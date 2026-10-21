@@ -207,10 +207,12 @@ export function resolveGridConfig(program, direction, args, resources) {
 export function refreshGridConfig(program, config) {
   if (config.inferredValues !== true) return config;
   const channel = config.direction === "horizontal" ? "y" : "x";
+  const inferred = inferGridTickConfig(program, channel, config.scale);
   const refreshed = {
     ...config,
-    ...inferGridTickConfig(program, channel, config.scale)
+    ...inferred
   };
+  if (inferred.rounding === undefined) delete refreshed.rounding;
   if (refreshed.mode === "values") delete refreshed.count;
   else delete refreshed.values;
   return refreshed;
@@ -224,11 +226,13 @@ export function editGridConfig(previous, args) {
     )
   };
   if (Object.hasOwn(args, "count")) {
+    delete config.rounding;
     config.mode = "count";
     config.count = args.count;
     config.inferredValues = false;
     delete config.values;
   } else if (Array.isArray(args.values)) {
+    delete config.rounding;
     config.mode = "values";
     config.values = args.values;
     config.inferredValues = false;

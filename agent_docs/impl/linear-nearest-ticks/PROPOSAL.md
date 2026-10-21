@@ -8,7 +8,7 @@
 - [x] literal primitive와 기존 explicit-values control이 정확히 같은 graphicSpec인지 확인했다.
 - [x] 같은 실행 SVG·PNG·decoded pixels 및 plot ink820pixels를 검증했다. `TARGET_EVIDENCE.json` 참조.
 - [x] 아래 구체적 API·저장·시각 목표에 사용자의 직접 standing approval을 재사용한다.
-- [ ] 검토 패키지를 commit/push한 뒤 구현한다.
+- [x] 검토 패키지 `ba22d895`를 commit/push했다. 이후 구현한다.
 - [ ] 기존 동작·선언·현재 계약·패키지·문서·예제·회귀를 함께 검증한다.
 
 ## 승인·배포 범위
@@ -53,10 +53,12 @@ program.createYAxis({
   명시해야 count-mode로 바꿀 수 있다. explicit values로 바꾸면 이전 rounding은 제거한다.
 - tick/label 생성 때 기존 tick owner가 있으면 생략한 선택 정책을 재사용한다. 명시적으로
   서로 다른 count/rounding/values를 요구하는 label 호출은 기존 충돌 원칙대로 거부한다.
+  새 policy를 가진 labels를 먼저 만들었다면 tick 생성도 그 유일한 선택 정책을 상속한다.
 - 새 rounding을 선택한 tick owner의 count/rounding/values를 편집하면 존재하는 labels와
   inferred grid를 순서 있는 기존 materialization plan으로 함께 갱신한다. 새 policy가 없는
   legacy 편집 흐름은 바꾸지 않는다. focused label은 기존 tick policy와 충돌하면 atomic 거부한다.
-- inferred grid는 matching axis owner의 count+rounding을 재사용한다. 복수 owner의 선택 정책이
+- inferred grid는 matching axis tick owner의 count+rounding을 재사용한다. labels만 있는 축은
+  기존과 같이 grid의 자동 정책을 선언하지 않는다. 복수 tick owner의 선택 정책이
   다르면 기존 ambiguity 오류를 유지한다. explicit grid count/values는 독립된 기존 정책으로
   되돌리고 이전 inferred rounding을 제거한다. 새 public grid 옵션은 추가하지 않는다.
 
@@ -72,7 +74,9 @@ override나 데이터 수정을 추가하지 않는다. 명시값은 enum 검증
 단일 책임으로 재사용한다. legacy ceil path는 유지한다. 소수는 reciprocal increment로
 정수 인덱스를 사용하며 유한 극값은 기존 정규화 책임을 재사용한다. ticks는 domain 안에서
 유한·오름차순·중복 없음으로 제한하고 10,000 item 한도를 유지한다. constant domain은
-한 값이다. 기존 오차 허용을 늘리거나 label만 바꾸지 않는다. renderer/상태 소유권의 거시
+한 값이다. 내부 정렬 grid에서 표현 가능한 값이 없으면 기존 tick fallback과 같이 관측 두
+endpoint를 쓴다. 초과 cardinality는 기존 방식처럼 양끝을 보존해 10,000개 이내로 고른다.
+기존 오차 허용을 늘리거나 label만 바꾸지 않는다. renderer/상태 소유권의 거시
 구조 변경은 없다.
 
 ## 시각 목표
@@ -82,7 +86,9 @@ Canvas260×170, plot200×120, margin left40/top20/right20/bottom30이다.
 선은 `(40,140) → (240,26)`, Y axis는 x40/y140→20, ticks는 x34→40이다.
 8개 y좌표는 `140 + value/140 * (20-140)`이고 label은 x28, right/middle,
 sans-serif12/normal이다. 모든 위치/paint/순서를 literal로 고정한다.
-새 public call은 control의 values만 `{count:5,rounding:"nearest"}`로 바꾸며
+새 public call은 control의 values만 `{count:5,rounding:"nearest"}`로 바꾼다. 최단 canonical
+예제는 같은 완성 축을 `createLinePlot.guides.axes.y` 안에 선언해 3개 public action을 쓴다.
+두 flow 모두
 graphicSpec·renderer calls·SVG·동일 실행 decoded PNG가 정확히 일치해야 한다.
 
 ## 검증과 동기화

@@ -18,14 +18,14 @@ const OPTIONS = Object.freeze([
 ]);
 const LINE_OPTIONS = Object.freeze(["color", "lineWidth"]);
 const TICK_OPTIONS = Object.freeze([
-  "count", "values", "length", "color", "lineWidth", "alongOffset", "strokeDash", "strokeDashMap"
+  "count", "values", "rounding", "length", "color", "lineWidth", "alongOffset", "strokeDash", "strokeDashMap"
 ]);
 const LABEL_OPTIONS = Object.freeze([
-  "count", "values", "offset", "format", "color", "fontSize",
+  "count", "values", "rounding", "offset", "format", "color", "fontSize",
   "fontFamily", "fontWeight", "rotation", "maxWidth", "wrap",
   "lineHeight", "overlap", "alongOffset", "labelMap", "flush", "colorMap", "align"
 ]);
-const GROUP_OPTIONS = Object.freeze(["count", "values", "ticks", "labels"]);
+const GROUP_OPTIONS = Object.freeze(["count", "values", "rounding", "ticks", "labels"]);
 const TITLE_OPTIONS = Object.freeze([
   "text", "at", "offset", "rotation", "color", "fontSize",
   "fontFamily", "fontWeight", "alongOffset", "align", "baseline", "overlap"

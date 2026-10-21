@@ -16267,6 +16267,11 @@
           "type": "number | undefined"
         },
         {
+          "name": "rounding",
+          "required": false,
+          "type": "AxisTickRounding | undefined"
+        },
+        {
           "name": "values",
           "required": false,
           "type": "readonly AxisValue[] | undefined"
@@ -16303,7 +16308,7 @@
         }
       ],
       "callPatterns": [
-        "createXAxisTicks({ target?, scale?, position?, count?, values?, color?, lineWidth?, length? })"
+        "createXAxisTicks({ target?, scale?, position?, count?, rounding?, values?, color?, lineWidth? })"
       ],
       "snippet": "program.createXAxisTicks({})",
       "errors": [],
@@ -16420,6 +16425,11 @@
           "type": "number | undefined"
         },
         {
+          "name": "rounding",
+          "required": false,
+          "type": "AxisTickRounding | undefined"
+        },
+        {
           "name": "values",
           "required": false,
           "type": "readonly AxisValue[] | undefined"
@@ -16456,7 +16466,7 @@
         }
       ],
       "callPatterns": [
-        "createYAxisTicks({ target?, scale?, position?, count?, values?, color?, lineWidth?, length? })"
+        "createYAxisTicks({ target?, scale?, position?, count?, rounding?, values?, color?, lineWidth? })"
       ],
       "snippet": "program.createYAxisTicks({})",
       "errors": [],
@@ -16584,6 +16594,11 @@
           "name": "count",
           "required": false,
           "type": "number | undefined"
+        },
+        {
+          "name": "rounding",
+          "required": false,
+          "type": "AxisTickRounding | undefined"
         },
         {
           "name": "values",
@@ -16720,6 +16735,11 @@
           "name": "count",
           "required": false,
           "type": "number | undefined"
+        },
+        {
+          "name": "rounding",
+          "required": false,
+          "type": "AxisTickRounding | undefined"
         },
         {
           "name": "values",
@@ -16861,6 +16881,11 @@
           "type": "number | undefined"
         },
         {
+          "name": "rounding",
+          "required": false,
+          "type": "AxisTickRounding | undefined"
+        },
+        {
           "name": "values",
           "required": false,
           "type": "readonly AxisValue[] | undefined"
@@ -16947,7 +16972,7 @@
         }
       ],
       "callPatterns": [
-        "createXAxisLabels({ target?, scale?, position?, count?, values?, labelMap?, offset?, format? })"
+        "createXAxisLabels({ target?, scale?, position?, count?, rounding?, values?, labelMap?, offset? })"
       ],
       "snippet": "program.createXAxisLabels({})",
       "errors": [],
@@ -17080,6 +17105,11 @@
           "type": "number | undefined"
         },
         {
+          "name": "rounding",
+          "required": false,
+          "type": "AxisTickRounding | undefined"
+        },
+        {
           "name": "values",
           "required": false,
           "type": "readonly AxisValue[] | undefined"
@@ -17166,7 +17196,7 @@
         }
       ],
       "callPatterns": [
-        "createYAxisLabels({ target?, scale?, position?, count?, values?, labelMap?, offset?, format? })"
+        "createYAxisLabels({ target?, scale?, position?, count?, rounding?, values?, labelMap?, offset? })"
       ],
       "snippet": "program.createYAxisLabels({})",
       "errors": [],
@@ -17361,6 +17391,11 @@
           "name": "count",
           "required": false,
           "type": "number | undefined"
+        },
+        {
+          "name": "rounding",
+          "required": false,
+          "type": "AxisTickRounding | undefined"
         },
         {
           "name": "values",
@@ -17566,6 +17601,11 @@
           "type": "number | undefined"
         },
         {
+          "name": "rounding",
+          "required": false,
+          "type": "AxisTickRounding | undefined"
+        },
+        {
           "name": "values",
           "required": false,
           "type": "readonly AxisValue[] | undefined"
@@ -17672,6 +17712,11 @@
           "type": "number | undefined"
         },
         {
+          "name": "rounding",
+          "required": false,
+          "type": "AxisTickRounding | undefined"
+        },
+        {
           "name": "values",
           "required": false,
           "type": "readonly AxisValue[] | undefined"
@@ -17688,7 +17733,7 @@
         }
       ],
       "callPatterns": [
-        "createXAxisTicksAndLabels({ target?, scale?, position?, count?, values?, ticks?, labels? })"
+        "createXAxisTicksAndLabels({ target?, scale?, position?, count?, rounding?, values?, ticks?, labels? })"
       ],
       "snippet": "program.createXAxisTicksAndLabels({})",
       "errors": [],
@@ -17788,6 +17833,11 @@
           "type": "number | undefined"
         },
         {
+          "name": "rounding",
+          "required": false,
+          "type": "AxisTickRounding | undefined"
+        },
+        {
           "name": "values",
           "required": false,
           "type": "readonly AxisValue[] | undefined"
@@ -17804,7 +17854,7 @@
         }
       ],
       "callPatterns": [
-        "createYAxisTicksAndLabels({ target?, scale?, position?, count?, values?, ticks?, labels? })"
+        "createYAxisTicksAndLabels({ target?, scale?, position?, count?, rounding?, values?, ticks?, labels? })"
       ],
       "snippet": "program.createYAxisTicksAndLabels({})",
       "errors": [],
@@ -17889,6 +17939,11 @@
           "type": "number | undefined"
         },
         {
+          "name": "rounding",
+          "required": false,
+          "type": "AxisTickRounding | undefined"
+        },
+        {
           "name": "values",
           "required": false,
           "type": "readonly AxisValue[] | undefined"
@@ -17905,7 +17960,7 @@
         }
       ],
       "callPatterns": [
-        "editXAxisTicksAndLabels({ target?, position?, count?, values?, ticks?, labels? })"
+        "editXAxisTicksAndLabels({ target?, position?, count?, rounding?, values?, ticks?, labels? })"
       ],
       "snippet": "program.editXAxisTicksAndLabels({ position: \"bottom\" })",
       "errors": [],
@@ -17990,6 +18045,11 @@
           "type": "number | undefined"
         },
         {
+          "name": "rounding",
+          "required": false,
+          "type": "AxisTickRounding | undefined"
+        },
+        {
           "name": "values",
           "required": false,
           "type": "readonly AxisValue[] | undefined"
@@ -18006,7 +18066,7 @@
         }
       ],
       "callPatterns": [
-        "editYAxisTicksAndLabels({ target?, position?, count?, values?, ticks?, labels? })"
+        "editYAxisTicksAndLabels({ target?, position?, count?, rounding?, values?, ticks?, labels? })"
       ],
       "snippet": "program.editYAxisTicksAndLabels({ position: \"left\" })",
       "errors": [],

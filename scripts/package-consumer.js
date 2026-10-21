@@ -74,6 +74,9 @@ export async function preparePackageConsumer({
 }
 
 async function testNodeConsumer(directory) {
+  await writeFile(path.join(directory, "linear-nearest-ticks-public.js"),
+    (await readFile(new URL("../examples/linear-nearest-ticks/program.js", import.meta.url), "utf8"))
+      .replace('"../../src/index.js"', '"ggaction"'));
   await writeFile(path.join(directory,"linear-nice-count-public.js"),
     (await readFile(new URL("../examples/linear-nice-count/program.js",import.meta.url),"utf8"))
       .replace('"../../src/index.js"','"ggaction"'));
@@ -105,6 +108,26 @@ async function testNodeConsumer(directory) {
     import { comparePrograms, describeAction, getDatasetSchema, inspectProgram } from "ggaction/inspection";
     import {createFacetSharedTopLaneProgram} from "./facet-lane-public.js";
     import {createPlotUnderlayProgram} from "./plot-underlay-public.js";
+
+    {
+      const {createLinearNearestTicks}=await import("./linear-nearest-ticks-public.js");
+      const p=createLinearNearestTicks();
+      const expected=["0","20","40","60","80","100","120","140"];
+      assert.deepEqual(p.graphicSpec.objects.yAxisLabels.items.map(x=>x.properties.text),expected);
+      assert.deepEqual(deserializeProgram(serializeProgram(p)).graphicSpec,p.graphicSpec);
+      const reset=p.createHorizontalGrid().editYAxisTicks({rounding:"ceiling"});
+      assert.equal(reset.graphicSpec.objects.yAxisTicks.items.length,5);
+      assert.equal(reset.graphicSpec.objects.yAxisLabels.items.length,5);
+      assert.equal(reset.graphicSpec.objects.horizontalGridLines.items.length,5);
+      assert.equal((await renderToPNGBuffer(p)).width,260);
+      assert.equal((await renderToPDFBuffer(p)).buffer.subarray(0,4).toString(),"%PDF");
+      assert(renderToSVG(p).includes('140'));
+      const b=basicChart().createCanvas({plot:{width:200,height:120},margin:40})
+        .createData({values:[{x:0,y:0},{x:1,y:133}]})
+        .createLinePlot({x:"x",y:{field:"y",scale:{domain:[0,140]}},guides:false})
+        .createYAxis({title:false,ticksAndLabels:{rounding:"nearest"}});
+      assert.deepEqual(b.graphicSpec.objects.yAxisLabels.items.map(x=>x.properties.text),expected);
+    }
 
     {
       const {createLinearNiceCount}=await import("./linear-nice-count-public.js");
@@ -3623,7 +3646,8 @@ const invalidGrouped: Parameters<FullFormatsProgram["createXAxisLabels"]>[0] = {
       type ViolinPlotOptions,
       type WindowDataOptions,
       type YStackMode,
-      type LinearNiceCountOptions
+      type LinearNiceCountOptions,
+      type AxisTickRounding
     } from "ggaction";
     import { action, ChartProgram as ExtensionProgram } from "ggaction/extension";
     import {
@@ -3690,6 +3714,12 @@ const invalidGrouped: Parameters<FullFormatsProgram["createXAxisLabels"]>[0] = {
 
     chart().createScatterPlot({ x: "x", y: "y", stroke: "group", point: { strokeWidth: 2 } });
     const linearNice: LinearNiceCountOptions = {count:10};
+    const tickRounding: AxisTickRounding = "nearest";
+    chart().createYAxis({ticksAndLabels:{rounding:tickRounding}});
+    chart().editYAxisTicksAndLabels({rounding:tickRounding});
+    basicChart().createYAxis({ticksAndLabels:{rounding:tickRounding}});
+    // @ts-expect-error Cartesian rounding is not a Polar option
+    chart().createThetaAxisTicks({rounding:tickRounding});
     chart().createLinePlot({x:"x",y:{field:"y",scale:{nice:linearNice}}});
     basicChart().createLinePlot({x:"x",y:{field:"y",scale:{nice:linearNice}}});
     chart().editYScale({nice:linearNice});
@@ -5707,6 +5737,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "shared-facet-top-lane",
       "rotated-facet-headers",
       "count-based-linear-position-domains",
+      "nearest-step-linear-axis-ticks",
       "explicit-axis-and-border-underlays",
       "typescript",
       "basic-entry-runtime-and-types",

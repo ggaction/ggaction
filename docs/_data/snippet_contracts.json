@@ -189,6 +189,18 @@
   {
     "file": "api/axes.md",
     "block": 1,
+    "heading": "Choose nearest-step linear ticks",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "c5f38269b79c84790af2d99a4abe57bfb69116e2d2769e0cf44b236a713f5c4c",
+    "executable": false
+  },
+  {
+    "file": "api/axes.md",
+    "block": 2,
     "heading": "Standalone Cartesian axes",
     "mode": "fragment",
     "environment": "esm-context",
@@ -200,7 +212,7 @@
   },
   {
     "file": "api/axes.md",
-    "block": 2,
+    "block": 3,
     "heading": "Polar component creation",
     "mode": "fragment",
     "environment": "esm-context",
@@ -212,7 +224,7 @@
   },
   {
     "file": "api/axes.md",
-    "block": 3,
+    "block": 4,
     "heading": "Editing a complete axis",
     "mode": "fragment",
     "environment": "esm-context",
@@ -224,7 +236,7 @@
   },
   {
     "file": "api/axes.md",
-    "block": 4,
+    "block": 5,
     "heading": "Removing an axis",
     "mode": "fragment",
     "environment": "esm-context",

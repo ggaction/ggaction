@@ -5,6 +5,7 @@ import {
   cleanNumericValue,
   interpolateNumber,
   inverseLerp,
+  nearestNumericIncrement,
   niceNumericStep,
   normalizeNumericRange
 } from "../numeric.js";
@@ -94,20 +95,6 @@ export function normalizeScaleNice(type, value) {
   return cloneAndFreeze({ count });
 }
 
-function countIncrement(span, count) {
-  const target = span / count;
-  const exponent = Math.floor(Math.log10(target));
-  const power = 10 ** exponent;
-  if (!Number.isFinite(power) || power === 0) return null;
-  const error = target / power;
-  const factor = error >= Math.sqrt(50) ? 10
-    : error >= Math.sqrt(10) ? 5 : error >= Math.sqrt(2) ? 2 : 1;
-  // Reciprocal integer increments avoid moving exact decimal boundaries such
-  // as 0.7 one step outward merely because 0.7 / 0.02 rounds below 35.
-  const increment = exponent < 0 ? -(10 ** -exponent) / factor : factor * power;
-  return Number.isFinite(increment) && increment !== 0 ? increment : null;
-}
-
 export function niceLinearCountDomain(domain, count) {
   const input = validatePair(domain, "Nice linear domain");
   normalizeScaleNice("linear", { count });
@@ -116,11 +103,11 @@ export function niceLinearCountDomain(domain, count) {
   let stable = lower === upper;
   for (let iteration = 0; iteration < 10 && lower !== upper; iteration++) {
     let start = lower, end = upper, scale = 1;
-    let increment = countIncrement(end - start, count);
+    let increment = nearestNumericIncrement(end - start, count);
     if (increment === null) {
       const normalized = normalizeNumericRange(lower, upper);
       ({ start, end, scale } = normalized);
-      increment = countIncrement(normalized.span, count);
+      increment = nearestNumericIncrement(normalized.span, count);
       if (increment === null) break;
     }
     let nextLower = (increment < 0

@@ -33,7 +33,7 @@ Cartesian line/ticks/labels/title의 실제 occupied bounds는 각 component pos
   Evidence: `test/unit/actions/guides/standalone-axes.test.js`.
 - `position`: x는 `"bottom" | "top"`, y는 `"left" | "right"`를 사용하며 defaults는 bottom/left다.
 - `line`: `{ color?, lineWidth? }`; axis-line child에 전달한다.
-- `ticksAndLabels`: `{ count?, values?, ticks?, labels? }`; shared tick/label child에 전달한다.
+- `ticksAndLabels`: `{ count?, values?, rounding?, ticks?, labels? }`; shared tick/label child에 전달한다.
 - `title`: `{ text?, at?, offset?, rotation?, color?, fontSize?, fontFamily?, fontWeight?, overlap? }`.
 - Effect: line → ticks/labels → title wrapped action 순서로 semantic guide와 concrete graphics를 만든다.
 - Complete axis는 선택한 position을 line, ticks/labels와 title child 모두에 전달한다.
@@ -54,9 +54,26 @@ Cartesian line/ticks/labels/title의 실제 occupied bounds는 각 component pos
 
 ## Shared axis-tick contract
 
-- Create parameters: `scale?`, `position?`, `count?`, `values?`, `length?`, `color?`, `lineWidth?`, `alongOffset?`.
+- Create parameters: `scale?`, `position?`, `count?`, `values?`, `rounding?`, `length?`, `color?`, `lineWidth?`, `alongOffset?`.
 - Edit parameters는 `scale`을 제외하고 동일하다.
 - `count`: positive integer, 기본값 `5`, 최대 `10,000`; `values`와 mutually exclusive다.
+- `rounding`: Cartesian linear count mode에서 `"ceiling" | "nearest"`. 생략 시 기존 step 선택과
+  출력은 그대로다. nearest는 span/count의 1·2·5·10 decade를 기하 중점으로 고른다.
+  count는 대략적 밀도이며 정확한 item 수가 아니다. ceiling은 기존 정책으로 복귀한다.
+  명시 values/rounding 동시 호출, undefined/잘못된 enum, temporal/transformed/discrete와
+  Polar/Parallel에서는 거부한다. values로 바꾸면 이전 rounding을 지운다. values-mode에서
+  rounding을 선택하려면 count도 명시한다. count-mode에서는 현재 count를 유지한다.
+  새 policy를 선택한 tick owner의 선택 편집은 기존 labels와 inferred grid를 ordered plan으로
+  함께 갱신한다. label 호출은 existing tick owner의 생략 정책을 상속하고 명시 충돌은 거부한다.
+  새-policy labels를 먼저 만들었다면 후속 ticks도 그 유일한 선택 정책을 상속한다.
+  label만 있는 축은 기존처럼 grid의 자동 정책을 선언하지 않는다. Inferred grid는 tick owner의
+  정책을 재사용하며, 다른 owner 정책은 ambiguity 오류다. Explicit grid count/values는 기존
+  독립 정책으로 바꾸고 inherited rounding을 지운다. `values:"auto"`로 다시 추론한다.
+  값은 finite/ascending/unique/domain 내부이며 constant는 한 값이다. 정렬 grid가 표현 불가능하면
+  기존처럼 관측 endpoints로 fallback하고 item limit은 양끝을 보존해 지킨다. 이 정책은 named
+  owner, Full/Basic, data/Canvas/scale, independent facet, persistence에서 유지한다.
+  근거: `test/contracts/linear-nearest-ticks.test.js`, `test/unit/grammar/ticks-nearest.test.js`,
+  `test/charts/linear-nearest-ticks/public.test.js`.
 - `values`: scale domain 안의 finite number/timestamp 또는 ordinal scalar array. histogram x는 둘 다
   생략하면 bin boundaries, ordinal x는 domain 전체를 사용한다. 생성 전 resolved cardinality는 최대
   `10,000`이다.
@@ -74,7 +91,7 @@ Cartesian line/ticks/labels/title의 실제 occupied bounds는 각 component pos
 - Create parameters: `scale?`, `position?`, `count?`, `values?`, `offset?`, `format?`, `color?`,
   `fontSize?`, `fontFamily?`, `fontWeight?`, `rotation?`, `maxWidth?`, `wrap?`, `lineHeight?`,
   `overlap?`, `labelMap?`, `alongOffset?`, `flush?`, `colorMap?`; edit에서는 scale을 제외한다.
-- `count`/`values`: tick contract와 같으며 existing ticks가 있으면 생략 시 그 정책을 재사용한다.
+- `count`/`values`/`rounding`: tick contract와 같으며 existing ticks가 있으면 생략 시 그 정책을 재사용한다.
 - `offset`: non-negative finite number; x default `18`, y default `12`.
 - `alongOffset`: signed finite logical pixels, 기본 `0`. Mapped label 위치에서 X는 오른쪽, Y는 아래쪽으로 이동한다. Tick offset을 상속하지 않는 독립 절대값이다. 기존 `offset`은 축 바깥쪽 간격으로 유지된다.
 - `format`: `"auto" | { decimals: nonNegativeInteger } | AxisFormatString`. Numeric token은 `.0`–`.12`

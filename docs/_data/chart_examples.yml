@@ -1625,3 +1625,21 @@
   url: /api/scales/#count-based-linear-domain-rounding
   home_group: essentials
   home_order: 158
+
+- id: linear-nearest-ticks
+  example: /examples/linear-nearest-ticks/
+  title: Nearest-step automatic linear ticks
+  image: /assets/images/linear-nearest-ticks.png
+  alt: A blue line on a Y axis labeled 0 through 140 at intervals of 20
+  width: 520
+  height: 340
+  thumbnail: /assets/images/linear-nearest-ticks-thumb.png
+  thumbnail_width: 520
+  thumbnail_height: 340
+  caption: Nearest-step density 5 selects 20-unit ticks while preserving the complete scale and data.
+  summary: Use one automatic tick policy across independently scaled facet panels.
+  actions: createLinePlot · createYAxis · editYAxisTicksAndLabels
+  tasks: axes comparison
+  url: /api/axes/#choose-nearest-step-linear-ticks
+  home_group: essentials
+  home_order: 159

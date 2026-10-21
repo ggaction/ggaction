@@ -410,6 +410,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
+| `rounding` | Optional / branch-dependent | `AxisTickRounding \| undefined` |
 | `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `lineWidth` | Optional / branch-dependent | `number \| undefined` |
@@ -447,6 +448,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
+| `rounding` | Optional / branch-dependent | `AxisTickRounding \| undefined` |
 | `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `lineWidth` | Optional / branch-dependent | `number \| undefined` |
@@ -489,6 +491,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
+| `rounding` | Optional / branch-dependent | `AxisTickRounding \| undefined` |
 | `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
 
 </details>
@@ -525,6 +528,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
+| `rounding` | Optional / branch-dependent | `AxisTickRounding \| undefined` |
 | `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
 
 </details>
@@ -556,6 +560,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
+| `rounding` | Optional / branch-dependent | `AxisTickRounding \| undefined` |
 | `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
 | `labelMap` | Optional / branch-dependent | `"auto" \| DisplayLabelMap \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
@@ -603,6 +608,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
+| `rounding` | Optional / branch-dependent | `AxisTickRounding \| undefined` |
 | `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
 | `labelMap` | Optional / branch-dependent | `"auto" \| DisplayLabelMap \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
@@ -665,6 +671,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
+| `rounding` | Optional / branch-dependent | `AxisTickRounding \| undefined` |
 | `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
 
 </details>
@@ -711,6 +718,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
+| `rounding` | Optional / branch-dependent | `AxisTickRounding \| undefined` |
 | `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
 
 </details>
@@ -742,6 +750,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
+| `rounding` | Optional / branch-dependent | `AxisTickRounding \| undefined` |
 | `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
 | `ticks` | Optional / branch-dependent | `CartesianAxisTickStyleOptions \| undefined` |
 | `labels` | Optional / branch-dependent | `(CartesianAxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions) \| undefined` |
@@ -775,6 +784,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
+| `rounding` | Optional / branch-dependent | `AxisTickRounding \| undefined` |
 | `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
 | `ticks` | Optional / branch-dependent | `CartesianAxisTickStyleOptions \| undefined` |
 | `labels` | Optional / branch-dependent | `(CartesianAxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions) \| undefined` |
@@ -807,6 +817,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
+| `rounding` | Optional / branch-dependent | `AxisTickRounding \| undefined` |
 | `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
 | `ticks` | Optional / branch-dependent | `CartesianAxisTickStyleOptions \| undefined` |
 | `labels` | Optional / branch-dependent | `(CartesianAxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions) \| undefined` |
@@ -839,6 +850,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
+| `rounding` | Optional / branch-dependent | `AxisTickRounding \| undefined` |
 | `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
 | `ticks` | Optional / branch-dependent | `CartesianAxisTickStyleOptions \| undefined` |
 | `labels` | Optional / branch-dependent | `(CartesianAxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions) \| undefined` |

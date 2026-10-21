@@ -550,13 +550,14 @@ export interface AxisLabelOptions<P extends string>
   scale?: string;
   position?: P;
   count?: number;
+  rounding?: AxisTickRounding;
   values?: readonly AxisValue[];
 }
 ```
 
 </details>
 
-Related types: [`CartesianAxisLabelStyleOptions`](#type-cartesianaxislabelstyleoptions) · [`AxisLabelLayoutOptions`](#type-axislabellayoutoptions) · [`DisplayLabelOptions`](#type-displaylabeloptions) · [`AxisValue`](#type-axisvalue).
+Related types: [`CartesianAxisLabelStyleOptions`](#type-cartesianaxislabelstyleoptions) · [`AxisLabelLayoutOptions`](#type-axislabellayoutoptions) · [`DisplayLabelOptions`](#type-displaylabeloptions) · [`AxisTickRounding`](#type-axistickrounding) · [`AxisValue`](#type-axisvalue).
 
 ### `AxisLabelStyleOptions` {#type-axislabelstyleoptions}
 
@@ -605,6 +606,7 @@ export interface AxisTickOptions<P extends string>
   scale?: string;
   position?: P;
   count?: number;
+  rounding?: AxisTickRounding;
   values?: readonly AxisValue[];
 }
 /** Cartesian label maps use typed category values or finite numeric/timestamp keys on continuous scales. Empty mapped labels are omitted without removing ticks. */
@@ -612,7 +614,18 @@ export interface AxisTickOptions<P extends string>
 
 </details>
 
-Related types: [`CartesianAxisTickStyleOptions`](#type-cartesianaxistickstyleoptions) · [`AxisValue`](#type-axisvalue).
+Related types: [`CartesianAxisTickStyleOptions`](#type-cartesianaxistickstyleoptions) · [`AxisTickRounding`](#type-axistickrounding) · [`AxisValue`](#type-axisvalue).
+
+### `AxisTickRounding` {#type-axistickrounding}
+
+<details markdown="1">
+<summary>Expand AxisTickRounding</summary>
+
+```typescript
+export type AxisTickRounding = "ceiling" | "nearest";
+```
+
+</details>
 
 ### `AxisTickStyleOptions` {#type-axistickstyleoptions}
 
@@ -641,6 +654,7 @@ export interface AxisTicksAndLabelsOptions<P extends string> {
   scale?: string;
   position?: P;
   count?: number;
+  rounding?: AxisTickRounding;
   values?: readonly AxisValue[];
   ticks?: CartesianAxisTickStyleOptions;
   labels?: CartesianAxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions;
@@ -649,7 +663,7 @@ export interface AxisTicksAndLabelsOptions<P extends string> {
 
 </details>
 
-Related types: [`AxisValue`](#type-axisvalue) · [`CartesianAxisTickStyleOptions`](#type-cartesianaxistickstyleoptions) · [`CartesianAxisLabelStyleOptions`](#type-cartesianaxislabelstyleoptions) · [`AxisLabelLayoutOptions`](#type-axislabellayoutoptions) · [`DisplayLabelOptions`](#type-displaylabeloptions).
+Related types: [`AxisTickRounding`](#type-axistickrounding) · [`AxisValue`](#type-axisvalue) · [`CartesianAxisTickStyleOptions`](#type-cartesianaxistickstyleoptions) · [`CartesianAxisLabelStyleOptions`](#type-cartesianaxislabelstyleoptions) · [`AxisLabelLayoutOptions`](#type-axislabellayoutoptions) · [`DisplayLabelOptions`](#type-displaylabeloptions).
 
 ### `AxisTitleOptions` {#type-axistitleoptions}
 

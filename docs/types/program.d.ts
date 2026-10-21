@@ -1469,12 +1469,14 @@ export interface AxisLabelLayoutOptions {
   /** Defaults to error; allow stores an intentional label-label overlap policy. */
   overlap?: "error" | "allow";
 }
+export type AxisTickRounding = "ceiling" | "nearest";
 export interface AxisTicksAndLabelsOptions<P extends string> {
   /** Axis resource identity; omission prefers canonical, then a unique named owner. */
   target?: string;
   scale?: string;
   position?: P;
   count?: number;
+  rounding?: AxisTickRounding;
   values?: readonly AxisValue[];
   ticks?: CartesianAxisTickStyleOptions;
   labels?: CartesianAxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions;
@@ -1533,6 +1535,7 @@ export interface AxisTickOptions<P extends string>
   scale?: string;
   position?: P;
   count?: number;
+  rounding?: AxisTickRounding;
   values?: readonly AxisValue[];
 }
 /** Cartesian label maps use typed category values or finite numeric/timestamp keys on continuous scales. Empty mapped labels are omitted without removing ticks. */
@@ -1543,6 +1546,7 @@ export interface AxisLabelOptions<P extends string>
   scale?: string;
   position?: P;
   count?: number;
+  rounding?: AxisTickRounding;
   values?: readonly AxisValue[];
 }
 

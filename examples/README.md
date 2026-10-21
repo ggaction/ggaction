@@ -588,6 +588,12 @@ Choose automatic linear domain rounding without hard-coding a range for every pa
 
 Representative actions: `createLinePlot`, `editYScale`, `editFacetScales`. [Documentation](https://ggaction.github.io/ggaction/api/scales/#count-based-linear-domain-rounding).
 
+### [Nearest-step automatic linear ticks](./linear-nearest-ticks/)
+
+Use one automatic tick policy across independently scaled facet panels.
+
+Representative actions: `createLinePlot`, `createYAxis`, `editYAxisTicksAndLabels`. [Documentation](https://ggaction.github.io/ggaction/api/axes/#choose-nearest-step-linear-ticks).
+
 ## Development fixtures
 
 The catalog includes every maintained public chart program. Getting Started

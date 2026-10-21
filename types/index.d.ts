@@ -2,6 +2,7 @@ import type { ChartProgram, CompositionOptions } from "./program.js";
 
 export type {
   LinearNiceCountOptions,
+  AxisTickRounding,
   ArcInnerRadius,
   PieRadiusChannel,
   TextMetricFontWeight,

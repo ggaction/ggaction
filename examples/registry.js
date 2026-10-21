@@ -124,6 +124,7 @@ import { createFacetGridExample } from "./facet-grid/program.js";
 import { createLookupExample } from "./lookup-data/program.js";
 import { createFacetFieldTitles } from "./facet-field-titles/program.js";
 import { createLinearNiceCount } from "./linear-nice-count/program.js";
+import { createLinearNearestTicks } from "./linear-nearest-ticks/program.js";
 import { createFacetHeaderRotation } from "./facet-header-rotation/program.js";
 import { createRepeatChartsExample } from "./repeat-charts/program.js";
 import {
@@ -454,6 +455,11 @@ export const PUBLIC_CHARTS = Object.freeze([
     id: "linear-nice-count", data: {}, width: 260, height: 170,
     createProgram: () => createLinearNiceCount(), docsGroup: "charts",
     browser: { path: "linear-nice-count/", canvas: "#chart" }
+  }),
+  example({
+    id: "linear-nearest-ticks", data: {}, width: 260, height: 170,
+    createProgram: () => createLinearNearestTicks(), docsGroup: "charts",
+    browser: { path: "linear-nearest-ticks/", canvas: "#chart" }
   }),
   example({
     id: "facet-field-titles", data: {}, width: 215, height: 195,

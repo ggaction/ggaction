@@ -27,6 +27,7 @@ import { validateGraphicItemLimit } from "../core/validation.js";
 import { LEGEND_TITLE_STYLE_KEYS, validateLegendTitleAlignment } from "../grammar/legendTitleStyle.js";
 import { validateGuideDash, normalizeGuideDashMap } from "../grammar/guideDash.js";
 import { validateAxisTextPlacement } from "../grammar/axisTextPlacement.js";
+import { validateTickSelectionRounding, axisTickSelection } from "../grammar/ticks.js";
 import { validateAreaPaintConfig } from "../grammar/areaPaint.js";
 import { validateOptionObject, validateKeys, validatePositiveFinite, validateNonNegativeFinite, validateNonEmptyString, validateGeneratedItemLimit } from "../core/validation.js";
 import { validateRegressionFitStatistics, requireRegressionStatisticsSource, regressionStatisticsRows } from "../grammar/regression/statistics.js";
@@ -228,9 +229,23 @@ export function validateProgramState(program, path) {
     if (config?.strokeDashMap !== undefined) normalizeGuideDashMap(config.strokeDashMap, { reset: false });
   }
   const cartesianOwners = cartesianAxisOwners(program);
+  for (const [id, axis] of Object.entries(program.guideConfigs.axis ?? {})) {
+    for (const config of [axis?.ticks, axis?.labels]) {
+      if (config === undefined || !Object.hasOwn(config, "rounding")) continue;
+      if (!cartesianOwners.some(owner => owner.id === id)) {
+        throw invalidSnapshot("Tick rounding requires a Cartesian axis owner.", path);
+      }
+      validateTickSelectionRounding(config, program.resolvedScales[config.scale]?.type);
+    }
+  }
   for (const owner of cartesianOwners) {
     const channel = owner.id;
     const axis = owner.config;
+    if (axis?.ticks && axis?.labels &&
+        (Object.hasOwn(axis.ticks, "rounding") || Object.hasOwn(axis.labels, "rounding")) &&
+        JSON.stringify(axisTickSelection(axis.ticks)) !== JSON.stringify(axisTickSelection(axis.labels))) {
+      throw invalidSnapshot("Stored tick rounding conflicts with axis labels.", path);
+    }
     if (axis?.frame !== undefined) {
       validateOptionObject(axis.frame, ["offset", "underlay"], `Stored axis "${channel}" frame`, { allowEmpty: false });
       if (Object.hasOwn(axis.frame, "offset")) validateNonNegativeFinite(axis.frame.offset, "Axis frame offset");
@@ -240,6 +255,16 @@ export function validateProgramState(program, path) {
     }
     if (axis?.labels !== undefined) validateAxisTextPlacement(axis.labels);
     if (axis?.title !== undefined) validateAxisTextPlacement(axis.title, { title: true });
+  }
+  for (const config of Object.values(program.guideConfigs.grid ?? {})) {
+    if (!Object.hasOwn(config, "rounding")) continue;
+    validateTickSelectionRounding(config, program.resolvedScales[config.scale]?.type);
+    const owners = cartesianOwners.map(owner => owner.config?.ticks)
+      .filter(ticks => ticks?.scale === config.scale);
+    if (config.inferredValues !== true || config.rounding !== "nearest" || owners.length === 0 ||
+        owners.some(ticks => JSON.stringify(axisTickSelection(ticks)) !== JSON.stringify(axisTickSelection(config)))) {
+      throw invalidSnapshot("Stored grid rounding requires its matching inferred tick policy.", path);
+    }
   }
   const border = program.materializationConfigs.canvas?.plotBorder;
   if (isPlainObject(border) && Object.hasOwn(border, "underlay") && border.underlay !== true) {

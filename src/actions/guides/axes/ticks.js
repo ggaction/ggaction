@@ -27,6 +27,7 @@ import {
   valuesFromTickConfig
 } from "../tickValues.js";
 import { DEFAULT_COLORS } from "../../../theme/defaults.js";
+import { validateTickRounding } from "../../../grammar/ticks.js";
 import {
   defaultAxisPosition,
   resolveAxisTickGeometry,
@@ -35,7 +36,7 @@ import {
 import { findCanvasGraphic, resolvePlotGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
 
-const OPTIONS = Object.freeze(["target", "scale", "position", "count", "values", "length", "color", "lineWidth", "alongOffset", "strokeDash", "strokeDashMap"]);
+const OPTIONS = Object.freeze(["target", "scale", "position", "count", "values", "rounding", "length", "color", "lineWidth", "alongOffset", "strokeDash", "strokeDashMap"]);
 const DEFAULTS = Object.freeze({
   count: DEFAULT_TICK_COUNT,
   length: 6,
@@ -44,6 +45,10 @@ const DEFAULTS = Object.freeze({
 });
 
 function validateOptions(args, operation, create) {
+  validateTickRounding(args.rounding, !Object.hasOwn(args, "rounding"));
+  if (Object.hasOwn(args, "rounding") && Object.hasOwn(args, "values")) {
+    throw new Error(`${operation} cannot use rounding and values together.`);
+  }
   validateOptionObject(
     args,
     create ? OPTIONS : OPTIONS.filter(key => key !== "scale"),
@@ -165,7 +170,10 @@ function makeEdit(channel) {
       ...(explicitMode ? { inferredValues: false } : {}),
       mode
     }, args);
-    if (mode === "values") delete config.count; else delete config.values;
+    if (mode === "values") {
+      delete config.count;
+      if (!Object.hasOwn(args, "rounding")) delete config.rounding;
+    } else delete config.values;
     validateConfig(channel, config);
     const resolved = geometry(this, channel, config, axisId);
     let next = this._withGuideConfig(axisId, config).editGraphics({ target: id, property: "length", value: resolved.values.length });
@@ -179,7 +187,11 @@ function makeEdit(channel) {
       next = next.editGraphics({ target: id, property: "strokeDash", value: resolveGuideDashes(resolved.values, config) });
     }
     // Structural dependency plans own grids during a scale/role handoff.
-    return explicitMode ? applyMaterializationPlan(next, planAxisTickGridRematerialization(next, channel, axisId)) : next;
+    const explicitSelection = explicitMode || Object.hasOwn(args, "rounding");
+    return explicitSelection ? applyMaterializationPlan(next,
+      planAxisTickGridRematerialization(next, channel, axisId, {
+        syncLabels: Object.hasOwn(config, "rounding") || Object.hasOwn(previous, "rounding")
+      })) : next;
   }));
 }
 
@@ -198,6 +210,10 @@ function makeCreate(channel) {
     const id = axisGraphicIds(channel, axisId)[1];
     if (this.graphicSpec.objects[id]) throw new Error(`${op} requires missing axis ticks.`);
     const resolvedScale = this.resolvedScales[scale];
+    const labels = this.guideConfigs.axis?.[axisId]?.labels;
+    const inheritedSelection = labels?.rounding !== undefined && !Object.hasOwn(args, "values")
+      ? { count: labels.count, rounding: labels.rounding } : {};
+    args = { ...inheritedSelection, ...args };
     const inferredValues =
       Object.hasOwn(args, "count") || Object.hasOwn(args, "values")
         ? undefined
@@ -217,7 +233,9 @@ function makeCreate(channel) {
         ...resolvePlotGraphicPlacement(this)
       })
       ._withGuideConfig(axisId, config)[edit](axisId === channel ? undefined : axisTargetArgs(axisId, channel));
-    return applyMaterializationPlan(next, planAxisTickGridRematerialization(next, channel, axisId));
+    return applyMaterializationPlan(next, planAxisTickGridRematerialization(next, channel, axisId, {
+      syncLabels: config.rounding !== undefined || labels?.rounding !== undefined
+    }));
   }));
 }
 

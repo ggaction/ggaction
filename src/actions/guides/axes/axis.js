@@ -27,6 +27,7 @@ const LINE_OPTIONS = Object.freeze(["color", "lineWidth"]);
 const TICK_GROUP_OPTIONS = Object.freeze([
   "count",
   "values",
+  "rounding",
   "ticks",
   "labels"
 ]);

@@ -26,6 +26,7 @@ const LOADERS = Object.freeze({
 
 const EXPECTED_DRAW_ORDER = Object.freeze({
   "linear-nice-count": ["canvas", "linePlot"],
+  "linear-nearest-ticks": ["canvas", "linePlot", "yAxisLine", "yAxisTicks", "yAxisLabels"],
   "lookup-data": ["canvas", "horizontalGridLines", "barPlot", "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle", "yAxisLine", "yAxisTicks", "yAxisLabels", "yAxisTitle"],
   "bootstrap-mean-ci": ["canvas", "areaPlot", "meanLine"],
   "continuous-area-color": ["canvas", "areaPlot"],

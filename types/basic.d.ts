@@ -2,6 +2,7 @@ import type { ChartProgram, BasicSeriesLayoutOptions, CreateDataOptions } from "
 
 export type {
   LinearNiceCountOptions,
+  AxisTickRounding,
   AxisLabelOptions,
   AxisLineStyleOptions,
   AxisTickOptions,

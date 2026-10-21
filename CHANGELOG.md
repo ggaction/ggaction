@@ -5,6 +5,7 @@ All notable changes to `ggaction` are recorded in this file.
 ## Unreleased
 
 - Add opt-in `nice: { count }` rounding for automatic linear position domains, preserving existing boolean behavior, independent facet ranges, immutable edits and saved programs.
+- Add opt-in nearest-step linear Cartesian ticks with matching labels, inferred grids, named owners, independent facets and editable saved programs.
 
 - Add independent role-scoped facet field titles through existing header creation and editing, with rotated placement, immutable partial edits, removal and collision-checked replay.
 
