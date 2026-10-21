@@ -3,9 +3,9 @@
   "status": "development",
   "packageVersion": "0.0.21",
   "contractId": "sha256:6f56f49c9b576fd0ef9be99686366556d8a4f92038f89f2fff42b4b23ac5f35e",
-  "sourceCommit": null,
-  "sourceRef": "main",
-  "exampleSourceRef": "codex/batch200-library-fixes",
+  "sourceCommit": "12cadafe416f48a52525f4dc93c13e0d040d40ec",
+  "sourceRef": "12cadafe416f48a52525f4dc93c13e0d040d40ec",
+  "exampleSourceRef": "12cadafe416f48a52525f4dc93c13e0d040d40ec",
   "baseline": {
     "tag": "v0.0.13",
     "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",

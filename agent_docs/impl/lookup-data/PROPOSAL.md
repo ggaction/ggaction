@@ -136,3 +136,5 @@ SECOND_ARCHITECTURE와 연결된 작업 경로에 기록한다.
 집중73개·통합32개·설치 package66그룹 및 primitive/public decoded pixels가 통과했다.
 전체 normal/clean source 문서·사이트·1297개9454program native cohort는 아직 최종 검증 전이다.
 초기 normal11실패와 설치 consumer 기대값/size 진단을 EVIDENCE.json에 보존한다.
+
+최종 source normal5123/5123, clean docs120, built150pages, responsive320/390/768·검색·접근성, public browser97개가 통과했다. 실제 설치66그룹/타입/FullBasic/PNG·PDF 및 독립 prejoined decoded pixels 통과 증거를 보존한다. 최종 후보 archive는 소비자 검증 archive와 README의 크기 표기 한 글자만 다르며609개 파일 중 모든 runtime/types/knowledge bytes는 동일하다. 현재1297/9454native cohort·로컬 설치·School 원본 번역은 별도 후속 검증이다.
