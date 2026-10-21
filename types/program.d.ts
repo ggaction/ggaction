@@ -4538,6 +4538,11 @@ export type AngleEncodingOptions =
   | { target?: string; value: number; field?: never; fieldType?: never }
   | { target?: string; field: string; fieldType?: "quantitative"; value?: never };
 
+/** Unscaled, signed logical-pixel offsets for independent Text marks. */
+export type TextOffsetEncodingOptions =
+  | { target?: string; value: number; field?: never }
+  | { target?: string; field: string; value?: never };
+
 type WithoutEncodingTarget<T> = T extends unknown
   ? Omit<T, "target" | "coordinate">
   : never;
@@ -4562,6 +4567,8 @@ export interface EncodingChannelAssignments {
   strokeDash?: WithoutEncodingTarget<StrokeDashEncodingOptions>;
   angle?: WithoutEncodingTarget<AngleEncodingOptions>;
   text?: WithoutEncodingTarget<TextEncodingOptions>;
+  dx?: WithoutEncodingTarget<TextOffsetEncodingOptions>;
+  dy?: WithoutEncodingTarget<TextOffsetEncodingOptions>;
 }
 
 type AtLeastOne<T> = {
@@ -5337,9 +5344,11 @@ export class ChartProgram {
     channel:
       | "x" | "y" | "x2" | "y2" | "xOffset" | "yOffset"
       | "theta" | "radius" | "color" | "stroke" | "strokeDash" | "strokeWidth"
-      | "size" | "shape" | "angle" | "group" | "opacity" | "text";
+      | "size" | "shape" | "angle" | "group" | "opacity" | "text" | "dx" | "dy";
   }): ChartProgram;
   encodeText(options: TextEncodingOptions): ChartProgram;
+  encodeDx(options: TextOffsetEncodingOptions): ChartProgram;
+  encodeDy(options: TextOffsetEncodingOptions): ChartProgram;
   encodeHistogram(options: HistogramEncodingOptions): ChartProgram;
   encodeDensity(options: DensityEncodingOptions): ChartProgram;
   editDensity(options: EditDensityOptions): ChartProgram;

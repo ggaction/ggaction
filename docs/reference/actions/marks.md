@@ -693,6 +693,7 @@ semantic base positions. [Text marks](../../api/marks/text.md)
 | `encodeTheta` | point, line, arc | point/line: quantitative, temporal, ordinal, nominal; arc: quantitative, ordinal, nominal | arc maps direct quantitative values, category counts, or category-weighted sums to proportional sectors |
 | `encodeR` | point, line, arc | point/line/arc: quantitative | radial position; arc combines it with a categorical theta band |
 | `encodeParallelCoordinates` | line | line: quantitative, ordinal | atomic ordered dimensions; one namespaced scale and axis per dimension |
+| `encodeDx` / `encodeDy` | text | text: quantitative | independent Text only; finite field or constant logical-pixel offsets, no scale or guide; field offsets establish row grain |
 
 <!-- action-capabilities:position:end -->
 

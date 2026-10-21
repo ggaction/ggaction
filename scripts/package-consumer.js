@@ -97,6 +97,24 @@ async function testNodeConsumer(directory) {
     import {createFacetSharedTopLaneProgram} from "./facet-lane-public.js";
     import {createPlotUnderlayProgram} from "./plot-underlay-public.js";
 
+    {
+      const rows=[{x:2,y:3,t:"Alpha",dx:12,dy:-6},{x:5,y:6,t:"Beta",dx:-9,dy:8}];
+      const original=chart().createCanvas({width:500,height:300,margin:80}).createData({values:rows})
+        .createTextPlot({x:{field:"x",scale:{domain:[0,10]}},y:{field:"y",scale:{domain:[0,10]}},text:"t"});
+      const p=original.encodeDx({field:"dx"}).encodeDy({field:"dy"});
+      assert.deepEqual(p.graphicSpec.objects.textPlot.items.map(i=>[i.properties.x,i.properties.y]),[[160,172],[241,144]]);
+      assert.deepEqual(p.semanticSpec.datasets[0].values,rows);
+      assert.deepEqual(p.resolvedScales,original.resolvedScales);
+      assert.deepEqual(p.graphicSpec,original.encodeChannels({target:"textPlot",channels:{dx:{field:"dx"},dy:{field:"dy"}}}).graphicSpec);
+      assert.deepEqual(p.removeEncoding({channel:"dx"}).removeEncoding({channel:"dy"}).graphicSpec,original.graphicSpec);
+      assert.deepEqual(deserializeProgram(serializeProgram(p)).graphicSpec,p.graphicSpec);
+      const before=serializeProgram(p);assert.throws(()=>p.encodeDy({value:Infinity}));assert.equal(serializeProgram(p),before);
+      assert.equal(basicChart().encodeDx,undefined);assert.equal(basicChart().encodeDy,undefined);
+      assert.ok(renderToSVG(p).includes("Alpha"));
+      assert.ok((await renderToPNGBuffer(p)).buffer.length>100);
+      assert.ok((await renderToPDFBuffer(p)).buffer.length>100);
+    }
+
     for (const factory of [chart,basicChart]) {
       const rows=Array.from({length:10},(_,i)=>({rank:i+1,group:"An intentionally long category "+(i+1)}));
       const base=factory().createCanvas({width:500,height:220,margin:{left:320,right:20,top:20,bottom:60}})
@@ -3404,6 +3422,16 @@ const groupedFull: Parameters<FullFormatsProgram["createXAxisLabels"]>[0] = {for
 const weekdayFull: Parameters<FullFormatsProgram["createXAxisLabels"]>[0] = {format:"%a"};
 const groupedBasic: Parameters<BasicFormatsProgram["createLinePlot"]>[0] = {x:"x",y:"y",guides:{axes:{x:{ticksAndLabels:{labels:{format:",.2f"}}}}}};
 const weekdayBasic: Parameters<BasicFormatsProgram["createLinePlot"]>[0] = {x:{field:"date",fieldType:"temporal"},y:"y",guides:{axes:{x:{ticksAndLabels:{labels:{format:"%a"}}}}}};
+declare const numericText: FullFormatsProgram;
+numericText.encodeDx({field:"shift"}).encodeDy({value:-6});
+numericText.encodeChannels({target:"text",channels:{dx:{field:"shift"},dy:{value:0}}});
+numericText.removeEncoding({channel:"dx"});
+// @ts-expect-error direct offsets have no scale
+numericText.encodeDx({field:"shift",scale:{}});
+// @ts-expect-error field/value union is exclusive
+numericText.encodeDy({field:"shift",value:1});
+// @ts-expect-error Basic retains its Text-family exclusion
+type BasicNumericTextOffset = BasicFormatsProgram["encodeDx"];
 const overlapFull: Parameters<FullFormatsProgram["createYAxisTitle"]>[0] = {overlap:"allow"};
 const overlapBasic: Parameters<BasicFormatsProgram["createAxes"]>[0] = {y:{title:{overlap:"allow"}}};
 // @ts-expect-error title overlap is a closed string policy
@@ -5567,6 +5595,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "stroke-color-encoding-and-legends",
       "atomic-channel-encoding",
       "axis-title-label-overlap-policy",
+      "numeric-independent-text-offsets",
       "statistical-references",
       "coordinate-aspect-and-polar-frame-editing",
       "facet-grid-repeat-and-named-composition-editing",

@@ -1,6 +1,6 @@
 {
-  "status": "approved-proposal-not-implemented",
-  "currentActionIndexChanged": false,
+  "status": "implemented-source-verified-pending-immutable-candidate",
+  "currentActionIndexChanged": true,
   "gateAuthority": "Direct human standing approval of all future in-scope questions",
   "actions": [
     {
@@ -37,5 +37,13 @@
   "scaled": false,
   "renderersChanged": false,
   "target": "TARGET_EVIDENCE.json",
-  "issue": 248
+  "issue": 248,
+  "entryPoints": {
+    "default": "supported",
+    "basic": "preserve-existing-Text-family-exclusion"
+  },
+  "existingEncodeChannelsShape": {
+    "target": "required",
+    "channels": "nested dx/dy payloads"
+  }
 }

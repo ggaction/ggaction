@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Add `encodeDx` and `encodeDy` for direct numeric independent Text offsets, including atomic channel assignment, immutable data replay and saved programs. Basic retains its Text-family exclusion.
+
 - Support quantitative/temporal Tick color mappings and their filled gradient, interval and sampled-color legends, preserving geometry, raw data, existing stroke-only behavior and explicit channel switching.
 
 - Support exact continuous color/stroke gradient tick values through existing legend creation and editing, with mapped positions, explicit reset, retained representation sampling and atomic domain validation.

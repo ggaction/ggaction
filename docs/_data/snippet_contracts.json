@@ -3017,6 +3017,18 @@
     "executable": false
   },
   {
+    "file": "api/marks/text.md",
+    "block": 8,
+    "heading": "Numeric pixel offsets",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "6fcde1d55324c3852d9e1d28a872a3e9185cae2f721576b51f335f9f37c40224",
+    "executable": false
+  },
+  {
     "file": "api/parallel-coordinates.md",
     "block": 1,
     "heading": "Complete chart action",

@@ -207,6 +207,15 @@ export function withRematerializedDerivedDataset(program, {
 // replaying their canonical primitive owners. Keep that speculative clone in
 // the primitive boundary and preserve the caller's layer for later dependency
 // and guide reconciliation.
+export function withPreviewLayerEncodings(program, { id, encodings }) {
+  return program._clone({ semanticSpec: {
+    ...program.semanticSpec,
+    layers: program.semanticSpec.layers.map(layer => layer.id === id
+      ? { ...layer, encoding: { ...layer.encoding, ...encodings } }
+      : layer)
+  } });
+}
+
 export function withoutPreviewLayerEncodings(program, { id, channels }) {
   const removed = new Set(channels);
   const semanticSpec = {

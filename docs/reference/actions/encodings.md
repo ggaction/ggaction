@@ -1148,7 +1148,7 @@ first-appearance order. [Category ordering](../../api/position/category-ordering
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-removeEncoding(options: { target?: string; channel: | "x" | "y" | "x2" | "y2" | "xOffset" | "yOffset" | "theta" | "radius" | "color" | "stroke" | "strokeDash" | "strokeWidth" | "size" | "shape" | "angle" | "group" | "opacity" | "text"; }): ChartProgram;
+removeEncoding(options: { target?: string; channel: | "x" | "y" | "x2" | "y2" | "xOffset" | "yOffset" | "theta" | "radius" | "color" | "stroke" | "strokeDash" | "strokeWidth" | "size" | "shape" | "angle" | "group" | "opacity" | "text" | "dx" | "dy"; }): ChartProgram;
 ```
 
 <details markdown="1">
@@ -1159,7 +1159,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `target` | Optional / branch-dependent | `string \| undefined` |
-| `channel` | Required | `"angle" \| "color" \| "group" \| "opacity" \| "radius" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| "text" \| "theta" \| "x" \| "x2" \| "xOffset" \| "y" \| "y2" \| "yOffset"` |
+| `channel` | Required | `"angle" \| "color" \| "dx" \| "dy" \| "group" \| "opacity" \| "radius" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| "text" \| "theta" \| "x" \| "x2" \| "xOffset" \| "y" \| "y2" \| "yOffset"` |
 
 </details>
 
@@ -1213,6 +1213,84 @@ Assign exactly one field, constant value, or semantic content to a text mark.
 `format` accepts `"auto"`, `.0`–`.12` precision with `f`, `%`, or `e`, or a UTC
 pattern composed from `%Y`, `%m`, `%d`, `%b`, `%%`, and literals. Reassignment
 replaces the previous content branch. [Text marks](../../api/marks/text.md)
+
+
+## `encodeDx`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+encodeDx(options: TextOffsetEncodingOptions): ChartProgram;
+```
+
+Named option contracts: [`TextOffsetEncodingOptions`](./../types.md#type-textoffsetencodingoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `value` | Optional / branch-dependent | `number \| undefined` |
+| `field` | Optional / branch-dependent | `string \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+encodeDx({ target?, field })
+encodeDx({ target?, value })
+```
+
+Move each independent Text glyph horizontally by finite signed logical pixels.
+Choose exactly one numeric field or constant; no scale is created. The encoding
+overrides the mark's constant dx. Removing it restores that constant. Field-bound
+offsets participate in row grain and the Text missing-row policy. Full only;
+source-owned labels and other marks are rejected.
+[Text offsets](../../api/marks/text.md#numeric-pixel-offsets)
+
+
+## `encodeDy`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+encodeDy(options: TextOffsetEncodingOptions): ChartProgram;
+```
+
+Named option contracts: [`TextOffsetEncodingOptions`](./../types.md#type-textoffsetencodingoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `value` | Optional / branch-dependent | `number \| undefined` |
+| `field` | Optional / branch-dependent | `string \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+encodeDy({ target?, field })
+encodeDy({ target?, value })
+```
+
+The corresponding independent Text vertical offset; positive values move down.
+It preserves dx and follows the same field/constant, removal, row-grain and atomic
+validation rules. Set both through existing `encodeChannels({target,channels})`.
+[Text offsets](../../api/marks/text.md#numeric-pixel-offsets)
 
 
 ## `encodeHistogram`

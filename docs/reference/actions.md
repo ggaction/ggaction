@@ -250,6 +250,8 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`encodeChannels`](./actions/advanced.md#encodechannels) | H2 | advanced | encodings |
 | [`encodeColor`](./actions/encodings.md#encodecolor) | H2 | user-facing | encodings |
 | [`encodeDensity`](./actions/encodings.md#encodedensity) | H2 | user-facing | encodings |
+| [`encodeDx`](./actions/encodings.md#encodedx) | H2 | user-facing | encodings |
+| [`encodeDy`](./actions/encodings.md#encodedy) | H2 | user-facing | encodings |
 | [`encodeGroup`](./actions/encodings.md#encodegroup) | H2 | user-facing | encodings |
 | [`encodeHistogram`](./actions/encodings.md#encodehistogram) | H2 | user-facing | encodings |
 | [`encodeHorizon`](./actions/encodings.md#encodehorizon) | H2 | user-facing | encodings |

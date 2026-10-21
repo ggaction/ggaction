@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "source": "generated lifecycle smoke corpus plus selection lifecycle",
-  "actionCount": 286,
+  "actionCount": 288,
   "relationships": [
     {
       "name": "createCanvas",
@@ -701,6 +701,18 @@
     },
     {
       "name": "encodeText",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "encodeDx",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "encodeDy",
       "wraps": [
         "editSemantic"
       ]

@@ -109,6 +109,8 @@
   "removeCategoryOrder": "/reference/actions/encodings/#removecategoryorder",
   "removeEncoding": "/reference/actions/encodings/#removeencoding",
   "encodeText": "/reference/actions/encodings/#encodetext",
+  "encodeDx": "/reference/actions/encodings/#encodedx",
+  "encodeDy": "/reference/actions/encodings/#encodedy",
   "encodeHistogram": "/reference/actions/encodings/#encodehistogram",
   "encodeDensity": "/reference/actions/encodings/#encodedensity",
   "editDensity": "/reference/actions/encodings/#editdensity",

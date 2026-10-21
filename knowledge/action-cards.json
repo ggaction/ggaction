@@ -3,7 +3,7 @@
   "packageVersion": "0.0.21",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 286,
+  "count": 288,
   "cards": [
     {
       "schemaVersion": 3,
@@ -11695,7 +11695,7 @@
       "layer": "user-facing",
       "domain": "encodings",
       "summary": "Remove one active semantic encoding, its generated companions, matching guide blocks, and stale concrete values.",
-      "signature": "removeEncoding(options: { target?: string; channel: | \"x\" | \"y\" | \"x2\" | \"y2\" | \"xOffset\" | \"yOffset\" | \"theta\" | \"radius\" | \"color\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\" | \"size\" | \"shape\" | \"angle\" | \"group\" | \"opacity\" | \"text\"; }): ChartProgram;",
+      "signature": "removeEncoding(options: { target?: string; channel: | \"x\" | \"y\" | \"x2\" | \"y2\" | \"xOffset\" | \"yOffset\" | \"theta\" | \"radius\" | \"color\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\" | \"size\" | \"shape\" | \"angle\" | \"group\" | \"opacity\" | \"text\" | \"dx\" | \"dy\"; }): ChartProgram;",
       "intents": [
         "remove encoding",
         "remove",
@@ -11751,7 +11751,7 @@
         {
           "name": "channel",
           "required": true,
-          "type": "\"angle\" | \"color\" | \"group\" | \"opacity\" | \"radius\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\" | \"text\" | \"theta\" | \"x\" | \"x2\" | \"xOffset\" | \"y\" | \"y2\" | \"yOffset\""
+          "type": "\"angle\" | \"color\" | \"dx\" | \"dy\" | \"group\" | \"opacity\" | \"radius\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\" | \"text\" | \"theta\" | \"x\" | \"x2\" | \"xOffset\" | \"y\" | \"y2\" | \"yOffset\""
         }
       ],
       "callPatterns": [
@@ -11862,6 +11862,182 @@
       "snippet": "program.encodeText({ field: \"label\" })",
       "errors": [],
       "route": "/reference/actions/encodings/#encodetext"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "encodeDx",
+      "layer": "user-facing",
+      "domain": "encodings",
+      "summary": "Move each independent Text glyph horizontally by finite signed logical pixels.",
+      "signature": "encodeDx(options: TextOffsetEncodingOptions): ChartProgram;",
+      "intents": [
+        "encode dx",
+        "encode",
+        "map field",
+        "visual encoding",
+        "field mapping",
+        "horizontal text offset",
+        "text pixel shift"
+      ],
+      "lifecycle": "Assignment",
+      "resources": {
+        "prerequisites": [
+          "target mark",
+          "field in the target dataset"
+        ],
+        "owns": [
+          "horizontal text offset assignment"
+        ],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "removeEncoding"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [
+        {
+          "path": "value",
+          "unit": "logical-pixel"
+        }
+      ],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "target mark",
+          "field in the target dataset"
+        ],
+        "allowsEmpty": true
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "value",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "field",
+          "required": false,
+          "type": "string | undefined"
+        }
+      ],
+      "callPatterns": [
+        "encodeDx({ target?, field })",
+        "encodeDx({ target?, value })"
+      ],
+      "snippet": "program.encodeDx({ value: 8 })",
+      "errors": [],
+      "route": "/reference/actions/encodings/#encodedx"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "encodeDy",
+      "layer": "user-facing",
+      "domain": "encodings",
+      "summary": "The corresponding independent Text vertical offset; positive values move down.",
+      "signature": "encodeDy(options: TextOffsetEncodingOptions): ChartProgram;",
+      "intents": [
+        "encode dy",
+        "encode",
+        "map field",
+        "visual encoding",
+        "field mapping",
+        "vertical text offset",
+        "text pixel shift"
+      ],
+      "lifecycle": "Assignment",
+      "resources": {
+        "prerequisites": [
+          "target mark",
+          "field in the target dataset"
+        ],
+        "owns": [
+          "vertical text offset assignment"
+        ],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "removeEncoding"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [
+        {
+          "path": "value",
+          "unit": "logical-pixel"
+        }
+      ],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "target mark",
+          "field in the target dataset"
+        ],
+        "allowsEmpty": true
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "value",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "field",
+          "required": false,
+          "type": "string | undefined"
+        }
+      ],
+      "callPatterns": [
+        "encodeDy({ target?, field })",
+        "encodeDy({ target?, value })"
+      ],
+      "snippet": "program.encodeDy({ value: 8 })",
+      "errors": [],
+      "route": "/reference/actions/encodings/#encodedy"
     },
     {
       "schemaVersion": 3,

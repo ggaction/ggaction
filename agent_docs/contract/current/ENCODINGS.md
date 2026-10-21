@@ -60,7 +60,7 @@ Evidence: `test/unit/actions/encodings/basic-scale-reassignment.test.js`, `test/
 - Signature: `removeEncoding({ target?, channel })`.
 - `channel` is the closed vocabulary `"x" | "y" | "x2" | "y2" | "xOffset" | "yOffset" |
   "theta" | "radius" | "color" | "stroke" | "strokeDash" | "strokeWidth" | "size" | "shape" | "group" |
-  "angle" | "opacity" | "text"`.
+  "angle" | "opacity" | "text" | "dx" | "dy"`.
 - `target` resolves the current mark when it owns the requested channel, otherwise the unique active owner;
   ambiguous ownership requires an explicit mark ID. A direct missing assignment is an error.
 - The action removes the semantic assignment and starts rematerialization from an empty concrete mark baseline.
@@ -100,7 +100,7 @@ Evidence: `test/unit/actions/encodings/basic-scale-reassignment.test.js`, `test/
 - `target`: 필수 explicit mark ID다. 한 transaction이 여러 mark나 composition child를 수정하지 않는다.
 - `channels`: 최소 한 property가 있는 plain object다. 허용 key는 정확히 `x`, `y`, `x2`, `y2`,
   `theta`, `r`, `xOffset`, `yOffset`, `group`, `pathOrder`, `color`, `stroke`, `size`, `shape`,
-  `opacity`, `strokeWidth`, `strokeDash`, `angle`, `text`다. `radius`, range action, bar width와
+  `opacity`, `strokeWidth`, `strokeDash`, `angle`, `text`, `dx`, `dy`다. `radius`, range action, bar width와
   Parallel dimension list는 이 API의 alias가 아니다.
 - 각 channel payload는 대응 focused encode action에서 `target`과 `coordinate`를 제거한 동일한
   exclusive option union을 사용한다. Direct `target`, `coordinate`, `id`는 오류지만
@@ -1730,3 +1730,42 @@ Parallel reencoding은 field identity로 axis component recipe와 explicit title
 - Evidence: `test/unit/actions/encodings/categorical-areas.test.js`.
 
 - Row-backed Text의 encodeColor는 nominal/ordinal 및 quantitative/temporal 색상을 지원한다. aggregate/layout/unknown fallback은 지원하지 않으며 고정 fill과 충돌한다. source-owned label은 MARKS의 inheritColor 계약을 따른다.
+
+## `encodeDx`
+
+- Signature: `encodeDx({target?:UserId} & ({field:FieldName;value?:never}|{value:Finite;field?:never}))`. Assign signed logical-pixel horizontal offsets to independent Text. No scale, fieldType option or numeric string coercion.
+- Resolve explicit/current/unique eligible independent Text through the shared selector. Reject source-owned labels and other marks before writes. Incomplete independent Text retains intent until x/y/text are complete.
+- Canonical storage: `layer.encoding.dx = {field,fieldType:'quantitative'} | {datum:number}`. Reassignment cleans the prior branch. No domain, scale, axis or legend is created.
+- Encoding overrides the corresponding constant mark dx; dy is preserved. Editing dormant constant style does not replace the encoding. `removeEncoding({channel:'dx'})` restores the stored constant.
+- Fields among x/y/text/color/dx/dy establish row grain; otherwise existing constant text uses one item even with empty data. A field-bound offset on empty raw data requires a known numeric schema field and creates zero glyphs.
+- Apply existing `missing:'error'|'skip'` to the same complete eligible row set. Skip retains every raw row while omitting missing items; all remaining offsets must be finite numbers. Invalid unions, missing fields, numeric strings, NaN and Infinity reject atomically.
+- Existing `encodeChannels({target,channels:{dx:{field|value},dy:{field|value}}})` batches both channels atomically. Its required target and nested channels shape remain unchanged. Canonical channel order applies dx,dy after text.
+- Canvas, position scale, data revision, derived-data edits, bindMarkData, facet children and persistence use the same Text materializer and row order. Renderers receive resolved graphic positions only.
+- Full only. Basic retains its existing Text-family exclusion. Categorical xOffset/yOffset and Text selection/highlight support are unchanged.
+
+### Formal values — `encodeDx`
+
+- Implemented: the closed field/value union above; finite negative, zero and positive logical pixels. Stored fieldType is quantitative; scales and other stored shapes are rejected.
+
+- Proposed (NOT IMPLEMENTED): scaled offsets, source-owned label bindings and Basic Text authoring.
+
+### Value coverage — `encodeDx`
+
+- ✅ Covered: signed logical-pixel assignment, immutable validation and public replay consumers.
+- Evidence: `test/unit/actions/encodings/text-offsets.test.js`, `test/contracts/text-offset-types.test.js`, actual installed-package runtime/types consumers. Signed values, raw rows/order, branch cleanup, removal/style fallback, empty/constant grain, skip/error, atomicity, ambiguity/source exclusion, facet/data/Canvas/scale replay, malformed persistence, primitive SVG/decoded PNG/PDF.
+
+## `encodeDy`
+
+- Same signature, targeting, lifecycle, storage, missing, grain, consumer and error contract as encodeDx. Owner is `encoding.dy`; positive logical pixels move down. Overrides constant mark dy and preserves dx. Removal restores constant dy.
+
+### Formal values — `encodeDy`
+
+- Implemented: `encodeDy({target?:UserId} & ({field:FieldName;value?:never}|{value:Finite;field?:never}))`; independent Text, unscaled logical pixels.
+
+- Proposed (NOT IMPLEMENTED): scaled offsets, source-owned label bindings and Basic Text authoring.
+
+### Value coverage — `encodeDy`
+
+- ✅ Covered: signed logical-pixel assignment, immutable validation and public replay consumers.
+- The shared capability tests/types/package consumers cover signed vertical offsets, separate and atomic assignment, branch cleanup and rematerialization.
+- Evidence: `test/unit/actions/encodings/text-offsets.test.js`, `test/contracts/text-offset-types.test.js` and installed-package consumers.

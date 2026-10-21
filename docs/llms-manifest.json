@@ -4,8 +4,8 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:b5d220bb11d8aa8953c0b1135eb36a082a20da986fae8605002b006ebcd74ee7",
-    "sourceCommit": "6f6c593cb51fb47a85b8ba0cf2562d6c4cc26414",
+    "contractId": "sha256:d42d88c0fb08fd4dc4162f53c54df14b40accb4e3d2f9bc8cbe1648dd8e64741",
+    "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -64,8 +64,8 @@
         "what-the-server-does-not-provide",
         "related"
       ],
-      "bytes": 11096,
-      "sha256": "95f7591e78e0b794ab59d87ab2de49d406b47feccc6e5ed4d01b727a67b56689"
+      "bytes": 11024,
+      "sha256": "6bdaaf83602079838ed4e8e8cf79f407175a15015615e1395f13e6104e01920a"
     },
     {
       "order": 4,
@@ -990,10 +990,11 @@
         "edittextmarkoptions",
         "layoutlabelsoptions",
         "removelabellayoutoptions",
+        "numeric-pixel-offsets",
         "related"
       ],
-      "bytes": 14541,
-      "sha256": "c2e9535db04313e6c96e470c91b79711e7adfc9ed1445acd939b92002ab6c5a2"
+      "bytes": 16190,
+      "sha256": "b9b404f9fb38850a7462a9df6c74b9d4d2e9a876b851e7f251c9a69588e89432"
     },
     {
       "order": 62,
@@ -1037,8 +1038,8 @@
         "calendar-interval-bar-widths",
         "related"
       ],
-      "bytes": 17394,
-      "sha256": "fd4cc67c843b77f7208a65b4ac46a29cafe5978acd3a13f9304e3c8c87b10cfa"
+      "bytes": 17576,
+      "sha256": "98763aec7dce7d59a9e78a2429ef1c1593d985bc73387bbc4284328c4ffd1d3f"
     },
     {
       "order": 64,
@@ -1248,8 +1249,8 @@
         "area-bounds",
         "related"
       ],
-      "bytes": 11561,
-      "sha256": "37354d649d4bc62b8982a47f738971750f1fc3f889784046aa313f06fa9d763f"
+      "bytes": 11743,
+      "sha256": "d3d0b1f8aadb09fae2ef8a0aeea0a97c71f000226ebe1e7ea6b1dacacfabd717"
     },
     {
       "order": 75,
@@ -1951,8 +1952,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 30836,
-      "sha256": "6cbebdd87b1a2b909e6a43f264c1cbb92c1629965e29b74e88200a2d7f4a2056"
+      "bytes": 31014,
+      "sha256": "ee7413ede895fab9f94540c2ebcebe0daf9d48500fee90c2bb921a9e4a145261"
     },
     {
       "order": 118,
@@ -2100,8 +2101,8 @@
         "editrectmark",
         "related"
       ],
-      "bytes": 71399,
-      "sha256": "734e7078fce42404f0289f8b3c200feac7c27e71d75c981b49e273a5c82ef906"
+      "bytes": 71581,
+      "sha256": "3ce1916f0dfac0230579a3a0fbfedc6513358246987f3725a92eda20446d60ec"
     },
     {
       "order": 120,
@@ -2140,6 +2141,8 @@
         "removecategoryorder",
         "removeencoding",
         "encodetext",
+        "encodedx",
+        "encodedy",
         "encodehistogram",
         "encodedensity",
         "editdensity",
@@ -2150,8 +2153,8 @@
         "encodechannels",
         "related"
       ],
-      "bytes": 62675,
-      "sha256": "0d43065da44075e059b135bfe48f5d89e80067ad4fdc4cf1fa0c87a7f5b9c4ef"
+      "bytes": 65340,
+      "sha256": "64a10c05cbafba345168d5a3d69a9eef167925deda5e08094445ac606acacdf1"
     },
     {
       "order": 121,
@@ -2985,6 +2988,7 @@
         "type-textmeasurement",
         "type-textmetricfontweight",
         "type-textmetricsprofile",
+        "type-textoffsetencodingoptions",
         "type-textplotpositionchannel",
         "type-themedefinition",
         "type-themename",
@@ -3027,8 +3031,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 347797,
-      "sha256": "fb353d04fa0a851fdc98685df72dea5ef787420feb45ec8fff38749deb6d982b"
+      "bytes": 348478,
+      "sha256": "7a0e16928a5a0db899e42a9378fea1d01538276293615d77ce17867bc6e2f896"
     },
     {
       "order": 127,
@@ -3060,8 +3064,8 @@
         "clip-a-named-graphic-owner",
         "scale-materialization"
       ],
-      "bytes": 19022,
-      "sha256": "e8e53a13b5ac7ec6249ad1b416dce14c9a6b6ec29c8815dc6d4c9f5a40ee8aea"
+      "bytes": 18950,
+      "sha256": "9f4dface42ad85d51435341bf7599d7bc74c9adb44c36c67225dcd90f3d5be55"
     },
     {
       "order": 129,
@@ -3386,8 +3390,8 @@
         "choose-the-matching-documentation",
         "migration-from-v0013"
       ],
-      "bytes": 3033,
-      "sha256": "9435309b3e479dbf0c73aa62486df5218dca39fb3e104b5dd01d6563699801af"
+      "bytes": 3000,
+      "sha256": "b57831b96fbd6d5f1d690e095a708b05686549d52c817254a4fe77cdf6ca4789"
     },
     {
       "order": 150,

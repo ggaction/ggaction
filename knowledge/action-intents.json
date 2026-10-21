@@ -906,6 +906,14 @@
       "aligned array data",
       "parallel array expansion",
       "zip arrays into rows"
+    ],
+    "Dx": [
+      "horizontal text offset",
+      "text pixel shift"
+    ],
+    "Dy": [
+      "vertical text offset",
+      "text pixel shift"
     ]
   },
   "summaryOverrides": {
@@ -1590,6 +1598,12 @@
         "amount",
         "category"
       ]
+    },
+    "encodeDx": {
+      "value": 8
+    },
+    "encodeDy": {
+      "value": 8
     }
   },
   "callPatternOverrides": {
@@ -1784,6 +1798,14 @@
     ],
     "editRegressionStatisticsData": [
       "editRegressionStatisticsData({ target?, source? })"
+    ],
+    "encodeDx": [
+      "encodeDx({ target?, field })",
+      "encodeDx({ target?, value })"
+    ],
+    "encodeDy": [
+      "encodeDy({ target?, field })",
+      "encodeDy({ target?, value })"
     ]
   },
   "errorOverrides": {

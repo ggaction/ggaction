@@ -3,7 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { readDocChartCatalog } from "./doc-chart-catalog.js";
 
-export const SEARCH_INDEX_MAX_BYTES = 842_000; // Explicit title-overlap documentation measured841109bytes; minimal1000-byte rounding.
+export const SEARCH_INDEX_MAX_BYTES = 844_000; // Numeric Text offset documentation measured843100bytes; minimal1000-byte rounding.
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const docsRoot = path.join(root, "docs");

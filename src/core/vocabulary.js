@@ -41,7 +41,9 @@ export const ENCODING_CHANNELS = Object.freeze([
   "group",
   "pathOrder",
   "opacity",
-  "text"
+  "text",
+  "dx",
+  "dy"
 ]);
 
 const CARTESIAN_MARK_TYPES = Object.freeze([
@@ -118,7 +120,7 @@ export const POSITION_CHANNEL_DEFINITIONS = Object.freeze({
 
 export const SCALED_ENCODING_CHANNELS = Object.freeze(
   ENCODING_CHANNELS.filter(channel =>
-    !["angle", "group", "pathOrder", "text"].includes(channel)
+    !["angle", "group", "pathOrder", "text", "dx", "dy"].includes(channel)
   )
 );
 

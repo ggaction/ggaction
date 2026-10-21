@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.21.
 
-Contract: sha256:b5d220bb11d8aa8953c0b1135eb36a082a20da986fae8605002b006ebcd74ee7. Status: development. Runtime source: 6f6c593cb51fb47a85b8ba0cf2562d6c4cc26414. Release baseline: v0.0.13.
+Contract: sha256:d42d88c0fb08fd4dc4162f53c54df14b40accb4e3d2f9bc8cbe1648dd8e64741. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/6f6c593cb51fb47a85b8ba0cf2562d6c4cc26414/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/6f6c593cb51fb47a85b8ba0cf2562d6c4cc26414/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -7040,6 +7040,41 @@ See [Label Collision Layout](./api/marks/label-layout/#layoutlabelsoptions) for 
 
 See [Label Collision Layout](./api/marks/label-layout/#removelabellayoutoptions) for this contract and its examples.
 
+## Numeric pixel offsets
+
+In Full, `encodeDx` and `encodeDy` assign a finite numeric field or constant to
+independent Text glyph offsets. These are signed logical pixels after position
+scaling; they do not create a scale or change axis domains.
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+import {chart} from 'ggaction';
+const labels = chart()
+  .createCanvas({width:500,height:300,margin:80})
+  .createData({values:[
+    {x:2,y:3,label:'Alpha',shift:12},
+    {x:5,y:6,label:'Beta',shift:-9}
+  ]})
+  .createTextPlot({x:'x',y:'y',text:'label'})
+  .encodeDx({field:'shift'})
+  .encodeDy({value:-6});
+```
+
+Use exactly one of `field` or `value`. Numeric strings and non-finite numbers
+are rejected. An encoded component overrides the corresponding constant
+`editTextMark` offset; `removeEncoding({channel:'dx'})` restores the stored
+constant. Omitting dy preserves it. Field offsets create one glyph per eligible
+row even with constant positions and content; typed empty field-bound data
+creates none. The existing `missing:'skip'` policy omits the complete missing row.
+
+For atomic assignment, call
+`labels.encodeChannels({target:'textPlot',channels:{dx:{field:'shift'},dy:{value:-6}}})`.
+Canvas, scale, data edits, facet children and saved-program restoration replay
+the offsets. Attached source labels are excluded. Basic retains its existing
+Text-family exclusion. Categorical `encodeXOffset`/`encodeYOffset` remain separate
+subgroup-layout operations.
+
 ## Related
 
 [Point marks](./api/marks/point/) · [Bar marks](./api/marks/bar/) · [Rule marks](./api/marks/rule/) ·
@@ -7248,6 +7283,7 @@ The tables below are generated from the same reviewed capability registry used b
 | `encodeTheta` | point, line, arc | point/line: quantitative, temporal, ordinal, nominal; arc: quantitative, ordinal, nominal | arc maps direct quantitative values, category counts, or category-weighted sums to proportional sectors |
 | `encodeR` | point, line, arc | point/line/arc: quantitative | radial position; arc combines it with a categorical theta band |
 | `encodeParallelCoordinates` | line | line: quantitative, ordinal | atomic ordered dimensions; one namespaced scale and axis per dimension |
+| `encodeDx` / `encodeDy` | text | text: quantitative | independent Text only; finite field or constant logical-pixel offsets, no scale or guide; field offsets establish row grain |
 
 ### Color channels
 
@@ -9741,6 +9777,7 @@ resolve a channel scale, and explicitly materialize the affected graphics.
 | `encodeTheta` | point, line, arc | point/line: quantitative, temporal, ordinal, nominal; arc: quantitative, ordinal, nominal | arc maps direct quantitative values, category counts, or category-weighted sums to proportional sectors |
 | `encodeR` | point, line, arc | point/line/arc: quantitative | radial position; arc combines it with a categorical theta band |
 | `encodeParallelCoordinates` | line | line: quantitative, ordinal | atomic ordered dimensions; one namespaced scale and axis per dimension |
+| `encodeDx` / `encodeDy` | text | text: quantitative | independent Text only; finite field or constant logical-pixel offsets, no scale or guide; field offsets establish row grain |
 
 ## Choose an encoding
 
@@ -16413,6 +16450,8 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`encodeChannels`](./reference/actions/advanced/#encodechannels) | H2 | advanced | encodings |
 | [`encodeColor`](./reference/actions/encodings/#encodecolor) | H2 | user-facing | encodings |
 | [`encodeDensity`](./reference/actions/encodings/#encodedensity) | H2 | user-facing | encodings |
+| [`encodeDx`](./reference/actions/encodings/#encodedx) | H2 | user-facing | encodings |
+| [`encodeDy`](./reference/actions/encodings/#encodedy) | H2 | user-facing | encodings |
 | [`encodeGroup`](./reference/actions/encodings/#encodegroup) | H2 | user-facing | encodings |
 | [`encodeHistogram`](./reference/actions/encodings/#encodehistogram) | H2 | user-facing | encodings |
 | [`encodeHorizon`](./reference/actions/encodings/#encodehorizon) | H2 | user-facing | encodings |
@@ -20548,6 +20587,7 @@ semantic base positions. [Text marks](./api/marks/text/)
 | `encodeTheta` | point, line, arc | point/line: quantitative, temporal, ordinal, nominal; arc: quantitative, ordinal, nominal | arc maps direct quantitative values, category counts, or category-weighted sums to proportional sectors |
 | `encodeR` | point, line, arc | point/line/arc: quantitative | radial position; arc combines it with a categorical theta band |
 | `encodeParallelCoordinates` | line | line: quantitative, ordinal | atomic ordered dimensions; one namespaced scale and axis per dimension |
+| `encodeDx` / `encodeDy` | text | text: quantitative | independent Text only; finite field or constant logical-pixel offsets, no scale or guide; field offsets establish row grain |
 
 Temporal input branches accept `temporalUnit: "auto" | "year" | "timestamp"`.
 Timestamp means Unix milliseconds; year means UTC January 1. Omission preserves
@@ -22356,7 +22396,7 @@ first-appearance order. [Category ordering](./api/position/category-ordering/)
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-removeEncoding(options: { target?: string; channel: | "x" | "y" | "x2" | "y2" | "xOffset" | "yOffset" | "theta" | "radius" | "color" | "stroke" | "strokeDash" | "strokeWidth" | "size" | "shape" | "angle" | "group" | "opacity" | "text"; }): ChartProgram;
+removeEncoding(options: { target?: string; channel: | "x" | "y" | "x2" | "y2" | "xOffset" | "yOffset" | "theta" | "radius" | "color" | "stroke" | "strokeDash" | "strokeWidth" | "size" | "shape" | "angle" | "group" | "opacity" | "text" | "dx" | "dy"; }): ChartProgram;
 ```
 
  Declared options
@@ -22366,7 +22406,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `target` | Optional / branch-dependent | `string \| undefined` |
-| `channel` | Required | `"angle" \| "color" \| "group" \| "opacity" \| "radius" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| "text" \| "theta" \| "x" \| "x2" \| "xOffset" \| "y" \| "y2" \| "yOffset"` |
+| `channel` | Required | `"angle" \| "color" \| "dx" \| "dy" \| "group" \| "opacity" \| "radius" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| "text" \| "theta" \| "x" \| "x2" \| "xOffset" \| "y" \| "y2" \| "yOffset"` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
@@ -22414,6 +22454,76 @@ Assign exactly one field, constant value, or semantic content to a text mark.
 `format` accepts `"auto"`, `.0`–`.12` precision with `f`, `%`, or `e`, or a UTC
 pattern composed from `%Y`, `%m`, `%d`, `%b`, `%%`, and literals. Reassignment
 replaces the previous content branch. [Text marks](./api/marks/text/)
+
+## `encodeDx`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+encodeDx(options: TextOffsetEncodingOptions): ChartProgram;
+```
+
+Named option contracts: [`TextOffsetEncodingOptions`](./reference/types/#type-textoffsetencodingoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `value` | Optional / branch-dependent | `number \| undefined` |
+| `field` | Optional / branch-dependent | `string \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+encodeDx({ target?, field })
+encodeDx({ target?, value })
+```
+
+Move each independent Text glyph horizontally by finite signed logical pixels.
+Choose exactly one numeric field or constant; no scale is created. The encoding
+overrides the mark's constant dx. Removing it restores that constant. Field-bound
+offsets participate in row grain and the Text missing-row policy. Full only;
+source-owned labels and other marks are rejected.
+[Text offsets](./api/marks/text/#numeric-pixel-offsets)
+
+## `encodeDy`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+encodeDy(options: TextOffsetEncodingOptions): ChartProgram;
+```
+
+Named option contracts: [`TextOffsetEncodingOptions`](./reference/types/#type-textoffsetencodingoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `value` | Optional / branch-dependent | `number \| undefined` |
+| `field` | Optional / branch-dependent | `string \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+encodeDy({ target?, field })
+encodeDy({ target?, value })
+```
+
+The corresponding independent Text vertical offset; positive values move down.
+It preserves dx and follows the same field/constant, removal, row-grain and atomic
+validation rules. Set both through existing `encodeChannels({target,channels})`.
+[Text offsets](./api/marks/text/#numeric-pixel-offsets)
 
 ## `encodeHistogram`
 
@@ -27906,8 +28016,10 @@ interface ChartProgramActions {
   encodeParallelCoordinates(options: ParallelCoordinatesEncodingOptions): ChartProgram;
   removePathOrder(options?: RemovePathOrderOptions): ChartProgram;
   removeCategoryOrder(options: RemoveCategoryOrderOptions): ChartProgram;
-  removeEncoding(options: { target?: string; channel: | "x" | "y" | "x2" | "y2" | "xOffset" | "yOffset" | "theta" | "radius" | "color" | "stroke" | "strokeDash" | "strokeWidth" | "size" | "shape" | "angle" | "group" | "opacity" | "text"; }): ChartProgram;
+  removeEncoding(options: { target?: string; channel: | "x" | "y" | "x2" | "y2" | "xOffset" | "yOffset" | "theta" | "radius" | "color" | "stroke" | "strokeDash" | "strokeWidth" | "size" | "shape" | "angle" | "group" | "opacity" | "text" | "dx" | "dy"; }): ChartProgram;
   encodeText(options: TextEncodingOptions): ChartProgram;
+  encodeDx(options: TextOffsetEncodingOptions): ChartProgram;
+  encodeDy(options: TextOffsetEncodingOptions): ChartProgram;
   encodeHistogram(options: HistogramEncodingOptions): ChartProgram;
   encodeDensity(options: DensityEncodingOptions): ChartProgram;
   editDensity(options: EditDensityOptions): ChartProgram;
@@ -28103,6 +28215,8 @@ Related types: [`ScalarAggregateOperation`](./reference/types/#type-scalaraggreg
 export type AngleEncodingOptions =
   | { target?: string; value: number; field?: never; fieldType?: never }
   | { target?: string; field: string; fieldType?: "quantitative"; value?: never };
+
+/** Unscaled, signed logical-pixel offsets for independent Text marks. */
 ```
 
 ### `AnnotationAnchor` {#type-annotationanchor}
@@ -32940,10 +33054,12 @@ export interface EncodingChannelAssignments {
   strokeDash?: WithoutEncodingTarget<StrokeDashEncodingOptions>;
   angle?: WithoutEncodingTarget<AngleEncodingOptions>;
   text?: WithoutEncodingTarget<TextEncodingOptions>;
+  dx?: WithoutEncodingTarget<TextOffsetEncodingOptions>;
+  dy?: WithoutEncodingTarget<TextOffsetEncodingOptions>;
 }
 ```
 
-Related types: [`WithoutEncodingTarget`](./reference/types/#type-withoutencodingtarget) · [`PositionEncodingOptions`](./reference/types/#type-positionencodingoptions) · [`DatumPositionEncodingOptions`](./reference/types/#type-datumpositionencodingoptions) · [`YPositionEncodingOptions`](./reference/types/#type-ypositionencodingoptions) · [`SecondaryPositionEncodingOptions`](./reference/types/#type-secondarypositionencodingoptions) · [`ThetaEncodingOptions`](./reference/types/#type-thetaencodingoptions) · [`RadialEncodingOptions`](./reference/types/#type-radialencodingoptions) · [`XOffsetEncodingOptions`](./reference/types/#type-xoffsetencodingoptions) · [`YOffsetEncodingOptions`](./reference/types/#type-yoffsetencodingoptions) · [`GroupEncodingOptions`](./reference/types/#type-groupencodingoptions) · [`PathOrderEncodingOptions`](./reference/types/#type-pathorderencodingoptions) · [`ColorEncodingOptions`](./reference/types/#type-colorencodingoptions) · [`StrokeEncodingOptions`](./reference/types/#type-strokeencodingoptions) · [`SizeEncodingOptions`](./reference/types/#type-sizeencodingoptions) · [`ShapeEncodingOptions`](./reference/types/#type-shapeencodingoptions) · [`OpacityEncodingOptions`](./reference/types/#type-opacityencodingoptions) · [`StrokeWidthEncodingOptions`](./reference/types/#type-strokewidthencodingoptions) · [`StrokeDashEncodingOptions`](./reference/types/#type-strokedashencodingoptions) · [`AngleEncodingOptions`](./reference/types/#type-angleencodingoptions) · [`TextEncodingOptions`](./reference/types/#type-textencodingoptions).
+Related types: [`WithoutEncodingTarget`](./reference/types/#type-withoutencodingtarget) · [`PositionEncodingOptions`](./reference/types/#type-positionencodingoptions) · [`DatumPositionEncodingOptions`](./reference/types/#type-datumpositionencodingoptions) · [`YPositionEncodingOptions`](./reference/types/#type-ypositionencodingoptions) · [`SecondaryPositionEncodingOptions`](./reference/types/#type-secondarypositionencodingoptions) · [`ThetaEncodingOptions`](./reference/types/#type-thetaencodingoptions) · [`RadialEncodingOptions`](./reference/types/#type-radialencodingoptions) · [`XOffsetEncodingOptions`](./reference/types/#type-xoffsetencodingoptions) · [`YOffsetEncodingOptions`](./reference/types/#type-yoffsetencodingoptions) · [`GroupEncodingOptions`](./reference/types/#type-groupencodingoptions) · [`PathOrderEncodingOptions`](./reference/types/#type-pathorderencodingoptions) · [`ColorEncodingOptions`](./reference/types/#type-colorencodingoptions) · [`StrokeEncodingOptions`](./reference/types/#type-strokeencodingoptions) · [`SizeEncodingOptions`](./reference/types/#type-sizeencodingoptions) · [`ShapeEncodingOptions`](./reference/types/#type-shapeencodingoptions) · [`OpacityEncodingOptions`](./reference/types/#type-opacityencodingoptions) · [`StrokeWidthEncodingOptions`](./reference/types/#type-strokewidthencodingoptions) · [`StrokeDashEncodingOptions`](./reference/types/#type-strokedashencodingoptions) · [`AngleEncodingOptions`](./reference/types/#type-angleencodingoptions) · [`TextEncodingOptions`](./reference/types/#type-textencodingoptions) · [`TextOffsetEncodingOptions`](./reference/types/#type-textoffsetencodingoptions).
 
 ### `EndpointCategoryChannel` {#type-endpointcategorychannel}
 
@@ -37630,6 +37746,16 @@ export interface TextMetricsProfile {
 
 Related types: [`TextMeasurement`](./reference/types/#type-textmeasurement).
 
+### `TextOffsetEncodingOptions` {#type-textoffsetencodingoptions}
+
+ Expand TextOffsetEncodingOptions
+
+```typescript
+export type TextOffsetEncodingOptions =
+  | { target?: string; value: number; field?: never }
+  | { target?: string; field: string; value?: never };
+```
+
 ### `TextPlotPositionChannel` {#type-textplotpositionchannel}
 
  Expand TextPlotPositionChannel
@@ -38721,12 +38847,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/6f6c593cb51fb47a85b8ba0cf2562d6c4cc26414/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/6f6c593cb51fb47a85b8ba0cf2562d6c4cc26414/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -41105,11 +41231,11 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:b5d220bb11d8aa8953c0b1135eb36a082a20da986fae8605002b006ebcd74ee7` |
+| Contract fingerprint | `sha256:d42d88c0fb08fd4dc4162f53c54df14b40accb4e3d2f9bc8cbe1648dd8e64741` |
 | Example and dataset source | `895006bccd39fd97b602b7ef42b5821b9c1d44ad` |
-| Runtime source commit | `6f6c593cb51fb47a85b8ba0cf2562d6c4cc26414` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
-| Declared actions here | 286 |
+| Declared actions here | 288 |
 | Declared actions in that release | 234 |
 
 ## Choose the matching documentation

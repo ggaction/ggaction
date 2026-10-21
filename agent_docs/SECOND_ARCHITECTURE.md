@@ -354,13 +354,15 @@ Basic의 기존 encoding 재할당은 Full 공개 editor 등록 없이 같은 wr
 각각 기존4130000/839000을 넘어4131000/840000으로만 조정한다. Full424000/SVG25000,
 604entries/packed854000과 동작·시각 오차 한도는 유지한다. 이전 한도 통과로 보고하지 않는다.
 
+독립 Text 숫자 오프셋은 기존 encoding, 순수 Text grammar와 Text materializer를 재사용한다. 새 상태 owner나 renderer boundary는 없으며, 실측 Full gzip424768bytes에 따라 한도만425000으로 보정한다. Basic214000/SVG25000은 유지한다.
+
 ### Browser bundle regression ceilings
 
 Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 않아야 한다.
 
 | Entry | Gzip ceiling |
 | --- | ---: |
-| `ggaction` | 424,000 bytes |
+| `ggaction` | 425,000 bytes |
 | `ggaction/basic` | 214,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 

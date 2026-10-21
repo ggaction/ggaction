@@ -6,7 +6,7 @@
 - [x] 구체적인 공개 API·저장·결측·item grain·제거·consumer 범위를 확정했다.
 - [x] 최신 직접 사용자의 앞으로의 모든 질문 승인으로 설계·시각 목표 Gate를 승인했다.
 - [x] 독립 primitive 목표를 생성하고 동결했다.
-- [ ] 공개 액션·순수 문법·명시적 materialization·저장/복원·타입·문서를 구현한다.
+- [x] 공개 액션·순수 문법·명시적 materialization·저장/복원·타입·문서를 구현했다.
 - [ ] focused/normal/설치 패키지·문서·기존 프로그램 호환성을 검증한다.
 - [ ] 검증된 로컬 후보를 채택하고 정규 공개 릴리즈에서 이슈를 정리한다.
 
@@ -34,7 +34,7 @@ chart()
   .encodeDy({field:'dy'});
 ```
 
-`encodeDx({target?,field?,value?})`, `encodeDy`를 추가한다. 정확히 field 또는 value 하나를 받으며 최대 세 top-level option이다. 숫자는 부호를 허용하는 유한한 logical pixel 값이다. fieldType과 scale 옵션은 받지 않는다. raw 숫자 문자열을 자동 변환하지 않는다. `encodeChannels({target?,dx:{field|value},dy:{field|value}})`로 같은 두 채널을 결합할 수 있다. 채널 payload 안의 target/coordinate/id 금지는 기존 규칙을 유지한다.
+`encodeDx({target?,field?,value?})`, `encodeDy`를 추가한다. 정확히 field 또는 value 하나를 받으며 최대 세 top-level option이다. 숫자는 부호를 허용하는 유한한 logical pixel 값이다. fieldType과 scale 옵션은 받지 않는다. raw 숫자 문자열을 자동 변환하지 않는다. 기존의 정확한 aggregate 형태 `encodeChannels({target:'textPlot',channels:{dx:{field:'dx'},dy:{field:'dy'}}})`로 같은 두 채널을 결합한다. target은 기존대로 필수이며 channels의 payload 안의 target/coordinate/id 금지도 유지한다. 최초 제안의 생략된 nested-shape 표기는 현재 계약에 맞춰 정정했으며 새 top-level shortcut을 도입하지 않는다.
 
 독립 Text만 지원한다. source-owned Text/label과 다른 mark는 변경 전에 오류다. explicit target, 현재 유일한 호환 mark, 유일한 후보 순서를 따르며 모호함을 첫 번째 항목 선택으로 숨기지 않는다. 불완전하지만 유효한 독립 Text에 할당하면 semantic intent만 보존하고 x/y/text 준비 뒤 기존 owner가 출력한다. 별도 placeholder나 renderer 동작은 없다.
 
@@ -61,7 +61,7 @@ field는 비어 있지 않은 문자열이며 현재 eligible dataset의 유한�
 - raw row/순서 보존, data revision/derived edits/bindMarkData, Canvas 및 x/y scale 재구현, facet clone/persistence.
 - 직접 편집된 잘못된 persisted shape도 restore/serialize에서 거부. 기본 omission은 새 필드를 넣지 않는다.
 - 기존 categorical xOffset 의미와 label/selection 배치/scale/guide/legend inference는 그대로다. Text selection/highlight 자체는 이번에 확장하지 않는다.
-- Full/Basic 공개 JS·types, installed package SVG/PNG/PDF, inspection/channel provenance, machine docs/action index/catalog/support matrix.
+- Full 공개 JS·types 및 Basic Text-family 제외 확인, installed package SVG/PNG/PDF, inspection/channel provenance, machine docs/action index/catalog/support matrix.
 - primitive/public 같은 실행 graphic 순서 및 decoded PNG 정확 일치, plot ink, 기존 전체 normal 검사와 현행1290family/9398actualprogram native SVG 호환성.
 
 ## 승인 및 공개
@@ -75,3 +75,9 @@ Gate 상태는 **approved**다. 사용자의 직접 지시 “지금까지 모�
 ## 목표 생성 기록
 
 TARGET_EVIDENCE.json의 signed field target은 공개 액션 구현 전에 동결했다. 프레임500×300, plot ink1372, PNG SHA256 `d585e062ba4aa2b1d7c48ecf165e25115724e0e62092a03e70c21d251c54c75c`다. 세 행의 positive/negative/zero dx/dy와 원래 순서를 보존한다. 최초 helper 실행의 미생성 parent directory와 두 번째의 collection input에 concrete id를 넣은 fixture 오류는 로그에 남겼다. 빈 실패 디렉터리만 제거했고 target 생성은 문서화된 primitive `{type,properties}`로 고쳤다. 라이브러리 동작이나 한도를 바꾸지 않았다. 동결된 TARGET.mjs는 다시 실행하지 않는다.
+
+## 실측 리소스 예산 보정
+
+RESOURCE_MEASUREMENT.json은 검증을 우회한 합격 자료가 아니라 공식 pack staging의 실측만 기록한다. 새 두 액션의 소스·타입·공개 카드·변경 기록으로 같은604개 파일의 archive855390bytes/unpacked4135679bytes, 검색843100bytes다. 기존 한도854000/4131000/842000을 각각1000단위 최소 올림856000/4136000/844000으로 보정한다. 파일 수·허용 경로·전체 문서 범위·그래픽/데이터 검사 기준은 유지한다. 최신 직접 사용자의 앞으로의 모든 질문 승인 범위 안에서 이 구체적인 작은 자원 예산 보정을 기록하고 반복 질문 없이 검증한다.
+
+설치 consumer의 runtime·types·tutorial 검사는 완료됐으나 Full browser gzip424768bytes가 이전424000한도를 넘었다. 실패 로그를 보존하고 Full만 최소1000단위 올림425000으로 보정한다. Basic214000/SVG25000 예산과 tree-shaking·node-only 경계는 유지하며 전체 installed consumer를 다시 실행한다.

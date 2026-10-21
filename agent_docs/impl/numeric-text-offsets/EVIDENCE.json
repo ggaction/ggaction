@@ -1,0 +1,189 @@
+{
+  "status": "implemented-source-verified-pending-immutable-candidate",
+  "issue": "https://github.com/ggaction/ggaction/issues/248",
+  "approvedProposalCommit": "66f3862cfcd0ce45ef1ee95f790eba934e1bb899",
+  "authority": "Direct human approval of all future in-scope questions; concrete target and contract recorded before implementation; public releases every200additional verified distinct source families.",
+  "normal": {
+    "pass": 4967,
+    "fail": 0,
+    "scope": "All runtime/type/current-doc inputs; later Full gzip ceiling-only amendment separately checked by documentation-truth contract."
+  },
+  "featureSpecificTests": 31,
+  "metadataFocusedTests": 64,
+  "installedConsumerGroups": 64,
+  "installedConsumer": {
+    "package": "ggaction@0.0.21",
+    "source": "ggaction-0.0.21.tgz",
+    "sha256": "9f35c585c89e7fd2d2f56f3098d158a415c803f5d091f159031942f0ebfc4be7",
+    "browserBundles": {
+      "full": {
+        "specifier": "ggaction",
+        "chunks": 1,
+        "modules": 536,
+        "minifiedBytes": 1565634,
+        "gzipBytes": 424768
+      },
+      "basic": {
+        "specifier": "ggaction/basic",
+        "chunks": 1,
+        "modules": 321,
+        "minifiedBytes": 758480,
+        "gzipBytes": 213824
+      },
+      "svg": {
+        "specifier": "ggaction/svg",
+        "chunks": 1,
+        "modules": 19,
+        "minifiedBytes": 23548,
+        "gzipBytes": 7567
+      }
+    },
+    "mcp": {
+      "coldStartMilliseconds": 143
+    },
+    "checks": [
+      "node",
+      "linear-regression-statistics-cache-and-source-revision",
+      "extension",
+      "pdf",
+      "png",
+      "svg",
+      "inspection",
+      "numeric-font-weight",
+      "point-jitter",
+      "point-packing",
+      "mark-label-removal",
+      "selected-mark-labels",
+      "semantic-label-placement",
+      "beeswarm-plot",
+      "raincloud-plot",
+      "path-order",
+      "time-unit-data",
+      "summary-data",
+      "bin-data",
+      "fold-data",
+      "computed-data",
+      "derived-data-editing",
+      "safe-resource-removal",
+      "advanced-authoring-integration",
+      "normalized-data",
+      "complete-data",
+      "imputed-data",
+      "stack-data",
+      "window-data",
+      "bin2d-data",
+      "binned-heatmap",
+      "parallel-coordinates",
+      "parallel-dimension-scale-editing",
+      "offset-scale-editing",
+      "stroke-color-encoding-and-legends",
+      "atomic-channel-encoding",
+      "axis-title-label-overlap-policy",
+      "numeric-independent-text-offsets",
+      "statistical-references",
+      "coordinate-aspect-and-polar-frame-editing",
+      "facet-grid-repeat-and-named-composition-editing",
+      "non-cartesian-facet-grid-and-repeat",
+      "horizon",
+      "violin-plot",
+      "polar-radar-rug-strip-ecdf-facades",
+      "right-categorical-legend-offset",
+      "grouped-corner-and-free-legend-placement",
+      "sequential-palette-count",
+      "ranged-numeric-datum-wrapper-parity",
+      "neutral-hcl-hue-borrowing",
+      "facet-numeric-legend-inference",
+      "explicit-fold-facet-partition",
+      "shared-facet-top-lane",
+      "explicit-axis-and-border-underlays",
+      "typescript",
+      "basic-entry-runtime-and-types",
+      "tutorial-consumers",
+      "minimal-browser-bundle-measurement",
+      "private-export-rejection",
+      "installed-local-mcp",
+      "direct-mcp-byte-equality",
+      "task-packet-v5-authoring-execution",
+      "explicit-unresolved-docs-fallback",
+      "terminal-unsupported-no-fallback"
+    ]
+  },
+  "publicPrimitiveExactGraphicOrderAndDecodedPng": true,
+  "publicPrimitiveEvidence": "PRIMITIVE_PUBLIC_EVIDENCE.json",
+  "docs": {
+    "generated": true,
+    "builtPages": 150,
+    "browser": "pass",
+    "browserDesktopSearchAndAllPagesWidths": [
+      320,
+      390,
+      768
+    ]
+  },
+  "resourceMeasurement": "RESOURCE_MEASUREMENT.json",
+  "resourceCeilings": {
+    "entries": 604,
+    "packedBytes": 856000,
+    "unpackedBytes": 4136000,
+    "searchBytes": 844000,
+    "FullBrowserGzip": 425000,
+    "BasicBrowserGzip": 214000,
+    "SVGBrowserGzip": 25000
+  },
+  "resourcePolicy": "Minimal1000-byte ceiling rounding for measured supported feature growth; retain every file/entry, all docs, all geometry/color/data/trace tests. Initial normal7fail and installedFullgzip768overflow retained. No claim previous ceilings passed.",
+  "newPublicApi": [
+    "encodeDx",
+    "encodeDy"
+  ],
+  "maximumTopOptions": 3,
+  "FullOnlyBasicTextExcluded": true,
+  "existingAtomicChannelsShapePreserved": true,
+  "newOwnerOrRendererBoundary": false,
+  "activeTranslationRuntimeChanged": false,
+  "registryPublished": false,
+  "publicDatasetFamilies": 1213,
+  "currentCompletedSourceFamilies": 1290,
+  "currentActualSchoolPrograms": 9398,
+  "nextRegularPublicationAt": 1413,
+  "SchoolRequests": 0,
+  "chartPixelsInspected": false,
+  "logs": [
+    {
+      "path": "/tmp/ggaction-numeric-text-offset-focused-v5.log",
+      "sha256": "a290c0f6ed2e8feb42a43b2da6438744b4599d1d1c3459355752eed27f2296ff"
+    },
+    {
+      "path": "/tmp/ggaction-numeric-text-offset-normal-v3.log",
+      "sha256": "48bd64e14ca0a143669d16c358d0b4dcaec9a7d8f998565ab404739232ff890f"
+    },
+    {
+      "path": "/tmp/ggaction-numeric-text-offset-package-consumer-v2.log",
+      "sha256": "1227d1023038cc5821980a1d32c336608957ca9b41df8bcadb9d3d2cb6c9ed4b"
+    },
+    {
+      "path": "/tmp/ggaction-numeric-text-offset-metadata-focused-v1.log",
+      "sha256": "5daa801c33d24276ec3a603bdd4e6e183f75a31482b6c6c0cc5548e816a663a9"
+    },
+    {
+      "path": "/tmp/ggaction-numeric-text-offset-bundle-budget-contract-v1.log",
+      "sha256": "4416483b189b60b9bf96712f7b3594bde99ad80afb141bba00d3d41c60f54365"
+    },
+    {
+      "path": "/tmp/ggaction-numeric-text-offset-docs-preflight-v1.log",
+      "sha256": "5498bb281530d50ed1534e8ebfce1934e86f6c7a33491aa407ff4db951e1674d"
+    },
+    {
+      "path": "/tmp/ggaction-numeric-text-offset-docs-build-v1.log",
+      "sha256": "e19baa44ea538c8df8281a80606e8ffa7526fb2d6d49a632e9c2eecb16bc8c06"
+    },
+    {
+      "path": "/tmp/ggaction-numeric-text-offset-docs-built-v1.log",
+      "sha256": "8b67b737002bb9a40f52b91eba9a2aba91b043a875723aacaf5ca645421b217d"
+    },
+    {
+      "path": "/tmp/ggaction-numeric-text-offset-docs-browser-v1.log",
+      "sha256": "a6c413832c2ac970262d660fe51fe2b6b1ac8d6ab97e797817fdb77cd9193c60"
+    }
+  ],
+  "bundleBudgetFocusedTests": 3
+}

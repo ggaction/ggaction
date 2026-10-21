@@ -135,8 +135,10 @@ interface ChartProgramActions {
   encodeParallelCoordinates(options: ParallelCoordinatesEncodingOptions): ChartProgram;
   removePathOrder(options?: RemovePathOrderOptions): ChartProgram;
   removeCategoryOrder(options: RemoveCategoryOrderOptions): ChartProgram;
-  removeEncoding(options: { target?: string; channel: | "x" | "y" | "x2" | "y2" | "xOffset" | "yOffset" | "theta" | "radius" | "color" | "stroke" | "strokeDash" | "strokeWidth" | "size" | "shape" | "angle" | "group" | "opacity" | "text"; }): ChartProgram;
+  removeEncoding(options: { target?: string; channel: | "x" | "y" | "x2" | "y2" | "xOffset" | "yOffset" | "theta" | "radius" | "color" | "stroke" | "strokeDash" | "strokeWidth" | "size" | "shape" | "angle" | "group" | "opacity" | "text" | "dx" | "dy"; }): ChartProgram;
   encodeText(options: TextEncodingOptions): ChartProgram;
+  encodeDx(options: TextOffsetEncodingOptions): ChartProgram;
+  encodeDy(options: TextOffsetEncodingOptions): ChartProgram;
   encodeHistogram(options: HistogramEncodingOptions): ChartProgram;
   encodeDensity(options: DensityEncodingOptions): ChartProgram;
   editDensity(options: EditDensityOptions): ChartProgram;
@@ -336,6 +338,8 @@ Related types: [`ScalarAggregateOperation`](#type-scalaraggregateoperation) · [
 export type AngleEncodingOptions =
   | { target?: string; value: number; field?: never; fieldType?: never }
   | { target?: string; field: string; fieldType?: "quantitative"; value?: never };
+
+/** Unscaled, signed logical-pixel offsets for independent Text marks. */
 ```
 
 </details>
@@ -6052,12 +6056,14 @@ export interface EncodingChannelAssignments {
   strokeDash?: WithoutEncodingTarget<StrokeDashEncodingOptions>;
   angle?: WithoutEncodingTarget<AngleEncodingOptions>;
   text?: WithoutEncodingTarget<TextEncodingOptions>;
+  dx?: WithoutEncodingTarget<TextOffsetEncodingOptions>;
+  dy?: WithoutEncodingTarget<TextOffsetEncodingOptions>;
 }
 ```
 
 </details>
 
-Related types: [`WithoutEncodingTarget`](#type-withoutencodingtarget) · [`PositionEncodingOptions`](#type-positionencodingoptions) · [`DatumPositionEncodingOptions`](#type-datumpositionencodingoptions) · [`YPositionEncodingOptions`](#type-ypositionencodingoptions) · [`SecondaryPositionEncodingOptions`](#type-secondarypositionencodingoptions) · [`ThetaEncodingOptions`](#type-thetaencodingoptions) · [`RadialEncodingOptions`](#type-radialencodingoptions) · [`XOffsetEncodingOptions`](#type-xoffsetencodingoptions) · [`YOffsetEncodingOptions`](#type-yoffsetencodingoptions) · [`GroupEncodingOptions`](#type-groupencodingoptions) · [`PathOrderEncodingOptions`](#type-pathorderencodingoptions) · [`ColorEncodingOptions`](#type-colorencodingoptions) · [`StrokeEncodingOptions`](#type-strokeencodingoptions) · [`SizeEncodingOptions`](#type-sizeencodingoptions) · [`ShapeEncodingOptions`](#type-shapeencodingoptions) · [`OpacityEncodingOptions`](#type-opacityencodingoptions) · [`StrokeWidthEncodingOptions`](#type-strokewidthencodingoptions) · [`StrokeDashEncodingOptions`](#type-strokedashencodingoptions) · [`AngleEncodingOptions`](#type-angleencodingoptions) · [`TextEncodingOptions`](#type-textencodingoptions).
+Related types: [`WithoutEncodingTarget`](#type-withoutencodingtarget) · [`PositionEncodingOptions`](#type-positionencodingoptions) · [`DatumPositionEncodingOptions`](#type-datumpositionencodingoptions) · [`YPositionEncodingOptions`](#type-ypositionencodingoptions) · [`SecondaryPositionEncodingOptions`](#type-secondarypositionencodingoptions) · [`ThetaEncodingOptions`](#type-thetaencodingoptions) · [`RadialEncodingOptions`](#type-radialencodingoptions) · [`XOffsetEncodingOptions`](#type-xoffsetencodingoptions) · [`YOffsetEncodingOptions`](#type-yoffsetencodingoptions) · [`GroupEncodingOptions`](#type-groupencodingoptions) · [`PathOrderEncodingOptions`](#type-pathorderencodingoptions) · [`ColorEncodingOptions`](#type-colorencodingoptions) · [`StrokeEncodingOptions`](#type-strokeencodingoptions) · [`SizeEncodingOptions`](#type-sizeencodingoptions) · [`ShapeEncodingOptions`](#type-shapeencodingoptions) · [`OpacityEncodingOptions`](#type-opacityencodingoptions) · [`StrokeWidthEncodingOptions`](#type-strokewidthencodingoptions) · [`StrokeDashEncodingOptions`](#type-strokedashencodingoptions) · [`AngleEncodingOptions`](#type-angleencodingoptions) · [`TextEncodingOptions`](#type-textencodingoptions) · [`TextOffsetEncodingOptions`](#type-textoffsetencodingoptions).
 
 ### `EndpointCategoryChannel` {#type-endpointcategorychannel}
 
@@ -11673,6 +11679,19 @@ export interface TextMetricsProfile {
 </details>
 
 Related types: [`TextMeasurement`](#type-textmeasurement).
+
+### `TextOffsetEncodingOptions` {#type-textoffsetencodingoptions}
+
+<details markdown="1">
+<summary>Expand TextOffsetEncodingOptions</summary>
+
+```typescript
+export type TextOffsetEncodingOptions =
+  | { target?: string; value: number; field?: never }
+  | { target?: string; field: string; value?: never };
+```
+
+</details>
 
 ### `TextPlotPositionChannel` {#type-textplotpositionchannel}
 

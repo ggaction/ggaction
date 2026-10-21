@@ -123,6 +123,14 @@ function atomicEncodingPrograms() {
     })];
 }
 
+function numericTextOffsetPrograms() {
+  const program = chart().createCanvas({ width: 500, height: 300, margin: 80 })
+    .createData({ values: [{ x: 1, y: 2, label: "A", shift: 8 }] })
+    .createTextPlot({ x: "x", y: "y", text: "label" })
+    .encodeDx({ field: "shift" }).encodeDy({ value: -4 });
+  return [program, program.removeEncoding({ channel: "dx" })];
+}
+
 function legendBlockPrograms() {
   return [chart()
     .createCanvas({ width: 760, height: 600, margin: 160 })
@@ -454,6 +462,7 @@ export function buildActionRelationshipPrograms() {
     ...selectionLifecyclePrograms(),
     ...focusedScaleEditorPrograms(),
     ...atomicEncodingPrograms(),
+    ...numericTextOffsetPrograms(),
     ...legendBlockPrograms(),
     ...coordinateAspectPrograms(),
     ...labelRemovalPrograms(),

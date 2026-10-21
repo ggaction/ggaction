@@ -124,7 +124,9 @@ const emptyResultActions = new Set([
   "createArcMark",
   "createRectMark",
   "createRuleMark",
-  "createTextMark"
+  "createTextMark",
+  "encodeDx",
+  "encodeDy"
 ]);
 
 function unique(values) {
@@ -210,7 +212,8 @@ export function optionUnits(action, options) {
     if (/^(create|edit).*Scale$/.test(action.name) &&
         Object.hasOwn(SCALE_OPTION_UNITS, option.name) && includesNumber(option.type)) {
       unit = SCALE_OPTION_UNITS[option.name];
-    } else if (option.name === "temporalUnit") unit = "temporal-input";
+    } else if (["encodeDx", "encodeDy"].includes(action.name) && option.name === "value") unit = "logical-pixel";
+    else if (option.name === "temporalUnit") unit = "temporal-input";
     else if (action.name === "createTimeUnitData" && option.name === "unit") unit = "calendar-unit";
     else if (option.name === "rotation" && option.type.includes("RotationInput")) unit = "angle";
     else if ((option.name === "angle" || option.name === "padAngle") && includesNumber(option.type)) unit = "degree";

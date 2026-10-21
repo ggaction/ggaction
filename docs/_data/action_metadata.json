@@ -899,6 +899,22 @@
     "layer": "user-facing",
     "domain": "encodings"
   },
+  "encodeDx": {
+    "operation": "encode",
+    "authoringRoles": [
+      "H2"
+    ],
+    "layer": "user-facing",
+    "domain": "encodings"
+  },
+  "encodeDy": {
+    "operation": "encode",
+    "authoringRoles": [
+      "H2"
+    ],
+    "layer": "user-facing",
+    "domain": "encodings"
+  },
   "encodeHistogram": {
     "operation": "encode",
     "authoringRoles": [

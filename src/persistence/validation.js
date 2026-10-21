@@ -34,6 +34,7 @@ import { normalizeTransformParameters } from "../grammar/scales/transformed.js";
 import { validateLegendGroupState } from "../grammar/legendGroups.js";
 import { normalizeGradientDirection, validateLegendGradient } from "../grammar/legendGradient.js";
 import { normalizeTextMetricProfile } from "../core/textMetricProfile.js";
+import { resolveTextOffsetDataset } from "../grammar/text.js";
 import { isPlainObject } from "../core/immutable.js";
 import { validateUserId } from "../core/identifiers.js";
 import { collectAllResourceReferences } from "../core/resourceReferences.js";
@@ -182,6 +183,11 @@ export function validateProgramState(program, path) {
     resources.set(referenceKind, entries);
     for (const resource of entries.values()) {
       if (kind === "layer") validateTickColorChannels(resource);
+      if (kind === "layer" && ["dx", "dy"].some(channel => resource.encoding?.[channel] !== undefined)) {
+        const dataset = semantic.datasets.find(item => item.id === resource.data);
+        if (dataset === undefined) throw new Error("Numeric text offsets require an existing dataset.");
+        resolveTextOffsetDataset(resource, dataset);
+      }
       if (kind === "scale") {
         normalizeColorInterpolationOptions(resource.interpolate, resource);
         if (resource.type === "pow") normalizeTransformParameters("pow", {

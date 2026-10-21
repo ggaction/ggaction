@@ -1691,6 +1691,7 @@ semantic base positions. [Text marks](../api/marks/text.md)
 | `encodeTheta` | point, line, arc | point/line: quantitative, temporal, ordinal, nominal; arc: quantitative, ordinal, nominal | arc maps direct quantitative values, category counts, or category-weighted sums to proportional sectors |
 | `encodeR` | point, line, arc | point/line/arc: quantitative | radial position; arc combines it with a categorical theta band |
 | `encodeParallelCoordinates` | line | line: quantitative, ordinal | atomic ordered dimensions; one namespaced scale and axis per dimension |
+| `encodeDx` / `encodeDy` | text | text: quantitative | independent Text only; finite field or constant logical-pixel offsets, no scale or guide; field offsets establish row grain |
 
 <!-- action-capabilities:position:end -->
 
@@ -1903,6 +1904,32 @@ Assign exactly one field, constant value, or semantic content to a text mark.
 `format` accepts `"auto"`, `.0`–`.12` precision with `f`, `%`, or `e`, or a UTC
 pattern composed from `%Y`, `%m`, `%d`, `%b`, `%%`, and literals. Reassignment
 replaces the previous content branch. [Text marks](../api/marks/text.md)
+
+### `encodeDx`
+
+```javascript
+encodeDx({ target?, field })
+encodeDx({ target?, value })
+```
+
+Move each independent Text glyph horizontally by finite signed logical pixels.
+Choose exactly one numeric field or constant; no scale is created. The encoding
+overrides the mark's constant dx. Removing it restores that constant. Field-bound
+offsets participate in row grain and the Text missing-row policy. Full only;
+source-owned labels and other marks are rejected.
+[Text offsets](../api/marks/text.md#numeric-pixel-offsets)
+
+### `encodeDy`
+
+```javascript
+encodeDy({ target?, field })
+encodeDy({ target?, value })
+```
+
+The corresponding independent Text vertical offset; positive values move down.
+It preserves dx and follows the same field/constant, removal, row-grain and atomic
+validation rules. Set both through existing `encodeChannels({target,channels})`.
+[Text offsets](../api/marks/text.md#numeric-pixel-offsets)
 
 ### `encodeXOffset`
 

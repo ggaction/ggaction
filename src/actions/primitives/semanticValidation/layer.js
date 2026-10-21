@@ -21,6 +21,7 @@ import { normalizeStatisticalWeight } from
   "../../../grammar/weightedStatistics.js";
 import { ITEM_MISSING_MARK_TYPES, validateItemMissing } from
   "../../../grammar/itemMissing.js";
+import { isIndependentText, validateTextOffsetEncoding } from "../../../grammar/text.js";
 
 function validateLayerSource(program, parsed, value, sourceMarkTypes) {
   validateUserId(value, "Layer source id");
@@ -51,6 +52,20 @@ export function validateLayerSemanticValue(
   } = {}
 ) {
   const property = parsed.path.join(".");
+  if (/^encoding\.(dx|dy)(\.|$)/.test(property)) {
+    if (!isIndependentText(findLayer(program, parsed.id))) {
+      throw new Error("Numeric text offsets require independent Text marks.");
+    }
+    const channel = parsed.path[1];
+    if (parsed.path.length === 2) validateTextOffsetEncoding(value, channel);
+    else if (property.endsWith(".fieldType") && value !== "quantitative") {
+      throw new Error(`Text ${channel} field type must be quantitative.`);
+    } else if (property.endsWith(".datum") && !Number.isFinite(value)) {
+      throw new TypeError(`Text ${channel} datum must be finite logical pixels.`);
+    } else if (property.endsWith(".field")) {
+      validateNonEmptySemanticString(value, `Text ${channel} field`);
+    }
+  }
   if (property === "mark.type" && !MARK_TYPES.includes(value)) {
     throw new Error(`Unknown mark type "${value}".`);
   }

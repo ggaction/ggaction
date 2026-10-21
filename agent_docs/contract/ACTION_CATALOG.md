@@ -118,6 +118,8 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`removeCategoryOrder`](current/ENCODINGS.md#removecategoryorder) | encodings | Assignment | Removal — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`removeEncoding`](current/ENCODINGS.md#removeencoding) | encodings | Assignment | Removal — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodeText`](current/ENCODINGS.md#encodetext) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
+| user-facing | [`encodeDx`](current/ENCODINGS.md#encodedx) | encodings | Assignment | Reassignment and removal fallback - Implemented | ✅ / ✅ / ✅ |
+| user-facing | [`encodeDy`](current/ENCODINGS.md#encodedy) | encodings | Assignment | Reassignment and removal fallback - Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodeHistogram`](current/ENCODINGS.md#encodehistogram) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodeDensity`](current/ENCODINGS.md#encodedensity) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`editDensity`](current/ENCODINGS.md#editdensity) | encodings | Mutable resource | Complete | ✅ / ✅ / ✅ |

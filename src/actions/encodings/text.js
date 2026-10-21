@@ -1,10 +1,11 @@
 import { action } from "../../core/action.js";
 import { schemaField } from "../../grammar/datasetSchema.js";
-import { formatTextValue, validateTextFormat } from "../../grammar/text.js";
+import { formatTextValue, validateTextFormat, isIndependentText, resolveTextOffsetDataset, normalizeTextOffsetAssignment } from "../../grammar/text.js";
+import { validateUserId } from "../../core/identifiers.js";
 import { normalizeMarkLabelContent, resolveMarkLabelValues } from "../../grammar/markLabels.js";
 import { canMaterializeText } from "../../materialization/marks/index.js";
 import { resolveMarkItems } from "../../materialization/selection/policies/index.js";
-import { findLayer } from "../../selectors/layers.js";
+import { findLayer, resolveEligibleLayer } from "../../selectors/layers.js";
 import {
   resolveTarget,
   setEncodingProperties,
@@ -90,6 +91,33 @@ export const encodeText = /* @__PURE__ */ action(
   }
 );
 
+function createTextOffsetEncoding(channel) {
+  const operation = channel === "dx" ? "encodeDx" : "encodeDy";
+  return action({ op: operation, description: `Assign direct numeric ${channel} pixel offsets to independent Text.` }, function (args = {}) {
+    const properties = normalizeTextOffsetAssignment(args, channel);
+    const selected = resolveEligibleLayer(this, {
+      target: args.target === undefined ? undefined : validateUserId(args.target, "Text offset target"),
+      predicate: isIndependentText,
+      label: "Independent Text offset"
+    });
+    const { id: target, layer, dataset } = resolveTarget(this, selected.id, ["text"], "independent Text");
+    resolveTextOffsetDataset({ ...layer, encoding: { ...layer.encoding, [channel]: properties } }, dataset);
+    let next = this;
+    for (const property of ["field", "fieldType", "datum"]) {
+      if (Object.hasOwn(layer.encoding?.[channel] ?? {}, property)) {
+        next = next.editSemantic({ property: `layer[${target}].encoding.${channel}.${property}`, remove: true });
+      }
+    }
+    next = setEncodingProperties(next, target, channel, properties);
+    return canMaterializeText(next, findLayer(next, target)) ? next.rematerializeTextMark({ id: target }) : next;
+  });
+}
+
+export const encodeDx = /* @__PURE__ */ createTextOffsetEncoding("dx");
+export const encodeDy = /* @__PURE__ */ createTextOffsetEncoding("dy");
+
 export function registerTextEncodingAction(ProgramClass) {
   ProgramClass.prototype.encodeText = encodeText;
+  ProgramClass.prototype.encodeDx = encodeDx;
+  ProgramClass.prototype.encodeDy = encodeDy;
 }
