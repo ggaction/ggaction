@@ -1,0 +1,41 @@
+{
+  "status": "focused-repair-verified-full-candidate-checks-pending",
+  "issue": 257,
+  "reviewCommit": "3170a347",
+  "persistenceTests": 17,
+  "lookupAndAxisRegressionTests": 32,
+  "persistenceCoverage": {
+    "lines": 100,
+    "branches": 95.12,
+    "functions": 100
+  },
+  "logs": [
+    {
+      "path": "/tmp/ggaction-nearest-persistence-focused-coverage-v4.log",
+      "sha256": "408092766ca4cd1f96710580d60dc1095a1e37f8b935a4b2e94e790fa864c381",
+      "bytes": 4496
+    },
+    {
+      "path": "/tmp/ggaction-legacy-lookup-migration-regressions-v1.log",
+      "sha256": "2e0f357e6e23d2f142476ed325767371c507c60e8f6fb170a0b5d1d5f38429e9",
+      "bytes": 6997
+    }
+  ],
+  "legacyRoundtripValues": [
+    "020",
+    "013",
+    null
+  ],
+  "mixedTypedKeysPreserved": true,
+  "bothRawTablesAndOrderPreserved": true,
+  "partialSchemaAndEditableV3Replay": true,
+  "tamperedValuesBadReferencesCyclesDuplicateKeysWrongSchemasRejected": true,
+  "modernFormatsStillRequireSchemas": true,
+  "newPublicAPI": false,
+  "newPersistedFormat": false,
+  "renderingChanges": false,
+  "SchoolRequests": 0,
+  "activeTranslationRuntimeChanged": false,
+  "publicRelease": false,
+  "regularReleaseAt": 1413
+}

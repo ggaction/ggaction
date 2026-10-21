@@ -194,7 +194,11 @@ Editable snapshots use schema version 3 to store large repeated arrays once,
 including source data shared by many facet panels. Dataset schema and calculation
 metadata still round-trip. Version 2 remains readable. The reader migrates
 editable version 1 payloads by
-inferring or deriving missing dataset schemas before validation. Graphic
+inferring or deriving missing dataset schemas before final schema validation.
+Lookup migration resolves both input schemas. The initial pass still checks
+references, cycles, typed keys, duplicate keys, and exact derived row values;
+only missing-schema comparisons are deferred. Malformed provided schemas and
+tampered lookup results remain rejected. Modern formats stay strict. Graphic
 snapshots remain version 1 because their payload shape did not change.
 `packageVersion` records the producer version; `schemaVersion` determines the
 format. Other schema versions are rejected. `extensions` contains the exact

@@ -169,7 +169,7 @@ function validateSemanticProperties(program, value, property) {
   validateStoredSemanticValue(program, parsed, value);
 }
 
-export function validateProgramState(program, path) {
+export function validateProgramState(program, path, { allowMissingLookupSchemas = false } = {}) {
   const semantic = program.semanticSpec;
   exactKeys(semantic, ["datasets", "layers", "scales", "coordinates", "guides", "title"], `${path}.semanticSpec`);
   const resources = new Map();
@@ -412,9 +412,12 @@ export function validateProgramState(program, path) {
       orderedDatasetAncestors(semantic.datasets,dataset.id);
       const transform=dataset.transform[0],source=resources.get("data").get(dataset.source),right=resources.get("data").get(transform.lookup.data);
       if(source===undefined||right===undefined)throw invalidSnapshot("Lookup requires both existing input datasets.",path);
-      const schema=deriveTransformSchema(source.schema,transform,dataset.values,
-        datasetSchemaContext(source,transform,dataset.id,id=>resources.get("data").get(id)));
-      if(!sameLookupValue(dataset.schema,schema))throw invalidSnapshot("Lookup schema does not match both inputs.",path);
+      const missingSchemas = [source, right, dataset].some(input => input.schema === undefined);
+      if (!allowMissingLookupSchemas || !missingSchemas) {
+        const schema=deriveTransformSchema(source.schema,transform,dataset.values,
+          datasetSchemaContext(source,transform,dataset.id,id=>resources.get("data").get(id)));
+        if(!sameLookupValue(dataset.schema,schema))throw invalidSnapshot("Lookup schema does not match both inputs.",path);
+      }
       if(dataset.values!==undefined&&!sameLookupValue(dataset.values,deriveLookupRows(source.values,right.values,transform)))throw invalidSnapshot("Lookup values do not match both input datasets.",path);
     }
     if (dataset.transform?.[0]?.type !== "regressionStatistics") continue;

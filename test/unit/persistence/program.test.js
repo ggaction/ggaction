@@ -120,6 +120,68 @@ test("editable schema version 1 migrates dataset schemas while version 2 require
   );
 });
 
+test("editable version 1 migrates lookup schemas from both lossless raw tables", () => {
+  const reference = [{ id: 1, value: "013" }, { id: "1", value: "020" }];
+  const source = [{ key: "1", order: 0 }, { key: 1, order: 1 }, { key: 9, order: 2 }];
+  const original = chart().createData({ id: "reference", values: reference })
+    .createData({ id: "source", values: source })
+    .createLookupData({ id: "joined", field: "key", lookup: {
+      data: "reference", key: "id", fields: ["value"], as: ["joinedValue"]
+    } });
+  const saved = serializeProgram(original), envelope = JSON.parse(saved);
+  const state = decodeValue(envelope.payload);
+  for (const dataset of state.semanticSpec.datasets) delete dataset.schema;
+  envelope.schemaVersion = 1; envelope.payload = encodeValue(state);
+  const migrated = deserializeProgram(JSON.stringify(envelope));
+  const get = id => migrated.semanticSpec.datasets.find(dataset => dataset.id === id);
+  assert.deepEqual(get("reference").values, reference);
+  assert.deepEqual(get("source").values, source);
+  assert.deepEqual(get("joined").values.map(row => row.joinedValue), ["020", "013", null]);
+  const copied = get("joined").schema.fields.find(field => field.name === "joinedValue");
+  assert.equal(copied.storageType, "string");
+  assert.equal(copied.nullable, true);
+  assert.deepEqual(copied.lineage.inputs, [
+    { data: "source", field: "key" }, { data: "reference", field: "id" },
+    { data: "reference", field: "value" }
+  ]);
+  const withPartialSchemas = JSON.parse(JSON.stringify(envelope));
+  const partialState = decodeValue(withPartialSchemas.payload);
+  partialState.semanticSpec.datasets.find(dataset => dataset.id === "reference").schema =
+    original.semanticSpec.datasets.find(dataset => dataset.id === "reference").schema;
+  withPartialSchemas.payload = encodeValue(partialState);
+  assert.deepEqual(deserializeProgram(JSON.stringify(withPartialSchemas)).semanticSpec, migrated.semanticSpec);
+  for (const change of [
+    s => { s.semanticSpec.datasets.find(d => d.id === "joined").values[0].joinedValue = "tampered"; },
+    s => { s.semanticSpec.datasets.find(d => d.id === "joined").transform[0].lookup.data = "unknown"; },
+    s => { s.semanticSpec.datasets.find(d => d.id === "joined").transform[0].lookup.data = "joined"; },
+    s => { const d = s.semanticSpec.datasets.find(d => d.id === "reference"); d.values.push({ ...d.values[0] }); },
+    s => { s.semanticSpec.datasets.find(d => d.id === "source").values.reverse(); },
+    s => {
+      const d = s.semanticSpec.datasets.find(d => d.id === "joined");
+      d.schema = structuredClone(original.semanticSpec.datasets.find(d => d.id === "joined").schema);
+      d.schema.fields.find(field => field.name === "joinedValue").storageType = "number";
+    },
+    s => {
+      const d = s.semanticSpec.datasets.find(d => d.id === "reference");
+      d.schema = structuredClone(original.semanticSpec.datasets.find(d => d.id === "reference").schema);
+      d.schema.fields[0].storageType = "not-a-type";
+    }
+  ]) {
+    const malformed = JSON.parse(JSON.stringify(envelope)), badState = decodeValue(malformed.payload);
+    change(badState); malformed.payload = encodeValue(badState);
+    assert.throws(() => deserializeProgram(JSON.stringify(malformed)));
+  }
+  for (const schemaVersion of [2, 3]) {
+    assert.throws(() => deserializeProgram(JSON.stringify({ ...envelope, schemaVersion })), /requires schema/);
+  }
+  assert.deepEqual(deserializeProgram(serializeProgram(migrated)).semanticSpec, migrated.semanticSpec);
+  const changed = migrated.editLookupData({ target: "joined", lookup: {
+    data: "reference", key: "id", fields: ["value"], as: ["renamedValue"]
+  } });
+  assert.deepEqual(changed.semanticSpec.datasets.at(-1).values.map(row => row.renamedValue), ["020", "013", null]);
+  assert.equal(serializeProgram(original), saved);
+});
+
 test("editable restoration retains compatible empty-domain preservation identity", () => {
   const original = chart()
     .createCanvas()

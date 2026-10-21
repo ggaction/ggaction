@@ -64,7 +64,7 @@ function restoreState(state, extensions, path = "payload", { requireSchemas = fa
     { requireSchemas }
   )]));
   const program = new ChartProgram({ ...state, children });
-  validateProgramState(program, path);
+  validateProgramState(program, path, { allowMissingLookupSchemas: !requireSchemas });
   if (requireSchemas) {
     for (const dataset of program.semanticSpec.datasets) {
       if (dataset.schema === undefined) {

@@ -8,8 +8,9 @@
 - [x] raw 두 표와 정확한 lookup 결과를 가진 schemaVersion1 payload의 복원 실패를 재현했다.
 - [x] 현재 문서가 약속한 missing schema 추론/복원 계약과 구현 순서 차이를 확인했다.
 - [x] 사용자의 모든 기존/향후 in-scope 질문 승인을 아래 정확한 수정에 재사용한다.
-- [ ] 구체적 재현·설계를 commit/push한 뒤 수정한다.
-- [ ] 집중 회귀 및 전체 coverage의 기존 critical100% 기준을 그대로 통과한다.
+- [x] 구체적 재현·설계 `3170a347`을 commit/push했다. 이후 수정한다.
+- [x] 집중 저장17개/lookup·axis32개 회귀와 persistence 함수100%·줄100%를 통과했다.
+- [ ] 전체 coverage 및 통합 후보 검증의 기존 floors를 그대로 통과한다.
 
 ## 승인과 수정 범위
 
