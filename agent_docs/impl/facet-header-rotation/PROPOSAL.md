@@ -6,7 +6,7 @@
 - [x] 구체적 API·저장·경계·호환·검증 설계 기록
 - [x] 이번 범위의 직접 사용자 상시 승인 기록
 - [x] 독립 primitive 목표와 수치 oracle 확정
-- [ ] 공개 API 구현·타입·현재 계약·문서 동기화
+- [x] 공개 API 구현·타입·현재 계약·문서 동기화
 - [ ] 기존 출력·설치 패키지·문서·전체 현재 코호트 검증
 - [ ] 검증된 로컬 후보 활성화 후 원본 번역 재개
 - [ ] 200개 차트 릴리즈 시점에 공개 배포 확인 후 이슈 종료
@@ -104,3 +104,5 @@ composition 계약, 생성 문서의 canonical source, 목적이 명확한 예�
 
 구체적인 외곽 margin 합집합과 legacy 호환 조건은 [LAYOUT_TARGET.md](./LAYOUT_TARGET.md),
 실행 가능한 primitive 목표와 사전 측정값은 `primitive-target.mjs` 및 `TARGET_EVIDENCE.json`에 있다.
+
+실제 normal5062/5062, 설치65그룹, 문서150페이지/3폭과 접근성, 공개 Canvas96예제, exact primitive/renderer/pixel 검증은 `EVIDENCE.json`을 따른다. 전체1295/9438 native replay와 로컬 설치·활성화는 아직 미완료다.
