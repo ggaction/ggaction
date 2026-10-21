@@ -1,0 +1,74 @@
+{
+  "status": "primitive-target-verified-before-public-implementation",
+  "publicFeatureImplemented": false,
+  "sourceCommit": "e535cda7771392121129dbb61ea3f946210035f7",
+  "approval": "Direct human standing approval of all future in-scope questions; automated glyph/bounds/render checks only. No manual image inspection.",
+  "previousWidths": {
+    "North": 29.880000000000003,
+    "South": 29.880000000000003
+  },
+  "targetHeaderX": {
+    "North": 9,
+    "South": 9
+  },
+  "headerCentersY": [
+    50,
+    135
+  ],
+  "plotOrigins": [
+    {
+      "x": 50,
+      "y": 20
+    },
+    {
+      "x": 50,
+      "y": 105
+    }
+  ],
+  "canvas": {
+    "width": 185,
+    "height": 195,
+    "background": "white"
+  },
+  "pngSha256": "e7c529819e8c4b5e6f8994f2c411f6db8a3af0251a414d9cadac365f1b698650",
+  "graphicSha256": "4596cd0438128ebcc9806b4ac87826a1f00dd34e3197dca98dce5b3c3cc72d0a",
+  "pixelBytes": 144300,
+  "inkPixels": 3121,
+  "intendedPublicHeaderCalls": [
+    {
+      "op": "facet",
+      "args": {
+        "field": "region",
+        "columns": 1,
+        "headers": {
+          "fontSize": 12,
+          "fontWeight": 400,
+          "column": {
+            "side": "left",
+            "offset": 35,
+            "rotation": {
+              "value": -90,
+              "unit": "degrees"
+            }
+          }
+        }
+      }
+    },
+    {
+      "op": "editFacetGuides",
+      "args": {
+        "axes": "outer",
+        "legend": false
+      }
+    },
+    {
+      "op": "editCompositionLayout",
+      "args": {
+        "spacing": "plot",
+        "gap": 25
+      }
+    }
+  ],
+  "reviewDirectory": ".artifacts/test/png/review/facet-header-rotation/left-vertical",
+  "chartPixelsInspected": false
+}

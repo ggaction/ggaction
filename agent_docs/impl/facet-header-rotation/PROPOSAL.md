@@ -5,7 +5,7 @@
 - [x] 현재 공개 API와 실제 원본 헤더의 차이 재현
 - [x] 구체적 API·저장·경계·호환·검증 설계 기록
 - [x] 이번 범위의 직접 사용자 상시 승인 기록
-- [ ] 독립 primitive 목표와 수치 oracle 확정
+- [x] 독립 primitive 목표와 수치 oracle 확정
 - [ ] 공개 API 구현·타입·현재 계약·문서 동기화
 - [ ] 기존 출력·설치 패키지·문서·전체 현재 코호트 검증
 - [ ] 검증된 로컬 후보 활성화 후 원본 번역 재개
@@ -101,3 +101,6 @@ mark/encoding topology 또는 renderer 경계를 바꾸지 않는다.
 예상되는 파일 범위는 기존 facet actions/header materializer, 타입, persistence 검증,
 composition 계약, 생성 문서의 canonical source, 목적이 명확한 예제 및 테스트다.
 원본 번역은 기능과 로컬 후보 검증이 끝난 뒤 동일 규칙으로 재개한다.
+
+구체적인 외곽 margin 합집합과 legacy 호환 조건은 [LAYOUT_TARGET.md](./LAYOUT_TARGET.md),
+실행 가능한 primitive 목표와 사전 측정값은 `primitive-target.mjs` 및 `TARGET_EVIDENCE.json`에 있다.
