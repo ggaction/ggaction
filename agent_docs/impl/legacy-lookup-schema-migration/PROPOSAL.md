@@ -10,7 +10,8 @@
 - [x] 사용자의 모든 기존/향후 in-scope 질문 승인을 아래 정확한 수정에 재사용한다.
 - [x] 구체적 재현·설계 `3170a347`을 commit/push했다. 이후 수정한다.
 - [x] 집중 저장17개/lookup·axis32개 회귀와 persistence 함수100%·줄100%를 통과했다.
-- [ ] 전체 coverage 및 통합 후보 검증의 기존 floors를 그대로 통과한다.
+- [x] 전체 coverage95.51/92.91/98.76과 critical135floors, 설치 소비자68그룹 및 문서 검증을 통과했다.
+- [ ] 현재1307개 전체 native replay 후 local adoption한다.
 
 ## 승인과 수정 범위
 

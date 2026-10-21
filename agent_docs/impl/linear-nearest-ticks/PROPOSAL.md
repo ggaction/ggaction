@@ -9,7 +9,7 @@
 - [x] 같은 실행 SVG·PNG·decoded pixels 및 plot ink820pixels를 검증했다. `TARGET_EVIDENCE.json` 참조.
 - [x] 아래 구체적 API·저장·시각 목표에 사용자의 직접 standing approval을 재사용한다.
 - [x] 검토 패키지 `ba22d895`를 commit/push했다. 이후 구현한다.
-- [ ] 기존 동작·선언·현재 계약·패키지·문서·예제·회귀를 함께 검증한다.
+- [x] 기존 동작·선언·현재 계약·패키지·문서·예제·회귀와 전체 coverage135floors를 함께 검증했다. `EVIDENCE.json` 참조.
 
 ## 승인·배포 범위
 

@@ -1,0 +1,25 @@
+{
+  "status": "verified-combined-local-implementation-not-published",
+  "issue": 257,
+  "implementationCommit": "39f6520ac5c51a49ae4dfeb553d73785e4d033c5",
+  "combinedEvidence": "../linear-nearest-ticks/EVIDENCE.json",
+  "coverage": {
+    "lines": 95.51,
+    "branches": 92.91,
+    "functions": 98.76,
+    "criticalFloorsPassed": 135
+  },
+  "persistenceCoverage": {
+    "lines": 100,
+    "branches": 95.12,
+    "functions": 100
+  },
+  "installedConsumerGroups": 68,
+  "documentationSourceTests": 120,
+  "documentationBuiltPages": 150,
+  "strictModernFormatsAndFinalLegacyValidationPreserved": true,
+  "rawLookupTableValuesAndOrderPreserved": true,
+  "SchoolRequests": 0,
+  "registryPublished": false,
+  "regularReleaseAt": 1413
+}

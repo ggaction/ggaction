@@ -1,0 +1,17 @@
+{
+  "status": "verified-combined-library-awaiting-current1307-native-replay",
+  "runtimeImplementationCommit": "39f6520ac5c51a49ae4dfeb553d73785e4d033c5",
+  "verifiedIssues": [
+    255,
+    256,
+    257
+  ],
+  "cleanSourceDocumentationTests": 120,
+  "normalTests": 5222,
+  "criticalCoverageFloorsPassed": 135,
+  "publicBrowserExamples": 100,
+  "installedConsumerGroups": 68,
+  "issue": 256,
+  "sourcePackageEntries": 610,
+  "registryPublished": false
+}

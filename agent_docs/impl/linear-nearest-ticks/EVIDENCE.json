@@ -1,0 +1,122 @@
+{
+  "status": "verified-combined-local-implementation-not-published",
+  "issue": 256,
+  "verifiedRelatedIssues": [
+    255,
+    256,
+    257
+  ],
+  "implementationCommit": "39f6520ac5c51a49ae4dfeb553d73785e4d033c5",
+  "axisImplementationCommit": "0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e",
+  "domainImplementationCommit": "9df5a5cd51103c4c5b14bf412343e4c01976ca18",
+  "node": "v22.23.1",
+  "normal": {
+    "tests": 5222,
+    "pass": 5222,
+    "fail": 0,
+    "method": "Canonical full coverage runner executes the exhaustive normal suite; successful child plus all global and critical floors. Inventory is5221 before the added legacy migration test, plus1."
+  },
+  "coverage": {
+    "lines": 95.51,
+    "branches": 92.91,
+    "functions": 98.76,
+    "criticalFloorsPassed": 135
+  },
+  "focusedTests": 19,
+  "numericAndLifecycleTests": 90,
+  "persistenceTests": 17,
+  "persistenceCoverage": {
+    "lines": 100,
+    "branches": 95.12,
+    "functions": 100
+  },
+  "installedConsumerGroups": 68,
+  "publicBrowserExamples": 100,
+  "publicBrowserEvidenceReuse": "The100example browser sweep passed for the unchanged axis/plot implementation. Subsequent production changes are confined to the separate editable persistence reader. Current packed consumer and full coverage pass; fresh current1307 native compatibility remains required.",
+  "documentationSourceTests": 120,
+  "documentationBuiltPages": 150,
+  "documentationResponsiveWidths": [
+    320,
+    390,
+    768
+  ],
+  "browserBundles": {
+    "full": {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 542,
+      "minifiedBytes": 1584176,
+      "gzipBytes": 430245
+    },
+    "basic": {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 325,
+      "minifiedBytes": 769302,
+      "gzipBytes": 217094
+    },
+    "svg": {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 19,
+      "minifiedBytes": 23548,
+      "gzipBytes": 7567
+    }
+  },
+  "packageMeasured": {
+    "entries": 610,
+    "packedBytes": 866417,
+    "unpackedBytes": 4180421
+  },
+  "logs": {
+    "coverage": {
+      "path": "/tmp/ggaction-linear-domain-ticks-migration-full-coverage-v1.log",
+      "sha256": "2ad42f4efa4f419f24aaf0390d7b171879edc628d713a595a2a0e90c797b5d5c",
+      "bytes": 158
+    },
+    "packageConsumer": {
+      "path": "/tmp/ggaction-linear-domain-ticks-migration-package-consumer-v1.log",
+      "sha256": "77977989da8acea773c432e3e975d5a89896f9a5c6f81ccb339d31bfd6466fce",
+      "bytes": 2981
+    },
+    "documentation": {
+      "path": "/tmp/ggaction-linear-domain-ticks-migration-docs-verify-v1.log",
+      "sha256": "37e405fac8f62d458ff6704d609f3c54ed5180257f2c211d488b3856531b8a67",
+      "bytes": 36254
+    },
+    "publicBrowser": {
+      "path": "/tmp/ggaction-linear-nearest-ticks-public-browser-v1.log",
+      "sha256": "61dedb72534c5299a3ffc30a2ab3d36efd30d8f3ae26f64ed1e48ec86043de34",
+      "bytes": 18368
+    },
+    "focused": {
+      "path": "/tmp/ggaction-linear-nearest-ticks-focused-v4.log",
+      "sha256": "ff2e79d14def2af445200245a1b2439c3bae809192f2440ef172c319cd0c8506",
+      "bytes": 4269
+    },
+    "numericAndLifecycle": {
+      "path": "/tmp/ggaction-linear-nearest-ticks-numeric-and-lifecycle-v2.log",
+      "sha256": "2bce32734356204d75c7911b4a32aaf9bfa0c5e98690efe80e90813a2c9d8ccd",
+      "bytes": 17514
+    },
+    "persistenceCoverage": {
+      "path": "/tmp/ggaction-nearest-persistence-focused-coverage-v4.log",
+      "sha256": "408092766ca4cd1f96710580d60dc1095a1e37f8b935a4b2e94e790fa864c381",
+      "bytes": 4496
+    },
+    "lookupRegressions": {
+      "path": "/tmp/ggaction-legacy-lookup-migration-regressions-v1.log",
+      "sha256": "2e0f357e6e23d2f142476ed325767371c507c60e8f6fb170a0b5d1d5f38429e9",
+      "bytes": 6997
+    }
+  },
+  "priorFailedFullCoverage": "/tmp/ggaction-linear-nearest-ticks-full-coverage-v1.log",
+  "failureResolution": "The existing legacy lookup migration resolver could not execute because pre-migration validation required the schemas it was meant to infer. Fix257 defers only missing lookup-schema equality in the legacy prepass, preserves raw/reference checks, and retains strict final validation. Persistence function coverage is100%; no coverage threshold or numeric tolerance changed.",
+  "sourceNeutral": true,
+  "noImageInspection": true,
+  "SchoolRequests": 0,
+  "registryPublished": false,
+  "activeTranslationRuntimeChanged": false,
+  "externalCurrent1307NativeReplayPending": true,
+  "regularReleaseAt": 1413
+}
