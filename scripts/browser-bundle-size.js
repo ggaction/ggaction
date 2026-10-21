@@ -5,8 +5,8 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 429_000, // Facet field-title bundle measured428792gzip bytes; minimal1000-byte rounding.
-  "ggaction/basic": 216_000, // Named lookup measured215605gzip bytes; minimal1000-byte rounding.
+  ggaction: 430_000, // Count-based linear domains measured429489gzip bytes; minimal1000-byte rounding.
+  "ggaction/basic": 217_000, // Count-based linear domains measured216395gzip bytes; minimal1000-byte rounding.
   "ggaction/svg": 25_000
 });
 

@@ -1186,7 +1186,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `domain` | Optional / branch-dependent | `"auto" \| readonly unknown[] \| undefined` |
 | `emptyDomain` | Optional / branch-dependent | `"preserve" \| "require-explicit" \| undefined` |
 | `range` | Optional / branch-dependent | `ScaleRange \| undefined` |
-| `nice` | Optional / branch-dependent | `boolean \| undefined` |
+| `nice` | Optional / branch-dependent | `boolean \| LinearNiceCountOptions \| undefined` |
 | `zero` | Optional / branch-dependent | `boolean \| undefined` |
 | `clamp` | Optional / branch-dependent | `boolean \| undefined` |
 | `reverse` | Optional / branch-dependent | `boolean \| undefined` |
@@ -1235,7 +1235,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `domain` | Optional / branch-dependent | `"auto" \| readonly unknown[] \| undefined` |
 | `emptyDomain` | Optional / branch-dependent | `"preserve" \| "require-explicit" \| undefined` |
 | `range` | Optional / branch-dependent | `ScaleRange \| undefined` |
-| `nice` | Optional / branch-dependent | `boolean \| undefined` |
+| `nice` | Optional / branch-dependent | `boolean \| LinearNiceCountOptions \| undefined` |
 | `zero` | Optional / branch-dependent | `boolean \| undefined` |
 | `clamp` | Optional / branch-dependent | `boolean \| undefined` |
 | `reverse` | Optional / branch-dependent | `boolean \| undefined` |
@@ -1281,7 +1281,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `reverse` | Optional / branch-dependent | `boolean \| undefined` |
-| `type` | Optional / branch-dependent | `"band" \| "point" \| "time" \| QuantitativePositionScaleType \| undefined` |
+| `type` | Optional / branch-dependent | `"band" \| "linear" \| "log" \| "point" \| "pow" \| "sqrt" \| "symlog" \| "time" \| undefined` |
 | `domain` | Optional / branch-dependent | `"auto" \| readonly unknown[] \| readonly [number, number] \| undefined` |
 | `range` | Optional / branch-dependent | `"auto" \| readonly [number, number] \| undefined` |
 | `unknown` | Optional / branch-dependent | `number \| undefined` |
@@ -1289,9 +1289,9 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `paddingOuter` | Optional / branch-dependent | `number \| undefined` |
 | `align` | Optional / branch-dependent | `number \| undefined` |
 | `padding` | Optional / branch-dependent | `number \| undefined` |
+| `clamp` | Optional / branch-dependent | `boolean \| undefined` |
 | `nice` | Optional / branch-dependent | `boolean \| undefined` |
 | `zero` | Optional / branch-dependent | `boolean \| undefined` |
-| `clamp` | Optional / branch-dependent | `boolean \| undefined` |
 | `base` | Optional / branch-dependent | `number \| undefined` |
 | `exponent` | Optional / branch-dependent | `number \| undefined` |
 | `constant` | Optional / branch-dependent | `number \| undefined` |
@@ -1324,7 +1324,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `reverse` | Optional / branch-dependent | `boolean \| undefined` |
-| `type` | Optional / branch-dependent | `"band" \| "point" \| "time" \| QuantitativePositionScaleType \| undefined` |
+| `type` | Optional / branch-dependent | `"band" \| "linear" \| "log" \| "point" \| "pow" \| "sqrt" \| "symlog" \| "time" \| undefined` |
 | `domain` | Optional / branch-dependent | `"auto" \| readonly unknown[] \| readonly [number, number] \| undefined` |
 | `range` | Optional / branch-dependent | `"auto" \| readonly [number, number] \| undefined` |
 | `unknown` | Optional / branch-dependent | `number \| undefined` |
@@ -1332,9 +1332,9 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `paddingOuter` | Optional / branch-dependent | `number \| undefined` |
 | `align` | Optional / branch-dependent | `number \| undefined` |
 | `padding` | Optional / branch-dependent | `number \| undefined` |
+| `clamp` | Optional / branch-dependent | `boolean \| undefined` |
 | `nice` | Optional / branch-dependent | `boolean \| undefined` |
 | `zero` | Optional / branch-dependent | `boolean \| undefined` |
-| `clamp` | Optional / branch-dependent | `boolean \| undefined` |
 | `base` | Optional / branch-dependent | `number \| undefined` |
 | `exponent` | Optional / branch-dependent | `number \| undefined` |
 | `constant` | Optional / branch-dependent | `number \| undefined` |
@@ -1433,7 +1433,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `target` | Required | `string` |
 | `dimension` | Required | `string` |
 | `reverse` | Optional / branch-dependent | `boolean \| undefined` |
-| `type` | Optional / branch-dependent | `"band" \| "point" \| QuantitativePositionScaleType \| undefined` |
+| `type` | Optional / branch-dependent | `"band" \| "linear" \| "log" \| "point" \| "pow" \| "sqrt" \| "symlog" \| undefined` |
 | `domain` | Optional / branch-dependent | `"auto" \| readonly unknown[] \| readonly [number, number] \| undefined` |
 | `range` | Optional / branch-dependent | `"auto" \| readonly [number, number] \| undefined` |
 | `unknown` | Optional / branch-dependent | `number \| undefined` |
@@ -1441,12 +1441,12 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `paddingOuter` | Optional / branch-dependent | `number \| undefined` |
 | `align` | Optional / branch-dependent | `number \| undefined` |
 | `padding` | Optional / branch-dependent | `number \| undefined` |
-| `nice` | Optional / branch-dependent | `boolean \| undefined` |
 | `zero` | Optional / branch-dependent | `boolean \| undefined` |
 | `clamp` | Optional / branch-dependent | `boolean \| undefined` |
 | `base` | Optional / branch-dependent | `number \| undefined` |
 | `exponent` | Optional / branch-dependent | `number \| undefined` |
 | `constant` | Optional / branch-dependent | `number \| undefined` |
+| `nice` | Optional / branch-dependent | `boolean \| LinearNiceCountOptions \| undefined` |
 
 </details>
 
@@ -1672,7 +1672,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
-| `nice` | Optional / branch-dependent | `boolean \| undefined` |
+| `nice` | Optional / branch-dependent | `boolean \| LinearNiceCountOptions \| undefined` |
 | `zero` | Optional / branch-dependent | `boolean \| undefined` |
 | `clamp` | Optional / branch-dependent | `boolean \| undefined` |
 | `reverse` | Optional / branch-dependent | `boolean \| undefined` |
@@ -1740,16 +1740,16 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
-| `nice` | Optional / branch-dependent | `boolean \| undefined` |
 | `zero` | Optional / branch-dependent | `boolean \| undefined` |
 | `clamp` | Optional / branch-dependent | `boolean \| undefined` |
 | `reverse` | Optional / branch-dependent | `boolean \| undefined` |
 | `base` | Optional / branch-dependent | `number \| undefined` |
 | `exponent` | Optional / branch-dependent | `number \| undefined` |
 | `constant` | Optional / branch-dependent | `number \| undefined` |
-| `type` | Optional / branch-dependent | `QuantitativePositionScaleType \| undefined` |
 | `domain` | Optional / branch-dependent | `"auto" \| readonly [number, number] \| undefined` |
 | `range` | Optional / branch-dependent | `"auto" \| readonly [number, number] \| undefined` |
+| `type` | Optional / branch-dependent | `"linear" \| "log" \| "pow" \| "sqrt" \| "symlog" \| undefined` |
+| `nice` | Optional / branch-dependent | `boolean \| LinearNiceCountOptions \| undefined` |
 
 </details>
 

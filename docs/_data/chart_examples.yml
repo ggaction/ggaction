@@ -1607,3 +1607,21 @@
   url: /api/composition/facets/#name-the-complete-facet-field
   home_group: essentials
   home_order: 157
+
+- id: linear-nice-count
+  example: /examples/linear-nice-count/
+  title: Count-based automatic linear domain
+  image: /assets/images/linear-nice-count.png
+  alt: A line reaching 108 within an automatically rounded 0 through 110 Y domain
+  width: 520
+  height: 340
+  thumbnail: /assets/images/linear-nice-count-thumb.png
+  thumbnail_width: 520
+  thumbnail_height: 340
+  caption: Count density 10 rounds the automatic Y domain to 0–110 while preserving all three data points.
+  summary: Choose automatic linear domain rounding without hard-coding a range for every panel.
+  actions: createLinePlot · editYScale · editFacetScales
+  tasks: scales comparison
+  url: /api/scales/#count-based-linear-domain-rounding
+  home_group: essentials
+  home_order: 158

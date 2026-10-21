@@ -25,8 +25,20 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
   사용하고 explicit transformed constant domain은 계속 거부한다.
 - `range`: Implemented. `"auto"` 또는 type/channel에 맞는 explicit array. position auto range는
   Canvas plot bounds를 사용한다.
-- `nice`: Implemented for linear/time position scale. boolean이며 auto domain만 읽기 좋은 경계로
-  확장한다. ordinal에는 허용되지 않는다.
+- `nice`: Implemented for compatible position scale. 기존 boolean/생략 동작은 그대로 유지한다.
+  linear position은 정확히 `{count: 양수 safe integer}`도 받으며 zero 포함 뒤 auto domain에만
+  밀도 기준 1·2·5 decade 경계 확장을 적용한다. count는 guide tick 수를 고정하지 않는다.
+  explicit domain이 우선하며 zero 이후 constant domain은 그대로다. 유한 endpoint 포함과
+  수치 한계를 보존하고 10회 안에 고정 경계가 없으면 관측 domain을 유지한다.
+  time/transformed/discrete/color/size 및 nice를 금지하는 measured radius에는 object를 거부한다.
+  caller object는 복사·freeze하며 semantic scale의 nice 한 곳에 저장한다. 공통/focused editor,
+  data revision/filter, shared consumer, independent facet, persistence가 같은 정책을 사용한다.
+  binned position은 기존 nice:true bin 경계·소속을 유지한 뒤 최종 auto domain만 count로 확장한다.
+  explicit scale domain 우선이며 별도 createBinData.nice는 boolean 전용을 유지한다.
+  type 변경 때 bool 호환은 기존과 같고, 호환되지 않는 이전 count object는 type-change reset으로
+  제거한다. 명시적 잘못된 object/type/count는 원래 상태와 trace를 보존하며 atomic하게 거부한다.
+  근거: test/unit/grammar/scales/linear-nice-count.test.js,
+  test/contracts/linear-nice-count.test.js, test/charts/linear-nice-count/public.test.js.
 - `zero`: Implemented for linear scale. boolean이며 auto domain에만 zero를 포함한다. explicit domain이
   있으면 적용되지 않는다.
 - `palette`: Implemented for color scale. palette name이며 `range`와 동시에 사용할 수 없다.

@@ -9158,7 +9158,7 @@
         {
           "name": "scale",
           "required": false,
-          "type": "CategoricalPositionScaleOptions | NonPointCategoricalPositionScaleOptions | NonPointQuantitativePositionScaleOptions | NonPointTemporalPositionScaleOptions | QuantitativePositionScaleOptions | TemporalPositionScaleOptions | undefined"
+          "type": "CategoricalPositionScaleOptions | NonPointCategoricalPositionScaleOptions | NonPointQuantitativePositionScaleOptions | QuantitativePositionScaleOptions | NonPointTemporalPositionScaleOptions | TemporalPositionScaleOptions | undefined"
         },
         {
           "name": "datum",
@@ -9295,7 +9295,7 @@
         {
           "name": "scale",
           "required": false,
-          "type": "CategoricalPositionScaleOptions | NonPointCategoricalPositionScaleOptions | NonPointQuantitativePositionScaleOptions | NonPointTemporalPositionScaleOptions | QuantitativePositionScaleOptions | TemporalPositionScaleOptions | undefined"
+          "type": "CategoricalPositionScaleOptions | NonPointCategoricalPositionScaleOptions | NonPointQuantitativePositionScaleOptions | QuantitativePositionScaleOptions | NonPointTemporalPositionScaleOptions | TemporalPositionScaleOptions | undefined"
         },
         {
           "name": "datum",
@@ -21793,7 +21793,7 @@
         {
           "name": "nice",
           "required": false,
-          "type": "boolean | undefined"
+          "type": "boolean | LinearNiceCountOptions | undefined"
         },
         {
           "name": "zero",
@@ -22000,7 +22000,7 @@
         {
           "name": "nice",
           "required": false,
-          "type": "boolean | undefined"
+          "type": "boolean | LinearNiceCountOptions | undefined"
         },
         {
           "name": "zero",
@@ -22190,7 +22190,7 @@
         {
           "name": "type",
           "required": false,
-          "type": "\"band\" | \"point\" | \"time\" | QuantitativePositionScaleType | undefined"
+          "type": "\"band\" | \"linear\" | \"log\" | \"point\" | \"pow\" | \"sqrt\" | \"symlog\" | \"time\" | undefined"
         },
         {
           "name": "domain",
@@ -22228,17 +22228,17 @@
           "type": "number | undefined"
         },
         {
+          "name": "clamp",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
           "name": "nice",
           "required": false,
           "type": "boolean | undefined"
         },
         {
           "name": "zero",
-          "required": false,
-          "type": "boolean | undefined"
-        },
-        {
-          "name": "clamp",
           "required": false,
           "type": "boolean | undefined"
         },
@@ -22365,7 +22365,7 @@
         {
           "name": "type",
           "required": false,
-          "type": "\"band\" | \"point\" | \"time\" | QuantitativePositionScaleType | undefined"
+          "type": "\"band\" | \"linear\" | \"log\" | \"point\" | \"pow\" | \"sqrt\" | \"symlog\" | \"time\" | undefined"
         },
         {
           "name": "domain",
@@ -22403,17 +22403,17 @@
           "type": "number | undefined"
         },
         {
+          "name": "clamp",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
           "name": "nice",
           "required": false,
           "type": "boolean | undefined"
         },
         {
           "name": "zero",
-          "required": false,
-          "type": "boolean | undefined"
-        },
-        {
-          "name": "clamp",
           "required": false,
           "type": "boolean | undefined"
         },
@@ -22794,7 +22794,7 @@
         {
           "name": "type",
           "required": false,
-          "type": "\"band\" | \"point\" | QuantitativePositionScaleType | undefined"
+          "type": "\"band\" | \"linear\" | \"log\" | \"point\" | \"pow\" | \"sqrt\" | \"symlog\" | undefined"
         },
         {
           "name": "domain",
@@ -22832,11 +22832,6 @@
           "type": "number | undefined"
         },
         {
-          "name": "nice",
-          "required": false,
-          "type": "boolean | undefined"
-        },
-        {
           "name": "zero",
           "required": false,
           "type": "boolean | undefined"
@@ -22860,6 +22855,11 @@
           "name": "constant",
           "required": false,
           "type": "number | undefined"
+        },
+        {
+          "name": "nice",
+          "required": false,
+          "type": "boolean | LinearNiceCountOptions | undefined"
         }
       ],
       "callPatterns": [
@@ -23687,7 +23687,7 @@
         {
           "name": "nice",
           "required": false,
-          "type": "boolean | undefined"
+          "type": "boolean | LinearNiceCountOptions | undefined"
         },
         {
           "name": "zero",
@@ -23911,11 +23911,6 @@
           "type": "string | undefined"
         },
         {
-          "name": "nice",
-          "required": false,
-          "type": "boolean | undefined"
-        },
-        {
           "name": "zero",
           "required": false,
           "type": "boolean | undefined"
@@ -23946,11 +23941,6 @@
           "type": "number | undefined"
         },
         {
-          "name": "type",
-          "required": false,
-          "type": "QuantitativePositionScaleType | undefined"
-        },
-        {
           "name": "domain",
           "required": false,
           "type": "\"auto\" | readonly [number, number] | undefined"
@@ -23959,10 +23949,20 @@
           "name": "range",
           "required": false,
           "type": "\"auto\" | readonly [number, number] | undefined"
+        },
+        {
+          "name": "type",
+          "required": false,
+          "type": "\"linear\" | \"log\" | \"pow\" | \"sqrt\" | \"symlog\" | undefined"
+        },
+        {
+          "name": "nice",
+          "required": false,
+          "type": "boolean | LinearNiceCountOptions | undefined"
         }
       ],
       "callPatterns": [
-        "editStrokeWidthScale({ id?, target?, nice?, zero?, clamp?, reverse?, base?, exponent? })"
+        "editStrokeWidthScale({ id?, target?, zero?, clamp?, reverse?, base?, exponent?, constant? })"
       ],
       "snippet": "program.editStrokeWidthScale({ range: [1, 8] })",
       "errors": [],

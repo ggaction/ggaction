@@ -74,6 +74,9 @@ export async function preparePackageConsumer({
 }
 
 async function testNodeConsumer(directory) {
+  await writeFile(path.join(directory,"linear-nice-count-public.js"),
+    (await readFile(new URL("../examples/linear-nice-count/program.js",import.meta.url),"utf8"))
+      .replace('"../../src/index.js"','"ggaction"'));
   await writeFile(path.join(directory,"facet-lane-public.js"),
     (await readFile(new URL("../examples/facet-shared-top-lane/program.js",import.meta.url),"utf8"))
       .replace("'../../src/index.js'","'ggaction'"));
@@ -102,6 +105,21 @@ async function testNodeConsumer(directory) {
     import { comparePrograms, describeAction, getDatasetSchema, inspectProgram } from "ggaction/inspection";
     import {createFacetSharedTopLaneProgram} from "./facet-lane-public.js";
     import {createPlotUnderlayProgram} from "./plot-underlay-public.js";
+
+    {
+      const {createLinearNiceCount}=await import("./linear-nice-count-public.js");
+      const p=createLinearNiceCount();
+      assert.deepEqual(p.resolvedScales.y.domain,[0,110]);
+      assert.deepEqual(p.semanticSpec.scales.find(s=>s.id==="y").nice,{count:10});
+      assert.deepEqual(deserializeProgram(serializeProgram(p)).graphicSpec,p.graphicSpec);
+      assert.deepEqual(p.editYScale({nice:true}).resolvedScales.y.domain,[0,120]);
+      assert.equal((await renderToPNGBuffer(p)).width,260);
+      assert.equal((await renderToPDFBuffer(p)).buffer.subarray(0,4).toString(),"%PDF");
+      assert(renderToSVG(p).includes("22.181818181818187"));
+      const basic=basicChart().createCanvas().createData({values:[{x:0,y:0},{x:1,y:108}]})
+        .createLinePlot({x:"x",y:{field:"y",scale:{zero:true,nice:{count:10}}},guides:false});
+      assert.deepEqual(basic.resolvedScales.y.domain,[0,110]);
+    }
 
     {
       const {createFacetHeaderRotation} = await import("./facet-header-rotation.js");
@@ -3604,7 +3622,8 @@ const invalidGrouped: Parameters<FullFormatsProgram["createXAxisLabels"]>[0] = {
       type TimeUnitDataOptions,
       type ViolinPlotOptions,
       type WindowDataOptions,
-      type YStackMode
+      type YStackMode,
+      type LinearNiceCountOptions
     } from "ggaction";
     import { action, ChartProgram as ExtensionProgram } from "ggaction/extension";
     import {
@@ -3670,6 +3689,14 @@ const invalidGrouped: Parameters<FullFormatsProgram["createXAxisLabels"]>[0] = {
     basicChart().createTextPlot({ x: "x", y: "y", text: "label" });
 
     chart().createScatterPlot({ x: "x", y: "y", stroke: "group", point: { strokeWidth: 2 } });
+    const linearNice: LinearNiceCountOptions = {count:10};
+    chart().createLinePlot({x:"x",y:{field:"y",scale:{nice:linearNice}}});
+    basicChart().createLinePlot({x:"x",y:{field:"y",scale:{nice:linearNice}}});
+    chart().editYScale({nice:linearNice});
+    // @ts-expect-error temporal position scales retain boolean nice
+    chart().encodeX({field:"date",fieldType:"temporal",scale:{nice:linearNice}});
+    // @ts-expect-error transformed position scales retain boolean nice
+    chart().editYScale({type:"sqrt",nice:linearNice});
     chart().encodeYRange({ lower: { datum: 45000 }, upper: { datum: 0 }, scale: { domain: [0, 45000], nice: false } });
     chart().encodeXRange({ lower: { datum: 1 }, upper: "high" });
     // @ts-expect-error numeric range constants remain numeric
@@ -5679,6 +5706,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "explicit-fold-facet-partition",
       "shared-facet-top-lane",
       "rotated-facet-headers",
+      "count-based-linear-position-domains",
       "explicit-axis-and-border-underlays",
       "typescript",
       "basic-entry-runtime-and-types",

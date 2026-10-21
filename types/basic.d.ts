@@ -1,6 +1,7 @@
 import type { ChartProgram, BasicSeriesLayoutOptions, CreateDataOptions } from "./program.js";
 
 export type {
+  LinearNiceCountOptions,
   AxisLabelOptions,
   AxisLineStyleOptions,
   AxisTickOptions,

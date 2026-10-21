@@ -8,7 +8,7 @@
 - [x] 새 공개 옵션 없이 explicit domain과 concrete path로 목표를 만들었다.
 - [x] 목표 primitive/explicit control의 SVG·PNG와 숫자 근거를 검증했다.
 - [x] API·저장 schema·시각 목표 Gate에 기존의 직접 사용자 승인을 재사용한다.
-- [ ] 검증된 이 검토 패키지를 commit/push한다.
+- [x] 검증된 이 검토 패키지를 commit/push했다 (`9b5a0fb1`).
 - [ ] 구현, 현재 계약, 선언, 문서, 생성물, 예제와 회귀를 함께 검증한다.
 - [ ] 공개 배포 없이 검증된 개발 후보 checkpoint를 commit/push한다.
 
@@ -61,6 +61,12 @@ chart()
 - subnormal/큰 유한 수는 기존 numeric 정규화 책임 안에서 처리한다. 결과는 유한하고 입력 관측값을
   포함하며, 표현 불가능한 더 미세한 확장을 만들지 않는다. 숫자 오차 허용을 넓히지 않는다.
 - generic/focused scale editor, 기존 position encoding과 facade creation이 같은 정규화/계산을 쓴다.
+- bin을 사용하는 linear position도 같은 최종 domain 정책을 쓴다. 새 count object에서는 기존
+  `nice:true`의 bin 경계와 소속을 먼저 유지하고, 그 최종 경계 범위에 count 올림을 적용한다.
+  예를 들어 명시적 bin 경계 `[0,54,108]`은 그대로 두고 자동 domain만 `[0,110]`으로 확장한다.
+  명시적 scale domain이 우선하며 기존 bin/domain 정합 검사는 유지한다. 데이터 변환
+  `createBinData.nice`는 기존 boolean 전용이다.
+  이 보완은 최종 시각 grouping에서 domain을 계산한다는 기존 범위에 포함하며 위 승인을 재사용한다.
 - caller object를 복사해 불변 semantic scale의 `nice:{count}`에 한 번 저장한다. 복제, 데이터 수정,
   filter, shared/independent facet, 직렬화/역직렬화에서도 같은 공개 의미를 유지한다.
 - 명시적 잘못된 옵션은 atomic하게 거부한다. scale type 변경 시 기존 boolean 호환 정책은 유지하며,

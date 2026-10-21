@@ -1,0 +1,105 @@
+{
+  "status": "runtime-package-and-browser-verified-source-link-awaiting-implementation-commit",
+  "issue": 255,
+  "normal": {
+    "tests": 5202,
+    "pass": 5201,
+    "fail": 1,
+    "remainingFailure": "New canonical example must exist at its Git source link; regenerate provenance and rerun after this source checkpoint."
+  },
+  "installedConsumerGroups": 67,
+  "publicBrowserExamples": 99,
+  "focusedCoverage": {
+    "tests": 67,
+    "pass": 67,
+    "continuous": {
+      "lines": 98.71,
+      "branches": 95.16,
+      "functions": 100
+    },
+    "histogram": {
+      "lines": 95.32,
+      "branches": 92.65,
+      "functions": 100
+    }
+  },
+  "primitivePublicPNG": {
+    "ratio2": "fb9ac9b7a27b5c2d40e7a3366d2a77ebe1728656910837c7c8f085701cae3d96",
+    "ratio1": "f8f13ee4a2fae17f809bc9128412318ade4046ed386923aa2ac71fe152ddae30",
+    "exactAtEachMatchingRatio": true
+  },
+  "initialMigrationProbe": "Comparing ratio2 and ratio1 encoded buffers correctly failed; explicitly matched ratios then passed exact checks. No tolerance changed.",
+  "primitivePublicSVGAndGraphicsExact": true,
+  "reviewArtifactGraduatedTo": ".artifacts/test/png/charts/scales/linear-nice-count/default",
+  "package": {
+    "entries": 610,
+    "packedBytes": 865022,
+    "unpackedBytes": 4172293
+  },
+  "browserBundleGzip": {
+    "full": 429489,
+    "basic": 216395,
+    "svg": 7567
+  },
+  "searchBytes": 848239,
+  "logs": {
+    "all-normal-v1": {
+      "path": "/tmp/ggaction-linear-nice-count-all-normal-v1.log",
+      "sha256": "d9b5c1bc6339e97d8600efe91a7b8ebaa60cbd8c0e7f94a36c431c02fefe264a",
+      "bytes": 5154514
+    },
+    "all-normal-v2": {
+      "path": "/tmp/ggaction-linear-nice-count-all-normal-v2.log",
+      "sha256": "4424bd2620d86545b65644e32dbf2a6fb9af06a07039222bdbae45a65cd52f3f",
+      "bytes": 1086556
+    },
+    "package-consumer-v1": {
+      "path": "/tmp/ggaction-linear-nice-count-package-consumer-v1.log",
+      "sha256": "0c42f9e90869c50ddd4f564e5d2267cf753bfb1f15924af483d54ba5df0b25a6",
+      "bytes": 809
+    },
+    "package-consumer-v2": {
+      "path": "/tmp/ggaction-linear-nice-count-package-consumer-v2.log",
+      "sha256": "cf21e9d4913e79291b2e677b2017a8d694110db331b669b9d671eea74bee508b",
+      "bytes": 2943
+    },
+    "render-v1": {
+      "path": "/tmp/ggaction-linear-nice-count-render-v1.log",
+      "sha256": "45d97b7886adc73706ca3f81b3c9396d8469287aab02b1b96c2bca565a945f24",
+      "bytes": 257
+    },
+    "public-browser-v1": {
+      "path": "/tmp/ggaction-linear-nice-count-public-browser-v1.log",
+      "sha256": "f876106b6ae8d3774406c119459af24dbfac18c189e7bb03776df43010d3272e",
+      "bytes": 18168
+    },
+    "focused-coverage-v1": {
+      "path": "/tmp/ggaction-linear-nice-count-focused-coverage-v1.log",
+      "sha256": "0682bc53f9d7be36db35cb4848d19110f6452d698ad76c501d101ec998bf488a",
+      "bytes": 13302
+    },
+    "bins-v1": {
+      "path": "/tmp/ggaction-linear-nice-count-bins-v1.log",
+      "sha256": "ba24c60ece499fcbe1b002c8d2615a735e95d607085b850c33d0b89b193fd560",
+      "bytes": 5554
+    },
+    "bins-v2": {
+      "path": "/tmp/ggaction-linear-nice-count-bins-v2.log",
+      "sha256": "a2f2259b65aa905554021629d201f12911522305f6011c01bf74bfb1a7e9b250",
+      "bytes": 2755
+    },
+    "bins-v3": {
+      "path": "/tmp/ggaction-linear-nice-count-bins-v3.log",
+      "sha256": "e327469ffcd4c237b0101f46e13c3fdc9642d9e1d2d1106758b62439889aa88d",
+      "bytes": 2998
+    },
+    "bins-v4": {
+      "path": "/tmp/ggaction-linear-nice-count-bins-v4.log",
+      "sha256": "783afcd74bbf28d4cf30c643f90e218ffba1eff1d8a106946785d6e7586f789f",
+      "bytes": 1340
+    }
+  },
+  "noImageInspection": true,
+  "registryPublished": false,
+  "releaseAt": 1413
+}

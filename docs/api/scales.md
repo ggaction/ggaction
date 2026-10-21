@@ -115,6 +115,53 @@ Other focused selectors follow the rules below.
 `editRScale` means Polar radial position; point glyph radius remains a constant
 appearance action.
 
+## Count-based linear domain rounding
+
+Use `nice: { count: 10 }` on a linear position scale to choose automatic domain
+rounding density. An observed range of 0–108 becomes 0–110. The count controls
+rounding; it does not force the number of axis ticks. This is useful when facet
+panels have independent ranges.
+
+{% include chart-example.html id="linear-nice-count" %}
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas({ plot: { width: 200, height: 120 }, margin: { left: 40, top: 20, right: 20, bottom: 30 } })
+  .createData({ values: [{ x: 0, y: 0 }, { x: 0.5, y: 54 }, { x: 1, y: 108 }] })
+  .createLinePlot({
+    x: { field: "x", scale: { domain: [0, 1] } },
+    y: { field: "y", scale: { zero: true, nice: { count: 10 } } },
+    guides: false
+  });
+```
+
+The object accepts only `count`, a positive safe integer. Existing omitted,
+`false`, and `true` behavior is unchanged. An explicit domain takes precedence;
+otherwise zero inclusion happens before rounding. The rule chooses outward
+1–2–5 decade steps and preserves finite observed endpoints at numeric limits.
+If a requested density has no stable outward grid, the observed domain remains
+unchanged. A constant domain remains constant after zero inclusion.
+
+For a binned position, the existing default bin boundaries and row membership
+stay unchanged; count rounding extends only the final automatic display domain.
+For example, boundaries `[0, 54, 108]` remain exact while the display domain becomes
+`[0, 110]`. The separate `createBinData.nice` option remains boolean-only.
+
+The count object is available through position encodings, chart facades,
+`editScale`, and focused position-scale editors. It is rejected for temporal,
+transformed, discrete, color, size, and measured-radius scales that disallow
+this policy. Data revisions, compatible shared scales, independent facets and
+program persistence preserve the chosen count. For independent panels, use
+`facet({ field: "group", scales: { y: "independent" } })` after declaring the chart.
+
 Point size scale ranges are areas rather than radii. With `fieldType: "nominal"`
 or `"ordinal"`, size uses an ordinal scale. Automatic domains preserve first
 appearance; explicit domains preserve their order and distinguish numbers from

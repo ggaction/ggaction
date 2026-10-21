@@ -5740,7 +5740,7 @@ export interface EditScaleOptions {
   domain?: "auto" | readonly unknown[];
   emptyDomain?: "preserve" | "require-explicit";
   range?: ScaleRange;
-  nice?: boolean;
+  nice?: boolean | LinearNiceCountOptions;
   zero?: boolean;
   clamp?: boolean;
   reverse?: boolean;
@@ -5763,7 +5763,7 @@ export interface EditScaleOptions {
 
 </details>
 
-Related types: [`RadialMapping`](#type-radialmapping) · [`ScaleType`](#type-scaletype) · [`ScaleRange`](#type-scalerange) · [`Palette`](#type-palette) · [`ContinuousColorInterpolation`](#type-continuouscolorinterpolation).
+Related types: [`RadialMapping`](#type-radialmapping) · [`ScaleType`](#type-scaletype) · [`ScaleRange`](#type-scalerange) · [`LinearNiceCountOptions`](#type-linearnicecountoptions) · [`Palette`](#type-palette) · [`ContinuousColorInterpolation`](#type-continuouscolorinterpolation).
 
 ### `EditSemanticOptions` {#type-editsemanticoptions}
 
@@ -8186,6 +8186,19 @@ export interface LinearGradientStop {
 
 </details>
 
+### `LinearNiceCountOptions` {#type-linearnicecountoptions}
+
+<details markdown="1">
+<summary>Expand LinearNiceCountOptions</summary>
+
+```typescript
+export interface LinearNiceCountOptions {
+  readonly count: number;
+}
+```
+
+</details>
+
 ### `LookupDataOptions` {#type-lookupdataoptions}
 
 <details markdown="1">
@@ -8512,18 +8525,20 @@ Related types: [`ScaleFields`](#type-scalefields) · [`PaletteName`](#type-palet
 
 ```typescript
 export type NonPointQuantitativePositionScaleOptions = ScaleFields<
-  "id" | "nice" | "zero" | "clamp" | "reverse" |
+  "id" | "zero" | "clamp" | "reverse" |
   "base" | "exponent" | "constant"
 > & {
-  type?: QuantitativePositionScaleType;
   domain?: "auto" | readonly [number, number];
   range?: "auto" | readonly [number, number];
-};
+} & (
+  | { type?: "linear"; nice?: boolean | LinearNiceCountOptions }
+  | { type: Exclude<QuantitativePositionScaleType, "linear">; nice?: boolean }
+);
 ```
 
 </details>
 
-Related types: [`ScaleFields`](#type-scalefields) · [`QuantitativePositionScaleType`](#type-quantitativepositionscaletype).
+Related types: [`ScaleFields`](#type-scalefields) · [`LinearNiceCountOptions`](#type-linearnicecountoptions) · [`QuantitativePositionScaleType`](#type-quantitativepositionscaletype).
 
 ### `NonPointQuantizeColorScaleOptions` {#type-nonpointquantizecolorscaleoptions}
 
@@ -8552,9 +8567,10 @@ Related types: [`ScaleFields`](#type-scalefields) · [`PaletteName`](#type-palet
 
 ```typescript
 export type NonPointTemporalPositionScaleOptions = ScaleFields<
-  "id" | "nice" | "clamp" | "reverse"
+  "id" | "clamp" | "reverse"
 > & {
   type?: "time";
+  nice?: boolean;
   domain?: "auto" | readonly [number, number];
   range?: "auto" | readonly [number, number];
 };
@@ -8590,13 +8606,16 @@ Related types: [`ScaleFields`](#type-scalefields) · [`PaletteName`](#type-palet
 ```typescript
 export type NonPointZeroSupportingPositionScaleOptions = Omit<
   NonPointQuantitativePositionScaleOptions,
-  "base" | "type"
-> & { type?: ZeroSupportingPositionScaleType };
+  "base" | "type" | "nice"
+> & (
+  | { type?: "linear"; nice?: boolean | LinearNiceCountOptions }
+  | { type: Exclude<ZeroSupportingPositionScaleType, "linear">; nice?: boolean }
+);
 ```
 
 </details>
 
-Related types: [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquantitativepositionscaleoptions) · [`ZeroSupportingPositionScaleType`](#type-zerosupportingpositionscaletype).
+Related types: [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquantitativepositionscaleoptions) · [`LinearNiceCountOptions`](#type-linearnicecountoptions) · [`ZeroSupportingPositionScaleType`](#type-zerosupportingpositionscaletype).
 
 ### `NormalizeBaseline` {#type-normalizebaseline}
 
@@ -9871,6 +9890,8 @@ Related types: [`RadiusScaleOptions`](#type-radiusscaleoptions) · [`RadialMappi
 
 ```typescript
 export type RadialMapping = "area" | "radius-length";
+
+/** Automatic linear position-domain rounding density, not a guide tick count. */
 ```
 
 </details>
@@ -10926,7 +10947,7 @@ export interface ScaleOptions {
   domain?: "auto" | readonly unknown[];
   emptyDomain?: "preserve" | "require-explicit";
   range?: ScaleRange;
-  nice?: boolean;
+  nice?: boolean | LinearNiceCountOptions;
   zero?: boolean;
   clamp?: boolean;
   reverse?: boolean;
@@ -10949,7 +10970,7 @@ export interface ScaleOptions {
 
 </details>
 
-Related types: [`RadialMapping`](#type-radialmapping) · [`ScaleType`](#type-scaletype) · [`ScaleRange`](#type-scalerange) · [`Palette`](#type-palette) · [`ContinuousColorInterpolation`](#type-continuouscolorinterpolation).
+Related types: [`RadialMapping`](#type-radialmapping) · [`ScaleType`](#type-scaletype) · [`ScaleRange`](#type-scalerange) · [`LinearNiceCountOptions`](#type-linearnicecountoptions) · [`Palette`](#type-palette) · [`ContinuousColorInterpolation`](#type-continuouscolorinterpolation).
 
 ### `ScaleRange` {#type-scalerange}
 

@@ -1865,6 +1865,11 @@ export type EditCoordinateOptions = EditCoordinateTarget & (
 
 export type RadialMapping = "area" | "radius-length";
 
+/** Automatic linear position-domain rounding density, not a guide tick count. */
+export interface LinearNiceCountOptions {
+  readonly count: number;
+}
+
 export interface ScaleOptions {
   radialMapping?: RadialMapping;
   id?: string;
@@ -1872,7 +1877,7 @@ export interface ScaleOptions {
   domain?: "auto" | readonly unknown[];
   emptyDomain?: "preserve" | "require-explicit";
   range?: ScaleRange;
-  nice?: boolean;
+  nice?: boolean | LinearNiceCountOptions;
   zero?: boolean;
   clamp?: boolean;
   reverse?: boolean;
@@ -1896,25 +1901,31 @@ export type QuantitativePositionScaleType =
   | "linear" | "log" | "pow" | "sqrt" | "symlog";
 type ScaleFields<Keys extends keyof ScaleOptions> = Pick<ScaleOptions, Keys>;
 export type NonPointQuantitativePositionScaleOptions = ScaleFields<
-  "id" | "nice" | "zero" | "clamp" | "reverse" |
+  "id" | "zero" | "clamp" | "reverse" |
   "base" | "exponent" | "constant"
 > & {
-  type?: QuantitativePositionScaleType;
   domain?: "auto" | readonly [number, number];
   range?: "auto" | readonly [number, number];
-};
+} & (
+  | { type?: "linear"; nice?: boolean | LinearNiceCountOptions }
+  | { type: Exclude<QuantitativePositionScaleType, "linear">; nice?: boolean }
+);
 export type QuantitativePositionScaleOptions =
   NonPointQuantitativePositionScaleOptions & { unknown?: number };
 export type ZeroSupportingPositionScaleType =
   | "linear" | "pow" | "sqrt" | "symlog";
 export type NonPointZeroSupportingPositionScaleOptions = Omit<
   NonPointQuantitativePositionScaleOptions,
-  "base" | "type"
-> & { type?: ZeroSupportingPositionScaleType };
+  "base" | "type" | "nice"
+> & (
+  | { type?: "linear"; nice?: boolean | LinearNiceCountOptions }
+  | { type: Exclude<ZeroSupportingPositionScaleType, "linear">; nice?: boolean }
+);
 export type NonPointTemporalPositionScaleOptions = ScaleFields<
-  "id" | "nice" | "clamp" | "reverse"
+  "id" | "clamp" | "reverse"
 > & {
   type?: "time";
+  nice?: boolean;
   domain?: "auto" | readonly [number, number];
   range?: "auto" | readonly [number, number];
 };
@@ -2030,7 +2041,7 @@ export interface EditScaleOptions {
   domain?: "auto" | readonly unknown[];
   emptyDomain?: "preserve" | "require-explicit";
   range?: ScaleRange;
-  nice?: boolean;
+  nice?: boolean | LinearNiceCountOptions;
   zero?: boolean;
   clamp?: boolean;
   reverse?: boolean;

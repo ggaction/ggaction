@@ -15,9 +15,22 @@ test("declares channel-specific scale editors with channel-appropriate options",
     await writeFile(file, `
 import type { ChartProgram } from ${JSON.stringify(path.join(root, "types/program.js"))};
 import type { BasicChartProgram } from ${JSON.stringify(path.join(root, "types/basic.js"))};
-import type { EditColorScaleOptions, EditRScaleOptions, EditStrokeScaleOptions } from ${JSON.stringify(path.join(root, "types/index.js"))};
+import type { EditColorScaleOptions, EditRScaleOptions, EditStrokeScaleOptions, LinearNiceCountOptions } from ${JSON.stringify(path.join(root, "types/index.js"))};
 declare const p: ChartProgram;
 declare const basic: BasicChartProgram;
+const niceCount: LinearNiceCountOptions = { count: 10 };
+p.createLinePlot({ x: "x", y: { field: "y", scale: { nice: niceCount } } });
+basic.createLinePlot({ x: "x", y: { field: "y", scale: { nice: niceCount } } });
+p.editYScale({ nice: niceCount });
+p.editScale({ id: "y", nice: niceCount });
+// @ts-expect-error temporal position scales keep boolean nice
+p.encodeX({ field: "date", fieldType: "temporal", scale: { nice: niceCount } });
+// @ts-expect-error transformed position scales keep boolean nice
+p.editYScale({ type: "sqrt", nice: niceCount });
+// @ts-expect-error size has no nice option
+p.encodeSize({ field: "y", scale: { nice: niceCount } });
+// @ts-expect-error color has no nice option
+p.editColorScale({ nice: niceCount });
 const colorOptions: EditColorScaleOptions = { palette: "set2" };
 const radiusOptions: EditRScaleOptions = { domain: [0, 10] };
 const strokeOptions: EditStrokeScaleOptions = { target: "points", palette: "set2" };

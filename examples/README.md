@@ -582,6 +582,12 @@ Add an independent field title to existing facet headers.
 
 Representative actions: `facet`, `editFacetHeaders`, `editCompositionLayout`. [Documentation](https://ggaction.github.io/ggaction/api/composition/facets/#name-the-complete-facet-field).
 
+### [Count-based automatic linear domain](./linear-nice-count/)
+
+Choose automatic linear domain rounding without hard-coding a range for every panel.
+
+Representative actions: `createLinePlot`, `editYScale`, `editFacetScales`. [Documentation](https://ggaction.github.io/ggaction/api/scales/#count-based-linear-domain-rounding).
+
 ## Development fixtures
 
 The catalog includes every maintained public chart program. Getting Started

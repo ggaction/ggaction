@@ -3599,7 +3599,19 @@
   {
     "file": "api/scales.md",
     "block": 4,
-    "heading": "At a glance",
+    "heading": "Count-based linear domain rounding",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "ce3f0946c33123eef320113e1e07a0ae8dfb7a259fab9b07795ec4cddf5cc632",
+    "executable": false
+  },
+  {
+    "file": "api/scales.md",
+    "block": 5,
+    "heading": "Count-based linear domain rounding",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [],
@@ -3610,8 +3622,8 @@
   },
   {
     "file": "api/scales.md",
-    "block": 5,
-    "heading": "At a glance",
+    "block": 6,
+    "heading": "Count-based linear domain rounding",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [
@@ -3624,8 +3636,8 @@
   },
   {
     "file": "api/scales.md",
-    "block": 6,
-    "heading": "At a glance",
+    "block": 7,
+    "heading": "Count-based linear domain rounding",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [
@@ -3638,7 +3650,7 @@
   },
   {
     "file": "api/scales.md",
-    "block": 7,
+    "block": 8,
     "heading": "`removeScale({ id })` {#removescale-id}",
     "mode": "fragment",
     "environment": "esm-context",
