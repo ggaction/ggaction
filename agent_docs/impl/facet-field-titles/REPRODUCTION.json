@@ -1,0 +1,61 @@
+{
+  "baseCommit": "f507da9795004bc7142a998f0ef0880ac9c00040",
+  "currentRejection": "Unknown editFacetHeaders option \"title\".",
+  "targetCanvas": {
+    "width": 215,
+    "height": 195,
+    "background": "white"
+  },
+  "targetItems": [
+    {
+      "id": "facet-headers:0",
+      "type": "text",
+      "properties": {
+        "x": 39,
+        "y": 50,
+        "text": "North",
+        "fill": "#0f172a",
+        "fontSize": 12,
+        "fontFamily": "sans-serif",
+        "fontWeight": 400,
+        "textAlign": "center",
+        "textBaseline": "middle",
+        "rotation": -1.5707963267948966
+      }
+    },
+    {
+      "id": "facet-headers:1",
+      "type": "text",
+      "properties": {
+        "x": 39,
+        "y": 135,
+        "text": "South",
+        "fill": "#0f172a",
+        "fontSize": 12,
+        "fontFamily": "sans-serif",
+        "fontWeight": 400,
+        "textAlign": "center",
+        "textBaseline": "middle",
+        "rotation": -1.5707963267948966
+      }
+    },
+    {
+      "id": "facet-headers:2",
+      "type": "text",
+      "properties": {
+        "x": 10,
+        "y": 92.5,
+        "text": "Region",
+        "fill": "#0f172a",
+        "fontSize": 12,
+        "fontFamily": "sans-serif",
+        "fontWeight": 400,
+        "textAlign": "center",
+        "textBaseline": "middle",
+        "rotation": -1.5707963267948966
+      }
+    }
+  ],
+  "pngSha256": "8f5609d58336d78a6c72437756466fbd73c833fb755f83f0d50aed0ac7303695",
+  "noImageInspection": true
+}
