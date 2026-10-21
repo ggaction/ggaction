@@ -1,0 +1,24 @@
+{
+  "status": "approved-existing-parameter-domain-extension",
+  "approval": "Direct human standing approval of all previous and future in-scope API, numeric and visual questions; no image inspection.",
+  "implemented": false,
+  "newActions": [],
+  "newOptions": [],
+  "parameter": "gamma",
+  "allowedModes": [
+    "cubehelix",
+    "cubehelix-long"
+  ],
+  "newDomain": "finite number, including zero and negative",
+  "existingDefault": 1,
+  "publicReleaseAfterVerifiedFamilies": 1413,
+  "currentCompletedFamilies": 1292,
+  "sameMapperConsumers": [
+    "color",
+    "stroke",
+    "gradient legend",
+    "sampled legend"
+  ],
+  "savedFieldsChanged": false,
+  "architectureChanged": false
+}
