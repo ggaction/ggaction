@@ -1,0 +1,37 @@
+{
+  "gate": "approved",
+  "approvalSource": "Direct user: 지금까지 모든 질문, 앞으로 할 모든 질문 승인함. 새로운 릴리즈는 200개 단위로 하자",
+  "approvalCovers": "Concrete public rounding enum, persisted axis selection policy, edit/rematerialization contract, and literal primitive target in PROPOSAL.md.",
+  "userManuallyInspectedImage": false,
+  "sourceCommit": "b77d9a56eabfd0e0a7810da0c0e1a6202436da9d",
+  "issue": 256,
+  "publicNewOptionImplemented": false,
+  "proof": {
+    "status": "verified-before-new-public-option-implementation",
+    "width": 260,
+    "height": 170,
+    "graphicSpecExact": true,
+    "sameRunPngBufferExact": true,
+    "sameRunDecodedPixelsExact": true,
+    "sameSvgExact": true,
+    "plotInkPixels": 820,
+    "tickValues": [
+      0,
+      20,
+      40,
+      60,
+      80,
+      100,
+      120,
+      140
+    ],
+    "pngSha256": "1c4efd783e08b95aaf8d829b07dba58cfdc4e815841122ad13d3013c4990c6e3",
+    "decodedPixelsSha256": "f4f8e5629d89eb3a9838335b15c420093c80531a630ca61e95a0b3c272b809a5",
+    "targetSourceSha256": "1114693f9838db948c84fb364f79f5f67442788356f8f979fefa0b5e35e82863",
+    "manualImageInspection": false,
+    "publicNewOptionImplemented": false
+  },
+  "sourceNeutral": true,
+  "registryPublished": false,
+  "releaseAt": 1413
+}
