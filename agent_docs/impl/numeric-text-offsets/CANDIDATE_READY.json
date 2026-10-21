@@ -1,0 +1,44 @@
+{
+  "status": "clean-runtime-source-and-matching-documentation-ready-for-candidate",
+  "checkedAt": "2026-10-21T00:27:41.903835+00:00",
+  "runtimeImplementationCommit": "f2045c12b5208ead0d98dc37f66cdd4ae8bd5625",
+  "sourceContractId": "sha256:d42d88c0fb08fd4dc4162f53c54df14b40accb4e3d2f9bc8cbe1648dd8e64741",
+  "normalTests": 4967,
+  "installedConsumerGroups": 64,
+  "cleanSourceDocumentationTests": 120,
+  "builtDocumentationPages": 150,
+  "browser": "Desktop search/accessibility/all pages at320/390/768 verified; only provenance/header metadata changed after build.",
+  "metadataOnlyFiles": [
+    "docs/_data/provenance.json",
+    "docs/doc-provenance.json",
+    "docs/llms-full.txt",
+    "docs/llms-manifest.json"
+  ],
+  "bindings": [
+    {
+      "path": "docs/_data/provenance.json",
+      "sha256": "cda9f12ca22ac42299ceb861e352d3b2cc4553024c13b0f56b81006093cfcdd2"
+    },
+    {
+      "path": "docs/doc-provenance.json",
+      "sha256": "cda9f12ca22ac42299ceb861e352d3b2cc4553024c13b0f56b81006093cfcdd2"
+    },
+    {
+      "path": "docs/llms-full.txt",
+      "sha256": "9c91d9b87dd77c2410ba7f6044515accfec6eb7e45ff89c31e0c91172a522c64"
+    },
+    {
+      "path": "docs/llms-manifest.json",
+      "sha256": "2fb4f5f9a4cf77a0d44279bc10da01eac660bce441e2ff088f7ece0abce9f61c"
+    }
+  ],
+  "cleanSourceDocsLogSha256": "ae84f8a52a09bb3f3f64c3b461b245d4464f1761be00b874bf57a20a6220bd02",
+  "packageLimits": "Minimal1000-byte measured feature-growth amendments, all independent checks retained; see EVIDENCE.json.",
+  "nextPublicReleaseAt": 1413,
+  "nativeCompatibilityPending": {
+    "families": 1290,
+    "programs": 9398
+  },
+  "activeTranslationRuntimeChanged": false,
+  "SchoolRequests": 0
+}
