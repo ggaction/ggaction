@@ -2657,3 +2657,6 @@ packed856430/unpacked4139194bytes로 기존856000/4137000을 초과했다. 실�
 다음1000byte 경계857000/4140000으로만 갱신한다. 새 grammar에도 기존 공식 staging compaction을 적용한다.
 Browser Full/Basic/SVG, coverage, 데이터, 수치·그림 오차 한도는 유지한다. Node24 protected-release 측정은
 다음 정기1413-family 공개 배포에서 별도로 확인한다.
+
+같은 설치 검증의 실제 Full browser gzip425480bytes가 기존425000을480bytes 넘었다. 실제 consumer 실패를
+보존하고 Full cap만 최소다음1000byte 단계426000으로 보정한다. Basic214000/SVG25000과 기타 기준은 유지한다.
