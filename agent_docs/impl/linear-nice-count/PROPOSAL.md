@@ -9,8 +9,8 @@
 - [x] 목표 primitive/explicit control의 SVG·PNG와 숫자 근거를 검증했다.
 - [x] API·저장 schema·시각 목표 Gate에 기존의 직접 사용자 승인을 재사용한다.
 - [x] 검증된 이 검토 패키지를 commit/push했다 (`9b5a0fb1`).
-- [ ] 구현, 현재 계약, 선언, 문서, 생성물, 예제와 회귀를 함께 검증한다.
-- [ ] 공개 배포 없이 검증된 개발 후보 checkpoint를 commit/push한다.
+- [x] 구현, 현재 계약, 선언, 문서, 생성물, 예제와 회귀를 함께 검증했다. `EVIDENCE.json` 참조.
+- [x] 공개 배포 없이 구현 checkpoint `9df5a5cd`를 commit/push했다. 최종 검증 metadata를 함께 보존한다.
 
 ## 승인 근거와 범위
 

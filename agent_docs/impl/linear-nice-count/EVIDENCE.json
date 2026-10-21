@@ -1,0 +1,103 @@
+{
+  "status": "verified-local-implementation-not-published",
+  "issue": 255,
+  "implementationCommit": "9df5a5cd51103c4c5b14bf412343e4c01976ca18",
+  "node": "v22.23.1",
+  "normal": {
+    "tests": 5202,
+    "pass": 5202,
+    "fail": 0
+  },
+  "focusedCoverageTests": 67,
+  "installedConsumerGroups": 67,
+  "publicBrowserExamples": 99,
+  "documentationSourceTests": 120,
+  "documentationBuiltPages": 150,
+  "documentationResponsiveWidths": [
+    320,
+    390,
+    768
+  ],
+  "coverage": {
+    "continuous": {
+      "lines": 98.71,
+      "branches": 95.16,
+      "functions": 100
+    },
+    "histogram": {
+      "lines": 95.32,
+      "branches": 92.65,
+      "functions": 100
+    }
+  },
+  "browserBundles": {
+    "full": {
+      "gzipBytes": 429489
+    },
+    "basic": {
+      "gzipBytes": 216395
+    },
+    "svg": {
+      "gzipBytes": 7567
+    }
+  },
+  "sourcePackageEntries": 610,
+  "packageMeasured": {
+    "packedBytes": 865022,
+    "unpackedBytes": 4172293
+  },
+  "logs": {
+    "normal": {
+      "path": "/tmp/ggaction-linear-nice-count-all-normal-v4.log",
+      "sha256": "33f10f12d27acb31de873effada583a6f240cee3bdbceaefa1c4539d4748ff75",
+      "bytes": 1085307
+    },
+    "packageConsumer": {
+      "path": "/tmp/ggaction-linear-nice-count-package-consumer-v2.log",
+      "sha256": "cf21e9d4913e79291b2e677b2017a8d694110db331b669b9d671eea74bee508b",
+      "bytes": 2943
+    },
+    "documentation": {
+      "path": "/tmp/ggaction-linear-nice-count-docs-verify-v1.log",
+      "sha256": "6400edb741d4167aba6601df4556ef832a8c016a836b7c164481b329ab1f0046",
+      "bytes": 36168
+    },
+    "publicBrowser": {
+      "path": "/tmp/ggaction-linear-nice-count-public-browser-v1.log",
+      "sha256": "f876106b6ae8d3774406c119459af24dbfac18c189e7bb03776df43010d3272e",
+      "bytes": 18168
+    },
+    "coverage": {
+      "path": "/tmp/ggaction-linear-nice-count-focused-coverage-v1.log",
+      "sha256": "0682bc53f9d7be36db35cb4848d19110f6452d698ad76c501d101ec998bf488a",
+      "bytes": 13302
+    },
+    "render": {
+      "path": "/tmp/ggaction-linear-nice-count-render-v1.log",
+      "sha256": "45d97b7886adc73706ca3f81b3c9396d8469287aab02b1b96c2bca565a945f24",
+      "bytes": 257
+    },
+    "budgetDocumentation": {
+      "path": "/tmp/ggaction-linear-nice-count-budget-doc-sync-v1.log",
+      "sha256": "1bf572b3952edb4389566c1e2b7d6fa1871348d45ff5140023d80cab203f4c0b",
+      "bytes": 760
+    }
+  },
+  "priorFailedSweepsRetained": [
+    "/tmp/ggaction-linear-nice-count-all-normal-v1.log",
+    "/tmp/ggaction-linear-nice-count-all-normal-v2.log",
+    "/tmp/ggaction-linear-nice-count-all-normal-v3.log",
+    "/tmp/ggaction-linear-nice-count-package-consumer-v1.log",
+    "/tmp/ggaction-linear-nice-count-bins-v1.log",
+    "/tmp/ggaction-linear-nice-count-bins-v2.log",
+    "/tmp/ggaction-linear-nice-count-bins-v3.log"
+  ],
+  "priorFailureResolution": "Added the required primitive slice and explicit example inventories; measured and synchronized package/search/bundle ceilings and documentation; committed exact example sources before regenerating provenance. Binned tests now respect existing boundary/domain constraints and separate incompatible Y policies. No source/runtime check or numerical tolerance was weakened.",
+  "primitivePublicTarget": "BEFORE_SOURCE_COMMIT.json",
+  "sourceNeutral": true,
+  "noImageInspection": true,
+  "registryPublished": false,
+  "activeTranslationRuntimeChanged": false,
+  "externalCurrent1307NativeReplayPending": true,
+  "releaseCadence": "200 newly completed source families; next public checkpoint1413"
+}
