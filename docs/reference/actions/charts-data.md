@@ -2400,13 +2400,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `side` | Optional / branch-dependent | `FacetHeaderSide \| undefined` |
 | `align` | Optional / branch-dependent | `FacetHeaderAlign \| undefined` |
 | `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
+| `title` | Optional / branch-dependent | `false \| FacetHeaderTitleOptions \| undefined` |
 
 </details>
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editFacetHeaders({ fontSize?, fontFamily?, fontWeight?, color?, offset?, role?, labelMap?, side?, align? })
+editFacetHeaders({ fontSize?, fontFamily?, fontWeight?, color?, offset?, role?, labelMap?, side?, align?, rotation?, title? })
 ```
 
 Edit the parent-owned repeated facet headers and rebuild the parent snapshot
@@ -2414,6 +2415,12 @@ without changing child programs or facet value order.
 One-field facets and repeats accept all four sides with `role: "column"`;
 left/right placements reserve a measured lane beside every physical column.
 Row-column grids retain left/right row headers and top/bottom column headers.
+Role-specific `title: { text: "Region" }` adds one field title across the occupied
+plots, separately from category headers and the chart title. Initial options use
+`headers.column.title` or grid `headers.row.title`. A first title requires one-line
+text; partial edits preserve it and `title: false` removes it. Title style inherits
+its role header, with optional fontSize/fontFamily/fontWeight/color, align,
+rotation, offset and alongOffset overrides. Common/all titles are rejected.
 
 
 ## `editFacetScales`

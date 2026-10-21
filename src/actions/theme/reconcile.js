@@ -285,6 +285,14 @@ function recolorGraphic(
   targetTokens,
   overrides
 ) {
+  if (id === `${program.compositionSpec?.id}-headers`) {
+    const headers = program.materializationConfigs.facets?.[program.compositionSpec.id]?.headers;
+    if (headers?.column?.title !== undefined || headers?.row?.title !== undefined) {
+      // Role titles and category labels have independently owned paint. Their
+      // reconciled header configs already materialized the complete collection.
+      return program;
+    }
+  }
   if (graphic.items === undefined) {
     const mapped = mapGraphicProperties(
       program,
@@ -970,6 +978,9 @@ function addFacetOverrides(overrides, program, args) {
     ["color", "fill"],
     ["fontFamily", "fontFamily"]
   ]) {
+    if (Object.hasOwn(args.title ?? {}, property)) {
+      overrides.add(`c:facets.${id}.headers.${owner}.title.${property}`);
+    }
     if (!Object.hasOwn(args, property)) continue;
     overrides.add(`c:facets.${id}.headers.${owner}.${property}`);
     overrides.add(`g:${id}-headers.${graphicProperty}`);

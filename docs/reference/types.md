@@ -5077,12 +5077,14 @@ export interface EditFacetHeadersOptions {
   align?: FacetHeaderAlign;
   /** Numbers are radians; zero restores the existing unrotated header layout. */
   rotation?: RotationInput;
+  /** Requires an explicit row or column role. False removes that role's field title. */
+  title?: FacetHeaderTitleOptions | false;
 }
 ```
 
 </details>
 
-Related types: [`FacetHeaderRole`](#type-facetheaderrole) · [`DisplayLabelMap`](#type-displaylabelmap) · [`FacetHeaderSide`](#type-facetheaderside) · [`FacetHeaderAlign`](#type-facetheaderalign) · [`RotationInput`](#type-rotationinput).
+Related types: [`FacetHeaderRole`](#type-facetheaderrole) · [`DisplayLabelMap`](#type-displaylabelmap) · [`FacetHeaderSide`](#type-facetheaderside) · [`FacetHeaderAlign`](#type-facetheaderalign) · [`RotationInput`](#type-rotationinput) · [`FacetHeaderTitleOptions`](#type-facetheadertitleoptions).
 
 ### `EditFacetSourceOptions` {#type-editfacetsourceoptions}
 
@@ -6557,13 +6559,37 @@ export type FacetHeaderSide = "top" | "bottom" | "left" | "right";
 
 </details>
 
+### `FacetHeaderTitleOptions` {#type-facetheadertitleoptions}
+
+<details markdown="1">
+<summary>Expand FacetHeaderTitleOptions</summary>
+
+```typescript
+export interface FacetHeaderTitleOptions {
+  /** Required when introducing a title; edits preserve the existing text. One line. */
+  text?: string;
+  fontSize?: number;
+  fontFamily?: string;
+  fontWeight?: string | number;
+  color?: string;
+  offset?: number;
+  align?: FacetHeaderAlign;
+  rotation?: RotationInput;
+  alongOffset?: number;
+}
+```
+
+</details>
+
+Related types: [`FacetHeaderAlign`](#type-facetheaderalign) · [`RotationInput`](#type-rotationinput).
+
 ### `FacetHeadersOptions` {#type-facetheadersoptions}
 
 <details markdown="1">
 <summary>Expand FacetHeadersOptions</summary>
 
 ```typescript
-export type FacetHeadersOptions = Omit<EditFacetHeadersOptions, "role" | "side"> & {
+export type FacetHeadersOptions = Omit<EditFacetHeadersOptions, "role" | "side" | "title"> & {
   row?: Omit<EditFacetHeadersOptions, "role">;
   column?: Omit<EditFacetHeadersOptions, "role">;
 };

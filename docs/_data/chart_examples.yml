@@ -1589,3 +1589,21 @@
   url: /api/data/summaries-and-shaping/#named-table-lookup
   home_group: essentials
   home_order: 156
+
+- id: facet-field-titles
+  example: /examples/facet-field-titles/
+  title: One field title across two panels
+  image: /assets/images/facet-field-titles.png
+  alt: Two line panels with vertical North and South names and one shared Region title
+  width: 430
+  height: 390
+  thumbnail: /assets/images/facet-field-titles-thumb.png
+  thumbnail_width: 430
+  thumbnail_height: 390
+  caption: A single field title spans the occupied plots while each panel keeps its own name.
+  summary: Add an independent field title to existing facet headers.
+  actions: facet · editFacetHeaders · editCompositionLayout
+  tasks: composition comparison
+  url: /api/composition/facets/#name-the-complete-facet-field
+  home_group: essentials
+  home_order: 157

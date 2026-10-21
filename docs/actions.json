@@ -29826,6 +29826,11 @@
           "name": "rotation",
           "required": false,
           "type": "RotationInput | undefined"
+        },
+        {
+          "name": "title",
+          "required": false,
+          "type": "false | FacetHeaderTitleOptions | undefined"
         }
       ],
       "callPatterns": [

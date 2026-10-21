@@ -9,6 +9,7 @@ import { validateFacetHeaderRotations } from "../grammar/facetHeaders.js";
 import { resolveDisplayLabel } from "../grammar/displayLabels.js";
 import { resolveGraphicBounds } from "../layout/canvas.js";
 import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from "../theme/defaults.js";
+import { prepareFacetHeaderTitles } from "../layout/facetHeaderTitles.js";
 
 const SIDES = Object.freeze(["top", "right", "bottom", "left"]);
 const ZERO_SIDES = Object.freeze({ top: 0, right: 0, bottom: 0, left: 0 });
@@ -206,7 +207,10 @@ export function prepareFacetHeaders(program, headersConfig) {
     ? Math.ceil(program.compositionSpec.children.length / program.compositionSpec.columns)
     : Math.max(...program.compositionSpec.facet.grid.cells.map(cell => cell.row)) + 1;
   const profile = program.materializationConfigs.textMetrics;
-  const space = descriptors.some(item => hasRotation(item.config))
+  const roles = ["column", ...(program.compositionSpec.facet.grid === undefined ? [] : ["row"])]
+    .map(role => [role, resolveFacetHeaderConfig(headers, role)]);
+  const hasTitles = roles.some(([, config]) => config.title !== undefined);
+  const space = hasTitles || descriptors.some(item => hasRotation(item.config))
     ? plotMarginSpace(program) : ZERO_SIDES;
   const headerLayout = {
     outer: { ...ZERO_SIDES },
@@ -249,8 +253,10 @@ export function prepareFacetHeaders(program, headersConfig) {
       headerLayout.outer[row.side] = laneThickness(descriptors, "row", profile, space);
     }
   }
-  return { headers, descriptors, headerLayout,
-    ...(descriptors.some(item => hasRotation(item.config)) && profile !== undefined ? { profile } : {}) };
+  const titles = prepareFacetHeaderTitles({ roles, descriptors, space, headerLayout, profile,
+    ids: program.compositionSpec.children });
+  return { headers, descriptors, titles, headerLayout,
+    ...((hasTitles || descriptors.some(item => hasRotation(item.config))) && profile !== undefined ? { profile } : {}) };
 }
 
 function horizontalAnchor(bounds, align) {
@@ -336,8 +342,11 @@ function roleItem(descriptor, cells, plots, spacing, profile) {
   const plot = union(selectedPlots);
   const snapshots = spacing === "plot" ? plot : union(selectedCells.map(placedCell));
   const config = descriptor.config;
-  if (hasRotation(config)) {
-    return { descriptor, snapshots, properties: rotatedRoleAnchor(descriptor, plot, snapshots, profile) };
+  if (hasRotation(config) || descriptor.topology === "role-title") {
+    const properties = rotatedRoleAnchor(descriptor, plot, snapshots, profile);
+    const axis = ["left", "right"].includes(config.side) ? "y" : "x";
+    if (config.alongOffset !== undefined) properties[axis] += config.alongOffset;
+    return { descriptor, snapshots, properties };
   }
   let anchor;
   if (["top", "bottom"].includes(config.side)) {
@@ -436,7 +445,7 @@ function assertLegacyHeadersFit(items, layout, plotById, profile) {
 export function resolveFacetHeaderItems(layout, plots, prepared) {
   const cells = new Map(layout.children.map(cell => [cell.id, cell]));
   const plotById = new Map(plots.map(plot => [plot.id, plot]));
-  const records = prepared.descriptors.map(descriptor => {
+  const records = [...prepared.descriptors, ...(prepared.titles ?? [])].map(descriptor => {
     if (descriptor.topology === "legacy") {
       return legacyItem(descriptor, cells.get(descriptor.id), plotById.get(descriptor.id), layout.spacing, prepared.profile);
     }

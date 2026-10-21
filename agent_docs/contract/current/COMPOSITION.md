@@ -224,7 +224,7 @@ Evidence: `test/unit/layout/facet-top-lane.test.js`, `test/unit/actions/composit
 
 ## `editFacetHeaders`
 
-- Signature: `editFacetHeaders({ fontSize?, fontFamily?, fontWeight?, color?, offset?, role?, labelMap?, side?, align?, rotation? })`.
+- Signature: `editFacetHeaders({ fontSize?, fontFamily?, fontWeight?, color?, offset?, role?, labelMap?, side?, align?, rotation?, title? })`.
 - Requires a facet composition and at least one appearance change.
 - Unqualified edits use `role:"all"` and update common style/mapping while preserving the legacy one-header-per-cell
   topology. `role:"row" | "column"` activates role mode. A row-column grid then owns one header per occupied
@@ -256,9 +256,24 @@ Evidence: `test/unit/layout/facet-top-lane.test.js`, `test/unit/actions/composit
 - Editing preserves child identity, semantic facet values, shared scales and layout order, then rematerializes the
   parent snapshot. Clipping, snapshot intersection or header-header overlap fails atomically.
 
+- 역할별 `title`은 전체 점유 plot 합집합에 한 번 정렬하는 필드 제목이다. 생성
+  `headers.column.title` 및 grid `headers.row.title`도 같은 옵션을 받는다. common/all은
+  거부한다. 최초 객체는 비어 있지 않은 한 줄 text가 필수이고 이후는 부분 병합한다.
+  생략은 보존, false는 제거다. text/fontSize/fontFamily/fontWeight/color/offset/align/
+  rotation/alongOffset만 받는다. 글꼴·색상은 역할 헤더를 상속하며 align 기본 center,
+  회전 기본 top/bottom 0,left -π/2,right +π/2다. 회전은 유한 정규 radians로 저장한다.
+- offset은 plot-spacing에서 plot 합집합, canvas-spacing에서 child Canvas 합집합과
+  회전된 제목 가까운 경계 사이 비음수 거리다. 기본은 같은 쪽 헤더 최대 두께+offset과
+  보존 child margin 중 큰 값+8이다. alongOffset은 edge 방향의 유한 signed 이동이다.
+  외곽 cell/role 예약과 child margin은 중복 사용하지 않고 필요한 초과분만 예약한다.
+- 제목은 기존 header collection 끝에 column,row 순서로 concrete text가 된다. 모든
+  Canvas/plot/헤더/보존 축·범례·차트 제목 text 충돌을 최종 상태에서 원자 검사한다.
+  제목 없는 기존 graphic 출력은 유지한다. layout/source/data/theme/textMetrics 및
+  editable persistence 재생을 지원하며 잘못된 저장 title은 거부한다.
+
 ### Formal values — `editFacetHeaders`
 
-- Implemented: `editFacetHeaders({ fontSize?: PositiveFinite; fontFamily?: NonEmptyString; fontWeight?: NonEmptyString | Finite; color?: NonEmptyString; offset?: NonNegativeFinite; role?: "all" | "row" | "column"; labelMap?: DisplayLabelMap | "auto"; side?: "top" | "bottom" | "left" | "right"; align?: "start" | "center" | "end"; rotation?: RotationInput }): ChartProgram`, with the role-specific side restrictions above.
+- Implemented: `editFacetHeaders({ fontSize?: PositiveFinite; fontFamily?: NonEmptyString; fontWeight?: NonEmptyString | Finite; color?: NonEmptyString; offset?: NonNegativeFinite; role?: "all" | "row" | "column"; labelMap?: DisplayLabelMap | "auto"; side?: "top" | "bottom" | "left" | "right"; align?: "start" | "center" | "end"; rotation?: RotationInput; title?: FacetHeaderTitleOptions | false }): ChartProgram`, with the role-specific side restrictions above.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `editFacetHeaders`

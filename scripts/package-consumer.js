@@ -1156,6 +1156,10 @@ async function testNodeConsumer(directory) {
       item => item.properties.text
     ), ["X", "Y", "Alpha", "B"]);
     assert.match(renderToSVG(installedFacetHeaders), />Alpha</);
+    const installedFieldTitle = installedFacetHeaders.editFacetHeaders({role:"row",title:{text:"Region"}});
+    assert.equal(installedFieldTitle.graphicSpec.objects["facetGrid-headers"].items.at(-1).properties.text,"Region");
+    assert.match(renderToSVG(installedFieldTitle),/>Region</);
+    assert.deepEqual(installedFieldTitle.editFacetHeaders({role:"row",title:false}).graphicSpec,installedFacetHeaders.graphicSpec);
     const statisticalReferences = program
       .createReferenceLine({
         id: "packageMean",
@@ -3879,6 +3883,10 @@ const invalidGrouped: Parameters<FullFormatsProgram["createXAxisLabels"]>[0] = {
       align: "start"
     };
     program.editFacetHeaders(facetHeaderOptions);
+    program.editFacetHeaders({role:"column",title:{text:"Region",rotation:{value:-90,unit:"degrees"}}});
+    program.editFacetHeaders({role:"column",title:false});
+    // @ts-expect-error Field-title options are closed.
+    program.editFacetHeaders({role:"column",title:{padding:1}});
     // @ts-expect-error Canvas fitting is Full only
     basicChart().fitCanvas(fitOptions);
     program.createCanvas({ plotBorder: {} });

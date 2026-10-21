@@ -576,6 +576,12 @@ Copy typed reference values while keeping both original tables unchanged.
 
 Representative actions: `createData`, `createLookupData`, `createBarPlot`. [Documentation](https://ggaction.github.io/ggaction/api/data/summaries-and-shaping/#named-table-lookup).
 
+### [One field title across two panels](./facet-field-titles/)
+
+Add an independent field title to existing facet headers.
+
+Representative actions: `facet`, `editFacetHeaders`, `editCompositionLayout`. [Documentation](https://ggaction.github.io/ggaction/api/composition/facets/#name-the-complete-facet-field).
+
 ## Development fixtures
 
 The catalog includes every maintained public chart program. Getting Started

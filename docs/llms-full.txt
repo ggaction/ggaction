@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.21.
 
-Contract: sha256:6f56f49c9b576fd0ef9be99686366556d8a4f92038f89f2fff42b4b23ac5f35e. Status: development. Runtime source: 12cadafe416f48a52525f4dc93c13e0d040d40ec. Release baseline: v0.0.13.
+Contract: sha256:02ed5833e08e19f71bae130b55f028e9eabb6649618d017e22732192f4a325bb. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -212,11 +212,11 @@ across the supported Node release matrix.
 ## Runnable repository examples
 
 Use the
-[generated repository example index](https://github.com/ggaction/ggaction/blob/12cadafe416f48a52525f4dc93c13e0d040d40ec/examples/README.md)
+[generated repository example index](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/README.md)
 for complete runnable modules. Browse the
 [chart gallery](./gallery/) for visual examples,
 or use
-the [Quarto and Observable JS example](https://github.com/ggaction/ggaction/tree/12cadafe416f48a52525f4dc93c13e0d040d40ec/examples/quarto-ojs/)
+the [Quarto and Observable JS example](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/quarto-ojs/)
 when authoring an `.qmd` document.
 
 ## Next
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/12cadafe416f48a52525f4dc93c13e0d040d40ec/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/12cadafe416f48a52525f4dc93c13e0d040d40ec/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -644,15 +644,15 @@ than introducing a separate renderer path.
 ![Horsepower versus miles per gallon](./assets/images/cars-scatterplot.png)
 
 This tutorial uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/12cadafe416f48a52525f4dc93c13e0d040d40ec/examples/cars-scatterplot)
-and its [canonical program](https://github.com/ggaction/ggaction/blob/12cadafe416f48a52525f4dc93c13e0d040d40ec/examples/cars-scatterplot/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/cars-scatterplot)
+and its [canonical program](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/cars-scatterplot/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/12cadafe416f48a52525f4dc93c13e0d040d40ec/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/batch200-library-fixes/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -798,7 +798,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-scatterplot/`.
-- View the [complete browser source](https://github.com/ggaction/ggaction/blob/12cadafe416f48a52525f4dc93c13e0d040d40ec/examples/cars-scatterplot/main.js).
+- View the [complete browser source](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/cars-scatterplot/main.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), and the
  [Basic Chart contract](./api/basic-charts/#createscatterplot).
@@ -816,7 +816,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/12cadafe416f48a52525f4dc93c13e0d040d40ec/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/batch200-library-fixes/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -929,7 +929,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/12cadafe416f48a52525f4dc93c13e0d040d40ec/data/gapminder.json --output public/gapminder.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/batch200-library-fixes/data/gapminder.json --output public/gapminder.json
 ```
 
 ## Complete program
@@ -1099,7 +1099,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/12cadafe416f48a52525f4dc93c13e0d040d40ec/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/batch200-library-fixes/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1321,15 +1321,15 @@ const tighter = radialBars.editArcMark({
 
 This chart shows mean acceleration over time for each origin. The complete
 module below uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/12cadafe416f48a52525f4dc93c13e0d040d40ec/examples/cars-line-chart)
-and its [complete program](https://github.com/ggaction/ggaction/blob/12cadafe416f48a52525f4dc93c13e0d040d40ec/examples/cars-line-chart/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/cars-line-chart)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/cars-line-chart/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/12cadafe416f48a52525f4dc93c13e0d040d40ec/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/batch200-library-fixes/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1465,7 +1465,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-line-chart/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/12cadafe416f48a52525f4dc93c13e0d040d40ec/examples/cars-line-chart/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/cars-line-chart/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), [Titles](./api/titles/), and the
  [Basic Chart contract](./api/basic-charts/#createlineplot).
@@ -1479,15 +1479,15 @@ program
 This chart bins car displacement, counts the rows in each bin, and stacks those
 counts by origin. The complete module uses the public npm package. The
 repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/12cadafe416f48a52525f4dc93c13e0d040d40ec/examples/cars-histogram)
-and its [complete program](https://github.com/ggaction/ggaction/blob/12cadafe416f48a52525f4dc93c13e0d040d40ec/examples/cars-histogram/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/cars-histogram)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/cars-histogram/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/12cadafe416f48a52525f4dc93c13e0d040d40ec/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/batch200-library-fixes/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1585,7 +1585,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-histogram/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/12cadafe416f48a52525f4dc93c13e0d040d40ec/examples/cars-histogram/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/cars-histogram/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), [Titles](./api/titles/), and the
  [Basic Chart contract](./api/basic-charts/#createhistogram).
@@ -1599,15 +1599,15 @@ program
 This tutorial uses a grouped bar chart as one concrete bar-chart layout. It
 aggregates job percentages by year and places the mean for men and women side
 by side. The complete module uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/12cadafe416f48a52525f4dc93c13e0d040d40ec/examples/jobs-grouped-bar)
-and its [complete program](https://github.com/ggaction/ggaction/blob/12cadafe416f48a52525f4dc93c13e0d040d40ec/examples/jobs-grouped-bar/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/jobs-grouped-bar)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/jobs-grouped-bar/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/12cadafe416f48a52525f4dc93c13e0d040d40ec/data/jobs.json --output public/jobs.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/batch200-library-fixes/data/jobs.json --output public/jobs.json
 ```
 
 ## Complete program
@@ -1716,7 +1716,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/jobs-grouped-bar/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/12cadafe416f48a52525f4dc93c13e0d040d40ec/examples/jobs-grouped-bar/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/jobs-grouped-bar/program.js).
 - Continue with [Position encodings](./api/position-encodings/),
  [Series encodings](./api/series-encodings/), and
  [Constant appearance](./api/appearance/), or review the
@@ -1732,15 +1732,15 @@ This tutorial filters the cars dataset to Japan and the USA, maps point size to
 Acceleration and point color/shape to Origin, then adds one linear fit and 95%
 mean-response confidence band per Origin. The complete module uses the public
 npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/12cadafe416f48a52525f4dc93c13e0d040d40ec/examples/cars-regression-scatterplot)
-and its [complete program](https://github.com/ggaction/ggaction/blob/12cadafe416f48a52525f4dc93c13e0d040d40ec/examples/cars-regression-scatterplot/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/cars-regression-scatterplot)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/cars-regression-scatterplot/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/12cadafe416f48a52525f4dc93c13e0d040d40ec/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/batch200-library-fixes/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1865,7 +1865,7 @@ render(program, document.querySelector('#chart').getContext('2d'));
 ```
 
 The value stays on y; y2 stores a constant zero. Both endpoints contribute to the automatic domain.
-The default opacity is 0.2. The [canonical executable example](https://github.com/ggaction/ggaction/blob/12cadafe416f48a52525f4dc93c13e0d040d40ec/examples/area-layout/program.js)
+The default opacity is 0.2. The [canonical executable example](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/area-layout/program.js)
 uses the same action flow and includes independent variants for the remaining cases.
 
 ## Choose bounds and orientation
@@ -1940,7 +1940,7 @@ explicit grid options can choose a direction. `editDensity` changes the statisti
 `editAreaMark` changes its appearance. The source remains immutable, and derived profiles retain only
 the group and the two generated value/density fields.
 
-The [runnable example](https://github.com/ggaction/ggaction/tree/12cadafe416f48a52525f4dc93c13e0d040d40ec/examples/density-plot) includes all three variants.
+The [runnable example](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/density-plot) includes all three variants.
 The workflow below shows the same lower-level owners on car data.
 
 ![Acceleration density by origin](./assets/images/cars-density-area.png)
@@ -1950,15 +1950,15 @@ Origin. The source rows remain immutable; `encodeDensity` creates a named
 derived dataset and materializes one translucent, zero-baseline area per
 group. The complete module below uses the public npm package. The repository
 also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/12cadafe416f48a52525f4dc93c13e0d040d40ec/examples/cars-density-area)
-and its [complete program](https://github.com/ggaction/ggaction/blob/12cadafe416f48a52525f4dc93c13e0d040d40ec/examples/cars-density-area/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/cars-density-area)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/cars-density-area/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/12cadafe416f48a52525f4dc93c13e0d040d40ec/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/batch200-library-fixes/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -2083,7 +2083,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-density-area/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/12cadafe416f48a52525f4dc93c13e0d040d40ec/examples/cars-density-area/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/cars-density-area/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Legends](./api/legends/), and [Scale options](./api/scales/).
 
@@ -2116,7 +2116,7 @@ Use `editHorizon` for bands, baseline, palette, or source revisions and `editAre
 stroke, and curve. An explicit `area.opacity` is applied after the encoding's opaque default.
 All-baseline input correctly produces no area paths while retaining the original x domain.
 
-The [runnable example](https://github.com/ggaction/ggaction/tree/12cadafe416f48a52525f4dc93c13e0d040d40ec/examples/horizon-plot) includes
+The [runnable example](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/horizon-plot) includes
 signed, temporal, and baseline/style variants. The program below exposes the same lower owners on real data.
 
 ![Kenya life expectancy Horizon chart](./assets/images/gapminder-horizon.png)
@@ -2127,8 +2127,8 @@ creates one derived dataset and ordinary closed area paths, so Browser Canvas
 and the SVG, PNG, and PDF outputs use the same backend-neutral graphics.
 
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/12cadafe416f48a52525f4dc93c13e0d040d40ec/examples/gapminder-horizon)
-and its [complete program](https://github.com/ggaction/ggaction/blob/12cadafe416f48a52525f4dc93c13e0d040d40ec/examples/gapminder-horizon/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/gapminder-horizon)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/gapminder-horizon/program.js).
 
 ## Complete program
 
@@ -2224,15 +2224,15 @@ acceleration by Origin. `createErrorBar()` infers the encoded point layer,
 derives one mean and two-sided 95% Student-t confidence interval per group,
 then creates concrete vertical rules and fixed-width caps. The source rows remain immutable.
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/12cadafe416f48a52525f4dc93c13e0d040d40ec/examples/cars-error-bar)
-and its [complete program](https://github.com/ggaction/ggaction/blob/12cadafe416f48a52525f4dc93c13e0d040d40ec/examples/cars-error-bar/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/cars-error-bar)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/cars-error-bar/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/12cadafe416f48a52525f4dc93c13e0d040d40ec/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/batch200-library-fixes/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -2329,15 +2329,15 @@ This chart summarizes life expectancy over time for each Gapminder cluster.
 interval per year and cluster, then creates one closed area path plus explicit
 lower and upper boundary paths per cluster.
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/12cadafe416f48a52525f4dc93c13e0d040d40ec/examples/gapminder-error-band)
-and its [complete program](https://github.com/ggaction/ggaction/blob/12cadafe416f48a52525f4dc93c13e0d040d40ec/examples/gapminder-error-band/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/gapminder-error-band)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/gapminder-error-band/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/12cadafe416f48a52525f4dc93c13e0d040d40ec/data/gapminder.json --output public/gapminder.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/batch200-library-fixes/data/gapminder.json --output public/gapminder.json
 ```
 
 ## Complete program
@@ -2443,8 +2443,8 @@ program
 
 Select final visual items by data field, semantic channel, or concrete graphic
 property, then filter, reuse, or highlight that selection. The repository
-contains a [runnable browser example](https://github.com/ggaction/ggaction/tree/12cadafe416f48a52525f4dc93c13e0d040d40ec/examples/mark-selection)
-and the [canonical programs](https://github.com/ggaction/ggaction/blob/12cadafe416f48a52525f4dc93c13e0d040d40ec/examples/mark-selection/program.js)
+contains a [runnable browser example](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/mark-selection)
+and the [canonical programs](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/mark-selection/program.js)
 used by the acceptance and PNG tests below.
 
 ## Complete program
@@ -2453,7 +2453,7 @@ Follow [Getting Started](./getting-started/) to create a browser module and
 `<canvas id="chart"></canvas>`. Save the Cars data under `public/cars.json`:
 
 ```bash
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/12cadafe416f48a52525f4dc93c13e0d040d40ec/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/batch200-library-fixes/data/cars.json --output public/cars.json
 ```
 
 This complete point workflow matches the canonical program used for its image.
@@ -2752,7 +2752,7 @@ render(program, document.querySelector("#chart").getContext("2d"));
 ```
 
 The runnable repository version is in
-[`examples/ecdf-plot`](https://github.com/ggaction/ggaction/tree/12cadafe416f48a52525f4dc93c13e0d040d40ec/examples/ecdf-plot).
+[`examples/ecdf-plot`](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/ecdf-plot).
 
 This example uses colored paths and endpoint labels without axes or a legend,
 matching the repository program and image. To add a legend, reserve space on
@@ -5759,7 +5759,7 @@ instead of replacing or rebinding consumers.
 ## Related
 
 [Data overview](./api/data/) · [Source and derived data](./api/data/source-and-derived/) ·
-[Runnable airline-passenger example](https://github.com/ggaction/ggaction/blob/12cadafe416f48a52525f4dc93c13e0d040d40ec/examples/airline-passenger-moving-windows/program.js) ·
+[Runnable airline-passenger example](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/airline-passenger-moving-windows/program.js) ·
 [Action reference](./reference/actions/)
 
 <!-- Source: /api/data/bin2d/ -->
@@ -9644,7 +9644,7 @@ const dashboard = vconcat({
 
 This is a composition fragment: `scatterplot`, `barChart`, and `trendChart`
 must each be a complete program with one materialized Canvas. See the
-[runnable repository example](https://github.com/ggaction/ggaction/tree/12cadafe416f48a52525f4dc93c13e0d040d40ec/examples/program-composition)
+[runnable repository example](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/program-composition)
 for complete child construction and Browser Canvas rendering.
 
 The representative output deliberately keeps two different final grammars:
@@ -9705,7 +9705,7 @@ const revisedDashboard = dashboard.replaceCompositionChild({
 
 This preserves immutable earlier programs and makes the affected ancestor
 layout visible in the action trace. See the
-[cross-feature dashboard source](https://github.com/ggaction/ggaction/tree/12cadafe416f48a52525f4dc93c13e0d040d40ec/examples/cross-feature-dashboard)
+[cross-feature dashboard source](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/cross-feature-dashboard)
 for a nested Polar replacement next to a Cartesian facet.
 
 ## Repeat the current chart by a field
@@ -10071,7 +10071,7 @@ Primary and secondary endpoints can specify different input units on one scale.
 Domains and tick values are already timestamps and are never parsed again.
 Channel selectors read normalized values; raw-field selectors read original rows.
 
-See the runnable [three-variant example](https://github.com/ggaction/ggaction/tree/12cadafe416f48a52525f4dc93c13e0d040d40ec/examples/temporal-input).
+See the runnable [three-variant example](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/temporal-input).
 
 ## Aggregate line `encodeY(options)`
 
@@ -10633,7 +10633,7 @@ if the remaining appearance would be ambiguous. Ordinary ranged Areas support
 the same explicit identity; statistical and stacked-layout groups keep their
 existing owner restrictions.
 
-The [runnable series tutorial](https://github.com/ggaction/ggaction/tree/12cadafe416f48a52525f4dc93c13e0d040d40ec/examples/series-identity)
+The [runnable series tutorial](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/series-identity)
 uses one shared program for country colors, tuple color/dash, and field width/opacity.
 
 ## Explicit path topology
@@ -18672,11 +18672,12 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `side` | Optional / branch-dependent | `FacetHeaderSide \| undefined` |
 | `align` | Optional / branch-dependent | `FacetHeaderAlign \| undefined` |
 | `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
+| `title` | Optional / branch-dependent | `false \| FacetHeaderTitleOptions \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editFacetHeaders({ fontSize?, fontFamily?, fontWeight?, color?, offset?, role?, labelMap?, side?, align? })
+editFacetHeaders({ fontSize?, fontFamily?, fontWeight?, color?, offset?, role?, labelMap?, side?, align?, rotation?, title? })
 ```
 
 Edit the parent-owned repeated facet headers and rebuild the parent snapshot
@@ -18684,6 +18685,12 @@ without changing child programs or facet value order.
 One-field facets and repeats accept all four sides with `role: "column"`;
 left/right placements reserve a measured lane beside every physical column.
 Row-column grids retain left/right row headers and top/bottom column headers.
+Role-specific `title: { text: "Region" }` adds one field title across the occupied
+plots, separately from category headers and the chart title. Initial options use
+`headers.column.title` or grid `headers.row.title`. A first title requires one-line
+text; partial edits preserve it and `title: false` removes it. Title style inherits
+its role header, with optional fontSize/fontFamily/fontWeight/color, align,
+rotation, offset and alongOffset overrides. Common/all titles are rejected.
 
 ## `editFacetScales`
 
@@ -32322,10 +32329,12 @@ export interface EditFacetHeadersOptions {
   align?: FacetHeaderAlign;
   /** Numbers are radians; zero restores the existing unrotated header layout. */
   rotation?: RotationInput;
+  /** Requires an explicit row or column role. False removes that role's field title. */
+  title?: FacetHeaderTitleOptions | false;
 }
 ```
 
-Related types: [`FacetHeaderRole`](./reference/types/#type-facetheaderrole) · [`DisplayLabelMap`](./reference/types/#type-displaylabelmap) · [`FacetHeaderSide`](./reference/types/#type-facetheaderside) · [`FacetHeaderAlign`](./reference/types/#type-facetheaderalign) · [`RotationInput`](./reference/types/#type-rotationinput).
+Related types: [`FacetHeaderRole`](./reference/types/#type-facetheaderrole) · [`DisplayLabelMap`](./reference/types/#type-displaylabelmap) · [`FacetHeaderSide`](./reference/types/#type-facetheaderside) · [`FacetHeaderAlign`](./reference/types/#type-facetheaderalign) · [`RotationInput`](./reference/types/#type-rotationinput) · [`FacetHeaderTitleOptions`](./reference/types/#type-facetheadertitleoptions).
 
 ### `EditFacetSourceOptions` {#type-editfacetsourceoptions}
 
@@ -33554,12 +33563,33 @@ export type FacetHeaderRole = "all" | "row" | "column";
 export type FacetHeaderSide = "top" | "bottom" | "left" | "right";
 ```
 
+### `FacetHeaderTitleOptions` {#type-facetheadertitleoptions}
+
+ Expand FacetHeaderTitleOptions
+
+```typescript
+export interface FacetHeaderTitleOptions {
+  /** Required when introducing a title; edits preserve the existing text. One line. */
+  text?: string;
+  fontSize?: number;
+  fontFamily?: string;
+  fontWeight?: string | number;
+  color?: string;
+  offset?: number;
+  align?: FacetHeaderAlign;
+  rotation?: RotationInput;
+  alongOffset?: number;
+}
+```
+
+Related types: [`FacetHeaderAlign`](./reference/types/#type-facetheaderalign) · [`RotationInput`](./reference/types/#type-rotationinput).
+
 ### `FacetHeadersOptions` {#type-facetheadersoptions}
 
  Expand FacetHeadersOptions
 
 ```typescript
-export type FacetHeadersOptions = Omit<EditFacetHeadersOptions, "role" | "side"> & {
+export type FacetHeadersOptions = Omit<EditFacetHeadersOptions, "role" | "side" | "title"> & {
   row?: Omit<EditFacetHeadersOptions, "role">;
   column?: Omit<EditFacetHeadersOptions, "role">;
 };
@@ -38973,12 +39003,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/12cadafe416f48a52525f4dc93c13e0d040d40ec/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/12cadafe416f48a52525f4dc93c13e0d040d40ec/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -39784,7 +39814,7 @@ program.editFacetHeaders({
 
 This is a fragment for an existing facet program. A one-field facet uses the
 `column` header role for each panel, including panels arranged in one column.
-Grid facets also provide a `row` role. The [complete example](https://github.com/ggaction/ggaction/tree/12cadafe416f48a52525f4dc93c13e0d040d40ec/examples/facet-header-rotation)
+Grid facets also provide a `row` role. The [complete example](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/facet-header-rotation)
 declares the axes and grid before arranging the two region panels.
 
 The same `rotation` option is available in common `headers` and in
@@ -39828,7 +39858,7 @@ const faceted = chart()
 
 The input rows in this runnable fragment must contain complete values for the
 encoded fields. See the
-[repository example](https://github.com/ggaction/ggaction/tree/12cadafe416f48a52525f4dc93c13e0d040d40ec/examples/cars-origin-scatterplot-facet)
+[repository example](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/cars-origin-scatterplot-facet)
 for the complete data preparation and guide options.
 
 Data-bound Cartesian text layers also repeat: encode x, y, and text before
@@ -40068,7 +40098,7 @@ The child limit is 100 after applying the combination policy. The same
 supports the same Cartesian, Polar, and Parallel chart families, scale policies,
 axis restrictions, and compatible shared legends as `facet`.
 
-See the [runnable grid example](https://github.com/ggaction/ggaction/tree/12cadafe416f48a52525f4dc93c13e0d040d40ec/examples/facet-grid)
+See the [runnable grid example](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/facet-grid)
 for a 2 × 3 full grid with one missing source pair.
 
 ## Repeat a positional encoding across fields
@@ -40115,7 +40145,7 @@ non-repeated legend may be promoted to the parent.
 Every repeated field can describe a different quantity, so outer-axis
 promotion is rejected. Pie and Radar raw theta/r repetition, composite roles,
 derived target datasets, and unrelated sibling layers also fail atomically.
-See the [runnable repeat example](https://github.com/ggaction/ggaction/tree/12cadafe416f48a52525f4dc93c13e0d040d40ec/examples/repeat-charts).
+See the [runnable repeat example](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/repeat-charts).
 
 ## Space between plots
 
@@ -40180,6 +40210,36 @@ Omitting the option in an edit preserves it. Reset with
 reset both together: `editCompositionLayout({ spacing: "canvas", topLane: "stacked" })`.
 Concat compositions reject this option. Shared legend placement keeps its existing
 edge, offset and occupied bounds.
+
+## Name the complete facet field
+
+Panel names identify individual values; a field title names what all panels share.
+Use the complete runnable example linked above.
+Create a title through `headers.column.title`, or edit a prepared facet with
+`editFacetHeaders({ role: "column", title: { text: "Region" } })`. Grids also support
+`role: "row"`. Repeats require an explicit title text, just like ordinary facets.
+
+A field title appears once across the union of occupied plots, including wrapped
+or sparse layouts. It is independent of `createTitle`. Its font inherits the role
+header unless overridden. Initial creation requires nonempty one-line `text`;
+later title objects merge their changes. `title: false` removes the role title.
+Common headers and `role: "all"` cannot own a title.
+
+Title options are `text`, `fontSize`, `fontFamily`, `fontWeight`, `color`, `offset`,
+`align`, `rotation`, and `alongOffset`. Alignment defaults to `"center"`, with
+`"start"` and `"end"` also available. Rotation defaults to horizontal on top/bottom,
+−90° on the left and +90° on the right; explicit rotations use the usual radians
+or `{ value, unit }` form. `alongOffset` shifts along that edge.
+
+The title's `offset` measures the distance to its nearest rotated ink edge from
+the plot union with plot spacing, or the occupied child Canvas union with Canvas
+spacing. The default clears same-side category headers and retained child margins
+by 8 pixels. An explicit offset preserves that requested distance. Existing outer
+margin and header space is reused once; only the remaining title lane is reserved.
+Titles must fit without overlapping panel headers, plots or retained chart text.
+A conflicting edit fails atomically. Omitting all title options preserves existing
+charts exactly, and source, layout, theme, font metrics and saved editable programs
+retain the field-title owner.
 
 <!-- Source: /api/composition/editing/ -->
 
@@ -40554,7 +40614,7 @@ semantic base text rather than accumulating offsets. Text, data, scale, source
 mark, and Canvas changes replay that same policy.
 
 See the complete
-[Gapminder country-label program](https://github.com/ggaction/ggaction/blob/12cadafe416f48a52525f4dc93c13e0d040d40ec/examples/gapminder-country-labels/program.js)
+[Gapminder country-label program](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/gapminder-country-labels/program.js)
 for a point-attached label layer with leaders.
 
 ## `removeLabelLayout(options?)`
@@ -41440,9 +41500,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:6f56f49c9b576fd0ef9be99686366556d8a4f92038f89f2fff42b4b23ac5f35e` |
-| Example and dataset source | `12cadafe416f48a52525f4dc93c13e0d040d40ec` |
-| Runtime source commit | `12cadafe416f48a52525f4dc93c13e0d040d40ec` |
+| Contract fingerprint | `sha256:02ed5833e08e19f71bae130b55f028e9eabb6649618d017e22732192f4a325bb` |
+| Example and dataset source | `codex/batch200-library-fixes` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 290 |
 | Declared actions in that release | 234 |

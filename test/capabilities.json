@@ -107,6 +107,20 @@
         "path": "contracts/documentation-truth.test.js"
       }
     ],
+    "facet-field-titles": [
+      {
+        "type": "file",
+        "path": "unit/actions/composition/facet-field-titles.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/facet-field-title-types.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/facet-field-titles/"
+      }
+    ],
     "facet-header-rotation": [
       {
         "type": "file",

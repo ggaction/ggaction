@@ -541,3 +541,36 @@ Omitting the option in an edit preserves it. Reset with
 reset both together: `editCompositionLayout({ spacing: "canvas", topLane: "stacked" })`.
 Concat compositions reject this option. Shared legend placement keeps its existing
 edge, offset and occupied bounds.
+
+
+## Name the complete facet field
+
+{% include chart-example.html id="facet-field-titles" %}
+
+Panel names identify individual values; a field title names what all panels share.
+Use the complete runnable example linked above.
+Create a title through `headers.column.title`, or edit a prepared facet with
+`editFacetHeaders({ role: "column", title: { text: "Region" } })`. Grids also support
+`role: "row"`. Repeats require an explicit title text, just like ordinary facets.
+
+A field title appears once across the union of occupied plots, including wrapped
+or sparse layouts. It is independent of `createTitle`. Its font inherits the role
+header unless overridden. Initial creation requires nonempty one-line `text`;
+later title objects merge their changes. `title: false` removes the role title.
+Common headers and `role: "all"` cannot own a title.
+
+Title options are `text`, `fontSize`, `fontFamily`, `fontWeight`, `color`, `offset`,
+`align`, `rotation`, and `alongOffset`. Alignment defaults to `"center"`, with
+`"start"` and `"end"` also available. Rotation defaults to horizontal on top/bottom,
+−90° on the left and +90° on the right; explicit rotations use the usual radians
+or `{ value, unit }` form. `alongOffset` shifts along that edge.
+
+The title's `offset` measures the distance to its nearest rotated ink edge from
+the plot union with plot spacing, or the occupied child Canvas union with Canvas
+spacing. The default clears same-side category headers and retained child margins
+by 8 pixels. An explicit offset preserves that requested distance. Existing outer
+margin and header space is reused once; only the remaining title lane is reserved.
+Titles must fit without overlapping panel headers, plots or retained chart text.
+A conflicting edit fails atomically. Omitting all title options preserves existing
+charts exactly, and source, layout, theme, font metrics and saved editable programs
+retain the field-title owner.

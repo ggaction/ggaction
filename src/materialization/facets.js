@@ -1,5 +1,6 @@
 import { cartesianAxisOwners } from "../selectors/axes.js";
 import { resolveConcreteGraphicBounds } from "../grammar/schemas/graphicBounds.js";
+import { walkGraphicTreeEvents } from "../grammar/schemas/graphicTree.js";
 import { textBoundsFitCanvas, textBoundsIntersect, resolveTextBounds } from "../core/textMetrics.js";
 import { axisGraphicIds, allLegendGraphicIds } from "./guides/resources.js";
 import { resolveGraphicBounds } from "../layout/canvas.js";
@@ -196,6 +197,25 @@ function assertPlotSpacingGuides(program, layout, plots) {
   }
 }
 
+function assertFacetFieldTitles(program, prepared) {
+  if (prepared.titles.length === 0) return;
+  const id = facetHeaderGraphicId(program.compositionSpec.id);
+  const profile = program.materializationConfigs.textMetrics;
+  const titles = program.graphicSpec.objects[id].items.slice(prepared.descriptors.length)
+    .map(item => resolveTextBounds(item.properties, profile));
+  const collect = entry => {
+    if ((entry.ownerId ?? entry.id) === id) return;
+    const type = entry.object.type ?? entry.owner?.type;
+    const properties = entry.object.properties;
+    if (type !== "text" || properties?.text === "" || properties?.opacity === 0) return;
+    const bounds = resolveConcreteGraphicBounds(program.graphicSpec, entry.id, profile);
+    if (bounds !== undefined && titles.some(title => textBoundsIntersect(title, bounds))) {
+      throw new Error("Facet field title overlaps retained chart text.");
+    }
+  };
+  walkGraphicTreeEvents(program.graphicSpec, { enter: collect, item: collect });
+}
+
 export function materializeFacetGraphics(program) {
   const preparedLegend = prepareSharedFacetLegend(program);
   const { layout, title, plot, plots, preparedHeaders } = resolveFacetProgramLayout(
@@ -239,6 +259,7 @@ export function materializeFacetGraphics(program) {
   next = next.composeFacetGuides({ layout, plot });
   if (layout.spacing === "plot") assertPlotSpacingGuides(next, layout, plots);
   if (title.height > 0) next = materializeTitle(next, plot, title);
+  assertFacetFieldTitles(next, preparedHeaders);
   assertFacetTopLane(next, { layout, plots,
     headerId: facetHeaderGraphicId(program.compositionSpec.id), titleIds: TITLE_IDS });
   return next._withCanvasConfig({

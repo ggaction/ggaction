@@ -4635,7 +4635,7 @@
       "domain": "composition",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits parent-owned common, row, or column facet headers, including side, alignment, rotation, style, and typed display labels",
+      "update": "Edits parent-owned common, row, or column facet headers, including side, alignment, rotation, style, typed display labels, and one field title per role",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",

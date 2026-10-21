@@ -215,6 +215,9 @@ export function validateProgramState(program, path) {
   if (program.compositionSpec?.type === "facet") {
     const headers = program.materializationConfigs.facets?.[program.compositionSpec.id]?.headers;
     if (headers !== undefined) validateFacetHeaderRotations(headers);
+    if (headers?.row?.title !== undefined && program.compositionSpec.facet.grid === undefined) {
+      throw new TypeError("Facet row field title requires a row-column facet grid.");
+    }
   }
   if (program.materializationConfigs.textMetrics !== undefined) normalizeTextMetricProfile(program.materializationConfigs.textMetrics);
   for (const config of [

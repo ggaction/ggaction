@@ -115,6 +115,16 @@ entry605→609다. Staging 실측861631packed/4160293unpacked bytes와 search846
 Full427506/Basic215605gzip bytes를 최소1000단위428000/216000으로 반영하며 SVG25000은 유지한다.
 최종 archive와 browser gzip은 설치 consumer evidence가 소유한다.
 
+역할별 facet field title은 기존 `materializationConfigs.facets[id].headers` 소유자에
+보존한다. 순수 `layout/facetHeaderTitles.js`가 전체 점유 plot 정렬과 기존 외곽 예약의
+중복 제거를 소유한다. 기존 header materializer가 category 뒤 제목 text를 같은 collection에
+명시적으로 추가하고 최종 facet materializer가 보존 text 충돌을 검사한다. renderer와
+semantic 데이터 경계는 바뀌지 않는다. 정확한 옵션은 current COMPOSITION 계약이 소유한다.
+새 순수 layout module 한 개로 entry609→610이다. Package staging4167062unpacked bytes와
+863468packed bytes, search847333bytes, Full428792gzip bytes가 이전 한도를 초과했다.
+기존 최소1000단위 정책으로4168000/864000/848000/429000으로만 조정하며 Basic216000,
+SVG25000은 유지한다. 이전 한도 통과를 주장하지 않으며 최종 archive는 패키지 evidence가 소유한다.
+
 ## 전체 계층
 
 ```text

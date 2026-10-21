@@ -273,6 +273,18 @@ export interface RepeatChartsOptions {
   topLane?: FacetTopLaneMode;
 }
 export interface EditFacetSourceOptions { program: ChartProgram; }
+export interface FacetHeaderTitleOptions {
+  /** Required when introducing a title; edits preserve the existing text. One line. */
+  text?: string;
+  fontSize?: number;
+  fontFamily?: string;
+  fontWeight?: string | number;
+  color?: string;
+  offset?: number;
+  align?: FacetHeaderAlign;
+  rotation?: RotationInput;
+  alongOffset?: number;
+}
 export interface EditFacetHeadersOptions {
   fontSize?: number;
   fontFamily?: string;
@@ -285,8 +297,10 @@ export interface EditFacetHeadersOptions {
   align?: FacetHeaderAlign;
   /** Numbers are radians; zero restores the existing unrotated header layout. */
   rotation?: RotationInput;
+  /** Requires an explicit row or column role. False removes that role's field title. */
+  title?: FacetHeaderTitleOptions | false;
 }
-export type FacetHeadersOptions = Omit<EditFacetHeadersOptions, "role" | "side"> & {
+export type FacetHeadersOptions = Omit<EditFacetHeadersOptions, "role" | "side" | "title"> & {
   row?: Omit<EditFacetHeadersOptions, "role">;
   column?: Omit<EditFacetHeadersOptions, "role">;
 };

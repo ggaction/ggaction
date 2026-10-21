@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Add independent role-scoped facet field titles through existing header creation and editing, with rotated placement, immutable partial edits, removal and collision-checked replay.
+
 - Add `createLookupData` / `editLookupData` for typed lookup between named datasets, preserving primary rows and both raw inputs.
 - Support immutable lookup edits, revisions from either input, typed lineage, persistence,
   facet/grid composition and encoding repeats over direct lookup results.

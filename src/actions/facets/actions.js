@@ -33,6 +33,7 @@ import { findLayer } from "../../selectors/layers.js";
 import { findSemanticScale } from "../../selectors/scales.js";
 import { normalizeDisplayLabelMap } from "../../grammar/displayLabels.js";
 import { resolveRotation } from "../../grammar/rotation.js";
+import { normalizeFacetHeaderTitle } from "../../grammar/facetHeaders.js";
 import {
   createDefaultFacetHeaders,
   normalizeFacetHeadersConfig,
@@ -55,7 +56,7 @@ const SOURCE_EDIT_OPTIONS = Object.freeze(["program"]);
 const GUIDE_OPTIONS = Object.freeze(["axes", "legend"]);
 const HEADER_OPTIONS = Object.freeze([
   "fontSize", "fontFamily", "fontWeight", "color", "offset", "role",
-  "labelMap", "side", "align", "rotation"
+  "labelMap", "side", "align", "rotation", "title"
 ]);
 const HEADER_STYLE_OPTIONS = Object.freeze([
   "fontSize", "fontFamily", "fontWeight", "color", "offset", "align", "rotation"
@@ -201,6 +202,9 @@ function resolveEditedFacetHeaders(currentHeaders, args, grid, operation = "edit
   if (role === "all" && Object.hasOwn(args, "side")) {
     throw new Error(`${operation} side requires an explicit row or column role.`);
   }
+  if (role === "all" && Object.hasOwn(args, "title")) {
+    throw new Error(`${operation} title requires an explicit row or column role.`);
+  }
   if (role === "row" && grid === undefined) {
     throw new Error(`${operation} row role requires a row-column facet grid.`);
   }
@@ -222,6 +226,11 @@ function resolveEditedFacetHeaders(currentHeaders, args, grid, operation = "edit
   const current = normalizeFacetHeadersConfig(currentHeaders);
   const owner = role === "all" ? "common" : role;
   const patch = { ...current[owner] };
+  if (Object.hasOwn(args, "title")) {
+    const title = normalizeFacetHeaderTitle(patch.title, args.title);
+    if (title === undefined) delete patch.title;
+    else patch.title = title;
+  }
   for (const key of HEADER_STYLE_OPTIONS) {
     if (Object.hasOwn(args, key)) patch[key] = args[key];
   }
