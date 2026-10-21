@@ -361,5 +361,6 @@
       "path": "/tmp/ggaction-facet-header-rotation-render-v1.log",
       "sha256": "56ba80415c52f2be99a4e29cd8892a3c3b0ceb69534e3f9ca7fb9f629bbba4f0"
     }
-  ]
+  ],
+  "publicTargetMeasurementInitialHarnessError": "An ad hoc evidence writer incorrectly expected physical185x195 for the default pixelRatio2; corrected to physical370x390, logical185x195. Exact decoded pair passed both times; no runtime change or tolerance relaxation."
 }
