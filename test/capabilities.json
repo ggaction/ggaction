@@ -103,6 +103,20 @@
         "path": "contracts/documentation-truth.test.js"
       }
     ],
+    "facet-header-rotation": [
+      {
+        "type": "file",
+        "path": "unit/actions/composition/facet-header-rotation.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/facet-header-rotation-types.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/facet-header-rotation/"
+      }
+    ],
     "facet-top-lane": [
       {
         "type": "file",

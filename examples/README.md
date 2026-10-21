@@ -564,6 +564,12 @@ Move a complete Cartesian axis or plot border behind ordinary marks without chan
 
 Representative actions: `createXAxis`, `editXAxis`, `editCanvas`. [Documentation](https://ggaction.github.io/ggaction/api/axes/complete/#composite-marks-over-guides).
 
+### [Vertical region headers](./facet-header-rotation/)
+
+Put panel names beside their plots with an explicit header rotation.
+
+Representative actions: `facet`, `editFacetHeaders`, `editCompositionLayout`. [Documentation](https://ggaction.github.io/ggaction/api/composition/facets/#rotate-panel-headers).
+
 ## Development fixtures
 
 The catalog includes every maintained public chart program. Getting Started

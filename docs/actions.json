@@ -29583,6 +29583,10 @@
         {
           "path": "offset",
           "unit": "logical-pixel"
+        },
+        {
+          "path": "rotation",
+          "unit": "angle"
         }
       ],
       "inference": [
@@ -29644,6 +29648,11 @@
           "name": "align",
           "required": false,
           "type": "FacetHeaderAlign | undefined"
+        },
+        {
+          "name": "rotation",
+          "required": false,
+          "type": "RotationInput | undefined"
         }
       ],
       "callPatterns": [

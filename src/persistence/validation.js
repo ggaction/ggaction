@@ -2,6 +2,7 @@ import { validateGraphicClip } from "../grammar/schemas/graphicClip.js";
 import {validateLegendSpacing} from "../grammar/legendSpacing.js";
 import { requestedMarkClip, validateMarkClipCoordinate } from "../selectors/markClip.js";
 import { validateAuthoredFacetLegend } from "../grammar/facets/legendIntent.js";
+import { validateFacetHeaderRotations } from "../grammar/facetHeaders.js";
 import { AXIS_RESOURCE_CHANNELS } from "../core/vocabulary.js";
 import { cartesianAxisOwners, assertCartesianAxisSideAvailable } from "../selectors/axes.js";
 import { axisGraphicIds } from "../selectors/axes.js";
@@ -207,6 +208,10 @@ export function validateProgramState(program, path) {
   for (const key of ["marks", "guides"]) requireObject(program.materializationConfigs[key], `${path}.materializationConfigs.${key}`);
   if (program.compositionSpec?.type === "facet" && isPlainObject(program.compositionSpec.facet.guides.legend)) {
     validateAuthoredFacetLegend(program, program.compositionSpec.facet.guides.legend);
+  }
+  if (program.compositionSpec?.type === "facet") {
+    const headers = program.materializationConfigs.facets?.[program.compositionSpec.id]?.headers;
+    if (headers !== undefined) validateFacetHeaderRotations(headers);
   }
   if (program.materializationConfigs.textMetrics !== undefined) normalizeTextMetricProfile(program.materializationConfigs.textMetrics);
   for (const config of [

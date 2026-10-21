@@ -283,6 +283,8 @@ export interface EditFacetHeadersOptions {
   labelMap?: DisplayLabelMap | "auto";
   side?: FacetHeaderSide;
   align?: FacetHeaderAlign;
+  /** Numbers are radians; zero restores the existing unrotated header layout. */
+  rotation?: RotationInput;
 }
 export type FacetHeadersOptions = Omit<EditFacetHeadersOptions, "role" | "side"> & {
   row?: Omit<EditFacetHeadersOptions, "role">;

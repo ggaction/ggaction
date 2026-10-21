@@ -32,6 +32,7 @@ import { findDataset } from "../../selectors/datasets.js";
 import { findLayer } from "../../selectors/layers.js";
 import { findSemanticScale } from "../../selectors/scales.js";
 import { normalizeDisplayLabelMap } from "../../grammar/displayLabels.js";
+import { resolveRotation } from "../../grammar/rotation.js";
 import {
   createDefaultFacetHeaders,
   normalizeFacetHeadersConfig,
@@ -54,10 +55,10 @@ const SOURCE_EDIT_OPTIONS = Object.freeze(["program"]);
 const GUIDE_OPTIONS = Object.freeze(["axes", "legend"]);
 const HEADER_OPTIONS = Object.freeze([
   "fontSize", "fontFamily", "fontWeight", "color", "offset", "role",
-  "labelMap", "side", "align"
+  "labelMap", "side", "align", "rotation"
 ]);
 const HEADER_STYLE_OPTIONS = Object.freeze([
-  "fontSize", "fontFamily", "fontWeight", "color", "offset", "align"
+  "fontSize", "fontFamily", "fontWeight", "color", "offset", "align", "rotation"
 ]);
 
 function normalizeGuides(guides, allowStored = false) {
@@ -224,6 +225,9 @@ function resolveEditedFacetHeaders(currentHeaders, args, grid, operation = "edit
   for (const key of HEADER_STYLE_OPTIONS) {
     if (Object.hasOwn(args, key)) patch[key] = args[key];
   }
+  if (Object.hasOwn(args, "rotation")) {
+    patch.rotation = resolveRotation(args.rotation, `${operation} ${role} rotation`);
+  }
   if (Object.hasOwn(args, "side")) patch.side = args.side;
   if (Object.hasOwn(args, "labelMap")) {
     if (args.labelMap === "auto") delete patch.labelMap;
@@ -245,6 +249,9 @@ function resolveEditedFacetHeaders(currentHeaders, args, grid, operation = "edit
     validateNonEmptyString(resolved.fontFamily, `Facet ${headerRole} header fontFamily`);
     validateNonEmptyString(resolved.color, `Facet ${headerRole} header color`);
     validateNonNegativeFinite(resolved.offset, `Facet ${headerRole} header offset`);
+    if (resolved.rotation !== undefined && !Number.isFinite(resolved.rotation)) {
+      throw new TypeError(`Facet ${headerRole} header rotation must resolve to finite radians.`);
+    }
     if (!(
       (typeof resolved.fontWeight === "string" && resolved.fontWeight.length > 0) ||
       Number.isFinite(resolved.fontWeight)

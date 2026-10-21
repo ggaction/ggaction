@@ -5052,12 +5052,14 @@ export interface EditFacetHeadersOptions {
   labelMap?: DisplayLabelMap | "auto";
   side?: FacetHeaderSide;
   align?: FacetHeaderAlign;
+  /** Numbers are radians; zero restores the existing unrotated header layout. */
+  rotation?: RotationInput;
 }
 ```
 
 </details>
 
-Related types: [`FacetHeaderRole`](#type-facetheaderrole) · [`DisplayLabelMap`](#type-displaylabelmap) · [`FacetHeaderSide`](#type-facetheaderside) · [`FacetHeaderAlign`](#type-facetheaderalign).
+Related types: [`FacetHeaderRole`](#type-facetheaderrole) · [`DisplayLabelMap`](#type-displaylabelmap) · [`FacetHeaderSide`](#type-facetheaderside) · [`FacetHeaderAlign`](#type-facetheaderalign) · [`RotationInput`](#type-rotationinput).
 
 ### `EditFacetSourceOptions` {#type-editfacetsourceoptions}
 

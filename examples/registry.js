@@ -121,6 +121,7 @@ import { createCrossFeatureDashboard } from
 import { createProgramCompositionExample } from
   "./program-composition/program.js";
 import { createFacetGridExample } from "./facet-grid/program.js";
+import { createFacetHeaderRotation } from "./facet-header-rotation/program.js";
 import { createRepeatChartsExample } from "./repeat-charts/program.js";
 import {
   createGroupedMaximumPointHighlight,
@@ -440,6 +441,15 @@ export const PUBLIC_CHARTS = Object.freeze([
     createProgram: () => createFacetGridExample(),
     docsGroup: "charts",
     browser: { path: "facet-grid/", canvas: "#chart" }
+  }),
+  example({
+    id: "facet-header-rotation",
+    data: {},
+    width: 185,
+    height: 195,
+    createProgram: () => createFacetHeaderRotation(),
+    docsGroup: "charts",
+    browser: { path: "facet-header-rotation/", canvas: "#chart" }
   }),
   example({
     id: "repeat-charts",

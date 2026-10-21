@@ -2642,3 +2642,18 @@ state에 sentinel을 추가하지 않는다. State·renderer·package 경계는 
 422002bytes가422000을 초과하여 최소1000byte 경계423000으로만 갱신한다. Basic208440≤209000과
 SVG25000, package·coverage·pixel 오차 한도는 유지한다. 자세한 동작은 Current CORE/ENCODINGS/MARKS,
 검증 기록은 `impl/categorical-line-unknown/PROPOSAL.md`를 따른다.
+
+### Explicit facet header rotation
+
+회전 의도는 기존 facet headers의 common/row/column 설정 한 곳에만 저장한다. 생성·편집은 기존
+rotation grammar로 단위를 정규화한다. 순수 `grammar/facetHeaders.js`가 저장된 유한 radians 검증을
+소유하고 materializer와 persistence가 공유하므로 import 검증은 materialization에 의존하지 않는다.
+기존 concrete text와 rotated bounds를 재사용하며 renderer와 public export 경계는 바뀌지 않는다.
+외곽 회전 헤더 예약은 이미 있는 child margin을 한 번만 계산하고, 내부 간격과 실제 bounds 검사는 유지한다.
+정확한 공개 계약은 Current COMPOSITION의 facet headers가 소유한다.
+
+새 pure validator 한 모듈로 package entries604→605다. Node22.23.1/npm10.9.8 official staging 실측은
+packed856430/unpacked4139194bytes로 기존856000/4137000을 초과했다. 실제 실패를 보존하고 각각 최소
+다음1000byte 경계857000/4140000으로만 갱신한다. 새 grammar에도 기존 공식 staging compaction을 적용한다.
+Browser Full/Basic/SVG, coverage, 데이터, 수치·그림 오차 한도는 유지한다. Node24 protected-release 측정은
+다음 정기1413-family 공개 배포에서 별도로 확인한다.

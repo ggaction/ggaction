@@ -5,7 +5,9 @@ import {
   resolveTextBounds,
   textBoundsIntersect
 } from "../core/textMetrics.js";
+import { validateFacetHeaderRotations } from "../grammar/facetHeaders.js";
 import { resolveDisplayLabel } from "../grammar/displayLabels.js";
+import { resolveGraphicBounds } from "../layout/canvas.js";
 import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from "../theme/defaults.js";
 
 const SIDES = Object.freeze(["top", "right", "bottom", "left"]);
@@ -35,6 +37,7 @@ export function normalizeFacetHeadersConfig(value) {
   if (!isPlainObject(value)) {
     throw new TypeError("Facet headers config must be a plain object.");
   }
+  validateFacetHeaderRotations(value);
   if (value.common === undefined && value.mode === undefined) {
     return {
       ...createDefaultFacetHeaders(),
@@ -144,14 +147,54 @@ function roleDescriptors(program, headers) {
   return [...columns, ...rows];
 }
 
-function laneThickness(descriptors, role, profile) {
+function hasRotation(config) {
+  return config.rotation !== undefined && config.rotation !== 0;
+}
+
+function rotatedBounds(descriptor, profile) {
+  return resolveTextBounds({
+    x: 0, y: 0, text: descriptor.text,
+    ...descriptor.config, textAlign: "center", textBaseline: "middle"
+  }, profile);
+}
+
+function headerThickness(descriptor, side, profile) {
+  if (hasRotation(descriptor.config)) {
+    const bounds = rotatedBounds(descriptor, profile);
+    return ["left", "right"].includes(side)
+      ? bounds.right - bounds.left : bounds.bottom - bounds.top;
+  }
+  return ["left", "right"].includes(side)
+    ? measureTextWidth(descriptor.text, descriptor.config, profile)
+    : descriptor.config.fontSize;
+}
+
+function plotMarginSpace(program) {
+  const space = { ...ZERO_SIDES };
+  if (program.compositionSpec.spacing !== "plot") return space;
+  for (const id of program.compositionSpec.children) {
+    const child = program.children[id], plot = resolveGraphicBounds(child);
+    const canvas = child.graphicSpec.objects.canvas.properties;
+    space.left = Math.max(space.left, plot.x);
+    space.top = Math.max(space.top, plot.y);
+    space.right = Math.max(space.right, canvas.width - plot.x - plot.width);
+    space.bottom = Math.max(space.bottom, canvas.height - plot.y - plot.height);
+  }
+  return space;
+}
+
+function headerReservation(descriptor, side, profile, space, outer) {
+  const amount = headerThickness(descriptor, side, profile) + descriptor.config.offset;
+  return hasRotation(descriptor.config) && outer
+    ? Math.max(0, amount - space[side]) : amount;
+}
+
+function laneThickness(descriptors, role, profile, space) {
   const visible = descriptors.filter(item => item.role === role && item.text !== "");
   if (visible.length === 0) return 0;
-  if (role === "column") {
-    return Math.max(...visible.map(item => item.config.fontSize + item.config.offset));
-  }
-  return Math.max(...visible.map(item => measureTextWidth(item.text, item.config, profile) +
-    item.config.offset));
+  return Math.max(...visible.map(item => headerReservation(
+    item, item.config.side, profile, space, true
+  )));
 }
 
 export function prepareFacetHeaders(program, headersConfig) {
@@ -162,6 +205,9 @@ export function prepareFacetHeaders(program, headersConfig) {
   const rows = program.compositionSpec.facet.grid === undefined
     ? Math.ceil(program.compositionSpec.children.length / program.compositionSpec.columns)
     : Math.max(...program.compositionSpec.facet.grid.cells.map(cell => cell.row)) + 1;
+  const profile = program.materializationConfigs.textMetrics;
+  const space = descriptors.some(item => hasRotation(item.config))
+    ? plotMarginSpace(program) : ZERO_SIDES;
   const headerLayout = {
     outer: { ...ZERO_SIDES },
     cellRows: { top: Array(rows).fill(0), bottom: Array(rows).fill(0) }
@@ -171,12 +217,13 @@ export function prepareFacetHeaders(program, headersConfig) {
       if (descriptor.text === "") continue;
       const index = program.compositionSpec.children.indexOf(descriptor.id);
       const row = program.compositionSpec.facet.grid?.cells[index]?.row ?? Math.floor(index / program.compositionSpec.columns);
-      headerLayout.cellRows.top[row] = Math.max(headerLayout.cellRows.top[row], descriptor.config.offset + descriptor.config.fontSize);
+      headerLayout.cellRows.top[row] = Math.max(headerLayout.cellRows.top[row],
+        headerReservation(descriptor, "top", profile, space, row === 0));
     }
   }
   if (headers.mode === "roles") {
     const column = resolveFacetHeaderConfig(headers, "column");
-    const columnThickness = laneThickness(descriptors, "column", program.materializationConfigs.textMetrics);
+    const columnThickness = laneThickness(descriptors, "column", profile, space);
     if (program.compositionSpec.facet.grid === undefined) {
       const side = ["left", "right"].includes(column.side);
       if (side) {
@@ -189,21 +236,21 @@ export function prepareFacetHeaders(program, headersConfig) {
         if (descriptor.text !== "") {
           const reservations = side ? headerLayout.cellColumns : headerLayout.cellRows;
           const index = side ? descriptor.column : descriptor.row;
-          const thickness = side
-            ? measureTextWidth(descriptor.text, descriptor.config, program.materializationConfigs.textMetrics)
-            : descriptor.config.fontSize;
+          const last = side ? program.compositionSpec.columns - 1 : rows - 1;
+          const outer = ["top", "left"].includes(column.side) ? index === 0 : index === last;
           reservations[column.side][index] = Math.max(
-            reservations[column.side][index], thickness + descriptor.config.offset
+            reservations[column.side][index], headerReservation(descriptor, column.side, profile, space, outer)
           );
         }
       }
     } else {
       headerLayout.outer[column.side] = columnThickness;
       const row = resolveFacetHeaderConfig(headers, "row");
-      headerLayout.outer[row.side] = laneThickness(descriptors, "row", program.materializationConfigs.textMetrics);
+      headerLayout.outer[row.side] = laneThickness(descriptors, "row", profile, space);
     }
   }
-  return { headers, descriptors, headerLayout };
+  return { headers, descriptors, headerLayout,
+    ...(descriptors.some(item => hasRotation(item.config)) && profile !== undefined ? { profile } : {}) };
 }
 
 function horizontalAnchor(bounds, align) {
@@ -245,7 +292,34 @@ function placedCell(cell) {
   };
 }
 
-function roleItem(descriptor, cells, plots, spacing) {
+function alignedBlockAnchor(start, end, minimum, maximum, align) {
+  if (align === "start") return start - minimum;
+  if (align === "end") return end - maximum;
+  return (start + end - minimum - maximum) / 2;
+}
+
+function rotatedRoleAnchor(descriptor, plot, snapshots, profile) {
+  const { config } = descriptor, bounds = rotatedBounds(descriptor, profile);
+  const common = { textAlign: "center", textBaseline: "middle", rotation: config.rotation };
+  if (["top", "bottom"].includes(config.side)) {
+    return {
+      ...common,
+      x: alignedBlockAnchor(plot.left, plot.right, bounds.left, bounds.right, config.align),
+      y: config.side === "top"
+        ? snapshots.top - config.offset - bounds.bottom
+        : snapshots.bottom + config.offset - bounds.top
+    };
+  }
+  return {
+    ...common,
+    x: config.side === "left"
+      ? snapshots.left - config.offset - bounds.right
+      : snapshots.right + config.offset - bounds.left,
+    y: alignedBlockAnchor(plot.top, plot.bottom, bounds.top, bounds.bottom, config.align)
+  };
+}
+
+function roleItem(descriptor, cells, plots, spacing, profile) {
   const selectedCells = descriptor.ids.map(id => cells.get(id));
   const missingCell = descriptor.ids.find((id, index) =>
     selectedCells[index] === undefined
@@ -262,6 +336,9 @@ function roleItem(descriptor, cells, plots, spacing) {
   const plot = union(selectedPlots);
   const snapshots = spacing === "plot" ? plot : union(selectedCells.map(placedCell));
   const config = descriptor.config;
+  if (hasRotation(config)) {
+    return { descriptor, snapshots, properties: rotatedRoleAnchor(descriptor, plot, snapshots, profile) };
+  }
   let anchor;
   if (["top", "bottom"].includes(config.side)) {
     anchor = horizontalAnchor(plot, config.align);
@@ -281,9 +358,16 @@ function roleItem(descriptor, cells, plots, spacing) {
   return { descriptor, snapshots, properties: anchor };
 }
 
-function legacyItem(descriptor, cell, plot, spacing) {
+function legacyItem(descriptor, cell, plot, spacing, profile) {
   if (cell === undefined || plot === undefined) {
     throw new Error(`Facet header requires cell and plot bounds for "${descriptor.id}".`);
+  }
+  if (hasRotation(descriptor.config) && spacing === "plot") {
+    const bounds = placedPlot(cell, plot);
+    return {
+      descriptor, snapshots: placedCell(cell),
+      properties: rotatedRoleAnchor({ ...descriptor, config: { ...descriptor.config, side: "top" } }, bounds, bounds, profile)
+    };
   }
   return {
     descriptor,
@@ -291,7 +375,8 @@ function legacyItem(descriptor, cell, plot, spacing) {
     properties: {
       ...horizontalAnchor(placedPlot(cell, plot), descriptor.config.align),
       y: spacing === "plot" ? cell.y + plot.y - descriptor.config.offset - descriptor.config.fontSize / 2 : cell.y + descriptor.config.offset,
-      textBaseline: "middle"
+      textBaseline: "middle",
+      ...(hasRotation(descriptor.config) ? { rotation: descriptor.config.rotation } : {})
     }
   };
 }
@@ -353,9 +438,9 @@ export function resolveFacetHeaderItems(layout, plots, prepared) {
   const plotById = new Map(plots.map(plot => [plot.id, plot]));
   const records = prepared.descriptors.map(descriptor => {
     if (descriptor.topology === "legacy") {
-      return legacyItem(descriptor, cells.get(descriptor.id), plotById.get(descriptor.id), layout.spacing);
+      return legacyItem(descriptor, cells.get(descriptor.id), plotById.get(descriptor.id), layout.spacing, prepared.profile);
     }
-    return roleItem(descriptor, cells, plotById, layout.spacing);
+    return roleItem(descriptor, cells, plotById, layout.spacing, prepared.profile);
   });
   return { records, items: records.map(styledItem), plotById };
 }

@@ -1553,3 +1553,21 @@
   actions: createXAxis · editXAxis · editCanvas
   tasks: composition appearance editing
   url: /api/axes/complete/#composite-marks-over-guides
+
+- id: facet-header-rotation
+  example: /examples/facet-header-rotation/
+  title: Vertical region headers
+  image: /assets/images/facet-header-rotation.png
+  alt: Two line panels labeled North and South vertically along their left edge
+  width: 370
+  height: 390
+  thumbnail: /assets/images/facet-header-rotation-thumb.png
+  thumbnail_width: 370
+  thumbnail_height: 390
+  caption: Rotated panel names use existing margin space while both plots keep their dimensions.
+  summary: Put panel names beside their plots with an explicit header rotation.
+  actions: facet · editFacetHeaders · editCompositionLayout
+  tasks: composition comparison
+  url: /api/composition/facets/#rotate-panel-headers
+  home_group: essentials
+  home_order: 155

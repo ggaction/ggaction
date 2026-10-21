@@ -388,6 +388,7 @@ function representativeValue(action, option) {
     const literal = firstQuotedLiteral(option.type);
     if (literal !== undefined) return literal;
   }
+  if (option.type.includes("RotationInput")) return { value: 45, unit: "degrees" };
   if (Object.hasOwn(named, option.name)) return named[option.name];
   const literal = firstQuotedLiteral(option.type);
   if (literal !== undefined) return literal;

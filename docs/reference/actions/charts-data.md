@@ -2399,6 +2399,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `labelMap` | Optional / branch-dependent | `"auto" \| DisplayLabelMap \| undefined` |
 | `side` | Optional / branch-dependent | `FacetHeaderSide \| undefined` |
 | `align` | Optional / branch-dependent | `FacetHeaderAlign \| undefined` |
+| `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
 
 </details>
 

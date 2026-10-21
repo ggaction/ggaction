@@ -80,6 +80,12 @@ async function testNodeConsumer(directory) {
   await writeFile(path.join(directory,"plot-underlay-public.js"),
     (await readFile(new URL("../examples/plot-guide-underlays/program.js",import.meta.url),"utf8"))
       .replace("'../../src/index.js'","'ggaction'"));
+  await writeFile(path.join(directory, "facet-header-rotation.js"),
+    (await readFile(new URL("../examples/facet-header-rotation/program.js", import.meta.url), "utf8"))
+      .replace('"../../src/index.js"', '"ggaction"')
+      .replace('"./data.js"', '"./facet-header-data.js"'));
+  await writeFile(path.join(directory, "facet-header-data.js"),
+    await readFile(new URL("../examples/facet-header-rotation/data.js", import.meta.url), "utf8"));
   const output = path.join(directory, "chart.png");
   const pdfOutput = path.join(directory, "chart.pdf");
   const fontWeightOutput = path.join(directory, "font-weight.png");
@@ -97,6 +103,17 @@ async function testNodeConsumer(directory) {
     import {createFacetSharedTopLaneProgram} from "./facet-lane-public.js";
     import {createPlotUnderlayProgram} from "./plot-underlay-public.js";
 
+    {
+      const {createFacetHeaderRotation} = await import("./facet-header-rotation.js");
+      const p = createFacetHeaderRotation();
+      assert.deepEqual(p.graphicSpec.objects.canvas.properties, {width:185,height:195,background:"white"});
+      assert.deepEqual(p.graphicSpec.objects["facet-headers"].items.map(i=>[i.properties.x,i.properties.y,i.properties.rotation]), [[9,50,-Math.PI/2],[9,135,-Math.PI/2]]);
+      assert.deepEqual(deserializeProgram(serializeProgram(p)).graphicSpec,p.graphicSpec);
+      assert(renderToSVG(p).includes("North"));
+      assert.equal((await renderToPNGBuffer(p)).buffer.subarray(1,4).toString(),"PNG");
+      assert.equal((await renderToPDFBuffer(p)).buffer.subarray(0,4).toString(),"%PDF");
+      assert.equal(typeof basicChart().editFacetHeaders,"undefined");
+    }
     {
       const rows=[{x:2,y:3,t:"Alpha",dx:12,dy:-6},{x:5,y:6,t:"Beta",dx:-9,dy:8}];
       const original=chart().createCanvas({width:500,height:300,margin:80}).createData({values:rows})
@@ -5617,6 +5634,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "facet-numeric-legend-inference",
       "explicit-fold-facet-partition",
       "shared-facet-top-lane",
+      "rotated-facet-headers",
       "explicit-axis-and-border-underlays",
       "typescript",
       "basic-entry-runtime-and-types",

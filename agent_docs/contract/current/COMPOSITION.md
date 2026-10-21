@@ -224,7 +224,7 @@ Evidence: `test/unit/layout/facet-top-lane.test.js`, `test/unit/actions/composit
 
 ## `editFacetHeaders`
 
-- Signature: `editFacetHeaders({ fontSize?, fontFamily?, fontWeight?, color?, offset?, role?, labelMap?, side?, align? })`.
+- Signature: `editFacetHeaders({ fontSize?, fontFamily?, fontWeight?, color?, offset?, role?, labelMap?, side?, align?, rotation? })`.
 - Requires a facet composition and at least one appearance change.
 - Unqualified edits use `role:"all"` and update common style/mapping while preserving the legacy one-header-per-cell
   topology. `role:"row" | "column"` activates role mode. A row-column grid then owns one header per occupied
@@ -241,24 +241,41 @@ Evidence: `test/unit/layout/facet-top-lane.test.js`, `test/unit/actions/composit
   including wrapped rows, without resizing child canvases. `align:"start" | "center" | "end"` applies
   along the occupied plot span. `side` requires an explicit row/column role. Role strips reserve measured space in
   the parent layout before child placement, so font, map, side, layout, title and shared-legend changes converge.
+- `rotation?: RotationInput`은 기존 숫자 radians 또는 `{ value, unit: "radians" | "degrees" }`를 받는다.
+  생성 공통/row/column 헤더와 편집이 같은 정규화를 쓰며, 유한 radians만 기존
+  `materializationConfigs.facets[id].headers` 소유자에 저장한다. 생략은 기존 의도를 유지하고
+  0은 기존 비회전 그래픽·예약으로 복원한다. common보다 role의 명시 값이 우선한다.
+- nonzero 회전 role 헤더와 plot-spacing legacy 헤더는 회전된 글자 블록의 가까운 경계를
+  해당 edge에서 `offset`만큼 바깥에 두고, `align`은 회전된 블록을 edge를 따라 정렬한다.
+  Canvas-spacing legacy 헤더는 기존 안쪽 anchor를 유지하며 회전한다. 폭/높이·Canvas 이탈·겹침은
+  회전된 실제 concrete bounds로 검사한다. 빈 표시 문자열은 기존처럼 예약하지 않는다.
+- plot-spacing의 회전 외곽 헤더는 이미 보존된 child margin을 중복 예약하지 않고 넘는 부분만
+  추가 예약한다. 내부 row/column 사이의 전체 헤더 두께와 offset은 기존 gap 검사에 포함된다.
+  생략/0도의 기존 출력과 경계 조건은 바꾸지 않는다. source/theme/text-metric/layout 및
+  editable persistence 재생은 회전을 보존하고, 잘못된 각도/단위/비정규 저장 값은 원자적으로 거부한다.
 - Editing preserves child identity, semantic facet values, shared scales and layout order, then rematerializes the
   parent snapshot. Clipping, snapshot intersection or header-header overlap fails atomically.
 
 ### Formal values — `editFacetHeaders`
 
-- Implemented: `editFacetHeaders({ fontSize?: PositiveFinite; fontFamily?: NonEmptyString; fontWeight?: NonEmptyString | Finite; color?: NonEmptyString; offset?: NonNegativeFinite; role?: "all" | "row" | "column"; labelMap?: DisplayLabelMap | "auto"; side?: "top" | "bottom" | "left" | "right"; align?: "start" | "center" | "end" }): ChartProgram`, with the role-specific side restrictions above.
+- Implemented: `editFacetHeaders({ fontSize?: PositiveFinite; fontFamily?: NonEmptyString; fontWeight?: NonEmptyString | Finite; color?: NonEmptyString; offset?: NonNegativeFinite; role?: "all" | "row" | "column"; labelMap?: DisplayLabelMap | "auto"; side?: "top" | "bottom" | "left" | "right"; align?: "start" | "center" | "end"; rotation?: RotationInput }): ChartProgram`, with the role-specific side restrictions above.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `editFacetHeaders`
 
 - ✅ Covered: legacy child-plot alignment, typed common and role maps, precedence/reset, deterministic row/column
   item order, four sides, three alignments, empty labels, exact strip reservation, source/layout replay, immutable
-  prior state, invalid role/side/map, empty edit and non-facet rejection.
+  prior state, invalid role/side/map, empty edit and non-facet rejection. Rotation adds initial/edit equality,
+  four sides, three block alignments, finite angles/units, zero reset, inherited overrides, exact primitive pixels,
+  outer-margin reuse, collision/overflow and persistence rejection without relaxing existing bounds.
 - Evidence: `test/unit/actions/composition/facet.test.js`,
   `test/unit/actions/composition/facet-display-headers.test.js`,
   `test/unit/actions/composition/facet-side-headers.test.js`,
   `test/unit/grammar/layout/facets.test.js`, and
-  `test/charts/cars-origin-scatterplot-facet/facet-variants.test.js`.
+  `test/charts/cars-origin-scatterplot-facet/facet-variants.test.js`,
+  `test/unit/actions/composition/facet-header-rotation.test.js`,
+  `test/contracts/facet-header-rotation-types.test.js`, and
+  `test/charts/facet-header-rotation/`.
 
 ## `editCompositionLayout`
 

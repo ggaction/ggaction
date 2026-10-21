@@ -42,6 +42,7 @@ const EXPECTED_DRAW_ORDER = Object.freeze({
   "legend-appearance": ["canvas", "scatterPlot", "colorLegendSymbolPoints", "colorLegendLabels"],
   "shared-facet-owner": [],
   "facet-shared-top-lane": [],
+  "facet-header-rotation": [],
   "symbol-window": ["canvas", "scatterPlot", "sizeLegendSymbols", "sizeLegendLabels"],
   "color-controls": ["canvas", "gamma1", "gamma22", "power"],
   "color-white-point": ["canvas", "d65", "d50"],
@@ -435,7 +436,9 @@ test("locks the complete public graphic hierarchy inventory", () => {
       assert.equal(rootChildren.slice(0, childCount).every(id =>
         program.graphicSpec.objects[id].type === "canvas"
       ), true);
-      const expectedParentChildren = chart.id === "facet-grid"
+      const expectedParentChildren = chart.id === "facet-header-rotation"
+        ? ["facet-headers"]
+        : chart.id === "facet-grid"
         ? ["matrix-headers"]
         : chart.id === "repeat-charts"
           ? ["metrics-headers", "metrics-shared-legend"]

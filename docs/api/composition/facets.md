@@ -75,6 +75,44 @@ The two channels select one combined block. Both scale bindings, samples and
 `clipHeight` survive saving, loading and layout edits; removing that block leaves
 other parent legend blocks intact.
 
+## Rotate panel headers
+
+{% include chart-example.html id="facet-header-rotation" %}
+
+Put a region name beside its panel with the existing header editor:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```js
+program.editFacetHeaders({
+  role: "column",
+  side: "left",
+  rotation: { value: -90, unit: "degrees" }
+});
+```
+
+This is a fragment for an existing facet program. A one-field facet uses the
+`column` header role for each panel, including panels arranged in one column.
+Grid facets also provide a `row` role. The [complete example](https://github.com/ggaction/ggaction/tree/{{ site.data.provenance.exampleSourceRef }}/examples/facet-header-rotation)
+declares the axes and grid before arranging the two region panels.
+
+The same `rotation` option is available in common `headers` and in
+`headers.row` or `headers.column` during `facet`, `facetGrid` and `repeatCharts`.
+A number means radians; the structured form makes the unit explicit. Omission
+preserves the current choice, and `0` restores the unrotated layout.
+
+For role headers, `offset` measures the outward gap to the rotated text block;
+`align` positions that block along the plot edge. The layout reserves its rotated
+width or height. With plot spacing, an outer rotated header uses existing child
+margin space before reserving more. Child plots keep their sizes. Text that
+crosses the Canvas, another header or a retained guide still fails clearly.
+Legacy headers inside child canvases retain their existing anchor when rotated;
+increase their margin or offset when the rotated text needs more room.
+
 ## Repeat the current chart by a field
 
 {% include chart-example.html id="facet" %}
