@@ -1,5 +1,5 @@
 {
-  "status": "implemented-source-checkpoint-clean-metadata-verification-pending",
+  "status": "implemented-source-and-installed-package-verified-immutable-candidate-pending",
   "issue": 249,
   "authority": "Direct human standing approval, regular publication at1413",
   "normalInitial": {
@@ -12,9 +12,9 @@
     ]
   },
   "normal": {
-    "pass": 5011,
-    "fail": 2,
-    "pending": "Clean source documentation/terminology tests after commit; no runtime failures"
+    "tests": 5013,
+    "pass": 5013,
+    "fail": 0
   },
   "focusedDistinctTestsBeforeNormal": 72,
   "installedConsumerGroups": 64,
@@ -146,6 +146,51 @@
     {
       "path": "/tmp/ggaction-nonpositive-gamma-docs-built-v1.log",
       "sha256": "8b67b737002bb9a40f52b91eba9a2aba91b043a875723aacaf5ca645421b217d"
+    },
+    {
+      "path": "/tmp/ggaction-nonpositive-gamma-normal-v2.log",
+      "sha256": "80f00291058ee1eeabbcbd2be6c9d09e64e58b3d594704f8abdfe534727323c3"
+    },
+    {
+      "path": "/tmp/ggaction-nonpositive-gamma-clean-source-docs-v1.log",
+      "sha256": "254ea0438b4774b0e5545768e55aa1e6248999d362093650e51250d92c97b49a"
+    },
+    {
+      "path": "/tmp/ggaction-nonpositive-gamma-docs-build-v2.log",
+      "sha256": "89c29c8bd0a8669d8a3ad206603a507b9ebb7dcd2127f5b554f6b72e8c3f9d58"
+    },
+    {
+      "path": "/tmp/ggaction-nonpositive-gamma-docs-built-v2.log",
+      "sha256": "8b67b737002bb9a40f52b91eba9a2aba91b043a875723aacaf5ca645421b217d"
+    },
+    {
+      "path": "/tmp/ggaction-nonpositive-gamma-docs-browser-v1.log",
+      "sha256": "a6c413832c2ac970262d660fe51fe2b6b1ac8d6ab97e797817fdb77cd9193c60"
+    },
+    {
+      "path": "/tmp/ggaction-nonpositive-gamma-current-page-browser-v1.log",
+      "sha256": "24f72283bed8acaa0b74d50237dd810e933b4e198af27206cb8b20321d4fc3f7"
+    },
+    {
+      "path": "/tmp/ggaction-nonpositive-gamma-current-page-browser-v2.log",
+      "sha256": "83260849529bd603ceaf8a9e8621c56355182410453185daaa5cd7e9b8f5e671"
+    },
+    {
+      "path": "/tmp/ggaction-nonpositive-gamma-package-limits-v1.json",
+      "sha256": "6c3e044b8918e3f0b357b73c668e70fd79eb172d680943f4ae84a982d4778c9c"
     }
-  ]
+  ],
+  "cleanSourceDocumentationTests": 120,
+  "builtDocumentationPages": 150,
+  "docsBrowser": {
+    "allPagesWidths": [
+      320,
+      390,
+      768
+    ],
+    "currentChangedPage": "pass",
+    "currentChangedPageAccessibilityViolations": 0,
+    "initialAdHocHarnessFailure": "v1 used browser.newPage without explicit context; corrected v2 passes; no product failure"
+  },
+  "sourceImplementationCommit": "035a53f467d709225dba2516c641233aac7b1700"
 }

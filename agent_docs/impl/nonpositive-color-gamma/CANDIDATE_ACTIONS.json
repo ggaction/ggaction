@@ -1,5 +1,5 @@
 {
-  "status": "implemented-local-source-package-verified-clean-docs-cohort-pending",
+  "status": "implemented-source-package-docs-verified-local-cohort-pending",
   "approval": "Direct human standing approval of all previous and future in-scope API, numeric and visual questions; no image inspection.",
   "implemented": true,
   "newActions": [],
