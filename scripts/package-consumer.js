@@ -190,6 +190,30 @@ async function testNodeConsumer(directory) {
     }
 
     for (const factory of [chart,basicChart]) {
+      const rightRows=[{name:"A",age:25},{name:"B",age:39}],leftRows=[{person:"B",group:"First"},{person:"A",group:"Second"}];
+      const base=factory().createCanvas({width:400,height:280,margin:50})
+        .createData({id:"people",values:rightRows}).createData({id:"groups",values:leftRows});
+      const joined=base.createLookupData({id:"ages",field:"person",lookup:{data:"people",key:"name",fields:["age"]}});
+      assert.deepEqual(joined.semanticSpec.datasets.find(d=>d.id==="ages").values,[{person:"B",group:"First",age:39},{person:"A",group:"Second",age:25}]);
+      assert.deepEqual(joined.semanticSpec.datasets.find(d=>d.id==="people").values,rightRows);
+      assert.deepEqual(joined.semanticSpec.datasets.find(d=>d.id==="groups").values,leftRows);
+      const bars=joined.createBarPlot({x:"group",y:"age"});
+      assert.deepEqual(deserializeProgram(serializeProgram(bars)).graphicSpec,bars.graphicSpec);
+      assert(renderToSVG(bars).includes("<rect"));
+      assert((await renderToPNGBuffer(bars)).buffer.length>100);
+      assert((await renderToPDFBuffer(bars)).buffer.length>100);
+      if(factory===chart){
+        const edited=bars.editLookupData({target:"ages",lookup:{data:"people",key:"name",fields:["age"],as:["years"]}});
+        assert.equal(edited.semanticSpec.layers[0].encoding.y.field,"years");
+        assert.deepEqual(edited.graphicSpec.objects.barPlot.items,bars.graphicSpec.objects.barPlot.items);
+        assert.equal(edited.graphicSpec.objects.yAxisTitle.properties.text,"mean(years)");
+        const revised=bars.reviseData({source:"people",id:"peopleV2",values:[{name:"A",age:30},{name:"B",age:45}]});
+        const id=revised.materializationConfigs.data.lookup.ages.current;
+        assert.deepEqual(revised.semanticSpec.datasets.find(d=>d.id===id).values.map(r=>r.age),[45,30]);
+      }else assert.equal(bars.editLookupData,undefined);
+    }
+
+    for (const factory of [chart,basicChart]) {
       const arrayRows=[{amounts:[1,2],labels:["A","B"],group:"alpha"},{amounts:[3,4,5],labels:["C","D"],group:"beta"}];
       const base=factory().createCanvas().createData({values:arrayRows});
       const expanded=base.createFlattenData({id:"expanded",fields:["amounts","labels"],as:["x","label"]});
@@ -3445,6 +3469,17 @@ const groupedFull: Parameters<FullFormatsProgram["createXAxisLabels"]>[0] = {for
 const weekdayFull: Parameters<FullFormatsProgram["createXAxisLabels"]>[0] = {format:"%a"};
 const groupedBasic: Parameters<BasicFormatsProgram["createLinePlot"]>[0] = {x:"x",y:"y",guides:{axes:{x:{ticksAndLabels:{labels:{format:",.2f"}}}}}};
 const weekdayBasic: Parameters<BasicFormatsProgram["createLinePlot"]>[0] = {x:{field:"date",fieldType:"temporal"},y:"y",guides:{axes:{x:{ticksAndLabels:{labels:{format:"%a"}}}}}};
+declare const fullLookup: FullFormatsProgram;
+declare const basicLookup: BasicFormatsProgram;
+fullLookup.createLookupData({id:"ages",field:"person",lookup:{data:"people",key:"name",fields:["age"]}});
+basicLookup.createLookupData({id:"ages",field:"person",lookup:{data:"people",key:"name",fields:["age"]}});
+fullLookup.editLookupData({target:"ages",lookup:{data:"people",key:"name",fields:["age"],as:["years"]}});
+// @ts-expect-error lookup reference is explicit
+fullLookup.createLookupData({id:"ages",field:"person",lookup:{key:"name",fields:["age"]}});
+// @ts-expect-error nested edit replaces a complete lookup definition
+fullLookup.editLookupData({target:"ages",lookup:{key:"name"}});
+// @ts-expect-error Basic is creation only
+basicLookup.editLookupData({target:"ages",field:"other"});
 declare const numericText: FullFormatsProgram;
 numericText.encodeDx({field:"shift"}).encodeDy({value:-6});
 numericText.encodeChannels({target:"text",channels:{dx:{field:"shift"},dy:{value:0}}});
@@ -5601,6 +5636,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "summary-data",
       "bin-data",
       "fold-data",
+      "named-dataset-lookup",
       "computed-data",
       "derived-data-editing",
       "safe-resource-removal",

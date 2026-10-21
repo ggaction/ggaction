@@ -32,6 +32,7 @@ domain action을 통해서만 실행한다.
 | `materializeGradientPlot` | deferred `createGradientPlot` completion and position encodings |
 | `materializeGradientPlotFill` | gradient-plot body, scale, text, and density-legend consumers |
 | `materializeFilteredData` | filter data actions |
+| `materializeLookupData` | immutable typed lookup between named datasets |
 | `materializeFlattenData` | immutable aligned array expansion |
 | `materializeFoldData` | reusable wide-to-long data actions |
 | `materializeMarkFilteredData` | `filterMarks` selected-item member rows |

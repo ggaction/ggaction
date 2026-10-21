@@ -426,7 +426,9 @@ function resolveRepeatDefinition(program, args) {
   }
   const layer = findLayer(program, target);
   const dataset = findDataset(program, layer.data);
-  if (dataset?.transform?.length > 0) {
+  // Lookup has already preserved the primary grain and materialized its fields.
+  // Repeating an output field changes only the encoding, never either input table.
+  if (dataset?.transform?.length > 0 && dataset.transform[0].type!=="lookup") {
     throw new Error("repeatCharts does not rewrite a derived dataset dependency.");
   }
   const encoding = parallelChannel

@@ -91,6 +91,10 @@
       {
         "type": "file",
         "path": "contracts/transform-registry.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/lookup-data/"
       }
     ],
     "documentation": [
@@ -265,6 +269,28 @@
       {
         "type": "prefix",
         "path": "unit/actions/guides/"
+      }
+    ],
+    "lookup-data": [
+      {
+        "type": "file",
+        "path": "unit/grammar/lookup.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/dataset-dependencies.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/lookup-data.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/composition/lookup-facets.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/lookup-data/"
       }
     ],
     "marks": [

@@ -4,6 +4,10 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Add `createLookupData` / `editLookupData` for typed lookup between named datasets, preserving primary rows and both raw inputs.
+- Support immutable lookup edits, revisions from either input, typed lineage, persistence,
+  facet/grid composition and encoding repeats over direct lookup results.
+
 - Support finite zero and negative Cubehelix lightness gamma, including explicit zero-position RGB boundaries, shared color/stroke legends and immutable replay.
 
 - Add `encodeDx` and `encodeDy` for direct numeric independent Text offsets, including atomic channel assignment, immutable data replay and saved programs. Basic retains its Text-family exclusion.

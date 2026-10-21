@@ -304,6 +304,14 @@ Evidence: `test/unit/layout/facet-top-lane.test.js`, `test/unit/actions/composit
   `test/unit/actions/composition/facet-editing.test.js`,
   `test/charts/program-composition/variants/layouts/public.test.js`.
 
+### Named lookup data composition
+
+- A row-preserving lookup may be faceted by a primary or copied field. Partition only the primary
+  branch, retain its complete reference table, and replay both-input revisions atomically.
+- `repeat` accepts a direct materialized lookup dataset and changes only the selected encoding
+  fields. It does not rewrite lookup inputs. Other derived-data repeat restrictions remain.
+- Evidence: `test/unit/actions/composition/lookup-facets.test.js`.
+
 ## `editFacetScales`
 
 - Signature: `editFacetScales({ x?, y?, xOffset?, yOffset?, theta?, r?, color?, stroke?, size?, shape?, opacity?, strokeDash?, parallelDimensions? })`.

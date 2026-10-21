@@ -328,6 +328,24 @@
       }
     },
     {
+      "name": "createLookupData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Copy named reference fields while preserving primary rows; edit with editLookupData",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "createlookupdata"
+      }
+    },
+    {
       "name": "createFlattenData",
       "layer": "user-facing",
       "domain": "statistics",
@@ -649,6 +667,24 @@
       "contract": {
         "file": "agent_docs/contract/current/CORE.md",
         "anchor": "editfiltereddata"
+      }
+    },
+    {
+      "name": "editLookupData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Revise typed lookup inputs and aliases with atomic dependent replay",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "editlookupdata"
       }
     },
     {
@@ -5245,6 +5281,7 @@
       "materializeGradientPlot",
       "materializeGradientPlotFill",
       "materializeFilteredData",
+      "materializeLookupData",
       "materializeFlattenData",
       "materializeFoldData",
       "materializeMarkFilteredData",

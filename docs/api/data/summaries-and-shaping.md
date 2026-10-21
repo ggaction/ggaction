@@ -240,3 +240,55 @@ rows; invalid input and overflow leave the earlier program unchanged.
 The Full entry point supports `editFlattenData({target, fields?, as?, dependents?})` and the
 same normalized `flatten` definition through `editDerivedData`. See
 [data revisions](./revisions-and-removal.md#editing-derived-data) for atomic dependent replay.
+
+## Named table lookup
+
+{% include chart-example.html id="lookup-data" %}
+
+Keep two tables separate and copy selected reference fields using a typed key:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `data: "people"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas({ width: 400, height: 280, margin: 50 })
+  .createData({ id: "people", values: [
+    { name: "A", age: 25 }, { name: "B", age: 39 }, { name: "C", age: 56 }
+  ] })
+  .createData({ id: "groups", values: [
+    { person: "A", group: "First" }, { person: "B", group: "First" },
+    { person: "C", group: "Second" }
+  ] })
+  .createLookupData({ id: "ages", field: "person", lookup: {
+    data: "people", key: "name", fields: ["age"]
+  } })
+  .createBarPlot({ x: "group", y: { field: "age", aggregate: "mean" } });
+```
+
+The bars show means 32 and 56. Both raw tables stay unchanged. The same creation chain
+works with `chart` imported from `ggaction/basic`. Use `source` only when the primary
+input is not the current table; `lookup.data` is always explicit.
+
+`fields` must be nonempty and unique. `as` optionally supplies equally many unique output
+names; the default names are the selected fields. Output names cannot replace primary
+columns. Keys are strings, finite numbers or booleans: number `1` and string `"1"` differ.
+Null or missing keys never match. Unmatched rows and missing selected cells produce null.
+Duplicate non-null reference keys reject; no row is silently chosen. Copied cells retain
+their existing JSON types, so numeric strings require an explicit conversion before
+strict numeric operations.
+
+The result preserves primary row count and order, including nested cells and raw ancestors.
+Lookup work is bounded by `reference rows + primary rows × (selected fields + 1)`, up to
+10,000,000 operations, with the existing input-data limits. Invalid options, fields, keys,
+aliases or excessive work leave the earlier program unchanged.
+
+In Full, use `editLookupData({ target, field?, lookup?, dependents? })`. A supplied `lookup`
+replaces the whole object. Revisions of either table update dependent charts; use
+`dependents: "recompute"` for downstream derived data. Generic `editDerivedData` accepts
+the same complete normalized lookup definition. See [data revisions](./revisions-and-removal.md#editing-derived-data).

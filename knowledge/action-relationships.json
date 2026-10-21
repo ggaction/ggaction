@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "source": "generated lifecycle smoke corpus plus selection lifecycle",
-  "actionCount": 288,
+  "actionCount": 290,
   "relationships": [
     {
       "name": "createCanvas",
@@ -98,6 +98,12 @@
     },
     {
       "name": "createBinData",
+      "wraps": [
+        "createDerivedData"
+      ]
+    },
+    {
+      "name": "createLookupData",
       "wraps": [
         "createDerivedData"
       ]
@@ -214,6 +220,12 @@
     },
     {
       "name": "editFilteredData",
+      "wraps": [
+        "editDerivedData"
+      ]
+    },
+    {
+      "name": "editLookupData",
       "wraps": [
         "editDerivedData"
       ]

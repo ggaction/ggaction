@@ -2,16 +2,16 @@
   "schemaVersion": 1,
   "status": "development",
   "packageVersion": "0.0.21",
-  "contractId": "sha256:ec420508d4ce85051934d83ed1264c1e1645db3266c301684098870f2c50d99c",
-  "sourceCommit": "fff362e88080fa0b3438df58893867e8c6f3e5e6",
-  "sourceRef": "fff362e88080fa0b3438df58893867e8c6f3e5e6",
-  "exampleSourceRef": "fff362e88080fa0b3438df58893867e8c6f3e5e6",
+  "contractId": "sha256:6f56f49c9b576fd0ef9be99686366556d8a4f92038f89f2fff42b4b23ac5f35e",
+  "sourceCommit": null,
+  "sourceRef": "main",
+  "exampleSourceRef": "codex/batch200-library-fixes",
   "baseline": {
     "tag": "v0.0.13",
     "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
     "actionCount": 234
   },
-  "actionCount": 288,
+  "actionCount": 290,
   "actionAvailability": {
     "createCanvas": {
       "availableBy": "v0.0.13"
@@ -95,6 +95,10 @@
       "introducedAfter": "v0.0.13",
       "status": "development"
     },
+    "createLookupData": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
     "createFoldData": {
       "availableBy": "v0.0.13"
     },
@@ -159,6 +163,10 @@
       "status": "development"
     },
     "editFlattenData": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editLookupData": {
       "introducedAfter": "v0.0.13",
       "status": "development"
     },

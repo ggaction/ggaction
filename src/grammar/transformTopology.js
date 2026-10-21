@@ -9,6 +9,7 @@ const TRANSFORM_TOPOLOGY = Object.freeze({
   ecdf: Object.freeze({ facetTopology: "statistical" }),
   filter: Object.freeze({ facetTopology: "rowPreserving" }),
   flatten: Object.freeze({ facetTopology: "statistical" }),
+  lookup: Object.freeze({ facetTopology: "rowPreserving" }),
   fold: Object.freeze({ facetTopology: "statistical" }),
   gradientProfile: Object.freeze({ facetTopology: "statistical" }),
   horizon: Object.freeze({ facetTopology: "statistical" }),

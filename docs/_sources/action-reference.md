@@ -561,6 +561,16 @@ Materialize reusable one-dimensional bounds, counts, and optional source
 members using the same edge rules as Histogram.
 [Source and Derived Data](../api/data/source-and-derived.md#createbindata-id-source-field-binoptions)
 
+### `createLookupData`
+
+```javascript
+createLookupData({ id, source?, field, lookup: { data, key, fields, as? } })
+```
+
+Copy fields from one named table without changing primary row order or count.
+Keys keep their scalar types; unmatched rows receive null, and duplicate reference keys reject.
+Full and Basic support creation. [Named table lookup](../api/data/summaries-and-shaping.md#named-table-lookup)
+
 ### `createFlattenData`
 
 ```javascript
@@ -1237,6 +1247,7 @@ semantic roles; expressions and predicates are never rewritten as strings.
 
 ```javascript
 editComputedData({ target, as?, expression?, dependents? })
+editLookupData({ target, field?, lookup?, dependents? })
 editFlattenData({ target, fields?, as?, dependents? })
 editFoldData({ target, fields?, as?, dependents? })
 editSummaryData({ target, groupBy?, aggregates?, members?, weight?, dependents? })

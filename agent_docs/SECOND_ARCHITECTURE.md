@@ -100,6 +100,21 @@ package entry는602→604다. 마지막 grammar 검증을 포함한 staging unpa
 소유한다. Full gzip423024와 Basic209555bytes는 각각 이전 한도423000/209000을
 24/555bytes 초과해 최소1000단위424000/210000으로 조정했다. SVG25000은 유지한다.
 
+Named-dataset lookup은 기존 derived-data 계층의 첫 명시적 이중 입력이다.
+`core/datasetReferences.js`가 primary source와 lookup.data의 canonical reference path를 한 번
+소유하고 resource cleanup/revision/persistence가 공유한다. `grammar/datasetDependencies.js`는
+기존 unary DFS 순서를 보존하는 stable topological descendant 순서와 양쪽 ancestor 순서를
+계산한다. `grammar/lookup.js`는 row-preserving typed key 계산과 한도를 소유한다.
+wrapped data action은 두 schema/values를 preflight하고 기존 semantic primitive를 명시적으로
+호출한다. typed schema는 양쪽 입력 lineage를 기록한다. Facet은 primary만 분할하고 reference
+표는 보존하며, repeat는 직접 materialized lookup의 encoding만 바꾸도록 제한적으로 허용한다.
+기존 semantic/graphic 분리, renderer와 자동 compiler 부재는 바뀌지 않는다. 정확한 값 계약은
+`contract/current/CORE.md`가 소유한다. 새 shared reference/grammar/action module4개로
+entry605→609다. Staging 실측861631packed/4160293unpacked bytes와 search846355bytes를
+기존 최소1000단위862000/4161000/847000으로만 반영한다. 이전 한도 통과를 주장하지 않는다.
+Full427506/Basic215605gzip bytes를 최소1000단위428000/216000으로 반영하며 SVG25000은 유지한다.
+최종 archive와 browser gzip은 설치 consumer evidence가 소유한다.
+
 ## 전체 계층
 
 ```text
@@ -362,8 +377,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Gzip ceiling |
 | --- | ---: |
-| `ggaction` | 426,000 bytes |
-| `ggaction/basic` | 214,000 bytes |
+| `ggaction` | 428,000 bytes |
+| `ggaction/basic` | 216,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 0.0.20의 Area 정량 색상과 seeded mean CI 추가 후 Node20.20.2 installed consumer는

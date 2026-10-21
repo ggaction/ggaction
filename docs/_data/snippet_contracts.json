@@ -1445,6 +1445,20 @@
     "executable": false
   },
   {
+    "file": "api/data/summaries-and-shaping.md",
+    "block": 6,
+    "heading": "Named table lookup",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [],
+    "resources": [
+      "data: \"people\""
+    ],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `data: \"people\"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "12dd1c8c63e4c654388c0f31c328f1ba2ca96163adedf7e0213aba8fddb2c5f6",
+    "executable": false
+  },
+  {
     "file": "api/data/time-units.md",
     "block": 1,
     "heading": "`createTimeUnitData({ id, source?, field, temporalUnit?, unit, as?, timeZone?, weekStartsOn?, weekRule? })`",

@@ -1,4 +1,7 @@
 import { validateGraphicClip } from "../grammar/schemas/graphicClip.js";
+import {deriveLookupRows,sameLookupValue} from "../grammar/lookup.js";
+import {deriveTransformSchema,datasetSchemaContext} from "../grammar/datasetSchema.js";
+import {orderedDatasetAncestors} from "../grammar/datasetDependencies.js";
 import {validateLegendSpacing} from "../grammar/legendSpacing.js";
 import { requestedMarkClip, validateMarkClipCoordinate } from "../selectors/markClip.js";
 import { validateAuthoredFacetLegend } from "../grammar/facets/legendIntent.js";
@@ -377,6 +380,15 @@ export function validateProgramState(program, path) {
     validateRegressionFitStatistics(cache, dataset, resources.get("data").get(dataset?.source));
   }
   for (const dataset of semantic.datasets) {
+    if(dataset.transform?.[0]?.type==="lookup"){
+      orderedDatasetAncestors(semantic.datasets,dataset.id);
+      const transform=dataset.transform[0],source=resources.get("data").get(dataset.source),right=resources.get("data").get(transform.lookup.data);
+      if(source===undefined||right===undefined)throw invalidSnapshot("Lookup requires both existing input datasets.",path);
+      const schema=deriveTransformSchema(source.schema,transform,dataset.values,
+        datasetSchemaContext(source,transform,dataset.id,id=>resources.get("data").get(id)));
+      if(!sameLookupValue(dataset.schema,schema))throw invalidSnapshot("Lookup schema does not match both inputs.",path);
+      if(dataset.values!==undefined&&!sameLookupValue(dataset.values,deriveLookupRows(source.values,right.values,transform)))throw invalidSnapshot("Lookup values do not match both input datasets.",path);
+    }
     if (dataset.transform?.[0]?.type !== "regressionStatistics") continue;
     const fit = resources.get("data").get(dataset.source);
     requireRegressionStatisticsSource(fit);

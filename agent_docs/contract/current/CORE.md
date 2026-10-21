@@ -597,6 +597,44 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - ✅ Covered: weighted mass, positive-weight extent/members, zero-weight prevalidation과 invalid/all-zero weights.
 - Evidence: `test/unit/actions/data/bin-data.test.js`.
 
+## `createLookupData`
+
+- Signature: `createLookupData({id, source?, field, lookup:{data,key,fields,as?}})`. Full/Basic 생성이다.
+  source 생략 시 기존 current-data resolver를 사용하고 reference data는 반드시 명시한다.
+- field/key는 각 materialized 입력 schema의 nonempty field다. fields는 비어 있지 않은 고유
+  reference field 배열이며 as는 같은 길이의 고유 출력 이름 배열, 생략 시 fields다.
+  출력 이름은 주 입력 열과 겹칠 수 없고 명시 alias로 충돌을 해결한다.
+- 왼쪽 행 수·순서·모든 기존 cell을 보존하고 오른쪽 값만 복사한다. Scalar key는 타입을
+  포함하여 정확히 비교한다(string/finite number/boolean). null/missing은 매칭하지 않는다.
+  오른쪽 null/missing key는 제외하고 그 외 중복 key는 빈 왼쪽 입력에서도 거부한다.
+  unmatched/missing selected cell은 명시 null이다. 숫자 문자열도 변환하지 않는다.
+- Nested JSON과 빈 원본 열 이름도 유지하며 own-property 복사 후 clone/freeze한다.
+  기존 data 한도와 `rightRows + leftRows * (fields.length + 1) <= 10,000,000` work 한도다.
+  출력 행 수를 늘리지 않으므로 새 generated-row cap은 없다.
+- Semantic: primary source와 단일 `{type:"lookup",field,lookup:{data,key,fields,as}}`를 저장한다.
+  두 입력은 canonical actual dataset ID다. 출력 schema는 오른쪽 storageType과 nullable:true,
+  optional:false, 왼쪽 key/오른쪽 key·값의 typed lineage를 보존한다. Renderer는 변경하지 않는다.
+- 어느 입력의 revision도 stable topological 순서로 affected descendants를 한 번씩 재생한다.
+  기존 unary DFS 순서는 유지하고 cycle/missing input/alias/schema/consumer 오류는 atomic하게 거부한다.
+  양쪽 live reference는 removeData 보호와 editable persistence 검증에 포함한다.
+- Facet은 주 입력만 분할하고 오른쪽 표를 유지한다. 직접 materialized lookup의 repeat는 출력
+  field encoding만 바꾸며 lookup 정의를 다시 쓰지 않는다. 다른 derived repeat 제한은 유지한다.
+- Coverage: `test/unit/grammar/lookup.test.js`, `test/unit/grammar/dataset-dependencies.test.js`,
+  `test/unit/actions/data/lookup-data.test.js`, `test/unit/actions/composition/lookup-facets.test.js`,
+  `test/charts/lookup-data/public.test.js`, `test/contracts/derived-editing-types.test.js`.
+
+### Formal values — `createLookupData`
+
+- Implemented: `LookupDataOptions`, normalized `DatasetLookupTransform`; Full/Basic 생성과 materialization.
+- Proposed (NOT IMPLEMENTED): many-to-many lookup, overwrite and implicit key coercion.
+
+### Value coverage — `createLookupData`
+
+- ✅ Covered: typed keys, null/missing/duplicate rules, aliases, nested own values, empty inputs and work bounds.
+- ✅ Covered: both-input/diamond revision, live references, typed lineage/persistence, facets/grid/repeat,
+  Full/Basic creation and independent prejoined chart output.
+- Evidence: the grammar, action, composition, chart and type tests above.
+
 ## `createFlattenData`
 
 - Signature: `createFlattenData({id, source?, fields, as?})`. Full/Basic 생성이며 id는 명시적,
@@ -1115,6 +1153,30 @@ weight를 지원하는 focused editors에서만 stored weight를 제거한다. �
 
 - ✅ Covered: field-only 유지, oneOf/predicate/range 상호배타 전환, invalid range와 empty patch 거부.
 - Evidence: `test/unit/actions/data/derived-editing.test.js`.
+
+## `editLookupData`
+
+- Signature: `editLookupData({target, field?, lookup?, dependents?})`, Full 전용이다.
+  최소 한 개 transform option이 필요하고 생략한 option은 유지한다. lookup을 제공하면
+  data/key/fields와 선택 as를 가진 전체 객체로 교체한다. Default as는 해당 fields다.
+- 기존 focused derived editor의 reject/recompute 정책을 사용한다. Generic editDerivedData는
+  같은 normalized lookup definition을 받으며 definition.source는 받지 않는다.
+  주 원본 교체는 reviseData가 소유한다. alias 역할은 원래 reference field별로 식별하여
+  호환되는 직접 consumer를 재결합한다. dependent expression의 field 문자열을 추측하여 고치지 않는다.
+- 현재 출력 또는 downstream 표를 reference로 삼는 logical cycle, duplicate key, schema 또는
+  downstream consumer 오류는 이전 program 전체를 보존한다. 성공 시 immutable physical revision과
+  양쪽 source 참조를 갱신한다. Basic은 creation-only surface를 유지한다.
+
+### Formal values — `editLookupData`
+
+- Implemented: `EditLookupDataOptions`, Full-only focused editor and generic editable lookup definition.
+- Proposed (NOT IMPLEMENTED): partial nested lookup patches and primary-source definition replacement.
+
+### Value coverage — `editLookupData`
+
+- ✅ Covered: direct alias rebind, derived reference changes, dependent replay, cycle and atomic rejection.
+- Evidence: `test/unit/actions/data/lookup-data.test.js`,
+  `test/unit/actions/composition/lookup-facets.test.js`, `test/contracts/derived-editing-types.test.js`.
 
 ## `editFlattenData`
 

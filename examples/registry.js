@@ -121,6 +121,7 @@ import { createCrossFeatureDashboard } from
 import { createProgramCompositionExample } from
   "./program-composition/program.js";
 import { createFacetGridExample } from "./facet-grid/program.js";
+import { createLookupExample } from "./lookup-data/program.js";
 import { createFacetHeaderRotation } from "./facet-header-rotation/program.js";
 import { createRepeatChartsExample } from "./repeat-charts/program.js";
 import {
@@ -441,6 +442,11 @@ export const PUBLIC_CHARTS = Object.freeze([
     createProgram: () => createFacetGridExample(),
     docsGroup: "charts",
     browser: { path: "facet-grid/", canvas: "#chart" }
+  }),
+  example({
+    id: "lookup-data", data: {}, width: 400, height: 280,
+    createProgram: () => createLookupExample(), docsGroup: "charts",
+    browser: { path: "lookup-data/", canvas: "#chart" }
   }),
   example({
     id: "facet-header-rotation",

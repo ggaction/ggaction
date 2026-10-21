@@ -127,6 +127,14 @@
     "layer": "user-facing",
     "domain": "statistics"
   },
+  "createLookupData": {
+    "operation": "create",
+    "authoringRoles": [
+      "H1"
+    ],
+    "layer": "user-facing",
+    "domain": "statistics"
+  },
   "createFlattenData": {
     "operation": "create",
     "authoringRoles": [
@@ -271,6 +279,15 @@
     ],
     "layer": "user-facing",
     "domain": "core"
+  },
+  "editLookupData": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H1",
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "statistics"
   },
   "editFlattenData": {
     "operation": "edit",

@@ -570,6 +570,12 @@ Put panel names beside their plots with an explicit header rotation.
 
 Representative actions: `facet`, `editFacetHeaders`, `editCompositionLayout`. [Documentation](https://ggaction.github.io/ggaction/api/composition/facets/#rotate-panel-headers).
 
+### [Mean age by group](./lookup-data/)
+
+Copy typed reference values while keeping both original tables unchanged.
+
+Representative actions: `createData`, `createLookupData`, `createBarPlot`. [Documentation](https://ggaction.github.io/ggaction/api/data/summaries-and-shaping/#named-table-lookup).
+
 ## Development fixtures
 
 The catalog includes every maintained public chart program. Getting Started

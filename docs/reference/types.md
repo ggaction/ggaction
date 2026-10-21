@@ -43,6 +43,7 @@ interface ChartProgramActions {
   createSummaryData(options: SummaryDataOptions): ChartProgram;
   createBinData(options: BinDataOptions): ChartProgram;
   createFlattenData(options: FlattenDataOptions): ChartProgram;
+  createLookupData(options: LookupDataOptions): ChartProgram;
   createFoldData(options: FoldDataOptions): ChartProgram;
   createComputedData(options: ComputedDataOptions): ChartProgram;
   createNormalizedData(options: NormalizedDataOptions): ChartProgram;
@@ -62,6 +63,7 @@ interface ChartProgramActions {
   editComputedData(options: EditComputedDataOptions): ChartProgram;
   editFilteredData(options: EditFilteredDataOptions): ChartProgram;
   editFlattenData(options: EditFlattenDataOptions): ChartProgram;
+  editLookupData(options: EditLookupDataOptions): ChartProgram;
   editFoldData(options: EditFoldDataOptions): ChartProgram;
   editSummaryData(options: EditSummaryDataOptions): ChartProgram;
   editBinData(options: EditBinDataOptions): ChartProgram;
@@ -3856,6 +3858,26 @@ export type DatasetIntervalTransform = {
 
 Related types: [`DatasetIntervalOutputFields`](#type-datasetintervaloutputfields) · [`MeanConfidenceIntervalMethod`](#type-meanconfidenceintervalmethod).
 
+### `DatasetLookupTransform` {#type-datasetlookuptransform}
+
+<details markdown="1">
+<summary>Expand DatasetLookupTransform</summary>
+
+```typescript
+export interface DatasetLookupTransform {
+  readonly type: "lookup";
+  readonly field: string;
+  readonly lookup: {
+    readonly data: string;
+    readonly key: string;
+    readonly fields: readonly string[];
+    readonly as: readonly string[];
+  };
+}
+```
+
+</details>
+
 ### `DatasetNormalizeBaselineTransform` {#type-datasetnormalizebaselinetransform}
 
 <details markdown="1">
@@ -4147,6 +4169,7 @@ export type DatasetTransform =
   | DatasetNormalizedTransform
   | DatasetFilterTransform
   | DatasetFlattenTransform
+  | DatasetLookupTransform
   | DatasetFoldTransform
   | DatasetRegressionTransform
   | DatasetRegressionStatisticsTransform
@@ -4164,7 +4187,7 @@ export type DatasetTransform =
 
 </details>
 
-Related types: [`DatasetBinTransform`](#type-datasetbintransform) · [`DatasetBin2DTransform`](#type-datasetbin2dtransform) · [`DatasetCompleteTransform`](#type-datasetcompletetransform) · [`DatasetComputedTransform`](#type-datasetcomputedtransform) · [`DatasetImputedTransform`](#type-datasetimputedtransform) · [`DatasetNormalizedTransform`](#type-datasetnormalizedtransform) · [`DatasetFilterTransform`](#type-datasetfiltertransform) · [`DatasetFlattenTransform`](#type-datasetflattentransform) · [`DatasetFoldTransform`](#type-datasetfoldtransform) · [`DatasetRegressionTransform`](#type-datasetregressiontransform) · [`DatasetRegressionStatisticsTransform`](#type-datasetregressionstatisticstransform) · [`DatasetSortTransform`](#type-datasetsorttransform) · [`DatasetDensityTransform`](#type-datasetdensitytransform) · [`DatasetECDFTransform`](#type-datasetecdftransform) · [`DatasetHorizonTransform`](#type-datasethorizontransform) · [`DatasetIntervalTransform`](#type-datasetintervaltransform) · [`DatasetSummaryTransform`](#type-datasetsummarytransform) · [`DatasetStackTransform`](#type-datasetstacktransform) · [`DatasetStatisticalReferenceTransform`](#type-datasetstatisticalreferencetransform) · [`DatasetTimeUnitTransform`](#type-datasettimeunittransform) · [`DatasetWindowTransform`](#type-datasetwindowtransform).
+Related types: [`DatasetBinTransform`](#type-datasetbintransform) · [`DatasetBin2DTransform`](#type-datasetbin2dtransform) · [`DatasetCompleteTransform`](#type-datasetcompletetransform) · [`DatasetComputedTransform`](#type-datasetcomputedtransform) · [`DatasetImputedTransform`](#type-datasetimputedtransform) · [`DatasetNormalizedTransform`](#type-datasetnormalizedtransform) · [`DatasetFilterTransform`](#type-datasetfiltertransform) · [`DatasetFlattenTransform`](#type-datasetflattentransform) · [`DatasetLookupTransform`](#type-datasetlookuptransform) · [`DatasetFoldTransform`](#type-datasetfoldtransform) · [`DatasetRegressionTransform`](#type-datasetregressiontransform) · [`DatasetRegressionStatisticsTransform`](#type-datasetregressionstatisticstransform) · [`DatasetSortTransform`](#type-datasetsorttransform) · [`DatasetDensityTransform`](#type-datasetdensitytransform) · [`DatasetECDFTransform`](#type-datasetecdftransform) · [`DatasetHorizonTransform`](#type-datasethorizontransform) · [`DatasetIntervalTransform`](#type-datasetintervaltransform) · [`DatasetSummaryTransform`](#type-datasetsummarytransform) · [`DatasetStackTransform`](#type-datasetstacktransform) · [`DatasetStatisticalReferenceTransform`](#type-datasetstatisticalreferencetransform) · [`DatasetTimeUnitTransform`](#type-datasettimeunittransform) · [`DatasetWindowTransform`](#type-datasetwindowtransform).
 
 ### `DatasetWindowOperation` {#type-datasetwindowoperation}
 
@@ -5411,6 +5434,19 @@ export interface EditLegendTitleOptions extends LegendTitleStyleEditOptions {
 </details>
 
 Related types: [`LegendTitleStyleEditOptions`](#type-legendtitlestyleeditoptions) · [`LegendChannel`](#type-legendchannel).
+
+### `EditLookupDataOptions` {#type-editlookupdataoptions}
+
+<details markdown="1">
+<summary>Expand EditLookupDataOptions</summary>
+
+```typescript
+export type EditLookupDataOptions = FocusedDerivedDataEdit<LookupDataOptions>;
+```
+
+</details>
+
+Related types: [`FocusedDerivedDataEdit`](#type-focusedderiveddataedit) · [`LookupDataOptions`](#type-lookupdataoptions).
 
 ### `EditMarkLabelPlacementOptions` {#type-editmarklabelplacementoptions}
 
@@ -8119,6 +8155,22 @@ export interface LinearGradientPoint {
 export interface LinearGradientStop {
   readonly offset: number;
   readonly color: string;
+}
+```
+
+</details>
+
+### `LookupDataOptions` {#type-lookupdataoptions}
+
+<details markdown="1">
+<summary>Expand LookupDataOptions</summary>
+
+```typescript
+export interface LookupDataOptions {
+  id: string;
+  source?: string;
+  field: string;
+  lookup: { data: string; key: string; fields: readonly string[]; as?: readonly string[] };
 }
 ```
 

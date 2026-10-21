@@ -1,0 +1,183 @@
+{
+  "status": "implemented-focused-and-installed-package-verified-full-normal-and-clean-docs-pending",
+  "issue": 251,
+  "authority": "Direct human standing in-scope approval; public release at1413; sequential translation; no manual chart-image inspection",
+  "focusedFeatureAndBoundaryTests": 73,
+  "focusedFeatureAndBoundaryFailures": 0,
+  "integrationTests": 32,
+  "integrationFailures": 0,
+  "normalInitial": {
+    "tests": 5121,
+    "pass": 5110,
+    "fail": 11,
+    "failures": [
+      "missing independent primitive target test",
+      "new draw-order inventory",
+      "measured package size",
+      "selector reverse core dependency",
+      "capability sort order",
+      "search index bound in two tests",
+      "compact transform-tag declaration spacing",
+      "changelog API-name provenance",
+      "new example Git source link before commit",
+      "compact action method declaration spacing"
+    ]
+  },
+  "installedConsumerGroups": 66,
+  "installedConsumer": {
+    "package": "ggaction@0.0.21",
+    "source": "ggaction-0.0.21.tgz",
+    "sha256": "636e9e4e8cb887f837993985d8d91073cf4ee7ea22f13f2036c30e10662275d3",
+    "browserBundles": {
+      "full": {
+        "specifier": "ggaction",
+        "chunks": 1,
+        "modules": 541,
+        "minifiedBytes": 1575388,
+        "gzipBytes": 427506
+      },
+      "basic": {
+        "specifier": "ggaction/basic",
+        "chunks": 1,
+        "modules": 325,
+        "minifiedBytes": 764635,
+        "gzipBytes": 215605
+      },
+      "svg": {
+        "specifier": "ggaction/svg",
+        "chunks": 1,
+        "modules": 19,
+        "minifiedBytes": 23548,
+        "gzipBytes": 7567
+      }
+    },
+    "mcp": {
+      "coldStartMilliseconds": 149
+    },
+    "checks": [
+      "node",
+      "linear-regression-statistics-cache-and-source-revision",
+      "extension",
+      "pdf",
+      "png",
+      "svg",
+      "inspection",
+      "numeric-font-weight",
+      "point-jitter",
+      "point-packing",
+      "mark-label-removal",
+      "selected-mark-labels",
+      "semantic-label-placement",
+      "beeswarm-plot",
+      "raincloud-plot",
+      "path-order",
+      "time-unit-data",
+      "summary-data",
+      "bin-data",
+      "fold-data",
+      "named-dataset-lookup",
+      "computed-data",
+      "derived-data-editing",
+      "safe-resource-removal",
+      "advanced-authoring-integration",
+      "normalized-data",
+      "complete-data",
+      "imputed-data",
+      "stack-data",
+      "window-data",
+      "bin2d-data",
+      "binned-heatmap",
+      "parallel-coordinates",
+      "parallel-dimension-scale-editing",
+      "offset-scale-editing",
+      "stroke-color-encoding-and-legends",
+      "atomic-channel-encoding",
+      "axis-title-label-overlap-policy",
+      "numeric-independent-text-offsets",
+      "statistical-references",
+      "coordinate-aspect-and-polar-frame-editing",
+      "facet-grid-repeat-and-named-composition-editing",
+      "non-cartesian-facet-grid-and-repeat",
+      "horizon",
+      "violin-plot",
+      "polar-radar-rug-strip-ecdf-facades",
+      "right-categorical-legend-offset",
+      "grouped-corner-and-free-legend-placement",
+      "sequential-palette-count",
+      "ranged-numeric-datum-wrapper-parity",
+      "neutral-hcl-hue-borrowing",
+      "facet-numeric-legend-inference",
+      "explicit-fold-facet-partition",
+      "shared-facet-top-lane",
+      "rotated-facet-headers",
+      "explicit-axis-and-border-underlays",
+      "typescript",
+      "basic-entry-runtime-and-types",
+      "tutorial-consumers",
+      "minimal-browser-bundle-measurement",
+      "private-export-rejection",
+      "installed-local-mcp",
+      "direct-mcp-byte-equality",
+      "task-packet-v5-authoring-execution",
+      "explicit-unresolved-docs-fallback",
+      "terminal-unsupported-no-fallback"
+    ]
+  },
+  "sourceDocumentationInitial": {
+    "tests": 120,
+    "pass": 119,
+    "fail": 1,
+    "remaining": "New public example source link requires first integration commit; do not weaken link verification."
+  },
+  "packageInitialMeasurement": {
+    "entryCount": 609,
+    "size": 861631,
+    "unpackedSize": 4160293
+  },
+  "diagnostics": [
+    "Consumer initially compared auto-renamed axis titles to unchanged SVG; corrected expected title to mean(years) and retained exact unchanged bar geometry.",
+    "Full427506/Basic215605 measured gzip exceeded previous426000/214000 ceilings; minimally rounded to428000/216000. SVG25000 retained."
+  ],
+  "publicExample": "examples/lookup-data/program.js",
+  "independentPrejoinedTarget": "test/charts/lookup-data/primitive.program.js",
+  "decodedPrimitivePublicPixelsExact": true,
+  "rendererCallsAndGraphicOrderExact": true,
+  "chartPixelsManuallyInspected": false,
+  "candidateActive": false,
+  "SchoolRequests": 0,
+  "publicationPendingUntil": 1413,
+  "logs": [
+    {
+      "path": "/tmp/ggaction-lookup-normal-v1.log",
+      "sha256": "eb52913372a3d5decde3714fc9a77a18d07d26a31d90e6f209cb49ae509c4d6e"
+    },
+    {
+      "path": "/tmp/ggaction-lookup-focused-final-v1.log",
+      "sha256": "db992ee42f35da62bddea7b9615119026524cc08c76a948c1e1c280dc81c1a33"
+    },
+    {
+      "path": "/tmp/ggaction-lookup-integration-v3.log",
+      "sha256": "8f73ca448f7c4620c16658ebcf4366c3261d092fc83b3e751e401efc3ad8bc96"
+    },
+    {
+      "path": "/tmp/ggaction-lookup-package-consumer-v1.log",
+      "sha256": "e730aaa112faeee99bad8ad52eb1dc6a43a0437ab9f3c17b24e121e534c7a855"
+    },
+    {
+      "path": "/tmp/ggaction-lookup-package-consumer-v2.log",
+      "sha256": "9f636dd13e1caf7f3152ec99271635d657a6f3f5e349017297472450b3634ab6"
+    },
+    {
+      "path": "/tmp/ggaction-lookup-package-consumer-v3.log",
+      "sha256": "953403637c655d4ec855ede4b27ae5aff14313752ba6b374925546140e07ecec"
+    },
+    {
+      "path": "/tmp/ggaction-lookup-package-consumer-v4.log",
+      "sha256": "c0aad05646b79a20ae81cca4bbaa814bb9cb1b26f3137c1576970be16e325338"
+    },
+    {
+      "path": "/tmp/ggaction-lookup-docs-source-v1.log",
+      "sha256": "2efb20d095866ac5d7392aa008ec6a4fcbafbc14bfb6bb921f1127af4290a58f"
+    }
+  ]
+}

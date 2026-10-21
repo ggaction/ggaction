@@ -914,6 +914,11 @@
     "Dy": [
       "vertical text offset",
       "text pixel shift"
+    ],
+    "LookupData": [
+      "named table lookup",
+      "copy reference fields",
+      "match typed keys"
     ]
   },
   "summaryOverrides": {
@@ -1604,6 +1609,30 @@
     },
     "encodeDy": {
       "value": 8
+    },
+    "createLookupData": {
+      "id": "ages",
+      "field": "person",
+      "lookup": {
+        "data": "people",
+        "key": "name",
+        "fields": [
+          "age"
+        ]
+      }
+    },
+    "editLookupData": {
+      "target": "ages",
+      "lookup": {
+        "data": "people",
+        "key": "name",
+        "fields": [
+          "age"
+        ],
+        "as": [
+          "years"
+        ]
+      }
     }
   },
   "callPatternOverrides": {

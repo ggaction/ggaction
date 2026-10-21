@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.21.
 
-Contract: sha256:ec420508d4ce85051934d83ed1264c1e1645db3266c301684098870f2c50d99c. Status: development. Runtime source: fff362e88080fa0b3438df58893867e8c6f3e5e6. Release baseline: v0.0.13.
+Contract: sha256:6f56f49c9b576fd0ef9be99686366556d8a4f92038f89f2fff42b4b23ac5f35e. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -212,11 +212,11 @@ across the supported Node release matrix.
 ## Runnable repository examples
 
 Use the
-[generated repository example index](https://github.com/ggaction/ggaction/blob/fff362e88080fa0b3438df58893867e8c6f3e5e6/examples/README.md)
+[generated repository example index](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/README.md)
 for complete runnable modules. Browse the
 [chart gallery](./gallery/) for visual examples,
 or use
-the [Quarto and Observable JS example](https://github.com/ggaction/ggaction/tree/fff362e88080fa0b3438df58893867e8c6f3e5e6/examples/quarto-ojs/)
+the [Quarto and Observable JS example](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/quarto-ojs/)
 when authoring an `.qmd` document.
 
 ## Next
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/fff362e88080fa0b3438df58893867e8c6f3e5e6/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/fff362e88080fa0b3438df58893867e8c6f3e5e6/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -644,15 +644,15 @@ than introducing a separate renderer path.
 ![Horsepower versus miles per gallon](./assets/images/cars-scatterplot.png)
 
 This tutorial uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/fff362e88080fa0b3438df58893867e8c6f3e5e6/examples/cars-scatterplot)
-and its [canonical program](https://github.com/ggaction/ggaction/blob/fff362e88080fa0b3438df58893867e8c6f3e5e6/examples/cars-scatterplot/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/cars-scatterplot)
+and its [canonical program](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/cars-scatterplot/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/fff362e88080fa0b3438df58893867e8c6f3e5e6/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/batch200-library-fixes/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -798,7 +798,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-scatterplot/`.
-- View the [complete browser source](https://github.com/ggaction/ggaction/blob/fff362e88080fa0b3438df58893867e8c6f3e5e6/examples/cars-scatterplot/main.js).
+- View the [complete browser source](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/cars-scatterplot/main.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), and the
  [Basic Chart contract](./api/basic-charts/#createscatterplot).
@@ -816,7 +816,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/fff362e88080fa0b3438df58893867e8c6f3e5e6/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/batch200-library-fixes/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -929,7 +929,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/fff362e88080fa0b3438df58893867e8c6f3e5e6/data/gapminder.json --output public/gapminder.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/batch200-library-fixes/data/gapminder.json --output public/gapminder.json
 ```
 
 ## Complete program
@@ -1099,7 +1099,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/fff362e88080fa0b3438df58893867e8c6f3e5e6/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/batch200-library-fixes/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1321,15 +1321,15 @@ const tighter = radialBars.editArcMark({
 
 This chart shows mean acceleration over time for each origin. The complete
 module below uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/fff362e88080fa0b3438df58893867e8c6f3e5e6/examples/cars-line-chart)
-and its [complete program](https://github.com/ggaction/ggaction/blob/fff362e88080fa0b3438df58893867e8c6f3e5e6/examples/cars-line-chart/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/cars-line-chart)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/cars-line-chart/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/fff362e88080fa0b3438df58893867e8c6f3e5e6/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/batch200-library-fixes/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1465,7 +1465,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-line-chart/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/fff362e88080fa0b3438df58893867e8c6f3e5e6/examples/cars-line-chart/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/cars-line-chart/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), [Titles](./api/titles/), and the
  [Basic Chart contract](./api/basic-charts/#createlineplot).
@@ -1479,15 +1479,15 @@ program
 This chart bins car displacement, counts the rows in each bin, and stacks those
 counts by origin. The complete module uses the public npm package. The
 repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/fff362e88080fa0b3438df58893867e8c6f3e5e6/examples/cars-histogram)
-and its [complete program](https://github.com/ggaction/ggaction/blob/fff362e88080fa0b3438df58893867e8c6f3e5e6/examples/cars-histogram/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/cars-histogram)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/cars-histogram/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/fff362e88080fa0b3438df58893867e8c6f3e5e6/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/batch200-library-fixes/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1585,7 +1585,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-histogram/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/fff362e88080fa0b3438df58893867e8c6f3e5e6/examples/cars-histogram/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/cars-histogram/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), [Titles](./api/titles/), and the
  [Basic Chart contract](./api/basic-charts/#createhistogram).
@@ -1599,15 +1599,15 @@ program
 This tutorial uses a grouped bar chart as one concrete bar-chart layout. It
 aggregates job percentages by year and places the mean for men and women side
 by side. The complete module uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/fff362e88080fa0b3438df58893867e8c6f3e5e6/examples/jobs-grouped-bar)
-and its [complete program](https://github.com/ggaction/ggaction/blob/fff362e88080fa0b3438df58893867e8c6f3e5e6/examples/jobs-grouped-bar/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/jobs-grouped-bar)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/jobs-grouped-bar/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/fff362e88080fa0b3438df58893867e8c6f3e5e6/data/jobs.json --output public/jobs.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/batch200-library-fixes/data/jobs.json --output public/jobs.json
 ```
 
 ## Complete program
@@ -1716,7 +1716,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/jobs-grouped-bar/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/fff362e88080fa0b3438df58893867e8c6f3e5e6/examples/jobs-grouped-bar/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/jobs-grouped-bar/program.js).
 - Continue with [Position encodings](./api/position-encodings/),
  [Series encodings](./api/series-encodings/), and
  [Constant appearance](./api/appearance/), or review the
@@ -1732,15 +1732,15 @@ This tutorial filters the cars dataset to Japan and the USA, maps point size to
 Acceleration and point color/shape to Origin, then adds one linear fit and 95%
 mean-response confidence band per Origin. The complete module uses the public
 npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/fff362e88080fa0b3438df58893867e8c6f3e5e6/examples/cars-regression-scatterplot)
-and its [complete program](https://github.com/ggaction/ggaction/blob/fff362e88080fa0b3438df58893867e8c6f3e5e6/examples/cars-regression-scatterplot/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/cars-regression-scatterplot)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/cars-regression-scatterplot/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/fff362e88080fa0b3438df58893867e8c6f3e5e6/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/batch200-library-fixes/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1865,7 +1865,7 @@ render(program, document.querySelector('#chart').getContext('2d'));
 ```
 
 The value stays on y; y2 stores a constant zero. Both endpoints contribute to the automatic domain.
-The default opacity is 0.2. The [canonical executable example](https://github.com/ggaction/ggaction/blob/fff362e88080fa0b3438df58893867e8c6f3e5e6/examples/area-layout/program.js)
+The default opacity is 0.2. The [canonical executable example](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/area-layout/program.js)
 uses the same action flow and includes independent variants for the remaining cases.
 
 ## Choose bounds and orientation
@@ -1940,7 +1940,7 @@ explicit grid options can choose a direction. `editDensity` changes the statisti
 `editAreaMark` changes its appearance. The source remains immutable, and derived profiles retain only
 the group and the two generated value/density fields.
 
-The [runnable example](https://github.com/ggaction/ggaction/tree/fff362e88080fa0b3438df58893867e8c6f3e5e6/examples/density-plot) includes all three variants.
+The [runnable example](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/density-plot) includes all three variants.
 The workflow below shows the same lower-level owners on car data.
 
 ![Acceleration density by origin](./assets/images/cars-density-area.png)
@@ -1950,15 +1950,15 @@ Origin. The source rows remain immutable; `encodeDensity` creates a named
 derived dataset and materializes one translucent, zero-baseline area per
 group. The complete module below uses the public npm package. The repository
 also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/fff362e88080fa0b3438df58893867e8c6f3e5e6/examples/cars-density-area)
-and its [complete program](https://github.com/ggaction/ggaction/blob/fff362e88080fa0b3438df58893867e8c6f3e5e6/examples/cars-density-area/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/cars-density-area)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/cars-density-area/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/fff362e88080fa0b3438df58893867e8c6f3e5e6/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/batch200-library-fixes/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -2083,7 +2083,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-density-area/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/fff362e88080fa0b3438df58893867e8c6f3e5e6/examples/cars-density-area/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/cars-density-area/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Legends](./api/legends/), and [Scale options](./api/scales/).
 
@@ -2116,7 +2116,7 @@ Use `editHorizon` for bands, baseline, palette, or source revisions and `editAre
 stroke, and curve. An explicit `area.opacity` is applied after the encoding's opaque default.
 All-baseline input correctly produces no area paths while retaining the original x domain.
 
-The [runnable example](https://github.com/ggaction/ggaction/tree/fff362e88080fa0b3438df58893867e8c6f3e5e6/examples/horizon-plot) includes
+The [runnable example](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/horizon-plot) includes
 signed, temporal, and baseline/style variants. The program below exposes the same lower owners on real data.
 
 ![Kenya life expectancy Horizon chart](./assets/images/gapminder-horizon.png)
@@ -2127,8 +2127,8 @@ creates one derived dataset and ordinary closed area paths, so Browser Canvas
 and the SVG, PNG, and PDF outputs use the same backend-neutral graphics.
 
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/fff362e88080fa0b3438df58893867e8c6f3e5e6/examples/gapminder-horizon)
-and its [complete program](https://github.com/ggaction/ggaction/blob/fff362e88080fa0b3438df58893867e8c6f3e5e6/examples/gapminder-horizon/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/gapminder-horizon)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/gapminder-horizon/program.js).
 
 ## Complete program
 
@@ -2224,15 +2224,15 @@ acceleration by Origin. `createErrorBar()` infers the encoded point layer,
 derives one mean and two-sided 95% Student-t confidence interval per group,
 then creates concrete vertical rules and fixed-width caps. The source rows remain immutable.
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/fff362e88080fa0b3438df58893867e8c6f3e5e6/examples/cars-error-bar)
-and its [complete program](https://github.com/ggaction/ggaction/blob/fff362e88080fa0b3438df58893867e8c6f3e5e6/examples/cars-error-bar/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/cars-error-bar)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/cars-error-bar/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/fff362e88080fa0b3438df58893867e8c6f3e5e6/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/batch200-library-fixes/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -2329,15 +2329,15 @@ This chart summarizes life expectancy over time for each Gapminder cluster.
 interval per year and cluster, then creates one closed area path plus explicit
 lower and upper boundary paths per cluster.
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/fff362e88080fa0b3438df58893867e8c6f3e5e6/examples/gapminder-error-band)
-and its [complete program](https://github.com/ggaction/ggaction/blob/fff362e88080fa0b3438df58893867e8c6f3e5e6/examples/gapminder-error-band/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/gapminder-error-band)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/gapminder-error-band/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/fff362e88080fa0b3438df58893867e8c6f3e5e6/data/gapminder.json --output public/gapminder.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/batch200-library-fixes/data/gapminder.json --output public/gapminder.json
 ```
 
 ## Complete program
@@ -2443,8 +2443,8 @@ program
 
 Select final visual items by data field, semantic channel, or concrete graphic
 property, then filter, reuse, or highlight that selection. The repository
-contains a [runnable browser example](https://github.com/ggaction/ggaction/tree/fff362e88080fa0b3438df58893867e8c6f3e5e6/examples/mark-selection)
-and the [canonical programs](https://github.com/ggaction/ggaction/blob/fff362e88080fa0b3438df58893867e8c6f3e5e6/examples/mark-selection/program.js)
+contains a [runnable browser example](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/mark-selection)
+and the [canonical programs](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/mark-selection/program.js)
 used by the acceptance and PNG tests below.
 
 ## Complete program
@@ -2453,7 +2453,7 @@ Follow [Getting Started](./getting-started/) to create a browser module and
 `<canvas id="chart"></canvas>`. Save the Cars data under `public/cars.json`:
 
 ```bash
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/fff362e88080fa0b3438df58893867e8c6f3e5e6/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/batch200-library-fixes/data/cars.json --output public/cars.json
 ```
 
 This complete point workflow matches the canonical program used for its image.
@@ -2752,7 +2752,7 @@ render(program, document.querySelector("#chart").getContext("2d"));
 ```
 
 The runnable repository version is in
-[`examples/ecdf-plot`](https://github.com/ggaction/ggaction/tree/fff362e88080fa0b3438df58893867e8c6f3e5e6/examples/ecdf-plot).
+[`examples/ecdf-plot`](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/ecdf-plot).
 
 This example uses colored paths and endpoint labels without axes or a legend,
 matching the repository program and image. To add a legend, reserve space on
@@ -4885,6 +4885,7 @@ operation; marks and renderers never mutate source values.
 | [Safe resource removal](./api/data/revisions-and-removal/#removedata-id) | `removeData` | Delete one named dataset only after all live consumers are gone |
 | [Reusable summaries](./api/data/summaries-and-shaping/#createsummarydata-id-source-groupby-aggregates-members) | `createSummaryData` | Materialize grouped multi-aggregate rows with optional members |
 | [Reusable bins](./api/data/summaries-and-shaping/#createbindata-id-source-field-binoptions) | `createBinData` | Materialize shared one-dimensional bounds, counts, and optional members |
+| [Named table lookup](./api/data/summaries-and-shaping/#named-table-lookup) | `createLookupData` | Copy reference fields while preserving primary rows |
 | [Aligned array data](./api/data/summaries-and-shaping/#createflattendata-id-source-fields-as) | `createFlattenData` | Expand parallel array elements into aligned rows |
 | [Wide-to-long data](./api/data/summaries-and-shaping/#createfolddata-id-source-fields-as) | `createFoldData` | Materialize selected fields as stable key/value rows |
 | [Computed data](./api/data/expressions-and-normalization/#createcomputeddata-id-source-as-expression) | `createComputedData` | Add numeric, string, boolean, or nullable values using the closed expression grammar |
@@ -5017,6 +5018,7 @@ corresponding higher-level action when the library should materialize values:
 | `"complete"` | `{ type, key, groupBy, values? or sequence?, fill, members? }` | `createCompleteData` |
 | `"impute"` | `{ type, fields, groupBy, sortBy, method, value?, edges, maxGap? }` | `createImputedData` |
 | `"filter"` | `{ type, field, oneOf }`, `{ type, field, predicate }`, or `{ type, field, range }` | `filterData` |
+| `"lookup"` | `{ type, field, lookup: { data, key, fields, as } }` | `createLookupData` |
 | `"flatten"` | `{ type, fields, as }` | `createFlattenData` |
 | `"fold"` | `{ type, fields, as }` | `createFoldData` |
 | `"regression"` | `{ type, method, x, y, groupBy?, ...methodParameters }` | `createRegressionData` |
@@ -5757,7 +5759,7 @@ instead of replacing or rebinding consumers.
 ## Related
 
 [Data overview](./api/data/) · [Source and derived data](./api/data/source-and-derived/) ·
-[Runnable airline-passenger example](https://github.com/ggaction/ggaction/blob/fff362e88080fa0b3438df58893867e8c6f3e5e6/examples/airline-passenger-moving-windows/program.js) ·
+[Runnable airline-passenger example](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/airline-passenger-moving-windows/program.js) ·
 [Action reference](./reference/actions/)
 
 <!-- Source: /api/data/bin2d/ -->
@@ -9642,7 +9644,7 @@ const dashboard = vconcat({
 
 This is a composition fragment: `scatterplot`, `barChart`, and `trendChart`
 must each be a complete program with one materialized Canvas. See the
-[runnable repository example](https://github.com/ggaction/ggaction/tree/fff362e88080fa0b3438df58893867e8c6f3e5e6/examples/program-composition)
+[runnable repository example](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/program-composition)
 for complete child construction and Browser Canvas rendering.
 
 The representative output deliberately keeps two different final grammars:
@@ -9703,7 +9705,7 @@ const revisedDashboard = dashboard.replaceCompositionChild({
 
 This preserves immutable earlier programs and makes the affected ancestor
 layout visible in the action trace. See the
-[cross-feature dashboard source](https://github.com/ggaction/ggaction/tree/fff362e88080fa0b3438df58893867e8c6f3e5e6/examples/cross-feature-dashboard)
+[cross-feature dashboard source](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/cross-feature-dashboard)
 for a nested Polar replacement next to a Cartesian facet.
 
 ## Repeat the current chart by a field
@@ -10069,7 +10071,7 @@ Primary and secondary endpoints can specify different input units on one scale.
 Domains and tick values are already timestamps and are never parsed again.
 Channel selectors read normalized values; raw-field selectors read original rows.
 
-See the runnable [three-variant example](https://github.com/ggaction/ggaction/tree/fff362e88080fa0b3438df58893867e8c6f3e5e6/examples/temporal-input).
+See the runnable [three-variant example](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/temporal-input).
 
 ## Aggregate line `encodeY(options)`
 
@@ -10631,7 +10633,7 @@ if the remaining appearance would be ambiguous. Ordinary ranged Areas support
 the same explicit identity; statistical and stacked-layout groups keep their
 existing owner restrictions.
 
-The [runnable series tutorial](https://github.com/ggaction/ggaction/tree/fff362e88080fa0b3438df58893867e8c6f3e5e6/examples/series-identity)
+The [runnable series tutorial](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/series-identity)
 uses one shared program for country colors, tuple color/dash, and field width/opacity.
 
 ## Explicit path topology
@@ -16292,6 +16294,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createLineMark`](./reference/actions/marks/#createlinemark) | H2 | user-facing | marks |
 | [`createLinePlot`](./reference/actions/charts-data/#createlineplot) | H0 | user-facing | charts |
 | [`createLollipopPlot`](./reference/actions/charts-data/#createlollipopplot) | H0, H1 | user-facing | charts |
+| [`createLookupData`](./reference/actions/statistics/#createlookupdata) | H1 | user-facing | statistics |
 | [`createMarkLabels`](./reference/actions/marks/#createmarklabels) | H1, H2 | user-facing | marks |
 | [`createNormalizedData`](./reference/actions/statistics/#createnormalizeddata) | H1 | user-facing | statistics |
 | [`createParallelAxes`](./reference/actions/guides/#createparallelaxes) | H3 | user-facing | axes |
@@ -16397,6 +16400,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editLegendSymbols`](./reference/actions/guides/#editlegendsymbols) | H3 | user-facing | legend_and_title |
 | [`editLegendTitle`](./reference/actions/guides/#editlegendtitle) | H3 | user-facing | legend_and_title |
 | [`editLineMark`](./reference/actions/marks/#editlinemark) | H3 | user-facing | marks |
+| [`editLookupData`](./reference/actions/statistics/#editlookupdata) | H1, H3 | user-facing | statistics |
 | [`editMarkLabelPlacement`](./reference/actions/marks/#editmarklabelplacement) | H3 | user-facing | marks |
 | [`editMarkLabelSelection`](./reference/actions/marks/#editmarklabelselection) | H3 | user-facing | marks |
 | [`editMarkSelection`](./reference/actions/advanced/#editmarkselection) | H3 | advanced | mark-selection |
@@ -22952,6 +22956,39 @@ Materialize reusable one-dimensional bounds, counts, and optional source
 members using the same edge rules as Histogram.
 [Source and Derived Data](./api/data/source-and-derived/#createbindata-id-source-field-binoptions)
 
+## `createLookupData`
+
+**API layer:** user-facing. **Authoring roles:** H1.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+createLookupData(options: LookupDataOptions): ChartProgram;
+```
+
+Named option contracts: [`LookupDataOptions`](./reference/types/#type-lookupdataoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Required | `string` |
+| `source` | Optional / branch-dependent | `string \| undefined` |
+| `field` | Required | `string` |
+| `lookup` | Required | `{ data: string; key: string; fields: readonly string[]; as?: readonly string[] \| undefined; }` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createLookupData({ id, source?, field, lookup: { data, key, fields, as? } })
+```
+
+Copy fields from one named table without changing primary row order or count.
+Keys keep their scalar types; unmatched rows receive null, and duplicate reference keys reject.
+Full and Basic support creation. [Named table lookup](./api/data/summaries-and-shaping/#named-table-lookup)
+
 ## `createFlattenData`
 
 **API layer:** user-facing. **Authoring roles:** H1.
@@ -23253,6 +23290,31 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `dependents` | Optional / branch-dependent | `DerivedDataDependents \| undefined` |
 | `as` | Optional / branch-dependent | `string \| undefined` |
 | `expression` | Optional / branch-dependent | `ComputedExpression \| undefined` |
+
+Behavior, inference, resets, and errors: [Focused statistical data editing](./reference/actions/statistics/#focused-statistical-data-editing).
+
+## `editLookupData`
+
+**API layer:** user-facing. **Authoring roles:** H1, H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+editLookupData(options: EditLookupDataOptions): ChartProgram;
+```
+
+Named option contracts: [`EditLookupDataOptions`](./reference/types/#type-editlookupdataoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Required | `string` |
+| `dependents` | Optional / branch-dependent | `DerivedDataDependents \| undefined` |
+| `field` | Optional / branch-dependent | `string \| undefined` |
+| `lookup` | Optional / branch-dependent | `{ data: string; key: string; fields: readonly string[]; as?: readonly string[] \| undefined; } \| undefined` |
 
 Behavior, inference, resets, and errors: [Focused statistical data editing](./reference/actions/statistics/#focused-statistical-data-editing).
 
@@ -24471,6 +24533,7 @@ The vertical grid follows continuous original x and rejects explicit `bandPositi
 
 ```javascript
 editComputedData({ target, as?, expression?, dependents? })
+editLookupData({ target, field?, lookup?, dependents? })
 editFlattenData({ target, fields?, as?, dependents? })
 editFoldData({ target, fields?, as?, dependents? })
 editSummaryData({ target, groupBy?, aggregates?, members?, weight?, dependents? })
@@ -27940,6 +28003,7 @@ interface ChartProgramActions {
   createSummaryData(options: SummaryDataOptions): ChartProgram;
   createBinData(options: BinDataOptions): ChartProgram;
   createFlattenData(options: FlattenDataOptions): ChartProgram;
+  createLookupData(options: LookupDataOptions): ChartProgram;
   createFoldData(options: FoldDataOptions): ChartProgram;
   createComputedData(options: ComputedDataOptions): ChartProgram;
   createNormalizedData(options: NormalizedDataOptions): ChartProgram;
@@ -27959,6 +28023,7 @@ interface ChartProgramActions {
   editComputedData(options: EditComputedDataOptions): ChartProgram;
   editFilteredData(options: EditFilteredDataOptions): ChartProgram;
   editFlattenData(options: EditFlattenDataOptions): ChartProgram;
+  editLookupData(options: EditLookupDataOptions): ChartProgram;
   editFoldData(options: EditFoldDataOptions): ChartProgram;
   editSummaryData(options: EditSummaryDataOptions): ChartProgram;
   editBinData(options: EditBinDataOptions): ChartProgram;
@@ -31219,6 +31284,23 @@ export type DatasetIntervalTransform = {
 
 Related types: [`DatasetIntervalOutputFields`](./reference/types/#type-datasetintervaloutputfields) · [`MeanConfidenceIntervalMethod`](./reference/types/#type-meanconfidenceintervalmethod).
 
+### `DatasetLookupTransform` {#type-datasetlookuptransform}
+
+ Expand DatasetLookupTransform
+
+```typescript
+export interface DatasetLookupTransform {
+  readonly type: "lookup";
+  readonly field: string;
+  readonly lookup: {
+    readonly data: string;
+    readonly key: string;
+    readonly fields: readonly string[];
+    readonly as: readonly string[];
+  };
+}
+```
+
 ### `DatasetNormalizeBaselineTransform` {#type-datasetnormalizebaselinetransform}
 
  Expand DatasetNormalizeBaselineTransform
@@ -31470,6 +31552,7 @@ export type DatasetTransform =
   | DatasetNormalizedTransform
   | DatasetFilterTransform
   | DatasetFlattenTransform
+  | DatasetLookupTransform
   | DatasetFoldTransform
   | DatasetRegressionTransform
   | DatasetRegressionStatisticsTransform
@@ -31485,7 +31568,7 @@ export type DatasetTransform =
   | DatasetWindowTransform;
 ```
 
-Related types: [`DatasetBinTransform`](./reference/types/#type-datasetbintransform) · [`DatasetBin2DTransform`](./reference/types/#type-datasetbin2dtransform) · [`DatasetCompleteTransform`](./reference/types/#type-datasetcompletetransform) · [`DatasetComputedTransform`](./reference/types/#type-datasetcomputedtransform) · [`DatasetImputedTransform`](./reference/types/#type-datasetimputedtransform) · [`DatasetNormalizedTransform`](./reference/types/#type-datasetnormalizedtransform) · [`DatasetFilterTransform`](./reference/types/#type-datasetfiltertransform) · [`DatasetFlattenTransform`](./reference/types/#type-datasetflattentransform) · [`DatasetFoldTransform`](./reference/types/#type-datasetfoldtransform) · [`DatasetRegressionTransform`](./reference/types/#type-datasetregressiontransform) · [`DatasetRegressionStatisticsTransform`](./reference/types/#type-datasetregressionstatisticstransform) · [`DatasetSortTransform`](./reference/types/#type-datasetsorttransform) · [`DatasetDensityTransform`](./reference/types/#type-datasetdensitytransform) · [`DatasetECDFTransform`](./reference/types/#type-datasetecdftransform) · [`DatasetHorizonTransform`](./reference/types/#type-datasethorizontransform) · [`DatasetIntervalTransform`](./reference/types/#type-datasetintervaltransform) · [`DatasetSummaryTransform`](./reference/types/#type-datasetsummarytransform) · [`DatasetStackTransform`](./reference/types/#type-datasetstacktransform) · [`DatasetStatisticalReferenceTransform`](./reference/types/#type-datasetstatisticalreferencetransform) · [`DatasetTimeUnitTransform`](./reference/types/#type-datasettimeunittransform) · [`DatasetWindowTransform`](./reference/types/#type-datasetwindowtransform).
+Related types: [`DatasetBinTransform`](./reference/types/#type-datasetbintransform) · [`DatasetBin2DTransform`](./reference/types/#type-datasetbin2dtransform) · [`DatasetCompleteTransform`](./reference/types/#type-datasetcompletetransform) · [`DatasetComputedTransform`](./reference/types/#type-datasetcomputedtransform) · [`DatasetImputedTransform`](./reference/types/#type-datasetimputedtransform) · [`DatasetNormalizedTransform`](./reference/types/#type-datasetnormalizedtransform) · [`DatasetFilterTransform`](./reference/types/#type-datasetfiltertransform) · [`DatasetFlattenTransform`](./reference/types/#type-datasetflattentransform) · [`DatasetLookupTransform`](./reference/types/#type-datasetlookuptransform) · [`DatasetFoldTransform`](./reference/types/#type-datasetfoldtransform) · [`DatasetRegressionTransform`](./reference/types/#type-datasetregressiontransform) · [`DatasetRegressionStatisticsTransform`](./reference/types/#type-datasetregressionstatisticstransform) · [`DatasetSortTransform`](./reference/types/#type-datasetsorttransform) · [`DatasetDensityTransform`](./reference/types/#type-datasetdensitytransform) · [`DatasetECDFTransform`](./reference/types/#type-datasetecdftransform) · [`DatasetHorizonTransform`](./reference/types/#type-datasethorizontransform) · [`DatasetIntervalTransform`](./reference/types/#type-datasetintervaltransform) · [`DatasetSummaryTransform`](./reference/types/#type-datasetsummarytransform) · [`DatasetStackTransform`](./reference/types/#type-datasetstacktransform) · [`DatasetStatisticalReferenceTransform`](./reference/types/#type-datasetstatisticalreferencetransform) · [`DatasetTimeUnitTransform`](./reference/types/#type-datasettimeunittransform) · [`DatasetWindowTransform`](./reference/types/#type-datasetwindowtransform).
 
 ### `DatasetWindowOperation` {#type-datasetwindowoperation}
 
@@ -32540,6 +32623,16 @@ export interface EditLegendTitleOptions extends LegendTitleStyleEditOptions {
 ```
 
 Related types: [`LegendTitleStyleEditOptions`](./reference/types/#type-legendtitlestyleeditoptions) · [`LegendChannel`](./reference/types/#type-legendchannel).
+
+### `EditLookupDataOptions` {#type-editlookupdataoptions}
+
+ Expand EditLookupDataOptions
+
+```typescript
+export type EditLookupDataOptions = FocusedDerivedDataEdit<LookupDataOptions>;
+```
+
+Related types: [`FocusedDerivedDataEdit`](./reference/types/#type-focusedderiveddataedit) · [`LookupDataOptions`](./reference/types/#type-lookupdataoptions).
 
 ### `EditMarkLabelPlacementOptions` {#type-editmarklabelplacementoptions}
 
@@ -34797,6 +34890,19 @@ export interface LinearGradientPoint {
 export interface LinearGradientStop {
   readonly offset: number;
   readonly color: string;
+}
+```
+
+### `LookupDataOptions` {#type-lookupdataoptions}
+
+ Expand LookupDataOptions
+
+```typescript
+export interface LookupDataOptions {
+  id: string;
+  source?: string;
+  field: string;
+  lookup: { data: string; key: string; fields: readonly string[]; as?: readonly string[] };
 }
 ```
 
@@ -38867,12 +38973,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/fff362e88080fa0b3438df58893867e8c6f3e5e6/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/fff362e88080fa0b3438df58893867e8c6f3e5e6/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -39168,6 +39274,52 @@ The Full entry point supports `editFlattenData({target, fields?, as?, dependents
 same normalized `flatten` definition through `editDerivedData`. See
 [data revisions](./api/data/revisions-and-removal/#editing-derived-data) for atomic dependent replay.
 
+## Named table lookup
+
+Keep two tables separate and copy selected reference fields using a typed key:
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `data: "people"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas({ width: 400, height: 280, margin: 50 })
+  .createData({ id: "people", values: [
+    { name: "A", age: 25 }, { name: "B", age: 39 }, { name: "C", age: 56 }
+  ] })
+  .createData({ id: "groups", values: [
+    { person: "A", group: "First" }, { person: "B", group: "First" },
+    { person: "C", group: "Second" }
+  ] })
+  .createLookupData({ id: "ages", field: "person", lookup: {
+    data: "people", key: "name", fields: ["age"]
+  } })
+  .createBarPlot({ x: "group", y: { field: "age", aggregate: "mean" } });
+```
+
+The bars show means 32 and 56. Both raw tables stay unchanged. The same creation chain
+works with `chart` imported from `ggaction/basic`. Use `source` only when the primary
+input is not the current table; `lookup.data` is always explicit.
+
+`fields` must be nonempty and unique. `as` optionally supplies equally many unique output
+names; the default names are the selected fields. Output names cannot replace primary
+columns. Keys are strings, finite numbers or booleans: number `1` and string `"1"` differ.
+Null or missing keys never match. Unmatched rows and missing selected cells produce null.
+Duplicate non-null reference keys reject; no row is silently chosen. Copied cells retain
+their existing JSON types, so numeric strings require an explicit conversion before
+strict numeric operations.
+
+The result preserves primary row count and order, including nested cells and raw ancestors.
+Lookup work is bounded by `reference rows + primary rows × (selected fields + 1)`, up to
+10,000,000 operations, with the existing input-data limits. Invalid options, fields, keys,
+aliases or excessive work leave the earlier program unchanged.
+
+In Full, use `editLookupData({ target, field?, lookup?, dependents? })`. A supplied `lookup`
+replaces the whole object. Revisions of either table update dependent charts; use
+`dependents: "recompute"` for downstream derived data. Generic `editDerivedData` accepts
+the same complete normalized lookup definition. See [data revisions](./api/data/revisions-and-removal/#editing-derived-data).
+
 <!-- Source: /api/data/expressions-and-normalization/ -->
 
 # Expressions and Normalization
@@ -39363,6 +39515,11 @@ Aligned-array datasets use `editFlattenData({target, fields?, as?, dependents?})
 Basic supports creation without expanding its public editing surface. Alias roles follow the original
 input field, so alias changes rebind compatible direct consumers. When changing the number of selected
 fields, provide a matching alias array. Generic `editDerivedData` accepts the same `flatten` definition.
+
+Named lookups use `editLookupData({target, field?, lookup?, dependents?})` in Full.
+A supplied `lookup` replaces its whole reference definition. Revisions of either input
+update the joined records and their consumers in dependency order. Change the primary
+source through `reviseData`; generic transform definitions cannot replace `source`.
 
 ## Editing derived data {#editing-derived-data}
 
@@ -39627,7 +39784,7 @@ program.editFacetHeaders({
 
 This is a fragment for an existing facet program. A one-field facet uses the
 `column` header role for each panel, including panels arranged in one column.
-Grid facets also provide a `row` role. The [complete example](https://github.com/ggaction/ggaction/tree/fff362e88080fa0b3438df58893867e8c6f3e5e6/examples/facet-header-rotation)
+Grid facets also provide a `row` role. The [complete example](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/facet-header-rotation)
 declares the axes and grid before arranging the two region panels.
 
 The same `rotation` option is available in common `headers` and in
@@ -39671,7 +39828,7 @@ const faceted = chart()
 
 The input rows in this runnable fragment must contain complete values for the
 encoded fields. See the
-[repository example](https://github.com/ggaction/ggaction/tree/fff362e88080fa0b3438df58893867e8c6f3e5e6/examples/cars-origin-scatterplot-facet)
+[repository example](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/cars-origin-scatterplot-facet)
 for the complete data preparation and guide options.
 
 Data-bound Cartesian text layers also repeat: encode x, y, and text before
@@ -39911,7 +40068,7 @@ The child limit is 100 after applying the combination policy. The same
 supports the same Cartesian, Polar, and Parallel chart families, scale policies,
 axis restrictions, and compatible shared legends as `facet`.
 
-See the [runnable grid example](https://github.com/ggaction/ggaction/tree/fff362e88080fa0b3438df58893867e8c6f3e5e6/examples/facet-grid)
+See the [runnable grid example](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/facet-grid)
 for a 2 × 3 full grid with one missing source pair.
 
 ## Repeat a positional encoding across fields
@@ -39958,7 +40115,7 @@ non-repeated legend may be promoted to the parent.
 Every repeated field can describe a different quantity, so outer-axis
 promotion is rejected. Pie and Radar raw theta/r repetition, composite roles,
 derived target datasets, and unrelated sibling layers also fail atomically.
-See the [runnable repeat example](https://github.com/ggaction/ggaction/tree/fff362e88080fa0b3438df58893867e8c6f3e5e6/examples/repeat-charts).
+See the [runnable repeat example](https://github.com/ggaction/ggaction/tree/codex/batch200-library-fixes/examples/repeat-charts).
 
 ## Space between plots
 
@@ -40397,7 +40554,7 @@ semantic base text rather than accumulating offsets. Text, data, scale, source
 mark, and Canvas changes replay that same policy.
 
 See the complete
-[Gapminder country-label program](https://github.com/ggaction/ggaction/blob/fff362e88080fa0b3438df58893867e8c6f3e5e6/examples/gapminder-country-labels/program.js)
+[Gapminder country-label program](https://github.com/ggaction/ggaction/blob/codex/batch200-library-fixes/examples/gapminder-country-labels/program.js)
 for a point-attached label layer with leaders.
 
 ## `removeLabelLayout(options?)`
@@ -41283,11 +41440,11 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:ec420508d4ce85051934d83ed1264c1e1645db3266c301684098870f2c50d99c` |
-| Example and dataset source | `fff362e88080fa0b3438df58893867e8c6f3e5e6` |
-| Runtime source commit | `fff362e88080fa0b3438df58893867e8c6f3e5e6` |
+| Contract fingerprint | `sha256:6f56f49c9b576fd0ef9be99686366556d8a4f92038f89f2fff42b4b23ac5f35e` |
+| Example and dataset source | `codex/batch200-library-fixes` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
-| Declared actions here | 288 |
+| Declared actions here | 290 |
 | Declared actions in that release | 234 |
 
 ## Choose the matching documentation

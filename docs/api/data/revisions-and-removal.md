@@ -14,6 +14,11 @@ Basic supports creation without expanding its public editing surface. Alias role
 input field, so alias changes rebind compatible direct consumers. When changing the number of selected
 fields, provide a matching alias array. Generic `editDerivedData` accepts the same `flatten` definition.
 
+Named lookups use `editLookupData({target, field?, lookup?, dependents?})` in Full.
+A supplied `lookup` replaces its whole reference definition. Revisions of either input
+update the joined records and their consumers in dependency order. Change the primary
+source through `reviseData`; generic transform definitions cannot replace `source`.
+
 ## Editing derived data {#editing-derived-data}
 
 Every standalone value-producing data action creates a logical dataset owner.

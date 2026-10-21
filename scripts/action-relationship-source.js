@@ -470,6 +470,9 @@ export function buildActionRelationshipPrograms() {
     ...normalizedDataPrograms(),
     ...missingDataPrograms(),
     ...derivedEditingPrograms(),
+    chart().createData({id:"people",values:[{name:"A",age:25}]}).createData({id:"groups",values:[{person:"A"}]})
+      .createLookupData({id:"ages",field:"person",lookup:{data:"people",key:"name",fields:["age"]}})
+      .editLookupData({target:"ages",lookup:{data:"people",key:"name",fields:["age"],as:["years"]}}),
     chart().createData({values:[{amounts:[1,2],labels:["A"]}]})
       .createFlattenData({id:"expandedArrays",fields:["amounts","labels"],as:["amount","label"]})
       .editFlattenData({target:"expandedArrays",as:["value","category"]}),

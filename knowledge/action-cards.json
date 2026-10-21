@@ -3,7 +3,7 @@
   "packageVersion": "0.0.21",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 288,
+  "count": 290,
   "cards": [
     {
       "schemaVersion": 3,
@@ -1334,6 +1334,93 @@
       "snippet": "program.createBinData({ id: \"bin-data-1\", field: \"value\" })",
       "errors": [],
       "route": "/reference/actions/statistics/#createbindata"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "createLookupData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "summary": "Copy fields from one named table without changing primary row order or count.",
+      "signature": "createLookupData(options: LookupDataOptions): ChartProgram;",
+      "intents": [
+        "create lookup data",
+        "create",
+        "add",
+        "statistical layer",
+        "statistical transform",
+        "named table lookup",
+        "copy reference fields"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "source dataset"
+        ],
+        "owns": [
+          "named table lookup"
+        ],
+        "idOptions": [
+          "id",
+          "source"
+        ]
+      },
+      "authoringRoles": [
+        "H1"
+      ],
+      "wraps": [
+        "createDerivedData"
+      ],
+      "editableVia": [
+        "editLookupData"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default",
+          "basic"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "source",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "source dataset"
+        ],
+        "allowsEmpty": true
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "source",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "field",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "lookup",
+          "required": true,
+          "type": "{ data: string; key: string; fields: readonly string[]; as?: readonly string[] | undefined; }"
+        }
+      ],
+      "callPatterns": [
+        "createLookupData({ id, field, lookup, source? })"
+      ],
+      "snippet": "program.createLookupData({ id: \"ages\", field: \"person\", lookup: { data: \"people\", key: \"name\", fields: [\"age\"] } })",
+      "errors": [],
+      "route": "/reference/actions/statistics/#createlookupdata"
     },
     {
       "schemaVersion": 3,
@@ -3245,6 +3332,92 @@
       "snippet": "program.editFilteredData({ target: \"filtered\", oneOf: [1] })",
       "errors": [],
       "route": "/reference/actions/charts-data/#editfiltereddata"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editLookupData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "summary": "Edits named table lookup, including settings for copy reference fields.",
+      "signature": "editLookupData(options: EditLookupDataOptions): ChartProgram;",
+      "intents": [
+        "edit lookup data",
+        "edit",
+        "change",
+        "statistical layer",
+        "statistical transform",
+        "named table lookup",
+        "copy reference fields"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing named table lookup",
+          "source dataset"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H1",
+        "H3"
+      ],
+      "wraps": [
+        "editDerivedData"
+      ],
+      "editableVia": [
+        "editLookupData"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing named table lookup",
+          "source dataset"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "dependents",
+          "required": false,
+          "type": "DerivedDataDependents | undefined"
+        },
+        {
+          "name": "field",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "lookup",
+          "required": false,
+          "type": "{ data: string; key: string; fields: readonly string[]; as?: readonly string[] | undefined; } | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editLookupData({ target, dependents?, field?, lookup? })"
+      ],
+      "snippet": "program.editLookupData({ target: \"ages\", lookup: { data: \"people\", key: \"name\", fields: [\"age\"], as: [\"years\"] } })",
+      "errors": [],
+      "route": "/reference/actions/statistics/#editlookupdata"
     },
     {
       "schemaVersion": 3,

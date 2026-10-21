@@ -5,7 +5,7 @@
 - [x] 두 원본 표를 보존해야 하는 실제 데이터 변환 요구 확인
 - [x] 현재 공개 액션 누락 재현 및 구체적 API·DAG·저장·검증 설계
 - [x] 진행 중인 범위의 직접 사용자 상시 승인 재사용
-- [ ] 구현·타입·현재 계약·문서·예제 동기화
+- [x] 구현·타입·현재 계약·문서·예제 동기화
 - [ ] 데이터·revision·facet·persistence·package·기존 출력 검증
 - [ ] 검증된 로컬 후보 설치와 원본 번역 재개
 - [ ] 200개 단위 공개 릴리즈 검증 후 이슈 종료
@@ -67,7 +67,8 @@ chart()
 
 `editLookupData({ target, field?, lookup?, dependents? })`는 기존 derived editor 계층을 재사용한다.
 제공된 `lookup`은 완전한 새 객체이며 부분적인 `lookup.key` 수정은 받지 않는다.
-`editDerivedData`의 definition 및 source 교체와 기존 `dependents: reject | recompute` 계약을 따른다.
+`editDerivedData`의 definition 및 기존 `dependents: reject | recompute` 계약을 따른다.
+주 원본의 교체는 기존 `reviseData`로 수행한다. definition에 `source`를 추가하는 새 편집 경로는 만들지 않는다.
 Full은 생성/편집/저장, Basic은 생성과 materialization을 지원한다.
 
 ## 값과 행 계약
@@ -81,6 +82,7 @@ Full은 생성/편집/저장, Basic은 생성과 materialization을 지원한다
 - 허용되는 기존 JSON cell 타입은 그대로 복사한다. 중첩 값도 독립적으로 clone/freeze한다.
 - 원본의 빈 열 이름은 행에서 그대로 유지하되 연결 키/생성 필드 참조는 기존 non-empty 계약을 따른다.
 - 출력 수는 왼쪽 입력 수와 같고, 기존 데이터 한도를 유지한다. 새 join 확장/곱집합 한도는 필요하지 않다.
+  기존 공통 10,000,000 work 한도를 `오른쪽 행 수 + 왼쪽 행 수 × (복사 필드 수 + 1)`에 적용한다.
 - 원본 행이나 이전 프로그램, 호출자 객체는 변경하지 않는다. prototype 관련 키도 own-property로 처리한다.
 
 ## 저장과 책임
@@ -130,3 +132,7 @@ SECOND_ARCHITECTURE와 연결된 작업 경로에 기록한다.
 
 외부 형식명 전용 API, 임의 JavaScript callback, regex, 다대다 join, 숫자 키 강제 변환,
 숨겨진 전처리 표, 자동 Canvas 확대 또는 일반 오차 완화는 이 설계에 포함하지 않는다.
+
+집중73개·통합32개·설치 package66그룹 및 primitive/public decoded pixels가 통과했다.
+전체 normal/clean source 문서·사이트·1297개9454program native cohort는 아직 최종 검증 전이다.
+초기 normal11실패와 설치 consumer 기대값/size 진단을 EVIDENCE.json에 보존한다.

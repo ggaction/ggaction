@@ -1571,3 +1571,21 @@
   url: /api/composition/facets/#rotate-panel-headers
   home_group: essentials
   home_order: 155
+
+- id: lookup-data
+  example: /examples/lookup-data/
+  title: Mean age by group
+  image: /assets/images/lookup-data.png
+  alt: Three bars showing mean age for groups First, Second and Third
+  width: 800
+  height: 560
+  thumbnail: /assets/images/lookup-data-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 448
+  caption: Names connect two separate tables before the chart calculates each group mean.
+  summary: Copy typed reference values while keeping both original tables unchanged.
+  actions: createData · createLookupData · createBarPlot
+  tasks: data comparison
+  url: /api/data/summaries-and-shaping/#named-table-lookup
+  home_group: essentials
+  home_order: 156

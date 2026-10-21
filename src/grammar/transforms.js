@@ -30,6 +30,7 @@ import {
 } from "./filter.js";
 import { normalizeFoldTransform, validateFoldTransform } from "./fold.js";
 import { normalizeFlattenTransform, validateFlattenTransform } from "./flatten.js";
+import {normalizeLookupTransform,validateLookupTransform} from "./lookup.js";
 import {
   requestedGradientProfileTransform,
   validateGradientProfileTransform
@@ -392,6 +393,17 @@ const TRANSFORM_POLICIES = Object.freeze({
     outputRoles: transform => Object.fromEntries(
       transform.fields.map((field, index) => [`value:${field}`, transform.as[index]])
     )
+  }),
+  lookup: Object.freeze({
+    ...findTransformTopology("lookup"),
+    validate:validateLookupTransform,
+    materializeOp:"materializeLookupData",
+    replayTransform:requestedTransform,
+    editable:true,
+    normalizeEdit:normalizeSimple(normalizeLookupTransform),
+    outputRoles:transform=>Object.fromEntries(transform.lookup.fields.map((field,index)=>[
+      `value:${field}`,transform.lookup.as[index]
+    ]))
   }),
   fold: Object.freeze({
     ...findTransformTopology("fold"),

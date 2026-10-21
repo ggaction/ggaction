@@ -77,6 +77,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createLineMark`](./actions/marks.md#createlinemark) | H2 | user-facing | marks |
 | [`createLinePlot`](./actions/charts-data.md#createlineplot) | H0 | user-facing | charts |
 | [`createLollipopPlot`](./actions/charts-data.md#createlollipopplot) | H0, H1 | user-facing | charts |
+| [`createLookupData`](./actions/statistics.md#createlookupdata) | H1 | user-facing | statistics |
 | [`createMarkLabels`](./actions/marks.md#createmarklabels) | H1, H2 | user-facing | marks |
 | [`createNormalizedData`](./actions/statistics.md#createnormalizeddata) | H1 | user-facing | statistics |
 | [`createParallelAxes`](./actions/guides.md#createparallelaxes) | H3 | user-facing | axes |
@@ -182,6 +183,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editLegendSymbols`](./actions/guides.md#editlegendsymbols) | H3 | user-facing | legend_and_title |
 | [`editLegendTitle`](./actions/guides.md#editlegendtitle) | H3 | user-facing | legend_and_title |
 | [`editLineMark`](./actions/marks.md#editlinemark) | H3 | user-facing | marks |
+| [`editLookupData`](./actions/statistics.md#editlookupdata) | H1, H3 | user-facing | statistics |
 | [`editMarkLabelPlacement`](./actions/marks.md#editmarklabelplacement) | H3 | user-facing | marks |
 | [`editMarkLabelSelection`](./actions/marks.md#editmarklabelselection) | H3 | user-facing | marks |
 | [`editMarkSelection`](./actions/advanced.md#editmarkselection) | H3 | advanced | mark-selection |

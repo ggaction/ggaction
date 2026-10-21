@@ -23,9 +23,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 605, // Facet header rotation adds one shared pure validation owner.
-  packedBytes: 857_000, // Rotated facet headers measured856430bytes; minimal1000-byte rounding.
-  unpackedBytes: 4_140_000 // Shared facet-header validation measured4139194bytes; minimal1000-byte rounding.
+  entries: 609, // Named lookup adds four shared reference/grammar/action modules.
+  packedBytes: 862_000, // Named lookup measured861631bytes; minimal1000-byte rounding.
+  unpackedBytes: 4_161_000 // Named lookup measured4160293bytes; minimal1000-byte rounding.
 });
 
 const REQUIRED_FILES = Object.freeze([

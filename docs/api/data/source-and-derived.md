@@ -109,6 +109,7 @@ corresponding higher-level action when the library should materialize values:
 | `"complete"` | `{ type, key, groupBy, values? or sequence?, fill, members? }` | `createCompleteData` |
 | `"impute"` | `{ type, fields, groupBy, sortBy, method, value?, edges, maxGap? }` | `createImputedData` |
 | `"filter"` | `{ type, field, oneOf }`, `{ type, field, predicate }`, or `{ type, field, range }` | `filterData` |
+| `"lookup"` | `{ type, field, lookup: { data, key, fields, as } }` | `createLookupData` |
 | `"flatten"` | `{ type, fields, as }` | `createFlattenData` |
 | `"fold"` | `{ type, fields, as }` | `createFoldData` |
 | `"regression"` | `{ type, method, x, y, groupBy?, ...methodParameters }` | `createRegressionData` |

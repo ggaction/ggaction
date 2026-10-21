@@ -815,6 +815,16 @@ export interface DatasetFlattenTransform {
   readonly fields: readonly string[];
   readonly as: readonly string[];
 }
+export interface DatasetLookupTransform {
+  readonly type: "lookup";
+  readonly field: string;
+  readonly lookup: {
+    readonly data: string;
+    readonly key: string;
+    readonly fields: readonly string[];
+    readonly as: readonly string[];
+  };
+}
 export interface DatasetFoldTransform {
   readonly type: "fold";
   readonly fields: readonly string[];
@@ -982,6 +992,7 @@ export type DatasetTransform =
   | DatasetNormalizedTransform
   | DatasetFilterTransform
   | DatasetFlattenTransform
+  | DatasetLookupTransform
   | DatasetFoldTransform
   | DatasetRegressionTransform
   | DatasetRegressionStatisticsTransform
@@ -2507,6 +2518,12 @@ export interface FlattenDataOptions {
   fields: readonly string[];
   as?: readonly string[];
 }
+export interface LookupDataOptions {
+  id: string;
+  source?: string;
+  field: string;
+  lookup: { data: string; key: string; fields: readonly string[]; as?: readonly string[] };
+}
 export interface FoldDataOptions {
   id: string;
   source?: string;
@@ -2660,6 +2677,7 @@ export type EditFilteredDataOptions = FilterModePatch & {
   dependents?: DerivedDataDependents;
 };
 export type EditFlattenDataOptions = FocusedDerivedDataEdit<FlattenDataOptions>;
+export type EditLookupDataOptions = FocusedDerivedDataEdit<LookupDataOptions>;
 export type EditFoldDataOptions = FocusedDerivedDataEdit<FoldDataOptions>;
 export type EditSummaryDataOptions = FocusedWeightedDerivedDataEdit<
   SummaryDataOptions,
@@ -5138,6 +5156,7 @@ export class ChartProgram {
   createSummaryData(options: SummaryDataOptions): ChartProgram;
   createBinData(options: BinDataOptions): ChartProgram;
   createFlattenData(options: FlattenDataOptions): ChartProgram;
+  createLookupData(options: LookupDataOptions): ChartProgram;
   createFoldData(options: FoldDataOptions): ChartProgram;
   createComputedData(options: ComputedDataOptions): ChartProgram;
   createNormalizedData(options: NormalizedDataOptions): ChartProgram;
@@ -5157,6 +5176,7 @@ export class ChartProgram {
   editComputedData(options: EditComputedDataOptions): ChartProgram;
   editFilteredData(options: EditFilteredDataOptions): ChartProgram;
   editFlattenData(options: EditFlattenDataOptions): ChartProgram;
+  editLookupData(options: EditLookupDataOptions): ChartProgram;
   editFoldData(options: EditFoldDataOptions): ChartProgram;
   editSummaryData(options: EditSummaryDataOptions): ChartProgram;
   editBinData(options: EditBinDataOptions): ChartProgram;

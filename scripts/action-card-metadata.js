@@ -114,6 +114,7 @@ const logicalPixelNames = new Set([
 
 const countNames = new Set(["count", "columns", "bands", "steps", "maxBins", "precision"]);
 const emptyResultActions = new Set([
+  "createLookupData",
   "createFlattenData",
   "createData",
   "createPointMark",
