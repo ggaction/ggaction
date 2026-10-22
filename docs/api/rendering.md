@@ -475,7 +475,7 @@ const scene = createTransitionScene(program);
 
 The optional `@ggaction/transition` package owns browser playback, timing,
 interruption and reduced-motion behavior. Creating a scene does not append an
-action or modify a program. Scene extraction reuses concrete SVG serialization.
+action or modify a program. Scene extraction shares an ordered concrete traversal; version 1 additionally serializes SVG.
 Point/member correspondence survives filters, reordered rows and facet placement;
 identical records receive occurrence keys. Selection resolvers supply membership
 for supported aggregate and series marks. Changed membership, unsupported
@@ -483,3 +483,37 @@ selection structures and changed path topology use conservative replacement
 rather than an invented data relationship. Arbitrary data-transform lineage and
 many-to-one morphs are not inferred. Keys are opaque and only comparable within
 a related dataset/program history, not globally persistent row identifiers.
+
+
+### Canvas transition scenes
+
+`createTransitionScene(program, { format: 'canvas' })` returns a frozen version-2
+scene. It shares version-1 keys, order, topology, offsets and clips, but each node
+contains concrete `properties` instead of an SVG fragment. Properties include
+resolved path commands, multiline text, gradients and blend settings. It contains
+no DOM, Canvas resources, semantic compilation or data tables. The default format
+remains SVG/version 1; unknown formats are rejected.
+
+`renderTransitionScene(scene, context, { pixelRatio = 1 } = {})` paints version-2
+scenes with the ordinary Canvas renderer. It uses the same primitive validation,
+paint order, nested clipping and isolated blending as `render`. It sizes and clears
+the target Canvas, keeping logical dimensions independent of output density.
+Invalid scene versions, duplicate keys and invalid geometry are rejected.
+Playback code may supply intermediate concrete properties; this function does
+not perform interpolation or schedule frames. Mutable intermediate scenes are
+not cached. Each intermediate node must retain a unique key and valid concrete
+properties. Do not use keys as editable graphic addresses.
+
+Browser example (with an existing `<canvas id="chart">` element):
+
+```js
+import { chart } from 'ggaction';
+import { createTransitionScene, renderTransitionScene } from 'ggaction/scene';
+const program = chart().createCanvas({ width: 600, height: 400 })
+  .createData({ id: 'data', values: [{ x: 1, y: 2 }, { x: 2, y: 3 }] })
+  .createScatterPlot({ id: 'points', data: 'data', x: { field: 'x' }, y: { field: 'y' } });
+const scene = createTransitionScene(program, { format: 'canvas' });
+renderTransitionScene(scene, document.querySelector('#chart').getContext('2d'), {
+  pixelRatio: window.devicePixelRatio
+});
+```

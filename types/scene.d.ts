@@ -1,4 +1,4 @@
-import type { ChartProgram } from './program.js';
+import type { ChartProgram, GraphicObject } from './program.js';
 export interface TransitionNode {
   readonly key: string;
   readonly type: string;
@@ -14,4 +14,20 @@ export interface TransitionScene {
   readonly definitions: string;
   readonly nodes: readonly TransitionNode[];
 }
-export declare function createTransitionScene(program: ChartProgram): TransitionScene;
+export interface CanvasTransitionNode {
+  readonly key: string;
+  readonly type: 'circle' | 'rect' | 'line' | 'path' | 'text';
+  readonly topology: string;
+  readonly properties: Readonly<NonNullable<GraphicObject['properties']>>;
+  readonly offset: readonly [number, number];
+  readonly clip: readonly [number, number, number, number];
+}
+export interface CanvasTransitionScene {
+  readonly version: 2;
+  readonly width: number;
+  readonly height: number;
+  readonly nodes: readonly CanvasTransitionNode[];
+}
+export declare function createTransitionScene(program: ChartProgram, options?: {format?: 'svg'}): TransitionScene;
+export declare function createTransitionScene(program: ChartProgram, options: {format: 'canvas'}): CanvasTransitionScene;
+export declare function renderTransitionScene(scene: CanvasTransitionScene, context: CanvasRenderingContext2D, options?: {pixelRatio?: number}): void;

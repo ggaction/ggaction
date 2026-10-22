@@ -23,9 +23,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 597, // Transition scene API, declarations and shared SVG serialization.
-  packedBytes: 862_000, // Read-only transition scenes: staged artifact measured 861033 bytes.
-  unpackedBytes: 4_131_000 // Scene extraction and shared serializer: measured 4130339 bytes.
+  entries: 599, // Shared concrete scene traversal and Canvas scene adapter.
+  packedBytes: 863_000, // Canvas transition scene support: measured 862828 bytes.
+  unpackedBytes: 4_136_000 // Canvas scenes: measured 4135439 bytes.
 });
 
 const REQUIRED_FILES = Object.freeze([

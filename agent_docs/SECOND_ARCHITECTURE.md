@@ -2587,3 +2587,19 @@ semanticSpec, graphicSpec, trace 또는 저장 스키마에 animation 상태를 
 검증했다. 해당 공개 entry와 type 및 공유 serializer를 포함하기 위해 package 한도를
 597/862000/4131000으로 최소 조정했다. 설치 consumer의 Full/Basic gzip은
 429327/215922 bytes로 측정되어 한도는 430000/216000이며 SVG 한도는 유지한다.
+
+
+### Canvas 전환 장면
+
+2026-10-22 사용자가 `createTransitionScene(program, {format: "canvas"})`와
+`renderTransitionScene(scene, context, {pixelRatio})` 공개 계약을 명시적으로 승인했다.
+기존 version 1 SVG 계약은 유지한다. Version 2는 동일한 불투명 correspondence key와
+순서·offset·clip을 갖고 SVG 대신 이미 materialize된 concrete properties를 보존한다.
+두 형식은 `renderers/transitionScene.js`의 순회 한 곳을 공유한다. Canvas adapter는
+이 장면을 temporary graphicSpec으로 배치해 기존 native renderer를 호출한다.
+시간·보간·중단은 별도 transition 패키지 책임이며 semanticSpec, action trace나 project
+저장 schema를 변경하지 않는다. 정확한 계약은 docs/api/rendering.md가 소유한다.
+
+Canvas 장면 shared traversal/adapter 2개로 package entry는597→599다. 실제 staged
+artifact는862828packed/4135439unpacked bytes로 이전862000/4131000한도를 초과했다.
+최소1000bytes 단위 ceiling인863000/4136000으로 갱신하며 이전 한도 통과를 주장하지 않는다.

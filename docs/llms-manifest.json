@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:613fb4ad91f8483437e25c24a8b0b61163282e3e11d3b5cc92bd0cf2057dc832",
+    "contractId": "sha256:384929fcf70cfe2fc17b36b6e89d5227de4eca157b2e3e5ab660c3aaaf96df30",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -1202,10 +1202,11 @@
         "accessible-data-alternatives",
         "explicit-whole-glyph-opacity",
         "related",
-        "transition-scenes"
+        "transition-scenes",
+        "canvas-transition-scenes"
       ],
-      "bytes": 22415,
-      "sha256": "476626640c4af823dc045a39c7f4b8057eccd2ce4b456ba42ad1369d455eb2da"
+      "bytes": 24254,
+      "sha256": "5a88e0c76247874cb1f9b2e4983a85ce4378815eda7d58bdf4599ceebdccfa1c"
     },
     {
       "order": 73,
@@ -3380,7 +3381,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "5d0b4e6517ae4fa3e3e12d94e4841a2364d079d9413deb745a68bf2efc3ed4e2"
+      "sha256": "0b86032ec4d842dcf7e33a344e072be7a0d5fd56985cf5535843e4a294514ca4"
     },
     {
       "order": 150,
