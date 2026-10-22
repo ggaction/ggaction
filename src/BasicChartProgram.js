@@ -5,7 +5,7 @@ import { ChartProgram as CoreChartProgram } from "./core/ChartProgram.js";
 export class BasicChartProgram extends CoreChartProgram {}
 
 registerBasicActions(BasicChartProgram);
-recordBuiltinActions(BasicChartProgram, ["hconcat", "vconcat", "rematerializeEncodingScales", "encodeStroke", "editScale"]);
+recordBuiltinActions(BasicChartProgram, ["hconcat", "vconcat", "rematerializeEncodingScales", "encodeStroke", "editScale", "removeEncoding", "removeScale"]);
 
 export function chart() {
   return new BasicChartProgram();

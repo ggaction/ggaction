@@ -17,6 +17,7 @@ const analysisChartNames = new Set([
 const analysisChartEditorNames = new Set([
   "editEndpointPlot",
   "editECDFPlot",
+  "editRadarPlot",
   "editRaincloudPlot"
 ]);
 
@@ -32,6 +33,7 @@ const coreH3Names = new Set([
   "removeTheme"
 ]);
 const analyticMarkNames = new Set([
+  "createStatisticalReference",
   "createReferenceLine",
   "createReferenceBand",
   "createMarkLabels",
@@ -44,6 +46,7 @@ const explicitFacadeEditors = Object.freeze({
   createDumbbellPlot: ["editEndpointPlot"],
   createECDFPlot: ["editECDFPlot"],
   createRaincloudPlot: ["editRaincloudPlot"],
+  createRadarPlot: ["editRadarPlot"],
   facet: ["editFacetSource", "editFacetHeaders", "editFacetScales", "editFacetGuides", "editCompositionLayout"],
   facetGrid: ["editFacetSource", "editFacetHeaders", "editFacetScales", "editFacetGuides", "editCompositionLayout"],
   repeatCharts: ["editFacetSource", "editFacetHeaders", "editFacetScales", "editFacetGuides", "editCompositionLayout"]
@@ -69,6 +72,7 @@ const explicitLifecycleEditors = Object.freeze({
   orderCategories: ["removeCategoryOrder"],
   editEndpointPlot: ["editEndpointPlot"],
   editECDFPlot: ["editECDFPlot"],
+  editRadarPlot: ["editRadarPlot"],
   editRaincloudPlot: ["editRaincloudPlot"]
 });
 

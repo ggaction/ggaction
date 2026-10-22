@@ -22,6 +22,12 @@ and Canvas or scale updates, regardless of authoring order. Increase the margin
 or change offsets when space is insufficient; a failed action preserves the
 earlier program.
 
+Automatic axis titles use the source field or aggregate. Statistical reference
+lines and bands reuse that title; their internal output columns do not introduce
+another measure name.
+Grouped summary outputs use their aggregate and source field, including after
+changing the source measure while retaining an output alias.
+
 An omitted offset for a vertical Y-axis title reserves a quarter-em ink gap when
 its estimated text box is clamped to the Canvas edge. This applies at every font
 size when the extra reserve fits beside the actual axis labels. If it would
@@ -316,6 +322,24 @@ Axis label and title weights follow the shared
 Use either `ticksAndLabels` or the independent `ticks`/`labels` options in one
 call. The action validates the entire request before editing any component, so
 an invalid later component cannot leave a partial result.
+
+## Edit several existing axes
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```js
+// Fragment: program already contains x and y axes.
+program.editAxes({
+  x: { labels: { fontSize: 11 } },
+  y: { ticksAndLabels: { count: 4, labels: { fontSize: 11 } } }
+});
+```
+
+`editAxes` groups existing channel editors in one atomic call. Omitted axes are preserved; it never creates an absent axis. See the [action reference](../reference/actions/guides.md#editaxes) for the complete signature.
 
 ## Errors and limitations
 

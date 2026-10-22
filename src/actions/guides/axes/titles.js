@@ -21,6 +21,7 @@ import {
 import { AXIS_TITLE_FONT_SIZE, DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from
   "../../../theme/defaults.js";
 import { findDataset } from "../../../selectors/datasets.js";
+import { findUpstreamTransform } from "../../../materialization/dataProvenance.js";
 import { formatAggregateTitle } from "../../../grammar/aggregate.js";
 import { finiteMidpoint } from "../../../grammar/numeric.js";
 import {
@@ -159,6 +160,8 @@ export function inferAxisTitleText(program, channel, scaleId) {
   const primaryTitles = new Set();
   for (const layer of program.semanticSpec.layers) {
     if (isSourceOwnedText(layer)) continue;
+    // Reference statistics reuse the source axis title.
+    if (program.markConfigs[layer.id]?.statisticalReference !== undefined) continue;
     const primary = layer.encoding?.[channel];
     const encoding = layer.mark?.type === "area" && Object.hasOwn(primary ?? {}, "datum")
       ? layer.encoding?.[`${channel}2`] : primary;
@@ -173,9 +176,8 @@ export function inferAxisTitleText(program, channel, scaleId) {
       encoding.field.length
     ) {
       const dataset = findDataset(program, layer.data);
-      const transform = dataset?.transform?.length === 1
-        ? dataset.transform[0]
-        : undefined;
+      const transform = findUpstreamTransform(program, dataset,
+        ["density", "ecdf", "interval", "boxSummary", "gradientProfile", "summary"]);
       let derivedTitle;
       if (transform?.type === "density") {
         derivedTitle = encoding.field === transform.as?.[0]
@@ -183,12 +185,23 @@ export function inferAxisTitleText(program, channel, scaleId) {
           : encoding.field === transform.as?.[1]
             ? "Density"
             : undefined;
+      } else if (transform?.type === "ecdf") {
+        derivedTitle = encoding.field === transform.as.value ? transform.field
+          : encoding.field === transform.as.probability ? "Cumulative probability"
+            : encoding.field === transform.as.cumulative ? "Cumulative count" : undefined;
       } else if (transform?.type === "interval" &&
         Object.values(transform.as).includes(encoding.field)) {
         derivedTitle = `${transform.center}(${transform.field})`;
       } else if (transform?.type === "boxSummary" &&
         Object.values(transform.as).includes(encoding.field)) {
         derivedTitle = transform.field;
+      } else if (transform?.type === "gradientProfile" &&
+        [transform.as.lower, transform.as.upper, transform.as.center].includes(encoding.field)) {
+        // Profile bounds and the optional center share one source measure.
+        derivedTitle = transform.field;
+      } else if (transform?.type === "summary") {
+        const aggregate = transform.aggregates.find(value => value.as === encoding.field);
+        if (aggregate) derivedTitle = formatAggregateTitle(aggregate.op, aggregate.field);
       }
       const title = encoding.title ?? derivedTitle ?? (encoding.aggregate === undefined
         ? encoding.field

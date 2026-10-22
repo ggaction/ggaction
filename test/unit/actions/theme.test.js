@@ -3,6 +3,7 @@ import test from "node:test";
 
 import { chart } from "../../../src/index.js";
 import { chart as basicChart } from "../../../src/basic.js";
+import { serializeProgram, deserializeProgram } from "../../../src/persistence.js";
 import { resolveConcreteGraphicBounds } from
   "../../../src/grammar/schemas/graphicBounds.js";
 
@@ -735,4 +736,26 @@ test("drops stale guide and component bindings when their resources are reset", 
     band.graphicSpec.objects.errorBand.items[0].properties.fill,
     "#60a5fa"
   );
+});
+
+test("cached trace removals preserve theme resets across branching and restored histories", () => {
+  let program = pointChart().encodeColor({ field: "group" }).createAxes()
+    .createLegend().applyTheme({ theme: "dark" });
+  for (let index = 0; index < 20; index += 1) {
+    program = program.editXAxisLine({ color: "#475569" })
+      .removeXAxis().createXAxisLine()
+      .editLegendLabels({ color: "#334155" }).removeLegend().createLegend();
+  }
+  const snapshot = serializeProgram(program);
+  for (const color of ["#ff0000", "#008800"]) {
+    const edit = source => source.editXAxisLine({ color })
+      .encodeOpacity({ value: .4 }).applyTheme({ theme: "light" });
+    const warm = edit(program), restored = edit(deserializeProgram(snapshot));
+    assert.deepEqual(warm.graphicSpec, restored.graphicSpec);
+    assert.deepEqual(warm.materializationConfigs, restored.materializationConfigs);
+    assert.deepEqual(warm.trace, restored.trace);
+    assert.equal(warm.graphicSpec.objects.xAxisLine.properties.stroke, color);
+    assert.equal(warm.graphicSpec.objects.colorLegendLabels.items[0].properties.fill, "#334155");
+  }
+  assert.equal(serializeProgram(program), snapshot);
 });

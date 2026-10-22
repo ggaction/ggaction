@@ -131,6 +131,26 @@ function numericTextOffsetPrograms() {
   return [program, program.removeEncoding({ channel: "dx" })];
 }
 
+function radarEditorPrograms() {
+  return [chart()
+    .createCanvas({ width: 320, height: 320, margin: 40 })
+    .createData({ values: [
+      { series: "a", first: 1, second: 2, third: 3 },
+      { series: "b", first: 2, second: 3, third: 4 }
+    ] })
+    .createRadarPlot({
+      id: "radarLines",
+      wide: { fields: ["first", "second", "third"] },
+      groupBy: "series",
+      color: "series",
+      guides: false
+    })
+    .editRadarPlot({
+      target: "radarLines",
+      wide: { fields: ["third", "first"] }
+    })];
+}
+
 function legendBlockPrograms() {
   return [chart()
     .createCanvas({ width: 760, height: 600, margin: 160 })
@@ -407,7 +427,11 @@ export async function buildActionRelationships() {
   const directNames = new Set(actionNames);
   const relationships = new Map(actionNames.map(name => [name, new Set()]));
   const observed = new Set();
-  const programs = buildActionRelationshipPrograms();
+  const programs = [...buildActionRelationshipPrograms(), chart()
+    .createCanvas({ width: 500, height: 400, margin: 70 })
+    .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 3 }] })
+    .createScatterPlot({ x: "x", y: "y" })
+    .editAxes({ x: { labels: { fontSize: 11 } }, y: { labels: { fontSize: 11 } } })];
   for (const program of programs) {
     collectDirectRelationships(program.trace, directNames, relationships, observed);
   }
@@ -433,6 +457,12 @@ export function buildActionRelationshipPrograms() {
   });
   return [
     ...descriptors.map(buildScenario),
+    ...[false, true].map(band => chart()
+      .createCanvas({ width: 400, height: 300, margin: 40 })
+      .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 4 }] })
+      .createScatterPlot({ id: "points", x: "x", y: "y", guides: false })
+      .createStatisticalReference({ source: "points", axis: "y",
+        ...(band ? { statistics: [{ op: "quantile", p: 0.025 }, { op: "quantile", p: 0.975 }] } : {}) })),
     chart().createCanvas().createData({ values: [{ group: "A", min: 1, q1: 2, median: 3, q3: 4, max: 5 }] })
       .createBoxPlot({ x: { field: "group", fieldType: "nominal" },
         summary: { min: "min", q1: "q1", median: "median", q3: "q3", max: "max" },
@@ -463,6 +493,7 @@ export function buildActionRelationshipPrograms() {
     ...focusedScaleEditorPrograms(),
     ...atomicEncodingPrograms(),
     ...numericTextOffsetPrograms(),
+    ...radarEditorPrograms(),
     ...legendBlockPrograms(),
     ...coordinateAspectPrograms(),
     ...labelRemovalPrograms(),

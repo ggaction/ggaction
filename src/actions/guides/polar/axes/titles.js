@@ -1,3 +1,4 @@
+import { withGuideLayoutValidation } from "../../../../materialization/guides/layout.js";
 import { axisThemeTypography } from "../../../theme/state.js";
 import { action } from "../../../../core/action.js";
 import {
@@ -96,7 +97,7 @@ function makeEditTitle(kind) {
   return action({
     op: operation.edit,
     description: `Edit the Polar ${kind}-axis title.`
-  }, function (args = {}) {
+  }, withGuideLayoutValidation(function (args = {}) {
     validateObject(args, TITLE_EDIT_OPTIONS, operation.edit);
     const names = polarGuideNames(kind);
     const previous = this.guideConfigs.axis?.[kind]?.title;
@@ -136,7 +137,7 @@ function makeEditTitle(kind) {
       next = next.editGraphics({ target: names.title, property, value });
     }
     return next;
-  });
+  }));
 }
 
 function makeCreateTitle(kind) {
@@ -144,7 +145,7 @@ function makeCreateTitle(kind) {
   return action({
     op: operation.create,
     description: `Create the Polar ${kind}-axis title.`
-  }, function (args = {}) {
+  }, withGuideLayoutValidation(function (args = {}) {
     validateComponentCreateArgs(kind, args, TITLE_CREATE_OPTIONS, operation.create);
     const names = polarGuideNames(kind);
     if (this.graphicSpec.objects[names.title] !== undefined) {
@@ -176,7 +177,7 @@ function makeCreateTitle(kind) {
       })
       ._withGuideConfig(kind, "title", config)
       [operation.edit]();
-  });
+  }));
 }
 
 export const createThetaAxisTitle = /* @__PURE__ */ makeCreateTitle("theta");

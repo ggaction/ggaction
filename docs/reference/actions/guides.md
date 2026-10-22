@@ -1023,6 +1023,50 @@ Behavior, inference, resets, and errors: [Tick/label groups and axis titles](./g
 
 
 
+## `editAxes`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+editAxes(options: EditAxesOptions): ChartProgram;
+```
+
+Named option contracts: [`EditAxesOptions`](./../types.md#type-editaxesoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `x` | Optional / branch-dependent | `false \| EditAxisOptions<XAxisPosition> \| readonly [EditAxisOptions<XAxisPosition> & { target: string; }, ...(EditAxisOptions<XAxisPosition> & { ...; })[]] \| undefined` |
+| `y` | Optional / branch-dependent | `false \| EditAxisOptions<YAxisPosition> \| readonly [EditAxisOptions<YAxisPosition> & { target: string; }, ...(EditAxisOptions<YAxisPosition> & { ...; })[]] \| undefined` |
+| `theta` | Optional / branch-dependent | `false \| EditThetaAxisOptions \| undefined` |
+| `radius` | Optional / branch-dependent | `false \| EditRadialAxisOptions \| undefined` |
+| `parallel` | Optional / branch-dependent | `false \| readonly [ParallelAxisComponentsOptions, ...ParallelAxisComponentsOptions[]] \| ParallelAxisComponentsOptions \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```js
+editAxes({ x?, y?, theta?, radius?, parallel? })
+```
+
+Chart-authoring action. Edit existing axes in one atomic call. Each selected option uses the corresponding `editXAxis`, `editYAxis`, `editThetaAxis`, `editRadialAxis`, or `editParallelAxis` options. Omission or `false` preserves that axis. At least one nonempty edit is required. No axes or components are created and scale/coordinate bindings are preserved. Cartesian arrays require explicit `target` IDs; parallel arrays select fields with the existing `field`/`target` options. Duplicate selections and empty arrays are rejected.
+
+```js
+// Fragment: program already contains x and y axes.
+program.editAxes({
+  x: { labels: { fontSize: 11 } },
+  y: { ticksAndLabels: { count: 4, labels: { fontSize: 11 } } }
+});
+```
+
+
 ## `editXAxis`
 
 **API layer:** user-facing. **Authoring roles:** H3.
@@ -1457,6 +1501,12 @@ Create categorical, point-size, continuous-color gradient, discretized-color
 interval, or field-opacity sample legends. Interval legends support all four
 edges with layout `"edge"`, side single columns and horizontal item grids. Explicit `channels` creates exactly
 the selected content; include `"size"` in a point categorical-and-size request.
+Compatible point and line categorical channels stay combined when their domains
+contain the same values, even in different orders. The first selected channel
+owns item order; each symbol still looks up its own scale by value. Independent fields,
+continuous color/stroke, opacity, and stroke width use separate native blocks.
+Area fill and stroke are independently selectable blocks, including stroke-only
+legends for density and horizon areas.
 For outside top/bottom legends, omitting `offset` places the occupied legend after
 the same-side axis line, ticks, labels, and title, with the family's native gap
 (8 pixels for categorical legends, 30 for continuous families). Axis edits and
@@ -1879,7 +1929,11 @@ createGuides({ axes?, grid?, legend? })
 
 Create applicable axes, grids, and legends; omitted branches infer applicability, false skips a branch, and explicit direction objects enable only named directions: `axes:{x:false}` requests neither axis while `axes:{x:false,y:{}}` requests y.
 Automatic calls preserve existing guide collections and add missing applicable
-collections; explicit collection objects retain strict create semantics.
+collections; explicit collection objects retain strict create semantics. Datum-only
+anchors do not infer axes. An automatic call on an existing chart that has no
+applicable guides succeeds without adding graphics. An explicit all-false request
+or a chart without marks still fails. On facet parents this action updates the retained source
+and rederives its panels while preserving the parent title and guide policy.
 [Guides](../../api/guides.md)
 
 

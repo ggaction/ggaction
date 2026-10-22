@@ -5,13 +5,14 @@ import {
   resolveTemporalUnit
 } from "../../../grammar/scales/index.js";
 import { validateContinuousColorConsumer } from "../../../grammar/scales/colorConsumers.js";
-import { validatePathSeriesAppearance } from "../../../grammar/pathSeries.js";
+import { validatePathGroupAppearance } from "../../../materialization/marks/grouping.js";
+import { readArcColorValues } from "../../../grammar/arcs.js";
 import { validateAggregateFieldValues } from "../../../grammar/aggregate.js";
 import {
   resolveQuantitativeColorScaleDefinition
 } from "../../scales/definitions.js";
 import {
-  resolveReassignmentScaleOptions,
+  releaseDetachedEncodingScale,
   resolveTarget
 } from "../shared.js";
 import {
@@ -23,7 +24,9 @@ import {
 } from "../../../materialization/encodings.js";
 import {
   assertNoConstantColor,
-  resolveColorScaleOptions
+  withoutConstantColor,
+  resolveColorScaleOptions,
+  resolveColorReassignmentScaleOptions
 } from "./policy.js";
 
 import { applyTemporalUnit } from "../temporal.js";
@@ -40,14 +43,15 @@ export function encodeContinuousColor(program, args) {
   const { id: target, dataset: sourceDataset, layer } = resolveTarget(
     program,
     args.target,
-    ["point", "bar", "rect", "text", "area", "tick"],
+    ["point", "line", "bar", "rect", "text", "area", "arc", "tick"],
     "continuous color mark"
   );
   const dataset = applyRequestedItemMissingPolicy(layer, sourceDataset, args.field);
-  assertNoConstantColor(program, layer);
+  const baseline = withoutConstantColor(program, layer);
+  assertNoConstantColor(baseline, layer);
   const temporalUnit = resolveTemporalUnit(args, args.fieldType, layer.encoding?.color);
-  const requestedScale = resolveReassignmentScaleOptions(
-    layer.encoding?.color,
+  const requestedScale = resolveColorReassignmentScaleOptions(
+    program, layer, "color", args.fieldType,
     resolveColorScaleOptions(args)
   );
   const scale = resolveQuantitativeColorScaleDefinition(
@@ -56,9 +60,15 @@ export function encodeContinuousColor(program, args) {
     requestedScale
   );
   const aggregate = validateContinuousColorConsumer(layer, args, scale, { inferAggregate: true });
-  if (layer.mark.type === "area") {
-    validatePathSeriesAppearance(dataset.values, {
+  if (["line", "area"].includes(layer.mark.type)) {
+    validatePathGroupAppearance(program, {
       ...layer, encoding: { ...layer.encoding, color: { field: args.field, fieldType: args.fieldType } }
+    }, dataset);
+  }
+  if (layer.mark.type === "arc") {
+    readArcColorValues(dataset.values, {
+      ...layer, encoding: { ...layer.encoding,
+        color: { field: args.field, fieldType: args.fieldType, temporalUnit } }
     });
   }
   if (aggregate !== undefined) validateAggregateFieldValues(dataset.values, args.field, args.fieldType);
@@ -75,7 +85,8 @@ export function encodeContinuousColor(program, args) {
   } else {
     readQuantitativeField(dataset.values, args.field);
   }
-  let next = applyTemporalUnit(program, target, "color", temporalUnit, layer.encoding?.color)
+  const prepared = baseline === program ? baseline : releaseDetachedEncodingScale(baseline, scale.id);
+  let next = applyTemporalUnit(prepared, target, "color", temporalUnit, layer.encoding?.color)
     .editSemantic({
       property: `layer[${target}].encoding.color.field`,
       value: args.field

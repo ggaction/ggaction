@@ -355,6 +355,11 @@ Nominal/ordinal independent positions support point/band scales. Domain order
 (or first appearance) orders vertices unless path order is explicit. Stacking
 requires aligned groups; missing categories are not synthesized.
 
+Align sparse groups with `createCompleteData`: explicitly fill counts/sums with
+zero; keep missing means null with `missing: "break"`. Stack/fill/center break all
+series at unknown totals. Isolated samples produce empty paths with finite
+domains. Completion edits rematerialize area consumers.
+
 <!-- snippet-context:start -->
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.

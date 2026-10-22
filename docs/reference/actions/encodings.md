@@ -35,7 +35,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `datum` | Optional / branch-dependent | `unknown` |
 | `bin` | Optional / branch-dependent | `{ maxBins?: number \| undefined; step?: undefined; boundaries?: undefined; } \| { maxBins?: undefined; step: number; boundaries?: undefined; } \| { maxBins?: undefined; step?: undefined; boundaries: readonly [...]; } \| undefined` |
 | `stack` | Optional / branch-dependent | `StackMode \| undefined` |
-| `aggregate` | Optional / branch-dependent | `undefined` |
+| `aggregate` | Optional / branch-dependent | `AggregateOperation` |
 | `temporalUnit` | Optional / branch-dependent | `TemporalInputUnit \| undefined` |
 
 </details>
@@ -82,7 +82,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `fieldType` | Optional / branch-dependent | `FieldType \| undefined` |
 | `scale` | Optional / branch-dependent | `CategoricalPositionScaleOptions \| NonPointCategoricalPositionScaleOptions \| NonPointQuantitativePositionScaleOptions \| QuantitativePositionScaleOptions \| NonPointTemporalPositionScaleOptions \| TemporalPositionScaleOptions \| undefined` |
 | `datum` | Optional / branch-dependent | `unknown` |
-| `aggregate` | Optional / branch-dependent | `undefined` |
+| `aggregate` | Optional / branch-dependent | `AggregateOperation` |
 | `stack` | Optional / branch-dependent | `YStackMode \| undefined` |
 | `temporalUnit` | Optional / branch-dependent | `TemporalInputUnit \| undefined` |
 
@@ -133,7 +133,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `scale` | Optional / branch-dependent | `{ id?: string \| undefined; } \| { id?: string \| undefined; } \| { id?: string \| undefined; } \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
-| `temporalUnit` | Optional / branch-dependent | `undefined` |
+| `temporalUnit` | Optional / branch-dependent | `TemporalInputUnit \| undefined` |
 
 </details>
 
@@ -168,8 +168,9 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `field` | Required | `string` |
+| `value` | Optional / branch-dependent | `string \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
+| `field` | Optional / branch-dependent | `string \| undefined` |
 | `fieldType` | Optional / branch-dependent | `"nominal" \| "ordinal" \| "quantitative" \| "temporal" \| undefined` |
 | `scale` | Optional / branch-dependent | `ContinuousColorScaleOptions \| DiscretizedColorScaleOptions \| CategoricalColorScaleOptions \| (Omit<...> & { ...; }) \| undefined` |
 | `palette` | Optional / branch-dependent | `Palette \| undefined` |
@@ -229,7 +230,15 @@ Categorical color, aggregate, layout and point-only unknown remain unsupported;
 Basic gains no Tick authoring.
 
 Row-owned rects accept categorical or continuous color. Arc sectors accept
-categorical color with optional overlay layout.
+categorical color with optional overlay layout, or continuous/discretized color
+with one value per sector. Aggregated sectors require that value to be constant
+within their category; no implicit color aggregation is invented. Gradient and
+interval legends use the same scale mapping. Automatic quantile domains use one
+sample per sector.
+When changing a target between categorical and continuous color families, an
+omitted scale ID detaches from an incompatible shared scale into a target-owned
+scale. Explicit shared IDs keep strict consumer validation. Other consumers,
+such as grouped regression lines, retain their original mapping.
 [Series encodings](../../api/series-encodings.md)
 
 Existing field encodings in `ggaction/basic` can reassign settings on a bound
@@ -359,8 +368,8 @@ encodeStrokeWidth({ value, target? })
 encodeStrokeWidth({ field, target?, fieldType?, scale? })
 ```
 
-Assign a non-negative finite logical Canvas width to a Line or Rule. Field mode
-maps one quantitative value per rule row or complete line series. Constant mode
+Assign a non-negative finite logical Canvas width to a Line, Rule, or Rect. Field mode
+maps one quantitative value per rule/rect row or complete line series. Constant mode
 clears the field and its own sampled width legend; fieldType/scale are invalid in
 constant mode. Active channel selections must be removed before replacement.
 [Appearance encodings](../../api/appearance.md)
@@ -385,8 +394,9 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `field` | Required | `string` |
+| `value` | Optional / branch-dependent | `number \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
+| `field` | Optional / branch-dependent | `string \| undefined` |
 | `fieldType` | Optional / branch-dependent | `"nominal" \| "ordinal" \| "quantitative" \| undefined` |
 | `scale` | Optional / branch-dependent | `SizeScaleOptions \| CategoricalSizeScaleOptions \| undefined` |
 
@@ -514,7 +524,7 @@ encodeOpacity({ value, target? })
 encodeOpacity({ field, target?, fieldType?, scale? })
 ```
 
-Apply a constant point/rule/line opacity from `0` to `1`, or map a quantitative field
+Apply a constant point/rule/line/bar/rect opacity from `0` to `1`, or map a quantitative field
 through a linear opacity scale. The two modes are mutually exclusive and may
 replace each other through the same action. Lines require one raw field value per
 series and support sampled opacity legends. Constant mode clears its field and
@@ -823,7 +833,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `scale` | Optional / branch-dependent | `{ id?: string \| undefined; } \| { id?: string \| undefined; } \| { id?: string \| undefined; } \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
-| `temporalUnit` | Optional / branch-dependent | `undefined` |
+| `temporalUnit` | Optional / branch-dependent | `TemporalInputUnit \| undefined` |
 
 </details>
 

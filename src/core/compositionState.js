@@ -1,4 +1,4 @@
-import { isPlainObject } from "./immutable.js";
+import { isOwned, isPlainObject } from "./immutable.js";
 import { ownProgramState } from "./programState.js";
 import {
   FACET_SCALE_CHANNELS,
@@ -6,6 +6,10 @@ import {
   FACET_TOP_LANE_MODES,
   DEFAULT_FACET_TOP_LANE
 } from "./vocabulary.js";
+
+// Primitive graphics/trace edits retain both immutable owners. Validate their
+// relationship once, rather than scanning every facet cell on every primitive.
+const validatedCompositions = new WeakMap();
 
 function validateFacetSpec(compositionSpec) {
   if (compositionSpec.direction !== undefined) {
@@ -262,6 +266,7 @@ function validateLayout(compositionSpec) {
 }
 
 export function ownCompositionSpec(compositionSpec, children) {
+  if (validatedCompositions.get(compositionSpec)?.has(children)) return compositionSpec;
   const childIds = Object.keys(children);
   if (compositionSpec === undefined) {
     if (childIds.length > 0) {
@@ -308,5 +313,10 @@ export function ownCompositionSpec(compositionSpec, children) {
     throw new Error("Concat compositionSpec does not accept facet properties.");
   }
   validateLayout(compositionSpec);
-  return ownProgramState(compositionSpec);
+  const owned = ownProgramState(compositionSpec);
+  if (isOwned(children)) {
+    if (!validatedCompositions.has(owned)) validatedCompositions.set(owned, new WeakSet());
+    validatedCompositions.get(owned).add(children);
+  }
+  return owned;
 }

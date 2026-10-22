@@ -32,6 +32,8 @@ export function withGuideLayoutTransaction(program, apply) {
         result = result.rematerializeLegend();
       }
       if (result.compositionSpec === undefined && needsSideLegendAxisReflow(program, result)) {
+        // Rebuild the native anchor before applying the current axis clearance.
+        // Axis removal must also discard any previously inferred displacement.
         result = result.rematerializeLegend();
       }
       if (result.compositionSpec === undefined && Object.values(result.guideConfigs.legend ?? {}).some(config =>

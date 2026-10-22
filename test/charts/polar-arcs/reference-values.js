@@ -234,8 +234,8 @@ function perimeterLabel(frame, theta, radius, text) {
   });
 }
 
-function legendLayout(target, domain, colors, title) {
-  const symbolX = target.width - target.margin.right + 8;
+function legendLayout(target, domain, colors, title, rightLabelEdge = -Infinity) {
+  const symbolX = Math.max(target.width - target.margin.right, rightLabelEdge) + 8;
   const titleY = target.margin.top;
   const itemY = domain.map((_, index) => titleY + 38.5 + index * 18);
   return Object.freeze({
@@ -526,7 +526,10 @@ export function createNightingaleRoseReference(rows) {
       NIGHTINGALE_TARGET,
       CAUSE_ORDER,
       NIGHTINGALE_COLORS,
-      "Cause"
+      "Cause",
+      // July is the rightmost label. Its independent 11px text metric
+      // fixture is 20.02px; leave the default 8px outside its ink.
+      thetaLabels[3].x + 20.02
     )
   });
 }
@@ -619,7 +622,9 @@ export function createGapminderRadialBarReference(rows) {
       GAPMINDER_RADIAL_TARGET,
       Object.freeze(["0", "1", "2", "3", "4", "5"]),
       CLUSTER_COLORS,
-      "Cluster"
+      "Cluster",
+      // Germany is the rightmost label, with a 41.58px metric fixture.
+      thetaLabels[3].x + 41.58
     )
   });
 }

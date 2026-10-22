@@ -58,9 +58,24 @@ const colored = program.encodeColor({
 });
 ```
 
-Density still controls lightness and opacity inside each strip. `gradient`
-controls the neutral palette and opacity range when no category color encoding
-is present.
+Density still controls lightness and opacity inside each strip. A fixed
+`encodeColor({ target: "gradientPlot", value: "#e45756" })` uses one hue for
+all strips while preserving the density gradient. A field color uses the
+actual value in each profile row; category, center, and observation count
+are available at this grain. Unrelated raw columns cannot assign several
+colors to one strip.
+
+`gradient.palette` controls density colors when no fixed or field color owns
+the hue. `gradient.opacity` controls the within-strip opacity range in every
+mode. `encodeOpacity`, `encodeStroke`, `encodeStrokeWidth`, and `editRectMark`
+apply to the strip itself and survive scale, Canvas, density, and facet
+replay. Enable an outline with `encodeStroke` before changing its width.
+Rounded corners use the same `editRectMark` options as other rect marks.
+
+The neutral density legend is independent of the color channel. A later
+`createGuides({ legend: { target: "gradientPlot", channels: ["color"] } })`
+can display a hue legend alongside it. The density legend moves beyond
+right-side channel legends to keep their labels separate.
 
 ## Options and defaults
 
@@ -72,7 +87,7 @@ is present.
 
 ```javascript
 createGradientPlot({
-  id?, target?, data?, x?, y?, coordinate?,
+  id?, target?, data?, x?, y?, coordinate?, color?,
   density?: { bandwidth?, extent?, steps?, kernel?, normalization? },
   width?: { band? },
   gradient?: { palette?, opacity? },
@@ -87,6 +102,11 @@ createGradientPlot({
   budget.
 - `width.band` defaults to `0.7` of the category band.
 - `gradient` defaults to `blues` with opacity `[0, 1]`.
+- `color` accepts a field name, a field/scale encoding, or `{ value }`. It is
+  equivalent to a later `encodeColor` on the strips, including after deferred
+  positions complete. Color controls hue; density retains lightness and opacity.
+  The density legend remains separate. This option does not create subgroup
+  profiles or add unrelated source fields to the profile data.
 - `center` defaults to a median rule with a `1.5` logical-pixel dark stroke;
   `false` removes the complete optional component. Its cap/join/miter values
   follow the shared [Mark Style](./appearance/mark-style.md#stroke-caps-joins-and-rounded-rectangles)

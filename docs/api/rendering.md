@@ -450,6 +450,41 @@ legacy painting unchanged; line/text/containers do not accept blend markers.
 The bar action's `blend:'normal'` remains a semantic reset which removes its
 optional concrete blend field. Normal does not enable circle difference blending.
 
+## Transition scenes
+
+`createTransitionScene(program)` from `ggaction/scene` is a read-only extension API.
+It returns a frozen, structured-cloneable version-1 scene with native `width` and
+`height`, SVG `definitions`, and ordered `nodes`. Each node contains an opaque
+`key`, concrete `type`, path `topology` signature, escaped SVG fragment, absolute
+parent `offset`, and intersected canvas `clip` rectangle. Keys are correspondence
+hints, not editable graphic addresses. Renderers still consume concrete graphics.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `data: "data"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```js
+import { chart } from 'ggaction';
+import { createTransitionScene } from 'ggaction/scene';
+const program = chart().createCanvas({ width: 600, height: 400 })
+  .createData({ id: 'data', values: [{ x: 1, y: 2 }, { x: 2, y: 3 }] })
+  .createScatterPlot({ id: 'points', data: 'data', x: { field: 'x' }, y: { field: 'y' } });
+const scene = createTransitionScene(program);
+```
+
+The optional `@ggaction/transition` package owns browser playback, timing,
+interruption and reduced-motion behavior. Creating a scene does not append an
+action or modify a program. Scene extraction reuses concrete SVG serialization.
+Point/member correspondence survives filters, reordered rows and facet placement;
+identical records receive occurrence keys. Selection resolvers supply membership
+for supported aggregate and series marks. Changed membership, unsupported
+selection structures and changed path topology use conservative replacement
+rather than an invented data relationship. Arbitrary data-transform lineage and
+many-to-one morphs are not inferred. Keys are opaque and only comparable within
+a related dataset/program history, not globally persistent row identifiers.
+
 ## Related
 
 [Canvas](./canvas.md) · [Semantic and graphical state](../concepts/semantic-and-graphics.md) ·

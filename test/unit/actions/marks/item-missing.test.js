@@ -16,6 +16,20 @@ function source() {
     });
 }
 
+test("histogram guides and labels use the same missing policy after variable replacement", () => {
+  const before = chart().createCanvas({ width: 600, height: 400, margin: 70 })
+    .createData({ values: [{ x: 1, y: 10 }, { x: 2, y: null }, { x: 3, y: 30 }] })
+    .createHistogram({ id: "bars", field: "x", maxBins: 3 });
+  const after = before.editBarMark({ target: "bars", missing: "skip" })
+    .encodeX({ target: "bars", field: "y", fieldType: "quantitative", bin: { maxBins: 3 } })
+    .createMarkLabels({ source: "bars", content: "category" });
+  assert.deepEqual(after.resolvedScales.x.domain, [10, 30]);
+  assert.ok(after.guideConfigs.axis.x.ticks.values.every(value => value >= 10 && value <= 30));
+  assert.equal(after.graphicSpec.objects.bars.items.length, 2);
+  assert.equal(before.semanticSpec.layers[0].encoding.x.field, "x");
+  assert.equal(after.semanticSpec.datasets[0].values.length, 3);
+});
+
 test("independent item missing:skip uses one eligible set for domains and graphics", () => {
   const program = source()
     .createPointMark({ id: "points", missing: "skip" })

@@ -27,7 +27,8 @@ export function pathGroupFields(layer) {
     return normalizeGroupFields(group.fields ?? group.field);
   }
   if (layer.mark?.type !== "line") return [];
-  const color = layer.encoding?.color?.field;
+  const color = ["nominal", "ordinal"].includes(layer.encoding?.color?.fieldType)
+    ? layer.encoding.color.field : undefined;
   const dash = layer.encoding?.strokeDash?.field;
   if (color !== undefined && dash !== undefined && color !== dash) {
     throw new Error("Line color field must match strokeDash field unless encodeGroup defines the series.");
@@ -60,7 +61,7 @@ function seriesValueIndex(rows, fields, field, channel, encoding = {}, scale) {
   const quantitative = channel === "strokeWidth" || channel === "opacity";
   const values = channel === "color" && scale !== undefined
     ? readCategoricalLineColor(rows, field)
-    : channel === "stroke" || (channel === "color" && encoding.fieldType === "quantitative")
+    : channel === "stroke" || (channel === "color" && ["quantitative", "temporal"].includes(encoding.fieldType))
     ? readScaleField(rows, field, encoding.fieldType ?? "nominal", {
         temporalUnit: encoding.temporalUnit
       })
@@ -97,10 +98,11 @@ export function derivePathSeriesFieldValues(
   return series.map(item => values.get(pathSeriesKey(Object.values(item.key))));
 }
 
-export function validatePathSeriesAppearance(rows, layer, scales) {
+export function validatePathSeriesAppearance(rows, layer, scales, seriesFields) {
   if (!["line", "area"].includes(layer.mark?.type) ||
       layer.encoding?.parallel !== undefined) return;
-  const grouping = readPathSeriesFields(rows, layer, scales);
+  const grouping = seriesFields ?? readPathSeriesFields(rows, layer, scales);
+  if (seriesFields !== undefined) for (const field of grouping) readNominalField(rows, field);
   const colorScale = lineColorScale(layer, scales);
   const channels = layer.mark.type === "line"
     ? ["color", "stroke", "strokeDash", "strokeWidth", "opacity"]
@@ -110,7 +112,7 @@ export function validatePathSeriesAppearance(rows, layer, scales) {
     if (encoding?.field === undefined) continue;
     const allowed = ["color", "stroke"].includes(channel)
       ? channel === "color"
-        ? layer.mark.type === "area" ? ["nominal", "ordinal", "quantitative"] : ["nominal", "ordinal"]
+        ? layer.mark.type === "area" ? ["nominal", "ordinal", "quantitative"] : ["nominal", "ordinal", "quantitative", "temporal"]
         : ["nominal", "ordinal", "quantitative", "temporal"]
       : channel === "strokeDash" ? ["nominal", "ordinal"] : ["quantitative"];
     if (!allowed.includes(encoding.fieldType)) {

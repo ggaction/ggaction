@@ -170,7 +170,7 @@ automatic undo stack; the application chooses which to retain or render.
 
 Use `createLinePlot`, `createBarPlot`, `createHistogram`, and `createHeatmap` for
 the other basic Cartesian charts. The `ggaction/basic` entry keeps this common
-creation path at or below the current 220,000-byte gzip regression ceiling while
+creation path at or below the current 230,000-byte gzip regression ceiling while
 each facade still records its mark, encoding, and guide actions as trace
 children. Import from
 `ggaction` when you need editing, selection, composition, alternative
@@ -220,6 +220,7 @@ The package is ESM-only and requires Node.js 20 or later.
 | `ggaction/inspection` | Inspect dataset schemas, action applicability, program changes, and concrete results without mutation |
 | `ggaction/diagnostics` | Read structured error codes and resource details in Browser or Node |
 | `ggaction/svg` | Serialize a completed program to browser-safe SVG |
+| `ggaction/scene` | Read-only structured transition scenes for external animation players |
 | `ggaction-mcp` | Run the local read-only MCP authoring server over stdio in Node.js |
 
 All module entries include TypeScript declarations. The default, basic,

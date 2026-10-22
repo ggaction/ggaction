@@ -86,7 +86,7 @@ export function categoricalLegendLabels(config) {
   config = categoricalLegendView(config);
   const labels = config.domain.map(value => resolveDisplayLabel(
     value,
-    config.labelMap,
+    [...(config.labelMap ?? []), ...(config.defaultLabelMap ?? [])],
     formatVisibleText
   ));
   return config.hiddenCount > 0 ? [...labels, `…${config.hiddenCount} entries`] : labels;

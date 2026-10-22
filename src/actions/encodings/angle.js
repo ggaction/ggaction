@@ -1,3 +1,4 @@
+import { APPEARANCE_MARK_TYPES } from "../../core/vocabulary.js";
 import { action } from "../../core/action.js";
 import { readQuantitativeField } from "../../grammar/scales/index.js";
 import {
@@ -34,7 +35,7 @@ export const encodeAngle = /* @__PURE__ */ action(
     const { id: target, dataset: sourceDataset, layer } = resolveTarget(
       this,
       args.target,
-      ["point", "tick"],
+      APPEARANCE_MARK_TYPES.encodeAngle,
       "point or Tick mark"
     );
     if (hasValue && !Number.isFinite(args.value)) {

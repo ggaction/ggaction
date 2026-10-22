@@ -64,6 +64,7 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`createECDFData`](current/STATISTICS.md#createecdfdata) | statistics | Mutable resource | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createPointMark`](current/MARKS.md#createpointmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createTickMark`](current/MARKS.md#createtickmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createStatisticalReference`](current/MARKS.md#createstatisticalreference) | marks | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createReferenceLine`](current/MARKS.md#createreferenceline) | marks | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createReferenceBand`](current/MARKS.md#createreferenceband) | marks | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createMarkLabels`](current/MARKS.md#createmarklabels) | marks | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
@@ -169,6 +170,7 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`createYAxisTitle`](current/AXES.md#createyaxistitle) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editXAxisTitle`](current/AXES.md#editxaxistitle) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editYAxisTitle`](current/AXES.md#edityaxistitle) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editAxes`](current/AXES.md#editaxes) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editXAxis`](current/AXES.md#editxaxis) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editYAxis`](current/AXES.md#edityaxis) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`removeXAxis`](current/AXES.md#removexaxis) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
@@ -280,6 +282,7 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`createPolarScatterPlot`](current/COMPLETE_CHARTS.md#createpolarscatterplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createPolarLinePlot`](current/COMPLETE_CHARTS.md#createpolarlineplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createRadarPlot`](current/COMPLETE_CHARTS.md#createradarplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
+| user-facing | [`editRadarPlot`](current/COMPLETE_CHARTS.md#editradarplot) | charts | Mutable resource | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createRugPlot`](current/COMPLETE_CHARTS.md#createrugplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createStripPlot`](current/COMPLETE_CHARTS.md#createstripplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createBeeswarmPlot`](current/COMPLETE_CHARTS.md#createbeeswarmplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |

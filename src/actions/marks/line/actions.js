@@ -212,6 +212,7 @@ const rematerializeLineMark = /* @__PURE__ */ action(
     const highlighted = rematerializeHighlightBaseline(this, {
       target: id,
       operation: "rematerializeLineMark",
+      scales: args.scales,
       resetProperty: "length",
       resetValue: 0
     });

@@ -1,5 +1,6 @@
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
 import { normalizeFacetTopLane } from "./facetTopLane.js";
+import { annotateError } from "../core/diagnostics.js";
 import {
   DEFAULT_COMPOSITION_LAYOUT,
   normalizeCompositionAlign,
@@ -186,13 +187,17 @@ export function resolveFacetLayout({
     Math.ceil(resolvedChildren.length / resolvedColumns);
   let headers = normalizeHeaderLayout(headerLayout, rowCount, resolvedColumns);
   if (spacing === "plot") {
+    let minimumGap = 0;
     for (const [before, after] of [[headers.cellRows.bottom, headers.cellRows.top],
       [headers.cellColumns?.right ?? [], headers.cellColumns?.left ?? []]]) {
       for (let index = 1; index < before.length; index += 1) {
-        if (before[index - 1] + after[index] > resolvedGap) {
-          throw new Error("Plot spacing gap is too small for the facet headers.");
-        }
+        minimumGap = Math.max(minimumGap, before[index - 1] + after[index]);
       }
+    }
+    if (minimumGap > resolvedGap) {
+      throw annotateError(new Error("Plot spacing gap is too small for the facet headers."), {
+        code: "invalid-value", optionPath: "gap", actual: resolvedGap, limit: minimumGap
+      });
     }
     headers = { outer: {
       top: headers.outer.top + headers.cellRows.top[0],

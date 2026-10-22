@@ -98,9 +98,49 @@ counts for unstacked layouts, and `[0, 1]` for normalize. The action materialize
 one concrete rectangle per non-empty bin; a later color encoding can split each
 bin according to its layout.
 
+## Bins with a separate measure
+
+For a binned bar whose height is a measure rather than a count, supply a
+quantitative Y field and its aggregate. Each rectangle spans the complete bin
+interval; numeric bin centers do not become fixed-width bars. Empty bins leave
+empty intervals. Mean, median, sum, min, max and the other native aggregate
+operations use the same per-bin, per-series samples as the measure domain and
+mark labels. Non-count bins do not accept statistical weights.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart } from "ggaction";
+
+const binned = chart()
+  .createCanvas({ width: 600, height: 450, margin: 90 })
+  .createData({ values: [
+    { X: 1, Y: 2, Group: "A" }, { X: 2, Y: 6, Group: "A" },
+    { X: 1, Y: 10, Group: "B" }, { X: 8, Y: 5, Group: "A" }
+  ] })
+  .createBarPlot({
+    x: { field: "X", bin: { boundaries: [0, 5, 10] } },
+    y: { field: "Y", aggregate: "mean" },
+    color: { field: "Group", layout: "overlay" },
+    guides: false
+  });
+const stacked = binned.layoutSeries({ mode: "stack" });
+const normalized = binned.layoutSeries({ mode: "fill" });
+const dodged = binned.layoutSeries({ mode: "group" });
+```
+
+Non-count bins default to overlay. Stack adds the group aggregates; fill divides
+each aggregate by their sum within the bin. Stacked group means therefore do
+not represent the pooled mean. Dodge subdivides each bin by series; the other
+layouts retain its full width.
+
 ## Errors and limitations
 
-Explicit fields must match the binned x field. `maxBins`, `binStep`, and
+Count Y fields must match the binned x field; explicit non-count measures may differ. `maxBins`, `binStep`, and
 `binBoundaries` are mutually exclusive. Step-aligned explicit domains must
 contain the data and use zero-anchored step multiples. Explicit boundaries
 must contain the complete data extent; a separate domain must match their

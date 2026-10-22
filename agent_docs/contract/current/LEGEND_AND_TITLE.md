@@ -8,15 +8,18 @@
 - Color/stroke/series/gradient/interval/size/opacity/strokeWidth의 네 edge에 같은 검증을 적용한다. 같은 target의 categorical+size는 하나의 group이며 retained border도 bounds에 포함한다.
 - Axis line/ticks/labels/title는 각자의 position과 실제 stroke·rotation·collection bounds를 사용한다. Axis 내부 component 제약은 axis owner가 별도로 담당한다.
 - 외부 top/bottom/left/right legend의 offset을 생략하면 같은 edge의 실제 axis line/ticks/labels/title occupied bounds 뒤에 해당 family의 기존 기본 간격(categorical 8, continuous 30)을 둔다. 저장한 offset 수치는 바꾸지 않고 최종 배치에서 clearance를 계산한다. 명시한 offset(0·8·30 포함)은 계속 plot 기준이며 free `at`, plot corner와 legacy-bottom은 이 추론을 사용하지 않는다.
+- Polar theta/radius labels와 title의 실제 ink bounds도 네 외부 edge의 clearance에 포함한다. 축 글꼴 편집과 Canvas·persistence replay가 이 간격을 다시 계산한다. Evidence: `test/unit/actions/guides/polar-legend-clearance.test.js`.
 - 기본 간격의 생략 여부는 private `inferredOffset` boolean으로 보존하며 creation order, axis 편집·제거, Canvas replay, group과 저장·복원에서도 다시 계산한다. 이 marker가 없는 이전 snapshot은 고정 offset으로 보수적으로 읽는다. 잘못된 marker 타입은 저장·복원 시 거부한다.
 - 서로 독립적인 legend group과 title↔axis, title↔legend, axis↔legend의 strict intersection은 오류다. 경계가 닿는 것만으로는 오류가 아니다.
 - Create/edit와 Canvas/scale/dependent replay는 해당 aggregate의 최종 guide geometry를 검증한다. 실패 시 이전 program의 semantic/graphic/config/context/trace는 변하지 않는다.
-- 공간이 부족하면 margin 또는 offset을 명시적으로 바꿔야 한다. Canvas 자동 확대나 임의 재배치는 없다. Public extension primitive의 의도된 overlay는 이 domain 검증에 포함하지 않는다.
+- 고정 outer Canvas에서 공간이 부족하면 margin 또는 offset을 명시적으로 바꿔야 한다. `createCanvas({ plot: { width, height } })`로 exact-inner sizing을 명시하면 축·범례·제목의 측정된 overflow만큼 outer margin과 Canvas가 확대되며 plot 크기는 보존한다. Legend group의 Canvas overflow도 같은 구조화된 진단으로 전달한다. 명시한 offset, free placement와 plot corner의 간격은 임의로 바꾸지 않는다. Public extension primitive의 의도된 overlay는 이 domain 검증에 포함하지 않는다.
 - Chart title을 먼저 만들어도 bordered gradient/opacity를 생성·편집·재생성할 수 있으며, 동등한 최종 옵션은 title-last와 같은 graphicSpec/drawing order가 된다.
 - Evidence: `test/unit/actions/guides/guide-collisions.test.js`, packed Node consumer와 동일 artifact browser Canvas/SVG.
 - ✅ Side inferred clearance는 named/canonical Y axis의 실제 occupied bounds와 border/stroke를 포함하며 axis-first/legend-first, edit/remove, Canvas/data/scale/persistence, combined lane/group에서도 동일하다. Explicit offset과 무관한 edge의 기존 geometry/trace는 유지한다. Evidence: `test/unit/actions/guides/default-side-legend-offset.test.js`.
 
 Current direct-action contracts for this domain. Shared notation and lifecycle rules live in [`../README.md`](../README.md).
+
+`comparePrograms`는 chart title의 실제 `titleConfig`를 비교하며 text가 같아도 위치·정렬·서체 변경을 guide 수정으로 보고한다. Evidence: `test/unit/inspection.test.js`.
 
 ## Shared formal types
 
@@ -50,8 +53,19 @@ type TitleWrap = "word" | "character";
 
 ## `createLegend`
 
+- Combined categorical channels require the same category value set, not identical ordering.
+  The first selected channel owns legend order; each channel maps category values through its
+  own scale. Different sets still reject. The specialized size-shape recipe retains its own
+  stricter alignment contract. Area fill/stroke are separate selectable legend blocks.
+- Continuous and discretized Arc fill participates in gradient/interval legend inference.
+- Evidence: `test/unit/actions/encodings/compound-color-regressions.test.js`.
+
+
 - Sampled opacity legend는 active quantitative opacity scale이 있는 Point와 Line을 지원한다.
   Line도 기존 circle sample recipe를 사용하며 constant assignment는 자신의 opacity block만 제거한다.
+  한 Point에 size와 opacity만 남은 경우 channels omission은 두 기존 sampled owner의 별도 block을
+  생성한다. Color를 상수로 전환한 뒤에도 자동 guides가 유지된다. Explicit opacity는 단독 channel 규칙을 유지한다.
+  Evidence: `test/unit/actions/encodings/fixed-variable-appearance.test.js`.
 
 - Signature: `createLegend({ target?, channels?, representation?, position?, blockLayout?, at?, layout?, align?, direction?, columns?, offset?, titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, rowPadding?, titlePadding?, border?, count?, values?, gradient?, order?, overflow? })`.
 - 모든 legend family의 `position`은 plot 내부 네 corner도 지원한다. Corner gradient는 vertical이며 sampled opacity는 vertical items를 사용한다. Offset은 painted border/content의
@@ -296,6 +310,9 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
 `test/contracts/category-legend-order-types.test.js`는 positive/negative declaration 계약을 검사한다.
 
 ### Dashed legend borders
+
+Automatic continuous legend samples preserve the exact effective domain endpoints;
+decimal cleanup must not extrapolate an opacity sample beyond its authored range.
 
 - `border.strokeDash?: readonly number[]` accepts only even-length arrays of finite nonnegative numbers.
   Empty arrays restore solid frames; omission preserves the existing border merge/creation semantics.
@@ -603,6 +620,8 @@ config normalization과 rematerialization을 공유한다. Evidence:
 
 ## `createGuides`
 
+- Facet에서 default guides가 이미 모두 있으면 기존 children/graphics를 재사용하며 마지막 wrapped createGuides trace는 유지한다. 새 collection 또는 명시적 옵션은 source action 검증과 rederive 경로를 따른다.
+
 - Signature: `createGuides({ axes?, grid?, legend? })`.
 - `axes`, `grid`, `legend`: 해당 child option object, `false`, 또는 생략. 생략은 semantic applicability
   inference, `{}`는 명시적 선택+inference, false는 opt-out이다.
@@ -619,7 +638,7 @@ config normalization과 rematerialization을 공유한다. Evidence:
   [공통 facade guide 계약](BASIC_CHARTS.md#facade-guide-reuse)이 소유한다.
 - Polar omission은 실제 저장된 theta/radius channel별 axis와 grid만 선택한다. Arc color encoding은
   categorical legend applicability에 포함되며 theta-only count arc는 radial guide를 합성하지 않는다.
-- 오류: explicit/automatic selection 결과가 하나도 없거나 child resource inference가 ambiguous하면 거부한다.
+- 오류: 명시적 all-false 요청, mark 없는 program 또는 ambiguous child inference는 거부한다. 기존 mark가 있고 한 branch 이상이 생략된 자동 추론에서 applicable guide가 없으면 immutable no-op으로 성공한다.
 - Coverage: `test/unit/actions/guides/guide-collection-actions.test.js`와 size/regression/density guide tests가
   chart-type applicability, standalone size inference, forwarding, opt-out, ambiguity와 trace를 검증한다.
 
@@ -901,3 +920,9 @@ and facet-parent-symbol-window unit tests.
 - 저장은 기존 gradient/strokeGradient guide owner의 optional sampling이며 auto 복원은 optional key를 제거한다. Legacy count와 기억된 count는 일치해야 한다. 과거 생략 출력/상태는 유지한다. Representation 전환은 exact sampling을 유지하고, 다른 scale family로의 전환은 custom sampling을 버릴 수 없다.
 - editLegendBlock의 gradient sample 편집 제한은 유지한다. 한 block의 값은 editLegend channel selector로 바꾼다. Shared facet은 동일 sampling만 결합한다. 잘못된 data/scale/domain 편집과 persistence는 원본 program/input/trace를 보존하고 거부한다.
 - Evidence: test/unit/actions/guides/gradient-exact-values.test.js; 기존 legend-values/sampled-color-legend 검사.
+## Guide inference and mixed appearance channels
+
+- Datum-only positional anchors는 자동 axis/grid 후보가 아니다. Rug의 anchor scale에 축 제목을 추론하지 않는다.
+- `createLegend({channels:[...]})`는 Rect/Bar/Arc/Text의 독립 channel들을 기존 owner별 block으로 생성한다. Opacity/strokeWidth sampled block도 다른 channel과 함께 생성할 수 있다. Point의 호환되는 categorical color/size/shape block은 유지하며 서로 다른 field 또는 continuous color/stroke는 별도 block으로 나눈다. Categorical overflow는 continuous/sample block에 전달하지 않는다.
+- `createGuides`는 facet/grid/repeat parent에서도 retained source의 native guide action을 실행하고 모든 child를 재도출한다. 기존 guide collections와 parent title/header/layout은 보존한다.
+- Evidence: `test/unit/actions/facet-source-action.test.js`, `test/unit/actions/encodings/rect-appearance.test.js`, `test/unit/actions/guides/mixed-appearance-guides.test.js`.

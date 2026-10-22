@@ -12,6 +12,10 @@ import { unionConcreteGraphicBounds } from "../grammar/schemas/graphicBounds.js"
 import { intersectClipBounds } from "../grammar/schemas/graphicClip.js";
 import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from "../theme/defaults.js";
 import { prepareFacetHeaderTitles } from "../layout/facetHeaderTitles.js";
+import { cartesianAxisOwners, axisGraphicIds } from "../selectors/axes.js";
+import { resolveFacetOuterSides } from "../grammar/facets/guides.js";
+import { resolveConcreteGraphicBounds } from "../grammar/schemas/graphicBounds.js";
+import { allLegendGraphicIds } from "./guides/resources.js";
 
 const SIDES = Object.freeze(["top", "right", "bottom", "left"]);
 const ZERO_SIDES = Object.freeze({ top: 0, right: 0, bottom: 0, left: 0 });
@@ -235,6 +239,36 @@ function laneThickness(descriptors, role, profile, space) {
   )));
 }
 
+export function retainedFacetGuideIds(program, childId) {
+  const spec = program.compositionSpec;
+  const child = program.children[childId];
+  const outer = spec.facet.guides.axes === "outer"
+    ? resolveFacetOuterSides({ placements: spec.facet.grid?.cells ?? spec.children.map((id, index) => ({
+      id, row: Math.floor(index / spec.columns), column: index % spec.columns
+    })) }) : undefined;
+  const ids = cartesianAxisOwners(child).flatMap(owner => axisGraphicIds(owner.channel, owner.id)
+    .filter((id, index) => index >= 2 && (outer === undefined ||
+      outer[owner.config?.[["line", "ticks", "labels", "title"][index]]?.position]?.includes(childId))));
+  for (const channel of ["theta", "radius", "parallel"]) {
+    if (child.guideConfigs.axis?.[channel] !== undefined) ids.push(...axisGraphicIds(channel).slice(2));
+  }
+  if (spec.facet.guides.legend === false) ids.push(...allLegendGraphicIds(Object.keys(child.guideConfigs.legend ?? {})));
+  return ids.filter(id => child.graphicSpec.objects[id] !== undefined);
+}
+
+function guideClearance(program, id) {
+  const child = program.children[id], plot = resolveGraphicBounds(child);
+  const bounds = retainedFacetGuideIds(program, id).map(target => resolveConcreteGraphicBounds(
+    child.graphicSpec, target, child.materializationConfigs.textMetrics
+  )).filter(Boolean);
+  return {
+    top: Math.max(0, ...bounds.map(bound => plot.y - bound.top)),
+    bottom: Math.max(0, ...bounds.map(bound => bound.bottom - plot.y - plot.height)),
+    left: Math.max(0, ...bounds.map(bound => plot.x - bound.left)),
+    right: Math.max(0, ...bounds.map(bound => bound.right - plot.x - plot.width))
+  };
+}
+
 export function prepareFacetHeaders(program, headersConfig) {
   const headers = normalizeFacetHeadersConfig(headersConfig);
   const descriptors = headers.mode === "legacy"
@@ -244,10 +278,22 @@ export function prepareFacetHeaders(program, headersConfig) {
     ? Math.ceil(program.compositionSpec.children.length / program.compositionSpec.columns)
     : Math.max(...program.compositionSpec.facet.grid.cells.map(cell => cell.row)) + 1;
   const profile = program.materializationConfigs.textMetrics;
-  const contentById = prepareContentBounds(program, descriptors, profile);
   const roles = ["column", ...(program.compositionSpec.facet.grid === undefined ? [] : ["row"])]
     .map(role => [role, resolveFacetHeaderConfig(headers, role)]);
   const hasTitles = roles.some(([, config]) => config.title !== undefined);
+  if (program.compositionSpec.spacing === "plot") {
+    const clearances = new Map(program.compositionSpec.children.map(id => [id, guideClearance(program, id)]));
+    for (const descriptor of descriptors) {
+      descriptor.clearance = Object.fromEntries(SIDES.map(side => {
+        const overflow = Math.max(0, ...(descriptor.ids ?? [descriptor.id])
+          .map(id => clearances.get(id)[side]));
+        // Preserve an existing safe plot offset. If guide ink consumes that
+        // offset, move the complete header lane beyond the occupied guide.
+        return [side, overflow > descriptor.config.offset ? overflow : 0];
+      }));
+    }
+  }
+  const contentById = prepareContentBounds(program, descriptors, profile);
   const space = hasTitles || descriptors.some(item => hasRotation(item.config))
     ? plotMarginSpace(program) : ZERO_SIDES;
   const headerLayout = {
@@ -393,20 +439,21 @@ function roleItem(descriptor, cells, plots, spacing, profile, contentById) {
     if (config.alongOffset !== undefined) properties[axis] += config.alongOffset;
     return { descriptor, snapshots, properties };
   }
+  const clearance = config.anchor === "content" ? 0 : descriptor.clearance?.[config.side] ?? 0;
   let anchor;
   if (["top", "bottom"].includes(config.side)) {
     anchor = horizontalAnchor(plot, config.align);
     const top = config.side === "top";
     anchor.y = top
-      ? snapshots.top - config.offset - config.fontSize / 2
-      : snapshots.bottom + config.offset + config.fontSize / 2;
+      ? snapshots.top - clearance - config.offset - config.fontSize / 2
+      : snapshots.bottom + clearance + config.offset + config.fontSize / 2;
     anchor.textBaseline = "middle";
   } else {
     anchor = verticalAnchor(plot, config.align);
     const left = config.side === "left";
     anchor.x = left
-      ? snapshots.left - config.offset
-      : snapshots.right + config.offset;
+      ? snapshots.left - clearance - config.offset
+      : snapshots.right + clearance + config.offset;
     anchor.textAlign = left ? "right" : "left";
   }
   return { descriptor, snapshots, properties: anchor };
@@ -430,7 +477,7 @@ function legacyItem(descriptor, cell, plot, spacing, profile, contentById) {
     snapshots: placedCell(cell),
     properties: {
       ...horizontalAnchor(placedPlot(cell, plot), descriptor.config.align),
-      y: spacing === "plot" ? content.top - descriptor.config.offset - descriptor.config.fontSize / 2 : cell.y + descriptor.config.offset,
+      y: spacing === "plot" ? cell.y + plot.y - (descriptor.clearance?.top ?? 0) - descriptor.config.offset - descriptor.config.fontSize / 2 : cell.y + descriptor.config.offset,
       textBaseline: "middle",
       ...(hasRotation(descriptor.config) ? { rotation: descriptor.config.rotation } : {})
     }

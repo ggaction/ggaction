@@ -147,6 +147,20 @@ function distributionPositions(path, type) {
     : { x: counterpart, y: requested };
 }
 
+function distributionColorOptions(type) {
+  // Summaries retain their category, not unrelated raw observation fields.
+  // Numeric categories exercise continuous hue without inventing a subgroup.
+  const field = type === "ordinal" ? "category" : "x";
+  return {
+    x: { field, fieldType: "nominal", scale: { type: "band" } },
+    y: positionChannel("linear"),
+    color: {
+      field, fieldType: type === "ordinal" ? "nominal" : "quantitative",
+      scale: colorScale(type)
+    }
+  };
+}
+
 function raincloudScaleOptions(path, type) {
   const options = {
     category: positionChannel("band"),
@@ -765,7 +779,11 @@ function buildScaleWitness(action, path, type) {
         })
         .editErrorBand(intervalPositions(path, type));
     case "createBoxPlot":
-      return source().createBoxPlot({ ...distributionPositions(path, type), guides: false });
+      return source().createBoxPlot({
+        ...(path === "color.scale.type"
+          ? distributionColorOptions(type) : distributionPositions(path, type)),
+        guides: false
+      });
     case "editBoxPlot": {
       const box = source().createBoxPlot({
         x: positionChannel("band"), y: positionChannel("linear"), guides: false
@@ -774,7 +792,9 @@ function buildScaleWitness(action, path, type) {
     }
     case "createGradientPlot":
       return source().createGradientPlot({
-        ...distributionPositions(path, type), guides: false
+        ...(path === "color.scale.type"
+          ? distributionColorOptions(type) : distributionPositions(path, type)),
+        guides: false
       });
     case "editGradientPlot": {
       const gradient = source().createGradientPlot({
@@ -820,8 +840,8 @@ test("derives only role-reachable nested scale type paths", async () => {
     /(?:^|\.)(?:xScale|yScale|valueScale|densityScale|radiusScale|scale)\.type$/u.test(option.path)
   );
 
-  assert.equal(scaleTypes.length, 150);
-  assert.equal(scaleTypes.reduce((sum, option) => sum + option.values.length, 0), 689);
+  assert.equal(scaleTypes.length, 152);
+  assert.equal(scaleTypes.reduce((sum, option) => sum + option.values.length, 0), 699);
   assert.ok(options.get("option-path:createLinePlot.x.scale.type").values.includes("string:band"));
   assert.ok(options.get("option-path:createLinePlot.x.scale.type").values.includes("string:point"));
   assert.ok(options.get("option-path:encodeColor.scale.type").values.includes("string:log"));
@@ -878,7 +898,7 @@ test("executes every strict nested scale type path and literal", async () => {
       witnesses += 1;
     }
   }
-  assert.equal(witnesses, 689);
+  assert.equal(witnesses, 699);
 });
 
 test("materializes every role-specific nested scale type vocabulary", () => {

@@ -1,5 +1,6 @@
 import { removeMark } from "./remove.js";
 import {
+  createStatisticalReference,
   createReferenceLine,
   createReferenceBand,
   materializeStatisticalReferenceData,
@@ -32,6 +33,7 @@ export function registerMarkActions(ProgramClass) {
   registerTextMarkActions(ProgramClass);
   registerTickMarkActions(ProgramClass);
   ProgramClass.prototype.removeMark = removeMark;
+  ProgramClass.prototype.createStatisticalReference = createStatisticalReference;
   ProgramClass.prototype.createReferenceLine = createReferenceLine;
   ProgramClass.prototype.createReferenceBand = createReferenceBand;
   ProgramClass.prototype.materializeStatisticalReferenceData =

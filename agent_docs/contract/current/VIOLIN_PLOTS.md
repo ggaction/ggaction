@@ -96,3 +96,11 @@ editViolinPlot({ target?, data?, x?, y?, split?, density? })
   `test/unit/actions/encodings/edit-density.test.js`.
 
 - `area.fill`은 area mark와 같은 `FillPaint`를 사용한다. Gradient fill은 명시적 solid outline과 함께 사용할 수 있지만 stroke 없이 strokeWidth만 지정하는 fill-owned outline은 gradient에서 atomic하게 거부한다.
+
+
+### Split appearance validation
+
+Color and variable stroke are validated at the actual category × split-field series grain,
+including provenance-preserving filtered density datasets. Each half may have its own constant
+appearance value; fields varying within a half remain invalid. Evidence:
+`test/unit/actions/encodings/compound-color-regressions.test.js`.

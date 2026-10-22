@@ -15,6 +15,7 @@ createBoxPlot({
   data?: UserId;
   x?: PositionChannel;
   y?: PositionChannel;
+  color?: string | { field: string; fieldType?: "nominal" | "ordinal"; scale?: NonPointCategoricalColorScaleOptions; palette?: Palette } | { value: string };
   coordinate?: UserId;
   whisker?:
     | { type?: "tukey"; factor?: PositiveFinite }
@@ -74,6 +75,10 @@ createBoxPlot({
   explicit `{}` 또는 `CreateGuidesOptions`만 complete materialization 뒤 applicable guide를 wrapped child로 만든다.
   Deferred x/y authoring도 stored guide intent를 completion 시 replay한다. 호환 guide는 재사용하고 missing
   component만 생성하며 [공통 확보 계약](BASIC_CHARTS.md#facade-guide-reuse)을 따른다.
+- `color` accepts the existing categorical string field, categorical field/scale, or constant value encoding vocabulary. It calls
+  `encodeColor` on the completed body before guides; deferred positions retain and replay this intent.
+  It is equivalent to creation followed by `encodeColor`, so it does not introduce subgroup summaries.
+  Simultaneous explicit `box.fill` and `color` are rejected as competing fill owners.
 - Discovery 역할은 deferred owner다. 생성 성공만으로 complete chart를 뜻하지 않으며 compatible x/y가
   완성돼야 geometry와 opt-in guide가 생긴다. 기존 mutable aggregate lifecycle은 유지한다.
 - Body는 ordinary bar with y/y2 or x/x2, whiskers는 explicit `createErrorBar`, median은 ordinary rule, outliers는
@@ -103,6 +108,9 @@ createBoxPlot({
 
 - ✅ Covered: precomputed field summaries, fixed pixel spans, cap/style edits, role/source replay, serialization and facets.
 - Evidence: `test/unit/actions/statistics/precomputed-box-plot.test.js`.
+- ✅ Covered: initial field/fixed color, deferred completion, direct-followup equality, guide ordering,
+  serialization and conflicting fill rejection.
+- Evidence: `test/unit/actions/statistics/distribution-color-facades.test.js`.
 - ✅ Covered: direct and deferred position order, unique-data/encoded-source inference, explicit guide opt-in,
   ambiguity rejection, deterministic IDs, sub-picounit summary ordering, exact Cars primitive
   equality, missing/outlier ownership, Canvas rematerialization, trace and immutability.

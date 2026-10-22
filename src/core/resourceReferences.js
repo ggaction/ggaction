@@ -168,7 +168,8 @@ export function collectMarkConfigReferences(program) {
         (root === "errorBandBoundary" && key === "owner") ||
         (parentPath.length === 0 && key === "boxSpanOwner") ||
         (root === "raincloudPlot" && (
-          key === "ownerId" || parentPath[1] === "childIds" ||
+          key === "ownerId" ||
+          (parentPath[1] === "childIds" && config.raincloudPlot.ownedChildIds?.includes(value)) ||
           parentPath[1] === "ownedChildIds"
         ))
       ) {

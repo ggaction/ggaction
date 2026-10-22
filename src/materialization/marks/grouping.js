@@ -1,11 +1,13 @@
 import { findUpstreamTransform } from "../dataProvenance.js";
-import { readPathSeriesFields, validatePathSeriesAppearance } from "../../grammar/pathSeries.js";
+import { validatePathSeriesAppearance } from "../../grammar/pathSeries.js";
 
 export function validatePathGroupAppearance(program, layer, dataset) {
-  if (layer.mark.type === "area" && findUpstreamTransform(program, dataset, "density")) {
+  const density = layer.mark.type === "area" &&
+    findUpstreamTransform(program, dataset, "density");
+  if (density) {
     // Density placement owns a category/split grain beyond the visible group field.
-    readPathSeriesFields(dataset.values, layer);
-    return;
+    return validatePathSeriesAppearance(dataset.values, layer, program.semanticSpec.scales,
+      [density.groupBy, density.placement?.split?.field].filter(Boolean));
   }
   validatePathSeriesAppearance(dataset.values, layer, program.semanticSpec.scales);
 }

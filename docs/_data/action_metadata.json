@@ -460,6 +460,15 @@
     "layer": "user-facing",
     "domain": "marks"
   },
+  "createStatisticalReference": {
+    "operation": "create",
+    "authoringRoles": [
+      "H1",
+      "H2"
+    ],
+    "layer": "user-facing",
+    "domain": "marks"
+  },
   "createReferenceLine": {
     "operation": "create",
     "authoringRoles": [
@@ -1313,6 +1322,14 @@
     "domain": "axes"
   },
   "editYAxisTitle": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "axes"
+  },
+  "editAxes": {
     "operation": "edit",
     "authoringRoles": [
       "H3"
@@ -2214,6 +2231,15 @@
     "operation": "create",
     "authoringRoles": [
       "H0"
+    ],
+    "layer": "user-facing",
+    "domain": "charts"
+  },
+  "editRadarPlot": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H1",
+      "H3"
     ],
     "layer": "user-facing",
     "domain": "charts"

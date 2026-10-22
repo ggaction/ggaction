@@ -155,6 +155,12 @@ Continuous labelMap evidence: `test/unit/actions/guides/continuous-axis-display-
 - Create: `text?`, `scale?`, `position?`, `at?`, `offset?`, `rotation?`, `color?`, `fontSize?`,
   `fontFamily?`, `fontWeight?`, `overlap?`; edit에서는 scale을 제외한다.
 - `text`: non-empty string. 생략하면 unique connected field/aggregate 또는 density provenance에서 추론한다.
+  같은 축을 재사용하는 statistical reference의 내부 출력 필드는 원본 축 제목 추론에서 제외한다.
+  Summary 출력은 alias 대신 해당 aggregate와 원본 field에서 제목을 추론하며, live summary edit 이후에도 갱신한다.
+  원본 field 없이 행 수를 집계한 `count` Summary는 제목을 `count`로 추론한다.
+  ECDF value는 원본 field, probability는 `Cumulative probability`, cumulative는 `Cumulative count`로 추론한다.
+  Gradient profile의 lower/upper/center는 모두 원본 measure 제목을 공유한다. 두 방향 및 measure revision에
+  적용하며 명시적인 사용자 제목은 유지한다. Evidence: `test/unit/actions/guides/axis-title-actions.test.js`.
 - `at`: `"start" | "center" | "end"` 또는 continuous scale domain 안의 finite number; 기본 center.
 - `offset`: signed finite; positive outward, negative inward; inferred preferred defaults x `42`, y `52`.
 - `rotation`: `RotationInput = Finite | { value: Finite; unit: "degrees" | "radians" }`. 기존 finite 숫자는
@@ -1299,3 +1305,23 @@ Invalid requests fail atomically. No renderer reads axis intent.
 
 Evidence: `test/unit/actions/guides/plot-underlays.test.js`, `test/unit/layout/plot-draw-order.test.js`,
 `test/unit/actions/primitives/graphic-child-order.test.js`, and `test/charts/plot-guide-underlays/`.
+
+## `editAxes`
+
+- 사용자 승인: 2026-10-19 “ggaction 받아서 editAxes 구현해서 쓰자” 요청. 기존 channel editor의 option 계약을 그대로 묶는 aggregate이며 새 state owner나 rendering 경계는 없다.
+- Signature: `editAxes(options: EditAxesOptions): ChartProgram`.
+- `x`, `y`, `theta`, `radius`, `parallel`은 해당 기존 editor의 option object다. 생략/false는 보존하며 하나 이상 실제 edit가 필요하다. x/y array는 각 entry에 `target`이 필수이고 parallel array는 기존 `field`/`target` 선택을 사용한다. 빈 array, 중복 선택, theta/radius array는 거부한다.
+- 기존 axis/component만 수정한다. Resource binding, 누락/모호성, appearance, component 제거는 소유 editor 계약을 따른다. Scale/coordinate 재바인딩이나 guide 생성을 하지 않는다.
+- 전체 immutable speculative preflight와 하나의 guide layout transaction으로 최종 상태를 검증한다. 이전 program과 caller input은 불변이다. Trace에는 editAxes 하나와 실제 channel edit children이 남는다.
+
+### Formal values — `editAxes`
+
+- Implemented: `editAxes({ x?, y?, theta?, radius?, parallel? })`; each value is `false | ExistingAxisEditOptions`, with named x/y and parallel arrays as declared above.
+
+### Value coverage — `editAxes`
+
+- Proposed (NOT IMPLEMENTED): —
+- ✅ Covered: Cartesian multi-axis edits, named arrays, Polar/Parallel delegation, missing/invalid edits, atomic failure, immutable state, trace grouping, public declarations and inspection.
+- Evidence: `test/unit/actions/guides/edit-axes.test.js`.
+
+- Axis title의 statistical provenance는 row-preserving filter/markFilter를 통과하여 가장 가까운 지원 transform을 읽는다. Box measure revision 뒤 category filtering도 원본 measure title을 유지한다.

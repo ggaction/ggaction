@@ -103,6 +103,7 @@ async function testNodeConsumer(directory) {
     import { renderToPDF, renderToPDFBuffer } from "ggaction/pdf";
     import { renderToPNG, renderToPNGBuffer } from "ggaction/png";
     import { renderToSVG } from "ggaction/svg";
+    import { createTransitionScene } from "ggaction/scene";
     import { serializeProgram, deserializeProgram, serializeGraphic, deserializeGraphic } from "ggaction/persistence";
     import { exportAccessibleData } from "ggaction/accessibility";
     import { comparePrograms, describeAction, getDatasetSchema, inspectProgram } from "ggaction/inspection";
@@ -493,6 +494,7 @@ async function testNodeConsumer(directory) {
 
     }
 
+    assert.equal(createTransitionScene(chart().createCanvas({width:100,height:100,margin:0})).version, 1);
     const bootstrapRows = [{x:0,y:0},{x:0,y:1},{x:0,y:2},{x:0,y:30}];
     const bootstrapSummary = chart().createData({values:bootstrapRows}).createSummaryData({id:"ci",groupBy:"x",aggregates:[
       {field:"y",op:{op:"ciLower",method:{type:"bootstrap",seed:1}},as:"lower"},
@@ -1881,7 +1883,8 @@ async function testNodeConsumer(directory) {
       { x: 2, y: 3, lower: 2, upper: 4, group: "A" }
     ] }).createErrorBand({ x: { field: "x" },
       y: { center: "y", lower: "lower", upper: "upper" }, groupBy: "group", fill: "red" });
-    assert.throws(() => filledBand.encodeColor({ field: "group" }), /constant appearance/);
+    assert.equal(filledBand.encodeColor({ field: "group" })
+      .semanticSpec.layers[0].encoding.color.field, "group");
     assert.equal(filledBand.editErrorBand({ fill: false }).encodeColor({ field: "group" })
       .semanticSpec.layers[0].encoding.color.field, "group");
     for (const factory of [chart, basicChart]) {
@@ -2586,6 +2589,20 @@ async function testNodeConsumer(directory) {
         .properties.fill.type,
       "linear-gradient"
     );
+    const styledGradient = gradientPlotFacade
+      .encodeColor({ target: "gradientPlot", value: "#e45756" })
+      .encodeOpacity({ target: "gradientPlot", value: 0.5 })
+      .encodeStroke({ target: "gradientPlot", value: "#000000" })
+      .encodeStrokeWidth({ target: "gradientPlot", value: 2 })
+      .editGradientPlot({ density: { bandwidth: 1 } });
+    const gradientAppearance = styledGradient.graphicSpec.objects.gradientPlot.items[0].properties;
+    assert.equal(gradientAppearance.opacity, 0.5);
+    assert.equal(gradientAppearance.stroke, "#000000");
+    assert.equal(gradientAppearance.strokeWidth, 2);
+    assert.equal(gradientAppearance.fill.type, "linear-gradient");
+    assert.notDeepEqual(gradientAppearance.fill,
+      gradientPlotFacade.graphicSpec.objects.gradientPlot.items[0].properties.fill);
+    assert.ok(renderToSVG(styledGradient).startsWith("<svg "));
     const violinPlotFacade = chart()
       .createCanvas({ width: 180, height: 140, margin: 20 })
       .createData({ values: [
@@ -3837,6 +3854,8 @@ const invalidGrouped: Parameters<FullFormatsProgram["createXAxisLabels"]>[0] = {
     chart().createLegend({ overflow: { maxItems: 3, summary: "truncate" } });
     const themeOptions: ApplyThemeOptions = { theme: themeName };
     const themedProgram: ChartProgram = program.applyTheme(themeOptions).removeTheme();
+    const transitionScene: import("ggaction/scene").TransitionScene = (await import("ggaction/scene")).createTransitionScene(program);
+    void transitionScene;
     const inspection: ProgramInspection = inspectProgram(program);
     const description: ActionDescription = describeAction(program, {
       action: "createData",
@@ -5391,7 +5410,7 @@ const invalidGrouped: Parameters<FullFormatsProgram["createXAxisLabels"]>[0] = {
       .editLegend({ border: { padding: 8 }, title: false });
     const jitterOffset: JitterMaxOffset = { pixels: 2 };
     const jitterOptions: JitterPointsOptions = {
-      channel: "x",
+      channel: "both",
       maxOffset: jitterOffset,
       key: "x"
     };

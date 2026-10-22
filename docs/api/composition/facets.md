@@ -180,6 +180,12 @@ transforms do not become valid partition anchors. `facetGrid` accepts the same
 explicit fold boundary. Changing a fold definition creates a new snapshot;
 select that snapshot explicitly when creating a new composition.
 
+Explicit tick, label, and grid values are intersected with each cell domain; shared scales restore the source selection.
+
+Final-item `filterMarks` recipes are also evaluated within each partition, after
+the target mark has been rebound to that partition. Empty matches preserve
+shared-scale panels, and `editFacetSource` can add, replace, or remove the filter.
+
 | Option | Default | Effect |
 | --- | --- | --- |
 | `id` | `"facet"` | Names the parent and deterministic child namespaces |

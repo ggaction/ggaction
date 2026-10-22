@@ -188,6 +188,10 @@ complete series. An empty match is a valid empty view: the preceding scale
 domains and connected guide meaning stay fixed while mark items, source labels,
 and stale highlight graphics are cleared.
 
+Filtering a Box plot owner retains complete selected categories. Its median,
+whiskers, caps, and outliers follow the selected boxes, including empty views,
+composed filters, and restoration through `removeMarkFilter`.
+
 ## `removeMarkFilter({ target? } = {})`
 
 Remove the active final-item filter and rebind the mark to its canonical source.

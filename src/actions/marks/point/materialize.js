@@ -188,47 +188,40 @@ function applyPointJitter(program, {
   const stored = program.materializationConfigs.jitters?.[id];
   if (stored === undefined) return { program, x, y };
   const policy = normalizePointJitterPolicy(stored);
-  const encoding = layer.encoding?.[policy.channel];
-  const scale = program.resolvedScales[encoding?.scale];
-  if (scale === undefined) {
-    throw new Error(
-      `Point jitter on "${id}" requires a resolved ${policy.channel} scale.`
-    );
-  }
   const bounds = resolveCoordinateBounds(program, layer.coordinate);
-  const entries = resolveJitterEntries({
-    policy,
-    dataset,
-    x,
-    y,
-    area,
-    shapes,
-    angles,
-    config,
-    graphic,
-    existingChildren
-  });
-  const resolution = resolvePointJitter({
-    target: id,
-    policy,
-    scale,
-    entries,
-    plotMinimum: policy.channel === "x" ? bounds.x : bounds.y,
-    plotMaximum: policy.channel === "x"
-      ? bounds.x + bounds.width
-      : bounds.y + bounds.height
-  });
-  const values = [...(policy.channel === "x" ? x : y)];
-  for (const item of resolution.items) {
-    values[item.index] += item.finalOffset;
+  const channels = policy.channel === "both" ? ["x", "y"] : [policy.channel];
+  const resolutions = {}, positions = { x, y };
+  for (const channel of channels) {
+    const scale = program.resolvedScales[layer.encoding?.[channel]?.scale];
+    if (scale === undefined) {
+      throw new Error(`Point jitter on "${id}" requires a resolved ${channel} scale.`);
+    }
+    // Resolve from the same unjittered positions, using each axis in the stable
+    // hash. Both is exactly the independent X and Y assignments together.
+    const axisPolicy = { ...policy, channel };
+    const entries = resolveJitterEntries({
+      policy: axisPolicy, dataset, x, y, area, shapes, angles,
+      config, graphic, existingChildren
+    });
+    const resolution = resolvePointJitter({
+      target: id, policy: axisPolicy, scale, entries,
+      plotMinimum: channel === "x" ? bounds.x : bounds.y,
+      plotMaximum: channel === "x" ? bounds.x + bounds.width : bounds.y + bounds.height
+    });
+    resolutions[channel] = resolution;
+    positions[channel] = [...positions[channel]];
+    for (const item of resolution.items) positions[channel][item.index] += item.finalOffset;
   }
+  const resolved = policy.channel === "both"
+    ? { algorithm: policy.algorithm, itemCount: resolutions.x.itemCount, axes: resolutions }
+    : resolutions[policy.channel];
   return {
     program: program._withMaterializationConfig(["jitters", id], {
       ...policy,
-      resolved: resolution
+      resolved
     }),
-    x: policy.channel === "x" ? values : x,
-    y: policy.channel === "y" ? values : y
+    x: positions.x,
+    y: positions.y
   };
 }
 

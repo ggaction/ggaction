@@ -4,9 +4,33 @@ import { chart } from "../../../../src/index.js";
 import { chart as basicChart } from "../../../../src/basic.js";
 import { rows } from "../../../../examples/horizon-plot/data.js";
 import { resolveStoredSelection } from "../../../../src/materialization/selection/state.js";
+import { serializeProgram, deserializeProgram } from "../../../../src/persistence.js";
 
 const base = (values = rows.signed) => chart().createCanvas({ width: 1000, height: 700, margin: 150 })
   .createData({ id: "source", values });
+
+test("explains Horizon colors using original value intervals and updates them on edits", () => {
+  const original = base().createHorizonPlot({ x: "time", y: "value", bands: 2 }).createLegend({ target: "horizonPlot" });
+  const labels = p => p.graphicSpec.objects.colorLegendLabels.items.map(item => item.properties.text);
+  assert.equal(original.guideConfigs.legend.color.title, "value");
+  assert.deepEqual(labels(original), ["-2 – 0", "-4 – -2", "0 – 2", "2 – 4"]);
+  const edited = original.editHorizon({ target: "horizonPlot", baseline: 2, extent: 6, bands: 3 });
+  assert.deepEqual(labels(edited), ["0 – 2", "-2 – 0", "-4 – -2", "2 – 4", "4 – 6", "6 – 8"]);
+  assert.deepEqual(labels(original), ["-2 – 0", "-4 – -2", "0 – 2", "2 – 4"]);
+  assert.deepEqual(labels(deserializeProgram(serializeProgram(edited))), labels(edited));
+  const custom = original.editLegendBlock({ target: "horizonPlot", channel: "color", labelMap: [{ value: "positive:1", label: "High" }] })
+    .editHorizon({ target: "horizonPlot", extent: 6 });
+  assert.deepEqual(labels(custom), ["-3 – 0", "-6 – -3", "0 – 3", "High"]);
+});
+
+test("inferred Horizon labels survive a native shared facet legend and persistence", () => {
+  const p = base(["A", "B"].flatMap(group => rows.signed.map(row => ({ ...row, group }))))
+    .createHorizonPlot({ id: "horizon", x: "time", y: "value", groupBy: "group", bands: 2 })
+    .facet({ field: "group", columns: 2, guides: { legend: { target: "horizon", channels: ["color"] } } });
+  const saved = serializeProgram(p);
+  assert.ok(!saved.includes('"text":"negative:0"'));
+  assert.deepEqual(deserializeProgram(saved).graphicSpec, p.graphicSpec);
+});
 
 test("completes the shortest Horizon with x-only guides and opaque signed bands", () => {
   const source = base();

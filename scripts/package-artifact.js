@@ -23,9 +23,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 613, // One additional shared simple-polygon point grammar module.
-  packedBytes: 872_000, // Native facet bounds preparation measured871866bytes; minimal1000-byte rounding.
-  unpackedBytes: 4_193_000 // Native facet bounds preparation measured4192188bytes; minimal1000-byte rounding.
+  entries: 619, // Combined verified editing, native chart fixes and transition scene modules.
+  packedBytes: 893_000, // Combined installed artifact measured892139bytes; next1000-byte boundary.
+  unpackedBytes: 4_247_000 // Combined artifact measured4246020bytes; next1000-byte boundary.
 });
 
 const REQUIRED_FILES = Object.freeze([
@@ -77,6 +77,8 @@ const COMPACT_JAVASCRIPT_FILES = Object.freeze([
   "src/grammar/pathSeries.js",
   "src/grammar/scales/colorConsumers.js",
   "src/actions/encodings/position/policies/line.js",
+  "src/inspection.js",
+  "src/grammar/regression/derive.js",
   "src/grammar/areaSeries.js",
   "src/grammar/summary.js",
   "src/grammar/statistics/confidenceInterval.js",
@@ -120,7 +122,12 @@ const COMPACT_JAVASCRIPT_FILES = Object.freeze([
   "src/layout/legendGroup.js",
   "src/layout/legendText.js",
   "src/materialization/legendText.js",
-  "src/materialization/legendGroups.js"
+  "src/materialization/legendGroups.js",
+  "src/grammar/horizon.js",
+  "src/actions/boxPlots/components.js",
+  "src/actions/data/filter.js",
+  "src/actions/facets/replay.js",
+  "src/actions/guides/legends/categorical/actions.js"
 ]);
 
 export function compactPackageJavaScript(source, { keepNames = true } = {}) {

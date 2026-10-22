@@ -184,14 +184,31 @@ export function allLegendGraphicIds(kinds) {
 // An inferred outside edge legend follows the actual occupied same-edge axis lane.
 // Explicit offsets, plot corners, free coordinates and legacy layouts retain
 // their authored anchor. This returns a derived offset, never stored geometry.
+function axisLaneBlocks(program) {
+  const blocks = resolveGuideCollisionBlocks(program.graphicSpec, program.guideConfigs, undefined,
+    program.materializationConfigs.textMetrics).filter(block => block.kind === "axis");
+  // Polar labels have no single Cartesian side. Reserve their concrete ink on
+  // each outside edge without treating the circle itself as an axis obstacle.
+  for (const channel of ["theta", "radius"]) {
+    if (program.guideConfigs.axis?.[channel] === undefined) continue;
+    const ids = axisGraphicIds(channel).slice(2).filter(id => program.graphicSpec.objects[id] !== undefined);
+    const bounds = unionConcreteGraphicBounds(program.graphicSpec, ids, program.materializationConfigs.textMetrics);
+    if (bounds !== undefined) for (const position of ["left", "right", "top", "bottom"]) {
+      blocks.push({ id: `${channel}-axis text`, kind: "axis", position, bounds });
+    }
+  }
+  return blocks;
+}
+
 export function resolveLegendAxisOffset(program, config, plot) {
   if (config.inferredOffset !== true || !["top", "bottom", "left", "right"].includes(config.position) || config.layout === "legacy-bottom") return config.offset;
-  const axes = resolveGuideCollisionBlocks(program.graphicSpec, program.guideConfigs, undefined,
-    program.materializationConfigs.textMetrics).filter(block=>block.kind === "axis" && block.position === config.position);
-  const clearance = Math.max(0, ...axes.map(({ bounds }) =>
-    config.position === "bottom" ? bounds.bottom - plot.y - plot.height :
-    config.position === "top" ? plot.y - bounds.top :
-    config.position === "right" ? bounds.right - plot.x - plot.width : plot.x - bounds.left));
+  const axes = axisLaneBlocks(program).filter(block => block.position === config.position);
+  const clearance = Math.max(0, ...axes.map(block => ({
+    bottom: block.bounds.bottom - plot.y - plot.height,
+    top: plot.y - block.bounds.top,
+    left: plot.x - block.bounds.left,
+    right: block.bounds.right - plot.x - plot.width
+  })[config.position]));
   return config.offset + clearance;
 }
 
@@ -207,9 +224,9 @@ export function needsLegendAxisReflow(before, after) {
     const effective = effectiveLegendOffsetConfig(program, kind, config);
     return effective.inferredOffset === true && ["top", "bottom"].includes(effective.position) && effective.layout !== "legacy-bottom";
   }) || Object.values(program.guideConfigs.legendGroups ?? {}).some(group=>group.inferredOffset === true && ["top","bottom"].includes(group.placement.position)));
-  return inferred && [before, after].some(program=>resolveGuideCollisionBlocks(program.graphicSpec, program.guideConfigs,
-    undefined, program.materializationConfigs.textMetrics).some(block=>block.kind === "axis" && ["top","bottom"].includes(block.position)));
+  return inferred && [before, after].some(program => axisLaneBlocks(program).some(block => ["top", "bottom"].includes(block.position)));
 }
+
 
 // Reset intrinsic side geometry only when an inferred side placement and a real
 // same-edge axis meet before or after the edit. This also handles axis removal.
@@ -228,7 +245,6 @@ export function needsSideLegendAxisReflow(before, after) {
       }
     }
   }
-  return edges.size > 0 && [before, after].some(program =>
-    resolveGuideCollisionBlocks(program.graphicSpec, program.guideConfigs, undefined,
-      program.materializationConfigs.textMetrics).some(block => block.kind === "axis" && edges.has(block.position)));
+  const signature = program => JSON.stringify(axisLaneBlocks(program).filter(block => edges.has(block.position)));
+  return edges.size > 0 && signature(before) !== signature(after);
 }

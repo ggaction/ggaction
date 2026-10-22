@@ -11,6 +11,7 @@ export function isPlainObject(value) {
 
 export function freezeOwned(value) {
   if (value !== null && typeof value === "object") {
+    if (ownedValues.has(value)) return value;
     Object.freeze(value);
     ownedValues.add(value);
   }

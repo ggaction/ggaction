@@ -172,7 +172,7 @@ const separated = program.jitterPoints({
 | Option | Type | Default or inference |
 | --- | --- | --- |
 | `target` | existing Cartesian point ID | current or only eligible point mark |
-| `channel` | `"x"` or `"y"` | required |
+| `channel` | `"x"`, `"y"`, or `"both"` | required |
 | `maxOffset` | `{ pixels: positiveNumber }` or `{ band: number }` | required; exactly one form |
 | `seed` | string or finite number | `0` |
 | `key` | non-empty field name | source-row index identity |
@@ -182,6 +182,10 @@ position scale. The final glyph remains inside both its category slot and plot
 bounds. Pixel offsets work with quantitative or categorical positions. The
 seed and item identity produce stable offsets; use a unique `key` when offsets
 must remain attached to rows after data reordering.
+
+Use `channel: "both"` to jitter X and Y in one call. Each axis gets an independent,
+deterministic offset with the same `maxOffset` limit. Pixel offsets support mixed
+position types; band offsets require categorical slots on both axes.
 
 Calling `jitterPoints` again replaces the target policy and recomputes from the
 semantic base position, so offsets never accumulate. Canvas, scale, data,

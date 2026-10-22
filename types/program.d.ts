@@ -108,7 +108,7 @@ export type JitterMaxOffset =
   | { pixels?: never; band: number };
 export interface JitterPointsOptions {
   target?: string;
-  channel: "x" | "y";
+  channel: "x" | "y" | "both";
   maxOffset: JitterMaxOffset;
   seed?: string | number;
   key?: string;
@@ -272,7 +272,9 @@ export interface RepeatChartsOptions {
   /** Share the existing top margin rather than adding title/header reservations. Requires plot spacing. */
   topLane?: FacetTopLaneMode;
 }
-export interface EditFacetSourceOptions { program: ChartProgram; }
+export type EditFacetSourceOptions =
+  | { program: ChartProgram; action?: never }
+  | { program?: never; action: { method: string; options?: Readonly<Record<string, unknown>> } };
 export interface FacetHeaderTitleOptions {
   /** Required when introducing a title; edits preserve the existing text. One line. */
   text?: string;
@@ -2358,6 +2360,8 @@ export interface CategoricalEncodingOptions {
   fieldType?: "nominal" | "ordinal";
   scale?: CategoricalColorScaleOptions;
   palette?: Palette;
+  /** Aggregate bars default to overlay for their category field, otherwise group;
+   * existing groups and stored or explicit layouts take precedence. */
   layout?: ColorLayout;
 }
 
@@ -2866,6 +2870,12 @@ export interface BoxPlotOptions {
   x?: BoxPlotPositionChannel;
   y?: BoxPlotPositionChannel;
   coordinate?: string;
+  color?: string | {
+    field: string;
+    fieldType?: "nominal" | "ordinal";
+    scale?: NonPointCategoricalColorScaleOptions;
+    palette?: Palette;
+  } | { value: string };
   whisker?: BoxPlotWhisker;
   width?: BoxPlotWidth;
   outliers?: boolean;
@@ -2943,6 +2953,7 @@ export interface GradientPlotOptions {
   x?: GradientPlotPositionChannel;
   y?: GradientPlotPositionChannel;
   coordinate?: string;
+  color?: BasicColorChannel | { value: string };
   density?: GradientPlotDensityOptions;
   width?: { band?: number };
   gradient?: GradientPlotAppearanceOptions;
@@ -3094,6 +3105,7 @@ type BandPositionChannel = FacadePositionChannel<
   NonPointTemporalPositionScaleOptions,
   NonPointBandPositionScaleOptions
 >;
+/** With binned quantitative X, aggregate Y per exact interval (and optional series). */
 type BarYPositionChannel =
   | string
   | {
@@ -3266,6 +3278,8 @@ export interface CreateParallelCoordinatesOptions {
 }
 
 export interface CreateScatterPlotOptions {
+  /** Forward the native mark missing-value policy. */
+  missing?: "error" | "skip";
   id?: string;
   data?: string;
   coordinate?: string;
@@ -3547,6 +3561,10 @@ export type CreateRadarPlotOptions = {
   | { category: RadarCategoryChannel; value: PolarRadiusChannel; wide?: never }
   | { wide: RadarWideOptions; category?: never; value?: never }
 );
+export interface EditRadarPlotOptions {
+  target?: string;
+  wide: { fields: readonly [string, string, ...string[]] };
+}
 export type RugMeasureChannel = string | (
   | {
       field: string;
@@ -3709,6 +3727,7 @@ export type RaincloudValueChannel = string | {
   fieldType?: "quantitative";
   scale?: NonPointQuantitativePositionScaleOptions;
 };
+export type RaincloudColorChannel = LineCategoricalColorChannel | { value: string };
 export interface CreateRaincloudPlotOptions {
   id?: string;
   data?: string;
@@ -3720,7 +3739,7 @@ export interface CreateRaincloudPlotOptions {
   density?: false | RaincloudDensityOptions;
   summary?: false | RaincloudSummaryOptions;
   points?: false | RaincloudPointsOptions;
-  color?: LineCategoricalColorChannel;
+  color?: false | RaincloudColorChannel;
   guides?: false | CartesianCategoricalPointGuideOptions;
 }
 export interface EditRaincloudPlotOptions {
@@ -3733,7 +3752,7 @@ export interface EditRaincloudPlotOptions {
   density?: false | RaincloudDensityOptions;
   summary?: false | RaincloudSummaryOptions;
   points?: false | RaincloudPointsOptions;
-  color?: false | LineCategoricalColorChannel;
+  color?: false | RaincloudColorChannel;
 }
 
 export type GroupEncodingOptions = { target?: string; fieldType?: "nominal" } & (
@@ -3828,6 +3847,8 @@ type BarRangeOppositePositionChannel = string | {
   stack?: never;
 };
 export type CreateBarPlotOptions = {
+  /** Forward the native mark missing-value policy. */
+  missing?: "error" | "skip";
   id?: string;
   data?: string;
   coordinate?: string;
@@ -4444,10 +4465,13 @@ export type DiscretizedColorScaleOptions =
  * Tick quantitative/temporal color paints its stroke and excludes a simultaneous stroke encoding.
  */
 export type ColorEncodingOptions =
-  | CategoricalEncodingOptions
+  | { value: string; target?: string; field?: never; fieldType?: never;
+      scale?: never; palette?: never; layout?: never; aggregate?: never; temporalUnit?: never }
+  | (CategoricalEncodingOptions & { value?: never })
   | {
       field: string;
       target?: string;
+      value?: never;
       fieldType: "quantitative";
       aggregate?: AggregateOperation;
       scale?: ContinuousColorScaleOptions | DiscretizedColorScaleOptions;
@@ -4457,6 +4481,7 @@ export type ColorEncodingOptions =
   | {
       field: string;
       target?: string;
+      value?: never;
       fieldType: "temporal";
       temporalUnit?: TemporalInputUnit;
       aggregate?: never;
@@ -4510,6 +4535,7 @@ export type OpacityScaleOptions = ScaleFields<
   unknown?: number;
 };
 
+/** Constant or quantitative opacity on Point, Rule, Line, Bar, or row-owned Rect marks. */
 export type OpacityEncodingOptions =
   | { value: number; field?: never; target?: string; fieldType?: never; scale?: never }
   | {
@@ -4543,8 +4569,11 @@ type DynamicReferenceBinding = {
   readonly id?: string;
   readonly source: string;
   readonly axis: "x" | "y";
+  /** Distribution/endpoint measurement axes and quantitative Horizon X use original bound observations, retaining multiplicity. Horizon folded Y is unsupported. */
   readonly population?: "boundData" | "visibleItems";
   readonly field?: string;
+  /** Compute a separate reference for each observed value of this field. */
+  readonly groupBy?: string;
   readonly x?: never;
   readonly y?: never;
   readonly space?: never;
@@ -4552,6 +4581,13 @@ type DynamicReferenceBinding = {
   readonly coordinate?: never;
   readonly temporalUnit?: never;
 };
+/** A statistical line (mean by default) or an exact two-statistic interval. */
+export type CreateStatisticalReferenceOptions = DynamicReferenceBinding & (
+  | (RuleStyleOptions & { readonly statistic?: ReferenceStatistic; readonly statistics?: never })
+  | (Omit<RectMarkOptions, "id" | "data" | "source" | "missing"> & {
+      readonly statistics: readonly [ReferenceStatistic, ReferenceStatistic]; readonly statistic?: never;
+    })
+);
 export type CreateReferenceLineOptions =
   | ({ id?: string } & RuleStyleOptions & ReferenceBinding<unknown, number>)
   | (DynamicReferenceBinding & RuleStyleOptions & {
@@ -4564,6 +4600,7 @@ export type CreateReferenceBandOptions =
       readonly statistics: readonly [ReferenceStatistic, ReferenceStatistic];
     });
 
+/** Constant or quantitative stroke width on Line, Rule, or row-owned Rect marks. */
 export type StrokeWidthEncodingOptions =
   | {
       value: number;
@@ -4580,13 +4617,17 @@ export type StrokeWidthEncodingOptions =
       scale?: StrokeWidthScaleOptions;
     };
 
-export type SizeEncodingOptions = {
+/** Constant value and scale ranges are graphical areas in square pixels. */
+export type SizeEncodingOptions =
+  | { value: number; target?: string; field?: never; fieldType?: never; scale?: never }
+  | ({
+  value?: never;
   field: string;
   target?: string;
 } & (
   | { fieldType?: "quantitative"; scale?: SizeScaleOptions }
   | { fieldType: "nominal" | "ordinal"; scale?: CategoricalSizeScaleOptions }
-);
+));
 
 export type ShapeEncodingOptions = {
   field: string;
@@ -5058,6 +5099,15 @@ export interface EditLegendBorderOptions {
   border: boolean | LegendBorderOptions;
 }
 
+/** Omitted/false axes are preserved; component false values remove existing components. */
+export interface EditAxesOptions {
+  x?: false | EditAxisOptions<XAxisPosition> | readonly [EditAxisOptions<XAxisPosition> & { target: string }, ...(EditAxisOptions<XAxisPosition> & { target: string })[]];
+  y?: false | EditAxisOptions<YAxisPosition> | readonly [EditAxisOptions<YAxisPosition> & { target: string }, ...(EditAxisOptions<YAxisPosition> & { target: string })[]];
+  theta?: false | EditThetaAxisOptions;
+  radius?: false | EditRadialAxisOptions;
+  parallel?: false | EditParallelAxisOptions | readonly [EditParallelAxisOptions, ...EditParallelAxisOptions[]];
+}
+
 export interface EditAxisOptions<P extends string> {
   /** Omission preserves placement; false restores the ordinary overlay. */
   underlay?: boolean;
@@ -5362,6 +5412,7 @@ export class ChartProgram {
   editMarkLabelPlacement(options: EditMarkLabelPlacementOptions): ChartProgram;
   removeMarkLabels(options: RemoveMarkLabelsOptions): ChartProgram;
   createAnnotation(options: CreateAnnotationOptions): ChartProgram;
+  createStatisticalReference(options: CreateStatisticalReferenceOptions): ChartProgram;
   createReferenceLine(options: CreateReferenceLineOptions): ChartProgram;
   createReferenceBand(options: CreateReferenceBandOptions): ChartProgram;
   editTextMark(options: EditTextMarkOptions): ChartProgram;
@@ -5450,6 +5501,7 @@ export class ChartProgram {
   createPolarScatterPlot(options: CreatePolarScatterPlotOptions): ChartProgram;
   createPolarLinePlot(options: CreatePolarLinePlotOptions): ChartProgram;
   createRadarPlot(options: CreateRadarPlotOptions): ChartProgram;
+  editRadarPlot(options: EditRadarPlotOptions): ChartProgram;
   createRugPlot(options: CreateRugPlotOptions): ChartProgram;
   createStripPlot(options: CreateStripPlotOptions): ChartProgram;
   createBeeswarmPlot(options: CreateBeeswarmPlotOptions): ChartProgram;
@@ -5472,6 +5524,7 @@ export class ChartProgram {
   removeParallelAxis(options: RemoveParallelAxisOptions): ChartProgram;
   removeParallelAxes(options?: ParallelAxesOptions): ChartProgram;
   createAxes(options?: CreateAxesOptions): ChartProgram;
+  editAxes(options: EditAxesOptions): ChartProgram;
   createXAxis(options?: CompleteAxisOptions<XAxisPosition>): ChartProgram;
   createYAxis(options?: CompleteAxisOptions<YAxisPosition>): ChartProgram;
   createThetaAxis(options?: CompleteThetaAxisOptions): ChartProgram;

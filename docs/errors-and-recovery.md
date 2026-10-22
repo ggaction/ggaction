@@ -40,7 +40,10 @@ Optional fields are `operation`, `optionPath`, `resourceId`, `candidates`,
 `limit`, and `actual`. `operation` identifies the innermost wrapped action that
 observed the error (or an explicitly named renderer). `optionPath` identifies
 the supplied key or the validator's named quantity. `candidates` lists resource
-IDs; `actual` and `limit` are numeric counts. No row values or complete program
+IDs; `actual` and `limit` are numeric measurements or bounds. For insufficient
+facet header spacing, `optionPath: "gap"` reports the requested gap in `actual`
+and the minimum header clearance in `limit`. Retry with that clearance and
+validate again: other retained guides can require additional space. No row values or complete program
 state are included. Use codes and available fields for recovery, and retain
 the message for human diagnosis. Do not parse complete message text.
 

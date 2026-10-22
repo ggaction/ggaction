@@ -42,7 +42,8 @@ function resolveScalePreviewAtBounds(program, id, bounds) {
   const valuesByConsumer = consumers.map(consumer => {
     if (
       program.markConfigs?.[consumer.layer.id]?.markFilter?.empty === true ||
-      program.markConfigs?.[consumer.layer.id]?.statisticalReference !== undefined
+      (program.markConfigs?.[consumer.layer.id]?.statisticalReference !== undefined &&
+        ["x", "y", "x2", "y2"].includes(consumer.channel))
     ) {
       return {
         consumer,

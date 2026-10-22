@@ -3,9 +3,22 @@ import test from "node:test";
 
 import { ownCompositionSpec } from "../../../src/core/compositionState.js";
 import { FACET_SCALE_CHANNELS } from "../../../src/core/vocabulary.js";
+import { cloneAndFreeze } from "../../../src/core/immutable.js";
 
 const padding = Object.freeze({ top: 1, right: 2, bottom: 3, left: 4 });
 const children = Object.freeze({ left: {}, right: {} });
+
+test("reusing an immutable composition still validates changed child identities and mutable inputs", () => {
+  const ownedChildren = cloneAndFreeze(children), input = facet();
+  const owned = ownCompositionSpec(input, ownedChildren);
+  assert.equal(ownCompositionSpec(owned, ownedChildren), owned);
+  assert.throws(() => ownCompositionSpec(owned, cloneAndFreeze({ left: {} })), /match ChartProgram children/);
+  input.columns = -1;
+  assert.throws(() => ownCompositionSpec(input, ownedChildren), /positive integer/);
+  const externalChildren = { left: {}, right: {} };
+  ownCompositionSpec(owned, externalChildren); delete externalChildren.right;
+  assert.throws(() => ownCompositionSpec(owned, externalChildren), /match ChartProgram children/);
+});
 
 function concat(overrides = {}) {
   return {

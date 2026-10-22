@@ -8,6 +8,7 @@ import {
 import { AXIS_LABEL_FONT_SIZES, AXIS_TITLE_FONT_SIZE, DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from "../../../../theme/defaults.js";
 import { validateAxisTextStyle } from "../labels.js";
 import { validateAxisFormat } from "../policy.js";
+import { axisGraphicIds } from "../../../../selectors/axes.js";
 
 import { PARALLEL_AXIS_PARTS, PARALLEL_AXIS_GRAPHICS } from "../../../../selectors/axes.js";
 export { PARALLEL_AXIS_PARTS, PARALLEL_AXIS_GRAPHICS };

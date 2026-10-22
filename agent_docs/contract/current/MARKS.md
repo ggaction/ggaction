@@ -295,7 +295,9 @@ Evidence: `test/unit/grammar/stroke-style.test.js`, `test/unit/grammar/rounded-r
   이전 concrete offset을 누적하지 않는다. 제거는 `removeJitter`가 소유한다.
 - `target`: complete Cartesian x/y point mark. Current compatible mark, otherwise unique compatible mark로
   infer하며 ambiguity는 explicit ID를 요구한다.
-- `channel`: closed vocabulary `"x" | "y"`. 지정 channel의 concrete center만 이동한다.
+- `channel`: closed vocabulary `"x" | "y" | "both"`. 지정 channel의 concrete center만 이동한다.
+  `both`는 한 호출에서 x/y 각각의 channel hash와 bounds로 독립 offset을 계산하며 같은 maxOffset을 적용한다.
+  Band form은 두 축 모두 categorical slot이 있어야 한다.
 - `maxOffset`: exactly one of `{ pixels: PositiveFinite }` or `{ band: PositiveFiniteAtMostHalf }`.
   `band`는 categorical position scale의 effective slot width에 대한 비율이다.
 - `seed`: string 또는 finite number, default `0`. `key`는 optional non-empty source field이며 지정하면
@@ -303,6 +305,7 @@ Evidence: `test/unit/grammar/stroke-style.test.js`, `test/unit/grammar/rounded-r
 - State: requested policy와 resolved item offsets는
   `materializationConfigs.jitters[target]`이 단독 소유한다. `semanticSpec`의 field, scale와 channel value는
   변경하지 않고 final concrete centers만 `graphicSpec`에 materialize한다.
+  `both`의 resolved metadata는 `algorithm`, 공통 `itemCount`, 각 축의 기존 resolution 형식인 `axes.x/y`다.
 - Geometry: point shape, area/radius와 stroke extent를 고려해 plot bounds 안에 유지한다. Categorical
   channel은 category slot 안에도 유지한다. 들어갈 공간이 없으면 해당 item의 offset은 `0`이고 resolved
   metadata에 unavailable 상태가 남는다.
@@ -313,13 +316,14 @@ Evidence: `test/unit/grammar/stroke-style.test.js`, `test/unit/grammar/rounded-r
 
 ### Formal values — `jitterPoints`
 
-- Implemented: `jitterPoints({ target?: UserId; channel: "x" | "y"; maxOffset: { pixels: PositiveFinite } | { band: PositiveFiniteAtMostHalf }; seed?: string | FiniteNumber; key?: NonEmptyString })`.
+- Implemented: `jitterPoints({ target?: UserId; channel: "x" | "y" | "both"; maxOffset: { pixels: PositiveFinite } | { band: PositiveFiniteAtMostHalf }; seed?: string | FiniteNumber; key?: NonEmptyString })`.
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `jitterPoints`
 
 - ✅ Covered: exact deterministic hash vector, x/y, pixel/band offset, default/explicit seed and keyed reorder stability.
+- ✅ Covered: both-axis offsets equal independent x/y calls; replacement, removal, keyed ordering, facet replay, persistence and band compatibility.
 - ✅ Covered: plot/category containment for every point shape extent, replacement from semantic base, removal and immutability.
 - ✅ Covered: Canvas, scale, filtering, appearance, highlight and facet rematerialization; primitive/public Canvas parity.
 - ✅ Covered: incomplete/ambiguous/Polar target, invalid offsets, incompatible band scale and duplicate/invalid key errors.
@@ -633,6 +637,8 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
   `test/unit/actions/marks/edit-area-mark.test.js`, density and regression chart tests.
 
 - `missing`: Implemented `"error"|"break"`, 기본 error. Semantic mark.missing에만 저장한다. Break는 raw Area 측정 endpoint의 null/undefined에서 2점 이상 segment로 나누며 density/horizon 재해석을 거부한다.
+- 명시적 break 뒤 인접한 유효 sample이 없으면 유한한 원래 좌표 domain을 유지하는 빈 path collection이다.
+  Sparse grouped Area는 `createCompleteData`로 먼저 정렬한다. count/sum의 명시적 zero fill과 mean의 null gap은 구분한다.
 - Evidence: test/unit/actions/encodings/area-endpoints.test.js.
 
 ## `editAreaMark`
@@ -810,6 +816,8 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ## `editRectMark`
 
+- Field opacity/width가 활성화된 경우 scalar edit는 거부한다. `encodeOpacity({ value })` 또는 `encodeStrokeWidth({ value })`로 명시적으로 교체한다.
+
 - Signature: `editRectMark({ clip?, target?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight?, cornerRadiusBottomRight?, cornerRadiusBottomLeft?, lineCap?, lineJoin?, miterLimit? })`.
 - At least one property is required. Omitted target resolves only one eligible rect. Omitted properties preserve the
   immutable mark configuration; `stroke: false` disables the stroke and rejects a simultaneous width.
@@ -828,10 +836,57 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
   rematerialization, and earlier-program immutability.
 - Evidence: `test/unit/actions/marks/rect-mark.test.js`.
 
+## `createStatisticalReference`
+
+- Approved scope: the user explicitly requested one native statistical action for the unified Add statistic card.
+- Signature: `createStatisticalReference({ id?, source, axis, population?, field?, groupBy?, statistic?, statistics?, ...style })`.
+- Full API Aggregate create-only facade. A wrapped child `createReferenceLine` or `createReferenceBand`
+  owns the existing Rule/Rect semantic configuration, derived dataset, validation and materialization.
+  Grouped source-color defaults additionally wrap `encodeStroke`; no new grammar.
+- Omit both statistic keys for `{ op: "mean" }`. A single `statistic` uses the existing `ReferenceStatistic` vocabulary:
+  mean, median, min, max, or `{ op: "quantile", p }`. An exact two-element `statistics` tuple creates a band.
+  The two keys are mutually exclusive. Literal x/y/space/data/coordinate/temporalUnit options are rejected.
+- Default ID is `statisticalReference` for either branch; another reference requires an explicit ID. The line defaults
+  to stroke `#222222`, width `2.5`, solid dash, opacity 1. The band defaults to fill `#6b7280`, opacity `0.18`, no stroke.
+  Styles follow RuleStyleOptions for lines and RectMarkOptions for bands; incompatible branch styles are rejected.
+- When `stroke` is omitted and `groupBy` matches the source Color field (without a color aggregate), the line
+  encodes its `group` output through the same color scale and field type, including temporal units.
+  Shared palette/range edits recolor both marks. Explicit stroke wins; unmatched or ungrouped lines remain dark.
+  The reference's groups contribute to that appearance domain, including bound-data groups hidden by `filterMarks`.
+  Statistical values remain excluded only from positional domains.
+- Central 50% is quantiles 0.25–0.75; central 95% is 0.025–0.975. These are population percentile intervals, not confidence intervals.
+- `groupBy`는 하나의 source field 이름이다. 생략하면 전체 통계, 지정하면 관측 그룹마다 하나의 선/구간을 만든다.
+  X/Y 양쪽과 모든 통계/중앙 구간에서 지원하며 그룹 순서는 원본 데이터의 첫 출현 순서다.
+- Source, axis, population, field tracking, missing/nonfinite validation, scale-domain exclusion, data/filter/Canvas replay,
+  facet-local statistics, persistence and source removal retain the native statistical reference contract below.
+  Later edits use the existing Rule/Rect, encoding and scale actions; `removeMark` owns deletion and owned dataset cleanup.
+
+### Formal values — `createStatisticalReference`
+
+- Implemented: `createStatisticalReference(options: CreateStatisticalReferenceOptions)`; shared dynamic source/axis binding,
+  exclusive optional single statistic or required exact statistic pair, and branch-specific native styles.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `createStatisticalReference`
+
+- ✅ Covered: default mean/style, all statistics and central intervals on both axes, child delegation and output parity,
+  strict atomic errors, immutable input, data/encoding/filter/Canvas replay, persistence, facet/removal ownership,
+  Full/Basic boundary, inspection and public TypeScript declarations.
+- Evidence: `test/unit/actions/marks/statistical-reference-facade.test.js`,
+  `test/contracts/statistical-reference-facade-types.test.js`.
+- ✅ Covered: original-observation populations for distribution owners, duplicate/missing observations,
+  grouped and facet-local means/percentiles, Box role-change order equality, singleton aggregate Line groups,
+  filtered bound-group color domains, and unsupported Text visible-item rejection.
+- Evidence: `test/unit/actions/marks/statistical-populations.test.js`,
+  `test/oracles/observation-statistics.js`.
+- ✅ Covered: summarized endpoint source/visible populations, separate Dumbbell role fields, facet-local observations,
+  owner-rebuild preservation, and quantitative Horizon X with explicit folded-Y/temporal-X rejection.
+- Evidence: `test/unit/actions/marks/statistical-source-owners.test.js`.
+
 ## `createReferenceLine`
 
 - Literal signature: `createReferenceLine({ id?, x?, y?, space?, source?, data?, coordinate?, temporalUnit?, stroke?, strokeWidth?, strokeDash?, opacity? })`.
-- Statistical signature: `createReferenceLine({ id?, source, axis, statistic, population?, field?, stroke?, strokeWidth?, strokeDash?, opacity? })`.
+- Statistical signature: `createReferenceLine({ id?, source, axis, statistic, population?, field?, groupBy?, stroke?, strokeWidth?, strokeDash?, opacity? })`.
 - Aggregate create-only. Literal branch는 정확히 한 x/y 상수로 한 Rule을 만들고 반대 축 전체 plot bounds를 잇는다.
   문자열은 field 이름이 아닌 literal datum이다. Source의 선택 축 scale/coordinate/data/fieldType/temporalUnit을
   사용한다. Data space가 기본이며 explicit source → current eligible → unique eligible Cartesian layer 순이다.
@@ -850,12 +905,34 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 - `population` 기본 `boundData`는 현재 authoring dataset을 사용하되 source의 `filterMarks` 전용 wrapper만
   provenance-transparent하게 역추적한다. `visibleItems`는 `filterMarks` 이후 최종 item grain에서 scalar를 읽는다.
   selection/highlight는 두 population 모두 바꾸지 않는다. Line/Area/Parallel의 visible item scalar는 모호하므로 오류다.
+  Item-selection policy가 없는 Text의 visibleItems도 사전 거부하며 boundData를 요구한다.
   missing/nonfinite/empty population은 오류다.
-- Statistical value는 `${id}-statistical-reference-data`라는 owned one-row dataset의 `value` field로 materialize된다.
-  requested recipe는 `markConfigs[id].statisticalReference`에 source/axis/population/field mode/statistics/dataId로 남는다.
+- Density/Violin/Raincloud cloud, ECDF, 계산된 Box summary, Gradient의 측정 축은 `boundData`에서
+  해당 statistical transform의 입력 관측치와 원래 측정 field를 사용한다. 동일한 관측값의 중복도 보존하며
+  KDE sample grid, box q1, 중복이 합쳐진 ECDF 출력은 원자료 모집단을 대신하지 않는다.
+  결측 측정값과 transform 출력에 없는 그룹을 제외한다. 명시한 field가 원본에 있으면 그 field를 사용하며,
+  출력 전용 field는 파생 dataset에 남는다. Precomputed Box는 원자료를 추정하지 않는다.
+  GroupBy는 이 입력 관측치의 field도 허용한다.
+- 집계된 Dot/Lollipop/Dumbbell의 boundData는 endpoint owner의 summary output을 원본 측정 field로
+  역추적한다. Dumbbell start/end는 각각의 원래 field를 사용한다. VisibleItems는 집계된 endpoint 값이다.
+  Horizon은 quantitative X만 원본 X 관측치에서 계산한다. 접힌 Y 좌표는 원본 측정 축이 아니므로
+  통계 reference를 거부한다. Temporal X도 수치 통계 계약에 포함되지 않는다.
+- Gradient source의 measure 축은 `visibleItems`에서 각 strip의 center 값을 소비한다. 원본의 다른 field로 groupBy할 때는
+  boundData를 사용한다. 통계 reference는 source position domain에 기여하지 않으므로 이미 해결한
+  position scale을 재사용하여 source/reference 재계산 feedback을 만들지 않는다.
+- `groupBy?: string`은 원본 source field로 모집단을 나눈다. null/string/boolean/finite number를 구분하고
+  원본 첫 출현 순서를 보존한다. 축이나 color에 매핑되지 않은 변수도 쓸 수 있다. VisibleItems에서는 각 최종 mark의
+  group field가 scalar여야 하며 섞여 있으면 오류다. BoundData는 원본 그룹으로 나눈 뒤 기존 axis-value grain을 따른다.
+  Aggregate Line의 그룹별 계산은 singleton partition도 집계하며 원본 line의 path topology는 바꾸지 않는다.
+  빈/잘못된 field와 누락된 key는 원자적으로 거부한다. 그룹의 null은 유효한 key이며 누락된 key와 구분한다.
+- Statistical value는 `${id}-statistical-reference-data`라는 owned dataset의 `value` field로 materialize된다.
+  기본은 one-row, groupBy를 지정하면 그룹마다 한 행이고 실제 key는 충돌 없는 별도 `group` field에 남는다.
+  requested recipe는 `markConfigs[id].statisticalReference`에 source/axis/population/field mode/groupBy/statistics/dataId로 남는다.
   이 datum은 source 자동 scale domain에 기여하지 않아 feedback cycle을 만들지 않는다. source reencode와 scale 변경,
   derived data edit, mark filter, Canvas replay에서 다시 계산한다. source 제거는 reference와 owned dataset까지 제거한다.
   facet child에서는 각 partition의 source data로 local statistic을 계산한다.
+  Box의 측정변수/원자료 revision도 완성된 source role 뒤 dependent reference를 갱신하여
+  통계 생성과 변수 변경의 호출 순서에 무관하게 같은 값과 좌표를 만든다.
 - 기본 ID=`referenceLine`, stroke=#64748b, strokeWidth=1, strokeDash=dashed, opacity=1. 추가 unnamed role은 오류다.
   스타일은 RuleStyleOptions의 기존 검증과 하위 appearance encoders를 따른다.
 - Literal branch는 전체 하위 chain 사전 검증 후 createScale(plot only), createRuleMark, encodeX 또는 encodeY를
@@ -883,12 +960,12 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 ## `createReferenceBand`
 
 - Literal signature: `createReferenceBand({ id?, x?, y?, space?, source?, data?, coordinate?, temporalUnit?, fill?, opacity?, stroke?, strokeWidth? })`.
-- Statistical signature: `createReferenceBand({ id?, source, axis, statistics, population?, field?, fill?, opacity?, stroke?, strokeWidth? })`.
+- Statistical signature: `createReferenceBand({ id?, source, axis, statistics, population?, field?, groupBy?, fill?, opacity?, stroke?, strokeWidth? })`.
 - createReferenceLine의 coordinate/data/source/scale/ID 충돌과 생명주기 규칙을 공유한다. 정확히 하나의
   x:[lower,upper] 또는 y:[lower,upper]를 받으며 data source는 quantitative/temporal 축만 가능하다.
   Plot endpoints는 각각 finite [0,1]. 뒤집힌 endpoint는 양의 Rect bounds, 같은 endpoint는 빈 collection이다.
 - Statistical branch는 정확히 두 `ReferenceStatistic`을 `statistics` tuple로 받는다. 계산값 lower<=upper를 요구하며
-  같으면 zero-width band로 허용하고 역전은 오류다. one-row dataset은 `lower`/`upper` field를 가진다. line의
+  같으면 zero-width band로 허용하고 역전은 오류다. 그룹별 dataset은 `lower`/`upper` field를 가진다. line의
   population, field mode, scale-domain exclusion, replay, facet, source removal 규칙을 공유한다.
 - 기본 ID=`referenceBand`, fill=#94a3b8, opacity=.15, stroke=false. strokeWidth만 주면 false와 충돌하므로 색도 명시한다.
   스타일은 RectMarkOptions를 따른다. createScale(plot only), createRectMark, primary encodeX/Y, secondary encodeX2/Y2로
@@ -1258,7 +1335,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ### Text 색상과 source appearance
 
-- Row-backed Text는 encodeColor로 범주형/연속형 색상을 지정한다. 명시적 fill과 충돌하며 source-owned label은 독립 color encoding을 받지 않는다.
+- Row-backed Text는 encodeColor로 범주형/연속형 색상을 지정한다. Field color assignment는 명시적 fill을 교체하며 source-owned label은 독립 color encoding을 받지 않는다.
 - Text/MarkLabels의 inheritColor는 fill/stroke/false다. source final item의 실제 색상을 따르며 명시적 fill이 우선한다. 기본 arc/rect 대비색 정책은 유지한다.
 - 상속은 추가 scale/legend를 만들지 않고 source 재계산을 따른다. source appearance가 없으면 오류다.
 - Evidence: `test/unit/actions/encodings/text-color.test.js`.

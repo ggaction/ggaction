@@ -279,6 +279,8 @@ The stable default mark ID is `barPlot`. `width` accepts the same band or
 logical-pixel options as `encodeBarWidth`; `bar` controls constant fill,
 opacity, stroke, and stroke width.
 
+For interval-width bars with a separate Y measure, use `createBarPlot` with `x.bin` and `y.aggregate`; see [bins with a separate measure](position/histogram.md#bins-with-a-separate-measure).
+
 ## `createHistogram`
 
 ```typescript

@@ -249,6 +249,20 @@
     "executable": false
   },
   {
+    "file": "api/axes.md",
+    "block": 6,
+    "heading": "Edit several existing axes",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [
+      "program"
+    ],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "87632174e3f458d85c132caea7bcbb51c66492e6f4e03b57791bdbf7dbc803ed",
+    "executable": false
+  },
+  {
     "file": "api/axes/complete.md",
     "block": 1,
     "heading": "Composite marks over guides",
@@ -535,7 +549,7 @@
     "receivers": [],
     "resources": [],
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
-    "sha256": "f77345a6549e85b3e7f8dc834b5d906b96bea2d589dc4ee1d589af3768c7e2a8",
+    "sha256": "f92ca13c4e6b0ec9df4ca387b7f1c75c8b9486cd5d63c9b3e58a519e82391c75",
     "executable": false
   },
   {
@@ -743,9 +757,11 @@
     "receivers": [
       "matrix"
     ],
-    "resources": [],
-    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `matrix`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
-    "sha256": "652d8f07e8d8fcead654c17b662ce3ffa7df5f602cdbd8d5c400dd22c6d4eda2",
+    "resources": [
+      "target: \"plot\""
+    ],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `matrix`. Resource selectors used here: `target: \"plot\"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "ae6b2c095be27f09926604eaa290828c5f57454c8699b8dabdb403af4de8c295",
     "executable": false
   },
   {
@@ -1539,6 +1555,18 @@
   {
     "file": "api/encodings.md",
     "block": 1,
+    "heading": "Fixed or variable appearance",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "9f0e1dfec31d3c8706832238ac75bb28b1560d6d72ce6a3f29c31104d0523e54",
+    "executable": false
+  },
+  {
+    "file": "api/encodings.md",
+    "block": 2,
     "heading": "Direction",
     "mode": "fragment",
     "environment": "esm-context",
@@ -1552,7 +1580,7 @@
   },
   {
     "file": "api/encodings.md",
-    "block": 2,
+    "block": 3,
     "heading": "Removing an encoding",
     "mode": "fragment",
     "environment": "esm-context",
@@ -1803,7 +1831,7 @@
     "receivers": [],
     "resources": [],
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
-    "sha256": "796f41449851efb0526a3e7dfdb6c3d2e63067bbab948c70bdc15fdf02d52389",
+    "sha256": "951f4299c7ecb3233321312ac66bb6b3f228c7545513b4fb0776909ecdbacef6",
     "executable": false
   },
   {
@@ -3007,6 +3035,20 @@
     "executable": false
   },
   {
+    "file": "api/marks/rule.md",
+    "block": 4,
+    "heading": "Statistical reference action",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [],
+    "resources": [
+      "source: \"points\""
+    ],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `source: \"points\"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "4dbd9eb8a96a16181d5d3b8fe11b2461ffa14b8a40bc3acb5eca05b56a5a6319",
+    "executable": false
+  },
+  {
     "file": "api/marks/text.md",
     "block": 1,
     "heading": "`createAnnotation(options)`",
@@ -3258,6 +3300,18 @@
     "resources": [],
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
     "sha256": "2278aba07cb43d540cd29ce9099cf65d488402c56958d2059d1acdedc9c288e8",
+    "executable": false
+  },
+  {
+    "file": "api/position/histogram.md",
+    "block": 3,
+    "heading": "Bins with a separate measure",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "3c0e6d6892f62b37221a1ba030f232383bd10a66df347ef016af3e7981de2515",
     "executable": false
   },
   {
@@ -3604,6 +3658,20 @@
     ],
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: \"sales\"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
     "sha256": "bc8e84151f865094ca13337584b6bd2a0003ea283a5e513e3155c312bf6a58a2",
+    "executable": false
+  },
+  {
+    "file": "api/rendering.md",
+    "block": 10,
+    "heading": "Transition scenes",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [],
+    "resources": [
+      "data: \"data\""
+    ],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `data: \"data\"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "bc6cb0b444a289aaee0221a9caddaa4b1e86a5618f217af1e6f3f983abbe5abb",
     "executable": false
   },
   {

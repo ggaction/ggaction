@@ -21,7 +21,7 @@ import { normalizeGuides } from "../charts/shared.js";
 
 export const BOX_PLOT_OPTIONS = Object.freeze([
   "id", "target", "data", "x", "y", "coordinate", "whisker",
-  "width", "summary", "outliers", "box", "median", "outlier", "guides"
+  "width", "summary", "outliers", "box", "median", "outlier", "color", "guides"
 ]);
 
 const DEFAULT_BOX = {

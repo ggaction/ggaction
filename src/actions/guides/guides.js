@@ -37,6 +37,11 @@ function inferAxesOptions(program, applicability, layers) {
     ? { x: { ticksAndLabels: { count: 7 } } }
     : {};
   const directions = applicability.axes.directions;
+  for (const channel of ["x", "y"]) {
+    if (!directions[channel] && layers.some(layer => layer.encoding?.[channel] !== undefined)) {
+      inferred[channel] = false;
+    }
+  }
   const hasStoredY = layers.some(
     layer => layer.encoding?.y !== undefined
   );
@@ -126,11 +131,26 @@ export function resolveGuideOptions(program, args = {}, layers = program.semanti
 const createGuides = /* @__PURE__ */ action(
   {
     op: "createGuides",
-    description: "Create applicable axes, grid, and legend."
+    description: "Create applicable axes, grid, and legend.",
+    scope: "any"
   },
   function (args = {}) {
+    if (this.compositionSpec?.facet) {
+      validateOptions(args);
+      if (Object.keys(args).length === 0) {
+        const selected = Object.entries(resolveGuideOptions(this, args))
+          .filter(([, options]) => options !== undefined);
+        if (selected.length > 0 && selected.every(([kind]) =>
+          hasStoredGuideCollection(this, kind === "axes" ? "axis" : kind)
+        )) return this;
+      }
+      return this.editFacetSource({ action: { method: "createGuides", options: args } });
+    }
+    this._assertUnitProgram("createGuides");
     const { axes, grid, legend } = resolveGuideOptions(this, args);
     if (axes === undefined && grid === undefined && legend === undefined) {
+      if (this.semanticSpec.layers.length > 0 &&
+          OPTIONS.some(key => args[key] === undefined)) return this;
       throw new Error("createGuides requires at least one selected guide.");
     }
 

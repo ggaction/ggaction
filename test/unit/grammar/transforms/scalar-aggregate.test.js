@@ -1,6 +1,12 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
+test("formats fieldless count titles without accepting missing measure fields", () => {
+  assert.equal(formatAggregateTitle("count"), "count");
+  assert.equal(formatAggregateTitle("count", "value"), "count(value)");
+  assert.throws(() => formatAggregateTitle("mean"), /Aggregate field/);
+});
+
 import {
   aggregateRows,
   aggregateScalarValues,

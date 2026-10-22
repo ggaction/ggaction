@@ -46,6 +46,23 @@ All notable changes to `ggaction` are recorded in this file.
 - Fix HCL and HCL-long hue handling at exact neutral RGB endpoints for D50 and D65.
 - Support finite numeric datum bounds in Rect/Rule range encoders, with final-pair validation and unchanged source data.
 - Align continuous color and stroke TypeScript palette descriptors with existing runtime count, extent and nested range forms.
+- Reuse validated immutable composition state and namespaced child graphics during layout edits, preserving validation of changed state and caller-owned inputs.
+- Report measured minimum facet header spacing through existing structured error diagnostics so clients can retry without repeated gap searches.
+- Add `editRadarPlot` to atomically edit the selected dimensions and order of a wide Radar chart while preserving its closed paths, groups, appearance and guides.
+- Accept color in Box and Gradient plot creation, support continuous Arc color, and preserve compound-chart color and filtering through edits and facets.
+- Compute distribution and endpoint statistical references from their source observations; retain and recompute independently authored reference layers through owner edits.
+- Resolve compatible facet color/stroke policies and combined legend domains consistently. Automatic `createGuides` accepts a chart with no applicable guides.
+- Reserve Polar and Parallel axis text in facet header and shared-legend placement; inferred outside legends also clear Polar labels after typography changes.
+- Apply Histogram missing-value policy consistently to marks, scales, guides, labels and selections, and expose actual bin intervals as category labels.
+
+- Add `createStatisticalReference` for a native mean/median/extreme/quantile line or exact percentile interval, with dark solid line defaults and existing statistical reference replay and ownership.
+
+- Preserve aggregate bar positions and widths when categorical color repeats the category-axis field and no group or layout was already specified.
+
+- Infer left/right legend clearance from occupied axis guides and reflow it after axis edits or removal; exact-inner Canvas sizing also fits inferred edge legend groups.
+- Detect chart title position and typography changes in `comparePrograms` when the title text is unchanged.
+- Add `editAxes` to edit selected Cartesian, Polar, or Parallel axes through one atomic public action, with existing channel-editor options and explicit named-axis selection.
+- Forward native `missing: "error" | "skip"` through `createScatterPlot` and `createBarPlot` without changing source rows.
 
 ## [0.0.21] - 2026-10-18
 

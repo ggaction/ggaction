@@ -1,11 +1,8 @@
 import { resolveAuthoredFacetLegendLayout } from "./ownerLayout.js";
-import { cartesianAxisOwners } from "../../selectors/axes.js";
 import { PLOT_LEGEND_POSITIONS } from "../../layout/legend.js";
 import { resolveConcreteGraphicBounds } from "../../grammar/schemas/graphicBounds.js";
-import { resolveFacetOuterSides } from "../../grammar/facets/guides.js";
 import { resolveTextBounds, textBoundsIntersect } from "../../core/textMetrics.js";
-import { axisGraphicIds } from "../guides/resources.js";
-import { resolveFacetHeaderItems } from "../facetHeaders.js";
+import { resolveFacetHeaderItems, retainedFacetGuideIds } from "../facetHeaders.js";
 
 function translated(bounds, x, y) {
   return { left: bounds.left + x, right: bounds.right + x,
@@ -14,19 +11,12 @@ function translated(bounds, x, y) {
 
 function retainedGuideBounds(program, layout, plots, headers) {
   const profile = program.materializationConfigs.textMetrics;
-  const outer = resolveFacetOuterSides({ placements: layout.children });
   const bounds = [];
   for (const cell of layout.children) {
     const child = program.children[cell.id];
-    for (const owner of cartesianAxisOwners(child)) {
-      for (const [index, component] of [[2, "labels"], [3, "title"]]) {
-        const position = owner.config?.[component]?.position;
-        if (program.compositionSpec.facet.guides.axes === "outer" && !outer[position]?.includes(cell.id)) continue;
-        const id = axisGraphicIds(owner.channel, owner.id)[index];
-        if (child.graphicSpec.objects[id] === undefined) continue;
-        const value = resolveConcreteGraphicBounds(child.graphicSpec, id, profile);
-        if (value !== undefined) bounds.push(translated(value, cell.x, cell.y));
-      }
+    for (const id of retainedFacetGuideIds(program, cell.id)) {
+      const value = resolveConcreteGraphicBounds(child.graphicSpec, id, profile);
+      if (value !== undefined) bounds.push(translated(value, cell.x, cell.y));
     }
   }
   const { items } = resolveFacetHeaderItems(layout, plots, headers);

@@ -300,7 +300,7 @@ test("rematerializes every point consumer of one sequential color scale", () => 
 test("validates color encoding inputs", () => {
   const program = createPointProgram();
 
-  assert.throws(() => program.encodeColor(), /field must be a non-empty string/i);
+  assert.throws(() => program.encodeColor(), /exactly one of value or field/i);
   assert.throws(
     () => program.encodeColor({ field: "missing" }),
     /nominal value/

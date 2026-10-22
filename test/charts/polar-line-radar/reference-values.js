@@ -291,9 +291,9 @@ function buildGuides({
   };
 }
 
-function buildLegend(target, domain, title, colors) {
+function buildLegend(target, domain, title, colors, rightLabelEdge) {
   const plotRight = target.width - target.margin.right;
-  const x = plotRight + 8;
+  const x = Math.max(plotRight, rightLabelEdge) + 8;
   return {
     domain,
     title,
@@ -365,7 +365,10 @@ export function createGapminderPolarLineReference(rows) {
       GAPMINDER_POLAR_TARGET,
       GAPMINDER_POLAR_TARGET.countries,
       "country",
-      POLAR_LINE_COLORS
+      POLAR_LINE_COLORS,
+      // The rightmost label is 1965 at 66 degrees. Its four 11px digits
+      // occupy 4 × 0.61 × 11 = 26.84px in the deterministic metric profile.
+      polarPoint(thetaAngles[1], frame.radius + 18, frame).x + 26.84
     )
   };
 }
@@ -428,7 +431,10 @@ export function createJobsRadarReference(rows) {
       JOBS_RADAR_TARGET,
       JOBS_RADAR_TARGET.sexes,
       "Sex",
-      POLAR_LINE_COLORS
+      POLAR_LINE_COLORS,
+      // Architecture is the rightmost label at 67.5 degrees; its
+      // independent 11px metric fixture is 61.38px wide.
+      polarPoint(thetaAngles[1], frame.radius + 18, frame).x + 61.38
     )
   };
 }

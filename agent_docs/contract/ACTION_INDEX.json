@@ -1048,6 +1048,24 @@
       }
     },
     {
+      "name": "createStatisticalReference",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Aggregate create-only",
+      "update": "Existing rule/rect, encoding and scale actions; removeMark owns deletion",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/MARKS.md",
+        "anchor": "createstatisticalreference"
+      }
+    },
+    {
       "name": "createReferenceLine",
       "layer": "user-facing",
       "domain": "marks",
@@ -1287,7 +1305,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Assignment",
-      "update": "Same action replaces the target jitter assignment; `removeJitter` removes it",
+      "update": "Same action replaces the X, Y, or both-axis jitter assignment; `removeJitter` removes it",
       "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
@@ -1647,7 +1665,7 @@
       "domain": "encodings",
       "status": "implemented",
       "lifecycle": "Assignment",
-      "update": "Same action replaces constant rule width or field-driven line/rule width",
+      "update": "Same action replaces constant or field-driven line/rule/rect width",
       "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
@@ -1719,7 +1737,7 @@
       "domain": "encodings",
       "status": "implemented",
       "lifecycle": "Assignment",
-      "update": "Same action replaces the constant value",
+      "update": "Same action replaces constant or field opacity on point/rule/line/bar/rect marks",
       "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
@@ -2935,6 +2953,24 @@
       "contract": {
         "file": "agent_docs/contract/current/AXES.md",
         "anchor": "edityaxistitle"
+      }
+    },
+    {
+      "name": "editAxes",
+      "layer": "user-facing",
+      "domain": "axes",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Atomically delegates selected existing axes to their channel editors",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/AXES.md",
+        "anchor": "editaxes"
       }
     },
     {
@@ -4617,7 +4653,7 @@
       "domain": "composition",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Replays a facet or repeat recipe on a revised unit",
+      "update": "Reapply retained facet recipe to a complete unit program or one public unit source action.",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -4929,10 +4965,28 @@
         "effects": "complete",
         "tests": "complete"
       },
-      "update": "Explicit Fold plus existing Polar line, category order, group, appearance, scale and guide actions",
+      "update": "editRadarPlot revises wide dimensions atomically; existing Polar appearance, scale and guide actions remain available",
       "contract": {
         "file": "agent_docs/contract/current/COMPLETE_CHARTS.md",
         "anchor": "createradarplot"
+      }
+    },
+    {
+      "name": "editRadarPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "update": "Revises owned wide-fold dimensions, theta order and radius geometry while preserving group, appearance and guide intent",
+      "contract": {
+        "file": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "anchor": "editradarplot"
       }
     },
     {

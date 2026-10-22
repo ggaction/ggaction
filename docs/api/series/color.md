@@ -285,8 +285,18 @@ The resolved color domain contains the per-rectangle aggregate values.
 `createLegend({ channels: ["color"] })` creates a gradient legend, and
 `editScale({ id: "color", reverse: true })` rematerializes both bar fills and
 the gradient without changing geometry. Continuous bar color rejects
-`layout`; histogram, ranged-bar, and line-path continuous color are
+`layout`; histogram and ranged-bar continuous color are
 not part of this contract.
+
+**Continuous line color.**
+
+Parallel-coordinate lines map quantitative or temporal color once per source
+row. Cartesian and Polar lines use one value per existing series: define the
+series with `encodeGroup` when needed. Continuous color does not split a path
+into a separate series for each numeric value, and varying values within one
+series are rejected. A continuous color creates a gradient legend; quantitative
+discretized scales create interval legends. Point-only unknown fallbacks remain
+unsupported for lines.
 
 ### Continuous area color
 

@@ -5,8 +5,8 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 434_000, // Polygon points measured433179gzip bytes; minimal1000-byte rounding.
-  "ggaction/basic": 220_000, // Polygon points measured219107gzip bytes; minimal1000-byte rounding.
+  ggaction: 447_000, // Combined installed consumer measured446832gzip bytes.
+  "ggaction/basic": 230_000, // Combined installed consumer measured229814gzip bytes.
   "ggaction/svg": 25_000
 });
 

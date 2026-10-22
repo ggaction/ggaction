@@ -18,6 +18,20 @@ function pointProgram() {
     .encodeY({ field: "y" });
 }
 
+test("literal filter and selection values are not interpreted as field names", () => {
+  const program = chart().createCanvas().createData({ values: [{ x: 1, y: 2, group: "A" }, { x: 2, y: 3, group: "B" }] })
+    .createScatterPlot({ id: "points", x: "x", y: "y" });
+  for (const action of ["filterMarks", "selectMarks"]) {
+    const options = { target: "points", field: "group", op: "eq", value: "A" };
+    const descriptor = describeAction(program, { action, target: { kind: "mark", id: "points" }, options });
+    assert.equal(descriptor.applicability, "supported");
+    assert.notEqual(descriptor.parameterDefinitions.find(p => p.path === "value").kind, "field");
+    assert.doesNotThrow(() => program[action](options));
+    assert.equal(describeAction(program, { action, target: { kind: "mark", id: "points" }, options: { ...options, field: "missing" } }).applicability, "incompatible");
+  }
+  assert.equal(describeAction(program, { action: "createStackData" }).parameterDefinitions.find(p => p.path === "value").kind, "field");
+});
+
 test("describeAction reports supported and incompatible checks without execution", () => {
   const program = pointProgram();
   const supported = describeAction(program, {
@@ -68,6 +82,24 @@ test("comparePrograms ignores trace-only identity and reports binding roles", ()
   assert.equal(comparison.equivalence, "different");
   assert.equal(mark.effect, "binding");
   assert.deepEqual(mark.roles, ["y"]);
+});
+
+test("comparison preserves exact scalar values, sparse arrays and changed immutable branches", () => {
+  const make = value => chart().createCanvas().createData({ id: "source", values: [{ value }] });
+  for (const value of [NaN, Infinity, -Infinity, -0, undefined, null, 1, "1"]) {
+    const before = make(value);
+    assert.equal(comparePrograms(before, make(value)).equivalence, "equal");
+    assert.equal(comparePrograms(before, before._withContext({ note: "unchanged" })).equivalence, "equal");
+  }
+  assert.equal(comparePrograms(make(-0), make(0)).equivalence, "different");
+  assert.equal(comparePrograms(make(undefined), make(null)).equivalence, "different");
+  assert.equal(comparePrograms(make(NaN), make(Infinity)).equivalence, "different");
+  assert.equal(comparePrograms(make(new Array(2)), make([undefined, undefined])).equivalence, "different");
+  const before = pointProgram();
+  const after = before.encodeSize({ target: "points", value: 60 });
+  const expected = comparePrograms(before, after);
+  for (let i = 0; i < 4; i++) assert.deepEqual(comparePrograms(before, after), expected);
+  assert.equal(comparePrograms(after, before).equivalence, "different");
 });
 
 test("comparePrograms includes composition intent and changed consumers in target scope", () => {
@@ -137,4 +169,39 @@ test("inspectProgram keeps guide items separate from data-mark counts", () => {
     target: { kind: "guide", id: "axis" }
   });
   assert.deepEqual(targeted.views.map(view => view.owner.id), ["axis"]);
+});
+
+
+test("comparePrograms detects title layout and typography changes without changing title text", () => {
+  const before = chart().createCanvas({ width: 900, height: 700, margin: 200 }).createTitle({ text: "Same title" });
+  for (const options of [{ titleStyle: { fontSize: 30 } }, { position: "bottom", offset: 80 }, { align: "right" }]) {
+    const after = before.editTitle(options);
+    assert.deepEqual(after.semanticSpec.title, before.semanticSpec.title);
+    const comparison = comparePrograms(before, after);
+    assert.equal(comparison.equivalence, "different");
+    assert.ok(comparison.changes.some(change => change.resource.id === "title" && change.effect === "guide"));
+  }
+  assert.equal(comparePrograms(before, before.editTitle({ titleStyle: { fontSize: 22 } })).equivalence, "equal");
+});
+
+test('plot field inspection follows source roles and explicit replacement data, including composed children', () => {
+  const program = chart().createCanvas().createData({ id: 'source', values: [{ x: 1, other: 4 }, { x: 2, other: 7 }] })
+    .createData({ id: 'replacement', values: [{ fresh: 3 }, { fresh: 6 }] })
+    .createECDFPlot({ id: 'curve', data: 'source', field: 'x', guides: false });
+  const before = program.trace.children.length;
+  for (const options of [{ field: 'other' }, { data: 'replacement', field: 'fresh' }]) {
+    const result = describeAction(program, { action: 'editECDFPlot', target: { kind: 'mark', id: 'curve' }, options });
+    assert.equal(result.applicability, 'supported');
+    assert.doesNotThrow(() => program.editECDFPlot({ target: 'curve', ...options }));
+  }
+  const missing = describeAction(program, { action: 'editECDFPlot', target: { kind: 'mark', id: 'curve' }, options: { field: 'missing' } });
+  assert.equal(missing.applicability, 'incompatible');
+  assert.equal(missing.findings[0].resource.id, 'source');
+  const wrongSource = describeAction(program, { action: 'editECDFPlot', target: { kind: 'mark', id: 'curve' }, options: { data: 'replacement', field: 'other' } });
+  assert.equal(wrongSource.applicability, 'incompatible');
+  assert.equal(wrongSource.findings[0].resource.id, 'replacement');
+  assert.equal(describeAction(program, { action: 'encodeX', target: { kind: 'mark', id: 'curve' }, options: { field: 'other' } }).applicability, 'incompatible');
+  const composed = hconcat({ programs: [{ id: 'left', program }, { id: 'right', program: pointProgram() }] });
+  assert.equal(describeAction(composed, { action: 'editECDFPlot', target: { kind: 'mark', id: 'curve', childPath: ['left'] }, options: { field: 'other' } }).applicability, 'supported');
+  assert.equal(program.trace.children.length, before);
 });

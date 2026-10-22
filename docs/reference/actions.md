@@ -112,6 +112,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createScatterPlot`](./actions/charts-data.md#createscatterplot) | H0 | user-facing | charts |
 | [`createSortedData`](./actions/statistics.md#createsorteddata) | H1 | user-facing | statistics |
 | [`createStackData`](./actions/statistics.md#createstackdata) | H1 | user-facing | statistics |
+| [`createStatisticalReference`](./actions/marks.md#createstatisticalreference) | H1, H2 | user-facing | marks |
 | [`createStripPlot`](./actions/charts-data.md#createstripplot) | H0 | user-facing | charts |
 | [`createSummaryData`](./actions/statistics.md#createsummarydata) | H1 | user-facing | statistics |
 | [`createTextMark`](./actions/marks.md#createtextmark) | H2 | user-facing | marks |
@@ -142,6 +143,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createYAxisTitle`](./actions/guides.md#createyaxistitle) | H3 | user-facing | axes |
 | [`editArcMark`](./actions/marks.md#editarcmark) | H3 | user-facing | marks |
 | [`editAreaMark`](./actions/marks.md#editareamark) | H3 | user-facing | marks |
+| [`editAxes`](./actions/guides.md#editaxes) | H3 | user-facing | axes |
 | [`editBarMark`](./actions/marks.md#editbarmark) | H3 | user-facing | marks |
 | [`editBin2DData`](./actions/charts-data.md#editbin2ddata) | H2 | user-facing | core |
 | [`editBinData`](./actions/statistics.md#editbindata) | H1, H3 | user-facing | statistics |
@@ -192,6 +194,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editParallelAxis`](./actions/guides.md#editparallelaxis) | H3 | user-facing | axes |
 | [`editParallelScale`](./actions/charts-data.md#editparallelscale) | H2 | user-facing | core |
 | [`editPointMark`](./actions/marks.md#editpointmark) | H3 | user-facing | marks |
+| [`editRadarPlot`](./actions/charts-data.md#editradarplot) | H1, H3 | user-facing | charts |
 | [`editRadialAxis`](./actions/guides.md#editradialaxis) | H3 | user-facing | axes |
 | [`editRadialAxisLabels`](./actions/guides.md#editradialaxislabels) | H3 | user-facing | axes |
 | [`editRadialAxisLine`](./actions/guides.md#editradialaxisline) | H3 | user-facing | axes |

@@ -8,14 +8,21 @@ Exact internal graphic ID spelling is not a public authoring option.
 
 ## Facet spacing policy
 
+헤더 lane으로 plot gap이 부족하면 기존 오류 메시지를 유지하며 `getErrorDetails`에
+`code: "invalid-value"`, `optionPath: "gap"`, 요청값 `actual`, 헤더의 최소 간격 `limit`을 제공한다.
+이 하한은 guide 충돌까지 허용한다는 보장이 아니며 수정된 요청은 다시 검증한다.
+
 Facet, grid, repeat 및 facet의 `editCompositionLayout`은 `spacing: "canvas" | "plot"`을 받는다.
 기본 canvas는 기존 cell Canvas 사이 gap이다. plot은 내부 data region의 grid track 사이 gap이며
 child plot 크기는 유지한다. 바깥 여백은 각 방향 child margin의 최댓값을 외곽에 한 번 배정한다.
-Role/legacy header는 plot edge에 배치하고 내부 header 예약은 gap 안에 들어가야 한다.
+Role/legacy header의 긴 축은 plot에 맞추고, 수직 방향은 retained Cartesian/Polar/Parallel guide text와
+local legend의 concrete ink 바깥에 offset만큼 배치한다. 내부 guide/header 예약은 gap 안에 들어가야 한다.
+바깥 header lane은 inferred parent Canvas에 예약하며 child Canvas와 명시적 plot gap은 바꾸지 않는다.
 남겨둔 축/범례/헤더가 다른 panel plot 또는 다른 panel guide와 겹치면 원자적으로 거부한다.
 Panel background는 plot 안에만 그려 인접 panel을 덮지 않으며 parent background가 외곽을 채운다.
 Shared legend와 title의 parent 예약은 기존 규칙을 유지한다. Concat에는 spacing 옵션을 거부한다.
 Evidence: `test/unit/actions/composition/facet-plot-spacing.test.js`, `test/unit/grammar/layout/facets.test.js`.
+Guide text/header clearance and source-style replay: `test/unit/actions/composition/facet-guide-header-clearance.test.js`.
 
 ## Shared facet top lane
 
@@ -49,14 +56,20 @@ Evidence: `test/unit/layout/facet-top-lane.test.js`, `test/unit/actions/composit
 - Evidence: `test/unit/actions/composition/facet-text.test.js`.
 - Facet values use source first-appearance order. Explicit `values` is a unique observed-value list whose exact order controls
   child, header and layout order. Omitted `columns` creates one row; a positive integer wraps cells row-major.
-- Omitted scale policies are shared. `x`, `y`, `xOffset`, `yOffset`, `theta`, `r`, `color`, `stroke`, `size`, `shape`,
+- Omitted scale policies are shared unless another explicitly selected channel uses the same physical scale. In that case omitted aliases inherit its policy transitively; two explicitly contradictory policies still reject. `x`, `y`, `xOffset`, `yOffset`, `theta`, `r`, `color`, `stroke`, `size`, `shape`,
   `opacity`, `strokeDash`, and `parallelDimensions` accept `"shared" | "independent"` when the role is used. Public
   `r` resolves the semantic `radius` binding; `radius` is not an accepted facet-policy alias. The single
   `parallelDimensions` policy applies separately to every dimension scale and never unions different dimensions.
   Explicit semantic domains override either policy. Histogram children share one bin-boundary set only when x is shared.
+- Box-plot body, whisker/cap/median rules, and outliers consume the same resolved facet scales;
+  component or highlight rematerialization must not replace shared domains with cell-local domains.
+  Evidence: `test/unit/actions/composition/facet-box-geometry.test.js`.
+- 각 cell의 명시적 tick/label/grid values는 해결된 domain과 교집합으로 파생한다. 원본 guide intent는 parent에 보존하므로 shared policy로 돌아가면 전체 선택이 복원된다. Unit의 잘못된 명시적 값 검증은 그대로 유지한다.
 - Filter, regression, density, interval, box-summary, and box-outlier dependencies replay topologically from each
   filtered cell source through `replayDerivedData`. Every affected layer is explicitly rebound through
   `rebindLayerData` before one deduplicated rematerialization plan runs.
+- `markFilter`도 partition source에 target mark를 먼저 rebind/materialize한 뒤 같은 selector recipe를
+  실행한다. 빈 결과의 shared-scale cell은 유지하며 원본 filter/remove 이력은 바뀌지 않는다.
 - `guides.axes` is `"each"` by default. `"outer"` keeps x axes on the bottommost occupied cell in each column and y
   axes on the leftmost occupied cell in each row, including an incomplete final row. Polar theta/radius and Parallel
   dimension axes remain child-local; requesting `"outer"` for either family is an atomic error.
@@ -200,7 +213,9 @@ Evidence: `test/unit/layout/facet-top-lane.test.js`, `test/unit/actions/composit
 
 ## `editFacetSource`
 
-- Signature: `editFacetSource({ program })`.
+- Signature: `editFacetSource({ program })` 또는 `editFacetSource({ action: { method, options? } })`.
+- `describeAction`의 facet/facetGrid preflight는 같은 pure dependency planner로 partition ancestry를 검사하며 action을 실행하지 않는다.
+- 두 입력은 상호 배타적이다. `action`은 retained source unit에 실제 wrapped chart-authoring 함수를 한 번 실행한 후 기존 facet/grid/repeat recipe를 다시 적용한다. Primitive, materialization, composition 함수와 알 수 없는 함수는 거부한다. Full-data item과 원래 axis config를 복원하므로 partitioned seed child의 item grain이나 outer-axis 생략을 source 의미로 사용하지 않는다. 새로운 label/statistical-reference config를 보존하고 전체 transaction은 하나의 `editFacetSource` trace node이다.
 - Requires a facet, grid or repeat parent and one complete unit `ChartProgram`. It reapplies the current partition or
   repeat recipe to the revised unit while preserving explicit value/field order, IDs when the recipe cardinality is
   unchanged, layout, scale/guide policy, parent header styling and parent title.
@@ -212,7 +227,7 @@ Evidence: `test/unit/layout/facet-top-lane.test.js`, `test/unit/actions/composit
 
 ### Formal values — `editFacetSource`
 
-- Implemented: `editFacetSource({ program: CompleteUnitChartProgram }): ChartProgram`.
+- Implemented: `editFacetSource({ program: CompleteUnitChartProgram } | { action: { method: PublicUnitActionName, options?: object } }): ChartProgram`.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `editFacetSource`
@@ -220,7 +235,7 @@ Evidence: `test/unit/layout/facet-top-lane.test.js`, `test/unit/actions/composit
 - ✅ Covered: one-field, grid and repeat recipe replay, revised rows under retained Cartesian/Polar/Parallel domains,
   stable policy and IDs, attached-label/selection/placement/theme/style preservation, revised-unit Canvas replay,
   title/header preservation, nested action trace and immutable failure.
-- Evidence: `test/unit/actions/composition/facet-grid-repeat.test.js`.
+- Evidence: `test/unit/actions/composition/facet-grid-repeat.test.js`, `test/unit/actions/facet-source-action.test.js`.
 
 ## `editFacetHeaders`
 
@@ -521,3 +536,8 @@ Evidence: `test/unit/layout/facet-top-lane.test.js`, `test/unit/actions/composit
   `test/contracts/polar-parallel-facets.test.js`, and
   `test/contracts/visual-capability-surface.test.js`, plus
   `test/unit/renderers/pdf-renderer.test.js` for backend translation parity.
+
+
+### Retained header recipe during source edits
+
+`editFacetSource` carries the existing canonical header configuration into the first native facet rebuild. It never validates an intermediate default header layout before restoring authored rotation, field titles or content anchors. The public header options and final atomicity contract are unchanged.

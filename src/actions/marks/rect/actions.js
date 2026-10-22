@@ -112,6 +112,7 @@ const rematerializeRectMark = /* @__PURE__ */ action(
     const highlighted = rematerializeHighlightBaseline(this, {
       target: id,
       operation: "rematerializeRectMark",
+      scales: args.scales,
       resetProperty: "items",
       resetValue: []
     });
@@ -129,7 +130,7 @@ const rematerializeRectMark = /* @__PURE__ */ action(
       throw new Error(`Rect mark "${id}" requires rect collection graphics.`);
     }
     if (this.markConfigs[id]?.gradientPlot?.materialized === true) {
-      return materializeMarkClip(this.materializeGradientPlotFill({ id }), id);
+      return materializeMarkClip(this.materializeGradientPlotFill({ id, scales: args.scales }), id);
     }
     const sourceDataset = findDataset(this, layer.data);
     if (sourceDataset === undefined) {
@@ -177,6 +178,11 @@ const editRectMark = /* @__PURE__ */ action(
       );
     }
     validateMarkClipCoordinate(this, layer, args.clip ?? this.markConfigs[layer.id]?.clip);
+    for (const channel of ["opacity", "strokeWidth"]) {
+      if (Object.hasOwn(args, channel) && layer.encoding?.[channel] !== undefined) {
+        throw new Error(`editRectMark ${channel} conflicts with a field encoding; use ${channel === "opacity" ? "encodeOpacity" : "encodeStrokeWidth"} with value to replace it.`);
+      }
+    }
     const semantic = Object.hasOwn(args, "missing")
       ? this.editSemantic({
           property: `layer[${layer.id}].mark.missing`,

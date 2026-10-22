@@ -39,9 +39,6 @@ export function normalizeMarkLabelContent(source, { content, normalizeBy }) {
         source.encoding[`${resolveBarChannels(source).measure}2`] !== undefined) {
       throw new Error("Ranged Bar text requires an explicit field or value.");
     }
-    if (content === "category" && grain === BAR_GRAINS.histogram) {
-      throw new Error("Histogram categories are intervals; use an explicit text field or value.");
-    }
   } else if (content === "category" && source.encoding?.theta?.fieldType === "quantitative") {
     throw new Error("Category text requires categorical Arc theta.");
   }
@@ -51,6 +48,8 @@ export function normalizeMarkLabelContent(source, { content, normalizeBy }) {
 function itemValue(source, item) {
   if (source.mark.type === "bar") {
     if (resolveBarGrain(source) === BAR_GRAINS.histogram) {
+      const measure = source.encoding.y;
+      if (measure.aggregate !== "count") return aggregateRows(item.members, measure.field, measure.aggregate);
       const weight = source.encoding.x.weight;
       if (weight === undefined || item.members.length === 0) return item.members.length;
       const weighted = readStatisticalWeights(item.members, weight, "Histogram label");
@@ -77,6 +76,12 @@ function itemValue(source, item) {
 }
 
 function categoryValue(source, item) {
+  if (source.mark.type === "bar" && resolveBarGrain(source) === BAR_GRAINS.histogram) {
+    // Describe the semantic bin, independently of stacking/reversal and its
+    // concrete pixel width. Suppress binary floating-point boundary artifacts.
+    const boundary = value => String(Number(value.toPrecision(12)));
+    return `${boundary(item.channels.x)}–${boundary(item.channels.x2)}`;
+  }
   return item.channels[source.mark.type === "arc" ? "theta" : resolveBarChannels(source).category];
 }
 

@@ -9,6 +9,7 @@ import { removeOwnedMark } from "../marks/remove.js";
 import { GRADIENT_PROFILE_FIELDS } from "../../grammar/gradientProfile.js";
 import { requestedStrokeDetails } from "../../grammar/strokeStyle.js";
 import { removeGradientPlotLegend } from "./components.js";
+import { rematerializeExistingLegend } from "../encodings/shared.js";
 import {
   resolveDistributionRoles,
   setCartesianPosition,
@@ -191,6 +192,22 @@ export const editGradientPlot = /* @__PURE__ */ closedAction(
             intensityDomain: profile.transform[0].resolved.intensityDomain
           }
         });
+        // Hue assigned to the old category follows the category role. Internal
+        // profile fields keep their stable names across statistical revisions.
+        if (candidate.category !== current.category) {
+          for (const channel of ["color", "stroke"]) {
+            const binding = owner.encoding?.[channel];
+            if (binding?.field !== current.category ||
+                !["nominal", "ordinal"].includes(binding.fieldType)) continue;
+            next = next.editSemantic({
+              property: `layer[${owner.id}].encoding.${channel}.field`,
+              value: candidate.category
+            }).editSemantic({
+              property: `layer[${owner.id}].encoding.${channel}.fieldType`,
+              value: candidate.categoryType
+            });
+          }
+        }
         if (center === false && hadCenter) {
           next = removeCenter(next, current.centerId);
         }
@@ -252,7 +269,7 @@ export const editGradientPlot = /* @__PURE__ */ closedAction(
             });
         }
         next = next.releaseDerivedData(revision.release);
-        return next._withContext({
+        return rematerializeExistingLegend(next)._withContext({
           currentMark: owner.id,
           currentData: candidate.source
         });

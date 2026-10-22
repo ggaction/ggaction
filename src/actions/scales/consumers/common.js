@@ -4,6 +4,7 @@ import { readAreaEndpoint } from "../../../grammar/areaEndpoints.js";
 import { readLinePosition } from "../../../grammar/lineMissing.js";
 import { readNominalField, readScaleField } from "../../../grammar/scales/index.js";
 import { readCategoricalLineColor, validateCategoricalColorConsumer } from "../../../grammar/scales/colorConsumers.js";
+import { readArcColorValues } from "../../../grammar/arcs.js";
 import { findDataset } from "../../../selectors/datasets.js";
 import { requireSemanticScale } from "../../../selectors/scales.js";
 import { SCALED_ENCODING_CHANNELS } from "../../../core/vocabulary.js";
@@ -69,6 +70,9 @@ export function readConsumerFieldValues(
   if (consumer.channel === "color" && ["nominal", "ordinal"].includes(fieldType) &&
       validateCategoricalColorConsumer(consumer.layer, consumer.encoding, scale)) {
     return readCategoricalLineColor(dataset.values, field);
+  }
+  if (consumer.layer.mark.type === "arc" && consumer.channel === "color") {
+    return readArcColorValues(dataset.values, consumer.layer);
   }
   if (consumer.layer.mark.type === "bar" && consumer.layer.encoding?.group !== undefined && ["xOffset", "yOffset"].includes(consumer.channel)) {
     return readSeriesIdentity(dataset.values, consumer.layer).values;

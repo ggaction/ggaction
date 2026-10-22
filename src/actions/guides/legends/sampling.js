@@ -122,14 +122,17 @@ export function resolveLegendSampleValues(config, scale, label = "Legend") {
     scale,
     label
   );
-  return sampling.mode === "values"
-    ? [...sampling.values]
-    : sampleNumericRange(
+  if (sampling.mode === "values") return [...sampling.values];
+  const values = sampleNumericRange(
         scale.domain[0],
         scale.domain[1],
         sampling.count,
         `${label} domain`
       );
+  // Preserve exact endpoints after decimal cleanup.
+  values[0] = scale.domain[0];
+  values[values.length - 1] = scale.domain[1];
+  return values;
 }
 
 export function hasExactLegendSamplingForScale(program, scaleId) {

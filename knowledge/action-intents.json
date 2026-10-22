@@ -919,6 +919,10 @@
       "named table lookup",
       "copy reference fields",
       "match typed keys"
+    ],
+    "StatisticalReference": [
+      "statistical reference",
+      "interval"
     ]
   },
   "summaryOverrides": {
@@ -1633,6 +1637,31 @@
           "years"
         ]
       }
+    },
+    "editRadarPlot": {
+      "target": "radarPlot",
+      "wide": {
+        "fields": [
+          "quality",
+          "speed"
+        ]
+      }
+    },
+    "editAxes": {
+      "x": {
+        "labels": {
+          "fontSize": 11
+        }
+      },
+      "y": {
+        "labels": {
+          "fontSize": 11
+        }
+      }
+    },
+    "createStatisticalReference": {
+      "source": "points",
+      "axis": "y"
     }
   },
   "callPatternOverrides": {
@@ -1645,7 +1674,7 @@
       "createReferenceLine({ space: \"plot\", x: 0.5 })"
     ],
     "createReferenceBand": [
-      "createReferenceBand({ space: \"plot\", y: [0.2, 0.8] })"
+      "createReferenceBand({ y: [2, 6] })"
     ],
     "createMarkLabels": [
       "createMarkLabels({ source?, content? })"
@@ -1835,6 +1864,12 @@
     "encodeDy": [
       "encodeDy({ target?, field })",
       "encodeDy({ target?, value })"
+    ],
+    "editRadarPlot": [
+      "editRadarPlot({ target?, wide: { fields } })"
+    ],
+    "createStatisticalReference": [
+      "createStatisticalReference({ source, axis, statistic?, statistics? })"
     ]
   },
   "errorOverrides": {

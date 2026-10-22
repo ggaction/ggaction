@@ -95,6 +95,80 @@ Create a centered line glyph that materializes after both x and y are complete.
 Length defaults to `14`; stroke width defaults to `2`. [Marks](../../api/marks.md)
 
 
+## `createStatisticalReference`
+
+**API layer:** user-facing. **Authoring roles:** H1, H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+createStatisticalReference(options: CreateStatisticalReferenceOptions): ChartProgram;
+```
+
+Named option contracts: [`CreateStatisticalReferenceOptions`](./../types.md#type-createstatisticalreferenceoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `source` | Required | `string` |
+| `axis` | Required | `"x" \| "y"` |
+| `population` | Optional / branch-dependent | `"boundData" \| "visibleItems" \| undefined` |
+| `field` | Optional / branch-dependent | `string \| undefined` |
+| `groupBy` | Optional / branch-dependent | `string \| undefined` |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `opacity` | Optional / branch-dependent | `number \| undefined` |
+| `stroke` | Optional / branch-dependent | `string \| false \| undefined` |
+| `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
+| `statistics` | Optional / branch-dependent | `readonly [ReferenceStatistic, ReferenceStatistic] \| undefined` |
+| `statistic` | Optional / branch-dependent | `ReferenceStatistic \| undefined` |
+| `cornerRadius` | Optional / branch-dependent | `number \| undefined` |
+| `cornerRadiusTopLeft` | Optional / branch-dependent | `number \| undefined` |
+| `cornerRadiusTopRight` | Optional / branch-dependent | `number \| undefined` |
+| `cornerRadiusBottomRight` | Optional / branch-dependent | `number \| undefined` |
+| `cornerRadiusBottomLeft` | Optional / branch-dependent | `number \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `fill` | Optional / branch-dependent | `string \| undefined` |
+| `strokeDash` | Optional / branch-dependent | `DashPattern \| DashStyle \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createStatisticalReference({ id?, source, axis, population?, field?, groupBy?, statistic?, statistics?, ...style })
+```
+
+Create a statistical line or interval through one public action. `source` is the source mark ID and `axis` is `"x"` or `"y"`.
+Omit the statistic keys for a mean line, supply `statistic: { op: "median" }` for another single statistic, or an exact
+`statistics` pair for a band. The keys are mutually exclusive and use the existing `ReferenceStatistic` vocabulary.
+Quantiles 0.25–0.75 show the central 50%; 0.025–0.975 show the central 95% of data, rather than a confidence interval.
+Set `groupBy` to one source field name for a separate result per observed group on either axis, even if that field is not encoded.
+Groups retain source order. Visible marks must have a single value of that grouping field; otherwise use `boundData`.
+For a distribution's measurement axis, `boundData` uses original observations from density, ECDF, computed
+box-summary, and gradient provenance. It preserves repeated observations and source groups instead of averaging
+rendering samples. Precomputed summaries keep their supplied data. Grouped aggregate line statistics can use
+singleton partitions without changing the source line.
+Summarized Dot, Lollipop, and Dumbbell endpoints also follow their original measurement roles.
+Horizon accepts quantitative X statistics from source observations; folded Y and temporal X are not numeric statistic axes.
+The owned output records the key in `group` beside `value` or `lower`/`upper`. Omitting `groupBy` preserves one overall result.
+The default ID is `statisticalReference`; use explicit IDs for additional references. Lines default to `#222222`,
+width `2.5`, solid stroke; bands to `#6b7280`, opacity `0.18`, no stroke. Use native Rule styles for lines and Rect styles for bands.
+When `groupBy` matches the source Color field without a color aggregate, omitted `stroke` shares that Color scale:
+each group's line matches its source marks, and palette edits update both. An explicit `stroke` overrides this default.
+Reference groups contribute to the shared appearance domain even when a mark filter hides that group.
+Statistical values do not expand positional domains, and distribution-role edits refresh existing references.
+This full-only action wraps `createReferenceLine` or `createReferenceBand` and retains their statistical binding,
+replay, editing, facet and removal behavior. Literal reference coordinates are not accepted.
+[Statistical references](../../api/marks/rule.md#statistical-reference-action)
+
+
 ## `createReferenceLine`
 
 **API layer:** user-facing. **Authoring roles:** H1, H2.
@@ -132,6 +206,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `axis` | Optional / branch-dependent | `"x" \| "y"` |
 | `population` | Optional / branch-dependent | `"boundData" \| "visibleItems" \| undefined` |
 | `field` | Optional / branch-dependent | `string \| undefined` |
+| `groupBy` | Optional / branch-dependent | `string \| undefined` |
 | `statistic` | Optional / branch-dependent | `ReferenceStatistic` |
 
 </details>
@@ -203,6 +278,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `axis` | Optional / branch-dependent | `"x" \| "y"` |
 | `population` | Optional / branch-dependent | `"boundData" \| "visibleItems" \| undefined` |
 | `field` | Optional / branch-dependent | `string \| undefined` |
+| `groupBy` | Optional / branch-dependent | `string \| undefined` |
 | `statistics` | Optional / branch-dependent | `readonly [ReferenceStatistic, ReferenceStatistic]` |
 
 </details>
@@ -809,7 +885,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `target` | Optional / branch-dependent | `string \| undefined` |
-| `channel` | Required | `"x" \| "y"` |
+| `channel` | Required | `"both" \| "x" \| "y"` |
 | `maxOffset` | Required | `JitterMaxOffset` |
 | `seed` | Optional / branch-dependent | `string \| number \| undefined` |
 | `key` | Optional / branch-dependent | `string \| undefined` |
@@ -822,7 +898,8 @@ The following call patterns are abbreviated examples; the declaration above owns
 jitterPoints({ target?, channel, maxOffset, seed?, key? })
 ```
 
-Assign deterministic bounded graphical jitter to one Cartesian point mark. Use
+Assign deterministic bounded graphical jitter to one Cartesian point mark with
+`channel: "x"`, `"y"`, or `"both"`. Both axes use independent offsets. Use
 exactly one of `maxOffset.pixels` or `maxOffset.band`; calling the action again
 replaces the previous policy from the semantic base positions. [Point marks](../../api/marks/point.md)
 

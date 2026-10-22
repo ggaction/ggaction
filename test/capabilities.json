@@ -431,6 +431,10 @@
       {
         "type": "file",
         "path": "browser/public-examples.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/scene.test.js"
       }
     ],
     "scales": [

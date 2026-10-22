@@ -3,7 +3,7 @@
   "packageVersion": "0.0.21",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 290,
+  "count": 293,
   "cards": [
     {
       "schemaVersion": 3,
@@ -5663,6 +5663,195 @@
     },
     {
       "schemaVersion": 3,
+      "name": "createStatisticalReference",
+      "layer": "user-facing",
+      "domain": "marks",
+      "summary": "Create a statistical line or interval through one public action.",
+      "signature": "createStatisticalReference(options: CreateStatisticalReferenceOptions): ChartProgram;",
+      "intents": [
+        "create statistical reference",
+        "create",
+        "add",
+        "graphical mark",
+        "mark appearance",
+        "statistical reference",
+        "interval"
+      ],
+      "lifecycle": "Aggregate create-only",
+      "resources": {
+        "prerequisites": [
+          "dataset and coordinate context"
+        ],
+        "owns": [
+          "statistical reference"
+        ],
+        "idOptions": [
+          "id",
+          "source"
+        ]
+      },
+      "authoringRoles": [
+        "H1",
+        "H2"
+      ],
+      "wraps": [
+        "createReferenceLine",
+        "createReferenceBand"
+      ],
+      "editableVia": [],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [
+        {
+          "path": "opacity",
+          "unit": "probability"
+        },
+        {
+          "path": "strokeWidth",
+          "unit": "logical-pixel"
+        }
+      ],
+      "inference": [
+        {
+          "input": "source",
+          "strategy": "explicit"
+        },
+        {
+          "input": "omitted optional options",
+          "strategy": "documented-default"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "dataset and coordinate context"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "source",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "axis",
+          "required": true,
+          "type": "\"x\" | \"y\""
+        },
+        {
+          "name": "population",
+          "required": false,
+          "type": "\"boundData\" | \"visibleItems\" | undefined"
+        },
+        {
+          "name": "field",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "groupBy",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "lineCap",
+          "required": false,
+          "type": "\"butt\" | \"round\" | \"square\" | undefined"
+        },
+        {
+          "name": "lineJoin",
+          "required": false,
+          "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+        },
+        {
+          "name": "miterLimit",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "opacity",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "stroke",
+          "required": false,
+          "type": "string | false | undefined"
+        },
+        {
+          "name": "strokeWidth",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "statistics",
+          "required": false,
+          "type": "readonly [ReferenceStatistic, ReferenceStatistic] | undefined"
+        },
+        {
+          "name": "statistic",
+          "required": false,
+          "type": "ReferenceStatistic | undefined"
+        },
+        {
+          "name": "cornerRadius",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "cornerRadiusTopLeft",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "cornerRadiusTopRight",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "cornerRadiusBottomRight",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "cornerRadiusBottomLeft",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "clip",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "fill",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "strokeDash",
+          "required": false,
+          "type": "DashPattern | DashStyle | undefined"
+        }
+      ],
+      "callPatterns": [
+        "createStatisticalReference({ source, axis, statistic?, statistics? })"
+      ],
+      "snippet": "program.createStatisticalReference({ source: \"points\", axis: \"y\" })",
+      "errors": [],
+      "route": "/reference/actions/marks/#createstatisticalreference"
+    },
+    {
+      "schemaVersion": 3,
       "name": "createReferenceLine",
       "layer": "user-facing",
       "domain": "marks",
@@ -5698,7 +5887,8 @@
       ],
       "wraps": [
         "createRuleMark",
-        "encodeY"
+        "encodeY",
+        "createDerivedData"
       ],
       "editableVia": [
         "editRuleMark",
@@ -5842,6 +6032,11 @@
           "type": "string | undefined"
         },
         {
+          "name": "groupBy",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
           "name": "statistic",
           "required": false,
           "type": "ReferenceStatistic"
@@ -5893,7 +6088,8 @@
       "wraps": [
         "createRectMark",
         "encodeX",
-        "encodeX2"
+        "encodeX2",
+        "createDerivedData"
       ],
       "editableVia": [
         "editRuleMark",
@@ -6067,13 +6263,18 @@
           "type": "string | undefined"
         },
         {
+          "name": "groupBy",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
           "name": "statistics",
           "required": false,
           "type": "readonly [ReferenceStatistic, ReferenceStatistic]"
         }
       ],
       "callPatterns": [
-        "createReferenceBand({ space: \"plot\", y: [0.2, 0.8] })"
+        "createReferenceBand({ y: [2, 6] })"
       ],
       "snippet": "program.createReferenceBand({ x: [2, 6] })",
       "errors": [],
@@ -7569,7 +7770,7 @@
       "name": "jitterPoints",
       "layer": "user-facing",
       "domain": "marks",
-      "summary": "Assign deterministic bounded graphical jitter to one Cartesian point mark.",
+      "summary": "Assign deterministic bounded graphical jitter to one Cartesian point mark with channel: \"x\", \"y\", or \"both\".",
       "signature": "jitterPoints(options: JitterPointsOptions): ChartProgram;",
       "intents": [
         "jitter points",
@@ -7628,7 +7829,7 @@
         {
           "name": "channel",
           "required": true,
-          "type": "\"x\" | \"y\""
+          "type": "\"both\" | \"x\" | \"y\""
         },
         {
           "name": "maxOffset",
@@ -9188,7 +9389,7 @@
         {
           "name": "aggregate",
           "required": false,
-          "type": "undefined"
+          "type": "AggregateOperation"
         },
         {
           "name": "temporalUnit",
@@ -9315,7 +9516,7 @@
         {
           "name": "aggregate",
           "required": false,
-          "type": "undefined"
+          "type": "AggregateOperation"
         },
         {
           "name": "stack",
@@ -9521,7 +9722,7 @@
         {
           "name": "temporalUnit",
           "required": false,
-          "type": "undefined"
+          "type": "TemporalInputUnit | undefined"
         }
       ],
       "callPatterns": [
@@ -9604,12 +9805,17 @@
       },
       "options": [
         {
-          "name": "field",
-          "required": true,
-          "type": "string"
+          "name": "value",
+          "required": false,
+          "type": "string | undefined"
         },
         {
           "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "field",
           "required": false,
           "type": "string | undefined"
         },
@@ -9645,9 +9851,9 @@
         }
       ],
       "callPatterns": [
-        "encodeColor({ field, target?, scale?, fieldType?, palette?, layout?, aggregate?, temporalUnit? })"
+        "encodeColor({ target?, scale?, value?, field?, fieldType?, palette?, layout?, aggregate? })"
       ],
-      "snippet": "program.encodeColor({ field: \"value\" })",
+      "snippet": "program.encodeColor({ value: \"value\" })",
       "errors": [],
       "route": "/reference/actions/encodings/#encodecolor"
     },
@@ -9863,7 +10069,7 @@
       "name": "encodeStrokeWidth",
       "layer": "user-facing",
       "domain": "encodings",
-      "summary": "Assign a non-negative finite logical Canvas width to a Line or Rule.",
+      "summary": "Assign a non-negative finite logical Canvas width to a Line, Rule, or Rect.",
       "signature": "encodeStrokeWidth(options: StrokeWidthEncodingOptions): ChartProgram;",
       "intents": [
         "encode stroke width",
@@ -10023,12 +10229,17 @@
       },
       "options": [
         {
-          "name": "field",
-          "required": true,
-          "type": "string"
+          "name": "value",
+          "required": false,
+          "type": "number | undefined"
         },
         {
           "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "field",
           "required": false,
           "type": "string | undefined"
         },
@@ -10044,9 +10255,9 @@
         }
       ],
       "callPatterns": [
-        "encodeSize({ field, target?, scale?, fieldType? })"
+        "encodeSize({ target?, scale?, value?, field?, fieldType? })"
       ],
-      "snippet": "program.encodeSize({ field: \"value\" })",
+      "snippet": "program.encodeSize({ value: 1 })",
       "errors": [],
       "route": "/reference/actions/encodings/#encodesize"
     },
@@ -10242,7 +10453,7 @@
       "name": "encodeOpacity",
       "layer": "user-facing",
       "domain": "encodings",
-      "summary": "Apply a constant point/rule/line opacity from 0 to 1, or map a quantitative field through a linear opacity scale.",
+      "summary": "Apply a constant point/rule/line/bar/rect opacity from 0 to 1, or map a quantitative field through a linear opacity scale.",
       "signature": "encodeOpacity(options: OpacityEncodingOptions): ChartProgram;",
       "intents": [
         "encode opacity",
@@ -11127,7 +11338,7 @@
         {
           "name": "temporalUnit",
           "required": false,
-          "type": "undefined"
+          "type": "TemporalInputUnit | undefined"
         }
       ],
       "callPatterns": [
@@ -14290,6 +14501,11 @@
           "type": "string | undefined"
         },
         {
+          "name": "color",
+          "required": false,
+          "type": "string | { field: string; fieldType?: \"nominal\" | \"ordinal\" | undefined; scale?: NonPointCategoricalColorScaleOptions | undefined; palette?: Palette | undefined; } | { ...; } | undefined"
+        },
+        {
           "name": "whisker",
           "required": false,
           "type": "BoxPlotWhisker | undefined"
@@ -14582,6 +14798,11 @@
           "name": "coordinate",
           "required": false,
           "type": "string | undefined"
+        },
+        {
+          "name": "color",
+          "required": false,
+          "type": "{ value: string; } | BasicColorChannel | undefined"
         },
         {
           "name": "density",
@@ -15451,7 +15672,9 @@
         "createYAxis",
         "createParallelAxes"
       ],
-      "editableVia": [],
+      "editableVia": [
+        "editAxes"
+      ],
       "supports": {
         "entryPoints": [
           "default",
@@ -18728,6 +18951,90 @@
     },
     {
       "schemaVersion": 3,
+      "name": "editAxes",
+      "layer": "user-facing",
+      "domain": "axes",
+      "summary": "Edits x and y axes, including settings for Cartesian guides.",
+      "signature": "editAxes(options: EditAxesOptions): ChartProgram;",
+      "intents": [
+        "edit axes",
+        "edit",
+        "change",
+        "axis guide",
+        "scale annotation",
+        "x and y axes",
+        "Cartesian guides"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing x and y axes",
+          "compatible scale or encoding context"
+        ],
+        "owns": [],
+        "idOptions": []
+      },
+      "authoringRoles": [
+        "H3"
+      ],
+      "wraps": [
+        "editXAxis",
+        "editYAxis"
+      ],
+      "editableVia": [
+        "editAxes"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing x and y axes",
+          "compatible scale or encoding context"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "x",
+          "required": false,
+          "type": "false | EditAxisOptions<XAxisPosition> | readonly [EditAxisOptions<XAxisPosition> & { target: string; }, ...(EditAxisOptions<XAxisPosition> & { ...; })[]] | undefined"
+        },
+        {
+          "name": "y",
+          "required": false,
+          "type": "false | EditAxisOptions<YAxisPosition> | readonly [EditAxisOptions<YAxisPosition> & { target: string; }, ...(EditAxisOptions<YAxisPosition> & { ...; })[]] | undefined"
+        },
+        {
+          "name": "theta",
+          "required": false,
+          "type": "false | EditThetaAxisOptions | undefined"
+        },
+        {
+          "name": "radius",
+          "required": false,
+          "type": "false | EditRadialAxisOptions | undefined"
+        },
+        {
+          "name": "parallel",
+          "required": false,
+          "type": "false | readonly [ParallelAxisComponentsOptions, ...ParallelAxisComponentsOptions[]] | ParallelAxisComponentsOptions | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editAxes({ x?, y?, theta?, radius?, parallel? })"
+      ],
+      "snippet": "program.editAxes({ x: { labels: { fontSize: 11 } }, y: { labels: { fontSize: 11 } } })",
+      "errors": [],
+      "route": "/reference/actions/guides/#editaxes"
+    },
+    {
+      "schemaVersion": 3,
       "name": "editXAxis",
       "layer": "user-facing",
       "domain": "axes",
@@ -18876,7 +19183,8 @@
       ],
       "wraps": [
         "editYAxisLine",
-        "editYAxisTitle"
+        "editYAxisTitle",
+        "editYAxisLabels"
       ],
       "editableVia": [
         "editYAxis"
@@ -29770,12 +30078,17 @@
       "options": [
         {
           "name": "program",
-          "required": true,
-          "type": "ChartProgram"
+          "required": false,
+          "type": "ChartProgram | undefined"
+        },
+        {
+          "name": "action",
+          "required": false,
+          "type": "{ method: string; options?: Readonly<Record<string, unknown>> | undefined; } | undefined"
         }
       ],
       "callPatterns": [
-        "editFacetSource({ program })"
+        "editFacetSource({ program?, action? })"
       ],
       "snippet": "program.editFacetSource({ program: chart().createCanvas({}).createData({ values: [] }) })",
       "errors": [],
@@ -30178,6 +30491,11 @@
       },
       "options": [
         {
+          "name": "missing",
+          "required": false,
+          "type": "\"error\" | \"skip\" | undefined"
+        },
+        {
           "name": "id",
           "required": false,
           "type": "string | undefined"
@@ -30234,7 +30552,7 @@
         }
       ],
       "callPatterns": [
-        "createScatterPlot({ x, y, id?, data?, coordinate?, color?, stroke?, size? })"
+        "createScatterPlot({ x, y, id?, data?, coordinate?, missing?, color?, stroke? })"
       ],
       "snippet": "program.createScatterPlot({ x: \"x\", y: \"y\" })",
       "errors": [],
@@ -31799,7 +32117,9 @@
       "wraps": [
         "createLineMark",
         "encodeTheta",
-        "encodeR"
+        "encodeR",
+        "encodeGroup",
+        "encodeColor"
       ],
       "editableVia": [],
       "supports": {
@@ -31923,9 +32243,12 @@
         "H0"
       ],
       "wraps": [
-        "createPolarLinePlot"
+        "createPolarLinePlot",
+        "createFoldData"
       ],
-      "editableVia": [],
+      "editableVia": [
+        "editRadarPlot"
+      ],
       "supports": {
         "entryPoints": [
           "default"
@@ -32022,6 +32345,83 @@
       "snippet": "program.createRadarPlot({ category: \"category\", value: \"value\" })",
       "errors": [],
       "route": "/reference/actions/charts-data/#createradarplot"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editRadarPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "summary": "Edits radar plot, including settings for radar chart.",
+      "signature": "editRadarPlot(options: EditRadarPlotOptions): ChartProgram;",
+      "intents": [
+        "edit radar plot",
+        "edit",
+        "change",
+        "complete chart",
+        "chart facade",
+        "radar plot",
+        "radar chart"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing radar plot",
+          "canvas and dataset context"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H1",
+        "H3"
+      ],
+      "wraps": [
+        "createFoldData",
+        "editThetaScale"
+      ],
+      "editableVia": [
+        "editRadarPlot"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing radar plot",
+          "canvas and dataset context"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "wide",
+          "required": true,
+          "type": "{ fields: readonly [string, string, ...string[]]; }"
+        }
+      ],
+      "callPatterns": [
+        "editRadarPlot({ target?, wide: { fields } })"
+      ],
+      "snippet": "program.editRadarPlot({ target: \"radarPlot\", wide: { fields: [\"quality\", \"speed\"] } })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#editradarplot"
     },
     {
       "schemaVersion": 3,
@@ -32525,7 +32925,7 @@
         {
           "name": "color",
           "required": false,
-          "type": "LineCategoricalColorChannel<NonPointCategoricalColorScaleOptions> | undefined"
+          "type": "false | RaincloudColorChannel | undefined"
         },
         {
           "name": "guides",
@@ -32656,7 +33056,7 @@
         {
           "name": "color",
           "required": false,
-          "type": "false | LineCategoricalColorChannel<NonPointCategoricalColorScaleOptions> | undefined"
+          "type": "false | RaincloudColorChannel | undefined"
         }
       ],
       "callPatterns": [
@@ -32672,7 +33072,7 @@
       "name": "createBarPlot",
       "layer": "user-facing",
       "domain": "charts",
-      "summary": "Create categorical or temporal bars with quantitative measures; use color.layout for grouped or stacked partitions, not top-level stack/groupBy; width defaults to 0.72 of the slot and guides are inferred unless disabled.",
+      "summary": "Create categorical, temporal or binned bars with quantitative measures; bin rectangles fill their complete intervals, while category bars default to 0.72 of the slot.",
       "signature": "createBarPlot(options: CreateBarPlotOptions): ChartProgram;",
       "intents": [
         "create bar plot",
@@ -32749,6 +33149,11 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "missing",
+          "required": false,
+          "type": "\"error\" | \"skip\" | undefined"
+        },
         {
           "name": "id",
           "required": false,

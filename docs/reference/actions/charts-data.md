@@ -1864,6 +1864,11 @@ filterMarks({ target?, mode?, grain?, field | channel | property, op, ...operand
 Retain matching final mark items through the shared selector grammar. Repeated
 filters are idempotent when equal and use explicit `replace` or `compose` mode
 when different. Empty results preserve the preceding scale domains.
+An explicit Raincloud parent ID selects raw observations by `field` at item grain
+and recomputes all enabled components. It accepts comparisons, sets, ranges, and
+grouped ranks; rendered channel/property selectors still require a child ID.
+Raincloud source filters retain the nonempty input requirements of their enabled
+statistical components; named-child empty filters remain supported.
 [Data](../../api/data.md)
 
 
@@ -2236,6 +2241,10 @@ two-field grid; its column sides are top/bottom, while one-field facets and
 repeats also allow left/right column headers. The option uses the same values,
 layout, and precedence as `editFacetHeaders`; authored styles survive themes
 and source replay. Omitting `headers` preserves the default headers.
+With `spacing: "plot"`, headers stay aligned to their panel plots and sit outside
+retained axis text and local legend ink, including outward Polar labels. Header lanes
+are recalculated after guide edits. The requested plot gap and child Canvas sizes
+remain unchanged; insufficient interior guide/header space rejects the operation.
 
 
 ## `facetGrid`
@@ -2354,7 +2363,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `program` | Required | `ChartProgram` |
+| `program` | Optional / branch-dependent | `ChartProgram \| undefined` |
+| `action` | Optional / branch-dependent | `{ method: string; options?: Readonly<Record<string, unknown>> \| undefined; } \| undefined` |
 
 </details>
 
@@ -2362,13 +2372,17 @@ The following call patterns are abbreviated examples; the declaration above owns
 
 ```javascript
 editFacetSource({ program })
+editFacetSource({ action: { method, options? } })
 ```
 
 Reapply the current facet, grid, or repeat recipe to a revised complete unit
 program while preserving the partition dataset ID, ordered domains, layout,
 scale/guide policy, headers, and parent title. All stored facet values must
 remain observed; create a new composition when the dataset ID, domain, or
-repeat field list changes.
+repeat field list changes. Alternatively, pass one actual unit chart-authoring action
+name and its options to edit the retained full-data source in the same transaction.
+Specify exactly one of `program` or `action`; extension primitives, materializers,
+and composition actions cannot be source edits.
 
 
 ## `editFacetHeaders`
@@ -2527,6 +2541,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
@@ -2544,7 +2559,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createScatterPlot({ id?, data?, coordinate?, x, y, color?, stroke?, size?, shape?, point?, guides? })
+createScatterPlot({ id?, data?, coordinate?, x, y, color?, stroke?, size?, shape?, point?, missing?, guides? })
 ```
 
 Create a complete Cartesian point chart from required x/y fields and optional
@@ -2768,6 +2783,11 @@ editEndpointPlot({ target?, data?, coordinate?, category?, value?, start?, end?,
 Atomically revise the semantic roles of a Dot, Lollipop, or Dumbbell facade.
 Owned points, rules, labels, and summary data are replaced together while the
 original appearance and guide policy are retained.
+When a changed role or source changes an axis domain, tick samples from the
+previous domain are inferred again while retaining their label and line styles.
+Separately added statistical references retain their source endpoint, styles, and
+labels, recompute from the revised observations, and follow the measurement axis
+when orientation changes.
 
 
 ## `createECDFPlot`
@@ -3044,7 +3064,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createPolarScatterPlot({ id?, data?, coordinate?, theta, radius, color?, size?, shape?, point?, guides? })
+createPolarScatterPlot({ id?, data?, coordinate?, theta, radius, color?, size?, shape?, point?, missing?, guides? })
 ```
 
 Create a complete Polar point chart from required angular and radial fields.
@@ -3138,6 +3158,57 @@ createRadarPlot({ id?, data?, coordinate?, wide: { fields, as? }, groupBy?, orde
 Create closed Radar paths from validated long rows or an explicit wide-to-long
 Fold. Every series must contain the same ordered dimensions exactly once. Values
 are used as supplied; the facade does not infer normalization. [Polar positions](../../api/position-encodings.md#polar-positions)
+
+
+## `editRadarPlot`
+
+**API layer:** user-facing. **Authoring roles:** H1, H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+editRadarPlot(options: EditRadarPlotOptions): ChartProgram;
+```
+
+Named option contracts: [`EditRadarPlotOptions`](./../types.md#type-editradarplotoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `wide` | Required | `{ fields: readonly [string, string, ...string[]]; }` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```js
+editRadarPlot({ target?, wide: { fields } })
+```
+
+Edit the dimensions and their angular order in an existing wide Radar plot. `fields` must contain
+at least two distinct numeric source fields. Omit `target` only when the current or sole wide Radar
+plot identifies the owner unambiguously. Long-form Radar plots are outside this editor's scope.
+
+The action updates the owned fold, angular domain, radial geometry and closed paths together.
+Series grouping, color, line appearance, coordinate and guide styles are preserved. Automatic radial
+domains are recalculated; explicit radial domains remain unchanged. Angular labels and grid values
+follow the revised dimension order, preserving valid explicit subsets.
+
+```js
+// Fragment: program already contains a wide Radar named "radar" and these source columns.
+const revised = program.editRadarPlot({
+  target: "radar",
+  wide: { fields: ["quality", "speed", "cost"] }
+});
+```
+
+Missing, duplicate or nonnumeric fields and incompatible targets reject without changing the
+previous program. Editing dimensions does not normalize values: compare columns with compatible units.
 
 
 ## `createRugPlot`
@@ -3302,7 +3373,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `density` | Optional / branch-dependent | `false \| RaincloudDensityOptions \| undefined` |
 | `summary` | Optional / branch-dependent | `false \| RaincloudSummaryOptions \| undefined` |
 | `points` | Optional / branch-dependent | `false \| RaincloudPointsOptions \| undefined` |
-| `color` | Optional / branch-dependent | `LineCategoricalColorChannel<NonPointCategoricalColorScaleOptions> \| undefined` |
+| `color` | Optional / branch-dependent | `false \| RaincloudColorChannel \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| CartesianCategoricalPointGuideOptions \| undefined` |
 
 </details>
@@ -3317,7 +3388,8 @@ Create a shared-source distribution composite from an optional half Violin,
 Box or Interval summary, and Strip or Beeswarm raw points. Defaults are vertical,
 `side: "before"`, Box summary, and Beeswarm points. Stable Cloud/Summary/Points
 children share role scales; summary and points use a replayable band-relative slot
-offset on the side opposite the density.
+offset on the side opposite the density. `color` accepts its category field or
+a fixed `{ value: "#345678" }`; every enabled component receives that color.
 
 
 ## `editRaincloudPlot`
@@ -3348,7 +3420,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `density` | Optional / branch-dependent | `false \| RaincloudDensityOptions \| undefined` |
 | `summary` | Optional / branch-dependent | `false \| RaincloudSummaryOptions \| undefined` |
 | `points` | Optional / branch-dependent | `false \| RaincloudPointsOptions \| undefined` |
-| `color` | Optional / branch-dependent | `false \| LineCategoricalColorChannel<NonPointCategoricalColorScaleOptions> \| undefined` |
+| `color` | Optional / branch-dependent | `false \| RaincloudColorChannel \| undefined` |
 
 </details>
 
@@ -3361,6 +3433,17 @@ editRaincloudPlot({ target?, data?, category?, value?, orientation?, side?, dens
 Atomically revise one Raincloud's shared source, roles, orientation, side, and
 component modes while preserving its parent and child IDs. Use `false` to disable
 an optional component or remove color; at least one component must remain enabled.
+Existing statistical references and their labels retain their identities, definitions,
+and styles, recompute from the revised source, and remain above the rebuilt components.
+Their measure axis follows orientation changes; if their original component is disabled,
+they bind to the remaining parent owner.
+When changing category without specifying color, an existing category-driven color
+follows the new field. Explicit color requests and fixed colors remain unchanged.
+An explicit parent ID also accepts `encodeColor({ target: parentId, ... })` and
+observation-field `filterMarks({ target: parentId, ... })`. Parent filtering
+recomputes density, summary, and raw points from one retained population;
+child-ID filters remain display-only. Parent filters support replace, compose,
+and removal, and require observations suitable for the enabled statistics.
 
 
 ## `createBarPlot`
@@ -3382,6 +3465,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
@@ -3398,11 +3482,12 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createBarPlot({ id?, data?, coordinate?, orientation?, x, y, color?, width?, bar?, guides? })
+createBarPlot({ id?, data?, coordinate?, orientation?, x, y, color?, width?, bar?, missing?, guides? })
 ```
 
-Create categorical or temporal bars with quantitative measures; use `color.layout` for grouped or stacked partitions, not top-level `stack`/`groupBy`; width defaults to 0.72 of the slot and guides are inferred unless disabled.
+Create categorical, temporal or binned bars with quantitative measures; bin rectangles fill their complete intervals, while category bars default to 0.72 of the slot. Use `color.layout` for grouped or stacked partitions; guides are inferred unless disabled.
 A channel may instead specify `{ lower, upper, scale? }` for raw interval bars without aggregation.
+Binned quantitative X with an explicit Y aggregate creates interval-width bars per bin and series; use `color.layout` or `layoutSeries` for overlay, stack, fill or group. Empty bins retain their interval gaps.
 Two raw numeric positions preserve each input row and numeric center spacing.
 Their orientation defaults to vertical (or follows the range channel); use
 `orientation: "horizontal"` for horizontal numeric bars. Their width defaults to
