@@ -1280,7 +1280,7 @@ belong only to the previous mode before validating the final definition.
 createPointMark({ clip?, id?, data?, missing?, shape?, fill?, opacity?, stroke?, strokeWidth? } = {})
 ```
 
-Create a semantic point mark with one of 12 equal-area shape realizations.
+Create a point mark using fourteen named shapes or polygons with area/radius normalization.
 `stroke: false` disables the outline and its width at creation. [Marks](../api/marks.md)
 
 ### `editPointMark`
@@ -2198,7 +2198,7 @@ Semantic Polar radial position is unchanged.
 encodeSize({ field, target?, fieldType?, scale? })
 ```
 
-Encode or replace a quantitative field as equal-area point size. The automatic area range
+Encode point size as area; radius-normalized polygons use reference-circle area. The automatic area range
 is `[24, 196]`. Size scales support continuous `linear`, `log`, `sqrt`, and
 `pow` mappings plus discrete `quantize`, `quantile`, and `threshold` mappings.
 [Appearance encodings](../api/appearance.md)
@@ -2209,7 +2209,7 @@ is `[24, 196]`. Size scales support continuous `linear`, `log`, `sqrt`, and
 encodeShape({ field, target?, fieldType?, scale? })
 ```
 
-Encode or replace a nominal field with the shared 12-value point-shape vocabulary.
+Encode a nominal field as fourteen named shapes or polygons with area/radius normalization.
 Explicit ranges may repeat shapes; provide one entry per domain value. Automatic ranges remain distinct.
 [Appearance encodings](../api/appearance.md)
 

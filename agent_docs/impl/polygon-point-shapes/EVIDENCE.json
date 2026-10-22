@@ -129,7 +129,7 @@
     }
   ],
   "originalPrivateWitness": {
-    "workspace": "vegalite-ggaction-translation",
+    "workspace": "local translation workspace",
     "geometryProof": "tmp/total1500-1735-private-polygon-feasibility-v1/proof.json",
     "browserProof": "tmp/total1500-1735-original-root-dom-v1/proof.json",
     "rawRows": 406,

@@ -226,7 +226,7 @@ Evidence: `test/unit/grammar/stroke-style.test.js`, `test/unit/grammar/rounded-r
 
 ### Value coverage — `editPointMark`
 
-- ✅ Covered: inferred/explicit target, all 12 shapes, equal target area and nested rematerialization trace.
+- ✅ Covered: inferred/explicit target, fourteen named shapes and explicit area/radius polygons, preserved size intent and nested rematerialization trace.
 - ✅ Covered: missing/unknown/ambiguous target, invalid shape, field-driven shape conflict and immutable failure.
 - ✅ Covered: fill/opacity/stroke/strokeWidth validation and persistence across position rematerialization;
   field-driven color conflict.

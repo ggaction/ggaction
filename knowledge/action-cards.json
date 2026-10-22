@@ -5383,7 +5383,7 @@
       "name": "createPointMark",
       "layer": "user-facing",
       "domain": "marks",
-      "summary": "Create a semantic point mark with one of 12 equal-area shape realizations.",
+      "summary": "Create a point mark using fourteen named shapes or polygons with area/radius normalization.",
       "signature": "createPointMark(options?: StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: \"error\" | \"skip\"; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;",
       "intents": [
         "create point mark",
@@ -9961,7 +9961,7 @@
       "name": "encodeSize",
       "layer": "user-facing",
       "domain": "encodings",
-      "summary": "Encode or replace a quantitative field as equal-area point size.",
+      "summary": "Encode point size as area; radius-normalized polygons use reference-circle area.",
       "signature": "encodeSize(options: SizeEncodingOptions): ChartProgram;",
       "intents": [
         "encode size",
@@ -10055,7 +10055,7 @@
       "name": "encodeShape",
       "layer": "user-facing",
       "domain": "encodings",
-      "summary": "Encode or replace a nominal field with the shared 12-value point-shape vocabulary.",
+      "summary": "Encode a nominal field as fourteen named shapes or polygons with area/radius normalization.",
       "signature": "encodeShape(options: ShapeEncodingOptions): ChartProgram;",
       "intents": [
         "encode shape",

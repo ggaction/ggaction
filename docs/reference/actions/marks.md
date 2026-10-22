@@ -48,7 +48,7 @@ The following call patterns are abbreviated examples; the declaration above owns
 createPointMark({ clip?, id?, data?, missing?, shape?, fill?, opacity?, stroke?, strokeWidth? } = {})
 ```
 
-Create a semantic point mark with one of 12 equal-area shape realizations.
+Create a point mark using fourteen named shapes or polygons with area/radius normalization.
 `stroke: false` disables the outline and its width at creation. [Marks](../../api/marks.md)
 
 

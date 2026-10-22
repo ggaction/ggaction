@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { mkdtemp, rm, writeFile } from "node:fs/promises";
+import { mkdtemp, rm, writeFile, readFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -59,4 +59,17 @@ void s;
     const result = spawnSync(process.execPath, [path.join(root, "node_modules/typescript/bin/tsc"), "--strict", "--noEmit", "--module", "NodeNext", "--moduleResolution", "NodeNext", "--target", "ES2022", "--skipLibCheck", file], { encoding: "utf8" });
     assert.equal(result.status, 0, result.stdout + result.stderr);
   } finally { await rm(directory, { recursive: true, force: true }); }
+});
+
+
+test("compact point cards retain polygon normalization in generated authoring guidance", async () => {
+  const cards = JSON.parse(await readFile(new URL("../../knowledge/action-cards.json", import.meta.url), "utf8")).cards;
+  for (const name of ["createPointMark", "encodeShape"]) {
+    const summary = cards.find(card => card.name === name).summary;
+    assert.match(summary, /fourteen/);
+    assert.match(summary, /polygon/);
+    assert.match(summary, /normalization/);
+    assert.doesNotMatch(summary, /12-value|one of 12/);
+  }
+  assert.match(cards.find(card => card.name === "encodeSize").summary, /reference-circle area/);
 });

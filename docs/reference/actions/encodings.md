@@ -398,7 +398,7 @@ The following call patterns are abbreviated examples; the declaration above owns
 encodeSize({ field, target?, fieldType?, scale? })
 ```
 
-Encode or replace a quantitative field as equal-area point size. The automatic area range
+Encode point size as area; radius-normalized polygons use reference-circle area. The automatic area range
 is `[24, 196]`. Size scales support continuous `linear`, `log`, `sqrt`, and
 `pow` mappings plus discrete `quantize`, `quantile`, and `threshold` mappings.
 [Appearance encodings](../../api/appearance.md)
@@ -436,7 +436,7 @@ The following call patterns are abbreviated examples; the declaration above owns
 encodeShape({ field, target?, fieldType?, scale? })
 ```
 
-Encode or replace a nominal field with the shared 12-value point-shape vocabulary.
+Encode a nominal field as fourteen named shapes or polygons with area/radius normalization.
 Explicit ranges may repeat shapes; provide one entry per domain value. Automatic ranges remain distinct.
 [Appearance encodings](../../api/appearance.md)
 

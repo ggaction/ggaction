@@ -1,0 +1,93 @@
+{
+  "status": "verified-source-neutral-authoring-guidance-correction",
+  "issue": 262,
+  "normalTotal": 5292,
+  "normalVerification": {
+    "allNormalLog": {
+      "path": ".artifacts/point-polygon-guidance-all-v1.log",
+      "sha256": "d2c367000b807531a2286cb15d5612c43c2419520f79a4c6f7fb08be13f731a3"
+    },
+    "passed": 5291,
+    "failed": 1,
+    "soleFailure": "Source-neutral verification-record workspace label, corrected to a neutral label. Runtime, numeric evidence and original private artifacts unchanged.",
+    "completeContractRerun": {
+      "path": ".artifacts/point-polygon-guidance-contracts-v2.log",
+      "sha256": "cc6a4314176644c9e741066c2d05ebb1f9ba8ca12ff438b023997a7827e3eb4c"
+    },
+    "contractRerunPassed": 624,
+    "completeDocumentationRerun": {
+      "path": ".artifacts/point-polygon-guidance-docs-v2.log",
+      "sha256": "547b8b58b744bad2d3a17c9516d0a7c8abce37d955fd8736005ba29345edc5ae"
+    },
+    "documentationRerunPassed": 121,
+    "effectiveFinalPassed": 5292
+  },
+  "checks": [
+    {
+      "suite": "normal-effective-final-inputs",
+      "passCount": 5292,
+      "failCount": 0
+    }
+  ],
+  "packageConsumerGroups": 69,
+  "packageConsumerLog": {
+    "path": ".artifacts/point-polygon-guidance-package-consumer-v1.log",
+    "sha256": "863f454b72bdd5d3ed3d8c0cf79559602064b5c04a9502feaf04a173d4b2e84c"
+  },
+  "packageConsumerArchiveSha256": "b66a1efd8bb3964083bd9f2b3b4cf5bc474330ee4542031a2f5e4e2b1baeaa6b",
+  "packageCheck": {
+    "path": ".artifacts/point-polygon-guidance-package-check-v1.log",
+    "sha256": "2379e9e25ff3eac450706e91ea11282623eb9ccf5d517b8442e874530e47616b"
+  },
+  "packageFiles": 613,
+  "packedBytes": 870863,
+  "unpackedBytes": 4189257,
+  "publicSearchIndexBytes": 850860,
+  "runtimeSourceAndDeclarationsUnchangedFrom87a0": true,
+  "browserEvidenceReusedUnchangedRuntime": {
+    "tests": 163,
+    "log": {
+      "path": ".artifacts/point-polygon-browser-v1.log",
+      "sha256": "c54e31980485188d4dcd431afa405d22a2194992f9eb39fa53dd4360f47315dd"
+    }
+  },
+  "browserBundles": {
+    "full": {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 544,
+      "minifiedBytes": 1593269,
+      "gzipBytes": 433179
+    },
+    "basic": {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 327,
+      "minifiedBytes": 776117,
+      "gzipBytes": 219107
+    },
+    "svg": {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 19,
+      "minifiedBytes": 23548,
+      "gzipBytes": 7567
+    }
+  },
+  "canonicalSummaryOwner": "docs/_sources/action-reference.md",
+  "correctedCards": [
+    "createPointMark",
+    "encodeShape",
+    "encodeSize"
+  ],
+  "newRegression": "test/contracts/polygon-point-shapes.test.js",
+  "retainedRejectedCandidate": "87a0a4cfba3310c573094621462bd63c10ec7f9d",
+  "rejectedCandidatePartialFamilies": 324,
+  "rejectedCandidatePartialDifferences": 0,
+  "rejectionBeforeModelCalls": true,
+  "schoolRequests": 0,
+  "translationRuntimeChanged": false,
+  "published": false,
+  "newFullCandidateCohortStillRequired": true,
+  "publicReleaseAt": 1350
+}

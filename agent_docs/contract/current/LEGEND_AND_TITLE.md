@@ -256,7 +256,7 @@ type TitleWrap = "word" | "character";
   - ✅ Covered: `"auto"`, line shorthand, swatch shorthand, layered line+point recipes.
   - ✅ Covered: schema-driven layer validation covers circle/rect/line/path dimensions, fill/stroke and unknown keys;
     representative composite recipes prove authored order without exhaustive recipe products.
-  - ✅ Covered: shared 12-shape point layers through the point-shape vocabulary.
+  - ✅ Covered: fourteen named and explicit simple polygon point layers through the shared point-shape grammar.
   - ✅ Covered: point-composite symbols in top/bottom item grids with shared anchors and declared layer order.
   - ✅ Covered: sequential-color gradient block and opacity sample points with auto/explicit recipe.
 - `labels`, `titleStyle`

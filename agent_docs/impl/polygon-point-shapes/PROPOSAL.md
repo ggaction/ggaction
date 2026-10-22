@@ -69,3 +69,11 @@ source1735는 기존 406행을 유지하고 원본 year filter와 missing-positi
 line100%/branch98.46%/function100%를 기록했다. 원본 1735의 private 수치 검증도
 29점/110vertex/3legend glyph를 확인했지만 전체 source qualification/실제 School
 번역은 아직 아니다. 기존 번역 runtime은 그대로이며 issue는1350공개까지 유지한다.
+
+## 모델 검색 카드 원천 보정
+
+후보 문서 검증이 canonical action-reference의 오래된12-shape 요약을 발견해
+후보87a0활성화를 거부했다. 이미324family/0difference였던 부분 cohort는 보존하고 중단했다.
+createPointMark/encodeShape/encodeSize의 원천 요약을 수정하고 compact-card 회귀 계약을 추가했다.
+Runtime/src/types는 그대로이며 GUIDANCE_CORRECTION.json이 실제 검증 범위를 기록한다.
+새 package/docs와 전체1334/9750cohort 검증이 끝나기 전에는 School을 호출하지 않는다.
