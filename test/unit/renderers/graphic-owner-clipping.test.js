@@ -3,7 +3,7 @@ import test from 'node:test';
 import {createHash} from 'node:crypto';
 import {inflateSync} from 'node:zlib';
 import {resolveConcreteGraphicBounds} from '../../../src/grammar/schemas/graphicBounds.js';
-import {createCanvas} from '@napi-rs/canvas';
+import {createCanvas,loadImage} from '@napi-rs/canvas';
 import {chart,render} from '../../../src/index.js';
 import {renderToSVG} from '../../../src/renderers/svg.js';
 import {renderToPNGBuffer} from '../../../src/renderers/png.js';
@@ -16,12 +16,13 @@ import {prepareIsolatedGlyphs} from '../../../src/renderers/canvas/isolated.js';
 import {resolveGraphicRenderTarget} from '../../../src/renderers/canvas/index.js';
 
 function rgba(p,ratio=1){const canvas=createCanvas(1,1);render(p,canvas.getContext('2d'),{pixelRatio:ratio});return canvas.getContext('2d').getImageData(0,0,canvas.width,canvas.height).data;}
+async function decodedPng(buffer){const image=await loadImage(buffer),canvas=createCanvas(image.width,image.height),context=canvas.getContext('2d');context.drawImage(image,0,0);return context.getImageData(0,0,image.width,image.height).data;}
 
 test('public point clip exactly matches independent existing viewport pixels and exports',async()=>{
   const control=clippingControl(chart),actual=control.editPointMark({target:'scatterPlot',clip:true}),primitive=clippingPrimitive(chart,control);
   for(const ratio of [1,2])assert.deepEqual(rgba(actual,ratio),rgba(primitive,ratio));
-  const png=await renderToPNGBuffer(actual),sha=createHash('sha256').update(png.buffer).digest('hex');
-  assert.equal(sha,'9338732bf3cc78c57b28b0f0c4faaebae4143bcf940ba2d3744c4b7c748b36b6');
+  const png=await renderToPNGBuffer(actual);
+  assert.deepEqual(await decodedPng(png.buffer),rgba(primitive));
   const svg=renderToSVG(actual,{resourceNamespace:'clipTest'});assert.equal((svg.match(/clip-path=/g)||[]).length,1);
   assert.match(svg,/<rect x="40" y="30" width="160" height="128"/);
   const pdf=await renderToPDFBuffer(actual);assert.equal(pdf.pages,1);assert.equal(pdf.buffer.subarray(0,5).toString(),'%PDF-');
@@ -35,9 +36,9 @@ test('public point clip exactly matches independent existing viewport pixels and
   assert.equal(inspection.flags.find(f=>f.reason==='outside-clip').count,2);assert.equal(inspection.visibleCandidates,6);
 });
 
-test('omitted or disabled clip retains the frozen pre-implementation control PNG and SVG',async()=>{
+test('omitted or disabled clip retains the frozen control SVG and exact decoded PNG pixels',async()=>{
   const control=clippingControl(chart),off=control.editPointMark({target:'scatterPlot',clip:false});
-  assert.equal(createHash('sha256').update((await renderToPNGBuffer(control)).buffer).digest('hex'),'1e864676bf6b7fc8ff35771d3ef790618a1c5912162bef4d8eef74fb670bf5e9');
+  assert.deepEqual(await decodedPng((await renderToPNGBuffer(control)).buffer),rgba(control));
   assert.equal(createHash('sha256').update(renderToSVG(control)).digest('hex'),'5ab2de406fcaea7ac6ec88884eef0ebdd6929ad497095b45be49fab6cdc027db');
   assert.equal(renderToSVG(off),renderToSVG(control));assert.deepEqual(rgba(off),rgba(control));
 });

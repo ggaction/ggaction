@@ -74,3 +74,5 @@ text, comments and raw-text bodies; the same owner serves fragment lookup and
 duplicate detection. Four controls retain rejection of genuine duplicates and
 exclude quoted/example attributes. All 125 documentation source tests and all
 150 built pages pass. Library source and the packaged runtime are unchanged.
+
+Linux normal CI found two clipping assertions tied to macOS-compressed PNG byte hashes. The independent same-run primitive/public pixel assertions already passed. PNG export is now decoded and compared exactly to that primitive/control, retaining the frozen SVG hash and all clip/PDF/restore assertions. This removes platform-specific compression identity from an image-content contract; no pixel tolerance is introduced.
