@@ -28,7 +28,7 @@ Do not close an issue merely because related preparation or a workaround exists.
 | #241 Support explicit unknown fallbacks for categorical stroke-dash scales | Implemented in the integrated candidate; close only after the matching public release is verified. |
 | #242 Fix Basic field encoding scale reassignment without exposing Full editors | Implemented in the integrated candidate; close only after the matching public release is verified. |
 | #243 Support bounded paths up to 30000 commands | Implemented in the integrated candidate; close only after the matching public release is verified. |
-| #244 Enhancement: explicit Steffen monotone recipe for faithful Vega-Lite curve translation | A separately named Steffen recipe remains unimplemented; existing monotone behavior is intentionally unchanged. |
+| #244 Enhancement: explicit Steffen monotone recipe for faithful source curve translation | A separately named Steffen recipe remains unimplemented; existing monotone behavior is intentionally unchanged. |
 | #245 Support explicit tick values for continuous gradient legends | Implemented in the integrated candidate; close only after the matching public release is verified. |
 | #246 Support quantitative color encodings on tick marks | Implemented in the integrated candidate; close only after the matching public release is verified. |
 | #247 Support explicit label-title overlap for Cartesian axis titles | Implemented in the integrated candidate; close only after the matching public release is verified. |

@@ -49,3 +49,10 @@ Final combined runtime verification: **5,490/5,490 normal tests** and the exact
 619-entry installed package consumer pass. The package was measured at 892 KB
 packed; no source/runtime changes followed those checks before this checkpoint.
 Generated provenance is refreshed in the following metadata-only commit.
+
+Dependency follow-up merges PR #252 by its exact Hono head. Compatible Vite 6.4.5 and ip-address 10.7.4 patches remove the two current development audit findings. Native platform metadata is preserved. Signature keyboard handling and its regression assertions were already incorporated by the independent branch; replaying cb27432a produces an empty cherry-pick, so no duplicate implementation commit is added. The 150-page built site and its keyboard/accessibility harness are verified as part of closeout.
+
+The dependency follow-up passes 163 browser tests, 10 MCP contract tests and
+261 renderer regressions. `npm audit` reports zero findings. The full normal
+suite above covers the unchanged library source. Native optional-package libc
+metadata is retained rather than dropped by package-manager normalization.
