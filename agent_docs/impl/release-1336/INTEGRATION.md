@@ -58,3 +58,11 @@ suite above covers the unchanged library source. Native optional-package libc
 metadata is retained rather than dropped by package-manager normalization.
 
 The first remote CI package/platform checks measure 893,861 packed bytes (local npm: 892,212). The explicit packed budget is adjusted to the next 1KB boundary, 894,000 bytes, covering the observed clean-checkout/package-manager variation. Entry and unpacked budgets are unchanged. No rendering or test tolerance is changed.
+
+Final branch refresh found 0384b927 (native Canvas transition scenes) after the original pinned scene revision. The human explicitly requested all applicable branches and approved in-scope decisions, and the branch architecture records the Canvas API approval. Reuse that scope to preserve semantic owner clips and nested fractional viewport coverage in the shared scene traversal. Canvas nodes add optional concrete `clips` frames; their existing `clip` intersection stays intact, and SVG scene shape stays unchanged. Caller-authored intermediate nodes without frames retain their single-clip fallback. Exact native pixel controls cover one and multiple nested Canvases, multiline titles and clipped marks at DPR 1/2; no tolerance is widened.
+
+The final refreshed branch integration passes **5,495/5,495 normal tests**, the
+26 focused scene/entry/type controls, and the official exact installed package
+consumer. The source-built package has 621 entries, 894,454 packed bytes and
+4,253,311 unpacked bytes locally. This includes the explicit clip-stack repair;
+no chart source, raw data, SVG baseline or numeric/pixel tolerance was altered.

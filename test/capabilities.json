@@ -435,6 +435,10 @@
       {
         "type": "file",
         "path": "unit/scene.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/canvas-scene.test.js"
       }
     ],
     "scales": [

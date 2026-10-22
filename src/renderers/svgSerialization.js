@@ -1,3 +1,4 @@
+import { collectTransitionGraphics } from "./transitionScene.js";
 import { isOwned } from "../core/immutable.js";
 import { validateGraphicClip } from "../grammar/schemas/graphicClip.js";
 import {
@@ -632,49 +633,11 @@ export function renderToSVG(program, options = {}) {
 
 // Internal adapter: only concrete graphics and opaque correspondence keys enter here.
 export function renderTransitionGraphics(graphicSpec, identities) {
-  const { id: root, object: canvas } = requireSingleOrderedGraphicByType(graphicSpec, "canvas");
-  const { width, height } = requireCanvasGeometry(root, canvas, { nested: false });
+  const scene = collectTransitionGraphics(graphicSpec, identities);
   const state = { definitions: [], gradientCount: 1, clipCount: 1,
     resourceNamespace: `scene-${resourceNamespace(graphicSpec)}` };
-  const nodes = [], stack = [{ x: 0, y: 0, clip: [0, 0, width, height] }];
-  const used = new Map();
-  const add = (id, graphic, suffix = "") => {
-    if (graphic.type === "collection") {
-      for (const [index, item] of (graphic.items ?? []).entries()) add(item.id ?? id, item, `${suffix}/${index}`);
-      return;
-    }
-    const frame = stack.at(-1);
-    const identity = identities.get(id);
-    const base = identity?.key ?? `graphic:${resourceNamespace({ id, suffix, graphic })}`;
-    const count = used.get(base) ?? 0; used.set(base, count + 1);
-    nodes.push({ key: `${base}#${count}`, type: graphic.type,
-      topology: identity?.topology ?? "",
-      svg: serializeConcreteGraphic(state, id, graphic),
-      offset: [frame.x, frame.y], clip: frame.clip });
-  };
-  const background = (id, object) => {
-    const p = object.properties;
-    if (p.background !== undefined) add(`${id}/background`, { type: "rect", properties: {
-      x: 0, y: 0, width: p.width, height: p.height, fill: p.background,
-      stroke: "none", strokeWidth: 0
-    } });
-  };
-  background(root, canvas);
-  walkGraphicTreeEvents(graphicSpec, {
-    enter({ id, object }) {
-      if (id === root) return;
-      if (object.type === "canvas") {
-        const p = requireCanvasGeometry(id, object, { nested: true }), parent = stack.at(-1);
-        const x = parent.x + p.x, y = parent.y + p.y;
-        const left = Math.max(x, parent.clip[0]), top = Math.max(y, parent.clip[1]);
-        stack.push({ x, y, clip: [left, top,
-          Math.max(0, Math.min(x + p.width, parent.clip[0] + parent.clip[2]) - left),
-          Math.max(0, Math.min(y + p.height, parent.clip[1] + parent.clip[3]) - top)] });
-        background(id, object);
-      } else if (object.type !== "collection" && !Array.isArray(object.items)) add(id, object);
-    },
-    item({ id, object, owner }) { add(id, { ...object, type: object.type ?? owner.type }); },
-    exit({ id, object }) { if (id !== root && object.type === "canvas") stack.pop(); }
-  });
-  return { version: 1, width, height, definitions: state.definitions.join(""), nodes };
+  const nodes = scene.nodes.map(({ properties, clips, ...node }) => ({ ...node,
+    svg: serializeConcreteGraphic(state, node.key, { type: node.type, properties }) }));
+  return { version: 1, width: scene.width, height: scene.height,
+    definitions: state.definitions.join(""), nodes };
 }

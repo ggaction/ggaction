@@ -409,8 +409,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Gzip ceiling |
 | --- | ---: |
-| `ggaction` | 447,000 bytes |
-| `ggaction/basic` | 230,000 bytes |
+| `ggaction` | 448,000 bytes |
+| `ggaction/basic` | 231,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 Nearest-step Cartesian tick policy와 저장 검증 추가 후 Node22 installed consumer 실측은
@@ -2816,3 +2816,19 @@ The release integration retains both independently developed action families and
 The extracted SVG serializer preserves concrete clipping, multiline text and default SVG output; the separate read-only scene entry reuses it. Named semantic layer lookup remains in the shared selector. Public declarations, current contracts, compact action data, documentation generation and tests describe the combined surface.
 
 Measured installed artifact before final documentation provenance:619entries,892139packed/4246020unpacked bytes; minimal ceilings619/893000/4247000. Installed full/basic/SVG browser consumers measured446832/229814/7567gzip bytes, so the next1000-byte full/basic ceilings are447000/230000 and SVG stays25000. Public search measured855807bytes and its next1000-byte ceiling is856000. These are measured feature costs, not new geometry tolerances or data limits. Exact final artifact and publication evidence remain required.
+### Canvas 전환 장면
+
+2026-10-22 사용자가 `createTransitionScene(program, {format: "canvas"})`와
+`renderTransitionScene(scene, context, {pixelRatio})` 공개 계약을 명시적으로 승인했다.
+기존 version 1 SVG 계약은 유지한다. Version 2는 동일한 불투명 correspondence key와
+순서·offset·clip을 갖고 SVG 대신 이미 materialize된 concrete properties를 보존한다.
+두 형식은 `renderers/transitionScene.js`의 순회 한 곳을 공유한다. Canvas adapter는
+이 장면을 temporary graphicSpec으로 배치해 기존 native renderer를 호출한다.
+시간·보간·중단은 별도 transition 패키지 책임이며 semanticSpec, action trace나 project
+저장 schema를 변경하지 않는다. 정확한 계약은 docs/api/rendering.md가 소유한다.
+
+Canvas 장면 shared traversal/adapter 2개로 package entry는597→599다. 실제 staged
+artifact는862828packed/4135439unpacked bytes로 이전862000/4131000한도를 초과했다.
+최소1000bytes 단위 ceiling인863000/4136000으로 갱신하며 이전 한도 통과를 주장하지 않는다.
+
+Final combined Canvas-scene integration measures621entries/894453packed/4253311unpacked bytes locally. Clean-runner npm/zlib variation was measured at1649 packed bytes and384 full-browser gzip bytes before this last scene addition. Explicit ceilings are621/897000/4254000 and448000/231000/25000 for Full/Basic/SVG gzip, retaining a sub1000-byte browser compression envelope. Search measures856486bytes, bounded at857000. Canvas scene traversal retains optional concrete clip frames in addition to their intersection, with shared native clip ancestors, preserving fractional coverage without renderer tolerance changes.

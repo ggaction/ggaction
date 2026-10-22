@@ -3675,6 +3675,20 @@
     "executable": false
   },
   {
+    "file": "api/rendering.md",
+    "block": 11,
+    "heading": "Canvas transition scenes",
+    "mode": "fragment",
+    "environment": "browser-module",
+    "receivers": [],
+    "resources": [
+      "data: \"data\""
+    ],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `data: \"data\"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "06acd16e1d625a1222324eb45e2bb43866b4bf4a398fd7d7f0378870b0238bce",
+    "executable": false
+  },
+  {
     "file": "api/scales.md",
     "block": 1,
     "heading": "At a glance",

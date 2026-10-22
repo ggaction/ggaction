@@ -1,3 +1,5 @@
+import { collectTransitionGraphics } from "./renderers/transitionScene.js";
+export { renderTransitionScene } from "./renderers/canvas/scene.js";
 import { renderTransitionGraphics } from "./renderers/svgSerialization.js";
 import { resolveMarkItems, findSelectionPolicy } from "./materialization/selection/policies/index.js";
 import { namespaceGraphicId } from "./selectors/graphicCapacity.js";
@@ -5,7 +7,7 @@ import { findLayer } from "./selectors/layers.js";
 import { findDataset } from "./selectors/datasets.js";
 import { cloneAndFreeze } from "./core/immutable.js";
 
-const scenes = new WeakMap();
+const scenes = new WeakMap(), canvasScenes = new WeakMap();
 function canonical(value) {
   if (value instanceof Date) return `date:${value.toISOString()}`;
   if (typeof value === "number" && !Number.isFinite(value)) return `number:${value}`;
@@ -76,10 +78,12 @@ function identities(program, project = id => id, scope = "", result = new Map())
 }
 
 /** Read-only, browser-safe, structured-cloneable scene for animation consumers. */
-export function createTransitionScene(program) {
+export function createTransitionScene(program, { format = "svg" } = {}) {
+  if (!["svg", "canvas"].includes(format)) throw new TypeError("Unknown transition scene format.");
+  const cache = format === "canvas" ? canvasScenes : scenes;
   if (!program?.semanticSpec || !program?.graphicSpec) throw new TypeError("createTransitionScene requires a ChartProgram.");
-  if (scenes.has(program)) return scenes.get(program);
-  const scene = cloneAndFreeze(renderTransitionGraphics(program.graphicSpec, identities(program)));
-  scenes.set(program, scene);
+  if (cache.has(program)) return cache.get(program);
+  const scene = cloneAndFreeze((format === "canvas" ? collectTransitionGraphics : renderTransitionGraphics)(program.graphicSpec, identities(program)));
+  cache.set(program, scene);
   return scene;
 }
