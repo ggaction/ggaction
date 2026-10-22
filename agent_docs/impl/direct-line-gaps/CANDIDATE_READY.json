@@ -1,0 +1,12 @@
+{
+  "status": "implementation-and-committed-docs-verified-awaiting-isolated-cohort",
+  "runtimeImplementationCommit": "c87e9d03e30fbeb9ebd259f425602bd018dbbacb",
+  "cleanSourceDocumentationTests": 121,
+  "documentationLog": ".artifacts/line-missing-committed-docs-suite.log",
+  "documentationLogSha256": "a9db8b95f5ee19e636c9b4fa947a5506f8f092ba06c9f4ca3286a0934cacb704",
+  "implementationEvidence": "agent_docs/impl/direct-line-gaps/EVIDENCE.json",
+  "translationRuntimeActivated": false,
+  "registryPublished": false,
+  "SchoolRequests": 0,
+  "regularReleaseAt": 1413
+}
