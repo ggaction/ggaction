@@ -2699,3 +2699,19 @@ Browser Full/Basic/SVG, coverage, 데이터, 수치·그림 오차 한도는 유
 
 같은 설치 검증의 실제 Full browser gzip425480bytes가 기존425000을480bytes 넘었다. 실제 consumer 실패를
 보존하고 Full cap만 최소다음1000byte 단계426000으로 보정한다. Basic214000/SVG25000과 기타 기준은 유지한다.
+
+### Content-bounds facet flow kernel checkpoint
+
+순수 `layout/facetContentFlow.js`는 전달된 cell bounds에서 독립 행/열 origin과
+shared footer의 마지막 논리 column owner 및 공통 trailing edge를 계산한다.
+아직 action/materialization에 연결하지 않았으므로 public API, canonical state,
+renderer와 기존 출력 경계는 바뀌지 않는다. 남은 연결과 native 측정 결정은
+`impl/facet-content-flow/PROPOSAL.md`가 기록하며 Current 지원으로 주장하지 않는다.
+
+새 pure module 하나 때문에 실제 package entry612가 기존611한도를 초과했다.
+이후 footer kernel의 actual packed869314bytes가 기존869000을 넘었다. 두 실패
+로그를 보존하고 entries612와 최소다음1000byte 단계 packed870000만 적용한다.
+Unpacked4183555bytes는 기존4191000이내라 그대로 유지한다. 이 수치는
+Node22.23.1/npm10.9.8의 로컬 staging 측정이며 공개 registry 설치나 Node24
+protected release 통과가 아니다. 번역에 설치된 candidate는 별도 검증과 활성화
+전까지 바꾸지 않는다.

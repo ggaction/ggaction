@@ -23,8 +23,8 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 611, // One shared direct-line missing-coordinate policy module.
-  packedBytes: 869_000, // Direct-line gaps measured868183bytes; minimal1000-byte rounding.
+  entries: 612, // One pure content-bounds facet flow calculation module.
+  packedBytes: 870_000, // Content flow measured869314bytes; minimal1000-byte rounding.
   unpackedBytes: 4_191_000 // Axis tick precision measured4190208bytes; minimal1000-byte rounding.
 });
 
