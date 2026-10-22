@@ -66,3 +66,11 @@ The final refreshed branch integration passes **5,495/5,495 normal tests**, the
 consumer. The source-built package has 621 entries, 894,454 packed bytes and
 4,253,311 unpacked bytes locally. This includes the explicit clip-stack repair;
 no chart source, raw data, SVG baseline or numeric/pixel tolerance was altered.
+
+Remote documentation verification found that the existing built-site ID regex
+counted escaped HTML in code examples as actual elements. The page has no real
+duplicate IDs. The checker now reads opening element attributes, ignoring code
+text, comments and raw-text bodies; the same owner serves fragment lookup and
+duplicate detection. Four controls retain rejection of genuine duplicates and
+exclude quoted/example attributes. All 125 documentation source tests and all
+150 built pages pass. Library source and the packaged runtime are unchanged.
