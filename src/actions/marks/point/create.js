@@ -48,8 +48,7 @@ export const createPointMark = /* @__PURE__ */ action(
         ? { data: inherited.data }
         : {})
     });
-    const shape = Object.hasOwn(args, "shape") ? args.shape : "circle";
-    validatePointShape(shape);
+    const shape = validatePointShape(Object.hasOwn(args, "shape") ? args.shape : "circle");
     const resolvedType = getPointGraphicType(shape);
     const graphicType = resolvedType === "path" ? "circle" : resolvedType;
 

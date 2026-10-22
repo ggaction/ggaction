@@ -2270,6 +2270,7 @@ export type ContinuousColorInterpolation =
   | "hcl-long"
   | "cubehelix"
   | "cubehelix-long";
+/** A simple polygon around its unchanged input origin; defaults to equal-area normalization. */
 ```
 
 </details>
@@ -9283,6 +9284,20 @@ export type PointPackingMaxOffset =
 
 </details>
 
+### `PointPolygonShape` {#type-pointpolygonshape}
+
+<details markdown="1">
+<summary>Expand PointPolygonShape</summary>
+
+```typescript
+export type PointPolygonShape = {
+  polygon: readonly { x: number; y: number }[];
+  normalization?: "area" | "radius";
+};
+```
+
+</details>
+
 ### `PointPositionScaleOptions` {#type-pointpositionscaleoptions}
 
 <details markdown="1">
@@ -9317,10 +9332,13 @@ export type PointShape =
   | "hexagon"
   | "wye"
   | "wedge"
-  | "arrow";
+  | "arrow"
+  | PointPolygonShape;
 ```
 
 </details>
+
+Related types: [`PointPolygonShape`](#type-pointpolygonshape).
 
 ### `PolarAxisTickSelection` {#type-polaraxistickselection}
 

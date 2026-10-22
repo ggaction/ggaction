@@ -354,6 +354,7 @@ export type {
   ParallelDimension,
   ParallelMissingPolicy,
   PointShape,
+  PointPolygonShape,
   PreGriddedHeatmapOptions,
   MarkSelector,
   MarkGraphicProperty,

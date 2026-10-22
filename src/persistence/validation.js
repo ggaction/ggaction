@@ -1,4 +1,5 @@
 import { validateGraphicClip } from "../grammar/schemas/graphicClip.js";
+import { validatePointShape } from "../grammar/pointShapes.js";
 import {deriveLookupRows,sameLookupValue} from "../grammar/lookup.js";
 import {deriveTransformSchema,datasetSchemaContext} from "../grammar/datasetSchema.js";
 import {orderedDatasetAncestors} from "../grammar/datasetDependencies.js";
@@ -465,6 +466,9 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
     requestedMarkClip(program.markConfigs[id]);
     validateMarkClipCoordinate(program, resources.get("mark").get(id), program.markConfigs[id].clip);
     if (!resources.get("mark").has(id)) throw invalidSnapshot(`Mark config "${id}" has no layer owner.`, path);
+    if (resources.get("mark").get(id).mark.type === "point" && program.markConfigs[id].shape !== undefined) {
+      validatePointShape(program.markConfigs[id].shape);
+    }
     if (resources.get("mark").get(id).mark.type === "area") {
       validateAreaPaintConfig(program.markConfigs[id]);
     }

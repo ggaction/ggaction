@@ -23,7 +23,10 @@ geometry with zero bandwidth. Marks, ticks, labels, and grids read the same
 resolved centers. Reversed explicit ranges are valid.
 
 Color ranges accept explicit colors or a named palette descriptor; stroke-dash
-ranges accept named styles and direct dash patterns.
+ranges accept named styles and direct dash patterns. Shape ranges and unknown fallbacks
+accept named shapes or [explicit simple polygons](../marks/point.md#explicit-polygon-shapes),
+including their area or radius normalization policy. Automatic shape ranges
+retain the fourteen named shapes; custom polygons require an explicit range.
 
 <!-- snippet-context:start -->
 

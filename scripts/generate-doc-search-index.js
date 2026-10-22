@@ -3,7 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { readDocChartCatalog } from "./doc-chart-catalog.js";
 
-export const SEARCH_INDEX_MAX_BYTES = 850_000; // Nearest-step tick documentation measured849318bytes; minimal1000-byte rounding.
+export const SEARCH_INDEX_MAX_BYTES = 851_000; // Explicit polygon documentation measured850818bytes; minimal1000-byte rounding.
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const docsRoot = path.join(root, "docs");

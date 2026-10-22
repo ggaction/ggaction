@@ -6,7 +6,13 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 type PointShape =
   | "circle" | "square" | "diamond"
   | "triangle-up" | "triangle-down" | "triangle-left" | "triangle-right"
-  | "plus" | "cross" | "star" | "hexagon" | "wye" | "wedge" | "arrow";
+  | "plus" | "cross" | "star" | "hexagon" | "wye" | "wedge" | "arrow"
+  | PointPolygonShape;
+
+type PointPolygonShape = {
+  polygon: readonly { x: number; y: number }[];
+  normalization?: "area" | "radius";
+};
 
 type CurveInterpolation =
   | "linear" | "step" | "step-before" | "step-after"
@@ -26,6 +32,22 @@ constant create/edit, encoded ranges and unknown fallbacks, legend glyphs, and h
 path input is added. The previous twelve automatic range entries keep their order, followed by wedge/arrow.
 Evidence: `test/contracts/directional-point-shapes.test.js` independently checks vertices/area/rotation,
 primitive-public PNG equality, SVG/PDF, Full/Basic persistence and Canvas replay.
+
+An explicit `PointPolygonShape` adds a simple closed polygon, not arbitrary path input. Only
+`polygon` and optional `normalization` are accepted; each vertex has exactly finite numeric `x/y`
+with magnitude at most 1,000,000. One repeated closing vertex is removed before the inclusive
+3–1,024-vertex limit. Empty/backtracking edges, crossing/overlapping/touching nonadjacent edges,
+and zero/nonfinite polygon area are errors; concave polygons and either winding are supported.
+The authored origin remains the anchor; coordinates are never recentered.
+
+Omitted normalization or `"area"` uses `sqrt(requestedArea/rawArea)`. Explicit `"radius"` uses
+`sqrt(requestedArea/PI)`: one input coordinate unit is a logical radius unit, and size then denotes
+reference-circle area rather than physical polygon area. Angle rotates clockwise about the same
+anchor. Constant create/edit, explicit shape range/unknown, legends, highlights, and editable replay
+share this grammar. The automatic range remains the fourteen named strings in its existing order.
+Per-layer custom-polygon materialization is limited to 10,000,000 path commands (vertices plus close),
+independently from the 50,000-point limit. Evidence: `test/unit/grammar/point-polygon.test.js`,
+`test/unit/actions/marks/polygon-point-shapes.test.js`, and `test/contracts/polygon-point-shapes.test.js`.
 
 Ordinary mark creation may omit `id` for the first mark of that semantic type. The library persists the
   deterministic role ID `"point" | "line" | "bar" | "area" | "arc" | "rule" | "tick" | "text"`. A second mark of the same type requires an
@@ -130,7 +152,7 @@ Evidence: `test/unit/grammar/stroke-style.test.js`, `test/unit/grammar/rounded-r
 - `id`: Implemented optional 새 layer/graphic ID. 첫 unnamed point는 `"point"`; 동일 type이 이미 있으면 required다.
 - `data`: Implemented, existing dataset ID. 생략하면 current data를 사용한다.
 - `shape`
-  - Status: Implemented. shared `PointShape` 14종, 기본값 `"circle"`.
+  - Status: Implemented. shared `PointShape` named 14종 또는 명시적 polygon, 기본값 `"circle"`.
   - Effect: semantic mark는 항상 `point`지만 concrete child는 circle, rect 또는 normalized path가 된다.
 - `fill`, `opacity`, `stroke`, `strokeWidth`: Implemented creation-time appearance shorthand. 각각
   `editPointMark`와 같은 validation/config persistence를 사용하며 wrapped `editPointMark`로 적용한다.
@@ -168,7 +190,7 @@ Evidence: `test/unit/grammar/stroke-style.test.js`, `test/unit/grammar/rounded-r
   - ✅ Covered: omission→`"point"`, current/explicit dataset, empty dataset, explicit multiple marks,
     second unnamed ambiguity, unknown data와 duplicate IDs.
 - `shape`
-  - ✅ Covered: 12-value vocabulary, omission→circle, equal-area normalized recipes and unknown rejection.
+  - ✅ Covered: fourteen named shapes and explicit simple polygons, omission→circle, area/radius normalization and unknown rejection.
 - `default radius`
   - ✅ Covered: complete Cartesian/Polar position→`3`, explicit radius와 field-driven size override,
     Canvas resize, immutable earlier program, Browser Canvas와 Node PNG.
@@ -183,7 +205,7 @@ Evidence: `test/unit/grammar/stroke-style.test.js`, `test/unit/grammar/rounded-r
 - Signature: `editPointMark({ clip?, target?, shape?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? })`.
 - `target`은 existing point mark다. current compatible mark 또는 유일한 point mark로 infer하며
   ambiguity는 explicit target을 요구한다.
-- `shape`은 shared `PointShape` 14종 중 하나다. Field-driven `encodeShape`가 있으면 constant shape
+- `shape`은 shared `PointShape` named 14종 또는 명시적 단순 polygon이다. Field-driven `encodeShape`가 있으면 constant shape
   edit와 충돌하므로 오류다.
 - `fill`은 non-empty color string이며 field-driven `encodeColor`가 있으면 충돌하므로 오류다.
 - `opacity`는 `[0, 1]`, `stroke`는 non-empty color string 또는 edit-time `false`, `strokeWidth`는 non-negative
@@ -193,7 +215,7 @@ Evidence: `test/unit/grammar/stroke-style.test.js`, `test/unit/grammar/rounded-r
 - Scalar opacity conflicts with active field opacity; use `encodeOpacity({ value })` for explicit replacement.
 - 최소 한 appearance property가 필요하며 omitted properties는 기존 stored config를 보존한다.
 - Effect: mark materialization config를 갱신하고 wrapped `rematerializePointMark`로 concrete items를
-  equal-area circle, rect 또는 path recipe로 교체한다. Semantic mark/data/encoding은 바꾸지 않는다.
+  circle, rect 또는 area/radius-normalized path recipe로 교체한다. Semantic mark/data/encoding은 바꾸지 않는다.
 
 ### Formal values — `editPointMark`
 

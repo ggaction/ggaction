@@ -82,6 +82,7 @@ export const CRITICAL_COVERAGE_OVERRIDES = Object.freeze({
   "accessibility.js": Object.freeze({ lines: 95, branches: 85, functions: 100 }),
   "persistence.js": Object.freeze({ lines: 90, branches: 80, functions: 100 }),
   "grammar/positionDatum.js": Object.freeze({ lines: 95, branches: 90, functions: 100 }),
+  "grammar/pointPolygon.js": Object.freeze({ lines: 95, branches: 85, functions: 100 }),
   "grammar/markLabels.js": Object.freeze({ lines: 95, branches: 85, functions: 100 }),
   "actions/guides/legends/transition.js": Object.freeze({ lines: 95, branches: 85, functions: 100 }),
   "layout/guideCollisions.js": Object.freeze({ lines: 95, branches: 85, functions: 100 }),

@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.21.
 
-Contract: sha256:70906e55c7e7859658e84efe78c59096917c03f13d78d88aea14313ffa1a009b. Status: development. Runtime source: a6001908154491117d92bb4cdbdd02abdff56188. Release baseline: v0.0.13.
+Contract: sha256:4035a303c3d4391ab0398256ecaddd191d7eff5cd7826b1de0624fee73c2786d. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/a6001908154491117d92bb4cdbdd02abdff56188/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/a6001908154491117d92bb4cdbdd02abdff56188/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -6133,8 +6133,8 @@ const diamonds = program.editPointMark({
 
 `target` may be omitted for the current or only point mark. Supported shapes
 are `circle`, `square`, `diamond`, four directional triangles, `plus`, `cross`,
-`star`, `hexagon`, `wye`, `wedge`, and `arrow`. Every recipe preserves the same logical target
-area. `wedge` is a narrow upward triangle centered at its centroid; `arrow` is an upward
+`star`, `hexagon`, `wye`, `wedge`, and `arrow`, or an explicit simple polygon
+described below. Named recipes preserve the same logical target area. `wedge` is a narrow upward triangle centered at its centroid; `arrow` is an upward
 seven-vertex arrow anchored at its bounding-box center. Angle encodings rotate either clockwise around
 that anchor. A constant shape conflicts with field-driven `encodeShape`, and constant
 fill conflicts with a semantic color encoding.
@@ -6147,6 +6147,41 @@ The cap, join, and miter options follow the shared
 [Mark Style](./api/appearance/mark-style/#stroke-caps-joins-and-rounded-rectangles)
 contract. They are retained even though a circular glyph has no visible cap or
 corner, so a later shape or stroke replay does not discard authored style.
+
+## Explicit polygon shapes
+
+Pass `{ polygon: [{ x, y }, ...], normalization? }` wherever a point shape is
+accepted: constant creation/editing, scatter `point.shape`, shape scale
+`range` or `unknown`, and highlights. The same glyph geometry is used in legends.
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+const triangle = {
+  polygon: [{ x: -1.5, y: -1.5 }, { x: 1.5, y: -1.5 }, { x: 0, y: 1.5 }]
+};
+const customPoints = program.editPointMark({ shape: triangle });
+```
+
+The input origin `(0, 0)` remains the point anchor. Default `normalization:
+"area"` scales vertices by `sqrt(area / polygonArea)` and preserves the requested
+physical area. Choose `normalization: "radius"` to scale each coordinate by
+`sqrt(area / PI)` instead. With `encodePointRadius({ value: 2 })`, one input unit
+then equals two logical pixels; a square from −1 to 1 has side length 4.
+In radius mode, `encodeSize` values describe reference-circle area, so different
+polygons can have different physical areas for the same value. Angle rotates
+clockwise about the authored origin in either mode.
+
+A shape has 3–1,024 vertices after removing one repeated closing vertex.
+Coordinates must be finite numbers with magnitude at most 1,000,000. Only
+`polygon` and `normalization` are accepted on the shape, and only `x` and `y` on
+each vertex. Concave shapes and either winding work; zero-area polygons,
+zero-length or backtracking edges, crossing, overlap, and nonadjacent touching
+are rejected. SVG strings, curves, and holes are unsupported. A point layer's
+custom polygons may generate at most 10,000,000 path commands, including each
+closing command, independently of its point-count limit. Polygon highlight
+replacement checks the resulting selected paths plus retained paths before
+allocating the new geometry.
 
 ## Directional shapes and area {#directional-shapes-and-area}
 
@@ -11441,7 +11476,9 @@ field. Its scale supports `linear`, `log`, `sqrt`, `pow`, `quantize`, `quantile`
 and `threshold`. Every range value is an area in square logical pixels; the
 automatic continuous range is `[24, 196]`. Circles use `sqrt(area / PI)` as
 radius and squares use `sqrt(area)` as side length, so the shapes represent
-equal visual area.
+equal visual area. Explicit polygons use the same area normalization by default;
+[`normalization: "radius"`](./api/marks/point/#explicit-polygon-shapes) instead
+interprets size as reference-circle area.
 
 Logarithmic size scales require positive values and use base 10 unless `base`
 is supplied. Square-root and power scales require non-negative values; power
@@ -11451,11 +11488,13 @@ and require one more area than cuts. Discrete size legends show every interval
 and therefore reject an explicit sample `count`.
 
 `encodeShape({ field, target?, fieldType?, scale? })` requires a nominal field.
-Its ordinal scale accepts the 12 shared point shapes documented under
-[Marks](./api/marks/). The automatic range uses each shape once and rejects more
-than 12 distinct categories rather than silently repeating symbols. Explicit
-ranges must contain unique supported shapes. Mixed circle, rect, and Z-closed path
-symbols are stored as typed items in one graphical collection.
+Its ordinal scale accepts the fourteen named point shapes and explicit simple
+polygons documented under [Point marks](./api/marks/point/). The automatic range
+uses each named shape once and rejects more than fourteen categories. Explicit
+ranges may repeat supported shapes deliberately and must cover the domain;
+there is no implicit cycling. Explicit `unknown` accepts a named or polygon
+fallback without adding it to the domain or legend. Mixed circle, rect, and
+closed-path symbols are stored as typed items in one graphical collection.
 
 `encodeOpacity` accepts exactly one of `value` or `field`. A constant value from
 `0` to `1` is graphical. A quantitative field creates semantic opacity and a
@@ -12084,7 +12123,10 @@ geometry with zero bandwidth. Marks, ticks, labels, and grids read the same
 resolved centers. Reversed explicit ranges are valid.
 
 Color ranges accept explicit colors or a named palette descriptor; stroke-dash
-ranges accept named styles and direct dash patterns.
+ranges accept named styles and direct dash patterns. Shape ranges and unknown fallbacks
+accept named shapes or [explicit simple polygons](./api/marks/point/#explicit-polygon-shapes),
+including their area or radius normalization policy. Automatic shape ranges
+retain the fourteen named shapes; custom polygons require an explicit range.
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
@@ -30068,6 +30110,7 @@ export type ContinuousColorInterpolation =
   | "hcl-long"
   | "cubehelix"
   | "cubehelix-long";
+/** A simple polygon around its unchanged input origin; defaults to equal-area normalization. */
 ```
 
 ### `ContinuousColorScaleOptions` {#type-continuouscolorscaleoptions}
@@ -35987,6 +36030,17 @@ export type PointPackingMaxOffset =
   | { pixels?: never; band: number };
 ```
 
+### `PointPolygonShape` {#type-pointpolygonshape}
+
+ Expand PointPolygonShape
+
+```typescript
+export type PointPolygonShape = {
+  polygon: readonly { x: number; y: number }[];
+  normalization?: "area" | "radius";
+};
+```
+
 ### `PointPositionScaleOptions` {#type-pointpositionscaleoptions}
 
  Expand PointPositionScaleOptions
@@ -36017,8 +36071,11 @@ export type PointShape =
   | "hexagon"
   | "wye"
   | "wedge"
-  | "arrow";
+  | "arrow"
+  | PointPolygonShape;
 ```
+
+Related types: [`PointPolygonShape`](./reference/types/#type-pointpolygonshape).
 
 ### `PolarAxisTickSelection` {#type-polaraxistickselection}
 
@@ -39183,12 +39240,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/a6001908154491117d92bb4cdbdd02abdff56188/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/a6001908154491117d92bb4cdbdd02abdff56188/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -41689,9 +41746,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:70906e55c7e7859658e84efe78c59096917c03f13d78d88aea14313ffa1a009b` |
+| Contract fingerprint | `sha256:4035a303c3d4391ab0398256ecaddd191d7eff5cd7826b1de0624fee73c2786d` |
 | Example and dataset source | `0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e` |
-| Runtime source commit | `a6001908154491117d92bb4cdbdd02abdff56188` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 290 |
 | Declared actions in that release | 234 |

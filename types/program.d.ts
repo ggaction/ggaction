@@ -1185,6 +1185,11 @@ export type ContinuousColorInterpolation =
   | "hcl-long"
   | "cubehelix"
   | "cubehelix-long";
+/** A simple polygon around its unchanged input origin; defaults to equal-area normalization. */
+export type PointPolygonShape = {
+  polygon: readonly { x: number; y: number }[];
+  normalization?: "area" | "radius";
+};
 export type PointShape =
   | "circle"
   | "square"
@@ -1199,7 +1204,8 @@ export type PointShape =
   | "hexagon"
   | "wye"
   | "wedge"
-  | "arrow";
+  | "arrow"
+  | PointPolygonShape;
 export type StrokeStyleDetails = {
   lineCap?: "butt" | "round" | "square";
   lineJoin?: "miter" | "round" | "bevel";

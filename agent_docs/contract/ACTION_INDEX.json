@@ -1683,7 +1683,7 @@
       "domain": "encodings",
       "status": "implemented",
       "lifecycle": "Assignment",
-      "update": "Assign an ordinal field to fourteen named equal-area point shapes, including wedge and arrow",
+      "update": "Assign an ordinal field to fourteen named point shapes or explicit simple polygons with area or radius normalization",
       "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",

@@ -1347,7 +1347,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 - Signature: `encodeShape({ field, target?, fieldType?, scale? })`
 - `field`, `target`, `fieldType`: nominal field, optional point ID, nominal-only type다.
-- `scale`: ordinal shape scale. Shared `PointShape` 14종을 non-repeating automatic range로 사용한다. Explicit range는 category별 shape entry를 제공하며 의도적인 shape 재사용을 허용한다. Domain보다 짧은 range는 오류이고 암묵적 cycling은 하지 않는다.
+- `scale`: ordinal shape scale. Shared `PointShape` 14종을 non-repeating automatic range로 사용한다. Explicit range/unknown은 named shape 또는 MARKS.md의 단순 polygon을 받으며 normalization도 보존한다. Explicit range는 category별 shape entry를 제공하며 의도적인 shape 재사용을 허용한다. Domain보다 짧은 range는 오류이고 암묵적 cycling은 하지 않는다.
 - Effect: point graphic을 heterogeneous collection으로 바꾸고 각 datum의 concrete primitive type과
   legend symbol을 rematerialize한다.
 - Coverage: regression scatterplot과 point/legend tests가 circle/square mapping을 검증한다.
@@ -1364,8 +1364,8 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - `field`, `target`, `fieldType`
   - ✅ Covered: nominal point field와 invalid alternatives.
 - `scale.domain/range`
-  - ✅ Covered: automatic and explicit 12-shape range, supported-value validation, explicit repeated assignments, capacity error and heterogeneous output.
-  - ✅ Covered: equal-area mark/legend recipes and Canvas path-ready concrete geometry.
+  - ✅ Covered: fourteen-name automatic and explicit named/polygon range, supported-value validation, explicit repeated assignments, capacity error and heterogeneous output.
+  - ✅ Covered: named equal-area and explicit polygon area/radius mark/legend recipes, unknown fallback, and concrete closed paths.
 - Evidence: point appearance, mark-schema and regression chart/guide tests.
 
 ## `encodeAngle`

@@ -4,8 +4,8 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:70906e55c7e7859658e84efe78c59096917c03f13d78d88aea14313ffa1a009b",
-    "sourceCommit": "a6001908154491117d92bb4cdbdd02abdff56188",
+    "contractId": "sha256:4035a303c3d4391ab0398256ecaddd191d7eff5cd7826b1de0624fee73c2786d",
+    "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -64,8 +64,8 @@
         "what-the-server-does-not-provide",
         "related"
       ],
-      "bytes": 11096,
-      "sha256": "f11ef9342f717239f93bd17dbd76ba79bfd3d93c2671497158a531e8f81edb5a"
+      "bytes": 11024,
+      "sha256": "6bdaaf83602079838ed4e8e8cf79f407175a15015615e1395f13e6104e01920a"
     },
     {
       "order": 4,
@@ -910,14 +910,15 @@
         "point-marks",
         "createpointmark-id-data-missing-shape-fill-opacity-stroke-strokewidth-linecap-linejoin-miterlimit",
         "editpointmark-target-shape-fill-opacity-stroke-strokewidth-linecap-linejoin-miterlimit",
+        "explicit-polygon-shapes",
         "directional-shapes-and-area",
         "jitterpoints-target-channel-maxoffset-seed-key",
         "removejitter-target",
         "continue-with-encodings",
         "errors-and-limitations"
       ],
-      "bytes": 7891,
-      "sha256": "6c5743864b1d2fdf6dce86c178c36332d85e5d55645b69825dbdf65275a1b314"
+      "bytes": 9960,
+      "sha256": "af8c70f0fd968916eab6bcd05512ec1526ab0074f4b97115453dd3a0ac38d8df"
     },
     {
       "order": 58,
@@ -1439,8 +1440,8 @@
         "point-field-encodings",
         "related"
       ],
-      "bytes": 4629,
-      "sha256": "acd857048c7dbc8d724803a27cb03e60329f1e7a474a306b1ba06d935875057e"
+      "bytes": 4979,
+      "sha256": "a5872677e536fd0cdc0080cf87750e4a654769ffb9da742ca3c4a596383b4d4d"
     },
     {
       "order": 87,
@@ -1504,8 +1505,8 @@
         "categories-outside-a-fixed-domain",
         "related"
       ],
-      "bytes": 3334,
-      "sha256": "47b4b68275a02fc60d98575ae920633209a1e60c1cf8fa23a6617701265da79e"
+      "bytes": 3617,
+      "sha256": "0a89cc69831b50cd6d870e18398ad32e937f11099010eee02cf30296c57d890c"
     },
     {
       "order": 91,
@@ -2858,6 +2859,7 @@
         "type-pieradiuschannel",
         "type-pointfacadepositionchannel",
         "type-pointpackingmaxoffset",
+        "type-pointpolygonshape",
         "type-pointpositionscaleoptions",
         "type-pointshape",
         "type-polaraxistickselection",
@@ -3042,8 +3044,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 352393,
-      "sha256": "6bc58d99a8639a88d477d610088a59f6930fd4c5fa07888eb9599a1c7cb1a280"
+      "bytes": 352813,
+      "sha256": "e77b8ba2d26b669358370dc9f083c86de9bab9a8ccb8909df8c889a81cdb9bf5"
     },
     {
       "order": 127,
@@ -3075,8 +3077,8 @@
         "clip-a-named-graphic-owner",
         "scale-materialization"
       ],
-      "bytes": 19022,
-      "sha256": "8d9845b113f7ebaf14c80ad785ca236aceb766298e8f77b9a0bcb51a443701bb"
+      "bytes": 18950,
+      "sha256": "9f4dface42ad85d51435341bf7599d7bc74c9adb44c36c67225dcd90f3d5be55"
     },
     {
       "order": 129,
@@ -3404,8 +3406,8 @@
         "choose-the-matching-documentation",
         "migration-from-v0013"
       ],
-      "bytes": 3033,
-      "sha256": "3c5672fab02f24bd59da0aeb5509763ca48d81d7f6bac5a07631993486ed71d0"
+      "bytes": 3000,
+      "sha256": "eebd2fae9cc4fb2da8fcfd8e91a0ae2124d012e7c1115e3b86d8ae63490ed9ed"
     },
     {
       "order": 150,

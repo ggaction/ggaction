@@ -1,0 +1,156 @@
+{
+  "status": "verified-unreleased-feature-checkpoint-awaiting-runtime-adoption",
+  "issue": 262,
+  "verifiedAt": "2026-10-22T19:23:35.358933+00:00",
+  "approval": "Existing explicit human approval covers past and future in-scope chart/library API decisions; numerical original/path evidence follows the no-image-inspection instruction.",
+  "normalTotal": 5291,
+  "browserTests": 163,
+  "focusedFeatureTests": 15,
+  "checks": [
+    {
+      "suite": "all-normal",
+      "passCount": 5291,
+      "failCount": 0,
+      "log": {
+        "path": ".artifacts/point-polygon-all-v3.log",
+        "sha256": "62b7fc54be9214b9dcdbd5ac40dd9b4496a2b43572efb1111358bf61f1bd8279"
+      }
+    },
+    {
+      "suite": "browser",
+      "passCount": 163,
+      "failCount": 0,
+      "log": {
+        "path": ".artifacts/point-polygon-browser-v1.log",
+        "sha256": "c54e31980485188d4dcd431afa405d22a2194992f9eb39fa53dd4360f47315dd"
+      }
+    },
+    {
+      "suite": "focused-shape-and-action-coverage",
+      "passCount": 13,
+      "failCount": 0,
+      "log": {
+        "path": ".artifacts/point-polygon-focused-coverage-v2.log",
+        "sha256": "62c7b5ce67ada08045ffcbd223b1140b86c2100caa3f03052adaa3b897a2b04b"
+      }
+    },
+    {
+      "suite": "independent-concrete-output-and-strict-declarations",
+      "passCount": 2,
+      "failCount": 0,
+      "log": {
+        "path": ".artifacts/point-polygon-concrete-and-types-final-v1.log",
+        "sha256": "975b7676c1e98d77f93c153b88243f5f502bac0ef03d288e1bf022524f1756bd"
+      }
+    }
+  ],
+  "overlappingSuiteCountsNotSummed": true,
+  "newGrammarCoverage": {
+    "module": "src/grammar/pointPolygon.js",
+    "lines": 100,
+    "branches": 98.46,
+    "functions": 100,
+    "enforcedFloors": {
+      "lines": 95,
+      "branches": 85,
+      "functions": 100
+    }
+  },
+  "packageConsumerGroups": 69,
+  "packageConsumerLog": {
+    "path": ".artifacts/point-polygon-package-consumer-v3.log",
+    "sha256": "20e3640822289e91909f9b62b40a4f5ab3c76f00a4f9cb593d4b3c5a317295df"
+  },
+  "installedConsumerFeatureCases": [
+    "Full/Basic constant polygons in area and radius modes",
+    "Explicit encoded range/unknown and legends",
+    "PNG/PDF and editable persistence",
+    "Full/Basic exported polygon declarations and negative normalization types"
+  ],
+  "packageConsumerArchiveSha256": "6a8eeea1848fc01e633d58029009354ea2fbdcf889ad0867471cd57efd182c3e",
+  "browserBundles": {
+    "full": {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 544,
+      "minifiedBytes": 1593269,
+      "gzipBytes": 433179
+    },
+    "basic": {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 327,
+      "minifiedBytes": 776117,
+      "gzipBytes": 219107
+    },
+    "svg": {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 19,
+      "minifiedBytes": 23548,
+      "gzipBytes": 7567
+    }
+  },
+  "finalPackageCheck": {
+    "path": ".artifacts/point-polygon-package-final-v1.log",
+    "sha256": "f65aa58d398314c7803379f3ead554caceb6341493cdef1b362949e794efa59d"
+  },
+  "packageFiles": 613,
+  "packedBytes": 870827,
+  "unpackedBytes": 4189215,
+  "packageBudgets": {
+    "entries": 613,
+    "packedBytes": 871000,
+    "unpackedBytes": 4191000
+  },
+  "browserGzipBudgets": {
+    "ggaction": 434000,
+    "ggaction/basic": 220000,
+    "ggaction/svg": 25000
+  },
+  "publicSearchIndexBytes": 850818,
+  "publicSearchIndexBudget": 851000,
+  "actualBudgetFailureLogs": [
+    {
+      "path": ".artifacts/point-polygon-package-initial-v1.log",
+      "sha256": "7f6a3e4387567a55568099815734629485082e7ebce019801744c2bba4fb68de"
+    },
+    {
+      "path": ".artifacts/point-polygon-package-entry613-v1.log",
+      "sha256": "5113bc938be08ea5ad7173b523453f6a40794448a916aceed9ec24bf49de0c2d"
+    },
+    {
+      "path": ".artifacts/point-polygon-package-consumer-v1.log",
+      "sha256": "18311e94703d59bba89f0ac497e149ca3d273a20957740df70185c145b1abdaa"
+    },
+    {
+      "path": ".artifacts/point-polygon-docs-v2.log",
+      "sha256": "16857cd96a2c3ffad7de22d06337056bdddb9973fa44111ed0c8523724353725"
+    }
+  ],
+  "originalPrivateWitness": {
+    "workspace": "vegalite-ggaction-translation",
+    "geometryProof": "tmp/total1500-1735-private-polygon-feasibility-v1/proof.json",
+    "browserProof": "tmp/total1500-1735-original-root-dom-v1/proof.json",
+    "rawRows": 406,
+    "yearRows": 35,
+    "eligiblePoints": 29,
+    "markVertices": 110,
+    "legendShapes": 3,
+    "admitted": false,
+    "SchoolRequests": 0,
+    "fullSourceQualification": false
+  },
+  "noManualImageReview": true,
+  "namedAutomaticVocabularyUnchanged": true,
+  "renderersUnchanged": true,
+  "numericAndPixelTolerancePoliciesUnchanged": true,
+  "translationRuntimeChanged": false,
+  "publicReleaseAt": 1350,
+  "published": false,
+  "pending": [
+    "Current1334family9750program source-exact candidate compatibility and matching documentation activation",
+    "Source1735 complete own source/normal/context qualification and actual model-authored stages",
+    "Synchronized package/dataset/viewer release at1350"
+  ]
+}

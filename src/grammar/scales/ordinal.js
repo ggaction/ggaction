@@ -1,6 +1,6 @@
-import { cloneAndFreeze } from "../../core/immutable.js";
+import { cloneAndFreeze, isPlainObject } from "../../core/immutable.js";
 import { isNominalValue } from "./fields.js";
-import { validateColorRange, validateStrokeDashRange } from "./appearance.js";
+import { validateColorRange, validateShapeRange, validateStrokeDashRange } from "./appearance.js";
 import { validatePair, validateScaleRange } from "./validation.js";
 import { resolveScaleRange } from "./continuous.js";
 import { interpolateNumber } from "../numeric.js";
@@ -70,6 +70,9 @@ export function validateOrdinalDomain(domain) {
 export function validateOrdinalRange(range) {
   if (range === "auto") return range;
   if (Array.isArray(range)) {
+    if (range.some(value => isPlainObject(value) && Object.hasOwn(value, "polygon"))) {
+      return validateShapeRange(range);
+    }
     if (range.length === 2 && range.every(Number.isFinite)) {
       return cloneAndFreeze(range);
     }

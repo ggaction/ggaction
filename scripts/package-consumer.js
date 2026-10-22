@@ -574,13 +574,23 @@ async function testNodeConsumer(directory) {
       assert.ok((await renderToPNGBuffer(dashedGuides)).buffer.length > 100);
       assert.ok((await renderToPDFBuffer(dashedGuides)).buffer.length > 100);
     }
-    for (const factory of [chart, basicChart]) for (const shape of ["wedge", "arrow"]) {
+    const polygonVertices = [{x:-1.5,y:-1.5},{x:1.5,y:-1.5},{x:0,y:1.5}];
+    for (const factory of [chart, basicChart]) for (const shape of ["wedge", "arrow",
+      {polygon:polygonVertices}, {polygon:polygonVertices,normalization:"radius"}]) {
       const directional = factory().createCanvas({width: 300, height: 200, margin: 50})
         .createData({values:[{x:0,y:0,g:"A"},{x:1,y:1,g:"B"}]})
         .createScatterPlot({x:"x",y:"y",point:{shape},guides:false});
       assert.equal(directional.graphicSpec.objects.scatterPlot.items[0].type, "path");
       assert.deepEqual(deserializeProgram(serializeProgram(directional)).graphicSpec, directional.graphicSpec);
       assert.ok((await renderToPNGBuffer(directional)).buffer.length > 100);
+      if (typeof shape === "object") {
+        const encoded = directional.encodeShape({field:"g",scale:{domain:["A","B"],
+          range:[shape,"circle"],unknown:shape}}).createLegend({channels:["shape"]});
+        assert.equal(encoded.graphicSpec.objects.scatterPlot.items[0].type,"path");
+        assert.equal(encoded.graphicSpec.objects.scatterPlot.items[1].type,"circle");
+        assert.deepEqual(deserializeProgram(serializeProgram(encoded)).graphicSpec,encoded.graphicSpec);
+        assert.ok((await renderToPDFBuffer(encoded)).buffer.length > 100);
+      }
     }
 
     const mappedSize = chart().createCanvas({width:700,height:500,margin:160})
@@ -5486,6 +5496,15 @@ const invalidGrouped: Parameters<FullFormatsProgram["createXAxisLabels"]>[0] = {
     chart().createReferenceBand({ space: "plot", x: [0.2, 0.6] });
     // @ts-expect-error Plot reference coordinates are numeric.
     chart().createReferenceLine({ space: "plot", x: "0.5" });
+    const polygonShape: import("ggaction").PointPolygonShape = {
+      polygon: [{x:0,y:0},{x:1,y:0},{x:0,y:1}], normalization: "radius"
+    };
+    const basicPolygonShape: import("ggaction/basic").PointPolygonShape = polygonShape;
+    program.createPointMark({shape:polygonShape});
+    basicChart().createPointMark({shape:basicPolygonShape});
+    program.encodeShape({field:"category",scale:{range:[polygonShape,"circle"],unknown:polygonShape}});
+    // @ts-expect-error polygon normalization is a closed vocabulary.
+    program.editPointMark({shape:{polygon:[],normalization:"automatic"}});
     chart().encodeSize({ field: "m", scale: { type: "log", domain: [1, 100], base: 10 } });
     chart().encodeSize({ field: "m", scale: { type: "pow", domain: [0, 100], exponent: 2 } });
     chart().encodeSize({ field: "m", scale: { type: "threshold", domain: [10], range: [20, 80] } });

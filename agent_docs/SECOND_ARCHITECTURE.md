@@ -391,8 +391,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Gzip ceiling |
 | --- | ---: |
-| `ggaction` | 433,000 bytes |
-| `ggaction/basic` | 219,000 bytes |
+| `ggaction` | 434,000 bytes |
+| `ggaction/basic` | 220,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 Nearest-step Cartesian tick policy와 저장 검증 추가 후 Node22 installed consumer 실측은
@@ -791,7 +791,8 @@ points: {
 ```
 
 서로 다른 point shape를 한 collection에 저장해야 하면 각 item이 자신의 concrete type을 가진다.
-Shared point-shape grammar가 12-value vocabulary, validation과 equal-area geometry를 한 번 소유한다.
+Shared point-shape grammar가 fourteen named shapes와 explicit simple polygons의 validation 및
+area/radius-normalized geometry를 한 번 소유한다.
 Circle은 `circle`, square는 `rect`, 나머지 shape는 renderer-neutral closed `path`가 된다.
 
 ```javascript
@@ -2715,3 +2716,23 @@ Unpacked4183555bytes는 기존4191000이내라 그대로 유지한다. 이 수�
 Node22.23.1/npm10.9.8의 로컬 staging 측정이며 공개 registry 설치나 Node24
 protected release 통과가 아니다. 번역에 설치된 candidate는 별도 검증과 활성화
 전까지 바꾸지 않는다.
+
+
+### Explicit simple polygon point shapes
+
+공유 `grammar/pointPolygon.js`가 닫힌 vertex schema, 단순성·유한 범위 검증,
+불변 canonical copy와 raw area를 소유한다. `pointShapes.js`는 기존 named shape와
+명시적 polygon에 같은 concrete closed-path 생성·회전·extent 규칙을 적용한다.
+정규화 의도는 constant mark config 또는 semantic shape scale 한 곳에 보존하며,
+renderer는 이전과 같은 concrete path만 읽는다. 자동 named range는 바꾸지 않는다.
+Point materializer와 polygon highlight 교체는 기존 공통 work limit으로 할당 전
+command work를 검사한다. 정확한 공개 계약은 Current MARKS/ENCODINGS/MARK_SELECTION이 소유한다.
+
+새 grammar module로 실측613entries가 이전612를 초과해613만 적용한다. Actual
+packed870658bytes는870000을 넘어서 최소 다음1000byte 경계871000을 적용했다.
+Unpacked4188709는4191000이내이므로 유지했다. 후속 highlight preflight까지 포함한
+installed bundle은 Full433179/Basic219107gzip bytes여서 각각434000/220000으로만
+올린다. SVG25000 한도는 그대로다. Search index850818bytes도 기존850000을 넘어서
+851000으로만 올렸다. 실패 로그와 최종 측정은 `impl/polygon-point-shapes/EVIDENCE.json`에
+기록한다. 수치·그림 오차나 데이터 한도는 바꾸지 않았으며 이 측정은 로컬 Node22 staging이다.
+새 공개 registry 버전·Node24 protected release·번역 runtime 활성화는 별도 검증 사항이다.

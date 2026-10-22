@@ -245,7 +245,7 @@ type MarkSelector =
 - Selection source: inline `select`, explicit `selection`, current unique compatible selection 순으로 resolve한다.
   Inline selection은 real wrapped `selectMarks` child를 호출하며 `select`와 `selection`은 함께 쓸 수 없다.
 - Current mark capability: point, bar, line, area, arc, rule and Tick. Omitted appearance uses accent `#dc2626`. Point default size is area
-  multiplier `2`; `shape` accepts the shared 12 point shapes and logical offset is available. Point/bar `color` aliases
+  multiplier `2`; `shape` accepts the shared fourteen named shapes or explicit simple polygons from MARKS.md, and logical offset is available. Point/bar `color` aliases
   fill and conflicts with explicit `fill`. Bar rejects shape, size, offset and strokeDash. Area uses fill with optional
   stroke and rejects shape, size and strokeDash. Arc uses the same fill, optional outline, and path-offset recipe.
   Line/rule/Tick use stroke with optional width and shared named/array dash.
@@ -272,6 +272,7 @@ type MarkSelector =
 - Selection flow
   - ✅ Covered: inline and reusable selection, source conflict, inferred current selection and target agreement.
 - Point appearance
+  - Polygon replacement preflights resulting selected polygon commands plus retained path commands against the common 10,000,000 work limit before allocation. Oversized highlights fail atomically; mark/Canvas/data replay repeats the same check.
   - ✅ Covered: shortest default, color/fill conflict, opacity, stroke/width dependency, shape, size, offset and errors.
   - ✅ Covered: every supported point shape as a highlighted replacement through the shared point-shape grammar.
 - Bar appearance and grain

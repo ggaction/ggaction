@@ -1,5 +1,5 @@
 import { materializeMarkClip } from "../../../materialization/markClip.js";
-import { validateGraphicItemLimit } from "../../../core/validation.js";
+import { validateGraphicItemLimit, validateWorkLimit } from "../../../core/validation.js";
 import { editGraphicProperties } from "../../primitives/graphicProperties.js";
 import { action } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
@@ -369,6 +369,9 @@ export const rematerializePointMark = /* @__PURE__ */ action(
     const strokeDetails = requestedStrokeDetails(config, "Point mark");
     const fill = mappedFill ?? config.fill ?? DEFAULT_POINT_FILL;
     const shapes = encodedShape ?? dataset.values.map(() => config.shape ?? "circle");
+    validateWorkLimit(shapes.reduce((sum, shape) => sum +
+      (typeof shape === "object" ? validatePointShape(shape).polygon.length + 1 : 0), 0),
+    "Point polygon materialization");
     const existingChildren = graphic.items ?? [];
     const constantShape = validatePointShape(config.shape ?? "circle");
     const requiresMixedCollection =
