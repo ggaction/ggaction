@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Add explicit axis `format: "ticks"` for per-axis numeric tick precision, including independent facets, while preserving existing automatic formatting.
+
 - Add opt-in `missing: "break"` for direct Cartesian quantitative/temporal lines, preserving raw observations, independent axis domains and curve restarts across gaps, including filtering, immutable edits and saved programs. Strict defaults remain unchanged.
 
 - Add opt-in `nice: { count }` rounding for automatic linear position domains, preserving existing boolean behavior, independent facet ranges, immutable edits and saved programs.

@@ -307,3 +307,41 @@ export function formatTimeTicks(values, domain) {
   }
   return cloneAndFreeze(values.map(value => String(value)));
 }
+
+
+// Fixed numeric display precision belongs to one settled axis, not its dataset.
+// Sorting a copied distinct list preserves the caller's tick and painter order.
+export function formatNumericTickValues(values) {
+  if (!Array.isArray(values) || !values.every(Number.isFinite)) {
+    throw new TypeError("Numeric tick formatting requires finite tick values.");
+  }
+  const ordered = [...new Set(values)].sort((a, b) => a - b);
+  if (ordered.length === 0) return [];
+  let step = Infinity;
+  for (let index = 1; index < ordered.length; index += 1) {
+    step = Math.min(step, ordered[index] - ordered[index - 1]);
+  }
+  let precision;
+  if (ordered.length === 1) {
+    const normalized = Number(ordered[0].toPrecision(12));
+    const [coefficient, exponent = "0"] = String(normalized).split("e");
+    precision = Math.max(0, (coefficient.split(".")[1]?.length ?? 0) - Number(exponent));
+  } else {
+    const normalizedStep = Number(step.toPrecision(12));
+    precision = Math.max(0, -Math.floor(Math.log10(normalizedStep)));
+  }
+  if (precision > 12) {
+    throw new RangeError("Numeric tick format supports at most 12 decimals.");
+  }
+  const fixed = (value, digits) => {
+    const label = value.toFixed(digits);
+    return Number(label) === 0 ? (0).toFixed(digits) : label.replace(/^-/, "−");
+  };
+  for (; precision <= 12; precision += 1) {
+    const labels = ordered.map(value => fixed(value, precision));
+    if (new Set(labels).size === labels.length) {
+      return values.map(value => fixed(value, precision));
+    }
+  }
+  throw new RangeError("Numeric tick format cannot distinguish values within 12 decimals.");
+}

@@ -9,7 +9,7 @@ import { niceTicks } from "../../../../grammar/ticks.js";
 import { resolveCoordinateBounds } from "../../../../materialization/coordinateBounds.js";
 import { findCoordinate } from "../../../../selectors/coordinates.js";
 import { findLayer } from "../../../../selectors/layers.js";
-import { formatAxisValue } from "../policy.js";
+import { formatAxisValue, formatNumericAxisTicks } from "../policy.js";
 import { resolveParallelAxisConfigs } from "./policy.js";
 
 export function requireParallelAxisLayer(program, target) {
@@ -79,8 +79,9 @@ function componentValues(program, dimension, config) {
   return {
     values,
     y: discrete ? mapOrdinalPositionValues(values, scale) : mapContinuousScaleValues(values, scale),
-    text: config.format === undefined ? undefined : values.map(value =>
-      formatAxisValue(value, scale.type, config.format, formatValue))
+    text: config.format === undefined ? undefined
+      : config.format === "ticks" ? formatNumericAxisTicks(values, scale.type)
+        : values.map(value => formatAxisValue(value, scale.type, config.format, formatValue))
   };
 }
 

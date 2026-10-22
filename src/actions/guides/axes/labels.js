@@ -30,6 +30,7 @@ import { AXIS_LABEL_FONT_SIZES, DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from
 import {
   defaultAxisPosition,
   formatAxisValue,
+  formatNumericAxisTicks,
   resolveAxisLabelGeometry,
   validateAxisFormat,
   validateAxisPosition
@@ -269,12 +270,14 @@ function resolve(program, channel, config, axisId = channel) {
             ? formatTransformedTick(scale.type, item)
             : String(item)
       );
-  const automaticTimeLabels = scale.type === "time" && config.format === "auto"
-    ? formatTimeTicks(values, scale.domain)
-    : undefined;
+  const automaticLabels = config.format === "ticks"
+    ? formatNumericAxisTicks(values, scale.type)
+    : scale.type === "time" && config.format === "auto"
+      ? formatTimeTicks(values, scale.domain)
+      : undefined;
   let text = values.map((value, index) =>
     resolveDisplayLabel(value, config.labelMap, raw =>
-      automaticTimeLabels?.[index] ?? fallback(raw)));
+      automaticLabels?.[index] ?? fallback(raw)));
   // Empty mapped text suppresses the label, never its raw tick or scale value.
   // Filter all aligned arrays before wrapping so group/color indices stay dense.
   if (text.includes("")) {

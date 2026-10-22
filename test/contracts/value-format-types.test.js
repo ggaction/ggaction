@@ -21,6 +21,12 @@ const weekday: ValueFormat = "%a";
 const weekdayAndDate: AxisFormatString = "%a %d";
 full.createAxes({x:{ticksAndLabels:{labels:{format:",.0f"}}}});
 full.editXAxisLabels({format:","});
+full.editXAxisLabels({format:"ticks"});
+full.createRadialAxis({ticksAndLabels:{labels:{format:"ticks"}}});
+full.editParallelAxis({field:"a",labels:{format:"ticks"}});
+basic.createLinePlot({x:"x",y:"y",guides:{axes:{y:{ticksAndLabels:{labels:{format:"ticks"}}}}}});
+// @ts-expect-error tick-step precision belongs to axes, not general value labels
+const axisOnly: ValueFormat = "ticks";
 full.encodeText({field:"amount",format:",.2f"});
 basic.createLinePlot({x:"x",y:"y",guides:{axes:{x:{ticksAndLabels:{labels:{format:",.2f"}}}}}});
 basic.createLinePlot({x:{field:"date",fieldType:"temporal"},y:"y",guides:{axes:{x:{ticksAndLabels:{labels:{format:"%a"}}}}}});

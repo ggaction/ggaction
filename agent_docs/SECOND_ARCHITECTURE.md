@@ -47,6 +47,10 @@ agent가 다음을 빠르게 이해하기 위한 내부 아키텍처 문서다.
 - Canvas, SVG, PNG와 PDF renderer가 무엇을 읽는가
 - 새로운 기능을 어느 계층에 추가해야 하는가
 
+이 기능의 실측 artifact는611entries/868800packed/4190208unpacked bytes다. Packed869000한도는 유지하고 unpacked만 최소1000byte 단위4191000으로 갱신한다. Full gzip431608은 기존432000이내이며 Basic218187에 대해서만219000으로 갱신한다. 이전 Basic218000·unpacked4188000을 통과했다고 주장하지 않는다.
+
+명시적 axis `format:"ticks"`는 기존 순수 tick grammar가 settled values별 fixed precision을 계산하고 기존 guide action이 문자열을 materialize한다. 저장 owner는 기존 axis label config이며 schema/renderer 경계는 바꾸지 않는다. 정확한 값·한도·재물질화는 current `AXES.md`가 소유한다.
+
 ## 핵심 결론
 
 `ggaction`은 완성된 선언형 specification을 renderer가 자동으로 compile하는
@@ -387,8 +391,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Gzip ceiling |
 | --- | ---: |
-| `ggaction` | 431,000 bytes |
-| `ggaction/basic` | 218,000 bytes |
+| `ggaction` | 432,000 bytes |
+| `ggaction/basic` | 219,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 Nearest-step Cartesian tick policy와 저장 검증 추가 후 Node22 installed consumer 실측은

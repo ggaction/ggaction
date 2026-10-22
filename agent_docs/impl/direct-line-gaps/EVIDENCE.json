@@ -92,7 +92,11 @@
       933,
       11
     ],
-    "workingTreeWitness": "/Users/hyeonjeon/Projects/vegalite-ggaction-translation/tmp/total1500-0549-direct-line-gap-worktree-witness-v1.json",
+    "workingTreeWitness": {
+      "externalWorkspaceFile": "total1500-0549-direct-line-gap-worktree-witness-v1.json",
+      "sha256": "bfc3de29f4cd9b53c6394cc587edb09c0734c64ff790cb301852b92838938feb",
+      "locationOwner": "External translation workspace evidence inventory; original location retained in preceding Git revision."
+    },
     "scope": "Private working-tree replay only; not an admitted translation or active package."
   },
   "failedAttemptsRetained": [

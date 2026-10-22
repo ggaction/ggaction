@@ -366,6 +366,32 @@ explicit `{ value, unit: "degrees" | "radians" }` object. Both forms normalize
 to radians before materialization. This does not change the degree-valued
 `angle` used to place radial-axis components.
 
+
+Use axis-only `format: "ticks"` to infer fixed decimal precision from each axis's
+settled numeric tick spacing. A step of `0.05` preserves labels such as `0.00`
+and `−0.10`; a step of `100` uses integers. Independent facet scales calculate
+precision separately from one shared recipe. Existing display-label maps take
+precedence, and omitted/`"auto"` output stays unchanged. This option works on
+numeric Cartesian, Polar and Parallel axes; time and discrete axes reject it.
+The smallest positive spacing is normalized to twelve significant digits before
+choosing precision. Precision increases only to distinguish different ticks,
+up to twelve decimals; finer unsupported precision is rejected. One tick uses
+its normalized decimal places, and an empty tick list stays empty. Values,
+domains and tick positions are preserved. Edits and replay recompute the labels.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```js
+// Fragment: after creating a numeric y encoding.
+program.createYAxis({
+  ticksAndLabels: { labels: { format: "ticks" } }
+});
+```
+
 Numeric label formats use `.0f` through `.12f` for fixed decimals, `.0%`
 through `.12%` for percentages, and `.0e` through `.12e` for scientific
 notation. A leading zero in a one-digit precision, such as `.01f`, is accepted

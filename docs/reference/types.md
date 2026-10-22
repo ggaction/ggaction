@@ -507,6 +507,7 @@ type AtLeastOne<T> = {
 
 ```typescript
 export type AxisFormat =
+  | "ticks"
   | ValueFormat
   | { decimals: number };
 ```

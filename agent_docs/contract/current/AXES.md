@@ -94,9 +94,10 @@ Cartesian line/ticks/labels/title의 실제 occupied bounds는 각 component pos
 - `count`/`values`/`rounding`: tick contract와 같으며 existing ticks가 있으면 생략 시 그 정책을 재사용한다.
 - `offset`: non-negative finite number; x default `18`, y default `12`.
 - `alongOffset`: signed finite logical pixels, 기본 `0`. Mapped label 위치에서 X는 오른쪽, Y는 아래쪽으로 이동한다. Tick offset을 상속하지 않는 독립 절대값이다. 기존 `offset`은 축 바깥쪽 간격으로 유지된다.
-- `format`: `"auto" | { decimals: nonNegativeInteger } | AxisFormatString`. Numeric token은 `.0`–`.12`
+- `format`: `"auto" | "ticks" | { decimals: nonNegativeInteger } | AxisFormatString`. Numeric token은 `.0`–`.12`
   precision과 `f | % | e` suffix이며 quantitative에서만 허용한다. Time format은 `%Y | %m | %d | %b | %a | %H | %M | %S | %L` UTC directive 하나 이상과 literal의
   sequence이며 literal percent는 `%%`다. Unknown/dangling directive는 거부하고 ordinal은 auto만 허용한다.
+- 명시적 `format: "ticks"`는 숫자 축의 settled tick values별로 fixed precision을 계산한다. 최소 양의 간격을12유효숫자로 정규화한 decimal exponent를 사용하며, 다른 값이 같은 문자열이면 최대12decimal까지 늘리고 그래도 구별되지 않으면 거부한다. 빈 값은 빈 결과, 단일 값은12유효숫자로 정규화한 해당 값의 소수 자릿수다. 뒤쪽0을 보존하고 음수는 `−`, 반올림된 signed zero는 양의0으로 표기한다. 예:0.05간격→`0.00`,100간격→`0`. Cartesian/Polar/Parallel 숫자 축에 적용하고 Time/discrete는 거부한다. 기존 typed labelMap 우선순위는 유지한다. Facet 각 child, scale/data/Canvas 재물질화 및 editable persistence에서 문자열 intent를 유지하고 새 settled ticks로 다시 계산한다. Omitted/auto와 기존 numeric/UTC 표기는 불변이다. 근거: `test/unit/grammar/numeric-tick-format.test.js`, `test/unit/actions/guides/axis-tick-format.test.js`, `test/contracts/value-format-types.test.js`.
 - `colorMap`: Cartesian label 전용 `readonly { value: DatasetScalar; color: NonEmptyString }[] | "auto"`. Raw typed tick value로 lookup하며 없는 key는 global `color`를 사용한다. `labelMap`의 display text와 독립이다. Categorical key는 기존 typed scalar 규칙을 쓰고 continuous/time key는 finite numeric/timestamp만 허용한다. Entry는 value/color 두 key만 허용하며 중복 typed key와 빈/비문자열 color를 거부한다. `[]`는 명시 empty map, `"auto"`는 map 제거, partial entry 편집은 없고 array 전체를 교체한다. Wrapped text는 raw tick의 모든 line에 같은 color를 적용한다. 이전 caller map/program은 immutable하고 tick/Canvas/scale replay에서도 map과 fallback을 유지한다. Polar/Parallel에는 이 옵션이 없다.
 - `color`: non-empty string; `fontSize`: positive finite; `fontFamily`: non-empty string;
   `fontWeight`: string 또는 finite number.
@@ -317,7 +318,7 @@ type TickOptions = {
 type LabelOptions = {
   align?: "left" | "center" | "right";
   offset?: NonNegativeFinite;
-  format?: "auto" | { decimals: NonNegativeInteger } | AxisFormatString;
+  format?: "auto" | "ticks" | { decimals: NonNegativeInteger } | AxisFormatString;
   color?: NonEmptyString;
   fontSize?: PositiveFinite;
   fontFamily?: NonEmptyString;

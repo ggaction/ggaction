@@ -25,7 +25,7 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 export const PACKAGE_LIMITS = Object.freeze({
   entries: 611, // One shared direct-line missing-coordinate policy module.
   packedBytes: 869_000, // Direct-line gaps measured868183bytes; minimal1000-byte rounding.
-  unpackedBytes: 4_188_000 // Direct-line gaps measured4187622bytes; minimal1000-byte rounding.
+  unpackedBytes: 4_191_000 // Axis tick precision measured4190208bytes; minimal1000-byte rounding.
 });
 
 const REQUIRED_FILES = Object.freeze([

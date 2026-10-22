@@ -1,3 +1,4 @@
+import { formatNumericTickValues } from "../../../grammar/ticks.js";
 import { formatVisibleText } from "../../../core/textMetrics.js";
 import { validateBoolean } from "../../../core/validation.js";
 import {
@@ -106,12 +107,23 @@ export function resolveAxisTitleGeometry({
 }
 
 export function validateAxisFormat(format) {
+  if (format === "ticks") return format;
   return validateValueFormat(format, "Label format", {
     allowDecimalsObject: true
   });
 }
 
+export function formatNumericAxisTicks(values, scaleType) {
+  if (["ordinal", "band", "point", "time"].includes(scaleType)) {
+    throw new Error('Axis format "ticks" requires a quantitative scale.');
+  }
+  return formatNumericTickValues(values);
+}
+
 export function formatAxisValue(value, scaleType, format, autoFormatter) {
+  if (format === "ticks") {
+    throw new Error('Axis format "ticks" requires the complete settled tick values.');
+  }
   validateAxisFormat(format);
   if (format === "auto") return formatVisibleText(autoFormatter(value));
   if (["ordinal", "band", "point"].includes(scaleType)) {

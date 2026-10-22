@@ -377,6 +377,20 @@
     ],
     "resources": [],
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "b0b86d257872a189422b110828fa12597b17291c9452034e39a1f08e2fd8a95a",
+    "executable": false
+  },
+  {
+    "file": "api/axes/complete.md",
+    "block": 11,
+    "heading": "Intentional title-label overlap",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [
+      "program"
+    ],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
     "sha256": "91c0716b3017dd97746ee09f544ff38dbda611c19e60a72f2eba8608a7293082",
     "executable": false
   },

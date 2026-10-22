@@ -110,6 +110,22 @@ async function testNodeConsumer(directory) {
     import {createPlotUnderlayProgram} from "./plot-underlay-public.js";
 
     for (const factory of [chart, basicChart]) {
+      const values = [{x:0,y:-0.15},{x:1,y:0.3}];
+      const p = factory().createCanvas({width:600,height:480,margin:90})
+        .createData({values})
+        .createLinePlot({x:"x",y:{field:"y",scale:{domain:[-0.15,0.3]}},guides:false})
+        .createYAxis({title:false,ticksAndLabels:{count:10,labels:{fontSize:10,format:"ticks"}}});
+      const texts = program => program.graphicSpec.objects.yAxisLabels.items.map(i=>i.properties.text);
+      assert.deepEqual(texts(p),["−0.15","−0.10","−0.05","0.00","0.05","0.10","0.15","0.20","0.25","0.30"]);
+      assert.deepEqual(p.semanticSpec.datasets[0].values,values);
+      const restored=deserializeProgram(serializeProgram(p));
+      assert.equal(renderToSVG(restored),renderToSVG(p));
+      assert.deepEqual(texts(restored.editYScale({domain:[0,900]})),["0","100","200","300","400","500","600","700","800","900"]);
+      assert.equal((await renderToPNGBuffer(p)).width,600);
+      assert.equal((await renderToPDFBuffer(p)).buffer.subarray(0,4).toString(),"%PDF");
+    }
+
+    for (const factory of [chart, basicChart]) {
       const values = [{x:0,y:1},{x:2,y:3},{x:3,y:null},{x:5,y:6},{x:7,y:8}];
       const p = factory().createCanvas({width:100,height:100,margin:0}).createData({values})
         .createLinePlot({id:"gaps",x:{field:"x",scale:{domain:[0,10]}},
@@ -5754,6 +5770,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "rotated-facet-headers",
       "count-based-linear-position-domains",
       "nearest-step-linear-axis-ticks",
+      "per-axis-numeric-tick-precision",
       "explicit-axis-and-border-underlays",
       "typescript",
       "basic-entry-runtime-and-types",

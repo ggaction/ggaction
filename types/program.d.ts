@@ -1416,6 +1416,7 @@ export type UtcFormatString = `${string}%${TimeAxisDirective}${string}`;
 export type ValueFormat = "auto" | NumericFormatString | UtcFormatString;
 export type AxisFormatString = NumericFormatString | UtcFormatString;
 export type AxisFormat =
+  | "ticks"
   | ValueFormat
   | { decimals: number };
 export type AxisValue = string | boolean | number;

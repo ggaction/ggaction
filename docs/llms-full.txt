@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.21.
 
-Contract: sha256:7115d3b5333f8b6a3d067aa8d49d0ff2af3bebe22e2f04c77728cfede20c8a86. Status: development. Runtime source: c87e9d03e30fbeb9ebd259f425602bd018dbbacb. Release baseline: v0.0.13.
+Contract: sha256:15c25c06f9b46243213d720ca2d93ec6b03b34724a2164194d3257b5748d6b4c. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/c87e9d03e30fbeb9ebd259f425602bd018dbbacb/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/c87e9d03e30fbeb9ebd259f425602bd018dbbacb/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -12791,6 +12791,13 @@ Numeric labels accept `format: ","` for integer grouping (`1234` becomes `1,234`
 it preserves raw values, scale domains and tick positions.
 
 Cartesian label `labelMap` works with categorical values, numeric ticks and time ticks. Provide typed `{ value, label }` entries. Continuous keys must be finite numbers; time keys use Unix milliseconds. Missing entries retain the normal formatter, and `"auto"` clears the map. Scale domains, tick positions and raw data are preserved. Use focused labels, nested ticks-and-labels or whole-axis editors to update the same policy.
+
+Numeric axes also accept `format: "ticks"`: infer fixed decimal places from each
+axis's settled tick spacing, retaining `0.00` at a `0.05` step and integer labels
+at a `100` step. Independent facets resolve their own precision. Omitted/auto
+output is unchanged; time and discrete scales reject this numeric option.
+See [numeric label formats](./api/axes/complete/) for
+precision limits and replay behavior.
 
 ## Shift ticks and labels along an axis
 
@@ -28582,6 +28589,7 @@ type AtLeastOne<T> = {
 
 ```typescript
 export type AxisFormat =
+  | "ticks"
   | ValueFormat
   | { decimals: number };
 ```
@@ -39172,12 +39180,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/c87e9d03e30fbeb9ebd259f425602bd018dbbacb/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/c87e9d03e30fbeb9ebd259f425602bd018dbbacb/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -41669,9 +41677,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:7115d3b5333f8b6a3d067aa8d49d0ff2af3bebe22e2f04c77728cfede20c8a86` |
+| Contract fingerprint | `sha256:15c25c06f9b46243213d720ca2d93ec6b03b34724a2164194d3257b5748d6b4c` |
 | Example and dataset source | `0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e` |
-| Runtime source commit | `c87e9d03e30fbeb9ebd259f425602bd018dbbacb` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 290 |
 | Declared actions in that release | 234 |
@@ -42034,6 +42042,27 @@ Cartesian title `rotation` accepts a finite legacy number in radians or an
 explicit `{ value, unit: "degrees" | "radians" }` object. Both forms normalize
 to radians before materialization. This does not change the degree-valued
 `angle` used to place radial-axis components.
+
+Use axis-only `format: "ticks"` to infer fixed decimal precision from each axis's
+settled numeric tick spacing. A step of `0.05` preserves labels such as `0.00`
+and `−0.10`; a step of `100` uses integers. Independent facet scales calculate
+precision separately from one shared recipe. Existing display-label maps take
+precedence, and omitted/`"auto"` output stays unchanged. This option works on
+numeric Cartesian, Polar and Parallel axes; time and discrete axes reject it.
+The smallest positive spacing is normalized to twelve significant digits before
+choosing precision. Precision increases only to distinguish different ticks,
+up to twelve decimals; finer unsupported precision is rejected. One tick uses
+its normalized decimal places, and an empty tick list stays empty. Values,
+domains and tick positions are preserved. Edits and replay recompute the labels.
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```js
+// Fragment: after creating a numeric y encoding.
+program.createYAxis({
+  ticksAndLabels: { labels: { format: "ticks" } }
+});
+```
 
 Numeric label formats use `.0f` through `.12f` for fixed decimals, `.0%`
 through `.12%` for percentages, and `.0e` through `.12e` for scientific
