@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+## [0.0.22] - 2026-10-23
+
 - Update locked Hono to 4.13.13, Vite to 6.4.5 and ip-address to 10.7.4; preserve native platform metadata and verify the existing browser/MCP consumers.
 
 - Add opt-in facet header `anchor: "content"` for plot spacing, following concrete mark overflow while preserving along-edge plot alignment, clipping, role overrides and editable replay.
