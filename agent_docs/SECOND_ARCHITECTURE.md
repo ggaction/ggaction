@@ -2572,3 +2572,18 @@ SVG25000 and package entry/packed/unpacked limits remain unchanged. Final identi
 facet guide reuse avoids rebuilding completed panels without changing exports or
 explicit guide creation semantics. This is a measured correctness-feature allowance,
 not a bundle optimization claim.
+
+## 읽기 전용 전환 장면과 외부 재생기
+
+사용자가 2026-10-22 승인한 분리 구조에 따라 `ggaction/scene`의
+`createTransitionScene(program)`은 버전 1 장면 계약을 제공한다. 기존 selection의
+멤버 정보를 도형 대응 키로 투영하고, renderer 내부 공유 SVG serialization은
+완성된 graphicSpec과 불투명 키만 읽는다. scene은 직렬화 가능한 읽기 전용 파생물이며
+semanticSpec, graphicSpec, trace 또는 저장 스키마에 animation 상태를 추가하지 않는다.
+범위와 제한은 docs/api/rendering.md의 Transition scenes가 소유한다.
+별도 `@ggaction/transition` 패키지가 장면 비교, 브라우저 재생, interruption을 소유한다.
+
+전환 scene 도입의 staging package는 597 entries, packed 861033, unpacked 4130339 bytes로
+검증했다. 해당 공개 entry와 type 및 공유 serializer를 포함하기 위해 package 한도를
+597/862000/4131000으로 최소 조정했다. 설치 consumer의 Full/Basic gzip은
+429327/215922 bytes로 측정되어 한도는 430000/216000이며 SVG 한도는 유지한다.

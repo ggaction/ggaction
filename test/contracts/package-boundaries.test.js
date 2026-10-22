@@ -16,6 +16,7 @@ import {
 } from "../../src/inspection.js";
 
 const PUBLIC_ENTRIES = Object.freeze({
+  "./scene": Object.freeze({ runtime: "./src/scene.js", types: "./types/scene.d.ts", values: Object.freeze(["createTransitionScene"]) }),
   ".": Object.freeze({
     runtime: "./src/index.js",
     types: "./types/index.d.ts",

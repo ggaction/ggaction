@@ -85,10 +85,12 @@ async function testNodeConsumer(directory) {
     import { renderToPDF, renderToPDFBuffer } from "ggaction/pdf";
     import { renderToPNG, renderToPNGBuffer } from "ggaction/png";
     import { renderToSVG } from "ggaction/svg";
+    import { createTransitionScene } from "ggaction/scene";
     import { serializeProgram, deserializeProgram, serializeGraphic, deserializeGraphic } from "ggaction/persistence";
     import { exportAccessibleData } from "ggaction/accessibility";
     import { comparePrograms, describeAction, getDatasetSchema, inspectProgram } from "ggaction/inspection";
 
+    assert.equal(createTransitionScene(chart().createCanvas({width:100,height:100,margin:0})).version, 1);
     const bootstrapRows = [{x:0,y:0},{x:0,y:1},{x:0,y:2},{x:0,y:30}];
     const bootstrapSummary = chart().createData({values:bootstrapRows}).createSummaryData({id:"ci",groupBy:"x",aggregates:[
       {field:"y",op:{op:"ciLower",method:{type:"bootstrap",seed:1}},as:"lower"},
@@ -3324,6 +3326,8 @@ async function testTypeScriptConsumer(directory) {
     chart().createLegend({ overflow: { maxItems: 3, summary: "truncate" } });
     const themeOptions: ApplyThemeOptions = { theme: themeName };
     const themedProgram: ChartProgram = program.applyTheme(themeOptions).removeTheme();
+    const transitionScene: import("ggaction/scene").TransitionScene = (await import("ggaction/scene")).createTransitionScene(program);
+    void transitionScene;
     const inspection: ProgramInspection = inspectProgram(program);
     const description: ActionDescription = describeAction(program, {
       action: "createData",

@@ -83,6 +83,10 @@
     "./inspection": {
       "types": "./types/inspection.d.ts",
       "default": "./src/inspection.js"
+    },
+    "./scene": {
+      "types": "./types/scene.d.ts",
+      "default": "./src/scene.js"
     }
   },
   "scripts": {

@@ -23,9 +23,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 594, // Raincloud selection/filtering and shared statistical dependents add three owners.
-  packedBytes: 859_000, // Radar, compound-chart and guide repairs: measured 857507 bytes.
-  unpackedBytes: 4_125_000 // Same staged package measured 4119128 bytes.
+  entries: 597, // Transition scene API, declarations and shared SVG serialization.
+  packedBytes: 862_000, // Read-only transition scenes: staged artifact measured 861033 bytes.
+  unpackedBytes: 4_131_000 // Scene extraction and shared serializer: measured 4130339 bytes.
 });
 
 const REQUIRED_FILES = Object.freeze([
