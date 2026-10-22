@@ -1,6 +1,7 @@
 import { isSourceOwnedText } from "../../../grammar/text.js";
 import { findSemanticScale } from "../../../selectors/scales.js";
 import { readAreaEndpoint } from "../../../grammar/areaEndpoints.js";
+import { readLinePosition } from "../../../grammar/lineMissing.js";
 import { validateUserId } from "../../../core/identifiers.js";
 import { getPositionCoordinateDefaults } from "../../../grammar/coordinates.js";
 import {
@@ -272,7 +273,9 @@ export function resolvePositionEncoding(program, channel, args, operation) {
       "Position scale unknown currently requires a row-owned point mark."
     );
   }
-  if (layer.mark.type === "area" && fieldType === "quantitative") {
+  if (layer.mark.type === "line" && layer.mark.missing === "break") {
+    readLinePosition(dataset.values, { field, fieldType, temporalUnit });
+  } else if (layer.mark.type === "area" && fieldType === "quantitative") {
     readAreaEndpoint(dataset.values, { ...(hasDatum ? { datum } : { field }), fieldType }, layer.mark.missing);
   } else if (["rule", "rect", "text", "point", "tick"].includes(layer.mark.type) && hasDatum) {
     const mark = layer.mark.type[0].toUpperCase() + layer.mark.type.slice(1);

@@ -1361,7 +1361,7 @@ and independently shared resources. [Marks](../api/marks.md)
 ### `createLineMark`
 
 ```javascript
-createLineMark({ clip?, id?, data?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed? } = {})
+createLineMark({ clip?, missing?, id?, data?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed? } = {})
 ```
 
 Create a semantic line mark and empty path collection. Curve defaults to
@@ -1370,16 +1370,19 @@ rematerialization. A compatible layered source can provide data, positions,
 shared scales, and a grain-preserving aggregate such as `mean`; bar-only bin,
 stack, and offset policies are not inherited. `closed: true` closes each Polar
 series as a radar path.
+For direct Cartesian quantitative/temporal positions, opt-in `missing: "break"`
+preserves null/absent observations as independent valid runs. The default remains
+strict. Each run is a path and selection item; curves restart at each gap.
 [Marks](../api/marks.md)
 
 ### `editLineMark`
 
 ```javascript
-editLineMark({ clip?, target?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed? })
+editLineMark({ clip?, missing?, target?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed? })
 ```
 
-Edit line appearance and rematerialize concrete path commands without changing
-semantic encodings. [Marks](../api/marks.md)
+Edit line appearance or its explicit missing-coordinate policy and rematerialize
+concrete path commands without changing field encodings. [Marks](../api/marks.md)
 
 ### `createBarMark`
 

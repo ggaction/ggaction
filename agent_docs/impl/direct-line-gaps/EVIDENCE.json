@@ -1,0 +1,120 @@
+{
+  "status": "verified-implementation-private-candidate-only",
+  "issue": 259,
+  "checks": [
+    {
+      "suite": "unit",
+      "log": ".artifacts/line-missing-unit-suite-v2.log",
+      "pass": 3857,
+      "fail": 0,
+      "sha256": "520260d48996d8086681a269e3b34aafb7663c67d7280cd480f94d4d4c085d75"
+    },
+    {
+      "suite": "contracts",
+      "log": ".artifacts/line-missing-contract-suite-v3.log",
+      "pass": 620,
+      "fail": 0,
+      "sha256": "376b734ddf9bc205ca9e77f936bc68ba86a0eb8f4f3cadeffe58777c86064b86"
+    },
+    {
+      "suite": "charts",
+      "log": ".artifacts/line-missing-charts-suite.log",
+      "pass": 641,
+      "fail": 0,
+      "sha256": "f2dca46b65835918343be51b54342b349992fda0e80711bd11e3660ab3c5703a"
+    },
+    {
+      "suite": "docs",
+      "log": ".artifacts/line-missing-docs-suite-v3.log",
+      "pass": 121,
+      "fail": 0,
+      "sha256": "6c710c4057f446281c2f55dfc252a5bd0b81723f570e22178e2894c4cc77d7f5"
+    },
+    {
+      "suite": "realisticFacades",
+      "log": ".artifacts/line-missing-realistic-facades.log",
+      "pass": 75,
+      "fail": 0,
+      "sha256": "ddb3bd1568323bc9bf3b7703baf0ff79aa321183d284bfd92edfff168a5679b9"
+    },
+    {
+      "suite": "browser",
+      "log": ".artifacts/line-missing-browser.log",
+      "pass": 1,
+      "fail": 0,
+      "sha256": "55af481298856ed31c286027679ac2de9adec466ed191f58a485cb894d673641"
+    },
+    {
+      "suite": "finalFocusedContracts",
+      "log": ".artifacts/line-missing-final-focused-contracts.log",
+      "pass": 5,
+      "fail": 0,
+      "sha256": "ecaf410d9f3def404fc9f822999d7ca18c5769bd65a23cd78e1b156fde0369be"
+    }
+  ],
+  "normalTotal": 5239,
+  "installedConsumerGroups": 68,
+  "consumerLog": {
+    "path": ".artifacts/line-missing-package-consumer-v2.log",
+    "sha256": "2fe070424eeb49a81c58438db55c02c30e2cb7e7a79227e0b9dd4d6111a2727b"
+  },
+  "browserBundles": {
+    "full": {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 543,
+      "minifiedBytes": 1587457,
+      "gzipBytes": 431139
+    },
+    "basic": {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 326,
+      "minifiedBytes": 772201,
+      "gzipBytes": 217852
+    },
+    "svg": {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 19,
+      "minifiedBytes": 23548,
+      "gzipBytes": 7567
+    }
+  },
+  "strictCompatibility": "Omitted missing policy preserves the stored state and output; existing unit and chart tests remain passing.",
+  "rawGapFixture": {
+    "originalRows": 1000,
+    "UKRows": 55,
+    "USRows": 945,
+    "USMissingSourceIndex": 933,
+    "rawMissingValue": ".",
+    "validUSRunLengths": [
+      933,
+      11
+    ],
+    "workingTreeWitness": "/Users/hyeonjeon/Projects/vegalite-ggaction-translation/tmp/total1500-0549-direct-line-gap-worktree-witness-v1.json",
+    "scope": "Private working-tree replay only; not an admitted translation or active package."
+  },
+  "failedAttemptsRetained": [
+    ".artifacts/line-missing-unit-suite.log",
+    ".artifacts/line-missing-package-consumer.log"
+  ],
+  "packageBudget": {
+    "entries": 611,
+    "packedBytes": 869000,
+    "unpackedBytes": 4188000,
+    "measuredPackedBytes": 868183,
+    "measuredUnpackedBytes": 4187622,
+    "browserFullGzipLimit": 432000,
+    "browserFullGzipBytes": 431139,
+    "browserBasicGzipLimit": 218000,
+    "browserBasicGzipBytes": 217852,
+    "browserSVGUnchanged": true,
+    "reason": "One shared policy module and +894 gzip bytes in the full entry versus the previous measured checkpoint; bounded minimal 1000-byte rounding. No data, path, tolerance or coverage limit changed."
+  },
+  "chartPixelsInspected": false,
+  "SchoolRequests": 0,
+  "translationRuntimeActivated": false,
+  "publicationPending": true,
+  "regularReleaseAt": 1413
+}

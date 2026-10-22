@@ -152,6 +152,11 @@ unique tuple such as `["country", "scenario"]`. Explicit groups define identity;
 `groupBy`, color/dash retain their shared-field grouping. Use `line` for constant
 appearance. See [independent series identity](./series-encodings.md).
 
+For a direct quantitative/temporal line, `line: { missing: "break" }` preserves
+null/absent observations as gaps. The default remains strict. See
+[gaps in direct lines](./marks/line-area.md#gaps) for supported
+positions, ordering, domains and segment ownership.
+
 <!-- snippet-context:start -->
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.

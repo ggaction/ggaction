@@ -7953,7 +7953,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Create a semantic line mark and empty path collection.",
-      "signature": "createLineMark(options?: StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;",
+      "signature": "createLineMark(options?: StrokeStyleDetails & { clip?: boolean; missing?: \"error\" | \"break\"; id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;",
       "intents": [
         "create line mark",
         "create",
@@ -8042,6 +8042,11 @@
           "type": "boolean | undefined"
         },
         {
+          "name": "missing",
+          "required": false,
+          "type": "\"break\" | \"error\" | undefined"
+        },
+        {
           "name": "id",
           "required": false,
           "type": "string | undefined"
@@ -8083,7 +8088,7 @@
         }
       ],
       "callPatterns": [
-        "createLineMark({ id?, data?, lineCap?, lineJoin?, miterLimit?, clip?, strokeWidth?, curve? })"
+        "createLineMark({ id?, data?, lineCap?, lineJoin?, miterLimit?, clip?, missing?, strokeWidth? })"
       ],
       "snippet": "program.createLineMark({})",
       "errors": [],
@@ -8094,8 +8099,8 @@
       "name": "editLineMark",
       "layer": "user-facing",
       "domain": "marks",
-      "summary": "Edit line appearance and rematerialize concrete path commands without changing semantic encodings.",
-      "signature": "editLineMark(options: StrokeStyleDetails & { clip?: boolean; target?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;",
+      "summary": "Edit line appearance or its explicit missing-coordinate policy and rematerialize concrete path commands without changing field encodings.",
+      "signature": "editLineMark(options: StrokeStyleDetails & { clip?: boolean; missing?: \"error\" | \"break\"; target?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;",
       "intents": [
         "edit line mark",
         "edit",
@@ -8172,6 +8177,11 @@
           "type": "boolean | undefined"
         },
         {
+          "name": "missing",
+          "required": false,
+          "type": "\"break\" | \"error\" | undefined"
+        },
+        {
           "name": "target",
           "required": false,
           "type": "string | undefined"
@@ -8208,7 +8218,7 @@
         }
       ],
       "callPatterns": [
-        "editLineMark({ target?, lineCap?, lineJoin?, miterLimit?, clip?, strokeWidth?, curve?, tension? })"
+        "editLineMark({ target?, lineCap?, lineJoin?, miterLimit?, clip?, missing?, strokeWidth?, curve? })"
       ],
       "snippet": "program.editLineMark({ lineCap: \"butt\" })",
       "errors": [],
@@ -31606,7 +31616,7 @@
         {
           "name": "line",
           "required": false,
-          "type": "(StrokeStyleDetails & { clip?: boolean | undefined; strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; tension?: number | undefined; stroke?: string | undefined; opacity?: number | undefined; closed?: false | undefined; }) | undefined"
+          "type": "(StrokeStyleDetails & { clip?: boolean | undefined; missing?: \"break\" | \"error\" | undefined; strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; tension?: number | undefined; stroke?: string | undefined; opacity?: number | undefined; closed?: false | undefined; }) | undefined"
         },
         {
           "name": "guides",
@@ -31858,7 +31868,7 @@
         {
           "name": "line",
           "required": false,
-          "type": "(Omit<StrokeStyleDetails & { clip?: boolean | undefined; strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; tension?: number | undefined; stroke?: string | undefined; opacity?: number | undefined; closed?: false | undefined; }, \"clip\" | ... 2 more ... | \"tension\"> & { ...; }) | undefined"
+          "type": "(Omit<StrokeStyleDetails & { clip?: boolean | undefined; missing?: \"break\" | \"error\" | undefined; strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; tension?: number | undefined; stroke?: string | undefined; opacity?: number | undefined; closed?: false | undefined; }, \"clip\" | ... 3 more ... |..."
         },
         {
           "name": "guides",
@@ -31977,7 +31987,7 @@
         {
           "name": "line",
           "required": false,
-          "type": "(Omit<StrokeStyleDetails & { clip?: boolean | undefined; strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; tension?: number | undefined; stroke?: string | undefined; opacity?: number | undefined; closed?: false | undefined; }, \"clip\" | ... 2 more ... | \"tension\"> & { ...; }) | undefined"
+          "type": "(Omit<StrokeStyleDetails & { clip?: boolean | undefined; missing?: \"break\" | \"error\" | undefined; strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; tension?: number | undefined; stroke?: string | undefined; opacity?: number | undefined; closed?: false | undefined; }, \"clip\" | ... 3 more ... |..."
         },
         {
           "name": "guides",

@@ -87,8 +87,8 @@ interface ChartProgramActions {
   removeJitter(options?: RemoveJitterOptions): ChartProgram;
   packPoints(options: PackPointsOptions): ChartProgram;
   removePointPacking(options?: RemovePointPackingOptions): ChartProgram;
-  createLineMark(options?: StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
-  editLineMark(options: StrokeStyleDetails & { clip?: boolean; target?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
+  createLineMark(options?: StrokeStyleDetails & { clip?: boolean; missing?: "error" | "break"; id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
+  editLineMark(options: StrokeStyleDetails & { clip?: boolean; missing?: "error" | "break"; target?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
   createBarMark(options?: RectStyleDetails & { clip?: boolean; id?: string; data?: string; orientation?: "vertical" | "horizontal"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
   editBarMark(options: RectStyleDetails & { clip?: boolean; target?: string; blend?: "normal" | "difference"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
   createAreaMark(options?: StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
@@ -2773,6 +2773,7 @@ export interface CreateLinePlotOptions {
   strokeDash?: BasicStrokeDashChannel;
   line?: StrokeStyleDetails & {
     clip?: boolean;
+    missing?: "error" | "break";
     strokeWidth?: number;
     curve?: CurveInterpolation;
     tension?: number;
@@ -2920,7 +2921,7 @@ export interface CreatePolarLinePlotOptions {
   color?: LineCategoricalColorChannel;
   groupBy?: string | readonly [string, ...string[]];
   strokeDash?: BasicStrokeDashChannel;
-  line?: Omit<NonNullable<CreateLinePlotOptions["line"]>, "clip" | "closed" | "curve" | "tension"> & {
+  line?: Omit<NonNullable<CreateLinePlotOptions["line"]>, "clip" | "missing" | "closed" | "curve" | "tension"> & {
     curve?: "linear";
     closed?: boolean;
   };
@@ -2975,7 +2976,7 @@ export type CreateRadarPlotOptions = {
   ];
   color?: LineCategoricalColorChannel;
   strokeDash?: BasicStrokeDashChannel;
-  line?: Omit<NonNullable<CreateLinePlotOptions["line"]>, "clip" | "closed" | "curve" | "tension"> & {
+  line?: Omit<NonNullable<CreateLinePlotOptions["line"]>, "clip" | "missing" | "closed" | "curve" | "tension"> & {
     curve?: "linear";
     closed?: true;
   };

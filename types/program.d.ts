@@ -3463,7 +3463,7 @@ export interface CreatePolarLinePlotOptions {
   color?: LineCategoricalColorChannel;
   groupBy?: string | readonly [string, ...string[]];
   strokeDash?: BasicStrokeDashChannel;
-  line?: Omit<NonNullable<CreateLinePlotOptions["line"]>, "clip" | "closed" | "curve" | "tension"> & {
+  line?: Omit<NonNullable<CreateLinePlotOptions["line"]>, "clip" | "missing" | "closed" | "curve" | "tension"> & {
     curve?: "linear";
     closed?: boolean;
   };
@@ -3529,7 +3529,7 @@ export type CreateRadarPlotOptions = {
   ];
   color?: LineCategoricalColorChannel;
   strokeDash?: BasicStrokeDashChannel;
-  line?: Omit<NonNullable<CreateLinePlotOptions["line"]>, "clip" | "closed" | "curve" | "tension"> & {
+  line?: Omit<NonNullable<CreateLinePlotOptions["line"]>, "clip" | "missing" | "closed" | "curve" | "tension"> & {
     curve?: "linear";
     closed?: true;
   };
@@ -3769,6 +3769,7 @@ export interface CreateLinePlotOptions {
   strokeDash?: BasicStrokeDashChannel;
   line?: StrokeStyleDetails & {
     clip?: boolean;
+    missing?: "error" | "break";
     strokeWidth?: number;
     curve?: CurveInterpolation;
     tension?: number;
@@ -5269,6 +5270,7 @@ export class ChartProgram {
   removePointPacking(options?: RemovePointPackingOptions): ChartProgram;
   createLineMark(options?: StrokeStyleDetails & {
     clip?: boolean;
+    missing?: "error" | "break";
     id?: string;
     data?: string;
     strokeWidth?: number;
@@ -5280,6 +5282,7 @@ export class ChartProgram {
   }): ChartProgram;
   editLineMark(options: StrokeStyleDetails & {
     clip?: boolean;
+    missing?: "error" | "break";
     target?: string;
     strokeWidth?: number;
     curve?: CurveInterpolation;

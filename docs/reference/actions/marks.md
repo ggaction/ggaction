@@ -973,7 +973,7 @@ and independently shared resources. [Marks](../../api/marks.md)
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createLineMark(options?: StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
+createLineMark(options?: StrokeStyleDetails & { clip?: boolean; missing?: "error" | "break"; id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
 ```
 
 Named option contracts: [`StrokeStyleDetails`](./../types.md#type-strokestyledetails) · [`CurveInterpolation`](./../types.md#type-curveinterpolation).
@@ -989,6 +989,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `missing` | Optional / branch-dependent | `"break" \| "error" \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
@@ -1003,7 +1004,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createLineMark({ clip?, id?, data?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed? } = {})
+createLineMark({ clip?, missing?, id?, data?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed? } = {})
 ```
 
 Create a semantic line mark and empty path collection. Curve defaults to
@@ -1012,6 +1013,9 @@ rematerialization. A compatible layered source can provide data, positions,
 shared scales, and a grain-preserving aggregate such as `mean`; bar-only bin,
 stack, and offset policies are not inherited. `closed: true` closes each Polar
 series as a radar path.
+For direct Cartesian quantitative/temporal positions, opt-in `missing: "break"`
+preserves null/absent observations as independent valid runs. The default remains
+strict. Each run is a path and selection item; curves restart at each gap.
 [Marks](../../api/marks.md)
 
 
@@ -1022,7 +1026,7 @@ series as a radar path.
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editLineMark(options: StrokeStyleDetails & { clip?: boolean; target?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
+editLineMark(options: StrokeStyleDetails & { clip?: boolean; missing?: "error" | "break"; target?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
 ```
 
 Named option contracts: [`StrokeStyleDetails`](./../types.md#type-strokestyledetails) · [`CurveInterpolation`](./../types.md#type-curveinterpolation).
@@ -1038,6 +1042,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `missing` | Optional / branch-dependent | `"break" \| "error" \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
 | `curve` | Optional / branch-dependent | `CurveInterpolation \| undefined` |
@@ -1051,11 +1056,11 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editLineMark({ clip?, target?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed? })
+editLineMark({ clip?, missing?, target?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed? })
 ```
 
-Edit line appearance and rematerialize concrete path commands without changing
-semantic encodings. [Marks](../../api/marks.md)
+Edit line appearance or its explicit missing-coordinate policy and rematerialize
+concrete path commands without changing field encodings. [Marks](../../api/marks.md)
 
 
 ## `createBarMark`

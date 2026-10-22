@@ -395,7 +395,17 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ## `createLineMark`
 
-- Signature: `createLineMark({ clip?, id?, data?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed?, lineCap?, lineJoin?, miterLimit? } = {})`
+- Signature: `createLineMark({ clip?, missing?, id?, data?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed?, lineCap?, lineJoin?, miterLimit? } = {})`
+- `missing`: `"error" | "break"`, 기본은 기존 `error`이며 생략 시 semantic 상태를 추가하지 않는다.
+  명시 값은 `layer.mark.missing`에 저장한다. `break`는 직접 Cartesian quantitative/temporal x/y에만
+  적용하며 aggregate/bin/categorical/Polar/Parallel은 거부한다. null/absent만 경계이고 다른 잘못된
+  값은 계속 오류다. 각 차원에는 하나 이상의 유효 값이 필요하며 domain은 반대 좌표의 결측과 무관하다.
+  기존 위치/pathOrder로 정렬한 뒤 유효한 연속 구간을 독립 path item으로 그린다. 정렬 좌표가
+  결측이면 원본 순서상 경계 양쪽을 각각 정렬한다. 구간마다 curve/tension을 다시 시작하며
+  singleton은 M 하나, 빈 구간은 path 없음이다. 각 item의 sourceIndices는 실제 유효 행만
+  소유한다. raw rows는 유지한다. 선택/강조/접근성은 이 구간의 실제 vertex를 사용한다.
+  Concrete one-subpath 규칙과 각 path 30,000명령 한도는 그대로다.
+  Evidence: `test/unit/actions/marks/line-missing.test.js`.
 - `id`, `data`: `createPointMark`와 같은 ID/data 계약이다.
 - `strokeWidth`: Implemented, non-negative finite number이며 concrete default는 `2`다. 명시한 값은
   mark materialization config에 저장되어 path 재생성 후에도 유지된다.
@@ -436,7 +446,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ### Formal values — `createLineMark`
 
-- Implemented: `createLineMark({ clip?: boolean; id?: UserId; data?: UserId; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; opacity?: UnitInterval; curve?: CurveInterpolation; tension?: UnitInterval; closed?: boolean; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`
+- Implemented: `createLineMark({ clip?: boolean; missing?: "error" | "break"; id?: UserId; data?: UserId; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; opacity?: UnitInterval; curve?: CurveInterpolation; tension?: UnitInterval; closed?: boolean; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`
 - Planned (NOT IMPLEMENTED): —
 - `clip` follows [the shared Cartesian plot-clipping contract](#shared-cartesian-plot-clipping).
 - Proposed (NOT IMPLEMENTED): —
@@ -463,7 +473,9 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ## `editLineMark`
 
-- Signature: `editLineMark({ clip?, target?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed?, lineCap?, lineJoin?, miterLimit? })`.
+- Signature: `editLineMark({ clip?, missing?, target?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed?, lineCap?, lineJoin?, miterLimit? })`.
+- `missing`은 위 생성 계약과 같은 semantic 정책이며 complete line을 재구체화한다. 결측 자료에서
+  `error`로 변경하면 strict validation으로 거부하며 이전 immutable program을 유지한다.
 - `target`: existing line mark. Current compatible mark 또는 유일한 line mark로 infer하며 ambiguity는 explicit target을 요구한다.
 - `strokeWidth`: non-negative finite number. Active field width와 scalar edit는 충돌한다. Constant mode에서
   전달되면 stored line config와 every concrete series path를 갱신한다. `opacity`도 active field와 scalar edit가
@@ -476,7 +488,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ### Formal values — `editLineMark`
 
-- Implemented: `editLineMark({ clip?: boolean; target?: UserId; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; opacity?: UnitInterval; curve?: CurveInterpolation; tension?: UnitInterval; closed?: boolean; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
+- Implemented: `editLineMark({ clip?: boolean; missing?: "error" | "break"; target?: UserId; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; opacity?: UnitInterval; curve?: CurveInterpolation; tension?: UnitInterval; closed?: boolean; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
 - Planned (NOT IMPLEMENTED): —
 - `clip` follows [the shared Cartesian plot-clipping contract](#shared-cartesian-plot-clipping).
 - Proposed (NOT IMPLEMENTED): —

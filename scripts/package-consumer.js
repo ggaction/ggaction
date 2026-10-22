@@ -109,6 +109,22 @@ async function testNodeConsumer(directory) {
     import {createFacetSharedTopLaneProgram} from "./facet-lane-public.js";
     import {createPlotUnderlayProgram} from "./plot-underlay-public.js";
 
+    for (const factory of [chart, basicChart]) {
+      const values = [{x:0,y:1},{x:2,y:3},{x:3,y:null},{x:5,y:6},{x:7,y:8}];
+      const p = factory().createCanvas({width:100,height:100,margin:0}).createData({values})
+        .createLinePlot({id:"gaps",x:{field:"x",scale:{domain:[0,10]}},
+          y:{field:"y",scale:{domain:[0,10]}},line:{missing:"break"},guides:false});
+      assert.deepEqual(p.graphicSpec.objects.gaps.items.map(i=>i.properties.commands),[
+        [{op:"M",x:0,y:90},{op:"L",x:20,y:70}],
+        [{op:"M",x:50,y:40},{op:"L",x:70,y:20}]
+      ]);
+      assert.deepEqual(p.semanticSpec.datasets[0].values,values);
+      assert.deepEqual(deserializeProgram(serializeProgram(p)).graphicSpec,p.graphicSpec);
+      assert.equal((await renderToPNGBuffer(p)).width,100);
+      assert.equal((await renderToPDFBuffer(p)).buffer.subarray(0,4).toString(),"%PDF");
+      assert.ok(renderToSVG(p).includes('M'));
+    }
+
     {
       const {createLinearNearestTicks}=await import("./linear-nearest-ticks-public.js");
       const p=createLinearNearestTicks();

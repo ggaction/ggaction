@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.21.
 
-Contract: sha256:4203b8ee703175af431861028012d5506aebb348c978d9a18b93db30d9c9e1d4. Status: development. Runtime source: 39f6520ac5c51a49ae4dfeb553d73785e4d033c5. Release baseline: v0.0.13.
+Contract: sha256:7115d3b5333f8b6a3d067aa8d49d0ff2af3bebe22e2f04c77728cfede20c8a86. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/39f6520ac5c51a49ae4dfeb553d73785e4d033c5/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/39f6520ac5c51a49ae4dfeb553d73785e4d033c5/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -4281,6 +4281,11 @@ unique tuple such as `["country", "scenario"]`. Explicit groups define identity;
 `groupBy`, color/dash retain their shared-field grouping. Use `line` for constant
 appearance. See [independent series identity](./api/series-encodings/).
 
+For a direct quantitative/temporal line, `line: { missing: "break" }` preserves
+null/absent observations as gaps. The default remains strict. See
+[gaps in direct lines](./api/marks/line-area/#gaps) for supported
+positions, ordering, domains and segment ownership.
+
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
 ```javascript
@@ -6228,7 +6233,7 @@ values; areas close two edges or one density edge against a baseline.
 
 ## Line marks
 
-### `createLineMark({ id?, data?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed?, lineCap?, lineJoin?, miterLimit? } = {})`
+### `createLineMark({ id?, data?, missing?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed?, lineCap?, lineJoin?, miterLimit? } = {})`
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
@@ -6252,6 +6257,39 @@ the path remains empty; the second completes the same final layer, resolved
 scales, and graphics in both orders. Aggregate y lines are different: their
 grain requires categorical, temporal, or binned quantitative x. Unbinned
 quantitative x does not accept aggregate y.
+
+### Gaps
+
+The default `missing: "error"` keeps strict validation. Choose `missing: "break"`
+to leave a gap at null or absent x/y coordinates in a direct Cartesian line with
+quantitative or temporal positions. Numeric strings, invalid dates and nonfinite
+numbers remain errors. Each dimension needs at least one nonmissing value.
+Valid x values still contribute to the x domain when y is missing, and vice versa.
+
+> **Executable complete.** Import ggaction in an ES module; all observations and required setup are included in this program.
+
+```javascript
+import { chart } from "ggaction";
+
+const gaps = chart().createCanvas().createData({ values: [
+  { time: 1, amount: 2 }, { time: 2, amount: 4 },
+  { time: 3, amount: null },
+  { time: 4, amount: 5 }, { time: 5, amount: 6 }
+] }).createLinePlot({ x: "time", y: "amount", line: { missing: "break" } });
+```
+
+Each run is a separate path and selection item; curves restart independently.
+Singletons have one move command; empty runs have no path. Raw rows remain, and
+each path owns its valid observations. Accessibility lists valid vertices.
+Snapshots retain gaps. Mark filtering retains selected series' invisible gap
+rows so separated paths stay separate.
+
+Default position sorting or explicit path order still applies. When the sorting
+coordinate itself is missing, that row divides the original row order and each
+side is sorted separately. Aggregate, binned, categorical, Polar and Parallel
+positions do not accept this line policy. Parallel coordinates retain their own
+independent missing-data option. `editLineMark({ missing })` changes the policy;
+switching to `"error"` rejects remaining missing coordinates atomically.
 
 ### Ordered categories
 
@@ -6303,7 +6341,7 @@ line vertices use the shared bar centers. Incompatible bin, stack, or offset
 policies are not transferred. Pass `data` explicitly to assemble an independent
 line with explicit encodings and scale IDs.
 
-### `editLineMark({ target?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed?, lineCap?, lineJoin?, miterLimit? })`
+### `editLineMark({ target?, missing?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed?, lineCap?, lineJoin?, miterLimit? })`
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
@@ -19292,7 +19330,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `color` | Optional / branch-dependent | `LineCategoricalColorChannel<CategoricalColorScaleOptions> \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| readonly [string, ...string[]] \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `Omit<{ field: string; value?: undefined; target?: string \| undefined; fieldType?: "nominal" \| "ordinal" \| undefined; scale?: DashScaleOptions \| undefined; }, "target"> \| Omit<...> \| undefined` |
-| `line` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; tension?: number \| undefined; stroke?: string \| undefined; opacity?: number \| undefined; closed?: false \| undefined; }) \| undefined` |
+| `line` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; missing?: "break" \| "error" \| undefined; strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; tension?: number \| undefined; stroke?: string \| undefined; opacity?: number \| undefined; closed?: false \| undefined; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| (Omit<CPathGuides, "grid" \| "legend"> & { grid?: false \| (Omit<CartesianGridOptions, "horizontal"> & { horizontal?: boolean \| ... 1 more ... \| undefined; }) \| undefined; legend?: false \| ... 1 more ... \| undefined; }) \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
@@ -19374,7 +19412,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `color` | Optional / branch-dependent | `LineCategoricalColorChannel<NonPointCategoricalColorScaleOptions> \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| readonly [string, ...string[]] \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `Omit<{ field: string; value?: undefined; target?: string \| undefined; fieldType?: "nominal" \| "ordinal" \| undefined; scale?: DashScaleOptions \| undefined; }, "target"> \| Omit<...> \| undefined` |
-| `line` | Optional / branch-dependent | `(Omit<StrokeStyleDetails & { clip?: boolean \| undefined; strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; tension?: number \| undefined; stroke?: string \| undefined; opacity?: number \| undefined; closed?: false \| undefined; }, "clip" \| ... 2 more ... \| "tension"> & { ...; }) \| undefined` |
+| `line` | Optional / branch-dependent | `(Omit<StrokeStyleDetails & { clip?: boolean \| undefined; missing?: "break" \| "error" \| undefined; strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; tension?: number \| undefined; stroke?: string \| undefined; opacity?: number \| undefined; closed?: false \| undefined; }, "clip" \| ... 3 more ... \|...` |
 | `guides` | Optional / branch-dependent | `false \| PolarPathGuideOptions \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
@@ -19411,7 +19449,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `order` | Optional / branch-dependent | `readonly [RadarCategoryValue, RadarCategoryValue, RadarCategoryValue, ...RadarCategoryValue[]] \| undefined` |
 | `color` | Optional / branch-dependent | `LineCategoricalColorChannel<NonPointCategoricalColorScaleOptions> \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `Omit<{ field: string; value?: undefined; target?: string \| undefined; fieldType?: "nominal" \| "ordinal" \| undefined; scale?: DashScaleOptions \| undefined; }, "target"> \| Omit<...> \| undefined` |
-| `line` | Optional / branch-dependent | `(Omit<StrokeStyleDetails & { clip?: boolean \| undefined; strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; tension?: number \| undefined; stroke?: string \| undefined; opacity?: number \| undefined; closed?: false \| undefined; }, "clip" \| ... 2 more ... \| "tension"> & { ...; }) \| undefined` |
+| `line` | Optional / branch-dependent | `(Omit<StrokeStyleDetails & { clip?: boolean \| undefined; missing?: "break" \| "error" \| undefined; strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; tension?: number \| undefined; stroke?: string \| undefined; opacity?: number \| undefined; closed?: false \| undefined; }, "clip" \| ... 3 more ... \|...` |
 | `guides` | Optional / branch-dependent | `false \| RadarGuideOptions \| undefined` |
 | `category` | Optional / branch-dependent | `RadarCategoryChannel \| undefined` |
 | `value` | Optional / branch-dependent | `PolarRadiusChannel \| undefined` |
@@ -20947,7 +20985,7 @@ and independently shared resources. [Marks](./api/marks/)
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-createLineMark(options?: StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
+createLineMark(options?: StrokeStyleDetails & { clip?: boolean; missing?: "error" | "break"; id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
 ```
 
 Named option contracts: [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`CurveInterpolation`](./reference/types/#type-curveinterpolation).
@@ -20962,6 +21000,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `missing` | Optional / branch-dependent | `"break" \| "error" \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
@@ -20974,7 +21013,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createLineMark({ clip?, id?, data?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed? } = {})
+createLineMark({ clip?, missing?, id?, data?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed? } = {})
 ```
 
 Create a semantic line mark and empty path collection. Curve defaults to
@@ -20983,6 +21022,9 @@ rematerialization. A compatible layered source can provide data, positions,
 shared scales, and a grain-preserving aggregate such as `mean`; bar-only bin,
 stack, and offset policies are not inherited. `closed: true` closes each Polar
 series as a radar path.
+For direct Cartesian quantitative/temporal positions, opt-in `missing: "break"`
+preserves null/absent observations as independent valid runs. The default remains
+strict. Each run is a path and selection item; curves restart at each gap.
 [Marks](./api/marks/)
 
 ## `editLineMark`
@@ -20992,7 +21034,7 @@ series as a radar path.
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-editLineMark(options: StrokeStyleDetails & { clip?: boolean; target?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
+editLineMark(options: StrokeStyleDetails & { clip?: boolean; missing?: "error" | "break"; target?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
 ```
 
 Named option contracts: [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`CurveInterpolation`](./reference/types/#type-curveinterpolation).
@@ -21007,6 +21049,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `missing` | Optional / branch-dependent | `"break" \| "error" \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
 | `curve` | Optional / branch-dependent | `CurveInterpolation \| undefined` |
@@ -21018,11 +21061,11 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editLineMark({ clip?, target?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed? })
+editLineMark({ clip?, missing?, target?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed? })
 ```
 
-Edit line appearance and rematerialize concrete path commands without changing
-semantic encodings. [Marks](./api/marks/)
+Edit line appearance or its explicit missing-coordinate policy and rematerialize
+concrete path commands without changing field encodings. [Marks](./api/marks/)
 
 ## `createBarMark`
 
@@ -28150,8 +28193,8 @@ interface ChartProgramActions {
   removeJitter(options?: RemoveJitterOptions): ChartProgram;
   packPoints(options: PackPointsOptions): ChartProgram;
   removePointPacking(options?: RemovePointPackingOptions): ChartProgram;
-  createLineMark(options?: StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
-  editLineMark(options: StrokeStyleDetails & { clip?: boolean; target?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
+  createLineMark(options?: StrokeStyleDetails & { clip?: boolean; missing?: "error" | "break"; id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
+  editLineMark(options: StrokeStyleDetails & { clip?: boolean; missing?: "error" | "break"; target?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
   createBarMark(options?: RectStyleDetails & { clip?: boolean; id?: string; data?: string; orientation?: "vertical" | "horizontal"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
   editBarMark(options: RectStyleDetails & { clip?: boolean; target?: string; blend?: "normal" | "difference"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
   createAreaMark(options?: StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
@@ -30448,6 +30491,7 @@ export interface CreateLinePlotOptions {
   strokeDash?: BasicStrokeDashChannel;
   line?: StrokeStyleDetails & {
     clip?: boolean;
+    missing?: "error" | "break";
     strokeWidth?: number;
     curve?: CurveInterpolation;
     tension?: number;
@@ -30577,7 +30621,7 @@ export interface CreatePolarLinePlotOptions {
   color?: LineCategoricalColorChannel;
   groupBy?: string | readonly [string, ...string[]];
   strokeDash?: BasicStrokeDashChannel;
-  line?: Omit<NonNullable<CreateLinePlotOptions["line"]>, "clip" | "closed" | "curve" | "tension"> & {
+  line?: Omit<NonNullable<CreateLinePlotOptions["line"]>, "clip" | "missing" | "closed" | "curve" | "tension"> & {
     curve?: "linear";
     closed?: boolean;
   };
@@ -30626,7 +30670,7 @@ export type CreateRadarPlotOptions = {
   ];
   color?: LineCategoricalColorChannel;
   strokeDash?: BasicStrokeDashChannel;
-  line?: Omit<NonNullable<CreateLinePlotOptions["line"]>, "clip" | "closed" | "curve" | "tension"> & {
+  line?: Omit<NonNullable<CreateLinePlotOptions["line"]>, "clip" | "missing" | "closed" | "curve" | "tension"> & {
     curve?: "linear";
     closed?: true;
   };
@@ -39128,12 +39172,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/39f6520ac5c51a49ae4dfeb553d73785e4d033c5/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/39f6520ac5c51a49ae4dfeb553d73785e4d033c5/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -41625,9 +41669,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:4203b8ee703175af431861028012d5506aebb348c978d9a18b93db30d9c9e1d4` |
+| Contract fingerprint | `sha256:7115d3b5333f8b6a3d067aa8d49d0ff2af3bebe22e2f04c77728cfede20c8a86` |
 | Example and dataset source | `0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e` |
-| Runtime source commit | `39f6520ac5c51a49ae4dfeb553d73785e4d033c5` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 290 |
 | Declared actions in that release | 234 |

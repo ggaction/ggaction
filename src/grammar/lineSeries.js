@@ -1,4 +1,6 @@
 import { cloneAndFreeze } from "../core/immutable.js";
+import { readLinePosition, validateLineMissingScope, orderLineGapValues,
+  splitLineGapValues } from "./lineMissing.js";
 import {
   readNominalField,
   readQuantitativeField,
@@ -124,6 +126,29 @@ export function resolveLineBins(rows, layer, scale = {}) {
 function deriveCartesianLineSeries(rows, layer, options = {}) {
   const { x, y, isAggregate, binnedAggregate, directRows, directTemporal } =
     requireLineEncoding(layer);
+  if (layer.mark.missing === "break") {
+    const xValues = readLinePosition(rows, x), yValues = readLinePosition(rows, y);
+    const fields = validatePathSeriesAppearance(rows, layer, options.scales);
+    const pathOrder = layer.encoding?.pathOrder;
+    const orderValues = pathOrder === undefined
+      ? directTemporal && y.fieldType === "temporal" ? yValues : xValues
+      : readQuantitativeField(rows, pathOrder.field);
+    const groups = new Map();
+    for (let index = 0; index < rows.length; index += 1) {
+      const series = groupedSeries(groups, fields, fields.map(field => rows[index][field]));
+      series.values.push({ x: xValues[index], y: yValues[index], sourceIndex: index });
+      (series.orderValues ??= []).push(orderValues[index]);
+    }
+    const series = [...groups.values()].flatMap(item => {
+      const ordered = orderLineGapValues(item.values, item.orderValues, pathOrder?.order);
+      const segments = splitLineGapValues(ordered);
+      return segments.map(values => ({ key: item.key,
+        values: values.map(({ sourceIndex: _sourceIndex, ...value }) => value),
+        sourceIndices: values.map(value => value.sourceIndex) }));
+    });
+    return cloneAndFreeze({ xValues: xValues.filter(value => value !== null),
+      yValues: yValues.filter(value => value !== null), series });
+  }
   if (isAggregate) {
     validateAggregateFieldValues(rows, y.field, y.fieldType);
   }
@@ -365,6 +390,7 @@ export function derivePolarLineSeries(rows, layer, { thetaDomain } = {}) {
 }
 
 export function deriveLineSeries(rows, layer, options) {
+  validateLineMissingScope(layer);
   const polar = layer?.encoding?.theta !== undefined ||
     layer?.encoding?.radius !== undefined;
   return polar

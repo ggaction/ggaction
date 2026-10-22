@@ -5,6 +5,7 @@ import {
 import { emptyPositionPolicy, resolveBin } from "./common.js";
 import { findSemanticScale } from "../../../../selectors/scales.js";
 import { validateCategoricalColorConsumer } from "../../../../grammar/scales/colorConsumers.js";
+import { validateLineMissingScope } from "../../../../grammar/lineMissing.js";
 
 function rejectStack(args, channel) {
   if (args.stack !== undefined) {
@@ -26,6 +27,8 @@ export function resolveLinePositionPolicy({
   args,
   fieldType
 }) {
+  validateLineMissingScope({ ...layer, encoding: { ...layer.encoding,
+    [channel]: { ...args, fieldType } } });
   for (const appearance of ["color", "strokeDash"]) {
     const encoding = layer.encoding?.[appearance];
     const scale = encoding === undefined ? undefined : findSemanticScale(program, encoding.scale);

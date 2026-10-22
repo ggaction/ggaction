@@ -22,6 +22,7 @@ import { normalizeStatisticalWeight } from
 import { ITEM_MISSING_MARK_TYPES, validateItemMissing } from
   "../../../grammar/itemMissing.js";
 import { isIndependentText, validateTextOffsetEncoding } from "../../../grammar/text.js";
+import { validateLineMissing, validateLineMissingScope } from "../../../grammar/lineMissing.js";
 
 function validateLayerSource(program, parsed, value, sourceMarkTypes) {
   validateUserId(value, "Layer source id");
@@ -75,6 +76,10 @@ export function validateLayerSemanticValue(
       if (!["error", "break"].includes(value)) {
         throw new Error(`Unsupported area missing policy "${value}".`);
       }
+    } else if (markType === "line") {
+      validateLineMissing(value);
+      const layer = findLayer(program, parsed.id);
+      validateLineMissingScope({ ...layer, mark: { ...layer.mark, missing: value } });
     } else if (ITEM_MISSING_MARK_TYPES.includes(markType)) {
       validateItemMissing(value, `${markType} missing`);
     } else {

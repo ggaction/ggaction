@@ -90,6 +90,7 @@ export function derivePathSeriesFieldValues(
   encoding,
   scale
 ) {
+  if (series.length === 0) return [];
   const fields = Object.keys(series[0]?.key ?? {});
   const values = seriesValueIndex(rows, fields, field, channel, encoding,
     Object.hasOwn(scale ?? {}, "unknown") ? scale : undefined);

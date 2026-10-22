@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Add opt-in `missing: "break"` for direct Cartesian quantitative/temporal lines, preserving raw observations, independent axis domains and curve restarts across gaps, including filtering, immutable edits and saved programs. Strict defaults remain unchanged.
+
 - Add opt-in `nice: { count }` rounding for automatic linear position domains, preserving existing boolean behavior, independent facet ranges, immutable edits and saved programs.
 - Add opt-in nearest-step linear Cartesian ticks with matching labels, inferred grids, named owners, independent facets and editable saved programs.
 - Fix editable version-1 lookup schema migration while retaining strict references, typed keys, raw rows and final schema validation.

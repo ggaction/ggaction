@@ -1,6 +1,7 @@
 import { isSourceOwnedText } from "../../../grammar/text.js";
 import { readSeriesIdentity, validatePathSeriesAppearance } from "../../../grammar/pathSeries.js";
 import { readAreaEndpoint } from "../../../grammar/areaEndpoints.js";
+import { readLinePosition } from "../../../grammar/lineMissing.js";
 import { readNominalField, readScaleField } from "../../../grammar/scales/index.js";
 import { readCategoricalLineColor, validateCategoricalColorConsumer } from "../../../grammar/scales/colorConsumers.js";
 import { findDataset } from "../../../selectors/datasets.js";
@@ -57,6 +58,10 @@ export function readConsumerFieldValues(
   scale = findScale(program, consumer.encoding.scale)
 ) {
   const { field, fieldType, temporalUnit } = consumer.encoding;
+  if (consumer.layer.mark.type === "line" && consumer.layer.mark.missing === "break" &&
+      ["x", "y"].includes(consumer.channel)) {
+    return readLinePosition(dataset.values, consumer.encoding).filter(value => value !== null);
+  }
   if (consumer.channel === "strokeDash") {
     validateCategoricalColorConsumer(consumer.layer, consumer.encoding, scale, "strokeDash");
     return readNominalField(dataset.values, field);

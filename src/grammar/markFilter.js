@@ -1,5 +1,6 @@
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
 import { normalizeMarkSelector } from "./markSelection.js";
+import { retainLineGapBoundaries } from "./lineMissing.js";
 
 const TRANSFORM_KEYS = Object.freeze([
   "type", "target", "selector", "selectors"
@@ -50,7 +51,7 @@ export function normalizeMarkFilterTransform(target, selectors) {
   return cloneAndFreeze(transform);
 }
 
-export function deriveMarkFilteredRows(sourceRows, items, selectedKeys) {
+export function deriveMarkFilteredRows(sourceRows, items, selectedKeys, layer) {
   if (!Array.isArray(sourceRows)) {
     throw new TypeError("Mark filter source values must be an array.");
   }
@@ -60,5 +61,6 @@ export function deriveMarkFilteredRows(sourceRows, items, selectedKeys) {
       .filter(item => selected.has(item.key))
       .flatMap(item => item.members)
   );
-  return cloneAndFreeze(sourceRows.filter(row => members.has(row)));
+  const retained = retainLineGapBoundaries(sourceRows, members, layer);
+  return cloneAndFreeze(sourceRows.filter(row => retained.has(row)));
 }

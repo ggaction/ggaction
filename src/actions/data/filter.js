@@ -135,7 +135,8 @@ export const materializeMarkFilteredData = /* @__PURE__ */ closedAction(
       currentRows = deriveMarkFilteredRows(
         currentRows,
         resolved.items,
-        resolved.keys
+        resolved.keys,
+        layer
       );
       if (index < selectors.length - 1) {
         preview = withPreviewDatasetValues(preview, {

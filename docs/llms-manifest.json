@@ -4,8 +4,8 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:4203b8ee703175af431861028012d5506aebb348c978d9a18b93db30d9c9e1d4",
-    "sourceCommit": "39f6520ac5c51a49ae4dfeb553d73785e4d033c5",
+    "contractId": "sha256:7115d3b5333f8b6a3d067aa8d49d0ff2af3bebe22e2f04c77728cfede20c8a86",
+    "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -64,8 +64,8 @@
         "what-the-server-does-not-provide",
         "related"
       ],
-      "bytes": 11096,
-      "sha256": "1ed05432f0975f775bfd87805f7d533bee8a4ec936618c052dae8fd8bebfb88d"
+      "bytes": 11024,
+      "sha256": "6bdaaf83602079838ed4e8e8cf79f407175a15015615e1395f13e6104e01920a"
     },
     {
       "order": 4,
@@ -728,8 +728,8 @@
         "advanced-authoring",
         "createtextplot"
       ],
-      "bytes": 18738,
-      "sha256": "a28f14a7d42997d64f8520a83e52e4ae3ee4a2a12eb63350dbbd971a8c76547c"
+      "bytes": 19003,
+      "sha256": "347a2228a651a055dbbac9c5b1d5f3fd4f91bae806b690d6bf4238f24e6c774d"
     },
     {
       "order": 47,
@@ -927,9 +927,10 @@
       "headings": [
         "line-and-area-marks",
         "line-marks",
-        "createlinemark-id-data-stroke-strokewidth-opacity-curve-tension-closed-linecap-linejoin-miterlimit",
+        "createlinemark-id-data-missing-stroke-strokewidth-opacity-curve-tension-closed-linecap-linejoin-miterlimit",
+        "gaps",
         "ordered-categories",
-        "editlinemark-target-stroke-strokewidth-opacity-curve-tension-closed-linecap-linejoin-miterlimit",
+        "editlinemark-target-missing-stroke-strokewidth-opacity-curve-tension-closed-linecap-linejoin-miterlimit",
         "polar-lines-and-radar-paths",
         "area-marks",
         "createareamark-id-data-fill-opacity-stroke-strokewidth-curve-missing-linecap-linejoin-miterlimit",
@@ -939,8 +940,8 @@
         "editarcmark-target-innerradius-padangle-fill-opacity-stroke-strokewidth-linecap-linejoin-miterlimit",
         "related"
       ],
-      "bytes": 15287,
-      "sha256": "cb6df1f4f9a541f1d2e78136d36ca78e59cd2ea9879a38747af04e7ecd525204"
+      "bytes": 16987,
+      "sha256": "41da0afbc90ea0489461c89388d8fa1afb0ecb5b5f07af54cf07601339f3db7e"
     },
     {
       "order": 59,
@@ -2058,8 +2059,8 @@
         "focused-channel-scale-editors",
         "related"
       ],
-      "bytes": 167540,
-      "sha256": "0980c7d58bf75a97efc9bea1debf1af93286ae97b7e51b759ab3280566c5a058"
+      "bytes": 167603,
+      "sha256": "a08e2f8f582cfc1b5938bfd40dfe8901d019115896c5e9f0b8784fdfe260107d"
     },
     {
       "order": 119,
@@ -2103,8 +2104,8 @@
         "editrectmark",
         "related"
       ],
-      "bytes": 71581,
-      "sha256": "3ce1916f0dfac0230579a3a0fbfedc6513358246987f3725a92eda20446d60ec"
+      "bytes": 72095,
+      "sha256": "71b1fc70b1452809ec313a98b32825febc1981745e0654b5d748d28a33e89303"
     },
     {
       "order": 120,
@@ -3041,8 +3042,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 352135,
-      "sha256": "64b1ee2e4a1a298698c955caf90a56ce007791a5f78e769b45645de5bb181df9"
+      "bytes": 352250,
+      "sha256": "4151742ef00e2d761cd0cf673eabc3c5d1e145d227a60ebda8f6b8bb5bf5f3d7"
     },
     {
       "order": 127,
@@ -3074,8 +3075,8 @@
         "clip-a-named-graphic-owner",
         "scale-materialization"
       ],
-      "bytes": 19022,
-      "sha256": "79d8df8adb8f7f8346a132f73c8429158e2a44e65991fbf342e94c5ed74ef5c1"
+      "bytes": 18950,
+      "sha256": "9f4dface42ad85d51435341bf7599d7bc74c9adb44c36c67225dcd90f3d5be55"
     },
     {
       "order": 129,
@@ -3403,8 +3404,8 @@
         "choose-the-matching-documentation",
         "migration-from-v0013"
       ],
-      "bytes": 3033,
-      "sha256": "2c3f69603648e9cabd0bba63e1cdd50d7777239c44853feeb14ea4ae814874a6"
+      "bytes": 3000,
+      "sha256": "18ed7e56b300962770187d37903764dd60cb51786e25ff2bdb110f657c77c9d1"
     },
     {
       "order": 150,

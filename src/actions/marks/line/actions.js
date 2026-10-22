@@ -35,6 +35,7 @@ import {
   resolvePositionedLineMaterialization
 } from "./materialize.js";
 import { resolveLineBins } from "../../../grammar/lineSeries.js";
+import { validateLineMissing, validateLineMissingScope } from "../../../grammar/lineMissing.js";
 import { requireSemanticScale } from "../../../selectors/scales.js";
 import {
   requestedStrokeDetails,
@@ -44,11 +45,11 @@ import {
 const DEFAULT_LINE_STROKE = DEFAULT_COLORS.mark;
 const DEFAULT_LINE_WIDTH = 2;
 const CREATE_OPTIONS = Object.freeze([
-  "clip", "id", "data", "stroke", "strokeWidth", "opacity", "curve", "tension", "closed",
+  "clip", "missing", "id", "data", "stroke", "strokeWidth", "opacity", "curve", "tension", "closed",
   ...STROKE_STYLE_PROPERTIES
 ]);
 const EDIT_OPTIONS = Object.freeze([
-  "clip", "target", "stroke", "strokeWidth", "opacity", "curve", "tension", "closed",
+  "clip", "missing", "target", "stroke", "strokeWidth", "opacity", "curve", "tension", "closed",
   ...STROKE_STYLE_PROPERTIES
 ]);
 const REMATERIALIZE_OPTIONS = Object.freeze(["id", "scales"]);
@@ -103,6 +104,7 @@ const createLineMark = /* @__PURE__ */ action(
     validateMarkOptions(args, CREATE_OPTIONS, "createLineMark");
     requestedMarkClip(args);
     const strokeDetails = requestedStrokeDetails(args, "createLineMark");
+    const missing = validateLineMissing(args.missing);
     const id = resolveMarkId(this, args.id, {
       defaultId: "line",
       label: "Line mark id",
@@ -142,6 +144,10 @@ const createLineMark = /* @__PURE__ */ action(
         value: data
       });
     created = applyLayeredMarkInheritance(created, id, inherited);
+    if (Object.hasOwn(args, "missing")) {
+      created = created.editSemantic({ property: `layer[${id}].mark.missing`, value: missing });
+    }
+    validateLineMissingScope(findLayer(created, id));
     created = created
       .createGraphics({
         id,
@@ -211,6 +217,7 @@ const rematerializeLineMark = /* @__PURE__ */ action(
     });
     if (highlighted !== undefined) return highlighted;
     const { dataset, layer } = requireLine(this, id);
+    validateLineMissingScope(layer);
     const existingChildren = this.graphicSpec.objects[id].items;
     const parallel = layer.encoding?.parallel;
     const xScaleId = layer.encoding?.x?.scale;
@@ -283,7 +290,7 @@ const editLineMark = /* @__PURE__ */ action(
     requestedMarkClip(args);
     const strokeDetails = requestedStrokeDetails(args, "editLineMark");
     if (!EDIT_OPTIONS.filter(key => key !== "target").some(key => Object.hasOwn(args, key))) {
-      throw new Error("editLineMark requires stroke, strokeWidth, opacity, curve, tension, or closed.");
+      throw new Error("editLineMark requires stroke, strokeWidth, opacity, curve, tension, closed, or missing.");
     }
     const target = Object.hasOwn(args, "target")
       ? validateUserId(args.target, "Line mark id")
@@ -328,7 +335,12 @@ const editLineMark = /* @__PURE__ */ action(
     if (Object.hasOwn(args, "tension")) config.tension = args.tension;
     validateCardinalTension(config.tension, config.curve ?? "linear");
     validatePolarLineConfig(layer, config);
-    const next = this._withMarkConfig(layer.id, config);
+    let next = this._withMarkConfig(layer.id, config);
+    if (Object.hasOwn(args, "missing")) {
+      const missing = validateLineMissing(args.missing);
+      validateLineMissingScope({ ...layer, mark: { ...layer.mark, missing } });
+      next = next.editSemantic({ property: `layer[${layer.id}].mark.missing`, value: missing });
+    }
     const materialized = canMaterializeLine(next, layer)
       ? next.rematerializeLineMark({ id: layer.id })
       : next;
