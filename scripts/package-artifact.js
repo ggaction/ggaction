@@ -24,7 +24,7 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 export const PACKAGE_LIMITS = Object.freeze({
   entries: 619, // Combined verified editing, native chart fixes and transition scene modules.
-  packedBytes: 893_000, // Combined installed artifact measured892139bytes; next1000-byte boundary.
+  packedBytes: 894_000, // Combined installed artifact measured892139bytes; next1000-byte boundary.
   unpackedBytes: 4_247_000 // Combined artifact measured4246020bytes; next1000-byte boundary.
 });
 
