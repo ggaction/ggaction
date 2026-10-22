@@ -2718,6 +2718,22 @@ protected release 통과가 아니다. 번역에 설치된 candidate는 별도 �
 전까지 바꾸지 않는다.
 
 
+### Native facet content measurement preparation
+
+기존 facet materializer에 내부 측정 단계를 준비했다. 실제 guide 적용과 동일한 ownership
+planner로 제거할 axis component와 승격할 legend를 구분하고, 유지할 child graph와 개별 cell
+header를 기존 concrete bounds/clip/text-metric owner로 측정한다. Shared bottom axis는 별도
+footer 범위로 분리한다. Owner offset과 clip은 collection마다 한 번 계산해 item 수에 비례해
+순회한다. 새 spacing/anchor API, 저장 상태, renderer 또는 자동 materialization 경계는 없다.
+Public content layout 연결과 channel별 axis 정책은 아직 미구현이며
+`impl/facet-content-flow/PROPOSAL.md`가 남은 범위를 기록한다.
+
+Node22.23.1의 실제 official staging이 613entries/871866packed/4192188unpackedbytes여서
+기존871000/4191000 한도를 초과했다. 실제 실패를 보존하고 entries613은 유지하며 packed872000,
+unpacked4193000으로 최소1000byte 단계만 적용한다. 수치·그림·data/command 한도는 바꾸지 않는다.
+후속 doc provenance 재생성 이후의 최종 크기와 검증 로그는 measurement evidence가 기록한다.
+이 준비 단계는 설치된 번역 runtime이나 공개 registry 배포를 바꾸지 않는다.
+
 ### Explicit simple polygon point shapes
 
 공유 `grammar/pointPolygon.js`가 닫힌 vertex schema, 단순성·유한 범위 검증,

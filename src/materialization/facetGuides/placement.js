@@ -145,15 +145,8 @@ function attachAuthoredParentLegend(program, prepared, layout, synchronizeColorS
     compositionSpec: { ...spec, facet: { ...spec.facet, guides: { ...spec.facet.guides, legend: prepared.intent } } } });
 }
 
-export function applyFacetGuideComposition(program, { layout, plot, synchronizeColorSizeMeaning } = {}) {
-  if (!isPlainObject(layout) || !Array.isArray(layout.children)) {
-    throw new TypeError("Facet guide composition requires a resolved layout.");
-  }
-  if (!isPlainObject(plot)) {
-    throw new TypeError("Facet guide composition requires resolved plot bounds.");
-  }
-  const prepared = prepareSharedFacetLegend(program);
-  const children = layout.children.map(cell => {
+export function prepareFacetGuideOwnership(program, placements, prepared) {
+  const children = placements.map(cell => {
     const child = program.children[cell.id];
     return {
       id: cell.id,
@@ -164,13 +157,24 @@ export function applyFacetGuideComposition(program, { layout, plot, synchronizeC
       legendKinds: legendKinds(child)
     };
   });
-  const ownership = planFacetGuideOwnership({
-    placements: layout.children,
+  return planFacetGuideOwnership({
+    placements,
     children,
     axes: program.compositionSpec.facet.guides.axes,
     legend: program.compositionSpec.facet.guides.legend,
     ...(prepared === undefined ? {} : { sharedLegends: prepared.compatibility })
   });
+}
+
+export function applyFacetGuideComposition(program, { layout, plot, synchronizeColorSizeMeaning } = {}) {
+  if (!isPlainObject(layout) || !Array.isArray(layout.children)) {
+    throw new TypeError("Facet guide composition requires a resolved layout.");
+  }
+  if (!isPlainObject(plot)) {
+    throw new TypeError("Facet guide composition requires resolved plot bounds.");
+  }
+  const prepared = prepareSharedFacetLegend(program);
+  const ownership = prepareFacetGuideOwnership(program, layout.children, prepared);
   let next = program;
   for (const cell of layout.children) {
     const namespace = `${program.compositionSpec.id}-${cell.id}`;

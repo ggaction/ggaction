@@ -24,8 +24,8 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 export const PACKAGE_LIMITS = Object.freeze({
   entries: 613, // One additional shared simple-polygon point grammar module.
-  packedBytes: 871_000, // Polygon grammar measured870658bytes; minimal1000-byte rounding.
-  unpackedBytes: 4_191_000 // Axis tick precision measured4190208bytes; minimal1000-byte rounding.
+  packedBytes: 872_000, // Native facet bounds preparation measured871866bytes; minimal1000-byte rounding.
+  unpackedBytes: 4_193_000 // Native facet bounds preparation measured4192188bytes; minimal1000-byte rounding.
 });
 
 const REQUIRED_FILES = Object.freeze([

@@ -5,14 +5,43 @@
 - [x] 기존 격자 track으로 표현되지 않는 실제 두 입력의 경계와 좌표 재현
 - [x] 원본 전체 경계에서 일곱 plot origin을 재현하는 순수 계산 kernel
 - [x] 불변성·ragged row·간격 단조성·경계 겹침·잘못된 입력 검사
-- [ ] 실제 child graphic의 mark/guide/header 경계를 소유권별로 수집
+- [x] 실제 child graphic의 mark/guide/개별 cell header 경계를 소유권별로 수집
 - [x] 논리 마지막 cell 소유권을 보존한 shared footer 순수 위치 계산
 - [ ] 전체 facet materialization과 shared footer 배치 연결
 - [ ] public option·persistence·type·문서·설치 consumer 검증
 - [ ] 실제 입력 두 개의 School 번역과 source/native/cold 검증
 
-현재 checkpoint는 순수 kernel만 구현했다. Public API나 package runtime에 연결하지 않았고,
-기존 출력, 문서의 Current 상태, 설치된 번역 runtime은 바꾸지 않았다. 이슈 #258은 열린 상태다.
+현재 checkpoint는 순수 kernel과 native 경계 측정까지 구현했다. 새 public spacing API에는
+연결하지 않았고, 기존 출력, 문서의 Current 상태, 설치된 번역 runtime은 바꾸지 않았다.
+이슈 #258은 열린 상태다. 여러 cell을 가로지르는 role header와 public materialization 연결은 남아 있다.
+
+## Native 측정 checkpoint
+
+`materialization/facets.js`의 내부 `measureFacetContentChildren`은 기존 concrete bounds와
+clipping을 재사용해 mark·유지된 guide·개별 cell text header를 측정한다. 공유 X footer는 별도
+경계로 분리하고 제거될 guide/상위로 승격할 legend는 packing에 넣지 않는다. 실제 guide 적용과
+측정은 `facetGuides/placement.js`의 동일 ownership planner를 사용한다. 새 상태나 public option은
+없다. Native header는 text/owner로 전달하며 원본에서 읽은 경계 배열을 받는 API는 없다.
+Collection item마다 전체 tree를 다시 검색하지 않고 owner의 offset/clip을 한 번 계산한다.
+
+불변성·ragged topology·named/mixed-side axes·공유 legend 제외·회전 header·text metrics·중첩
+translation/clipping의 집중 검사를 추가했다. 초기 시험의 title 문자열과 범위 밖 tick은 fixture를
+기존 공개 API에 맞춰 수정했다. `editFacetSource`는 retained recipe를 유지하므로 새 unit의 guide
+스타일 검사는 수정된 unit에서 facet을 다시 만드는 기존 수명주기로 검증한다. 이 checkpoint가
+기존 source 교체 정책을 바꿨다고 주장하지 않는다.
+
+실제 세 cell의 기존 private program으로 새 측정을 실행한 결과 (0,0)/(173,0)/(346,0)이고,
+원본은 (0,0)/(199,0)/(393,0)다. 이전 진단 (0,0)/(196,0)/(386,0)은 parent에서 제거된 내부 Y축도
+child snapshot에서 직접 측정했다. 새 결과는 실제 ownership을 따르므로 둘을 혼동하지 않는다.
+`axes:"outer"`는 현재 계약대로 내부 Y축을 제거하지만 이 원본은 독립 Y축을 각 cell에 유지한다.
+따라서 경계 측정만 연결해서 원본 배치를 복원했다고 주장할 수 없다.
+
+다음 연결에서 기존 scalar axes 정책을 보존하며 Cartesian channel별 정책
+`axes:{x:"outer",y:"each"}`을 검토·구현한다. 이 구체적 설계는 번역에 필요한 in-scope API 결정에
+대한 기존 사용자의 포괄 승인 근거를 재사용하며 새 질문을 반복하지 않는다. Named axes도 channel
+정책과 실제 side/component ownership을 함께 적용한다. Partial object의 정규화, grid/repeat,
+non-Cartesian 거부, 저장/replay/type/docs/consumer 검증까지 같은 변경으로 처리해야 한다.
+새 정책이 실제로 구현·검증되기 전에는 Current 지원이나 번역 성공으로 세지 않는다.
 
 ## 승인과 범위
 
