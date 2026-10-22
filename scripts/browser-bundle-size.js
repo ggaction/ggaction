@@ -5,7 +5,7 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 432_000, // Direct line gaps measured431139gzip bytes; minimal1000-byte rounding.
+  ggaction: 433_000, // Content headers measured432131gzip bytes; minimal1000-byte rounding.
   "ggaction/basic": 219_000, // Axis tick precision measured218187gzip bytes; minimal1000-byte rounding.
   "ggaction/svg": 25_000
 });

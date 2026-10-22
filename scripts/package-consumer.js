@@ -109,6 +109,15 @@ async function testNodeConsumer(directory) {
     import {createFacetSharedTopLaneProgram} from "./facet-lane-public.js";
     import {createPlotUnderlayProgram} from "./plot-underlay-public.js";
 
+    const contentFacet = chart().createCanvas({plot:{width:100,height:100},margin:70})
+      .createData({values:[{group:"A",x:5,y:5},{group:"B",x:10,y:10}]})
+      .createScatterPlot({x:{field:"x",scale:{domain:[0,10]}},y:{field:"y",scale:{domain:[0,10]}},guides:false})
+      .editPointMark({stroke:false}).encodePointRadius({value:3})
+      .facet({field:"group",spacing:"plot",headers:{anchor:"content"}})
+      .editCompositionLayout({topLane:"shared"});
+    assert.deepEqual(contentFacet.graphicSpec.objects["facet-headers"].items.map(i=>i.properties.y),[54,51]);
+    assert.deepEqual(deserializeProgram(serializeProgram(contentFacet)).graphicSpec,contentFacet.graphicSpec);
+
     for (const factory of [chart, basicChart]) {
       const values = [{x:0,y:-0.15},{x:1,y:0.3}];
       const p = factory().createCanvas({width:600,height:480,margin:90})

@@ -25,7 +25,8 @@ export function prepareFacetHeaderTitles({ roles, descriptors, space, headerLayo
     const config = { ...Object.fromEntries(STYLE_KEYS.map(key => [key, header[key]])),
       ...title, side, align: title.align ?? "center", rotation: title.rotation ?? ROTATIONS[side] };
     const labelDistance = Math.max(0, ...descriptors.filter(item => item.config.side === side && item.text !== "")
-      .map(item => thickness(item.text, item.config, side, profile) + item.config.offset));
+      .map(item => thickness(item.text, item.config, side, profile) + item.config.offset +
+        (item.clearance?.[side] ?? 0)));
     config.offset = title.offset ?? Math.max(space[side], labelDistance) + 8;
     const required = config.offset + thickness(title.text, config, side, profile);
     headerLayout.outer[side] = Math.max(headerLayout.outer[side],

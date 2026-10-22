@@ -108,6 +108,8 @@ const COMPACT_JAVASCRIPT_FILES = Object.freeze([
   "src/materialization/facets.js",
   "src/materialization/facetGuides/layout.js",
   "src/materialization/facetHeaders.js",
+  "src/layout/facetHeaderTitles.js",
+  "src/actions/facets/actions.js",
   "src/grammar/facetHeaders.js",
   "src/materialization/guides/layout.js",
   "src/materialization/guides/resources.js",

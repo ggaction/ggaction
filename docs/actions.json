@@ -29873,6 +29873,11 @@
           "type": "number | undefined"
         },
         {
+          "name": "anchor",
+          "required": false,
+          "type": "\"content\" | \"plot\" | undefined"
+        },
+        {
           "name": "role",
           "required": false,
           "type": "FacetHeaderRole | undefined"
@@ -29904,7 +29909,7 @@
         }
       ],
       "callPatterns": [
-        "editFacetHeaders({ fontSize?, fontFamily?, fontWeight?, color?, offset?, role?, labelMap?, side? })"
+        "editFacetHeaders({ fontSize?, fontFamily?, fontWeight?, color?, offset?, anchor?, role?, labelMap? })"
       ],
       "snippet": "program.editFacetHeaders({ fontSize: 1 })",
       "errors": [],

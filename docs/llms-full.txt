@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.21.
 
-Contract: sha256:15c25c06f9b46243213d720ca2d93ec6b03b34724a2164194d3257b5748d6b4c. Status: development. Runtime source: e6c636aee444272db277ca9883ef050a721d141c. Release baseline: v0.0.13.
+Contract: sha256:70906e55c7e7859658e84efe78c59096917c03f13d78d88aea14313ffa1a009b. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -262,9 +262,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/e6c636aee444272db277ca9883ef050a721d141c/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/e6c636aee444272db277ca9883ef050a721d141c/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -18796,6 +18796,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
+| `anchor` | Optional / branch-dependent | `"content" \| "plot" \| undefined` |
 | `role` | Optional / branch-dependent | `FacetHeaderRole \| undefined` |
 | `labelMap` | Optional / branch-dependent | `"auto" \| DisplayLabelMap \| undefined` |
 | `side` | Optional / branch-dependent | `FacetHeaderSide \| undefined` |
@@ -32482,6 +32483,8 @@ export interface EditFacetHeadersOptions {
   fontWeight?: string | number;
   color?: string;
   offset?: number;
+  /** Content follows concrete mark bounds with plot spacing; plot preserves existing placement. */
+  anchor?: "plot" | "content";
   role?: FacetHeaderRole;
   labelMap?: DisplayLabelMap | "auto";
   side?: FacetHeaderSide;
@@ -39180,12 +39183,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/e6c636aee444272db277ca9883ef050a721d141c/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/e6c636aee444272db277ca9883ef050a721d141c/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -40006,6 +40009,15 @@ margin space before reserving more. Child plots keep their sizes. Text that
 crosses the Canvas, another header or a retained guide still fails clearly.
 Legacy headers inside child canvases retain their existing anchor when rotated;
 increase their margin or offset when the rotated text needs more room.
+
+For an existing facet with plot spacing, the fragment
+`program.editFacetHeaders({ anchor: "content" })` moves each header outward when its
+marks extend beyond the plot edge. Alignment along the edge still follows the plot.
+This uses concrete mark geometry, including strokes and clipping, regardless of
+opacity; axes, legends and titles are excluded. The same option works in initial
+`headers`, including row and column overrides. Field titles keep their plot anchor.
+Omission or `anchor: "plot"` preserves the existing placement. Content anchoring
+requires `spacing: "plot"` and sufficient space; it never changes child plot sizes.
 
 ## Repeat the current chart by a field
 
@@ -41677,9 +41689,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:15c25c06f9b46243213d720ca2d93ec6b03b34724a2164194d3257b5748d6b4c` |
+| Contract fingerprint | `sha256:70906e55c7e7859658e84efe78c59096917c03f13d78d88aea14313ffa1a009b` |
 | Example and dataset source | `0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e` |
-| Runtime source commit | `e6c636aee444272db277ca9883ef050a721d141c` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 290 |
 | Declared actions in that release | 234 |

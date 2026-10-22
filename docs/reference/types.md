@@ -5087,6 +5087,8 @@ export interface EditFacetHeadersOptions {
   fontWeight?: string | number;
   color?: string;
   offset?: number;
+  /** Content follows concrete mark bounds with plot spacing; plot preserves existing placement. */
+  anchor?: "plot" | "content";
   role?: FacetHeaderRole;
   labelMap?: DisplayLabelMap | "auto";
   side?: FacetHeaderSide;

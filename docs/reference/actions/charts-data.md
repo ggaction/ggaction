@@ -2395,6 +2395,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
+| `anchor` | Optional / branch-dependent | `"content" \| "plot" \| undefined` |
 | `role` | Optional / branch-dependent | `FacetHeaderRole \| undefined` |
 | `labelMap` | Optional / branch-dependent | `"auto" \| DisplayLabelMap \| undefined` |
 | `side` | Optional / branch-dependent | `FacetHeaderSide \| undefined` |

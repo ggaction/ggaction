@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Add opt-in facet header `anchor: "content"` for plot spacing, following concrete mark overflow while preserving along-edge plot alignment, clipping, role overrides and editable replay.
+
 - Add explicit axis `format: "ticks"` for per-axis numeric tick precision, including independent facets, while preserving existing automatic formatting.
 
 - Add opt-in `missing: "break"` for direct Cartesian quantitative/temporal lines, preserving raw observations, independent axis domains and curve restarts across gaps, including filtering, immutable edits and saved programs. Strict defaults remain unchanged.

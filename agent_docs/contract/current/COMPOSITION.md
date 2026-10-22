@@ -224,7 +224,7 @@ Evidence: `test/unit/layout/facet-top-lane.test.js`, `test/unit/actions/composit
 
 ## `editFacetHeaders`
 
-- Signature: `editFacetHeaders({ fontSize?, fontFamily?, fontWeight?, color?, offset?, role?, labelMap?, side?, align?, rotation?, title? })`.
+- Signature: `editFacetHeaders({ fontSize?, fontFamily?, fontWeight?, color?, offset?, role?, labelMap?, side?, align?, rotation?, title?, anchor? })`.
 - Requires a facet composition and at least one appearance change.
 - Unqualified edits use `role:"all"` and update common style/mapping while preserving the legacy one-header-per-cell
   topology. `role:"row" | "column"` activates role mode. A row-column grid then owns one header per occupied
@@ -255,6 +255,15 @@ Evidence: `test/unit/layout/facet-top-lane.test.js`, `test/unit/actions/composit
   editable persistence 재생은 회전을 보존하고, 잘못된 각도/단위/비정규 저장 값은 원자적으로 거부한다.
 - Editing preserves child identity, semantic facet values, shared scales and layout order, then rematerializes the
   parent snapshot. Clipping, snapshot intersection or header-header overlap fails atomically.
+- `anchor:"content"` requires plot spacing. The outward anchor follows the union of each selected child's
+  plot rectangle and concrete semantic mark bounds, including strokes, collection children, translations and
+  clipping. Opacity does not alter these geometric bounds. Axes, grids, legends, titles and extension-only
+  graphics are excluded. Alignment along the edge continues to use the plot span. Mark overflow is included
+  in header reservations. Common/role precedence, all four sides, rotation and editable replay apply normally.
+  Role field titles retain their existing plot anchor; their inferred offset clears the content-anchored labels.
+  Omission or `anchor:"plot"` preserves existing placement, including canvas spacing. No default anchor field
+  is inserted into older configurations. Invalid values, content with canvas spacing, clipping and collisions
+  reject atomically; child dimensions and clips are never changed to make a header fit.
 
 - 역할별 `title`은 전체 점유 plot 합집합에 한 번 정렬하는 필드 제목이다. 생성
   `headers.column.title` 및 grid `headers.row.title`도 같은 옵션을 받는다. common/all은
@@ -273,7 +282,7 @@ Evidence: `test/unit/layout/facet-top-lane.test.js`, `test/unit/actions/composit
 
 ### Formal values — `editFacetHeaders`
 
-- Implemented: `editFacetHeaders({ fontSize?: PositiveFinite; fontFamily?: NonEmptyString; fontWeight?: NonEmptyString | Finite; color?: NonEmptyString; offset?: NonNegativeFinite; role?: "all" | "row" | "column"; labelMap?: DisplayLabelMap | "auto"; side?: "top" | "bottom" | "left" | "right"; align?: "start" | "center" | "end"; rotation?: RotationInput; title?: FacetHeaderTitleOptions | false }): ChartProgram`, with the role-specific side restrictions above.
+- Implemented: `editFacetHeaders({ fontSize?: PositiveFinite; fontFamily?: NonEmptyString; fontWeight?: NonEmptyString | Finite; color?: NonEmptyString; offset?: NonNegativeFinite; role?: "all" | "row" | "column"; labelMap?: DisplayLabelMap | "auto"; side?: "top" | "bottom" | "left" | "right"; align?: "start" | "center" | "end"; rotation?: RotationInput; title?: FacetHeaderTitleOptions | false; anchor?: "plot" | "content" }): ChartProgram`, with the role-specific side restrictions above.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `editFacetHeaders`
@@ -283,6 +292,10 @@ Evidence: `test/unit/layout/facet-top-lane.test.js`, `test/unit/actions/composit
   prior state, invalid role/side/map, empty edit and non-facet rejection. Rotation adds initial/edit equality,
   four sides, three block alignments, finite angles/units, zero reset, inherited overrides, exact primitive pixels,
   outer-margin reuse, collision/overflow and persistence rejection without relaxing existing bounds.
+- Content anchoring evidence: `test/unit/actions/composition/facet-content-headers.test.js` and
+  `test/contracts/facet-content-header-types.test.js` cover per-panel geometry, strokes/clips, four sides,
+  rotation, inherited overrides, field titles, fixed shared top space, source/layout/theme/metrics replay,
+  saved programs, unchanged defaults and atomic rejection.
 - Evidence: `test/unit/actions/composition/facet.test.js`,
   `test/unit/actions/composition/facet-display-headers.test.js`,
   `test/unit/actions/composition/facet-side-headers.test.js`,

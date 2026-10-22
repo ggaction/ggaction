@@ -47,6 +47,10 @@ export function normalizeFacetHeaderTitle(current, patch) {
 
 export function validateFacetHeaderRotations(value) {
   for (const config of value.common === undefined ? [value] : [value.common, value.row, value.column]) {
+    if (config !== undefined && Object.hasOwn(config, "anchor") &&
+        !["plot", "content"].includes(config.anchor)) {
+      throw new TypeError("Facet header anchor must be plot or content.");
+    }
     if (config?.rotation !== undefined && !Number.isFinite(config.rotation)) {
       throw new TypeError("Facet header rotation must contain finite normalized radians.");
     }

@@ -56,10 +56,10 @@ const SOURCE_EDIT_OPTIONS = Object.freeze(["program"]);
 const GUIDE_OPTIONS = Object.freeze(["axes", "legend"]);
 const HEADER_OPTIONS = Object.freeze([
   "fontSize", "fontFamily", "fontWeight", "color", "offset", "role",
-  "labelMap", "side", "align", "rotation", "title"
+  "labelMap", "side", "align", "rotation", "title", "anchor"
 ]);
 const HEADER_STYLE_OPTIONS = Object.freeze([
-  "fontSize", "fontFamily", "fontWeight", "color", "offset", "align", "rotation"
+  "fontSize", "fontFamily", "fontWeight", "color", "offset", "align", "rotation", "anchor"
 ]);
 
 function normalizeGuides(guides, allowStored = false) {

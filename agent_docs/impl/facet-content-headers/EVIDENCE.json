@@ -1,0 +1,91 @@
+{
+  "status": "verified-unreleased-implementation-checkpoint",
+  "issue": 261,
+  "approval": "2026-10-22 current human instruction approves all previous and future in-scope questions for ongoing chart/library work. No repeat design approval requested.",
+  "normalTotal": 5268,
+  "normalVerification": {
+    "allNormalLog": {
+      "path": ".artifacts/facet-content-headers/normal-v2.log",
+      "sha256": "fe8529daf8f86b7a1727e5787277a277bffa2d4a6a23a98c44ea6d0a4f7e9691"
+    },
+    "passed": 5266,
+    "supersededGeneratedDocumentationFailures": 2,
+    "documentationRerun": {
+      "path": ".artifacts/facet-content-headers/docs-v3.log",
+      "sha256": "ea3f3830e78050c8750e2de77448f09b43f5e22be70f5dddbd0081419dea736f"
+    },
+    "documentationRerunPassed": 121,
+    "effectiveFinalPassed": 5268,
+    "explanation": "Runtime/types/contracts/chart inputs unchanged after the full run; both failed generated-documentation freshness checks resolved by canonical regeneration and complete121-test documentation rerun."
+  },
+  "focusedFeatureTests": 20,
+  "browserTests": 163,
+  "checks": [
+    {
+      "suite": "normal-effective-final-inputs",
+      "passCount": 5268,
+      "failCount": 0
+    },
+    {
+      "suite": "browser",
+      "passCount": 163,
+      "failCount": 0,
+      "log": {
+        "path": ".artifacts/facet-content-headers/browser-v1.log",
+        "sha256": "91efaea521d8e783ec593bd83745b1c36d5e6b6baddfaee5b18a109e2c34ec5b"
+      }
+    }
+  ],
+  "packageConsumerGroups": 69,
+  "legacyDefaultPolicyUnchanged": true,
+  "packageBudgetUnchanged": true,
+  "packageCheck": {
+    "path": ".artifacts/facet-content-headers/package-check-v2.log",
+    "sha256": "964cbdeef08400a3c84ed2e08dd5dd111749a9cd5fd43f7ae8cb52ad1319224b"
+  },
+  "packedBytes": 868133,
+  "unpackedBytes": 4178347,
+  "publicSearchIndexBytes": 849989,
+  "sourceNeutralReproduction": "test/unit/actions/composition/facet-content-headers.test.js",
+  "backendPrimitiveComparison": "test/browser/facet-content-headers.browser.js",
+  "noManualImageReview": true,
+  "published": false,
+  "publicReleaseAt": 1350,
+  "originalPrivateTranslationWitness": "reports/v12-source0589-private-facet-content-header-capability-proof-v2.json in the translation workspace (not a delivered family)",
+  "publicReleaseMilestoneOverride": "Latest human steering lowers next checkpoint from1413to1350, including full branch/fix/PR/issue integration and synchronized viewer refresh.",
+  "packageConsumerLog": {
+    "path": ".artifacts/facet-content-headers/package-consumer-v2.log",
+    "sha256": "19eadb53de221a27d4a8626690fbab87e99b8c793516678024cca8e7c27261e3"
+  },
+  "browserBundles": {
+    "full": {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 543,
+      "minifiedBytes": 1590278,
+      "gzipBytes": 432131
+    },
+    "basic": {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 326,
+      "minifiedBytes": 773375,
+      "gzipBytes": 218187
+    },
+    "svg": {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 19,
+      "minifiedBytes": 23548,
+      "gzipBytes": 7567
+    }
+  },
+  "browserBundleBudgetChange": {
+    "prior": 432000,
+    "actual": 432131,
+    "ceiling": 433000,
+    "policy": "Minimum1000-byte rounding of measured feature growth. Basic/SVG and package packed/unpacked ceilings unchanged."
+  },
+  "additionalBudgetContractTests": 7,
+  "historicalFullNativeCompatibility": "Pending translation-workspace source-exact local-candidate replay before authoring adoption."
+}

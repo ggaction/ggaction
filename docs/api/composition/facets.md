@@ -113,6 +113,15 @@ crosses the Canvas, another header or a retained guide still fails clearly.
 Legacy headers inside child canvases retain their existing anchor when rotated;
 increase their margin or offset when the rotated text needs more room.
 
+For an existing facet with plot spacing, the fragment
+`program.editFacetHeaders({ anchor: "content" })` moves each header outward when its
+marks extend beyond the plot edge. Alignment along the edge still follows the plot.
+This uses concrete mark geometry, including strokes and clipping, regardless of
+opacity; axes, legends and titles are excluded. The same option works in initial
+`headers`, including row and column overrides. Field titles keep their plot anchor.
+Omission or `anchor: "plot"` preserves the existing placement. Content anchoring
+requires `spacing: "plot"` and sufficient space; it never changes child plot sizes.
+
 ## Repeat the current chart by a field
 
 {% include chart-example.html id="facet" %}

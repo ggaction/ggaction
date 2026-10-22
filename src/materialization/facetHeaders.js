@@ -8,6 +8,8 @@ import {
 import { validateFacetHeaderRotations } from "../grammar/facetHeaders.js";
 import { resolveDisplayLabel } from "../grammar/displayLabels.js";
 import { resolveGraphicBounds } from "../layout/canvas.js";
+import { unionConcreteGraphicBounds } from "../grammar/schemas/graphicBounds.js";
+import { intersectClipBounds } from "../grammar/schemas/graphicClip.js";
 import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from "../theme/defaults.js";
 import { prepareFacetHeaderTitles } from "../layout/facetHeaderTitles.js";
 
@@ -185,9 +187,44 @@ function plotMarginSpace(program) {
 }
 
 function headerReservation(descriptor, side, profile, space, outer) {
-  const amount = headerThickness(descriptor, side, profile) + descriptor.config.offset;
+  const amount = headerThickness(descriptor, side, profile) + descriptor.config.offset +
+    (descriptor.clearance?.[side] ?? 0);
   return hasRotation(descriptor.config) && outer
     ? Math.max(0, amount - space[side]) : amount;
+}
+
+function prepareContentBounds(program, descriptors, profile) {
+  if (!descriptors.some(item => item.config.anchor === "content")) return undefined;
+  if (program.compositionSpec.spacing !== "plot") {
+    throw new Error("Facet header content anchor requires plot spacing.");
+  }
+  const boundsById = new Map();
+  for (const id of program.compositionSpec.children) {
+    const child = program.children[id], plot = resolveGraphicBounds(child);
+    const bounds = { left: plot.x, right: plot.x + plot.width,
+      top: plot.y, bottom: plot.y + plot.height };
+    const owners = child.semanticSpec.layers.map(layer => layer.id)
+      .filter(owner => child.graphicSpec.objects[owner] !== undefined);
+    const marks = unionConcreteGraphicBounds(child.graphicSpec, owners, profile);
+    const canvas = child.graphicSpec.objects.canvas.properties;
+    const clipped = marks === undefined ? undefined : intersectClipBounds(marks,
+      { left: 0, right: canvas.width, top: 0, bottom: canvas.height });
+    boundsById.set(id, clipped === undefined || clipped.left > clipped.right || clipped.top > clipped.bottom
+      ? bounds : union([bounds, clipped]));
+  }
+  for (const descriptor of descriptors) {
+    if (descriptor.config.anchor !== "content") continue;
+    descriptor.clearance = { ...ZERO_SIDES };
+    for (const id of descriptor.ids ?? [descriptor.id]) {
+      const plot = resolveGraphicBounds(program.children[id]), bounds = boundsById.get(id);
+      for (const [side, amount] of Object.entries({ left: plot.x - bounds.left,
+        right: bounds.right - plot.x - plot.width, top: plot.y - bounds.top,
+        bottom: bounds.bottom - plot.y - plot.height })) {
+        descriptor.clearance[side] = Math.max(descriptor.clearance[side], amount);
+      }
+    }
+  }
+  return boundsById;
 }
 
 function laneThickness(descriptors, role, profile, space) {
@@ -207,6 +244,7 @@ export function prepareFacetHeaders(program, headersConfig) {
     ? Math.ceil(program.compositionSpec.children.length / program.compositionSpec.columns)
     : Math.max(...program.compositionSpec.facet.grid.cells.map(cell => cell.row)) + 1;
   const profile = program.materializationConfigs.textMetrics;
+  const contentById = prepareContentBounds(program, descriptors, profile);
   const roles = ["column", ...(program.compositionSpec.facet.grid === undefined ? [] : ["row"])]
     .map(role => [role, resolveFacetHeaderConfig(headers, role)]);
   const hasTitles = roles.some(([, config]) => config.title !== undefined);
@@ -255,7 +293,7 @@ export function prepareFacetHeaders(program, headersConfig) {
   }
   const titles = prepareFacetHeaderTitles({ roles, descriptors, space, headerLayout, profile,
     ids: program.compositionSpec.children });
-  return { headers, descriptors, titles, headerLayout,
+  return { headers, descriptors, titles, headerLayout, ...(contentById === undefined ? {} : { contentById }),
     ...((hasTitles || descriptors.some(item => hasRotation(item.config))) && profile !== undefined ? { profile } : {}) };
 }
 
@@ -298,6 +336,11 @@ function placedCell(cell) {
   };
 }
 
+function placedContent(cell, bounds) {
+  return { left: cell.x + bounds.left, right: cell.x + bounds.right,
+    top: cell.y + bounds.top, bottom: cell.y + bounds.bottom };
+}
+
 function alignedBlockAnchor(start, end, minimum, maximum, align) {
   if (align === "start") return start - minimum;
   if (align === "end") return end - maximum;
@@ -325,7 +368,7 @@ function rotatedRoleAnchor(descriptor, plot, snapshots, profile) {
   };
 }
 
-function roleItem(descriptor, cells, plots, spacing, profile) {
+function roleItem(descriptor, cells, plots, spacing, profile, contentById) {
   const selectedCells = descriptor.ids.map(id => cells.get(id));
   const missingCell = descriptor.ids.find((id, index) =>
     selectedCells[index] === undefined
@@ -340,7 +383,9 @@ function roleItem(descriptor, cells, plots, spacing, profile) {
     placedPlot(selectedCells[index], plots.get(id))
   );
   const plot = union(selectedPlots);
-  const snapshots = spacing === "plot" ? plot : union(selectedCells.map(placedCell));
+  const snapshots = descriptor.config.anchor === "content"
+    ? union(descriptor.ids.map((id, index) => placedContent(selectedCells[index], contentById.get(id))))
+    : spacing === "plot" ? plot : union(selectedCells.map(placedCell));
   const config = descriptor.config;
   if (hasRotation(config) || descriptor.topology === "role-title") {
     const properties = rotatedRoleAnchor(descriptor, plot, snapshots, profile);
@@ -367,15 +412,17 @@ function roleItem(descriptor, cells, plots, spacing, profile) {
   return { descriptor, snapshots, properties: anchor };
 }
 
-function legacyItem(descriptor, cell, plot, spacing, profile) {
+function legacyItem(descriptor, cell, plot, spacing, profile, contentById) {
   if (cell === undefined || plot === undefined) {
     throw new Error(`Facet header requires cell and plot bounds for "${descriptor.id}".`);
   }
+  const content = descriptor.config.anchor === "content"
+    ? placedContent(cell, contentById.get(descriptor.id)) : placedPlot(cell, plot);
   if (hasRotation(descriptor.config) && spacing === "plot") {
     const bounds = placedPlot(cell, plot);
     return {
       descriptor, snapshots: placedCell(cell),
-      properties: rotatedRoleAnchor({ ...descriptor, config: { ...descriptor.config, side: "top" } }, bounds, bounds, profile)
+      properties: rotatedRoleAnchor({ ...descriptor, config: { ...descriptor.config, side: "top" } }, bounds, content, profile)
     };
   }
   return {
@@ -383,7 +430,7 @@ function legacyItem(descriptor, cell, plot, spacing, profile) {
     snapshots: placedCell(cell),
     properties: {
       ...horizontalAnchor(placedPlot(cell, plot), descriptor.config.align),
-      y: spacing === "plot" ? cell.y + plot.y - descriptor.config.offset - descriptor.config.fontSize / 2 : cell.y + descriptor.config.offset,
+      y: spacing === "plot" ? content.top - descriptor.config.offset - descriptor.config.fontSize / 2 : cell.y + descriptor.config.offset,
       textBaseline: "middle",
       ...(hasRotation(descriptor.config) ? { rotation: descriptor.config.rotation } : {})
     }
@@ -405,7 +452,7 @@ function styledItem(item) {
   };
 }
 
-function assertRoleHeadersFit(records, items, layout, profile, plots) {
+function assertRoleHeadersFit(records, items, layout, profile, plots, contentById) {
   const bounds = items.map((item, index) => records[index].descriptor.text === ""
     ? undefined
     : resolveTextBounds(item.properties, profile));
@@ -415,7 +462,9 @@ function assertRoleHeadersFit(records, items, layout, profile, plots) {
         current.top < -1e-9 || current.bottom > layout.height + 1e-9 ||
         bounds.some((other, otherIndex) => otherIndex < index &&
           other !== undefined && textBoundsIntersect(other, current)) ||
-        layout.children.some(cell => textBoundsIntersect(current, layout.spacing === "plot" ? placedPlot(cell, plots.get(cell.id)) : placedCell(cell)))) {
+        layout.children.some(cell => textBoundsIntersect(current, contentById === undefined
+          ? layout.spacing === "plot" ? placedPlot(cell, plots.get(cell.id)) : placedCell(cell)
+          : placedContent(cell, contentById.get(cell.id))))) {
       throw new Error(
         "Facet role headers require sufficient non-overlapping reserved space."
       );
@@ -423,7 +472,7 @@ function assertRoleHeadersFit(records, items, layout, profile, plots) {
   }
 }
 
-function assertLegacyHeadersFit(items, layout, plotById, profile) {
+function assertLegacyHeadersFit(items, layout, plotById, profile, contentById) {
   const previous = [];
   for (let index = 0; index < items.length; index += 1) {
     if (items[index].properties.text === "") continue;
@@ -433,7 +482,9 @@ function assertLegacyHeadersFit(items, layout, plotById, profile) {
     if (bounds.left < 0 || bounds.right > layout.width ||
       bounds.top < 0 || bounds.bottom > layout.height ||
       previous.some(item => textBoundsIntersect(item, bounds)) ||
-      (layout.spacing === "plot" ? layout.children.some(other => textBoundsIntersect(bounds, placedPlot(other, plotById.get(other.id)))) : textBoundsIntersect(bounds, placedPlot(cell, plot)))) {
+      (layout.spacing === "plot" ? layout.children.some(other => textBoundsIntersect(bounds,
+        contentById === undefined ? placedPlot(other, plotById.get(other.id))
+          : placedContent(other, contentById.get(other.id)))) : textBoundsIntersect(bounds, placedPlot(cell, plot)))) {
       throw new Error(
         "Facet headers require sufficient non-overlapping space above every child plot."
       );
@@ -447,9 +498,9 @@ export function resolveFacetHeaderItems(layout, plots, prepared) {
   const plotById = new Map(plots.map(plot => [plot.id, plot]));
   const records = [...prepared.descriptors, ...(prepared.titles ?? [])].map(descriptor => {
     if (descriptor.topology === "legacy") {
-      return legacyItem(descriptor, cells.get(descriptor.id), plotById.get(descriptor.id), layout.spacing, prepared.profile);
+      return legacyItem(descriptor, cells.get(descriptor.id), plotById.get(descriptor.id), layout.spacing, prepared.profile, prepared.contentById);
     }
-    return roleItem(descriptor, cells, plotById, layout.spacing, prepared.profile);
+    return roleItem(descriptor, cells, plotById, layout.spacing, prepared.profile, prepared.contentById);
   });
   return { records, items: records.map(styledItem), plotById };
 }
@@ -458,9 +509,9 @@ export function materializeFacetHeaders(program, layout, plots, prepared) {
   const profile = program.materializationConfigs.textMetrics;
   const { records, items, plotById } = resolveFacetHeaderItems(layout, plots, prepared);
   if (prepared.headers.mode === "legacy") {
-    assertLegacyHeadersFit(items, layout, plotById, profile);
+    assertLegacyHeadersFit(items, layout, plotById, profile, prepared.contentById);
   } else {
-    assertRoleHeadersFit(records, items, layout, profile, plotById);
+    assertRoleHeadersFit(records, items, layout, profile, plotById, prepared.contentById);
   }
   const id = facetHeaderGraphicId(program.compositionSpec.id);
   return program
