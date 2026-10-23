@@ -4,8 +4,8 @@
 
 - [x] 구체적인 기존 동작·수치 재현 검토
 - [x] 기존 사용자 승인 재사용
-- [ ] 구현·선언·현재 계약·공개 문서 동기화
-- [ ] 수치·생명주기·복원·공개 타입 검증
+- [x] 구현·선언·현재 계약·공개 문서 동기화
+- [x] 수치·생명주기·복원·공개 타입 검증
 - [ ] 검증한 체크포인트 커밋·푸시
 
 Gate 상태: **approved**. 승인 근거는 이 번역 프로젝트에서 사용자가 직접 말한
@@ -47,3 +47,19 @@ threshold0은 정확한 끝점만 고른다. alongOffset은 span·눈금에 동�
 replay, wrapped group, create/group/facade/whole/focused edit 수렴, auto reset, immutable
 원자 거부, editable serialize/import와 잘못된 저장 값, 공개 TypeScript·생성 문서 및
 관련 축 회귀 테스트를 요구한다. 기존1336개 호환성은 후보 채택 담당자가 다시 검증한다.
+
+## 구현 검증
+
+2026-10-23: 전체 normal **5596/5596** 통과. 설치 패키지 소비자 **178/178** 통과이며
+새 full/Basic 축 끝점 옵션, SVG/PNG/PDF, editable restore와 auto reset 사례를 포함한다.
+공개 타입·전체 문서 생성·package 크기 검사를 통과했다. 기존 card 개수/byte/median 및
+package 크기 한도를 늘리지 않았다. 공식 package recipe로 labels.js만 추가 압축하여
+기존 unpacked 한도를 유지한다. 최종 소비자가 실제 검증한 archive SHA256은
+`b320d8831f2da50cea6fb5c14a399e2ad4f7d1af2d5971578781e99a1e1df10b`다.
+
+첫 전체 실행의 누락 개발 의존성은 정확한 lock으로 npm ci하여 복구했다. 생성 문서는
+현재 source fingerprint로 다시 만들었다. 중간 카드 요약 override 추가는 기존 개수
+상한에 걸려 폐기하고, 기존 두 축 별칭의 중복 단어만 줄였다. 모든 실패 로그와 실제
+명령은 번역 프로젝트 reports/v13-flush-threshold-*에 남긴다. 새 공개 배포·문서 사이트
+배포·활성 번역 런타임 교체는 하지 않았다. 기존1336개 전체 후보 호환성은 후보 채택
+담당자가 별도로 검증한다.
