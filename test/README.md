@@ -166,3 +166,12 @@ mutated rows, sample/source counts, category counts, missing/duplicate/negative/
 constant-value dimensions, and explicit aggregate expectations are retained in
 `.artifacts/corpus/`. Rename collisions and finite-number overflow fail before a
 mutation can silently destroy evidence.
+
+Realistic runs preload `scripts/test-file-metrics.js` in each isolated test
+process. `.artifacts/timings/` records file elapsed time after preload, peak RSS,
+exit status, exact Node/platform/architecture, and CI run identity. CI retains
+these records for 30 days. Summarize downloaded runs with
+`node scripts/summarize-test-timings.js <directory> ...`; medians and p95 values
+use successful samples, report failures separately, and never pool different
+environments. Keep the committed scheduling weights until repeated comparable
+CI samples justify an update. Local measurements do not replace Ubuntu weights.

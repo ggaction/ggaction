@@ -195,6 +195,7 @@ async function run(suite, selectors, shard) {
     }
   }
   const args = testRunnerArguments(suite, files, shard);
+  if (suite === "realistic") args.unshift("--import", path.join(repositoryRoot, "scripts/test-file-metrics.js"));
   let output = "";
   const capture = { write(chunk) { output += chunk.toString(); } };
   const code = await runCheck(`suite-${suite}`, process.execPath, args, {

@@ -404,6 +404,14 @@ jobs:
         run: npm run datasets:sync
       - name: Run the assigned realistic files
         run: node scripts/run-check.js test-realistic -- npm run test:realistic -- --shard=${{ matrix.shard }}/7
+      - name: Retain per-file timing and memory evidence
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: timings-${{ github.job }}-${{ matrix.shard }}-${{ github.run_attempt }}
+          path: .artifacts/timings
+          if-no-files-found: warn
+          retention-days: 30
       - name: Collect bounded failure evidence
         if: ${{ failure() }}
         continue-on-error: true
