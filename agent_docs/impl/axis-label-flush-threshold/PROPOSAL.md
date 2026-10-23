@@ -6,7 +6,7 @@
 - [x] 기존 사용자 승인 재사용
 - [x] 구현·선언·현재 계약·공개 문서 동기화
 - [x] 수치·생명주기·복원·공개 타입 검증
-- [ ] 검증한 체크포인트 커밋·푸시
+- [x] 검증한 체크포인트 커밋·푸시
 
 Gate 상태: **approved**. 승인 근거는 이 번역 프로젝트에서 사용자가 직접 말한
 “지금까지 모든 질문, 앞으로 할 모든 질문 승인함” 및 계속되는 ggaction 수정·번역
@@ -63,3 +63,5 @@ package 크기 한도를 늘리지 않았다. 공식 package recipe로 labels.js
 명령은 번역 프로젝트 reports/v13-flush-threshold-*에 남긴다. 새 공개 배포·문서 사이트
 배포·활성 번역 런타임 교체는 하지 않았다. 기존1336개 전체 후보 호환성은 후보 채택
 담당자가 별도로 검증한다.
+
+Checkpoint: implementation39aea9d7 and documentation4be4ace2 were pushed to origin/codex/release1400. Committed-source documentation and public-type checks:162/162 passed.
