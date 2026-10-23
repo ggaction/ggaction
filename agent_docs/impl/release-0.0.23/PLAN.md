@@ -1,0 +1,59 @@
+# 0.0.23 통합 릴리즈
+
+## 진행 상태
+
+- [x] 원격 branch 3개, 전체 PR 72개, issue/PR 263개, release 21개 조사
+- [x] v0.0.22 release workflow 성공 확인
+- [x] 문서/테스트 개선 branch와 축/제목 branch 통합; 집중 검사 16개 통과
+- [ ] #253 nullable calendar 정책
+- [ ] #244 독립 Steffen 곡선
+- [ ] #238 회귀 layer의 plot-last 배치
+- [ ] #258 content facet 배치와 channel별 axis 소유권
+- [ ] 전체 source/coverage/realistic/render/browser/package/docs/platform CI
+- [ ] exact annotated tag의 동일 candidate로 npm/GitHub/Pages 배포 검증
+
+## 승인 근거와 범위
+
+2026-10-23 사용자가 모든 branch/PR/issue 반영 구현과 통합, 모든 CI 통과 및 새로운
+릴리즈를 요청했다. 이번 요청은 구현·통합·릴리즈 배포를 포함한다. 기존
+[facet 설계 승인](../facet-content-flow/PROPOSAL.md#승인과-범위)은 번역에 필요한
+in-scope API 결정에 대한 포괄 승인을 기록한다. 같은 문제 범위와 기존 기본값을
+보존하며 재사용한다. 번역 서비스 호출, 별도 데이터셋 프로젝트 릴리즈는 이 저장소
+릴리즈의 일부로 임의 실행하지 않는다. Native capability 검증과 외부 원본 번역
+완료 증거를 구분한다.
+
+## 통합 입력
+
+- base: main / v0.0.22 `202b7afd4146a691c136964c4cc53f9c37444513`.
+- `fix/documentation-and-rose-demo`: 문서/README/LLM/test 개선 전체.
+- `codex/edit-axes-autocomplete`: legend title alignment와 four-edge facet title.
+- open PR: 0. PR #263은 이미 merge 및 release 완료.
+- closed PR 72개 중 미병합 7개(#5, #25, #39–43)는 폐쇄 사유와 현행 구현을
+  비교한다. 오래된 branch를 다시 덮어쓰지 않고 누락된 요구만 구현한다.
+- closed issues는 기존 해결 사항의 회귀 근거로 확인한다. 열린 4개는 아래 계약으로 구현한다.
+
+## 구현 계약
+
+- #253: `createTimeUnitData` / `editTimeUnitData`의 `missing:"error"|"null"`.
+  생략은 기존 strict behavior와 저장형태 유지. null 정책은 null 및 absent input만
+  null bucket으로 만들며 undefined/nonfinite/invalid non-null input은 거부한다.
+  모든 row/raw field/order/lineage 유지. Weekday도 현재 numeric 0–6 출력 유지.
+  Full/Basic 지원 범위는 기존 entry별 경계를 보존한다.
+- #244: 별도 `curve:"monotone-steffen"`; 기존 `monotone` 출력 불변.
+  Line/Area/ErrorBand 및 boundary curve의 공유 grammar에서 일관 처리한다.
+  독립 수식/control point, reverse boundary, duplicate X, persistence/backend 검증.
+- #238: `createRegression({placement:"source"|"plot-last"})`; 생략은 source.
+  같은 회귀 owner의 band/line 순서를 유지하고 grid/frame/axis 소유권을 보존한다.
+  기존 편집 경로에서 placement 변경 및 source-follow/data revision/restore를 검증한다.
+- #258: [기존 연결 계약](../facet-content-flow/INTEGRATION_PLAN.md) 적용.
+  `spacing:"content"`, header `anchor:"view"`, `axes:{x:"outer",y:"each"}`.
+  실제 native retained bounds와 논리 cell order에 기반하고 source coordinate 주입 금지.
+  기존 canvas/plot spacing 및 content header anchor 유지.
+
+## 검증과 완료
+
+각 변경은 source, types, current contracts, docs/generated artifacts, focused tests를
+동시에 커밋/푸시한다. 통합 후보는 전체 CI와 realistic shard를 통과해야 한다.
+실패를 skip/continue-on-error로 숨기지 않는다. 버전은 직전 0.0.22의 다음 patch
+0.0.23으로 준비하며 CI 통과 커밋을 merge/tag한다. 배포 후 registry 버전/무결성,
+GitHub release 및 문서 identity를 확인한 뒤 완료한다.

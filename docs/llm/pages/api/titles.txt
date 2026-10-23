@@ -12,6 +12,11 @@
 
 Creates one chart title and an optional subtitle on any Canvas edge.
 
+Facet parents support the same four edges. Their inferred Canvas reserves an outer
+lane for the title and subtitle, outside retained axes, headers and shared legends.
+Alignment follows the union of the child plots; left and right titles rotate with
+their subtitle. Editing the title or facet layout recomputes that lane.
+
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
 ```javascript
