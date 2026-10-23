@@ -126,3 +126,32 @@ test("shared facet promotion retains explicit title style without adding sharing
   assert.ok(Object.values(faceted.guideConfigs.legend).every(c=>c.titleStyle.align==="left"));
   assert.deepEqual(deserializeProgram(serializeProgram(faceted)).editFacetGuides({legend:"shared"}).graphicSpec,faceted.editFacetGuides({legend:"shared"}).graphicSpec);
 });
+
+test("local edge overrides use one resolved title anchor and alignment across replay",()=>{
+  for(const kind of ["color","series","stroke"]){
+    const channel=kind==="series"?"shape":kind;
+    const base=source(kind).createLegend({position:"right",title:"Heading"});
+    for(const position of ["top","bottom","left","right"]){
+      const p=base.editLegend({channel,position}),[id,g]=title(p);
+      assert.equal(g.properties.textAlign,["top","bottom"].includes(position)?"center":"left",kind+position);
+      if(["top","bottom"].includes(position)){
+        const body=union(Object.keys(p.graphicSpec.objects)
+          .filter(k=>/(Legend|Gradient|Interval)/.test(k)&&!/(Title|Background)$/.test(k)).map(k=>bounds(p,k)));
+        assert.ok(Math.abs(g.properties.x-(body.left+body.right)/2)<1e-9,kind+position);
+        assert.match(renderToSVG(p),/text-anchor="middle"[^>]*>Heading<\/text>/);
+      }
+      assert.deepEqual(p.rematerializeLegend().graphicSpec,p.graphicSpec);
+      assert.deepEqual(deserializeProgram(serializeProgram(p)).graphicSpec,p.graphicSpec);
+      assert.deepEqual(p.editCanvas({width:1450}).editCanvas({width:1400}).graphicSpec,p.graphicSpec);
+      assert.deepEqual(p.editLegend({channel,position:"inherit"}).graphicSpec,base.graphicSpec);
+    }
+  }
+});
+
+test("local horizontal inline and explicit title alignment remain intentional",()=>{
+  const base=source("color").createLegend({position:"right",title:"Heading"})
+    .editLegend({channel:"color",position:"bottom"});
+  assert.equal(title(base.editLegend({channel:"color",titlePosition:"left"}))[1].properties.textAlign,"left");
+  for(const align of ["left","center","right"])
+    assert.equal(title(base.editLegendTitle({channel:"color",align}))[1].properties.textAlign,align);
+});

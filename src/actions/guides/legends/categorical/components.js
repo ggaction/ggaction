@@ -85,10 +85,7 @@ export const rematerializeLegendTitle = /* @__PURE__ */ action(
       .editGraphics({
         target: id,
         property: "textAlign",
-        value: config.titleStyle.align ?? (["top", "bottom"].includes(config.position) &&
-          config.titlePosition === "top"
-          ? "center"
-          : "left")
+        value: layout.title.align
       })
       .editGraphics({ target: id, property: "textBaseline", value: "middle" });
     return materializeLegendTitleLines(next, id, config.title, config.titleStyle);

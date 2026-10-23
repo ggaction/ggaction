@@ -76,3 +76,33 @@ test("unit title resolution stays unchanged and invalid facet offsets fail atomi
   assert.throws(() => facet.editTitle({ subtitle: "Long subtitle ".repeat(100) }), /outside the Canvas/);
   assert.equal(serializeProgram(facet), saved);
 });
+
+test("four-edge facet titles reserve a lane outside shared legends and survive replay", async () => {
+  const { resolveConcreteGraphicBounds: bounds } = await import("../../../../src/grammar/schemas/graphicBounds.js");
+  const { textBoundsIntersect } = await import("../../../../src/core/textMetrics.js");
+  const source = unit().encodeColor({ field: "group" });
+  for (const position of ["top", "bottom", "left", "right"]) {
+    for (const legendPosition of ["top", "bottom", "left", "right"]) {
+      const base = source.facet({ field: "group", columns: 2,
+        guides: { legend: { position: legendPosition } } });
+      const saved = serializeProgram(base);
+      const titled = base.createTitle({ ...options, position, align: "center" });
+      for (const program of [titled, titled.editCompositionLayout({ gap: 30 }),
+        titled.editTitle({ subtitleStyle: { fontSize: 19 } }),
+        titled.editLegend({ position: legendPosition })]) {
+        const canvas = program.graphicSpec.objects.canvas.properties;
+        for (const id of ["chartTitle", "chartSubtitle"]) {
+          const title = bounds(program.graphicSpec, id);
+          assert.ok(title.left >= 0 && title.top >= 0 && title.right <= canvas.width && title.bottom <= canvas.height, JSON.stringify({position,legendPosition,id,title,canvas}));
+          for (const other of Object.keys(program.graphicSpec.objects).filter(id => /legend/i.test(id))) {
+            const legend = bounds(program.graphicSpec, other);
+            if (legend) assert.equal(textBoundsIntersect(title, legend), false, `${position} title overlaps ${legendPosition} ${other}`);
+          }
+        }
+        assert.deepEqual(deserializeProgram(serializeProgram(program)).graphicSpec, program.graphicSpec);
+      }
+      assert.equal(serializeProgram(base), saved);
+      assert.deepEqual(titled.removeTitle().graphicSpec, base.graphicSpec);
+    }
+  }
+});
