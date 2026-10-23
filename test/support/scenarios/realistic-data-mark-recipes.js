@@ -863,7 +863,9 @@ function buildPointLabels(factors) {
       lineCap: "round",
       lineJoin: "bevel",
       miterLimit: 4
-    });
+    })
+    .editPointMark({target:"observations",clip:true,shape:{polygon:[{x:0,y:-1},{x:1,y:1},{x:-1,y:1}],normalization:"area"}})
+    .editPointMark({target:"observations",clip:false,shape:factors.shape});
   if (factors.strokeRemoval) {
     program = program.editPointMark({ target: "observations", stroke: false });
   }
@@ -974,7 +976,7 @@ function buildOrderedLine(factors) {
         field: "group",
         fieldType: "nominal",
         scale: {
-          id: "trendDash", type: "ordinal", domain: "auto",
+          id: "trendDash", type: "ordinal", domain: "auto", unknown: "dotted",
           range: dashRange(factors.dashStyle)
         }
       })

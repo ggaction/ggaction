@@ -67,7 +67,7 @@ function quantitativeScale(action, channel, variant, type, profileIndex) {
     range: "auto",
     // Nice log domains can round a small positive histogram boundary to zero.
     // Keeping log exact preserves the valid strictly-positive role witness.
-    nice: type === "log" ? false : profile.nice,
+    nice: type === "linear" ? { count: 5 } : type === "log" ? false : profile.nice,
     clamp: profile.clamp,
     reverse: profile.reverse,
     ...(type === "log" ? { base: 2 } : { zero: profile.zero }),

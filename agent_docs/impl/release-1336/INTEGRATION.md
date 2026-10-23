@@ -101,3 +101,13 @@ remain rejected. Additional linear Rug profiles preserve all original transforme
 profiles while exercising both automatic tick policies in each orientation.
 The621-entry exact installed0.0.22source-built consumer passes; this is not yet
 registry publication.
+
+The complete remote sweep additionally exposed stale lifecycle/global inventory,
+parent-legend and315-chart scale ledgers outside the initial changed suites.
+They now retain actual direct calls for all286 user-facing actions, authored
+parent spacing, linear nice-count scale profiles and polygon/clipped point edits.
+The parent5/3 gate,17data/mark controls,10facade controls including315actual
+charts,7global inventory/anti-inflation controls and6Cartesian controls pass.
+The original source/lineage, direct-root and diversity assertions remain active.
+These follow-ups change test evidence only; the published-source contract and
+621-entry runtime artifact are unchanged frome9349060.

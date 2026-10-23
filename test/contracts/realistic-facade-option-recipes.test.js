@@ -33,11 +33,11 @@ const SCALE_ROOTS = Object.freeze({
   createHistogram: Object.freeze(["xScale", "yScale", "color.scale"])
 });
 const EXPECTED_INVENTORY_BY_ACTION = Object.freeze({
-  createBoxPlot: Object.freeze({"paths":30,"literals":32,"typeLiterals":12,"diversity":0}),
-  createGradientPlot: Object.freeze({"paths":30,"literals":32,"typeLiterals":12,"diversity":0}),
-  createViolinPlot: Object.freeze({"paths":43,"literals":35,"typeLiterals":13,"diversity":4}),
-  createHeatmap: Object.freeze({"paths":52,"literals":58,"typeLiterals":21,"diversity":4}),
-  createHistogram: Object.freeze({"paths":36,"literals":32,"typeLiterals":10,"diversity":4}),
+  createBoxPlot: Object.freeze({"paths":32,"literals":32,"typeLiterals":12,"diversity":0}),
+  createGradientPlot: Object.freeze({"paths":32,"literals":32,"typeLiterals":12,"diversity":0}),
+  createViolinPlot: Object.freeze({"paths":45,"literals":35,"typeLiterals":13,"diversity":4}),
+  createHeatmap: Object.freeze({"paths":54,"literals":58,"typeLiterals":21,"diversity":4}),
+  createHistogram: Object.freeze({"paths":38,"literals":32,"typeLiterals":10,"diversity":4}),
 });
 
 function targetOption(option) {
@@ -609,16 +609,16 @@ test("fits baseline and longest authentic titles across every eligible TT facade
   assert.equal(chartCount, 470);
 });
 
-test("locks the role-valid facade scale inventory at 191 paths and 189 literals", async () => {
+test("locks the role-valid facade scale inventory at 201 paths and 189 literals", async () => {
   const target = targetInventory(await inventoryPromise);
-  assert.equal(target.options.length, 191);
+  assert.equal(target.options.length, 201);
   assert.equal(target.literals.length, 189);
   assert.equal(target.diversity.length, 12);
   assert.equal(
     createHash("sha256")
       .update([...target.options, ...target.literals].map(item => item.id).sort().join("\n"))
       .digest("hex"),
-    "de0f1cff71b05d608f5bfbd420df948f82af6bdc9e4d784fe5aeca21442abcf5"
+    "be9e1286d8eda4d4511d654596d87bb6e6524322a28208ef1ea51e2f40ce2ef4"
   );
   assert.equal(target.options.filter(option => option.path.endsWith(".unknown")).length, 0);
   assert.equal(target.literals.filter(requirement => {

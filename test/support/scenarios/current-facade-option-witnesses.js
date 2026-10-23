@@ -94,6 +94,7 @@ export function currentFacadeOptionWitnesses(args,{action,index,program}={}) {
       if(scales[axis.scale]?.type==='linear'&&!Object.hasOwn(ticks,'values'))ticks.rounding=
         action==='createScatterPlot'?(index>=32?'nearest':'ceiling'):
         statistical?([0,2,3].includes(index)?'nearest':'ceiling'):
+        ['createBarPlot','createLinePlot'].includes(action)?(Math.floor(index/2)%2?'nearest':'ceiling'):
         action==='createRugPlot'?(Math.floor(index/2)%2?'nearest':'ceiling'):
         ([2,9,12].includes(index)?'nearest':'ceiling');
       else delete ticks.rounding;

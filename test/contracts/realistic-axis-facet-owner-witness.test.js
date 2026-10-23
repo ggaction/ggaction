@@ -107,7 +107,7 @@ test("parent legend options and literals have actual public 5/3 witnesses", { ti
   const optionIds = new Set(options.map(option => option.id));
   const literals = inventory.pathLiteralRequirements.filter(requirement => optionIds.has(requirement.optionPath));
   const diversity = inventory.pathDiversityRequirements.filter(requirement => optionIds.has(requirement.optionPath));
-  assert.equal(options.length, 248);
+  assert.equal(options.length, 256);
   assert.equal(literals.length, 168);
   assert.equal(diversity.length, 4);
   const optionById = new Map(options.map(option => [option.id, option]));
