@@ -80,3 +80,7 @@ GitHub release 및 문서 identity를 확인한 뒤 완료한다.
   Source 5587개 검사는 모두 통과했으나 검사 실행 중 source 편집이 겹친 로컬 coverage는
   파일별 합산이 유효하지 않아 동결된 후보에서 재실행한다. Threshold는 유지한다.
 - 렌더 회귀 261개/205개 chart variants 통과. PR #264에서 전체 CI 시작.
+
+- 설치된 full browser bundle은 451111 gzip bytes로 기존 448000 한도를 초과했다.
+  새 공개 기능을 유지하며 full entry만 452000으로 최소 조정하고 Basic/SVG는 그대로 유지했다.
+  공개 browser 검사 전체 284개는 통과했다.
