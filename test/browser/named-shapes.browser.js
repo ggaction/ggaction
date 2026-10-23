@@ -1,3 +1,4 @@
+import { saveBrowserPageEvidence } from "../support/browser.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
@@ -41,6 +42,6 @@ test("canonical named-shapes browser Canvas and SVG preserve the independent lit
       assert.equal(result.width,480);assert.equal(result.height,270);assert.ok(result.accessible?.length>0);
       assert.deepEqual(result.state,{id:"named-shapes",width:480,height:270});
       assertNoBrowserErrors(errors,"named-shapes");
-    } finally {await page.close();}
+    } catch (error) { await saveBrowserPageEvidence(page, error, "browser-assertion"); throw error; } finally { await page.close(); }
   } finally {await closeBrowserWithEvidence(browser);await server?.close();}
 });

@@ -23,7 +23,7 @@ function tutorialHtml(name) {
 `;
 }
 
-async function prepareTutorials(directory) {
+export async function prepareTutorials(directory) {
   const examples = await documentationPrograms();
   const publicDirectory = path.join(directory, "public");
   await mkdir(publicDirectory, { recursive: true });
@@ -34,7 +34,8 @@ async function prepareTutorials(directory) {
   const inputs = {};
   const consumers = [];
   for (const example of examples) {
-    const name = example.file.replace(/\.md$/, "").replaceAll("/", "-");
+    const name = example.file.replace(/\.md$/, "").replaceAll("/", "-") + "--" + (example.id ?? "primary");
+    assert.ok(!Object.hasOwn(inputs, name), `Duplicate tutorial identity: ${name}`);
     const fixture = example.fixture ? docInputs[example.fixture] : {};
     assert.ok(fixture, `${example.file} has an unknown fixture.`);
     const prefix = [

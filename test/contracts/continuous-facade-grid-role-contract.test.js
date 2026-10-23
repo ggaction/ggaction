@@ -108,7 +108,7 @@ p.createDensityPlot({field:"y",guides:{grid:{vertical:nonfresh}}});
 // @ts-expect-error Histogram grids also reject non-fresh categorical band placement.
 p.createHistogram({field:"x",guides:{grid:{vertical:nonfresh}}});
 `);
-    const result = spawnSync(path.join(root, "node_modules/.bin/tsc"), [
+    const result = spawnSync(process.execPath, [path.join(root, "node_modules/typescript/bin/tsc"),
       "--noEmit", "--strict", "--skipLibCheck", "--target", "ES2022",
       "--module", "NodeNext", "--moduleResolution", "NodeNext", file
     ], { cwd: root, encoding: "utf8" });

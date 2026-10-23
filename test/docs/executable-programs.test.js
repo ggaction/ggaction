@@ -12,7 +12,7 @@ const directory = path.join(root, ".artifacts/test/docs/programs");
 await mkdir(directory, { recursive: true });
 
 for (const example of await documentationPrograms()) {
-  test(`executes documented ${example.file} against its stated inputs`, async () => {
+  test(`executes documented ${example.file} [${example.id ?? "primary"}] against its stated inputs`, async () => {
     const fixture = example.fixture ? docInputs[example.fixture] : {};
     assert.ok(fixture, `Unknown fixture ${example.fixture}`);
     const data = example.dataset ? datasetValues(example.dataset) : undefined;
@@ -53,4 +53,30 @@ test("marks tutorial and recipe snippets with explicit execution contracts", asy
     assert.ok(example.mode === "complete" || example.mode === "continuation", file);
     assert.ok(typeof example.prerequisites === "string" && example.prerequisites.length > 15, file);
   }
+});
+
+ test("prepares a distinct packed consumer source for every registered snippet", async () => {
+  const { prepareTutorials } = await import("../../scripts/tutorial-consumer.js");
+  const { mkdtemp, rm } = await import("node:fs/promises");
+  const { tmpdir } = await import("node:os");
+  const temporary = await mkdtemp(path.join(tmpdir(), "ggaction-snippet-identity-"));
+  try {
+    const programs = await documentationPrograms();
+    const { inputs, consumers } = await prepareTutorials(temporary);
+    assert.equal(Object.keys(inputs).length, programs.length);
+    assert.equal(new Set(consumers.map(item => item.name)).size, programs.length);
+    for (const [index, consumer] of consumers.entries()) {
+      const source = await readFile(path.join(temporary, "tutorials", consumer.name, "main.js"), "utf8");
+      assert.ok(source.includes(programs[index].code), consumer.name);
+    }
+  } finally { await rm(temporary, { recursive: true, force: true }); }
+});
+
+test("extracts long and indented fences without closing on shorter embedded fences", async () => {
+ const { documentationCodeBlocks } = await import("../../scripts/doc-snippets.js");
+ for (const opening of ["````js", "  ```js", '```js title="example"']) {
+  const fence=opening.trim().match(/`+/)[0];
+  assert.equal(documentationCodeBlocks(`${opening}\nconst x = 1;\n${fence}`)[0].code,"const x = 1;");
+ }
+ assert.equal(documentationCodeBlocks("````js\n```\n````")[0].code,"```");
 });

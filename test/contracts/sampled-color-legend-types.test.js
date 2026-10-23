@@ -53,7 +53,7 @@ const pie: PieLegendOptions = { representation: "symbols" };
 // @ts-expect-error Pie does not gain the sampled-color point recipe.
 const pieRadius: PieLegendOptions = { symbol: { radius: 5 } };
 `);
-    const result = spawnSync(path.join(root, "node_modules/.bin/tsc"), ["--noEmit", "--strict", "--skipLibCheck",
+    const result = spawnSync(process.execPath, [path.join(root, "node_modules/typescript/bin/tsc"),"--noEmit", "--strict", "--skipLibCheck",
       "--target", "ES2022", "--module", "NodeNext", "--moduleResolution", "NodeNext", file], { encoding: "utf8", cwd: root });
     assert.equal(result.status, 0, `${result.stdout}\n${result.stderr}`);
   } finally { await rm(directory, { recursive: true, force: true }); }

@@ -28,7 +28,7 @@ test('facade declarations retain only combinations supported by their own mark a
   const raincloudColor: Legend<'createRaincloudPlot'>={combine:'color-size'};
   const gradient: Legend<'createHeatmap'>={titlePosition:'bottom',representation:'gradient'};`);
   const file=path.join(dir,'legend.mts');await writeFile(file,snippets.join('\n'));
-  const result=spawnSync(path.join(root,'node_modules/.bin/tsc'),['--noEmit','--strict','--skipLibCheck','--target','ES2022','--module','NodeNext','--moduleResolution','NodeNext',file],{encoding:'utf8',cwd:root});
+  const result=spawnSync(process.execPath, [path.join(root, "node_modules/typescript/bin/tsc"),'--noEmit','--strict','--skipLibCheck','--target','ES2022','--module','NodeNext','--moduleResolution','NodeNext',file],{encoding:'utf8',cwd:root});
   assert.equal(result.status,0,`${result.stdout}\n${result.stderr}`);
  } finally {await rm(dir,{recursive:true,force:true});}
 });

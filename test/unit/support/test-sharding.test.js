@@ -8,13 +8,13 @@ const root = fileURLToPath(new URL("../../", import.meta.url));
 
 test("realistic shards are exhaustive, disjoint, deterministic, and weighted by measured durations", () => {
   const files = collectTestFiles("realistic");
-  assert.deepEqual(Object.keys(REALISTIC_TIMINGS).sort(), files.map(file => path.relative(root, file)).sort());
+  assert.deepEqual(Object.keys(REALISTIC_TIMINGS).sort(), files.map(file => path.relative(root, file).split(path.sep).join("/")).sort());
   const shards = partitionTestFiles(files, 7);
   assert.deepEqual(shards.flatMap(shard => shard.files).sort(), files);
   assert.ok(shards.every(shard => shard.files.length > 0));
   assert.deepEqual(partitionTestFiles([...files].reverse(), 7), shards);
   const oldLoads = Array.from({ length: 7 }, () => 0);
-  files.forEach((file, index) => { oldLoads[index % 7] += REALISTIC_TIMINGS[path.relative(root, file)]; });
+  files.forEach((file, index) => { oldLoads[index % 7] += REALISTIC_TIMINGS[path.relative(root, file).split(path.sep).join("/")]; });
   assert.ok(Math.max(...shards.map(shard => shard.estimatedMs)) < Math.max(...oldLoads));
   const added = path.join(root, "contracts/new-realistic-file.test.js");
   assert.equal(partitionTestFiles([...files, added], 7).flatMap(shard => shard.files).filter(file => file === added).length, 1);

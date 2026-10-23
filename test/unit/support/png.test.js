@@ -29,3 +29,11 @@ test("rejects malformed expected color contracts", () => {
   assert.throws(() => normalizeExpectedColor({ value: "#fff", unknown: true }));
   assert.throws(() => normalizeExpectedColor({ tolerance: 2 }));
 });
+
+test("rejects invisible output and invalid expected paint", () => {
+  assert.equal(pixelDiffersFromBackground([0, 0, 0, 0], [255, 255, 255, 255]), false);
+  assert.equal(pixelDiffersFromBackground([0, 0, 0, 255], [0, 0, 0, 0]), true);
+  assert.throws(() => normalizeExpectedColor("not-a-css-color"), /Invalid/);
+  assert.deepEqual(normalizeExpectedColor("transparent").rgba, [0, 0, 0, 0]);
+  assert.deepEqual(normalizeExpectedColor("black").rgba, [0, 0, 0, 255]);
+});

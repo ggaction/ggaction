@@ -33,7 +33,7 @@ p.encodeXRange({ lower: { datum: 1 }, upper: { datum: 2 }, fieldType: "temporal"
 // @ts-expect-error range encoders remain Full only
 basic.encodeYRange({ lower: { datum: 1 }, upper: { datum: 2 } });
 `);
-    const result = spawnSync(path.join(root, "node_modules/.bin/tsc"), [
+    const result = spawnSync(process.execPath, [path.join(root, "node_modules/typescript/bin/tsc"),
       "--noEmit", "--strict", "--skipLibCheck", "--target", "ES2022",
       "--module", "NodeNext", "--moduleResolution", "NodeNext", file
     ], { encoding: "utf8", cwd: root });

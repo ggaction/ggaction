@@ -57,7 +57,7 @@ p.createWindowData({ id: "bad", sortBy: [{ field: "t" }], operations: [{ op: "mo
 // @ts-expect-error Full only
 basic.createCompleteData({ id: "complete", key: "t", values: [1] });
 `);
-    const result = spawnSync(path.join(root, "node_modules/.bin/tsc"), [
+    const result = spawnSync(process.execPath, [path.join(root, "node_modules/typescript/bin/tsc"),
       "--noEmit", "--strict", "--skipLibCheck", "--target", "ES2022",
       "--module", "NodeNext", "--moduleResolution", "NodeNext", file
     ], { encoding: "utf8", cwd: root });

@@ -268,10 +268,15 @@ export function parseCoverageTable(output) {
     const name = match[2].trim();
     stack.length = depth - 1;
     stack[depth - 1] = name;
-    if (match[3] === undefined) continue;
+    if (match[3] === undefined && !name.endsWith(".js")) continue;
+    const metrics = match.slice(3, 6).map(Number);
+    if (metrics.some(value => !Number.isFinite(value) || value < 0 || value > 100)) {
+      throw new Error(`Malformed coverage metrics for ${name}.`);
+    }
     const relative = stack[0] === "src"
       ? stack.slice(1).join("/")
       : stack.join("/");
+    if (files.has(relative)) throw new Error(`Duplicate coverage row: ${relative}`);
     files.set(relative, Object.freeze({
       lines: Number(match[3]),
       branches: Number(match[4]),

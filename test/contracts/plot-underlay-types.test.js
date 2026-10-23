@@ -38,7 +38,7 @@ p.createParallelAxis({field:'x',underlay:true});
 // @ts-expect-error Basic retains creation-only chart authoring
 basic.editXAxis({underlay:true});
 `);
-    const result=spawnSync(path.join(root,'node_modules/.bin/tsc'),['--noEmit','--strict','--skipLibCheck',
+    const result=spawnSync(process.execPath, [path.join(root, "node_modules/typescript/bin/tsc"),'--noEmit','--strict','--skipLibCheck',
       '--target','ES2022','--module','NodeNext','--moduleResolution','NodeNext',file],{cwd:root,encoding:'utf8'});
     assert.equal(result.status,0,result.stdout+result.stderr);
   }finally{await rm(directory,{recursive:true,force:true});}

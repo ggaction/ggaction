@@ -166,7 +166,7 @@ p.createLegend({ symbol: { layers: [{ type: "swatch", cornerRadius: 2 }] } });
 p.editLegendBlock({ target: "legend", channel: "color", symbol: { lineCap: "round" } });
 `);
 
-    const result = spawnSync(path.join(root, "node_modules/.bin/tsc"), [
+    const result = spawnSync(process.execPath, [path.join(root, "node_modules/typescript/bin/tsc"),
       "--noEmit",
       "--strict",
       "--skipLibCheck",

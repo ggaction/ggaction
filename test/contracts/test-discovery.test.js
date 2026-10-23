@@ -315,3 +315,10 @@ test("assigns every normal test file to at least one named capability", () => {
 
   assert.deepEqual(unowned.map(file => path.relative(testRoot, file)), []);
 });
+
+test("validates every selector before short-circuit matching", () => {
+  for (const selectors of [
+    ["unit", "contracts", "charts", "docs", "gates", "capability:does-not-exist"],
+    ["capability:does-not-exist", "unit"]
+  ]) assert.throws(() => collectTestFiles("all", undefined, selectors), /Unknown test capability/);
+});

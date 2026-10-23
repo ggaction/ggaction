@@ -120,7 +120,7 @@ const invalidHorizontal = {bandPosition:"boundary" as const};
 // @ts-expect-error Non-fresh objects must not bypass the prohibited property.
 p.createLinePlot({x:"x",y:"y",guides:{grid:{horizontal:invalidHorizontal}}});
 `);
-    const result = spawnSync(path.join(root, "node_modules/.bin/tsc"), [
+    const result = spawnSync(process.execPath, [path.join(root, "node_modules/typescript/bin/tsc"),
       "--noEmit", "--strict", "--skipLibCheck", "--target", "ES2022",
       "--module", "NodeNext", "--moduleResolution", "NodeNext", file
     ], { cwd: root, encoding: "utf8" });

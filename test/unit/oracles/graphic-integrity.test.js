@@ -112,3 +112,12 @@ test("SVG integrity distinguishes legitimate text from invalid attributes", () =
     "unclosed root"
   ));
 });
+
+test("rejects wrong geometry types without crashing on malformed containers", () => {
+  for (const x of [null, "broken", false, {}, []]) {
+    const value = program({ canvas: {type: "canvas", properties: {width:100,height:100}, children:["point"]},
+      point: {type:"circle",properties:{x,y:10,radius:2}} });
+    assert.ok(inspectGraphicIntegrity(value).issues.some(issue => issue.includes(".x must be finite")));
+  }
+  assert.ok(inspectGraphicIntegrity(program({canvas:{type:"canvas",properties:{width:100,height:100},children:42}})).issues.length);
+});

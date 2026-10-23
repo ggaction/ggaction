@@ -46,7 +46,7 @@ basic.createPolarScatterPlot({ theta: "angle", radius: "distance" });
 // @ts-expect-error Full only
 basic.createPolarLinePlot({ theta: "angle", radius: "distance" });
 `);
-    const result = spawnSync(path.join(root, "node_modules/.bin/tsc"), [
+    const result = spawnSync(process.execPath, [path.join(root, "node_modules/typescript/bin/tsc"),
       "--noEmit", "--strict", "--skipLibCheck", "--target", "ES2022",
       "--module", "NodeNext", "--moduleResolution", "NodeNext", file
     ], { encoding: "utf8", cwd: root });

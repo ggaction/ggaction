@@ -85,3 +85,9 @@ test("keeps explicit critical overrides above family defaults", () => {
     { lines: 90, branches: 85, functions: 100 }
   );
 });
+
+test("rejects missing metrics instead of comparing NaN to a floor", () => {
+  assert.throws(() => assertCriticalCoverage("# src | | | |\n#  fake.js | 100 | | |", {
+    "fake.js": { lines:100, branches:100, functions:100 }
+  }), /Malformed/);
+});

@@ -120,7 +120,7 @@ p.editRScale({ value: 4 });
 // @ts-expect-error stroke dash ranges contain dash patterns
 p.editStrokeDashScale({ range: [1, 2] });
 `);
-    const result = spawnSync(path.join(root, "node_modules/.bin/tsc"), [
+    const result = spawnSync(process.execPath, [path.join(root, "node_modules/typescript/bin/tsc"),
       "--noEmit", "--strict", "--skipLibCheck", "--target", "ES2022",
       "--module", "NodeNext", "--moduleResolution", "NodeNext", file
     ], { encoding: "utf8", cwd: root });

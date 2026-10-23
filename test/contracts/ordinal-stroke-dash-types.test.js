@@ -47,7 +47,7 @@ basic.encodeStrokeDash({ field: "level", fieldType: "ordinal" });
 // @ts-expect-error bulk assignment remains outside Basic
 basic.encodeChannels({ target: "paths", channels: { strokeDash: { field: "level", fieldType: "ordinal" } } });
 `);
-    const result = spawnSync(path.join(root, "node_modules/.bin/tsc"), [
+    const result = spawnSync(process.execPath, [path.join(root, "node_modules/typescript/bin/tsc"),
       "--noEmit", "--strict", "--exactOptionalPropertyTypes", "--skipLibCheck", "--target", "ES2022",
       "--module", "NodeNext", "--moduleResolution", "NodeNext", file
     ], { cwd: root, encoding: "utf8" });

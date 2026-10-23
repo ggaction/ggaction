@@ -161,6 +161,10 @@ test("linear statistics stay finite at previously supported extreme ranges witho
     const program = statistics(parent);
     const result = dataset(program, "statistics").values[0];
     assert.ok(Number.isFinite(result.intercept)); assert.ok(Number.isFinite(result.slope));
+    if (values[0].y === 1e-300) {
+      assert.ok(Math.abs(result.slope / 1e-300 - 1) < 1e-12);
+      assert.ok(Math.abs(result.intercept / 1e-300 - 2) < 1e-12);
+    }
     assert.equal(result.rSquared, values.length === 2 ? null : 1);
     assert.deepEqual(dataset(program, "fit"), dataset(parent, "fit"));
     assert.doesNotThrow(() => deserializeProgram(serializeProgram(program)));

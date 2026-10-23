@@ -1,6 +1,15 @@
 # Test Guide
 
-The default suite runs unit, contract, chart, gate, and documentation tests:
+Install dependencies and the browser runtime before running tests:
+
+```sh
+npm ci
+npx playwright install chromium
+```
+
+The default suite runs unit, contract, chart, gate, and documentation tests.
+Some unit support and documentation interaction tests launch Chromium, so the
+browser runtime is required even when the separate browser suite is not selected:
 
 ```sh
 npm test
@@ -100,6 +109,9 @@ must not import from `src/`: they are a separate mathematical implementation
 used to catch shared implementation mistakes rather than repeat production
 helpers. Keep a few representative literal expectations in chart tests as
 anchors for the oracle itself and for important public examples.
+
+Full coverage output and runtime receipts are retained in `.artifacts/coverage/`,
+including when critical thresholds fail.
 
 Critical coverage is owned by `scripts/coverage-policy.js`. Family rules apply
 minimum floors to every current and future file under high-risk boundaries;

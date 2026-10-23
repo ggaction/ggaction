@@ -53,7 +53,7 @@ program.encodeChannels({ target: "points", channels: { color: null } });
 // @ts-expect-error value and field remain exclusive
 program.encodeChannels({ target: "points", channels: { stroke: { value: "red", field: "outline" } } });
 `);
-    const result = spawnSync(path.join(root, "node_modules/.bin/tsc"), [
+    const result = spawnSync(process.execPath, [path.join(root, "node_modules/typescript/bin/tsc"),
       "--noEmit", "--strict", "--skipLibCheck", "--target", "ES2022",
       "--module", "NodeNext", "--moduleResolution", "NodeNext", file
     ], { cwd: root, encoding: "utf8" });

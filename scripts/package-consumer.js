@@ -40,37 +40,42 @@ export async function preparePackageConsumer({
   packageSpec = process.env.GGACTION_PACKAGE_SPEC
 } = {}) {
   const directory = await mkdtemp(path.join(tmpdir(), "ggaction-consumer-"));
-  const artifact = packageSpec === undefined ? await createPackageArtifact() : undefined;
-  const installSpec = packageSpec ?? artifact.file;
-  await writeFile(path.join(directory, "package.json"), `${JSON.stringify({
-    name: "ggaction-release-consumer",
-    version: "1.0.0",
-    private: true,
-    type: "module"
-  }, null, 2)}\n`);
-  run(npmCommand, [
-    "install",
-    "--ignore-scripts",
-    "--no-audit",
-    "--no-fund",
-    installSpec
-  ], directory, {
-    env: {
-      ...process.env,
-      NPM_CONFIG_CACHE: path.join(directory, ".npm-cache")
-    }
-  });
-  const installedManifest = JSON.parse(await readFile(
-    path.join(directory, "node_modules", "ggaction", "package.json"),
-    "utf8"
-  ));
-  return {
-    artifact,
-    directory,
-    installedManifest,
-    packageSpec: packageSpec ?? artifact.file,
-    cleanup: () => rm(directory, { recursive: true, force: true })
-  };
+  try {
+    const artifact = packageSpec === undefined ? await createPackageArtifact() : undefined;
+    const installSpec = packageSpec ?? artifact.file;
+    await writeFile(path.join(directory, "package.json"), `${JSON.stringify({
+      name: "ggaction-release-consumer",
+      version: "1.0.0",
+      private: true,
+      type: "module"
+    }, null, 2)}\n`);
+    run(npmCommand, [
+      "install",
+      "--ignore-scripts",
+      "--no-audit",
+      "--no-fund",
+      installSpec
+    ], directory, {
+      env: {
+        ...process.env,
+        NPM_CONFIG_CACHE: path.join(directory, ".npm-cache")
+      }
+    });
+    const installedManifest = JSON.parse(await readFile(
+      path.join(directory, "node_modules", "ggaction", "package.json"),
+      "utf8"
+    ));
+    return {
+      artifact,
+      directory,
+      installedManifest,
+      packageSpec: packageSpec ?? artifact.file,
+      cleanup: () => rm(directory, { recursive: true, force: true })
+    };
+  } catch (error) {
+    await rm(directory, { recursive: true, force: true });
+    throw error;
+  }
 }
 
 async function testNodeConsumer(directory) {

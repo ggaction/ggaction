@@ -19,7 +19,14 @@ function resolveCssColor(value) {
   const canvas = createCanvas(1, 1);
   const context = canvas.getContext("2d");
   context.clearRect(0, 0, 1, 1);
+  // Invalid CSS assignments leave the previous paint unchanged. Two distinct
+  // sentinels distinguish that case from any valid color (including black).
+  context.fillStyle = "#010203";
   context.fillStyle = value;
+  const first = context.fillStyle;
+  context.fillStyle = "#040506";
+  context.fillStyle = value;
+  if (context.fillStyle !== first) throw new TypeError(`Invalid expected CSS color: ${value}`);
   context.fillRect(0, 0, 1, 1);
   return [...context.getImageData(0, 0, 1, 1).data];
 }
@@ -60,7 +67,7 @@ export function pixelMatchesColor(pixel, expected) {
 }
 
 export function pixelDiffersFromBackground(pixel, background, tolerance = 5) {
-  return pixel.some((channel, index) =>
+  return pixel[3] > 0 && pixel.some((channel, index) =>
     Math.abs(channel - background[index]) > tolerance
   );
 }

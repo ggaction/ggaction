@@ -1,4 +1,4 @@
-import { readFileSync, readdirSync } from "node:fs";
+import { readFileSync, readdirSync, mkdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { partitionTestFiles } from "./test-sharding.js";
 import { spawnSync } from "node:child_process";
@@ -109,6 +109,11 @@ function matchesSelector(file, root, selector) {
 }
 
 export function collectTestFiles(suite = "all", root = testRoot, selectors = []) {
+  for (const selector of selectors) {
+    if (selector.startsWith("capability:") && !Object.hasOwn(TEST_CAPABILITIES, selector.slice(11))) {
+      throw new Error(`Unknown test capability "${selector.slice(11)}".`);
+    }
+  }
   const requested = suite === "all" || suite === "coverage"
     ? new Set(NORMAL_SUITES)
     : new Set([suite]);
@@ -193,6 +198,17 @@ function run(suite, selectors, shard) {
       ? { encoding: "utf8", maxBuffer: 10 * 1024 * 1024 }
       : { stdio: "inherit" })
   });
+  if (coverage) {
+    const directory = path.join(repositoryRoot, ".artifacts/coverage");
+    mkdirSync(directory, { recursive: true });
+    writeFileSync(path.join(directory, "report.log"), (result.stdout ?? "") + (result.stderr ?? ""));
+    writeFileSync(path.join(directory, "receipt.json"), JSON.stringify({
+      node: process.version, platform: process.platform, arch: process.arch,
+      status: result.status, signal: result.signal, error: result.error?.message,
+      files: files.map(file => path.relative(repositoryRoot, file)),
+      sourceCommit: spawnSync("git", ["rev-parse", "HEAD"], { cwd: repositoryRoot, encoding: "utf8" }).stdout?.trim()
+    }, null, 2));
+  }
   if (result.error) throw result.error;
   if (coverage) {
     if (result.status === 0) {

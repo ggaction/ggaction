@@ -84,7 +84,7 @@ program.editLegendBlock({ target: "points", channel: "color", text: { format: ".
 // @ts-expect-error explicit values require at least one number.
 program.editLegendBlock({ target: "points", channel: "size", values: [] });
 `);
-    const result = spawnSync(path.join(root, "node_modules/.bin/tsc"), [
+    const result = spawnSync(process.execPath, [path.join(root, "node_modules/typescript/bin/tsc"),
       "--noEmit", "--strict", "--skipLibCheck", "--target", "ES2022",
       "--module", "NodeNext", "--moduleResolution", "NodeNext", file
     ], { encoding: "utf8", cwd: root });

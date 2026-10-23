@@ -29,7 +29,7 @@ chart().removeData({ id: "unused", cascade: true });
 // @ts-expect-error batch removal is not supported.
 chart().removeScale({ id: ["x", "y"] });
 `);
-    const result = spawnSync(path.join(root, "node_modules/.bin/tsc"), [
+    const result = spawnSync(process.execPath, [path.join(root, "node_modules/typescript/bin/tsc"),
       "--noEmit", "--strict", "--skipLibCheck", "--target", "ES2022",
       "--module", "NodeNext", "--moduleResolution", "NodeNext", file
     ], { encoding: "utf8", cwd: root });

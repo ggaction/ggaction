@@ -52,7 +52,7 @@ p.createThetaAxis({id:"angle"});
 // @ts-expect-error Cartesian selectors do not extend polar remover contracts.
 p.removeThetaAxis({target:"angle"});
 `);
-    const result = spawnSync(path.join(root, "node_modules/.bin/tsc"), [
+    const result = spawnSync(process.execPath, [path.join(root, "node_modules/typescript/bin/tsc"),
       "--noEmit", "--strict", "--skipLibCheck", "--target", "ES2022",
       "--module", "NodeNext", "--moduleResolution", "NodeNext", file
     ], { cwd: root, encoding: "utf8" });

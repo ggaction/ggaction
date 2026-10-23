@@ -13,4 +13,4 @@ const invalidFloor:ComputedExpression={op:'floor',operand:{constant:1},digits:2}
 p.createComputedData({id:'bad',as:'t',expression:{op:'parseTime',operand:{field:'date'},format:'%Q'}});
 // @ts-expect-error callbacks are never expressions
 p.createComputedData({id:'bad',as:'t',expression:{op:'parseTime',operand:()=>new Date()}});
-`);const r=spawnSync(path.join(root,'node_modules/.bin/tsc'),['--noEmit','--strict','--skipLibCheck','--target','ES2022','--module','NodeNext','--moduleResolution','NodeNext',file],{cwd:root,encoding:'utf8'});assert.equal(r.status,0,r.stdout+r.stderr);}finally{await rm(dir,{recursive:true,force:true});}});
+`);const r=spawnSync(process.execPath, [path.join(root, "node_modules/typescript/bin/tsc"),'--noEmit','--strict','--skipLibCheck','--target','ES2022','--module','NodeNext','--moduleResolution','NodeNext',file],{cwd:root,encoding:'utf8'});assert.equal(r.status,0,r.stdout+r.stderr);}finally{await rm(dir,{recursive:true,force:true});}});

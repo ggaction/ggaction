@@ -81,6 +81,10 @@ function validatePrimitive(type, properties, path, issues) {
     return;
   }
   for (const property of required) {
+    if (!["text", "commands"].includes(property) &&
+        properties[property] !== undefined && !Number.isFinite(properties[property])) {
+      issues.push(`${path}.properties.${property} must be finite.`);
+    }
     if (properties[property] === undefined) {
       issues.push(`${path}.properties.${property} is required.`);
     }
@@ -124,7 +128,7 @@ function detectCycles(objects, roots, issues) {
     active.add(id);
     const object = objects[id];
     if (object !== undefined) {
-      const children = object.children ?? [];
+      const children = Array.isArray(object.children) ? object.children : [];
       if (new Set(children).size !== children.length) {
         issues.push(`Graphic "${id}" repeats a child id.`);
       }

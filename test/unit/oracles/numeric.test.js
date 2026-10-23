@@ -31,3 +31,11 @@ test("rejects invalid oracle inputs", () => {
   assert.throws(() => mapLinear(1, [0, 1], [0]), /two domain and range/);
   assert.throws(() => quantile([1], 2), /between 0 and 1/);
 });
+
+test("bounds oracle work and preserves opposite-sign extreme midpoints", () => {
+  assert.throws(() => numericTicks([1e16, 1e16 + 4], 5), /precision/);
+  assert.equal(mapLinear(0, [-Number.MAX_VALUE, Number.MAX_VALUE], [0, 100]), 50);
+  assert.equal(mapLinear(0.5, [0, 1], [-Number.MAX_VALUE, Number.MAX_VALUE]), 0);
+  assert.equal(quantile([-Number.MAX_VALUE, Number.MAX_VALUE], 0.5), 0);
+  assert.equal(mapLinear(1, [1, 1], [Number.MAX_VALUE, Number.MAX_VALUE]), Number.MAX_VALUE);
+});

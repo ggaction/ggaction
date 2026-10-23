@@ -11,14 +11,14 @@ export function documentationCodeBlocks(markdown) {
   let block;
   for (const [index, line] of markdown.split("\n").entries()) {
     if (block) {
-      if (line.startsWith(block.fence)) {
+      if (new RegExp(`^ {0,3}${block.fence[0]}{${block.fence.length},}\\s*$`).test(line)) {
         blocks.push({ ...block, code: block.lines.join("\n") });
         block = undefined;
       } else block.lines.push(line);
       continue;
     }
     if (/^#{1,6} /.test(line)) heading = line.replace(/^#+ /, "");
-    const fence = line.match(/^(```|~~~)([\w-]*)\s*$/);
+    const fence = line.match(/^ {0,3}(`{3,}|~{3,})([\w-]*)(?:[ \t]+[^\n]*)?$/);
     if (fence) block = {
       fence: fence[1], language: fence[2], heading, line: index + 1, lines: []
     };
@@ -55,7 +55,7 @@ export async function documentationPrograms() {
       ? javascript.find(item => item.code.includes(options.contains))
       : javascript.find(item => item.heading === "Complete program") ?? javascript[0];
     if (!block) throw new Error(`${file} is missing its registered executable block.`);
-    if (!options.environment || !options.result) {
+    if (!["node-esm", "browser-module"].includes(options.environment) || !options.result) {
       throw new Error(`${file} must identify its environment and observable result.`);
     }
     return { file, ...options, ...block };

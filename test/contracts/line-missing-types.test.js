@@ -27,7 +27,7 @@ p.editLineMark({ missing: false });
 // @ts-expect-error Polar does not expose direct Cartesian missing intent
 const polar: NonNullable<CreatePolarLinePlotOptions['line']> = { missing: 'break' };
 `);
-    const result = spawnSync(path.join(root, "node_modules/.bin/tsc"), [
+    const result = spawnSync(process.execPath, [path.join(root, "node_modules/typescript/bin/tsc"),
       "--noEmit", "--strict", "--exactOptionalPropertyTypes", "--skipLibCheck",
       "--target", "ES2022", "--module", "NodeNext", "--moduleResolution", "NodeNext", file
     ], { cwd: root, encoding: "utf8" });

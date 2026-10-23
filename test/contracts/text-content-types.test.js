@@ -178,7 +178,7 @@ p.encodeText({ value: 1, format: ".13%" });
 // @ts-expect-error Scientific precision follows the same bounds.
 p.encodeText({ value: 1, format: ".13e" });
 `);
-    const result = spawnSync(path.join(root, "node_modules/.bin/tsc"), ["--noEmit", "--strict", "--skipLibCheck",
+    const result = spawnSync(process.execPath, [path.join(root, "node_modules/typescript/bin/tsc"),"--noEmit", "--strict", "--skipLibCheck",
       "--target", "ES2022", "--module", "NodeNext", "--moduleResolution", "NodeNext", file], { encoding: "utf8", cwd: root });
     assert.equal(result.status, 0, `${result.stdout}\n${result.stderr}`);
   } finally { await rm(directory, { recursive: true, force: true }); }

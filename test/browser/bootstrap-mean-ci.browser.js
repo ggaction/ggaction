@@ -1,3 +1,4 @@
+import { saveBrowserPageEvidence } from "../support/browser.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
@@ -41,6 +42,6 @@ test("canonical bootstrap-mean-ci browser Canvas and SVG preserve the independen
       assert.equal(result.width,320);assert.equal(result.height,220);assert.ok(result.accessible?.length>0);
       assert.deepEqual(result.state,{id:"bootstrap-mean-ci",width:320,height:220});
       assertNoBrowserErrors(errors,"bootstrap-mean-ci");
-    } finally {await page.close();}
+    } catch (error) { await saveBrowserPageEvidence(page, error, "browser-assertion"); throw error; } finally { await page.close(); }
   } finally {await closeBrowserWithEvidence(browser);await server?.close();}
 });

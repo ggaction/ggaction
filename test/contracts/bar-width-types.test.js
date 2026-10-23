@@ -21,5 +21,5 @@ p.encodeBarWidth({pixels:10,interval:{unit:'year'}});
 p.encodeBarWidth({interval:{unit:'week'}});
 // @ts-expect-error box widths remain slot or pixel based
 p.createBoxPlot({x:'category',y:'value',width:{interval:{unit:'year'}}});
-`);const r=spawnSync(path.join(root,'node_modules/.bin/tsc'),['--noEmit','--strict','--skipLibCheck','--target','ES2022','--module','NodeNext','--moduleResolution','NodeNext',file],{cwd:root,encoding:'utf8'});assert.equal(r.status,0,r.stdout+r.stderr);}finally{await rm(dir,{recursive:true,force:true});}
+`);const r=spawnSync(process.execPath, [path.join(root, "node_modules/typescript/bin/tsc"),'--noEmit','--strict','--skipLibCheck','--target','ES2022','--module','NodeNext','--moduleResolution','NodeNext',file],{cwd:root,encoding:'utf8'});assert.equal(r.status,0,r.stdout+r.stderr);}finally{await rm(dir,{recursive:true,force:true});}
 });

@@ -37,7 +37,7 @@ p.createStripPlot({ x: "value", y: { field: "category", fieldType: "nominal" }, 
 // @ts-expect-error Strip is Full only.
 basic.createStripPlot(options);
 `);
-    const result = spawnSync(path.join(root, "node_modules/.bin/tsc"), [
+    const result = spawnSync(process.execPath, [path.join(root, "node_modules/typescript/bin/tsc"),
       "--noEmit", "--strict", "--skipLibCheck", "--target", "ES2022",
       "--module", "NodeNext", "--moduleResolution", "NodeNext", file
     ], { encoding: "utf8", cwd: root });
