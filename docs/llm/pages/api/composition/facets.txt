@@ -2,6 +2,35 @@
 
 [Family overview](../../../../api/composition/) · [Exact action lookup](../../../../reference/actions/)
 
+## Use different horizontal and vertical gaps
+
+A facet can set `gap: { x: 32, y: 48 }` to leave more space between rows than
+between columns. The existing number form applies the same gap in both directions.
+This complete example preserves one plot per panel:
+
+> **Executable complete.** Import chart from ggaction. This complete program includes all four panel rows and retains the original dataset while creating the facet.
+
+```js
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas({ width: 240, height: 180 })
+  .createData({ values: [
+    { panel: "A", x: 1, y: 2 }, { panel: "B", x: 2, y: 3 },
+    { panel: "C", x: 3, y: 1 }, { panel: "D", x: 4, y: 4 }
+  ] })
+  .createScatterPlot({ x: "x", y: "y" })
+  .facet({ field: "panel", columns: 2, gap: { x: 32, y: 48 } });
+```
+
+Both keys are required, even for a single row or column. Values must be finite and
+non-negative; partial objects and unknown keys are rejected. The same pair is
+supported by field repetition and row-column grids. Existing spacing rules still
+apply: canvas gaps separate child canvases, plot gaps separate data regions, and
+content gaps separate retained content. A row-column grid still rejects content
+spacing. Titles, headers, guides and legends keep their existing ownership and
+collision checks. Concat continues to accept only a number.
+
 ## Declare a legend for the complete facet
 
 Pass a legend object to `guides.legend` to create it against the combined inner plots.

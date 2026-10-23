@@ -882,7 +882,7 @@
     "title": "Facets and Field Repetition",
     "source": "docs/api/composition/facets.md",
     "editSource": "docs/api/composition/facets.md",
-    "description": "Pass a legend object to guides.legend to create it against the combined inner plots.",
+    "description": "A facet can set gap: { x: 32, y: 48 } to leave more space between rows than between columns. The existing number form applies the same gap in both directions.",
     "image": "/assets/images/facet-grid.png"
   },
   "/api/composition/editing/": {

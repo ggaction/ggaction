@@ -38,6 +38,11 @@ content-flow layout kernel에 전달한다. 공통 bottom footer는 부모 Canva
 child viewport clipping과 분리한다. Renderer와 semantic/graphic 경계는 유지한다.
 공개 옵션은 [composition 계약](contract/current/COMPOSITION.md)이 소유한다.
 
+Facet의 가로·세로 간격은 기존 `compositionSpec.gap` 한 곳에 숫자 또는 닫힌 `{x,y}`로
+보존한다. 순수 `core/facetGap.js`가 생성·편집·grid/content 배치·저장 복원의 검증을
+공유하며, 각 materializer는 해결된 축별 간격을 사용한다. Concat은 숫자 계약을 유지하고
+renderer/state 경계는 바뀌지 않는다. 정확한 값 계약은 current COMPOSITION이 소유한다.
+
 ## 문서의 위치
 
 > 과거 checkpoint 수치 포함. 현재 한도는 실행 검사에서 확인한다.

@@ -287,6 +287,7 @@ export type {
   FieldType,
   FillPaint,
   FacetCompositionSpec,
+  FacetGap,
   FacetGuideOptions,
   FacetOptions,
   FacetTopLaneMode,

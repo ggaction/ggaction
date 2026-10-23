@@ -6,7 +6,8 @@
 - [x] 현재 scalar gap, content kernel, 저장 validator, action/materialization 경계 읽기
 - [x] 공개 입력·저장·검증·호환 범위의 구체 설계
 - [x] ROOT 설계 검토 및 기존 승인 근거 기록
-- [ ] 구현·회귀 검사·source별 새 native qualification
+- [x] 구현·회귀 검사·packed consumer·browser·전체 normal 검증
+- [ ] source별 새 native qualification
 - [ ] 정확한 package/docs 준비와 기존 번역 호환 검증 후 런타임 채택
 
 Gate 상태: `approved` (2026-10-23, ROOT가 문서 전체와 구체 API·저장·검증 범위를 검토).

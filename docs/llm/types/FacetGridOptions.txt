@@ -4,7 +4,7 @@ export interface FacetGridOptions {
   rows: FacetGridRole;
   columns: FacetGridRole;
   combinations?: "observed" | "full";
-  gap?: number;
+  gap?: FacetGap;
   align?: CompositionAlign;
   padding?: number | CompositionPadding;
   scales?: FacetScaleResolutions;

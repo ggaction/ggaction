@@ -5,3 +5,4 @@ export interface CompositionOptions {
   align?: CompositionAlign;
   padding?: number | CompositionPadding;
 }
+/** Facets may set independent axis gaps; concat continues to require a number. */

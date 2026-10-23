@@ -131,5 +131,15 @@
       "mark": "scatterPlot",
       "items": 3
     }
+  },
+  {
+    "id": "facet-axis-gaps",
+    "file": "api/composition/facets.md",
+    "contains": "gap: { x: 32, y: 48 }",
+    "mode": "complete",
+    "environment": "node-esm",
+    "rendering": "authoring-only",
+    "result": "program",
+    "prerequisites": "Import chart from ggaction. This complete program includes all four panel rows and retains the original dataset while creating the facet."
   }
 ]

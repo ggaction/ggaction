@@ -4509,7 +4509,7 @@
       "domain": "composition",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits concat layout or facet columns/layout; optional shared top lane with plot spacing",
+      "update": "Edits concat layout or facet columns/layout; optional shared top lane with plot spacing; facet axis-gap pair replacement",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -4599,7 +4599,7 @@
       "domain": "composition",
       "status": "implemented",
       "lifecycle": "Aggregate create-only",
-      "update": "Creates immutable derived child views; optional shared top lane with plot spacing",
+      "update": "Creates immutable derived child views; optional shared top lane with plot spacing; independent axis gaps",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -4617,7 +4617,7 @@
       "domain": "composition",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Creates ordered row-column facet cells; optional shared top lane with plot spacing",
+      "update": "Creates ordered row-column facet cells; optional shared top lane with plot spacing; independent axis gaps",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -4635,7 +4635,7 @@
       "domain": "composition",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Repeats one eligible Cartesian or Polar role or one Parallel dimension across fields; optional shared top lane with plot spacing",
+      "update": "Repeats one eligible Cartesian or Polar role or one Parallel dimension across fields; optional shared top lane with plot spacing; independent axis gaps",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",

@@ -839,11 +839,16 @@ export const editFacetSource = /* @__PURE__ */ closedAction(
 
 export function registerFacetActions(ProgramClass) {
   registerFacetDataRevision((program, args) => {
-    const { program: unit, plan } = reviseUnitData(facetUnitTemplate(program), args);
+    const template = facetUnitTemplate(program);
+    // A parent title belongs to the composition, not the retained child unit.
+    const revisionSource = template.semanticSpec.title.text === undefined
+      ? template : template.removeTitle();
+    const { program: unit, plan } = reviseUnitData(revisionSource, args);
     const current = program.compositionSpec;
     // Adopt an already-materialized unit revision into the retained parent.
     const revised = new program.constructor({
       ...unit,
+      semanticSpec: { ...unit.semanticSpec, title: program.semanticSpec.title },
       graphicSpec: program.graphicSpec,
       children: program.children,
       materializationConfigs: { ...unit.materializationConfigs,

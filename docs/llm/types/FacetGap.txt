@@ -1,0 +1,1 @@
+export type FacetGap = number | Readonly<{ x: number; y: number }>;

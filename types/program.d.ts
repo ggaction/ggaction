@@ -164,9 +164,11 @@ export interface CompositionOptions {
   align?: CompositionAlign;
   padding?: number | CompositionPadding;
 }
+/** Facets may set independent axis gaps; concat continues to require a number. */
+export type FacetGap = number | Readonly<{ x: number; y: number }>;
 export interface EditCompositionLayoutOptions {
   columns?: number;
-  gap?: number;
+  gap?: FacetGap;
   align?: CompositionAlign;
   padding?: number | CompositionPadding;
   /** Interpret gap between child canvases (default), inner plots, or retained full content (wrapped facets). */
@@ -224,7 +226,7 @@ export interface FacetOptions {
   data?: string;
   values?: readonly DatasetScalar[];
   columns?: number;
-  gap?: number;
+  gap?: FacetGap;
   align?: CompositionAlign;
   padding?: number | CompositionPadding;
   scales?: FacetScaleResolutions;
@@ -245,7 +247,7 @@ export interface FacetGridOptions {
   rows: FacetGridRole;
   columns: FacetGridRole;
   combinations?: "observed" | "full";
-  gap?: number;
+  gap?: FacetGap;
   align?: CompositionAlign;
   padding?: number | CompositionPadding;
   scales?: FacetScaleResolutions;
@@ -262,7 +264,7 @@ export interface RepeatChartsOptions {
   channel: "x" | "y" | "theta" | "r" | { parallelDimension: string };
   fields: readonly [string, ...string[]];
   columns?: number;
-  gap?: number;
+  gap?: FacetGap;
   align?: CompositionAlign;
   padding?: number | CompositionPadding;
   scales?: FacetScaleResolutions;
@@ -328,7 +330,7 @@ export interface FacetCompositionSpec {
   readonly spacing?: "canvas" | "plot" | "content";
   /** Canonical opt-in intent; stacked is represented by omission. */
   readonly topLane?: "shared";
-  readonly gap: number;
+  readonly gap: FacetGap;
   readonly align: CompositionAlign;
   readonly padding: Readonly<Required<CompositionPadding>>;
   readonly facet: {

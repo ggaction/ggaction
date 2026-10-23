@@ -23,7 +23,7 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 623, // Shared facet axis policy and native content-bound measurement.
+  entries: 624, // Previous623 files plus the shared facet axis-gap owner.
   packedBytes: 902_000, // Measured 901585 on clean Linux and 901579 on Windows runners.
   unpackedBytes: 4_272_000 // Measured 4,271,487 bytes after synchronized release features.
 });

@@ -4191,7 +4191,7 @@ Related types: [`FocusedDerivedDataEdit`](../../../reference/types/#type-focused
 ```typescript
 export interface EditCompositionLayoutOptions {
   columns?: number;
-  gap?: number;
+  gap?: FacetGap;
   align?: CompositionAlign;
   padding?: number | CompositionPadding;
   /** Interpret gap between child canvases (default), inner plots, or retained full content (wrapped facets). */
@@ -4201,7 +4201,7 @@ export interface EditCompositionLayoutOptions {
 }
 ```
 
-Related types: [`CompositionAlign`](../../../reference/types/#type-compositionalign) · [`CompositionPadding`](../../../reference/types/#type-compositionpadding) · [`FacetTopLaneMode`](../../../reference/types/#type-facettoplanemode).
+Related types: [`FacetGap`](../../../reference/types/#type-facetgap) · [`CompositionAlign`](../../../reference/types/#type-compositionalign) · [`CompositionPadding`](../../../reference/types/#type-compositionpadding) · [`FacetTopLaneMode`](../../../reference/types/#type-facettoplanemode).
 
 ### `EditComputedDataOptions` {#type-editcomputeddataoptions}
 
@@ -5606,6 +5606,14 @@ type FacadePositionChannel<Quantitative, Temporal, Categorical> =
 
 Related types: [`PositionEncodingBase`](../../../reference/types/#type-positionencodingbase) · [`PositionScaleBranches`](../../../reference/types/#type-positionscalebranches).
 
+### `FacetGap` {#type-facetgap}
+
+ Expand FacetGap
+
+```typescript
+export type FacetGap = number | Readonly<{ x: number; y: number }>;
+```
+
 ### `FacetGridOptions` {#type-facetgridoptions}
 
  Expand FacetGridOptions
@@ -5617,7 +5625,7 @@ export interface FacetGridOptions {
   rows: FacetGridRole;
   columns: FacetGridRole;
   combinations?: "observed" | "full";
-  gap?: number;
+  gap?: FacetGap;
   align?: CompositionAlign;
   padding?: number | CompositionPadding;
   scales?: FacetScaleResolutions;
@@ -5630,7 +5638,7 @@ export interface FacetGridOptions {
 }
 ```
 
-Related types: [`FacetGridRole`](../../../reference/types/#type-facetgridrole) · [`CompositionAlign`](../../../reference/types/#type-compositionalign) · [`CompositionPadding`](../../../reference/types/#type-compositionpadding) · [`FacetScaleResolutions`](../../../reference/types/#type-facetscaleresolutions) · [`FacetGuideOptions`](../../../reference/types/#type-facetguideoptions) · [`FacetHeadersOptions`](../../../reference/types/#type-facetheadersoptions) · [`FacetTopLaneMode`](../../../reference/types/#type-facettoplanemode).
+Related types: [`FacetGridRole`](../../../reference/types/#type-facetgridrole) · [`FacetGap`](../../../reference/types/#type-facetgap) · [`CompositionAlign`](../../../reference/types/#type-compositionalign) · [`CompositionPadding`](../../../reference/types/#type-compositionpadding) · [`FacetScaleResolutions`](../../../reference/types/#type-facetscaleresolutions) · [`FacetGuideOptions`](../../../reference/types/#type-facetguideoptions) · [`FacetHeadersOptions`](../../../reference/types/#type-facetheadersoptions) · [`FacetTopLaneMode`](../../../reference/types/#type-facettoplanemode).
 
 ### `FacetGridRole` {#type-facetgridrole}
 
@@ -5728,7 +5736,7 @@ export interface FacetOptions {
   data?: string;
   values?: readonly DatasetScalar[];
   columns?: number;
-  gap?: number;
+  gap?: FacetGap;
   align?: CompositionAlign;
   padding?: number | CompositionPadding;
   scales?: FacetScaleResolutions;
@@ -5741,7 +5749,7 @@ export interface FacetOptions {
 }
 ```
 
-Related types: [`DatasetScalar`](../../../reference/types/#type-datasetscalar) · [`CompositionAlign`](../../../reference/types/#type-compositionalign) · [`CompositionPadding`](../../../reference/types/#type-compositionpadding) · [`FacetScaleResolutions`](../../../reference/types/#type-facetscaleresolutions) · [`FacetGuideOptions`](../../../reference/types/#type-facetguideoptions) · [`FacetHeadersOptions`](../../../reference/types/#type-facetheadersoptions) · [`FacetTopLaneMode`](../../../reference/types/#type-facettoplanemode).
+Related types: [`DatasetScalar`](../../../reference/types/#type-datasetscalar) · [`FacetGap`](../../../reference/types/#type-facetgap) · [`CompositionAlign`](../../../reference/types/#type-compositionalign) · [`CompositionPadding`](../../../reference/types/#type-compositionpadding) · [`FacetScaleResolutions`](../../../reference/types/#type-facetscaleresolutions) · [`FacetGuideOptions`](../../../reference/types/#type-facetguideoptions) · [`FacetHeadersOptions`](../../../reference/types/#type-facetheadersoptions) · [`FacetTopLaneMode`](../../../reference/types/#type-facettoplanemode).
 
 ### `FacetScaleResolution` {#type-facetscaleresolution}
 
@@ -9157,7 +9165,7 @@ export interface RepeatChartsOptions {
   channel: "x" | "y" | "theta" | "r" | { parallelDimension: string };
   fields: readonly [string, ...string[]];
   columns?: number;
-  gap?: number;
+  gap?: FacetGap;
   align?: CompositionAlign;
   padding?: number | CompositionPadding;
   scales?: FacetScaleResolutions;
@@ -9170,7 +9178,7 @@ export interface RepeatChartsOptions {
 }
 ```
 
-Related types: [`CompositionAlign`](../../../reference/types/#type-compositionalign) · [`CompositionPadding`](../../../reference/types/#type-compositionpadding) · [`FacetScaleResolutions`](../../../reference/types/#type-facetscaleresolutions) · [`FacetGuideOptions`](../../../reference/types/#type-facetguideoptions) · [`FacetHeadersOptions`](../../../reference/types/#type-facetheadersoptions) · [`FacetTopLaneMode`](../../../reference/types/#type-facettoplanemode).
+Related types: [`FacetGap`](../../../reference/types/#type-facetgap) · [`CompositionAlign`](../../../reference/types/#type-compositionalign) · [`CompositionPadding`](../../../reference/types/#type-compositionpadding) · [`FacetScaleResolutions`](../../../reference/types/#type-facetscaleresolutions) · [`FacetGuideOptions`](../../../reference/types/#type-facetguideoptions) · [`FacetHeadersOptions`](../../../reference/types/#type-facetheadersoptions) · [`FacetTopLaneMode`](../../../reference/types/#type-facettoplanemode).
 
 ### `ReplaceCompositionChildOptions` {#type-replacecompositionchildoptions}
 

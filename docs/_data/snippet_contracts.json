@@ -799,6 +799,18 @@
   {
     "file": "api/composition/facets.md",
     "block": 1,
+    "heading": "Use different horizontal and vertical gaps",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Import chart from ggaction. This complete program includes all four panel rows and retains the original dataset while creating the facet.",
+    "sha256": "96821fbbe0adf6cd046c5b9e7ad18cddadf13d555cc9924fc6a23ba1fe04d064",
+    "executable": true
+  },
+  {
+    "file": "api/composition/facets.md",
+    "block": 2,
     "heading": "Declare a legend for the complete facet",
     "mode": "fragment",
     "environment": "esm-context",
@@ -810,7 +822,7 @@
   },
   {
     "file": "api/composition/facets.md",
-    "block": 2,
+    "block": 3,
     "heading": "Rotate panel headers",
     "mode": "fragment",
     "environment": "esm-context",
@@ -824,7 +836,7 @@
   },
   {
     "file": "api/composition/facets.md",
-    "block": 3,
+    "block": 4,
     "heading": "Repeat the current chart by a field",
     "mode": "fragment",
     "environment": "esm-context",
@@ -836,7 +848,7 @@
   },
   {
     "file": "api/composition/facets.md",
-    "block": 4,
+    "block": 5,
     "heading": "Repeat the current chart by a field",
     "mode": "fragment",
     "environment": "esm-context",
@@ -848,7 +860,7 @@
   },
   {
     "file": "api/composition/facets.md",
-    "block": 5,
+    "block": 6,
     "heading": "Repeat the current chart by a field",
     "mode": "fragment",
     "environment": "esm-context",
@@ -863,7 +875,7 @@
   },
   {
     "file": "api/composition/facets.md",
-    "block": 6,
+    "block": 7,
     "heading": "Repeat the current chart by a field",
     "mode": "fragment",
     "environment": "esm-context",
@@ -877,7 +889,7 @@
   },
   {
     "file": "api/composition/facets.md",
-    "block": 7,
+    "block": 8,
     "heading": "Repeat the current chart by a field",
     "mode": "fragment",
     "environment": "esm-context",
@@ -889,7 +901,7 @@
   },
   {
     "file": "api/composition/facets.md",
-    "block": 8,
+    "block": 9,
     "heading": "Repeat the current chart by a field",
     "mode": "fragment",
     "environment": "esm-context",
@@ -901,7 +913,7 @@
   },
   {
     "file": "api/composition/facets.md",
-    "block": 9,
+    "block": 10,
     "heading": "Build a row and column facet grid",
     "mode": "fragment",
     "environment": "esm-context",
@@ -915,7 +927,7 @@
   },
   {
     "file": "api/composition/facets.md",
-    "block": 10,
+    "block": 11,
     "heading": "Repeat a positional encoding across fields",
     "mode": "fragment",
     "environment": "esm-context",
@@ -931,7 +943,7 @@
   },
   {
     "file": "api/composition/facets.md",
-    "block": 11,
+    "block": 12,
     "heading": "Repeat a positional encoding across fields",
     "mode": "fragment",
     "environment": "esm-context",
@@ -945,7 +957,7 @@
   },
   {
     "file": "api/composition/facets.md",
-    "block": 12,
+    "block": 13,
     "heading": "Share the existing top margin",
     "mode": "fragment",
     "environment": "esm-context",

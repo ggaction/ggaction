@@ -2014,7 +2014,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `columns` | Optional / branch-dependent | `number \| undefined` |
-| `gap` | Optional / branch-dependent | `number \| undefined` |
+| `gap` | Optional / branch-dependent | `FacetGap \| undefined` |
 | `align` | Optional / branch-dependent | `CompositionAlign \| undefined` |
 | `padding` | Optional / branch-dependent | `number \| CompositionPadding \| undefined` |
 | `spacing` | Optional / branch-dependent | `"canvas" \| "content" \| "plot" \| undefined` |
@@ -2031,7 +2031,10 @@ editCompositionLayout({ columns?, gap?, spacing?, align?, padding? })
 Edit spacing, cross-axis alignment, or outer padding on an existing composition.
 `columns` changes wrapping only on a facet composition and is rejected for concat.
 Omitted values are preserved, child identity is unchanged, and the parent snapshot
-is rebuilt from retained child programs.
+is rebuilt from retained child programs. Facet parents accept `gap: {x, y}` to
+set horizontal and vertical distances separately; both keys are required and each
+value must be finite and non-negative. A pair replaces both axes, while an omitted
+gap preserves its current form. Concat continues to require a numeric gap.
 
 
 ## `replaceCompositionChild`
@@ -2194,7 +2197,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `values` | Optional / branch-dependent | `readonly DatasetScalar[] \| undefined` |
 | `columns` | Optional / branch-dependent | `number \| undefined` |
-| `gap` | Optional / branch-dependent | `number \| undefined` |
+| `gap` | Optional / branch-dependent | `FacetGap \| undefined` |
 | `align` | Optional / branch-dependent | `CompositionAlign \| undefined` |
 | `padding` | Optional / branch-dependent | `number \| CompositionPadding \| undefined` |
 | `scales` | Optional / branch-dependent | `FacetScaleResolutions \| undefined` |
@@ -2235,6 +2238,15 @@ anchors use the union and preserve child dimensions, automatic policies and edit
 persistence. See [parent legend creation](../../api/composition/facets.md#declare-a-legend-for-the-complete-facet).
 See [Program composition](../../api/composition.md#repeat-the-current-chart-by-a-field).
 
+Facet, grid and field repetition also accept `gap: {x, y}`. A number still applies
+one distance in both directions and keeps its stored form. A pair must contain
+exactly those two finite non-negative values; partial objects and unknown keys
+reject, even for one row or column. The distances separate child canvases, plots,
+or retained content according to the existing spacing mode. Grid still supports
+only canvas/plot spacing. Header clearance and final overlap checks remain active
+independently in both directions. The pair survives layout edits, source replay
+and editable persistence. See [independent axis gaps](../../api/composition/facets.md#use-different-horizontal-and-vertical-gaps).
+
 Creation options for `facet`, `facetGrid`, and `repeatCharts` accept `headers`.
 Set common `fontSize`, `fontFamily`, `fontWeight`, `color`, `offset`, `align`, or
 `labelMap`, and optional `row`/`column` objects with role-specific overrides and
@@ -2273,7 +2285,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `rows` | Required | `FacetGridRole` |
 | `columns` | Required | `FacetGridRole` |
 | `combinations` | Optional / branch-dependent | `"full" \| "observed" \| undefined` |
-| `gap` | Optional / branch-dependent | `number \| undefined` |
+| `gap` | Optional / branch-dependent | `FacetGap \| undefined` |
 | `align` | Optional / branch-dependent | `CompositionAlign \| undefined` |
 | `padding` | Optional / branch-dependent | `number \| CompositionPadding \| undefined` |
 | `scales` | Optional / branch-dependent | `FacetScaleResolutions \| undefined` |
@@ -2321,7 +2333,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `channel` | Required | `"r" \| "theta" \| "x" \| "y" \| { parallelDimension: string; }` |
 | `fields` | Required | `readonly [string, ...string[]]` |
 | `columns` | Optional / branch-dependent | `number \| undefined` |
-| `gap` | Optional / branch-dependent | `number \| undefined` |
+| `gap` | Optional / branch-dependent | `FacetGap \| undefined` |
 | `align` | Optional / branch-dependent | `CompositionAlign \| undefined` |
 | `padding` | Optional / branch-dependent | `number \| CompositionPadding \| undefined` |
 | `scales` | Optional / branch-dependent | `FacetScaleResolutions \| undefined` |

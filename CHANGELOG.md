@@ -4,6 +4,9 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Add independent horizontal/vertical facet gaps with closed `{ x, y }` input, immutable replay and unchanged numeric/concat spacing.
+- Preserve a facet parent title when revising its source data without introducing titles in child charts.
+
 - Add optional Cartesian label `flushThreshold` to align only mapped ticks near range edges, preserving full-containment defaults and editable replay.
 
 ## [0.0.23] - 2026-10-23

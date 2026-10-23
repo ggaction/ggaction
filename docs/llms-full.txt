@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.23.
 
-Contract: sha256:39588058a0ca2a1bfa7743c118689c38c2afe366b1e398a91fe4b561549b2351. Status: development. Runtime source: 39aea9d7d94d9210f2e1df3c74a2c9569ef67753. Release baseline: v0.0.13.
+Contract: sha256:310e928037990f408f8ee790dcdd0e5c9455b8f645554a58e91ef8e34a8f7e06. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/39aea9d7d94d9210f2e1df3c74a2c9569ef67753/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/39aea9d7d94d9210f2e1df3c74a2c9569ef67753/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -18933,7 +18933,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `columns` | Optional / branch-dependent | `number \| undefined` |
-| `gap` | Optional / branch-dependent | `number \| undefined` |
+| `gap` | Optional / branch-dependent | `FacetGap \| undefined` |
 | `align` | Optional / branch-dependent | `CompositionAlign \| undefined` |
 | `padding` | Optional / branch-dependent | `number \| CompositionPadding \| undefined` |
 | `spacing` | Optional / branch-dependent | `"canvas" \| "content" \| "plot" \| undefined` |
@@ -18948,7 +18948,10 @@ editCompositionLayout({ columns?, gap?, spacing?, align?, padding? })
 Edit spacing, cross-axis alignment, or outer padding on an existing composition.
 `columns` changes wrapping only on a facet composition and is rejected for concat.
 Omitted values are preserved, child identity is unchanged, and the parent snapshot
-is rebuilt from retained child programs.
+is rebuilt from retained child programs. Facet parents accept `gap: {x, y}` to
+set horizontal and vertical distances separately; both keys are required and each
+value must be finite and non-negative. A pair replaces both axes, while an omitted
+gap preserves its current form. Concat continues to require a numeric gap.
 
 ## `replaceCompositionChild`
 
@@ -19093,7 +19096,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `values` | Optional / branch-dependent | `readonly DatasetScalar[] \| undefined` |
 | `columns` | Optional / branch-dependent | `number \| undefined` |
-| `gap` | Optional / branch-dependent | `number \| undefined` |
+| `gap` | Optional / branch-dependent | `FacetGap \| undefined` |
 | `align` | Optional / branch-dependent | `CompositionAlign \| undefined` |
 | `padding` | Optional / branch-dependent | `number \| CompositionPadding \| undefined` |
 | `scales` | Optional / branch-dependent | `FacetScaleResolutions \| undefined` |
@@ -19132,6 +19135,15 @@ anchors use the union and preserve child dimensions, automatic policies and edit
 persistence. See [parent legend creation](./api/composition/facets/#declare-a-legend-for-the-complete-facet).
 See [Program composition](./api/composition/#repeat-the-current-chart-by-a-field).
 
+Facet, grid and field repetition also accept `gap: {x, y}`. A number still applies
+one distance in both directions and keeps its stored form. A pair must contain
+exactly those two finite non-negative values; partial objects and unknown keys
+reject, even for one row or column. The distances separate child canvases, plots,
+or retained content according to the existing spacing mode. Grid still supports
+only canvas/plot spacing. Header clearance and final overlap checks remain active
+independently in both directions. The pair survives layout edits, source replay
+and editable persistence. See [independent axis gaps](./api/composition/facets/#use-different-horizontal-and-vertical-gaps).
+
 Creation options for `facet`, `facetGrid`, and `repeatCharts` accept `headers`.
 Set common `fontSize`, `fontFamily`, `fontWeight`, `color`, `offset`, `align`, or
 `labelMap`, and optional `row`/`column` objects with role-specific overrides and
@@ -19168,7 +19180,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `rows` | Required | `FacetGridRole` |
 | `columns` | Required | `FacetGridRole` |
 | `combinations` | Optional / branch-dependent | `"full" \| "observed" \| undefined` |
-| `gap` | Optional / branch-dependent | `number \| undefined` |
+| `gap` | Optional / branch-dependent | `FacetGap \| undefined` |
 | `align` | Optional / branch-dependent | `CompositionAlign \| undefined` |
 | `padding` | Optional / branch-dependent | `number \| CompositionPadding \| undefined` |
 | `scales` | Optional / branch-dependent | `FacetScaleResolutions \| undefined` |
@@ -19212,7 +19224,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `channel` | Required | `"r" \| "theta" \| "x" \| "y" \| { parallelDimension: string; }` |
 | `fields` | Required | `readonly [string, ...string[]]` |
 | `columns` | Optional / branch-dependent | `number \| undefined` |
-| `gap` | Optional / branch-dependent | `number \| undefined` |
+| `gap` | Optional / branch-dependent | `FacetGap \| undefined` |
 | `align` | Optional / branch-dependent | `CompositionAlign \| undefined` |
 | `padding` | Optional / branch-dependent | `number \| CompositionPadding \| undefined` |
 | `scales` | Optional / branch-dependent | `FacetScaleResolutions \| undefined` |
@@ -28967,6 +28979,7 @@ export type {
   FieldType,
   FillPaint,
   FacetCompositionSpec,
+  FacetGap,
   FacetGuideOptions,
   FacetOptions,
   FacetTopLaneMode,
@@ -33782,7 +33795,7 @@ Related types: [`FocusedDerivedDataEdit`](./reference/types/#type-focusedderived
 ```typescript
 export interface EditCompositionLayoutOptions {
   columns?: number;
-  gap?: number;
+  gap?: FacetGap;
   align?: CompositionAlign;
   padding?: number | CompositionPadding;
   /** Interpret gap between child canvases (default), inner plots, or retained full content (wrapped facets). */
@@ -33792,7 +33805,7 @@ export interface EditCompositionLayoutOptions {
 }
 ```
 
-Related types: [`CompositionAlign`](./reference/types/#type-compositionalign) · [`CompositionPadding`](./reference/types/#type-compositionpadding) · [`FacetTopLaneMode`](./reference/types/#type-facettoplanemode).
+Related types: [`FacetGap`](./reference/types/#type-facetgap) · [`CompositionAlign`](./reference/types/#type-compositionalign) · [`CompositionPadding`](./reference/types/#type-compositionpadding) · [`FacetTopLaneMode`](./reference/types/#type-facettoplanemode).
 
 ### `EditComputedDataOptions` {#type-editcomputeddataoptions}
 
@@ -35197,6 +35210,14 @@ type FacadePositionChannel<Quantitative, Temporal, Categorical> =
 
 Related types: [`PositionEncodingBase`](./reference/types/#type-positionencodingbase) · [`PositionScaleBranches`](./reference/types/#type-positionscalebranches).
 
+### `FacetGap` {#type-facetgap}
+
+ Expand FacetGap
+
+```typescript
+export type FacetGap = number | Readonly<{ x: number; y: number }>;
+```
+
 ### `FacetGridOptions` {#type-facetgridoptions}
 
  Expand FacetGridOptions
@@ -35208,7 +35229,7 @@ export interface FacetGridOptions {
   rows: FacetGridRole;
   columns: FacetGridRole;
   combinations?: "observed" | "full";
-  gap?: number;
+  gap?: FacetGap;
   align?: CompositionAlign;
   padding?: number | CompositionPadding;
   scales?: FacetScaleResolutions;
@@ -35221,7 +35242,7 @@ export interface FacetGridOptions {
 }
 ```
 
-Related types: [`FacetGridRole`](./reference/types/#type-facetgridrole) · [`CompositionAlign`](./reference/types/#type-compositionalign) · [`CompositionPadding`](./reference/types/#type-compositionpadding) · [`FacetScaleResolutions`](./reference/types/#type-facetscaleresolutions) · [`FacetGuideOptions`](./reference/types/#type-facetguideoptions) · [`FacetHeadersOptions`](./reference/types/#type-facetheadersoptions) · [`FacetTopLaneMode`](./reference/types/#type-facettoplanemode).
+Related types: [`FacetGridRole`](./reference/types/#type-facetgridrole) · [`FacetGap`](./reference/types/#type-facetgap) · [`CompositionAlign`](./reference/types/#type-compositionalign) · [`CompositionPadding`](./reference/types/#type-compositionpadding) · [`FacetScaleResolutions`](./reference/types/#type-facetscaleresolutions) · [`FacetGuideOptions`](./reference/types/#type-facetguideoptions) · [`FacetHeadersOptions`](./reference/types/#type-facetheadersoptions) · [`FacetTopLaneMode`](./reference/types/#type-facettoplanemode).
 
 ### `FacetGridRole` {#type-facetgridrole}
 
@@ -35319,7 +35340,7 @@ export interface FacetOptions {
   data?: string;
   values?: readonly DatasetScalar[];
   columns?: number;
-  gap?: number;
+  gap?: FacetGap;
   align?: CompositionAlign;
   padding?: number | CompositionPadding;
   scales?: FacetScaleResolutions;
@@ -35332,7 +35353,7 @@ export interface FacetOptions {
 }
 ```
 
-Related types: [`DatasetScalar`](./reference/types/#type-datasetscalar) · [`CompositionAlign`](./reference/types/#type-compositionalign) · [`CompositionPadding`](./reference/types/#type-compositionpadding) · [`FacetScaleResolutions`](./reference/types/#type-facetscaleresolutions) · [`FacetGuideOptions`](./reference/types/#type-facetguideoptions) · [`FacetHeadersOptions`](./reference/types/#type-facetheadersoptions) · [`FacetTopLaneMode`](./reference/types/#type-facettoplanemode).
+Related types: [`DatasetScalar`](./reference/types/#type-datasetscalar) · [`FacetGap`](./reference/types/#type-facetgap) · [`CompositionAlign`](./reference/types/#type-compositionalign) · [`CompositionPadding`](./reference/types/#type-compositionpadding) · [`FacetScaleResolutions`](./reference/types/#type-facetscaleresolutions) · [`FacetGuideOptions`](./reference/types/#type-facetguideoptions) · [`FacetHeadersOptions`](./reference/types/#type-facetheadersoptions) · [`FacetTopLaneMode`](./reference/types/#type-facettoplanemode).
 
 ### `FacetScaleResolution` {#type-facetscaleresolution}
 
@@ -38748,7 +38769,7 @@ export interface RepeatChartsOptions {
   channel: "x" | "y" | "theta" | "r" | { parallelDimension: string };
   fields: readonly [string, ...string[]];
   columns?: number;
-  gap?: number;
+  gap?: FacetGap;
   align?: CompositionAlign;
   padding?: number | CompositionPadding;
   scales?: FacetScaleResolutions;
@@ -38761,7 +38782,7 @@ export interface RepeatChartsOptions {
 }
 ```
 
-Related types: [`CompositionAlign`](./reference/types/#type-compositionalign) · [`CompositionPadding`](./reference/types/#type-compositionpadding) · [`FacetScaleResolutions`](./reference/types/#type-facetscaleresolutions) · [`FacetGuideOptions`](./reference/types/#type-facetguideoptions) · [`FacetHeadersOptions`](./reference/types/#type-facetheadersoptions) · [`FacetTopLaneMode`](./reference/types/#type-facettoplanemode).
+Related types: [`FacetGap`](./reference/types/#type-facetgap) · [`CompositionAlign`](./reference/types/#type-compositionalign) · [`CompositionPadding`](./reference/types/#type-compositionpadding) · [`FacetScaleResolutions`](./reference/types/#type-facetscaleresolutions) · [`FacetGuideOptions`](./reference/types/#type-facetguideoptions) · [`FacetHeadersOptions`](./reference/types/#type-facetheadersoptions) · [`FacetTopLaneMode`](./reference/types/#type-facettoplanemode).
 
 ### `ReplaceCompositionChildOptions` {#type-replacecompositionchildoptions}
 
@@ -40787,12 +40808,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/39aea9d7d94d9210f2e1df3c74a2c9569ef67753/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/39aea9d7d94d9210f2e1df3c74a2c9569ef67753/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -41524,6 +41545,35 @@ offer cross-child removal; call the action in the program that owns the resource
 
 [Family overview](./api/composition/) · [Exact action lookup](./reference/actions/)
 
+## Use different horizontal and vertical gaps
+
+A facet can set `gap: { x: 32, y: 48 }` to leave more space between rows than
+between columns. The existing number form applies the same gap in both directions.
+This complete example preserves one plot per panel:
+
+> **Executable complete.** Import chart from ggaction. This complete program includes all four panel rows and retains the original dataset while creating the facet.
+
+```js
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas({ width: 240, height: 180 })
+  .createData({ values: [
+    { panel: "A", x: 1, y: 2 }, { panel: "B", x: 2, y: 3 },
+    { panel: "C", x: 3, y: 1 }, { panel: "D", x: 4, y: 4 }
+  ] })
+  .createScatterPlot({ x: "x", y: "y" })
+  .facet({ field: "panel", columns: 2, gap: { x: 32, y: 48 } });
+```
+
+Both keys are required, even for a single row or column. Values must be finite and
+non-negative; partial objects and unknown keys are rejected. The same pair is
+supported by field repetition and row-column grids. Existing spacing rules still
+apply: canvas gaps separate child canvases, plot gaps separate data regions, and
+content gaps separate retained content. A row-column grid still rejects content
+spacing. Titles, headers, guides and legends keep their existing ownership and
+collision checks. Concat continues to accept only a number.
+
 ## Declare a legend for the complete facet
 
 Pass a legend object to `guides.legend` to create it against the combined inner plots.
@@ -42090,7 +42140,9 @@ const twoColumns = faceted.editCompositionLayout({ columns: 2, gap: 28 });
 ```
 
 At least one option is required. Omitted values retain their current settings;
-a partial padding object updates only the named sides. The action preserves all
+a partial padding object updates only the named sides. A facet gap pair always
+requires both `x` and `y` and replaces the complete pair; `gap: 28` resets both
+directions to the same distance. Concat gaps remain numbers. The action preserves all
 child IDs and references and rebuilds the parent snapshot.
 
 Facet parents use this same action for `gap`, `align`, and `padding`; derived
@@ -43340,9 +43392,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:39588058a0ca2a1bfa7743c118689c38c2afe366b1e398a91fe4b561549b2351` |
+| Contract fingerprint | `sha256:310e928037990f408f8ee790dcdd0e5c9455b8f645554a58e91ef8e34a8f7e06` |
 | Example and dataset source | `6422776b0a379c8c89809f41b434f366fbc1f143` |
-| Runtime source commit | `39aea9d7d94d9210f2e1df3c74a2c9569ef67753` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 293 |
 | Declared actions in that release | 234 |

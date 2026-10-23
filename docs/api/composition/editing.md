@@ -39,7 +39,9 @@ const twoColumns = faceted.editCompositionLayout({ columns: 2, gap: 28 });
 ```
 
 At least one option is required. Omitted values retain their current settings;
-a partial padding object updates only the named sides. The action preserves all
+a partial padding object updates only the named sides. A facet gap pair always
+requires both `x` and `y` and replaces the complete pair; `gap: 28` resets both
+directions to the same distance. Concat gaps remain numbers. The action preserves all
 child IDs and references and rebuilds the parent snapshot.
 
 Facet parents use this same action for `gap`, `align`, and `padding`; derived

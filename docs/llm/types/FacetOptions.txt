@@ -5,7 +5,7 @@ export interface FacetOptions {
   data?: string;
   values?: readonly DatasetScalar[];
   columns?: number;
-  gap?: number;
+  gap?: FacetGap;
   align?: CompositionAlign;
   padding?: number | CompositionPadding;
   scales?: FacetScaleResolutions;
