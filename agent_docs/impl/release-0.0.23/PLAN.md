@@ -74,3 +74,9 @@ GitHub release 및 문서 identity를 확인한 뒤 완료한다.
 - 외부 원본 family의 model-authored translation과 수치 fidelity 승인은 이 저장소의
   native capability 완료와 별도다. #258의 해당 검증이 없으면 issue를 닫거나 family가
   완성되었다고 보고하지 않는다.
+
+- Clean CI package 재측정: Linux 901585 / Windows 901579 packed bytes로 로컬 압축과
+  차이가 확인됐다. 실제 최대치를 올림한 902000으로 packed 한도만 조정했다.
+  Source 5587개 검사는 모두 통과했으나 검사 실행 중 source 편집이 겹친 로컬 coverage는
+  파일별 합산이 유효하지 않아 동결된 후보에서 재실행한다. Threshold는 유지한다.
+- 렌더 회귀 261개/205개 chart variants 통과. PR #264에서 전체 CI 시작.

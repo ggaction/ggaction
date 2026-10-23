@@ -24,7 +24,7 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 export const PACKAGE_LIMITS = Object.freeze({
   entries: 623, // Shared facet axis policy and native content-bound measurement.
-  packedBytes: 900_000, // Measured 899462 after release features; retain a bounded artifact.
+  packedBytes: 902_000, // Measured 901585 on clean Linux and 901579 on Windows runners.
   unpackedBytes: 4_272_000 // Measured 4,271,487 bytes after synchronized release features.
 });
 
