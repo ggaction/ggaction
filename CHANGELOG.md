@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Add explicit `monotone-steffen` interpolation for lines, areas and interval boundaries while preserving existing monotone output.
+
 - Preserve null or absent calendar inputs as null buckets with opt-in `missing: "null"`, including immutable edits and saved programs.
 - Preserve locally moved legend title alignment and reserve four-edge facet parent title lanes.
 - Strengthen test oracles, execution receipts, consumer qualification, source coverage, browser evidence and bounded CI runners.

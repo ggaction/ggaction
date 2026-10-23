@@ -3441,6 +3441,7 @@ export type CurveInterpolation =
   | "basis"
   | "cardinal"
   | "monotone"
+  | "monotone-steffen"
   | "natural";
 ```
 

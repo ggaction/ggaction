@@ -16,7 +16,7 @@ type PointPolygonShape = {
 
 type CurveInterpolation =
   | "linear" | "step" | "step-before" | "step-after"
-  | "basis" | "cardinal" | "monotone" | "natural";
+  | "basis" | "cardinal" | "monotone" | "monotone-steffen" | "natural";
 ```
 
 This closed vocabulary is owned by the shared point-shape grammar and reused by mark creation/editing,
@@ -435,7 +435,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 - `id`, `data`: `createPointMark`와 같은 ID/data 계약이다.
 - `strokeWidth`: Implemented, non-negative finite number이며 concrete default는 `2`다. 명시한 값은
   mark materialization config에 저장되어 path 재생성 후에도 유지된다.
-- `curve`: Implemented. `linear | step | step-before | step-after | basis | cardinal | monotone | natural`이며
+- `curve`: Implemented. `linear | step | step-before | step-after | basis | cardinal | monotone | monotone-steffen | natural`이며
   기본값은 `linear`다. Monotone은 materialized x가 strictly increasing 또는 decreasing일 때 동작하며
   duplicate/non-monotonic x는 거부한다. Curve는 graphical materialization config이고 semantic field/scale/group을 바꾸지 않는다.
 - `tension`: cardinal 전용 finite `[0,1]`, 생략 기본 0이다. Tangent에 `1-tension`을 곱한다. Endpoint는 기존 duplicate-neighbor 규칙, 2점은 linear fallback을 유지한다. 다른 curve로 편집하면 이전 tension을 제거하며 동시에 explicit tension을 지정하면 거부한다. Create/edit, facade forwarding, resize/grouping과 저장/복원에 유지한다.
@@ -1351,3 +1351,15 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 - `test/unit/actions/marks/area-gradient-fill.test.js`: constructor/editor/facade parity, orientations, ranged/stacked/missing paths, immutable rematerialization, stroke swatches/opacity, color precedence, atomic failures, persistence/selection restoration, SVG/PNG/PDF exports.
 - Density, violin and error-band fill properties delegate the same `FillPaint`; horizon palette ownership and solid regression `color` options are unchanged.
+
+### Explicit Steffen interpolation
+
+`curve:"monotone-steffen"`는 기존 harmonic `monotone`과 별개인 Steffen interior
+slope와 one-sided endpoint slope를 사용한다. Line/Area/ErrorBand와 boundary가
+동일 grammar를 사용한다. X는 nondecreasing 또는 nonincreasing이며 방향 전환은
+거부한다. 연속 동일 좌표는 합치고 동일 X의 vertical segment는 보존한다. 두 distinct
+point는 linear다. 기존 `monotone`의 strict X, two-point cubic와 출력은 변경하지 않는다.
+Interior는 sign 합 × min(abs adjacent secants, abs weighted secant mean / 2),
+endpoint는 (3 × secant − adjacent tangent) / 2다. Vertical endpoint는 adjacent
+tangent를 사용한다. Curve/tension validation, command limits, finite normalization을 공유한다.
+Evidence: `test/unit/grammar/steffen-curve.test.js`, `test/unit/actions/marks/steffen-curve.test.js`.

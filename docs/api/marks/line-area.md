@@ -158,9 +158,15 @@ program.editLineMark({
 ```
 
 Supported curves are `linear`, `step`, `step-before`, `step-after`, `basis`,
-`cardinal`, `monotone`, and `natural`. Smooth curves use cubic commands and
-two-point series fall back to linear. Monotone paths require strictly increasing
-or decreasing materialized x values; duplicate or non-monotonic x is rejected.
+`cardinal`, `monotone`, `monotone-steffen`, and `natural`. Smooth curves use cubic
+commands. Two-point series use linear commands, except the existing `monotone`
+recipe, which keeps its cubic representation. `monotone` uses weighted harmonic
+tangents and requires strictly increasing or decreasing materialized x values.
+`monotone-steffen` uses limited weighted secants and one-sided endpoint tangents.
+It accepts either X direction, preserves vertical segments, and collapses consecutive
+identical coordinates; an X-direction reversal is an error. The two recipes agree
+at anchors but can differ between them. The explicit choice applies to Line, Area,
+ErrorBand and requested boundary curves, and survives edits and saved programs.
 Materialization rejects any line or complete area that would expand beyond
 30,000 backend-neutral path commands before allocating that command array.
 

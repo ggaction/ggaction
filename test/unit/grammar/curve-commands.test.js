@@ -14,10 +14,10 @@ const points = Object.freeze([
   Object.freeze({ x: 6, y: 0 })
 ]);
 
-test("exposes and validates the exact eight-value curve vocabulary", () => {
+test("exposes and validates the closed curve vocabulary", () => {
   assert.deepEqual(CURVE_INTERPOLATIONS, [
     "linear", "step", "step-before", "step-after",
-    "basis", "cardinal", "monotone", "natural"
+    "basis", "cardinal", "monotone", "monotone-steffen", "natural"
   ]);
   assert.equal(validateCurveInterpolation("natural"), "natural");
   assert.throws(

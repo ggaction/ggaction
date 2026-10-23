@@ -100,6 +100,7 @@ export type CurveInterpolation =
   | "basis"
   | "cardinal"
   | "monotone"
+  | "monotone-steffen"
   | "natural";
 export type DashStyle = "solid" | "dashed" | "dotted" | "dashdot";
 export type DashPattern = readonly number[];

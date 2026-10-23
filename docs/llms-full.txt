@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.22.
 
-Contract: sha256:2acfe027276a09451b1da621b473b36a0f3207c1a10ee02c0a147ed28654f043. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:1382cf69670f829ad52f4047648c8c981d3e345bf7085b5c1f6cfb0a8d7acd8a. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -6434,9 +6434,15 @@ program.editLineMark({
 ```
 
 Supported curves are `linear`, `step`, `step-before`, `step-after`, `basis`,
-`cardinal`, `monotone`, and `natural`. Smooth curves use cubic commands and
-two-point series fall back to linear. Monotone paths require strictly increasing
-or decreasing materialized x values; duplicate or non-monotonic x is rejected.
+`cardinal`, `monotone`, `monotone-steffen`, and `natural`. Smooth curves use cubic
+commands. Two-point series use linear commands, except the existing `monotone`
+recipe, which keeps its cubic representation. `monotone` uses weighted harmonic
+tangents and requires strictly increasing or decreasing materialized x values.
+`monotone-steffen` uses limited weighted secants and one-sided endpoint tangents.
+It accepts either X direction, preserves vertical segments, and collapses consecutive
+identical coordinates; an X-direction reversal is an error. The two recipes agree
+at anchors but can differ between them. The explicit choice applies to Line, Area,
+ErrorBand and requested boundary curves, and survives edits and saved programs.
 Materialization rejects any line or complete area that would expand beyond
 30,000 backend-neutral path commands before allocating that command array.
 
@@ -32516,6 +32522,7 @@ export type CurveInterpolation =
   | "basis"
   | "cardinal"
   | "monotone"
+  | "monotone-steffen"
   | "natural";
 ```
 
@@ -43279,7 +43286,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:2acfe027276a09451b1da621b473b36a0f3207c1a10ee02c0a147ed28654f043` |
+| Contract fingerprint | `sha256:1382cf69670f829ad52f4047648c8c981d3e345bf7085b5c1f6cfb0a8d7acd8a` |
 | Example and dataset source | `6422776b0a379c8c89809f41b434f366fbc1f143` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
