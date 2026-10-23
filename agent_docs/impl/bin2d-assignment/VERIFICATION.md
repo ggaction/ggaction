@@ -49,3 +49,12 @@ root/Basic entry에서 공개 `Bin2DAssignment` type도 내보낸다.
 `.artifacts/test/bin2d-assignment-normal-v1.log`와 `normal-v2.log`로 보존하며 덮어쓰지 않는다.
 새 candidate package/docs와 전체 기존 accepted cohort 검증 후 quiet runtime 전환은 ROOT가 소유한다.
 공개 이슈266은 최종 registry 검증 이전에는 종료하지 않는다.
+
+## 구현 revision provenance
+
+구현 checkpoint는 `20ca9113d40bb16b09e58eeaf83550733042342c`이며,
+현재 source checksum은 `sha256:443978a6b9b70f861b9e31b68c6efbe6a1117f6ec3ec4306efbf4d8e45e0df24`다.
+후속 metadata는 이 실제 source commit과 checksum을 가리킨다. 설계 Gate를 구현된 runtime source로 사용하지 않는다.
+
+구현 commit 이후 새 provenance로 전체 docs 검사152/152 PASS(exit0),
+`.artifacts/test/bin2d-assignment-metadata-docs-v1.log`에 보존했다.
