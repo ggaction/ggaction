@@ -94,4 +94,3 @@ export function measureFacetContentChildren(program, { headerItems = [] } = {}) 
       ...(groups.has("footer") ? { footerBounds: relative(groups.get("footer")) } : {}) };
   }));
 }
-

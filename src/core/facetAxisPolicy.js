@@ -28,4 +28,3 @@ export function validateFacetAxisPolicy(policy, family, repeat = false) {
     throw new Error("repeatCharts does not promote axes across different repeated fields.");
   }
 }
-
