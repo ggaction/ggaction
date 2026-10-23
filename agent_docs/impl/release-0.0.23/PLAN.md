@@ -8,7 +8,7 @@
 - [x] #253 nullable calendar 정책
 - [x] #244 독립 Steffen 곡선
 - [x] #238 회귀 layer의 plot-last 배치
-- [ ] #258 content facet 배치와 channel별 axis 소유권
+- [x] #258 native content facet 배치와 channel별 axis 소유권 (외부 번역 승인은 별도)
 - [ ] 전체 source/coverage/realistic/render/browser/package/docs/platform CI
 - [ ] exact annotated tag의 동일 candidate로 npm/GitHub/Pages 배포 검증
 
@@ -89,3 +89,12 @@ GitHub release 및 문서 identity를 확인한 뒤 완료한다.
   stdout chunk가 UTF-8 `ℹ` 중간에서 잘리면 decoder가 이를 훼손해 한 파일을 누락시켰다.
   스트림별 bytes를 완전히 모은 뒤 decode하도록 runner를 수정하고 모든 byte 경계와
   stderr 교차 입력 회귀를 추가했다. Source/critical coverage 기준은 그대로 유지한다.
+
+- UTF-8 capture 수정 후 전체 source 5588개와 critical coverage 172개 기준 통과:
+  lines 95.64%, branches 93.18%, functions 98.76%. 원격 coverage도 통과했다.
+- 새 9번째 곡선이 기존 8-value literal 분류를 축소시키던 realistic inventory를 수정했다.
+  Curve family는 모든 authoring path에서 9개 값을 계속 요구하며 전체 ledger는 23816개
+  (+79)다. 기존 최소 5회/3-dataset witness 및 diversity 조건을 유지했다.
+- 실제 데이터의 정렬 조건을 보존하며 Steffen witness를 추가했다. Inventory 7개,
+  Cartesian facade 6개(830-chart schedule), data/direct/hierarchical lifecycle 34개,
+  statistical facade 7개(540 direct-root witnesses) 검사가 통과했다.

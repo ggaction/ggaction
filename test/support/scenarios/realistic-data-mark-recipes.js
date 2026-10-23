@@ -51,10 +51,10 @@ const DENSITY_AXIS_LABEL_STYLE = Object.freeze({
 });
 const CURVES = Object.freeze([
   "linear", "step", "step-before", "step-after", "basis", "cardinal",
-  "monotone", "natural"
+  "monotone", "natural", "monotone-steffen"
 ]);
 const BAND_CURVES_WITHOUT_MONOTONE = Object.freeze(
-  CURVES.filter(curve => curve !== "monotone")
+  CURVES.filter(curve => !["monotone", "monotone-steffen"].includes(curve))
 );
 const DASHES = Object.freeze(["solid", "dashed", "dotted", "dashdot"]);
 const POINT_SHAPES = Object.freeze([

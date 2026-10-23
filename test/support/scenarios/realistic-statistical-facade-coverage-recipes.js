@@ -1362,7 +1362,7 @@ function buildViolin(factors) {
   const fillOnly = profile.fillOnly === true;
   const curves = [
     "basis", "cardinal", "linear", "monotone", "natural",
-    "step", "step-after", "step-before"
+    "step", "step-after", "step-before", "monotone-steffen"
   ];
   const program = createOwnedFacade(sourceProgram(view, profile, "createViolinPlot"), "createViolinPlot", {
     id: "facadeViolins",

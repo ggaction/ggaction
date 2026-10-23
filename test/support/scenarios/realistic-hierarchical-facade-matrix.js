@@ -6,7 +6,7 @@ const THETA_TYPES = Object.freeze(["linear", "time", "band", "point"]);
 const TEMPORAL_UNITS = Object.freeze(["auto", "year", "timestamp"]);
 const CURVES = Object.freeze([
   "linear", "basis", "cardinal", "monotone", "natural", "step",
-  "step-after", "step-before"
+  "step-after", "step-before", "monotone-steffen"
 ]);
 const DASHES = Object.freeze(["solid", "dashed", "dotted", "dashdot"]);
 const POINT_SHAPES = Object.freeze([

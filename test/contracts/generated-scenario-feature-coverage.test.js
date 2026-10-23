@@ -215,15 +215,15 @@ test("derives a bounded public option inventory without runtime prototype paths"
   const inventory = await buildPublicOptionInventory(actionCards);
 
   assert.equal(inventory.counts.publicActions, 286);
-  assert.equal(inventory.counts.topLevelOptionPaths, 2495);
-  assert.equal(inventory.counts.nestedOptionPaths, 16119);
-  assert.equal(inventory.counts.optionPaths, 18614);
-  assert.equal(inventory.counts.requiredOptionPaths, 13297);
+  assert.equal(inventory.counts.topLevelOptionPaths, 2500);
+  assert.equal(inventory.counts.nestedOptionPaths, 16127);
+  assert.equal(inventory.counts.optionPaths, 18627);
+  assert.equal(inventory.counts.requiredOptionPaths, 13310);
   assert.equal(inventory.counts.excludedOptionPaths, 5317);
-  assert.equal(inventory.counts.topLevelCategoricalPaths, 873);
-  assert.equal(inventory.counts.topLevelLiteralValues, 3593);
-  assert.equal(inventory.counts.literalFamilies, 186);
-  assert.equal(inventory.counts.pathLiteralRequirements, 9708);
+  assert.equal(inventory.counts.topLevelCategoricalPaths, 878);
+  assert.equal(inventory.counts.topLevelLiteralValues, 3618);
+  assert.equal(inventory.counts.literalFamilies, 190);
+  assert.equal(inventory.counts.pathLiteralRequirements, 9774);
   assert.equal(inventory.counts.familyLiteralRequirements, 442);
   assert.equal(inventory.counts.pathDiversityRequirements, 391);
   const bootstrapMethodRoots = [
@@ -297,6 +297,15 @@ test("derives a bounded public option inventory without runtime prototype paths"
   assert.equal(closedColorFamily.policy,"path-values");
   for (const path of closedColorFamily.requiredPaths) {
     assert.equal(inventory.pathLiteralRequirements.filter(requirement => requirement.optionPath===path).length,9,path);
+  }
+  const curves = inventory.literalFamilies.find(family =>
+    family.values.some(value => value.key === "string:monotone-steffen"));
+  assert.equal(curves.size, 9);
+  assert.equal(curves.policy, "path-values", "new curves must not retire existing per-path witnesses");
+  for (const optionPath of curves.requiredPaths) {
+    const values = inventory.pathLiteralRequirements.filter(requirement => requirement.optionPath === optionPath);
+    assert.equal(values.length, 9, optionPath);
+    assert.ok(values.some(value => value.valueKey === "string:monotone-steffen"), optionPath);
   }
   const otherNine = inventory.literalFamilies.find(family => family.values.some(value => value.key==="string:weekday") && family.size===9);
   assert.equal(otherNine.policy,"family-values","the general threshold remains eight");
@@ -452,7 +461,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
     "option-path:createData.values[]"), false);
   assert.equal(ledger.requirements.some(requirement => requirement.id ===
     "option-path:createDerivedData.transform[].type"), false);
-  assert.equal(ledger.requirements.length, 23737);
+  assert.equal(ledger.requirements.length, 23816);
   const directBootstrapMethods = bootstrapMethodRoots.filter(root => !root.includes("[]"));
   const directBootstrapOptions = directBootstrapMethods.flatMap(root =>
     ["samples", "seed", "type"].map(key => `option-path:${root}.${key}`));
