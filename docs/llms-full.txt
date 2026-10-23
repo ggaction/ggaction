@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.22.
 
-Contract: sha256:544f19e50a3333ddd276be6603173318bdc403b39db49042df71d165ff856886. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:2acfe027276a09451b1da621b473b36a0f3207c1a10ee02c0a147ed28654f043. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -5575,7 +5575,7 @@ shared value before a later encoding, filter, aggregation, or window operation.
 
 Omit `as` to name the new field `${field}_${unit}`. The name must be absent from every source row; collisions are errors. Explicit `as` keeps your chosen output name.
 
-## `createTimeUnitData({ id, source?, field, temporalUnit?, unit, as?, timeZone?, weekStartsOn?, weekRule? })`
+## `createTimeUnitData({ id, source?, field, temporalUnit?, unit, as?, timeZone?, weekStartsOn?, weekRule?, missing? })`
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
@@ -5611,6 +5611,7 @@ console.log(program.semanticSpec.datasets[1].values[0].month);
 | `as` | new output field name | `${field}_${unit}` |
 | `timeZone` | non-empty IANA time-zone name | `"UTC"` |
 | `weekStartsOn` | integer Sunday `0` through Saturday `6`; week only | `1` |
+| `missing` | `"error"` or `"null"` | `"error"` |
 | `weekRule` | `"calendar"` or `"iso"`; week only | `"calendar"` |
 
 Except for `weekday`, the output is a finite epoch-millisecond timestamp at the
@@ -5634,6 +5635,18 @@ The source dataset remains unchanged. The derived dataset preserves row order
 and every existing field, then adds `as`. The output name must differ from the
 input and must not already exist in any source row. Invalid timestamps and
 collisions fail atomically.
+
+## Missing dates
+
+Use `missing: "null"` to retain rows whose input is null or absent and add a null
+bucket. All original fields, row order, and source lineage remain intact. An
+explicit `undefined`, malformed non-null date, nonfinite number, unsupported zone,
+or out-of-range calendar boundary still fails. Output schema remains numeric,
+including an all-null result; weekday values remain numbers from 0 through 6.
+
+`editTimeUnitData({ target, missing: "null" })` applies the same policy to an
+existing owner. Switching back to `"error"` rejects a source with missing dates.
+The default remains strict and existing stored transforms need no migration.
 
 ## Boundaries
 
@@ -17791,6 +17804,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `missing` | Optional / branch-dependent | `"error" \| "null" \| undefined` |
 | `id` | Required | `string` |
 | `source` | Optional / branch-dependent | `string \| undefined` |
 | `field` | Required | `string` |
@@ -17968,6 +17982,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `target` | Required | `string` |
 | `dependents` | Optional / branch-dependent | `DerivedDataDependents \| undefined` |
+| `missing` | Optional / branch-dependent | `"error" \| "null" \| undefined` |
 | `field` | Optional / branch-dependent | `string \| undefined` |
 | `temporalUnit` | Optional / branch-dependent | `TemporalInputUnit \| undefined` |
 | `as` | Optional / branch-dependent | `string \| undefined` |
@@ -33160,6 +33175,7 @@ Related types: [`DatasetTimeUnitTransformBase`](./reference/types/#type-datasett
 
 ```typescript
 type DatasetTimeUnitTransformBase = {
+  readonly missing?: "error" | "null";
   readonly type: "timeUnit";
   readonly field: string;
   readonly temporalUnit?: TemporalInputUnit;
@@ -39817,6 +39833,8 @@ export type TimeUnit =
 
 ```typescript
 type TimeUnitDataBaseOptions = {
+  /** Preserve null or absent inputs as null buckets; defaults to strict errors. */
+  missing?: "error" | "null";
   id: string;
   source?: string;
   field: string;
@@ -43261,7 +43279,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:544f19e50a3333ddd276be6603173318bdc403b39db49042df71d165ff856886` |
+| Contract fingerprint | `sha256:2acfe027276a09451b1da621b473b36a0f3207c1a10ee02c0a147ed28654f043` |
 | Example and dataset source | `6422776b0a379c8c89809f41b434f366fbc1f143` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

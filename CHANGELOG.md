@@ -4,6 +4,10 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Preserve null or absent calendar inputs as null buckets with opt-in `missing: "null"`, including immutable edits and saved programs.
+- Preserve locally moved legend title alignment and reserve four-edge facet parent title lanes.
+- Strengthen test oracles, execution receipts, consumer qualification, source coverage, browser evidence and bounded CI runners.
+
 - Correct documentation examples, recovery ordering, conditional defaults, data-refresh guidance, and action-card prerequisites; execute additional examples and pin contextual exceptions.
 - Publish the complete declaration dependency graph, all runtime entry references, and selective LLM page/action/type artifacts with shared identity and hashes.
 - Improve task search, navigation affordances, source editing links, and first-run documentation; replace the README animation with the paper's Nightingale rose sequence.

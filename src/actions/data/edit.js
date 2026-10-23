@@ -476,7 +476,7 @@ export const editBinData = /* @__PURE__ */ focusedEditor(
 export const editTimeUnitData = /* @__PURE__ */ focusedEditor(
   "editTimeUnitData", "timeUnit", [
     "field", "unit", "as", "temporalUnit", "timeZone", "weekStartsOn",
-    "weekRule"
+    "weekRule", "missing"
   ]
 );
 export const editWindowData = /* @__PURE__ */ focusedEditor(

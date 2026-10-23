@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:544f19e50a3333ddd276be6603173318bdc403b39db49042df71d165ff856886",
+    "contractId": "sha256:2acfe027276a09451b1da621b473b36a0f3207c1a10ee02c0a147ed28654f043",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -850,12 +850,13 @@
       "source": "api/data/time-units.md",
       "headings": [
         "time-unit-data-transforms",
-        "createtimeunitdata-id-source-field-temporalunit-unit-as-timezone-weekstartson-weekrule",
+        "createtimeunitdata-id-source-field-temporalunit-unit-as-timezone-weekstartson-weekrule-missing",
+        "missing-dates",
         "boundaries",
         "related"
       ],
-      "bytes": 4121,
-      "sha256": "43fc2e2476aa70723aa07552e569745680a047a7d4865c921e94db906417acaa"
+      "bytes": 4835,
+      "sha256": "997c56282efcb53ec251e9029e6f611cd485d18d0b516ab0331f5d733816678f"
     },
     {
       "order": 54,
@@ -2071,8 +2072,8 @@
         "focused-channel-scale-editors",
         "related"
       ],
-      "bytes": 172462,
-      "sha256": "c342dbdbc9cdb820b90ade0b19011d321bfe0f559e7c2b17a377b486f618632e"
+      "bytes": 172620,
+      "sha256": "916b09d30385035c99565b5bee65b43099bb2f63b003066c998c566f469d6f81"
     },
     {
       "order": 119,
@@ -3066,8 +3067,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 358078,
-      "sha256": "8a25e93f8ca2729096ebfa34d7667b14b77306f898747c0b63792a6891aeb6c0"
+      "bytes": 358231,
+      "sha256": "83562cc5b96bf544a73f0e4a7f75bf7837357cc420a39ffc493f6250dbaf34ad"
     },
     {
       "order": 127,
@@ -3430,7 +3431,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "5c9eb5c643f91b0d4dc76cc0132fcf6f61cf26642d653ca20a96d487ad3e9a1f"
+      "sha256": "2202eafdb391567deb48cb4f5ff6fbdf581015da5052bdb98d33b22aea033ee2"
     },
     {
       "order": 150,

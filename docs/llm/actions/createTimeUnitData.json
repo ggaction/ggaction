@@ -70,6 +70,11 @@
   },
   "options": [
     {
+      "name": "missing",
+      "required": false,
+      "type": "\"error\" | \"null\" | undefined"
+    },
+    {
       "name": "id",
       "required": true,
       "type": "string"
@@ -116,7 +121,7 @@
     }
   ],
   "callPatterns": [
-    "createTimeUnitData({ id, field, unit, source?, temporalUnit?, as?, timeZone?, weekStartsOn? })"
+    "createTimeUnitData({ id, field, unit, source?, missing?, temporalUnit?, as?, timeZone? })"
   ],
   "snippet": "program.createTimeUnitData({ id: \"time-unit-data-1\", field: \"value\", unit: \"month\" })",
   "errors": [],

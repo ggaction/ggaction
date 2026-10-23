@@ -2769,6 +2769,11 @@
       },
       "options": [
         {
+          "name": "missing",
+          "required": false,
+          "type": "\"error\" | \"null\" | undefined"
+        },
+        {
           "name": "id",
           "required": true,
           "type": "string"
@@ -2815,7 +2820,7 @@
         }
       ],
       "callPatterns": [
-        "createTimeUnitData({ id, field, unit, source?, temporalUnit?, as?, timeZone?, weekStartsOn? })"
+        "createTimeUnitData({ id, field, unit, source?, missing?, temporalUnit?, as?, timeZone? })"
       ],
       "snippet": "program.createTimeUnitData({ id: \"time-unit-data-1\", field: \"value\", unit: \"month\" })",
       "errors": [],
@@ -3915,6 +3920,11 @@
           "type": "DerivedDataDependents | undefined"
         },
         {
+          "name": "missing",
+          "required": false,
+          "type": "\"error\" | \"null\" | undefined"
+        },
+        {
           "name": "field",
           "required": false,
           "type": "string | undefined"
@@ -3951,7 +3961,7 @@
         }
       ],
       "callPatterns": [
-        "editTimeUnitData({ target, dependents?, field?, temporalUnit?, as?, timeZone?, unit?, weekStartsOn? })"
+        "editTimeUnitData({ target, dependents?, missing?, field?, temporalUnit?, as?, timeZone?, unit? })"
       ],
       "snippet": "program.editTimeUnitData({ target: \"buckets\", unit: \"month\" })",
       "errors": [],

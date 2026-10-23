@@ -1,4 +1,6 @@
 type TimeUnitDataBaseOptions = {
+  /** Preserve null or absent inputs as null buckets; defaults to strict errors. */
+  missing?: "error" | "null";
   id: string;
   source?: string;
   field: string;

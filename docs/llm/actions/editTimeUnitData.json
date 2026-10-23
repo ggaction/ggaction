@@ -71,6 +71,11 @@
       "type": "DerivedDataDependents | undefined"
     },
     {
+      "name": "missing",
+      "required": false,
+      "type": "\"error\" | \"null\" | undefined"
+    },
+    {
       "name": "field",
       "required": false,
       "type": "string | undefined"
@@ -107,7 +112,7 @@
     }
   ],
   "callPatterns": [
-    "editTimeUnitData({ target, dependents?, field?, temporalUnit?, as?, timeZone?, unit?, weekStartsOn? })"
+    "editTimeUnitData({ target, dependents?, missing?, field?, temporalUnit?, as?, timeZone?, unit? })"
   ],
   "snippet": "program.editTimeUnitData({ target: \"buckets\", unit: \"month\" })",
   "errors": [],

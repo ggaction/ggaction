@@ -41,7 +41,7 @@ export const TIME_UNITS = cloneAndFreeze([
 
 const TRANSFORM_KEYS = Object.freeze([
   "type", "field", "unit", "as", "temporalUnit", "timeZone",
-  "weekStartsOn", "weekRule"
+  "weekStartsOn", "weekRule", "missing"
 ]);
 
 const CALENDAR_FORMATTERS = new Map();
@@ -93,6 +93,9 @@ export function validateTimeUnitTransform(transform) {
   if (transform.type !== "timeUnit") {
     throw new Error(`Unsupported time-unit transform "${transform.type}".`);
   }
+  if (Object.hasOwn(transform, "missing") && !["error", "null"].includes(transform.missing)) {
+    throw new Error('Time-unit missing must be "error" or "null".');
+  }
   validateTemporalUnit(transform.temporalUnit);
   const field = requireField(transform.field, "Time-unit field");
   const output = requireField(transform.as, "Time-unit output field");
@@ -127,7 +130,8 @@ export function normalizeTimeUnitTransform(args = {}) {
   const as = args.as === undefined ? `${field}_${unit}` : args.as;
   const transform = { type: "timeUnit", field, unit, as,
     ...(temporalUnit === undefined ? {} : { temporalUnit }),
-    ...(timeZone === undefined ? {} : { timeZone }) };
+    ...(timeZone === undefined ? {} : { timeZone }),
+    ...(Object.hasOwn(args, "missing") ? { missing: args.missing } : {}) };
   if (unit === "week") {
     transform.weekStartsOn = args.weekStartsOn ?? 1;
     transform.weekRule = args.weekRule ?? "calendar";
@@ -319,7 +323,8 @@ export function deriveTimeUnitRows(rows, transform) {
     throw new TypeError("Time-unit source must contain plain row objects.");
   }
   const values = rows.map((row, index) => {
-    if (!Object.hasOwn(row, transform.field)) {
+    const missing = !Object.hasOwn(row, transform.field) || row[transform.field] === null;
+    if (!Object.hasOwn(row, transform.field) && transform.missing !== "null") {
       throw new Error(
         `Time-unit source does not contain field "${transform.field}" at row ${index}.`
       );
@@ -327,6 +332,7 @@ export function deriveTimeUnitRows(rows, transform) {
     if (Object.hasOwn(row, transform.as)) {
       throw new Error(`Time-unit output field "${transform.as}" already exists.`);
     }
+    if (missing && transform.missing === "null") return { ...row, [transform.as]: null };
     const timestamp = normalizeTemporalValue(row[transform.field], transform.field, index, transform.temporalUnit);
     return {
       ...row,

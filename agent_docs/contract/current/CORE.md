@@ -1254,7 +1254,7 @@ weight를 지원하는 focused editors에서만 stored weight를 제거한다. �
 
 ## `editTimeUnitData`
 
-- Signature: `editTimeUnitData({ target, field?, unit?, as?, temporalUnit?, timeZone?, weekStartsOn?, weekRule?, dependents? })`.
+- Signature: `editTimeUnitData({ target, field?, unit?, as?, temporalUnit?, timeZone?, weekStartsOn?, weekRule?, missing?, dependents? })`.
 - Non-week unit으로 전환하면 week-only keys를 제거한다. Week로 전환하면 create defaults와 ISO/Monday constraint를
   동일하게 적용한다.
 
@@ -1411,11 +1411,12 @@ weight를 지원하는 focused editors에서만 stored weight를 제거한다. �
 
 ## `createTimeUnitData`
 
-- Signature: `createTimeUnitData({ id, source?, field, temporalUnit?, unit, as?, timeZone?, weekStartsOn?, weekRule? })`
+- Signature: `createTimeUnitData({ id, source?, field, temporalUnit?, unit, as?, timeZone?, weekStartsOn?, weekRule?, missing? })`
 - Lifecycle: standalone 호출은 stable logical owner를 만들고 `editTimeUnitData`가 immutable revision을 생성해
   consumer를 rebind한다. `id`는 최초 생성 시 필수 새 derived dataset ID다.
 - `source`: existing dataset ID다. 생략하면 current data를 사용하며 안전하게 추론할 수 없으면 오류다.
-- `field`: 모든 row에 존재하는 temporal input field다. Existing temporal normalization과 동일하게 finite timestamp,
+- `missing`: 생략/`"error"`는 기존 strict 동작이다. `"null"`은 null 또는 absent input만 null bucket으로 보존한다. Explicit undefined, invalid/nonfinite 값, zone/unit 오류는 계속 거부한다. 모든 row/order/raw field/lineage를 유지하며 all-null output도 nullable number schema다. 편집·replay도 동일하다.
+- `field`: 기본은 모든 row에 존재하는 temporal input field다. Existing temporal normalization과 동일하게 finite timestamp,
   ISO/date string 또는 four-digit year를 받는다. `temporalUnit`은 입력 해석만 제어하며 transform에 보존된다.
 - `unit`: `"year" | "quarter" | "month" | "day" | "hour" | "minute" | "second" | "week" | "weekday"`의
   closed vocabulary다.
@@ -1444,6 +1445,8 @@ weight를 지원하는 focused editors에서만 stored weight를 제거한다. �
 - Proposed (NOT IMPLEMENTED): locale calendar 선택, aggregation과 resampling.
 
 ### Value coverage — `createTimeUnitData`
+
+- `missing`: strict/null, mixed/optional/all-null rows, edits, replay, nullable numeric lineage and rejection evidence: `test/unit/actions/data/time-unit-missing.test.js`.
 
 - `unit`
   - ✅ Covered: 기존 seven boundaries, week/weekday, custom week starts, ISO Monday, quarter/leap/sub-day/early-year.

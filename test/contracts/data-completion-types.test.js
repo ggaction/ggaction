@@ -32,6 +32,10 @@ p.createImputedData({ id: "linear", fields: ["x"], method: "linear", sortBy: [{ 
 p.createTimeUnitData({ id: "week", field: "t", as: "week", unit: "week", timeZone: "Asia/Seoul" });
 p.createTimeUnitData({ id: "iso", field: "t", as: "week", unit: "week", weekRule: "iso", weekStartsOn: 1 });
 p.createTimeUnitData({ id: "weekday", field: "t", as: "weekday", unit: "weekday" });
+p.createTimeUnitData({ id: "nullable", field: "t", unit: "year", missing: "null" });
+p.editTimeUnitData({ target: "nullable", missing: "error" });
+// @ts-expect-error calendar missing policy is closed
+p.createTimeUnitData({ id: "badMissing", field: "t", unit: "year", missing: "drop" });
 p.createWindowData({ id: "duration", temporalUnit: "timestamp", sortBy: [{ field: "t" }], operations: [{
   op: "movingMean", field: "x", as: "mean",
   frame: { duration: { preceding: 7, unit: "day" } }, minPeriods: 2, missing: "skip"

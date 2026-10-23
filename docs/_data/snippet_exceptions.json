@@ -812,7 +812,7 @@
     "reason": "Not a standalone executable contract. Requires the imports, resource state, and branch in \"Named table lookup\" on docs/api/data/summaries-and-shaping.md. Review this context when editing; register a fixture in snippet_cases.json to claim execution coverage."
   },
   {
-    "id": "docs/api/data/time-units.md#-createtimeunitdata-id-source-field-temporalunit-unit-as-timezone-weekstartson-weekrule-:1",
+    "id": "docs/api/data/time-units.md#-createtimeunitdata-id-source-field-temporalunit-unit-as-timezone-weekstartson-weekrule-missing-:1",
     "sha256": "fb5474f70156bb5d9ea41b59b210769101bc06f2933b15a689fae8cb72f7c9f4",
     "mode": "contextual-fragment",
     "owner": "docs/api/data/time-units.md",

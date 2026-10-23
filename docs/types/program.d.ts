@@ -735,6 +735,7 @@ export type TimeUnit =
   | "week"
   | "weekday";
 type DatasetTimeUnitTransformBase = {
+  readonly missing?: "error" | "null";
   readonly type: "timeUnit";
   readonly field: string;
   readonly temporalUnit?: TemporalInputUnit;
@@ -2496,6 +2497,8 @@ export interface ECDFDataOptions {
 }
 
 type TimeUnitDataBaseOptions = {
+  /** Preserve null or absent inputs as null buckets; defaults to strict errors. */
+  missing?: "error" | "null";
   id: string;
   source?: string;
   field: string;

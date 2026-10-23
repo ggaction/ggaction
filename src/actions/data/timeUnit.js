@@ -6,7 +6,7 @@ import { derivedCreator, derivedMaterializer } from "./shared.js";
 
 const OPTIONS = Object.freeze([
   "id", "source", "field", "unit", "as", "temporalUnit", "timeZone",
-  "weekStartsOn", "weekRule"
+  "weekStartsOn", "weekRule", "missing"
 ]);
 
 export const materializeTimeUnitData = /* @__PURE__ */ derivedMaterializer(

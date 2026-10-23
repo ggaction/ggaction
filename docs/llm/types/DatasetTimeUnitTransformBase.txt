@@ -1,4 +1,5 @@
 type DatasetTimeUnitTransformBase = {
+  readonly missing?: "error" | "null";
   readonly type: "timeUnit";
   readonly field: string;
   readonly temporalUnit?: TemporalInputUnit;

@@ -665,6 +665,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `missing` | Optional / branch-dependent | `"error" \| "null" \| undefined` |
 | `id` | Required | `string` |
 | `source` | Optional / branch-dependent | `string \| undefined` |
 | `field` | Required | `string` |
@@ -842,6 +843,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `target` | Required | `string` |
 | `dependents` | Optional / branch-dependent | `DerivedDataDependents \| undefined` |
+| `missing` | Optional / branch-dependent | `"error" \| "null" \| undefined` |
 | `field` | Optional / branch-dependent | `string \| undefined` |
 | `temporalUnit` | Optional / branch-dependent | `TemporalInputUnit \| undefined` |
 | `as` | Optional / branch-dependent | `string \| undefined` |
