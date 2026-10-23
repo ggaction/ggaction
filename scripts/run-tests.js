@@ -175,6 +175,16 @@ export function testRunnerArguments(suite, files, shard) {
   return args;
 }
 
+// Decode only after joining a stream's bytes: a data event can split the
+// multi-byte info marker used by Node's coverage table at any byte boundary.
+export function createTestOutputCapture() {
+  const chunks = [];
+  return {
+    write(chunk) { chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk)); },
+    toString() { return Buffer.concat(chunks).toString("utf8"); }
+  };
+}
+
 async function run(suite, selectors, shard) {
   const files = collectTestFiles(suite, testRoot, selectors);
   if (files.length === 0) {
@@ -196,13 +206,13 @@ async function run(suite, selectors, shard) {
   }
   const args = testRunnerArguments(suite, files, shard);
   if (suite === "realistic") args.unshift("--import", path.join(repositoryRoot, "scripts/test-file-metrics.js"));
-  let output = "";
-  const capture = { write(chunk) { output += chunk.toString(); } };
+  const stdout = createTestOutputCapture(), stderr = createTestOutputCapture();
   const code = await runCheck(`suite-${suite}`, process.execPath, args, {
     cwd: repositoryRoot,
-    ...(coverage ? { stdout: capture, stderr: capture } : {})
+    ...(coverage ? { stdout, stderr } : {})
   });
   if (coverage) {
+    const output = stdout.toString() + stderr.toString();
     const directory = path.join(repositoryRoot, ".artifacts/coverage");
     mkdirSync(directory, { recursive: true });
     writeFileSync(path.join(directory, "report.log"), output);

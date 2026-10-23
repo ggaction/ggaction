@@ -84,3 +84,8 @@ GitHub release 및 문서 identity를 확인한 뒤 완료한다.
 - 설치된 full browser bundle은 451111 gzip bytes로 기존 448000 한도를 초과했다.
   새 공개 기능을 유지하며 full entry만 452000으로 최소 조정하고 Basic/SVG는 그대로 유지했다.
   공개 browser 검사 전체 284개는 통과했다.
+
+- 동결 후보의 5587개 검사와 global coverage 95.65/93.19/98.76은 통과했으나
+  stdout chunk가 UTF-8 `ℹ` 중간에서 잘리면 decoder가 이를 훼손해 한 파일을 누락시켰다.
+  스트림별 bytes를 완전히 모은 뒤 decode하도록 runner를 수정하고 모든 byte 경계와
+  stderr 교차 입력 회귀를 추가했다. Source/critical coverage 기준은 그대로 유지한다.
