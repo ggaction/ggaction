@@ -1,0 +1,8 @@
+type BinDataMode =
+  | { maxBins?: number; step?: never; boundaries?: never }
+  | { maxBins?: never; step: number; boundaries?: never }
+  | {
+      maxBins?: never;
+      step?: never;
+      boundaries: readonly [number, number, ...number[]];
+    };

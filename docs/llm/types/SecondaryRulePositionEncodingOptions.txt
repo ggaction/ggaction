@@ -1,0 +1,6 @@
+type SecondaryRulePositionEncodingOptions = RulePositionEncodingBase & {
+  scale?: { id?: string };
+} & (
+  | { fieldType: Exclude<FieldType, "temporal">; temporalUnit?: never }
+  | { fieldType: "temporal"; temporalUnit?: TemporalInputUnit }
+);

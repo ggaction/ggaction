@@ -1,0 +1,10 @@
+type QuantitativeBarColorChannel = {
+  field: string;
+  fieldType: "quantitative";
+  aggregate?: AggregateOperation;
+  scale?:
+    | NonPointContinuousColorScaleOptions
+    | NonPointDiscretizedColorScaleOptions;
+  palette?: Palette;
+  layout?: never;
+};

@@ -1,0 +1,5 @@
+export interface SortedDataOptions {
+  id: string;
+  source?: string;
+  sortBy: readonly [SortKey, ...SortKey[]];
+}

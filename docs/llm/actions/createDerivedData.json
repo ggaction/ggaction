@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 3,
+  "name": "createDerivedData",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Creates derived dataset for stored transform provenance.",
+  "signature": "createDerivedData(options: CreateDerivedDataOptions): ChartProgram;",
+  "intents": [
+    "create derived data",
+    "create",
+    "add",
+    "chart setup",
+    "data and scales",
+    "derived dataset",
+    "stored transform provenance"
+  ],
+  "lifecycle": "Immutable create-only",
+  "resources": {
+    "prerequisites": [
+      "source dataset"
+    ],
+    "owns": [
+      "derived dataset"
+    ],
+    "idOptions": [
+      "id",
+      "source"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "editDerivedData"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "source",
+      "strategy": "explicit"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "source dataset"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "source",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "transform",
+      "required": true,
+      "type": "readonly [DatasetTransform]"
+    }
+  ],
+  "callPatterns": [
+    "createDerivedData({ id, source, transform })"
+  ],
+  "snippet": "program.createDerivedData({ id: \"filtered\", source: \"source\", transform: [{ type: \"filter\", field: \"value\", predicate: { op: \"gt\", value: 0 } }] })",
+  "errors": [
+    {
+      "error": "transform is empty or contains more than one transform.",
+      "fix": "Provide exactly one valid DatasetTransform object."
+    }
+  ],
+  "route": "/reference/actions/charts-data/#createderiveddata"
+}

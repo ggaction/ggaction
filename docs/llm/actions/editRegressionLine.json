@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 3,
+  "name": "editRegressionLine",
+  "layer": "user-facing",
+  "domain": "statistics",
+  "summary": "Edits regression line, including settings for fitted curve.",
+  "signature": "editRegressionLine(options: StrokeStyleDetails & { target?: string; strokeWidth?: number; curve?: CurveInterpolation; }): ChartProgram;",
+  "intents": [
+    "edit regression line",
+    "edit",
+    "change",
+    "statistical layer",
+    "statistical transform",
+    "regression line",
+    "fitted curve"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing regression line",
+      "statistical source and coordinate context"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H1",
+    "H3"
+  ],
+  "wraps": [
+    "editLineMark"
+  ],
+  "editableVia": [
+    "editRegressionLine"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "strokeWidth",
+      "unit": "logical-pixel"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing regression line",
+      "statistical source and coordinate context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "lineCap",
+      "required": false,
+      "type": "\"butt\" | \"round\" | \"square\" | undefined"
+    },
+    {
+      "name": "lineJoin",
+      "required": false,
+      "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+    },
+    {
+      "name": "miterLimit",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "strokeWidth",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "curve",
+      "required": false,
+      "type": "CurveInterpolation | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editRegressionLine({ target?, lineCap?, lineJoin?, miterLimit?, strokeWidth?, curve? })"
+  ],
+  "snippet": "program.editRegressionLine({ lineCap: \"butt\" })",
+  "errors": [],
+  "route": "/reference/actions/statistics/#editregressionline"
+}

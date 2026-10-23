@@ -1,0 +1,39 @@
+type AnnotationAnchor =
+  | {
+      anchor: "plot-center";
+      x?: never;
+      y?: never;
+      space?: never;
+      source?: never;
+      align?: never;
+      baseline?: never;
+      data?: string;
+      coordinate?: string;
+    }
+  | {
+      anchor?: never;
+      x?: never;
+      y?: never;
+      space?: never;
+      source?: string;
+      data?: never;
+      coordinate?: never;
+    }
+  | {
+      anchor?: never;
+      x: unknown;
+      y: unknown;
+      space?: "data";
+      source?: string;
+      data?: never;
+      coordinate?: never;
+    }
+  | {
+      anchor?: never;
+      x: number;
+      y: number;
+      space: "plot";
+      source?: never;
+      data?: string;
+      coordinate?: string;
+    };

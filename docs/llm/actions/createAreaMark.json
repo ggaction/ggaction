@@ -1,0 +1,140 @@
+{
+  "schemaVersion": 3,
+  "name": "createAreaMark",
+  "layer": "user-facing",
+  "domain": "marks",
+  "summary": "Create a semantic area mark and empty path collection.",
+  "signature": "createAreaMark(options?: StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: \"error\" | \"break\"; }): ChartProgram;",
+  "intents": [
+    "create area mark",
+    "create",
+    "add",
+    "graphical mark",
+    "mark appearance",
+    "area mark",
+    "filled band"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "dataset and coordinate context"
+    ],
+    "owns": [
+      "area mark"
+    ],
+    "idOptions": [
+      "id",
+      "data"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editSemantic",
+    "createGraphics"
+  ],
+  "editableVia": [
+    "editAreaMark"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "opacity",
+      "unit": "probability"
+    },
+    {
+      "path": "strokeWidth",
+      "unit": "logical-pixel"
+    }
+  ],
+  "inference": [
+    {
+      "input": "data",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "dataset and coordinate context"
+    ],
+    "allowsEmpty": true
+  },
+  "options": [
+    {
+      "name": "lineCap",
+      "required": false,
+      "type": "\"butt\" | \"round\" | \"square\" | undefined"
+    },
+    {
+      "name": "lineJoin",
+      "required": false,
+      "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+    },
+    {
+      "name": "miterLimit",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "clip",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "data",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "fill",
+      "required": false,
+      "type": "FillPaint | undefined"
+    },
+    {
+      "name": "opacity",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "stroke",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "strokeWidth",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "curve",
+      "required": false,
+      "type": "CurveInterpolation | undefined"
+    },
+    {
+      "name": "missing",
+      "required": false,
+      "type": "\"break\" | \"error\" | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createAreaMark({ id?, data?, lineCap?, lineJoin?, miterLimit?, clip?, fill?, opacity? })"
+  ],
+  "snippet": "program.createAreaMark({})",
+  "errors": [],
+  "route": "/reference/actions/marks/#createareamark"
+}

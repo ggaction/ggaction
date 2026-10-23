@@ -25,6 +25,9 @@
       .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, " ")
+      .replace(/\bcolors\b/g, "color")
+      .replace(/\b(how|do|i|the|a|an|can|my)\b/g, " ")
+      .replace(/\s+/g, " ")
       .trim();
   }
 
@@ -132,6 +135,7 @@
         const compactKeywordValues = keywordValues.map(value => value.replaceAll(" ", ""));
         const score = section.actionName?.toLowerCase() === queryCompact
           ? 100
+          : (section.taskAliases ?? []).map(searchable).includes(query) ? 20
           : sectionTitle === query || sectionTitle.replaceAll(" ", "") === queryCompact
           ? 12
           : pageTitle === query || pageTitle.replaceAll(" ", "") === queryCompact
@@ -187,7 +191,7 @@
         link.href = new URL(match.url.replace(/^\/+/, ""), docsRoot);
         const kind = document.createElement("span");
         kind.className = "docs-search-kind";
-        kind.textContent = [match.kind, config.dataset.sourceStatus, config.dataset.contractId].filter(Boolean).join(" · ");
+        kind.textContent = match.kind;
         const title = document.createElement("span");
         title.className = "docs-search-title";
         title.textContent = match.sectionTitle

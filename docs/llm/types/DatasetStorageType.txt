@@ -1,0 +1,8 @@
+export type DatasetStorageType =
+  | "number"
+  | "string"
+  | "boolean"
+  | "array"
+  | "object"
+  | "unknown"
+  | "mixed";

@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 3,
+  "name": "createFoldData",
+  "layer": "user-facing",
+  "domain": "statistics",
+  "summary": "Materialize selected wide fields as stable key/value rows while preserving every source cell.",
+  "signature": "createFoldData(options: FoldDataOptions): ChartProgram;",
+  "intents": [
+    "create fold data",
+    "create",
+    "add",
+    "statistical layer",
+    "statistical transform",
+    "wide to long data",
+    "key value rows"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "source dataset"
+    ],
+    "owns": [
+      "wide to long data"
+    ],
+    "idOptions": [
+      "id",
+      "source"
+    ]
+  },
+  "authoringRoles": [
+    "H1"
+  ],
+  "wraps": [
+    "createDerivedData"
+  ],
+  "editableVia": [
+    "editFoldData"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "source",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "source dataset"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "source",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "fields",
+      "required": true,
+      "type": "readonly string[]"
+    },
+    {
+      "name": "as",
+      "required": false,
+      "type": "FoldDataOutputFields | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createFoldData({ id, fields, source?, as? })"
+  ],
+  "snippet": "program.createFoldData({ id: \"long\", fields: [\"apples\", \"pears\"] })",
+  "errors": [],
+  "route": "/reference/actions/statistics/#createfolddata"
+}

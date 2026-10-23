@@ -1,3 +1,4 @@
+import { saveBrowserContextEvidence, saveBrowserEvidence } from "../support/browser.js";
 import assert from 'node:assert/strict';
 import {readFile,writeFile} from 'node:fs/promises';
 import path from 'node:path';
@@ -24,6 +25,7 @@ test.before(async()=>{
 test.after(async()=>{await closeBrowserWithEvidence(browser);await server?.close();await consumer?.cleanup();});
 
 for(const blank of [false,true])for(const ratio of [1,2])test(`${name} matches ${blank?'blank header':'shared top lane'} primitive in installed Canvas and SVG at DPR ${ratio}`,async()=>{
+  try {
   const context=await browser.newContext({deviceScaleFactor:ratio});
   try{
     const {page,errors}=await openBrowserPage(context,server.baseUrl);
@@ -70,5 +72,7 @@ for(const blank of [false,true])for(const ratio of [1,2])test(`${name} matches $
     else{assert.ok(title.bottom<=header.top);assert.ok(header.bottom<endpoint.top);}
     assert.ok(endpoint.top<43&&endpoint.bottom>43,'upper endpoint is retained at the plot edge');
     assertNoBrowserErrors(errors,name);await page.close();
-  }finally{await context.close();}
+  } catch (error) { await saveBrowserContextEvidence(context, error); throw error; }finally{await context.close();}
+
+  } catch (error) { await saveBrowserEvidence(browser, error); throw error; }
 });

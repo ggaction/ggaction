@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 3,
+  "name": "editFilteredData",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Edits filtered dataset, including settings for rows matching a predicate.",
+  "signature": "editFilteredData(options: EditFilteredDataOptions): ChartProgram;",
+  "intents": [
+    "edit filtered data",
+    "edit",
+    "change",
+    "chart setup",
+    "data and scales",
+    "filtered dataset",
+    "rows matching a predicate"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing filtered dataset",
+      "source dataset"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editDerivedData"
+  ],
+  "editableVia": [
+    "editFilteredData"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing filtered dataset",
+      "source dataset"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "oneOf",
+      "required": false,
+      "type": "readonly [DatasetScalar, ...DatasetScalar[]] | undefined"
+    },
+    {
+      "name": "noneOf",
+      "required": false,
+      "type": "readonly [DatasetScalar, ...DatasetScalar[]] | undefined"
+    },
+    {
+      "name": "predicate",
+      "required": false,
+      "type": "FilterComparison | undefined"
+    },
+    {
+      "name": "range",
+      "required": false,
+      "type": "FilterRangePatch | undefined"
+    },
+    {
+      "name": "target",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "field",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "nulls",
+      "required": false,
+      "type": "\"exclude\" | \"include\" | false | undefined"
+    },
+    {
+      "name": "dependents",
+      "required": false,
+      "type": "DerivedDataDependents | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editFilteredData({ target, oneOf?, noneOf?, predicate?, range?, field?, nulls?, dependents? })"
+  ],
+  "snippet": "program.editFilteredData({ target: \"filtered\", oneOf: [1] })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#editfiltereddata"
+}

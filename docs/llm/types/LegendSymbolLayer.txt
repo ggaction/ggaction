@@ -1,0 +1,19 @@
+export type LegendSymbolLayer =
+  | { type: "line"; length?: number; lineWidth?: number; opacity?: number }
+  | {
+      type: "point";
+      shape?: "circle";
+      size?: number;
+      fill?: string;
+      stroke?: string;
+      strokeWidth?: number;
+      opacity?: number;
+    }
+  | {
+      type: "swatch";
+      width?: number;
+      height?: number;
+      stroke?: string;
+      strokeWidth?: number;
+      opacity?: number;
+    };

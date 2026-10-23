@@ -1,0 +1,9 @@
+export interface RaincloudBoxSummaryOptions {
+  type?: "box";
+  whisker?: BoxPlotWhisker;
+  width?: { band?: number };
+  outliers?: boolean;
+  box?: BoxPlotOptions["box"];
+  median?: BoxPlotOptions["median"];
+  outlier?: BoxPlotOptions["outlier"];
+}

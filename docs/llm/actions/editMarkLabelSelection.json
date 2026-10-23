@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 3,
+  "name": "editMarkLabelSelection",
+  "layer": "user-facing",
+  "domain": "marks",
+  "summary": "Replace one attached label layer's final-item membership.",
+  "signature": "editMarkLabelSelection(options: EditMarkLabelSelectionOptions): ChartProgram;",
+  "intents": [
+    "edit mark label selection",
+    "edit",
+    "change",
+    "graphical mark",
+    "mark appearance",
+    "selected mark labels",
+    "label membership"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "attached label"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target",
+      "selection"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [],
+  "editableVia": [
+    "editMarkLabelSelection",
+    "editMarkLabelPlacement",
+    "removeMarkLabels"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit"
+    },
+    {
+      "input": "selection",
+      "strategy": "explicit"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "attached label"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "select",
+      "required": false,
+      "type": "MarkSelector | undefined"
+    },
+    {
+      "name": "selection",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "all",
+      "required": false,
+      "type": "true | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editMarkLabelSelection({ target, select | selection | all: true })"
+  ],
+  "snippet": "program.editMarkLabelSelection({ target: \"labels\", all: true })",
+  "errors": [],
+  "route": "/reference/actions/marks/#editmarklabelselection"
+}

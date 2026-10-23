@@ -1,0 +1,11 @@
+export type TextEncodingOptions = {
+  target?: string;
+  format?: TextFormat;
+} & (
+  | { field: string; value?: never; content?: never; normalizeBy?: never }
+  | { field?: never; value: unknown; content?: never; normalizeBy?: never }
+  | { field?: never; value?: never; content: "category" | "value"; normalizeBy?: never }
+  | { field?: never; value?: never; content: "share"; normalizeBy?: "source" | "category" }
+);
+
+/** Attached final-item labels; lower text actions own subsequent edits. */

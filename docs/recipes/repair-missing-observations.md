@@ -64,7 +64,9 @@ The source has two rows: `(t=1,value=2)` and `(t=3,value=6)`. Complete produces 
 
 ## Boundaries and failure behavior
 
-Completion adds keys; imputation fills cells and does not add rows. Each observed group/key must be unique. Linear imputation uses position distance, not index distance. Source rows are immutable: there is no general edit-source-data action. Create the replacement, rebuild its derivation, then bind an eligible independent mark. To change a transform decision on the same source, use its focused editor with `dependents: "recompute"`.
+Completion adds keys; imputation fills cells and does not add rows. Each observed group/key must be unique. Linear imputation uses position distance, not index distance. Source rows are immutable. Use `reviseData` for compatible new rows and automatic dependent recomputation. The explicit replacement, derivation, and mark binding shown here is useful when restructuring dependencies. To change a transform decision on the same source, use its focused editor with `dependents: "recompute"`.
+
+For a compatible source refresh, use `reviseData` to replay this pipeline automatically. The manual replacement steps above are useful when explicitly restructuring dependencies. See [Data updates](../data-updates.md).
 
 ## Related
 

@@ -13,6 +13,7 @@ export function niceStep(span, count = 5) {
   if (span === 0) return 0;
   const rough = span / Math.max(1, count);
   const power = 10 ** Math.floor(Math.log10(rough));
+  if (!(power > 0)) throw new RangeError("Oracle step is below its supported precision.");
   const fraction = rough / power;
   const factor = [1, 2, 3, 5, 10].find(candidate => candidate >= fraction);
   return factor * power;
@@ -42,7 +43,12 @@ export function numericTicks(domain, count = 5) {
   const stop = Math.floor((high + tolerance) / step) * step;
   const values = [];
   for (let value = start; value <= stop + tolerance; value += step) {
-    values.push(Number(value.toPrecision(12)));
+    const rounded = Number(value.toPrecision(12));
+    if (values.length >= 10000 || value + step === value ||
+        (values.length && rounded <= values.at(-1))) {
+      throw new RangeError("Oracle ticks exceed supported precision or capacity.");
+    }
+    values.push(rounded);
   }
   if (domain[0] > domain[1]) values.reverse();
   return Object.freeze(values);
@@ -55,9 +61,14 @@ export function mapLinear(value, domain, range) {
   if (domain.length !== 2 || range.length !== 2) {
     throw new TypeError("mapLinear requires two domain and range endpoints.");
   }
-  if (domain[0] === domain[1]) return (range[0] + range[1]) / 2;
-  const ratio = (value - domain[0]) / (domain[1] - domain[0]);
-  return range[0] + ratio * (range[1] - range[0]);
+  if (domain[0] === domain[1]) return range[0] / 2 + range[1] / 2;
+  const span = domain[1] - domain[0];
+  const ratio = Number.isFinite(span)
+    ? (value - domain[0]) / span
+    : (value / 2 - domain[0] / 2) / (domain[1] / 2 - domain[0] / 2);
+  const extent = range[1] - range[0];
+  return Number.isFinite(extent) ? range[0] + ratio * extent
+    : (1 - ratio) * range[0] + ratio * range[1];
 }
 
 export function quantile(sortedValues, probability) {
@@ -70,6 +81,8 @@ export function quantile(sortedValues, probability) {
   const upper = Math.ceil(position);
   if (lower === upper) return sortedValues[lower];
   const fraction = position - lower;
-  return sortedValues[lower] +
-    (sortedValues[upper] - sortedValues[lower]) * fraction;
+  const difference = sortedValues[upper] - sortedValues[lower];
+  return Number.isFinite(difference)
+    ? sortedValues[lower] + difference * fraction
+    : (1 - fraction) * sortedValues[lower] + fraction * sortedValues[upper];
 }

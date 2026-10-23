@@ -28,42 +28,86 @@
     "route"
   ],
   "properties": {
-    "schemaVersion": { "const": 3 },
-    "name": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9]*$" },
-    "layer": { "enum": ["user-facing", "advanced", "primitive"] },
-    "domain": { "type": "string", "minLength": 1 },
-    "summary": { "type": "string", "minLength": 20, "maxLength": 420 },
-    "signature": { "type": "string", "minLength": 10 },
+    "schemaVersion": {
+      "const": 3
+    },
+    "name": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9]*$"
+    },
+    "layer": {
+      "enum": [
+        "user-facing",
+        "advanced",
+        "primitive"
+      ]
+    },
+    "domain": {
+      "type": "string",
+      "minLength": 1
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 20,
+      "maxLength": 420
+    },
+    "signature": {
+      "type": "string",
+      "minLength": 10
+    },
     "intents": {
       "type": "array",
       "minItems": 3,
       "maxItems": 7,
       "uniqueItems": true,
-      "items": { "type": "string", "minLength": 2, "maxLength": 80 }
+      "items": {
+        "type": "string",
+        "minLength": 2,
+        "maxLength": 80
+      }
     },
-    "lifecycle": { "type": "string", "minLength": 3 },
+    "lifecycle": {
+      "type": "string",
+      "minLength": 3
+    },
     "resources": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["prerequisites", "owns", "idOptions"],
+      "required": [
+        "prerequisites",
+        "owns",
+        "idOptions"
+      ],
       "properties": {
         "prerequisites": {
           "type": "array",
           "maxItems": 4,
           "uniqueItems": true,
-          "items": { "type": "string", "minLength": 2, "maxLength": 100 }
+          "items": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 100
+          }
         },
         "owns": {
           "type": "array",
           "maxItems": 3,
           "uniqueItems": true,
-          "items": { "type": "string", "minLength": 2, "maxLength": 80 }
+          "items": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 80
+          }
         },
         "idOptions": {
           "type": "array",
           "maxItems": 10,
           "uniqueItems": true,
-          "items": { "type": "string", "minLength": 2, "maxLength": 30 }
+          "items": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 30
+          }
         }
       }
     },
@@ -72,31 +116,52 @@
       "minItems": 1,
       "maxItems": 5,
       "uniqueItems": true,
-      "items": { "enum": ["H0", "H1", "H2", "H3", "H4"] }
+      "items": {
+        "enum": [
+          "H0",
+          "H1",
+          "H2",
+          "H3",
+          "H4"
+        ]
+      }
     },
     "wraps": {
       "type": "array",
       "maxItems": 20,
       "uniqueItems": true,
-      "items": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9]*$" }
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z][A-Za-z0-9]*$"
+      }
     },
     "editableVia": {
       "type": "array",
       "maxItems": 20,
       "uniqueItems": true,
-      "items": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9]*$" }
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z][A-Za-z0-9]*$"
+      }
     },
     "supports": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["entryPoints"],
+      "required": [
+        "entryPoints"
+      ],
       "properties": {
         "entryPoints": {
           "type": "array",
           "minItems": 1,
           "maxItems": 2,
           "uniqueItems": true,
-          "items": { "enum": ["default", "basic"] }
+          "items": {
+            "enum": [
+              "default",
+              "basic"
+            ]
+          }
         }
       }
     },
@@ -106,9 +171,16 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["path", "unit"],
+        "required": [
+          "path",
+          "unit"
+        ],
         "properties": {
-          "path": { "type": "string", "minLength": 1, "maxLength": 80 },
+          "path": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80
+          },
           "unit": {
             "enum": [
               "logical-pixel",
@@ -132,9 +204,16 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["input", "strategy"],
+        "required": [
+          "input",
+          "strategy"
+        ],
         "properties": {
-          "input": { "type": "string", "minLength": 1, "maxLength": 80 },
+          "input": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80
+          },
           "strategy": {
             "enum": [
               "explicit",
@@ -150,16 +229,34 @@
     "completionRequirements": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["state", "requires", "allowsEmpty"],
+      "required": [
+        "state",
+        "requires",
+        "allowsEmpty"
+      ],
       "properties": {
-        "state": { "enum": ["complete", "deferred", "contextual", "not-applicable"] },
+        "state": {
+          "enum": [
+            "complete",
+            "deferred",
+            "contextual",
+            "not-applicable"
+          ]
+        },
         "requires": {
           "type": "array",
           "maxItems": 4,
           "uniqueItems": true,
-          "items": { "type": "string", "minLength": 2, "maxLength": 100 }
+          "items": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 100
+          }
         },
-        "allowsEmpty": { "type": "boolean" }
+        "allowsEmpty": {
+          "type": "boolean",
+          "description": "Whether this action permits an empty result. This does not promise that subsequent actions can infer domains from empty data or that geometry is complete."
+        }
       }
     },
     "options": {
@@ -168,11 +265,24 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["name", "required", "type"],
+        "required": [
+          "name",
+          "required",
+          "type"
+        ],
         "properties": {
-          "name": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9]*$" },
-          "required": { "type": "boolean" },
-          "type": { "type": "string", "minLength": 1, "maxLength": 500 }
+          "name": {
+            "type": "string",
+            "pattern": "^[A-Za-z][A-Za-z0-9]*$"
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "type": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          }
         }
       }
     },
@@ -181,22 +291,44 @@
       "minItems": 1,
       "maxItems": 3,
       "uniqueItems": true,
-      "items": { "type": "string", "minLength": 3, "maxLength": 260 }
+      "items": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 260
+      }
     },
-    "snippet": { "type": "string", "minLength": 3, "maxLength": 700 },
+    "snippet": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 700
+    },
     "errors": {
       "type": "array",
       "maxItems": 2,
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["error", "fix"],
+        "required": [
+          "error",
+          "fix"
+        ],
         "properties": {
-          "error": { "type": "string", "minLength": 5, "maxLength": 220 },
-          "fix": { "type": "string", "minLength": 5, "maxLength": 220 }
+          "error": {
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 220
+          },
+          "fix": {
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 220
+          }
         }
       }
     },
-    "route": { "type": "string", "pattern": "^/reference/" }
+    "route": {
+      "type": "string",
+      "pattern": "^/reference/"
+    }
   }
 }

@@ -1,0 +1,151 @@
+{
+  "schemaVersion": 3,
+  "name": "editDensity",
+  "layer": "user-facing",
+  "domain": "encodings",
+  "summary": "Create an immutable density-data revision, rebind the selected density area, and rematerialize its graphical consumers.",
+  "signature": "editDensity(options: EditDensityOptions): ChartProgram;",
+  "intents": [
+    "edit density",
+    "edit",
+    "change",
+    "visual encoding",
+    "field mapping",
+    "density plot",
+    "kernel density estimate"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing density plot"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target",
+      "source"
+    ]
+  },
+  "authoringRoles": [
+    "H2",
+    "H3"
+  ],
+  "wraps": [
+    "createDensityData"
+  ],
+  "editableVia": [
+    "editDensity"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "bandwidth",
+      "unit": "data-value"
+    },
+    {
+      "path": "steps",
+      "unit": "count"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "source",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "bandwidth",
+      "strategy": "documented-auto"
+    },
+    {
+      "input": "extent",
+      "strategy": "documented-auto"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing density plot"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "source",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "field",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "groupBy",
+      "required": false,
+      "type": "string | false | undefined"
+    },
+    {
+      "name": "bandwidth",
+      "required": false,
+      "type": "number | \"auto\" | undefined"
+    },
+    {
+      "name": "extent",
+      "required": false,
+      "type": "\"auto\" | readonly [number, number] | undefined"
+    },
+    {
+      "name": "steps",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "kernel",
+      "required": false,
+      "type": "DensityKernel | undefined"
+    },
+    {
+      "name": "normalization",
+      "required": false,
+      "type": "DensityNormalization | undefined"
+    },
+    {
+      "name": "weight",
+      "required": false,
+      "type": "false | StatisticalWeight | undefined"
+    },
+    {
+      "name": "densityChannel",
+      "required": false,
+      "type": "\"x\" | \"y\" | undefined"
+    },
+    {
+      "name": "valueScale",
+      "required": false,
+      "type": "NonPointQuantitativePositionScaleOptions | undefined"
+    },
+    {
+      "name": "placement",
+      "required": false,
+      "type": "DensityPlacement | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editDensity({ target?, source?, field?, groupBy?, bandwidth?, extent?, steps?, kernel? })"
+  ],
+  "snippet": "program.editDensity({ field: \"value\" })",
+  "errors": [],
+  "route": "/reference/actions/encodings/#editdensity"
+}

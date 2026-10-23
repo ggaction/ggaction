@@ -1,0 +1,12 @@
+type RegressionPlotBaseOptions = {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  x: RegressionPlotPositionChannel;
+  y: RegressionPlotPositionChannel;
+  color?: BasicColorChannel;
+  size?: BasicSizeChannel;
+  shape?: BasicShapeChannel;
+  point?: CreateScatterPlotOptions["point"];
+  guides?: false | CartesianGuideOptions;
+};

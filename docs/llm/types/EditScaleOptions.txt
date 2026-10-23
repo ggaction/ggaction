@@ -1,0 +1,26 @@
+export interface EditScaleOptions {
+  radialMapping?: RadialMapping;
+  id?: string;
+  type?: ScaleType;
+  domain?: "auto" | readonly unknown[];
+  emptyDomain?: "preserve" | "require-explicit";
+  range?: ScaleRange;
+  nice?: boolean | LinearNiceCountOptions;
+  zero?: boolean;
+  clamp?: boolean;
+  reverse?: boolean;
+  base?: number;
+  exponent?: number;
+  constant?: number;
+  paddingInner?: number;
+  paddingOuter?: number;
+  padding?: number;
+  align?: number;
+  palette?: Palette;
+  interpolate?: ContinuousColorInterpolation;
+  whitePoint?: "d65" | "d50" | "auto";
+  /** Finite Cubehelix lightness gamma; auto restores 1. */
+  gamma?: number | "auto";
+  midpoint?: number | "auto";
+  unknown?: unknown;
+}

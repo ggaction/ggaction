@@ -17,7 +17,7 @@ shared value before a later encoding, filter, aggregation, or window operation.
 
 Omit `as` to name the new field `${field}_${unit}`. The name must be absent from every source row; collisions are errors. Explicit `as` keeps your chosen output name.
 
-## `createTimeUnitData({ id, source?, field, temporalUnit?, unit, as?, timeZone?, weekStartsOn?, weekRule? })`
+## `createTimeUnitData({ id, source?, field, temporalUnit?, unit, as?, timeZone?, weekStartsOn?, weekRule?, missing? })`
 
 <!-- snippet-context:start -->
 
@@ -54,9 +54,10 @@ console.log(program.semanticSpec.datasets[1].values[0].month);
 | `field` | temporal field name | required |
 | `temporalUnit` | `"auto"`, `"year"`, or `"timestamp"` input mode | existing automatic parser |
 | `unit` | `"year"`, `"quarter"`, `"month"`, `"day"`, `"hour"`, `"minute"`, `"second"`, `"week"`, or `"weekday"` | required |
-| `as` | new output field name | required |
+| `as` | new output field name | `${field}_${unit}` |
 | `timeZone` | non-empty IANA time-zone name | `"UTC"` |
 | `weekStartsOn` | integer Sunday `0` through Saturday `6`; week only | `1` |
+| `missing` | `"error"` or `"null"` | `"error"` |
 | `weekRule` | `"calendar"` or `"iso"`; week only | `"calendar"` |
 
 Except for `weekday`, the output is a finite epoch-millisecond timestamp at the
@@ -80,6 +81,18 @@ The source dataset remains unchanged. The derived dataset preserves row order
 and every existing field, then adds `as`. The output name must differ from the
 input and must not already exist in any source row. Invalid timestamps and
 collisions fail atomically.
+
+## Missing dates
+
+Use `missing: "null"` to retain rows whose input is null or absent and add a null
+bucket. All original fields, row order, and source lineage remain intact. An
+explicit `undefined`, malformed non-null date, nonfinite number, unsupported zone,
+or out-of-range calendar boundary still fails. Output schema remains numeric,
+including an all-null result; weekday values remain numbers from 0 through 6.
+
+`editTimeUnitData({ target, missing: "null" })` applies the same policy to an
+existing owner. Switching back to `"error"` rejects a source with missing dates.
+The default remains strict and existing stored transforms need no migration.
 
 ## Boundaries
 

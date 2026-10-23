@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 3,
+  "name": "editBin2DData",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Partially revise the current or unique logical 2D-bin owner.",
+  "signature": "editBin2DData(options: EditBin2DDataOptions): ChartProgram;",
+  "intents": [
+    "edit bin2 d data",
+    "edit",
+    "change",
+    "chart setup",
+    "data and scales",
+    "two-dimensional bins",
+    "rectangular aggregation"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing two-dimensional bins"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target",
+      "source"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "createDerivedData",
+    "editXAxisLine",
+    "editXAxisTicks",
+    "editXAxisLabels",
+    "editXAxisTitle",
+    "editYAxisLine",
+    "editYAxisTicks",
+    "editYAxisLabels",
+    "editYAxisTitle"
+  ],
+  "editableVia": [
+    "editBin2DData"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "source",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing two-dimensional bins"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "source",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "x",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "y",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "bins",
+      "required": false,
+      "type": "number | Bin2DCounts | undefined"
+    },
+    {
+      "name": "extent",
+      "required": false,
+      "type": "Bin2DExtent | undefined"
+    },
+    {
+      "name": "includeEmpty",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "members",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "as",
+      "required": false,
+      "type": "DatasetBin2DOutputFields | undefined"
+    },
+    {
+      "name": "dependents",
+      "required": false,
+      "type": "DerivedDataDependents | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editBin2DData({ target?, source?, x?, y?, bins?, extent?, includeEmpty?, members? })"
+  ],
+  "snippet": "program.editBin2DData({ x: \"x\" })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#editbin2ddata"
+}

@@ -1,0 +1,7 @@
+type ParallelGuideOptions = {
+  axes?: false | {
+    coordinate?: { id?: string; type?: "auto" | "parallel" };
+  };
+  grid?: false;
+  legend?: false | (Omit<PathLegendOptions, "order"> & { order?: LegendValueOrder });
+};

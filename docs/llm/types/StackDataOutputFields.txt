@@ -1,0 +1,6 @@
+export interface StackDataOutputFields {
+  start?: string;
+  end?: string;
+  value?: string;
+  share?: string;
+}

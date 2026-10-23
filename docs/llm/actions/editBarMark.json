@@ -1,0 +1,150 @@
+{
+  "schemaVersion": 3,
+  "name": "editBarMark",
+  "layer": "user-facing",
+  "domain": "marks",
+  "summary": "Edit whole-bar appearance and rematerialize every concrete rectangle.",
+  "signature": "editBarMark(options: RectStyleDetails & { clip?: boolean; target?: string; blend?: \"normal\" | \"difference\"; missing?: \"error\" | \"skip\"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;",
+  "intents": [
+    "edit bar mark",
+    "edit",
+    "change",
+    "graphical mark",
+    "mark appearance",
+    "bar mark",
+    "rectangle bar"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing bar mark"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [],
+  "editableVia": [
+    "editBarMark"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "opacity",
+      "unit": "probability"
+    },
+    {
+      "path": "strokeWidth",
+      "unit": "logical-pixel"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing bar mark"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "lineCap",
+      "required": false,
+      "type": "\"butt\" | \"round\" | \"square\" | undefined"
+    },
+    {
+      "name": "lineJoin",
+      "required": false,
+      "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+    },
+    {
+      "name": "miterLimit",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "cornerRadius",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "cornerRadiusTopLeft",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "cornerRadiusTopRight",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "cornerRadiusBottomRight",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "cornerRadiusBottomLeft",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "clip",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "blend",
+      "required": false,
+      "type": "\"difference\" | \"normal\" | undefined"
+    },
+    {
+      "name": "missing",
+      "required": false,
+      "type": "\"error\" | \"skip\" | undefined"
+    },
+    {
+      "name": "fill",
+      "required": false,
+      "type": "FillPaint | undefined"
+    },
+    {
+      "name": "opacity",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "stroke",
+      "required": false,
+      "type": "FilledMarkStroke | undefined"
+    },
+    {
+      "name": "strokeWidth",
+      "required": false,
+      "type": "number | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editBarMark({ target?, lineCap?, lineJoin?, miterLimit?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight?, cornerRadiusBottomRight? })"
+  ],
+  "snippet": "program.editBarMark({ lineCap: \"butt\" })",
+  "errors": [],
+  "route": "/reference/actions/marks/#editbarmark"
+}

@@ -1,0 +1,16 @@
+export type PointShape =
+  | "circle"
+  | "square"
+  | "diamond"
+  | "triangle-up"
+  | "triangle-down"
+  | "triangle-left"
+  | "triangle-right"
+  | "plus"
+  | "cross"
+  | "star"
+  | "hexagon"
+  | "wye"
+  | "wedge"
+  | "arrow"
+  | PointPolygonShape;

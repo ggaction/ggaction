@@ -1,3 +1,4 @@
+import { compileTypeScript } from "../support/typescript.js";
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
 import { mkdtemp, rm, writeFile } from "node:fs/promises";
@@ -33,8 +34,7 @@ p.encodeXRange({ lower: { datum: 1 }, upper: { datum: 2 }, fieldType: "temporal"
 // @ts-expect-error range encoders remain Full only
 basic.encodeYRange({ lower: { datum: 1 }, upper: { datum: 2 } });
 `);
-    const result = spawnSync(path.join(root, "node_modules/.bin/tsc"), [
-      "--noEmit", "--strict", "--skipLibCheck", "--target", "ES2022",
+    const result = compileTypeScript(["--noEmit", "--strict", "--skipLibCheck", "--target", "ES2022",
       "--module", "NodeNext", "--moduleResolution", "NodeNext", file
     ], { encoding: "utf8", cwd: root });
     assert.equal(result.status, 0, `${result.stdout}\n${result.stderr}`);

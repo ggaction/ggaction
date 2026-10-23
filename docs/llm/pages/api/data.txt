@@ -1,0 +1,48 @@
+# Data
+
+Data actions own immutable source rows, explicit derivation provenance, and
+statistical result datasets. Choose the focused page that matches the data
+operation; marks and renderers never mutate source values.
+
+## At a glance
+
+| Family | Actions | Use |
+| --- | --- | --- |
+| [Source and derived data](../../../api/data/source-and-derived/) | `createData`, `createDerivedData` | Store source rows or explicit transform provenance |
+| [Safe resource removal](../../../api/data/revisions-and-removal/#removedata-id) | `removeData` | Delete one named dataset only after all live consumers are gone |
+| [Reusable summaries](../../../api/data/summaries-and-shaping/#createsummarydata-id-source-groupby-aggregates-members) | `createSummaryData` | Materialize grouped multi-aggregate rows with optional members |
+| [Reusable bins](../../../api/data/summaries-and-shaping/#createbindata-id-source-field-binoptions) | `createBinData` | Materialize shared one-dimensional bounds, counts, and optional members |
+| [Named table lookup](../../../api/data/summaries-and-shaping/#named-table-lookup) | `createLookupData` | Copy reference fields while preserving primary rows |
+| [Aligned array data](../../../api/data/summaries-and-shaping/#createflattendata-id-source-fields-as) | `createFlattenData` | Expand parallel array elements into aligned rows |
+| [Wide-to-long data](../../../api/data/summaries-and-shaping/#createfolddata-id-source-fields-as) | `createFoldData` | Materialize selected fields as stable key/value rows |
+| [Computed data](../../../api/data/expressions-and-normalization/#createcomputeddata-id-source-as-expression) | `createComputedData` | Add numeric, string, boolean, or nullable values using the closed expression grammar |
+| [Normalization](../../../api/data/expressions-and-normalization/#createnormalizeddata-id-source-field-as-groupby-method) | `createNormalizedData` | Preserve rows while expressing values relative to a group, baseline, or range |
+| [Missing keys](../../../api/data/missing-data/#createcompletedata-id-source-key-groupby-values-sequence-fill-members) | `createCompleteData` | Add missing key/group rows on an explicit domain |
+| [Missing values](../../../api/data/missing-data/#createimputeddata-id-source-fields-groupby-sortby-method-value-edges-maxgap) | `createImputedData` | Fill selected values with an explicit method and ordering policy |
+| [Empirical distributions](../../../tutorials/ecdf/#reuse-the-derived-rows) | `createECDFData` | Reduce observations to ordered support, mass, and probability rows |
+| [Stack data](../../../api/data/summaries-and-shaping/#createstackdata-id-source-category-group-value-mode-as) | `createStackData` | Materialize reusable stack endpoints, values, and shares |
+| [Filtering](../../../api/data/filtering/) | `filterData`, `filterMarks`, `removeMarkFilter` | Derive rows or revise and remove one visual-layer filter |
+| [Statistical transforms](../../../api/data/statistical-transforms/) | `createRegressionData`, `createIntervalData`, `createDensityData` | Materialize fitted, interval, or density rows |
+| [Time-unit transforms](../../../api/data/time-units/) | `createTimeUnitData` | Add calendar buckets with UTC or an explicit IANA zone and calendar policies |
+| [Window transforms](../../../api/data/window/) | `createWindowData` | Compute ordered values within partitions while preserving source row order |
+| [Rectangular 2D bins](../../../api/data/bin2d/) | `createBin2DData` | Aggregate two quantitative fields into immutable ranged cells |
+| [Derived revisions](../../../api/data/revisions-and-removal/#editing-derived-data) | Focused `edit*Data` actions | Revise one transform and explicitly recompute dependent revisions |
+
+## Shared invariants
+
+- Every dataset is immutable after creation.
+- Omitted sources resolve only from the current or unique compatible dataset.
+- Derived datasets retain their source and transform provenance.
+- Ambiguous sources require an explicit ID; the library never selects the first
+ of several candidates silently.
+
+## Errors and limitations
+
+Values must be arrays of plain row objects. Dataset IDs are unique. Filters and
+statistical transforms validate their complete option combination before
+creating state, and a failed action leaves the earlier program unchanged.
+
+## Related
+
+[Marks](../../../api/marks/) · [ChartProgram and immutability](../../../concepts/chart-program/) ·
+[Complete action reference](../../../reference/actions/)

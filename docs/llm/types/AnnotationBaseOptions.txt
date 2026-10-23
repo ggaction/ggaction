@@ -1,0 +1,6 @@
+type AnnotationBaseOptions = Omit<TextMarkOptions, "id" | "data" | "source" | "text"> & {
+  id?: string;
+  text: unknown;
+  format?: TextFormat;
+  layout?: false | Omit<LabelLayoutOptions, "target">;
+};

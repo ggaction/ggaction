@@ -1,0 +1,5 @@
+export type RaincloudCategoryChannel = string | {
+  field: string;
+  fieldType?: "nominal" | "ordinal";
+  scale?: NonPointBandPositionScaleOptions;
+};

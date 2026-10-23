@@ -1,0 +1,5 @@
+export interface DatasetFlattenTransform {
+  readonly type: "flatten";
+  readonly fields: readonly string[];
+  readonly as: readonly string[];
+}

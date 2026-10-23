@@ -1,3 +1,4 @@
+import { compileTypeScript } from "../support/typescript.js";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { mkdtemp, writeFile, rm } from "node:fs/promises";
@@ -40,7 +41,7 @@ p.editFacetHeaders({rotation:'auto'});
 // @ts-expect-error Basic has no facet actions
 basic.editFacetHeaders({rotation:0});
 `);
-    const result = spawnSync(path.join(root, "node_modules/.bin/tsc"), ["--noEmit", "--strict", "--skipLibCheck", "--target", "ES2022", "--module", "NodeNext", "--moduleResolution", "NodeNext", file], { cwd: root, encoding: "utf8" });
+    const result = compileTypeScript(["--noEmit", "--strict", "--skipLibCheck", "--target", "ES2022", "--module", "NodeNext", "--moduleResolution", "NodeNext", file], { cwd: root, encoding: "utf8" });
     assert.equal(result.status, 0, result.stdout + result.stderr);
   } finally { await rm(directory, { recursive: true, force: true }); }
 });

@@ -1,0 +1,8 @@
+export interface PackPointsOptions {
+  target?: string;
+  channel: "x" | "y";
+  maxOffset?: PointPackingMaxOffset;
+  padding?: number;
+  key?: string;
+  overflow?: "error" | "overlap";
+}

@@ -1,0 +1,2 @@
+export type CategoricalColorScaleOptions =
+  NonPointCategoricalColorScaleOptions & { unknown?: string };

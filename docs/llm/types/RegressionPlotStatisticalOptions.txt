@@ -1,0 +1,3 @@
+type RegressionPlotStatisticalOptions<T> = T extends unknown
+  ? Omit<T, "target" | "x" | "y">
+  : never;

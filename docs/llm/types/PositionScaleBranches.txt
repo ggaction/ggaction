@@ -1,0 +1,22 @@
+type PositionScaleBranches<Quantitative, Temporal, Categorical> =
+  | {
+      fieldType?: "quantitative";
+      aggregate?: never;
+      scale?: Quantitative;
+    }
+  | {
+      fieldType: "temporal";
+      temporalUnit?: TemporalInputUnit;
+      aggregate?: never;
+      scale?: Temporal;
+    }
+  | {
+      fieldType: "nominal" | "ordinal";
+      aggregate?: never;
+      scale?: Categorical;
+    }
+  | {
+      fieldType?: FieldType;
+      aggregate: AggregateOperation;
+      scale?: Quantitative;
+    };

@@ -1,0 +1,6 @@
+export interface RemoveGridOptions {
+  horizontal?: boolean;
+  vertical?: boolean;
+  theta?: boolean;
+  radial?: boolean;
+}

@@ -1,0 +1,4 @@
+interface DatasetStatisticalReferenceTransform {
+  readonly type: "statisticalReference";
+  readonly target: string;
+}

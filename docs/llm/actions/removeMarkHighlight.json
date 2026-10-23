@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 3,
+  "name": "removeMarkHighlight",
+  "layer": "user-facing",
+  "domain": "mark-selection",
+  "summary": "Remove one highlight assignment, restore the target mark and categorical legend baseline, and retain the reusable selection.",
+  "signature": "removeMarkHighlight(options?: RemoveMarkSelectionOptions): ChartProgram;",
+  "intents": [
+    "remove mark highlight",
+    "remove",
+    "delete",
+    "mark selection",
+    "conditional emphasis",
+    "mark highlight"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing mark highlight",
+      "target mark and selector operands"
+    ],
+    "owns": [],
+    "idOptions": [
+      "selection"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editGraphics"
+  ],
+  "editableVia": [],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "selection",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing mark highlight",
+      "target mark and selector operands"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "selection",
+      "required": false,
+      "type": "string | undefined"
+    }
+  ],
+  "callPatterns": [
+    "removeMarkHighlight({ selection? })"
+  ],
+  "snippet": "program.removeMarkHighlight({})",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#removemarkhighlight"
+}

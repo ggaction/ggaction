@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 3,
+  "name": "createCanvas",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Create the program's Canvas and plot bounds.",
+  "signature": "createCanvas(options?: CanvasOptions): ChartProgram;",
+  "intents": [
+    "create canvas",
+    "create",
+    "add",
+    "chart setup",
+    "data and scales",
+    "canvas",
+    "chart size"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [],
+    "owns": [
+      "canvas"
+    ],
+    "idOptions": []
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "createGraphics",
+    "editCanvas"
+  ],
+  "editableVia": [
+    "editCanvas"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default",
+      "basic"
+    ]
+  },
+  "units": [
+    {
+      "path": "width",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "height",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "margin",
+      "unit": "logical-pixel"
+    }
+  ],
+  "inference": [
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "width",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "height",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "background",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "margin",
+      "required": false,
+      "type": "number | Partial<Record<\"bottom\" | \"left\" | \"right\" | \"top\", number>> | undefined"
+    },
+    {
+      "name": "plot",
+      "required": false,
+      "type": "false | { width: number; height: number; } | undefined"
+    },
+    {
+      "name": "plotBorder",
+      "required": false,
+      "type": "false | { color?: string | undefined; lineWidth?: number | undefined; underlay?: boolean | undefined; } | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createCanvas({ width?, height?, background?, margin?, plot?, plotBorder? })"
+  ],
+  "snippet": "program.createCanvas({})",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#createcanvas"
+}

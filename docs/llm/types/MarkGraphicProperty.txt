@@ -1,0 +1,4 @@
+export type MarkGraphicProperty =
+  | "x" | "y" | "width" | "height" | "radius"
+  | "x1" | "y1" | "x2" | "y2"
+  | "fill" | "stroke" | "strokeWidth" | "opacity";

@@ -1,0 +1,7 @@
+type DensityEncodingBase = Omit<DensityDataOptions, "id" | "groupBy"> & {
+  groupBy?: string | false;
+  target?: string;
+  densityChannel?: "x" | "y";
+  coordinate?: string;
+  valueScale?: NonPointQuantitativePositionScaleOptions;
+};

@@ -9,6 +9,7 @@ export const CURVE_INTERPOLATIONS = Object.freeze([
   "basis",
   "cardinal",
   "monotone",
+  "monotone-steffen",
   "natural"
 ]);
 
@@ -16,6 +17,7 @@ const SMOOTH_CURVES = new Set([
   "basis",
   "cardinal",
   "monotone",
+  "monotone-steffen",
   "natural"
 ]);
 
@@ -196,8 +198,38 @@ function monotoneTangents(points) {
   return tangents;
 }
 
-function buildMonotoneCommands(points) {
-  const tangents = monotoneTangents(points);
+function steffenTangents(points) {
+  const widths = points.slice(1).map((point, index) => point.x - points[index].x);
+  const direction = Math.sign(widths.find(width => width !== 0) ?? 0);
+  if (widths.some(width => width !== 0 && Math.sign(width) !== direction)) {
+    throw new Error("Steffen curve requires monotonic x values.");
+  }
+  const slopes = widths.map((width, i) =>
+    (points[i + 1].y - points[i].y) / (width || (direction < 0 ? -0 : 0)));
+  const tangents = Array(points.length);
+  for (let i = 1; i < points.length - 1; i += 1) {
+    const a = slopes[i - 1], b = slopes[i];
+    const mean = (a * widths[i] + b * widths[i - 1]) / (widths[i - 1] + widths[i]);
+    // A zero-width turn has no finite secant estimate; its Hermite limit is flat.
+    const sign = value => value < 0 ? -1 : 1;
+    const slope = (sign(a) + sign(b)) * Math.min(Math.abs(a), Math.abs(b), Math.abs(mean) / 2);
+    tangents[i] = Number.isNaN(slope) && (widths[i - 1] === 0 || widths[i] === 0) ? 0 : slope;
+  }
+  tangents[0] = widths[0] === 0 ? tangents[1] : (3 * slopes[0] - tangents[1]) / 2;
+  tangents[points.length - 1] = widths.at(-1) === 0 ? tangents.at(-2) :
+    (3 * slopes.at(-1) - tangents.at(-2)) / 2;
+  return tangents;
+}
+
+function buildSteffenCommands(points) {
+  const distinct = points.filter((point, i) => i === 0 ||
+    point.x !== points[i - 1].x || point.y !== points[i - 1].y);
+  if (distinct.length === 1) return ownCommands([{ op: "M", ...distinct[0] }]);
+  if (distinct.length === 2) return buildLinearPathCommands(distinct);
+  return buildMonotoneCommands(distinct, steffenTangents(distinct));
+}
+
+function buildMonotoneCommands(points, tangents = monotoneTangents(points)) {
   const commands = [{ op: "M", x: points[0].x, y: points[0].y }];
   for (let index = 1; index < points.length; index += 1) {
     const previous = points[index - 1];
@@ -274,6 +306,7 @@ function buildNaturalCommands(points) {
 }
 
 function buildValidatedCurvePathCommands(points, curve, tension) {
+  if (curve === "monotone-steffen") return buildSteffenCommands(points);
   if (curve === "linear" ||
       (SMOOTH_CURVES.has(curve) &&
         curve !== "monotone" &&

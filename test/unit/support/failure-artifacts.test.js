@@ -1,3 +1,5 @@
+import { spawn } from "node:child_process";
+import { once } from "node:events";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { mkdtemp, mkdir, readFile, readdir, rm, stat, writeFile } from "node:fs/promises";
@@ -9,7 +11,7 @@ import { runCheck } from "../../../scripts/run-check.js";
 import { collectFailureArtifacts } from "../../../scripts/collect-failure-artifacts.js";
 import { recordFailure } from "../../support/failure-artifacts.js";
 import { assertSameRenderedPNG } from "../../support/png.js";
-import { saveBrowserPageEvidence } from "../../support/browser.js";
+import { saveBrowserPageEvidence, saveBrowserContextEvidence } from "../../support/browser.js";
 
 const artifacts = fileURLToPath(new URL("../../../.artifacts/", import.meta.url));
 const silence = { write() {} };
@@ -125,3 +127,85 @@ test("the upload payload stays within its total byte budget", async t => {
   assert.equal(result.omitted, 1);
   assert.equal(result.bytes, 48 * 1024 * 1024);
 });
+
+test("a hanging check is terminated with a timeout receipt", async t => {
+ const directory=await fixture(t);
+ const code=await runCheck("hang", "node", ["-e", 'process.on("SIGTERM",()=>{});setInterval(()=>{},1000)'], {
+  outputDirectory: directory, stdout: silence, stderr: silence, timeoutMs: 500, killGraceMs: 100
+ });
+ assert.equal(code,124);
+ const record=JSON.parse(await readFile(path.join(directory,"hang.json"),"utf8"));
+ assert.equal(record.termination,"timeout");
+ assert.ok(record.durationMs < 10000);
+});
+
+
+test("a timed-out check kills its descendant process group", async t => {
+  if (process.platform === "win32") return t.skip("Unix process group assertion; Windows uses taskkill /t");
+  const directory = await fixture(t);
+  const source = `
+    const { spawn } = require("node:child_process");
+    const fs = require("node:fs");
+    const child = spawn(process.execPath, ["-e", 'process.on("SIGTERM",()=>{});setInterval(()=>{},1000)'], {stdio:"inherit"});
+    fs.writeFileSync(${JSON.stringify(path.join(directory, "child.pid"))}, String(child.pid));
+    process.on("SIGTERM",()=>{});setInterval(()=>{},1000);
+  `;
+  assert.equal(await runCheck("tree", "node", ["-e", source], {
+    outputDirectory: directory, stdout: silence, stderr: silence, timeoutMs: 1000, killGraceMs: 100
+  }), 124);
+  const pid = Number(await readFile(path.join(directory, "child.pid"), "utf8"));
+  // Reaping may lag group termination briefly.
+  for (let attempt = 0; attempt < 50; attempt++) {
+    try { process.kill(pid, 0); } catch (error) { assert.equal(error.code, "ESRCH"); return; }
+    await new Promise(resolve => setTimeout(resolve, 20));
+  }
+  assert.fail(`Descendant ${pid} survived its qualification deadline`);
+});
+
+
+test("context teardown retains the original assertion and screenshot before closing", async t => {
+  const browser = await chromium.launch({ headless: true });
+  t.after(() => browser.close());
+  const context = await browser.newContext({ viewport: { width: 160, height: 90 } });
+  const page = await context.newPage();
+  await page.setContent("<h1>Wrong chart</h1>");
+  const failure = new Error("Expected three visible data marks");
+  await assert.rejects(async () => {
+    try { throw failure; }
+    catch (error) { await saveBrowserContextEvidence(context, error); throw error; }
+    finally { await context.close(); }
+  }, error => error === failure);
+  assert.equal(page.isClosed(), true);
+  const { directory, record } = await ownEvidence(t, "context-assertion: about:blank");
+  assert.equal(record.message, failure.message);
+  const image = await loadImage(path.join(directory, "actual.png"));
+  assert.equal(image.width, 160);
+});
+
+
+for (const [signal, expected] of [["SIGINT", 130], ["SIGTERM", 143]]) {
+  test(`check cancellation forwards ${signal} and preserves its receipt`, async t => {
+    if (process.platform === "win32") return t.skip("Unix supervisor signals; Windows process trees use taskkill");
+    const directory = await fixture(t);
+    const pidFile = path.join(directory, "child.pid");
+    const childCode = `require("node:fs").writeFileSync(${JSON.stringify(pidFile)}, String(process.pid));process.on("SIGTERM",()=>{});setInterval(()=>{},1000);`;
+    const wrapper = spawn(process.execPath, ["--input-type=module", "-e", `
+      import { runCheck } from ${JSON.stringify(new URL("../../../scripts/run-check.js", import.meta.url).href)};
+      process.exitCode = await runCheck("cancel", "node", ["-e", ${JSON.stringify(childCode)}], {outputDirectory:${JSON.stringify(directory)},killGraceMs:50});
+    `], { stdio: "ignore" });
+    t.after(() => wrapper.kill("SIGKILL"));
+    const closed = once(wrapper, "close");
+    let pid;
+    for (let attempt = 0; attempt < 100 && !pid; attempt++) {
+      pid = Number(await readFile(pidFile, "utf8").catch(() => ""));
+      if (!pid) await new Promise(resolve => setTimeout(resolve, 20));
+    }
+    assert.ok(pid, "The check child must start before cancellation");
+    wrapper.kill(signal);
+    const [code] = await closed;
+    assert.equal(code, expected);
+    const receipt = JSON.parse(await readFile(path.join(directory, "cancel.json"), "utf8"));
+    assert.equal(receipt.termination, signal);
+    assert.throws(() => process.kill(pid, 0), { code: "ESRCH" });
+  });
+}

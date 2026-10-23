@@ -1,0 +1,17 @@
+export interface HighlightMarksOptions {
+  id?: string;
+  target?: string;
+  select?: MarkSelector;
+  selection?: string;
+  color?: string;
+  opacity?: number;
+  fill?: string;
+  stroke?: string;
+  strokeWidth?: number;
+  strokeDash?: DashStyle | DashPattern;
+  shape?: PointShape;
+  size?: number;
+  offset?: { x?: number; y?: number };
+  dimOthers?: boolean | { opacity?: number };
+  bringToFront?: boolean;
+}

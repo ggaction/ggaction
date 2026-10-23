@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 3,
+  "name": "editXOffsetScale",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Edits x-offset scale, including settings for horizontal subgroup placement.",
+  "signature": "editXOffsetScale(options: EditXOffsetScaleOptions): ChartProgram;",
+  "intents": [
+    "edit x offset scale",
+    "edit",
+    "change",
+    "chart setup",
+    "data and scales",
+    "x-offset scale",
+    "horizontal subgroup placement"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing x-offset scale"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editScale"
+  ],
+  "editableVia": [
+    "editXOffsetScale"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "paddingInner",
+      "unit": "band-fraction"
+    },
+    {
+      "path": "paddingOuter",
+      "unit": "band-fraction"
+    },
+    {
+      "path": "padding",
+      "unit": "band-fraction"
+    },
+    {
+      "path": "align",
+      "unit": "ratio"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit"
+    },
+    {
+      "input": "domain",
+      "strategy": "documented-auto"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing x-offset scale"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "domain",
+      "required": false,
+      "type": "\"auto\" | readonly unknown[] | undefined"
+    },
+    {
+      "name": "reverse",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "paddingInner",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "paddingOuter",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "padding",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "align",
+      "required": false,
+      "type": "number | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editXOffsetScale({ target, domain?, reverse?, padding?, paddingInner?, paddingOuter?, align? })"
+  ],
+  "snippet": "program.editXOffsetScale({ target: \"bars\", paddingInner: 0.2, paddingOuter: 0.1 })",
+  "errors": [
+    {
+      "error": "The target has no xOffset scale.",
+      "fix": "Encode a categorical xOffset on that mark before editing its nested scale."
+    },
+    {
+      "error": "range, type, or order is supplied.",
+      "fix": "Use domain for subgroup order; the parent category slot owns the concrete range and the scale type is ordinal."
+    }
+  ],
+  "route": "/reference/actions/charts-data/#editxoffsetscale"
+}

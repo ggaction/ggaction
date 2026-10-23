@@ -1,0 +1,123 @@
+{
+  "schemaVersion": 3,
+  "name": "editRuleMark",
+  "layer": "user-facing",
+  "domain": "marks",
+  "summary": "Edit constant Rule appearance through the four existing encoding owners.",
+  "signature": "editRuleMark(options: { clip?: boolean; target?: string; missing?: \"error\" | \"skip\" } & RuleStyleOptions): ChartProgram;",
+  "intents": [
+    "edit rule mark",
+    "edit",
+    "change",
+    "graphical mark",
+    "mark appearance",
+    "rule mark",
+    "reference line"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing rule mark"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "encodeStroke",
+    "encodeOpacity"
+  ],
+  "editableVia": [
+    "editRuleMark"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "strokeWidth",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "opacity",
+      "unit": "probability"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing rule mark"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "clip",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "missing",
+      "required": false,
+      "type": "\"error\" | \"skip\" | undefined"
+    },
+    {
+      "name": "stroke",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "strokeWidth",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "strokeDash",
+      "required": false,
+      "type": "DashPattern | DashStyle | undefined"
+    },
+    {
+      "name": "opacity",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "lineCap",
+      "required": false,
+      "type": "\"butt\" | \"round\" | \"square\" | undefined"
+    },
+    {
+      "name": "lineJoin",
+      "required": false,
+      "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+    },
+    {
+      "name": "miterLimit",
+      "required": false,
+      "type": "number | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editRuleMark({ target?, clip?, missing?, stroke?, strokeWidth?, strokeDash?, opacity?, lineCap? })"
+  ],
+  "snippet": "program.editRuleMark({ stroke: \"#334155\" })",
+  "errors": [],
+  "route": "/reference/actions/marks/#editrulemark"
+}

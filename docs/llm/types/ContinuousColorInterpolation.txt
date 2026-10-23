@@ -1,0 +1,10 @@
+export type ContinuousColorInterpolation =
+  | "rgb"
+  | "hsl"
+  | "hsl-long"
+  | "lab"
+  | "hcl"
+  | "hcl-long"
+  | "cubehelix"
+  | "cubehelix-long";
+/** A simple polygon around its unchanged input origin; defaults to equal-area normalization. */

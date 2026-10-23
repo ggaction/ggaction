@@ -1,0 +1,6 @@
+export interface ViolinPlotDensityOptions
+  extends GradientPlotDensityOptions {
+  weight?: StatisticalWeight;
+  width?: DensityPlacementWidth;
+  side?: "both" | "left" | "right" | "top" | "bottom";
+}

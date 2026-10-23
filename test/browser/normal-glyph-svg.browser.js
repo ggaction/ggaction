@@ -1,3 +1,4 @@
+import { saveBrowserEvidence } from "../support/browser.js";
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import {mkdtemp,writeFile,rm} from 'node:fs/promises';
@@ -31,5 +32,5 @@ test('browser SVG normal opacity remains one whole element with independent lite
    }return{count,failures};
   });
   assert.equal(results.count,54);assert.deepEqual(results.failures,[]);assertNoBrowserErrors(opened.errors,'normal SVG opacity');await opened.page.close();
- }finally{await closeBrowserWithEvidence(browser);await server?.close();await rm(directory,{recursive:true,force:true});}
+ } catch (error) { await saveBrowserEvidence(browser, error); throw error; }finally{await closeBrowserWithEvidence(browser);await server?.close();await rm(directory,{recursive:true,force:true});}
 });

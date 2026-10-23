@@ -1,0 +1,8 @@
+export interface AxisLabelStyleOptions {
+  offset?: number;
+  format?: AxisFormat;
+  color?: string;
+  fontSize?: number;
+  fontFamily?: string;
+  fontWeight?: string | number;
+}

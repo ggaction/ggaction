@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 3,
+  "name": "createGraphics",
+  "layer": "primitive",
+  "domain": "primitives",
+  "summary": "Creates one backend-neutral concrete graphic resource inside an extension action.",
+  "signature": "createGraphics(options: { id: string; type: GraphicType; length?: number; parent?: string; before?: string; after?: string; }): ChartProgram;",
+  "intents": [
+    "create graphics",
+    "create",
+    "add",
+    "extension primitive",
+    "low-level authoring",
+    "graphic state",
+    "concrete graphic resource"
+  ],
+  "lifecycle": "Primitive",
+  "resources": {
+    "prerequisites": [
+      "extension action context"
+    ],
+    "owns": [
+      "graphic state"
+    ],
+    "idOptions": [
+      "id",
+      "parent",
+      "before",
+      "after"
+    ]
+  },
+  "authoringRoles": [
+    "H4"
+  ],
+  "wraps": [],
+  "editableVia": [
+    "editGraphics"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "length",
+      "unit": "count"
+    }
+  ],
+  "inference": [
+    {
+      "input": "parent",
+      "strategy": "explicit"
+    },
+    {
+      "input": "before",
+      "strategy": "explicit"
+    },
+    {
+      "input": "after",
+      "strategy": "explicit"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "not-applicable",
+    "requires": [],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "type",
+      "required": true,
+      "type": "GraphicType"
+    },
+    {
+      "name": "length",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "parent",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "before",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "after",
+      "required": false,
+      "type": "string | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createGraphics({ id, type, parent?, before?, after?, length? })"
+  ],
+  "snippet": "program.createGraphics({ id: \"graphic-1\", type: \"collection\" })",
+  "errors": [],
+  "route": "/reference/actions/extension/#creategraphics"
+}

@@ -23,7 +23,7 @@ const REQUIRED_REPETITIONS = 5;
 const DASHES = Object.freeze(["solid", "dashed", "dotted", "dashdot"]);
 const CURVES = Object.freeze([
   "linear", "step", "step-before", "step-after", "basis", "cardinal",
-  "monotone", "natural"
+  "monotone", "natural", "monotone-steffen"
 ]);
 const KERNELS = Object.freeze(["epanechnikov", "gaussian", "triangular", "uniform"]);
 const NORMALIZATIONS = Object.freeze(["unit", "count"]);

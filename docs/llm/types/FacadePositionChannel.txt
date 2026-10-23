@@ -1,0 +1,4 @@
+type FacadePositionChannel<Quantitative, Temporal, Categorical> =
+  | string
+  | (Omit<PositionEncodingBase, "target" | "coordinate"> &
+      PositionScaleBranches<Quantitative, Temporal, Categorical>);

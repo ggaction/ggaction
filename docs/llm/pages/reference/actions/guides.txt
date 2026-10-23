@@ -1,0 +1,2890 @@
+# Guide, Axis, Grid, and Title Actions
+
+Each declared action has an exact signature and its own stable link. Option tables are generated from types; behavior prose names the owning workflow and its constraints. API layers and [H0–H4 catalog role tags](../../../../tutorials/hierarchical-authoring/#catalog-role-tags) are independent classifications. Relative action hierarchy is determined by composition, not by a tag or fixed trace depth.
+
+## `createParallelAxes`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+createParallelAxes(options?: ParallelAxesOptions): ChartProgram;
+```
+
+Named option contracts: [`ParallelAxesOptions`](../../../../reference/types/#type-parallelaxesoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+
+Behavior, inference, resets, and errors: [createParallelAxes, createParallelAxis, editParallelAxis, removeParallelAxis, removeParallelAxes](../../../../reference/actions/guides/#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes).
+
+## `createParallelAxis`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+createParallelAxis(options: CreateParallelAxisOptions): ChartProgram;
+```
+
+Named option contracts: [`CreateParallelAxisOptions`](../../../../reference/types/#type-createparallelaxisoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `field` | Required | `string` |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `line` | Optional / branch-dependent | `false \| AxisLineStyleOptions \| undefined` |
+| `title` | Optional / branch-dependent | `false \| ParallelAxisTitleOptions \| undefined` |
+| `ticksAndLabels` | Optional / branch-dependent | `false \| (ParallelAxisTickSelection & { ticks?: AxisTickStyleOptions \| undefined; labels?: AxisLabelStyleOptions \| undefined; }) \| undefined` |
+| `ticks` | Optional / branch-dependent | `false \| ParallelAxisTicksOptions \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| ParallelAxisLabelsOptions \| undefined` |
+
+Behavior, inference, resets, and errors: [createParallelAxes, createParallelAxis, editParallelAxis, removeParallelAxis, removeParallelAxes](../../../../reference/actions/guides/#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes).
+
+## `editParallelAxis`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+editParallelAxis(options: EditParallelAxisOptions): ChartProgram;
+```
+
+Named option contracts: [`EditParallelAxisOptions`](../../../../reference/types/#type-editparallelaxisoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `field` | Required | `string` |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `line` | Optional / branch-dependent | `false \| AxisLineStyleOptions \| undefined` |
+| `title` | Optional / branch-dependent | `false \| ParallelAxisTitleOptions \| undefined` |
+| `ticksAndLabels` | Optional / branch-dependent | `false \| (ParallelAxisTickSelection & { ticks?: AxisTickStyleOptions \| undefined; labels?: AxisLabelStyleOptions \| undefined; }) \| undefined` |
+| `ticks` | Optional / branch-dependent | `false \| ParallelAxisTicksOptions \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| ParallelAxisLabelsOptions \| undefined` |
+
+Behavior, inference, resets, and errors: [createParallelAxes, createParallelAxis, editParallelAxis, removeParallelAxis, removeParallelAxes](../../../../reference/actions/guides/#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes).
+
+## `removeParallelAxis`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+removeParallelAxis(options: RemoveParallelAxisOptions): ChartProgram;
+```
+
+Named option contracts: [`RemoveParallelAxisOptions`](../../../../reference/types/#type-removeparallelaxisoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `field` | Required | `string` |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+
+Behavior, inference, resets, and errors: [createParallelAxes, createParallelAxis, editParallelAxis, removeParallelAxis, removeParallelAxes](../../../../reference/actions/guides/#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes).
+
+## `removeParallelAxes`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+removeParallelAxes(options?: ParallelAxesOptions): ChartProgram;
+```
+
+Named option contracts: [`ParallelAxesOptions`](../../../../reference/types/#type-parallelaxesoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+
+Behavior, inference, resets, and errors: [createParallelAxes, createParallelAxis, editParallelAxis, removeParallelAxis, removeParallelAxes](../../../../reference/actions/guides/#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes).
+
+## `createAxes`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+createAxes(options?: CreateAxesOptions): ChartProgram;
+```
+
+Named option contracts: [`CreateAxesOptions`](../../../../reference/types/#type-createaxesoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `coordinate` | Optional / branch-dependent | `{ id?: string \| undefined; type?: "auto" \| "cartesian" \| "parallel" \| "polar" \| undefined; } \| undefined` |
+| `x` | Optional / branch-dependent | `false \| CompleteAxisOptions<XAxisPosition> \| readonly [NamedCompleteAxis<XAxisPosition>, ...NamedCompleteAxis<XAxisPosition>[]] \| undefined` |
+| `y` | Optional / branch-dependent | `false \| CompleteAxisOptions<YAxisPosition> \| readonly [NamedCompleteAxis<YAxisPosition>, ...NamedCompleteAxis<YAxisPosition>[]] \| undefined` |
+| `theta` | Optional / branch-dependent | `false \| CompletePolarAxisOptions \| undefined` |
+| `radius` | Optional / branch-dependent | `false \| CompleteRadialAxisOptions \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createAxes({ coordinate?, x?, y?, theta?, radius? })
+```
+
+Create Cartesian or Polar axes directly, including inferred titles and ticks.
+[Axes](../../../../api/axes/)
+
+## `createXAxis`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+createXAxis(options?: CompleteAxisOptions<XAxisPosition>): ChartProgram;
+```
+
+Named option contracts: [`CompleteAxisOptions`](../../../../reference/types/#type-completeaxisoptions) · [`XAxisPosition`](../../../../reference/types/#type-xaxisposition).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `underlay` | Optional / branch-dependent | `boolean \| undefined` |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `offset` | Optional / branch-dependent | `number \| undefined` |
+| `scale` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
+| `line` | Optional / branch-dependent | `false \| AxisLineStyleOptions \| undefined` |
+| `ticksAndLabels` | Optional / branch-dependent | `false \| Omit<AxisTicksAndLabelsOptions<XAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
+| `title` | Optional / branch-dependent | `false \| Omit<AxisTitleOptions<XAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
+
+Behavior, inference, resets, and errors: [Complete single-channel axes](../../../../reference/actions/guides/#complete-single-channel-axes).
+
+## `createYAxis`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+createYAxis(options?: CompleteAxisOptions<YAxisPosition>): ChartProgram;
+```
+
+Named option contracts: [`CompleteAxisOptions`](../../../../reference/types/#type-completeaxisoptions) · [`YAxisPosition`](../../../../reference/types/#type-yaxisposition).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `underlay` | Optional / branch-dependent | `boolean \| undefined` |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `offset` | Optional / branch-dependent | `number \| undefined` |
+| `scale` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
+| `line` | Optional / branch-dependent | `false \| AxisLineStyleOptions \| undefined` |
+| `ticksAndLabels` | Optional / branch-dependent | `false \| Omit<AxisTicksAndLabelsOptions<YAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
+| `title` | Optional / branch-dependent | `false \| Omit<AxisTitleOptions<YAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
+
+Behavior, inference, resets, and errors: [Complete single-channel axes](../../../../reference/actions/guides/#complete-single-channel-axes).
+
+## `createXAxisLine`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+createXAxisLine(options?: AxisLineStyleOptions & { target?: string; scale?: string; position?: XAxisPosition }): ChartProgram;
+```
+
+Named option contracts: [`AxisLineStyleOptions`](../../../../reference/types/#type-axislinestyleoptions) · [`XAxisPosition`](../../../../reference/types/#type-xaxisposition).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `color` | Optional / branch-dependent | `string \| undefined` |
+| `lineWidth` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `scale` | Optional / branch-dependent | `string \| undefined` |
+| `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
+
+Behavior, inference, resets, and errors: [Axis lines, ticks, and labels](../../../../reference/actions/guides/#axis-lines-ticks-and-labels).
+
+## `createYAxisLine`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+createYAxisLine(options?: AxisLineStyleOptions & { target?: string; scale?: string; position?: YAxisPosition }): ChartProgram;
+```
+
+Named option contracts: [`AxisLineStyleOptions`](../../../../reference/types/#type-axislinestyleoptions) · [`YAxisPosition`](../../../../reference/types/#type-yaxisposition).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `color` | Optional / branch-dependent | `string \| undefined` |
+| `lineWidth` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `scale` | Optional / branch-dependent | `string \| undefined` |
+| `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
+
+Behavior, inference, resets, and errors: [Axis lines, ticks, and labels](../../../../reference/actions/guides/#axis-lines-ticks-and-labels).
+
+## `editXAxisLine`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+editXAxisLine(options?: AxisLineStyleOptions & { target?: string; position?: XAxisPosition }): ChartProgram;
+```
+
+Named option contracts: [`AxisLineStyleOptions`](../../../../reference/types/#type-axislinestyleoptions) · [`XAxisPosition`](../../../../reference/types/#type-xaxisposition).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `color` | Optional / branch-dependent | `string \| undefined` |
+| `lineWidth` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
+
+Behavior, inference, resets, and errors: [Axis lines, ticks, and labels](../../../../reference/actions/guides/#axis-lines-ticks-and-labels).
+
+## `editYAxisLine`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+editYAxisLine(options?: AxisLineStyleOptions & { target?: string; position?: YAxisPosition }): ChartProgram;
+```
+
+Named option contracts: [`AxisLineStyleOptions`](../../../../reference/types/#type-axislinestyleoptions) · [`YAxisPosition`](../../../../reference/types/#type-yaxisposition).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `color` | Optional / branch-dependent | `string \| undefined` |
+| `lineWidth` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
+
+Behavior, inference, resets, and errors: [Axis lines, ticks, and labels](../../../../reference/actions/guides/#axis-lines-ticks-and-labels).
+
+## `createXAxisTicks`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+createXAxisTicks(options?: AxisTickOptions<XAxisPosition>): ChartProgram;
+```
+
+Named option contracts: [`AxisTickOptions`](../../../../reference/types/#type-axistickoptions) · [`XAxisPosition`](../../../../reference/types/#type-xaxisposition).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `scale` | Optional / branch-dependent | `string \| undefined` |
+| `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
+| `count` | Optional / branch-dependent | `number \| undefined` |
+| `rounding` | Optional / branch-dependent | `AxisTickRounding \| undefined` |
+| `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
+| `color` | Optional / branch-dependent | `string \| undefined` |
+| `lineWidth` | Optional / branch-dependent | `number \| undefined` |
+| `length` | Optional / branch-dependent | `number \| undefined` |
+| `strokeDash` | Optional / branch-dependent | `readonly number[] \| undefined` |
+| `strokeDashMap` | Optional / branch-dependent | `"auto" \| CartesianGuideDashMap \| undefined` |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
+
+Behavior, inference, resets, and errors: [Axis lines, ticks, and labels](../../../../reference/actions/guides/#axis-lines-ticks-and-labels).
+
+## `createYAxisTicks`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+createYAxisTicks(options?: AxisTickOptions<YAxisPosition>): ChartProgram;
+```
+
+Named option contracts: [`AxisTickOptions`](../../../../reference/types/#type-axistickoptions) · [`YAxisPosition`](../../../../reference/types/#type-yaxisposition).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `scale` | Optional / branch-dependent | `string \| undefined` |
+| `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
+| `count` | Optional / branch-dependent | `number \| undefined` |
+| `rounding` | Optional / branch-dependent | `AxisTickRounding \| undefined` |
+| `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
+| `color` | Optional / branch-dependent | `string \| undefined` |
+| `lineWidth` | Optional / branch-dependent | `number \| undefined` |
+| `length` | Optional / branch-dependent | `number \| undefined` |
+| `strokeDash` | Optional / branch-dependent | `readonly number[] \| undefined` |
+| `strokeDashMap` | Optional / branch-dependent | `"auto" \| CartesianGuideDashMap \| undefined` |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
+
+Behavior, inference, resets, and errors: [Axis lines, ticks, and labels](../../../../reference/actions/guides/#axis-lines-ticks-and-labels).
+
+## `editXAxisTicks`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+editXAxisTicks(options?: Omit<AxisTickOptions<XAxisPosition>, "scale">): ChartProgram;
+```
+
+Named option contracts: [`AxisTickOptions`](../../../../reference/types/#type-axistickoptions) · [`XAxisPosition`](../../../../reference/types/#type-xaxisposition).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `color` | Optional / branch-dependent | `string \| undefined` |
+| `lineWidth` | Optional / branch-dependent | `number \| undefined` |
+| `length` | Optional / branch-dependent | `number \| undefined` |
+| `strokeDash` | Optional / branch-dependent | `readonly number[] \| undefined` |
+| `strokeDashMap` | Optional / branch-dependent | `"auto" \| CartesianGuideDashMap \| undefined` |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
+| `count` | Optional / branch-dependent | `number \| undefined` |
+| `rounding` | Optional / branch-dependent | `AxisTickRounding \| undefined` |
+| `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
+
+Behavior, inference, resets, and errors: [Axis lines, ticks, and labels](../../../../reference/actions/guides/#axis-lines-ticks-and-labels).
+
+## `editYAxisTicks`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+editYAxisTicks(options?: Omit<AxisTickOptions<YAxisPosition>, "scale">): ChartProgram;
+```
+
+Named option contracts: [`AxisTickOptions`](../../../../reference/types/#type-axistickoptions) · [`YAxisPosition`](../../../../reference/types/#type-yaxisposition).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `color` | Optional / branch-dependent | `string \| undefined` |
+| `lineWidth` | Optional / branch-dependent | `number \| undefined` |
+| `length` | Optional / branch-dependent | `number \| undefined` |
+| `strokeDash` | Optional / branch-dependent | `readonly number[] \| undefined` |
+| `strokeDashMap` | Optional / branch-dependent | `"auto" \| CartesianGuideDashMap \| undefined` |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
+| `count` | Optional / branch-dependent | `number \| undefined` |
+| `rounding` | Optional / branch-dependent | `AxisTickRounding \| undefined` |
+| `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
+
+Behavior, inference, resets, and errors: [Axis lines, ticks, and labels](../../../../reference/actions/guides/#axis-lines-ticks-and-labels).
+
+## `createXAxisLabels`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+createXAxisLabels(options?: AxisLabelOptions<XAxisPosition>): ChartProgram;
+```
+
+Named option contracts: [`AxisLabelOptions`](../../../../reference/types/#type-axislabeloptions) · [`XAxisPosition`](../../../../reference/types/#type-xaxisposition).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `scale` | Optional / branch-dependent | `string \| undefined` |
+| `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
+| `count` | Optional / branch-dependent | `number \| undefined` |
+| `rounding` | Optional / branch-dependent | `AxisTickRounding \| undefined` |
+| `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
+| `labelMap` | Optional / branch-dependent | `"auto" \| DisplayLabelMap \| undefined` |
+| `offset` | Optional / branch-dependent | `number \| undefined` |
+| `format` | Optional / branch-dependent | `AxisFormat \| undefined` |
+| `color` | Optional / branch-dependent | `string \| undefined` |
+| `fontSize` | Optional / branch-dependent | `number \| undefined` |
+| `fontFamily` | Optional / branch-dependent | `string \| undefined` |
+| `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+| `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
+| `colorMap` | Optional / branch-dependent | `"auto" \| CartesianAxisLabelColorMap \| undefined` |
+| `flush` | Optional / branch-dependent | `boolean \| undefined` |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
+| `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
+| `maxWidth` | Optional / branch-dependent | `number \| false \| undefined` |
+| `wrap` | Optional / branch-dependent | `"character" \| "word" \| undefined` |
+| `lineHeight` | Optional / branch-dependent | `number \| undefined` |
+| `overlap` | Optional / branch-dependent | `"allow" \| "error" \| undefined` |
+
+Behavior, inference, resets, and errors: [Axis lines, ticks, and labels](../../../../reference/actions/guides/#axis-lines-ticks-and-labels).
+
+## `createYAxisLabels`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+createYAxisLabels(options?: AxisLabelOptions<YAxisPosition>): ChartProgram;
+```
+
+Named option contracts: [`AxisLabelOptions`](../../../../reference/types/#type-axislabeloptions) · [`YAxisPosition`](../../../../reference/types/#type-yaxisposition).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `scale` | Optional / branch-dependent | `string \| undefined` |
+| `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
+| `count` | Optional / branch-dependent | `number \| undefined` |
+| `rounding` | Optional / branch-dependent | `AxisTickRounding \| undefined` |
+| `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
+| `labelMap` | Optional / branch-dependent | `"auto" \| DisplayLabelMap \| undefined` |
+| `offset` | Optional / branch-dependent | `number \| undefined` |
+| `format` | Optional / branch-dependent | `AxisFormat \| undefined` |
+| `color` | Optional / branch-dependent | `string \| undefined` |
+| `fontSize` | Optional / branch-dependent | `number \| undefined` |
+| `fontFamily` | Optional / branch-dependent | `string \| undefined` |
+| `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+| `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
+| `colorMap` | Optional / branch-dependent | `"auto" \| CartesianAxisLabelColorMap \| undefined` |
+| `flush` | Optional / branch-dependent | `boolean \| undefined` |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
+| `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
+| `maxWidth` | Optional / branch-dependent | `number \| false \| undefined` |
+| `wrap` | Optional / branch-dependent | `"character" \| "word" \| undefined` |
+| `lineHeight` | Optional / branch-dependent | `number \| undefined` |
+| `overlap` | Optional / branch-dependent | `"allow" \| "error" \| undefined` |
+
+Behavior, inference, resets, and errors: [Axis lines, ticks, and labels](../../../../reference/actions/guides/#axis-lines-ticks-and-labels).
+
+## `editXAxisLabels`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+editXAxisLabels(options?: Omit<AxisLabelOptions<XAxisPosition>, "scale">): ChartProgram;
+```
+
+Named option contracts: [`AxisLabelOptions`](../../../../reference/types/#type-axislabeloptions) · [`XAxisPosition`](../../../../reference/types/#type-xaxisposition).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `labelMap` | Optional / branch-dependent | `"auto" \| DisplayLabelMap \| undefined` |
+| `offset` | Optional / branch-dependent | `number \| undefined` |
+| `format` | Optional / branch-dependent | `AxisFormat \| undefined` |
+| `color` | Optional / branch-dependent | `string \| undefined` |
+| `fontSize` | Optional / branch-dependent | `number \| undefined` |
+| `fontFamily` | Optional / branch-dependent | `string \| undefined` |
+| `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+| `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
+| `colorMap` | Optional / branch-dependent | `"auto" \| CartesianAxisLabelColorMap \| undefined` |
+| `flush` | Optional / branch-dependent | `boolean \| undefined` |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
+| `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
+| `maxWidth` | Optional / branch-dependent | `number \| false \| undefined` |
+| `wrap` | Optional / branch-dependent | `"character" \| "word" \| undefined` |
+| `lineHeight` | Optional / branch-dependent | `number \| undefined` |
+| `overlap` | Optional / branch-dependent | `"allow" \| "error" \| undefined` |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
+| `count` | Optional / branch-dependent | `number \| undefined` |
+| `rounding` | Optional / branch-dependent | `AxisTickRounding \| undefined` |
+| `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
+
+Behavior, inference, resets, and errors: [Axis lines, ticks, and labels](../../../../reference/actions/guides/#axis-lines-ticks-and-labels).
+
+## `editYAxisLabels`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+editYAxisLabels(options?: Omit<AxisLabelOptions<YAxisPosition>, "scale">): ChartProgram;
+```
+
+Named option contracts: [`AxisLabelOptions`](../../../../reference/types/#type-axislabeloptions) · [`YAxisPosition`](../../../../reference/types/#type-yaxisposition).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `labelMap` | Optional / branch-dependent | `"auto" \| DisplayLabelMap \| undefined` |
+| `offset` | Optional / branch-dependent | `number \| undefined` |
+| `format` | Optional / branch-dependent | `AxisFormat \| undefined` |
+| `color` | Optional / branch-dependent | `string \| undefined` |
+| `fontSize` | Optional / branch-dependent | `number \| undefined` |
+| `fontFamily` | Optional / branch-dependent | `string \| undefined` |
+| `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+| `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
+| `colorMap` | Optional / branch-dependent | `"auto" \| CartesianAxisLabelColorMap \| undefined` |
+| `flush` | Optional / branch-dependent | `boolean \| undefined` |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
+| `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
+| `maxWidth` | Optional / branch-dependent | `number \| false \| undefined` |
+| `wrap` | Optional / branch-dependent | `"character" \| "word" \| undefined` |
+| `lineHeight` | Optional / branch-dependent | `number \| undefined` |
+| `overlap` | Optional / branch-dependent | `"allow" \| "error" \| undefined` |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
+| `count` | Optional / branch-dependent | `number \| undefined` |
+| `rounding` | Optional / branch-dependent | `AxisTickRounding \| undefined` |
+| `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
+
+Behavior, inference, resets, and errors: [Axis lines, ticks, and labels](../../../../reference/actions/guides/#axis-lines-ticks-and-labels).
+
+## `createXAxisTicksAndLabels`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+createXAxisTicksAndLabels(options?: AxisTicksAndLabelsOptions<XAxisPosition>): ChartProgram;
+```
+
+Named option contracts: [`AxisTicksAndLabelsOptions`](../../../../reference/types/#type-axisticksandlabelsoptions) · [`XAxisPosition`](../../../../reference/types/#type-xaxisposition).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `scale` | Optional / branch-dependent | `string \| undefined` |
+| `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
+| `count` | Optional / branch-dependent | `number \| undefined` |
+| `rounding` | Optional / branch-dependent | `AxisTickRounding \| undefined` |
+| `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
+| `ticks` | Optional / branch-dependent | `CartesianAxisTickStyleOptions \| undefined` |
+| `labels` | Optional / branch-dependent | `(CartesianAxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions) \| undefined` |
+
+Behavior, inference, resets, and errors: [Tick/label groups and axis titles](../../../../reference/actions/guides/#ticklabel-groups-and-axis-titles).
+
+## `createYAxisTicksAndLabels`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+createYAxisTicksAndLabels(options?: AxisTicksAndLabelsOptions<YAxisPosition>): ChartProgram;
+```
+
+Named option contracts: [`AxisTicksAndLabelsOptions`](../../../../reference/types/#type-axisticksandlabelsoptions) · [`YAxisPosition`](../../../../reference/types/#type-yaxisposition).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `scale` | Optional / branch-dependent | `string \| undefined` |
+| `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
+| `count` | Optional / branch-dependent | `number \| undefined` |
+| `rounding` | Optional / branch-dependent | `AxisTickRounding \| undefined` |
+| `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
+| `ticks` | Optional / branch-dependent | `CartesianAxisTickStyleOptions \| undefined` |
+| `labels` | Optional / branch-dependent | `(CartesianAxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions) \| undefined` |
+
+Behavior, inference, resets, and errors: [Tick/label groups and axis titles](../../../../reference/actions/guides/#ticklabel-groups-and-axis-titles).
+
+## `editXAxisTicksAndLabels`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+editXAxisTicksAndLabels(options: Omit<AxisTicksAndLabelsOptions<XAxisPosition>, "scale">): ChartProgram;
+```
+
+Named option contracts: [`AxisTicksAndLabelsOptions`](../../../../reference/types/#type-axisticksandlabelsoptions) · [`XAxisPosition`](../../../../reference/types/#type-xaxisposition).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
+| `count` | Optional / branch-dependent | `number \| undefined` |
+| `rounding` | Optional / branch-dependent | `AxisTickRounding \| undefined` |
+| `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
+| `ticks` | Optional / branch-dependent | `CartesianAxisTickStyleOptions \| undefined` |
+| `labels` | Optional / branch-dependent | `(CartesianAxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions) \| undefined` |
+
+Behavior, inference, resets, and errors: [Tick/label groups and axis titles](../../../../reference/actions/guides/#ticklabel-groups-and-axis-titles).
+
+## `editYAxisTicksAndLabels`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+editYAxisTicksAndLabels(options: Omit<AxisTicksAndLabelsOptions<YAxisPosition>, "scale">): ChartProgram;
+```
+
+Named option contracts: [`AxisTicksAndLabelsOptions`](../../../../reference/types/#type-axisticksandlabelsoptions) · [`YAxisPosition`](../../../../reference/types/#type-yaxisposition).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
+| `count` | Optional / branch-dependent | `number \| undefined` |
+| `rounding` | Optional / branch-dependent | `AxisTickRounding \| undefined` |
+| `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
+| `ticks` | Optional / branch-dependent | `CartesianAxisTickStyleOptions \| undefined` |
+| `labels` | Optional / branch-dependent | `(CartesianAxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions) \| undefined` |
+
+Behavior, inference, resets, and errors: [Tick/label groups and axis titles](../../../../reference/actions/guides/#ticklabel-groups-and-axis-titles).
+
+## `createXAxisTitle`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+createXAxisTitle(options?: AxisTitleOptions<XAxisPosition>): ChartProgram;
+```
+
+Named option contracts: [`AxisTitleOptions`](../../../../reference/types/#type-axistitleoptions) · [`XAxisPosition`](../../../../reference/types/#type-xaxisposition).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
+| `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
+| `overlap` | Optional / branch-dependent | `"allow" \| "error" \| undefined` |
+| `baseline` | Optional / branch-dependent | `"alphabetic" \| "bottom" \| "hanging" \| "ideographic" \| "middle" \| "top" \| undefined` |
+| `text` | Optional / branch-dependent | `string \| undefined` |
+| `scale` | Optional / branch-dependent | `string \| undefined` |
+| `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
+| `at` | Optional / branch-dependent | `number \| "center" \| "end" \| "start" \| undefined` |
+| `offset` | Optional / branch-dependent | `number \| undefined` |
+| `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
+| `color` | Optional / branch-dependent | `string \| undefined` |
+| `fontSize` | Optional / branch-dependent | `number \| undefined` |
+| `fontFamily` | Optional / branch-dependent | `string \| undefined` |
+| `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+
+Behavior, inference, resets, and errors: [Tick/label groups and axis titles](../../../../reference/actions/guides/#ticklabel-groups-and-axis-titles).
+
+## `createYAxisTitle`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+createYAxisTitle(options?: AxisTitleOptions<YAxisPosition>): ChartProgram;
+```
+
+Named option contracts: [`AxisTitleOptions`](../../../../reference/types/#type-axistitleoptions) · [`YAxisPosition`](../../../../reference/types/#type-yaxisposition).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
+| `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
+| `overlap` | Optional / branch-dependent | `"allow" \| "error" \| undefined` |
+| `baseline` | Optional / branch-dependent | `"alphabetic" \| "bottom" \| "hanging" \| "ideographic" \| "middle" \| "top" \| undefined` |
+| `text` | Optional / branch-dependent | `string \| undefined` |
+| `scale` | Optional / branch-dependent | `string \| undefined` |
+| `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
+| `at` | Optional / branch-dependent | `number \| "center" \| "end" \| "start" \| undefined` |
+| `offset` | Optional / branch-dependent | `number \| undefined` |
+| `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
+| `color` | Optional / branch-dependent | `string \| undefined` |
+| `fontSize` | Optional / branch-dependent | `number \| undefined` |
+| `fontFamily` | Optional / branch-dependent | `string \| undefined` |
+| `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+
+Behavior, inference, resets, and errors: [Tick/label groups and axis titles](../../../../reference/actions/guides/#ticklabel-groups-and-axis-titles).
+
+## `editXAxisTitle`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+editXAxisTitle(options?: Omit<AxisTitleOptions<XAxisPosition>, "scale">): ChartProgram;
+```
+
+Named option contracts: [`AxisTitleOptions`](../../../../reference/types/#type-axistitleoptions) · [`XAxisPosition`](../../../../reference/types/#type-xaxisposition).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
+| `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
+| `overlap` | Optional / branch-dependent | `"allow" \| "error" \| undefined` |
+| `baseline` | Optional / branch-dependent | `"alphabetic" \| "bottom" \| "hanging" \| "ideographic" \| "middle" \| "top" \| undefined` |
+| `text` | Optional / branch-dependent | `string \| undefined` |
+| `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
+| `at` | Optional / branch-dependent | `number \| "center" \| "end" \| "start" \| undefined` |
+| `offset` | Optional / branch-dependent | `number \| undefined` |
+| `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
+| `color` | Optional / branch-dependent | `string \| undefined` |
+| `fontSize` | Optional / branch-dependent | `number \| undefined` |
+| `fontFamily` | Optional / branch-dependent | `string \| undefined` |
+| `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+
+Behavior, inference, resets, and errors: [Tick/label groups and axis titles](../../../../reference/actions/guides/#ticklabel-groups-and-axis-titles).
+
+## `editYAxisTitle`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+editYAxisTitle(options?: Omit<AxisTitleOptions<YAxisPosition>, "scale">): ChartProgram;
+```
+
+Named option contracts: [`AxisTitleOptions`](../../../../reference/types/#type-axistitleoptions) · [`YAxisPosition`](../../../../reference/types/#type-yaxisposition).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
+| `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
+| `overlap` | Optional / branch-dependent | `"allow" \| "error" \| undefined` |
+| `baseline` | Optional / branch-dependent | `"alphabetic" \| "bottom" \| "hanging" \| "ideographic" \| "middle" \| "top" \| undefined` |
+| `text` | Optional / branch-dependent | `string \| undefined` |
+| `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
+| `at` | Optional / branch-dependent | `number \| "center" \| "end" \| "start" \| undefined` |
+| `offset` | Optional / branch-dependent | `number \| undefined` |
+| `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
+| `color` | Optional / branch-dependent | `string \| undefined` |
+| `fontSize` | Optional / branch-dependent | `number \| undefined` |
+| `fontFamily` | Optional / branch-dependent | `string \| undefined` |
+| `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+
+Behavior, inference, resets, and errors: [Tick/label groups and axis titles](../../../../reference/actions/guides/#ticklabel-groups-and-axis-titles).
+
+## `editAxes`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.23. See [release compatibility](../../../../version/).
+
+```typescript
+editAxes(options: EditAxesOptions): ChartProgram;
+```
+
+Named option contracts: [`EditAxesOptions`](../../../../reference/types/#type-editaxesoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `x` | Optional / branch-dependent | `false \| EditAxisOptions<XAxisPosition> \| readonly [EditAxisOptions<XAxisPosition> & { target: string; }, ...(EditAxisOptions<XAxisPosition> & { ...; })[]] \| undefined` |
+| `y` | Optional / branch-dependent | `false \| EditAxisOptions<YAxisPosition> \| readonly [EditAxisOptions<YAxisPosition> & { target: string; }, ...(EditAxisOptions<YAxisPosition> & { ...; })[]] \| undefined` |
+| `theta` | Optional / branch-dependent | `false \| EditThetaAxisOptions \| undefined` |
+| `radius` | Optional / branch-dependent | `false \| EditRadialAxisOptions \| undefined` |
+| `parallel` | Optional / branch-dependent | `false \| readonly [ParallelAxisComponentsOptions, ...ParallelAxisComponentsOptions[]] \| ParallelAxisComponentsOptions \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```js
+editAxes({ x?, y?, theta?, radius?, parallel? })
+```
+
+Chart-authoring action. Edit existing axes in one atomic call. Each selected option uses the corresponding `editXAxis`, `editYAxis`, `editThetaAxis`, `editRadialAxis`, or `editParallelAxis` options. Omission or `false` preserves that axis. At least one nonempty edit is required. No axes or components are created and scale/coordinate bindings are preserved. Cartesian arrays require explicit `target` IDs; parallel arrays select fields with the existing `field`/`target` options. Duplicate selections and empty arrays are rejected.
+
+```js
+// Fragment: program already contains x and y axes.
+program.editAxes({
+  x: { labels: { fontSize: 11 } },
+  y: { ticksAndLabels: { count: 4, labels: { fontSize: 11 } } }
+});
+```
+
+## `editXAxis`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+editXAxis(options: EditAxisOptions<XAxisPosition>): ChartProgram;
+```
+
+Named option contracts: [`EditAxisOptions`](../../../../reference/types/#type-editaxisoptions) · [`XAxisPosition`](../../../../reference/types/#type-xaxisposition).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `underlay` | Optional / branch-dependent | `boolean \| undefined` |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `offset` | Optional / branch-dependent | `number \| undefined` |
+| `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
+| `line` | Optional / branch-dependent | `false \| AxisLineStyleOptions \| undefined` |
+| `ticks` | Optional / branch-dependent | `false \| Omit<AxisTickOptions<XAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| Omit<AxisLabelOptions<XAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
+| `ticksAndLabels` | Optional / branch-dependent | `false \| Omit<AxisTicksAndLabelsOptions<XAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
+| `title` | Optional / branch-dependent | `false \| Omit<AxisTitleOptions<XAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
+
+Behavior, inference, resets, and errors: [Complete single-channel axes](../../../../reference/actions/guides/#complete-single-channel-axes).
+
+## `editYAxis`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+editYAxis(options: EditAxisOptions<YAxisPosition>): ChartProgram;
+```
+
+Named option contracts: [`EditAxisOptions`](../../../../reference/types/#type-editaxisoptions) · [`YAxisPosition`](../../../../reference/types/#type-yaxisposition).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `underlay` | Optional / branch-dependent | `boolean \| undefined` |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `offset` | Optional / branch-dependent | `number \| undefined` |
+| `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
+| `line` | Optional / branch-dependent | `false \| AxisLineStyleOptions \| undefined` |
+| `ticks` | Optional / branch-dependent | `false \| Omit<AxisTickOptions<YAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| Omit<AxisLabelOptions<YAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
+| `ticksAndLabels` | Optional / branch-dependent | `false \| Omit<AxisTicksAndLabelsOptions<YAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
+| `title` | Optional / branch-dependent | `false \| Omit<AxisTitleOptions<YAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
+
+Behavior, inference, resets, and errors: [Complete single-channel axes](../../../../reference/actions/guides/#complete-single-channel-axes).
+
+## `removeXAxis`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+removeXAxis(options?: RemoveAxisOptions): ChartProgram;
+```
+
+Named option contracts: [`RemoveAxisOptions`](../../../../reference/types/#type-removeaxisoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `scale` | Optional / branch-dependent | `string \| undefined` |
+
+Behavior, inference, resets, and errors: [Complete axis removal](../../../../reference/actions/guides/#complete-axis-removal).
+
+## `removeYAxis`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+removeYAxis(options?: RemoveAxisOptions): ChartProgram;
+```
+
+Named option contracts: [`RemoveAxisOptions`](../../../../reference/types/#type-removeaxisoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `scale` | Optional / branch-dependent | `string \| undefined` |
+
+Behavior, inference, resets, and errors: [Complete axis removal](../../../../reference/actions/guides/#complete-axis-removal).
+
+## `createGrid`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+createGrid(options?: CreateGridOptions): ChartProgram;
+```
+
+Named option contracts: [`CreateGridOptions`](../../../../reference/types/#type-creategridoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `horizontal` | Optional / branch-dependent | `boolean \| GridDirectionOptions \| undefined` |
+| `vertical` | Optional / branch-dependent | `boolean \| GridDirectionOptions \| undefined` |
+| `theta` | Optional / branch-dependent | `boolean \| PolarGridOptions \| undefined` |
+| `radial` | Optional / branch-dependent | `boolean \| PolarGridOptions \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createGrid({ horizontal?, vertical?, theta?, radial? })
+```
+
+Create inferred horizontal and/or vertical Cartesian grid lines behind related
+marks, or infer the Polar grid families backed by stored theta/radius encodings.
+[Grids](../../../../api/grids/)
+
+## `createHorizontalGrid`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+createHorizontalGrid(options?: GridDirectionOptions): ChartProgram;
+```
+
+Named option contracts: [`GridDirectionOptions`](../../../../reference/types/#type-griddirectionoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `strokeDashMap` | Optional / branch-dependent | `"auto" \| CartesianGuideDashMap \| undefined` |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
+| `zIndex` | Optional / branch-dependent | `number \| undefined` |
+| `bandPosition` | Optional / branch-dependent | `"boundary" \| "center" \| undefined` |
+| `scale` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `count` | Optional / branch-dependent | `number \| undefined` |
+| `values` | Optional / branch-dependent | `readonly CategoryValue[] \| undefined` |
+| `color` | Optional / branch-dependent | `string \| undefined` |
+| `lineWidth` | Optional / branch-dependent | `number \| undefined` |
+| `strokeDash` | Optional / branch-dependent | `readonly number[] \| undefined` |
+
+Behavior, inference, resets, and errors: [Directional grids](../../../../reference/actions/guides/#directional-grids).
+
+## `createVerticalGrid`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+createVerticalGrid(options?: GridDirectionOptions): ChartProgram;
+```
+
+Named option contracts: [`GridDirectionOptions`](../../../../reference/types/#type-griddirectionoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `strokeDashMap` | Optional / branch-dependent | `"auto" \| CartesianGuideDashMap \| undefined` |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
+| `zIndex` | Optional / branch-dependent | `number \| undefined` |
+| `bandPosition` | Optional / branch-dependent | `"boundary" \| "center" \| undefined` |
+| `scale` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `count` | Optional / branch-dependent | `number \| undefined` |
+| `values` | Optional / branch-dependent | `readonly CategoryValue[] \| undefined` |
+| `color` | Optional / branch-dependent | `string \| undefined` |
+| `lineWidth` | Optional / branch-dependent | `number \| undefined` |
+| `strokeDash` | Optional / branch-dependent | `readonly number[] \| undefined` |
+
+Behavior, inference, resets, and errors: [Directional grids](../../../../reference/actions/guides/#directional-grids).
+
+## `editHorizontalGrid`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+editHorizontalGrid(options: EditGridOptions): ChartProgram;
+```
+
+Named option contracts: [`EditGridOptions`](../../../../reference/types/#type-editgridoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `strokeDashMap` | Optional / branch-dependent | `"auto" \| CartesianGuideDashMap \| undefined` |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
+| `zIndex` | Optional / branch-dependent | `number \| undefined` |
+| `bandPosition` | Optional / branch-dependent | `"boundary" \| "center" \| undefined` |
+| `count` | Optional / branch-dependent | `number \| undefined` |
+| `values` | Optional / branch-dependent | `"auto" \| readonly CategoryValue[] \| undefined` |
+| `color` | Optional / branch-dependent | `string \| undefined` |
+| `lineWidth` | Optional / branch-dependent | `number \| undefined` |
+| `strokeDash` | Optional / branch-dependent | `readonly number[] \| undefined` |
+
+Behavior, inference, resets, and errors: [Directional grids](../../../../reference/actions/guides/#directional-grids).
+
+## `editVerticalGrid`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+editVerticalGrid(options: EditGridOptions): ChartProgram;
+```
+
+Named option contracts: [`EditGridOptions`](../../../../reference/types/#type-editgridoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `strokeDashMap` | Optional / branch-dependent | `"auto" \| CartesianGuideDashMap \| undefined` |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
+| `zIndex` | Optional / branch-dependent | `number \| undefined` |
+| `bandPosition` | Optional / branch-dependent | `"boundary" \| "center" \| undefined` |
+| `count` | Optional / branch-dependent | `number \| undefined` |
+| `values` | Optional / branch-dependent | `"auto" \| readonly CategoryValue[] \| undefined` |
+| `color` | Optional / branch-dependent | `string \| undefined` |
+| `lineWidth` | Optional / branch-dependent | `number \| undefined` |
+| `strokeDash` | Optional / branch-dependent | `readonly number[] \| undefined` |
+
+Behavior, inference, resets, and errors: [Directional grids](../../../../reference/actions/guides/#directional-grids).
+
+## `editGrid`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+editGrid(options: EditGridDirectionsOptions): ChartProgram;
+```
+
+Named option contracts: [`EditGridDirectionsOptions`](../../../../reference/types/#type-editgriddirectionsoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `horizontal` | Optional / branch-dependent | `EditGridOptions \| undefined` |
+| `vertical` | Optional / branch-dependent | `EditGridOptions \| undefined` |
+| `theta` | Optional / branch-dependent | `EditPolarGridOptions \| undefined` |
+| `radial` | Optional / branch-dependent | `EditPolarGridOptions \| undefined` |
+
+Behavior, inference, resets, and errors: [Directional grids](../../../../reference/actions/guides/#directional-grids).
+
+## `removeGrid`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+removeGrid(options?: RemoveGridOptions): ChartProgram;
+```
+
+Named option contracts: [`RemoveGridOptions`](../../../../reference/types/#type-removegridoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `horizontal` | Optional / branch-dependent | `boolean \| undefined` |
+| `vertical` | Optional / branch-dependent | `boolean \| undefined` |
+| `theta` | Optional / branch-dependent | `boolean \| undefined` |
+| `radial` | Optional / branch-dependent | `boolean \| undefined` |
+
+Behavior, inference, resets, and errors: [Directional grids](../../../../reference/actions/guides/#directional-grids).
+
+## `createLegend`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+createLegend(options?: LegendOptions): ChartProgram;
+```
+
+Named option contracts: [`LegendOptions`](../../../../reference/types/#type-legendoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `clipHeight` | Optional / branch-dependent | `number \| undefined` |
+| `combine` | Optional / branch-dependent | `"color-size" \| "separate" \| "size-shape" \| undefined` |
+| `representation` | Optional / branch-dependent | `"gradient" \| "symbols" \| undefined` |
+| `layout` | Optional / branch-dependent | `"edge" \| "legacy-bottom" \| undefined` |
+| `overflow` | Optional / branch-dependent | `false \| { maxItems: number; summary?: "ellipsis-count" \| undefined; } \| undefined` |
+| `order` | Optional / branch-dependent | `LegendOrder \| undefined` |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `channels` | Optional / branch-dependent | `readonly ("color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth")[] \| undefined` |
+| `position` | Optional / branch-dependent | `"bottom" \| "bottom-left" \| "bottom-right" \| "left" \| "right" \| "top" \| "top-left" \| "top-right" \| undefined` |
+| `blockLayout` | Optional / branch-dependent | `"column" \| "row" \| "wrap" \| undefined` |
+| `at` | Optional / branch-dependent | `{ x: number; y: number; } \| undefined` |
+| `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
+| `direction` | Optional / branch-dependent | `"horizontal" \| "vertical" \| undefined` |
+| `columns` | Optional / branch-dependent | `number \| undefined` |
+| `offset` | Optional / branch-dependent | `number \| undefined` |
+| `titlePosition` | Optional / branch-dependent | `"bottom" \| "left" \| "top" \| undefined` |
+| `title` | Optional / branch-dependent | `string \| false \| undefined` |
+| `values` | Optional / branch-dependent | `readonly number[] \| undefined` |
+| `count` | Optional / branch-dependent | `number \| undefined` |
+| `gradient` | Optional / branch-dependent | `{ length?: number \| undefined; thickness?: number \| undefined; opacity?: number \| undefined; } \| undefined` |
+| `symbol` | Optional / branch-dependent | `LegendSymbolRecipe \| undefined` |
+| `labels` | Optional / branch-dependent | `LegendTextOptions \| undefined` |
+| `titleStyle` | Optional / branch-dependent | `LegendTitleStyleOptions \| undefined` |
+| `itemGap` | Optional / branch-dependent | `number \| undefined` |
+| `rowPadding` | Optional / branch-dependent | `number \| undefined` |
+| `titlePadding` | Optional / branch-dependent | `number \| undefined` |
+| `border` | Optional / branch-dependent | `boolean \| LegendBorderOptions \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createLegend({
+  target?, channels?, position?, layout?, align?, direction?, columns?, offset?,
+  titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, rowPadding?, titlePadding?, border?, count?,
+  values?, gradient?, order?
+})
+```
+
+`rowPadding` sets non-negative finite occupied edge-to-edge vertical row gaps for item-based legends; `titlePadding` independently sets title-to-body spacing for every family. Omission preserves the original layout. Text uses deterministic font-size and hard-line-break bounds; strokes, paths and clips contribute to sample bounds. Multi-column rows use their union; text-only summaries have no sample. These options require edge layout. Gradient strips reject row padding.
+
+Create categorical, point-size, continuous-color gradient, discretized-color
+interval, or field-opacity sample legends. Interval legends support all four
+edges with layout `"edge"`, side single columns and horizontal item grids. Explicit `channels` creates exactly
+the selected content; include `"size"` in a point categorical-and-size request.
+Compatible point and line categorical channels stay combined when their domains
+contain the same values, even in different orders. The first selected channel
+owns item order; each symbol still looks up its own scale by value. Independent fields,
+continuous color/stroke, opacity, and stroke width use separate native blocks.
+Area fill and stroke are independently selectable blocks, including stroke-only
+legends for density and horizon areas.
+For outside top/bottom legends, omitting `offset` places the occupied legend after
+the same-side axis line, ticks, labels, and title, with the family's native gap
+(8 pixels for categorical legends, 30 for continuous families). Axis edits and
+removal recompute that gap. An explicit numeric `offset`, including zero or the
+native value, remains measured from the plot edge. Free coordinates, plot corners,
+and `legacy-bottom` keep their existing anchors. Older saved programs retain
+their fixed offsets.
+Top-title style accepts `align: "left" | "center" | "right"` within the
+measured title/body content block. This applies to every legend family; omission
+preserves each layout's current alignment. It does not move the complete group,
+change item spacing, or include border padding. Inline `titlePosition: "left"`
+rejects an explicit title alignment. Whole/focused title edits accept `"auto"`
+to remove an explicit alignment; creation and saved state accept only the three
+alignment values. Hidden titles retain their style for restoration.
+Automatic symbol recipes refresh when matching companion lines or their color
+bindings change; explicit recipes retain their layers and order.
+Continuous color and stroke ramps accept
+`gradient: { length?, thickness?, opacity? }`. Body opacity is finite in `[0, 1]`,
+defaults to `1`, and preserves space at zero. It never fades marks, text, ticks,
+or borders. Whole and focused legend edits preserve omitted gradient fields;
+switching from symbols back to a gradient resets exclusive gradient settings.
+Continuous color and stroke gradients also accept exact ascending numeric
+`values` inside their domain. Ticks use their mapped positions, without adding
+midpoint or endpoint values. Creation omits `values` for automatic ticks; editors
+preserve omitted arrays and use `values: "auto"` to restore the remembered count.
+Do not combine an exact array with `count`. Exact samples survive color
+gradient/symbol representation changes. Select a gradient block with the
+`editLegend` channel option; `editLegendBlock` sample edits remain sampled-only.
+Omitted point channels infer the available categorical color, shape, and
+quantitative size with the same result as explicit selection. Color-only uses
+swatches; shape uses typed symbols; a size encoding adds its own sample block.
+Continuous legends support right, left, top, and bottom
+placement. Categorical legends also support left side placement; composite
+point and size blocks remain in deterministic vertical order. Horizontal
+sampled-opacity legends accept `titlePosition: "left"` for one inline
+title-symbol-label reading line. Same-edge top/bottom blocks are left-packed
+with a 40-pixel occupied-bound gap. Categorical `layout` defaults to `"edge"`;
+`"legacy-bottom"` explicitly selects the former Canvas-bottom compact row and
+requires bottom position. Categorical `order` accepts `"scale"`, `{ values: [...] }`,
+or `{ channel: "x" | "y" | "theta" }` while preserving each category's color/shape/dash.
+Continuous size, opacity, and stroke-width legends accept 1–100 exact,
+finite, strictly increasing `values`. They use the actual channel scale without
+changing its domain or the encoded marks. `values` cannot be combined with
+`count` and is unsupported for discrete size and gradient legends.
+[Legends](../../../../api/legends/)
+
+Categorical left/right legends accept positive `columns` (default one), fill
+columns in domain order, and measure each column before allocating its width.
+They retain vertical direction and a top title. Side grids need sufficient
+Canvas margin and preserve their internal spacing when combined with other blocks.
+
+Categorical-only legends also accept `position: "top-left" | "top-right" |
+"bottom-left" | "bottom-right"` inside the plot. `offset` is the inward gap to
+the complete painted border (or content without a border); border padding is
+reserved inside that edge. These anchors default to vertical, one-column content,
+with a top title and center alignment. They do not reserve an outer guide lane.
+The full legend must fit the plot; resizing the Canvas reanchors it.
+
+Set `overflow: { maxItems: 29 }` to display at most 29 categorical or ordinal
+point-size symbols and labels, followed by an additional text-only `…N entries`
+summary when needed.
+The optional `summary` value is `"ellipsis-count"`. All categories remain in
+the appearance scale and legend domain, including categories omitted from the
+visible legend. The limit follows the effective legend order and label map.
+Omission or `false` displays every category. This option also works on edge
+categorical legends and ordinal size legends. When a categorical block and an
+ordinal size block are created or edited together, the same limit applies to both
+blocks. Quantitative size sampling is unchanged by a categorical overflow limit.
+Continuous and combined sampled legends retain their existing edge-only contracts. Shared facet promotion requires an edge position.
+
+## `editLegend`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+editLegend(options: EditLegendOptions): ChartProgram;
+```
+
+Named option contracts: [`EditLegendOptions`](../../../../reference/types/#type-editlegendoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `clipHeight` | Optional / branch-dependent | `number \| "auto" \| undefined` |
+| `rowPadding` | Optional / branch-dependent | `number \| "auto" \| undefined` |
+| `titlePadding` | Optional / branch-dependent | `number \| "auto" \| undefined` |
+| `channel` | Optional / branch-dependent | `"color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| undefined` |
+| `position` | Optional / branch-dependent | `"bottom" \| "bottom-left" \| "bottom-right" \| "inherit" \| "left" \| "right" \| "top" \| "top-left" \| "top-right" \| undefined` |
+| `direction` | Optional / branch-dependent | `"auto" \| "horizontal" \| "vertical" \| undefined` |
+| `titleStyle` | Optional / branch-dependent | `LegendTitleStyleEditOptions \| undefined` |
+| `channels` | Optional / branch-dependent | `readonly ("color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth")[] \| undefined` |
+| `title` | Optional / branch-dependent | `string \| false \| undefined` |
+| `values` | Optional / branch-dependent | `"auto" \| readonly number[] \| undefined` |
+| `combine` | Optional / branch-dependent | `"color-size" \| "separate" \| "size-shape" \| undefined` |
+| `representation` | Optional / branch-dependent | `"gradient" \| "symbols" \| undefined` |
+| `layout` | Optional / branch-dependent | `"edge" \| "legacy-bottom" \| undefined` |
+| `overflow` | Optional / branch-dependent | `false \| { maxItems: number; summary?: "ellipsis-count" \| undefined; } \| undefined` |
+| `order` | Optional / branch-dependent | `LegendOrder \| undefined` |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `blockLayout` | Optional / branch-dependent | `"column" \| "row" \| "wrap" \| undefined` |
+| `at` | Optional / branch-dependent | `{ x: number; y: number; } \| undefined` |
+| `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
+| `columns` | Optional / branch-dependent | `number \| undefined` |
+| `offset` | Optional / branch-dependent | `number \| undefined` |
+| `titlePosition` | Optional / branch-dependent | `"bottom" \| "left" \| "top" \| undefined` |
+| `count` | Optional / branch-dependent | `number \| undefined` |
+| `gradient` | Optional / branch-dependent | `{ length?: number \| undefined; thickness?: number \| undefined; opacity?: number \| undefined; } \| undefined` |
+| `symbol` | Optional / branch-dependent | `LegendSymbolRecipe \| undefined` |
+| `labels` | Optional / branch-dependent | `LegendTextOptions \| undefined` |
+| `itemGap` | Optional / branch-dependent | `number \| undefined` |
+| `border` | Optional / branch-dependent | `boolean \| LegendBorderOptions \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editLegend({
+  target?, channel?, channels?, position?, layout?, align?, direction?, columns?, offset?, titlePosition?,
+  title?, symbol?, labels?, titleStyle?, itemGap?, rowPadding?, titlePadding?, border?, count?, values?, gradient?, order?, overflow?
+})
+```
+
+Singular `channel` selects one existing block without changing sibling typography. It cannot
+accompany `channels`, `blockLayout`, or `at`. A channel never disambiguates mark targets.
+
+`rowPadding` and `titlePadding` accept numbers or `"auto"` to remove retained intent; omission or undefined preserves it. Explicit row spacing wins over vertical itemGap/block gap while retaining the old fallback and horizontal spacing. Explicit title spacing wins over the old title gap. Reset row padding before a transition to a gradient. Combining conflicting policies requires an explicit choice; incompatible splits require explicit reset. Content and Canvas/data/scale/theme/facet replay retain compatible policies.
+
+Partially edit one existing legend. Categorical `overflow` can be replaced or reset
+with `false`; data/scale/order revisions recompute the hidden count and remove stale
+symbols and summary text. Interval legends accept four-edge placement
+and horizontal grid/inline-title controls. Hidden continuous titles are excluded
+from occupied bounds and backgrounds. Omitted categorical `layout` preserves the
+stored mode; style edits never switch modes. Categorical `order` can be reassigned or reset
+with `"scale"`; linked position changes also refresh its item order. `title` accepts a non-empty string,
+`"auto"`, or `false`. Explicit `channels` replaces the entire target's content
+with the exact supported non-empty set; mark encodings and scales remain.
+Retained blocks preserve configuration; new blocks use creation defaults and
+removed blocks lose their settings. Categorical revisions preserve compatible
+recipes and order. Shared text patches merge only requested style leaves into
+each block. A
+horizontal sampled-opacity legend accepts `titlePosition: "left"` and inline
+spacing edits. A
+standalone size or stroke-width legend accepts the bounded `title`, `count`,
+`labels`, and `titleStyle` subset and remains right-positioned. Count and text
+styles persist through Canvas/scale/data replay; `false` hides a title and
+`"auto"` restores it from the encoded field.
+Sampled size, opacity, and stroke-width legends also accept exact numeric
+`values`; `values: "auto"` restores the remembered automatic count. A scale or
+dependent replay that would invalidate a stored exact sample fails atomically.
+[Legends](../../../../api/legends/)
+
+## `editLegendBlock`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.23. See [release compatibility](../../../../version/).
+
+```typescript
+editLegendBlock(options: EditLegendBlockOptions): ChartProgram;
+```
+
+Named option contracts: [`EditLegendBlockOptions`](../../../../reference/types/#type-editlegendblockoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `clipHeight` | Optional / branch-dependent | `number \| "auto" \| undefined` |
+| `target` | Required | `string` |
+| `channel` | Required | `"color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth"` |
+| `position` | Optional / branch-dependent | `"bottom" \| "bottom-left" \| "bottom-right" \| "inherit" \| "left" \| "right" \| "top" \| "top-left" \| "top-right" \| undefined` |
+| `title` | Optional / branch-dependent | `string \| undefined` |
+| `values` | Optional / branch-dependent | `"auto" \| readonly [number, ...number[]] \| undefined` |
+| `count` | Optional / branch-dependent | `number \| undefined` |
+| `order` | Optional / branch-dependent | `readonly CategoryValue[] \| undefined` |
+| `gap` | Optional / branch-dependent | `number \| undefined` |
+| `text` | Optional / branch-dependent | `LegendBlockTextPatch \| undefined` |
+| `symbol` | Optional / branch-dependent | `LegendBlockSymbolPatch \| undefined` |
+| `labelMap` | Optional / branch-dependent | `"auto" \| DisplayLabelMap \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editLegendBlock({
+  target, channel, title?, values?, count?, order?, gap?, text?, symbol?, labelMap?
+})
+```
+
+Edit one logical legend block without changing sibling blocks on the same mark.
+Both the mark `target` and a channel currently represented by the legend are
+required. Merged categorical channels share one block identity, so selecting
+color or shape in a color-and-shape block edits the same state.
+
+Continuous size, opacity, and stroke-width blocks accept exact `values` or an
+automatic `count`; categorical blocks accept an exact full-domain `order`.
+`text` changes item-label typography and color, `symbol` changes supported
+sample appearance, and `gap` changes internal spacing. Empty `text` or `symbol`
+objects restore the base style. A symbol property that would replace the data
+mapping is rejected. Empty `title` hides the selected block. Full programs only.
+Categorical and continuous-size `labelMap` may map a value to `""`: only text is omitted,
+while the sample, symbol, item slot and typed identity remain. Continuous size accepts finite
+numeric keys only; unmatched samples keep their normal formatter. `"auto"` removes the map and
+`[]` stores an explicit empty map.
+[Editing legends](../../../../api/legends/editing/#editing-one-legend-block)
+
+## `editLegendLayout`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+editLegendLayout(options: EditLegendLayoutOptions): ChartProgram;
+```
+
+Named option contracts: [`EditLegendLayoutOptions`](../../../../reference/types/#type-editlegendlayoutoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `channel` | Optional / branch-dependent | `"color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| undefined` |
+| `layout` | Optional / branch-dependent | `"edge" \| "legacy-bottom" \| undefined` |
+| `position` | Optional / branch-dependent | `"bottom" \| "bottom-left" \| "bottom-right" \| "inherit" \| "left" \| "right" \| "top" \| "top-left" \| "top-right" \| undefined` |
+| `blockLayout` | Optional / branch-dependent | `"column" \| "row" \| "wrap" \| undefined` |
+| `at` | Optional / branch-dependent | `{ x: number; y: number; } \| undefined` |
+| `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
+| `direction` | Optional / branch-dependent | `"auto" \| "horizontal" \| "vertical" \| undefined` |
+| `columns` | Optional / branch-dependent | `number \| undefined` |
+| `offset` | Optional / branch-dependent | `number \| undefined` |
+| `titlePosition` | Optional / branch-dependent | `"bottom" \| "left" \| "top" \| undefined` |
+| `itemGap` | Optional / branch-dependent | `number \| undefined` |
+| `rowPadding` | Optional / branch-dependent | `number \| "auto" \| undefined` |
+| `titlePadding` | Optional / branch-dependent | `number \| "auto" \| undefined` |
+
+Behavior, inference, resets, and errors: [Focused legend edits](../../../../reference/actions/guides/#focused-legend-edits).
+
+## `editLegendLabels`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+editLegendLabels(options: EditLegendLabelsOptions): ChartProgram;
+```
+
+Named option contracts: [`EditLegendLabelsOptions`](../../../../reference/types/#type-editlegendlabelsoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `channel` | Optional / branch-dependent | `"color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| undefined` |
+| `offset` | Optional / branch-dependent | `number \| undefined` |
+| `color` | Optional / branch-dependent | `string \| undefined` |
+| `fontSize` | Optional / branch-dependent | `number \| undefined` |
+| `fontFamily` | Optional / branch-dependent | `string \| undefined` |
+| `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+| `format` | Optional / branch-dependent | `ValueFormat \| undefined` |
+
+Behavior, inference, resets, and errors: [Focused legend edits](../../../../reference/actions/guides/#focused-legend-edits).
+
+## `editLegendTitle`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+editLegendTitle(options: EditLegendTitleOptions): ChartProgram;
+```
+
+Named option contracts: [`EditLegendTitleOptions`](../../../../reference/types/#type-editlegendtitleoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `channel` | Optional / branch-dependent | `"color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| undefined` |
+| `title` | Optional / branch-dependent | `string \| false \| undefined` |
+| `color` | Optional / branch-dependent | `string \| undefined` |
+| `fontSize` | Optional / branch-dependent | `number \| undefined` |
+| `fontFamily` | Optional / branch-dependent | `string \| undefined` |
+| `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+| `align` | Optional / branch-dependent | `"auto" \| "center" \| "left" \| "right" \| undefined` |
+
+Behavior, inference, resets, and errors: [Focused legend edits](../../../../reference/actions/guides/#focused-legend-edits).
+
+## `editLegendSymbols`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+editLegendSymbols(options: EditLegendSymbolsOptions): ChartProgram;
+```
+
+Named option contracts: [`EditLegendSymbolsOptions`](../../../../reference/types/#type-editlegendsymbolsoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `clipHeight` | Optional / branch-dependent | `number \| "auto" \| undefined` |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `channel` | Optional / branch-dependent | `"color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| undefined` |
+| `symbol` | Optional / branch-dependent | `LegendSymbolRecipe \| undefined` |
+| `count` | Optional / branch-dependent | `number \| undefined` |
+| `gradient` | Optional / branch-dependent | `{ length?: number \| undefined; thickness?: number \| undefined; opacity?: number \| undefined; } \| undefined` |
+
+Behavior, inference, resets, and errors: [Focused legend edits](../../../../reference/actions/guides/#focused-legend-edits).
+
+## `editLegendBorder`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+editLegendBorder(options: EditLegendBorderOptions): ChartProgram;
+```
+
+Named option contracts: [`EditLegendBorderOptions`](../../../../reference/types/#type-editlegendborderoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `channel` | Optional / branch-dependent | `"color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| undefined` |
+| `border` | Required | `boolean \| LegendBorderOptions` |
+
+Behavior, inference, resets, and errors: [Focused legend edits](../../../../reference/actions/guides/#focused-legend-edits).
+
+## `createGuides`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+createGuides(options?: CreateGuidesOptions): ChartProgram;
+```
+
+Named option contracts: [`CreateGuidesOptions`](../../../../reference/types/#type-createguidesoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `axes` | Optional / branch-dependent | `false \| CreateAxesOptions \| undefined` |
+| `grid` | Optional / branch-dependent | `false \| CreateGridOptions \| undefined` |
+| `legend` | Optional / branch-dependent | `false \| LegendOptions \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createGuides({ axes?, grid?, legend? })
+```
+
+Create applicable axes, grids, and legends; omitted branches infer applicability, false skips a branch, and explicit direction objects enable only named directions: `axes:{x:false}` requests neither axis while `axes:{x:false,y:{}}` requests y.
+Automatic calls preserve existing guide collections and add missing applicable
+collections; explicit collection objects retain strict create semantics. Datum-only
+anchors do not infer axes. An automatic call on an existing chart that has no
+applicable guides succeeds without adding graphics. An explicit all-false request
+or a chart without marks still fails. On facet parents this action updates the retained source
+and rederives its panels while preserving the parent title and guide policy.
+[Guides](../../../../api/guides/)
+
+## `removeLegend`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+removeLegend(options?: RemoveLegendOptions): ChartProgram;
+```
+
+Named option contracts: [`RemoveLegendOptions`](../../../../reference/types/#type-removelegendoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `channels` | Optional / branch-dependent | `readonly ("color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth")[] \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+removeLegend({ target?, channels? })
+```
+
+Remove every legend block owned by one mark when `channels` is omitted, or
+remove selected channels while preserving mark encodings, scales, and unrelated
+blocks. Partial categorical removal retains remaining channels, styles, title
+visibility, layout and item order; automatic symbols are inferred again. [Legends](../../../../api/legends/)
+
+## `createTitle`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+createTitle(options: TitleOptions): ChartProgram;
+```
+
+Named option contracts: [`TitleOptions`](../../../../reference/types/#type-titleoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `text` | Required | `string` |
+| `subtitle` | Optional / branch-dependent | `string \| undefined` |
+| `position` | Optional / branch-dependent | `"bottom" \| "left" \| "right" \| "top" \| undefined` |
+| `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
+| `offset` | Optional / branch-dependent | `number \| undefined` |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
+| `gap` | Optional / branch-dependent | `number \| undefined` |
+| `maxWidth` | Optional / branch-dependent | `number \| undefined` |
+| `wrap` | Optional / branch-dependent | `"character" \| "word" \| undefined` |
+| `lineHeight` | Optional / branch-dependent | `number \| undefined` |
+| `titleStyle` | Optional / branch-dependent | `TitleTextStyleOptions \| undefined` |
+| `subtitleStyle` | Optional / branch-dependent | `TitleTextStyleOptions \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createTitle({
+  text, subtitle?, position?, align?, offset?, alongOffset?, gap?,
+  maxWidth?, wrap?, lineHeight?,
+  titleStyle?, subtitleStyle?
+})
+```
+
+Create a chart title and optional subtitle. Explicit newlines retain their line
+spacing; blank lines reserve space without painted text. Each string requires
+at least one non-empty hard line. On facet parents, `alongOffset` shifts the full
+title/subtitle block horizontally from the translated child-plot alignment anchor.
+Text outside the composed Canvas is rejected. [Titles](../../../../api/titles/)
+
+## `editTitle`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+editTitle(options: EditTitleOptions): ChartProgram;
+```
+
+Named option contracts: [`EditTitleOptions`](../../../../reference/types/#type-edittitleoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `text` | Optional / branch-dependent | `string \| undefined` |
+| `subtitle` | Optional / branch-dependent | `string \| false \| undefined` |
+| `position` | Optional / branch-dependent | `"bottom" \| "left" \| "right" \| "top" \| undefined` |
+| `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
+| `offset` | Optional / branch-dependent | `number \| undefined` |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
+| `gap` | Optional / branch-dependent | `number \| undefined` |
+| `maxWidth` | Optional / branch-dependent | `number \| undefined` |
+| `wrap` | Optional / branch-dependent | `"character" \| "word" \| undefined` |
+| `lineHeight` | Optional / branch-dependent | `number \| undefined` |
+| `titleStyle` | Optional / branch-dependent | `TitleTextStyleOptions \| undefined` |
+| `subtitleStyle` | Optional / branch-dependent | `TitleTextStyleOptions \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editTitle({
+  text?, subtitle?, position?, align?, offset?, alongOffset?, gap?,
+  maxWidth?, wrap?, lineHeight?,
+  titleStyle?, subtitleStyle?
+})
+```
+
+Partially edit the existing title. `subtitle: false` removes the subtitle;
+omitted properties remain unchanged. [Titles](../../../../api/titles/)
+
+## `removeTitle`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+removeTitle(): ChartProgram;
+```
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+This action takes no named options.
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+removeTitle()
+```
+
+Remove the complete chart title and subtitle resource. [Titles](../../../../api/titles/)
+
+## `createThetaAxis`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+createThetaAxis(options?: CompleteThetaAxisOptions): ChartProgram;
+```
+
+Named option contracts: [`CompleteThetaAxisOptions`](../../../../reference/types/#type-completethetaaxisoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `ticksAndLabels` | Optional / branch-dependent | `false \| ThetaTicksAndLabelsOptions \| undefined` |
+| `scale` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `line` | Optional / branch-dependent | `false \| AxisLineStyleOptions \| undefined` |
+| `title` | Optional / branch-dependent | `false \| PolarTitleOptions \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createThetaAxis({ scale?, coordinate?, line?, ticksAndLabels?, title? } = {})
+```
+
+Create the complete outer circular theta axis. [Axes](../../../../api/axes/)
+
+## `createRadialAxis`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+createRadialAxis(options?: CompleteRadialAxisOptions): ChartProgram;
+```
+
+Named option contracts: [`CompleteRadialAxisOptions`](../../../../reference/types/#type-completeradialaxisoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `angle` | Optional / branch-dependent | `number \| undefined` |
+| `title` | Optional / branch-dependent | `false \| RadialTitleOptions \| undefined` |
+| `scale` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `line` | Optional / branch-dependent | `false \| AxisLineStyleOptions \| undefined` |
+| `ticksAndLabels` | Optional / branch-dependent | `false \| PolarTicksAndLabelsOptions \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createRadialAxis({ scale?, coordinate?, angle?, line?, ticksAndLabels?, title? } = {})
+```
+
+Create the complete center-to-edge radial axis; `angle` defaults to `90`.
+[Axes](../../../../api/axes/)
+
+## `editThetaAxis`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+editThetaAxis(options: EditThetaAxisOptions): ChartProgram;
+```
+
+Named option contracts: [`EditThetaAxisOptions`](../../../../reference/types/#type-editthetaaxisoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `labels` | Optional / branch-dependent | `false \| ThetaAxisLabelOptions \| undefined` |
+| `ticksAndLabels` | Optional / branch-dependent | `false \| ThetaTicksAndLabelsOptions \| undefined` |
+| `line` | Optional / branch-dependent | `false \| AxisLineStyleOptions \| undefined` |
+| `ticks` | Optional / branch-dependent | `false \| PolarTickOptions \| undefined` |
+| `title` | Optional / branch-dependent | `false \| PolarTitleOptions \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editThetaAxis({ line?, ticks?, labels?, ticksAndLabels?, title? })
+```
+
+Edit selected theta-axis components. [Axes](../../../../api/axes/#editing-a-complete-axis)
+
+## `editRadialAxis`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+editRadialAxis(options: EditRadialAxisOptions): ChartProgram;
+```
+
+Named option contracts: [`EditRadialAxisOptions`](../../../../reference/types/#type-editradialaxisoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `title` | Optional / branch-dependent | `false \| RadialTitleOptions \| undefined` |
+| `angle` | Optional / branch-dependent | `number \| undefined` |
+| `line` | Optional / branch-dependent | `false \| AxisLineStyleOptions \| undefined` |
+| `ticks` | Optional / branch-dependent | `false \| PolarTickOptions \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| PolarLabelOptions \| undefined` |
+| `ticksAndLabels` | Optional / branch-dependent | `false \| PolarTicksAndLabelsOptions \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editRadialAxis({ angle?, line?, ticks?, labels?, ticksAndLabels?, title? })
+```
+
+Edit selected radial components; `angle` moves the whole axis.
+[Axes](../../../../api/axes/#editing-a-complete-axis)
+
+## `removeThetaAxis`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+removeThetaAxis(options?: Omit<RemoveAxisOptions, "target">): ChartProgram;
+```
+
+Named option contracts: [`RemoveAxisOptions`](../../../../reference/types/#type-removeaxisoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `scale` | Optional / branch-dependent | `string \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+removeThetaAxis({ scale?, coordinate? } = {})
+```
+
+Remove the complete theta-axis resource. [Axes](../../../../api/axes/#removing-an-axis)
+
+## `removeRadialAxis`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+removeRadialAxis(options?: Omit<RemoveAxisOptions, "target">): ChartProgram;
+```
+
+Named option contracts: [`RemoveAxisOptions`](../../../../reference/types/#type-removeaxisoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `scale` | Optional / branch-dependent | `string \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+removeRadialAxis({ scale?, coordinate? } = {})
+```
+
+Remove the complete radial-axis resource. [Axes](../../../../api/axes/#removing-an-axis)
+
+## `createThetaAxisLine`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+createThetaAxisLine(options?: CreateThetaAxisLineOptions): ChartProgram;
+```
+
+Named option contracts: [`CreateThetaAxisLineOptions`](../../../../reference/types/#type-createthetaaxislineoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `color` | Optional / branch-dependent | `string \| undefined` |
+| `lineWidth` | Optional / branch-dependent | `number \| undefined` |
+| `scale` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createThetaAxisLine({ scale?, coordinate?, color?, lineWidth? } = {})
+```
+
+Create missing theta-axis line independently of the other components. Reuse stored axis bindings or infer one compatible Polar encoding. Existing components are edited with the matching `edit` action. [Axes](../../../../api/axes/#polar-component-creation)
+
+## `editThetaAxisLine`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+editThetaAxisLine(options?: AxisLineStyleOptions): ChartProgram;
+```
+
+Named option contracts: [`AxisLineStyleOptions`](../../../../reference/types/#type-axislinestyleoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `color` | Optional / branch-dependent | `string \| undefined` |
+| `lineWidth` | Optional / branch-dependent | `number \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editThetaAxisLine({ color?, lineWidth? } = {})
+```
+
+Edit the outer baseline style. [Axes](../../../../api/axes/)
+
+## `createRadialAxisLine`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+createRadialAxisLine(options?: CreateRadialAxisLineOptions): ChartProgram;
+```
+
+Named option contracts: [`CreateRadialAxisLineOptions`](../../../../reference/types/#type-createradialaxislineoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `color` | Optional / branch-dependent | `string \| undefined` |
+| `lineWidth` | Optional / branch-dependent | `number \| undefined` |
+| `scale` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `angle` | Optional / branch-dependent | `number \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createRadialAxisLine({ scale?, coordinate?, angle?, color?, lineWidth? } = {})
+```
+
+Create missing radial-axis line independently of the other components. Reuse stored axis bindings or infer one compatible Polar encoding. Existing components are edited with the matching `edit` action. [Axes](../../../../api/axes/#polar-component-creation)
+
+## `editRadialAxisLine`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+editRadialAxisLine(options?: AxisLineStyleOptions): ChartProgram;
+```
+
+Named option contracts: [`AxisLineStyleOptions`](../../../../reference/types/#type-axislinestyleoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `color` | Optional / branch-dependent | `string \| undefined` |
+| `lineWidth` | Optional / branch-dependent | `number \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editRadialAxisLine({ color?, lineWidth? } = {})
+```
+
+Edit the radial baseline style. [Axes](../../../../api/axes/)
+
+## `createThetaAxisTicks`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+createThetaAxisTicks(options?: CreateThetaAxisTicksOptions): ChartProgram;
+```
+
+Named option contracts: [`CreateThetaAxisTicksOptions`](../../../../reference/types/#type-createthetaaxisticksoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `color` | Optional / branch-dependent | `string \| undefined` |
+| `lineWidth` | Optional / branch-dependent | `number \| undefined` |
+| `length` | Optional / branch-dependent | `number \| undefined` |
+| `count` | Optional / branch-dependent | `number \| undefined` |
+| `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
+| `scale` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createThetaAxisTicks({ scale?, coordinate?, count?, values?, length?, color?, lineWidth? } = {})
+```
+
+Create missing theta-axis ticks independently of the other components. Use count or exact values, never both. Reuse stored axis bindings or infer one compatible Polar encoding. Existing components are edited with the matching `edit` action. [Axes](../../../../api/axes/#polar-component-creation)
+
+## `editThetaAxisTicks`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+editThetaAxisTicks(options?: PolarTickOptions): ChartProgram;
+```
+
+Named option contracts: [`PolarTickOptions`](../../../../reference/types/#type-polartickoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `count` | Optional / branch-dependent | `number \| undefined` |
+| `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
+| `color` | Optional / branch-dependent | `string \| undefined` |
+| `lineWidth` | Optional / branch-dependent | `number \| undefined` |
+| `length` | Optional / branch-dependent | `number \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editThetaAxisTicks({ count?, values?, length?, color?, lineWidth? } = {})
+```
+
+Edit theta tick geometry and style. [Axes](../../../../api/axes/)
+
+## `createRadialAxisTicks`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+createRadialAxisTicks(options?: CreateRadialAxisTicksOptions): ChartProgram;
+```
+
+Named option contracts: [`CreateRadialAxisTicksOptions`](../../../../reference/types/#type-createradialaxisticksoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `color` | Optional / branch-dependent | `string \| undefined` |
+| `lineWidth` | Optional / branch-dependent | `number \| undefined` |
+| `length` | Optional / branch-dependent | `number \| undefined` |
+| `count` | Optional / branch-dependent | `number \| undefined` |
+| `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
+| `scale` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `angle` | Optional / branch-dependent | `number \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createRadialAxisTicks({ scale?, coordinate?, angle?, count?, values?, length?, color?, lineWidth? } = {})
+```
+
+Create missing radial-axis ticks independently of the other components. Use count or exact values, never both. Reuse stored axis bindings or infer one compatible Polar encoding. Existing components are edited with the matching `edit` action. [Axes](../../../../api/axes/#polar-component-creation)
+
+## `editRadialAxisTicks`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+editRadialAxisTicks(options?: PolarTickOptions): ChartProgram;
+```
+
+Named option contracts: [`PolarTickOptions`](../../../../reference/types/#type-polartickoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `count` | Optional / branch-dependent | `number \| undefined` |
+| `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
+| `color` | Optional / branch-dependent | `string \| undefined` |
+| `lineWidth` | Optional / branch-dependent | `number \| undefined` |
+| `length` | Optional / branch-dependent | `number \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editRadialAxisTicks({ count?, values?, length?, color?, lineWidth? } = {})
+```
+
+Edit radial tick geometry and style. [Axes](../../../../api/axes/)
+
+## `createThetaAxisLabels`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+createThetaAxisLabels(options?: CreateThetaAxisLabelsOptions): ChartProgram;
+```
+
+Named option contracts: [`CreateThetaAxisLabelsOptions`](../../../../reference/types/#type-createthetaaxislabelsoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `offset` | Optional / branch-dependent | `number \| undefined` |
+| `format` | Optional / branch-dependent | `AxisFormat \| undefined` |
+| `color` | Optional / branch-dependent | `string \| undefined` |
+| `fontSize` | Optional / branch-dependent | `number \| undefined` |
+| `fontFamily` | Optional / branch-dependent | `string \| undefined` |
+| `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+| `count` | Optional / branch-dependent | `number \| undefined` |
+| `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
+| `scale` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `labelMap` | Optional / branch-dependent | `"auto" \| DisplayLabelMap \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createThetaAxisLabels({ scale?, coordinate?, count?, values?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight? } = {})
+```
+
+Create missing theta-axis labels independently of the other components. Use count or exact values, never both. Reuse stored axis bindings or infer one compatible Polar encoding. Existing components are edited with the matching `edit` action. [Axes](../../../../api/axes/#polar-component-creation)
+
+## `editThetaAxisLabels`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+editThetaAxisLabels(options?: ThetaAxisLabelOptions): ChartProgram;
+```
+
+Named option contracts: [`ThetaAxisLabelOptions`](../../../../reference/types/#type-thetaaxislabeloptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `count` | Optional / branch-dependent | `number \| undefined` |
+| `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
+| `offset` | Optional / branch-dependent | `number \| undefined` |
+| `format` | Optional / branch-dependent | `AxisFormat \| undefined` |
+| `color` | Optional / branch-dependent | `string \| undefined` |
+| `fontSize` | Optional / branch-dependent | `number \| undefined` |
+| `fontFamily` | Optional / branch-dependent | `string \| undefined` |
+| `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+| `labelMap` | Optional / branch-dependent | `"auto" \| DisplayLabelMap \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editThetaAxisLabels({ count?, values?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight? } = {})
+```
+
+Edit perimeter theta labels. [Axes](../../../../api/axes/)
+
+## `createRadialAxisLabels`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+createRadialAxisLabels(options?: CreateRadialAxisLabelsOptions): ChartProgram;
+```
+
+Named option contracts: [`CreateRadialAxisLabelsOptions`](../../../../reference/types/#type-createradialaxislabelsoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `offset` | Optional / branch-dependent | `number \| undefined` |
+| `format` | Optional / branch-dependent | `AxisFormat \| undefined` |
+| `color` | Optional / branch-dependent | `string \| undefined` |
+| `fontSize` | Optional / branch-dependent | `number \| undefined` |
+| `fontFamily` | Optional / branch-dependent | `string \| undefined` |
+| `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+| `count` | Optional / branch-dependent | `number \| undefined` |
+| `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
+| `scale` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `angle` | Optional / branch-dependent | `number \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createRadialAxisLabels({ scale?, coordinate?, angle?, count?, values?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight? } = {})
+```
+
+Create missing radial-axis labels independently of the other components. Use count or exact values, never both. Reuse stored axis bindings or infer one compatible Polar encoding. Existing components are edited with the matching `edit` action. [Axes](../../../../api/axes/#polar-component-creation)
+
+## `editRadialAxisLabels`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+editRadialAxisLabels(options?: PolarLabelOptions): ChartProgram;
+```
+
+Named option contracts: [`PolarLabelOptions`](../../../../reference/types/#type-polarlabeloptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `count` | Optional / branch-dependent | `number \| undefined` |
+| `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
+| `offset` | Optional / branch-dependent | `number \| undefined` |
+| `format` | Optional / branch-dependent | `AxisFormat \| undefined` |
+| `color` | Optional / branch-dependent | `string \| undefined` |
+| `fontSize` | Optional / branch-dependent | `number \| undefined` |
+| `fontFamily` | Optional / branch-dependent | `string \| undefined` |
+| `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editRadialAxisLabels({ count?, values?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight? } = {})
+```
+
+Edit radial value labels. [Axes](../../../../api/axes/)
+
+## `createThetaAxisTitle`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+createThetaAxisTitle(options?: CreateThetaAxisTitleOptions): ChartProgram;
+```
+
+Named option contracts: [`CreateThetaAxisTitleOptions`](../../../../reference/types/#type-createthetaaxistitleoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `text` | Optional / branch-dependent | `string \| undefined` |
+| `offset` | Optional / branch-dependent | `number \| undefined` |
+| `color` | Optional / branch-dependent | `string \| undefined` |
+| `fontSize` | Optional / branch-dependent | `number \| undefined` |
+| `fontFamily` | Optional / branch-dependent | `string \| undefined` |
+| `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+| `scale` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createThetaAxisTitle({ scale?, coordinate?, text?, offset?, color?, fontSize?, fontFamily?, fontWeight? } = {})
+```
+
+Create missing theta-axis title independently of the other components. Reuse stored axis bindings or infer one compatible Polar encoding. Existing components are edited with the matching `edit` action. [Axes](../../../../api/axes/#polar-component-creation)
+
+## `editThetaAxisTitle`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+editThetaAxisTitle(options?: PolarTitleOptions): ChartProgram;
+```
+
+Named option contracts: [`PolarTitleOptions`](../../../../reference/types/#type-polartitleoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `text` | Optional / branch-dependent | `string \| undefined` |
+| `offset` | Optional / branch-dependent | `number \| undefined` |
+| `color` | Optional / branch-dependent | `string \| undefined` |
+| `fontSize` | Optional / branch-dependent | `number \| undefined` |
+| `fontFamily` | Optional / branch-dependent | `string \| undefined` |
+| `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editThetaAxisTitle({ text?, offset?, color?, fontSize?, fontFamily?, fontWeight? } = {})
+```
+
+Edit the theta title. [Axes](../../../../api/axes/)
+
+## `createRadialAxisTitle`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+createRadialAxisTitle(options?: CreateRadialAxisTitleOptions): ChartProgram;
+```
+
+Named option contracts: [`CreateRadialAxisTitleOptions`](../../../../reference/types/#type-createradialaxistitleoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `position` | Optional / branch-dependent | `"inside" \| "outside" \| undefined` |
+| `text` | Optional / branch-dependent | `string \| undefined` |
+| `offset` | Optional / branch-dependent | `number \| undefined` |
+| `color` | Optional / branch-dependent | `string \| undefined` |
+| `fontSize` | Optional / branch-dependent | `number \| undefined` |
+| `fontFamily` | Optional / branch-dependent | `string \| undefined` |
+| `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+| `scale` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `angle` | Optional / branch-dependent | `number \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createRadialAxisTitle({ scale?, coordinate?, angle?, text?, offset?, color?, fontSize?, fontFamily?, fontWeight?, position? } = {})
+```
+
+Create missing radial-axis title independently of the other components. Reuse stored axis bindings or infer one compatible Polar encoding. Existing components are edited with the matching `edit` action. [Axes](../../../../api/axes/#polar-component-creation)
+
+## `editRadialAxisTitle`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+editRadialAxisTitle(options?: RadialTitleOptions): ChartProgram;
+```
+
+Named option contracts: [`RadialTitleOptions`](../../../../reference/types/#type-radialtitleoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `position` | Optional / branch-dependent | `"inside" \| "outside" \| undefined` |
+| `text` | Optional / branch-dependent | `string \| undefined` |
+| `offset` | Optional / branch-dependent | `number \| undefined` |
+| `color` | Optional / branch-dependent | `string \| undefined` |
+| `fontSize` | Optional / branch-dependent | `number \| undefined` |
+| `fontFamily` | Optional / branch-dependent | `string \| undefined` |
+| `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editRadialAxisTitle({ text?, position?, offset?, color?, fontSize?, fontFamily?, fontWeight? } = {})
+```
+
+Edit the radial title. `position` accepts `"inside"` or `"outside"` and defaults
+to the baseline midpoint inside the plot. [Axes](../../../../api/axes/)
+
+## `createThetaGrid`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+createThetaGrid(options?: PolarGridOptions): ChartProgram;
+```
+
+Named option contracts: [`PolarGridOptions`](../../../../reference/types/#type-polargridoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `scale` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `count` | Optional / branch-dependent | `number \| undefined` |
+| `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
+| `color` | Optional / branch-dependent | `string \| undefined` |
+| `lineWidth` | Optional / branch-dependent | `number \| undefined` |
+| `strokeDash` | Optional / branch-dependent | `readonly number[] \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createThetaGrid({ scale?, coordinate?, count?, values?, color?, lineWidth?, strokeDash? } = {})
+```
+
+Create theta spokes behind related marks. [Grids](../../../../api/grids/)
+
+## `createRadialGrid`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+createRadialGrid(options?: PolarGridOptions): ChartProgram;
+```
+
+Named option contracts: [`PolarGridOptions`](../../../../reference/types/#type-polargridoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `scale` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `count` | Optional / branch-dependent | `number \| undefined` |
+| `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
+| `color` | Optional / branch-dependent | `string \| undefined` |
+| `lineWidth` | Optional / branch-dependent | `number \| undefined` |
+| `strokeDash` | Optional / branch-dependent | `readonly number[] \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createRadialGrid({ scale?, coordinate?, count?, values?, color?, lineWidth?, strokeDash? } = {})
+```
+
+Create concentric radial paths behind related marks. [Grids](../../../../api/grids/)
+
+## `editThetaGrid`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+editThetaGrid(options: EditPolarGridOptions): ChartProgram;
+```
+
+Named option contracts: [`EditPolarGridOptions`](../../../../reference/types/#type-editpolargridoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `count` | Optional / branch-dependent | `number \| undefined` |
+| `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
+| `color` | Optional / branch-dependent | `string \| undefined` |
+| `lineWidth` | Optional / branch-dependent | `number \| undefined` |
+| `strokeDash` | Optional / branch-dependent | `readonly number[] \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editThetaGrid({ count?, values?, color?, lineWidth?, strokeDash? })
+```
+
+Edit the existing theta grid. [Grids](../../../../api/grids/#editing-grids)
+
+## `editRadialGrid`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+editRadialGrid(options: EditPolarGridOptions): ChartProgram;
+```
+
+Named option contracts: [`EditPolarGridOptions`](../../../../reference/types/#type-editpolargridoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `count` | Optional / branch-dependent | `number \| undefined` |
+| `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
+| `color` | Optional / branch-dependent | `string \| undefined` |
+| `lineWidth` | Optional / branch-dependent | `number \| undefined` |
+| `strokeDash` | Optional / branch-dependent | `readonly number[] \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editRadialGrid({ count?, values?, color?, lineWidth?, strokeDash? })
+```
+
+Edit the existing radial grid. [Grids](../../../../api/grids/#editing-grids)
+
+## `createParallelAxes`, `createParallelAxis`, `editParallelAxis`, `removeParallelAxis`, `removeParallelAxes`
+
+```javascript
+createParallelAxes({ target?, coordinate? })
+createParallelAxis({ field, target?, line?, ticks?, labels?, ticksAndLabels?, title? })
+editParallelAxis({ field, target?, line?, ticks?, labels?, ticksAndLabels?, title? })
+removeParallelAxis({ field, target? })
+removeParallelAxes({ target?, coordinate? })
+```
+
+Full-only field-selected Parallel guides. Create requires missing resources;
+edit/removal requires existing resources. Component `false` skips creation or
+removes an existing component. Group and individual tick/label options are
+exclusive. Field recipes and explicit titles survive dimension reordering.
+The last component removal clears the guide owner. [Axes](../../../../api/axes/) owns
+exact styles, defaults, inference, validation and replay behavior.
+
+## Complete single-channel axes
+
+```javascript
+createXAxis({ scale?, coordinate?, position?, line?, ticksAndLabels?, title? })
+createYAxis({ scale?, coordinate?, position?, line?, ticksAndLabels?, title? })
+editXAxis({ position?, line?: false | {...}, ticks?: false | {...},
+  labels?: false | {...}, ticksAndLabels?: false | {...}, title?: false | {...} })
+editYAxis({ position?, line?: false | {...}, ticks?: false | {...},
+  labels?: false | {...}, ticksAndLabels?: false | {...}, title?: false | {...} })
+```
+
+Cartesian and Polar complete-axis creators accept `false` for `line`,
+`ticksAndLabels`, or `title` to omit those components; at least one must remain
+enabled. Complete-axis edits update only the selected components of an existing axis.
+Each component accepts its edit object or `false` for removal. Use
+`ticksAndLabels` for a coordinated tick/label edit or removal, or `ticks` and
+`labels` for independent edits/removals; do not combine both forms. Removal
+preserves scale, coordinate, encoding, and data, while the last component also
+cleans the empty axis state.
+
+Cartesian `createXAxis`/`createYAxis` can bind a standalone scale without marks:
+provide both `coordinate` and `scale`, with an existing Cartesian coordinate
+and explicit nonempty scale domain. The default title is the scale ID.
+Scale, Canvas, and coordinate frame edits update the axis. Auto domains require
+data consumers; unrelated channel or coordinate bindings are rejected.
+
+## Axis lines, ticks, and labels
+
+```javascript
+createXAxisLine({ scale?, position?, color?, lineWidth? })
+createYAxisLine({ scale?, position?, color?, lineWidth? })
+editXAxisLine({ position?, color?, lineWidth? })
+editYAxisLine({ position?, color?, lineWidth? })
+
+createXAxisTicks({ scale?, position?, count?, values?, length?, color?, lineWidth?, alongOffset? })
+createYAxisTicks({ scale?, position?, count?, values?, length?, color?, lineWidth?, alongOffset? })
+editXAxisTicks({ position?, count?, values?, length?, color?, lineWidth?, alongOffset? })
+editYAxisTicks({ position?, count?, values?, length?, color?, lineWidth?, alongOffset? })
+
+createXAxisLabels({
+  scale?, position?, count?, values?, offset?, format?, color?,
+  fontSize?, fontFamily?, fontWeight?, alongOffset?, flush?, labelMap?, colorMap?
+})
+createYAxisLabels({
+  scale?, position?, count?, values?, offset?, format?, color?,
+  fontSize?, fontFamily?, fontWeight?, alongOffset?, flush?, labelMap?, colorMap?
+})
+editXAxisLabels({
+  position?, count?, values?, offset?, format?, color?,
+  fontSize?, fontFamily?, fontWeight?, alongOffset?, flush?, labelMap?, colorMap?
+})
+editYAxisLabels({
+  position?, count?, values?, offset?, format?, color?,
+  fontSize?, fontFamily?, fontWeight?, alongOffset?, flush?, labelMap?, colorMap?
+})
+```
+
+Axis `position` is `"bottom" | "top"` for x and `"left" | "right"` for y.
+Label `format` accepts `"auto"`, `{ decimals }`, `.0`–`.12` precision with
+`f`, `%`, or `e`, or a UTC sequence of `%Y/%m/%d/%b` directives and literals
+when compatible with the resolved scale. Use `%%` for a literal percent;
+unknown or dangling directives reject.
+
+## Tick/label groups and axis titles
+
+```javascript
+createXAxisTicksAndLabels({ scale?, position?, count?, values?, ticks?, labels? })
+createYAxisTicksAndLabels({ scale?, position?, count?, values?, ticks?, labels? })
+editXAxisTicksAndLabels({ position?, count?, values?, ticks?, labels? })
+editYAxisTicksAndLabels({ position?, count?, values?, ticks?, labels? })
+
+createXAxisTitle({
+  text?, scale?, position?, at?, offset?, rotation?, color?,
+  fontSize?, fontFamily?, fontWeight?, overlap?
+})
+createYAxisTitle({
+  text?, scale?, position?, at?, offset?, rotation?, color?,
+  fontSize?, fontFamily?, fontWeight?, overlap?
+})
+editXAxisTitle({
+  text?, position?, at?, offset?, rotation?, color?,
+  fontSize?, fontFamily?, fontWeight?, overlap?
+})
+editYAxisTitle({
+  text?, position?, at?, offset?, rotation?, color?,
+  fontSize?, fontFamily?, fontWeight?, overlap?
+})
+```
+
+Cartesian title `text` keeps explicit line breaks (LF, CRLF, or CR), including
+blank lines. Lines form a centered block with spacing of `fontSize * 1.2`;
+rotation applies to the complete block. Creation, editing, Canvas/scale updates,
+facets and saved programs retain the same lines. Canvas and label-clearance
+checks use their full bounds. Returning to single-line text removes the old lines.
+
+Cartesian title `rotation` accepts a finite legacy number in radians or
+`{ value, unit: "degrees" | "radians" }`. Both forms normalize to concrete
+radians. Polar component `angle` remains degree-valued placement.
+
+Cartesian title `overlap` is `"error"` by default. Explicit `"allow"` permits only
+that title to intersect labels of its own axis. Label-label overlap and Canvas
+bounds remain independent checks. Complete axes accept the policy in `title`;
+focused and whole-axis editors preserve it when omitted. Resetting to `"error"`
+requires a valid final layout. The same policy applies when labels are edited
+after the title and through Canvas, scale, data, facet and saved-program replay.
+
+## Complete axis removal
+
+```javascript
+removeXAxis({ coordinate?, scale? })
+removeYAxis({ coordinate?, scale? })
+```
+
+Remove one complete Cartesian axis. Optional selectors must match the existing
+resource. [Axes](../../../../api/axes/)
+
+## Directional grids
+
+```javascript
+createHorizontalGrid({ scale?, coordinate?, count?, values?, color?, lineWidth?, strokeDash?, alongOffset? })
+createVerticalGrid({ scale?, coordinate?, count?, values?, color?, lineWidth?, strokeDash?, alongOffset? })
+editHorizontalGrid({ count?, values?, color?, lineWidth?, strokeDash? })
+editVerticalGrid({ count?, values?, color?, lineWidth?, strokeDash? })
+editGrid({
+  horizontal?: { count?, values?, color?, lineWidth?, strokeDash? },
+  vertical?: { count?, values?, color?, lineWidth?, strokeDash? }
+})
+```
+
+Directional grid edits require an existing grid. Their `values` option accepts
+an exact finite array or `"auto"` to restore current axis/scale inference.
+`editGrid` applies one or both directional edits through the same actions.
+
+```javascript
+removeGrid({ horizontal?, vertical? })
+```
+
+Remove all existing directions when omitted, or only directions selected with
+`true`.
+
+See [Coordinates](../../../../api/coordinates/) and
+[Advanced axis components](../../../../advanced/axis-components/).
+
+## Focused legend edits
+
+```javascript
+editLegendLayout({
+  target?, channel?, position?, layout?, align?, direction?, columns?, offset?,
+  titlePosition?, itemGap?, rowPadding?, titlePadding?
+})
+editLegendLabels({ target?, channel?, offset?, color?, fontSize?, fontFamily?, fontWeight?, format? })
+editLegendTitle({
+  target?, channel?, title?, color?, fontSize?, fontFamily?, fontWeight?, align?
+})
+editLegendSymbols({ target?, channel?, symbol?, count?, gradient? })
+editLegendBorder({ target?, channel?, border })
+```
+
+`editLegendLayout` owns content spacing and its edit-only `"auto"` reset. Title editing remains text/style-only; block editing retains its original gap contract. See [content spacing](../../../../api/legends/#space-rows-by-content).
+
+Edit one legend component without constructing the nested options accepted by
+`editLegend`. Each action uses the same target inference, validation, and
+rematerialization as `editLegend`. At least one component change is required.
+[Editing legends](../../../../api/legends/editing/#focused-edits)
+
+## Related
+
+[Action Reference](../../../../reference/actions/) · [Chart API](../../../../api/) · [Supported Features](../../../../supported-features/)

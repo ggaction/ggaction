@@ -1,0 +1,6 @@
+export interface ErrorBandExplicitIntervalChannel {
+  center: string;
+  lower: string;
+  upper: string;
+  scale?: NonPointQuantitativePositionScaleOptions;
+}

@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 3,
+  "name": "createThetaAxisLine",
+  "layer": "user-facing",
+  "domain": "axes",
+  "summary": "Create missing theta-axis line independently of the other components.",
+  "signature": "createThetaAxisLine(options?: CreateThetaAxisLineOptions): ChartProgram;",
+  "intents": [
+    "create theta axis line",
+    "create",
+    "add",
+    "axis guide",
+    "scale annotation",
+    "theta-axis line",
+    "angular baseline"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "compatible scale or encoding context"
+    ],
+    "owns": [
+      "theta-axis line"
+    ],
+    "idOptions": [
+      "scale",
+      "coordinate"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editSemantic",
+    "createGraphics",
+    "editThetaAxisLine"
+  ],
+  "editableVia": [
+    "editThetaAxisLine"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "lineWidth",
+      "unit": "logical-pixel"
+    }
+  ],
+  "inference": [
+    {
+      "input": "scale",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "compatible scale or encoding context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "color",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "lineWidth",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "scale",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createThetaAxisLine({ scale?, coordinate?, color?, lineWidth? })"
+  ],
+  "snippet": "program.createThetaAxisLine({})",
+  "errors": [],
+  "route": "/reference/actions/guides/#createthetaaxisline"
+}

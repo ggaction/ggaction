@@ -1,0 +1,15 @@
+export type ThetaEncodingOptions = {
+  /**
+   * Arc marks interpret an aggregate-free quantitative field as per-row sector
+   * weights. Categorical arc theta retains the count and weighted-sum modes.
+   */
+  field: string;
+  target?: string;
+  scale?: ThetaScaleOptions;
+  coordinate?: string;
+  aggregate?: "count" | "sum";
+  weight?: string;
+} & (
+  | { fieldType?: Exclude<FieldType, "temporal">; temporalUnit?: never }
+  | { fieldType: "temporal"; temporalUnit?: TemporalInputUnit }
+);

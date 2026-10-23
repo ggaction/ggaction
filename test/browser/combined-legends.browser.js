@@ -1,3 +1,4 @@
+import { saveBrowserEvidence } from "../support/browser.js";
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import {mkdtemp,writeFile,rm} from 'node:fs/promises';
@@ -35,5 +36,5 @@ test('shared numeric samples match literal Canvas and SVG on DOM and Offscreen s
   assert.equal(result.count,90);assert.deepEqual(result.failures,[]);assert.equal(result.svgExact,true);
   assert.deepEqual(result.circles,[[10,290,1],[205,150,2],[400,10,3],[433.5,48.5,1],[433.5,66.5,2],[433.5,84.5,3]]);
   assertNoBrowserErrors(opened.errors,'combined-legends');await opened.page.close();
- }finally{await closeBrowserWithEvidence(browser);await server?.close();await rm(directory,{recursive:true,force:true});}
+ } catch (error) { await saveBrowserEvidence(browser, error); throw error; }finally{await closeBrowserWithEvidence(browser);await server?.close();await rm(directory,{recursive:true,force:true});}
 });

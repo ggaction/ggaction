@@ -1,0 +1,168 @@
+{
+  "schemaVersion": 3,
+  "name": "editRegression",
+  "layer": "user-facing",
+  "domain": "statistics",
+  "summary": "Revise the model through its stable point owner.",
+  "signature": "editRegression(options: EditRegressionOptions): ChartProgram;",
+  "intents": [
+    "edit regression",
+    "edit",
+    "change",
+    "statistical layer",
+    "statistical transform",
+    "regression",
+    "fitted line and band"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing regression",
+      "statistical source and coordinate context"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target",
+      "data"
+    ]
+  },
+  "authoringRoles": [
+    "H1",
+    "H3"
+  ],
+  "wraps": [
+    "createRegressionData",
+    "editRegressionBand",
+    "editRegressionLine"
+  ],
+  "editableVia": [
+    "editRegression"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "data",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing regression",
+      "statistical source and coordinate context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "placement",
+      "required": false,
+      "type": "\"plot-last\" | \"source\" | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "data",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "x",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "y",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "groupBy",
+      "required": false,
+      "type": "string | false | undefined"
+    },
+    {
+      "name": "method",
+      "required": false,
+      "type": "RegressionMethod | undefined"
+    },
+    {
+      "name": "degree",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "span",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "robustIterations",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "confidenceMethod",
+      "required": false,
+      "type": "ConfidenceIntervalMethod | undefined"
+    },
+    {
+      "name": "level",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "confidence",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "interval",
+      "required": false,
+      "type": "false | RegressionInterval | undefined"
+    },
+    {
+      "name": "missing",
+      "required": false,
+      "type": "\"drop\" | \"error\" | undefined"
+    },
+    {
+      "name": "predict",
+      "required": false,
+      "type": "false | RegressionPredictOptions | undefined"
+    },
+    {
+      "name": "band",
+      "required": false,
+      "type": "false | RegressionBandOptions | undefined"
+    },
+    {
+      "name": "line",
+      "required": false,
+      "type": "(StrokeStyleDetails & { strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; }) | undefined"
+    },
+    {
+      "name": "sourceBinding",
+      "required": false,
+      "type": "\"fixed\" | \"follow\" | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editRegression({ target?, data?, placement?, x?, y?, groupBy?, method?, degree? })"
+  ],
+  "snippet": "program.editRegression({ placement: \"plot-last\" })",
+  "errors": [],
+  "route": "/reference/actions/statistics/#editregression"
+}

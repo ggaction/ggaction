@@ -1,0 +1,7 @@
+type DatasetImputedBaseTransform = {
+  readonly type: "impute";
+  readonly fields: readonly string[];
+  readonly groupBy: readonly string[];
+  readonly edges: "keep" | "error";
+  readonly maxGap?: number;
+};

@@ -1,0 +1,1 @@
+export type EditStrokeWidthScaleOptions = FocusedScaleSelection & WithoutScaleId<StrokeWidthScaleOptions>;

@@ -1,3 +1,4 @@
+import { saveBrowserEvidence } from "../support/browser.js";
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import {mkdtemp,writeFile,rm} from 'node:fs/promises';
@@ -40,5 +41,5 @@ test('browser Canvas renders directional named glyphs like independent polygon p
   });
   assert.equal(results.length,8);for(const result of results){assert.equal(result.exact,true,JSON.stringify(result));assert.ok(result.ink>10);}
   assertNoBrowserErrors(opened.errors,'directional points');await page.close();
- }finally{await closeBrowserWithEvidence(browser);await server?.close();await rm(directory,{recursive:true,force:true});}
+ } catch (error) { await saveBrowserEvidence(browser, error); throw error; }finally{await closeBrowserWithEvidence(browser);await server?.close();await rm(directory,{recursive:true,force:true});}
 });

@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 3,
+  "name": "createAxes",
+  "layer": "user-facing",
+  "domain": "axes",
+  "summary": "Create Cartesian or Polar axes directly, including inferred titles and ticks.",
+  "signature": "createAxes(options?: CreateAxesOptions): ChartProgram;",
+  "intents": [
+    "create axes",
+    "create",
+    "add",
+    "axis guide",
+    "scale annotation",
+    "x and y axes",
+    "Cartesian guides"
+  ],
+  "lifecycle": "Aggregate create-only",
+  "resources": {
+    "prerequisites": [
+      "compatible scale or encoding context"
+    ],
+    "owns": [
+      "x and y axes"
+    ],
+    "idOptions": [
+      "coordinate"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "createThetaAxis",
+    "createRadialAxis",
+    "createXAxis",
+    "createYAxis",
+    "createParallelAxes"
+  ],
+  "editableVia": [
+    "editAxes"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default",
+      "basic"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "coordinate",
+      "strategy": "documented-auto"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "compatible scale or encoding context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "{ id?: string | undefined; type?: \"auto\" | \"cartesian\" | \"parallel\" | \"polar\" | undefined; } | undefined"
+    },
+    {
+      "name": "x",
+      "required": false,
+      "type": "false | CompleteAxisOptions<XAxisPosition> | readonly [NamedCompleteAxis<XAxisPosition>, ...NamedCompleteAxis<XAxisPosition>[]] | undefined"
+    },
+    {
+      "name": "y",
+      "required": false,
+      "type": "false | CompleteAxisOptions<YAxisPosition> | readonly [NamedCompleteAxis<YAxisPosition>, ...NamedCompleteAxis<YAxisPosition>[]] | undefined"
+    },
+    {
+      "name": "theta",
+      "required": false,
+      "type": "false | CompletePolarAxisOptions | undefined"
+    },
+    {
+      "name": "radius",
+      "required": false,
+      "type": "false | CompleteRadialAxisOptions | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createAxes({ coordinate?, x?, y?, theta?, radius? })"
+  ],
+  "snippet": "program.createAxes({})",
+  "errors": [],
+  "route": "/reference/actions/guides/#createaxes"
+}

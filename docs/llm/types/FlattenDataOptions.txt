@@ -1,0 +1,6 @@
+export interface FlattenDataOptions {
+  id: string;
+  source?: string;
+  fields: readonly string[];
+  as?: readonly string[];
+}

@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 3,
+  "name": "editStrokeWidthScale",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Edits stroke-width scale, including settings for line-width mapping.",
+  "signature": "editStrokeWidthScale(options: EditStrokeWidthScaleOptions): ChartProgram;",
+  "intents": [
+    "edit stroke width scale",
+    "edit",
+    "change",
+    "chart setup",
+    "data and scales",
+    "stroke-width scale",
+    "line-width mapping"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing stroke-width scale"
+    ],
+    "owns": [],
+    "idOptions": [
+      "id",
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editScale"
+  ],
+  "editableVia": [
+    "editStrokeWidthScale",
+    "editScale"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "domain",
+      "strategy": "documented-auto"
+    },
+    {
+      "input": "range",
+      "strategy": "documented-auto"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing stroke-width scale"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "zero",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "clamp",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "reverse",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "base",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "exponent",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "constant",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "domain",
+      "required": false,
+      "type": "\"auto\" | readonly [number, number] | undefined"
+    },
+    {
+      "name": "range",
+      "required": false,
+      "type": "\"auto\" | readonly [number, number] | undefined"
+    },
+    {
+      "name": "type",
+      "required": false,
+      "type": "\"linear\" | \"log\" | \"pow\" | \"sqrt\" | \"symlog\" | undefined"
+    },
+    {
+      "name": "nice",
+      "required": false,
+      "type": "boolean | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editStrokeWidthScale({ id?, target?, zero?, clamp?, reverse?, base?, exponent?, constant? })"
+  ],
+  "snippet": "program.editStrokeWidthScale({ range: [1, 8] })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#editstrokewidthscale"
+}

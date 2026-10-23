@@ -1,0 +1,12 @@
+type IntervalPlotBaseOptions = {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  xOffset?: ErrorBarOffsetChannel;
+  yOffset?: ErrorBarOffsetChannel;
+  groupBy?: string | false;
+  color?: BasicColorChannel;
+  point?: CreateScatterPlotOptions["point"];
+  errorBar?: IntervalPlotErrorBarOptions;
+  guides?: false | CartesianSeparateGuideOptions;
+};

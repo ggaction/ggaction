@@ -1,0 +1,5 @@
+export interface CreateDataOptions<Row extends object> {
+  id?: string;
+  values: readonly (Row extends readonly unknown[] ? never : Row & StoredCell<Row>)[];
+  schema?: SourceSchemaInput;
+}

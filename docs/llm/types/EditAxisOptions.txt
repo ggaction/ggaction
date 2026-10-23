@@ -1,0 +1,13 @@
+export interface EditAxisOptions<P extends string> {
+  /** Omission preserves placement; false restores the ordinary overlay. */
+  underlay?: boolean;
+  target?: string;
+  /** Omitted edits preserve the frame; zero restores the plot-edge frame. */
+  offset?: number;
+  position?: P;
+  line?: false | AxisLineStyleOptions;
+  ticks?: false | Omit<AxisTickOptions<P>, "scale" | "position" | "target">;
+  labels?: false | Omit<AxisLabelOptions<P>, "scale" | "position" | "target">;
+  ticksAndLabels?: false | Omit<AxisTicksAndLabelsOptions<P>, "scale" | "position" | "target">;
+  title?: false | Omit<AxisTitleOptions<P>, "scale" | "position" | "target">;
+}

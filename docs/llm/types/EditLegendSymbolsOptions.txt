@@ -1,0 +1,9 @@
+export interface EditLegendSymbolsOptions {
+  clipHeight?: number | "auto";
+  target?: string;
+  /** Select one existing block without changing its content. */
+  channel?: LegendChannel;
+  symbol?: LegendSymbolRecipe;
+  count?: number;
+  gradient?: { length?: number; thickness?: number; opacity?: number };
+}

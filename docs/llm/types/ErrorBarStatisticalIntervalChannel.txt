@@ -1,0 +1,8 @@
+export interface ErrorBarStatisticalIntervalChannel {
+  field?: string;
+  center?: IntervalCenter;
+  extent?: IntervalExtent;
+  method?: ConfidenceIntervalMethod;
+  level?: number;
+  scale?: NonPointQuantitativePositionScaleOptions;
+}

@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 3,
+  "name": "removeJitter",
+  "layer": "user-facing",
+  "domain": "marks",
+  "summary": "Remove the target point mark's jitter assignment and restore positions derived directly from its semantic encodings.",
+  "signature": "removeJitter(options?: RemoveJitterOptions): ChartProgram;",
+  "intents": [
+    "remove jitter",
+    "remove",
+    "delete",
+    "graphical mark",
+    "mark appearance",
+    "point jitter",
+    "overplotting"
+  ],
+  "lifecycle": "Assignment",
+  "resources": {
+    "prerequisites": [
+      "existing point jitter"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [],
+  "editableVia": [],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing point jitter"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    }
+  ],
+  "callPatterns": [
+    "removeJitter({ target? })"
+  ],
+  "snippet": "program.removeJitter({})",
+  "errors": [],
+  "route": "/reference/actions/marks/#removejitter"
+}

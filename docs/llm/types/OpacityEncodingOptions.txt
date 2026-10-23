@@ -1,0 +1,9 @@
+export type OpacityEncodingOptions =
+  | { value: number; field?: never; target?: string; fieldType?: never; scale?: never }
+  | {
+      field: string;
+      value?: never;
+      target?: string;
+      fieldType?: "quantitative";
+      scale?: OpacityScaleOptions;
+    };

@@ -1,0 +1,4 @@
+# All Chart Examples
+
+This catalog includes every maintained public chart example. Start with the
+[curated gallery](../../../gallery/) when you want a shorter representative set.

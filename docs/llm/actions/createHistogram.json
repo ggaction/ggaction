@@ -1,0 +1,164 @@
+{
+  "schemaVersion": 3,
+  "name": "createHistogram",
+  "layer": "user-facing",
+  "domain": "charts",
+  "summary": "Create a bar layer with atomic bin and count encodings.",
+  "signature": "createHistogram(options: CreateHistogramOptions): ChartProgram;",
+  "intents": [
+    "create histogram",
+    "create",
+    "add",
+    "complete chart",
+    "chart facade",
+    "histogram",
+    "one-dimensional distribution"
+  ],
+  "lifecycle": "Aggregate create-only",
+  "resources": {
+    "prerequisites": [
+      "canvas and dataset context"
+    ],
+    "owns": [
+      "histogram"
+    ],
+    "idOptions": [
+      "xScale",
+      "yScale",
+      "id",
+      "data",
+      "coordinate"
+    ]
+  },
+  "authoringRoles": [
+    "H0",
+    "H1"
+  ],
+  "wraps": [
+    "createBarMark",
+    "encodeHistogram",
+    "encodeColor",
+    "createGuides"
+  ],
+  "editableVia": [],
+  "supports": {
+    "entryPoints": [
+      "default",
+      "basic"
+    ]
+  },
+  "units": [
+    {
+      "path": "maxBins",
+      "unit": "count"
+    }
+  ],
+  "inference": [
+    {
+      "input": "xScale",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "yScale",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "data",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "complete",
+    "requires": [
+      "canvas and dataset context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "xScale",
+      "required": false,
+      "type": "NonPointQuantitativePositionScaleOptions | undefined"
+    },
+    {
+      "name": "yScale",
+      "required": false,
+      "type": "NonPointZeroSupportingPositionScaleOptions | undefined"
+    },
+    {
+      "name": "weight",
+      "required": false,
+      "type": "StatisticalWeight | undefined"
+    },
+    {
+      "name": "maxBins",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "binStep",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "binBoundaries",
+      "required": false,
+      "type": "readonly [number, number, ...number[]] | undefined"
+    },
+    {
+      "name": "stack",
+      "required": false,
+      "type": "StackMode | undefined"
+    },
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "data",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "field",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "color",
+      "required": false,
+      "type": "HistogramCategoricalColorChannel | undefined"
+    },
+    {
+      "name": "bar",
+      "required": false,
+      "type": "(StrokeStyleDetails & { cornerRadius?: number | undefined; cornerRadiusTopLeft?: number | undefined; cornerRadiusTopRight?: number | undefined; cornerRadiusBottomRight?: number | undefined; cornerRadiusBottomLeft?: number | undefined; } & { ...; }) | undefined"
+    },
+    {
+      "name": "guides",
+      "required": false,
+      "type": "false | (Omit<CartesianCategoricalGuideOptions, \"grid\"> & { grid?: false | ContinuousCartesianGridOptions | undefined; }) | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createHistogram({ field, maxBins? | binStep? | binBoundaries? })",
+    "createHistogram({ field, color?, stack?, guides? })"
+  ],
+  "snippet": "program.createHistogram({ field: \"value\" })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#createhistogram"
+}

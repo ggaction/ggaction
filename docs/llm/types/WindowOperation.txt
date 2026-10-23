@@ -1,0 +1,18 @@
+export type WindowOperation =
+  | { op: "rowNumber" | "rank" | "denseRank"; as: string }
+  | { op: "cumulativeSum"; field: string; as: string }
+  | {
+      op: "lag" | "lead";
+      field: string;
+      as: string;
+      offset?: number;
+      default?: unknown;
+    }
+  | {
+      op: "movingMean" | "movingSum";
+      field: string;
+      as: string;
+      frame: WindowFrame;
+      minPeriods?: number;
+      missing?: "error" | "skip";
+    };

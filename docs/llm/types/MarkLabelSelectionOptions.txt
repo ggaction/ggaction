@@ -1,0 +1,4 @@
+export type MarkLabelSelectionOptions =
+  | { select?: never; selection?: never }
+  | { select: MarkSelector; selection?: never }
+  | { selection: string; select?: never };

@@ -1,0 +1,17 @@
+type DynamicReferenceBinding = {
+  readonly id?: string;
+  readonly source: string;
+  readonly axis: "x" | "y";
+  /** Distribution/endpoint measurement axes and quantitative Horizon X use original bound observations, retaining multiplicity. Horizon folded Y is unsupported. */
+  readonly population?: "boundData" | "visibleItems";
+  readonly field?: string;
+  /** Compute a separate reference for each observed value of this field. */
+  readonly groupBy?: string;
+  readonly x?: never;
+  readonly y?: never;
+  readonly space?: never;
+  readonly data?: never;
+  readonly coordinate?: never;
+  readonly temporalUnit?: never;
+};
+/** A statistical line (mean by default) or an exact two-statistic interval. */

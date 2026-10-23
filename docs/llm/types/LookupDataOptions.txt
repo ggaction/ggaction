@@ -1,0 +1,6 @@
+export interface LookupDataOptions {
+  id: string;
+  source?: string;
+  field: string;
+  lookup: { data: string; key: string; fields: readonly string[]; as?: readonly string[] };
+}

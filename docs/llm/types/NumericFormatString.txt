@@ -1,0 +1,4 @@
+export type NumericFormatString =
+  | `.${ValueFormatPrecision}${"f" | "%" | "e"}`
+  | ","
+  | `,.${ValueFormatPrecision}f`;

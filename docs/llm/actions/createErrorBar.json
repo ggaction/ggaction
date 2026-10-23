@@ -1,0 +1,193 @@
+{
+  "schemaVersion": 3,
+  "name": "createErrorBar",
+  "layer": "user-facing",
+  "domain": "statistics",
+  "summary": "Create vertical or horizontal statistical or explicit intervals.",
+  "signature": "createErrorBar(options?: ErrorBarOptions): ChartProgram;",
+  "intents": [
+    "create error bar",
+    "create",
+    "add",
+    "statistical layer",
+    "statistical transform",
+    "error bar",
+    "uncertainty whisker"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "statistical source and coordinate context"
+    ],
+    "owns": [
+      "error bar"
+    ],
+    "idOptions": [
+      "id",
+      "target",
+      "data",
+      "coordinate"
+    ]
+  },
+  "authoringRoles": [
+    "H1"
+  ],
+  "wraps": [
+    "createRuleMark",
+    "encodeX",
+    "encodeY",
+    "editSemantic",
+    "encodeY2",
+    "encodeStroke",
+    "encodeStrokeWidth",
+    "encodeStrokeDash",
+    "encodeOpacity",
+    "encodeX2",
+    "createIntervalData"
+  ],
+  "editableVia": [
+    "editErrorBar"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "capSize",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "strokeWidth",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "opacity",
+      "unit": "probability"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "data",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "statistical source and coordinate context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "data",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "x",
+      "required": false,
+      "type": "ErrorBarIntervalChannel | ErrorBarPositionChannel | undefined"
+    },
+    {
+      "name": "y",
+      "required": false,
+      "type": "ErrorBarIntervalChannel | ErrorBarPositionChannel | undefined"
+    },
+    {
+      "name": "xOffset",
+      "required": false,
+      "type": "ErrorBarOffsetChannel | undefined"
+    },
+    {
+      "name": "yOffset",
+      "required": false,
+      "type": "ErrorBarOffsetChannel | undefined"
+    },
+    {
+      "name": "groupBy",
+      "required": false,
+      "type": "string | false | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "caps",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "capSize",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "stroke",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "strokeWidth",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "strokeDash",
+      "required": false,
+      "type": "DashPattern | DashStyle | undefined"
+    },
+    {
+      "name": "opacity",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "lineCap",
+      "required": false,
+      "type": "\"butt\" | \"round\" | \"square\" | undefined"
+    },
+    {
+      "name": "lineJoin",
+      "required": false,
+      "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+    },
+    {
+      "name": "miterLimit",
+      "required": false,
+      "type": "number | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createErrorBar({ id?, target?, data?, coordinate?, x?, y?, xOffset?, yOffset? })"
+  ],
+  "snippet": "program.createErrorBar({})",
+  "errors": [],
+  "route": "/reference/actions/statistics/#createerrorbar"
+}

@@ -5,6 +5,12 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "core-state": { prefix: "core/", floor: { lines: 80, branches: 75, functions: 80 }, rationale: "State and action boundaries must remain exercised." },
+  "all-renderers": { prefix: "renderers/", floor: { lines: 50, branches: 60, functions: 80 }, rationale: "Includes the lazy native loader; Canvas and explicit overrides retain stricter floors." },
+  "all-selectors": { prefix: "selectors/", floor: { lines: 80, branches: 80, functions: 80 }, rationale: "Resource identity and ambiguity are public contracts." },
+  "mcp": { prefix: "mcp/", floor: { lines: 85, branches: 75, functions: 70 }, rationale: "Adapter and server contracts need explicit evidence." },
+  "inspection": { prefix: "inspection", floor: { lines: 90, branches: 80, functions: 90 }, rationale: "Inspection descriptors and state must agree." },
+  "scene": { prefix: "scene", floor: { lines: 95, branches: 90, functions: 95 }, rationale: "Scene construction is a public boundary." },
   "legend-policies": Object.freeze({
     prefix: "grammar/legend",
     floor: Object.freeze({ lines: 90, branches: 80, functions: 100 }),
@@ -247,8 +253,11 @@ export function coverageFloorsForFiles(
 ) {
   const floors = {};
   for (const file of files) {
+    if (file === "mcp/cli.js") continue;
     for (const family of Object.values(families)) {
-      if (file.startsWith(family.prefix)) floors[file] = family.floor;
+      if (file.startsWith(family.prefix)) floors[file] = Object.fromEntries(
+        ["lines", "branches", "functions"].map(metric => [metric, Math.max(floors[file]?.[metric] ?? 0, family.floor[metric])])
+      );
     }
   }
   return Object.freeze({ ...floors, ...overrides });
@@ -268,10 +277,15 @@ export function parseCoverageTable(output) {
     const name = match[2].trim();
     stack.length = depth - 1;
     stack[depth - 1] = name;
-    if (match[3] === undefined) continue;
+    if (match[3] === undefined && !name.endsWith(".js")) continue;
+    const metrics = match.slice(3, 6).map(Number);
+    if (metrics.some(value => !Number.isFinite(value) || value < 0 || value > 100)) {
+      throw new Error(`Malformed coverage metrics for ${name}.`);
+    }
     const relative = stack[0] === "src"
       ? stack.slice(1).join("/")
       : stack.join("/");
+    if (files.has(relative)) throw new Error(`Duplicate coverage row: ${relative}`);
     files.set(relative, Object.freeze({
       lines: Number(match[3]),
       branches: Number(match[4]),
@@ -303,5 +317,21 @@ export function assertCriticalCoverage(
   }
   if (failures.length > 0) {
     throw new Error(`Critical coverage policy failed:\n${failures.join("\n")}`);
+  }
+}
+
+// The CLI exits/opens stdio and is exercised by installed subprocess consumers;
+// importing it into an instrumented test process would change that contract.
+export const SOURCE_COVERAGE_EXCLUSIONS = Object.freeze({
+  "mcp/cli.js": "Installed MCP stdio and missing-SDK consumer tests in scripts/package-consumer.js."
+});
+export function assertSourceCoverage(output, files = sourceFiles(sourceRoot), exclusions = SOURCE_COVERAGE_EXCLUSIONS) {
+  const coverage = parseCoverageTable(output);
+  const missing = files.filter(file => !coverage.has(file) && !Object.hasOwn(exclusions, file));
+  if (missing.length) throw new Error(`Source files missing from coverage: ${missing.join(", ")}`);
+  for (const [file, reason] of Object.entries(exclusions)) {
+    if (!files.includes(file) || typeof reason !== "string" || reason.length < 20) {
+      throw new Error(`Invalid source coverage exclusion: ${file}`);
+    }
   }
 }

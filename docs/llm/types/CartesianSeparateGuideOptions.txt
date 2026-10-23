@@ -1,0 +1,3 @@
+type CartesianSeparateGuideOptions = Omit<CartesianGuideOptions, "legend"> & {
+  legend?: false | (DistributiveLegendOmit<SeparateFilledLegendOptions, "order"> & { order?: CartesianLegendOrder });
+};

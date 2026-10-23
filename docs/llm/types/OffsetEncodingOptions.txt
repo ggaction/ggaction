@@ -1,0 +1,8 @@
+export interface OffsetEncodingOptions {
+  field: string;
+  target?: string;
+  fieldType?: "nominal" | "ordinal";
+  scale?: OffsetScaleOptions;
+  paddingInner?: number;
+  paddingOuter?: number;
+}

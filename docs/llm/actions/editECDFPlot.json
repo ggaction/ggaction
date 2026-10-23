@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 3,
+  "name": "editECDFPlot",
+  "layer": "user-facing",
+  "domain": "charts",
+  "summary": "Atomically revise an ECDF source or statistical role and rebuild its owned derived rows, path, final-series labels, and guides under the stable owner ID.",
+  "signature": "editECDFPlot(options: EditECDFPlotOptions): ChartProgram;",
+  "intents": [
+    "edit ecdf plot",
+    "edit",
+    "change",
+    "complete chart",
+    "chart facade",
+    "ECDF plot",
+    "empirical cumulative distribution"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing ECDF plot",
+      "canvas and dataset context"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target",
+      "data",
+      "coordinate"
+    ]
+  },
+  "authoringRoles": [
+    "H1",
+    "H3"
+  ],
+  "wraps": [
+    "removeMark",
+    "createECDFPlot"
+  ],
+  "editableVia": [
+    "editECDFPlot"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "data",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing ECDF plot",
+      "canvas and dataset context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "data",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "field",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "missing",
+      "required": false,
+      "type": "\"drop\" | \"error\" | undefined"
+    },
+    {
+      "name": "as",
+      "required": false,
+      "type": "ECDFOutputFields | undefined"
+    },
+    {
+      "name": "groupBy",
+      "required": false,
+      "type": "string | false | readonly [string, ...string[]] | undefined"
+    },
+    {
+      "name": "weight",
+      "required": false,
+      "type": "string | false | undefined"
+    },
+    {
+      "name": "color",
+      "required": false,
+      "type": "false | LineCategoricalColorChannel<NonPointCategoricalColorScaleOptions> | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editECDFPlot({ target?, data?, coordinate?, field?, missing?, as?, groupBy?, weight? })"
+  ],
+  "snippet": "program.editECDFPlot({ field: \"value\" })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#editecdfplot"
+}

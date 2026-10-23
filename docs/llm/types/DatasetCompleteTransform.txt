@@ -1,0 +1,14 @@
+export type DatasetCompleteTransform = {
+  readonly type: "complete";
+  readonly key: string;
+  readonly groupBy: readonly string[];
+  readonly fill: Readonly<Record<string, DatasetScalar>>;
+  readonly members?: string;
+} & (
+  | { readonly values: readonly DatasetScalar[]; readonly sequence?: never }
+  | {
+      readonly sequence: { readonly start: number; readonly end: number; readonly step: number };
+      readonly values?: never;
+    }
+  | { readonly values?: never; readonly sequence?: never }
+);

@@ -1,0 +1,8 @@
+type ImputedDataBaseOptions = {
+  id: string;
+  source?: string;
+  fields: string | readonly [string, ...string[]];
+  groupBy?: string | readonly string[];
+  edges?: "keep" | "error";
+  maxGap?: number;
+};

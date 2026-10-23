@@ -1,0 +1,5 @@
+export type ScalarAggregateOperation =
+  | "count" | "sum" | "mean" | "median" | "min" | "max"
+  | "distinct" | "valid" | "missing"
+  | "variance" | "varianceP" | "stdev" | "stdevP" | "stderr"
+  | "q1" | "q3" | "ciLower" | "ciUpper";

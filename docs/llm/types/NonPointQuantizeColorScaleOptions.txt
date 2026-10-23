@@ -1,0 +1,8 @@
+export type NonPointQuantizeColorScaleOptions = ScaleFields<
+  "id" | "clamp" | "reverse"
+> & {
+  type: "quantize";
+  domain?: "auto" | readonly [number, number];
+  range?: "auto" | readonly [string, string, ...string[]];
+  palette?: PaletteName | { name: PaletteName; count?: number };
+};

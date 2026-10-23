@@ -404,7 +404,7 @@ export function deriveTransformSchema(inputSchema, transform, values, { sourceId
       if (planned.lineage === undefined && !["complete", "impute"].includes(transform.type)) {
         return planned;
       }
-      return { ...planned, storageType: transform.type === "regressionStatistics" && planned.storageType === "number"
+      return { ...planned, storageType: ["regressionStatistics", "timeUnit"].includes(transform.type) && planned.storageType === "number"
         ? "number" : field.storageType, nullable: field.nullable, optional: field.optional };
     });
     for (const field of inferred.fields) {

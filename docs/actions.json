@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "packageVersion": "0.0.22",
+  "packageVersion": "0.0.23",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
   "count": 293,
@@ -1019,7 +1019,7 @@
         "requires": [
           "source dataset"
         ],
-        "allowsEmpty": false
+        "allowsEmpty": true
       },
       "options": [
         {
@@ -2769,6 +2769,11 @@
       },
       "options": [
         {
+          "name": "missing",
+          "required": false,
+          "type": "\"error\" | \"null\" | undefined"
+        },
+        {
           "name": "id",
           "required": true,
           "type": "string"
@@ -2815,7 +2820,7 @@
         }
       ],
       "callPatterns": [
-        "createTimeUnitData({ id, field, unit, source?, temporalUnit?, as?, timeZone?, weekStartsOn? })"
+        "createTimeUnitData({ id, field, unit, source?, missing?, temporalUnit?, as?, timeZone? })"
       ],
       "snippet": "program.createTimeUnitData({ id: \"time-unit-data-1\", field: \"value\", unit: \"month\" })",
       "errors": [],
@@ -3915,6 +3920,11 @@
           "type": "DerivedDataDependents | undefined"
         },
         {
+          "name": "missing",
+          "required": false,
+          "type": "\"error\" | \"null\" | undefined"
+        },
+        {
           "name": "field",
           "required": false,
           "type": "string | undefined"
@@ -3951,7 +3961,7 @@
         }
       ],
       "callPatterns": [
-        "editTimeUnitData({ target, dependents?, field?, temporalUnit?, as?, timeZone?, unit?, weekStartsOn? })"
+        "editTimeUnitData({ target, dependents?, missing?, field?, temporalUnit?, as?, timeZone?, unit? })"
       ],
       "snippet": "program.editTimeUnitData({ target: \"buckets\", unit: \"month\" })",
       "errors": [],
@@ -9288,7 +9298,7 @@
       "resources": {
         "prerequisites": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "owns": [
           "x position assignment"
@@ -9341,7 +9351,7 @@
         "state": "contextual",
         "requires": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "allowsEmpty": false
       },
@@ -9424,7 +9434,7 @@
       "resources": {
         "prerequisites": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "owns": [
           "y position assignment"
@@ -9478,7 +9488,7 @@
         "state": "contextual",
         "requires": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "allowsEmpty": false
       },
@@ -9634,7 +9644,7 @@
       "resources": {
         "prerequisites": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "owns": [
           "secondary x position assignment"
@@ -9684,7 +9694,7 @@
         "state": "contextual",
         "requires": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "allowsEmpty": false
       },
@@ -9752,7 +9762,7 @@
       "resources": {
         "prerequisites": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "owns": [
           "color assignment"
@@ -9799,7 +9809,7 @@
         "state": "contextual",
         "requires": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "allowsEmpty": false
       },
@@ -9877,7 +9887,7 @@
       "resources": {
         "prerequisites": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "owns": [
           "stroke dash assignment"
@@ -9918,7 +9928,7 @@
         "state": "contextual",
         "requires": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "allowsEmpty": false
       },
@@ -9976,7 +9986,7 @@
       "resources": {
         "prerequisites": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "owns": [
           "stroke color assignment"
@@ -10021,7 +10031,7 @@
         "state": "contextual",
         "requires": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "allowsEmpty": false
       },
@@ -10084,7 +10094,7 @@
       "resources": {
         "prerequisites": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "owns": [
           "stroke width assignment"
@@ -10128,7 +10138,7 @@
         "state": "contextual",
         "requires": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "allowsEmpty": false
       },
@@ -10186,7 +10196,7 @@
       "resources": {
         "prerequisites": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "owns": [
           "size assignment"
@@ -10227,7 +10237,7 @@
         "state": "contextual",
         "requires": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "allowsEmpty": false
       },
@@ -10285,7 +10295,7 @@
       "resources": {
         "prerequisites": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "owns": [
           "point shape assignment"
@@ -10326,7 +10336,7 @@
         "state": "contextual",
         "requires": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "allowsEmpty": false
       },
@@ -10379,7 +10389,7 @@
       "resources": {
         "prerequisites": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "owns": [
           "angle assignment"
@@ -10413,7 +10423,7 @@
         "state": "contextual",
         "requires": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "allowsEmpty": false
       },
@@ -10472,7 +10482,7 @@
       "resources": {
         "prerequisites": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "owns": [
           "opacity assignment"
@@ -10512,7 +10522,7 @@
         "state": "contextual",
         "requires": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "allowsEmpty": false
       },
@@ -10643,7 +10653,7 @@
       "resources": {
         "prerequisites": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "owns": [
           "theta assignment"
@@ -10694,7 +10704,7 @@
         "state": "contextual",
         "requires": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "allowsEmpty": false
       },
@@ -10767,7 +10777,7 @@
       "resources": {
         "prerequisites": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "owns": [
           "radial position assignment"
@@ -10813,7 +10823,7 @@
         "state": "contextual",
         "requires": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "allowsEmpty": false
       },
@@ -11024,7 +11034,7 @@
       "resources": {
         "prerequisites": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "owns": [
           "x offset assignment"
@@ -11076,7 +11086,7 @@
         "state": "contextual",
         "requires": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "allowsEmpty": false
       },
@@ -11139,7 +11149,7 @@
       "resources": {
         "prerequisites": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "owns": [
           "y offset assignment"
@@ -11191,7 +11201,7 @@
         "state": "contextual",
         "requires": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "allowsEmpty": false
       },
@@ -11254,7 +11264,7 @@
       "resources": {
         "prerequisites": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "owns": [
           "secondary y position assignment"
@@ -11304,7 +11314,7 @@
         "state": "contextual",
         "requires": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "allowsEmpty": false
       },
@@ -11606,7 +11616,7 @@
       "resources": {
         "prerequisites": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "owns": [
           "series grouping assignment"
@@ -11641,7 +11651,7 @@
         "state": "contextual",
         "requires": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "allowsEmpty": false
       },
@@ -11695,7 +11705,7 @@
       "resources": {
         "prerequisites": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "owns": [
           "path order assignment"
@@ -11729,7 +11739,7 @@
         "state": "contextual",
         "requires": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "allowsEmpty": false
       },
@@ -12184,7 +12194,7 @@
       "resources": {
         "prerequisites": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "owns": [
           "text content assignment"
@@ -12218,7 +12228,7 @@
         "state": "contextual",
         "requires": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "allowsEmpty": false
       },
@@ -12281,7 +12291,7 @@
       "resources": {
         "prerequisites": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "owns": [
           "horizontal text offset assignment"
@@ -12320,7 +12330,7 @@
         "state": "contextual",
         "requires": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "allowsEmpty": true
       },
@@ -12369,7 +12379,7 @@
       "resources": {
         "prerequisites": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "owns": [
           "vertical text offset assignment"
@@ -12408,7 +12418,7 @@
         "state": "contextual",
         "requires": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "allowsEmpty": true
       },
@@ -12457,7 +12467,7 @@
       "resources": {
         "prerequisites": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "owns": [
           "histogram assignment"
@@ -12513,7 +12523,7 @@
         "state": "contextual",
         "requires": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "allowsEmpty": false
       },
@@ -12596,7 +12606,7 @@
       "resources": {
         "prerequisites": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "owns": [
           "density plot assignment"
@@ -12662,7 +12672,7 @@
         "state": "contextual",
         "requires": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "allowsEmpty": false
       },
@@ -13343,6 +13353,11 @@
       },
       "options": [
         {
+          "name": "placement",
+          "required": false,
+          "type": "\"plot-last\" | \"source\" | undefined"
+        },
+        {
           "name": "target",
           "required": false,
           "type": "string | undefined"
@@ -13502,6 +13517,11 @@
       },
       "options": [
         {
+          "name": "placement",
+          "required": false,
+          "type": "\"plot-last\" | \"source\" | undefined"
+        },
+        {
           "name": "target",
           "required": false,
           "type": "string | undefined"
@@ -13593,9 +13613,9 @@
         }
       ],
       "callPatterns": [
-        "editRegression({ target?, data?, x?, y?, groupBy?, method?, degree?, span? })"
+        "editRegression({ target?, data?, placement?, x?, y?, groupBy?, method?, degree? })"
       ],
-      "snippet": "program.editRegression({ x: \"x\" })",
+      "snippet": "program.editRegression({ placement: \"plot-last\" })",
       "errors": [],
       "route": "/reference/actions/statistics/#editregression"
     },
@@ -21733,8 +21753,7 @@
       "lifecycle": "Mutable resource",
       "resources": {
         "prerequisites": [
-          "existing chart title",
-          "compatible scale or encoding context"
+          "existing chart title"
         ],
         "owns": [],
         "idOptions": []
@@ -21775,8 +21794,7 @@
       "completionRequirements": {
         "state": "contextual",
         "requires": [
-          "existing chart title",
-          "compatible scale or encoding context"
+          "existing chart title"
         ],
         "allowsEmpty": false
       },
@@ -21868,8 +21886,7 @@
       "lifecycle": "Mutable resource",
       "resources": {
         "prerequisites": [
-          "existing chart title",
-          "compatible scale or encoding context"
+          "existing chart title"
         ],
         "owns": [],
         "idOptions": []
@@ -21892,8 +21909,7 @@
       "completionRequirements": {
         "state": "contextual",
         "requires": [
-          "existing chart title",
-          "compatible scale or encoding context"
+          "existing chart title"
         ],
         "allowsEmpty": false
       },
@@ -25164,7 +25180,7 @@
         "requires": [
           "target mark and selector operands"
         ],
-        "allowsEmpty": false
+        "allowsEmpty": true
       },
       "options": [
         {
@@ -29298,7 +29314,7 @@
         {
           "name": "spacing",
           "required": false,
-          "type": "\"canvas\" | \"plot\" | undefined"
+          "type": "\"canvas\" | \"content\" | \"plot\" | undefined"
         },
         {
           "name": "topLane",
@@ -29725,7 +29741,7 @@
         {
           "name": "spacing",
           "required": false,
-          "type": "\"canvas\" | \"plot\" | undefined"
+          "type": "\"canvas\" | \"content\" | \"plot\" | undefined"
         },
         {
           "name": "topLane",
@@ -30013,7 +30029,7 @@
         {
           "name": "spacing",
           "required": false,
-          "type": "\"canvas\" | \"plot\" | undefined"
+          "type": "\"canvas\" | \"content\" | \"plot\" | undefined"
         },
         {
           "name": "topLane",
@@ -30192,7 +30208,7 @@
         {
           "name": "anchor",
           "required": false,
-          "type": "\"content\" | \"plot\" | undefined"
+          "type": "\"content\" | \"plot\" | \"view\" | undefined"
         },
         {
           "name": "role",
@@ -30404,7 +30420,7 @@
         {
           "name": "axes",
           "required": false,
-          "type": "\"each\" | \"outer\" | undefined"
+          "type": "\"each\" | \"outer\" | { x?: \"each\" | \"outer\" | undefined; y?: \"each\" | \"outer\" | undefined; } | undefined"
         },
         {
           "name": "legend",
@@ -31794,6 +31810,11 @@
           "name": "predict",
           "required": false,
           "type": "RegressionPredictOptions | undefined"
+        },
+        {
+          "name": "placement",
+          "required": false,
+          "type": "\"plot-last\" | \"source\" | undefined"
         },
         {
           "name": "groupBy",

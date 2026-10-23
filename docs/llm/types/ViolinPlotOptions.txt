@@ -1,0 +1,12 @@
+export interface ViolinPlotOptions {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  x: ViolinPlotPositionChannel;
+  y: ViolinPlotPositionChannel;
+  split?: ViolinPlotSplitOptions;
+  color?: ViolinPlotColorOptions;
+  density?: ViolinPlotDensityOptions;
+  area?: ViolinPlotAreaOptions;
+  guides?: false | CartesianCategoricalGuideOptions;
+}

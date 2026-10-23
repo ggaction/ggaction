@@ -1,0 +1,6 @@
+export type FilterDataOptions = {
+  id: string;
+  source?: string;
+  field: string;
+  nulls?: "include" | "exclude";
+} & FilterModeOptions;

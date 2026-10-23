@@ -1,0 +1,5 @@
+export interface DatasetFieldLineage {
+  readonly inputs: readonly Readonly<{ data: string; field: string }>[];
+  readonly owner: string;
+  readonly role: string;
+}

@@ -1,0 +1,7 @@
+export type PolarChartGuideOptions = {
+  axes?: false | Pick<CreateAxesOptions, "theta" | "radius"> & {
+    coordinate?: { id?: string; type?: "auto" | "polar" };
+  };
+  grid?: false | Pick<CreateGridOptions, "theta" | "radial">;
+  legend?: false | LegendOptions;
+};

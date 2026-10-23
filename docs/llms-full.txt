@@ -2,9 +2,9 @@
 
 
 
-Package metadata version: 0.0.22.
+Package metadata version: 0.0.23.
 
-Contract: sha256:a83a24aac005b1837d65321a4e02f6d8f363b3c1379de75b0df307fa01a0ac86. Status: published-release. Runtime source: e934906032f624edd55697409651e3db496053a4. Release baseline: v0.0.13.
+Contract: sha256:d4a3b46c05b696b43389ec3e4bc2aaa89584ef20e01d5e64b8c61a316fe2c004. Status: published-release. Runtime source: 12b66b229f9a4dae1cfa580929b74e7e178c02c9. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -28,7 +28,7 @@ Build, inspect, select, and revise charts one meaningful action at a time.
 Start with a complete example, then use the API pages when you need to customize
 one part. The main, basic, extension, SVG, PNG, and PDF entry points include TypeScript declarations.
 
- Experimental 0.0.22 · APIs may change before 1.0.0. Review the [changelog](https://github.com/ggaction/ggaction/blob/main/CHANGELOG.md) when upgrading.
+ Experimental 0.0.23 · APIs may change before 1.0.0. Review the [changelog](https://github.com/ggaction/ggaction/blob/main/CHANGELOG.md) when upgrading.
 
 ## Start here
 
@@ -194,6 +194,7 @@ created in `index.html`.
 | `ggaction/png` | Node.js 20+ only | PNG file output through the native Canvas adapter |
 | `ggaction/pdf` | Node.js 20+ only | Single-page vector PDF file output |
 | `ggaction/svg` | Modern ESM browsers and Node.js 20+ | Complete SVG document string output |
+| `ggaction/scene` | Browser or Node.js 20+ | Read transition scenes and draw native Canvas scenes |
 
 All entries include TypeScript declarations. The package does not publish
 CommonJS entry points. Import `ggaction/png` and `ggaction/pdf` only from Node
@@ -212,11 +213,11 @@ across the supported Node release matrix.
 ## Runnable repository examples
 
 Use the
-[generated repository example index](https://github.com/ggaction/ggaction/blob/0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e/examples/README.md)
+[generated repository example index](https://github.com/ggaction/ggaction/blob/6422776b0a379c8c89809f41b434f366fbc1f143/examples/README.md)
 for complete runnable modules. Browse the
 [chart gallery](./gallery/) for visual examples,
 or use
-the [Quarto and Observable JS example](https://github.com/ggaction/ggaction/tree/0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e/examples/quarto-ojs/)
+the [Quarto and Observable JS example](https://github.com/ggaction/ggaction/tree/6422776b0a379c8c89809f41b434f366fbc1f143/examples/quarto-ojs/)
 when authoring an `.qmd` document.
 
 ## Next
@@ -250,7 +251,10 @@ files, make network requests, or collect telemetry.
 A fixed 576-run evaluation compared public-documentation browsing with
 MCP-first authoring plus bounded fallback across Terra, Luna, and Nano. Each
 model-condition cell contains 48 observations from the same 24 tasks and two
-repetitions.
+repetitions. The experiment completed on 2026-08-10 using `gpt-5.6-terra`,
+`gpt-5.6-luna`, and `gpt-5.4-nano`, with four knowledge conditions and product
+candidate `4e211ba418cd437d7c66c4fb986fcc714cf579ea`. It is a historical measurement,
+not a rerun of the current documentation version.
 
 ![Strict success, tokens, and model calls for Docs only and MCP with fallback across Terra, Luna, and Nano](./assets/images/readme-mcp-benefits.svg)
 
@@ -262,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/e934906032f624edd55697409651e3db496053a4/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/12b66b229f9a4dae1cfa580929b74e7e178c02c9/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/e934906032f624edd55697409651e3db496053a4/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/12b66b229f9a4dae1cfa580929b74e7e178c02c9/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -459,9 +463,9 @@ owners such as Box and Gradient plots that still need compatible position roles
 before geometry exists.
 The complete LLM bundle also publishes a
 [`manifest`](./llms-manifest.json) and
-[`manifest schema`](./schemas/llms-manifest.schema.json). Use artifacts from
-the same `packageVersion`; the local installed files remain authoritative for
-an installed MCP process.
+[`manifest schema`](./schemas/llms-manifest.schema.json). Use the [selective artifact identity manifest](./llm/index.json) to match the
+contract fingerprint and file hashes. `packageVersion` alone cannot distinguish
+branches; the local installed files remain authoritative for an installed MCP process.
 
 ## What the server does not provide
 
@@ -474,6 +478,10 @@ an installed MCP process.
 Use the [complete action reference](./reference/actions/) manually when a
 human needs the full contract. For normal model-assisted authoring, start with
 the one search call and add documentation only for explicit gaps.
+
+## Long requests and execution recovery
+
+Each query is limited to 500 characters. Preserve the full user request in the host, split longer requests into bounded tasks, and track every requirement across packets. A resolved packet is not an execution guarantee. If execution fails, inspect `ggaction/diagnostics`, retain the prior program, and consult the exact action/type and public recovery guide. The MCP fallback URI allowlist still applies; external public-documentation access is a separate host capability. Never drop requirements to fit the query limit.
 
 ## Related
 
@@ -644,15 +652,15 @@ than introducing a separate renderer path.
 ![Horsepower versus miles per gallon](./assets/images/cars-scatterplot.png)
 
 This tutorial uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e/examples/cars-scatterplot)
-and its [canonical program](https://github.com/ggaction/ggaction/blob/0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e/examples/cars-scatterplot/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/6422776b0a379c8c89809f41b434f366fbc1f143/examples/cars-scatterplot)
+and its [canonical program](https://github.com/ggaction/ggaction/blob/6422776b0a379c8c89809f41b434f366fbc1f143/examples/cars-scatterplot/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/6422776b0a379c8c89809f41b434f366fbc1f143/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -709,8 +717,7 @@ read that stored relationship; they do not create or repair coordinates.
 ## Reassign encodings
 
 The same encoding actions can replace compatible bindings. For a field-sized
-variant, omit the earlier constant `encodeRadius` and author the chain without
-that conflicting graphical constant:
+variant, use the following alternative. If your own variant explicitly sets a constant `encodeRadius`, omit that conflicting graphical constant first:
 
 ```javascript
 const reassigned = chart()
@@ -798,7 +805,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-scatterplot/`.
-- View the [complete browser source](https://github.com/ggaction/ggaction/blob/0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e/examples/cars-scatterplot/main.js).
+- View the [complete browser source](https://github.com/ggaction/ggaction/blob/6422776b0a379c8c89809f41b434f366fbc1f143/examples/cars-scatterplot/main.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), and the
  [Basic Chart contract](./api/basic-charts/#createscatterplot).
@@ -816,7 +823,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/6422776b0a379c8c89809f41b434f366fbc1f143/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -929,7 +936,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e/data/gapminder.json --output public/gapminder.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/6422776b0a379c8c89809f41b434f366fbc1f143/data/gapminder.json --output public/gapminder.json
 ```
 
 ## Complete program
@@ -1099,7 +1106,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/6422776b0a379c8c89809f41b434f366fbc1f143/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1321,15 +1328,15 @@ const tighter = radialBars.editArcMark({
 
 This chart shows mean acceleration over time for each origin. The complete
 module below uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e/examples/cars-line-chart)
-and its [complete program](https://github.com/ggaction/ggaction/blob/0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e/examples/cars-line-chart/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/6422776b0a379c8c89809f41b434f366fbc1f143/examples/cars-line-chart)
+and its [complete program](https://github.com/ggaction/ggaction/blob/6422776b0a379c8c89809f41b434f366fbc1f143/examples/cars-line-chart/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/6422776b0a379c8c89809f41b434f366fbc1f143/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1465,7 +1472,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-line-chart/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e/examples/cars-line-chart/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/6422776b0a379c8c89809f41b434f366fbc1f143/examples/cars-line-chart/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), [Titles](./api/titles/), and the
  [Basic Chart contract](./api/basic-charts/#createlineplot).
@@ -1479,15 +1486,15 @@ program
 This chart bins car displacement, counts the rows in each bin, and stacks those
 counts by origin. The complete module uses the public npm package. The
 repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e/examples/cars-histogram)
-and its [complete program](https://github.com/ggaction/ggaction/blob/0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e/examples/cars-histogram/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/6422776b0a379c8c89809f41b434f366fbc1f143/examples/cars-histogram)
+and its [complete program](https://github.com/ggaction/ggaction/blob/6422776b0a379c8c89809f41b434f366fbc1f143/examples/cars-histogram/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/6422776b0a379c8c89809f41b434f366fbc1f143/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1585,7 +1592,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-histogram/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e/examples/cars-histogram/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/6422776b0a379c8c89809f41b434f366fbc1f143/examples/cars-histogram/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), [Titles](./api/titles/), and the
  [Basic Chart contract](./api/basic-charts/#createhistogram).
@@ -1599,15 +1606,15 @@ program
 This tutorial uses a grouped bar chart as one concrete bar-chart layout. It
 aggregates job percentages by year and places the mean for men and women side
 by side. The complete module uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e/examples/jobs-grouped-bar)
-and its [complete program](https://github.com/ggaction/ggaction/blob/0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e/examples/jobs-grouped-bar/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/6422776b0a379c8c89809f41b434f366fbc1f143/examples/jobs-grouped-bar)
+and its [complete program](https://github.com/ggaction/ggaction/blob/6422776b0a379c8c89809f41b434f366fbc1f143/examples/jobs-grouped-bar/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e/data/jobs.json --output public/jobs.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/6422776b0a379c8c89809f41b434f366fbc1f143/data/jobs.json --output public/jobs.json
 ```
 
 ## Complete program
@@ -1716,7 +1723,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/jobs-grouped-bar/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e/examples/jobs-grouped-bar/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/6422776b0a379c8c89809f41b434f366fbc1f143/examples/jobs-grouped-bar/program.js).
 - Continue with [Position encodings](./api/position-encodings/),
  [Series encodings](./api/series-encodings/), and
  [Constant appearance](./api/appearance/), or review the
@@ -1732,15 +1739,15 @@ This tutorial filters the cars dataset to Japan and the USA, maps point size to
 Acceleration and point color/shape to Origin, then adds one linear fit and 95%
 mean-response confidence band per Origin. The complete module uses the public
 npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e/examples/cars-regression-scatterplot)
-and its [complete program](https://github.com/ggaction/ggaction/blob/0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e/examples/cars-regression-scatterplot/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/6422776b0a379c8c89809f41b434f366fbc1f143/examples/cars-regression-scatterplot)
+and its [complete program](https://github.com/ggaction/ggaction/blob/6422776b0a379c8c89809f41b434f366fbc1f143/examples/cars-regression-scatterplot/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/6422776b0a379c8c89809f41b434f366fbc1f143/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1865,7 +1872,7 @@ render(program, document.querySelector('#chart').getContext('2d'));
 ```
 
 The value stays on y; y2 stores a constant zero. Both endpoints contribute to the automatic domain.
-The default opacity is 0.2. The [canonical executable example](https://github.com/ggaction/ggaction/blob/0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e/examples/area-layout/program.js)
+The default opacity is 0.2. The [canonical executable example](https://github.com/ggaction/ggaction/blob/6422776b0a379c8c89809f41b434f366fbc1f143/examples/area-layout/program.js)
 uses the same action flow and includes independent variants for the remaining cases.
 
 ## Choose bounds and orientation
@@ -1940,7 +1947,7 @@ explicit grid options can choose a direction. `editDensity` changes the statisti
 `editAreaMark` changes its appearance. The source remains immutable, and derived profiles retain only
 the group and the two generated value/density fields.
 
-The [runnable example](https://github.com/ggaction/ggaction/tree/0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e/examples/density-plot) includes all three variants.
+The [runnable example](https://github.com/ggaction/ggaction/tree/6422776b0a379c8c89809f41b434f366fbc1f143/examples/density-plot) includes all three variants.
 The workflow below shows the same lower-level owners on car data.
 
 ![Acceleration density by origin](./assets/images/cars-density-area.png)
@@ -1950,15 +1957,15 @@ Origin. The source rows remain immutable; `encodeDensity` creates a named
 derived dataset and materializes one translucent, zero-baseline area per
 group. The complete module below uses the public npm package. The repository
 also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e/examples/cars-density-area)
-and its [complete program](https://github.com/ggaction/ggaction/blob/0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e/examples/cars-density-area/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/6422776b0a379c8c89809f41b434f366fbc1f143/examples/cars-density-area)
+and its [complete program](https://github.com/ggaction/ggaction/blob/6422776b0a379c8c89809f41b434f366fbc1f143/examples/cars-density-area/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/6422776b0a379c8c89809f41b434f366fbc1f143/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -2083,7 +2090,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-density-area/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e/examples/cars-density-area/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/6422776b0a379c8c89809f41b434f366fbc1f143/examples/cars-density-area/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Legends](./api/legends/), and [Scale options](./api/scales/).
 
@@ -2116,7 +2123,7 @@ Use `editHorizon` for bands, baseline, palette, or source revisions and `editAre
 stroke, and curve. An explicit `area.opacity` is applied after the encoding's opaque default.
 All-baseline input correctly produces no area paths while retaining the original x domain.
 
-The [runnable example](https://github.com/ggaction/ggaction/tree/0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e/examples/horizon-plot) includes
+The [runnable example](https://github.com/ggaction/ggaction/tree/6422776b0a379c8c89809f41b434f366fbc1f143/examples/horizon-plot) includes
 signed, temporal, and baseline/style variants. The program below exposes the same lower owners on real data.
 
 ![Kenya life expectancy Horizon chart](./assets/images/gapminder-horizon.png)
@@ -2127,8 +2134,8 @@ creates one derived dataset and ordinary closed area paths, so Browser Canvas
 and the SVG, PNG, and PDF outputs use the same backend-neutral graphics.
 
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e/examples/gapminder-horizon)
-and its [complete program](https://github.com/ggaction/ggaction/blob/0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e/examples/gapminder-horizon/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/6422776b0a379c8c89809f41b434f366fbc1f143/examples/gapminder-horizon)
+and its [complete program](https://github.com/ggaction/ggaction/blob/6422776b0a379c8c89809f41b434f366fbc1f143/examples/gapminder-horizon/program.js).
 
 ## Complete program
 
@@ -2224,15 +2231,15 @@ acceleration by Origin. `createErrorBar()` infers the encoded point layer,
 derives one mean and two-sided 95% Student-t confidence interval per group,
 then creates concrete vertical rules and fixed-width caps. The source rows remain immutable.
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e/examples/cars-error-bar)
-and its [complete program](https://github.com/ggaction/ggaction/blob/0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e/examples/cars-error-bar/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/6422776b0a379c8c89809f41b434f366fbc1f143/examples/cars-error-bar)
+and its [complete program](https://github.com/ggaction/ggaction/blob/6422776b0a379c8c89809f41b434f366fbc1f143/examples/cars-error-bar/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/6422776b0a379c8c89809f41b434f366fbc1f143/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -2329,15 +2336,15 @@ This chart summarizes life expectancy over time for each Gapminder cluster.
 interval per year and cluster, then creates one closed area path plus explicit
 lower and upper boundary paths per cluster.
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e/examples/gapminder-error-band)
-and its [complete program](https://github.com/ggaction/ggaction/blob/0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e/examples/gapminder-error-band/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/6422776b0a379c8c89809f41b434f366fbc1f143/examples/gapminder-error-band)
+and its [complete program](https://github.com/ggaction/ggaction/blob/6422776b0a379c8c89809f41b434f366fbc1f143/examples/gapminder-error-band/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e/data/gapminder.json --output public/gapminder.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/6422776b0a379c8c89809f41b434f366fbc1f143/data/gapminder.json --output public/gapminder.json
 ```
 
 ## Complete program
@@ -2443,8 +2450,8 @@ program
 
 Select final visual items by data field, semantic channel, or concrete graphic
 property, then filter, reuse, or highlight that selection. The repository
-contains a [runnable browser example](https://github.com/ggaction/ggaction/tree/0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e/examples/mark-selection)
-and the [canonical programs](https://github.com/ggaction/ggaction/blob/0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e/examples/mark-selection/program.js)
+contains a [runnable browser example](https://github.com/ggaction/ggaction/tree/6422776b0a379c8c89809f41b434f366fbc1f143/examples/mark-selection)
+and the [canonical programs](https://github.com/ggaction/ggaction/blob/6422776b0a379c8c89809f41b434f366fbc1f143/examples/mark-selection/program.js)
 used by the acceptance and PNG tests below.
 
 ## Complete program
@@ -2453,7 +2460,7 @@ Follow [Getting Started](./getting-started/) to create a browser module and
 `<canvas id="chart"></canvas>`. Save the Cars data under `public/cars.json`:
 
 ```bash
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/6422776b0a379c8c89809f41b434f366fbc1f143/data/cars.json --output public/cars.json
 ```
 
 This complete point workflow matches the canonical program used for its image.
@@ -2752,7 +2759,7 @@ render(program, document.querySelector("#chart").getContext("2d"));
 ```
 
 The runnable repository version is in
-[`examples/ecdf-plot`](https://github.com/ggaction/ggaction/tree/0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e/examples/ecdf-plot).
+[`examples/ecdf-plot`](https://github.com/ggaction/ggaction/tree/6422776b0a379c8c89809f41b434f366fbc1f143/examples/ecdf-plot).
 
 This example uses colored paths and endpoint labels without axes or a legend,
 matching the repository program and image. To add a legend, reserve space on
@@ -2844,8 +2851,7 @@ resources, defaults, and guides that ggaction can infer.
  [Choosing a chart? Browse complete results before selecting a minimal recipe.](./gallery/)
 
 Every flow begins with `createCanvas`, `createData`, and a semantic mark or
-composite action. Add explicit IDs only when the current program contains more
-than one compatible resource.
+composite action. Follow each action’s required selectors even when only one resource exists. Use stable explicit IDs for later edits; omission is available only where the action documents inference. See [authoring conventions](./concepts/authoring-conventions/).
 
 Each recipe labels its primary snippet as runnable. Later snippets revise the
 named `program` produced by that primary flow unless they repeat an import and
@@ -2948,7 +2954,7 @@ encodings. The line infers the shared fields, scales, and aggregate, so no
 second `encodeY` call is needed:
 
 ```javascript
-const layered = chart()
+const layered = chart().createCanvas()
   .createData({ values })
   .createBarMark({ id: "bars" })
   .encodeX({ field: "date", fieldType: "temporal" })
@@ -3128,8 +3134,7 @@ the resolved bin extents, a continuous count scale, source-facing axis titles,
 and a `Count` legend. It disables separate chart grid lines unless requested.
 
 Use `rect: { opacity, stroke, strokeWidth }` for cell appearance. Cell fill is
-owned by the required color encoding. To show values, chain a text layer after
-the heatmap:
+owned by the required color encoding. The following continuation applies only to the **pre-gridded flow** above, whose source rows contain `value`. Set `program` to that branch; the raw-row binned branch owns generated count data and cannot use this source-field label:
 
 ```javascript
 const labeled = program
@@ -3407,7 +3412,8 @@ const program = chart()
 
 - The current dataset and Cartesian coordinate
 - Vertical or horizontal orientation from the complete field pair
-- Tukey quartiles and `1.5 × IQR` observed whiskers
+- Linearly interpolated quartiles: for `[1, 2, 3, 4]`, Q1/median/Q3 are `1.75 / 2.5 / 3.25`
+- Tukey `1.5 × IQR` fences, with whiskers at the most extreme observed values within the fences
 - A ranged-bar body, median rule, whiskers, caps, and optional outlier points
 - Compatible scales, axes, and the perpendicular grid
 
@@ -3835,12 +3841,14 @@ the cases below to make the missing decision explicit.
 Right-side legends use the default position and require available right margin:
 
 ```javascript
-program.createCanvas({
+const resized = program.editCanvas({
   width: 720,
   height: 460,
   margin: { top: 40, right: 140, bottom: 70, left: 80 }
 });
 ```
+
+Use the returned `resized` program for subsequent calls. If guide creation failed, retry it on this branch. For initial construction, set the same margin in `createCanvas`.
 
 For a horizontal legend, request bottom placement and reserve bottom margin:
 
@@ -5124,6 +5132,8 @@ lifecycle because changing only one layer would break the resource.
 
 ## `createSummaryData({ id, source?, groupBy?, aggregates, members?, weight? })` {#createsummarydata-id-source-groupby-aggregates-members}
 
+This heading shows common options. For the full callable contract and all branches, see [`createSummaryData`](./reference/actions/statistics/#createsummarydata) and the [exact declarations](./reference/types/).
+
 See [Summaries, Bins, and Data Shaping](./api/data/summaries-and-shaping/#createsummarydata-id-source-groupby-aggregates-members) for this contract and its examples.
 
 ## `createBinData({ id, source?, field, ...binOptions })` {#createbindata-id-source-field-binoptions}
@@ -5357,6 +5367,8 @@ const restored = japanOnly.removeMarkFilter({ target: "points" });
 
 ## `createRegressionData({ id, source?, x, y, groupBy?, method?, degree?, span?, confidenceMethod?, level?, confidence?, interval?, predict?, missing? })`
 
+This heading shows common options. For the full callable contract and all branches, see [`createRegressionData`](./reference/actions/charts-data/#createregressiondata) and the [exact declarations](./reference/types/).
+
 Create deterministic regression predictions from an existing dataset. This is
 an advanced data action used by higher-level regression chart actions.
 
@@ -5380,10 +5392,11 @@ program.createRegressionData({
 | `method` | `"linear"`, `"polynomial"`, `"loess"`, or `"exp"` | `"linear"` |
 | `degree` | integer from `1` through `32` for polynomial | `2` |
 | `span` | number greater than `0` and at most `1` for LOESS | `0.75` |
+| `robustIterations` | integer `0` through `32`, LOESS only | `0` |
 | `confidenceMethod` | `"normal"` or `"student-t"`; not accepted by LOESS | `"student-t"` |
 | `level` | number strictly between `0` and `1`; not accepted by LOESS | `0.95` |
 | `confidence` | compatibility alias for `level`; must match it when both appear | omitted |
-| `interval` | `"mean"` or `"prediction"`; not accepted by LOESS | `"mean"` |
+| `interval` | `"mean"`, `"prediction"`, or `false`; not accepted by LOESS | `"mean"` |
 | `predict` | `{ values }` or `{ domain, steps }` | observed unique x values |
 | `missing` | `"error"` or `"drop"` | compatibility behavior when omitted |
 
@@ -5392,7 +5405,7 @@ require two rows; fit-only polynomial models require `degree + 1` rows and
 distinct x values. Confidence intervals require the additional residual
 degrees of freedom. Set `interval: false` for fitted values without lower and
 upper confidence fields. LOESS uses
-tricube-weighted local-linear fits over `ceil(span * groupSize)` nearest rows,
+tricube-weighted local-linear fits over `max(2, ceil(span * groupSize))` nearest rows,
 with source order breaking distance ties. Output follows group first appearance
 and the chosen prediction grid. Explicit prediction values must be finite,
 unique, and strictly ascending; a domain requires at least two steps. Linear
@@ -5562,7 +5575,7 @@ shared value before a later encoding, filter, aggregation, or window operation.
 
 Omit `as` to name the new field `${field}_${unit}`. The name must be absent from every source row; collisions are errors. Explicit `as` keeps your chosen output name.
 
-## `createTimeUnitData({ id, source?, field, temporalUnit?, unit, as?, timeZone?, weekStartsOn?, weekRule? })`
+## `createTimeUnitData({ id, source?, field, temporalUnit?, unit, as?, timeZone?, weekStartsOn?, weekRule?, missing? })`
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
@@ -5595,9 +5608,10 @@ console.log(program.semanticSpec.datasets[1].values[0].month);
 | `field` | temporal field name | required |
 | `temporalUnit` | `"auto"`, `"year"`, or `"timestamp"` input mode | existing automatic parser |
 | `unit` | `"year"`, `"quarter"`, `"month"`, `"day"`, `"hour"`, `"minute"`, `"second"`, `"week"`, or `"weekday"` | required |
-| `as` | new output field name | required |
+| `as` | new output field name | `${field}_${unit}` |
 | `timeZone` | non-empty IANA time-zone name | `"UTC"` |
 | `weekStartsOn` | integer Sunday `0` through Saturday `6`; week only | `1` |
+| `missing` | `"error"` or `"null"` | `"error"` |
 | `weekRule` | `"calendar"` or `"iso"`; week only | `"calendar"` |
 
 Except for `weekday`, the output is a finite epoch-millisecond timestamp at the
@@ -5621,6 +5635,18 @@ The source dataset remains unchanged. The derived dataset preserves row order
 and every existing field, then adds `as`. The output name must differ from the
 input and must not already exist in any source row. Invalid timestamps and
 collisions fail atomically.
+
+## Missing dates
+
+Use `missing: "null"` to retain rows whose input is null or absent and add a null
+bucket. All original fields, row order, and source lineage remain intact. An
+explicit `undefined`, malformed non-null date, nonfinite number, unsupported zone,
+or out-of-range calendar boundary still fails. Output schema remains numeric,
+including an all-null result; weekday values remain numbers from 0 through 6.
+
+`editTimeUnitData({ target, missing: "null" })` applies the same policy to an
+existing owner. Switching back to `"error"` rejects a source with missing dates.
+The default remains strict and existing stored transforms need no migration.
 
 ## Boundaries
 
@@ -5770,7 +5796,7 @@ instead of replacing or rebinding consumers.
 ## Related
 
 [Data overview](./api/data/) · [Source and derived data](./api/data/source-and-derived/) ·
-[Runnable airline-passenger example](https://github.com/ggaction/ggaction/blob/0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e/examples/airline-passenger-moving-windows/program.js) ·
+[Runnable airline-passenger example](https://github.com/ggaction/ggaction/blob/6422776b0a379c8c89809f41b434f366fbc1f143/examples/airline-passenger-moving-windows/program.js) ·
 [Action reference](./reference/actions/)
 
 <!-- Source: /api/data/bin2d/ -->
@@ -6079,6 +6105,8 @@ realizations of that meaning.
 
 ## `createPointMark({ id?, data?, missing?, shape?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? } = {})`
 
+This heading shows common options. For the full callable contract and all branches, see [`createPointMark`](./reference/actions/marks/#createpointmark) and the [exact declarations](./reference/types/).
+
 | Option | Type | Default or inference |
 | --- | --- | --- |
 | `id` | valid user-defined ID | first point mark uses `"point"` |
@@ -6087,15 +6115,15 @@ realizations of that meaning.
 | `fill` | non-empty color string | theme color; conflicts with `encodeColor` |
 | `opacity` | number from `0` to `1` | `1` |
 | `stroke` | non-empty color string | no outline |
-| `strokeWidth` | non-negative number | `0` |
+| `strokeWidth` | non-negative number | `1` when `stroke` is supplied; otherwise `0` |
 | `lineCap` | `"butt"`, `"round"`, or `"square"` | `"butt"` |
 | `lineJoin` | `"miter"`, `"round"`, or `"bevel"` | `"miter"` |
 | `miterLimit` | positive finite number | `10` |
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Executable complete.** Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas.
 
 ```javascript
-const program = chart()
+const program = chart().createCanvas()
   .createData({ values: cars })
   .createPointMark({ opacity: 0.48, stroke: "white", strokeWidth: 1.25 })
   .encodeX({ field: "Horsepower" })
@@ -6124,6 +6152,8 @@ for a field-driven area mapping. `removePointRadius()` returns an explicitly
 sized point mark to the theme radius without changing Polar position.
 
 ## `editPointMark({ target?, shape?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? })`
+
+This heading shows common options. For the full callable contract and all branches, see [`editPointMark`](./reference/actions/marks/#editpointmark) and the [exact declarations](./reference/types/).
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
@@ -6280,10 +6310,12 @@ values; areas close two edges or one density edge against a baseline.
 
 ### `createLineMark({ id?, data?, missing?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed?, lineCap?, lineJoin?, miterLimit? } = {})`
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+This heading shows common options. For the full callable contract and all branches, see [`createLineMark`](./reference/actions/marks/#createlinemark) and the [exact declarations](./reference/types/).
+
+> **Executable complete.** Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas.
 
 ```javascript
-const program = chart()
+const program = chart().createCanvas()
   .createData({ values: cars })
   .createLineMark({ stroke: "#7c3aed", opacity: 0.55 })
   .encodeX({ field: "Year", fieldType: "temporal" })
@@ -6370,10 +6402,10 @@ data and positions are inferred. Compatible aggregate grain is inferred too,
 so an aggregate trend over aggregate bars needs no repeated `encodeX` or
 `encodeY` call:
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Executable complete.** Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas.
 
 ```javascript
-const layered = chart()
+const layered = chart().createCanvas()
   .createData({ values: cars })
   .createBarMark({ id: "bars" })
   .encodeX({ field: "Year", fieldType: "temporal" })
@@ -6388,6 +6420,8 @@ line with explicit encodings and scale IDs.
 
 ### `editLineMark({ target?, missing?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed?, lineCap?, lineJoin?, miterLimit? })`
 
+This heading shows common options. For the full callable contract and all branches, see [`editLineMark`](./reference/actions/marks/#editlinemark) and the [exact declarations](./reference/types/).
+
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
 ```javascript
@@ -6400,9 +6434,15 @@ program.editLineMark({
 ```
 
 Supported curves are `linear`, `step`, `step-before`, `step-after`, `basis`,
-`cardinal`, `monotone`, and `natural`. Smooth curves use cubic commands and
-two-point series fall back to linear. Monotone paths require strictly increasing
-or decreasing materialized x values; duplicate or non-monotonic x is rejected.
+`cardinal`, `monotone`, `monotone-steffen`, and `natural`. Smooth curves use cubic
+commands. Two-point series use linear commands, except the existing `monotone`
+recipe, which keeps its cubic representation. `monotone` uses weighted harmonic
+tangents and requires strictly increasing or decreasing materialized x values.
+`monotone-steffen` uses limited weighted secants and one-sided endpoint tangents.
+It accepts either X direction, preserves vertical segments, and collapses consecutive
+identical coordinates; an X-direction reversal is an error. The two recipes agree
+at anchors but can differ between them. The explicit choice applies to Line, Area,
+ErrorBand and requested boundary curves, and survives edits and saved programs.
 Materialization rejects any line or complete area that would expand beyond
 30,000 backend-neutral path commands before allocating that command array.
 
@@ -6440,10 +6480,10 @@ Line marks also accept theta/radius positions. The two encoding actions may be
 called in either order; one channel remains valid semantic state but does not
 produce a path until both are present.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Executable complete.** Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas.
 
 ```javascript
-const radar = chart()
+const radar = chart().createCanvas()
   .createData({ values: rows })
   .createLineMark({ closed: true, strokeWidth: 2.5 })
   .encodeTheta({ field: "category", fieldType: "nominal" })
@@ -6463,10 +6503,12 @@ through the shared line materialization lifecycle.
 
 ### `createAreaMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing?, lineCap?, lineJoin?, miterLimit? } = {})`
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+This heading shows common options. For the full callable contract and all branches, see [`createAreaMark`](./reference/actions/marks/#createareamark) and the [exact declarations](./reference/types/).
+
+> **Executable complete.** Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas.
 
 ```javascript
-const area = chart()
+const area = chart().createCanvas()
   .createData({ values: intervalRows })
   .createAreaMark()
   .encodeX({ field: "year", fieldType: "temporal" })
@@ -6506,6 +6548,8 @@ without creating a scale or legend. For a center-stacked area,
 center y policy atomically.
 
 ### `editAreaMark({ target?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing?, lineCap?, lineJoin?, miterLimit? })`
+
+This heading shows common options. For the full callable contract and all branches, see [`editAreaMark`](./reference/actions/marks/#editareamark) and the [exact declarations](./reference/types/).
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
@@ -6623,10 +6667,12 @@ The `createBarPlot` facade infers vertical orientation for two raw numeric field
 
 ## `createBarMark({ id?, data?, missing?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight?, cornerRadiusBottomRight?, cornerRadiusBottomLeft?, lineCap?, lineJoin?, miterLimit? } = {})`
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+This heading shows common options. For the full callable contract and all branches, see [`createBarMark`](./reference/actions/marks/#createbarmark) and the [exact declarations](./reference/types/).
+
+> **Executable complete.** Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas.
 
 ```javascript
-const program = chart()
+const program = chart().createCanvas()
   .createData({ values: cars })
   .createBarMark({ opacity: 0.78, stroke: "#0f172a", strokeWidth: 1.25 })
   .encodeHistogram({ field: "Displacement" });
@@ -6671,6 +6717,8 @@ uses the smallest observed time gap. Both orientations support ISO dates and
 explicit timestamp units.
 
 ## `editBarMark({ target?, blend?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight?, cornerRadiusBottomRight?, cornerRadiusBottomLeft?, lineCap?, lineJoin?, miterLimit? })` {#edit-bar-mark}
+
+This heading shows common options. For the full callable contract and all branches, see [`editBarMark`](./reference/actions/marks/#editbarmark) and the [exact declarations](./reference/types/).
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
@@ -6736,6 +6784,8 @@ Rule marks represent reference lines and intervals. They use concrete line
 primitives without exposing a renderer-specific path format.
 
 ## `createRuleMark({ id?, data?, missing?, stroke?, strokeWidth?, strokeDash?, opacity?, lineCap?, lineJoin?, miterLimit? } = {})`
+
+This heading shows common options. For the full callable contract and all branches, see [`createRuleMark`](./reference/actions/marks/#createrulemark) and the [exact declarations](./reference/types/).
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
@@ -7251,6 +7301,8 @@ bars: rects do not infer aggregation, a zero baseline, stacking, or bar width.
 
 ## `createRectMark({ id?, data?, missing?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight?, cornerRadiusBottomRight?, cornerRadiusBottomLeft?, lineCap?, lineJoin?, miterLimit? } = {})`
 
+This heading shows common options. For the full callable contract and all branches, see [`createRectMark`](./reference/actions/marks/#createrectmark) and the [exact declarations](./reference/types/).
+
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
 ```javascript
@@ -7328,6 +7380,8 @@ rect collection stays empty. Missing endpoint or color values omit only their
 row. `encodeColor` accepts categorical and continuous color scales.
 
 ## `editRectMark({ target?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight?, cornerRadiusBottomRight?, cornerRadiusBottomLeft?, lineCap?, lineJoin?, miterLimit? })`
+
+This heading shows common options. For the full callable contract and all branches, see [`editRectMark`](./reference/actions/marks/#editrectmark) and the [exact declarations](./reference/types/).
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
@@ -7674,6 +7728,15 @@ After a temporal bar facade, use `.encodeBarWidth({ interval: { unit: "year", in
 existing quantitative point mark. Linear and polynomial fits can include mean
 or prediction interval bands; LOESS is line-only.
 
+Use `createRegression({ placement: "plot-last" })` to paint the band and then the
+fit after existing plot marks. The default keeps the band before its source points
+and the fit immediately after them. Both policies preserve grid underlays and axis
+or frame overlays. `editRegression({ placement: "source" })` restores source
+attachment; omission retains the current policy through model/data edits and saved
+programs. Later independently authored marks follow ordinary authoring order;
+editing a plot-last regression reapplies its placement. `createRegressionPlot`
+accepts the same option.
+
 ## At a glance
 
 | Action | Required decision | Inferred or default behavior |
@@ -7714,6 +7777,7 @@ program.createRegression({
 
 | Option | Type | Default |
 | --- | --- | --- |
+| `placement` | `"source"` or `"plot-last"` | `"source"` |
 | `target` | eligible point mark ID | inferred |
 | `x`, `y` | quantitative field names | target x/y fields |
 | `groupBy` | nominal field name or `false` (legacy explicit `undefined` also supported) | unique color/shape field |
@@ -7724,7 +7788,7 @@ program.createRegression({
 | `confidenceMethod` | `"normal"` or `"student-t"` | `"student-t"` |
 | `level` | number strictly between `0` and `1` | `0.95` |
 | `confidence` | compatibility alias for `level`; must match it when both appear | omitted |
-| `interval` | `"mean"` or `"prediction"` | `"mean"` |
+| `interval` | `"mean"`, `"prediction"`, or `false` | `"mean"` |
 | `predict` | `{ values }` or `{ domain, steps }` | observed unique x values |
 | `missing` | `"error"` or `"drop"` | compatibility behavior when omitted |
 | `sourceBinding` | `"fixed"` or `"follow"` | `"fixed"` |
@@ -9271,6 +9335,11 @@ opacity and stroke-width legends become separate blocks alongside color.
 
 Creates one chart title and an optional subtitle on any Canvas edge.
 
+Facet parents support the same four edges. Their inferred Canvas reserves an outer
+lane for the title and subtitle, outside retained axes, headers and shared legends.
+Alignment follows the union of the child plots; left and right titles rotate with
+their subtitle. Editing the title or facet layout recomputes that lane.
+
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
 ```javascript
@@ -9420,75 +9489,6 @@ the optional native backend with `npm install ggaction @napi-rs/canvas`.
 Importing the PNG/PDF entry works without the backend; calling it then reports
 the required installation command. No dependency is installed automatically.
 
-## Measured text layout
-
-Full charts support `applyTextMetrics({ profile })` and `removeTextMetrics()`.
-These authoring actions recalculate text layout before rendering. A profile has
-exactly `schemaVersion: 1`, a nonempty `id`, and a `measurements` array. Each entry
-requires `text`, `fontFamily`, `fontSize`, `fontWeight`, and `width`, and may
-include `fontStyle: "normal" | "italic"` (normal when omitted).
-
-The host measures strings in the font it will use. Width is in logical pixels,
-not output pixels multiplied by device pixel ratio. Font size must be positive;
-width must be finite and nonnegative. Weight is one of 100, 200, …, 900.
-Duplicate text/family/size/weight/style combinations are rejected. Empty profiles and
-empty strings are valid.
-
-This complete browser example waits for fonts and measures the full string and
-word candidates that its title wrapping will use:
-
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
-
-```javascript
-import { chart } from "ggaction";
-
-await document.fonts.ready;
-const context = document.createElement("canvas").getContext("2d");
-const fontFamily = "sans-serif";
-const fontSize = 20;
-const fontWeight = 400;
-context.font = `${fontWeight} ${fontSize}px ${fontFamily}`;
-const profile = {
-  schemaVersion: 1,
-  id: "page-fonts",
-  measurements: ["Alpha Beta", "Alpha", "Beta"].map(text => ({
-    text, fontFamily, fontSize, fontWeight,
-    width: context.measureText(text).width
-  }))
-};
-const measured = chart()
-  .applyTextMetrics({ profile })
-  .createCanvas({ width: 500, height: 350, margin: 80 })
-  .createTitle({
-    text: "Alpha Beta", maxWidth: 100,
-    titleStyle: { fontFamily, fontSize, fontWeight }
-  });
-const estimated = measured.removeTextMetrics();
-```
-
-Matching uses the exact string, family, size, and normalized weight. Omitted
-family uses `sans-serif`; omitted/`normal` weight is 400 and `bold` is 700.
-Numeric weights use the renderer's rounding to 100 and clamping to 100–900;
-strings `"100"` through `"900"` match those numeric values. Unmatched strings or
-styles, including relative CSS weights, use the existing deterministic estimate.
-Wrapping may measure partial words and candidate lines; include those strings
-when exact measurements are needed for them.
-
-Applying clones and freezes the profile and replaces any active profile. It
-recalculates titles, axes, legends, labels, and composition layout without
-changing typography. A composition applies the profile to its root and nested
-children, adopting Basic children as Full snapshots; replacement/insertion children and retained facet/repeat edits inherit
-it. Removal clears the profile throughout that composition and restores
-estimates; it does not restore earlier child profiles. Removing without an active
-profile is an error. Failed layout leaves the original program intact.
-
-Later domain edits and source revisions use the stored profile. Editable
-[persistence](./data-updates/#save-and-restore-snapshots) preserves and validates it. Render-only snapshots
-contain the already laid-out graphics. Changing the original profile or loading
-a font later does not change an existing program. Apply a new measured profile
-to update layout after fonts change. Canvas, SVG, PNG, and PDF draw the resulting
-text graphics; they do not rewrap or replace the authoring measurements.
-
 ## At a glance
 
 | Target | Environment | Shortest call | Use when |
@@ -9500,6 +9500,23 @@ text graphics; they do not rewrap or replace the authoring measurements.
 
 Rendering consumes a completed program's `graphicSpec`. It does not read
 datasets, semantic encodings, context, or trace to infer missing output.
+
+## First render
+
+Run this ES module in a bundler-based browser page containing `<canvas id="chart"></canvas>`:
+
+> **Executable complete.** Use a browser ES module with a canvas element whose id is chart; all input rows are included.
+
+```javascript
+import { chart, render } from "ggaction/basic";
+const program = chart().createCanvas({ width: 480, height: 320 })
+  .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 4 }] })
+  .createScatterPlot({ x: "x", y: "y" });
+render(program, document.querySelector("#chart").getContext("2d"));
+```
+
+The result has two points. The output adapters below consume this same completed
+program. Text measurement is an optional authoring step described after the output examples.
 
 ## Automated environment checks
 
@@ -9891,6 +9908,75 @@ renderTransitionScene(scene, document.querySelector('#chart').getContext('2d'), 
 });
 ```
 
+## Measured text layout
+
+Full charts support `applyTextMetrics({ profile })` and `removeTextMetrics()`.
+These authoring actions recalculate text layout before rendering. A profile has
+exactly `schemaVersion: 1`, a nonempty `id`, and a `measurements` array. Each entry
+requires `text`, `fontFamily`, `fontSize`, `fontWeight`, and `width`, and may
+include `fontStyle: "normal" | "italic"` (normal when omitted).
+
+The host measures strings in the font it will use. Width is in logical pixels,
+not output pixels multiplied by device pixel ratio. Font size must be positive;
+width must be finite and nonnegative. Weight is one of 100, 200, …, 900.
+Duplicate text/family/size/weight/style combinations are rejected. Empty profiles and
+empty strings are valid.
+
+This complete browser example waits for fonts and measures the full string and
+word candidates that its title wrapping will use:
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+import { chart } from "ggaction";
+
+await document.fonts.ready;
+const context = document.createElement("canvas").getContext("2d");
+const fontFamily = "sans-serif";
+const fontSize = 20;
+const fontWeight = 400;
+context.font = `${fontWeight} ${fontSize}px ${fontFamily}`;
+const profile = {
+  schemaVersion: 1,
+  id: "page-fonts",
+  measurements: ["Alpha Beta", "Alpha", "Beta"].map(text => ({
+    text, fontFamily, fontSize, fontWeight,
+    width: context.measureText(text).width
+  }))
+};
+const measured = chart()
+  .applyTextMetrics({ profile })
+  .createCanvas({ width: 500, height: 350, margin: 80 })
+  .createTitle({
+    text: "Alpha Beta", maxWidth: 100,
+    titleStyle: { fontFamily, fontSize, fontWeight }
+  });
+const estimated = measured.removeTextMetrics();
+```
+
+Matching uses the exact string, family, size, and normalized weight. Omitted
+family uses `sans-serif`; omitted/`normal` weight is 400 and `bold` is 700.
+Numeric weights use the renderer's rounding to 100 and clamping to 100–900;
+strings `"100"` through `"900"` match those numeric values. Unmatched strings or
+styles, including relative CSS weights, use the existing deterministic estimate.
+Wrapping may measure partial words and candidate lines; include those strings
+when exact measurements are needed for them.
+
+Applying clones and freezes the profile and replaces any active profile. It
+recalculates titles, axes, legends, labels, and composition layout without
+changing typography. A composition applies the profile to its root and nested
+children, adopting Basic children as Full snapshots; replacement/insertion children and retained facet/repeat edits inherit
+it. Removal clears the profile throughout that composition and restores
+estimates; it does not restore earlier child profiles. Removing without an active
+profile is an error. Failed layout leaves the original program intact.
+
+Later domain edits and source revisions use the stored profile. Editable
+[persistence](./data-updates/#save-and-restore-snapshots) preserves and validates it. Render-only snapshots
+contain the already laid-out graphics. Changing the original profile or loading
+a font later does not change an existing program. Apply a new measured profile
+to update layout after fonts change. Canvas, SVG, PNG, and PDF draw the resulting
+text graphics; they do not rewrap or replace the authoring measurements.
+
 ## Related
 
 [Canvas](./api/canvas/) · [Semantic and graphical state](./concepts/semantic-and-graphics/) ·
@@ -9930,7 +10016,7 @@ const dashboard = vconcat({
 
 This is a composition fragment: `scatterplot`, `barChart`, and `trendChart`
 must each be a complete program with one materialized Canvas. See the
-[runnable repository example](https://github.com/ggaction/ggaction/tree/0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e/examples/program-composition)
+[runnable repository example](https://github.com/ggaction/ggaction/tree/6422776b0a379c8c89809f41b434f366fbc1f143/examples/program-composition)
 for complete child construction and Browser Canvas rendering.
 
 The representative output deliberately keeps two different final grammars:
@@ -9991,7 +10077,7 @@ const revisedDashboard = dashboard.replaceCompositionChild({
 
 This preserves immutable earlier programs and makes the affected ancestor
 layout visible in the action trace. See the
-[cross-feature dashboard source](https://github.com/ggaction/ggaction/tree/0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e/examples/cross-feature-dashboard)
+[cross-feature dashboard source](https://github.com/ggaction/ggaction/tree/6422776b0a379c8c89809f41b434f366fbc1f143/examples/cross-feature-dashboard)
 for a nested Polar replacement next to a Cartesian facet.
 
 ## Repeat the current chart by a field
@@ -10357,7 +10443,7 @@ Primary and secondary endpoints can specify different input units on one scale.
 Domains and tick values are already timestamps and are never parsed again.
 Channel selectors read normalized values; raw-field selectors read original rows.
 
-See the runnable [three-variant example](https://github.com/ggaction/ggaction/tree/0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e/examples/temporal-input).
+See the runnable [three-variant example](https://github.com/ggaction/ggaction/tree/6422776b0a379c8c89809f41b434f366fbc1f143/examples/temporal-input).
 
 ## Aggregate line `encodeY(options)`
 
@@ -10955,7 +11041,7 @@ if the remaining appearance would be ambiguous. Ordinary ranged Areas support
 the same explicit identity; statistical and stacked-layout groups keep their
 existing owner restrictions.
 
-The [runnable series tutorial](https://github.com/ggaction/ggaction/tree/0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e/examples/series-identity)
+The [runnable series tutorial](https://github.com/ggaction/ggaction/tree/6422776b0a379c8c89809f41b434f366fbc1f143/examples/series-identity)
 uses one shared program for country colors, tuple color/dash, and field width/opacity.
 
 ## Explicit path topology
@@ -11920,6 +12006,8 @@ full validation. Editing requires at least one style and rejects active field
 appearance. Endpoints and statistical component ownership remain separate.
 
 ## `encodeBarWidth({ band?, pixels?, target? })`
+
+This heading shows common options. For the full callable contract and all branches, see [`encodeBarWidth`](./reference/actions/encodings/#encodebarwidth) and the [exact declarations](./reference/types/).
 
 Override the fraction of each resolved category band—or directional offset slot for group
 layout—used by an aggregate or ranged bar and rematerialize its rectangles.
@@ -15406,9 +15494,7 @@ for the schema, runnable example, and explicit unsupported-owner behavior.
 
 ggaction is an ESM-only package. The supported Node.js floor is 20. Continuous
 integration installs and tests the packed package on Node.js 20, 22, and 24;
-browser package and documentation tests run in Playwright Chromium. Other
-modern ESM browsers may work, but they are not part of the current automated
-compatibility claim.
+documentation interaction tests run in Playwright Chromium. Library renderer compatibility additionally exercises representative scenes in Chromium, Firefox, and WebKit. These checks do not guarantee every browser version or font configuration; see [Rendering](./api/rendering/#automated-environment-checks).
 
 ## Entry points
 
@@ -15420,6 +15506,11 @@ compatibility claim.
 | `ggaction/png` | Node.js 20+ | Native PNG file output; do not place in a browser bundle |
 | `ggaction/pdf` | Node.js 20+ | Native single-page PDF file output; do not place in a browser bundle |
 | `ggaction/extension` | Browser bundler or Node.js 20+ | Extension registration and authoring primitives |
+| `ggaction/persistence` | Browser or Node.js 20+ | Save and restore editable programs or render-only snapshots |
+| `ggaction/accessibility` | Browser or Node.js 20+ | Read visual data for accessible tables and descriptions |
+| `ggaction/inspection` | Browser or Node.js 20+ | Inspect schemas, applicability, changes, and concrete results |
+| `ggaction/diagnostics` | Browser or Node.js 20+ | Read structured error details |
+| `ggaction/scene` | Browser or Node.js 20+ | Read transition scenes and draw native Canvas scenes |
 
 CommonJS `require("ggaction")` is not a supported entry. Use ESM source files
 or configure the consuming project for ESM.
@@ -15441,7 +15532,7 @@ import { renderToSVG } from "ggaction/svg";
 Vite is the documented getting-started path and the installed browser consumer
 is tested with a real Chromium page. Obtain a 2D rendering context only after
 the Canvas exists in the DOM. Chart authoring itself does not require a DOM;
-`render` does.
+`render` needs a compatible Canvas 2D context supplied by the host.
 
 Framework components should keep caller-owned rows outside the program, build
 a new immutable program when relevant inputs change, render after the host
@@ -15675,6 +15766,15 @@ Source dataset values are immutable after creation. `createData` copies and free
 caller-owned rows. Use `reviseData` to add a fresh source snapshot and update its
 dependent chart, or rebuild a program from application-owned rows.
 
+## Choose an update path
+
+| Change | Action or workflow | Prerequisite |
+| --- | --- | --- |
+| New rows with compatible fields | `reviseData({ source, id, values })` | Existing source ID and fresh revision ID; dependent transforms remain valid |
+| Field names, types, or chart topology change | Rebuild from application-owned rows | Update affected encodings and transform definitions together |
+| Transform parameters change | The owning `edit*Data` action | Existing logical transform ID and valid options |
+| One mark should use independent data | `createData` then the mark's data editor | Explicit target and a compatible replacement schema |
+
 ## Revise a source and its dependent chart
 
 `reviseData({ source, id, values })` is a Full-entry action. Both IDs are required:
@@ -15786,10 +15886,7 @@ new schema or intended chart structure requires a different authoring flow.
 ## Derived data
 
 Derived datasets record one normalized transform and source provenance.
-Higher-level materializers create concrete derived values. When source rows
-change, recreate both source and derived datasets in the new program. Editing
-a derived transform revises the transform against the existing immutable
-source snapshot only.
+Higher-level materializers create concrete derived values. For compatible source updates, `reviseData` replays dependent transforms and rematerializes consumers in a new snapshot. Rebuild explicitly when changing the schema or topology beyond its contract. Use a focused transform editor to change its configuration, or `bindMarkData` to attach an independent dataset. Earlier snapshots remain immutable.
 
 ## Save and restore snapshots
 
@@ -15930,6 +16027,29 @@ import {
   inspectProgram
 } from "ggaction/inspection";
 ```
+
+## Complete inspection workflow
+
+Run as a Node.js ES module or in a browser bundler. No rendering context is needed.
+
+```javascript
+import { chart } from "ggaction";
+import { comparePrograms, getDatasetSchema, inspectProgram } from "ggaction/inspection";
+const before = chart().createCanvas()
+  .createData({ id: "sales", values: [{ x: 1, y: 2 }, { x: 2, y: 3 }] })
+  .createScatterPlot({ id: "points", x: "x", y: "y" });
+const after = before.editPointMark({ target: "points", opacity: 0.35 });
+const schema = getDatasetSchema(after, { data: "sales" });
+const comparison = comparePrograms(before, after);
+const report = inspectProgram(after, { target: { kind: "mark", id: "points" } });
+console.log(schema, comparison, report);
+console.log(before === after); // false: both revisions remain available
+console.log(after.graphicSpec.objects.points.items.every(item => item.properties.opacity === 0.35)); // true
+```
+
+The dataset still has two rows and the same x/y fields; the comparison reports a
+style change, and inspection reports the concrete point items. Inspect the returned
+coverage flags before making claims about pixel visibility.
 
 ## Read a dataset contract
 
@@ -16077,8 +16197,8 @@ let current = buildChart(rows);
 function applyRevision(revise) {
   try {
     const candidate = revise(current);
+    render(candidate, context);
     current = candidate;
-    render(current, context);
     return { ok: true };
   } catch (error) {
     return {
@@ -16094,7 +16214,7 @@ const result = applyRevision(program =>
 );
 ```
 
-Commit the candidate only after the complete action succeeds. Preserve the
+Commit the candidate only after authoring and rendering succeed. This preserves the previous program reference on output failure; Canvas pixels can still be partially drawn. If atomic visual replacement is required, render to a separate surface and replace the visible output only after success. Preserve the
 request, action name, explicit resource IDs, and package version in diagnostic
 logs; do not log sensitive row contents by default.
 
@@ -17145,7 +17265,7 @@ default overflow policy rejects an unsatisfied minimum plot atomically;
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 applyTextMetrics(options: ApplyTextMetricsOptions): ChartProgram;
@@ -17175,7 +17295,7 @@ exact profile format, matching rules, propagation, and executable example.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 removeTextMetrics(): ChartProgram;
@@ -17325,7 +17445,7 @@ Create one immutable named dataset. [Data](./api/data/)
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 reviseData<Row extends object>(options: ReviseDataOptions<Row>): ChartProgram;
@@ -17358,7 +17478,7 @@ See [Data updates](./data-updates/#revise-a-source-and-its-dependent-chart).
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 removeData(options: RemoveResourceOptions): ChartProgram;
@@ -17391,7 +17511,7 @@ does not infer, cascade, or change graphics.
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 removeScale(options: RemoveResourceOptions): ChartProgram;
@@ -17422,7 +17542,7 @@ graphics. [Scale Options](./api/scales/#removescale-id)
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 removeCoordinate(options: RemoveResourceOptions): ChartProgram;
@@ -17616,7 +17736,7 @@ adds residual reweighting; see [regression](./api/regression/) for the estimator
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 createRegressionStatisticsData(options: RegressionStatisticsDataOptions): ChartProgram;
@@ -17700,6 +17820,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `missing` | Optional / branch-dependent | `"error" \| "null" \| undefined` |
 | `id` | Required | `string` |
 | `source` | Optional / branch-dependent | `string \| undefined` |
 | `field` | Required | `string` |
@@ -17808,7 +17929,7 @@ rebind direct visual consumers, and safely release the prior revision.
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 editDerivedData(options: EditDerivedDataOptions): ChartProgram;
@@ -17832,7 +17953,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./reference
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 editFilteredData(options: EditFilteredDataOptions): ChartProgram;
@@ -17861,7 +17982,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./reference
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 editTimeUnitData(options: EditTimeUnitDataOptions): ChartProgram;
@@ -17877,6 +17998,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `target` | Required | `string` |
 | `dependents` | Optional / branch-dependent | `DerivedDataDependents \| undefined` |
+| `missing` | Optional / branch-dependent | `"error" \| "null" \| undefined` |
 | `field` | Optional / branch-dependent | `string \| undefined` |
 | `temporalUnit` | Optional / branch-dependent | `TemporalInputUnit \| undefined` |
 | `as` | Optional / branch-dependent | `string \| undefined` |
@@ -17891,7 +18013,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./reference
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 editWindowData(options: EditWindowDataOptions): ChartProgram;
@@ -17918,7 +18040,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./reference
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 editDensityData(options: EditDensityDataOptions): ChartProgram;
@@ -17951,7 +18073,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./reference
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 editRegressionData(options: EditRegressionDataOptions): ChartProgram;
@@ -17987,7 +18109,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./reference
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 editRegressionStatisticsData(options?: EditRegressionStatisticsDataOptions): ChartProgram;
@@ -18042,7 +18164,7 @@ Behavior, inference, resets, and errors: [Semantic resources and regression laye
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 editCoordinate(options: EditCoordinateOptions): ChartProgram;
@@ -18154,7 +18276,7 @@ Behavior, inference, resets, and errors: [Extension and scale contracts](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 editXScale(options: EditXScaleOptions): ChartProgram;
@@ -18192,7 +18314,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 editYScale(options: EditYScaleOptions): ChartProgram;
@@ -18230,7 +18352,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 editXOffsetScale(options: EditXOffsetScaleOptions): ChartProgram;
@@ -18258,7 +18380,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 editYOffsetScale(options: EditYOffsetScaleOptions): ChartProgram;
@@ -18286,7 +18408,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 editParallelScale(options: EditParallelScaleOptions): ChartProgram;
@@ -18324,7 +18446,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 editThetaScale(options: EditThetaScaleOptions): ChartProgram;
@@ -18358,7 +18480,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 editRScale(options: EditRScaleOptions): ChartProgram;
@@ -18392,7 +18514,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 editColorScale(options: EditColorScaleOptions): ChartProgram;
@@ -18429,7 +18551,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 editStrokeScale(options: EditStrokeScaleOptions): ChartProgram;
@@ -18465,7 +18587,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 editSizeScale(options: EditSizeScaleOptions): ChartProgram;
@@ -18496,7 +18618,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 editOpacityScale(options: EditOpacityScaleOptions): ChartProgram;
@@ -18527,7 +18649,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 editShapeScale(options: EditShapeScaleOptions): ChartProgram;
@@ -18554,7 +18676,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 editStrokeWidthScale(options: EditStrokeWidthScaleOptions): ChartProgram;
@@ -18587,7 +18709,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 editStrokeDashScale(options: EditStrokeDashScaleOptions): ChartProgram;
@@ -18814,7 +18936,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `gap` | Optional / branch-dependent | `number \| undefined` |
 | `align` | Optional / branch-dependent | `CompositionAlign \| undefined` |
 | `padding` | Optional / branch-dependent | `number \| CompositionPadding \| undefined` |
-| `spacing` | Optional / branch-dependent | `"canvas" \| "plot" \| undefined` |
+| `spacing` | Optional / branch-dependent | `"canvas" \| "content" \| "plot" \| undefined` |
 | `topLane` | Optional / branch-dependent | `FacetTopLaneMode \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
@@ -18977,7 +19099,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `scales` | Optional / branch-dependent | `FacetScaleResolutions \| undefined` |
 | `guides` | Optional / branch-dependent | `FacetGuideOptions \| undefined` |
 | `headers` | Optional / branch-dependent | `FacetHeadersOptions \| undefined` |
-| `spacing` | Optional / branch-dependent | `"canvas" \| "plot" \| undefined` |
+| `spacing` | Optional / branch-dependent | `"canvas" \| "content" \| "plot" \| undefined` |
 | `topLane` | Optional / branch-dependent | `FacetTopLaneMode \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
@@ -19096,7 +19218,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `scales` | Optional / branch-dependent | `FacetScaleResolutions \| undefined` |
 | `guides` | Optional / branch-dependent | `FacetGuideOptions \| undefined` |
 | `headers` | Optional / branch-dependent | `FacetHeadersOptions \| undefined` |
-| `spacing` | Optional / branch-dependent | `"canvas" \| "plot" \| undefined` |
+| `spacing` | Optional / branch-dependent | `"canvas" \| "content" \| "plot" \| undefined` |
 | `topLane` | Optional / branch-dependent | `FacetTopLaneMode \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
@@ -19172,7 +19294,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
-| `anchor` | Optional / branch-dependent | `"content" \| "plot" \| undefined` |
+| `anchor` | Optional / branch-dependent | `"content" \| "plot" \| "view" \| undefined` |
 | `role` | Optional / branch-dependent | `FacetHeaderRole \| undefined` |
 | `labelMap` | Optional / branch-dependent | `"auto" \| DisplayLabelMap \| undefined` |
 | `side` | Optional / branch-dependent | `FacetHeaderSide \| undefined` |
@@ -19260,7 +19382,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `axes` | Optional / branch-dependent | `"each" \| "outer" \| undefined` |
+| `axes` | Optional / branch-dependent | `"each" \| "outer" \| { x?: "each" \| "outer" \| undefined; y?: "each" \| "outer" \| undefined; } \| undefined` |
 | `legend` | Optional / branch-dependent | `"shared" \| false \| LegendOptions \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
@@ -19318,7 +19440,7 @@ appearance encodings. [Basic Charts](./api/basic-charts/#createscatterplot)
 
 **API layer:** user-facing. **Authoring roles:** H0.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 createTextPlot(options: CreateTextPlotOptions): ChartProgram;
@@ -19678,6 +19800,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `level` | Optional / branch-dependent | `number \| undefined` |
 | `confidence` | Optional / branch-dependent | `number \| undefined` |
 | `predict` | Optional / branch-dependent | `RegressionPredictOptions \| undefined` |
+| `placement` | Optional / branch-dependent | `"plot-last" \| "source" \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| false \| undefined` |
 | `line` | Optional / branch-dependent | `(StrokeStyleDetails & { strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; }) \| undefined` |
 | `sourceBinding` | Optional / branch-dependent | `"fixed" \| "follow" \| undefined` |
@@ -19860,7 +19983,7 @@ are used as supplied; the facade does not infer normalization. [Polar positions]
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 editRadarPlot(options: EditRadarPlotOptions): ChartProgram;
@@ -20638,7 +20761,7 @@ Length defaults to `14`; stroke width defaults to `2`. [Marks](./api/marks/)
 
 **API layer:** user-facing. **Authoring roles:** H1, H2.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 createStatisticalReference(options: CreateStatisticalReferenceOptions): ChartProgram;
@@ -20893,7 +21016,7 @@ keeps its percentage of the complete source.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 editMarkLabelSelection(options: EditMarkLabelSelectionOptions): ChartProgram;
@@ -20931,7 +21054,7 @@ rebound with this action or removed.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 editMarkLabelPlacement(options: EditMarkLabelPlacementOptions): ChartProgram;
@@ -20971,7 +21094,7 @@ Pass `"auto"` to restore the legacy source anchor and remove the owned placement
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 removeMarkLabels(options: RemoveMarkLabelsOptions): ChartProgram;
@@ -23147,7 +23270,7 @@ replaces the previous content branch. [Text marks](./api/marks/text/)
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 encodeDx(options: TextOffsetEncodingOptions): ChartProgram;
@@ -23183,7 +23306,7 @@ source-owned labels and other marks are rejected.
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 encodeDy(options: TextOffsetEncodingOptions): ChartProgram;
@@ -23628,7 +23751,7 @@ members using the same edge rules as Histogram.
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 createLookupData(options: LookupDataOptions): ChartProgram;
@@ -23661,7 +23784,7 @@ Full and Basic support creation. [Named table lookup](./api/data/summaries-and-s
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 createFlattenData(options: FlattenDataOptions): ChartProgram;
@@ -23759,7 +23882,7 @@ expression, including explicit nested scalar `getPath` and first-occurrence
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 createNormalizedData(options: NormalizedDataOptions): ChartProgram;
@@ -23798,7 +23921,7 @@ percent-change values independently within each group.
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 createSortedData(options: SortedDataOptions): ChartProgram;
@@ -23830,7 +23953,7 @@ null placement, and quantitative, categorical, or temporal comparison.
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 createCompleteData(options: CompleteDataOptions): ChartProgram;
@@ -23867,7 +23990,7 @@ explicit fill and source-membership provenance for synthesized rows.
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 createImputedData(options: ImputedDataOptions): ChartProgram;
@@ -23940,7 +24063,7 @@ by Bar and Area layouts. [Source and Derived Data](./api/data/source-and-derived
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 editComputedData(options: EditComputedDataOptions): ChartProgram;
@@ -23965,7 +24088,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./re
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 editLookupData(options: EditLookupDataOptions): ChartProgram;
@@ -23990,7 +24113,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./re
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 editFlattenData(options: EditFlattenDataOptions): ChartProgram;
@@ -24015,7 +24138,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./re
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 editFoldData(options: EditFoldDataOptions): ChartProgram;
@@ -24040,7 +24163,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./re
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 editSummaryData(options: EditSummaryDataOptions): ChartProgram;
@@ -24069,7 +24192,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./re
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 editBinData(options: EditBinDataOptions): ChartProgram;
@@ -24104,7 +24227,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./re
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 editStackData(options: EditStackDataOptions): ChartProgram;
@@ -24132,7 +24255,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./re
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 editIntervalData(options: EditIntervalDataOptions): ChartProgram;
@@ -24163,7 +24286,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./re
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 editECDFData(options: EditECDFDataOptions): ChartProgram;
@@ -24191,7 +24314,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./re
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 editNormalizedData(options: EditNormalizedDataOptions): ChartProgram;
@@ -24222,7 +24345,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./re
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 editSortedData(options: EditSortedDataOptions): ChartProgram;
@@ -24246,7 +24369,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./reference
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 editCompleteData(options: EditCompleteDataOptions): ChartProgram;
@@ -24275,7 +24398,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./re
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 editImputedData(options: EditImputedDataOptions): ChartProgram;
@@ -24397,6 +24520,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `placement` | Optional / branch-dependent | `"plot-last" \| "source" \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `x` | Optional / branch-dependent | `string \| undefined` |
 | `y` | Optional / branch-dependent | `string \| undefined` |
@@ -24447,6 +24571,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `placement` | Optional / branch-dependent | `"plot-last" \| "source" \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `x` | Optional / branch-dependent | `string \| undefined` |
@@ -26191,7 +26316,7 @@ Behavior, inference, resets, and errors: [Tick/label groups and axis titles](./r
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 editAxes(options: EditAxesOptions): ChartProgram;
@@ -26769,7 +26894,7 @@ dependent replay that would invalidate a stored exact sample fails atomically.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 editLegendBlock(options: EditLegendBlockOptions): ChartProgram;
@@ -28208,7 +28333,7 @@ Each declared action has an exact signature and its own stable link. Option tabl
 
 **API layer:** advanced. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.22. See [release compatibility](./version/).
+**Availability:** Available by v0.0.23. See [release compatibility](./version/).
 
 ```typescript
 encodeChannels(options: EncodeChannelsOptions): ChartProgram;
@@ -28543,7 +28668,463 @@ These blocks are generated from the declaration file owned by each package entry
 
 #### `ggaction`
 
+[Complete declaration and relative dependencies](./types/index.d.ts)
+
 ```typescript
+export type {
+  LinearNiceCountOptions,
+  AxisTickRounding,
+  ArcInnerRadius,
+  PieRadiusChannel,
+  TextMetricFontWeight,
+  TextMeasurement,
+  TextMetricsProfile,
+  ApplyTextMetricsOptions,
+  ReviseDataOptions,
+  ActionOptions,
+  AxisFormat,
+  AxisFormatString,
+  RotationInput,
+  RotationUnit,
+  NumericFormatString,
+  UtcFormatString,
+  ValueFormat,
+  AxisLabelOptions,
+  AxisLabelLayoutOptions,
+  AxisLabelStyleOptions,
+  AxisLineStyleOptions,
+  AxisTickOptions,
+  CartesianGuideDashMap,
+  AxisTicksAndLabelsOptions,
+  AxisTickStyleOptions,
+  AxisTitleOptions,
+  AxisValue,
+  DisplayLabelMap,
+  DisplayLabelOptions,
+  BarWidthOptions,
+  BoxPlotOptions,
+  BoxPlotSummaryFields,
+  BinnedHeatmapColorOptions,
+  BinnedHeatmapOptions,
+  BinnedHeatmapPositionChannel,
+  Bin2DCounts,
+  Bin2DDataOptions,
+  Bin2DExtent,
+  Bin2DOutputFields,
+  BinDataOptions,
+  BinDataOutputFields,
+  BindMarkDataOptions,
+  RemoveResourceOptions,
+  CanvasOptions,
+  FitCanvasOptions,
+  FoldDataOptions,
+  FoldDataOutputFields,
+  CategoricalEncodingOptions,
+  CategoryOrder,
+  CategoryOrderSummary,
+  CategoryValue,
+  ColorLayout,
+  SeriesLayoutOptions,
+  BasicSeriesLayoutOptions,
+  StrokeStyleDetails,
+  RectStyleDetails,
+  CreateAreaPlotOptions,
+  AreaPlotIndependentChannel,
+  AreaPlotMeasureChannel,
+  ColorEncodingOptions,
+  StrokeEncodingOptions,
+  EncodeChannelsOptions,
+  EncodingChannelAssignments,
+  SizeEncodingOptions,
+  ShapeEncodingOptions,
+  AngleEncodingOptions,
+  CompleteAxisOptions,
+  NamedCompleteAxis,
+  ConcatCompositionSpec,
+  CompositionAlign,
+  CompositionOptions,
+  EditFacetSourceOptions,
+  FacetHeaderRole,
+  FacetHeaderSide,
+  FacetHeaderAlign,
+  CompositionPadding,
+  CompositionProgramEntry,
+  CompositionSpec,
+  ComputedDataOptions,
+  ComputedExpression,
+  CompleteDataOptions,
+  ImputedDataOptions,
+  NormalizedDataOptions,
+  NormalizeBaseline,
+  NormalizeMethod,
+  NormalizeZeroDenominator,
+  ChartProgram,
+  ConcretePathCommand,
+  CurveInterpolation,
+  CreateDerivedDataOptions,
+  CreateAxesOptions,
+  PolarAxisTickSelection,
+  ParallelAxisTickSelection,
+  ParallelAxisTicksOptions,
+  ParallelAxisLabelsOptions,
+  ParallelAxisTitleOptions,
+  ParallelAxisComponentsOptions,
+  CreateParallelAxisOptions,
+  EditParallelAxisOptions,
+  ParallelAxesOptions,
+  RemoveParallelAxisOptions,
+  CreateThetaAxisLineOptions,
+  CreateRadialAxisLineOptions,
+  CreateThetaAxisTicksOptions,
+  CreateRadialAxisTicksOptions,
+  CreateThetaAxisLabelsOptions,
+  ThetaAxisLabelOptions,
+  ThetaTicksAndLabelsOptions,
+  CompleteThetaAxisOptions,
+  EditThetaAxisOptions,
+  CreateRadialAxisLabelsOptions,
+  CreateThetaAxisTitleOptions,
+  CreateRadialAxisTitleOptions,
+  CreateCoordinateOptions,
+  CoordinateAspect,
+  CoordinateAspectAlign,
+  PolarFrameCenter,
+  PolarFrameRadius,
+  PolarFrameOptions,
+  EditCoordinateOptions,
+  CreateGuidesOptions,
+  CreateGridOptions,
+  CreateBarPlotOptions,
+  BarRangePositionChannel,
+  CreateHeatmapOptions,
+  CreateHistogramOptions,
+  CreatePiePlotOptions,
+  CreateRosePlotOptions,
+  CreateRadialBarPlotOptions,
+  MeasuredRadialGuideOptions,
+  MeasuredRadiusScaleOptions,
+  RadialMapping,
+  RadialEncodingOptions,
+  RadiusScaleOptions,
+  CreateDensityPlotOptions,
+  CreateHorizonPlotOptions,
+  HorizonPlotGuideOptions,
+  DensityPlotGuideOptions,
+  DensityPlotLegendOptions,
+  PieCategory,
+  PieColor,
+  PieLegendOptions,
+  CreateRegressionBandOptions,
+  CreateRegressionLineOptions,
+  CreateLinePlotOptions,
+  CreatePolarLinePlotOptions,
+  CreatePolarScatterPlotOptions,
+  CreateRadarPlotOptions,
+  CreateRugPlotOptions,
+  CreateStripPlotOptions,
+  CreateBeeswarmPlotOptions,
+  RaincloudDensityOptions,
+  RaincloudBoxSummaryOptions,
+  RaincloudIntervalSummaryOptions,
+  RaincloudSummaryOptions,
+  RaincloudPointAppearanceOptions,
+  RaincloudPointsOptions,
+  CreateRaincloudPlotOptions,
+  EditRaincloudPlotOptions,
+  BeeswarmPackingOptions,
+  RadarCategoryChannel,
+  RadarCategoryScaleOptions,
+  RadarCategoryValue,
+  RadarWideOptions,
+  RugGuideOptions,
+  RugMeasureChannel,
+  RugTickOptions,
+  StripCategoryChannel,
+  StripBandJitterOptions,
+  StripJitterOptions,
+  StripPixelJitterOptions,
+  CreateParallelCoordinatesOptions,
+  CreateScatterPlotOptions,
+  CreateTextPlotOptions,
+  CreateIntervalPlotOptions,
+  CreateRegressionPlotOptions,
+  CreateDotPlotOptions,
+  CreateLollipopPlotOptions,
+  CreateDumbbellPlotOptions,
+  EditEndpointPlotOptions,
+  CreateECDFPlotOptions,
+  EditECDFPlotOptions,
+  EndpointCategoryChannel,
+  EndpointValueChannel,
+  EndpointPlotSummary,
+  EndpointLabelOptions,
+  IntervalPlotErrorBarOptions,
+  RegressionPlotPositionChannel,
+  CreateScaleOptions,
+  DashPattern,
+  DashScaleOptions,
+  DashStyle,
+  DatasetDensityTransform,
+  DatasetECDFResolvedGroup,
+  DatasetECDFTransform,
+  ECDFOutputFields,
+  ECDFDataOptions,
+  DatasetComputedTransform,
+  DatasetCompleteTransform,
+  DatasetImputedTransform,
+  DatasetNormalizedTransform,
+  DatasetHorizonTransform,
+  DensityPlacement,
+  BaselineDensityPlacement,
+  CategoryDensityPlacement,
+  DensityPlacementSide,
+  DensityPlacementSplit,
+  DensityPlacementWidth,
+  DensityWidthResolution,
+  DatasetBin2DOutputFields,
+  DatasetBin2DTransform,
+  DatasetFilterTransform,
+  DatasetFoldTransform,
+  DatasetIntervalOutputFields,
+  DatasetIntervalTransform,
+  DatasetTimeUnitTransform,
+  DatasetWindowOperation,
+  DatasetWindowSort,
+  DatasetWindowTransform,
+  DurationWindowFrame,
+  DurationWindowUnit,
+  DatasetRegressionTransform,
+  DatasetRegressionStatisticsTransform,
+  DatasetScalar,
+  StatisticalWeight,
+  DatasetStackTransform,
+  DatasetTransform,
+  RequestedDatasetTransform,
+  DerivedDataDependents,
+  EditDerivedDataOptions,
+  EditGraphicsOptions,
+  EditBin2DDataOptions,
+  EditComputedDataOptions,
+  EditFilteredDataOptions,
+  EditFoldDataOptions,
+  EditSummaryDataOptions,
+  EditBinDataOptions,
+  EditTimeUnitDataOptions,
+  EditWindowDataOptions,
+  EditDensityDataOptions,
+  EditStackDataOptions,
+  EditRegressionDataOptions,
+  EditRegressionStatisticsDataOptions,
+  EditIntervalDataOptions,
+  EditECDFDataOptions,
+  EditNormalizedDataOptions,
+  EditCompleteDataOptions,
+  EditImputedDataOptions,
+  EditHorizonOptions,
+  EditCompositionLayoutOptions,
+  EditFacetHeadersOptions,
+  FacetHeadersOptions,
+  FacetHeaderTitleOptions,
+  EditAxesOptions,
+  EditAxisOptions,
+  EditGradientPlotOptions,
+  EditViolinPlotOptions,
+  EditGridDirectionsOptions,
+  EditGridOptions,
+  EditErrorBandBoundaryOptions,
+  EditErrorBandOptions,
+  EditErrorBarOptions,
+  RuleStyleOptions,
+  EditBoxPlotOptions,
+  EditLegendBorderOptions,
+  EditLegendLabelsOptions,
+  EditLegendLayoutOptions,
+  EditLegendSymbolsOptions,
+  EditLegendTitleOptions,
+  EditScaleOptions,
+  EditXScaleOptions,
+  EditYScaleOptions,
+  EditParallelScaleOptions,
+  EditThetaScaleOptions,
+  EditRScaleOptions,
+  EditColorScaleOptions,
+  EditStrokeScaleOptions,
+  EditSizeScaleOptions,
+  EditOpacityScaleOptions,
+  EditShapeScaleOptions,
+  EditStrokeWidthScaleOptions,
+  EditStrokeDashScaleOptions,
+  EditSemanticOptions,
+  FieldType,
+  FillPaint,
+  FacetCompositionSpec,
+  FacetGuideOptions,
+  FacetOptions,
+  FacetTopLaneMode,
+  FacetGridOptions,
+  FacetGridRole,
+  FacetScaleResolution,
+  FacetScaleResolutions,
+  GraphicClipRect,
+  GraphicObject,
+  GraphicSpec,
+  GraphicType,
+  GroupEncodingOptions,
+  GradientPlotAppearanceOptions,
+  GradientPlotCenterOptions,
+  GradientPlotDensityOptions,
+  GradientPlotOptions,
+  GradientPlotPositionChannel,
+  ViolinPlotAreaOptions,
+  ViolinPlotColorOptions,
+  ViolinPlotDensityOptions,
+  ViolinPlotOptions,
+  ViolinPlotPositionChannel,
+  ViolinPlotSplitOptions,
+  LinearGradientPaint,
+  LinearGradientPoint,
+  LinearGradientStop,
+  GridDirectionOptions,
+  HeatmapBaseOptions,
+  HeatmapBinOptions,
+  HistogramEncodingOptions,
+  HorizonEncodingOptions,
+  HorizonMissingPolicy,
+  HorizonOutputFields,
+  HorizonOverflowPolicy,
+  HorizonPaletteOptions,
+  HorizonResolution,
+  HorizonXEncoding,
+  HorizonYEncoding,
+  HighlightMarksOptions,
+  JitterMaxOffset,
+  JitterPointsOptions,
+  PointPackingMaxOffset,
+  PackPointsOptions,
+  RemovePointPackingOptions,
+  LabelLayoutAxis,
+  LabelLayoutBounds,
+  LabelLayoutOptions,
+  LabelLeaderOptions,
+  LegendOptions,
+  LegendChannel,
+  LegendBlockTextPatch,
+  LegendBlockSymbolPatch,
+  EditLegendBlockOptions,
+  EditLegendOptions,
+  ContinuousColorInterpolation,
+  ContinuousColorScaleOptions,
+  OpacityEncodingOptions,
+  OpacityScaleOptions,
+  OrderCategoriesOptions,
+  OffsetScaleOptions,
+  OffsetScaleEditPatch,
+  EditXOffsetScaleOptions,
+  EditYOffsetScaleOptions,
+  PathOrderEncodingOptions,
+  ParallelCoordinatesEncodingOptions,
+  ParallelDimension,
+  ParallelMissingPolicy,
+  PointShape,
+  PointPolygonShape,
+  PreGriddedHeatmapOptions,
+  MarkSelector,
+  MarkGraphicProperty,
+  Palette,
+  PaletteName,
+  NonPointQuantitativePositionScaleOptions,
+  PositionEncodingOptions,
+  YPositionEncodingOptions,
+  RulePositionEncodingOptions,
+  SecondaryPositionEncodingOptions,
+  RegressionBandOptions,
+  RegressionDataOptions,
+  RegressionStatisticsDataOptions,
+  RegressionInterval,
+  RegressionMethod,
+  RegressionOptions,
+  RectMarkOptions,
+  ReplaceCompositionChildOptions,
+  InsertCompositionChildOptions,
+  RemoveCompositionChildOptions,
+  ReorderCompositionChildrenOptions,
+  RepeatChartsOptions,
+  EditRegressionOptions,
+  EditRectMarkOptions,
+  RemoveAxisOptions,
+  RemoveCategoryOrderOptions,
+  RemoveGridOptions,
+  RemoveJitterOptions,
+  RemoveLabelLayoutOptions,
+  RemoveLegendOptions,
+  RemoveMarkOptions,
+  RemovePathOrderOptions,
+  ScaleRange,
+  ScaleOptions,
+  ScaleType,
+  ShapeScaleOptions,
+  SizeScaleOptions,
+  CategoricalSizeScaleOptions,
+  StackMode,
+  StackDataMode,
+  StackDataOptions,
+  StackDataOutputFields,
+  BootstrapMeanIntervalMethod,
+  MeanConfidenceIntervalMethod,
+  SummaryAggregateOptions,
+  SummaryDataOptions,
+  YStackMode,
+  SemanticCoordinate,
+  SemanticDataset,
+  SemanticLayer,
+  SemanticScale,
+  SemanticSpec,
+  SelectMarksOptions,
+  StrokeDashEncodingOptions,
+  StrokeWidthEncodingOptions,
+  StrokeWidthScaleOptions,
+  ThetaEncodingOptions,
+  ThetaScaleOptions,
+  TimeUnit,
+  TimeUnitDataOptions,
+  RowWindowFrame,
+  TemporalInputUnit,
+  ThemeDefinition,
+  ThemeName,
+  ThemeTokens,
+  ApplyThemeOptions,
+  TraceNode,
+  TitleOptions,
+  EditTitleOptions,
+  EditTextMarkOptions,
+  TitleTextStyleOptions,
+  TextEncodingOptions,
+  TextFormat,
+  TextMarkOptions,
+  DatumPositionEncodingOptions,
+  CreateMarkLabelsOptions,
+  EditMarkLabelPlacementOptions,
+  EditMarkLabelSelectionOptions,
+  MarkLabelAnchor,
+  MarkLabelPlacement,
+  MarkLabelPlacementLeaderOptions,
+  MarkLabelSelectionOptions,
+  RemoveMarkLabelsOptions,
+  CreateAnnotationOptions,
+  ReferenceStatistic,
+  CreateStatisticalReferenceOptions,
+  CreateReferenceLineOptions,
+  CreateReferenceBandOptions,
+  XAxisPosition,
+  YAxisPosition,
+  WindowDataOptions,
+  WindowFrame,
+  WindowOperation,
+  WindowSort,
+  WindowSortOrder,
+  XOffsetEncodingOptions
+} from "./program.js";
+
 export function chart(): ChartProgram;
 export function hconcat(options: CompositionOptions): ChartProgram;
 export function vconcat(options: CompositionOptions): ChartProgram;
@@ -28556,7 +29137,135 @@ export function render(
 
 #### `ggaction/basic`
 
+[Complete declaration and relative dependencies](./types/basic.d.ts)
+
 ```typescript
+export type {
+  LinearNiceCountOptions,
+  PointPolygonShape,
+  AxisTickRounding,
+  AxisLabelOptions,
+  AxisLineStyleOptions,
+  AxisTickOptions,
+  CartesianGuideDashMap,
+  AxisTicksAndLabelsOptions,
+  AxisTitleOptions,
+  DisplayLabelMap,
+  DisplayLabelOptions,
+  ApplyThemeOptions,
+  BarWidthOptions,
+  BasicSeriesLayoutOptions,
+  Bin2DDataOptions,
+  CanvasOptions,
+  ColorEncodingOptions,
+  CompleteAxisOptions,
+  NamedCompleteAxis,
+  CreateAxesOptions,
+  CreateBarPlotOptions,
+  BarRangePositionChannel,
+  CreateDataOptions,
+  FlattenDataOptions,
+  LookupDataOptions,
+  CreateGridOptions,
+  CreateGuidesOptions,
+  CreateHeatmapOptions,
+  CreateHistogramOptions,
+  CreateLinePlotOptions,
+  CreateScatterPlotOptions,
+  CreateScaleOptions,
+  GraphicSpec,
+  GroupEncodingOptions,
+  GridDirectionOptions,
+  HistogramEncodingOptions,
+  LegendOptions,
+  PositionEncodingOptions,
+  RectMarkOptions,
+  RectStyleDetails,
+  ScaleOptions,
+  SecondaryPositionEncodingOptions,
+  SemanticSpec,
+  StrokeDashEncodingOptions,
+  StrokeStyleDetails,
+  TemporalInputUnit,
+  ThemeDefinition,
+  ThemeName,
+  ThemeTokens,
+  TraceNode,
+  XAxisPosition,
+  XOffsetEncodingOptions,
+  YAxisPosition
+} from "./program.js";
+
+type BasicStateKey =
+  | "semanticSpec"
+  | "graphicSpec"
+  | "resolvedScales"
+  | "materializationConfigs"
+  | "context"
+  | "trace"
+  | "actionStack";
+
+type BasicMethodKey =
+  | "createCanvas"
+  | "applyTheme"
+  | "removeTheme"
+  | "createData"
+  | "createFlattenData"
+  | "createLookupData"
+  | "createPointMark"
+  | "createLineMark"
+  | "createBarMark"
+  | "createRectMark"
+  | "encodeX"
+  | "encodeY"
+  | "encodeX2"
+  | "encodeY2"
+  | "encodeGroup"
+  | "encodePointRadius"
+  | "encodeColor"
+  | "encodeStrokeDash"
+  | "encodeSize"
+  | "encodeShape"
+  | "encodeXOffset"
+  | "encodeYOffset"
+  | "encodeHistogram"
+  | "encodeBarWidth"
+  | "createCoordinate"
+  | "createScale"
+  | "createScatterPlot"
+  | "createLinePlot"
+  | "createBarPlot"
+  | "createHistogram"
+  | "createHeatmap"
+  | "createAxes"
+  | "createXAxis"
+  | "createYAxis"
+  | "createXAxisLine"
+  | "createYAxisLine"
+  | "createXAxisTicks"
+  | "createYAxisTicks"
+  | "createXAxisLabels"
+  | "createYAxisLabels"
+  | "createXAxisTicksAndLabels"
+  | "createYAxisTicksAndLabels"
+  | "createXAxisTitle"
+  | "createYAxisTitle"
+  | "createGrid"
+  | "createHorizontalGrid"
+  | "createVerticalGrid"
+  | "createLegend"
+  | "createGuides";
+
+type RebindMethod<T> = T extends (...args: infer Args) => ChartProgram
+  ? (...args: Args) => BasicChartProgram
+  : never;
+
+export type BasicChartProgram =
+  Pick<ChartProgram, BasicStateKey> &
+  { readonly [Key in Exclude<BasicMethodKey, "createData">]: RebindMethod<ChartProgram[Key]> } &
+  { createData<Row extends object>(options: CreateDataOptions<Row>): BasicChartProgram } &
+  { readonly layoutSeries: (options: BasicSeriesLayoutOptions) => BasicChartProgram };
+
 export function chart(): BasicChartProgram;
 export function render(
   program: Pick<BasicChartProgram, "graphicSpec">,
@@ -28565,22 +29274,59 @@ export function render(
 ): void;
 ```
 
-#### `ggaction/svg`
+#### `ggaction/extension`
+
+[Complete declaration and relative dependencies](./types/extension.d.ts)
 
 ```typescript
-export interface SVGRenderOptions {
-  readonly title?: string;
-  readonly description?: string;
-  readonly resourceNamespace?: string;
+import type { ActionOptions } from "./program.js";
+import { ChartProgram } from "./program.js";
+
+export { ChartProgram };
+export type {
+  FillPaint,
+  LinearGradientPaint,
+  LinearGradientPoint,
+  LinearGradientStop
+} from "./program.js";
+
+export interface ActionMetadata {
+  op: string;
+  description: string;
+  scope?: "unit" | "composition" | "any";
 }
 
-export function renderToSVG(
-  program: Pick<ChartProgram, "graphicSpec">,
-  options?: SVGRenderOptions
-): string;
+export interface RegisteredExtensionActions {}
+
+export type RegisteredExtensionAction = (
+  this: ChartProgram,
+  ...args: any[]
+) => ChartProgram;
+
+export interface ExtensionDefinition<
+  TActions extends Readonly<Record<string, RegisteredExtensionAction>> =
+    Readonly<Record<string, RegisteredExtensionAction>>
+> {
+  name: string;
+  actions: TActions;
+}
+
+export function action<TOptions extends ActionOptions = ActionOptions>(
+  metadata: ActionMetadata,
+  implementation: (this: ChartProgram, options: TOptions) => ChartProgram
+): <TProgram extends ChartProgram>(
+  this: TProgram,
+  options?: TOptions
+) => TProgram;
+
+export function registerExtension<
+  TActions extends Readonly<Record<string, RegisteredExtensionAction>>
+>(definition: ExtensionDefinition<TActions>): void;
 ```
 
 #### `ggaction/png`
+
+[Complete declaration and relative dependencies](./types/png.d.ts)
 
 ```typescript
 export interface PNGRenderResult {
@@ -28607,6 +29353,8 @@ export function renderToPNGBuffer(
 ```
 
 #### `ggaction/pdf`
+
+[Complete declaration and relative dependencies](./types/pdf.d.ts)
 
 ```typescript
 export interface PDFMetadata {
@@ -28644,7 +29392,26 @@ export function renderToPDFBuffer(
 ): Promise<PDFBufferResult>;
 ```
 
+#### `ggaction/svg`
+
+[Complete declaration and relative dependencies](./types/svg.d.ts)
+
+```typescript
+export interface SVGRenderOptions {
+  readonly title?: string;
+  readonly description?: string;
+  readonly resourceNamespace?: string;
+}
+
+export function renderToSVG(
+  program: Pick<ChartProgram, "graphicSpec">,
+  options?: SVGRenderOptions
+): string;
+```
+
 #### `ggaction/diagnostics`
+
+[Complete declaration and relative dependencies](./types/diagnostics.d.ts)
 
 ```typescript
 export type ErrorCode = "invalid-option" | "invalid-value" | "missing-resource" |
@@ -28666,6 +29433,8 @@ export function getErrorDetails(error: unknown): ErrorDetails | undefined;
 
 #### `ggaction/persistence`
 
+[Complete declaration and relative dependencies](./types/persistence.d.ts)
+
 ```typescript
 import type { ChartProgram } from "./program.js";
 import type { BasicChartProgram } from "./basic.js";
@@ -28674,6 +29443,116 @@ export function serializeProgram(program: ChartProgram | BasicChartProgram): str
 export function deserializeProgram(text: string): ChartProgram;
 export function serializeGraphic(program: Pick<ChartProgram, "graphicSpec">): string;
 export function deserializeGraphic(text: string): Readonly<Pick<ChartProgram, "graphicSpec">>;
+```
+
+#### `ggaction/accessibility`
+
+[Complete declaration and relative dependencies](./types/accessibility.d.ts)
+
+```typescript
+import type { ChartProgram } from "./program.js";
+import type { BasicChartProgram } from "./basic.js";
+
+export interface AccessibleColumn {
+  readonly key: string;
+  readonly role: string;
+  readonly component: string;
+  readonly field?: string;
+  readonly aggregate?: string;
+  readonly unit?: "utc-milliseconds";
+}
+export interface AccessibleRow {
+  readonly component: string;
+  readonly series: Readonly<Record<string, unknown>>;
+  readonly values: Readonly<Record<string, unknown>>;
+}
+export interface AccessibleOwnerView {
+  readonly ownerId: string;
+  readonly markType: string;
+  readonly columns: readonly AccessibleColumn[];
+  readonly rows: readonly AccessibleRow[];
+  readonly units: Readonly<Record<string, "utc-milliseconds">>;
+}
+export interface AccessibleChildView {
+  readonly ownerId: string;
+  readonly kind: "composition-child";
+  readonly title: string | null;
+  readonly facet?: Readonly<Record<string, unknown>>;
+  readonly views: readonly AccessibleView[];
+}
+export type AccessibleView = AccessibleOwnerView | AccessibleChildView;
+export interface AccessibleData {
+  readonly schemaVersion: 1;
+  readonly title: string | null;
+  readonly views: readonly AccessibleView[];
+}
+export function exportAccessibleData(program: ChartProgram | BasicChartProgram, options?: { readonly target?: string }): AccessibleData;
+```
+
+#### `ggaction/inspection`
+
+[Complete declaration and relative dependencies](./types/inspection.d.ts)
+
+```typescript
+import type { BasicChartProgram } from "./basic.js";
+import type { ChartProgram, DatasetSchema } from "./program.js";
+export type ProgramInput = ChartProgram | BasicChartProgram;
+export interface ResourceRef { readonly kind: "data" | "mark" | "scale" | "coordinate" | "guide" | "canvas" | "composition"; readonly id: string; readonly childPath?: readonly string[]; }
+export interface InspectionTarget { readonly kind: "data" | "mark" | "scale" | "coordinate" | "guide"; readonly id: string; readonly childPath?: readonly string[]; }
+export interface Finding { readonly severity: "error" | "warning" | "info"; readonly code: string; readonly reason: string; readonly message: string; readonly resource?: ResourceRef; readonly optionPath?: string; }
+export interface CheckResult { readonly name: string; readonly status: "not_run" | "passed" | "failed" | "not_applicable"; readonly evidencePaths: readonly string[]; readonly findings: readonly Finding[]; }
+export interface ParameterDefinition { readonly path: string; readonly kind: "field" | "enum" | "number" | "string" | "boolean" | "range" | "array" | "object" | "resource"; readonly required: boolean; readonly active: boolean; readonly choices?: readonly (string | number | boolean | null)[]; readonly minimum?: number; readonly maximum?: number; readonly unit?: string; readonly fieldRole?: string; }
+export interface ActionDescription { readonly version: 1; readonly action: string; readonly applicability: "supported" | "needs-input" | "incompatible" | "unsupported" | "unverified"; readonly parameterDefinitions: readonly ParameterDefinition[]; readonly requirements: readonly { readonly reason: string; readonly optionPath?: string }[]; readonly checks: readonly CheckResult[]; readonly findings: readonly Finding[]; }
+export interface Change { readonly resource: ResourceRef; readonly operation: "add" | "remove" | "modify"; readonly effect: "data" | "binding" | "structure" | "scale" | "guide" | "style"; readonly roles: readonly string[]; }
+export interface ProgramComparison { readonly version: 1; readonly equivalence: "equal" | "different" | "unknown"; readonly completeProgramComparison: boolean; readonly changes: readonly Change[]; readonly affected: readonly ResourceRef[]; readonly findings: readonly Finding[]; }
+export interface OwnerInspection { readonly owner: ResourceRef; readonly grain: "item" | "series" | "composite" | "unknown"; readonly rawRows: number | null; readonly logicalDataItems: number | null; readonly drawablePrimitives: number | null; readonly visibleCandidates: number | null; readonly flags: readonly { readonly reason: "opacity-zero" | "zero-size" | "outside-clip" | "missing-skipped"; readonly count: number | null }[]; readonly bounds: Readonly<{x:number;y:number;width:number;height:number}> | null; readonly sourceRefs: readonly ResourceRef[]; readonly checks: readonly CheckResult[]; }
+export interface ProgramInspection { readonly version: 1; readonly views: readonly OwnerInspection[]; readonly calculations: readonly unknown[]; readonly checks: readonly CheckResult[]; readonly findings: readonly Finding[]; readonly coverage: Readonly<{partial:boolean;unsupported:readonly ResourceRef[]}>; }
+export function getDatasetSchema(program: ProgramInput, options: {readonly data:string;readonly childPath?:readonly string[]}): Readonly<{data:string;schema:DatasetSchema}>;
+export function describeAction(program: ProgramInput, options: {readonly action:string;readonly target?:InspectionTarget;readonly options?:Readonly<Record<string,unknown>>}): ActionDescription;
+export function comparePrograms(before: ProgramInput, after: ProgramInput, options?: {readonly target?:InspectionTarget}): ProgramComparison;
+export function inspectProgram(program: ProgramInput, options?: {readonly target?:InspectionTarget}): ProgramInspection;
+```
+
+#### `ggaction/scene`
+
+[Complete declaration and relative dependencies](./types/scene.d.ts)
+
+```typescript
+import type { ChartProgram, GraphicObject } from './program.js';
+export interface TransitionNode {
+  readonly key: string;
+  readonly type: string;
+  readonly topology: string;
+  readonly svg: string;
+  readonly offset: readonly [number, number];
+  readonly clip: readonly [number, number, number, number];
+}
+export interface TransitionScene {
+  readonly version: 1;
+  readonly width: number;
+  readonly height: number;
+  readonly definitions: string;
+  readonly nodes: readonly TransitionNode[];
+}
+export interface CanvasTransitionNode {
+  readonly key: string;
+  readonly type: 'circle' | 'rect' | 'line' | 'path' | 'text';
+  readonly topology: string;
+  readonly properties: Readonly<NonNullable<GraphicObject['properties']>>;
+  /** Explicit outer-to-inner global clip frames; the root physical viewport is implicit. */
+  readonly clips?: readonly (readonly [number, number, number, number])[];
+  readonly offset: readonly [number, number];
+  readonly clip: readonly [number, number, number, number];
+}
+export interface CanvasTransitionScene {
+  readonly version: 2;
+  readonly width: number;
+  readonly height: number;
+  readonly nodes: readonly CanvasTransitionNode[];
+}
+export declare function createTransitionScene(program: ChartProgram, options?: {format?: 'svg'}): TransitionScene;
+export declare function createTransitionScene(program: ChartProgram, options: {format: 'canvas'}): CanvasTransitionScene;
+export declare function renderTransitionScene(scene: CanvasTransitionScene, context: CanvasRenderingContext2D, options?: {pixelRatio?: number}): void;
 ```
 
 ## Rendering functions
@@ -31656,6 +32535,7 @@ export type CurveInterpolation =
   | "basis"
   | "cardinal"
   | "monotone"
+  | "monotone-steffen"
   | "natural";
 ```
 
@@ -32315,6 +33195,7 @@ Related types: [`DatasetTimeUnitTransformBase`](./reference/types/#type-datasett
 
 ```typescript
 type DatasetTimeUnitTransformBase = {
+  readonly missing?: "error" | "null";
   readonly type: "timeUnit";
   readonly field: string;
   readonly temporalUnit?: TemporalInputUnit;
@@ -32893,8 +33774,8 @@ export interface EditCompositionLayoutOptions {
   gap?: number;
   align?: CompositionAlign;
   padding?: number | CompositionPadding;
-  /** Interpret gap between child canvases (default) or inner plot regions. */
-  spacing?: "canvas" | "plot";
+  /** Interpret gap between child canvases (default), inner plots, or retained full content (wrapped facets). */
+  spacing?: "canvas" | "plot" | "content";
   /** Share existing top margin with parent title and headers; requires plot spacing. Stacked restores the default. */
   topLane?: FacetTopLaneMode;
 }
@@ -33124,7 +34005,7 @@ export interface EditFacetHeadersOptions {
   color?: string;
   offset?: number;
   /** Content follows concrete mark bounds with plot spacing; plot preserves existing placement. */
-  anchor?: "plot" | "content";
+  anchor?: "plot" | "content" | "view";
   role?: FacetHeaderRole;
   labelMap?: DisplayLabelMap | "auto";
   side?: FacetHeaderSide;
@@ -33655,6 +34536,7 @@ Related types: [`FocusedDerivedDataEdit`](./reference/types/#type-focusedderived
 
 ```typescript
 export interface EditRegressionOptions {
+  placement?: "source" | "plot-last";
   target?: string;
   data?: string;
   x?: string;
@@ -34321,7 +35203,7 @@ export interface FacetGridOptions {
   scales?: FacetScaleResolutions;
   guides?: FacetGuideOptions;
   headers?: FacetHeadersOptions;
-  /** Interpret gap between child canvases (default) or inner plot regions. */
+  /** Interpret gap between child canvases (default), inner plots, or retained full content (wrapped facets). */
   spacing?: "canvas" | "plot";
   /** Share the existing top margin rather than adding title/header reservations. Requires plot spacing. */
   topLane?: FacetTopLaneMode;
@@ -34349,7 +35231,7 @@ Related types: [`DatasetScalar`](./reference/types/#type-datasetscalar).
 
 ```typescript
 export interface FacetGuideOptions {
-  axes?: "each" | "outer";
+  axes?: "each" | "outer" | { x?: "each" | "outer"; y?: "each" | "outer" };
   legend?: false | "shared" | LegendOptions;
 }
 ```
@@ -34432,8 +35314,8 @@ export interface FacetOptions {
   scales?: FacetScaleResolutions;
   guides?: FacetGuideOptions;
   headers?: FacetHeadersOptions;
-  /** Interpret gap between child canvases (default) or inner plot regions. */
-  spacing?: "canvas" | "plot";
+  /** Interpret gap between child canvases (default), inner plots, or retained full content (wrapped facets). */
+  spacing?: "canvas" | "plot" | "content";
   /** Share the existing top margin rather than adding title/header reservations. Requires plot spacing. */
   topLane?: FacetTopLaneMode;
 }
@@ -37490,6 +38372,7 @@ Related types: [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails
 
 ```typescript
 type RegressionCommonOptions = {
+  placement?: "source" | "plot-last";
   target?: string;
   x?: string;
   y?: string;
@@ -37860,8 +38743,8 @@ export interface RepeatChartsOptions {
   scales?: FacetScaleResolutions;
   guides?: FacetGuideOptions;
   headers?: FacetHeadersOptions;
-  /** Interpret gap between child canvases (default) or inner plot regions. */
-  spacing?: "canvas" | "plot";
+  /** Interpret gap between child canvases (default), inner plots, or retained full content (wrapped facets). */
+  spacing?: "canvas" | "plot" | "content";
   /** Share the existing top margin rather than adding title/header reservations. Requires plot spacing. */
   topLane?: FacetTopLaneMode;
 }
@@ -38972,6 +39855,8 @@ export type TimeUnit =
 
 ```typescript
 type TimeUnitDataBaseOptions = {
+  /** Preserve null or absent inputs as null buckets; defaults to strict errors. */
+  missing?: "error" | "null";
   id: string;
   source?: string;
   field: string;
@@ -39577,6 +40462,12 @@ Use the [primitive extension API](./extension/primitives/) to express semantic a
 graphical changes. A semantic edit never materializes graphics automatically;
 the enclosing action must invoke every required graphical operation.
 
+## Installed guide
+
+The installed package includes `node_modules/ggaction/knowledge/extension-authoring.md`.
+Read it together with the installed `types/extension.d.ts` and `types/program.d.ts`
+when extending an older release. This is a guide file, not a package export to import.
+
 <!-- Source: /extension/primitives/ -->
 
 # Primitive Extension API
@@ -39885,12 +40776,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/e934906032f624edd55697409651e3db496053a4/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/12b66b229f9a4dae1cfa580929b74e7e178c02c9/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/e934906032f624edd55697409651e3db496053a4/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/12b66b229f9a4dae1cfa580929b74e7e178c02c9/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -39977,6 +40868,8 @@ never runs merely because `semanticSpec` changed.
 [Family overview](./api/data/source-and-derived/) · [Exact action lookup](./reference/actions/)
 
 ## `createSummaryData({ id, source?, groupBy?, aggregates, members?, weight? })` {#createsummarydata-id-source-groupby-aggregates-members}
+
+This heading shows common options. For the full callable contract and all branches, see [`createSummaryData`](./reference/actions/statistics/#createsummarydata) and the [exact declarations](./reference/types/).
 
 Create reusable aggregate rows without tying the calculation to a chart type:
 
@@ -40696,7 +41589,7 @@ program.editFacetHeaders({
 
 This is a fragment for an existing facet program. A one-field facet uses the
 `column` header role for each panel, including panels arranged in one column.
-Grid facets also provide a `row` role. The [complete example](https://github.com/ggaction/ggaction/tree/0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e/examples/facet-header-rotation)
+Grid facets also provide a `row` role. The [complete example](https://github.com/ggaction/ggaction/tree/6422776b0a379c8c89809f41b434f366fbc1f143/examples/facet-header-rotation)
 declares the axes and grid before arranging the two region panels.
 
 The same `rotation` option is available in common `headers` and in
@@ -40719,7 +41612,7 @@ This uses concrete mark geometry, including strokes and clipping, regardless of
 opacity; axes, legends and titles are excluded. The same option works in initial
 `headers`, including row and column overrides. Field titles keep their plot anchor.
 Omission or `anchor: "plot"` preserves the existing placement. Content anchoring
-requires `spacing: "plot"` and sufficient space; it never changes child plot sizes.
+requires `spacing: "plot"` or `"content"` and sufficient space; it never changes child plot sizes.
 
 ## Repeat the current chart by a field
 
@@ -40749,7 +41642,7 @@ const faceted = chart()
 
 The input rows in this runnable fragment must contain complete values for the
 encoded fields. See the
-[repository example](https://github.com/ggaction/ggaction/tree/0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e/examples/cars-origin-scatterplot-facet)
+[repository example](https://github.com/ggaction/ggaction/tree/6422776b0a379c8c89809f41b434f366fbc1f143/examples/cars-origin-scatterplot-facet)
 for the complete data preparation and guide options.
 
 Data-bound Cartesian text layers also repeat: encode x, y, and text before
@@ -40787,13 +41680,13 @@ shared-scale panels, and `editFacetSource` can add, replace, or remove the filte
 | `values` | source first-appearance order | Selects and orders a non-empty set of observed scalar values |
 | `columns` | number of values | Sets the grid column count |
 | `gap` | `16` | Sets horizontal and vertical cell spacing |
-| `spacing` | `"canvas"` | Measures gaps between child canvases or, with `"plot"`, inner plot tracks |
+| `spacing` | `"canvas"` | Measures gaps between child canvases or, with `"plot"`, inner plot tracks; `"content"` independently packs full retained bounds |
 | `topLane` | `"stacked"` | With plot spacing, `"shared"` places parent title and top headers in the existing top margin |
 | `align` | `"center"` | Aligns unequal cells inside grid tracks |
 | `padding` | `0` on every side | Adds scalar or four-side parent padding |
 | `scales` | every used role `"shared"` | Sets `"shared"` or `"independent"` per `x`, `y`, `xOffset`, `yOffset`, `theta`, public `r`, `color`, `stroke`, `size`, `shape`, `opacity`, `strokeDash`, or all `parallelDimensions` |
 | `headers` | default header style | Common text style/map plus optional `row` and `column` overrides; role objects also accept `side` |
-| `guides.axes` | `"each"` | `"outer"` keeps occupied-edge Cartesian x/y axes; Polar and Parallel axes remain local and reject `"outer"` |
+| `guides.axes` | `"each"` | `"outer"` keeps occupied-edge Cartesian x/y axes; `{ x: "outer", y: "each" }` shares only X; Polar and Parallel axes remain local and reject `"outer"` |
 | `guides.legend` | `false` | `"shared"` promotes one compatible parent-owned categorical, gradient, discretized-color, size, or opacity legend |
 
 Author the legend position on the unit chart before calling `facet`. Promotion
@@ -40995,7 +41888,7 @@ The child limit is 100 after applying the combination policy. The same
 supports the same Cartesian, Polar, and Parallel chart families, scale policies,
 axis restrictions, and compatible shared legends as `facet`.
 
-See the [runnable grid example](https://github.com/ggaction/ggaction/tree/0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e/examples/facet-grid)
+See the [runnable grid example](https://github.com/ggaction/ggaction/tree/6422776b0a379c8c89809f41b434f366fbc1f143/examples/facet-grid)
 for a 2 × 3 full grid with one missing source pair.
 
 ## Repeat a positional encoding across fields
@@ -41042,7 +41935,7 @@ non-repeated legend may be promoted to the parent.
 Every repeated field can describe a different quantity, so outer-axis
 promotion is rejected. Pie and Radar raw theta/r repetition, composite roles,
 derived target datasets, and unrelated sibling layers also fail atomically.
-See the [runnable repeat example](https://github.com/ggaction/ggaction/tree/0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e/examples/repeat-charts).
+See the [runnable repeat example](https://github.com/ggaction/ggaction/tree/6422776b0a379c8c89809f41b434f366fbc1f143/examples/repeat-charts).
 
 ## Space between plots
 
@@ -41137,6 +42030,26 @@ Titles must fit without overlapping panel headers, plots or retained chart text.
 A conflicting edit fails atomically. Omitting all title options preserves existing
 charts exactly, and source, layout, theme, font metrics and saved editable programs
 retain the field-title owner.
+
+## Independently packed panels
+
+For an existing Cartesian program with axes, this fragment packs complete visible panel
+bounds while keeping every Y axis and one common bottom X footer per occupied column:
+
+Use `program.facet({ field: "group", columns: 2, spacing: "content", gap: 16,
+headers: { anchor: "view" }, guides: { axes: { x: "outer", y: "each" } } })`.
+The program must already contain a `group` field and Cartesian mark encodings.
+
+Panel plot sizes and logical group order stay fixed. Different axis labels or mark overflow
+can give panels in the same logical row different plot origins. `gap` adds clearance between
+measured content bounds. The parent Canvas includes the final footer, title and legend lanes.
+The full-body `view` header anchor includes retained guides; `content` continues to measure
+marks and the plot only. Both anchors accept plot or content spacing.
+
+Use content spacing with wrapped `facet` or `repeatCharts`. Keyed `facetGrid` retains aligned
+tracks and rejects it. Shared top lanes require plot spacing. Repeat keeps axes local and
+rejects any `outer` channel. Per-channel policies require Cartesian coordinates.
+`align` controls slots in canvas/plot spacing; content flow uses independent measured bounds.
 
 <!-- Source: /api/composition/editing/ -->
 
@@ -41289,6 +42202,14 @@ composition untouched.
 These structural actions and `replaceCompositionChild` apply only to concat
 parents. Facet-derived children remain governed by their canonical recipe and
 the facet-specific edit actions.
+
+For Cartesian facets, `editFacetGuides({ axes: { x: "outer" } })` changes only the X policy;
+the Y policy stays unchanged. Scalar `"each"` or `"outer"` changes both channels. At creation,
+omitted object channels default to `"each"`. Empty or unknown channel policies are rejected.
+Wrapped layouts can switch to `editCompositionLayout({ spacing: "content" })` to pack native
+content bounds independently; keyed grids reject this mode. Reset `topLane` to `"stacked"`
+in the same call when switching from a shared plot lane. Header `anchor: "view"` includes
+retained guides in its outward clearance and is available with plot or content spacing.
 
 <!-- Source: /api/marks/labels/ -->
 
@@ -41520,7 +42441,7 @@ semantic base text rather than accumulating offsets. Text, data, scale, source
 mark, and Canvas changes replay that same policy.
 
 See the complete
-[Gapminder country-label program](https://github.com/ggaction/ggaction/blob/0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e/examples/gapminder-country-labels/program.js)
+[Gapminder country-label program](https://github.com/ggaction/ggaction/blob/6422776b0a379c8c89809f41b434f366fbc1f143/examples/gapminder-country-labels/program.js)
 for a point-attached label layer with leaders.
 
 ## `removeLabelLayout(options?)`
@@ -41592,7 +42513,9 @@ The source has two rows: `(t=1,value=2)` and `(t=3,value=6)`. Complete produces 
 
 ## Boundaries and failure behavior
 
-Completion adds keys; imputation fills cells and does not add rows. Each observed group/key must be unique. Linear imputation uses position distance, not index distance. Source rows are immutable: there is no general edit-source-data action. Create the replacement, rebuild its derivation, then bind an eligible independent mark. To change a transform decision on the same source, use its focused editor with `dependents: "recompute"`.
+Completion adds keys; imputation fills cells and does not add rows. Each observed group/key must be unique. Linear imputation uses position distance, not index distance. Source rows are immutable. Use `reviseData` for compatible new rows and automatic dependent recomputation. The explicit replacement, derivation, and mark binding shown here is useful when restructuring dependencies. To change a transform decision on the same source, use its focused editor with `dependents: "recompute"`.
+
+For a compatible source refresh, use `reviseData` to replay this pipeline automatically. The manual replacement steps above are useful when explicitly restructuring dependencies. See [Data updates](./data-updates/).
 
 ## Related
 
@@ -42304,74 +43227,66 @@ Start with the chart that expresses the data's meaning, then edit its parts thro
 lower-level actions. Every complete-chart action in the current declared catalog
 appears below, including composition and deferred-construction entries.
 
-## Three independent choices
-
-**H0–H4 catalog role tags** group related authoring tasks; the actual hierarchy
-comes from the smaller actions an action composes. **API layer** describes
-user-facing, advanced, or primitive exposure. **Package entry** describes availability
-from the full or basic import. A higher-level action is not automatically part of the
-smaller package, and a low-level domain action is not automatically an extension primitive.
-
 Prepare a Canvas and explicit or unambiguous materialized data before a unit chart
 facade. Repetition consumes a complete program. Box and Gradient constructors
 can defer roles, so merely calling them does not necessarily produce a complete chart.
 
 ## Relationships and trends
 
-| Task / input | Chart action | Role tags · API layer · entry | Direct editor | Lower-level actions |
-| --- | --- | --- | --- | --- |
-| One row per observation; x and y fields | [`createScatterPlot`](./reference/actions/charts-data/#createscatterplot) | H0 · user-facing · default, basic | Refine the owned marks, encodings, or guides | [`createPointMark`](./reference/actions/marks/#createpointmark) · [`encodeX`](./reference/actions/encodings/#encodex) · [`encodeY`](./reference/actions/encodings/#encodey) · [`encodeColor`](./reference/actions/encodings/#encodecolor) · [`encodeShape`](./reference/actions/encodings/#encodeshape) · [`createGuides`](./reference/actions/guides/#createguides) · [`encodeStroke`](./reference/actions/encodings/#encodestroke) · [`editPointMark`](./reference/actions/marks/#editpointmark) · [`encodeSize`](./reference/actions/encodings/#encodesize) · [`encodePointRadius`](./reference/actions/encodings/#encodepointradius) |
-| Ordered positions and measures; explicit aggregation when needed | [`createLinePlot`](./reference/actions/charts-data/#createlineplot) | H0 · user-facing · default, basic | Refine the owned marks, encodings, or guides | [`createLineMark`](./reference/actions/marks/#createlinemark) · [`encodeX`](./reference/actions/encodings/#encodex) · [`encodeY`](./reference/actions/encodings/#encodey) · [`encodeGroup`](./reference/actions/encodings/#encodegroup) · [`encodeColor`](./reference/actions/encodings/#encodecolor) · [`encodeStrokeDash`](./reference/actions/encodings/#encodestrokedash) · [`createGuides`](./reference/actions/guides/#createguides) |
-| Ordered values and a baseline, or paired interval bounds | [`createAreaPlot`](./reference/actions/charts-data/#createareaplot) | H0 · user-facing · default | Refine the owned marks, encodings, or guides | [`createAreaMark`](./reference/actions/marks/#createareamark) · [`encodeGroup`](./reference/actions/encodings/#encodegroup) · [`encodeX`](./reference/actions/encodings/#encodex) · [`encodeYRange`](./reference/actions/encodings/#encodeyrange) · [`layoutSeries`](./reference/actions/encodings/#layoutseries) · [`encodeColor`](./reference/actions/encodings/#encodecolor) · [`createGuides`](./reference/actions/guides/#createguides) |
-| Finite quantitative observations for a fit and optional uncertainty | [`createRegressionPlot`](./reference/actions/charts-data/#createregressionplot) | H0, H1 · user-facing · default | Refine the owned marks, encodings, or guides | [`createScatterPlot`](./reference/actions/charts-data/#createscatterplot) · [`createRegression`](./reference/actions/statistics/#createregression) |
-| Angular and radial fields per observation | [`createPolarScatterPlot`](./reference/actions/charts-data/#createpolarscatterplot) | H0 · user-facing · default | Refine the owned marks, encodings, or guides | [`createPointMark`](./reference/actions/marks/#createpointmark) · [`encodeTheta`](./reference/actions/encodings/#encodetheta) · [`encodeR`](./reference/actions/encodings/#encoder) · [`encodePointRadius`](./reference/actions/encodings/#encodepointradius) |
-| Ordered angular/radial observations per path | [`createPolarLinePlot`](./reference/actions/charts-data/#createpolarlineplot) | H0 · user-facing · default | Refine the owned marks, encodings, or guides | [`createLineMark`](./reference/actions/marks/#createlinemark) · [`encodeTheta`](./reference/actions/encodings/#encodetheta) · [`encodeR`](./reference/actions/encodings/#encoder) · [`encodeGroup`](./reference/actions/encodings/#encodegroup) · [`encodeColor`](./reference/actions/encodings/#encodecolor) |
-| Long category/value rows or explicitly selected wide fields | [`createRadarPlot`](./reference/actions/charts-data/#createradarplot) | H0 · user-facing · default | [`editRadarPlot`](./reference/actions/charts-data/#editradarplot) | [`createFoldData`](./reference/actions/statistics/#createfolddata) · [`createPolarLinePlot`](./reference/actions/charts-data/#createpolarlineplot) |
-| Rows with two or more quantitative or ordinal dimensions | [`createParallelCoordinates`](./reference/actions/charts-data/#createparallelcoordinates) | H0 · user-facing · default | Refine the owned marks, encodings, or guides | [`createCoordinate`](./reference/actions/charts-data/#createcoordinate) · [`createLineMark`](./reference/actions/marks/#createlinemark) · [`encodeParallelCoordinates`](./reference/actions/encodings/#encodeparallelcoordinates) · [`encodeColor`](./reference/actions/encodings/#encodecolor) · [`encodeStrokeDash`](./reference/actions/encodings/#encodestrokedash) · [`createGuides`](./reference/actions/guides/#createguides) |
-| Positioned text from x/y fields and row content | [`createTextPlot`](./reference/actions/charts-data/#createtextplot) | H0 · user-facing · default | Refine the owned marks, encodings, or guides | [`createTextMark`](./reference/actions/marks/#createtextmark) · [`encodeX`](./reference/actions/encodings/#encodex) · [`encodeY`](./reference/actions/encodings/#encodey) · [`encodeText`](./reference/actions/encodings/#encodetext) · [`encodeColor`](./reference/actions/encodings/#encodecolor) · [`createGuides`](./reference/actions/guides/#createguides) |
+| Task / input | Chart action | Package entry | Direct editor |
+| --- | --- | --- | --- |
+| One row per observation; x and y fields | [`createScatterPlot`](./reference/actions/charts-data/#createscatterplot) | default, basic | Refine the owned marks, encodings, or guides |
+| Ordered positions and measures; explicit aggregation when needed | [`createLinePlot`](./reference/actions/charts-data/#createlineplot) | default, basic | Refine the owned marks, encodings, or guides |
+| Ordered values and a baseline, or paired interval bounds | [`createAreaPlot`](./reference/actions/charts-data/#createareaplot) | default | Refine the owned marks, encodings, or guides |
+| Finite quantitative observations for a fit and optional uncertainty | [`createRegressionPlot`](./reference/actions/charts-data/#createregressionplot) | default | Refine the owned marks, encodings, or guides |
+| Angular and radial fields per observation | [`createPolarScatterPlot`](./reference/actions/charts-data/#createpolarscatterplot) | default | Refine the owned marks, encodings, or guides |
+| Ordered angular/radial observations per path | [`createPolarLinePlot`](./reference/actions/charts-data/#createpolarlineplot) | default | Refine the owned marks, encodings, or guides |
+| Long category/value rows or explicitly selected wide fields | [`createRadarPlot`](./reference/actions/charts-data/#createradarplot) | default | [`editRadarPlot`](./reference/actions/charts-data/#editradarplot) |
+| Rows with two or more quantitative or ordinal dimensions | [`createParallelCoordinates`](./reference/actions/charts-data/#createparallelcoordinates) | default | Refine the owned marks, encodings, or guides |
+| Positioned text from x/y fields and row content | [`createTextPlot`](./reference/actions/charts-data/#createtextplot) | default | Refine the owned marks, encodings, or guides |
 
 ## Comparisons and intervals
 
-| Task / input | Chart action | Role tags · API layer · entry | Direct editor | Lower-level actions |
-| --- | --- | --- | --- | --- |
-| Categorical/measure roles, explicit summary, or ranged endpoints | [`createBarPlot`](./reference/actions/charts-data/#createbarplot) | H0 · user-facing · default, basic | Refine the owned marks, encodings, or guides | [`createBarMark`](./reference/actions/marks/#createbarmark) · [`encodeY`](./reference/actions/encodings/#encodey) · [`encodeX`](./reference/actions/encodings/#encodex) · [`encodeColor`](./reference/actions/encodings/#encodecolor) · [`encodeBarWidth`](./reference/actions/encodings/#encodebarwidth) · [`createGuides`](./reference/actions/guides/#createguides) · [`encodeYRange`](./reference/actions/encodings/#encodeyrange) · [`encodeXRange`](./reference/actions/encodings/#encodexrange) |
-| Category and measure per raw row, or an explicit summary | [`createDotPlot`](./reference/actions/charts-data/#createdotplot) | H0, H1 · user-facing · default | [`editEndpointPlot`](./reference/actions/charts-data/#editendpointplot) | [`createSummaryData`](./reference/actions/statistics/#createsummarydata) · [`createPointMark`](./reference/actions/marks/#createpointmark) · [`encodeX`](./reference/actions/encodings/#encodex) · [`encodeY`](./reference/actions/encodings/#encodey) |
-| Category, measure, and a finite baseline | [`createLollipopPlot`](./reference/actions/charts-data/#createlollipopplot) | H0, H1 · user-facing · default | [`editEndpointPlot`](./reference/actions/charts-data/#editendpointplot) | [`createSummaryData`](./reference/actions/statistics/#createsummarydata) · [`createRuleMark`](./reference/actions/marks/#createrulemark) · [`encodeX`](./reference/actions/encodings/#encodex) · [`encodeY`](./reference/actions/encodings/#encodey) · [`encodeX2`](./reference/actions/encodings/#encodex2) · [`createPointMark`](./reference/actions/marks/#createpointmark) |
-| Category plus named start and end measurements | [`createDumbbellPlot`](./reference/actions/charts-data/#createdumbbellplot) | H0, H1 · user-facing · default | [`editEndpointPlot`](./reference/actions/charts-data/#editendpointplot) | [`createSummaryData`](./reference/actions/statistics/#createsummarydata) · [`createRuleMark`](./reference/actions/marks/#createrulemark) · [`encodeX`](./reference/actions/encodings/#encodex) · [`encodeY`](./reference/actions/encodings/#encodey) · [`encodeX2`](./reference/actions/encodings/#encodex2) · [`createPointMark`](./reference/actions/marks/#createpointmark) |
-| Center and interval measurements or a statistical interval definition | [`createIntervalPlot`](./reference/actions/charts-data/#createintervalplot) | H0, H1 · user-facing · default | Refine the owned marks, encodings, or guides | [`createErrorBar`](./reference/actions/statistics/#createerrorbar) · [`createPointMark`](./reference/actions/marks/#createpointmark) · [`encodeX`](./reference/actions/encodings/#encodex) · [`encodeY`](./reference/actions/encodings/#encodey) |
+| Task / input | Chart action | Package entry | Direct editor |
+| --- | --- | --- | --- |
+| Categorical/measure roles, explicit summary, or ranged endpoints | [`createBarPlot`](./reference/actions/charts-data/#createbarplot) | default, basic | Refine the owned marks, encodings, or guides |
+| Category and measure per raw row, or an explicit summary | [`createDotPlot`](./reference/actions/charts-data/#createdotplot) | default | [`editEndpointPlot`](./reference/actions/charts-data/#editendpointplot) |
+| Category, measure, and a finite baseline | [`createLollipopPlot`](./reference/actions/charts-data/#createlollipopplot) | default | [`editEndpointPlot`](./reference/actions/charts-data/#editendpointplot) |
+| Category plus named start and end measurements | [`createDumbbellPlot`](./reference/actions/charts-data/#createdumbbellplot) | default | [`editEndpointPlot`](./reference/actions/charts-data/#editendpointplot) |
+| Center and interval measurements or a statistical interval definition | [`createIntervalPlot`](./reference/actions/charts-data/#createintervalplot) | default | Refine the owned marks, encodings, or guides |
 
 ## Distributions
 
-| Task / input | Chart action | Role tags · API layer · entry | Direct editor | Lower-level actions |
-| --- | --- | --- | --- | --- |
-| Quantitative observations; one bin policy; optional weights | [`createHistogram`](./reference/actions/charts-data/#createhistogram) | H0, H1 · user-facing · default, basic | Refine the owned marks, encodings, or guides | [`createBarMark`](./reference/actions/marks/#createbarmark) · [`encodeHistogram`](./reference/actions/encodings/#encodehistogram) · [`encodeColor`](./reference/actions/encodings/#encodecolor) · [`createGuides`](./reference/actions/guides/#createguides) |
-| Finite numeric observations and KDE decisions | [`createDensityPlot`](./reference/actions/statistics/#createdensityplot) | H0, H1 · user-facing · default | [`editDensity`](./reference/actions/encodings/#editdensity) · [`editAreaMark`](./reference/actions/marks/#editareamark) | [`createAreaMark`](./reference/actions/marks/#createareamark) · [`encodeDensity`](./reference/actions/encodings/#encodedensity) · [`createGuides`](./reference/actions/guides/#createguides) · [`encodeColor`](./reference/actions/encodings/#encodecolor) |
-| Numeric support observations; optional group and weight field | [`createECDFPlot`](./reference/actions/charts-data/#createecdfplot) | H0, H1 · user-facing · default | [`editECDFPlot`](./reference/actions/charts-data/#editecdfplot) | [`createECDFData`](./reference/actions/statistics/#createecdfdata) · [`createLineMark`](./reference/actions/marks/#createlinemark) · [`encodeX`](./reference/actions/encodings/#encodex) · [`encodeY`](./reference/actions/encodings/#encodey) · [`encodeGroup`](./reference/actions/encodings/#encodegroup) |
-| One categorical and one quantitative role; constructor may defer roles | [`createBoxPlot`](./reference/actions/statistics/#createboxplot) | H0, H1 · user-facing · default | [`editBoxPlot`](./reference/actions/statistics/#editboxplot) | [`createBarMark`](./reference/actions/marks/#createbarmark) · [`encodeX`](./reference/actions/encodings/#encodex) · [`encodeY`](./reference/actions/encodings/#encodey) |
-| Category and quantitative profile roles; constructor may defer roles | [`createGradientPlot`](./reference/actions/statistics/#creategradientplot) | H0, H1 · user-facing · default | [`editGradientPlot`](./reference/actions/statistics/#editgradientplot) | [`createRectMark`](./reference/actions/marks/#createrectmark) · [`encodeX`](./reference/actions/encodings/#encodex) · [`encodeY`](./reference/actions/encodings/#encodey) |
-| Category and quantitative measure; optional two-value split | [`createViolinPlot`](./reference/actions/statistics/#createviolinplot) | H0, H1 · user-facing · default | [`editViolinPlot`](./reference/actions/statistics/#editviolinplot) | [`createAreaMark`](./reference/actions/marks/#createareamark) · [`encodeDensity`](./reference/actions/encodings/#encodedensity) · [`encodeColor`](./reference/actions/encodings/#encodecolor) · [`createGuides`](./reference/actions/guides/#createguides) |
-| One quantitative or temporal measure | [`createRugPlot`](./reference/actions/charts-data/#createrugplot) | H0 · user-facing · default | Refine the owned marks, encodings, or guides | [`createTickMark`](./reference/actions/marks/#createtickmark) · [`encodeX`](./reference/actions/encodings/#encodex) · [`encodeY`](./reference/actions/encodings/#encodey) · [`encodeAngle`](./reference/actions/encodings/#encodeangle) |
-| One measure, optionally with a categorical slot | [`createStripPlot`](./reference/actions/charts-data/#createstripplot) | H0 · user-facing · default | Refine the owned marks, encodings, or guides | [`createPointMark`](./reference/actions/marks/#createpointmark) · [`encodeX`](./reference/actions/encodings/#encodex) · [`encodeY`](./reference/actions/encodings/#encodey) · [`encodePointRadius`](./reference/actions/encodings/#encodepointradius) |
-| Category and measure for glyph-aware deterministic packing | [`createBeeswarmPlot`](./reference/actions/charts-data/#createbeeswarmplot) | H0 · user-facing · default | Refine the owned marks, encodings, or guides | [`createStripPlot`](./reference/actions/charts-data/#createstripplot) · [`packPoints`](./reference/actions/marks/#packpoints) |
-| Shared category/measure rows for density, summary, and observations | [`createRaincloudPlot`](./reference/actions/charts-data/#createraincloudplot) | H0, H1 · user-facing · default | [`editRaincloudPlot`](./reference/actions/charts-data/#editraincloudplot) | [`createViolinPlot`](./reference/actions/statistics/#createviolinplot) · [`createBoxPlot`](./reference/actions/statistics/#createboxplot) · [`createBeeswarmPlot`](./reference/actions/charts-data/#createbeeswarmplot) |
+| Task / input | Chart action | Package entry | Direct editor |
+| --- | --- | --- | --- |
+| Quantitative observations; one bin policy; optional weights | [`createHistogram`](./reference/actions/charts-data/#createhistogram) | default, basic | Refine the owned marks, encodings, or guides |
+| Finite numeric observations and KDE decisions | [`createDensityPlot`](./reference/actions/statistics/#createdensityplot) | default | [`editDensity`](./reference/actions/encodings/#editdensity) · [`editAreaMark`](./reference/actions/marks/#editareamark) |
+| Numeric support observations; optional group and weight field | [`createECDFPlot`](./reference/actions/charts-data/#createecdfplot) | default | [`editECDFPlot`](./reference/actions/charts-data/#editecdfplot) |
+| One categorical and one quantitative role; constructor may defer roles | [`createBoxPlot`](./reference/actions/statistics/#createboxplot) | default | [`editBoxPlot`](./reference/actions/statistics/#editboxplot) |
+| Category and quantitative profile roles; constructor may defer roles | [`createGradientPlot`](./reference/actions/statistics/#creategradientplot) | default | [`editGradientPlot`](./reference/actions/statistics/#editgradientplot) |
+| Category and quantitative measure; optional two-value split | [`createViolinPlot`](./reference/actions/statistics/#createviolinplot) | default | [`editViolinPlot`](./reference/actions/statistics/#editviolinplot) |
+| One quantitative or temporal measure | [`createRugPlot`](./reference/actions/charts-data/#createrugplot) | default | Refine the owned marks, encodings, or guides |
+| One measure, optionally with a categorical slot | [`createStripPlot`](./reference/actions/charts-data/#createstripplot) | default | Refine the owned marks, encodings, or guides |
+| Category and measure for glyph-aware deterministic packing | [`createBeeswarmPlot`](./reference/actions/charts-data/#createbeeswarmplot) | default | Refine the owned marks, encodings, or guides |
+| Shared category/measure rows for density, summary, and observations | [`createRaincloudPlot`](./reference/actions/charts-data/#createraincloudplot) | default | [`editRaincloudPlot`](./reference/actions/charts-data/#editraincloudplot) |
 
 ## Parts, radial values, and dense samples
 
-| Task / input | Chart action | Role tags · API layer · entry | Direct editor | Lower-level actions |
-| --- | --- | --- | --- | --- |
-| Category counts or category sums for proportional sector angles | [`createPiePlot`](./reference/actions/charts-data/#createpieplot) | H0 · user-facing · default | Refine the owned marks, encodings, or guides | [`createArcMark`](./reference/actions/marks/#createarcmark) · [`encodeTheta`](./reference/actions/encodings/#encodetheta) · [`encodeColor`](./reference/actions/encodings/#encodecolor) · [`createGuides`](./reference/actions/guides/#createguides) · [`encodeR`](./reference/actions/encodings/#encoder) |
-| Category counts or sums represented by sector area | [`createRosePlot`](./reference/actions/charts-data/#createroseplot) | H0 · user-facing · default | Refine the owned marks, encodings, or guides | [`createArcMark`](./reference/actions/marks/#createarcmark) · [`encodeTheta`](./reference/actions/encodings/#encodetheta) · [`encodeR`](./reference/actions/encodings/#encoder) · [`encodeColor`](./reference/actions/encodings/#encodecolor) · [`createGuides`](./reference/actions/guides/#createguides) |
-| Category counts or sums represented by radial length | [`createRadialBarPlot`](./reference/actions/charts-data/#createradialbarplot) | H0 · user-facing · default | Refine the owned marks, encodings, or guides | [`createArcMark`](./reference/actions/marks/#createarcmark) · [`encodeTheta`](./reference/actions/encodings/#encodetheta) · [`encodeR`](./reference/actions/encodings/#encoder) · [`encodeColor`](./reference/actions/encodings/#encodecolor) · [`createGuides`](./reference/actions/guides/#createguides) |
-| Pre-gridded cells or two raw quantitative fields for rectangular bins | [`createHeatmap`](./reference/actions/charts-data/#createheatmap) | H0 · user-facing · default, basic | Refine the owned marks, encodings, or guides | [`createRectMark`](./reference/actions/marks/#createrectmark) · [`encodeX`](./reference/actions/encodings/#encodex) · [`encodeY`](./reference/actions/encodings/#encodey) · [`encodeColor`](./reference/actions/encodings/#encodecolor) · [`createGuides`](./reference/actions/guides/#createguides) · [`createBin2DData`](./reference/actions/charts-data/#createbin2ddata) · [`encodeX2`](./reference/actions/encodings/#encodex2) · [`encodeY2`](./reference/actions/encodings/#encodey2) |
-| Ordered quantitative/temporal x and foldable quantitative y | [`createHorizonPlot`](./reference/actions/statistics/#createhorizonplot) | H0, H1 · user-facing · default | [`editHorizon`](./reference/actions/encodings/#edithorizon) · [`editAreaMark`](./reference/actions/marks/#editareamark) | [`createAreaMark`](./reference/actions/marks/#createareamark) · [`encodeHorizon`](./reference/actions/encodings/#encodehorizon) · [`createGuides`](./reference/actions/guides/#createguides) |
+| Task / input | Chart action | Package entry | Direct editor |
+| --- | --- | --- | --- |
+| Category counts or category sums for proportional sector angles | [`createPiePlot`](./reference/actions/charts-data/#createpieplot) | default | Refine the owned marks, encodings, or guides |
+| Category counts or sums represented by sector area | [`createRosePlot`](./reference/actions/charts-data/#createroseplot) | default | Refine the owned marks, encodings, or guides |
+| Category counts or sums represented by radial length | [`createRadialBarPlot`](./reference/actions/charts-data/#createradialbarplot) | default | Refine the owned marks, encodings, or guides |
+| Pre-gridded cells or two raw quantitative fields for rectangular bins | [`createHeatmap`](./reference/actions/charts-data/#createheatmap) | default, basic | Refine the owned marks, encodings, or guides |
+| Ordered quantitative/temporal x and foldable quantitative y | [`createHorizonPlot`](./reference/actions/statistics/#createhorizonplot) | default | [`editHorizon`](./reference/actions/encodings/#edithorizon) · [`editAreaMark`](./reference/actions/marks/#editareamark) |
 
 ## Repeated chart structure
 
-| Task / input | Chart action | Role tags · API layer · entry | Direct editor | Lower-level actions |
-| --- | --- | --- | --- | --- |
-| One complete chart and an eligible shared ancestor field | [`facet`](./reference/actions/charts-data/#facet) | H0 · user-facing · default | [`editFacetSource`](./reference/actions/charts-data/#editfacetsource) · [`editFacetHeaders`](./reference/actions/charts-data/#editfacetheaders) · [`editFacetScales`](./reference/actions/charts-data/#editfacetscales) · [`editFacetGuides`](./reference/actions/charts-data/#editfacetguides) · [`editCompositionLayout`](./reference/actions/charts-data/#editcompositionlayout) | |
-| One complete chart plus row and column fields | [`facetGrid`](./reference/actions/charts-data/#facetgrid) | H0 · user-facing · default | [`editFacetSource`](./reference/actions/charts-data/#editfacetsource) · [`editFacetHeaders`](./reference/actions/charts-data/#editfacetheaders) · [`editFacetScales`](./reference/actions/charts-data/#editfacetscales) · [`editFacetGuides`](./reference/actions/charts-data/#editfacetguides) · [`editCompositionLayout`](./reference/actions/charts-data/#editcompositionlayout) | |
-| One eligible mark role and an ordered field list | [`repeatCharts`](./reference/actions/charts-data/#repeatcharts) | H0 · user-facing · default | [`editFacetSource`](./reference/actions/charts-data/#editfacetsource) · [`editFacetHeaders`](./reference/actions/charts-data/#editfacetheaders) · [`editFacetScales`](./reference/actions/charts-data/#editfacetscales) · [`editFacetGuides`](./reference/actions/charts-data/#editfacetguides) · [`editCompositionLayout`](./reference/actions/charts-data/#editcompositionlayout) | |
+| Task / input | Chart action | Package entry | Direct editor |
+| --- | --- | --- | --- |
+| One complete chart and an eligible shared ancestor field | [`facet`](./reference/actions/charts-data/#facet) | default | [`editFacetSource`](./reference/actions/charts-data/#editfacetsource) · [`editFacetHeaders`](./reference/actions/charts-data/#editfacetheaders) · [`editFacetScales`](./reference/actions/charts-data/#editfacetscales) · [`editFacetGuides`](./reference/actions/charts-data/#editfacetguides) · [`editCompositionLayout`](./reference/actions/charts-data/#editcompositionlayout) |
+| One complete chart plus row and column fields | [`facetGrid`](./reference/actions/charts-data/#facetgrid) | default | [`editFacetSource`](./reference/actions/charts-data/#editfacetsource) · [`editFacetHeaders`](./reference/actions/charts-data/#editfacetheaders) · [`editFacetScales`](./reference/actions/charts-data/#editfacetscales) · [`editFacetGuides`](./reference/actions/charts-data/#editfacetguides) · [`editCompositionLayout`](./reference/actions/charts-data/#editcompositionlayout) |
+| One eligible mark role and an ordered field list | [`repeatCharts`](./reference/actions/charts-data/#repeatcharts) | default | [`editFacetSource`](./reference/actions/charts-data/#editfacetsource) · [`editFacetHeaders`](./reference/actions/charts-data/#editfacetheaders) · [`editFacetScales`](./reference/actions/charts-data/#editfacetscales) · [`editFacetGuides`](./reference/actions/charts-data/#editfacetguides) · [`editCompositionLayout`](./reference/actions/charts-data/#editcompositionlayout) |
 
 ## Compose or refine
 
@@ -42388,6 +43303,14 @@ for one chart authored and edited at several levels.
 The table's H0–H4 values are [catalog role tags](./tutorials/hierarchical-authoring/#catalog-role-tags),
 separate from the relative action hierarchy and from package exposure.
 
+## Three independent choices
+
+**H0–H4 catalog role tags** group related authoring tasks; the actual hierarchy
+comes from the smaller actions an action composes. **API layer** describes
+user-facing, advanced, or primitive exposure. **Package entry** describes availability
+from the full or basic import. A higher-level action is not automatically part of the
+smaller package, and a low-level domain action is not automatically an extension primitive.
+
 ## Related
 
 [Authoring conventions](./concepts/authoring-conventions/) · [Data grain](./api/data/policies/) ·
@@ -42397,7 +43320,7 @@ separate from the relative action hierarchy and from package exposure.
 
 # Documentation Version
 
-The current site documents **ggaction 0.0.22** with a
+The current site documents **ggaction 0.0.23** with a
 **published-release** contract.
 A `published-release` contract matches that package version. A `development`
 contract can include newer behavior; its package version alone does not establish
@@ -42406,9 +43329,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:a83a24aac005b1837d65321a4e02f6d8f363b3c1379de75b0df307fa01a0ac86` |
-| Example and dataset source | `0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e` |
-| Runtime source commit | `e934906032f624edd55697409651e3db496053a4` |
+| Contract fingerprint | `sha256:d4a3b46c05b696b43389ec3e4bc2aaa89584ef20e01d5e64b8c61a316fe2c004` |
+| Example and dataset source | `6422776b0a379c8c89809f41b434f366fbc1f143` |
+| Runtime source commit | `12b66b229f9a4dae1cfa580929b74e7e178c02c9` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 293 |
 | Declared actions in that release | 234 |

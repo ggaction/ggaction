@@ -1,0 +1,6 @@
+type BandPositionChannel = FacadePositionChannel<
+  NonPointZeroSupportingPositionScaleOptions,
+  NonPointTemporalPositionScaleOptions,
+  NonPointBandPositionScaleOptions
+>;
+/** With binned quantitative X, aggregate Y per exact interval (and optional series). */

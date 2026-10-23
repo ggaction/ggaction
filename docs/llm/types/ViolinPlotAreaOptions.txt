@@ -1,0 +1,7 @@
+export interface ViolinPlotAreaOptions extends StrokeStyleDetails {
+  fill?: FillPaint;
+  opacity?: number;
+  stroke?: string;
+  strokeWidth?: number;
+  curve?: CurveInterpolation;
+}

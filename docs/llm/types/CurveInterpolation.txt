@@ -1,0 +1,10 @@
+export type CurveInterpolation =
+  | "linear"
+  | "step"
+  | "step-before"
+  | "step-after"
+  | "basis"
+  | "cardinal"
+  | "monotone"
+  | "monotone-steffen"
+  | "natural";

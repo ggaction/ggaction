@@ -1,0 +1,7 @@
+export interface ParallelCoordinatesEncodingOptions {
+  target?: string;
+  coordinate?: string;
+  dimensions: readonly [ParallelDimension, ParallelDimension, ...ParallelDimension[]];
+  key?: string;
+  missing?: ParallelMissingPolicy;
+}

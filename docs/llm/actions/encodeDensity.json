@@ -1,0 +1,184 @@
+{
+  "schemaVersion": 3,
+  "name": "encodeDensity",
+  "layer": "user-facing",
+  "domain": "encodings",
+  "summary": "Create immutable KDE data, bind it to an area mark, encode its value and density fields, and materialize baseline-closed paths.",
+  "signature": "encodeDensity(options: DensityEncodingOptions): ChartProgram;",
+  "intents": [
+    "encode density",
+    "encode",
+    "map field",
+    "visual encoding",
+    "field mapping",
+    "density plot",
+    "kernel density estimate"
+  ],
+  "lifecycle": "Assignment",
+  "resources": {
+    "prerequisites": [
+      "target mark",
+      "field mode: dataset field"
+    ],
+    "owns": [
+      "density plot assignment"
+    ],
+    "idOptions": [
+      "source",
+      "target",
+      "coordinate"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "createDensityData",
+    "editSemantic",
+    "encodeX",
+    "encodeY",
+    "encodeGroup"
+  ],
+  "editableVia": [
+    "editDensity",
+    "removeEncoding"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "bandwidth",
+      "unit": "data-value"
+    },
+    {
+      "path": "steps",
+      "unit": "count"
+    }
+  ],
+  "inference": [
+    {
+      "input": "source",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "bandwidth",
+      "strategy": "documented-auto"
+    },
+    {
+      "input": "extent",
+      "strategy": "documented-auto"
+    },
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "target mark",
+      "field mode: dataset field"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "source",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "field",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "bandwidth",
+      "required": false,
+      "type": "number | \"auto\" | undefined"
+    },
+    {
+      "name": "extent",
+      "required": false,
+      "type": "\"auto\" | readonly [number, number] | undefined"
+    },
+    {
+      "name": "steps",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "kernel",
+      "required": false,
+      "type": "DensityKernel | undefined"
+    },
+    {
+      "name": "normalization",
+      "required": false,
+      "type": "DensityNormalization | undefined"
+    },
+    {
+      "name": "weight",
+      "required": false,
+      "type": "StatisticalWeight | undefined"
+    },
+    {
+      "name": "missing",
+      "required": false,
+      "type": "\"drop\" | \"error\" | undefined"
+    },
+    {
+      "name": "as",
+      "required": false,
+      "type": "readonly [string, string] | undefined"
+    },
+    {
+      "name": "groupBy",
+      "required": false,
+      "type": "string | false | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "densityChannel",
+      "required": false,
+      "type": "\"x\" | \"y\" | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "valueScale",
+      "required": false,
+      "type": "NonPointQuantitativePositionScaleOptions | undefined"
+    },
+    {
+      "name": "placement",
+      "required": false,
+      "type": "BaselineDensityPlacement | CategoryDensityPlacement | undefined"
+    },
+    {
+      "name": "densityScale",
+      "required": false,
+      "type": "NonPointZeroSupportingPositionScaleOptions | undefined"
+    }
+  ],
+  "callPatterns": [
+    "encodeDensity({ field, source?, target?, coordinate?, bandwidth?, extent?, steps?, kernel? })"
+  ],
+  "snippet": "program.encodeDensity({ field: \"value\" })",
+  "errors": [],
+  "route": "/reference/actions/encodings/#encodedensity"
+}

@@ -1,3 +1,4 @@
+import { compileTypeScript } from "../support/typescript.js";
 import assert from "node:assert/strict";
 import {spawnSync} from "node:child_process";
 import {mkdtemp,rm,writeFile} from "node:fs/promises";
@@ -28,7 +29,7 @@ p.editLegend({title:false});
 // @ts-expect-error Basic still exposes no general legend remover
 p.removeLegend();
 `);
-  const result=spawnSync(path.join(root,"node_modules/.bin/tsc"),["--noEmit","--strict","--exactOptionalPropertyTypes","--skipLibCheck","--target","ES2022","--module","NodeNext","--moduleResolution","NodeNext",file],{cwd:root,encoding:"utf8"});
+  const result=compileTypeScript(["--noEmit","--strict","--exactOptionalPropertyTypes","--skipLibCheck","--target","ES2022","--module","NodeNext","--moduleResolution","NodeNext",file],{cwd:root,encoding:"utf8"});
   assert.equal(result.status,0,result.stdout+result.stderr);
  }finally{await rm(directory,{recursive:true,force:true});}
 });

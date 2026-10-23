@@ -1,0 +1,19 @@
+export type DatumPositionEncodingOptions =
+  | InferredRuleDatumPositionEncodingOptions
+  | RulePositionEncodingBase & (
+    | {
+        fieldType: "quantitative";
+        scale?: NonPointQuantitativePositionScaleOptions;
+      }
+    | {
+        fieldType: "temporal";
+        temporalUnit?: TemporalInputUnit;
+        scale?: NonPointTemporalPositionScaleOptions;
+      }
+    | {
+        fieldType: "nominal" | "ordinal";
+        scale?: NonPointCategoricalPositionScaleOptions;
+      }
+    );
+
+/** Constant primary position accepted by Rule, Rect, Area, Point, Tick, and independent Text policies. */

@@ -197,6 +197,22 @@ export function applyFacetGuideComposition(program, { layout, plot, synchronizeC
       const ids = axisGraphicIds(owner.channel, axisId);
       next = removeNamespacedGraphics(next, namespace, components.map(component => ids[["line", "ticks", "labels", "title"].indexOf(component)]));
     }
+    if (cell.footerShift !== undefined) {
+      for (const owner of axisOwners.filter(owner => owner.channel === "x")) {
+        for (const [index, component] of ["line", "ticks", "labels", "title"].entries()) {
+          if (owner.config?.[component]?.position !== "bottom") continue;
+          const id = namespaceGraphicId(namespace, axisGraphicIds(owner.channel, owner.id)[index]);
+          if (next.graphicSpec.objects[id] !== undefined) {
+            // Footer guides belong to the parent viewport: moving them within
+            // the child Canvas would clip ragged-row owners at its old edge.
+            const snapshot = next.graphicSpec;
+            next = next.editGraphics({ target: id, remove: true });
+            next = attachSnapshotObject(next, snapshot, id, "canvas");
+            next = translateGraphic(next, id, cell.x, cell.y + cell.footerShift);
+          }
+        }
+      }
+    }
     if (childPlan.removeLegends.length > 0) {
       next = removeNamespacedGraphics(
         next,

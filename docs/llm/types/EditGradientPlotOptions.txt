@@ -1,0 +1,10 @@
+export interface EditGradientPlotOptions {
+  target?: string;
+  data?: string;
+  x?: GradientPlotPositionChannel;
+  y?: GradientPlotPositionChannel;
+  density?: GradientPlotDensityOptions;
+  width?: { band?: number };
+  gradient?: GradientPlotAppearanceOptions;
+  center?: false | GradientPlotCenterOptions;
+}

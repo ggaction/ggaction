@@ -1,0 +1,138 @@
+{
+  "schemaVersion": 3,
+  "name": "editRScale",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Edits radial scale, including settings for radial position mapping.",
+  "signature": "editRScale(options: EditRScaleOptions): ChartProgram;",
+  "intents": [
+    "edit radial scale",
+    "edit",
+    "change",
+    "chart setup",
+    "data and scales",
+    "radial scale",
+    "radial position mapping"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing radial scale"
+    ],
+    "owns": [],
+    "idOptions": [
+      "id",
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editScale"
+  ],
+  "editableVia": [
+    "editRScale",
+    "editScale"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "domain",
+      "strategy": "documented-auto"
+    },
+    {
+      "input": "range",
+      "strategy": "documented-auto"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing radial scale"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "type",
+      "required": false,
+      "type": "\"linear\" | \"log\" | \"pow\" | \"sqrt\" | \"symlog\" | undefined"
+    },
+    {
+      "name": "domain",
+      "required": false,
+      "type": "\"auto\" | readonly [number, number] | undefined"
+    },
+    {
+      "name": "range",
+      "required": false,
+      "type": "\"auto\" | readonly [number, number] | undefined"
+    },
+    {
+      "name": "nice",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "zero",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "clamp",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "reverse",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "base",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "exponent",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "constant",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "radialMapping",
+      "required": false,
+      "type": "RadialMapping | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editRScale({ id?, target?, type?, domain?, range?, nice?, zero?, clamp? })"
+  ],
+  "snippet": "program.editRScale({ reverse: true })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#editrscale"
+}

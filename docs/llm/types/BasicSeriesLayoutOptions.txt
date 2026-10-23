@@ -1,0 +1,1 @@
+export interface BasicSeriesLayoutOptions { target?: string; mode: Exclude<ColorLayout, "center">; }

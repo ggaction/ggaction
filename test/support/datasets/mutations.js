@@ -67,7 +67,7 @@ export function scaleNumericFields(rows, fields, factor) {
   }
   return rows.map(row => Object.fromEntries(Object.entries(row).map(([key, value]) => [
     key,
-    fields.includes(key) && Number.isFinite(value) ? value * factor : structuredClone(value)
+    fields.includes(key) && Number.isFinite(value) ? scaledFinite(value, factor, key) : structuredClone(value)
   ])));
 }
 
@@ -81,8 +81,15 @@ export function renameFields(rows, mapping) {
   ) {
     throw new TypeError("Field renaming requires rows and a string mapping.");
   }
-  return rows.map(row => Object.fromEntries(Object.entries(row).map(([key, value]) => [
-    mapping[key] ?? key,
-    structuredClone(value)
-  ])));
+  return rows.map(row => {
+    const keys = Object.keys(row).map(key => Object.hasOwn(mapping, key) ? mapping[key] : key);
+    if (new Set(keys).size !== keys.length) throw new Error("Field renaming would overwrite an existing field.");
+    return Object.fromEntries(Object.entries(row).map(([key, value], index) => [keys[index], structuredClone(value)]));
+  });
+}
+
+function scaledFinite(value, factor, field) {
+  const result = value * factor;
+  if (!Number.isFinite(result)) throw new RangeError(`Numeric mutation overflow in ${field}.`);
+  return result;
 }

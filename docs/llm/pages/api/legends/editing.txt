@@ -1,0 +1,490 @@
+# Editing Legends
+
+## Edit a facet parent legend
+
+Whole, focused and block editors and `removeLegend` also accept an existing shared
+legend on a facet, row-column facet grid or field-repeat parent. Targets name source
+marks, and channel selectors keep their normal meaning. Declare a missing parent with
+`editFacetGuides({ legend: { position: "top-left" } })`; the complete placement and
+lifecycle contract is in [Facets and Field Repetition](../../../../api/composition/facets/#declare-a-legend-for-the-complete-facet).
+Concat parents do not support these operations.
+
+## Keep explicit title lines
+
+Use newline characters in a title string, for example
+`program.editLegendTitle({ title: "Revenue\nUSD millions" })`, to keep an explicit
+line break. Every legend family preserves the line order and blank lines, with
+line spacing equal to 1.2 times the title font size. Layout reserves the longest
+line's width and the full block height before placing items, borders, and other
+legend blocks. SVG and Canvas draw the same resolved lines. Editing the title
+back to one line removes the old line layout; font changes, Canvas changes, and
+saved programs preserve the intended text. This does not enable automatic wrapping.
+
+## Place several legend blocks
+
+`direction` and `columns` arrange items inside one block. `blockLayout` arranges
+all legend blocks owned by one target, such as color, size, and opacity:
+
+| Option | Result |
+| --- | --- |
+| `blockLayout: "row"` | One row of complete blocks, with their occupied tops aligned; never wraps |
+| `blockLayout: "column"` | A vertical stack of complete blocks |
+| `blockLayout: "wrap"` | Existing edge flow; corner wrapping uses the available inset plot width |
+| `at: { x, y }` | Complete occupied group top-left at plot origin plus the finite logical-pixel coordinates |
+
+For example, after a target's legends exist, call
+`program.editLegendLayout({ position: "bottom-right", blockLayout: "row" })`
+to move the complete group inside that plot corner. A top or bottom row may be
+wider than the plot if it fits the declared Canvas. It retains every sample,
+font, symbol and block's own item direction. An in-plot group must fit entirely
+inside its plot inset. Insufficient space produces an error; no content is
+hidden, shrunk, wrapped into an unrequested row or moved to another edge.
+
+The new fields opt into whole-target grouping. Omit `target` only when one
+eligible target is inferable. An established group supplies placement to later
+member creation when that placement is omitted; an explicitly conflicting
+member anchor is an error. A group edit moves every member atomically. If a
+layout edit supplies only `blockLayout` and existing anchors differ, supply a
+new `position` or `at` too. Calls without the new fields retain their previous
+behavior unless that target already has an established group. New multi-block
+corners default to a row; existing sides use a column and existing top/bottom
+edges retain wrapping. Native corner inset is 8 pixels, corner block gap is 24,
+and external row gap is 40.
+
+For a free anchor, use `program.editLegendLayout({ at: { x: 120, y: 40 } })`.
+The anchor measures the complete visible group, including borders and strokes,
+from the plot rectangle's origin. Negative finite coordinates are allowed when
+the group still fits the Canvas. Do not combine `at` with `position`, `align`,
+or `offset` in the same call. A later explicit `position` clears the free
+anchor; an `at` edit replaces the edge anchor. Previously stored default
+alignment and offset do not conflict with a new free anchor. New free groups
+default to a column; existing groups retain their block policy. Data, scales,
+Canvas, styles and content changes recompute the same requested placement.
+
+## Updates and trace
+
+Legend creation and editing check the final occupied bounds against chart titles,
+Cartesian axis components and independent legend groups on the same edge.
+The check includes borders, strokes and rotated text. A categorical legend with
+its size companion counts as one group. Overlap is an error in either authoring
+order; provide more margin space or different offsets. Canvas and scale updates
+apply the same check after dependent guides have moved. A failed action leaves
+the earlier program unchanged.
+
+When you omit an external legend's `offset`, its existing family gap follows
+any axis on the same edge. This applies to all four edges, including named
+right Y axes: the whole side legend sits beyond the occupied axis labels,
+title, ticks and strokes, while its top remains aligned to the plot top.
+The categorical default gap remains 8 pixels; standalone continuous and size
+families retain 30 pixels. Borders participate in the occupied gap. Axis
+edits, removal and Canvas/data/scale replay recalculate the same placement.
+An explicit `offset`, including `0` or `8`, remains measured from the plot;
+free anchors, plot corners and `legacy-bottom` keep their own rules.
+
+A single top/bottom edge legend keeps its actual outer bounds aligned to the
+plot after content, border, style or Canvas changes. Its `offset` includes the
+border stroke, so adding a border preserves the requested plot-to-legend gap.
+Explicit `legacy-bottom` retains its fixed Canvas anchors.
+
+`editLegend()` updates one existing stable legend. Omit `target` when exactly
+one legend target exists; otherwise pass its mark ID. It accepts content, layout and appearance changes supported by the resulting
+legend kind. Mark encodings and scales stay unchanged.
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "points"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+~~~javascript
+program.editLegend({
+  target: "points",
+  position: "left",
+  offset: 80,
+  count: 4,
+  labels: { fontSize: 11 },
+  border: { color: "#94a3b8" }
+});
+~~~
+
+Nested label, title, border, and gradient objects merge only the supplied
+leaves. Categorical layout mode is also preserved: styling a `legacy-bottom`
+legend does not move it into the edge grid. Switch explicitly with
+`editLegendLayout({ layout: "edge" })`; changing a legacy legend to another
+position also requires `layout: "edge"` in that edit. A string title becomes explicit, `title: "auto"` restores field-name
+inference, and `title: false` hides the concrete title without discarding the
+stored semantic title. A hidden categorical title contributes no height or inline
+gap to the grid or border. Changing its stored text style leaves the visible
+legend unchanged; restoration checks that the visible title fits. Legacy-bottom
+sample positions stay fixed, with a border around the visible items. Gradient and opacity legends accept only their
+kind-compatible options. Both require center alignment at the left or right
+side. Gradient title placement accepts `titlePosition: "top" | "bottom"` through
+creation, `editLegend` and `editLegendLayout`. Gradient direction is independent
+of its position; editing `direction: "auto"` removes the explicit orientation.
+Bottom titles follow the complete strip/tick/label bounds with a 12-pixel gap. Every legend title style accepts only
+color and typography; use `labels.offset` for label spacing. Interval legends support the four edges and four plot corners and
+`layout: "edge"`; top/bottom grids also accept alignment, direction, columns
+and inline titles. Side positions require vertical flow, center alignment,
+a top title and one column. When changing position, omitted direction follows
+the new edge; explicitly stored columns/alignment/title placement remain and
+must be made compatible in the same edit. A horizontal opacity legend can switch to
+`titlePosition: "left"`; unless spacing is supplied in the same edit, the
+inline mode selects its 8-pixel symbol-label and 20-pixel sample defaults.
+Editing an opacity sample radius, stroke width or text size recomputes item
+spacing from its visible bounds. `labels.offset` remains the gap outside the
+circle stroke. Hidden titles use no space; restoring a title checks the newly
+occupied bounds before returning a program.
+
+Standalone size legends support `title`, `count`, `labels`, `titleStyle`, border,
+and edge/corner layout through the same editing actions. On a Full program
+with an existing standalone size legend, this fragment edits its sampled content:
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+const edited = program.editLegend({
+  count: 3,
+  title: "Mass",
+  labels: { color: "#123456", fontWeight: 700 },
+  titleStyle: { color: "#654321" }
+});
+const restored = edited.editLegendTitle({ title: false })
+  .editLegendTitle({ title: "auto" });
+```
+
+For continuous size, opacity, stroke-width, color-symbol and color/stroke-gradient legends, `values` replaces the
+automatic samples with exact values:
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+const exact = program.editLegend({ values: [10, 50, 100] });
+const automatic = exact.editLegend({ values: "auto" });
+const automaticWithNewCount = exact.editLegend({
+  values: "auto",
+  count: 4
+});
+```
+
+Entering exact mode remembers the previous automatic count. Replacing the
+array keeps that remembered count, and `values: "auto"` restores it. A
+count-only edit while exact mode is active is an error; give the reset and the
+new count together when both are intended. Exact arrays contain 1–100 finite,
+strictly increasing values inside the effective scale domain. They are not
+sorted or clamped. Layout, title, style, theme, and Canvas edits preserve the
+array. A later scale, data, encoding, or facet change that would put a stored
+sample outside its effective domain fails without changing the earlier
+program. On a combined or multi-block legend, use `editLegendBlock()` to name
+a sampled channel. For gradient ticks, select the existing block with
+`editLegend({ channel: "color", values: [10, 50, 100] })` instead.
+
+Size samples retain the encoded area mapping. For continuous size scales, count
+must be an integer from 2 through 10,000 when automatic sampling is active.
+Discrete quantize, quantile, and
+threshold legends always show every interval and reject explicit `count`.
+Size labels use a default gap of 12 pixels after the sample slot, editable through
+`labels: { offset }`; title styles do not accept an offset. The slot is at least
+32 pixels wide and expands to fit the largest circle. This replaces the previous
+center-relative offset of 28; explicit offsets now measure from the slot edge. Defaults remain size 12/normal for labels and size 13/600 for titles.
+Side size legends use title/item centers at plot top plus 20/52, an offset of 30,
+and item pitch of at least 18. Large circles or fonts expand the required spacing.
+Partial styles and title visibility survive Canvas, scale and data updates.
+
+Stroke-width legends additionally support edge/corner layout and borders on creation
+and editing. Their line samples remain 32 pixels long; sample widths come from
+the encoded scale. Their common sample slot includes the widest stroke at
+both line ends. `labels.offset` is the minimum gap after this occupied slot,
+defaulting to 12 pixels. Thinner samples retain the same label column.
+The default offset is 30 and vertical item gap is 18. Side title and
+first sample centers are 20 and 52 pixels below the plot top. Thick side samples and large labels
+move down as needed to keep a 12-pixel gap below the title. Horizontal grids
+measure the thickest sample when allocating rows. Hidden titles do not occupy
+space; visible content and borders must fit the Canvas.
+
+For a line or rule with an existing stroke-width legend (fragment):
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `weightedLines`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+weightedLines.editLegend({
+  position: "top", layout: "edge", columns: 3,
+  titlePosition: "left", count: 3, border: true
+});
+```
+Basic supports size legend creation; these editing actions require Full.
+
+## Replacing legend content
+
+Pass `channels` as the exact final content set for the entire target. This
+fragment requires a Full program with an existing legend and color, shape and
+size encodings on `points`:
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "points"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+const colorAndSize = program.editLegend({
+  target: "points",
+  channels: ["color", "size"],
+  count: 3
+});
+const shapeOnly = colorAndSize.editLegend({
+  target: "points",
+  channels: ["shape"]
+});
+```
+
+The first edit removes shape content and retains or adds color and size. The
+second removes color and size and shows only shape. Supported combinations
+match `createLegend`; an empty set is invalid. Use `removeLegend()` to remove
+all content. Omitting `channels` preserves existing content.
+
+Retained blocks keep their configuration, sample count and title visibility.
+Categorical color/shape/dash revisions also retain compatible explicit symbol
+recipes, text styles and order. Newly added blocks use creation defaults;
+removed blocks lose their settings. A style patch in the same edit applies to
+the final content. In categorical-size legends, shared label/title-style edits
+merge only the supplied leaves into each block's effective style; changing a
+title or count preserves independent size styles. Other targets remain intact.
+
+## Editing one legend block
+
+A block-local `position` accepts the eight named anchors. `"inherit"` removes
+only that override, restoring the target group's placement or the legacy family
+placement. The same override is used by `editLegend({ channel, position })` and
+`editLegendLayout({ channel, position })`; without a singular selector, position
+continues to move the whole group. Group position, `at`, and block-layout edits
+preserve local overrides. Locally placed blocks are excluded from inherited
+packing and are measured independently, including titles, labels and frames.
+Corners use the existing 8px plot inset; outside edges retain native family gaps
+and the existing axis-lane policy. No coordinates, automatic Canvas growth, or
+extra offset option is introduced. Conflicting occupied guides fail atomically.
+A merged block moves through either member alias. `combine` is a whole-target content control and cannot accompany singular `channel`. Merging different local anchors
+requires resetting them or supplying an explicit whole-group position.
+
+Use `editLegendBlock()` when one mark has several legend blocks and an edit
+must apply to only one of them. Both selectors are required: `target` is the
+owning mark ID and `channel` identifies the logical block.
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "points"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+const edited = program.editLegendBlock({
+  target: "points",
+  channel: "size",
+  title: "Magnitude",
+  values: [10, 50, 100],
+  gap: 36,
+  text: { fontSize: 14, color: "#334155" },
+  symbol: {
+    fill: "#f97316",
+    stroke: "#111827",
+    strokeWidth: 2,
+    opacity: 0.7
+  }
+});
+```
+
+This changes the size samples and leaves a categorical color or shape block on
+the same target unchanged. If color and shape are merged into one categorical
+block, selecting either member edits that same block; a later call replaces the
+earlier block-local value.
+
+The action accepts `title`, `values`, `count`, `order`, `gap`, `text`, `symbol`,
+`labelMap`, and `position`. An empty title hides only that block's title. Exact `values` and
+`count` apply to continuous size, opacity, stroke-width, and color-symbol blocks. `order`
+applies to a categorical block and must list every current category exactly
+once. `text` changes item-label typography and color. `symbol.size` is point
+area in square pixels. Empty `text` or `symbol` objects remove that local patch
+and restore the current base style.
+
+Use `labelMap` on a categorical block to change reader-facing names while
+preserving the typed raw domain and block order:
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "points"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+const localized = program.editLegendBlock({
+  target: "points",
+  channel: "color",
+  labelMap: [
+    { value: "KR", label: "대한민국" },
+    { value: "US", label: "미국" }
+  ]
+});
+```
+
+Unmapped categories keep their normal visible text. Duplicate display labels
+and empty labels are valid and do not merge symbols. `labelMap: []` stores an
+empty map. An empty mapped label omits only its text; its category, symbol and
+item slot remain through layout, resizing and shared facet legends.
+`labelMap: "auto"` removes only this block override. Continuous size supports numeric keys as described below.
+Opacity, stroke-width, discrete-size, gradient and interval blocks reject display maps.
+
+Symbol properties cannot replace the mapping the block explains. For example,
+a size block rejects `symbol.size`, an opacity block rejects `symbol.opacity`,
+a categorical color block rejects `symbol.fill`, and a categorical stroke
+block rejects `symbol.stroke`. Gradient blocks accept label, title, and gap
+edits but no symbol patch.
+
+Block state follows its channel set through layout, Canvas, theme, data, and
+compatible scale-family updates. Removing a block discards its local state.
+Changing membership rejects a title, order, or display map whose destination would be
+ambiguous, and merging independently edited blocks requires their local styles
+to agree. For a size block, setting `symbol.stroke` without `symbol.strokeWidth`
+uses its base no-outline width of `0`; set a positive width to draw an outline.
+An omitted stroke retains the existing unoutlined sample.
+`editLegendBlock()` is available on Full programs only.
+
+## Focused edits
+
+Focused actions avoid constructing nested `editLegend()` options when only one
+legend component should change:
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+program
+  .editLegendLayout({ position: "left", offset: 12 })
+  .editLegendLabels({ color: "#475569", fontSize: 11, format: ".2e" })
+  .editLegendTitle({ title: "Country", fontWeight: 700 })
+  .editLegendSymbols({ count: 5 })
+  .editLegendBorder({
+    border: { color: "#cbd5e1", lineWidth: 1, padding: 8 }
+  });
+```
+
+| Action | Accepted component options |
+| --- | --- |
+| `editLegendLayout` | `position`, `blockLayout`, `at`, `layout`, `align`, `direction`, `columns`, `offset`, `titlePosition`, `itemGap`, `rowPadding`, `titlePadding` |
+| `editLegendLabels` | `offset`, `color`, `fontSize`, `fontFamily`, `fontWeight`, continuous `format` |
+| `editLegendTitle` | `title`, `color`, `fontSize`, `fontFamily`, `fontWeight` |
+| `editLegendSymbols` | `symbol`, `count`, `gradient` |
+| `editLegendBorder` | required `border` boolean or border style object |
+
+Every focused action also accepts `target`. Omit it only when one existing
+legend is inferable. The actions use `editLegend` internally, so title modes,
+partial nested merges, legend-kind compatibility, layout errors, and
+rematerialization behavior remain identical. At least one component option is
+required.
+
+`rowPadding` and `titlePadding` accept non-negative finite numbers or `"auto"`
+in both whole and focused layout edits. An omitted or `undefined` field preserves
+its policy; `"auto"` removes it and restores the original layout. Use `channel`
+to edit one block. `editLegendTitle` changes title text/style only, and
+`editLegendBlock({gap})` keeps its original uniform-gap contract. Explicit
+content spacing takes precedence over the corresponding old gap while active.
+When combining blocks with conflicting spacing policies, choose the resulting
+policy explicitly in the same whole edit. A split that would leave row padding
+on a gradient requires an explicit `rowPadding: "auto"` reset. No layout edit
+enlarges the Canvas or drops items to make content fit.
+
+Legend label and title weights follow the shared
+[Canvas font-weight policy](../../../../api/marks/text/#font-weights).
+
+## Removing a legend
+
+`removeLegend()` removes every legend block associated with one mark, including
+combined categorical and size blocks. Mark encodings and scales remain.
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "points"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+const withoutLegend = program.removeLegend({ target: "points" });
+```
+
+`target` may be omitted when exactly one legend owner exists. Independent
+legend owners require an explicit target.
+
+Pass `channels` to remove only the selected content:
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "points"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+const withoutSize = program.removeLegend({
+  target: "points",
+  channels: ["size"]
+});
+```
+
+Accepted channels are `color`, `stroke`, `strokeDash`, `strokeWidth`, `shape`, `size`,
+and `opacity`. In a combined color-and-shape legend, removing `shape` keeps the
+color explanation and removing `color` keeps the shape explanation. The last
+remaining channel removes the block. Partial removal preserves title visibility,
+custom titles, styles, layout, item order, and explicit symbol recipes. Automatic
+symbols are inferred again from the remaining channels. Removing an encoding
+uses the same revision rules and also preserves a hidden legend title.
+
+Retained blocks are rematerialized when their layout depended on the removed
+content. `removeLegend` preserves mark encodings, scales, and unrelated blocks.
+A missing channel or an empty, duplicate, or unknown channel list is an error.
+
+Canvas changes and relevant encoding actions explicitly rematerialize the
+legend from the latest ordinal domains and ranges. The renderer still reads
+only concrete `graphicSpec` values.
+
+~~~text
+createLegend
+├─ createCategoricalLegend | createGradientLegend | createOpacityLegend
+│  └─ concrete background?, symbols/strips, labels, and title
+└─ createSizeLegend?
+~~~
+
+~~~text
+editLegend
+├─ rematerializeLegend | rematerializeGradientLegend | rematerializeOpacityLegend
+└─ rematerializeStrokeWidthLegend
+   └─ concrete background?, symbols/strips, labels, title?, and size block
+~~~
+
+The component actions shown above are internal wrapped actions. Chart and
+extension authors call the public `createLegend()` facade; the children remain
+visible in the trace.
+
+`createGuides()` selects line-series, histogram color, grouped-bar color,
+grouped-area color, and compatible point color/shape/size, sequential color,
+or standalone field-opacity legends automatically.
+Pass `createGuides({ legend: false })` to opt out.
+
+Combined categorical-size legends can also move between all four edges with
+`editLegendLayout({ position })`. Moving to a different edge infers the direction
+when it is omitted; explicit incompatible grid controls still fail. On top and
+bottom the categorical layout controls position both blocks. The size block's
+own stored layout returns when the categorical channels are removed. A title
+edit changes the categorical title; the size block retains its own title and
+visibility. Whole-content replacement preserves both retained blocks' settings.
+
+### Numeric sample display labels
+
+Continuous size blocks accept exact numeric display maps, including keys not currently sampled:
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "points"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```js
+// Fragment: program already owns a continuous size legend on points.
+program.editLegendBlock({
+  target: "points", channel: "size",
+  labelMap: [{ value: 3.14159, label: "0" }, { value: 10, label: "" }]
+});
+```
+
+Empty strings hide text while preserving the sample and its glyph. Unmatched values keep the existing
+formatter. Use `labelMap: "auto"` to remove the override. Opacity, stroke-width and discrete-size blocks
+reject this map. Values are compared exactly, so zero and negative zero are duplicate keys.
+
+### Dashed frames
+
+Pass an even-length dash sequence on a legend border:
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```js
+// Fragment: program already owns one legend.
+program.editLegendBorder({ border: { strokeDash: [4, 2, 6, 1] } });
+```
+
+The pattern continues around all four sides. Use `strokeDash: []` for a solid frame or `border: false`
+to remove it. Dash entries must be finite and nonnegative; odd-length arrays are rejected.
+
+## Related
+
+[Legend overview](../../../../api/legends/) · [Guides](../../../../api/guides/) · [Canvas](../../../../api/canvas/)
+
+To start with a hidden title, use `createLegend({ title: false })`. This preserves
+the inferred field title for later restoration with `editLegend({ title: "auto" })`
+and avoids a separate initial edit.

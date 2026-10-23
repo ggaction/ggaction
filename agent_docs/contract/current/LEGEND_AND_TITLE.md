@@ -926,3 +926,13 @@ and facet-parent-symbol-window unit tests.
 - `createLegend({channels:[...]})`는 Rect/Bar/Arc/Text의 독립 channel들을 기존 owner별 block으로 생성한다. Opacity/strokeWidth sampled block도 다른 channel과 함께 생성할 수 있다. Point의 호환되는 categorical color/size/shape block은 유지하며 서로 다른 field 또는 continuous color/stroke는 별도 block으로 나눈다. Categorical overflow는 continuous/sample block에 전달하지 않는다.
 - `createGuides`는 facet/grid/repeat parent에서도 retained source의 native guide action을 실행하고 모든 child를 재도출한다. 기존 guide collections와 parent title/header/layout은 보존한다.
 - Evidence: `test/unit/actions/facet-source-action.test.js`, `test/unit/actions/encodings/rect-appearance.test.js`, `test/unit/actions/guides/mixed-appearance-guides.test.js`.
+
+### Facet parent title placement
+
+`createTitle` and `editTitle` support all four positions on facet parents. Top/bottom
+read horizontally; left/right rotate the complete title/subtitle reading block.
+The inferred Canvas reserves a lane outside child guides and shared legends, with
+alignment against the child plot union and the same signed `alongOffset` semantics.
+Facet layout edits rematerialize that reservation without changing authored padding
+or child plots. Unsupported overflowing text/offsets still fail atomically.
+Evidence: `test/unit/actions/composition/facet-title-along-offset.test.js`.

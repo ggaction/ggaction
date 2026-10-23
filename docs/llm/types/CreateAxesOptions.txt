@@ -1,0 +1,10 @@
+export interface CreateAxesOptions {
+  coordinate?: {
+    id?: string;
+    type?: "auto" | "cartesian" | "polar" | "parallel";
+  };
+  x?: false | CompleteAxisOptions<XAxisPosition> | readonly [NamedCompleteAxis<XAxisPosition>, ...NamedCompleteAxis<XAxisPosition>[]];
+  y?: false | CompleteAxisOptions<YAxisPosition> | readonly [NamedCompleteAxis<YAxisPosition>, ...NamedCompleteAxis<YAxisPosition>[]];
+  theta?: false | CompletePolarAxisOptions;
+  radius?: false | CompleteRadialAxisOptions;
+}

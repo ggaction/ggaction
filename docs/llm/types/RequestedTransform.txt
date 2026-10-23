@@ -1,0 +1,1 @@
+type RequestedTransform<T> = T extends unknown ? Omit<T, "resolved"> : never;

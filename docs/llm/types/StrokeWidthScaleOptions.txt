@@ -1,0 +1,3 @@
+export type StrokeWidthScaleOptions = NonPointQuantitativePositionScaleOptions extends infer T
+  ? T extends unknown ? Omit<T, "nice"> & { nice?: boolean } : never
+  : never;

@@ -26,8 +26,7 @@ resources, defaults, and guides that ggaction can infer.
 </div>
 
 Every flow begins with `createCanvas`, `createData`, and a semantic mark or
-composite action. Add explicit IDs only when the current program contains more
-than one compatible resource.
+composite action. Follow each action’s required selectors even when only one resource exists. Use stable explicit IDs for later edits; omission is available only where the action documents inference. See [authoring conventions](../concepts/authoring-conventions.md).
 
 Each recipe labels its primary snippet as runnable. Later snippets revise the
 named `program` produced by that primary flow unless they repeat an import and

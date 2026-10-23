@@ -1,0 +1,147 @@
+{
+  "schemaVersion": 3,
+  "name": "createThetaAxisLabels",
+  "layer": "user-facing",
+  "domain": "axes",
+  "summary": "Create missing theta-axis labels independently of the other components.",
+  "signature": "createThetaAxisLabels(options?: CreateThetaAxisLabelsOptions): ChartProgram;",
+  "intents": [
+    "create theta axis labels",
+    "create",
+    "add",
+    "axis guide",
+    "scale annotation",
+    "theta-axis labels",
+    "angular tick text"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "compatible scale or encoding context"
+    ],
+    "owns": [
+      "theta-axis labels"
+    ],
+    "idOptions": [
+      "scale",
+      "coordinate"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "createGraphics",
+    "editThetaAxisLabels"
+  ],
+  "editableVia": [
+    "editThetaAxisLabels"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "offset",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "fontSize",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "count",
+      "unit": "count"
+    }
+  ],
+  "inference": [
+    {
+      "input": "scale",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "labelMap",
+      "strategy": "documented-auto"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "compatible scale or encoding context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "offset",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "format",
+      "required": false,
+      "type": "AxisFormat | undefined"
+    },
+    {
+      "name": "color",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "fontSize",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "fontFamily",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "fontWeight",
+      "required": false,
+      "type": "string | number | undefined"
+    },
+    {
+      "name": "count",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "values",
+      "required": false,
+      "type": "readonly AxisValue[] | undefined"
+    },
+    {
+      "name": "scale",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "labelMap",
+      "required": false,
+      "type": "\"auto\" | DisplayLabelMap | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createThetaAxisLabels({ scale?, coordinate?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight? })"
+  ],
+  "snippet": "program.createThetaAxisLabels({})",
+  "errors": [],
+  "route": "/reference/actions/guides/#createthetaaxislabels"
+}

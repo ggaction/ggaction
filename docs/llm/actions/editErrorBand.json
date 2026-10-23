@@ -1,0 +1,139 @@
+{
+  "schemaVersion": 3,
+  "name": "editErrorBand",
+  "layer": "user-facing",
+  "domain": "statistics",
+  "summary": "Constant band fill conflicts with active color.",
+  "signature": "editErrorBand(options: EditErrorBandOptions): ChartProgram;",
+  "intents": [
+    "edit error band",
+    "edit",
+    "change",
+    "statistical layer",
+    "statistical transform",
+    "error band",
+    "uncertainty ribbon"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing error band",
+      "statistical source and coordinate context"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target",
+      "data"
+    ]
+  },
+  "authoringRoles": [
+    "H1",
+    "H3"
+  ],
+  "wraps": [],
+  "editableVia": [
+    "editErrorBand"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "opacity",
+      "unit": "probability"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "data",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing error band",
+      "statistical source and coordinate context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "data",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "x",
+      "required": false,
+      "type": "ErrorBandIntervalChannel | ErrorBandPositionChannel | undefined"
+    },
+    {
+      "name": "y",
+      "required": false,
+      "type": "ErrorBandIntervalChannel | ErrorBandPositionChannel | undefined"
+    },
+    {
+      "name": "groupBy",
+      "required": false,
+      "type": "string | false | undefined"
+    },
+    {
+      "name": "fill",
+      "required": false,
+      "type": "false | FillPaint | undefined"
+    },
+    {
+      "name": "opacity",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "curve",
+      "required": false,
+      "type": "CurveInterpolation | undefined"
+    },
+    {
+      "name": "statistics",
+      "required": false,
+      "type": "{ center?: IntervalCenter | undefined; extent?: IntervalExtent | undefined; method?: ConfidenceIntervalMethod | undefined; level?: number | undefined; } | undefined"
+    },
+    {
+      "name": "boundaries",
+      "required": false,
+      "type": "false | (StrokeStyleDetails & { stroke?: string | undefined; strokeWidth?: number | undefined; strokeDash?: DashPattern | DashStyle | undefined; opacity?: number | undefined; curve?: CurveInterpolation | undefined; }) | undefined"
+    },
+    {
+      "name": "lineCap",
+      "required": false,
+      "type": "\"butt\" | \"round\" | \"square\" | undefined"
+    },
+    {
+      "name": "lineJoin",
+      "required": false,
+      "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+    },
+    {
+      "name": "miterLimit",
+      "required": false,
+      "type": "number | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editErrorBand({ target?, data?, x?, y?, groupBy?, fill?, opacity?, curve? })"
+  ],
+  "snippet": "program.editErrorBand({ opacity: 0.35 })",
+  "errors": [],
+  "route": "/reference/actions/statistics/#editerrorband"
+}

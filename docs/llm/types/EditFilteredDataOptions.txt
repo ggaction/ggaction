@@ -1,0 +1,6 @@
+export type EditFilteredDataOptions = FilterModePatch & {
+  target: string;
+  field?: string;
+  nulls?: "include" | "exclude" | false;
+  dependents?: DerivedDataDependents;
+};

@@ -1,0 +1,2 @@
+export type ContinuousColorScaleOptions =
+  NonPointContinuousColorScaleOptions & { unknown?: string };

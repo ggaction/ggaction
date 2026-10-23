@@ -1,3 +1,4 @@
+import { saveBrowserContextEvidence, saveBrowserEvidence } from "../support/browser.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
@@ -33,6 +34,7 @@ assert.equal(examples.length > 0, true);
 
 for (const example of examples) {
   test(`renders ${example.id} at its logical Canvas size`, async () => {
+  try {
     const { page, errors } = await openBrowserPage(
       browser,
       new URL(`examples/${example.browser.path}`, server.baseUrl).href,
@@ -43,6 +45,16 @@ for (const example of examples) {
         }
       }
     );
+    const paint = await page.locator(example.browser.canvas).evaluate(canvas => {
+      const rgba = canvas.getContext("2d").getImageData(0, 0, canvas.width, canvas.height).data;
+      const colors = new Set();
+      for (let i = 0; i < rgba.length; i += 4) {
+        if (rgba[i + 3] > 0) colors.add(`${rgba[i]},${rgba[i+1]},${rgba[i+2]},${rgba[i+3]}`);
+        if (colors.size > 1) return true;
+      }
+      return false;
+    });
+    assert.equal(paint, true, `${example.id} must paint visible content beyond a uniform background`);
     const size = await page.locator(example.browser.canvas).evaluate(canvas => ({
       width: canvas.width,
       height: canvas.height,
@@ -66,10 +78,13 @@ for (const example of examples) {
     }
     assertNoBrowserErrors(errors, example.id);
     await page.close();
-  });
+
+  } catch (error) { await saveBrowserEvidence(browser, error); throw error; }
+});
 }
 
 test("keeps logical Canvas size at a high browser pixel density", async () => {
+  try {
   const context = await browser.newContext({ deviceScaleFactor: 2 });
   try {
     const example = examples.find(item => item.id === "cars-binned-heatmap");
@@ -83,6 +98,16 @@ test("keeps logical Canvas size at a high browser pixel density", async () => {
         }
       }
     );
+    const paint = await page.locator(example.browser.canvas).evaluate(canvas => {
+      const rgba = canvas.getContext("2d").getImageData(0, 0, canvas.width, canvas.height).data;
+      const colors = new Set();
+      for (let i = 0; i < rgba.length; i += 4) {
+        if (rgba[i + 3] > 0) colors.add(`${rgba[i]},${rgba[i+1]},${rgba[i+2]},${rgba[i+3]}`);
+        if (colors.size > 1) return true;
+      }
+      return false;
+    });
+    assert.equal(paint, true, `${example.id} must paint visible content beyond a uniform background`);
     const size = await page.locator(example.browser.canvas).evaluate(canvas => ({
       width: canvas.width,
       height: canvas.height,
@@ -97,7 +122,9 @@ test("keeps logical Canvas size at a high browser pixel density", async () => {
     });
     assertNoBrowserErrors(errors, `${example.id} high-density browser`);
     await page.close();
-  } finally {
+  } catch (error) { await saveBrowserContextEvidence(context, error); throw error; } finally {
     await context.close();
   }
+
+  } catch (error) { await saveBrowserEvidence(browser, error); throw error; }
 });

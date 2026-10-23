@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 3,
+  "name": "encodeTheta",
+  "layer": "user-facing",
+  "domain": "encodings",
+  "summary": "Encode Polar angle in clockwise degrees from 12 o'clock.",
+  "signature": "encodeTheta(options: ThetaEncodingOptions): ChartProgram;",
+  "intents": [
+    "encode theta",
+    "encode",
+    "map field",
+    "visual encoding",
+    "field mapping",
+    "theta",
+    "angular position"
+  ],
+  "lifecycle": "Assignment",
+  "resources": {
+    "prerequisites": [
+      "target mark",
+      "field mode: dataset field"
+    ],
+    "owns": [
+      "theta assignment"
+    ],
+    "idOptions": [
+      "target",
+      "scale",
+      "coordinate"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "createCoordinate",
+    "editSemantic",
+    "createScale"
+  ],
+  "editableVia": [
+    "removeEncoding"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "temporalUnit",
+      "unit": "temporal-input"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "scale",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "target mark",
+      "field mode: dataset field"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "field",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "scale",
+      "required": false,
+      "type": "ThetaScaleOptions | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "aggregate",
+      "required": false,
+      "type": "\"count\" | \"sum\" | undefined"
+    },
+    {
+      "name": "weight",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "fieldType",
+      "required": false,
+      "type": "\"nominal\" | \"ordinal\" | \"quantitative\" | \"temporal\" | undefined"
+    },
+    {
+      "name": "temporalUnit",
+      "required": false,
+      "type": "TemporalInputUnit | undefined"
+    }
+  ],
+  "callPatterns": [
+    "encodeTheta({ field, target?, scale?, coordinate?, aggregate?, weight?, fieldType?, temporalUnit? })"
+  ],
+  "snippet": "program.encodeTheta({ field: \"value\" })",
+  "errors": [],
+  "route": "/reference/actions/encodings/#encodetheta"
+}

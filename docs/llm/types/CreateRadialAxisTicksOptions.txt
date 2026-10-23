@@ -1,0 +1,2 @@
+export type CreateRadialAxisTicksOptions = Omit<PolarTickOptions, "count" | "values"> &
+  PolarAxisTickSelection & PolarGuideResourceOptions;

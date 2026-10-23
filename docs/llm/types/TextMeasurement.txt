@@ -1,0 +1,8 @@
+export interface TextMeasurement {
+  readonly text: string;
+  readonly fontFamily: string;
+  readonly fontSize: number;
+  readonly fontWeight: TextMetricFontWeight;
+  readonly fontStyle?: "normal" | "italic";
+  readonly width: number;
+}

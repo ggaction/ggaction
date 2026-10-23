@@ -1,0 +1,7 @@
+export interface TitleTextStyleOptions {
+  fontStyle?: "normal" | "italic";
+  color?: string;
+  fontSize?: number;
+  fontFamily?: string;
+  fontWeight?: string | number;
+}

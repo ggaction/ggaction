@@ -1,0 +1,5 @@
+export interface CompletePolarAxisOptions extends Omit<PolarGuideResourceOptions, "angle"> {
+  line?: false | AxisLineStyleOptions;
+  ticksAndLabels?: false | PolarTicksAndLabelsOptions;
+  title?: false | PolarTitleOptions;
+}

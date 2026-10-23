@@ -1,0 +1,5 @@
+export type MeasuredRadialGuideOptions = {
+  axes?: false | CategoricalPolarAxesOptions;
+  grid?: false | CategoricalPolarGridOptions;
+  legend?: false | PieLegendOptions;
+};

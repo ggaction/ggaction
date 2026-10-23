@@ -1,0 +1,4 @@
+export type PolarFrameCenter = {
+  x: number;
+  y: number;
+};

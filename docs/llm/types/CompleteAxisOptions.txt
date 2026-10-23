@@ -1,0 +1,14 @@
+export interface CompleteAxisOptions<P extends string> {
+  /** Paint the complete Cartesian axis before ordinary marks. Defaults to false. */
+  underlay?: boolean;
+  /** Omission retains the canonical x/y identity. */
+  id?: string;
+  /** Non-negative outward displacement of the complete axis frame in logical pixels. */
+  offset?: number;
+  scale?: string;
+  coordinate?: string;
+  position?: P;
+  line?: false | AxisLineStyleOptions;
+  ticksAndLabels?: false | Omit<AxisTicksAndLabelsOptions<P>, "scale" | "position" | "target">;
+  title?: false | Omit<AxisTitleOptions<P>, "scale" | "position" | "target">;
+}

@@ -1,0 +1,5 @@
+type CartesianGuideOptions = {
+  axes?: false | CartesianAxesOptions;
+  grid?: false | CartesianGridOptions;
+  legend?: false | (DistributiveLegendOmit<FilledMarkLegendOptions, "order"> & { order?: CartesianLegendOrder });
+};

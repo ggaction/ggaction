@@ -41,19 +41,13 @@ test("keeps current package surfaces visible in public and architecture document
   assert.deepEqual(architectureEntries, expected);
 });
 
-test("keeps the current renderer set out of architecture limitations", () => {
+test("documents each shipped renderer entry at the package boundary", () => {
+  const entries = JSON.parse(read("package.json")).exports;
   const architecture = read("agent_docs/SECOND_ARCHITECTURE.md");
-  const limitations = section(architecture, "현재 범위 밖 또는 제한된 부분");
-
-  for (const heading of ["Canvas renderer", "SVG renderer", "PNG adapter", "PDF adapter"]) {
-    assert.match(architecture, new RegExp(`^## ${heading}$`, "m"));
+  for (const name of ["svg", "png", "pdf"]) {
+    assert.ok(entries[`./${name}`], name);
+    assert.ok(architecture.includes(`ggaction/${name}`), name);
   }
-  assert.doesNotMatch(limitations, /^- SVG renderer$/m);
-  assert.doesNotMatch(architecture, /SVG mapping 등 구현되지 않은/);
-  assert.match(
-    architecture,
-    /├─ renderers\/\s+Canvas, SVG, PNG와 PDF renderer\/adapter/
-  );
 });
 
 test("keeps documented browser bundle ceilings synchronized with package checks", () => {

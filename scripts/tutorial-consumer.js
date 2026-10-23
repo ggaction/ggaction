@@ -1,3 +1,4 @@
+import { saveBrowserPageEvidence } from "../test/support/browser.js";
 import assert from "node:assert/strict";
 import { copyFile, mkdir, realpath, writeFile } from "node:fs/promises";
 import path from "node:path";
@@ -23,7 +24,7 @@ function tutorialHtml(name) {
 `;
 }
 
-async function prepareTutorials(directory) {
+export async function prepareTutorials(directory) {
   const examples = await documentationPrograms();
   const publicDirectory = path.join(directory, "public");
   await mkdir(publicDirectory, { recursive: true });
@@ -34,7 +35,8 @@ async function prepareTutorials(directory) {
   const inputs = {};
   const consumers = [];
   for (const example of examples) {
-    const name = example.file.replace(/\.md$/, "").replaceAll("/", "-");
+    const name = example.file.replace(/^\.\.\//, "root/").replace(/\.md$/, "").replaceAll("/", "-") + "--" + (example.id ?? "primary");
+    assert.ok(!Object.hasOwn(inputs, name), `Duplicate tutorial identity: ${name}`);
     const fixture = example.fixture ? docInputs[example.fixture] : {};
     assert.ok(fixture, `${example.file} has an unknown fixture.`);
     const prefix = [
@@ -43,7 +45,8 @@ async function prepareTutorials(directory) {
       ...Object.entries(fixture).map(([key, value]) => `const ${key} = ${JSON.stringify(value)};`)
     ].join("\n");
     const result = example.result.split(",").at(-1).trim();
-    const source = `${prefix}\n${example.code}\nrenderDocumentationResult(${result}, document.querySelector("#chart").getContext("2d"));\n`;
+    const renderResult = example.rendering === "authoring-only" ? `renderDocumentationResult(${result}, document.querySelector("#chart").getContext("2d"));` : "";
+    const source = `${prefix}\n${example.code}\n${renderResult}\nwindow.__ggactionSnippetCompleted = true;\n`;
     assert.doesNotMatch(source, /from ["']\.\.\/.*src\//, "Examples must import the installed package.");
     const tutorialDirectory = path.join(directory, "tutorials", name);
     await mkdir(tutorialDirectory, { recursive: true });
@@ -51,7 +54,7 @@ async function prepareTutorials(directory) {
     const html = path.join(tutorialDirectory, "index.html");
     await writeFile(html, tutorialHtml(name));
     inputs[name] = html;
-    consumers.push({ name, dataset: example.dataset });
+    consumers.push({ name, dataset: example.dataset, id: example.id ?? example.file, file: example.file, sha256: example.sha256, rendering: example.rendering });
   }
   return { inputs, consumers };
 }
@@ -76,8 +79,7 @@ async function assertRenderedTutorial(page, baseUrl, name, dataset) {
   );
   assert.equal(response.ok(), true, name);
   await page.waitForFunction(() => {
-    const canvas = document.querySelector("canvas");
-    return canvas && (canvas.width !== 300 || canvas.height !== 150);
+    return window.__ggactionSnippetCompleted === true;
   });
   const canvas = await page.locator("canvas").evaluate(element => {
     const context = element.getContext("2d");
@@ -125,16 +127,27 @@ export async function testTutorialConsumers(directory) {
   });
   const baseUrl = server.resolvedUrls.local[0];
   const browser = await chromium.launch({ headless: true });
+  const records = [];
   try {
-    for (const { name, dataset } of consumers) {
+    for (const consumer of consumers) {
+      const { name, dataset } = consumer;
+      const started = performance.now();
       const page = await browser.newPage();
       try {
         await assertRenderedTutorial(page, baseUrl, name, dataset);
+        records.push({ ...consumer, status: "passed", durationMs: performance.now() - started });
+      } catch (error) {
+        records.push({ ...consumer, status: "failed", durationMs: performance.now() - started, error: error.stack });
+        await saveBrowserPageEvidence(page, error, name);
       } finally {
         await page.close();
       }
     }
+    const failed = records.filter(record => record.status === "failed");
+    if (failed.length) throw new AggregateError(failed.map(record => new Error(`${record.id}: ${record.error}`)), "Documentation consumers failed");
   } finally {
+    await mkdir(path.join(root, ".artifacts/consumers"), { recursive: true });
+    await writeFile(path.join(root, ".artifacts/consumers/tutorials.json"), JSON.stringify(records, null, 2));
     await browser.close();
     await new Promise((resolve, reject) => server.httpServer.close(error => {
       if (error) reject(error);

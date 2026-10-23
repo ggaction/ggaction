@@ -1,0 +1,7 @@
+export type HeatmapCategoryPositionChannel =
+  | string
+  | {
+      field: string;
+      fieldType?: "nominal" | "ordinal";
+      scale?: NonPointBandPositionScaleOptions;
+    };

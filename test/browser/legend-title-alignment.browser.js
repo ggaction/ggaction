@@ -1,3 +1,4 @@
+import { saveBrowserEvidence } from "../support/browser.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import {mkdtemp, mkdir, writeFile, rm} from "node:fs/promises";
@@ -27,5 +28,5 @@ test("Browser Canvas and SVG use the same top-title alignment without viewing pi
     });
     for(const r of records){assert.equal(r.anchor,{left:'start',center:'middle',right:'end'}[r.align]);assert.equal(r.painted.textAlign,r.align);assert.ok(Math.abs(r.painted.x-r.concrete.x)<1e-4);assert.ok(r.ink.left>=0&&r.ink.right<=700);}
     assertNoBrowserErrors(opened.errors,'legend title alignment');await opened.page.close();
-  }finally{await closeBrowserWithEvidence(browser);await server?.close();await rm(directory,{recursive:true,force:true});}
+  } catch (error) { await saveBrowserEvidence(browser, error); throw error; }finally{await closeBrowserWithEvidence(browser);await server?.close();await rm(directory,{recursive:true,force:true});}
 });

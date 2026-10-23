@@ -1,0 +1,1 @@
+type CartesianLegendOrder = LegendValueOrder | { channel: "x" | "y"; values?: never };

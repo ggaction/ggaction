@@ -26,7 +26,7 @@ export async function collectFailureArtifacts(repository = root) {
   const output = path.join(artifactRoot, "ci-evidence");
   await rm(output, { recursive: true, force: true });
   await mkdir(output, { recursive: true });
-  const candidates = (await Promise.all(["checks", "failures", "docs"].map(name => filesAt(path.join(artifactRoot, name))))).flat();
+  const candidates = (await Promise.all(["checks", "failures", "docs", "consumers", "types", "corpus"].map(name => filesAt(path.join(artifactRoot, name))))).flat();
   // Keep case identities and errors before images when the job exceeds its budget.
   candidates.sort((a, b) => Number(a.endsWith(".png")) - Number(b.endsWith(".png")) || a.localeCompare(b));
   const saved = [];

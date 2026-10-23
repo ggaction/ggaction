@@ -1,3 +1,4 @@
+import { compileTypeScript } from "../support/typescript.js";
 import assert from "node:assert/strict";
 import { mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
@@ -53,8 +54,7 @@ program.encodeChannels({ target: "points", channels: { color: null } });
 // @ts-expect-error value and field remain exclusive
 program.encodeChannels({ target: "points", channels: { stroke: { value: "red", field: "outline" } } });
 `);
-    const result = spawnSync(path.join(root, "node_modules/.bin/tsc"), [
-      "--noEmit", "--strict", "--skipLibCheck", "--target", "ES2022",
+    const result = compileTypeScript(["--noEmit", "--strict", "--skipLibCheck", "--target", "ES2022",
       "--module", "NodeNext", "--moduleResolution", "NodeNext", file
     ], { cwd: root, encoding: "utf8" });
     assert.equal(result.status, 0, `${result.stdout}\n${result.stderr}`);

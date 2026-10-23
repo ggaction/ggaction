@@ -1,0 +1,123 @@
+{
+  "schemaVersion": 3,
+  "name": "createThetaAxisTicks",
+  "layer": "user-facing",
+  "domain": "axes",
+  "summary": "Create missing theta-axis ticks independently of the other components.",
+  "signature": "createThetaAxisTicks(options?: CreateThetaAxisTicksOptions): ChartProgram;",
+  "intents": [
+    "create theta axis ticks",
+    "create",
+    "add",
+    "axis guide",
+    "scale annotation",
+    "theta-axis ticks",
+    "angular tick marks"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "compatible scale or encoding context"
+    ],
+    "owns": [
+      "theta-axis ticks"
+    ],
+    "idOptions": [
+      "scale",
+      "coordinate"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "createGraphics",
+    "editThetaAxisTicks"
+  ],
+  "editableVia": [
+    "editThetaAxisTicks"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "lineWidth",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "length",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "count",
+      "unit": "count"
+    }
+  ],
+  "inference": [
+    {
+      "input": "scale",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "compatible scale or encoding context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "color",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "lineWidth",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "length",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "count",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "values",
+      "required": false,
+      "type": "readonly AxisValue[] | undefined"
+    },
+    {
+      "name": "scale",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createThetaAxisTicks({ scale?, coordinate?, color?, lineWidth?, length?, count?, values? })"
+  ],
+  "snippet": "program.createThetaAxisTicks({})",
+  "errors": [],
+  "route": "/reference/actions/guides/#createthetaaxisticks"
+}

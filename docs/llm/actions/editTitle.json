@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 3,
+  "name": "editTitle",
+  "layer": "user-facing",
+  "domain": "legend_and_title",
+  "summary": "Partially edit the existing title.",
+  "signature": "editTitle(options: EditTitleOptions): ChartProgram;",
+  "intents": [
+    "edit title",
+    "edit",
+    "change",
+    "legend or title",
+    "chart annotation",
+    "chart title",
+    "title and subtitle"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing chart title"
+    ],
+    "owns": [],
+    "idOptions": []
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "editTitle"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "offset",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "alongOffset",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "maxWidth",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "lineHeight",
+      "unit": "logical-pixel"
+    }
+  ],
+  "inference": [],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing chart title"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "text",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "subtitle",
+      "required": false,
+      "type": "string | false | undefined"
+    },
+    {
+      "name": "position",
+      "required": false,
+      "type": "\"bottom\" | \"left\" | \"right\" | \"top\" | undefined"
+    },
+    {
+      "name": "align",
+      "required": false,
+      "type": "\"center\" | \"left\" | \"right\" | undefined"
+    },
+    {
+      "name": "offset",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "alongOffset",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "gap",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "maxWidth",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "wrap",
+      "required": false,
+      "type": "\"character\" | \"word\" | undefined"
+    },
+    {
+      "name": "lineHeight",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "titleStyle",
+      "required": false,
+      "type": "TitleTextStyleOptions | undefined"
+    },
+    {
+      "name": "subtitleStyle",
+      "required": false,
+      "type": "TitleTextStyleOptions | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editTitle({ text?, subtitle?, position?, align?, offset?, alongOffset?, gap?, maxWidth? })"
+  ],
+  "snippet": "program.editTitle({ text: \"Chart title\" })",
+  "errors": [],
+  "route": "/reference/actions/guides/#edittitle"
+}

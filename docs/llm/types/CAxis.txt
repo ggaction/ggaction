@@ -1,0 +1,3 @@
+type CAxis<P extends string> = Omit<CompleteAxisOptions<P>, "ticksAndLabels"> & {
+  ticksAndLabels?: false | Omit<CAxisTicks<P>, "scale" | "position" | "target">;
+};

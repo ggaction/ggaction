@@ -1,6 +1,15 @@
 # Test Guide
 
-The default suite runs unit, contract, chart, gate, and documentation tests:
+Install dependencies and the browser runtime before running tests:
+
+```sh
+npm ci
+npx playwright install chromium
+```
+
+The default suite runs unit, contract, chart, gate, and documentation tests.
+Some unit support and documentation interaction tests launch Chromium, so the
+browser runtime is required even when the separate browser suite is not selected:
 
 ```sh
 npm test
@@ -101,8 +110,89 @@ used to catch shared implementation mistakes rather than repeat production
 helpers. Keep a few representative literal expectations in chart tests as
 anchors for the oracle itself and for important public examples.
 
+Full coverage output and runtime receipts are retained in `.artifacts/coverage/`,
+including when critical thresholds fail.
+
 Critical coverage is owned by `scripts/coverage-policy.js`. Family rules apply
 minimum floors to every current and future file under high-risk boundaries;
 explicit per-file overrides are reserved for modules that warrant stricter
 thresholds. This prevents a newly split policy or renderer from escaping the
 coverage contract.
+
+Installed consumers use exact peer versions from `package-lock.json` by default.
+Use `GGACTION_PEER_MODE=latest npm run test:package` (or `test:platform`) for a
+separate latest-compatible peer check. Receipts record the resolved versions.
+CI checks launched by `scripts/run-check.js` have a 90-minute deadline, preserve
+timeout/cancellation identity, and terminate their child process tree.
+
+
+The canonical suite runner also uses the process-tree deadline wrapper. Set
+`GGACTION_CHECK_TIMEOUT_MS` to a positive millisecond value to shorten or extend a
+local deadline; timeout exits with 124, interrupt with 130, and cancellation with
+143. CI jobs have an additional 120-minute ceiling. Coverage writes the complete
+Node report, per-file `metrics.json`, and a receipt with the commit, dirty paths,
+and tracked-diff digest under `.artifacts/coverage/`. CI retains these on success
+and failure for 14 days. The separate peer-compatibility job exercises the latest
+compatible native peer; baseline qualification remains lockfile-pinned.
+
+
+Installed package qualification is owned by `scripts/consumers/`: Node public
+contracts, MCP transport, declarations, and optional peer installation have
+separate runners. Editable Node fixtures are grouped by contract owner and
+registered in `fixtures/node/manifest.json`. Every case gets its own status,
+duration, and original error in `.artifacts/consumers/node-cases.json`; independent
+qualification phases continue after a failure and write `qualification.json`.
+The package install is shared and its directory is always reclaimed.
+
+Type contract tests use `test/support/typescript.js`, which preserves each
+fixture's compiler options and negative assertions, invokes the compiler through
+Node on every platform, applies a 60-second deadline, and records compiler
+version, arguments, diagnostics, and status under `.artifacts/types/`.
+
+`test/charts/baseline-evidence.json` lists every primitive baseline's transitive
+production imports and independent oracle imports. Regenerate it with
+`node scripts/baseline-evidence.js`. Equality with a primitive proves equivalent
+construction and same-run output; it does not establish independence of shared
+layout, scale, or shape calculations. In particular, mark-selection baselines
+reuse production point-shape construction, and composition references reuse the
+production layout resolver. Their selection/order and composition-equivalence
+assertions are complemented by literal shape/geometry tests in the owning slices
+and `test/unit/layout/composition-layout.test.js`.
+
+`corpus-mutation-relations.test.js` reports bounded input-size tiers and pathology
+postconditions separately from real-source sampling. Its 32/512/4096-row point
+cases are stress witnesses, not a scalability benchmark. Seed, original and
+mutated rows, sample/source counts, category counts, missing/duplicate/negative/
+constant-value dimensions, and explicit aggregate expectations are retained in
+`.artifacts/corpus/`. Rename collisions and finite-number overflow fail before a
+mutation can silently destroy evidence.
+
+Realistic runs preload `scripts/test-file-metrics.js` in each isolated test
+process. `.artifacts/timings/` records file elapsed time after preload, peak RSS,
+exit status, exact Node/platform/architecture, and CI run identity. CI retains
+these records for 30 days. Summarize downloaded runs with
+`node scripts/summarize-test-timings.js <directory> ...`; medians and p95 values
+use successful samples, report failures separately, and never pool different
+environments. Keep the committed scheduling weights until repeated comparable
+CI samples justify an update. Local measurements do not replace Ubuntu weights.
+
+Documentation programs declare `environment`, `mode`, `rendering`, and result
+bindings. A `renders-canvas` example must paint its own Canvas; the browser
+consumer renders returned programs only for `authoring-only` examples. Node
+execution accepts only the documented Canvas selectors and exact dataset URL.
+Node and packed-browser receipts retain stable case IDs and exact code hashes.
+`node scripts/doc-snippet-coverage.js` reports registration, current observed
+passing execution, generated reference blocks, and contextual exceptions as
+separate counts. Hash-pinned exceptions and generated blocks are not execution
+evidence. README Quick start and immutable branches now have executable cases
+and explicit three-mark expectations.
+
+
+Offline scenario recipes each retain a differential raster witness: rendering a
+chart must differ from the same concrete scene with its analytic marks hidden.
+Axes, titles, and backgrounds alone cannot satisfy that test. Fully transparent
+and off-canvas marks are negative controls. Large canvases use a bounded whole
+chart raster; this representative witness supplements the exhaustive semantic
+corpus, not a claim that every generated scenario is raster-tested. Packed
+browser expectations are separate from the HTML fixture and reported as named
+subtests so one wrong result does not hide the other contract results.

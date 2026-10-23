@@ -214,3 +214,8 @@
 .docs-nav-group a.is-active {
   font-weight: 600;
 }
+
+.docs-nav-group > summary { cursor: pointer; display: flex; align-items: center; min-height: 2.5rem; }
+.docs-nav-group > summary::after { content: "+"; margin-left: auto; }
+.docs-nav-group[open] > summary::after { content: "−"; }
+.docs-nav-group > summary:hover { background: var(--docs-accent-soft); }

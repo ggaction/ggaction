@@ -1,0 +1,1 @@
+export type FacetHeaderAlign = "start" | "center" | "end";

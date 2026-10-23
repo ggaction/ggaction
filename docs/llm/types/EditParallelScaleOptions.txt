@@ -1,0 +1,6 @@
+export type EditParallelScaleOptions = {
+  target: string;
+  dimension: string;
+} & WithoutScaleId<
+  QuantitativePositionScaleOptions | CategoricalPositionScaleOptions
+>;

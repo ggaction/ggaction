@@ -1,0 +1,167 @@
+{
+  "schemaVersion": 3,
+  "name": "editErrorBar",
+  "layer": "user-facing",
+  "domain": "statistics",
+  "summary": "Revise one error bar's source, position/interval roles, optional categorical offset, statistics, and owned caps.",
+  "signature": "editErrorBar(options: EditErrorBarOptions): ChartProgram;",
+  "intents": [
+    "edit error bar",
+    "edit",
+    "change",
+    "statistical layer",
+    "statistical transform",
+    "error bar",
+    "uncertainty whisker"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing error bar",
+      "statistical source and coordinate context"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target",
+      "data"
+    ]
+  },
+  "authoringRoles": [
+    "H1",
+    "H3"
+  ],
+  "wraps": [],
+  "editableVia": [
+    "editErrorBar"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "capSize",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "strokeWidth",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "opacity",
+      "unit": "probability"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "data",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing error bar",
+      "statistical source and coordinate context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "data",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "x",
+      "required": false,
+      "type": "ErrorBarIntervalChannel | ErrorBarPositionChannel | undefined"
+    },
+    {
+      "name": "y",
+      "required": false,
+      "type": "ErrorBarIntervalChannel | ErrorBarPositionChannel | undefined"
+    },
+    {
+      "name": "xOffset",
+      "required": false,
+      "type": "false | ErrorBarOffsetChannel | undefined"
+    },
+    {
+      "name": "yOffset",
+      "required": false,
+      "type": "false | ErrorBarOffsetChannel | undefined"
+    },
+    {
+      "name": "groupBy",
+      "required": false,
+      "type": "string | false | undefined"
+    },
+    {
+      "name": "caps",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "capSize",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "stroke",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "strokeWidth",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "strokeDash",
+      "required": false,
+      "type": "DashPattern | DashStyle | undefined"
+    },
+    {
+      "name": "opacity",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "statistics",
+      "required": false,
+      "type": "{ center?: IntervalCenter | undefined; extent?: IntervalExtent | undefined; method?: ConfidenceIntervalMethod | undefined; level?: number | undefined; } | undefined"
+    },
+    {
+      "name": "lineCap",
+      "required": false,
+      "type": "\"butt\" | \"round\" | \"square\" | undefined"
+    },
+    {
+      "name": "lineJoin",
+      "required": false,
+      "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+    },
+    {
+      "name": "miterLimit",
+      "required": false,
+      "type": "number | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editErrorBar({ target?, data?, x?, y?, xOffset?, yOffset?, groupBy?, caps? })"
+  ],
+  "snippet": "program.editErrorBar({ opacity: 0.6 })",
+  "errors": [],
+  "route": "/reference/actions/statistics/#editerrorbar"
+}

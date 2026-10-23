@@ -1,0 +1,12 @@
+export interface HeatmapBaseOptions {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  rect?: RectStyleDetails & {
+    clip?: boolean;
+    opacity?: number;
+    stroke?: string | false;
+    strokeWidth?: number;
+  };
+  guides?: false | CartesianSeparateGuideOptions;
+}

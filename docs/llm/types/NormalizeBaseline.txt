@@ -1,0 +1,3 @@
+export type NormalizeBaseline =
+  | { readonly position: "first" | "last" }
+  | { readonly value: number };

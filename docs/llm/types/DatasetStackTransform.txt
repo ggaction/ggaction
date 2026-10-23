@@ -1,0 +1,8 @@
+export interface DatasetStackTransform {
+  readonly type: "stack";
+  readonly category: string;
+  readonly group: string;
+  readonly value: string;
+  readonly mode: StackDataMode;
+  readonly as: Required<StackDataOutputFields>;
+}

@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 3,
+  "name": "removePointRadius",
+  "layer": "user-facing",
+  "domain": "encodings",
+  "summary": "Remove an explicit constant point glyph radius and restore the theme default.",
+  "signature": "removePointRadius(options?: { target?: string }): ChartProgram;",
+  "intents": [
+    "remove point radius",
+    "remove",
+    "delete",
+    "visual encoding",
+    "field mapping",
+    "point radius",
+    "symbol radius"
+  ],
+  "lifecycle": "Assignment",
+  "resources": {
+    "prerequisites": [
+      "existing point radius"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H2",
+    "H3"
+  ],
+  "wraps": [
+    "editGraphics"
+  ],
+  "editableVia": [],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing point radius"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    }
+  ],
+  "callPatterns": [
+    "removePointRadius({ target? })"
+  ],
+  "snippet": "program.removePointRadius({})",
+  "errors": [],
+  "route": "/reference/actions/encodings/#removepointradius"
+}

@@ -1,0 +1,5 @@
+type ReferenceBinding<DataValue, PlotValue> =
+  | ({ space?: "data"; source?: string; temporalUnit?: TemporalInputUnit;
+       data?: never; coordinate?: never } & ReferenceAxis<DataValue>)
+  | ({ space: "plot"; data?: string; coordinate?: string;
+       source?: never; temporalUnit?: never } & ReferenceAxis<PlotValue>);

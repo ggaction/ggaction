@@ -1,0 +1,5 @@
+export interface StripPixelJitterOptions {
+  maxOffset: { pixels: number; band?: never };
+  seed?: string | number;
+  key?: string;
+}

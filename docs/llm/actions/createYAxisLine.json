@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 3,
+  "name": "createYAxisLine",
+  "layer": "user-facing",
+  "domain": "axes",
+  "summary": "Creates y-axis line for vertical baseline.",
+  "signature": "createYAxisLine(options?: AxisLineStyleOptions & { target?: string; scale?: string; position?: YAxisPosition }): ChartProgram;",
+  "intents": [
+    "create y axis line",
+    "create",
+    "add",
+    "axis guide",
+    "scale annotation",
+    "y-axis line",
+    "vertical baseline"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "compatible scale or encoding context"
+    ],
+    "owns": [
+      "y-axis line"
+    ],
+    "idOptions": [
+      "target",
+      "scale"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editSemantic",
+    "createGraphics",
+    "editYAxisLine"
+  ],
+  "editableVia": [
+    "editYAxisLine"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default",
+      "basic"
+    ]
+  },
+  "units": [
+    {
+      "path": "lineWidth",
+      "unit": "logical-pixel"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "scale",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "compatible scale or encoding context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "color",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "lineWidth",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "scale",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "position",
+      "required": false,
+      "type": "YAxisPosition | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createYAxisLine({ target?, scale?, color?, lineWidth?, position? })"
+  ],
+  "snippet": "program.createYAxisLine({})",
+  "errors": [],
+  "route": "/reference/actions/guides/#createyaxisline"
+}

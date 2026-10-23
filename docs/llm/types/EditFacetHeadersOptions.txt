@@ -1,0 +1,17 @@
+export interface EditFacetHeadersOptions {
+  fontSize?: number;
+  fontFamily?: string;
+  fontWeight?: string | number;
+  color?: string;
+  offset?: number;
+  /** Content follows concrete mark bounds with plot spacing; plot preserves existing placement. */
+  anchor?: "plot" | "content" | "view";
+  role?: FacetHeaderRole;
+  labelMap?: DisplayLabelMap | "auto";
+  side?: FacetHeaderSide;
+  align?: FacetHeaderAlign;
+  /** Numbers are radians; zero restores the existing unrotated header layout. */
+  rotation?: RotationInput;
+  /** Requires an explicit row or column role. False removes that role's field title. */
+  title?: FacetHeaderTitleOptions | false;
+}

@@ -1,0 +1,7 @@
+export type EditMarkLabelSelectionOptions = { target: string } & (
+  | { select: MarkSelector; selection?: never; all?: never }
+  | { selection: string; select?: never; all?: never }
+  | { all: true; select?: never; selection?: never }
+);
+
+/** Replace semantic placement or reset one attached label layer to its legacy anchor. */

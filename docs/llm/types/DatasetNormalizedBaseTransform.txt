@@ -1,0 +1,6 @@
+type DatasetNormalizedBaseTransform = {
+  readonly type: "normalize";
+  readonly field: string;
+  readonly as: string;
+  readonly groupBy: readonly string[];
+};

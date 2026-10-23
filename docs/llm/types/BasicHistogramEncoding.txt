@@ -1,0 +1,8 @@
+type BasicHistogramEncoding =
+  HistogramEncodingOptions extends infer T
+    ? T extends unknown
+      ? Omit<T, "field" | "target" | "coordinate" | "stack"> & {
+          stack?: Exclude<StackMode, "center">;
+        }
+      : never
+    : never;

@@ -1,3 +1,4 @@
+import { saveBrowserContextEvidence, saveBrowserEvidence } from "../support/browser.js";
 import assert from 'node:assert/strict';
 import {readFile,writeFile} from 'node:fs/promises';
 import path from 'node:path';
@@ -23,6 +24,7 @@ test.before(async()=>{
 test.after(async()=>{await closeBrowserWithEvidence(browser);await server?.close();await consumer?.cleanup();});
 
 for(const ratio of [1,2])test(`${name} preserves literal underlay pixels and opaque difference arithmetic at DPR ${ratio}`,async()=>{
+  try {
   const context=await browser.newContext({deviceScaleFactor:ratio});
   try{
     const {page,errors}=await openBrowserPage(context,server.baseUrl);
@@ -66,5 +68,7 @@ for(const ratio of [1,2])test(`${name} preserves literal underlay pixels and opa
       assert.deepEqual(check.probes,[[119,119,136,255],[119,119,136,255],[136,136,136,255]]);
     }
     assertNoBrowserErrors(errors,name);await page.close();
-  }finally{await context.close();}
+  } catch (error) { await saveBrowserContextEvidence(context, error); throw error; }finally{await context.close();}
+
+  } catch (error) { await saveBrowserEvidence(browser, error); throw error; }
 });

@@ -1,0 +1,4 @@
+export interface EncodeChannelsOptions {
+  target: string;
+  channels: AtLeastOne<EncodingChannelAssignments>;
+}

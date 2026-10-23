@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 3,
+  "name": "encodeYOffset",
+  "layer": "user-facing",
+  "domain": "encodings",
+  "summary": "Create or compatibly update the corresponding categorical offset scale within a bar, point, or rule y category.",
+  "signature": "encodeYOffset(options: YOffsetEncodingOptions): ChartProgram;",
+  "intents": [
+    "encode y offset",
+    "encode",
+    "map field",
+    "visual encoding",
+    "field mapping",
+    "y offset",
+    "grouped vertical offset"
+  ],
+  "lifecycle": "Assignment",
+  "resources": {
+    "prerequisites": [
+      "target mark",
+      "field mode: dataset field"
+    ],
+    "owns": [
+      "y offset assignment"
+    ],
+    "idOptions": [
+      "target",
+      "scale"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editSemantic",
+    "createScale",
+    "layoutSeries",
+    "editScale"
+  ],
+  "editableVia": [
+    "removeEncoding"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default",
+      "basic"
+    ]
+  },
+  "units": [
+    {
+      "path": "paddingInner",
+      "unit": "band-fraction"
+    },
+    {
+      "path": "paddingOuter",
+      "unit": "band-fraction"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "scale",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "target mark",
+      "field mode: dataset field"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "field",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "fieldType",
+      "required": false,
+      "type": "\"nominal\" | \"ordinal\" | undefined"
+    },
+    {
+      "name": "scale",
+      "required": false,
+      "type": "OffsetScaleOptions | undefined"
+    },
+    {
+      "name": "paddingInner",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "paddingOuter",
+      "required": false,
+      "type": "number | undefined"
+    }
+  ],
+  "callPatterns": [
+    "encodeYOffset({ field, target?, scale?, fieldType?, paddingInner?, paddingOuter? })"
+  ],
+  "snippet": "program.encodeYOffset({ field: \"value\" })",
+  "errors": [],
+  "route": "/reference/actions/encodings/#encodeyoffset"
+}

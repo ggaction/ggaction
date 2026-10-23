@@ -1,0 +1,21 @@
+export interface EditRegressionOptions {
+  placement?: "source" | "plot-last";
+  target?: string;
+  data?: string;
+  x?: string;
+  y?: string;
+  groupBy?: string | false;
+  method?: RegressionMethod;
+  degree?: number;
+  span?: number;
+  robustIterations?: number;
+  confidenceMethod?: ConfidenceIntervalMethod;
+  level?: number;
+  confidence?: number;
+  interval?: RegressionInterval | false;
+  missing?: "error" | "drop";
+  predict?: RegressionPredictOptions | false;
+  band?: false | RegressionBandOptions;
+  line?: StrokeStyleDetails & { strokeWidth?: number; curve?: CurveInterpolation };
+  sourceBinding?: "fixed" | "follow";
+}

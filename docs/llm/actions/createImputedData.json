@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 3,
+  "name": "createImputedData",
+  "layer": "user-facing",
+  "domain": "statistics",
+  "summary": "Replace nullish cells by group mean (the default), constant, forward, backward, or distance-based linear imputation while preserving group boundaries and final source order.",
+  "signature": "createImputedData(options: ImputedDataOptions): ChartProgram;",
+  "intents": [
+    "create imputed data",
+    "create",
+    "add",
+    "statistical layer",
+    "statistical transform",
+    "imputed data",
+    "filled missing values"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "source dataset"
+    ],
+    "owns": [
+      "imputed data"
+    ],
+    "idOptions": [
+      "id",
+      "source"
+    ]
+  },
+  "authoringRoles": [
+    "H1"
+  ],
+  "wraps": [
+    "createDerivedData"
+  ],
+  "editableVia": [
+    "editImputedData"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "source",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "source dataset"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "source",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "fields",
+      "required": true,
+      "type": "string | readonly [string, ...string[]]"
+    },
+    {
+      "name": "groupBy",
+      "required": false,
+      "type": "string | readonly string[] | undefined"
+    },
+    {
+      "name": "edges",
+      "required": false,
+      "type": "\"error\" | \"keep\" | undefined"
+    },
+    {
+      "name": "maxGap",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "method",
+      "required": false,
+      "type": "\"backward\" | \"constant\" | \"forward\" | \"linear\" | \"mean\" | undefined"
+    },
+    {
+      "name": "value",
+      "required": false,
+      "type": "DatasetScalar | undefined"
+    },
+    {
+      "name": "sortBy",
+      "required": false,
+      "type": "readonly WindowSort[] | readonly [{ field: string; order?: \"ascending\" | undefined; }] | readonly [WindowSort, ...WindowSort[]] | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createImputedData({ id, fields, source?, groupBy?, method?: \"mean\" })",
+    "createImputedData({ id, fields, method: \"constant\", value, source?, groupBy? })",
+    "createImputedData({ id, fields, method: \"forward\" | \"backward\" | \"linear\", sortBy, source?, groupBy? })"
+  ],
+  "snippet": "program.createImputedData({ id: \"imputed\", fields: \"amount\", groupBy: \"series\", sortBy: [{ field: \"period\" }], method: \"linear\" })",
+  "errors": [],
+  "route": "/reference/actions/statistics/#createimputeddata"
+}

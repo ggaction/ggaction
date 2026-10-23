@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 3,
+  "name": "encodeR",
+  "layer": "user-facing",
+  "domain": "encodings",
+  "summary": "Encode a quantitative field as Polar radial distance.",
+  "signature": "encodeR(options: RadialEncodingOptions): ChartProgram;",
+  "intents": [
+    "encode radial",
+    "encode",
+    "map field",
+    "visual encoding",
+    "field mapping",
+    "radial position",
+    "polar distance"
+  ],
+  "lifecycle": "Assignment",
+  "resources": {
+    "prerequisites": [
+      "target mark",
+      "field mode: dataset field"
+    ],
+    "owns": [
+      "radial position assignment"
+    ],
+    "idOptions": [
+      "target",
+      "coordinate",
+      "scale"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "createCoordinate",
+    "editSemantic",
+    "createScale"
+  ],
+  "editableVia": [
+    "removeEncoding"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "scale",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "target mark",
+      "field mode: dataset field"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "fieldType",
+      "required": false,
+      "type": "\"quantitative\" | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "field",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "mapping",
+      "required": false,
+      "type": "false | RadialMapping | undefined"
+    },
+    {
+      "name": "aggregate",
+      "required": false,
+      "type": "\"count\" | \"sum\" | undefined"
+    },
+    {
+      "name": "scale",
+      "required": false,
+      "type": "RadiusScaleOptions | MeasuredRadiusScaleOptions | undefined"
+    }
+  ],
+  "callPatterns": [
+    "encodeR({ target?, coordinate?, scale?, fieldType?, field?, mapping?, aggregate? })"
+  ],
+  "snippet": "program.encodeR({ field: \"value\" })",
+  "errors": [],
+  "route": "/reference/actions/encodings/#encoder"
+}

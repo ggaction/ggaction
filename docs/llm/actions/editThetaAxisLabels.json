@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 3,
+  "name": "editThetaAxisLabels",
+  "layer": "user-facing",
+  "domain": "axes",
+  "summary": "Edit perimeter theta labels.",
+  "signature": "editThetaAxisLabels(options?: ThetaAxisLabelOptions): ChartProgram;",
+  "intents": [
+    "edit theta axis labels",
+    "edit",
+    "change",
+    "axis guide",
+    "scale annotation",
+    "theta-axis labels",
+    "angular tick text"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing theta-axis labels",
+      "compatible scale or encoding context"
+    ],
+    "owns": [],
+    "idOptions": []
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editGraphics"
+  ],
+  "editableVia": [
+    "editThetaAxisLabels"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "count",
+      "unit": "count"
+    },
+    {
+      "path": "offset",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "fontSize",
+      "unit": "logical-pixel"
+    }
+  ],
+  "inference": [
+    {
+      "input": "labelMap",
+      "strategy": "documented-auto"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing theta-axis labels",
+      "compatible scale or encoding context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "count",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "values",
+      "required": false,
+      "type": "readonly AxisValue[] | undefined"
+    },
+    {
+      "name": "offset",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "format",
+      "required": false,
+      "type": "AxisFormat | undefined"
+    },
+    {
+      "name": "color",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "fontSize",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "fontFamily",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "fontWeight",
+      "required": false,
+      "type": "string | number | undefined"
+    },
+    {
+      "name": "labelMap",
+      "required": false,
+      "type": "\"auto\" | DisplayLabelMap | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editThetaAxisLabels({ count?, values?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight? })"
+  ],
+  "snippet": "program.editThetaAxisLabels({ count: 5 })",
+  "errors": [],
+  "route": "/reference/actions/guides/#editthetaaxislabels"
+}

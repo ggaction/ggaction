@@ -1,0 +1,4 @@
+export interface EditRegressionStatisticsDataOptions {
+  target?: string;
+  source?: string;
+}

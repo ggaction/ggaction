@@ -1,0 +1,130 @@
+{
+  "schemaVersion": 3,
+  "name": "createLinePlot",
+  "layer": "user-facing",
+  "domain": "charts",
+  "summary": "Create a complete Cartesian line chart.",
+  "signature": "createLinePlot(options: CreateLinePlotOptions): ChartProgram;",
+  "intents": [
+    "create line plot",
+    "create",
+    "add",
+    "complete chart",
+    "chart facade",
+    "line chart",
+    "ordered trend"
+  ],
+  "lifecycle": "Aggregate create-only",
+  "resources": {
+    "prerequisites": [
+      "canvas and dataset context"
+    ],
+    "owns": [
+      "line chart"
+    ],
+    "idOptions": [
+      "id",
+      "data",
+      "coordinate"
+    ]
+  },
+  "authoringRoles": [
+    "H0"
+  ],
+  "wraps": [
+    "createLineMark",
+    "encodeX",
+    "encodeY",
+    "encodeGroup",
+    "encodeColor",
+    "encodeStrokeDash",
+    "createGuides"
+  ],
+  "editableVia": [],
+  "supports": {
+    "entryPoints": [
+      "default",
+      "basic"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "data",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "complete",
+    "requires": [
+      "canvas and dataset context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "data",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "x",
+      "required": true,
+      "type": "LineXPositionChannel"
+    },
+    {
+      "name": "y",
+      "required": true,
+      "type": "LineYPositionChannel"
+    },
+    {
+      "name": "color",
+      "required": false,
+      "type": "LineCategoricalColorChannel<CategoricalColorScaleOptions> | undefined"
+    },
+    {
+      "name": "groupBy",
+      "required": false,
+      "type": "string | readonly [string, ...string[]] | undefined"
+    },
+    {
+      "name": "strokeDash",
+      "required": false,
+      "type": "Omit<{ field: string; value?: undefined; target?: string | undefined; fieldType?: \"nominal\" | \"ordinal\" | undefined; scale?: DashScaleOptions | undefined; }, \"target\"> | Omit<...> | undefined"
+    },
+    {
+      "name": "line",
+      "required": false,
+      "type": "(StrokeStyleDetails & { clip?: boolean | undefined; missing?: \"break\" | \"error\" | undefined; strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; tension?: number | undefined; stroke?: string | undefined; opacity?: number | undefined; closed?: false | undefined; }) | undefined"
+    },
+    {
+      "name": "guides",
+      "required": false,
+      "type": "false | (Omit<CPathGuides, \"grid\" | \"legend\"> & { grid?: false | (Omit<CartesianGridOptions, \"horizontal\"> & { horizontal?: boolean | ... 1 more ... | undefined; }) | undefined; legend?: false | ... 1 more ... | undefined; }) | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createLinePlot({ x, y, id?, data?, coordinate?, color?, groupBy?, strokeDash? })"
+  ],
+  "snippet": "program.createLinePlot({ x: \"x\", y: \"y\" })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#createlineplot"
+}

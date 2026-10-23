@@ -1,0 +1,8 @@
+export interface DatasetFoldTransform {
+  readonly type: "fold";
+  readonly fields: readonly string[];
+  readonly as: {
+    readonly key: string;
+    readonly value: string;
+  };
+}

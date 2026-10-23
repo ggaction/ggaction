@@ -1,0 +1,170 @@
+{
+  "schemaVersion": 3,
+  "name": "createBoxPlot",
+  "layer": "user-facing",
+  "domain": "statistics",
+  "summary": "Creates a Box plot owner that defers geometry and guides until compatible x/y roles are available.",
+  "signature": "createBoxPlot(options?: BoxPlotOptions): ChartProgram;",
+  "intents": [
+    "create box plot",
+    "create",
+    "add",
+    "statistical layer",
+    "statistical transform",
+    "box plot",
+    "quartile distribution"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "canvas and source dataset",
+      "compatible x/y roles before materialization"
+    ],
+    "owns": [
+      "box plot"
+    ],
+    "idOptions": [
+      "id",
+      "target",
+      "data",
+      "coordinate"
+    ]
+  },
+  "authoringRoles": [
+    "H0",
+    "H1"
+  ],
+  "wraps": [
+    "createBarMark",
+    "encodeX",
+    "encodeY"
+  ],
+  "editableVia": [
+    "editBoxPlot"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "width",
+      "unit": "band-fraction"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "data",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "median",
+      "strategy": "documented-auto"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "deferred",
+    "requires": [
+      "canvas and source dataset",
+      "compatible x/y roles before materialization"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "summary",
+      "required": false,
+      "type": "BoxPlotSummaryFields | undefined"
+    },
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "data",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "x",
+      "required": false,
+      "type": "BoxPlotPositionChannel | undefined"
+    },
+    {
+      "name": "y",
+      "required": false,
+      "type": "BoxPlotPositionChannel | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "color",
+      "required": false,
+      "type": "string | { field: string; fieldType?: \"nominal\" | \"ordinal\" | undefined; scale?: NonPointCategoricalColorScaleOptions | undefined; palette?: Palette | undefined; } | { ...; } | undefined"
+    },
+    {
+      "name": "whisker",
+      "required": false,
+      "type": "BoxPlotWhisker | undefined"
+    },
+    {
+      "name": "width",
+      "required": false,
+      "type": "BoxPlotWidth | undefined"
+    },
+    {
+      "name": "outliers",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "box",
+      "required": false,
+      "type": "(StrokeStyleDetails & { cornerRadius?: number | undefined; cornerRadiusTopLeft?: number | undefined; cornerRadiusTopRight?: number | undefined; cornerRadiusBottomRight?: number | undefined; cornerRadiusBottomLeft?: number | undefined; } & { ...; }) | undefined"
+    },
+    {
+      "name": "median",
+      "required": false,
+      "type": "(StrokeStyleDetails & { width?: \"auto\" | { pixels: number; } | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; }) | undefined"
+    },
+    {
+      "name": "outlier",
+      "required": false,
+      "type": "(StrokeStyleDetails & { shape?: PointShape | undefined; radius?: number | undefined; opacity?: number | undefined; }) | undefined"
+    },
+    {
+      "name": "guides",
+      "required": false,
+      "type": "false | BoxPlotGuideOptions | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createBoxPlot({ x, y, guides? })",
+    "createBoxPlot({ id?, data? })"
+  ],
+  "snippet": "program.createBoxPlot({})",
+  "errors": [],
+  "route": "/reference/actions/statistics/#createboxplot"
+}

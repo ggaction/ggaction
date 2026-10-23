@@ -221,3 +221,9 @@ rejected because a finite immutable trace summary cannot represent them.
 Use the [primitive extension API](./primitives.md) to express semantic and
 graphical changes. A semantic edit never materializes graphics automatically;
 the enclosing action must invoke every required graphical operation.
+
+## Installed guide
+
+The installed package includes `node_modules/ggaction/knowledge/extension-authoring.md`.
+Read it together with the installed `types/extension.d.ts` and `types/program.d.ts`
+when extending an older release. This is a guide file, not a package export to import.

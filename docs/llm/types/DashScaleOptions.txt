@@ -1,0 +1,7 @@
+export interface DashScaleOptions {
+  id?: string;
+  type?: "ordinal";
+  domain?: "auto" | readonly unknown[];
+  range?: "auto" | readonly (DashStyle | DashPattern)[];
+  unknown?: DashStyle | DashPattern;
+}

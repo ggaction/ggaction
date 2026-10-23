@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 3,
+  "name": "editCompleteData",
+  "layer": "user-facing",
+  "domain": "statistics",
+  "summary": "Edits completed data, including settings for explicit key-domain rows.",
+  "signature": "editCompleteData(options: EditCompleteDataOptions): ChartProgram;",
+  "intents": [
+    "edit complete data",
+    "edit",
+    "change",
+    "statistical layer",
+    "statistical transform",
+    "completed data",
+    "explicit key-domain rows"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing completed data",
+      "source dataset"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H1",
+    "H3"
+  ],
+  "wraps": [
+    "editDerivedData"
+  ],
+  "editableVia": [
+    "editCompleteData"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing completed data",
+      "source dataset"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "dependents",
+      "required": false,
+      "type": "DerivedDataDependents | undefined"
+    },
+    {
+      "name": "key",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "groupBy",
+      "required": false,
+      "type": "string | readonly string[] | undefined"
+    },
+    {
+      "name": "fill",
+      "required": false,
+      "type": "Readonly<Record<string, DatasetScalar>> | undefined"
+    },
+    {
+      "name": "members",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "values",
+      "required": false,
+      "type": "readonly [DatasetScalar, ...DatasetScalar[]] | undefined"
+    },
+    {
+      "name": "sequence",
+      "required": false,
+      "type": "{ start: number; end: number; step: number; } | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editCompleteData({ target, dependents?, key?, groupBy?, fill?, members?, values?, sequence? })"
+  ],
+  "snippet": "program.editCompleteData({ target: \"complete\", values: [1, 2] })",
+  "errors": [],
+  "route": "/reference/actions/statistics/#editcompletedata"
+}

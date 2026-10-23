@@ -1,0 +1,1 @@
+export type CreateScaleOptions = ScaleOptions & { id: string };

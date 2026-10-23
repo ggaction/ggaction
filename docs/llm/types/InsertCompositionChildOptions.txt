@@ -1,0 +1,6 @@
+export interface InsertCompositionChildOptions {
+  id: string;
+  program: ChartProgram;
+  before?: string;
+  after?: string;
+}

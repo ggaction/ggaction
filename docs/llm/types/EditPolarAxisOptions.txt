@@ -1,0 +1,8 @@
+export interface EditPolarAxisOptions {
+  angle?: number;
+  line?: false | AxisLineStyleOptions;
+  ticks?: false | PolarTickOptions;
+  labels?: false | PolarLabelOptions;
+  ticksAndLabels?: false | PolarTicksAndLabelsOptions;
+  title?: false | PolarTitleOptions;
+}

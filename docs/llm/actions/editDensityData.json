@@ -1,0 +1,142 @@
+{
+  "schemaVersion": 3,
+  "name": "editDensityData",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Edits kernel density data, including settings for KDE.",
+  "signature": "editDensityData(options: EditDensityDataOptions): ChartProgram;",
+  "intents": [
+    "edit density data",
+    "edit",
+    "change",
+    "chart setup",
+    "data and scales",
+    "kernel density data",
+    "KDE"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing kernel density data",
+      "source dataset"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editDerivedData"
+  ],
+  "editableVia": [
+    "editDensityData"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "bandwidth",
+      "unit": "data-value"
+    },
+    {
+      "path": "steps",
+      "unit": "count"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit"
+    },
+    {
+      "input": "bandwidth",
+      "strategy": "documented-auto"
+    },
+    {
+      "input": "extent",
+      "strategy": "documented-auto"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing kernel density data",
+      "source dataset"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "dependents",
+      "required": false,
+      "type": "DerivedDataDependents | undefined"
+    },
+    {
+      "name": "field",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "groupBy",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "bandwidth",
+      "required": false,
+      "type": "number | \"auto\" | undefined"
+    },
+    {
+      "name": "extent",
+      "required": false,
+      "type": "\"auto\" | readonly [number, number] | undefined"
+    },
+    {
+      "name": "steps",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "kernel",
+      "required": false,
+      "type": "DensityKernel | undefined"
+    },
+    {
+      "name": "normalization",
+      "required": false,
+      "type": "DensityNormalization | undefined"
+    },
+    {
+      "name": "missing",
+      "required": false,
+      "type": "\"drop\" | \"error\" | undefined"
+    },
+    {
+      "name": "as",
+      "required": false,
+      "type": "readonly [string, string] | undefined"
+    },
+    {
+      "name": "weight",
+      "required": false,
+      "type": "false | StatisticalWeight | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editDensityData({ target, dependents?, field?, groupBy?, bandwidth?, extent?, steps?, kernel? })"
+  ],
+  "snippet": "program.editDensityData({ target: \"density\", steps: 64 })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#editdensitydata"
+}

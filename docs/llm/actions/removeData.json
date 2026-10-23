@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 3,
+  "name": "removeData",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Remove one explicitly named dataset only when no mark, downstream dataset, retained recipe, or owned resource still refers to it.",
+  "signature": "removeData(options: RemoveResourceOptions): ChartProgram;",
+  "intents": [
+    "remove data",
+    "remove",
+    "delete",
+    "chart setup",
+    "data and scales",
+    "dataset",
+    "rows"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing dataset",
+      "source dataset"
+    ],
+    "owns": [],
+    "idOptions": [
+      "id"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing dataset",
+      "source dataset"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": true,
+      "type": "string"
+    }
+  ],
+  "callPatterns": [
+    "removeData({ id })"
+  ],
+  "snippet": "program.removeData({ id: \"unusedData\" })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#removedata"
+}

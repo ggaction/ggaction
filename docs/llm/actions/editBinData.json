@@ -1,0 +1,145 @@
+{
+  "schemaVersion": 3,
+  "name": "editBinData",
+  "layer": "user-facing",
+  "domain": "statistics",
+  "summary": "Edits one-dimensional bins, including settings for reusable histogram bounds and counts.",
+  "signature": "editBinData(options: EditBinDataOptions): ChartProgram;",
+  "intents": [
+    "edit bin data",
+    "edit",
+    "change",
+    "statistical layer",
+    "statistical transform",
+    "one-dimensional bins",
+    "reusable histogram bounds and counts"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing one-dimensional bins",
+      "source dataset"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H1",
+    "H3"
+  ],
+  "wraps": [
+    "editDerivedData"
+  ],
+  "editableVia": [
+    "editBinData"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "maxBins",
+      "unit": "count"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit"
+    },
+    {
+      "input": "extent",
+      "strategy": "documented-auto"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing one-dimensional bins",
+      "source dataset"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "dependents",
+      "required": false,
+      "type": "DerivedDataDependents | undefined"
+    },
+    {
+      "name": "maxBins",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "step",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "boundaries",
+      "required": false,
+      "type": "readonly [number, number, ...number[]] | undefined"
+    },
+    {
+      "name": "field",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "extent",
+      "required": false,
+      "type": "\"auto\" | readonly [number, number] | undefined"
+    },
+    {
+      "name": "nice",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "zero",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "includeEmpty",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "members",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "missing",
+      "required": false,
+      "type": "\"drop\" | \"error\" | undefined"
+    },
+    {
+      "name": "as",
+      "required": false,
+      "type": "BinDataOutputFields | undefined"
+    },
+    {
+      "name": "weight",
+      "required": false,
+      "type": "false | StatisticalWeight | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editBinData({ target, dependents?, maxBins?, step?, boundaries?, field?, extent?, nice? })"
+  ],
+  "snippet": "program.editBinData({ target: \"bins\", maxBins: 12 })",
+  "errors": [],
+  "route": "/reference/actions/statistics/#editbindata"
+}

@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 3,
+  "name": "editRadialAxisLabels",
+  "layer": "user-facing",
+  "domain": "axes",
+  "summary": "Edit radial value labels.",
+  "signature": "editRadialAxisLabels(options?: PolarLabelOptions): ChartProgram;",
+  "intents": [
+    "edit radial axis labels",
+    "edit",
+    "change",
+    "axis guide",
+    "scale annotation",
+    "radial-axis labels",
+    "radial tick text"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing radial-axis labels",
+      "compatible scale or encoding context"
+    ],
+    "owns": [],
+    "idOptions": []
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editGraphics"
+  ],
+  "editableVia": [
+    "editRadialAxisLabels"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "count",
+      "unit": "count"
+    },
+    {
+      "path": "offset",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "fontSize",
+      "unit": "logical-pixel"
+    }
+  ],
+  "inference": [],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing radial-axis labels",
+      "compatible scale or encoding context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "count",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "values",
+      "required": false,
+      "type": "readonly AxisValue[] | undefined"
+    },
+    {
+      "name": "offset",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "format",
+      "required": false,
+      "type": "AxisFormat | undefined"
+    },
+    {
+      "name": "color",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "fontSize",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "fontFamily",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "fontWeight",
+      "required": false,
+      "type": "string | number | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editRadialAxisLabels({ count?, values?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight? })"
+  ],
+  "snippet": "program.editRadialAxisLabels({ count: 5 })",
+  "errors": [],
+  "route": "/reference/actions/guides/#editradialaxislabels"
+}

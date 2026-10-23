@@ -1,0 +1,139 @@
+{
+  "schemaVersion": 3,
+  "name": "encodeHistogram",
+  "layer": "user-facing",
+  "domain": "encodings",
+  "summary": "Compose binned bar encodeX and count encodeY as one atomic histogram action.",
+  "signature": "encodeHistogram(options: HistogramEncodingOptions): ChartProgram;",
+  "intents": [
+    "encode histogram",
+    "encode",
+    "map field",
+    "visual encoding",
+    "field mapping",
+    "histogram",
+    "one-dimensional distribution"
+  ],
+  "lifecycle": "Assignment",
+  "resources": {
+    "prerequisites": [
+      "target mark",
+      "field mode: dataset field"
+    ],
+    "owns": [
+      "histogram assignment"
+    ],
+    "idOptions": [
+      "target",
+      "coordinate",
+      "xScale",
+      "yScale"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "encodeX",
+    "encodeY"
+  ],
+  "editableVia": [
+    "removeEncoding"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default",
+      "basic"
+    ]
+  },
+  "units": [
+    {
+      "path": "maxBins",
+      "unit": "count"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "xScale",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "yScale",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "target mark",
+      "field mode: dataset field"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "field",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "stack",
+      "required": false,
+      "type": "StackMode | undefined"
+    },
+    {
+      "name": "xScale",
+      "required": false,
+      "type": "NonPointQuantitativePositionScaleOptions | undefined"
+    },
+    {
+      "name": "yScale",
+      "required": false,
+      "type": "NonPointZeroSupportingPositionScaleOptions | undefined"
+    },
+    {
+      "name": "weight",
+      "required": false,
+      "type": "StatisticalWeight | undefined"
+    },
+    {
+      "name": "maxBins",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "binStep",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "binBoundaries",
+      "required": false,
+      "type": "readonly [number, number, ...number[]] | undefined"
+    }
+  ],
+  "callPatterns": [
+    "encodeHistogram({ field, target?, coordinate?, xScale?, yScale?, stack?, weight?, maxBins? })"
+  ],
+  "snippet": "program.encodeHistogram({ field: \"value\" })",
+  "errors": [],
+  "route": "/reference/actions/encodings/#encodehistogram"
+}

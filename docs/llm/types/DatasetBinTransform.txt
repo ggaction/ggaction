@@ -1,0 +1,26 @@
+export interface DatasetBinTransform {
+  readonly type: "bin";
+  readonly field: string;
+  readonly bin:
+    | { readonly maxBins: number }
+    | { readonly step: number }
+    | { readonly boundaries: readonly [number, number, ...number[]] };
+  readonly extent: "auto" | readonly [number, number];
+  readonly nice: boolean;
+  readonly zero: boolean;
+  readonly includeEmpty: boolean;
+  readonly members: boolean;
+  readonly weight?: StatisticalWeight;
+  readonly missing?: "error" | "drop";
+  readonly as: {
+    readonly lower: string;
+    readonly upper: string;
+    readonly count: string;
+    readonly members?: string;
+  };
+  readonly resolved?: {
+    readonly domain: readonly [number, number];
+    readonly step?: number;
+    readonly boundaries: readonly [number, number, ...number[]];
+  };
+}

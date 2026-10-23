@@ -1,0 +1,4 @@
+export type RequestedDatasetTransform = RequestedTransform<Exclude<
+  DatasetTransform,
+  DatasetHorizonTransform | DatasetStatisticalReferenceTransform
+>>;

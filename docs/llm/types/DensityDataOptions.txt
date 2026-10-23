@@ -1,0 +1,14 @@
+export interface DensityDataOptions {
+  id: string;
+  source?: string;
+  field: string;
+  groupBy?: string;
+  bandwidth?: "auto" | number;
+  extent?: "auto" | readonly [number, number];
+  steps?: number;
+  kernel?: DensityKernel;
+  normalization?: DensityNormalization;
+  weight?: StatisticalWeight;
+  missing?: "error" | "drop";
+  as?: readonly [string, string];
+}

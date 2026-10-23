@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 3,
+  "name": "layoutLabels",
+  "layer": "user-facing",
+  "domain": "marks",
+  "summary": "Assign deterministic collision-aware placement to one complete text mark.",
+  "signature": "layoutLabels(options?: LabelLayoutOptions): ChartProgram;",
+  "intents": [
+    "layout labels",
+    "layout",
+    "avoid overlap",
+    "graphical mark",
+    "mark appearance",
+    "label layout",
+    "collision avoidance"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing label layout"
+    ],
+    "owns": [
+      "label layout"
+    ],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [],
+  "editableVia": [
+    "layoutLabels",
+    "removeLabelLayout"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "padding",
+      "unit": "logical-pixel"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing label layout"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "axis",
+      "required": false,
+      "type": "LabelLayoutAxis | undefined"
+    },
+    {
+      "name": "padding",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "maxDisplacement",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "bounds",
+      "required": false,
+      "type": "LabelLayoutBounds | undefined"
+    },
+    {
+      "name": "leader",
+      "required": false,
+      "type": "false | LabelLeaderOptions | undefined"
+    }
+  ],
+  "callPatterns": [
+    "layoutLabels({ target?, axis?, padding?, maxDisplacement?, bounds?, leader? })"
+  ],
+  "snippet": "program.layoutLabels({ axis: \"y\" })",
+  "errors": [],
+  "route": "/reference/actions/marks/#layoutlabels"
+}

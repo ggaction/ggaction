@@ -1,0 +1,8 @@
+export interface MarkLabelPlacement {
+  anchor: MarkLabelAnchor;
+  /** Pixel gap between the source boundary and the nearest text edge. Defaults to 4. */
+  gap?: number;
+  /** Inside-fit behavior. Defaults to hide. */
+  overflow?: "hide" | "outside" | "allow";
+  leader?: false | MarkLabelPlacementLeaderOptions;
+}

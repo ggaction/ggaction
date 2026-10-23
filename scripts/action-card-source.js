@@ -207,13 +207,13 @@ function actionResources(action, optionNames, intentSource) {
   }
   if (operation === "encode") {
     prerequisites.push("target mark");
-    if (optionNames.includes("field")) prerequisites.push("field in the target dataset");
+    if (optionNames.includes("field")) prerequisites.push("field mode: dataset field");
   }
   if (action.domain === "charts") prerequisites.push("canvas and dataset context");
   if (action.domain === "marks" && operation === "create" && action.name !== "createMarkLabels") {
     prerequisites.push("dataset and coordinate context");
   }
-  if (["axes", "grid", "legend_and_title"].includes(action.domain) && action.name !== "createTitle") {
+  if (["axes", "grid", "legend_and_title"].includes(action.domain) && !["createTitle", "editTitle", "removeTitle"].includes(action.name)) {
     prerequisites.push("compatible scale or encoding context");
   }
   if (
@@ -595,7 +595,7 @@ export function validateActionCards({ cards, actions, declarations, routes }) {
 
 export function compactActionCardByteLimit(name) {
   return {editLegend: 4220, createLegend: 3810, createMarkLabels: 3420,
-    createAnnotation: 3420, createRegressionPlot: 3370, createReferenceBand: 3450}[name] ?? 3360;
+    createAnnotation: 3420, createRegressionPlot: 3460, createReferenceBand: 3450}[name] ?? 3360;
 }
 
 export async function buildActionCards() {

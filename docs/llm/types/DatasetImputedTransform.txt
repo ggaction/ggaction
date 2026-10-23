@@ -1,0 +1,18 @@
+export type DatasetImputedTransform = DatasetImputedBaseTransform & (
+  | { readonly method: "mean"; readonly value?: never; readonly sortBy: readonly DatasetWindowSort[]; }
+  | {
+      readonly method: "constant";
+      readonly value: DatasetScalar;
+      readonly sortBy: readonly DatasetWindowSort[];
+    }
+  | {
+      readonly method: "forward" | "backward";
+      readonly value?: never;
+      readonly sortBy: readonly [DatasetWindowSort, ...DatasetWindowSort[]];
+    }
+  | {
+      readonly method: "linear";
+      readonly value?: never;
+      readonly sortBy: readonly [{ readonly field: string; readonly order: "ascending" }];
+    }
+);

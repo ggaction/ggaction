@@ -1,0 +1,10 @@
+export type NonPointQuantitativePositionScaleOptions = ScaleFields<
+  "id" | "zero" | "clamp" | "reverse" |
+  "base" | "exponent" | "constant"
+> & {
+  domain?: "auto" | readonly [number, number];
+  range?: "auto" | readonly [number, number];
+} & (
+  | { type?: "linear"; nice?: boolean | LinearNiceCountOptions }
+  | { type: Exclude<QuantitativePositionScaleType, "linear">; nice?: boolean }
+);

@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 3,
+  "name": "removeTitle",
+  "layer": "user-facing",
+  "domain": "legend_and_title",
+  "summary": "Remove the complete chart title and subtitle resource.",
+  "signature": "removeTitle(): ChartProgram;",
+  "intents": [
+    "remove title",
+    "remove",
+    "delete",
+    "legend or title",
+    "chart annotation",
+    "chart title",
+    "title and subtitle"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing chart title"
+    ],
+    "owns": [],
+    "idOptions": []
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editSemantic",
+    "editGraphics"
+  ],
+  "editableVia": [],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing chart title"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [],
+  "callPatterns": [
+    "removeTitle()"
+  ],
+  "snippet": "program.removeTitle()",
+  "errors": [],
+  "route": "/reference/actions/guides/#removetitle"
+}

@@ -1,0 +1,45 @@
+export type DatasetRegressionTransform = {
+  type: "regression";
+  x: string;
+  y: string;
+  groupBy?: string;
+} & (
+  | ({
+      method: "linear";
+      degree?: never;
+      span?: never;
+      robustIterations?: never;
+    } & ({ interval: false; confidenceMethod?: never; level?: never; confidence?: never } | ({ interval: "mean" | "prediction" } & (
+      | { confidenceMethod: ConfidenceIntervalMethod; level: number; confidence?: never }
+      | { confidence: number; confidenceMethod?: never; level?: never }
+    ))))
+  | ({
+      method: "polynomial";
+      degree: number;
+      span?: never;
+      robustIterations?: never;
+    } & ({ interval: false; confidenceMethod?: never; level?: never; confidence?: never } | ({ interval: "mean" | "prediction" } & (
+      | { confidenceMethod: ConfidenceIntervalMethod; level: number; confidence?: never }
+      | { confidence: number; confidenceMethod?: never; level?: never }
+    ))))
+  | {
+      method: "exp";
+      interval: false;
+      degree?: never;
+      span?: never;
+      robustIterations?: never;
+      confidenceMethod?: never;
+      level?: never;
+      confidence?: never;
+    }
+  | {
+      method: "loess";
+      span: number;
+      robustIterations?: number;
+      degree?: never;
+      confidenceMethod?: never;
+      level?: never;
+      confidence?: never;
+      interval?: never;
+    }
+) & { readonly predict?: RegressionPredictOptions; readonly missing?: "error" | "drop" };

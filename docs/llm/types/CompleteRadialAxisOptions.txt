@@ -1,0 +1,5 @@
+export interface CompleteRadialAxisOptions
+  extends Omit<CompletePolarAxisOptions, "title"> {
+  angle?: number;
+  title?: false | RadialTitleOptions;
+}

@@ -1,0 +1,94 @@
+# Choose a Chart
+
+Start with the chart that expresses the data's meaning, then edit its parts through
+lower-level actions. Every complete-chart action in the current declared catalog
+appears below, including composition and deferred-construction entries.
+
+Prepare a Canvas and explicit or unambiguous materialized data before a unit chart
+facade. Repetition consumes a complete program. Box and Gradient constructors
+can defer roles, so merely calling them does not necessarily produce a complete chart.
+
+## Relationships and trends
+
+| Task / input | Chart action | Package entry | Direct editor |
+| --- | --- | --- | --- |
+| One row per observation; x and y fields | [`createScatterPlot`](../../../reference/actions/charts-data/#createscatterplot) | default, basic | Refine the owned marks, encodings, or guides |
+| Ordered positions and measures; explicit aggregation when needed | [`createLinePlot`](../../../reference/actions/charts-data/#createlineplot) | default, basic | Refine the owned marks, encodings, or guides |
+| Ordered values and a baseline, or paired interval bounds | [`createAreaPlot`](../../../reference/actions/charts-data/#createareaplot) | default | Refine the owned marks, encodings, or guides |
+| Finite quantitative observations for a fit and optional uncertainty | [`createRegressionPlot`](../../../reference/actions/charts-data/#createregressionplot) | default | Refine the owned marks, encodings, or guides |
+| Angular and radial fields per observation | [`createPolarScatterPlot`](../../../reference/actions/charts-data/#createpolarscatterplot) | default | Refine the owned marks, encodings, or guides |
+| Ordered angular/radial observations per path | [`createPolarLinePlot`](../../../reference/actions/charts-data/#createpolarlineplot) | default | Refine the owned marks, encodings, or guides |
+| Long category/value rows or explicitly selected wide fields | [`createRadarPlot`](../../../reference/actions/charts-data/#createradarplot) | default | [`editRadarPlot`](../../../reference/actions/charts-data/#editradarplot) |
+| Rows with two or more quantitative or ordinal dimensions | [`createParallelCoordinates`](../../../reference/actions/charts-data/#createparallelcoordinates) | default | Refine the owned marks, encodings, or guides |
+| Positioned text from x/y fields and row content | [`createTextPlot`](../../../reference/actions/charts-data/#createtextplot) | default | Refine the owned marks, encodings, or guides |
+
+## Comparisons and intervals
+
+| Task / input | Chart action | Package entry | Direct editor |
+| --- | --- | --- | --- |
+| Categorical/measure roles, explicit summary, or ranged endpoints | [`createBarPlot`](../../../reference/actions/charts-data/#createbarplot) | default, basic | Refine the owned marks, encodings, or guides |
+| Category and measure per raw row, or an explicit summary | [`createDotPlot`](../../../reference/actions/charts-data/#createdotplot) | default | [`editEndpointPlot`](../../../reference/actions/charts-data/#editendpointplot) |
+| Category, measure, and a finite baseline | [`createLollipopPlot`](../../../reference/actions/charts-data/#createlollipopplot) | default | [`editEndpointPlot`](../../../reference/actions/charts-data/#editendpointplot) |
+| Category plus named start and end measurements | [`createDumbbellPlot`](../../../reference/actions/charts-data/#createdumbbellplot) | default | [`editEndpointPlot`](../../../reference/actions/charts-data/#editendpointplot) |
+| Center and interval measurements or a statistical interval definition | [`createIntervalPlot`](../../../reference/actions/charts-data/#createintervalplot) | default | Refine the owned marks, encodings, or guides |
+
+## Distributions
+
+| Task / input | Chart action | Package entry | Direct editor |
+| --- | --- | --- | --- |
+| Quantitative observations; one bin policy; optional weights | [`createHistogram`](../../../reference/actions/charts-data/#createhistogram) | default, basic | Refine the owned marks, encodings, or guides |
+| Finite numeric observations and KDE decisions | [`createDensityPlot`](../../../reference/actions/statistics/#createdensityplot) | default | [`editDensity`](../../../reference/actions/encodings/#editdensity) · [`editAreaMark`](../../../reference/actions/marks/#editareamark) |
+| Numeric support observations; optional group and weight field | [`createECDFPlot`](../../../reference/actions/charts-data/#createecdfplot) | default | [`editECDFPlot`](../../../reference/actions/charts-data/#editecdfplot) |
+| One categorical and one quantitative role; constructor may defer roles | [`createBoxPlot`](../../../reference/actions/statistics/#createboxplot) | default | [`editBoxPlot`](../../../reference/actions/statistics/#editboxplot) |
+| Category and quantitative profile roles; constructor may defer roles | [`createGradientPlot`](../../../reference/actions/statistics/#creategradientplot) | default | [`editGradientPlot`](../../../reference/actions/statistics/#editgradientplot) |
+| Category and quantitative measure; optional two-value split | [`createViolinPlot`](../../../reference/actions/statistics/#createviolinplot) | default | [`editViolinPlot`](../../../reference/actions/statistics/#editviolinplot) |
+| One quantitative or temporal measure | [`createRugPlot`](../../../reference/actions/charts-data/#createrugplot) | default | Refine the owned marks, encodings, or guides |
+| One measure, optionally with a categorical slot | [`createStripPlot`](../../../reference/actions/charts-data/#createstripplot) | default | Refine the owned marks, encodings, or guides |
+| Category and measure for glyph-aware deterministic packing | [`createBeeswarmPlot`](../../../reference/actions/charts-data/#createbeeswarmplot) | default | Refine the owned marks, encodings, or guides |
+| Shared category/measure rows for density, summary, and observations | [`createRaincloudPlot`](../../../reference/actions/charts-data/#createraincloudplot) | default | [`editRaincloudPlot`](../../../reference/actions/charts-data/#editraincloudplot) |
+
+## Parts, radial values, and dense samples
+
+| Task / input | Chart action | Package entry | Direct editor |
+| --- | --- | --- | --- |
+| Category counts or category sums for proportional sector angles | [`createPiePlot`](../../../reference/actions/charts-data/#createpieplot) | default | Refine the owned marks, encodings, or guides |
+| Category counts or sums represented by sector area | [`createRosePlot`](../../../reference/actions/charts-data/#createroseplot) | default | Refine the owned marks, encodings, or guides |
+| Category counts or sums represented by radial length | [`createRadialBarPlot`](../../../reference/actions/charts-data/#createradialbarplot) | default | Refine the owned marks, encodings, or guides |
+| Pre-gridded cells or two raw quantitative fields for rectangular bins | [`createHeatmap`](../../../reference/actions/charts-data/#createheatmap) | default, basic | Refine the owned marks, encodings, or guides |
+| Ordered quantitative/temporal x and foldable quantitative y | [`createHorizonPlot`](../../../reference/actions/statistics/#createhorizonplot) | default | [`editHorizon`](../../../reference/actions/encodings/#edithorizon) · [`editAreaMark`](../../../reference/actions/marks/#editareamark) |
+
+## Repeated chart structure
+
+| Task / input | Chart action | Package entry | Direct editor |
+| --- | --- | --- | --- |
+| One complete chart and an eligible shared ancestor field | [`facet`](../../../reference/actions/charts-data/#facet) | default | [`editFacetSource`](../../../reference/actions/charts-data/#editfacetsource) · [`editFacetHeaders`](../../../reference/actions/charts-data/#editfacetheaders) · [`editFacetScales`](../../../reference/actions/charts-data/#editfacetscales) · [`editFacetGuides`](../../../reference/actions/charts-data/#editfacetguides) · [`editCompositionLayout`](../../../reference/actions/charts-data/#editcompositionlayout) |
+| One complete chart plus row and column fields | [`facetGrid`](../../../reference/actions/charts-data/#facetgrid) | default | [`editFacetSource`](../../../reference/actions/charts-data/#editfacetsource) · [`editFacetHeaders`](../../../reference/actions/charts-data/#editfacetheaders) · [`editFacetScales`](../../../reference/actions/charts-data/#editfacetscales) · [`editFacetGuides`](../../../reference/actions/charts-data/#editfacetguides) · [`editCompositionLayout`](../../../reference/actions/charts-data/#editcompositionlayout) |
+| One eligible mark role and an ordered field list | [`repeatCharts`](../../../reference/actions/charts-data/#repeatcharts) | default | [`editFacetSource`](../../../reference/actions/charts-data/#editfacetsource) · [`editFacetHeaders`](../../../reference/actions/charts-data/#editfacetheaders) · [`editFacetScales`](../../../reference/actions/charts-data/#editfacetscales) · [`editFacetGuides`](../../../reference/actions/charts-data/#editfacetguides) · [`editCompositionLayout`](../../../reference/actions/charts-data/#editcompositionlayout) |
+
+## Compose or refine
+
+`hconcat` and `vconcat` are exported functions for arranging independent complete
+programs; they are not methods in the direct action catalog. Facet and repeat methods
+retain a source recipe. Use the [composition overview](../../../api/composition/) to choose.
+
+The [five basic Cartesian facades](../../../api/basic-charts/) are a compact starting subset.
+For intervals added to existing layers, use [Error Bar](../../../api/error-bars/) or
+[Error Band](../../../api/error-bands/), which add interval layers to a chart.
+See [hierarchical authoring](../../../tutorials/hierarchical-authoring/)
+for one chart authored and edited at several levels.
+
+The table's H0–H4 values are [catalog role tags](../../../tutorials/hierarchical-authoring/#catalog-role-tags),
+separate from the relative action hierarchy and from package exposure.
+
+## Three independent choices
+
+**H0–H4 catalog role tags** group related authoring tasks; the actual hierarchy
+comes from the smaller actions an action composes. **API layer** describes
+user-facing, advanced, or primitive exposure. **Package entry** describes availability
+from the full or basic import. A higher-level action is not automatically part of the
+smaller package, and a low-level domain action is not automatically an extension primitive.
+
+## Related
+
+[Authoring conventions](../../../concepts/authoring-conventions/) · [Data grain](../../../api/data/policies/) ·
+[All chart examples](../../../gallery/all/)

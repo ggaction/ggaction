@@ -1,0 +1,6 @@
+export interface BinnedHeatmapOptions extends HeatmapBaseOptions {
+  x: string | BinnedHeatmapPositionChannel;
+  y: string | BinnedHeatmapPositionChannel;
+  bin: HeatmapBinOptions;
+  color?: BinnedHeatmapColorOptions;
+}

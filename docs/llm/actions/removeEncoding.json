@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 3,
+  "name": "removeEncoding",
+  "layer": "user-facing",
+  "domain": "encodings",
+  "summary": "Remove one active semantic encoding, its generated companions, matching guide blocks, and stale concrete values.",
+  "signature": "removeEncoding(options: { target?: string; channel: | \"x\" | \"y\" | \"x2\" | \"y2\" | \"xOffset\" | \"yOffset\" | \"theta\" | \"radius\" | \"color\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\" | \"size\" | \"shape\" | \"angle\" | \"group\" | \"opacity\" | \"text\" | \"dx\" | \"dy\"; }): ChartProgram;",
+  "intents": [
+    "remove encoding",
+    "remove",
+    "delete",
+    "visual encoding",
+    "field mapping",
+    "one assigned channel"
+  ],
+  "lifecycle": "Assignment",
+  "resources": {
+    "prerequisites": [
+      "existing visual encoding"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H2",
+    "H3"
+  ],
+  "wraps": [
+    "editSemantic",
+    "editGraphics"
+  ],
+  "editableVia": [],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing visual encoding"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "channel",
+      "required": true,
+      "type": "\"angle\" | \"color\" | \"dx\" | \"dy\" | \"group\" | \"opacity\" | \"radius\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\" | \"text\" | \"theta\" | \"x\" | \"x2\" | \"xOffset\" | \"y\" | \"y2\" | \"yOffset\""
+    }
+  ],
+  "callPatterns": [
+    "removeEncoding({ channel, target? })"
+  ],
+  "snippet": "program.removeEncoding({ channel: \"x\" })",
+  "errors": [
+    {
+      "error": "The selected channel is not assigned to the target mark.",
+      "fix": "Pass a currently assigned channel and disambiguate target when needed."
+    }
+  ],
+  "route": "/reference/actions/encodings/#removeencoding"
+}

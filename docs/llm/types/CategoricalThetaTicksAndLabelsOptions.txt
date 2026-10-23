@@ -1,0 +1,8 @@
+type CategoricalThetaTicksAndLabelsOptions = Omit<
+  PolarTicksAndLabelsOptions,
+  "count" | "labels"
+> & {
+  count?: never;
+  labels?: Omit<AxisLabelStyleOptions, "format"> & DisplayLabelOptions &
+    { format?: "auto" };
+};

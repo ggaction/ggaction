@@ -1,0 +1,7 @@
+export interface ErrorBarOffsetChannel {
+  field?: string;
+  fieldType?: "nominal" | "ordinal";
+  scale?: OffsetScaleOptions;
+  paddingInner?: number;
+  paddingOuter?: number;
+}

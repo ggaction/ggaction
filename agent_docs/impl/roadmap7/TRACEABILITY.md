@@ -12,7 +12,7 @@
 | R09 | 2 | [기간 기반 window와 최소 관측수](features/09-duration-windows.md) | [Phase 2 STEP1](phase2/STEP1.md) · `9d4d0840`; R02/Phase 12 `d29287c9`, `8c4b56ad` | Current |
 | R10 | 3 | [가중 통계·histogram·KDE](features/10-weighted-statistics.md) | [Phase 3 STEP1](phase3/STEP1.md) · `da0ca4e2`, `276c8318`, `32ddfcdd`; R02/Phase 12 `d29287c9`, `8c4b56ad` | Current |
 | R19 | 5 | [다중 채널의 원자적 재인코딩](features/19-atomic-encoding.md) | `test/contracts/atomic-encoding.test.js`; strict types; installed package; `58d9e51a`; final consumer flow `8c4b56ad` | Current |
-| R20 | 5 | [Parallel 차원별 scale 집중 편집](features/20-parallel-scale.md) | `test/unit/actions/scales/parallel-scale.test.js`; `test/contracts/phase5-scale-types.test.js`; `eaea2b8b` | Current |
+| R20 | 5 | [Parallel 차원별 scale 집중 편집](features/20-parallel-scale.md) | `test/unit/actions/scales/parallel-scale.test.js`; `test/contracts/focused-scale-editor-types.test.js`; `eaea2b8b` | Current |
 | R21 | 5 | [중첩 band offset scale 집중 편집](features/21-offset-scales.md) | `test/unit/actions/scales/offset-scale.test.js`; grouped-bar chart fixtures; package consumer; `335ce4f0` | Current |
 | R22 | 5 | [필드 기반 stroke 색상](features/22-stroke-color.md) | feature 내 독립 oracle/완료 조건 → Phase 5 STEP1 evidence | Current (`3fc40a66`) |
 | R23 | 5 | [크기 scale의 비선형·단계형 mapping](features/23-size-scale-types.md) | `test/contracts/size-scale-types.test.js`; `test/unit/grammar/scales/size.test.js`; installed package; `1b68a8ba`; R43 consumer `ebf3562a` | Current |

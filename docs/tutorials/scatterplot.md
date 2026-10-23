@@ -73,8 +73,7 @@ read that stored relationship; they do not create or repair coordinates.
 ## Reassign encodings
 
 The same encoding actions can replace compatible bindings. For a field-sized
-variant, omit the earlier constant `encodeRadius` and author the chain without
-that conflicting graphical constant:
+variant, use the following alternative. If your own variant explicitly sets a constant `encodeRadius`, omit that conflicting graphical constant first:
 
 ```javascript
 const reassigned = chart()

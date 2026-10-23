@@ -1,0 +1,35 @@
+export type StrokeEncodingOptions =
+  | {
+      target?: string;
+      value: string;
+      field?: never;
+      fieldType?: never;
+      temporalUnit?: never;
+      scale?: never;
+    }
+  | {
+      target?: string;
+      field: string;
+      value?: never;
+      fieldType?: "nominal" | "ordinal";
+      temporalUnit?: never;
+      scale?: CategoricalColorScaleOptions;
+    }
+  | {
+      target?: string;
+      field: string;
+      value?: never;
+      fieldType: "quantitative";
+      temporalUnit?: never;
+      scale?: ContinuousColorScaleOptions | DiscretizedColorScaleOptions;
+    }
+  | {
+      target?: string;
+      field: string;
+      value?: never;
+      fieldType: "temporal";
+      temporalUnit?: TemporalInputUnit;
+      scale?: Omit<ContinuousColorScaleOptions, "midpoint"> & {
+        midpoint?: "auto";
+      };
+    };

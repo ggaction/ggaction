@@ -1,0 +1,9 @@
+export interface PolarGridOptions {
+  scale?: string;
+  coordinate?: string;
+  count?: number;
+  values?: readonly AxisValue[];
+  color?: string;
+  lineWidth?: number;
+  strokeDash?: readonly number[];
+}

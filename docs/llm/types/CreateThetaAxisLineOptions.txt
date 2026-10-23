@@ -1,0 +1,2 @@
+export type CreateThetaAxisLineOptions = AxisLineStyleOptions &
+  Omit<PolarGuideResourceOptions, "angle">;

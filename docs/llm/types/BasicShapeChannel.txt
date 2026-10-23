@@ -1,0 +1,5 @@
+export type BasicShapeChannel = string | {
+  field: string;
+  fieldType?: "nominal";
+  scale?: ShapeScaleOptions;
+};

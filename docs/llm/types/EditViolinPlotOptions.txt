@@ -1,0 +1,10 @@
+export interface EditViolinPlotOptions {
+  target?: string;
+  data?: string;
+  x?: ViolinPlotPositionChannel;
+  y?: ViolinPlotPositionChannel;
+  split?: false | ViolinPlotSplitOptions;
+  density?: Omit<ViolinPlotDensityOptions, "weight"> & {
+    weight?: StatisticalWeight | false;
+  };
+}

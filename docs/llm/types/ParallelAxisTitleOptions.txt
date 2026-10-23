@@ -1,0 +1,8 @@
+export interface ParallelAxisTitleOptions {
+  text?: string;
+  offset?: number;
+  color?: string;
+  fontSize?: number;
+  fontFamily?: string;
+  fontWeight?: string | number;
+}

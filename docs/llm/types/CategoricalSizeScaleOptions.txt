@@ -1,0 +1,8 @@
+export type CategoricalSizeScaleOptions = SizeScaleCommonOptions & {
+  type?: "ordinal";
+  domain?: "auto" | readonly (string | number | boolean)[];
+  range?: "auto" | readonly [number, ...number[]];
+  clamp?: never;
+  base?: never;
+  exponent?: never;
+};

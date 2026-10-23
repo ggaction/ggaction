@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { htmlElementIds } from "./html-element-ids.js";
 import { SEARCH_INDEX_MAX_BYTES } from "./generate-doc-search-index.js";
 import assert from "node:assert/strict";
@@ -220,5 +221,32 @@ assert.equal(mcpResources.packageVersion, actionCards.packageVersion);
 assert.equal(llmsManifest.sectionCount, htmlFiles.length);
 assert.equal(llmsManifest.sections.length, htmlFiles.length);
 assert.equal(llmsManifest.sections.every(section => /^[a-f0-9]{64}$/.test(section.sha256)), true);
+
+const selective = JSON.parse(await readFile(path.join(siteRoot, "llm/index.json"), "utf8"));
+assert.equal(selective.contractId, llmsManifest.provenance.contractId);
+let chunkCount = 0;
+async function verifyArtifact(entry) {
+  const target = path.resolve(siteRoot, entry.path);
+  assert.ok(target.startsWith(siteRoot + path.sep));
+  const bytes = await readFile(target);
+  assert.equal(bytes.length, entry.bytes, entry.path);
+  assert.equal(createHash("sha256").update(bytes).digest("hex"), entry.sha256, entry.path);
+  return bytes;
+}
+for (const artifact of selective.artifacts) await verifyArtifact(artifact);
+for (const [kind, catalog] of Object.entries(selective.catalogs)) {
+  const entries = JSON.parse(await verifyArtifact(catalog));
+  assert.equal(entries.length, catalog.count);
+  for (const entry of entries) {
+    const bytes = await verifyArtifact(entry); chunkCount++;
+    if (kind === "pages") {
+      const markdown = bytes.toString("utf8").replace(/```[\s\S]*?```|~~~[\s\S]*?~~~/g, "");
+      for (const match of markdown.matchAll(/!?\[[^\]]*\]\(([^)]+)\)/g)) {
+        await assertTarget(path.join(siteRoot, entry.path), match[1]);
+      }
+    }
+  }
+}
+process.stdout.write(`verified ${chunkCount} selective LLM artifacts and their identity hashes\n`);
 
 process.stdout.write(`checked ${htmlFiles.length} built documentation pages\n`);

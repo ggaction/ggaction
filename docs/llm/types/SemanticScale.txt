@@ -1,0 +1,8 @@
+export interface SemanticScale {
+  readonly id: string;
+  readonly type?: ScaleType;
+  readonly domain?: "auto" | readonly unknown[];
+  readonly emptyDomain?: "preserve" | "require-explicit";
+  readonly range?: ScaleRange;
+  readonly [key: string]: unknown;
+}

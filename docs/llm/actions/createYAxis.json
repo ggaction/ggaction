@@ -1,0 +1,129 @@
+{
+  "schemaVersion": 3,
+  "name": "createYAxis",
+  "layer": "user-facing",
+  "domain": "axes",
+  "summary": "Creates y axis for vertical scale guide.",
+  "signature": "createYAxis(options?: CompleteAxisOptions<YAxisPosition>): ChartProgram;",
+  "intents": [
+    "create y axis",
+    "create",
+    "add",
+    "axis guide",
+    "scale annotation",
+    "y axis",
+    "vertical scale guide"
+  ],
+  "lifecycle": "Aggregate create-only",
+  "resources": {
+    "prerequisites": [
+      "compatible scale or encoding context"
+    ],
+    "owns": [
+      "y axis"
+    ],
+    "idOptions": [
+      "id",
+      "scale",
+      "coordinate"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editSemantic",
+    "createYAxisLine",
+    "createYAxisTicksAndLabels",
+    "createYAxisTitle"
+  ],
+  "editableVia": [
+    "editYAxis"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default",
+      "basic"
+    ]
+  },
+  "units": [
+    {
+      "path": "offset",
+      "unit": "logical-pixel"
+    }
+  ],
+  "inference": [
+    {
+      "input": "scale",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "compatible scale or encoding context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "underlay",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "offset",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "scale",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "position",
+      "required": false,
+      "type": "YAxisPosition | undefined"
+    },
+    {
+      "name": "line",
+      "required": false,
+      "type": "false | AxisLineStyleOptions | undefined"
+    },
+    {
+      "name": "ticksAndLabels",
+      "required": false,
+      "type": "false | Omit<AxisTicksAndLabelsOptions<YAxisPosition>, \"position\" | \"scale\" | \"target\"> | undefined"
+    },
+    {
+      "name": "title",
+      "required": false,
+      "type": "false | Omit<AxisTitleOptions<YAxisPosition>, \"position\" | \"scale\" | \"target\"> | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createYAxis({ id?, scale?, coordinate?, underlay?, offset?, position?, line?, ticksAndLabels? })"
+  ],
+  "snippet": "program.createYAxis({})",
+  "errors": [],
+  "route": "/reference/actions/guides/#createyaxis"
+}

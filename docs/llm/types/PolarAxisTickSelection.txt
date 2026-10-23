@@ -1,0 +1,3 @@
+export type PolarAxisTickSelection =
+  | { count?: number; values?: never }
+  | { values: readonly AxisValue[]; count?: never };

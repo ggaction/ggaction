@@ -1,0 +1,1 @@
+export type EditIntervalDataOptions = FocusedDerivedDataEdit<IntervalDataOptions>;

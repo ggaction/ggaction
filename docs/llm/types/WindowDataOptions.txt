@@ -1,0 +1,8 @@
+export interface WindowDataOptions {
+  id: string;
+  source?: string;
+  partitionBy?: string | readonly string[];
+  sortBy?: readonly WindowSort[];
+  operations: readonly WindowOperation[];
+  temporalUnit?: TemporalInputUnit;
+}

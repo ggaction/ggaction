@@ -1,0 +1,4 @@
+export interface RadarWideOptions {
+  fields: readonly [string, string, string, ...string[]];
+  as?: { key?: string; value?: string };
+}

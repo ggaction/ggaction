@@ -122,7 +122,33 @@ test("keeps generated README GIF and PNG valid and referenced", () => {
     width: README_DEMO_WIDTH,
     height: README_DEMO_HEIGHT
   });
-  assert.equal(gif.frameCount, README_STAGE_IDS.length);
+  assert.equal(gif.frameCount, 8);
   assert.equal(gif.durationMs, README_DEMO_DURATION_MS);
   assert.match(readme, /\.\/docs\/assets\/images\/readme-authoring-sequence\.gif/);
+});
+
+test("the paper rose sequence retains each revision and materializes its final palette", async () => {
+  const { createReadmeAuthoringDemo: createRose } = await import("../../examples/readme-rose-sequence/program.js");
+  const rows = JSON.parse(read("examples/readme-rose-sequence/data.json"));
+  const { stages, finalProgram } = createRose(rows);
+  assert.equal(rows.length, 36);
+  assert.deepEqual(stages.map(stage => stage.id), ["canvas", "data", "rose", "radius", "color", "spacing", "title", "palette"]);
+  assert.equal(stages[0].program.semanticSpec.datasets.length, 0);
+  assert.equal(finalProgram.semanticSpec.datasets[0].values.length, 36);
+  for (let i = 1; i < stages.length; i++) {
+    assert.notEqual(stages[i].program, stages[i - 1].program);
+    assert.equal(stages[i].program.trace.children.length, stages[i - 1].program.trace.children.length + 1);
+  }
+  assert.ok(JSON.stringify(finalProgram.graphicSpec).includes("Causes of Mortality in the Army in the East"));
+  assert.ok(JSON.stringify(finalProgram.graphicSpec).includes("#7570b3"));
+});
+
+test("the README leads with the paper GIF, then installation and a complete first chart", () => {
+  const source = read("README.md").toString("utf8");
+  const gif = source.indexOf("readme-authoring-sequence.gif");
+  const quick = source.indexOf("\n## Quick start");
+  const grammar = source.indexOf("\n## A grammar of graphical action");
+  assert.ok(gif > 0 && gif < quick && quick < grammar);
+  assert.ok(source.slice(quick, grammar).includes("const observations = ["));
+  assert.ok(source.slice(quick, grammar).includes("render(program, context)"));
 });

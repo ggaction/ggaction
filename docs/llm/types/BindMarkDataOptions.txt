@@ -1,0 +1,4 @@
+export interface BindMarkDataOptions {
+  target: string;
+  data: string;
+}

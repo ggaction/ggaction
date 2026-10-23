@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 3,
+  "name": "jitterPoints",
+  "layer": "user-facing",
+  "domain": "marks",
+  "summary": "Assign deterministic bounded graphical jitter to one Cartesian point mark with channel: \"x\", \"y\", or \"both\".",
+  "signature": "jitterPoints(options: JitterPointsOptions): ChartProgram;",
+  "intents": [
+    "jitter points",
+    "jitter",
+    "separate overlapping points",
+    "graphical mark",
+    "mark appearance",
+    "point positions",
+    "overlapping observations"
+  ],
+  "lifecycle": "Assignment",
+  "resources": {
+    "prerequisites": [
+      "existing point positions"
+    ],
+    "owns": [
+      "point positions"
+    ],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [],
+  "editableVia": [
+    "jitterPoints",
+    "removeJitter"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing point positions"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "channel",
+      "required": true,
+      "type": "\"both\" | \"x\" | \"y\""
+    },
+    {
+      "name": "maxOffset",
+      "required": true,
+      "type": "JitterMaxOffset"
+    },
+    {
+      "name": "seed",
+      "required": false,
+      "type": "string | number | undefined"
+    },
+    {
+      "name": "key",
+      "required": false,
+      "type": "string | undefined"
+    }
+  ],
+  "callPatterns": [
+    "jitterPoints({ channel, maxOffset, target?, seed?, key? })"
+  ],
+  "snippet": "program.jitterPoints({ channel: \"x\", maxOffset: { pixels: 4 } })",
+  "errors": [],
+  "route": "/reference/actions/marks/#jitterpoints"
+}

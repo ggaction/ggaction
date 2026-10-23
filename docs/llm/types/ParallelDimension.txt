@@ -1,0 +1,19 @@
+export type ParallelDimension = string | ({
+  field: string;
+  title?: string;
+} & (
+  | {
+      fieldType: "quantitative";
+      scale?: WithoutScaleId<QuantitativePositionScaleOptions>;
+    }
+  | {
+      fieldType: "ordinal";
+      scale?: WithoutScaleId<CategoricalPositionScaleOptions>;
+    }
+  | {
+      fieldType?: undefined;
+      scale?: WithoutScaleId<
+        QuantitativePositionScaleOptions | CategoricalPositionScaleOptions
+      >;
+    }
+));

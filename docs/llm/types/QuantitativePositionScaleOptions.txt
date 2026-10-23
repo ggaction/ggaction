@@ -1,0 +1,2 @@
+export type QuantitativePositionScaleOptions =
+  NonPointQuantitativePositionScaleOptions & { unknown?: number };

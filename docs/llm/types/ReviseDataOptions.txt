@@ -1,0 +1,4 @@
+export interface ReviseDataOptions<Row extends object> extends CreateDataOptions<Row> {
+  source: string;
+  id: string;
+}

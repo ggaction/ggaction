@@ -1,0 +1,5 @@
+export type StrokeStyleDetails = {
+  lineCap?: "butt" | "round" | "square";
+  lineJoin?: "miter" | "round" | "bevel";
+  miterLimit?: number;
+};

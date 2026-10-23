@@ -1,0 +1,138 @@
+{
+  "schemaVersion": 3,
+  "name": "editBoxPlot",
+  "layer": "user-facing",
+  "domain": "statistics",
+  "summary": "Revise box statistics, optional outlier topology, width, and component appearance through the stable box owner without addressing generated child IDs.",
+  "signature": "editBoxPlot(options: EditBoxPlotOptions): ChartProgram;",
+  "intents": [
+    "edit box plot",
+    "edit",
+    "change",
+    "statistical layer",
+    "statistical transform",
+    "box plot",
+    "quartile distribution"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing box plot",
+      "statistical source and coordinate context"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target",
+      "data"
+    ]
+  },
+  "authoringRoles": [
+    "H1",
+    "H3"
+  ],
+  "wraps": [
+    "editSemantic",
+    "encodeStroke",
+    "encodeStrokeWidth",
+    "editErrorBar"
+  ],
+  "editableVia": [
+    "editBoxPlot"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "width",
+      "unit": "band-fraction"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "data",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "median",
+      "strategy": "documented-auto"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing box plot",
+      "statistical source and coordinate context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "summary",
+      "required": false,
+      "type": "false | BoxPlotSummaryFields | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "data",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "x",
+      "required": false,
+      "type": "BoxPlotPositionChannel | undefined"
+    },
+    {
+      "name": "y",
+      "required": false,
+      "type": "BoxPlotPositionChannel | undefined"
+    },
+    {
+      "name": "whisker",
+      "required": false,
+      "type": "BoxPlotWhisker | undefined"
+    },
+    {
+      "name": "width",
+      "required": false,
+      "type": "BoxPlotWidth | undefined"
+    },
+    {
+      "name": "outliers",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "box",
+      "required": false,
+      "type": "(StrokeStyleDetails & { cornerRadius?: number | undefined; cornerRadiusTopLeft?: number | undefined; cornerRadiusTopRight?: number | undefined; cornerRadiusBottomRight?: number | undefined; cornerRadiusBottomLeft?: number | undefined; } & { ...; }) | undefined"
+    },
+    {
+      "name": "median",
+      "required": false,
+      "type": "(StrokeStyleDetails & { width?: \"auto\" | { pixels: number; } | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; }) | undefined"
+    },
+    {
+      "name": "outlier",
+      "required": false,
+      "type": "(StrokeStyleDetails & { shape?: PointShape | undefined; radius?: number | undefined; opacity?: number | undefined; }) | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editBoxPlot({ target?, data?, summary?, x?, y?, whisker?, width?, outliers? })"
+  ],
+  "snippet": "program.editBoxPlot({ data: \"data-1\" })",
+  "errors": [],
+  "route": "/reference/actions/statistics/#editboxplot"
+}

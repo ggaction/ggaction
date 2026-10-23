@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 3,
+  "name": "editTimeUnitData",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Edits date bucket, including settings for UTC time unit.",
+  "signature": "editTimeUnitData(options: EditTimeUnitDataOptions): ChartProgram;",
+  "intents": [
+    "edit time unit data",
+    "edit",
+    "change",
+    "chart setup",
+    "data and scales",
+    "date bucket",
+    "UTC time unit"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing date bucket",
+      "source dataset"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editDerivedData"
+  ],
+  "editableVia": [
+    "editTimeUnitData"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "temporalUnit",
+      "unit": "temporal-input"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing date bucket",
+      "source dataset"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "dependents",
+      "required": false,
+      "type": "DerivedDataDependents | undefined"
+    },
+    {
+      "name": "missing",
+      "required": false,
+      "type": "\"error\" | \"null\" | undefined"
+    },
+    {
+      "name": "field",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "temporalUnit",
+      "required": false,
+      "type": "TemporalInputUnit | undefined"
+    },
+    {
+      "name": "as",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "timeZone",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "unit",
+      "required": false,
+      "type": "\"day\" | \"hour\" | \"minute\" | \"month\" | \"quarter\" | \"second\" | \"week\" | \"weekday\" | \"year\" | undefined"
+    },
+    {
+      "name": "weekStartsOn",
+      "required": false,
+      "type": "0 | 1 | 2 | 3 | 4 | 5 | 6 | undefined"
+    },
+    {
+      "name": "weekRule",
+      "required": false,
+      "type": "\"calendar\" | \"iso\" | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editTimeUnitData({ target, dependents?, missing?, field?, temporalUnit?, as?, timeZone?, unit? })"
+  ],
+  "snippet": "program.editTimeUnitData({ target: \"buckets\", unit: \"month\" })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#edittimeunitdata"
+}

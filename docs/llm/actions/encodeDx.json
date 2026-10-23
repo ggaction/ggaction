@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 3,
+  "name": "encodeDx",
+  "layer": "user-facing",
+  "domain": "encodings",
+  "summary": "Move each independent Text glyph horizontally by finite signed logical pixels.",
+  "signature": "encodeDx(options: TextOffsetEncodingOptions): ChartProgram;",
+  "intents": [
+    "encode dx",
+    "encode",
+    "map field",
+    "visual encoding",
+    "field mapping",
+    "horizontal text offset",
+    "text pixel shift"
+  ],
+  "lifecycle": "Assignment",
+  "resources": {
+    "prerequisites": [
+      "target mark",
+      "field mode: dataset field"
+    ],
+    "owns": [
+      "horizontal text offset assignment"
+    ],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "removeEncoding"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "value",
+      "unit": "logical-pixel"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "target mark",
+      "field mode: dataset field"
+    ],
+    "allowsEmpty": true
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "value",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "field",
+      "required": false,
+      "type": "string | undefined"
+    }
+  ],
+  "callPatterns": [
+    "encodeDx({ target?, field })",
+    "encodeDx({ target?, value })"
+  ],
+  "snippet": "program.encodeDx({ value: 8 })",
+  "errors": [],
+  "route": "/reference/actions/encodings/#encodedx"
+}

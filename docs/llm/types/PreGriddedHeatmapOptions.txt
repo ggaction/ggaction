@@ -1,0 +1,6 @@
+export interface PreGriddedHeatmapOptions extends HeatmapBaseOptions {
+  x: HeatmapCategoryPositionChannel;
+  y: HeatmapCategoryPositionChannel;
+  bin?: never;
+  color?: RectColorChannel;
+}

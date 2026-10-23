@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 3,
+  "name": "removeGrid",
+  "layer": "user-facing",
+  "domain": "grid",
+  "summary": "Removes grid while preserving unrelated chart resources.",
+  "signature": "removeGrid(options?: RemoveGridOptions): ChartProgram;",
+  "intents": [
+    "remove grid",
+    "remove",
+    "delete",
+    "grid guide",
+    "reference lines",
+    "grid",
+    "Cartesian reference lines"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing grid",
+      "compatible scale or encoding context"
+    ],
+    "owns": [],
+    "idOptions": []
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editSemantic",
+    "editGraphics"
+  ],
+  "editableVia": [],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing grid",
+      "compatible scale or encoding context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "horizontal",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "vertical",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "theta",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "radial",
+      "required": false,
+      "type": "boolean | undefined"
+    }
+  ],
+  "callPatterns": [
+    "removeGrid({ horizontal?, vertical?, theta?, radial? })"
+  ],
+  "snippet": "program.removeGrid({})",
+  "errors": [],
+  "route": "/reference/actions/guides/#removegrid"
+}

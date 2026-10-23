@@ -1,0 +1,224 @@
+{
+  "schemaVersion": 3,
+  "name": "createLegend",
+  "layer": "user-facing",
+  "domain": "legend_and_title",
+  "summary": "rowPadding sets non-negative finite occupied edge-to-edge vertical row gaps for item-based legends; titlePadding independently sets title-to-body spacing for every family.",
+  "signature": "createLegend(options?: LegendOptions): ChartProgram;",
+  "intents": [
+    "create legend",
+    "create",
+    "add",
+    "legend or title",
+    "chart annotation",
+    "legend",
+    "encoding key"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "compatible scale or encoding context"
+    ],
+    "owns": [
+      "legend"
+    ],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [],
+  "editableVia": [
+    "editLegend"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default",
+      "basic"
+    ]
+  },
+  "units": [
+    {
+      "path": "columns",
+      "unit": "count"
+    },
+    {
+      "path": "offset",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "count",
+      "unit": "count"
+    },
+    {
+      "path": "rowPadding",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "titlePadding",
+      "unit": "logical-pixel"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "compatible scale or encoding context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "clipHeight",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "combine",
+      "required": false,
+      "type": "\"color-size\" | \"separate\" | \"size-shape\" | undefined"
+    },
+    {
+      "name": "representation",
+      "required": false,
+      "type": "\"gradient\" | \"symbols\" | undefined"
+    },
+    {
+      "name": "layout",
+      "required": false,
+      "type": "\"edge\" | \"legacy-bottom\" | undefined"
+    },
+    {
+      "name": "overflow",
+      "required": false,
+      "type": "false | { maxItems: number; summary?: \"ellipsis-count\" | undefined; } | undefined"
+    },
+    {
+      "name": "order",
+      "required": false,
+      "type": "LegendOrder | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "channels",
+      "required": false,
+      "type": "readonly (\"color\" | \"opacity\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\")[] | undefined"
+    },
+    {
+      "name": "position",
+      "required": false,
+      "type": "\"bottom\" | \"bottom-left\" | \"bottom-right\" | \"left\" | \"right\" | \"top\" | \"top-left\" | \"top-right\" | undefined"
+    },
+    {
+      "name": "blockLayout",
+      "required": false,
+      "type": "\"column\" | \"row\" | \"wrap\" | undefined"
+    },
+    {
+      "name": "at",
+      "required": false,
+      "type": "{ x: number; y: number; } | undefined"
+    },
+    {
+      "name": "align",
+      "required": false,
+      "type": "\"center\" | \"left\" | \"right\" | undefined"
+    },
+    {
+      "name": "direction",
+      "required": false,
+      "type": "\"horizontal\" | \"vertical\" | undefined"
+    },
+    {
+      "name": "columns",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "offset",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "titlePosition",
+      "required": false,
+      "type": "\"bottom\" | \"left\" | \"top\" | undefined"
+    },
+    {
+      "name": "title",
+      "required": false,
+      "type": "string | false | undefined"
+    },
+    {
+      "name": "values",
+      "required": false,
+      "type": "readonly number[] | undefined"
+    },
+    {
+      "name": "count",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "gradient",
+      "required": false,
+      "type": "{ length?: number | undefined; thickness?: number | undefined; opacity?: number | undefined; } | undefined"
+    },
+    {
+      "name": "symbol",
+      "required": false,
+      "type": "LegendSymbolRecipe | undefined"
+    },
+    {
+      "name": "labels",
+      "required": false,
+      "type": "LegendTextOptions | undefined"
+    },
+    {
+      "name": "titleStyle",
+      "required": false,
+      "type": "LegendTitleStyleOptions | undefined"
+    },
+    {
+      "name": "itemGap",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "rowPadding",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "titlePadding",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "border",
+      "required": false,
+      "type": "boolean | LegendBorderOptions | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createLegend({ target?, clipHeight?, combine?, representation?, layout?, overflow?, order?, channels? })"
+  ],
+  "snippet": "program.createLegend({})",
+  "errors": [],
+  "route": "/reference/actions/guides/#createlegend"
+}

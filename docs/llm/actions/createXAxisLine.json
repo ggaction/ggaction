@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 3,
+  "name": "createXAxisLine",
+  "layer": "user-facing",
+  "domain": "axes",
+  "summary": "Creates x-axis line for horizontal baseline.",
+  "signature": "createXAxisLine(options?: AxisLineStyleOptions & { target?: string; scale?: string; position?: XAxisPosition }): ChartProgram;",
+  "intents": [
+    "create x axis line",
+    "create",
+    "add",
+    "axis guide",
+    "scale annotation",
+    "x-axis line",
+    "horizontal baseline"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "compatible scale or encoding context"
+    ],
+    "owns": [
+      "x-axis line"
+    ],
+    "idOptions": [
+      "target",
+      "scale"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editSemantic",
+    "createGraphics",
+    "editXAxisLine"
+  ],
+  "editableVia": [
+    "editXAxisLine"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default",
+      "basic"
+    ]
+  },
+  "units": [
+    {
+      "path": "lineWidth",
+      "unit": "logical-pixel"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "scale",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "compatible scale or encoding context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "color",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "lineWidth",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "scale",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "position",
+      "required": false,
+      "type": "XAxisPosition | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createXAxisLine({ target?, scale?, color?, lineWidth?, position? })"
+  ],
+  "snippet": "program.createXAxisLine({})",
+  "errors": [],
+  "route": "/reference/actions/guides/#createxaxisline"
+}

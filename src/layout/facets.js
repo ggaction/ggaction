@@ -117,7 +117,7 @@ export function resolveFacetLayout({
   topLane,
   plots
 } = {}) {
-  if (!["canvas", "plot"].includes(spacing)) throw new Error(`Unknown facet spacing "${spacing}".`);
+  if (!["canvas", "plot", "content"].includes(spacing)) throw new Error(`Unknown facet spacing "${spacing}".`);
   const resolvedTopLane = normalizeFacetTopLane(topLane, spacing);
   const byId = new Map((plots ?? []).map(plot => [plot.id, plot]));
   const originalChildren = children;
@@ -143,6 +143,7 @@ export function resolveFacetLayout({
   }
   const values = children?.map(child => child?.value);
   const coordinates = resolveGridCoordinates(children ?? [], columns);
+  if (spacing === "content" && coordinates !== undefined) throw new Error("Content flow requires a wrapped facet, not a keyed facet grid.");
   const resolvedChildren = normalizeCompositionChildren(children?.map(
     ({ value: _value, row: _row, column: _column, ...child }) => child
   ));
@@ -286,7 +287,7 @@ export function resolveFacetLayout({
     }
   }
   return cloneAndFreeze({
-    ...(spacing === "plot" ? { spacing } : {}),
+    ...(spacing !== "canvas" ? { spacing } : {}),
     ...(resolvedTopLane === undefined ? {} : { topLane: resolvedTopLane }),
     columns: resolvedColumns,
     rows: rowCount,

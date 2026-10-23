@@ -1,0 +1,4 @@
+export interface PolarTickOptions extends AxisTickStyleOptions {
+  count?: number;
+  values?: readonly AxisValue[];
+}

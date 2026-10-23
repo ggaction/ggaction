@@ -233,3 +233,10 @@ export function normalizeRegressionTransform(args = {}) {
   validateRegressionTransform(transform);
   return cloneAndFreeze(transform);
 }
+
+export function validateRegressionPlacement(value) {
+  if (value !== undefined && !["source", "plot-last"].includes(value)) {
+    throw new Error('Regression placement must be "source" or "plot-last".');
+  }
+  return value ?? "source";
+}

@@ -1,0 +1,8 @@
+export interface DatasetBin2DOutputFields {
+  readonly x0: string;
+  readonly x1: string;
+  readonly y0: string;
+  readonly y1: string;
+  readonly count: string;
+  readonly members?: string;
+}

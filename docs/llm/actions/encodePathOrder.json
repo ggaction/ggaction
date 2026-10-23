@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 3,
+  "name": "encodePathOrder",
+  "layer": "user-facing",
+  "domain": "encodings",
+  "summary": "Order vertices within each compatible Cartesian line or ranged-area series.",
+  "signature": "encodePathOrder(options: PathOrderEncodingOptions): ChartProgram;",
+  "intents": [
+    "encode path order",
+    "encode",
+    "map field",
+    "visual encoding",
+    "field mapping",
+    "path order",
+    "line sorting"
+  ],
+  "lifecycle": "Assignment",
+  "resources": {
+    "prerequisites": [
+      "target mark",
+      "field mode: dataset field"
+    ],
+    "owns": [
+      "path order assignment"
+    ],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "removePathOrder"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "target mark",
+      "field mode: dataset field"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "field",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "fieldType",
+      "required": false,
+      "type": "\"quantitative\" | undefined"
+    },
+    {
+      "name": "order",
+      "required": false,
+      "type": "\"ascending\" | \"descending\" | undefined"
+    }
+  ],
+  "callPatterns": [
+    "encodePathOrder({ field, target?, fieldType?, order? })"
+  ],
+  "snippet": "program.encodePathOrder({ field: \"value\" })",
+  "errors": [],
+  "route": "/reference/actions/encodings/#encodepathorder"
+}

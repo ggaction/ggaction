@@ -1,0 +1,5 @@
+type ContinuousSizeScaleOptions = SizeScaleCommonOptions &
+  ScaleFields<"clamp"> & {
+    domain?: "auto" | readonly [number, number];
+    range?: "auto" | readonly [number, number];
+  };

@@ -1,0 +1,7 @@
+type CategoricalPolarAxesOptions = Omit<
+  Pick<CreateAxesOptions, "theta" | "radius">,
+  "theta"
+> & {
+  coordinate?: { id?: string; type?: "auto" | "polar" };
+  theta?: false | CategoricalThetaAxisOptions;
+};

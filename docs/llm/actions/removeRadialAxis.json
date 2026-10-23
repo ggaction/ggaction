@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 3,
+  "name": "removeRadialAxis",
+  "layer": "user-facing",
+  "domain": "axes",
+  "summary": "Remove the complete radial-axis resource.",
+  "signature": "removeRadialAxis(options?: Omit<RemoveAxisOptions, \"target\">): ChartProgram;",
+  "intents": [
+    "remove radial axis",
+    "remove",
+    "delete",
+    "axis guide",
+    "scale annotation",
+    "radial axis",
+    "polar distance guide"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing radial axis",
+      "compatible scale or encoding context"
+    ],
+    "owns": [],
+    "idOptions": [
+      "coordinate",
+      "scale"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editSemantic",
+    "editGraphics"
+  ],
+  "editableVia": [],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "scale",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing radial axis",
+      "compatible scale or encoding context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "scale",
+      "required": false,
+      "type": "string | undefined"
+    }
+  ],
+  "callPatterns": [
+    "removeRadialAxis({ coordinate?, scale? })"
+  ],
+  "snippet": "program.removeRadialAxis({})",
+  "errors": [],
+  "route": "/reference/actions/guides/#removeradialaxis"
+}

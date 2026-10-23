@@ -1,0 +1,3 @@
+export type TextOffsetEncodingOptions =
+  | { target?: string; value: number; field?: never }
+  | { target?: string; field: string; value?: never };

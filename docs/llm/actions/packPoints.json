@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 3,
+  "name": "packPoints",
+  "layer": "user-facing",
+  "domain": "marks",
+  "summary": "Deterministically displace Point glyphs only on a categorical x or y axis to avoid overlap while preserving measure coordinates.",
+  "signature": "packPoints(options: PackPointsOptions): ChartProgram;",
+  "intents": [
+    "pack points",
+    "pack",
+    "avoid point overlap",
+    "graphical mark",
+    "mark appearance",
+    "point positions",
+    "overlapping observations"
+  ],
+  "lifecycle": "Assignment",
+  "resources": {
+    "prerequisites": [
+      "existing point positions"
+    ],
+    "owns": [
+      "point positions"
+    ],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [],
+  "editableVia": [
+    "packPoints",
+    "removePointPacking"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "padding",
+      "unit": "logical-pixel"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing point positions"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "channel",
+      "required": true,
+      "type": "\"x\" | \"y\""
+    },
+    {
+      "name": "maxOffset",
+      "required": false,
+      "type": "PointPackingMaxOffset | undefined"
+    },
+    {
+      "name": "padding",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "key",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "overflow",
+      "required": false,
+      "type": "\"error\" | \"overlap\" | undefined"
+    }
+  ],
+  "callPatterns": [
+    "packPoints({ channel, maxOffset?, padding?, key?, overflow? })"
+  ],
+  "snippet": "program.packPoints({ channel: \"x\" })",
+  "errors": [],
+  "route": "/reference/actions/marks/#packpoints"
+}

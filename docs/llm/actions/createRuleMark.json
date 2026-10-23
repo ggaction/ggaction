@@ -1,0 +1,138 @@
+{
+  "schemaVersion": 3,
+  "name": "createRuleMark",
+  "layer": "user-facing",
+  "domain": "marks",
+  "summary": "Create a semantic rule mark and empty line collection.",
+  "signature": "createRuleMark(options?: { clip?: boolean; id?: string; data?: string; missing?: \"error\" | \"skip\" } & RuleStyleOptions): ChartProgram;",
+  "intents": [
+    "create rule mark",
+    "create",
+    "add",
+    "graphical mark",
+    "mark appearance",
+    "rule mark",
+    "reference line"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "dataset and coordinate context"
+    ],
+    "owns": [
+      "rule mark"
+    ],
+    "idOptions": [
+      "id",
+      "data"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editSemantic",
+    "createGraphics",
+    "encodeStroke",
+    "encodeStrokeWidth",
+    "encodeStrokeDash"
+  ],
+  "editableVia": [
+    "editRuleMark"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "strokeWidth",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "opacity",
+      "unit": "probability"
+    }
+  ],
+  "inference": [
+    {
+      "input": "data",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "dataset and coordinate context"
+    ],
+    "allowsEmpty": true
+  },
+  "options": [
+    {
+      "name": "clip",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "data",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "missing",
+      "required": false,
+      "type": "\"error\" | \"skip\" | undefined"
+    },
+    {
+      "name": "stroke",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "strokeWidth",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "strokeDash",
+      "required": false,
+      "type": "DashPattern | DashStyle | undefined"
+    },
+    {
+      "name": "opacity",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "lineCap",
+      "required": false,
+      "type": "\"butt\" | \"round\" | \"square\" | undefined"
+    },
+    {
+      "name": "lineJoin",
+      "required": false,
+      "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+    },
+    {
+      "name": "miterLimit",
+      "required": false,
+      "type": "number | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createRuleMark({ id?, data?, clip?, missing?, stroke?, strokeWidth?, strokeDash?, opacity? })"
+  ],
+  "snippet": "program.createRuleMark({})",
+  "errors": [],
+  "route": "/reference/actions/marks/#createrulemark"
+}

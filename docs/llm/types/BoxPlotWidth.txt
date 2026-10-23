@@ -1,0 +1,1 @@
+type BoxPlotWidth = { band?: number; pixels?: never } | { band?: never; pixels: number };

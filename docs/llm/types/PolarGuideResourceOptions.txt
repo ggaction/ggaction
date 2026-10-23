@@ -1,0 +1,5 @@
+export interface PolarGuideResourceOptions {
+  scale?: string;
+  coordinate?: string;
+  angle?: number;
+}

@@ -1,0 +1,13 @@
+export type BinDataOptions = {
+  id: string;
+  source?: string;
+  field: string;
+  extent?: "auto" | readonly [number, number];
+  nice?: boolean;
+  zero?: boolean;
+  includeEmpty?: boolean;
+  members?: boolean;
+  weight?: StatisticalWeight;
+  missing?: "error" | "drop";
+  as?: BinDataOutputFields;
+} & BinDataMode;

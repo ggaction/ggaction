@@ -1,3 +1,4 @@
+import { saveBrowserEvidence } from "../support/browser.js";
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import {mkdtemp,writeFile,rm} from 'node:fs/promises';
@@ -36,5 +37,5 @@ test('browser combined size-shape samples match independent area geometry',async
    return {exact:ap.every((v,i)=>v===bp[i]),ink:ap.filter((v,i)=>i%4===0&&v<100).length};
   });
   assert.equal(actual.exact,true);assert.ok(actual.ink>100);assertNoBrowserErrors(opened.errors,'size-shape legend');await opened.page.close();
- }finally{await closeBrowserWithEvidence(browser);await server?.close();await rm(directory,{recursive:true,force:true});}
+ } catch (error) { await saveBrowserEvidence(browser, error); throw error; }finally{await closeBrowserWithEvidence(browser);await server?.close();await rm(directory,{recursive:true,force:true});}
 });

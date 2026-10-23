@@ -1,0 +1,4 @@
+type RulePositionEncodingBase = RulePositionValue & {
+  target?: string;
+  coordinate?: string;
+};

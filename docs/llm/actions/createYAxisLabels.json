@@ -1,0 +1,224 @@
+{
+  "schemaVersion": 3,
+  "name": "createYAxisLabels",
+  "layer": "user-facing",
+  "domain": "axes",
+  "summary": "Creates y-axis labels for vertical tick text.",
+  "signature": "createYAxisLabels(options?: AxisLabelOptions<YAxisPosition>): ChartProgram;",
+  "intents": [
+    "create y axis labels",
+    "create",
+    "add",
+    "axis guide",
+    "scale annotation",
+    "y-axis labels",
+    "vertical tick text"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "compatible scale or encoding context"
+    ],
+    "owns": [
+      "y-axis labels"
+    ],
+    "idOptions": [
+      "target",
+      "scale"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editSemantic",
+    "createGraphics",
+    "editYAxisLabels"
+  ],
+  "editableVia": [
+    "editYAxisLabels"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default",
+      "basic"
+    ]
+  },
+  "units": [
+    {
+      "path": "count",
+      "unit": "count"
+    },
+    {
+      "path": "offset",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "fontSize",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "alongOffset",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "rotation",
+      "unit": "angle"
+    },
+    {
+      "path": "maxWidth",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "lineHeight",
+      "unit": "logical-pixel"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "scale",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "labelMap",
+      "strategy": "documented-auto"
+    },
+    {
+      "input": "colorMap",
+      "strategy": "documented-auto"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "compatible scale or encoding context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "scale",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "position",
+      "required": false,
+      "type": "YAxisPosition | undefined"
+    },
+    {
+      "name": "count",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "rounding",
+      "required": false,
+      "type": "AxisTickRounding | undefined"
+    },
+    {
+      "name": "values",
+      "required": false,
+      "type": "readonly AxisValue[] | undefined"
+    },
+    {
+      "name": "labelMap",
+      "required": false,
+      "type": "\"auto\" | DisplayLabelMap | undefined"
+    },
+    {
+      "name": "offset",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "format",
+      "required": false,
+      "type": "AxisFormat | undefined"
+    },
+    {
+      "name": "color",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "fontSize",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "fontFamily",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "fontWeight",
+      "required": false,
+      "type": "string | number | undefined"
+    },
+    {
+      "name": "align",
+      "required": false,
+      "type": "\"center\" | \"left\" | \"right\" | undefined"
+    },
+    {
+      "name": "colorMap",
+      "required": false,
+      "type": "\"auto\" | CartesianAxisLabelColorMap | undefined"
+    },
+    {
+      "name": "flush",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "alongOffset",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "rotation",
+      "required": false,
+      "type": "RotationInput | undefined"
+    },
+    {
+      "name": "maxWidth",
+      "required": false,
+      "type": "number | false | undefined"
+    },
+    {
+      "name": "wrap",
+      "required": false,
+      "type": "\"character\" | \"word\" | undefined"
+    },
+    {
+      "name": "lineHeight",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "overlap",
+      "required": false,
+      "type": "\"allow\" | \"error\" | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createYAxisLabels({ target?, scale?, position?, count?, rounding?, values?, labelMap?, offset? })"
+  ],
+  "snippet": "program.createYAxisLabels({})",
+  "errors": [],
+  "route": "/reference/actions/guides/#createyaxislabels"
+}

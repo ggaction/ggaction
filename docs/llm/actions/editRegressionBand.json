@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 3,
+  "name": "editRegressionBand",
+  "layer": "user-facing",
+  "domain": "statistics",
+  "summary": "Edits regression band, including settings for uncertainty interval.",
+  "signature": "editRegressionBand(options: StrokeStyleDetails & { target?: string; color?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; }): ChartProgram;",
+  "intents": [
+    "edit regression band",
+    "edit",
+    "change",
+    "statistical layer",
+    "statistical transform",
+    "regression band",
+    "uncertainty interval"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing regression band",
+      "statistical source and coordinate context"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H1",
+    "H3"
+  ],
+  "wraps": [
+    "editAreaMark"
+  ],
+  "editableVia": [
+    "editRegressionBand"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "opacity",
+      "unit": "probability"
+    },
+    {
+      "path": "strokeWidth",
+      "unit": "logical-pixel"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing regression band",
+      "statistical source and coordinate context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "lineCap",
+      "required": false,
+      "type": "\"butt\" | \"round\" | \"square\" | undefined"
+    },
+    {
+      "name": "lineJoin",
+      "required": false,
+      "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+    },
+    {
+      "name": "miterLimit",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "color",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "opacity",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "stroke",
+      "required": false,
+      "type": "string | false | undefined"
+    },
+    {
+      "name": "strokeWidth",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "curve",
+      "required": false,
+      "type": "CurveInterpolation | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editRegressionBand({ target?, lineCap?, lineJoin?, miterLimit?, color?, opacity?, stroke?, strokeWidth? })"
+  ],
+  "snippet": "program.editRegressionBand({ lineCap: \"butt\" })",
+  "errors": [],
+  "route": "/reference/actions/statistics/#editregressionband"
+}

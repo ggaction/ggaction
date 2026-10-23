@@ -1,0 +1,18 @@
+export type ImputedDataOptions = ImputedDataBaseOptions & (
+  | { method?: "mean"; value?: never; sortBy?: readonly WindowSort[]; }
+  | {
+      method: "constant";
+      value: DatasetScalar;
+      sortBy?: readonly WindowSort[];
+    }
+  | {
+      method: "forward" | "backward";
+      value?: never;
+      sortBy: readonly [WindowSort, ...WindowSort[]];
+    }
+  | {
+      method: "linear";
+      value?: never;
+      sortBy: readonly [{ field: string; order?: "ascending" }];
+    }
+);

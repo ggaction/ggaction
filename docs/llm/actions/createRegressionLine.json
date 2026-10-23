@@ -1,0 +1,164 @@
+{
+  "schemaVersion": 3,
+  "name": "createRegressionLine",
+  "layer": "user-facing",
+  "domain": "statistics",
+  "summary": "Creates regression line for fitted curve.",
+  "signature": "createRegressionLine(options: CreateRegressionLineOptions): ChartProgram;",
+  "intents": [
+    "create regression line",
+    "create",
+    "add",
+    "statistical layer",
+    "statistical transform",
+    "regression line",
+    "fitted curve"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "statistical source and coordinate context"
+    ],
+    "owns": [
+      "regression line"
+    ],
+    "idOptions": [
+      "id",
+      "data",
+      "coordinate",
+      "xScale",
+      "yScale"
+    ]
+  },
+  "authoringRoles": [
+    "H1"
+  ],
+  "wraps": [
+    "createLineMark",
+    "encodeX",
+    "encodeY",
+    "encodeColor",
+    "encodeGroup"
+  ],
+  "editableVia": [
+    "editRegressionLine"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "strokeWidth",
+      "unit": "logical-pixel"
+    }
+  ],
+  "inference": [
+    {
+      "input": "data",
+      "strategy": "explicit"
+    },
+    {
+      "input": "coordinate",
+      "strategy": "explicit"
+    },
+    {
+      "input": "xScale",
+      "strategy": "explicit"
+    },
+    {
+      "input": "yScale",
+      "strategy": "explicit"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "statistical source and coordinate context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "data",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "x",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "y",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "groupBy",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "xScale",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "yScale",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "colorScale",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "strokeWidth",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "curve",
+      "required": false,
+      "type": "CurveInterpolation | undefined"
+    },
+    {
+      "name": "lineCap",
+      "required": false,
+      "type": "\"butt\" | \"round\" | \"square\" | undefined"
+    },
+    {
+      "name": "lineJoin",
+      "required": false,
+      "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+    },
+    {
+      "name": "miterLimit",
+      "required": false,
+      "type": "number | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createRegressionLine({ id, data, x, y, coordinate, xScale, yScale, groupBy? })"
+  ],
+  "snippet": "program.createRegressionLine({ id: \"regression-line-1\", data: \"data-1\", x: \"x\", y: \"y\", coordinate: \"coordinate-1\", xScale: \"x-scale\", yScale: \"y-scale\" })",
+  "errors": [],
+  "route": "/reference/actions/statistics/#createregressionline"
+}

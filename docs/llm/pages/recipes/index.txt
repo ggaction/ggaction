@@ -1,0 +1,15 @@
+# Chart Recipes
+
+Use a recipe when you know the chart type and want the shortest supported
+action flow. Each recipe separates the decisions you must provide from the
+resources, defaults, and guides that ggaction can infer.
+
+ [Want the reasoning? Use a tutorial for an ordered workflow and explanation of each action.](../../../tutorials/)
+ [Choosing a chart? Browse complete results before selecting a minimal recipe.](../../../gallery/)
+
+Every flow begins with `createCanvas`, `createData`, and a semantic mark or
+composite action. Follow each action’s required selectors even when only one resource exists. Use stable explicit IDs for later edits; omission is available only where the action documents inference. See [authoring conventions](../../../concepts/authoring-conventions/).
+
+Each recipe labels its primary snippet as runnable. Later snippets revise the
+named `program` produced by that primary flow unless they repeat an import and
+complete setup explicitly.

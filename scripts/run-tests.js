@@ -1,11 +1,14 @@
-import { readFileSync, readdirSync } from "node:fs";
+import { readFileSync, readdirSync, mkdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
+import { createHash } from "node:crypto";
+import { runCheck } from "./run-check.js";
 import { partitionTestFiles } from "./test-sharding.js";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
 import {
   assertCriticalCoverage,
+  assertSourceCoverage,
   CRITICAL_COVERAGE_FLOORS,
   parseCoverageTable
 } from "./coverage-policy.js";
@@ -109,6 +112,11 @@ function matchesSelector(file, root, selector) {
 }
 
 export function collectTestFiles(suite = "all", root = testRoot, selectors = []) {
+  for (const selector of selectors) {
+    if (selector.startsWith("capability:") && !Object.hasOwn(TEST_CAPABILITIES, selector.slice(11))) {
+      throw new Error(`Unknown test capability "${selector.slice(11)}".`);
+    }
+  }
   const requested = suite === "all" || suite === "coverage"
     ? new Set(NORMAL_SUITES)
     : new Set([suite]);
@@ -167,7 +175,17 @@ export function testRunnerArguments(suite, files, shard) {
   return args;
 }
 
-function run(suite, selectors, shard) {
+// Decode only after joining a stream's bytes: a data event can split the
+// multi-byte info marker used by Node's coverage table at any byte boundary.
+export function createTestOutputCapture() {
+  const chunks = [];
+  return {
+    write(chunk) { chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk)); },
+    toString() { return Buffer.concat(chunks).toString("utf8"); }
+  };
+}
+
+async function run(suite, selectors, shard) {
   const files = collectTestFiles(suite, testRoot, selectors);
   if (files.length === 0) {
     if (suite === "gates" && selectors.length === 0) {
@@ -187,24 +205,35 @@ function run(suite, selectors, shard) {
     }
   }
   const args = testRunnerArguments(suite, files, shard);
-  const result = spawnSync(process.execPath, args, {
+  if (suite === "realistic") args.unshift("--import", path.join(repositoryRoot, "scripts/test-file-metrics.js"));
+  const stdout = createTestOutputCapture(), stderr = createTestOutputCapture();
+  const code = await runCheck(`suite-${suite}`, process.execPath, args, {
     cwd: repositoryRoot,
-    ...(coverage
-      ? { encoding: "utf8", maxBuffer: 10 * 1024 * 1024 }
-      : { stdio: "inherit" })
+    ...(coverage ? { stdout, stderr } : {})
   });
-  if (result.error) throw result.error;
   if (coverage) {
-    if (result.status === 0) {
-      assertCriticalCoverage(result.stdout);
-      process.stdout.write(coverageSummary(result.stdout));
-      process.stderr.write(result.stderr);
-    } else {
-      process.stdout.write(result.stdout);
-      process.stderr.write(result.stderr);
-    }
+    const output = stdout.toString() + stderr.toString();
+    const directory = path.join(repositoryRoot, ".artifacts/coverage");
+    mkdirSync(directory, { recursive: true });
+    writeFileSync(path.join(directory, "report.log"), output);
+    const git = args => spawnSync("git", args, { cwd: repositoryRoot, encoding: "utf8", maxBuffer: 20 * 1024 * 1024 }).stdout?.trim();
+    writeFileSync(path.join(directory, "receipt.json"), JSON.stringify({
+      node: process.version, platform: process.platform, arch: process.arch,
+      status: code, files: files.map(file => path.relative(repositoryRoot, file)),
+      sourceCommit: git(["rev-parse", "HEAD"]),
+      workingTree: git(["status", "--porcelain"]),
+      untrackedSha256: Object.fromEntries((git(["ls-files", "--others", "--exclude-standard", "-z"]) ?? "").split("\0").filter(Boolean).map(file => [file, createHash("sha256").update(readFileSync(path.join(repositoryRoot, file))).digest("hex")])),
+      trackedDiffSha256: createHash("sha256").update(git(["diff", "HEAD", "--binary"]) ?? "").digest("hex")
+    }, null, 2));
+    // Preserve machine-readable metrics even when a threshold later rejects them.
+    writeFileSync(path.join(directory, "metrics.json"), JSON.stringify(Object.fromEntries(parseCoverageTable(output)), null, 2));
+    if (code === 0) {
+      assertSourceCoverage(output);
+      assertCriticalCoverage(output);
+      process.stdout.write(coverageSummary(output));
+    } else process.stdout.write(output);
   }
-  process.exitCode = result.status ?? 1;
+  process.exitCode = code;
 }
 
 if (
@@ -236,5 +265,5 @@ if (
   if (suite === "coverage" && selectors.length > 0) {
     throw new Error("Coverage requires the complete normal test suite.");
   }
-  run(suite, selectors, shard);
+  await run(suite, selectors, shard);
 }

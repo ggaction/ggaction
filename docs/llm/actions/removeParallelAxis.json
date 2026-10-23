@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 3,
+  "name": "removeParallelAxis",
+  "layer": "user-facing",
+  "domain": "axes",
+  "summary": "Full-only field-selected Parallel guides.",
+  "signature": "removeParallelAxis(options: RemoveParallelAxisOptions): ChartProgram;",
+  "intents": [
+    "remove parallel axis",
+    "remove",
+    "delete",
+    "axis guide",
+    "scale annotation",
+    "parallel dimension axis",
+    "field axis"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing parallel dimension axis",
+      "compatible scale or encoding context"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editParallelAxis"
+  ],
+  "editableVia": [
+    "createParallelAxis"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing parallel dimension axis",
+      "compatible scale or encoding context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "field",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    }
+  ],
+  "callPatterns": [
+    "removeParallelAxis({ field, target? })"
+  ],
+  "snippet": "program.removeParallelAxis({ field: \"value\" })",
+  "errors": [],
+  "route": "/reference/actions/guides/#removeparallelaxis"
+}

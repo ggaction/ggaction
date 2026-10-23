@@ -1,0 +1,10 @@
+type PathLegendOptions = Omit<
+  LegendOptions,
+  "symbol" | "gradient" | "count" | "values" | "labels" | "representation" | "combine" | "titlePosition"
+> & {
+  titlePosition?: "top" | "left";
+  combine?: "separate";
+  symbol?: "auto" | { length?: number; lineWidth?: number }
+    | { layers: readonly LegendSymbolLayer[] };
+  labels?: CategoricalLegendTextOptions;
+};

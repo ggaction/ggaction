@@ -1,0 +1,5 @@
+export type AreaPlotMeasureChannel = string | { field: string; scale?: NonPointQuantitativePositionScaleOptions }
+  | ({ scale?: NonPointQuantitativePositionScaleOptions } & (
+    | { lower: string; upper: string | { datum: number } }
+    | { lower: { datum: number }; upper: string }
+  ));

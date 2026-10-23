@@ -1503,7 +1503,7 @@
   {
     "file": "api/data/time-units.md",
     "block": 1,
-    "heading": "`createTimeUnitData({ id, source?, field, temporalUnit?, unit, as?, timeZone?, weekStartsOn?, weekRule? })`",
+    "heading": "`createTimeUnitData({ id, source?, field, temporalUnit?, unit, as?, timeZone?, weekStartsOn?, weekRule?, missing? })`",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [],
@@ -2586,13 +2586,13 @@
     "file": "api/marks/bar.md",
     "block": 1,
     "heading": "`createBarMark({ id?, data?, missing?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight?, cornerRadiusBottomRight?, cornerRadiusBottomLeft?, lineCap?, lineJoin?, miterLimit? } = {})`",
-    "mode": "fragment",
-    "environment": "esm-context",
+    "mode": "complete",
+    "environment": "node-esm",
     "receivers": [],
     "resources": [],
-    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
-    "sha256": "7d1bab1875af081b7df79a2c2a963affaa705250d4f0ac29a9e47da014c92a86",
-    "executable": false
+    "prerequisites": "Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas.",
+    "sha256": "d3c3447ea368cdd061e0722377bc71a255fde1c382d41181a7fa43f2ec9c2e0b",
+    "executable": true
   },
   {
     "file": "api/marks/bar.md",
@@ -2730,13 +2730,13 @@
     "file": "api/marks/line-area.md",
     "block": 1,
     "heading": "`createLineMark({ id?, data?, missing?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed?, lineCap?, lineJoin?, miterLimit? } = {})`",
-    "mode": "fragment",
-    "environment": "esm-context",
+    "mode": "complete",
+    "environment": "node-esm",
     "receivers": [],
     "resources": [],
-    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
-    "sha256": "c09abaa468dab4c939399d51fac8fe6a16cdcf93a64b519342e47f3e540ded46",
-    "executable": false
+    "prerequisites": "Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas.",
+    "sha256": "1e471e4bcdd4e5bc08dd9723f732d2e1de77c19b10b1f7f3697dc540f1773d2c",
+    "executable": true
   },
   {
     "file": "api/marks/line-area.md",
@@ -2766,13 +2766,13 @@
     "file": "api/marks/line-area.md",
     "block": 4,
     "heading": "Ordered categories",
-    "mode": "fragment",
-    "environment": "esm-context",
+    "mode": "complete",
+    "environment": "node-esm",
     "receivers": [],
     "resources": [],
-    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
-    "sha256": "c6e49845e2ef95e0045604ae111588e636ff4c1b694020c6703434b7556f2dfc",
-    "executable": false
+    "prerequisites": "Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas.",
+    "sha256": "7866ca913f6b9ea834b89546a4f9d0301c32539b537af69cfcac1d27b491da71",
+    "executable": true
   },
   {
     "file": "api/marks/line-area.md",
@@ -2804,25 +2804,25 @@
     "file": "api/marks/line-area.md",
     "block": 7,
     "heading": "Polar lines and radar paths",
-    "mode": "fragment",
-    "environment": "esm-context",
+    "mode": "complete",
+    "environment": "node-esm",
     "receivers": [],
     "resources": [],
-    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
-    "sha256": "4bce11bfbf0e206430c8b9c41466dbbc91b6139ecadca35f9a07432bbc046bd6",
-    "executable": false
+    "prerequisites": "Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas.",
+    "sha256": "38497ffbc7fb4263f35d40ba551e84fd0d6c072276c8be5e443c950cdebaf68e",
+    "executable": true
   },
   {
     "file": "api/marks/line-area.md",
     "block": 8,
     "heading": "`createAreaMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing?, lineCap?, lineJoin?, miterLimit? } = {})`",
-    "mode": "fragment",
-    "environment": "esm-context",
+    "mode": "complete",
+    "environment": "node-esm",
     "receivers": [],
     "resources": [],
-    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
-    "sha256": "fb75da6ccc85304f930dd64925a041a2993089c29a8422b7a5d06ec4382a224e",
-    "executable": false
+    "prerequisites": "Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas.",
+    "sha256": "2c03caccd646eb10b4e303b07a7a69be8cd1d0c0c787fbd9147f32816885b58c",
+    "executable": true
   },
   {
     "file": "api/marks/line-area.md",
@@ -2878,13 +2878,13 @@
     "file": "api/marks/point.md",
     "block": 1,
     "heading": "`createPointMark({ id?, data?, missing?, shape?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? } = {})`",
-    "mode": "fragment",
-    "environment": "esm-context",
+    "mode": "complete",
+    "environment": "node-esm",
     "receivers": [],
     "resources": [],
-    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
-    "sha256": "e4e9ac7794c4b0c0bf53a0eeec475e9f2ee1a906c0174735dea31363738f0741",
-    "executable": false
+    "prerequisites": "Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas.",
+    "sha256": "2488693ca093301c55e11fdb34b84c30e9187ff537b71078a221319dc50411e5",
+    "executable": true
   },
   {
     "file": "api/marks/point.md",
@@ -3553,14 +3553,14 @@
   {
     "file": "api/rendering.md",
     "block": 1,
-    "heading": "Measured text layout",
-    "mode": "fragment",
+    "heading": "First render",
+    "mode": "complete",
     "environment": "browser-module",
     "receivers": [],
     "resources": [],
-    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
-    "sha256": "a61be368967daa63294e8ffe37d42c11426dfab1cec2b70eaf9ab96c51c5c13b",
-    "executable": false
+    "prerequisites": "Use a browser ES module with a canvas element whose id is chart; all input rows are included.",
+    "sha256": "afaab2a8b06c0b2861c9563e7628a837f0014f25860825f8509745008f825ccb",
+    "executable": true
   },
   {
     "file": "api/rendering.md",
@@ -3686,6 +3686,18 @@
     ],
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `data: \"data\"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
     "sha256": "06acd16e1d625a1222324eb45e2bb43866b4bf4a398fd7d7f0378870b0238bce",
+    "executable": false
+  },
+  {
+    "file": "api/rendering.md",
+    "block": 12,
+    "heading": "Measured text layout",
+    "mode": "fragment",
+    "environment": "browser-module",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "a61be368967daa63294e8ffe37d42c11426dfab1cec2b70eaf9ab96c51c5c13b",
     "executable": false
   },
   {

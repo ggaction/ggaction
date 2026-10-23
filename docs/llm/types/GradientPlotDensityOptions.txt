@@ -1,0 +1,7 @@
+export interface GradientPlotDensityOptions {
+  bandwidth?: "auto" | number;
+  extent?: "auto" | readonly [number, number];
+  steps?: number;
+  kernel?: DensityKernel;
+  normalization?: DensityNormalization;
+}

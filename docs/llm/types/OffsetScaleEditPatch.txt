@@ -1,0 +1,4 @@
+export type OffsetScaleEditPatch = Pick<
+  ScaleOptions,
+  "domain" | "reverse" | "padding" | "paddingInner" | "paddingOuter" | "align"
+>;

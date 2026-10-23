@@ -1,3 +1,5 @@
+import { measureFacetContentChildren } from "./facetContentBounds.js";
+import { facetAxisMode, hasOuterFacetAxes } from "../core/facetAxisPolicy.js";
 import { isPlainObject } from "../core/immutable.js";
 import {
   formatVisibleText,
@@ -178,7 +180,7 @@ function headerThickness(descriptor, side, profile) {
 
 function plotMarginSpace(program) {
   const space = { ...ZERO_SIDES };
-  if (program.compositionSpec.spacing !== "plot") return space;
+  if (!["plot", "content"].includes(program.compositionSpec.spacing)) return space;
   for (const id of program.compositionSpec.children) {
     const child = program.children[id], plot = resolveGraphicBounds(child);
     const canvas = child.graphicSpec.objects.canvas.properties;
@@ -198,11 +200,13 @@ function headerReservation(descriptor, side, profile, space, outer) {
 }
 
 function prepareContentBounds(program, descriptors, profile) {
-  if (!descriptors.some(item => item.config.anchor === "content")) return undefined;
-  if (program.compositionSpec.spacing !== "plot") {
-    throw new Error("Facet header content anchor requires plot spacing.");
+  if (!descriptors.some(item => ["content", "view"].includes(item.config.anchor))) return undefined;
+  if (!["plot", "content"].includes(program.compositionSpec.spacing)) {
+    throw new Error("Facet header content anchor requires plot spacing or content spacing.");
   }
   const boundsById = new Map();
+  const views = descriptors.some(item => item.config.anchor === "view")
+    ? new Map(measureFacetContentChildren(program).map(child => [child.id, child])) : undefined;
   for (const id of program.compositionSpec.children) {
     const child = program.children[id], plot = resolveGraphicBounds(child);
     const bounds = { left: plot.x, right: plot.x + plot.width,
@@ -216,11 +220,16 @@ function prepareContentBounds(program, descriptors, profile) {
     boundsById.set(id, clipped === undefined || clipped.left > clipped.right || clipped.top > clipped.bottom
       ? bounds : union([bounds, clipped]));
   }
+  const viewById = views === undefined ? undefined : new Map([...views].map(([id, item]) => [id, {
+    left: item.bounds.left + item.plot.x, right: item.bounds.right + item.plot.x,
+    top: item.bounds.top + item.plot.y, bottom: item.bounds.bottom + item.plot.y
+  }]));
   for (const descriptor of descriptors) {
-    if (descriptor.config.anchor !== "content") continue;
+    if (!["content", "view"].includes(descriptor.config.anchor)) continue;
+    if (descriptor.config.anchor === "view") descriptor.contentById = viewById;
     descriptor.clearance = { ...ZERO_SIDES };
     for (const id of descriptor.ids ?? [descriptor.id]) {
-      const plot = resolveGraphicBounds(program.children[id]), bounds = boundsById.get(id);
+      const plot = resolveGraphicBounds(program.children[id]), bounds = (descriptor.contentById ?? boundsById).get(id);
       for (const [side, amount] of Object.entries({ left: plot.x - bounds.left,
         right: bounds.right - plot.x - plot.width, top: plot.y - bounds.top,
         bottom: bounds.bottom - plot.y - plot.height })) {
@@ -242,12 +251,12 @@ function laneThickness(descriptors, role, profile, space) {
 export function retainedFacetGuideIds(program, childId) {
   const spec = program.compositionSpec;
   const child = program.children[childId];
-  const outer = spec.facet.guides.axes === "outer"
+  const outer = hasOuterFacetAxes(spec.facet.guides.axes)
     ? resolveFacetOuterSides({ placements: spec.facet.grid?.cells ?? spec.children.map((id, index) => ({
       id, row: Math.floor(index / spec.columns), column: index % spec.columns
     })) }) : undefined;
   const ids = cartesianAxisOwners(child).flatMap(owner => axisGraphicIds(owner.channel, owner.id)
-    .filter((id, index) => index >= 2 && (outer === undefined ||
+    .filter((id, index) => index >= 2 && (outer === undefined || facetAxisMode(spec.facet.guides.axes, owner.channel) === "each" ||
       outer[owner.config?.[["line", "ticks", "labels", "title"][index]]?.position]?.includes(childId))));
   for (const channel of ["theta", "radius", "parallel"]) {
     if (child.guideConfigs.axis?.[channel] !== undefined) ids.push(...axisGraphicIds(channel).slice(2));
@@ -281,7 +290,7 @@ export function prepareFacetHeaders(program, headersConfig) {
   const roles = ["column", ...(program.compositionSpec.facet.grid === undefined ? [] : ["row"])]
     .map(role => [role, resolveFacetHeaderConfig(headers, role)]);
   const hasTitles = roles.some(([, config]) => config.title !== undefined);
-  if (program.compositionSpec.spacing === "plot") {
+  if (["plot", "content"].includes(program.compositionSpec.spacing)) {
     const clearances = new Map(program.compositionSpec.children.map(id => [id, guideClearance(program, id)]));
     for (const descriptor of descriptors) {
       descriptor.clearance = Object.fromEntries(SIDES.map(side => {
@@ -300,7 +309,7 @@ export function prepareFacetHeaders(program, headersConfig) {
     outer: { ...ZERO_SIDES },
     cellRows: { top: Array(rows).fill(0), bottom: Array(rows).fill(0) }
   };
-  if (headers.mode === "legacy" && program.compositionSpec.spacing === "plot") {
+  if (headers.mode === "legacy" && ["plot", "content"].includes(program.compositionSpec.spacing)) {
     for (const descriptor of descriptors) {
       if (descriptor.text === "") continue;
       const index = program.compositionSpec.children.indexOf(descriptor.id);
@@ -415,6 +424,7 @@ function rotatedRoleAnchor(descriptor, plot, snapshots, profile) {
 }
 
 function roleItem(descriptor, cells, plots, spacing, profile, contentById) {
+  contentById = descriptor.contentById ?? contentById;
   const selectedCells = descriptor.ids.map(id => cells.get(id));
   const missingCell = descriptor.ids.find((id, index) =>
     selectedCells[index] === undefined
@@ -429,9 +439,9 @@ function roleItem(descriptor, cells, plots, spacing, profile, contentById) {
     placedPlot(selectedCells[index], plots.get(id))
   );
   const plot = union(selectedPlots);
-  const snapshots = descriptor.config.anchor === "content"
+  const snapshots = ["content", "view"].includes(descriptor.config.anchor)
     ? union(descriptor.ids.map((id, index) => placedContent(selectedCells[index], contentById.get(id))))
-    : spacing === "plot" ? plot : union(selectedCells.map(placedCell));
+    : ["plot", "content"].includes(spacing) ? plot : union(selectedCells.map(placedCell));
   const config = descriptor.config;
   if (hasRotation(config) || descriptor.topology === "role-title") {
     const properties = rotatedRoleAnchor(descriptor, plot, snapshots, profile);
@@ -439,7 +449,7 @@ function roleItem(descriptor, cells, plots, spacing, profile, contentById) {
     if (config.alongOffset !== undefined) properties[axis] += config.alongOffset;
     return { descriptor, snapshots, properties };
   }
-  const clearance = config.anchor === "content" ? 0 : descriptor.clearance?.[config.side] ?? 0;
+  const clearance = ["content", "view"].includes(config.anchor) ? 0 : descriptor.clearance?.[config.side] ?? 0;
   let anchor;
   if (["top", "bottom"].includes(config.side)) {
     anchor = horizontalAnchor(plot, config.align);
@@ -460,12 +470,13 @@ function roleItem(descriptor, cells, plots, spacing, profile, contentById) {
 }
 
 function legacyItem(descriptor, cell, plot, spacing, profile, contentById) {
+  contentById = descriptor.contentById ?? contentById;
   if (cell === undefined || plot === undefined) {
     throw new Error(`Facet header requires cell and plot bounds for "${descriptor.id}".`);
   }
-  const content = descriptor.config.anchor === "content"
+  const content = ["content", "view"].includes(descriptor.config.anchor)
     ? placedContent(cell, contentById.get(descriptor.id)) : placedPlot(cell, plot);
-  if (hasRotation(descriptor.config) && spacing === "plot") {
+  if (hasRotation(descriptor.config) && ["plot", "content"].includes(spacing)) {
     const bounds = placedPlot(cell, plot);
     return {
       descriptor, snapshots: placedCell(cell),
@@ -477,7 +488,7 @@ function legacyItem(descriptor, cell, plot, spacing, profile, contentById) {
     snapshots: placedCell(cell),
     properties: {
       ...horizontalAnchor(placedPlot(cell, plot), descriptor.config.align),
-      y: spacing === "plot" ? cell.y + plot.y - (descriptor.clearance?.top ?? 0) - descriptor.config.offset - descriptor.config.fontSize / 2 : cell.y + descriptor.config.offset,
+      y: ["plot", "content"].includes(spacing) ? cell.y + plot.y - (descriptor.clearance?.top ?? 0) - descriptor.config.offset - descriptor.config.fontSize / 2 : cell.y + descriptor.config.offset,
       textBaseline: "middle",
       ...(hasRotation(descriptor.config) ? { rotation: descriptor.config.rotation } : {})
     }
@@ -510,7 +521,7 @@ function assertRoleHeadersFit(records, items, layout, profile, plots, contentByI
         bounds.some((other, otherIndex) => otherIndex < index &&
           other !== undefined && textBoundsIntersect(other, current)) ||
         layout.children.some(cell => textBoundsIntersect(current, contentById === undefined
-          ? layout.spacing === "plot" ? placedPlot(cell, plots.get(cell.id)) : placedCell(cell)
+          ? ["plot", "content"].includes(layout.spacing) ? placedPlot(cell, plots.get(cell.id)) : placedCell(cell)
           : placedContent(cell, contentById.get(cell.id))))) {
       throw new Error(
         "Facet role headers require sufficient non-overlapping reserved space."
@@ -529,7 +540,7 @@ function assertLegacyHeadersFit(items, layout, plotById, profile, contentById) {
     if (bounds.left < 0 || bounds.right > layout.width ||
       bounds.top < 0 || bounds.bottom > layout.height ||
       previous.some(item => textBoundsIntersect(item, bounds)) ||
-      (layout.spacing === "plot" ? layout.children.some(other => textBoundsIntersect(bounds,
+      (["plot", "content"].includes(layout.spacing) ? layout.children.some(other => textBoundsIntersect(bounds,
         contentById === undefined ? placedPlot(other, plotById.get(other.id))
           : placedContent(other, contentById.get(other.id)))) : textBoundsIntersect(bounds, placedPlot(cell, plot)))) {
       throw new Error(

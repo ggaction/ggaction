@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 3,
+  "name": "createHeatmap",
+  "layer": "user-facing",
+  "domain": "charts",
+  "summary": "Create one rect cell per valid pre-gridded row, or bin raw quantitative x/y rows into ranged cells colored by count.",
+  "signature": "createHeatmap(options: CreateHeatmapOptions): ChartProgram;",
+  "intents": [
+    "create heatmap",
+    "create",
+    "add",
+    "complete chart",
+    "chart facade",
+    "heatmap",
+    "two-dimensional distribution"
+  ],
+  "lifecycle": "Aggregate create-only",
+  "resources": {
+    "prerequisites": [
+      "canvas and dataset context"
+    ],
+    "owns": [
+      "heatmap"
+    ],
+    "idOptions": [
+      "id",
+      "data",
+      "coordinate"
+    ]
+  },
+  "authoringRoles": [
+    "H0"
+  ],
+  "wraps": [
+    "createRectMark",
+    "encodeX",
+    "encodeY",
+    "encodeColor",
+    "createGuides",
+    "createBin2DData",
+    "encodeX2",
+    "encodeY2"
+  ],
+  "editableVia": [],
+  "supports": {
+    "entryPoints": [
+      "default",
+      "basic"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "data",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "complete",
+    "requires": [
+      "canvas and dataset context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "x",
+      "required": true,
+      "type": "BinnedHeatmapPositionChannel | HeatmapCategoryPositionChannel"
+    },
+    {
+      "name": "y",
+      "required": true,
+      "type": "BinnedHeatmapPositionChannel | HeatmapCategoryPositionChannel"
+    },
+    {
+      "name": "bin",
+      "required": false,
+      "type": "HeatmapBinOptions | undefined"
+    },
+    {
+      "name": "color",
+      "required": false,
+      "type": "BinnedHeatmapColorOptions | RectColorChannel | undefined"
+    },
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "data",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "rect",
+      "required": false,
+      "type": "(StrokeStyleDetails & { cornerRadius?: number | undefined; cornerRadiusTopLeft?: number | undefined; cornerRadiusTopRight?: number | undefined; cornerRadiusBottomRight?: number | undefined; cornerRadiusBottomLeft?: number | undefined; } & { ...; }) | undefined"
+    },
+    {
+      "name": "guides",
+      "required": false,
+      "type": "false | CartesianSeparateGuideOptions | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createHeatmap({ x, y, color })",
+    "createHeatmap({ x, y, bin, color? })"
+  ],
+  "snippet": "program.createHeatmap({ x: \"x\", y: \"y\", color: \"value\" })",
+  "errors": [
+    {
+      "error": "Raw rows are requested without a bin object or pre-gridded rows omit color.",
+      "fix": "Use bin for raw x/y rows, or provide x, y, and color for pre-gridded rows."
+    }
+  ],
+  "route": "/reference/actions/charts-data/#createheatmap"
+}

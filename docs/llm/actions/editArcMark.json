@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 3,
+  "name": "editArcMark",
+  "layer": "user-facing",
+  "domain": "marks",
+  "summary": "Edit arc geometry or appearance and rematerialize complete sector paths.",
+  "signature": "editArcMark(options: StrokeStyleDetails & { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;",
+  "intents": [
+    "edit arc mark",
+    "edit",
+    "change",
+    "graphical mark",
+    "mark appearance",
+    "arc mark",
+    "polar sector"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing arc mark"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [],
+  "editableVia": [
+    "editArcMark"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "innerRadius.value",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "innerRadius",
+      "unit": "ratio"
+    },
+    {
+      "path": "padAngle",
+      "unit": "degree"
+    },
+    {
+      "path": "opacity",
+      "unit": "probability"
+    },
+    {
+      "path": "strokeWidth",
+      "unit": "logical-pixel"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing arc mark"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "lineCap",
+      "required": false,
+      "type": "\"butt\" | \"round\" | \"square\" | undefined"
+    },
+    {
+      "name": "lineJoin",
+      "required": false,
+      "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+    },
+    {
+      "name": "miterLimit",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "innerRadius",
+      "required": false,
+      "type": "ArcInnerRadius | undefined"
+    },
+    {
+      "name": "padAngle",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "fill",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "opacity",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "stroke",
+      "required": false,
+      "type": "string | false | undefined"
+    },
+    {
+      "name": "strokeWidth",
+      "required": false,
+      "type": "number | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editArcMark({ target?, lineCap?, lineJoin?, miterLimit?, innerRadius?, padAngle?, fill?, opacity? })"
+  ],
+  "snippet": "program.editArcMark({ lineCap: \"butt\" })",
+  "errors": [],
+  "route": "/reference/actions/marks/#editarcmark"
+}

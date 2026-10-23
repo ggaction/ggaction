@@ -1,0 +1,169 @@
+{
+  "schemaVersion": 3,
+  "name": "createYAxisTitle",
+  "layer": "user-facing",
+  "domain": "axes",
+  "summary": "Creates y-axis title for vertical field title.",
+  "signature": "createYAxisTitle(options?: AxisTitleOptions<YAxisPosition>): ChartProgram;",
+  "intents": [
+    "create y axis title",
+    "create",
+    "add",
+    "axis guide",
+    "scale annotation",
+    "y-axis title",
+    "vertical field title"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "compatible scale or encoding context"
+    ],
+    "owns": [
+      "y-axis title"
+    ],
+    "idOptions": [
+      "target",
+      "scale"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editSemantic",
+    "createGraphics",
+    "editYAxisTitle"
+  ],
+  "editableVia": [
+    "editYAxisTitle"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default",
+      "basic"
+    ]
+  },
+  "units": [
+    {
+      "path": "alongOffset",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "offset",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "rotation",
+      "unit": "angle"
+    },
+    {
+      "path": "fontSize",
+      "unit": "logical-pixel"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "scale",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "compatible scale or encoding context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "alongOffset",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "align",
+      "required": false,
+      "type": "\"center\" | \"left\" | \"right\" | undefined"
+    },
+    {
+      "name": "overlap",
+      "required": false,
+      "type": "\"allow\" | \"error\" | undefined"
+    },
+    {
+      "name": "baseline",
+      "required": false,
+      "type": "\"alphabetic\" | \"bottom\" | \"hanging\" | \"ideographic\" | \"middle\" | \"top\" | undefined"
+    },
+    {
+      "name": "text",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "scale",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "position",
+      "required": false,
+      "type": "YAxisPosition | undefined"
+    },
+    {
+      "name": "at",
+      "required": false,
+      "type": "number | \"center\" | \"end\" | \"start\" | undefined"
+    },
+    {
+      "name": "offset",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "rotation",
+      "required": false,
+      "type": "RotationInput | undefined"
+    },
+    {
+      "name": "color",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "fontSize",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "fontFamily",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "fontWeight",
+      "required": false,
+      "type": "string | number | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createYAxisTitle({ target?, scale?, alongOffset?, align?, overlap?, baseline?, text?, position? })"
+  ],
+  "snippet": "program.createYAxisTitle({})",
+  "errors": [],
+  "route": "/reference/actions/guides/#createyaxistitle"
+}

@@ -16,79 +16,6 @@ the optional native backend with `npm install ggaction @napi-rs/canvas`.
 Importing the PNG/PDF entry works without the backend; calling it then reports
 the required installation command. No dependency is installed automatically.
 
-## Measured text layout
-
-Full charts support `applyTextMetrics({ profile })` and `removeTextMetrics()`.
-These authoring actions recalculate text layout before rendering. A profile has
-exactly `schemaVersion: 1`, a nonempty `id`, and a `measurements` array. Each entry
-requires `text`, `fontFamily`, `fontSize`, `fontWeight`, and `width`, and may
-include `fontStyle: "normal" | "italic"` (normal when omitted).
-
-The host measures strings in the font it will use. Width is in logical pixels,
-not output pixels multiplied by device pixel ratio. Font size must be positive;
-width must be finite and nonnegative. Weight is one of 100, 200, …, 900.
-Duplicate text/family/size/weight/style combinations are rejected. Empty profiles and
-empty strings are valid.
-
-This complete browser example waits for fonts and measures the full string and
-word candidates that its title wrapping will use:
-
-<!-- snippet-context:start -->
-
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
-
-<!-- snippet-context:end -->
-
-```javascript
-import { chart } from "ggaction";
-
-await document.fonts.ready;
-const context = document.createElement("canvas").getContext("2d");
-const fontFamily = "sans-serif";
-const fontSize = 20;
-const fontWeight = 400;
-context.font = `${fontWeight} ${fontSize}px ${fontFamily}`;
-const profile = {
-  schemaVersion: 1,
-  id: "page-fonts",
-  measurements: ["Alpha Beta", "Alpha", "Beta"].map(text => ({
-    text, fontFamily, fontSize, fontWeight,
-    width: context.measureText(text).width
-  }))
-};
-const measured = chart()
-  .applyTextMetrics({ profile })
-  .createCanvas({ width: 500, height: 350, margin: 80 })
-  .createTitle({
-    text: "Alpha Beta", maxWidth: 100,
-    titleStyle: { fontFamily, fontSize, fontWeight }
-  });
-const estimated = measured.removeTextMetrics();
-```
-
-Matching uses the exact string, family, size, and normalized weight. Omitted
-family uses `sans-serif`; omitted/`normal` weight is 400 and `bold` is 700.
-Numeric weights use the renderer's rounding to 100 and clamping to 100–900;
-strings `"100"` through `"900"` match those numeric values. Unmatched strings or
-styles, including relative CSS weights, use the existing deterministic estimate.
-Wrapping may measure partial words and candidate lines; include those strings
-when exact measurements are needed for them.
-
-Applying clones and freezes the profile and replaces any active profile. It
-recalculates titles, axes, legends, labels, and composition layout without
-changing typography. A composition applies the profile to its root and nested
-children, adopting Basic children as Full snapshots; replacement/insertion children and retained facet/repeat edits inherit
-it. Removal clears the profile throughout that composition and restores
-estimates; it does not restore earlier child profiles. Removing without an active
-profile is an error. Failed layout leaves the original program intact.
-
-Later domain edits and source revisions use the stored profile. Editable
-[persistence](../data-updates.md#save-and-restore-snapshots) preserves and validates it. Render-only snapshots
-contain the already laid-out graphics. Changing the original profile or loading
-a font later does not change an existing program. Apply a new measured profile
-to update layout after fonts change. Canvas, SVG, PNG, and PDF draw the resulting
-text graphics; they do not rewrap or replace the authoring measurements.
-
 ## At a glance
 
 | Target | Environment | Shortest call | Use when |
@@ -100,6 +27,28 @@ text graphics; they do not rewrap or replace the authoring measurements.
 
 Rendering consumes a completed program's `graphicSpec`. It does not read
 datasets, semantic encodings, context, or trace to infer missing output.
+
+## First render
+
+Run this ES module in a bundler-based browser page containing `<canvas id="chart"></canvas>`:
+
+<!-- snippet-context:start -->
+
+> **Executable complete.** Use a browser ES module with a canvas element whose id is chart; all input rows are included.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart, render } from "ggaction/basic";
+const program = chart().createCanvas({ width: 480, height: 320 })
+  .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 4 }] })
+  .createScatterPlot({ x: "x", y: "y" });
+render(program, document.querySelector("#chart").getContext("2d"));
+```
+
+The result has two points. The output adapters below consume this same completed
+program. Text measurement is an optional authoring step described after the output examples.
+
 
 ## Automated environment checks
 
@@ -531,6 +480,80 @@ renderTransitionScene(scene, document.querySelector('#chart').getContext('2d'), 
   pixelRatio: window.devicePixelRatio
 });
 ```
+
+## Measured text layout
+
+Full charts support `applyTextMetrics({ profile })` and `removeTextMetrics()`.
+These authoring actions recalculate text layout before rendering. A profile has
+exactly `schemaVersion: 1`, a nonempty `id`, and a `measurements` array. Each entry
+requires `text`, `fontFamily`, `fontSize`, `fontWeight`, and `width`, and may
+include `fontStyle: "normal" | "italic"` (normal when omitted).
+
+The host measures strings in the font it will use. Width is in logical pixels,
+not output pixels multiplied by device pixel ratio. Font size must be positive;
+width must be finite and nonnegative. Weight is one of 100, 200, …, 900.
+Duplicate text/family/size/weight/style combinations are rejected. Empty profiles and
+empty strings are valid.
+
+This complete browser example waits for fonts and measures the full string and
+word candidates that its title wrapping will use:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart } from "ggaction";
+
+await document.fonts.ready;
+const context = document.createElement("canvas").getContext("2d");
+const fontFamily = "sans-serif";
+const fontSize = 20;
+const fontWeight = 400;
+context.font = `${fontWeight} ${fontSize}px ${fontFamily}`;
+const profile = {
+  schemaVersion: 1,
+  id: "page-fonts",
+  measurements: ["Alpha Beta", "Alpha", "Beta"].map(text => ({
+    text, fontFamily, fontSize, fontWeight,
+    width: context.measureText(text).width
+  }))
+};
+const measured = chart()
+  .applyTextMetrics({ profile })
+  .createCanvas({ width: 500, height: 350, margin: 80 })
+  .createTitle({
+    text: "Alpha Beta", maxWidth: 100,
+    titleStyle: { fontFamily, fontSize, fontWeight }
+  });
+const estimated = measured.removeTextMetrics();
+```
+
+Matching uses the exact string, family, size, and normalized weight. Omitted
+family uses `sans-serif`; omitted/`normal` weight is 400 and `bold` is 700.
+Numeric weights use the renderer's rounding to 100 and clamping to 100–900;
+strings `"100"` through `"900"` match those numeric values. Unmatched strings or
+styles, including relative CSS weights, use the existing deterministic estimate.
+Wrapping may measure partial words and candidate lines; include those strings
+when exact measurements are needed for them.
+
+Applying clones and freezes the profile and replaces any active profile. It
+recalculates titles, axes, legends, labels, and composition layout without
+changing typography. A composition applies the profile to its root and nested
+children, adopting Basic children as Full snapshots; replacement/insertion children and retained facet/repeat edits inherit
+it. Removal clears the profile throughout that composition and restores
+estimates; it does not restore earlier child profiles. Removing without an active
+profile is an error. Failed layout leaves the original program intact.
+
+Later domain edits and source revisions use the stored profile. Editable
+[persistence](../data-updates.md#save-and-restore-snapshots) preserves and validates it. Render-only snapshots
+contain the already laid-out graphics. Changing the original profile or loading
+a font later does not change an existing program. Apply a new measured profile
+to update layout after fonts change. Canvas, SVG, PNG, and PDF draw the resulting
+text graphics; they do not rewrap or replace the authoring measurements.
+
 
 ## Related
 

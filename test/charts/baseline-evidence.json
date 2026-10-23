@@ -1,0 +1,866 @@
+[
+  {
+    "file": "test/charts/airline-passenger-moving-windows/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": [
+      "test/oracles/window.js"
+    ]
+  },
+  {
+    "file": "test/charts/annotated-imdb-scatterplot/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": [
+      "test/oracles/numeric.js"
+    ]
+  },
+  {
+    "file": "test/charts/area-layout/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": [
+      "test/oracles/series-area.js"
+    ]
+  },
+  {
+    "file": "test/charts/axis-owners/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": [
+      "test/oracles/guide-owner-scenes.js"
+    ]
+  },
+  {
+    "file": "test/charts/bar-compositing/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/beeswarm-plot/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/bootstrap-mean-ci/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/cars-acceleration-violins/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": [
+      "test/oracles/categorical-density.js",
+      "test/oracles/numeric.js"
+    ]
+  },
+  {
+    "file": "test/charts/cars-binned-heatmap/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": [
+      "test/oracles/bin2d.js"
+    ]
+  },
+  {
+    "file": "test/charts/cars-box-plot/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": [
+      "test/oracles/numeric.js"
+    ]
+  },
+  {
+    "file": "test/charts/cars-box-plot/variants/options/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": [
+      "test/oracles/numeric.js"
+    ]
+  },
+  {
+    "file": "test/charts/cars-density-area/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": [
+      "test/oracles/numeric.js"
+    ]
+  },
+  {
+    "file": "test/charts/cars-error-bar/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/cars-error-bar/variants/error-bar-modes.primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/cars-error-bar/variants/field-stroke-width/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/cars-gradient-plot/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": [
+      "test/oracles/gradient.js"
+    ]
+  },
+  {
+    "file": "test/charts/cars-histogram/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/cars-line-chart/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/cars-multi-legend-layout/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/cars-origin-scatterplot-facet/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js",
+      "src/materialization/composition.js",
+      "src/materialization/compositionSnapshot.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/cars-parallel-coordinates/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": [
+      "test/oracles/numeric.js",
+      "test/oracles/parallel-coordinates.js"
+    ]
+  },
+  {
+    "file": "test/charts/cars-regression-scatterplot/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": [
+      "test/oracles/numeric.js",
+      "test/oracles/regression-scatterplot-filter.js",
+      "test/oracles/regression-scatterplot-layout.js"
+    ]
+  },
+  {
+    "file": "test/charts/cars-scatterplot/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/cars-temporal-bar-line/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/cars-window-rank-scatterplot/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": [
+      "test/oracles/window.js"
+    ]
+  },
+  {
+    "file": "test/charts/centered-area-stream/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/color-controls/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/color-midpoint/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/color-transitions/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/combined-legends/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": [
+      "test/oracles/combined-category-geometry.js"
+    ]
+  },
+  {
+    "file": "test/charts/continuous-area-color/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/cross-feature-integration/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js",
+      "src/materialization/composition.js",
+      "src/materialization/compositionSnapshot.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/cross-feature-integration/variants/facet-resolution/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/grammar/scales/index.js",
+      "src/index.js",
+      "src/materialization/composition.js",
+      "src/materialization/compositionSnapshot.js"
+    ],
+    "independentOracleImports": [
+      "test/oracles/facet-scales.js",
+      "test/oracles/numeric.js",
+      "test/oracles/regression-scatterplot-filter.js",
+      "test/oracles/regression-scatterplot-layout.js"
+    ]
+  },
+  {
+    "file": "test/charts/cross-feature-integration/variants/focused-editing/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": [
+      "test/oracles/numeric.js",
+      "test/oracles/regression-scatterplot-filter.js",
+      "test/oracles/regression-scatterplot-layout.js"
+    ]
+  },
+  {
+    "file": "test/charts/dark-theme-scatterplot/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/density-plot/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": [
+      "test/oracles/gaussian-profile.js"
+    ]
+  },
+  {
+    "file": "test/charts/directional-tick-plot/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": [
+      "test/oracles/directional-glyph.js"
+    ]
+  },
+  {
+    "file": "test/charts/ecdf-plot/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/endpoint-plots/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/facet-field-titles/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/facet-grid/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/facet-header-rotation/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/facet-shared-top-lane/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/fitted-long-labels/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/gapminder-continuous-color-bars/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/gapminder-country-labels/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": [
+      "test/oracles/label-layout.js"
+    ]
+  },
+  {
+    "file": "test/charts/gapminder-development-trajectories/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": [
+      "test/oracles/numeric.js",
+      "test/oracles/path-order.js"
+    ]
+  },
+  {
+    "file": "test/charts/gapminder-discretized-color-scales/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/gapminder-error-band/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": [
+      "test/oracles/numeric.js"
+    ]
+  },
+  {
+    "file": "test/charts/gapminder-error-band/variants/curved-boundary.primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": [
+      "test/oracles/numeric.js"
+    ]
+  },
+  {
+    "file": "test/charts/gapminder-error-band/variants/horizontal/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": [
+      "test/oracles/numeric.js"
+    ]
+  },
+  {
+    "file": "test/charts/gapminder-horizon/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": [
+      "test/oracles/horizon.js",
+      "test/oracles/monotone-area.js",
+      "test/oracles/numeric.js"
+    ]
+  },
+  {
+    "file": "test/charts/gapminder-life-expectancy-heatmap/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/gapminder-temporal-discrete-scales/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/gapminder-transformed-scales/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/horizon-plot/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": [
+      "test/oracles/horizon.js"
+    ]
+  },
+  {
+    "file": "test/charts/jobs-grouped-bar/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/jobs-horizontal-grouped-bar/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/legend-appearance/appearance-primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": [
+      "test/oracles/legend-appearance-scenes.js"
+    ]
+  },
+  {
+    "file": "test/charts/legend-appearance/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": [
+      "test/oracles/legend-appearance-scenes.js"
+    ]
+  },
+  {
+    "file": "test/charts/legend-content-spacing/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/linear-nearest-ticks/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/linear-nice-count/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/lookup-data/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/mark-selection-bars/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/mark-selection-lines/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/mark-selection-points/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/grammar/pointShapes.js",
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/named-shapes/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": [
+      "test/oracles/directional-point-scenes.js"
+    ]
+  },
+  {
+    "file": "test/charts/ordered-category-bar/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/pie-plot/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/plot-guide-underlays/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/point-jitter/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": [
+      "test/oracles/jitter.js"
+    ]
+  },
+  {
+    "file": "test/charts/polar-arcs/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/polar-guides/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/polar-line-radar/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/polar-points/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/program-composition/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/program-composition/variants/layouts/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js",
+      "src/layout/composition.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/radial-sectors/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/raincloud-plot/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/repeat-charts/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/series-identity/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/shared-facet-owner/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": [
+      "test/oracles/guide-owner-scenes.js"
+    ]
+  },
+  {
+    "file": "test/charts/symbol-window/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/temporal-input/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/theta-legend-order/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/time-unit-data/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  }
+]

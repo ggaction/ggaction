@@ -1,3 +1,4 @@
+import { saveBrowserEvidence } from "../support/browser.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
@@ -69,6 +70,7 @@ test.after(async () => {
 
 for (const capability of pages) {
   test(`renders ${capability.id} through the shared capability harness`, async () => {
+  try {
     let opened;
     try {
       opened = await openBrowserPage(
@@ -89,5 +91,7 @@ for (const capability of pages) {
     );
     assertNoBrowserErrors(errors, capability.id);
     await page.close();
-  });
+
+  } catch (error) { await saveBrowserEvidence(browser, error); throw error; }
+});
 }

@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 3,
+  "name": "editRadarPlot",
+  "layer": "user-facing",
+  "domain": "charts",
+  "summary": "Edits radar plot, including settings for radar chart.",
+  "signature": "editRadarPlot(options: EditRadarPlotOptions): ChartProgram;",
+  "intents": [
+    "edit radar plot",
+    "edit",
+    "change",
+    "complete chart",
+    "chart facade",
+    "radar plot",
+    "radar chart"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing radar plot",
+      "canvas and dataset context"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H1",
+    "H3"
+  ],
+  "wraps": [
+    "createFoldData",
+    "editThetaScale"
+  ],
+  "editableVia": [
+    "editRadarPlot"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing radar plot",
+      "canvas and dataset context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "wide",
+      "required": true,
+      "type": "{ fields: readonly [string, string, ...string[]]; }"
+    }
+  ],
+  "callPatterns": [
+    "editRadarPlot({ target?, wide: { fields } })"
+  ],
+  "snippet": "program.editRadarPlot({ target: \"radarPlot\", wide: { fields: [\"quality\", \"speed\"] } })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#editradarplot"
+}

@@ -1,0 +1,6 @@
+type FilterModePatch =
+  | { oneOf: readonly [DatasetScalar, ...DatasetScalar[]]; noneOf?: never; predicate?: never; range?: never }
+  | { oneOf?: never; noneOf: readonly [DatasetScalar, ...DatasetScalar[]]; predicate?: never; range?: never }
+  | { oneOf?: never; noneOf?: never; predicate: FilterComparison; range?: never }
+  | { oneOf?: never; noneOf?: never; predicate?: never; range: FilterRangePatch }
+  | { oneOf?: never; noneOf?: never; predicate?: never; range?: never };

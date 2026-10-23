@@ -1,0 +1,1 @@
+export type CategoryValue = string | number | boolean;

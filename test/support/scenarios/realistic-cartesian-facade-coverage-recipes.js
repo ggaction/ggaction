@@ -1186,7 +1186,10 @@ function lineOptions(factors, view) {
   const aggregateLine = index === 5 || (index >= 6 && index <= 14) ||
     index === 16 || index === 17;
   const color = categoricalFacadeColor(index);
-  const curve = index >= 18 && index <= 21 ? "linear" : CURVES[index % CURVES.length];
+  // Retain the established categorical/temporal profile assignments. The
+  // ordered square-root profile supplies the additional Steffen witness.
+  const curve = index === 3 ? "monotone-steffen"
+    : index >= 18 && index <= 21 ? "linear" : CURVES[index % CURVES.length];
   return {
     id: "mainLines",
     data: "analysisRows",

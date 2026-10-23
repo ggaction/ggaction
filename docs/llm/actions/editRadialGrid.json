@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 3,
+  "name": "editRadialGrid",
+  "layer": "user-facing",
+  "domain": "grid",
+  "summary": "Edit the existing radial grid.",
+  "signature": "editRadialGrid(options: EditPolarGridOptions): ChartProgram;",
+  "intents": [
+    "edit radial grid",
+    "edit",
+    "change",
+    "grid guide",
+    "reference lines",
+    "radial grid",
+    "concentric reference lines"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing radial grid",
+      "compatible scale or encoding context"
+    ],
+    "owns": [],
+    "idOptions": []
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [],
+  "editableVia": [
+    "editRadialGrid"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "count",
+      "unit": "count"
+    },
+    {
+      "path": "lineWidth",
+      "unit": "logical-pixel"
+    }
+  ],
+  "inference": [],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing radial grid",
+      "compatible scale or encoding context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "count",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "values",
+      "required": false,
+      "type": "readonly AxisValue[] | undefined"
+    },
+    {
+      "name": "color",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "lineWidth",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "strokeDash",
+      "required": false,
+      "type": "readonly number[] | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editRadialGrid({ count?, values?, color?, lineWidth?, strokeDash? })"
+  ],
+  "snippet": "program.editRadialGrid({ count: 5 })",
+  "errors": [],
+  "route": "/reference/actions/guides/#editradialgrid"
+}

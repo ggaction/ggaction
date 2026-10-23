@@ -3441,6 +3441,7 @@ export type CurveInterpolation =
   | "basis"
   | "cardinal"
   | "monotone"
+  | "monotone-steffen"
   | "natural";
 ```
 
@@ -4199,6 +4200,7 @@ Related types: [`DatasetTimeUnitTransformBase`](#type-datasettimeunittransformba
 
 ```typescript
 type DatasetTimeUnitTransformBase = {
+  readonly missing?: "error" | "null";
   readonly type: "timeUnit";
   readonly field: string;
   readonly temporalUnit?: TemporalInputUnit;
@@ -4882,8 +4884,8 @@ export interface EditCompositionLayoutOptions {
   gap?: number;
   align?: CompositionAlign;
   padding?: number | CompositionPadding;
-  /** Interpret gap between child canvases (default) or inner plot regions. */
-  spacing?: "canvas" | "plot";
+  /** Interpret gap between child canvases (default), inner plots, or retained full content (wrapped facets). */
+  spacing?: "canvas" | "plot" | "content";
   /** Share existing top margin with parent title and headers; requires plot spacing. Stacked restores the default. */
   topLane?: FacetTopLaneMode;
 }
@@ -5152,7 +5154,7 @@ export interface EditFacetHeadersOptions {
   color?: string;
   offset?: number;
   /** Content follows concrete mark bounds with plot spacing; plot preserves existing placement. */
-  anchor?: "plot" | "content";
+  anchor?: "plot" | "content" | "view";
   role?: FacetHeaderRole;
   labelMap?: DisplayLabelMap | "auto";
   side?: FacetHeaderSide;
@@ -5788,6 +5790,7 @@ Related types: [`FocusedDerivedDataEdit`](#type-focusedderiveddataedit) · [`Reg
 
 ```typescript
 export interface EditRegressionOptions {
+  placement?: "source" | "plot-last";
   target?: string;
   data?: string;
   x?: string;
@@ -6583,7 +6586,7 @@ export interface FacetGridOptions {
   scales?: FacetScaleResolutions;
   guides?: FacetGuideOptions;
   headers?: FacetHeadersOptions;
-  /** Interpret gap between child canvases (default) or inner plot regions. */
+  /** Interpret gap between child canvases (default), inner plots, or retained full content (wrapped facets). */
   spacing?: "canvas" | "plot";
   /** Share the existing top margin rather than adding title/header reservations. Requires plot spacing. */
   topLane?: FacetTopLaneMode;
@@ -6617,7 +6620,7 @@ Related types: [`DatasetScalar`](#type-datasetscalar).
 
 ```typescript
 export interface FacetGuideOptions {
-  axes?: "each" | "outer";
+  axes?: "each" | "outer" | { x?: "each" | "outer"; y?: "each" | "outer" };
   legend?: false | "shared" | LegendOptions;
 }
 ```
@@ -6718,8 +6721,8 @@ export interface FacetOptions {
   scales?: FacetScaleResolutions;
   guides?: FacetGuideOptions;
   headers?: FacetHeadersOptions;
-  /** Interpret gap between child canvases (default) or inner plot regions. */
-  spacing?: "canvas" | "plot";
+  /** Interpret gap between child canvases (default), inner plots, or retained full content (wrapped facets). */
+  spacing?: "canvas" | "plot" | "content";
   /** Share the existing top margin rather than adding title/header reservations. Requires plot spacing. */
   topLane?: FacetTopLaneMode;
 }
@@ -10388,6 +10391,7 @@ Related types: [`StrokeStyleDetails`](#type-strokestyledetails) · [`CurveInterp
 
 ```typescript
 type RegressionCommonOptions = {
+  placement?: "source" | "plot-last";
   target?: string;
   x?: string;
   y?: string;
@@ -10839,8 +10843,8 @@ export interface RepeatChartsOptions {
   scales?: FacetScaleResolutions;
   guides?: FacetGuideOptions;
   headers?: FacetHeadersOptions;
-  /** Interpret gap between child canvases (default) or inner plot regions. */
-  spacing?: "canvas" | "plot";
+  /** Interpret gap between child canvases (default), inner plots, or retained full content (wrapped facets). */
+  spacing?: "canvas" | "plot" | "content";
   /** Share the existing top margin rather than adding title/header reservations. Requires plot spacing. */
   topLane?: FacetTopLaneMode;
 }
@@ -12164,6 +12168,8 @@ export type TimeUnit =
 
 ```typescript
 type TimeUnitDataBaseOptions = {
+  /** Preserve null or absent inputs as null buckets; defaults to strict errors. */
+  missing?: "error" | "null";
   id: string;
   source?: string;
   field: string;

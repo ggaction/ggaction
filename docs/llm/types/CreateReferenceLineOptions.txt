@@ -1,0 +1,5 @@
+export type CreateReferenceLineOptions =
+  | ({ id?: string } & RuleStyleOptions & ReferenceBinding<unknown, number>)
+  | (DynamicReferenceBinding & RuleStyleOptions & {
+      readonly statistic: ReferenceStatistic;
+    });

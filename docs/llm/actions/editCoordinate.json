@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 3,
+  "name": "editCoordinate",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Edits coordinate system, including settings for Cartesian or polar space.",
+  "signature": "editCoordinate(options: EditCoordinateOptions): ChartProgram;",
+  "intents": [
+    "edit coordinate",
+    "edit",
+    "change",
+    "chart setup",
+    "data and scales",
+    "coordinate system",
+    "Cartesian or polar space"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing coordinate system"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "editCoordinate"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing coordinate system"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "aspect",
+      "required": false,
+      "type": "CoordinateAspect | undefined"
+    },
+    {
+      "name": "polarFrame",
+      "required": false,
+      "type": "PolarFrameOptions | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editCoordinate({ target, aspect: { mode: \"frame\" | \"data\", ratio, alignX?, alignY? } | \"auto\" })",
+    "editCoordinate({ target, polarFrame: { center?, radius? } | \"auto\" })"
+  ],
+  "snippet": "program.editCoordinate({ target: \"polar\", polarFrame: { center: { x: 0.25, y: 0.5 }, radius: { unit: \"fraction\", value: 0.8 } } })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#editcoordinate"
+}

@@ -1,3 +1,4 @@
+import { saveBrowserContextEvidence, saveBrowserEvidence } from "../support/browser.js";
 import assert from "node:assert/strict";
 import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
@@ -32,6 +33,7 @@ test.after(async () => {
 });
 
 test(`${browserName} preserves occupied legend spacing in installed Canvas and SVG at both densities`,async()=>{
+  try {
   for(const ratio of[1,2]){
     const context=await browser.newContext({deviceScaleFactor:ratio});
     try{
@@ -68,12 +70,15 @@ test(`${browserName} preserves occupied legend spacing in installed Canvas and S
       assert.equal(result.svgExact,true);assert.deepEqual(result.sampleCenterY,[73,102,143]);assert.deepEqual(result.labelTopY,[68,97,138]);
       for(const check of result.checks){assert.equal(check.differences,0,check.backend);assert.ok(check.ink>100*ratio*ratio);assert.deepEqual(check.dimensions,[320*ratio,240*ratio]);}
       assert.match(result.svg,/cx="231" cy="73" r="8"/);assertNoBrowserErrors(errors,browserName);await page.close();
-    }finally{await context.close();}
+    } catch (error) { await saveBrowserContextEvidence(context, error); throw error; }finally{await context.close();}
   }
+
+  } catch (error) { await saveBrowserEvidence(browser, error); throw error; }
 });
 
 for (const ratio of [1, 2]) {
   test(`${browserName} preserves Canvas/SVG clipping, gradient, text, resize, density, and downloads at DPR ${ratio}`, async () => {
+  try {
     const context = await browser.newContext({ deviceScaleFactor: ratio, acceptDownloads: true });
     let page;
     try {
@@ -111,10 +116,13 @@ for (const ratio of [1, 2]) {
       if (page) await saveBrowserPageEvidence(page, error, `${browserName}-dpr-${ratio}`);
       throw error;
     } finally { await context.close(); }
-  });
+
+  } catch (error) { await saveBrowserEvidence(browser, error); throw error; }
+});
 }
 
 test(`${browserName} keeps vertical and slanted axis labels outside fixed plots in Canvas and SVG`, async () => {
+  try {
   const context = await browser.newContext();
   try {
     const { page, errors } = await openBrowserPage(context, server.baseUrl, { waitFor: () => window.compatibility !== undefined });
@@ -153,11 +161,14 @@ test(`${browserName} keeps vertical and slanted axis labels outside fixed plots 
       }
     }
     assertNoBrowserErrors(errors, "rotated axis labels");await page.close();
-  } finally { await context.close(); }
+  } catch (error) { await saveBrowserContextEvidence(context, error); throw error; } finally { await context.close(); }
+
+  } catch (error) { await saveBrowserEvidence(browser, error); throw error; }
 });
 
 
 test(`${browserName} renders hard title breaks as concrete Canvas and SVG text lines`, async () => {
+  try {
   const context = await browser.newContext();
   try {
     const { page, errors } = await openBrowserPage(context, server.baseUrl, { waitFor: () => window.compatibility !== undefined });
@@ -178,10 +189,13 @@ test(`${browserName} renders hard title breaks as concrete Canvas and SVG text l
     assert.deepEqual(actual.labels, ["Headline", "Details", "Credit", "Source"]);
     assert.ok(actual.ink > 100);
     assertNoBrowserErrors(errors, "hard title breaks");await page.close();
-  } finally { await context.close(); }
+  } catch (error) { await saveBrowserContextEvidence(context, error); throw error; } finally { await context.close(); }
+
+  } catch (error) { await saveBrowserEvidence(browser, error); throw error; }
 });
 
 test(`${browserName} composites each bar fill and outline once in Canvas and SVG`, async () => {
+  try {
   const context = await browser.newContext();
   try {
     const {page,errors}=await openBrowserPage(context,server.baseUrl,{waitFor:()=>window.compatibility!==undefined});
@@ -221,10 +235,13 @@ test(`${browserName} composites each bar fill and outline once in Canvas and SVG
     assert.equal(results.length,64);
     for(const result of results){assert.equal(result.canvas,0,JSON.stringify(result));assert.equal(result.svg,0,JSON.stringify(result));}
     assertNoBrowserErrors(errors,browserName);await page.close();
-  } finally {await context.close();}
+  } catch (error) { await saveBrowserContextEvidence(context, error); throw error; } finally {await context.close();}
+
+  } catch (error) { await saveBrowserEvidence(browser, error); throw error; }
 });
 
 test(`${browserName} clips one Cartesian mark without moving its items or outside guides`, async()=>{
+  try {
   const context=await browser.newContext();
   try{
     const {page,errors}=await openBrowserPage(context,server.baseUrl,{waitFor:()=>window.compatibility!==undefined});
@@ -253,5 +270,7 @@ test(`${browserName} clips one Cartesian mark without moving its items or outsid
     assert.equal(record.svgEqual,true);assert.equal(record.clipCount,1);assert.equal(record.disabledEqual,true);
     assert.deepEqual(record.frame,record.expectedFrame);assert.deepEqual(record.centers,record.expectedCenters);
     assertNoBrowserErrors(errors,'Cartesian mark clipping');await page.close();
-  }finally{await context.close();}
+  } catch (error) { await saveBrowserContextEvidence(context, error); throw error; }finally{await context.close();}
+
+  } catch (error) { await saveBrowserEvidence(browser, error); throw error; }
 });

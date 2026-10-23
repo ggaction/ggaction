@@ -1,0 +1,21 @@
+export interface EditErrorBarOptions extends StrokeStyleDetails {
+  target?: string;
+  data?: string;
+  x?: ErrorBarPositionChannel | ErrorBarIntervalChannel;
+  y?: ErrorBarPositionChannel | ErrorBarIntervalChannel;
+  xOffset?: ErrorBarOffsetChannel | false;
+  yOffset?: ErrorBarOffsetChannel | false;
+  groupBy?: string | false;
+  caps?: boolean;
+  capSize?: number;
+  stroke?: string;
+  strokeWidth?: number;
+  strokeDash?: DashStyle | DashPattern;
+  opacity?: number;
+  statistics?: {
+    center?: IntervalCenter;
+    extent?: IntervalExtent;
+    method?: ConfidenceIntervalMethod;
+    level?: number;
+  };
+}

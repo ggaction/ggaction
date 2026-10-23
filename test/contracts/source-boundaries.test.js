@@ -1,3 +1,4 @@
+import { parse } from "acorn";
 import assert from "node:assert/strict";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
@@ -26,6 +27,42 @@ function localImports(file) {
   return moduleSpecifiers(source)
     .filter(entry => entry.specifier?.startsWith("."))
     .map(entry => resolveLocalModule(file, entry.specifier));
+}
+
+function memberName(node) {
+  if (node?.type === "ChainExpression") return memberName(node.expression);
+  if (node?.type !== "MemberExpression") return undefined;
+  return node.computed ? node.property.value : node.property.name;
+}
+function walkSyntax(node, visit) {
+  if (!node || typeof node.type !== "string") return;
+  visit(node);
+  for (const child of Object.values(node)) {
+    if (Array.isArray(child)) child.forEach(value => walkSyntax(value, visit));
+    else if (child && typeof child === "object") walkSyntax(child, visit);
+  }
+}
+function hasCall(source, predicate) {
+  const file = parse(source, { ecmaVersion: "latest", sourceType: "module" });
+  let found = false;
+  walkSyntax(file, node => { if (node.type === "CallExpression" && predicate(node)) found = true; });
+  return found;
+}
+function directSemanticLookup(source) {
+  return hasCall(source, call => {
+    const method = memberName(call.callee);
+    const collection = call.callee.object;
+    if (!["find", "some"].includes(method) || !collection ||
+        !["layers", "datasets", "scales", "coordinates"].includes(memberName(collection)) ||
+        memberName(collection.object) !== "semanticSpec") return false;
+    if (method === "find") return true;
+    let identity = false;
+    for (const argument of call.arguments) walkSyntax(argument, node => {
+      if (node.type === "BinaryExpression" && node.operator === "===" &&
+          (memberName(node.left) === "id" || memberName(node.right) === "id")) identity = true;
+    });
+    return identity;
+  });
 }
 
 function layer(file) {
@@ -138,7 +175,7 @@ test("keeps semantic and graphic cloning inside primitive actions", () => {
   const actionRoot = path.join(root, "actions");
   for (const file of sourceFiles(actionRoot)) {
     const source = readFileSync(file, "utf8");
-    if (!source.includes("._clone(")) continue;
+    if (!hasCall(source, call => memberName(call.callee) === "_clone")) continue;
     assert.equal(
       path.relative(actionRoot, file).split(path.sep)[0],
       "primitives",
@@ -149,22 +186,16 @@ test("keeps semantic and graphic cloning inside primitive actions", () => {
 
 test("routes exact named semantic resource lookup through selectors", () => {
   const selectorRoot = path.join(root, "selectors");
-  const directLookup = /semanticSpec\.(layers|datasets|scales|coordinates)\.find\s*\(/u;
-  const directIdentityProbe = /semanticSpec\.(layers|datasets|scales|coordinates)\.some\s*\([^)]*\.id\s*===/su;
 
   for (const file of sourceFiles()) {
     if (file.startsWith(`${selectorRoot}${path.sep}`)) continue;
     const source = readFileSync(file, "utf8");
     assert.equal(
-      directLookup.test(source),
+      directSemanticLookup(source),
       false,
       `${path.relative(root, file)} must use a named resource selector`
     );
-    assert.equal(
-      directIdentityProbe.test(source),
-      false,
-      `${path.relative(root, file)} must use a named resource selector`
-    );
+
   }
 });
 
@@ -197,4 +228,19 @@ test("keeps every ordinary mark family behind a stable directory entry", () => {
       `${mark} must not return to a flat mark module`
     );
   }
+});
+
+test("architectural syntax checks ignore comments and recognize direct bracket and optional access", () => {
+ for (const source of [
+  "p.semanticSpec.layers.find(x => x.id === id)",
+  "p.semanticSpec.layers?.find(x => x.id === id)",
+  'p["semanticSpec"]["layers"]["find"](x => x.id === id)',
+  'p.semanticSpec.layers.some(x => x["id"] === id)'
+ ]) assert.equal(directSemanticLookup(source), true, source);
+ for (const source of [
+  "// p.semanticSpec.layers.find(x => x.id === id)",
+  '\"p.semanticSpec.layers.find(x => x.id === id)\"',
+  "p.semanticSpec.layers.some(x => x.visible)"
+ ]) assert.equal(directSemanticLookup(source), false, source);
+ // This syntactic rule intentionally does not perform interprocedural alias analysis.
 });

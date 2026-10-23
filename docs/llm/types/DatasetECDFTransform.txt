@@ -1,0 +1,11 @@
+export interface DatasetECDFTransform {
+  readonly type: "ecdf";
+  readonly field: string;
+  readonly groupBy: readonly string[];
+  readonly weight?: string;
+  readonly missing: "drop" | "error";
+  readonly as: Readonly<ECDFOutputFields>;
+  readonly resolved?: {
+    readonly groups: readonly DatasetECDFResolvedGroup[];
+  };
+}

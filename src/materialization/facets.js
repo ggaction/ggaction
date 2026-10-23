@@ -1,15 +1,14 @@
-import { cartesianAxisOwners } from "../selectors/axes.js";
-import { resolveConcreteGraphicBounds, resolvePrimitiveGraphicBounds, resolveGraphicParentOffset,
-  resolveGraphicClipBounds } from "../grammar/schemas/graphicBounds.js";
-import { intersectClipBounds } from "../grammar/schemas/graphicClip.js";
-import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
 import { walkGraphicTreeEvents } from "../grammar/schemas/graphicTree.js";
-import { textBoundsFitCanvas, textBoundsIntersect, resolveTextBounds, requireFiniteBounds } from "../core/textMetrics.js";
-import { axisGraphicIds, allLegendGraphicIds } from "./guides/resources.js";
+import { measureFacetContentChildren } from "./facetContentBounds.js";
+export { measureFacetContentChildren } from "./facetContentBounds.js";
+import { resolveFacetContentFlow, resolveFacetContentFooters } from "../layout/facetContentFlow.js";
+import { resolveConcreteGraphicBounds } from "../grammar/schemas/graphicBounds.js";
+import { textBoundsFitCanvas, textBoundsIntersect, resolveTextBounds } from "../core/textMetrics.js";
 import { resolveGraphicBounds } from "../layout/canvas.js";
 import { resolvePlacedPlotBounds } from "../layout/composition.js";
 import {
   alignedTextAnchor,
+  alignedTitleAnchor,
   buildTitleReadingBlock,
   paintedTitleComponent,
   resolveTitleComponentBounds,
@@ -19,7 +18,6 @@ import { resolveFacetLayout } from "../layout/facets.js";
 import { assertFacetTopLane } from "./facetTopLane.js";
 import { namespaceGraphicId, namespaceGraphicSnapshot } from "./compositionSnapshot.js";
 import { prepareSharedFacetLegend } from "./facetGuides/index.js";
-import { prepareFacetGuideOwnership } from "./facetGuides/placement.js";
 import { resolvePromotedFacetLegendLayout } from "./facetGuides/layout.js";
 import {
   attachSnapshotObject,
@@ -28,6 +26,7 @@ import {
 } from "./composition.js";
 import {
   materializeFacetHeaders,
+  resolveFacetHeaderItems,
   prepareFacetHeaders,
   facetHeaderGraphicId,
   retainedFacetGuideIds
@@ -36,91 +35,6 @@ import {
 const ZERO_MARGIN = { top: 0, right: 0, bottom: 0, left: 0 };
 const TITLE_IDS = Object.freeze(["chartTitle", "chartSubtitle"]);
 
-function includeBounds(union, bounds) {
-  if (bounds === undefined) return union;
-  if (union === undefined) return { ...bounds };
-  return { left: Math.min(union.left, bounds.left), right: Math.max(union.right, bounds.right),
-    top: Math.min(union.top, bounds.top), bottom: Math.max(union.bottom, bounds.bottom) };
-}
-
-// Internal preparation only: no new public spacing policy or persisted state.
-// Header entries are concrete child-local text, never caller-supplied bounds.
-export function measureFacetContentChildren(program, { headerItems = [] } = {}) {
-  if (program?.compositionSpec?.type !== "facet") {
-    throw new Error("Facet content measurement requires a facet composition.");
-  }
-  const spec = program.compositionSpec, grid = new Map((spec.facet.grid?.cells ?? []).map(cell => [cell.id, cell]));
-  const placements = spec.children.map((id, index) => ({ id,
-    row: grid.get(id)?.row ?? Math.floor(index / spec.columns),
-    column: grid.get(id)?.column ?? index % spec.columns }));
-  const prepared = prepareSharedFacetLegend(program);
-  const ownership = prepareFacetGuideOwnership(program, placements, prepared);
-  const childIds = new Set(spec.children), headersByOwner = new Map();
-  if (!Array.isArray(headerItems) || headerItems.some(item =>
-    !childIds.has(item?.ownerId) || item.type !== "text" || !isPlainObject(item.properties))) {
-    throw new TypeError("Facet content headers require concrete text with one observed child owner.");
-  }
-  for (const header of headerItems) {
-    if (!headersByOwner.has(header.ownerId)) headersByOwner.set(header.ownerId, []);
-    headersByOwner.get(header.ownerId).push(header);
-  }
-  const components = ["line", "ticks", "labels", "title"];
-  return cloneAndFreeze(placements.map(cell => {
-    const child = program.children[cell.id], graphic = child.graphicSpec;
-    const profile = child.materializationConfigs.textMetrics;
-    const plot = resolveGraphicBounds(child);
-    const plan = ownership.children[cell.id], roles = new Map();
-    for (const owner of cartesianAxisOwners(child)) {
-      const roots = axisGraphicIds(owner.channel, owner.id);
-      for (const [index, component] of components.entries()) {
-        const removed = plan.removeAxes.includes(owner.id) || plan.removeAxisComponents?.[owner.id]?.includes(component);
-        if (removed) roles.set(roots[index], "removed");
-        else if (spec.facet.guides.axes === "outer" && owner.channel === "x" && owner.config?.[component]?.position === "bottom") {
-          roles.set(roots[index], "footer");
-        }
-      }
-    }
-    for (const id of allLegendGraphicIds(plan.removeLegends)) roles.set(id, "removed");
-    const groups = new Map(), stack = [], frames = new Map();
-    const include = entry => {
-      const role = stack.at(-1);
-      if (role === "removed") return;
-      const type = entry.object.type ?? entry.owner?.type, p = entry.object.properties;
-      if (!p || type === "canvas" || p.opacity === 0 || type === "text" && (p.text === "" || p.fill === "none" || p.fill === "transparent")) return;
-      const ownerId = entry.ownerId ?? entry.id;
-      if (!frames.has(ownerId)) frames.set(ownerId, {
-        offset: resolveGraphicParentOffset(graphic, ownerId),
-        clip: resolveGraphicClipBounds(graphic, ownerId, { rootViewport: true })
-      });
-      const { offset: [x, y], clip } = frames.get(ownerId);
-      let bounds = resolvePrimitiveGraphicBounds(type, p, profile);
-      if (bounds === undefined) return;
-      bounds = requireFiniteBounds({ left: bounds.left + x, right: bounds.right + x,
-        top: bounds.top + y, bottom: bounds.bottom + y });
-      if (clip !== undefined) bounds = intersectClipBounds(bounds, clip);
-      if (bounds.left > bounds.right || bounds.top > bounds.bottom) return;
-      const key = role ?? "body";
-      groups.set(key, includeBounds(groups.get(key), bounds));
-    };
-    walkGraphicTreeEvents(graphic, {
-      enter(entry) {
-        stack.push(stack.at(-1) === "removed" ? "removed" : roles.get(entry.id) ?? stack.at(-1));
-        if (entry.object.items === undefined && !(entry.object.children?.length)) include(entry);
-      },
-      item: include,
-      exit() { stack.pop(); }
-    });
-    let body = includeBounds({ left: plot.x, right: plot.x + plot.width, top: plot.y, bottom: plot.y + plot.height }, groups.get("body"));
-    for (const header of headersByOwner.get(cell.id) ?? []) {
-      const p = header.properties;
-      if (p.text !== "" && p.opacity !== 0 && p.fill !== "none" && p.fill !== "transparent") body = includeBounds(body, resolveTextBounds(p, profile));
-    }
-    const relative = bounds => bounds === undefined ? undefined : ({ left: bounds.left - plot.x, right: bounds.right - plot.x,
-      top: bounds.top - plot.y, bottom: bounds.bottom - plot.y });
-    return { ...cell, plot, bounds: relative(body),
-      ...(groups.has("footer") ? { footerBounds: relative(groups.get("footer")) } : {}) };
-  }));
-}
 
 function facetConfig(program) {
   const config = program.materializationConfigs.facets?.[program.compositionSpec.id];
@@ -138,27 +52,33 @@ function titleLayout(program) {
   if (config === undefined) {
     throw new Error("Facet title requires chart title configuration.");
   }
-  if (config.position !== "top") {
-    throw new Error("Facet parent title currently supports only top position.");
-  }
   const block = buildTitleReadingBlock({
     text: program.semanticSpec.title.text,
     subtitle: program.semanticSpec.title.subtitle
-  }, config);
+  }, config, program.materializationConfigs.textMetrics);
   const top = 8 + config.offset;
   if (top < 0) {
     throw new Error("Facet parent title offset places text outside the Canvas.");
   }
-  return { config, block, top, height: Math.ceil(top + block.height) };
+  const reservation = Math.ceil(top + block.height);
+  return { config, block, top, reservation, height: config.position === "top" ? reservation : 0 };
 }
 
-function materializeTitleComponent(program, id, lines, centers, style, plot, top) {
+function materializeTitleComponent(program, id, lines, centers, style, plot, title) {
   if (lines.length === 0) return program;
-  const x = alignedTextAnchor(plot.x, plot.width, program.titleConfig.align) +
-    (program.titleConfig.alongOffset ?? 0);
-  const component = paintedTitleComponent({
-    x, y: centers.map(center => top + center), lines,
-    textAlign: program.titleConfig.align
+  const { config, block, top } = title;
+  const canvas = program.graphicSpec.objects.canvas.properties;
+  const horizontal = ["top", "bottom"].includes(config.position);
+  const component = paintedTitleComponent(horizontal ? {
+    x: alignedTextAnchor(plot.x, plot.width, config.align) + (config.alongOffset ?? 0),
+    y: centers.map(center => (config.position === "top" ? top : canvas.height - top - block.height) + center),
+    lines, textAlign: config.align,
+    ...(config.position === "bottom" ? { rotation: 0, explicitRotation: true } : {})
+  } : {
+    x: centers.map(center => config.position === "left" ? top + center : canvas.width - top - center),
+    y: alignedTitleAnchor(plot.y, plot.height, block.width, config.align) + (config.alongOffset ?? 0),
+    lines, textAlign: "center", rotation: config.position === "left" ? -Math.PI / 2 : Math.PI / 2,
+    explicitRotation: true
   });
   const bounds = resolveTitleComponentBounds(component, style, program.materializationConfigs.textMetrics);
   if (!textBoundsFitCanvas(bounds, program.graphicSpec.objects.canvas.properties)) {
@@ -171,7 +91,9 @@ function materializeTitleComponent(program, id, lines, centers, style, plot, top
     ...(count > 1 ? { length: count } : {}),
     parent: "canvas"
   });
-  for (const [property, value] of Object.entries(titleTextProperties(component, style))) {
+  for (const [property, value] of Object.entries({ ...titleTextProperties(component, style),
+    ...(component.explicitRotation ? { rotation: component.rotation } : {})
+  })) {
     next = next.editGraphics({ target: id, property, value });
   }
   return next;
@@ -185,7 +107,7 @@ function materializeTitle(program, plot, title) {
     title.block.titleCenters,
     title.config.titleStyle,
     plot,
-    title.top
+    title
   );
   if (title.block.subtitleLines.length > 0) {
     next = materializeTitleComponent(
@@ -195,10 +117,58 @@ function materializeTitle(program, plot, title) {
       title.block.subtitleCenters,
       title.config.subtitleStyle,
       plot,
-      title.top
+      title
     );
   }
   return next;
+}
+
+function resolveContentLayout(program, options, preparedHeaders) {
+  const spec = program.compositionSpec;
+  const plots = options.plots;
+  // Header anchors are child-local before packing. Role titles reserve one outer
+  // lane; they must not be duplicated into every child measurement.
+  const local = { spacing: "content", children: options.children.map((child, index) => ({
+    ...child, x: 0, y: 0, row: Math.floor(index / spec.columns), column: index % spec.columns
+  })) };
+  const { records, items } = resolveFacetHeaderItems(local, plots, preparedHeaders);
+  const headerItems = records.flatMap((record, index) => {
+    const descriptor = record.descriptor;
+    if (descriptor.topology === "role-title" || descriptor.ids?.length > 1) return [];
+    return [{ ...items[index], ownerId: descriptor.id ?? descriptor.ids[0] }];
+  });
+  const measured = measureFacetContentChildren(program, { headerItems });
+  const flow = resolveFacetContentFlow({ children: measured, columns: spec.columns, gap: spec.gap });
+  const measuredById = new Map(measured.map(child => [child.id, child]));
+  const lastByColumn = new Map(flow.children.map(child => [child.column, child]));
+  const footers = resolveFacetContentFooters({ flow, footers: [...lastByColumn.values()]
+    .filter(child => measuredById.get(child.id).footerBounds !== undefined)
+    .map(child => ({ id: child.id, column: child.column })) });
+  const footerById = new Map(footers.map(footer => [footer.ownerId, footer]));
+  const bounds = { ...flow.bounds };
+  for (const footer of footers) {
+    const measured = measuredById.get(footer.ownerId), b = measured.footerBounds;
+    const dy = footer.y - measured.plot.height;
+    bounds.left = Math.min(bounds.left, footer.x + b.left);
+    bounds.right = Math.max(bounds.right, footer.x + b.right);
+    bounds.top = Math.min(bounds.top, dy + b.top);
+    bounds.bottom = Math.max(bounds.bottom, dy + b.bottom);
+  }
+  const packed = resolveFacetLayout({ ...options, spacing: "canvas", topLane: undefined,
+    children: [{ id: "packed", width: bounds.right - bounds.left, height: bounds.bottom - bounds.top }],
+    columns: 1, gap: 0, headerLayout: { outer: preparedHeaders.headerLayout.outer }, plots: undefined });
+  const dx = packed.children[0].x - bounds.left, dy = packed.children[0].y - bounds.top;
+  return { ...packed, spacing: "content", columns: flow.columns,
+    rows: Math.ceil(flow.children.length / flow.columns), gap: spec.gap,
+    children: flow.children.map(cell => {
+      const measured = measuredById.get(cell.id), child = program.children[cell.id];
+      const canvas = child.graphicSpec.objects.canvas.properties;
+      const footer = footerById.get(cell.id);
+      return { id: cell.id, row: cell.row, column: cell.column,
+        x: dx + cell.x - measured.plot.x, y: dy + cell.y - measured.plot.y,
+        width: canvas.width, height: canvas.height,
+        ...(footer === undefined ? {} : { footerShift: footer.y - cell.y - measured.plot.height }) };
+    }) };
 }
 
 export function resolveFacetProgramLayout(program, preparedLegend) {
@@ -216,7 +186,13 @@ export function resolveFacetProgramLayout(program, preparedLegend) {
   const gridCells = new Map(
     (spec.facet.grid?.cells ?? []).map(cell => [cell.id, cell])
   );
-  let layout = resolveFacetLayout({
+  // Reserve the outer title lane before placing children and shared legends.
+  // Only the inferred layout uses this padding; the authored facet is unchanged.
+  const padding = { ...spec.padding };
+  if (title.config && title.config.position !== "top") {
+    padding[title.config.position] += title.reservation;
+  }
+  const layoutOptions = {
     children: spec.children.map((id, index) => ({
       ...compositionChildDescriptor(id, program.children[id]),
       value: spec.facet.values[index],
@@ -231,7 +207,7 @@ export function resolveFacetProgramLayout(program, preparedLegend) {
     columns: spec.columns,
     gap: spec.gap,
     align: spec.align,
-    padding: spec.padding,
+    padding,
     titleHeight: title.height,
     headerLayout: preparedHeaders.headerLayout,
     sharedLegend: spec.facet.guides.legend === "shared" && preparedLegend?.mode !== "promoted",
@@ -241,7 +217,9 @@ export function resolveFacetProgramLayout(program, preparedLegend) {
       sharedLegendHeight: preparedLegend.reservation.height,
       sharedLegendPosition: preparedLegend.reservation.position
     })
-  });
+  };
+  let layout = spec.spacing === "content" ? resolveContentLayout(program, layoutOptions, preparedHeaders)
+    : resolveFacetLayout(layoutOptions);
   const plots = spec.children.map(id => ({
     id,
     ...resolveGraphicBounds(program.children[id])
@@ -330,7 +308,7 @@ export function materializeFacetGraphics(program) {
       y: placement.y
     });
     next = attachSnapshotObject(next, snapshot, snapshot.order[0], "canvas");
-    if (layout.spacing === "plot") {
+    if (["plot", "content"].includes(layout.spacing)) {
       const root = snapshot.order[0];
       const id = namespaceGraphicId(`${program.compositionSpec.id}-${placement.id}`, "plot-background");
       const bounds = resolveGraphicBounds(child);
@@ -345,7 +323,7 @@ export function materializeFacetGraphics(program) {
   next = materializeFacetHeaders(next, layout, plots, preparedHeaders);
   next = next.composeFacetGuides({ layout, plot });
   if (layout.spacing === "plot") assertPlotSpacingGuides(next, layout, plots);
-  if (title.height > 0) next = materializeTitle(next, plot, title);
+  if (title.config) next = materializeTitle(next, plot, title);
   assertFacetFieldTitles(next, preparedHeaders);
   assertFacetTopLane(next, { layout, plots,
     headerId: facetHeaderGraphicId(program.compositionSpec.id), titleIds: TITLE_IDS });

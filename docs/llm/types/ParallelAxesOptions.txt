@@ -1,0 +1,1 @@
+export interface ParallelAxesOptions { target?: string; coordinate?: string; }

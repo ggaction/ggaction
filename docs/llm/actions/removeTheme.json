@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 3,
+  "name": "removeTheme",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Remove the most recently applied theme scope on that receiver.",
+  "signature": "removeTheme(): ChartProgram;",
+  "intents": [
+    "remove theme",
+    "remove",
+    "delete",
+    "chart setup",
+    "data and scales",
+    "program theme",
+    "light or dark visual defaults"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing program theme"
+    ],
+    "owns": [],
+    "idOptions": []
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editGraphics"
+  ],
+  "editableVia": [
+    "applyTheme"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default",
+      "basic"
+    ]
+  },
+  "units": [],
+  "inference": [],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing program theme"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [],
+  "callPatterns": [
+    "removeTheme()"
+  ],
+  "snippet": "program.removeTheme()",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#removetheme"
+}

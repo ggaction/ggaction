@@ -1,0 +1,8 @@
+export interface LegendBlockSymbolPatch {
+  /** Point glyph area in square pixels. */
+  size?: number;
+  fill?: string;
+  stroke?: string;
+  strokeWidth?: number;
+  opacity?: number;
+}

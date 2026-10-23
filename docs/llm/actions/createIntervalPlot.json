@@ -1,0 +1,138 @@
+{
+  "schemaVersion": 3,
+  "name": "createIntervalPlot",
+  "layer": "user-facing",
+  "domain": "charts",
+  "summary": "Create center points and matching statistical or explicit intervals from one shared dataset, coordinate, and pair of scales.",
+  "signature": "createIntervalPlot(options: CreateIntervalPlotOptions): ChartProgram;",
+  "intents": [
+    "create interval plot",
+    "create",
+    "add",
+    "complete chart",
+    "chart facade",
+    "interval plot",
+    "point and interval"
+  ],
+  "lifecycle": "Aggregate create-only",
+  "resources": {
+    "prerequisites": [
+      "canvas and dataset context"
+    ],
+    "owns": [
+      "interval plot"
+    ],
+    "idOptions": [
+      "id",
+      "data",
+      "coordinate"
+    ]
+  },
+  "authoringRoles": [
+    "H0",
+    "H1"
+  ],
+  "wraps": [
+    "createErrorBar",
+    "createPointMark",
+    "encodeX",
+    "encodeY"
+  ],
+  "editableVia": [],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "data",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "complete",
+    "requires": [
+      "canvas and dataset context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "data",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "xOffset",
+      "required": false,
+      "type": "ErrorBarOffsetChannel | undefined"
+    },
+    {
+      "name": "yOffset",
+      "required": false,
+      "type": "ErrorBarOffsetChannel | undefined"
+    },
+    {
+      "name": "groupBy",
+      "required": false,
+      "type": "string | false | undefined"
+    },
+    {
+      "name": "color",
+      "required": false,
+      "type": "BasicColorChannel | undefined"
+    },
+    {
+      "name": "point",
+      "required": false,
+      "type": "(StrokeStyleDetails & { clip?: boolean | undefined; radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
+    },
+    {
+      "name": "errorBar",
+      "required": false,
+      "type": "IntervalPlotErrorBarOptions | undefined"
+    },
+    {
+      "name": "guides",
+      "required": false,
+      "type": "false | CartesianSeparateGuideOptions | undefined"
+    },
+    {
+      "name": "x",
+      "required": true,
+      "type": "string | ErrorBarIntervalChannel | ErrorBarPositionChannel"
+    },
+    {
+      "name": "y",
+      "required": true,
+      "type": "string | ErrorBarIntervalChannel | ErrorBarPositionChannel"
+    }
+  ],
+  "callPatterns": [
+    "createIntervalPlot({ x, y })",
+    "createIntervalPlot({ x, y, groupBy?, point?, errorBar?, guides? })"
+  ],
+  "snippet": "program.createIntervalPlot({ x: \"category\", y: \"value\" })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#createintervalplot"
+}

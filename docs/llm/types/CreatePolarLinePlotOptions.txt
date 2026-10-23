@@ -1,0 +1,15 @@
+export interface CreatePolarLinePlotOptions {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  theta: PolarThetaChannel;
+  radius: PolarRadiusChannel;
+  color?: LineCategoricalColorChannel;
+  groupBy?: string | readonly [string, ...string[]];
+  strokeDash?: NonCartesianStrokeDashChannel;
+  line?: Omit<NonNullable<CreateLinePlotOptions["line"]>, "clip" | "missing" | "closed" | "curve" | "tension"> & {
+    curve?: "linear";
+    closed?: boolean;
+  };
+  guides?: false | PolarPathGuideOptions;
+}

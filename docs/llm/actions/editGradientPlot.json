@@ -1,0 +1,125 @@
+{
+  "schemaVersion": 3,
+  "name": "editGradientPlot",
+  "layer": "user-facing",
+  "domain": "statistics",
+  "summary": "Revise one stable gradient-plot owner.",
+  "signature": "editGradientPlot(options: EditGradientPlotOptions): ChartProgram;",
+  "intents": [
+    "edit gradient plot",
+    "edit",
+    "change",
+    "statistical layer",
+    "statistical transform",
+    "gradient plot",
+    "density gradient"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing gradient plot",
+      "statistical source and coordinate context"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target",
+      "data"
+    ]
+  },
+  "authoringRoles": [
+    "H1",
+    "H3"
+  ],
+  "wraps": [
+    "editSemantic",
+    "editXAxisTicks",
+    "editXAxisLabels",
+    "editXAxisTitle",
+    "editYAxisTicks",
+    "editYAxisLabels",
+    "editYAxisTitle",
+    "encodeStroke",
+    "encodeStrokeWidth",
+    "editGraphics"
+  ],
+  "editableVia": [
+    "editGradientPlot"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "width",
+      "unit": "band-fraction"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "data",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing gradient plot",
+      "statistical source and coordinate context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "data",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "x",
+      "required": false,
+      "type": "BoxPlotPositionChannel | undefined"
+    },
+    {
+      "name": "y",
+      "required": false,
+      "type": "BoxPlotPositionChannel | undefined"
+    },
+    {
+      "name": "density",
+      "required": false,
+      "type": "GradientPlotDensityOptions | undefined"
+    },
+    {
+      "name": "width",
+      "required": false,
+      "type": "{ band?: number | undefined; } | undefined"
+    },
+    {
+      "name": "gradient",
+      "required": false,
+      "type": "GradientPlotAppearanceOptions | undefined"
+    },
+    {
+      "name": "center",
+      "required": false,
+      "type": "false | GradientPlotCenterOptions | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editGradientPlot({ target?, data?, x?, y?, density?, width?, gradient?, center? })"
+  ],
+  "snippet": "program.editGradientPlot({ data: \"data-1\" })",
+  "errors": [],
+  "route": "/reference/actions/statistics/#editgradientplot"
+}

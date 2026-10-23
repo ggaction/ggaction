@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 3,
+  "name": "createGuides",
+  "layer": "user-facing",
+  "domain": "legend_and_title",
+  "summary": "Create applicable axes, grids, and legends; omitted branches infer applicability, false skips a branch, and explicit direction objects enable only named directions: axes:{x:false} requests neither axis while axes:{x:false,y:{}} requests y.",
+  "signature": "createGuides(options?: CreateGuidesOptions): ChartProgram;",
+  "intents": [
+    "create guides",
+    "create",
+    "add",
+    "legend or title",
+    "chart annotation",
+    "axes and legends",
+    "automatic guides"
+  ],
+  "lifecycle": "Aggregate create-only",
+  "resources": {
+    "prerequisites": [
+      "compatible scale or encoding context"
+    ],
+    "owns": [
+      "axes and legends"
+    ],
+    "idOptions": []
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "createAxes",
+    "createGrid",
+    "createLegend"
+  ],
+  "editableVia": [],
+  "supports": {
+    "entryPoints": [
+      "default",
+      "basic"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "compatible scale or encoding context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "axes",
+      "required": false,
+      "type": "false | CreateAxesOptions | undefined"
+    },
+    {
+      "name": "grid",
+      "required": false,
+      "type": "false | CreateGridOptions | undefined"
+    },
+    {
+      "name": "legend",
+      "required": false,
+      "type": "false | LegendOptions | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createGuides({ axes?, grid?, legend? })"
+  ],
+  "snippet": "program.createGuides({})",
+  "errors": [],
+  "route": "/reference/actions/guides/#createguides"
+}

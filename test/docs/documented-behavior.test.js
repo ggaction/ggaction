@@ -80,3 +80,32 @@ test("numeric lines, points with default radius, and bars with default width mat
   assert.equal(bars.graphicSpec.objects.bars.items.length, 2);
   assert.ok(bars.graphicSpec.objects.bars.items.every(item => item.properties.width > 0));
 });
+
+test("card preconditions distinguish constant encodings, title-only charts, and empty filtered results", async () => {
+  const { cards } = JSON.parse(await readFile(new URL("../../knowledge/action-cards.json", import.meta.url), "utf8"));
+  const card = name => cards.find(card => card.name === name);
+  const title = chart().createCanvas({ margin: { top: 80 } }).createTitle({ text: "A" }).editTitle({ text: "B" });
+  assert.equal(title.semanticSpec.scales.length, 0);
+  assert.ok(!card("editTitle").resources.prerequisites.some(item => /scale/.test(item)));
+  const colored = chart().createCanvas().createData({ values: [{}] }).createPointMark().encodeColor({ value: "red" });
+  assert.deepEqual(Object.keys(colored.semanticSpec.datasets[0].values[0]), []);
+  assert.ok(card("encodeColor").resources.prerequisites.some(item => item.includes("field mode:")));
+  const filtered = chart().createData({ values: [{ value: 1 }] }).filterData({ id: "none", field: "value", predicate: { op: "gt", value: 2 } });
+  assert.deepEqual(filtered.semanticSpec.datasets.at(-1).values, []);
+  assert.equal(card("filterData").completionRequirements.allowsEmpty, true);
+  assert.equal(card("filterMarks").completionRequirements.allowsEmpty, true);
+});
+
+test("documented defaults agree with point strokes, time-unit aliases, and quartile interpolation", () => {
+  const point = chart().createCanvas().createData({ values: [{ x: 1, y: 2 }] })
+    .createPointMark({ stroke: "red" }).encodeX({ field: "x" }).encodeY({ field: "y" });
+  assert.equal(point.graphicSpec.objects.point.items[0].properties.strokeWidth, 1);
+  const time = chart().createData({ values: [{ date: "2024-05-17T13:45:00Z" }] })
+    .createTimeUnitData({ id: "month", field: "date", unit: "month" });
+  assert.ok(Object.hasOwn(time.semanticSpec.datasets.at(-1).values[0], "date_month"));
+  const box = chart().createCanvas().createData({ values: [1, 2, 3, 4].map(value => ({ category: "A", value })) })
+    .createBoxPlot({ x: { field: "category", fieldType: "nominal" }, y: { field: "value" } });
+  const row = box.semanticSpec.datasets.find(data => data.id === "boxPlotSummaryData").values[0];
+  assert.ok(Object.values(row).includes(1.75));
+  assert.ok(Object.values(row).includes(3.25));
+});

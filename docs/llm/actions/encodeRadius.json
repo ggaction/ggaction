@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 3,
+  "name": "encodeRadius",
+  "layer": "user-facing",
+  "domain": "encodings",
+  "summary": "Apply a constant point radius.",
+  "signature": "encodeRadius(options: { value: number; target?: string }): ChartProgram;",
+  "intents": [
+    "encode radius",
+    "encode",
+    "map field",
+    "visual encoding",
+    "field mapping",
+    "radius",
+    "polar radius"
+  ],
+  "lifecycle": "Assignment",
+  "resources": {
+    "prerequisites": [
+      "target mark"
+    ],
+    "owns": [
+      "radius assignment"
+    ],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [],
+  "editableVia": [
+    "removeEncoding"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "target mark"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "value",
+      "required": true,
+      "type": "number"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    }
+  ],
+  "callPatterns": [
+    "encodeRadius({ value, target? })"
+  ],
+  "snippet": "program.encodeRadius({ value: 1 })",
+  "errors": [],
+  "route": "/reference/actions/encodings/#encoderadius"
+}

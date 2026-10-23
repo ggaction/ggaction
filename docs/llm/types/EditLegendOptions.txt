@@ -1,0 +1,20 @@
+export interface EditLegendOptions
+  extends Omit<LegendOptions, "title" | "values" | "titleStyle" | "direction" | "position" | "clipHeight" | "rowPadding" | "titlePadding"> {
+  clipHeight?: number | "auto";
+  /** auto removes the row policy and restores the retained itemGap behavior. */
+  rowPadding?: number | "auto";
+  /** auto removes the title/body spacing override. */
+  titlePadding?: number | "auto";
+  /** Select one existing block; cannot accompany channels. */
+  channel?: LegendChannel;
+  /** inherit is allowed only with a singular channel selector. */
+  position?: "right" | "left" | "bottom" | "top" | "top-left" | "top-right" | "bottom-left" | "bottom-right" | "inherit";
+  /** Gradient-only auto resets orientation. */
+  direction?: "horizontal" | "vertical" | "auto";
+  titleStyle?: LegendTitleStyleEditOptions;
+  /** Exact final content set for the whole target; omission preserves content. */
+  channels?: LegendOptions["channels"];
+  title?: string | "auto" | false;
+  /** Replace exact samples, or reset them to the remembered automatic count. */
+  values?: readonly number[] | "auto";
+}

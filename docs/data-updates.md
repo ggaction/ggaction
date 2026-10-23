@@ -9,6 +9,15 @@ Source dataset values are immutable after creation. `createData` copies and free
 caller-owned rows. Use `reviseData` to add a fresh source snapshot and update its
 dependent chart, or rebuild a program from application-owned rows.
 
+## Choose an update path
+
+| Change | Action or workflow | Prerequisite |
+| --- | --- | --- |
+| New rows with compatible fields | `reviseData({ source, id, values })` | Existing source ID and fresh revision ID; dependent transforms remain valid |
+| Field names, types, or chart topology change | Rebuild from application-owned rows | Update affected encodings and transform definitions together |
+| Transform parameters change | The owning `edit*Data` action | Existing logical transform ID and valid options |
+| One mark should use independent data | `createData` then the mark's data editor | Explicit target and a compatible replacement schema |
+
 ## Revise a source and its dependent chart
 
 `reviseData({ source, id, values })` is a Full-entry action. Both IDs are required:
@@ -120,10 +129,7 @@ new schema or intended chart structure requires a different authoring flow.
 ## Derived data
 
 Derived datasets record one normalized transform and source provenance.
-Higher-level materializers create concrete derived values. When source rows
-change, recreate both source and derived datasets in the new program. Editing
-a derived transform revises the transform against the existing immutable
-source snapshot only.
+Higher-level materializers create concrete derived values. For compatible source updates, `reviseData` replays dependent transforms and rematerializes consumers in a new snapshot. Rebuild explicitly when changing the schema or topology beyond its contract. Use a focused transform editor to change its configuration, or `bindMarkData` to attach an independent dataset. Earlier snapshots remain immutable.
 
 ## Save and restore snapshots
 

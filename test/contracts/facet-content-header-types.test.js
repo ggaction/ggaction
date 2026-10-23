@@ -1,3 +1,4 @@
+import { compileTypeScript } from "../support/typescript.js";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { mkdtemp, writeFile, rm } from "node:fs/promises";
@@ -21,6 +22,16 @@ p.facetGrid({rows:{field:'row'},columns:{field:'group'},spacing:'plot',headers:{
 p.repeatCharts({channel:'y',fields:['a','b'],spacing:'plot',headers});
 p.editFacetHeaders({role:'column',anchor:'content'});
 p.editFacetHeaders({anchor:'plot'});
+p.facet({field:'group',spacing:'content',headers:{anchor:'view'},guides:{axes:{x:'outer'}}});
+p.editFacetGuides({axes:{y:'each'}});
+p.editCompositionLayout({spacing:'content'});
+p.repeatCharts({channel:'y',fields:['a','b'],spacing:'content',headers:{anchor:'view'}});
+// @ts-expect-error keyed grids retain aligned tracks
+p.facetGrid({rows:{field:'row'},columns:{field:'group'},spacing:'content'});
+// @ts-expect-error axis channel vocabulary is closed
+p.editFacetGuides({axes:{theta:'outer'}});
+// @ts-expect-error axis mode vocabulary is closed
+p.editFacetGuides({axes:{x:'shared'}});
 // @ts-expect-error closed anchor values
 p.editFacetHeaders({anchor:'marks'});
 // @ts-expect-error no automatic sentinel
@@ -30,7 +41,7 @@ p.editFacetHeaders({role:'column',title:{text:'Group',anchor:'content'}});
 // @ts-expect-error Basic retains composition exclusion
 basic.editFacetHeaders({anchor:'content'});
 `);
-    const result = spawnSync(path.join(root, "node_modules/.bin/tsc"), ["--noEmit", "--strict", "--skipLibCheck", "--target", "ES2022", "--module", "NodeNext", "--moduleResolution", "NodeNext", file], { cwd: root, encoding: "utf8" });
+    const result = compileTypeScript(["--noEmit", "--strict", "--skipLibCheck", "--target", "ES2022", "--module", "NodeNext", "--moduleResolution", "NodeNext", file], { cwd: root, encoding: "utf8" });
     assert.equal(result.status, 0, result.stdout + result.stderr);
   } finally { await rm(directory, { recursive: true, force: true }); }
 });

@@ -1,0 +1,6 @@
+export interface BinDataOutputFields {
+  lower?: string;
+  upper?: string;
+  count?: string;
+  members?: string;
+}

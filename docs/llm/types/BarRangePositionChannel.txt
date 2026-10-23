@@ -1,0 +1,9 @@
+export type BarRangePositionChannel = {
+  lower: string;
+  upper: string;
+  fieldType?: "quantitative";
+  scale?: NonPointZeroSupportingPositionScaleOptions;
+  field?: never;
+  aggregate?: never;
+  stack?: never;
+};

@@ -1,0 +1,8 @@
+export type CompleteDataOptions = CompleteDataBaseOptions & (
+  | { values: readonly [DatasetScalar, ...DatasetScalar[]]; sequence?: never }
+  | {
+      values?: never;
+      sequence: { start: number; end: number; step: number };
+    }
+  | { values?: never; sequence?: never }
+);

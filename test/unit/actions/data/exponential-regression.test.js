@@ -85,7 +85,7 @@ test("exponential facades suppress bands, support transitions and remain rendere
   assert.deepEqual(deserializeProgram(serializeProgram(again)).graphicSpec, again.graphicSpec);
   const context = createCanvas(500, 350).getContext("2d");
   render(again, context);
-  assert.ok(context.getImageData(0, 0, 500, 350).data.some((byte, i) => i % 4 !== 3 && byte < 200));
+  assert.ok(context.getImageData(0, 0, 500, 350).data.some((byte, i, pixels) => i % 4 !== 3 && byte < 200 && pixels[i - i % 4 + 3] > 0));
   assert.match(renderToSVG(again), /<path/);
   const updated = again.reviseData({ source: "raw", id: "newRows", values: rows.map(row => ({ ...row, y: row.y * 2 })) });
   assert.deepEqual(updated.semanticSpec.datasets.find(dataset => dataset.id === "raw").values, rows);

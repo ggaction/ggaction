@@ -18,7 +18,10 @@ files, make network requests, or collect telemetry.
 A fixed 576-run evaluation compared public-documentation browsing with
 MCP-first authoring plus bounded fallback across Terra, Luna, and Nano. Each
 model-condition cell contains 48 observations from the same 24 tasks and two
-repetitions.
+repetitions. The experiment completed on 2026-08-10 using `gpt-5.6-terra`,
+`gpt-5.6-luna`, and `gpt-5.4-nano`, with four knowledge conditions and product
+candidate `4e211ba418cd437d7c66c4fb986fcc714cf579ea`. It is a historical measurement,
+not a rerun of the current documentation version.
 
 ![Strict success, tokens, and model calls for Docs only and MCP with fallback across Terra, Luna, and Nano](./assets/images/readme-mcp-benefits.svg)
 
@@ -227,9 +230,9 @@ owners such as Box and Gradient plots that still need compatible position roles
 before geometry exists.
 The complete LLM bundle also publishes a
 [`manifest`](./llms-manifest.json) and
-[`manifest schema`](./schemas/llms-manifest.schema.json). Use artifacts from
-the same `packageVersion`; the local installed files remain authoritative for
-an installed MCP process.
+[`manifest schema`](./schemas/llms-manifest.schema.json). Use the [selective artifact identity manifest](./llm/index.json) to match the
+contract fingerprint and file hashes. `packageVersion` alone cannot distinguish
+branches; the local installed files remain authoritative for an installed MCP process.
 
 ## What the server does not provide
 
@@ -242,6 +245,10 @@ an installed MCP process.
 Use the [complete action reference](./reference/actions.md) manually when a
 human needs the full contract. For normal model-assisted authoring, start with
 the one search call and add documentation only for explicit gaps.
+
+## Long requests and execution recovery
+
+Each query is limited to 500 characters. Preserve the full user request in the host, split longer requests into bounded tasks, and track every requirement across packets. A resolved packet is not an execution guarantee. If execution fails, inspect `ggaction/diagnostics`, retain the prior program, and consult the exact action/type and public recovery guide. The MCP fallback URI allowlist still applies; external public-documentation access is a separate host capability. Never drop requirements to fit the query limit.
 
 ## Related
 

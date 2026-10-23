@@ -1,0 +1,6 @@
+export interface CreateGridOptions {
+  horizontal?: boolean | GridDirectionOptions;
+  vertical?: boolean | GridDirectionOptions;
+  theta?: boolean | PolarGridOptions;
+  radial?: boolean | PolarGridOptions;
+}

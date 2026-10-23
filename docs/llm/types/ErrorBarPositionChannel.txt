@@ -1,0 +1,15 @@
+export type ErrorBarPositionChannel = { field?: string } & (
+  | {
+      fieldType?: "nominal" | "ordinal";
+      scale?: NonPointCategoricalPositionScaleOptions;
+    }
+  | {
+      fieldType: "temporal";
+      temporalUnit?: TemporalInputUnit;
+      scale?: NonPointTemporalPositionScaleOptions;
+    }
+  | {
+      fieldType: "quantitative";
+      scale?: NonPointQuantitativePositionScaleOptions;
+    }
+);

@@ -1,0 +1,1 @@
+export type NormalizeZeroDenominator = "error" | "null" | "zero";

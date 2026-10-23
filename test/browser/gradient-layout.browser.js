@@ -1,3 +1,4 @@
+import { saveBrowserEvidence } from "../support/browser.js";
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import {mkdtemp,writeFile,rm} from 'node:fs/promises';
@@ -39,5 +40,5 @@ test('browser gradient strips preserve independent orientation and dimensions at
   });
   for(const result of actual){assert.equal(result.exact,true,JSON.stringify(result));assert.ok(result.ink>100);}
   assertNoBrowserErrors(opened.errors,'gradient layout');await page.close();
- }finally{await closeBrowserWithEvidence(browser);await server?.close();await rm(directory,{recursive:true,force:true});}
+ } catch (error) { await saveBrowserEvidence(browser, error); throw error; }finally{await closeBrowserWithEvidence(browser);await server?.close();await rm(directory,{recursive:true,force:true});}
 });

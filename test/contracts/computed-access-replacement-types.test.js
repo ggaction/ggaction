@@ -1,3 +1,4 @@
+import { compileTypeScript } from "../support/typescript.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { mkdtemp, writeFile, rm } from "node:fs/promises";
@@ -30,7 +31,7 @@ const regex:ComputedExpression={op:'replaceLiteral',operand:{field:'text'},searc
 // @ts-expect-error unknown flags are unsupported
 const flags:ComputedExpression={op:'replaceLiteral',operand:{field:'text'},search:'%',replacement:'',flags:'g'};
 `);
-    const result = spawnSync(path.join(root, "node_modules/.bin/tsc"), ["--noEmit", "--strict", "--skipLibCheck", "--target", "ES2022", "--module", "NodeNext", "--moduleResolution", "NodeNext", file], { cwd: root, encoding: "utf8" });
+    const result = compileTypeScript(["--noEmit", "--strict", "--skipLibCheck", "--target", "ES2022", "--module", "NodeNext", "--moduleResolution", "NodeNext", file], { cwd: root, encoding: "utf8" });
     assert.equal(result.status, 0, result.stdout + result.stderr);
   } finally { await rm(dir, { recursive: true, force: true }); }
 });

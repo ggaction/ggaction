@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 3,
+  "name": "bindMarkData",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Atomically connect one independent mark to an existing materialized dataset.",
+  "signature": "bindMarkData(options: BindMarkDataOptions): ChartProgram;",
+  "intents": [
+    "bind mark data",
+    "bind",
+    "connect data",
+    "chart setup",
+    "data and scales",
+    "mark data binding",
+    "change mark dataset"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "source dataset"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target",
+      "data"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [],
+  "editableVia": [
+    "bindMarkData"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit"
+    },
+    {
+      "input": "data",
+      "strategy": "explicit"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "source dataset"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "data",
+      "required": true,
+      "type": "string"
+    }
+  ],
+  "callPatterns": [
+    "bindMarkData({ target, data })"
+  ],
+  "snippet": "program.bindMarkData({ target: \"mark-1\", data: \"data-1\" })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#bindmarkdata"
+}

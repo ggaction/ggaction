@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 3,
+  "name": "editMarkLabelPlacement",
+  "layer": "user-facing",
+  "domain": "marks",
+  "summary": "Replace semantic placement for one attached label layer.",
+  "signature": "editMarkLabelPlacement(options: EditMarkLabelPlacementOptions): ChartProgram;",
+  "intents": [
+    "edit mark label placement",
+    "edit",
+    "change",
+    "graphical mark",
+    "mark appearance",
+    "semantic mark label placement",
+    "inside or outside label anchors"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "attached label with a supported source geometry"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [],
+  "editableVia": [
+    "editMarkLabelPlacement",
+    "removeMarkLabels"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "placement.gap",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "placement.leader.strokeWidth",
+      "unit": "logical-pixel"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit"
+    },
+    {
+      "input": "placement",
+      "strategy": "documented-auto"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "attached label with a supported source geometry"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "placement",
+      "required": true,
+      "type": "\"auto\" | MarkLabelPlacement"
+    }
+  ],
+  "callPatterns": [
+    "editMarkLabelPlacement({ target, placement: anchor policy | auto })"
+  ],
+  "snippet": "program.editMarkLabelPlacement({ target: \"labels\", placement: { anchor: \"outsideEnd\", gap: 4 } })",
+  "errors": [],
+  "route": "/reference/actions/marks/#editmarklabelplacement"
+}

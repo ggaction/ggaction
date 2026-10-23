@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 3,
+  "name": "createRadialAxisLine",
+  "layer": "user-facing",
+  "domain": "axes",
+  "summary": "Create missing radial-axis line independently of the other components.",
+  "signature": "createRadialAxisLine(options?: CreateRadialAxisLineOptions): ChartProgram;",
+  "intents": [
+    "create radial axis line",
+    "create",
+    "add",
+    "axis guide",
+    "scale annotation",
+    "radial-axis line",
+    "polar baseline"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "compatible scale or encoding context"
+    ],
+    "owns": [
+      "radial-axis line"
+    ],
+    "idOptions": [
+      "scale",
+      "coordinate"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editSemantic",
+    "createGraphics",
+    "editRadialAxisLine"
+  ],
+  "editableVia": [
+    "editRadialAxisLine"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "lineWidth",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "angle",
+      "unit": "degree"
+    }
+  ],
+  "inference": [
+    {
+      "input": "scale",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "compatible scale or encoding context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "color",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "lineWidth",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "scale",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "angle",
+      "required": false,
+      "type": "number | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createRadialAxisLine({ scale?, coordinate?, color?, lineWidth?, angle? })"
+  ],
+  "snippet": "program.createRadialAxisLine({})",
+  "errors": [],
+  "route": "/reference/actions/guides/#createradialaxisline"
+}

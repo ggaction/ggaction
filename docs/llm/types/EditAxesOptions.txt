@@ -1,0 +1,7 @@
+export interface EditAxesOptions {
+  x?: false | EditAxisOptions<XAxisPosition> | readonly [EditAxisOptions<XAxisPosition> & { target: string }, ...(EditAxisOptions<XAxisPosition> & { target: string })[]];
+  y?: false | EditAxisOptions<YAxisPosition> | readonly [EditAxisOptions<YAxisPosition> & { target: string }, ...(EditAxisOptions<YAxisPosition> & { target: string })[]];
+  theta?: false | EditThetaAxisOptions;
+  radius?: false | EditRadialAxisOptions;
+  parallel?: false | EditParallelAxisOptions | readonly [EditParallelAxisOptions, ...EditParallelAxisOptions[]];
+}

@@ -1,0 +1,15 @@
+export interface FacetScaleResolutions {
+  x?: FacetScaleResolution;
+  y?: FacetScaleResolution;
+  xOffset?: FacetScaleResolution;
+  yOffset?: FacetScaleResolution;
+  theta?: FacetScaleResolution;
+  r?: FacetScaleResolution;
+  color?: FacetScaleResolution;
+  stroke?: FacetScaleResolution;
+  size?: FacetScaleResolution;
+  shape?: FacetScaleResolution;
+  opacity?: FacetScaleResolution;
+  strokeDash?: FacetScaleResolution;
+  parallelDimensions?: FacetScaleResolution;
+}

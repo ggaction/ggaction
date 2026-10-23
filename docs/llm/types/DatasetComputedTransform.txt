@@ -1,0 +1,5 @@
+export interface DatasetComputedTransform {
+  readonly type: "computed";
+  readonly as: string;
+  readonly expression: ComputedExpression;
+}

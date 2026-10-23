@@ -1,0 +1,23 @@
+export interface CreateScatterPlotOptions {
+  /** Forward the native mark missing-value policy. */
+  missing?: "error" | "skip";
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  x: PointFacadePositionChannel;
+  y: PointFacadePositionChannel;
+  color?: BasicColorChannel;
+  stroke?: string | WithoutEncodingTarget<Extract<StrokeEncodingOptions, { field: string }>>;
+  size?: BasicSizeChannel;
+  shape?: BasicShapeChannel;
+  point?: StrokeStyleDetails & {
+    clip?: boolean;
+    radius?: number;
+    shape?: PointShape;
+    fill?: string;
+    opacity?: number;
+    stroke?: FilledMarkStroke;
+    strokeWidth?: number;
+  };
+  guides?: false | CartesianGuideOptions;
+}

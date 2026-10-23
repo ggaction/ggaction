@@ -1,0 +1,6 @@
+type FocusedWeightedDerivedDataEdit<T, Weight> = {
+  target: string;
+  dependents?: DerivedDataDependents;
+} & (T extends unknown
+  ? Omit<FocusedDerivedDataPatch<T>, "weight"> & { weight?: Weight | false }
+  : never);

@@ -1,0 +1,8 @@
+export type NonPointTemporalPositionScaleOptions = ScaleFields<
+  "id" | "clamp" | "reverse"
+> & {
+  type?: "time";
+  nice?: boolean;
+  domain?: "auto" | readonly [number, number];
+  range?: "auto" | readonly [number, number];
+};

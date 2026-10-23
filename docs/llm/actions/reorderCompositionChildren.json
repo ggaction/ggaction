@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 3,
+  "name": "reorderCompositionChildren",
+  "layer": "user-facing",
+  "domain": "composition",
+  "summary": "Provide every current concat child ID exactly once in its new order.",
+  "signature": "reorderCompositionChildren(options: ReorderCompositionChildrenOptions): ChartProgram;",
+  "intents": [
+    "reorder composition children",
+    "edit",
+    "change",
+    "chart composition",
+    "small multiples",
+    "composition child order",
+    "reorder chart slots"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing composition child order",
+      "complete child chart program"
+    ],
+    "owns": [],
+    "idOptions": []
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [],
+  "editableVia": [],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing composition child order",
+      "complete child chart program"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "order",
+      "required": true,
+      "type": "readonly [string, ...string[]]"
+    }
+  ],
+  "callPatterns": [
+    "reorderCompositionChildren({ order })"
+  ],
+  "snippet": "program.reorderCompositionChildren({ order: [\"detail\", \"overview\"] })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#reordercompositionchildren"
+}

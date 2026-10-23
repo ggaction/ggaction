@@ -1,0 +1,30 @@
+export interface DatasetHorizonTransform {
+  readonly type: "horizon";
+  readonly x: { readonly field: string } & (
+    | { readonly fieldType: "quantitative"; readonly temporalUnit?: never }
+    | { readonly fieldType: "temporal"; readonly temporalUnit?: TemporalInputUnit }
+  );
+  readonly y: {
+    readonly field: string;
+    readonly fieldType: "quantitative";
+  };
+  readonly groupBy?: string;
+  readonly bands: number;
+  readonly baseline: number;
+  readonly extent: "auto" | number;
+  readonly resolve: HorizonResolution;
+  readonly missing: HorizonMissingPolicy;
+  readonly overflow: HorizonOverflowPolicy;
+  readonly palette: {
+    readonly positive: Readonly<Exclude<Palette, string>>;
+    readonly negative: Readonly<Exclude<Palette, string>>;
+  };
+  readonly as: HorizonOutputFields;
+  readonly resolved?: {
+    readonly extents: readonly {
+      readonly group?: DatasetScalar;
+      readonly extent: number;
+      readonly bandHeight: number;
+    }[];
+  };
+}

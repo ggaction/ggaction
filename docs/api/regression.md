@@ -11,6 +11,15 @@ title: Regression
 existing quantitative point mark. Linear and polynomial fits can include mean
 or prediction interval bands; LOESS is line-only.
 
+Use `createRegression({ placement: "plot-last" })` to paint the band and then the
+fit after existing plot marks. The default keeps the band before its source points
+and the fit immediately after them. Both policies preserve grid underlays and axis
+or frame overlays. `editRegression({ placement: "source" })` restores source
+attachment; omission retains the current policy through model/data edits and saved
+programs. Later independently authored marks follow ordinary authoring order;
+editing a plot-last regression reapplies its placement. `createRegressionPlot`
+accepts the same option.
+
 ## At a glance
 
 | Action | Required decision | Inferred or default behavior |
@@ -59,6 +68,7 @@ program.createRegression({
 
 | Option | Type | Default |
 | --- | --- | --- |
+| `placement` | `"source"` or `"plot-last"` | `"source"` |
 | `target` | eligible point mark ID | inferred |
 | `x`, `y` | quantitative field names | target x/y fields |
 | `groupBy` | nominal field name or `false` (legacy explicit `undefined` also supported) | unique color/shape field |
@@ -69,7 +79,7 @@ program.createRegression({
 | `confidenceMethod` | `"normal"` or `"student-t"` | `"student-t"` |
 | `level` | number strictly between `0` and `1` | `0.95` |
 | `confidence` | compatibility alias for `level`; must match it when both appear | omitted |
-| `interval` | `"mean"` or `"prediction"` | `"mean"` |
+| `interval` | `"mean"`, `"prediction"`, or `false` | `"mean"` |
 | `predict` | `{ values }` or `{ domain, steps }` | observed unique x values |
 | `missing` | `"error"` or `"drop"` | compatibility behavior when omitted |
 | `sourceBinding` | `"fixed"` or `"follow"` | `"fixed"` |

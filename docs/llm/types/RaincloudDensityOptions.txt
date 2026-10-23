@@ -1,0 +1,4 @@
+export interface RaincloudDensityOptions extends GradientPlotDensityOptions {
+  width?: DensityPlacementWidth;
+  area?: ViolinPlotAreaOptions;
+}

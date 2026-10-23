@@ -1,0 +1,9 @@
+type NormalizeBaselineOptions =
+  | {
+      baseline?: { position: "first" | "last" };
+      sortBy: readonly [WindowSort, ...WindowSort[]];
+    }
+  | {
+      baseline: { value: number };
+      sortBy?: readonly WindowSort[];
+    };

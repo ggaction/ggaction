@@ -1,0 +1,3 @@
+type FocusedDerivedDataPatch<T> = T extends unknown
+  ? Partial<Omit<T, "id" | "source">>
+  : never;

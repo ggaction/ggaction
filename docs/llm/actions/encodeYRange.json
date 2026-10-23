@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 3,
+  "name": "encodeYRange",
+  "layer": "user-facing",
+  "domain": "encodings",
+  "summary": "Atomically compose area or ranged-bar encodeY and encodeY2.",
+  "signature": "encodeYRange(options: RangePositionEncodingOptions): ChartProgram;",
+  "intents": [
+    "encode y range",
+    "encode",
+    "map field",
+    "visual encoding",
+    "field mapping",
+    "y interval",
+    "vertical range"
+  ],
+  "lifecycle": "Assignment",
+  "resources": {
+    "prerequisites": [
+      "target mark"
+    ],
+    "owns": [
+      "y interval assignment"
+    ],
+    "idOptions": [
+      "target",
+      "coordinate",
+      "scale"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editSemantic",
+    "encodeY",
+    "encodeY2"
+  ],
+  "editableVia": [
+    "removeEncoding"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "temporalUnit",
+      "unit": "temporal-input"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "scale",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "target mark"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "lower",
+      "required": true,
+      "type": "string | { datum: number; }"
+    },
+    {
+      "name": "upper",
+      "required": true,
+      "type": "string | { datum: number; }"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "fieldType",
+      "required": false,
+      "type": "\"quantitative\" | \"temporal\" | undefined"
+    },
+    {
+      "name": "temporalUnit",
+      "required": false,
+      "type": "TemporalInputUnit | undefined"
+    },
+    {
+      "name": "scale",
+      "required": false,
+      "type": "NonPointQuantitativePositionScaleOptions | NonPointTemporalPositionScaleOptions | undefined"
+    }
+  ],
+  "callPatterns": [
+    "encodeYRange({ lower, upper, target?, coordinate?, scale?, fieldType?, temporalUnit? })"
+  ],
+  "snippet": "program.encodeYRange({ lower: \"lower\", upper: \"upper\" })",
+  "errors": [],
+  "route": "/reference/actions/encodings/#encodeyrange"
+}

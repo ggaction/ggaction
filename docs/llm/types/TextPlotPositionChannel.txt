@@ -1,0 +1,7 @@
+type TextPlotPositionChannel =
+  | string
+  | ({ field: string } & PositionScaleBranches<
+      NonPointQuantitativePositionScaleOptions,
+      NonPointTemporalPositionScaleOptions,
+      NonPointCategoricalPositionScaleOptions>)
+  | WithoutEncodingTarget<Extract<DatumPositionEncodingOptions, { datum: unknown }>> & { coordinate?: never };

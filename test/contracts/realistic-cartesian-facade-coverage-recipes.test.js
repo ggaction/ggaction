@@ -31,14 +31,14 @@ const ACTIONS = new Set(REALISTIC_CARTESIAN_FACADE_COVERAGE_EXPECTED_ACTIONS);
 const EXPECTED_TARGETS = Object.freeze({
   createScatterPlot: Object.freeze({ requirements: 598, diversity: 14 }),
   createBarPlot: Object.freeze({ requirements: 541, diversity: 11 }),
-  createLinePlot: Object.freeze({ requirements: 460, diversity: 8 }),
+  createLinePlot: Object.freeze({ requirements: 461, diversity: 8 }),
   createParallelCoordinates: Object.freeze({ requirements: 145, diversity: 5 })
 });
 const EXPECTED_REQUIREMENT_DIGESTS = Object.freeze({
   // Locked after public declarations match the runtime-supported facade branches.
   createScatterPlot: "2734d2ee850cb5ad02242f1b5eabf3331f49dadd40f940f49703277132df098c",
   createBarPlot: "c6c3a2043d0309482adda2a60d34a955c564a247876eb2f12271ad1149a7c8a5",
-  createLinePlot: "7764377653a119fbe84e86d28a1342b716354692fbae2b667b40b913a66267d1",
+  createLinePlot: "f825d3e1caeac39f2574a61e1df244e7008f0dde6b3e58a1ef5839cfd2468a2a",
   createParallelCoordinates: "dd687aadf208a582f00997f78518ebb4b38e5ecaf13b8e05f4764169788c4b15"
 });
 const EXPECTED_DIVERSITY_DIGESTS = Object.freeze({
@@ -720,9 +720,9 @@ test("locks the exact assigned option, literal, aggregate, and diversity target 
     actionRequirementCount += requirementIds.length;
     diversityCount += diversityIds.length;
   }
-  assert.equal(actionRequirementCount, 1744);
+  assert.equal(actionRequirementCount, 1745);
   assert.equal(target.familyLiterals.length, 15);
-  assert.equal(actionRequirementCount + target.familyLiterals.length, 1759);
+  assert.equal(actionRequirementCount + target.familyLiterals.length, 1760);
   assert.equal(diversityCount, 38);
 });
 

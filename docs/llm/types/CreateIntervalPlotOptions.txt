@@ -1,0 +1,10 @@
+export type CreateIntervalPlotOptions = IntervalPlotBaseOptions & (
+  | {
+      x: string | ErrorBarPositionChannel;
+      y: string | ErrorBarIntervalChannel;
+    }
+  | {
+      x: string | ErrorBarIntervalChannel;
+      y: string | ErrorBarPositionChannel;
+    }
+);

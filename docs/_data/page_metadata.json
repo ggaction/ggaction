@@ -1,704 +1,1004 @@
 {
   "/": {
     "title": "ggaction",
+    "source": "docs/index.md",
+    "editSource": "docs/index.md",
     "description": "Most visualization grammars describe a finished chart. ggaction represents chart authoring itself as an immutable, traceable sequence of graphical actions."
   },
   "/getting-started/": {
     "title": "Getting Started",
+    "source": "docs/getting-started.md",
+    "editSource": "docs/getting-started.md",
     "description": "This walkthrough installs ggaction, creates a complete scatterplot from an inline dataset, and renders it to Browser Canvas.",
     "image": "/assets/images/getting-started.png"
   },
   "/mcp/": {
     "title": "Local MCP for LLM Chart Authoring",
+    "source": "docs/mcp.md",
+    "editSource": "docs/mcp.md",
     "description": "The ggaction package includes a local, read only MCP server that helps a language model choose current actions and syntax valid call templates without preloading the complete…"
   },
   "/llm-authoring/": {
     "title": "LLM Chart Authoring Contract",
+    "source": "docs/llm-authoring.md",
+    "editSource": "docs/llm-authoring.md",
     "description": "\"A bounded public contract for complete ggaction programs: exact Canvas and data bootstrap, common histogram and regression tasks, renderers, canonical limitation IDs, and open decisions.\""
   },
   "/tutorials/": {
     "title": "Tutorials",
+    "source": "docs/tutorials/index.md",
+    "editSource": "docs/tutorials/index.md",
     "description": "Tutorials build complete, runnable charts and explain what each action adds. Choose the visual relationship that matches the question you want to answer."
   },
   "/tutorials/scatterplot/": {
     "title": "Scatterplot Tutorial",
+    "source": "docs/tutorials/scatterplot.md",
+    "editSource": "docs/tutorials/scatterplot.md",
     "description": "This tutorial uses the public npm package. The repository also contains a runnable browser example and its canonical program."
   },
   "/tutorials/polar-points/": {
     "title": "Polar Point Tutorial",
+    "source": "docs/tutorials/polar-points.md",
+    "editSource": "docs/tutorials/polar-points.md",
     "description": "This tutorial maps car acceleration to angle, horsepower to distance from the center, and origin to color.",
     "image": "/assets/images/cars-polar-scatterplot.png"
   },
   "/tutorials/polar-lines/": {
     "title": "Polar Line and Radar Tutorial",
+    "source": "docs/tutorials/polar-lines.md",
+    "editSource": "docs/tutorials/polar-lines.md",
     "description": "Polar line marks use the same encodeTheta and encodeR actions as Polar points. The line stays open by default; closed: true turns each grouped series into a radar path.",
     "image": "/assets/images/gapminder-polar-trends.png"
   },
   "/tutorials/polar-arcs/": {
     "title": "Polar Arc Tutorial",
+    "source": "docs/tutorials/polar-arcs.md",
+    "editSource": "docs/tutorials/polar-arcs.md",
     "description": "Arc marks turn Polar positions into closed sector paths. Map a quantitative theta field directly to proportional sectors, aggregate categorical theta by count or weighted sum, or…",
     "image": "/assets/images/pie-plot.png"
   },
   "/tutorials/line-chart/": {
     "title": "Line Chart Tutorial",
+    "source": "docs/tutorials/line-chart.md",
+    "editSource": "docs/tutorials/line-chart.md",
     "description": "This chart shows mean acceleration over time for each origin. The complete module below uses the public npm package."
   },
   "/tutorials/histogram/": {
     "title": "Histogram Tutorial",
+    "source": "docs/tutorials/histogram.md",
+    "editSource": "docs/tutorials/histogram.md",
     "description": "This chart bins car displacement, counts the rows in each bin, and stacks those counts by origin. The complete module uses the public npm package."
   },
   "/tutorials/grouped-bar/": {
     "title": "Bar Chart Tutorial",
+    "source": "docs/tutorials/grouped-bar.md",
+    "editSource": "docs/tutorials/grouped-bar.md",
     "description": "This tutorial uses a grouped bar chart as one concrete bar chart layout. It aggregates job percentages by year and places the mean for men and women side by side."
   },
   "/tutorials/regression-scatterplot/": {
     "title": "Regression Scatterplot Tutorial",
+    "source": "docs/tutorials/regression-scatterplot.md",
+    "editSource": "docs/tutorials/regression-scatterplot.md",
     "description": "This tutorial filters the cars dataset to Japan and the USA, maps point size to Acceleration and point color/shape to Origin, then adds one linear fit and 95% mean response…"
   },
   "/tutorials/area-layout/": {
     "title": "Area and Series Layout",
+    "source": "docs/tutorials/area-layout.md",
+    "editSource": "examples/area-layout/program.js",
     "description": "An area measures the space between a value and a baseline, or between two explicit bounds.",
     "image": "/assets/images/area-layout.png"
   },
   "/tutorials/density-area/": {
     "title": "Density Area Tutorial",
+    "source": "docs/tutorials/density-area.md",
+    "editSource": "docs/tutorials/density-area.md",
     "description": "Use createDensityPlot to complete a density chart in one action:",
     "image": "/assets/images/density-plot.png"
   },
   "/tutorials/horizon/": {
     "title": "Horizon Chart Tutorial",
+    "source": "docs/tutorials/horizon.md",
+    "editSource": "docs/tutorials/horizon.md",
     "description": "Use createHorizonPlot to author signed bands and the original x axis in one action:",
     "image": "/assets/images/horizon-plot.png"
   },
   "/tutorials/error-bar/": {
     "title": "Error Bar Tutorial",
+    "source": "docs/tutorials/error-bar.md",
+    "editSource": "docs/tutorials/error-bar.md",
     "description": "This chart keeps individual car observations visible while summarizing acceleration by Origin."
   },
   "/tutorials/error-band/": {
     "title": "Error Band Tutorial",
+    "source": "docs/tutorials/error-band.md",
+    "editSource": "docs/tutorials/error-band.md",
     "description": "This chart summarizes life expectancy over time for each Gapminder cluster."
   },
   "/tutorials/mark-selection/": {
     "title": "Mark Selection Tutorial",
+    "source": "docs/tutorials/mark-selection.md",
+    "editSource": "examples/mark-selection/program.js",
     "description": "Select final visual items by data field, semantic channel, or concrete graphic property, then filter, reuse, or highlight that selection."
   },
   "/tutorials/endpoint-plots/": {
     "title": "Dot, Lollipop, and Dumbbell Plots",
+    "source": "docs/tutorials/endpoint-plots.md",
+    "editSource": "examples/dumbbell-plot/program.js",
     "description": "These three Full entry actions share one categorical endpoint model. Each starts from immutable rows and produces ordinary point and rule children, so existing mark, scale, label,…",
     "image": "/assets/images/dumbbell-plot.png"
   },
   "/tutorials/ecdf/": {
     "title": "Empirical Cumulative Distribution Plots",
+    "source": "docs/tutorials/ecdf.md",
+    "editSource": "examples/ecdf-plot/program.js",
     "description": "An empirical cumulative distribution function answers: “What share of the observations is less than or equal to this value?” createECDFPlot owns that statistical definition and…",
     "image": "/assets/images/ecdf-plot.png"
   },
   "/recipes/": {
     "title": "Chart Recipes",
+    "source": "docs/recipes/index.md",
+    "editSource": "docs/recipes/index.md",
     "description": "Use a recipe when you know the chart type and want the shortest supported action flow."
   },
   "/recipes/scatterplot/": {
     "title": "Scatterplot Recipe",
+    "source": "docs/recipes/scatterplot.md",
+    "editSource": "docs/recipes/scatterplot.md",
     "description": "Add color: \"group\", size: \"amount\", or shape: \"category\" to the same call for field driven appearance. The default point radius is 3.",
     "image": "/assets/images/cars-scatterplot.png"
   },
   "/recipes/line-chart/": {
     "title": "Line Chart Recipe",
+    "source": "docs/recipes/line-chart.md",
+    "editSource": "docs/recipes/line-chart.md",
     "description": "For multiple series, add color: \"group\", groupBy: \"group\", or strokeDash: { field: \"group\" } to the facade call.",
     "image": "/assets/images/cars-line-chart.png"
   },
   "/recipes/histogram/": {
     "title": "Histogram Recipe",
+    "source": "docs/recipes/histogram.md",
+    "editSource": "docs/recipes/histogram.md",
     "description": "Add color: { field: \"group\", layout: \"stack\" } to the createHistogram options.",
     "image": "/assets/images/cars-histogram.png"
   },
   "/recipes/bar-chart/": {
     "title": "Bar Chart Recipe",
+    "source": "docs/recipes/bar-chart.md",
+    "editSource": "docs/recipes/bar-chart.md",
     "description": "The current complete bar chart example uses grouped bars. Grouping is a layout choice inside the bar chart, not a separate top level chart type.",
     "image": "/assets/images/jobs-grouped-bar.png"
   },
   "/recipes/heatmap/": {
     "title": "Heatmap Recipe",
+    "source": "docs/recipes/heatmap.md",
+    "editSource": "docs/recipes/heatmap.md",
     "description": "This mode derives rectangular x/y bounds and a count for each cell. It emits the complete grid by default, including zero count cells.",
     "image": "/assets/images/gapminder-life-expectancy-heatmap.png"
   },
   "/recipes/regression-scatterplot/": {
     "title": "Regression Scatterplot Recipe",
+    "source": "docs/recipes/regression-scatterplot.md",
+    "editSource": "docs/recipes/regression-scatterplot.md",
     "description": "Use this pattern to layer grouped linear fits and mean response confidence bands over a point chart.",
     "image": "/assets/images/cars-regression-scatterplot.png"
   },
   "/recipes/density-area/": {
     "title": "Density Area Recipe",
+    "source": "docs/recipes/density-area.md",
+    "editSource": "docs/recipes/density-area.md",
     "description": "Use createGuides({ grid: { horizontal: {}, vertical: {} } }) for both grid directions.",
     "image": "/assets/images/cars-density-area.png"
   },
   "/recipes/horizon/": {
     "title": "Horizon Chart Recipe",
+    "source": "docs/recipes/horizon.md",
+    "editSource": "docs/recipes/horizon.md",
     "description": "values contains finite numeric value and ordered numeric or ISO date time values, with one observation per time. For example, use monthly dates such as \"2024 01 01\".",
     "image": "/assets/images/gapminder-horizon.png"
   },
   "/recipes/error-bar/": {
     "title": "Error Bar Recipe",
+    "source": "docs/recipes/error-bar.md",
+    "editSource": "docs/recipes/error-bar.md",
     "description": "When one compatible layer is already encoded, call createErrorBar() without options to reuse its fields, data, coordinate, and scales.",
     "image": "/assets/images/cars-error-bar.png"
   },
   "/recipes/error-band/": {
     "title": "Error Band Recipe",
+    "source": "docs/recipes/error-band.md",
+    "editSource": "docs/recipes/error-band.md",
     "description": "values contains ISO date strings in time, finite numbers in value, and non empty series names.",
     "image": "/assets/images/gapminder-error-band.png"
   },
   "/recipes/box-plot/": {
     "title": "Box Plot Recipe",
+    "source": "docs/recipes/box-plot.md",
+    "editSource": "docs/recipes/box-plot.md",
     "description": "Use whisker: { type: \"minmax\" } for observed minimum and maximum whiskers without an outlier layer.",
     "image": "/assets/images/cars-box-plot.png"
   },
   "/recipes/violin-plot/": {
     "title": "Violin Plot Recipe",
+    "source": "docs/recipes/violin-plot.md",
+    "editSource": "docs/recipes/violin-plot.md",
     "description": "Add color: \"category\" for category fills. Use split: { field } when the field has exactly two values, or provide an explicit two value domain when side assignment must be stable…",
     "image": "/assets/images/cars-acceleration-violins.png"
   },
   "/recipes/composition/": {
     "title": "Composition Recipe",
+    "source": "docs/recipes/composition.md",
+    "editSource": "docs/recipes/composition.md",
     "description": "pointRows and barRows are arrays of plain row objects containing the named fields. Every child must already have one complete materialized Canvas.",
     "image": "/assets/images/program-composition.png"
   },
   "/recipes/facet/": {
     "title": "Facet Recipe",
+    "source": "docs/recipes/facet.md",
+    "editSource": "docs/recipes/facet.md",
     "description": "cars is an array of plain row objects containing the encoded fields and Origin. Facet values retain source first appearance order.",
     "image": "/assets/images/cars-origin-scatterplot-facet.png"
   },
   "/recipes/parallel-coordinates/": {
     "title": "Parallel Coordinates Recipe",
+    "source": "docs/recipes/parallel-coordinates.md",
+    "editSource": "docs/recipes/parallel-coordinates.md",
     "description": "cars is an array of plain row objects. Every eligible row becomes one open path across the ordered dimensions.",
     "image": "/assets/images/cars-parallel-coordinates.png"
   },
   "/recipes/rose-chart/": {
     "title": "Rose Chart Recipe",
+    "source": "docs/recipes/rose-chart.md",
+    "editSource": "docs/recipes/rose-chart.md",
     "description": "A rose chart compares several magnitudes inside equal categorical angle bands. The overlay layout draws larger sectors first so smaller sectors remain visible.",
     "image": "/assets/images/nightingale-rose-chart.png"
   },
   "/recipes/gradient-plot/": {
     "title": "Gradient Plot Recipe",
+    "source": "docs/recipes/gradient-plot.md",
+    "editSource": "docs/recipes/gradient-plot.md",
     "description": "cars contains plain rows with non empty categorical Origin and finite numeric Acceleration.",
     "image": "/assets/images/cars-gradient-plot.png"
   },
   "/recipes/annotations/": {
     "title": "Annotation Recipe",
+    "source": "docs/recipes/annotations.md",
+    "editSource": "docs/recipes/annotations.md",
     "description": "films is an array of plain row objects containing the two position fields and the label field.",
     "image": "/assets/images/annotated-imdb-scatterplot.png"
   },
   "/recipes/path-ordering/": {
     "title": "Path Ordering Recipe",
+    "source": "docs/recipes/path-ordering.md",
+    "editSource": "docs/recipes/path-ordering.md",
     "description": "observations is an array of plain row objects. Source rows may be shuffled; the order field controls vertices independently inside each color/group series.",
     "image": "/assets/images/gapminder-development-trajectories.png"
   },
   "/troubleshooting/": {
     "title": "Troubleshooting",
+    "source": "docs/troubleshooting.md",
+    "editSource": "docs/troubleshooting.md",
     "description": "ggaction reports an error when stored state does not determine one safe action. It does not silently select the first mark, scale, dataset, or coordinate."
   },
   "/gallery/": {
     "title": "Chart Gallery",
+    "source": "docs/gallery.md",
+    "editSource": "docs/gallery.md",
     "description": "Browse complete ggaction charts by Cartesian, statistical, Polar, composition, and static selection task."
   },
   "/gallery/all/": {
     "title": "All Chart Examples",
+    "source": "docs/gallery/all.md",
+    "editSource": "docs/gallery/all.md",
     "description": "Browse every maintained ggaction chart example by analytical task."
   },
   "/api/": {
     "title": "Chart API",
+    "source": "docs/api/index.md",
+    "editSource": "docs/api/index.md",
     "description": "Build a chart from a small set of domain actions. Start with the family that owns the decision you need to make; follow its focused pages only when the overview no longer provides…",
     "image": "/assets/images/cars-scatterplot.png"
   },
   "/api/basic-charts/": {
     "title": "Basic Charts",
+    "source": "docs/api/basic-charts.md",
+    "editSource": "docs/api/basic-charts.md",
     "description": "Basic chart actions create a complete mark, its encodings, and applicable guides in one traceable call.",
     "image": "/assets/images/cars-scatterplot.png"
   },
   "/api/parallel-coordinates/": {
     "title": "Parallel Coordinates",
+    "source": "docs/api/parallel-coordinates.md",
+    "editSource": "docs/api/parallel-coordinates.md",
     "description": "Create and revise row-wise paths across ordered dimension-local scales and axes.",
     "image": "/assets/images/cars-parallel-coordinates.png"
   },
   "/api/canvas/": {
     "title": "Canvas",
+    "source": "docs/api/canvas.md",
+    "editSource": "docs/api/canvas.md",
     "description": "Creates the program's single canvas and establishes bounds for later position encodings.",
     "image": "/assets/images/cars-scatterplot.png"
   },
   "/api/data/": {
     "title": "Data",
+    "source": "docs/api/data.md",
+    "editSource": "docs/api/data.md",
     "description": "Data actions own immutable source rows, explicit derivation provenance, and statistical result datasets.",
     "image": "/assets/images/cars-regression-scatterplot.png"
   },
   "/api/data/source-and-derived/": {
     "title": "Source and Derived Data",
+    "source": "docs/api/data/source-and-derived.md",
+    "editSource": "docs/api/data/source-and-derived.md",
     "description": "Contextual fragment. Use an ES module with the imports, data, and prepared resource state described in this section.",
     "image": "/assets/images/cars-scatterplot.png"
   },
   "/api/data/filtering/": {
     "title": "Data Filtering",
+    "source": "docs/api/data/filtering.md",
+    "editSource": "docs/api/data/filtering.md",
     "description": "Create a named derived dataset without replacing or mutating its source.",
     "image": "/assets/images/mark-selection-points.png"
   },
   "/api/data/statistical-transforms/": {
     "title": "Statistical Data Transforms",
-    "description": "Create deterministic regression predictions from an existing dataset. This is an advanced data action used by higher level regression chart actions.",
+    "source": "docs/api/data/statistical-transforms.md",
+    "editSource": "docs/api/data/statistical-transforms.md",
+    "description": "This heading shows common options. For the full callable contract and all branches, see createRegressionData and the exact declarations.",
     "image": "/assets/images/cars-regression-scatterplot.png"
   },
   "/api/data/time-units/": {
     "title": "Time-Unit Data Transforms",
+    "source": "docs/api/data/time-units.md",
+    "editSource": "docs/api/data/time-units.md",
     "description": "createTimeUnitData adds one reproducible UTC or named zone calendar field to every source row."
   },
   "/api/data/window/": {
     "title": "Window Data Transforms",
+    "source": "docs/api/data/window.md",
+    "editSource": "docs/api/data/window.md",
     "description": "createWindowData computes ordered values within optional partitions and stores the result as a new immutable dataset."
   },
   "/api/data/bin2d/": {
     "title": "Rectangular 2D Bins",
+    "source": "docs/api/data/bin2d.md",
+    "editSource": "docs/api/data/bin2d.md",
     "description": "createBin2DData groups two quantitative fields into a rectangular grid. editBin2DData partially revises an existing logical grid owner."
   },
   "/api/marks/": {
     "title": "Marks",
+    "source": "docs/api/marks.md",
+    "editSource": "docs/api/marks.md",
     "description": "Marks define the semantic form of a layer. Create a mark first, then connect it to data through position, grouping, and appearance encodings.",
     "image": "/assets/images/cars-scatterplot.png"
   },
   "/api/marks/point/": {
     "title": "Point Marks",
+    "source": "docs/api/marks/point.md",
+    "editSource": "docs/api/marks/point.md",
     "description": "Point marks represent individual observations or derived items. Their semantic type is point; circle, square, diamond, and other symbols are graphical realizations of that meaning.",
     "image": "/assets/images/cars-scatterplot.png"
   },
   "/api/marks/line-area/": {
     "title": "Line and Area Marks",
+    "source": "docs/api/marks/line-area.md",
+    "editSource": "docs/api/marks/line-area.md",
     "description": "Line and area marks materialize ordered backend neutral paths. Lines connect values; areas close two edges or one density edge against a baseline.",
     "image": "/assets/images/cars-line-chart.png"
   },
   "/api/marks/bar/": {
     "title": "Bar Marks",
+    "source": "docs/api/marks/bar.md",
+    "editSource": "docs/api/marks/bar.md",
     "description": "Bar marks represent binned counts, aggregate categories, grouped or stacked partitions, and observed quantitative intervals.",
     "image": "/assets/images/jobs-grouped-bar.png"
   },
   "/api/marks/rule/": {
     "title": "Rule Marks",
+    "source": "docs/api/marks/rule.md",
+    "editSource": "docs/api/marks/rule.md",
     "description": "Rule marks represent reference lines and intervals. They use concrete line primitives without exposing a renderer specific path format.",
     "image": "/assets/images/cars-error-bar.png"
   },
   "/api/marks/text/": {
     "title": "Text Marks",
+    "source": "docs/api/marks/text.md",
+    "editSource": "docs/api/marks/text.md",
     "description": "Text marks turn data values into visible labels. Add one after a compatible point, line, bar, rect, rule, or arc layer and ggaction persists that layer as the annotation source.",
     "image": "/assets/images/annotated-imdb-scatterplot.png"
   },
   "/api/marks/rect/": {
     "title": "Rect Marks",
+    "source": "docs/api/marks/rect.md",
+    "editSource": "docs/api/marks/rect.md",
     "description": "Rect marks represent independent two dimensional cells. They are distinct from bars: rects do not infer aggregation, a zero baseline, stacking, or bar width.",
     "image": "/assets/images/gapminder-life-expectancy-heatmap.png"
   },
   "/api/encodings/": {
     "title": "Encodings",
+    "source": "docs/api/encodings.md",
+    "editSource": "docs/api/encodings.md",
     "description": "Encoding actions connect data fields or constants to chart channels. Ordinary authors choose the relationship; ggaction infers a unique target, coordinate, scale ID, and field…",
     "image": "/assets/images/cars-regression-scatterplot.png"
   },
   "/api/regression/": {
     "title": "Regression",
+    "source": "docs/api/regression.md",
+    "editSource": "docs/api/regression.md",
     "description": "createRegression() layers grouped linear, polynomial, LOESS, or exponential fits over an existing quantitative point mark.",
     "image": "/assets/images/cars-regression-scatterplot.png"
   },
   "/api/error-bars/": {
     "title": "Error Bars",
+    "source": "docs/api/error-bars.md",
+    "editSource": "docs/api/error-bars.md",
     "description": "createErrorBar() materializes vertical or horizontal intervals from either grouped statistics or existing center/lower/upper fields.",
     "image": "/assets/images/cars-error-bar.png"
   },
   "/api/error-bands/": {
     "title": "Error Bands",
+    "source": "docs/api/error-bands.md",
+    "editSource": "docs/api/error-bands.md",
     "description": "createErrorBand() creates a vertical or horizontal confidence or interval ribbon as one ordinary area layer.",
     "image": "/assets/images/gapminder-error-band.png"
   },
   "/api/box-plots/": {
     "title": "Box Plots",
+    "source": "docs/api/box-plots.md",
+    "editSource": "docs/api/box-plots.md",
     "description": "createBoxPlot creates vertical or horizontal box plots from one categorical field and one quantitative field.",
     "image": "/assets/images/cars-box-plot.png"
   },
   "/api/gradient-plots/": {
     "title": "Gradient Plots",
+    "source": "docs/api/gradient-plots.md",
+    "editSource": "docs/api/gradient-plots.md",
     "description": "createGradientPlot compares a quantitative distribution across categories. Each category becomes one density filled strip plus an optional center rule.",
     "image": "/assets/images/cars-gradient-plot.png"
   },
   "/api/violin-plots/": {
     "title": "Violin Plots",
+    "source": "docs/api/violin-plots.md",
+    "editSource": "docs/api/violin-plots.md",
     "description": "Use createViolinPlot to compare kernel density profiles inside categorical bands.",
     "image": "/assets/images/cars-acceleration-violins.png"
   },
   "/api/guides/": {
     "title": "Guides",
+    "source": "docs/api/guides.md",
+    "editSource": "docs/api/guides.md",
     "description": "Creates the applicable Cartesian, Polar, or Parallel axes, Cartesian or Polar grid, and categorical legend supported by the current semantic encodings.",
     "image": "/assets/images/cars-histogram.png"
   },
   "/api/titles/": {
     "title": "Titles",
+    "source": "docs/api/titles.md",
+    "editSource": "docs/api/titles.md",
     "description": "Creates one chart title and an optional subtitle on any Canvas edge.",
     "image": "/assets/images/cars-line-chart.png"
   },
   "/api/rendering/": {
     "title": "Rendering",
+    "source": "docs/api/rendering.md",
+    "editSource": "docs/api/rendering.md",
     "description": "Render one fully materialized ChartProgram to Browser Canvas, a browser safe SVG string, a Node PNG file, or a single page vector PDF.",
     "image": "/assets/images/cars-scatterplot.png"
   },
   "/api/composition/": {
     "title": "Program Composition",
+    "source": "docs/api/composition.md",
+    "editSource": "docs/api/composition.md",
     "description": "Combine already authored chart programs without merging their datasets, marks, scales, or guides.",
     "image": "/assets/images/program-composition.png"
   },
   "/api/position-encodings/": {
     "title": "Position Encodings",
+    "source": "docs/api/position-encodings.md",
+    "editSource": "docs/api/position-encodings.md",
     "description": "Choose the position family from the semantic mark and field relationship.",
     "image": "/assets/images/cars-scatterplot.png"
   },
   "/api/position/quantitative/": {
     "title": "Quantitative Positions",
+    "source": "docs/api/position/quantitative.md",
+    "editSource": "docs/api/position/quantitative.md",
     "description": "Contextual fragment. Use an ES module with the imports, data, and prepared resource state described in this section.",
     "image": "/assets/images/cars-scatterplot.png"
   },
   "/api/position/temporal/": {
     "title": "Temporal Line Positions",
+    "source": "docs/api/position/temporal.md",
+    "editSource": "docs/api/position/temporal.md",
     "description": "Contextual fragment. Use an ES module with the imports, data, and prepared resource state described in this section. Caller provided receivers: program.",
     "image": "/assets/images/cars-line-chart.png"
   },
   "/api/position/ordinal-bars/": {
     "title": "Ordinal Bar Positions",
+    "source": "docs/api/position/ordinal-bars.md",
+    "editSource": "docs/api/position/ordinal-bars.md",
     "description": "Contextual fragment. Use an ES module with the imports, data, and prepared resource state described in this section. Caller provided receivers: program.",
     "image": "/assets/images/jobs-grouped-bar.png"
   },
   "/api/position/category-ordering/": {
     "title": "Category Ordering",
+    "source": "docs/api/position/category-ordering.md",
+    "editSource": "docs/api/position/category-ordering.md",
     "description": "Use orderCategories when a nominal or ordinal x/y/theta position should follow an explicit list or a data derived order.",
     "image": "/assets/images/ordered-category-bar.png"
   },
   "/api/position/histogram/": {
     "title": "Histogram Positions",
+    "source": "docs/api/position/histogram.md",
+    "editSource": "docs/api/position/histogram.md",
     "description": "Prefer the atomic action for ordinary chart authoring:",
     "image": "/assets/images/cars-histogram.png"
   },
   "/api/position/offsets/": {
     "title": "Ordinal Offsets",
+    "source": "docs/api/position/offsets.md",
+    "editSource": "docs/api/position/offsets.md",
     "description": "Contextual fragment. Use an ES module with the imports, data, and prepared resource state described in this section. Caller provided receivers: program.",
     "image": "/assets/images/jobs-grouped-bar.png"
   },
   "/api/series-encodings/": {
     "title": "Series Encodings",
+    "source": "docs/api/series-encodings.md",
+    "editSource": "docs/api/series-encodings.md",
     "description": "Series appearance is authored through color, stroke color, stroke dash, stroke width, and opacity.",
     "image": "/assets/images/cars-line-chart.png"
   },
   "/api/series/color/": {
     "title": "Color Encoding",
+    "source": "docs/api/series/color.md",
+    "editSource": "docs/api/series/color.md",
     "description": "Map a nominal or ordinal field to point fills, line series strokes, area fills, bar fills, rect fills, or arc sector fills.",
     "image": "/assets/images/cars-line-chart.png"
   },
   "/api/series/stroke-dash/": {
     "title": "Stroke Dash Encoding",
+    "source": "docs/api/series/stroke-dash.md",
+    "editSource": "docs/api/series/stroke-dash.md",
     "description": "Map a nominal or ordinal field to line series or rule dash patterns, or apply one constant pattern to every series.",
     "image": "/assets/images/cars-line-chart.png"
   },
   "/api/appearance/": {
     "title": "Appearance Encodings",
+    "source": "docs/api/appearance.md",
+    "editSource": "docs/api/appearance.md",
     "description": "Appearance actions change final mark style without changing position. Use the focused pages below for selection, point appearance, and mark specific style.",
     "image": "/assets/images/cars-regression-scatterplot.png"
   },
   "/api/appearance/selection-and-highlighting/": {
     "title": "Selection and Highlighting",
+    "source": "docs/api/appearance/selection-and-highlighting.md",
+    "editSource": "docs/api/appearance/selection-and-highlighting.md",
     "description": "selectMarks is the advanced reusable selection action. Selection by itself does not alter semanticSpec or graphicSpec:",
     "image": "/assets/images/mark-selection-points.png"
   },
   "/api/appearance/point/": {
     "title": "Point Appearance",
+    "source": "docs/api/appearance/point.md",
+    "editSource": "docs/api/appearance/point.md",
     "description": "Broadcast a non negative finite graphical radius to a point mark.",
     "image": "/assets/images/cars-regression-scatterplot.png"
   },
   "/api/appearance/mark-style/": {
     "title": "Mark Style",
+    "source": "docs/api/appearance/mark-style.md",
+    "editSource": "docs/api/appearance/mark-style.md",
     "description": "Every strokable mark style accepts lineCap, lineJoin, and miterLimit:",
     "image": "/assets/images/jobs-grouped-bar.png"
   },
   "/api/scales/": {
     "title": "Scale Options",
+    "source": "docs/api/scales.md",
+    "editSource": "docs/api/scales.md",
     "description": "Scales map semantic field or datum values into concrete positions and appearance values.",
     "image": "/assets/images/cars-density-area.png"
   },
   "/api/scales/position/": {
     "title": "Position Scales",
+    "source": "docs/api/scales/position.md",
+    "editSource": "docs/api/scales/position.md",
     "description": "The field type, channel, mark recipe, and all consumers of a shared scale must agree. editScale validates that complete matrix before applying any semantic or graphical change.",
     "image": "/assets/images/cars-scatterplot.png"
   },
   "/api/scales/ordinal-and-dash/": {
     "title": "Ordinal and Dash Scales",
+    "source": "docs/api/scales/ordinal-and-dash.md",
+    "editSource": "docs/api/scales/ordinal-and-dash.md",
     "description": "Band/point position, color, and stroke dash encodings use ordered discrete domains. Automatic domains preserve first appearance order.",
     "image": "/assets/images/cars-line-chart.png"
   },
   "/api/scales/continuous-color/": {
     "title": "Continuous Color Scales",
+    "source": "docs/api/scales/continuous-color.md",
+    "editSource": "docs/api/scales/continuous-color.md",
     "description": "Use a name directly or an object with optional sampling controls:",
     "image": "/assets/images/cars-density-area.png"
   },
   "/api/scales/discretized-color/": {
     "title": "Discretized Color Scales",
+    "source": "docs/api/scales/discretized-color.md",
+    "editSource": "docs/api/scales/discretized-color.md",
     "description": "Quantitative Point, aggregate Bar, and Rect color can create concrete color classes instead of a continuous gradient:",
     "image": "/assets/images/cars-scatterplot.png"
   },
   "/api/scales/missing-values/": {
     "title": "Missing Scale Values",
+    "source": "docs/api/scales/missing-values.md",
+    "editSource": "docs/api/scales/missing-values.md",
     "description": "Point encodings can provide an unknown fallback inside their scale options:",
     "image": "/assets/images/cars-scatterplot.png"
   },
   "/api/coordinates/": {
     "title": "Coordinates",
+    "source": "docs/api/coordinates.md",
+    "editSource": "docs/api/coordinates.md",
     "description": "Position encoding actions normally manage coordinates automatically:",
     "image": "/assets/images/cars-scatterplot.png"
   },
   "/api/axes/": {
     "title": "Axes",
+    "source": "docs/api/axes.md",
+    "editSource": "docs/api/axes.md",
     "description": "Cartesian axis lines, ticks, labels and titles must not overlap a chart title or legend on the same edge.",
     "image": "/assets/images/cars-scatterplot.png"
   },
   "/api/grids/": {
     "title": "Grids",
+    "source": "docs/api/grids.md",
+    "editSource": "docs/api/grids.md",
     "description": "Cartesian grid creators and editors accept strokeDashMap: [{ value, strokeDash }] alongside the uniform strokeDash pattern.",
     "image": "/assets/images/cars-histogram.png"
   },
   "/api/legends/": {
     "title": "Legends",
+    "source": "docs/api/legends.md",
+    "editSource": "docs/api/legends.md",
     "description": "Legends are inferred from final mark encodings and materialized as concrete graphics.",
     "image": "/assets/images/cars-density-area.png"
   },
   "/api/legends/categorical/": {
     "title": "Categorical and Size Legends",
+    "source": "docs/api/legends/categorical.md",
+    "editSource": "docs/api/legends/categorical.md",
     "description": "Creates inferred legend blocks. It supports combined line series, color stacked histogram, grouped ordinal bar, grouped area, independent stroke, composite point series,…",
     "image": "/assets/images/cars-line-chart.png"
   },
   "/api/legends/continuous/": {
     "title": "Continuous Legends",
+    "source": "docs/api/legends/continuous.md",
+    "editSource": "docs/api/legends/continuous.md",
     "description": "Rule opacity is a supported encoding but does not currently have an opacity legend.",
     "image": "/assets/images/cars-multi-legend-layout.png"
   },
   "/api/legends/composite/": {
     "title": "Composite Legend Symbols",
+    "source": "docs/api/legends/composite.md",
+    "editSource": "docs/api/legends/composite.md",
     "description": "Legend symbols are graphical recipes composed from line, point, and swatch layers. The default line shorthand remains supported:",
     "image": "/assets/images/cars-regression-scatterplot.png"
   },
   "/api/legends/editing/": {
     "title": "Editing Legends",
+    "source": "docs/api/legends/editing.md",
+    "editSource": "docs/api/legends/editing.md",
     "description": "Whole, focused and block editors and removeLegend also accept an existing shared legend on a facet, row column facet grid or field repeat parent.",
     "image": "/assets/images/cars-density-area.png"
   },
   "/concepts/chart-program/": {
     "title": "ChartProgram and Immutability",
+    "source": "docs/concepts/chart-program.md",
+    "editSource": "docs/concepts/chart-program.md",
     "description": "The grammar has two units: a graphical action expresses one authoring decision, and a chart program composes those actions in order."
   },
   "/concepts/semantic-and-graphics/": {
     "title": "Semantic and Graphical State",
+    "source": "docs/concepts/semantic-and-graphics.md",
+    "editSource": "docs/concepts/semantic-and-graphics.md",
     "description": "ggaction keeps chart meaning separate from its fully resolved graphics."
   },
   "/concepts/actions-and-trace/": {
     "title": "Actions and Trace Trees",
+    "source": "docs/concepts/actions-and-trace.md",
+    "editSource": "docs/concepts/actions-and-trace.md",
     "description": "An action expresses an operation on a chart element, with options describing the requested design choice. A chart program composes calls in authoring order."
   },
   "/accessibility/": {
     "title": "Accessibility",
+    "source": "docs/accessibility.md",
+    "editSource": "docs/accessibility.md",
     "description": "ggaction produces static chart graphics. Accessibility therefore has two parts: author a chart whose meaning is not carried by color alone, then give the rendered output an…"
   },
   "/compatibility/": {
     "title": "Runtime and Browser Compatibility",
-    "description": "ggaction is an ESM only package. The supported Node.js floor is 20. Continuous integration installs and tests the packed package on Node.js 20, 22, and 24; browser package and…"
+    "source": "docs/compatibility.md",
+    "editSource": "docs/compatibility.md",
+    "description": "ggaction is an ESM only package. The supported Node.js floor is 20. Continuous integration installs and tests the packed package on Node.js 20, 22, and 24; documentation…"
   },
   "/responsive-charts/": {
     "title": "Responsive Charts",
+    "source": "docs/responsive-charts.md",
+    "editSource": "docs/responsive-charts.md",
     "description": "A ggaction ChartProgram has concrete logical Canvas dimensions. Responsive behavior belongs to the host: measure a container, rebuild the immutable program with the new width and…"
   },
   "/performance/": {
     "title": "Performance and Large Charts",
+    "source": "docs/performance.md",
+    "editSource": "docs/performance.md",
     "description": "Performance depends on source row count, derived transforms, final graphic item count, text measurement, output dimensions, and renderer choice."
   },
   "/data-updates/": {
     "title": "Data Updates and Live Refresh",
+    "source": "docs/data-updates.md",
+    "editSource": "docs/data-updates.md",
     "description": "Source dataset values are immutable after creation. createData copies and freezes caller owned rows."
   },
   "/inspection/": {
     "title": "Program Inspection",
+    "source": "docs/inspection.md",
+    "editSource": "docs/inspection.md",
     "description": "Repeated comparisons reuse unchanged immutable resources while preserving exact value comparisons and change reports."
   },
   "/errors-and-recovery/": {
     "title": "Errors and Recovery",
+    "source": "docs/errors-and-recovery.md",
+    "editSource": "docs/errors-and-recovery.md",
     "description": "ggaction rejects ambiguous state, invalid options, incompatible resources, and renderer allocation failures instead of guessing."
   },
   "/versioning/": {
     "title": "Versioning and Documentation Provenance",
+    "source": "docs/versioning.md",
+    "editSource": "docs/versioning.md",
     "description": "ggaction is experimental and remains below 1.0. Minor releases can change public action signatures, inference rules, generated graphics, or renderer behavior."
   },
   "/fonts/": {
     "title": "Fonts and Text Rendering",
+    "source": "docs/fonts.md",
+    "editSource": "docs/fonts.md",
     "description": "ggaction stores a CSS style fontFamily string in concrete text graphics and passes it to the selected rendering backend. The default family is sans serif."
   },
   "/typescript/": {
     "title": "TypeScript",
+    "source": "docs/typescript.md",
+    "editSource": "docs/typescript.md",
     "description": "ggaction ships TypeScript declarations with every public export. Install no separate @types package."
   },
   "/advanced/axis-components/": {
     "title": "Advanced Axis Components",
+    "source": "docs/advanced/axis-components.md",
+    "editSource": "docs/advanced/axis-components.md",
     "description": "Use these actions when a complete createAxes call is not sufficient. All component actions require a resolved compatible quantitative, time, band, or point scale and Canvas…",
     "image": "/assets/images/cars-scatterplot.png"
   },
   "/supported-features/": {
     "title": "Supported Features",
+    "source": "docs/supported-features.md",
+    "editSource": "docs/supported-features.md",
     "description": "This page describes implemented behavior only. A dash means that the current chart authoring API does not support that combination."
   },
   "/reference/actions/": {
     "title": "Complete Action Reference",
+    "source": "docs/reference/actions.md",
+    "editSource": "scripts/action-card-source.js",
     "description": "Find every public ggaction action by task, API layer, or exact action name."
   },
   "/reference/actions/charts-data/": {
     "title": "Charts, Data, and Composition Actions",
+    "source": "docs/reference/actions/charts-data.md",
+    "editSource": "scripts/action-card-source.js",
     "description": "Create complete charts, manage data, select marks, and compose complete programs."
   },
   "/reference/actions/marks/": {
     "title": "Mark Actions",
+    "source": "docs/reference/actions/marks.md",
+    "editSource": "scripts/action-card-source.js",
     "description": "Create, edit, jitter, and remove semantic chart marks."
   },
   "/reference/actions/encodings/": {
     "title": "Encoding Actions",
+    "source": "docs/reference/actions/encodings.md",
+    "editSource": "scripts/action-card-source.js",
     "description": "Map fields and constants to position, grouping, color, shape, size, and appearance."
   },
   "/reference/actions/statistics/": {
     "title": "Statistical Layer Actions",
+    "source": "docs/reference/actions/statistics.md",
+    "editSource": "scripts/action-card-source.js",
     "description": "Create and edit regression, density, interval, error, and box-plot layers."
   },
   "/reference/actions/guides/": {
     "title": "Guide, Axis, Grid, and Title Actions",
+    "source": "docs/reference/actions/guides.md",
+    "editSource": "scripts/action-card-source.js",
     "description": "Create, edit, and remove axes, grids, legends, and chart titles."
   },
   "/reference/actions/advanced/": {
     "title": "Advanced Chart Actions",
+    "source": "docs/reference/actions/advanced.md",
+    "editSource": "scripts/action-card-source.js",
     "description": "Assign atomic channels and manage reusable final-item selections."
   },
   "/reference/actions/extension/": {
     "title": "Extension Actions",
+    "source": "docs/reference/actions/extension.md",
+    "editSource": "scripts/action-card-source.js",
     "description": "Edit semantic and concrete graphics through extension primitives."
   },
   "/reference/runtime/": {
     "title": "Program and Rendering Functions",
+    "source": "docs/reference/runtime.md",
+    "editSource": "scripts/generate-doc-signatures.js",
     "description": "Create, compose, render, and inspect programs without confusing package functions with chainable actions."
   },
   "/reference/types/": {
     "title": "Exact TypeScript Contract",
+    "source": "docs/reference/types.md",
+    "editSource": "types/program.d.ts",
     "description": "Read the complete generated TypeScript interface for every chainable ChartProgram action."
   },
   "/extension/action-authoring/": {
     "title": "Action Authoring",
+    "source": "docs/extension/action-authoring.md",
+    "editSource": "docs/extension/action-authoring.md",
     "description": "The extension entry point is for developers adding traceable domain actions and installing them on the complete chart() program."
   },
   "/extension/primitives/": {
     "title": "Primitive API",
+    "source": "docs/extension/primitives.md",
+    "editSource": "docs/extension/primitives.md",
     "description": "A named Canvas or collection can reorder its existing direct children with editGraphics({ target, property: \"children\", value: orderedIds })."
   },
   "/api/data/summaries-and-shaping/": {
     "title": "Summaries, Bins, and Data Shaping",
-    "description": "Create reusable aggregate rows without tying the calculation to a chart type:",
+    "source": "docs/api/data/summaries-and-shaping.md",
+    "editSource": "docs/api/data/summaries-and-shaping.md",
+    "description": "This heading shows common options. For the full callable contract and all branches, see createSummaryData and the exact declarations.",
     "image": "/assets/images/cars-histogram.png"
   },
   "/api/data/expressions-and-normalization/": {
     "title": "Expressions and Normalization",
+    "source": "docs/api/data/expressions-and-normalization.md",
+    "editSource": "docs/api/data/expressions-and-normalization.md",
     "description": "Add a typed primitive or null field to every source row with a serializable formula:",
     "image": "/assets/images/cars-regression-scatterplot.png"
   },
   "/api/data/missing-data/": {
     "title": "Missing Keys and Values",
+    "source": "docs/api/data/missing-data.md",
+    "editSource": "docs/api/data/missing-data.md",
     "description": "Materialize missing keys inside each observed group without silently turning absence into zero:",
     "image": "/assets/images/repair-missing-observations.png"
   },
   "/api/data/revisions-and-removal/": {
     "title": "Data Revisions and Removal",
+    "source": "docs/api/data/revisions-and-removal.md",
+    "editSource": "docs/api/data/revisions-and-removal.md",
     "description": "Aligned array datasets use editFlattenData({target, fields?, as?, dependents?}) in the Full entry point. Basic supports creation without expanding its public editing surface.",
     "image": "/assets/images/cars-scatterplot.png"
   },
   "/api/composition/facets/": {
     "title": "Facets and Field Repetition",
+    "source": "docs/api/composition/facets.md",
+    "editSource": "docs/api/composition/facets.md",
     "description": "Pass a legend object to guides.legend to create it against the combined inner plots.",
     "image": "/assets/images/facet-grid.png"
   },
   "/api/composition/editing/": {
     "title": "Editing Compositions",
+    "source": "docs/api/composition/editing.md",
+    "editSource": "docs/api/composition/editing.md",
     "description": "Contextual fragment. Use an ES module with the imports, data, and prepared resource state described in this section. Caller provided receivers: row.",
     "image": "/assets/images/program-composition.png"
   },
   "/api/marks/labels/": {
     "title": "Attached Mark Labels",
+    "source": "docs/api/marks/labels.md",
+    "editSource": "docs/api/marks/labels.md",
     "description": "Create final item labels in one call, then use the lower text actions to refine them:",
     "image": "/assets/images/edit-selected-labels.png"
   },
   "/api/marks/label-layout/": {
     "title": "Label Collision Layout",
+    "source": "docs/api/marks/label-layout.md",
+    "editSource": "docs/api/marks/label-layout.md",
     "description": "Use explicit offsets for intentional placement, or assign collision aware placement after the text encoding is complete:",
     "image": "/assets/images/gapminder-country-labels.png"
   },
   "/recipes/repair-missing-observations/": {
     "title": "Repair missing observations",
+    "source": "docs/recipes/repair-missing-observations.md",
+    "editSource": "examples/repair-missing-observations/program.js",
     "description": "Restore an omitted time key, impute its measure, and recompute a trailing window when new source observations arrive.",
     "image": "/assets/images/repair-missing-observations.png"
   },
   "/recipes/compare-weighted-distributions/": {
     "title": "Compare weighted distributions",
+    "source": "docs/recipes/compare-weighted-distributions.md",
+    "editSource": "examples/compare-weighted-distributions/program.js",
     "description": "Compare three different summaries of the same weighted observations without treating their vertical units as interchangeable.",
     "image": "/assets/images/compare-weighted-distributions.png"
   },
   "/recipes/switch-encoding-modes/": {
     "title": "Switch encoding modes atomically",
+    "source": "docs/recipes/switch-encoding-modes.md",
+    "editSource": "examples/switch-encoding-modes/program.js",
     "description": "Switch two supported channels between field encodings and constants as one validated chart revision.",
     "image": "/assets/images/switch-encoding-modes.png"
   },
   "/recipes/edit-scales-and-guides/": {
     "title": "Edit scales and refresh guides",
+    "source": "docs/recipes/edit-scales-and-guides.md",
+    "editSource": "examples/edit-scales-and-guides/program.js",
     "description": "Change an existing positional mapping and keep its visible ticks aligned with the rematerialized marks.",
     "image": "/assets/images/edit-scales-and-guides.png"
   },
   "/recipes/edit-selected-labels/": {
     "title": "Select and place final-item labels",
+    "source": "docs/recipes/edit-selected-labels.md",
+    "editSource": "examples/edit-selected-labels/program.js",
     "description": "Label only the largest final aggregates, place labels outside bar ends, and apply bounded collision layout.",
     "image": "/assets/images/edit-selected-labels.png"
   },
   "/recipes/apply-custom-theme/": {
     "title": "Apply, override, and remove a theme",
+    "source": "docs/recipes/apply-custom-theme.md",
+    "editSource": "examples/apply-custom-theme/program.js",
     "description": "Apply reusable defaults, preserve an intentional local override, and remove the active theme.",
     "image": "/assets/images/apply-custom-theme.png"
   },
   "/recipes/edit-facet-source/": {
     "title": "Revise facet source and shared guides",
+    "source": "docs/recipes/edit-facet-source.md",
+    "editSource": "examples/edit-facet-source/program.js",
     "description": "Replace a facet's retained source program, rename its headers, and arrange outer axes with a shared categorical legend.",
     "image": "/assets/images/edit-facet-source.png"
   },
   "/recipes/remove-dependent-resources/": {
     "title": "Remove resources in dependency order",
+    "source": "docs/recipes/remove-dependent-resources.md",
+    "editSource": "examples/remove-dependent-resources/program.js",
     "description": "Use the ownership error to identify a live consumer, then delete the consumer and its temporary dataset in order.",
     "image": "/assets/images/remove-dependent-resources.png"
   },
   "/tutorials/hierarchical-authoring/": {
     "title": "Choose the Right Authoring Level",
+    "source": "docs/tutorials/hierarchical-authoring.md",
+    "editSource": "examples/hierarchical-authoring/program.js",
     "description": "A chart can begin as one high level action and remain editable through its lower level parts.",
     "image": "/assets/images/hierarchical-authoring.png"
   },
   "/concepts/authoring-conventions/": {
     "title": "Authoring Conventions",
+    "source": "docs/concepts/authoring-conventions.md",
+    "editSource": "docs/concepts/authoring-conventions.md",
     "description": "A successful action returns a new ChartProgram. Keep that returned value to continue editing. The earlier program and caller owned option objects remain unchanged."
   },
   "/api/data/policies/": {
     "title": "Data Grain and Statistical Policies",
+    "source": "docs/api/data/policies.md",
+    "editSource": "docs/api/data/policies.md",
     "description": "Choose a transform by its output meaning before selecting a chart. Aggregation, completion, and imputation solve different problems and do not share one missing value or weight…",
     "image": "/assets/images/repair-missing-observations.png"
   },
   "/api/chart-picker/": {
     "title": "Choose a Chart",
+    "source": "docs/api/chart-picker.md",
+    "editSource": "docs/_data/chart_picker.json",
     "description": "Start with the chart that expresses the data's meaning, then edit its parts through lower level actions.",
     "image": "/assets/images/hierarchical-authoring.png"
   },
   "/version/": {
     "title": "Documentation Version",
+    "source": "docs/version.md",
+    "editSource": "docs/version.md",
     "description": "The current site documents ggaction with a contract. A published release contract matches that package version."
   },
   "/api/axes/complete/": {
     "title": "Complete Axes and Labels",
+    "source": "docs/api/axes/complete.md",
+    "editSource": "docs/api/axes/complete.md",
     "description": "Use underlay: true when the complete Cartesian axis should be painted before ordinary marks. The plot border accepts the same choice.",
     "image": "/assets/images/cars-line-chart.png"
   }

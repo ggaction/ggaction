@@ -1,0 +1,19 @@
+export type ViolinPlotPositionChannel =
+  | string
+  | {
+      field: string;
+      fieldType: "nominal" | "ordinal";
+      scale?: NonPointBandPositionScaleOptions;
+    }
+  | {
+      field: string;
+      fieldType: "quantitative";
+      scale?: NonPointQuantitativePositionScaleOptions;
+    }
+  | {
+      field: string;
+      fieldType?: undefined;
+      scale?:
+        | NonPointBandPositionScaleOptions
+        | NonPointQuantitativePositionScaleOptions;
+    };

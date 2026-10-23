@@ -1,3 +1,4 @@
+import { saveBrowserEvidence } from "../support/browser.js";
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import {mkdtemp,writeFile,rm} from 'node:fs/promises';
@@ -32,5 +33,5 @@ test('sample windows preserve full circles and clip fill and stroke with exact b
    }return{count,failures};
   });
   assert.equal(results.count,36);assert.deepEqual(results.failures,[]);assertNoBrowserErrors(opened.errors,'sample-window');await opened.page.close();
- }finally{await closeBrowserWithEvidence(browser);await server?.close();await rm(directory,{recursive:true,force:true});}
+ } catch (error) { await saveBrowserEvidence(browser, error); throw error; }finally{await closeBrowserWithEvidence(browser);await server?.close();await rm(directory,{recursive:true,force:true});}
 });

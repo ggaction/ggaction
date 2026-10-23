@@ -1,0 +1,3 @@
+export type ReferenceStatistic =
+  | { readonly op: "mean" | "median" | "min" | "max"; readonly p?: never }
+  | { readonly op: "quantile"; readonly p: number };

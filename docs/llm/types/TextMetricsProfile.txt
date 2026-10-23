@@ -1,0 +1,5 @@
+export interface TextMetricsProfile {
+  readonly schemaVersion: 1;
+  readonly id: string;
+  readonly measurements: readonly TextMeasurement[];
+}

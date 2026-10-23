@@ -1,0 +1,4 @@
+type StoredCell<T> = T extends (...args: never[]) => unknown ? never
+  : T extends readonly (infer Value)[] ? readonly StoredCell<Value>[]
+  : T extends object ? { readonly [Key in keyof T]: StoredCell<T[Key]> }
+  : T;

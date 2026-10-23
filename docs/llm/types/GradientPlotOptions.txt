@@ -1,0 +1,14 @@
+export interface GradientPlotOptions {
+  id?: string;
+  target?: string;
+  data?: string;
+  x?: GradientPlotPositionChannel;
+  y?: GradientPlotPositionChannel;
+  coordinate?: string;
+  color?: BasicColorChannel | { value: string };
+  density?: GradientPlotDensityOptions;
+  width?: { band?: number };
+  gradient?: GradientPlotAppearanceOptions;
+  center?: false | GradientPlotCenterOptions;
+  guides?: false | GradientPlotGuideOptions;
+}

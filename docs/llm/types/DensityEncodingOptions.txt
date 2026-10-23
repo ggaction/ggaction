@@ -1,0 +1,10 @@
+export type DensityEncodingOptions = DensityEncodingBase & (
+  | {
+      placement?: BaselineDensityPlacement;
+      densityScale?: NonPointZeroSupportingPositionScaleOptions;
+    }
+  | {
+      placement: CategoryDensityPlacement;
+      densityScale?: never;
+    }
+);

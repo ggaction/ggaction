@@ -1,0 +1,5 @@
+export type AngleEncodingOptions =
+  | { target?: string; value: number; field?: never; fieldType?: never }
+  | { target?: string; field: string; fieldType?: "quantitative"; value?: never };
+
+/** Unscaled, signed logical-pixel offsets for independent Text marks. */

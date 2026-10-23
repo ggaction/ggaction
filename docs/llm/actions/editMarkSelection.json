@@ -1,0 +1,142 @@
+{
+  "schemaVersion": 3,
+  "name": "editMarkSelection",
+  "layer": "advanced",
+  "domain": "mark-selection",
+  "summary": "Replace the complete selector while preserving the stored selection ID and mark target.",
+  "signature": "editMarkSelection(options: EditMarkSelectionOptions): ChartProgram;",
+  "intents": [
+    "edit mark selection",
+    "edit",
+    "change",
+    "mark selection",
+    "conditional emphasis",
+    "stored mark selection",
+    "reusable selector"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing stored mark selection",
+      "target mark and selector operands"
+    ],
+    "owns": [],
+    "idOptions": [
+      "selection"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editGraphics"
+  ],
+  "editableVia": [
+    "editMarkSelection",
+    "removeMarkSelection"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "count",
+      "unit": "count"
+    }
+  ],
+  "inference": [
+    {
+      "input": "selection",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing stored mark selection",
+      "target mark and selector operands"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "selection",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "grain",
+      "required": false,
+      "type": "\"item\" | \"stack\" | undefined"
+    },
+    {
+      "name": "field",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "channel",
+      "required": false,
+      "type": "\"color\" | \"group\" | \"opacity\" | \"radius\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\" | \"theta\" | \"x\" | \"x2\" | \"xOffset\" | \"y\" | \"y2\" | \"yOffset\" | undefined"
+    },
+    {
+      "name": "property",
+      "required": false,
+      "type": "MarkGraphicProperty | undefined"
+    },
+    {
+      "name": "op",
+      "required": true,
+      "type": "\"eq\" | \"gt\" | \"gte\" | \"lt\" | \"lte\" | \"max\" | \"min\" | \"neq\" | \"oneOf\" | \"range\""
+    },
+    {
+      "name": "value",
+      "required": false,
+      "type": "unknown"
+    },
+    {
+      "name": "values",
+      "required": false,
+      "type": "readonly unknown[]"
+    },
+    {
+      "name": "min",
+      "required": false,
+      "type": "string | number"
+    },
+    {
+      "name": "max",
+      "required": false,
+      "type": "string | number"
+    },
+    {
+      "name": "inclusive",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "count",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "groupBy",
+      "required": false,
+      "type": "string | readonly string[] | undefined"
+    },
+    {
+      "name": "ties",
+      "required": false,
+      "type": "\"all\" | \"first\" | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editMarkSelection({ selection?, field | channel | property, op, ...operands })",
+    "editMarkSelection({ selection?, grain?, op: min | max, count? })"
+  ],
+  "snippet": "program.editMarkSelection({ field: \"category\", op: \"eq\", value: \"A\" })",
+  "errors": [],
+  "route": "/reference/actions/advanced/#editmarkselection"
+}

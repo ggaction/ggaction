@@ -1,0 +1,2 @@
+export type CreateThetaAxisTicksOptions = Omit<PolarTickOptions, "count" | "values"> &
+  PolarAxisTickSelection & Omit<PolarGuideResourceOptions, "angle">;

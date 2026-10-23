@@ -1,0 +1,35 @@
+export interface BoxPlotOptions {
+  summary?: BoxPlotSummaryFields;
+  id?: string;
+  target?: string;
+  data?: string;
+  x?: BoxPlotPositionChannel;
+  y?: BoxPlotPositionChannel;
+  coordinate?: string;
+  color?: string | {
+    field: string;
+    fieldType?: "nominal" | "ordinal";
+    scale?: NonPointCategoricalColorScaleOptions;
+    palette?: Palette;
+  } | { value: string };
+  whisker?: BoxPlotWhisker;
+  width?: BoxPlotWidth;
+  outliers?: boolean;
+  box?: RectStyleDetails & {
+    fill?: string;
+    opacity?: number;
+    stroke?: string;
+    strokeWidth?: number;
+  };
+  median?: StrokeStyleDetails & {
+    width?: { pixels: number } | "auto";
+    stroke?: string;
+    strokeWidth?: number;
+  };
+  outlier?: StrokeStyleDetails & {
+    shape?: PointShape;
+    radius?: number;
+    opacity?: number;
+  };
+  guides?: false | BoxPlotGuideOptions;
+}

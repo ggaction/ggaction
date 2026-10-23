@@ -1,0 +1,10 @@
+export type EndpointLabelOptions = Omit<
+  TextMarkOptions,
+  "id" | "data" | "source" | "text"
+> & {
+  format?: TextFormat;
+  layout?: false | Omit<LabelLayoutOptions, "target">;
+} & (
+  | { field?: string; value?: never }
+  | { field?: never; value: unknown }
+);

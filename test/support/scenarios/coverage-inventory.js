@@ -37,6 +37,17 @@ function exhaustiveColorTypes(values) {
     values.every((value, index) => value.key === EXHAUSTIVE_COLOR_TYPES[index]);
 }
 
+// Keep every geometric curve branch required at each authoring path when
+// Steffen extends the previously exhaustive eight-value closed family.
+const EXHAUSTIVE_CURVE_TYPES = Object.freeze([
+  "basis", "cardinal", "linear", "monotone", "monotone-steffen", "natural",
+  "step", "step-after", "step-before"
+].map(value => `string:${value}`));
+function exhaustiveCurveTypes(values) {
+  return values.length === EXHAUSTIVE_CURVE_TYPES.length &&
+    values.every((value, index) => value.key === EXHAUSTIVE_CURVE_TYPES[index]);
+}
+
 export const EXCLUDED_OPTION_PATH_SEGMENTS = Object.freeze({
   resolved: "Readonly derived-transform output; it is not accepted authoring input."
 });
@@ -363,7 +374,7 @@ function finalizeInventory(cards, rawPaths) {
       values,
       size: values.length,
       open: input.open,
-      policy: !input.open && (values.length <= SMALL_LITERAL_FAMILY_LIMIT || exhaustiveColorTypes(values))
+      policy: !input.open && (values.length <= SMALL_LITERAL_FAMILY_LIMIT || exhaustiveColorTypes(values) || exhaustiveCurveTypes(values))
         ? "path-values"
         : "family-values",
       paths: Object.freeze(input.paths.map(pathValue =>

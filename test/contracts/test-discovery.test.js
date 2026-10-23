@@ -1,3 +1,4 @@
+import { createTestOutputCapture } from "../../scripts/run-tests.js";
 import assert from "node:assert/strict";
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import path from "node:path";
@@ -314,4 +315,27 @@ test("assigns every normal test file to at least one named capability", () => {
   });
 
   assert.deepEqual(unowned.map(file => path.relative(testRoot, file)), []);
+});
+
+test("validates every selector before short-circuit matching", () => {
+  for (const selectors of [
+    ["unit", "contracts", "charts", "docs", "gates", "capability:does-not-exist"],
+    ["capability:does-not-exist", "unit"]
+  ]) assert.throws(() => collectTestFiles("all", undefined, selectors), /Unknown test capability/);
+});
+
+
+test("coverage capture preserves UTF-8 markers across every byte boundary", () => {
+  const report = "ℹ src | | | |\nℹ  example.js | 100 | 90 | 100 |\n";
+  const bytes = Buffer.from(report);
+  for (let split = 1; split < bytes.length; split++) {
+    const capture = createTestOutputCapture();
+    capture.write(bytes.subarray(0, split));
+    capture.write(bytes.subarray(split));
+    assert.equal(capture.toString(), report);
+  }
+  const stdout = createTestOutputCapture(), stderr = createTestOutputCapture();
+  for (const byte of bytes) { stdout.write(Buffer.from([byte])); stderr.write("diagnostic\n"); }
+  assert.equal(stdout.toString(), report);
+  assert.equal(stderr.toString(), "diagnostic\n".repeat(bytes.length));
 });

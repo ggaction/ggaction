@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 3,
+  "name": "editRegressionStatisticsData",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Revise a standalone statistics owner's linear fit source and replay its consumers atomically.",
+  "signature": "editRegressionStatisticsData(options?: EditRegressionStatisticsDataOptions): ChartProgram;",
+  "intents": [
+    "edit regression statistics data",
+    "edit",
+    "change",
+    "chart setup",
+    "data and scales",
+    "regression statistics dataset",
+    "linear fit coefficients"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "materialized linear regression dataset",
+      "existing regression statistics dataset",
+      "source dataset"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target",
+      "source"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "createDerivedData"
+  ],
+  "editableVia": [
+    "editRegressionStatisticsData"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "source",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "materialized linear regression dataset",
+      "existing regression statistics dataset",
+      "source dataset"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "source",
+      "required": false,
+      "type": "string | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editRegressionStatisticsData({ target?, source? })"
+  ],
+  "snippet": "program.editRegressionStatisticsData({ target: \"fitStatistics\", source: \"anotherFit\" })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#editregressionstatisticsdata"
+}

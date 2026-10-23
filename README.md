@@ -9,77 +9,10 @@ Most visualization grammars describe a finished chart. **ggaction** represents c
 Build, inspect, select, and revise charts one meaningful action at a time.
 
 <p align="left">
-  <img src="./docs/assets/images/readme-authoring-sequence.gif" width="960" height="540" loading="eager" alt="A ggaction program progressively creates a scatterplot, adds grouped regression fits and confidence bands, highlights the Japan group across chart layers, and finishes with an R-squared annotation.">
+  <img src="./docs/assets/images/readme-authoring-sequence.gif" width="960" height="540" loading="eager" alt="The paper Nightingale rose plot is built progressively, then its radial mapping, cause colors, sector spacing, title, and palette are revised.">
 </p>
 
-Every frame is rendered from an immutable `ChartProgram`. The final R² label is a traceable action built from public extension primitives.
-
-## A grammar of graphical action
-
-An action expresses a design operation on a chart element. In
-`editLineMark({ strokeWidth: 4 })`, `edit` is the operation, `LineMark` names
-the target concept, and the option supplies the design choice.
-
-The grammar has two units: **graphical actions** and **chart programs**.
-A program composes action calls in authoring order and retains their resulting
-immutable state. Authors read a linear sequence of decisions; an action may
-delegate to smaller actions recorded in its nested execution trace.
-
-The following fragment assumes `cars` is an array of row objects:
-
-```javascript
-import { chart } from "ggaction";
-
-const program = chart()
-  .createCanvas({
-    width: 760,
-    height: 480,
-    margin: { top: 40, right: 190, bottom: 70, left: 80 }
-  })
-  .createData({ values: cars })
-  .createScatterPlot({
-    id: "points",
-    x: "Displacement",
-    y: "Acceleration",
-    color: "Origin",
-    guides: false
-  })
-  .createRegression()
-  .createGuides();
-```
-
-Here `createRegression()` infers groups from the point layer, uses a linear
-model, and includes a 95% mean-response interval band. The right margin reserves
-space for the resulting legend. The [regression recipe](https://ggaction.github.io/ggaction/recipes/regression-scatterplot/)
-provides data and rendering setup; [regression options](https://ggaction.github.io/ggaction/api/regression/)
-control grouping, model, interval, and whether a band is drawn.
-
-## Why actions?
-
-- **Progressive** — build and revise a chart one meaningful operation at a time.
-- **Traceable** — retain high-level actions and the wrapped actions they invoke.
-- **Materialized** — actions create concrete backend-neutral graphics; rendering does not perform hidden semantic compilation.
-
-## MCP server for LLM
-
-ggaction includes a local, read-only MCP server that gives coding assistants
-current action names, syntax-valid call templates, explicit placeholders, and
-task-specific authoring steps
-without loading the complete documentation.
-
-<p align="left">
-  <img src="./docs/assets/images/readme-mcp-benefits.svg" width="960" loading="lazy" alt="Across 576 fixed task runs, MCP with bounded fallback improved strict success and reduced tokens and model calls compared with public-documentation browsing for Terra, Luna, and Nano.">
-</p>
-
-Across a fixed 576-run evaluation, MCP-first authoring with bounded fallback
-improved strict task success while using fewer tokens and model calls for all
-three model sizes. The server runs locally over stdio and does not execute chart
-code, access arbitrary files, make network requests, require an account, or
-collect telemetry.
-
-[Set up the local MCP server](https://ggaction.github.io/ggaction/mcp/) ·
-[Inspect the benchmark record](./benchmarks/llm-authoring-v1/) ·
-[Read the complete evaluation report](./agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+Every frame is rendered from an immutable `ChartProgram`. This is the paper’s Nightingale rose-plot authoring sequence: create the chart, encode mortality and cause, adjust sector spacing, add the title, and change the palette.
 
 ## Quick start
 
@@ -177,21 +110,79 @@ children. Import from
 coordinates, or statistical layers. See the
 [Basic Charts API](https://ggaction.github.io/ggaction/api/basic-charts/).
 
-Use `createParallelCoordinates({ dimensions })` to connect each source row
-across ordered, dimension-local scales and axes. See the
-[Parallel Coordinates API](https://ggaction.github.io/ggaction/api/parallel-coordinates/)
-or the [runnable Cars example](./examples/cars-parallel-coordinates/).
+Explore [parallel coordinates](https://ggaction.github.io/ggaction/api/parallel-coordinates/),
+[gradient plots](https://ggaction.github.io/ggaction/api/gradient-plots/),
+[violin plots](https://ggaction.github.io/ggaction/api/violin-plots/), and
+[Horizon charts](./examples/gapminder-horizon/) in the [runnable examples](./examples/README.md).
 
-For an advanced layered example, follow the [regression recipe](https://ggaction.github.io/ggaction/recipes/regression-scatterplot/)
-or open the [runnable regression example](./examples/cars-regression-scatterplot/).
-To compare category distributions with density-filled strips, read the
-[gradient-plot guide](https://ggaction.github.io/ggaction/api/gradient-plots/)
-or open the [runnable example](./examples/cars-gradient-plot/).
-For symmetric or split density shapes centered on categories, use the
-[violin-plot API](https://ggaction.github.io/ggaction/api/violin-plots/) or the
-[runnable Cars example](./examples/cars-acceleration-violins/).
-For compact signed time-series bands, use `encodeHorizon` on an area mark and
-open the [runnable Gapminder example](./examples/gapminder-horizon/).
+## A grammar of graphical action
+
+An action expresses a design operation on a chart element. In
+`editLineMark({ strokeWidth: 4 })`, `edit` is the operation, `LineMark` names
+the target concept, and the option supplies the design choice.
+
+The grammar has two units: **graphical actions** and **chart programs**.
+A program composes action calls in authoring order and retains their resulting
+immutable state. Authors read a linear sequence of decisions; an action may
+delegate to smaller actions recorded in its nested execution trace.
+
+The following fragment assumes `cars` is an array of row objects:
+
+```javascript
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas({
+    width: 760,
+    height: 480,
+    margin: { top: 40, right: 190, bottom: 70, left: 80 }
+  })
+  .createData({ values: cars })
+  .createScatterPlot({
+    id: "points",
+    x: "Displacement",
+    y: "Acceleration",
+    color: "Origin",
+    guides: false
+  })
+  .createRegression()
+  .createGuides();
+```
+
+Here `createRegression()` infers groups from the point layer, uses a linear
+model, and includes a 95% mean-response interval band. The right margin reserves
+space for the resulting legend. The [regression recipe](https://ggaction.github.io/ggaction/recipes/regression-scatterplot/)
+provides data and rendering setup ([source](./examples/cars-regression-scatterplot/)); [regression options](https://ggaction.github.io/ggaction/api/regression/)
+control grouping, model, interval, and whether a band is drawn.
+
+## Why actions?
+
+- **Progressive** — build and revise a chart one meaningful operation at a time.
+- **Traceable** — retain high-level actions and the wrapped actions they invoke.
+- **Materialized** — actions create concrete backend-neutral graphics; rendering does not perform hidden semantic compilation.
+
+## MCP server for LLM
+
+ggaction includes a local, read-only MCP server that gives coding assistants
+current action names, syntax-valid call templates, explicit placeholders, and
+task-specific authoring steps
+without loading the complete documentation.
+
+<p align="left">
+  <img src="./docs/assets/images/readme-mcp-benefits.svg" width="960" loading="lazy" alt="Across 576 fixed task runs, MCP with bounded fallback improved strict success and reduced tokens and model calls compared with public-documentation browsing for Terra, Luna, and Nano.">
+</p>
+
+In the fixed 576-run evaluation completed on 2026-08-10 (24 tasks × 2 repetitions ×
+`gpt-5.6-terra`, `gpt-5.6-luna`, and `gpt-5.4-nano` × 4 conditions;
+product candidate `4e211ba418cd437d7c66c4fb986fcc714cf579ea`), MCP-first authoring with bounded fallback
+improved strict task success while using fewer tokens and model calls for all
+three model sizes. The server runs locally over stdio and does not execute chart
+code, access arbitrary files, make network requests, require an account, or
+collect telemetry.
+
+[Set up the local MCP server](https://ggaction.github.io/ggaction/mcp/) ·
+[Inspect the benchmark record](./benchmarks/llm-authoring-v1/) ·
+[Read the complete evaluation report](./agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 
 ## What it supports
 
@@ -227,9 +218,6 @@ All module entries include TypeScript declarations. The default, basic,
 extension, diagnostics, accessibility, and SVG entries are browser-safe; the PNG and PDF adapters are
 Node-only.
 
-The installed package also includes the Node-only `ggaction-mcp` executable. It
-provides one local, read-only chart-authoring search tool and stays outside every
-browser entry. See the [local MCP guide](https://ggaction.github.io/ggaction/mcp/).
 
 ## Documentation
 
@@ -249,7 +237,7 @@ the extra discussion required before public API or architecture changes.
 
 ## Status and development
 
-> **Status:** `0.0.22` is the current experimental public release. APIs may change before `1.0.0`; changes are recorded in the [changelog](./CHANGELOG.md).
+> **Status:** `0.0.23` is the current experimental public release. APIs may change before `1.0.0`; changes are recorded in the [changelog](./CHANGELOG.md).
 
 ```bash
 npm install
@@ -263,6 +251,9 @@ The renderer development suite also needs Poppler's `pdftoppm` on `PATH` for
 independent PDF pixel checks. The CI and protected release jobs install
 `poppler-utils` explicitly; this is not a runtime package dependency.
 
+
+For extension authors, the installed package includes `node_modules/ggaction/knowledge/extension-authoring.md`. Read that file alongside the installed declarations; it is a guide file, not an importable package entry.
+
 ## Related Links
 
 - Action-trace demo: [Link](https://ggactionbot.github.io/action-trace-demo/)
@@ -270,7 +261,8 @@ independent PDF pixel checks. The CI and protected release jobs install
 ### Prepare a release
 
 Record changes under `Unreleased` in `CHANGELOG.md` and commit the reviewed work.
-Run `npm run release:prepare -- 0.0.16 --dry-run` to preview version updates.
+Set `NEXT_VERSION` to the agreed next release version (at least the current package version).
+Run `npm run release:prepare -- "$NEXT_VERSION" --dry-run` to preview version updates.
 Omit `--dry-run` to update versions, promote notes, and generate the release
 contract, documentation, and local notes. Review the Git diff. After committing
 runtime changes, rerun the command to refresh source provenance; existing notes

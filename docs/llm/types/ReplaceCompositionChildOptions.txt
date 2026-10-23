@@ -1,0 +1,4 @@
+export interface ReplaceCompositionChildOptions {
+  target: string;
+  program: ChartProgram;
+}

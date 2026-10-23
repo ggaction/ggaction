@@ -1,0 +1,6 @@
+export type MarkLabelAnchor =
+  | "center"
+  | "insideStart"
+  | "insideEnd"
+  | "outsideStart"
+  | "outsideEnd";

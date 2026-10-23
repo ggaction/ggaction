@@ -1,0 +1,3 @@
+type NonCartesianStrokeDashChannel = BasicStrokeDashChannel extends infer T
+  ? T extends { field: string } ? Omit<T, "scale"> & { scale?: Omit<DashScaleOptions, "unknown"> } : T
+  : never;

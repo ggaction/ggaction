@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 3,
+  "name": "editFoldData",
+  "layer": "user-facing",
+  "domain": "statistics",
+  "summary": "Edits wide to long data, including settings for key value rows.",
+  "signature": "editFoldData(options: EditFoldDataOptions): ChartProgram;",
+  "intents": [
+    "edit fold data",
+    "edit",
+    "change",
+    "statistical layer",
+    "statistical transform",
+    "wide to long data",
+    "key value rows"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing wide to long data",
+      "source dataset"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H1",
+    "H3"
+  ],
+  "wraps": [
+    "editDerivedData"
+  ],
+  "editableVia": [
+    "editFoldData"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing wide to long data",
+      "source dataset"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "dependents",
+      "required": false,
+      "type": "DerivedDataDependents | undefined"
+    },
+    {
+      "name": "fields",
+      "required": false,
+      "type": "readonly string[] | undefined"
+    },
+    {
+      "name": "as",
+      "required": false,
+      "type": "FoldDataOutputFields | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editFoldData({ target, dependents?, fields?, as? })"
+  ],
+  "snippet": "program.editFoldData({ target: \"folded\", fields: [\"value\"] })",
+  "errors": [],
+  "route": "/reference/actions/statistics/#editfolddata"
+}

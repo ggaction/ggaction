@@ -1,0 +1,5 @@
+export interface EditLegendLabelsOptions extends LegendTextOptions {
+  target?: string;
+  /** Select one existing block without changing its content. */
+  channel?: LegendChannel;
+}

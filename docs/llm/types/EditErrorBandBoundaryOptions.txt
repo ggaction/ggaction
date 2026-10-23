@@ -1,0 +1,9 @@
+export interface EditErrorBandBoundaryOptions extends StrokeStyleDetails {
+  target?: string;
+  boundary?: "both" | "lower" | "upper";
+  stroke?: string;
+  strokeWidth?: number;
+  strokeDash?: DashStyle | DashPattern;
+  opacity?: number;
+  curve?: CurveInterpolation;
+}

@@ -1,0 +1,7 @@
+export interface CartesianAxisTickStyleOptions extends AxisTickStyleOptions {
+  strokeDash?: readonly number[];
+  /** Typed raw-value overrides. Empty arrays and auto clear only the map. */
+  strokeDashMap?: CartesianGuideDashMap | "auto";
+  /** Signed logical pixels along the axis: positive right for x, down for y. */
+  alongOffset?: number;
+}

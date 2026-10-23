@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 3,
+  "name": "encodeStrokeWidth",
+  "layer": "user-facing",
+  "domain": "encodings",
+  "summary": "Assign a non-negative finite logical Canvas width to a Line, Rule, or Rect.",
+  "signature": "encodeStrokeWidth(options: StrokeWidthEncodingOptions): ChartProgram;",
+  "intents": [
+    "encode stroke width",
+    "encode",
+    "map field",
+    "visual encoding",
+    "field mapping",
+    "stroke width",
+    "line thickness"
+  ],
+  "lifecycle": "Assignment",
+  "resources": {
+    "prerequisites": [
+      "target mark",
+      "field mode: dataset field"
+    ],
+    "owns": [
+      "stroke width assignment"
+    ],
+    "idOptions": [
+      "target",
+      "scale"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editSemantic",
+    "createScale"
+  ],
+  "editableVia": [
+    "removeEncoding"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "scale",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "scale",
+      "strategy": "documented-auto"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "target mark",
+      "field mode: dataset field"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "value",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "field",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "fieldType",
+      "required": false,
+      "type": "\"quantitative\" | undefined"
+    },
+    {
+      "name": "scale",
+      "required": false,
+      "type": "(Omit<ScaleFields<\"base\" | \"clamp\" | \"constant\" | \"exponent\" | \"id\" | \"reverse\" | \"zero\"> & { domain?: \"auto\" | readonly [number, number] | undefined; range?: \"auto\" | readonly [...] | undefined; } & { ...; }, \"nice\"> & { ...; }) | (Omit<...> & { ...; }) | undefined"
+    }
+  ],
+  "callPatterns": [
+    "encodeStrokeWidth({ target?, scale?, value?, field?, fieldType? })"
+  ],
+  "snippet": "program.encodeStrokeWidth({ value: 2 })",
+  "errors": [],
+  "route": "/reference/actions/encodings/#encodestrokewidth"
+}

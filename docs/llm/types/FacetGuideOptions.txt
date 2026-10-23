@@ -1,0 +1,4 @@
+export interface FacetGuideOptions {
+  axes?: "each" | "outer" | { x?: "each" | "outer"; y?: "each" | "outer" };
+  legend?: false | "shared" | LegendOptions;
+}

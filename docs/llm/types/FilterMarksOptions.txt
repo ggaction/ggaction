@@ -1,0 +1,4 @@
+export type FilterMarksOptions = {
+  target?: string;
+  mode?: "replace" | "compose";
+} & MarkSelector;

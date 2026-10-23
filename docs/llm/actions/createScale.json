@@ -1,0 +1,203 @@
+{
+  "schemaVersion": 3,
+  "name": "createScale",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Creates a named scale that maps a semantic domain to a graphical range.",
+  "signature": "createScale(options: CreateScaleOptions): ChartProgram;",
+  "intents": [
+    "create scale",
+    "create",
+    "add",
+    "chart setup",
+    "data and scales",
+    "scale",
+    "domain-to-range mapping"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [],
+    "owns": [
+      "scale"
+    ],
+    "idOptions": [
+      "id"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "editScale",
+    "removeScale"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default",
+      "basic"
+    ]
+  },
+  "units": [
+    {
+      "path": "paddingInner",
+      "unit": "band-fraction"
+    },
+    {
+      "path": "paddingOuter",
+      "unit": "band-fraction"
+    },
+    {
+      "path": "padding",
+      "unit": "band-fraction"
+    },
+    {
+      "path": "align",
+      "unit": "ratio"
+    }
+  ],
+  "inference": [
+    {
+      "input": "domain",
+      "strategy": "documented-auto"
+    },
+    {
+      "input": "midpoint",
+      "strategy": "documented-auto"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "radialMapping",
+      "required": false,
+      "type": "RadialMapping | undefined"
+    },
+    {
+      "name": "id",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "type",
+      "required": false,
+      "type": "ScaleType | undefined"
+    },
+    {
+      "name": "domain",
+      "required": false,
+      "type": "\"auto\" | readonly unknown[] | undefined"
+    },
+    {
+      "name": "emptyDomain",
+      "required": false,
+      "type": "\"preserve\" | \"require-explicit\" | undefined"
+    },
+    {
+      "name": "range",
+      "required": false,
+      "type": "ScaleRange | undefined"
+    },
+    {
+      "name": "nice",
+      "required": false,
+      "type": "boolean | LinearNiceCountOptions | undefined"
+    },
+    {
+      "name": "zero",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "clamp",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "reverse",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "base",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "exponent",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "constant",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "paddingInner",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "paddingOuter",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "padding",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "align",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "palette",
+      "required": false,
+      "type": "Palette | undefined"
+    },
+    {
+      "name": "interpolate",
+      "required": false,
+      "type": "ContinuousColorInterpolation | undefined"
+    },
+    {
+      "name": "whitePoint",
+      "required": false,
+      "type": "\"d50\" | \"d65\" | undefined"
+    },
+    {
+      "name": "gamma",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "midpoint",
+      "required": false,
+      "type": "number | \"auto\" | undefined"
+    },
+    {
+      "name": "unknown",
+      "required": false,
+      "type": "unknown"
+    }
+  ],
+  "callPatterns": [
+    "createScale({ id, radialMapping?, type?, domain?, emptyDomain?, range?, nice?, zero? })"
+  ],
+  "snippet": "program.createScale({ id: \"scale-1\" })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#createscale"
+}

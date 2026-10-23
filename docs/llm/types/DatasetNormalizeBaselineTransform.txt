@@ -1,0 +1,4 @@
+type DatasetNormalizeBaselineTransform = {
+  readonly baseline: NormalizeBaseline;
+  readonly sortBy: readonly WindowSort[];
+};

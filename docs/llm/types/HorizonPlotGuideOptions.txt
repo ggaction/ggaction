@@ -1,0 +1,5 @@
+export type HorizonPlotGuideOptions = {
+  axes?: false | (Omit<CAxes, "y"> & { y?: false });
+  grid?: false | { vertical?: boolean | ContinuousGridDirectionOptions; horizontal?: false };
+  legend?: false;
+};

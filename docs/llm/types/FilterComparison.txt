@@ -1,0 +1,3 @@
+export type FilterComparison =
+  | { op: "eq" | "neq"; value: unknown }
+  | { op: "lt" | "lte" | "gt" | "gte"; value: number | string };

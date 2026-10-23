@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 3,
+  "name": "editXAxisLine",
+  "layer": "user-facing",
+  "domain": "axes",
+  "summary": "Edits x-axis line, including settings for horizontal baseline.",
+  "signature": "editXAxisLine(options?: AxisLineStyleOptions & { target?: string; position?: XAxisPosition }): ChartProgram;",
+  "intents": [
+    "edit x axis line",
+    "edit",
+    "change",
+    "axis guide",
+    "scale annotation",
+    "x-axis line",
+    "horizontal baseline"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing x-axis line",
+      "compatible scale or encoding context"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editGraphics"
+  ],
+  "editableVia": [
+    "editXAxisLine"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "lineWidth",
+      "unit": "logical-pixel"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing x-axis line",
+      "compatible scale or encoding context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "color",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "lineWidth",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "position",
+      "required": false,
+      "type": "XAxisPosition | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editXAxisLine({ target?, color?, lineWidth?, position? })"
+  ],
+  "snippet": "program.editXAxisLine({ color: \"#f28e2b\" })",
+  "errors": [],
+  "route": "/reference/actions/guides/#editxaxisline"
+}

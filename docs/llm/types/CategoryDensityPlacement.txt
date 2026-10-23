@@ -1,0 +1,7 @@
+export interface CategoryDensityPlacement {
+  type: "category";
+  side?: DensityPlacementSide;
+  width?: DensityPlacementWidth;
+  split?: DensityPlacementSplit;
+  scale?: NonPointBandPositionScaleOptions;
+}

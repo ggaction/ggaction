@@ -1,0 +1,8 @@
+export interface EditLegendBorderOptions {
+  target?: string;
+  /** Select one existing block without changing its content. */
+  channel?: LegendChannel;
+  border: boolean | LegendBorderOptions;
+}
+
+/** Omitted/false axes are preserved; component false values remove existing components. */

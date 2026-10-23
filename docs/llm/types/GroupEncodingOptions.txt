@@ -1,0 +1,4 @@
+export type GroupEncodingOptions = { target?: string; fieldType?: "nominal" } & (
+  | { field: string; fields?: never }
+  | { fields: readonly [string, ...string[]]; field?: never }
+);

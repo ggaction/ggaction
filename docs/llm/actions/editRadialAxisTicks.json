@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 3,
+  "name": "editRadialAxisTicks",
+  "layer": "user-facing",
+  "domain": "axes",
+  "summary": "Edit radial tick geometry and style.",
+  "signature": "editRadialAxisTicks(options?: PolarTickOptions): ChartProgram;",
+  "intents": [
+    "edit radial axis ticks",
+    "edit",
+    "change",
+    "axis guide",
+    "scale annotation",
+    "radial-axis ticks",
+    "radial tick marks"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing radial-axis ticks",
+      "compatible scale or encoding context"
+    ],
+    "owns": [],
+    "idOptions": []
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editGraphics"
+  ],
+  "editableVia": [
+    "editRadialAxisTicks"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "count",
+      "unit": "count"
+    },
+    {
+      "path": "lineWidth",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "length",
+      "unit": "logical-pixel"
+    }
+  ],
+  "inference": [],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing radial-axis ticks",
+      "compatible scale or encoding context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "count",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "values",
+      "required": false,
+      "type": "readonly AxisValue[] | undefined"
+    },
+    {
+      "name": "color",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "lineWidth",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "length",
+      "required": false,
+      "type": "number | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editRadialAxisTicks({ count?, values?, color?, lineWidth?, length? })"
+  ],
+  "snippet": "program.editRadialAxisTicks({ count: 5 })",
+  "errors": [],
+  "route": "/reference/actions/guides/#editradialaxisticks"
+}

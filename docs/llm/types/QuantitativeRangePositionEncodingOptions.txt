@@ -1,0 +1,9 @@
+type QuantitativeRangePositionEncodingOptions = {
+  lower: string | { datum: number };
+  upper: string | { datum: number };
+  target?: string;
+  coordinate?: string;
+  fieldType?: "quantitative";
+  temporalUnit?: never;
+  scale?: NonPointQuantitativePositionScaleOptions;
+};

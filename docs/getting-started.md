@@ -127,6 +127,7 @@ created in `index.html`.
 | `ggaction/png` | Node.js 20+ only | PNG file output through the native Canvas adapter |
 | `ggaction/pdf` | Node.js 20+ only | Single-page vector PDF file output |
 | `ggaction/svg` | Modern ESM browsers and Node.js 20+ | Complete SVG document string output |
+| `ggaction/scene` | Browser or Node.js 20+ | Read transition scenes and draw native Canvas scenes |
 
 All entries include TypeScript declarations. The package does not publish
 CommonJS entry points. Import `ggaction/png` and `ggaction/pdf` only from Node

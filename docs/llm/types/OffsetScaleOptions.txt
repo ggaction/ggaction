@@ -1,0 +1,10 @@
+export interface OffsetScaleOptions {
+  id?: string;
+  type?: "ordinal";
+  domain?: "auto" | readonly unknown[];
+  reverse?: boolean;
+  padding?: number;
+  paddingInner?: number;
+  paddingOuter?: number;
+  align?: number;
+}

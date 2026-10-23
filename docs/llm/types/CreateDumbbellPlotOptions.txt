@@ -1,0 +1,8 @@
+export interface CreateDumbbellPlotOptions extends EndpointPlotBaseOptions {
+  start: EndpointValueChannel;
+  end: EndpointValueChannel;
+  startPoint?: CreateScatterPlotOptions["point"];
+  endPoint?: CreateScatterPlotOptions["point"];
+  connector?: RuleStyleOptions & { clip?: boolean };
+  labels?: false | (EndpointLabelOptions & { endpoint?: "start" | "end" | "both" });
+}

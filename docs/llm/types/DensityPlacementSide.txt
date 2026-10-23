@@ -1,0 +1,6 @@
+export type DensityPlacementSide =
+  | "both"
+  | "left"
+  | "right"
+  | "top"
+  | "bottom";

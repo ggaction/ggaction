@@ -1,0 +1,5 @@
+export interface CreateCoordinateOptions {
+  id?: string;
+  type?: "cartesian" | "polar" | "parallel";
+  layers?: readonly string[];
+}

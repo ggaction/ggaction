@@ -163,6 +163,8 @@ appearance. Endpoints and statistical component ownership remain separate.
 
 ## `encodeBarWidth({ band?, pixels?, target? })`
 
+This heading shows common options. For the full callable contract and all branches, see [`encodeBarWidth`](../../reference/actions/encodings.md#encodebarwidth) and the [exact declarations](../../reference/types.md).
+
 Override the fraction of each resolved category band—or directional offset slot for group
 layout—used by an aggregate or ranged bar and rematerialize its rectangles.
 

@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 3,
+  "name": "removeYAxis",
+  "layer": "user-facing",
+  "domain": "axes",
+  "summary": "Removes y axis while preserving unrelated chart resources.",
+  "signature": "removeYAxis(options?: RemoveAxisOptions): ChartProgram;",
+  "intents": [
+    "remove y axis",
+    "remove",
+    "delete",
+    "axis guide",
+    "scale annotation",
+    "y axis",
+    "vertical scale guide"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing y axis",
+      "compatible scale or encoding context"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target",
+      "coordinate",
+      "scale"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editSemantic",
+    "editGraphics"
+  ],
+  "editableVia": [],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "scale",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing y axis",
+      "compatible scale or encoding context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "scale",
+      "required": false,
+      "type": "string | undefined"
+    }
+  ],
+  "callPatterns": [
+    "removeYAxis({ target?, coordinate?, scale? })"
+  ],
+  "snippet": "program.removeYAxis({})",
+  "errors": [],
+  "route": "/reference/actions/guides/#removeyaxis"
+}

@@ -1,0 +1,175 @@
+{
+  "schemaVersion": 3,
+  "name": "editYScale",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Edits y scale, including settings for vertical position mapping.",
+  "signature": "editYScale(options: EditYScaleOptions): ChartProgram;",
+  "intents": [
+    "edit y scale",
+    "edit",
+    "change",
+    "chart setup",
+    "data and scales",
+    "y scale",
+    "vertical position mapping"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing y scale"
+    ],
+    "owns": [],
+    "idOptions": [
+      "id",
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editScale"
+  ],
+  "editableVia": [
+    "editYScale",
+    "editScale"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "paddingInner",
+      "unit": "band-fraction"
+    },
+    {
+      "path": "paddingOuter",
+      "unit": "band-fraction"
+    },
+    {
+      "path": "align",
+      "unit": "ratio"
+    },
+    {
+      "path": "padding",
+      "unit": "band-fraction"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "domain",
+      "strategy": "documented-auto"
+    },
+    {
+      "input": "range",
+      "strategy": "documented-auto"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing y scale"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "reverse",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "type",
+      "required": false,
+      "type": "\"band\" | \"linear\" | \"log\" | \"point\" | \"pow\" | \"sqrt\" | \"symlog\" | \"time\" | undefined"
+    },
+    {
+      "name": "domain",
+      "required": false,
+      "type": "\"auto\" | readonly unknown[] | readonly [number, number] | undefined"
+    },
+    {
+      "name": "range",
+      "required": false,
+      "type": "\"auto\" | readonly [number, number] | undefined"
+    },
+    {
+      "name": "unknown",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "paddingInner",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "paddingOuter",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "align",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "padding",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "clamp",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "nice",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "zero",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "base",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "exponent",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "constant",
+      "required": false,
+      "type": "number | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editYScale({ id?, target?, reverse?, type?, domain?, range?, unknown?, paddingInner? })"
+  ],
+  "snippet": "program.editYScale({ reverse: true })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#edityscale"
+}

@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 3,
+  "name": "encodeShape",
+  "layer": "user-facing",
+  "domain": "encodings",
+  "summary": "Encode a nominal field as fourteen named shapes or polygons with area/radius normalization.",
+  "signature": "encodeShape(options: ShapeEncodingOptions): ChartProgram;",
+  "intents": [
+    "encode shape",
+    "encode",
+    "map field",
+    "visual encoding",
+    "field mapping",
+    "point shape",
+    "categorical shape"
+  ],
+  "lifecycle": "Assignment",
+  "resources": {
+    "prerequisites": [
+      "target mark",
+      "field mode: dataset field"
+    ],
+    "owns": [
+      "point shape assignment"
+    ],
+    "idOptions": [
+      "target",
+      "scale"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editSemantic",
+    "createScale"
+  ],
+  "editableVia": [
+    "removeEncoding"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default",
+      "basic"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "scale",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "target mark",
+      "field mode: dataset field"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "field",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "fieldType",
+      "required": false,
+      "type": "\"nominal\" | undefined"
+    },
+    {
+      "name": "scale",
+      "required": false,
+      "type": "ShapeScaleOptions | undefined"
+    }
+  ],
+  "callPatterns": [
+    "encodeShape({ field, target?, scale?, fieldType? })"
+  ],
+  "snippet": "program.encodeShape({ field: \"value\" })",
+  "errors": [],
+  "route": "/reference/actions/encodings/#encodeshape"
+}

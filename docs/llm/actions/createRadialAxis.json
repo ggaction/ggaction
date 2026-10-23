@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 3,
+  "name": "createRadialAxis",
+  "layer": "user-facing",
+  "domain": "axes",
+  "summary": "Create the complete center-to-edge radial axis; angle defaults to 90.",
+  "signature": "createRadialAxis(options?: CompleteRadialAxisOptions): ChartProgram;",
+  "intents": [
+    "create radial axis",
+    "create",
+    "add",
+    "axis guide",
+    "scale annotation",
+    "radial axis",
+    "polar distance guide"
+  ],
+  "lifecycle": "Aggregate create-only",
+  "resources": {
+    "prerequisites": [
+      "compatible scale or encoding context"
+    ],
+    "owns": [
+      "radial axis"
+    ],
+    "idOptions": [
+      "scale",
+      "coordinate"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "createRadialAxisLine",
+    "createRadialAxisTicks",
+    "createRadialAxisLabels",
+    "createRadialAxisTitle"
+  ],
+  "editableVia": [
+    "editRadialAxis"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "angle",
+      "unit": "degree"
+    }
+  ],
+  "inference": [
+    {
+      "input": "scale",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "compatible scale or encoding context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "angle",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "title",
+      "required": false,
+      "type": "false | RadialTitleOptions | undefined"
+    },
+    {
+      "name": "scale",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "line",
+      "required": false,
+      "type": "false | AxisLineStyleOptions | undefined"
+    },
+    {
+      "name": "ticksAndLabels",
+      "required": false,
+      "type": "false | PolarTicksAndLabelsOptions | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createRadialAxis({ scale?, coordinate?, angle?, title?, line?, ticksAndLabels? })"
+  ],
+  "snippet": "program.createRadialAxis({})",
+  "errors": [],
+  "route": "/reference/actions/guides/#createradialaxis"
+}

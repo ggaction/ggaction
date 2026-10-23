@@ -1,0 +1,8 @@
+type CategoricalLegendTextOptions = {
+  offset?: number;
+  color?: string;
+  fontSize?: number;
+  fontFamily?: string;
+  fontWeight?: string | number;
+  format?: "auto";
+};

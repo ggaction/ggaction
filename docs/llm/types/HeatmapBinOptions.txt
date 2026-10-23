@@ -1,0 +1,5 @@
+export interface HeatmapBinOptions {
+  bins?: number | Bin2DCounts;
+  extent?: Bin2DExtent;
+  includeEmpty?: boolean;
+}

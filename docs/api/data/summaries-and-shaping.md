@@ -11,6 +11,8 @@ title: Summaries, Bins, and Data Shaping
 
 ## `createSummaryData({ id, source?, groupBy?, aggregates, members?, weight? })` {#createsummarydata-id-source-groupby-aggregates-members}
 
+This heading shows common options. For the full callable contract and all branches, see [`createSummaryData`](../../reference/actions/statistics.md#createsummarydata) and the [exact declarations](../../reference/types.md).
+
 Create reusable aggregate rows without tying the calculation to a chart type:
 
 <!-- snippet-context:start -->

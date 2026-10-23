@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 3,
+  "name": "createParallelAxes",
+  "layer": "user-facing",
+  "domain": "axes",
+  "summary": "Full-only field-selected Parallel guides.",
+  "signature": "createParallelAxes(options?: ParallelAxesOptions): ChartProgram;",
+  "intents": [
+    "create parallel axes",
+    "create",
+    "add",
+    "axis guide",
+    "scale annotation",
+    "parallel axes",
+    "dimension axes"
+  ],
+  "lifecycle": "Aggregate create-only",
+  "resources": {
+    "prerequisites": [
+      "compatible scale or encoding context"
+    ],
+    "owns": [
+      "parallel axes"
+    ],
+    "idOptions": [
+      "target",
+      "coordinate"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "editParallelAxis",
+    "removeParallelAxes"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "compatible scale or encoding context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createParallelAxes({ target?, coordinate? })"
+  ],
+  "snippet": "program.createParallelAxes({})",
+  "errors": [],
+  "route": "/reference/actions/guides/#createparallelaxes"
+}

@@ -1,0 +1,130 @@
+{
+  "schemaVersion": 3,
+  "name": "editLineMark",
+  "layer": "user-facing",
+  "domain": "marks",
+  "summary": "Edit line appearance or its explicit missing-coordinate policy and rematerialize concrete path commands without changing field encodings.",
+  "signature": "editLineMark(options: StrokeStyleDetails & { clip?: boolean; missing?: \"error\" | \"break\"; target?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;",
+  "intents": [
+    "edit line mark",
+    "edit",
+    "change",
+    "graphical mark",
+    "mark appearance",
+    "line mark",
+    "path"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing line mark"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [],
+  "editableVia": [
+    "editLineMark"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "strokeWidth",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "opacity",
+      "unit": "probability"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing line mark"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "lineCap",
+      "required": false,
+      "type": "\"butt\" | \"round\" | \"square\" | undefined"
+    },
+    {
+      "name": "lineJoin",
+      "required": false,
+      "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+    },
+    {
+      "name": "miterLimit",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "clip",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "missing",
+      "required": false,
+      "type": "\"break\" | \"error\" | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "strokeWidth",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "curve",
+      "required": false,
+      "type": "CurveInterpolation | undefined"
+    },
+    {
+      "name": "tension",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "stroke",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "opacity",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "closed",
+      "required": false,
+      "type": "boolean | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editLineMark({ target?, lineCap?, lineJoin?, miterLimit?, clip?, missing?, strokeWidth?, curve? })"
+  ],
+  "snippet": "program.editLineMark({ lineCap: \"butt\" })",
+  "errors": [],
+  "route": "/reference/actions/marks/#editlinemark"
+}

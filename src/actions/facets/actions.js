@@ -1,3 +1,4 @@
+import { normalizeFacetAxes, validateFacetAxisPolicy } from "../../core/facetAxisPolicy.js";
 import { DEFAULT_ACTION_METHODS } from "../../core/vocabulary.js";
 import { axisGraphicIds } from "../../materialization/guides/resources.js";
 import { cartesianAxisOwners, axisTargetArgs } from "../../selectors/axes.js";
@@ -73,10 +74,7 @@ const HEADER_STYLE_OPTIONS = Object.freeze([
 function normalizeGuides(guides, allowStored = false) {
   if (guides === undefined) return { axes: "each", legend: false };
   validateOptionObject(guides, GUIDE_OPTIONS, "facet.guides");
-  const axes = guides.axes ?? "each";
-  if (!["each", "outer"].includes(axes)) {
-    throw new Error('facet guides.axes must be "each" or "outer".');
-  }
+  const axes = normalizeFacetAxes(guides.axes);
   const legend = guides.legend ?? false;
   if (legend !== false && legend !== "shared" && !isPlainObject(legend)) {
     throw new Error('facet guides.legend must be false, "shared", or legend options.');
@@ -344,9 +342,7 @@ function partitionFacetAction(op, description, definitionResolver) {
     function (args = {}) {
       const guides = normalizeGuides(args.guides);
       const definition = definitionResolver(this.semanticSpec, args);
-      if (definition.family !== "cartesian" && guides.axes === "outer") {
-        throw new Error("Polar and Parallel facets do not support outer axes.");
-      }
+      validateFacetAxisPolicy(guides.axes, definition.family);
       const scalePolicies = normalizeFacetScalePolicies(this.semanticSpec, args.scales ?? {});
       const derived = deriveFacetChildren(this, definition, {
         closeInheritedAction: true, stripTitle: true, scales: args.scales ?? {}
@@ -559,10 +555,8 @@ export const repeatCharts = /* @__PURE__ */ closedAction(
   }, REPEAT_OPTIONS,
   function (args = {}) {
     const guides = normalizeGuides(args.guides);
-    if (guides.axes === "outer") {
-      throw new Error("repeatCharts does not promote axes across different repeated fields.");
-    }
     const definition = resolveRepeatDefinition(this, args);
+    validateFacetAxisPolicy(guides.axes, resolveFacetFamily(this.semanticSpec).family, true);
     const requestedScales = {
       ...(args.scales ?? {}),
       [definition.policyKey]: args.scales?.[definition.policyKey] ?? "independent"
@@ -657,14 +651,10 @@ export const editFacetGuides = /* @__PURE__ */ action(
     });
     const current = this.compositionSpec.facet;
     if (Object.hasOwn(args, "legend")) normalizeGuides({ legend: args.legend });
-    const guides = normalizeGuides({ ...current.guides, ...args }, true);
+    const guides = normalizeGuides({ ...current.guides, ...args,
+      ...(Object.hasOwn(args, "axes") ? { axes: normalizeFacetAxes(args.axes, current.guides.axes) } : {}) }, true);
     const family = resolveFacetFamily(this.semanticSpec).family;
-    if (family !== "cartesian" && guides.axes === "outer") {
-      throw new Error("Polar and Parallel facets do not support outer axes.");
-    }
-    if (current.repeat !== undefined && guides.axes === "outer") {
-      throw new Error("repeatCharts does not promote axes across different repeated fields.");
-    }
+    validateFacetAxisPolicy(guides.axes, family, current.repeat !== undefined);
     return rederiveFacet(this, {
       scales: current.scales,
       guides

@@ -1,0 +1,123 @@
+{
+  "schemaVersion": 3,
+  "name": "editErrorBandBoundary",
+  "layer": "user-facing",
+  "domain": "statistics",
+  "summary": "Constant band fill conflicts with active color.",
+  "signature": "editErrorBandBoundary(options: EditErrorBandBoundaryOptions): ChartProgram;",
+  "intents": [
+    "edit error band boundary",
+    "edit",
+    "change",
+    "statistical layer",
+    "statistical transform",
+    "error band boundary",
+    "ribbon outline"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing error band boundary",
+      "statistical source and coordinate context"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H1",
+    "H3"
+  ],
+  "wraps": [],
+  "editableVia": [
+    "editErrorBandBoundary"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "strokeWidth",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "opacity",
+      "unit": "probability"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing error band boundary",
+      "statistical source and coordinate context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "boundary",
+      "required": false,
+      "type": "\"both\" | \"lower\" | \"upper\" | undefined"
+    },
+    {
+      "name": "stroke",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "strokeWidth",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "strokeDash",
+      "required": false,
+      "type": "DashPattern | DashStyle | undefined"
+    },
+    {
+      "name": "opacity",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "curve",
+      "required": false,
+      "type": "CurveInterpolation | undefined"
+    },
+    {
+      "name": "lineCap",
+      "required": false,
+      "type": "\"butt\" | \"round\" | \"square\" | undefined"
+    },
+    {
+      "name": "lineJoin",
+      "required": false,
+      "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+    },
+    {
+      "name": "miterLimit",
+      "required": false,
+      "type": "number | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editErrorBandBoundary({ target?, boundary?, stroke?, strokeWidth?, strokeDash?, opacity?, curve?, lineCap? })"
+  ],
+  "snippet": "program.editErrorBandBoundary({ boundary: \"both\" })",
+  "errors": [],
+  "route": "/reference/actions/statistics/#editerrorbandboundary"
+}

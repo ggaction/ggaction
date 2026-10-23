@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 3,
+  "name": "applyTheme",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Use \"light\", \"dark\", or a custom partial definition such as:",
+  "signature": "applyTheme(options: ApplyThemeOptions): ChartProgram;",
+  "intents": [
+    "apply theme",
+    "apply",
+    "set defaults",
+    "chart setup",
+    "data and scales",
+    "program theme",
+    "light or dark visual defaults"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [],
+    "owns": [
+      "program theme"
+    ],
+    "idOptions": []
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editGraphics"
+  ],
+  "editableVia": [
+    "applyTheme",
+    "removeTheme"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default",
+      "basic"
+    ]
+  },
+  "units": [],
+  "inference": [],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "theme",
+      "required": true,
+      "type": "ThemeDefinition"
+    },
+    {
+      "name": "scope",
+      "required": false,
+      "type": "\"descendants\" | \"self\" | undefined"
+    }
+  ],
+  "callPatterns": [
+    "applyTheme({ theme, scope? })"
+  ],
+  "snippet": "program.applyTheme({ theme: \"dark\" })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#applytheme"
+}

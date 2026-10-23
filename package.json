@@ -1,6 +1,6 @@
 {
   "name": "ggaction",
-  "version": "0.0.22",
+  "version": "0.0.23",
   "description": "Build charts through immutable, traceable graphical actions.",
   "license": "MIT",
   "author": "Hyeon Jeon",
@@ -155,7 +155,7 @@
     "benchmark:runtime": "node scripts/benchmark-runtime.js",
     "benchmark:authoring": "node scripts/evaluate-authoring-requirements.js",
     "test:platform": "node scripts/test-platform-package.js",
-    "test:browser:compat": "node scripts/run-tests.js browser browser/backend-compatibility.browser.js",
+    "test:browser:compat": "node scripts/run-tests.js browser browser/backend-compatibility.browser.js browser/facet-content-headers.browser.js",
     "release:prepare": "node scripts/prepare-release.js"
   },
   "engines": {
@@ -170,13 +170,16 @@
     "@axe-core/playwright": "^4.12.1",
     "@modelcontextprotocol/sdk": "1.32.1",
     "@napi-rs/canvas": "^1.0.2",
+    "@xmldom/xmldom": "0.9.12",
+    "acorn": "8.19.0",
     "ajv": "^8.20.0",
     "es-module-lexer": "^1.7.0",
     "esbuild": "0.28.2",
     "gifenc": "^1.0.3",
     "playwright": "^1.61.1",
     "typescript": "^7.0.2",
-    "vite": "^6.4.3"
+    "vite": "^6.4.3",
+    "yaml": "2.9.1"
   },
   "peerDependencies": {
     "@modelcontextprotocol/sdk": "1.32.1",

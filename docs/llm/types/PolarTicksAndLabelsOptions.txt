@@ -1,0 +1,6 @@
+export interface PolarTicksAndLabelsOptions {
+  count?: number;
+  values?: readonly AxisValue[];
+  ticks?: AxisTickStyleOptions;
+  labels?: AxisLabelStyleOptions;
+}

@@ -1,0 +1,7 @@
+export interface SourceSchemaField {
+  /** Exact source row key, including an empty string or whitespace. */
+  name: string;
+  storageType: Exclude<DatasetStorageType, "unknown" | "mixed">;
+  nullable?: boolean;
+  optional?: boolean;
+}

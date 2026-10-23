@@ -1,0 +1,165 @@
+{
+  "schemaVersion": 3,
+  "name": "editColorScale",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Edits color scale, including settings for color mapping.",
+  "signature": "editColorScale(options: EditColorScaleOptions): ChartProgram;",
+  "intents": [
+    "edit color scale",
+    "edit",
+    "change",
+    "chart setup",
+    "data and scales",
+    "color scale",
+    "color mapping"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing color scale"
+    ],
+    "owns": [],
+    "idOptions": [
+      "id",
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editScale"
+  ],
+  "editableVia": [
+    "editColorScale",
+    "editScale"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "domain",
+      "strategy": "documented-auto"
+    },
+    {
+      "input": "range",
+      "strategy": "documented-auto"
+    },
+    {
+      "input": "whitePoint",
+      "strategy": "documented-auto"
+    },
+    {
+      "input": "gamma",
+      "strategy": "documented-auto"
+    },
+    {
+      "input": "midpoint",
+      "strategy": "documented-auto"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing color scale"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "domain",
+      "required": false,
+      "type": "\"auto\" | readonly unknown[] | readonly number[] | readonly [unknown, unknown] | readonly [number, number] | undefined"
+    },
+    {
+      "name": "range",
+      "required": false,
+      "type": "\"auto\" | readonly string[] | { readonly palette: Palette; } | { readonly palette: Palette; } | readonly [string, string, ...string[]] | undefined"
+    },
+    {
+      "name": "palette",
+      "required": false,
+      "type": "\"accent\" | \"bluegreen\" | \"blueorange\" | \"bluepurple\" | \"blues\" | \"brownbluegreen\" | \"browns\" | \"category10\" | \"category20\" | \"category20b\" | \"category20c\" | \"cividis\" | \"dark2\" | ... 59 more ... | undefined"
+    },
+    {
+      "name": "type",
+      "required": false,
+      "type": "\"log\" | \"ordinal\" | \"pow\" | \"quantile\" | \"quantize\" | \"sequential\" | \"sqrt\" | \"symlog\" | \"threshold\" | undefined"
+    },
+    {
+      "name": "unknown",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "whitePoint",
+      "required": false,
+      "type": "\"auto\" | \"d50\" | \"d65\" | undefined"
+    },
+    {
+      "name": "gamma",
+      "required": false,
+      "type": "number | \"auto\" | undefined"
+    },
+    {
+      "name": "clamp",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "reverse",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "interpolate",
+      "required": false,
+      "type": "ContinuousColorInterpolation | undefined"
+    },
+    {
+      "name": "midpoint",
+      "required": false,
+      "type": "number | \"auto\" | undefined"
+    },
+    {
+      "name": "base",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "constant",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "exponent",
+      "required": false,
+      "type": "number | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editColorScale({ id?, target?, domain?, range?, palette?, type?, unknown?, whitePoint? })"
+  ],
+  "snippet": "program.editColorScale({ palette: \"set2\" })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#editcolorscale"
+}

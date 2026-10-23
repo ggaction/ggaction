@@ -1,0 +1,4 @@
+export interface LinearGradientStop {
+  readonly offset: number;
+  readonly color: string;
+}

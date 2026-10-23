@@ -1,0 +1,138 @@
+{
+  "schemaVersion": 3,
+  "name": "editHorizon",
+  "layer": "user-facing",
+  "domain": "encodings",
+  "summary": "Create and bind an immutable Horizon revision, preserve omitted settings and scale identities, and rematerialize affected consumers.",
+  "signature": "editHorizon(options: EditHorizonOptions): ChartProgram;",
+  "intents": [
+    "edit horizon",
+    "edit",
+    "change",
+    "visual encoding",
+    "field mapping",
+    "horizon chart",
+    "banded time series"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing horizon chart"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target",
+      "source"
+    ]
+  },
+  "authoringRoles": [
+    "H2",
+    "H3"
+  ],
+  "wraps": [
+    "editScale"
+  ],
+  "editableVia": [
+    "editHorizon"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "bands",
+      "unit": "count"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "source",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "extent",
+      "strategy": "documented-auto"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing horizon chart"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "groupBy",
+      "required": false,
+      "type": "string | false | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "source",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "x",
+      "required": false,
+      "type": "string | HorizonXEncoding | undefined"
+    },
+    {
+      "name": "y",
+      "required": false,
+      "type": "string | HorizonYEncoding | undefined"
+    },
+    {
+      "name": "bands",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "baseline",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "extent",
+      "required": false,
+      "type": "number | \"auto\" | undefined"
+    },
+    {
+      "name": "resolve",
+      "required": false,
+      "type": "HorizonResolution | undefined"
+    },
+    {
+      "name": "missing",
+      "required": false,
+      "type": "HorizonMissingPolicy | undefined"
+    },
+    {
+      "name": "overflow",
+      "required": false,
+      "type": "HorizonOverflowPolicy | undefined"
+    },
+    {
+      "name": "palette",
+      "required": false,
+      "type": "HorizonPaletteOptions | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editHorizon({ target?, source?, groupBy?, x?, y?, bands?, baseline?, extent? })"
+  ],
+  "snippet": "program.editHorizon({ groupBy: \"groupBy\" })",
+  "errors": [],
+  "route": "/reference/actions/encodings/#edithorizon"
+}

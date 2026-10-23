@@ -1,0 +1,17 @@
+export type StrokeWidthEncodingOptions =
+  | {
+      value: number;
+      field?: never;
+      target?: string;
+      fieldType?: never;
+      scale?: never;
+    }
+  | {
+      field: string;
+      value?: never;
+      target?: string;
+      fieldType?: "quantitative";
+      scale?: StrokeWidthScaleOptions;
+    };
+
+/** Constant value and scale ranges are graphical areas in square pixels. */

@@ -1,3 +1,5 @@
+import { reconcileRegressionPlacement } from "../../materialization/graphicHierarchy.js";
+import { validateRegressionPlacement } from "../../grammar/regression/parameters.js";
 import { closedAction } from "../../core/action.js";
 import { validateKeys } from "../../core/validation.js";
 import { normalizeRegressionParameters, normalizeRegressionPredict } from "../../grammar/regression/index.js";
@@ -12,7 +14,7 @@ import {
 const REGRESSION_OPTIONS = Object.freeze([
   "target", "x", "y", "groupBy", "method", "degree", "span", "robustIterations",
   "confidenceMethod", "level", "confidence", "interval", "band", "line"
-  , "predict", "sourceBinding", "missing"
+  , "predict", "sourceBinding", "missing", "placement"
 ]);
 
 export const createRegression = /* @__PURE__ */ closedAction(
@@ -21,6 +23,7 @@ export const createRegression = /* @__PURE__ */ closedAction(
     description: "Fit and layer regression lines with optional interval bands."
   }, REGRESSION_OPTIONS,
   function (args = {}) {
+    const placement = validateRegressionPlacement(args.placement);
     const sourceBinding = args.sourceBinding ?? "fixed";
     if (!["fixed", "follow"].includes(sourceBinding)) {
       throw new Error('Regression sourceBinding must be "fixed" or "follow".');
@@ -134,9 +137,11 @@ export const createRegression = /* @__PURE__ */ closedAction(
         dataId,
         bandId: band === false ? undefined : bandId,
         lineId,
+        ...(Object.hasOwn(args, "placement") ? { placement } : {}),
         parameters: regressionDefinition
       }
     });
+    if (placement === "plot-last") next = reconcileRegressionPlacement(next, point.id);
     return sourceBinding === "follow"
       ? next.editSemantic({
           property: `layer[${point.id}].derivedBindings.regression`,

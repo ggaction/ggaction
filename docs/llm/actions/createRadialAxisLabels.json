@@ -1,0 +1,147 @@
+{
+  "schemaVersion": 3,
+  "name": "createRadialAxisLabels",
+  "layer": "user-facing",
+  "domain": "axes",
+  "summary": "Create missing radial-axis labels independently of the other components.",
+  "signature": "createRadialAxisLabels(options?: CreateRadialAxisLabelsOptions): ChartProgram;",
+  "intents": [
+    "create radial axis labels",
+    "create",
+    "add",
+    "axis guide",
+    "scale annotation",
+    "radial-axis labels",
+    "radial tick text"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "compatible scale or encoding context"
+    ],
+    "owns": [
+      "radial-axis labels"
+    ],
+    "idOptions": [
+      "scale",
+      "coordinate"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "createGraphics",
+    "editRadialAxisLabels"
+  ],
+  "editableVia": [
+    "editRadialAxisLabels"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "offset",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "fontSize",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "count",
+      "unit": "count"
+    },
+    {
+      "path": "angle",
+      "unit": "degree"
+    }
+  ],
+  "inference": [
+    {
+      "input": "scale",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "compatible scale or encoding context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "offset",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "format",
+      "required": false,
+      "type": "AxisFormat | undefined"
+    },
+    {
+      "name": "color",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "fontSize",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "fontFamily",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "fontWeight",
+      "required": false,
+      "type": "string | number | undefined"
+    },
+    {
+      "name": "count",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "values",
+      "required": false,
+      "type": "readonly AxisValue[] | undefined"
+    },
+    {
+      "name": "scale",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "angle",
+      "required": false,
+      "type": "number | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createRadialAxisLabels({ scale?, coordinate?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight? })"
+  ],
+  "snippet": "program.createRadialAxisLabels({})",
+  "errors": [],
+  "route": "/reference/actions/guides/#createradialaxislabels"
+}

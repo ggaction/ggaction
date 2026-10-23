@@ -1,0 +1,7 @@
+export type NonPointPointPositionScaleOptions = ScaleFields<
+  "id" | "reverse" | "padding" | "align"
+> & {
+  type?: "point";
+  domain?: "auto" | readonly unknown[];
+  range?: "auto" | readonly [number, number];
+};

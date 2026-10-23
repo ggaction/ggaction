@@ -1,0 +1,4 @@
+export interface ThetaTicksAndLabelsOptions
+  extends Omit<PolarTicksAndLabelsOptions, "labels"> {
+  labels?: AxisLabelStyleOptions & DisplayLabelOptions;
+}

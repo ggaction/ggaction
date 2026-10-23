@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "packageVersion": "0.0.23",
+  "contractId": "sha256:d4a3b46c05b696b43389ec3e4bc2aaa89584ef20e01d5e64b8c61a316fe2c004",
+  "identityPolicy": "Match contractId and artifact hashes before mixing page, card, type, or MCP resource data. Task packets must come from the same installed card/resource set; packageVersion alone is insufficient.",
+  "artifacts": [
+    {
+      "path": "actions.json",
+      "sha256": "feb8b745e205fd0ad6064c0643c57dbbf4b078465be98c176719fcf2e52efebd",
+      "bytes": 901889
+    },
+    {
+      "path": "mcp-resources.json",
+      "sha256": "b2bd47e6d3f0ce9821b8ff9483dc151b803ae6b8146bf6c00557ad6da0c346bc",
+      "bytes": 7727
+    },
+    {
+      "path": "intent-taxonomy.json",
+      "sha256": "110c08451c1791bdac33e2dfc4824714db36ff77796645925ba8ead8cd52af62",
+      "bytes": 60471
+    },
+    {
+      "path": "schemas/task-packet.schema.json",
+      "sha256": "d3f4985492e477fe70d8030a36f3bc7aec2290018bd55396e9e8fc0e6e546ed4",
+      "bytes": 6680
+    },
+    {
+      "path": "schemas/action-card.schema.json",
+      "sha256": "cbef6ad8deaaea0581a438ef9f4dc0c7feb504925aef52bd622ea94ec92d6bb2",
+      "bytes": 7069
+    },
+    {
+      "path": "types/program.d.ts",
+      "sha256": "88bf968d09b79a479c87fbad8d84a0b4e8a85dc6dd6eaced6a92de98e42a494e",
+      "bytes": 193569
+    }
+  ],
+  "catalogs": {
+    "pages": {
+      "count": 150,
+      "path": "llm/pages.json",
+      "bytes": 37460,
+      "sha256": "6c2d9c741f1b65309ed2b9a7baf2f7901ea738f77f8e2921b73cec958a1d913f"
+    },
+    "actions": {
+      "count": 293,
+      "path": "llm/actions.json",
+      "bytes": 77429,
+      "sha256": "8e566dbec11fb9672535e13fb9d4b221e8f6764fc31b4cf60d6b715e5424b140"
+    },
+    "types": {
+      "count": 686,
+      "path": "llm/types.json",
+      "bytes": 155745,
+      "sha256": "5e1573519289d278b5286662d2992427f5f6cee175f6771269caf196e94d6f97"
+    }
+  },
+  "paths": {
+    "page": "llm/pages/<source-without-md>.txt",
+    "action": "llm/actions/<actionName>.json",
+    "type": "llm/types/<TypeName>.txt"
+  }
+}

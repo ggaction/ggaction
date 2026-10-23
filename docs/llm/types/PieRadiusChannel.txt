@@ -1,0 +1,3 @@
+export type PieRadiusChannel = string | {
+  scale?: RadiusScaleOptions;
+} & ({ field: string; aggregate?: "sum" } | { field?: never; aggregate: "count" });

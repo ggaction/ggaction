@@ -1,0 +1,158 @@
+{
+  "schemaVersion": 3,
+  "name": "createYAxisTicks",
+  "layer": "user-facing",
+  "domain": "axes",
+  "summary": "Creates y-axis ticks for vertical tick marks.",
+  "signature": "createYAxisTicks(options?: AxisTickOptions<YAxisPosition>): ChartProgram;",
+  "intents": [
+    "create y axis ticks",
+    "create",
+    "add",
+    "axis guide",
+    "scale annotation",
+    "y-axis ticks",
+    "vertical tick marks"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "compatible scale or encoding context"
+    ],
+    "owns": [
+      "y-axis ticks"
+    ],
+    "idOptions": [
+      "target",
+      "scale"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editSemantic",
+    "createGraphics",
+    "editYAxisTicks"
+  ],
+  "editableVia": [
+    "editYAxisTicks"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default",
+      "basic"
+    ]
+  },
+  "units": [
+    {
+      "path": "count",
+      "unit": "count"
+    },
+    {
+      "path": "lineWidth",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "length",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "alongOffset",
+      "unit": "logical-pixel"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "scale",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "strokeDashMap",
+      "strategy": "documented-auto"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "compatible scale or encoding context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "scale",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "position",
+      "required": false,
+      "type": "YAxisPosition | undefined"
+    },
+    {
+      "name": "count",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "rounding",
+      "required": false,
+      "type": "AxisTickRounding | undefined"
+    },
+    {
+      "name": "values",
+      "required": false,
+      "type": "readonly AxisValue[] | undefined"
+    },
+    {
+      "name": "color",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "lineWidth",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "length",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "strokeDash",
+      "required": false,
+      "type": "readonly number[] | undefined"
+    },
+    {
+      "name": "strokeDashMap",
+      "required": false,
+      "type": "\"auto\" | CartesianGuideDashMap | undefined"
+    },
+    {
+      "name": "alongOffset",
+      "required": false,
+      "type": "number | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createYAxisTicks({ target?, scale?, position?, count?, rounding?, values?, color?, lineWidth? })"
+  ],
+  "snippet": "program.createYAxisTicks({})",
+  "errors": [],
+  "route": "/reference/actions/guides/#createyaxisticks"
+}

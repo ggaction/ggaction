@@ -1,0 +1,4 @@
+export type DisplayLabelMap = ReadonlyArray<Readonly<{
+  value: DatasetScalar;
+  label: string;
+}>>;

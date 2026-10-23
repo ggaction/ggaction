@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 3,
+  "name": "editAxes",
+  "layer": "user-facing",
+  "domain": "axes",
+  "summary": "Edits x and y axes, including settings for Cartesian guides.",
+  "signature": "editAxes(options: EditAxesOptions): ChartProgram;",
+  "intents": [
+    "edit axes",
+    "edit",
+    "change",
+    "axis guide",
+    "scale annotation",
+    "x and y axes",
+    "Cartesian guides"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing x and y axes",
+      "compatible scale or encoding context"
+    ],
+    "owns": [],
+    "idOptions": []
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editXAxis",
+    "editYAxis"
+  ],
+  "editableVia": [
+    "editAxes"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing x and y axes",
+      "compatible scale or encoding context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "x",
+      "required": false,
+      "type": "false | EditAxisOptions<XAxisPosition> | readonly [EditAxisOptions<XAxisPosition> & { target: string; }, ...(EditAxisOptions<XAxisPosition> & { ...; })[]] | undefined"
+    },
+    {
+      "name": "y",
+      "required": false,
+      "type": "false | EditAxisOptions<YAxisPosition> | readonly [EditAxisOptions<YAxisPosition> & { target: string; }, ...(EditAxisOptions<YAxisPosition> & { ...; })[]] | undefined"
+    },
+    {
+      "name": "theta",
+      "required": false,
+      "type": "false | EditThetaAxisOptions | undefined"
+    },
+    {
+      "name": "radius",
+      "required": false,
+      "type": "false | EditRadialAxisOptions | undefined"
+    },
+    {
+      "name": "parallel",
+      "required": false,
+      "type": "false | readonly [ParallelAxisComponentsOptions, ...ParallelAxisComponentsOptions[]] | ParallelAxisComponentsOptions | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editAxes({ x?, y?, theta?, radius?, parallel? })"
+  ],
+  "snippet": "program.editAxes({ x: { labels: { fontSize: 11 } }, y: { labels: { fontSize: 11 } } })",
+  "errors": [],
+  "route": "/reference/actions/guides/#editaxes"
+}

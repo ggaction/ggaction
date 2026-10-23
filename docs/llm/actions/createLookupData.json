@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 3,
+  "name": "createLookupData",
+  "layer": "user-facing",
+  "domain": "statistics",
+  "summary": "Copy fields from one named table without changing primary row order or count.",
+  "signature": "createLookupData(options: LookupDataOptions): ChartProgram;",
+  "intents": [
+    "create lookup data",
+    "create",
+    "add",
+    "statistical layer",
+    "statistical transform",
+    "named table lookup",
+    "copy reference fields"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "source dataset"
+    ],
+    "owns": [
+      "named table lookup"
+    ],
+    "idOptions": [
+      "id",
+      "source"
+    ]
+  },
+  "authoringRoles": [
+    "H1"
+  ],
+  "wraps": [
+    "createDerivedData"
+  ],
+  "editableVia": [
+    "editLookupData"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default",
+      "basic"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "source",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "source dataset"
+    ],
+    "allowsEmpty": true
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "source",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "field",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "lookup",
+      "required": true,
+      "type": "{ data: string; key: string; fields: readonly string[]; as?: readonly string[] | undefined; }"
+    }
+  ],
+  "callPatterns": [
+    "createLookupData({ id, field, lookup, source? })"
+  ],
+  "snippet": "program.createLookupData({ id: \"ages\", field: \"person\", lookup: { data: \"people\", key: \"name\", fields: [\"age\"] } })",
+  "errors": [],
+  "route": "/reference/actions/statistics/#createlookupdata"
+}

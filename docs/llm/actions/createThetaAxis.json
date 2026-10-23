@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 3,
+  "name": "createThetaAxis",
+  "layer": "user-facing",
+  "domain": "axes",
+  "summary": "Create the complete outer circular theta axis.",
+  "signature": "createThetaAxis(options?: CompleteThetaAxisOptions): ChartProgram;",
+  "intents": [
+    "create theta axis",
+    "create",
+    "add",
+    "axis guide",
+    "scale annotation",
+    "theta axis",
+    "angular guide"
+  ],
+  "lifecycle": "Aggregate create-only",
+  "resources": {
+    "prerequisites": [
+      "compatible scale or encoding context"
+    ],
+    "owns": [
+      "theta axis"
+    ],
+    "idOptions": [
+      "scale",
+      "coordinate"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "createThetaAxisLine",
+    "createThetaAxisTicks",
+    "createThetaAxisLabels",
+    "createThetaAxisTitle"
+  ],
+  "editableVia": [
+    "editThetaAxis"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "scale",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "compatible scale or encoding context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "ticksAndLabels",
+      "required": false,
+      "type": "false | ThetaTicksAndLabelsOptions | undefined"
+    },
+    {
+      "name": "scale",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "line",
+      "required": false,
+      "type": "false | AxisLineStyleOptions | undefined"
+    },
+    {
+      "name": "title",
+      "required": false,
+      "type": "false | PolarTitleOptions | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createThetaAxis({ scale?, coordinate?, ticksAndLabels?, line?, title? })"
+  ],
+  "snippet": "program.createThetaAxis({})",
+  "errors": [],
+  "route": "/reference/actions/guides/#createthetaaxis"
+}

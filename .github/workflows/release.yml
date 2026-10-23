@@ -18,6 +18,7 @@ concurrency:
 jobs:
   candidate:
     runs-on: ubuntu-latest
+    timeout-minutes: 120
     steps:
       - name: Check out the requested tag
         uses: actions/checkout@v6
@@ -72,6 +73,7 @@ jobs:
   verify-source:
     needs: candidate
     runs-on: ubuntu-latest
+    timeout-minutes: 120
     steps:
       - name: Check out the requested tag
         uses: actions/checkout@v6
@@ -128,6 +130,7 @@ jobs:
   verify-coverage:
     needs: candidate
     runs-on: ubuntu-latest
+    timeout-minutes: 120
     steps:
       - name: Check out the requested tag
         uses: actions/checkout@v6
@@ -161,6 +164,14 @@ jobs:
         run: npx playwright install --with-deps chromium
       - name: Enforce coverage thresholds
         run: node scripts/run-check.js test-coverage -- npm run test:coverage
+      - name: Retain complete coverage evidence
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: coverage-${{ github.job }}-${{ github.run_attempt }}
+          path: .artifacts/coverage
+          if-no-files-found: warn
+          retention-days: 14
       - name: Collect bounded failure evidence
         if: ${{ failure() }}
         continue-on-error: true
@@ -178,6 +189,7 @@ jobs:
   verify-package:
     needs: candidate
     runs-on: ubuntu-latest
+    timeout-minutes: 120
     steps:
       - name: Check out the requested tag
         uses: actions/checkout@v6
@@ -228,6 +240,7 @@ jobs:
   verify-documentation:
     needs: candidate
     runs-on: ubuntu-latest
+    timeout-minutes: 120
     steps:
       - name: Check out the requested tag
         uses: actions/checkout@v6
@@ -306,6 +319,7 @@ jobs:
   realistic-data:
     needs: candidate
     runs-on: ubuntu-latest
+    timeout-minutes: 120
     steps:
       - name: Check out the requested tag
         uses: actions/checkout@v6
@@ -349,6 +363,7 @@ jobs:
       matrix:
         shard: [1, 2, 3, 4, 5, 6, 7]
     runs-on: ubuntu-latest
+    timeout-minutes: 120
     steps:
       - name: Check out the requested tag
         uses: actions/checkout@v6
@@ -389,6 +404,14 @@ jobs:
         run: npm run datasets:sync
       - name: Run the assigned realistic files
         run: node scripts/run-check.js test-realistic -- npm run test:realistic -- --shard=${{ matrix.shard }}/7
+      - name: Retain per-file timing and memory evidence
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: timings-${{ github.job }}-${{ matrix.shard }}-${{ github.run_attempt }}
+          path: .artifacts/timings
+          if-no-files-found: warn
+          retention-days: 30
       - name: Collect bounded failure evidence
         if: ${{ failure() }}
         continue-on-error: true
@@ -410,6 +433,7 @@ jobs:
       matrix:
         os: [macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 120
     defaults:
       run:
         shell: bash
@@ -444,6 +468,8 @@ jobs:
           '
       - name: Verify installed native package outputs
         run: node scripts/run-check.js test-platform -- npm run test:platform
+      - name: Verify portable compiler and test paths
+        run: node scripts/run-check.js test-platform-contracts -- node scripts/run-tests.js all contracts/compiler-harness.test.js contracts/data-completion-types.test.js contracts/focused-scale-editor-types.test.js unit/support/test-sharding.test.js
       - name: Collect bounded failure evidence
         if: ${{ failure() }}
         continue-on-error: true
@@ -465,6 +491,7 @@ jobs:
       matrix:
         browser: [firefox, webkit]
     runs-on: ubuntu-latest
+    timeout-minutes: 120
     defaults:
       run:
         shell: bash
@@ -521,6 +548,7 @@ jobs:
     if: ${{ always() }}
     needs: [candidate, verify-source, verify-coverage, verify-package, verify-documentation, realistic-data, verify-realistic, verify-platform, verify-browsers]
     runs-on: ubuntu-latest
+    timeout-minutes: 120
     steps:
       - name: Check out the requested tag
         uses: actions/checkout@v6
@@ -552,6 +580,7 @@ jobs:
   publish:
     needs: verify
     runs-on: ubuntu-latest
+    timeout-minutes: 120
     environment:
       name: npm-release
       url: https://www.npmjs.com/package/ggaction
@@ -631,6 +660,7 @@ jobs:
   pages-build:
     needs: publish
     runs-on: ubuntu-latest
+    timeout-minutes: 120
     permissions:
       contents: read
     steps:
@@ -688,6 +718,7 @@ jobs:
   pages-deploy:
     needs: pages-build
     runs-on: ubuntu-latest
+    timeout-minutes: 120
     permissions:
       contents: read
       pages: write

@@ -1,0 +1,14 @@
+export type ScaleType =
+  | "linear"
+  | "log"
+  | "pow"
+  | "sqrt"
+  | "symlog"
+  | "time"
+  | "band"
+  | "point"
+  | "ordinal"
+  | "sequential"
+  | "quantize"
+  | "quantile"
+  | "threshold";

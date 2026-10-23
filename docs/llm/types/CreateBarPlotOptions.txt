@@ -1,0 +1,22 @@
+export type CreateBarPlotOptions = {
+  /** Forward the native mark missing-value policy. */
+  missing?: "error" | "skip";
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  orientation?: "vertical" | "horizontal";
+  color?: BarColorChannel;
+  width?: Omit<BarWidthOptions, "target" | "interval">;
+  bar?: RectStyleDetails & {
+    clip?: boolean;
+    fill?: FillPaint;
+    opacity?: number;
+    stroke?: FilledMarkStroke;
+    strokeWidth?: number;
+  };
+  guides?: false | ColorGuides;
+} & (
+  | { x: BarFieldPosition<BandPositionChannel>; y: BarFieldPosition<BarYPositionChannel> }
+  | { x: BarRangePositionChannel; y: BarRangeOppositePositionChannel }
+  | { x: BarRangeOppositePositionChannel; y: BarRangePositionChannel }
+);

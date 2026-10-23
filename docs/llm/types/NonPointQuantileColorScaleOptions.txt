@@ -1,0 +1,6 @@
+export type NonPointQuantileColorScaleOptions = ScaleFields<"id" | "reverse"> & {
+  type: "quantile";
+  domain?: "auto" | readonly number[];
+  range?: "auto" | readonly [string, string, ...string[]];
+  palette?: PaletteName | { name: PaletteName; count?: number };
+};

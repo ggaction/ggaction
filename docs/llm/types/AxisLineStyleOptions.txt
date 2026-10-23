@@ -1,0 +1,4 @@
+export interface AxisLineStyleOptions {
+  color?: string;
+  lineWidth?: number;
+}

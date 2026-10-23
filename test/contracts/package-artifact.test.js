@@ -1,6 +1,9 @@
+import { tmpdir } from "node:os";
+import path from "node:path";
+import { preparePackageConsumer } from "../../scripts/package-consumer.js";
 import { packageVersion } from "../../src/version.js";
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { mkdtemp, readFile, readdir, rm } from "node:fs/promises";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
@@ -197,4 +200,51 @@ test("packed scale compaction preserves exports and numeric color results", asyn
   const transformed = await compactModule("transformed");
   assert.deepEqual(transformed.mapTransformedValues([1,10,100],[1,100],[0,100],{type:"log"}),[0,50,100]);
   assert.deepEqual(transformed.mapTransformedValues([-1,0,1],[-1,1],[0,100],{type:"symlog",constant:.01}),[0,50,100]);
+});
+
+
+test("consumer setup removes its temporary directory when installation fails", async t => {
+  const directory = await mkdtemp(path.join(tmpdir(), "ggaction-failed-install-"));
+  t.after(() => rm(directory, { recursive: true, force: true }));
+  await assert.rejects(preparePackageConsumer({
+    temporaryRoot: directory,
+    packageSpec: path.join(directory, "intentionally-missing.tgz")
+  }), /ENOENT|no such file/);
+  assert.deepEqual(await readdir(directory), []);
+});
+
+test("independent installed cases continue after a failure and retain case identities", async t => {
+  const { runConsumerCases } = await import("../../scripts/consumers/runtime.js");
+  const directory = await mkdtemp(path.join(tmpdir(), "ggaction-consumer-receipts-"));
+  t.after(() => rm(directory, { recursive: true, force: true }));
+  const receipt = path.join(directory, "cases.json");
+  let secondRan = false;
+  await assert.rejects(runConsumerCases([
+    { id: "broken-entry", run() { throw new Error("negative control"); } },
+    { id: "independent-entry", run() { secondRan = true; } }
+  ], receipt), AggregateError);
+  assert.equal(secondRan, true);
+  const { records } = JSON.parse(await readFile(receipt, "utf8"));
+  assert.deepEqual(records.map(({ id, status }) => ({ id, status })), [
+    { id: "broken-entry", status: "failed" },
+    { id: "independent-entry", status: "passed" }
+  ]);
+  assert.match(records[0].error, /negative control/);
+});
+
+test("installed fixture modules and their case manifest are exhaustive", async () => {
+  const { parse } = await import("acorn");
+  const directory = new URL("../../scripts/consumers/fixtures/node/", import.meta.url);
+  const manifest = JSON.parse(await readFile(new URL("manifest.json", directory), "utf8"));
+  const ids = [];
+  assert.deepEqual((await readdir(directory)).filter(file => file.endsWith(".mjs")).sort(), manifest.map(entry => entry.file).sort());
+  for (const entry of manifest) {
+    const source = await readFile(new URL(entry.file, directory), "utf8");
+    const ast = parse(source, { ecmaVersion: "latest", sourceType: "module" });
+    const cases = ast.body.find(node => node.type === "ExportNamedDeclaration").declaration.declarations[0].init.elements;
+    assert.deepEqual(cases.map(node => node.properties.find(property => property.key.name === "id").value.value), entry.cases.map(item => item.id));
+    assert.doesNotMatch(source, /from ["'].*src\//, "Fixtures consume installed public exports");
+    ids.push(...entry.cases.map(item => item.id));
+  }
+  assert.equal(new Set(ids).size, ids.length);
 });

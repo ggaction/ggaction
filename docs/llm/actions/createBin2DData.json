@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 3,
+  "name": "createBin2DData",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Aggregate finite x/y pairs into deterministic rectangular cell bounds and counts.",
+  "signature": "createBin2DData(options: Bin2DDataOptions): ChartProgram;",
+  "intents": [
+    "create bin2 d data",
+    "create",
+    "add",
+    "chart setup",
+    "data and scales",
+    "two-dimensional bins",
+    "rectangular aggregation"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "source dataset"
+    ],
+    "owns": [
+      "two-dimensional bins"
+    ],
+    "idOptions": [
+      "id",
+      "source"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "createDerivedData"
+  ],
+  "editableVia": [
+    "editBin2DData"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "source",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "source dataset"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "source",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "x",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "y",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "bins",
+      "required": false,
+      "type": "number | Bin2DCounts | undefined"
+    },
+    {
+      "name": "extent",
+      "required": false,
+      "type": "Bin2DExtent | undefined"
+    },
+    {
+      "name": "includeEmpty",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "members",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "as",
+      "required": false,
+      "type": "Bin2DOutputFields | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createBin2DData({ id, x, y, source?, bins?, extent?, includeEmpty?, members? })"
+  ],
+  "snippet": "program.createBin2DData({ id: \"bin2-d-data-1\", x: \"x\", y: \"y\" })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#createbin2ddata"
+}

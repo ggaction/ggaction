@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 3,
+  "name": "insertCompositionChild",
+  "layer": "user-facing",
+  "domain": "composition",
+  "summary": "Insert a complete chart or nested composition under a new stable child name.",
+  "signature": "insertCompositionChild(options: InsertCompositionChildOptions): ChartProgram;",
+  "intents": [
+    "insert composition child",
+    "edit",
+    "change",
+    "chart composition",
+    "small multiples",
+    "composition child",
+    "nested chart slot"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing composition child",
+      "complete child chart program"
+    ],
+    "owns": [],
+    "idOptions": [
+      "id",
+      "before",
+      "after"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [],
+  "editableVia": [],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "before",
+      "strategy": "explicit"
+    },
+    {
+      "input": "after",
+      "strategy": "explicit"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing composition child",
+      "complete child chart program"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "program",
+      "required": true,
+      "type": "ChartProgram"
+    },
+    {
+      "name": "before",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "after",
+      "required": false,
+      "type": "string | undefined"
+    }
+  ],
+  "callPatterns": [
+    "insertCompositionChild({ id, program, before?, after? })"
+  ],
+  "snippet": "program.insertCompositionChild({ id: \"detail\", program: chart().createCanvas({}).createData({ values: [] }), after: \"overview\" })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#insertcompositionchild"
+}

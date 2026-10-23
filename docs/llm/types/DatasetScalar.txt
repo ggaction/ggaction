@@ -1,0 +1,1 @@
+export type DatasetScalar = string | number | boolean | null;

@@ -1,0 +1,10 @@
+export type TimeUnit =
+  | "year"
+  | "quarter"
+  | "month"
+  | "day"
+  | "hour"
+  | "minute"
+  | "second"
+  | "week"
+  | "weekday";
