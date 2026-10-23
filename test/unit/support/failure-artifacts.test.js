@@ -125,3 +125,14 @@ test("the upload payload stays within its total byte budget", async t => {
   assert.equal(result.omitted, 1);
   assert.equal(result.bytes, 48 * 1024 * 1024);
 });
+
+test("a hanging check is terminated with a timeout receipt", async t => {
+ const directory=await fixture(t);
+ const code=await runCheck("hang", "node", ["-e", 'process.on("SIGTERM",()=>{});setInterval(()=>{},1000)'], {
+  outputDirectory: directory, stdout: silence, stderr: silence, timeoutMs: 500, killGraceMs: 100
+ });
+ assert.equal(code,124);
+ const record=JSON.parse(await readFile(path.join(directory,"hang.json"),"utf8"));
+ assert.equal(record.termination,"timeout");
+ assert.ok(record.durationMs < 10000);
+});

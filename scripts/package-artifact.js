@@ -25,7 +25,7 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 export const PACKAGE_LIMITS = Object.freeze({
   entries: 621, // Combined chart fixes and both native transition scene adapters.
   packedBytes: 897_000, // Measured894453 locally plus observed clean-runner compression variation.
-  unpackedBytes: 4_255_000 // Measured4254609bytes after exact role declarations and complete release notes; next1000-byte boundary.
+  unpackedBytes: 4_256_000 // Measured 4,255,019 bytes after adding XML/YAML test dependencies to package metadata.
 });
 
 const REQUIRED_FILES = Object.freeze([

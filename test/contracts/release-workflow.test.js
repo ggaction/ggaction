@@ -1,3 +1,4 @@
+import { parse } from "yaml";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
@@ -161,4 +162,35 @@ test("test and documentation failures retain bounded artifacts without forgiving
       }
     }
   }
+});
+
+function assertRequiredExecution(source) {
+ const workflow = parse(source);
+ const required = {
+  "verify-source": ["node scripts/run-check.js test -- npm test", "node scripts/run-check.js test-browser -- npm run test:browser", "node scripts/run-check.js test-render -- npm run test:render"],
+  "verify-coverage": ["node scripts/run-check.js test-coverage -- npm run test:coverage"],
+  "verify-package": ["node scripts/run-check.js test-package -- npm run test:package"]
+ };
+ for (const [name, commands] of Object.entries(required)) {
+  const job=workflow.jobs[name];
+  assert.ok(job, name);
+  assert.equal(job.if, undefined, `${name} must run unconditionally after its prerequisites`);
+  assert.ok(!job["continue-on-error"], name);
+  assert.ok([job.needs].flat().includes("candidate"), name);
+  for(const command of commands) {
+   const steps=job.steps.filter(step => step.run?.trim() === command);
+   assert.equal(steps.length, 1, `${name} must execute ${command}`);
+   assert.equal(steps[0].if, undefined, command);
+   assert.ok(!steps[0]["continue-on-error"], command);
+  }
+ }
+}
+test("required qualification steps execute rather than merely mention their commands", () => {
+ assertRequiredExecution(workflow);
+ const command="node scripts/run-check.js test -- npm test";
+ for(const replacement of [
+  `echo '${command}'`,
+  command + "\n        if: ${{ false }}",
+  `${command}\n        continue-on-error: true`
+ ]) assert.throws(() => assertRequiredExecution(workflow.replace(command,replacement)));
 });

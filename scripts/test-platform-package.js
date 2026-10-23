@@ -1,5 +1,5 @@
 import { execFileSync } from "node:child_process";
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir, writeFile, readFile } from "node:fs/promises";
 import path from "node:path";
 import { preparePackageConsumer } from "./package-consumer.js";
 import { compatibilityScene } from "../test/support/backend-compatibility.js";
@@ -7,7 +7,11 @@ import { npmInvocation } from "./npm-command.js";
 
 const consumer = await preparePackageConsumer();
 try {
-  const install = npmInvocation(["install", "--ignore-scripts", "--no-audit", "--no-fund", "@napi-rs/canvas"]);
+  const lock = JSON.parse(await readFile(new URL("../package-lock.json", import.meta.url), "utf8"));
+  const nativeVersion = process.env.GGACTION_PEER_MODE === "latest"
+    ? consumer.installedManifest.peerDependencies["@napi-rs/canvas"]
+    : lock.packages["node_modules/@napi-rs/canvas"].version;
+  const install = npmInvocation(["install", "--ignore-scripts", "--no-audit", "--no-fund", `@napi-rs/canvas@${nativeVersion}`]);
   execFileSync(install.command, install.args, { cwd: consumer.directory, stdio: "pipe" });
   const script = path.join(consumer.directory, "platform.mjs");
   await writeFile(script, `
@@ -60,7 +64,9 @@ console.log("Verified installed Full/Basic, SVG, PNG/PDF memory/files, and persi
   execFileSync(process.execPath, [script], { cwd: consumer.directory, stdio: "inherit" });
   const receipt = { platform: process.platform, arch: process.arch, node: process.version,
     package: `${consumer.installedManifest.name}@${consumer.installedManifest.version}`,
-    source: consumer.packageSpec, sha256: consumer.artifact?.sha256 };
+    source: consumer.packageSpec, sha256: consumer.artifact?.sha256,
+    peerMode: process.env.GGACTION_PEER_MODE ?? "locked",
+    nativeBackend: JSON.parse(await readFile(path.join(consumer.directory, "node_modules/@napi-rs/canvas/package.json"), "utf8")).version };
   await mkdir(".artifacts/platform", { recursive: true });
   await writeFile(`.artifacts/platform/${process.platform}-${process.arch}.json`, JSON.stringify(receipt, null, 2));
   process.stdout.write(`${JSON.stringify(receipt)}\n`);

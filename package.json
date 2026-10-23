@@ -177,7 +177,8 @@
     "gifenc": "^1.0.3",
     "playwright": "^1.61.1",
     "typescript": "^7.0.2",
-    "vite": "^6.4.3"
+    "vite": "^6.4.3",
+    "yaml": "2.9.1"
   },
   "peerDependencies": {
     "@modelcontextprotocol/sdk": "1.32.1",

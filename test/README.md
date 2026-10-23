@@ -118,3 +118,9 @@ minimum floors to every current and future file under high-risk boundaries;
 explicit per-file overrides are reserved for modules that warrant stricter
 thresholds. This prevents a newly split policy or renderer from escaping the
 coverage contract.
+
+Installed consumers use exact peer versions from `package-lock.json` by default.
+Use `GGACTION_PEER_MODE=latest npm run test:package` (or `test:platform`) for a
+separate latest-compatible peer check. Receipts record the resolved versions.
+CI checks launched by `scripts/run-check.js` have a 90-minute deadline, preserve
+timeout/cancellation identity, and terminate their child process tree.

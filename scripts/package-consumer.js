@@ -5713,11 +5713,19 @@ async function testOptionalDependencies(consumer) {
     throw new Error(`Missing SDK diagnostic failed: ${cli.stderr}`);
   }
   const peers = consumer.installedManifest.peerDependencies;
+  const lock = JSON.parse(await readFile(path.join(root, "package-lock.json"), "utf8"));
+  const selectedPeers = Object.fromEntries(Object.entries(peers).map(([name, range]) => {
+    const version = process.env.GGACTION_PEER_MODE === "latest" ? range : lock.packages[`node_modules/${name}`]?.version;
+    if (!version) throw new Error(`Missing locked consumer peer: ${name}`);
+    return [name, version];
+  }));
   run(npmCommand, ["install", "--ignore-scripts", "--no-audit", "--no-fund",
-    ...Object.entries(peers).map(([name, version]) => `${name}@${version}`)
+    ...Object.entries(selectedPeers).map(([name, version]) => `${name}@${version}`)
   ], consumer.directory, { env: {
     ...process.env, NPM_CONFIG_CACHE: path.join(consumer.directory, ".npm-cache")
   } });
+  consumer.resolvedPeers = Object.fromEntries(await Promise.all(Object.keys(peers).map(async name =>
+    [name, JSON.parse(await readFile(path.join(consumer.directory, "node_modules", name, "package.json"), "utf8")).version])));
 }
 
 export async function testPackageConsumer(options) {
@@ -5760,6 +5768,8 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
     package: `${result.installedManifest.name}@${result.installedManifest.version}`,
     source: result.artifact?.filename ?? result.packageSpec,
     ...(result.artifact ? { sha256: result.artifact.sha256 } : {}),
+    peerMode: process.env.GGACTION_PEER_MODE ?? "locked",
+    resolvedPeers: result.resolvedPeers,
     browserBundles: result.browserBundles,
     mcp: {
       coldStartMilliseconds: Math.round(result.mcp.coldStartMilliseconds)
