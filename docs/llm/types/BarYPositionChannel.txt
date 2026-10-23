@@ -1,0 +1,28 @@
+type BarYPositionChannel =
+  | string
+  | {
+      field: string;
+      bin?: never;
+      fieldType: "temporal";
+      temporalUnit?: TemporalInputUnit;
+      aggregate?: never;
+      stack?: never;
+      scale?: NonPointTemporalPositionScaleOptions;
+    }
+  | ({ field: string; bin?: never; stack?: StackMode } & (
+      | {
+          fieldType?: "quantitative";
+          aggregate?: never;
+          scale?: NonPointZeroSupportingPositionScaleOptions;
+        }
+      | {
+          fieldType: "nominal" | "ordinal";
+          aggregate?: never;
+          scale?: NonPointBandPositionScaleOptions;
+        }
+      | {
+          fieldType?: "quantitative" | "nominal" | "ordinal";
+          aggregate: AggregateOperation;
+          scale?: NonPointZeroSupportingPositionScaleOptions;
+        }
+    ));

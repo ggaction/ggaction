@@ -1,0 +1,4 @@
+export interface ViolinPlotSplitOptions {
+  field: string;
+  domain?: readonly [unknown, unknown];
+}

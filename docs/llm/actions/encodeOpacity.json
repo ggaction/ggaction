@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 3,
+  "name": "encodeOpacity",
+  "layer": "user-facing",
+  "domain": "encodings",
+  "summary": "Apply a constant point/rule/line/bar/rect opacity from 0 to 1, or map a quantitative field through a linear opacity scale.",
+  "signature": "encodeOpacity(options: OpacityEncodingOptions): ChartProgram;",
+  "intents": [
+    "encode opacity",
+    "encode",
+    "map field",
+    "visual encoding",
+    "field mapping",
+    "opacity",
+    "transparency"
+  ],
+  "lifecycle": "Assignment",
+  "resources": {
+    "prerequisites": [
+      "target mark",
+      "field mode: dataset field"
+    ],
+    "owns": [
+      "opacity assignment"
+    ],
+    "idOptions": [
+      "target",
+      "scale"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editSemantic",
+    "createScale"
+  ],
+  "editableVia": [
+    "removeEncoding"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "scale",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "target mark",
+      "field mode: dataset field"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "value",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "field",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "fieldType",
+      "required": false,
+      "type": "\"quantitative\" | undefined"
+    },
+    {
+      "name": "scale",
+      "required": false,
+      "type": "OpacityScaleOptions | undefined"
+    }
+  ],
+  "callPatterns": [
+    "encodeOpacity({ target?, scale?, value?, field?, fieldType? })"
+  ],
+  "snippet": "program.encodeOpacity({ value: 0.8 })",
+  "errors": [],
+  "route": "/reference/actions/encodings/#encodeopacity"
+}

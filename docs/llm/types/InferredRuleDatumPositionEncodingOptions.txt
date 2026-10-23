@@ -1,0 +1,10 @@
+type InferredRuleDatumPositionEncodingOptions = {
+  field?: never;
+  datum: unknown;
+  target?: string;
+  coordinate?: string;
+  fieldType?: undefined;
+  scale?:
+    | NonPointQuantitativePositionScaleOptions
+    | NonPointCategoricalPositionScaleOptions;
+};

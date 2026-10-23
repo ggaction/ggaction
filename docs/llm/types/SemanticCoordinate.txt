@@ -1,0 +1,8 @@
+export interface SemanticCoordinate {
+  readonly id: string;
+  readonly type?: "cartesian" | "polar" | "parallel";
+  readonly aspect?: CoordinateAspect;
+  readonly polarFrame?: Exclude<PolarFrameOptions, "auto">;
+  readonly layers?: readonly string[];
+  readonly [key: string]: unknown;
+}

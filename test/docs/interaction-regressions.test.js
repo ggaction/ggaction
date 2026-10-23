@@ -171,3 +171,21 @@ test("each retry makes one request after consecutive failures and pending search
     }
   } finally { await browser.close(); }
 });
+
+test("natural task queries reach their canonical guide among the first three results", async () => {
+  const browser = await chromium.launch();
+  try {
+    const page = await browser.newPage();
+    await page.route("https://docs.test/search-index.json", async route => route.fulfill({ contentType: "application/json", body: await read("docs/search-index.json") }));
+    await page.setContent('<base href="https://docs.test/"><div class="docs-search"><input id="docs-search-input"><ul id="docs-search-results" hidden></ul></div><div id="docs-search-config" data-root-url="/" data-index-url="/search-index.json"></div>');
+    await page.addScriptTag({ content: await read("docs/assets/js/docs-search.js") });
+    for (const [query, route] of [
+      ["change colors", "/api/series/color/"], ["change the colors", "/api/series/color/"],
+      ["how do I change the axis label", "/api/axes/"], ["update data", "/data-updates/"],
+      ["export svg", "/api/rendering/"]
+    ]) {
+      await page.locator("input").fill(query);
+      await page.waitForFunction(expected => [...document.querySelectorAll('[role="option"]')].slice(0, 3).some(link => new URL(link.href).pathname === expected), route);
+    }
+  } finally { await browser.close(); }
+});

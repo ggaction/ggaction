@@ -1,0 +1,6 @@
+export type ActionOptions = Record<string, unknown>;
+/**
+ * One semantic assignment or removal. Complete unreferenced source datasets and
+ * coordinates can be removed; source values remain immutable. Domain removal
+ * actions own full resource/configuration lifecycle checks and cleanup.
+ */

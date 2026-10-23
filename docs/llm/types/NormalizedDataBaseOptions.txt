@@ -1,0 +1,7 @@
+type NormalizedDataBaseOptions = {
+  id: string;
+  source?: string;
+  field: string;
+  as: string;
+  groupBy?: string | readonly string[];
+};

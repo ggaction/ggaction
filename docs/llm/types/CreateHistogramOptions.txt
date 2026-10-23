@@ -1,0 +1,18 @@
+export type CreateHistogramOptions = BasicHistogramEncoding & {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  field: string;
+  color?: HistogramCategoricalColorChannel;
+  bar?: RectStyleDetails & {
+    clip?: boolean;
+    fill?: FillPaint;
+    opacity?: number;
+    stroke?: FilledMarkStroke;
+    strokeWidth?: number;
+  };
+  guides?: false | (Omit<CartesianCategoricalGuideOptions, "grid"> & {
+    /** Bin position and count axes are continuous; neither grid has categorical band edges. */
+    grid?: false | ContinuousCartesianGridOptions;
+  });
+};

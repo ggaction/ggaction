@@ -33,7 +33,8 @@ const program = chart()
 
 - The current dataset and Cartesian coordinate
 - Vertical or horizontal orientation from the complete field pair
-- Tukey quartiles and `1.5 × IQR` observed whiskers
+- Linearly interpolated quartiles: for `[1, 2, 3, 4]`, Q1/median/Q3 are `1.75 / 2.5 / 3.25`
+- Tukey `1.5 × IQR` fences, with whiskers at the most extreme observed values within the fences
 - A ranged-bar body, median rule, whiskers, caps, and optional outlier points
 - Compatible scales, axes, and the perpendicular grid
 

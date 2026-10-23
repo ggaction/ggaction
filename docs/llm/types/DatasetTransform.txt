@@ -1,0 +1,23 @@
+export type DatasetTransform =
+  | DatasetBinTransform
+  | DatasetBin2DTransform
+  | DatasetCompleteTransform
+  | DatasetComputedTransform
+  | DatasetImputedTransform
+  | DatasetNormalizedTransform
+  | DatasetFilterTransform
+  | DatasetFlattenTransform
+  | DatasetLookupTransform
+  | DatasetFoldTransform
+  | DatasetRegressionTransform
+  | DatasetRegressionStatisticsTransform
+  | DatasetSortTransform
+  | DatasetDensityTransform
+  | DatasetECDFTransform
+  | DatasetHorizonTransform
+  | DatasetIntervalTransform
+  | DatasetSummaryTransform
+  | DatasetStackTransform
+  | DatasetStatisticalReferenceTransform
+  | DatasetTimeUnitTransform
+  | DatasetWindowTransform;

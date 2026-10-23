@@ -1,0 +1,5 @@
+export interface GradientPlotCenterOptions extends StrokeStyleDetails {
+  type?: "mean" | "median";
+  stroke?: string;
+  strokeWidth?: number;
+}

@@ -1,0 +1,6 @@
+export interface PathOrderEncodingOptions {
+  target?: string;
+  field: string;
+  fieldType?: "quantitative";
+  order?: "ascending" | "descending";
+}

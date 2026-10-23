@@ -1,0 +1,25 @@
+export interface TextMarkOptions {
+  clip?: boolean;
+  /** Logical-pixel baseline spacing; defaults to 1.2 times fontSize. */
+  lineHeight?: number;
+  /** Anchor the first line or center the complete multiline block. */
+  blockAlign?: "first" | "middle";
+  /** Follow resolved source appearance; an explicit fill takes precedence. Source-owned labels only. */
+  inheritColor?: "fill" | "stroke" | false;
+  id?: string;
+  data?: string;
+  /** Explicit source mark. Mutually exclusive with data; may be incomplete. */
+  source?: string;
+  text?: unknown;
+  missing?: "error" | "skip";
+  fill?: string;
+  opacity?: number;
+  fontSize?: number;
+  fontFamily?: string;
+  fontWeight?: string | number;
+  align?: "left" | "right" | "center" | "start" | "end";
+  baseline?: "top" | "hanging" | "middle" | "alphabetic" | "ideographic" | "bottom";
+  rotation?: RotationInput;
+  dx?: number;
+  dy?: number;
+}

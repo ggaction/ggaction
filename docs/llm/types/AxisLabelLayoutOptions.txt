@@ -1,0 +1,10 @@
+export interface AxisLabelLayoutOptions {
+  /** Legacy numbers are radians; structured values make radians or degrees explicit. */
+  rotation?: RotationInput;
+  /** Wrap each label to this measured width; false removes an existing wrap policy. */
+  maxWidth?: number | false;
+  wrap?: "word" | "character";
+  lineHeight?: number;
+  /** Defaults to error; allow stores an intentional label-label overlap policy. */
+  overlap?: "error" | "allow";
+}

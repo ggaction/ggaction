@@ -1,0 +1,17 @@
+export type HorizonXEncoding = { field: string } & (
+  | {
+      fieldType: "quantitative";
+      scale?: NonPointQuantitativePositionScaleOptions;
+    }
+  | {
+      fieldType: "temporal";
+      temporalUnit?: TemporalInputUnit;
+      scale?: NonPointTemporalPositionScaleOptions;
+    }
+  | {
+      fieldType?: undefined;
+      scale?:
+        | NonPointQuantitativePositionScaleOptions
+        | NonPointTemporalPositionScaleOptions;
+    }
+);

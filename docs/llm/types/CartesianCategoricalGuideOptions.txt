@@ -1,0 +1,11 @@
+type CartesianCategoricalGuideOptions = Omit<CartesianGuideOptions, "legend"> & {
+  legend?: false | (Omit<
+    SeparateFilledLegendOptions,
+    "count" | "values" | "gradient" | "labels" | "order" | "representation" | "symbol" | "titlePosition"
+  > & {
+    titlePosition?: "top" | "left";
+    symbol?: FilledLegendSymbolRecipe;
+    labels?: CategoricalLegendTextOptions;
+    order?: CartesianLegendOrder;
+  });
+};

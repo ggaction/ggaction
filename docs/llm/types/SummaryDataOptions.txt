@@ -1,0 +1,10 @@
+export interface SummaryDataOptions {
+  id: string;
+  source?: string;
+  groupBy?: string | readonly string[];
+  aggregates: readonly SummaryAggregateOptions[];
+  members?: string;
+  weight?: StatisticalWeight;
+  missing?: "error" | "drop";
+  empty?: "null" | "identity";
+}

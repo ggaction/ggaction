@@ -1,0 +1,4 @@
+export interface MarkLabelPlacementLeaderOptions {
+  stroke?: string;
+  strokeWidth?: number;
+}

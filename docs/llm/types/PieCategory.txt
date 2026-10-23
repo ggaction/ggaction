@@ -1,0 +1,5 @@
+export type PieCategory = string | {
+  field: string;
+  fieldType?: "nominal" | "ordinal";
+  scale?: Pick<ThetaScaleOptions, "id" | "domain" | "range" | "reverse"> & { type?: "band" };
+};

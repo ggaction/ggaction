@@ -1,0 +1,17 @@
+export interface EditLegendBlockOptions {
+  /** Reset only the sample window with auto. */
+  clipHeight?: number | "auto";
+  target: string;
+  channel: LegendChannel;
+  /** Block-local anchor; inherit removes only this override. */
+  position?: "right" | "left" | "bottom" | "top" | "top-left" | "top-right" | "bottom-left" | "bottom-right" | "inherit";
+  title?: string;
+  values?: readonly [number, ...number[]] | "auto";
+  count?: number;
+  order?: readonly CategoryValue[];
+  gap?: number;
+  text?: LegendBlockTextPatch;
+  symbol?: LegendBlockSymbolPatch;
+  /** Display-only: categorical keys, or finite numeric keys for continuous size samples. Empty labels omit text only. */
+  labelMap?: DisplayLabelMap | "auto";
+}

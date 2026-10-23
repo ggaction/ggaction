@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 3,
+  "name": "createRadialAxisTicks",
+  "layer": "user-facing",
+  "domain": "axes",
+  "summary": "Create missing radial-axis ticks independently of the other components.",
+  "signature": "createRadialAxisTicks(options?: CreateRadialAxisTicksOptions): ChartProgram;",
+  "intents": [
+    "create radial axis ticks",
+    "create",
+    "add",
+    "axis guide",
+    "scale annotation",
+    "radial-axis ticks",
+    "radial tick marks"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "compatible scale or encoding context"
+    ],
+    "owns": [
+      "radial-axis ticks"
+    ],
+    "idOptions": [
+      "scale",
+      "coordinate"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "createGraphics",
+    "editRadialAxisTicks"
+  ],
+  "editableVia": [
+    "editRadialAxisTicks"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "lineWidth",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "length",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "count",
+      "unit": "count"
+    },
+    {
+      "path": "angle",
+      "unit": "degree"
+    }
+  ],
+  "inference": [
+    {
+      "input": "scale",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "compatible scale or encoding context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "color",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "lineWidth",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "length",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "count",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "values",
+      "required": false,
+      "type": "readonly AxisValue[] | undefined"
+    },
+    {
+      "name": "scale",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "angle",
+      "required": false,
+      "type": "number | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createRadialAxisTicks({ scale?, coordinate?, color?, lineWidth?, length?, count?, values?, angle? })"
+  ],
+  "snippet": "program.createRadialAxisTicks({})",
+  "errors": [],
+  "route": "/reference/actions/guides/#createradialaxisticks"
+}

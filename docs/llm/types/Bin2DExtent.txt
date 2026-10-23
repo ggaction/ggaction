@@ -1,0 +1,4 @@
+export interface Bin2DExtent {
+  x?: readonly [number, number];
+  y?: readonly [number, number];
+}

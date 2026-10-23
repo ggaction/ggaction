@@ -1,0 +1,22 @@
+export type CreateStripPlotOptions = {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  color?: BasicColorChannel;
+  size?: BasicSizeChannel;
+  shape?: BasicShapeChannel;
+  point?: StrokeStyleDetails & {
+    clip?: boolean;
+    radius?: number;
+    shape?: PointShape;
+    fill?: string;
+    opacity?: number;
+    stroke?: FilledMarkStroke;
+    strokeWidth?: number;
+  };
+  guides?: false | CartesianGuideOptions;
+} & (
+  | { x: RugMeasureChannel; y?: never; jitter?: false | StripPixelJitterOptions }
+  | { x: RugMeasureChannel; y: StripCategoryChannel; jitter?: false | StripBandJitterOptions }
+  | { x: StripCategoryChannel; y: RugMeasureChannel; jitter?: false | StripBandJitterOptions }
+);

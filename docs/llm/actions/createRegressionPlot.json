@@ -1,0 +1,195 @@
+{
+  "schemaVersion": 3,
+  "name": "createRegressionPlot",
+  "layer": "user-facing",
+  "domain": "charts",
+  "summary": "Create a scatter plot with fitted regression data, a line, and optional interval bands.",
+  "signature": "createRegressionPlot(options: CreateRegressionPlotOptions): ChartProgram;",
+  "intents": [
+    "create regression plot",
+    "create",
+    "add",
+    "complete chart",
+    "chart facade",
+    "regression plot",
+    "scatter relationship with fitted trend"
+  ],
+  "lifecycle": "Aggregate create-only",
+  "resources": {
+    "prerequisites": [
+      "canvas and dataset context"
+    ],
+    "owns": [
+      "regression plot"
+    ],
+    "idOptions": [
+      "id",
+      "data",
+      "coordinate"
+    ]
+  },
+  "authoringRoles": [
+    "H0",
+    "H1"
+  ],
+  "wraps": [
+    "createScatterPlot",
+    "createRegression"
+  ],
+  "editableVia": [],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "data",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "complete",
+    "requires": [
+      "canvas and dataset context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "data",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "x",
+      "required": true,
+      "type": "RegressionPlotPositionChannel"
+    },
+    {
+      "name": "y",
+      "required": true,
+      "type": "RegressionPlotPositionChannel"
+    },
+    {
+      "name": "color",
+      "required": false,
+      "type": "BasicColorChannel | undefined"
+    },
+    {
+      "name": "size",
+      "required": false,
+      "type": "BasicSizeChannel | undefined"
+    },
+    {
+      "name": "shape",
+      "required": false,
+      "type": "BasicShapeChannel | undefined"
+    },
+    {
+      "name": "point",
+      "required": false,
+      "type": "(StrokeStyleDetails & { clip?: boolean | undefined; radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
+    },
+    {
+      "name": "guides",
+      "required": false,
+      "type": "false | CartesianGuideOptions | undefined"
+    },
+    {
+      "name": "method",
+      "required": false,
+      "type": "\"exp\" | \"linear\" | \"loess\" | \"polynomial\" | undefined"
+    },
+    {
+      "name": "interval",
+      "required": false,
+      "type": "false | RegressionInterval | undefined"
+    },
+    {
+      "name": "degree",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "span",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "robustIterations",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "confidenceMethod",
+      "required": false,
+      "type": "ConfidenceIntervalMethod | undefined"
+    },
+    {
+      "name": "level",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "confidence",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "predict",
+      "required": false,
+      "type": "RegressionPredictOptions | undefined"
+    },
+    {
+      "name": "groupBy",
+      "required": false,
+      "type": "string | false | undefined"
+    },
+    {
+      "name": "line",
+      "required": false,
+      "type": "(StrokeStyleDetails & { strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; }) | undefined"
+    },
+    {
+      "name": "sourceBinding",
+      "required": false,
+      "type": "\"fixed\" | \"follow\" | undefined"
+    },
+    {
+      "name": "missing",
+      "required": false,
+      "type": "\"drop\" | \"error\" | undefined"
+    },
+    {
+      "name": "band",
+      "required": false,
+      "type": "false | RegressionBandOptions | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createRegressionPlot({ x, y, method? })"
+  ],
+  "snippet": "program.createRegressionPlot({ x: \"x\", y: \"y\", groupBy: false })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#createregressionplot"
+}

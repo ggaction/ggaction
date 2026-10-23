@@ -1,0 +1,9 @@
+export type DurationWindowFrame = {
+  preceding?: never;
+  following?: never;
+  duration: {
+    preceding: number;
+    following?: number;
+    unit: DurationWindowUnit;
+  };
+};

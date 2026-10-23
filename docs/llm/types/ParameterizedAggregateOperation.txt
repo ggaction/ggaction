@@ -1,0 +1,12 @@
+export type ParameterizedAggregateOperation =
+  | { op: "quantile"; probability: number }
+  | {
+      op: "first" | "last";
+      orderBy: string;
+      order?: "ascending" | "descending";
+    }
+  | {
+      op: "ciLower" | "ciUpper";
+      method?: ConfidenceIntervalMethod;
+      level?: number;
+    };

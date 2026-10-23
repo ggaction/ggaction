@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 3,
+  "name": "createGrid",
+  "layer": "user-facing",
+  "domain": "grid",
+  "summary": "Create inferred horizontal and/or vertical Cartesian grid lines behind related marks, or infer the Polar grid families backed by stored theta/radius encodings.",
+  "signature": "createGrid(options?: CreateGridOptions): ChartProgram;",
+  "intents": [
+    "create grid",
+    "create",
+    "add",
+    "grid guide",
+    "reference lines",
+    "grid",
+    "Cartesian reference lines"
+  ],
+  "lifecycle": "Aggregate create-only",
+  "resources": {
+    "prerequisites": [
+      "compatible scale or encoding context"
+    ],
+    "owns": [
+      "grid"
+    ],
+    "idOptions": []
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "createRadialGrid",
+    "createThetaGrid",
+    "createHorizontalGrid",
+    "createVerticalGrid"
+  ],
+  "editableVia": [
+    "editGrid"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default",
+      "basic"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "compatible scale or encoding context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "horizontal",
+      "required": false,
+      "type": "boolean | GridDirectionOptions | undefined"
+    },
+    {
+      "name": "vertical",
+      "required": false,
+      "type": "boolean | GridDirectionOptions | undefined"
+    },
+    {
+      "name": "theta",
+      "required": false,
+      "type": "boolean | PolarGridOptions | undefined"
+    },
+    {
+      "name": "radial",
+      "required": false,
+      "type": "boolean | PolarGridOptions | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createGrid({ horizontal?, vertical?, theta?, radial? })"
+  ],
+  "snippet": "program.createGrid({})",
+  "errors": [],
+  "route": "/reference/actions/guides/#creategrid"
+}

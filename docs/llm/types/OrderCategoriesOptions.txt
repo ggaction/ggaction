@@ -1,0 +1,4 @@
+export type OrderCategoriesOptions = {
+  target?: string;
+  channel: "x" | "y" | "theta";
+} & CategoryOrder;

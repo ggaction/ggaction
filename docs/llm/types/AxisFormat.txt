@@ -1,0 +1,4 @@
+export type AxisFormat =
+  | "ticks"
+  | ValueFormat
+  | { decimals: number };

@@ -1,0 +1,7 @@
+export type ColorLayout =
+  | "stack"
+  | "fill"
+  | "group"
+  | "overlay"
+  | "diverging"
+  | "center";

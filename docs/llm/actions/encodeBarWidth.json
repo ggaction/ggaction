@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 3,
+  "name": "encodeBarWidth",
+  "layer": "user-facing",
+  "domain": "encodings",
+  "summary": "Set aggregate or ranged bar width before or after its positions are complete.",
+  "signature": "encodeBarWidth(options?: BarWidthOptions): ChartProgram;",
+  "intents": [
+    "encode bar width",
+    "encode",
+    "map field",
+    "visual encoding",
+    "field mapping",
+    "bar width",
+    "band occupancy"
+  ],
+  "lifecycle": "Assignment",
+  "resources": {
+    "prerequisites": [
+      "target mark"
+    ],
+    "owns": [
+      "bar width assignment"
+    ],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [],
+  "editableVia": [
+    "removeEncoding"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default",
+      "basic"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "target mark"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "band",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "pixels",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "interval",
+      "required": false,
+      "type": "{ unit: \"day\" | \"hour\" | \"minute\" | \"month\" | \"quarter\" | \"second\" | \"year\"; insetStart?: number | undefined; insetEnd?: number | undefined; } | undefined"
+    }
+  ],
+  "callPatterns": [
+    "encodeBarWidth({ target?, band?, pixels?, interval? })"
+  ],
+  "snippet": "program.encodeBarWidth({ band: 1 })",
+  "errors": [],
+  "route": "/reference/actions/encodings/#encodebarwidth"
+}

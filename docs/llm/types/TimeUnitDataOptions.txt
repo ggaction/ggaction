@@ -1,0 +1,17 @@
+export type TimeUnitDataOptions = TimeUnitDataBaseOptions & (
+  | {
+      unit: Exclude<TimeUnit, "week">;
+      weekStartsOn?: never;
+      weekRule?: never;
+    }
+  | {
+      unit: "week";
+      weekRule?: "calendar";
+      weekStartsOn?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
+    }
+  | {
+      unit: "week";
+      weekRule: "iso";
+      weekStartsOn?: 1;
+    }
+);

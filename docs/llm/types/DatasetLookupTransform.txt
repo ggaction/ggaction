@@ -1,0 +1,10 @@
+export interface DatasetLookupTransform {
+  readonly type: "lookup";
+  readonly field: string;
+  readonly lookup: {
+    readonly data: string;
+    readonly key: string;
+    readonly fields: readonly string[];
+    readonly as: readonly string[];
+  };
+}

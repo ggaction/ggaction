@@ -1,0 +1,4 @@
+export interface GraphicSpec {
+  readonly objects: Readonly<Record<string, GraphicObject>>;
+  readonly order: readonly string[];
+}

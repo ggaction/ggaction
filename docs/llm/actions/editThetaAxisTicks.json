@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 3,
+  "name": "editThetaAxisTicks",
+  "layer": "user-facing",
+  "domain": "axes",
+  "summary": "Edit theta tick geometry and style.",
+  "signature": "editThetaAxisTicks(options?: PolarTickOptions): ChartProgram;",
+  "intents": [
+    "edit theta axis ticks",
+    "edit",
+    "change",
+    "axis guide",
+    "scale annotation",
+    "theta-axis ticks",
+    "angular tick marks"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing theta-axis ticks",
+      "compatible scale or encoding context"
+    ],
+    "owns": [],
+    "idOptions": []
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editGraphics"
+  ],
+  "editableVia": [
+    "editThetaAxisTicks"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "count",
+      "unit": "count"
+    },
+    {
+      "path": "lineWidth",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "length",
+      "unit": "logical-pixel"
+    }
+  ],
+  "inference": [],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing theta-axis ticks",
+      "compatible scale or encoding context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "count",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "values",
+      "required": false,
+      "type": "readonly AxisValue[] | undefined"
+    },
+    {
+      "name": "color",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "lineWidth",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "length",
+      "required": false,
+      "type": "number | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editThetaAxisTicks({ count?, values?, color?, lineWidth?, length? })"
+  ],
+  "snippet": "program.editThetaAxisTicks({ count: 5 })",
+  "errors": [],
+  "route": "/reference/actions/guides/#editthetaaxisticks"
+}

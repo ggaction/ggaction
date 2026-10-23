@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 3,
+  "name": "orderCategories",
+  "layer": "user-facing",
+  "domain": "encodings",
+  "summary": "Assign explicit or computed semantic order to a nominal/ordinal Cartesian x/y or Polar theta position.",
+  "signature": "orderCategories(options: OrderCategoriesOptions): ChartProgram;",
+  "intents": [
+    "order categories",
+    "order",
+    "sort categories",
+    "visual encoding",
+    "field mapping",
+    "category order",
+    "ordinal sorting"
+  ],
+  "lifecycle": "Assignment",
+  "resources": {
+    "prerequisites": [
+      "existing category order"
+    ],
+    "owns": [
+      "category order"
+    ],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "removeCategoryOrder"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing category order"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "channel",
+      "required": true,
+      "type": "\"theta\" | \"x\" | \"y\""
+    },
+    {
+      "name": "values",
+      "required": false,
+      "type": "readonly CategoryValue[] | undefined"
+    },
+    {
+      "name": "by",
+      "required": false,
+      "type": "\"category\" | \"count\" | CategoryOrderSummary | undefined"
+    },
+    {
+      "name": "direction",
+      "required": false,
+      "type": "\"ascending\" | \"descending\" | undefined"
+    }
+  ],
+  "callPatterns": [
+    "orderCategories({ channel, target?, values?, by?, direction? })"
+  ],
+  "snippet": "program.orderCategories({ channel: \"x\", by: \"category\" })",
+  "errors": [],
+  "route": "/reference/actions/encodings/#ordercategories"
+}

@@ -1,0 +1,16 @@
+export type NormalizedDataOptions = NormalizedDataBaseOptions & (
+  | {
+      method: "share" | "minmax";
+      zeroDenominator?: NormalizeZeroDenominator;
+    }
+  | {
+      method: "zscore";
+      variance?: "population" | "sample";
+      zeroDenominator?: NormalizeZeroDenominator;
+    }
+  | ({
+      method: "index" | "percentChange";
+      zeroDenominator?: NormalizeZeroDenominator;
+    } & NormalizeBaselineOptions)
+  | ({ method: "change" } & NormalizeBaselineOptions)
+);

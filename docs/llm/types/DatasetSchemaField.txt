@@ -1,0 +1,8 @@
+export interface DatasetSchemaField {
+  /** Lossless stored row key; empty names cannot be used as action field references. */
+  readonly name: string;
+  readonly storageType: DatasetStorageType;
+  readonly nullable: boolean;
+  readonly optional: boolean;
+  readonly lineage?: DatasetFieldLineage;
+}

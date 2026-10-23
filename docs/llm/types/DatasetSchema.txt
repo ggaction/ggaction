@@ -1,0 +1,6 @@
+export interface DatasetSchema {
+  readonly version: 1;
+  readonly completeness: "known" | "unknown";
+  readonly origin: "declared" | "inferred" | "derived";
+  readonly fields: readonly DatasetSchemaField[];
+}

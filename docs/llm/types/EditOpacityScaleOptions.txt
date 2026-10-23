@@ -1,0 +1,1 @@
+export type EditOpacityScaleOptions = FocusedScaleSelection & WithoutScaleId<OpacityScaleOptions>;

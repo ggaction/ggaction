@@ -1,0 +1,3 @@
+export type CreateThetaAxisLabelsOptions = Omit<PolarLabelOptions, "count" | "values"> &
+  PolarAxisTickSelection & Omit<PolarGuideResourceOptions, "angle"> &
+  DisplayLabelOptions;

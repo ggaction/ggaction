@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 3,
+  "name": "editFlattenData",
+  "layer": "user-facing",
+  "domain": "statistics",
+  "summary": "Edits aligned array data, including settings for parallel array expansion.",
+  "signature": "editFlattenData(options: EditFlattenDataOptions): ChartProgram;",
+  "intents": [
+    "edit flatten data",
+    "edit",
+    "change",
+    "statistical layer",
+    "statistical transform",
+    "aligned array data",
+    "parallel array expansion"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing aligned array data",
+      "source dataset"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H1",
+    "H3"
+  ],
+  "wraps": [
+    "editDerivedData"
+  ],
+  "editableVia": [
+    "editFlattenData"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing aligned array data",
+      "source dataset"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "dependents",
+      "required": false,
+      "type": "DerivedDataDependents | undefined"
+    },
+    {
+      "name": "fields",
+      "required": false,
+      "type": "readonly string[] | undefined"
+    },
+    {
+      "name": "as",
+      "required": false,
+      "type": "readonly string[] | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editFlattenData({ target, dependents?, fields?, as? })"
+  ],
+  "snippet": "program.editFlattenData({ target: \"expanded\", as: [\"amount\", \"category\"] })",
+  "errors": [],
+  "route": "/reference/actions/statistics/#editflattendata"
+}

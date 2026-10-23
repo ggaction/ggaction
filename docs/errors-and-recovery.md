@@ -55,8 +55,8 @@ let current = buildChart(rows);
 function applyRevision(revise) {
   try {
     const candidate = revise(current);
+    render(candidate, context);
     current = candidate;
-    render(current, context);
     return { ok: true };
   } catch (error) {
     return {
@@ -72,7 +72,7 @@ const result = applyRevision(program =>
 );
 ```
 
-Commit the candidate only after the complete action succeeds. Preserve the
+Commit the candidate only after authoring and rendering succeed. This preserves the previous program reference on output failure; Canvas pixels can still be partially drawn. If atomic visual replacement is required, render to a separate surface and replace the visible output only after success. Preserve the
 request, action name, explicit resource IDs, and package version in diagnostic
 logs; do not log sensitive row contents by default.
 

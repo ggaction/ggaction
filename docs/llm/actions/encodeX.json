@@ -1,0 +1,136 @@
+{
+  "schemaVersion": 3,
+  "name": "encodeX",
+  "layer": "user-facing",
+  "domain": "encodings",
+  "summary": "Create or compatibly replace an x encoding for the supported mark/type pairs in the matrix above.",
+  "signature": "encodeX(options: PositionEncodingOptions | DatumPositionEncodingOptions): ChartProgram;",
+  "intents": [
+    "encode x",
+    "encode",
+    "map field",
+    "visual encoding",
+    "field mapping",
+    "x position",
+    "horizontal position"
+  ],
+  "lifecycle": "Assignment",
+  "resources": {
+    "prerequisites": [
+      "target mark",
+      "field mode: dataset field"
+    ],
+    "owns": [
+      "x position assignment"
+    ],
+    "idOptions": [
+      "target",
+      "coordinate",
+      "scale"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "createCoordinate",
+    "editSemantic",
+    "createScale",
+    "editScale"
+  ],
+  "editableVia": [
+    "removeEncoding"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default",
+      "basic"
+    ]
+  },
+  "units": [
+    {
+      "path": "temporalUnit",
+      "unit": "temporal-input"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "scale",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "target mark",
+      "field mode: dataset field"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "field",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "fieldType",
+      "required": false,
+      "type": "FieldType | undefined"
+    },
+    {
+      "name": "scale",
+      "required": false,
+      "type": "CategoricalPositionScaleOptions | NonPointCategoricalPositionScaleOptions | NonPointQuantitativePositionScaleOptions | QuantitativePositionScaleOptions | NonPointTemporalPositionScaleOptions | TemporalPositionScaleOptions | undefined"
+    },
+    {
+      "name": "datum",
+      "required": false,
+      "type": "unknown"
+    },
+    {
+      "name": "bin",
+      "required": false,
+      "type": "{ maxBins?: number | undefined; step?: undefined; boundaries?: undefined; } | { maxBins?: undefined; step: number; boundaries?: undefined; } | { maxBins?: undefined; step?: undefined; boundaries: readonly [...]; } | undefined"
+    },
+    {
+      "name": "stack",
+      "required": false,
+      "type": "StackMode | undefined"
+    },
+    {
+      "name": "aggregate",
+      "required": false,
+      "type": "AggregateOperation"
+    },
+    {
+      "name": "temporalUnit",
+      "required": false,
+      "type": "TemporalInputUnit | undefined"
+    }
+  ],
+  "callPatterns": [
+    "encodeX({ target?, coordinate?, scale?, field?, fieldType?, datum?, bin?, stack? })"
+  ],
+  "snippet": "program.encodeX({ field: \"x\" })",
+  "errors": [],
+  "route": "/reference/actions/encodings/#encodex"
+}

@@ -1,0 +1,6 @@
+type CartesianAxesOptions = Omit<
+  CreateAxesOptions,
+  "coordinate" | "theta" | "radius"
+> & {
+  coordinate?: { id?: string; type?: "auto" | "cartesian" };
+};

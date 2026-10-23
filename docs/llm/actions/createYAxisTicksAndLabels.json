@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 3,
+  "name": "createYAxisTicksAndLabels",
+  "layer": "user-facing",
+  "domain": "axes",
+  "summary": "Creates y-axis ticks and labels for coordinated vertical guide.",
+  "signature": "createYAxisTicksAndLabels(options?: AxisTicksAndLabelsOptions<YAxisPosition>): ChartProgram;",
+  "intents": [
+    "create y axis ticks and labels",
+    "create",
+    "add",
+    "axis guide",
+    "scale annotation",
+    "y-axis ticks and labels",
+    "coordinated vertical guide"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "compatible scale or encoding context"
+    ],
+    "owns": [
+      "y-axis ticks and labels"
+    ],
+    "idOptions": [
+      "target",
+      "scale"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "createYAxisTicks",
+    "createYAxisLabels"
+  ],
+  "editableVia": [
+    "editYAxisTicksAndLabels"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default",
+      "basic"
+    ]
+  },
+  "units": [
+    {
+      "path": "count",
+      "unit": "count"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "scale",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "compatible scale or encoding context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "scale",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "position",
+      "required": false,
+      "type": "YAxisPosition | undefined"
+    },
+    {
+      "name": "count",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "rounding",
+      "required": false,
+      "type": "AxisTickRounding | undefined"
+    },
+    {
+      "name": "values",
+      "required": false,
+      "type": "readonly AxisValue[] | undefined"
+    },
+    {
+      "name": "ticks",
+      "required": false,
+      "type": "CartesianAxisTickStyleOptions | undefined"
+    },
+    {
+      "name": "labels",
+      "required": false,
+      "type": "(CartesianAxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions) | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createYAxisTicksAndLabels({ target?, scale?, position?, count?, rounding?, values?, ticks?, labels? })"
+  ],
+  "snippet": "program.createYAxisTicksAndLabels({})",
+  "errors": [],
+  "route": "/reference/actions/guides/#createyaxisticksandlabels"
+}

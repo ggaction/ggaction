@@ -1,0 +1,5 @@
+export interface EditTitleOptions
+  extends Omit<TitleOptions, "text" | "subtitle"> {
+  text?: string;
+  subtitle?: string | false;
+}

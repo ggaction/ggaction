@@ -1,0 +1,390 @@
+# Primitive Extension API
+
+## Reorder existing direct children
+
+A named Canvas or collection can reorder its existing direct children with
+`editGraphics({ target, property: "children", value: orderedIds })`. The value
+must contain each existing direct child exactly once. It cannot add, remove,
+reparent or rename a graphic, and cannot target a generated item or a drawable.
+Properties, items, clips, object declaration order and top-level order stay intact.
+An empty container accepts `[]`. Caller arrays and earlier programs stay immutable.
+
+This runnable identity-and-order example leaves geometry for a later authoring step:
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "plot"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```js
+import { ChartProgram } from "ggaction/extension";
+
+const program = new ChartProgram()
+  .createGraphics({ id: "canvas", type: "canvas" })
+  .createGraphics({ id: "plot", type: "collection", parent: "canvas" })
+  .createGraphics({ id: "front", type: "rect", parent: "plot" })
+  .createGraphics({ id: "back", type: "rect", parent: "plot" })
+  .editGraphics({ target: "plot", property: "children", value: ["back", "front"] });
+```
+
+Ordinary chart authors use complete-axis `underlay` and Canvas `plotBorder`
+options for guide placement; direct child IDs belong to extension authoring.
+
+ editSemantic meaning
+ createGraphics identity
+ editGraphics concrete value
+
+These methods are the low-level public extension layer, not the recommended
+chart-authoring API.
+
+All three primitives accept one plain options object and reject unknown
+top-level keys. Misspelled options never silently fall back to a default.
+Stored values cannot contain functions, class instances, or cyclic references.
+
+## `editSemantic({ property, value | remove })`
+
+Creates, replaces, or removes one supported semantic branch and structurally
+copies the changed path.
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+program.editSemantic({
+  property: "layer[points].mark.type",
+  value: "point"
+});
+```
+
+Property paths use singular user-ID selectors such as `layer[points]` and
+library-defined keys such as `encoding.x.field`. Unknown paths are rejected.
+Dataset values cannot be replaced after creation.
+
+Use `remove: true` instead of `value` to remove one supported semantic branch.
+Empty parent objects are pruned, the earlier program remains unchanged, and the
+removal is recorded as an `editSemantic` trace node. Current removable container
+paths include complete layers such as `layer[points]`, encoding channels such as
+`layer[points].encoding.opacity`, and legend branches such as
+`guide.legend.opacity`, complete datasets such as `dataset[observations]`, scales
+such as `scale[x]`, and coordinates such as `coordinate[main]`. Source rows still
+cannot be edited after creation. Removing an entire unreferenced source dataset
+is different from modifying its values.
+
+Source-dataset and coordinate removal use the full named-resource dependency
+checks and clear a matching current-resource pointer. Scale removal clears its
+resolved cache and current pointer. Unit-program derived-data removal retains
+its lower-level semantic-reference checks; the owning domain action coordinates
+its materialization configuration and graphical consumers. A facet parent also
+allows named-resource removal after full dependency validation; other semantic
+edits on composition parents remain limited to facet title state.
+
+Use `removeData`, `removeScale`, or `removeCoordinate` for ordinary resource
+lifecycles. They validate ownership and all live references, then invoke
+`editSemantic` for the concrete semantic deletion. `removeData` additionally
+releases a standalone logical data owner's retained configuration.
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+program.editSemantic({
+  property: "layer[points].encoding.opacity",
+  remove: true
+});
+```
+
+Removing a complete layer does not automatically remove its graphics, scales,
+guides, or materialization configuration. A domain action that owns the whole
+resource lifecycle must explicitly clean up those consumers as separate wrapped
+operations.
+
+The primitive semantic grammar also supports the current line-chart contract,
+including temporal field types, `mean` aggregation, `strokeDash` encodings,
+scale `nice`/`zero` policies, combined series legends, and chart title text.
+
+Derived dataset primitives may store an immutable `source`, a validated
+`filter` or `regression` transform, and materialized `values`. Regression
+transforms support linear, polynomial, or LOESS provenance and optional
+Student-t mean/prediction intervals for linear and polynomial fits. Layer paths
+also support `encoding.y2`, field-driven `encoding.shape`, and scale-free
+`encoding.group` for primitive area and grouped-path contracts. These are
+extension-level building blocks; the corresponding chart-authoring actions are
+introduced separately when their complete materialization behavior is ready.
+
+Series policy leaves are `layer[id].layout.mode` (`group`, `stack`, `fill`,
+`overlay`, `diverging`, or `center`), `layer[id].mark.missing` (`error` or `break`),
+and `layer[id].encoding.group.inferredFrom` (`color` or `offset`). These leaves
+record decisions only: they do not lay out marks or split paths. Extension
+authors must materialize concrete graphics explicitly. Removing `layer[id].layout`
+removes its policy container without changing graphics.
+
+## `createGraphics({ id, type, length?, parent?, before?, after? })`
+
+Creates one concrete object, a homogeneous drawable collection, or an empty
+heterogeneous drawable `collection`.
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+program.createGraphics({ id: "points", type: "circle", length: 2 });
+```
+
+Supported types are `canvas`, `collection`, `circle`, `rect`, `line`, `text`,
+and `path`. `length` is a non-negative integer no greater than 10,000 accepted by
+homogeneous drawable types. A heterogeneous `collection` is populated through
+one `editGraphics({ property: "items" })` call instead; replacement `items`
+arrays are likewise limited to 10,000 entries. Equivalent repeated
+creation is idempotent.
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "symbols"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+program
+  .createGraphics({ id: "symbols", type: "collection" })
+  .editGraphics({
+    target: "symbols",
+    property: "items",
+    value: [
+      {
+        type: "circle",
+        properties: { x: 20, y: 30, radius: 4, fill: "red" }
+      },
+      {
+        type: "rect",
+        properties: {
+          x: 36,
+          y: 46,
+          width: 8,
+          height: 8,
+          fill: "blue",
+          stroke: "blue",
+          strokeWidth: 0
+        }
+      }
+    ]
+  });
+```
+
+Collection item IDs are generated as `symbols:0`, `symbols:1`, and so on.
+Each item stores its own concrete primitive type. Shared properties such as
+`opacity` can then be broadcast to every compatible item.
+
+A concrete text graphic accepts an empty `text` string. This lets a high-level
+display-name action hide one rendered label while retaining stable collection
+identity. High-level titles, annotations, and text authoring actions still
+apply their own non-empty input rules.
+
+`parent` attaches a named graphic to an existing Canvas or collection. Attached
+IDs are stored in the parent's `children` list; repeated drawable instances stay
+separate in the owning graphic's `items` list. Omitting `parent` preserves
+top-level placement in `graphicSpec.order`.
+
+Ordinary chart actions create and use their Canvas/plot hierarchy automatically.
+An extension that authors the same structure directly makes every owner explicit:
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+program
+  .createGraphics({ id: "canvas", type: "canvas" })
+  .createGraphics({
+    id: "plot",
+    type: "collection",
+    parent: "canvas"
+  })
+  .createGraphics({
+    id: "bars",
+    type: "rect",
+    length: 3,
+    parent: "plot"
+  });
+```
+
+`before` or `after` places a new graphic relative to a direct sibling. They are
+mutually exclusive, the referenced graphic must already belong to the same
+parent, and no top-level graphic can be placed before the Canvas.
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+program.createGraphics({
+  id: "grid",
+  type: "line",
+  length: 5,
+  parent: "plot",
+  before: "bars"
+});
+```
+
+Graphic IDs are unique across the complete tree. The renderer visits named
+graphics depth-first in sibling order. Attachment defines ownership and drawing
+order only; it does not create coordinate transforms, clipping, or layout.
+Unknown or non-container parents, self-attachment, and cross-parent sibling
+anchors are rejected during authoring. Rendering rejects orphaned, duplicated,
+cyclic, or unknown attachments instead of silently skipping them.
+
+Path graphics use backend-neutral `path.commands` arrays rather than renderer-specific
+path strings. The closed command vocabulary is `M`, `L`, `C`, and `Z`. A path starts
+with one `M`; `L` and `C` draw straight and cubic segments; an optional final `Z`
+closes the path. At least one `L` or `C` segment is required. Coordinates and cubic
+control points must be finite numbers, and one path may contain at most 30,000
+commands. Generated linear and closed paths enforce the same limit before allocation.
+TypeScript users can import the `ConcretePathCommand` union from `ggaction`.
+`path.strokeDash` and `line.strokeDash` accept non-negative finite number arrays;
+an empty array is a solid stroke.
+
+Chart authors choose line interpolation through `createLineMark({ curve })` or
+`editLineMark({ curve })`. Extension authors still write final commands rather
+than storing curve names in `graphicSpec`; the renderer never performs
+interpolation.
+
+Circle graphics support a required fill and an optional concrete
+`stroke`/`strokeWidth` pair. Accepted graphic properties have Canvas rendering
+semantics; opaque style bags are not stored in `graphicSpec`.
+
+A path can be open and stroked or Z-closed and filled. Filled paths require a final
+`Z` command; their stroke is optional. When both fill and stroke are present, the
+Canvas renderer fills first and strokes second.
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "band"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+program
+  .createGraphics({ id: "band", type: "path" })
+  .editGraphics({
+    target: "band",
+    property: "commands",
+    value: [
+      { op: "M", x: 10, y: 80 },
+      { op: "L", x: 70, y: 40 },
+      { op: "L", x: 70, y: 60 },
+      { op: "L", x: 10, y: 100 },
+      { op: "Z" }
+    ]
+  })
+  .editGraphics({ target: "band", property: "fill", value: "#111111" })
+  .editGraphics({ target: "band", property: "opacity", value: 0.18 });
+```
+
+Rect and closed-path `fill` also accept a backend-neutral `LinearGradientPaint`.
+The `from` and `to` coordinates are normalized to each item's own fill bounds,
+not the whole Canvas. Stops are ordered by offsets from `0` to `1`; repeated
+adjacent offsets create a hard transition. A paint object and its nested `stops`
+array are one scalar property value, so broadcasting it to a collection applies
+the complete paint to every item.
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "distributionStrips"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+const verticalDensityPaint = {
+  type: "linear-gradient",
+  from: { x: 0.5, y: 1 },
+  to: { x: 0.5, y: 0 },
+  stops: [
+    { offset: 0, color: "rgba(207, 225, 242, 0)" },
+    { offset: 0.5, color: "rgba(79, 142, 195, 0.7)" },
+    { offset: 1, color: "rgba(10, 74, 144, 1)" }
+  ]
+};
+
+program.editGraphics({
+  target: "distributionStrips",
+  property: "fill",
+  value: verticalDensityPaint
+});
+```
+
+TypeScript users can import `FillPaint`, `LinearGradientPaint`,
+`LinearGradientPoint`, and `LinearGradientStop` from `ggaction` or
+`ggaction/extension`. Structured paint is currently fill-only for rects and
+closed paths. Circle/text fills, strokes, radial or conic gradients, patterns,
+and Canvas-wide user-space coordinates are not supported.
+
+Only normalized paint data is stored in `graphicSpec`. The Canvas renderer
+resolves the final item-local coordinates and creates the backend gradient while
+drawing; no Canvas gradient object is retained in the immutable program.
+Canvas, PNG, and PDF require resolved native gradient geometry to have magnitude
+no greater than `16777216`, including the direction-vector length, and reject
+the complete render before native output changes. SVG preserves all finite
+JavaScript coordinates.
+
+The complete low-level line-chart example is available in
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
+It explicitly authors semantic line state, paths, axes, a combined legend, and
+title graphics without chart-level convenience actions.
+
+The regression scatterplot baseline in
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
+uses a heterogeneous point collection, grouped filled confidence-band paths,
+grouped line paths, and two concrete legends.
+
+## `editGraphics({ target, property, value | remove })`
+
+Sets one validated concrete property or removes one named graphic subtree.
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "points"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+program.editGraphics({
+  target: "points",
+  property: "x",
+  value: [32.5, 81.4]
+});
+```
+
+For a homogeneous or heterogeneous collection, an outer array distributes
+values by index and must match its length. A non-array value is broadcast to
+every item that supports the property. Nested arrays and objects remain one
+value per item. Generated item IDs such as `points:1` can be targeted.
+
+Use `remove: true` without `property` or `value` to remove a named graphic and
+its owned named descendants. The action also detaches the root from its parent
+or top-level order. The Canvas root and generated items cannot be removed;
+resize or replace an item's owning collection instead.
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "opacityLegendSymbols"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+program.editGraphics({
+  target: "opacityLegendSymbols",
+  remove: true
+});
+```
+
+Authoring and rendering share the same concrete value contract. Numeric
+geometry must be finite, dimensions and stroke widths cannot be negative,
+opacity stays between `0` and `1`, text alignment uses the Canvas vocabulary,
+and appearance strings must be non-empty. Structured rect/path fill follows the
+`FillPaint` contract described above. Rendering additionally requires all
+properties needed to draw the primitive to be present.
+
+### Clip a named graphic owner
+
+Use `editGraphics({ target, property: "clip", value: { x, y, width, height } })`
+to clip one named non-Canvas owner and its items/children in its unchanged parent
+frame. Values must be finite, dimensions nonnegative, and endpoints finite.
+Use `value: false` to clear the optional clip. Generated item IDs, inline item
+properties and Canvas clips are rejected; nested Canvas retains its existing
+viewport behavior. Item coordinates and IDs stay unchanged, including after
+`items` or `length` replacement. Ordinary chart authors use the mark's
+`clip` option instead.
+
+## Scale materialization
+
+`createScale({ id, type?, domain?, range?, nice?, zero?, clamp?, reverse?, base?, exponent?, constant? })` creates an
+idempotent semantic scale. Domain actions that own scale consumers invoke the
+internal wrapped `rematerializeScale` operation to resolve all consumers and
+apply concrete graphic edits, including connected axis updates. Aggregate line
+consumers resolve their domains from derived means rather than raw rows. Ordinal
+ranges may contain color strings, a validated named-palette descriptor, or validated
+even-length stroke-dash patterns for the matching channel.
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+program.createScale({ id: "x", type: "linear" });
+```
+
+Direct quantitative position scale types are `linear`, `log`, `pow`, `sqrt`,
+and `symlog`; type-specific parameters use the same contract as encoding scale
+options. `time` and `ordinal` remain available for their current roles.
+
+Extension actions should call the public domain action that owns the affected
+consumer instead of calling `rematerializeScale` directly. Rematerialization is
+still explicit inside that action and remains visible in `program.trace`; it
+never runs merely because `semanticSpec` changed.

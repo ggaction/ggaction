@@ -13,6 +13,8 @@ realizations of that meaning.
 
 ## `createPointMark({ id?, data?, missing?, shape?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? } = {})`
 
+This heading shows common options. For the full callable contract and all branches, see [`createPointMark`](../../reference/actions/marks.md#createpointmark) and the [exact declarations](../../reference/types.md).
+
 | Option | Type | Default or inference |
 | --- | --- | --- |
 | `id` | valid user-defined ID | first point mark uses `"point"` |
@@ -21,19 +23,19 @@ realizations of that meaning.
 | `fill` | non-empty color string | theme color; conflicts with `encodeColor` |
 | `opacity` | number from `0` to `1` | `1` |
 | `stroke` | non-empty color string | no outline |
-| `strokeWidth` | non-negative number | `0` |
+| `strokeWidth` | non-negative number | `1` when `stroke` is supplied; otherwise `0` |
 | `lineCap` | `"butt"`, `"round"`, or `"square"` | `"butt"` |
 | `lineJoin` | `"miter"`, `"round"`, or `"bevel"` | `"miter"` |
 | `miterLimit` | positive finite number | `10` |
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Executable complete.** Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas.
 
 <!-- snippet-context:end -->
 
 ```javascript
-const program = chart()
+const program = chart().createCanvas()
   .createData({ values: cars })
   .createPointMark({ opacity: 0.48, stroke: "white", strokeWidth: 1.25 })
   .encodeX({ field: "Horsepower" })
@@ -62,6 +64,8 @@ for a field-driven area mapping. `removePointRadius()` returns an explicitly
 sized point mark to the theme radius without changing Polar position.
 
 ## `editPointMark({ target?, shape?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? })`
+
+This heading shows common options. For the full callable contract and all branches, see [`editPointMark`](../../reference/actions/marks.md#editpointmark) and the [exact declarations](../../reference/types.md).
 
 <!-- snippet-context:start -->
 

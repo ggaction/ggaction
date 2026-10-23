@@ -1,0 +1,8 @@
+type LineCategoricalColorChannel<Scale = NonPointCategoricalColorScaleOptions> =
+  | string
+  | {
+      field: string;
+      fieldType?: "nominal" | "ordinal";
+      scale?: Scale;
+      palette?: Palette;
+    };

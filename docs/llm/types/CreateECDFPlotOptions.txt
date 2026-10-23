@@ -1,0 +1,14 @@
+export interface CreateECDFPlotOptions {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  field: string;
+  groupBy?: string | readonly [string, ...string[]];
+  weight?: string;
+  missing?: "drop" | "error";
+  as?: ECDFOutputFields;
+  color?: string | LineCategoricalColorChannel;
+  line?: StrokeStyleDetails & { clip?: boolean; strokeWidth?: number; stroke?: string; opacity?: number };
+  labels?: false | EndpointLabelOptions;
+  guides?: false | CartesianPathGuideOptions;
+}

@@ -1005,7 +1005,7 @@ test("keeps concise and full LLM documentation synchronized", async () => {
 
   assert.match(index, /\.\/llms-full\.txt/);
   assert.match(index, /\.\/reference\/actions\/charts-data\//);
-  assert.doesNotMatch(index, /\.md(?:#|\b)/);
+  assert.doesNotMatch(index.replace(/`[^`]+`/g, ""), /\.md(?:#|\b)/);
   assert.equal(new Set(targets).size, targets.length);
   assert.equal(targets.length >= registry.length + 12, true);
   for (const route of routes) {

@@ -1,0 +1,17 @@
+export interface ErrorBarOptions extends StrokeStyleDetails {
+  id?: string;
+  target?: string;
+  data?: string;
+  x?: ErrorBarPositionChannel | ErrorBarIntervalChannel;
+  y?: ErrorBarPositionChannel | ErrorBarIntervalChannel;
+  xOffset?: ErrorBarOffsetChannel;
+  yOffset?: ErrorBarOffsetChannel;
+  groupBy?: string | false;
+  coordinate?: string;
+  caps?: boolean;
+  capSize?: number;
+  stroke?: string;
+  strokeWidth?: number;
+  strokeDash?: DashStyle | DashPattern;
+  opacity?: number;
+}

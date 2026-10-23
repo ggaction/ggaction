@@ -1,0 +1,1 @@
+export type DensityWidthResolution = "shared" | "independent";

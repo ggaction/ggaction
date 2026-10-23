@@ -1,0 +1,13 @@
+# Chart Gallery
+
+This curated set highlights complete, representative charts. Every card links
+to the canonical tutorial, recipe, or API page that owns the chart. Use the
+filters to narrow the analytical relationship you want to express.
+
+ [Browse all supported chart examples →](../../gallery/all/)
+
+## Choose a next step
+
+- [Learn a complete workflow](../../tutorials/)
+- [Copy a minimal chart recipe](../../recipes/)
+- [Find an exact action](../../reference/actions/)

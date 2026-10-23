@@ -1,0 +1,164 @@
+{
+  "schemaVersion": 3,
+  "name": "editLegendLayout",
+  "layer": "user-facing",
+  "domain": "legend_and_title",
+  "summary": "Edits one legend's position, alignment, direction, columns, title placement, and item spacing.",
+  "signature": "editLegendLayout(options: EditLegendLayoutOptions): ChartProgram;",
+  "intents": [
+    "edit legend layout",
+    "edit",
+    "change",
+    "legend or title",
+    "chart annotation",
+    "legend layout",
+    "legend position and flow"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing legend layout",
+      "compatible scale or encoding context"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editLegend"
+  ],
+  "editableVia": [
+    "editLegendLayout"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "columns",
+      "unit": "count"
+    },
+    {
+      "path": "offset",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "rowPadding",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "titlePadding",
+      "unit": "logical-pixel"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "direction",
+      "strategy": "documented-auto"
+    },
+    {
+      "input": "rowPadding",
+      "strategy": "documented-auto"
+    },
+    {
+      "input": "titlePadding",
+      "strategy": "documented-auto"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing legend layout",
+      "compatible scale or encoding context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "channel",
+      "required": false,
+      "type": "\"color\" | \"opacity\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\" | undefined"
+    },
+    {
+      "name": "layout",
+      "required": false,
+      "type": "\"edge\" | \"legacy-bottom\" | undefined"
+    },
+    {
+      "name": "position",
+      "required": false,
+      "type": "\"bottom\" | \"bottom-left\" | \"bottom-right\" | \"inherit\" | \"left\" | \"right\" | \"top\" | \"top-left\" | \"top-right\" | undefined"
+    },
+    {
+      "name": "blockLayout",
+      "required": false,
+      "type": "\"column\" | \"row\" | \"wrap\" | undefined"
+    },
+    {
+      "name": "at",
+      "required": false,
+      "type": "{ x: number; y: number; } | undefined"
+    },
+    {
+      "name": "align",
+      "required": false,
+      "type": "\"center\" | \"left\" | \"right\" | undefined"
+    },
+    {
+      "name": "direction",
+      "required": false,
+      "type": "\"auto\" | \"horizontal\" | \"vertical\" | undefined"
+    },
+    {
+      "name": "columns",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "offset",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "titlePosition",
+      "required": false,
+      "type": "\"bottom\" | \"left\" | \"top\" | undefined"
+    },
+    {
+      "name": "itemGap",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "rowPadding",
+      "required": false,
+      "type": "number | \"auto\" | undefined"
+    },
+    {
+      "name": "titlePadding",
+      "required": false,
+      "type": "number | \"auto\" | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editLegendLayout({ target?, channel?, layout?, position?, blockLayout?, at?, align?, direction? })"
+  ],
+  "snippet": "program.editLegendLayout({ channel: \"color\" })",
+  "errors": [],
+  "route": "/reference/actions/guides/#editlegendlayout"
+}

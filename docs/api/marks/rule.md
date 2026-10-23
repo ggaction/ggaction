@@ -12,6 +12,8 @@ primitives without exposing a renderer-specific path format.
 
 ## `createRuleMark({ id?, data?, missing?, stroke?, strokeWidth?, strokeDash?, opacity?, lineCap?, lineJoin?, miterLimit? } = {})`
 
+This heading shows common options. For the full callable contract and all branches, see [`createRuleMark`](../../reference/actions/marks.md#createrulemark) and the [exact declarations](../../reference/types.md).
+
 <!-- snippet-context:start -->
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.

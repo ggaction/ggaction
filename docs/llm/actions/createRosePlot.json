@@ -1,0 +1,136 @@
+{
+  "schemaVersion": 3,
+  "name": "createRosePlot",
+  "layer": "user-facing",
+  "domain": "charts",
+  "summary": "Create equal-angle sectors whose sector area, excluding the hole is proportional to category count or sum.",
+  "signature": "createRosePlot(options: CreateRosePlotOptions): ChartProgram;",
+  "intents": [
+    "create rose plot",
+    "create",
+    "add",
+    "complete chart",
+    "chart facade",
+    "rose chart",
+    "coxcomb chart"
+  ],
+  "lifecycle": "Aggregate create-only",
+  "resources": {
+    "prerequisites": [
+      "canvas and dataset context"
+    ],
+    "owns": [
+      "rose chart"
+    ],
+    "idOptions": [
+      "id",
+      "data",
+      "coordinate"
+    ]
+  },
+  "authoringRoles": [
+    "H0"
+  ],
+  "wraps": [
+    "createArcMark",
+    "encodeTheta",
+    "encodeR",
+    "encodeColor",
+    "createGuides"
+  ],
+  "editableVia": [],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "arc.innerRadius",
+      "unit": "ratio"
+    },
+    {
+      "path": "arc.innerRadius.value",
+      "unit": "logical-pixel"
+    }
+  ],
+  "inference": [
+    {
+      "input": "data",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "complete",
+    "requires": [
+      "canvas and dataset context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "data",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "category",
+      "required": true,
+      "type": "PieCategory"
+    },
+    {
+      "name": "color",
+      "required": false,
+      "type": "false | PieColor | undefined"
+    },
+    {
+      "name": "radiusScale",
+      "required": false,
+      "type": "MeasuredRadiusScaleOptions | undefined"
+    },
+    {
+      "name": "arc",
+      "required": false,
+      "type": "(StrokeStyleDetails & { innerRadius?: ArcInnerRadius | undefined; padAngle?: 0 | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; }) | undefined"
+    },
+    {
+      "name": "guides",
+      "required": false,
+      "type": "false | MeasuredRadialGuideOptions | undefined"
+    },
+    {
+      "name": "value",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "aggregate",
+      "required": false,
+      "type": "\"count\" | \"sum\" | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createRosePlot({ category, id?, data?, coordinate?, color?, radiusScale?, arc?, guides? })"
+  ],
+  "snippet": "program.createRosePlot({ category: \"category\" })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#createroseplot"
+}

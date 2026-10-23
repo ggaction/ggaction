@@ -1,0 +1,11 @@
+export type ErrorBandPositionChannel = { field?: string } & (
+  | {
+      fieldType?: "quantitative";
+      scale?: NonPointQuantitativePositionScaleOptions;
+    }
+  | {
+      fieldType: "temporal";
+      temporalUnit?: TemporalInputUnit;
+      scale?: NonPointTemporalPositionScaleOptions;
+    }
+);

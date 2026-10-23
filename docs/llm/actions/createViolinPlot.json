@@ -1,0 +1,130 @@
+{
+  "schemaVersion": 3,
+  "name": "createViolinPlot",
+  "layer": "user-facing",
+  "domain": "statistics",
+  "summary": "Create a vertical or horizontal categorical density plot from exactly one categorical and one quantitative x/y role.",
+  "signature": "createViolinPlot(options: ViolinPlotOptions): ChartProgram;",
+  "intents": [
+    "create violin plot",
+    "create",
+    "add",
+    "statistical layer",
+    "statistical transform",
+    "violin plot",
+    "mirrored density distribution"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "statistical source and coordinate context"
+    ],
+    "owns": [
+      "violin plot"
+    ],
+    "idOptions": [
+      "id",
+      "data",
+      "coordinate"
+    ]
+  },
+  "authoringRoles": [
+    "H0",
+    "H1"
+  ],
+  "wraps": [
+    "createAreaMark",
+    "encodeDensity",
+    "encodeColor",
+    "createGuides"
+  ],
+  "editableVia": [
+    "editViolinPlot"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "data",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "complete",
+    "requires": [
+      "statistical source and coordinate context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "data",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "x",
+      "required": true,
+      "type": "ViolinPlotPositionChannel"
+    },
+    {
+      "name": "y",
+      "required": true,
+      "type": "ViolinPlotPositionChannel"
+    },
+    {
+      "name": "split",
+      "required": false,
+      "type": "ViolinPlotSplitOptions | undefined"
+    },
+    {
+      "name": "color",
+      "required": false,
+      "type": "ViolinPlotColorOptions | undefined"
+    },
+    {
+      "name": "density",
+      "required": false,
+      "type": "ViolinPlotDensityOptions | undefined"
+    },
+    {
+      "name": "area",
+      "required": false,
+      "type": "ViolinPlotAreaOptions | undefined"
+    },
+    {
+      "name": "guides",
+      "required": false,
+      "type": "false | CartesianCategoricalGuideOptions | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createViolinPlot({ x, y, density?, area? })",
+    "createViolinPlot({ x, y, split, color?, guides? })"
+  ],
+  "snippet": "program.createViolinPlot({ x: \"x\", y: \"y\" })",
+  "errors": [],
+  "route": "/reference/actions/statistics/#createviolinplot"
+}

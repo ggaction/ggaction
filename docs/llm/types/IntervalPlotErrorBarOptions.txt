@@ -1,0 +1,8 @@
+export interface IntervalPlotErrorBarOptions extends StrokeStyleDetails {
+  caps?: boolean;
+  capSize?: number;
+  stroke?: string;
+  strokeWidth?: number;
+  strokeDash?: DashStyle | DashPattern;
+  opacity?: number;
+}

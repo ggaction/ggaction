@@ -1,0 +1,6 @@
+export type ShapeEncodingOptions = {
+  field: string;
+  target?: string;
+  fieldType?: "nominal";
+  scale?: ShapeScaleOptions;
+};

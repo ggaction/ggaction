@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 3,
+  "name": "encodeY",
+  "layer": "user-facing",
+  "domain": "encodings",
+  "summary": "Create or compatibly replace a y encoding.",
+  "signature": "encodeY(options: YPositionEncodingOptions | DatumPositionEncodingOptions): ChartProgram;",
+  "intents": [
+    "encode y",
+    "encode",
+    "map field",
+    "visual encoding",
+    "field mapping",
+    "y position",
+    "vertical position"
+  ],
+  "lifecycle": "Assignment",
+  "resources": {
+    "prerequisites": [
+      "target mark",
+      "field mode: dataset field"
+    ],
+    "owns": [
+      "y position assignment"
+    ],
+    "idOptions": [
+      "target",
+      "coordinate",
+      "scale"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "createCoordinate",
+    "editSemantic",
+    "createScale",
+    "layoutSeries",
+    "encodeX"
+  ],
+  "editableVia": [
+    "removeEncoding"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default",
+      "basic"
+    ]
+  },
+  "units": [
+    {
+      "path": "temporalUnit",
+      "unit": "temporal-input"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "scale",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "target mark",
+      "field mode: dataset field"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "field",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "fieldType",
+      "required": false,
+      "type": "FieldType | undefined"
+    },
+    {
+      "name": "scale",
+      "required": false,
+      "type": "CategoricalPositionScaleOptions | NonPointCategoricalPositionScaleOptions | NonPointQuantitativePositionScaleOptions | QuantitativePositionScaleOptions | NonPointTemporalPositionScaleOptions | TemporalPositionScaleOptions | undefined"
+    },
+    {
+      "name": "datum",
+      "required": false,
+      "type": "unknown"
+    },
+    {
+      "name": "aggregate",
+      "required": false,
+      "type": "AggregateOperation"
+    },
+    {
+      "name": "stack",
+      "required": false,
+      "type": "YStackMode | undefined"
+    },
+    {
+      "name": "temporalUnit",
+      "required": false,
+      "type": "TemporalInputUnit | undefined"
+    }
+  ],
+  "callPatterns": [
+    "encodeY({ target?, coordinate?, scale?, field?, fieldType?, datum?, aggregate?, stack? })"
+  ],
+  "snippet": "program.encodeY({ field: \"y\" })",
+  "errors": [],
+  "route": "/reference/actions/encodings/#encodey"
+}

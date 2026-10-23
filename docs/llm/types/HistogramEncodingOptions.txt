@@ -1,0 +1,17 @@
+export type HistogramEncodingOptions = {
+  field: string;
+  target?: string;
+  coordinate?: string;
+  stack?: StackMode;
+  xScale?: NonPointQuantitativePositionScaleOptions;
+  yScale?: NonPointZeroSupportingPositionScaleOptions;
+  weight?: StatisticalWeight;
+} & (
+  | { maxBins?: number; binStep?: never; binBoundaries?: never }
+  | { maxBins?: never; binStep: number; binBoundaries?: never }
+  | {
+      maxBins?: never;
+      binStep?: never;
+      binBoundaries: readonly [number, number, ...number[]];
+    }
+);

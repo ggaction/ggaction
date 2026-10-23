@@ -1,0 +1,12 @@
+export interface EditRaincloudPlotOptions {
+  target?: string;
+  data?: string;
+  category?: RaincloudCategoryChannel;
+  value?: RaincloudValueChannel;
+  orientation?: "vertical" | "horizontal";
+  side?: "before" | "after";
+  density?: false | RaincloudDensityOptions;
+  summary?: false | RaincloudSummaryOptions;
+  points?: false | RaincloudPointsOptions;
+  color?: false | RaincloudColorChannel;
+}

@@ -1,0 +1,9 @@
+export interface DatasetSortTransform {
+  readonly type: "sort";
+  readonly sortBy: readonly {
+    readonly field: string;
+    readonly order: "ascending" | "descending";
+    readonly nulls: "first" | "last";
+    readonly temporalUnit?: "year" | "timestamp";
+  }[];
+}

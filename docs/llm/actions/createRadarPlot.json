@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 3,
+  "name": "createRadarPlot",
+  "layer": "user-facing",
+  "domain": "charts",
+  "summary": "Draws a complete Radar plot from long category-value rows or explicitly selected wide fields as closed Polar profiles.",
+  "signature": "createRadarPlot(options: CreateRadarPlotOptions): ChartProgram;",
+  "intents": [
+    "create radar plot",
+    "create",
+    "add",
+    "complete chart",
+    "chart facade",
+    "radar plot",
+    "radar chart"
+  ],
+  "lifecycle": "Aggregate create-only",
+  "resources": {
+    "prerequisites": [
+      "canvas and dataset context"
+    ],
+    "owns": [
+      "radar plot"
+    ],
+    "idOptions": [
+      "id",
+      "data",
+      "coordinate"
+    ]
+  },
+  "authoringRoles": [
+    "H0"
+  ],
+  "wraps": [
+    "createFoldData",
+    "createPolarLinePlot"
+  ],
+  "editableVia": [
+    "editRadarPlot"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "data",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "complete",
+    "requires": [
+      "canvas and dataset context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "data",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "groupBy",
+      "required": false,
+      "type": "string | readonly [string, ...string[]] | undefined"
+    },
+    {
+      "name": "order",
+      "required": false,
+      "type": "readonly [RadarCategoryValue, RadarCategoryValue, RadarCategoryValue, ...RadarCategoryValue[]] | undefined"
+    },
+    {
+      "name": "color",
+      "required": false,
+      "type": "LineCategoricalColorChannel<NonPointCategoricalColorScaleOptions> | undefined"
+    },
+    {
+      "name": "strokeDash",
+      "required": false,
+      "type": "Omit<{ value: DashPattern | DashStyle; field?: undefined; target?: string | undefined; fieldType?: undefined; scale?: undefined; }, \"target\"> | (Omit<Omit<...>, \"scale\"> & { ...; }) | undefined"
+    },
+    {
+      "name": "line",
+      "required": false,
+      "type": "(Omit<StrokeStyleDetails & { clip?: boolean | undefined; missing?: \"break\" | \"error\" | undefined; strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; tension?: number | undefined; stroke?: string | undefined; opacity?: number | undefined; closed?: false | undefined; }, \"clip\" | ... 3 more ... |..."
+    },
+    {
+      "name": "guides",
+      "required": false,
+      "type": "false | RadarGuideOptions | undefined"
+    },
+    {
+      "name": "category",
+      "required": false,
+      "type": "RadarCategoryChannel | undefined"
+    },
+    {
+      "name": "value",
+      "required": false,
+      "type": "PolarRadiusChannel | undefined"
+    },
+    {
+      "name": "wide",
+      "required": false,
+      "type": "RadarWideOptions | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createRadarPlot({ category, value, groupBy?, order? })",
+    "createRadarPlot({ wide: { fields, as? }, groupBy?, order?, color?, strokeDash?, guides? })"
+  ],
+  "snippet": "program.createRadarPlot({ category: \"category\", value: \"value\" })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#createradarplot"
+}

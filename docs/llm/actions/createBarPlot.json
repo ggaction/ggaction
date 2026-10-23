@@ -1,0 +1,146 @@
+{
+  "schemaVersion": 3,
+  "name": "createBarPlot",
+  "layer": "user-facing",
+  "domain": "charts",
+  "summary": "Create categorical, temporal or binned bars with quantitative measures; bin rectangles fill their complete intervals, while category bars default to 0.72 of the slot.",
+  "signature": "createBarPlot(options: CreateBarPlotOptions): ChartProgram;",
+  "intents": [
+    "create bar plot",
+    "create",
+    "add",
+    "complete chart",
+    "chart facade",
+    "bar chart",
+    "category comparison"
+  ],
+  "lifecycle": "Aggregate create-only",
+  "resources": {
+    "prerequisites": [
+      "canvas and dataset context"
+    ],
+    "owns": [
+      "bar chart"
+    ],
+    "idOptions": [
+      "id",
+      "data",
+      "coordinate"
+    ]
+  },
+  "authoringRoles": [
+    "H0"
+  ],
+  "wraps": [
+    "createBarMark",
+    "encodeY",
+    "encodeX",
+    "encodeColor",
+    "encodeBarWidth",
+    "createGuides",
+    "encodeYRange",
+    "encodeXRange"
+  ],
+  "editableVia": [],
+  "supports": {
+    "entryPoints": [
+      "default",
+      "basic"
+    ]
+  },
+  "units": [
+    {
+      "path": "width",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "width",
+      "unit": "band-fraction"
+    }
+  ],
+  "inference": [
+    {
+      "input": "data",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "complete",
+    "requires": [
+      "canvas and dataset context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "missing",
+      "required": false,
+      "type": "\"error\" | \"skip\" | undefined"
+    },
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "data",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "orientation",
+      "required": false,
+      "type": "\"horizontal\" | \"vertical\" | undefined"
+    },
+    {
+      "name": "color",
+      "required": false,
+      "type": "BarColorChannel | undefined"
+    },
+    {
+      "name": "width",
+      "required": false,
+      "type": "Omit<BarWidthOptions, \"interval\" | \"target\"> | undefined"
+    },
+    {
+      "name": "bar",
+      "required": false,
+      "type": "(StrokeStyleDetails & { cornerRadius?: number | undefined; cornerRadiusTopLeft?: number | undefined; cornerRadiusTopRight?: number | undefined; cornerRadiusBottomRight?: number | undefined; cornerRadiusBottomLeft?: number | undefined; } & { ...; }) | undefined"
+    },
+    {
+      "name": "guides",
+      "required": false,
+      "type": "false | ColorGuides | undefined"
+    },
+    {
+      "name": "x",
+      "required": true,
+      "type": "BarRangePositionChannel | BarRangeOppositePositionChannel | (Omit<PositionEncodingBase, \"coordinate\" | \"target\"> & { ...; } & { ...; }) | (Omit<...> & ... 1 more ... & { ...; }) | (Omit<...> & ... 1 more ... & { ...; }) | (Omit<...> & ... 1 more ... & { ...; })"
+    },
+    {
+      "name": "y",
+      "required": true,
+      "type": "BarRangePositionChannel | BarRangeOppositePositionChannel | ({ field: string; bin?: undefined; fieldType: \"temporal\"; temporalUnit?: TemporalInputUnit | undefined; aggregate?: undefined; stack?: undefined; scale?: NonPointTemporalPositionScaleOptions | undefined; } & { ...; }) | ({ ...; } & ... 1 more ... & { ...; }..."
+    }
+  ],
+  "callPatterns": [
+    "createBarPlot({ x, y, width?, color? })",
+    "createBarPlot({ x: { lower, upper, scale? }, y, width?, guides? })"
+  ],
+  "snippet": "program.createBarPlot({ x: \"x\", y: \"y\" })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#createbarplot"
+}

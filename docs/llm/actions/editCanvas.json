@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 3,
+  "name": "editCanvas",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Edit Canvas properties and rematerialize connected consumers.",
+  "signature": "editCanvas(options: CanvasOptions): ChartProgram;",
+  "intents": [
+    "edit canvas",
+    "edit",
+    "change",
+    "chart setup",
+    "data and scales",
+    "canvas",
+    "chart size"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing canvas"
+    ],
+    "owns": [],
+    "idOptions": []
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editGraphics",
+    "editXAxisLine",
+    "editXAxisTicks",
+    "editXAxisLabels",
+    "editXAxisTitle",
+    "editYAxisLine",
+    "editYAxisTicks",
+    "editYAxisLabels",
+    "editYAxisTitle"
+  ],
+  "editableVia": [
+    "editCanvas"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "width",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "height",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "margin",
+      "unit": "logical-pixel"
+    }
+  ],
+  "inference": [],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing canvas"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "width",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "height",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "background",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "margin",
+      "required": false,
+      "type": "number | Partial<Record<\"bottom\" | \"left\" | \"right\" | \"top\", number>> | undefined"
+    },
+    {
+      "name": "plot",
+      "required": false,
+      "type": "false | { width: number; height: number; } | undefined"
+    },
+    {
+      "name": "plotBorder",
+      "required": false,
+      "type": "false | { color?: string | undefined; lineWidth?: number | undefined; underlay?: boolean | undefined; } | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editCanvas({ width?, height?, background?, margin?, plot?, plotBorder? })"
+  ],
+  "snippet": "program.editCanvas({ width: 640 })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#editcanvas"
+}

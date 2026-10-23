@@ -1,0 +1,97 @@
+[
+  {
+    "id": "canvas-layout-1",
+    "file": "api/marks/bar.md",
+    "contains": "const program = chart()",
+    "mode": "complete",
+    "environment": "node-esm",
+    "fixture": "apiExamples",
+    "importChart": true,
+    "result": "program",
+    "prerequisites": "Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas."
+  },
+  {
+    "id": "canvas-layout-2",
+    "file": "api/marks/line-area.md",
+    "contains": "const program = chart().createCanvas()\n",
+    "mode": "complete",
+    "environment": "node-esm",
+    "fixture": "apiExamples",
+    "importChart": true,
+    "result": "program",
+    "prerequisites": "Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas."
+  },
+  {
+    "id": "canvas-layout-3",
+    "file": "api/marks/line-area.md",
+    "contains": "const layered = chart()",
+    "mode": "complete",
+    "environment": "node-esm",
+    "fixture": "apiExamples",
+    "importChart": true,
+    "result": "layered",
+    "prerequisites": "Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas."
+  },
+  {
+    "id": "canvas-layout-4",
+    "file": "api/marks/line-area.md",
+    "contains": "const radar = chart()",
+    "mode": "complete",
+    "environment": "node-esm",
+    "fixture": "apiExamples",
+    "importChart": true,
+    "result": "radar",
+    "prerequisites": "Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas."
+  },
+  {
+    "id": "canvas-layout-5",
+    "file": "api/marks/line-area.md",
+    "contains": "const area = chart()",
+    "mode": "complete",
+    "environment": "node-esm",
+    "fixture": "apiExamples",
+    "importChart": true,
+    "result": "area",
+    "prerequisites": "Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas."
+  },
+  {
+    "id": "canvas-layout-6",
+    "file": "api/marks/point.md",
+    "contains": "const program = chart()",
+    "mode": "complete",
+    "environment": "node-esm",
+    "fixture": "apiExamples",
+    "importChart": true,
+    "result": "program",
+    "prerequisites": "Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas."
+  },
+  {
+    "id": "canvas-layout-7",
+    "file": "recipes/line-chart.md",
+    "contains": "const layered = chart()",
+    "mode": "complete",
+    "environment": "node-esm",
+    "fixture": "apiExamples",
+    "importChart": true,
+    "result": "layered",
+    "prerequisites": "Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas."
+  },
+  {
+    "id": "inspection-roundtrip",
+    "file": "inspection.md",
+    "contains": "const before = chart().createCanvas()",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "before, after",
+    "prerequisites": "Run this standalone ES module; all data and imports are included."
+  },
+  {
+    "id": "render-first",
+    "file": "api/rendering.md",
+    "contains": "width: 480, height: 320",
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use a browser ES module with a canvas element whose id is chart; all input rows are included."
+  }
+]

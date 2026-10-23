@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 3,
+  "name": "encodeSize",
+  "layer": "user-facing",
+  "domain": "encodings",
+  "summary": "Encode point size as area; radius-normalized polygons use reference-circle area.",
+  "signature": "encodeSize(options: SizeEncodingOptions): ChartProgram;",
+  "intents": [
+    "encode size",
+    "encode",
+    "map field",
+    "visual encoding",
+    "field mapping",
+    "size",
+    "quantitative size"
+  ],
+  "lifecycle": "Assignment",
+  "resources": {
+    "prerequisites": [
+      "target mark",
+      "field mode: dataset field"
+    ],
+    "owns": [
+      "size assignment"
+    ],
+    "idOptions": [
+      "target",
+      "scale"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editSemantic",
+    "createScale"
+  ],
+  "editableVia": [
+    "removeEncoding"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default",
+      "basic"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "scale",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "target mark",
+      "field mode: dataset field"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "value",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "field",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "fieldType",
+      "required": false,
+      "type": "\"nominal\" | \"ordinal\" | \"quantitative\" | undefined"
+    },
+    {
+      "name": "scale",
+      "required": false,
+      "type": "SizeScaleOptions | CategoricalSizeScaleOptions | undefined"
+    }
+  ],
+  "callPatterns": [
+    "encodeSize({ target?, scale?, value?, field?, fieldType? })"
+  ],
+  "snippet": "program.encodeSize({ value: 1 })",
+  "errors": [],
+  "route": "/reference/actions/encodings/#encodesize"
+}

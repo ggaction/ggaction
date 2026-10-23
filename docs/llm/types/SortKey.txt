@@ -1,0 +1,6 @@
+export interface SortKey {
+  field: string;
+  order?: "ascending" | "descending";
+  nulls?: "first" | "last";
+  temporalUnit?: "year" | "timestamp";
+}

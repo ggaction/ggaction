@@ -1,0 +1,10 @@
+export type CreateRugPlotOptions = {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  tick?: RugTickOptions;
+  guides?: false | RugGuideOptions;
+} & (
+  | { x: RugMeasureChannel; y?: never; edge: "top" | "bottom" }
+  | { y: RugMeasureChannel; x?: never; edge: "left" | "right" }
+);

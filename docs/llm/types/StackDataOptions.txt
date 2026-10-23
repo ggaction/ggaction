@@ -1,0 +1,9 @@
+export interface StackDataOptions {
+  id?: string;
+  source?: string;
+  category: string;
+  group: string;
+  value: string;
+  mode?: StackDataMode;
+  as?: StackDataOutputFields;
+}

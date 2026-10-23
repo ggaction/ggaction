@@ -20,14 +20,16 @@ The `createBarPlot` facade infers vertical orientation for two raw numeric field
 
 ## `createBarMark({ id?, data?, missing?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight?, cornerRadiusBottomRight?, cornerRadiusBottomLeft?, lineCap?, lineJoin?, miterLimit? } = {})`
 
+This heading shows common options. For the full callable contract and all branches, see [`createBarMark`](../../reference/actions/marks.md#createbarmark) and the [exact declarations](../../reference/types.md).
+
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Executable complete.** Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas.
 
 <!-- snippet-context:end -->
 
 ```javascript
-const program = chart()
+const program = chart().createCanvas()
   .createData({ values: cars })
   .createBarMark({ opacity: 0.78, stroke: "#0f172a", strokeWidth: 1.25 })
   .encodeHistogram({ field: "Displacement" });
@@ -76,6 +78,8 @@ uses the smallest observed time gap. Both orientations support ISO dates and
 explicit timestamp units.
 
 ## `editBarMark({ target?, blend?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight?, cornerRadiusBottomRight?, cornerRadiusBottomLeft?, lineCap?, lineJoin?, miterLimit? })` {#edit-bar-mark}
+
+This heading shows common options. For the full callable contract and all branches, see [`editBarMark`](../../reference/actions/marks.md#editbarmark) and the [exact declarations](../../reference/types.md).
 
 <!-- snippet-context:start -->
 

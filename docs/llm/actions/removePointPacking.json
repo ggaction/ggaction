@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 3,
+  "name": "removePointPacking",
+  "layer": "user-facing",
+  "domain": "marks",
+  "summary": "Remove stored point packing and rematerialize the current semantic scale positions.",
+  "signature": "removePointPacking(options?: RemovePointPackingOptions): ChartProgram;",
+  "intents": [
+    "remove point packing",
+    "remove",
+    "delete",
+    "graphical mark",
+    "mark appearance",
+    "point packing",
+    "deterministic collision avoidance"
+  ],
+  "lifecycle": "Assignment",
+  "resources": {
+    "prerequisites": [
+      "existing point packing"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [],
+  "editableVia": [],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing point packing"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    }
+  ],
+  "callPatterns": [
+    "removePointPacking({ target? })"
+  ],
+  "snippet": "program.removePointPacking({})",
+  "errors": [],
+  "route": "/reference/actions/marks/#removepointpacking"
+}

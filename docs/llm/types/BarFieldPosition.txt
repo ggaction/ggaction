@@ -1,0 +1,1 @@
+type BarFieldPosition<T> = T extends string ? T : T & { lower?: never; upper?: never };

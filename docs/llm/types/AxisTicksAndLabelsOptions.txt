@@ -1,0 +1,11 @@
+export interface AxisTicksAndLabelsOptions<P extends string> {
+  /** Axis resource identity; omission prefers canonical, then a unique named owner. */
+  target?: string;
+  scale?: string;
+  position?: P;
+  count?: number;
+  rounding?: AxisTickRounding;
+  values?: readonly AxisValue[];
+  ticks?: CartesianAxisTickStyleOptions;
+  labels?: CartesianAxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions;
+}

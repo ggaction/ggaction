@@ -1,0 +1,10 @@
+export interface RectMarkOptions extends RectStyleDetails {
+  clip?: boolean;
+  id?: string;
+  data?: string;
+  missing?: "error" | "skip";
+  fill?: string;
+  opacity?: number;
+  stroke?: string | false;
+  strokeWidth?: number;
+}

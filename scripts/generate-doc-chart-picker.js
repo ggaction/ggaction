@@ -17,11 +17,11 @@ export async function generateDocChartPicker({ check = false } = {}) {
   };
   const body = Object.entries(groups).flatMap(([title, entries]) => [
     `## ${title}`, "",
-    "| Task / input | Chart action | Role tags · API layer · entry | Direct editor | Lower-level actions |",
-    "| --- | --- | --- | --- | --- |",
+    "| Task / input | Chart action | Package entry | Direct editor |",
+    "| --- | --- | --- | --- |",
     ...Object.entries(entries).map(([name, input]) => {
       const card = h0.find(card => card.name === name);
-      return `| ${input} | ${link(name)} | ${card.authoringRoles.join(", ")} · ${card.layer} · ${card.supports.entryPoints.join(", ")} | ${card.editableVia.map(link).join(" · ") || "Refine the owned marks, encodings, or guides"} | ${card.wraps.filter(name => cards.some(card => card.name === name)).map(link).join(" · ")} |`;
+      return `| ${input} | ${link(name)} | ${card.supports.entryPoints.join(", ")} | ${card.editableVia.map(link).join(" · ") || "Refine the owned marks, encodings, or guides"} |`;
     }), ""
   ]).join("\n");
   const file = "docs/api/chart-picker.md";

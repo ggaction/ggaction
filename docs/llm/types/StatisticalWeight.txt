@@ -1,0 +1,4 @@
+export interface StatisticalWeight {
+  readonly field: string;
+  readonly kind: "frequency" | "reliability";
+}

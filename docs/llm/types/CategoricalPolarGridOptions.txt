@@ -1,0 +1,6 @@
+type CategoricalPolarGridOptions = Omit<
+  Pick<CreateGridOptions, "theta" | "radial">,
+  "theta"
+> & {
+  theta?: boolean | CategoricalThetaGridOptions;
+};

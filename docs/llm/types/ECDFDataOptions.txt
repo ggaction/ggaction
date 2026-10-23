@@ -1,0 +1,9 @@
+export interface ECDFDataOptions {
+  id: string;
+  source?: string;
+  field: string;
+  groupBy?: string | readonly [string, ...string[]];
+  weight?: string;
+  missing?: "drop" | "error";
+  as?: ECDFOutputFields;
+}

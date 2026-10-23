@@ -1,0 +1,26 @@
+export interface EditBoxPlotOptions {
+  summary?: BoxPlotSummaryFields | false;
+  target?: string;
+  data?: string;
+  x?: BoxPlotPositionChannel;
+  y?: BoxPlotPositionChannel;
+  whisker?: BoxPlotWhisker;
+  width?: BoxPlotWidth;
+  outliers?: boolean;
+  box?: RectStyleDetails & {
+    fill?: string;
+    opacity?: number;
+    stroke?: string;
+    strokeWidth?: number;
+  };
+  median?: StrokeStyleDetails & {
+    width?: { pixels: number } | "auto";
+    stroke?: string;
+    strokeWidth?: number;
+  };
+  outlier?: StrokeStyleDetails & {
+    shape?: PointShape;
+    radius?: number;
+    opacity?: number;
+  };
+}

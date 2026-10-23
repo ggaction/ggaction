@@ -1,0 +1,16 @@
+export interface GridDirectionOptions {
+  strokeDashMap?: CartesianGuideDashMap | "auto";
+  /** Signed logical pixels along the scale: vertical lines right, horizontal lines down. */
+  alongOffset?: number;
+  /** Grid draw order relative to marks at zero: positive above, nonpositive behind. */
+  zIndex?: number;
+  /** Band centers by default; boundary draws both edges of each selected band. */
+  bandPosition?: "center" | "boundary";
+  scale?: string;
+  coordinate?: string;
+  count?: number;
+  values?: readonly CategoryValue[];
+  color?: string;
+  lineWidth?: number;
+  strokeDash?: readonly number[];
+}

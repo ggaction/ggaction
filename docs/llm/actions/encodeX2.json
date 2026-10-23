@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 3,
+  "name": "encodeX2",
+  "layer": "user-facing",
+  "domain": "encodings",
+  "summary": "Assign an area, ranged-bar, or rect upper edge, or a rule secondary x endpoint.",
+  "signature": "encodeX2(options: SecondaryPositionEncodingOptions): ChartProgram;",
+  "intents": [
+    "encode x2",
+    "encode",
+    "map field",
+    "visual encoding",
+    "field mapping",
+    "secondary x position",
+    "x endpoint"
+  ],
+  "lifecycle": "Assignment",
+  "resources": {
+    "prerequisites": [
+      "target mark",
+      "field mode: dataset field"
+    ],
+    "owns": [
+      "secondary x position assignment"
+    ],
+    "idOptions": [
+      "target",
+      "scale",
+      "coordinate"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "removeEncoding"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default",
+      "basic"
+    ]
+  },
+  "units": [
+    {
+      "path": "temporalUnit",
+      "unit": "temporal-input"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "scale",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "target mark",
+      "field mode: dataset field"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "datum",
+      "required": false,
+      "type": "unknown"
+    },
+    {
+      "name": "field",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "fieldType",
+      "required": false,
+      "type": "\"nominal\" | \"ordinal\" | \"quantitative\" | \"temporal\" | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "scale",
+      "required": false,
+      "type": "{ id?: string | undefined; } | { id?: string | undefined; } | { id?: string | undefined; } | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "temporalUnit",
+      "required": false,
+      "type": "TemporalInputUnit | undefined"
+    }
+  ],
+  "callPatterns": [
+    "encodeX2({ target?, scale?, coordinate?, datum?, field?, fieldType?, temporalUnit? })"
+  ],
+  "snippet": "program.encodeX2({ field: \"x2\" })",
+  "errors": [],
+  "route": "/reference/actions/encodings/#encodex2"
+}

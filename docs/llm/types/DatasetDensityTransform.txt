@@ -1,0 +1,45 @@
+export interface DatasetDensityTransform {
+  type: "density";
+  field: string;
+  groupBy?: string;
+  bandwidth: "auto" | number;
+  extent: "auto" | readonly [number, number];
+  steps: number;
+  kernel?: DensityKernel;
+  normalization?: DensityNormalization;
+  weight?: StatisticalWeight;
+  missing?: "error" | "drop";
+  as: readonly [string, string];
+  resolve: "shared";
+  placement?: {
+    readonly type: "category";
+    readonly channel: "x" | "y";
+    readonly categoryField: string;
+    readonly side: DensityPlacementSide;
+    readonly width: {
+      readonly band: number;
+      readonly resolve: DensityWidthResolution;
+    };
+    readonly split?: {
+      readonly field: string;
+      readonly domain?: readonly [unknown, unknown];
+    };
+  };
+  resolved?: {
+    readonly extent: readonly [number, number];
+    readonly splitDomain?: readonly [unknown, unknown];
+  } & (
+    | {
+        readonly bandwidth: number;
+        readonly bandwidths?: never;
+      }
+    | {
+        readonly bandwidth?: never;
+        readonly bandwidths: readonly {
+          readonly group?: unknown;
+          readonly split?: unknown;
+          readonly bandwidth: number;
+        }[];
+      }
+  );
+}

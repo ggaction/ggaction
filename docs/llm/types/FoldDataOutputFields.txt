@@ -1,0 +1,4 @@
+export interface FoldDataOutputFields {
+  key?: string;
+  value?: string;
+}

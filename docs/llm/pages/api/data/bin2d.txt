@@ -1,0 +1,133 @@
+# Rectangular 2D Bins
+
+ source rows finite x/y pairs
+ grid edges automatic or explicit
+ cell assignment one cell per eligible row
+ derived rows bounds + count
+
+`createBin2DData` groups two quantitative fields into a rectangular grid.
+`editBin2DData` partially revises an existing logical grid owner. Both store
+concrete cell bounds and counts as immutable datasets, so ordinary ranged
+rectangles or other marks can consume the result without asking the renderer to
+perform data transforms.
+
+## `createBin2DData({ id, source?, x, y, bins?, extent?, includeEmpty?, members?, as? })`
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+const program = chart()
+  .createData({
+    id: "observations",
+    values: [
+      { x: 0, y: 0 },
+      { x: 1, y: 0 },
+      { x: 2, y: 2 }
+    ]
+  })
+  .createBin2DData({
+    id: "cells",
+    x: "x",
+    y: "y",
+    bins: { x: 2, y: 2 },
+    extent: { x: [0, 2], y: [0, 2] },
+    includeEmpty: true,
+    as: { count: "count" }
+  });
+```
+
+| Option | Type | Default |
+| --- | --- | --- |
+| `id` | logical derived-dataset ID | required |
+| `source` | existing dataset ID | current dataset; previous source on revision |
+| `x`, `y` | quantitative field names | required |
+| `bins` | positive integer or `{ x, y }` | `{ x: 10, y: 10 }` |
+| `extent` | `{ x?: [min, max], y?: [min, max] }` | eligible min/max per axis |
+| `includeEmpty` | boolean | `false` |
+| `members` | boolean | `false` |
+| `as` | partial output-field object | namespaced from `id` |
+
+Each axis accepts at most 10,000 bins, and a grid accepts at most 1,000,000
+cells in total. These limits are validated before any cell storage is
+allocated, including when the transform is reached through `createHeatmap` or
+`editBin2DData`.
+
+Only rows with finite values for both fields are eligible. Cells are half-open:
+`[lower, upper)`. The last cell on each axis includes its upper endpoint, so
+every eligible row belongs to exactly one cell. Output rows are ordered from low
+to high y and then low to high x.
+
+The stored transform includes the resolved axis extents and edge arrays. An
+explicit extent must contain every eligible value; the action throws rather
+than silently dropping rows. An automatic axis with no positive span also
+throws instead of guessing a display range.
+
+Every resolved edge is a finite number and edges are strictly increasing. Edge
+generation supports extents whose direct subtraction overflows, such as a grid
+from `-1e308` to `1e308`. If the requested number of distinct bins cannot be
+represented within an extent, the action throws `RangeError`; it never silently
+returns fewer bins.
+
+The default output fields are `__<id>_x0`, `__<id>_x1`, `__<id>_y0`,
+`__<id>_y1`, and `__<id>_count`. Pass `as` to give downstream encodings shorter
+names. With `members: true`, each cell also stores source row indexes. It never
+copies complete source row objects into every cell.
+
+## Revisions
+
+Calling `createBin2DData` again with the same logical `id` remains supported as
+a complete reauthoring operation. Supply the complete transform decisions for
+that intent. It creates a new immutable revision, rebinds direct visual
+consumers, rematerializes their scales, marks, and guides, and releases the
+unreferenced previous revision.
+
+## `editBin2DData`
+
+`editBin2DData({ target?, source?, x?, y?, bins?, extent?, includeEmpty?, members?, as?, dependents? })`
+
+Use `editBin2DData` when only part of the current transform should change:
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "cells"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+const revised = program.editBin2DData({
+  target: "cells",
+  bins: { x: 20, y: 10 },
+  includeEmpty: false
+});
+```
+
+`target` names the logical owner, not a generated revision dataset. It can be
+omitted when the current dataset identifies an owner or exactly one 2D-bin owner
+exists. Multiple owners without a current match are ambiguous and require
+`target`.
+
+Every omitted top-level option is preserved from the current requested
+provenance. Supplying `extent` replaces the complete extent decision and an
+omitted axis inside that object returns to automatic extent. Supplying `as`
+requires the complete `x0`, `x1`, `y0`, `y1`, and `count` output map, plus
+`members` when member indexes are enabled. When `as` is omitted, enabling
+members adds `__<logical-owner>_members`; disabling members removes only that
+output.
+
+An edit must contain at least one transform or source option and must produce an
+actual change. The complete source, transform, and every direct visual consumer
+are validated before the returned action records its first child transition.
+Successful calls create a deterministic immutable revision, explicitly rebind
+each direct layer, rematerialize affected scales, marks, and guides, then release
+the unreferenced prior revision. Earlier programs and caller-owned options remain
+unchanged.
+
+`dependents` defaults to `"reject"`. With that default, an edit stops before
+changing the program when another derived dataset reads the current grid.
+Pass `dependents: "recompute"` to revise the complete downstream dependency
+closure in topological order. Every affected logical owner receives one new
+deterministic revision, direct visual consumers move to those revisions, and
+obsolete revisions are released only after the whole speculative result passes
+validation. Cycles, unsupported internal transforms, and unsafe output-field
+renames reject atomically.
+
+## Related
+
+[Data overview](../../../../api/data/) · [Source and derived data](../../../../api/data/source-and-derived/) ·
+[Heatmaps](../../../../api/basic-charts/#createheatmap) · [Action reference](../../../../reference/actions/)

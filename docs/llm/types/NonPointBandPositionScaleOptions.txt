@@ -1,0 +1,7 @@
+export type NonPointBandPositionScaleOptions = ScaleFields<
+  "id" | "reverse" | "paddingInner" | "paddingOuter" | "align"
+> & {
+  type?: "band";
+  domain?: "auto" | readonly unknown[];
+  range?: "auto" | readonly [number, number];
+};

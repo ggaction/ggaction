@@ -1,0 +1,153 @@
+{
+  "schemaVersion": 3,
+  "name": "editXAxisTitle",
+  "layer": "user-facing",
+  "domain": "axes",
+  "summary": "Edits x-axis title, including settings for horizontal field title.",
+  "signature": "editXAxisTitle(options?: Omit<AxisTitleOptions<XAxisPosition>, \"scale\">): ChartProgram;",
+  "intents": [
+    "edit x axis title",
+    "edit",
+    "change",
+    "axis guide",
+    "scale annotation",
+    "x-axis title",
+    "horizontal field title"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing x-axis title",
+      "compatible scale or encoding context"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editGraphics",
+    "editSemantic"
+  ],
+  "editableVia": [
+    "editXAxisTitle"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "alongOffset",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "offset",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "rotation",
+      "unit": "angle"
+    },
+    {
+      "path": "fontSize",
+      "unit": "logical-pixel"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing x-axis title",
+      "compatible scale or encoding context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "alongOffset",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "align",
+      "required": false,
+      "type": "\"center\" | \"left\" | \"right\" | undefined"
+    },
+    {
+      "name": "overlap",
+      "required": false,
+      "type": "\"allow\" | \"error\" | undefined"
+    },
+    {
+      "name": "baseline",
+      "required": false,
+      "type": "\"alphabetic\" | \"bottom\" | \"hanging\" | \"ideographic\" | \"middle\" | \"top\" | undefined"
+    },
+    {
+      "name": "text",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "position",
+      "required": false,
+      "type": "XAxisPosition | undefined"
+    },
+    {
+      "name": "at",
+      "required": false,
+      "type": "number | \"center\" | \"end\" | \"start\" | undefined"
+    },
+    {
+      "name": "offset",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "rotation",
+      "required": false,
+      "type": "RotationInput | undefined"
+    },
+    {
+      "name": "color",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "fontSize",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "fontFamily",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "fontWeight",
+      "required": false,
+      "type": "string | number | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editXAxisTitle({ target?, alongOffset?, align?, overlap?, baseline?, text?, position?, at? })"
+  ],
+  "snippet": "program.editXAxisTitle({ alongOffset: 1 })",
+  "errors": [],
+  "route": "/reference/actions/guides/#editxaxistitle"
+}

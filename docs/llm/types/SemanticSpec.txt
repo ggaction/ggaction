@@ -1,0 +1,8 @@
+export interface SemanticSpec {
+  readonly datasets: readonly SemanticDataset[];
+  readonly layers: readonly SemanticLayer[];
+  readonly scales: readonly SemanticScale[];
+  readonly coordinates: readonly SemanticCoordinate[];
+  readonly guides: Readonly<Record<string, unknown>>;
+  readonly title: Readonly<Record<string, unknown>>;
+}

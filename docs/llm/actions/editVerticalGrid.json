@@ -1,0 +1,123 @@
+{
+  "schemaVersion": 3,
+  "name": "editVerticalGrid",
+  "layer": "user-facing",
+  "domain": "grid",
+  "summary": "Edits vertical grid, including settings for x reference lines.",
+  "signature": "editVerticalGrid(options: EditGridOptions): ChartProgram;",
+  "intents": [
+    "edit vertical grid",
+    "edit",
+    "change",
+    "grid guide",
+    "reference lines",
+    "vertical grid",
+    "x reference lines"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing vertical grid",
+      "compatible scale or encoding context"
+    ],
+    "owns": [],
+    "idOptions": []
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [],
+  "editableVia": [
+    "editVerticalGrid"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "alongOffset",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "count",
+      "unit": "count"
+    },
+    {
+      "path": "lineWidth",
+      "unit": "logical-pixel"
+    }
+  ],
+  "inference": [
+    {
+      "input": "strokeDashMap",
+      "strategy": "documented-auto"
+    },
+    {
+      "input": "values",
+      "strategy": "documented-auto"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing vertical grid",
+      "compatible scale or encoding context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "strokeDashMap",
+      "required": false,
+      "type": "\"auto\" | CartesianGuideDashMap | undefined"
+    },
+    {
+      "name": "alongOffset",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "zIndex",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "bandPosition",
+      "required": false,
+      "type": "\"boundary\" | \"center\" | undefined"
+    },
+    {
+      "name": "count",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "values",
+      "required": false,
+      "type": "\"auto\" | readonly CategoryValue[] | undefined"
+    },
+    {
+      "name": "color",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "lineWidth",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "strokeDash",
+      "required": false,
+      "type": "readonly number[] | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editVerticalGrid({ strokeDashMap?, alongOffset?, zIndex?, bandPosition?, count?, values?, color?, lineWidth? })"
+  ],
+  "snippet": "program.editVerticalGrid({ strokeDashMap: \"auto\" })",
+  "errors": [],
+  "route": "/reference/actions/guides/#editverticalgrid"
+}

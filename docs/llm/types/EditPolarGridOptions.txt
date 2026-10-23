@@ -1,0 +1,7 @@
+export interface EditPolarGridOptions {
+  count?: number;
+  values?: readonly AxisValue[];
+  color?: string;
+  lineWidth?: number;
+  strokeDash?: readonly number[];
+}

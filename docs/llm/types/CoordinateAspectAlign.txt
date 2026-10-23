@@ -1,0 +1,1 @@
+export type CoordinateAspectAlign = "start" | "center" | "end";

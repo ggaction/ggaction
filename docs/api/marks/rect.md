@@ -12,6 +12,8 @@ bars: rects do not infer aggregation, a zero baseline, stacking, or bar width.
 
 ## `createRectMark({ id?, data?, missing?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight?, cornerRadiusBottomRight?, cornerRadiusBottomLeft?, lineCap?, lineJoin?, miterLimit? } = {})`
 
+This heading shows common options. For the full callable contract and all branches, see [`createRectMark`](../../reference/actions/marks.md#createrectmark) and the [exact declarations](../../reference/types.md).
+
 <!-- snippet-context:start -->
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
@@ -101,6 +103,8 @@ rect collection stays empty. Missing endpoint or color values omit only their
 row. `encodeColor` accepts categorical and continuous color scales.
 
 ## `editRectMark({ target?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight?, cornerRadiusBottomRight?, cornerRadiusBottomLeft?, lineCap?, lineJoin?, miterLimit? })`
+
+This heading shows common options. For the full callable contract and all branches, see [`editRectMark`](../../reference/actions/marks.md#editrectmark) and the [exact declarations](../../reference/types.md).
 
 <!-- snippet-context:start -->
 

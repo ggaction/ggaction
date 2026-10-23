@@ -1,0 +1,18 @@
+type LineXPositionChannel =
+  | string
+  | ({ field: string; bin?: PositionEncodingBase["bin"] } & (
+      | {
+          fieldType?: "quantitative";
+          scale?: NonPointQuantitativePositionScaleOptions;
+        }
+      | {
+          fieldType: "temporal";
+          temporalUnit?: TemporalInputUnit;
+          scale?: NonPointTemporalPositionScaleOptions;
+        }
+      | {
+          fieldType: "nominal" | "ordinal";
+          bin?: never;
+          scale?: NonPointCategoricalPositionScaleOptions;
+        }
+    ));

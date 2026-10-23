@@ -1,0 +1,4 @@
+export interface RegressionStatisticsDataOptions {
+  id: string;
+  source: string;
+}

@@ -1,0 +1,5 @@
+export interface DatasetIntervalOutputFields {
+  center: string;
+  lower: string;
+  upper: string;
+}

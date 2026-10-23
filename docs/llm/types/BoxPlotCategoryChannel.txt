@@ -1,0 +1,5 @@
+export interface BoxPlotCategoryChannel {
+  field: string;
+  fieldType: "nominal" | "ordinal";
+  scale?: NonPointBandPositionScaleOptions;
+}

@@ -1,0 +1,5 @@
+export interface SummaryAggregateOptions {
+  op: AggregateOperation | { op: "ciLower" | "ciUpper"; method: BootstrapMeanIntervalMethod; level?: number };
+  field?: string;
+  as: string;
+}

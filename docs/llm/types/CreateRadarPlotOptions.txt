@@ -1,0 +1,22 @@
+export type CreateRadarPlotOptions = {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  groupBy?: string | readonly [string, ...string[]];
+  order?: readonly [
+    RadarCategoryValue,
+    RadarCategoryValue,
+    RadarCategoryValue,
+    ...RadarCategoryValue[]
+  ];
+  color?: LineCategoricalColorChannel;
+  strokeDash?: NonCartesianStrokeDashChannel;
+  line?: Omit<NonNullable<CreateLinePlotOptions["line"]>, "clip" | "missing" | "closed" | "curve" | "tension"> & {
+    curve?: "linear";
+    closed?: true;
+  };
+  guides?: false | RadarGuideOptions;
+} & (
+  | { category: RadarCategoryChannel; value: PolarRadiusChannel; wide?: never }
+  | { wide: RadarWideOptions; category?: never; value?: never }
+);

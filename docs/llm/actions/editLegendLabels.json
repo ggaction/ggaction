@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 3,
+  "name": "editLegendLabels",
+  "layer": "user-facing",
+  "domain": "legend_and_title",
+  "summary": "Edits the text style of one legend's item labels.",
+  "signature": "editLegendLabels(options: EditLegendLabelsOptions): ChartProgram;",
+  "intents": [
+    "edit legend labels",
+    "edit",
+    "change",
+    "legend or title",
+    "chart annotation",
+    "legend labels",
+    "legend text style"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing legend labels",
+      "compatible scale or encoding context"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editLegend"
+  ],
+  "editableVia": [
+    "editLegendLabels"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "offset",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "fontSize",
+      "unit": "logical-pixel"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing legend labels",
+      "compatible scale or encoding context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "channel",
+      "required": false,
+      "type": "\"color\" | \"opacity\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\" | undefined"
+    },
+    {
+      "name": "offset",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "color",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "fontSize",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "fontFamily",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "fontWeight",
+      "required": false,
+      "type": "string | number | undefined"
+    },
+    {
+      "name": "format",
+      "required": false,
+      "type": "ValueFormat | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editLegendLabels({ target?, channel?, offset?, color?, fontSize?, fontFamily?, fontWeight?, format? })"
+  ],
+  "snippet": "program.editLegendLabels({ channel: \"color\" })",
+  "errors": [],
+  "route": "/reference/actions/guides/#editlegendlabels"
+}

@@ -1,0 +1,5 @@
+export type HorizonYScaleOptions = ScaleFields<"id" | "clamp" | "reverse"> & {
+  type?: "linear";
+  domain?: readonly [0, 1];
+  range?: "auto" | readonly [number, number];
+};

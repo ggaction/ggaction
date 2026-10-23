@@ -1,0 +1,1 @@
+export type ArcInnerRadius = number | { unit: "px"; value: number };

@@ -1,0 +1,3 @@
+export type RemoveMarkLabelsOptions =
+  | { target: string; source?: never }
+  | { source: string; target?: never };

@@ -1,0 +1,9 @@
+export type ViolinPlotColorOptions =
+  | string
+  | {
+      field: string;
+      fieldType?: "nominal" | "ordinal";
+      scale?: NonPointCategoricalColorScaleOptions;
+      palette?: Palette;
+      layout?: "overlay";
+    };

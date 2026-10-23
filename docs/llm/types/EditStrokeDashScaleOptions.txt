@@ -1,0 +1,2 @@
+export type EditStrokeDashScaleOptions = FocusedScaleSelection &
+  Omit<WithoutScaleId<DashScaleOptions>, "unknown"> & { unknown?: DashStyle | DashPattern | undefined };

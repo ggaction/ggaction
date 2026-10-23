@@ -1,0 +1,208 @@
+{
+  "schemaVersion": 3,
+  "name": "editXAxisLabels",
+  "layer": "user-facing",
+  "domain": "axes",
+  "summary": "Edits x-axis labels, including settings for horizontal tick text.",
+  "signature": "editXAxisLabels(options?: Omit<AxisLabelOptions<XAxisPosition>, \"scale\">): ChartProgram;",
+  "intents": [
+    "edit x axis labels",
+    "edit",
+    "change",
+    "axis guide",
+    "scale annotation",
+    "x-axis labels",
+    "horizontal tick text"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing x-axis labels",
+      "compatible scale or encoding context"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editGraphics",
+    "editXAxisTitle"
+  ],
+  "editableVia": [
+    "editXAxisLabels"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "offset",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "fontSize",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "alongOffset",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "rotation",
+      "unit": "angle"
+    },
+    {
+      "path": "maxWidth",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "lineHeight",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "count",
+      "unit": "count"
+    }
+  ],
+  "inference": [
+    {
+      "input": "labelMap",
+      "strategy": "documented-auto"
+    },
+    {
+      "input": "colorMap",
+      "strategy": "documented-auto"
+    },
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing x-axis labels",
+      "compatible scale or encoding context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "labelMap",
+      "required": false,
+      "type": "\"auto\" | DisplayLabelMap | undefined"
+    },
+    {
+      "name": "offset",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "format",
+      "required": false,
+      "type": "AxisFormat | undefined"
+    },
+    {
+      "name": "color",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "fontSize",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "fontFamily",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "fontWeight",
+      "required": false,
+      "type": "string | number | undefined"
+    },
+    {
+      "name": "align",
+      "required": false,
+      "type": "\"center\" | \"left\" | \"right\" | undefined"
+    },
+    {
+      "name": "colorMap",
+      "required": false,
+      "type": "\"auto\" | CartesianAxisLabelColorMap | undefined"
+    },
+    {
+      "name": "flush",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "alongOffset",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "rotation",
+      "required": false,
+      "type": "RotationInput | undefined"
+    },
+    {
+      "name": "maxWidth",
+      "required": false,
+      "type": "number | false | undefined"
+    },
+    {
+      "name": "wrap",
+      "required": false,
+      "type": "\"character\" | \"word\" | undefined"
+    },
+    {
+      "name": "lineHeight",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "overlap",
+      "required": false,
+      "type": "\"allow\" | \"error\" | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "position",
+      "required": false,
+      "type": "XAxisPosition | undefined"
+    },
+    {
+      "name": "count",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "rounding",
+      "required": false,
+      "type": "AxisTickRounding | undefined"
+    },
+    {
+      "name": "values",
+      "required": false,
+      "type": "readonly AxisValue[] | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editXAxisLabels({ target?, labelMap?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight? })"
+  ],
+  "snippet": "program.editXAxisLabels({ labelMap: \"auto\" })",
+  "errors": [],
+  "route": "/reference/actions/guides/#editxaxislabels"
+}

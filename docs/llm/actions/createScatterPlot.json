@@ -1,0 +1,143 @@
+{
+  "schemaVersion": 3,
+  "name": "createScatterPlot",
+  "layer": "user-facing",
+  "domain": "charts",
+  "summary": "Draws one point per observation, without statistical aggregation. Supports color, size, and shape fields; defaults to applicable axes, grid, and legends. Aggregate create-only describes composed actions, not aggregated rows.",
+  "signature": "createScatterPlot(options: CreateScatterPlotOptions): ChartProgram;",
+  "intents": [
+    "create scatter plot",
+    "create",
+    "add",
+    "complete chart",
+    "chart facade",
+    "scatter plot",
+    "two-field relationship"
+  ],
+  "lifecycle": "Aggregate create-only",
+  "resources": {
+    "prerequisites": [
+      "canvas and dataset context"
+    ],
+    "owns": [
+      "scatter plot"
+    ],
+    "idOptions": [
+      "id",
+      "data",
+      "coordinate"
+    ]
+  },
+  "authoringRoles": [
+    "H0"
+  ],
+  "wraps": [
+    "createPointMark",
+    "encodeX",
+    "encodeY",
+    "encodeColor",
+    "encodeShape",
+    "createGuides",
+    "encodeStroke",
+    "editPointMark",
+    "encodeSize",
+    "encodePointRadius"
+  ],
+  "editableVia": [],
+  "supports": {
+    "entryPoints": [
+      "default",
+      "basic"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "data",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "complete",
+    "requires": [
+      "canvas and dataset context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "missing",
+      "required": false,
+      "type": "\"error\" | \"skip\" | undefined"
+    },
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "data",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "x",
+      "required": true,
+      "type": "PointFacadePositionChannel"
+    },
+    {
+      "name": "y",
+      "required": true,
+      "type": "PointFacadePositionChannel"
+    },
+    {
+      "name": "color",
+      "required": false,
+      "type": "BasicColorChannel | undefined"
+    },
+    {
+      "name": "stroke",
+      "required": false,
+      "type": "string | Omit<{ target?: string | undefined; field: string; value?: undefined; fieldType?: \"nominal\" | \"ordinal\" | undefined; temporalUnit?: undefined; scale?: CategoricalColorScaleOptions | undefined; }, \"coordinate\" | \"target\"> | Omit<...> | Omit<...> | undefined"
+    },
+    {
+      "name": "size",
+      "required": false,
+      "type": "BasicSizeChannel | undefined"
+    },
+    {
+      "name": "shape",
+      "required": false,
+      "type": "BasicShapeChannel | undefined"
+    },
+    {
+      "name": "point",
+      "required": false,
+      "type": "(StrokeStyleDetails & { clip?: boolean | undefined; radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
+    },
+    {
+      "name": "guides",
+      "required": false,
+      "type": "false | CartesianGuideOptions | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createScatterPlot({ x, y, id?, data?, coordinate?, missing?, color?, stroke? })"
+  ],
+  "snippet": "program.createScatterPlot({ x: \"x\", y: \"y\" })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#createscatterplot"
+}

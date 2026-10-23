@@ -1,0 +1,4 @@
+export type FilterRangePatch = FilterRangeClosure & {
+  min?: FilterBound | false;
+  max?: FilterBound | false;
+};

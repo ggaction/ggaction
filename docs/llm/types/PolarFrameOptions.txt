@@ -1,0 +1,5 @@
+export type PolarFrameOptions = "auto" | {
+  center?: PolarFrameCenter;
+  radius?: PolarFrameRadius;
+  overflow?: "error" | "allow";
+};

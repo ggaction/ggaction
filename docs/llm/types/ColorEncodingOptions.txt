@@ -1,0 +1,25 @@
+export type ColorEncodingOptions =
+  | { value: string; target?: string; field?: never; fieldType?: never;
+      scale?: never; palette?: never; layout?: never; aggregate?: never; temporalUnit?: never }
+  | (CategoricalEncodingOptions & { value?: never })
+  | {
+      field: string;
+      target?: string;
+      value?: never;
+      fieldType: "quantitative";
+      aggregate?: AggregateOperation;
+      scale?: ContinuousColorScaleOptions | DiscretizedColorScaleOptions;
+      palette?: Palette;
+      layout?: never;
+    }
+  | {
+      field: string;
+      target?: string;
+      value?: never;
+      fieldType: "temporal";
+      temporalUnit?: TemporalInputUnit;
+      aggregate?: never;
+      scale?: Omit<ContinuousColorScaleOptions, "midpoint" | "type" | "base" | "exponent" | "constant"> & { midpoint?: "auto"; type?: "sequential" };
+      palette?: Palette;
+      layout?: never;
+    };

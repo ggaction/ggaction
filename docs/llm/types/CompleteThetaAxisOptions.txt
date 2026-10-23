@@ -1,0 +1,4 @@
+export interface CompleteThetaAxisOptions
+  extends Omit<CompletePolarAxisOptions, "ticksAndLabels"> {
+  ticksAndLabels?: false | ThetaTicksAndLabelsOptions;
+}

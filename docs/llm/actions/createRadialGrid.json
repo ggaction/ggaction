@@ -1,0 +1,119 @@
+{
+  "schemaVersion": 3,
+  "name": "createRadialGrid",
+  "layer": "user-facing",
+  "domain": "grid",
+  "summary": "Create concentric radial paths behind related marks.",
+  "signature": "createRadialGrid(options?: PolarGridOptions): ChartProgram;",
+  "intents": [
+    "create radial grid",
+    "create",
+    "add",
+    "grid guide",
+    "reference lines",
+    "radial grid",
+    "concentric reference lines"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "compatible scale or encoding context"
+    ],
+    "owns": [
+      "radial grid"
+    ],
+    "idOptions": [
+      "scale",
+      "coordinate"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editSemantic",
+    "createGraphics"
+  ],
+  "editableVia": [
+    "editRadialGrid"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "count",
+      "unit": "count"
+    },
+    {
+      "path": "lineWidth",
+      "unit": "logical-pixel"
+    }
+  ],
+  "inference": [
+    {
+      "input": "scale",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "compatible scale or encoding context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "scale",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "count",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "values",
+      "required": false,
+      "type": "readonly AxisValue[] | undefined"
+    },
+    {
+      "name": "color",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "lineWidth",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "strokeDash",
+      "required": false,
+      "type": "readonly number[] | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createRadialGrid({ scale?, coordinate?, count?, values?, color?, lineWidth?, strokeDash? })"
+  ],
+  "snippet": "program.createRadialGrid({})",
+  "errors": [],
+  "route": "/reference/actions/guides/#createradialgrid"
+}

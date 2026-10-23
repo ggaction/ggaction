@@ -1,0 +1,4 @@
+export interface HorizonPaletteOptions {
+  positive?: Palette;
+  negative?: Palette;
+}

@@ -1,0 +1,2 @@
+export type ZeroSupportingPositionScaleType =
+  | "linear" | "pow" | "sqrt" | "symlog";

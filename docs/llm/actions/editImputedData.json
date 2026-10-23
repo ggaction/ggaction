@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 3,
+  "name": "editImputedData",
+  "layer": "user-facing",
+  "domain": "statistics",
+  "summary": "Edits imputed data, including settings for filled missing values.",
+  "signature": "editImputedData(options: EditImputedDataOptions): ChartProgram;",
+  "intents": [
+    "edit imputed data",
+    "edit",
+    "change",
+    "statistical layer",
+    "statistical transform",
+    "imputed data",
+    "filled missing values"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing imputed data",
+      "source dataset"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H1",
+    "H3"
+  ],
+  "wraps": [
+    "editDerivedData"
+  ],
+  "editableVia": [
+    "editImputedData"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing imputed data",
+      "source dataset"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "dependents",
+      "required": false,
+      "type": "DerivedDataDependents | undefined"
+    },
+    {
+      "name": "fields",
+      "required": false,
+      "type": "string | readonly [string, ...string[]] | undefined"
+    },
+    {
+      "name": "groupBy",
+      "required": false,
+      "type": "string | readonly string[] | undefined"
+    },
+    {
+      "name": "edges",
+      "required": false,
+      "type": "\"error\" | \"keep\" | undefined"
+    },
+    {
+      "name": "maxGap",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "method",
+      "required": false,
+      "type": "\"backward\" | \"constant\" | \"forward\" | \"linear\" | \"mean\" | undefined"
+    },
+    {
+      "name": "value",
+      "required": false,
+      "type": "DatasetScalar | undefined"
+    },
+    {
+      "name": "sortBy",
+      "required": false,
+      "type": "readonly WindowSort[] | readonly [{ field: string; order?: \"ascending\" | undefined; }] | readonly [WindowSort, ...WindowSort[]] | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editImputedData({ target, dependents?, fields?, groupBy?, edges?, maxGap?, method?, value? })"
+  ],
+  "snippet": "program.editImputedData({ target: \"imputed\", value: 0 })",
+  "errors": [],
+  "route": "/reference/actions/statistics/#editimputeddata"
+}

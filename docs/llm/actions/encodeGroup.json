@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 3,
+  "name": "encodeGroup",
+  "layer": "user-facing",
+  "domain": "encodings",
+  "summary": "Split Line or ordinary Area paths by one nominal field or a non-empty unique tuple.",
+  "signature": "encodeGroup(options: GroupEncodingOptions): ChartProgram;",
+  "intents": [
+    "encode group",
+    "encode",
+    "map field",
+    "visual encoding",
+    "field mapping",
+    "series grouping",
+    "group field"
+  ],
+  "lifecycle": "Assignment",
+  "resources": {
+    "prerequisites": [
+      "target mark",
+      "field mode: dataset field"
+    ],
+    "owns": [
+      "series grouping assignment"
+    ],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "removeEncoding"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default",
+      "basic"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "target mark",
+      "field mode: dataset field"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "fieldType",
+      "required": false,
+      "type": "\"nominal\" | undefined"
+    },
+    {
+      "name": "field",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "fields",
+      "required": false,
+      "type": "readonly [string, ...string[]] | undefined"
+    }
+  ],
+  "callPatterns": [
+    "encodeGroup({ field, target?, fieldType? })",
+    "encodeGroup({ fields: [first, ...rest], target?, fieldType? })"
+  ],
+  "snippet": "program.encodeGroup({ field: \"country\" })",
+  "errors": [],
+  "route": "/reference/actions/encodings/#encodegroup"
+}

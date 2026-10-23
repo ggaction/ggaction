@@ -1,0 +1,8 @@
+export interface LabelLayoutOptions {
+  target?: string;
+  axis?: LabelLayoutAxis;
+  padding?: number;
+  maxDisplacement?: number;
+  bounds?: LabelLayoutBounds;
+  leader?: false | LabelLeaderOptions;
+}

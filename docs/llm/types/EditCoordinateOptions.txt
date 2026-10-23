@@ -1,0 +1,4 @@
+export type EditCoordinateOptions = EditCoordinateTarget & (
+  | { aspect: CoordinateAspect; polarFrame?: PolarFrameOptions }
+  | { aspect?: CoordinateAspect; polarFrame: PolarFrameOptions }
+);

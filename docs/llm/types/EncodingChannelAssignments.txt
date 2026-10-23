@@ -1,0 +1,23 @@
+export interface EncodingChannelAssignments {
+  x?: WithoutEncodingTarget<PositionEncodingOptions | DatumPositionEncodingOptions>;
+  y?: WithoutEncodingTarget<YPositionEncodingOptions | DatumPositionEncodingOptions>;
+  x2?: WithoutEncodingTarget<SecondaryPositionEncodingOptions>;
+  y2?: WithoutEncodingTarget<SecondaryPositionEncodingOptions>;
+  theta?: WithoutEncodingTarget<ThetaEncodingOptions>;
+  r?: WithoutEncodingTarget<RadialEncodingOptions>;
+  xOffset?: WithoutEncodingTarget<XOffsetEncodingOptions>;
+  yOffset?: WithoutEncodingTarget<YOffsetEncodingOptions>;
+  group?: WithoutEncodingTarget<GroupEncodingOptions>;
+  pathOrder?: WithoutEncodingTarget<PathOrderEncodingOptions>;
+  color?: WithoutEncodingTarget<ColorEncodingOptions>;
+  stroke?: WithoutEncodingTarget<StrokeEncodingOptions>;
+  size?: WithoutEncodingTarget<SizeEncodingOptions>;
+  shape?: WithoutEncodingTarget<ShapeEncodingOptions>;
+  opacity?: WithoutEncodingTarget<OpacityEncodingOptions>;
+  strokeWidth?: WithoutEncodingTarget<StrokeWidthEncodingOptions>;
+  strokeDash?: WithoutEncodingTarget<StrokeDashEncodingOptions>;
+  angle?: WithoutEncodingTarget<AngleEncodingOptions>;
+  text?: WithoutEncodingTarget<TextEncodingOptions>;
+  dx?: WithoutEncodingTarget<TextOffsetEncodingOptions>;
+  dy?: WithoutEncodingTarget<TextOffsetEncodingOptions>;
+}

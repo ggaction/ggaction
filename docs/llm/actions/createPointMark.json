@@ -1,0 +1,142 @@
+{
+  "schemaVersion": 3,
+  "name": "createPointMark",
+  "layer": "user-facing",
+  "domain": "marks",
+  "summary": "Create a point mark using fourteen named shapes or polygons with area/radius normalization.",
+  "signature": "createPointMark(options?: StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: \"error\" | \"skip\"; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;",
+  "intents": [
+    "create point mark",
+    "create",
+    "add",
+    "graphical mark",
+    "mark appearance",
+    "point mark",
+    "scatter point"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "dataset and coordinate context"
+    ],
+    "owns": [
+      "point mark"
+    ],
+    "idOptions": [
+      "id",
+      "data"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editSemantic",
+    "createGraphics",
+    "editPointMark"
+  ],
+  "editableVia": [
+    "editPointMark"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default",
+      "basic"
+    ]
+  },
+  "units": [
+    {
+      "path": "opacity",
+      "unit": "probability"
+    },
+    {
+      "path": "strokeWidth",
+      "unit": "logical-pixel"
+    }
+  ],
+  "inference": [
+    {
+      "input": "data",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "dataset and coordinate context"
+    ],
+    "allowsEmpty": true
+  },
+  "options": [
+    {
+      "name": "lineCap",
+      "required": false,
+      "type": "\"butt\" | \"round\" | \"square\" | undefined"
+    },
+    {
+      "name": "lineJoin",
+      "required": false,
+      "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+    },
+    {
+      "name": "miterLimit",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "clip",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "data",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "missing",
+      "required": false,
+      "type": "\"error\" | \"skip\" | undefined"
+    },
+    {
+      "name": "shape",
+      "required": false,
+      "type": "PointShape | undefined"
+    },
+    {
+      "name": "fill",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "opacity",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "stroke",
+      "required": false,
+      "type": "FilledMarkStroke | undefined"
+    },
+    {
+      "name": "strokeWidth",
+      "required": false,
+      "type": "number | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createPointMark({ id?, data?, lineCap?, lineJoin?, miterLimit?, clip?, missing?, shape? })"
+  ],
+  "snippet": "program.createPointMark({})",
+  "errors": [],
+  "route": "/reference/actions/marks/#createpointmark"
+}

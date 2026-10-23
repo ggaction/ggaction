@@ -57,7 +57,7 @@ are internal operations.
 
 ## Essential invariants
 
-- Every action accepts one option object and returns a new ChartProgram.
+- Actions accept zero arguments or one option object according to their exact signature and returns a new ChartProgram.
 - Existing programs and caller-owned inputs are never mutated.
 - semanticSpec records chart meaning.
 - graphicSpec stores fully materialized backend-neutral graphics.
@@ -78,8 +78,28 @@ are internal operations.
   backend-neutral graphicSpec contract.
 - The package is ESM-only. Node entry points require Node.js 20 or later.
 
+
+For extension authors, the installed package includes `node_modules/ggaction/knowledge/extension-authoring.md`. Read that file alongside the installed declarations; it is a guide file, not an importable package entry.
+
+## Selective HTTP reading without MCP
+
+Fetch the small selective artifact manifest listed below first, then only the needed
+page, action, or type catalog. These catalogs list plaintext pages, one JSON card per action,
+and one declaration per named type with its dependencies. Read the task page,
+then only the selected action and its named option types. Follow dependencies
+until the chosen union branch is understood. The complete declaration graph is
+also distributed with the public type files.
+
+Pin one manifest's `contractId` and verify its SHA-256 hashes. Do not combine
+same-version artifacts from different branches. MCP packets should be obtained
+from the same installed card/resource set; a resolved packet still requires
+execution and numerical/layout validation. The MCP query limit is 500 characters:
+retain the original request in host context, split by task, and reconcile all
+requirements after resolving each part.
+
 ## Machine-readable contracts and canonical page inventory
 
+- Selective plaintext pages, action cards, named type dependencies, and artifact identity: ./llm/index.json
 - Full bundle section manifest and hashes: ./llms-manifest.json
 - Typed compact action-card collection: ./actions.json
 - Action-card item schema: ./schemas/action-card.schema.json

@@ -1,0 +1,10 @@
+export type PieLegendOptions = Omit<
+  SeparateFilledLegendOptions,
+  "count" | "values" | "gradient" | "channels" | "order" | "labels" | "representation" | "symbol" | "titlePosition"
+> & {
+  titlePosition?: "top" | "left";
+  symbol?: FilledLegendSymbolRecipe;
+  channels?: readonly ["color"];
+  order?: LegendValueOrder | { channel: "theta"; values?: never };
+  labels?: CategoricalLegendTextOptions;
+};

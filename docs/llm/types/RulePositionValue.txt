@@ -1,0 +1,3 @@
+type RulePositionValue =
+  | { field: string; datum?: never }
+  | { field?: never; datum: unknown };

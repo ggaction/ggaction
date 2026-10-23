@@ -1,0 +1,15 @@
+type LineYPositionChannel =
+  | string
+  | ({ field: string } & (
+      | {
+          fieldType?: "quantitative";
+          aggregate?: AggregateOperation;
+          scale?: NonPointQuantitativePositionScaleOptions;
+        }
+      | {
+          fieldType: "temporal";
+          temporalUnit?: TemporalInputUnit;
+          aggregate?: never;
+          scale?: NonPointTemporalPositionScaleOptions;
+        }
+    ));

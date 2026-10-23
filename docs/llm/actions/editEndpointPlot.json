@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 3,
+  "name": "editEndpointPlot",
+  "layer": "user-facing",
+  "domain": "charts",
+  "summary": "Atomically revise the semantic roles of a Dot, Lollipop, or Dumbbell facade.",
+  "signature": "editEndpointPlot(options: EditEndpointPlotOptions): ChartProgram;",
+  "intents": [
+    "edit endpoint plot",
+    "edit",
+    "change",
+    "complete chart",
+    "chart facade",
+    "endpoint plot",
+    "dot lollipop or dumbbell semantic roles"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing endpoint plot",
+      "canvas and dataset context"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target",
+      "data",
+      "coordinate"
+    ]
+  },
+  "authoringRoles": [
+    "H1",
+    "H3"
+  ],
+  "wraps": [
+    "removeMark",
+    "createDumbbellPlot"
+  ],
+  "editableVia": [
+    "editEndpointPlot"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "data",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing endpoint plot",
+      "canvas and dataset context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "data",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "category",
+      "required": false,
+      "type": "EndpointCategoryChannel | undefined"
+    },
+    {
+      "name": "orientation",
+      "required": false,
+      "type": "\"horizontal\" | \"vertical\" | undefined"
+    },
+    {
+      "name": "summary",
+      "required": false,
+      "type": "EndpointPlotSummary | undefined"
+    },
+    {
+      "name": "start",
+      "required": false,
+      "type": "EndpointValueChannel | undefined"
+    },
+    {
+      "name": "end",
+      "required": false,
+      "type": "EndpointValueChannel | undefined"
+    },
+    {
+      "name": "value",
+      "required": false,
+      "type": "EndpointValueChannel | undefined"
+    },
+    {
+      "name": "baseline",
+      "required": false,
+      "type": "number | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editEndpointPlot({ value })",
+    "editEndpointPlot({ target?, data?, category?, value?, start?, end?, orientation?, summary?, baseline? })"
+  ],
+  "snippet": "program.editEndpointPlot({ value: \"updatedValue\" })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#editendpointplot"
+}

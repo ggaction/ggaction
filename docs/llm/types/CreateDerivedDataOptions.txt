@@ -1,0 +1,5 @@
+export interface CreateDerivedDataOptions {
+  id: string;
+  source: string;
+  transform: readonly [DatasetTransform];
+}

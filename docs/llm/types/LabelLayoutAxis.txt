@@ -1,0 +1,1 @@
+export type LabelLayoutAxis = "x" | "y" | "both";

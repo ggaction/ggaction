@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 3,
+  "name": "editGraphics",
+  "layer": "primitive",
+  "domain": "primitives",
+  "summary": "Sets a concrete graphic property or removes a top-level graphic resource inside an extension action.",
+  "signature": "editGraphics(options: EditGraphicsOptions): ChartProgram;",
+  "intents": [
+    "edit graphics",
+    "edit",
+    "change",
+    "extension primitive",
+    "low-level authoring",
+    "graphic state",
+    "concrete graphic resource"
+  ],
+  "lifecycle": "Primitive",
+  "resources": {
+    "prerequisites": [
+      "existing graphic state",
+      "extension action context"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H4"
+  ],
+  "wraps": [],
+  "editableVia": [
+    "editGraphics"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit"
+    }
+  ],
+  "completionRequirements": {
+    "state": "not-applicable",
+    "requires": [],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "property",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "value",
+      "required": false,
+      "type": "unknown"
+    },
+    {
+      "name": "remove",
+      "required": false,
+      "type": "boolean | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editGraphics({ target, property, value })",
+    "editGraphics({ target, remove: true })"
+  ],
+  "snippet": "program.editGraphics({ target: \"graphic-1\", remove: true })",
+  "errors": [
+    {
+      "error": "A removal also supplies property or value.",
+      "fix": "Use either { target, property, value } or { target, remove: true }."
+    }
+  ],
+  "route": "/reference/actions/extension/#editgraphics"
+}

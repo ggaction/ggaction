@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 3,
+  "name": "createCompleteData",
+  "layer": "user-facing",
+  "domain": "statistics",
+  "summary": "Complete one typed key domain independently inside every observed group, with explicit fill and source-membership provenance for synthesized rows.",
+  "signature": "createCompleteData(options: CompleteDataOptions): ChartProgram;",
+  "intents": [
+    "create complete data",
+    "create",
+    "add",
+    "statistical layer",
+    "statistical transform",
+    "completed data",
+    "explicit key-domain rows"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "source dataset"
+    ],
+    "owns": [
+      "completed data"
+    ],
+    "idOptions": [
+      "id",
+      "source"
+    ]
+  },
+  "authoringRoles": [
+    "H1"
+  ],
+  "wraps": [
+    "createDerivedData"
+  ],
+  "editableVia": [
+    "editCompleteData"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "source",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "source dataset"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "source",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "key",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "groupBy",
+      "required": false,
+      "type": "string | readonly string[] | undefined"
+    },
+    {
+      "name": "fill",
+      "required": false,
+      "type": "Readonly<Record<string, DatasetScalar>> | undefined"
+    },
+    {
+      "name": "members",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "values",
+      "required": false,
+      "type": "readonly [DatasetScalar, ...DatasetScalar[]] | undefined"
+    },
+    {
+      "name": "sequence",
+      "required": false,
+      "type": "{ start: number; end: number; step: number; } | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createCompleteData({ id, key, source?, groupBy?, fill?, members?, values?, sequence? })"
+  ],
+  "snippet": "program.createCompleteData({ id: \"completed\", key: \"period\", groupBy: \"series\", values: [1, 2, 3], members: \"sourceRows\" })",
+  "errors": [],
+  "route": "/reference/actions/statistics/#createcompletedata"
+}

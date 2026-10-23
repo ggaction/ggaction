@@ -1,0 +1,6 @@
+export interface EditMarkLabelPlacementOptions {
+  target: string;
+  placement: MarkLabelPlacement | "auto";
+}
+
+/** Remove one attached label layer or every attached label owned by a source mark. */

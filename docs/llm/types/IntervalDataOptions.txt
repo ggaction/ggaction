@@ -1,0 +1,12 @@
+export interface IntervalDataOptions {
+  id: string;
+  source?: string;
+  field: string;
+  groupBy?: string | readonly string[];
+  center?: IntervalCenter;
+  extent?: IntervalExtent;
+  method?: MeanConfidenceIntervalMethod;
+  level?: number;
+  missing?: "error" | "drop";
+  as?: IntervalOutputFields;
+}

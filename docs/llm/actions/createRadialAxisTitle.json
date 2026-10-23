@@ -1,0 +1,139 @@
+{
+  "schemaVersion": 3,
+  "name": "createRadialAxisTitle",
+  "layer": "user-facing",
+  "domain": "axes",
+  "summary": "Create missing radial-axis title independently of the other components.",
+  "signature": "createRadialAxisTitle(options?: CreateRadialAxisTitleOptions): ChartProgram;",
+  "intents": [
+    "create radial axis title",
+    "create",
+    "add",
+    "axis guide",
+    "scale annotation",
+    "radial-axis title",
+    "polar field title"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "compatible scale or encoding context"
+    ],
+    "owns": [
+      "radial-axis title"
+    ],
+    "idOptions": [
+      "scale",
+      "coordinate"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editSemantic",
+    "createGraphics",
+    "editRadialAxisTitle"
+  ],
+  "editableVia": [
+    "editRadialAxisTitle"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "offset",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "fontSize",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "angle",
+      "unit": "degree"
+    }
+  ],
+  "inference": [
+    {
+      "input": "scale",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "compatible scale or encoding context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "position",
+      "required": false,
+      "type": "\"inside\" | \"outside\" | undefined"
+    },
+    {
+      "name": "text",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "offset",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "color",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "fontSize",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "fontFamily",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "fontWeight",
+      "required": false,
+      "type": "string | number | undefined"
+    },
+    {
+      "name": "scale",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "angle",
+      "required": false,
+      "type": "number | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createRadialAxisTitle({ scale?, coordinate?, position?, text?, offset?, color?, fontSize?, fontFamily? })"
+  ],
+  "snippet": "program.createRadialAxisTitle({})",
+  "errors": [],
+  "route": "/reference/actions/guides/#createradialaxistitle"
+}

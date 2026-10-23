@@ -54,7 +54,7 @@ console.log(program.semanticSpec.datasets[1].values[0].month);
 | `field` | temporal field name | required |
 | `temporalUnit` | `"auto"`, `"year"`, or `"timestamp"` input mode | existing automatic parser |
 | `unit` | `"year"`, `"quarter"`, `"month"`, `"day"`, `"hour"`, `"minute"`, `"second"`, `"week"`, or `"weekday"` | required |
-| `as` | new output field name | required |
+| `as` | new output field name | `${field}_${unit}` |
 | `timeZone` | non-empty IANA time-zone name | `"UTC"` |
 | `weekStartsOn` | integer Sunday `0` through Saturday `6`; week only | `1` |
 | `weekRule` | `"calendar"` or `"iso"`; week only | `"calendar"` |

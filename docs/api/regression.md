@@ -69,7 +69,7 @@ program.createRegression({
 | `confidenceMethod` | `"normal"` or `"student-t"` | `"student-t"` |
 | `level` | number strictly between `0` and `1` | `0.95` |
 | `confidence` | compatibility alias for `level`; must match it when both appear | omitted |
-| `interval` | `"mean"` or `"prediction"` | `"mean"` |
+| `interval` | `"mean"`, `"prediction"`, or `false` | `"mean"` |
 | `predict` | `{ values }` or `{ domain, steps }` | observed unique x values |
 | `missing` | `"error"` or `"drop"` | compatibility behavior when omitted |
 | `sourceBinding` | `"fixed"` or `"follow"` | `"fixed"` |

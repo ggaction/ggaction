@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 3,
+  "name": "removeMarkFilter",
+  "layer": "user-facing",
+  "domain": "mark-selection",
+  "summary": "Restore a filtered mark to its canonical source, recover its prior Histogram bin policy, and retain any filtered dataset snapshot that still has downstream users.",
+  "signature": "removeMarkFilter(options?: RemoveMarkFilterOptions): ChartProgram;",
+  "intents": [
+    "remove mark filter",
+    "remove",
+    "delete",
+    "mark selection",
+    "conditional emphasis",
+    "active mark filter",
+    "filtered final items"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing active mark filter",
+      "target mark and selector operands"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing active mark filter",
+      "target mark and selector operands"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    }
+  ],
+  "callPatterns": [
+    "removeMarkFilter({ target? })"
+  ],
+  "snippet": "program.removeMarkFilter({})",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#removemarkfilter"
+}

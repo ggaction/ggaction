@@ -1,0 +1,22 @@
+export type CreateBeeswarmPlotOptions = {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  color?: BasicColorChannel;
+  size?: BasicSizeChannel;
+  shape?: BasicShapeChannel;
+  point?: StrokeStyleDetails & {
+    clip?: boolean;
+    radius?: number;
+    shape?: PointShape;
+    fill?: string;
+    opacity?: number;
+    stroke?: FilledMarkStroke;
+    strokeWidth?: number;
+  };
+  packing?: false | BeeswarmPackingOptions;
+  guides?: false | CartesianGuideOptions;
+} & (
+  | { x: RugMeasureChannel; y: StripCategoryChannel }
+  | { x: StripCategoryChannel; y: RugMeasureChannel }
+);

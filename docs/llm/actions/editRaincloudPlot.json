@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 3,
+  "name": "editRaincloudPlot",
+  "layer": "user-facing",
+  "domain": "charts",
+  "summary": "Atomically revise one Raincloud's shared source, roles, orientation, side, and component modes while preserving its parent and child IDs.",
+  "signature": "editRaincloudPlot(options: EditRaincloudPlotOptions): ChartProgram;",
+  "intents": [
+    "edit raincloud plot",
+    "edit",
+    "change",
+    "complete chart",
+    "chart facade",
+    "raincloud plot",
+    "half density with summary and raw observations"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing raincloud plot",
+      "canvas and dataset context"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target",
+      "data"
+    ]
+  },
+  "authoringRoles": [
+    "H1",
+    "H3"
+  ],
+  "wraps": [
+    "removeMark",
+    "editScale",
+    "createViolinPlot",
+    "createIntervalPlot",
+    "createStripPlot"
+  ],
+  "editableVia": [
+    "editRaincloudPlot"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "data",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing raincloud plot",
+      "canvas and dataset context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "data",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "category",
+      "required": false,
+      "type": "RaincloudCategoryChannel | undefined"
+    },
+    {
+      "name": "value",
+      "required": false,
+      "type": "RaincloudValueChannel | undefined"
+    },
+    {
+      "name": "orientation",
+      "required": false,
+      "type": "\"horizontal\" | \"vertical\" | undefined"
+    },
+    {
+      "name": "side",
+      "required": false,
+      "type": "\"after\" | \"before\" | undefined"
+    },
+    {
+      "name": "density",
+      "required": false,
+      "type": "false | RaincloudDensityOptions | undefined"
+    },
+    {
+      "name": "summary",
+      "required": false,
+      "type": "false | RaincloudSummaryOptions | undefined"
+    },
+    {
+      "name": "points",
+      "required": false,
+      "type": "false | RaincloudPointsOptions | undefined"
+    },
+    {
+      "name": "color",
+      "required": false,
+      "type": "false | RaincloudColorChannel | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editRaincloudPlot({ target?, data?, category?, value? })",
+    "editRaincloudPlot({ target?, orientation?, side?, density?, summary?, points?, color? })"
+  ],
+  "snippet": "program.editRaincloudPlot({ target: \"raincloudPlot\", side: \"after\" })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#editraincloudplot"
+}

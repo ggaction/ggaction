@@ -1,0 +1,4 @@
+type FocusedDerivedDataEdit<T> = {
+  target: string;
+  dependents?: DerivedDataDependents;
+} & FocusedDerivedDataPatch<T>;

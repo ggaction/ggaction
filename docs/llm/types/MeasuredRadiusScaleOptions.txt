@@ -1,0 +1,6 @@
+export type MeasuredRadiusScaleOptions = Pick<RadiusScaleOptions, "id" | "domain" | "range" | "clamp"> & {
+  type?: "linear";
+  zero?: true;
+  nice?: false;
+  reverse?: false;
+};

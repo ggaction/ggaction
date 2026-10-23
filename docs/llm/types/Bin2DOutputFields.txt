@@ -1,0 +1,8 @@
+export interface Bin2DOutputFields {
+  x0?: string;
+  x1?: string;
+  y0?: string;
+  y1?: string;
+  count?: string;
+  members?: string;
+}

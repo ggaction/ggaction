@@ -352,7 +352,7 @@ Representative actions: `createHeatmap`, `createTitle`. [Documentation](https://
 
 Calendar buckets change temporal resolution while preserving original measurements.
 
-Representative actions: `createScatterPlot`, `encodePointRadius`, `createTitle`. [Documentation](https://ggaction.github.io/ggaction/reference/actions/charts-data/#createscatterplot).
+Representative actions: `createTimeUnitData`, `createScatterPlot`, `createTitle`. [Documentation](https://ggaction.github.io/ggaction/api/data/time-units/).
 
 ### [Moving passenger windows](./airline-passenger-moving-windows/)
 

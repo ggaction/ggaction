@@ -1,0 +1,1 @@
+type BoxPlotGuideOptions = Omit<CartesianGuideOptions, "legend"> & { legend?: false };

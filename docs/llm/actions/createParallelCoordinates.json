@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 3,
+  "name": "createParallelCoordinates",
+  "layer": "user-facing",
+  "domain": "charts",
+  "summary": "Create one open line path per source row across an ordered list of dimension- local scales and axes.",
+  "signature": "createParallelCoordinates(options: CreateParallelCoordinatesOptions): ChartProgram;",
+  "intents": [
+    "create parallel coordinates",
+    "create",
+    "add",
+    "complete chart",
+    "chart facade",
+    "parallel coordinates",
+    "multiple dimensions"
+  ],
+  "lifecycle": "Aggregate create-only",
+  "resources": {
+    "prerequisites": [
+      "canvas and dataset context"
+    ],
+    "owns": [
+      "parallel coordinates"
+    ],
+    "idOptions": [
+      "id",
+      "data",
+      "coordinate"
+    ]
+  },
+  "authoringRoles": [
+    "H0"
+  ],
+  "wraps": [
+    "createCoordinate",
+    "createLineMark",
+    "encodeParallelCoordinates",
+    "encodeColor",
+    "encodeStrokeDash",
+    "createGuides"
+  ],
+  "editableVia": [],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "data",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "complete",
+    "requires": [
+      "canvas and dataset context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "data",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "dimensions",
+      "required": true,
+      "type": "readonly [ParallelDimension, ParallelDimension, ...ParallelDimension[]]"
+    },
+    {
+      "name": "key",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "missing",
+      "required": false,
+      "type": "ParallelMissingPolicy | undefined"
+    },
+    {
+      "name": "color",
+      "required": false,
+      "type": "LineCategoricalColorChannel<NonPointCategoricalColorScaleOptions> | undefined"
+    },
+    {
+      "name": "strokeDash",
+      "required": false,
+      "type": "Omit<{ value: DashPattern | DashStyle; field?: undefined; target?: string | undefined; fieldType?: undefined; scale?: undefined; }, \"target\"> | (Omit<Omit<...>, \"scale\"> & { ...; }) | undefined"
+    },
+    {
+      "name": "line",
+      "required": false,
+      "type": "(StrokeStyleDetails & { strokeWidth?: number | undefined; stroke?: string | undefined; opacity?: number | undefined; curve?: \"linear\" | undefined; closed?: false | undefined; }) | undefined"
+    },
+    {
+      "name": "guides",
+      "required": false,
+      "type": "false | ParallelGuideOptions | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createParallelCoordinates({ dimensions, id?, data?, coordinate?, key?, missing?, color?, strokeDash? })"
+  ],
+  "snippet": "program.createParallelCoordinates({ dimensions: [\"a\", \"b\"] })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#createparallelcoordinates"
+}

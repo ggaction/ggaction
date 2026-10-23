@@ -1,0 +1,146 @@
+{
+  "schemaVersion": 3,
+  "name": "selectMarks",
+  "layer": "advanced",
+  "domain": "mark-selection",
+  "summary": "Stores a reusable selection of mark items without changing graphics.",
+  "signature": "selectMarks(options: SelectMarksOptions): ChartProgram;",
+  "intents": [
+    "select marks",
+    "select",
+    "store selection",
+    "mark selection",
+    "conditional emphasis",
+    "mark items",
+    "selected graphical items"
+  ],
+  "lifecycle": "Stable create-only",
+  "resources": {
+    "prerequisites": [
+      "target mark and selector operands"
+    ],
+    "owns": [
+      "mark items"
+    ],
+    "idOptions": [
+      "id",
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [],
+  "editableVia": [
+    "editMarkSelection",
+    "removeMarkSelection"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "count",
+      "unit": "count"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "target mark and selector operands"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "grain",
+      "required": false,
+      "type": "\"item\" | \"stack\" | undefined"
+    },
+    {
+      "name": "field",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "channel",
+      "required": false,
+      "type": "\"color\" | \"group\" | \"opacity\" | \"radius\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\" | \"theta\" | \"x\" | \"x2\" | \"xOffset\" | \"y\" | \"y2\" | \"yOffset\" | undefined"
+    },
+    {
+      "name": "property",
+      "required": false,
+      "type": "MarkGraphicProperty | undefined"
+    },
+    {
+      "name": "op",
+      "required": true,
+      "type": "\"eq\" | \"gt\" | \"gte\" | \"lt\" | \"lte\" | \"max\" | \"min\" | \"neq\" | \"oneOf\" | \"range\""
+    },
+    {
+      "name": "value",
+      "required": false,
+      "type": "unknown"
+    },
+    {
+      "name": "values",
+      "required": false,
+      "type": "readonly unknown[]"
+    },
+    {
+      "name": "min",
+      "required": false,
+      "type": "string | number"
+    },
+    {
+      "name": "max",
+      "required": false,
+      "type": "string | number"
+    },
+    {
+      "name": "inclusive",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "count",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "groupBy",
+      "required": false,
+      "type": "string | readonly string[] | undefined"
+    },
+    {
+      "name": "ties",
+      "required": false,
+      "type": "\"all\" | \"first\" | undefined"
+    }
+  ],
+  "callPatterns": [
+    "selectMarks({ id?, field | channel | property, op, ...operands })",
+    "selectMarks({ id?, target?, grain?, op: min | max, count? })"
+  ],
+  "snippet": "program.selectMarks({ field: \"category\", op: \"eq\", value: \"A\" })",
+  "errors": [],
+  "route": "/reference/actions/advanced/#selectmarks"
+}

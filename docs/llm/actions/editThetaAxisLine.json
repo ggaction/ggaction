@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 3,
+  "name": "editThetaAxisLine",
+  "layer": "user-facing",
+  "domain": "axes",
+  "summary": "Edit the outer baseline style.",
+  "signature": "editThetaAxisLine(options?: AxisLineStyleOptions): ChartProgram;",
+  "intents": [
+    "edit theta axis line",
+    "edit",
+    "change",
+    "axis guide",
+    "scale annotation",
+    "theta-axis line",
+    "angular baseline"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing theta-axis line",
+      "compatible scale or encoding context"
+    ],
+    "owns": [],
+    "idOptions": []
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editGraphics"
+  ],
+  "editableVia": [
+    "editThetaAxisLine"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "lineWidth",
+      "unit": "logical-pixel"
+    }
+  ],
+  "inference": [],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing theta-axis line",
+      "compatible scale or encoding context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "color",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "lineWidth",
+      "required": false,
+      "type": "number | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editThetaAxisLine({ color?, lineWidth? })"
+  ],
+  "snippet": "program.editThetaAxisLine({ color: \"#f28e2b\" })",
+  "errors": [],
+  "route": "/reference/actions/guides/#editthetaaxisline"
+}

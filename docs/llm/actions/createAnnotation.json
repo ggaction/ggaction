@@ -1,0 +1,238 @@
+{
+  "schemaVersion": 3,
+  "name": "createAnnotation",
+  "layer": "user-facing",
+  "domain": "marks",
+  "summary": "Create anchored text.",
+  "signature": "createAnnotation(options: CreateAnnotationOptions): ChartProgram;",
+  "intents": [
+    "create annotation",
+    "create",
+    "add",
+    "graphical mark",
+    "mark appearance",
+    "annotation",
+    "anchored note"
+  ],
+  "lifecycle": "Aggregate create-only",
+  "resources": {
+    "prerequisites": [
+      "dataset and coordinate context"
+    ],
+    "owns": [
+      "annotation"
+    ],
+    "idOptions": [
+      "id",
+      "source",
+      "data",
+      "coordinate"
+    ]
+  },
+  "authoringRoles": [
+    "H1",
+    "H2"
+  ],
+  "wraps": [
+    "createScale",
+    "createTextMark",
+    "encodeText",
+    "encodeX",
+    "encodeY"
+  ],
+  "editableVia": [
+    "encodeText",
+    "editTextMark",
+    "layoutLabels",
+    "removeLabelLayout",
+    "editScale",
+    "removeMark"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "lineHeight",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "opacity",
+      "unit": "probability"
+    },
+    {
+      "path": "fontSize",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "rotation",
+      "unit": "angle"
+    }
+  ],
+  "inference": [
+    {
+      "input": "source",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "data",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "dataset and coordinate context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "clip",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "lineHeight",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "blockAlign",
+      "required": false,
+      "type": "\"first\" | \"middle\" | undefined"
+    },
+    {
+      "name": "inheritColor",
+      "required": false,
+      "type": "\"fill\" | \"stroke\" | false | undefined"
+    },
+    {
+      "name": "missing",
+      "required": false,
+      "type": "\"error\" | \"skip\" | undefined"
+    },
+    {
+      "name": "fill",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "opacity",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "fontSize",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "fontFamily",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "fontWeight",
+      "required": false,
+      "type": "string | number | undefined"
+    },
+    {
+      "name": "align",
+      "required": false,
+      "type": "\"center\" | \"end\" | \"left\" | \"right\" | \"start\" | undefined"
+    },
+    {
+      "name": "baseline",
+      "required": false,
+      "type": "\"alphabetic\" | \"bottom\" | \"hanging\" | \"ideographic\" | \"middle\" | \"top\" | undefined"
+    },
+    {
+      "name": "rotation",
+      "required": false,
+      "type": "RotationInput | undefined"
+    },
+    {
+      "name": "dx",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "dy",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "text",
+      "required": true,
+      "type": "unknown"
+    },
+    {
+      "name": "format",
+      "required": false,
+      "type": "ValueFormat | undefined"
+    },
+    {
+      "name": "layout",
+      "required": false,
+      "type": "false | Omit<LabelLayoutOptions, \"target\"> | undefined"
+    },
+    {
+      "name": "anchor",
+      "required": false,
+      "type": "\"plot-center\" | undefined"
+    },
+    {
+      "name": "x",
+      "required": false,
+      "type": "unknown"
+    },
+    {
+      "name": "y",
+      "required": false,
+      "type": "unknown"
+    },
+    {
+      "name": "space",
+      "required": false,
+      "type": "\"data\" | \"plot\" | undefined"
+    },
+    {
+      "name": "source",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "data",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createAnnotation({ text, source? })",
+    "createAnnotation({ text, anchor: \"plot-center\" })"
+  ],
+  "snippet": "program.createAnnotation({ text: \"Peak\", x: 8, y: 9 })",
+  "errors": [],
+  "route": "/reference/actions/marks/#createannotation"
+}

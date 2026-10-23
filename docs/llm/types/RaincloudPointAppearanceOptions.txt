@@ -1,0 +1,5 @@
+export interface RaincloudPointAppearanceOptions {
+  size?: BasicSizeChannel;
+  shape?: BasicShapeChannel;
+  point?: CreateScatterPlotOptions["point"];
+}

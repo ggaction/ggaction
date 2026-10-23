@@ -1,0 +1,8 @@
+export interface ConcatCompositionSpec {
+  readonly id: string;
+  readonly direction: "horizontal" | "vertical";
+  readonly children: readonly string[];
+  readonly gap: number;
+  readonly align: CompositionAlign;
+  readonly padding: Readonly<Required<CompositionPadding>>;
+}

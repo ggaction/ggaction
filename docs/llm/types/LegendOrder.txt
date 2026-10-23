@@ -1,0 +1,2 @@
+export type LegendOrder = LegendValueOrder |
+  { channel: "x" | "y" | "theta"; values?: never };

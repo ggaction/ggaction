@@ -1,0 +1,15 @@
+export interface EditDensityOptions {
+  target?: string;
+  source?: string;
+  field?: string;
+  groupBy?: string | false;
+  bandwidth?: "auto" | number;
+  extent?: "auto" | readonly [number, number];
+  steps?: number;
+  kernel?: DensityKernel;
+  normalization?: DensityNormalization;
+  weight?: StatisticalWeight | false;
+  densityChannel?: "x" | "y";
+  valueScale?: NonPointQuantitativePositionScaleOptions;
+  placement?: DensityPlacement;
+}

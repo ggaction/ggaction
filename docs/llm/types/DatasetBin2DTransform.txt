@@ -1,0 +1,25 @@
+export interface DatasetBin2DTransform {
+  readonly type: "bin2d";
+  readonly x: string;
+  readonly y: string;
+  readonly bins: Readonly<Bin2DCounts>;
+  readonly extent: {
+    readonly x: "auto" | readonly [number, number];
+    readonly y: "auto" | readonly [number, number];
+  };
+  readonly includeEmpty: boolean;
+  readonly members: boolean;
+  readonly as: DatasetBin2DOutputFields;
+  readonly resolved?: {
+    readonly extent: {
+      readonly x: readonly [number, number];
+      readonly y: readonly [number, number];
+    };
+    readonly edges: {
+      readonly x: readonly number[];
+      readonly y: readonly number[];
+    };
+    readonly eligibleCount: number;
+    readonly occupiedCount: number;
+  };
+}

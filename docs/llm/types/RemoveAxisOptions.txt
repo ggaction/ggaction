@@ -1,0 +1,5 @@
+export interface RemoveAxisOptions {
+  target?: string;
+  coordinate?: string;
+  scale?: string;
+}

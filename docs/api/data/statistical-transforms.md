@@ -9,6 +9,8 @@ title: Statistical Data Transforms
 
 ## `createRegressionData({ id, source?, x, y, groupBy?, method?, degree?, span?, confidenceMethod?, level?, confidence?, interval?, predict?, missing? })`
 
+This heading shows common options. For the full callable contract and all branches, see [`createRegressionData`](../../reference/actions/charts-data.md#createregressiondata) and the [exact declarations](../../reference/types.md).
+
 Create deterministic regression predictions from an existing dataset. This is
 an advanced data action used by higher-level regression chart actions.
 
@@ -36,10 +38,11 @@ program.createRegressionData({
 | `method` | `"linear"`, `"polynomial"`, `"loess"`, or `"exp"` | `"linear"` |
 | `degree` | integer from `1` through `32` for polynomial | `2` |
 | `span` | number greater than `0` and at most `1` for LOESS | `0.75` |
+| `robustIterations` | integer `0` through `32`, LOESS only | `0` |
 | `confidenceMethod` | `"normal"` or `"student-t"`; not accepted by LOESS | `"student-t"` |
 | `level` | number strictly between `0` and `1`; not accepted by LOESS | `0.95` |
 | `confidence` | compatibility alias for `level`; must match it when both appear | omitted |
-| `interval` | `"mean"` or `"prediction"`; not accepted by LOESS | `"mean"` |
+| `interval` | `"mean"`, `"prediction"`, or `false`; not accepted by LOESS | `"mean"` |
 | `predict` | `{ values }` or `{ domain, steps }` | observed unique x values |
 | `missing` | `"error"` or `"drop"` | compatibility behavior when omitted |
 
@@ -48,7 +51,7 @@ require two rows; fit-only polynomial models require `degree + 1` rows and
 distinct x values. Confidence intervals require the additional residual
 degrees of freedom. Set `interval: false` for fitted values without lower and
 upper confidence fields. LOESS uses
-tricube-weighted local-linear fits over `ceil(span * groupSize)` nearest rows,
+tricube-weighted local-linear fits over `max(2, ceil(span * groupSize))` nearest rows,
 with source order breaking distance ties. Output follows group first appearance
 and the chosen prediction grid. Explicit prediction values must be finite,
 unique, and strictly ascending; a domain requires at least two steps. Linear

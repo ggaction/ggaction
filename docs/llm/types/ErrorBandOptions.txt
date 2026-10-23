@@ -1,0 +1,19 @@
+export interface ErrorBandOptions extends StrokeStyleDetails {
+  id?: string;
+  target?: string;
+  data?: string;
+  x?: ErrorBandPositionChannel | ErrorBandIntervalChannel;
+  y?: ErrorBandPositionChannel | ErrorBandIntervalChannel;
+  groupBy?: string;
+  coordinate?: string;
+  fill?: FillPaint;
+  opacity?: number;
+  curve?: CurveInterpolation;
+  boundaries?: false | (StrokeStyleDetails & {
+    stroke?: string;
+    strokeWidth?: number;
+    strokeDash?: DashStyle | DashPattern;
+    opacity?: number;
+    curve?: CurveInterpolation;
+  });
+}

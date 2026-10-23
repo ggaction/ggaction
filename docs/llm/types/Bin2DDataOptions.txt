@@ -1,0 +1,11 @@
+export interface Bin2DDataOptions {
+  id: string;
+  source?: string;
+  x: string;
+  y: string;
+  bins?: number | Bin2DCounts;
+  extent?: Bin2DExtent;
+  includeEmpty?: boolean;
+  members?: boolean;
+  as?: Bin2DOutputFields;
+}

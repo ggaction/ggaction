@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 3,
+  "name": "editThetaAxis",
+  "layer": "user-facing",
+  "domain": "axes",
+  "summary": "Edit selected theta-axis components.",
+  "signature": "editThetaAxis(options: EditThetaAxisOptions): ChartProgram;",
+  "intents": [
+    "edit theta axis",
+    "edit",
+    "change",
+    "axis guide",
+    "scale annotation",
+    "theta axis",
+    "angular guide"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing theta axis",
+      "compatible scale or encoding context"
+    ],
+    "owns": [],
+    "idOptions": []
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editThetaAxisLine",
+    "editThetaAxisTicks",
+    "editThetaAxisLabels",
+    "editThetaAxisTitle"
+  ],
+  "editableVia": [
+    "editThetaAxis"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing theta axis",
+      "compatible scale or encoding context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "labels",
+      "required": false,
+      "type": "false | ThetaAxisLabelOptions | undefined"
+    },
+    {
+      "name": "ticksAndLabels",
+      "required": false,
+      "type": "false | ThetaTicksAndLabelsOptions | undefined"
+    },
+    {
+      "name": "line",
+      "required": false,
+      "type": "false | AxisLineStyleOptions | undefined"
+    },
+    {
+      "name": "ticks",
+      "required": false,
+      "type": "false | PolarTickOptions | undefined"
+    },
+    {
+      "name": "title",
+      "required": false,
+      "type": "false | PolarTitleOptions | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editThetaAxis({ labels?, ticksAndLabels?, line?, ticks?, title? })"
+  ],
+  "snippet": "program.editThetaAxis({ line: { color: \"#222222\" } })",
+  "errors": [],
+  "route": "/reference/actions/guides/#editthetaaxis"
+}

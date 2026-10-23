@@ -1,0 +1,8 @@
+export type RegressionDataOptions = {
+  id: string;
+  source?: string;
+  x: string;
+  y: string;
+  groupBy?: string;
+  missing?: "error" | "drop";
+} & RegressionParameterOptions;

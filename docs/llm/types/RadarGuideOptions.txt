@@ -1,0 +1,5 @@
+export type RadarGuideOptions = Omit<PolarPathGuideOptions, "axes" | "grid" | "legend"> & {
+  axes?: false | CategoricalPolarAxesOptions;
+  grid?: false | CategoricalPolarGridOptions;
+  legend?: false | (Omit<PathLegendOptions, "order"> & { order?: LegendValueOrder });
+};

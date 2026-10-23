@@ -1,0 +1,1 @@
+type FocusedScaleSelection = { id?: string; target?: string };

@@ -1,0 +1,5 @@
+export type RadarCategoryScaleOptions = Pick<
+  ThetaScaleOptions,
+  "id" | "domain" | "range" | "reverse" | "paddingInner" | "paddingOuter" |
+  "padding" | "align"
+> & { type?: "band" | "point" };

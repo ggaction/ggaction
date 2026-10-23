@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 3,
+  "name": "removeMarkSelection",
+  "layer": "advanced",
+  "domain": "mark-selection",
+  "summary": "Release one stored selection after removing its dependent highlight.",
+  "signature": "removeMarkSelection(options?: RemoveMarkSelectionOptions): ChartProgram;",
+  "intents": [
+    "remove mark selection",
+    "remove",
+    "delete",
+    "mark selection",
+    "conditional emphasis",
+    "stored mark selection",
+    "reusable selector"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing stored mark selection",
+      "target mark and selector operands"
+    ],
+    "owns": [],
+    "idOptions": [
+      "selection"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "removeMarkHighlight"
+  ],
+  "editableVia": [],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "selection",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing stored mark selection",
+      "target mark and selector operands"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "selection",
+      "required": false,
+      "type": "string | undefined"
+    }
+  ],
+  "callPatterns": [
+    "removeMarkSelection({ selection? })"
+  ],
+  "snippet": "program.removeMarkSelection({})",
+  "errors": [],
+  "route": "/reference/actions/advanced/#removemarkselection"
+}

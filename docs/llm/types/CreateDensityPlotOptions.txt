@@ -1,0 +1,26 @@
+export interface CreateDensityPlotOptions {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  field: string;
+  groupBy?: string | false;
+  bandwidth?: "auto" | number;
+  extent?: "auto" | readonly [number, number];
+  steps?: number;
+  kernel?: DensityKernel;
+  normalization?: DensityNormalization;
+  weight?: StatisticalWeight;
+  as?: readonly [string, string];
+  densityChannel?: "x" | "y";
+  valueScale?: NonPointQuantitativePositionScaleOptions;
+  densityScale?: NonPointZeroSupportingPositionScaleOptions;
+  color?: string | {
+    field: string;
+    fieldType?: "nominal" | "ordinal";
+    scale?: NonPointCategoricalColorScaleOptions;
+    palette?: Palette;
+    layout?: "overlay";
+  };
+  area?: StrokeStyleDetails & { clip?: boolean; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
+  guides?: false | DensityPlotGuideOptions;
+}

@@ -1,0 +1,9 @@
+export interface RaincloudIntervalSummaryOptions {
+  type: "interval";
+  center?: IntervalCenter;
+  extent?: IntervalExtent;
+  method?: ConfidenceIntervalMethod;
+  level?: number;
+  point?: CreateScatterPlotOptions["point"];
+  errorBar?: IntervalPlotErrorBarOptions;
+}

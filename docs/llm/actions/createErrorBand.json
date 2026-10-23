@@ -1,0 +1,162 @@
+{
+  "schemaVersion": 3,
+  "name": "createErrorBand",
+  "layer": "user-facing",
+  "domain": "statistics",
+  "summary": "Create a vertical or horizontal statistical or explicit interval ribbon.",
+  "signature": "createErrorBand(options?: ErrorBandOptions): ChartProgram;",
+  "intents": [
+    "create error band",
+    "create",
+    "add",
+    "statistical layer",
+    "statistical transform",
+    "error band",
+    "uncertainty ribbon"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "statistical source and coordinate context"
+    ],
+    "owns": [
+      "error band"
+    ],
+    "idOptions": [
+      "id",
+      "target",
+      "data",
+      "coordinate"
+    ]
+  },
+  "authoringRoles": [
+    "H1"
+  ],
+  "wraps": [
+    "createAreaMark",
+    "encodeX",
+    "encodeYRange",
+    "editSemantic",
+    "encodeGroup",
+    "encodeY",
+    "encodeXRange"
+  ],
+  "editableVia": [
+    "editErrorBand",
+    "editErrorBandBoundary"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "opacity",
+      "unit": "probability"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "data",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "statistical source and coordinate context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "data",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "x",
+      "required": false,
+      "type": "ErrorBandIntervalChannel | ErrorBandPositionChannel | undefined"
+    },
+    {
+      "name": "y",
+      "required": false,
+      "type": "ErrorBandIntervalChannel | ErrorBandPositionChannel | undefined"
+    },
+    {
+      "name": "groupBy",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "fill",
+      "required": false,
+      "type": "FillPaint | undefined"
+    },
+    {
+      "name": "opacity",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "curve",
+      "required": false,
+      "type": "CurveInterpolation | undefined"
+    },
+    {
+      "name": "boundaries",
+      "required": false,
+      "type": "false | (StrokeStyleDetails & { stroke?: string | undefined; strokeWidth?: number | undefined; strokeDash?: DashPattern | DashStyle | undefined; opacity?: number | undefined; curve?: CurveInterpolation | undefined; }) | undefined"
+    },
+    {
+      "name": "lineCap",
+      "required": false,
+      "type": "\"butt\" | \"round\" | \"square\" | undefined"
+    },
+    {
+      "name": "lineJoin",
+      "required": false,
+      "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+    },
+    {
+      "name": "miterLimit",
+      "required": false,
+      "type": "number | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createErrorBand({ id?, target?, data?, coordinate?, x?, y?, groupBy?, fill? })"
+  ],
+  "snippet": "program.createErrorBand({})",
+  "errors": [],
+  "route": "/reference/actions/statistics/#createerrorband"
+}

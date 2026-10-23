@@ -1,0 +1,2 @@
+export type ConfidenceIntervalMethod = "normal" | "student-t";
+/** Seeded percentile bootstrap of nonweighted means; samples defaults to 1000. */

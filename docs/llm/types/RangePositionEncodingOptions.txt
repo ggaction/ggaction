@@ -1,0 +1,9 @@
+type RangePositionEncodingOptions = QuantitativeRangePositionEncodingOptions | {
+  lower: string;
+  upper: string;
+  target?: string;
+  coordinate?: string;
+  fieldType: "temporal";
+  temporalUnit?: TemporalInputUnit;
+  scale?: NonPointTemporalPositionScaleOptions;
+};

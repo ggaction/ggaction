@@ -1,0 +1,8 @@
+type CompleteDataBaseOptions = {
+  id: string;
+  source?: string;
+  key: string;
+  groupBy?: string | readonly string[];
+  fill?: Readonly<Record<string, DatasetScalar>>;
+  members?: string;
+};

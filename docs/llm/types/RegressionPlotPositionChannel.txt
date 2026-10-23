@@ -1,0 +1,5 @@
+export type RegressionPlotPositionChannel = string | {
+  field: string;
+  fieldType?: "quantitative";
+  scale?: NonPointQuantitativePositionScaleOptions;
+};

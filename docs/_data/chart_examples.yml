@@ -993,9 +993,9 @@
   thumbnail_height: 265
   caption: Calendar buckets change temporal resolution while preserving original measurements.
   summary: Calendar buckets change temporal resolution while preserving original measurements.
-  actions: createScatterPlot · encodePointRadius · createTitle
+  actions: createTimeUnitData · createScatterPlot · createTitle
   tasks: time
-  url: /reference/actions/charts-data/#createscatterplot
+  url: /api/data/time-units/
 - id: airline-passenger-moving-windows
   example: /examples/airline-passenger-moving-windows/
   title: Moving passenger windows

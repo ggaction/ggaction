@@ -1,0 +1,11 @@
+export type CreateMarkLabelsOptions = Omit<TextMarkOptions, "data" | "text"> & {
+  layout?: false | Omit<LabelLayoutOptions, "target">;
+  placement?: MarkLabelPlacement;
+} & (
+  | (TextEncodingOptions extends infer Options
+      ? Options extends TextEncodingOptions ? Omit<Options, "target"> : never
+      : never)
+  | { field?: never; value?: never; content?: never; normalizeBy?: never; format?: TextFormat }
+) & MarkLabelSelectionOptions;
+
+/** Replace the requested final-item membership of one attached label layer. */

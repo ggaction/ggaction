@@ -1,0 +1,16 @@
+export type DatasetNormalizedTransform = DatasetNormalizedBaseTransform & (
+  | {
+      readonly method: "share" | "minmax";
+      readonly zeroDenominator: NormalizeZeroDenominator;
+    }
+  | {
+      readonly method: "zscore";
+      readonly variance: "population" | "sample";
+      readonly zeroDenominator: NormalizeZeroDenominator;
+    }
+  | ({
+      readonly method: "index" | "percentChange";
+      readonly zeroDenominator: NormalizeZeroDenominator;
+    } & DatasetNormalizeBaselineTransform)
+  | ({ readonly method: "change" } & DatasetNormalizeBaselineTransform)
+);

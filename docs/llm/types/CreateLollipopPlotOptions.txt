@@ -1,0 +1,7 @@
+export interface CreateLollipopPlotOptions extends EndpointPlotBaseOptions {
+  value: EndpointValueChannel;
+  baseline?: number;
+  point?: CreateScatterPlotOptions["point"];
+  stem?: RuleStyleOptions & { clip?: boolean };
+  labels?: false | EndpointLabelOptions;
+}

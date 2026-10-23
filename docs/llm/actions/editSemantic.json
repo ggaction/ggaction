@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 3,
+  "name": "editSemantic",
+  "layer": "primitive",
+  "domain": "primitives",
+  "summary": "Sets or removes one semantic property inside an extension action.",
+  "signature": "editSemantic(options: EditSemanticOptions): ChartProgram;",
+  "intents": [
+    "edit semantic",
+    "edit",
+    "change",
+    "extension primitive",
+    "low-level authoring",
+    "semantic state",
+    "extension semantic property"
+  ],
+  "lifecycle": "Primitive",
+  "resources": {
+    "prerequisites": [
+      "existing semantic state",
+      "extension action context"
+    ],
+    "owns": [],
+    "idOptions": []
+  },
+  "authoringRoles": [
+    "H4"
+  ],
+  "wraps": [],
+  "editableVia": [
+    "editSemantic"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [],
+  "completionRequirements": {
+    "state": "not-applicable",
+    "requires": [],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "property",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "value",
+      "required": false,
+      "type": "unknown"
+    },
+    {
+      "name": "remove",
+      "required": false,
+      "type": "boolean | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editSemantic({ property, value })",
+    "editSemantic({ property, remove: true })"
+  ],
+  "snippet": "program.editSemantic({ property: \"annotation\", value: \"note\" })",
+  "errors": [
+    {
+      "error": "A removal also supplies value.",
+      "fix": "Use either { property, value } or { property, remove: true }."
+    }
+  ],
+  "route": "/reference/actions/extension/#editsemantic"
+}

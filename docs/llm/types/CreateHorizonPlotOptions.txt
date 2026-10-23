@@ -1,0 +1,17 @@
+export interface CreateHorizonPlotOptions {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  x: string | HorizonXEncoding;
+  y: string | HorizonYEncoding;
+  groupBy?: string | false;
+  bands?: number;
+  baseline?: number;
+  extent?: "auto" | number;
+  resolve?: HorizonResolution;
+  missing?: HorizonMissingPolicy;
+  overflow?: HorizonOverflowPolicy;
+  palette?: HorizonPaletteOptions;
+  area?: StrokeStyleDetails & { clip?: boolean; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
+  guides?: false | HorizonPlotGuideOptions;
+}

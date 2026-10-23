@@ -1,0 +1,7 @@
+export interface BoxPlotSummaryFields {
+  min: string;
+  q1: string;
+  median: string;
+  q3: string;
+  max: string;
+}

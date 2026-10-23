@@ -1,0 +1,9 @@
+export interface DatasetSummaryTransform {
+  type: "summary";
+  groupBy: readonly string[];
+  aggregates: readonly SummaryAggregateOptions[];
+  members?: string;
+  weight?: StatisticalWeight;
+  missing?: "error" | "drop";
+  empty?: "null" | "identity";
+}

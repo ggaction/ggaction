@@ -1,0 +1,45 @@
+export type SizeScaleOptions =
+  | (ContinuousSizeScaleOptions & {
+      type?: "linear";
+      base?: never;
+      exponent?: never;
+    })
+  | (ContinuousSizeScaleOptions & {
+      type: "log";
+      base?: number;
+      exponent?: never;
+    })
+  | (ContinuousSizeScaleOptions & {
+      type: "sqrt";
+      base?: never;
+      exponent?: never;
+    })
+  | (ContinuousSizeScaleOptions & {
+      type: "pow";
+      exponent: number;
+      base?: never;
+    })
+  | (SizeScaleCommonOptions & {
+      type: "quantize";
+      domain?: "auto" | readonly [number, number];
+      range: readonly [number, number, ...number[]];
+      clamp?: never;
+      base?: never;
+      exponent?: never;
+    })
+  | (SizeScaleCommonOptions & {
+      type: "quantile";
+      domain?: "auto" | readonly [number, ...number[]];
+      range: readonly [number, number, ...number[]];
+      clamp?: never;
+      base?: never;
+      exponent?: never;
+    })
+  | (SizeScaleCommonOptions & {
+      type: "threshold";
+      domain: readonly [number, ...number[]];
+      range: readonly [number, number, ...number[]];
+      clamp?: never;
+      base?: never;
+      exponent?: never;
+    });

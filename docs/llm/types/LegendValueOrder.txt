@@ -1,0 +1,1 @@
+type LegendValueOrder = "scale" | { values: readonly CategoryValue[]; channel?: never };

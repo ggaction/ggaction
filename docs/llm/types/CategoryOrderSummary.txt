@@ -1,0 +1,4 @@
+export type CategoryOrderSummary = {
+  field: string;
+  aggregate: "sum" | "mean" | "min" | "max";
+};

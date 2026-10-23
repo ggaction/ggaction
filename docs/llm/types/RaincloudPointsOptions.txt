@@ -1,0 +1,11 @@
+export type RaincloudPointsOptions =
+  | (RaincloudPointAppearanceOptions & {
+      type: "strip";
+      jitter?: false | StripBandJitterOptions;
+      packing?: never;
+    })
+  | (RaincloudPointAppearanceOptions & {
+      type?: "beeswarm";
+      packing?: false | BeeswarmPackingOptions;
+      jitter?: never;
+    });

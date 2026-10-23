@@ -1,0 +1,21 @@
+type BasicColorChannel =
+  | string
+  | {
+      field: string;
+      fieldType?: "nominal" | "ordinal";
+      scale?: CategoricalColorScaleOptions;
+      palette?: Palette;
+    }
+  | {
+      field: string;
+      fieldType: "quantitative";
+      scale?: ContinuousColorScaleOptions | DiscretizedColorScaleOptions;
+      palette?: Palette;
+    }
+  | {
+      field: string;
+      fieldType: "temporal";
+      temporalUnit?: TemporalInputUnit;
+      scale?: Omit<ContinuousColorScaleOptions, "midpoint" | "type" | "base" | "exponent" | "constant"> & { midpoint?: "auto"; type?: "sequential" };
+      palette?: Palette;
+    };

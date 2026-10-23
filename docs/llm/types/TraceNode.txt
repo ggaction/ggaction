@@ -1,0 +1,7 @@
+export interface TraceNode {
+  readonly id: string;
+  readonly op: string;
+  readonly description: string;
+  readonly args: Readonly<Record<string, unknown>>;
+  readonly children: readonly TraceNode[];
+}

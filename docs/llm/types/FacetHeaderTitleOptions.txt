@@ -1,0 +1,12 @@
+export interface FacetHeaderTitleOptions {
+  /** Required when introducing a title; edits preserve the existing text. One line. */
+  text?: string;
+  fontSize?: number;
+  fontFamily?: string;
+  fontWeight?: string | number;
+  color?: string;
+  offset?: number;
+  align?: FacetHeaderAlign;
+  rotation?: RotationInput;
+  alongOffset?: number;
+}

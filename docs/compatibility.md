@@ -7,9 +7,7 @@ title: Runtime and Browser Compatibility
 
 ggaction is an ESM-only package. The supported Node.js floor is 20. Continuous
 integration installs and tests the packed package on Node.js 20, 22, and 24;
-browser package and documentation tests run in Playwright Chromium. Other
-modern ESM browsers may work, but they are not part of the current automated
-compatibility claim.
+documentation interaction tests run in Playwright Chromium. Library renderer compatibility additionally exercises representative scenes in Chromium, Firefox, and WebKit. These checks do not guarantee every browser version or font configuration; see [Rendering](./api/rendering.md#automated-environment-checks).
 
 ## Entry points
 
@@ -21,6 +19,11 @@ compatibility claim.
 | `ggaction/png` | Node.js 20+ | Native PNG file output; do not place in a browser bundle |
 | `ggaction/pdf` | Node.js 20+ | Native single-page PDF file output; do not place in a browser bundle |
 | `ggaction/extension` | Browser bundler or Node.js 20+ | Extension registration and authoring primitives |
+| `ggaction/persistence` | Browser or Node.js 20+ | Save and restore editable programs or render-only snapshots |
+| `ggaction/accessibility` | Browser or Node.js 20+ | Read visual data for accessible tables and descriptions |
+| `ggaction/inspection` | Browser or Node.js 20+ | Inspect schemas, applicability, changes, and concrete results |
+| `ggaction/diagnostics` | Browser or Node.js 20+ | Read structured error details |
+| `ggaction/scene` | Browser or Node.js 20+ | Read transition scenes and draw native Canvas scenes |
 
 CommonJS `require("ggaction")` is not a supported entry. Use ESM source files
 or configure the consuming project for ESM.
@@ -42,7 +45,7 @@ import { renderToSVG } from "ggaction/svg";
 Vite is the documented getting-started path and the installed browser consumer
 is tested with a real Chromium page. Obtain a 2D rendering context only after
 the Canvas exists in the DOM. Chart authoring itself does not require a DOM;
-`render` does.
+`render` needs a compatible Canvas 2D context supplied by the host.
 
 Framework components should keep caller-owned rows outside the program, build
 a new immutable program when relevant inputs change, render after the host

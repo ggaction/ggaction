@@ -1,0 +1,12 @@
+export type DatasetTimeUnitTransform = DatasetTimeUnitTransformBase & (
+  | {
+      readonly unit: Exclude<TimeUnit, "week">;
+      readonly weekStartsOn?: never;
+      readonly weekRule?: never;
+    }
+  | {
+      readonly unit: "week";
+      readonly weekStartsOn: 0 | 1 | 2 | 3 | 4 | 5 | 6;
+      readonly weekRule: "calendar" | "iso";
+    }
+);

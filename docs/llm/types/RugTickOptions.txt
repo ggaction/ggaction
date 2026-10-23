@@ -1,0 +1,7 @@
+export interface RugTickOptions extends StrokeStyleDetails {
+  clip?: boolean;
+  length?: number;
+  stroke?: string;
+  strokeWidth?: number;
+  opacity?: number;
+}

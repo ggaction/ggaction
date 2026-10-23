@@ -1,0 +1,5 @@
+export type Palette = PaletteName | {
+  name: PaletteName;
+  count?: number;
+  extent?: readonly [number, number];
+};

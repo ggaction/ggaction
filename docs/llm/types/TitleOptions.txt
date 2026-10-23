@@ -1,0 +1,17 @@
+export interface TitleOptions {
+  /** Explicit hard lines are retained; blank lines reserve spacing without painted text. */
+  text: string;
+  /** Multiline subtitle with at least one non-empty hard line. */
+  subtitle?: string;
+  position?: "top" | "bottom" | "left" | "right";
+  align?: "left" | "center" | "right";
+  offset?: number;
+  /** Signed logical-pixel shift along the selected edge; defaults to zero. */
+  alongOffset?: number;
+  gap?: number;
+  maxWidth?: number;
+  wrap?: "word" | "character";
+  lineHeight?: number;
+  titleStyle?: TitleTextStyleOptions;
+  subtitleStyle?: TitleTextStyleOptions;
+}

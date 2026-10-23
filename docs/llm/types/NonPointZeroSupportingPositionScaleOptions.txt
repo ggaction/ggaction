@@ -1,0 +1,7 @@
+export type NonPointZeroSupportingPositionScaleOptions = Omit<
+  NonPointQuantitativePositionScaleOptions,
+  "base" | "type" | "nice"
+> & (
+  | { type?: "linear"; nice?: boolean | LinearNiceCountOptions }
+  | { type: Exclude<ZeroSupportingPositionScaleType, "linear">; nice?: boolean }
+);

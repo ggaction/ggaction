@@ -14,14 +14,16 @@ values; areas close two edges or one density edge against a baseline.
 
 ### `createLineMark({ id?, data?, missing?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed?, lineCap?, lineJoin?, miterLimit? } = {})`
 
+This heading shows common options. For the full callable contract and all branches, see [`createLineMark`](../../reference/actions/marks.md#createlinemark) and the [exact declarations](../../reference/types.md).
+
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Executable complete.** Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas.
 
 <!-- snippet-context:end -->
 
 ```javascript
-const program = chart()
+const program = chart().createCanvas()
   .createData({ values: cars })
   .createLineMark({ stroke: "#7c3aed", opacity: 0.55 })
   .encodeX({ field: "Year", fieldType: "temporal" })
@@ -118,12 +120,12 @@ so an aggregate trend over aggregate bars needs no repeated `encodeX` or
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Executable complete.** Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas.
 
 <!-- snippet-context:end -->
 
 ```javascript
-const layered = chart()
+const layered = chart().createCanvas()
   .createData({ values: cars })
   .createBarMark({ id: "bars" })
   .encodeX({ field: "Year", fieldType: "temporal" })
@@ -137,6 +139,8 @@ policies are not transferred. Pass `data` explicitly to assemble an independent
 line with explicit encodings and scale IDs.
 
 ### `editLineMark({ target?, missing?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed?, lineCap?, lineJoin?, miterLimit? })`
+
+This heading shows common options. For the full callable contract and all branches, see [`editLineMark`](../../reference/actions/marks.md#editlinemark) and the [exact declarations](../../reference/types.md).
 
 <!-- snippet-context:start -->
 
@@ -200,12 +204,12 @@ produce a path until both are present.
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Executable complete.** Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas.
 
 <!-- snippet-context:end -->
 
 ```javascript
-const radar = chart()
+const radar = chart().createCanvas()
   .createData({ values: rows })
   .createLineMark({ closed: true, strokeWidth: 2.5 })
   .encodeTheta({ field: "category", fieldType: "nominal" })
@@ -225,14 +229,16 @@ through the shared line materialization lifecycle.
 
 ### `createAreaMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing?, lineCap?, lineJoin?, miterLimit? } = {})`
 
+This heading shows common options. For the full callable contract and all branches, see [`createAreaMark`](../../reference/actions/marks.md#createareamark) and the [exact declarations](../../reference/types.md).
+
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Executable complete.** Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas.
 
 <!-- snippet-context:end -->
 
 ```javascript
-const area = chart()
+const area = chart().createCanvas()
   .createData({ values: intervalRows })
   .createAreaMark()
   .encodeX({ field: "year", fieldType: "temporal" })
@@ -276,6 +282,8 @@ without creating a scale or legend. For a center-stacked area,
 center y policy atomically.
 
 ### `editAreaMark({ target?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing?, lineCap?, lineJoin?, miterLimit? })`
+
+This heading shows common options. For the full callable contract and all branches, see [`editAreaMark`](../../reference/actions/marks.md#editareamark) and the [exact declarations](../../reference/types.md).
 
 <!-- snippet-context:start -->
 

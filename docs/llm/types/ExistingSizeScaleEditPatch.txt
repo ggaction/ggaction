@@ -1,0 +1,10 @@
+type ExistingSizeScaleEditPatch = {
+  type?: never;
+  domain?: "auto" | readonly [string | number | boolean, ...(string | number | boolean)[]];
+  range?: "auto" | readonly [number, ...number[]];
+  unknown?: number;
+  clamp?: boolean;
+  reverse?: boolean;
+  base?: number;
+  exponent?: number;
+};

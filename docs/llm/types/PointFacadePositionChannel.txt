@@ -1,0 +1,17 @@
+type PointFacadePositionChannel =
+  | string
+  | ({ field: string } & (
+      | {
+          fieldType?: "quantitative";
+          scale?: QuantitativePositionScaleOptions;
+        }
+      | {
+          fieldType: "temporal";
+          temporalUnit?: TemporalInputUnit;
+          scale?: TemporalPositionScaleOptions;
+        }
+      | {
+          fieldType: "nominal" | "ordinal";
+          scale?: CategoricalPositionScaleOptions;
+        }
+    ));

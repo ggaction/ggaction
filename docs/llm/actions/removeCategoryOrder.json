@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 3,
+  "name": "removeCategoryOrder",
+  "layer": "user-facing",
+  "domain": "encodings",
+  "summary": "Remove one active category-order assignment and restore automatic first-appearance order.",
+  "signature": "removeCategoryOrder(options: RemoveCategoryOrderOptions): ChartProgram;",
+  "intents": [
+    "remove category order",
+    "remove",
+    "delete",
+    "visual encoding",
+    "field mapping",
+    "category order",
+    "explicit ordinal sorting"
+  ],
+  "lifecycle": "Assignment",
+  "resources": {
+    "prerequisites": [
+      "existing category order"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H2",
+    "H3"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing category order"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "channel",
+      "required": true,
+      "type": "\"theta\" | \"x\" | \"y\""
+    }
+  ],
+  "callPatterns": [
+    "removeCategoryOrder({ channel, target? })"
+  ],
+  "snippet": "program.removeCategoryOrder({ channel: \"x\" })",
+  "errors": [],
+  "route": "/reference/actions/encodings/#removecategoryorder"
+}

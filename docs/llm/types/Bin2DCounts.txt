@@ -1,0 +1,4 @@
+export interface Bin2DCounts {
+  x: number;
+  y: number;
+}

@@ -1,0 +1,3 @@
+type TemporalBindingBranch =
+  | { fieldType?: "quantitative"; temporalUnit?: never }
+  | { fieldType: "temporal"; temporalUnit?: TemporalInputUnit };

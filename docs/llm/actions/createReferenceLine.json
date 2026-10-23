@@ -1,0 +1,200 @@
+{
+  "schemaVersion": 3,
+  "name": "createReferenceLine",
+  "layer": "user-facing",
+  "domain": "marks",
+  "summary": "Create one constant Rule spanning the other plot axis.",
+  "signature": "createReferenceLine(options: CreateReferenceLineOptions): ChartProgram;",
+  "intents": [
+    "create reference line",
+    "create",
+    "add",
+    "graphical mark",
+    "mark appearance",
+    "reference line",
+    "threshold"
+  ],
+  "lifecycle": "Aggregate create-only",
+  "resources": {
+    "prerequisites": [
+      "dataset and coordinate context"
+    ],
+    "owns": [
+      "reference line"
+    ],
+    "idOptions": [
+      "id",
+      "source",
+      "data",
+      "coordinate"
+    ]
+  },
+  "authoringRoles": [
+    "H1",
+    "H2"
+  ],
+  "wraps": [
+    "createRuleMark",
+    "encodeY",
+    "createDerivedData"
+  ],
+  "editableVia": [
+    "editRuleMark",
+    "editRectMark",
+    "editScale",
+    "removeMark"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "temporalUnit",
+      "unit": "temporal-input"
+    },
+    {
+      "path": "strokeWidth",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "opacity",
+      "unit": "probability"
+    }
+  ],
+  "inference": [
+    {
+      "input": "source",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "data",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "dataset and coordinate context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "source",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "x",
+      "required": false,
+      "type": "unknown"
+    },
+    {
+      "name": "y",
+      "required": false,
+      "type": "unknown"
+    },
+    {
+      "name": "space",
+      "required": false,
+      "type": "\"data\" | \"plot\" | undefined"
+    },
+    {
+      "name": "data",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "temporalUnit",
+      "required": false,
+      "type": "TemporalInputUnit | undefined"
+    },
+    {
+      "name": "stroke",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "strokeWidth",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "strokeDash",
+      "required": false,
+      "type": "DashPattern | DashStyle | undefined"
+    },
+    {
+      "name": "opacity",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "lineCap",
+      "required": false,
+      "type": "\"butt\" | \"round\" | \"square\" | undefined"
+    },
+    {
+      "name": "lineJoin",
+      "required": false,
+      "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+    },
+    {
+      "name": "miterLimit",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "axis",
+      "required": false,
+      "type": "\"x\" | \"y\""
+    },
+    {
+      "name": "population",
+      "required": false,
+      "type": "\"boundData\" | \"visibleItems\" | undefined"
+    },
+    {
+      "name": "field",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "groupBy",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "statistic",
+      "required": false,
+      "type": "ReferenceStatistic"
+    }
+  ],
+  "callPatterns": [
+    "createReferenceLine({ y: 5 })",
+    "createReferenceLine({ space: \"plot\", x: 0.5 })"
+  ],
+  "snippet": "program.createReferenceLine({ y: 5 })",
+  "errors": [],
+  "route": "/reference/actions/marks/#createreferenceline"
+}

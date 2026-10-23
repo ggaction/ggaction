@@ -1,0 +1,5 @@
+export interface DatasetECDFResolvedGroup {
+  readonly keys: Readonly<Record<string, string | number | boolean>>;
+  readonly denominator: number;
+  readonly validCount: number;
+}

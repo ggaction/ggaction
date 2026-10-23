@@ -1,0 +1,125 @@
+{
+  "schemaVersion": 3,
+  "name": "encodeColor",
+  "layer": "user-facing",
+  "domain": "encodings",
+  "summary": "Create or compatibly replace point fill, line-series color, grouped area fill, bar color, rect fill, or arc-sector fill.",
+  "signature": "encodeColor(options: ColorEncodingOptions): ChartProgram;",
+  "intents": [
+    "encode color",
+    "encode",
+    "map field",
+    "visual encoding",
+    "field mapping",
+    "color",
+    "fill or stroke mapping"
+  ],
+  "lifecycle": "Assignment",
+  "resources": {
+    "prerequisites": [
+      "target mark",
+      "field mode: dataset field"
+    ],
+    "owns": [
+      "color assignment"
+    ],
+    "idOptions": [
+      "target",
+      "scale"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editSemantic",
+    "createScale",
+    "layoutSeries"
+  ],
+  "editableVia": [
+    "removeEncoding"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default",
+      "basic"
+    ]
+  },
+  "units": [
+    {
+      "path": "temporalUnit",
+      "unit": "temporal-input"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "scale",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "target mark",
+      "field mode: dataset field"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "value",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "field",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "fieldType",
+      "required": false,
+      "type": "\"nominal\" | \"ordinal\" | \"quantitative\" | \"temporal\" | undefined"
+    },
+    {
+      "name": "scale",
+      "required": false,
+      "type": "ContinuousColorScaleOptions | DiscretizedColorScaleOptions | CategoricalColorScaleOptions | (Omit<...> & { ...; }) | undefined"
+    },
+    {
+      "name": "palette",
+      "required": false,
+      "type": "Palette | undefined"
+    },
+    {
+      "name": "layout",
+      "required": false,
+      "type": "ColorLayout | undefined"
+    },
+    {
+      "name": "aggregate",
+      "required": false,
+      "type": "AggregateOperation | undefined"
+    },
+    {
+      "name": "temporalUnit",
+      "required": false,
+      "type": "TemporalInputUnit | undefined"
+    }
+  ],
+  "callPatterns": [
+    "encodeColor({ target?, scale?, value?, field?, fieldType?, palette?, layout?, aggregate? })"
+  ],
+  "snippet": "program.encodeColor({ value: \"value\" })",
+  "errors": [],
+  "route": "/reference/actions/encodings/#encodecolor"
+}

@@ -1,0 +1,4 @@
+export type PolarThetaChannel = string | ({ field: string; scale?: ThetaScaleOptions } & (
+  | { fieldType?: "quantitative" | "nominal" | "ordinal"; temporalUnit?: never }
+  | { fieldType: "temporal"; temporalUnit?: TemporalInputUnit }
+));

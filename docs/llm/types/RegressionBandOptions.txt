@@ -1,0 +1,7 @@
+export interface RegressionBandOptions extends StrokeStyleDetails {
+  color?: string;
+  opacity?: number;
+  stroke?: string;
+  strokeWidth?: number;
+  curve?: CurveInterpolation;
+}

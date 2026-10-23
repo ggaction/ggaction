@@ -1,0 +1,1 @@
+export type DashStyle = "solid" | "dashed" | "dotted" | "dashdot";

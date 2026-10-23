@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 3,
+  "name": "editParallelAxis",
+  "layer": "user-facing",
+  "domain": "axes",
+  "summary": "Full-only field-selected Parallel guides.",
+  "signature": "editParallelAxis(options: EditParallelAxisOptions): ChartProgram;",
+  "intents": [
+    "edit parallel axis",
+    "edit",
+    "change",
+    "axis guide",
+    "scale annotation",
+    "parallel dimension axis",
+    "field axis"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing parallel dimension axis",
+      "compatible scale or encoding context"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "editParallelAxis"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing parallel dimension axis",
+      "compatible scale or encoding context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "field",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "line",
+      "required": false,
+      "type": "false | AxisLineStyleOptions | undefined"
+    },
+    {
+      "name": "title",
+      "required": false,
+      "type": "false | ParallelAxisTitleOptions | undefined"
+    },
+    {
+      "name": "ticksAndLabels",
+      "required": false,
+      "type": "false | (ParallelAxisTickSelection & { ticks?: AxisTickStyleOptions | undefined; labels?: AxisLabelStyleOptions | undefined; }) | undefined"
+    },
+    {
+      "name": "ticks",
+      "required": false,
+      "type": "false | ParallelAxisTicksOptions | undefined"
+    },
+    {
+      "name": "labels",
+      "required": false,
+      "type": "false | ParallelAxisLabelsOptions | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editParallelAxis({ field, target?, line?, title?, ticksAndLabels?, ticks?, labels? })"
+  ],
+  "snippet": "program.editParallelAxis({ field: \"value\" })",
+  "errors": [],
+  "route": "/reference/actions/guides/#editparallelaxis"
+}

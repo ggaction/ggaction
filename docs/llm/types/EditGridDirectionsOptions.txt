@@ -1,0 +1,6 @@
+export interface EditGridDirectionsOptions {
+  horizontal?: EditGridOptions;
+  vertical?: EditGridOptions;
+  theta?: EditPolarGridOptions;
+  radial?: EditPolarGridOptions;
+}

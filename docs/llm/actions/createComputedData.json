@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 3,
+  "name": "createComputedData",
+  "layer": "user-facing",
+  "domain": "statistics",
+  "summary": "Materialize a typed primitive or null field from a serializable, closed expression, including explicit nested scalar getPath and first-occurrence replaceLiteral operations.",
+  "signature": "createComputedData(options: ComputedDataOptions): ChartProgram;",
+  "intents": [
+    "create computed data",
+    "create",
+    "add",
+    "statistical layer",
+    "statistical transform",
+    "computed field",
+    "typed formula data"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "source dataset"
+    ],
+    "owns": [
+      "computed field"
+    ],
+    "idOptions": [
+      "id",
+      "source"
+    ]
+  },
+  "authoringRoles": [
+    "H1"
+  ],
+  "wraps": [
+    "createDerivedData"
+  ],
+  "editableVia": [
+    "editComputedData"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "source",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "source dataset"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "source",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "as",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "expression",
+      "required": true,
+      "type": "ComputedExpression"
+    }
+  ],
+  "callPatterns": [
+    "createComputedData({ id, as, expression, source? })"
+  ],
+  "snippet": "program.createComputedData({ id: \"ratios\", as: \"ratio\", expression: { op: \"divide\", left: { field: \"part\" }, right: { field: \"whole\" } } })",
+  "errors": [],
+  "route": "/reference/actions/statistics/#createcomputeddata"
+}

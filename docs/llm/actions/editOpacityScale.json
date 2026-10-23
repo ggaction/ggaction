@@ -1,0 +1,123 @@
+{
+  "schemaVersion": 3,
+  "name": "editOpacityScale",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Edits opacity scale, including settings for opacity mapping.",
+  "signature": "editOpacityScale(options: EditOpacityScaleOptions): ChartProgram;",
+  "intents": [
+    "edit opacity scale",
+    "edit",
+    "change",
+    "chart setup",
+    "data and scales",
+    "opacity scale",
+    "opacity mapping"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing opacity scale"
+    ],
+    "owns": [],
+    "idOptions": [
+      "id",
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editScale"
+  ],
+  "editableVia": [
+    "editOpacityScale",
+    "editScale"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "domain",
+      "strategy": "documented-auto"
+    },
+    {
+      "input": "range",
+      "strategy": "documented-auto"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing opacity scale"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "zero",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "clamp",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "reverse",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "nice",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "type",
+      "required": false,
+      "type": "\"linear\" | undefined"
+    },
+    {
+      "name": "domain",
+      "required": false,
+      "type": "\"auto\" | readonly [number, number] | undefined"
+    },
+    {
+      "name": "range",
+      "required": false,
+      "type": "\"auto\" | readonly [number, number] | undefined"
+    },
+    {
+      "name": "unknown",
+      "required": false,
+      "type": "number | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editOpacityScale({ id?, target?, zero?, clamp?, reverse?, nice?, type?, domain? })"
+  ],
+  "snippet": "program.editOpacityScale({ range: [0.2, 0.9] })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#editopacityscale"
+}

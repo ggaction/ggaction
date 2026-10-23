@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 3,
+  "name": "editFacetScales",
+  "layer": "user-facing",
+  "domain": "composition",
+  "summary": "Partially change used facet channels between \"shared\" and \"independent\".",
+  "signature": "editFacetScales(options: FacetScaleResolutions): ChartProgram;",
+  "intents": [
+    "edit facet scales",
+    "edit",
+    "change",
+    "chart composition",
+    "small multiples",
+    "facet scale resolution",
+    "shared or independent scales"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing facet scale resolution",
+      "complete child chart program"
+    ],
+    "owns": [],
+    "idOptions": []
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [],
+  "editableVia": [
+    "editFacetScales"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing facet scale resolution",
+      "complete child chart program"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "x",
+      "required": false,
+      "type": "FacetScaleResolution | undefined"
+    },
+    {
+      "name": "y",
+      "required": false,
+      "type": "FacetScaleResolution | undefined"
+    },
+    {
+      "name": "xOffset",
+      "required": false,
+      "type": "FacetScaleResolution | undefined"
+    },
+    {
+      "name": "yOffset",
+      "required": false,
+      "type": "FacetScaleResolution | undefined"
+    },
+    {
+      "name": "theta",
+      "required": false,
+      "type": "FacetScaleResolution | undefined"
+    },
+    {
+      "name": "r",
+      "required": false,
+      "type": "FacetScaleResolution | undefined"
+    },
+    {
+      "name": "color",
+      "required": false,
+      "type": "FacetScaleResolution | undefined"
+    },
+    {
+      "name": "stroke",
+      "required": false,
+      "type": "FacetScaleResolution | undefined"
+    },
+    {
+      "name": "size",
+      "required": false,
+      "type": "FacetScaleResolution | undefined"
+    },
+    {
+      "name": "shape",
+      "required": false,
+      "type": "FacetScaleResolution | undefined"
+    },
+    {
+      "name": "opacity",
+      "required": false,
+      "type": "FacetScaleResolution | undefined"
+    },
+    {
+      "name": "strokeDash",
+      "required": false,
+      "type": "FacetScaleResolution | undefined"
+    },
+    {
+      "name": "parallelDimensions",
+      "required": false,
+      "type": "FacetScaleResolution | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editFacetScales({ x?, y?, xOffset?, yOffset?, theta?, r?, color?, stroke? })"
+  ],
+  "snippet": "program.editFacetScales({ x: \"shared\" })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#editfacetscales"
+}

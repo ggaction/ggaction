@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 3,
+  "name": "editSummaryData",
+  "layer": "user-facing",
+  "domain": "statistics",
+  "summary": "Edits grouped summary data, including settings for reusable aggregate rows.",
+  "signature": "editSummaryData(options: EditSummaryDataOptions): ChartProgram;",
+  "intents": [
+    "edit summary data",
+    "edit",
+    "change",
+    "statistical layer",
+    "statistical transform",
+    "grouped summary data",
+    "reusable aggregate rows"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing grouped summary data",
+      "source dataset"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H1",
+    "H3"
+  ],
+  "wraps": [
+    "editDerivedData"
+  ],
+  "editableVia": [
+    "editSummaryData"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing grouped summary data",
+      "source dataset"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "dependents",
+      "required": false,
+      "type": "DerivedDataDependents | undefined"
+    },
+    {
+      "name": "groupBy",
+      "required": false,
+      "type": "string | readonly string[] | undefined"
+    },
+    {
+      "name": "aggregates",
+      "required": false,
+      "type": "readonly SummaryAggregateOptions[] | undefined"
+    },
+    {
+      "name": "members",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "missing",
+      "required": false,
+      "type": "\"drop\" | \"error\" | undefined"
+    },
+    {
+      "name": "empty",
+      "required": false,
+      "type": "\"identity\" | \"null\" | undefined"
+    },
+    {
+      "name": "weight",
+      "required": false,
+      "type": "false | StatisticalWeight | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editSummaryData({ target, dependents?, groupBy?, aggregates?, members?, missing?, empty?, weight? })"
+  ],
+  "snippet": "program.editSummaryData({ target: \"summary\", aggregates: [{ op: \"count\", as: \"count\" }] })",
+  "errors": [],
+  "route": "/reference/actions/statistics/#editsummarydata"
+}

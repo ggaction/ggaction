@@ -1,0 +1,3 @@
+type PolarPointLegendOptions = DistributiveLegendOmit<Exclude<FilledMarkLegendOptions, { combine: "color-size" }>, "order"> & {
+  order?: PolarLegendOrder;
+};

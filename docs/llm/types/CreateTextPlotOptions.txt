@@ -1,0 +1,11 @@
+export interface CreateTextPlotOptions {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  x: TextPlotPositionChannel;
+  y: TextPlotPositionChannel;
+  text: string | WithoutEncodingTarget<Extract<TextEncodingOptions, { field: string } | { value: unknown }>>;
+  color?: RectColorChannel;
+  style?: Omit<TextMarkOptions, "id" | "data" | "source" | "text" | "inheritColor">;
+  guides?: false | ColorGuides;
+}

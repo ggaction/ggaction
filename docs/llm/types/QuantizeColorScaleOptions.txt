@@ -1,0 +1,2 @@
+export type QuantizeColorScaleOptions =
+  NonPointQuantizeColorScaleOptions & { unknown?: string };

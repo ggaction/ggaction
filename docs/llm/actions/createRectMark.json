@@ -1,0 +1,162 @@
+{
+  "schemaVersion": 3,
+  "name": "createRectMark",
+  "layer": "user-facing",
+  "domain": "marks",
+  "summary": "Create a semantic rect mark and empty rect collection.",
+  "signature": "createRectMark(options?: RectMarkOptions): ChartProgram;",
+  "intents": [
+    "create rect mark",
+    "create",
+    "add",
+    "graphical mark",
+    "mark appearance",
+    "rectangle mark",
+    "heatmap cell"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "dataset and coordinate context"
+    ],
+    "owns": [
+      "rectangle mark"
+    ],
+    "idOptions": [
+      "id",
+      "data"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editSemantic",
+    "createGraphics",
+    "editRectMark"
+  ],
+  "editableVia": [
+    "editRectMark"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default",
+      "basic"
+    ]
+  },
+  "units": [
+    {
+      "path": "opacity",
+      "unit": "probability"
+    },
+    {
+      "path": "strokeWidth",
+      "unit": "logical-pixel"
+    }
+  ],
+  "inference": [
+    {
+      "input": "data",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "dataset and coordinate context"
+    ],
+    "allowsEmpty": true
+  },
+  "options": [
+    {
+      "name": "clip",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "data",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "missing",
+      "required": false,
+      "type": "\"error\" | \"skip\" | undefined"
+    },
+    {
+      "name": "fill",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "opacity",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "stroke",
+      "required": false,
+      "type": "string | false | undefined"
+    },
+    {
+      "name": "strokeWidth",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "lineCap",
+      "required": false,
+      "type": "\"butt\" | \"round\" | \"square\" | undefined"
+    },
+    {
+      "name": "lineJoin",
+      "required": false,
+      "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+    },
+    {
+      "name": "miterLimit",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "cornerRadius",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "cornerRadiusTopLeft",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "cornerRadiusTopRight",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "cornerRadiusBottomRight",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "cornerRadiusBottomLeft",
+      "required": false,
+      "type": "number | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createRectMark({ id?, data?, clip?, missing?, fill?, opacity?, stroke?, strokeWidth? })"
+  ],
+  "snippet": "program.createRectMark({})",
+  "errors": [],
+  "route": "/reference/actions/marks/#createrectmark"
+}

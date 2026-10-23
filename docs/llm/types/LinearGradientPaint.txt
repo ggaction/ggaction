@@ -1,0 +1,10 @@
+export interface LinearGradientPaint {
+  readonly type: "linear-gradient";
+  readonly from: LinearGradientPoint;
+  readonly to: LinearGradientPoint;
+  readonly stops: readonly [
+    LinearGradientStop,
+    LinearGradientStop,
+    ...LinearGradientStop[]
+  ];
+}

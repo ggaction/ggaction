@@ -1,0 +1,13 @@
+export interface CreateRegressionLineOptions extends StrokeStyleDetails {
+  id: string;
+  data: string;
+  x: string;
+  y: string;
+  groupBy?: string;
+  coordinate: string;
+  xScale: string;
+  yScale: string;
+  colorScale?: string;
+  strokeWidth?: number;
+  curve?: CurveInterpolation;
+}

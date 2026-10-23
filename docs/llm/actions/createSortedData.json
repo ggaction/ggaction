@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 3,
+  "name": "createSortedData",
+  "layer": "user-facing",
+  "domain": "statistics",
+  "summary": "Create immutable rows in stable multi-key order.",
+  "signature": "createSortedData(options: SortedDataOptions): ChartProgram;",
+  "intents": [
+    "create sorted data",
+    "create",
+    "add",
+    "statistical layer",
+    "statistical transform",
+    "sorted dataset",
+    "stable multi-key row order"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "source dataset"
+    ],
+    "owns": [
+      "sorted dataset"
+    ],
+    "idOptions": [
+      "id",
+      "source"
+    ]
+  },
+  "authoringRoles": [
+    "H1"
+  ],
+  "wraps": [
+    "createDerivedData"
+  ],
+  "editableVia": [
+    "editSortedData"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "source",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "source dataset"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "source",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "sortBy",
+      "required": true,
+      "type": "readonly [SortKey, ...SortKey[]]"
+    }
+  ],
+  "callPatterns": [
+    "createSortedData({ id, sortBy, source? })"
+  ],
+  "snippet": "program.createSortedData({ id: \"sorted\", sortBy: [{ field: \"group\" }, { field: \"value\", order: \"descending\", nulls: \"last\" }] })",
+  "errors": [],
+  "route": "/reference/actions/statistics/#createsorteddata"
+}

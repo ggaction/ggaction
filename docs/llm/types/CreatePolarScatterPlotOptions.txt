@@ -1,0 +1,12 @@
+export interface CreatePolarScatterPlotOptions {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  theta: PolarThetaChannel;
+  radius: PolarRadiusChannel;
+  color?: BasicColorChannel;
+  size?: BasicSizeChannel;
+  shape?: BasicShapeChannel;
+  point?: Omit<NonNullable<CreateScatterPlotOptions["point"]>, "clip">;
+  guides?: false | PolarPointGuideOptions;
+}

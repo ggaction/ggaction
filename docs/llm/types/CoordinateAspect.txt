@@ -1,0 +1,6 @@
+export type CoordinateAspect = "auto" | {
+  mode: "frame" | "data";
+  ratio: number;
+  alignX?: CoordinateAspectAlign;
+  alignY?: CoordinateAspectAlign;
+};

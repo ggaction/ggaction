@@ -1,0 +1,1 @@
+export type RegressionMethod = "linear" | "polynomial" | "loess" | "exp";

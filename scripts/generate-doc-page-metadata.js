@@ -75,13 +75,23 @@ export async function buildDocPageMetadata() {
     readFile(chartCatalogFile, "utf8")
   ]);
   const chartById = charts(chartSource);
+  const programs = JSON.parse(await readFile(path.join(docsRoot, "_data/snippet_programs.json"), "utf8"));
   const metadata = {};
   for (const page of registry(pagesSource)) {
-    const source = await readFile(await pathForUrl(page.url), "utf8");
+    const sourceFile = await pathForUrl(page.url);
+    const source = await readFile(sourceFile, "utf8");
+    const sourcePath = path.relative(root, sourceFile);
+    const workflowSource = programs[sourcePath.slice(5)]?.canonical?.file;
+    const editSource = workflowSource ?? (page.url.startsWith("/reference/actions/") ? "scripts/action-card-source.js"
+      : page.url === "/reference/types/" ? "types/program.d.ts"
+      : page.url === "/reference/runtime/" ? "scripts/generate-doc-signatures.js"
+      : page.url === "/api/chart-picker/" ? "docs/_data/chart_picker.json" : sourcePath);
     const chartId = source.match(/chart-example\.html\s+id="([^"]+)"/)?.[1];
     const explicitImage = source.match(/^image:\s+(\S+)$/m)?.[1];
     metadata[page.url] = {
       title: page.title,
+      source: sourcePath,
+      editSource,
       description: description(source),
       ...(explicitImage
         ? { image: explicitImage }

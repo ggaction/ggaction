@@ -1,0 +1,11 @@
+# Tutorials
+
+Tutorials build complete, runnable charts and explain what each action adds.
+Choose the visual relationship that matches the question you want to answer.
+
+ [New to ggaction? Install the package and render one complete browser chart first.](../../../getting-started/)
+ [Need only the shortest code? Switch to recipes when you do not need the step-by-step explanation.](../../../recipes/)
+
+The bar tutorial uses grouped bars as one layout of the general bar mark. The
+statistical tutorials compose ordinary data, marks, encodings, and guides rather
+than introducing a separate renderer path.

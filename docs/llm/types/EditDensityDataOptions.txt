@@ -1,0 +1,4 @@
+export type EditDensityDataOptions = FocusedWeightedDerivedDataEdit<
+  DensityDataOptions,
+  StatisticalWeight
+>;

@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 3,
+  "name": "editRadialAxisTitle",
+  "layer": "user-facing",
+  "domain": "axes",
+  "summary": "Edit the radial title.",
+  "signature": "editRadialAxisTitle(options?: RadialTitleOptions): ChartProgram;",
+  "intents": [
+    "edit radial axis title",
+    "edit",
+    "change",
+    "axis guide",
+    "scale annotation",
+    "radial-axis title",
+    "polar field title"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing radial-axis title",
+      "compatible scale or encoding context"
+    ],
+    "owns": [],
+    "idOptions": []
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editGraphics",
+    "editSemantic"
+  ],
+  "editableVia": [
+    "editRadialAxisTitle"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "offset",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "fontSize",
+      "unit": "logical-pixel"
+    }
+  ],
+  "inference": [],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing radial-axis title",
+      "compatible scale or encoding context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "position",
+      "required": false,
+      "type": "\"inside\" | \"outside\" | undefined"
+    },
+    {
+      "name": "text",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "offset",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "color",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "fontSize",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "fontFamily",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "fontWeight",
+      "required": false,
+      "type": "string | number | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editRadialAxisTitle({ position?, text?, offset?, color?, fontSize?, fontFamily?, fontWeight? })"
+  ],
+  "snippet": "program.editRadialAxisTitle({ position: \"inside\" })",
+  "errors": [],
+  "route": "/reference/actions/guides/#editradialaxistitle"
+}

@@ -1,0 +1,234 @@
+{
+  "schemaVersion": 3,
+  "name": "createMarkLabels",
+  "layer": "user-facing",
+  "domain": "marks",
+  "summary": "Label source mark items.",
+  "signature": "createMarkLabels(options?: CreateMarkLabelsOptions): ChartProgram;",
+  "intents": [
+    "create mark labels",
+    "create",
+    "add",
+    "graphical mark",
+    "mark appearance",
+    "mark labels",
+    "source-owned text"
+  ],
+  "lifecycle": "Aggregate create-only",
+  "resources": {
+    "prerequisites": [
+      "existing eligible source mark"
+    ],
+    "owns": [
+      "mark labels"
+    ],
+    "idOptions": [
+      "id",
+      "source",
+      "selection"
+    ]
+  },
+  "authoringRoles": [
+    "H1",
+    "H2"
+  ],
+  "wraps": [
+    "createTextMark",
+    "encodeText"
+  ],
+  "editableVia": [
+    "editMarkLabelSelection",
+    "editMarkLabelPlacement",
+    "removeMarkLabels"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "placement.gap",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "placement.leader.strokeWidth",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "lineHeight",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "opacity",
+      "unit": "probability"
+    },
+    {
+      "path": "fontSize",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "rotation",
+      "unit": "angle"
+    }
+  ],
+  "inference": [
+    {
+      "input": "source",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "selection",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing eligible source mark"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "clip",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "lineHeight",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "blockAlign",
+      "required": false,
+      "type": "\"first\" | \"middle\" | undefined"
+    },
+    {
+      "name": "inheritColor",
+      "required": false,
+      "type": "\"fill\" | \"stroke\" | false | undefined"
+    },
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "source",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "missing",
+      "required": false,
+      "type": "\"error\" | \"skip\" | undefined"
+    },
+    {
+      "name": "fill",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "opacity",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "fontSize",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "fontFamily",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "fontWeight",
+      "required": false,
+      "type": "string | number | undefined"
+    },
+    {
+      "name": "align",
+      "required": false,
+      "type": "\"center\" | \"end\" | \"left\" | \"right\" | \"start\" | undefined"
+    },
+    {
+      "name": "baseline",
+      "required": false,
+      "type": "\"alphabetic\" | \"bottom\" | \"hanging\" | \"ideographic\" | \"middle\" | \"top\" | undefined"
+    },
+    {
+      "name": "rotation",
+      "required": false,
+      "type": "RotationInput | undefined"
+    },
+    {
+      "name": "dx",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "dy",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "layout",
+      "required": false,
+      "type": "false | Omit<LabelLayoutOptions, \"target\"> | undefined"
+    },
+    {
+      "name": "placement",
+      "required": false,
+      "type": "MarkLabelPlacement | undefined"
+    },
+    {
+      "name": "format",
+      "required": false,
+      "type": "ValueFormat | undefined"
+    },
+    {
+      "name": "field",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "value",
+      "required": false,
+      "type": "unknown"
+    },
+    {
+      "name": "content",
+      "required": false,
+      "type": "\"category\" | \"share\" | \"value\" | undefined"
+    },
+    {
+      "name": "normalizeBy",
+      "required": false,
+      "type": "\"category\" | \"source\" | undefined"
+    },
+    {
+      "name": "select",
+      "required": false,
+      "type": "MarkSelector | undefined"
+    },
+    {
+      "name": "selection",
+      "required": false,
+      "type": "string | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createMarkLabels({ source?, content? })"
+  ],
+  "snippet": "program.createMarkLabels({})",
+  "errors": [],
+  "route": "/reference/actions/marks/#createmarklabels"
+}

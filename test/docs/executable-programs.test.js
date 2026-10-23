@@ -25,7 +25,7 @@ for (const example of await documentationPrograms()) {
       ...(example.importChart ? ['import { chart } from "ggaction";'] : [])
     ].join("\n");
     const resultNames = example.result.split(",").map(value => value.trim());
-    const moduleFile = path.join(directory, example.file.replaceAll("/", "-") + ".mjs");
+    const moduleFile = path.join(directory, example.file.replaceAll("/", "-") + (example.id ?? "") + ".mjs");
     await writeFile(moduleFile, `${prefix}\n${example.code}\nexport { ${resultNames.join(", ")} };\n`);
     const result = await import(pathToFileURL(moduleFile));
     for (const name of resultNames) {

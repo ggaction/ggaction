@@ -1,0 +1,10 @@
+export type SizeEncodingOptions =
+  | { value: number; target?: string; field?: never; fieldType?: never; scale?: never }
+  | ({
+  value?: never;
+  field: string;
+  target?: string;
+} & (
+  | { fieldType?: "quantitative"; scale?: SizeScaleOptions }
+  | { fieldType: "nominal" | "ordinal"; scale?: CategoricalSizeScaleOptions }
+));

@@ -1,0 +1,4 @@
+export interface WindowSort {
+  field: string;
+  order?: WindowSortOrder;
+}

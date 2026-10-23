@@ -1,0 +1,14 @@
+export type RegressionOptions = RegressionCommonOptions & (
+  | (Extract<RegressionParameterOptions, { method: "exp" }> & {
+      band?: false;
+    })
+  | (Extract<RegressionParameterOptions, { method?: "linear" }> & {
+      band?: false | RegressionBandOptions;
+    })
+  | (Extract<RegressionParameterOptions, { method: "polynomial" }> & {
+      band?: false | RegressionBandOptions;
+    })
+  | (Extract<RegressionParameterOptions, { method: "loess" }> & {
+      band?: false;
+    })
+);

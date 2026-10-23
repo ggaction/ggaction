@@ -1,0 +1,16 @@
+export interface CreateRegressionBandOptions extends StrokeStyleDetails {
+  id: string;
+  data: string;
+  x: string;
+  lower: string;
+  upper: string;
+  groupBy?: string;
+  coordinate: string;
+  xScale: string;
+  yScale: string;
+  color?: string;
+  opacity?: number;
+  stroke?: string;
+  strokeWidth?: number;
+  curve?: CurveInterpolation;
+}

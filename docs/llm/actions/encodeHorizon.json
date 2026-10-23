@@ -1,0 +1,146 @@
+{
+  "schemaVersion": 3,
+  "name": "encodeHorizon",
+  "layer": "user-facing",
+  "domain": "encodings",
+  "summary": "Create immutable folded-band data, bind it to an area mark, and author the ordinary x, y/y2, group, and color encodings needed for a compact Horizon chart.",
+  "signature": "encodeHorizon(options?: HorizonEncodingOptions): ChartProgram;",
+  "intents": [
+    "encode horizon",
+    "encode",
+    "map field",
+    "visual encoding",
+    "field mapping",
+    "horizon chart",
+    "banded time series"
+  ],
+  "lifecycle": "Assignment",
+  "resources": {
+    "prerequisites": [
+      "target mark"
+    ],
+    "owns": [
+      "horizon chart assignment"
+    ],
+    "idOptions": [
+      "target",
+      "source"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editSemantic",
+    "encodeX",
+    "encodeY",
+    "encodeGroup",
+    "encodeY2",
+    "encodeColor",
+    "editAreaMark"
+  ],
+  "editableVia": [
+    "editHorizon",
+    "removeEncoding"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "bands",
+      "unit": "count"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "source",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "extent",
+      "strategy": "documented-auto"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "target mark"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "source",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "x",
+      "required": false,
+      "type": "string | HorizonXEncoding | undefined"
+    },
+    {
+      "name": "y",
+      "required": false,
+      "type": "string | HorizonYEncoding | undefined"
+    },
+    {
+      "name": "groupBy",
+      "required": false,
+      "type": "string | false | undefined"
+    },
+    {
+      "name": "bands",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "baseline",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "extent",
+      "required": false,
+      "type": "number | \"auto\" | undefined"
+    },
+    {
+      "name": "resolve",
+      "required": false,
+      "type": "HorizonResolution | undefined"
+    },
+    {
+      "name": "missing",
+      "required": false,
+      "type": "HorizonMissingPolicy | undefined"
+    },
+    {
+      "name": "overflow",
+      "required": false,
+      "type": "HorizonOverflowPolicy | undefined"
+    },
+    {
+      "name": "palette",
+      "required": false,
+      "type": "HorizonPaletteOptions | undefined"
+    }
+  ],
+  "callPatterns": [
+    "encodeHorizon({ target?, source?, x?, y?, groupBy?, bands?, baseline?, extent? })"
+  ],
+  "snippet": "program.encodeHorizon({ x: \"x\" })",
+  "errors": [],
+  "route": "/reference/actions/encodings/#encodehorizon"
+}

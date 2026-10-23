@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 3,
+  "name": "removeScale",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Remove one explicitly named unused semantic scale and its resolved cache entry.",
+  "signature": "removeScale(options: RemoveResourceOptions): ChartProgram;",
+  "intents": [
+    "remove scale",
+    "remove",
+    "delete",
+    "chart setup",
+    "data and scales",
+    "scale",
+    "domain-to-range mapping"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing scale"
+    ],
+    "owns": [],
+    "idOptions": [
+      "id"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing scale"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": true,
+      "type": "string"
+    }
+  ],
+  "callPatterns": [
+    "removeScale({ id })"
+  ],
+  "snippet": "program.removeScale({ id: \"unusedScale\" })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#removescale"
+}

@@ -1,0 +1,145 @@
+{
+  "schemaVersion": 3,
+  "name": "editRectMark",
+  "layer": "user-facing",
+  "domain": "marks",
+  "summary": "Edit rect appearance and rematerialize complete cells.",
+  "signature": "editRectMark(options: EditRectMarkOptions): ChartProgram;",
+  "intents": [
+    "edit rect mark",
+    "edit",
+    "change",
+    "graphical mark",
+    "mark appearance",
+    "rectangle mark",
+    "heatmap cell"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing rectangle mark"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [],
+  "editableVia": [
+    "editRectMark"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "opacity",
+      "unit": "probability"
+    },
+    {
+      "path": "strokeWidth",
+      "unit": "logical-pixel"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing rectangle mark"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "lineCap",
+      "required": false,
+      "type": "\"butt\" | \"round\" | \"square\" | undefined"
+    },
+    {
+      "name": "lineJoin",
+      "required": false,
+      "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+    },
+    {
+      "name": "miterLimit",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "cornerRadius",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "cornerRadiusTopLeft",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "cornerRadiusTopRight",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "cornerRadiusBottomRight",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "cornerRadiusBottomLeft",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "clip",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "missing",
+      "required": false,
+      "type": "\"error\" | \"skip\" | undefined"
+    },
+    {
+      "name": "fill",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "opacity",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "stroke",
+      "required": false,
+      "type": "string | false | undefined"
+    },
+    {
+      "name": "strokeWidth",
+      "required": false,
+      "type": "number | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editRectMark({ target?, lineCap?, lineJoin?, miterLimit?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight?, cornerRadiusBottomRight? })"
+  ],
+  "snippet": "program.editRectMark({ lineCap: \"butt\" })",
+  "errors": [],
+  "route": "/reference/actions/marks/#editrectmark"
+}

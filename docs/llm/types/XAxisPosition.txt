@@ -1,0 +1,1 @@
+export type XAxisPosition = "bottom" | "top";

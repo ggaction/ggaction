@@ -1,0 +1,1 @@
+type ScaleFields<Keys extends keyof ScaleOptions> = Pick<ScaleOptions, Keys>;

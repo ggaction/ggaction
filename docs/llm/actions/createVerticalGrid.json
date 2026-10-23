@@ -1,0 +1,148 @@
+{
+  "schemaVersion": 3,
+  "name": "createVerticalGrid",
+  "layer": "user-facing",
+  "domain": "grid",
+  "summary": "Creates vertical grid for x reference lines.",
+  "signature": "createVerticalGrid(options?: GridDirectionOptions): ChartProgram;",
+  "intents": [
+    "create vertical grid",
+    "create",
+    "add",
+    "grid guide",
+    "reference lines",
+    "vertical grid",
+    "x reference lines"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "compatible scale or encoding context"
+    ],
+    "owns": [
+      "vertical grid"
+    ],
+    "idOptions": [
+      "scale",
+      "coordinate"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editSemantic",
+    "createGraphics"
+  ],
+  "editableVia": [
+    "editVerticalGrid"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default",
+      "basic"
+    ]
+  },
+  "units": [
+    {
+      "path": "alongOffset",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "count",
+      "unit": "count"
+    },
+    {
+      "path": "lineWidth",
+      "unit": "logical-pixel"
+    }
+  ],
+  "inference": [
+    {
+      "input": "strokeDashMap",
+      "strategy": "documented-auto"
+    },
+    {
+      "input": "scale",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "compatible scale or encoding context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "strokeDashMap",
+      "required": false,
+      "type": "\"auto\" | CartesianGuideDashMap | undefined"
+    },
+    {
+      "name": "alongOffset",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "zIndex",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "bandPosition",
+      "required": false,
+      "type": "\"boundary\" | \"center\" | undefined"
+    },
+    {
+      "name": "scale",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "count",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "values",
+      "required": false,
+      "type": "readonly CategoryValue[] | undefined"
+    },
+    {
+      "name": "color",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "lineWidth",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "strokeDash",
+      "required": false,
+      "type": "readonly number[] | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createVerticalGrid({ scale?, coordinate?, strokeDashMap?, alongOffset?, zIndex?, bandPosition?, count?, values? })"
+  ],
+  "snippet": "program.createVerticalGrid({})",
+  "errors": [],
+  "route": "/reference/actions/guides/#createverticalgrid"
+}

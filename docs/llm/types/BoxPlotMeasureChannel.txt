@@ -1,0 +1,5 @@
+export interface BoxPlotMeasureChannel {
+  field: string;
+  fieldType?: "quantitative";
+  scale?: NonPointQuantitativePositionScaleOptions;
+}

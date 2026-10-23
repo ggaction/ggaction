@@ -1,0 +1,14 @@
+export type RugMeasureChannel = string | (
+  | {
+      field: string;
+      fieldType?: "quantitative";
+      temporalUnit?: never;
+      scale?: NonPointQuantitativePositionScaleOptions;
+    }
+  | {
+      field: string;
+      fieldType: "temporal";
+      temporalUnit?: TemporalInputUnit;
+      scale?: NonPointTemporalPositionScaleOptions;
+    }
+);

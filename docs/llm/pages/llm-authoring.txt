@@ -1,0 +1,138 @@
+# LLM Chart Authoring Contract
+
+Use this bounded page when a language model needs enough public information to
+write one complete ggaction program. For narrower option details, continue to
+the linked API family or the [complete action reference](../../reference/actions/).
+
+## Complete program bootstrap
+
+Import the root factory, initialize one immutable program, create its Canvas,
+and store caller-owned rows before chart-specific actions:
+
+```javascript
+import { chart } from "ggaction";
+
+export function buildChart(rows) {
+  let program = chart()
+  program = program.createCanvas({
+    width: 800,
+    height: 600,
+    margin: { top: 140, right: 220, bottom: 120, left: 260 }
+  })
+  program = program.createData({ values: rows })
+  return program
+}
+```
+
+The exact setup signatures are:
+
+```typescript
+createCanvas(options?: CanvasOptions): ChartProgram;
+createData<Row extends object>(options: {
+  id?: string;
+  values: readonly Row[];
+  schema?: {
+    fields: readonly {
+      name: string;
+      storageType: "number" | "string" | "boolean" | "array" | "object";
+      nullable?: boolean;
+      optional?: boolean;
+    }[];
+  };
+}): ChartProgram;
+```
+
+`values` is the caller-owned array; `createData({ rows })` is not a public call.
+Provide `schema` when an empty source still needs known fields. Without it, an empty
+source has unknown field completeness and field-driven actions cannot infer those fields.
+Every action returns a new `ChartProgram`, so retain each reassignment or use a
+fluent chain. See [Canvas](../../api/canvas/), [Data](../../api/data/), and the
+[ChartProgram type](../../reference/types/) for their normative contracts.
+
+## Common task families
+
+Choose one independent flow after Canvas and data setup. These are alternatives
+from `buildChart(rows)`, not sequential layers sharing one x scale.
+
+```javascript
+// Binned one-dimensional distribution with axes.
+const histogram = buildChart(rows).createHistogram({ field: "value", guides: {} })
+```
+
+Here `rows` contains finite numeric `value`. For the separate regression task,
+provide finite `x` and `y`, at least three observations, and distinct x values:
+
+```javascript
+
+// Point layer with a fitted line and confidence band.
+const regression = buildChart(rows)
+  .createPointMark({})
+  .encodeX({ field: "x" })
+  .encodeY({ field: "y" })
+  .createRegression({})
+  .createAxes({})
+```
+
+Use [Basic Charts](../../api/basic-charts/) for histogram, scatter, line, bar, and
+heatmap facades. Use [Regression](../../api/regression/) for fitted lines and
+uncertainty bands. These examples name ordinary fields; replace them with the
+actual dataset fields rather than inventing new data.
+
+## Renderer selection
+
+Choose one supported output route:
+
+```javascript
+// Browser Canvas
+import { render } from "ggaction";
+render(program, context)
+
+// Browser-safe SVG string
+import { renderToSVG } from "ggaction/svg";
+const svg = renderToSVG(program)
+
+// Node file or bytes
+import { renderToPNG } from "ggaction/png";
+import { renderToPDF } from "ggaction/pdf";
+```
+
+The supported renderer capability IDs are `renderer.canvas`, `renderer.svg`,
+`renderer.png`, and `renderer.pdf`. See [Rendering](../../api/rendering/) for the
+exact PNG and PDF output options.
+
+## Terminal limitations and open decisions
+
+These canonical capability IDs are terminal limitations in the current static
+chart contract:
+
+- `unsupported.geo` — geographic projections and map marks
+- `unsupported.animation` — animated transitions
+- `unsupported.interaction` — interactive runtime behavior
+- `unsupported.3d` — three-dimensional charts
+- `unsupported.jpg` — JPEG output
+- `unsupported.areaStrokeDash` — field-driven dash encoding on an area mark
+
+Do not invent an action or silently substitute another capability. A request
+can still preserve supported parts—for example, PDF plus JPEG retains
+`renderer.pdf` and reports `unsupported.jpg`.
+
+An open decision is different. `chart.type`, `renderer.format`,
+`composition.children`, `encoding.position`, `guide.legend.channel`, and
+conflicting `layout.legend.*` constraints require clarification or a bounded
+documentation read before authoring can continue. A compact task packet lists
+those decisions under `unresolved` and attaches the exact
+`ggaction://docs/...` resource URI. Terminal limitations appear under
+`unsupported` and require no mandatory read.
+
+## Compact knowledge route
+
+When the local MCP server is available, call `search_ggaction` once with only
+the complete user request. Follow `authoring.prerequisites` and
+`authoring.steps` in order. Explicit Canvas or data actions occur in the steps
+and are omitted from prerequisites so they execute only once. The packet closes
+deterministic target, field-type, scale, and derived-data dependencies; missing
+semantic choices remain unresolved. Confirm every `placeholderBindings` entry,
+apply or clarify every `unmatchedRequirements` entry, and never treat template
+field names as inferred dataset facts. Read documentation only for URIs
+explicitly listed in `unresolved[].resources`. See [Local MCP](../../mcp/) for
+installation and the packet contract.

@@ -1,0 +1,2 @@
+export type PointPositionScaleOptions =
+  NonPointPointPositionScaleOptions & { unknown?: number };

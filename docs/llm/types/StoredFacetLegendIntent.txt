@@ -1,0 +1,8 @@
+interface StoredFacetLegendIntent {
+  readonly type: "authored-legend";
+  readonly blocks: Readonly<Record<string, {
+    readonly config: Readonly<Record<string, unknown>>;
+    readonly guide?: Readonly<Record<string, unknown>>;
+  }>>;
+  readonly groups: Readonly<Record<string, unknown>>;
+}

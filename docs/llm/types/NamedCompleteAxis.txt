@@ -1,0 +1,1 @@
+export type NamedCompleteAxis<P extends string> = CompleteAxisOptions<P> & { id: string };

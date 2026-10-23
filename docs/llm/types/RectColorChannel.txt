@@ -1,0 +1,17 @@
+type RectColorChannel =
+  | LineCategoricalColorChannel
+  | {
+      field: string;
+      fieldType: "quantitative";
+      scale?:
+        | NonPointContinuousColorScaleOptions
+        | NonPointDiscretizedColorScaleOptions;
+      palette?: Palette;
+    }
+  | {
+      field: string;
+      fieldType: "temporal";
+      temporalUnit?: TemporalInputUnit;
+      scale?: Omit<NonPointContinuousColorScaleOptions, "midpoint" | "type" | "base" | "exponent" | "constant"> & { midpoint?: "auto"; type?: "sequential" };
+      palette?: Palette;
+    };

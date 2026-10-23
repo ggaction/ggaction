@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 3,
+  "name": "layoutSeries",
+  "layer": "user-facing",
+  "domain": "encodings",
+  "summary": "Assign group, stack, fill, overlay, diverging, or center placement independently of color.",
+  "signature": "layoutSeries(options: SeriesLayoutOptions): ChartProgram;",
+  "intents": [
+    "layout series",
+    "layout",
+    "avoid overlap",
+    "visual encoding",
+    "field mapping",
+    "series placement",
+    "grouped bars"
+  ],
+  "lifecycle": "Assignment",
+  "resources": {
+    "prerequisites": [
+      "existing series placement"
+    ],
+    "owns": [
+      "series placement"
+    ],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editSemantic",
+    "encodeXOffset",
+    "encodeYOffset"
+  ],
+  "editableVia": [],
+  "supports": {
+    "entryPoints": [
+      "default",
+      "basic"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing series placement"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "mode",
+      "required": true,
+      "type": "ColorLayout"
+    }
+  ],
+  "callPatterns": [
+    "layoutSeries({ mode })"
+  ],
+  "snippet": "program.layoutSeries({ mode: \"stack\" })",
+  "errors": [],
+  "route": "/reference/actions/encodings/#layoutseries"
+}

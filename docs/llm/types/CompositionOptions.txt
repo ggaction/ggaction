@@ -1,0 +1,7 @@
+export interface CompositionOptions {
+  id?: string;
+  programs: readonly CompositionProgramEntry[];
+  gap?: number;
+  align?: CompositionAlign;
+  padding?: number | CompositionPadding;
+}

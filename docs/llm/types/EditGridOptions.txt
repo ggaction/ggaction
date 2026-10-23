@@ -1,0 +1,14 @@
+export interface EditGridOptions {
+  strokeDashMap?: CartesianGuideDashMap | "auto";
+  /** Absolute signed logical-pixel displacement; omission preserves the current value. */
+  alongOffset?: number;
+  /** Preserve omitted order; finite values sort Cartesian grids relative to marks at zero. */
+  zIndex?: number;
+  /** Band centers by default; boundary draws both edges of each selected band. */
+  bandPosition?: "center" | "boundary";
+  count?: number;
+  values?: readonly CategoryValue[] | "auto";
+  color?: string;
+  lineWidth?: number;
+  strokeDash?: readonly number[];
+}

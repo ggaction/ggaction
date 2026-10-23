@@ -11,7 +11,8 @@
   "excludeFolders": [
     "docs/_sources",
     "docs/assets",
-    "docs/README.md"
+    "docs/README.md",
+    "docs/llm"
   ],
   "excludeFiles": [
     "AGENTS.md",
@@ -28,7 +29,7 @@
     "Import from ggaction/basic only for creating and rendering scatter, line, bar, histogram, or heatmap charts; import from ggaction for editing, selection, composition, alternative coordinates, or statistical layers.",
     "Render only after authoring: use render(program, canvasContext) in the browser, or the ggaction/svg, ggaction/png, and ggaction/pdf adapters for those outputs.",
     "Use documented domain actions for normal chart authoring; use ggaction/extension primitives only when authoring custom actions.",
-    "Provide explicit resource IDs when multiple datasets, marks, scales, coordinate systems, or child programs make a target ambiguous.",
+    "Provide explicit resource IDs whenever the signature requires them, even for one resource; also disambiguate multiple compatible resources and use stable IDs for later editing.",
     "Do not expect an automatic semantic-to-graphic compiler; each domain action materializes the graphics required by its semantic change."
   ],
   "previousVersions": [

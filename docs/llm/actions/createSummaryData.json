@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 3,
+  "name": "createSummaryData",
+  "layer": "user-facing",
+  "domain": "statistics",
+  "summary": "Materialize reusable, first-appearance-ordered summary rows from one or more shared aggregate operations.",
+  "signature": "createSummaryData(options: SummaryDataOptions): ChartProgram;",
+  "intents": [
+    "create summary data",
+    "create",
+    "add",
+    "statistical layer",
+    "statistical transform",
+    "grouped summary data",
+    "reusable aggregate rows"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "source dataset"
+    ],
+    "owns": [
+      "grouped summary data"
+    ],
+    "idOptions": [
+      "id",
+      "source"
+    ]
+  },
+  "authoringRoles": [
+    "H1"
+  ],
+  "wraps": [
+    "createDerivedData"
+  ],
+  "editableVia": [
+    "editSummaryData"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "source",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "source dataset"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "source",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "groupBy",
+      "required": false,
+      "type": "string | readonly string[] | undefined"
+    },
+    {
+      "name": "aggregates",
+      "required": true,
+      "type": "readonly SummaryAggregateOptions[]"
+    },
+    {
+      "name": "members",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "weight",
+      "required": false,
+      "type": "StatisticalWeight | undefined"
+    },
+    {
+      "name": "missing",
+      "required": false,
+      "type": "\"drop\" | \"error\" | undefined"
+    },
+    {
+      "name": "empty",
+      "required": false,
+      "type": "\"identity\" | \"null\" | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createSummaryData({ id, aggregates, source?, groupBy?, members?, weight?, missing?, empty? })"
+  ],
+  "snippet": "program.createSummaryData({ id: \"summary-data-1\", aggregates: [] })",
+  "errors": [],
+  "route": "/reference/actions/statistics/#createsummarydata"
+}

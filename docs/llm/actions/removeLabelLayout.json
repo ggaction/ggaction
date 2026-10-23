@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 3,
+  "name": "removeLabelLayout",
+  "layer": "user-facing",
+  "domain": "marks",
+  "summary": "Remove one text mark's layout policy and leader collection, then restore its semantic base positions.",
+  "signature": "removeLabelLayout(options?: RemoveLabelLayoutOptions): ChartProgram;",
+  "intents": [
+    "remove label layout",
+    "remove",
+    "delete",
+    "graphical mark",
+    "mark appearance",
+    "label layout",
+    "collision avoidance and leader lines"
+  ],
+  "lifecycle": "Assignment",
+  "resources": {
+    "prerequisites": [
+      "existing label layout"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editGraphics"
+  ],
+  "editableVia": [],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing label layout"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    }
+  ],
+  "callPatterns": [
+    "removeLabelLayout({ target? })"
+  ],
+  "snippet": "program.removeLabelLayout({})",
+  "errors": [],
+  "route": "/reference/actions/marks/#removelabellayout"
+}

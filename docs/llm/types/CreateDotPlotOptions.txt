@@ -1,0 +1,5 @@
+export interface CreateDotPlotOptions extends EndpointPlotBaseOptions {
+  value: EndpointValueChannel;
+  point?: CreateScatterPlotOptions["point"];
+  labels?: false | EndpointLabelOptions;
+}

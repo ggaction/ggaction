@@ -1,0 +1,10 @@
+export interface HorizonOutputFields {
+  readonly x: string;
+  readonly lower: string;
+  readonly upper: string;
+  readonly group: string;
+  readonly color: string;
+  readonly sign: string;
+  readonly band: string;
+  readonly segment: string;
+}

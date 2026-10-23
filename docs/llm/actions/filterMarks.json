@@ -1,0 +1,146 @@
+{
+  "schemaVersion": 3,
+  "name": "filterMarks",
+  "layer": "user-facing",
+  "domain": "mark-selection",
+  "summary": "Retain matching final mark items through the shared selector grammar.",
+  "signature": "filterMarks(options: FilterMarksOptions): ChartProgram;",
+  "intents": [
+    "filter marks",
+    "filter",
+    "retain matching",
+    "mark selection",
+    "conditional emphasis",
+    "mark items",
+    "selected graphical items"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "target mark and selector operands"
+    ],
+    "owns": [
+      "mark items"
+    ],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "createDerivedData"
+  ],
+  "editableVia": [
+    "removeMarkFilter"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "count",
+      "unit": "count"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "target mark and selector operands"
+    ],
+    "allowsEmpty": true
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "mode",
+      "required": false,
+      "type": "\"compose\" | \"replace\" | undefined"
+    },
+    {
+      "name": "grain",
+      "required": false,
+      "type": "\"item\" | \"stack\" | undefined"
+    },
+    {
+      "name": "field",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "channel",
+      "required": false,
+      "type": "\"color\" | \"group\" | \"opacity\" | \"radius\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\" | \"theta\" | \"x\" | \"x2\" | \"xOffset\" | \"y\" | \"y2\" | \"yOffset\" | undefined"
+    },
+    {
+      "name": "property",
+      "required": false,
+      "type": "MarkGraphicProperty | undefined"
+    },
+    {
+      "name": "op",
+      "required": true,
+      "type": "\"eq\" | \"gt\" | \"gte\" | \"lt\" | \"lte\" | \"max\" | \"min\" | \"neq\" | \"oneOf\" | \"range\""
+    },
+    {
+      "name": "value",
+      "required": false,
+      "type": "unknown"
+    },
+    {
+      "name": "values",
+      "required": false,
+      "type": "readonly unknown[]"
+    },
+    {
+      "name": "min",
+      "required": false,
+      "type": "string | number"
+    },
+    {
+      "name": "max",
+      "required": false,
+      "type": "string | number"
+    },
+    {
+      "name": "inclusive",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "count",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "groupBy",
+      "required": false,
+      "type": "string | readonly string[] | undefined"
+    },
+    {
+      "name": "ties",
+      "required": false,
+      "type": "\"all\" | \"first\" | undefined"
+    }
+  ],
+  "callPatterns": [
+    "filterMarks({ field | channel | property, op, ...operands })",
+    "filterMarks({ target?, mode: replace | compose, ...selector })"
+  ],
+  "snippet": "program.filterMarks({ field: \"value\", op: \"gt\", value: 0 })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#filtermarks"
+}

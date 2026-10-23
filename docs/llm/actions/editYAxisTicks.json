@@ -1,0 +1,141 @@
+{
+  "schemaVersion": 3,
+  "name": "editYAxisTicks",
+  "layer": "user-facing",
+  "domain": "axes",
+  "summary": "Edits y-axis ticks, including settings for vertical tick marks.",
+  "signature": "editYAxisTicks(options?: Omit<AxisTickOptions<YAxisPosition>, \"scale\">): ChartProgram;",
+  "intents": [
+    "edit y axis ticks",
+    "edit",
+    "change",
+    "axis guide",
+    "scale annotation",
+    "y-axis ticks",
+    "vertical tick marks"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing y-axis ticks",
+      "compatible scale or encoding context"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editGraphics"
+  ],
+  "editableVia": [
+    "editYAxisTicks"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "lineWidth",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "length",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "alongOffset",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "count",
+      "unit": "count"
+    }
+  ],
+  "inference": [
+    {
+      "input": "strokeDashMap",
+      "strategy": "documented-auto"
+    },
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing y-axis ticks",
+      "compatible scale or encoding context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "color",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "lineWidth",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "length",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "strokeDash",
+      "required": false,
+      "type": "readonly number[] | undefined"
+    },
+    {
+      "name": "strokeDashMap",
+      "required": false,
+      "type": "\"auto\" | CartesianGuideDashMap | undefined"
+    },
+    {
+      "name": "alongOffset",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "position",
+      "required": false,
+      "type": "YAxisPosition | undefined"
+    },
+    {
+      "name": "count",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "rounding",
+      "required": false,
+      "type": "AxisTickRounding | undefined"
+    },
+    {
+      "name": "values",
+      "required": false,
+      "type": "readonly AxisValue[] | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editYAxisTicks({ target?, color?, lineWidth?, length?, strokeDash?, strokeDashMap?, alongOffset?, position? })"
+  ],
+  "snippet": "program.editYAxisTicks({ color: \"#f28e2b\" })",
+  "errors": [],
+  "route": "/reference/actions/guides/#edityaxisticks"
+}

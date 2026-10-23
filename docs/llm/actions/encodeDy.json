@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 3,
+  "name": "encodeDy",
+  "layer": "user-facing",
+  "domain": "encodings",
+  "summary": "The corresponding independent Text vertical offset; positive values move down.",
+  "signature": "encodeDy(options: TextOffsetEncodingOptions): ChartProgram;",
+  "intents": [
+    "encode dy",
+    "encode",
+    "map field",
+    "visual encoding",
+    "field mapping",
+    "vertical text offset",
+    "text pixel shift"
+  ],
+  "lifecycle": "Assignment",
+  "resources": {
+    "prerequisites": [
+      "target mark",
+      "field mode: dataset field"
+    ],
+    "owns": [
+      "vertical text offset assignment"
+    ],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "removeEncoding"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "value",
+      "unit": "logical-pixel"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "target mark",
+      "field mode: dataset field"
+    ],
+    "allowsEmpty": true
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "value",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "field",
+      "required": false,
+      "type": "string | undefined"
+    }
+  ],
+  "callPatterns": [
+    "encodeDy({ target?, field })",
+    "encodeDy({ target?, value })"
+  ],
+  "snippet": "program.encodeDy({ value: 8 })",
+  "errors": [],
+  "route": "/reference/actions/encodings/#encodedy"
+}

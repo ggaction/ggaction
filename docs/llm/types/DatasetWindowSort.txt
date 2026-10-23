@@ -1,0 +1,4 @@
+export interface DatasetWindowSort {
+  readonly field: string;
+  readonly order: WindowSortOrder;
+}

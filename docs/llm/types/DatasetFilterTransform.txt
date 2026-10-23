@@ -1,0 +1,10 @@
+export type DatasetFilterTransform = {
+  type: "filter";
+  field: string;
+  nulls?: "include" | "exclude";
+} & (
+  | { oneOf: readonly DatasetScalar[]; noneOf?: never; predicate?: never; range?: never }
+  | { oneOf?: never; noneOf: readonly DatasetScalar[]; predicate?: never; range?: never }
+  | { oneOf?: never; noneOf?: never; predicate: FilterComparison; range?: never }
+  | { oneOf?: never; noneOf?: never; predicate?: never; range: FilterRange }
+);

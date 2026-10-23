@@ -1,0 +1,9 @@
+type EndpointPlotBaseOptions = {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  category: EndpointCategoryChannel;
+  orientation?: "horizontal" | "vertical";
+  summary?: EndpointPlotSummary;
+  guides?: false | CartesianSeparateGuideOptions;
+};

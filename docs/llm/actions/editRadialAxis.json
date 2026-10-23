@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 3,
+  "name": "editRadialAxis",
+  "layer": "user-facing",
+  "domain": "axes",
+  "summary": "Edit selected radial components; angle moves the whole axis.",
+  "signature": "editRadialAxis(options: EditRadialAxisOptions): ChartProgram;",
+  "intents": [
+    "edit radial axis",
+    "edit",
+    "change",
+    "axis guide",
+    "scale annotation",
+    "radial axis",
+    "polar distance guide"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing radial axis",
+      "compatible scale or encoding context"
+    ],
+    "owns": [],
+    "idOptions": []
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editRadialAxisLine",
+    "editRadialAxisTicks",
+    "editRadialAxisLabels",
+    "editRadialAxisTitle"
+  ],
+  "editableVia": [
+    "editRadialAxis"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "angle",
+      "unit": "degree"
+    }
+  ],
+  "inference": [],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing radial axis",
+      "compatible scale or encoding context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "title",
+      "required": false,
+      "type": "false | RadialTitleOptions | undefined"
+    },
+    {
+      "name": "angle",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "line",
+      "required": false,
+      "type": "false | AxisLineStyleOptions | undefined"
+    },
+    {
+      "name": "ticks",
+      "required": false,
+      "type": "false | PolarTickOptions | undefined"
+    },
+    {
+      "name": "labels",
+      "required": false,
+      "type": "false | PolarLabelOptions | undefined"
+    },
+    {
+      "name": "ticksAndLabels",
+      "required": false,
+      "type": "false | PolarTicksAndLabelsOptions | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editRadialAxis({ title?, angle?, line?, ticks?, labels?, ticksAndLabels? })"
+  ],
+  "snippet": "program.editRadialAxis({ title: { text: \"Radius\" } })",
+  "errors": [],
+  "route": "/reference/actions/guides/#editradialaxis"
+}

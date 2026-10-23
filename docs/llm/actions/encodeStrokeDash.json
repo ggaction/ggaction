@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 3,
+  "name": "encodeStrokeDash",
+  "layer": "user-facing",
+  "domain": "encodings",
+  "summary": "Create or replace nominal/ordinal line-series or rule dash patterns, or apply one constant named/direct pattern.",
+  "signature": "encodeStrokeDash(options: StrokeDashEncodingOptions): ChartProgram;",
+  "intents": [
+    "encode stroke dash",
+    "encode",
+    "map field",
+    "visual encoding",
+    "field mapping",
+    "stroke dash",
+    "line style"
+  ],
+  "lifecycle": "Assignment",
+  "resources": {
+    "prerequisites": [
+      "target mark",
+      "field mode: dataset field"
+    ],
+    "owns": [
+      "stroke dash assignment"
+    ],
+    "idOptions": [
+      "target",
+      "scale"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editSemantic",
+    "createScale"
+  ],
+  "editableVia": [
+    "removeEncoding"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default",
+      "basic"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "scale",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "target mark",
+      "field mode: dataset field"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "field",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "value",
+      "required": false,
+      "type": "DashPattern | DashStyle | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "fieldType",
+      "required": false,
+      "type": "\"nominal\" | \"ordinal\" | undefined"
+    },
+    {
+      "name": "scale",
+      "required": false,
+      "type": "DashScaleOptions | undefined"
+    }
+  ],
+  "callPatterns": [
+    "encodeStrokeDash({ target?, scale?, field?, value?, fieldType? })"
+  ],
+  "snippet": "program.encodeStrokeDash({ value: \"dashed\" })",
+  "errors": [],
+  "route": "/reference/actions/encodings/#encodestrokedash"
+}

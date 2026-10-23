@@ -1,0 +1,146 @@
+{
+  "schemaVersion": 3,
+  "name": "repeatCharts",
+  "layer": "user-facing",
+  "domain": "composition",
+  "summary": "Repeat one direct mark by replacing Cartesian x/y, eligible Polar theta/public r, or one { parallelDimension: field }.",
+  "signature": "repeatCharts(options: RepeatChartsOptions): ChartProgram;",
+  "intents": [
+    "repeat charts",
+    "facet",
+    "repeat chart",
+    "chart composition",
+    "small multiples",
+    "repeat chart by field",
+    "field comparison panels"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "complete child chart program"
+    ],
+    "owns": [
+      "repeat chart by field"
+    ],
+    "idOptions": [
+      "id",
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H0"
+  ],
+  "wraps": [],
+  "editableVia": [
+    "editFacetSource",
+    "editFacetHeaders",
+    "editFacetScales",
+    "editFacetGuides",
+    "editCompositionLayout"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "columns",
+      "unit": "count"
+    },
+    {
+      "path": "padding",
+      "unit": "logical-pixel"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "complete",
+    "requires": [
+      "complete child chart program"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "channel",
+      "required": true,
+      "type": "\"r\" | \"theta\" | \"x\" | \"y\" | { parallelDimension: string; }"
+    },
+    {
+      "name": "fields",
+      "required": true,
+      "type": "readonly [string, ...string[]]"
+    },
+    {
+      "name": "columns",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "gap",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "align",
+      "required": false,
+      "type": "CompositionAlign | undefined"
+    },
+    {
+      "name": "padding",
+      "required": false,
+      "type": "number | CompositionPadding | undefined"
+    },
+    {
+      "name": "scales",
+      "required": false,
+      "type": "FacetScaleResolutions | undefined"
+    },
+    {
+      "name": "guides",
+      "required": false,
+      "type": "FacetGuideOptions | undefined"
+    },
+    {
+      "name": "headers",
+      "required": false,
+      "type": "FacetHeadersOptions | undefined"
+    },
+    {
+      "name": "spacing",
+      "required": false,
+      "type": "\"canvas\" | \"plot\" | undefined"
+    },
+    {
+      "name": "topLane",
+      "required": false,
+      "type": "FacetTopLaneMode | undefined"
+    }
+  ],
+  "callPatterns": [
+    "repeatCharts({ channel, fields, id?, target?, columns?, gap?, align?, padding? })"
+  ],
+  "snippet": "program.repeatCharts({ channel: \"x\", fields: [\"sales\", \"profit\"] })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#repeatcharts"
+}

@@ -1,0 +1,145 @@
+{
+  "schemaVersion": 3,
+  "name": "createRegressionData",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Create immutable linear, polynomial, LOESS, or exponential fitted rows at observed unique x values.",
+  "signature": "createRegressionData(options: RegressionDataOptions): ChartProgram;",
+  "intents": [
+    "create regression data",
+    "create",
+    "add",
+    "chart setup",
+    "data and scales",
+    "fitted values",
+    "regression transform"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "source dataset"
+    ],
+    "owns": [
+      "fitted values"
+    ],
+    "idOptions": [
+      "id",
+      "source"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "createDerivedData"
+  ],
+  "editableVia": [
+    "editRegressionData"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "source",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "source dataset"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "source",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "x",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "y",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "groupBy",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "missing",
+      "required": false,
+      "type": "\"drop\" | \"error\" | undefined"
+    },
+    {
+      "name": "method",
+      "required": false,
+      "type": "\"exp\" | \"linear\" | \"loess\" | \"polynomial\" | undefined"
+    },
+    {
+      "name": "interval",
+      "required": false,
+      "type": "false | RegressionInterval | undefined"
+    },
+    {
+      "name": "degree",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "span",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "robustIterations",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "confidenceMethod",
+      "required": false,
+      "type": "ConfidenceIntervalMethod | undefined"
+    },
+    {
+      "name": "level",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "confidence",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "predict",
+      "required": false,
+      "type": "RegressionPredictOptions | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createRegressionData({ id, x, y, source?, groupBy?, missing?, method?, interval? })"
+  ],
+  "snippet": "program.createRegressionData({ id: \"regression-data-1\", x: \"x\", y: \"y\" })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#createregressiondata"
+}

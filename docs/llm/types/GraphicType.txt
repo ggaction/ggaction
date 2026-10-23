@@ -1,0 +1,8 @@
+export type GraphicType =
+  | "canvas"
+  | "collection"
+  | "circle"
+  | "rect"
+  | "line"
+  | "text"
+  | "path";

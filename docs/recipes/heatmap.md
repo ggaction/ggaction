@@ -68,8 +68,7 @@ the resolved bin extents, a continuous count scale, source-facing axis titles,
 and a `Count` legend. It disables separate chart grid lines unless requested.
 
 Use `rect: { opacity, stroke, strokeWidth }` for cell appearance. Cell fill is
-owned by the required color encoding. To show values, chain a text layer after
-the heatmap:
+owned by the required color encoding. The following continuation applies only to the **pre-gridded flow** above, whose source rows contain `value`. Set `program` to that branch; the raw-row binned branch owns generated count data and cannot use this source-field label:
 
 ```javascript
 const labeled = program

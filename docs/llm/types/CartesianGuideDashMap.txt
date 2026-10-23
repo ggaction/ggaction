@@ -1,0 +1,4 @@
+export type CartesianGuideDashMap = ReadonlyArray<Readonly<{
+  value: AxisValue;
+  strokeDash: readonly number[];
+}>>;

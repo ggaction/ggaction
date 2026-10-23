@@ -1,0 +1,181 @@
+{
+  "schemaVersion": 3,
+  "name": "createRegressionBand",
+  "layer": "user-facing",
+  "domain": "statistics",
+  "summary": "Creates regression band for uncertainty interval.",
+  "signature": "createRegressionBand(options: CreateRegressionBandOptions): ChartProgram;",
+  "intents": [
+    "create regression band",
+    "create",
+    "add",
+    "statistical layer",
+    "statistical transform",
+    "regression band",
+    "uncertainty interval"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "statistical source and coordinate context"
+    ],
+    "owns": [
+      "regression band"
+    ],
+    "idOptions": [
+      "id",
+      "data",
+      "coordinate",
+      "xScale",
+      "yScale"
+    ]
+  },
+  "authoringRoles": [
+    "H1"
+  ],
+  "wraps": [
+    "createErrorBand",
+    "editSemantic",
+    "editAreaMark"
+  ],
+  "editableVia": [
+    "editRegressionBand"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "opacity",
+      "unit": "probability"
+    },
+    {
+      "path": "strokeWidth",
+      "unit": "logical-pixel"
+    }
+  ],
+  "inference": [
+    {
+      "input": "data",
+      "strategy": "explicit"
+    },
+    {
+      "input": "coordinate",
+      "strategy": "explicit"
+    },
+    {
+      "input": "xScale",
+      "strategy": "explicit"
+    },
+    {
+      "input": "yScale",
+      "strategy": "explicit"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "statistical source and coordinate context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "data",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "x",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "lower",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "upper",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "groupBy",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "xScale",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "yScale",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "color",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "opacity",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "stroke",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "strokeWidth",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "curve",
+      "required": false,
+      "type": "CurveInterpolation | undefined"
+    },
+    {
+      "name": "lineCap",
+      "required": false,
+      "type": "\"butt\" | \"round\" | \"square\" | undefined"
+    },
+    {
+      "name": "lineJoin",
+      "required": false,
+      "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+    },
+    {
+      "name": "miterLimit",
+      "required": false,
+      "type": "number | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createRegressionBand({ id, data, x, lower, upper, coordinate, xScale, yScale })"
+  ],
+  "snippet": "program.createRegressionBand({ id: \"regression-band-1\", data: \"data-1\", x: \"x\", lower: \"lower\", upper: \"upper\", coordinate: \"coordinate-1\", xScale: \"x-scale\", yScale: \"y-scale\" })",
+  "errors": [],
+  "route": "/reference/actions/statistics/#createregressionband"
+}

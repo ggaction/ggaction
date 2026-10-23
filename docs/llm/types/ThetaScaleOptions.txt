@@ -1,0 +1,14 @@
+export interface ThetaScaleOptions {
+  id?: string;
+  type?: "linear" | "time" | "band" | "point";
+  domain?: "auto" | readonly unknown[];
+  range?: "auto" | readonly [number, number];
+  nice?: boolean;
+  zero?: boolean;
+  clamp?: boolean;
+  reverse?: boolean;
+  paddingInner?: number;
+  paddingOuter?: number;
+  padding?: number;
+  align?: number;
+}

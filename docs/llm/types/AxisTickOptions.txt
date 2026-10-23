@@ -1,0 +1,11 @@
+export interface AxisTickOptions<P extends string>
+  extends CartesianAxisTickStyleOptions {
+  /** Axis resource identity; omission prefers canonical, then a unique named owner. */
+  target?: string;
+  scale?: string;
+  position?: P;
+  count?: number;
+  rounding?: AxisTickRounding;
+  values?: readonly AxisValue[];
+}
+/** Cartesian label maps use typed category values or finite numeric/timestamp keys on continuous scales. Empty mapped labels are omitted without removing ticks. */

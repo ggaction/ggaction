@@ -1,0 +1,33 @@
+export type DatasetWindowOperation =
+  | { readonly op: "rowNumber" | "rank" | "denseRank"; readonly as: string }
+  | {
+      readonly op: "cumulativeSum";
+      readonly field: string;
+      readonly as: string;
+    }
+  | {
+      readonly op: "lag" | "lead";
+      readonly field: string;
+      readonly as: string;
+      readonly offset: number;
+      readonly default: unknown;
+    }
+  | {
+      readonly op: "movingMean" | "movingSum";
+      readonly field: string;
+      readonly as: string;
+      readonly frame:
+        | {
+            readonly preceding: number;
+            readonly following: number;
+          }
+        | {
+            readonly duration: {
+              readonly preceding: number;
+              readonly following: number;
+              readonly unit: DurationWindowUnit;
+            };
+          };
+      readonly minPeriods: number;
+      readonly missing: "error" | "skip";
+    };

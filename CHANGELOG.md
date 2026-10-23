@@ -4,6 +4,10 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Correct documentation examples, recovery ordering, conditional defaults, data-refresh guidance, and action-card prerequisites; execute additional examples and pin contextual exceptions.
+- Publish the complete declaration dependency graph, all runtime entry references, and selective LLM page/action/type artifacts with shared identity and hashes.
+- Improve task search, navigation affordances, source editing links, and first-run documentation; replace the README animation with the paper's Nightingale rose sequence.
+
 ## [0.0.22] - 2026-10-23
 
 - Add opt-in plot clipping to supported Cartesian mark layers, with native/SVG/PNG/PDF parity and immutable owner replay.

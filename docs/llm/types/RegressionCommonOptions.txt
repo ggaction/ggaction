@@ -1,0 +1,9 @@
+type RegressionCommonOptions = {
+  target?: string;
+  x?: string;
+  y?: string;
+  groupBy?: string | false;
+  line?: StrokeStyleDetails & { strokeWidth?: number; curve?: CurveInterpolation };
+  sourceBinding?: "fixed" | "follow";
+  missing?: "error" | "drop";
+};

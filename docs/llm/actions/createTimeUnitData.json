@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 3,
+  "name": "createTimeUnitData",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Create an immutable row-preserving dataset with one UTC or IANA-zone calendar bucket timestamp, including week, or a nominal local weekday field.",
+  "signature": "createTimeUnitData(options: TimeUnitDataOptions): ChartProgram;",
+  "intents": [
+    "create time unit data",
+    "create",
+    "add",
+    "chart setup",
+    "data and scales",
+    "date bucket",
+    "UTC time unit"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "source dataset"
+    ],
+    "owns": [
+      "date bucket"
+    ],
+    "idOptions": [
+      "id",
+      "source"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "createDerivedData"
+  ],
+  "editableVia": [
+    "editTimeUnitData"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "unit",
+      "unit": "calendar-unit"
+    },
+    {
+      "path": "temporalUnit",
+      "unit": "temporal-input"
+    }
+  ],
+  "inference": [
+    {
+      "input": "source",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "source dataset"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "source",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "field",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "temporalUnit",
+      "required": false,
+      "type": "TemporalInputUnit | undefined"
+    },
+    {
+      "name": "as",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "timeZone",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "unit",
+      "required": true,
+      "type": "\"day\" | \"hour\" | \"minute\" | \"month\" | \"quarter\" | \"second\" | \"week\" | \"weekday\" | \"year\""
+    },
+    {
+      "name": "weekStartsOn",
+      "required": false,
+      "type": "0 | 1 | 2 | 3 | 4 | 5 | 6 | undefined"
+    },
+    {
+      "name": "weekRule",
+      "required": false,
+      "type": "\"calendar\" | \"iso\" | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createTimeUnitData({ id, field, unit, source?, temporalUnit?, as?, timeZone?, weekStartsOn? })"
+  ],
+  "snippet": "program.createTimeUnitData({ id: \"time-unit-data-1\", field: \"value\", unit: \"month\" })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#createtimeunitdata"
+}

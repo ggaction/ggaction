@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 3,
+  "name": "encodeParallelCoordinates",
+  "layer": "user-facing",
+  "domain": "encodings",
+  "summary": "Atomically assign ordered dimensions and their local scales to one line mark.",
+  "signature": "encodeParallelCoordinates(options: ParallelCoordinatesEncodingOptions): ChartProgram;",
+  "intents": [
+    "encode parallel coordinates",
+    "encode",
+    "map field",
+    "visual encoding",
+    "field mapping",
+    "parallel coordinates",
+    "multiple dimensions"
+  ],
+  "lifecycle": "Assignment",
+  "resources": {
+    "prerequisites": [
+      "target mark"
+    ],
+    "owns": [
+      "parallel coordinates assignment"
+    ],
+    "idOptions": [
+      "target",
+      "coordinate"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editSemantic",
+    "createScale"
+  ],
+  "editableVia": [
+    "removeEncoding"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "target mark"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "dimensions",
+      "required": true,
+      "type": "readonly [ParallelDimension, ParallelDimension, ...ParallelDimension[]]"
+    },
+    {
+      "name": "key",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "missing",
+      "required": false,
+      "type": "ParallelMissingPolicy | undefined"
+    }
+  ],
+  "callPatterns": [
+    "encodeParallelCoordinates({ dimensions, target?, coordinate?, key?, missing? })"
+  ],
+  "snippet": "program.encodeParallelCoordinates({ dimensions: [\"a\", \"b\"] })",
+  "errors": [],
+  "route": "/reference/actions/encodings/#encodeparallelcoordinates"
+}

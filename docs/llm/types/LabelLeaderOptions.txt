@@ -1,0 +1,6 @@
+export interface LabelLeaderOptions {
+  stroke?: string;
+  strokeWidth?: number;
+  strokeDash?: readonly number[];
+  opacity?: number;
+}

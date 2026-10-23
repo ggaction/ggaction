@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 3,
+  "name": "encodePointRadius",
+  "layer": "user-facing",
+  "domain": "encodings",
+  "summary": "Apply a constant point glyph radius through a traced encodeRadius child.",
+  "signature": "encodePointRadius(options: { value: number; target?: string }): ChartProgram;",
+  "intents": [
+    "encode point radius",
+    "encode",
+    "map field",
+    "visual encoding",
+    "field mapping",
+    "point radius",
+    "symbol radius"
+  ],
+  "lifecycle": "Assignment",
+  "resources": {
+    "prerequisites": [
+      "target mark"
+    ],
+    "owns": [
+      "point radius assignment"
+    ],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "encodeRadius"
+  ],
+  "editableVia": [
+    "removePointRadius"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default",
+      "basic"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "target mark"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "value",
+      "required": true,
+      "type": "number"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    }
+  ],
+  "callPatterns": [
+    "encodePointRadius({ value, target? })"
+  ],
+  "snippet": "program.encodePointRadius({ value: 1 })",
+  "errors": [],
+  "route": "/reference/actions/encodings/#encodepointradius"
+}

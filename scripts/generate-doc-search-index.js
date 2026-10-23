@@ -15,22 +15,23 @@ const chartCatalogFile = path.join(docsRoot, "_data/chart_examples.yml");
 const outputFile = path.join(docsRoot, "search-index.json");
 
 const SEARCH_ALIASES = new Map([
+  ["/api/series/color/", ["change colors", "change color", "color palette"]],
   ["/recipes/compare-weighted-distributions/", ["weighted histogram", "weighted KDE", "weighted ECDF"]],
   ["/api/data/missing-data/", ["missing values", "missing keys", "complete", "impute"]],
   ["/accessibility/", ["accessible chart", "aria label", "alt text", "accessible svg"]],
   ["/responsive-charts/", ["responsive canvas", "responsive chart", "ResizeObserver", "retina", "device pixel ratio"]],
   ["/performance/", ["large dataset", "large chart", "render benchmark", "allocation limit"]],
-  ["/data-updates/", ["live data", "streaming data", "replace data", "refresh chart"]],
+  ["/data-updates/", ["update data", "live data", "streaming data", "replace data", "refresh chart"]],
   ["/errors-and-recovery/", ["error handling", "TypeError", "RangeError", "recovery"]],
   ["/compatibility/", ["browser support", "Node 20", "Node 22", "Node 24", "ESM only", "CommonJS"]],
   ["/fonts/", ["web font", "font loading", "font fallback", "font family"]],
   ["/typescript/", ["TypeScript setup", "strict types", "declaration file"]],
-  ["/api/axes/", ["axis label", "tick label", "axis title", "axis label rotation"]],
+  ["/api/axes/", ["change axis label", "axis label", "tick label", "axis title", "axis label rotation"]],
   ["/api/marks/text/", ["maxDisplacement", "label displacement", "collision labels"]],
   ["/api/scales/", ["logarithmic scale", "log scale", "scale precedence"]],
   ["/api/rendering/", [
     "PDFMetadata", "SVGRenderOptions", "resourceNamespace", "pixel ratio",
-    "high dpi", "retina", "serialize svg", "save svg"
+    "export svg", "high dpi", "retina", "serialize svg", "save svg"
   ]],
   ["/api/error-bars/", ["confidence interval", "uncertainty"]],
   ["/api/error-bands/", ["confidence interval", "uncertainty ribbon"]],
@@ -211,6 +212,7 @@ export async function buildDocSearchIndex() {
       pageTitle: page.title,
       url: page.url,
       kind: searchKind(page.url),
+      taskAliases: aliases(page.url),
       summary: summary(pageSummary),
       keywords: [
         page.title,
@@ -261,7 +263,7 @@ export async function buildDocSearchIndex() {
   }
   return entries.map(entry => ({
     ...entry,
-    keywords: [...new Set(entry.keywords)].slice(0, entry.actionName ? 40 : 24)
+    keywords: [...new Set(entry.keywords)].slice(0, entry.actionName ? 32 : 20)
   }));
 }
 

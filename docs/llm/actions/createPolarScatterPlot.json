@@ -1,0 +1,127 @@
+{
+  "schemaVersion": 3,
+  "name": "createPolarScatterPlot",
+  "layer": "user-facing",
+  "domain": "charts",
+  "summary": "Draws a complete Polar scatter plot that maps observations to angular and radial position while keeping glyph size independent.",
+  "signature": "createPolarScatterPlot(options: CreatePolarScatterPlotOptions): ChartProgram;",
+  "intents": [
+    "create polar scatter plot",
+    "create",
+    "add",
+    "complete chart",
+    "chart facade",
+    "polar scatter plot",
+    "angular and radial relationship"
+  ],
+  "lifecycle": "Aggregate create-only",
+  "resources": {
+    "prerequisites": [
+      "canvas and dataset context"
+    ],
+    "owns": [
+      "polar scatter plot"
+    ],
+    "idOptions": [
+      "id",
+      "data",
+      "coordinate"
+    ]
+  },
+  "authoringRoles": [
+    "H0"
+  ],
+  "wraps": [
+    "createPointMark",
+    "encodeTheta",
+    "encodeR",
+    "encodePointRadius"
+  ],
+  "editableVia": [],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "data",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "complete",
+    "requires": [
+      "canvas and dataset context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "data",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "theta",
+      "required": true,
+      "type": "PolarThetaChannel"
+    },
+    {
+      "name": "radius",
+      "required": true,
+      "type": "PolarRadiusChannel"
+    },
+    {
+      "name": "color",
+      "required": false,
+      "type": "BasicColorChannel | undefined"
+    },
+    {
+      "name": "size",
+      "required": false,
+      "type": "BasicSizeChannel | undefined"
+    },
+    {
+      "name": "shape",
+      "required": false,
+      "type": "BasicShapeChannel | undefined"
+    },
+    {
+      "name": "point",
+      "required": false,
+      "type": "Omit<StrokeStyleDetails & { clip?: boolean | undefined; radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }, \"clip\"> | undefined"
+    },
+    {
+      "name": "guides",
+      "required": false,
+      "type": "false | PolarPointGuideOptions | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createPolarScatterPlot({ theta, radius })",
+    "createPolarScatterPlot({ theta, radius, color?, size?, shape?, guides? })"
+  ],
+  "snippet": "program.createPolarScatterPlot({ theta: \"angle\", radius: \"distance\" })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#createpolarscatterplot"
+}

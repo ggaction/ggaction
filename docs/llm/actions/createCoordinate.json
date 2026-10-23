@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 3,
+  "name": "createCoordinate",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Creates coordinate system for Cartesian or polar space.",
+  "signature": "createCoordinate(options?: CreateCoordinateOptions): ChartProgram;",
+  "intents": [
+    "create coordinate",
+    "create",
+    "add",
+    "chart setup",
+    "data and scales",
+    "coordinate system",
+    "Cartesian or polar space"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [],
+    "owns": [
+      "coordinate system"
+    ],
+    "idOptions": [
+      "id"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "editCoordinate",
+    "removeCoordinate"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default",
+      "basic"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "type",
+      "required": false,
+      "type": "\"cartesian\" | \"parallel\" | \"polar\" | undefined"
+    },
+    {
+      "name": "layers",
+      "required": false,
+      "type": "readonly string[] | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createCoordinate({ id?, type?, layers? })"
+  ],
+  "snippet": "program.createCoordinate({})",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#createcoordinate"
+}

@@ -1,6 +1,7 @@
+import { publicOptionDeclarations } from "./generate-doc-signatures.js";
 import { buildDocProvenance } from "./doc-provenance.js";
 import { createHash } from "node:crypto";
-import { access, readFile, writeFile } from "node:fs/promises";
+import { access, mkdir, readFile, writeFile } from "node:fs/promises";
 import {
   posix as pathPosix,
   relative as relativePath,
@@ -195,7 +196,7 @@ function routeToken(url) {
 }
 
 export async function buildConciseLlmDocumentation() {
-  const source = await readFile(conciseOutput, "utf8");
+  const source = await readFile(new URL("../docs/_sources/llms-index.md", import.meta.url), "utf8");
   const registry = await pageRegistry();
   const inventoryMarker = "## Machine-readable contracts and canonical page inventory";
   const curatedSource = source.split(inventoryMarker)[0].trimEnd();
@@ -220,6 +221,7 @@ export async function buildConciseLlmDocumentation() {
     "",
     inventoryMarker,
     "",
+    "- Selective plaintext pages, action cards, named type dependencies, and artifact identity: ./llm/index.json",
     "- Full bundle section manifest and hashes: ./llms-manifest.json",
     "- Typed compact action-card collection: ./actions.json",
     "- Action-card item schema: ./schemas/action-card.schema.json",
@@ -239,7 +241,7 @@ export async function buildConciseLlmDocumentation() {
   )].map(match => match[0]);
 
   for (const target of targets) {
-    if (/\.\/(?:llms-(?:full\.txt|manifest\.json)|actions\.json|intent-taxonomy\.json|mcp-resources\.json|schemas\/|types\/)/.test(target)) {
+    if (/\.\/(?:llms-(?:full\.txt|manifest\.json)|actions\.json|intent-taxonomy\.json|mcp-resources\.json|schemas\/|types\/|llm\/)/.test(target)) {
       continue;
     }
     const [route, fragment] = target.split("#");
@@ -329,11 +331,55 @@ export async function buildLlmManifest() {
   return llmManifest(await llmSections());
 }
 
+export async function buildSelectiveLlmArtifacts(context) {
+  context ??= await llmSections();
+  const files = [];
+  const hash = value => createHash("sha256").update(value).digest("hex");
+  const add = (path, content) => { files.push({ path, content }); return { path, bytes: Buffer.byteLength(content), sha256: hash(content) }; };
+  const pageMetadata = JSON.parse(await readFile(resolve(docsRoot, "_data/page_metadata.json"), "utf8"));
+  const pages = context.sections.map(section => {
+    const chunkPath = `llm/pages/${section.source.replace(/\.md$/, ".txt")}`;
+    const prefix = "../".repeat(chunkPath.split("/").length - 1);
+    const markdown = protectCode(section.markdown, text => text.replace(/(\]\()\.\//g, `$1${prefix}`));
+    return { route: section.route, source: `docs/${section.source}`,
+      editSource: pageMetadata[section.route].editSource, ...add(chunkPath, markdown + "\n") };
+  });
+  const declarations = await publicOptionDeclarations();
+  const types = [...declarations].map(([name, source]) => ({ name,
+    dependencies: [...new Set(source.match(/\b[A-Z][A-Za-z0-9]+\b/g) ?? [])].filter(other => other !== name && declarations.has(other)),
+    ...add(`llm/types/${name}.txt`, source + "\n") }));
+  const cardsSource = await readFile(new URL("../knowledge/action-cards.json", import.meta.url), "utf8");
+  const { cards } = JSON.parse(cardsSource);
+  const actions = cards.map(card => ({ name: card.name, route: card.route,
+    types: [...new Set(card.signature.match(/\b[A-Z][A-Za-z0-9]+\b/g) ?? [])].filter(name => declarations.has(name)),
+    ...add(`llm/actions/${card.name}.json`, JSON.stringify(card, null, 2) + "\n") }));
+  const artifacts = [];
+  for (const path of ["actions.json", "mcp-resources.json", "intent-taxonomy.json", "schemas/task-packet.schema.json", "schemas/action-card.schema.json", "types/program.d.ts"]) {
+    const content = await readFile(resolve(docsRoot, path), "utf8");
+    artifacts.push({ path, sha256: hash(content), bytes: Buffer.byteLength(content) });
+  }
+  const manifest = { schemaVersion: 1, packageVersion: context.packageVersion,
+    contractId: context.provenance.contractId,
+    identityPolicy: "Match contractId and artifact hashes before mixing page, card, type, or MCP resource data. Task packets must come from the same installed card/resource set; packageVersion alone is insufficient.",
+    artifacts,
+    catalogs: Object.fromEntries(Object.entries({ pages, actions, types }).map(([kind, entries]) => [kind,
+      { count: entries.length, ...add(`llm/${kind}.json`, JSON.stringify(entries) + "\n") }])),
+    paths: { page: "llm/pages/<source-without-md>.txt", action: "llm/actions/<actionName>.json", type: "llm/types/<TypeName>.txt" } };
+  add("llm/index.json", JSON.stringify(manifest, null, 2) + "\n");
+  return files;
+}
+
 export async function generateFullLlmDocumentation() {
   const [concise, context] = await Promise.all([
     buildConciseLlmDocumentation(),
     llmSections()
   ]);
+  const chunks = await buildSelectiveLlmArtifacts(context);
+  for (const artifact of chunks) {
+    const target = resolve(docsRoot, artifact.path);
+    await mkdir(resolve(target, ".."), { recursive: true });
+    await writeFile(target, artifact.content);
+  }
   const full = fullDocumentation(context);
   const manifest = `${JSON.stringify(llmManifest(context), null, 2)}\n`;
   await Promise.all([

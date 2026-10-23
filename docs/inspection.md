@@ -21,6 +21,29 @@ import {
 } from "ggaction/inspection";
 ```
 
+## Complete inspection workflow
+
+Run as a Node.js ES module or in a browser bundler. No rendering context is needed.
+
+```javascript
+import { chart } from "ggaction";
+import { comparePrograms, getDatasetSchema, inspectProgram } from "ggaction/inspection";
+const before = chart().createCanvas()
+  .createData({ id: "sales", values: [{ x: 1, y: 2 }, { x: 2, y: 3 }] })
+  .createScatterPlot({ id: "points", x: "x", y: "y" });
+const after = before.editPointMark({ target: "points", opacity: 0.35 });
+const schema = getDatasetSchema(after, { data: "sales" });
+const comparison = comparePrograms(before, after);
+const report = inspectProgram(after, { target: { kind: "mark", id: "points" } });
+console.log(schema, comparison, report);
+console.log(before === after); // false: both revisions remain available
+console.log(after.graphicSpec.objects.points.items.every(item => item.properties.opacity === 0.35)); // true
+```
+
+The dataset still has two rows and the same x/y fields; the comparison reports a
+style change, and inspection reports the concrete point items. Inspect the returned
+coverage flags before making claims about pixel visibility.
+
 ## Read a dataset contract
 
 ```javascript

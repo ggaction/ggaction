@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 3,
+  "name": "removeMark",
+  "layer": "user-facing",
+  "domain": "marks",
+  "summary": "Remove one stable mark owner and its owned state while preserving source data and independently shared resources.",
+  "signature": "removeMark(options?: RemoveMarkOptions): ChartProgram;",
+  "intents": [
+    "remove mark",
+    "remove",
+    "delete",
+    "graphical mark",
+    "mark appearance",
+    "mark resource",
+    "semantic and graphical mark state"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing mark resource"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editSemantic",
+    "editGraphics"
+  ],
+  "editableVia": [],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing mark resource"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    }
+  ],
+  "callPatterns": [
+    "removeMark({ target? })"
+  ],
+  "snippet": "program.removeMark({})",
+  "errors": [],
+  "route": "/reference/actions/marks/#removemark"
+}

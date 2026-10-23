@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 3,
+  "name": "editDerivedData",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Edits derived dataset, including settings for stored transform provenance.",
+  "signature": "editDerivedData(options: EditDerivedDataOptions): ChartProgram;",
+  "intents": [
+    "edit derived data",
+    "edit",
+    "change",
+    "chart setup",
+    "data and scales",
+    "derived dataset",
+    "stored transform provenance"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing derived dataset",
+      "source dataset"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "createDerivedData"
+  ],
+  "editableVia": [
+    "editDerivedData"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing derived dataset",
+      "source dataset"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "definition",
+      "required": true,
+      "type": "RequestedDatasetTransform"
+    },
+    {
+      "name": "dependents",
+      "required": false,
+      "type": "DerivedDataDependents | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editDerivedData({ target, definition, dependents? })"
+  ],
+  "snippet": "program.editDerivedData({ target: \"computed\", definition: { type: \"computed\", as: \"result\", expression: { field: \"value\" } } })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#editderiveddata"
+}

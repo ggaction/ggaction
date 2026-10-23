@@ -1,0 +1,7 @@
+export interface DatasetWindowTransform {
+  readonly type: "window";
+  readonly partitionBy: readonly string[];
+  readonly sortBy: readonly DatasetWindowSort[];
+  readonly operations: readonly DatasetWindowOperation[];
+  readonly temporalUnit?: TemporalInputUnit;
+}

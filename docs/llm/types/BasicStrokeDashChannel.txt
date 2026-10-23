@@ -1,0 +1,4 @@
+export type BasicStrokeDashChannel =
+  StrokeDashEncodingOptions extends infer T
+    ? T extends unknown ? Omit<T, "target"> : never
+    : never;

@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 3,
+  "name": "createFlattenData",
+  "layer": "user-facing",
+  "domain": "statistics",
+  "summary": "Expand parallel array columns into index-aligned rows; shorter arrays pad with null.",
+  "signature": "createFlattenData(options: FlattenDataOptions): ChartProgram;",
+  "intents": [
+    "create flatten data",
+    "create",
+    "add",
+    "statistical layer",
+    "statistical transform",
+    "aligned array data",
+    "parallel array expansion"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "source dataset"
+    ],
+    "owns": [
+      "aligned array data"
+    ],
+    "idOptions": [
+      "id",
+      "source"
+    ]
+  },
+  "authoringRoles": [
+    "H1"
+  ],
+  "wraps": [
+    "createDerivedData"
+  ],
+  "editableVia": [
+    "editFlattenData"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default",
+      "basic"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "source",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "source dataset"
+    ],
+    "allowsEmpty": true
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "source",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "fields",
+      "required": true,
+      "type": "readonly string[]"
+    },
+    {
+      "name": "as",
+      "required": false,
+      "type": "readonly string[] | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createFlattenData({ id, fields, source?, as? })"
+  ],
+  "snippet": "program.createFlattenData({ id: \"expanded\", fields: [\"amounts\", \"labels\"], as: [\"amount\", \"label\"] })",
+  "errors": [],
+  "route": "/reference/actions/statistics/#createflattendata"
+}

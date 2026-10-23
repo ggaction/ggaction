@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 3,
+  "name": "editLegendBorder",
+  "layer": "user-facing",
+  "domain": "legend_and_title",
+  "summary": "Adds, removes, or styles the border around one legend.",
+  "signature": "editLegendBorder(options: EditLegendBorderOptions): ChartProgram;",
+  "intents": [
+    "edit legend border",
+    "edit",
+    "change",
+    "legend or title",
+    "chart annotation",
+    "legend border",
+    "legend frame"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing legend border",
+      "compatible scale or encoding context"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editLegend"
+  ],
+  "editableVia": [
+    "editLegendBorder"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing legend border",
+      "compatible scale or encoding context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "channel",
+      "required": false,
+      "type": "\"color\" | \"opacity\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\" | undefined"
+    },
+    {
+      "name": "border",
+      "required": true,
+      "type": "boolean | LegendBorderOptions"
+    }
+  ],
+  "callPatterns": [
+    "editLegendBorder({ border, target?, channel? })"
+  ],
+  "snippet": "program.editLegendBorder({ border: true })",
+  "errors": [],
+  "route": "/reference/actions/guides/#editlegendborder"
+}

@@ -216,6 +216,8 @@ lifecycle because changing only one layer would break the resource.
 
 ## `createSummaryData({ id, source?, groupBy?, aggregates, members?, weight? })` {#createsummarydata-id-source-groupby-aggregates-members}
 
+This heading shows common options. For the full callable contract and all branches, see [`createSummaryData`](../../reference/actions/statistics.md#createsummarydata) and the [exact declarations](../../reference/types.md).
+
 See [Summaries, Bins, and Data Shaping](./summaries-and-shaping.md#createsummarydata-id-source-groupby-aggregates-members) for this contract and its examples.
 
 ## `createBinData({ id, source?, field, ...binOptions })` {#createbindata-id-source-field-binoptions}

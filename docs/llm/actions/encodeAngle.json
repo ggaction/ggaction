@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 3,
+  "name": "encodeAngle",
+  "layer": "user-facing",
+  "domain": "encodings",
+  "summary": "Maps a constant or quantitative field to point or tick rotation angle.",
+  "signature": "encodeAngle(options: AngleEncodingOptions): ChartProgram;",
+  "intents": [
+    "encode angle",
+    "encode",
+    "map field",
+    "visual encoding",
+    "field mapping",
+    "angle",
+    "point or tick rotation"
+  ],
+  "lifecycle": "Assignment",
+  "resources": {
+    "prerequisites": [
+      "target mark",
+      "field mode: dataset field"
+    ],
+    "owns": [
+      "angle assignment"
+    ],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "removeEncoding"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "target mark",
+      "field mode: dataset field"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "value",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "field",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "fieldType",
+      "required": false,
+      "type": "\"quantitative\" | undefined"
+    }
+  ],
+  "callPatterns": [
+    "encodeAngle({ target?, value })",
+    "encodeAngle({ target?, field, fieldType? })"
+  ],
+  "snippet": "program.encodeAngle({ value: 45 })",
+  "errors": [
+    {
+      "error": "Both value and field are supplied.",
+      "fix": "Choose a constant angle or a quantitative field, not both."
+    }
+  ],
+  "route": "/reference/actions/encodings/#encodeangle"
+}

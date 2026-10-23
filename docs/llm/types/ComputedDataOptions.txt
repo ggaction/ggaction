@@ -1,0 +1,6 @@
+export interface ComputedDataOptions {
+  id: string;
+  source?: string;
+  as: string;
+  expression: ComputedExpression;
+}

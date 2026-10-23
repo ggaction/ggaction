@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 3,
+  "name": "editYAxisLine",
+  "layer": "user-facing",
+  "domain": "axes",
+  "summary": "Edits y-axis line, including settings for vertical baseline.",
+  "signature": "editYAxisLine(options?: AxisLineStyleOptions & { target?: string; position?: YAxisPosition }): ChartProgram;",
+  "intents": [
+    "edit y axis line",
+    "edit",
+    "change",
+    "axis guide",
+    "scale annotation",
+    "y-axis line",
+    "vertical baseline"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing y-axis line",
+      "compatible scale or encoding context"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editGraphics"
+  ],
+  "editableVia": [
+    "editYAxisLine"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "lineWidth",
+      "unit": "logical-pixel"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing y-axis line",
+      "compatible scale or encoding context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "color",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "lineWidth",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "position",
+      "required": false,
+      "type": "YAxisPosition | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editYAxisLine({ target?, color?, lineWidth?, position? })"
+  ],
+  "snippet": "program.editYAxisLine({ color: \"#f28e2b\" })",
+  "errors": [],
+  "route": "/reference/actions/guides/#edityaxisline"
+}

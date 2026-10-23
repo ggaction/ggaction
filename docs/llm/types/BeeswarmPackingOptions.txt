@@ -1,0 +1,6 @@
+export interface BeeswarmPackingOptions {
+  maxOffset?: PointPackingMaxOffset;
+  padding?: number;
+  key?: string;
+  overflow?: "error" | "overlap";
+}

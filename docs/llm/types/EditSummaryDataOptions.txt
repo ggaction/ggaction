@@ -1,0 +1,4 @@
+export type EditSummaryDataOptions = FocusedWeightedDerivedDataEdit<
+  SummaryDataOptions,
+  StatisticalWeight
+>;

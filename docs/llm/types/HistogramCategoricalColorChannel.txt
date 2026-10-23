@@ -1,0 +1,9 @@
+type HistogramCategoricalColorChannel =
+  | string
+  | {
+      field: string;
+      fieldType?: "nominal" | "ordinal";
+      scale?: NonPointCategoricalColorScaleOptions;
+      palette?: Palette;
+      layout?: Exclude<ColorLayout, "center">;
+    };

@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 3,
+  "name": "createData",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Create one immutable named dataset.",
+  "signature": "createData<Row extends object>(options: CreateDataOptions<Row>): ChartProgram;",
+  "intents": [
+    "create data",
+    "create",
+    "add",
+    "chart setup",
+    "data and scales",
+    "dataset",
+    "rows"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [],
+    "owns": [
+      "dataset"
+    ],
+    "idOptions": [
+      "id"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "removeData"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default",
+      "basic"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [],
+    "allowsEmpty": true
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "values",
+      "required": true,
+      "type": "readonly (Row extends readonly unknown[] ? never : Row & StoredCell<Row>)[]"
+    },
+    {
+      "name": "schema",
+      "required": false,
+      "type": "SourceSchemaInput | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createData({ values, id?, schema? })"
+  ],
+  "snippet": "program.createData({ values: [{ category: \"A\", value: 1 }] })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#createdata"
+}

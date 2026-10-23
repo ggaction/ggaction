@@ -1,0 +1,12 @@
+export interface FitCanvasOptions {
+  /** Minimum fitted margin on every Canvas edge. Defaults to 0. */
+  padding?: number;
+  /** Required final plot width. Defaults to 160. */
+  minPlotWidth?: number;
+  /** Required final plot height. Defaults to 120. */
+  minPlotHeight?: number;
+  /** Maximum binary-search probes per edge. Defaults to 32; maximum 64. */
+  iterationLimit?: number;
+  /** Reject an unsatisfied fit or preserve it with a structured overflow result. */
+  overflow?: "error" | "report";
+}

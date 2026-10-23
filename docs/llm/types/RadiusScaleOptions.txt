@@ -1,0 +1,13 @@
+export interface RadiusScaleOptions {
+  id?: string;
+  type?: "linear" | "log" | "pow" | "sqrt" | "symlog";
+  domain?: "auto" | readonly [number, number];
+  range?: "auto" | readonly [number, number];
+  nice?: boolean;
+  zero?: boolean;
+  clamp?: boolean;
+  reverse?: boolean;
+  base?: number;
+  exponent?: number;
+  constant?: number;
+}

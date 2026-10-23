@@ -1,0 +1,144 @@
+{
+  "schemaVersion": 3,
+  "name": "facet",
+  "layer": "user-facing",
+  "domain": "composition",
+  "summary": "Repeat one complete Cartesian, Polar, or Parallel chart by a field on its common row-preserving dataset ancestor.",
+  "signature": "facet(options: FacetOptions): ChartProgram;",
+  "intents": [
+    "facet",
+    "repeat chart",
+    "chart composition",
+    "small multiples",
+    "faceting"
+  ],
+  "lifecycle": "Aggregate create-only",
+  "resources": {
+    "prerequisites": [
+      "complete child chart program"
+    ],
+    "owns": [
+      "faceting"
+    ],
+    "idOptions": [
+      "id",
+      "data"
+    ]
+  },
+  "authoringRoles": [
+    "H0"
+  ],
+  "wraps": [],
+  "editableVia": [
+    "editFacetSource",
+    "editFacetHeaders",
+    "editFacetScales",
+    "editFacetGuides",
+    "editCompositionLayout"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "columns",
+      "unit": "count"
+    },
+    {
+      "path": "padding",
+      "unit": "logical-pixel"
+    }
+  ],
+  "inference": [
+    {
+      "input": "data",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "complete",
+    "requires": [
+      "complete child chart program"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "field",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "data",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "values",
+      "required": false,
+      "type": "readonly DatasetScalar[] | undefined"
+    },
+    {
+      "name": "columns",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "gap",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "align",
+      "required": false,
+      "type": "CompositionAlign | undefined"
+    },
+    {
+      "name": "padding",
+      "required": false,
+      "type": "number | CompositionPadding | undefined"
+    },
+    {
+      "name": "scales",
+      "required": false,
+      "type": "FacetScaleResolutions | undefined"
+    },
+    {
+      "name": "guides",
+      "required": false,
+      "type": "FacetGuideOptions | undefined"
+    },
+    {
+      "name": "headers",
+      "required": false,
+      "type": "FacetHeadersOptions | undefined"
+    },
+    {
+      "name": "spacing",
+      "required": false,
+      "type": "\"canvas\" | \"plot\" | undefined"
+    },
+    {
+      "name": "topLane",
+      "required": false,
+      "type": "FacetTopLaneMode | undefined"
+    }
+  ],
+  "callPatterns": [
+    "facet({ field, id?, data?, values?, columns?, gap?, align?, padding? })"
+  ],
+  "snippet": "program.facet({ field: \"value\" })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#facet"
+}

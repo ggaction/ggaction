@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 3,
+  "name": "filterData",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Create an immutable named derived dataset using exactly one membership, comparison, or range filter.",
+  "signature": "filterData(options: FilterDataOptions): ChartProgram;",
+  "intents": [
+    "filter data",
+    "filter",
+    "retain matching",
+    "chart setup",
+    "data and scales",
+    "dataset",
+    "rows"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "source dataset"
+    ],
+    "owns": [
+      "dataset"
+    ],
+    "idOptions": [
+      "id",
+      "source"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "createDerivedData"
+  ],
+  "editableVia": [
+    "editFilteredData"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "source",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "source dataset"
+    ],
+    "allowsEmpty": true
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "source",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "field",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "nulls",
+      "required": false,
+      "type": "\"exclude\" | \"include\" | undefined"
+    },
+    {
+      "name": "oneOf",
+      "required": false,
+      "type": "readonly [DatasetScalar, ...DatasetScalar[]] | undefined"
+    },
+    {
+      "name": "noneOf",
+      "required": false,
+      "type": "readonly [DatasetScalar, ...DatasetScalar[]] | undefined"
+    },
+    {
+      "name": "predicate",
+      "required": false,
+      "type": "FilterComparison | undefined"
+    },
+    {
+      "name": "range",
+      "required": false,
+      "type": "FilterRange | undefined"
+    }
+  ],
+  "callPatterns": [
+    "filterData({ id, field, predicate })",
+    "filterData({ id, field, oneOf | range })"
+  ],
+  "snippet": "program.filterData({ id: \"filtered\", field: \"value\", predicate: { op: \"gt\", value: 0 } })",
+  "errors": [
+    {
+      "error": "More or fewer than one of oneOf, predicate, and range is supplied.",
+      "fix": "Choose exactly one filter mode."
+    }
+  ],
+  "route": "/reference/actions/charts-data/#filterdata"
+}

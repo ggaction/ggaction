@@ -1,0 +1,5 @@
+export type RugGuideOptions = Omit<CartesianGuideOptions, "axes" | "legend" | "grid"> & {
+  axes?: false | CAxes;
+  grid?: false | ContinuousCartesianGridOptions;
+  legend?: false;
+};

@@ -1,0 +1,11 @@
+export type CategoryOrder =
+  | {
+      values: readonly CategoryValue[];
+      by?: never;
+      direction?: never;
+    }
+  | {
+      values?: never;
+      by: "category" | "count" | CategoryOrderSummary;
+      direction?: "ascending" | "descending";
+    };

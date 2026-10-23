@@ -1,0 +1,98 @@
+# ggaction
+ggaction is a JavaScript chart-authoring library built around immutable,
+hierarchical actions. Use this file as a routing index. The linked selective
+HTML routes are canonical; the generated full-text bundle is available at
+./llms-full.txt
+
+## Start
+
+- Development/release status and exact source identity: ./version/
+
+- Documentation overview: ./
+- npm installation and first runnable chart: ./getting-started/
+- Local one-tool MCP for compact chart-authoring knowledge: ./mcp/
+- Bounded complete-program bootstrap and canonical capability IDs: ./llm-authoring/
+- Chart recipes: ./recipes/
+- Complete public action reference: ./reference/actions/
+- Supported features and limitations: ./supported-features/
+- Inference and layout troubleshooting: ./troubleshooting/
+
+## Public API layers
+
+- Basic scatter, line, bar, histogram, and heatmap charts: ./api/basic-charts/
+- Chart authoring: ./reference/actions/charts-data/
+- Advanced chart actions: ./reference/actions/advanced/
+- Extension action authoring: ./extension/action-authoring/
+- Primitive extension API: ./extension/primitives/
+- Canvas, SVG, PNG, and PDF rendering: ./api/rendering/
+- Data and scales: ./api/data/ | ./api/scales/
+- Legends and series encodings: ./api/legends/ | ./api/series-encodings/
+- Mark appearance, selection, and highlighting: ./api/appearance/
+- Vertical and horizontal statistical and explicit error bands: ./api/error-bands/
+- Vertical/horizontal Tukey and min–max box plots: ./api/box-plots/
+- Vertical/horizontal categorical gradient plots: ./api/gradient-plots/
+
+Only methods declared on the public ChartProgram TypeScript type are supported
+direct-call actions. Additional wrapped names may appear in action traces but
+are internal operations.
+
+## Chart recipes and tutorials
+
+- Scatterplot: ./recipes/scatterplot/ | ./tutorials/scatterplot/
+- Polar point chart: ./tutorials/polar-points/ | ./api/position-encodings/#polar-positions
+- Line chart: ./recipes/line-chart/ | ./tutorials/line-chart/
+- Histogram: ./recipes/histogram/ | ./tutorials/histogram/
+- Bar chart: ./recipes/bar-chart/ | ./tutorials/grouped-bar/
+- Heatmap: ./recipes/heatmap/ | ./api/basic-charts/#createheatmap
+- Regression scatterplot: ./recipes/regression-scatterplot/ | ./tutorials/regression-scatterplot/
+- Density area: ./recipes/density-area/ | ./tutorials/density-area/
+- Error bar: ./recipes/error-bar/ | ./tutorials/error-bar/
+- Mark selection and highlighting: ./tutorials/mark-selection/ | ./api/appearance/selection-and-highlighting/
+
+## Core concepts
+
+- Immutable ChartProgram: ./concepts/chart-program/
+- Semantic and graphical state: ./concepts/semantic-and-graphics/
+- Hierarchical action traces: ./concepts/actions-and-trace/
+
+## Essential invariants
+
+- Actions accept zero arguments or one option object according to their exact signature and returns a new ChartProgram.
+- Existing programs and caller-owned inputs are never mutated.
+- semanticSpec records chart meaning.
+- graphicSpec stores fully materialized backend-neutral graphics.
+- There is no automatic semantic-to-graphic compiler.
+- Domain actions explicitly invoke graphical materialization.
+- Renderers read graphicSpec only.
+- Omitted values are resolved as explicit option, unique inference, documented
+  default, then an error when no safe choice exists.
+- The first unnamed source dataset is stored as `"data"`; the first unnamed
+  point, line, bar, or area mark uses its type name. Repeated roles require an
+  explicit ID rather than receiving an automatic numeric suffix.
+
+## Runtime and support status
+
+- Exact program and renderer signatures: ./reference/runtime/
+- Exact ChartProgram action type: ./reference/types/
+- Browser Canvas, browser-safe SVG, Node PNG, and vector PDF share one
+  backend-neutral graphicSpec contract.
+- The package is ESM-only. Node entry points require Node.js 20 or later.
+
+
+For extension authors, the installed package includes `node_modules/ggaction/knowledge/extension-authoring.md`. Read that file alongside the installed declarations; it is a guide file, not an importable package entry.
+
+## Selective HTTP reading without MCP
+
+Fetch the small selective artifact manifest listed below first, then only the needed
+page, action, or type catalog. These catalogs list plaintext pages, one JSON card per action,
+and one declaration per named type with its dependencies. Read the task page,
+then only the selected action and its named option types. Follow dependencies
+until the chosen union branch is understood. The complete declaration graph is
+also distributed with the public type files.
+
+Pin one manifest's `contractId` and verify its SHA-256 hashes. Do not combine
+same-version artifacts from different branches. MCP packets should be obtained
+from the same installed card/resource set; a resolved packet still requires
+execution and numerical/layout validation. The MCP query limit is 500 characters:
+retain the original request in host context, split by task, and reconcile all
+requirements after resolving each part.

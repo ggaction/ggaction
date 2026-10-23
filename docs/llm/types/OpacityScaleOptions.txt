@@ -1,0 +1,11 @@
+export type OpacityScaleOptions = ScaleFields<
+  "id" | "zero" | "clamp" | "reverse"
+> & {
+  nice?: boolean;
+  type?: "linear";
+  domain?: "auto" | readonly [number, number];
+  range?: "auto" | readonly [number, number];
+  unknown?: number;
+};
+
+/** Constant or quantitative opacity on Point, Rule, Line, Bar, or row-owned Rect marks. */

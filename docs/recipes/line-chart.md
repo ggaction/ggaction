@@ -60,7 +60,7 @@ encodings. The line infers the shared fields, scales, and aggregate, so no
 second `encodeY` call is needed:
 
 ```javascript
-const layered = chart()
+const layered = chart().createCanvas()
   .createData({ values })
   .createBarMark({ id: "bars" })
   .encodeX({ field: "date", fieldType: "temporal" })

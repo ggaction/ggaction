@@ -1,0 +1,8 @@
+export interface SemanticDataset {
+  readonly id: string;
+  readonly schema: DatasetSchema;
+  readonly values?: readonly Readonly<Record<string, unknown>>[];
+  readonly source?: string;
+  readonly transform?: readonly Readonly<Record<string, unknown>>[];
+  readonly [key: string]: unknown;
+}

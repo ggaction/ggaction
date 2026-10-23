@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 3,
+  "name": "createStackData",
+  "layer": "user-facing",
+  "domain": "statistics",
+  "summary": "Materialize reusable start/end/value/share rows with the same stack math used by Bar and Area layouts.",
+  "signature": "createStackData(options: StackDataOptions): ChartProgram;",
+  "intents": [
+    "create stack data",
+    "create",
+    "add",
+    "statistical layer",
+    "statistical transform",
+    "stacked data",
+    "reusable stack endpoints and shares"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "source dataset"
+    ],
+    "owns": [
+      "stacked data"
+    ],
+    "idOptions": [
+      "id",
+      "source"
+    ]
+  },
+  "authoringRoles": [
+    "H1"
+  ],
+  "wraps": [
+    "createDerivedData"
+  ],
+  "editableVia": [
+    "editStackData"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "source",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "source dataset"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "source",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "category",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "group",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "value",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "mode",
+      "required": false,
+      "type": "StackDataMode | undefined"
+    },
+    {
+      "name": "as",
+      "required": false,
+      "type": "StackDataOutputFields | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createStackData({ category, group, value, id?, source?, mode?, as? })"
+  ],
+  "snippet": "program.createStackData({ id: \"stacked\", category: \"category\", group: \"series\", value: \"amount\" })",
+  "errors": [],
+  "route": "/reference/actions/statistics/#createstackdata"
+}

@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 3,
+  "name": "encodeStroke",
+  "layer": "user-facing",
+  "domain": "encodings",
+  "summary": "Assign a constant non-empty stroke color or map a categorical, quantitative, or temporal field to the outline of a Point, Line, Area, Bar, Rect, Arc, Rule, or Tick.",
+  "signature": "encodeStroke(options: StrokeEncodingOptions): ChartProgram;",
+  "intents": [
+    "encode stroke",
+    "encode",
+    "map field",
+    "visual encoding",
+    "field mapping",
+    "stroke color",
+    "outline"
+  ],
+  "lifecycle": "Assignment",
+  "resources": {
+    "prerequisites": [
+      "target mark",
+      "field mode: dataset field"
+    ],
+    "owns": [
+      "stroke color assignment"
+    ],
+    "idOptions": [
+      "target",
+      "scale"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editSemantic",
+    "createScale"
+  ],
+  "editableVia": [
+    "removeEncoding"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "temporalUnit",
+      "unit": "temporal-input"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "scale",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "target mark",
+      "field mode: dataset field"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "value",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "field",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "fieldType",
+      "required": false,
+      "type": "\"nominal\" | \"ordinal\" | \"quantitative\" | \"temporal\" | undefined"
+    },
+    {
+      "name": "temporalUnit",
+      "required": false,
+      "type": "TemporalInputUnit | undefined"
+    },
+    {
+      "name": "scale",
+      "required": false,
+      "type": "ContinuousColorScaleOptions | DiscretizedColorScaleOptions | CategoricalColorScaleOptions | (Omit<...> & { ...; }) | undefined"
+    }
+  ],
+  "callPatterns": [
+    "encodeStroke({ target?, scale?, value?, field?, fieldType?, temporalUnit? })"
+  ],
+  "snippet": "program.encodeStroke({ value: \"#222222\" })",
+  "errors": [],
+  "route": "/reference/actions/encodings/#encodestroke"
+}

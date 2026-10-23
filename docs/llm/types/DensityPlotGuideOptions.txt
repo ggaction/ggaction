@@ -1,0 +1,4 @@
+export type DensityPlotGuideOptions = Omit<CCategoricalGuides, "legend" | "grid"> & {
+  grid?: false | ContinuousCartesianGridOptions;
+  legend?: false | DensityPlotLegendOptions;
+};

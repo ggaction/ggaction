@@ -1,0 +1,12 @@
+export type ParallelAxisComponentsOptions = {
+  field: string;
+  target?: string;
+  line?: false | AxisLineStyleOptions;
+  title?: false | ParallelAxisTitleOptions;
+} & (
+  | { ticksAndLabels?: false | (ParallelAxisTickSelection & {
+      ticks?: AxisTickStyleOptions; labels?: AxisLabelStyleOptions;
+    }); ticks?: never; labels?: never }
+  | { ticks?: false | ParallelAxisTicksOptions; labels?: false | ParallelAxisLabelsOptions;
+      ticksAndLabels?: never }
+);

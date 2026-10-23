@@ -44,10 +44,20 @@
       >
         {%- include breadcrumbs.html -%}
         <p class="docs-release-status">{{ site.data.provenance.status | capitalize }} documentation ·
-          <a href="{{ '/version/' | relative_url }}">{{ site.data.provenance.actionCount }} actions; release compatibility</a> ·
-          <span title="{{ site.data.provenance.contractId }}">contract {{ site.data.provenance.contractId | slice: 7, 12 }}</span>
+          <a href="{{ '/version/' | relative_url }}">release compatibility</a>
         </p>
         {{ content }}
+        {% assign page_meta = site.data.page_metadata[page.url] %}
+        {% if page_meta.source %}
+        <nav aria-label="Page contribution links">
+          <a href="{{ site.repository_url }}/blob/main/{{ page_meta.source }}">Page source</a> ·
+          <a href="{{ site.repository_url }}/edit/main/{{ page_meta.editSource }}">Edit authoritative source</a> ·
+          <a href="{{ site.repository_url }}/issues/new?title=Documentation%3A%20{{ page.title | url_encode }}">Report a documentation issue</a>
+        </nav>
+        {% endif %}
+        <details><summary>Documentation provenance</summary>
+          <p>{{ site.data.provenance.actionCount }} actions · {{ site.data.provenance.contractId }}</p>
+        </details>
         {%- include page-navigation.html -%}
       </main>
     </div>

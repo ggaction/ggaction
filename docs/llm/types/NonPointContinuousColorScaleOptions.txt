@@ -1,0 +1,12 @@
+export type NonPointContinuousColorScaleOptions = ScaleFields<
+  "id" | "interpolate" | "whitePoint" | "gamma" | "midpoint" | "clamp" | "reverse"
+> & {
+  base?: number;
+  constant?: number;
+  domain?: "auto" | readonly [unknown, unknown];
+  range?: "auto" | readonly [string, string, ...string[]] | { readonly palette: Palette };
+  palette?: Palette;
+} & (
+  | { type: "pow"; exponent?: number }
+  | { type?: "sequential" | "log" | "sqrt" | "symlog"; exponent?: never }
+);

@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 3,
+  "name": "editRadialAxisLine",
+  "layer": "user-facing",
+  "domain": "axes",
+  "summary": "Edit the radial baseline style.",
+  "signature": "editRadialAxisLine(options?: AxisLineStyleOptions): ChartProgram;",
+  "intents": [
+    "edit radial axis line",
+    "edit",
+    "change",
+    "axis guide",
+    "scale annotation",
+    "radial-axis line",
+    "polar baseline"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing radial-axis line",
+      "compatible scale or encoding context"
+    ],
+    "owns": [],
+    "idOptions": []
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editGraphics"
+  ],
+  "editableVia": [
+    "editRadialAxisLine"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "lineWidth",
+      "unit": "logical-pixel"
+    }
+  ],
+  "inference": [],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing radial-axis line",
+      "compatible scale or encoding context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "color",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "lineWidth",
+      "required": false,
+      "type": "number | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editRadialAxisLine({ color?, lineWidth? })"
+  ],
+  "snippet": "program.editRadialAxisLine({ color: \"#f28e2b\" })",
+  "errors": [],
+  "route": "/reference/actions/guides/#editradialaxisline"
+}

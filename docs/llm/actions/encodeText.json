@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 3,
+  "name": "encodeText",
+  "layer": "user-facing",
+  "domain": "encodings",
+  "summary": "Assign exactly one field, constant value, or semantic content to a text mark.",
+  "signature": "encodeText(options: TextEncodingOptions): ChartProgram;",
+  "intents": [
+    "encode text",
+    "encode",
+    "map field",
+    "visual encoding",
+    "field mapping",
+    "text content",
+    "data-driven labels"
+  ],
+  "lifecycle": "Assignment",
+  "resources": {
+    "prerequisites": [
+      "target mark",
+      "field mode: dataset field"
+    ],
+    "owns": [
+      "text content assignment"
+    ],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "removeEncoding"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "target mark",
+      "field mode: dataset field"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "format",
+      "required": false,
+      "type": "ValueFormat | undefined"
+    },
+    {
+      "name": "field",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "value",
+      "required": false,
+      "type": "unknown"
+    },
+    {
+      "name": "content",
+      "required": false,
+      "type": "\"category\" | \"share\" | \"value\" | undefined"
+    },
+    {
+      "name": "normalizeBy",
+      "required": false,
+      "type": "\"category\" | \"source\" | undefined"
+    }
+  ],
+  "callPatterns": [
+    "encodeText({ target?, format?, field?, value?, content?, normalizeBy? })"
+  ],
+  "snippet": "program.encodeText({ field: \"label\" })",
+  "errors": [],
+  "route": "/reference/actions/encodings/#encodetext"
+}

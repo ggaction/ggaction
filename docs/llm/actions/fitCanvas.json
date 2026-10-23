@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 3,
+  "name": "fitCanvas",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Fit an existing Full unit chart by shrinking its margins on a fixed Canvas.",
+  "signature": "fitCanvas(options?: FitCanvasOptions): ChartProgram;",
+  "intents": [
+    "fit canvas",
+    "layout",
+    "avoid overlap",
+    "chart setup",
+    "data and scales",
+    "canvas",
+    "chart size"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing canvas"
+    ],
+    "owns": [
+      "canvas"
+    ],
+    "idOptions": []
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editCanvas"
+  ],
+  "editableVia": [
+    "fitCanvas"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "padding",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "minPlotWidth",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "minPlotHeight",
+      "unit": "logical-pixel"
+    }
+  ],
+  "inference": [],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing canvas"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "padding",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "minPlotWidth",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "minPlotHeight",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "iterationLimit",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "overflow",
+      "required": false,
+      "type": "\"error\" | \"report\" | undefined"
+    }
+  ],
+  "callPatterns": [
+    "fitCanvas({ padding?, minPlotWidth?, minPlotHeight?, iterationLimit?, overflow? })"
+  ],
+  "snippet": "program.fitCanvas({ padding: 1 })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#fitcanvas"
+}

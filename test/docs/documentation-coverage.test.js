@@ -196,3 +196,83 @@ test("weighted distribution recipes preserve mass and separate density from cumu
   for (const [i, expected] of [0, 1 / 6, 4 / 6, 1].entries()) assert.ok(Math.abs(probabilities[i] - expected) < 1e-12);
   assert.equal(ecdf.graphicSpec.objects.yAxisTitle.properties.text, "Cumulative probability");
 });
+
+test("every public JavaScript block is executable, generated, or a reviewed hash-pinned contextual exception", async () => {
+  const { publicSnippetCoverage } = await import("../../scripts/doc-snippet-coverage.js");
+  const records = await publicSnippetCoverage();
+  const exceptions = JSON.parse(await read("docs/_data/snippet_exceptions.json"));
+  const remaining = new Map(exceptions.map(entry => [entry.id, entry]));
+  assert.equal(remaining.size, exceptions.length);
+  for (const record of records) {
+    if (record.executable || record.generated) continue;
+    const exception = remaining.get(record.id);
+    assert.ok(exception, `Register execution or a specific contextual exception: ${record.id}`);
+    assert.equal(exception.sha256, record.sha256, `Changed example needs execution/context review: ${record.id}`);
+    assert.equal(exception.owner, record.file);
+    assert.ok(exception.reason.length > 50);
+    remaining.delete(record.id);
+  }
+  assert.equal(remaining.size, 0, "Remove stale snippet exceptions");
+});
+
+test("selective LLM artifacts retain current content, dependency routes, and shared identity", async () => {
+  const { buildSelectiveLlmArtifacts } = await import("../../scripts/generate-llm-docs.js");
+  const artifacts = await buildSelectiveLlmArtifacts();
+  for (const artifact of artifacts) assert.equal(await read(`docs/${artifact.path}`), artifact.content, artifact.path);
+  const index = JSON.parse(artifacts.find(artifact => artifact.path === "llm/index.json").content);
+  assert.equal(index.contractId, (await buildDocProvenance()).contractId);
+  assert.ok(Buffer.byteLength(JSON.stringify(index)) < 5000);
+  const types = JSON.parse(artifacts.find(artifact => artifact.path === index.catalogs.types.path).content);
+  const names = new Set(types.map(type => type.name));
+  for (const type of types) for (const dependency of type.dependencies) assert.ok(names.has(dependency));
+});
+
+test("all published declarations compile in isolation without skipLibCheck", async () => {
+  const { mkdtemp, cp, rm, writeFile } = await import("node:fs/promises");
+  const { tmpdir } = await import("node:os");
+  const directory = await mkdtemp(path.join(tmpdir(), "ggaction-doc-types-"));
+  try {
+    await cp(path.join(root, "docs/types"), directory, { recursive: true });
+    await writeFile(path.join(directory, "package.json"), '{"type":"module"}');
+    execFileSync(process.execPath, [path.join(root, "node_modules/typescript/bin/tsc"), "--noEmit", "--strict", "--module", "NodeNext", "--moduleResolution", "NodeNext", ... (await readdir(directory)).filter(file => file.endsWith(".d.ts")).map(file => path.join(directory, file))], { cwd: directory, stdio: "pipe" });
+  } finally { await rm(directory, { recursive: true, force: true }); }
+});
+
+test("each manifest module has an exact runtime reference and architecture owner", async () => {
+  const manifest = JSON.parse(await read("package.json"));
+  const reference = await read("docs/reference/runtime.md");
+  const architecture = await read("agent_docs/SECOND_ARCHITECTURE.md");
+  for (const [key, entry] of Object.entries(manifest.exports)) {
+    const name = key === "." ? "ggaction" : `ggaction/${key.slice(2)}`;
+    assert.ok(reference.includes(`#### \`${name}\``), name);
+    assert.ok(architecture.includes(entry.default.slice(2)), name);
+    assert.ok(architecture.includes(entry.types.slice(2)), name);
+  }
+});
+
+test("compatibility guidance follows the CI Node and browser matrix", async () => {
+  const ci = await read(".github/workflows/ci.yml");
+  const rendering = await read("docs/api/rendering.md");
+  const compatibility = await read("docs/compatibility.md");
+  const nodeVersions = ci.match(/node(?:-version)?: \[([^\]]+)\]/)?.[1].match(/\d+/g);
+  assert.ok(nodeVersions?.length);
+  for (const version of nodeVersions) assert.ok(rendering.includes(version));
+  for (const browser of ci.match(/browser: \[([^\]]+)\]/)[1].split(/,\s*/)) {
+    assert.ok(rendering.toLowerCase().includes(browser));
+    assert.ok(compatibility.toLowerCase().includes(browser));
+  }
+  for (const key of Object.keys(JSON.parse(await read("package.json")).exports)) {
+    const name = key === "." ? "ggaction" : `ggaction/${key.slice(2)}`;
+    assert.ok(compatibility.includes(`| \`${name}\``), name);
+  }
+});
+
+test("page editing links resolve to maintained sources including generated workflow owners", async () => {
+  const metadata = JSON.parse(await read("docs/_data/page_metadata.json"));
+  for (const page of Object.values(metadata)) {
+    assert.ok((await read(page.source)).length);
+    assert.ok((await read(page.editSource)).length);
+  }
+  assert.equal(metadata["/recipes/repair-missing-observations/"].editSource, "examples/repair-missing-observations/program.js");
+  assert.equal(metadata["/reference/runtime/"].editSource, "scripts/generate-doc-signatures.js");
+});

@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 3,
+  "name": "createStripPlot",
+  "layer": "user-facing",
+  "domain": "charts",
+  "summary": "Create a point strip from one measure or from one measure plus one categorical slot.",
+  "signature": "createStripPlot(options: CreateStripPlotOptions): ChartProgram;",
+  "intents": [
+    "create strip plot",
+    "create",
+    "add",
+    "complete chart",
+    "chart facade",
+    "strip plot",
+    "jittered observations"
+  ],
+  "lifecycle": "Aggregate create-only",
+  "resources": {
+    "prerequisites": [
+      "canvas and dataset context"
+    ],
+    "owns": [
+      "strip plot"
+    ],
+    "idOptions": [
+      "id",
+      "data",
+      "coordinate"
+    ]
+  },
+  "authoringRoles": [
+    "H0"
+  ],
+  "wraps": [
+    "createPointMark",
+    "encodeX",
+    "encodeY",
+    "encodePointRadius"
+  ],
+  "editableVia": [],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "data",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "complete",
+    "requires": [
+      "canvas and dataset context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "data",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "color",
+      "required": false,
+      "type": "BasicColorChannel | undefined"
+    },
+    {
+      "name": "size",
+      "required": false,
+      "type": "BasicSizeChannel | undefined"
+    },
+    {
+      "name": "shape",
+      "required": false,
+      "type": "BasicShapeChannel | undefined"
+    },
+    {
+      "name": "point",
+      "required": false,
+      "type": "(StrokeStyleDetails & { clip?: boolean | undefined; radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
+    },
+    {
+      "name": "guides",
+      "required": false,
+      "type": "false | CartesianGuideOptions | undefined"
+    },
+    {
+      "name": "x",
+      "required": true,
+      "type": "string | { field: string; fieldType?: \"quantitative\" | undefined; temporalUnit?: undefined; scale?: NonPointQuantitativePositionScaleOptions | undefined; } | { ...; } | { ...; }"
+    },
+    {
+      "name": "y",
+      "required": false,
+      "type": "string | { field: string; fieldType?: \"quantitative\" | undefined; temporalUnit?: undefined; scale?: NonPointQuantitativePositionScaleOptions | undefined; } | { ...; } | { ...; } | undefined"
+    },
+    {
+      "name": "jitter",
+      "required": false,
+      "type": "false | StripBandJitterOptions | StripPixelJitterOptions | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createStripPlot({ x, point?, jitter?, guides? })",
+    "createStripPlot({ x, y, color?, size?, shape?, point?, jitter?, guides? })"
+  ],
+  "snippet": "program.createStripPlot({ x: \"value\" })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#createstripplot"
+}

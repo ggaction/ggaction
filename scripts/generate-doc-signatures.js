@@ -98,11 +98,6 @@ async function declaration(relative) {
   return readFile(fileURLToPath(new URL(`../types/${relative}`, import.meta.url)), "utf8");
 }
 
-function functionsFrom(source, first) {
-  const start = source.indexOf(first);
-  if (start === -1) throw new Error(`Declaration block was not found: ${first}`);
-  return source.slice(start).trim();
-}
 
 function exportedDeclarations(source) {
   return source
@@ -111,32 +106,21 @@ function exportedDeclarations(source) {
 }
 
 export async function buildRuntimeSignatureSection() {
-  const [main, basic, svg, png, pdf, diagnostics, persistence] = await Promise.all([
-    declaration("index.d.ts"),
-    declaration("basic.d.ts"),
-    declaration("svg.d.ts"),
-    declaration("png.d.ts"),
-    declaration("pdf.d.ts"),
-    declaration("diagnostics.d.ts"),
-    declaration("persistence.d.ts")
-  ]);
-  const entries = [
-    ["ggaction", functionsFrom(main, "export function chart()")],
-    ["ggaction/basic", functionsFrom(basic, "export function chart()")],
-    ["ggaction/svg", exportedDeclarations(svg)],
-    ["ggaction/png", exportedDeclarations(png)],
-    ["ggaction/pdf", exportedDeclarations(pdf)],
-    ["ggaction/diagnostics", exportedDeclarations(diagnostics)],
-    ["ggaction/persistence", exportedDeclarations(persistence)]
-  ];
+  const manifest = JSON.parse(await readFile(new URL("../package.json", import.meta.url), "utf8"));
+  const entries = await Promise.all(Object.entries(manifest.exports).map(async ([entry, target]) => {
+    const source = await declaration(target.types.split("/").at(-1));
+    return [entry === "." ? "ggaction" : `ggaction/${entry.slice(2)}`, exportedDeclarations(source), target.types.split("/").at(-1)];
+  }));
   return [
     runtimeBegin,
     "### Exact TypeScript signatures",
     "",
     "These blocks are generated from the declaration file owned by each package entry.",
     "",
-    ...entries.flatMap(([name, source]) => [
+    ...entries.flatMap(([name, source, typeFile]) => [
       `#### \`${name}\``,
+      "",
+      `[Complete declaration and relative dependencies](../types/${typeFile})`,
       "",
       "```typescript",
       source,

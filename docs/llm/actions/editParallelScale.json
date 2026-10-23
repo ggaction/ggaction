@@ -1,0 +1,173 @@
+{
+  "schemaVersion": 3,
+  "name": "editParallelScale",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Edits parallel dimension scale, including settings for field-selected parallel scale.",
+  "signature": "editParallelScale(options: EditParallelScaleOptions): ChartProgram;",
+  "intents": [
+    "edit parallel scale",
+    "edit",
+    "change",
+    "chart setup",
+    "data and scales",
+    "parallel dimension scale",
+    "field-selected parallel scale"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing parallel dimension scale"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editScale"
+  ],
+  "editableVia": [
+    "editParallelScale"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "paddingInner",
+      "unit": "band-fraction"
+    },
+    {
+      "path": "paddingOuter",
+      "unit": "band-fraction"
+    },
+    {
+      "path": "align",
+      "unit": "ratio"
+    },
+    {
+      "path": "padding",
+      "unit": "band-fraction"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit"
+    },
+    {
+      "input": "domain",
+      "strategy": "documented-auto"
+    },
+    {
+      "input": "range",
+      "strategy": "documented-auto"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing parallel dimension scale"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "dimension",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "reverse",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "type",
+      "required": false,
+      "type": "\"band\" | \"linear\" | \"log\" | \"point\" | \"pow\" | \"sqrt\" | \"symlog\" | undefined"
+    },
+    {
+      "name": "domain",
+      "required": false,
+      "type": "\"auto\" | readonly unknown[] | readonly [number, number] | undefined"
+    },
+    {
+      "name": "range",
+      "required": false,
+      "type": "\"auto\" | readonly [number, number] | undefined"
+    },
+    {
+      "name": "unknown",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "paddingInner",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "paddingOuter",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "align",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "padding",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "zero",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "clamp",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "base",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "exponent",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "constant",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "nice",
+      "required": false,
+      "type": "boolean | LinearNiceCountOptions | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editParallelScale({ target, dimension, reverse?, type?, domain?, range?, unknown?, paddingInner? })"
+  ],
+  "snippet": "program.editParallelScale({ target: \"parallelLines\", dimension: \"amount\", reverse: true })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#editparallelscale"
+}

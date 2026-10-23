@@ -1,0 +1,26 @@
+export type DatasetIntervalTransform = {
+  type: "interval";
+  field: string;
+  groupBy: readonly string[];
+  as: DatasetIntervalOutputFields;
+  missing?: "error" | "drop";
+} & (
+  | {
+      center: "mean";
+      extent: "stderr" | "stdev";
+      method?: never;
+      level?: never;
+    }
+  | {
+      center: "mean";
+      extent: "ci";
+      method?: MeanConfidenceIntervalMethod;
+      level: number;
+    }
+  | {
+      center: "median";
+      extent: "iqr";
+      method?: never;
+      level?: never;
+    }
+);

@@ -1,0 +1,159 @@
+{
+  "schemaVersion": 3,
+  "name": "highlightMarks",
+  "layer": "user-facing",
+  "domain": "mark-selection",
+  "summary": "Select point, bar, line, area, arc, or rule items inline or reuse a stored selection, then apply mark-specific concrete emphasis, optional complement dimming, and selected-last order.",
+  "signature": "highlightMarks(options: HighlightMarksOptions): ChartProgram;",
+  "intents": [
+    "highlight marks",
+    "highlight",
+    "emphasize",
+    "mark selection",
+    "conditional emphasis",
+    "mark items",
+    "selected graphical items"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "target mark and selector operands"
+    ],
+    "owns": [
+      "mark items"
+    ],
+    "idOptions": [
+      "id",
+      "target",
+      "selection"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "selectMarks"
+  ],
+  "editableVia": [
+    "removeMarkHighlight"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "opacity",
+      "unit": "probability"
+    },
+    {
+      "path": "strokeWidth",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "offset",
+      "unit": "logical-pixel"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "selection",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "target mark and selector operands"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "select",
+      "required": false,
+      "type": "MarkSelector | undefined"
+    },
+    {
+      "name": "selection",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "color",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "opacity",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "fill",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "stroke",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "strokeWidth",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "strokeDash",
+      "required": false,
+      "type": "DashPattern | DashStyle | undefined"
+    },
+    {
+      "name": "shape",
+      "required": false,
+      "type": "PointShape | undefined"
+    },
+    {
+      "name": "size",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "offset",
+      "required": false,
+      "type": "{ x?: number | undefined; y?: number | undefined; } | undefined"
+    },
+    {
+      "name": "dimOthers",
+      "required": false,
+      "type": "boolean | { opacity?: number | undefined; } | undefined"
+    },
+    {
+      "name": "bringToFront",
+      "required": false,
+      "type": "boolean | undefined"
+    }
+  ],
+  "callPatterns": [
+    "highlightMarks({ id?, target?, selection?, select?, color?, opacity?, fill?, stroke? })"
+  ],
+  "snippet": "program.highlightMarks({ select: { field: \"category\", op: \"eq\", value: \"A\" }, color: \"#f28e2b\" })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#highlightmarks"
+}

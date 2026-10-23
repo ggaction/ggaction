@@ -1,4 +1,4 @@
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -13,12 +13,13 @@ const artifacts = Object.freeze([
   ["knowledge/mcp-resources.schema.json", "docs/schemas/mcp-resources.schema.json"],
   ["knowledge/action-cards.json", "docs/actions.json"],
   ["knowledge/intent-taxonomy.json", "docs/intent-taxonomy.json"],
-  ["knowledge/mcp-resources.json", "docs/mcp-resources.json"],
-  ["types/program.d.ts", "docs/types/program.d.ts"]
+  ["knowledge/mcp-resources.json", "docs/mcp-resources.json"]
 ]);
 
 export async function buildDocMachineArtifacts() {
-  return Promise.all(artifacts.map(async ([source, destination]) => ({
+  const declarations = (await readdir(path.join(root, "types"))).filter(file => file.endsWith(".d.ts")).sort()
+    .map(file => [`types/${file}`, `docs/types/${file}`]);
+  return Promise.all([...artifacts, ...declarations].map(async ([source, destination]) => ({
     source,
     destination,
     content: await readFile(path.join(root, source), "utf8")

@@ -1,0 +1,1 @@
+type PolarLegendOrder = LegendValueOrder | { channel: "theta"; values?: never };

@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 3,
+  "name": "editLookupData",
+  "layer": "user-facing",
+  "domain": "statistics",
+  "summary": "Edits named table lookup, including settings for copy reference fields.",
+  "signature": "editLookupData(options: EditLookupDataOptions): ChartProgram;",
+  "intents": [
+    "edit lookup data",
+    "edit",
+    "change",
+    "statistical layer",
+    "statistical transform",
+    "named table lookup",
+    "copy reference fields"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing named table lookup",
+      "source dataset"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H1",
+    "H3"
+  ],
+  "wraps": [
+    "editDerivedData"
+  ],
+  "editableVia": [
+    "editLookupData"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing named table lookup",
+      "source dataset"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "dependents",
+      "required": false,
+      "type": "DerivedDataDependents | undefined"
+    },
+    {
+      "name": "field",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "lookup",
+      "required": false,
+      "type": "{ data: string; key: string; fields: readonly string[]; as?: readonly string[] | undefined; } | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editLookupData({ target, dependents?, field?, lookup? })"
+  ],
+  "snippet": "program.editLookupData({ target: \"ages\", lookup: { data: \"people\", key: \"name\", fields: [\"age\"], as: [\"years\"] } })",
+  "errors": [],
+  "route": "/reference/actions/statistics/#editlookupdata"
+}

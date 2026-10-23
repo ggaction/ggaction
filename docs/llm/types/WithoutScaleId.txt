@@ -1,0 +1,1 @@
+type WithoutScaleId<T> = T extends unknown ? Omit<T, "id"> : never;

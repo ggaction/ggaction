@@ -1,0 +1,6 @@
+export interface EditLegendTitleOptions extends LegendTitleStyleEditOptions {
+  target?: string;
+  /** Select one existing block without changing its content. */
+  channel?: LegendChannel;
+  title?: string | "auto" | false;
+}

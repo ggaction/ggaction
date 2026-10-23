@@ -1,0 +1,207 @@
+{
+  "schemaVersion": 3,
+  "name": "editScale",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Partially edits a named or uniquely resolvable scale and rematerializes its consumers.",
+  "signature": "editScale(options: EditScaleOptions): ChartProgram;",
+  "intents": [
+    "edit scale",
+    "edit",
+    "change",
+    "chart setup",
+    "data and scales",
+    "scale",
+    "domain-to-range mapping"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing scale"
+    ],
+    "owns": [],
+    "idOptions": [
+      "id"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "editScale"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "paddingInner",
+      "unit": "band-fraction"
+    },
+    {
+      "path": "paddingOuter",
+      "unit": "band-fraction"
+    },
+    {
+      "path": "padding",
+      "unit": "band-fraction"
+    },
+    {
+      "path": "align",
+      "unit": "ratio"
+    }
+  ],
+  "inference": [
+    {
+      "input": "domain",
+      "strategy": "documented-auto"
+    },
+    {
+      "input": "whitePoint",
+      "strategy": "documented-auto"
+    },
+    {
+      "input": "gamma",
+      "strategy": "documented-auto"
+    },
+    {
+      "input": "midpoint",
+      "strategy": "documented-auto"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing scale"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "radialMapping",
+      "required": false,
+      "type": "RadialMapping | undefined"
+    },
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "type",
+      "required": false,
+      "type": "ScaleType | undefined"
+    },
+    {
+      "name": "domain",
+      "required": false,
+      "type": "\"auto\" | readonly unknown[] | undefined"
+    },
+    {
+      "name": "emptyDomain",
+      "required": false,
+      "type": "\"preserve\" | \"require-explicit\" | undefined"
+    },
+    {
+      "name": "range",
+      "required": false,
+      "type": "ScaleRange | undefined"
+    },
+    {
+      "name": "nice",
+      "required": false,
+      "type": "boolean | LinearNiceCountOptions | undefined"
+    },
+    {
+      "name": "zero",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "clamp",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "reverse",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "base",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "exponent",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "constant",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "paddingInner",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "paddingOuter",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "padding",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "align",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "palette",
+      "required": false,
+      "type": "Palette | undefined"
+    },
+    {
+      "name": "interpolate",
+      "required": false,
+      "type": "ContinuousColorInterpolation | undefined"
+    },
+    {
+      "name": "whitePoint",
+      "required": false,
+      "type": "\"auto\" | \"d50\" | \"d65\" | undefined"
+    },
+    {
+      "name": "gamma",
+      "required": false,
+      "type": "number | \"auto\" | undefined"
+    },
+    {
+      "name": "midpoint",
+      "required": false,
+      "type": "number | \"auto\" | undefined"
+    },
+    {
+      "name": "unknown",
+      "required": false,
+      "type": "unknown"
+    }
+  ],
+  "callPatterns": [
+    "editScale({ id?, radialMapping?, type?, domain?, emptyDomain?, range?, nice?, zero? })"
+  ],
+  "snippet": "program.editScale({ type: \"linear\" })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#editscale"
+}

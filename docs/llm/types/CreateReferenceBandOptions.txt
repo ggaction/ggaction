@@ -1,0 +1,8 @@
+export type CreateReferenceBandOptions =
+  | (Omit<RectMarkOptions, "clip" | "data"> &
+      ReferenceBinding<readonly [unknown, unknown], readonly [number, number]>)
+  | (DynamicReferenceBinding & Omit<RectMarkOptions, "clip" | "id" | "data" | "source"> & {
+      readonly statistics: readonly [ReferenceStatistic, ReferenceStatistic];
+    });
+
+/** Constant or quantitative stroke width on Line, Rule, or row-owned Rect marks. */

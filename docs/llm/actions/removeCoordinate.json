@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 3,
+  "name": "removeCoordinate",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Remove one explicitly named unused coordinate after checking layer, guide, annotation, and retained data-space bindings.",
+  "signature": "removeCoordinate(options: RemoveResourceOptions): ChartProgram;",
+  "intents": [
+    "remove coordinate",
+    "remove",
+    "delete",
+    "chart setup",
+    "data and scales",
+    "coordinate system",
+    "Cartesian or polar space"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing coordinate system"
+    ],
+    "owns": [],
+    "idOptions": [
+      "id"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing coordinate system"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": true,
+      "type": "string"
+    }
+  ],
+  "callPatterns": [
+    "removeCoordinate({ id })"
+  ],
+  "snippet": "program.removeCoordinate({ id: \"unusedCoordinate\" })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#removecoordinate"
+}

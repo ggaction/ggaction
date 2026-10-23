@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 3,
+  "name": "createParallelAxis",
+  "layer": "user-facing",
+  "domain": "axes",
+  "summary": "Full-only field-selected Parallel guides.",
+  "signature": "createParallelAxis(options: CreateParallelAxisOptions): ChartProgram;",
+  "intents": [
+    "create parallel axis",
+    "create",
+    "add",
+    "axis guide",
+    "scale annotation",
+    "parallel dimension axis",
+    "field axis"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "compatible scale or encoding context"
+    ],
+    "owns": [
+      "parallel dimension axis"
+    ],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [],
+  "editableVia": [
+    "editParallelAxis",
+    "removeParallelAxis"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "compatible scale or encoding context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "field",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "line",
+      "required": false,
+      "type": "false | AxisLineStyleOptions | undefined"
+    },
+    {
+      "name": "title",
+      "required": false,
+      "type": "false | ParallelAxisTitleOptions | undefined"
+    },
+    {
+      "name": "ticksAndLabels",
+      "required": false,
+      "type": "false | (ParallelAxisTickSelection & { ticks?: AxisTickStyleOptions | undefined; labels?: AxisLabelStyleOptions | undefined; }) | undefined"
+    },
+    {
+      "name": "ticks",
+      "required": false,
+      "type": "false | ParallelAxisTicksOptions | undefined"
+    },
+    {
+      "name": "labels",
+      "required": false,
+      "type": "false | ParallelAxisLabelsOptions | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createParallelAxis({ field, target?, line?, title?, ticksAndLabels?, ticks?, labels? })"
+  ],
+  "snippet": "program.createParallelAxis({ field: \"value\" })",
+  "errors": [],
+  "route": "/reference/actions/guides/#createparallelaxis"
+}

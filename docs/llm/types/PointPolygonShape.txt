@@ -1,0 +1,4 @@
+export type PointPolygonShape = {
+  polygon: readonly { x: number; y: number }[];
+  normalization?: "area" | "radius";
+};

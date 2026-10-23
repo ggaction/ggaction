@@ -1,0 +1,2 @@
+export type CreateThetaAxisTitleOptions = PolarTitleOptions &
+  Omit<PolarGuideResourceOptions, "angle">;

@@ -1,0 +1,4 @@
+type GradientPlotDensityLegendOptions = {
+  title?: string;
+  position?: "right";
+};

@@ -1,0 +1,5 @@
+export type NonPointCategoricalColorScaleOptions = ScaleFields<"id" | "palette"> & {
+  type?: "ordinal";
+  domain?: "auto" | readonly unknown[];
+  range?: "auto" | readonly string[] | { readonly palette: Palette };
+};

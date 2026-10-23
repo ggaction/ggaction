@@ -1,0 +1,5 @@
+export type BoxPlotWhisker = (
+  | { type?: "tukey"; factor?: number }
+  | { type: "minmax"; factor?: never }
+) & Pick<ErrorBarOptions, "caps" | "capSize" | "stroke" | "strokeWidth" | "strokeDash" | "opacity" |
+  "lineCap" | "lineJoin" | "miterLimit">;

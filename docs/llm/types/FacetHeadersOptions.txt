@@ -1,0 +1,4 @@
+export type FacetHeadersOptions = Omit<EditFacetHeadersOptions, "role" | "side" | "title"> & {
+  row?: Omit<EditFacetHeadersOptions, "role">;
+  column?: Omit<EditFacetHeadersOptions, "role">;
+};

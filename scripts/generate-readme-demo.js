@@ -9,7 +9,7 @@ import { render } from "ggaction";
 import {
   createReadmeAuthoringDemo,
   README_ACTION_LINES
-} from "../examples/readme-authoring-sequence/program.js";
+} from "../examples/readme-rose-sequence/program.js";
 
 const { applyPalette, GIFEncoder, quantize } = gifenc;
 
@@ -26,7 +26,7 @@ const CHART_WIDTH = 540;
 const CHART_HEIGHT = 430;
 const GIF_COLORS = 256;
 const FIRST_CHART_ACTION_INDEX = README_ACTION_LINES.findIndex(
-  actionLine => actionLine.id === "size"
+  actionLine => actionLine.id === "rose"
 );
 const GIF_OUTPUT = new URL(
   "../docs/assets/images/readme-authoring-sequence.gif",
@@ -82,7 +82,7 @@ function drawChartPanel(context, stage, chartCanvas) {
     context.textAlign = "center";
     context.textBaseline = "middle";
     context.fillText(
-      "Chart appears after x · y · size",
+      "Create data, then build a rose plot",
       CHART_PANEL_WIDTH / 2,
       README_DEMO_HEIGHT / 2
     );
@@ -253,12 +253,16 @@ function validateOutputs(gifBytes, pngBytes, expectedFrames) {
 }
 
 export async function generateReadmeDemoAssets() {
-  const cars = JSON.parse(await readFile(
-    new URL("../data/cars.json", import.meta.url),
+  const nightingale = JSON.parse(await readFile(
+    new URL("../examples/readme-rose-sequence/data.json", import.meta.url),
     "utf8"
   ));
-  const { stages } = createReadmeAuthoringDemo(cars);
+  const { stages } = createReadmeAuthoringDemo(nightingale);
   const frames = createFrames(stages);
+  // Keep reviewable per-stage renders outside the shipped documentation assets.
+  const reviewDirectory = fileURLToPath(new URL("../.artifacts/docs/readme-rose/", import.meta.url));
+  await mkdir(reviewDirectory, { recursive: true });
+  for (const { stage, frame } of frames) await writeFile(resolve(reviewDirectory, `${stage.id}.png`), frame.toBuffer("image/png"));
   const gifBytes = encodeGif(frames);
   const pngBytes = frames.at(-1).frame.toBuffer("image/png");
   const inspected = validateOutputs(gifBytes, pngBytes, frames.length);

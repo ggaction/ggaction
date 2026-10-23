@@ -1,0 +1,2 @@
+export type QuantitativePositionScaleType =
+  | "linear" | "log" | "pow" | "sqrt" | "symlog";

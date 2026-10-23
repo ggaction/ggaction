@@ -1,0 +1,2 @@
+export type EditSizeScaleOptions = FocusedScaleSelection &
+  (ExistingSizeScaleEditPatch | SizeScaleTypeEditPatch);

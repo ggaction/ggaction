@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 3,
+  "name": "editGrid",
+  "layer": "user-facing",
+  "domain": "grid",
+  "summary": "Edits grid, including settings for Cartesian reference lines.",
+  "signature": "editGrid(options: EditGridDirectionsOptions): ChartProgram;",
+  "intents": [
+    "edit grid",
+    "edit",
+    "change",
+    "grid guide",
+    "reference lines",
+    "grid",
+    "Cartesian reference lines"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing grid",
+      "compatible scale or encoding context"
+    ],
+    "owns": [],
+    "idOptions": []
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editHorizontalGrid",
+    "editVerticalGrid"
+  ],
+  "editableVia": [
+    "editGrid"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing grid",
+      "compatible scale or encoding context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "horizontal",
+      "required": false,
+      "type": "EditGridOptions | undefined"
+    },
+    {
+      "name": "vertical",
+      "required": false,
+      "type": "EditGridOptions | undefined"
+    },
+    {
+      "name": "theta",
+      "required": false,
+      "type": "EditPolarGridOptions | undefined"
+    },
+    {
+      "name": "radial",
+      "required": false,
+      "type": "EditPolarGridOptions | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editGrid({ horizontal?, vertical?, theta?, radial? })"
+  ],
+  "snippet": "program.editGrid({ horizontal: { color: \"#dddddd\" } })",
+  "errors": [],
+  "route": "/reference/actions/guides/#editgrid"
+}

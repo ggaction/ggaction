@@ -1,0 +1,151 @@
+{
+  "schemaVersion": 3,
+  "name": "createGradientPlot",
+  "layer": "user-facing",
+  "domain": "statistics",
+  "summary": "Creates a Gradient plot owner that defers geometry and guides until compatible x/y roles are available.",
+  "signature": "createGradientPlot(options?: GradientPlotOptions): ChartProgram;",
+  "intents": [
+    "create gradient plot",
+    "create",
+    "add",
+    "statistical layer",
+    "statistical transform",
+    "gradient plot",
+    "density gradient"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "canvas and source dataset",
+      "compatible x/y roles before materialization"
+    ],
+    "owns": [
+      "gradient plot"
+    ],
+    "idOptions": [
+      "id",
+      "target",
+      "data",
+      "coordinate"
+    ]
+  },
+  "authoringRoles": [
+    "H0",
+    "H1"
+  ],
+  "wraps": [
+    "createRectMark",
+    "encodeX",
+    "encodeY"
+  ],
+  "editableVia": [
+    "editGradientPlot"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "width",
+      "unit": "band-fraction"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "data",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "deferred",
+    "requires": [
+      "canvas and source dataset",
+      "compatible x/y roles before materialization"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "data",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "x",
+      "required": false,
+      "type": "BoxPlotPositionChannel | undefined"
+    },
+    {
+      "name": "y",
+      "required": false,
+      "type": "BoxPlotPositionChannel | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "color",
+      "required": false,
+      "type": "{ value: string; } | BasicColorChannel | undefined"
+    },
+    {
+      "name": "density",
+      "required": false,
+      "type": "GradientPlotDensityOptions | undefined"
+    },
+    {
+      "name": "width",
+      "required": false,
+      "type": "{ band?: number | undefined; } | undefined"
+    },
+    {
+      "name": "gradient",
+      "required": false,
+      "type": "GradientPlotAppearanceOptions | undefined"
+    },
+    {
+      "name": "center",
+      "required": false,
+      "type": "false | GradientPlotCenterOptions | undefined"
+    },
+    {
+      "name": "guides",
+      "required": false,
+      "type": "false | GradientPlotGuideOptions | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createGradientPlot({ x, y, guides? })",
+    "createGradientPlot({ id?, data? })"
+  ],
+  "snippet": "program.createGradientPlot({})",
+  "errors": [],
+  "route": "/reference/actions/statistics/#creategradientplot"
+}

@@ -42,10 +42,15 @@ export async function documentationPrograms() {
   if (JSON.stringify(expected) !== JSON.stringify(registered)) {
     throw new Error("Every tutorial and recipe needs a runnable entry in docs/_data/snippet_programs.json.");
   }
-  return Promise.all(Object.entries(registry).map(async ([file, options]) => {
+  const extra = JSON.parse(await readFile(path.join(root, "docs/_data/snippet_cases.json"), "utf8"));
+  if (new Set(extra.map(entry => entry.id)).size !== extra.length) throw new Error("Snippet case IDs must be unique.");
+  return Promise.all([...Object.entries(registry), ...extra.map(({ file, ...options }) => [file, options])].map(async ([file, options]) => {
     const source = await readFile(path.join(root, "docs", file), "utf8");
     const blocks = documentationCodeBlocks(source);
     const javascript = blocks.filter(block => ["js", "javascript"].includes(block.language));
+    if (options.contains && javascript.filter(item => item.code.includes(options.contains)).length !== 1) {
+      throw new Error(`${file}: snippet marker must select exactly one block: ${options.contains}`);
+    }
     const block = options.contains
       ? javascript.find(item => item.code.includes(options.contains))
       : javascript.find(item => item.heading === "Complete program") ?? javascript[0];

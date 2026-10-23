@@ -14,12 +14,14 @@ the cases below to make the missing decision explicit.
 Right-side legends use the default position and require available right margin:
 
 ```javascript
-program.createCanvas({
+const resized = program.editCanvas({
   width: 720,
   height: 460,
   margin: { top: 40, right: 140, bottom: 70, left: 80 }
 });
 ```
+
+Use the returned `resized` program for subsequent calls. If guide creation failed, retry it on this branch. For initial construction, set the same margin in `createCanvas`.
 
 For a horizontal legend, request bottom placement and reserve bottom margin:
 

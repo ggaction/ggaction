@@ -1019,7 +1019,7 @@
         "requires": [
           "source dataset"
         ],
-        "allowsEmpty": false
+        "allowsEmpty": true
       },
       "options": [
         {
@@ -9288,7 +9288,7 @@
       "resources": {
         "prerequisites": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "owns": [
           "x position assignment"
@@ -9341,7 +9341,7 @@
         "state": "contextual",
         "requires": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "allowsEmpty": false
       },
@@ -9424,7 +9424,7 @@
       "resources": {
         "prerequisites": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "owns": [
           "y position assignment"
@@ -9478,7 +9478,7 @@
         "state": "contextual",
         "requires": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "allowsEmpty": false
       },
@@ -9634,7 +9634,7 @@
       "resources": {
         "prerequisites": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "owns": [
           "secondary x position assignment"
@@ -9684,7 +9684,7 @@
         "state": "contextual",
         "requires": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "allowsEmpty": false
       },
@@ -9752,7 +9752,7 @@
       "resources": {
         "prerequisites": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "owns": [
           "color assignment"
@@ -9799,7 +9799,7 @@
         "state": "contextual",
         "requires": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "allowsEmpty": false
       },
@@ -9877,7 +9877,7 @@
       "resources": {
         "prerequisites": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "owns": [
           "stroke dash assignment"
@@ -9918,7 +9918,7 @@
         "state": "contextual",
         "requires": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "allowsEmpty": false
       },
@@ -9976,7 +9976,7 @@
       "resources": {
         "prerequisites": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "owns": [
           "stroke color assignment"
@@ -10021,7 +10021,7 @@
         "state": "contextual",
         "requires": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "allowsEmpty": false
       },
@@ -10084,7 +10084,7 @@
       "resources": {
         "prerequisites": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "owns": [
           "stroke width assignment"
@@ -10128,7 +10128,7 @@
         "state": "contextual",
         "requires": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "allowsEmpty": false
       },
@@ -10186,7 +10186,7 @@
       "resources": {
         "prerequisites": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "owns": [
           "size assignment"
@@ -10227,7 +10227,7 @@
         "state": "contextual",
         "requires": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "allowsEmpty": false
       },
@@ -10285,7 +10285,7 @@
       "resources": {
         "prerequisites": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "owns": [
           "point shape assignment"
@@ -10326,7 +10326,7 @@
         "state": "contextual",
         "requires": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "allowsEmpty": false
       },
@@ -10379,7 +10379,7 @@
       "resources": {
         "prerequisites": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "owns": [
           "angle assignment"
@@ -10413,7 +10413,7 @@
         "state": "contextual",
         "requires": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "allowsEmpty": false
       },
@@ -10472,7 +10472,7 @@
       "resources": {
         "prerequisites": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "owns": [
           "opacity assignment"
@@ -10512,7 +10512,7 @@
         "state": "contextual",
         "requires": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "allowsEmpty": false
       },
@@ -10643,7 +10643,7 @@
       "resources": {
         "prerequisites": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "owns": [
           "theta assignment"
@@ -10694,7 +10694,7 @@
         "state": "contextual",
         "requires": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "allowsEmpty": false
       },
@@ -10767,7 +10767,7 @@
       "resources": {
         "prerequisites": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "owns": [
           "radial position assignment"
@@ -10813,7 +10813,7 @@
         "state": "contextual",
         "requires": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "allowsEmpty": false
       },
@@ -11024,7 +11024,7 @@
       "resources": {
         "prerequisites": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "owns": [
           "x offset assignment"
@@ -11076,7 +11076,7 @@
         "state": "contextual",
         "requires": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "allowsEmpty": false
       },
@@ -11139,7 +11139,7 @@
       "resources": {
         "prerequisites": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "owns": [
           "y offset assignment"
@@ -11191,7 +11191,7 @@
         "state": "contextual",
         "requires": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "allowsEmpty": false
       },
@@ -11254,7 +11254,7 @@
       "resources": {
         "prerequisites": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "owns": [
           "secondary y position assignment"
@@ -11304,7 +11304,7 @@
         "state": "contextual",
         "requires": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "allowsEmpty": false
       },
@@ -11606,7 +11606,7 @@
       "resources": {
         "prerequisites": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "owns": [
           "series grouping assignment"
@@ -11641,7 +11641,7 @@
         "state": "contextual",
         "requires": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "allowsEmpty": false
       },
@@ -11695,7 +11695,7 @@
       "resources": {
         "prerequisites": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "owns": [
           "path order assignment"
@@ -11729,7 +11729,7 @@
         "state": "contextual",
         "requires": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "allowsEmpty": false
       },
@@ -12184,7 +12184,7 @@
       "resources": {
         "prerequisites": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "owns": [
           "text content assignment"
@@ -12218,7 +12218,7 @@
         "state": "contextual",
         "requires": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "allowsEmpty": false
       },
@@ -12281,7 +12281,7 @@
       "resources": {
         "prerequisites": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "owns": [
           "horizontal text offset assignment"
@@ -12320,7 +12320,7 @@
         "state": "contextual",
         "requires": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "allowsEmpty": true
       },
@@ -12369,7 +12369,7 @@
       "resources": {
         "prerequisites": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "owns": [
           "vertical text offset assignment"
@@ -12408,7 +12408,7 @@
         "state": "contextual",
         "requires": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "allowsEmpty": true
       },
@@ -12457,7 +12457,7 @@
       "resources": {
         "prerequisites": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "owns": [
           "histogram assignment"
@@ -12513,7 +12513,7 @@
         "state": "contextual",
         "requires": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "allowsEmpty": false
       },
@@ -12596,7 +12596,7 @@
       "resources": {
         "prerequisites": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "owns": [
           "density plot assignment"
@@ -12662,7 +12662,7 @@
         "state": "contextual",
         "requires": [
           "target mark",
-          "field in the target dataset"
+          "field mode: dataset field"
         ],
         "allowsEmpty": false
       },
@@ -21733,8 +21733,7 @@
       "lifecycle": "Mutable resource",
       "resources": {
         "prerequisites": [
-          "existing chart title",
-          "compatible scale or encoding context"
+          "existing chart title"
         ],
         "owns": [],
         "idOptions": []
@@ -21775,8 +21774,7 @@
       "completionRequirements": {
         "state": "contextual",
         "requires": [
-          "existing chart title",
-          "compatible scale or encoding context"
+          "existing chart title"
         ],
         "allowsEmpty": false
       },
@@ -21868,8 +21866,7 @@
       "lifecycle": "Mutable resource",
       "resources": {
         "prerequisites": [
-          "existing chart title",
-          "compatible scale or encoding context"
+          "existing chart title"
         ],
         "owns": [],
         "idOptions": []
@@ -21892,8 +21889,7 @@
       "completionRequirements": {
         "state": "contextual",
         "requires": [
-          "existing chart title",
-          "compatible scale or encoding context"
+          "existing chart title"
         ],
         "allowsEmpty": false
       },
@@ -25164,7 +25160,7 @@
         "requires": [
           "target mark and selector operands"
         ],
-        "allowsEmpty": false
+        "allowsEmpty": true
       },
       "options": [
         {

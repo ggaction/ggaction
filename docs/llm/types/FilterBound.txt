@@ -1,0 +1,1 @@
+type FilterBound = number | string;

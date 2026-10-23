@@ -1,0 +1,123 @@
+{
+  "schemaVersion": 3,
+  "name": "editSizeScale",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Edits size scale, including settings for area mapping.",
+  "signature": "editSizeScale(options: EditSizeScaleOptions): ChartProgram;",
+  "intents": [
+    "edit size scale",
+    "edit",
+    "change",
+    "chart setup",
+    "data and scales",
+    "size scale",
+    "area mapping"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing size scale"
+    ],
+    "owns": [],
+    "idOptions": [
+      "id",
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editScale"
+  ],
+  "editableVia": [
+    "editSizeScale",
+    "editScale"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "domain",
+      "strategy": "documented-auto"
+    },
+    {
+      "input": "range",
+      "strategy": "documented-auto"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing size scale"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "type",
+      "required": false,
+      "type": "\"linear\" | \"log\" | \"ordinal\" | \"pow\" | \"quantile\" | \"quantize\" | \"sqrt\" | \"threshold\" | undefined"
+    },
+    {
+      "name": "domain",
+      "required": false,
+      "type": "\"auto\" | readonly (string | number | boolean)[] | readonly [number, number] | readonly [number, ...number[]] | readonly [string | number | boolean, ...(string | number | boolean)[]] | undefined"
+    },
+    {
+      "name": "range",
+      "required": false,
+      "type": "\"auto\" | readonly [number, number] | readonly [number, ...number[]] | readonly [number, number, ...number[]] | undefined"
+    },
+    {
+      "name": "unknown",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "clamp",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "reverse",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "base",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "exponent",
+      "required": false,
+      "type": "number | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editSizeScale({ id?, target?, type?, domain?, range?, unknown?, clamp?, reverse? })"
+  ],
+  "snippet": "program.editSizeScale({ range: [20, 200] })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#editsizescale"
+}

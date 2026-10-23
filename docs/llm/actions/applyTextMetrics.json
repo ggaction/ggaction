@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 3,
+  "name": "applyTextMetrics",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Apply a host-measured width profile to title, axis, legend, label, and composition layout.",
+  "signature": "applyTextMetrics(options: ApplyTextMetricsOptions): ChartProgram;",
+  "intents": [
+    "apply text metrics",
+    "apply",
+    "set defaults",
+    "chart setup",
+    "data and scales",
+    "measured text widths",
+    "font measurement profile"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [],
+    "owns": [
+      "measured text widths"
+    ],
+    "idOptions": []
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [],
+  "editableVia": [
+    "removeTextMetrics"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "profile",
+      "required": true,
+      "type": "TextMetricsProfile"
+    }
+  ],
+  "callPatterns": [
+    "applyTextMetrics({ profile })"
+  ],
+  "snippet": "program.applyTextMetrics({ profile: { schemaVersion: 1, id: \"host\", measurements: [] } })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#applytextmetrics"
+}

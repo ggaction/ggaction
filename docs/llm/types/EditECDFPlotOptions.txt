@@ -1,0 +1,8 @@
+export type EditECDFPlotOptions = { target?: string } & Partial<Pick<
+  CreateECDFPlotOptions,
+  "data" | "coordinate" | "field" | "missing" | "as"
+>> & {
+  groupBy?: CreateECDFPlotOptions["groupBy"] | false;
+  weight?: string | false;
+  color?: CreateECDFPlotOptions["color"] | false;
+};

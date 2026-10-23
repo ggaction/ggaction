@@ -1,0 +1,38 @@
+# Chart API
+
+Build a chart from a small set of domain actions. Start with the family that
+owns the decision you need to make; follow its focused pages only when the
+overview no longer provides enough control.
+
+ [Basic charts Create scatter, line, bar, histogram, and heatmap charts from their minimum field decisions.](../../../api/basic-charts/)
+ [Canvas Create and resize the drawing surface, background, and plot margins.](../../../api/canvas/)
+ [Data and transforms Create immutable source data, derived datasets, filters, bins, windows, and statistical transforms.](../../../api/data/)
+ [Marks Create point, line, area, bar, and rule layers.](../../../api/marks/)
+ [Encodings Map fields and constants to position, grouping, and appearance.](../../../api/encodings/)
+ [Coordinates Use Cartesian, Polar, or Parallel coordinate systems.](../../../api/coordinates/)
+ [Scales Control domains, ranges, mapping types, palettes, and missing values.](../../../api/scales/)
+ [Parallel coordinates Compare each source row across an ordered set of dimension-local scales.](../../../api/parallel-coordinates/)
+ [Guides and titles Create axes, grids, legends, and chart titles from existing encodings.](../../../api/guides/)
+ [Program composition Arrange complete chart programs horizontally or vertically and replace stable child slots.](../../../api/composition/)
+ [Rendering Render the fully materialized program to Browser Canvas, SVG, Node PNG, or vector PDF.](../../../api/rendering/)
+
+## All complete chart families
+
+The [complete chart picker](../../../api/chart-picker/) covers every complete-chart facade, including
+Pie, Area, Density, Horizon, endpoint charts, ECDF, Rug, Strip, Beeswarm, and Raincloud.
+
+## Statistical and distribution facades
+
+ [Regression Add grouped fitted lines and optional confidence bands to encoded observations.](../../../api/regression/)
+ [Error bars Show observed values with explicit or derived interval endpoints.](../../../api/error-bars/)
+ [Error bands Show continuous uncertainty ribbons with optional boundaries.](../../../api/error-bands/)
+ [Box plots Summarize quartiles, whiskers, medians, and outliers by category.](../../../api/box-plots/)
+ [Gradient plots Compare category distributions as compact density fills.](../../../api/gradient-plots/)
+ [Violin plots Compare symmetric or split density shapes by category.](../../../api/violin-plots/)
+
+## Exact action lookup
+
+Use the [complete action reference](../../../reference/actions/) when you know an
+action name and need its canonical signature. Extension authors should use the
+[extension API](../../../extension/action-authoring/) rather than depending on
+internal trace operations.

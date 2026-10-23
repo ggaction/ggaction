@@ -1,0 +1,31 @@
+export interface CreateLinePlotOptions {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  x: LineXPositionChannel;
+  y: LineYPositionChannel;
+  color?: LineCategoricalColorChannel<CategoricalColorScaleOptions>;
+  groupBy?: string | readonly [string, ...string[]];
+  strokeDash?: BasicStrokeDashChannel;
+  line?: StrokeStyleDetails & {
+    clip?: boolean;
+    missing?: "error" | "break";
+    strokeWidth?: number;
+    curve?: CurveInterpolation;
+    tension?: number;
+    stroke?: string;
+    opacity?: number;
+    closed?: false;
+  };
+  guides?: false | (Omit<CPathGuides, "legend" | "grid"> & {
+    grid?: false | (Omit<CartesianGridOptions, "horizontal"> & {
+      horizontal?: boolean | (Omit<GridDirectionOptions, "bandPosition"> & {
+        /** Line y is continuous; band positioning is available only for categorical x grids. */
+        bandPosition?: never;
+      });
+    });
+    legend?: false | (Omit<PathLegendOptions, "order"> & {
+      order?: LegendValueOrder | { channel: "x"; values?: never };
+    });
+  });
+}

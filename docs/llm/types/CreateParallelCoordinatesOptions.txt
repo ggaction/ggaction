@@ -1,0 +1,18 @@
+export interface CreateParallelCoordinatesOptions {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  dimensions: readonly [ParallelDimension, ParallelDimension, ...ParallelDimension[]];
+  key?: string;
+  missing?: ParallelMissingPolicy;
+  color?: LineCategoricalColorChannel;
+  strokeDash?: NonCartesianStrokeDashChannel;
+  line?: StrokeStyleDetails & {
+    strokeWidth?: number;
+    stroke?: string;
+    opacity?: number;
+    curve?: "linear";
+    closed?: false;
+  };
+  guides?: false | ParallelGuideOptions;
+}
