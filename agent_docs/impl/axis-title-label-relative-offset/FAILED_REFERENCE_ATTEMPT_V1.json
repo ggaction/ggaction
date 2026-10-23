@@ -1,0 +1,11 @@
+{
+  "status": "failed-before-reference-output",
+  "SchoolRequests": 0,
+  "newPublicAPIImplemented": false,
+  "error": "TypeError: chart(...).hconcat is not a function",
+  "cause": "Reference-authoring error, not a library gap. hconcat is an existing standalone public export, not a fluent ChartProgram method. NEW v2 uses import {chart,hconcat} and hconcat({programs,gap:16}).",
+  "referenceProgramSha256": "544f629f4529d98dd42e0122412ef5aee0d57ef432594f70aebb4ffa2ce48bef",
+  "failedRendererSha256": "8381de3a8c330b5e780097df76ab653c627a2738b33f59bb4484f2bd4960a531",
+  "referenceOutputCreated": false,
+  "priorFilesRetained": true
+}
