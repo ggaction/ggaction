@@ -2,9 +2,9 @@
 
 
 
-Package metadata version: 0.0.22.
+Package metadata version: 0.0.23.
 
-Contract: sha256:911e194881c03ddb5b1917000da66e3058c8f6ee324cee3bfea18fe8803a5fea. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:48ba11153b8e32e766b7908c5484416c5faa87a7c6413eb8e6426cb95ef9e99a. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -28,7 +28,7 @@ Build, inspect, select, and revise charts one meaningful action at a time.
 Start with a complete example, then use the API pages when you need to customize
 one part. The main, basic, extension, SVG, PNG, and PDF entry points include TypeScript declarations.
 
- Experimental 0.0.22 · APIs may change before 1.0.0. Review the [changelog](https://github.com/ggaction/ggaction/blob/main/CHANGELOG.md) when upgrading.
+ Experimental 0.0.23 · APIs may change before 1.0.0. Review the [changelog](https://github.com/ggaction/ggaction/blob/main/CHANGELOG.md) when upgrading.
 
 ## Start here
 
@@ -43320,7 +43320,7 @@ smaller package, and a low-level domain action is not automatically an extension
 
 # Documentation Version
 
-The current site documents **ggaction 0.0.22** with a
+The current site documents **ggaction 0.0.23** with a
 **development** contract.
 A `published-release` contract matches that package version. A `development`
 contract can include newer behavior; its package version alone does not establish
@@ -43329,7 +43329,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:911e194881c03ddb5b1917000da66e3058c8f6ee324cee3bfea18fe8803a5fea` |
+| Contract fingerprint | `sha256:48ba11153b8e32e766b7908c5484416c5faa87a7c6413eb8e6426cb95ef9e99a` |
 | Example and dataset source | `6422776b0a379c8c89809f41b434f366fbc1f143` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

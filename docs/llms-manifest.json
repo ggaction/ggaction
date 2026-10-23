@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
-  "packageVersion": "0.0.22",
+  "packageVersion": "0.0.23",
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:911e194881c03ddb5b1917000da66e3058c8f6ee324cee3bfea18fe8803a5fea",
+    "contractId": "sha256:48ba11153b8e32e766b7908c5484416c5faa87a7c6413eb8e6426cb95ef9e99a",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -30,7 +30,7 @@
         "go-deeper"
       ],
       "bytes": 2429,
-      "sha256": "e234e6509638be724bcda075cfed194ce5ff2836d5af1e56ea479ee0b20ea85a"
+      "sha256": "e07a79c6664170f6ff5ca3def5e7c056087afdd9b927df39c1c1440914dc570b"
     },
     {
       "order": 2,
@@ -3432,7 +3432,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "e8b2ee364f557f8f1b83a0e3a8d09bcece9ed76393a676df0fa372357d200f29"
+      "sha256": "3636ec60fd30e13c07579b81b6be48924e8d359e071d0e08985041e282eff5c0"
     },
     {
       "order": 150,

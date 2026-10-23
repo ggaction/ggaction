@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+## [0.0.23] - 2026-10-23
+
 - Add independent full-content facet packing, view-aware headers and per-channel Cartesian axis policies with unclipped shared footer axes.
 - Avoid false title/legend collisions from floating-point roundoff at touching edges.
 
