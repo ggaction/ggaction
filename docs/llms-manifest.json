@@ -3,9 +3,9 @@
   "packageVersion": "0.0.23",
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
-    "status": "development",
+    "status": "published-release",
     "contractId": "sha256:48ba11153b8e32e766b7908c5484416c5faa87a7c6413eb8e6426cb95ef9e99a",
-    "sourceCommit": null,
+    "sourceCommit": "b097b3e7e175aeabd0fb4a6bd43f97e47c6d781f",
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -65,8 +65,8 @@
         "long-requests-and-execution-recovery",
         "related"
       ],
-      "bytes": 11986,
-      "sha256": "c14c078d0d79db1cb04ee38a587d53a79e71b64caa952352b8ea4e083bc94523"
+      "bytes": 12058,
+      "sha256": "c0d8641c212c6dccc02429f69114eed2b9800c25171421c9b41d14b0e774b64f"
     },
     {
       "order": 4,
@@ -2072,8 +2072,8 @@
         "focused-channel-scale-editors",
         "related"
       ],
-      "bytes": 172835,
-      "sha256": "bccd624168ac5af99cc80af339844b1e0c16b76453ba29092339e2a8b8616471"
+      "bytes": 172463,
+      "sha256": "b04a14990863426b63587a6f6696dd98840109ed051ce0c22f91c622614737d1"
     },
     {
       "order": 119,
@@ -2118,8 +2118,8 @@
         "editrectmark",
         "related"
       ],
-      "bytes": 77301,
-      "sha256": "c248475a9b70b9f848944ffc54ab7f434d8b4700a9ab08682778c43d6ed55504"
+      "bytes": 77253,
+      "sha256": "281073bc9982af45ffb168b009143cd6f022270e3571d6803d1bbb3c0687d12a"
     },
     {
       "order": 120,
@@ -2170,8 +2170,8 @@
         "encodechannels",
         "related"
       ],
-      "bytes": 66456,
-      "sha256": "2661581ddc9fac459b197660058c5cd3a04cd8b77a30d854d296c6aa125d7db3"
+      "bytes": 66432,
+      "sha256": "4ca3394e152a8d6dde23eba7c16d0a41215f94e65177c0dc28c244c29f82dd66"
     },
     {
       "order": 121,
@@ -2230,8 +2230,8 @@
         "semantic-resources-and-regression-layers",
         "related"
       ],
-      "bytes": 84787,
-      "sha256": "6ea695ab41db21af9b2fff6eafc4af429fbfbc3adefd35d4e37165dff1fbaa00"
+      "bytes": 84559,
+      "sha256": "072320a2dcc74a8f74037b8d7237b9ff15f4421fc779e65afe960f53f5fc6946"
     },
     {
       "order": 122,
@@ -2328,8 +2328,8 @@
         "focused-legend-edits",
         "related"
       ],
-      "bytes": 137917,
-      "sha256": "6feb64a046d742006c4a83b207a5909b33c0647e06cba9661a77efd747b80dc2"
+      "bytes": 137893,
+      "sha256": "e7340d77988183d1eaa5ab0024685267cb8abce9cf870e39e6a02c201c21caf4"
     },
     {
       "order": 123,
@@ -2353,8 +2353,8 @@
         "directional-grids",
         "related"
       ],
-      "bytes": 10285,
-      "sha256": "8254783a14842402919b5ff7afd3faa0628e393e51b4035403b3afc61811071e"
+      "bytes": 10273,
+      "sha256": "64b7bcb6639c0404d11c6552ca898eacef744bb53943f503fd20b3d8826085e4"
     },
     {
       "order": 124,
@@ -3101,8 +3101,8 @@
         "clip-a-named-graphic-owner",
         "scale-materialization"
       ],
-      "bytes": 18950,
-      "sha256": "9f4dface42ad85d51435341bf7599d7bc74c9adb44c36c67225dcd90f3d5be55"
+      "bytes": 19022,
+      "sha256": "a74c376ac08e0ae5118372db3ab6740ce568eedfd82d0609fa514a3aed4d8975"
     },
     {
       "order": 129,
@@ -3431,8 +3431,8 @@
         "choose-the-matching-documentation",
         "migration-from-v0013"
       ],
-      "bytes": 3000,
-      "sha256": "3636ec60fd30e13c07579b81b6be48924e8d359e071d0e08985041e282eff5c0"
+      "bytes": 3039,
+      "sha256": "7c13629e889e6cf916cecdfd0bb9e4263d8e945562cf7358825778bfff338d9e"
     },
     {
       "order": 150,

@@ -128,7 +128,7 @@ default overflow policy rejects an unsatisfied minimum plot atomically;
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
 
 ```typescript
 applyTextMetrics(options: ApplyTextMetricsOptions): ChartProgram;
@@ -162,7 +162,7 @@ exact profile format, matching rules, propagation, and executable example.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
 
 ```typescript
 removeTextMetrics(): ChartProgram;
@@ -328,7 +328,7 @@ Create one immutable named dataset. [Data](../../api/data.md)
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
 
 ```typescript
 reviseData<Row extends object>(options: ReviseDataOptions<Row>): ChartProgram;
@@ -365,7 +365,7 @@ See [Data updates](../../data-updates.md#revise-a-source-and-its-dependent-chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
 
 ```typescript
 removeData(options: RemoveResourceOptions): ChartProgram;
@@ -402,7 +402,7 @@ does not infer, cascade, or change graphics.
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
 
 ```typescript
 removeScale(options: RemoveResourceOptions): ChartProgram;
@@ -437,7 +437,7 @@ graphics. [Scale Options](../../api/scales.md#removescale-id)
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
 
 ```typescript
 removeCoordinate(options: RemoveResourceOptions): ChartProgram;
@@ -651,7 +651,7 @@ adds residual reweighting; see [regression](../../api/regression.md) for the est
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
 
 ```typescript
 createRegressionStatisticsData(options: RegressionStatisticsDataOptions): ChartProgram;
@@ -864,7 +864,7 @@ rebind direct visual consumers, and safely release the prior revision.
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
 
 ```typescript
 editDerivedData(options: EditDerivedDataOptions): ChartProgram;
@@ -893,7 +893,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./charts-da
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
 
 ```typescript
 editFilteredData(options: EditFilteredDataOptions): ChartProgram;
@@ -927,7 +927,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./charts-da
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
 
 ```typescript
 editTimeUnitData(options: EditTimeUnitDataOptions): ChartProgram;
@@ -963,7 +963,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./charts-da
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
 
 ```typescript
 editWindowData(options: EditWindowDataOptions): ChartProgram;
@@ -995,7 +995,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./charts-da
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
 
 ```typescript
 editDensityData(options: EditDensityDataOptions): ChartProgram;
@@ -1033,7 +1033,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./charts-da
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
 
 ```typescript
 editRegressionData(options: EditRegressionDataOptions): ChartProgram;
@@ -1074,7 +1074,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./charts-da
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
 
 ```typescript
 editRegressionStatisticsData(options?: EditRegressionStatisticsDataOptions): ChartProgram;
@@ -1138,7 +1138,7 @@ Behavior, inference, resets, and errors: [Semantic resources and regression laye
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
 
 ```typescript
 editCoordinate(options: EditCoordinateOptions): ChartProgram;
@@ -1265,7 +1265,7 @@ Behavior, inference, resets, and errors: [Extension and scale contracts](./exten
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
 
 ```typescript
 editXScale(options: EditXScaleOptions): ChartProgram;
@@ -1308,7 +1308,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
 
 ```typescript
 editYScale(options: EditYScaleOptions): ChartProgram;
@@ -1351,7 +1351,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
 
 ```typescript
 editXOffsetScale(options: EditXOffsetScaleOptions): ChartProgram;
@@ -1384,7 +1384,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
 
 ```typescript
 editYOffsetScale(options: EditYOffsetScaleOptions): ChartProgram;
@@ -1417,7 +1417,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
 
 ```typescript
 editParallelScale(options: EditParallelScaleOptions): ChartProgram;
@@ -1460,7 +1460,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
 
 ```typescript
 editThetaScale(options: EditThetaScaleOptions): ChartProgram;
@@ -1499,7 +1499,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
 
 ```typescript
 editRScale(options: EditRScaleOptions): ChartProgram;
@@ -1538,7 +1538,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
 
 ```typescript
 editColorScale(options: EditColorScaleOptions): ChartProgram;
@@ -1580,7 +1580,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
 
 ```typescript
 editStrokeScale(options: EditStrokeScaleOptions): ChartProgram;
@@ -1621,7 +1621,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
 
 ```typescript
 editSizeScale(options: EditSizeScaleOptions): ChartProgram;
@@ -1657,7 +1657,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
 
 ```typescript
 editOpacityScale(options: EditOpacityScaleOptions): ChartProgram;
@@ -1693,7 +1693,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
 
 ```typescript
 editShapeScale(options: EditShapeScaleOptions): ChartProgram;
@@ -1725,7 +1725,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
 
 ```typescript
 editStrokeWidthScale(options: EditStrokeWidthScaleOptions): ChartProgram;
@@ -1763,7 +1763,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
 
 ```typescript
 editStrokeDashScale(options: EditStrokeDashScaleOptions): ChartProgram;
@@ -2572,7 +2572,7 @@ appearance encodings. [Basic Charts](../../api/basic-charts.md#createscatterplot
 
 **API layer:** user-facing. **Authoring roles:** H0.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
 
 ```typescript
 createTextPlot(options: CreateTextPlotOptions): ChartProgram;
@@ -3167,7 +3167,7 @@ are used as supplied; the facade does not infer normalization. [Polar positions]
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
 
 ```typescript
 editRadarPlot(options: EditRadarPlotOptions): ChartProgram;
