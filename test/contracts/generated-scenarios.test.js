@@ -70,3 +70,15 @@ test("builds and independently validates every offline smoke scenario", () => {
   assert.equal(summary.svgBytes >= 300_000, true);
   assert.equal(results.every(result => result.svgSha256.length === 64), true);
 });
+
+test("each offline recipe has a differential analytic raster witness", async () => {
+  const { assertAnalyticPixels } = await import("../support/analytic-pixels.js");
+  const descriptors = generateScenarioDescriptors({ mode: "smoke", includeTidyTuesday: false });
+  for (const recipe of SCENARIO_RECIPES) {
+    const descriptor = descriptors.find(entry => entry.recipe === recipe.id);
+    assert.ok(descriptor, recipe.id);
+    let program;
+    runScenario(descriptor, { deterministic: false, captureProgram: value => { program = value; } });
+    assert.ok(assertAnalyticPixels(program, descriptor.id) > 0);
+  }
+});

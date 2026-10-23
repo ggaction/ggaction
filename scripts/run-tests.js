@@ -212,6 +212,7 @@ async function run(suite, selectors, shard) {
       status: code, files: files.map(file => path.relative(repositoryRoot, file)),
       sourceCommit: git(["rev-parse", "HEAD"]),
       workingTree: git(["status", "--porcelain"]),
+      untrackedSha256: Object.fromEntries((git(["ls-files", "--others", "--exclude-standard", "-z"]) ?? "").split("\0").filter(Boolean).map(file => [file, createHash("sha256").update(readFileSync(path.join(repositoryRoot, file))).digest("hex")])),
       trackedDiffSha256: createHash("sha256").update(git(["diff", "HEAD", "--binary"]) ?? "").digest("hex")
     }, null, 2));
     // Preserve machine-readable metrics even when a threshold later rejects them.

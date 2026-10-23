@@ -170,7 +170,7 @@ const qualificationCommands = {
   package: ["node scripts/run-check.js test-package -- npm run test:package"],
   documentation: ["node scripts/run-check.js test-docs -- npm run test:docs", "node scripts/run-check.js docs-build -- npm run docs:build", "node scripts/run-check.js test-docs-built -- npm run test:docs:built", "node scripts/run-check.js test-docs-browser -- npm run test:docs:browser"],
   realistic: ["node scripts/run-check.js test-realistic -- npm run test:realistic -- --shard=${{ matrix.shard }}/7"],
-  platform: ["node scripts/run-check.js test-platform -- npm run test:platform"],
+  platform: ["node scripts/run-check.js test-platform -- npm run test:platform", "node scripts/run-check.js test-platform-contracts -- node scripts/run-tests.js all contracts/compiler-harness.test.js contracts/data-completion-types.test.js contracts/focused-scale-editor-types.test.js unit/support/test-sharding.test.js"],
   browsers: ["node scripts/run-check.js test-browser-compat -- npm run test:browser:compat"]
 };
 

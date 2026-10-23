@@ -186,3 +186,13 @@ passing execution, generated reference blocks, and contextual exceptions as
 separate counts. Hash-pinned exceptions and generated blocks are not execution
 evidence. README Quick start and immutable branches now have executable cases
 and explicit three-mark expectations.
+
+
+Offline scenario recipes each retain a differential raster witness: rendering a
+chart must differ from the same concrete scene with its analytic marks hidden.
+Axes, titles, and backgrounds alone cannot satisfy that test. Fully transparent
+and off-canvas marks are negative controls. Large canvases use a bounded whole
+chart raster; this representative witness supplements the exhaustive semantic
+corpus, not a claim that every generated scenario is raster-tested. Packed
+browser expectations are separate from the HTML fixture and reported as named
+subtests so one wrong result does not hide the other contract results.

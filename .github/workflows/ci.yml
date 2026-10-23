@@ -220,6 +220,8 @@ jobs:
         run: npm ci
       - name: Verify installed native package outputs
         run: node scripts/run-check.js test-platform -- npm run test:platform
+      - name: Verify portable compiler and test paths
+        run: node scripts/run-check.js test-platform-contracts -- node scripts/run-tests.js all contracts/compiler-harness.test.js contracts/data-completion-types.test.js contracts/focused-scale-editor-types.test.js unit/support/test-sharding.test.js
       - name: Collect bounded failure evidence
         if: ${{ failure() }}
         continue-on-error: true

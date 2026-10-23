@@ -89,6 +89,11 @@ function validatePrimitive(type, properties, path, issues) {
       issues.push(`${path}.properties.${property} is required.`);
     }
   }
+  for (const property of [...NON_NEGATIVE_PROPERTIES, "angle", "dx", "dy"]) {
+    if (properties[property] !== undefined && !Number.isFinite(properties[property])) {
+      issues.push(`${path}.properties.${property} must be finite.`);
+    }
+  }
   if (type === "text" && typeof properties.text !== "string") {
     issues.push(`${path}.properties.text must be a string.`);
   }

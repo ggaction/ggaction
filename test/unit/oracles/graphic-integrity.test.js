@@ -128,3 +128,18 @@ test("rejects malformed XML and invalid geometry regardless of quote style", () 
  }
  assert.doesNotThrow(() => assertSvgIntegrity('<svg><text>NaN &amp; Infinity</text><circle cx="1e2" cy="2" r="1"/></svg>'));
 });
+
+
+test("rejects malformed optional numeric styles and SVG command grammars", () => {
+  for (const property of ["strokeWidth", "fontSize", "angle", "dx", "dy"]) {
+    for (const value of [null, "3", false, [], {}]) {
+      const state = program({ canvas: { type: "canvas", properties: { width: 50, height: 50 }, children: ["mark"] },
+        mark: { type: "circle", properties: { x: 2, y: 2, radius: 1, [property]: value } } });
+      assert.ok(inspectGraphicIntegrity(state).issues.some(issue => issue.includes(`.${property} must be finite`)));
+    }
+  }
+  for (const attribute of ['d="M broken"', 'd="M 0 0 L 2"', 'd="M 0 0 A 2 2 0 3 0 5 5"', 'transform="translate(broken)"', 'transform="matrix(1 2)"', 'points="1 2 3"', 'viewBox="0 0 10"']) {
+    assert.throws(() => assertSvgIntegrity(`<svg><path ${attribute}/></svg>`), attribute);
+  }
+  assert.doesNotThrow(() => assertSvgIntegrity('<svg viewBox="0 0 10 20"><path d="M0,0L2,3C1,2,3,4,5,6Z" transform="translate(1,2) rotate(30)"/></svg>'));
+});
