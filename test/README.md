@@ -148,3 +148,21 @@ Type contract tests use `test/support/typescript.js`, which preserves each
 fixture's compiler options and negative assertions, invokes the compiler through
 Node on every platform, applies a 60-second deadline, and records compiler
 version, arguments, diagnostics, and status under `.artifacts/types/`.
+
+`test/charts/baseline-evidence.json` lists every primitive baseline's transitive
+production imports and independent oracle imports. Regenerate it with
+`node scripts/baseline-evidence.js`. Equality with a primitive proves equivalent
+construction and same-run output; it does not establish independence of shared
+layout, scale, or shape calculations. In particular, mark-selection baselines
+reuse production point-shape construction, and composition references reuse the
+production layout resolver. Their selection/order and composition-equivalence
+assertions are complemented by literal shape/geometry tests in the owning slices
+and `test/unit/layout/composition-layout.test.js`.
+
+`corpus-mutation-relations.test.js` reports bounded input-size tiers and pathology
+postconditions separately from real-source sampling. Its 32/512/4096-row point
+cases are stress witnesses, not a scalability benchmark. Seed, original and
+mutated rows, sample/source counts, category counts, missing/duplicate/negative/
+constant-value dimensions, and explicit aggregate expectations are retained in
+`.artifacts/corpus/`. Rename collisions and finite-number overflow fail before a
+mutation can silently destroy evidence.

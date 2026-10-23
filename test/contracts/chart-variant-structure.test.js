@@ -36,3 +36,21 @@ test("uses capability names instead of completed gate or phase names", () => {
     );
   }
 });
+
+test("baseline evidence declares shared production dependencies without claiming independent geometry", async () => {
+  const { baselineEvidence } = await import("../../scripts/baseline-evidence.js");
+  const { readFileSync, existsSync } = await import("node:fs");
+  const records = baselineEvidence();
+  assert.deepEqual(JSON.parse(readFileSync(new URL("../charts/baseline-evidence.json", import.meta.url), "utf8")), records);
+  for (const record of records) {
+    assert.ok(record.proof.includes("equivalence"));
+    assert.ok(record.independentGeometry.includes("not inferred"));
+    for (const file of [...record.sharedProductionImports, ...record.independentOracleImports]) {
+      assert.ok(existsSync(new URL(`../../${file}`, import.meta.url)), file);
+    }
+  }
+  const selection = records.find(record => record.file === "test/charts/mark-selection-points/primitive.program.js");
+  assert.ok(selection.sharedProductionImports.includes("src/grammar/pointShapes.js"));
+  const composition = records.find(record => record.file === "test/charts/program-composition/variants/layouts/primitive.program.js");
+  assert.ok(composition.sharedProductionImports.includes("src/layout/composition.js"));
+});
