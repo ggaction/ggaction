@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Fix Canvas replay comparing new axis labels with a stale numeric sibling title position.
+
 - Add Cartesian axis title `offset: { from: "labels", gap }` with same-owner label-aware replay, preserving numeric and omitted defaults.
 
 - Add explicit `assignment: "step"` for rectangular 2D bins and binned heatmaps, preserving the default strict edge policy and immutable replay.

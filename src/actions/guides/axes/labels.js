@@ -1,6 +1,6 @@
 import { axisTitleAllowsLabelOverlap, axisTitleFollowsLabels } from "../../../grammar/axisTextPlacement.js";
 import { selectCartesianAxis, axisTargetArgs } from "../../../selectors/axes.js";
-import { axisGraphicIds } from "../../../materialization/guides/resources.js";
+import { axisGraphicIds, hasPendingAxisTitleRematerialization } from "../../../materialization/guides/resources.js";
 import { axisThemeTypography } from "../../theme/state.js";
 import { validateAxisLabelFlushThreshold, validateAxisTextPlacement } from "../../../grammar/axisTextPlacement.js";
 import { canvasOverflowError } from "../../../layout/canvas.js";
@@ -397,6 +397,7 @@ function resolve(program, channel, config, axisId = channel) {
     : undefined;
   if (title && !axisTitleAllowsLabelOverlap(program.guideConfigs.axis?.[axisId]?.title) &&
     !axisTitleFollowsLabels(program.guideConfigs.axis?.[axisId]?.title) &&
+    !hasPendingAxisTitleRematerialization(program, channel, axisId) &&
     labelBounds.some(item => textBoundsIntersect(item, title))) {
     throw new Error(`The ${channel}-axis labels overlap the axis title.`);
   }

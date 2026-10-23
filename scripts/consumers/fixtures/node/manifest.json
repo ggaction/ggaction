@@ -759,5 +759,14 @@
         "statements": 1
       }
     ]
+  },
+  {
+    "file": "axis-title-replay.mjs",
+    "cases": [
+      {
+        "id": "guides/prospective-numeric-axis-title-replay",
+        "statements": 3
+      }
+    ]
   }
 ]

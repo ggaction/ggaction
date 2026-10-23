@@ -79,6 +79,9 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   - Effect: width/height/margin은 auto-range scale을 시작점으로 모든 registered consumer의
     deterministic materialization plan을 실행한다. background만 바꾸면 consumer를 다시 만들지 않는다.
   - Interaction: explicit scale range는 Canvas bounds 변경으로 재계산되지 않는다.
+  - Axis labels는 같은 deterministic plan에서 뒤이어 다시 배치할 동일 owner의 title을
+    이전 위치와 비교하지 않는다. 실제 title leaf와 최종 guide 검사로 새 상태의 충돌을 거부한다.
+    Label-only edit이나 다른 owner의 title은 이 형제 replay 범위에 해당하지 않는다.
 - `plot`: 생략하면 기존 모드를 유지한다. 새 내부 크기 또는 `false`로 전환할 수 있다. 활성 모드에서 margin 편집은 내부 크기를 유지하며 외부 Canvas를 재계산한다.
 - `plotBorder`: 생략하면 현재 설정을 유지한다. `false`는 설정을 비활성화하고 concrete border를 제거한다.
   객체는 complete style configuration이며 partial patch가 아니다. 생략한 style field는 이전 값 대신

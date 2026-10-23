@@ -471,8 +471,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 452,000 bytes |
-| `ggaction/basic` | 231,000 bytes |
+| `ggaction` | 454,000 bytes |
+| `ggaction/basic` | 233,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 
@@ -2676,3 +2676,18 @@ macOS/Node22.23.1 installed canonical consumer의 Full452644/Basic231356gzip byt
 비교해 차이0을 확인했다. 두 archive bytes·SHA는 다르므로 같은 archive로 주장하지 않는다.
 이 별도 측정 검토 뒤 packed 한도만 최소1000byte 단계904000으로 갱신한다.
 624entries/4272000unpacked 및 위의 나머지 기준은 유지한다.
+
+### Prospective guide sibling validation
+
+기존 generic materialization planner는 normalized/dedup plan과 다음 step index를 실행 중
+private context로만 노출한다. Guide resource owner가 기존 axis selector로 같은 owner의
+실제 미래 title leaf를 확인하면 이전 numeric title과의 중간 충돌만 미룬다. Title leaf와
+outer guide transaction의 최종 geometry/Canvas/collision 검사는 유지한다. Immutable step
+반환·중첩 실행은 이전 context scope를 복원하고 실패 branch는 이전 program을 바꾸지 않는다.
+새 공개 옵션·저장 owner·renderer 의미 해석은 없다. 정확한 동작은 Current CORE가 소유한다.
+
+Node24.22.1 실제 installed consumer에서 Full453148/Basic232016gzip bytes가 직전
+453000/232000을148/16bytes 초과했다. 필요한 owner 검증과 final collision 검사는 줄이지 않고
+별도 측정 검토 후 기존1000byte 최소 단계454000/233000으로만 갱신한다. Canonical table과
+README도 같은 값을 명시하며 보호 documentation-truth test는 바꾸지 않는다. SVG25000,
+package624entries/904000packed/4272000unpacked, storage·수치·픽셀·오류·coverage 기준은 유지한다.
