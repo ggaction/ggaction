@@ -3,9 +3,9 @@
   "status": "development",
   "packageVersion": "0.0.22",
   "contractId": "sha256:d7bb23b7bb434c7d7af5bf6ff104bbf7d070c0ba7d48756641e12d51b2859240",
-  "sourceCommit": null,
-  "sourceRef": "main",
-  "exampleSourceRef": "fix/documentation-and-rose-demo",
+  "sourceCommit": "6422776b0a379c8c89809f41b434f366fbc1f143",
+  "sourceRef": "6422776b0a379c8c89809f41b434f366fbc1f143",
+  "exampleSourceRef": "6422776b0a379c8c89809f41b434f366fbc1f143",
   "baseline": {
     "tag": "v0.0.13",
     "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",

@@ -10,8 +10,8 @@ The comparison baseline below is the older release used by the migration notes.
 | Identity | Value |
 | --- | --- |
 | Contract fingerprint | `sha256:d7bb23b7bb434c7d7af5bf6ff104bbf7d070c0ba7d48756641e12d51b2859240` |
-| Example and dataset source | `fix/documentation-and-rose-demo` |
-| Runtime source commit | `current` |
+| Example and dataset source | `6422776b0a379c8c89809f41b434f366fbc1f143` |
+| Runtime source commit | `6422776b0a379c8c89809f41b434f366fbc1f143` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 293 |
 | Declared actions in that release | 234 |
