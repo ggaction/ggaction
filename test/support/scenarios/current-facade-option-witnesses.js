@@ -90,6 +90,10 @@ export function currentFacadeOptionWitnesses(args,{action,index,program}={}) {
     if(axis.title&&typeof axis.title==='object')axis.title.overlap=Math.floor(index/2)%2?'allow':'error';
     const ticks=axis.ticksAndLabels;
     if(ticks&&typeof ticks==='object'){
+      if(statistical&&ticks.labels&&typeof ticks.labels==='object'){
+        ticks.labels.flushThreshold=index%2===0?'auto':4;
+        if(axis.title&&typeof axis.title==='object')axis.title.offset={from:'labels',gap:12+index%3*4};
+      }
       if(statistical&&scales[axis.scale]?.type==='linear') {delete ticks.values;ticks.count=4;}
       if(scales[axis.scale]?.type==='linear'&&!Object.hasOwn(ticks,'values'))ticks.rounding=
         action==='createScatterPlot'?(index>=32?'nearest':'ceiling'):
