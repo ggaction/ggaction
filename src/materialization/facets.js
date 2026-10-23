@@ -4,6 +4,7 @@ import { resolveGraphicBounds } from "../layout/canvas.js";
 import { resolvePlacedPlotBounds } from "../layout/composition.js";
 import {
   alignedTextAnchor,
+  alignedTitleAnchor,
   buildTitleReadingBlock,
   paintedTitleComponent,
   resolveTitleComponentBounds,
@@ -42,27 +43,33 @@ function titleLayout(program) {
   if (config === undefined) {
     throw new Error("Facet title requires chart title configuration.");
   }
-  if (config.position !== "top") {
-    throw new Error("Facet parent title currently supports only top position.");
-  }
   const block = buildTitleReadingBlock({
     text: program.semanticSpec.title.text,
     subtitle: program.semanticSpec.title.subtitle
-  }, config);
+  }, config, program.materializationConfigs.textMetrics);
   const top = 8 + config.offset;
   if (top < 0) {
     throw new Error("Facet parent title offset places text outside the Canvas.");
   }
-  return { config, block, top, height: Math.ceil(top + block.height) };
+  const reservation = Math.ceil(top + block.height);
+  return { config, block, top, reservation, height: config.position === "top" ? reservation : 0 };
 }
 
-function materializeTitleComponent(program, id, lines, centers, style, plot, top) {
+function materializeTitleComponent(program, id, lines, centers, style, plot, title) {
   if (lines.length === 0) return program;
-  const x = alignedTextAnchor(plot.x, plot.width, program.titleConfig.align) +
-    (program.titleConfig.alongOffset ?? 0);
-  const component = paintedTitleComponent({
-    x, y: centers.map(center => top + center), lines,
-    textAlign: program.titleConfig.align
+  const { config, block, top } = title;
+  const canvas = program.graphicSpec.objects.canvas.properties;
+  const horizontal = ["top", "bottom"].includes(config.position);
+  const component = paintedTitleComponent(horizontal ? {
+    x: alignedTextAnchor(plot.x, plot.width, config.align) + (config.alongOffset ?? 0),
+    y: centers.map(center => (config.position === "top" ? top : canvas.height - top - block.height) + center),
+    lines, textAlign: config.align,
+    ...(config.position === "bottom" ? { rotation: 0, explicitRotation: true } : {})
+  } : {
+    x: centers.map(center => config.position === "left" ? top + center : canvas.width - top - center),
+    y: alignedTitleAnchor(plot.y, plot.height, block.width, config.align) + (config.alongOffset ?? 0),
+    lines, textAlign: "center", rotation: config.position === "left" ? -Math.PI / 2 : Math.PI / 2,
+    explicitRotation: true
   });
   const bounds = resolveTitleComponentBounds(component, style, program.materializationConfigs.textMetrics);
   if (!textBoundsFitCanvas(bounds, program.graphicSpec.objects.canvas.properties)) {
@@ -75,7 +82,9 @@ function materializeTitleComponent(program, id, lines, centers, style, plot, top
     ...(count > 1 ? { length: count } : {}),
     parent: "canvas"
   });
-  for (const [property, value] of Object.entries(titleTextProperties(component, style))) {
+  for (const [property, value] of Object.entries({ ...titleTextProperties(component, style),
+    ...(component.explicitRotation ? { rotation: component.rotation } : {})
+  })) {
     next = next.editGraphics({ target: id, property, value });
   }
   return next;
@@ -89,7 +98,7 @@ function materializeTitle(program, plot, title) {
     title.block.titleCenters,
     title.config.titleStyle,
     plot,
-    title.top
+    title
   );
   if (title.block.subtitleLines.length > 0) {
     next = materializeTitleComponent(
@@ -99,7 +108,7 @@ function materializeTitle(program, plot, title) {
       title.block.subtitleCenters,
       title.config.subtitleStyle,
       plot,
-      title.top
+      title
     );
   }
   return next;
@@ -120,6 +129,12 @@ export function resolveFacetProgramLayout(program, preparedLegend) {
   const gridCells = new Map(
     (spec.facet.grid?.cells ?? []).map(cell => [cell.id, cell])
   );
+  // Reserve the outer title lane before placing children and shared legends.
+  // Only the inferred layout uses this padding; the authored facet is unchanged.
+  const padding = { ...spec.padding };
+  if (title.config && title.config.position !== "top") {
+    padding[title.config.position] += title.reservation;
+  }
   let layout = resolveFacetLayout({
     children: spec.children.map((id, index) => ({
       ...compositionChildDescriptor(id, program.children[id]),
@@ -134,7 +149,7 @@ export function resolveFacetProgramLayout(program, preparedLegend) {
     columns: spec.columns,
     gap: spec.gap,
     align: spec.align,
-    padding: spec.padding,
+    padding,
     titleHeight: title.height,
     headerLayout: preparedHeaders.headerLayout,
     sharedLegend: spec.facet.guides.legend === "shared" && preparedLegend?.mode !== "promoted",
@@ -229,7 +244,7 @@ export function materializeFacetGraphics(program) {
   next = materializeFacetHeaders(next, layout, plots, preparedHeaders);
   next = next.composeFacetGuides({ layout, plot });
   if (layout.spacing === "plot") assertPlotSpacingGuides(next, layout, plots);
-  if (title.height > 0) next = materializeTitle(next, plot, title);
+  if (title.config) next = materializeTitle(next, plot, title);
   return next._withCanvasConfig({
     margin: ZERO_MARGIN,
     size: { width: "auto", height: "auto" }

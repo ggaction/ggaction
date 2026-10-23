@@ -96,7 +96,7 @@ Guide text/header clearance and source-style replay: `test/unit/actions/composit
   shared/independent continuous domains,
   explicit-domain precedence, shared ordinal order, shared/independent histogram policy, parent categorical legend,
   parent gradient/discretized/size/opacity legends, occupied-edge outer axes, title promotion, child-plot-aligned
-  parent title and headers, empty-string header display, renderer isolation, layout rematerialization, immutable
+  four-edge parent title with an outer reserved lane, and headers, empty-string header display, renderer isolation, layout rematerialization, immutable
   base/children, four-edge shared-legend placement and layout-edit preservation, incompatible guide, invalid
   channel, dependency, and ambiguous-source rejection; Polar theta/radius and Parallel dimension domains, local Pie
   denominators, local frames/axes, attached-label replay, transform-produced empty cells, and non-Cartesian outer-axis

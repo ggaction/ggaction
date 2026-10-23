@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.21.
 
-Contract: sha256:384929fcf70cfe2fc17b36b6e89d5227de4eca157b2e3e5ab660c3aaaf96df30. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:c592a3fdb303ac22ccdbed110f9d63a5f5bd39a8c15b7d59d97cc33801cb9431. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -9097,6 +9097,11 @@ opacity and stroke-width legends become separate blocks alongside color.
 ## `createTitle(options)`
 
 Creates one chart title and an optional subtitle on any Canvas edge.
+
+Facet parents support the same four edges. Their inferred Canvas reserves an outer
+lane for the title and subtitle, outside retained axes, headers and shared legends.
+Alignment follows the union of the child plots; left and right titles rotate with
+their subtitle. Editing the title or facet layout recomputes that lane.
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
@@ -41081,7 +41086,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:384929fcf70cfe2fc17b36b6e89d5227de4eca157b2e3e5ab660c3aaaf96df30` |
+| Contract fingerprint | `sha256:c592a3fdb303ac22ccdbed110f9d63a5f5bd39a8c15b7d59d97cc33801cb9431` |
 | Example and dataset source | `84e86de2bbaa210b0a17165cd5f7b778398b3e18` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
