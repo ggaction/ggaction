@@ -27,3 +27,10 @@ export const docInputs = {
 export function datasetValues(name) { return dataset(name); }
 
 docInputs.apiExamples = { ...docInputs.cars, ...docInputs.values, rows: [{ category: "A", score: 0.3, series: "s" }, { category: "B", score: 0.7, series: "s" }, { category: "C", score: 0.4, series: "s" }], intervalRows: [{ year: 2000, lower: 1, upper: 3 }, { year: 2001, lower: 2, upper: 4 }] };
+
+
+docInputs.readmeObservations = { observations: [
+  { displacement: 97, acceleration: 14.5, origin: "Japan" },
+  { displacement: 140, acceleration: 15.5, origin: "USA" },
+  { displacement: 86, acceleration: 16.4, origin: "Japan" }
+] };

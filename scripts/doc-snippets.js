@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { readFile, readdir } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -55,9 +56,12 @@ export async function documentationPrograms() {
       ? javascript.find(item => item.code.includes(options.contains))
       : javascript.find(item => item.heading === "Complete program") ?? javascript[0];
     if (!block) throw new Error(`${file} is missing its registered executable block.`);
-    if (!["node-esm", "browser-module"].includes(options.environment) || !options.result) {
+    if (!["node-esm", "browser-module"].includes(options.environment) ||
+        !["authoring-only", "renders-canvas"].includes(options.rendering) ||
+        !["complete", "continuation"].includes(options.mode) ||
+        !/^[A-Za-z_$][\w$]*(?:\s*,\s*[A-Za-z_$][\w$]*)*$/.test(options.result ?? "")) {
       throw new Error(`${file} must identify its environment and observable result.`);
     }
-    return { file, ...options, ...block };
+    return { file, ...options, ...block, sha256: createHash("sha256").update(block.code).digest("hex") };
   }));
 }

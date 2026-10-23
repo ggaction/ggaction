@@ -8,7 +8,8 @@
     "fixture": "apiExamples",
     "importChart": true,
     "result": "program",
-    "prerequisites": "Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas."
+    "prerequisites": "Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas.",
+    "rendering": "authoring-only"
   },
   {
     "id": "canvas-layout-2",
@@ -19,7 +20,8 @@
     "fixture": "apiExamples",
     "importChart": true,
     "result": "program",
-    "prerequisites": "Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas."
+    "prerequisites": "Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas.",
+    "rendering": "authoring-only"
   },
   {
     "id": "canvas-layout-3",
@@ -30,7 +32,8 @@
     "fixture": "apiExamples",
     "importChart": true,
     "result": "layered",
-    "prerequisites": "Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas."
+    "prerequisites": "Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas.",
+    "rendering": "authoring-only"
   },
   {
     "id": "canvas-layout-4",
@@ -41,7 +44,8 @@
     "fixture": "apiExamples",
     "importChart": true,
     "result": "radar",
-    "prerequisites": "Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas."
+    "prerequisites": "Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas.",
+    "rendering": "authoring-only"
   },
   {
     "id": "canvas-layout-5",
@@ -52,7 +56,8 @@
     "fixture": "apiExamples",
     "importChart": true,
     "result": "area",
-    "prerequisites": "Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas."
+    "prerequisites": "Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas.",
+    "rendering": "authoring-only"
   },
   {
     "id": "canvas-layout-6",
@@ -63,7 +68,8 @@
     "fixture": "apiExamples",
     "importChart": true,
     "result": "program",
-    "prerequisites": "Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas."
+    "prerequisites": "Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas.",
+    "rendering": "authoring-only"
   },
   {
     "id": "canvas-layout-7",
@@ -74,7 +80,8 @@
     "fixture": "apiExamples",
     "importChart": true,
     "result": "layered",
-    "prerequisites": "Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas."
+    "prerequisites": "Import chart from ggaction and supply the cars, rows, intervalRows, or values fixture described by this section. Each chain owns its Canvas.",
+    "rendering": "authoring-only"
   },
   {
     "id": "inspection-roundtrip",
@@ -83,7 +90,8 @@
     "mode": "complete",
     "environment": "node-esm",
     "result": "before, after",
-    "prerequisites": "Run this standalone ES module; all data and imports are included."
+    "prerequisites": "Run this standalone ES module; all data and imports are included.",
+    "rendering": "authoring-only"
   },
   {
     "id": "render-first",
@@ -92,6 +100,36 @@
     "mode": "complete",
     "environment": "browser-module",
     "result": "program",
-    "prerequisites": "Use a browser ES module with a canvas element whose id is chart; all input rows are included."
+    "prerequisites": "Use a browser ES module with a canvas element whose id is chart; all input rows are included.",
+    "rendering": "renders-canvas"
+  },
+  {
+    "id": "readme-quick-start",
+    "file": "../README.md",
+    "contains": "const observations = [",
+    "mode": "complete",
+    "environment": "browser-module",
+    "rendering": "renders-canvas",
+    "result": "program",
+    "prerequisites": "Use the Canvas element with id chart shown immediately before this complete browser module.",
+    "expect": {
+      "mark": "scatterPlot",
+      "items": 3
+    }
+  },
+  {
+    "id": "readme-immutable-branches",
+    "file": "../README.md",
+    "contains": "const checkpoint = editableChart()",
+    "mode": "continuation",
+    "environment": "node-esm",
+    "rendering": "authoring-only",
+    "fixture": "readmeObservations",
+    "result": "checkpoint, outlined, muted",
+    "prerequisites": "Use the three observations from the README Quick start; every returned branch must retain the original dataset.",
+    "expect": {
+      "mark": "scatterPlot",
+      "items": 3
+    }
   }
 ]

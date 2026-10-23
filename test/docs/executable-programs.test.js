@@ -5,6 +5,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import test from "node:test";
 
 import { documentationPrograms } from "../../scripts/doc-snippets.js";
+import { assertDocumentationRendering, documentationEnvironment } from "../support/docs-runtime.js";
 import { docInputs, datasetValues } from "../support/docs-inputs.js";
 
 const root = fileURLToPath(new URL("../..", import.meta.url));
@@ -12,21 +13,23 @@ const directory = path.join(root, ".artifacts/test/docs/programs");
 await mkdir(directory, { recursive: true });
 
 for (const example of await documentationPrograms()) {
-  test(`executes documented ${example.file} [${example.id ?? "primary"}] against its stated inputs`, async () => {
+  test(`executes documented ${example.file} [${example.id ?? "primary"}] against its stated inputs`, async t => {
+    let passed = false;
+    const started = performance.now();
+    t.after(async () => writeFile(path.join(directory, example.file.replaceAll("/", "-") + (example.id ?? "primary") + ".json"), JSON.stringify({ id: example.id ?? example.file, file: example.file, sha256: example.sha256, rendering: example.rendering, status: passed ? "passed" : "failed", durationMs: performance.now() - started }, null, 2)));
     const fixture = example.fixture ? docInputs[example.fixture] : {};
     assert.ok(fixture, `Unknown fixture ${example.fixture}`);
     const data = example.dataset ? datasetValues(example.dataset) : undefined;
     const prefix = [
-      'import { createCanvas as nativeCanvas } from "@napi-rs/canvas";',
-      'const canvas = nativeCanvas(1, 1);',
-      'const document = { querySelector: () => canvas };',
-      ...(data ? [`const fetch = async () => ({ ok: true, status: 200, json: async () => ${JSON.stringify(data)} });`] : []),
+      `import { documentationEnvironment } from ${JSON.stringify(new URL("../support/docs-runtime.js", import.meta.url).href)};`,
+      `const __documentationEnvironment = documentationEnvironment(${JSON.stringify({ environment: example.environment, dataset: example.dataset })}, ${JSON.stringify(data)});`,
+      'const { document, fetch } = __documentationEnvironment;',
       ...Object.entries(fixture).map(([key, value]) => `const ${key} = ${JSON.stringify(value)};`),
       ...(example.importChart ? ['import { chart } from "ggaction";'] : [])
     ].join("\n");
     const resultNames = example.result.split(",").map(value => value.trim());
     const moduleFile = path.join(directory, example.file.replaceAll("/", "-") + (example.id ?? "") + ".mjs");
-    await writeFile(moduleFile, `${prefix}\n${example.code}\nexport { ${resultNames.join(", ")} };\n`);
+    await writeFile(moduleFile, `${prefix}\n${example.code}\nexport { ${resultNames.join(", ")}, __documentationEnvironment };\n`);
     const result = await import(pathToFileURL(moduleFile));
     for (const name of resultNames) {
       const program = result[name];
@@ -36,6 +39,10 @@ for (const example of await documentationPrograms()) {
         (object.items?.length ?? 0) > 0 || ["line", "path", "circle", "rect", "text"].includes(object.type)
       ), `${name} must materialize visible content`);
     }
+    assertDocumentationRendering(example, result.__documentationEnvironment.canvas);
+    if (example.expect) {
+      for (const name of resultNames) assert.equal(result[name].graphicSpec.objects[example.expect.mark]?.items?.length, example.expect.items, `${name} documented mark cardinality`);
+    }
     if (example.canonical) {
       const { file, exported, input } = example.canonical;
       const canonical = await import(pathToFileURL(path.join(root, file)));
@@ -43,6 +50,7 @@ for (const example of await documentationPrograms()) {
       assert.deepEqual(result[resultNames.at(-1)].graphicSpec, expected.graphicSpec,
         "The displayed complete program must match its canonical example.");
     }
+    passed = true;
   });
 }
 
@@ -79,4 +87,27 @@ test("extracts long and indented fences without closing on shorter embedded fenc
   assert.equal(documentationCodeBlocks(`${opening}\nconst x = 1;\n${fence}`)[0].code,"const x = 1;");
  }
  assert.equal(documentationCodeBlocks("````js\n```\n````")[0].code,"```");
+});
+
+
+test("documentation mocks reject incorrect URLs/selectors and missing rendering", async () => {
+  const example = { environment: "browser-module", dataset: "cars", rendering: "renders-canvas" };
+  const environment = documentationEnvironment(example, []);
+  assert.throws(() => environment.document.querySelector("#wrong"), /Undocumented Canvas selector/);
+  await assert.rejects(environment.fetch("/wrong.json"), /documented dataset URL/);
+  assert.throws(() => assertDocumentationRendering(example, environment.canvas), /must render/);
+  environment.canvas.width = environment.canvas.height = 10;
+  assert.throws(() => assertDocumentationRendering(example, environment.canvas), /uniform background/);
+  assert.equal(documentationEnvironment({ environment: "node-esm" }).document, undefined);
+});
+
+test("snippet execution evidence must match the current code hash and pass status", async () => {
+  const { snippetExecutionSummary } = await import("../../scripts/doc-snippet-coverage.js");
+  const record = { id: "docs/example.md#example:1", file: "docs/example.md", sha256: "current", executable: true, generated: false };
+  const receipt = { id: "example", file: "example.md", sha256: "current", status: "passed" };
+  assert.equal(snippetExecutionSummary([record], [receipt]).observedPassing, 1);
+  assert.equal(snippetExecutionSummary([record], [{ ...receipt, sha256: "stale" }]).observedPassing, 0);
+  assert.equal(snippetExecutionSummary([record], [{ ...receipt, status: "failed" }]).observedPassing, 0);
+  assert.equal(snippetExecutionSummary([record], []).registered, 1);
+  assert.equal(snippetExecutionSummary([record], []).observedPassing, 0);
 });

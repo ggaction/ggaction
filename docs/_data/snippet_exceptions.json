@@ -1,19 +1,5 @@
 [
   {
-    "id": "README.md#quick-start:1",
-    "sha256": "36d9a5835909c9aa166dd9d318e2e0d60b1a591420db65c54bdf885d6ea878a9",
-    "mode": "contextual-fragment",
-    "owner": "README.md",
-    "reason": "Not a standalone executable contract. Requires the imports, resource state, and branch in \"Quick start\" on README.md. Review this context when editing; register a fixture in snippet_cases.json to claim execution coverage."
-  },
-  {
-    "id": "README.md#branch-revisions-without-mutation:1",
-    "sha256": "0681363e744e0b0e0a4b45af7d64736d21b95cd26a856558951b70dd3e5c66a5",
-    "mode": "contextual-fragment",
-    "owner": "README.md",
-    "reason": "Not a standalone executable contract. Requires the imports, resource state, and branch in \"Branch revisions without mutation\" on README.md. Review this context when editing; register a fixture in snippet_cases.json to claim execution coverage."
-  },
-  {
     "id": "README.md#a-grammar-of-graphical-action:1",
     "sha256": "ee451748b0747b8928c1c09e4e91e9ca169bd00f868e92c49d180c3a6da17e74",
     "mode": "contextual-fragment",

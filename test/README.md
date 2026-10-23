@@ -175,3 +175,14 @@ these records for 30 days. Summarize downloaded runs with
 use successful samples, report failures separately, and never pool different
 environments. Keep the committed scheduling weights until repeated comparable
 CI samples justify an update. Local measurements do not replace Ubuntu weights.
+
+Documentation programs declare `environment`, `mode`, `rendering`, and result
+bindings. A `renders-canvas` example must paint its own Canvas; the browser
+consumer renders returned programs only for `authoring-only` examples. Node
+execution accepts only the documented Canvas selectors and exact dataset URL.
+Node and packed-browser receipts retain stable case IDs and exact code hashes.
+`node scripts/doc-snippet-coverage.js` reports registration, current observed
+passing execution, generated reference blocks, and contextual exceptions as
+separate counts. Hash-pinned exceptions and generated blocks are not execution
+evidence. README Quick start and immutable branches now have executable cases
+and explicit three-mark expectations.

@@ -4,133 +4,152 @@
     "environment": "node-esm",
     "fixture": "films",
     "result": "program",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe."
+    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
+    "rendering": "authoring-only"
   },
   "recipes/bar-chart.md": {
     "mode": "complete",
     "environment": "node-esm",
     "fixture": "values",
     "result": "program",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe."
+    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
+    "rendering": "authoring-only"
   },
   "recipes/box-plot.md": {
     "mode": "complete",
     "environment": "node-esm",
     "fixture": "values",
     "result": "program",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe."
+    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
+    "rendering": "authoring-only"
   },
   "recipes/composition.md": {
     "mode": "complete",
     "environment": "node-esm",
     "fixture": "composition",
     "result": "dashboard",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe."
+    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
+    "rendering": "authoring-only"
   },
   "recipes/density-area.md": {
     "mode": "complete",
     "environment": "node-esm",
     "fixture": "values",
     "result": "program",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe."
+    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
+    "rendering": "authoring-only"
   },
   "recipes/error-band.md": {
     "mode": "complete",
     "environment": "node-esm",
     "fixture": "intervals",
     "result": "program",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe."
+    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
+    "rendering": "authoring-only"
   },
   "recipes/error-bar.md": {
     "mode": "complete",
     "environment": "node-esm",
     "fixture": "values",
     "result": "program",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe."
+    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
+    "rendering": "authoring-only"
   },
   "recipes/facet.md": {
     "mode": "complete",
     "environment": "node-esm",
     "fixture": "cars",
     "result": "program",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe."
+    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
+    "rendering": "authoring-only"
   },
   "recipes/gradient-plot.md": {
     "mode": "complete",
     "environment": "node-esm",
     "fixture": "cars",
     "result": "program",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe."
+    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
+    "rendering": "authoring-only"
   },
   "recipes/heatmap.md": {
     "mode": "complete",
     "environment": "node-esm",
     "fixture": "cells",
     "result": "program",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe."
+    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
+    "rendering": "authoring-only"
   },
   "recipes/histogram.md": {
     "mode": "complete",
     "environment": "node-esm",
     "fixture": "values",
     "result": "program",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe."
+    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
+    "rendering": "authoring-only"
   },
   "recipes/horizon.md": {
     "mode": "complete",
     "environment": "node-esm",
     "fixture": "horizon",
     "result": "program",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe."
+    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
+    "rendering": "authoring-only"
   },
   "recipes/line-chart.md": {
     "mode": "complete",
     "environment": "node-esm",
     "fixture": "values",
     "result": "program",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe."
+    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
+    "rendering": "authoring-only"
   },
   "recipes/parallel-coordinates.md": {
     "mode": "complete",
     "environment": "node-esm",
     "fixture": "cars",
     "result": "program",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe."
+    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
+    "rendering": "authoring-only"
   },
   "recipes/path-ordering.md": {
     "mode": "complete",
     "environment": "node-esm",
     "fixture": "observations",
     "result": "program",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe."
+    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
+    "rendering": "authoring-only"
   },
   "recipes/regression-scatterplot.md": {
     "mode": "complete",
     "environment": "node-esm",
     "fixture": "cars",
     "result": "program",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe."
+    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
+    "rendering": "authoring-only"
   },
   "recipes/rose-chart.md": {
     "mode": "complete",
     "environment": "node-esm",
     "fixture": "rose",
     "result": "program",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe."
+    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
+    "rendering": "authoring-only"
   },
   "recipes/scatterplot.md": {
     "mode": "complete",
     "environment": "node-esm",
     "fixture": "values",
     "result": "program",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe."
+    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
+    "rendering": "authoring-only"
   },
   "recipes/violin-plot.md": {
     "mode": "complete",
     "environment": "node-esm",
     "fixture": "values",
     "result": "program",
-    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe."
+    "prerequisites": "Import ggaction and provide the named row array with the fields and grain described on this recipe.",
+    "rendering": "authoring-only"
   },
   "tutorials/area-layout.md": {
     "mode": "complete",
@@ -140,14 +159,16 @@
     "canonical": {
       "file": "examples/area-layout/program.js",
       "exported": "createAreaSimple"
-    }
+    },
+    "rendering": "renders-canvas"
   },
   "tutorials/density-area.md": {
     "mode": "complete",
     "environment": "browser-module",
     "result": "program",
     "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
-    "dataset": "cars"
+    "dataset": "cars",
+    "rendering": "renders-canvas"
   },
   "tutorials/ecdf.md": {
     "mode": "complete",
@@ -157,7 +178,8 @@
     "canonical": {
       "file": "examples/ecdf-plot/program.js",
       "exported": "createECDFExample"
-    }
+    },
+    "rendering": "renders-canvas"
   },
   "tutorials/endpoint-plots.md": {
     "mode": "complete",
@@ -167,49 +189,56 @@
     "canonical": {
       "file": "examples/dumbbell-plot/program.js",
       "exported": "createDumbbellPlotExample"
-    }
+    },
+    "rendering": "renders-canvas"
   },
   "tutorials/error-band.md": {
     "mode": "complete",
     "environment": "browser-module",
     "result": "program",
     "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
-    "dataset": "gapminder"
+    "dataset": "gapminder",
+    "rendering": "renders-canvas"
   },
   "tutorials/error-bar.md": {
     "mode": "complete",
     "environment": "browser-module",
     "result": "program",
     "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
-    "dataset": "cars"
+    "dataset": "cars",
+    "rendering": "renders-canvas"
   },
   "tutorials/grouped-bar.md": {
     "mode": "complete",
     "environment": "browser-module",
     "result": "program",
     "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
-    "dataset": "jobs"
+    "dataset": "jobs",
+    "rendering": "renders-canvas"
   },
   "tutorials/histogram.md": {
     "mode": "complete",
     "environment": "browser-module",
     "result": "program",
     "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
-    "dataset": "cars"
+    "dataset": "cars",
+    "rendering": "renders-canvas"
   },
   "tutorials/horizon.md": {
     "mode": "complete",
     "environment": "browser-module",
     "result": "program",
     "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
-    "dataset": "gapminder"
+    "dataset": "gapminder",
+    "rendering": "renders-canvas"
   },
   "tutorials/line-chart.md": {
     "mode": "complete",
     "environment": "browser-module",
     "result": "program",
     "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
-    "dataset": "cars"
+    "dataset": "cars",
+    "rendering": "renders-canvas"
   },
   "tutorials/mark-selection.md": {
     "mode": "complete",
@@ -221,42 +250,48 @@
       "file": "examples/mark-selection/program.js",
       "exported": "createGroupedMaximumPointHighlight",
       "input": "cars"
-    }
+    },
+    "rendering": "renders-canvas"
   },
   "tutorials/polar-arcs.md": {
     "mode": "complete",
     "environment": "browser-module",
     "result": "program",
     "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
-    "dataset": "cars"
+    "dataset": "cars",
+    "rendering": "renders-canvas"
   },
   "tutorials/polar-lines.md": {
     "mode": "complete",
     "environment": "browser-module",
     "result": "program",
     "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
-    "dataset": "gapminder"
+    "dataset": "gapminder",
+    "rendering": "renders-canvas"
   },
   "tutorials/polar-points.md": {
     "mode": "complete",
     "environment": "browser-module",
     "result": "program",
     "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
-    "dataset": "cars"
+    "dataset": "cars",
+    "rendering": "renders-canvas"
   },
   "tutorials/regression-scatterplot.md": {
     "mode": "complete",
     "environment": "browser-module",
     "result": "program",
     "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
-    "dataset": "cars"
+    "dataset": "cars",
+    "rendering": "renders-canvas"
   },
   "tutorials/scatterplot.md": {
     "mode": "complete",
     "environment": "browser-module",
     "result": "program",
     "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
-    "dataset": "cars"
+    "dataset": "cars",
+    "rendering": "renders-canvas"
   },
   "api/data/filtering.md": {
     "mode": "complete",
@@ -265,7 +300,8 @@
     "result": "filtered",
     "contains": "const filtered = chart()",
     "importChart": true,
-    "prerequisites": "Import chart from ggaction and provide Cars rows with finite Displacement and Acceleration."
+    "prerequisites": "Import chart from ggaction and provide Cars rows with finite Displacement and Acceleration.",
+    "rendering": "authoring-only"
   },
   "recipes/repair-missing-observations.md": {
     "mode": "complete",
@@ -275,7 +311,8 @@
     "canonical": {
       "file": "examples/repair-missing-observations/program.js",
       "exported": "createMissingObservationsWorkflow"
-    }
+    },
+    "rendering": "renders-canvas"
   },
   "recipes/compare-weighted-distributions.md": {
     "mode": "complete",
@@ -285,7 +322,8 @@
     "canonical": {
       "file": "examples/compare-weighted-distributions/program.js",
       "exported": "createWeightedDistributionsWorkflow"
-    }
+    },
+    "rendering": "renders-canvas"
   },
   "recipes/switch-encoding-modes.md": {
     "mode": "complete",
@@ -295,7 +333,8 @@
     "canonical": {
       "file": "examples/switch-encoding-modes/program.js",
       "exported": "createEncodingModesWorkflow"
-    }
+    },
+    "rendering": "renders-canvas"
   },
   "recipes/edit-scales-and-guides.md": {
     "mode": "complete",
@@ -305,7 +344,8 @@
     "canonical": {
       "file": "examples/edit-scales-and-guides/program.js",
       "exported": "createScaleGuidesWorkflow"
-    }
+    },
+    "rendering": "renders-canvas"
   },
   "recipes/edit-selected-labels.md": {
     "mode": "complete",
@@ -315,7 +355,8 @@
     "canonical": {
       "file": "examples/edit-selected-labels/program.js",
       "exported": "createSelectedLabelsWorkflow"
-    }
+    },
+    "rendering": "renders-canvas"
   },
   "recipes/apply-custom-theme.md": {
     "mode": "complete",
@@ -325,7 +366,8 @@
     "canonical": {
       "file": "examples/apply-custom-theme/program.js",
       "exported": "createCustomThemeWorkflow"
-    }
+    },
+    "rendering": "renders-canvas"
   },
   "recipes/edit-facet-source.md": {
     "mode": "complete",
@@ -335,7 +377,8 @@
     "canonical": {
       "file": "examples/edit-facet-source/program.js",
       "exported": "createFacetSourceWorkflow"
-    }
+    },
+    "rendering": "renders-canvas"
   },
   "recipes/remove-dependent-resources.md": {
     "mode": "complete",
@@ -345,7 +388,8 @@
     "canonical": {
       "file": "examples/remove-dependent-resources/program.js",
       "exported": "createResourceRemovalWorkflow"
-    }
+    },
+    "rendering": "renders-canvas"
   },
   "tutorials/hierarchical-authoring.md": {
     "mode": "complete",
@@ -355,13 +399,15 @@
     "canonical": {
       "file": "examples/hierarchical-authoring/program.js",
       "exported": "createHierarchicalAuthoring"
-    }
+    },
+    "rendering": "renders-canvas"
   },
   "api/marks/line-area.md": {
     "mode": "complete",
     "environment": "node-esm",
     "result": "gaps",
     "contains": "const gaps =",
-    "prerequisites": "Import ggaction in an ES module; all observations and required setup are included in this program."
+    "prerequisites": "Import ggaction in an ES module; all observations and required setup are included in this program.",
+    "rendering": "authoring-only"
   }
 }
