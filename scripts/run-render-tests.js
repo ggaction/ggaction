@@ -1,4 +1,4 @@
-import { spawnSync } from "node:child_process";
+import { runCheck } from "./run-check.js";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -19,18 +19,12 @@ export function renderTestCommands(selectors = []) {
   return Object.freeze(commands);
 }
 
-function run(command) {
-  const result = spawnSync(process.execPath, command, {
-    cwd: repositoryRoot,
-    stdio: "inherit"
-  });
-  if (result.error) throw result.error;
-  if (result.status !== 0) process.exit(result.status ?? 1);
-}
-
 export async function runRenderTests(selectors = []) {
   await resetPngArtifacts();
-  for (const command of renderTestCommands(selectors)) run(command);
+  for (const [index, command] of renderTestCommands(selectors).entries()) {
+    const code = await runCheck(`render-stage-${index}`, process.execPath, command, { cwd: repositoryRoot });
+    if (code !== 0) { process.exitCode = code; return; }
+  }
   if (selectors.length > 0) {
     process.stdout.write(
       "Focused render completed; full artifact galleries were not regenerated.\n"

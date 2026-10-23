@@ -1,3 +1,5 @@
+import { spawn } from "node:child_process";
+import { once } from "node:events";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { mkdtemp, mkdir, readFile, readdir, rm, stat, writeFile } from "node:fs/promises";
@@ -179,3 +181,31 @@ test("context teardown retains the original assertion and screenshot before clos
   const image = await loadImage(path.join(directory, "actual.png"));
   assert.equal(image.width, 160);
 });
+
+
+for (const [signal, expected] of [["SIGINT", 130], ["SIGTERM", 143]]) {
+  test(`check cancellation forwards ${signal} and preserves its receipt`, async t => {
+    if (process.platform === "win32") return t.skip("Unix supervisor signals; Windows process trees use taskkill");
+    const directory = await fixture(t);
+    const pidFile = path.join(directory, "child.pid");
+    const childCode = `require("node:fs").writeFileSync(${JSON.stringify(pidFile)}, String(process.pid));process.on("SIGTERM",()=>{});setInterval(()=>{},1000);`;
+    const wrapper = spawn(process.execPath, ["--input-type=module", "-e", `
+      import { runCheck } from ${JSON.stringify(new URL("../../../scripts/run-check.js", import.meta.url).href)};
+      process.exitCode = await runCheck("cancel", "node", ["-e", ${JSON.stringify(childCode)}], {outputDirectory:${JSON.stringify(directory)},killGraceMs:50});
+    `], { stdio: "ignore" });
+    t.after(() => wrapper.kill("SIGKILL"));
+    const closed = once(wrapper, "close");
+    let pid;
+    for (let attempt = 0; attempt < 100 && !pid; attempt++) {
+      pid = Number(await readFile(pidFile, "utf8").catch(() => ""));
+      if (!pid) await new Promise(resolve => setTimeout(resolve, 20));
+    }
+    assert.ok(pid, "The check child must start before cancellation");
+    wrapper.kill(signal);
+    const [code] = await closed;
+    assert.equal(code, expected);
+    const receipt = JSON.parse(await readFile(path.join(directory, "cancel.json"), "utf8"));
+    assert.equal(receipt.termination, signal);
+    assert.throws(() => process.kill(pid, 0), { code: "ESRCH" });
+  });
+}
