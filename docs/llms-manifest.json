@@ -4,8 +4,8 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:443978a6b9b70f861b9e31b68c6efbe6a1117f6ec3ec4306efbf4d8e45e0df24",
-    "sourceCommit": "20ca9113d40bb16b09e58eeaf83550733042342c",
+    "contractId": "sha256:2171a3f52b4bf9f107d4366946d367f057392705aa5acb003f5fc06db366d832",
+    "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -65,8 +65,8 @@
         "long-requests-and-execution-recovery",
         "related"
       ],
-      "bytes": 12058,
-      "sha256": "a5079c309b750cf117ddea0b32c12dd242078d75ea77bbf8940649ca8e3a33bd"
+      "bytes": 11986,
+      "sha256": "c14c078d0d79db1cb04ee38a587d53a79e71b64caa952352b8ea4e083bc94523"
     },
     {
       "order": 4,
@@ -1585,6 +1585,8 @@
       "headings": [
         "axes",
         "at-a-glance",
+        "keep-a-title-outside-its-labels",
+        "rotate-labels-outside-the-plot",
         "choose-nearest-step-linear-ticks",
         "keep-endpoint-labels-inside-the-axis-span",
         "color-individual-tick-labels",
@@ -1601,8 +1603,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 17816,
-      "sha256": "2f0be5a5705934fb7f510c1a2207dc8700e10091e88808ec57ea097e5aa61bb1"
+      "bytes": 19393,
+      "sha256": "8dc04536486a2170fa33b161c0ead4ef5ed73a10e55470cd2cdcb8e0b6317389"
     },
     {
       "order": 96,
@@ -2328,8 +2330,8 @@
         "focused-legend-edits",
         "related"
       ],
-      "bytes": 138630,
-      "sha256": "7d688fc6de68cad642c150a0214710c8f518c0fc458a7f88daf78d3793397f7b"
+      "bytes": 138666,
+      "sha256": "3632ddd054fcff5783ae1b9bb418e5d125481862c74d92f64a1cc6e600d48bbf"
     },
     {
       "order": 123,
@@ -2395,8 +2397,8 @@
         "rendering-functions",
         "internal-trace-operations"
       ],
-      "bytes": 27823,
-      "sha256": "67b54984685c2e8984cd3902b0d2a0456d90433619eefa8e1e003119a1d26b00"
+      "bytes": 27861,
+      "sha256": "5288714c81143ee290e03334980ecd70b3c9fcfc9730807762d5d9994da79c6c"
     },
     {
       "order": 126,
@@ -2426,6 +2428,7 @@
         "type-axistickrounding",
         "type-axistickstyleoptions",
         "type-axisticksandlabelsoptions",
+        "type-axistitleoffset",
         "type-axistitleoptions",
         "type-axisvalue",
         "type-bandpositionchannel",
@@ -3068,8 +3071,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 359194,
-      "sha256": "e289aa7f4ddf7370cd599b6e54e505c63b3105f5ffa1645889a4df914e73b6fd"
+      "bytes": 359453,
+      "sha256": "cc8b6f2c9861e86ff9579741895fa2b56ebc948eea0bff4b1287d941f45bf8ea"
     },
     {
       "order": 127,
@@ -3102,8 +3105,8 @@
         "clip-a-named-graphic-owner",
         "scale-materialization"
       ],
-      "bytes": 19022,
-      "sha256": "5684741ba5a23431ff86a05b724f63d7197ebf6781e96b7cddf7724b4550ca0d"
+      "bytes": 18950,
+      "sha256": "9f4dface42ad85d51435341bf7599d7bc74c9adb44c36c67225dcd90f3d5be55"
     },
     {
       "order": 129,
@@ -3433,8 +3436,8 @@
         "choose-the-matching-documentation",
         "migration-from-v0013"
       ],
-      "bytes": 3033,
-      "sha256": "3db004bea433213cdc1273671e7c1659117472f1d818eefd2218edafc4d70e5a"
+      "bytes": 3000,
+      "sha256": "ec61eea32404b2ea46d3986e18113a5dc9f4308ed1383c0daed70b5daee24083"
     },
     {
       "order": 150,

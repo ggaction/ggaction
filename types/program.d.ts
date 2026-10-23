@@ -1500,6 +1500,7 @@ export interface AxisTicksAndLabelsOptions<P extends string> {
   ticks?: CartesianAxisTickStyleOptions;
   labels?: CartesianAxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions;
 }
+export type AxisTitleOffset = number | Readonly<{ from: "labels"; gap: number }>;
 export interface AxisTitleOptions<P extends string> {
   /** Axis resource identity; omission prefers canonical, then a unique named owner. */
   target?: string;
@@ -1514,8 +1515,8 @@ export interface AxisTitleOptions<P extends string> {
   scale?: string;
   position?: P;
   at?: "start" | "center" | "end" | number;
-  /** Signed distance from the axis frame: positive outward, negative inward. */
-  offset?: number;
+  /** Signed distance from the axis frame, or a nonnegative gap outside same-owner labels. */
+  offset?: AxisTitleOffset;
   rotation?: RotationInput;
   color?: string;
   fontSize?: number;

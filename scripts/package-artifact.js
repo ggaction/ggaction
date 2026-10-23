@@ -24,7 +24,7 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 export const PACKAGE_LIMITS = Object.freeze({
   entries: 624, // Previous623 files plus the shared facet axis-gap owner.
-  packedBytes: 902_000, // Measured 901585 on clean Linux and 901579 on Windows runners.
+  packedBytes: 904_000, // Node24 measured903474; Node22/24 have624 exact file contents.
   unpackedBytes: 4_272_000 // Measured 4,271,487 bytes after synchronized release features.
 });
 
@@ -88,6 +88,7 @@ const COMPACT_JAVASCRIPT_FILES = Object.freeze([
   "src/core/graphicProperties.js",
   "src/grammar/axisTextPlacement.js",
   "src/actions/guides/axes/labels.js",
+  "src/actions/guides/axes/titles.js",
   "src/grammar/guideDash.js",
   "knowledge/task-resolver.js",
   "src/grammar/scales/color.js",

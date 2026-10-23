@@ -18427,6 +18427,10 @@
           "unit": "logical-pixel"
         },
         {
+          "path": "offset.gap",
+          "unit": "logical-pixel"
+        },
+        {
           "path": "offset",
           "unit": "logical-pixel"
         },
@@ -18509,7 +18513,7 @@
         {
           "name": "offset",
           "required": false,
-          "type": "number | undefined"
+          "type": "AxisTitleOffset | undefined"
         },
         {
           "name": "rotation",
@@ -18596,6 +18600,10 @@
           "unit": "logical-pixel"
         },
         {
+          "path": "offset.gap",
+          "unit": "logical-pixel"
+        },
+        {
           "path": "offset",
           "unit": "logical-pixel"
         },
@@ -18678,7 +18686,7 @@
         {
           "name": "offset",
           "required": false,
-          "type": "number | undefined"
+          "type": "AxisTitleOffset | undefined"
         },
         {
           "name": "rotation",
@@ -18761,6 +18769,10 @@
           "unit": "logical-pixel"
         },
         {
+          "path": "offset.gap",
+          "unit": "logical-pixel"
+        },
+        {
           "path": "offset",
           "unit": "logical-pixel"
         },
@@ -18831,7 +18843,7 @@
         {
           "name": "offset",
           "required": false,
-          "type": "number | undefined"
+          "type": "AxisTitleOffset | undefined"
         },
         {
           "name": "rotation",
@@ -18914,6 +18926,10 @@
           "unit": "logical-pixel"
         },
         {
+          "path": "offset.gap",
+          "unit": "logical-pixel"
+        },
+        {
           "path": "offset",
           "unit": "logical-pixel"
         },
@@ -18984,7 +19000,7 @@
         {
           "name": "offset",
           "required": false,
-          "type": "number | undefined"
+          "type": "AxisTitleOffset | undefined"
         },
         {
           "name": "rotation",

@@ -750,5 +750,14 @@
         "statements": 8
       }
     ]
+  },
+  {
+    "file": "axis-title-relative.mjs",
+    "cases": [
+      {
+        "id": "guides/label-relative-axis-title",
+        "statements": 1
+      }
+    ]
   }
 ]

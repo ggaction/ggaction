@@ -1,0 +1,195 @@
+{
+  "schemaVersion": 1,
+  "capability": "axes",
+  "chart": "label-relative-title-offset",
+  "variant": "four-independent-label-widths",
+  "displayTitle": "Axis title clearance from labels",
+  "profile": {
+    "schemaVersion": 1,
+    "id": "measured-price-axis-label-widths",
+    "measurements": [
+      {
+        "text": "0",
+        "fontFamily": "sans-serif",
+        "fontSize": 10,
+        "fontWeight": 400,
+        "fontStyle": "normal",
+        "width": 5.5615234375
+      },
+      {
+        "text": "1",
+        "fontFamily": "sans-serif",
+        "fontSize": 10,
+        "fontWeight": 400,
+        "fontStyle": "normal",
+        "width": 5.5615234375
+      },
+      {
+        "text": "2",
+        "fontFamily": "sans-serif",
+        "fontSize": 10,
+        "fontWeight": 400,
+        "fontStyle": "normal",
+        "width": 5.5615234375
+      },
+      {
+        "text": "3",
+        "fontFamily": "sans-serif",
+        "fontSize": 10,
+        "fontWeight": 400,
+        "fontStyle": "normal",
+        "width": 5.5615234375
+      },
+      {
+        "text": "4",
+        "fontFamily": "sans-serif",
+        "fontSize": 10,
+        "fontWeight": 400,
+        "fontStyle": "normal",
+        "width": 5.5615234375
+      },
+      {
+        "text": "Price, \u00a3",
+        "fontFamily": "sans-serif",
+        "fontSize": 11,
+        "fontWeight": 700,
+        "fontStyle": "normal",
+        "width": 39.13916015625
+      },
+      {
+        "text": "5",
+        "fontFamily": "sans-serif",
+        "fontSize": 10,
+        "fontWeight": 400,
+        "fontStyle": "normal",
+        "width": 5.5615234375
+      },
+      {
+        "text": "10",
+        "fontFamily": "sans-serif",
+        "fontSize": 10,
+        "fontWeight": 400,
+        "fontStyle": "normal",
+        "width": 11.123046875
+      },
+      {
+        "text": "15",
+        "fontFamily": "sans-serif",
+        "fontSize": 10,
+        "fontWeight": 400,
+        "fontStyle": "normal",
+        "width": 11.123046875
+      },
+      {
+        "text": "20",
+        "fontFamily": "sans-serif",
+        "fontSize": 10,
+        "fontWeight": 400,
+        "fontStyle": "normal",
+        "width": 11.123046875
+      },
+      {
+        "text": "25",
+        "fontFamily": "sans-serif",
+        "fontSize": 10,
+        "fontWeight": 400,
+        "fontStyle": "normal",
+        "width": 11.123046875
+      }
+    ]
+  },
+  "plot": {
+    "width": 200,
+    "height": 200
+  },
+  "margin": {
+    "left": 34,
+    "right": 8,
+    "top": 59,
+    "bottom": 43
+  },
+  "gap": 3.421875,
+  "groups": [
+    {
+      "id": "narrow-a",
+      "max": 4.3000002,
+      "domain": [
+        0,
+        4.5
+      ],
+      "ticks": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "expectedOffset": 20.9833984375,
+      "expectedTitleAnchorX": 13.0166015625,
+      "expectedPlacementX": 0
+    },
+    {
+      "id": "wide-a",
+      "max": 26.75,
+      "domain": [
+        0,
+        28
+      ],
+      "ticks": [
+        0,
+        5,
+        10,
+        15,
+        20,
+        25
+      ],
+      "expectedOffset": 26.544921875,
+      "expectedTitleAnchorX": 7.455078125,
+      "expectedPlacementX": 258
+    },
+    {
+      "id": "wide-b",
+      "max": 11,
+      "domain": [
+        0,
+        11
+      ],
+      "ticks": [
+        0,
+        2,
+        4,
+        6,
+        8,
+        10
+      ],
+      "expectedOffset": 26.544921875,
+      "expectedTitleAnchorX": 7.455078125,
+      "expectedPlacementX": 516
+    },
+    {
+      "id": "narrow-b",
+      "max": 4.4499998,
+      "domain": [
+        0,
+        4.5
+      ],
+      "ticks": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "expectedOffset": 20.9833984375,
+      "expectedTitleAnchorX": 13.0166015625,
+      "expectedPlacementX": 774
+    }
+  ],
+  "expectedCanvas": {
+    "width": 1016,
+    "height": 302
+  },
+  "expectedTitleY": 159.5,
+  "measurementPolicy": "Unmodified original browser canvas measurements; font values are not calibrated to change positions. Label-relative gap is authored semantic layout input, not a renderer coordinate.",
+  "referenceScope": "Axis-only primitive reference, not a completed original dataset family or whole-source pixel equivalence."
+}

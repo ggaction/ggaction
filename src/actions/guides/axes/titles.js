@@ -1,7 +1,8 @@
 import { selectCartesianAxis, axisTargetArgs } from "../../../selectors/axes.js";
 import { axisGraphicIds } from "../../../materialization/guides/resources.js";
 import { materializeTextLines } from "../../../materialization/textLines.js";
-import { axisTitleTextLines as titleLines, validateAxisTextPlacement, axisTitleAllowsLabelOverlap } from "../../../grammar/axisTextPlacement.js";
+import { axisTitleTextLines as titleLines, validateAxisTextPlacement, axisTitleAllowsLabelOverlap,
+  isLabelRelativeTitleOffset, axisLabelHasText } from "../../../grammar/axisTextPlacement.js";
 import { axisThemeTypography } from "../../theme/state.js";
 import { canvasOverflowError } from "../../../layout/canvas.js";
 import { isSourceOwnedText } from "../../../grammar/text.js";
@@ -131,6 +132,27 @@ function inferredTitleOffset(program, channel, config, axisId = channel) {
     ? legacyAdjustment : adjustment);
 }
 
+function labelRelativeTitleOffset(program, channel, config, axisId, frame, along) {
+  const labels = program.graphicSpec.objects[axisGraphicIds(channel, axisId)[2]];
+  if (program.guideConfigs.axis?.[axisId]?.labels?.position !== config.position) {
+    throw new Error("Label-relative title offset requires labels on the same axis side.");
+  }
+  const items = labels?.items ?? (labels ? [labels] : []);
+  const bounds = items.filter(item => axisLabelHasText(item.properties)).map(item =>
+    resolveConcreteGraphicBounds(program.graphicSpec, item.id, program.materializationConfigs.textMetrics));
+  if (bounds.length === 0) throw new Error("Label-relative title offset requires nonempty axis labels.");
+  const near = channel === "x" ? "top" : "left", far = channel === "x" ? "bottom" : "right";
+  const positive = config.position === (channel === "x" ? "bottom" : "right");
+  const zero = titleBounds(resolveAxisTitleGeometry({ bounds: frame, channel,
+    position: config.position, along, offset: 0 }), config,
+  program.semanticSpec.guides.axis?.[axisId]?.title ?? "", program.materializationConfigs.textMetrics);
+  const offset = positive
+    ? Math.max(...bounds.map(bound => bound[far])) + config.offset.gap - zero[near]
+    : zero[far] - Math.min(...bounds.map(bound => bound[near])) + config.offset.gap;
+  if (!Number.isFinite(offset)) throw new RangeError("Label-relative title offset must resolve to a finite distance.");
+  return offset;
+}
+
 const CREATE_OPTIONS = ["target",
   "text", "scale", "position", "at", "offset", "rotation", "color",
   "fontSize", "fontFamily", "fontWeight", "alongOffset", "align", "baseline", "overlap"
@@ -229,7 +251,9 @@ function resolveGeometry(program, channel, config, axisId = channel) {
     channel,
     position: config.position,
     along,
-    offset: config.offset
+    offset: isLabelRelativeTitleOffset(config.offset)
+      ? labelRelativeTitleOffset(program, channel, config, axisId, bounds, along)
+      : config.offset
   });
   const resolvedBounds = titleBounds(
     geometry,
@@ -238,6 +262,9 @@ function resolveGeometry(program, channel, config, axisId = channel) {
   , program.materializationConfigs.textMetrics);
   const canvas = findCanvasGraphic(program)?.properties;
   if (!canvas || !textBoundsFitCanvas(resolvedBounds, canvas)) {
+    if (isLabelRelativeTitleOffset(config.offset)) {
+      throw new RangeError(`The ${channel}-axis label-relative title does not fit the Canvas margin.`);
+    }
     throw canvasOverflowError(`The ${channel}-axis title does not fit the Canvas margin.`, [resolvedBounds], canvas);
   }
   const labelBounds = axisLabelBounds(program, channel, axisId);

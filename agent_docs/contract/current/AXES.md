@@ -165,6 +165,20 @@ Continuous labelMap evidence: `test/unit/actions/guides/continuous-axis-display-
   적용하며 명시적인 사용자 제목은 유지한다. Evidence: `test/unit/actions/guides/axis-title-actions.test.js`.
 - `at`: `"start" | "center" | "end"` 또는 continuous scale domain 안의 finite number; 기본 center.
 - `offset`: signed finite; positive outward, negative inward; inferred preferred defaults x `42`, y `52`.
+  Cartesian title에 한해 closed `{from:"labels",gap:Finite>=0}`도 허용한다. 같은 owner와
+  physical side의 nonempty concrete label occupied bounds 바깥에 gap을 둔다. 빈 display
+  label은 제외하며 기준 labels 부재·side 불일치·unknown key·nonfinite/negative gap은 오류다.
+  객체를 기존 `title.offset`에 한 번 저장하고 `inferredOffset:false`로 구분한다. 계산한 숫자는
+  materialization 지역값이며 별도 resolved metadata나 renderer intent를 저장하지 않는다.
+  label preflight와 재구현은 하나의 inferred-or-relative dependency predicate를 쓴다.
+  label text/font/format/profile, scale/data/Canvas/theme, shared/independent facet/source 편집과
+  editable persistence에서 현재 label bounds로 재계산한다. relative title+last labels 동시
+  삭제와 같은 whole-axis sibling 편집은 최종 상태로 원자적으로 검증한다. 객체 edit는 전체
+  교체, numeric edit는 상대 모드 종료, edit 생략은 기존 intent 유지다. numeric/전체 생략
+  defaults와 오류 정책은 그대로다. Polar/Parallel에는 객체형을 허용하지 않는다.
+  Evidence: `test/unit/actions/guides/axis-title-label-relative-offset.test.js`,
+  `test/browser/axis-title-label-relative-offset.browser.js` (네 independent child의 정확한
+  anchors와 같은 실행 numeric public reference 대비 decoded RGBA exact equality).
 - `rotation`: `RotationInput = Finite | { value: Finite; unit: "degrees" | "radians" }`. 기존 finite 숫자는
   radians 의미를 유지하고 구조형 입력은 단위를 명시한다. 둘 다 stored materialization config에서 radians로
   정규화한다. x bottom/top default `0`, y left default `-Math.PI / 2`, y right default `Math.PI / 2`이며

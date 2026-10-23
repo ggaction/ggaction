@@ -1,8 +1,9 @@
 import { selectCartesianAxis, axisTargetArgs, assertCartesianAxisSideAvailable } from "../../../selectors/axes.js";
 import { validateAxisPosition, resolveAxisFrameConfig } from "./policy.js";
-import { withGuideLayoutValidation } from "../../../materialization/guides/layout.js";
+import { withGuideLayoutValidation, withPendingRelativeAxisTitle } from "../../../materialization/guides/layout.js";
 import { action } from "../../../core/action.js";
 import { isPlainObject } from "../../../core/immutable.js";
+import { isLabelRelativeTitleOffset } from "../../../grammar/axisTextPlacement.js";
 import { validateKeys, validateOptionObject, validateNonNegativeFinite } from "../../../core/validation.js";
 
 import {
@@ -129,8 +130,20 @@ function buildPlan(program, channel, args, operation, axisId = channel) {
 }
 
 function applyPlan(program, channel, plan, operation, axisId = channel) {
+  const pendingTitle = isLabelRelativeTitleOffset(program.guideConfigs.axis?.[axisId]?.title?.offset) &&
+    plan.some(step => step.kind === "edit" && step.operation === operation.title);
+  // The title leaf validates the final sibling state once, including side
+  // transitions and a simultaneous switch back to a numeric offset.
+  if (pendingTitle && program.context.pendingRelativeTitleAxis !== axisId) {
+    return withPendingRelativeAxisTitle(program, axisId, next => applyPlan(next, channel, plan, operation, axisId));
+  }
   let next = program;
-  for (const step of plan) {
+  // A combined removal has no retained dependency; remove the title first.
+  const ordered = isLabelRelativeTitleOffset(program.guideConfigs.axis?.[axisId]?.title?.offset) &&
+    plan.some(step => step.kind === "remove" && step.component === "title")
+    ? [...plan.filter(step => step.kind === "remove" && step.component === "title"),
+      ...plan.filter(step => !(step.kind === "remove" && step.component === "title"))] : plan;
+  for (const step of ordered) {
     next = step.kind === "remove"
       ? removeComponent(next, channel, step.component, axisId)
       : next[step.operation](step.args);

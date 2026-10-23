@@ -1,4 +1,4 @@
-import { axisTitleAllowsLabelOverlap } from "../../../grammar/axisTextPlacement.js";
+import { axisTitleAllowsLabelOverlap, axisTitleFollowsLabels } from "../../../grammar/axisTextPlacement.js";
 import { selectCartesianAxis, axisTargetArgs } from "../../../selectors/axes.js";
 import { axisGraphicIds } from "../../../materialization/guides/resources.js";
 import { axisThemeTypography } from "../../theme/state.js";
@@ -396,7 +396,7 @@ function resolve(program, channel, config, axisId = channel) {
     ? resolveConcreteGraphicBounds(program.graphicSpec, axisGraphicIds(channel, axisId)[3], program.materializationConfigs.textMetrics)
     : undefined;
   if (title && !axisTitleAllowsLabelOverlap(program.guideConfigs.axis?.[axisId]?.title) &&
-    program.guideConfigs.axis?.[axisId]?.title?.inferredOffset !== true &&
+    !axisTitleFollowsLabels(program.guideConfigs.axis?.[axisId]?.title) &&
     labelBounds.some(item => textBoundsIntersect(item, title))) {
     throw new Error(`The ${channel}-axis labels overlap the axis title.`);
   }
@@ -459,7 +459,7 @@ function makeEdit(channel) {
       next = next.editGraphics({ target: id, property, value });
     }
     const titleConfig = next.guideConfigs.axis?.[axisId]?.title;
-    if (titleConfig?.inferredOffset === true) {
+    if (axisTitleFollowsLabels(titleConfig) && next.context.pendingRelativeTitleAxis !== axisId) {
       const editTitle = channel === "x" ? "editXAxisTitle" : "editYAxisTitle";
       next = next[editTitle](axisId === channel ? undefined : axisTargetArgs(axisId, channel));
     }

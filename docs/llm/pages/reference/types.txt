@@ -605,6 +605,14 @@ export interface AxisTicksAndLabelsOptions<P extends string> {
 
 Related types: [`AxisTickRounding`](../../../reference/types/#type-axistickrounding) · [`AxisValue`](../../../reference/types/#type-axisvalue) · [`CartesianAxisTickStyleOptions`](../../../reference/types/#type-cartesianaxistickstyleoptions) · [`CartesianAxisLabelStyleOptions`](../../../reference/types/#type-cartesianaxislabelstyleoptions) · [`AxisLabelLayoutOptions`](../../../reference/types/#type-axislabellayoutoptions) · [`DisplayLabelOptions`](../../../reference/types/#type-displaylabeloptions).
 
+### `AxisTitleOffset` {#type-axistitleoffset}
+
+ Expand AxisTitleOffset
+
+```typescript
+export type AxisTitleOffset = number | Readonly<{ from: "labels"; gap: number }>;
+```
+
 ### `AxisTitleOptions` {#type-axistitleoptions}
 
  Expand AxisTitleOptions
@@ -624,8 +632,8 @@ export interface AxisTitleOptions<P extends string> {
   scale?: string;
   position?: P;
   at?: "start" | "center" | "end" | number;
-  /** Signed distance from the axis frame: positive outward, negative inward. */
-  offset?: number;
+  /** Signed distance from the axis frame, or a nonnegative gap outside same-owner labels. */
+  offset?: AxisTitleOffset;
   rotation?: RotationInput;
   color?: string;
   fontSize?: number;
@@ -634,7 +642,7 @@ export interface AxisTitleOptions<P extends string> {
 }
 ```
 
-Related types: [`RotationInput`](../../../reference/types/#type-rotationinput).
+Related types: [`AxisTitleOffset`](../../../reference/types/#type-axistitleoffset) · [`RotationInput`](../../../reference/types/#type-rotationinput).
 
 ### `AxisValue` {#type-axisvalue}
 

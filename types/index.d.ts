@@ -27,6 +27,7 @@ export type {
   AxisTicksAndLabelsOptions,
   AxisTickStyleOptions,
   AxisTitleOptions,
+  AxisTitleOffset,
   AxisValue,
   DisplayLabelMap,
   DisplayLabelOptions,

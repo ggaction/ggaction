@@ -223,6 +223,10 @@ export function optionUnits(action, options) {
     else if (option.name === "temporalUnit") unit = "temporal-input";
     else if (action.name === "createTimeUnitData" && option.name === "unit") unit = "calendar-unit";
     else if (option.name === "rotation" && option.type.includes("RotationInput")) unit = "angle";
+    else if (option.name === "offset" && option.type.includes("AxisTitleOffset")) {
+      unit = "logical-pixel";
+      units.push({ path: "offset.gap", unit: "logical-pixel" });
+    }
     else if ((option.name === "angle" || option.name === "padAngle") && includesNumber(option.type)) unit = "degree";
     else if (option.name === "innerRadius" && (includesNumber(option.type) || option.type.includes("ArcInnerRadius"))) {
       unit = "ratio";

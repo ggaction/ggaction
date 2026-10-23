@@ -28,6 +28,39 @@ introduce a label collision, placement keeps the existing Canvas-fit offset.
 Automatic margin fitting keeps space for the inferred ink reserve.
 Explicit offsets and preferred placement with sufficient margin stay exact.
 
+## Keep a title outside its labels
+
+Cartesian axis titles accept `offset: { from: "labels", gap: 8 }`. The gap is a
+finite non-negative distance in logical pixels outside the occupied label block.
+It follows the same axis owner and physical side, including rotated labels and
+independent facet scales. Declare the axis first, then refine its title:
+
+> **Executable complete.** Import chart from ggaction; all rows and both axes are declared in this complete program.
+
+```js
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas({ width: 500, height: 360, margin: 90 })
+  .createData({ values: [{ distance: 0, amount: 0 }, { distance: 1, amount: 120 }] })
+  .createScatterPlot({ x: "distance", y: "amount" })
+  .editYAxisTitle({ offset: { from: "labels", gap: 8 } });
+```
+
+The stored offset retains this intent. Label text, fonts, scales, data, Canvas,
+theme and text metrics can change the resulting distance without replacing it
+with a fixed number. Empty display labels do not contribute; at least one
+nonempty label on the same side is required. Remove the title together with its
+last labels, or switch its offset to a number. The existing collision and Canvas
+checks still apply, including when `overlap: "allow"` is set.
+
+Numeric offsets keep their signed distance from the axis frame; omitted offsets
+keep their existing automatic defaults. An omitted edit preserves either mode.
+The relative object accepts only `from` and `gap`. It is not a Polar/Parallel
+title option, an axis frame offset, or a label offset.
+
+## Rotate labels outside the plot
+
 Rotated Cartesian labels stay outside their selected plot edge in both fixed-size
 and automatic-plot Canvases. `offset` measures the gap to the complete rotated
 text bounds. Vertical X-axis labels are centered over their ticks; slanted labels

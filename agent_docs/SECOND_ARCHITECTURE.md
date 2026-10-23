@@ -2656,3 +2656,23 @@ The extracted SVG serializer preserves concrete clipping, multiline text and def
 이 장면을 temporary graphicSpec으로 배치해 기존 native renderer를 호출한다.
 시간·보간·중단은 별도 transition 패키지 책임이며 semanticSpec, action trace나 project
 저장 schema를 변경하지 않는다. 정확한 계약은 docs/api/rendering.md가 소유한다.
+
+### Cartesian title label-relative offset measurement
+
+Cartesian 제목은 기존 `guideConfigs.axis[id].title.offset` 한 곳에 숫자 또는 닫힌
+`{from:"labels",gap}` 의도를 저장한다. 기존 guide materializer가 같은 owner의 실제
+레이블 bounds로 local numeric geometry만 계산하며 renderer나 추가 저장 owner는 없다.
+Whole-axis edit의 형제 교체 scope는 materialization owner의 private context에서만 유지한다.
+정확한 계약은 Current AXES와 공개 axes 문서가 소유한다.
+
+macOS/Node22.23.1 installed canonical consumer의 Full452644/Basic231356gzip bytes가
+기존452000/231000을 초과했다. 이전 실패는 구현 검증 기록에 보존하고 기존1000byte
+최소 단위에 따라453000/232000으로만 갱신한다. SVG25000, package624entries 및
+902000packed/4272000unpacked, storage quota, coverage, 오류·수치·픽셀 기준은 유지한다.
+이 수치는 새 registry 배포나 활성 번역 runtime 채택의 증거가 아니다.
+
+같은 canonical source의 Node24.22.1 실제 archive는903474bytes로 기존902000을
+초과했다. Node22.23.1 archive901292bytes와624개 entry의 path/content SHA/size/mode/type/link를
+비교해 차이0을 확인했다. 두 archive bytes·SHA는 다르므로 같은 archive로 주장하지 않는다.
+이 별도 측정 검토 뒤 packed 한도만 최소1000byte 단계904000으로 갱신한다.
+624entries/4272000unpacked 및 위의 나머지 기준은 유지한다.

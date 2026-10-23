@@ -10,6 +10,7 @@ export type {
   CartesianGuideDashMap,
   AxisTicksAndLabelsOptions,
   AxisTitleOptions,
+  AxisTitleOffset,
   DisplayLabelMap,
   DisplayLabelOptions,
   ApplyThemeOptions,

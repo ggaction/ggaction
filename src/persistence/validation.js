@@ -30,7 +30,8 @@ import { isContinuousSizeScaleType } from "../grammar/scales/size.js";
 import { validateGraphicItemLimit } from "../core/validation.js";
 import { LEGEND_TITLE_STYLE_KEYS, validateLegendTitleAlignment } from "../grammar/legendTitleStyle.js";
 import { validateGuideDash, normalizeGuideDashMap } from "../grammar/guideDash.js";
-import { validateAxisLabelFlushThreshold, validateAxisTextPlacement } from "../grammar/axisTextPlacement.js";
+import { validateAxisLabelFlushThreshold, validateAxisTextPlacement,
+  axisLabelHasText } from "../grammar/axisTextPlacement.js";
 import { validateTickSelectionRounding, axisTickSelection } from "../grammar/ticks.js";
 import { validateAreaPaintConfig } from "../grammar/areaPaint.js";
 import { validateOptionObject, validateKeys, validatePositiveFinite, validateNonNegativeFinite, validateNonEmptyString, validateGeneratedItemLimit } from "../core/validation.js";
@@ -236,6 +237,19 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
   }
   const cartesianOwners = cartesianAxisOwners(program);
   for (const [id, axis] of Object.entries(program.guideConfigs.axis ?? {})) {
+    if (isPlainObject(axis?.title?.offset)) {
+      if (!cartesianOwners.some(owner => owner.id === id)) throw invalidSnapshot("Relative title offset requires a Cartesian axis owner.", path);
+      validateAxisTextPlacement(axis.title, { title: true });
+      if (axis.title.inferredOffset === true) throw invalidSnapshot("Relative title offset cannot be inferred.", path);
+      const owner = cartesianOwners.find(owner => owner.id === id);
+      const labels = program.graphicSpec.objects[axisGraphicIds(owner.channel, id)[2]];
+      // Composition parents retain source intent, not local unit graphics.
+      // Their retained unit/children are validated through the same unit rule.
+      if (axis.labels?.position !== axis.title.position || (program.compositionSpec === undefined &&
+          !(labels?.items ?? (labels ? [labels] : [])).some(item => axisLabelHasText(item.properties)))) {
+        throw invalidSnapshot("Relative title offset requires nonempty same-side labels.", path);
+      }
+    }
     if (axis?.labels?.flushThreshold !== undefined) {
       if (!cartesianOwners.some(owner => owner.id === id)) throw invalidSnapshot("Label flushThreshold requires a Cartesian axis owner.", path);
       validateAxisLabelFlushThreshold(axis.labels.flushThreshold);

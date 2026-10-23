@@ -893,7 +893,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
 | `at` | Optional / branch-dependent | `number \| "center" \| "end" \| "start" \| undefined` |
-| `offset` | Optional / branch-dependent | `number \| undefined` |
+| `offset` | Optional / branch-dependent | `AxisTitleOffset \| undefined` |
 | `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
@@ -934,7 +934,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
 | `at` | Optional / branch-dependent | `number \| "center" \| "end" \| "start" \| undefined` |
-| `offset` | Optional / branch-dependent | `number \| undefined` |
+| `offset` | Optional / branch-dependent | `AxisTitleOffset \| undefined` |
 | `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
@@ -974,7 +974,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `text` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
 | `at` | Optional / branch-dependent | `number \| "center" \| "end" \| "start" \| undefined` |
-| `offset` | Optional / branch-dependent | `number \| undefined` |
+| `offset` | Optional / branch-dependent | `AxisTitleOffset \| undefined` |
 | `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
@@ -1014,7 +1014,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `text` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
 | `at` | Optional / branch-dependent | `number \| "center" \| "end" \| "start" \| undefined` |
-| `offset` | Optional / branch-dependent | `number \| undefined` |
+| `offset` | Optional / branch-dependent | `AxisTitleOffset \| undefined` |
 | `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
