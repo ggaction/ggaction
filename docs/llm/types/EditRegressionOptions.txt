@@ -1,4 +1,5 @@
 export interface EditRegressionOptions {
+  placement?: "source" | "plot-last";
   target?: string;
   data?: string;
   x?: string;

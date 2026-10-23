@@ -306,6 +306,15 @@ without naming generated child layers.
 
 ## `createRegression`
 
+- `placement?: "source" | "plot-last"`: 생략은 기존 source 배치와 저장형태를 보존한다.
+  Source는 band → source point → fit이다. Plot-last는 기존 plot marks 뒤에 band → fit을
+  붙이고 grid/frame/axis overlay ownership을 보존한다. 같은 owner의 `editRegression`으로
+  전환하며 source-follow, data/model/interval edits와 editable persistence에서 유지한다.
+  `createRegressionPlot`도 전달한다. 새로 나중에 생성하는 mark는 일반 authoring 순서를
+  따른다. 회귀 owner 편집 시 plot-last 정책을 다시 적용한다.
+  Evidence: `test/unit/actions/regression/placement.test.js`.
+
+
 - Signature: `createRegression({ target?, x?, y?, groupBy?, method?, degree?, span?, confidenceMethod?, level?, confidence?, interval?, band?, line? })`
 - `target`: quantitative x/y point mark ID. 생략하면 current mark, 아니면 유일한 eligible point를 추론한다.
 - `x`, `y`: non-empty field names. 생략하면 target의 x/y encoding field를 사용한다.
@@ -360,6 +369,8 @@ without naming generated child layers.
 - Evidence: `test/unit/actions/regression/create-regression.test.js` and regression chart tests.
 
 ## `editRegression`
+
+- `placement`는 create와 같은 closed vocabulary다. 생략 시 현재 정책 유지, 명시하면 source/plot-last로 재배치한다.
 
 - Signature: `editRegression({ target?, data?, x?, y?, groupBy?, method?, degree?, span?, confidenceMethod?, level?, confidence?, interval?, band?, line? })`.
 - `target` is the stable point owner passed to or inferred by `createRegression`; generated band and line IDs are not

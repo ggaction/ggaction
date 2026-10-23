@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Add opt-in `placement: "plot-last"` for regression fits and bands, preserving source attachment by default and retaining placement through edits and restoration.
+
 - Add explicit `monotone-steffen` interpolation for lines, areas and interval boundaries while preserving existing monotone output.
 
 - Preserve null or absent calendar inputs as null buckets with opt-in `missing: "null"`, including immutable edits and saved programs.

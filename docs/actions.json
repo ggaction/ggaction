@@ -13353,6 +13353,11 @@
       },
       "options": [
         {
+          "name": "placement",
+          "required": false,
+          "type": "\"plot-last\" | \"source\" | undefined"
+        },
+        {
           "name": "target",
           "required": false,
           "type": "string | undefined"
@@ -13512,6 +13517,11 @@
       },
       "options": [
         {
+          "name": "placement",
+          "required": false,
+          "type": "\"plot-last\" | \"source\" | undefined"
+        },
+        {
           "name": "target",
           "required": false,
           "type": "string | undefined"
@@ -13603,9 +13613,9 @@
         }
       ],
       "callPatterns": [
-        "editRegression({ target?, data?, x?, y?, groupBy?, method?, degree?, span? })"
+        "editRegression({ target?, data?, placement?, x?, y?, groupBy?, method?, degree? })"
       ],
-      "snippet": "program.editRegression({ x: \"x\" })",
+      "snippet": "program.editRegression({ placement: \"plot-last\" })",
       "errors": [],
       "route": "/reference/actions/statistics/#editregression"
     },
@@ -31800,6 +31810,11 @@
           "name": "predict",
           "required": false,
           "type": "RegressionPredictOptions | undefined"
+        },
+        {
+          "name": "placement",
+          "required": false,
+          "type": "\"plot-last\" | \"source\" | undefined"
         },
         {
           "name": "groupBy",

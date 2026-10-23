@@ -1,3 +1,4 @@
+import { validateRegressionPlacement, reconcileRegressionPlacement } from "../../materialization/graphicHierarchy.js";
 import { closedAction } from "../../core/action.js";
 import { isPlainObject } from "../../core/immutable.js";
 import { validateUserId } from "../../core/identifiers.js";
@@ -24,7 +25,7 @@ import { buildSourceRevisionPlan, applyRevisionPlan } from "../data/edit.js";
 const OPTIONS = Object.freeze([
   "target", "data", "x", "y", "groupBy", "method", "degree", "span", "robustIterations",
   "confidenceMethod", "level", "confidence", "interval", "band", "line"
-  , "predict", "sourceBinding", "missing"
+  , "predict", "sourceBinding", "missing", "placement"
 ]);
 const BAND_OPTIONS = Object.freeze([
   "color", "opacity", "stroke", "strokeWidth", "curve",
@@ -259,6 +260,7 @@ export const editRegression = /* @__PURE__ */ closedAction(
     }
     const owner = resolveRegressionOwner(this, args.target);
     const current = this.markConfigs[owner.id].regression;
+    const placement = validateRegressionPlacement(Object.hasOwn(args, "placement") ? args.placement : current.placement);
     const currentBinding = owner.derivedBindings?.regression?.mode === "follow" ? "follow" : "fixed";
     const sourceBinding = args.sourceBinding ?? currentBinding;
     if (!["fixed", "follow"].includes(sourceBinding)) throw new Error('Regression sourceBinding must be "fixed" or "follow".');
@@ -350,6 +352,8 @@ export const editRegression = /* @__PURE__ */ closedAction(
         }
       }
 
+      next = next._withMarkConfig(owner.id, { ...next.markConfigs[owner.id],
+        regression: { ...current, dataId } });
       let bandId = current.bandId;
       if (hadBand && !wantsBand) {
         next = removeOwnedMark(next, current.bandId);
@@ -411,6 +415,7 @@ export const editRegression = /* @__PURE__ */ closedAction(
         ...next.markConfigs[owner.id],
         regression: {
           ...current,
+          ...(Object.hasOwn(args, "placement") ? { placement } : {}),
           source,
           x,
           y,
@@ -431,6 +436,9 @@ export const editRegression = /* @__PURE__ */ closedAction(
         next = next.editSemantic({ property: `layer[${owner.id}].derivedBindings.regression`, value: { mode: "follow", roles: ["data", "x", "y"] } });
       } else if (sourceBinding === "fixed" && binding !== undefined) {
         next = next.editSemantic({ property: `layer[${owner.id}].derivedBindings.regression`, remove: true });
+      }
+      if (placement === "plot-last" || Object.hasOwn(args, "placement")) {
+        next = reconcileRegressionPlacement(next, owner.id);
       }
       return next;
     };

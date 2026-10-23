@@ -5790,6 +5790,7 @@ Related types: [`FocusedDerivedDataEdit`](#type-focusedderiveddataedit) · [`Reg
 
 ```typescript
 export interface EditRegressionOptions {
+  placement?: "source" | "plot-last";
   target?: string;
   data?: string;
   x?: string;
@@ -10390,6 +10391,7 @@ Related types: [`StrokeStyleDetails`](#type-strokestyledetails) · [`CurveInterp
 
 ```typescript
 type RegressionCommonOptions = {
+  placement?: "source" | "plot-last";
   target?: string;
   x?: string;
   y?: string;

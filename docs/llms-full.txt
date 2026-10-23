@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.22.
 
-Contract: sha256:1382cf69670f829ad52f4047648c8c981d3e345bf7085b5c1f6cfb0a8d7acd8a. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:508ea18c3c3c4029b62372845992943d81267f50f0f23ac374480d71c2b07bad. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -7728,6 +7728,15 @@ After a temporal bar facade, use `.encodeBarWidth({ interval: { unit: "year", in
 existing quantitative point mark. Linear and polynomial fits can include mean
 or prediction interval bands; LOESS is line-only.
 
+Use `createRegression({ placement: "plot-last" })` to paint the band and then the
+fit after existing plot marks. The default keeps the band before its source points
+and the fit immediately after them. Both policies preserve grid underlays and axis
+or frame overlays. `editRegression({ placement: "source" })` restores source
+attachment; omission retains the current policy through model/data edits and saved
+programs. Later independently authored marks follow ordinary authoring order;
+editing a plot-last regression reapplies its placement. `createRegressionPlot`
+accepts the same option.
+
 ## At a glance
 
 | Action | Required decision | Inferred or default behavior |
@@ -7768,6 +7777,7 @@ program.createRegression({
 
 | Option | Type | Default |
 | --- | --- | --- |
+| `placement` | `"source"` or `"plot-last"` | `"source"` |
 | `target` | eligible point mark ID | inferred |
 | `x`, `y` | quantitative field names | target x/y fields |
 | `groupBy` | nominal field name or `false` (legacy explicit `undefined` also supported) | unique color/shape field |
@@ -19790,6 +19800,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `level` | Optional / branch-dependent | `number \| undefined` |
 | `confidence` | Optional / branch-dependent | `number \| undefined` |
 | `predict` | Optional / branch-dependent | `RegressionPredictOptions \| undefined` |
+| `placement` | Optional / branch-dependent | `"plot-last" \| "source" \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| false \| undefined` |
 | `line` | Optional / branch-dependent | `(StrokeStyleDetails & { strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; }) \| undefined` |
 | `sourceBinding` | Optional / branch-dependent | `"fixed" \| "follow" \| undefined` |
@@ -24509,6 +24520,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `placement` | Optional / branch-dependent | `"plot-last" \| "source" \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `x` | Optional / branch-dependent | `string \| undefined` |
 | `y` | Optional / branch-dependent | `string \| undefined` |
@@ -24559,6 +24571,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `placement` | Optional / branch-dependent | `"plot-last" \| "source" \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `x` | Optional / branch-dependent | `string \| undefined` |
@@ -34523,6 +34536,7 @@ Related types: [`FocusedDerivedDataEdit`](./reference/types/#type-focusedderived
 
 ```typescript
 export interface EditRegressionOptions {
+  placement?: "source" | "plot-last";
   target?: string;
   data?: string;
   x?: string;
@@ -38358,6 +38372,7 @@ Related types: [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails
 
 ```typescript
 type RegressionCommonOptions = {
+  placement?: "source" | "plot-last";
   target?: string;
   x?: string;
   y?: string;
@@ -43286,7 +43301,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:1382cf69670f829ad52f4047648c8c981d3e345bf7085b5c1f6cfb0a8d7acd8a` |
+| Contract fingerprint | `sha256:508ea18c3c3c4029b62372845992943d81267f50f0f23ac374480d71c2b07bad` |
 | Example and dataset source | `6422776b0a379c8c89809f41b434f366fbc1f143` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

@@ -79,7 +79,9 @@ export function resolveMarkGraphicPlacement(program, { data, markType }) {
   const namespaced = eligible.filter(layer =>
     `${layer.id}RegressionData` === dataset.id
   );
-  const sources = namespaced.length === 1 ? namespaced : eligible;
+  const declared = program.semanticSpec.layers.filter(layer =>
+    program.markConfigs[layer.id]?.regression?.dataId === dataset.id);
+  const sources = declared.length === 1 ? declared : namespaced.length === 1 ? namespaced : eligible;
   if (sources.length !== 1) {
     throw new Error(
       "Regression graphic placement requires one source mark layer."
@@ -120,4 +122,32 @@ export function preserveGraphicPlacement(program, id) {
     ...(parent?.kind === "parent" ? { parent: parent.id } : {}),
     ...(next === undefined ? {} : { before: next })
   };
+}
+
+export function validateRegressionPlacement(value) {
+  if (value !== undefined && !["source", "plot-last"].includes(value)) {
+    throw new Error('Regression placement must be "source" or "plot-last".');
+  }
+  return value ?? "source";
+}
+
+export function reconcileRegressionPlacement(program, ownerId) {
+  const config = program.markConfigs[ownerId].regression;
+  const placement = validateRegressionPlacement(config.placement);
+  const children = program.graphicSpec.objects[PLOT_GRAPHIC_ID]?.children;
+  if (children === undefined) throw new Error("Regression placement requires the plot container.");
+  const owned = [config.bandId, config.lineId].filter(id => id !== undefined && children.includes(id));
+  const order = children.filter(id => !owned.includes(id));
+  if (placement === "plot-last") {
+    const overlay = firstOverlayGuide(program);
+    const index = overlay === undefined ? order.length : order.indexOf(overlay);
+    order.splice(index < 0 ? order.length : index, 0, ...owned);
+  } else {
+    const index = order.indexOf(ownerId);
+    if (index < 0) throw new Error("Regression placement requires its source mark in the plot.");
+    order.splice(index, 1, ...(owned.includes(config.bandId) ? [config.bandId] : []),
+      ownerId, ...(owned.includes(config.lineId) ? [config.lineId] : []));
+  }
+  if (order.every((id, i) => id === children[i])) return program;
+  return program.editGraphics({ target: PLOT_GRAPHIC_ID, property: "children", value: order });
 }

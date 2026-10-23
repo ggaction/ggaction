@@ -128,8 +128,10 @@ p.createErrorBand({ ...stroke, boundaries: stroke })
 p.createBoxPlot({ box: rect, median: stroke, outlier: stroke })
   .editBoxPlot({ box: rect, median: stroke, outlier: stroke });
 p.createGradientPlot({ center: stroke }).editGradientPlot({ center: stroke });
-p.createRegression({ line: stroke, band: stroke })
-  .editRegression({ line: stroke, band: stroke });
+p.createRegression({ line: { ...stroke, curve: "monotone-steffen" }, band: stroke, placement: "plot-last" })
+  .editRegression({ line: stroke, band: stroke, placement: "source" });
+// @ts-expect-error closed regression placement policy
+p.createRegression({ placement: "top" });
 p.createReferenceLine({ space: "plot", x: 1, ...stroke });
 p.createReferenceBand({ space: "plot", x: [0, 1], ...rect });
 

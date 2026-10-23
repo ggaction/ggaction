@@ -980,6 +980,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `placement` | Optional / branch-dependent | `"plot-last" \| "source" \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `x` | Optional / branch-dependent | `string \| undefined` |
 | `y` | Optional / branch-dependent | `string \| undefined` |
@@ -1034,6 +1035,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `placement` | Optional / branch-dependent | `"plot-last" \| "source" \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `x` | Optional / branch-dependent | `string \| undefined` |

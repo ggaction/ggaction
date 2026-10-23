@@ -161,6 +161,11 @@
       "type": "RegressionPredictOptions | undefined"
     },
     {
+      "name": "placement",
+      "required": false,
+      "type": "\"plot-last\" | \"source\" | undefined"
+    },
+    {
       "name": "groupBy",
       "required": false,
       "type": "string | false | undefined"

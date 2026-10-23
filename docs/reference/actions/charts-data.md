@@ -2965,6 +2965,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `level` | Optional / branch-dependent | `number \| undefined` |
 | `confidence` | Optional / branch-dependent | `number \| undefined` |
 | `predict` | Optional / branch-dependent | `RegressionPredictOptions \| undefined` |
+| `placement` | Optional / branch-dependent | `"plot-last" \| "source" \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| false \| undefined` |
 | `line` | Optional / branch-dependent | `(StrokeStyleDetails & { strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; }) \| undefined` |
 | `sourceBinding` | Optional / branch-dependent | `"fixed" \| "follow" \| undefined` |

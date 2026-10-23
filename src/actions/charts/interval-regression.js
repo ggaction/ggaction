@@ -136,7 +136,7 @@ export const createIntervalPlot = /* @__PURE__ */ action(
 const REGRESSION_OPTIONS = Object.freeze([
   "id", "data", "coordinate", "x", "y", "color", "size", "shape", "point",
   "groupBy", "method", "degree", "span", "robustIterations", "confidenceMethod", "level", "confidence",
-  "interval", "band", "line", "guides"
+  "interval", "band", "line", "placement", "predict", "sourceBinding", "missing", "guides"
 ]);
 
 export const createRegressionPlot = /* @__PURE__ */ action(
@@ -164,7 +164,7 @@ export const createRegressionPlot = /* @__PURE__ */ action(
     });
     const regression = Object.fromEntries([
       "groupBy", "method", "degree", "span", "robustIterations", "confidenceMethod", "level",
-      "confidence", "interval", "band", "line"
+      "confidence", "interval", "band", "line", "placement", "predict", "sourceBinding", "missing"
     ].filter(key => Object.hasOwn(args, key)).map(key => [key, args[key]]));
     next = next.createRegression({ target: id, ...regression });
     return applyFacadeGuides(next, guides, id, guides);

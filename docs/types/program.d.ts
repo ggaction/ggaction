@@ -4804,6 +4804,7 @@ export interface EditRegressionStatisticsDataOptions {
 }
 
 type RegressionCommonOptions = {
+  placement?: "source" | "plot-last";
   target?: string;
   x?: string;
   y?: string;
@@ -4829,6 +4830,7 @@ export type RegressionOptions = RegressionCommonOptions & (
 );
 
 export interface EditRegressionOptions {
+  placement?: "source" | "plot-last";
   target?: string;
   data?: string;
   x?: string;
