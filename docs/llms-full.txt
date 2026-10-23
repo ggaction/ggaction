@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.23.
 
-Contract: sha256:310e928037990f408f8ee790dcdd0e5c9455b8f645554a58e91ef8e34a8f7e06. Status: development. Runtime source: 0b717e7ed2e9bc6f455cfc7b98288785b9ad2223. Release baseline: v0.0.13.
+Contract: sha256:443978a6b9b70f861b9e31b68c6efbe6a1117f6ec3ec4306efbf4d8e45e0df24. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/0b717e7ed2e9bc6f455cfc7b98288785b9ad2223/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/0b717e7ed2e9bc6f455cfc7b98288785b9ad2223/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -4491,6 +4491,10 @@ domains default to the resolved bin extents, while an explicit position scale
 option takes precedence. `color` is optional in binned mode and may configure
 the generated quantitative count scale, but cannot supply another field.
 
+Binned `bin.assignment` accepts `"edges"` (default) or `"step"`; the
+[2D-bin assignment contract](./api/data/bin2d/) defines their boundary behavior.
+The high-level and explicit data-action paths store the same policy.
+
 The stable default mark ID is `heatmap`. Binned mode owns a namespaced derived
 dataset and records `createBin2DData` as a wrapped child action. Default guide
 titles use the original x/y field names and `Count`, never generated field
@@ -5814,7 +5818,7 @@ concrete cell bounds and counts as immutable datasets, so ordinary ranged
 rectangles or other marks can consume the result without asking the renderer to
 perform data transforms.
 
-## `createBin2DData({ id, source?, x, y, bins?, extent?, includeEmpty?, members?, as? })`
+## `createBin2DData({ id, source?, x, y, bins?, extent?, assignment?, includeEmpty?, members?, as? })`
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
@@ -5846,6 +5850,7 @@ const program = chart()
 | `x`, `y` | quantitative field names | required |
 | `bins` | positive integer or `{ x, y }` | `{ x: 10, y: 10 }` |
 | `extent` | `{ x?: [min, max], y?: [min, max] }` | eligible min/max per axis |
+| `assignment` | `"edges"` or `"step"` | `"edges"` |
 | `includeEmpty` | boolean | `false` |
 | `members` | boolean | `false` |
 | `as` | partial output-field object | namespaced from `id` |
@@ -5855,10 +5860,26 @@ cells in total. These limits are validated before any cell storage is
 allocated, including when the transform is reached through `createHeatmap` or
 `editBin2DData`.
 
-Only rows with finite values for both fields are eligible. Cells are half-open:
-`[lower, upper)`. The last cell on each axis includes its upper endpoint, so
-every eligible row belongs to exactly one cell. Output rows are ordered from low
-to high y and then low to high x.
+Only rows with finite values for both fields are eligible. Default `assignment: "edges"`
+compares each value with the actual stored edges: cells are half-open `[lower, upper)`,
+and the last cell includes its upper endpoint. This default is omitted from stored
+provenance, preserving existing snapshots.
+
+Explicit `assignment: "step"` instead computes the logical uniform index
+`floor(1e-14 + (value - min) / step)` on each axis, then clamps it to the valid
+index range. The fixed index increment is part of this policy, not a configurable
+tolerance. `step = (max - min) / bins`; overflowing subtraction uses
+`max / bins - min / bins`, and an overflowing value difference uses
+`value / step - min / step`. A one-bin axis assigns index zero; the final upper
+endpoint always belongs to the last bin. Explicit extents are still validated
+before assignment, so clamping cannot accept out-of-range rows.
+
+Both policies generate identical stored edges. Floating-point rounding can place
+a value just below a stored edge while `step` assigns it to the logical upper
+cell. For extent `[-5, 5]` with 50 bins, input `0.6` falls below the stored edge
+`0.6000000000000005` under `edges`, but enters the upper cell under `step`.
+A value `0.6 - 1e-12` remains below it. Both policies assign every eligible row
+once and order output from low to high y, then low to high x.
 
 The stored transform includes the resolved axis extents and edge arrays. An
 explicit extent must contain every eligible value; the action throws rather
@@ -5886,7 +5907,7 @@ unreferenced previous revision.
 
 ## `editBin2DData`
 
-`editBin2DData({ target?, source?, x?, y?, bins?, extent?, includeEmpty?, members?, as?, dependents? })`
+`editBin2DData({ target?, source?, x?, y?, bins?, extent?, assignment?, includeEmpty?, members?, as?, dependents? })`
 
 Use `editBin2DData` when only part of the current transform should change:
 
@@ -5906,7 +5927,8 @@ exists. Multiple owners without a current match are ambiguous and require
 `target`.
 
 Every omitted top-level option is preserved from the current requested
-provenance. Supplying `extent` replaces the complete extent decision and an
+provenance. `assignment: "edges"` restores the default and removes stored `step`
+provenance; an unchanged policy is a no-op and is rejected. Supplying `extent` replaces the complete extent decision and an
 omitted axis inside that object returns to automatic extent. Supplying `as`
 requires the complete `x0`, `x1`, `y0`, `y1`, and `count` output map, plus
 `members` when member indexes are enabled. When `as` is omitted, enabling
@@ -17866,6 +17888,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `y` | Required | `string` |
 | `bins` | Optional / branch-dependent | `number \| Bin2DCounts \| undefined` |
 | `extent` | Optional / branch-dependent | `Bin2DExtent \| undefined` |
+| `assignment` | Optional / branch-dependent | `"edges" \| "step" \| undefined` |
 | `includeEmpty` | Optional / branch-dependent | `boolean \| undefined` |
 | `members` | Optional / branch-dependent | `boolean \| undefined` |
 | `as` | Optional / branch-dependent | `Bin2DOutputFields \| undefined` |
@@ -17906,6 +17929,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `y` | Optional / branch-dependent | `string \| undefined` |
 | `bins` | Optional / branch-dependent | `number \| Bin2DCounts \| undefined` |
 | `extent` | Optional / branch-dependent | `Bin2DExtent \| undefined` |
+| `assignment` | Optional / branch-dependent | `"edges" \| "step" \| undefined` |
 | `includeEmpty` | Optional / branch-dependent | `boolean \| undefined` |
 | `members` | Optional / branch-dependent | `boolean \| undefined` |
 | `as` | Optional / branch-dependent | `DatasetBin2DOutputFields \| undefined` |
@@ -28728,6 +28752,7 @@ export type {
   BinnedHeatmapColorOptions,
   BinnedHeatmapOptions,
   BinnedHeatmapPositionChannel,
+  Bin2DAssignment,
   Bin2DCounts,
   Bin2DDataOptions,
   Bin2DExtent,
@@ -29177,6 +29202,7 @@ export type {
   ApplyThemeOptions,
   BarWidthOptions,
   BasicSeriesLayoutOptions,
+  Bin2DAssignment,
   Bin2DDataOptions,
   CanvasOptions,
   ColorEncodingOptions,
@@ -30531,6 +30557,7 @@ export interface Bin2DDataOptions {
   y: string;
   bins?: number | Bin2DCounts;
   extent?: Bin2DExtent;
+  assignment?: "edges" | "step";
   includeEmpty?: boolean;
   members?: boolean;
   as?: Bin2DOutputFields;
@@ -32617,6 +32644,7 @@ export interface DatasetBin2DOutputFields {
 ```typescript
 export interface DatasetBin2DTransform {
   readonly type: "bin2d";
+  readonly assignment?: "step";
   readonly x: string;
   readonly y: string;
   readonly bins: Readonly<Bin2DCounts>;
@@ -33709,6 +33737,7 @@ export interface EditBin2DDataOptions {
   y?: string;
   bins?: number | Bin2DCounts;
   extent?: Bin2DExtent;
+  assignment?: "edges" | "step";
   includeEmpty?: boolean;
   members?: boolean;
   as?: DatasetBin2DOutputFields;
@@ -35850,6 +35879,7 @@ Related types: [`RectStyleDetails`](./reference/types/#type-rectstyledetails) ·
 export interface HeatmapBinOptions {
   bins?: number | Bin2DCounts;
   extent?: Bin2DExtent;
+  assignment?: "edges" | "step";
   includeEmpty?: boolean;
 }
 ```
@@ -40808,12 +40838,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/0b717e7ed2e9bc6f455cfc7b98288785b9ad2223/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/0b717e7ed2e9bc6f455cfc7b98288785b9ad2223/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -43392,9 +43422,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:310e928037990f408f8ee790dcdd0e5c9455b8f645554a58e91ef8e34a8f7e06` |
+| Contract fingerprint | `sha256:443978a6b9b70f861b9e31b68c6efbe6a1117f6ec3ec4306efbf4d8e45e0df24` |
 | Example and dataset source | `6422776b0a379c8c89809f41b434f366fbc1f143` |
-| Runtime source commit | `0b717e7ed2e9bc6f455cfc7b98288785b9ad2223` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 293 |
 | Declared actions in that release | 234 |

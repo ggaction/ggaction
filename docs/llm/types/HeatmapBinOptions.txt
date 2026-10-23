@@ -1,5 +1,6 @@
 export interface HeatmapBinOptions {
   bins?: number | Bin2DCounts;
   extent?: Bin2DExtent;
+  assignment?: "edges" | "step";
   includeEmpty?: boolean;
 }

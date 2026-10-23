@@ -1062,7 +1062,7 @@
   {
     "file": "api/data/bin2d.md",
     "block": 1,
-    "heading": "`createBin2DData({ id, source?, x, y, bins?, extent?, includeEmpty?, members?, as? })`",
+    "heading": "`createBin2DData({ id, source?, x, y, bins?, extent?, assignment?, includeEmpty?, members?, as? })`",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [],

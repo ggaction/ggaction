@@ -36,6 +36,7 @@ export type {
   BinnedHeatmapColorOptions,
   BinnedHeatmapOptions,
   BinnedHeatmapPositionChannel,
+  Bin2DAssignment,
   Bin2DCounts,
   Bin2DDataOptions,
   Bin2DExtent,

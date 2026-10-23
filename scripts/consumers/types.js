@@ -16,6 +16,7 @@ export async function testTypeScriptConsumer(directory) {
   );
   await writeFile(path.join(directory, "consumer.ts"), await readFile(new URL("./fixtures/types-2.ts", import.meta.url), "utf8"));
   await writeFile(path.join(directory, "facet-axis-gaps.ts"), await readFile(new URL("./fixtures/facet-axis-gaps.ts", import.meta.url), "utf8"));
+  await writeFile(path.join(directory, "bin2d-assignment.ts"), await readFile(new URL("./fixtures/bin2d-assignment.ts", import.meta.url), "utf8"));
   await writeFile(path.join(directory, "tsconfig.json"), `${JSON.stringify({
     compilerOptions: {
       module: "NodeNext",
@@ -26,7 +27,7 @@ export async function testTypeScriptConsumer(directory) {
       noEmit: true,
       skipLibCheck: false
     },
-    files: ["consumer.ts", "extension-authoring.ts", "facet-axis-gaps.ts"]
+    files: ["consumer.ts", "extension-authoring.ts", "facet-axis-gaps.ts", "bin2d-assignment.ts"]
   }, null, 2)}\n`);
   run(process.execPath, [tscCommand, "--project", "tsconfig.json"], directory);
 }

@@ -15,6 +15,7 @@ export type {
   ApplyThemeOptions,
   BarWidthOptions,
   BasicSeriesLayoutOptions,
+  Bin2DAssignment,
   Bin2DDataOptions,
   CanvasOptions,
   ColorEncodingOptions,

@@ -91,6 +91,11 @@
       "type": "Bin2DExtent | undefined"
     },
     {
+      "name": "assignment",
+      "required": false,
+      "type": "\"edges\" | \"step\" | undefined"
+    },
+    {
       "name": "includeEmpty",
       "required": false,
       "type": "boolean | undefined"
@@ -107,7 +112,7 @@
     }
   ],
   "callPatterns": [
-    "createBin2DData({ id, x, y, source?, bins?, extent?, includeEmpty?, members? })"
+    "createBin2DData({ id, x, y, source?, bins?, extent?, assignment?, includeEmpty? })"
   ],
   "snippet": "program.createBin2DData({ id: \"bin2-d-data-1\", x: \"x\", y: \"y\" })",
   "errors": [],

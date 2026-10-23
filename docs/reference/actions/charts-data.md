@@ -794,6 +794,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `y` | Required | `string` |
 | `bins` | Optional / branch-dependent | `number \| Bin2DCounts \| undefined` |
 | `extent` | Optional / branch-dependent | `Bin2DExtent \| undefined` |
+| `assignment` | Optional / branch-dependent | `"edges" \| "step" \| undefined` |
 | `includeEmpty` | Optional / branch-dependent | `boolean \| undefined` |
 | `members` | Optional / branch-dependent | `boolean \| undefined` |
 | `as` | Optional / branch-dependent | `Bin2DOutputFields \| undefined` |
@@ -838,6 +839,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `y` | Optional / branch-dependent | `string \| undefined` |
 | `bins` | Optional / branch-dependent | `number \| Bin2DCounts \| undefined` |
 | `extent` | Optional / branch-dependent | `Bin2DExtent \| undefined` |
+| `assignment` | Optional / branch-dependent | `"edges" \| "step" \| undefined` |
 | `includeEmpty` | Optional / branch-dependent | `boolean \| undefined` |
 | `members` | Optional / branch-dependent | `boolean \| undefined` |
 | `as` | Optional / branch-dependent | `DatasetBin2DOutputFields \| undefined` |

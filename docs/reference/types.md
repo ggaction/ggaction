@@ -1049,6 +1049,7 @@ export interface Bin2DDataOptions {
   y: string;
   bins?: number | Bin2DCounts;
   extent?: Bin2DExtent;
+  assignment?: "edges" | "step";
   includeEmpty?: boolean;
   members?: boolean;
   as?: Bin2DOutputFields;
@@ -3516,6 +3517,7 @@ export interface DatasetBin2DOutputFields {
 ```typescript
 export interface DatasetBin2DTransform {
   readonly type: "bin2d";
+  readonly assignment?: "step";
   readonly x: string;
   readonly y: string;
   readonly bins: Readonly<Bin2DCounts>;
@@ -4782,6 +4784,7 @@ export interface EditBin2DDataOptions {
   y?: string;
   bins?: number | Bin2DCounts;
   extent?: Bin2DExtent;
+  assignment?: "edges" | "step";
   includeEmpty?: boolean;
   members?: boolean;
   as?: DatasetBin2DOutputFields;
@@ -7352,6 +7355,7 @@ Related types: [`RectStyleDetails`](#type-rectstyledetails) · [`CartesianSepara
 export interface HeatmapBinOptions {
   bins?: number | Bin2DCounts;
   extent?: Bin2DExtent;
+  assignment?: "edges" | "step";
   includeEmpty?: boolean;
 }
 ```

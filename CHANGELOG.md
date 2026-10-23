@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Add explicit `assignment: "step"` for rectangular 2D bins and binned heatmaps, preserving the default strict edge policy and immutable replay.
+
 - Add independent horizontal/vertical facet gaps with closed `{ x, y }` input, immutable replay and unchanged numeric/concat spacing.
 - Preserve a facet parent title when revising its source data without introducing titles in child charts.
 
