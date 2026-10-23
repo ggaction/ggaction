@@ -1889,22 +1889,26 @@ source-owned Text continues to reject direct position replacement.
 
 ```javascript
 encodeY2({ field, target?, fieldType, scale?, coordinate? })
-encodeY2({ datum, target?, fieldType, scale?, coordinate? }) // rule
+encodeY2({ datum, target?, fieldType?, scale?, coordinate? }) // rule
 ```
 
 Assign an area, ranged-bar, or rect upper edge, or a rule secondary y endpoint.
 It requires an existing y and shares its scale and coordinate.
+A rule numeric datum defaults to `fieldType: "quantitative"` and must be finite.
+Rule field endpoints and nonnumeric datum endpoints require an explicit matching type.
 [Position encodings](../api/position-encodings.md)
 
 ### `encodeX2`
 
 ```javascript
 encodeX2({ field, target?, fieldType, scale?, coordinate? })
-encodeX2({ datum, target?, fieldType, scale?, coordinate? })
+encodeX2({ datum, target?, fieldType?, scale?, coordinate? })
 ```
 
 Assign an area, ranged-bar, or rect upper edge, or a rule secondary x endpoint.
 It requires an existing x and shares its scale and coordinate.
+A rule numeric datum defaults to `fieldType: "quantitative"` and must be finite.
+Rule field endpoints and nonnumeric datum endpoints require an explicit matching type.
 [Position encodings](../api/position-encodings.md)
 
 ### `encodeYRange`

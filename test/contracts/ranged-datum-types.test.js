@@ -18,6 +18,10 @@ import type { ChartProgram } from ${JSON.stringify(path.join(root, "types/index.
 import type { BasicChartProgram } from ${JSON.stringify(path.join(root, "types/basic.js"))};
 declare const p: ChartProgram;
 declare const basic: BasicChartProgram;
+p.encodeX2({ datum: 0 });
+p.encodeY2({ datum: 0 });
+p.encodeX2({ datum: 0, fieldType: "quantitative" });
+p.encodeY2({ datum: "end", fieldType: "nominal" });
 p.encodeYRange({ lower: { datum: 45000 }, upper: { datum: 0 }, scale: { domain: [0, 45000], nice: false } });
 p.encodeXRange({ lower: { datum: 1 }, upper: { datum: 100 }, scale: { type: "log", domain: [1, 100] } });
 p.encodeYRange({ lower: "low", upper: { datum: 100 } });

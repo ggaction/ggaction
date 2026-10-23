@@ -514,7 +514,8 @@ type AggregateOperation =
 ## `encodeY2`
 
 - Signature: area, ranged bar는 `encodeY2({ field, target?, fieldType?, scale? })`; Rect는 `field | datum`과 primary에서 추론하는 fieldType을 받는다. Rule은
-  `encodeY2({ field | datum, target?, fieldType, scale?, coordinate? })`다.
+  `encodeY2({ field | datum, target?, fieldType, scale?, coordinate? })`다. Numeric datum secondary는
+  `fieldType` 생략 시 `"quantitative"`를 사용하며 finite number만 허용한다. Rule field secondary는 계속 명시적 fieldType이 필요하다.
 - Area/ranged-bar `field`는 quantitative upper-bound field다. Bar는 stale aggregate/stack intent를 제거해
   lower/upper endpoints를 one range grain으로 저장한다. Rule은 field/datum 중 정확히 하나를 요구하고 primary y의
   field type, scale과 coordinate를 공유한다.
@@ -544,6 +545,7 @@ type AggregateOperation =
 ```typescript
 type RulePositionAssignment =
   | { field: FieldName; datum?: never; target?: UserId; fieldType: FieldType; scale?: PositionScale; coordinate?: UserId }
+  | { field?: never; datum: number; target?: UserId; fieldType?: "quantitative"; scale?: PositionScale; coordinate?: UserId }
   | { field?: never; datum: unknown; target?: UserId; fieldType: FieldType; scale?: PositionScale; coordinate?: UserId };
 
 type AreaSecondaryXAssignment = {
@@ -558,6 +560,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 ```
 
 - Rule/Rect `encodeX`/`encodeY`와 `encodeX2`/`encodeY2`는 field 또는 datum 중 정확히 하나를 저장한다. Rect secondary는 primary fieldType을 기본으로 사용한다.
+  Rule secondary numeric datum은 fieldType 생략 시 quantitative를 사용한다. Non-numeric datum은 명시적이고 primary와 일치하는 fieldType이 필요하다.
   Secondary endpoint는 primary channel 없이는 생성할 수 없고 같은 scale, coordinate와 field type을 공유한다.
 - x-only/y-only는 plot-bound full span, `x+y+y2`/`y+x+x2`는 vertical/horizontal interval,
   `x+y+x2+y2`는 diagonal interval이다. Field mode는 row당 line 하나, datum-only mode는 line 하나다.
@@ -577,6 +580,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - ✅ Covered: rule field/datum exclusivity, quantitative/nominal position, full span, bounded and diagonal geometry,
   plus area quantitative x2, shared endpoint scale, endpoint reassignment and invalid/incomplete prerequisites.
 - Evidence: `test/unit/actions/marks/rect-span.test.js`, `test/unit/actions/encodings/rule-position-encodings.test.js`,
+  `test/unit/actions/encodings/ranged-datum-encodings.test.js`,
   `test/charts/cars-error-bar/primitive.test.js`.
 
 ## `encodeStroke`

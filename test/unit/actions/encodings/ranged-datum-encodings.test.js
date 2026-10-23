@@ -16,6 +16,53 @@ function base(mark, channel) {
   return p[channel === "x" ? "encodeY" : "encodeX"]({ field: "position", fieldType: "quantitative" });
 }
 
+test("rule secondary numeric datum defaults match explicit quantitative endpoints", () => {
+  for (const channel of ["x", "y"]) {
+    const primary = channel === "x" ? "encodeX" : "encodeY";
+    const secondary = channel === "x" ? "encodeX2" : "encodeY2";
+    const before = base("rule", channel)[primary]({ datum: 100,
+      scale: { domain: [0, 100], nice: false } });
+    const snapshot = JSON.stringify(before);
+    const options = Object.freeze({ datum: 0 });
+    const inferred = before[secondary](options);
+    const explicit = before[secondary]({ datum: 0, fieldType: "quantitative" });
+    assert.deepEqual(inferred.semanticSpec, explicit.semanticSpec);
+    assert.deepEqual(inferred.graphicSpec, explicit.graphicSpec);
+    assert.deepEqual(inferred.resolvedScales, explicit.resolvedScales);
+    assert.equal(renderToSVG(inferred), renderToSVG(explicit));
+    assert.deepEqual(deserializeProgram(serializeProgram(inferred)).graphicSpec, inferred.graphicSpec);
+    assert.deepEqual(inferred.editCanvas({ width: 300 }).graphicSpec,
+      explicit.editCanvas({ width: 300 }).graphicSpec);
+    assert.equal(inferred.semanticSpec.layers[0].encoding[channel + "2"].fieldType, "quantitative");
+    assert.equal(inferred.semanticSpec.layers[0].encoding[channel + "2"].datum, 0);
+    assert.equal(JSON.stringify(before), snapshot);
+    assert.deepEqual(options, { datum: 0 });
+  }
+});
+
+test("rule secondary datum inference retains finite, field, scale and categorical checks", () => {
+  for (const channel of ["x", "y"]) {
+    const primary = channel === "x" ? "encodeX" : "encodeY";
+    const secondary = channel === "x" ? "encodeX2" : "encodeY2";
+    const before = base("rule", channel)[primary]({ datum: 1,
+      scale: { id: "positionScale", domain: [0, 100], nice: false } });
+    const snapshot = JSON.stringify(before);
+    for (const datum of [NaN, Infinity, -Infinity, "0", null, true, {}]) {
+      assert.throws(() => before[secondary]({ datum }), /finite number/);
+      assert.equal(JSON.stringify(before), snapshot);
+    }
+    assert.throws(() => before[secondary]({ field: "high" }), /requires fieldType/);
+    assert.throws(() => before[secondary]({ datum: 0, scale: { id: "other" } }), /share one scale/);
+    assert.throws(() => before[secondary]({ datum: 0, fieldType: "nominal" }), /fieldType must match/);
+    const categorical = base("rule", channel)[primary]({ datum: "low", fieldType: "nominal",
+      scale: { domain: ["low", "high"] } });
+    const bounded = categorical[secondary]({ datum: "high", fieldType: "nominal" });
+    assert.equal(bounded.semanticSpec.layers[0].encoding[channel + "2"].fieldType, "nominal");
+    assert.throws(() => categorical[secondary]({ datum: "high" }), /fieldType must match/);
+    assert.equal(JSON.stringify(before), snapshot);
+  }
+});
+
 test("rect and rule numeric range bounds match the existing direct encoders exactly", () => {
   for (const mark of ["rect", "rule"]) for (const channel of ["x", "y"]) {
     const primary = channel === "x" ? "encodeX" : "encodeY";
