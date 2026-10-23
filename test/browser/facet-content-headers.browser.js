@@ -1,3 +1,4 @@
+import { saveBrowserContextEvidence, saveBrowserEvidence } from "../support/browser.js";
 import assert from "node:assert/strict";
 import { writeFile } from "node:fs/promises";
 import path from "node:path";
@@ -20,6 +21,7 @@ test.before(async () => {
 test.after(async () => { await closeBrowserWithEvidence(browser); await server?.close(); await consumer?.cleanup(); });
 
 for (const ratio of [1, 2]) test(`${name} matches explicit content-header geometry in Canvas and SVG at DPR ${ratio}`, async () => {
+  try {
   const context = await browser.newContext({ deviceScaleFactor: ratio });
   try {
     const { page, errors } = await openBrowserPage(context, server.baseUrl);
@@ -53,5 +55,7 @@ for (const ratio of [1, 2]) test(`${name} matches explicit content-header geomet
     assert.deepEqual(result, { differences: 0, sameLength: true, sameSvg: true, savedSvg: true, headerY: [54, 51] });
     assertNoBrowserErrors(errors, name);
     await page.close();
-  } finally { await context.close(); }
+  } catch (error) { await saveBrowserContextEvidence(context, error); throw error; } finally { await context.close(); }
+
+  } catch (error) { await saveBrowserEvidence(browser, error); throw error; }
 });

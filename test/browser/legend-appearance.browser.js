@@ -1,3 +1,4 @@
+import { saveBrowserEvidence } from "../support/browser.js";
 import { saveBrowserPageEvidence } from "../support/browser.js";
 import assert from'node:assert/strict';
 import test from'node:test';
@@ -13,6 +14,7 @@ test.before(async()=>{server=await startStaticServer(fileURLToPath(new URL('../.
 test.after(async()=>{await closeBrowserWithEvidence(browser);await server?.close();});
 for(const entry of[{id:'legend-layout',factory:createGradientBlockProgram,opacity:null},...[0,.7,1].map(opacity=>({id:'legend-recipe-opacity',factory:()=>createRecipeOpacityProgram(opacity),opacity}))]){
  test(`${entry.id} ${entry.opacity??'gradient'} has exact browser Canvas and SVG primitive output`,async()=>{
+  try {
   const{page,errors}=await openBrowserPage(browser,new URL(`examples/${entry.id}/`,server.baseUrl).href,{waitFor:()=>{const text=document.querySelector('#status')?.textContent??'';return text.length>0&&!/^Loading\b/i.test(text);}});
   try{
    const result=await page.evaluate(async({id,opacity})=>{
@@ -32,5 +34,7 @@ for(const entry of[{id:'legend-layout',factory:createGradientBlockProgram,opacit
    assert.equal(result.width,480);assert.equal(result.height,270);assert.ok(result.accessible?.length>0);
    assert.deepEqual(result.state,{id:entry.id,width:480,height:270});assertNoBrowserErrors(errors,entry.id);
   } catch (error) { await saveBrowserPageEvidence(page, error, "browser-assertion"); throw error; } finally { await page.close(); }
- });
+
+  } catch (error) { await saveBrowserEvidence(browser, error); throw error; }
+});
 }

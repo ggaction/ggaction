@@ -8,7 +8,7 @@ import { npmInvocation } from "./npm-command.js";
 const root = fileURLToPath(new URL("../", import.meta.url));
 const LOG_LIMIT = 2 * 1024 * 1024;
 
-export async function runCheck(label, command, args, { cwd = root, outputDirectory = path.join(root, ".artifacts/checks"), stdout = process.stdout, stderr = process.stderr, timeoutMs = 90 * 60 * 1000, killGraceMs = 1000 } = {}) {
+export async function runCheck(label, command, args, { cwd = root, outputDirectory = path.join(root, ".artifacts/checks"), stdout = process.stdout, stderr = process.stderr, timeoutMs = Number(process.env.GGACTION_CHECK_TIMEOUT_MS ?? 90 * 60 * 1000), killGraceMs = 1000 } = {}) {
   if (!/^[a-z0-9-]+$/.test(label) || !command) throw new Error("A check requires a safe label and command.");
   if (!Number.isFinite(timeoutMs) || timeoutMs <= 0 || !Number.isFinite(killGraceMs) || killGraceMs < 0) throw new Error("Check deadlines must be finite and positive.");
   let tail = Buffer.alloc(0);

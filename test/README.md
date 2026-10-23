@@ -124,3 +124,13 @@ Use `GGACTION_PEER_MODE=latest npm run test:package` (or `test:platform`) for a
 separate latest-compatible peer check. Receipts record the resolved versions.
 CI checks launched by `scripts/run-check.js` have a 90-minute deadline, preserve
 timeout/cancellation identity, and terminate their child process tree.
+
+
+The canonical suite runner also uses the process-tree deadline wrapper. Set
+`GGACTION_CHECK_TIMEOUT_MS` to a positive millisecond value to shorten or extend a
+local deadline; timeout exits with 124, interrupt with 130, and cancellation with
+143. CI jobs have an additional 120-minute ceiling. Coverage writes the complete
+Node report, per-file `metrics.json`, and a receipt with the commit, dirty paths,
+and tracked-diff digest under `.artifacts/coverage/`. CI retains these on success
+and failure for 14 days. The separate peer-compatibility job exercises the latest
+compatible native peer; baseline qualification remains lockfile-pinned.

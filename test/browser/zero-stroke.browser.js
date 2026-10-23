@@ -1,3 +1,4 @@
+import { saveBrowserEvidence } from "../support/browser.js";
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import {mkdtemp,writeFile,rm} from 'node:fs/promises';
@@ -28,5 +29,5 @@ test('browser zero-width strokes never retain previous width or create outline i
   },{scene:noPaintScene(),samples:noPaintSamples});
   const expected=noPaintSamples.map(([, ,rgba])=>rgba);assert.deepEqual(actual.canvas,expected);assert.deepEqual(actual.svg,expected);
   assertNoBrowserErrors(opened.errors,'none paint');await page.close();
- }finally{await closeBrowserWithEvidence(browser);await server?.close();await rm(directory,{recursive:true,force:true});}
+ } catch (error) { await saveBrowserEvidence(browser, error); throw error; }finally{await closeBrowserWithEvidence(browser);await server?.close();await rm(directory,{recursive:true,force:true});}
 });

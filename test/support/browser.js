@@ -3,6 +3,7 @@ import path from "node:path";
 import { recordFailure } from "./failure-artifacts.js";
 
 const pageErrors = new WeakMap();
+const capturedPages = new WeakSet();
 
 export async function openBrowserPage(browser, url, { waitFor, waitForArg } = {}) {
   const page = await browser.newPage();
@@ -33,13 +34,21 @@ export function assertNoBrowserErrors(errors, label) {
 }
 
 export async function saveBrowserPageEvidence(page, error, label) {
+  if (capturedPages.has(page)) return;
   try {
     const directory = await recordFailure({
       label: `${label}: ${page.url()}`, error,
       details: { url: page.url(), viewport: page.viewportSize(), errors: pageErrors.get(page) ?? [] }
     });
     if (directory !== undefined) await page.screenshot({ path: path.join(directory, "actual.png"), timeout: 5000 });
+    capturedPages.add(page);
   } catch (failure) { process.stderr.write(`Could not capture browser evidence: ${failure.message}\n`); }
+}
+
+export async function saveBrowserContextEvidence(context, error) {
+  for (const page of context.pages()) {
+    await saveBrowserPageEvidence(page, error, "context-assertion");
+  }
 }
 
 export async function saveBrowserEvidence(browser, error) {

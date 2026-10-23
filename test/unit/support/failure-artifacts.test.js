@@ -9,7 +9,7 @@ import { runCheck } from "../../../scripts/run-check.js";
 import { collectFailureArtifacts } from "../../../scripts/collect-failure-artifacts.js";
 import { recordFailure } from "../../support/failure-artifacts.js";
 import { assertSameRenderedPNG } from "../../support/png.js";
-import { saveBrowserPageEvidence } from "../../support/browser.js";
+import { saveBrowserPageEvidence, saveBrowserContextEvidence } from "../../support/browser.js";
 
 const artifacts = fileURLToPath(new URL("../../../.artifacts/", import.meta.url));
 const silence = { write() {} };
@@ -135,4 +135,47 @@ test("a hanging check is terminated with a timeout receipt", async t => {
  const record=JSON.parse(await readFile(path.join(directory,"hang.json"),"utf8"));
  assert.equal(record.termination,"timeout");
  assert.ok(record.durationMs < 10000);
+});
+
+
+test("a timed-out check kills its descendant process group", async t => {
+  if (process.platform === "win32") return t.skip("Unix process group assertion; Windows uses taskkill /t");
+  const directory = await fixture(t);
+  const source = `
+    const { spawn } = require("node:child_process");
+    const fs = require("node:fs");
+    const child = spawn(process.execPath, ["-e", 'process.on("SIGTERM",()=>{});setInterval(()=>{},1000)'], {stdio:"inherit"});
+    fs.writeFileSync(${JSON.stringify(path.join(directory, "child.pid"))}, String(child.pid));
+    process.on("SIGTERM",()=>{});setInterval(()=>{},1000);
+  `;
+  assert.equal(await runCheck("tree", "node", ["-e", source], {
+    outputDirectory: directory, stdout: silence, stderr: silence, timeoutMs: 1000, killGraceMs: 100
+  }), 124);
+  const pid = Number(await readFile(path.join(directory, "child.pid"), "utf8"));
+  // Reaping may lag group termination briefly.
+  for (let attempt = 0; attempt < 50; attempt++) {
+    try { process.kill(pid, 0); } catch (error) { assert.equal(error.code, "ESRCH"); return; }
+    await new Promise(resolve => setTimeout(resolve, 20));
+  }
+  assert.fail(`Descendant ${pid} survived its qualification deadline`);
+});
+
+
+test("context teardown retains the original assertion and screenshot before closing", async t => {
+  const browser = await chromium.launch({ headless: true });
+  t.after(() => browser.close());
+  const context = await browser.newContext({ viewport: { width: 160, height: 90 } });
+  const page = await context.newPage();
+  await page.setContent("<h1>Wrong chart</h1>");
+  const failure = new Error("Expected three visible data marks");
+  await assert.rejects(async () => {
+    try { throw failure; }
+    catch (error) { await saveBrowserContextEvidence(context, error); throw error; }
+    finally { await context.close(); }
+  }, error => error === failure);
+  assert.equal(page.isClosed(), true);
+  const { directory, record } = await ownEvidence(t, "context-assertion: about:blank");
+  assert.equal(record.message, failure.message);
+  const image = await loadImage(path.join(directory, "actual.png"));
+  assert.equal(image.width, 160);
 });

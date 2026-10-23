@@ -1,3 +1,4 @@
+import { saveBrowserEvidence } from "../support/browser.js";
 import assert from "node:assert/strict";
 import { mkdtemp, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
@@ -9,6 +10,7 @@ import { openBrowserPage, assertNoBrowserErrors, closeBrowserWithEvidence } from
 
 const root = fileURLToPath(new URL("../../", import.meta.url));
 test("direct line gaps agree in browser Canvas and independently inspected SVG geometry", async () => {
+  try {
   const directory = await mkdtemp(path.join(root, ".artifacts/line-gap-browser-"));
   const server = await startStaticServer(root);
   const browser = await chromium.launch({ headless: true });
@@ -43,8 +45,10 @@ test("direct line gaps agree in browser Canvas and independently inspected SVG g
     assert.deepEqual(result.gapPixel, [255, 255, 255, 255]);
     assert.ok(result.segmentPixel.slice(0, 3).some(value => value < 200));
     assertNoBrowserErrors(errors);
-  } finally {
+  } catch (error) { await saveBrowserEvidence(browser, error); throw error; } finally {
     await context?.close(); await closeBrowserWithEvidence(browser); await server.close();
     await rm(directory, { recursive: true, force: true });
   }
+
+  } catch (error) { await saveBrowserEvidence(browser, error); throw error; }
 });

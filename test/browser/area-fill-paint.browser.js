@@ -1,3 +1,4 @@
+import { saveBrowserEvidence } from "../support/browser.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { mkdtemp, writeFile, rm } from "node:fs/promises";
@@ -55,7 +56,7 @@ test("Browser Canvas and SVG consume the same materialized area gradient", async
     assert.deepEqual(result.svg, result.gradients[0]);
     assertNoBrowserErrors(opened.errors, "area fill paint");
     await opened.page.close();
-  } finally {
+  } catch (error) { await saveBrowserEvidence(browser, error); throw error; } finally {
     await closeBrowserWithEvidence(browser);
     await server?.close();
     await rm(directory, { recursive: true, force: true });

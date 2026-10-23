@@ -37,9 +37,10 @@ function run(command, args, cwd, options = {}) {
 }
 
 export async function preparePackageConsumer({
-  packageSpec = process.env.GGACTION_PACKAGE_SPEC
+  packageSpec = process.env.GGACTION_PACKAGE_SPEC,
+  temporaryRoot = tmpdir()
 } = {}) {
-  const directory = await mkdtemp(path.join(tmpdir(), "ggaction-consumer-"));
+  const directory = await mkdtemp(path.join(temporaryRoot, "ggaction-consumer-"));
   try {
     const artifact = packageSpec === undefined ? await createPackageArtifact() : undefined;
     const installSpec = packageSpec ?? artifact.file;

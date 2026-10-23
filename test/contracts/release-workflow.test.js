@@ -164,33 +164,54 @@ test("test and documentation failures retain bounded artifacts without forgiving
   }
 });
 
-function assertRequiredExecution(source) {
- const workflow = parse(source);
- const required = {
-  "verify-source": ["node scripts/run-check.js test -- npm test", "node scripts/run-check.js test-browser -- npm run test:browser", "node scripts/run-check.js test-render -- npm run test:render"],
-  "verify-coverage": ["node scripts/run-check.js test-coverage -- npm run test:coverage"],
-  "verify-package": ["node scripts/run-check.js test-package -- npm run test:package"]
- };
- for (const [name, commands] of Object.entries(required)) {
-  const job=workflow.jobs[name];
-  assert.ok(job, name);
-  assert.equal(job.if, undefined, `${name} must run unconditionally after its prerequisites`);
-  assert.ok(!job["continue-on-error"], name);
-  assert.ok([job.needs].flat().includes("candidate"), name);
-  for(const command of commands) {
-   const steps=job.steps.filter(step => step.run?.trim() === command);
-   assert.equal(steps.length, 1, `${name} must execute ${command}`);
-   assert.equal(steps[0].if, undefined, command);
-   assert.ok(!steps[0]["continue-on-error"], command);
+const qualificationCommands = {
+  source: ["node scripts/run-check.js test -- npm test", "node scripts/run-check.js test-browser -- npm run test:browser", "node scripts/run-check.js test-render -- npm run test:render"],
+  coverage: ["node scripts/run-check.js test-coverage -- npm run test:coverage"],
+  package: ["node scripts/run-check.js test-package -- npm run test:package"],
+  documentation: ["node scripts/run-check.js test-docs -- npm run test:docs", "node scripts/run-check.js docs-build -- npm run docs:build", "node scripts/run-check.js test-docs-built -- npm run test:docs:built", "node scripts/run-check.js test-docs-browser -- npm run test:docs:browser"],
+  realistic: ["node scripts/run-check.js test-realistic -- npm run test:realistic -- --shard=${{ matrix.shard }}/7"],
+  platform: ["node scripts/run-check.js test-platform -- npm run test:platform"],
+  browsers: ["node scripts/run-check.js test-browser-compat -- npm run test:browser:compat"]
+};
+
+function assertRequiredExecution(document, release) {
+  for (const [kind, commands] of Object.entries(qualificationCommands)) {
+    const name = release ? `verify-${kind}` : kind === "source" ? "test" : kind;
+    const job = document.jobs[name];
+    assert.ok(job, name);
+    assert.equal(job.if, undefined, `${name} must run after its prerequisites`);
+    assert.ok(!job["continue-on-error"], name);
+    if (release) assert.ok([job.needs].flat().includes("candidate"), name);
+    assert.ok(Number.isInteger(job["timeout-minutes"]) && job["timeout-minutes"] <= 120, name);
+    for (const command of commands) {
+      const steps = job.steps.filter(step => step.run?.split("\n").some(line => line.trim() === command));
+      assert.equal(steps.length, 1, `${name} must execute ${command}`);
+      assert.equal(steps[0].if, undefined, command);
+      assert.ok(!steps[0]["continue-on-error"], command);
+    }
   }
- }
 }
-test("required qualification steps execute rather than merely mention their commands", () => {
- assertRequiredExecution(workflow);
- const command="node scripts/run-check.js test -- npm test";
- for(const replacement of [
-  `echo '${command}'`,
-  command + "\n        if: ${{ false }}",
-  `${command}\n        continue-on-error: true`
- ]) assert.throws(() => assertRequiredExecution(workflow.replace(command,replacement)));
+
+test("every qualification rejects disabled, forgiven, and echo-only commands", () => {
+  const ci = readFileSync(new URL("../../.github/workflows/ci.yml", import.meta.url), "utf8");
+  for (const [source, release] of [[ci, false], [workflow, true]]) {
+    const document = parse(source);
+    assertRequiredExecution(document, release);
+    for (const [kind, commands] of Object.entries(qualificationCommands)) {
+      const name = release ? `verify-${kind}` : kind === "source" ? "test" : kind;
+      for (const command of commands) {
+        for (const mutation of ["echo", "if", "continue-on-error"]) {
+          const changed = structuredClone(document);
+          const step = changed.jobs[name].steps.find(step => step.run?.split("\n").some(line => line.trim() === command));
+          if (mutation === "echo") step.run = step.run.replace(command, `echo '${command}'`);
+          else step[mutation] = mutation === "if" ? "${{ false }}" : true;
+          assert.throws(() => assertRequiredExecution(changed, release), `${name}: ${mutation}`);
+        }
+      }
+    }
+    const coverage = document.jobs[release ? "verify-coverage" : "coverage"];
+    const upload = coverage.steps.find(step => step.with?.path === ".artifacts/coverage");
+    assert.equal(upload.if, "${{ always() }}");
+    assert.ok(upload.uses.startsWith("actions/upload-artifact@"));
+  }
 });

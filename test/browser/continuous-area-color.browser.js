@@ -1,3 +1,4 @@
+import { saveBrowserEvidence } from "../support/browser.js";
 import { saveBrowserPageEvidence } from "../support/browser.js";
 import assert from "node:assert/strict";
 import test from "node:test";
@@ -43,5 +44,5 @@ test("canonical continuous-area-color browser Canvas and SVG preserve the indepe
       assert.deepEqual(result.state,{id:"continuous-area-color",width:320,height:220});
       assertNoBrowserErrors(errors,"continuous-area-color");
     } catch (error) { await saveBrowserPageEvidence(page, error, "browser-assertion"); throw error; } finally { await page.close(); }
-  } finally {await closeBrowserWithEvidence(browser);await server?.close();}
+  } catch (error) { await saveBrowserEvidence(browser, error); throw error; } finally {await closeBrowserWithEvidence(browser);await server?.close();}
 });

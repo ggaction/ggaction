@@ -1,3 +1,4 @@
+import { saveBrowserContextEvidence, saveBrowserEvidence } from "../support/browser.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
@@ -33,6 +34,7 @@ assert.equal(examples.length > 0, true);
 
 for (const example of examples) {
   test(`renders ${example.id} at its logical Canvas size`, async () => {
+  try {
     const { page, errors } = await openBrowserPage(
       browser,
       new URL(`examples/${example.browser.path}`, server.baseUrl).href,
@@ -76,10 +78,13 @@ for (const example of examples) {
     }
     assertNoBrowserErrors(errors, example.id);
     await page.close();
-  });
+
+  } catch (error) { await saveBrowserEvidence(browser, error); throw error; }
+});
 }
 
 test("keeps logical Canvas size at a high browser pixel density", async () => {
+  try {
   const context = await browser.newContext({ deviceScaleFactor: 2 });
   try {
     const example = examples.find(item => item.id === "cars-binned-heatmap");
@@ -117,7 +122,9 @@ test("keeps logical Canvas size at a high browser pixel density", async () => {
     });
     assertNoBrowserErrors(errors, `${example.id} high-density browser`);
     await page.close();
-  } finally {
+  } catch (error) { await saveBrowserContextEvidence(context, error); throw error; } finally {
     await context.close();
   }
+
+  } catch (error) { await saveBrowserEvidence(browser, error); throw error; }
 });

@@ -1,3 +1,4 @@
+import { saveBrowserContextEvidence } from "../support/browser.js";
 import assert from "node:assert/strict";
 import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
@@ -89,7 +90,7 @@ for (const profile of ["Full", "Basic"]) {
         }
       }
       assertNoBrowserErrors(opened.errors, `${profile} plot borders`);
-    } finally {
+    } catch (error) { await saveBrowserContextEvidence(context, error); throw error; } finally {
       await page?.close();
       await context.close();
     }

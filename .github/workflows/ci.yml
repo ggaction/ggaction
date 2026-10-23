@@ -18,6 +18,7 @@ jobs:
       matrix:
         node-version: [20, 22, 24]
     runs-on: ubuntu-latest
+    timeout-minutes: 120
     steps:
       - name: Check out repository
         uses: actions/checkout@v6
@@ -50,6 +51,7 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 120
     steps:
       - name: Check out repository
         uses: actions/checkout@v6
@@ -88,6 +90,7 @@ jobs:
 
   realistic-data:
     runs-on: ubuntu-latest
+    timeout-minutes: 120
     steps:
       - name: Check out repository
         uses: actions/checkout@v6
@@ -125,6 +128,7 @@ jobs:
       matrix:
         shard: [1, 2, 3, 4, 5, 6, 7]
     runs-on: ubuntu-latest
+    timeout-minutes: 120
     steps:
       - name: Check out repository
         uses: actions/checkout@v6
@@ -160,6 +164,7 @@ jobs:
     if: ${{ always() }}
     needs: [realistic-data, realistic]
     runs-on: ubuntu-latest
+    timeout-minutes: 120
     steps:
       - name: Check out repository
         uses: actions/checkout@v6
@@ -191,6 +196,7 @@ jobs:
       matrix:
         os: [macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 120
     defaults:
       run:
         shell: bash
@@ -226,6 +232,7 @@ jobs:
       matrix:
         browser: [firefox, webkit]
     runs-on: ubuntu-latest
+    timeout-minutes: 120
     defaults:
       run:
         shell: bash
@@ -261,6 +268,7 @@ jobs:
 
   coverage:
     runs-on: ubuntu-latest
+    timeout-minutes: 120
     steps:
       - name: Check out repository
         uses: actions/checkout@v6
@@ -277,6 +285,14 @@ jobs:
         run: npx playwright install --with-deps chromium
       - name: Enforce coverage thresholds
         run: node scripts/run-check.js test-coverage -- npm run test:coverage
+      - name: Retain complete coverage evidence
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: coverage-${{ github.job }}-${{ github.run_attempt }}
+          path: .artifacts/coverage
+          if-no-files-found: warn
+          retention-days: 14
       - name: Collect bounded failure evidence
         if: ${{ failure() }}
         continue-on-error: true
@@ -293,6 +309,7 @@ jobs:
 
   documentation:
     runs-on: ubuntu-latest
+    timeout-minutes: 120
     steps:
       - name: Check out repository
         uses: actions/checkout@v6
@@ -345,3 +362,26 @@ jobs:
           path: .artifacts/ci-evidence
           if-no-files-found: ignore
           retention-days: 7
+
+  peer-compatibility:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Qualify the latest compatible native peer
+        env:
+          GGACTION_PEER_MODE: latest
+        run: node scripts/run-check.js test-peer-latest -- npm run test:platform
+      - name: Retain peer compatibility receipt
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: peer-compatibility-${{ github.run_attempt }}
+          path: .artifacts/checks
+          if-no-files-found: warn
+          retention-days: 14

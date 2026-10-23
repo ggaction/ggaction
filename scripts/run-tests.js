@@ -1,5 +1,7 @@
 import { readFileSync, readdirSync, mkdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
+import { createHash } from "node:crypto";
+import { runCheck } from "./run-check.js";
 import { partitionTestFiles } from "./test-sharding.js";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
@@ -173,7 +175,7 @@ export function testRunnerArguments(suite, files, shard) {
   return args;
 }
 
-function run(suite, selectors, shard) {
+async function run(suite, selectors, shard) {
   const files = collectTestFiles(suite, testRoot, selectors);
   if (files.length === 0) {
     if (suite === "gates" && selectors.length === 0) {
@@ -193,36 +195,33 @@ function run(suite, selectors, shard) {
     }
   }
   const args = testRunnerArguments(suite, files, shard);
-  const result = spawnSync(process.execPath, args, {
+  let output = "";
+  const capture = { write(chunk) { output += chunk.toString(); } };
+  const code = await runCheck(`suite-${suite}`, process.execPath, args, {
     cwd: repositoryRoot,
-    ...(coverage
-      ? { encoding: "utf8", maxBuffer: 10 * 1024 * 1024 }
-      : { stdio: "inherit" })
+    ...(coverage ? { stdout: capture, stderr: capture } : {})
   });
   if (coverage) {
     const directory = path.join(repositoryRoot, ".artifacts/coverage");
     mkdirSync(directory, { recursive: true });
-    writeFileSync(path.join(directory, "report.log"), (result.stdout ?? "") + (result.stderr ?? ""));
+    writeFileSync(path.join(directory, "report.log"), output);
+    const git = args => spawnSync("git", args, { cwd: repositoryRoot, encoding: "utf8", maxBuffer: 20 * 1024 * 1024 }).stdout?.trim();
     writeFileSync(path.join(directory, "receipt.json"), JSON.stringify({
       node: process.version, platform: process.platform, arch: process.arch,
-      status: result.status, signal: result.signal, error: result.error?.message,
-      files: files.map(file => path.relative(repositoryRoot, file)),
-      sourceCommit: spawnSync("git", ["rev-parse", "HEAD"], { cwd: repositoryRoot, encoding: "utf8" }).stdout?.trim()
+      status: code, files: files.map(file => path.relative(repositoryRoot, file)),
+      sourceCommit: git(["rev-parse", "HEAD"]),
+      workingTree: git(["status", "--porcelain"]),
+      trackedDiffSha256: createHash("sha256").update(git(["diff", "HEAD", "--binary"]) ?? "").digest("hex")
     }, null, 2));
+    // Preserve machine-readable metrics even when a threshold later rejects them.
+    writeFileSync(path.join(directory, "metrics.json"), JSON.stringify(Object.fromEntries(parseCoverageTable(output)), null, 2));
+    if (code === 0) {
+      assertSourceCoverage(output);
+      assertCriticalCoverage(output);
+      process.stdout.write(coverageSummary(output));
+    } else process.stdout.write(output);
   }
-  if (result.error) throw result.error;
-  if (coverage) {
-    if (result.status === 0) {
-      assertSourceCoverage(result.stdout);
-      assertCriticalCoverage(result.stdout);
-      process.stdout.write(coverageSummary(result.stdout));
-      process.stderr.write(result.stderr);
-    } else {
-      process.stdout.write(result.stdout);
-      process.stderr.write(result.stderr);
-    }
-  }
-  process.exitCode = result.status ?? 1;
+  process.exitCode = code;
 }
 
 if (
@@ -254,5 +253,5 @@ if (
   if (suite === "coverage" && selectors.length > 0) {
     throw new Error("Coverage requires the complete normal test suite.");
   }
-  run(suite, selectors, shard);
+  await run(suite, selectors, shard);
 }

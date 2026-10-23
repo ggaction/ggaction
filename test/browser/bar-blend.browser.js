@@ -1,3 +1,4 @@
+import { saveBrowserEvidence } from "../support/browser.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import {mkdtemp, writeFile, rm} from "node:fs/promises";
@@ -48,5 +49,5 @@ test("difference paints the independently approved fill/outline source in DOM an
       for(const sample of result.crossSamples)assert.deepEqual(sample.canvas,sample.svg,label+" interior/outline");
     }
     assertNoBrowserErrors(opened.errors,"bar difference");await page.close();
-  }finally{await closeBrowserWithEvidence(browser);await server?.close();await rm(directory,{recursive:true,force:true});}
+  } catch (error) { await saveBrowserEvidence(browser, error); throw error; }finally{await closeBrowserWithEvidence(browser);await server?.close();await rm(directory,{recursive:true,force:true});}
 });

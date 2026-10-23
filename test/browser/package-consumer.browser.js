@@ -1,3 +1,4 @@
+import { saveBrowserEvidence } from "../support/browser.js";
 import assert from "node:assert/strict";
 import { writeFile } from "node:fs/promises";
 import path from "node:path";
@@ -723,6 +724,7 @@ test.after(async () => {
 });
 
 test("imports and renders the packed browser entries", async () => {
+  try {
   const { page, errors } = await openBrowserPage(browser, server.baseUrl, {
     waitFor: () => window.__ggactionConsumer !== undefined
   });
@@ -891,4 +893,6 @@ test("imports and renders the packed browser entries", async () => {
   );
   assertNoBrowserErrors(errors, "packed consumer");
   await page.close();
+
+  } catch (error) { await saveBrowserEvidence(browser, error); throw error; }
 });
