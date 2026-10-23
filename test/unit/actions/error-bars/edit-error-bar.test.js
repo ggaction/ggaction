@@ -21,6 +21,37 @@ function errorBar(id = "errorBar") {
     });
 }
 
+test("interval plot centers follow field, statistic and orientation revisions", () => {
+  const original = chart().createCanvas({ width: 600, height: 450, margin: 100 })
+    .createData({ values: rows.map(row => ({ ...row, other: row.value ** 2 })) })
+    .createIntervalPlot({ id: "plot", x: { field: "group", fieldType: "nominal" },
+      y: { field: "value", extent: "stdev" }, point: { fill: "#d62728" } });
+  const before = JSON.stringify(original.graphicSpec);
+  const changed = original.editErrorBar({ target: "plotInterval", y: { field: "other", extent: "stdev" } });
+  const center = changed.semanticSpec.layers.find(layer => layer.id === "plot");
+  const rule = changed.semanticSpec.layers.find(layer => layer.id === "plotInterval");
+  assert.equal(center.data, rule.data);
+  assert.deepEqual(changed.semanticSpec.datasets.find(d => d.id === center.data).values.map(r => r[center.encoding.y.field]), [5, 20]);
+  const scale = changed.resolvedScales[center.encoding.y.scale];
+  for (const [i, mean] of [5, 20].entries()) {
+    const expected = scale.range[0] + (mean - scale.domain[0]) /
+      (scale.domain[1] - scale.domain[0]) * (scale.range[1] - scale.range[0]);
+    assert.equal(changed.graphicSpec.objects.plot.items[i].properties.y, expected);
+  }
+  assert.equal(changed.graphicSpec.objects.plot.items[0].properties.fill, "#d62728");
+  const median = changed.editErrorBar({ target: "plotInterval", statistics: { center: "median", extent: "iqr" } });
+  assert.equal(median.semanticSpec.layers.find(l => l.id === "plot").data,
+    median.semanticSpec.layers.find(l => l.id === "plotInterval").data);
+  const horizontal = changed.editErrorBar({ target: "plotInterval",
+    x: { field: "other", extent: "stdev" }, y: { field: "group", fieldType: "nominal" } });
+  const rotated = horizontal.semanticSpec.layers.find(l => l.id === "plot");
+  assert.equal(rotated.encoding.y.field, "group");
+  assert.equal(rotated.encoding.x.fieldType, "quantitative");
+  assert.equal(rotated.encoding.x.scale, horizontal.markConfigs.plotInterval.errorBar.intervalScale);
+  assert.throws(() => changed.editErrorBar({ target: "plotInterval", y: { field: "absent" } }));
+  assert.equal(JSON.stringify(original.graphicSpec), before);
+});
+
 test("edits one error bar and reconciles its owned caps", () => {
   const before = errorBar();
   const withoutCaps = before.editErrorBar({

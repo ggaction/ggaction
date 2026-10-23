@@ -1,4 +1,5 @@
 import{normalizeLegendClipHeight}from"../../../../grammar/legendClip.js";
+import {normalizeLegendSpacing} from "../../../../grammar/legendSpacing.js";
 import{applyLegendClipGraphics}from"../../../../materialization/legendClip.js";
 import { normalizeGradientDirection } from "../../../../grammar/legendGradient.js";
 import { normalizeLegendBorderDash } from "../../../../grammar/legendBorder.js";
@@ -43,13 +44,13 @@ const OPTIONS = [
   "clipHeight",
   "target", "channels", "position", "align", "offset", "title", "count",
   "values",
-  "gradient", "symbol", "labels", "titleStyle", "itemGap", "border",
+  "gradient", "symbol", "labels", "titleStyle", "itemGap", "rowPadding", "titlePadding", "border",
   "direction", "columns", "titlePosition"
 ];
 export const ITEM_LEGEND_OPTIONS = Object.freeze([
   "clipHeight",
   "target", "count", "values", "position", "layout", "align", "direction",
-  "columns", "titlePosition", "offset", "itemGap", "title", "labels", "titleStyle", "border", "overflow"
+  "columns", "titlePosition", "offset", "itemGap", "rowPadding", "titlePadding", "title", "labels", "titleStyle", "border", "overflow"
 ]);
 const TEXT_OPTIONS = [
   "offset", "color", "fontSize", "fontFamily", "fontWeight", "format"
@@ -168,16 +169,13 @@ export function normalizeContinuousLegend(args, kind) {
   if (["left", "right"].includes(position) && align !== "center") {
     throw new Error("Side continuous legends require center alignment.");
   }
-  if (kind === "gradient" && Object.hasOwn(args, "values")) {
-    throw new Error("Gradient legends do not support exact sample values.");
-  }
-  const sampling = kind === "opacity"
+  const sampling = kind === "opacity" || Object.hasOwn(args, "values")
     ? normalizeLegendSampling(args, {
         operation: "create",
-        label: "Opacity legend"
+        label: kind === "gradient" ? "Gradient legend" : "Opacity legend"
       })
     : undefined;
-  const count = kind === "gradient" ? args.count ?? 5 : undefined;
+  const count = kind === "gradient" ? sampling?.count ?? args.count ?? 5 : undefined;
   if (kind === "gradient") {
     if (!Number.isInteger(count) || count < 2) {
       throw new RangeError(
@@ -220,10 +218,12 @@ export function normalizeContinuousLegend(args, kind) {
   return {
     ...(args.clipHeight===undefined?{}:{clipHeight:normalizeLegendClipHeight(args.clipHeight)}),
     target: args.target,
+    ...normalizeLegendSpacing(args),
     position,
     align,
     offset,
     ...(kind === "gradient" ? { count,
+      ...(sampling?.mode === "values" ? { sampling } : {}),
       ...(args.direction === undefined ? {} : { gradientDirection: normalizeGradientDirection(args.direction) })
     } : { sampling }),
     ...normalizeInitialLegendTitle(args.title),
@@ -277,7 +277,7 @@ export function resolveContinuousColorLayer(program, requested, channel = "color
     requested,
     candidate => (channel === "stroke"
       ? ["point", "line", "area", "bar", "rect", "arc", "rule", "tick"]
-      : ["point", "bar", "rect", "text", "area"]
+      : ["point", "line", "bar", "rect", "text", "area", "arc", "tick"]
     ).includes(candidate.mark?.type) &&
       candidate.encoding?.[channel]?.scale !== undefined &&
       (channel !== "color" || ["quantitative", "temporal"].includes(candidate.encoding[channel].fieldType))
@@ -286,7 +286,7 @@ export function resolveContinuousColorLayer(program, requested, channel = "color
     throw new Error(
       requested === undefined
         ? channel === "color"
-          ? "color legend requires one eligible point, bar, rect, text, or area mark."
+          ? "color legend requires one eligible point, line, bar, rect, text, area, arc, or tick mark."
           : "stroke legend requires one eligible mark."
         : `Unknown ${channel} legend target "${requested}".`
     );
@@ -449,7 +449,8 @@ export function normalizeItemLegendLayout(args, { multiColumnSide = false } = {}
   const itemGap = args.itemGap ?? (direction === "vertical" ? DEFAULT_VERTICAL_LEGEND_ITEM_GAP : 28);
   validateNonNegative(offset, "Legend offset");
   validatePositive(itemGap, "Legend itemGap");
-  return { position, layout, align, direction, columns, titlePosition, offset, itemGap };
+  return { position, layout, align, direction, columns, titlePosition, offset, itemGap,
+    ...normalizeLegendSpacing(args) };
 }
 
 export function materializeItemLegend(program, kind, config, layout, {

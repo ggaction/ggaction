@@ -1,11 +1,14 @@
 import {
   BAR_GRAINS,
-  inferBarColorLayout
+  inferBarColorLayout,
+  resolveBarChannels
 } from "../../../grammar/bars/policy.js";
 import { validateColorLayout } from "../../../grammar/seriesLayout.js";
+import { findScaleConsumers } from "../../scales/consumers/common.js";
+import { resolveReassignmentScaleOptions } from "../shared.js";
 
 export const COLOR_ENCODING_OPTIONS = Object.freeze([
-  "field", "target", "fieldType", "scale", "palette", "layout", "aggregate", "temporalUnit"
+  "value", "field", "target", "fieldType", "scale", "palette", "layout", "aggregate", "temporalUnit"
 ]);
 
 export function resolveColorScaleOptions(args) {
@@ -17,6 +20,50 @@ export function resolveColorScaleOptions(args) {
     );
   }
   return { ...options, palette: args.palette };
+}
+
+export function resolveColorReassignmentScaleOptions(
+  program, layer, channel, fieldType, options = {}
+) {
+  const previous = layer.encoding?.[channel];
+  const requested = resolveReassignmentScaleOptions(previous, options);
+  if (options.id !== undefined || previous?.scale === undefined) return requested;
+  const categorical = type => ["nominal", "ordinal"].includes(type);
+  if (categorical(previous.fieldType) === categorical(fieldType)) return requested;
+  const otherConsumer = consumer => consumer.layer.id !== layer.id ||
+    consumer.channel !== channel;
+  if (!findScaleConsumers(program, previous.scale).some(otherConsumer)) return requested;
+  // Re-encoding one mark must not change the scale family of its siblings.
+  // Explicit scale IDs still opt into normal shared-resource validation.
+  const id = `${layer.id}-${channel}-${fieldType}`;
+  if (findScaleConsumers(program, id).some(otherConsumer)) {
+    throw new Error(`Color reassignment requires scale.id because "${id}" has other consumers.`);
+  }
+  return { ...options, id };
+}
+
+export function withoutConstantColor(program, layer) {
+  const previous = program.markConfigs[layer.id];
+  const explicit = { point: previous?.fill !== undefined, line: previous?.stroke !== undefined,
+    bar: previous?.barAppearance?.fill !== undefined, area: previous?.errorBand?.fill !== undefined,
+    arc: previous?.fill !== undefined, rect: previous?.fillExplicit === true,
+    text: previous?.fillExplicit === true }[layer.mark.type];
+  if (!explicit) return program;
+  const config = { ...previous };
+  if (layer.mark.type === "bar") {
+    config.barAppearance = { ...config.barAppearance };
+    delete config.barAppearance.fill;
+  } else if (layer.mark.type === "line") {
+    delete config.stroke;
+  } else {
+    if (["point", "arc"].includes(layer.mark.type)) delete config.fill;
+    if (["rect", "text"].includes(layer.mark.type)) config.fillExplicit = false;
+    if (config.errorBand !== undefined) {
+      config.errorBand = { ...config.errorBand };
+      delete config.errorBand.fill;
+    }
+  }
+  return program._withMarkConfig(layer.id, config);
 }
 
 export function assertNoConstantColor(program, layer) {
@@ -47,7 +94,13 @@ export function isRangedArea(layer) {
   );
 }
 
-export function resolveColorLayout(layer, requested, barGrain) {
+export function resolveColorLayout(layer, requested, barGrain, field) {
+  const category = layer.encoding?.[resolveBarChannels(layer)?.category];
+  // Coloring the category does not introduce another partition. An explicit
+  // group or a stored/requested layout still owns series placement.
+  const categoryColorOnly = barGrain === BAR_GRAINS.aggregate &&
+    ["nominal", "ordinal"].includes(category?.fieldType) &&
+    category.field === field && layer.encoding?.group === undefined;
   const existing = layer.encoding?.color === undefined
     ? undefined
     : layer.encoding.color.layout ?? (
@@ -62,7 +115,7 @@ export function resolveColorLayout(layer, requested, barGrain) {
     layer.mark.type === "bar"
       ? barGrain === BAR_GRAINS.histogram
         ? "stack"
-        : [BAR_GRAINS.ranged, BAR_GRAINS.centered].includes(barGrain) ? "overlay" : "group"
+        : [BAR_GRAINS.ranged, BAR_GRAINS.centered].includes(barGrain) || categoryColorOnly ? "overlay" : "group"
       : layer.mark.type === "area"
         ? "overlay"
         : undefined

@@ -32,7 +32,7 @@ import { resolveEffectiveLegendBlockConfig } from "../blocks.js";
 
 const OPTIONS = [
   "target", "channels", "position", "align", "offset", "title",
-  "symbol", "labels", "titleStyle", "itemGap", "direction", "border", "layout", "columns", "titlePosition"
+  "symbol", "labels", "titleStyle", "itemGap", "rowPadding", "titlePadding", "direction", "border", "layout", "columns", "titlePosition"
 ];
 const SYMBOL_OPTIONS = [
   "width", "height", "stroke", "strokeWidth"

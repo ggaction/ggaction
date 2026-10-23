@@ -1,3 +1,4 @@
+import { requestedMarkClip, validateMarkClipCoordinate } from "../../../selectors/markClip.js";
 import { action } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
 import {
@@ -15,6 +16,7 @@ import { resolveMarkGraphicPlacement } from
 import { resolveRowEncodingValues } from
   "../../../materialization/rowEncoding.js";
 import { findDataset } from "../../../selectors/datasets.js";
+import { validateTickColorChannels } from "../../../grammar/scales/colorConsumers.js";
 import { findLayer } from "../../../selectors/layers.js";
 import { DEFAULT_COLORS } from "../../../theme/defaults.js";
 import {
@@ -37,7 +39,7 @@ import {
 } from "../shared.js";
 
 const APPEARANCE_OPTIONS = Object.freeze([
-  "length", "stroke", "strokeWidth", "opacity", ...STROKE_STYLE_PROPERTIES
+  "clip", "length", "stroke", "strokeWidth", "opacity", ...STROKE_STYLE_PROPERTIES
 ]);
 const CREATE_OPTIONS = Object.freeze(["id", "data", "missing", ...APPEARANCE_OPTIONS]);
 const EDIT_OPTIONS = Object.freeze(["target", "missing", ...APPEARANCE_OPTIONS]);
@@ -74,6 +76,7 @@ function resolveTick(program, requested, operation) {
 function validateTickConfig(args, current = DEFAULT_TICK_CONFIG) {
   return {
     ...current,
+    ...requestedMarkClip(args),
     length: Object.hasOwn(args, "length")
       ? validatePositiveFinite(args.length, "Tick length")
       : current.length,
@@ -97,6 +100,7 @@ export const createTickMark = /* @__PURE__ */ action(
   },
   function (args = {}) {
     validateMarkOptions(args, CREATE_OPTIONS, "createTickMark");
+    requestedMarkClip(args);
     requestedStrokeDetails(args, "createTickMark");
     const id = resolveMarkId(this, args.id, {
       defaultId: "tick",
@@ -148,6 +152,7 @@ export const editTickMark = /* @__PURE__ */ action(
   },
   function (args = {}) {
     validateMarkOptions(args, EDIT_OPTIONS, "editTickMark");
+    requestedMarkClip(args);
     requestedStrokeDetails(args, "editTickMark");
     if (!["missing", ...APPEARANCE_OPTIONS].some(property => Object.hasOwn(args, property))) {
       throw new Error(
@@ -155,11 +160,13 @@ export const editTickMark = /* @__PURE__ */ action(
       );
     }
     const layer = resolveTick(this, args.target, "editTickMark");
+    if (Object.hasOwn(args, "stroke")) validateTickColorChannels(layer, "stroke");
     if (Object.hasOwn(args, "stroke") && layer.encoding?.stroke !== undefined) {
       throw new Error(
         "editTickMark stroke conflicts with a field encoding; use encodeStroke with value to replace it."
       );
     }
+    validateMarkClipCoordinate(this, layer, args.clip ?? this.markConfigs[layer.id]?.clip);
     const semantic = Object.hasOwn(args, "missing")
       ? this.editSemantic({
           property: `layer[${layer.id}].mark.missing`,
@@ -200,6 +207,7 @@ export const rematerializeTickMark = /* @__PURE__ */ action(
     if (layer?.mark?.type !== "tick") {
       throw new Error(`Unknown tick mark "${id}".`);
     }
+    validateTickColorChannels(layer);
     const graphic = this.graphicSpec.objects[id];
     if (graphic?.type !== "line" || !Array.isArray(graphic.items)) {
       throw new Error(`Tick mark "${id}" requires line collection graphics.`);
@@ -220,7 +228,8 @@ export const rematerializeTickMark = /* @__PURE__ */ action(
 
     const x = resolveRowEncodingValues(this, layer, dataset, "x");
     const y = resolveRowEncodingValues(this, layer, dataset, "y");
-    const stroke = resolveRowEncodingValues(this, layer, dataset, "stroke");
+    const stroke = resolveRowEncodingValues(this, layer, dataset,
+      layer.encoding?.color === undefined ? "stroke" : "color");
     const angles = resolveDirectionValues(dataset.values, layer.encoding?.angle);
     const config = validateTickConfig({}, {
       ...DEFAULT_TICK_CONFIG,

@@ -51,7 +51,7 @@ const program = chart()
 
 ```javascript
 createBoxPlot({
-  id?, target?, data?, x?, y?, coordinate?, summary?, whisker?, width?, outliers?,
+  id?, target?, data?, x?, y?, coordinate?, color?, summary?, whisker?, width?, outliers?,
   box?, median?, outlier?, guides?
 } = {})
 ```
@@ -63,6 +63,7 @@ createBoxPlot({
 | `data` | source dataset | explicit value, source layer, current dataset, then unique dataset |
 | `x` | categorical or quantitative field and optional scale | inferred from `target` when omitted |
 | `y` | categorical or quantitative field and optional scale | inferred from `target` when omitted |
+| `color` | categorical field name/scale encoding, or `{ value }` body fill | omitted: existing body style |
 | `coordinate` | Cartesian coordinate ID | source coordinate, then `"main"` |
 | `summary` | `{ min, q1, median, q3, max }` source field names | omitted: compute from raw observations |
 | `whisker` | statistical policy plus `caps`, `capSize`, stroke, opacity and stroke details | Tukey with factor `1.5`; precomputed summaries use minmax |
@@ -81,6 +82,11 @@ complete. Omission and `guides: false` preserve the historical no-guide result.
 Completion reuses compatible guides, preserves their titles and styles, and
 creates only missing components. Creating the deferred owner alone does not
 produce a finished chart.
+
+`color` is the same encoding as a later `encodeColor` call on the box body,
+including explicit color scales. It runs after position completion and before
+guides, and supports deferred positions. It does not split a category into
+additional summary groups. Choose either `color` or an explicit `box.fill`.
 
 The category/measure pairing determines orientation. This horizontal min–max
 example creates no outlier resources:

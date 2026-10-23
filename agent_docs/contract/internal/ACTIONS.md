@@ -2,8 +2,8 @@
 
 These actions may appear in traces but are not public direct actions or primitives.
 
-현재 등록된 wrapped method는 catalog action 284개와 internal 122개로 분리된다. 두 집합은 겹치지 않고 합집합은
-등록된 406개 전체와 같다. [`../ACTION_INDEX.json`](../ACTION_INDEX.json)이 목록을 소유하며,
+현재 등록된 wrapped method는 catalog action 284개와 internal 123개로 분리된다. 두 집합은 겹치지 않고 합집합은
+등록된 407개 전체와 같다. [`../ACTION_INDEX.json`](../ACTION_INDEX.json)이 목록을 소유하며,
 `test/contracts/action-catalog.test.js`는 wrapper metadata로 runtime을 읽어 누락·중복·orphan과 각 owner 표의 누락을 검사한다.
 
 ## Internal materialization inventory
@@ -32,6 +32,8 @@ domain action을 통해서만 실행한다.
 | `materializeGradientPlot` | deferred `createGradientPlot` completion and position encodings |
 | `materializeGradientPlotFill` | gradient-plot body, scale, text, and density-legend consumers |
 | `materializeFilteredData` | filter data actions |
+| `materializeLookupData` | immutable typed lookup between named datasets |
+| `materializeFlattenData` | immutable aligned array expansion |
 | `materializeFoldData` | reusable wide-to-long data actions |
 | `materializeMarkFilteredData` | `filterMarks` selected-item member rows |
 | `materializeEmptyMark` | active empty `filterMarks` view across mark, label, scale, and Canvas replay |
@@ -75,6 +77,7 @@ domain action을 통해서만 실행한다.
 | `rematerializeOpacityLegend` | field-opacity legend, scale, and Canvas actions |
 | `rematerializeParallelAxes` | Parallel dimension scales, axes, and Canvas actions |
 | `rematerializePlotBorder` | optional Canvas plot outline, bounds changes, and facet replay |
+| `rematerializePlotDrawOrder` | explicit axis and border underlays through exact child-order edits |
 | `rematerializePointMark` | point mark and encoding actions |
 | `rematerializeRectMark` | rect mark and position/color encoding actions |
 | `rematerializeRuleMark` | rule mark, endpoint, appearance, scale, and Canvas actions |

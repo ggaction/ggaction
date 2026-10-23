@@ -1,0 +1,22 @@
+{
+  "status": "recorded-within-existing-standing-approved-scope",
+  "originalProposalCommit": "66f3862cfcd0ce45ef1ee95f790eba934e1bb899",
+  "corrections": [
+    {
+      "topic": "encodeChannels shape",
+      "decision": "Keep existing required target and nested channels object. No top-level shortcut or target inference change."
+    },
+    {
+      "topic": "Basic consumer",
+      "decision": "Basic currently has no Text mark/plot APIs; retain that boundary. Test new methods absent at runtime and in types; Full supports new offsets."
+    },
+    {
+      "topic": "atomic final-state eligibility",
+      "decision": "Use the existing private semantic preview owner and the same pure offset assignment normalization to stage both requested offsets before focused validation. This avoids invalid transient eligibility and validates the complete final row set."
+    }
+  ],
+  "newPublicPackageBoundary": false,
+  "newPersistentOwner": false,
+  "newRendererBranch": false,
+  "userAuthority": "Direct human explicit approval of all future in-scope questions; these corrections preserve existing API/package boundaries."
+}

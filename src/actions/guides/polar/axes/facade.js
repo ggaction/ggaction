@@ -1,3 +1,4 @@
+import { withGuideLayoutValidation } from "../../../../materialization/guides/layout.js";
 import { action } from "../../../../core/action.js";
 import { resolvePolarGuideResources } from "../resolve.js";
 import {
@@ -77,7 +78,7 @@ function makeCreateAxis(kind) {
   return action({
     op: operation,
     description: `Create the complete Polar ${kind} axis.`
-  }, function (args = {}) {
+  }, withGuideLayoutValidation(function (args = {}) {
     validatePolarAxisArgs(kind, args, operation);
     const resources = resolvePolarGuideResources(this, kind, args, operation);
     const angle = resolveAngle(this, kind, args);
@@ -108,7 +109,7 @@ function makeCreateAxis(kind) {
           ...shared,
           ...(args.title ?? {})
         });
-  });
+  }));
 }
 
 function validateAxisEditArgs(kind, args, operation) {
@@ -211,7 +212,7 @@ function makeEditAxis(kind) {
   return action({
     op: operation,
     description: `Edit selected Polar ${kind}-axis components.`
-  }, function (args = {}) {
+  }, withGuideLayoutValidation(function (args = {}) {
     validateAxisEditArgs(kind, args, operation);
     if (!AXIS_COMPONENTS.some(component => hasAxisComponent(this, kind, component))) {
       throw new Error(`${operation} requires an existing ${kind}-axis component.`);
@@ -225,7 +226,7 @@ function makeEditAxis(kind) {
     // Validate the whole proposal on an immutable branch before returning changes.
     applyAxisEdit(this, kind, args);
     return applyAxisEdit(this, kind, args);
-  });
+  }));
 }
 
 export const createThetaAxis = /* @__PURE__ */ makeCreateAxis("theta");

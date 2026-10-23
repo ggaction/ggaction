@@ -1,3 +1,4 @@
+import { datasetInputReferences, rebindTransformDatasetInputs } from "../../core/datasetReferences.js";
 import { action } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { validateKeys } from "../../core/validation.js";
@@ -11,6 +12,15 @@ import {
   transformInputFields,
   validateRowsAgainstSchema
 } from "../../grammar/datasetSchema.js";
+
+export function resolveDatasetTransformInputs(program, transform) {
+  const replacements = new Map();
+  for (const reference of datasetInputReferences({ transform: [transform] })) {
+    const input = resolveDatasetReference(program, reference.id, "Lookup dataset");
+    if (input.id !== reference.id) replacements.set(reference.id, input.id);
+  }
+  return rebindTransformDatasetInputs(transform, replacements);
+}
 
 export const MATERIALIZE_OPTIONS = Object.freeze(["id"]);
 

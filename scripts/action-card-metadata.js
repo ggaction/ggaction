@@ -17,6 +17,7 @@ const analysisChartNames = new Set([
 const analysisChartEditorNames = new Set([
   "editEndpointPlot",
   "editECDFPlot",
+  "editRadarPlot",
   "editRaincloudPlot"
 ]);
 
@@ -32,6 +33,7 @@ const coreH3Names = new Set([
   "removeTheme"
 ]);
 const analyticMarkNames = new Set([
+  "createStatisticalReference",
   "createReferenceLine",
   "createReferenceBand",
   "createMarkLabels",
@@ -44,6 +46,7 @@ const explicitFacadeEditors = Object.freeze({
   createDumbbellPlot: ["editEndpointPlot"],
   createECDFPlot: ["editECDFPlot"],
   createRaincloudPlot: ["editRaincloudPlot"],
+  createRadarPlot: ["editRadarPlot"],
   facet: ["editFacetSource", "editFacetHeaders", "editFacetScales", "editFacetGuides", "editCompositionLayout"],
   facetGrid: ["editFacetSource", "editFacetHeaders", "editFacetScales", "editFacetGuides", "editCompositionLayout"],
   repeatCharts: ["editFacetSource", "editFacetHeaders", "editFacetScales", "editFacetGuides", "editCompositionLayout"]
@@ -69,6 +72,7 @@ const explicitLifecycleEditors = Object.freeze({
   orderCategories: ["removeCategoryOrder"],
   editEndpointPlot: ["editEndpointPlot"],
   editECDFPlot: ["editECDFPlot"],
+  editRadarPlot: ["editRadarPlot"],
   editRaincloudPlot: ["editRaincloudPlot"]
 });
 
@@ -102,6 +106,8 @@ const logicalPixelNames = new Set([
   "lineWidth",
   "fontSize",
   "offset",
+  "rowPadding",
+  "titlePadding",
   "alongOffset",
   "maxWidth",
   "lineHeight",
@@ -112,6 +118,8 @@ const logicalPixelNames = new Set([
 
 const countNames = new Set(["count", "columns", "bands", "steps", "maxBins", "precision"]);
 const emptyResultActions = new Set([
+  "createLookupData",
+  "createFlattenData",
   "createData",
   "createPointMark",
   "createTickMark",
@@ -121,7 +129,9 @@ const emptyResultActions = new Set([
   "createArcMark",
   "createRectMark",
   "createRuleMark",
-  "createTextMark"
+  "createTextMark",
+  "encodeDx",
+  "encodeDy"
 ]);
 
 function unique(values) {
@@ -207,7 +217,8 @@ export function optionUnits(action, options) {
     if (/^(create|edit).*Scale$/.test(action.name) &&
         Object.hasOwn(SCALE_OPTION_UNITS, option.name) && includesNumber(option.type)) {
       unit = SCALE_OPTION_UNITS[option.name];
-    } else if (option.name === "temporalUnit") unit = "temporal-input";
+    } else if (["encodeDx", "encodeDy"].includes(action.name) && option.name === "value") unit = "logical-pixel";
+    else if (option.name === "temporalUnit") unit = "temporal-input";
     else if (action.name === "createTimeUnitData" && option.name === "unit") unit = "calendar-unit";
     else if (option.name === "rotation" && option.type.includes("RotationInput")) unit = "angle";
     else if ((option.name === "angle" || option.name === "padAngle") && includesNumber(option.type)) unit = "degree";

@@ -1,4 +1,20 @@
 import { isPlainObject } from "../../core/immutable.js";
+import { isGraphicContainerType } from "./graphic.js";
+
+export function resolveGraphicChildOrder(graphicSpec, target, value) {
+  const found = requireGraphic(graphicSpec, target);
+  if (found.kind !== "object" || !isGraphicContainerType(found.object.type)) {
+    throw new Error("Graphic children order requires a named Canvas or collection.");
+  }
+  const children = found.object.children ?? [];
+  const existing = new Set(children);
+  if (!Array.isArray(value) || value.length !== children.length ||
+      new Set(value).size !== children.length ||
+      value.some(id => typeof id !== "string" || !existing.has(id))) {
+    throw new Error("Graphic children order must be an exact permutation of existing direct children.");
+  }
+  return [...value];
+}
 
 function requireGraphicSpec(graphicSpec) {
   if (

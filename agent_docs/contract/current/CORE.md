@@ -32,15 +32,18 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
     resize, persistence, text metrics, title와 고정 외부 모드 회귀를 검증한다.
 - `plotBorder`
   - Status: Implemented. Full/Basic 공통이며 기본값은 `false`다. `false`는 비활성화하고
-    `{ color?: NonEmptyString, lineWidth?: PositiveFinite }`는 내부 플롯 테두리를 활성화한다.
+    `{ color?: NonEmptyString, lineWidth?: PositiveFinite, underlay?: boolean }`는 내부 플롯 테두리를 활성화한다.
     `{}`의 기본 style은 `color: "#ddd"`, `lineWidth: 1`이다. `true`, 비객체와 unknown key는 거부한다.
   - `lineWidth`는 resolved plot width와 height 중 작은 값보다 엄격히 작아야 한다.
     stroke 중심은 plot edge에서 반 폭만큼 안으로 들어가므로 painted outer bounds는 plot bounds와 같다.
   - Effect: immutable Canvas materialization config에 저장하며 stable internal rectangle `plotBorder`로 그린다.
-    ordinary marks 위, axes 아래에 배치하고 mark/scales/plot size/margins/clipping은 변경하지 않는다.
+    기본은 ordinary marks 위, axes 아래다. `underlay:true`는 같은 rectangle을 marks 전에 배치한다.
+    Boolean만 받고 생략/false는 optional intent를 저장하지 않는다. Border object replacement에서
+    underlay 생략도 기본 overlay로 복원한다. 다른 Canvas 속성만 편집하면 현재 정책을 유지한다.
+    mark/scales/plot size/margins/clipping은 변경하지 않는다.
     내부 wrapped `rematerializePlotBorder`가 Canvas, scale, data 및 facet replay에서 최종 plot bounds를 따른다.
     semantic state나 public direct action을 추가하지 않는다. 생략한 기존 차트는 테두리가 생기지 않는다.
-  - Coverage: `test/unit/actions/canvas/plot-border.test.js`의 Full/Basic, default off, style default,
+  - Coverage: `test/unit/actions/canvas/plot-border.test.js`와 `test/unit/actions/guides/plot-underlays.test.js`의 Full/Basic, default off, style default,
     stroke inset, plot bounds, draw order, invalid style 및 immutable replay 계약을 검증한다.
 - 오류와 상호작용: unknown option, invalid dimension/color/margin, 두 번째 Canvas를 거부한다.
 - Coverage: `test/unit/actions/canvas/create-canvas.test.js`,
@@ -49,7 +52,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ### Formal values — `createCanvas`
 
-- Implemented: `createCanvas({ width?: PositiveFinite; height?: PositiveFinite; background?: NonEmptyString; margin?: Margin; plot?: false | { width: PositiveFinite; height: PositiveFinite }; plotBorder?: false | { color?: NonEmptyString; lineWidth?: PositiveFinite } } = {})`
+- Implemented: `createCanvas({ width?: PositiveFinite; height?: PositiveFinite; background?: NonEmptyString; margin?: Margin; plot?: false | { width: PositiveFinite; height: PositiveFinite }; plotBorder?: false | { color?: NonEmptyString; lineWidth?: PositiveFinite; underlay?: boolean } } = {})`
 - Proposed (NOT IMPLEMENTED): `{ width?: "auto"; height?: "auto"; margin?: "auto" }`
 
 ### Value coverage — `createCanvas`
@@ -89,7 +92,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ### Formal values — `editCanvas`
 
-- Implemented: `editCanvas({ width?: PositiveFinite; height?: PositiveFinite; background?: NonEmptyString; margin?: Margin; plot?: false | { width: PositiveFinite; height: PositiveFinite }; plotBorder?: false | { color?: NonEmptyString; lineWidth?: PositiveFinite } })`; 최소 한 property가 필요하다.
+- Implemented: `editCanvas({ width?: PositiveFinite; height?: PositiveFinite; background?: NonEmptyString; margin?: Margin; plot?: false | { width: PositiveFinite; height: PositiveFinite }; plotBorder?: false | { color?: NonEmptyString; lineWidth?: PositiveFinite; underlay?: boolean } })`; 최소 한 property가 필요하다.
 - Proposed (NOT IMPLEMENTED): `createCanvas`의 `"auto"` dimension/margin과 동일하다.
 
 ### Value coverage — `editCanvas`
@@ -594,6 +597,79 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - ✅ Covered: weighted mass, positive-weight extent/members, zero-weight prevalidation과 invalid/all-zero weights.
 - Evidence: `test/unit/actions/data/bin-data.test.js`.
 
+## `createLookupData`
+
+- Signature: `createLookupData({id, source?, field, lookup:{data,key,fields,as?}})`. Full/Basic 생성이다.
+  source 생략 시 기존 current-data resolver를 사용하고 reference data는 반드시 명시한다.
+- field/key는 각 materialized 입력 schema의 nonempty field다. fields는 비어 있지 않은 고유
+  reference field 배열이며 as는 같은 길이의 고유 출력 이름 배열, 생략 시 fields다.
+  출력 이름은 주 입력 열과 겹칠 수 없고 명시 alias로 충돌을 해결한다.
+- 왼쪽 행 수·순서·모든 기존 cell을 보존하고 오른쪽 값만 복사한다. Scalar key는 타입을
+  포함하여 정확히 비교한다(string/finite number/boolean). null/missing은 매칭하지 않는다.
+  오른쪽 null/missing key는 제외하고 그 외 중복 key는 빈 왼쪽 입력에서도 거부한다.
+  unmatched/missing selected cell은 명시 null이다. 숫자 문자열도 변환하지 않는다.
+- Nested JSON과 빈 원본 열 이름도 유지하며 own-property 복사 후 clone/freeze한다.
+  기존 data 한도와 `rightRows + leftRows * (fields.length + 1) <= 10,000,000` work 한도다.
+  출력 행 수를 늘리지 않으므로 새 generated-row cap은 없다.
+- Semantic: primary source와 단일 `{type:"lookup",field,lookup:{data,key,fields,as}}`를 저장한다.
+  두 입력은 canonical actual dataset ID다. 출력 schema는 오른쪽 storageType과 nullable:true,
+  optional:false, 왼쪽 key/오른쪽 key·값의 typed lineage를 보존한다. Renderer는 변경하지 않는다.
+- 어느 입력의 revision도 stable topological 순서로 affected descendants를 한 번씩 재생한다.
+  기존 unary DFS 순서는 유지하고 cycle/missing input/alias/schema/consumer 오류는 atomic하게 거부한다.
+  양쪽 live reference는 removeData 보호와 editable persistence 검증에 포함한다.
+- Facet은 주 입력만 분할하고 오른쪽 표를 유지한다. 직접 materialized lookup의 repeat는 출력
+  field encoding만 바꾸며 lookup 정의를 다시 쓰지 않는다. 다른 derived repeat 제한은 유지한다.
+- Coverage: `test/unit/grammar/lookup.test.js`, `test/unit/grammar/dataset-dependencies.test.js`,
+  `test/unit/actions/data/lookup-data.test.js`, `test/unit/actions/composition/lookup-facets.test.js`,
+  `test/charts/lookup-data/public.test.js`, `test/contracts/derived-editing-types.test.js`.
+
+### Formal values — `createLookupData`
+
+- Implemented: `LookupDataOptions`, normalized `DatasetLookupTransform`; Full/Basic 생성과 materialization.
+- Proposed (NOT IMPLEMENTED): many-to-many lookup, overwrite and implicit key coercion.
+
+### Value coverage — `createLookupData`
+
+- ✅ Covered: typed keys, null/missing/duplicate rules, aliases, nested own values, empty inputs and work bounds.
+- ✅ Covered: both-input/diamond revision, live references, typed lineage/persistence, facets/grid/repeat,
+  Full/Basic creation and independent prejoined chart output.
+- Evidence: the grammar, action, composition, chart and type tests above.
+
+## `createFlattenData`
+
+- Signature: `createFlattenData({id, source?, fields, as?})`. Full/Basic 생성이며 id는 명시적,
+  source 생략 시 기존 current-data resolver를 사용한다.
+- `fields`: source schema에 존재하는 1..64개 고유 nonempty field다. 각 행에서 선택된 값은
+  array/null/missing만 허용한다. null/missing은 길이0, 비배열은 row/field 오류다.
+- `as`: 생략 시 fields와 같다. 지정 시 같은 길이의 고유 field 이름 배열이다. 선택된 입력
+  배열 이름의 파생 결과 대체는 허용하지만 선택되지 않은 기존 열의 overwrite는 거부한다.
+- Effect: 입력 행 순서 다음 array-index 순서로 해당 행의 최대 array 길이만큼 생성한다.
+  짧은 배열의 빈 자리는 null이고 요소의 기존 JSON 값은 유지한다. 모든 배열이 비었으면
+  그 행은 출력0개다. Cartesian product가 아니다. 원본 dataset/배열/키/순서/이전 program은
+  불변이며 alias 외 모든 cell을 보존한다.
+- Semantic: `{type:"flatten",fields,as}` 정규화 한 곳, source provenance와 입력 field별
+  output schema lineage를 저장한다. 기존 derived materializer/replay 및 statistical facet
+  topology를 사용하며 renderer는 변경하지 않는다.
+- Limits/errors: output 총10,000행까지, 초과·잘못된 field/alias/value·unknown option을
+  반환된 상태나 원본 trace 변경 없이 거부한다. 기존 raw data/nested-value 한도는 그대로다.
+- Current coverage: `test/unit/actions/data/flatten-data.test.js`,
+  `test/contracts/transform-registry.test.js`, `test/contracts/derived-editing-types.test.js`.
+
+### Formal values — `createFlattenData`
+
+- Implemented: `FlattenDataOptions`의 id/source?/fields/as?와 `DatasetFlattenTransform`.
+- Full/Basic 생성, Full에서 immutable source revision·derived dependent replay·persistence를 지원한다.
+- Coverage: 길이가 다른5관측값/빈배열/null/missing/JSON요소/default replacement/alias collision,
+  원본 보존/typed schema/trace/한도/실제 scatter 소비/Full revision은 위 실행 테스트가 검증한다.
+- Proposed (NOT IMPLEMENTED): No proposal beyond the current aligned-array contract.
+
+### Value coverage — `createFlattenData`
+
+- ✅ Covered: alignment, null padding, field/alias validation, immutable raw snapshots and schema lineage.
+- ✅ Covered: Full revision/dependent replay, Basic creation, bounds and ordinary mark consumption.
+- Evidence: `test/unit/actions/data/flatten-data.test.js`, `test/contracts/derived-editing-types.test.js`.
+
+
 ## `createFoldData`
 
 - Signature: `createFoldData({ id, source?, fields, as? })`
@@ -972,7 +1048,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - `id`: Implemented, 필수 새 dataset ID.
 - `source`: Implemented, 필수 existing dataset ID.
 - `transform`: Implemented, 정확히 하나의 transform definition을 가진 tuple. Public direct-authoring union은
-  filter/fold/computed/stack/regression/density/interval/time-unit/window/summary/bin/bin2d schema이며 값 materialization은 해당 전용 action이 담당한다. Box summary,
+  filter/fold/flatten/computed/stack/regression/density/interval/time-unit/window/summary/bin/bin2d schema이며 값 materialization은 해당 전용 action이 담당한다. Box summary,
   box outlier, mark filter provenance는 composite action이 생성하는 internal transform으로 public union에 넣지 않는다.
 - Effect: source와 transform provenance만 저장하고 values는 만들지 않는다.
 - 오류: duplicate ID, unknown source, invalid/empty/multiple transform schema를 거부한다.
@@ -1027,7 +1103,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 ### Formal values — `editDerivedData`
 
 - Implemented: `editDerivedData({ target: UserId; definition: RequestedDatasetTransform; dependents?: "reject" | "recompute" }): ChartProgram`.
-- Editable transform types: `computed | filter | fold | summary | bin | bin2d | timeUnit | window | density | stack |
+- Editable transform types: `computed | filter | fold | flatten | summary | bin | bin2d | timeUnit | window | density | stack |
   regression | interval | ecdf | normalize | complete | impute`.
 - Planned (NOT IMPLEMENTED): source 교체와 transform type 교체. 기존 `editBin2DData.source`는 전용 compatibility 예외다.
 - Proposed (NOT IMPLEMENTED): 추가 transform family가 standalone create lifecycle을 얻을 때 같은 registry 계약으로 검토한다.
@@ -1077,6 +1153,57 @@ weight를 지원하는 focused editors에서만 stored weight를 제거한다. �
 
 - ✅ Covered: field-only 유지, oneOf/predicate/range 상호배타 전환, invalid range와 empty patch 거부.
 - Evidence: `test/unit/actions/data/derived-editing.test.js`.
+
+## `editLookupData`
+
+- Signature: `editLookupData({target, field?, lookup?, dependents?})`, Full 전용이다.
+  최소 한 개 transform option이 필요하고 생략한 option은 유지한다. lookup을 제공하면
+  data/key/fields와 선택 as를 가진 전체 객체로 교체한다. Default as는 해당 fields다.
+- 기존 focused derived editor의 reject/recompute 정책을 사용한다. Generic editDerivedData는
+  같은 normalized lookup definition을 받으며 definition.source는 받지 않는다.
+  주 원본 교체는 reviseData가 소유한다. alias 역할은 원래 reference field별로 식별하여
+  호환되는 직접 consumer를 재결합한다. dependent expression의 field 문자열을 추측하여 고치지 않는다.
+- 현재 출력 또는 downstream 표를 reference로 삼는 logical cycle, duplicate key, schema 또는
+  downstream consumer 오류는 이전 program 전체를 보존한다. 성공 시 immutable physical revision과
+  양쪽 source 참조를 갱신한다. Basic은 creation-only surface를 유지한다.
+
+### Formal values — `editLookupData`
+
+- Implemented: `EditLookupDataOptions`, Full-only focused editor and generic editable lookup definition.
+- Proposed (NOT IMPLEMENTED): partial nested lookup patches and primary-source definition replacement.
+
+### Value coverage — `editLookupData`
+
+- ✅ Covered: direct alias rebind, derived reference changes, dependent replay, cycle and atomic rejection.
+- Evidence: `test/unit/actions/data/lookup-data.test.js`,
+  `test/unit/actions/composition/lookup-facets.test.js`, `test/contracts/derived-editing-types.test.js`.
+
+## `editFlattenData`
+
+- Signature: `editFlattenData({target, fields?, as?, dependents?})`, Full 전용이다.
+- 기존 logical owner/current snapshot을 명시하고, 최소1개 의미 있는 edit가 필요하다.
+  기존 generic `editDerivedData({target, definition:{type:"flatten",fields,as},dependents?})`
+  역시 같은 typed definition·preflight·revision 경로를 사용한다.
+- Omitted 옵션은 유지한다. fields 개수가 달라지면 같은 길이의 as를 명시한다. 입력 field별
+  alias 역할을 사용하므로 alias rename은 호환되는 직접 소비자에 재결합하고, 참조 중인
+  역할 제거/모호한 output/schema·값·한도·의존 소비자 불일치는 atomic하게 거부한다.
+- dependents는 기존 reject/recompute 정책이다. 원본/이전 dataset은 보존하고 성공 시
+  immutable revision 및 영향받는 graphic/guide를 재계산한다. Basic은 생성 전용 surface다.
+- Coverage: `test/unit/actions/data/flatten-data.test.js`와
+  `test/contracts/derived-editing-types.test.js`의 재결합/연쇄계산/atomic rejection/공개 타입 검증.
+
+### Formal values — `editFlattenData`
+
+- Implemented: `EditFlattenDataOptions`, Full 전용 focused derived editor.
+- 정규화·null padding·한도는 `createFlattenData` 계약을 공유한다.
+- Proposed (NOT IMPLEMENTED): No proposal beyond the current aligned-array contract.
+
+### Value coverage — `editFlattenData`
+
+- ✅ Covered: alignment, null padding, field/alias validation, immutable raw snapshots and schema lineage.
+- ✅ Covered: Full revision/dependent replay, Basic creation, bounds and ordinary mark consumption.
+- Evidence: `test/unit/actions/data/flatten-data.test.js`, `test/contracts/derived-editing-types.test.js`.
+
 
 ## `editFoldData`
 
@@ -1663,9 +1790,10 @@ source row의 prototype을 바꾸거나 결과를 누락하지 않는다. 뒤 op
   기본은 `"rgb"`다. Public palette `count`, sequential explicit range와 discretized explicit color
   range cardinality는 최대 `10,000`이다.
 - `midpoint`: sequential quantitative color의 finite 기준값 또는 `"auto"`. Numeric 값은 최종 domain의 두 끝 사이에 엄격히 있어야 한다. Auto domain은 consumer resolution 때 검증한다. 생성 생략은 endpoint-linear mapping, 편집 생략은 보존이며 `"auto"`는 semantic leaf를 제거한다. Temporal/position/ordinal/discretized numeric midpoint는 오류다. 양쪽 domain 구간을 color parameter [0,.5]/[.5,1]로 나누고 reverse/clamp/interpolation을 기존 mapper에서 적용한다. Palette 중앙색이 항상 neutral/white라고 추론하지 않는다.
-- `whitePoint`는 lab/hcl/hcl-long에서만 `"d65" | "d50"`를 받는다. 생략은 기존 D65, D50은 adapted sRGB/XYZ 행렬로 opt-in한다. Focused/generic edit의 `"auto"`는 explicit leaf를 제거한다. Interpolation 변경 시 비호환 inherited 값은 제거하고 동시 explicit 비호환 조합은 오류다. Mark/stroke/gradient/sample 범례는 같은 mapper를 공유한다. Evidence: `test/unit/grammar/scales/continuous-color-options.test.js`, `test/unit/actions/scales/color-interpolation-options.test.js`, `test/unit/actions/scales/color-primitive-parity.test.js`.
+- `whitePoint`는 lab/hcl/hcl-long에서만 `"d65" | "d50"`를 받는다. 생략은 기존 D65, D50은 adapted sRGB/XYZ 행렬로 opt-in한다. Focused/generic edit의 `"auto"`는 explicit leaf를 제거한다. Interpolate를 다른 값으로 명시 편집하면 생략한 whitePoint/gamma는 기본값으로 돌아간다. 유지하려면 같은 편집에 다시 지정하며, 새 보간법과 비호환인 explicit 조합은 오류다. Mark/stroke/gradient/sample 범례는 같은 mapper를 공유한다. Evidence: `test/unit/grammar/scales/continuous-color-options.test.js`, `test/unit/actions/scales/color-interpolation-options.test.js`, `test/unit/actions/scales/color-primitive-parity.test.js`.
+- HCL/HCL-long은 파싱된 R/G/B가 정확히 같은 endpoint를 chroma0/undefined hue로 취급한다. 한쪽만 neutral이면 구간 hue를 반대 유채색 hue로 고정하고, 양쪽 neutral이면 hue0/chroma0으로 lightness만 보간한다. 별도 epsilon이나 byte 양자화를 추가하지 않고 기존 D50/D65 행렬·endpoint 정규화·최종 byte 반올림을 유지한다. 유채색끼리의 short/long 경로는 기존과 같다. Evidence: `test/unit/grammar/scales/neutral-hcl.test.js`, `test/unit/actions/scales/neutral-hcl-consumers.test.js`.
 - Continuous color의 `type:"pow"`와 positive finite `exponent`(기본1)는 기존 signed raw-value transform을 사용한다. `[f(v)-f(d0)]/[f(d1)-f(d0)]`를 색 위치로 사용하고 numeric midpoint는 거부한다. 원래 값의 범례 label/tick과 변환 위치를 유지한다. Exponent1로 reset하며 다른 type의 explicit exponent는 오류다. 기존 log/sqrt/symlog와 일반 position 척도는 같은 수치 owner를 유지한다.
-- `gamma`는 cubehelix/cubehelix-long에만 positive finite 값, 기본1, edit의 `"auto"` reset이다. Hue/saturation은 구간 t를 보존하고 lightness만 t**gamma로 보간한다. 기존 8bit endpoint와 final byte rounding을 유지한다. Clamp 뒤 적용하며 unclamped 음수 t의 fractional power 등 nonfinite 실수 결과는 원자적 오류다. 비호환 inherited 값 제거와 explicit 조합 거부는 whitePoint와 같다.
+- `gamma`는 cubehelix/cubehelix-long에만 finite number(0·음수 포함), 기본1, edit의 `"auto"` reset이다. Hue/saturation은 구간 t를 보존하고 lightness만 t**gamma로 보간한다. 0은 0**0도1이며 구간 오른쪽 lightness를 쓴다. 음수 gamma의 t=0에서만 같은 endpoint lightness와 saturation0의 무채색을 보존하고, 나머지 확장 RGB채널의 NaN/-Infinity는0,+Infinity는1로 제한한 뒤 기존8bit반올림을 한다. 이 경계를 일반 invalid raw fallback으로 사용하지 않는다. t!=0의 nonfinite power/음수gamma RGB산술은 원자적 오류다. Clamp 뒤 적용하고 여러stop의 정확한 내부경계는 오른쪽구간t0을 쓴다. 기존 양수·생략·1의 결과, 8bit endpoint와 final byte rounding은 유지한다. 비호환 inherited 값 제거와 explicit 조합 거부는 whitePoint와 같다. Evidence: `test/unit/grammar/scales/nonpositive-color-gamma.test.js`, `test/unit/actions/scales/nonpositive-color-controls.test.js`, `test/charts/color-controls/public.test.js`.
 - `unknown`은 direct unattached scale에서는 channel을 알 수 없으므로 그대로 저장한다. Consumer가 attach될 때
   concrete channel fallback validation과 supported item-grain policy를 적용한다.
 - Standalone `createScale`/`editScale`은 위의 전체 vocabulary를 유지하지만 action 안의 nested scale은
@@ -1674,7 +1802,7 @@ source row의 prototype을 바꾸거나 결과를 누락하지 않는다. 뒤 op
   output에서는 `log`를 제외한다. Categorical color는 `ordinal`, size/opacity는 `linear`, shape/dash는
   `ordinal`이고 stroke width는 quantitative transformed scale이다. Palette/interpolation 같은 color-only
   option이나 padding 같은 discrete-position option을 다른 role에 전달하면 저장 후 무시하지 않고 즉시
-  거부한다. Point row consumers만 channel-valid `unknown` fallback을 author할 수 있다.
+  거부한다. Point row consumers와 explicit-domain categorical Cartesian Line color만 channel-valid `unknown` fallback을 author할 수 있다.
 - Effect: semantic definition만 저장한다. equivalent repeated call은 idempotent, conflicting definition은 오류다.
 - Coverage: `test/unit/actions/scales/scale-actions.test.js`와 grammar scale tests가 types,
   auto/explicit values, idempotence와 conflicts를 검증한다. Consumer-specific ordinal range와 `unknown`
@@ -1691,7 +1819,7 @@ type ScaleType =
   | "sequential" | "quantize" | "quantile" | "threshold";
 ```
 
-- Implemented: `createScale({ id: UserId; type?: ScaleType; domain?: ContinuousDomain | OrdinalDomain; range?: "auto" | readonly unknown[]; nice?: boolean; zero?: boolean; clamp?: boolean; reverse?: boolean; base?: PositiveFiniteExceptOne; exponent?: PositiveFinite; constant?: PositiveFinite; paddingInner?: UnitIntervalLessThan1; paddingOuter?: NonNegativeFinite; padding?: NonNegativeFinite; align?: UnitInterval; palette?: Palette; interpolate?: ContinuousColorInterpolation; whitePoint?: "d65" | "d50"; gamma?: PositiveFinite; midpoint?: number | "auto"; radialMapping?: "area" | "radius-length"; unknown?: unknown })`; type별 validation이 값을 제한한다. `time`은 유일한 UTC temporal token이다.
+- Implemented: `createScale({ id: UserId; type?: ScaleType; domain?: ContinuousDomain | OrdinalDomain; range?: "auto" | readonly unknown[]; nice?: boolean; zero?: boolean; clamp?: boolean; reverse?: boolean; base?: PositiveFiniteExceptOne; exponent?: PositiveFinite; constant?: PositiveFinite; paddingInner?: UnitIntervalLessThan1; paddingOuter?: NonNegativeFinite; padding?: NonNegativeFinite; align?: UnitInterval; palette?: Palette; interpolate?: ContinuousColorInterpolation; whitePoint?: "d65" | "d50"; gamma?: Finite; midpoint?: number | "auto"; radialMapping?: "area" | "radius-length"; unknown?: unknown })`; type별 validation이 값을 제한한다. `time`은 유일한 UTC temporal token이다.
 - Maybe Future (NOT IMPLEMENTED): `{ type?: "identity" | "bin-ordinal" }`.
 - Proposed (NOT IMPLEMENTED): —
 
@@ -1725,6 +1853,10 @@ type ScaleType =
 ## `editScale`
 
 - Implemented: immutable edits for every current `ScaleType`.
+- Availability: 공개 editScale은 Full 전용이다. Basic에 이미 제공되는 encoding의 같은 타입 bound-scale
+  재할당은 같은 wrapped owner를 내부에서 사용한다. Basic 공개 method/type/action-card 경계와
+  기존 타입 전환 제한은 유지하며 모든 shared consumer를 검증한다. 내부 builtin trace op 인식은
+  공개 method 등록과 별개다. Evidence: `test/unit/actions/encodings/basic-scale-reassignment.test.js`.
 - Signature: `editScale({ id?, type?, domain?, range?, nice?, zero?, clamp?, reverse?, base?, exponent?, constant?, paddingInner?, paddingOuter?, padding?, align?, palette?, interpolate?, whitePoint?, gamma?, midpoint?, radialMapping?, unknown? })`.
 - `id`는 existing scale을 선택한다. 생략하면 current scale, 그렇지 않으면 유일한 scale을 사용하며
   안전하게 하나를 정할 수 없으면 explicit ID를 요구한다.
@@ -1740,16 +1872,22 @@ type ScaleType =
   `quantize | quantile | threshold`를 사용한다. Complete definition과 every consumer를 먼저 검증하고 stale
   type-only properties를 제거한다.
 - Sequential↔quantize/quantile/threshold와 nested encodeColor type reassignment는 같은 전환 owner를 사용한다. Creation/edit/materialization은 공통 quantitative color consumer validator를 사용하여 Point/aggregate Bar/Rect의 fieldType·aggregate·unknown·grain을 검증한다. 모든 shared consumer와 guide를 포함한 immutable candidate를 먼저 실행 검증하고 반환할 branch에 적용한다.
-- Active gradient↔interval legend는 네 edge의 compatible 교집합에서 같은 transaction으로 교체한다. Left/right는 vertical·center align·top title, top/bottom는 기본 horizontal interval flow와 left/center/right align·top title이다. Target/channel, title·visibility·inferred mode, labels, titleStyle, border, position, align, offset을 보존한다. Count/gradient size 또는 interval symbol/itemGap이 해당 family default와 다르면 오류다. 새 family 고유 값은 새 default를 쓰며 source 스타일을 조용히 버리지 않는다. Interval의 horizontal columns, vertical flow 또는 inline title처럼 gradient에 보존할 수 없는 layout도 오류다. Side columns1은 기본 한 열과 동등해 허용한다. 비호환 설정은 removeLegend→editScale→createLegend의 명시 경로를 사용한다.
+- Active gradient↔interval legend는 네 edge의 compatible 교집합에서 같은 transaction으로 교체한다. Left/right는 vertical·center align·top title, top/bottom는 기본 horizontal interval flow와 left/center/right align·top title이다. Target/channel, title·visibility·inferred mode, labels, titleStyle, border, position, align, offset을 보존한다. Opt-in titlePadding은 보존하며 active rowPadding은 gradient 전환 전에 명시적으로 auto reset해야 한다. Count/gradient size 또는 interval symbol/itemGap이 해당 family default와 다르면 오류다. 새 family 고유 값은 새 default를 쓰며 source 스타일을 조용히 버리지 않는다. Interval의 horizontal columns, vertical flow 또는 inline title처럼 gradient에 보존할 수 없는 layout도 오류다. Side columns1은 기본 한 열과 동등해 허용한다. 비호환 설정은 removeLegend→editScale→createLegend의 명시 경로를 사용한다.
 - Explicit domain의 의미가 extent, quantile sample, threshold 사이에 바뀌면 새 domain을 명시해야 한다. Sequential↔quantize의 compatible extent는 보존 가능하며 auto inference는 각 타입 계약을 따른다. Midpoint/interpolate 등 비호환 속성은 제거하고 돌아올 때 숨은 복구를 하지 않는다. 범례 overflow나 consumer 하나의 실패도 전체 상태·trace를 유지한다.
 - Structural type transition은 Full 범위다. Basic은 기존 typed quantitative color와 interval legend 생성을 지원하며, 다른 타입은 새 scale ID로 작성한다.
 - Evidence: `test/unit/actions/scales/color-transitions.test.js`, `test/charts/color-transitions/`.
 - Discrete position은 compatible consumers에서 `band ↔ point`를 검증한다. Bar consumer가 있으면
   zero-bandwidth `point` 전환을 거부한다.
 - `nice`, `zero`, `clamp`, transformed parameters와 `reverse`는 create contract의 type별 policy를 따른다.
-- `unknown`은 row-owned point item에서만 지원한다. Missing/invalid input과 explicit ordinal domain 밖의 input을
-  channel-valid concrete fallback으로 mapping하며 domain member를 추가하지 않는다. Compound path, bar, area,
-  rule, xOffset와 strokeDash grains는 topology가 달라질 수 있어 명시적으로 거부한다.
+- `unknown`은 row-owned Point 및 explicit nonempty ordinal-domain의 categorical Cartesian Line color를 지원한다.
+  Point의 기존 missing/invalid fallback은 유지한다. Line은 absent/null과 정상 out-of-domain scalar만 fallback으로 mapping하며
+  malformed category는 거부하고 raw rows·vertices·series identity·domain members를 보존한다.
+  이 missing-color 정책은 Aggregate/bin/parallel/polar Line과 다른 compound path, bar, area, rule,
+  xOffset에 확장하지 않는다. 별도의 Cartesian Line/Rule strokeDash는 유효한 domain 밖 범주의
+  named/direct dash fallback을 지원하며 missing/null/malformed 값은 계속 거부한다. 정확한
+  범위·정규화·domain/legend 보존은 `ENCODINGS.md`의 encodeStrokeDash 계약을 따른다.
+  모든 shared consumer를 검증하며 explicit domain 또는 fallback 제거가 현재 rows와 호환되지 않으면 원자적으로 거부한다.
+  Evidence: `test/unit/actions/encodings/categorical-line-unknown.test.js`.
 - Complete patch와 shared-consumer channel compatibility를 먼저 검증한 뒤 semantic scale을 수정하고,
   scale, mark, axes, grids와 legend consumer를 wrapped materialization plan으로 갱신한다.
 - Source-attached text는 source의 current scale consumer에서 dependency를 따라 갱신한다. Text의 inherited scale ID가 이전 binding을 유지해도 라벨이 이전 위치에 남지 않는다. Evidence: `test/unit/actions/marks/text-source.test.js`.
@@ -1777,7 +1915,7 @@ type EditableCurrentScale = {
   padding?: NonNegativeFinite;
   align?: UnitInterval;
   palette?: Palette;
-  interpolate?: ContinuousColorInterpolation; whitePoint?: "d65" | "d50" | "auto"; gamma?: PositiveFinite | "auto"; midpoint?: number | "auto";
+  interpolate?: ContinuousColorInterpolation; whitePoint?: "d65" | "d50" | "auto"; gamma?: Finite | "auto"; midpoint?: number | "auto";
   unknown?: unknown;
 };
 ```
@@ -2080,17 +2218,20 @@ type EditableCurrentScale = {
 
 ## `editStrokeDashScale`
 
-- Implemented: edits the ordinal scale bound to categorical line or rule dash patterns.
+- Implemented: edits the ordinal scale bound to categorical line or rule dash patterns, including named/direct `unknown`.
+- Omitted `unknown` retains the existing fallback; explicit `unknown: undefined` removes it, matching `editScale`.
+  Removal or any other edit preflights every consumer and fails atomically if raw values would become invalid.
+  Valid outside-domain categories only are supported by Cartesian Line/Rule, as defined in `ENCODINGS.md`.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Formal values — `editStrokeDashScale`
 
-- Implemented: `editStrokeDashScale(EditStrokeDashScaleOptions)` with ordinal domain/range plus `id?` and `target?`.
+- Implemented: `editStrokeDashScale(EditStrokeDashScaleOptions)` with ordinal domain/range/unknown plus `id?` and `target?`.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `editStrokeDashScale`
 
-- ✅ Covered: line-series dash-range editing, strict dash typing, and rematerialization. Evidence: `test/unit/actions/scales/channel-scale-editors.test.js`, `test/contracts/channel-scale-editor-types.test.js`.
+- ✅ Covered: line-series dash-range/fallback editing, removal and shared-consumer atomicity, strict dash typing, and rematerialization. Additional evidence: `test/unit/actions/encodings/stroke-dash-unknown.test.js`, `test/contracts/ordinal-stroke-dash-types.test.js`. Evidence: `test/unit/actions/scales/channel-scale-editors.test.js`, `test/contracts/channel-scale-editor-types.test.js`.
 
 ## Persistence package boundary
 

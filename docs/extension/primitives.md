@@ -5,6 +5,37 @@ title: Primitive Extension API
 
 # Primitive Extension API
 
+## Reorder existing direct children
+
+A named Canvas or collection can reorder its existing direct children with
+`editGraphics({ target, property: "children", value: orderedIds })`. The value
+must contain each existing direct child exactly once. It cannot add, remove,
+reparent or rename a graphic, and cannot target a generated item or a drawable.
+Properties, items, clips, object declaration order and top-level order stay intact.
+An empty container accepts `[]`. Caller arrays and earlier programs stay immutable.
+
+This runnable identity-and-order example leaves geometry for a later authoring step:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "plot"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```js
+import { ChartProgram } from "ggaction/extension";
+
+const program = new ChartProgram()
+  .createGraphics({ id: "canvas", type: "canvas" })
+  .createGraphics({ id: "plot", type: "collection", parent: "canvas" })
+  .createGraphics({ id: "front", type: "rect", parent: "plot" })
+  .createGraphics({ id: "back", type: "rect", parent: "plot" })
+  .editGraphics({ target: "plot", property: "children", value: ["back", "front"] });
+```
+
+Ordinary chart authors use complete-axis `underlay` and Canvas `plotBorder`
+options for guide placement; direct child IDs belong to extension authoring.
+
 <div class="docs-concept-flow" role="img" aria-label="Extension actions compose editSemantic, createGraphics, and editGraphics primitives">
   <span>editSemantic<strong>meaning</strong></span>
   <span>createGraphics<strong>identity</strong></span>
@@ -226,7 +257,7 @@ Path graphics use backend-neutral `path.commands` arrays rather than renderer-sp
 path strings. The closed command vocabulary is `M`, `L`, `C`, and `Z`. A path starts
 with one `M`; `L` and `C` draw straight and cubic segments; an optional final `Z`
 closes the path. At least one `L` or `C` segment is required. Coordinates and cubic
-control points must be finite numbers, and one path may contain at most 20,000
+control points must be finite numbers, and one path may contain at most 30,000
 commands. Generated linear and closed paths enforce the same limit before allocation.
 TypeScript users can import the `ConcretePathCommand` union from `ggaction`.
 `path.strokeDash` and `line.strokeDash` accept non-negative finite number arrays;
@@ -372,6 +403,17 @@ opacity stays between `0` and `1`, text alignment uses the Canvas vocabulary,
 and appearance strings must be non-empty. Structured rect/path fill follows the
 `FillPaint` contract described above. Rendering additionally requires all
 properties needed to draw the primitive to be present.
+
+### Clip a named graphic owner
+
+Use `editGraphics({ target, property: "clip", value: { x, y, width, height } })`
+to clip one named non-Canvas owner and its items/children in its unchanged parent
+frame. Values must be finite, dimensions nonnegative, and endpoints finite.
+Use `value: false` to clear the optional clip. Generated item IDs, inline item
+properties and Canvas clips are rejected; nested Canvas retains its existing
+viewport behavior. Item coordinates and IDs stay unchanged, including after
+`items` or `length` replacement. Ordinary chart authors use the mark's
+`clip` option instead.
 
 ## Scale materialization
 

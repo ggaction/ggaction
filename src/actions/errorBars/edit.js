@@ -266,8 +266,8 @@ function updateErrorBarOffsets(program, ids, current, candidate) {
   return next;
 }
 
-function updateErrorBarRoles(program, owner, current, candidate, dataId, capIds) {
-  const owned = [owner.id, ...capIds];
+function updateErrorBarRoles(program, owner, current, candidate, dataId, capIds, centerIds) {
+  const owned = [owner.id, ...capIds, ...centerIds];
   let next = updateErrorBarOffsets(
     program, owned, current, { ...candidate, offset: undefined }
   );
@@ -299,6 +299,18 @@ function updateErrorBarRoles(program, owner, current, candidate, dataId, capIds)
             orientation: candidate.orientation === "vertical"
               ? "horizontal" : "vertical"
           }
+        });
+      }
+      for (const id of centerIds) {
+        updated = setCartesianPosition(updated, id, categoryChannel, {
+          field: candidate.position.field,
+          fieldType: candidate.position.fieldType,
+          scale: category.scale
+        });
+        updated = setCartesianPosition(updated, id, measureChannel, {
+          field: candidate.fields.center,
+          fieldType: "quantitative",
+          scale: measure.scale
         });
       }
       return updated;
@@ -411,7 +423,12 @@ export const editErrorBar = /* @__PURE__ */ closedAction(
     const capIds = errorBarCaps(current)
       .map(([id]) => id)
       .filter(id => findLayer(this, id) !== undefined);
-    const consumers = collectIntervalConsumers(this, [owner.id, ...capIds]);
+    // createIntervalPlot records the center's ownership explicitly. It must
+    // follow the interval revision just like caps and source-owned labels.
+    const centerIds = this.semanticSpec.layers.filter(layer =>
+      this.markConfigs[layer.id]?.intervalPlot?.intervalId === owner.id
+    ).map(layer => layer.id);
+    const consumers = collectIntervalConsumers(this, [owner.id, ...capIds, ...centerIds]);
     const interval = roleRequested
       ? planIntervalRoleData(this, {
           owner: owner.id,
@@ -442,9 +459,12 @@ export const editErrorBar = /* @__PURE__ */ closedAction(
     });
     next = roleRequested
       ? updateErrorBarRoles(
-          next, owner, current, candidate, interval.dataId, capIds
+          next, owner, current, candidate, interval.dataId, capIds, centerIds
         )
       : next.rematerializeErrorBar({ id: owner.id });
+    if (interval.changed || roleRequested) {
+      for (const id of centerIds) next = next.rematerializePointMark({ id });
+    }
     return releaseIntervalRevision(next, interval);
   }
 );

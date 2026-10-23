@@ -33,8 +33,8 @@ Cartesian line/ticks/labels/title의 실제 occupied bounds는 각 component pos
   Evidence: `test/unit/actions/guides/standalone-axes.test.js`.
 - `position`: x는 `"bottom" | "top"`, y는 `"left" | "right"`를 사용하며 defaults는 bottom/left다.
 - `line`: `{ color?, lineWidth? }`; axis-line child에 전달한다.
-- `ticksAndLabels`: `{ count?, values?, ticks?, labels? }`; shared tick/label child에 전달한다.
-- `title`: `{ text?, at?, offset?, rotation?, color?, fontSize?, fontFamily?, fontWeight? }`.
+- `ticksAndLabels`: `{ count?, values?, rounding?, ticks?, labels? }`; shared tick/label child에 전달한다.
+- `title`: `{ text?, at?, offset?, rotation?, color?, fontSize?, fontFamily?, fontWeight?, overlap? }`.
 - Effect: line → ticks/labels → title wrapped action 순서로 semantic guide와 concrete graphics를 만든다.
 - Complete axis는 선택한 position을 line, ticks/labels와 title child 모두에 전달한다.
 
@@ -54,9 +54,26 @@ Cartesian line/ticks/labels/title의 실제 occupied bounds는 각 component pos
 
 ## Shared axis-tick contract
 
-- Create parameters: `scale?`, `position?`, `count?`, `values?`, `length?`, `color?`, `lineWidth?`, `alongOffset?`.
+- Create parameters: `scale?`, `position?`, `count?`, `values?`, `rounding?`, `length?`, `color?`, `lineWidth?`, `alongOffset?`.
 - Edit parameters는 `scale`을 제외하고 동일하다.
 - `count`: positive integer, 기본값 `5`, 최대 `10,000`; `values`와 mutually exclusive다.
+- `rounding`: Cartesian linear count mode에서 `"ceiling" | "nearest"`. 생략 시 기존 step 선택과
+  출력은 그대로다. nearest는 span/count의 1·2·5·10 decade를 기하 중점으로 고른다.
+  count는 대략적 밀도이며 정확한 item 수가 아니다. ceiling은 기존 정책으로 복귀한다.
+  명시 values/rounding 동시 호출, undefined/잘못된 enum, temporal/transformed/discrete와
+  Polar/Parallel에서는 거부한다. values로 바꾸면 이전 rounding을 지운다. values-mode에서
+  rounding을 선택하려면 count도 명시한다. count-mode에서는 현재 count를 유지한다.
+  새 policy를 선택한 tick owner의 선택 편집은 기존 labels와 inferred grid를 ordered plan으로
+  함께 갱신한다. label 호출은 existing tick owner의 생략 정책을 상속하고 명시 충돌은 거부한다.
+  새-policy labels를 먼저 만들었다면 후속 ticks도 그 유일한 선택 정책을 상속한다.
+  label만 있는 축은 기존처럼 grid의 자동 정책을 선언하지 않는다. Inferred grid는 tick owner의
+  정책을 재사용하며, 다른 owner 정책은 ambiguity 오류다. Explicit grid count/values는 기존
+  독립 정책으로 바꾸고 inherited rounding을 지운다. `values:"auto"`로 다시 추론한다.
+  값은 finite/ascending/unique/domain 내부이며 constant는 한 값이다. 정렬 grid가 표현 불가능하면
+  기존처럼 관측 endpoints로 fallback하고 item limit은 양끝을 보존해 지킨다. 이 정책은 named
+  owner, Full/Basic, data/Canvas/scale, independent facet, persistence에서 유지한다.
+  근거: `test/contracts/linear-nearest-ticks.test.js`, `test/unit/grammar/ticks-nearest.test.js`,
+  `test/charts/linear-nearest-ticks/public.test.js`.
 - `values`: scale domain 안의 finite number/timestamp 또는 ordinal scalar array. histogram x는 둘 다
   생략하면 bin boundaries, ordinal x는 domain 전체를 사용한다. 생성 전 resolved cardinality는 최대
   `10,000`이다.
@@ -74,12 +91,13 @@ Cartesian line/ticks/labels/title의 실제 occupied bounds는 각 component pos
 - Create parameters: `scale?`, `position?`, `count?`, `values?`, `offset?`, `format?`, `color?`,
   `fontSize?`, `fontFamily?`, `fontWeight?`, `rotation?`, `maxWidth?`, `wrap?`, `lineHeight?`,
   `overlap?`, `labelMap?`, `alongOffset?`, `flush?`, `colorMap?`; edit에서는 scale을 제외한다.
-- `count`/`values`: tick contract와 같으며 existing ticks가 있으면 생략 시 그 정책을 재사용한다.
+- `count`/`values`/`rounding`: tick contract와 같으며 existing ticks가 있으면 생략 시 그 정책을 재사용한다.
 - `offset`: non-negative finite number; x default `18`, y default `12`.
 - `alongOffset`: signed finite logical pixels, 기본 `0`. Mapped label 위치에서 X는 오른쪽, Y는 아래쪽으로 이동한다. Tick offset을 상속하지 않는 독립 절대값이다. 기존 `offset`은 축 바깥쪽 간격으로 유지된다.
-- `format`: `"auto" | { decimals: nonNegativeInteger } | AxisFormatString`. Numeric token은 `.0`–`.12`
+- `format`: `"auto" | "ticks" | { decimals: nonNegativeInteger } | AxisFormatString`. Numeric token은 `.0`–`.12`
   precision과 `f | % | e` suffix이며 quantitative에서만 허용한다. Time format은 `%Y | %m | %d | %b | %a | %H | %M | %S | %L` UTC directive 하나 이상과 literal의
   sequence이며 literal percent는 `%%`다. Unknown/dangling directive는 거부하고 ordinal은 auto만 허용한다.
+- 명시적 `format: "ticks"`는 숫자 축의 settled tick values별로 fixed precision을 계산한다. 최소 양의 간격을12유효숫자로 정규화한 decimal exponent를 사용하며, 다른 값이 같은 문자열이면 최대12decimal까지 늘리고 그래도 구별되지 않으면 거부한다. 빈 값은 빈 결과, 단일 값은12유효숫자로 정규화한 해당 값의 소수 자릿수다. 뒤쪽0을 보존하고 음수는 `−`, 반올림된 signed zero는 양의0으로 표기한다. 예:0.05간격→`0.00`,100간격→`0`. Cartesian/Polar/Parallel 숫자 축에 적용하고 Time/discrete는 거부한다. 기존 typed labelMap 우선순위는 유지한다. Facet 각 child, scale/data/Canvas 재물질화 및 editable persistence에서 문자열 intent를 유지하고 새 settled ticks로 다시 계산한다. Omitted/auto와 기존 numeric/UTC 표기는 불변이다. 근거: `test/unit/grammar/numeric-tick-format.test.js`, `test/unit/actions/guides/axis-tick-format.test.js`, `test/contracts/value-format-types.test.js`.
 - `colorMap`: Cartesian label 전용 `readonly { value: DatasetScalar; color: NonEmptyString }[] | "auto"`. Raw typed tick value로 lookup하며 없는 key는 global `color`를 사용한다. `labelMap`의 display text와 독립이다. Categorical key는 기존 typed scalar 규칙을 쓰고 continuous/time key는 finite numeric/timestamp만 허용한다. Entry는 value/color 두 key만 허용하며 중복 typed key와 빈/비문자열 color를 거부한다. `[]`는 명시 empty map, `"auto"`는 map 제거, partial entry 편집은 없고 array 전체를 교체한다. Wrapped text는 raw tick의 모든 line에 같은 color를 적용한다. 이전 caller map/program은 immutable하고 tick/Canvas/scale replay에서도 map과 fallback을 유지한다. Polar/Parallel에는 이 옵션이 없다.
 - `color`: non-empty string; `fontSize`: positive finite; `fontFamily`: non-empty string;
   `fontWeight`: string 또는 finite number.
@@ -97,10 +115,10 @@ Cartesian line/ticks/labels/title의 실제 occupied bounds는 각 component pos
 - `wrap`: `"word" | "character"`, 기본값은 `"word"`다. 너무 긴 word는 Unicode code point 단위로 나눈다.
 - `lineHeight`: fontSize 이상의 finite number다. 생략하면 `fontSize * 1.2`다.
 - `overlap`: `"error" | "allow"`, 기본값은 `"error"`다. Allow는 label-label 교차만 허용하며 Canvas
-  overflow와 explicit axis-title collision은 계속 거부한다.
+  overflow는 계속 거부한다. 같은 축 제목이 명시적 `overlap: "allow"`를 저장한 경우에만 그 제목과의 교차도 허용한다.
   Axis title과 label의 교차는 실제 개별 concrete label item의 occupied bounds로 검사한다.
   Label collection 전체를 감싼 union의 빈 공간은 충돌로 보지 않으며 title/label 작성 순서와 무관하게
-  같은 최종 배치를 허용한다. 개별 label과 실제로 교차하는 explicit title은 계속 거부한다.
+  같은 최종 배치를 허용한다. 해당 제목의 정책이 생략 또는 `error`이면 개별 label과 실제로 교차하는 explicit title은 계속 거부한다.
 - `labelMap`: categorical/continuous Cartesian scale에서 쓰는 typed
   `readonly { value: DatasetScalar; label: string }[] | "auto"`다. `1`과 `"1"`은 서로 다른 key이고,
   `0`과 `-0`은 같은 key다. 중복 raw key는 거부하고 중복 label과 빈 label은 허용한다. Array는
@@ -135,8 +153,14 @@ Continuous labelMap evidence: `test/unit/actions/guides/continuous-axis-display-
 ## Shared axis-title contract
 
 - Create: `text?`, `scale?`, `position?`, `at?`, `offset?`, `rotation?`, `color?`, `fontSize?`,
-  `fontFamily?`, `fontWeight?`; edit에서는 scale을 제외한다.
+  `fontFamily?`, `fontWeight?`, `overlap?`; edit에서는 scale을 제외한다.
 - `text`: non-empty string. 생략하면 unique connected field/aggregate 또는 density provenance에서 추론한다.
+  같은 축을 재사용하는 statistical reference의 내부 출력 필드는 원본 축 제목 추론에서 제외한다.
+  Summary 출력은 alias 대신 해당 aggregate와 원본 field에서 제목을 추론하며, live summary edit 이후에도 갱신한다.
+  원본 field 없이 행 수를 집계한 `count` Summary는 제목을 `count`로 추론한다.
+  ECDF value는 원본 field, probability는 `Cumulative probability`, cumulative는 `Cumulative count`로 추론한다.
+  Gradient profile의 lower/upper/center는 모두 원본 measure 제목을 공유한다. 두 방향 및 measure revision에
+  적용하며 명시적인 사용자 제목은 유지한다. Evidence: `test/unit/actions/guides/axis-title-actions.test.js`.
 - `at`: `"start" | "center" | "end"` 또는 continuous scale domain 안의 finite number; 기본 center.
 - `offset`: signed finite; positive outward, negative inward; inferred preferred defaults x `42`, y `52`.
 - `rotation`: `RotationInput = Finite | { value: Finite; unit: "degrees" | "radians" }`. 기존 finite 숫자는
@@ -151,6 +175,8 @@ Continuous labelMap evidence: `test/unit/actions/guides/continuous-axis-display-
   graphic properties를 그대로 유지하고 multiline→single 편집은 stale `lines`만 제거한다.
 - Evidence: `test/unit/actions/guides/axis-title-hard-breaks.test.js` (네 방향, explicit rotation, blank lines,
   SVG/Canvas, immutable edit, Canvas/scale/facet replay, persistence, overflow/collision atomicity).
+
+- `overlap`: `"error" | "allow"`; 생략은 현재 엄격한 충돌 검사를 유지한다. `allow`는 이 제목과 같은 axis owner의 개별 레이블 교차만 허용한다. Canvas 이탈, 레이블끼리의 교차와 다른 owner 충돌은 별도 현재 규칙이다. 제목/레이블 생성·편집 순서와 Canvas·scale·data·facet 재구현에서 같은 title config를 읽는다. Edit 생략은 기존 정책을 보존하며 explicit `error` reset은 결합된 최종 배치가 유효할 때만 성공한다. 잘못된 값과 충돌 reset은 원자적으로 거부한다. 명시 정책은 기존 materialization title config에만 저장하며 기본 생략 경로에는 필드를 추가하지 않는다. Persistence는 손상된 값을 거부한다. Evidence: `test/unit/actions/guides/axis-title-overlap.test.js` 및 `test/contracts/axis-grid-offset-types.test.js`.
 
 ## Shared grid-direction contract
 
@@ -273,14 +299,19 @@ Full-only Parallel axes는 encoded field별로 line/ticks/labels/title을 소유
 
 ## Shared formal types
 
+기존 shared formatter와 선언은 동일한 grouped numeric `","`/`,.0f`~`,.12f` 및 UTC weekday `%a`를
+지원한다. Grouped numeric은 quantitative field 전용이며 grouped percent/scientific은 지원하지 않는다.
+원본 값·domain·tick 위치는 바꾸지 않는다. Runtime evidence: `test/unit/grammar/value-format.test.js`;
+declaration evidence: `test/contracts/value-format-types.test.js`.
+
 ```typescript
 type AxisPositionX = "bottom" | "top";
 type AxisPositionY = "left" | "right";
-type TimeAxisDirective = "Y" | "m" | "d" | "b";
+type TimeAxisDirective = "Y" | "m" | "d" | "b" | "a" | "H" | "M" | "S" | "L";
 type TimeAxisFormatString = `${string}%${TimeAxisDirective}${string}`;
 type ValueFormatDigit = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
 type ValueFormatPrecision = ValueFormatDigit | 10 | 11 | 12 | `0${ValueFormatDigit}`;
-type NumericFormatString = `.${ValueFormatPrecision}${"f" | "%" | "e"}`;
+type NumericFormatString = `.${ValueFormatPrecision}${"f" | "%" | "e"}` | "," | `,.${ValueFormatPrecision}f`;
 type AxisFormatString = NumericFormatString | TimeAxisFormatString;
 type TickValue = string | boolean | Finite;
 type TickOptions = {
@@ -293,7 +324,7 @@ type TickOptions = {
 type LabelOptions = {
   align?: "left" | "center" | "right";
   offset?: NonNegativeFinite;
-  format?: "auto" | { decimals: NonNegativeInteger } | AxisFormatString;
+  format?: "auto" | "ticks" | { decimals: NonNegativeInteger } | AxisFormatString;
   color?: NonEmptyString;
   fontSize?: PositiveFinite;
   fontFamily?: NonEmptyString;
@@ -316,6 +347,7 @@ type AxisTitleOptions<P extends string> = TextStyle & {
   rotation?: RotationInput;
 };
 type CompleteAxisOptions<P extends string> = {
+  underlay?: boolean;
   offset?: NonNegativeFinite;
   scale?: UserId;
   coordinate?: UserId;
@@ -745,7 +777,7 @@ Ticks/labels의 count와 values는 배타적이고 같은 existing mode/default 
 
 ## `createXAxis`
 
-- Signature: `createXAxis({ scale?, coordinate?, position?, line?, ticksAndLabels?, title? })`
+- Signature: `createXAxis({ id?, scale?, coordinate?, position?, offset?, underlay?, line?, ticksAndLabels?, title? })`
 - Parameter contract와 effect는 Shared complete-axis contract를 따른다. x default는 bottom이다.
 - Coverage: `test/unit/actions/guides/axis-actions.test.js`가 defaults, routing, coordinate와 duplicates를 검증한다.
 
@@ -769,7 +801,7 @@ Ticks/labels의 count와 values는 배타적이고 같은 existing mode/default 
 
 ## `createYAxis`
 
-- Signature: `createYAxis({ scale?, coordinate?, position?, line?, ticksAndLabels?, title? })`
+- Signature: `createYAxis({ id?, scale?, coordinate?, position?, offset?, underlay?, line?, ticksAndLabels?, title? })`
 - Parameter contract와 effect는 Shared complete-axis contract를 따른다. y default는 left다.
 - Coverage: `test/unit/actions/guides/axis-actions.test.js`가 symmetric behavior를 검증한다.
 
@@ -1163,7 +1195,7 @@ Ticks/labels의 count와 values는 배타적이고 같은 existing mode/default 
 
 ## `editXAxis`
 
-- Signature: `editXAxis({ position?, line?, ticks?, labels?, ticksAndLabels?, title? })`; each component accepts its
+- Signature: `editXAxis({ target?, position?, offset?, underlay?, line?, ticks?, labels?, ticksAndLabels?, title? })`; each component accepts its
   existing edit object or `false`.
 - Existing x-axis leaf resources를 선택해 편집하거나 제거하는 aggregate facade다. `position`은 제거되지 않은 existing
   line, ticks/labels와 title 전체에 공유된다. `ticksAndLabels`는 standalone `ticks`/`labels`와 함께 쓸 수 없다.
@@ -1253,3 +1285,43 @@ Wrapped line은 같은 원본 label group으로 처리한다. 자동 axis title 
 제한되지 않으며 측정 overflow를 Canvas guide transaction이 수용한다. 명시적 overlap:error와
 실제 label 충돌은 여전히 오류다. 고정 외부 Canvas 동작은 변경하지 않는다.
 Evidence: `test/unit/actions/canvas/inner-plot-size.test.js`.
+
+## Cartesian axis underlays
+
+Complete Cartesian create/edit actions accept `underlay?: boolean`; aggregate axes, guides and chart facades
+reuse that complete option. Focused components and Polar/Parallel axes do not accept it. Default omission/false
+keeps ordinary axes after marks. True paints all retained components before ordinary marks, after nonpositive
+Cartesian grids and an underlay border. Positive grids retain their own rank after marks. Overlay border and
+axes keep their existing front tier. Axis owner order and its existing component order are retained; ordinary
+marks, regression bands/lines and unowned graphics retain their relative order.
+
+Edit omission/undefined preserves the policy; false removes the optional canonical frame intent.
+It is stored once as `guides.axis[id].frame.underlay?: true` beside the independent optional frame offset.
+Editing either field preserves the other. Empty frames disappear. The returned concrete scene changes only
+its existing child permutation; graph IDs, parents, properties, items, clips and object declaration order stay
+intact. Removing an axis removes its policy; restoring a missing component follows its retained owner.
+Source, data, scales, Canvas, theme, metrics, facet/concat snapshots and editable persistence retain placement.
+Invalid requests fail atomically. No renderer reads axis intent.
+
+Evidence: `test/unit/actions/guides/plot-underlays.test.js`, `test/unit/layout/plot-draw-order.test.js`,
+`test/unit/actions/primitives/graphic-child-order.test.js`, and `test/charts/plot-guide-underlays/`.
+
+## `editAxes`
+
+- 사용자 승인: 2026-10-19 “ggaction 받아서 editAxes 구현해서 쓰자” 요청. 기존 channel editor의 option 계약을 그대로 묶는 aggregate이며 새 state owner나 rendering 경계는 없다.
+- Signature: `editAxes(options: EditAxesOptions): ChartProgram`.
+- `x`, `y`, `theta`, `radius`, `parallel`은 해당 기존 editor의 option object다. 생략/false는 보존하며 하나 이상 실제 edit가 필요하다. x/y array는 각 entry에 `target`이 필수이고 parallel array는 기존 `field`/`target` 선택을 사용한다. 빈 array, 중복 선택, theta/radius array는 거부한다.
+- 기존 axis/component만 수정한다. Resource binding, 누락/모호성, appearance, component 제거는 소유 editor 계약을 따른다. Scale/coordinate 재바인딩이나 guide 생성을 하지 않는다.
+- 전체 immutable speculative preflight와 하나의 guide layout transaction으로 최종 상태를 검증한다. 이전 program과 caller input은 불변이다. Trace에는 editAxes 하나와 실제 channel edit children이 남는다.
+
+### Formal values — `editAxes`
+
+- Implemented: `editAxes({ x?, y?, theta?, radius?, parallel? })`; each value is `false | ExistingAxisEditOptions`, with named x/y and parallel arrays as declared above.
+
+### Value coverage — `editAxes`
+
+- Proposed (NOT IMPLEMENTED): —
+- ✅ Covered: Cartesian multi-axis edits, named arrays, Polar/Parallel delegation, missing/invalid edits, atomic failure, immutable state, trace grouping, public declarations and inspection.
+- Evidence: `test/unit/actions/guides/edit-axes.test.js`.
+
+- Axis title의 statistical provenance는 row-preserving filter/markFilter를 통과하여 가장 가까운 지원 transform을 읽는다. Box measure revision 뒤 category filtering도 원본 measure title을 유지한다.

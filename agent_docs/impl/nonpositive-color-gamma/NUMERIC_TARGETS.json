@@ -1,0 +1,742 @@
+{
+  "status": "pass",
+  "vectors": [
+    {
+      "interpolation": "cubehelix",
+      "gamma": 0,
+      "range": [
+        "#ffff00",
+        "#ff0000"
+      ],
+      "positions": [
+        0,
+        0.125,
+        0.25,
+        0.375,
+        0.5,
+        0.625,
+        0.75,
+        0.875,
+        1
+      ],
+      "colors": [
+        "#898900",
+        "#bd6600",
+        "#e74700",
+        "#ff2e00",
+        "#ff1900",
+        "#ff0b00",
+        "#ff0200",
+        "#ff0000",
+        "#ff0000"
+      ]
+    },
+    {
+      "interpolation": "cubehelix",
+      "gamma": 0,
+      "range": [
+        "#75190b",
+        "#90f2a4"
+      ],
+      "positions": [
+        0,
+        0.125,
+        0.25,
+        0.375,
+        0.5,
+        0.625,
+        0.75,
+        0.875,
+        1
+      ],
+      "colors": [
+        "#ffb2a4",
+        "#ffba93",
+        "#f6c487",
+        "#e5ce7e",
+        "#d2d87c",
+        "#bfe17e",
+        "#ade986",
+        "#9def93",
+        "#90f2a4"
+      ]
+    },
+    {
+      "interpolation": "cubehelix",
+      "gamma": 0,
+      "range": [
+        "#000000",
+        "#ffffff"
+      ],
+      "positions": [
+        0,
+        0.125,
+        0.25,
+        0.375,
+        0.5,
+        0.625,
+        0.75,
+        0.875,
+        1
+      ],
+      "colors": [
+        "#ffffff",
+        "#ffffff",
+        "#ffffff",
+        "#ffffff",
+        "#ffffff",
+        "#ffffff",
+        "#ffffff",
+        "#ffffff",
+        "#ffffff"
+      ]
+    },
+    {
+      "interpolation": "cubehelix",
+      "gamma": 0,
+      "range": [
+        "#75190b",
+        "#75190b"
+      ],
+      "positions": [
+        0,
+        0.125,
+        0.25,
+        0.375,
+        0.5,
+        0.625,
+        0.75,
+        0.875,
+        1
+      ],
+      "colors": [
+        "#75190b",
+        "#75190b",
+        "#75190b",
+        "#75190b",
+        "#75190b",
+        "#75190b",
+        "#75190b",
+        "#75190b",
+        "#75190b"
+      ]
+    },
+    {
+      "interpolation": "cubehelix",
+      "gamma": -0.1,
+      "range": [
+        "#ffff00",
+        "#ff0000"
+      ],
+      "positions": [
+        0,
+        0.125,
+        0.25,
+        0.375,
+        0.5,
+        0.625,
+        0.75,
+        0.875,
+        1
+      ],
+      "colors": [
+        "#000000",
+        "#733a00",
+        "#b13200",
+        "#dd2200",
+        "#fb1300",
+        "#ff0700",
+        "#ff0000",
+        "#ff0000",
+        "#ff0000"
+      ]
+    },
+    {
+      "interpolation": "cubehelix",
+      "gamma": -0.1,
+      "range": [
+        "#75190b",
+        "#90f2a4"
+      ],
+      "positions": [
+        0,
+        0.125,
+        0.25,
+        0.375,
+        0.5,
+        0.625,
+        0.75,
+        0.875,
+        1
+      ],
+      "colors": [
+        "#00ffff",
+        "#ffe9db",
+        "#fcdeb8",
+        "#eedda2",
+        "#dce195",
+        "#c8e68f",
+        "#b3eb90",
+        "#a0f097",
+        "#90f2a4"
+      ]
+    },
+    {
+      "interpolation": "cubehelix",
+      "gamma": -0.1,
+      "range": [
+        "#000000",
+        "#ffffff"
+      ],
+      "positions": [
+        0,
+        0.125,
+        0.25,
+        0.375,
+        0.5,
+        0.625,
+        0.75,
+        0.875,
+        1
+      ],
+      "colors": [
+        "#ffffff",
+        "#ffffff",
+        "#ffffff",
+        "#ffffff",
+        "#ffffff",
+        "#ffffff",
+        "#ffffff",
+        "#ffffff",
+        "#ffffff"
+      ]
+    },
+    {
+      "interpolation": "cubehelix",
+      "gamma": -0.1,
+      "range": [
+        "#75190b",
+        "#75190b"
+      ],
+      "positions": [
+        0,
+        0.125,
+        0.25,
+        0.375,
+        0.5,
+        0.625,
+        0.75,
+        0.875,
+        1
+      ],
+      "colors": [
+        "#75190b",
+        "#75190b",
+        "#75190b",
+        "#75190b",
+        "#75190b",
+        "#75190b",
+        "#75190b",
+        "#75190b",
+        "#75190b"
+      ]
+    },
+    {
+      "interpolation": "cubehelix",
+      "gamma": 1,
+      "range": [
+        "#ffff00",
+        "#ff0000"
+      ],
+      "positions": [
+        0,
+        0.125,
+        0.25,
+        0.375,
+        0.5,
+        0.625,
+        0.75,
+        0.875,
+        1
+      ],
+      "colors": [
+        "#ffff00",
+        "#ffe200",
+        "#ffb900",
+        "#ff8a00",
+        "#ff5d00",
+        "#ff3700",
+        "#ff1a00",
+        "#ff0800",
+        "#ff0000"
+      ]
+    },
+    {
+      "interpolation": "cubehelix",
+      "gamma": 1,
+      "range": [
+        "#75190b",
+        "#90f2a4"
+      ],
+      "positions": [
+        0,
+        0.125,
+        0.25,
+        0.375,
+        0.5,
+        0.625,
+        0.75,
+        0.875,
+        1
+      ],
+      "colors": [
+        "#75190b",
+        "#8c3000",
+        "#944e00",
+        "#926f00",
+        "#899202",
+        "#7fb31c",
+        "#79cf43",
+        "#7ee472",
+        "#90f2a4"
+      ]
+    },
+    {
+      "interpolation": "cubehelix",
+      "gamma": 1,
+      "range": [
+        "#000000",
+        "#ffffff"
+      ],
+      "positions": [
+        0,
+        0.125,
+        0.25,
+        0.375,
+        0.5,
+        0.625,
+        0.75,
+        0.875,
+        1
+      ],
+      "colors": [
+        "#000000",
+        "#202020",
+        "#404040",
+        "#606060",
+        "#808080",
+        "#9f9f9f",
+        "#bfbfbf",
+        "#dfdfdf",
+        "#ffffff"
+      ]
+    },
+    {
+      "interpolation": "cubehelix",
+      "gamma": 1,
+      "range": [
+        "#75190b",
+        "#75190b"
+      ],
+      "positions": [
+        0,
+        0.125,
+        0.25,
+        0.375,
+        0.5,
+        0.625,
+        0.75,
+        0.875,
+        1
+      ],
+      "colors": [
+        "#75190b",
+        "#75190b",
+        "#75190b",
+        "#75190b",
+        "#75190b",
+        "#75190b",
+        "#75190b",
+        "#75190b",
+        "#75190b"
+      ]
+    },
+    {
+      "interpolation": "cubehelix-long",
+      "gamma": 0,
+      "range": [
+        "#ffff00",
+        "#ff0000"
+      ],
+      "positions": [
+        0,
+        0.125,
+        0.25,
+        0.375,
+        0.5,
+        0.625,
+        0.75,
+        0.875,
+        1
+      ],
+      "colors": [
+        "#898900",
+        "#00f800",
+        "#00ff00",
+        "#00e3bf",
+        "#0080ff",
+        "#3b1bff",
+        "#d600ff",
+        "#ff008b",
+        "#ff0000"
+      ]
+    },
+    {
+      "interpolation": "cubehelix-long",
+      "gamma": 0,
+      "range": [
+        "#75190b",
+        "#90f2a4"
+      ],
+      "positions": [
+        0,
+        0.125,
+        0.25,
+        0.375,
+        0.5,
+        0.625,
+        0.75,
+        0.875,
+        1
+      ],
+      "colors": [
+        "#ffb2a4",
+        "#ffa7cc",
+        "#ffa6f4",
+        "#ebafff",
+        "#c6c0ff",
+        "#a3d4ff",
+        "#8ae6f4",
+        "#83f1cc",
+        "#90f2a4"
+      ]
+    },
+    {
+      "interpolation": "cubehelix-long",
+      "gamma": 0,
+      "range": [
+        "#000000",
+        "#ffffff"
+      ],
+      "positions": [
+        0,
+        0.125,
+        0.25,
+        0.375,
+        0.5,
+        0.625,
+        0.75,
+        0.875,
+        1
+      ],
+      "colors": [
+        "#ffffff",
+        "#ffffff",
+        "#ffffff",
+        "#ffffff",
+        "#ffffff",
+        "#ffffff",
+        "#ffffff",
+        "#ffffff",
+        "#ffffff"
+      ]
+    },
+    {
+      "interpolation": "cubehelix-long",
+      "gamma": 0,
+      "range": [
+        "#75190b",
+        "#75190b"
+      ],
+      "positions": [
+        0,
+        0.125,
+        0.25,
+        0.375,
+        0.5,
+        0.625,
+        0.75,
+        0.875,
+        1
+      ],
+      "colors": [
+        "#75190b",
+        "#75190b",
+        "#75190b",
+        "#75190b",
+        "#75190b",
+        "#75190b",
+        "#75190b",
+        "#75190b",
+        "#75190b"
+      ]
+    },
+    {
+      "interpolation": "cubehelix-long",
+      "gamma": -0.1,
+      "range": [
+        "#ffff00",
+        "#ff0000"
+      ],
+      "positions": [
+        0,
+        0.125,
+        0.25,
+        0.375,
+        0.5,
+        0.625,
+        0.75,
+        0.875,
+        1
+      ],
+      "colors": [
+        "#000000",
+        "#009900",
+        "#00d600",
+        "#00bfa1",
+        "#0070ff",
+        "#3517ff",
+        "#cd00ff",
+        "#ff0088",
+        "#ff0000"
+      ]
+    },
+    {
+      "interpolation": "cubehelix-long",
+      "gamma": -0.1,
+      "range": [
+        "#75190b",
+        "#90f2a4"
+      ],
+      "positions": [
+        0,
+        0.125,
+        0.25,
+        0.375,
+        0.5,
+        0.625,
+        0.75,
+        0.875,
+        1
+      ],
+      "colors": [
+        "#00ffff",
+        "#ffe2ef",
+        "#ffcbfb",
+        "#f3c6ff",
+        "#d2cdff",
+        "#afdbff",
+        "#93e9f6",
+        "#88f2ce",
+        "#90f2a4"
+      ]
+    },
+    {
+      "interpolation": "cubehelix-long",
+      "gamma": -0.1,
+      "range": [
+        "#000000",
+        "#ffffff"
+      ],
+      "positions": [
+        0,
+        0.125,
+        0.25,
+        0.375,
+        0.5,
+        0.625,
+        0.75,
+        0.875,
+        1
+      ],
+      "colors": [
+        "#ffffff",
+        "#ffffff",
+        "#ffffff",
+        "#ffffff",
+        "#ffffff",
+        "#ffffff",
+        "#ffffff",
+        "#ffffff",
+        "#ffffff"
+      ]
+    },
+    {
+      "interpolation": "cubehelix-long",
+      "gamma": -0.1,
+      "range": [
+        "#75190b",
+        "#75190b"
+      ],
+      "positions": [
+        0,
+        0.125,
+        0.25,
+        0.375,
+        0.5,
+        0.625,
+        0.75,
+        0.875,
+        1
+      ],
+      "colors": [
+        "#75190b",
+        "#75190b",
+        "#75190b",
+        "#75190b",
+        "#75190b",
+        "#75190b",
+        "#75190b",
+        "#75190b",
+        "#75190b"
+      ]
+    },
+    {
+      "interpolation": "cubehelix-long",
+      "gamma": 1,
+      "range": [
+        "#ffff00",
+        "#ff0000"
+      ],
+      "positions": [
+        0,
+        0.125,
+        0.25,
+        0.375,
+        0.5,
+        0.625,
+        0.75,
+        0.875,
+        1
+      ],
+      "colors": [
+        "#ffff00",
+        "#42ff00",
+        "#00ff40",
+        "#00ffff",
+        "#00d2ff",
+        "#704aff",
+        "#ff00ff",
+        "#ff00a5",
+        "#ff0000"
+      ]
+    },
+    {
+      "interpolation": "cubehelix-long",
+      "gamma": 1,
+      "range": [
+        "#75190b",
+        "#90f2a4"
+      ],
+      "positions": [
+        0,
+        0.125,
+        0.25,
+        0.375,
+        0.5,
+        0.625,
+        0.75,
+        0.875,
+        1
+      ],
+      "colors": [
+        "#75190b",
+        "#a11846",
+        "#ae2392",
+        "#9c40d7",
+        "#766dfd",
+        "#539ffd",
+        "#48cbdf",
+        "#5ee7b9",
+        "#90f2a4"
+      ]
+    },
+    {
+      "interpolation": "cubehelix-long",
+      "gamma": 1,
+      "range": [
+        "#000000",
+        "#ffffff"
+      ],
+      "positions": [
+        0,
+        0.125,
+        0.25,
+        0.375,
+        0.5,
+        0.625,
+        0.75,
+        0.875,
+        1
+      ],
+      "colors": [
+        "#000000",
+        "#202020",
+        "#404040",
+        "#606060",
+        "#808080",
+        "#9f9f9f",
+        "#bfbfbf",
+        "#dfdfdf",
+        "#ffffff"
+      ]
+    },
+    {
+      "interpolation": "cubehelix-long",
+      "gamma": 1,
+      "range": [
+        "#75190b",
+        "#75190b"
+      ],
+      "positions": [
+        0,
+        0.125,
+        0.25,
+        0.375,
+        0.5,
+        0.625,
+        0.75,
+        0.875,
+        1
+      ],
+      "colors": [
+        "#75190b",
+        "#75190b",
+        "#75190b",
+        "#75190b",
+        "#75190b",
+        "#75190b",
+        "#75190b",
+        "#75190b",
+        "#75190b"
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "id": "vl_1588",
+      "gamma": -0.1,
+      "observations": 392,
+      "exactRgb": true
+    },
+    {
+      "id": "vl_1589",
+      "gamma": 0,
+      "observations": 392,
+      "exactRgb": true
+    }
+  ],
+  "SchoolRequests": 0,
+  "publicLibraryChanged": false,
+  "independentOracle": "Literal numeric expectations independently computed from the same explicit public 8bit RGB inputs; no product module used to derive expected colors."
+}

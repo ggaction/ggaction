@@ -23,9 +23,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 591, // The combined color-size grammar and materializer add two owners.
-  packedBytes: 842_000, // Node24 parent-guide integration measured841241packed bytes.
-  unpackedBytes: 4_087_000 // Versioned facade declarations measured4086545unpacked bytes.
+  entries: 621, // Combined chart fixes and both native transition scene adapters.
+  packedBytes: 897_000, // Measured894453 locally plus observed clean-runner compression variation.
+  unpackedBytes: 4_255_000 // Measured4254609bytes after exact role declarations and complete release notes; next1000-byte boundary.
 });
 
 const REQUIRED_FILES = Object.freeze([
@@ -73,6 +73,12 @@ const COMPACT_JSON_FILES = Object.freeze([
   "knowledge/task-packet.schema.json"
 ]);
 const COMPACT_JAVASCRIPT_FILES = Object.freeze([
+  "src/grammar/lineSeries.js",
+  "src/grammar/pathSeries.js",
+  "src/grammar/scales/colorConsumers.js",
+  "src/actions/encodings/position/policies/line.js",
+  "src/inspection.js",
+  "src/grammar/regression/derive.js",
   "src/grammar/areaSeries.js",
   "src/grammar/summary.js",
   "src/grammar/statistics/confidenceInterval.js",
@@ -91,6 +97,8 @@ const COMPACT_JAVASCRIPT_FILES = Object.freeze([
   "src/grammar/numeric.js",
   "src/actions/guides/legends/continuous/common.js",
   "src/actions/guides/legends/continuous/colorSymbols.js",
+  "src/actions/guides/legends/sampling.js",
+  "src/actions/guides/legends/continuous/gradient.js",
   "src/grammar/scales/transformed.js",
   "src/grammar/scales/definition.js",
   "src/actions/scales/definitions.js",
@@ -102,6 +110,9 @@ const COMPACT_JAVASCRIPT_FILES = Object.freeze([
   "src/materialization/facets.js",
   "src/materialization/facetGuides/layout.js",
   "src/materialization/facetHeaders.js",
+  "src/layout/facetHeaderTitles.js",
+  "src/actions/facets/actions.js",
+  "src/grammar/facetHeaders.js",
   "src/materialization/guides/layout.js",
   "src/materialization/guides/resources.js",
   "src/actions/guides/legends/group.js",
@@ -111,7 +122,12 @@ const COMPACT_JAVASCRIPT_FILES = Object.freeze([
   "src/layout/legendGroup.js",
   "src/layout/legendText.js",
   "src/materialization/legendText.js",
-  "src/materialization/legendGroups.js"
+  "src/materialization/legendGroups.js",
+  "src/grammar/horizon.js",
+  "src/actions/boxPlots/components.js",
+  "src/actions/data/filter.js",
+  "src/actions/facets/replay.js",
+  "src/actions/guides/legends/categorical/actions.js"
 ]);
 
 export function compactPackageJavaScript(source, { keepNames = true } = {}) {

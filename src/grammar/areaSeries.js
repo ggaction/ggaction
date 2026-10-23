@@ -116,13 +116,16 @@ export function deriveAreaSeries(rows, layer, options = {}) {
     }
     return { key: item.key, values };
   });
-  if (series.length === 0) throw new Error(`Area mark "${layer.id}" has no valid segment with at least two points.`);
+  // Explicit gaps may leave only isolated samples. Preserve their finite
+  // coordinate domains, but do not invent a segment connecting across a gap.
+  const empty = series.length === 0 && missing === "break";
+  const finiteEndpoints = [...lower, ...upper].filter(Number.isFinite);
   return cloneAndFreeze({
     orientation,
-    xValues: series.flatMap(item => item.values.flatMap(value =>
+    xValues: empty ? vertical ? independentValues : finiteEndpoints : series.flatMap(item => item.values.flatMap(value =>
       vertical ? [value.x] : [value.x, value.x2]
     )),
-    yValues: series.flatMap(item => item.values.flatMap(value =>
+    yValues: empty ? vertical ? finiteEndpoints : independentValues : series.flatMap(item => item.values.flatMap(value =>
       vertical ? [value.y, value.y2] : [value.y]
     )),
     series

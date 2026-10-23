@@ -84,6 +84,10 @@ export function parentLegendWitnessOptions(view, profile) {
   if (options.layout === "legacy-bottom") delete options.columns;
   if (profile.family === "opacity") for (const key of ["columns", "direction"]) delete options[key];
   if (profile.id === "color-gradient") for (const key of ["columns", "symbol", "itemGap"]) delete options[key];
+  if (options.layout !== "legacy-bottom") {
+    options.titlePadding = 6;
+    if (profile.id !== "color-gradient") options.rowPadding = 2;
+  }
   if (profile.explicitOrder) options.order = { values: [...new Set(view.rows.map(row => row.category))].reverse() };
   if (profile.sampledValues) {
     const [lower, upper] = parentLegendWitnessDomain(view); options.values = [lower, lower + (upper - lower) / 2, upper];

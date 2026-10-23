@@ -1,3 +1,4 @@
+import { aggregateRows } from "../../grammar/aggregate.js";
 import { resolveBarCellOpacities } from "./resolve.js";
 import { readSeriesIdentity } from "../../grammar/pathSeries.js";
 import {
@@ -25,7 +26,7 @@ import {
   validateWeightedNumericFields
 } from "../../grammar/weightedStatistics.js";
 
-export function resolveHistogramInput(dataset, xEncoding) {
+export function resolveHistogramInput(dataset, xEncoding, yEncoding) {
   const allValues = readQuantitativeField(dataset.values, xEncoding.field);
   if (xEncoding.weight === undefined) {
     return {
@@ -33,6 +34,11 @@ export function resolveHistogramInput(dataset, xEncoding) {
       values: allValues,
       entries: dataset.values.map((row, index) => ({ row, index })),
       mass(entries) {
+        if (yEncoding?.aggregate !== undefined && yEncoding.aggregate !== "count") {
+          // Empty/insufficient samples have no visible segment, just like zero
+          // count bins. Use the same native aggregate owner as category bars.
+          return aggregateRows(entries.map(entry => entry.row), yEncoding.field, yEncoding.aggregate) ?? 0;
+        }
         return entries.length;
       }
     };
@@ -65,7 +71,7 @@ export function deriveHistogramSegments({
   xScale,
   resolvedScales
 }) {
-  const input = resolveHistogramInput(dataset, xEncoding);
+  const input = resolveHistogramInput(dataset, xEncoding, layer.encoding.y);
   const { rows, values: xValues, entries } = input;
   const bins = resolveHistogramBins({
     values: xValues,

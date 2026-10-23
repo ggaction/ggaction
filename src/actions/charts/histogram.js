@@ -17,7 +17,7 @@ const OPTIONS = Object.freeze([
   "binBoundaries", "stack", "xScale", "yScale", "weight", "color", "bar", "guides"
 ]);
 const BAR_OPTIONS = Object.freeze([
-  "fill", "opacity", "stroke", "strokeWidth", ...RECT_STYLE_PROPERTIES
+  "clip",   "fill", "opacity", "stroke", "strokeWidth", ...RECT_STYLE_PROPERTIES
 ]);
 const HISTOGRAM_OPTIONS = Object.freeze([
   "maxBins", "binStep", "binBoundaries", "stack", "xScale", "yScale", "weight"

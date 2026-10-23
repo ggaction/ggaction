@@ -1,3 +1,6 @@
+import { editScaleForEncoding } from "../scales/edit.js";
+import { collectResourceReferences } from "../../core/resourceReferences.js";
+import { removeScale } from "../resources/remove.js";
 import { cartesianAxisOwners } from "../../selectors/axes.js";
 import { isSourceOwnedText } from "../../grammar/text.js";
 import { validateUserId } from "../../core/identifiers.js";
@@ -60,6 +63,15 @@ export function resolveReassignmentScaleOptions(encoding, options) {
   return { ...options, id: encoding.scale };
 }
 
+// A fixed-to-field transition may reuse a detached named channel scale with
+// changed options. Recreate it through the existing resource owner, preserving
+// the resolved definition's omitted defaults and never touching live consumers.
+export function releaseDetachedEncodingScale(program, id) {
+  if (findSemanticScale(program, id) === undefined ||
+      collectResourceReferences(program, { kind: "scale", id }).some(ref => ref.strength === "live")) return program;
+  return removeScale.call(program, { id });
+}
+
 export function applyEncodingScale(
   program,
   definition,
@@ -71,7 +83,7 @@ export function applyEncodingScale(
     return program.createScale(definition);
   }
   if (existing.type !== definition.type) {
-    if (reassignment && allowTypeChange) return program.editScale({ ...definition });
+    if (reassignment && allowTypeChange) return editScaleForEncoding(program, { ...definition });
     throw new Error(
       `Scale "${definition.id}" cannot change type from "${existing.type}" to "${definition.type}".`
     );
@@ -89,7 +101,7 @@ export function applyEncodingScale(
 
   return Object.keys(patch).length === 1 || !reassignment
     ? program.createScale(definition)
-    : program.editScale(patch);
+    : editScaleForEncoding(program, patch);
 }
 
 export function rebindPositionGuides(

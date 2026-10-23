@@ -27,7 +27,7 @@ function requiredChannels(layer, mode) {
   return [
     ...position,
     ...(layer.encoding?.color ? ["color"] : []),
-    ...(layer.encoding?.stroke ? ["stroke"] : [])
+    ...["stroke", "opacity", "strokeWidth"].filter(channel => layer.encoding?.[channel])
   ];
 }
 
@@ -96,6 +96,10 @@ export function resolveRectRows(program, layer, dataset) {
   const stroke = layer.encoding?.stroke === undefined
     ? undefined
     : mappedEncoding(program, layer, dataset, "stroke").values;
+  const opacity = layer.encoding?.opacity === undefined ? undefined
+    : mappedEncoding(program, layer, dataset, "opacity").values;
+  const strokeWidth = layer.encoding?.strokeWidth === undefined ? undefined
+    : mappedEncoding(program, layer, dataset, "strokeWidth").values;
   const config = program.markConfigs[layer.id] ?? DEFAULT_RECT_MARK;
 
   const rows = rectUsesFields(layer) ? dataset.values : [{}];
@@ -105,7 +109,9 @@ export function resolveRectRows(program, layer, dataset) {
       (x !== undefined && !Number.isFinite(x.values[index])) ||
       (y !== undefined && !Number.isFinite(y.values[index])) ||
       typeof fill !== "string" ||
-      (stroke !== undefined && typeof stroke[index] !== "string")
+      (stroke !== undefined && typeof stroke[index] !== "string") ||
+      (opacity !== undefined && !Number.isFinite(opacity[index])) ||
+      (strokeWidth !== undefined && !Number.isFinite(strokeWidth[index]))
     ) return [];
 
     let geometry;
@@ -138,7 +144,9 @@ export function resolveRectRows(program, layer, dataset) {
     return [{
       row,
       sourceIndex: index,
-      properties: { ...geometry, ...appearance(config, fill, stroke?.[index]) }
+      properties: { ...geometry, ...appearance(config, fill, stroke?.[index]),
+        ...(opacity === undefined ? {} : { opacity: opacity[index] }),
+        ...(strokeWidth === undefined ? {} : { strokeWidth: strokeWidth[index] }) }
     }];
   });
 }

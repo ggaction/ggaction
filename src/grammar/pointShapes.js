@@ -1,6 +1,7 @@
 import { cloneAndFreeze } from "../core/immutable.js";
 import { buildLinearPathCommands } from "./pathCommands.js";
 import { requestedStrokeDetails } from "./strokeStyle.js";
+import { normalizePointPolygon, pointPolygonArea } from "./pointPolygon.js";
 
 export const POINT_SHAPES = cloneAndFreeze([
   "circle",
@@ -22,6 +23,7 @@ export const POINT_SHAPES = cloneAndFreeze([
 const SHAPE_SET = new Set(POINT_SHAPES);
 
 export function validatePointShape(shape) {
+  if (shape !== null && typeof shape === "object") return normalizePointPolygon(shape);
   if (typeof shape !== "string" || !SHAPE_SET.has(shape)) {
     throw new Error(`Unsupported point shape "${shape}".`);
   }
@@ -33,16 +35,6 @@ export function getPointGraphicType(shape) {
   if (validated === "circle") return "circle";
   if (validated === "square") return "rect";
   return "path";
-}
-
-function polygonArea(points) {
-  let twiceArea = 0;
-  for (let index = 0; index < points.length; index += 1) {
-    const current = points[index];
-    const next = points[(index + 1) % points.length];
-    twiceArea += current.x * next.y - next.x * current.y;
-  }
-  return Math.abs(twiceArea) / 2;
 }
 
 function rotate(points, angle) {
@@ -70,6 +62,7 @@ function alternatingPolygon(count, innerRadius, rotation = -Math.PI / 2) {
 }
 
 function shapePolygon(shape) {
+  if (typeof shape === "object") return shape.polygon;
   const arm = 0.32;
   const plus = [
     { x: -arm, y: -1 }, { x: arm, y: -1 },
@@ -116,12 +109,17 @@ function shapePolygon(shape) {
   }[shape];
 }
 
-function normalizePolygon(points, x, y, area) {
-  const scale = Math.sqrt(area / polygonArea(points));
-  return points.map(point => ({
+function normalizePolygon(points, x, y, area, normalization = "area") {
+  const scale = Math.sqrt(area / (normalization === "radius" ? Math.PI : pointPolygonArea(points)));
+  if (!Number.isFinite(scale)) throw new RangeError("Point polygon normalization exceeds finite geometry.");
+  const normalized = points.map(point => ({
     x: x + point.x * scale,
     y: y + point.y * scale
   }));
+  if (normalized.some(point => !Number.isFinite(point.x) || !Number.isFinite(point.y))) {
+    throw new RangeError("Point polygon normalization exceeds finite geometry.");
+  }
+  return normalized;
 }
 
 function appearance(fill, stroke, strokeWidth, opacity, strokeDetails) {
@@ -192,7 +190,8 @@ export function createPointShapeGraphic({
           rotate(shapePolygon(validated), (angle ?? 0) * Math.PI / 180),
           x,
           y,
-          area
+          area,
+          validated.normalization
         ),
         { close: true }
       ),
@@ -230,7 +229,8 @@ export function resolvePointShapeExtent({
     rotate(shapePolygon(validated), (angle ?? 0) * Math.PI / 180),
     0,
     0,
-    area
+    area,
+    validated.normalization
   );
   return cloneAndFreeze({
     x: Math.max(0, ...points.map(point => Math.abs(point.x))) + strokeExtent,

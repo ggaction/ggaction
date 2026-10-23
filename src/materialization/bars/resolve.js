@@ -82,7 +82,7 @@ export function requireCompleteBar(program, id) {
     grain === undefined
   ) {
     throw new Error(
-      `Bar mark "${id}" requires binned x/count y or ordinal x/aggregate y encodings.`
+      `Bar mark "${id}" requires binned x/aggregate y or ordinal x/aggregate y encodings.`
     );
   }
   const xScale = findSemanticScale(program, xEncoding.scale);

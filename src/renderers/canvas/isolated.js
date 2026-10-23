@@ -1,4 +1,5 @@
 import { resolvePrimitiveGraphicBounds } from "../../grammar/schemas/graphicBounds.js";
+import { graphicClipBounds, intersectClipBounds, validateGraphicClip } from "../../grammar/schemas/graphicClip.js";
 import { walkGraphicTreeEvents } from "../../grammar/schemas/graphicTree.js";
 import { MAX_RASTER_DIMENSION, MAX_RASTER_PIXELS } from "./limits.js";
 
@@ -124,10 +125,19 @@ export function prepareIsolatedGlyphs(target, context, { pixelRatio = 1, createC
         };
         frames.push({offset, clip});
       }
+      if (object.clip !== undefined) {
+        const parent = frames.at(-1);
+        validateGraphicClip(object.clip, object.type);
+        frames.push({offset: parent.offset, clip: intersectClipBounds(parent.clip,
+          graphicClipBounds(object.clip, ...parent.offset))});
+      }
       if (!object.items) plan(id, object, object.type);
     },
     item({id, object, owner}) { plan(id, object, object.type ?? owner.type); },
-    exit({object}) { if (object.type === "canvas") frames.pop(); }
+    exit({object}) {
+      if (object.clip !== undefined) frames.pop();
+      if (object.type === "canvas") frames.pop();
+    }
   });
   return {plans, surface, pixelRatio};
 }

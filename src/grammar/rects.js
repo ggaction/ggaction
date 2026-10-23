@@ -30,5 +30,5 @@ export function resolveRectMode(layer) {
 }
 
 export function rectUsesFields(layer) {
-  return ["x", "y", "x2", "y2", "color"].some(channel => Object.hasOwn(layer.encoding?.[channel] ?? {}, "field"));
+  return ["x", "y", "x2", "y2", "color", "stroke", "opacity", "strokeWidth"].some(channel => Object.hasOwn(layer.encoding?.[channel] ?? {}, "field"));
 }

@@ -12,7 +12,7 @@ values; areas close two edges or one density edge against a baseline.
 
 ## Line marks
 
-### `createLineMark({ id?, data?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed?, lineCap?, lineJoin?, miterLimit? } = {})`
+### `createLineMark({ id?, data?, missing?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed?, lineCap?, lineJoin?, miterLimit? } = {})`
 
 <!-- snippet-context:start -->
 
@@ -40,6 +40,43 @@ the path remains empty; the second completes the same final layer, resolved
 scales, and graphics in both orders. Aggregate y lines are different: their
 grain requires categorical, temporal, or binned quantitative x. Unbinned
 quantitative x does not accept aggregate y.
+
+### Gaps
+
+The default `missing: "error"` keeps strict validation. Choose `missing: "break"`
+to leave a gap at null or absent x/y coordinates in a direct Cartesian line with
+quantitative or temporal positions. Numeric strings, invalid dates and nonfinite
+numbers remain errors. Each dimension needs at least one nonmissing value.
+Valid x values still contribute to the x domain when y is missing, and vice versa.
+
+<!-- snippet-context:start -->
+
+> **Executable complete.** Import ggaction in an ES module; all observations and required setup are included in this program.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart } from "ggaction";
+
+const gaps = chart().createCanvas().createData({ values: [
+  { time: 1, amount: 2 }, { time: 2, amount: 4 },
+  { time: 3, amount: null },
+  { time: 4, amount: 5 }, { time: 5, amount: 6 }
+] }).createLinePlot({ x: "time", y: "amount", line: { missing: "break" } });
+```
+
+Each run is a separate path and selection item; curves restart independently.
+Singletons have one move command; empty runs have no path. Raw rows remain, and
+each path owns its valid observations. Accessibility lists valid vertices.
+Snapshots retain gaps. Mark filtering retains selected series' invisible gap
+rows so separated paths stay separate.
+
+Default position sorting or explicit path order still applies. When the sorting
+coordinate itself is missing, that row divides the original row order and each
+side is sorted separately. Aggregate, binned, categorical, Polar and Parallel
+positions do not accept this line policy. Parallel coordinates retain their own
+independent missing-data option. `editLineMark({ missing })` changes the policy;
+switching to `"error"` rejects remaining missing coordinates atomically.
 
 ### Ordered categories
 
@@ -99,7 +136,7 @@ line vertices use the shared bar centers. Incompatible bin, stack, or offset
 policies are not transferred. Pass `data` explicitly to assemble an independent
 line with explicit encodings and scale IDs.
 
-### `editLineMark({ target?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed?, lineCap?, lineJoin?, miterLimit? })`
+### `editLineMark({ target?, missing?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed?, lineCap?, lineJoin?, miterLimit? })`
 
 <!-- snippet-context:start -->
 
@@ -121,7 +158,7 @@ Supported curves are `linear`, `step`, `step-before`, `step-after`, `basis`,
 two-point series fall back to linear. Monotone paths require strictly increasing
 or decreasing materialized x values; duplicate or non-monotonic x is rejected.
 Materialization rejects any line or complete area that would expand beyond
-20,000 backend-neutral path commands before allocating that command array.
+30,000 backend-neutral path commands before allocating that command array.
 
 For Cartesian cardinal lines, `tension` is a finite number from 0 to 1,
 with default 0 preserving the existing curve. It multiplies each tangent by
@@ -317,6 +354,11 @@ Missing independent positions, invalid group keys, NaN and Infinity remain error
 Nominal/ordinal independent positions support point/band scales. Domain order
 (or first appearance) orders vertices unless path order is explicit. Stacking
 requires aligned groups; missing categories are not synthesized.
+
+Align sparse groups with `createCompleteData`: explicitly fill counts/sums with
+zero; keep missing means null with `missing: "break"`. Stack/fill/center break all
+series at unknown totals. Isolated samples produce empty paths with finite
+domains. Completion edits rematerialize area consumers.
 
 <!-- snippet-context:start -->
 

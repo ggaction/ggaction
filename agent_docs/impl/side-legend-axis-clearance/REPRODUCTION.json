@@ -1,0 +1,35 @@
+{
+  "status": "published21-default-side-legend-collision-reproduced",
+  "runtimeCommit": "e93500081b6dde6be7614e3e9352e947bec5908d",
+  "rawRows": 2,
+  "source": "vl_0167",
+  "sourceSha256": "a865b4bd24a79f6b9549e6b2a47e07b105554e3bf5b29f122562bf0b719695a0",
+  "originalInnerPlot": {
+    "width": 400,
+    "height": 300
+  },
+  "originalOuterCanvas": {
+    "width": 576,
+    "height": 364
+  },
+  "minimumInnerPlot": {
+    "width": 300,
+    "height": 200
+  },
+  "minimumOuterCanvas": {
+    "width": 560,
+    "height": 280
+  },
+  "minimumDefaultError": "The right rightAxis-axis labels and color legend overlap; guides require more margin space or different offsets.",
+  "minimumExplicitOffsetControl": {
+    "offset": 90,
+    "builds": true,
+    "nativeStoredInferredOffset": false
+  },
+  "sourceFullPrivateFailure": "tmp/total1500-0167-current-preflight/native-full-v2/failure.json",
+  "sourceFullPrivateFailureSha256": "87f8922ab925db1bfd73155349efda22139d5a9745bc24f89069c2578c58f53c",
+  "description": "Native default right legend starts at plot edge+8 regardless of an existing named right Y axis, then eager guide collision rejects a chart with ample right margin. Explicit offset90 succeeds, proving the failure is placement, not unavailable Canvas space. No public types/new option is needed for inferred placement to account for right-axis occupied extent.",
+  "modelCalls": 0,
+  "admitted": false,
+  "chartPixelsInspected": false
+}

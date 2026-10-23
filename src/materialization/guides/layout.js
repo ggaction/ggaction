@@ -1,11 +1,12 @@
 import {resetLegendClipGraphics, hasLegendClipGraphics}from"../legendClip.js";
 import { localLegendPosition } from "../legendGroups.js";
-import { needsLegendAxisReflow } from "./resources.js";
+import { needsLegendAxisReflow, needsSideLegendAxisReflow } from "./resources.js";
 import { getErrorDetails } from "../../core/diagnostics.js";
 import { planCanvasRematerialization } from "../layout.js";
 import { applyMaterializationPlan } from "../planner.js";
 import { assertGuideCollisionBlocks } from "../../layout/guideCollisions.js";
 import { resolveGuideCollisionBlocks } from "./resources.js";
+import { hasPlotUnderlays } from "../plotDrawOrder.js";
 export { resolveGuideCollisionBlocks } from "./resources.js";
 
 // Defer cross-guide checks while sibling materializers still carry old
@@ -30,6 +31,11 @@ export function withGuideLayoutTransaction(program, apply) {
           Object.values(result.guideConfigs.legend ?? {}).some(config => config.clipHeight !== undefined)) {
         result = result.rematerializeLegend();
       }
+      if (result.compositionSpec === undefined && needsSideLegendAxisReflow(program, result)) {
+        // Rebuild the native anchor before applying the current axis clearance.
+        // Axis removal must also discard any previously inferred displacement.
+        result = result.rematerializeLegend();
+      }
       if (result.compositionSpec === undefined && Object.values(result.guideConfigs.legend ?? {}).some(config =>
         ["left", "right"].includes(config.position))) {
         result = result.rematerializeSideLegendLane();
@@ -41,6 +47,7 @@ export function withGuideLayoutTransaction(program, apply) {
         result = result.rematerializeLegendGroups();
       }
       if (plot !== undefined && result.titleConfig !== undefined) result = result.rematerializeTitle();
+      if (hasPlotUnderlays(program) || hasPlotUnderlays(result)) result = result.rematerializePlotDrawOrder();
       break;
     } catch (error) {
       const overflow = getErrorDetails(error)?.canvasOverflow;

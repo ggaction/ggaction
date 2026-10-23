@@ -186,6 +186,19 @@ export function normalizeNumericRange(start, end) {
   };
 }
 
+// Negative increments are reciprocal steps, preserving exact decimal boundaries.
+export function nearestNumericIncrement(span, count) {
+  const target = span / count;
+  const exponent = Math.floor(Math.log10(target));
+  const power = 10 ** exponent;
+  if (!Number.isFinite(power) || power === 0) return null;
+  const error = target / power;
+  const factor = error >= Math.sqrt(50) ? 10
+    : error >= Math.sqrt(10) ? 5 : error >= Math.sqrt(2) ? 2 : 1;
+  const increment = exponent < 0 ? -(10 ** -exponent) / factor : factor * power;
+  return Number.isFinite(increment) && increment !== 0 ? increment : null;
+}
+
 export function niceNumericStep(
   span,
   count = 5,

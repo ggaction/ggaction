@@ -1,0 +1,115 @@
+{
+  "status": "verified-private-layout-kernel-checkpoint",
+  "baseCommit": "bb73836f78a6d3a0f6e9c999f7e30d6aeee414e7",
+  "source": {
+    "path": "src/layout/facetContentFlow.js",
+    "sha256": "ea87ba88e7e5a627b7c897db70071abea255ac5ebba1ecc111bcb344fbbdd6c7"
+  },
+  "test": {
+    "path": "test/unit/layout/facet-content-flow.test.js",
+    "sha256": "e98a247fe85610e13544e070df2b5edddeaafdd25ff3df2f5b98542d35742fbc"
+  },
+  "tests": [
+    {
+      "path": ".artifacts/facet-content-flow-full-unit-final-v1.log",
+      "sha256": "7bc4379a1a38af2842adb5beefcfd495e7d4ecf8f9758199385ba38ade487e55",
+      "pass": 3893,
+      "fail": 0
+    },
+    {
+      "path": ".artifacts/facet-content-flow-layout-suite-final-v1.log",
+      "sha256": "6db32f85567521613d9dbc123949c2d29bf39a221b4b1e30a9e3c6efcf97b00f",
+      "pass": 71,
+      "fail": 0
+    },
+    {
+      "path": ".artifacts/facet-content-flow-package-contract-final-v1.log",
+      "sha256": "a2876de734194cf6d7a2fe4c98593cda8d38004561e1dcaebf222888e3d10234",
+      "pass": 4,
+      "fail": 0
+    }
+  ],
+  "commands": [
+    "node scripts/run-tests.js unit",
+    "node --test test/unit/layout/*.test.js",
+    "node --test test/contracts/package-artifact.test.js",
+    "node scripts/package-artifact.js --check"
+  ],
+  "packageManifest": {
+    "name": "ggaction",
+    "version": "0.0.21",
+    "filename": "ggaction-0.0.21.tgz",
+    "entryCount": 612,
+    "packedBytes": 869311,
+    "unpackedBytes": 4183580
+  },
+  "retainedPriorFailures": [
+    {
+      "path": ".artifacts/facet-content-flow-package-before-budget-v1.log",
+      "reason": "612 entries exceeds611"
+    },
+    {
+      "path": ".artifacts/facet-content-flow-package-with-footers-v1.log",
+      "reason": "869314 packedbytes exceeds869000"
+    }
+  ],
+  "budgetChange": {
+    "entries": {
+      "from": 611,
+      "to": 612
+    },
+    "packedBytes": {
+      "from": 869000,
+      "to": 870000
+    },
+    "unpackedBytes": {
+      "from": 4191000,
+      "to": 4191000
+    }
+  },
+  "independentOriginalEvidence": {
+    "proofSha256": "12aaa158d2df734965a81f538f1ba29ff058a7ec4b416a56ae6abe3932d9b24b",
+    "sourceFamilies": 2,
+    "exactPanelCoordinatePairs": 7,
+    "exactSharedFooterCoordinatePairs": 5
+  },
+  "nativeMeasurementStillPending": {
+    "proofSha256": "54c500ea2c250ec13ba77211caceb4d767e8cb5595e0734d979448c92c2eaa11",
+    "measuredNativeOrigins": [
+      [
+        0,
+        0
+      ],
+      [
+        196,
+        0
+      ],
+      [
+        386,
+        0
+      ]
+    ],
+    "originalOrigins": [
+      [
+        0,
+        0
+      ],
+      [
+        199,
+        0
+      ],
+      [
+        393,
+        0
+      ]
+    ]
+  },
+  "publicApiImplemented": false,
+  "actionMaterializationConnected": false,
+  "installedTranslationRuntimeChanged": false,
+  "SchoolRequests": 0,
+  "SchoolTokens": 0,
+  "imagesInspected": false,
+  "issueClosed": false,
+  "publicRelease": false
+}

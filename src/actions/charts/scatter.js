@@ -17,10 +17,10 @@ import {
 
 const OPTIONS = Object.freeze([
   "id", "data", "coordinate", "x", "y", "color", "stroke", "size", "shape",
-  "point", "guides"
+  "point", "missing", "guides"
 ]);
 const POINT_OPTIONS = Object.freeze([
-  "shape", "fill", "opacity", "stroke", "strokeWidth", "radius",
+  "clip",   "shape", "fill", "opacity", "stroke", "strokeWidth", "radius",
   ...STROKE_STYLE_PROPERTIES
 ]);
 
@@ -62,7 +62,7 @@ export const createScatterPlot = /* @__PURE__ */ action(
     const initialPoint = { ...point };
     if (stroke !== undefined) delete initialPoint.strokeWidth;
     let next = this
-      .createPointMark({ id, data, ...initialPoint })
+      .createPointMark({ id, data, ...initialPoint, ...(args.missing === undefined ? {} : { missing: args.missing }) })
       .encodeX(positionArgs(x, { target: id, coordinate: args.coordinate }))
       .encodeY(positionArgs(y, { target: id, coordinate: args.coordinate }));
     if (radius !== undefined) next = next.encodePointRadius({ target: id, value: radius });

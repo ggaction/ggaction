@@ -1,6 +1,7 @@
 export function rematerializeHighlightBaseline(program, {
   target,
   operation,
+  scales,
   resetProperty,
   resetValue
 }) {
@@ -22,6 +23,6 @@ export function rematerializeHighlightBaseline(program, {
       property: resetProperty,
       value: resetValue
     })
-    [operation]({ id: target })
+    [operation]({ id: target, ...(scales === undefined ? {} : { scales }) })
     .rematerializeMarkHighlights({ target, highlights });
 }

@@ -214,18 +214,18 @@ function smallPolicy(overrides = {}) {
 test("derives a bounded public option inventory without runtime prototype paths", async () => {
   const inventory = await buildPublicOptionInventory(actionCards);
 
-  assert.equal(inventory.counts.publicActions, 277);
-  assert.equal(inventory.counts.topLevelOptionPaths, 2381);
-  assert.equal(inventory.counts.nestedOptionPaths, 14590);
-  assert.equal(inventory.counts.optionPaths, 16971);
-  assert.equal(inventory.counts.requiredOptionPaths, 12303);
-  assert.equal(inventory.counts.excludedOptionPaths, 4668);
-  assert.equal(inventory.counts.topLevelCategoricalPaths, 805);
-  assert.equal(inventory.counts.topLevelLiteralValues, 3163);
-  assert.equal(inventory.counts.literalFamilies, 181);
-  assert.equal(inventory.counts.pathLiteralRequirements, 8871);
-  assert.equal(inventory.counts.familyLiteralRequirements, 319);
-  assert.equal(inventory.counts.pathDiversityRequirements, 369);
+  assert.equal(inventory.counts.publicActions, 286);
+  assert.equal(inventory.counts.topLevelOptionPaths, 2495);
+  assert.equal(inventory.counts.nestedOptionPaths, 16119);
+  assert.equal(inventory.counts.optionPaths, 18614);
+  assert.equal(inventory.counts.requiredOptionPaths, 13297);
+  assert.equal(inventory.counts.excludedOptionPaths, 5317);
+  assert.equal(inventory.counts.topLevelCategoricalPaths, 873);
+  assert.equal(inventory.counts.topLevelLiteralValues, 3593);
+  assert.equal(inventory.counts.literalFamilies, 186);
+  assert.equal(inventory.counts.pathLiteralRequirements, 9708);
+  assert.equal(inventory.counts.familyLiteralRequirements, 442);
+  assert.equal(inventory.counts.pathDiversityRequirements, 391);
   const bootstrapMethodRoots = [
     "createDerivedData.transform[].aggregates[].op.method",
     "createDerivedData.transform[].method",
@@ -392,14 +392,23 @@ test("derives a bounded public option inventory without runtime prototype paths"
     .filter(option => option.path.endsWith(".anchor"))
     .map(option => option.id), [
     "option-path:createMarkLabels.placement.anchor",
-    "option-path:editMarkLabelPlacement.placement.anchor"
+    "option-path:editMarkLabelPlacement.placement.anchor",
+    "option-path:facet.headers.anchor",
+    "option-path:facet.headers.column.anchor",
+    "option-path:facet.headers.row.anchor",
+    "option-path:facetGrid.headers.anchor",
+    "option-path:facetGrid.headers.column.anchor",
+    "option-path:facetGrid.headers.row.anchor",
+    "option-path:repeatCharts.headers.anchor",
+    "option-path:repeatCharts.headers.column.anchor",
+    "option-path:repeatCharts.headers.row.anchor"
   ]);
   assert.deepEqual(
     inventory.excludedOptionPaths.reduce((counts, value) => ({
       ...counts,
       [value.reason]: (counts[value.reason] ?? 0) + 1
     }), {}),
-    { "redacted-array": 4668 }
+    { "redacted-array": 5317 }
   );
   const values = id => optionById.get(id)?.values ?? [];
   assert.equal(optionById.has("option-path:createScatterPlot.x.scale.palette"), false);
@@ -427,8 +436,8 @@ test("derives a bounded public option inventory without runtime prototype paths"
     option.required &&
     /(?:^|\.)(?:xScale|yScale|valueScale|densityScale|scale)\.type$/u.test(option.path)
   );
-  assert.equal(scaleTypePaths.length, 148);
-  assert.equal(scaleTypePaths.reduce((sum, option) => sum + option.values.length, 0), 687);
+  assert.equal(scaleTypePaths.length, 150);
+  assert.equal(scaleTypePaths.reduce((sum, option) => sum + option.values.length, 0), 697);
   assert.equal(inventory.excludedOptionPaths.every(option =>
     optionById.get(option.replacement)?.required === true
   ), true);
@@ -443,7 +452,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
     "option-path:createData.values[]"), false);
   assert.equal(ledger.requirements.some(requirement => requirement.id ===
     "option-path:createDerivedData.transform[].type"), false);
-  assert.equal(ledger.requirements.length, 21774);
+  assert.equal(ledger.requirements.length, 23737);
   const directBootstrapMethods = bootstrapMethodRoots.filter(root => !root.includes("[]"));
   const directBootstrapOptions = directBootstrapMethods.flatMap(root =>
     ["samples", "seed", "type"].map(key => `option-path:${root}.${key}`));

@@ -5,6 +5,7 @@ import { isPlainObject } from "../../../core/immutable.js";
 import { validateUserId } from "../../../core/identifiers.js";
 import { validateKeys, validateOptionObject } from "../../../core/validation.js";
 import { findCoordinate } from "../../../selectors/coordinates.js";
+import { resolveParallelAxisTarget } from "./parallel/resolve.js";
 import { resolvePolarGuideResources } from "../polar/resolve.js";
 
 const TOP_OPTIONS = Object.freeze([
@@ -326,6 +327,44 @@ const createAxes = /* @__PURE__ */ action(
   }
 );
 
+// Aggregate existing component editors; omission/false preserves that axis.
+const editAxes = /* @__PURE__ */ action(
+  { op: "editAxes", description: "Edit selected existing axes in one atomic layout transaction." },
+  function (args = {}) {
+    const methods = { x: "editXAxis", y: "editYAxis", theta: "editThetaAxis",
+      radius: "editRadialAxis", parallel: "editParallelAxis" };
+    validateOptionObject(args, Object.keys(methods), "editAxes", { allowEmpty: false });
+    const plan = [];
+    for (const [channel, method] of Object.entries(methods)) {
+      const option = args[channel];
+      if (option === undefined || option === false) continue;
+      const entries = Array.isArray(option) ? option : [option];
+      if (entries.length === 0 || entries.some(entry => !isPlainObject(entry))) {
+        throw new TypeError(`editAxes ${channel} must be a plain object or a nonempty array of edit options.`);
+      }
+      if (Array.isArray(option) && ["theta", "radius"].includes(channel)) {
+        throw new TypeError(`editAxes ${channel} does not accept an array.`);
+      }
+      const targets = new Set();
+      for (const entry of entries) {
+        if (Array.isArray(option) && ["x", "y"].includes(channel) && entry.target === undefined) {
+          throw new Error(`editAxes ${channel} arrays require an explicit axis target for every entry.`);
+        }
+        const key = channel === "parallel" ? `${resolveParallelAxisTarget(this, entry.target ?? this.guideConfigs.axis?.parallel?.axes?.target)}:${entry.field}` : entry.target ?? channel;
+        if (targets.has(key)) throw new Error(`editAxes ${channel} contains a duplicate axis target.`);
+        targets.add(key);
+        plan.push({ method, args: entry });
+      }
+    }
+    if (plan.length === 0) throw new Error("editAxes requires at least one axis change.");
+    const apply = source => plan.reduce((program, step) => program[step.method](step.args), source);
+    // Preflight the full immutable proposal before beginning the returned branch.
+    withGuideLayoutTransaction(this, apply);
+    return withGuideLayoutTransaction(this, apply);
+  }
+);
+
 export function registerAxisCollectionActions(ProgramClass) {
   ProgramClass.prototype.createAxes = createAxes;
+  ProgramClass.prototype.editAxes = editAxes;
 }

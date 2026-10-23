@@ -901,6 +901,28 @@
       "regression statistics dataset",
       "linear fit coefficients",
       "R-squared and observation count"
+    ],
+    "FlattenData": [
+      "aligned array data",
+      "parallel array expansion",
+      "zip arrays into rows"
+    ],
+    "Dx": [
+      "horizontal text offset",
+      "text pixel shift"
+    ],
+    "Dy": [
+      "vertical text offset",
+      "text pixel shift"
+    ],
+    "LookupData": [
+      "named table lookup",
+      "copy reference fields",
+      "match typed keys"
+    ],
+    "StatisticalReference": [
+      "statistical reference",
+      "interval"
     ]
   },
   "summaryOverrides": {
@@ -1567,6 +1589,79 @@
     "editRegressionStatisticsData": {
       "target": "fitStatistics",
       "source": "anotherFit"
+    },
+    "createFlattenData": {
+      "id": "expanded",
+      "fields": [
+        "amounts",
+        "labels"
+      ],
+      "as": [
+        "amount",
+        "label"
+      ]
+    },
+    "editFlattenData": {
+      "target": "expanded",
+      "as": [
+        "amount",
+        "category"
+      ]
+    },
+    "encodeDx": {
+      "value": 8
+    },
+    "encodeDy": {
+      "value": 8
+    },
+    "createLookupData": {
+      "id": "ages",
+      "field": "person",
+      "lookup": {
+        "data": "people",
+        "key": "name",
+        "fields": [
+          "age"
+        ]
+      }
+    },
+    "editLookupData": {
+      "target": "ages",
+      "lookup": {
+        "data": "people",
+        "key": "name",
+        "fields": [
+          "age"
+        ],
+        "as": [
+          "years"
+        ]
+      }
+    },
+    "editRadarPlot": {
+      "target": "radarPlot",
+      "wide": {
+        "fields": [
+          "quality",
+          "speed"
+        ]
+      }
+    },
+    "editAxes": {
+      "x": {
+        "labels": {
+          "fontSize": 11
+        }
+      },
+      "y": {
+        "labels": {
+          "fontSize": 11
+        }
+      }
+    },
+    "createStatisticalReference": {
+      "source": "points",
+      "axis": "y"
     }
   },
   "callPatternOverrides": {
@@ -1579,7 +1674,7 @@
       "createReferenceLine({ space: \"plot\", x: 0.5 })"
     ],
     "createReferenceBand": [
-      "createReferenceBand({ space: \"plot\", y: [0.2, 0.8] })"
+      "createReferenceBand({ y: [2, 6] })"
     ],
     "createMarkLabels": [
       "createMarkLabels({ source?, content? })"
@@ -1761,6 +1856,20 @@
     ],
     "editRegressionStatisticsData": [
       "editRegressionStatisticsData({ target?, source? })"
+    ],
+    "encodeDx": [
+      "encodeDx({ target?, field })",
+      "encodeDx({ target?, value })"
+    ],
+    "encodeDy": [
+      "encodeDy({ target?, field })",
+      "encodeDy({ target?, value })"
+    ],
+    "editRadarPlot": [
+      "editRadarPlot({ target?, wide: { fields } })"
+    ],
+    "createStatisticalReference": [
+      "createStatisticalReference({ source, axis, statistic?, statistics? })"
     ]
   },
   "errorOverrides": {

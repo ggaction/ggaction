@@ -5,6 +5,7 @@ import { validateOptionObject } from "../../core/validation.js";
 import { findDataset } from "../../selectors/datasets.js";
 import { findLayer } from "../../selectors/layers.js";
 import { findSemanticScale } from "../../selectors/scales.js";
+import { retainStatisticalDependents, restoreStatisticalDependents } from "../marks/dependentReferences.js";
 import { resolveViolinRoles } from "../violinPlots/create.js";
 import {
   applyFacadeGuides,
@@ -111,6 +112,13 @@ function roleScale(encoding, fallbackId, label, defaults = {}) {
 
 function normalizeColor(value, category, id) {
   if (value === undefined || value === false) return undefined;
+  if (isPlainObject(value) && Object.hasOwn(value, "value")) {
+    validateOptionObject(value, ["value"], "Raincloud fixed color");
+    if (typeof value.value !== "string" || value.value.length === 0) {
+      throw new TypeError("Raincloud fixed color requires a non-empty value.");
+    }
+    return { value: value.value };
+  }
   const color = normalizeEncoding(value, "Raincloud color");
   if (color.field !== category.field) {
     throw new Error("Raincloud color must encode its category field.");
@@ -194,6 +202,9 @@ function addSummary(program, config, positions) {
       y: positions.y,
       width: options.width ?? { band: 0.24 },
       ...options,
+      ...(config.color?.value === undefined ? {} : {
+        box: { ...(options.box ?? {}), fill: config.color.value }
+      }),
       guides: false
     });
     if (config.color !== undefined) next = next.encodeColor({ target: id, ...config.color });
@@ -238,7 +249,7 @@ function addPoints(program, config, positions) {
     coordinate: config.coordinate,
     x: positions.x,
     y: positions.y,
-    ...(config.color === undefined ? {} : { color: config.color }),
+    ...(config.color?.field === undefined ? {} : { color: config.color }),
     ...(size === undefined ? {} : { size }),
     ...(shape === undefined ? {} : { shape }),
     ...(point === undefined ? {} : { point }),
@@ -274,7 +285,7 @@ function buildRaincloud(program, config) {
       coordinate: config.coordinate,
       x: positions.x,
       y: positions.y,
-      ...(config.color === undefined ? {} : { color: config.color }),
+      ...(config.color?.field === undefined ? {} : { color: config.color }),
       density: { ...density, side: densitySide(config.orientation, config.side) },
       ...(area === undefined ? {} : { area }),
       guides: false
@@ -282,6 +293,11 @@ function buildRaincloud(program, config) {
   }
   next = addSummary(next, config, positions);
   next = addPoints(next, config, positions);
+  if (config.color?.value !== undefined) {
+    for (const id of [config.childIds.cloud, config.childIds.points]) {
+      if (findLayer(next, id) !== undefined) next = next.encodeColor({ target: id, value: config.color.value });
+    }
+  }
   const ownerId = [config.childIds.cloud, config.childIds.summary, config.childIds.points]
     .find(id => findLayer(next, id) !== undefined);
   if (ownerId === undefined) throw new Error("Raincloud requires at least one enabled component.");
@@ -395,11 +411,16 @@ export const editRaincloudPlot = /* @__PURE__ */ action(
     }
     const ownerId = raincloudOwner(this, args.target);
     const current = this.markConfigs[ownerId].raincloudPlot;
+    const category = Object.hasOwn(args, "category") ? args.category : current.category;
+    const color = Object.hasOwn(args, "color") ? args.color
+      : Object.hasOwn(args, "category") && current.color?.field === current.category.field
+        ? { ...current.color, field: normalizeEncoding(category, "Raincloud category").field }
+        : current.color;
     const candidateArgs = {
       id: current.id,
       data: Object.hasOwn(args, "data") ? args.data : current.source,
       ...(current.coordinate === undefined ? {} : { coordinate: current.coordinate }),
-      category: Object.hasOwn(args, "category") ? args.category : current.category,
+      category,
       value: Object.hasOwn(args, "value") ? args.value : current.value,
       orientation: args.orientation ?? current.orientation,
       side: args.side ?? current.side,
@@ -412,11 +433,21 @@ export const editRaincloudPlot = /* @__PURE__ */ action(
       points: Object.hasOwn(args, "points")
         ? normalizePoints(args.points, current.points)
         : current.points,
-      color: Object.hasOwn(args, "color") ? args.color : current.color,
+      color,
       guides: current.guides
     };
-    const withoutCurrent = this.removeMark({ target: ownerId });
+    const axes = { fromAxis: current.orientation === "vertical" ? "y" : "x",
+      toAxis: candidateArgs.orientation === "vertical" ? "y" : "x" };
+    const retained = retainStatisticalDependents(this, ownerId);
+    const withoutCurrent = retained.program.removeMark({ target: ownerId });
     const revised = normalizeCreate(withoutCurrent, candidateArgs, operation);
-    return buildRaincloud(alignExistingRoleScales(withoutCurrent, revised), revised);
+    const rebuilt = buildRaincloud(alignExistingRoleScales(withoutCurrent, revised), {
+      ...revised,
+      ...(!Object.hasOwn(args, "data") && current.sourceFilter !== undefined
+        ? { sourceFilter: current.sourceFilter } : {})
+    });
+    return restoreStatisticalDependents(rebuilt, retained.references, {
+      ...axes, fallbackSource: raincloudOwner(rebuilt, current.id)
+    });
   }
 );

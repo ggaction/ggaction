@@ -2,7 +2,7 @@ import { closedAction } from "../../core/action.js";
 
 import { normalizeBoxSummary } from "../../grammar/boxPlot.js";
 import { findSemanticScale } from "../../selectors/scales.js";
-import { resolveFacadeData } from "../charts/shared.js";
+import { normalizeEncoding, resolveFacadeData } from "../charts/shared.js";
 import {
   BOX_PLOT_OPTIONS,
   boxEncodingArgs,
@@ -51,6 +51,10 @@ export const createBoxPlot = /* @__PURE__ */ closedAction(
       throw new TypeError("createBoxPlot outliers must be a boolean.");
     }
     const box = resolveBoxAppearance(args.box);
+    const color = normalizeEncoding(args.color, "createBoxPlot color");
+    if (color !== undefined && args.box?.fill !== undefined) {
+      throw new Error("createBoxPlot box.fill cannot be combined with color.");
+    }
     const median = resolveBoxMedianAppearance(args.median);
     const outlier = resolveBoxOutlierAppearance(args.outlier);
     const guides = resolveBoxGuides(args.guides);
@@ -77,6 +81,7 @@ export const createBoxPlot = /* @__PURE__ */ closedAction(
         box,
         median,
         outlier,
+        ...(color === undefined ? {} : { color }),
         guides
       }
     });

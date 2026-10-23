@@ -23,7 +23,9 @@ basic().createLegend({ combine: "color-size" });
 // @ts-expect-error Combined modes have a closed vocabulary.
 p.createLegend({ combine: "color-opacity" });
 p.editLegend({ representation: "symbols", values: [2,4] });
-p.editLegend({ representation: "gradient" });
+p.editLegend({ representation: "gradient", values: [2,4,8] });
+p.createLegend({ channels: ["stroke"], values: [2,4,8] });
+basic().createLegend({ values: [2,4,8], gradient: { length: 125 } });
 p.editLegend({ values: "auto", count: 5 });
 p.editLegendBlock({ target: "points", channel: "color", values: [2,4], symbol: { size: 25, strokeWidth: 1.5 } });
 p.createGuides({ legend: options });

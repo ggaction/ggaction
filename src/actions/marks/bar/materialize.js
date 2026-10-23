@@ -1,3 +1,4 @@
+import { materializeMarkClip } from "../../../materialization/markClip.js";
 import { findLayer } from "../../../selectors/layers.js";
 import { editGraphicProperties } from "../../primitives/graphicProperties.js";
 import { action } from "../../../core/action.js";
@@ -29,12 +30,12 @@ function editRectangles(program, id, rectangles) {
     item.properties?.blend !== undefined);
   if (hasShapeStyle || blend !== undefined || previousBlend) {
     const radius = appearance;
-    return replaceGraphicItems(
+    return materializeMarkClip(replaceGraphicItems(
       program,
       id,
       "rect",
       rectangles.map(rectangle => materializeRectItem(rectangle, radius))
-    );
+    ), id);
   }
   let next = editGraphicProperties(program, id, {
     length: rectangles.length,
@@ -53,7 +54,7 @@ function editRectangles(program, id, rectangles) {
       value: rectangles.map(rect => rect.opacity ?? 1)
     });
   }
-  return next;
+  return materializeMarkClip(next, id);
 }
 
 export const rematerializeBarMark = /* @__PURE__ */ action(
@@ -74,6 +75,7 @@ export const rematerializeBarMark = /* @__PURE__ */ action(
     const highlighted = rematerializeHighlightBaseline(this, {
       target: id,
       operation: "rematerializeBarMark",
+      scales: args.scales,
       resetProperty: "items",
       resetValue: []
     });

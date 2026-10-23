@@ -1,0 +1,254 @@
+{
+  "status": "existing-primitive-target-rendered-proposed-public-api-not-implemented",
+  "runtimeBaselineCommit": "6d7e466eb95172bc6176a4175842a6ed2c47dfbe",
+  "canvas": {
+    "width": 508,
+    "height": 262
+  },
+  "baselineCanvas": {
+    "width": 508,
+    "height": 302
+  },
+  "unitCanvas": {
+    "width": 136,
+    "height": 262,
+    "margin": {
+      "left": 40,
+      "right": 56,
+      "top": 43,
+      "bottom": 19
+    }
+  },
+  "plotOrigins": [
+    {
+      "x": 40,
+      "y": 43,
+      "width": 40,
+      "height": 200
+    },
+    {
+      "x": 102,
+      "y": 43,
+      "width": 40,
+      "height": 200
+    },
+    {
+      "x": 164,
+      "y": 43,
+      "width": 40,
+      "height": 200
+    },
+    {
+      "x": 226,
+      "y": 43,
+      "width": 40,
+      "height": 200
+    },
+    {
+      "x": 288,
+      "y": 43,
+      "width": 40,
+      "height": 200
+    },
+    {
+      "x": 350,
+      "y": 43,
+      "width": 40,
+      "height": 200
+    },
+    {
+      "x": 412,
+      "y": 43,
+      "width": 40,
+      "height": 200
+    }
+  ],
+  "sourceRows": [
+    {
+      "panel": "Sun",
+      "group": "a",
+      "value": 13
+    },
+    {
+      "panel": "Sun",
+      "group": "b",
+      "value": 14
+    },
+    {
+      "panel": "Mon",
+      "group": "a",
+      "value": 13
+    },
+    {
+      "panel": "Mon",
+      "group": "b",
+      "value": 14
+    },
+    {
+      "panel": "Tue",
+      "group": "a",
+      "value": 13
+    },
+    {
+      "panel": "Tue",
+      "group": "b",
+      "value": 14
+    },
+    {
+      "panel": "Wed",
+      "group": "a",
+      "value": 13
+    },
+    {
+      "panel": "Wed",
+      "group": "b",
+      "value": 14
+    },
+    {
+      "panel": "Thu",
+      "group": "a",
+      "value": 13
+    },
+    {
+      "panel": "Thu",
+      "group": "b",
+      "value": 14
+    },
+    {
+      "panel": "Fri",
+      "group": "a",
+      "value": 13
+    },
+    {
+      "panel": "Fri",
+      "group": "b",
+      "value": 14
+    },
+    {
+      "panel": "Sat",
+      "group": "a",
+      "value": 13
+    },
+    {
+      "panel": "Sat",
+      "group": "b",
+      "value": 14
+    }
+  ],
+  "sourceRowsUnchanged": true,
+  "targetDelta": 39.609375,
+  "sourceAxisEndpointLabelPreserved": true,
+  "domRequired": [
+    {
+      "text": "50",
+      "bounds": {
+        "left": 16.875,
+        "top": 36.5,
+        "right": 28,
+        "bottom": 48.5
+      },
+      "attributes": {
+        "x": "28",
+        "y": "43.890625",
+        "fill": "black",
+        "font-family": "sans-serif",
+        "font-size": "10",
+        "font-weight": "normal",
+        "text-anchor": "end",
+        "dominant-baseline": "middle",
+        "opacity": "1"
+      }
+    },
+    {
+      "text": "Sun",
+      "bounds": {
+        "left": 51.1015625,
+        "top": 20,
+        "right": 68.8984375,
+        "bottom": 32
+      },
+      "attributes": {
+        "x": "60",
+        "y": "27.390625",
+        "fill": "#0f172a",
+        "font-family": "sans-serif",
+        "font-size": "10",
+        "font-weight": "400",
+        "text-anchor": "middle",
+        "dominant-baseline": "middle",
+        "opacity": "1"
+      }
+    },
+    {
+      "text": "Grouped Bar Chart",
+      "bounds": {
+        "left": 40,
+        "top": 3,
+        "right": 157.015625,
+        "bottom": 18
+      },
+      "attributes": {
+        "x": "40",
+        "y": "11.546875",
+        "fill": "black",
+        "font-family": "sans-serif",
+        "font-size": "13",
+        "font-weight": "700",
+        "text-anchor": "start",
+        "dominant-baseline": "middle",
+        "opacity": "1"
+      }
+    }
+  ],
+  "fullPrimitiveGraphicSpecExactToIndependentLiteralPlacement": true,
+  "primitiveCodeSha256": "ccb819b7d77b1ff1cdb2949c329095f4be8e07465cf0d558ddd84e24594194a5",
+  "baselineProbe": "agent_docs/impl/facet-shared-top-lane/baseline.mjs",
+  "primitive": "agent_docs/impl/facet-shared-top-lane/target.primitive.mjs",
+  "outputs": [
+    {
+      "name": "stacked-control",
+      "width": 508,
+      "height": 302,
+      "svgSha256": "74b3a86e9f49f7cbb6e16d19ca3b24c7d238099701037704cd221b0fb433e215",
+      "pngSha256": "860d07c005a59707cb3d4b99226c0298cd6ecae147a6f1bb1b843f301f5e830c",
+      "pngDpr2Sha256": "025968330e10bbd95a6c03a1a99edd9714e96539fb5b0b32a7e0603489cd763b",
+      "pdfSha256": "d2485aba7e1f2730ba9fd96d9b381b443e0769054e1673b61f0d79a7d751c0b0",
+      "plotInk": 12547
+    },
+    {
+      "name": "shared-top-primitive-target",
+      "width": 508,
+      "height": 262,
+      "svgSha256": "de206f4ca840e4d7acb1c11f179c4bd0ed7d304e22cf26fdc8cf5c12797b86c3",
+      "pngSha256": "b58e155ae631c70b16e1aaa0cb9b65930bdbddf2a5c058298c1197fd1a14e482",
+      "pngDpr2Sha256": "a281c3b850ab61db9527d668b3b6254ad3a54996813375f02a32d413b875bfc5",
+      "pdfSha256": "5d48c7a2822029523ae4773d39df29c9cefaaa1cb2b308312dde592aa7466d3a",
+      "plotInk": 12351
+    }
+  ],
+  "before": [
+    {
+      "route": "facet",
+      "error": "Unknown facet option \"topLane\"."
+    },
+    {
+      "route": "facetGrid",
+      "error": "Unknown facetGrid option \"topLane\"."
+    },
+    {
+      "route": "repeatCharts",
+      "error": "Unknown repeatCharts option \"topLane\"."
+    },
+    {
+      "route": "editCompositionLayout-shared",
+      "error": "Unknown editCompositionLayout option \"topLane\"."
+    },
+    {
+      "route": "editCompositionLayout-stacked",
+      "error": "Unknown editCompositionLayout option \"topLane\"."
+    }
+  ],
+  "schoolCalls": 0,
+  "chartPixelsInspected": false,
+  "baselineProbeHistory": "Initial uncalibrated inferred-legend probe658x304 preserved; explicit unit legend produces intended508width. Original baseline-v2 invocation failed on an incorrect private serialization helper before DOM capture; corrected baseline-v3 uses public serializeProgram. No runtime API implemented or acceptance claimed through those probes."
+}

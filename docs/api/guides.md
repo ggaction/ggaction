@@ -251,3 +251,9 @@ be selected.
 
 [Axes](./axes.md) · [Grids](./grids.md) · [Legends](./legends.md) ·
 [Titles](./titles.md)
+
+`createGuides` also accepts facet parents: it creates applicable guides on the
+retained source. Unchanged automatic guides preserve panels; new guides rederive them.
+Datum-only anchors, such as a rug baseline, do not infer an axis. Independent
+appearance channels can be requested together through `legend.channels`; sampled
+opacity and stroke-width legends become separate blocks alongside color.

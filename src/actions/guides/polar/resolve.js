@@ -22,7 +22,7 @@ import {
   walkGraphicDrawOrder
 } from "../../../grammar/schemas/graphicTree.js";
 import { valuesFromTickConfig } from "../tickValues.js";
-import { formatAxisValue, validateAxisFormat } from "../axes/policy.js";
+import { formatAxisValue, formatNumericAxisTicks, validateAxisFormat } from "../axes/policy.js";
 import { resolveDisplayLabel } from "../../../grammar/displayLabels.js";
 
 export const POLAR_AXIS_DEFAULTS = Object.freeze({
@@ -200,6 +200,7 @@ export function mapPolarGuideValues(program, config) {
 
 export function formatPolarGuideValues(program, config, values) {
   const scale = program.resolvedScales[config.scale];
+  if (config.format === "ticks") return formatNumericAxisTicks(values, scale.type);
   if (["ordinal", "band", "point"].includes(scale.type)) {
     return values.map(value => resolveDisplayLabel(
       value,

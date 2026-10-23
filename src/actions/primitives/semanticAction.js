@@ -7,7 +7,7 @@ import {
   removeOwnedPath
 } from "../../core/immutable.js";
 import { parseSemanticPath } from "../../grammar/schemas/semanticPath.js";
-import { deriveTransformSchema, inferDatasetSchema, validateRowsAgainstSchema } from "../../grammar/datasetSchema.js";
+import { deriveTransformSchema, inferDatasetSchema, validateRowsAgainstSchema,datasetSchemaContext } from "../../grammar/datasetSchema.js";
 
 
 const CONTEXT_KEYS = Object.freeze({
@@ -57,7 +57,7 @@ function updateEntity(spec, parsed, value) {
         source.schema,
         value[0],
         undefined,
-        { sourceId: source.id, ownerId: parsed.id, sourceTransform: source.transform?.[0] }
+        datasetSchemaContext(source,value[0],parsed.id,id=>collection.find(d=>d.id===id))
       ));
     }
   }
@@ -70,11 +70,8 @@ function updateEntity(spec, parsed, value) {
       ? undefined
       : collection.find(dataset => dataset.id === current.source);
     const schema = source?.schema !== undefined && current.transform?.length === 1
-      ? deriveTransformSchema(source.schema, current.transform[0], value, {
-          sourceId: source.id,
-          sourceTransform: source.transform?.[0],
-          ownerId: parsed.id
-        })
+      ? deriveTransformSchema(source.schema, current.transform[0], value,
+          datasetSchemaContext(source,current.transform[0],parsed.id,id=>collection.find(d=>d.id===id)))
       : inferDatasetSchema(value);
     validateRowsAgainstSchema(value, schema, `Dataset "${parsed.id}"`);
     updated = setNestedProperty(updated, ["schema"], schema);
@@ -207,6 +204,15 @@ export function withRematerializedDerivedDataset(program, {
 // replaying their canonical primitive owners. Keep that speculative clone in
 // the primitive boundary and preserve the caller's layer for later dependency
 // and guide reconciliation.
+export function withPreviewLayerEncodings(program, { id, encodings }) {
+  return program._clone({ semanticSpec: {
+    ...program.semanticSpec,
+    layers: program.semanticSpec.layers.map(layer => layer.id === id
+      ? { ...layer, encoding: { ...layer.encoding, ...encodings } }
+      : layer)
+  } });
+}
+
 export function withoutPreviewLayerEncodings(program, { id, channels }) {
   const removed = new Set(channels);
   const semanticSpec = {

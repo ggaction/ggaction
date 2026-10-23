@@ -15,6 +15,7 @@ import {
 } from "./resolve.js";
 import { polarGuideNames } from "../polar/resolve.js";
 import { resolveAutomaticGridOptions } from "../applicability.js";
+import { hasPlotUnderlays } from "../../../materialization/plotDrawOrder.js";
 
 const CARTESIAN_OPTIONS = Object.freeze(["horizontal", "vertical"]);
 const POLAR_OPTIONS = Object.freeze(["theta", "radial"]);
@@ -78,7 +79,7 @@ function makeRematerialize(direction) {
           value: geometry[property]
         });
       }
-      return editGraphicProperties(next, operation.graphic, {
+      next = editGraphicProperties(next, operation.graphic, {
         stroke: config.color,
         strokeWidth: config.lineWidth
       })
@@ -87,6 +88,7 @@ function makeRematerialize(direction) {
           property: "strokeDash",
           value: geometry.strokeDash
         });
+      return hasPlotUnderlays(next) ? next.rematerializePlotDrawOrder() : next;
     }
   );
 }

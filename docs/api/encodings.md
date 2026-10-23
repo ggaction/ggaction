@@ -11,6 +11,18 @@ Encoding actions connect data fields or constants to chart channels. Ordinary
 authors choose the relationship; ggaction infers a unique target, coordinate,
 scale ID, and field type when the stored program makes that choice safe.
 
+## Reassign an existing encoding
+
+Calling an available field encoding again can replace settings on its bound
+scale. In `ggaction/basic`, same-type reassignment uses the same validation and
+mark, axis, grid, and legend updates as Full. Every shared consumer must remain
+valid; failure preserves the earlier program and caller data.
+
+Basic still has no public `editScale`, focused scale editors, or legend editors.
+Scale-type transitions require Full, or a new scale ID in Basic. Saving a Basic
+program preserves its internal actions; restoring it returns the existing
+editable Full program. See [Saved programs](../data-updates.md#save-and-restore-snapshots).
+
 ## Choose a family
 
 <div class="docs-entry-grid docs-entry-grid--two">
@@ -38,14 +50,15 @@ The tables below are generated from the same reviewed capability registry used b
 | `encodeTheta` | point, line, arc | point/line: quantitative, temporal, ordinal, nominal; arc: quantitative, ordinal, nominal | arc maps direct quantitative values, category counts, or category-weighted sums to proportional sectors |
 | `encodeR` | point, line, arc | point/line/arc: quantitative | radial position; arc combines it with a categorical theta band |
 | `encodeParallelCoordinates` | line | line: quantitative, ordinal | atomic ordered dimensions; one namespaced scale and axis per dimension |
+| `encodeDx` / `encodeDy` | text | text: quantitative | independent Text only; finite field or constant logical-pixel offsets, no scale or guide; field offsets establish row grain |
 
 ### Color channels
 
 | Mode | Supported marks | Field types | Important options |
 | --- | --- | --- | --- |
-| Categorical | point, line, area, bar, rect, arc, text | point/line/area/bar/rect/arc/text: nominal, ordinal | bar/area layout; arc overlay; palette and ordinal scale |
-| Continuous | point, aggregate bar, rect, text, area | point/rect/text: quantitative, temporal; aggregate bar/area: quantitative | sequential scale; aggregate required for a different bar measure; area requires one finite value per existing series |
-| Discretized continuous | point, aggregate bar, rect, text, area | point/aggregate bar/rect/text/area: quantitative | quantize, quantile, or threshold scale; area requires one finite value per existing series |
+| Categorical | point, line, area, bar, rect, arc, text | point/line/area/bar/rect/arc/text: nominal, ordinal | bar/area layout; arc overlay; palette and ordinal scale; explicit-domain row-owned Cartesian line color supports unknown paint |
+| Continuous | point, aggregate bar, rect, text, area, tick | point/rect/text/tick: quantitative, temporal; aggregate bar/area: quantitative | sequential scale; aggregate required for a different bar measure; area requires one finite value per existing series; tick paints its centered segment and rejects simultaneous stroke |
+| Discretized continuous | point, aggregate bar, rect, text, area, tick | point/aggregate bar/rect/text/area/tick: quantitative | quantize, quantile, or threshold scale; area requires one finite value per existing series; tick maps colors per row |
 
 ### Independent stroke channel
 
@@ -79,9 +92,9 @@ The tables below are generated from the same reviewed capability registry used b
 | --- | --- | --- |
 | Categorical color/shape/dash | point, line, area, bar, rect, arc, text | ordinal color; point shape; line strokeDash; compatible composites follow family constraints |
 | Categorical stroke | point, line, area, bar, rect, arc, rule, tick | ordinal stroke; final-item or series identities |
-| Continuous color gradient | point, aggregate bar, rect, text | sequential color; gradient swatch, no symbol recipe |
+| Continuous color gradient | point, aggregate bar, rect, text, tick | sequential color; gradient swatch, no symbol recipe |
 | Continuous stroke gradient | point, line, area, bar, rect, arc, rule, tick | sequential stroke; separate gradient, no symbol recipe |
-| Discretized color interval | point, aggregate bar, rect | quantize/quantile/threshold color; rectangle swatches |
+| Discretized color interval | point, aggregate bar, rect, tick | quantize/quantile/threshold color; rectangle swatches |
 | Discretized stroke interval | point, line, area, bar, rect, arc, rule, tick | quantize/quantile/threshold stroke; outline-colored interval symbols |
 | Size | point | size; continuous numeric samples or every discrete interval; point glyph symbol |
 | Opacity | point, line, bar | quantitative opacity samples; representative point symbol even for line consumers; Rule opacity has no legend |
@@ -94,6 +107,47 @@ The tables below are generated from the same reviewed capability registry used b
 | Parallel dimension axes | `createAxes` / `createParallelAxes` / `createParallelAxis` | `editParallelAxis` / `removeParallelAxis` / `removeParallelAxes` | line, ticks, labels, title from each stored dimension |
 
 <!-- action-capabilities:summary:end -->
+
+## Fixed or variable appearance
+
+Use the same action for either a constant `value` or a data `field`. These are
+mutually exclusive. Constants have no scale or legend; field mappings use the
+existing scale options and final-item grain constraints. Switching to a constant
+removes that channel's legend participation, preserving other guides and styles.
+Switching back to a field removes its constant override. Color supports point,
+line, bar, area, arc, rect and text; size supports point marks.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```js
+import { chart } from "ggaction";
+const data = [{ x: 1, y: 2, group: "A" }, { x: 2, y: 4, group: "B" }];
+const fixed = chart().createCanvas().createData({ values: data })
+  .createScatterPlot({ x: "x", y: "y", guides: false })
+  .encodeColor({ value: "#4c78a8" })
+  .encodeSize({ value: 64 }) // Equal graphical area, in square pixels.
+  .encodeOpacity({ value: 0.7 });
+const variable = fixed.encodeColor({ field: "group" })
+  .encodeSize({ field: "y", scale: { range: [20, 240] } })
+  .encodeOpacity({ field: "y", scale: { range: [0.25, 1] } });
+```
+
+`encodeStroke` likewise accepts constant colors or field mappings. Field-driven
+Line/Area appearance must still be unambiguous within each series; fixed values
+work without requiring a suitable field. `encodeRadius` remains a direct radius
+assignment and rejects an active size mapping; use `encodeSize({ value })` for
+an atomic switch to constant area.
+
+
+For an aggregate bar with no existing group or layout, coloring the same
+nominal/ordinal field used on the category axis preserves bar positions, widths,
+and heights. This applies to both vertical and horizontal bars. A different color
+field retains the default grouped layout. Explicit or previously stored layouts
+and independent series groups take precedence.
 
 ## Direction
 
@@ -162,6 +216,10 @@ and density work is limited to 10,000,000 source-row/sample units.
 It accepts existing compatible x/y encodings or explicit `x` and `y`, then
 owns the folded y/y2 positions and positive/negative palettes as one action.
 Horizon charts intentionally keep only the source-facing x guide.
+
+An explicit color legend shows the original measure and band intervals.
+Different independent extents use relative band labels. `editHorizon` refreshes
+inferred labels while retaining authored titles and label maps.
 `bands` is at most 10,000 and the complete run-by-band output is limited to
 10,000 rows; unrepresentable signed deviations or fold extents are rejected.
 

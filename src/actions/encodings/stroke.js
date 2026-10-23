@@ -1,3 +1,4 @@
+import { APPEARANCE_MARK_TYPES } from "../../core/vocabulary.js";
 import { action } from "../../core/action.js";
 import {
   readNominalField,
@@ -7,9 +8,10 @@ import {
   resolveTemporalUnit,
   validateCategoricalFieldType
 } from "../../grammar/scales/index.js";
-import { validateContinuousColorConsumer } from
+import { validateContinuousColorConsumer, validateTickColorChannels } from
   "../../grammar/scales/colorConsumers.js";
-import { validatePathSeriesAppearance } from "../../grammar/pathSeries.js";
+import { validatePathGroupAppearance } from "../../materialization/marks/grouping.js";
+import { resolveColorReassignmentScaleOptions } from "./color/policy.js";
 import { validateRuleStroke } from "../../grammar/ruleAppearance.js";
 import { assertEncodingSelectionCompatibility } from
   "../../materialization/selection/compatibility.js";
@@ -20,8 +22,8 @@ import {
 import { applyTemporalUnit } from "./temporal.js";
 import {
   applyEncodingScale,
+  releaseDetachedEncodingScale,
   rematerializeEncoding,
-  resolveReassignmentScaleOptions,
   resolveTarget,
   setEncodingProperties,
   validateOptions
@@ -32,9 +34,7 @@ import { applyRequestedItemMissingPolicy } from
 const OPTIONS = Object.freeze([
   "target", "value", "field", "fieldType", "temporalUnit", "scale"
 ]);
-const MARK_TYPES = Object.freeze([
-  "point", "line", "area", "bar", "rect", "arc", "rule", "tick"
-]);
+const MARK_TYPES = APPEARANCE_MARK_TYPES.encodeStroke;
 
 function withoutConstantStroke(program, layer) {
   const config = { ...program.markConfigs[layer.id] };
@@ -79,17 +79,17 @@ function hasStrokeLegend(program, target) {
   );
 }
 
-function validateStrokeField(dataset, layer, args, scale, temporalUnit) {
+function validateStrokeField(program, dataset, layer, args, scale, temporalUnit) {
   const { field, fieldType } = args;
   validateContinuousColorConsumer(layer, args, scale, { channel: "stroke" });
   if (["line", "area"].includes(layer.mark.type)) {
-    validatePathSeriesAppearance(dataset.values, {
+    validatePathGroupAppearance(program, {
       ...layer,
       encoding: {
         ...layer.encoding,
         stroke: { field, fieldType, temporalUnit, scale: scale.id }
       }
-    });
+    }, dataset);
   }
   if (Object.hasOwn(scale, "unknown")) {
     readScaleField(dataset.values, field, fieldType, {
@@ -130,6 +130,7 @@ export const encodeStroke = /* @__PURE__ */ action(
       MARK_TYPES,
       "stroke-capable mark"
     );
+    validateTickColorChannels(layer, "stroke");
 
     if (hasValue) {
       const value = validateRuleStroke(args.value);
@@ -160,8 +161,8 @@ export const encodeStroke = /* @__PURE__ */ action(
     const dataset = applyRequestedItemMissingPolicy(layer, sourceDataset, args.field);
     const previous = layer.encoding?.stroke;
     const temporalUnit = resolveTemporalUnit(args, fieldType, previous);
-    const requestedScale = resolveReassignmentScaleOptions(
-      previous,
+    const requestedScale = resolveColorReassignmentScaleOptions(
+      this, layer, "stroke", fieldType,
       args.scale ?? {}
     );
     let scale;
@@ -179,7 +180,7 @@ export const encodeStroke = /* @__PURE__ */ action(
         readNominalField(dataset.values, args.field);
       }
       if (["line", "area"].includes(layer.mark.type)) {
-        validatePathSeriesAppearance(dataset.values, {
+        validatePathGroupAppearance(this, {
           ...layer,
           encoding: {
             ...layer.encoding,
@@ -189,7 +190,7 @@ export const encodeStroke = /* @__PURE__ */ action(
               scale: scale.id
             }
           }
-        });
+        }, dataset);
       }
     } else if (["quantitative", "temporal"].includes(fieldType)) {
       scale = resolveQuantitativeColorScaleDefinition(
@@ -199,17 +200,22 @@ export const encodeStroke = /* @__PURE__ */ action(
         "stroke"
       );
       validateStrokeField(
+        this,
         dataset,
         layer,
         { ...args, fieldType },
         scale,
-        temporalUnit
+        temporalUnit,
+        this.semanticSpec.scales
       );
     } else {
       throw new Error(`Unsupported stroke field type "${fieldType}".`);
     }
 
     let next = withoutConstantStroke(this, layer);
+    if (this.markConfigs[target]?.stroke !== undefined || this.markConfigs[target]?.barAppearance?.stroke !== undefined) {
+      next = releaseDetachedEncodingScale(next, scale.id);
+    }
     next = applyTemporalUnit(next, target, "stroke", temporalUnit, previous);
     next = setEncodingProperties(next, target, "stroke", {
       field: args.field,

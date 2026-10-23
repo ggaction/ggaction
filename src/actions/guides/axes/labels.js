@@ -1,3 +1,4 @@
+import { axisTitleAllowsLabelOverlap } from "../../../grammar/axisTextPlacement.js";
 import { selectCartesianAxis, axisTargetArgs } from "../../../selectors/axes.js";
 import { axisGraphicIds } from "../../../materialization/guides/resources.js";
 import { axisThemeTypography } from "../../theme/state.js";
@@ -21,7 +22,7 @@ import {
   formatTransformedTick,
   mapOrdinalPositionValues
 } from "../../../grammar/scales/index.js";
-import { formatTimeTick, formatTimeTicks } from "../../../grammar/ticks.js";
+import { formatTimeTick, formatTimeTicks, validateTickRounding } from "../../../grammar/ticks.js";
 import { resolveRotation } from "../../../grammar/rotation.js";
 import { valuesFromTickConfig } from "../tickValues.js";
 import { AXIS_LABEL_FONT_SIZES, DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from
@@ -29,6 +30,7 @@ import { AXIS_LABEL_FONT_SIZES, DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from
 import {
   defaultAxisPosition,
   formatAxisValue,
+  formatNumericAxisTicks,
   resolveAxisLabelGeometry,
   validateAxisFormat,
   validateAxisPosition
@@ -51,7 +53,7 @@ import {
 } from "../../../grammar/displayLabels.js";
 
 const OPTIONS = [
-  "target", "scale", "position", "count", "values", "offset", "format", "color",
+  "target", "scale", "position", "count", "values", "rounding", "offset", "format", "color",
   "fontSize", "fontFamily", "fontWeight", "rotation", "maxWidth", "wrap",
   "lineHeight", "overlap", "labelMap", "alongOffset", "flush", "colorMap", "align"
 ];
@@ -88,6 +90,10 @@ function normalizeLabelLayout(config, args, operation) {
 export { validateTextStyle as validateAxisTextStyle };
 
 function validateOptions(args, operation, create) {
+  validateTickRounding(args.rounding, !Object.hasOwn(args, "rounding"));
+  if (Object.hasOwn(args, "rounding") && Object.hasOwn(args, "values")) {
+    throw new Error(`${operation} cannot use rounding and values together.`);
+  }
   validateAxisTextPlacement(args);
   validateOptionObject(
     args,
@@ -173,6 +179,9 @@ function assertTickCompatibility(ticks, config, operation) {
   if (!ticks) return;
   if (ticks.scale !== config.scale || ticks.mode !== config.mode) throw new Error(`${operation} conflicts with axis ticks.`);
   if (config.mode === "count" && ticks.count !== config.count) throw new Error(`${operation} conflicts with axis ticks.`);
+  if (config.mode === "count" && (ticks.rounding ?? "ceiling") !== (config.rounding ?? "ceiling")) {
+    throw new Error(`${operation} conflicts with axis tick rounding.`);
+  }
   if (config.mode === "values" && !sameOrderedValues(ticks.values, config.values)) throw new Error(`${operation} conflicts with axis ticks.`);
 }
 
@@ -261,12 +270,14 @@ function resolve(program, channel, config, axisId = channel) {
             ? formatTransformedTick(scale.type, item)
             : String(item)
       );
-  const automaticTimeLabels = scale.type === "time" && config.format === "auto"
-    ? formatTimeTicks(values, scale.domain)
-    : undefined;
+  const automaticLabels = config.format === "ticks"
+    ? formatNumericAxisTicks(values, scale.type)
+    : scale.type === "time" && config.format === "auto"
+      ? formatTimeTicks(values, scale.domain)
+      : undefined;
   let text = values.map((value, index) =>
     resolveDisplayLabel(value, config.labelMap, raw =>
-      automaticTimeLabels?.[index] ?? fallback(raw)));
+      automaticLabels?.[index] ?? fallback(raw)));
   // Empty mapped text suppresses the label, never its raw tick or scale value.
   // Filter all aligned arrays before wrapping so group/color indices stay dense.
   if (text.includes("")) {
@@ -378,7 +389,7 @@ function resolve(program, channel, config, axisId = channel) {
   const title = program.graphicSpec.objects[axisGraphicIds(channel, axisId)[3]]
     ? resolveConcreteGraphicBounds(program.graphicSpec, axisGraphicIds(channel, axisId)[3], program.materializationConfigs.textMetrics)
     : undefined;
-  if (title &&
+  if (title && !axisTitleAllowsLabelOverlap(program.guideConfigs.axis?.[axisId]?.title) &&
     program.guideConfigs.axis?.[axisId]?.title?.inferredOffset !== true &&
     labelBounds.some(item => textBoundsIntersect(item, title))) {
     throw new Error(`The ${channel}-axis labels overlap the axis title.`);
@@ -413,7 +424,10 @@ function makeEdit(channel) {
       mode
     }, args, op);
     config = normalizeAxisLabelMaps(this, config, args, op);
-    if (mode === "values") delete config.count; else delete config.values;
+    if (mode === "values") {
+      delete config.count;
+      if (!Object.hasOwn(args, "rounding")) delete config.rounding;
+    } else delete config.values;
     validateConfig(channel, config);
     assertTickCompatibility(this.guideConfigs.axis?.[axisId]?.ticks, config, op);
     const resolved = resolve(this, channel, config, axisId);
@@ -485,6 +499,7 @@ function makeCreate(channel) {
       ...axisThemeTypography(this.materializationConfigs.theme, "labels"),
       rotation: DEFAULTS.rotation,
       overlap: DEFAULTS.overlap,
+      ...(ticks?.rounding === undefined ? {} : { rounding: ticks.rounding }),
       ...args,
       inferredValues: !hasValues && !hasCount &&
         (ticks?.inferredValues === true || inferredDiscreteValues !== undefined),
@@ -493,6 +508,7 @@ function makeCreate(channel) {
     config = normalizeAxisLabelMaps(this, config, args, op);
     if (mode === "values") {
       config.values ??= ticks?.values ?? inferredDiscreteValues;
+      if (!Object.hasOwn(args, "rounding")) delete config.rounding;
     } else {
       config.count ??= ticks?.count ?? DEFAULTS.count;
     }

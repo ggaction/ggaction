@@ -5,11 +5,10 @@ import {
   resolveMarkLabelPlacement
 } from "../layout/labels.js";
 import { resolveMarkLabelValues } from "../grammar/markLabels.js";
-import { formatTextValue, resolveTextLines } from "../grammar/text.js";
+import { formatTextValue, resolveTextLines, resolveTextOffsetDataset, textOffsetValue } from "../grammar/text.js";
 import { normalizePositionDatum } from "../grammar/positionDatum.js";
 import { mapOrdinalPositionValues } from "../grammar/scales/index.js";
 import { findDataset } from "../selectors/datasets.js";
-import { applyItemMissingPolicy } from "../grammar/itemMissing.js";
 import { findCoordinate } from "../selectors/coordinates.js";
 import { findLayer } from "../selectors/layers.js";
 import { unionConcreteGraphicBounds } from
@@ -427,8 +426,9 @@ function resolveRowTextItems(program, layer, config) {
   if (sourceDataset === undefined) {
     throw new Error(`Text mark "${layer.id}" requires an existing dataset.`);
   }
-  const dataset = applyItemMissingPolicy(layer, sourceDataset);
-  const encodings = [layer.encoding?.x, layer.encoding?.y, layer.encoding?.text, layer.encoding?.color];
+  const dataset = resolveTextOffsetDataset(layer, sourceDataset);
+  const encodings = [layer.encoding?.x, layer.encoding?.y, layer.encoding?.text, layer.encoding?.color,
+    layer.encoding?.dx, layer.encoding?.dy];
   const length = encodings.some(encoding => encoding !== undefined && Object.hasOwn(encoding, "field"))
     ? dataset.values.length
     : 1;
@@ -465,7 +465,12 @@ function resolveRowTextItems(program, layer, config) {
   const fills = resolveRowEncodingValues(program, layer, dataset, "color");
   return rows.flatMap((row, index) => {
     const concrete = concreteItem(
-      fills === undefined ? config : { ...config, fill: fills[index] },
+      {
+        ...config,
+        ...(fills === undefined ? {} : { fill: fills[index] }),
+        dx: textOffsetValue(layer.encoding?.dx, row, config.dx),
+        dy: textOffsetValue(layer.encoding?.dy, row, config.dy)
+      },
       { x: x[index], y: y[index] },
       contentValue(layer.encoding.text, row),
       layer.encoding.text.format

@@ -189,6 +189,18 @@
   {
     "file": "api/axes.md",
     "block": 1,
+    "heading": "Choose nearest-step linear ticks",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "c5f38269b79c84790af2d99a4abe57bfb69116e2d2769e0cf44b236a713f5c4c",
+    "executable": false
+  },
+  {
+    "file": "api/axes.md",
+    "block": 2,
     "heading": "Standalone Cartesian axes",
     "mode": "fragment",
     "environment": "esm-context",
@@ -200,7 +212,7 @@
   },
   {
     "file": "api/axes.md",
-    "block": 2,
+    "block": 3,
     "heading": "Polar component creation",
     "mode": "fragment",
     "environment": "esm-context",
@@ -212,7 +224,7 @@
   },
   {
     "file": "api/axes.md",
-    "block": 3,
+    "block": 4,
     "heading": "Editing a complete axis",
     "mode": "fragment",
     "environment": "esm-context",
@@ -224,7 +236,7 @@
   },
   {
     "file": "api/axes.md",
-    "block": 4,
+    "block": 5,
     "heading": "Removing an axis",
     "mode": "fragment",
     "environment": "esm-context",
@@ -237,8 +249,34 @@
     "executable": false
   },
   {
+    "file": "api/axes.md",
+    "block": 6,
+    "heading": "Edit several existing axes",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [
+      "program"
+    ],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "87632174e3f458d85c132caea7bcbb51c66492e6f4e03b57791bdbf7dbc803ed",
+    "executable": false
+  },
+  {
     "file": "api/axes/complete.md",
     "block": 1,
+    "heading": "Composite marks over guides",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "77bf1baa5b4833891fcd461a8a013ab3d5549dacea5cf9c3abdfe7b3b9125a3b",
+    "executable": false
+  },
+  {
+    "file": "api/axes/complete.md",
+    "block": 2,
     "heading": "Independent named Cartesian axes",
     "mode": "fragment",
     "environment": "esm-context",
@@ -252,7 +290,7 @@
   },
   {
     "file": "api/axes/complete.md",
-    "block": 2,
+    "block": 3,
     "heading": "Moving a complete axis and refining its text",
     "mode": "fragment",
     "environment": "esm-context",
@@ -264,7 +302,7 @@
   },
   {
     "file": "api/axes/complete.md",
-    "block": 3,
+    "block": 4,
     "heading": "Styling native tick dashes",
     "mode": "fragment",
     "environment": "esm-context",
@@ -272,20 +310,6 @@
     "resources": [],
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
     "sha256": "cf1f11d653404c55e48dca7db30604813c72d379fa6f18facb9ba4c05e57114e",
-    "executable": false
-  },
-  {
-    "file": "api/axes/complete.md",
-    "block": 4,
-    "heading": "`createAxes(options?)`",
-    "mode": "fragment",
-    "environment": "esm-context",
-    "receivers": [
-      "program"
-    ],
-    "resources": [],
-    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
-    "sha256": "d5dcaf02169388ab3fb2f3ca12c0f46a200005e277b234305cb1e3a8942f734b",
     "executable": false
   },
   {
@@ -299,7 +323,7 @@
     ],
     "resources": [],
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
-    "sha256": "ef35f4b5bcc59c999924a679003b57e0ef2720bb0ffed28e3774cf47436075e5",
+    "sha256": "d5dcaf02169388ab3fb2f3ca12c0f46a200005e277b234305cb1e3a8942f734b",
     "executable": false
   },
   {
@@ -313,7 +337,7 @@
     ],
     "resources": [],
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
-    "sha256": "e617151251ffbc6048bd2e7e1fd8f2d31a02347143f6c7d7957cdba6f2c3cb6e",
+    "sha256": "ef35f4b5bcc59c999924a679003b57e0ef2720bb0ffed28e3774cf47436075e5",
     "executable": false
   },
   {
@@ -327,13 +351,53 @@
     ],
     "resources": [],
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
-    "sha256": "9e744feb00c85430d869bc1e92a91d99050760e66c33d22e125cab1ba65345e8",
+    "sha256": "e617151251ffbc6048bd2e7e1fd8f2d31a02347143f6c7d7957cdba6f2c3cb6e",
     "executable": false
   },
   {
     "file": "api/axes/complete.md",
     "block": 8,
     "heading": "`createAxes(options?)`",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [
+      "program"
+    ],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "9e744feb00c85430d869bc1e92a91d99050760e66c33d22e125cab1ba65345e8",
+    "executable": false
+  },
+  {
+    "file": "api/axes/complete.md",
+    "block": 9,
+    "heading": "Intentional title-label overlap",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "e8e1d40302e94d1efdc5504d7ec00a1fa11445842bbbe93aae08e939aa98ff58",
+    "executable": false
+  },
+  {
+    "file": "api/axes/complete.md",
+    "block": 10,
+    "heading": "Intentional title-label overlap",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [
+      "program"
+    ],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "b0b86d257872a189422b110828fa12597b17291c9452034e39a1f08e2fd8a95a",
+    "executable": false
+  },
+  {
+    "file": "api/axes/complete.md",
+    "block": 11,
+    "heading": "Intentional title-label overlap",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [
@@ -485,7 +549,7 @@
     "receivers": [],
     "resources": [],
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
-    "sha256": "f77345a6549e85b3e7f8dc834b5d906b96bea2d589dc4ee1d589af3768c7e2a8",
+    "sha256": "f92ca13c4e6b0ec9df4ca387b7f1c75c8b9486cd5d63c9b3e58a519e82391c75",
     "executable": false
   },
   {
@@ -693,9 +757,11 @@
     "receivers": [
       "matrix"
     ],
-    "resources": [],
-    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `matrix`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
-    "sha256": "652d8f07e8d8fcead654c17b662ce3ffa7df5f602cdbd8d5c400dd22c6d4eda2",
+    "resources": [
+      "target: \"plot\""
+    ],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `matrix`. Resource selectors used here: `target: \"plot\"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "ae6b2c095be27f09926604eaa290828c5f57454c8699b8dabdb403af4de8c295",
     "executable": false
   },
   {
@@ -745,13 +811,15 @@
   {
     "file": "api/composition/facets.md",
     "block": 2,
-    "heading": "Repeat the current chart by a field",
+    "heading": "Rotate panel headers",
     "mode": "fragment",
     "environment": "esm-context",
-    "receivers": [],
+    "receivers": [
+      "program"
+    ],
     "resources": [],
-    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
-    "sha256": "33b794a4af3053a7ead8c4c4e4abded49656926802e8f19bc264ca743f03a668",
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "4a712ff09a24fef648d3fd62a806a7c674843db8adbf3c23a9e05df49e8220c0",
     "executable": false
   },
   {
@@ -763,12 +831,24 @@
     "receivers": [],
     "resources": [],
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
-    "sha256": "6a697b4af9d94353ab03b8e04be59c294c6d724e26d1ea1ae4d24f4543b3281c",
+    "sha256": "33b794a4af3053a7ead8c4c4e4abded49656926802e8f19bc264ca743f03a668",
     "executable": false
   },
   {
     "file": "api/composition/facets.md",
     "block": 4,
+    "heading": "Repeat the current chart by a field",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "6a697b4af9d94353ab03b8e04be59c294c6d724e26d1ea1ae4d24f4543b3281c",
+    "executable": false
+  },
+  {
+    "file": "api/composition/facets.md",
+    "block": 5,
     "heading": "Repeat the current chart by a field",
     "mode": "fragment",
     "environment": "esm-context",
@@ -783,7 +863,7 @@
   },
   {
     "file": "api/composition/facets.md",
-    "block": 5,
+    "block": 6,
     "heading": "Repeat the current chart by a field",
     "mode": "fragment",
     "environment": "esm-context",
@@ -797,7 +877,7 @@
   },
   {
     "file": "api/composition/facets.md",
-    "block": 6,
+    "block": 7,
     "heading": "Repeat the current chart by a field",
     "mode": "fragment",
     "environment": "esm-context",
@@ -809,7 +889,7 @@
   },
   {
     "file": "api/composition/facets.md",
-    "block": 7,
+    "block": 8,
     "heading": "Repeat the current chart by a field",
     "mode": "fragment",
     "environment": "esm-context",
@@ -821,7 +901,7 @@
   },
   {
     "file": "api/composition/facets.md",
-    "block": 8,
+    "block": 9,
     "heading": "Build a row and column facet grid",
     "mode": "fragment",
     "environment": "esm-context",
@@ -835,7 +915,7 @@
   },
   {
     "file": "api/composition/facets.md",
-    "block": 9,
+    "block": 10,
     "heading": "Repeat a positional encoding across fields",
     "mode": "fragment",
     "environment": "esm-context",
@@ -851,7 +931,7 @@
   },
   {
     "file": "api/composition/facets.md",
-    "block": 10,
+    "block": 11,
     "heading": "Repeat a positional encoding across fields",
     "mode": "fragment",
     "environment": "esm-context",
@@ -861,6 +941,18 @@
     "resources": [],
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `parallelUnit`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
     "sha256": "b913aa55cbd530ace031ecffa677f9a5a2f7b03b4f4e9d1cee4c427e979cd17f",
+    "executable": false
+  },
+  {
+    "file": "api/composition/facets.md",
+    "block": 12,
+    "heading": "Share the existing top margin",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "09bd667565ddb9aeeeb9a92127aa58be5670d5b328ed805b8a3c65d00914a9d2",
     "executable": false
   },
   {
@@ -1383,6 +1475,32 @@
     "executable": false
   },
   {
+    "file": "api/data/summaries-and-shaping.md",
+    "block": 5,
+    "heading": "`createFlattenData({ id, source?, fields, as? })` {#createflattendata-id-source-fields-as}",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "d269be5e32fc2dc4d90d81e16cbf7e1c2f27fc4793a2217abc409d71c825e808",
+    "executable": false
+  },
+  {
+    "file": "api/data/summaries-and-shaping.md",
+    "block": 6,
+    "heading": "Named table lookup",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [],
+    "resources": [
+      "data: \"people\""
+    ],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `data: \"people\"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "12dd1c8c63e4c654388c0f31c328f1ba2ca96163adedf7e0213aba8fddb2c5f6",
+    "executable": false
+  },
+  {
     "file": "api/data/time-units.md",
     "block": 1,
     "heading": "`createTimeUnitData({ id, source?, field, temporalUnit?, unit, as?, timeZone?, weekStartsOn?, weekRule? })`",
@@ -1437,6 +1555,18 @@
   {
     "file": "api/encodings.md",
     "block": 1,
+    "heading": "Fixed or variable appearance",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "9f0e1dfec31d3c8706832238ac75bb28b1560d6d72ce6a3f29c31104d0523e54",
+    "executable": false
+  },
+  {
+    "file": "api/encodings.md",
+    "block": 2,
     "heading": "Direction",
     "mode": "fragment",
     "environment": "esm-context",
@@ -1450,7 +1580,7 @@
   },
   {
     "file": "api/encodings.md",
-    "block": 2,
+    "block": 3,
     "heading": "Removing an encoding",
     "mode": "fragment",
     "environment": "esm-context",
@@ -1701,7 +1831,7 @@
     "receivers": [],
     "resources": [],
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
-    "sha256": "796f41449851efb0526a3e7dfdb6c3d2e63067bbab948c70bdc15fdf02d52389",
+    "sha256": "951f4299c7ecb3233321312ac66bb6b3f228c7545513b4fb0776909ecdbacef6",
     "executable": false
   },
   {
@@ -1922,6 +2052,20 @@
     "resources": [],
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
     "sha256": "46e8bf94d158bd4a0cafc94af7fad3f69f82b3fd282c870806f76a83465724a1",
+    "executable": false
+  },
+  {
+    "file": "api/legends.md",
+    "block": 2,
+    "heading": "Space rows by content",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [
+      "program"
+    ],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "1e38f6ab48084bf36b9152f285cd3c25b92a7eab60f9941800f1c82d52ba7ed2",
     "executable": false
   },
   {
@@ -2163,6 +2307,20 @@
   {
     "file": "api/legends/continuous.md",
     "block": 5,
+    "heading": "Choose exact gradient ticks",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [
+      "program"
+    ],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "b5f6ffd863524ba7a57a55d1474dbbcbe7dd0193976ae24cfbf87134ec403735",
+    "executable": false
+  },
+  {
+    "file": "api/legends/continuous.md",
+    "block": 6,
     "heading": "Show a continuous color scale as symbols",
     "mode": "fragment",
     "environment": "esm-context",
@@ -2174,7 +2332,7 @@
   },
   {
     "file": "api/legends/continuous.md",
-    "block": 6,
+    "block": 7,
     "heading": "Show a continuous color scale as symbols",
     "mode": "fragment",
     "environment": "esm-context",
@@ -2188,7 +2346,7 @@
   },
   {
     "file": "api/legends/continuous.md",
-    "block": 7,
+    "block": 8,
     "heading": "Show a continuous color scale as symbols",
     "mode": "fragment",
     "environment": "esm-context",
@@ -2383,6 +2541,18 @@
   {
     "file": "api/marks.md",
     "block": 1,
+    "heading": "Clip one layer to its plot",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "5d94a633602a8ee041ee0dc8d1331b64006089cb791533646677df00060263c4",
+    "executable": false
+  },
+  {
+    "file": "api/marks.md",
+    "block": 2,
     "heading": "At a glance",
     "mode": "fragment",
     "environment": "esm-context",
@@ -2398,7 +2568,7 @@
   },
   {
     "file": "api/marks.md",
-    "block": 2,
+    "block": 3,
     "heading": "Tick marks",
     "mode": "fragment",
     "environment": "esm-context",
@@ -2559,7 +2729,7 @@
   {
     "file": "api/marks/line-area.md",
     "block": 1,
-    "heading": "`createLineMark({ id?, data?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed?, lineCap?, lineJoin?, miterLimit? } = {})`",
+    "heading": "`createLineMark({ id?, data?, missing?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed?, lineCap?, lineJoin?, miterLimit? } = {})`",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [],
@@ -2571,6 +2741,18 @@
   {
     "file": "api/marks/line-area.md",
     "block": 2,
+    "heading": "Gaps",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Import ggaction in an ES module; all observations and required setup are included in this program.",
+    "sha256": "adf96253153a3f6f7e21beeeaf752fd85dca7b25f5c523c7aaac4a2765b11d38",
+    "executable": true
+  },
+  {
+    "file": "api/marks/line-area.md",
+    "block": 3,
     "heading": "Ordered categories",
     "mode": "fragment",
     "environment": "esm-context",
@@ -2582,7 +2764,7 @@
   },
   {
     "file": "api/marks/line-area.md",
-    "block": 3,
+    "block": 4,
     "heading": "Ordered categories",
     "mode": "fragment",
     "environment": "esm-context",
@@ -2594,8 +2776,8 @@
   },
   {
     "file": "api/marks/line-area.md",
-    "block": 4,
-    "heading": "`editLineMark({ target?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed?, lineCap?, lineJoin?, miterLimit? })`",
+    "block": 5,
+    "heading": "`editLineMark({ target?, missing?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed?, lineCap?, lineJoin?, miterLimit? })`",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [
@@ -2608,8 +2790,8 @@
   },
   {
     "file": "api/marks/line-area.md",
-    "block": 5,
-    "heading": "`editLineMark({ target?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed?, lineCap?, lineJoin?, miterLimit? })`",
+    "block": 6,
+    "heading": "`editLineMark({ target?, missing?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed?, lineCap?, lineJoin?, miterLimit? })`",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [],
@@ -2620,7 +2802,7 @@
   },
   {
     "file": "api/marks/line-area.md",
-    "block": 6,
+    "block": 7,
     "heading": "Polar lines and radar paths",
     "mode": "fragment",
     "environment": "esm-context",
@@ -2632,7 +2814,7 @@
   },
   {
     "file": "api/marks/line-area.md",
-    "block": 7,
+    "block": 8,
     "heading": "`createAreaMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing?, lineCap?, lineJoin?, miterLimit? } = {})`",
     "mode": "fragment",
     "environment": "esm-context",
@@ -2644,7 +2826,7 @@
   },
   {
     "file": "api/marks/line-area.md",
-    "block": 8,
+    "block": 9,
     "heading": "`createAreaMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing?, lineCap?, lineJoin?, miterLimit? } = {})`",
     "mode": "fragment",
     "environment": "esm-context",
@@ -2656,7 +2838,7 @@
   },
   {
     "file": "api/marks/line-area.md",
-    "block": 9,
+    "block": 10,
     "heading": "`editAreaMark({ target?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing?, lineCap?, lineJoin?, miterLimit? })`",
     "mode": "fragment",
     "environment": "esm-context",
@@ -2670,7 +2852,7 @@
   },
   {
     "file": "api/marks/line-area.md",
-    "block": 10,
+    "block": 11,
     "heading": "`createArcMark({ id?, data?, innerRadius?, padAngle?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? } = {})`",
     "mode": "fragment",
     "environment": "esm-context",
@@ -2682,7 +2864,7 @@
   },
   {
     "file": "api/marks/line-area.md",
-    "block": 11,
+    "block": 12,
     "heading": "`editArcMark({ target?, innerRadius?, padAngle?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? })`",
     "mode": "fragment",
     "environment": "esm-context",
@@ -2721,6 +2903,20 @@
   {
     "file": "api/marks/point.md",
     "block": 3,
+    "heading": "Explicit polygon shapes",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [
+      "program"
+    ],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "b1475f411affddb41baf461ee4696050da4142285cbb176a468bbfbfa90e96c0",
+    "executable": false
+  },
+  {
+    "file": "api/marks/point.md",
+    "block": 4,
     "heading": "`jitterPoints({ target?, channel, maxOffset, seed?, key? })`",
     "mode": "fragment",
     "environment": "esm-context",
@@ -2734,7 +2930,7 @@
   },
   {
     "file": "api/marks/point.md",
-    "block": 4,
+    "block": 5,
     "heading": "`removeJitter({ target? } = {})`",
     "mode": "fragment",
     "environment": "esm-context",
@@ -2839,6 +3035,20 @@
     "executable": false
   },
   {
+    "file": "api/marks/rule.md",
+    "block": 4,
+    "heading": "Statistical reference action",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [],
+    "resources": [
+      "source: \"points\""
+    ],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `source: \"points\"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "4dbd9eb8a96a16181d5d3b8fe11b2461ffa14b8a40bc3acb5eca05b56a5a6319",
+    "executable": false
+  },
+  {
     "file": "api/marks/text.md",
     "block": 1,
     "heading": "`createAnnotation(options)`",
@@ -2926,6 +3136,18 @@
     "resources": [],
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `annotated`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
     "sha256": "572810fcedda5f44f70ef0ab3e8ca0c38209cab6c7a94f8273a93f2ff071b503",
+    "executable": false
+  },
+  {
+    "file": "api/marks/text.md",
+    "block": 8,
+    "heading": "Numeric pixel offsets",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "6fcde1d55324c3852d9e1d28a872a3e9185cae2f721576b51f335f9f37c40224",
     "executable": false
   },
   {
@@ -3078,6 +3300,18 @@
     "resources": [],
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
     "sha256": "2278aba07cb43d540cd29ce9099cf65d488402c56958d2059d1acdedc9c288e8",
+    "executable": false
+  },
+  {
+    "file": "api/position/histogram.md",
+    "block": 3,
+    "heading": "Bins with a separate measure",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "3c0e6d6892f62b37221a1ba030f232383bd10a66df347ef016af3e7981de2515",
     "executable": false
   },
   {
@@ -3427,6 +3661,34 @@
     "executable": false
   },
   {
+    "file": "api/rendering.md",
+    "block": 10,
+    "heading": "Transition scenes",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [],
+    "resources": [
+      "data: \"data\""
+    ],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `data: \"data\"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "bc6cb0b444a289aaee0221a9caddaa4b1e86a5618f217af1e6f3f983abbe5abb",
+    "executable": false
+  },
+  {
+    "file": "api/rendering.md",
+    "block": 11,
+    "heading": "Canvas transition scenes",
+    "mode": "fragment",
+    "environment": "browser-module",
+    "receivers": [],
+    "resources": [
+      "data: \"data\""
+    ],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `data: \"data\"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "06acd16e1d625a1222324eb45e2bb43866b4bf4a398fd7d7f0378870b0238bce",
+    "executable": false
+  },
+  {
     "file": "api/scales.md",
     "block": 1,
     "heading": "At a glance",
@@ -3471,7 +3733,19 @@
   {
     "file": "api/scales.md",
     "block": 4,
-    "heading": "At a glance",
+    "heading": "Count-based linear domain rounding",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "ce3f0946c33123eef320113e1e07a0ae8dfb7a259fab9b07795ec4cddf5cc632",
+    "executable": false
+  },
+  {
+    "file": "api/scales.md",
+    "block": 5,
+    "heading": "Count-based linear domain rounding",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [],
@@ -3482,8 +3756,8 @@
   },
   {
     "file": "api/scales.md",
-    "block": 5,
-    "heading": "At a glance",
+    "block": 6,
+    "heading": "Count-based linear domain rounding",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [
@@ -3496,8 +3770,8 @@
   },
   {
     "file": "api/scales.md",
-    "block": 6,
-    "heading": "At a glance",
+    "block": 7,
+    "heading": "Count-based linear domain rounding",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [
@@ -3510,7 +3784,7 @@
   },
   {
     "file": "api/scales.md",
-    "block": 7,
+    "block": 8,
     "heading": "`removeScale({ id })` {#removescale-id}",
     "mode": "fragment",
     "environment": "esm-context",
@@ -3792,6 +4066,18 @@
     "resources": [],
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `bars`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
     "sha256": "2638366bcc01938e006b8df49bf1b446de2b5cd41661ccb1cffadffc7c05a7f3",
+    "executable": false
+  },
+  {
+    "file": "api/series/color.md",
+    "block": 11,
+    "heading": "Color numeric ticks",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "ca0e27baa7f53df17dcf29fdb015ed3797cfd7cc5964f40a64a42aa6503ad03f",
     "executable": false
   },
   {
@@ -4090,15 +4376,15 @@
   {
     "file": "extension/primitives.md",
     "block": 1,
-    "heading": "`editSemantic({ property, value | remove })`",
+    "heading": "Reorder existing direct children",
     "mode": "fragment",
     "environment": "esm-context",
-    "receivers": [
-      "program"
+    "receivers": [],
+    "resources": [
+      "target: \"plot\""
     ],
-    "resources": [],
-    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
-    "sha256": "8756376774c7eecb1fd5cb071b10051a3747743fe2937d661b6906e83b105ca1",
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: \"plot\"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "bcba8720b573d9186e396d146816f59670b29ca53925a09b59afcf5acf00b592",
     "executable": false
   },
   {
@@ -4112,12 +4398,26 @@
     ],
     "resources": [],
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
-    "sha256": "27bec8517a62e88c60718ede8856b0d4c88934d2ceb699872ef11a9a704afacd",
+    "sha256": "8756376774c7eecb1fd5cb071b10051a3747743fe2937d661b6906e83b105ca1",
     "executable": false
   },
   {
     "file": "extension/primitives.md",
     "block": 3,
+    "heading": "`editSemantic({ property, value | remove })`",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [
+      "program"
+    ],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "27bec8517a62e88c60718ede8856b0d4c88934d2ceb699872ef11a9a704afacd",
+    "executable": false
+  },
+  {
+    "file": "extension/primitives.md",
+    "block": 4,
     "heading": "`createGraphics({ id, type, length?, parent?, before?, after? })`",
     "mode": "fragment",
     "environment": "esm-context",
@@ -4131,7 +4431,7 @@
   },
   {
     "file": "extension/primitives.md",
-    "block": 4,
+    "block": 5,
     "heading": "`createGraphics({ id, type, length?, parent?, before?, after? })`",
     "mode": "fragment",
     "environment": "esm-context",
@@ -4145,7 +4445,7 @@
   },
   {
     "file": "extension/primitives.md",
-    "block": 5,
+    "block": 6,
     "heading": "`createGraphics({ id, type, length?, parent?, before?, after? })`",
     "mode": "fragment",
     "environment": "esm-context",
@@ -4157,7 +4457,7 @@
   },
   {
     "file": "extension/primitives.md",
-    "block": 6,
+    "block": 7,
     "heading": "`createGraphics({ id, type, length?, parent?, before?, after? })`",
     "mode": "fragment",
     "environment": "esm-context",
@@ -4171,7 +4471,7 @@
   },
   {
     "file": "extension/primitives.md",
-    "block": 7,
+    "block": 8,
     "heading": "`createGraphics({ id, type, length?, parent?, before?, after? })`",
     "mode": "fragment",
     "environment": "esm-context",
@@ -4185,7 +4485,7 @@
   },
   {
     "file": "extension/primitives.md",
-    "block": 8,
+    "block": 9,
     "heading": "`createGraphics({ id, type, length?, parent?, before?, after? })`",
     "mode": "fragment",
     "environment": "esm-context",
@@ -4201,7 +4501,7 @@
   },
   {
     "file": "extension/primitives.md",
-    "block": 9,
+    "block": 10,
     "heading": "`editGraphics({ target, property, value | remove })`",
     "mode": "fragment",
     "environment": "esm-context",
@@ -4217,7 +4517,7 @@
   },
   {
     "file": "extension/primitives.md",
-    "block": 10,
+    "block": 11,
     "heading": "`editGraphics({ target, property, value | remove })`",
     "mode": "fragment",
     "environment": "esm-context",
@@ -4233,7 +4533,7 @@
   },
   {
     "file": "extension/primitives.md",
-    "block": 11,
+    "block": 12,
     "heading": "Scale materialization",
     "mode": "fragment",
     "environment": "esm-context",

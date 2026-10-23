@@ -1,3 +1,4 @@
+import { canvasOverflowError } from "./canvas.js";
 import { PLOT_LEGEND_POSITIONS } from "./legend.js";
 import { SIDE_LEGEND_BLOCK_GAP, HORIZONTAL_LEGEND_BLOCK_GAP } from "./legendLane.js";
 
@@ -59,7 +60,8 @@ export function resolveLegendGroupPlacement({ blocks, group, plot, canvas, allow
   }
   const occupied = { left, top, right: left + width, bottom: top + height };
   if (!deferCanvasFit && (occupied.left < 0 || occupied.top < 0 || occupied.right > canvas.width || occupied.bottom > canvas.height)) {
-    throw new Error("Legend group requires more Canvas space.");
+    if (placement.at !== undefined || group.inferredOffset !== true) throw new Error("Legend group requires more Canvas space.");
+    throw canvasOverflowError("Legend group requires more Canvas space.", [occupied], canvas);
   }
   return packed.map((block, index) => ({ id: block.id,
     dx: left + block.x - blocks[index].bounds.left,

@@ -1,4 +1,6 @@
 import { closedAction } from "../../core/action.js";
+import { validateMarkClipCoordinate } from "../../selectors/markClip.js";
+import { validateLineMissingScope } from "../../grammar/lineMissing.js";
 
 import {
   normalizeParallelDimensions,
@@ -31,6 +33,7 @@ export const encodeParallelCoordinates = /* @__PURE__ */ closedAction(
       ["line"],
       "line mark"
     );
+    validateLineMissingScope({ ...layer, encoding: { ...layer.encoding, parallel: {} } });
     if (
       ["x", "y", "theta", "radius"].some(
         channel => layer.encoding?.[channel] !== undefined
@@ -45,6 +48,7 @@ export const encodeParallelCoordinates = /* @__PURE__ */ closedAction(
       layer,
       operation: "encodeParallelCoordinates"
     });
+    validateMarkClipCoordinate(this, layer, this.markConfigs[target]?.clip, "parallel");
     const dimensions = normalizeParallelDimensions(
       dataset.values,
       args.dimensions,

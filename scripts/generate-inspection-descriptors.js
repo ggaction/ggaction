@@ -6,10 +6,14 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 const cardsFile = path.join(root, "knowledge/action-cards.json");
 const catalogFile = path.join(root, "agent_docs/contract/ACTION_INDEX.json");
 const outputFile = path.join(root, "src/inspectionDescriptors.js");
+const vocabularyFile = path.join(root, "src/core/vocabulary.js");
 
-function optionKind(name, type) {
+function optionKind(name, type, action) {
   if (["target", "source", "data", "coordinate", "scale", "id"].includes(name)) return "resource";
-  if (["field", "x", "y", "groupBy", "category", "value"].includes(name)) return "field";
+  // "value" is a field role only in data-stack and chart value channels.
+  // Selection/filter comparisons, imputation and labels accept literal values.
+  if (["field", "x", "y", "groupBy", "category"].includes(name) ||
+      (name === "value" && /^(?:create|edit)(?:StackData|DotPlot|LollipopPlot|EndpointPlot|RadarPlot|RaincloudPlot|PiePlot|RosePlot|RadialBarPlot)$/.test(action))) return "field";
   if (/domain|range|extent/i.test(name)) return "range";
   if (name === "plot") return "object";
   if (/readonly .*\[\]|\[.*\]/.test(type)) return "array";
@@ -34,7 +38,7 @@ export async function buildInspectionDescriptors() {
     card.options.map(option => [
       option.name,
       option.required,
-      optionKind(option.name, option.type),
+      optionKind(option.name, option.type, card.name),
       choices(option.type),
       card.units.find(unit => unit.path === option.name)?.unit ?? null
     ]),
@@ -57,12 +61,20 @@ export async function buildInspectionDescriptors() {
 
 export async function generateInspectionDescriptors({ check = false } = {}) {
   const expected = await buildInspectionDescriptors();
+  const cards = JSON.parse(await readFile(cardsFile, "utf8")).cards;
+  const methods = cards.filter(card => card.supports.entryPoints.includes("default")).map(card => card.name);
+  const marker = /\/\/ Generated default action methods: start\n[\s\S]*?\/\/ Generated default action methods: end\n?/;
+  const block = `// Generated default action methods: start\nexport const DEFAULT_ACTION_METHODS = /* @__PURE__ */ Object.freeze(${JSON.stringify(methods)});\n// Generated default action methods: end\n`;
+  const vocabulary = await readFile(vocabularyFile, "utf8");
+  const expectedVocabulary = marker.test(vocabulary) ? vocabulary.replace(marker, block) : `${vocabulary}\n${block}`;
   if (check) {
     const actual = await readFile(outputFile, "utf8").catch(() => undefined);
     if (actual !== expected) throw new Error("Inspection descriptors are stale.");
+    if (vocabulary !== expectedVocabulary) throw new Error("Default action vocabulary is stale.");
     return;
   }
   await writeFile(outputFile, expected);
+  await writeFile(vocabularyFile, expectedVocabulary);
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.argv[1])) {

@@ -1,10 +1,21 @@
-import { cloneAndFreeze, freezeOwned, isPlainObject } from "../core/immutable.js";
+import { cloneAndFreeze, freezeOwned, isOwned, isPlainObject } from "../core/immutable.js";
 import { namespaceGraphicId } from "../selectors/graphicCapacity.js";
 export { namespaceGraphicId } from "../selectors/graphicCapacity.js";
 import {
   requireSingleOrderedGraphicByType,
   walkGraphicTreeEvents
 } from "../grammar/schemas/graphicTree.js";
+
+const snapshots = new WeakMap();
+
+function placeSnapshot(snapshot, placement) {
+  const root = snapshot.order[0], canvas = snapshot.objects[root];
+  if (canvas.properties.x === placement.x && canvas.properties.y === placement.y) return snapshot;
+  return freezeOwned({ order: snapshot.order, objects: freezeOwned({
+    ...snapshot.objects,
+    [root]: freezeOwned({ ...canvas, properties: freezeOwned({ ...canvas.properties, ...placement }) })
+  }) });
+}
 
 function validateNamespace(namespace) {
   if (typeof namespace !== "string" || namespace.length === 0) {
@@ -84,6 +95,8 @@ export function namespaceGraphicSnapshot(
   ) {
     throw new TypeError("Graphic snapshot requires objects and order.");
   }
+  const cached = snapshots.get(graphicSpec)?.get(resolvedNamespace);
+  if (cached) return placeSnapshot(cached, placement);
   walkGraphicTreeEvents(graphicSpec, {});
   const { id: canvasId, object: canvas } =
     requireSingleOrderedGraphicByType(graphicSpec, "canvas");
@@ -102,8 +115,15 @@ export function namespaceGraphicSnapshot(
     ]
   ));
   const rootId = namespaceGraphicId(resolvedNamespace, canvasId);
-  return freezeOwned({
+  const snapshot = freezeOwned({
     objects: freezeOwned(objects),
     order: freezeOwned([rootId])
   });
+  if (isOwned(graphicSpec)) {
+    if (!snapshots.has(graphicSpec)) snapshots.set(graphicSpec, new Map());
+    const cache = snapshots.get(graphicSpec);
+    cache.set(resolvedNamespace, snapshot);
+    if (cache.size > 16) cache.delete(cache.keys().next().value);
+  }
+  return snapshot;
 }

@@ -155,7 +155,7 @@ function quantitativeScale(type, id, ordinal, { point = true } = {}) {
     type,
     domain: "auto",
     range: "auto",
-    nice: type === "log" ? false : ordinal % 2 === 0,
+    nice: type === "linear" ? { count: 5 + ordinal % 3 } : type === "log" ? false : ordinal % 2 === 0,
     clamp: ordinal % 3 === 0,
     reverse,
     ...(point ? { unknown: 0 } : {}),
@@ -891,7 +891,7 @@ function addAppearanceEncodings(program) {
     const id = `stroke-width-${type}`;
     next = positionedLine(next, id).encodeStrokeWidth({
       target: id, field: "seriesWidth", fieldType: "quantitative",
-      scale: quantitativeScale(type, `${id}-scale`, index, { point: false })
+      scale: { ...quantitativeScale(type, `${id}-scale`, index, { point: false }), nice: type === "log" ? false : index % 2 === 0 }
     });
   }
   next = next.createRuleMark({ id: "stroke-width-value", data: "analysisRows" })
@@ -998,6 +998,26 @@ function buildAppearanceCoverage(factors) {
     program = positionedPoint(program, id).encodeColor({
       target: id, field: mode.field, fieldType: "temporal", temporalUnit: mode.temporalUnit,
       scale: { id: `${id}-scale`, type: "sequential", palette: "viridis" }
+    });
+  }
+  program = positionedPoint(program, "constant-color-size")
+    .encodeColor({ target: "constant-color-size", value: "#2563eb" })
+    .encodeSize({ target: "constant-color-size", value: 25 });
+  for (const normalization of ["area", "radius"]) {
+    const id = `polygon-unknown-${normalization}`;
+    program = positionedPoint(program, id).encodeShape({
+      target: id, field: "group", fieldType: "nominal",
+      scale: {id: `${id}-scale`, type: "ordinal", domain: "auto", unknown: {
+        polygon: [{x: 0, y: -1}, {x: 1, y: 1}, {x: -1, y: 1}], normalization
+      }}
+    });
+  }
+  const dashDomain = [...new Set(view.rows.map(row => row.group))];
+  for (const unknown of ["solid", "dashed", "dotted", "dashdot"]) {
+    const id = `dash-unknown-${unknown}`;
+    program = positionedLine(program, id).encodeStrokeDash({
+      target: id, field: "group", fieldType: unknown === "solid" ? "nominal" : "ordinal",
+      scale: { id: `${id}-scale`, type: "ordinal", domain: dashDomain, range: "auto", unknown }
     });
   }
   return finish(program, factors, "direct-appearance-encoding-options");

@@ -1,4 +1,5 @@
 import {findLayer} from '../../../selectors/layers.js';
+import {prepareLegendSpacingEdit} from '../../../grammar/legendSpacing.js';
 import {findCoordinate} from '../../../selectors/coordinates.js';
 import {legendBlockChannels} from '../../../grammar/legendBlocks.js';
 import {mergeLegendTitleStyle} from '../../../grammar/legendTitleStyle.js';
@@ -91,6 +92,7 @@ export function createColorSizeLegendFromConfig(program,config) {
 }
 
 export function resolveColorSizeEdit(program,previous,args) {
+ ({previous,args}=prepareLegendSpacingEdit(previous,args));
  validateOptionObject(args,[...ITEM_LEGEND_OPTIONS.filter(key=>key!=='overflow'),'symbol'],'Color-size legend edit');
  const {count:_count,values:_values,title:_title,...layoutArgs}=args;
  const title=args.title==='auto'?previous.field:typeof args.title==='string'?args.title:previous.title;

@@ -202,6 +202,9 @@ export const materializeBoxPlot = /* @__PURE__ */ action(
         outlierDataId: hasOutliers ? outlierDataId : undefined
       }
     });
+    if (config.color !== undefined) {
+      next = next.encodeColor({ ...config.color, target: ownerId });
+    }
     if (config.guides !== false) {
       next = applyFacadeGuides(next, config.guides, ownerId);
     }

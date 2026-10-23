@@ -9,6 +9,8 @@ import {
 import { resolveGraphicBounds } from "../../layout/canvas.js";
 import { findLayer } from "../../selectors/layers.js";
 import { createDensityLegendPaint } from "./paint.js";
+import { legendResourcePolicy } from "../../materialization/guides/resources.js";
+import { resolveConcreteGraphicBounds } from "../../grammar/schemas/graphicBounds.js";
 
 const CENTER_OPTIONS = Object.freeze([
   "id", "owner", "data", "category", "categoryType", "coordinate",
@@ -94,11 +96,18 @@ export const rematerializeGradientPlotLegend = /* @__PURE__ */ action(
     if (position !== "right") {
       throw new Error('Gradient plot density legend currently requires position "right".');
     }
-    const x = bounds.x + bounds.width + 50;
+    const right = bounds.x + bounds.width;
+    const legendBounds = Object.keys(this.guideConfigs.legend ?? {}).flatMap(kind =>
+      legendResourcePolicy(kind).graphicIds.filter(id => this.graphicSpec.objects[id])
+        .map(id => resolveConcreteGraphicBounds(this.graphicSpec, id, this.materializationConfigs.textMetrics)))
+      .filter(box => box && box.left >= right);
+    const x = Math.max(right + 50, ...legendBounds.map(box => box.right + 24));
     const y = bounds.y + 50;
     const width = 22;
     const height = Math.min(170, Math.max(80, bounds.height - 110));
-    let next = editProperties(this, ids.strip, {
+    const baseline = this.semanticSpec.guides.legend?.color?.scale === `${owner}Density`
+      ? this.editSemantic({ property: "guide.legend.color", remove: true }) : this;
+    let next = editProperties(baseline, ids.strip, {
       x, y, width, height,
       fill: createDensityLegendPaint(config.gradient.opacity),
       stroke: "#cbd5e1",
@@ -144,14 +153,14 @@ function resolveDensityLegend(program, args) {
 }
 
 export function fulfillGradientPlotLegend(program, args) {
-  const { ids, densityScale } = resolveDensityLegend(program, args);
-  const occupied = program.semanticSpec.guides.legend?.color;
-  if (occupied !== undefined && occupied.scale !== densityScale) {
+  const { ids } = resolveDensityLegend(program, args);
+  if (Object.keys(program.markConfigs).some(owner => owner !== args.owner &&
+      program.graphicSpec.objects[`${owner}DensityLegend`])) {
     guideConflict("Gradient plot density legend uses a different scale or family");
   }
   const existing = Object.values(ids).filter(id => program.graphicSpec.objects[id] !== undefined);
   if (existing.length === 0) return program.createGradientPlotLegend(args);
-  if (existing.length !== Object.keys(ids).length || occupied?.scale !== densityScale) {
+  if (existing.length !== Object.keys(ids).length) {
     guideConflict("Gradient plot density legend has incomplete ownership");
   }
   const { owner, ...explicit } = args;
@@ -170,11 +179,14 @@ export const createGradientPlotLegend = /* @__PURE__ */ action(
     for (const [property, value] of [
       [`scale[${densityScale}].type`, "sequential"],
       [`scale[${densityScale}].domain`, this.markConfigs[args.owner].gradientPlot.intensityDomain],
-      [`scale[${densityScale}].range`, { palette: { name: "greys" } }],
-      ["guide.legend.color.scale", densityScale],
-      ["guide.legend.color.title", title]
+      [`scale[${densityScale}].range`, { palette: { name: "greys" } }]
     ]) {
       next = next.editSemantic({ property, value });
+    }
+    // Older snapshots used the color-channel slot for this independent guide.
+    // Its existing owner config is sufficient; free that slot for actual hue.
+    if (next.semanticSpec.guides.legend?.color?.scale === densityScale) {
+      next = next.editSemantic({ property: "guide.legend.color", remove: true });
     }
     for (const [id, type, length] of [
       [ids.strip, "rect"],

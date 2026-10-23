@@ -1,3 +1,5 @@
+import { findRaincloudParent } from "../../selectors/raincloud.js";
+import { filterRaincloud, materializeRaincloudFilter, removeRaincloudFilter } from "./raincloudFilter.js";
 import { closedAction } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
 
@@ -13,6 +15,7 @@ import {
   normalizeMarkFilterTransform
 } from "../../grammar/markFilter.js";
 import { resolveMarkFilterSelection } from "../../materialization/selection/filter.js";
+import { synchronizeBoxFilter } from "../boxPlots/components.js";
 import { findSelectionPolicy } from
   "../../materialization/selection/policies/index.js";
 import {
@@ -117,6 +120,8 @@ export const materializeMarkFilteredData = /* @__PURE__ */ closedAction(
       args.id,
       "markFilter"
     );
+    const raincloud = findRaincloudParent(this, transform.target);
+    if (raincloud !== undefined) return materializeRaincloudFilter(this, { id, source, transform }, raincloud);
     const layer = requireLayer(this, transform.target);
     if (layer?.data !== dataset.source) {
       throw new Error(
@@ -135,7 +140,8 @@ export const materializeMarkFilteredData = /* @__PURE__ */ closedAction(
       currentRows = deriveMarkFilteredRows(
         currentRows,
         resolved.items,
-        resolved.keys
+        resolved.keys,
+        layer
       );
       if (index < selectors.length - 1) {
         preview = withPreviewDatasetValues(preview, {
@@ -143,6 +149,7 @@ export const materializeMarkFilteredData = /* @__PURE__ */ closedAction(
           values: currentRows,
           target: transform.target
         });
+        preview = synchronizeBoxFilter(preview, transform.target, id);
         preview = currentRows.length === 0
           ? applyLayerEmptyDataView(preview, transform.target)
           : applyLayerDataRematerialization(preview, transform.target);
@@ -172,6 +179,7 @@ export const materializeMarkFilteredData = /* @__PURE__ */ closedAction(
         empty: currentRows.length === 0
       }
     });
+    next = synchronizeBoxFilter(next, transform.target, id);
     return currentRows.length === 0
       ? next.materializeEmptyMark({ id: transform.target })
       : applyLayerDataRematerialization(next, transform.target);
@@ -243,7 +251,7 @@ function restoreHistogramBin(program, layer, originalBin) {
 }
 
 function removeActiveMarkFilter(program, layer, owner) {
-  let next = program.editSemantic({
+  let next = synchronizeBoxFilter(program, layer.id).editSemantic({
     property: `layer[${layer.id}].data`,
     value: owner.source
   });
@@ -277,6 +285,8 @@ export const removeMarkFilter = /* @__PURE__ */ closedAction(
     const target = args.target === undefined
       ? undefined
       : validateUserId(args.target, "Mark filter target id");
+    const raincloud = findRaincloudParent(this, target);
+    if (raincloud !== undefined) return removeRaincloudFilter(this, raincloud);
     const layer = resolveEligibleLayer(this, {
       target,
       label: "mark filter",
@@ -298,6 +308,11 @@ export const filterMarks = /* @__PURE__ */ closedAction(
     const target = args.target === undefined
       ? undefined
       : validateUserId(args.target, "Filter mark target id");
+    const raincloud = findRaincloudParent(this, target);
+    if (raincloud !== undefined) {
+      const selector = Object.fromEntries(MARK_SELECTOR_KEYS.flatMap(key => Object.hasOwn(args, key) ? [[key, args[key]]] : []));
+      return filterRaincloud(this, args, raincloud, selector);
+    }
     const layer = resolveEligibleLayer(this, {
       target,
       label: "filter mark",

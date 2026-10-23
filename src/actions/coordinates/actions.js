@@ -1,4 +1,5 @@
 import { action } from "../../core/action.js";
+import { validateMarkClipCoordinate } from "../../selectors/markClip.js";
 import { validateCoordinateType } from "../../grammar/coordinates.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { findCoordinate } from "../../selectors/coordinates.js";
@@ -51,6 +52,7 @@ export const createCoordinate = /* @__PURE__ */ action(
 
     for (const layerId of layers) {
       const layer = findLayer(this, layerId);
+      validateMarkClipCoordinate(this, layer, this.markConfigs[layerId]?.clip, type);
 
       if (layer.coordinate !== undefined && layer.coordinate !== id) {
         throw new Error(

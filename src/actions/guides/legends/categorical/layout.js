@@ -86,7 +86,7 @@ export function categoricalLegendLabels(config) {
   config = categoricalLegendView(config);
   const labels = config.domain.map(value => resolveDisplayLabel(
     value,
-    config.labelMap,
+    [...(config.labelMap ?? []), ...(config.defaultLabelMap ?? [])],
     formatVisibleText
   ));
   return config.hiddenCount > 0 ? [...labels, `…${config.hiddenCount} entries`] : labels;
@@ -174,8 +174,11 @@ export function resolveAppearance(program, config) {
     target.encoding.color === undefined &&
     !config.channels.includes("color") &&
     isLinearGradientPaint(program.markConfigs[target.id]?.fill);
+  const fixedLineStroke = target?.mark?.type === "line" &&
+    config.channels.includes("strokeDash")
+    ? program.markConfigs[target.id]?.stroke : undefined;
   const fallback = gradientFallback
-    ? program.markConfigs[target.id].fill : DEFAULT_COLORS.mark;
+    ? program.markConfigs[target.id].fill : fixedLineStroke ?? DEFAULT_COLORS.mark;
   let colors = config.domain.map(() => fallback);
   let strokes = config.domain.map(() => "white");
   let dashes = config.domain.map(() => []);

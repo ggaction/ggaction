@@ -67,7 +67,7 @@ test("ErrorBand fill replacement is explicit in both directions and reset restor
   assert.deepEqual(fills(constant), ["black", "black"]);
   assert.equal(constant.guideConfigs.legend?.color, undefined);
   for (const program of [constant, band({ fill: "black" }), band().editAreaMark({ fill: "black" })]) {
-    assert.throws(() => program.encodeColor({ target: "band", field: "group" }), /constant appearance/);
+    assert.deepEqual(fills(program.encodeColor({ target: "band", field: "group" })), fills(colored));
     const reset = program.editErrorBand({ target: "band", fill: false });
     assert.deepEqual(fills(reset), ["#4c78a8", "#4c78a8"]);
     assert.equal(reset.markConfigs.band.errorBand.fill, undefined);

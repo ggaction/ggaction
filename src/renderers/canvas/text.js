@@ -1,6 +1,6 @@
 import { resolveCanvasSolidPaint } from "./fill.js";
 import { requireFiniteProperty, requireStringProperty } from "./validation.js";
-import { validateConcreteGraphicProperties } from
+import { validateConcreteGraphicProperties, validateConcreteGraphicValue } from
   "../../grammar/schemas/concreteGraphic.js";
 import { normalizeRendererFontWeight } from "../text.js";
 
@@ -13,7 +13,8 @@ function drawText(context, child, collectionId) {
   const fontSize = requireFiniteProperty(properties, "fontSize", graphicId);
   const rotation = properties.rotation ?? 0;
   const opacity = properties.opacity ?? 1;
-  const text = requireStringProperty(properties, "text", graphicId);
+  const text = properties.text;
+  validateConcreteGraphicValue("text", "text", text);
   const fill = requireStringProperty(properties, "fill", graphicId);
   const fontFamily = requireStringProperty(
     properties,

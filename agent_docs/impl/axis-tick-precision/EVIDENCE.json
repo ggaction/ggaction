@@ -1,0 +1,104 @@
+{
+  "status": "verified-unreleased-implementation-checkpoint",
+  "issue": 260,
+  "approval": "Current human instruction approves all previous and future questions within the ongoing chart/library task. Reused for the concrete proposal.",
+  "checks": [
+    {
+      "suite": "unit",
+      "log": ".artifacts/axis-tick-precision/unit.log",
+      "passCount": 3866,
+      "failCount": 0,
+      "sha256": "0d0684ef57f7f621a080bdd1b01d4ca7f79f2ddeb1029f4645f0a1cf1d6368cd"
+    },
+    {
+      "suite": "contracts",
+      "log": ".artifacts/axis-tick-precision/contracts.log",
+      "passCount": 620,
+      "failCount": 0,
+      "sha256": "35bd22b1feaaaea4e7f67fd74b44ca44e88a8cdfcb4305cf18fbde00b3335c88"
+    },
+    {
+      "suite": "docs",
+      "log": ".artifacts/axis-tick-precision/docs.log",
+      "passCount": 121,
+      "failCount": 0,
+      "sha256": "44d854084b7173ae092acb8a82a8592640339427e36dc305acacfa49f51e6ffa"
+    },
+    {
+      "suite": "charts",
+      "log": ".artifacts/axis-tick-precision/charts.log",
+      "passCount": 641,
+      "failCount": 0,
+      "sha256": "b1fb099fee794858d03c84968774fa7f4475afc74b7165cdac5707a62064c495"
+    },
+    {
+      "suite": "browser",
+      "log": ".artifacts/axis-tick-precision/browser.log",
+      "passCount": 161,
+      "failCount": 0,
+      "sha256": "580acc27fdf8761ae7c0587449c01497f5ce65a59ebcf8f2e2de4346e95b6da3"
+    }
+  ],
+  "normalTotal": 5248,
+  "packageConsumerGroups": 69,
+  "packageConsumerLog": {
+    "path": ".artifacts/axis-tick-precision/package-consumer.log",
+    "sha256": "0aa8475d3633d3995a94b91f2c03d63d6f483e18b36d91f9ecd4e492d4f91eb4"
+  },
+  "browserBundles": {
+    "full": {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 543,
+      "minifiedBytes": 1588700,
+      "gzipBytes": 431608
+    },
+    "basic": {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 326,
+      "minifiedBytes": 773375,
+      "gzipBytes": 218187
+    },
+    "svg": {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 19,
+      "minifiedBytes": 23548,
+      "gzipBytes": 7567
+    }
+  },
+  "legacyDefaultPolicyUnchanged": true,
+  "focusedFeatureTests": 9,
+  "externalRealisticDiagnostic": {
+    "passed": 75,
+    "failedDueToMissingExternalDatasetCache": 15,
+    "allRealisticTestsPassClaim": false,
+    "log": ".artifacts/axis-tick-precision/realistic-external-cache-diagnostic.log",
+    "sha256": "84a3e092a024418b571bc58af30667638201c5b0197e6a7ac64c8f63e425b2c9"
+  },
+  "measuredBudgetChanges": {
+    "unpackedBytes": {
+      "prior": 4188000,
+      "actual": 4190208,
+      "ceiling": 4191000
+    },
+    "basicGzipBytes": {
+      "prior": 218000,
+      "actual": 218187,
+      "ceiling": 219000
+    },
+    "fullGzipBytes": {
+      "actual": 431608,
+      "existingScriptCeiling": 432000,
+      "architectureTableCorrectedToExistingCeiling": true
+    },
+    "publicSearchBytes": 849978,
+    "publicSearchLimitUnchanged": 850000
+  },
+  "scope": "Library unit/contracts/chart/docs/browser and packed consumer checks; not current translation-cohort compatibility or source-family qualification.",
+  "translationRuntimeActivated": false,
+  "registryPublished": false,
+  "SchoolRequests": 0,
+  "regularPublicReleaseAt": 1413
+}

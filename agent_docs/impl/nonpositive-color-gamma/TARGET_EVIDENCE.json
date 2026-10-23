@@ -1,0 +1,66 @@
+{
+  "status": "primitive-target-verified-public-extension-notimplemented",
+  "reviewer": "codex",
+  "authorization": "Direct human standing approval of all future in-scope API/numeric/visual questions; no image inspection; decoded RGB/ink evidence only.",
+  "publicLibraryChanged": false,
+  "results": [
+    {
+      "gamma": 0,
+      "variant": "zero-gamma",
+      "primitiveProgram": "agent_docs/impl/nonpositive-color-gamma/primitive-target.mjs",
+      "primitiveGraphicSha256": "f60783ce0db81ed78eba9236ba52c3c4d43921883e6768169a83d0383d9e1ab7",
+      "primitiveOrder": [
+        "canvas"
+      ],
+      "pngSha256": "00be6af6169467d0ee7b7ac851a9fa7e726f0d88e32d057353f9b74e072e8d18",
+      "pixelBytes": 518400,
+      "inkPixels": 31050,
+      "literalMiddleRowColors": [
+        "#ffb2a4",
+        "#ffba93",
+        "#f6c487",
+        "#e5ce7e",
+        "#d2d87c",
+        "#bfe17e",
+        "#ade986",
+        "#9def93",
+        "#90f2a4"
+      ],
+      "currentPublicRejection": {
+        "rejected": true,
+        "error": "Scale gamma must be a positive finite number."
+      },
+      "reviewDirectory": ".artifacts/test/png/review/nonpositive-color-gamma/zero-gamma",
+      "chartPixelsInspected": false
+    },
+    {
+      "gamma": -0.1,
+      "variant": "negative-gamma",
+      "primitiveProgram": "agent_docs/impl/nonpositive-color-gamma/primitive-target.mjs",
+      "primitiveGraphicSha256": "b14b47afded80f2041a44dc08994d71a2c35ea6ce04c88b4a86bd77bd2bd2372",
+      "primitiveOrder": [
+        "canvas"
+      ],
+      "pngSha256": "335d683578da2f61db7e846d09fa2df248d829fe799fa6943d0b7406d9b9c890",
+      "pixelBytes": 518400,
+      "inkPixels": 31050,
+      "literalMiddleRowColors": [
+        "#00ffff",
+        "#ffe9db",
+        "#fcdeb8",
+        "#eedda2",
+        "#dce195",
+        "#c8e68f",
+        "#b3eb90",
+        "#a0f097",
+        "#90f2a4"
+      ],
+      "currentPublicRejection": {
+        "rejected": true,
+        "error": "Scale gamma must be a positive finite number."
+      },
+      "reviewDirectory": ".artifacts/test/png/review/nonpositive-color-gamma/negative-gamma",
+      "chartPixelsInspected": false
+    }
+  ]
+}

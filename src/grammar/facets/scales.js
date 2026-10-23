@@ -89,17 +89,37 @@ export function normalizeFacetScalePolicies(semanticSpec, requested = {}) {
       );
     }
   }
+  const inferred = { ...requested };
+  let changed = true;
+  while (changed) {
+    changed = false;
+    for (const [id, channelSet] of used) {
+      const attached = [...channelSet];
+      const policies = [...new Set(attached
+        .filter(channel => inferred[channel] !== undefined)
+        .map(channel => inferred[channel]))];
+      if (policies.length > 1) {
+        throw new Error(
+          `Facet scale "${id}" has conflicting channel policies for ${attached.join(", ")}.`
+        );
+      }
+      if (policies.length === 1) for (const channel of attached) {
+        if (inferred[channel] === undefined) {
+          inferred[channel] = policies[0];
+          changed = true;
+        }
+      }
+    }
+  }
+  Object.assign(channels, inferred);
   const scalePolicies = {};
   for (const [id, channelSet] of used) {
     const attached = [...channelSet];
-    const policies = [...new Set(attached.map(channel => channels[channel]))];
-    if (policies.length !== 1) {
-      throw new Error(
-        `Facet scale "${id}" has conflicting channel policies for ${attached.join(", ")}.`
-      );
-    }
+    // One semantic scale cannot have different resolutions through its aliases.
+    // An explicitly chosen channel policy also owns omitted aliases; only
+    // contradictory explicit requests are ambiguous.
     scalePolicies[id] = {
-      policy: policies[0],
+      policy: channels[attached[0]],
       channels: attached
     };
   }

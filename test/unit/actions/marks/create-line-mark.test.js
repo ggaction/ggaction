@@ -76,12 +76,8 @@ test("stores explicit curve and stroke appearance for later materialization", ()
   });
   assert.deepEqual(dataProgram().createLineMark({ id: "trends" }).markConfigs.trends, {});
   assert.equal(program.trace.children.at(-1).children.at(-1).op, "editLineMark");
-  assert.throws(
-    () => dataProgram()
-      .createLineMark({ id: "colored", stroke: "#7c3aed" })
-      .encodeColor({ field: "Origin" }),
-    /cannot replace constant appearance/
-  );
+  assert.equal(dataProgram().createLineMark({ id: "colored", stroke: "#7c3aed" })
+    .encodeColor({ field: "Origin" }).markConfigs.colored.stroke, undefined);
 });
 
 test("validates line mark options, ids, data, and conflicts", () => {

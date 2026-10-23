@@ -1,3 +1,4 @@
+import { withGuideLayoutValidation } from "../../../../materialization/guides/layout.js";
 import { axisThemeTypography } from "../../../theme/state.js";
 import { action } from "../../../../core/action.js";
 import { validateNonNegativeFinite } from "../../../../core/validation.js";
@@ -148,7 +149,7 @@ function makeEditLabels(kind) {
   return action({
     op: operation.edit,
     description: `Edit the Polar ${kind}-axis labels.`
-  }, function (args = {}) {
+  }, withGuideLayoutValidation(function (args = {}) {
     validateObject(args, labelEditOptions(kind), operation.edit);
     validateModeOptions(args, operation.edit);
     const names = polarGuideNames(kind);
@@ -184,7 +185,7 @@ function makeEditLabels(kind) {
       next = next.editGraphics({ target: names.labels, property, value });
     }
     return next;
-  });
+  }));
 }
 
 function makeCreateLabels(kind) {
@@ -192,7 +193,7 @@ function makeCreateLabels(kind) {
   return action({
     op: operation.create,
     description: `Create the Polar ${kind}-axis labels.`
-  }, function (args = {}) {
+  }, withGuideLayoutValidation(function (args = {}) {
     validateComponentCreateArgs(kind, args, labelCreateOptions(kind), operation.create);
     validateModeOptions(args, operation.create);
     const names = polarGuideNames(kind);
@@ -217,7 +218,7 @@ function makeCreateLabels(kind) {
       })
       ._withGuideConfig(kind, "labels", config)
       [operation.edit]();
-  });
+  }));
 }
 
 export const createThetaAxisLabels = /* @__PURE__ */ makeCreateLabels("theta");

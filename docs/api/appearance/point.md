@@ -72,7 +72,9 @@ field. Its scale supports `linear`, `log`, `sqrt`, `pow`, `quantize`, `quantile`
 and `threshold`. Every range value is an area in square logical pixels; the
 automatic continuous range is `[24, 196]`. Circles use `sqrt(area / PI)` as
 radius and squares use `sqrt(area)` as side length, so the shapes represent
-equal visual area.
+equal visual area. Explicit polygons use the same area normalization by default;
+[`normalization: "radius"`](../marks/point.md#explicit-polygon-shapes) instead
+interprets size as reference-circle area.
 
 Logarithmic size scales require positive values and use base 10 unless `base`
 is supplied. Square-root and power scales require non-negative values; power
@@ -82,11 +84,13 @@ and require one more area than cuts. Discrete size legends show every interval
 and therefore reject an explicit sample `count`.
 
 `encodeShape({ field, target?, fieldType?, scale? })` requires a nominal field.
-Its ordinal scale accepts the 12 shared point shapes documented under
-[Marks](../marks.md). The automatic range uses each shape once and rejects more
-than 12 distinct categories rather than silently repeating symbols. Explicit
-ranges must contain unique supported shapes. Mixed circle, rect, and Z-closed path
-symbols are stored as typed items in one graphical collection.
+Its ordinal scale accepts the fourteen named point shapes and explicit simple
+polygons documented under [Point marks](../marks/point.md). The automatic range
+uses each named shape once and rejects more than fourteen categories. Explicit
+ranges may repeat supported shapes deliberately and must cover the domain;
+there is no implicit cycling. Explicit `unknown` accepts a named or polygon
+fallback without adding it to the domain or legend. Mixed circle, rect, and
+closed-path symbols are stored as typed items in one graphical collection.
 
 `encodeOpacity` accepts exactly one of `value` or `field`. A constant value from
 `0` to `1` is graphical. A quantitative field creates semantic opacity and a

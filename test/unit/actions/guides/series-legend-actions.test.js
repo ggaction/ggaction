@@ -401,7 +401,7 @@ test("validates combined fields, domains, targets, and appearance options", () =
   const differentDomains = createSeriesLine({ dash: false })
     .encodeStrokeDash({
       field: "origin",
-      scale: { domain: ["B", "A"] }
+      scale: { domain: ["B", "A", "C"] }
     });
 
   assert.throws(
@@ -411,7 +411,7 @@ test("validates combined fields, domains, targets, and appearance options", () =
   );
   assert.throws(
     () => differentDomains.createLegend(),
-    /identical ordered domains/
+    /same domain values/
   );
   assert.throws(
     () => createSeriesLine().createLegend({ channels: [] }),

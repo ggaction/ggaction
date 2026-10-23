@@ -5,6 +5,7 @@ import {
   cleanNumericValue,
   interpolateNumber,
   inverseLerp,
+  nearestNumericIncrement,
   niceNumericStep,
   normalizeNumericRange
 } from "../numeric.js";
@@ -76,6 +77,59 @@ export function niceLinearDomain(domain) {
   return cloneAndFreeze([lower, upper]);
 }
 
+export function normalizeScaleNice(type, value) {
+  if (typeof value === "boolean") return value;
+  if (!isPlainObject(value)) {
+    throw new TypeError("Scale nice must be a boolean or a linear count object.");
+  }
+  if (type !== "linear") {
+    throw new Error("Count-based nice requires a linear position scale.");
+  }
+  if (Reflect.ownKeys(value).length !== 1 || !Object.hasOwn(value, "count")) {
+    throw new TypeError("Count-based nice requires exactly one count property.");
+  }
+  const count = value.count;
+  if (!Number.isSafeInteger(count) || count <= 0) {
+    throw new RangeError("Nice count must be a positive safe integer.");
+  }
+  return cloneAndFreeze({ count });
+}
+
+export function niceLinearCountDomain(domain, count) {
+  const input = validatePair(domain, "Nice linear domain");
+  normalizeScaleNice("linear", { count });
+  const reversed = input[0] > input[1];
+  let lower = Math.min(...input), upper = Math.max(...input);
+  let stable = lower === upper;
+  for (let iteration = 0; iteration < 10 && lower !== upper; iteration++) {
+    let start = lower, end = upper, scale = 1;
+    let increment = nearestNumericIncrement(end - start, count);
+    if (increment === null) {
+      const normalized = normalizeNumericRange(lower, upper);
+      ({ start, end, scale } = normalized);
+      increment = nearestNumericIncrement(normalized.span, count);
+      if (increment === null) break;
+    }
+    let nextLower = (increment < 0
+      ? Math.floor(start * -increment) / -increment
+      : Math.floor(start / increment) * increment) * scale;
+    let nextUpper = (increment < 0
+      ? Math.ceil(end * -increment) / -increment
+      : Math.ceil(end / increment) * increment) * scale;
+    // At numeric limits an outward step may not be representable. Retain the
+    // observed endpoint rather than overflow, move inward, or invent a value.
+    if (!Number.isFinite(nextLower) || nextLower > lower) nextLower = lower;
+    if (!Number.isFinite(nextUpper) || nextUpper < upper) nextUpper = upper;
+    if (nextLower === lower && nextUpper === upper) { stable = true; break; }
+    lower = nextLower; upper = nextUpper;
+  }
+  // A density such as one interval across zero may have no fixed outward
+  // grid. Do not return an arbitrarily enlarged result after the loop cap.
+  if (!stable) return input;
+  const result = [lower === 0 ? 0 : lower, upper === 0 ? 0 : upper];
+  return cloneAndFreeze(reversed ? result.reverse() : result);
+}
+
 export function resolveContinuousDomain({ domain, values, type, nice, zero }) {
   const explicit = domain !== "auto";
   let resolved = resolveScaleDomain(domain, values);
@@ -86,7 +140,10 @@ export function resolveContinuousDomain({ domain, values, type, nice, zero }) {
       Math.max(0, resolved[1])
     ]);
   }
-  if (nice === true) {
+  if (nice !== undefined && typeof nice === "object") {
+    const policy = normalizeScaleNice(type, nice);
+    resolved = niceLinearCountDomain(resolved, policy.count);
+  } else if (nice === true) {
     resolved = type === "time"
       ? niceTimeDomain(resolved)
       : niceLinearDomain(resolved);

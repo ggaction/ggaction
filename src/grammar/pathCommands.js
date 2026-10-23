@@ -1,7 +1,7 @@
 import { freezeOwned, isPlainObject } from "../core/immutable.js";
 import { validateGeneratedItemLimit } from "../core/validation.js";
 
-export const MAX_PATH_COMMANDS = 20_000;
+export const MAX_PATH_COMMANDS = 30_000;
 
 export function validatePathCommandCount(count, label) {
   return validateGeneratedItemLimit(count, label, MAX_PATH_COMMANDS);

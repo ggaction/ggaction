@@ -91,6 +91,10 @@
       {
         "type": "file",
         "path": "contracts/transform-registry.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/lookup-data/"
       }
     ],
     "documentation": [
@@ -101,6 +105,60 @@
       {
         "type": "file",
         "path": "contracts/documentation-truth.test.js"
+      }
+    ],
+    "facet-field-titles": [
+      {
+        "type": "file",
+        "path": "unit/actions/composition/facet-field-titles.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/facet-field-title-types.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/facet-field-titles/"
+      }
+    ],
+    "facet-header-rotation": [
+      {
+        "type": "file",
+        "path": "unit/actions/composition/facet-header-rotation.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/facet-header-rotation-types.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/facet-header-rotation/"
+      }
+    ],
+    "facet-top-lane": [
+      {
+        "type": "file",
+        "path": "unit/layout/facet-top-lane.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/layout/facet-top-lane-concrete.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/composition/facet-top-lane.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/facet-top-lane-types.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/facet-shared-top-lane/"
+      },
+      {
+        "type": "file",
+        "path": "unit/renderers/empty-text-renderer.test.js"
       }
     ],
     "grammar": [
@@ -191,6 +249,24 @@
         "path": "unit/layout/"
       }
     ],
+    "legend-content-spacing": [
+      {
+        "type": "file",
+        "path": "unit/layout/legend-content-spacing.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/guides/legend-content-spacing.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/legend-spacing-types.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/legend-content-spacing/"
+      }
+    ],
     "legend-layout": [
       {
         "type": "prefix",
@@ -207,6 +283,28 @@
       {
         "type": "prefix",
         "path": "unit/actions/guides/"
+      }
+    ],
+    "lookup-data": [
+      {
+        "type": "file",
+        "path": "unit/grammar/lookup.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/dataset-dependencies.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/lookup-data.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/composition/lookup-facets.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/lookup-data/"
       }
     ],
     "marks": [
@@ -253,6 +351,32 @@
       {
         "type": "prefix",
         "path": "unit/persistence/"
+      }
+    ],
+    "plot-guide-underlays": [
+      {
+        "type": "file",
+        "path": "unit/actions/primitives/graphic-child-order.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/layout/plot-draw-order.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/guides/plot-underlays.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/plot-guide-underlays/"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/guides/plot-underlay-marks.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/plot-underlay-types.test.js"
       }
     ],
     "polar": [
@@ -307,6 +431,14 @@
       {
         "type": "file",
         "path": "browser/public-examples.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/scene.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/canvas-scene.test.js"
       }
     ],
     "scales": [

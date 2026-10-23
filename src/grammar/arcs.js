@@ -4,7 +4,8 @@ import {
   mapContinuousScaleValues,
   mapOrdinalPositionValues,
   readNominalField,
-  readQuantitativeField
+  readQuantitativeField,
+  readScaleField
 } from "./scales/index.js";
 import {
   interpolateNumber,
@@ -60,7 +61,27 @@ function requireBandScale(scale, label) {
 function colorValues(rows, encoding) {
   return encoding === undefined
     ? rows.map(() => undefined)
-    : readNominalField(rows, encoding.field);
+    : readScaleField(rows, encoding.field, encoding.fieldType ?? "nominal", {
+        temporalUnit: encoding.temporalUnit
+      });
+}
+
+export function readArcColorValues(rows, layer) {
+  const values = colorValues(rows, layer.encoding?.color);
+  const theta = layer.encoding?.theta;
+  const grouped = theta?.aggregate !== undefined ||
+    layer.encoding?.radius?.aggregate !== undefined;
+  if (!grouped || theta?.field === undefined) return values;
+  const categories = readNominalField(rows, theta.field);
+  const groups = new Map();
+  categories.forEach((category, index) => {
+    const value = values[index];
+    if (groups.has(category) && !Object.is(groups.get(category), value)) {
+      throw new Error(`Arc category "${category}" must resolve to one color value.`);
+    }
+    groups.set(category, value);
+  });
+  return [...groups.values()];
 }
 
 function readNonNegativeArcThetaValues(rows, field, layerId, role) {

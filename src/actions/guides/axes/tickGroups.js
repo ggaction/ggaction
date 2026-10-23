@@ -8,6 +8,7 @@ const CREATE_OPTIONS = Object.freeze(["target",
   "position",
   "count",
   "values",
+  "rounding",
   "ticks",
   "labels"
 ]);
@@ -15,6 +16,7 @@ const EDIT_OPTIONS = Object.freeze(["target",
   "position",
   "count",
   "values",
+  "rounding",
   "ticks",
   "labels"
 ]);
@@ -37,8 +39,8 @@ const LABEL_OPTIONS = Object.freeze([
   "colorMap",
   "align"
 ]);
-const SHARED_CREATE = Object.freeze(["target", "scale", "position", "count", "values"]);
-const SHARED_EDIT = Object.freeze(["target", "position", "count", "values"]);
+const SHARED_CREATE = Object.freeze(["target", "scale", "position", "count", "values", "rounding"]);
+const SHARED_EDIT = Object.freeze(["target", "position", "count", "values", "rounding"]);
 
 function validateNested(value, supported, label) {
   if (!isPlainObject(value)) {

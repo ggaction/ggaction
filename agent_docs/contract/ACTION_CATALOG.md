@@ -24,6 +24,8 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`filterData`](current/CORE.md#filterdata) | core | Mutable resource | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createSummaryData`](current/CORE.md#createsummarydata) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createBinData`](current/CORE.md#createbindata) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createLookupData`](current/CORE.md#createlookupdata) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createFlattenData`](current/CORE.md#createflattendata) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createFoldData`](current/CORE.md#createfolddata) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createComputedData`](current/CORE.md#createcomputeddata) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createNormalizedData`](current/CORE.md#createnormalizeddata) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
@@ -41,6 +43,8 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`editDerivedData`](current/CORE.md#editderiveddata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editComputedData`](current/CORE.md#editcomputeddata) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editFilteredData`](current/CORE.md#editfiltereddata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editLookupData`](current/CORE.md#editlookupdata) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editFlattenData`](current/CORE.md#editflattendata) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editFoldData`](current/CORE.md#editfolddata) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editSummaryData`](current/CORE.md#editsummarydata) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editBinData`](current/CORE.md#editbindata) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
@@ -60,6 +64,7 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`createECDFData`](current/STATISTICS.md#createecdfdata) | statistics | Mutable resource | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createPointMark`](current/MARKS.md#createpointmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createTickMark`](current/MARKS.md#createtickmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createStatisticalReference`](current/MARKS.md#createstatisticalreference) | marks | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createReferenceLine`](current/MARKS.md#createreferenceline) | marks | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createReferenceBand`](current/MARKS.md#createreferenceband) | marks | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createMarkLabels`](current/MARKS.md#createmarklabels) | marks | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
@@ -116,6 +121,8 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`removeCategoryOrder`](current/ENCODINGS.md#removecategoryorder) | encodings | Assignment | Removal — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`removeEncoding`](current/ENCODINGS.md#removeencoding) | encodings | Assignment | Removal — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodeText`](current/ENCODINGS.md#encodetext) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
+| user-facing | [`encodeDx`](current/ENCODINGS.md#encodedx) | encodings | Assignment | Reassignment and removal fallback - Implemented | ✅ / ✅ / ✅ |
+| user-facing | [`encodeDy`](current/ENCODINGS.md#encodedy) | encodings | Assignment | Reassignment and removal fallback - Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodeHistogram`](current/ENCODINGS.md#encodehistogram) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodeDensity`](current/ENCODINGS.md#encodedensity) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`editDensity`](current/ENCODINGS.md#editdensity) | encodings | Mutable resource | Complete | ✅ / ✅ / ✅ |
@@ -163,6 +170,7 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`createYAxisTitle`](current/AXES.md#createyaxistitle) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editXAxisTitle`](current/AXES.md#editxaxistitle) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editYAxisTitle`](current/AXES.md#edityaxistitle) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editAxes`](current/AXES.md#editaxes) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editXAxis`](current/AXES.md#editxaxis) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editYAxis`](current/AXES.md#edityaxis) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`removeXAxis`](current/AXES.md#removexaxis) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
@@ -274,6 +282,7 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`createPolarScatterPlot`](current/COMPLETE_CHARTS.md#createpolarscatterplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createPolarLinePlot`](current/COMPLETE_CHARTS.md#createpolarlineplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createRadarPlot`](current/COMPLETE_CHARTS.md#createradarplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
+| user-facing | [`editRadarPlot`](current/COMPLETE_CHARTS.md#editradarplot) | charts | Mutable resource | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createRugPlot`](current/COMPLETE_CHARTS.md#createrugplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createStripPlot`](current/COMPLETE_CHARTS.md#createstripplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createBeeswarmPlot`](current/COMPLETE_CHARTS.md#createbeeswarmplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |

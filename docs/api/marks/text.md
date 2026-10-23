@@ -233,7 +233,8 @@ const segmentValues = stackedBars
 normalization, each histogram segment's count, each Pie sector's count or
 weighted sum, or an Arc's radial value. For two stacked values of 10 and 30,
 it labels them 10 and 30. `content: "category"` reads the category of an
-aggregate Bar or categorical Arc.
+aggregate Bar or categorical Arc. For a histogram or other binned Bar it shows
+the bin interval as `start–end`, regardless of stacking or axis reversal.
 
 `content: "share"` divides these values by their total across the current
 source's final items. Use `normalizeBy: "category"` for percentages within
@@ -301,6 +302,45 @@ See [Label Collision Layout](./label-layout.md#layoutlabelsoptions) for this con
 ## `removeLabelLayout(options?)`
 
 See [Label Collision Layout](./label-layout.md#removelabellayoutoptions) for this contract and its examples.
+
+## Numeric pixel offsets
+
+In Full, `encodeDx` and `encodeDy` assign a finite numeric field or constant to
+independent Text glyph offsets. These are signed logical pixels after position
+scaling; they do not create a scale or change axis domains.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```javascript
+import {chart} from 'ggaction';
+const labels = chart()
+  .createCanvas({width:500,height:300,margin:80})
+  .createData({values:[
+    {x:2,y:3,label:'Alpha',shift:12},
+    {x:5,y:6,label:'Beta',shift:-9}
+  ]})
+  .createTextPlot({x:'x',y:'y',text:'label'})
+  .encodeDx({field:'shift'})
+  .encodeDy({value:-6});
+```
+
+Use exactly one of `field` or `value`. Numeric strings and non-finite numbers
+are rejected. An encoded component overrides the corresponding constant
+`editTextMark` offset; `removeEncoding({channel:'dx'})` restores the stored
+constant. Omitting dy preserves it. Field offsets create one glyph per eligible
+row even with constant positions and content; typed empty field-bound data
+creates none. The existing `missing:'skip'` policy omits the complete missing row.
+
+For atomic assignment, call
+`labels.encodeChannels({target:'textPlot',channels:{dx:{field:'shift'},dy:{value:-6}}})`.
+Canvas, scale, data edits, facet children and saved-program restoration replay
+the offsets. Attached source labels are excluded. Basic retains its existing
+Text-family exclusion. Categorical `encodeXOffset`/`encodeYOffset` remain separate
+subgroup-layout operations.
 
 ## Related
 

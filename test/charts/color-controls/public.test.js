@@ -18,7 +18,7 @@ for (const variant of visualVariants) {
       displayedActionCalls(variant.callChain).map(({op,args}) => ({op,args:summarizeArgs(args)})));
     assertChartProgramsEquivalent({ publicProgram: program, primitiveProgram: primitive, compareSemanticSpec: false });
     for (const region of variant.regions) {
-      assert.deepEqual(program.graphicSpec.objects[region.name].items.map(item => item.properties.fill), literalColors[region.name]);
+      assert.deepEqual(program.graphicSpec.objects[region.name].items.map(item => item.properties.fill), region.colors.map(color => color.value));
     }
     const rendered = [program, primitive].map(value => {
       const context = createCanvas(480, 270).getContext("2d");
@@ -49,4 +49,11 @@ test("all 18 Lab, 18 gamma and 9 signed-power literal colors match independent f
     const position = referenceSignedPower(value, [-2,2], 3);
     return "#" + [255*position,0,255*(1-position)].map(channel => Math.round(channel).toString(16).padStart(2,"0")).join("");
   }), literalColors.power);
+});
+
+test("zero and negative gamma literals match independently solved public RGB endpoints", () => {
+  const positions = Array.from({length:9}, (_,i) => i / 8);
+  for (const [name, gamma] of [["gamma0", 0], ["gammaNegative", -.1]]) {
+    assert.deepEqual(positions.map(t => referenceCubehelixColor([117,25,11],[144,242,164],t,gamma)), literalColors[name]);
+  }
 });

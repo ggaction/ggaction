@@ -59,7 +59,7 @@ export function findUpstreamTransform(program, dataset, type) {
     visited.add(current.id);
     if (current.transform?.length !== 1) return undefined;
     const transform = current.transform[0];
-    if (transform.type === type) return transform;
+    if (Array.isArray(type) ? type.includes(transform.type) : transform.type === type) return transform;
     if (findTransformTopology(transform.type)?.provenanceTransparent !== true) {
       return undefined;
     }

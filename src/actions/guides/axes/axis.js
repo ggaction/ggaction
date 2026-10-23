@@ -1,7 +1,7 @@
 import { AXIS_RESOURCE_CHANNELS } from "../../../core/vocabulary.js";
 import { cartesianAxisOwners, axisTargetArgs, assertCartesianAxisSideAvailable } from "../../../selectors/axes.js";
 import { axisGraphicIds } from "../../../materialization/guides/resources.js";
-import { defaultAxisPosition, validateAxisPosition } from "./policy.js";
+import { defaultAxisPosition, validateAxisPosition, resolveAxisFrameConfig } from "./policy.js";
 import { isSourceOwnedText } from "../../../grammar/text.js";
 import { withGuideLayoutValidation } from "../../../materialization/guides/layout.js";
 import { action } from "../../../core/action.js";
@@ -21,12 +21,13 @@ const TOP_OPTIONS = Object.freeze([
   "line",
   "ticksAndLabels",
   "title",
-  "offset"
+  "offset", "underlay"
 ]);
 const LINE_OPTIONS = Object.freeze(["color", "lineWidth"]);
 const TICK_GROUP_OPTIONS = Object.freeze([
   "count",
   "values",
+  "rounding",
   "ticks",
   "labels"
 ]);
@@ -39,7 +40,7 @@ const TITLE_OPTIONS = Object.freeze([
   "fontSize",
   "fontFamily",
   "fontWeight",
-  "alongOffset", "align", "baseline"
+  "alongOffset", "align", "baseline", "overlap"
 ]);
 
 function validateNested(value, supported, label) {
@@ -53,6 +54,7 @@ function validateNested(value, supported, label) {
 export function validateAxisArgs(args, operation) {
   validateKeys(args, TOP_OPTIONS, operation);
   if (Object.hasOwn(args, "offset")) validateNonNegativeFinite(args.offset, "Axis frame offset");
+  resolveAxisFrameConfig(undefined, args);
 
   validateEnabledAxisComponents(args, operation);
   if (Object.hasOwn(args, "line") && args.line !== false) {
@@ -136,8 +138,10 @@ function makeCreateAxis(channel) {
       const shared = axisTargetArgs(axisId, channel);
       if (Object.hasOwn(args, "scale")) shared.scale = args.scale;
       if (Object.hasOwn(args, "position")) shared.position = args.position;
-      let next = Object.hasOwn(args, "offset")
-        ? source._withGuideConfig(axisId, "frame", { offset: args.offset }) : source;
+      const frame = resolveAxisFrameConfig(source.guideConfigs.axis?.[axisId]?.frame, args);
+      let next = frame === undefined
+        ? source._withoutMaterializationConfig(["guides", "axis", axisId, "frame"])
+        : source._withGuideConfig(axisId, "frame", frame);
 
       if (Object.hasOwn(args, "coordinate")) {
         const coordinate = validateUserId(args.coordinate, "Coordinate id");

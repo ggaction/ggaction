@@ -1,7 +1,8 @@
 import { action, closedAction } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { isPlainObject } from "../../core/immutable.js";
-import { validateKeys } from "../../core/validation.js";
+import { validateKeys, validateWorkLimit } from "../../core/validation.js";
+import { validatePointShape } from "../../grammar/pointShapes.js";
 import { collectResourceReferences } from "../../core/resourceReferences.js";
 import { findLayer, resolveEligibleLayer } from "../../selectors/layers.js";
 import { isSourceOwnedText } from "../../grammar/text.js";
@@ -369,6 +370,14 @@ export const applyPointHighlight = /* @__PURE__ */ closedAction(
       throw new Error("applyPointHighlight requires a point selection.");
     }
     if (keys.length === 0) return this;
+    if (isPlainObject(args.style.shape)) {
+      const shape = validatePointShape(args.style.shape);
+      const { selected, items } = selectedGraphicItems(this, resolved, keys);
+      validateWorkLimit(items.reduce((sum, { key, child }) => sum +
+        (selected.has(key) ? shape.polygon.length + 1
+          : child.type === "path" ? child.properties.commands.length : 0), 0),
+      "Point polygon highlight");
+    }
     return editSelectedItems(this, resolved, keys, item =>
       transformPointHighlightChild(item, args.style)
     );

@@ -1,0 +1,18 @@
+{
+  "state": "approved",
+  "approvalSource": "reuse-direct-human-standing-approval-for-all-future-in-scope-design-and-visual-questions",
+  "humanInstruction": "지금까지 모든 질문, 앞으로 할 모든 질문 승인함. 새로운 릴리즈는 200개 단위로 하자",
+  "recordedAt": "2026-10-19T03:14:25.039Z",
+  "reviewCommit": "f131d7bb3bfcdb2a0856859e2e65818565dfeebd",
+  "reviewedProposalSha256": "1eaa6c29eb9826540aa0b5d96752a5718d87cb55a42d2b7e8e6183db5b734d3a",
+  "primitiveSha256": "ccb819b7d77b1ff1cdb2949c329095f4be8e07465cf0d558ddd84e24594194a5",
+  "targetEvidenceSha256": "9c2ed8ec8adc441b1466baf20d28c360a1a49fb200314692c017f3b480d1142b",
+  "targetSvgSha256": "de206f4ca840e4d7acb1c11f179c4bd0ed7d304e22cf26fdc8cf5c12797b86c3",
+  "targetPngSha256": "b58e155ae631c70b16e1aaa0cb9b65930bdbddf2a5c058298c1197fd1a14e482",
+  "scope": "Exact proposed topLane stacked/shared API, optional canonical shared intent on facet plot spacing, final concrete text-bounds validation, immutable replay/persistence and frozen508x262 primitive target. Existing unit validations/defaults/renderer boundaries/data and acceptance tolerances retained.",
+  "newInteractiveApprovalRequested": false,
+  "chartPixelsInspected": false,
+  "humanVisualInspectionClaimed": false,
+  "schoolCalls": 0,
+  "releasePolicy": "Collect verified candidate; next regular synchronized release at1413 successful families,200 after published1213."
+}

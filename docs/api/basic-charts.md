@@ -52,6 +52,15 @@ creation, editing returns to the action that owns the decision; for example,
 use `encodeY`, `editScale`, `editBarMark`, or `editLegend` rather than a generic
 facade editor.
 
+### The Basic package entry
+
+`ggaction/basic` keeps its smaller creation API. Its available field encodings
+can be called again to replace settings on an existing scale of the same type;
+all dependent marks and guides are validated and updated together. It does not
+expose the Full `editScale`, focused scale editors, or legend editors. Use Full
+for scale-type transitions, or create a new scale ID in Basic. See
+[Encoding reassignment](./encodings.md#reassign-an-existing-encoding).
+
 ## Shared behavior
 
 - `data` is optional when there is a current dataset or exactly one dataset.
@@ -142,6 +151,11 @@ unique tuple such as `["country", "scenario"]`. Explicit groups define identity;
 `color` and `strokeDash` can use other fields with one value per series. Without
 `groupBy`, color/dash retain their shared-field grouping. Use `line` for constant
 appearance. See [independent series identity](./series-encodings.md).
+
+For a direct quantitative/temporal line, `line: { missing: "break" }` preserves
+null/absent observations as gaps. The default remains strict. See
+[gaps in direct lines](./marks/line-area.md#gaps) for supported
+positions, ordering, domains and segment ownership.
 
 <!-- snippet-context:start -->
 
@@ -264,6 +278,8 @@ const bars = chart()
 The stable default mark ID is `barPlot`. `width` accepts the same band or
 logical-pixel options as `encodeBarWidth`; `bar` controls constant fill,
 opacity, stroke, and stroke width.
+
+For interval-width bars with a separate Y measure, use `createBarPlot` with `x.bin` and `y.aggregate`; see [bins with a separate measure](position/histogram.md#bins-with-a-separate-measure).
 
 ## `createHistogram`
 

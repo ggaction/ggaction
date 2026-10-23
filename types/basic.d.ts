@@ -1,6 +1,9 @@
 import type { ChartProgram, BasicSeriesLayoutOptions, CreateDataOptions } from "./program.js";
 
 export type {
+  LinearNiceCountOptions,
+  PointPolygonShape,
+  AxisTickRounding,
   AxisLabelOptions,
   AxisLineStyleOptions,
   AxisTickOptions,
@@ -21,6 +24,8 @@ export type {
   CreateBarPlotOptions,
   BarRangePositionChannel,
   CreateDataOptions,
+  FlattenDataOptions,
+  LookupDataOptions,
   CreateGridOptions,
   CreateGuidesOptions,
   CreateHeatmapOptions,
@@ -65,6 +70,8 @@ type BasicMethodKey =
   | "applyTheme"
   | "removeTheme"
   | "createData"
+  | "createFlattenData"
+  | "createLookupData"
   | "createPointMark"
   | "createLineMark"
   | "createBarMark"

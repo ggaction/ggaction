@@ -1,4 +1,12 @@
+import { validateGraphicClip } from "../grammar/schemas/graphicClip.js";
+import { validatePointShape } from "../grammar/pointShapes.js";
+import {deriveLookupRows,sameLookupValue} from "../grammar/lookup.js";
+import {deriveTransformSchema,datasetSchemaContext} from "../grammar/datasetSchema.js";
+import {orderedDatasetAncestors} from "../grammar/datasetDependencies.js";
+import {validateLegendSpacing} from "../grammar/legendSpacing.js";
+import { requestedMarkClip, validateMarkClipCoordinate } from "../selectors/markClip.js";
 import { validateAuthoredFacetLegend } from "../grammar/facets/legendIntent.js";
+import { validateFacetHeaderRotations } from "../grammar/facetHeaders.js";
 import { AXIS_RESOURCE_CHANNELS } from "../core/vocabulary.js";
 import { cartesianAxisOwners, assertCartesianAxisSideAvailable } from "../selectors/axes.js";
 import { axisGraphicIds } from "../selectors/axes.js";
@@ -20,16 +28,19 @@ import { validateGraphicItemLimit } from "../core/validation.js";
 import { LEGEND_TITLE_STYLE_KEYS, validateLegendTitleAlignment } from "../grammar/legendTitleStyle.js";
 import { validateGuideDash, normalizeGuideDashMap } from "../grammar/guideDash.js";
 import { validateAxisTextPlacement } from "../grammar/axisTextPlacement.js";
+import { validateTickSelectionRounding, axisTickSelection } from "../grammar/ticks.js";
 import { validateAreaPaintConfig } from "../grammar/areaPaint.js";
 import { validateOptionObject, validateKeys, validatePositiveFinite, validateNonNegativeFinite, validateNonEmptyString, validateGeneratedItemLimit } from "../core/validation.js";
 import { validateRegressionFitStatistics, requireRegressionStatisticsSource, regressionStatisticsRows } from "../grammar/regression/statistics.js";
 import { resolveGraphicItemCapacity } from "../selectors/graphicCapacity.js";
 import { isContinuousColorScaleType } from "../grammar/scales/types.js";
+import { validateTickColorChannels } from "../grammar/scales/colorConsumers.js";
 import { normalizeColorInterpolationOptions } from "../grammar/scales/color.js";
 import { normalizeTransformParameters } from "../grammar/scales/transformed.js";
 import { validateLegendGroupState } from "../grammar/legendGroups.js";
 import { normalizeGradientDirection, validateLegendGradient } from "../grammar/legendGradient.js";
 import { normalizeTextMetricProfile } from "../core/textMetricProfile.js";
+import { resolveTextOffsetDataset } from "../grammar/text.js";
 import { isPlainObject } from "../core/immutable.js";
 import { validateUserId } from "../core/identifiers.js";
 import { collectAllResourceReferences } from "../core/resourceReferences.js";
@@ -47,6 +58,21 @@ export const STATE_KEYS = Object.freeze([
   "semanticSpec", "graphicSpec", "resolvedScales", "materializationConfigs",
   "children", "compositionSpec", "context", "trace", "actionStack"
 ]);
+
+function validateStoredColorLegendSampling(program, config, path) {
+  requireObject(config.sampling, path);
+  const sample = config.sampling;
+  exactKeys(sample, sample.mode === "values" ? ["mode", "values", "count"] : ["mode", "count"], path);
+  if (!["auto", "values"].includes(sample.mode)) throw invalidSnapshot("Invalid color legend sample mode.", path);
+  if (!Number.isInteger(sample.count) || sample.count < 2) throw invalidSnapshot("Invalid color legend sample count.", path);
+  validateGeneratedItemLimit(sample.count, "Color legend sample count");
+  const scale = program.resolvedScales[config.scale];
+  if (!isContinuousColorScaleType(scale?.type)) throw invalidSnapshot("Sampled color legend requires a continuous color scale.", path);
+  if (sample.mode === "values") {
+    requireArray(sample.values, path);
+    if (!sample.values.length || sample.values.length > 100 || sample.values.some((value, index) => !Number.isFinite(value) || index > 0 && value <= sample.values[index - 1] || value < Math.min(...scale.domain) || value > Math.max(...scale.domain) || scale.type === "log" && value <= 0)) throw invalidSnapshot("Invalid exact color legend samples.", path);
+  }
+}
 
 export function requireObject(value, path) {
   if (!isPlainObject(value)) throw invalidSnapshot(`${path} must be a plain object.`, path);
@@ -79,9 +105,10 @@ export function validateGraphic(graphic, path = "payload.graphicSpec") {
     if (!id.length) throw invalidSnapshot("Graphic IDs must be non-empty.", path);
     requireObject(object, `${path}.objects.${id}`);
     validateGraphicType(object.type);
-    if (Object.keys(object).some(key => !["type", "properties", "items", "children"].includes(key))) {
+    if (Object.keys(object).some(key => !["type", "properties", "items", "children", "clip"].includes(key))) {
       throw invalidSnapshot(`Unknown graphic member at ${id}.`, path);
     }
+    if (object.clip !== undefined) validateGraphicClip(object.clip, object.type);
     if (object.properties !== undefined) validateConcreteGraphicProperties(object.type, object.properties);
     if (object.items !== undefined) {
       if (object.type === "canvas" || object.properties !== undefined) throw invalidSnapshot(`Invalid item owner "${id}".`, path);
@@ -143,7 +170,7 @@ function validateSemanticProperties(program, value, property) {
   validateStoredSemanticValue(program, parsed, value);
 }
 
-export function validateProgramState(program, path) {
+export function validateProgramState(program, path, { allowMissingLookupSchemas = false } = {}) {
   const semantic = program.semanticSpec;
   exactKeys(semantic, ["datasets", "layers", "scales", "coordinates", "guides", "title"], `${path}.semanticSpec`);
   const resources = new Map();
@@ -161,6 +188,12 @@ export function validateProgramState(program, path) {
     }
     resources.set(referenceKind, entries);
     for (const resource of entries.values()) {
+      if (kind === "layer") validateTickColorChannels(resource);
+      if (kind === "layer" && ["dx", "dy"].some(channel => resource.encoding?.[channel] !== undefined)) {
+        const dataset = semantic.datasets.find(item => item.id === resource.data);
+        if (dataset === undefined) throw new Error("Numeric text offsets require an existing dataset.");
+        resolveTextOffsetDataset(resource, dataset);
+      }
       if (kind === "scale") {
         normalizeColorInterpolationOptions(resource.interpolate, resource);
         if (resource.type === "pow") normalizeTransformParameters("pow", {
@@ -181,6 +214,13 @@ export function validateProgramState(program, path) {
   if (program.compositionSpec?.type === "facet" && isPlainObject(program.compositionSpec.facet.guides.legend)) {
     validateAuthoredFacetLegend(program, program.compositionSpec.facet.guides.legend);
   }
+  if (program.compositionSpec?.type === "facet") {
+    const headers = program.materializationConfigs.facets?.[program.compositionSpec.id]?.headers;
+    if (headers !== undefined) validateFacetHeaderRotations(headers);
+    if (headers?.row?.title !== undefined && program.compositionSpec.facet.grid === undefined) {
+      throw new TypeError("Facet row field title requires a row-column facet grid.");
+    }
+  }
   if (program.materializationConfigs.textMetrics !== undefined) normalizeTextMetricProfile(program.materializationConfigs.textMetrics);
   for (const config of [
     ...Object.values(program.guideConfigs.axis ?? {}).map(axis => axis.ticks),
@@ -189,17 +229,54 @@ export function validateProgramState(program, path) {
     if (config?.strokeDash !== undefined) validateGuideDash(config.strokeDash);
     if (config?.strokeDashMap !== undefined) normalizeGuideDashMap(config.strokeDashMap, { reset: false });
   }
-  for (const owner of cartesianAxisOwners(program)) {
+  const cartesianOwners = cartesianAxisOwners(program);
+  for (const [id, axis] of Object.entries(program.guideConfigs.axis ?? {})) {
+    for (const config of [axis?.ticks, axis?.labels]) {
+      if (config === undefined || !Object.hasOwn(config, "rounding")) continue;
+      if (!cartesianOwners.some(owner => owner.id === id)) {
+        throw invalidSnapshot("Tick rounding requires a Cartesian axis owner.", path);
+      }
+      validateTickSelectionRounding(config, program.resolvedScales[config.scale]?.type);
+    }
+  }
+  for (const owner of cartesianOwners) {
     const channel = owner.id;
     const axis = owner.config;
+    if (axis?.ticks && axis?.labels &&
+        (Object.hasOwn(axis.ticks, "rounding") || Object.hasOwn(axis.labels, "rounding")) &&
+        JSON.stringify(axisTickSelection(axis.ticks)) !== JSON.stringify(axisTickSelection(axis.labels))) {
+      throw invalidSnapshot("Stored tick rounding conflicts with axis labels.", path);
+    }
     if (axis?.frame !== undefined) {
-      exactKeys(axis.frame, ["offset"], `${path}.guides.axis.${channel}.frame`);
-      validateNonNegativeFinite(axis.frame.offset, "Axis frame offset");
+      validateOptionObject(axis.frame, ["offset", "underlay"], `Stored axis "${channel}" frame`, { allowEmpty: false });
+      if (Object.hasOwn(axis.frame, "offset")) validateNonNegativeFinite(axis.frame.offset, "Axis frame offset");
+      if (Object.hasOwn(axis.frame, "underlay") && axis.frame.underlay !== true) {
+        throw new Error("Stored axis underlay must be canonical true intent.");
+      }
     }
     if (axis?.labels !== undefined) validateAxisTextPlacement(axis.labels);
     if (axis?.title !== undefined) validateAxisTextPlacement(axis.title, { title: true });
   }
+  for (const config of Object.values(program.guideConfigs.grid ?? {})) {
+    if (!Object.hasOwn(config, "rounding")) continue;
+    validateTickSelectionRounding(config, program.resolvedScales[config.scale]?.type);
+    const owners = cartesianOwners.map(owner => owner.config?.ticks)
+      .filter(ticks => ticks?.scale === config.scale);
+    if (config.inferredValues !== true || config.rounding !== "nearest" || owners.length === 0 ||
+        owners.some(ticks => JSON.stringify(axisTickSelection(ticks)) !== JSON.stringify(axisTickSelection(config)))) {
+      throw invalidSnapshot("Stored grid rounding requires its matching inferred tick policy.", path);
+    }
+  }
+  const border = program.materializationConfigs.canvas?.plotBorder;
+  if (isPlainObject(border) && Object.hasOwn(border, "underlay") && border.underlay !== true) {
+    throw new Error("Stored plot border underlay must be canonical true intent.");
+  }
   for (const id of Object.keys(program.guideConfigs.axis ?? {})) {
+    const config = program.guideConfigs.axis[id];
+    if (config?.frame !== undefined && Object.hasOwn(config.frame, "underlay") &&
+        !cartesianOwners.some(owner => owner.id === id)) {
+      throw new Error("Stored axis underlay requires a Cartesian axis owner.");
+    }
     if (!AXIS_RESOURCE_CHANNELS.includes(id) && !Object.hasOwn(program.semanticSpec.guides.axis ?? {}, id)) {
       throw invalidSnapshot("Named axis configs require their semantic owner.", path);
     }
@@ -242,6 +319,7 @@ export function validateProgramState(program, path) {
   if (program.guideConfigs.legendGroups !== undefined) validateLegendGroupState(program.guideConfigs.legendGroups);
   for (const [kind, config] of Object.entries(program.guideConfigs.legend ?? {})) {
     validateLegendClip(kind,config);
+    validateLegendSpacing(kind,config);
     if (localLegendPosition(config) !== undefined) {
       const descriptor = describeLegendBlock(program, kind, config);
       for (const [key, override] of Object.entries(config.blockOverrides)) {
@@ -301,22 +379,17 @@ export function validateProgramState(program, path) {
     if (["gradient", "strokeGradient"].includes(kind) && config.representation !== "symbols") {
       validateLegendGradient(config.gradient, "Stored legend gradient");
     }
+    if (["gradient", "strokeGradient"].includes(kind) && config.representation !== "symbols" && config.sampling !== undefined) {
+      validateStoredColorLegendSampling(program, config, path);
+      if (config.sampling.mode !== "values" || config.count !== config.sampling.count) {
+        throw invalidSnapshot("Gradient exact sampling must retain its automatic count.", path);
+      }
+    }
     if (config.representation === undefined) continue;
     if (kind !== "gradient" || !["symbols", "gradient"].includes(config.representation)) throw invalidSnapshot("Invalid continuous color legend representation.", path);
     if (config.representation === "symbols") {
       if (config.gradient !== undefined) throw invalidSnapshot("Symbol color legend cannot store gradient dimensions.", path);
-      requireObject(config.sampling, path);
-      const sample = config.sampling;
-      exactKeys(sample, sample.mode === "values" ? ["mode", "values", "count"] : ["mode", "count"], path);
-      if (!["auto", "values"].includes(sample.mode)) throw invalidSnapshot("Invalid color legend sample mode.", path);
-      if (!Number.isInteger(sample.count) || sample.count < 2) throw invalidSnapshot("Invalid color legend sample count.", path);
-      validateGeneratedItemLimit(sample.count, "Color legend sample count");
-      const scale = program.resolvedScales[config.scale];
-      if (!isContinuousColorScaleType(scale?.type)) throw invalidSnapshot("Sampled color legend requires a continuous color scale.", path);
-      if (sample.mode === "values") {
-        requireArray(sample.values, path);
-        if (!sample.values.length || sample.values.length > 100 || sample.values.some((value, index) => !Number.isFinite(value) || index > 0 && value <= sample.values[index - 1] || value < Math.min(...scale.domain) || value > Math.max(...scale.domain) || scale.type === "log" && value <= 0)) throw invalidSnapshot("Invalid exact color legend samples.", path);
-      }
+      validateStoredColorLegendSampling(program, config, path);
       requireObject(config.symbol, path);
       validateKeys(config.symbol, ["type", "radius", "stroke", "strokeWidth"], "Stored sampled color symbol");
       if (config.symbol.type !== "point") throw invalidSnapshot("Invalid sampled color symbol type.", path);
@@ -326,7 +399,7 @@ export function validateProgramState(program, path) {
       if (!["left", "right", "top", "bottom", "top-left", "top-right", "bottom-left", "bottom-right"].includes(config.position) || !["horizontal", "vertical"].includes(config.direction) || config.layout !== "edge" || !["left", "center", "right"].includes(config.align) || !["top", "left"].includes(config.titlePosition) || config.columns !== undefined && (!Number.isInteger(config.columns) || config.columns < 1)) throw invalidSnapshot("Invalid sampled color item layout.", path);
       validatePositiveFinite(config.itemGap, "Stored sampled color itemGap");
       validateNonNegativeFinite(config.offset, "Stored sampled color offset");
-    } else if (["sampling", "symbol", "columns", "direction", "layout"].some(key => config[key] !== undefined)) throw invalidSnapshot("Gradient color legend cannot store symbol representation settings.", path);
+    } else if (["symbol", "columns", "direction", "layout"].some(key => config[key] !== undefined)) throw invalidSnapshot("Gradient color legend cannot store symbol representation settings.", path);
   }
 
   const regressionFits = program.materializationConfigs.regressionFits ?? {};
@@ -336,6 +409,18 @@ export function validateProgramState(program, path) {
     validateRegressionFitStatistics(cache, dataset, resources.get("data").get(dataset?.source));
   }
   for (const dataset of semantic.datasets) {
+    if(dataset.transform?.[0]?.type==="lookup"){
+      orderedDatasetAncestors(semantic.datasets,dataset.id);
+      const transform=dataset.transform[0],source=resources.get("data").get(dataset.source),right=resources.get("data").get(transform.lookup.data);
+      if(source===undefined||right===undefined)throw invalidSnapshot("Lookup requires both existing input datasets.",path);
+      const missingSchemas = [source, right, dataset].some(input => input.schema === undefined);
+      if (!allowMissingLookupSchemas || !missingSchemas) {
+        const schema=deriveTransformSchema(source.schema,transform,dataset.values,
+          datasetSchemaContext(source,transform,dataset.id,id=>resources.get("data").get(id)));
+        if(!sameLookupValue(dataset.schema,schema))throw invalidSnapshot("Lookup schema does not match both inputs.",path);
+      }
+      if(dataset.values!==undefined&&!sameLookupValue(dataset.values,deriveLookupRows(source.values,right.values,transform)))throw invalidSnapshot("Lookup values do not match both input datasets.",path);
+    }
     if (dataset.transform?.[0]?.type !== "regressionStatistics") continue;
     const fit = resources.get("data").get(dataset.source);
     requireRegressionStatisticsSource(fit);
@@ -378,7 +463,12 @@ export function validateProgramState(program, path) {
     }
   }
   for (const id of Object.keys(program.markConfigs)) {
+    requestedMarkClip(program.markConfigs[id]);
+    validateMarkClipCoordinate(program, resources.get("mark").get(id), program.markConfigs[id].clip);
     if (!resources.get("mark").has(id)) throw invalidSnapshot(`Mark config "${id}" has no layer owner.`, path);
+    if (resources.get("mark").get(id).mark.type === "point" && program.markConfigs[id].shape !== undefined) {
+      validatePointShape(program.markConfigs[id].shape);
+    }
     if (resources.get("mark").get(id).mark.type === "area") {
       validateAreaPaintConfig(program.markConfigs[id]);
     }

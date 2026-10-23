@@ -1,4 +1,6 @@
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
+import { normalizeFacetTopLane } from "./facetTopLane.js";
+import { annotateError } from "../core/diagnostics.js";
 import {
   DEFAULT_COMPOSITION_LAYOUT,
   normalizeCompositionAlign,
@@ -112,9 +114,11 @@ export function resolveFacetLayout({
   sharedLegendPosition = "right",
   headerLayout,
   spacing = "canvas",
+  topLane,
   plots
 } = {}) {
   if (!["canvas", "plot"].includes(spacing)) throw new Error(`Unknown facet spacing "${spacing}".`);
+  const resolvedTopLane = normalizeFacetTopLane(topLane, spacing);
   const byId = new Map((plots ?? []).map(plot => [plot.id, plot]));
   const originalChildren = children;
   let outerMargins = ZERO_SIDES;
@@ -153,6 +157,7 @@ export function resolveFacetLayout({
     titleHeight,
     "Facet title height"
   );
+  const titleReservation = resolvedTopLane === undefined ? resolvedTitleHeight : 0;
   if (typeof sharedLegend !== "boolean") {
     throw new TypeError("Facet sharedLegend must be a boolean.");
   }
@@ -182,13 +187,17 @@ export function resolveFacetLayout({
     Math.ceil(resolvedChildren.length / resolvedColumns);
   let headers = normalizeHeaderLayout(headerLayout, rowCount, resolvedColumns);
   if (spacing === "plot") {
+    let minimumGap = 0;
     for (const [before, after] of [[headers.cellRows.bottom, headers.cellRows.top],
       [headers.cellColumns?.right ?? [], headers.cellColumns?.left ?? []]]) {
       for (let index = 1; index < before.length; index += 1) {
-        if (before[index - 1] + after[index] > resolvedGap) {
-          throw new Error("Plot spacing gap is too small for the facet headers.");
-        }
+        minimumGap = Math.max(minimumGap, before[index - 1] + after[index]);
       }
+    }
+    if (minimumGap > resolvedGap) {
+      throw annotateError(new Error("Plot spacing gap is too small for the facet headers."), {
+        code: "invalid-value", optionPath: "gap", actual: resolvedGap, limit: minimumGap
+      });
     }
     headers = { outer: {
       top: headers.outer.top + headers.cellRows.top[0],
@@ -196,6 +205,7 @@ export function resolveFacetLayout({
       left: headers.outer.left + (headers.cellColumns?.left[0] ?? 0),
       right: headers.outer.right + (headers.cellColumns?.right.at(-1) ?? 0)
     }, cellRows: { top: Array(rowCount).fill(0), bottom: Array(rowCount).fill(0) } };
+    if (resolvedTopLane !== undefined) headers.outer.top = 0;
   }
   const columnHeaders = headers.cellColumns ?? {
     left: Array(resolvedColumns).fill(0), right: Array(resolvedColumns).fill(0)
@@ -219,7 +229,7 @@ export function resolveFacetLayout({
       resolvedGap * column + columnHeaders.left[column]
   );
   const rowStarts = rowHeights.map((_, row) =>
-    resolvedTitleHeight + resolvedPadding.top + headers.outer.top +
+    titleReservation + resolvedPadding.top + headers.outer.top +
     rowHeights.slice(0, row).reduce((sum, height, index) =>
       sum + headers.cellRows.top[index] + height + headers.cellRows.bottom[index], 0) +
     resolvedGap * row + headers.cellRows.top[row]
@@ -258,7 +268,7 @@ export function resolveFacetLayout({
     resolvedGap * Math.max(0, resolvedColumns - 1) +
     headers.outer.right +
     resolvedPadding.right;
-  const gridHeight = resolvedTitleHeight + resolvedPadding.top +
+  const gridHeight = titleReservation + resolvedPadding.top +
     headers.outer.top +
     rowHeights.reduce((sum, height) => sum + height, 0) +
     headers.cellRows.top.reduce((sum, amount) => sum + amount, 0) +
@@ -277,6 +287,7 @@ export function resolveFacetLayout({
   }
   return cloneAndFreeze({
     ...(spacing === "plot" ? { spacing } : {}),
+    ...(resolvedTopLane === undefined ? {} : { topLane: resolvedTopLane }),
     columns: resolvedColumns,
     rows: rowCount,
     gap: resolvedGap,

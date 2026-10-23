@@ -15,7 +15,7 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 
 - `id`: Implemented. user-defined scale ID; 생략하면 channel 이름(`x`, `y`, `color`, `size`,
   `shape`, `strokeDash`, `xOffset`, `yOffset`)을 사용한다.
-- `type`: Implemented. compatible quantitative position은 `linear | log | pow | sqrt | symlog`, temporal position은 `time`, discrete position은 `band | point`; nominal color/shape/dash/offset은
+- `type`: Implemented. compatible quantitative position은 `linear | log | pow | sqrt | symlog`, temporal position은 `time`, discrete position은 `band | point`; categorical color/dash/offset과 nominal shape은
   `ordinal`, continuous point/aggregate-bar/rect color는 `sequential`, quantitative point/aggregate-bar/rect color는 추가로
   `quantize | quantile | threshold`, size는 `linear`만 허용한다.
 - `domain`: Implemented. `"auto"` 또는 type에 맞는 explicit array. explicit domain은 data inference,
@@ -25,8 +25,20 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
   사용하고 explicit transformed constant domain은 계속 거부한다.
 - `range`: Implemented. `"auto"` 또는 type/channel에 맞는 explicit array. position auto range는
   Canvas plot bounds를 사용한다.
-- `nice`: Implemented for linear/time position scale. boolean이며 auto domain만 읽기 좋은 경계로
-  확장한다. ordinal에는 허용되지 않는다.
+- `nice`: Implemented for compatible position scale. 기존 boolean/생략 동작은 그대로 유지한다.
+  linear position은 정확히 `{count: 양수 safe integer}`도 받으며 zero 포함 뒤 auto domain에만
+  밀도 기준 1·2·5 decade 경계 확장을 적용한다. count는 guide tick 수를 고정하지 않는다.
+  explicit domain이 우선하며 zero 이후 constant domain은 그대로다. 유한 endpoint 포함과
+  수치 한계를 보존하고 10회 안에 고정 경계가 없으면 관측 domain을 유지한다.
+  time/transformed/discrete/color/size/opacity/strokeWidth 및 nice를 금지하는 measured radius에는 object를 거부한다.
+  caller object는 복사·freeze하며 semantic scale의 nice 한 곳에 저장한다. 공통/focused editor,
+  data revision/filter, shared consumer, independent facet, persistence가 같은 정책을 사용한다.
+  binned position은 기존 nice:true bin 경계·소속을 유지한 뒤 최종 auto domain만 count로 확장한다.
+  explicit scale domain 우선이며 별도 createBinData.nice는 boolean 전용을 유지한다.
+  type 변경 때 bool 호환은 기존과 같고, 호환되지 않는 이전 count object는 type-change reset으로
+  제거한다. 명시적 잘못된 object/type/count는 원래 상태와 trace를 보존하며 atomic하게 거부한다.
+  근거: test/unit/grammar/scales/linear-nice-count.test.js,
+  test/contracts/linear-nice-count.test.js, test/charts/linear-nice-count/public.test.js.
 - `zero`: Implemented for linear scale. boolean이며 auto domain에만 zero를 포함한다. explicit domain이
   있으면 적용되지 않는다.
 - `palette`: Implemented for color scale. palette name이며 `range`와 동시에 사용할 수 없다.
@@ -36,17 +48,31 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 - `paddingInner`, `paddingOuter`, `padding`, `align`: Implemented for type-compatible band/point position.
 - `unknown`: Implemented for row-owned point `x`, `y`, `color`, `size`, `shape`, `opacity`. Missing/invalid input과
   explicit ordinal domain 밖의 값에 channel-valid concrete fallback을 사용하며 scale domain에는 추가하지 않는다.
-  Compound path/bar/area/rule, offset과 strokeDash에서는 topology-safe fallback contract가 없어 거부한다.
+  행 단위 Cartesian Line의 nominal/ordinal color는 explicit nonempty ordinal domain과 unknown을 함께 지정하면 허용한다.
+  Line의 absent/null은 fallback paint를 쓰지만 서로 다른 inferred series identity를 유지하며 object/array/non-finite category는 거부한다.
+  Aggregate/bin/parallel/polar line, bar/area/rule, offset과 strokeDash는 이 color fallback 확장에 포함하지 않는다.
+  별도의 Cartesian Line/Rule strokeDash는 유효한 domain 밖 raw 범주에 named/direct dash fallback을 허용한다.
+  Missing/null/malformed category는 계속 거부하며 raw series/vertex와 domain/legend membership을 보존한다.
 - Direct `createScale`/`editScale`은 complete current scale vocabulary를 노출한다. Encoding attachment가
   field type, channel, mark grain과 existing consumers에 맞는 subset을 검증한다.
 - Proposed: —
+
+### Basic encoding scale reassignment
+
+Basic에 이미 제공되는 field encoding을 다시 호출하면 같은 타입의 bound scale 설정을 갱신한다.
+Full과 같은 shared-consumer preflight와 wrapped scale/mark/guide 재물질화를 사용하며 invalid
+입력은 원래 program/caller data/trace를 보존한다. Incomplete 유효한 mark 선언도 유지한다.
+공개 editScale/focused scale editor/editLegend/removeLegend를 Basic에 등록하거나 선언하지 않는다.
+기존 scale 타입 전환은 Full 또는 Basic의 새 scale ID 경계를 유지한다. Basic 내부 trace의
+기존 editScale op는 builtin으로 저장할 수 있고 deserializeProgram은 기존 계약대로 Full을 반환한다.
+Evidence: `test/unit/actions/encodings/basic-scale-reassignment.test.js`, `test/contracts/basic-scale-reassignment-types.test.js`.
 
 ## `removeEncoding`
 
 - Signature: `removeEncoding({ target?, channel })`.
 - `channel` is the closed vocabulary `"x" | "y" | "x2" | "y2" | "xOffset" | "yOffset" |
   "theta" | "radius" | "color" | "stroke" | "strokeDash" | "strokeWidth" | "size" | "shape" | "group" |
-  "angle" | "opacity" | "text"`.
+  "angle" | "opacity" | "text" | "dx" | "dy"`.
 - `target` resolves the current mark when it owns the requested channel, otherwise the unique active owner;
   ambiguous ownership requires an explicit mark ID. A direct missing assignment is an error.
 - The action removes the semantic assignment and starts rematerialization from an empty concrete mark baseline.
@@ -86,7 +112,7 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 - `target`: 필수 explicit mark ID다. 한 transaction이 여러 mark나 composition child를 수정하지 않는다.
 - `channels`: 최소 한 property가 있는 plain object다. 허용 key는 정확히 `x`, `y`, `x2`, `y2`,
   `theta`, `r`, `xOffset`, `yOffset`, `group`, `pathOrder`, `color`, `stroke`, `size`, `shape`,
-  `opacity`, `strokeWidth`, `strokeDash`, `angle`, `text`다. `radius`, range action, bar width와
+  `opacity`, `strokeWidth`, `strokeDash`, `angle`, `text`, `dx`, `dy`다. `radius`, range action, bar width와
   Parallel dimension list는 이 API의 alias가 아니다.
 - 각 channel payload는 대응 focused encode action에서 `target`과 `coordinate`를 제거한 동일한
   exclusive option union을 사용한다. Direct `target`, `coordinate`, `id`는 오류지만
@@ -170,7 +196,7 @@ Source-owned Text의 inherited aliases는 domain, guide inference/rebinding, sca
 - Bar order independence: quantitative measure를 category보다 먼저 쓰면 field/type/scale과 명시적
   aggregate/stack만 저장한다. 생략한 aggregate/stack은 아직 결정하지 않으며 graphic items는 비어 있다.
   반대 category가 완성되면 같은 Bar policy와 wrapped position action으로 mean/null을 적용한다.
-  Histogram의 y-first는 같은 field의 binned x가 완성될 때 count/zero로 결정한다. 명시적 집계·stack·scale
+  Histogram의 y-first는 같은 field의 binned x가 완성될 때 count/zero로 결정한다. 다른 quantitative Y도 명시한 aggregate로 bin별 집계하며 기본 stack은 null(overlay)이다. 명시적 집계·stack·scale
   설정은 보존하며 잘못된 field/type/value는 미완성 상태에서도 즉시 거부한다. 두 위치가 모두 있는
   지원 불가 pair는 거부한다. Scale의 자동 zero 결정도 role이 완성될 때 적용한다.
 - Line order independence: direct quantitative line은 y가 아직 없어도 x semantic과 scale을 저장한다.
@@ -271,10 +297,11 @@ type AggregateOperation =
 - `field`: point/line/ordinal-bar에서는 필수 field다. Rect는 field/datum 중 정확히 하나이며 area datum은 별도 endpoint 계약을 따른다. histogram count y는 x field에서 추론한다.
 - `target`, `fieldType`, `scale`, `coordinate`: x와 같은 selection/storage contract이다. Continuous y
   auto range는 bottom-to-top, ordinal y band는 top-to-bottom이다.
-- `aggregate`: line과 ordinal bar는 `"count" | "sum" | "mean" | "median" | "min" | "max" |
+- `aggregate`: line과 ordinal/binned bar는 `"count" | "sum" | "mean" | "median" | "min" | "max" |
   "distinct" | "valid" | "missing" | "variance" | "varianceP" | "stdev" | "stdevP" | "stderr" |
-  "q1" | "q3" | "ciLower" | "ciUpper"`를 지원한다. Histogram은 count를 사용하고 raw quantitative
+  "q1" | "q3" | "ciLower" | "ciUpper"`를 지원한다. Count histogram은 count를 사용하고 raw quantitative
   point/area는 aggregate를 생략한다.
+- Binned X bar도 별도 quantitative Y의 모든 AggregateOperation을 bin/series별 계산한다. 빈 bin과 유효 통계가 없는 cell은 생략하고 실제 lower/upper 경계까지 폭을 채운다. Color는 overlay/stack/fill/group/diverging을 지원하며 기존 count histogram은 그대로 유지한다. Non-count bin은 통계 weight를 거부한다. Evidence: `test/unit/actions/charts/binned-bar-aggregate.test.js`.
 - `count`는 group row 수, `valid`/`missing`은 null·undefined·NaN 여부, `distinct`는 valid value의
   SameValueZero distinct count를 반환한다. 이 네 연산은 nominal input도 허용하되 output scale은 linear다.
 - 나머지 연산은 finite quantitative sample만 사용한다. Sample variance/stdev/stderr와 CI는 `n < 2`,
@@ -602,18 +629,19 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 - Signature: `encodeStrokeWidth({ target?, value })` or
   `encodeStrokeWidth({ target?, field, fieldType?, scale? })`.
-- Constant mode targets Line or Rule: `value` is a non-negative finite logical Canvas
+- Constant mode targets Line, Rule or Rect: `value` is a non-negative finite logical Canvas
   width, creates no scale or legend, and rematerializes every rule child.
-- Field mode targets a line or rule, defaults `fieldType` to `"quantitative"`, creates an independent
+- Field mode targets a line, rule or rect, defaults `fieldType` to `"quantitative"`, creates an independent
   `strokeWidth` scale, and maps to concrete logical Canvas widths. Default range is `[1, 8]`; explicit range
   must be an ascending pair of non-negative finite widths.
+- Rect grain is one source row per concrete cell, preserving ranged/discrete positions.
 - Rule grain is one source row per concrete line. Line grain is one complete series path. Every source row
   contributing to a line series must have the same field value; the action never chooses or aggregates a
   representative value implicitly.
 - Field values are finite and non-negative. Missing, non-finite, negative, ambiguous-target, and unequal
   within-series values fail atomically. Zero is valid.
 - `value` and `field` are mutually exclusive. Reassignment structurally replaces the semantic field binding;
-  returning a Line or Rule to constant mode removes the `strokeWidth` encoding and only its own legend.
+  returning a Line, Rule or Rect to constant mode removes the `strokeWidth` encoding and only its own legend.
   Constant mode rejects fieldType/scale and a selection bound to the replaced channel; detached shared scales
   retain other consumers. Field mode removes the constant override. Line scalar editors reject active field width.
 - Field mode participates in `editScale`, `createLegend({ channels: ["strokeWidth"] })`, Canvas
@@ -640,7 +668,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 ## `encodeYRange`
 
 - Signature: `encodeYRange({ lower, upper, target?, fieldType?, coordinate?, scale? })`
-- `lower`, `upper`: 필수 quantitative field names이며 각각 y와 y2가 된다.
+- `lower`, `upper`: 각각 y/y2다. Rect/Rule의 quantitative range는 field string 또는 finite `{ datum: number }`를 각 끝점에 받으며 양쪽 datum도 허용한다. Area는 최소 한 field, Bar는 두 field를 요구한다. Temporal range는 두 field다.
 - `target`, `fieldType`, `coordinate`, `scale`: `encodeY` 계약을 공유한다.
 - Effect: bar는 secondary endpoint 의미를 먼저 설정해 일시적인 평균 집계를 방지한다. 이후 wrapped `encodeY` 뒤 `encodeY2`를 호출하는 atomic action이다. 중간의 incomplete area/bar
   상태를 public workflow에 노출하지 않는다.
@@ -651,7 +679,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 ### Formal values — `encodeYRange`
 
-- Implemented: `encodeYRange({ lower: FieldName; upper: FieldName; target?: UserId; fieldType?: "quantitative"; coordinate?: UserId; scale?: PositionScale })`
+- Implemented: `encodeYRange({ lower: FieldName | { datum: Finite }; upper: FieldName | { datum: Finite }; target?: UserId; fieldType?: "quantitative"; coordinate?: UserId; scale?: PositionScale })`; mark별 위 제한을 적용하며 기존 temporal field/field branch는 유지한다.
 - Planned (NOT IMPLEMENTED): —.
 - Proposed (NOT IMPLEMENTED): —
 
@@ -666,12 +694,13 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - Reassignment
   - ✅ Covered: lower/upper 동시 교체, wrapped child order, concrete path change와 earlier-program immutability.
 - Temporal ranged bar는 실제 날짜 간격을 유지하고 aggregate temporal bar와 같은 slot 정책을 사용한다. ISO/timestamp 정규화, 양방향, pixel width의 선후 지정, resize/scale edit/source revision/저장 복원을 지원한다.
-- Evidence: ranged-area, ranged-bar and regression tests.
+- Datum Rect/Rule은 최종 pair의 shared scale을 pure preview로 검증하고 companion semantic을 먼저 기록한 뒤 wrapped primary/secondary를 호출한다. 새 scale ID로 전환할 때 이전 zero endpoint가 새 log scale에 잠시 남지 않는다. 원래 field/field 경로는 유지한다.
+- Evidence: ranged-area, ranged-bar and regression tests, `test/unit/actions/encodings/ranged-datum-encodings.test.js`, `test/contracts/ranged-datum-types.test.js`.
 
 ## `encodeXRange`
 
 - Signature: `encodeXRange({ lower, upper, target?, fieldType?, coordinate?, scale? })`
-- `lower`, `upper`: Area는 field string 또는 finite datum 객체이며 최소 하나는 field다. Bar/Rect는 field names이고 각각 x와 x2가 된다.
+- `lower`, `upper`: 각각 x/x2며 `encodeYRange`와 같은 mark별 field/datum 정책 및 최종 pair 검증을 따른다.
 - Effect: bar는 secondary endpoint 의미를 먼저 설정해 기존 raw scale consumers와 호환된다. 이후 wrapped `encodeX` 뒤 area/bar-compatible `encodeX2`를 호출하는 atomic action이다.
 - Horizontal area는 y independent position 순서로 lower path와 reversed upper path를 연결해 Z-closed
   concrete path를 만들고 ranged bar는 one rect per observed category를 만든다. x/x2는 one shared scale and coordinate를 사용한다.
@@ -680,7 +709,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 ### Formal values — `encodeXRange`
 
-- Implemented: `encodeXRange({ lower: FieldName; upper: FieldName; target?: UserId; fieldType?: "quantitative"; coordinate?: UserId; scale?: PositionScale })`.
+- Implemented: `encodeXRange({ lower: FieldName | { datum: Finite }; upper: FieldName | { datum: Finite }; target?: UserId; fieldType?: "quantitative"; coordinate?: UserId; scale?: PositionScale })`; mark별 위 제한과 기존 temporal field/field branch를 적용한다.
 - Planned (NOT IMPLEMENTED): —.
 - Proposed (NOT IMPLEMENTED): —.
 
@@ -688,7 +717,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 - ✅ Covered: shortest horizontal area assignment, explicit target, wrapped x/x2 order, shared scale/coordinate,
   invalid/missing fields, conflicting scale, atomic reassignment, Canvas rematerialization and primitive parity.
-- Evidence: `test/unit/actions/encodings/area-encodings.test.js` and
+- Evidence: `test/unit/actions/encodings/ranged-datum-encodings.test.js`, `test/contracts/ranged-datum-types.test.js`, `test/unit/actions/encodings/area-encodings.test.js` and
   `test/charts/gapminder-error-band/public.test.js`.
 
 ## `encodeGroup`
@@ -1059,6 +1088,9 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   다시 계산한다.
 - Shared x guides: 원래 x field의 title을 x position materialization 전에 저장한다. 같은 source x를 공유하는
   Horizon을 추가할 때 namespaced derived field 이름 때문에 title inference가 충돌하지 않는다.
+- 명시적으로 추가한 categorical legend는 원본 y field를 title로 쓰고 shared extent의 band를 원본 값
+  구간으로 표시한다. 서로 다른 independent extent는 baseline 위/아래 band 순서로 표시해 공통 수치
+  구간을 암시하지 않는다. `editHorizon`은 inferred label을 갱신하며 explicit title/labelMap은 유지한다.
 
 ### Formal values — `encodeHorizon`
 
@@ -1108,8 +1140,41 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 ## `encodeColor`
 
+- Tick의 quantitative/temporal color는 row 단위로 기존 scale mapper를 사용해 concrete segment stroke를 칠한다. Quantitative quantize/quantile/threshold와 기존 color gradient/interval/symbols 범례를 재사용한다. Color는 x/y/angle/length/strokeWidth/opacity를 바꾸지 않는다. Tick의 categorical color/aggregate/layout/point-only unknown은 지원하지 않는다.
+- Tick color와 field stroke는 동시에 보유할 수 없다. Color가 있으면 encodeStroke(field/value)와 editTickMark.stroke를 거부한다. 반대 방향도 기존 encoding을 먼저 removeEncoding으로 제거한다. Color assignment는 고정 stroke 설정을 지우며 제거 뒤 기본 Tick 색을 사용한다. 공유 pure color-consumer 정책이 action/rematerialization/persistence의 같은 제약을 소유한다.
+- 현재/유일 target 추론, partial positional state, missing error/skip, clip, scale/data/theme/Canvas replay, selection/highlight, persistence와 facet 공유 범례를 지원한다. Basic의 Tick/Rug 공개 표면은 추가하지 않는다. Evidence: test/unit/actions/encodings/tick-quantitative-color.test.js 및 설치 consumer.
+
+
 - An ErrorBand with explicit constant fill rejects color encoding. Use `editErrorBand({ fill: false })`
   to restore field eligibility. The reverse transition requires removing the color encoding first.
+- Arc accepts quantitative/temporal continuous color and quantitative discretized color.
+  Each derived sector must have exactly one color value; aggregated category sectors reject
+  conflicting values. Automatic domains/quantile samples use one value per sector.
+  Gradient/interval guides map the same real color scale. Unknown fallback and color aggregate
+  remain unsupported for Arc.
+- Categorical↔continuous reassignment with an omitted scale ID detaches an incompatible shared
+  scale into `${target}-${channel}-${fieldType}` when another consumer remains. Explicit IDs
+  preserve strict shared-resource validation. No other consumer is rebound.
+- An explicit Raincloud facade ID dispatches color to the complete owned population through
+  editRaincloudPlot; a named child remains a local mark target. Fixed colors use `{value}`;
+  field colors must use the category role.
+- Evidence: `test/unit/actions/encodings/compound-color-regressions.test.js`,
+  `test/unit/actions/charts/raincloud-owner-operations.test.js`.
+
+
+- User authorization: the requested Fixed/Variable appearance modes approve constant `value` branches
+  on the existing encodeColor/encodeSize APIs, following encodeOpacity/encodeStroke vocabulary.
+- `encodeColor({ value, target? })` assigns one non-empty graphical color string. Exactly one of value/field
+  is required; constants reject fieldType, scale, palette, layout, aggregate and temporalUnit. It composes the
+  existing wrapped removeEncoding and mark editor, removes only the replaced channel's legend participation,
+  and preserves axes, independent grouping/layout and unrelated appearance. Shared scales remain resources.
+- Field reassignment explicitly replaces constant fill/stroke, including an ErrorBand fill. Direct mark editors
+  retain their conflicts with active field mappings. Source-owned text still rejects field color.
+- Full and Basic share the implementation; Basic records the nested removal as built-in for persistence.
+  A fixed-to-field transition recreates a detached scale through removeScale/createScale under the
+  same ID when needed, carrying forward resolved omitted defaults and accepting new ranges/palettes.
+  A scale with live references is preserved and keeps normal shared-resource validation.
+  Evidence: `test/unit/actions/encodings/fixed-variable-appearance.test.js`.
 
 - Quantitative Area color uses the existing continuous/discretized scale mapper and real legend owner.
   Exactly one finite numeric value is required per existing series (ungrouped means one series);
@@ -1119,15 +1184,19 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   one value per group, not one value per path vertex. Full Area creation is supported; Basic has no
   Area authoring surface and is unchanged. createAreaPlot.color stays categorical-only.
   Evidence: `test/unit/actions/encodings/continuous-area-color.test.js`, `test/charts/continuous-area-color/`.
-- Signature: `encodeColor({ field, target?, fieldType?, layout?, aggregate?, scale? })`
+- Signature: `encodeColor({ value, target? } | { field, target?, fieldType?, layout?, aggregate?, scale? })`
 - `field`: 필수 field. nominal/ordinal은 categorical color contract에, quantitative/temporal은 point에 사용하며
   aggregate bar는 quantitative field를 지원한다.
-- `target`: point, line, bar, rect 또는 area ID; current/unique inference를 지원한다.
+- Line의 quantitative/temporal color도 지원한다. Parallel은 row마다 값을 사용하고 Cartesian/Polar는
+  기존 series마다 값 하나를 요구한다. Continuous color 자체는 grouping을 만들지 않는다. Gradient 및
+  discretized legend를 지원하며 temporal은 sequential만 허용한다. Unknown fallback은 Point 전용이다.
+- `target`: point, line, bar, rect, text, arc 또는 area ID; current/unique inference를 지원한다.
 - `fieldType`: `"nominal" | "ordinal" | "quantitative" | "temporal"`; 기본값은 nominal이다.
   Ordinal은 숫자를 포함한 ordered category를 categorical palette와 first-appearance domain으로 매핑한다.
 - `layout`: bar는 `"stack" | "fill" | "group" | "overlay" | "diverging"`, area는 group을 제외하고
-  `"center"`를 포함한 다섯 layout을 지원한다. Histogram default는 stack, ordinal aggregate bar default는
-  group, area default는 overlay다. Point/line과 continuous color는 layout을 거부한다.
+  `"center"`를 포함한 다섯 layout을 지원한다. Count histogram default는 stack, non-count binned bar default는 overlay, ordinal aggregate bar default는
+  group이다. 단, 기존 group/layout이 없는 aggregate bar의 nominal/ordinal 범주 위치와 새 color가 같은 field이면 기본 overlay로 위치·폭·높이를 보존하고 색만 추가한다. Horizontal bar의 y 범주에도 동일하게 적용한다. 별도 group, 저장한 layout, 명시적 layout은 우선하며 temporal grouping과 histogram은 이 예외를 사용하지 않는다. Area default는 overlay다. Point/line과 continuous color는 layout을 거부한다.
+  Evidence: `test/unit/actions/encodings/category-color-bar.test.js`.
 - `aggregate`: aggregate bar continuous color에서만 사용한다. Color field가 measure field와 같으면 measure
   aggregate를 상속하고, 다른 field는 compatible aggregate를 명시해야 한다. 집계는 최종 category rect
   grain에서 독립적으로 계산한다.
@@ -1167,12 +1236,18 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   mismatch는 오류지만 유효한 layout transition은 layoutSeries로 수행한다. 실패 시 이전 program은 불변이다.
 - Line color and stroke-dash assignments may precede complete positions. Field scales resolve immediately, while
   line graphics stay empty until position prerequisites are complete. Compatible encoding orders converge.
+- Categorical unknown color가 먼저 있으면 unsupported polar/bin/aggregate position은 첫 partial assignment부터
+  coordinate/semantic/trace 변경 전에 거부한다. Direct Cartesian position 순서는 계속 호환된다.
+- Categorical Cartesian Line unknown은 explicit nonempty ordinal domain이 필요하다. 원본 rows/keys/order와 vertex를 유지하며
+  missing/null/out-of-domain paint만 fallback으로 mapping한다. 다른 raw category는 같은 fallback이라도 합치지 않는다.
+  Explicit group은 여전히 strict nominal이며 한 series에 raw color 하나만 허용한다. Aggregate/bin/parallel/polar line은 거부한다.
+  Evidence: `test/unit/actions/encodings/categorical-line-unknown.test.js`.
 - Coverage: 모든 대표 chart와 legend tests가 mark별 materialization을 검증한다. Five-layout bar matrix,
   five-layout area matrix, normalized/signed domains, primitive/public equivalence와 transition validation을 포함한다.
 
 ### Formal values — `encodeColor`
 
-- Implemented: `encodeColor({ field: FieldName; target?: UserId; fieldType?: "nominal" | "ordinal"; layout?: "stack" | "fill" | "group" | "overlay" | "diverging" | "center"; scale?: ColorScale } | { field: FieldName; target?: UserId; fieldType: "quantitative" | "temporal"; aggregate?: AggregateOperation; scale?: SequentialColorScale | DiscretizedColorScale })`; `"center"` is area-only, ordinal supports ordered categorical values including finite numbers, rect supports categorical or continuous fill without layout/aggregate, discretized scales support quantitative point/rect/text/Area consumers and quantitative aggregate bars, `unknown` remains point-row-only, and mark compatibility narrows the categorical layout set.
+- Implemented: `encodeColor({ value: string; target?: UserId } | { field: FieldName; target?: UserId; fieldType?: "nominal" | "ordinal"; layout?: "stack" | "fill" | "group" | "overlay" | "diverging" | "center"; scale?: ColorScale } | { field: FieldName; target?: UserId; fieldType: "quantitative" | "temporal"; aggregate?: AggregateOperation; scale?: SequentialColorScale | DiscretizedColorScale })`; `"center"` is area-only, ordinal supports ordered categorical values including finite numbers, rect supports categorical or continuous fill without layout/aggregate, discretized scales support quantitative point/rect/text/Area consumers and quantitative aggregate bars, `unknown` supports row-owned points and explicit-domain categorical Cartesian lines, and mark compatibility narrows the categorical layout set.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `encodeColor`
@@ -1207,9 +1282,16 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 ## `encodeStrokeDash`
 
 - Signature: `encodeStrokeDash({ field, target?, fieldType?, scale? } | { value, target? })`
-- `field`, `target`, `fieldType`: field mode의 nominal field, optional line ID, nominal-only type다.
+- `field`, `target`, `fieldType`: field mode의 categorical field, optional line/rule ID, `"nominal" | "ordinal"` type다. 생략 기본값은 nominal이다.
 - `value`: constant mode의 `"solid" | "dashed" | "dotted" | "dashdot" | DashPattern`이다.
 - `scale`: field mode의 ordinal dash scale이다. range는 named style 또는 direct pattern의 array다.
+- `scale.unknown`: Cartesian Line/Rule의 유효한 raw 범주가 domain 밖일 때 사용할 named style/direct pattern이다.
+  기존 패턴 검증·정규화를 사용하며 `[]`는 solid다. 생략은 strict, 생성의 명시 undefined는 거부한다.
+  Auto domain은 기존 raw first-appearance order를 유지하며 fallback은 domain/legend에 추가하지 않는다.
+  서로 다른 raw unknown 범주는 같은 fallback이어도 별도 series이며 한 series의 raw appearance 일관성을 유지한다.
+  Missing/null/malformed 범주는 거부한다. Parallel/polar/aggregate/bin topology는 거부하며
+  위치 전/후 선언·facade/bulk·공유 scale과 editor는 같은 consumer 정책을 쓴다.
+- Ordinal field intent는 semantic encoding과 editable snapshot에 보존한다. Auto domain은 기존 raw first-appearance order이며 explicit domain 순서가 우선한다. Field type으로 rows/group/vertices를 자동 정렬하거나 값을 변환하지 않는다.
 - Effect: field mode는 line series별 concrete dash와 categorical legend symbol을 rematerialize한다.
   Constant mode는 모든 series에 같은 concrete dash를 적용하며 scale이나 legend를 만들지 않는다.
 - Reassignment: `field`와 `value`는 mutually exclusive하며 같은 action이 두 mode를 원자적으로
@@ -1226,7 +1308,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 ### Formal values — `encodeStrokeDash`
 
-- Implemented: `encodeStrokeDash({ field: FieldName; target?: UserId; fieldType?: "nominal"; scale?: DashScale } | { value: DashStyle | DashPattern; target?: UserId })`
+- Implemented: `encodeStrokeDash({ field: FieldName; target?: UserId; fieldType?: "nominal" | "ordinal"; scale?: DashScale } | { value: DashStyle | DashPattern; target?: UserId })`
 - `DashStyle = "solid" | "dashed" | "dotted" | "dashdot"`
 - `DashPattern = readonly number[]`; empty array는 solid, non-empty array는 even-length,
   non-negative finite values이며 all-zero는 허용하지 않는다.
@@ -1235,7 +1317,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 ### Value coverage — `encodeStrokeDash`
 
 - `field`, `target`, `fieldType`
-  - ✅ Covered: nominal line series, inferred/explicit target, invalid mark/type/field, compatible/incompatible
+  - ✅ Covered: nominal/ordinal line and rule series, first-appearance/explicit order, facade/bulk and early/late assignment, inferred/explicit target, invalid mark/type/field, compatible/incompatible
     group/color field, same/different-field reassignment.
 - `value`
   - ✅ Covered: four named styles, direct pattern, field↔constant replacement, field/value exclusivity,
@@ -1244,13 +1326,23 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   - ✅ Covered: auto and explicit order.
 - `scale.range`
   - ✅ Covered: automatic cycling, direct patterns, named styles, resolved numeric recipes, invalid patterns.
+- `scale.unknown`
+  - ✅ Covered: nominal/ordinal direct/facade/bulk/reused/early/late Line/Rule, raw category identity and rows,
+    unseen domain/legend entries, malformed/null/missing/topology rejection, shared edits/removal atomicity,
+    revision/highlight/persistence and exact SVG/Canvas plus PDF export.
+    Evidence: `test/unit/actions/encodings/stroke-dash-unknown.test.js`, `test/contracts/ordinal-stroke-dash-types.test.js`.
 - Named recipes: `solid → []`, `dashed → [6, 4]`, `dotted → [1, 3]`,
   `dashdot → [6, 3, 1, 3]`.
-- Evidence: line-series encoding and scale tests.
+- Evidence: line-series encoding and scale tests; `test/unit/actions/encodings/ordinal-stroke-dash.test.js` and `test/contracts/ordinal-stroke-dash-types.test.js`.
 
 ## `encodeSize`
 
-- Signature: `encodeSize({ field, target?, fieldType?, scale? })`
+- Signature: `encodeSize({ value, target? } | { field, target?, fieldType?, scale? })`
+- `value`: nonnegative finite graphical area in square pixels, including zero. Exactly one of value/field;
+  constants reject fieldType and scale. Native removeEncoding cleans size legend participation, then
+  encodeRadius stores sqrt(area/pi) in the existing graphical radius owner. Circle/square/other glyphs
+  retain equal area through shape edits, persistence and rematerialization. No new state schema is added.
+  Evidence: `test/unit/actions/encodings/fixed-variable-appearance.test.js`.
 - `field`: 필수 quantitative 또는 categorical field.
 - `target`: optional point ID.
 - `fieldType`: 기본 `"quantitative"`; `"nominal"`, `"ordinal"`도 지원한다.
@@ -1259,9 +1351,9 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   `pow`는 positive finite `exponent`가 필수다. discrete range는 최소 두 개의
   nonnegative, nondecreasing area를 명시한다.
 - Effect: semantic size를 concrete area로 mapping하고 circle radius=`sqrt(area/pi)`, square side=`sqrt(area)`로
-  materialize한다. constant `encodeRadius`와 함께 사용할 수 없다.
+  materialize한다. Field assignment는 기존 constant radius를 명시적으로 교체한다.
 - Reassignment: 다시 호출하면 size field와 compatible scale binding을 교체하고 point 및 existing
-  size legend를 rematerialize한다. constant radius conflict는 자동 제거하지 않는다.
+  size legend를 rematerialize한다. Constant radius는 같은 전환에서 제거한다.
 - Coverage: regression scatterplot과 size legend tests가 representative mapping을 검증한다. explicit
   domain/range와 constant-size conflict의 값 matrix는 부분적이다.
 
@@ -1273,7 +1365,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 ### Formal values — `encodeSize`
 
-- Implemented: `encodeSize({ field: FieldName; target?: UserId; fieldType?: "quantitative" | "nominal" | "ordinal"; scale?: SizeScaleOptions | CategoricalSizeScaleOptions })`, where `SizeScaleOptions` is the closed discriminated union for quantitative `linear | log | sqrt | pow | quantize | quantile | threshold`; categorical fields use `CategoricalSizeScaleOptions`. Continuous ranges are two areas; quantize/quantile ranges contain at least two areas; threshold range length is domain cut count plus one.
+- Implemented: `encodeSize({ value: NonNegativeFinite; target?: UserId } | { field: FieldName; target?: UserId; fieldType?: "quantitative" | "nominal" | "ordinal"; scale?: SizeScaleOptions | CategoricalSizeScaleOptions })`, where `SizeScaleOptions` is the closed discriminated union for quantitative `linear | log | sqrt | pow | quantize | quantile | threshold`; categorical fields use `CategoricalSizeScaleOptions`. Continuous ranges are two areas; quantize/quantile ranges contain at least two areas; threshold range length is domain cut count plus one.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `encodeSize`
@@ -1287,7 +1379,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   - ✅ Covered: transformed-domain interpolation for log/pow/sqrt, quantize endpoints, duplicate-preserving
     quantile cuts, strict threshold cuts, reversed areas with stable interval labels, and invalid family migrations.
 - Interaction
-  - ✅ Covered: constant radius conflict, shape-independent equal-area materialization, discrete legends, shared
+  - ✅ Covered: constant radius replacement, shape-independent equal-area materialization, discrete legends, shared
     consumer refresh, and automatic quantile threshold recomputation after a derived-source revision.
 - No proposal: explicit `scale.range` remains the single size-area range API.
 - Evidence: `test/contracts/size-scale-types.test.js`, point appearance, size legend, shared-scale, and
@@ -1297,7 +1389,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 - Signature: `encodeShape({ field, target?, fieldType?, scale? })`
 - `field`, `target`, `fieldType`: nominal field, optional point ID, nominal-only type다.
-- `scale`: ordinal shape scale. Shared `PointShape` 14종을 non-repeating automatic range로 사용한다. Explicit range는 category별 shape entry를 제공하며 의도적인 shape 재사용을 허용한다. Domain보다 짧은 range는 오류이고 암묵적 cycling은 하지 않는다.
+- `scale`: ordinal shape scale. Shared `PointShape` 14종을 non-repeating automatic range로 사용한다. Explicit range/unknown은 named shape 또는 MARKS.md의 단순 polygon을 받으며 normalization도 보존한다. Explicit range는 category별 shape entry를 제공하며 의도적인 shape 재사용을 허용한다. Domain보다 짧은 range는 오류이고 암묵적 cycling은 하지 않는다.
 - Effect: point graphic을 heterogeneous collection으로 바꾸고 각 datum의 concrete primitive type과
   legend symbol을 rematerialize한다.
 - Coverage: regression scatterplot과 point/legend tests가 circle/square mapping을 검증한다.
@@ -1314,8 +1406,8 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - `field`, `target`, `fieldType`
   - ✅ Covered: nominal point field와 invalid alternatives.
 - `scale.domain/range`
-  - ✅ Covered: automatic and explicit 12-shape range, supported-value validation, explicit repeated assignments, capacity error and heterogeneous output.
-  - ✅ Covered: equal-area mark/legend recipes and Canvas path-ready concrete geometry.
+  - ✅ Covered: fourteen-name automatic and explicit named/polygon range, supported-value validation, explicit repeated assignments, capacity error and heterogeneous output.
+  - ✅ Covered: named equal-area and explicit polygon area/radius mark/legend recipes, unknown fallback, and concrete closed paths.
 - Evidence: point appearance, mark-schema and regression chart/guide tests.
 
 ## `encodeAngle`
@@ -1355,8 +1447,8 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - Signature: `encodeOpacity({ value, target? } | { field, target?, fieldType?, scale? })`
 - 상수로 전환할 때 target이 소유한 opacity legend만 제거하며 다른 layer의 범례는 보존한다.
 - `value`: field와 mutually exclusive인 finite `[0, 1]` number.
-- `field`: value와 mutually exclusive인 quantitative point/rule/line/bar field. auto linear range는 `[0.2, 1]`이다.
-- `target`: optional point, rule, line 또는 bar ID.
+- `field`: value와 mutually exclusive인 quantitative point/rule/line/bar/rect field. auto linear range는 `[0.2, 1]`이다.
+- `target`: optional point, rule, line, bar 또는 rect ID.
 - Effect: constant는 graphical config, field는 semantic encoding과 linear scale을 저장한다. 같은 target에
   다시 호출하면 constant↔field 또는 field↔field를 structural copy로 교체하고 target mark/legend를 rematerialize한다.
 - Line은 final-series grain이며 모든 source row의 field 값이 같아야 한다. Width처럼 implicit grouping을
@@ -1365,6 +1457,8 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - Field Line opacity는 scale/Canvas/filter/highlight replay와 sampled opacity legend를 지원한다.
 - Bar는 ranged item 또는 final aggregate/bin/series cell마다 하나의 field 값을 요구하며 opacity로 새로운 그룹을 만들지 않는다. 값이 다른 cell은 거부한다. 상수↔field 전환 시 `barAppearance.opacity`도 정리하며 `editBarMark({ opacity })`는 field mode와 충돌한다. Position 이전의 field 지정, scale/Canvas/persistence replay와 opacity sample legend를 지원한다.
 - Evidence: `test/unit/actions/encodings/bar-opacity.test.js` covers constant/field replacement, aggregate rejection, grouped/ranged/histogram cells, scale/Canvas edits, persistence and legend cleanup.
+- Rect는 discrete/ranged cell의 원본 행마다 opacity를 매핑한다. Rect의 field opacity/width와 scalar `editRectMark`는 충돌하며 같은 encoding 함수의 constant mode로 교체한다. Rect opacity unknown fallback은 지원하지 않는다. Scale/Canvas/persistence 및 sampled legend replay를 지원한다.
+- Evidence: `test/unit/actions/encodings/rect-appearance.test.js`.
 - Coverage: point/rule/regression 및 line-appearance-modes tests가 replacement와 invalid range를 검증한다.
 
 ### Formal values — `encodeOpacity`
@@ -1414,7 +1508,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - Interaction
   - ✅ Covered: semanticSpec unchanged, child broadcast, same-action reassignment, explicit-radius/encodeSize
     conflict, default-radius/encodeSize override.
-- No proposal: constant area shorthand는 추가하지 않고 field-driven area는 `encodeSize`가 소유한다.
+- Constant area is also owned by `encodeSize({ value })`; direct encodeRadius retains its field-size conflict.
 - Evidence: `test/unit/actions/encodings/radius-encoding.test.js` and
   `test/contracts/point-default-radius.test.js`.
 
@@ -1599,7 +1693,8 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - `value`: constant content repeated at every final text anchor.
 - `content`: `"category" | "value" | "share"`, requiring an attached Bar or Arc source. Incomplete sources retain the
   intent until their position is complete. Point/Rule/Rect and independent text use explicit field or constant content.
-  Category reads an aggregate Bar's category channel or categorical Arc theta; histogram intervals and quantitative theta
+  Category reads an aggregate Bar's category channel, a histogram's semantic bin interval as `start–end`
+  (12 significant digits to suppress floating-point boundary noise), or categorical Arc theta; quantitative theta
   require explicit field/constant labels. Ranged Bars have no inferred single value and require explicit content fields.
 - Semantic value is the canonical aggregate over each final Bar item's members, histogram segment count, Pie sector
   count/weighted sum/quantitative theta, or Radial Arc radius. It is independent of stack endpoints and normalized heights.
@@ -1622,7 +1717,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 ### Formal values — `encodeText`
 
-- Implemented: `encodeText({ target?: UserId; format?: ValueFormat } & ({ field: FieldName } | { value: unknown } | { content: "category" | "value" } | { content: "share"; normalizeBy?: "source" | "category" }))`; branches are mutually exclusive. `ValueFormat` is `"auto" | NumericFormatString | UtcFormatString`; numeric precision is 0–12 and suffix is `f | % | e`.
+- Implemented: `encodeText({ target?: UserId; format?: ValueFormat } & ({ field: FieldName } | { value: unknown } | { content: "category" | "value" } | { content: "share"; normalizeBy?: "source" | "category" }))`; branches are mutually exclusive. `ValueFormat` is `"auto" | NumericFormatString | UtcFormatString`; numeric precision is 0–12 and suffix is `f | % | e`. Existing grouped quantitative forms are `","` and `,.<precision>f`; UTC weekday uses `%a`. Grouped percent/scientific remain unsupported.
 - Proposed (NOT IMPLEMENTED): locale-aware text formatting tokens.
 
 ### Value coverage — `encodeText`
@@ -1692,3 +1787,42 @@ Parallel reencoding은 field identity로 axis component recipe와 explicit title
 - Evidence: `test/unit/actions/encodings/categorical-areas.test.js`.
 
 - Row-backed Text의 encodeColor는 nominal/ordinal 및 quantitative/temporal 색상을 지원한다. aggregate/layout/unknown fallback은 지원하지 않으며 고정 fill과 충돌한다. source-owned label은 MARKS의 inheritColor 계약을 따른다.
+
+## `encodeDx`
+
+- Signature: `encodeDx({target?:UserId} & ({field:FieldName;value?:never}|{value:Finite;field?:never}))`. Assign signed logical-pixel horizontal offsets to independent Text. No scale, fieldType option or numeric string coercion.
+- Resolve explicit/current/unique eligible independent Text through the shared selector. Reject source-owned labels and other marks before writes. Incomplete independent Text retains intent until x/y/text are complete.
+- Canonical storage: `layer.encoding.dx = {field,fieldType:'quantitative'} | {datum:number}`. Reassignment cleans the prior branch. No domain, scale, axis or legend is created.
+- Encoding overrides the corresponding constant mark dx; dy is preserved. Editing dormant constant style does not replace the encoding. `removeEncoding({channel:'dx'})` restores the stored constant.
+- Fields among x/y/text/color/dx/dy establish row grain; otherwise existing constant text uses one item even with empty data. A field-bound offset on empty raw data requires a known numeric schema field and creates zero glyphs.
+- Apply existing `missing:'error'|'skip'` to the same complete eligible row set. Skip retains every raw row while omitting missing items; all remaining offsets must be finite numbers. Invalid unions, missing fields, numeric strings, NaN and Infinity reject atomically.
+- Existing `encodeChannels({target,channels:{dx:{field|value},dy:{field|value}}})` batches both channels atomically. Its required target and nested channels shape remain unchanged. Canonical channel order applies dx,dy after text.
+- Canvas, position scale, data revision, derived-data edits, bindMarkData, facet children and persistence use the same Text materializer and row order. Renderers receive resolved graphic positions only.
+- Full only. Basic retains its existing Text-family exclusion. Categorical xOffset/yOffset and Text selection/highlight support are unchanged.
+
+### Formal values — `encodeDx`
+
+- Implemented: the closed field/value union above; finite negative, zero and positive logical pixels. Stored fieldType is quantitative; scales and other stored shapes are rejected.
+
+- Proposed (NOT IMPLEMENTED): scaled offsets, source-owned label bindings and Basic Text authoring.
+
+### Value coverage — `encodeDx`
+
+- ✅ Covered: signed logical-pixel assignment, immutable validation and public replay consumers.
+- Evidence: `test/unit/actions/encodings/text-offsets.test.js`, `test/contracts/text-offset-types.test.js`, actual installed-package runtime/types consumers. Signed values, raw rows/order, branch cleanup, removal/style fallback, empty/constant grain, skip/error, atomicity, ambiguity/source exclusion, facet/data/Canvas/scale replay, malformed persistence, primitive SVG/decoded PNG/PDF.
+
+## `encodeDy`
+
+- Same signature, targeting, lifecycle, storage, missing, grain, consumer and error contract as encodeDx. Owner is `encoding.dy`; positive logical pixels move down. Overrides constant mark dy and preserves dx. Removal restores constant dy.
+
+### Formal values — `encodeDy`
+
+- Implemented: `encodeDy({target?:UserId} & ({field:FieldName;value?:never}|{value:Finite;field?:never}))`; independent Text, unscaled logical pixels.
+
+- Proposed (NOT IMPLEMENTED): scaled offsets, source-owned label bindings and Basic Text authoring.
+
+### Value coverage — `encodeDy`
+
+- ✅ Covered: signed logical-pixel assignment, immutable validation and public replay consumers.
+- The shared capability tests/types/package consumers cover signed vertical offsets, separate and atomic assignment, branch cleanup and rematerialization.
+- Evidence: `test/unit/actions/encodings/text-offsets.test.js`, `test/contracts/text-offset-types.test.js` and installed-package consumers.

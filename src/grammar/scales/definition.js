@@ -1,4 +1,5 @@
 import { validateMeasuredRadiusScale } from "./radial.js";
+import { normalizeScaleNice } from "./continuous.js";
 import { normalizeColorInterpolationOptions, validateContinuousColorInterpolation, validateSequentialMidpoint } from "./color.js";
 import { isTransformedScaleType } from "./mapping.js";
 import {
@@ -10,7 +11,7 @@ import {
   validateScalePropertyForType
 } from "./types.js";
 
-const BOOLEAN_PROPERTIES = Object.freeze([
+const COMMON_SCALE_PROPERTIES = Object.freeze([
   "nice", "zero", "clamp", "reverse"
 ]);
 const TYPE_PARAMETERS = Object.freeze(["base", "exponent", "constant"]);
@@ -118,7 +119,7 @@ export function normalizeScaleDefinition({
     definition.emptyDomain = emptyDomain;
   }
 
-  for (const property of BOOLEAN_PROPERTIES) {
+  for (const property of COMMON_SCALE_PROPERTIES) {
     let value = retainedValue(previous, patch, defaults, property, typeChanged);
     if (
       value === undefined &&
@@ -128,13 +129,16 @@ export function normalizeScaleDefinition({
     ) {
       try {
         validateScalePropertyForType(type, property);
+        if (property === "nice") normalizeScaleNice(type, previous[property]);
         value = previous[property];
       } catch {
         value = undefined;
       }
     }
     if (value === undefined) continue;
-    if (typeof value !== "boolean") {
+    if (property === "nice") {
+      value = normalizeScaleNice(type, value);
+    } else if (typeof value !== "boolean") {
       throw new TypeError(`Scale ${property} must be a boolean.`);
     }
     validateScalePropertyForType(type, property);

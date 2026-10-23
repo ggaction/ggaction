@@ -1,0 +1,16 @@
+{
+  "status": "target-declaration-order-only-svg-id-diagnosis",
+  "graphicSpecDeepExact": true,
+  "sameExplicitResourceNamespaceSvgExact": true,
+  "defaultSvgExact": false,
+  "firstObjectInsertionOrderDifference": {
+    "index": 2,
+    "public": "g00006600006100006300006500007400002d00006600006100006300006500007400002d00006300006500006c00006c00002d000031_plot-main",
+    "primitive": "g00006600006100006300006500007400002d00006600006100006300006500007400002d00006300006500006c00006c00002d000031_plot-background"
+  },
+  "objectValuesWithKeyOrderDifference": [],
+  "acceptanceToleranceChanged": false,
+  "plan": "Preserve original approved target; create another explicit primitive with baseline object insertion order and explicit before placement, so default SVG resource namespace also matches. Do not change runtime renderer or weaken comparisons.",
+  "schoolCalls": 0,
+  "chartPixelsInspected": false
+}

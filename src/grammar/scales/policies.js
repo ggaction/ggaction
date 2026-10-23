@@ -1,5 +1,5 @@
 import { cloneAndFreeze } from "../../core/immutable.js";
-import { POINT_SHAPES } from "../pointShapes.js";
+import { POINT_SHAPES, validatePointShape } from "../pointShapes.js";
 import { normalizeStrokeDashPattern } from "./appearance.js";
 
 export function validateScaleUnknown(channel, value) {
@@ -30,10 +30,10 @@ export function validateScaleUnknown(channel, value) {
     return value;
   }
   if (channel === "shape") {
-    if (!POINT_SHAPES.includes(value)) {
+    if (typeof value !== "object" && !POINT_SHAPES.includes(value)) {
       throw new Error(`Unsupported scale unknown shape "${value}".`);
     }
-    return value;
+    return validatePointShape(value);
   }
   if (channel === "strokeDash") {
     return cloneAndFreeze(normalizeStrokeDashPattern(value));

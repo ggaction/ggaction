@@ -19,13 +19,13 @@ import { findScale } from "./common.js";
 
 function lineDerivationOptions(program, consumer, dataset) {
   const x = consumer.layer.encoding?.x;
-  if (x?.bin === undefined) return undefined;
+  if (x?.bin === undefined) return { scales: program.semanticSpec.scales };
   const bins = resolveLineBins(
     dataset.values,
     consumer.layer,
     findScale(program, x.scale)
   );
-  return { xBinBoundaries: bins.boundaries };
+  return { xBinBoundaries: bins.boundaries, scales: program.semanticSpec.scales };
 }
 
 export function resolveMarkFamilyConsumerValues(program, consumer, dataset) {

@@ -1,4 +1,5 @@
 import { MAX_RASTER_DIMENSION, MAX_RASTER_PIXELS } from "./limits.js";
+import { validateGraphicClip } from "../../grammar/schemas/graphicClip.js";
 import { prepareIsolatedGlyphs, drawIsolatedGlyph } from "./isolated.js";
 import { resolveCanvasSolidPaint } from "./fill.js";
 import { annotateError } from "../../core/diagnostics.js";
@@ -158,6 +159,16 @@ export function drawResolvedGraphicSpec(target, context, options = {}) {
         enterNestedCanvas(context, id, object);
         return;
       }
+      if (object.clip !== undefined) {
+        validateGraphicClip(object.clip, object.type);
+        requireContextMethod(context, "rect", `Graphic "${id}" clip`);
+        requireContextMethod(context, "clip", `Graphic "${id}" clip`);
+        context.save();
+        context.beginPath();
+        const {x, y, width, height} = object.clip;
+        context.rect(x, y, width, height);
+        context.clip();
+      }
       if (object.type === "collection") {
         context.save();
         return;
@@ -179,6 +190,7 @@ export function drawResolvedGraphicSpec(target, context, options = {}) {
       ) {
         context.restore();
       }
+      if (object.clip !== undefined) context.restore();
     }
   });
 }
@@ -221,6 +233,10 @@ export function renderCanvasProgram(program, context, { pixelRatio = 1 } = {}, c
     ), { code: "resource-limit", operation: "render", optionPath: "physicalPixels", limit: MAX_RASTER_PIXELS, actual: physicalWidth * physicalHeight });
   }
   preflightCanvasGraphicSpec(target, pixelRatio);
+  if (Object.values(graphicSpec.objects).some(object => object.clip !== undefined)) {
+    requireContextMethod(context, "rect", "Graphic clip");
+    requireContextMethod(context, "clip", "Graphic clip");
+  }
   const isolated = prepareIsolatedGlyphs(target, context, {pixelRatio, createCanvas});
 
   context.canvas.width = physicalWidth;

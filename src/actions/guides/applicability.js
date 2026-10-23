@@ -25,6 +25,8 @@ function hasEncoding(program, layers, channel, { scaled = false, grid = false } 
   return layers.some(layer => {
     if (isHorizonLayer(program, layer) && channel !== "x") return false;
     const encoding = layer.encoding?.[channel];
+    if (encoding?.datum !== undefined && encoding.field === undefined &&
+        layer.encoding?.[`${channel}2`]?.field === undefined) return false;
     if (!scaled && !grid) return encoding !== undefined;
     if (encoding?.scale === undefined) return false;
     if (!grid || POLAR_POSITION_CHANNELS.includes(channel)) return true;

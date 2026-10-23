@@ -133,3 +133,7 @@ export function validateTextStyle(config, label) {
   validateNonEmptyString(config.fontFamily, `${label} fontFamily`);
   validateFontWeight(config.fontWeight, `${label} fontWeight`);
 }
+export function validateBoolean(value, label) {
+  if (typeof value !== "boolean") throw new TypeError(`${label} must be a boolean.`);
+  return value;
+}

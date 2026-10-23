@@ -45,8 +45,8 @@ export function normalizePointJitterPolicy(options = {}) {
   if (!isPlainObject(options)) {
     throw new TypeError("Point jitter options must be a plain object.");
   }
-  if (!["x", "y"].includes(options.channel)) {
-    throw new Error('Point jitter channel must be "x" or "y".');
+  if (!["x", "y", "both"].includes(options.channel)) {
+    throw new Error('Point jitter channel must be "x", "y", or "both".');
   }
   const maxOffset = options.maxOffset;
   if (!isPlainObject(maxOffset)) {

@@ -1,3 +1,4 @@
+import { requestedMarkClip, validateMarkClipCoordinate } from "../../../selectors/markClip.js";
 import { action } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
 import { validatePositiveFinite } from "../../../core/validation.js";
@@ -5,7 +6,6 @@ import {
   mapContinuousScaleValues,
   mapOrdinalOffsetValues,
   mapOrdinalPositionValues,
-  mapOrdinalValues,
   normalizeStrokeDashPattern
 } from "../../../grammar/scales/index.js";
 import { deriveRuleValues, resolveRuleMode } from "../../../grammar/rules.js";
@@ -43,12 +43,12 @@ import { applyItemMissingPolicy, validateItemMissing } from
   "../../../grammar/itemMissing.js";
 
 const APPEARANCE_OPTIONS = Object.freeze([
-  "stroke", "strokeWidth", "strokeDash", "opacity",
+  "clip", "stroke", "strokeWidth", "strokeDash", "opacity",
   ...STROKE_STYLE_PROPERTIES
 ]);
 const CREATE_OPTIONS = Object.freeze(["id", "data", "missing", ...APPEARANCE_OPTIONS]);
 const EDIT_OPTIONS = Object.freeze(["target", "missing", ...APPEARANCE_OPTIONS]);
-const REMATERIALIZE_OPTIONS = Object.freeze(["id"]);
+const REMATERIALIZE_OPTIONS = Object.freeze(["id", "scales"]);
 const SPAN_OPTIONS = Object.freeze(["id", "orientation", "size"]);
 const DEFAULT_RULE_CONFIG = Object.freeze({
   stroke: DEFAULT_COLORS.mark,
@@ -102,6 +102,7 @@ const createRuleMark = /* @__PURE__ */ action(
   },
   function (args = {}) {
     validateMarkOptions(args, CREATE_OPTIONS, "createRuleMark");
+    requestedMarkClip(args);
     const strokeDetails = requestedStrokeDetails(args, "createRuleMark");
     const id = resolveMarkId(this, args.id, {
       defaultId: "rule",
@@ -137,6 +138,7 @@ const createRuleMark = /* @__PURE__ */ action(
       })
       ._withMarkConfig(id, {
         ...DEFAULT_RULE_CONFIG,
+        ...requestedMarkClip(args),
         ...strokeDetails,
         ...(inherited === undefined
           ? {}
@@ -155,6 +157,7 @@ const editRuleMark = /* @__PURE__ */ action(
   { op: "editRuleMark", description: "Edit constant rule appearance through its encoding owners." },
   function (args = {}) {
     validateMarkOptions(args, EDIT_OPTIONS, "editRuleMark");
+    requestedMarkClip(args);
     const strokeDetails = requestedStrokeDetails(args, "editRuleMark");
     if (args.target !== undefined) validateUserId(args.target, "Rule mark id");
     const layer = resolveEligibleLayer(this, {
@@ -162,9 +165,10 @@ const editRuleMark = /* @__PURE__ */ action(
       predicate: candidate => candidate.mark?.type === "rule",
       label: "rule mark"
     });
+    validateMarkClipCoordinate(this, layer, args.clip ?? this.markConfigs[layer.id]?.clip);
     const appearance = planRuleAppearance(args, layer);
     if (appearance.length === 0 && Object.keys(strokeDetails).length === 0 &&
-        !Object.hasOwn(args, "missing")) {
+        !Object.hasOwn(args, "missing") && !Object.hasOwn(args, "clip")) {
       throw new Error("editRuleMark requires missing or an appearance change.");
     }
     const semantic = Object.hasOwn(args, "missing")
@@ -175,6 +179,7 @@ const editRuleMark = /* @__PURE__ */ action(
       : this;
     const configured = semantic._withMarkConfig(layer.id, {
       ...semantic.markConfigs[layer.id],
+      ...requestedMarkClip(args),
       ...strokeDetails
     });
     const materialized = appearance.length === 0
@@ -191,10 +196,14 @@ const rematerializeRuleMark = /* @__PURE__ */ action(
   },
   function (args = {}) {
     validateMarkOptions(args, REMATERIALIZE_OPTIONS, "rematerializeRuleMark");
+    if (args.scales !== undefined && typeof args.scales !== "boolean") {
+      throw new TypeError("rematerializeRuleMark scales must be a boolean.");
+    }
     const id = validateUserId(args.id, "Rule mark id");
     const highlighted = rematerializeHighlightBaseline(this, {
       target: id,
       operation: "rematerializeRuleMark",
+      scales: args.scales,
       resetProperty: "length",
       resetValue: 0
     });
@@ -226,8 +235,10 @@ const rematerializeRuleMark = /* @__PURE__ */ action(
         .filter(scale => scale !== undefined)
     )];
     let resolved = this;
-    for (const scaleId of scaleIds) {
-      resolved = resolved.rematerializeScale({ id: scaleId });
+    if (args.scales !== false) {
+      for (const scaleId of scaleIds) {
+        resolved = resolved.rematerializeScale({ id: scaleId });
+      }
     }
 
     const derived = deriveRuleValues(dataset.values, layer);
@@ -356,10 +367,10 @@ const rematerializeRuleMark = /* @__PURE__ */ action(
             dashEncoding?.datum ?? resolvedConfig.strokeDash
           )
         )
-      : mapOrdinalValues(
+      : mapScaleConsumerValues(
           derived.values.strokeDash,
-          resolved.resolvedScales[dashEncoding.scale].domain,
-          resolved.resolvedScales[dashEncoding.scale].range
+          resolved.resolvedScales[dashEncoding.scale],
+          "strokeDash"
         );
     const opacity = opacityEncoding?.scale === undefined
       ? resolvedConfig.opacity

@@ -414,6 +414,10 @@ two-field grid; its column sides are top/bottom, while one-field facets and
 repeats also allow left/right column headers. The option uses the same values,
 layout, and precedence as `editFacetHeaders`; authored styles survive themes
 and source replay. Omitting `headers` preserves the default headers.
+With `spacing: "plot"`, headers stay aligned to their panel plots and sit outside
+retained axis text and local legend ink, including outward Polar labels. Header lanes
+are recalculated after guide edits. The requested plot gap and child Canvas sizes
+remain unchanged; insufficient interior guide/header space rejects the operation.
 
 ### `facetGrid`
 
@@ -444,18 +448,22 @@ layers, and composite roles are rejected with explicit errors.
 
 ```javascript
 editFacetSource({ program })
+editFacetSource({ action: { method, options? } })
 ```
 
 Reapply the current facet, grid, or repeat recipe to a revised complete unit
 program while preserving the partition dataset ID, ordered domains, layout,
 scale/guide policy, headers, and parent title. All stored facet values must
 remain observed; create a new composition when the dataset ID, domain, or
-repeat field list changes.
+repeat field list changes. Alternatively, pass one actual unit chart-authoring action
+name and its options to edit the retained full-data source in the same transaction.
+Specify exactly one of `program` or `action`; extension primitives, materializers,
+and composition actions cannot be source edits.
 
 ### `editFacetHeaders`
 
 ```javascript
-editFacetHeaders({ fontSize?, fontFamily?, fontWeight?, color?, offset?, role?, labelMap?, side?, align? })
+editFacetHeaders({ fontSize?, fontFamily?, fontWeight?, color?, offset?, role?, labelMap?, side?, align?, rotation?, title? })
 ```
 
 Edit the parent-owned repeated facet headers and rebuild the parent snapshot
@@ -463,6 +471,12 @@ without changing child programs or facet value order.
 One-field facets and repeats accept all four sides with `role: "column"`;
 left/right placements reserve a measured lane beside every physical column.
 Row-column grids retain left/right row headers and top/bottom column headers.
+Role-specific `title: { text: "Region" }` adds one field title across the occupied
+plots, separately from category headers and the chart title. Initial options use
+`headers.column.title` or grid `headers.row.title`. A first title requires one-line
+text; partial edits preserve it and `title: false` removes it. Title style inherits
+its role header, with optional fontSize/fontFamily/fontWeight/color, align,
+rotation, offset and alongOffset overrides. Common/all titles are rejected.
 
 ### `editFacetScales`
 
@@ -561,6 +575,26 @@ Materialize reusable one-dimensional bounds, counts, and optional source
 members using the same edge rules as Histogram.
 [Source and Derived Data](../api/data/source-and-derived.md#createbindata-id-source-field-binoptions)
 
+### `createLookupData`
+
+```javascript
+createLookupData({ id, source?, field, lookup: { data, key, fields, as? } })
+```
+
+Copy fields from one named table without changing primary row order or count.
+Keys keep their scalar types; unmatched rows receive null, and duplicate reference keys reject.
+Full and Basic support creation. [Named table lookup](../api/data/summaries-and-shaping.md#named-table-lookup)
+
+### `createFlattenData`
+
+```javascript
+createFlattenData({ id, source?, fields, as? })
+```
+
+Expand parallel array columns into index-aligned rows; shorter arrays pad with null.
+Retain raw ancestors and original row/index order. Full and Basic support creation.
+[Aligned array data](../api/data/summaries-and-shaping.md#createflattendata-id-source-fields-as)
+
 ### `createFoldData`
 
 ```javascript
@@ -633,7 +667,7 @@ highlights before it rematerializes every registered consumer.
 ### `createScatterPlot`
 
 ```javascript
-createScatterPlot({ id?, data?, coordinate?, x, y, color?, stroke?, size?, shape?, point?, guides? })
+createScatterPlot({ id?, data?, coordinate?, x, y, color?, stroke?, size?, shape?, point?, missing?, guides? })
 ```
 
 Create a complete Cartesian point chart from required x/y fields and optional
@@ -688,6 +722,11 @@ editEndpointPlot({ target?, data?, coordinate?, category?, value?, start?, end?,
 Atomically revise the semantic roles of a Dot, Lollipop, or Dumbbell facade.
 Owned points, rules, labels, and summary data are replaced together while the
 original appearance and guide policy are retained.
+When a changed role or source changes an axis domain, tick samples from the
+previous domain are inferred again while retaining their label and line styles.
+Separately added statistical references retain their source endpoint, styles, and
+labels, recompute from the revised observations, and follow the measurement axis
+when orientation changes.
 
 ### `createECDFPlot`
 
@@ -749,7 +788,7 @@ are not synthesized, and remaining observations connect across their category sp
 ### `createPolarScatterPlot`
 
 ```javascript
-createPolarScatterPlot({ id?, data?, coordinate?, theta, radius, color?, size?, shape?, point?, guides? })
+createPolarScatterPlot({ id?, data?, coordinate?, theta, radius, color?, size?, shape?, point?, missing?, guides? })
 ```
 
 Create a complete Polar point chart from required angular and radial fields.
@@ -775,6 +814,32 @@ createRadarPlot({ id?, data?, coordinate?, wide: { fields, as? }, groupBy?, orde
 Create closed Radar paths from validated long rows or an explicit wide-to-long
 Fold. Every series must contain the same ordered dimensions exactly once. Values
 are used as supplied; the facade does not infer normalization. [Polar positions](../api/position-encodings.md#polar-positions)
+
+### `editRadarPlot`
+
+```js
+editRadarPlot({ target?, wide: { fields } })
+```
+
+Edit the dimensions and their angular order in an existing wide Radar plot. `fields` must contain
+at least two distinct numeric source fields. Omit `target` only when the current or sole wide Radar
+plot identifies the owner unambiguously. Long-form Radar plots are outside this editor's scope.
+
+The action updates the owned fold, angular domain, radial geometry and closed paths together.
+Series grouping, color, line appearance, coordinate and guide styles are preserved. Automatic radial
+domains are recalculated; explicit radial domains remain unchanged. Angular labels and grid values
+follow the revised dimension order, preserving valid explicit subsets.
+
+```js
+// Fragment: program already contains a wide Radar named "radar" and these source columns.
+const revised = program.editRadarPlot({
+  target: "radar",
+  wide: { fields: ["quality", "speed", "cost"] }
+});
+```
+
+Missing, duplicate or nonnumeric fields and incompatible targets reject without changing the
+previous program. Editing dimensions does not normalize values: compare columns with compatible units.
 
 ### `createRugPlot`
 
@@ -820,7 +885,8 @@ Create a shared-source distribution composite from an optional half Violin,
 Box or Interval summary, and Strip or Beeswarm raw points. Defaults are vertical,
 `side: "before"`, Box summary, and Beeswarm points. Stable Cloud/Summary/Points
 children share role scales; summary and points use a replayable band-relative slot
-offset on the side opposite the density.
+offset on the side opposite the density. `color` accepts its category field or
+a fixed `{ value: "#345678" }`; every enabled component receives that color.
 
 ### `editRaincloudPlot`
 
@@ -831,15 +897,27 @@ editRaincloudPlot({ target?, data?, category?, value?, orientation?, side?, dens
 Atomically revise one Raincloud's shared source, roles, orientation, side, and
 component modes while preserving its parent and child IDs. Use `false` to disable
 an optional component or remove color; at least one component must remain enabled.
+Existing statistical references and their labels retain their identities, definitions,
+and styles, recompute from the revised source, and remain above the rebuilt components.
+Their measure axis follows orientation changes; if their original component is disabled,
+they bind to the remaining parent owner.
+When changing category without specifying color, an existing category-driven color
+follows the new field. Explicit color requests and fixed colors remain unchanged.
+An explicit parent ID also accepts `encodeColor({ target: parentId, ... })` and
+observation-field `filterMarks({ target: parentId, ... })`. Parent filtering
+recomputes density, summary, and raw points from one retained population;
+child-ID filters remain display-only. Parent filters support replace, compose,
+and removal, and require observations suitable for the enabled statistics.
 
 ### `createBarPlot`
 
 ```javascript
-createBarPlot({ id?, data?, coordinate?, orientation?, x, y, color?, width?, bar?, guides? })
+createBarPlot({ id?, data?, coordinate?, orientation?, x, y, color?, width?, bar?, missing?, guides? })
 ```
 
-Create categorical or temporal bars with quantitative measures; use `color.layout` for grouped or stacked partitions, not top-level `stack`/`groupBy`; width defaults to 0.72 of the slot and guides are inferred unless disabled.
+Create categorical, temporal or binned bars with quantitative measures; bin rectangles fill their complete intervals, while category bars default to 0.72 of the slot. Use `color.layout` for grouped or stacked partitions; guides are inferred unless disabled.
 A channel may instead specify `{ lower, upper, scale? }` for raw interval bars without aggregation.
+Binned quantitative X with an explicit Y aggregate creates interval-width bars per bin and series; use `color.layout` or `layoutSeries` for overlay, stack, fill or group. Empty bins retain their interval gaps.
 Two raw numeric positions preserve each input row and numeric center spacing.
 Their orientation defaults to vertical (or follows the range channel); use
 `orientation: "horizontal"` for horizontal numeric bars. Their width defaults to
@@ -1039,6 +1117,11 @@ filterMarks({ target?, mode?, grain?, field | channel | property, op, ...operand
 Retain matching final mark items through the shared selector grammar. Repeated
 filters are idempotent when equal and use explicit `replace` or `compose` mode
 when different. Empty results preserve the preceding scale domains.
+An explicit Raincloud parent ID selects raw observations by `field` at item grain
+and recomputes all enabled components. It accepts comparisons, sets, ranges, and
+grouped ranks; rendered channel/property selectors still require a child ID.
+Raincloud source filters retain the nonempty input requirements of their enabled
+statistical components; named-child empty filters remain supported.
 [Data](../api/data.md)
 
 ### `removeMarkFilter`
@@ -1227,6 +1310,8 @@ semantic roles; expressions and predicates are never rewritten as strings.
 
 ```javascript
 editComputedData({ target, as?, expression?, dependents? })
+editLookupData({ target, field?, lookup?, dependents? })
+editFlattenData({ target, fields?, as?, dependents? })
 editFoldData({ target, fields?, as?, dependents? })
 editSummaryData({ target, groupBy?, aggregates?, members?, weight?, dependents? })
 editBinData({ target, field?, maxBins? | step? | boundaries?, extent?, nice?, zero?, includeEmpty?, members?, as?, weight?, dependents? })
@@ -1249,16 +1334,16 @@ belong only to the previous mode before validating the final definition.
 ### `createPointMark`
 
 ```javascript
-createPointMark({ id?, data?, missing?, shape?, fill?, opacity?, stroke?, strokeWidth? } = {})
+createPointMark({ clip?, id?, data?, missing?, shape?, fill?, opacity?, stroke?, strokeWidth? } = {})
 ```
 
-Create a semantic point mark with one of 12 equal-area shape realizations.
+Create a point mark using fourteen named shapes or polygons with area/radius normalization.
 `stroke: false` disables the outline and its width at creation. [Marks](../api/marks.md)
 
 ### `editPointMark`
 
 ```javascript
-editPointMark({ target?, missing?, shape?, fill?, opacity?, stroke?, strokeWidth? })
+editPointMark({ clip?, target?, missing?, shape?, fill?, opacity?, stroke?, strokeWidth? })
 ```
 
 Change constant point shape, fill, opacity, or outline appearance and rematerialize its concrete items.
@@ -1267,7 +1352,7 @@ Change constant point shape, fill, opacity, or outline appearance and rematerial
 ### `createTickMark`
 
 ```javascript
-createTickMark({ id?, data?, length?, stroke?, strokeWidth?, opacity? } = {})
+createTickMark({ clip?, id?, data?, length?, stroke?, strokeWidth?, opacity? } = {})
 ```
 
 Create a centered line glyph that materializes after both x and y are complete.
@@ -1276,7 +1361,7 @@ Length defaults to `14`; stroke width defaults to `2`. [Marks](../api/marks.md)
 ### `editTickMark`
 
 ```javascript
-editTickMark({ target?, length?, stroke?, strokeWidth?, opacity? })
+editTickMark({ clip?, target?, length?, stroke?, strokeWidth?, opacity? })
 ```
 
 Partially edit Tick length or constant line appearance while preserving data,
@@ -1288,7 +1373,8 @@ position, and other assignments. [Marks](../api/marks.md)
 jitterPoints({ target?, channel, maxOffset, seed?, key? })
 ```
 
-Assign deterministic bounded graphical jitter to one Cartesian point mark. Use
+Assign deterministic bounded graphical jitter to one Cartesian point mark with
+`channel: "x"`, `"y"`, or `"both"`. Both axes use independent offsets. Use
 exactly one of `maxOffset.pixels` or `maxOffset.band`; calling the action again
 replaces the previous policy from the semantic base positions. [Point marks](../api/marks/point.md)
 
@@ -1333,7 +1419,7 @@ and independently shared resources. [Marks](../api/marks.md)
 ### `createLineMark`
 
 ```javascript
-createLineMark({ id?, data?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed? } = {})
+createLineMark({ clip?, missing?, id?, data?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed? } = {})
 ```
 
 Create a semantic line mark and empty path collection. Curve defaults to
@@ -1342,21 +1428,24 @@ rematerialization. A compatible layered source can provide data, positions,
 shared scales, and a grain-preserving aggregate such as `mean`; bar-only bin,
 stack, and offset policies are not inherited. `closed: true` closes each Polar
 series as a radar path.
+For direct Cartesian quantitative/temporal positions, opt-in `missing: "break"`
+preserves null/absent observations as independent valid runs. The default remains
+strict. Each run is a path and selection item; curves restart at each gap.
 [Marks](../api/marks.md)
 
 ### `editLineMark`
 
 ```javascript
-editLineMark({ target?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed? })
+editLineMark({ clip?, missing?, target?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed? })
 ```
 
-Edit line appearance and rematerialize concrete path commands without changing
-semantic encodings. [Marks](../api/marks.md)
+Edit line appearance or its explicit missing-coordinate policy and rematerialize
+concrete path commands without changing field encodings. [Marks](../api/marks.md)
 
 ### `createBarMark`
 
 ```javascript
-createBarMark({ id?, data?, orientation?, fill?, opacity?, stroke?, strokeWidth? } = {})
+createBarMark({ clip?, id?, data?, orientation?, fill?, opacity?, stroke?, strokeWidth? } = {})
 ```
 
 Create a semantic bar mark and empty rect collection.
@@ -1370,7 +1459,7 @@ Omitted corners fall back to the global radius or zero; edits retain unspecified
 ### `editBarMark`
 
 ```javascript
-editBarMark({ target?, blend?, fill?, opacity?, stroke?, strokeWidth? })
+editBarMark({ clip?, target?, blend?, fill?, opacity?, stroke?, strokeWidth? })
 ```
 
 Edit whole-bar appearance and rematerialize every concrete rectangle.
@@ -1390,7 +1479,7 @@ Omitted corners fall back to the global radius or zero; edits retain unspecified
 ### `createAreaMark`
 
 ```javascript
-createAreaMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing? } = {})
+createAreaMark({ clip?, id?, data?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing? } = {})
 ```
 
 Create a semantic area mark and empty path collection. Fixed fill defaults to
@@ -1403,7 +1492,7 @@ Area `missing` defaults to `"error"`. `"break"` splits null/undefined measured e
 ### `editAreaMark`
 
 ```javascript
-editAreaMark({ target?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing? })
+editAreaMark({ clip?, target?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing? })
 ```
 
 Edit constant area appearance. `stroke: false` removes an existing outline.
@@ -1433,7 +1522,7 @@ Edit arc geometry or appearance and rematerialize complete sector paths.
 ### `createRuleMark`
 
 ```javascript
-createRuleMark({ id?, data?, stroke?, strokeWidth?, strokeDash?, opacity? } = {})
+createRuleMark({ clip?, id?, data?, stroke?, strokeWidth?, strokeDash?, opacity? } = {})
 ```
 
 Create a semantic rule mark and empty line collection. The first omitted ID is
@@ -1442,7 +1531,7 @@ Create a semantic rule mark and empty line collection. The first omitted ID is
 ### `editRuleMark`
 
 ```javascript
-editRuleMark({ target?, stroke?, strokeWidth?, strokeDash?, opacity? })
+editRuleMark({ clip?, target?, stroke?, strokeWidth?, strokeDash?, opacity? })
 ```
 
 Edit constant Rule appearance through the four existing encoding owners. At least
@@ -1452,7 +1541,7 @@ accepts the same styles. [Rule marks](../api/marks/rule.md)
 ### `createRectMark`
 
 ```javascript
-createRectMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth? } = {})
+createRectMark({ clip?, id?, data?, fill?, opacity?, stroke?, strokeWidth? } = {})
 ```
 
 Create a semantic rect mark and empty rect collection. Two discrete x/y bands
@@ -1468,7 +1557,7 @@ Omitted corners fall back to the global radius or zero; edits retain unspecified
 ### `editRectMark`
 
 ```javascript
-editRectMark({ target?, fill?, opacity?, stroke?, strokeWidth? })
+editRectMark({ clip?, target?, fill?, opacity?, stroke?, strokeWidth? })
 ```
 
 Edit rect appearance and rematerialize complete cells. Constant fill conflicts
@@ -1479,6 +1568,35 @@ Global `cornerRadius` and per-corner `cornerRadiusTopLeft`, `cornerRadiusTopRigh
 `cornerRadiusBottomRight`, and `cornerRadiusBottomLeft` use non-negative logical pixels.
 Each corner override wins over the global fallback and clamps to half the smaller item side.
 Omitted corners fall back to the global radius or zero; edits retain unspecified overrides.
+
+### `createStatisticalReference`
+
+```javascript
+createStatisticalReference({ id?, source, axis, population?, field?, groupBy?, statistic?, statistics?, ...style })
+```
+
+Create a statistical line or interval through one public action. `source` is the source mark ID and `axis` is `"x"` or `"y"`.
+Omit the statistic keys for a mean line, supply `statistic: { op: "median" }` for another single statistic, or an exact
+`statistics` pair for a band. The keys are mutually exclusive and use the existing `ReferenceStatistic` vocabulary.
+Quantiles 0.25–0.75 show the central 50%; 0.025–0.975 show the central 95% of data, rather than a confidence interval.
+Set `groupBy` to one source field name for a separate result per observed group on either axis, even if that field is not encoded.
+Groups retain source order. Visible marks must have a single value of that grouping field; otherwise use `boundData`.
+For a distribution's measurement axis, `boundData` uses original observations from density, ECDF, computed
+box-summary, and gradient provenance. It preserves repeated observations and source groups instead of averaging
+rendering samples. Precomputed summaries keep their supplied data. Grouped aggregate line statistics can use
+singleton partitions without changing the source line.
+Summarized Dot, Lollipop, and Dumbbell endpoints also follow their original measurement roles.
+Horizon accepts quantitative X statistics from source observations; folded Y and temporal X are not numeric statistic axes.
+The owned output records the key in `group` beside `value` or `lower`/`upper`. Omitting `groupBy` preserves one overall result.
+The default ID is `statisticalReference`; use explicit IDs for additional references. Lines default to `#222222`,
+width `2.5`, solid stroke; bands to `#6b7280`, opacity `0.18`, no stroke. Use native Rule styles for lines and Rect styles for bands.
+When `groupBy` matches the source Color field without a color aggregate, omitted `stroke` shares that Color scale:
+each group's line matches its source marks, and palette edits update both. An explicit `stroke` overrides this default.
+Reference groups contribute to the shared appearance domain even when a mark filter hides that group.
+Statistical values do not expand positional domains, and distribution-role edits refresh existing references.
+This full-only action wraps `createReferenceLine` or `createReferenceBand` and retains their statistical binding,
+replay, editing, facet and removal behavior. Literal reference coordinates are not accepted.
+[Statistical references](../api/marks/rule.md#statistical-reference-action)
 
 ### `createReferenceLine`
 
@@ -1522,7 +1640,7 @@ is needed. Both reference facades are available in the full entry point.
 ### `createMarkLabels`
 
 ```javascript
-createMarkLabels({ id?, source?, field?, value?, content?, normalizeBy?, format?, inheritColor?, lineHeight?, blockAlign?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout?, placement?, select?, selection? } = {})
+createMarkLabels({ clip?, id?, source?, field?, value?, content?, normalizeBy?, format?, inheritColor?, lineHeight?, blockAlign?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout?, placement?, select?, selection? } = {})
 ```
 
 Label source mark items. The default content is the source's semantic value;
@@ -1588,7 +1706,7 @@ to use `removeMark`.
 ### `createAnnotation`
 
 ```javascript
-createAnnotation({ id?, text, anchor?, format?, source?, x?, y?, space?, data?, coordinate?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout? })
+createAnnotation({ clip?, id?, text, anchor?, format?, source?, x?, y?, space?, data?, coordinate?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout? })
 ```
 
 Create anchored text. Omit x/y/space for a
@@ -1616,7 +1734,7 @@ Omit `layout` or pass `false` to retain the exact anchor. A layout object accept
 ### `createTextMark`
 
 ```javascript
-createTextMark({ id?, data?, source?, text?, inheritColor?, lineHeight?, blockAlign?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? } = {})
+createTextMark({ clip?, id?, data?, source?, text?, inheritColor?, lineHeight?, blockAlign?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? } = {})
 ```
 
 Create a semantic text layer. Omitted data and position attach to the current
@@ -1641,7 +1759,7 @@ centers the entire block vertically. Empty internal lines are retained.
 ### `editTextMark`
 
 ```javascript
-editTextMark({ target?, inheritColor?, lineHeight?, blockAlign?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? })
+editTextMark({ clip?, target?, inheritColor?, lineHeight?, blockAlign?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? })
 ```
 
 Edit text typography and graphical offsets without changing its semantic
@@ -1680,6 +1798,7 @@ semantic base positions. [Text marks](../api/marks/text.md)
 | `encodeTheta` | point, line, arc | point/line: quantitative, temporal, ordinal, nominal; arc: quantitative, ordinal, nominal | arc maps direct quantitative values, category counts, or category-weighted sums to proportional sectors |
 | `encodeR` | point, line, arc | point/line/arc: quantitative | radial position; arc combines it with a categorical theta band |
 | `encodeParallelCoordinates` | line | line: quantitative, ordinal | atomic ordered dimensions; one namespaced scale and axis per dimension |
+| `encodeDx` / `encodeDy` | text | text: quantitative | independent Text only; finite field or constant logical-pixel offsets, no scale or guide; field offsets establish row grain |
 
 <!-- action-capabilities:position:end -->
 
@@ -1893,6 +2012,32 @@ Assign exactly one field, constant value, or semantic content to a text mark.
 pattern composed from `%Y`, `%m`, `%d`, `%b`, `%%`, and literals. Reassignment
 replaces the previous content branch. [Text marks](../api/marks/text.md)
 
+### `encodeDx`
+
+```javascript
+encodeDx({ target?, field })
+encodeDx({ target?, value })
+```
+
+Move each independent Text glyph horizontally by finite signed logical pixels.
+Choose exactly one numeric field or constant; no scale is created. The encoding
+overrides the mark's constant dx. Removing it restores that constant. Field-bound
+offsets participate in row grain and the Text missing-row policy. Full only;
+source-owned labels and other marks are rejected.
+[Text offsets](../api/marks/text.md#numeric-pixel-offsets)
+
+### `encodeDy`
+
+```javascript
+encodeDy({ target?, field })
+encodeDy({ target?, value })
+```
+
+The corresponding independent Text vertical offset; positive values move down.
+It preserves dx and follows the same field/constant, removal, row-grain and atomic
+validation rules. Set both through existing `encodeChannels({target,channels})`.
+[Text offsets](../api/marks/text.md#numeric-pixel-offsets)
+
 ### `encodeXOffset`
 
 ```javascript
@@ -2007,9 +2152,9 @@ removes grouping.
 
 | Mode | Supported marks | Field types | Important options |
 | --- | --- | --- | --- |
-| Categorical | point, line, area, bar, rect, arc, text | point/line/area/bar/rect/arc/text: nominal, ordinal | bar/area layout; arc overlay; palette and ordinal scale |
-| Continuous | point, aggregate bar, rect, text, area | point/rect/text: quantitative, temporal; aggregate bar/area: quantitative | sequential scale; aggregate required for a different bar measure; area requires one finite value per existing series |
-| Discretized continuous | point, aggregate bar, rect, text, area | point/aggregate bar/rect/text/area: quantitative | quantize, quantile, or threshold scale; area requires one finite value per existing series |
+| Categorical | point, line, area, bar, rect, arc, text | point/line/area/bar/rect/arc/text: nominal, ordinal | bar/area layout; arc overlay; palette and ordinal scale; explicit-domain row-owned Cartesian line color supports unknown paint |
+| Continuous | point, aggregate bar, rect, text, area, tick | point/rect/text/tick: quantitative, temporal; aggregate bar/area: quantitative | sequential scale; aggregate required for a different bar measure; area requires one finite value per existing series; tick paints its centered segment and rejects simultaneous stroke |
+| Discretized continuous | point, aggregate bar, rect, text, area, tick | point/aggregate bar/rect/text/area/tick: quantitative | quantize, quantile, or threshold scale; area requires one finite value per existing series; tick maps colors per row |
 
 <!-- action-capabilities:color:end -->
 
@@ -2042,10 +2187,28 @@ aggregate, temporal color, or point-only unknown fallback are supported. Use
 `encodeColor` after a complete `createAreaPlot`, whose color option remains categorical.
 The real color scale drives fills and legends and uses one sample per series for
 automatic quantile domains. Basic does not expose Area authoring.
+Tick quantitative/temporal color paints its segment, using color gradients,
+intervals or samples without changing geometry. Remove the existing color or
+stroke encoding before switching channels or setting constant stroke.
+Categorical color, aggregate, layout and point-only unknown remain unsupported;
+Basic gains no Tick authoring.
 
 Row-owned rects accept categorical or continuous color. Arc sectors accept
-categorical color with optional overlay layout.
+categorical color with optional overlay layout, or continuous/discretized color
+with one value per sector. Aggregated sectors require that value to be constant
+within their category; no implicit color aggregation is invented. Gradient and
+interval legends use the same scale mapping. Automatic quantile domains use one
+sample per sector.
+When changing a target between categorical and continuous color families, an
+omitted scale ID detaches from an incompatible shared scale into a target-owned
+scale. Explicit shared IDs keep strict consumer validation. Other consumers,
+such as grouped regression lines, retain their original mapping.
 [Series encodings](../api/series-encodings.md)
+
+Existing field encodings in `ggaction/basic` can reassign settings on a bound
+scale of the same type, updating every consumer atomically. Generic/focused
+scale editors and legend editors remain Full-only; scale-type transitions use
+Full or a new scale ID in Basic. [Encoding reassignment](../api/encodings.md#reassign-an-existing-encoding)
 
 ### `encodeStrokeDash`
 
@@ -2056,9 +2219,11 @@ encodeStrokeDash(
 )
 ```
 
-Create or replace nominal line-series or rule dash patterns, or apply one
+Create or replace nominal/ordinal line-series or rule dash patterns, or apply one
 constant named/direct pattern. Named styles are `solid`, `dashed`, `dotted`, and
-`dashdot`.
+`dashdot`. Cartesian line/rule `scale.unknown` accepts the same named or direct
+pattern for valid categories outside a domain; missing categories remain errors,
+and domain, legend and raw series identities stay unchanged.
 [Series encodings](../api/series-encodings.md)
 
 ### `encodeRadius`
@@ -2128,7 +2293,7 @@ Semantic Polar radial position is unchanged.
 encodeSize({ field, target?, fieldType?, scale? })
 ```
 
-Encode or replace a quantitative field as equal-area point size. The automatic area range
+Encode point size as area; radius-normalized polygons use reference-circle area. The automatic area range
 is `[24, 196]`. Size scales support continuous `linear`, `log`, `sqrt`, and
 `pow` mappings plus discrete `quantize`, `quantile`, and `threshold` mappings.
 [Appearance encodings](../api/appearance.md)
@@ -2139,7 +2304,7 @@ is `[24, 196]`. Size scales support continuous `linear`, `log`, `sqrt`, and
 encodeShape({ field, target?, fieldType?, scale? })
 ```
 
-Encode or replace a nominal field with the shared 12-value point-shape vocabulary.
+Encode a nominal field as fourteen named shapes or polygons with area/radius normalization.
 Explicit ranges may repeat shapes; provide one entry per domain value. Automatic ranges remain distinct.
 [Appearance encodings](../api/appearance.md)
 
@@ -2150,7 +2315,7 @@ encodeOpacity({ value, target? })
 encodeOpacity({ field, target?, fieldType?, scale? })
 ```
 
-Apply a constant point/rule/line opacity from `0` to `1`, or map a quantitative field
+Apply a constant point/rule/line/bar/rect opacity from `0` to `1`, or map a quantitative field
 through a linear opacity scale. The two modes are mutually exclusive and may
 replace each other through the same action. Lines require one raw field value per
 series and support sampled opacity legends. Constant mode clears its field and
@@ -2178,8 +2343,8 @@ encodeStrokeWidth({ value, target? })
 encodeStrokeWidth({ field, target?, fieldType?, scale? })
 ```
 
-Assign a non-negative finite logical Canvas width to a Line or Rule. Field mode
-maps one quantitative value per rule row or complete line series. Constant mode
+Assign a non-negative finite logical Canvas width to a Line, Rule, or Rect. Field mode
+maps one quantitative value per rule/rect row or complete line series. Constant mode
 clears the field and its own sampled width legend; fieldType/scale are invalid in
 constant mode. Active channel selections must be removed before replacement.
 [Appearance encodings](../api/appearance.md)
@@ -2303,7 +2468,7 @@ an object creates or edits both. The focused boundary action still accepts
 
 ```javascript
 createBoxPlot({
-  id?, target?, data?, x?, y?, coordinate?, summary?, whisker?, width?, outliers?,
+  id?, target?, data?, x?, y?, coordinate?, color?, summary?, whisker?, width?, outliers?,
   box?, median?, outlier?, guides?
 } = {})
 ```
@@ -2315,6 +2480,8 @@ median rules, and optional point outliers. Tukey factor, band width, component
 appearance, and outlier creation are configurable. [Box plots](../api/box-plots.md)
 Guides remain opt-in for compatibility: pass `guides: {}` or nested options to
 ensure compatible guides inside the facade; omission and `false` create none.
+Optional `color` uses the ordinary field/fixed encoding on the body after
+position completion and before guides. It cannot be combined with explicit `box.fill`.
 
 ### `editBoxPlot`
 
@@ -2330,7 +2497,7 @@ IDs. [Box plots](../api/box-plots.md#editing-a-box-plot)
 
 ```javascript
 createGradientPlot({
-  id?, target?, data?, x?, y?, coordinate?, density?, width?, gradient?,
+  id?, target?, data?, x?, y?, coordinate?, color?, density?, width?, gradient?,
   center?, guides?
 } = {})
 ```
@@ -2341,6 +2508,8 @@ encoded layer, or completed later. Defaults are Gaussian auto density, 64
 samples, width band `0.7`, no outline, a median center rule, and applicable
 guides. A categorical `encodeColor` owns strip hue while density continues to
 control lightness and opacity.
+Optional `color` applies that same field/fixed encoding at creation or deferred
+position completion, before guides.
 [Statistical actions](../reference/actions/statistics.md#creategradientplot)
 
 ### `editGradientPlot`
@@ -2391,8 +2560,28 @@ createGuides({ axes?, grid?, legend? })
 
 Create applicable axes, grids, and legends; omitted branches infer applicability, false skips a branch, and explicit direction objects enable only named directions: `axes:{x:false}` requests neither axis while `axes:{x:false,y:{}}` requests y.
 Automatic calls preserve existing guide collections and add missing applicable
-collections; explicit collection objects retain strict create semantics.
+collections; explicit collection objects retain strict create semantics. Datum-only
+anchors do not infer axes. An automatic call on an existing chart that has no
+applicable guides succeeds without adding graphics. An explicit all-false request
+or a chart without marks still fails. On facet parents this action updates the retained source
+and rederives its panels while preserving the parent title and guide policy.
 [Guides](../api/guides.md)
+
+### `editAxes`
+
+```js
+editAxes({ x?, y?, theta?, radius?, parallel? })
+```
+
+Chart-authoring action. Edit existing axes in one atomic call. Each selected option uses the corresponding `editXAxis`, `editYAxis`, `editThetaAxis`, `editRadialAxis`, or `editParallelAxis` options. Omission or `false` preserves that axis. At least one nonempty edit is required. No axes or components are created and scale/coordinate bindings are preserved. Cartesian arrays require explicit `target` IDs; parallel arrays select fields with the existing `field`/`target` options. Duplicate selections and empty arrays are rejected.
+
+```js
+// Fragment: program already contains x and y axes.
+program.editAxes({
+  x: { labels: { fontSize: 11 } },
+  y: { ticksAndLabels: { count: 4, labels: { fontSize: 11 } } }
+});
+```
 
 ### `createAxes`
 
@@ -2629,15 +2818,23 @@ Edit the existing radial grid. [Grids](../api/grids.md#editing-grids)
 ```javascript
 createLegend({
   target?, channels?, position?, layout?, align?, direction?, columns?, offset?,
-  titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?,
+  titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, rowPadding?, titlePadding?, border?, count?,
   values?, gradient?, order?
 })
 ```
+
+`rowPadding` sets non-negative finite occupied edge-to-edge vertical row gaps for item-based legends; `titlePadding` independently sets title-to-body spacing for every family. Omission preserves the original layout. Text uses deterministic font-size and hard-line-break bounds; strokes, paths and clips contribute to sample bounds. Multi-column rows use their union; text-only summaries have no sample. These options require edge layout. Gradient strips reject row padding.
 
 Create categorical, point-size, continuous-color gradient, discretized-color
 interval, or field-opacity sample legends. Interval legends support all four
 edges with layout `"edge"`, side single columns and horizontal item grids. Explicit `channels` creates exactly
 the selected content; include `"size"` in a point categorical-and-size request.
+Compatible point and line categorical channels stay combined when their domains
+contain the same values, even in different orders. The first selected channel
+owns item order; each symbol still looks up its own scale by value. Independent fields,
+continuous color/stroke, opacity, and stroke width use separate native blocks.
+Area fill and stroke are independently selectable blocks, including stroke-only
+legends for density and horizon areas.
 For outside top/bottom legends, omitting `offset` places the occupied legend after
 the same-side axis line, ticks, labels, and title, with the family's native gap
 (8 pixels for categorical legends, 30 for continuous families). Axis edits and
@@ -2659,6 +2856,13 @@ Continuous color and stroke ramps accept
 defaults to `1`, and preserves space at zero. It never fades marks, text, ticks,
 or borders. Whole and focused legend edits preserve omitted gradient fields;
 switching from symbols back to a gradient resets exclusive gradient settings.
+Continuous color and stroke gradients also accept exact ascending numeric
+`values` inside their domain. Ticks use their mapped positions, without adding
+midpoint or endpoint values. Creation omits `values` for automatic ticks; editors
+preserve omitted arrays and use `values: "auto"` to restore the remembered count.
+Do not combine an exact array with `count`. Exact samples survive color
+gradient/symbol representation changes. Select a gradient block with the
+`editLegend` channel option; `editLegendBlock` sample edits remain sampled-only.
 Omitted point channels infer the available categorical color, shape, and
 quantitative size with the same result as explicit selection. Color-only uses
 swatches; shape uses typed symbols; a size encoding adds its own sample block.
@@ -2706,12 +2910,14 @@ Continuous and combined sampled legends retain their existing edge-only contract
 ```javascript
 editLegend({
   target?, channel?, channels?, position?, layout?, align?, direction?, columns?, offset?, titlePosition?,
-  title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, values?, gradient?, order?, overflow?
+  title?, symbol?, labels?, titleStyle?, itemGap?, rowPadding?, titlePadding?, border?, count?, values?, gradient?, order?, overflow?
 })
 ```
 
 Singular `channel` selects one existing block without changing sibling typography. It cannot
 accompany `channels`, `blockLayout`, or `at`. A channel never disambiguates mark targets.
+
+`rowPadding` and `titlePadding` accept numbers or `"auto"` to remove retained intent; omission or undefined preserves it. Explicit row spacing wins over vertical itemGap/block gap while retaining the old fallback and horizontal spacing. Explicit title spacing wins over the old title gap. Reset row padding before a transition to a gradient. Combining conflicting policies requires an explicit choice; incompatible splits require explicit reset. Content and Canvas/data/scale/theme/facet replay retain compatible policies.
 
 Partially edit one existing legend. Categorical `overflow` can be replaced or reset
 with `false`; data/scale/order revisions recompute the hidden count and remove stale
@@ -2767,7 +2973,7 @@ numeric keys only; unmatched samples keep their normal formatter. `"auto"` remov
 ```javascript
 editLegendLayout({
   target?, channel?, position?, layout?, align?, direction?, columns?, offset?,
-  titlePosition?, itemGap?
+  titlePosition?, itemGap?, rowPadding?, titlePadding?
 })
 editLegendLabels({ target?, channel?, offset?, color?, fontSize?, fontFamily?, fontWeight?, format? })
 editLegendTitle({
@@ -2776,6 +2982,8 @@ editLegendTitle({
 editLegendSymbols({ target?, channel?, symbol?, count?, gradient? })
 editLegendBorder({ target?, channel?, border })
 ```
+
+`editLegendLayout` owns content spacing and its edit-only `"auto"` reset. Title editing remains text/style-only; block editing retains its original gap contract. See [content spacing](../api/legends.md#space-rows-by-content).
 
 Edit one legend component without constructing the nested options accepted by
 `editLegend`. Each action uses the same target inference, validation, and
@@ -2884,7 +3092,7 @@ editSizeScale({ id?, target?, type?, domain?, range?, unknown?, clamp?, reverse?
 editOpacityScale({ id?, target?, type?, domain?, range?, nice?, zero?, clamp?, reverse?, unknown? })
 editShapeScale({ id?, target?, type?, domain?, range?, unknown? })
 editStrokeWidthScale({ id?, target?, type?, domain?, range?, ...quantitativeOptions })
-editStrokeDashScale({ id?, target?, type?, domain?, range? })
+editStrokeDashScale({ id?, target?, type?, domain?, range?, unknown? })
 ```
 
 Edit the scale bound to one semantic channel without requiring its generated
@@ -3060,19 +3268,19 @@ editYAxisTicksAndLabels({ position?, count?, values?, ticks?, labels? })
 
 createXAxisTitle({
   text?, scale?, position?, at?, offset?, rotation?, color?,
-  fontSize?, fontFamily?, fontWeight?
+  fontSize?, fontFamily?, fontWeight?, overlap?
 })
 createYAxisTitle({
   text?, scale?, position?, at?, offset?, rotation?, color?,
-  fontSize?, fontFamily?, fontWeight?
+  fontSize?, fontFamily?, fontWeight?, overlap?
 })
 editXAxisTitle({
   text?, position?, at?, offset?, rotation?, color?,
-  fontSize?, fontFamily?, fontWeight?
+  fontSize?, fontFamily?, fontWeight?, overlap?
 })
 editYAxisTitle({
   text?, position?, at?, offset?, rotation?, color?,
-  fontSize?, fontFamily?, fontWeight?
+  fontSize?, fontFamily?, fontWeight?, overlap?
 })
 ```
 
@@ -3085,6 +3293,13 @@ checks use their full bounds. Returning to single-line text removes the old line
 Cartesian title `rotation` accepts a finite legacy number in radians or
 `{ value, unit: "degrees" | "radians" }`. Both forms normalize to concrete
 radians. Polar component `angle` remains degree-valued placement.
+
+Cartesian title `overlap` is `"error"` by default. Explicit `"allow"` permits only
+that title to intersect labels of its own axis. Label-label overlap and Canvas
+bounds remain independent checks. Complete axes accept the policy in `title`;
+focused and whole-axis editors preserve it when omitted. Resetting to `"error"`
+requires a valid final layout. The same policy applies when labels are edited
+after the title and through Canvas, scale, data, facet and saved-program replay.
 
 ### Directional grids
 

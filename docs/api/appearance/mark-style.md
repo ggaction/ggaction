@@ -151,7 +151,7 @@ Use `{ value: 0.5 }` to return to constant opacity. Constant mode rejects
 `editLineMark` rejects scalar width/opacity while the same field encoding is
 active; use the corresponding encoder's explicit value assignment to replace it.
 
-Rules also reuse `encodeStrokeDash` in constant or nominal-field mode and
+Rules also reuse `encodeStrokeDash` in constant or nominal/ordinal-field mode and
 `encodeOpacity` in constant or quantitative-field mode. Field modes produce
 one concrete value per rule line; constant modes remain scale-free. Recalling
 an owning action replaces that appearance assignment immutably.

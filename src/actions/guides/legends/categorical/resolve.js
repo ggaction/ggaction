@@ -11,6 +11,7 @@ import { CHANNELS } from "./options.js";
 import { nonEmptyString } from "./validation.js";
 import { findLayer } from "../../../../selectors/layers.js";
 import { findSemanticScale } from "../../../../selectors/scales.js";
+import { horizonLegendPresentation } from "../../../../grammar/horizon.js";
 
 function isCategoricalTarget(layer) {
   if (["line", "point"].includes(layer?.mark?.type)) {
@@ -76,8 +77,9 @@ function resolveOrdinalScales(program, scaleIds) {
     );
     return concrete;
   });
-  if (scales.slice(1).some(scale => !sameValues(scale.domain, scales[0].domain))) {
-    throw new Error("Combined legend scales must have identical ordered domains.");
+  if (scales.slice(1).some(scale => scale.domain.length !== scales[0].domain.length ||
+      scale.domain.some(value => !scales[0].domain.some(other => Object.is(value, other))))) {
+    throw new Error("Combined legend scales must contain the same domain values.");
   }
   return { scales, domain: scales[0].domain };
 }
@@ -119,6 +121,8 @@ export function resolveDefinition(program, layer, requestedChannels, requestedTi
   const scales = encodings.map(item => item.encoding.scale);
   const resolved = resolveOrdinalScales(program, scales);
   const field = [...fields][0];
+  const transform = requireDataset(program, layer.data).transform?.[0];
+  const horizon = field === transform?.as?.color ? horizonLegendPresentation(transform) : undefined;
   let linked;
   if (order?.channel !== undefined) {
     const position = layer.encoding?.[order.channel];
@@ -132,7 +136,8 @@ export function resolveDefinition(program, layer, requestedChannels, requestedTi
     channels,
     scales,
     field,
-    title: nonEmptyString(requestedTitle ?? field, "Legend title"),
+    title: nonEmptyString(requestedTitle ?? horizon?.title ?? field, "Legend title"),
+    ...(horizon === undefined ? {} : { defaultLabelMap: horizon.labelMap }),
     domain: resolveLegendOrderDomain(resolved.domain, order, linked,
       order?.values === undefined ? undefined : readNominalField(requireDataset(program, layer.data).values, field)),
     ...(sizeShape ? {combine:"size-shape",...resolveSizeShapeMapping({layer,

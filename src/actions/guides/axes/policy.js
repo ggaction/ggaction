@@ -1,4 +1,6 @@
+import { formatNumericTickValues } from "../../../grammar/ticks.js";
 import { formatVisibleText } from "../../../core/textMetrics.js";
+import { validateBoolean } from "../../../core/validation.js";
 import {
   formatValue,
   isUtcValueFormat,
@@ -9,6 +11,15 @@ const AXIS_POSITIONS = Object.freeze({
   x: Object.freeze(["bottom", "top"]),
   y: Object.freeze(["left", "right"])
 });
+
+export function resolveAxisFrameConfig(current, args) {
+  if (args.underlay !== undefined) validateBoolean(args.underlay, "Axis underlay");
+  const frame = { ...current };
+  if (Object.hasOwn(args, "offset")) frame.offset = args.offset;
+  if (args.underlay === true) frame.underlay = true;
+  else if (args.underlay === false) delete frame.underlay;
+  return Object.keys(frame).length === 0 ? undefined : frame;
+}
 
 export function defaultAxisPosition(channel) {
   return channel === "x" ? "bottom" : "left";
@@ -96,12 +107,23 @@ export function resolveAxisTitleGeometry({
 }
 
 export function validateAxisFormat(format) {
+  if (format === "ticks") return format;
   return validateValueFormat(format, "Label format", {
     allowDecimalsObject: true
   });
 }
 
+export function formatNumericAxisTicks(values, scaleType) {
+  if (["ordinal", "band", "point", "time"].includes(scaleType)) {
+    throw new Error('Axis format "ticks" requires a quantitative scale.');
+  }
+  return formatNumericTickValues(values);
+}
+
 export function formatAxisValue(value, scaleType, format, autoFormatter) {
+  if (format === "ticks") {
+    throw new Error('Axis format "ticks" requires the complete settled tick values.');
+  }
   validateAxisFormat(format);
   if (format === "auto") return formatVisibleText(autoFormatter(value));
   if (["ordinal", "band", "point"].includes(scaleType)) {

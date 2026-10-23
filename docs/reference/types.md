@@ -42,6 +42,8 @@ interface ChartProgramActions {
   createDensityData(options: DensityDataOptions): ChartProgram;
   createSummaryData(options: SummaryDataOptions): ChartProgram;
   createBinData(options: BinDataOptions): ChartProgram;
+  createFlattenData(options: FlattenDataOptions): ChartProgram;
+  createLookupData(options: LookupDataOptions): ChartProgram;
   createFoldData(options: FoldDataOptions): ChartProgram;
   createComputedData(options: ComputedDataOptions): ChartProgram;
   createNormalizedData(options: NormalizedDataOptions): ChartProgram;
@@ -60,6 +62,8 @@ interface ChartProgramActions {
   editDerivedData(options: EditDerivedDataOptions): ChartProgram;
   editComputedData(options: EditComputedDataOptions): ChartProgram;
   editFilteredData(options: EditFilteredDataOptions): ChartProgram;
+  editFlattenData(options: EditFlattenDataOptions): ChartProgram;
+  editLookupData(options: EditLookupDataOptions): ChartProgram;
   editFoldData(options: EditFoldDataOptions): ChartProgram;
   editSummaryData(options: EditSummaryDataOptions): ChartProgram;
   editBinData(options: EditBinDataOptions): ChartProgram;
@@ -75,25 +79,25 @@ interface ChartProgramActions {
   editCompleteData(options: EditCompleteDataOptions): ChartProgram;
   editImputedData(options: EditImputedDataOptions): ChartProgram;
   editBin2DData(options: EditBin2DDataOptions): ChartProgram;
-  createPointMark(options?: StrokeStyleDetails & { id?: string; data?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
-  editPointMark(options: StrokeStyleDetails & { target?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
-  createTickMark(options?: StrokeStyleDetails & { id?: string; data?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;
-  editTickMark(options: StrokeStyleDetails & { target?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;
+  createPointMark(options?: StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+  editPointMark(options: StrokeStyleDetails & { clip?: boolean; target?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+  createTickMark(options?: StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;
+  editTickMark(options: StrokeStyleDetails & { clip?: boolean; target?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;
   jitterPoints(options: JitterPointsOptions): ChartProgram;
   removeJitter(options?: RemoveJitterOptions): ChartProgram;
   packPoints(options: PackPointsOptions): ChartProgram;
   removePointPacking(options?: RemovePointPackingOptions): ChartProgram;
-  createLineMark(options?: StrokeStyleDetails & { id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
-  editLineMark(options: StrokeStyleDetails & { target?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
-  createBarMark(options?: RectStyleDetails & { id?: string; data?: string; orientation?: "vertical" | "horizontal"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
-  editBarMark(options: RectStyleDetails & { target?: string; blend?: "normal" | "difference"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
-  createAreaMark(options?: StrokeStyleDetails & { id?: string; data?: string; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
+  createLineMark(options?: StrokeStyleDetails & { clip?: boolean; missing?: "error" | "break"; id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
+  editLineMark(options: StrokeStyleDetails & { clip?: boolean; missing?: "error" | "break"; target?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
+  createBarMark(options?: RectStyleDetails & { clip?: boolean; id?: string; data?: string; orientation?: "vertical" | "horizontal"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+  editBarMark(options: RectStyleDetails & { clip?: boolean; target?: string; blend?: "normal" | "difference"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+  createAreaMark(options?: StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
   createArcMark(options?: StrokeStyleDetails & { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
   editArcMark(options: StrokeStyleDetails & { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;
   createRectMark(options?: RectMarkOptions): ChartProgram;
   editRectMark(options: EditRectMarkOptions): ChartProgram;
-  createRuleMark(options?: { id?: string; data?: string; missing?: "error" | "skip" } & RuleStyleOptions): ChartProgram;
-  editRuleMark(options: { target?: string; missing?: "error" | "skip" } & RuleStyleOptions): ChartProgram;
+  createRuleMark(options?: { clip?: boolean; id?: string; data?: string; missing?: "error" | "skip" } & RuleStyleOptions): ChartProgram;
+  editRuleMark(options: { clip?: boolean; target?: string; missing?: "error" | "skip" } & RuleStyleOptions): ChartProgram;
   createTextMark(options?: TextMarkOptions): ChartProgram;
   createTextPlot(options: CreateTextPlotOptions): ChartProgram;
   createMarkLabels(options?: CreateMarkLabelsOptions): ChartProgram;
@@ -101,12 +105,13 @@ interface ChartProgramActions {
   editMarkLabelPlacement(options: EditMarkLabelPlacementOptions): ChartProgram;
   removeMarkLabels(options: RemoveMarkLabelsOptions): ChartProgram;
   createAnnotation(options: CreateAnnotationOptions): ChartProgram;
+  createStatisticalReference(options: CreateStatisticalReferenceOptions): ChartProgram;
   createReferenceLine(options: CreateReferenceLineOptions): ChartProgram;
   createReferenceBand(options: CreateReferenceBandOptions): ChartProgram;
   editTextMark(options: EditTextMarkOptions): ChartProgram;
   layoutLabels(options?: LabelLayoutOptions): ChartProgram;
   removeLabelLayout(options?: RemoveLabelLayoutOptions): ChartProgram;
-  editAreaMark(options: StrokeStyleDetails & { target?: string; fill?: FillPaint; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
+  editAreaMark(options: StrokeStyleDetails & { clip?: boolean; target?: string; fill?: FillPaint; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
   encodeX(options: PositionEncodingOptions | DatumPositionEncodingOptions): ChartProgram;
   encodeY(options: YPositionEncodingOptions | DatumPositionEncodingOptions): ChartProgram;
   encodeTheta(options: ThetaEncodingOptions): ChartProgram;
@@ -133,8 +138,10 @@ interface ChartProgramActions {
   encodeParallelCoordinates(options: ParallelCoordinatesEncodingOptions): ChartProgram;
   removePathOrder(options?: RemovePathOrderOptions): ChartProgram;
   removeCategoryOrder(options: RemoveCategoryOrderOptions): ChartProgram;
-  removeEncoding(options: { target?: string; channel: | "x" | "y" | "x2" | "y2" | "xOffset" | "yOffset" | "theta" | "radius" | "color" | "stroke" | "strokeDash" | "strokeWidth" | "size" | "shape" | "angle" | "group" | "opacity" | "text"; }): ChartProgram;
+  removeEncoding(options: { target?: string; channel: | "x" | "y" | "x2" | "y2" | "xOffset" | "yOffset" | "theta" | "radius" | "color" | "stroke" | "strokeDash" | "strokeWidth" | "size" | "shape" | "angle" | "group" | "opacity" | "text" | "dx" | "dy"; }): ChartProgram;
   encodeText(options: TextEncodingOptions): ChartProgram;
+  encodeDx(options: TextOffsetEncodingOptions): ChartProgram;
+  encodeDy(options: TextOffsetEncodingOptions): ChartProgram;
   encodeHistogram(options: HistogramEncodingOptions): ChartProgram;
   encodeDensity(options: DensityEncodingOptions): ChartProgram;
   editDensity(options: EditDensityOptions): ChartProgram;
@@ -170,6 +177,7 @@ interface ChartProgramActions {
   createPolarScatterPlot(options: CreatePolarScatterPlotOptions): ChartProgram;
   createPolarLinePlot(options: CreatePolarLinePlotOptions): ChartProgram;
   createRadarPlot(options: CreateRadarPlotOptions): ChartProgram;
+  editRadarPlot(options: EditRadarPlotOptions): ChartProgram;
   createRugPlot(options: CreateRugPlotOptions): ChartProgram;
   createStripPlot(options: CreateStripPlotOptions): ChartProgram;
   createBeeswarmPlot(options: CreateBeeswarmPlotOptions): ChartProgram;
@@ -192,6 +200,7 @@ interface ChartProgramActions {
   removeParallelAxis(options: RemoveParallelAxisOptions): ChartProgram;
   removeParallelAxes(options?: ParallelAxesOptions): ChartProgram;
   createAxes(options?: CreateAxesOptions): ChartProgram;
+  editAxes(options: EditAxesOptions): ChartProgram;
   createXAxis(options?: CompleteAxisOptions<XAxisPosition>): ChartProgram;
   createYAxis(options?: CompleteAxisOptions<YAxisPosition>): ChartProgram;
   createThetaAxis(options?: CompleteThetaAxisOptions): ChartProgram;
@@ -318,6 +327,7 @@ These declarations are generated from the same source as the action signatures. 
 export type AggregateOperation =
   | ScalarAggregateOperation
   | ParameterizedAggregateOperation;
+/** HCL modes borrow a chromatic endpoint's hue across an exact RGB-neutral endpoint. */
 ```
 
 </details>
@@ -333,6 +343,8 @@ Related types: [`ScalarAggregateOperation`](#type-scalaraggregateoperation) · [
 export type AngleEncodingOptions =
   | { target?: string; value: number; field?: never; fieldType?: never }
   | { target?: string; field: string; fieldType?: "quantitative"; value?: never };
+
+/** Unscaled, signed logical-pixel offsets for independent Text marks. */
 ```
 
 </details>
@@ -478,28 +490,6 @@ export type AreaPlotMeasureChannel = string | { field: string; scale?: NonPointQ
 
 Related types: [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquantitativepositionscaleoptions).
 
-### `AreaRangePositionEncodingOptions` {#type-arearangepositionencodingoptions}
-
-<details markdown="1">
-<summary>Expand AreaRangePositionEncodingOptions</summary>
-
-```typescript
-type AreaRangePositionEncodingOptions = {
-  target?: string;
-  coordinate?: string;
-  fieldType?: "quantitative";
-  temporalUnit?: never;
-  scale?: NonPointQuantitativePositionScaleOptions;
-} & (
-  | { lower: string; upper: { datum: number } }
-  | { lower: { datum: number }; upper: string }
-);
-```
-
-</details>
-
-Related types: [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquantitativepositionscaleoptions).
-
 ### `AtLeastOne` {#type-atleastone}
 
 <details markdown="1">
@@ -520,6 +510,7 @@ type AtLeastOne<T> = {
 
 ```typescript
 export type AxisFormat =
+  | "ticks"
   | ValueFormat
   | { decimals: number };
 ```
@@ -563,13 +554,14 @@ export interface AxisLabelOptions<P extends string>
   scale?: string;
   position?: P;
   count?: number;
+  rounding?: AxisTickRounding;
   values?: readonly AxisValue[];
 }
 ```
 
 </details>
 
-Related types: [`CartesianAxisLabelStyleOptions`](#type-cartesianaxislabelstyleoptions) · [`AxisLabelLayoutOptions`](#type-axislabellayoutoptions) · [`DisplayLabelOptions`](#type-displaylabeloptions) · [`AxisValue`](#type-axisvalue).
+Related types: [`CartesianAxisLabelStyleOptions`](#type-cartesianaxislabelstyleoptions) · [`AxisLabelLayoutOptions`](#type-axislabellayoutoptions) · [`DisplayLabelOptions`](#type-displaylabeloptions) · [`AxisTickRounding`](#type-axistickrounding) · [`AxisValue`](#type-axisvalue).
 
 ### `AxisLabelStyleOptions` {#type-axislabelstyleoptions}
 
@@ -618,6 +610,7 @@ export interface AxisTickOptions<P extends string>
   scale?: string;
   position?: P;
   count?: number;
+  rounding?: AxisTickRounding;
   values?: readonly AxisValue[];
 }
 /** Cartesian label maps use typed category values or finite numeric/timestamp keys on continuous scales. Empty mapped labels are omitted without removing ticks. */
@@ -625,7 +618,18 @@ export interface AxisTickOptions<P extends string>
 
 </details>
 
-Related types: [`CartesianAxisTickStyleOptions`](#type-cartesianaxistickstyleoptions) · [`AxisValue`](#type-axisvalue).
+Related types: [`CartesianAxisTickStyleOptions`](#type-cartesianaxistickstyleoptions) · [`AxisTickRounding`](#type-axistickrounding) · [`AxisValue`](#type-axisvalue).
+
+### `AxisTickRounding` {#type-axistickrounding}
+
+<details markdown="1">
+<summary>Expand AxisTickRounding</summary>
+
+```typescript
+export type AxisTickRounding = "ceiling" | "nearest";
+```
+
+</details>
 
 ### `AxisTickStyleOptions` {#type-axistickstyleoptions}
 
@@ -654,6 +658,7 @@ export interface AxisTicksAndLabelsOptions<P extends string> {
   scale?: string;
   position?: P;
   count?: number;
+  rounding?: AxisTickRounding;
   values?: readonly AxisValue[];
   ticks?: CartesianAxisTickStyleOptions;
   labels?: CartesianAxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions;
@@ -662,7 +667,7 @@ export interface AxisTicksAndLabelsOptions<P extends string> {
 
 </details>
 
-Related types: [`AxisValue`](#type-axisvalue) · [`CartesianAxisTickStyleOptions`](#type-cartesianaxistickstyleoptions) · [`CartesianAxisLabelStyleOptions`](#type-cartesianaxislabelstyleoptions) · [`AxisLabelLayoutOptions`](#type-axislabellayoutoptions) · [`DisplayLabelOptions`](#type-displaylabeloptions).
+Related types: [`AxisTickRounding`](#type-axistickrounding) · [`AxisValue`](#type-axisvalue) · [`CartesianAxisTickStyleOptions`](#type-cartesianaxistickstyleoptions) · [`CartesianAxisLabelStyleOptions`](#type-cartesianaxislabelstyleoptions) · [`AxisLabelLayoutOptions`](#type-axislabellayoutoptions) · [`DisplayLabelOptions`](#type-displaylabeloptions).
 
 ### `AxisTitleOptions` {#type-axistitleoptions}
 
@@ -676,6 +681,8 @@ export interface AxisTitleOptions<P extends string> {
   /** Signed logical pixels: positive right for x, down for y, independent of scale reversal. */
   alongOffset?: number;
   align?: "left" | "center" | "right";
+  /** Defaults to error; allow permits only this title to intersect its own axis labels. */
+  overlap?: "error" | "allow";
   baseline?: "top" | "hanging" | "middle" | "alphabetic" | "ideographic" | "bottom";
   /** Hard breaks retain ordered lines with the chosen block baseline, spaced at 1.2 times fontSize. */
   text?: string;
@@ -718,6 +725,7 @@ type BandPositionChannel = FacadePositionChannel<
   NonPointTemporalPositionScaleOptions,
   NonPointBandPositionScaleOptions
 >;
+/** With binned quantitative X, aggregate Y per exact interval (and optional series). */
 ```
 
 </details>
@@ -1285,6 +1293,12 @@ export interface BoxPlotOptions {
   x?: BoxPlotPositionChannel;
   y?: BoxPlotPositionChannel;
   coordinate?: string;
+  color?: string | {
+    field: string;
+    fieldType?: "nominal" | "ordinal";
+    scale?: NonPointCategoricalColorScaleOptions;
+    palette?: Palette;
+  } | { value: string };
   whisker?: BoxPlotWhisker;
   width?: BoxPlotWidth;
   outliers?: boolean;
@@ -1310,7 +1324,7 @@ export interface BoxPlotOptions {
 
 </details>
 
-Related types: [`BoxPlotSummaryFields`](#type-boxplotsummaryfields) · [`BoxPlotPositionChannel`](#type-boxplotpositionchannel) · [`BoxPlotWhisker`](#type-boxplotwhisker) · [`BoxPlotWidth`](#type-boxplotwidth) · [`RectStyleDetails`](#type-rectstyledetails) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`PointShape`](#type-pointshape) · [`BoxPlotGuideOptions`](#type-boxplotguideoptions).
+Related types: [`BoxPlotSummaryFields`](#type-boxplotsummaryfields) · [`BoxPlotPositionChannel`](#type-boxplotpositionchannel) · [`NonPointCategoricalColorScaleOptions`](#type-nonpointcategoricalcolorscaleoptions) · [`Palette`](#type-palette) · [`BoxPlotWhisker`](#type-boxplotwhisker) · [`BoxPlotWidth`](#type-boxplotwidth) · [`RectStyleDetails`](#type-rectstyledetails) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`PointShape`](#type-pointshape) · [`BoxPlotGuideOptions`](#type-boxplotguideoptions).
 
 ### `BoxPlotPositionChannel` {#type-boxplotpositionchannel}
 
@@ -1467,6 +1481,8 @@ export interface CanvasOptions {
     color?: string;
     /** Positive finite width smaller than both plot dimensions. Defaults to 1. */
     lineWidth?: number;
+    /** Paint this border before ordinary marks. Defaults to false. */
+    underlay?: boolean;
   };
 }
 ```
@@ -1704,6 +1720,8 @@ export interface CategoricalEncodingOptions {
   fieldType?: "nominal" | "ordinal";
   scale?: CategoricalColorScaleOptions;
   palette?: Palette;
+  /** Aggregate bars default to overlay for their category field, otherwise group;
+   * existing groups and stored or explicit layouts take precedence. */
   layout?: ColorLayout;
 }
 ```
@@ -1939,10 +1957,13 @@ export type CategoryValue = string | number | boolean;
 
 ```typescript
 export type ColorEncodingOptions =
-  | CategoricalEncodingOptions
+  | { value: string; target?: string; field?: never; fieldType?: never;
+      scale?: never; palette?: never; layout?: never; aggregate?: never; temporalUnit?: never }
+  | (CategoricalEncodingOptions & { value?: never })
   | {
       field: string;
       target?: string;
+      value?: never;
       fieldType: "quantitative";
       aggregate?: AggregateOperation;
       scale?: ContinuousColorScaleOptions | DiscretizedColorScaleOptions;
@@ -1952,6 +1973,7 @@ export type ColorEncodingOptions =
   | {
       field: string;
       target?: string;
+      value?: never;
       fieldType: "temporal";
       temporalUnit?: TemporalInputUnit;
       aggregate?: never;
@@ -2006,6 +2028,8 @@ export type ColorLayout =
 
 ```typescript
 export interface CompleteAxisOptions<P extends string> {
+  /** Paint the complete Cartesian axis before ordinary marks. Defaults to false. */
+  underlay?: boolean;
   /** Omission retains the canonical x/y identity. */
   id?: string;
   /** Non-negative outward displacement of the complete axis frame in logical pixels. */
@@ -2262,6 +2286,7 @@ export type ContinuousColorInterpolation =
   | "hcl-long"
   | "cubehelix"
   | "cubehelix-long";
+/** A simple polygon around its unchanged input origin; defaults to equal-area normalization. */
 ```
 
 </details>
@@ -2366,7 +2391,7 @@ export type CreateAreaPlotOptions = {
   groupBy?: string | readonly [string, ...string[]];
   layout?: Exclude<ColorLayout, "group">; missing?: "error" | "break";
   color?: string | { field: string; fieldType?: "nominal" | "ordinal"; scale?: NonPointCategoricalColorScaleOptions; palette?: Palette };
-  area?: StrokeStyleDetails & { fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
+  area?: StrokeStyleDetails & { clip?: boolean; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
   guides?: false | (Omit<DensityPlotGuideOptions, "grid"> & { grid?: false | CartesianGridOptions });
 } & (
   | { valueChannel?: "y"; x: AreaPlotIndependentChannel; y: Exclude<AreaPlotMeasureChannel, { lower: unknown }>; baseline?: number }
@@ -2409,6 +2434,8 @@ Related types: [`CompleteAxisOptions`](#type-completeaxisoptions) · [`XAxisPosi
 
 ```typescript
 export type CreateBarPlotOptions = {
+  /** Forward the native mark missing-value policy. */
+  missing?: "error" | "skip";
   id?: string;
   data?: string;
   coordinate?: string;
@@ -2416,6 +2443,7 @@ export type CreateBarPlotOptions = {
   color?: BarColorChannel;
   width?: Omit<BarWidthOptions, "target" | "interval">;
   bar?: RectStyleDetails & {
+    clip?: boolean;
     fill?: FillPaint;
     opacity?: number;
     stroke?: FilledMarkStroke;
@@ -2447,6 +2475,7 @@ export type CreateBeeswarmPlotOptions = {
   size?: BasicSizeChannel;
   shape?: BasicShapeChannel;
   point?: StrokeStyleDetails & {
+    clip?: boolean;
     radius?: number;
     shape?: PointShape;
     fill?: string;
@@ -2527,7 +2556,7 @@ export interface CreateDensityPlotOptions {
     palette?: Palette;
     layout?: "overlay";
   };
-  area?: StrokeStyleDetails & { fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
+  area?: StrokeStyleDetails & { clip?: boolean; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
   guides?: false | DensityPlotGuideOptions;
 }
 ```
@@ -2581,7 +2610,7 @@ export interface CreateDumbbellPlotOptions extends EndpointPlotBaseOptions {
   end: EndpointValueChannel;
   startPoint?: CreateScatterPlotOptions["point"];
   endPoint?: CreateScatterPlotOptions["point"];
-  connector?: RuleStyleOptions;
+  connector?: RuleStyleOptions & { clip?: boolean };
   labels?: false | (EndpointLabelOptions & { endpoint?: "start" | "end" | "both" });
 }
 ```
@@ -2606,7 +2635,7 @@ export interface CreateECDFPlotOptions {
   missing?: "drop" | "error";
   as?: ECDFOutputFields;
   color?: string | LineCategoricalColorChannel;
-  line?: StrokeStyleDetails & { strokeWidth?: number; stroke?: string; opacity?: number };
+  line?: StrokeStyleDetails & { clip?: boolean; strokeWidth?: number; stroke?: string; opacity?: number };
   labels?: false | EndpointLabelOptions;
   guides?: false | CartesianPathGuideOptions;
 }
@@ -2679,6 +2708,7 @@ export type CreateHistogramOptions = BasicHistogramEncoding & {
   field: string;
   color?: HistogramCategoricalColorChannel;
   bar?: RectStyleDetails & {
+    clip?: boolean;
     fill?: FillPaint;
     opacity?: number;
     stroke?: FilledMarkStroke;
@@ -2715,7 +2745,7 @@ export interface CreateHorizonPlotOptions {
   missing?: HorizonMissingPolicy;
   overflow?: HorizonOverflowPolicy;
   palette?: HorizonPaletteOptions;
-  area?: StrokeStyleDetails & { opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
+  area?: StrokeStyleDetails & { clip?: boolean; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
   guides?: false | HorizonPlotGuideOptions;
 }
 ```
@@ -2758,10 +2788,12 @@ export interface CreateLinePlotOptions {
   coordinate?: string;
   x: LineXPositionChannel;
   y: LineYPositionChannel;
-  color?: LineCategoricalColorChannel;
+  color?: LineCategoricalColorChannel<CategoricalColorScaleOptions>;
   groupBy?: string | readonly [string, ...string[]];
   strokeDash?: BasicStrokeDashChannel;
   line?: StrokeStyleDetails & {
+    clip?: boolean;
+    missing?: "error" | "break";
     strokeWidth?: number;
     curve?: CurveInterpolation;
     tension?: number;
@@ -2785,7 +2817,7 @@ export interface CreateLinePlotOptions {
 
 </details>
 
-Related types: [`LineXPositionChannel`](#type-linexpositionchannel) · [`LineYPositionChannel`](#type-lineypositionchannel) · [`LineCategoricalColorChannel`](#type-linecategoricalcolorchannel) · [`BasicStrokeDashChannel`](#type-basicstrokedashchannel) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`CurveInterpolation`](#type-curveinterpolation) · [`CPathGuides`](#type-cpathguides) · [`CartesianGridOptions`](#type-cartesiangridoptions) · [`GridDirectionOptions`](#type-griddirectionoptions) · [`PathLegendOptions`](#type-pathlegendoptions) · [`LegendValueOrder`](#type-legendvalueorder).
+Related types: [`LineXPositionChannel`](#type-linexpositionchannel) · [`LineYPositionChannel`](#type-lineypositionchannel) · [`LineCategoricalColorChannel`](#type-linecategoricalcolorchannel) · [`CategoricalColorScaleOptions`](#type-categoricalcolorscaleoptions) · [`BasicStrokeDashChannel`](#type-basicstrokedashchannel) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`CurveInterpolation`](#type-curveinterpolation) · [`CPathGuides`](#type-cpathguides) · [`CartesianGridOptions`](#type-cartesiangridoptions) · [`GridDirectionOptions`](#type-griddirectionoptions) · [`PathLegendOptions`](#type-pathlegendoptions) · [`LegendValueOrder`](#type-legendvalueorder).
 
 ### `CreateLollipopPlotOptions` {#type-createlollipopplotoptions}
 
@@ -2797,7 +2829,7 @@ export interface CreateLollipopPlotOptions extends EndpointPlotBaseOptions {
   value: EndpointValueChannel;
   baseline?: number;
   point?: CreateScatterPlotOptions["point"];
-  stem?: RuleStyleOptions;
+  stem?: RuleStyleOptions & { clip?: boolean };
   labels?: false | EndpointLabelOptions;
 }
 ```
@@ -2856,7 +2888,7 @@ export interface CreateParallelCoordinatesOptions {
   key?: string;
   missing?: ParallelMissingPolicy;
   color?: LineCategoricalColorChannel;
-  strokeDash?: BasicStrokeDashChannel;
+  strokeDash?: NonCartesianStrokeDashChannel;
   line?: StrokeStyleDetails & {
     strokeWidth?: number;
     stroke?: string;
@@ -2870,7 +2902,7 @@ export interface CreateParallelCoordinatesOptions {
 
 </details>
 
-Related types: [`ParallelDimension`](#type-paralleldimension) · [`ParallelMissingPolicy`](#type-parallelmissingpolicy) · [`LineCategoricalColorChannel`](#type-linecategoricalcolorchannel) · [`BasicStrokeDashChannel`](#type-basicstrokedashchannel) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`ParallelGuideOptions`](#type-parallelguideoptions).
+Related types: [`ParallelDimension`](#type-paralleldimension) · [`ParallelMissingPolicy`](#type-parallelmissingpolicy) · [`LineCategoricalColorChannel`](#type-linecategoricalcolorchannel) · [`NonCartesianStrokeDashChannel`](#type-noncartesianstrokedashchannel) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`ParallelGuideOptions`](#type-parallelguideoptions).
 
 ### `CreatePiePlotOptions` {#type-createpieplotoptions}
 
@@ -2908,8 +2940,8 @@ export interface CreatePolarLinePlotOptions {
   radius: PolarRadiusChannel;
   color?: LineCategoricalColorChannel;
   groupBy?: string | readonly [string, ...string[]];
-  strokeDash?: BasicStrokeDashChannel;
-  line?: Omit<NonNullable<CreateLinePlotOptions["line"]>, "closed" | "curve" | "tension"> & {
+  strokeDash?: NonCartesianStrokeDashChannel;
+  line?: Omit<NonNullable<CreateLinePlotOptions["line"]>, "clip" | "missing" | "closed" | "curve" | "tension"> & {
     curve?: "linear";
     closed?: boolean;
   };
@@ -2919,7 +2951,7 @@ export interface CreatePolarLinePlotOptions {
 
 </details>
 
-Related types: [`PolarThetaChannel`](#type-polarthetachannel) · [`PolarRadiusChannel`](#type-polarradiuschannel) · [`LineCategoricalColorChannel`](#type-linecategoricalcolorchannel) · [`BasicStrokeDashChannel`](#type-basicstrokedashchannel) · [`CreateLinePlotOptions`](#type-createlineplotoptions) · [`PolarPathGuideOptions`](#type-polarpathguideoptions).
+Related types: [`PolarThetaChannel`](#type-polarthetachannel) · [`PolarRadiusChannel`](#type-polarradiuschannel) · [`LineCategoricalColorChannel`](#type-linecategoricalcolorchannel) · [`NonCartesianStrokeDashChannel`](#type-noncartesianstrokedashchannel) · [`CreateLinePlotOptions`](#type-createlineplotoptions) · [`PolarPathGuideOptions`](#type-polarpathguideoptions).
 
 ### `CreatePolarScatterPlotOptions` {#type-createpolarscatterplotoptions}
 
@@ -2936,7 +2968,7 @@ export interface CreatePolarScatterPlotOptions {
   color?: BasicColorChannel;
   size?: BasicSizeChannel;
   shape?: BasicShapeChannel;
-  point?: CreateScatterPlotOptions["point"];
+  point?: Omit<NonNullable<CreateScatterPlotOptions["point"]>, "clip">;
   guides?: false | PolarPointGuideOptions;
 }
 ```
@@ -2963,8 +2995,8 @@ export type CreateRadarPlotOptions = {
     ...RadarCategoryValue[]
   ];
   color?: LineCategoricalColorChannel;
-  strokeDash?: BasicStrokeDashChannel;
-  line?: Omit<NonNullable<CreateLinePlotOptions["line"]>, "closed" | "curve" | "tension"> & {
+  strokeDash?: NonCartesianStrokeDashChannel;
+  line?: Omit<NonNullable<CreateLinePlotOptions["line"]>, "clip" | "missing" | "closed" | "curve" | "tension"> & {
     curve?: "linear";
     closed?: true;
   };
@@ -2977,7 +3009,7 @@ export type CreateRadarPlotOptions = {
 
 </details>
 
-Related types: [`RadarCategoryValue`](#type-radarcategoryvalue) · [`LineCategoricalColorChannel`](#type-linecategoricalcolorchannel) · [`BasicStrokeDashChannel`](#type-basicstrokedashchannel) · [`CreateLinePlotOptions`](#type-createlineplotoptions) · [`RadarGuideOptions`](#type-radarguideoptions) · [`RadarCategoryChannel`](#type-radarcategorychannel) · [`PolarRadiusChannel`](#type-polarradiuschannel) · [`RadarWideOptions`](#type-radarwideoptions).
+Related types: [`RadarCategoryValue`](#type-radarcategoryvalue) · [`LineCategoricalColorChannel`](#type-linecategoricalcolorchannel) · [`NonCartesianStrokeDashChannel`](#type-noncartesianstrokedashchannel) · [`CreateLinePlotOptions`](#type-createlineplotoptions) · [`RadarGuideOptions`](#type-radarguideoptions) · [`RadarCategoryChannel`](#type-radarcategorychannel) · [`PolarRadiusChannel`](#type-polarradiuschannel) · [`RadarWideOptions`](#type-radarwideoptions).
 
 ### `CreateRadialAxisLabelsOptions` {#type-createradialaxislabelsoptions}
 
@@ -3063,14 +3095,14 @@ export interface CreateRaincloudPlotOptions {
   density?: false | RaincloudDensityOptions;
   summary?: false | RaincloudSummaryOptions;
   points?: false | RaincloudPointsOptions;
-  color?: LineCategoricalColorChannel;
+  color?: false | RaincloudColorChannel;
   guides?: false | CartesianCategoricalPointGuideOptions;
 }
 ```
 
 </details>
 
-Related types: [`RaincloudCategoryChannel`](#type-raincloudcategorychannel) · [`RaincloudValueChannel`](#type-raincloudvaluechannel) · [`RaincloudDensityOptions`](#type-rainclouddensityoptions) · [`RaincloudSummaryOptions`](#type-raincloudsummaryoptions) · [`RaincloudPointsOptions`](#type-raincloudpointsoptions) · [`LineCategoricalColorChannel`](#type-linecategoricalcolorchannel) · [`CartesianCategoricalPointGuideOptions`](#type-cartesiancategoricalpointguideoptions).
+Related types: [`RaincloudCategoryChannel`](#type-raincloudcategorychannel) · [`RaincloudValueChannel`](#type-raincloudvaluechannel) · [`RaincloudDensityOptions`](#type-rainclouddensityoptions) · [`RaincloudSummaryOptions`](#type-raincloudsummaryoptions) · [`RaincloudPointsOptions`](#type-raincloudpointsoptions) · [`RaincloudColorChannel`](#type-raincloudcolorchannel) · [`CartesianCategoricalPointGuideOptions`](#type-cartesiancategoricalpointguideoptions).
 
 ### `CreateReferenceBandOptions` {#type-createreferencebandoptions}
 
@@ -3079,11 +3111,13 @@ Related types: [`RaincloudCategoryChannel`](#type-raincloudcategorychannel) · [
 
 ```typescript
 export type CreateReferenceBandOptions =
-  | (Omit<RectMarkOptions, "data"> &
+  | (Omit<RectMarkOptions, "clip" | "data"> &
       ReferenceBinding<readonly [unknown, unknown], readonly [number, number]>)
-  | (DynamicReferenceBinding & Omit<RectMarkOptions, "id" | "data" | "source"> & {
+  | (DynamicReferenceBinding & Omit<RectMarkOptions, "clip" | "id" | "data" | "source"> & {
       readonly statistics: readonly [ReferenceStatistic, ReferenceStatistic];
     });
+
+/** Constant or quantitative stroke width on Line, Rule, or row-owned Rect marks. */
 ```
 
 </details>
@@ -3233,6 +3267,8 @@ Related types: [`ScaleOptions`](#type-scaleoptions).
 
 ```typescript
 export interface CreateScatterPlotOptions {
+  /** Forward the native mark missing-value policy. */
+  missing?: "error" | "skip";
   id?: string;
   data?: string;
   coordinate?: string;
@@ -3243,6 +3279,7 @@ export interface CreateScatterPlotOptions {
   size?: BasicSizeChannel;
   shape?: BasicShapeChannel;
   point?: StrokeStyleDetails & {
+    clip?: boolean;
     radius?: number;
     shape?: PointShape;
     fill?: string;
@@ -3258,6 +3295,24 @@ export interface CreateScatterPlotOptions {
 
 Related types: [`PointFacadePositionChannel`](#type-pointfacadepositionchannel) · [`BasicColorChannel`](#type-basiccolorchannel) · [`WithoutEncodingTarget`](#type-withoutencodingtarget) · [`StrokeEncodingOptions`](#type-strokeencodingoptions) · [`BasicSizeChannel`](#type-basicsizechannel) · [`BasicShapeChannel`](#type-basicshapechannel) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`PointShape`](#type-pointshape) · [`FilledMarkStroke`](#type-filledmarkstroke) · [`CartesianGuideOptions`](#type-cartesianguideoptions).
 
+### `CreateStatisticalReferenceOptions` {#type-createstatisticalreferenceoptions}
+
+<details markdown="1">
+<summary>Expand CreateStatisticalReferenceOptions</summary>
+
+```typescript
+export type CreateStatisticalReferenceOptions = DynamicReferenceBinding & (
+  | (RuleStyleOptions & { readonly statistic?: ReferenceStatistic; readonly statistics?: never })
+  | (Omit<RectMarkOptions, "id" | "data" | "source" | "missing"> & {
+      readonly statistics: readonly [ReferenceStatistic, ReferenceStatistic]; readonly statistic?: never;
+    })
+);
+```
+
+</details>
+
+Related types: [`DynamicReferenceBinding`](#type-dynamicreferencebinding) · [`RuleStyleOptions`](#type-rulestyleoptions) · [`ReferenceStatistic`](#type-referencestatistic) · [`RectMarkOptions`](#type-rectmarkoptions).
+
 ### `CreateStripPlotOptions` {#type-createstripplotoptions}
 
 <details markdown="1">
@@ -3272,6 +3327,7 @@ export type CreateStripPlotOptions = {
   size?: BasicSizeChannel;
   shape?: BasicShapeChannel;
   point?: StrokeStyleDetails & {
+    clip?: boolean;
     radius?: number;
     shape?: PointShape;
     fill?: string;
@@ -3412,6 +3468,7 @@ export interface DashScaleOptions {
   type?: "ordinal";
   domain?: "auto" | readonly unknown[];
   range?: "auto" | readonly (DashStyle | DashPattern)[];
+  unknown?: DashStyle | DashPattern;
 }
 ```
 
@@ -3683,6 +3740,21 @@ export type DatasetFilterTransform = {
 
 Related types: [`DatasetScalar`](#type-datasetscalar) · [`FilterComparison`](#type-filtercomparison) · [`FilterRange`](#type-filterrange).
 
+### `DatasetFlattenTransform` {#type-datasetflattentransform}
+
+<details markdown="1">
+<summary>Expand DatasetFlattenTransform</summary>
+
+```typescript
+export interface DatasetFlattenTransform {
+  readonly type: "flatten";
+  readonly fields: readonly string[];
+  readonly as: readonly string[];
+}
+```
+
+</details>
+
 ### `DatasetFoldTransform` {#type-datasetfoldtransform}
 
 <details markdown="1">
@@ -3842,6 +3914,26 @@ export type DatasetIntervalTransform = {
 </details>
 
 Related types: [`DatasetIntervalOutputFields`](#type-datasetintervaloutputfields) · [`MeanConfidenceIntervalMethod`](#type-meanconfidenceintervalmethod).
+
+### `DatasetLookupTransform` {#type-datasetlookuptransform}
+
+<details markdown="1">
+<summary>Expand DatasetLookupTransform</summary>
+
+```typescript
+export interface DatasetLookupTransform {
+  readonly type: "lookup";
+  readonly field: string;
+  readonly lookup: {
+    readonly data: string;
+    readonly key: string;
+    readonly fields: readonly string[];
+    readonly as: readonly string[];
+  };
+}
+```
+
+</details>
 
 ### `DatasetNormalizeBaselineTransform` {#type-datasetnormalizebaselinetransform}
 
@@ -4133,6 +4225,8 @@ export type DatasetTransform =
   | DatasetImputedTransform
   | DatasetNormalizedTransform
   | DatasetFilterTransform
+  | DatasetFlattenTransform
+  | DatasetLookupTransform
   | DatasetFoldTransform
   | DatasetRegressionTransform
   | DatasetRegressionStatisticsTransform
@@ -4150,7 +4244,7 @@ export type DatasetTransform =
 
 </details>
 
-Related types: [`DatasetBinTransform`](#type-datasetbintransform) · [`DatasetBin2DTransform`](#type-datasetbin2dtransform) · [`DatasetCompleteTransform`](#type-datasetcompletetransform) · [`DatasetComputedTransform`](#type-datasetcomputedtransform) · [`DatasetImputedTransform`](#type-datasetimputedtransform) · [`DatasetNormalizedTransform`](#type-datasetnormalizedtransform) · [`DatasetFilterTransform`](#type-datasetfiltertransform) · [`DatasetFoldTransform`](#type-datasetfoldtransform) · [`DatasetRegressionTransform`](#type-datasetregressiontransform) · [`DatasetRegressionStatisticsTransform`](#type-datasetregressionstatisticstransform) · [`DatasetSortTransform`](#type-datasetsorttransform) · [`DatasetDensityTransform`](#type-datasetdensitytransform) · [`DatasetECDFTransform`](#type-datasetecdftransform) · [`DatasetHorizonTransform`](#type-datasethorizontransform) · [`DatasetIntervalTransform`](#type-datasetintervaltransform) · [`DatasetSummaryTransform`](#type-datasetsummarytransform) · [`DatasetStackTransform`](#type-datasetstacktransform) · [`DatasetStatisticalReferenceTransform`](#type-datasetstatisticalreferencetransform) · [`DatasetTimeUnitTransform`](#type-datasettimeunittransform) · [`DatasetWindowTransform`](#type-datasetwindowtransform).
+Related types: [`DatasetBinTransform`](#type-datasetbintransform) · [`DatasetBin2DTransform`](#type-datasetbin2dtransform) · [`DatasetCompleteTransform`](#type-datasetcompletetransform) · [`DatasetComputedTransform`](#type-datasetcomputedtransform) · [`DatasetImputedTransform`](#type-datasetimputedtransform) · [`DatasetNormalizedTransform`](#type-datasetnormalizedtransform) · [`DatasetFilterTransform`](#type-datasetfiltertransform) · [`DatasetFlattenTransform`](#type-datasetflattentransform) · [`DatasetLookupTransform`](#type-datasetlookuptransform) · [`DatasetFoldTransform`](#type-datasetfoldtransform) · [`DatasetRegressionTransform`](#type-datasetregressiontransform) · [`DatasetRegressionStatisticsTransform`](#type-datasetregressionstatisticstransform) · [`DatasetSortTransform`](#type-datasetsorttransform) · [`DatasetDensityTransform`](#type-datasetdensitytransform) · [`DatasetECDFTransform`](#type-datasetecdftransform) · [`DatasetHorizonTransform`](#type-datasethorizontransform) · [`DatasetIntervalTransform`](#type-datasetintervaltransform) · [`DatasetSummaryTransform`](#type-datasetsummarytransform) · [`DatasetStackTransform`](#type-datasetstacktransform) · [`DatasetStatisticalReferenceTransform`](#type-datasetstatisticalreferencetransform) · [`DatasetTimeUnitTransform`](#type-datasettimeunittransform) · [`DatasetWindowTransform`](#type-datasetwindowtransform).
 
 ### `DatasetWindowOperation` {#type-datasetwindowoperation}
 
@@ -4482,6 +4576,7 @@ export type DiscretizedColorScaleOptions =
 /** Area quantitative color requires one finite value per existing series;
  * aggregate, temporal color and unknown fallback remain mark-specific restrictions.
  * Area authoring uses the Full facade; createAreaPlot.color stays categorical.
+ * Tick quantitative/temporal color paints its stroke and excludes a simultaneous stroke encoding.
  */
 ```
 
@@ -4573,8 +4668,11 @@ type DynamicReferenceBinding = {
   readonly id?: string;
   readonly source: string;
   readonly axis: "x" | "y";
+  /** Distribution/endpoint measurement axes and quantitative Horizon X use original bound observations, retaining multiplicity. Horizon folded Y is unsupported. */
   readonly population?: "boundData" | "visibleItems";
   readonly field?: string;
+  /** Compute a separate reference for each observed value of this field. */
+  readonly groupBy?: string;
   readonly x?: never;
   readonly y?: never;
   readonly space?: never;
@@ -4582,6 +4680,7 @@ type DynamicReferenceBinding = {
   readonly coordinate?: never;
   readonly temporalUnit?: never;
 };
+/** A statistical line (mean by default) or an exact two-statistic interval. */
 ```
 
 </details>
@@ -4622,6 +4721,25 @@ export interface ECDFOutputFields {
 
 </details>
 
+### `EditAxesOptions` {#type-editaxesoptions}
+
+<details markdown="1">
+<summary>Expand EditAxesOptions</summary>
+
+```typescript
+export interface EditAxesOptions {
+  x?: false | EditAxisOptions<XAxisPosition> | readonly [EditAxisOptions<XAxisPosition> & { target: string }, ...(EditAxisOptions<XAxisPosition> & { target: string })[]];
+  y?: false | EditAxisOptions<YAxisPosition> | readonly [EditAxisOptions<YAxisPosition> & { target: string }, ...(EditAxisOptions<YAxisPosition> & { target: string })[]];
+  theta?: false | EditThetaAxisOptions;
+  radius?: false | EditRadialAxisOptions;
+  parallel?: false | EditParallelAxisOptions | readonly [EditParallelAxisOptions, ...EditParallelAxisOptions[]];
+}
+```
+
+</details>
+
+Related types: [`EditAxisOptions`](#type-editaxisoptions) · [`XAxisPosition`](#type-xaxisposition) · [`YAxisPosition`](#type-yaxisposition) · [`EditThetaAxisOptions`](#type-editthetaaxisoptions) · [`EditRadialAxisOptions`](#type-editradialaxisoptions) · [`EditParallelAxisOptions`](#type-editparallelaxisoptions).
+
 ### `EditAxisOptions` {#type-editaxisoptions}
 
 <details markdown="1">
@@ -4629,6 +4747,8 @@ export interface ECDFOutputFields {
 
 ```typescript
 export interface EditAxisOptions<P extends string> {
+  /** Omission preserves placement; false restores the ordinary overlay. */
+  underlay?: boolean;
   target?: string;
   /** Omitted edits preserve the frame; zero restores the plot-edge frame. */
   offset?: number;
@@ -4764,12 +4884,14 @@ export interface EditCompositionLayoutOptions {
   padding?: number | CompositionPadding;
   /** Interpret gap between child canvases (default) or inner plot regions. */
   spacing?: "canvas" | "plot";
+  /** Share existing top margin with parent title and headers; requires plot spacing. Stacked restores the default. */
+  topLane?: FacetTopLaneMode;
 }
 ```
 
 </details>
 
-Related types: [`CompositionAlign`](#type-compositionalign) · [`CompositionPadding`](#type-compositionpadding).
+Related types: [`CompositionAlign`](#type-compositionalign) · [`CompositionPadding`](#type-compositionpadding) · [`FacetTopLaneMode`](#type-facettoplanemode).
 
 ### `EditComputedDataOptions` {#type-editcomputeddataoptions}
 
@@ -5029,16 +5151,22 @@ export interface EditFacetHeadersOptions {
   fontWeight?: string | number;
   color?: string;
   offset?: number;
+  /** Content follows concrete mark bounds with plot spacing; plot preserves existing placement. */
+  anchor?: "plot" | "content";
   role?: FacetHeaderRole;
   labelMap?: DisplayLabelMap | "auto";
   side?: FacetHeaderSide;
   align?: FacetHeaderAlign;
+  /** Numbers are radians; zero restores the existing unrotated header layout. */
+  rotation?: RotationInput;
+  /** Requires an explicit row or column role. False removes that role's field title. */
+  title?: FacetHeaderTitleOptions | false;
 }
 ```
 
 </details>
 
-Related types: [`FacetHeaderRole`](#type-facetheaderrole) · [`DisplayLabelMap`](#type-displaylabelmap) · [`FacetHeaderSide`](#type-facetheaderside) · [`FacetHeaderAlign`](#type-facetheaderalign).
+Related types: [`FacetHeaderRole`](#type-facetheaderrole) · [`DisplayLabelMap`](#type-displaylabelmap) · [`FacetHeaderSide`](#type-facetheaderside) · [`FacetHeaderAlign`](#type-facetheaderalign) · [`RotationInput`](#type-rotationinput) · [`FacetHeaderTitleOptions`](#type-facetheadertitleoptions).
 
 ### `EditFacetSourceOptions` {#type-editfacetsourceoptions}
 
@@ -5046,7 +5174,9 @@ Related types: [`FacetHeaderRole`](#type-facetheaderrole) · [`DisplayLabelMap`]
 <summary>Expand EditFacetSourceOptions</summary>
 
 ```typescript
-export interface EditFacetSourceOptions { program: ChartProgram; }
+export type EditFacetSourceOptions =
+  | { program: ChartProgram; action?: never }
+  | { program?: never; action: { method: string; options?: Readonly<Record<string, unknown>> } };
 ```
 
 </details>
@@ -5068,6 +5198,19 @@ export type EditFilteredDataOptions = FilterModePatch & {
 </details>
 
 Related types: [`FilterModePatch`](#type-filtermodepatch) · [`DerivedDataDependents`](#type-deriveddatadependents).
+
+### `EditFlattenDataOptions` {#type-editflattendataoptions}
+
+<details markdown="1">
+<summary>Expand EditFlattenDataOptions</summary>
+
+```typescript
+export type EditFlattenDataOptions = FocusedDerivedDataEdit<FlattenDataOptions>;
+```
+
+</details>
+
+Related types: [`FocusedDerivedDataEdit`](#type-focusedderiveddataedit) · [`FlattenDataOptions`](#type-flattendataoptions).
 
 ### `EditFoldDataOptions` {#type-editfolddataoptions}
 
@@ -5244,6 +5387,8 @@ export interface EditLegendBorderOptions {
   channel?: LegendChannel;
   border: boolean | LegendBorderOptions;
 }
+
+/** Omitted/false axes are preserved; component false values remove existing components. */
 ```
 
 </details>
@@ -5296,6 +5441,10 @@ export interface EditLegendLayoutOptions {
   titlePosition?: "top" | "left" | "bottom";
   /** Explicit spacing override; vertical creation defaults to 18 logical pixels. */
   itemGap?: number;
+  /** Non-negative occupied-row gap; auto restores the retained legacy pitch. */
+  rowPadding?: number | "auto";
+  /** Non-negative visible-title/body gap; auto restores the family default. */
+  titlePadding?: number | "auto";
 }
 ```
 
@@ -5310,8 +5459,12 @@ Related types: [`LegendChannel`](#type-legendchannel).
 
 ```typescript
 export interface EditLegendOptions
-  extends Omit<LegendOptions, "title" | "values" | "titleStyle" | "direction" | "position" | "clipHeight"> {
+  extends Omit<LegendOptions, "title" | "values" | "titleStyle" | "direction" | "position" | "clipHeight" | "rowPadding" | "titlePadding"> {
   clipHeight?: number | "auto";
+  /** auto removes the row policy and restores the retained itemGap behavior. */
+  rowPadding?: number | "auto";
+  /** auto removes the title/body spacing override. */
+  titlePadding?: number | "auto";
   /** Select one existing block; cannot accompany channels. */
   channel?: LegendChannel;
   /** inherit is allowed only with a singular channel selector. */
@@ -5369,6 +5522,19 @@ export interface EditLegendTitleOptions extends LegendTitleStyleEditOptions {
 </details>
 
 Related types: [`LegendTitleStyleEditOptions`](#type-legendtitlestyleeditoptions) · [`LegendChannel`](#type-legendchannel).
+
+### `EditLookupDataOptions` {#type-editlookupdataoptions}
+
+<details markdown="1">
+<summary>Expand EditLookupDataOptions</summary>
+
+```typescript
+export type EditLookupDataOptions = FocusedDerivedDataEdit<LookupDataOptions>;
+```
+
+</details>
+
+Related types: [`FocusedDerivedDataEdit`](#type-focusedderiveddataedit) · [`LookupDataOptions`](#type-lookupdataoptions).
 
 ### `EditMarkLabelPlacementOptions` {#type-editmarklabelplacementoptions}
 
@@ -5533,6 +5699,20 @@ export type EditRScaleOptions = FocusedScaleSelection & WithoutScaleId<RadiusSca
 
 Related types: [`FocusedScaleSelection`](#type-focusedscaleselection) · [`WithoutScaleId`](#type-withoutscaleid) · [`RadiusScaleOptions`](#type-radiusscaleoptions) · [`RadialMapping`](#type-radialmapping).
 
+### `EditRadarPlotOptions` {#type-editradarplotoptions}
+
+<details markdown="1">
+<summary>Expand EditRadarPlotOptions</summary>
+
+```typescript
+export interface EditRadarPlotOptions {
+  target?: string;
+  wide: { fields: readonly [string, string, ...string[]] };
+}
+```
+
+</details>
+
 ### `EditRadialAxisOptions` {#type-editradialaxisoptions}
 
 <details markdown="1">
@@ -5565,13 +5745,13 @@ export interface EditRaincloudPlotOptions {
   density?: false | RaincloudDensityOptions;
   summary?: false | RaincloudSummaryOptions;
   points?: false | RaincloudPointsOptions;
-  color?: false | LineCategoricalColorChannel;
+  color?: false | RaincloudColorChannel;
 }
 ```
 
 </details>
 
-Related types: [`RaincloudCategoryChannel`](#type-raincloudcategorychannel) · [`RaincloudValueChannel`](#type-raincloudvaluechannel) · [`RaincloudDensityOptions`](#type-rainclouddensityoptions) · [`RaincloudSummaryOptions`](#type-raincloudsummaryoptions) · [`RaincloudPointsOptions`](#type-raincloudpointsoptions) · [`LineCategoricalColorChannel`](#type-linecategoricalcolorchannel).
+Related types: [`RaincloudCategoryChannel`](#type-raincloudcategorychannel) · [`RaincloudValueChannel`](#type-raincloudvaluechannel) · [`RaincloudDensityOptions`](#type-rainclouddensityoptions) · [`RaincloudSummaryOptions`](#type-raincloudsummaryoptions) · [`RaincloudPointsOptions`](#type-raincloudpointsoptions) · [`RaincloudColorChannel`](#type-raincloudcolorchannel).
 
 ### `EditRectMarkOptions` {#type-editrectmarkoptions}
 
@@ -5660,7 +5840,7 @@ export interface EditScaleOptions {
   domain?: "auto" | readonly unknown[];
   emptyDomain?: "preserve" | "require-explicit";
   range?: ScaleRange;
-  nice?: boolean;
+  nice?: boolean | LinearNiceCountOptions;
   zero?: boolean;
   clamp?: boolean;
   reverse?: boolean;
@@ -5674,6 +5854,7 @@ export interface EditScaleOptions {
   palette?: Palette;
   interpolate?: ContinuousColorInterpolation;
   whitePoint?: "d65" | "d50" | "auto";
+  /** Finite Cubehelix lightness gamma; auto restores 1. */
   gamma?: number | "auto";
   midpoint?: number | "auto";
   unknown?: unknown;
@@ -5682,7 +5863,7 @@ export interface EditScaleOptions {
 
 </details>
 
-Related types: [`RadialMapping`](#type-radialmapping) · [`ScaleType`](#type-scaletype) · [`ScaleRange`](#type-scalerange) · [`Palette`](#type-palette) · [`ContinuousColorInterpolation`](#type-continuouscolorinterpolation).
+Related types: [`RadialMapping`](#type-radialmapping) · [`ScaleType`](#type-scaletype) · [`ScaleRange`](#type-scalerange) · [`LinearNiceCountOptions`](#type-linearnicecountoptions) · [`Palette`](#type-palette) · [`ContinuousColorInterpolation`](#type-continuouscolorinterpolation).
 
 ### `EditSemanticOptions` {#type-editsemanticoptions}
 
@@ -5760,12 +5941,13 @@ Related types: [`FocusedDerivedDataEdit`](#type-focusedderiveddataedit) · [`Sta
 <summary>Expand EditStrokeDashScaleOptions</summary>
 
 ```typescript
-export type EditStrokeDashScaleOptions = FocusedScaleSelection & WithoutScaleId<DashScaleOptions>;
+export type EditStrokeDashScaleOptions = FocusedScaleSelection &
+  Omit<WithoutScaleId<DashScaleOptions>, "unknown"> & { unknown?: DashStyle | DashPattern | undefined };
 ```
 
 </details>
 
-Related types: [`FocusedScaleSelection`](#type-focusedscaleselection) · [`WithoutScaleId`](#type-withoutscaleid) · [`DashScaleOptions`](#type-dashscaleoptions).
+Related types: [`FocusedScaleSelection`](#type-focusedscaleselection) · [`WithoutScaleId`](#type-withoutscaleid) · [`DashScaleOptions`](#type-dashscaleoptions) · [`DashStyle`](#type-dashstyle) · [`DashPattern`](#type-dashpattern).
 
 ### `EditStrokeScaleOptions` {#type-editstrokescaleoptions}
 
@@ -6015,12 +6197,14 @@ export interface EncodingChannelAssignments {
   strokeDash?: WithoutEncodingTarget<StrokeDashEncodingOptions>;
   angle?: WithoutEncodingTarget<AngleEncodingOptions>;
   text?: WithoutEncodingTarget<TextEncodingOptions>;
+  dx?: WithoutEncodingTarget<TextOffsetEncodingOptions>;
+  dy?: WithoutEncodingTarget<TextOffsetEncodingOptions>;
 }
 ```
 
 </details>
 
-Related types: [`WithoutEncodingTarget`](#type-withoutencodingtarget) · [`PositionEncodingOptions`](#type-positionencodingoptions) · [`DatumPositionEncodingOptions`](#type-datumpositionencodingoptions) · [`YPositionEncodingOptions`](#type-ypositionencodingoptions) · [`SecondaryPositionEncodingOptions`](#type-secondarypositionencodingoptions) · [`ThetaEncodingOptions`](#type-thetaencodingoptions) · [`RadialEncodingOptions`](#type-radialencodingoptions) · [`XOffsetEncodingOptions`](#type-xoffsetencodingoptions) · [`YOffsetEncodingOptions`](#type-yoffsetencodingoptions) · [`GroupEncodingOptions`](#type-groupencodingoptions) · [`PathOrderEncodingOptions`](#type-pathorderencodingoptions) · [`ColorEncodingOptions`](#type-colorencodingoptions) · [`StrokeEncodingOptions`](#type-strokeencodingoptions) · [`SizeEncodingOptions`](#type-sizeencodingoptions) · [`ShapeEncodingOptions`](#type-shapeencodingoptions) · [`OpacityEncodingOptions`](#type-opacityencodingoptions) · [`StrokeWidthEncodingOptions`](#type-strokewidthencodingoptions) · [`StrokeDashEncodingOptions`](#type-strokedashencodingoptions) · [`AngleEncodingOptions`](#type-angleencodingoptions) · [`TextEncodingOptions`](#type-textencodingoptions).
+Related types: [`WithoutEncodingTarget`](#type-withoutencodingtarget) · [`PositionEncodingOptions`](#type-positionencodingoptions) · [`DatumPositionEncodingOptions`](#type-datumpositionencodingoptions) · [`YPositionEncodingOptions`](#type-ypositionencodingoptions) · [`SecondaryPositionEncodingOptions`](#type-secondarypositionencodingoptions) · [`ThetaEncodingOptions`](#type-thetaencodingoptions) · [`RadialEncodingOptions`](#type-radialencodingoptions) · [`XOffsetEncodingOptions`](#type-xoffsetencodingoptions) · [`YOffsetEncodingOptions`](#type-yoffsetencodingoptions) · [`GroupEncodingOptions`](#type-groupencodingoptions) · [`PathOrderEncodingOptions`](#type-pathorderencodingoptions) · [`ColorEncodingOptions`](#type-colorencodingoptions) · [`StrokeEncodingOptions`](#type-strokeencodingoptions) · [`SizeEncodingOptions`](#type-sizeencodingoptions) · [`ShapeEncodingOptions`](#type-shapeencodingoptions) · [`OpacityEncodingOptions`](#type-opacityencodingoptions) · [`StrokeWidthEncodingOptions`](#type-strokewidthencodingoptions) · [`StrokeDashEncodingOptions`](#type-strokedashencodingoptions) · [`AngleEncodingOptions`](#type-angleencodingoptions) · [`TextEncodingOptions`](#type-textencodingoptions) · [`TextOffsetEncodingOptions`](#type-textoffsetencodingoptions).
 
 ### `EndpointCategoryChannel` {#type-endpointcategorychannel}
 
@@ -6401,12 +6585,14 @@ export interface FacetGridOptions {
   headers?: FacetHeadersOptions;
   /** Interpret gap between child canvases (default) or inner plot regions. */
   spacing?: "canvas" | "plot";
+  /** Share the existing top margin rather than adding title/header reservations. Requires plot spacing. */
+  topLane?: FacetTopLaneMode;
 }
 ```
 
 </details>
 
-Related types: [`FacetGridRole`](#type-facetgridrole) · [`CompositionAlign`](#type-compositionalign) · [`CompositionPadding`](#type-compositionpadding) · [`FacetScaleResolutions`](#type-facetscaleresolutions) · [`FacetGuideOptions`](#type-facetguideoptions) · [`FacetHeadersOptions`](#type-facetheadersoptions).
+Related types: [`FacetGridRole`](#type-facetgridrole) · [`CompositionAlign`](#type-compositionalign) · [`CompositionPadding`](#type-compositionpadding) · [`FacetScaleResolutions`](#type-facetscaleresolutions) · [`FacetGuideOptions`](#type-facetguideoptions) · [`FacetHeadersOptions`](#type-facetheadersoptions) · [`FacetTopLaneMode`](#type-facettoplanemode).
 
 ### `FacetGridRole` {#type-facetgridrole}
 
@@ -6473,13 +6659,37 @@ export type FacetHeaderSide = "top" | "bottom" | "left" | "right";
 
 </details>
 
+### `FacetHeaderTitleOptions` {#type-facetheadertitleoptions}
+
+<details markdown="1">
+<summary>Expand FacetHeaderTitleOptions</summary>
+
+```typescript
+export interface FacetHeaderTitleOptions {
+  /** Required when introducing a title; edits preserve the existing text. One line. */
+  text?: string;
+  fontSize?: number;
+  fontFamily?: string;
+  fontWeight?: string | number;
+  color?: string;
+  offset?: number;
+  align?: FacetHeaderAlign;
+  rotation?: RotationInput;
+  alongOffset?: number;
+}
+```
+
+</details>
+
+Related types: [`FacetHeaderAlign`](#type-facetheaderalign) · [`RotationInput`](#type-rotationinput).
+
 ### `FacetHeadersOptions` {#type-facetheadersoptions}
 
 <details markdown="1">
 <summary>Expand FacetHeadersOptions</summary>
 
 ```typescript
-export type FacetHeadersOptions = Omit<EditFacetHeadersOptions, "role" | "side"> & {
+export type FacetHeadersOptions = Omit<EditFacetHeadersOptions, "role" | "side" | "title"> & {
   row?: Omit<EditFacetHeadersOptions, "role">;
   column?: Omit<EditFacetHeadersOptions, "role">;
 };
@@ -6498,6 +6708,7 @@ Related types: [`EditFacetHeadersOptions`](#type-editfacetheadersoptions).
 export interface FacetOptions {
   id?: string;
   field: string;
+  /** Common row-preserving ancestor, or an explicit materialized fold ancestor of every layer. */
   data?: string;
   values?: readonly DatasetScalar[];
   columns?: number;
@@ -6509,12 +6720,14 @@ export interface FacetOptions {
   headers?: FacetHeadersOptions;
   /** Interpret gap between child canvases (default) or inner plot regions. */
   spacing?: "canvas" | "plot";
+  /** Share the existing top margin rather than adding title/header reservations. Requires plot spacing. */
+  topLane?: FacetTopLaneMode;
 }
 ```
 
 </details>
 
-Related types: [`DatasetScalar`](#type-datasetscalar) · [`CompositionAlign`](#type-compositionalign) · [`CompositionPadding`](#type-compositionpadding) · [`FacetScaleResolutions`](#type-facetscaleresolutions) · [`FacetGuideOptions`](#type-facetguideoptions) · [`FacetHeadersOptions`](#type-facetheadersoptions).
+Related types: [`DatasetScalar`](#type-datasetscalar) · [`CompositionAlign`](#type-compositionalign) · [`CompositionPadding`](#type-compositionpadding) · [`FacetScaleResolutions`](#type-facetscaleresolutions) · [`FacetGuideOptions`](#type-facetguideoptions) · [`FacetHeadersOptions`](#type-facetheadersoptions) · [`FacetTopLaneMode`](#type-facettoplanemode).
 
 ### `FacetScaleResolution` {#type-facetscaleresolution}
 
@@ -6553,6 +6766,17 @@ export interface FacetScaleResolutions {
 </details>
 
 Related types: [`FacetScaleResolution`](#type-facetscaleresolution).
+
+### `FacetTopLaneMode` {#type-facettoplanemode}
+
+<details markdown="1">
+<summary>Expand FacetTopLaneMode</summary>
+
+```typescript
+export type FacetTopLaneMode = "stacked" | "shared";
+```
+
+</details>
 
 ### `FieldType` {#type-fieldtype}
 
@@ -6793,6 +7017,22 @@ export interface FitCanvasOptions {
 
 </details>
 
+### `FlattenDataOptions` {#type-flattendataoptions}
+
+<details markdown="1">
+<summary>Expand FlattenDataOptions</summary>
+
+```typescript
+export interface FlattenDataOptions {
+  id: string;
+  source?: string;
+  fields: readonly string[];
+  as?: readonly string[];
+}
+```
+
+</details>
+
 ### `FocusedDerivedDataEdit` {#type-focusedderiveddataedit}
 
 <details markdown="1">
@@ -6977,6 +7217,7 @@ export interface GradientPlotOptions {
   x?: GradientPlotPositionChannel;
   y?: GradientPlotPositionChannel;
   coordinate?: string;
+  color?: BasicColorChannel | { value: string };
   density?: GradientPlotDensityOptions;
   width?: { band?: number };
   gradient?: GradientPlotAppearanceOptions;
@@ -6987,7 +7228,7 @@ export interface GradientPlotOptions {
 
 </details>
 
-Related types: [`GradientPlotPositionChannel`](#type-gradientplotpositionchannel) · [`GradientPlotDensityOptions`](#type-gradientplotdensityoptions) · [`GradientPlotAppearanceOptions`](#type-gradientplotappearanceoptions) · [`GradientPlotCenterOptions`](#type-gradientplotcenteroptions) · [`GradientPlotGuideOptions`](#type-gradientplotguideoptions).
+Related types: [`GradientPlotPositionChannel`](#type-gradientplotpositionchannel) · [`BasicColorChannel`](#type-basiccolorchannel) · [`GradientPlotDensityOptions`](#type-gradientplotdensityoptions) · [`GradientPlotAppearanceOptions`](#type-gradientplotappearanceoptions) · [`GradientPlotCenterOptions`](#type-gradientplotcenteroptions) · [`GradientPlotGuideOptions`](#type-gradientplotguideoptions).
 
 ### `GradientPlotPositionChannel` {#type-gradientplotpositionchannel}
 
@@ -7073,6 +7314,7 @@ export interface HeatmapBaseOptions {
   data?: string;
   coordinate?: string;
   rect?: RectStyleDetails & {
+    clip?: boolean;
     opacity?: number;
     stroke?: string | false;
     strokeWidth?: number;
@@ -7587,7 +7829,7 @@ export type JitterMaxOffset =
 ```typescript
 export interface JitterPointsOptions {
   target?: string;
-  channel: "x" | "y";
+  channel: "x" | "y" | "both";
   maxOffset: JitterMaxOffset;
   seed?: string | number;
   key?: string;
@@ -7762,7 +8004,7 @@ export interface LegendOptions {
   /** false hides the title while retaining its inferred field text. */
   /** LF, CRLF and CR preserve explicit title lines, including blank lines. */
   title?: string | false;
-  /** Exact ascending samples for continuous size, opacity, stroke-width, or color with representation symbols. Cannot be combined with count. */
+  /** Exact ascending samples for continuous size, opacity, stroke-width, color symbols, or color/stroke gradient ticks. Cannot be combined with count. */
   values?: readonly number[];
   count?: number;
   /** Body-only opacity defaults to 1; edits preserve omitted fields. */
@@ -7773,6 +8015,10 @@ export interface LegendOptions {
   titleStyle?: LegendTitleStyleOptions;
   /** Vertical items default to 18 logical pixels; the pitch grows to fit samples and labels. */
   itemGap?: number;
+  /** Non-negative gap between occupied item rows; overrides vertical itemGap pitch. Item legends in edge layout only. */
+  rowPadding?: number;
+  /** Non-negative gap between visible title and body bounds; legacy-bottom is excluded. */
+  titlePadding?: number;
   border?: boolean | LegendBorderOptions;
 }
 ```
@@ -7920,12 +8166,12 @@ Related types: [`CategoryValue`](#type-categoryvalue).
 <summary>Expand LineCategoricalColorChannel</summary>
 
 ```typescript
-type LineCategoricalColorChannel =
+type LineCategoricalColorChannel<Scale = NonPointCategoricalColorScaleOptions> =
   | string
   | {
       field: string;
       fieldType?: "nominal" | "ordinal";
-      scale?: NonPointCategoricalColorScaleOptions;
+      scale?: Scale;
       palette?: Palette;
     };
 ```
@@ -8036,6 +8282,35 @@ export interface LinearGradientPoint {
 export interface LinearGradientStop {
   readonly offset: number;
   readonly color: string;
+}
+```
+
+</details>
+
+### `LinearNiceCountOptions` {#type-linearnicecountoptions}
+
+<details markdown="1">
+<summary>Expand LinearNiceCountOptions</summary>
+
+```typescript
+export interface LinearNiceCountOptions {
+  readonly count: number;
+}
+```
+
+</details>
+
+### `LookupDataOptions` {#type-lookupdataoptions}
+
+<details markdown="1">
+<summary>Expand LookupDataOptions</summary>
+
+```typescript
+export interface LookupDataOptions {
+  id: string;
+  source?: string;
+  field: string;
+  lookup: { data: string; key: string; fields: readonly string[]; as?: readonly string[] };
 }
 ```
 
@@ -8216,6 +8491,21 @@ export type NamedCompleteAxis<P extends string> = CompleteAxisOptions<P> & { id:
 
 Related types: [`CompleteAxisOptions`](#type-completeaxisoptions).
 
+### `NonCartesianStrokeDashChannel` {#type-noncartesianstrokedashchannel}
+
+<details markdown="1">
+<summary>Expand NonCartesianStrokeDashChannel</summary>
+
+```typescript
+type NonCartesianStrokeDashChannel = BasicStrokeDashChannel extends infer T
+  ? T extends { field: string } ? Omit<T, "scale"> & { scale?: Omit<DashScaleOptions, "unknown"> } : T
+  : never;
+```
+
+</details>
+
+Related types: [`BasicStrokeDashChannel`](#type-basicstrokedashchannel) · [`DashScaleOptions`](#type-dashscaleoptions).
+
 ### `NonPointBandPositionScaleOptions` {#type-nonpointbandpositionscaleoptions}
 
 <details markdown="1">
@@ -8279,11 +8569,8 @@ export type NonPointContinuousColorScaleOptions = ScaleFields<
   base?: number;
   constant?: number;
   domain?: "auto" | readonly [unknown, unknown];
-  range?: "auto" | readonly [string, string, ...string[]];
-  palette?: PaletteName | {
-    name: PaletteName;
-    extent?: readonly [number, number];
-  };
+  range?: "auto" | readonly [string, string, ...string[]] | { readonly palette: Palette };
+  palette?: Palette;
 } & (
   | { type: "pow"; exponent?: number }
   | { type?: "sequential" | "log" | "sqrt" | "symlog"; exponent?: never }
@@ -8292,7 +8579,7 @@ export type NonPointContinuousColorScaleOptions = ScaleFields<
 
 </details>
 
-Related types: [`ScaleFields`](#type-scalefields) · [`PaletteName`](#type-palettename).
+Related types: [`ScaleFields`](#type-scalefields) · [`Palette`](#type-palette).
 
 ### `NonPointDiscretizedColorScaleOptions` {#type-nonpointdiscretizedcolorscaleoptions}
 
@@ -8354,18 +8641,20 @@ Related types: [`ScaleFields`](#type-scalefields) · [`PaletteName`](#type-palet
 
 ```typescript
 export type NonPointQuantitativePositionScaleOptions = ScaleFields<
-  "id" | "nice" | "zero" | "clamp" | "reverse" |
+  "id" | "zero" | "clamp" | "reverse" |
   "base" | "exponent" | "constant"
 > & {
-  type?: QuantitativePositionScaleType;
   domain?: "auto" | readonly [number, number];
   range?: "auto" | readonly [number, number];
-};
+} & (
+  | { type?: "linear"; nice?: boolean | LinearNiceCountOptions }
+  | { type: Exclude<QuantitativePositionScaleType, "linear">; nice?: boolean }
+);
 ```
 
 </details>
 
-Related types: [`ScaleFields`](#type-scalefields) · [`QuantitativePositionScaleType`](#type-quantitativepositionscaletype).
+Related types: [`ScaleFields`](#type-scalefields) · [`LinearNiceCountOptions`](#type-linearnicecountoptions) · [`QuantitativePositionScaleType`](#type-quantitativepositionscaletype).
 
 ### `NonPointQuantizeColorScaleOptions` {#type-nonpointquantizecolorscaleoptions}
 
@@ -8394,9 +8683,10 @@ Related types: [`ScaleFields`](#type-scalefields) · [`PaletteName`](#type-palet
 
 ```typescript
 export type NonPointTemporalPositionScaleOptions = ScaleFields<
-  "id" | "nice" | "clamp" | "reverse"
+  "id" | "clamp" | "reverse"
 > & {
   type?: "time";
+  nice?: boolean;
   domain?: "auto" | readonly [number, number];
   range?: "auto" | readonly [number, number];
 };
@@ -8432,13 +8722,16 @@ Related types: [`ScaleFields`](#type-scalefields) · [`PaletteName`](#type-palet
 ```typescript
 export type NonPointZeroSupportingPositionScaleOptions = Omit<
   NonPointQuantitativePositionScaleOptions,
-  "base" | "type"
-> & { type?: ZeroSupportingPositionScaleType };
+  "base" | "type" | "nice"
+> & (
+  | { type?: "linear"; nice?: boolean | LinearNiceCountOptions }
+  | { type: Exclude<ZeroSupportingPositionScaleType, "linear">; nice?: boolean }
+);
 ```
 
 </details>
 
-Related types: [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquantitativepositionscaleoptions) · [`ZeroSupportingPositionScaleType`](#type-zerosupportingpositionscaletype).
+Related types: [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquantitativepositionscaleoptions) · [`LinearNiceCountOptions`](#type-linearnicecountoptions) · [`ZeroSupportingPositionScaleType`](#type-zerosupportingpositionscaletype).
 
 ### `NormalizeBaseline` {#type-normalizebaseline}
 
@@ -8536,7 +8829,10 @@ Related types: [`NormalizedDataBaseOptions`](#type-normalizeddatabaseoptions) ·
 <summary>Expand NumericFormatString</summary>
 
 ```typescript
-export type NumericFormatString = `.${ValueFormatPrecision}${"f" | "%" | "e"}`;
+export type NumericFormatString =
+  | `.${ValueFormatPrecision}${"f" | "%" | "e"}`
+  | ","
+  | `,.${ValueFormatPrecision}f`;
 ```
 
 </details>
@@ -8627,13 +8923,16 @@ Related types: [`OpacityScaleOptions`](#type-opacityscaleoptions).
 
 ```typescript
 export type OpacityScaleOptions = ScaleFields<
-  "id" | "nice" | "zero" | "clamp" | "reverse"
+  "id" | "zero" | "clamp" | "reverse"
 > & {
+  nice?: boolean;
   type?: "linear";
   domain?: "auto" | readonly [number, number];
   range?: "auto" | readonly [number, number];
   unknown?: number;
 };
+
+/** Constant or quantitative opacity on Point, Rule, Line, Bar, or row-owned Rect marks. */
 ```
 
 </details>
@@ -9085,6 +9384,20 @@ export type PointPackingMaxOffset =
 
 </details>
 
+### `PointPolygonShape` {#type-pointpolygonshape}
+
+<details markdown="1">
+<summary>Expand PointPolygonShape</summary>
+
+```typescript
+export type PointPolygonShape = {
+  polygon: readonly { x: number; y: number }[];
+  normalization?: "area" | "radius";
+};
+```
+
+</details>
+
 ### `PointPositionScaleOptions` {#type-pointpositionscaleoptions}
 
 <details markdown="1">
@@ -9119,10 +9432,13 @@ export type PointShape =
   | "hexagon"
   | "wye"
   | "wedge"
-  | "arrow";
+  | "arrow"
+  | PointPolygonShape;
 ```
 
 </details>
+
+Related types: [`PointPolygonShape`](#type-pointpolygonshape).
 
 ### `PolarAxisTickSelection` {#type-polaraxistickselection}
 
@@ -9569,6 +9885,27 @@ export type QuantitativePositionScaleType =
 
 </details>
 
+### `QuantitativeRangePositionEncodingOptions` {#type-quantitativerangepositionencodingoptions}
+
+<details markdown="1">
+<summary>Expand QuantitativeRangePositionEncodingOptions</summary>
+
+```typescript
+type QuantitativeRangePositionEncodingOptions = {
+  lower: string | { datum: number };
+  upper: string | { datum: number };
+  target?: string;
+  coordinate?: string;
+  fieldType?: "quantitative";
+  temporalUnit?: never;
+  scale?: NonPointQuantitativePositionScaleOptions;
+};
+```
+
+</details>
+
+Related types: [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquantitativepositionscaleoptions).
+
 ### `QuantizeColorScaleOptions` {#type-quantizecolorscaleoptions}
 
 <details markdown="1">
@@ -9689,6 +10026,8 @@ Related types: [`RadiusScaleOptions`](#type-radiusscaleoptions) · [`RadialMappi
 
 ```typescript
 export type RadialMapping = "area" | "radius-length";
+
+/** Automatic linear position-domain rounding density, not a guide tick count. */
 ```
 
 </details>
@@ -9768,6 +10107,19 @@ export type RaincloudCategoryChannel = string | {
 </details>
 
 Related types: [`NonPointBandPositionScaleOptions`](#type-nonpointbandpositionscaleoptions).
+
+### `RaincloudColorChannel` {#type-raincloudcolorchannel}
+
+<details markdown="1">
+<summary>Expand RaincloudColorChannel</summary>
+
+```typescript
+export type RaincloudColorChannel = LineCategoricalColorChannel | { value: string };
+```
+
+</details>
+
+Related types: [`LineCategoricalColorChannel`](#type-linecategoricalcolorchannel).
 
 ### `RaincloudDensityOptions` {#type-rainclouddensityoptions}
 
@@ -9884,20 +10236,20 @@ Related types: [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquanti
 <summary>Expand RangePositionEncodingOptions</summary>
 
 ```typescript
-type RangePositionEncodingOptions = AreaRangePositionEncodingOptions | {
+type RangePositionEncodingOptions = QuantitativeRangePositionEncodingOptions | {
   lower: string;
   upper: string;
   target?: string;
   coordinate?: string;
-} & (
-  | { fieldType?: "quantitative"; temporalUnit?: never; scale?: NonPointQuantitativePositionScaleOptions }
-  | { fieldType: "temporal"; temporalUnit?: TemporalInputUnit; scale?: NonPointTemporalPositionScaleOptions }
-);
+  fieldType: "temporal";
+  temporalUnit?: TemporalInputUnit;
+  scale?: NonPointTemporalPositionScaleOptions;
+};
 ```
 
 </details>
 
-Related types: [`AreaRangePositionEncodingOptions`](#type-arearangepositionencodingoptions) · [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquantitativepositionscaleoptions) · [`TemporalInputUnit`](#type-temporalinputunit) · [`NonPointTemporalPositionScaleOptions`](#type-nonpointtemporalpositionscaleoptions).
+Related types: [`QuantitativeRangePositionEncodingOptions`](#type-quantitativerangepositionencodingoptions) · [`TemporalInputUnit`](#type-temporalinputunit) · [`NonPointTemporalPositionScaleOptions`](#type-nonpointtemporalpositionscaleoptions).
 
 ### `RectColorChannel` {#type-rectcolorchannel}
 
@@ -9935,6 +10287,7 @@ Related types: [`LineCategoricalColorChannel`](#type-linecategoricalcolorchannel
 
 ```typescript
 export interface RectMarkOptions extends RectStyleDetails {
+  clip?: boolean;
   id?: string;
   data?: string;
   missing?: "error" | "skip";
@@ -10488,12 +10841,14 @@ export interface RepeatChartsOptions {
   headers?: FacetHeadersOptions;
   /** Interpret gap between child canvases (default) or inner plot regions. */
   spacing?: "canvas" | "plot";
+  /** Share the existing top margin rather than adding title/header reservations. Requires plot spacing. */
+  topLane?: FacetTopLaneMode;
 }
 ```
 
 </details>
 
-Related types: [`CompositionAlign`](#type-compositionalign) · [`CompositionPadding`](#type-compositionpadding) · [`FacetScaleResolutions`](#type-facetscaleresolutions) · [`FacetGuideOptions`](#type-facetguideoptions) · [`FacetHeadersOptions`](#type-facetheadersoptions).
+Related types: [`CompositionAlign`](#type-compositionalign) · [`CompositionPadding`](#type-compositionpadding) · [`FacetScaleResolutions`](#type-facetscaleresolutions) · [`FacetGuideOptions`](#type-facetguideoptions) · [`FacetHeadersOptions`](#type-facetheadersoptions) · [`FacetTopLaneMode`](#type-facettoplanemode).
 
 ### `ReplaceCompositionChildOptions` {#type-replacecompositionchildoptions}
 
@@ -10641,6 +10996,7 @@ Related types: [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquanti
 
 ```typescript
 export interface RugTickOptions extends StrokeStyleDetails {
+  clip?: boolean;
   length?: number;
   stroke?: string;
   strokeWidth?: number;
@@ -10740,7 +11096,7 @@ export interface ScaleOptions {
   domain?: "auto" | readonly unknown[];
   emptyDomain?: "preserve" | "require-explicit";
   range?: ScaleRange;
-  nice?: boolean;
+  nice?: boolean | LinearNiceCountOptions;
   zero?: boolean;
   clamp?: boolean;
   reverse?: boolean;
@@ -10754,6 +11110,7 @@ export interface ScaleOptions {
   palette?: Palette;
   interpolate?: ContinuousColorInterpolation;
   whitePoint?: "d65" | "d50";
+  /** Finite Cubehelix lightness gamma, including zero and negative values. Defaults to 1. */
   gamma?: number;
   midpoint?: number | "auto";
   unknown?: unknown;
@@ -10762,7 +11119,7 @@ export interface ScaleOptions {
 
 </details>
 
-Related types: [`RadialMapping`](#type-radialmapping) · [`ScaleType`](#type-scaletype) · [`ScaleRange`](#type-scalerange) · [`Palette`](#type-palette) · [`ContinuousColorInterpolation`](#type-continuouscolorinterpolation).
+Related types: [`RadialMapping`](#type-radialmapping) · [`ScaleType`](#type-scaletype) · [`ScaleRange`](#type-scalerange) · [`LinearNiceCountOptions`](#type-linearnicecountoptions) · [`Palette`](#type-palette) · [`ContinuousColorInterpolation`](#type-continuouscolorinterpolation).
 
 ### `ScaleRange` {#type-scalerange}
 
@@ -10922,13 +11279,16 @@ Related types: [`ScaleFields`](#type-scalefields) · [`PointShape`](#type-points
 <summary>Expand SizeEncodingOptions</summary>
 
 ```typescript
-export type SizeEncodingOptions = {
+export type SizeEncodingOptions =
+  | { value: number; target?: string; field?: never; fieldType?: never; scale?: never }
+  | ({
+  value?: never;
   field: string;
   target?: string;
 } & (
   | { fieldType?: "quantitative"; scale?: SizeScaleOptions }
   | { fieldType: "nominal" | "ordinal"; scale?: CategoricalSizeScaleOptions }
-);
+));
 ```
 
 </details>
@@ -11257,7 +11617,7 @@ export type StrokeDashEncodingOptions =
       field: string;
       value?: never;
       target?: string;
-      fieldType?: "nominal";
+      fieldType?: "nominal" | "ordinal";
       scale?: DashScaleOptions;
     }
   | {
@@ -11356,6 +11716,8 @@ export type StrokeWidthEncodingOptions =
       fieldType?: "quantitative";
       scale?: StrokeWidthScaleOptions;
     };
+
+/** Constant value and scale ranges are graphical areas in square pixels. */
 ```
 
 </details>
@@ -11368,7 +11730,9 @@ Related types: [`StrokeWidthScaleOptions`](#type-strokewidthscaleoptions).
 <summary>Expand StrokeWidthScaleOptions</summary>
 
 ```typescript
-export type StrokeWidthScaleOptions = NonPointQuantitativePositionScaleOptions;
+export type StrokeWidthScaleOptions = NonPointQuantitativePositionScaleOptions extends infer T
+  ? T extends unknown ? Omit<T, "nice"> & { nice?: boolean } : never
+  : never;
 ```
 
 </details>
@@ -11497,6 +11861,7 @@ Related types: [`ValueFormat`](#type-valueformat).
 
 ```typescript
 export interface TextMarkOptions {
+  clip?: boolean;
   /** Logical-pixel baseline spacing; defaults to 1.2 times fontSize. */
   lineHeight?: number;
   /** Anchor the first line or center the complete multiline block. */
@@ -11573,6 +11938,19 @@ export interface TextMetricsProfile {
 </details>
 
 Related types: [`TextMeasurement`](#type-textmeasurement).
+
+### `TextOffsetEncodingOptions` {#type-textoffsetencodingoptions}
+
+<details markdown="1">
+<summary>Expand TextOffsetEncodingOptions</summary>
+
+```typescript
+export type TextOffsetEncodingOptions =
+  | { target?: string; value: number; field?: never }
+  | { target?: string; field: string; value?: never };
+```
+
+</details>
 
 ### `TextPlotPositionChannel` {#type-textplotpositionchannel}
 
@@ -11754,7 +12132,7 @@ Related types: [`NonPointThresholdColorScaleOptions`](#type-nonpointthresholdcol
 <summary>Expand TimeAxisDirective</summary>
 
 ```typescript
-type TimeAxisDirective = "Y" | "m" | "d" | "b" | "H" | "M" | "S" | "L";
+type TimeAxisDirective = "Y" | "m" | "d" | "b" | "a" | "H" | "M" | "S" | "L";
 ```
 
 </details>

@@ -1,0 +1,19 @@
+{
+  "results": [
+    {
+      "route": "default-strict",
+      "status": "rejected",
+      "error": "Value \"other\" is outside the ordinal domain."
+    },
+    {
+      "route": "explicit-fallback",
+      "status": "rejected",
+      "error": "StrokeDash scale unknown is not supported for grouped line or rule paths."
+    },
+    {
+      "route": "generic-scale-edit",
+      "status": "rejected",
+      "error": "Categorical unknown requires a row-owned point or a Cartesian line with explicit ordinal domain."
+    }
+  ]
+}

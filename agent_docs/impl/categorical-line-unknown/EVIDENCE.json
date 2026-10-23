@@ -1,0 +1,340 @@
+{
+  "status": "library-implementation-verified-local-candidate-not-yet-activated",
+  "date": "2026-10-20T08:38:39.574Z",
+  "issue": 236,
+  "reviewer": "codex",
+  "baseDesignCommit": "e9ee03d3",
+  "normal": {
+    "tests": 4816,
+    "pass": 4816,
+    "fail": 0
+  },
+  "focusedTests": 10,
+  "installedPackageChecks": [
+    "node",
+    "linear-regression-statistics-cache-and-source-revision",
+    "extension",
+    "pdf",
+    "png",
+    "svg",
+    "inspection",
+    "numeric-font-weight",
+    "point-jitter",
+    "point-packing",
+    "mark-label-removal",
+    "selected-mark-labels",
+    "semantic-label-placement",
+    "beeswarm-plot",
+    "raincloud-plot",
+    "path-order",
+    "time-unit-data",
+    "summary-data",
+    "bin-data",
+    "fold-data",
+    "computed-data",
+    "derived-data-editing",
+    "safe-resource-removal",
+    "advanced-authoring-integration",
+    "normalized-data",
+    "complete-data",
+    "imputed-data",
+    "stack-data",
+    "window-data",
+    "bin2d-data",
+    "binned-heatmap",
+    "parallel-coordinates",
+    "parallel-dimension-scale-editing",
+    "offset-scale-editing",
+    "stroke-color-encoding-and-legends",
+    "atomic-channel-encoding",
+    "statistical-references",
+    "coordinate-aspect-and-polar-frame-editing",
+    "facet-grid-repeat-and-named-composition-editing",
+    "non-cartesian-facet-grid-and-repeat",
+    "horizon",
+    "violin-plot",
+    "polar-radar-rug-strip-ecdf-facades",
+    "right-categorical-legend-offset",
+    "grouped-corner-and-free-legend-placement",
+    "sequential-palette-count",
+    "ranged-numeric-datum-wrapper-parity",
+    "neutral-hcl-hue-borrowing",
+    "facet-numeric-legend-inference",
+    "explicit-fold-facet-partition",
+    "shared-facet-top-lane",
+    "explicit-axis-and-border-underlays",
+    "typescript",
+    "basic-entry-runtime-and-types",
+    "tutorial-consumers",
+    "minimal-browser-bundle-measurement",
+    "private-export-rejection",
+    "installed-local-mcp",
+    "direct-mcp-byte-equality",
+    "task-packet-v5-authoring-execution",
+    "explicit-unresolved-docs-fallback",
+    "terminal-unsupported-no-fallback"
+  ],
+  "browserBundles": {
+    "full": {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 534,
+      "minifiedBytes": 1557374,
+      "gzipBytes": 422002
+    },
+    "basic": {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 316,
+      "minifiedBytes": 739224,
+      "gzipBytes": 208440
+    },
+    "svg": {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 19,
+      "minifiedBytes": 23548,
+      "gzipBytes": 7567
+    }
+  },
+  "package": {
+    "entries": 602,
+    "packedBytes": 851926,
+    "unpackedBytes": 4120774
+  },
+  "renderer": {
+    "status": "pass",
+    "dimensions": [
+      440,
+      220
+    ],
+    "rawRows": 6,
+    "paths": 3,
+    "transparentPaths": 2,
+    "normalReferencePaths": 1,
+    "nativePngDecodedPrimitiveExact": true,
+    "nativePdfDecodedPrimitiveExact": true,
+    "svgTransparentPathCount": 2,
+    "nativePngPixelsSha256": "21974880dd38c33e3c1ca2519bd864788f739da0f4c4e5e4337572db20c99d65",
+    "nativePdfPixelsSha256": "e0b0d8b32f22d252e6c71379dc59b804d2164ce02d2e90c1ffdc1ce9cb7eaad5",
+    "pixelTolerance": 0,
+    "chartPixelsInspected": false,
+    "schoolRequests": 0
+  },
+  "logs": {
+    "normal": {
+      "path": ".artifacts/categorical-line-unknown-normal-clean.log",
+      "sha256": "03407ba0934c6a43aab81138e99ead4fc364fcf42afe48ddfc986dddc51f4954"
+    },
+    "consumer": {
+      "path": ".artifacts/categorical-line-unknown-consumer-final.log",
+      "sha256": "939b9b4dd01045987b4607aa78bce323183586c33b097403a8fa0fe26ab6495f"
+    },
+    "focused": {
+      "path": ".artifacts/categorical-line-unknown-focused-committed.log",
+      "sha256": "13f2bc26695c940d7213351e9b3426a6cad73237dc23d98ea52813cfab7fdba3"
+    },
+    "docs": {
+      "path": ".artifacts/categorical-line-unknown-doc-final.log",
+      "sha256": "b9aa755477252de4785e396a5b33bd9150a7f9fe8a997368553ca1cd40a2ff99"
+    },
+    "package": {
+      "path": ".artifacts/categorical-line-unknown-package-final.log",
+      "sha256": "697788ed97f9da1d161add1047e8276a87a9ea9ab06fd0fd4bcb5e662e881156"
+    },
+    "render": {
+      "path": ".artifacts/categorical-line-unknown-render/report.json",
+      "sha256": "4dc865ee07ff74e73f09c3687b3c327e9e48609547c1e511e00a0a5e0727b664"
+    }
+  },
+  "sourceBindings": [
+    {
+      "path": "agent_docs/SECOND_ARCHITECTURE.md",
+      "sha256": "ed01bf890cd623737970f9488613bd4d4821875fbc58a2fbffdb9b2dcbb70542"
+    },
+    {
+      "path": "agent_docs/contract/current/CORE.md",
+      "sha256": "cd1dc8cef5619701977ed5a8edef299c8902c436093cb9b3e7e58169bd32e763"
+    },
+    {
+      "path": "agent_docs/contract/current/ENCODINGS.md",
+      "sha256": "6e27fe5e8995f83c77c70e4de552c198b49e30f87c7867e8f03f56787991e9ed"
+    },
+    {
+      "path": "agent_docs/contract/current/MARKS.md",
+      "sha256": "5e1cefef73ebdf5ae521085610e2377cf02adf65e8879f2105bef8b9725f6eae"
+    },
+    {
+      "path": "docs/_data/action_capabilities.json",
+      "sha256": "ee67ab79cd7fd464ed3fa4836ced3640cecd7d1753d38743c50df90441b02483"
+    },
+    {
+      "path": "docs/_data/provenance.json",
+      "sha256": "b92bf01f211f37d92c3c74700691435421b2d814ecd3697326669350c6e46d67"
+    },
+    {
+      "path": "docs/_sources/action-reference.md",
+      "sha256": "8a38aaa197f4c2e35745455352a605c148194ffe2571d8b637d3aa0bbff10c6f"
+    },
+    {
+      "path": "docs/actions.json",
+      "sha256": "2bc1a3f0e75b28b6c59f2c663fb1027e40084153fa65b3cd5c97e62dd2e25d2e"
+    },
+    {
+      "path": "docs/api/encodings.md",
+      "sha256": "fa1359edf60e753124226853e6294dc7c533fed0cf4052af50b6045751484541"
+    },
+    {
+      "path": "docs/api/scales.md",
+      "sha256": "39e6273207377c7617eddbdcf3aa9c82ca779fa3f5861dd7a97d49519a737883"
+    },
+    {
+      "path": "docs/api/series/color.md",
+      "sha256": "ba3c304bbf58fcf47cdb5c3063398bece3e9948a9bea622b9caebbb8c8c8a761"
+    },
+    {
+      "path": "docs/doc-provenance.json",
+      "sha256": "b92bf01f211f37d92c3c74700691435421b2d814ecd3697326669350c6e46d67"
+    },
+    {
+      "path": "docs/llms-full.txt",
+      "sha256": "85c91886b1b46e0b94b38edd9f0c631cdf8469796d31793971a742480c4435ed"
+    },
+    {
+      "path": "docs/llms-manifest.json",
+      "sha256": "ad7a6697890dcef056fa35b6eaff5eec1367e16f2f45c8ad498a51d5a4a65a76"
+    },
+    {
+      "path": "docs/reference/actions/charts-data.md",
+      "sha256": "2d28ec1a67a14c510792211c78e7e50fe032f494b141b8280977822b522ee714"
+    },
+    {
+      "path": "docs/reference/actions/encodings.md",
+      "sha256": "e43a920bdb5a63c77a94a2d0babc2c5a55d2ce7f75b7a8b744518a83b330b701"
+    },
+    {
+      "path": "docs/reference/types.md",
+      "sha256": "4fa662b23e430a43008f2103499614108807aa45d363ead5d1c1c8fd12f1e019"
+    },
+    {
+      "path": "docs/search-index.json",
+      "sha256": "4fc4dd93041d110acd12a2009a5d4e36ec12c7e78f9c16653a56766c50688d3e"
+    },
+    {
+      "path": "docs/types/program.d.ts",
+      "sha256": "6e1101961a3243151cfbf1d99c3ed61756d46baaea4530dc187a8f9d122a0a3b"
+    },
+    {
+      "path": "knowledge/action-cards.json",
+      "sha256": "2bc1a3f0e75b28b6c59f2c663fb1027e40084153fa65b3cd5c97e62dd2e25d2e"
+    },
+    {
+      "path": "scripts/browser-bundle-size.js",
+      "sha256": "f43c6cb96ef389dada59359a39199711ceea16391f41774ef52c4ed2f7fabc58"
+    },
+    {
+      "path": "scripts/package-artifact.js",
+      "sha256": "7844c50b0eece4ae043faf475d614c51635dc74d7645aa0aeec199055730a5ec"
+    },
+    {
+      "path": "scripts/package-consumer.js",
+      "sha256": "7fec22269c74c046c5d95585d465a13e0fba54e0091ea26994673cf884325ac8"
+    },
+    {
+      "path": "src/accessibility.js",
+      "sha256": "a45b5af31c2f432e35ab76e41630fc9fbc135a20822ce72577a3ba745c625177"
+    },
+    {
+      "path": "src/actions/encodings/appearance.js",
+      "sha256": "0c6e3c31de837244d640a817addf0ecde907372707b4a0bdf133f7f692c1fcea"
+    },
+    {
+      "path": "src/actions/encodings/color/index.js",
+      "sha256": "c077bc423f4d9acf879992c071f04d8a17bf21dcf231930080bec06e6991fe67"
+    },
+    {
+      "path": "src/actions/encodings/ruleAppearance.js",
+      "sha256": "1f67b0f820499865d36639b2ba42a77951c2de9f80982be7271bc8cf8c6c582d"
+    },
+    {
+      "path": "src/actions/encodings/stroke.js",
+      "sha256": "bb6781084a38f713ff24d94ea0b66573c929c8654b7fbfc313a4f34c4cbde7af"
+    },
+    {
+      "path": "src/actions/encodings/strokeDash.js",
+      "sha256": "010bd2163111e7b8ac06e275c1fe337cfa4eb744c4cd9da31c14686ef1cb8d2b"
+    },
+    {
+      "path": "src/actions/marks/line/materialize.js",
+      "sha256": "12673e0599c4f509b846b864b99b16180685295a3605ead418dd732220c7ac4c"
+    },
+    {
+      "path": "src/actions/scales/consumers/common.js",
+      "sha256": "652bdf660347429db737b9a78eb0a5a527c64ea53f5472205ce2a3c3d635da6a"
+    },
+    {
+      "path": "src/actions/scales/consumers/families.js",
+      "sha256": "39cbc1fe0443e7c8e1661256ee9f625b185db4c1a015117e8db675776a6f4fc5"
+    },
+    {
+      "path": "src/actions/scales/editPolicy.js",
+      "sha256": "d92dd75b50f3b759e3353497d181c3766fe52d397e0b8dba1fe346bea1684312"
+    },
+    {
+      "path": "src/grammar/lineSeries.js",
+      "sha256": "8dfecf2c7380ff864f6d7f7be8d6c2221196ffb5c618fd2e850b2ff4853eb812"
+    },
+    {
+      "path": "src/grammar/pathSeries.js",
+      "sha256": "1e5056bb791b53b6a45071a926129d8da5f094562e9cf6f84fedc0c61e2423e8"
+    },
+    {
+      "path": "src/grammar/scales/colorConsumers.js",
+      "sha256": "d1b4c01c906d182c39ae36eb16ceba6fed594fe4ed8b38f782b534712f59ce43"
+    },
+    {
+      "path": "src/materialization/marks/grouping.js",
+      "sha256": "fddb27df3a2a74d0c707ed8845232cade092f1807873ee6184de6b495cd17fd9"
+    },
+    {
+      "path": "src/materialization/selection/items/path.js",
+      "sha256": "22964b84c3ec6b1c7bc13c41ad8358c8644084229fe2ac5d278fd93e99a7091e"
+    },
+    {
+      "path": "test/contracts/channel-scale-editor-types.test.js",
+      "sha256": "6549e5128d88874abf497f7e06a9a3b36ffe7f6821cb54b1e73905f2981f0261"
+    },
+    {
+      "path": "test/contracts/scale-capability-contract.test.js",
+      "sha256": "bf9cac3e8163e1440a8d44b2ac28d65f0637f39d81ed683f7d1d97494c0e185c"
+    },
+    {
+      "path": "types/program.d.ts",
+      "sha256": "6e1101961a3243151cfbf1d99c3ed61756d46baaea4530dc187a8f9d122a0a3b"
+    },
+    {
+      "path": "test/unit/actions/encodings/categorical-line-unknown.test.js",
+      "sha256": "d4a06dd70f0eb78d0f003fcca821aa8807bb318bd31f0ed6c1e5ead24bd820e2"
+    }
+  ],
+  "budgetAdjustment": {
+    "fullGzipFrom": 422000,
+    "fullGzipTo": 423000,
+    "actualAfterScopedSimplification": 422002,
+    "otherBudgetsUnchanged": true
+  },
+  "lastWhitespaceNormalization": "Final colorConsumers EOF-only cleanup has byte-identical official compacted JavaScript.",
+  "originalFailuresRetained": [
+    ".artifacts/categorical-line-unknown-normal.log",
+    ".artifacts/categorical-line-unknown-normal-final.log",
+    ".artifacts/categorical-line-unknown-package.log",
+    ".artifacts/categorical-line-unknown-consumer.log"
+  ],
+  "current1275Compatibility": "pending",
+  "source0702FullQualification": "pending",
+  "schoolRequests": 0,
+  "publicRelease": false,
+  "registryPublished": false,
+  "issueClosed": false,
+  "nextRegularReleaseAt": 1413
+}

@@ -1,8 +1,10 @@
+import { findRaincloudParent } from "../../selectors/raincloud.js";
 import { closedAction } from "../../core/action.js";
 import { isPlainObject } from "../../core/immutable.js";
 import { validateUserId } from "../../core/identifiers.js";
 
 import { findTransformPolicy } from "../../grammar/transforms.js";
+import { applyLayerDataRematerialization } from "../../materialization/dependencies.js";
 
 const REPLAY_OPTIONS = Object.freeze(["id", "source", "transform"]);
 
@@ -31,7 +33,16 @@ export const replayDerivedData = /* @__PURE__ */ closedAction(
     const id = validateUserId(args.id, "Facet replay dataset id");
     const source = validateUserId(args.source, "Facet replay source id");
     const resolved = requestedTransform(args.transform);
-    return this
+    let next = this;
+    if (resolved.transform.type === "markFilter" && findRaincloudParent(next, resolved.transform.target) === undefined) {
+      const target = resolved.transform.target;
+      const { markFilter: previous, ...config } = next.markConfigs[target] ?? {};
+      next = next.rebindLayerData({ id: target, data: source })._withMarkConfig(target, config);
+      next = applyLayerDataRematerialization(next, target)._withMarkConfig(target, {
+        ...config, markFilter: { ...previous, source, dataset: id, empty: false }
+      });
+    }
+    return next
       .createDerivedData({ id, source, transform: [resolved.transform] })
       [resolved.materialize]({ id });
   }

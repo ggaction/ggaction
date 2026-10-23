@@ -1,3 +1,4 @@
+import { requestedMarkClip, validateMarkClipCoordinate } from "../../../selectors/markClip.js";
 import { action } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
 import {
@@ -16,7 +17,7 @@ import { validateMarkOptions } from "../shared.js";
 import { validateItemMissing } from "../../../grammar/itemMissing.js";
 
 const OPTIONS = Object.freeze([
-  "target", "missing", "shape", "fill", "opacity", "stroke", "strokeWidth",
+  "target", "clip", "missing", "shape", "fill", "opacity", "stroke", "strokeWidth",
   ...STROKE_STYLE_PROPERTIES
 ]);
 
@@ -27,9 +28,10 @@ export const editPointMark = /* @__PURE__ */ action(
   },
   function (args = {}) {
     validateMarkOptions(args, OPTIONS, "editPointMark");
+    requestedMarkClip(args);
     const strokeDetails = requestedStrokeDetails(args, "editPointMark");
     const editable = [
-      "missing", "shape", "fill", "opacity", "stroke", "strokeWidth",
+      "clip", "missing", "shape", "fill", "opacity", "stroke", "strokeWidth",
       ...STROKE_STYLE_PROPERTIES
     ];
     if (!editable.some(property => Object.hasOwn(args, property))) {
@@ -62,13 +64,14 @@ export const editPointMark = /* @__PURE__ */ action(
     if (Object.hasOwn(args, "opacity") && layer.encoding?.opacity?.field !== undefined) {
       throw new Error("editPointMark opacity conflicts with a field encoding; use encodeOpacity with value to replace it.");
     }
+    validateMarkClipCoordinate(this, layer, args.clip ?? this.markConfigs[id]?.clip);
     const semantic = Object.hasOwn(args, "missing")
       ? this.editSemantic({
           property: `layer[${id}].mark.missing`,
           value: validateItemMissing(args.missing, "Point missing")
         })
       : this;
-    const config = { ...semantic.markConfigs[id] };
+    const config = { ...semantic.markConfigs[id], ...requestedMarkClip(args) };
     Object.assign(config, strokeDetails);
     if (Object.hasOwn(args, "shape")) {
       config.shape = validatePointShape(args.shape);

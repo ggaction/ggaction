@@ -72,6 +72,11 @@ const interval = chart()
   .encodeX2({ datum: 6 });
 ```
 
+Full authors can assign the same numeric interval atomically with
+`encodeXRange({ lower: { datum: 2 }, upper: { datum: 6 }, scale: { domain: [0, 10] } })`.
+The [range wrapper](../position-encodings.md#quantitative-ranges) accepts field
+names or finite numeric datum objects and leaves source data unchanged.
+
 Each position accepts exactly one `field` or `datum`. When every position and
 color is constant, the result is one rectangle even with an empty or multirow
 dataset. A field binding makes the rectangle row-based again; constants broadcast

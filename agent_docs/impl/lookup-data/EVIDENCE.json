@@ -1,0 +1,3292 @@
+{
+  "status": "implemented-source-package-docs-browser-verified-current-native-cohort-pending",
+  "issue": 251,
+  "authority": "Direct human standing in-scope approval; public release at1413; sequential translation; no manual chart-image inspection",
+  "focusedFeatureAndBoundaryTests": 73,
+  "focusedFeatureAndBoundaryFailures": 0,
+  "integrationTests": 32,
+  "integrationFailures": 0,
+  "normalInitial": {
+    "tests": 5121,
+    "pass": 5110,
+    "fail": 11,
+    "failures": [
+      "missing independent primitive target test",
+      "new draw-order inventory",
+      "measured package size",
+      "selector reverse core dependency",
+      "capability sort order",
+      "search index bound in two tests",
+      "compact transform-tag declaration spacing",
+      "changelog API-name provenance",
+      "new example Git source link before commit",
+      "compact action method declaration spacing"
+    ]
+  },
+  "installedConsumerGroups": 66,
+  "installedConsumer": {
+    "package": "ggaction@0.0.21",
+    "source": "ggaction-0.0.21.tgz",
+    "sha256": "636e9e4e8cb887f837993985d8d91073cf4ee7ea22f13f2036c30e10662275d3",
+    "browserBundles": {
+      "full": {
+        "specifier": "ggaction",
+        "chunks": 1,
+        "modules": 541,
+        "minifiedBytes": 1575388,
+        "gzipBytes": 427506
+      },
+      "basic": {
+        "specifier": "ggaction/basic",
+        "chunks": 1,
+        "modules": 325,
+        "minifiedBytes": 764635,
+        "gzipBytes": 215605
+      },
+      "svg": {
+        "specifier": "ggaction/svg",
+        "chunks": 1,
+        "modules": 19,
+        "minifiedBytes": 23548,
+        "gzipBytes": 7567
+      }
+    },
+    "mcp": {
+      "coldStartMilliseconds": 149
+    },
+    "checks": [
+      "node",
+      "linear-regression-statistics-cache-and-source-revision",
+      "extension",
+      "pdf",
+      "png",
+      "svg",
+      "inspection",
+      "numeric-font-weight",
+      "point-jitter",
+      "point-packing",
+      "mark-label-removal",
+      "selected-mark-labels",
+      "semantic-label-placement",
+      "beeswarm-plot",
+      "raincloud-plot",
+      "path-order",
+      "time-unit-data",
+      "summary-data",
+      "bin-data",
+      "fold-data",
+      "named-dataset-lookup",
+      "computed-data",
+      "derived-data-editing",
+      "safe-resource-removal",
+      "advanced-authoring-integration",
+      "normalized-data",
+      "complete-data",
+      "imputed-data",
+      "stack-data",
+      "window-data",
+      "bin2d-data",
+      "binned-heatmap",
+      "parallel-coordinates",
+      "parallel-dimension-scale-editing",
+      "offset-scale-editing",
+      "stroke-color-encoding-and-legends",
+      "atomic-channel-encoding",
+      "axis-title-label-overlap-policy",
+      "numeric-independent-text-offsets",
+      "statistical-references",
+      "coordinate-aspect-and-polar-frame-editing",
+      "facet-grid-repeat-and-named-composition-editing",
+      "non-cartesian-facet-grid-and-repeat",
+      "horizon",
+      "violin-plot",
+      "polar-radar-rug-strip-ecdf-facades",
+      "right-categorical-legend-offset",
+      "grouped-corner-and-free-legend-placement",
+      "sequential-palette-count",
+      "ranged-numeric-datum-wrapper-parity",
+      "neutral-hcl-hue-borrowing",
+      "facet-numeric-legend-inference",
+      "explicit-fold-facet-partition",
+      "shared-facet-top-lane",
+      "rotated-facet-headers",
+      "explicit-axis-and-border-underlays",
+      "typescript",
+      "basic-entry-runtime-and-types",
+      "tutorial-consumers",
+      "minimal-browser-bundle-measurement",
+      "private-export-rejection",
+      "installed-local-mcp",
+      "direct-mcp-byte-equality",
+      "task-packet-v5-authoring-execution",
+      "explicit-unresolved-docs-fallback",
+      "terminal-unsupported-no-fallback"
+    ]
+  },
+  "sourceDocumentationInitial": {
+    "tests": 120,
+    "pass": 119,
+    "fail": 1,
+    "remaining": "New public example source link requires first integration commit; do not weaken link verification."
+  },
+  "packageInitialMeasurement": {
+    "entryCount": 609,
+    "size": 861631,
+    "unpackedSize": 4160293
+  },
+  "diagnostics": [
+    "Consumer initially compared auto-renamed axis titles to unchanged SVG; corrected expected title to mean(years) and retained exact unchanged bar geometry.",
+    "Full427506/Basic215605 measured gzip exceeded previous426000/214000 ceilings; minimally rounded to428000/216000. SVG25000 retained."
+  ],
+  "publicExample": "examples/lookup-data/program.js",
+  "independentPrejoinedTarget": "test/charts/lookup-data/primitive.program.js",
+  "decodedPrimitivePublicPixelsExact": true,
+  "rendererCallsAndGraphicOrderExact": true,
+  "chartPixelsManuallyInspected": false,
+  "candidateActive": false,
+  "SchoolRequests": 0,
+  "publicationPendingUntil": 1413,
+  "logs": [
+    {
+      "path": "/tmp/ggaction-lookup-normal-v1.log",
+      "sha256": "eb52913372a3d5decde3714fc9a77a18d07d26a31d90e6f209cb49ae509c4d6e"
+    },
+    {
+      "path": "/tmp/ggaction-lookup-focused-final-v1.log",
+      "sha256": "db992ee42f35da62bddea7b9615119026524cc08c76a948c1e1c280dc81c1a33"
+    },
+    {
+      "path": "/tmp/ggaction-lookup-integration-v3.log",
+      "sha256": "8f73ca448f7c4620c16658ebcf4366c3261d092fc83b3e751e401efc3ad8bc96"
+    },
+    {
+      "path": "/tmp/ggaction-lookup-package-consumer-v1.log",
+      "sha256": "e730aaa112faeee99bad8ad52eb1dc6a43a0437ab9f3c17b24e121e534c7a855"
+    },
+    {
+      "path": "/tmp/ggaction-lookup-package-consumer-v2.log",
+      "sha256": "9f636dd13e1caf7f3152ec99271635d657a6f3f5e349017297472450b3634ab6"
+    },
+    {
+      "path": "/tmp/ggaction-lookup-package-consumer-v3.log",
+      "sha256": "953403637c655d4ec855ede4b27ae5aff14313752ba6b374925546140e07ecec"
+    },
+    {
+      "path": "/tmp/ggaction-lookup-package-consumer-v4.log",
+      "sha256": "c0aad05646b79a20ae81cca4bbaa814bb9cb1b26f3137c1576970be16e325338"
+    },
+    {
+      "path": "/tmp/ggaction-lookup-docs-source-v1.log",
+      "sha256": "2efb20d095866ac5d7392aa008ec6a4fcbafbc14bfb6bb921f1127af4290a58f"
+    },
+    {
+      "path": "/tmp/ggaction-lookup-normal-v2.log",
+      "sha256": "7fe84f15ab8b47611917f943dcd907728382d0c04e862bf25fb18eaf3ddede5e"
+    },
+    {
+      "path": "/tmp/ggaction-lookup-normal-v3.log",
+      "sha256": "a3e43da216fc2478a14c392c9967aa7c5d30ff5236a174d0b9192911917e8765"
+    },
+    {
+      "path": "/tmp/ggaction-lookup-docs-verify-v1.log",
+      "sha256": "2af5e219612926e57a56fe611545632a942f6ef7b45f2172fb8986cde4b20810"
+    },
+    {
+      "path": "/tmp/ggaction-lookup-browser-examples-v1.log",
+      "sha256": "fcd904f35665c78632319b6b41d6ad22a5da4b84866fe1f3dd453a8f3d0c2d41"
+    },
+    {
+      "path": "/tmp/ggaction-lookup-docs-preflight-v1.log",
+      "sha256": "64ecb4257c7b3b937fa478c25e2de60b08f3db623091362c9cb40dc2200a3bbf"
+    }
+  ],
+  "sourceImplementationCommit": "12cadafe416f48a52525f4dc93c13e0d040d40ec",
+  "normalIntermediate": {
+    "tests": 5123,
+    "pass": 5122,
+    "fail": 1,
+    "failure": "README retained the previous Basic gzip ceiling after the measured canonical limits changed; corrected only that number."
+  },
+  "normal": {
+    "tests": 5123,
+    "pass": 5123,
+    "fail": 0
+  },
+  "cleanSourceDocumentationTests": 120,
+  "builtDocumentationPages": 150,
+  "responsiveWidths": [
+    320,
+    390,
+    768
+  ],
+  "builtSearchAccessibilityResponsivePassed": true,
+  "publicBrowserExamplesPassed": 97,
+  "finalArtifact": {
+    "id": "ggaction@0.0.21",
+    "name": "ggaction",
+    "version": "0.0.21",
+    "size": 861543,
+    "unpackedSize": 4160205,
+    "shasum": "02f737a705bb21ea75c2ac38c477b16ac6983ea9",
+    "integrity": "sha512-vGba2MGCGph7vX+he3sejHH+am8RggOGMcUyLVnBBXxV2DrT7qBZkY8k7g+BeUEE25qhjDjwHqxy494gNBq76Q==",
+    "filename": "ggaction-0.0.21.tgz",
+    "files": [
+      {
+        "path": "CHANGELOG.md",
+        "size": 39108,
+        "mode": 420
+      },
+      {
+        "path": "LICENSE",
+        "size": 1067,
+        "mode": 420
+      },
+      {
+        "path": "README.md",
+        "size": 12630,
+        "mode": 420
+      },
+      {
+        "path": "knowledge/action-card.schema.json",
+        "size": 3797,
+        "mode": 420
+      },
+      {
+        "path": "knowledge/action-cards.json",
+        "size": 558358,
+        "mode": 420
+      },
+      {
+        "path": "knowledge/action-cards.schema.json",
+        "size": 705,
+        "mode": 420
+      },
+      {
+        "path": "knowledge/extension-authoring.md",
+        "size": 12424,
+        "mode": 420
+      },
+      {
+        "path": "knowledge/intent-taxonomy.json",
+        "size": 37126,
+        "mode": 420
+      },
+      {
+        "path": "knowledge/intent-taxonomy.schema.json",
+        "size": 2402,
+        "mode": 420
+      },
+      {
+        "path": "knowledge/mcp-resources.json",
+        "size": 6617,
+        "mode": 420
+      },
+      {
+        "path": "knowledge/mcp-resources.schema.json",
+        "size": 1427,
+        "mode": 420
+      },
+      {
+        "path": "knowledge/task-packet.schema.json",
+        "size": 4471,
+        "mode": 420
+      },
+      {
+        "path": "knowledge/task-resolver.js",
+        "size": 46128,
+        "mode": 420
+      },
+      {
+        "path": "package.json",
+        "size": 8178,
+        "mode": 420
+      },
+      {
+        "path": "src/accessibility.js",
+        "size": 8144,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/basic.js",
+        "size": 1138,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/boxPlots/components.js",
+        "size": 3290,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/boxPlots/create.js",
+        "size": 3618,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/boxPlots/edit.js",
+        "size": 18312,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/boxPlots/index.js",
+        "size": 567,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/boxPlots/materialize.js",
+        "size": 7181,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/boxPlots/options.js",
+        "size": 6284,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/boxPlots/resolve.js",
+        "size": 1707,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/canvas/actions.js",
+        "size": 5929,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/canvas/fitting.js",
+        "size": 7622,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/canvas/index.js",
+        "size": 884,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/canvas/plotBorder.js",
+        "size": 1643,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/canvas/plotOrder.js",
+        "size": 794,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/categoryOrder/index.js",
+        "size": 4496,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/charts/area.js",
+        "size": 4015,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/charts/bar.js",
+        "size": 4170,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/charts/basic.js",
+        "size": 587,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/charts/beeswarm.js",
+        "size": 2777,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/charts/density.js",
+        "size": 2810,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/charts/ecdf.js",
+        "size": 6438,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/charts/endpoints.js",
+        "size": 19140,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/charts/heatmap.js",
+        "size": 6536,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/charts/histogram.js",
+        "size": 2086,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/charts/horizon.js",
+        "size": 3965,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/charts/index.js",
+        "size": 3019,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/charts/interval-regression.js",
+        "size": 6689,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/charts/line.js",
+        "size": 2444,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/charts/parallel.js",
+        "size": 3757,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/charts/pie.js",
+        "size": 367,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/charts/polar.js",
+        "size": 5082,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/charts/radar.js",
+        "size": 11117,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/charts/radial.js",
+        "size": 4224,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/charts/raincloud.js",
+        "size": 16512,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/charts/rug-strip.js",
+        "size": 11654,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/charts/scatter.js",
+        "size": 3407,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/charts/shared.js",
+        "size": 7751,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/charts/text.js",
+        "size": 1922,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/composition/actions.js",
+        "size": 14618,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/composition/index.js",
+        "size": 59,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/coordinates/actions.js",
+        "size": 2695,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/coordinates/edit.js",
+        "size": 2792,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/coordinates/parallel.js",
+        "size": 1912,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/data/basic.js",
+        "size": 929,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/data/basicBin2d.js",
+        "size": 1424,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/data/bin.js",
+        "size": 816,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/data/bin2d.js",
+        "size": 6191,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/data/bin2dMaterialize.js",
+        "size": 849,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/data/box.js",
+        "size": 1585,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/data/complete.js",
+        "size": 761,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/data/computed.js",
+        "size": 725,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/data/create.js",
+        "size": 1664,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/data/density.js",
+        "size": 2024,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/data/derived.js",
+        "size": 6949,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/data/ecdf.js",
+        "size": 1005,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/data/edit.js",
+        "size": 18493,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/data/filter.js",
+        "size": 12590,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/data/flatten.js",
+        "size": 704,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/data/fold.js",
+        "size": 657,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/data/gradientProfile.js",
+        "size": 1071,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/data/horizon.js",
+        "size": 1296,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/data/impute.js",
+        "size": 750,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/data/index.js",
+        "size": 3912,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/data/interval.js",
+        "size": 1133,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/data/intervalEdit.js",
+        "size": 6474,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/data/lookup.js",
+        "size": 2696,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/data/normalize.js",
+        "size": 816,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/data/regression.js",
+        "size": 2635,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/data/regressionStatistics.js",
+        "size": 4146,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/data/revise.js",
+        "size": 3665,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/data/revisionBindings.js",
+        "size": 4662,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/data/shared.js",
+        "size": 4473,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/data/sort.js",
+        "size": 657,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/data/stack.js",
+        "size": 732,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/data/summary.js",
+        "size": 752,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/data/timeUnit.js",
+        "size": 758,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/data/window.js",
+        "size": 707,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/distributions/revision.js",
+        "size": 13521,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/encodings/angle.js",
+        "size": 2592,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/encodings/appearance.js",
+        "size": 10014,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/encodings/barWidth.js",
+        "size": 3662,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/encodings/basic.js",
+        "size": 1122,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/encodings/channels.js",
+        "size": 13791,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/encodings/color/continuous.js",
+        "size": 3877,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/encodings/color/index.js",
+        "size": 6536,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/encodings/color/layout.js",
+        "size": 238,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/encodings/color/policy.js",
+        "size": 3462,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/encodings/density.js",
+        "size": 19888,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/encodings/density/resolve.js",
+        "size": 4127,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/encodings/histogram.js",
+        "size": 1683,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/encodings/horizon.js",
+        "size": 12336,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/encodings/horizon/resolve.js",
+        "size": 9661,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/encodings/index.js",
+        "size": 2179,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/encodings/offset.js",
+        "size": 4540,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/encodings/parallel.js",
+        "size": 3548,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/encodings/pathOrder.js",
+        "size": 4219,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/encodings/position/apply.js",
+        "size": 5090,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/encodings/position/index.js",
+        "size": 5884,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/encodings/position/policies/arc.js",
+        "size": 3590,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/encodings/position/policies/area.js",
+        "size": 1989,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/encodings/position/policies/bar.js",
+        "size": 6358,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/encodings/position/policies/common.js",
+        "size": 514,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/encodings/position/policies/index.js",
+        "size": 1309,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/encodings/position/policies/line.js",
+        "size": 3800,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/encodings/position/policies/point.js",
+        "size": 692,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/encodings/position/policies/rule.js",
+        "size": 647,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/encodings/position/policies/tick.js",
+        "size": 687,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/encodings/position/resolve.js",
+        "size": 14109,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/encodings/ranged.js",
+        "size": 17761,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/encodings/remove.js",
+        "size": 10351,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/encodings/ruleAppearance.js",
+        "size": 4171,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/encodings/seriesLayout.js",
+        "size": 7431,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/encodings/shared.js",
+        "size": 9570,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/encodings/stroke.js",
+        "size": 7583,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/encodings/strokeDash.js",
+        "size": 4828,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/encodings/temporal.js",
+        "size": 305,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/encodings/text.js",
+        "size": 5630,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/errorBands/create.js",
+        "size": 8540,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/errorBands/edit.js",
+        "size": 18341,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/errorBands/index.js",
+        "size": 594,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/errorBars/create.js",
+        "size": 13459,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/errorBars/edit.js",
+        "size": 15640,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/errorBars/index.js",
+        "size": 437,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/facets/actions.js",
+        "size": 31826,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/facets/derive.js",
+        "size": 10681,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/facets/guides.js",
+        "size": 629,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/facets/index.js",
+        "size": 53,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/facets/replay.js",
+        "size": 1362,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/gradientPlots/components.js",
+        "size": 7628,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/gradientPlots/create.js",
+        "size": 3175,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/gradientPlots/edit.js",
+        "size": 12227,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/gradientPlots/index.js",
+        "size": 717,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/gradientPlots/materialize.js",
+        "size": 9681,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/gradientPlots/options.js",
+        "size": 4138,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/gradientPlots/paint.js",
+        "size": 3506,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/gradientPlots/rebind.js",
+        "size": 1803,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/gradientPlots/resolve.js",
+        "size": 2380,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/applicability.js",
+        "size": 5375,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/axes/axes.js",
+        "size": 11362,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/axes/axis.js",
+        "size": 8969,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/axes/components.js",
+        "size": 1913,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/axes/edit.js",
+        "size": 7990,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/axes/index.js",
+        "size": 1519,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/axes/labels.js",
+        "size": 23461,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/axes/lines.js",
+        "size": 6992,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/axes/parallel.js",
+        "size": 5592,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/axes/parallel/lifecycle.js",
+        "size": 6628,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/axes/parallel/policy.js",
+        "size": 6914,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/axes/parallel/resolve.js",
+        "size": 4668,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/axes/policy.js",
+        "size": 4247,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/axes/remove.js",
+        "size": 2648,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/axes/tickGroups.js",
+        "size": 4415,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/axes/ticks.js",
+        "size": 11539,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/axes/titles.js",
+        "size": 16885,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/basic.js",
+        "size": 986,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/facade.js",
+        "size": 5548,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/facadeAxes.js",
+        "size": 11020,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/facadeLegend.js",
+        "size": 4220,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/grids/grid.js",
+        "size": 12704,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/grids/index.js",
+        "size": 75,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/grids/resolve.js",
+        "size": 14990,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/guides.js",
+        "size": 5449,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/index.js",
+        "size": 635,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/legends/blocks.js",
+        "size": 19023,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/legends/categorical/actions.js",
+        "size": 23898,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/legends/categorical/components.js",
+        "size": 5765,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/legends/categorical/index.js",
+        "size": 6540,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/legends/categorical/layout.js",
+        "size": 9516,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/legends/categorical/options.js",
+        "size": 7729,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/legends/categorical/recipes.js",
+        "size": 7386,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/legends/categorical/resolve.js",
+        "size": 6186,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/legends/categorical/symbols.js",
+        "size": 10988,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/legends/categorical/validation.js",
+        "size": 660,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/legends/colorSize.js",
+        "size": 9177,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/legends/combine.js",
+        "size": 2617,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/legends/continuous/colorSymbols.js",
+        "size": 3906,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/legends/continuous/common.js",
+        "size": 12891,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/legends/continuous/gradient.js",
+        "size": 9835,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/legends/continuous/index.js",
+        "size": 1478,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/legends/continuous/interval.js",
+        "size": 8553,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/legends/continuous/opacity.js",
+        "size": 15903,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/legends/continuous/stroke.js",
+        "size": 8430,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/legends/creation.js",
+        "size": 2054,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/legends/edit.js",
+        "size": 28701,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/legends/focused.js",
+        "size": 2304,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/legends/group.js",
+        "size": 5075,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/legends/index.js",
+        "size": 833,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/legends/lane.js",
+        "size": 12079,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/legends/lifecycle.js",
+        "size": 5080,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/legends/remove.js",
+        "size": 4700,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/legends/sampling.js",
+        "size": 2630,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/legends/size.js",
+        "size": 11503,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/legends/strokeWidth.js",
+        "size": 6250,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/legends/target.js",
+        "size": 2550,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/legends/transition.js",
+        "size": 12406,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/polar/axes/facade.js",
+        "size": 8124,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/polar/axes/index.js",
+        "size": 1195,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/polar/axes/labels.js",
+        "size": 8228,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/polar/axes/lines.js",
+        "size": 4128,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/polar/axes/shared.js",
+        "size": 4496,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/polar/axes/ticks.js",
+        "size": 5620,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/polar/axes/titles.js",
+        "size": 6787,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/polar/grids.js",
+        "size": 8850,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/polar/index.js",
+        "size": 115,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/polar/resolve.js",
+        "size": 9119,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/reuse.js",
+        "size": 1954,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/guides/tickValues.js",
+        "size": 3447,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/index.js",
+        "size": 2739,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/intervals/resolve.js",
+        "size": 11033,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/intervals/revision.js",
+        "size": 4693,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/marks/arc/actions.js",
+        "size": 11289,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/marks/arc/index.js",
+        "size": 55,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/marks/area/actions.js",
+        "size": 13563,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/marks/area/index.js",
+        "size": 87,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/marks/area/materialize.js",
+        "size": 3207,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/marks/bar/create.js",
+        "size": 3175,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/marks/bar/edit.js",
+        "size": 5675,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/marks/bar/index.js",
+        "size": 487,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/marks/bar/materialize.js",
+        "size": 5317,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/marks/basic.js",
+        "size": 460,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/marks/index.js",
+        "size": 1692,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/marks/lifecycle.js",
+        "size": 691,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/marks/line/actions.js",
+        "size": 12642,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/marks/line/index.js",
+        "size": 90,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/marks/line/materialize.js",
+        "size": 5461,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/marks/point/create.js",
+        "size": 3120,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/marks/point/edit.js",
+        "size": 4525,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/marks/point/index.js",
+        "size": 630,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/marks/point/jitter.js",
+        "size": 2644,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/marks/point/materialize.js",
+        "size": 18720,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/marks/point/packing.js",
+        "size": 2756,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/marks/rect/actions.js",
+        "size": 8416,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/marks/rect/index.js",
+        "size": 90,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/marks/references.js",
+        "size": 21194,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/marks/remove.js",
+        "size": 10446,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/marks/rule/actions.js",
+        "size": 15694,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/marks/rule/appearance.js",
+        "size": 1104,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/marks/rule/index.js",
+        "size": 56,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/marks/shared.js",
+        "size": 8584,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/marks/text/actions.js",
+        "size": 20270,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/marks/text/index.js",
+        "size": 525,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/marks/text/layout.js",
+        "size": 15893,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/marks/text/removal.js",
+        "size": 6535,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/marks/text/selection.js",
+        "size": 2549,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/marks/tick/actions.js",
+        "size": 9598,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/marks/tick/index.js",
+        "size": 56,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/primitives/createGraphics.js",
+        "size": 6705,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/primitives/editGraphics.js",
+        "size": 11082,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/primitives/graphicProperties.js",
+        "size": 73,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/primitives/index.js",
+        "size": 1798,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/primitives/semantic.js",
+        "size": 1308,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/primitives/semanticAction.js",
+        "size": 14299,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/primitives/semanticValidation/dataset.js",
+        "size": 1092,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/primitives/semanticValidation/guide.js",
+        "size": 2803,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/primitives/semanticValidation/index.js",
+        "size": 1669,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/primitives/semanticValidation/layer.js",
+        "size": 6311,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/primitives/semanticValidation/scale.js",
+        "size": 4063,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/primitives/semanticValidation/shared.js",
+        "size": 191,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/regression/components.js",
+        "size": 7226,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/regression/create.js",
+        "size": 4812,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/regression/edit.js",
+        "size": 16018,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/regression/follow.js",
+        "size": 909,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/regression/index.js",
+        "size": 890,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/regression/resolve.js",
+        "size": 2004,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/resources/index.js",
+        "size": 296,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/resources/remove.js",
+        "size": 6959,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/scales/channels.js",
+        "size": 8058,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/scales/consumers/common.js",
+        "size": 4120,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/scales/consumers/families.js",
+        "size": 3824,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/scales/consumers/index.js",
+        "size": 3151,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/scales/consumers/seriesLayout.js",
+        "size": 10505,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/scales/create.js",
+        "size": 6170,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/scales/definitions.js",
+        "size": 8448,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/scales/edit.js",
+        "size": 6377,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/scales/editPolicy.js",
+        "size": 10252,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/scales/index.js",
+        "size": 934,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/scales/materialize.js",
+        "size": 3261,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/scales/offset.js",
+        "size": 1880,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/scales/parallel.js",
+        "size": 2798,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/scales/patch.js",
+        "size": 890,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/scales/preview.js",
+        "size": 7864,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/scales/quantitativeColor.js",
+        "size": 1855,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/selection/actions.js",
+        "size": 21821,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/selection/index.js",
+        "size": 1440,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/textMetrics/index.js",
+        "size": 2453,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/theme/actions.js",
+        "size": 3166,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/theme/composition.js",
+        "size": 7078,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/theme/index.js",
+        "size": 551,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/theme/reconcile.js",
+        "size": 41415,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/theme/state.js",
+        "size": 5119,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/titles/actions.js",
+        "size": 8363,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/titles/index.js",
+        "size": 692,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/titles/resolve.js",
+        "size": 10623,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/violinPlots/create.js",
+        "size": 8335,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/violinPlots/edit.js",
+        "size": 6432,
+        "mode": 420
+      },
+      {
+        "path": "src/actions/violinPlots/index.js",
+        "size": 273,
+        "mode": 420
+      },
+      {
+        "path": "src/basic.js",
+        "size": 102,
+        "mode": 420
+      },
+      {
+        "path": "src/BasicChartProgram.js",
+        "size": 492,
+        "mode": 420
+      },
+      {
+        "path": "src/ChartProgram.js",
+        "size": 433,
+        "mode": 420
+      },
+      {
+        "path": "src/composition.js",
+        "size": 294,
+        "mode": 420
+      },
+      {
+        "path": "src/core/action.js",
+        "size": 7795,
+        "mode": 420
+      },
+      {
+        "path": "src/core/ChartProgram.js",
+        "size": 8236,
+        "mode": 420
+      },
+      {
+        "path": "src/core/compositionState.js",
+        "size": 12651,
+        "mode": 420
+      },
+      {
+        "path": "src/core/datasetReferences.js",
+        "size": 802,
+        "mode": 420
+      },
+      {
+        "path": "src/core/diagnostics.js",
+        "size": 643,
+        "mode": 420
+      },
+      {
+        "path": "src/core/extensionRegistry.js",
+        "size": 4218,
+        "mode": 420
+      },
+      {
+        "path": "src/core/font.js",
+        "size": 903,
+        "mode": 420
+      },
+      {
+        "path": "src/core/graphicProperties.js",
+        "size": 146,
+        "mode": 420
+      },
+      {
+        "path": "src/core/identifiers.js",
+        "size": 909,
+        "mode": 420
+      },
+      {
+        "path": "src/core/immutable.js",
+        "size": 2824,
+        "mode": 420
+      },
+      {
+        "path": "src/core/materializationState.js",
+        "size": 1637,
+        "mode": 420
+      },
+      {
+        "path": "src/core/optionRequirements.js",
+        "size": 390,
+        "mode": 420
+      },
+      {
+        "path": "src/core/programState.js",
+        "size": 2216,
+        "mode": 420
+      },
+      {
+        "path": "src/core/resourceReferences.js",
+        "size": 12188,
+        "mode": 420
+      },
+      {
+        "path": "src/core/specs.js",
+        "size": 525,
+        "mode": 420
+      },
+      {
+        "path": "src/core/textMetricProfile.js",
+        "size": 1822,
+        "mode": 420
+      },
+      {
+        "path": "src/core/textMetrics.js",
+        "size": 6451,
+        "mode": 420
+      },
+      {
+        "path": "src/core/validation.js",
+        "size": 5158,
+        "mode": 420
+      },
+      {
+        "path": "src/core/vocabulary.js",
+        "size": 6179,
+        "mode": 420
+      },
+      {
+        "path": "src/diagnostics.js",
+        "size": 57,
+        "mode": 420
+      },
+      {
+        "path": "src/extension.js",
+        "size": 296,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/aggregate.js",
+        "size": 10866,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/arcs.js",
+        "size": 8307,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/areaEndpoints.js",
+        "size": 1991,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/areaPaint.js",
+        "size": 492,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/areaSeries.js",
+        "size": 9229,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/axisTextPlacement.js",
+        "size": 1176,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/bars/aggregate.js",
+        "size": 5527,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/bars/geometry.js",
+        "size": 5772,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/bars/policy.js",
+        "size": 3940,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/bin.js",
+        "size": 8288,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/bin2d.js",
+        "size": 10777,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/boxPlot.js",
+        "size": 8321,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/categoricalDensity.js",
+        "size": 6551,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/categoryOrder.js",
+        "size": 6448,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/colorSizeLegend.js",
+        "size": 2439,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/complete.js",
+        "size": 10428,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/computed.js",
+        "size": 18020,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/coordinates.js",
+        "size": 1909,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/curveCommands.js",
+        "size": 13079,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/datasetDependencies.js",
+        "size": 3927,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/datasetSchema.js",
+        "size": 19809,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/density.js",
+        "size": 27025,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/direction.js",
+        "size": 1503,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/displayLabels.js",
+        "size": 3538,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/ecdf.js",
+        "size": 6821,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/facetHeaders.js",
+        "size": 259,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/facets/dependencies.js",
+        "size": 11695,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/facets/guides.js",
+        "size": 10730,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/facets/index.js",
+        "size": 6759,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/facets/legendIntent.js",
+        "size": 4546,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/facets/scales.js",
+        "size": 8135,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/filter.js",
+        "size": 10479,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/flatten.js",
+        "size": 3120,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/fold.js",
+        "size": 3838,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/gradientProfile.js",
+        "size": 7314,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/guideDash.js",
+        "size": 1627,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/histogram.js",
+        "size": 11421,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/horizon.js",
+        "size": 16173,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/impute.js",
+        "size": 12343,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/interval.js",
+        "size": 9816,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/itemMissing.js",
+        "size": 2043,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/jitter.js",
+        "size": 6107,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/legendBlocks.js",
+        "size": 2297,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/legendBorder.js",
+        "size": 492,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/legendClip.js",
+        "size": 1101,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/legendCombinations.js",
+        "size": 2434,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/legendGradient.js",
+        "size": 1150,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/legendGroups.js",
+        "size": 2041,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/legendOpacity.js",
+        "size": 238,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/legendSpacing.js",
+        "size": 1656,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/legendTitleStyle.js",
+        "size": 1029,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/lineSeries.js",
+        "size": 6255,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/lookup.js",
+        "size": 4408,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/markFilter.js",
+        "size": 2253,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/markLabels.js",
+        "size": 5203,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/markLabelSelection.js",
+        "size": 1860,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/markSelection.js",
+        "size": 9941,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/normalize.js",
+        "size": 11224,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/numeric.js",
+        "size": 4623,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/paint.js",
+        "size": 3428,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/palettes.js",
+        "size": 11781,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/parallelAxisTitles.js",
+        "size": 703,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/parallelCoordinates.js",
+        "size": 7121,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/parseTime.js",
+        "size": 1584,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/pathCommands.js",
+        "size": 3201,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/pathOrder.js",
+        "size": 1223,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/pathSeries.js",
+        "size": 3199,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/pointPacking.js",
+        "size": 7269,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/pointShapes.js",
+        "size": 6682,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/polar.js",
+        "size": 3867,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/polarGuides.js",
+        "size": 7685,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/polarLineCommands.js",
+        "size": 1181,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/polarPaths.js",
+        "size": 4643,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/positionCompatibility.js",
+        "size": 2212,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/positionDatum.js",
+        "size": 641,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/rects.js",
+        "size": 1174,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/regression/derive.js",
+        "size": 6469,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/regression/index.js",
+        "size": 854,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/regression/models.js",
+        "size": 21339,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/regression/parameters.js",
+        "size": 9557,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/regression/statistics.js",
+        "size": 3670,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/rotation.js",
+        "size": 891,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/roundedRect.js",
+        "size": 5724,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/ruleAppearance.js",
+        "size": 344,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/rules.js",
+        "size": 2312,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/scales/appearance.js",
+        "size": 3672,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/scales/color.js",
+        "size": 8777,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/scales/colorConsumers.js",
+        "size": 4064,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/scales/continuous.js",
+        "size": 5726,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/scales/definition.js",
+        "size": 3982,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/scales/discretized.js",
+        "size": 4265,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/scales/fields.js",
+        "size": 6293,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/scales/index.js",
+        "size": 403,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/scales/mapping.js",
+        "size": 1255,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/scales/ordinal.js",
+        "size": 10145,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/scales/policies.js",
+        "size": 1630,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/scales/radial.js",
+        "size": 2725,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/scales/size.js",
+        "size": 6661,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/scales/temporal.js",
+        "size": 2063,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/scales/transformed.js",
+        "size": 6440,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/scales/types.js",
+        "size": 3595,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/scales/validation.js",
+        "size": 1639,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/schemas/concreteGraphic.js",
+        "size": 4402,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/schemas/graphic.js",
+        "size": 2687,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/schemas/graphicBounds.js",
+        "size": 18269,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/schemas/graphicClip.js",
+        "size": 1095,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/schemas/graphicTree.js",
+        "size": 5731,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/schemas/mark.js",
+        "size": 81,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/schemas/semanticPath.js",
+        "size": 6683,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/seriesLayout.js",
+        "size": 4010,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/sort.js",
+        "size": 4320,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/stack.js",
+        "size": 5875,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/statisticalReference.js",
+        "size": 3665,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/statistics/confidenceInterval.js",
+        "size": 3430,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/statistics/studentT.js",
+        "size": 2897,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/strokeStyle.js",
+        "size": 2415,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/summary.js",
+        "size": 7023,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/text.js",
+        "size": 6238,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/ticks.js",
+        "size": 8511,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/timeUnit.js",
+        "size": 12434,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/transformKeys.js",
+        "size": 1766,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/transforms.js",
+        "size": 18647,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/transformTopology.js",
+        "size": 1728,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/valueFormat.js",
+        "size": 4457,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/weightedStatistics.js",
+        "size": 12296,
+        "mode": 420
+      },
+      {
+        "path": "src/grammar/window.js",
+        "size": 20130,
+        "mode": 420
+      },
+      {
+        "path": "src/index.js",
+        "size": 150,
+        "mode": 420
+      },
+      {
+        "path": "src/inspection.js",
+        "size": 26701,
+        "mode": 420
+      },
+      {
+        "path": "src/inspectionDescriptors.js",
+        "size": 139528,
+        "mode": 420
+      },
+      {
+        "path": "src/layout/aspect.js",
+        "size": 2719,
+        "mode": 420
+      },
+      {
+        "path": "src/layout/canvas.js",
+        "size": 3458,
+        "mode": 420
+      },
+      {
+        "path": "src/layout/composition.js",
+        "size": 10272,
+        "mode": 420
+      },
+      {
+        "path": "src/layout/facets.js",
+        "size": 6236,
+        "mode": 420
+      },
+      {
+        "path": "src/layout/facetTopLane.js",
+        "size": 1410,
+        "mode": 420
+      },
+      {
+        "path": "src/layout/grid.js",
+        "size": 396,
+        "mode": 420
+      },
+      {
+        "path": "src/layout/guideCollisions.js",
+        "size": 1058,
+        "mode": 420
+      },
+      {
+        "path": "src/layout/labels.js",
+        "size": 23033,
+        "mode": 420
+      },
+      {
+        "path": "src/layout/legend.js",
+        "size": 2068,
+        "mode": 420
+      },
+      {
+        "path": "src/layout/legendGroup.js",
+        "size": 1807,
+        "mode": 420
+      },
+      {
+        "path": "src/layout/legendItems.js",
+        "size": 9369,
+        "mode": 420
+      },
+      {
+        "path": "src/layout/legendLane.js",
+        "size": 8009,
+        "mode": 420
+      },
+      {
+        "path": "src/layout/legendSpacing.js",
+        "size": 3775,
+        "mode": 420
+      },
+      {
+        "path": "src/layout/legendText.js",
+        "size": 766,
+        "mode": 420
+      },
+      {
+        "path": "src/layout/plotDrawOrder.js",
+        "size": 987,
+        "mode": 420
+      },
+      {
+        "path": "src/layout/text.js",
+        "size": 1783,
+        "mode": 420
+      },
+      {
+        "path": "src/layout/title.js",
+        "size": 4031,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/bars/aggregate.js",
+        "size": 5342,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/bars/histogram.js",
+        "size": 8172,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/bars/ranged.js",
+        "size": 4026,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/bars/resolve.js",
+        "size": 3690,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/categorySlotOffset.js",
+        "size": 1811,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/composition.js",
+        "size": 5277,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/compositionSnapshot.js",
+        "size": 3511,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/coordinateBounds.js",
+        "size": 8142,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/dataProvenance.js",
+        "size": 2671,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/density.js",
+        "size": 988,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/dependencies.js",
+        "size": 5094,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/encodings.js",
+        "size": 947,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/facetGuides/edit.js",
+        "size": 1914,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/facetGuides/index.js",
+        "size": 122,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/facetGuides/layout.js",
+        "size": 2834,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/facetGuides/legacyCategorical.js",
+        "size": 4067,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/facetGuides/owner.js",
+        "size": 7702,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/facetGuides/ownerLayout.js",
+        "size": 4314,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/facetGuides/placement.js",
+        "size": 9337,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/facetGuides/preparation.js",
+        "size": 9192,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/facetHeaders.js",
+        "size": 8932,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/facets.js",
+        "size": 6202,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/facetTopLane.js",
+        "size": 1484,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/graphicHierarchy.js",
+        "size": 4607,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/graphicTranslation.js",
+        "size": 2185,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/guides/layout.js",
+        "size": 2504,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/guides/resources.js",
+        "size": 6602,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/horizon.js",
+        "size": 990,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/layout.js",
+        "size": 2396,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/legendBorder.js",
+        "size": 1222,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/legendClip.js",
+        "size": 4492,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/legendGroups.js",
+        "size": 866,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/legends.js",
+        "size": 1193,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/legendText.js",
+        "size": 256,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/markClip.js",
+        "size": 1654,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/marks/capabilities.js",
+        "size": 6804,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/marks/grouping.js",
+        "size": 2377,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/marks/index.js",
+        "size": 6694,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/marks/pathOrder.js",
+        "size": 2389,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/marks/policies.js",
+        "size": 3682,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/planner.js",
+        "size": 3536,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/plotDrawOrder.js",
+        "size": 2087,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/rect.js",
+        "size": 5852,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/rectConfig.js",
+        "size": 1240,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/revisionIdentity.js",
+        "size": 466,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/rowEncoding.js",
+        "size": 3037,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/scaleGuideDependencies.js",
+        "size": 4328,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/scales/map.js",
+        "size": 1643,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/scales/policies/arc.js",
+        "size": 3446,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/scales/policies/bar.js",
+        "size": 4369,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/scales/policies/binnedPosition.js",
+        "size": 1326,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/scales/policies/offset.js",
+        "size": 2865,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/scales/policies/series.js",
+        "size": 3209,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/scales/resolve.js",
+        "size": 14868,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/selection/compatibility.js",
+        "size": 434,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/selection/filter.js",
+        "size": 1249,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/selection/items/arc.js",
+        "size": 2635,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/selection/items/bar.js",
+        "size": 8484,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/selection/items/common.js",
+        "size": 5889,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/selection/items/index.js",
+        "size": 338,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/selection/items/path.js",
+        "size": 3327,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/selection/items/point.js",
+        "size": 1089,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/selection/items/rect.js",
+        "size": 2284,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/selection/items/rule.js",
+        "size": 900,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/selection/items/tick.js",
+        "size": 1078,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/selection/path.js",
+        "size": 1015,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/selection/point.js",
+        "size": 3629,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/selection/policies/arc.js",
+        "size": 406,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/selection/policies/area.js",
+        "size": 389,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/selection/policies/bar.js",
+        "size": 391,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/selection/policies/index.js",
+        "size": 1669,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/selection/policies/line.js",
+        "size": 415,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/selection/policies/point.js",
+        "size": 396,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/selection/policies/rect.js",
+        "size": 389,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/selection/policies/rule.js",
+        "size": 415,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/selection/policies/tick.js",
+        "size": 415,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/selection/state.js",
+        "size": 2373,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/selection/styles.js",
+        "size": 6744,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/text.js",
+        "size": 18063,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/textLines.js",
+        "size": 776,
+        "mode": 420
+      },
+      {
+        "path": "src/materialization/typography.js",
+        "size": 2299,
+        "mode": 420
+      },
+      {
+        "path": "src/mcp/adapter.js",
+        "size": 7223,
+        "mode": 420
+      },
+      {
+        "path": "src/mcp/cli.js",
+        "size": 517,
+        "mode": 420
+      },
+      {
+        "path": "src/mcp/server.js",
+        "size": 3453,
+        "mode": 420
+      },
+      {
+        "path": "src/persistence.js",
+        "size": 7569,
+        "mode": 420
+      },
+      {
+        "path": "src/persistence/codec.js",
+        "size": 4929,
+        "mode": 420
+      },
+      {
+        "path": "src/persistence/validation.js",
+        "size": 30025,
+        "mode": 420
+      },
+      {
+        "path": "src/renderers/canvas/circle.js",
+        "size": 2050,
+        "mode": 420
+      },
+      {
+        "path": "src/renderers/canvas/fill.js",
+        "size": 1405,
+        "mode": 420
+      },
+      {
+        "path": "src/renderers/canvas/index.js",
+        "size": 9152,
+        "mode": 420
+      },
+      {
+        "path": "src/renderers/canvas/isolated.js",
+        "size": 8981,
+        "mode": 420
+      },
+      {
+        "path": "src/renderers/canvas/limits.js",
+        "size": 170,
+        "mode": 420
+      },
+      {
+        "path": "src/renderers/canvas/line.js",
+        "size": 1691,
+        "mode": 420
+      },
+      {
+        "path": "src/renderers/canvas/native.js",
+        "size": 5696,
+        "mode": 420
+      },
+      {
+        "path": "src/renderers/canvas/path.js",
+        "size": 3070,
+        "mode": 420
+      },
+      {
+        "path": "src/renderers/canvas/rect.js",
+        "size": 2225,
+        "mode": 420
+      },
+      {
+        "path": "src/renderers/canvas/stroke.js",
+        "size": 519,
+        "mode": 420
+      },
+      {
+        "path": "src/renderers/canvas/text.js",
+        "size": 3164,
+        "mode": 420
+      },
+      {
+        "path": "src/renderers/canvas/validation.js",
+        "size": 562,
+        "mode": 420
+      },
+      {
+        "path": "src/renderers/nativeBackend.js",
+        "size": 378,
+        "mode": 420
+      },
+      {
+        "path": "src/renderers/options.js",
+        "size": 537,
+        "mode": 420
+      },
+      {
+        "path": "src/renderers/pdf.js",
+        "size": 3250,
+        "mode": 420
+      },
+      {
+        "path": "src/renderers/png.js",
+        "size": 1541,
+        "mode": 420
+      },
+      {
+        "path": "src/renderers/svg.js",
+        "size": 21173,
+        "mode": 420
+      },
+      {
+        "path": "src/renderers/text.js",
+        "size": 63,
+        "mode": 420
+      },
+      {
+        "path": "src/selectors/axes.js",
+        "size": 2620,
+        "mode": 420
+      },
+      {
+        "path": "src/selectors/coordinates.js",
+        "size": 553,
+        "mode": 420
+      },
+      {
+        "path": "src/selectors/datasets.js",
+        "size": 2521,
+        "mode": 420
+      },
+      {
+        "path": "src/selectors/graphicCapacity.js",
+        "size": 1563,
+        "mode": 420
+      },
+      {
+        "path": "src/selectors/grids.js",
+        "size": 304,
+        "mode": 420
+      },
+      {
+        "path": "src/selectors/index.js",
+        "size": 123,
+        "mode": 420
+      },
+      {
+        "path": "src/selectors/layers.js",
+        "size": 2846,
+        "mode": 420
+      },
+      {
+        "path": "src/selectors/markClip.js",
+        "size": 1293,
+        "mode": 420
+      },
+      {
+        "path": "src/selectors/markOwners.js",
+        "size": 1458,
+        "mode": 420
+      },
+      {
+        "path": "src/selectors/scales.js",
+        "size": 1313,
+        "mode": 420
+      },
+      {
+        "path": "src/theme/defaults.js",
+        "size": 4518,
+        "mode": 420
+      },
+      {
+        "path": "src/version.js",
+        "size": 116,
+        "mode": 420
+      },
+      {
+        "path": "types/accessibility.d.ts",
+        "size": 1335,
+        "mode": 420
+      },
+      {
+        "path": "types/basic.d.ts",
+        "size": 3090,
+        "mode": 420
+      },
+      {
+        "path": "types/diagnostics.d.ts",
+        "size": 546,
+        "mode": 420
+      },
+      {
+        "path": "types/extension.d.ts",
+        "size": 1139,
+        "mode": 420
+      },
+      {
+        "path": "types/index.d.ts",
+        "size": 11151,
+        "mode": 420
+      },
+      {
+        "path": "types/inspection.d.ts",
+        "size": 3829,
+        "mode": 420
+      },
+      {
+        "path": "types/pdf.d.ts",
+        "size": 867,
+        "mode": 420
+      },
+      {
+        "path": "types/persistence.d.ts",
+        "size": 434,
+        "mode": 420
+      },
+      {
+        "path": "types/png.d.ts",
+        "size": 637,
+        "mode": 420
+      },
+      {
+        "path": "types/program.d.ts",
+        "size": 187985,
+        "mode": 420
+      },
+      {
+        "path": "types/svg.d.ts",
+        "size": 304,
+        "mode": 420
+      }
+    ],
+    "entryCount": 609,
+    "bundled": [],
+    "file": "/Users/hyeonjeon/Projects/ggaction-feature-review-0.0.19/.artifacts/lookup-data-package/ggaction-0.0.21.tgz",
+    "sha1": "02f737a705bb21ea75c2ac38c477b16ac6983ea9",
+    "sha256": "10e96585c97f8d619d82dba55d9708edd91a7636d96365784fecc8b8ff8cddf2",
+    "consumerRuntimeArtifact": "636e9e4e8cb887f837993985d8d91073cf4ee7ea22f13f2036c30e10662275d3",
+    "consumerArtifactDifferences": [
+      "README.md"
+    ],
+    "allRuntimeTypesKnowledgeFilesByteExactToVerifiedConsumer": true
+  },
+  "environmentDiagnostic": "Initial shell selected system Ruby2.6.10. Reused installed Ruby3.3.12/Bundler with explicit PATH; dependency preflight and full docs validation passed. CI remains pinned3.2.6; no package/source dependencies changed."
+}

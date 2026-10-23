@@ -7,6 +7,7 @@ import { decodeValue, encodeValue, encodeSharedValue, invalidSnapshot } from "./
 import { exactKeys, requireObject, STATE_KEYS, validateGraphic, validateProgramState, validateTrace } from "./persistence/validation.js";
 import {
   deriveTransformSchema,
+  datasetSchemaContext,
   inferDatasetSchema,
   validateDatasetSchema
 } from "./grammar/datasetSchema.js";
@@ -63,7 +64,7 @@ function restoreState(state, extensions, path = "payload", { requireSchemas = fa
     { requireSchemas }
   )]));
   const program = new ChartProgram({ ...state, children });
-  validateProgramState(program, path);
+  validateProgramState(program, path, { allowMissingLookupSchemas: !requireSchemas });
   if (requireSchemas) {
     for (const dataset of program.semanticSpec.datasets) {
       if (dataset.schema === undefined) {
@@ -96,7 +97,8 @@ function migrateStateSchemas(state) {
         sourceSchema,
         dataset.transform?.[0] ?? {},
         dataset.values,
-        { sourceId: dataset.source, ownerId: dataset.id, sourceTransform: byId.get(dataset.source)?.transform?.[0] }
+        datasetSchemaContext({...byId.get(dataset.source),schema:sourceSchema},dataset.transform?.[0]??{},dataset.id,
+          input=>({...byId.get(input),schema:schemaFor(input)}))
       );
     }
     active.delete(id);

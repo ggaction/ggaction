@@ -5,11 +5,24 @@ import {
   resolveTextBounds,
   textBoundsIntersect
 } from "../core/textMetrics.js";
+import { validateFacetHeaderRotations } from "../grammar/facetHeaders.js";
 import { resolveDisplayLabel } from "../grammar/displayLabels.js";
+import { resolveGraphicBounds } from "../layout/canvas.js";
+import { unionConcreteGraphicBounds } from "../grammar/schemas/graphicBounds.js";
+import { intersectClipBounds } from "../grammar/schemas/graphicClip.js";
 import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from "../theme/defaults.js";
+import { prepareFacetHeaderTitles } from "../layout/facetHeaderTitles.js";
+import { cartesianAxisOwners, axisGraphicIds } from "../selectors/axes.js";
+import { resolveFacetOuterSides } from "../grammar/facets/guides.js";
+import { resolveConcreteGraphicBounds } from "../grammar/schemas/graphicBounds.js";
+import { allLegendGraphicIds } from "./guides/resources.js";
 
 const SIDES = Object.freeze(["top", "right", "bottom", "left"]);
 const ZERO_SIDES = Object.freeze({ top: 0, right: 0, bottom: 0, left: 0 });
+
+export function facetHeaderGraphicId(facetId) {
+  return `${facetId}-headers`;
+}
 
 export function createDefaultFacetHeaders() {
   return {
@@ -31,6 +44,7 @@ export function normalizeFacetHeadersConfig(value) {
   if (!isPlainObject(value)) {
     throw new TypeError("Facet headers config must be a plain object.");
   }
+  validateFacetHeaderRotations(value);
   if (value.common === undefined && value.mode === undefined) {
     return {
       ...createDefaultFacetHeaders(),
@@ -140,14 +154,119 @@ function roleDescriptors(program, headers) {
   return [...columns, ...rows];
 }
 
-function laneThickness(descriptors, role, profile) {
+function hasRotation(config) {
+  return config.rotation !== undefined && config.rotation !== 0;
+}
+
+function rotatedBounds(descriptor, profile) {
+  return resolveTextBounds({
+    x: 0, y: 0, text: descriptor.text,
+    ...descriptor.config, textAlign: "center", textBaseline: "middle"
+  }, profile);
+}
+
+function headerThickness(descriptor, side, profile) {
+  if (hasRotation(descriptor.config)) {
+    const bounds = rotatedBounds(descriptor, profile);
+    return ["left", "right"].includes(side)
+      ? bounds.right - bounds.left : bounds.bottom - bounds.top;
+  }
+  return ["left", "right"].includes(side)
+    ? measureTextWidth(descriptor.text, descriptor.config, profile)
+    : descriptor.config.fontSize;
+}
+
+function plotMarginSpace(program) {
+  const space = { ...ZERO_SIDES };
+  if (program.compositionSpec.spacing !== "plot") return space;
+  for (const id of program.compositionSpec.children) {
+    const child = program.children[id], plot = resolveGraphicBounds(child);
+    const canvas = child.graphicSpec.objects.canvas.properties;
+    space.left = Math.max(space.left, plot.x);
+    space.top = Math.max(space.top, plot.y);
+    space.right = Math.max(space.right, canvas.width - plot.x - plot.width);
+    space.bottom = Math.max(space.bottom, canvas.height - plot.y - plot.height);
+  }
+  return space;
+}
+
+function headerReservation(descriptor, side, profile, space, outer) {
+  const amount = headerThickness(descriptor, side, profile) + descriptor.config.offset +
+    (descriptor.clearance?.[side] ?? 0);
+  return hasRotation(descriptor.config) && outer
+    ? Math.max(0, amount - space[side]) : amount;
+}
+
+function prepareContentBounds(program, descriptors, profile) {
+  if (!descriptors.some(item => item.config.anchor === "content")) return undefined;
+  if (program.compositionSpec.spacing !== "plot") {
+    throw new Error("Facet header content anchor requires plot spacing.");
+  }
+  const boundsById = new Map();
+  for (const id of program.compositionSpec.children) {
+    const child = program.children[id], plot = resolveGraphicBounds(child);
+    const bounds = { left: plot.x, right: plot.x + plot.width,
+      top: plot.y, bottom: plot.y + plot.height };
+    const owners = child.semanticSpec.layers.map(layer => layer.id)
+      .filter(owner => child.graphicSpec.objects[owner] !== undefined);
+    const marks = unionConcreteGraphicBounds(child.graphicSpec, owners, profile);
+    const canvas = child.graphicSpec.objects.canvas.properties;
+    const clipped = marks === undefined ? undefined : intersectClipBounds(marks,
+      { left: 0, right: canvas.width, top: 0, bottom: canvas.height });
+    boundsById.set(id, clipped === undefined || clipped.left > clipped.right || clipped.top > clipped.bottom
+      ? bounds : union([bounds, clipped]));
+  }
+  for (const descriptor of descriptors) {
+    if (descriptor.config.anchor !== "content") continue;
+    descriptor.clearance = { ...ZERO_SIDES };
+    for (const id of descriptor.ids ?? [descriptor.id]) {
+      const plot = resolveGraphicBounds(program.children[id]), bounds = boundsById.get(id);
+      for (const [side, amount] of Object.entries({ left: plot.x - bounds.left,
+        right: bounds.right - plot.x - plot.width, top: plot.y - bounds.top,
+        bottom: bounds.bottom - plot.y - plot.height })) {
+        descriptor.clearance[side] = Math.max(descriptor.clearance[side], amount);
+      }
+    }
+  }
+  return boundsById;
+}
+
+function laneThickness(descriptors, role, profile, space) {
   const visible = descriptors.filter(item => item.role === role && item.text !== "");
   if (visible.length === 0) return 0;
-  if (role === "column") {
-    return Math.max(...visible.map(item => item.config.fontSize + item.config.offset));
+  return Math.max(...visible.map(item => headerReservation(
+    item, item.config.side, profile, space, true
+  )));
+}
+
+export function retainedFacetGuideIds(program, childId) {
+  const spec = program.compositionSpec;
+  const child = program.children[childId];
+  const outer = spec.facet.guides.axes === "outer"
+    ? resolveFacetOuterSides({ placements: spec.facet.grid?.cells ?? spec.children.map((id, index) => ({
+      id, row: Math.floor(index / spec.columns), column: index % spec.columns
+    })) }) : undefined;
+  const ids = cartesianAxisOwners(child).flatMap(owner => axisGraphicIds(owner.channel, owner.id)
+    .filter((id, index) => index >= 2 && (outer === undefined ||
+      outer[owner.config?.[["line", "ticks", "labels", "title"][index]]?.position]?.includes(childId))));
+  for (const channel of ["theta", "radius", "parallel"]) {
+    if (child.guideConfigs.axis?.[channel] !== undefined) ids.push(...axisGraphicIds(channel).slice(2));
   }
-  return Math.max(...visible.map(item => measureTextWidth(item.text, item.config, profile) +
-    item.config.offset));
+  if (spec.facet.guides.legend === false) ids.push(...allLegendGraphicIds(Object.keys(child.guideConfigs.legend ?? {})));
+  return ids.filter(id => child.graphicSpec.objects[id] !== undefined);
+}
+
+function guideClearance(program, id) {
+  const child = program.children[id], plot = resolveGraphicBounds(child);
+  const bounds = retainedFacetGuideIds(program, id).map(target => resolveConcreteGraphicBounds(
+    child.graphicSpec, target, child.materializationConfigs.textMetrics
+  )).filter(Boolean);
+  return {
+    top: Math.max(0, ...bounds.map(bound => plot.y - bound.top)),
+    bottom: Math.max(0, ...bounds.map(bound => bound.bottom - plot.y - plot.height)),
+    left: Math.max(0, ...bounds.map(bound => plot.x - bound.left)),
+    right: Math.max(0, ...bounds.map(bound => bound.right - plot.x - plot.width))
+  };
 }
 
 export function prepareFacetHeaders(program, headersConfig) {
@@ -158,6 +277,25 @@ export function prepareFacetHeaders(program, headersConfig) {
   const rows = program.compositionSpec.facet.grid === undefined
     ? Math.ceil(program.compositionSpec.children.length / program.compositionSpec.columns)
     : Math.max(...program.compositionSpec.facet.grid.cells.map(cell => cell.row)) + 1;
+  const profile = program.materializationConfigs.textMetrics;
+  const roles = ["column", ...(program.compositionSpec.facet.grid === undefined ? [] : ["row"])]
+    .map(role => [role, resolveFacetHeaderConfig(headers, role)]);
+  const hasTitles = roles.some(([, config]) => config.title !== undefined);
+  if (program.compositionSpec.spacing === "plot") {
+    const clearances = new Map(program.compositionSpec.children.map(id => [id, guideClearance(program, id)]));
+    for (const descriptor of descriptors) {
+      descriptor.clearance = Object.fromEntries(SIDES.map(side => {
+        const overflow = Math.max(0, ...(descriptor.ids ?? [descriptor.id])
+          .map(id => clearances.get(id)[side]));
+        // Preserve an existing safe plot offset. If guide ink consumes that
+        // offset, move the complete header lane beyond the occupied guide.
+        return [side, overflow > descriptor.config.offset ? overflow : 0];
+      }));
+    }
+  }
+  const contentById = prepareContentBounds(program, descriptors, profile);
+  const space = hasTitles || descriptors.some(item => hasRotation(item.config))
+    ? plotMarginSpace(program) : ZERO_SIDES;
   const headerLayout = {
     outer: { ...ZERO_SIDES },
     cellRows: { top: Array(rows).fill(0), bottom: Array(rows).fill(0) }
@@ -167,12 +305,13 @@ export function prepareFacetHeaders(program, headersConfig) {
       if (descriptor.text === "") continue;
       const index = program.compositionSpec.children.indexOf(descriptor.id);
       const row = program.compositionSpec.facet.grid?.cells[index]?.row ?? Math.floor(index / program.compositionSpec.columns);
-      headerLayout.cellRows.top[row] = Math.max(headerLayout.cellRows.top[row], descriptor.config.offset + descriptor.config.fontSize);
+      headerLayout.cellRows.top[row] = Math.max(headerLayout.cellRows.top[row],
+        headerReservation(descriptor, "top", profile, space, row === 0));
     }
   }
   if (headers.mode === "roles") {
     const column = resolveFacetHeaderConfig(headers, "column");
-    const columnThickness = laneThickness(descriptors, "column", program.materializationConfigs.textMetrics);
+    const columnThickness = laneThickness(descriptors, "column", profile, space);
     if (program.compositionSpec.facet.grid === undefined) {
       const side = ["left", "right"].includes(column.side);
       if (side) {
@@ -185,21 +324,23 @@ export function prepareFacetHeaders(program, headersConfig) {
         if (descriptor.text !== "") {
           const reservations = side ? headerLayout.cellColumns : headerLayout.cellRows;
           const index = side ? descriptor.column : descriptor.row;
-          const thickness = side
-            ? measureTextWidth(descriptor.text, descriptor.config, program.materializationConfigs.textMetrics)
-            : descriptor.config.fontSize;
+          const last = side ? program.compositionSpec.columns - 1 : rows - 1;
+          const outer = ["top", "left"].includes(column.side) ? index === 0 : index === last;
           reservations[column.side][index] = Math.max(
-            reservations[column.side][index], thickness + descriptor.config.offset
+            reservations[column.side][index], headerReservation(descriptor, column.side, profile, space, outer)
           );
         }
       }
     } else {
       headerLayout.outer[column.side] = columnThickness;
       const row = resolveFacetHeaderConfig(headers, "row");
-      headerLayout.outer[row.side] = laneThickness(descriptors, "row", program.materializationConfigs.textMetrics);
+      headerLayout.outer[row.side] = laneThickness(descriptors, "row", profile, space);
     }
   }
-  return { headers, descriptors, headerLayout };
+  const titles = prepareFacetHeaderTitles({ roles, descriptors, space, headerLayout, profile,
+    ids: program.compositionSpec.children });
+  return { headers, descriptors, titles, headerLayout, ...(contentById === undefined ? {} : { contentById }),
+    ...((hasTitles || descriptors.some(item => hasRotation(item.config))) && profile !== undefined ? { profile } : {}) };
 }
 
 function horizontalAnchor(bounds, align) {
@@ -241,7 +382,39 @@ function placedCell(cell) {
   };
 }
 
-function roleItem(descriptor, cells, plots, spacing) {
+function placedContent(cell, bounds) {
+  return { left: cell.x + bounds.left, right: cell.x + bounds.right,
+    top: cell.y + bounds.top, bottom: cell.y + bounds.bottom };
+}
+
+function alignedBlockAnchor(start, end, minimum, maximum, align) {
+  if (align === "start") return start - minimum;
+  if (align === "end") return end - maximum;
+  return (start + end - minimum - maximum) / 2;
+}
+
+function rotatedRoleAnchor(descriptor, plot, snapshots, profile) {
+  const { config } = descriptor, bounds = rotatedBounds(descriptor, profile);
+  const common = { textAlign: "center", textBaseline: "middle", rotation: config.rotation };
+  if (["top", "bottom"].includes(config.side)) {
+    return {
+      ...common,
+      x: alignedBlockAnchor(plot.left, plot.right, bounds.left, bounds.right, config.align),
+      y: config.side === "top"
+        ? snapshots.top - config.offset - bounds.bottom
+        : snapshots.bottom + config.offset - bounds.top
+    };
+  }
+  return {
+    ...common,
+    x: config.side === "left"
+      ? snapshots.left - config.offset - bounds.right
+      : snapshots.right + config.offset - bounds.left,
+    y: alignedBlockAnchor(plot.top, plot.bottom, bounds.top, bounds.bottom, config.align)
+  };
+}
+
+function roleItem(descriptor, cells, plots, spacing, profile, contentById) {
   const selectedCells = descriptor.ids.map(id => cells.get(id));
   const missingCell = descriptor.ids.find((id, index) =>
     selectedCells[index] === undefined
@@ -256,38 +429,57 @@ function roleItem(descriptor, cells, plots, spacing) {
     placedPlot(selectedCells[index], plots.get(id))
   );
   const plot = union(selectedPlots);
-  const snapshots = spacing === "plot" ? plot : union(selectedCells.map(placedCell));
+  const snapshots = descriptor.config.anchor === "content"
+    ? union(descriptor.ids.map((id, index) => placedContent(selectedCells[index], contentById.get(id))))
+    : spacing === "plot" ? plot : union(selectedCells.map(placedCell));
   const config = descriptor.config;
+  if (hasRotation(config) || descriptor.topology === "role-title") {
+    const properties = rotatedRoleAnchor(descriptor, plot, snapshots, profile);
+    const axis = ["left", "right"].includes(config.side) ? "y" : "x";
+    if (config.alongOffset !== undefined) properties[axis] += config.alongOffset;
+    return { descriptor, snapshots, properties };
+  }
+  const clearance = config.anchor === "content" ? 0 : descriptor.clearance?.[config.side] ?? 0;
   let anchor;
   if (["top", "bottom"].includes(config.side)) {
     anchor = horizontalAnchor(plot, config.align);
     const top = config.side === "top";
     anchor.y = top
-      ? snapshots.top - config.offset - config.fontSize / 2
-      : snapshots.bottom + config.offset + config.fontSize / 2;
+      ? snapshots.top - clearance - config.offset - config.fontSize / 2
+      : snapshots.bottom + clearance + config.offset + config.fontSize / 2;
     anchor.textBaseline = "middle";
   } else {
     anchor = verticalAnchor(plot, config.align);
     const left = config.side === "left";
     anchor.x = left
-      ? snapshots.left - config.offset
-      : snapshots.right + config.offset;
+      ? snapshots.left - clearance - config.offset
+      : snapshots.right + clearance + config.offset;
     anchor.textAlign = left ? "right" : "left";
   }
   return { descriptor, snapshots, properties: anchor };
 }
 
-function legacyItem(descriptor, cell, plot, spacing) {
+function legacyItem(descriptor, cell, plot, spacing, profile, contentById) {
   if (cell === undefined || plot === undefined) {
     throw new Error(`Facet header requires cell and plot bounds for "${descriptor.id}".`);
+  }
+  const content = descriptor.config.anchor === "content"
+    ? placedContent(cell, contentById.get(descriptor.id)) : placedPlot(cell, plot);
+  if (hasRotation(descriptor.config) && spacing === "plot") {
+    const bounds = placedPlot(cell, plot);
+    return {
+      descriptor, snapshots: placedCell(cell),
+      properties: rotatedRoleAnchor({ ...descriptor, config: { ...descriptor.config, side: "top" } }, bounds, content, profile)
+    };
   }
   return {
     descriptor,
     snapshots: placedCell(cell),
     properties: {
       ...horizontalAnchor(placedPlot(cell, plot), descriptor.config.align),
-      y: spacing === "plot" ? cell.y + plot.y - descriptor.config.offset - descriptor.config.fontSize / 2 : cell.y + descriptor.config.offset,
-      textBaseline: "middle"
+      y: spacing === "plot" ? cell.y + plot.y - (descriptor.clearance?.top ?? 0) - descriptor.config.offset - descriptor.config.fontSize / 2 : cell.y + descriptor.config.offset,
+      textBaseline: "middle",
+      ...(hasRotation(descriptor.config) ? { rotation: descriptor.config.rotation } : {})
     }
   };
 }
@@ -307,7 +499,7 @@ function styledItem(item) {
   };
 }
 
-function assertRoleHeadersFit(records, items, layout, profile, plots) {
+function assertRoleHeadersFit(records, items, layout, profile, plots, contentById) {
   const bounds = items.map((item, index) => records[index].descriptor.text === ""
     ? undefined
     : resolveTextBounds(item.properties, profile));
@@ -317,7 +509,9 @@ function assertRoleHeadersFit(records, items, layout, profile, plots) {
         current.top < -1e-9 || current.bottom > layout.height + 1e-9 ||
         bounds.some((other, otherIndex) => otherIndex < index &&
           other !== undefined && textBoundsIntersect(other, current)) ||
-        layout.children.some(cell => textBoundsIntersect(current, layout.spacing === "plot" ? placedPlot(cell, plots.get(cell.id)) : placedCell(cell)))) {
+        layout.children.some(cell => textBoundsIntersect(current, contentById === undefined
+          ? layout.spacing === "plot" ? placedPlot(cell, plots.get(cell.id)) : placedCell(cell)
+          : placedContent(cell, contentById.get(cell.id))))) {
       throw new Error(
         "Facet role headers require sufficient non-overlapping reserved space."
       );
@@ -325,7 +519,7 @@ function assertRoleHeadersFit(records, items, layout, profile, plots) {
   }
 }
 
-function assertLegacyHeadersFit(items, layout, plotById, profile) {
+function assertLegacyHeadersFit(items, layout, plotById, profile, contentById) {
   const previous = [];
   for (let index = 0; index < items.length; index += 1) {
     if (items[index].properties.text === "") continue;
@@ -335,7 +529,9 @@ function assertLegacyHeadersFit(items, layout, plotById, profile) {
     if (bounds.left < 0 || bounds.right > layout.width ||
       bounds.top < 0 || bounds.bottom > layout.height ||
       previous.some(item => textBoundsIntersect(item, bounds)) ||
-      (layout.spacing === "plot" ? layout.children.some(other => textBoundsIntersect(bounds, placedPlot(other, plotById.get(other.id)))) : textBoundsIntersect(bounds, placedPlot(cell, plot)))) {
+      (layout.spacing === "plot" ? layout.children.some(other => textBoundsIntersect(bounds,
+        contentById === undefined ? placedPlot(other, plotById.get(other.id))
+          : placedContent(other, contentById.get(other.id)))) : textBoundsIntersect(bounds, placedPlot(cell, plot)))) {
       throw new Error(
         "Facet headers require sufficient non-overlapping space above every child plot."
       );
@@ -347,11 +543,11 @@ function assertLegacyHeadersFit(items, layout, plotById, profile) {
 export function resolveFacetHeaderItems(layout, plots, prepared) {
   const cells = new Map(layout.children.map(cell => [cell.id, cell]));
   const plotById = new Map(plots.map(plot => [plot.id, plot]));
-  const records = prepared.descriptors.map(descriptor => {
+  const records = [...prepared.descriptors, ...(prepared.titles ?? [])].map(descriptor => {
     if (descriptor.topology === "legacy") {
-      return legacyItem(descriptor, cells.get(descriptor.id), plotById.get(descriptor.id), layout.spacing);
+      return legacyItem(descriptor, cells.get(descriptor.id), plotById.get(descriptor.id), layout.spacing, prepared.profile, prepared.contentById);
     }
-    return roleItem(descriptor, cells, plotById, layout.spacing);
+    return roleItem(descriptor, cells, plotById, layout.spacing, prepared.profile, prepared.contentById);
   });
   return { records, items: records.map(styledItem), plotById };
 }
@@ -360,11 +556,11 @@ export function materializeFacetHeaders(program, layout, plots, prepared) {
   const profile = program.materializationConfigs.textMetrics;
   const { records, items, plotById } = resolveFacetHeaderItems(layout, plots, prepared);
   if (prepared.headers.mode === "legacy") {
-    assertLegacyHeadersFit(items, layout, plotById, profile);
+    assertLegacyHeadersFit(items, layout, plotById, profile, prepared.contentById);
   } else {
-    assertRoleHeadersFit(records, items, layout, profile, plotById);
+    assertRoleHeadersFit(records, items, layout, profile, plotById, prepared.contentById);
   }
-  const id = `${program.compositionSpec.id}-headers`;
+  const id = facetHeaderGraphicId(program.compositionSpec.id);
   return program
     .createGraphics({ id, type: "collection", parent: "canvas" })
     .editGraphics({ target: id, property: "items", value: items });

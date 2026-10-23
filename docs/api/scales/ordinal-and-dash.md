@@ -12,8 +12,9 @@ title: Ordinal and Stroke Dash Scales
 Band/point position, color, and stroke-dash encodings use ordered discrete
 domains. Automatic domains preserve first-appearance order. `ordinal` remains
 the appearance and offset lookup type; position uses explicit `band` or `point`.
-Color accepts both nominal and ordinal fields; ordinal is useful for discrete,
-ordered numeric categories and does not turn them into a continuous gradient.
+Color and stroke-dash accept nominal and ordinal fields. Ordinal preserves
+ordered categorical intent; it does not sort rows or turn numeric categories
+into a continuous mapping. Explicit domain order takes precedence.
 
 A band or point position scale uses `"auto"` or a numeric pair as its range.
 Automatic ranges use the plot bounds. Resolved band scales record signed
@@ -22,7 +23,10 @@ geometry with zero bandwidth. Marks, ticks, labels, and grids read the same
 resolved centers. Reversed explicit ranges are valid.
 
 Color ranges accept explicit colors or a named palette descriptor; stroke-dash
-ranges accept named styles and direct dash patterns.
+ranges accept named styles and direct dash patterns. Shape ranges and unknown fallbacks
+accept named shapes or [explicit simple polygons](../marks/point.md#explicit-polygon-shapes),
+including their area or radius normalization policy. Automatic shape ranges
+retain the fourteen named shapes; custom polygons require an explicit range.
 
 <!-- snippet-context:start -->
 
@@ -65,6 +69,20 @@ program.encodeStrokeDash({
 Semantic scale state preserves the names; the resolved scale, line paths, and
 legend symbols contain numeric patterns only. Pattern lengths use logical
 Canvas units and do not change with output pixel ratio.
+
+### Categories outside a fixed domain
+
+Set `scale.unknown` to a named style or direct pattern for valid categories
+outside the domain of a Cartesian line or rule. `[]` draws a solid stroke.
+The fallback never becomes a domain or legend entry, and different raw
+categories remain distinct line series. Missing or malformed categories still
+fail. Omitting the option retains strict domain checking. An automatic domain
+continues to include the original categories in first-appearance order.
+
+Use `editStrokeDashScale({ unknown: "dotted" })` to replace the fallback.
+Omission retains it; explicit `unknown: undefined` removes it. Removal fails
+atomically while any consumer still has an out-of-domain category. Parallel,
+polar, aggregate and binned path topologies do not support this fallback.
 
 ## Related
 

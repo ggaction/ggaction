@@ -1,4 +1,5 @@
 import {validateLegendClip} from "../../../grammar/legendClip.js";
+import { APPEARANCE_MARK_TYPES } from "../../../core/vocabulary.js";
 import { intrinsicLegendConfig } from "../../../materialization/legendGroups.js";
 import { action, closedAction } from "../../../core/action.js";
 import {
@@ -35,7 +36,7 @@ import { resolveEffectiveLegendBlockConfig } from "./blocks.js";
 export { STROKE_WIDTH_LEGEND_LABELS, STROKE_WIDTH_LEGEND_TITLE_STYLE };
 
 export function isStrokeWidthLegendLayer(layer) {
-  return ["line", "rule"].includes(layer?.mark?.type) &&
+  return APPEARANCE_MARK_TYPES.encodeStrokeWidth.includes(layer?.mark?.type) &&
     layer.encoding?.strokeWidth?.scale !== undefined;
 }
 
@@ -49,7 +50,7 @@ function resolveLayer(program, requested) {
   if (layer === undefined) {
     throw new Error(
       requested === undefined
-        ? "Stroke-width legend requires one eligible line or rule mark or an explicit target."
+        ? "Stroke-width legend requires one eligible line, rule or rect mark or an explicit target."
         : `Unknown stroke-width legend target "${requested}".`
     );
   }

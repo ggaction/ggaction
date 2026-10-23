@@ -62,7 +62,8 @@ export function getSourceDependentMarkSteps(program, sourceId) {
       getMarkMaterializationPolicy(layer)?.sourceDependent === true;
     const statistical = program.markConfigs?.[layer.id]
       ?.statisticalReference?.source === sourceId;
-    return sourceOwned || statistical
+    const filteredCompanion = program.markConfigs?.[layer.id]?.markFilter?.owner === sourceId;
+    return sourceOwned || statistical || filteredCompanion
       ? [getMarkMaterializationStep(program, layer) ??
           getExistingMarkRematerializationStep(program, layer)].filter(
           step => step !== undefined
@@ -166,7 +167,8 @@ export function reusePlannedMarkScales(program, steps, scaleIds) {
   const resolved = new Set(scaleIds);
   return steps.map(step => {
     const layer = findLayer(program, step.args?.id);
-    if (layer === undefined || getMarkMaterializationPolicy(layer)?.acceptsResolvedScales !== true ||
+    const policy = layer === undefined ? undefined : getMarkMaterializationPolicy(layer);
+    if (policy?.acceptsResolvedScales !== true || step.op !== policy.op ||
         !getLayerScaleIds(layer).every(id => resolved.has(id))) return step;
     return { ...step, args: { ...step.args, scales: false } };
   });

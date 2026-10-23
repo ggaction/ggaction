@@ -174,6 +174,15 @@
         ]
       },
       "modes": "atomic ordered dimensions; one namespaced scale and axis per dimension"
+    },
+    {
+      "action": "encodeDx / encodeDy",
+      "support": {
+        "text": [
+          "quantitative"
+        ]
+      },
+      "modes": "independent Text only; finite field or constant logical-pixel offsets, no scale or guide; field offsets establish row grain"
     }
   ],
   "color": [
@@ -209,7 +218,7 @@
           "ordinal"
         ]
       },
-      "options": "bar/area layout; arc overlay; palette and ordinal scale"
+      "options": "bar/area layout; arc overlay; palette and ordinal scale; explicit-domain row-owned Cartesian line color supports unknown paint"
     },
     {
       "mode": "Continuous",
@@ -231,9 +240,13 @@
         ],
         "area": [
           "quantitative"
+        ],
+        "tick": [
+          "quantitative",
+          "temporal"
         ]
       },
-      "options": "sequential scale; aggregate required for a different bar measure; area requires one finite value per existing series"
+      "options": "sequential scale; aggregate required for a different bar measure; area requires one finite value per existing series; tick paints its centered segment and rejects simultaneous stroke"
     },
     {
       "mode": "Discretized continuous",
@@ -252,9 +265,12 @@
         ],
         "area": [
           "quantitative"
+        ],
+        "tick": [
+          "quantitative"
         ]
       },
-      "options": "quantize, quantile, or threshold scale; area requires one finite value per existing series"
+      "options": "quantize, quantile, or threshold scale; area requires one finite value per existing series; tick maps colors per row"
     }
   ],
   "highlight": [
@@ -308,7 +324,8 @@
         "point",
         "aggregate bar",
         "rect",
-        "text"
+        "text",
+        "tick"
       ],
       "channels": "sequential color; gradient swatch, no symbol recipe"
     },
@@ -331,7 +348,8 @@
       "marks": [
         "point",
         "aggregate bar",
-        "rect"
+        "rect",
+        "tick"
       ],
       "channels": "quantize/quantile/threshold color; rectangle swatches"
     },

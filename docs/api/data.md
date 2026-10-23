@@ -19,6 +19,8 @@ operation; marks and renderers never mutate source values.
 | [Safe resource removal](./data/revisions-and-removal.md#removedata-id) | `removeData` | Delete one named dataset only after all live consumers are gone |
 | [Reusable summaries](./data/summaries-and-shaping.md#createsummarydata-id-source-groupby-aggregates-members) | `createSummaryData` | Materialize grouped multi-aggregate rows with optional members |
 | [Reusable bins](./data/summaries-and-shaping.md#createbindata-id-source-field-binoptions) | `createBinData` | Materialize shared one-dimensional bounds, counts, and optional members |
+| [Named table lookup](./data/summaries-and-shaping.md#named-table-lookup) | `createLookupData` | Copy reference fields while preserving primary rows |
+| [Aligned array data](./data/summaries-and-shaping.md#createflattendata-id-source-fields-as) | `createFlattenData` | Expand parallel array elements into aligned rows |
 | [Wide-to-long data](./data/summaries-and-shaping.md#createfolddata-id-source-fields-as) | `createFoldData` | Materialize selected fields as stable key/value rows |
 | [Computed data](./data/expressions-and-normalization.md#createcomputeddata-id-source-as-expression) | `createComputedData` | Add numeric, string, boolean, or nullable values using the closed expression grammar |
 | [Normalization](./data/expressions-and-normalization.md#createnormalizeddata-id-source-field-as-groupby-method) | `createNormalizedData` | Preserve rows while expressing values relative to a group, baseline, or range |

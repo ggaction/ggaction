@@ -10,20 +10,20 @@ const JITTER_OPTIONS = Object.freeze([
 ]);
 const REMOVE_OPTIONS = Object.freeze(["target"]);
 
-function isCartesianPoint(program, layer, channel) {
+function isCartesianPoint(program, layer) {
   return layer.mark?.type === "point" &&
-    layer.encoding?.[channel]?.scale !== undefined &&
-    layer.encoding?.[channel === "x" ? "y" : "x"]?.scale !== undefined &&
+    layer.encoding?.x?.scale !== undefined &&
+    layer.encoding?.y?.scale !== undefined &&
     findCoordinate(program, layer.coordinate)?.type === "cartesian";
 }
 
-function resolveJitterTarget(program, target, channel) {
+function resolveJitterTarget(program, target) {
   const requested = target === undefined
     ? undefined
     : validateUserId(target, "Point jitter target");
   return resolveEligibleLayer(program, {
     target: requested,
-    predicate: layer => isCartesianPoint(program, layer, channel),
+    predicate: layer => isCartesianPoint(program, layer),
     label: "point jitter"
   });
 }
@@ -35,7 +35,7 @@ export const jitterPoints = /* @__PURE__ */ closedAction(
   }, JITTER_OPTIONS,
   function (args = {}) {
     const policy = normalizePointJitterPolicy(args);
-    const layer = resolveJitterTarget(this, args.target, policy.channel);
+    const layer = resolveJitterTarget(this, args.target);
     if (this.materializationConfigs.pointPacking?.[layer.id] !== undefined) {
       throw new Error(`Point jitter on "${layer.id}" conflicts with point packing.`);
     }

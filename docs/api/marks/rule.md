@@ -133,13 +133,69 @@ const summarized = chart()
 ```
 
 The default `boundData` population ignores `filterMarks`. Choose `visibleItems` to recompute after mark filtering.
+On a distribution's measurement axis, `boundData` uses the original observations recorded by its density,
+ECDF, computed box-summary, or gradient transform. Summarized Dot, Lollipop, and Dumbbell endpoints likewise
+resolve their original source measurement; a Dumbbell's start and end retain their separate fields.
+Repeated observations retain their frequency; density
+samples and summary rows do not substitute for observations. Source groups remain available for `groupBy`.
+Precomputed box summaries retain their supplied data because original observations are unavailable.
+Horizon supports statistics only on a quantitative X axis, using original X observations rather than
+the repeated folded-band samples. Its Y coordinate is a folded fraction, so a Y statistic is rejected;
+temporal X is also outside the numeric statistical-reference contract.
 Selections and highlights do not filter statistical populations. An omitted `field` follows the source axis after
-re-encoding; an explicit field remains fixed. Statistical values use the source scale but never expand its automatic
-domain. They recompute for source-data, encoding, scale, Canvas, and facet replay, and are removed with their source.
+re-encoding; an explicit field remains fixed. Statistical values use the source position scale but never expand its
+automatic domain. Shared appearance scales do include the reference's groups, including groups hidden by a mark
+filter. They recompute for source-data, distribution-role revisions, encoding, scale, Canvas, and facet replay,
+and are removed with their source.
 
 Reference marks remain editable with ordinary mark, encoding, and scale actions. Refer to the
 [reference-line contract](../../reference/actions/marks.md#createreferenceline) and
 [reference-band contract](../../reference/actions/marks.md#createreferenceband) for binding, defaults, and removal behavior.
+
+## Statistical reference action
+
+Use `createStatisticalReference` to choose a line or data interval through one action in the full API:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `source: "points"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart } from "ggaction";
+
+const source = chart()
+  .createCanvas({ width: 600, height: 450, margin: 80 })
+  .createData({ values: [0, 10, 20, 30, 40].map(value => ({ x: value, y: value * 2, group: value < 20 ? "A" : "B" })) })
+  .createScatterPlot({ id: "points", x: "x", y: "y", guides: false });
+
+const mean = source.createStatisticalReference({ source: "points", axis: "y" });
+const groupedMean = source.createStatisticalReference({ source: "points", axis: "y", groupBy: "group" });
+const middle95 = source.createStatisticalReference({
+  source: "points", axis: "y",
+  statistics: [{ op: "quantile", p: 0.025 }, { op: "quantile", p: 0.975 }]
+});
+```
+
+The first branch creates a dark (`#222222`), 2.5-pixel solid mean line. Set `statistic` to mean, median, min, max,
+or a quantile using the existing `{ op, p? }` vocabulary. Supply an exact `statistics` pair instead for a gray
+(`#6b7280`) band with opacity `0.18`. Central 50% uses quantiles 0.25 and 0.75; central 95% uses 0.025 and 0.975.
+These describe the data distribution, not a confidence interval. Never supply both statistic keys.
+
+Use `groupBy: "group"` to compute one line or interval per observed source group on either axis.
+The field need not be mapped to color or an axis. Group order follows the source rows.
+When it matches the source Color field (without a color aggregate), each line defaults to that group's
+color using the same scale. Palette edits therefore update both the chart and the lines. Set `stroke`
+explicitly to override this; ungrouped lines or a different grouping field keep the dark default.
+The grouped output keeps its key in `group`; no group field names collide with statistical outputs.
+For `visibleItems`, a visible mark must belong to one group. If an aggregated mark mixes group values, use `boundData`.
+Filtering, re-encoding, facets and persistence keep the grouping; an omitted `groupBy` gives one overall result.
+
+Both branches use ID `statisticalReference` by default. To add multiple references, give each an explicit `id`.
+Line styles use the Rule options and band styles use Rect options. `population` and `field` retain the statistical
+reference binding described above; literal coordinates belong to the separate literal reference actions.
+The wrapper delegates to `createReferenceLine` or `createReferenceBand`, so native replay, editing and removal remain available.
 
 ## Related
 

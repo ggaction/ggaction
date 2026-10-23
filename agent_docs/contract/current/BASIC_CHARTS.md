@@ -25,6 +25,8 @@ Aggregate create-only는 child action 합성을 뜻하며 source rows의 통계 
   existing mark owner. Exact values, defaults, replay, and unsupported-family errors are owned by
   [the shared mark-style contract](MARKS.md#shared-stroke-and-rounded-rectangle-style-details).
 
+Existing Cartesian Scatter/Line/Bar/Histogram/Heatmap/Text, Area/Density/ECDF/Horizon and Cartesian endpoint/rug/strip/interval point styles also forward `clip?: boolean` to their existing mark owner. The [shared clipping contract](MARKS.md#shared-cartesian-plot-clipping) owns the exact behavior. Polar/Parallel styles do not expose this Cartesian option.
+
 ## Facade guide reuse
 
 - Scatter, Line, Bar, Histogram, Heatmap, Parallel, Violin과 Box/Gradient completion의 공통 계약이다.
@@ -67,6 +69,7 @@ createScatterPlot({
   size?: FieldName | SizeEncodingOptionsWithoutTarget;
   shape?: FieldName | ShapeEncodingOptionsWithoutTarget;
   point?: PointMarkAppearanceOptions & { radius?: NonNegativeFinite };
+  missing?: "error" | "skip";
   guides?: false | CreateGuidesOptions;
 }): ChartProgram;
 ```
@@ -104,6 +107,8 @@ createScatterPlot({
   `test/charts/cars-scatterplot/public.test.js`, and
   `test/charts/cars-scatterplot/png.render.js`.
 
+- `missing`은 기존 native mark missing-value policy로 그대로 전달한다. 생략하면 기존 mark 기본 동작을 보존한다. 원본 dataset은 변경하지 않는다. Evidence: `test/unit/actions/charts/facade-missing-policy.test.js`.
+
 ## `createLinePlot`
 
 ```typescript
@@ -124,6 +129,8 @@ createLinePlot({
 - Stable default ID is `linePlot`.
 - Line y는 quantitative/temporal이므로 `guides.grid.horizontal.bandPosition`은 허용하지 않는다. Categorical x가 band scale일 때만 `guides.grid.vertical.bandPosition: "center" | "boundary"`를 사용한다. Facade grid는 자기 line의 channel/scale/coordinate만 참조하며 별도 auxiliary band scale로 이 제약을 우회하지 않는다. Evidence: `test/contracts/line-grid-role-contract.test.js`.
 - `line.tension`은 cardinal 곡선의 `[0,1]` 장력을 `createLineMark`에 전달한다. 생략은 기존 0이다.
+- `line.missing`은 `"error" | "break"`이며 생략은 기존 strict 처리다. 직접 Cartesian
+  quantitative/temporal 위치에서만 break를 지원하며 세부 규칙은 MARKS.md의 createLineMark가 소유한다.
 - Hierarchy: `createLineMark`, `encodeX`, `encodeY`, optional `encodeGroup` then `encodeColor`/`encodeStrokeDash`,
   optional `createGuides`.
 - Explicit groupBy is a single field or non-empty unique tuple and exclusively defines path identity.
@@ -166,6 +173,7 @@ createBarPlot({
   color?: FieldName | ColorEncodingOptionsWithoutTarget;
   width?: BarWidthOptionsWithoutTarget;
   bar?: BarMarkAppearanceOptions;
+  missing?: "error" | "skip";
   guides?: false | CreateGuidesOptions;
 }): ChartProgram;
 ```
@@ -177,6 +185,7 @@ createBarPlot({
   자동 measure domain에는 baseline0이 참여한다. 폭은 기본5px 또는 width.pixels이며 band 폭과 stack/group은
   거부한다. 기존 category/temporal/aggregate/histogram에는 orientation을 지정하지 않는다.
   Evidence: `test/unit/actions/charts/numeric-bar-centers.test.js`.
+- `x:{field,bin}` + `y:{field,aggregate}`는 numeric-center가 아닌 bin/series 집계 막대다. 서로 다른 X/Y를 지원하고 각 rect는 bin lower/upper 전체 폭을 사용한다. Count는 기존 histogram 기본 stack, 다른 집계는 기본 overlay이며 Color layout 또는 layoutSeries로 stack/fill/group/overlay/diverging을 선택한다. 비어 있는 bin은 생략한다. Native source data와 경계를 보존하고 scale/Canvas/labels/persistence에서 같은 grain을 사용한다. Evidence: `test/unit/actions/charts/binned-bar-aggregate.test.js`.
 - 한 위치 channel은 `{ lower, upper, fieldType?: "quantitative", scale? }` raw interval을 받는다. 다른 channel은 categorical/temporal 또는 numeric field다. 양쪽 range, field/aggregate/stack과 range의 혼합은 거부한다.
 - Raw range는 category-first `encodeXRange`/`encodeYRange`를 호출하고 입력 행을 합치지 않는다. 여러 구간 layer와 raw line이 compatible value scale을 공유하고 resize/facet에도 경계·폭·그리기 순서를 유지한다.
 - Hierarchy: `createBarMark`, category-first position actions (`encodeX`→`encodeY` vertically,
@@ -212,6 +221,8 @@ createBarPlot({
   `test/unit/actions/charts/bar-histogram-facades.test.js`,
   `test/charts/jobs-grouped-bar/public.test.js`, and
   `test/charts/jobs-grouped-bar/png.render.js`.
+
+- `missing`은 기존 native mark missing-value policy로 그대로 전달한다. 생략하면 기존 mark 기본 동작을 보존한다. 원본 dataset은 변경하지 않는다. Evidence: `test/unit/actions/charts/facade-missing-policy.test.js`.
 
 ## `createHistogram`
 

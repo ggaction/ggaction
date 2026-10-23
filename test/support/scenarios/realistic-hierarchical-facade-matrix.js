@@ -1,3 +1,4 @@
+import { currentFacadeOptionWitnesses } from "./current-facade-option-witnesses.js";
 import { appendFacadeLegendCombinations } from "./realistic-facade-legend-combinations.js";
 import { realisticColorControls, realisticPaletteRange, appendRealisticColorControls } from "./realistic-color-controls.js";
 const POSITION_TYPES = Object.freeze(["linear", "log", "pow", "sqrt", "symlog"]);
@@ -975,7 +976,7 @@ function appendPolarScatter(program, index) {
       : undefined,
     radiusValues: [numericFieldValue(program, "analysisRows", "positiveY")]
   });
-  return removeWitness(program.createPolarScatterPlot(options), suffix);
+  return removeWitness(program.createPolarScatterPlot(currentFacadeOptionWitnesses(options,{action:"createPolarScatterPlot",index,program:program})), suffix);
 }
 
 function appendPolarLine(program, index) {
@@ -1018,7 +1019,7 @@ function appendPolarLine(program, index) {
     ),
     radiusValues: [numericFieldValue(program, "analysisRows", "positiveY")]
   });
-  return removeWitness(program.createPolarLinePlot(options), suffix);
+  return removeWitness(program.createPolarLinePlot(currentFacadeOptionWitnesses(options,{action:"createPolarLinePlot",index,program:program})), suffix);
 }
 
 function appendRadar(program, index) {
@@ -1087,13 +1088,13 @@ function appendRadar(program, index) {
     legendOrderValues: categoryValues(next, source, "group"),
     radiusValues: [numericFieldValue(next, source, "positiveY")]
   }) : false;
-  return removeWitness(next.createRadarPlot(options), suffix);
+  return removeWitness(next.createRadarPlot(currentFacadeOptionWitnesses(options,{action:"createRadarPlot",index,program:next})), suffix);
 }
 
 function appendRug(program, index) {
   const suffix = `matrix-rug-${index}`;
   const horizontal = index % 2 === 0;
-  const temporal = index >= 12;
+  const temporal = index >= 12 && index < 36;
   const temporalUnit = temporal
     ? TEMPORAL_UNITS[Math.floor((index - 12) / 2) % TEMPORAL_UNITS.length]
     : undefined;
@@ -1101,6 +1102,10 @@ function appendRug(program, index) {
     temporal,
     temporalUnit
   });
+  if (index >= 36) {
+    measure.scale.type="linear";
+    for(const property of ["base","exponent","constant"])delete measure.scale[property];
+  }
   if (index === 12) Object.assign(measure.scale, { nice: false, clamp: true });
   if (index === 13) Object.assign(measure.scale, { nice: true, clamp: false, reverse: true });
   const edge = horizontal
@@ -1156,7 +1161,7 @@ function appendRug(program, index) {
       guide.title.rotation.unit = "degrees";
     }
   }
-  return removeWitness(program.createRugPlot(options), suffix);
+  return removeWitness(program.createRugPlot(currentFacadeOptionWitnesses(options,{action:"createRugPlot",index,program:program})), suffix);
 }
 
 function appendStrip(program, index) {
@@ -1279,7 +1284,7 @@ function appendStrip(program, index) {
     }
     if (options.guides.grid !== false) options.guides.grid.horizontal = true;
   }
-  return removeWitness(program.createStripPlot(options), suffix);
+  return removeWitness(program.createStripPlot(currentFacadeOptionWitnesses(options,{action:"createStripPlot",index,program:program})), suffix);
 }
 
 function appendBeeswarm(program, index) {
@@ -1416,7 +1421,7 @@ function appendBeeswarm(program, index) {
     }
     if (options.guides.grid !== false) options.guides.grid.horizontal = true;
   }
-  return removeWitness(program.createBeeswarmPlot(options), suffix);
+  return removeWitness(program.createBeeswarmPlot(currentFacadeOptionWitnesses(options,{action:"createBeeswarmPlot",index,program:program})), suffix);
 }
 
 function appendRaincloud(program, index) {
@@ -1622,17 +1627,17 @@ function appendRaincloud(program, index) {
     if (index === 3) options.guides.grid.vertical = true;
     if (index === 4) options.guides.grid.horizontal = true;
   }
-  const bestEffort = program.createRaincloudPlot(options);
+  const bestEffort = program.createRaincloudPlot(currentFacadeOptionWitnesses(options,{action:"createRaincloudPlot",index,program:program}));
   const unresolved = bestEffort.materializationConfigs.pointPacking?.[guideTarget]
     ?.resolved?.unresolvedItemCount;
   const created = index === 0 && unresolved === 0
-    ? program.createRaincloudPlot({
+    ? program.createRaincloudPlot(currentFacadeOptionWitnesses({
         ...options,
         points: {
           ...options.points,
           packing: { ...options.points.packing, overflow: "error" }
         }
-      })
+      },{action:"createRaincloudPlot",index,program}))
     : bestEffort;
   const owner = Object.keys(created.markConfigs).find(id =>
     created.markConfigs[id].raincloudPlot?.id === suffix);
@@ -1766,7 +1771,7 @@ function appendArea(program, index) {
     xFormat: index === 4 ? ".1f" : "auto",
     yFormat: index === 3 ? ".1f" : "auto"
   });
-  next = removeWitness(next.createAreaPlot(options), suffix);
+  next = removeWitness(next.createAreaPlot(currentFacadeOptionWitnesses(options,{action:"createAreaPlot",index,program:next})), suffix);
   if (index === 29 || index === 31) {
     const direction = index === 29 ? "vertical" : "horizontal";
     const grid = options.guides.grid[direction];
@@ -1774,7 +1779,7 @@ function appendArea(program, index) {
       ...options.guides.grid, [direction]: { ...grid,
         bandPosition: grid.bandPosition === "center" ? "boundary" : "center" }
     } } };
-    next = removeWitness(next.createAreaPlot(alternate), suffix);
+    next = removeWitness(next.createAreaPlot(currentFacadeOptionWitnesses(alternate,{action:"createAreaPlot",index,program:next})), suffix);
   }
   return next;
 }
@@ -1829,7 +1834,7 @@ function appendDensity(program, index) {
     xFormat: index === 4 ? ".1f" : "auto",
     yFormat: index === 3 ? ".1f" : "auto"
   });
-  return removeWitness(program.createDensityPlot(options), suffix);
+  return removeWitness(program.createDensityPlot(currentFacadeOptionWitnesses(options,{action:"createDensityPlot",index,program:program})), suffix);
 }
 
 function appendHorizon(program, index) {
@@ -1883,7 +1888,7 @@ function appendHorizon(program, index) {
       ? [numericFieldValue(program, "analysisRows", "positiveX")]
       : undefined
   });
-  return removeWitness(program.createHorizonPlot(options), suffix);
+  return removeWitness(program.createHorizonPlot(currentFacadeOptionWitnesses(options,{action:"createHorizonPlot",index,program:program})), suffix);
 }
 
 function radialOptions(program, action, index) {
@@ -1949,7 +1954,7 @@ function radialOptions(program, action, index) {
 
 function appendRadial(program, action, index) {
   const { suffix, options } = radialOptions(program, action, index);
-  return removeWitness(program[action](options), suffix);
+  return removeWitness(program[action](currentFacadeOptionWitnesses(options,{action,index,program})), suffix);
 }
 
 export function appendHierarchicalFacadeCoverage(program) {
@@ -1965,6 +1970,7 @@ export function appendHierarchicalFacadeCoverage(program) {
       }
     }
   }
+  for(const index of [36,37,38,39,41,43])next=appendRug(next,index);
   next = appendPaletteRangeProfiles(next, [34, 35]);
   for (const action of ["createPolarScatterPlot", "createStripPlot", "createBeeswarmPlot", "createRaincloudPlot"]) {
     next = appendFacadeLegendCombinations(next, {action,xField:"positiveX",yField:"positiveY",categoryField:"group",numberField:"rowOrdinal",

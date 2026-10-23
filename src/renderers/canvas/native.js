@@ -1,4 +1,5 @@
 import { resolveLinearGradientCoordinates } from "../../grammar/paint.js";
+import { validateGraphicClip } from "../../grammar/schemas/graphicClip.js";
 import { resolvePathCommandBounds } from
   "../../grammar/schemas/graphicBounds.js";
 import { walkGraphicTreeEvents } from
@@ -143,6 +144,12 @@ export function preflightCanvasGraphicSpec(target, scale = 1) {
         offset = id === target.canvasId ? undefined : parent;
       }
       preflightGraphic(id, object, scale, object.type, offset);
+      if (object.clip !== undefined) {
+        const clip = validateGraphicClip(object.clip, object.type);
+        requireProperties(clip, ["x", "y", "width", "height"], `Graphic "${id}" Canvas clip`, scale, offset);
+        requireCanvasNativeValue(clip.x + clip.width, `Graphic "${id}" Canvas clip`, scale, offset?.[0]);
+        requireCanvasNativeValue(clip.y + clip.height, `Graphic "${id}" Canvas clip`, scale, offset?.[1]);
+      }
     },
     item({ id, object, owner }) {
       preflightGraphic(

@@ -692,6 +692,7 @@ function buildCartesianGuideLifecycle(factors) {
       text: lifecycleTitle(factors, "Guide-rich relationship"),
       subtitle: "Every public edit and removal path"
     })
+    .editAxes({x:{labels:{fontSize:11}},y:{labels:{fontSize:11}}})
     .editXAxisTicksAndLabels({
       count: factors.tickCount,
       ticks: { length: 8, lineWidth: 1.5 },
@@ -1171,7 +1172,12 @@ function addDirectDerivedDataEdits(program) {
       method: "constant",
       value: 0
     })
-    .editImputedData({ target: "editImputed", value: 1 });
+    .editImputedData({ target: "editImputed", value: 1 })
+    .createData({id:"alignedSource",values:values.map(row=>({...row,pair:[row.x,row.y]}))})
+    .createFlattenData({id:"alignedValues",source:"alignedSource",fields:["pair"],as:["expandedValue"]})
+    .editFlattenData({target:"alignedValues",as:["coordinateValue"]})
+    .createLookupData({id:"joinedRows",source:"editSource",field:"x",lookup:{data:"alignedSource",key:"x",fields:["y"],as:["lookupValue"]}})
+    .editLookupData({target:"joinedRows",lookup:{data:"alignedSource",key:"x",fields:["value"],as:["lookupValue"]}});
 }
 
 function buildDirectDataResources(factors) {
@@ -1256,6 +1262,7 @@ function buildDirectDataResources(factors) {
     .createPointMark({ id: "resourcePoints", data: "directSource" })
     .encodeX({ target: "resourcePoints", field: "x" })
     .encodeY({ target: "resourcePoints", field: "positive" })
+    .createStatisticalReference({id:"resourceMean",source:"resourcePoints",axis:"y"})
     .createDotPlot({
       id: "directDot",
       data: "directSource",
@@ -1361,6 +1368,8 @@ function buildDirectPointText(factors) {
       scale: { id: "y" }
     })
     .encodeText({ target: "appearanceLabels", field: "label" })
+    .encodeDx({target:"appearanceLabels",value:1})
+    .encodeDy({target:"appearanceLabels",value:-1})
     .editTextMark({
       target: "appearanceLabels",
       fill: factors.fill,
@@ -1373,7 +1382,12 @@ function buildDirectPointText(factors) {
     .applyTextMetrics({
       profile: { schemaVersion: 1, id: "appearanceMetrics", measurements: [] }
     })
-    .removeTextMetrics();
+    .removeTextMetrics()
+    .createData({id:"radarAppearanceRows",values:rows.map((row,index)=>({...row,seriesKey:index}))})
+    .createCoordinate({id:"appearanceRadar",type:"polar"})
+    .createRadarPlot({id:"appearanceRadarPlot",data:"radarAppearanceRows",coordinate:"appearanceRadar",wide:{fields:["x","positive","opacity"]},groupBy:"seriesKey",guides:false})
+    .editRadarPlot({target:"appearanceRadarPlot",wide:{fields:["positive","opacity","x"]}})
+    .removeMark({target:"appearanceRadarPlot"});
 }
 
 function directRangeRows(dataset) {

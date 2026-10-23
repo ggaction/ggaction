@@ -43,6 +43,9 @@ type MarkSelector =
 - Bar semantic geometry는 start endpoint `x`/`y`와 end endpoint `x2`/`y2`를 사용한다. Concrete rect는
   property `x`/`y`(top-left), `width`/`height`를 사용한다. 예를 들어 vertical zero-based stack의 전체 높이는
   `channel: "y2"`, concrete pixel 높이는 `property: "height"`로 선택한다.
+- Mark owner clipping changes visible bounds only. Selection properties retain the original concrete item geometry,
+  including multi-segment stack unions and fully invisible items. Existing nested Canvas viewport behavior is preserved.
+  Evidence: `test/unit/actions/marks/plot-clipping.test.js`.
 - Stable key는 semantic item identity에서 만들며 collection child order를 selector identity로 사용하지 않는다.
   Multi-row path의 field/channel은 series grain에서 값이 하나로 unique할 때만 selectable하다.
   Explicit tuple group의 각 field를 선택할 수 있으며 Line/Area의 stroke와 Line의
@@ -66,9 +69,19 @@ type MarkSelector =
   `mode`가 필요하다. `replace`는 canonical source에서 새 recipe를 시작하고 `compose`는 기존 recipe 결과에
   다음 selector를 순서대로 적용한다. 이전 filtered dataset을 downstream dataset이 참조하면 그 snapshot은
   보존하고 `${target}FilteredData2`, `3`, …의 첫 빈 revision ID를 사용한다.
+- Raincloud parent: an explicit facade ID accepts field/item selectors over raw observations and
+  recomputes all enabled components. Comparisons, sets, ranges and grouped ranks use the same
+  selector algebra. The recipe is retained across appearance/component edits; explicit source
+  replacement clears it. Parent filters require nonempty input for enabled statistics. Named
+  child IDs retain display-only filtering, including empty views.
 - Native grain: aggregate/ranged bar는 selected cell members, stacked bar는 complete selected stack members,
   line/area는 selected series members, arc는 selected sector members, rule/Tick은 selected line members를 보존한다. Histogram은 filtering 전 resolved
   boundaries를 explicit semantic boundaries로 고정해서 selected bins가 subset domain에서 다시 나뉘지 않게 한다.
+  직접 line의 `missing: "break"`는 선택된 logical series의 보이지 않는 null/absent 좌표 행도 보존해
+  filtering 후 구간이 연결되지 않게 한다. Selection item의 실제 sourceIndices는 유효한 vertex만 소유한다.
+  결측 판정과 구간 순서는 [MARKS.md](./MARKS.md)의 line 계약을 따른다.
+- Box owner의 선택은 category 전체를 보존한다. 소유 median/whisker/cap은 같은 filtered summary로 rebind하고,
+  outlier는 선택된 category만 보존한다. empty/compose/replace/remove도 모든 owned component에 함께 적용한다.
 - Rematerialization: target scale을 deduplicate한 순서로 resolve하고 target과 그 scale을 공유하는 모든
   complete mark 및 source-dependent mark를 다시 만든 뒤 connected axes,
   grids와 legends를 갱신한다. Coupled categorical legend scales는 intermediate mismatch를 노출하지 않고 final
@@ -239,7 +252,7 @@ type MarkSelector =
 - Selection source: inline `select`, explicit `selection`, current unique compatible selection 순으로 resolve한다.
   Inline selection은 real wrapped `selectMarks` child를 호출하며 `select`와 `selection`은 함께 쓸 수 없다.
 - Current mark capability: point, bar, line, area, arc, rule and Tick. Omitted appearance uses accent `#dc2626`. Point default size is area
-  multiplier `2`; `shape` accepts the shared 12 point shapes and logical offset is available. Point/bar `color` aliases
+  multiplier `2`; `shape` accepts the shared fourteen named shapes or explicit simple polygons from MARKS.md, and logical offset is available. Point/bar `color` aliases
   fill and conflicts with explicit `fill`. Bar rejects shape, size, offset and strokeDash. Area uses fill with optional
   stroke and rejects shape, size and strokeDash. Arc uses the same fill, optional outline, and path-offset recipe.
   Line/rule/Tick use stroke with optional width and shared named/array dash.
@@ -266,6 +279,7 @@ type MarkSelector =
 - Selection flow
   - ✅ Covered: inline and reusable selection, source conflict, inferred current selection and target agreement.
 - Point appearance
+  - Polygon replacement preflights resulting selected polygon commands plus retained path commands against the common 10,000,000 work limit before allocation. Oversized highlights fail atomically; mark/Canvas/data replay repeats the same check.
   - ✅ Covered: shortest default, color/fill conflict, opacity, stroke/width dependency, shape, size, offset and errors.
   - ✅ Covered: every supported point shape as a highlighted replacement through the shared point-shape grammar.
 - Bar appearance and grain

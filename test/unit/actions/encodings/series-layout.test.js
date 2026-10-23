@@ -60,6 +60,34 @@ test("a missing endpoint breaks all stacked series at the same source position",
   assert.ok(derive(zero).series.every(s => s.values.every(point => point.y === 0 && point.y2 === 0)));
 });
 
+test("explicit completion keeps sparse means as gaps and count zeros as zeros through layout edits", () => {
+  const sparse = ["a", "b"].flatMap(series => [0, 1, 2, 3, 4].filter(x => !(series === "b" && x === 2))
+    .map(x => ({ x, series, value: series === "a" ? 2 : 3 })));
+  const completed = base(sparse).createCompleteData({ id: "aligned", source: "data", key: "x", groupBy: "series" });
+  const prepared = completed.createAreaPlot({ id: "m", data: "aligned", x: "x", y: "value", groupBy: "series", missing: "break", guides: false });
+  for (const mode of ["stack", "fill", "center"]) {
+    const p = prepared.layoutSeries({ target: "m", mode });
+    const data = p.semanticSpec.datasets.find(dataset => dataset.id === layer(p).data);
+    assert.equal(data.values.find(row => row.series === "b" && row.x === 2).value, null);
+    assert.deepEqual(deriveAreaSeries(data.values, layer(p)).series.map(s => s.values.map(v => v.x)), [[0, 1], [3, 4], [0, 1], [3, 4]]);
+  }
+  const counted = base(sparse).createCompleteData({ id: "aligned", source: "data", key: "x", groupBy: "series", fill: { value: 0 } })
+    .createAreaPlot({ id: "m", data: "aligned", x: "x", y: "value", groupBy: "series", missing: "break", layout: "stack", guides: false });
+  assert.equal(items(counted).length, 2);
+  const edited = counted.editCompleteData({ target: "aligned", fill: { value: null } });
+  assert.equal(items(edited).length, 4);
+  assert.equal(items(counted).length, 2);
+});
+
+test("explicit break produces empty geometry when no adjacent complete samples remain", () => {
+  const sparse = [{ x: 0, series: "a", value: 2 }, { x: 1, series: "b", value: 3 }];
+  const p = base(sparse).createCompleteData({ id: "aligned", source: "data", key: "x", groupBy: "series" })
+    .createAreaPlot({ id: "m", data: "aligned", x: "x", y: "value", groupBy: "series", missing: "break", layout: "stack", guides: false });
+  assert.equal(items(p).length, 0);
+  assert.ok(p.resolvedScales.x.domain.every(Number.isFinite));
+  assert.ok(p.resolvedScales.y.domain.every(Number.isFinite));
+});
+
 test("invalid area layout edits preserve every state and caller input", () => {
   const p = area();
   assertAtomicFailures(p, [

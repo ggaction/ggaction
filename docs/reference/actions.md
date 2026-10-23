@@ -60,6 +60,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createECDFPlot`](./actions/charts-data.md#createecdfplot) | H0, H1 | user-facing | charts |
 | [`createErrorBand`](./actions/statistics.md#createerrorband) | H1 | user-facing | statistics |
 | [`createErrorBar`](./actions/statistics.md#createerrorbar) | H1 | user-facing | statistics |
+| [`createFlattenData`](./actions/statistics.md#createflattendata) | H1 | user-facing | statistics |
 | [`createFoldData`](./actions/statistics.md#createfolddata) | H1 | user-facing | statistics |
 | [`createGradientPlot`](./actions/statistics.md#creategradientplot) | H0, H1 | user-facing | statistics |
 | [`createGraphics`](./actions/extension.md#creategraphics) | H4 | primitive | primitives |
@@ -76,6 +77,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createLineMark`](./actions/marks.md#createlinemark) | H2 | user-facing | marks |
 | [`createLinePlot`](./actions/charts-data.md#createlineplot) | H0 | user-facing | charts |
 | [`createLollipopPlot`](./actions/charts-data.md#createlollipopplot) | H0, H1 | user-facing | charts |
+| [`createLookupData`](./actions/statistics.md#createlookupdata) | H1 | user-facing | statistics |
 | [`createMarkLabels`](./actions/marks.md#createmarklabels) | H1, H2 | user-facing | marks |
 | [`createNormalizedData`](./actions/statistics.md#createnormalizeddata) | H1 | user-facing | statistics |
 | [`createParallelAxes`](./actions/guides.md#createparallelaxes) | H3 | user-facing | axes |
@@ -110,6 +112,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createScatterPlot`](./actions/charts-data.md#createscatterplot) | H0 | user-facing | charts |
 | [`createSortedData`](./actions/statistics.md#createsorteddata) | H1 | user-facing | statistics |
 | [`createStackData`](./actions/statistics.md#createstackdata) | H1 | user-facing | statistics |
+| [`createStatisticalReference`](./actions/marks.md#createstatisticalreference) | H1, H2 | user-facing | marks |
 | [`createStripPlot`](./actions/charts-data.md#createstripplot) | H0 | user-facing | charts |
 | [`createSummaryData`](./actions/statistics.md#createsummarydata) | H1 | user-facing | statistics |
 | [`createTextMark`](./actions/marks.md#createtextmark) | H2 | user-facing | marks |
@@ -140,6 +143,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createYAxisTitle`](./actions/guides.md#createyaxistitle) | H3 | user-facing | axes |
 | [`editArcMark`](./actions/marks.md#editarcmark) | H3 | user-facing | marks |
 | [`editAreaMark`](./actions/marks.md#editareamark) | H3 | user-facing | marks |
+| [`editAxes`](./actions/guides.md#editaxes) | H3 | user-facing | axes |
 | [`editBarMark`](./actions/marks.md#editbarmark) | H3 | user-facing | marks |
 | [`editBin2DData`](./actions/charts-data.md#editbin2ddata) | H2 | user-facing | core |
 | [`editBinData`](./actions/statistics.md#editbindata) | H1, H3 | user-facing | statistics |
@@ -164,6 +168,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editFacetScales`](./actions/charts-data.md#editfacetscales) | H3 | user-facing | composition |
 | [`editFacetSource`](./actions/charts-data.md#editfacetsource) | H3 | user-facing | composition |
 | [`editFilteredData`](./actions/charts-data.md#editfiltereddata) | H2 | user-facing | core |
+| [`editFlattenData`](./actions/statistics.md#editflattendata) | H1, H3 | user-facing | statistics |
 | [`editFoldData`](./actions/statistics.md#editfolddata) | H1, H3 | user-facing | statistics |
 | [`editGradientPlot`](./actions/statistics.md#editgradientplot) | H1, H3 | user-facing | statistics |
 | [`editGraphics`](./actions/extension.md#editgraphics) | H4 | primitive | primitives |
@@ -180,6 +185,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editLegendSymbols`](./actions/guides.md#editlegendsymbols) | H3 | user-facing | legend_and_title |
 | [`editLegendTitle`](./actions/guides.md#editlegendtitle) | H3 | user-facing | legend_and_title |
 | [`editLineMark`](./actions/marks.md#editlinemark) | H3 | user-facing | marks |
+| [`editLookupData`](./actions/statistics.md#editlookupdata) | H1, H3 | user-facing | statistics |
 | [`editMarkLabelPlacement`](./actions/marks.md#editmarklabelplacement) | H3 | user-facing | marks |
 | [`editMarkLabelSelection`](./actions/marks.md#editmarklabelselection) | H3 | user-facing | marks |
 | [`editMarkSelection`](./actions/advanced.md#editmarkselection) | H3 | advanced | mark-selection |
@@ -188,6 +194,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editParallelAxis`](./actions/guides.md#editparallelaxis) | H3 | user-facing | axes |
 | [`editParallelScale`](./actions/charts-data.md#editparallelscale) | H2 | user-facing | core |
 | [`editPointMark`](./actions/marks.md#editpointmark) | H3 | user-facing | marks |
+| [`editRadarPlot`](./actions/charts-data.md#editradarplot) | H1, H3 | user-facing | charts |
 | [`editRadialAxis`](./actions/guides.md#editradialaxis) | H3 | user-facing | axes |
 | [`editRadialAxisLabels`](./actions/guides.md#editradialaxislabels) | H3 | user-facing | axes |
 | [`editRadialAxisLine`](./actions/guides.md#editradialaxisline) | H3 | user-facing | axes |
@@ -248,6 +255,8 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`encodeChannels`](./actions/advanced.md#encodechannels) | H2 | advanced | encodings |
 | [`encodeColor`](./actions/encodings.md#encodecolor) | H2 | user-facing | encodings |
 | [`encodeDensity`](./actions/encodings.md#encodedensity) | H2 | user-facing | encodings |
+| [`encodeDx`](./actions/encodings.md#encodedx) | H2 | user-facing | encodings |
+| [`encodeDy`](./actions/encodings.md#encodedy) | H2 | user-facing | encodings |
 | [`encodeGroup`](./actions/encodings.md#encodegroup) | H2 | user-facing | encodings |
 | [`encodeHistogram`](./actions/encodings.md#encodehistogram) | H2 | user-facing | encodings |
 | [`encodeHorizon`](./actions/encodings.md#encodehorizon) | H2 | user-facing | encodings |

@@ -1,6 +1,12 @@
+import { DEFAULT_ACTION_METHODS } from "../../core/vocabulary.js";
+import { axisGraphicIds } from "../../materialization/guides/resources.js";
+import { cartesianAxisOwners, axisTargetArgs } from "../../selectors/axes.js";
 import { resolveGraphicBounds } from "../../layout/canvas.js";
-import { action, closedAction } from "../../core/action.js";
+import { action, closedAction, getWrappedActionMetadata } from "../../core/action.js";
 import { registerFacetDataRevision, reviseUnitData } from "../data/revise.js";
+import { applyMaterializationPlan } from "../../materialization/dependencies.js";
+import { getMarkMaterializationStep } from "../../materialization/marks/index.js";
+import { buildMaterializationPlan } from "../../materialization/planner.js";
 import { freezeOwned, isPlainObject } from "../../core/immutable.js";
 import { validateUserId } from "../../core/identifiers.js";
 import {
@@ -32,6 +38,8 @@ import { findDataset } from "../../selectors/datasets.js";
 import { findLayer } from "../../selectors/layers.js";
 import { findSemanticScale } from "../../selectors/scales.js";
 import { normalizeDisplayLabelMap } from "../../grammar/displayLabels.js";
+import { resolveRotation } from "../../grammar/rotation.js";
+import { normalizeFacetHeaderTitle } from "../../grammar/facetHeaders.js";
 import {
   createDefaultFacetHeaders,
   normalizeFacetHeadersConfig,
@@ -39,25 +47,27 @@ import {
 } from "../../materialization/facetHeaders.js";
 
 const FACET_OPTIONS = Object.freeze([
-  "id", "field", "data", "values", "columns", "gap", "spacing", "align", "padding", "scales",
+  "id", "field", "data", "values", "columns", "gap", "spacing", "topLane", "align", "padding", "scales",
   "guides", "headers"
 ]);
 const FACET_GRID_OPTIONS = Object.freeze([
-  "id", "data", "rows", "columns", "combinations", "gap", "spacing", "align",
+  "id", "data", "rows", "columns", "combinations", "gap", "spacing", "topLane", "align",
   "padding", "scales", "guides", "headers"
 ]);
 const REPEAT_OPTIONS = Object.freeze([
-  "id", "target", "channel", "fields", "columns", "gap", "spacing", "align",
+  "id", "target", "channel", "fields", "columns", "gap", "spacing", "topLane", "align",
   "padding", "scales", "guides", "headers"
 ]);
-const SOURCE_EDIT_OPTIONS = Object.freeze(["program"]);
+const SOURCE_ACTION_NAMES = new Set(DEFAULT_ACTION_METHODS);
+
+const SOURCE_EDIT_OPTIONS = Object.freeze(["program", "action"]);
 const GUIDE_OPTIONS = Object.freeze(["axes", "legend"]);
 const HEADER_OPTIONS = Object.freeze([
   "fontSize", "fontFamily", "fontWeight", "color", "offset", "role",
-  "labelMap", "side", "align"
+  "labelMap", "side", "align", "rotation", "title", "anchor"
 ]);
 const HEADER_STYLE_OPTIONS = Object.freeze([
-  "fontSize", "fontFamily", "fontWeight", "color", "offset", "align"
+  "fontSize", "fontFamily", "fontWeight", "color", "offset", "align", "rotation", "anchor"
 ]);
 
 function normalizeGuides(guides, allowStored = false) {
@@ -90,12 +100,12 @@ function usedFacetScalePolicies(program, policies) {
   );
   return Object.fromEntries(
     FACET_SCALE_CHANNELS.flatMap(channel =>
-      used.has(channel) ? [[channel, policies[channel]]] : []
+      used.has(channel) && policies[channel] !== undefined ? [[channel, policies[channel]]] : []
     )
   );
 }
 
-function facetUnitTemplate(program) {
+function facetUnitTemplate(program, sourceAction = false) {
   const seedId = program.compositionSpec.children.find(id =>
     program.children[id]?.semanticSpec.layers.length > 0
   ) ?? program.compositionSpec.children[0];
@@ -104,8 +114,14 @@ function facetUnitTemplate(program) {
     throw new Error(`Facet "${program.compositionSpec.id}" requires a retained child.`);
   }
   const { facets: _facets, guides: _guides, ...unitConfigs } = program.materializationConfigs;
+  const { legend: _parentLegend, ...sourceSemanticGuides } = program.semanticSpec.guides;
+  const sourceGuides = { ...seed.materializationConfigs.guides,
+    axis: _guides?.axis ?? seed.guideConfigs.axis,
+    grid: _guides?.grid ?? seed.guideConfigs.grid };
+  if (sourceAction) delete unitConfigs.title;
   return new program.constructor({
-    semanticSpec: program.semanticSpec,
+    semanticSpec: sourceAction ? { ...program.semanticSpec, title: {},
+      guides: { ...sourceSemanticGuides, ...(seed.semanticSpec.guides.legend === undefined ? {} : { legend: seed.semanticSpec.guides.legend }) } } : program.semanticSpec,
     graphicSpec: seed.graphicSpec,
     resolvedScales: program.resolvedScales,
     materializationConfigs: freezeOwned({
@@ -113,9 +129,8 @@ function facetUnitTemplate(program) {
       ...(seed.materializationConfigs.theme === undefined
         ? {}
         : { theme: seed.materializationConfigs.theme }),
-      ...(seed.materializationConfigs.guides === undefined
-        ? {}
-        : { guides: seed.materializationConfigs.guides }),
+
+      ...(sourceGuides === undefined ? {} : { guides: sourceGuides }),
       canvas: seed.materializationConfigs.canvas
     }),
     children: {},
@@ -200,6 +215,9 @@ function resolveEditedFacetHeaders(currentHeaders, args, grid, operation = "edit
   if (role === "all" && Object.hasOwn(args, "side")) {
     throw new Error(`${operation} side requires an explicit row or column role.`);
   }
+  if (role === "all" && Object.hasOwn(args, "title")) {
+    throw new Error(`${operation} title requires an explicit row or column role.`);
+  }
   if (role === "row" && grid === undefined) {
     throw new Error(`${operation} row role requires a row-column facet grid.`);
   }
@@ -221,8 +239,16 @@ function resolveEditedFacetHeaders(currentHeaders, args, grid, operation = "edit
   const current = normalizeFacetHeadersConfig(currentHeaders);
   const owner = role === "all" ? "common" : role;
   const patch = { ...current[owner] };
+  if (Object.hasOwn(args, "title")) {
+    const title = normalizeFacetHeaderTitle(patch.title, args.title);
+    if (title === undefined) delete patch.title;
+    else patch.title = title;
+  }
   for (const key of HEADER_STYLE_OPTIONS) {
     if (Object.hasOwn(args, key)) patch[key] = args[key];
+  }
+  if (Object.hasOwn(args, "rotation")) {
+    patch.rotation = resolveRotation(args.rotation, `${operation} ${role} rotation`);
   }
   if (Object.hasOwn(args, "side")) patch.side = args.side;
   if (Object.hasOwn(args, "labelMap")) {
@@ -245,6 +271,9 @@ function resolveEditedFacetHeaders(currentHeaders, args, grid, operation = "edit
     validateNonEmptyString(resolved.fontFamily, `Facet ${headerRole} header fontFamily`);
     validateNonEmptyString(resolved.color, `Facet ${headerRole} header color`);
     validateNonNegativeFinite(resolved.offset, `Facet ${headerRole} header offset`);
+    if (resolved.rotation !== undefined && !Number.isFinite(resolved.rotation)) {
+      throw new TypeError(`Facet ${headerRole} header rotation must resolve to finite radians.`);
+    }
     if (!(
       (typeof resolved.fontWeight === "string" && resolved.fontWeight.length > 0) ||
       Number.isFinite(resolved.fontWeight)
@@ -281,9 +310,13 @@ function initialFacetHeaders(value, grid) {
 }
 
 function composeDerivedFacet(program, args, { definition, derived, guides, scalePolicies, facet }) {
-  const headers = initialFacetHeaders(args.headers, definition.grid);
+  const retainedHeaders = program.materializationConfigs.facets?.[definition.id]?.headers;
+  const headers = args.headers === undefined && retainedHeaders !== undefined
+    ? normalizeFacetHeadersConfig(retainedHeaders)
+    : initialFacetHeaders(args.headers, definition.grid);
   const preflight = resolveFacetLayout({
     spacing: args.spacing,
+    topLane: args.topLane,
     plots: Object.entries(derived.children).map(([id, child]) => ({ id, ...resolveGraphicBounds(child) })),
     children: definition.cells.map(cell => ({
       ...compositionChildDescriptor(cell.id, derived.children[cell.id]), value: cell.value,
@@ -297,6 +330,7 @@ function composeDerivedFacet(program, args, { definition, derived, guides, scale
     id: definition.id, type: "facet", children: definition.cells.map(cell => cell.id),
     columns: preflight.columns, gap: preflight.gap, align: preflight.align, padding: preflight.padding,
     ...(preflight.spacing === undefined ? {} : { spacing: preflight.spacing }),
+    ...(preflight.topLane === undefined ? {} : { topLane: preflight.topLane }),
     facet: { data: definition.data, ...facet, scales: scalePolicies.channels, guides }
   };
   return applyCompositionState(
@@ -417,7 +451,9 @@ function resolveRepeatDefinition(program, args) {
   }
   const layer = findLayer(program, target);
   const dataset = findDataset(program, layer.data);
-  if (dataset?.transform?.length > 0) {
+  // Lookup has already preserved the primary grain and materialized its fields.
+  // Repeating an output field changes only the encoding, never either input table.
+  if (dataset?.transform?.length > 0 && dataset.transform[0].type!=="lookup") {
     throw new Error("repeatCharts does not rewrite a derived dataset dependency.");
   }
   const encoding = parallelChannel
@@ -636,7 +672,7 @@ export const editFacetGuides = /* @__PURE__ */ action(
   }
 );
 
-function adoptUnitState(program, actionOwner) {
+function adoptUnitState(program, actionOwner, preferSource = false) {
   if (!(program instanceof actionOwner.constructor)) {
     throw new TypeError("editFacetSource program must be a ChartProgram.");
   }
@@ -664,8 +700,8 @@ function adoptUnitState(program, actionOwner) {
     graphicSpec: program.graphicSpec,
     resolvedScales: program.resolvedScales,
     materializationConfigs: freezeOwned({
-      ...program.materializationConfigs,
-      ...retainedRecipe,
+      ...(preferSource ? { ...retainedRecipe, ...program.materializationConfigs }
+        : { ...program.materializationConfigs, ...retainedRecipe }),
       ...(program.materializationConfigs.canvas === undefined
         ? {}
         : { canvas: program.materializationConfigs.canvas }),
@@ -691,11 +727,56 @@ export const editFacetSource = /* @__PURE__ */ closedAction(
     requireFacetProgram(this, "editFacetSource");
     const current = this.compositionSpec;
     const facetConfig = this.materializationConfigs.facets?.[current.id];
-    const base = adoptUnitState(args.program, this);
+    if (Object.hasOwn(args, "program") === Object.hasOwn(args, "action")) {
+      throw new Error("editFacetSource requires exactly one of program or action.");
+    }
+    let source = args.program, owner = this;
+    if (args.action !== undefined) {
+      validateOptionObject(args.action, ["method", "options"], "editFacetSource action");
+      const method = validateNonEmptyString(args.action.method, "editFacetSource action method");
+      let unit = facetUnitTemplate(this, true);
+      const metadata = typeof unit[method] === "function" ? getWrappedActionMetadata(unit[method]) : undefined;
+      if (!metadata || !SOURCE_ACTION_NAMES.has(method) || metadata.scope === "composition" ||
+          /^(?:_|materialize|rematerialize|replay|editSemantic$|editGraphics$|createGraphics$)/.test(method)) {
+        throw new Error("editFacetSource action requires a unit chart-authoring action.");
+      }
+      // A retained child is partitioned and may hide outer guide parts. Restore
+      // full-data mark items before source actions inspect their item grain.
+      unit = applyMaterializationPlan(unit, buildMaterializationPlan({
+        marks: unit.semanticSpec.layers.map(layer => getMarkMaterializationStep(unit, layer))
+      }));
+      for (const axis of cartesianAxisOwners(unit)) {
+        const config = unit.guideConfigs.axis?.[axis.id] ?? {};
+        const ids = axisGraphicIds(axis.channel, axis.id);
+        for (const [index, component] of ["line", "ticks", "labels", "title"].entries()) {
+          if (!config[component] || unit.graphicSpec.objects[ids[index]]) continue;
+          const { mode, inferredValues, inferredText, inferredRotation, inferredOffset, ...options } = config[component];
+          if (mode === "values") delete options.count;
+          if (mode === "count") delete options.values;
+          const suffix = component[0].toUpperCase() + component.slice(1);
+          unit = unit[`create${axis.channel.toUpperCase()}Axis${suffix}`]({
+            ...options, ...axisTargetArgs(axis.id, axis.channel)
+          });
+        }
+      }
+      const revised = unit[method](args.action.options ?? {});
+      // Retain the wrapped source action inside this one parent transaction.
+      owner = new this.constructor({ ...this, trace: revised.trace, actionStack: revised.actionStack,
+        actionSequence: revised._actionSequence });
+      source = new this.constructor({ ...revised, actionStack: [], actionSequence: revised._actionSequence });
+    }
+    let base = adoptUnitState(source, owner, args.action !== undefined);
+    if (facetConfig !== undefined) {
+      base = base._withMaterializationConfig(["facets", current.id], facetConfig);
+    }
     const authored = isPlainObject(current.facet.guides.legend);
     const guides = authored ? { ...current.facet.guides, legend: false } : current.facet.guides;
     let revised;
-    const scales = usedFacetScalePolicies(base, current.facet.scales);
+    // Policies for channels absent from the previous source are defaults, not
+    // authored requests. A newly introduced alias must inherit the policy of
+    // the existing physical scale rather than conflict with a stale default.
+    const scales = usedFacetScalePolicies(base,
+      usedFacetScalePolicies(this, current.facet.scales));
     if (current.facet.grid !== undefined) {
       revised = base.facetGrid({
         id: current.id,
@@ -705,6 +786,7 @@ export const editFacetSource = /* @__PURE__ */ closedAction(
         combinations: current.facet.grid.combinations,
         gap: current.gap,
         ...(current.spacing === undefined ? {} : { spacing: current.spacing }),
+        ...(current.topLane === undefined ? {} : { topLane: current.topLane }),
         align: current.align,
         padding: current.padding,
         scales,
@@ -717,6 +799,7 @@ export const editFacetSource = /* @__PURE__ */ closedAction(
         columns: current.columns,
         gap: current.gap,
         ...(current.spacing === undefined ? {} : { spacing: current.spacing }),
+        ...(current.topLane === undefined ? {} : { topLane: current.topLane }),
         align: current.align,
         padding: current.padding,
         scales,
@@ -731,6 +814,7 @@ export const editFacetSource = /* @__PURE__ */ closedAction(
         columns: current.columns,
         gap: current.gap,
         ...(current.spacing === undefined ? {} : { spacing: current.spacing }),
+        ...(current.topLane === undefined ? {} : { topLane: current.topLane }),
         align: current.align,
         padding: current.padding,
         scales,

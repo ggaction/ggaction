@@ -1,0 +1,114 @@
+{
+  "status": "verified-before-new-public-option-implementation",
+  "width": 260,
+  "height": 170,
+  "graphicSpecExact": true,
+  "sameRunPngBufferExact": true,
+  "sameRunDecodedPixelsExact": true,
+  "sameSvgExact": true,
+  "plotInkPixels": 742,
+  "pngSha256": "f8f13ee4a2fae17f809bc9128412318ade4046ed386923aa2ac71fe152ddae30",
+  "decodedPixelsSha256": "fb212cb60e77b5ed5380b3d230a2e70dd6f362f4de095f7df82a311aa0ce70be",
+  "targetSourceSha256": "69d77b637325194a7a3c772998664dccdb20078ad29f8d52b6e42e722232e210",
+  "manualImageInspection": false,
+  "publicNewOptionImplemented": false,
+  "baseCommit": "031fb19e40e7752e0aa328d289fb156b8208a551",
+  "issue": "https://github.com/ggaction/ggaction/issues/255",
+  "newOptionCurrentlyRejected": true,
+  "numericCases": [
+    {
+      "input": [
+        0,
+        133
+      ],
+      "legacy": [
+        0,
+        150
+      ],
+      "expectedCount10": [
+        0,
+        140
+      ]
+    },
+    {
+      "input": [
+        0,
+        108
+      ],
+      "legacy": [
+        0,
+        120
+      ],
+      "expectedCount10": [
+        0,
+        110
+      ]
+    },
+    {
+      "input": [
+        0,
+        171
+      ],
+      "legacy": [
+        0,
+        200
+      ],
+      "expectedCount10": [
+        0,
+        180
+      ]
+    },
+    {
+      "input": [
+        0,
+        107
+      ],
+      "legacy": [
+        0,
+        120
+      ],
+      "expectedCount10": [
+        0,
+        110
+      ]
+    },
+    {
+      "input": [
+        0,
+        139
+      ],
+      "legacy": [
+        0,
+        150
+      ],
+      "expectedCount10": [
+        0,
+        140
+      ]
+    },
+    {
+      "input": [
+        0,
+        116
+      ],
+      "legacy": [
+        0,
+        120
+      ],
+      "expectedCount10": [
+        0,
+        120
+      ]
+    }
+  ],
+  "gateState": "approved",
+  "approvalEvidence": {
+    "kind": "explicit-human-standing-approval-for-all-current-and-future-in-scope-questions",
+    "quote": "지금까지 모든 질문, 앞으로 할 모든 질문 승인함. 새로운 릴리즈는 200개 단위로 하자",
+    "specificDesign": "nice:{count:positiveSafeInteger},linearpositiononly,legacybooleanunchanged,concretetarget260x170,exactgraphicSVGdecodedPNG",
+    "manualUserImageReviewClaim": false
+  },
+  "reproduce": "node agent_docs/impl/linear-nice-count/reproduce-target.mjs",
+  "publicRelease": false,
+  "nextRegularPublicCheckpoint": 1413
+}

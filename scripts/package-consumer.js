@@ -74,6 +74,24 @@ export async function preparePackageConsumer({
 }
 
 async function testNodeConsumer(directory) {
+  await writeFile(path.join(directory, "linear-nearest-ticks-public.js"),
+    (await readFile(new URL("../examples/linear-nearest-ticks/program.js", import.meta.url), "utf8"))
+      .replace('"../../src/index.js"', '"ggaction"'));
+  await writeFile(path.join(directory,"linear-nice-count-public.js"),
+    (await readFile(new URL("../examples/linear-nice-count/program.js",import.meta.url),"utf8"))
+      .replace('"../../src/index.js"','"ggaction"'));
+  await writeFile(path.join(directory,"facet-lane-public.js"),
+    (await readFile(new URL("../examples/facet-shared-top-lane/program.js",import.meta.url),"utf8"))
+      .replace("'../../src/index.js'","'ggaction'"));
+  await writeFile(path.join(directory,"plot-underlay-public.js"),
+    (await readFile(new URL("../examples/plot-guide-underlays/program.js",import.meta.url),"utf8"))
+      .replace("'../../src/index.js'","'ggaction'"));
+  await writeFile(path.join(directory, "facet-header-rotation.js"),
+    (await readFile(new URL("../examples/facet-header-rotation/program.js", import.meta.url), "utf8"))
+      .replace('"../../src/index.js"', '"ggaction"')
+      .replace('"./data.js"', '"./facet-header-data.js"'));
+  await writeFile(path.join(directory, "facet-header-data.js"),
+    await readFile(new URL("../examples/facet-header-rotation/data.js", import.meta.url), "utf8"));
   const output = path.join(directory, "chart.png");
   const pdfOutput = path.join(directory, "chart.pdf");
   const fontWeightOutput = path.join(directory, "font-weight.png");
@@ -85,10 +103,398 @@ async function testNodeConsumer(directory) {
     import { renderToPDF, renderToPDFBuffer } from "ggaction/pdf";
     import { renderToPNG, renderToPNGBuffer } from "ggaction/png";
     import { renderToSVG } from "ggaction/svg";
+    import { createTransitionScene } from "ggaction/scene";
     import { serializeProgram, deserializeProgram, serializeGraphic, deserializeGraphic } from "ggaction/persistence";
     import { exportAccessibleData } from "ggaction/accessibility";
     import { comparePrograms, describeAction, getDatasetSchema, inspectProgram } from "ggaction/inspection";
+    import {createFacetSharedTopLaneProgram} from "./facet-lane-public.js";
+    import {createPlotUnderlayProgram} from "./plot-underlay-public.js";
 
+    const contentFacet = chart().createCanvas({plot:{width:100,height:100},margin:70})
+      .createData({values:[{group:"A",x:5,y:5},{group:"B",x:10,y:10}]})
+      .createScatterPlot({x:{field:"x",scale:{domain:[0,10]}},y:{field:"y",scale:{domain:[0,10]}},guides:false})
+      .editPointMark({stroke:false}).encodePointRadius({value:3})
+      .facet({field:"group",spacing:"plot",headers:{anchor:"content"}})
+      .editCompositionLayout({topLane:"shared"});
+    assert.deepEqual(contentFacet.graphicSpec.objects["facet-headers"].items.map(i=>i.properties.y),[54,51]);
+    assert.deepEqual(deserializeProgram(serializeProgram(contentFacet)).graphicSpec,contentFacet.graphicSpec);
+
+    for (const factory of [chart, basicChart]) {
+      const values = [{x:0,y:-0.15},{x:1,y:0.3}];
+      const p = factory().createCanvas({width:600,height:480,margin:90})
+        .createData({values})
+        .createLinePlot({x:"x",y:{field:"y",scale:{domain:[-0.15,0.3]}},guides:false})
+        .createYAxis({title:false,ticksAndLabels:{count:10,labels:{fontSize:10,format:"ticks"}}});
+      const texts = program => program.graphicSpec.objects.yAxisLabels.items.map(i=>i.properties.text);
+      assert.deepEqual(texts(p),["−0.15","−0.10","−0.05","0.00","0.05","0.10","0.15","0.20","0.25","0.30"]);
+      assert.deepEqual(p.semanticSpec.datasets[0].values,values);
+      const restored=deserializeProgram(serializeProgram(p));
+      assert.equal(renderToSVG(restored),renderToSVG(p));
+      assert.deepEqual(texts(restored.editYScale({domain:[0,900]})),["0","100","200","300","400","500","600","700","800","900"]);
+      assert.equal((await renderToPNGBuffer(p)).width,600);
+      assert.equal((await renderToPDFBuffer(p)).buffer.subarray(0,4).toString(),"%PDF");
+    }
+
+    for (const factory of [chart, basicChart]) {
+      const values = [{x:0,y:1},{x:2,y:3},{x:3,y:null},{x:5,y:6},{x:7,y:8}];
+      const p = factory().createCanvas({width:100,height:100,margin:0}).createData({values})
+        .createLinePlot({id:"gaps",x:{field:"x",scale:{domain:[0,10]}},
+          y:{field:"y",scale:{domain:[0,10]}},line:{missing:"break"},guides:false});
+      assert.deepEqual(p.graphicSpec.objects.gaps.items.map(i=>i.properties.commands),[
+        [{op:"M",x:0,y:90},{op:"L",x:20,y:70}],
+        [{op:"M",x:50,y:40},{op:"L",x:70,y:20}]
+      ]);
+      assert.deepEqual(p.semanticSpec.datasets[0].values,values);
+      assert.deepEqual(deserializeProgram(serializeProgram(p)).graphicSpec,p.graphicSpec);
+      assert.equal((await renderToPNGBuffer(p)).width,100);
+      assert.equal((await renderToPDFBuffer(p)).buffer.subarray(0,4).toString(),"%PDF");
+      assert.ok(renderToSVG(p).includes('M'));
+    }
+
+    {
+      const {createLinearNearestTicks}=await import("./linear-nearest-ticks-public.js");
+      const p=createLinearNearestTicks();
+      const expected=["0","20","40","60","80","100","120","140"];
+      assert.deepEqual(p.graphicSpec.objects.yAxisLabels.items.map(x=>x.properties.text),expected);
+      assert.deepEqual(deserializeProgram(serializeProgram(p)).graphicSpec,p.graphicSpec);
+      const reset=p.createHorizontalGrid().editYAxisTicks({rounding:"ceiling"});
+      assert.equal(reset.graphicSpec.objects.yAxisTicks.items.length,5);
+      assert.equal(reset.graphicSpec.objects.yAxisLabels.items.length,5);
+      assert.equal(reset.graphicSpec.objects.horizontalGridLines.items.length,5);
+      assert.equal((await renderToPNGBuffer(p)).width,260);
+      assert.equal((await renderToPDFBuffer(p)).buffer.subarray(0,4).toString(),"%PDF");
+      assert(renderToSVG(p).includes('140'));
+      const b=basicChart().createCanvas({plot:{width:200,height:120},margin:40})
+        .createData({values:[{x:0,y:0},{x:1,y:133}]})
+        .createLinePlot({x:"x",y:{field:"y",scale:{domain:[0,140]}},guides:false})
+        .createYAxis({title:false,ticksAndLabels:{rounding:"nearest"}});
+      assert.deepEqual(b.graphicSpec.objects.yAxisLabels.items.map(x=>x.properties.text),expected);
+    }
+
+    {
+      const {createLinearNiceCount}=await import("./linear-nice-count-public.js");
+      const p=createLinearNiceCount();
+      assert.deepEqual(p.resolvedScales.y.domain,[0,110]);
+      assert.deepEqual(p.semanticSpec.scales.find(s=>s.id==="y").nice,{count:10});
+      assert.deepEqual(deserializeProgram(serializeProgram(p)).graphicSpec,p.graphicSpec);
+      assert.deepEqual(p.editYScale({nice:true}).resolvedScales.y.domain,[0,120]);
+      assert.equal((await renderToPNGBuffer(p)).width,260);
+      assert.equal((await renderToPDFBuffer(p)).buffer.subarray(0,4).toString(),"%PDF");
+      assert(renderToSVG(p).includes("22.181818181818187"));
+      const basic=basicChart().createCanvas().createData({values:[{x:0,y:0},{x:1,y:108}]})
+        .createLinePlot({x:"x",y:{field:"y",scale:{zero:true,nice:{count:10}}},guides:false});
+      assert.deepEqual(basic.resolvedScales.y.domain,[0,110]);
+    }
+
+    {
+      const {createFacetHeaderRotation} = await import("./facet-header-rotation.js");
+      const p = createFacetHeaderRotation();
+      assert.deepEqual(p.graphicSpec.objects.canvas.properties, {width:185,height:195,background:"white"});
+      assert.deepEqual(p.graphicSpec.objects["facet-headers"].items.map(i=>[i.properties.x,i.properties.y,i.properties.rotation]), [[9,50,-Math.PI/2],[9,135,-Math.PI/2]]);
+      assert.deepEqual(deserializeProgram(serializeProgram(p)).graphicSpec,p.graphicSpec);
+      assert(renderToSVG(p).includes("North"));
+      assert.equal((await renderToPNGBuffer(p)).buffer.subarray(1,4).toString(),"PNG");
+      assert.equal((await renderToPDFBuffer(p)).buffer.subarray(0,4).toString(),"%PDF");
+      assert.equal(typeof basicChart().editFacetHeaders,"undefined");
+    }
+    {
+      const rows=[{x:2,y:3,t:"Alpha",dx:12,dy:-6},{x:5,y:6,t:"Beta",dx:-9,dy:8}];
+      const original=chart().createCanvas({width:500,height:300,margin:80}).createData({values:rows})
+        .createTextPlot({x:{field:"x",scale:{domain:[0,10]}},y:{field:"y",scale:{domain:[0,10]}},text:"t"});
+      const p=original.encodeDx({field:"dx"}).encodeDy({field:"dy"});
+      assert.deepEqual(p.graphicSpec.objects.textPlot.items.map(i=>[i.properties.x,i.properties.y]),[[160,172],[241,144]]);
+      assert.deepEqual(p.semanticSpec.datasets[0].values,rows);
+      assert.deepEqual(p.resolvedScales,original.resolvedScales);
+      assert.deepEqual(p.graphicSpec,original.encodeChannels({target:"textPlot",channels:{dx:{field:"dx"},dy:{field:"dy"}}}).graphicSpec);
+      assert.deepEqual(p.removeEncoding({channel:"dx"}).removeEncoding({channel:"dy"}).graphicSpec,original.graphicSpec);
+      assert.deepEqual(deserializeProgram(serializeProgram(p)).graphicSpec,p.graphicSpec);
+      const before=serializeProgram(p);assert.throws(()=>p.encodeDy({value:Infinity}));assert.equal(serializeProgram(p),before);
+      assert.equal(basicChart().encodeDx,undefined);assert.equal(basicChart().encodeDy,undefined);
+      assert.ok(renderToSVG(p).includes("Alpha"));
+      assert.ok((await renderToPNGBuffer(p)).buffer.length>100);
+      assert.ok((await renderToPDFBuffer(p)).buffer.length>100);
+    }
+
+    for (const factory of [chart,basicChart]) {
+      const rows=Array.from({length:10},(_,i)=>({rank:i+1,group:"An intentionally long category "+(i+1)}));
+      const base=factory().createCanvas({width:500,height:220,margin:{left:320,right:20,top:20,bottom:60}})
+        .createData({values:rows}).createScatterPlot({x:"rank",y:{field:"group",fieldType:"nominal"},guides:false});
+      const labels={fontSize:14,overlap:"allow"};
+      assert.throws(()=>base.createAxes({x:false,y:{ticksAndLabels:{labels},title:{text:"Group",fontSize:11,offset:80}}}),/title overlaps the axis labels/);
+      const p=base.createAxes({x:false,y:{ticksAndLabels:{labels},title:{text:"Group",fontSize:11,offset:80,overlap:"allow"}}});
+      assert.equal(p.guideConfigs.axis.y.title.overlap,"allow");
+      assert.equal(p.graphicSpec.objects.yAxisTitle.properties.x,240);
+      assert.deepEqual(p.semanticSpec.datasets[0].values,rows);
+      assert.deepEqual(deserializeProgram(serializeProgram(p)).graphicSpec,p.graphicSpec);
+      if(factory===chart){
+        const before=serializeProgram(p);assert.throws(()=>p.editYAxisTitle({overlap:"error"}),/title overlaps the axis labels/);assert.equal(serializeProgram(p),before);
+        assert.equal(p.editYAxisTitle({offset:300,overlap:"error"}).guideConfigs.axis.y.title.overlap,"error");
+        assert.equal(p.editYAxisLabels({color:"red"}).guideConfigs.axis.y.title.overlap,"allow");
+      }
+      assert.ok((await renderToPNGBuffer(p)).buffer.length>100);
+      assert.ok((await renderToPDFBuffer(p)).buffer.length>100);
+    }
+
+    for (const factory of [chart,basicChart]) for(const channel of ["color","stroke"]) {
+      const scale={domain:[35,85],palette:"viridis"};
+      const channelOption={field:"v",fieldType:"quantitative",scale};
+      const p=factory().createCanvas({width:800,height:700,margin:200})
+        .createData({values:[{x:0,y:0,v:35},{x:1,y:1,v:60},{x:2,y:0,v:85}]})
+        .createScatterPlot({x:"x",y:"y",guides:false,[channel]:channelOption})
+        .createLegend({values:[40,60,80],gradient:{length:125}});
+      const prefix=channel+"Gradient";
+      assert.deepEqual(p.graphicSpec.objects[prefix+"Labels"].items.map(i=>i.properties.text),["40","60","80"]);
+      const top=Math.min(...p.graphicSpec.objects[prefix+"Strips"].items.map(i=>i.properties.y));
+      const offsets=p.graphicSpec.objects[prefix+"Ticks"].items.map(i=>i.properties.y1-top);
+      offsets.forEach((v,i)=>assert.ok(Math.abs(v-[112.5,62.5,12.5][i])<1e-9));
+      assert.deepEqual(deserializeProgram(serializeProgram(p)).graphicSpec,p.graphicSpec);
+      if(factory===chart){
+        const q=p.editLegend({values:"auto",count:3});
+        assert.equal(q.guideConfigs.legend[channel==="color"?"gradient":"strokeGradient"].sampling,undefined);
+        assert.throws(()=>p.editScale({id:channel,domain:[35,70]}),/outside the scale domain/);
+      }
+      assert.ok((await renderToPNGBuffer(p)).buffer.length>100);
+      assert.ok((await renderToPDFBuffer(p)).buffer.length>100);
+    }
+
+    {
+      const tickRows=[{x:0,y:0,v:35},{x:1,y:1,v:60},{x:2,y:0,v:85}];
+      const base=chart().createCanvas({width:800,height:700,margin:200}).createData({values:tickRows})
+        .createRugPlot({x:"x",edge:"bottom",guides:false}).encodeY({field:"y"});
+      const numeric=base.encodeColor({field:"v",fieldType:"quantitative",scale:{domain:[35,85],range:["blue","red"]}})
+        .createLegend({values:[40,60,80],gradient:{length:125}});
+      assert.deepEqual(numeric.graphicSpec.objects.rugPlot.items.map(i=>i.properties.stroke),["#0000ff","#800080","#ff0000"]);
+      assert.ok(numeric.graphicSpec.objects.colorGradientStrips.items.every(i=>i.properties.fill===i.properties.stroke&&i.properties.strokeWidth===0));
+      assert.deepEqual(numeric.semanticSpec.datasets[0].values,tickRows);
+      assert.throws(()=>numeric.encodeStroke({value:"green"}),/Tick color and stroke cannot coexist/);
+      assert.deepEqual(deserializeProgram(serializeProgram(numeric)).graphicSpec,numeric.graphicSpec);
+      assert.ok((await renderToPNGBuffer(numeric)).buffer.length>100);assert.ok((await renderToPDFBuffer(numeric)).buffer.length>100);
+      assert.equal(basicChart().createTickMark,undefined);
+    }
+
+    for (const factory of [chart,basicChart]) {
+      const rightRows=[{name:"A",age:25},{name:"B",age:39}],leftRows=[{person:"B",group:"First"},{person:"A",group:"Second"}];
+      const base=factory().createCanvas({width:400,height:280,margin:50})
+        .createData({id:"people",values:rightRows}).createData({id:"groups",values:leftRows});
+      const joined=base.createLookupData({id:"ages",field:"person",lookup:{data:"people",key:"name",fields:["age"]}});
+      assert.deepEqual(joined.semanticSpec.datasets.find(d=>d.id==="ages").values,[{person:"B",group:"First",age:39},{person:"A",group:"Second",age:25}]);
+      assert.deepEqual(joined.semanticSpec.datasets.find(d=>d.id==="people").values,rightRows);
+      assert.deepEqual(joined.semanticSpec.datasets.find(d=>d.id==="groups").values,leftRows);
+      const bars=joined.createBarPlot({x:"group",y:"age"});
+      assert.deepEqual(deserializeProgram(serializeProgram(bars)).graphicSpec,bars.graphicSpec);
+      assert(renderToSVG(bars).includes("<rect"));
+      assert((await renderToPNGBuffer(bars)).buffer.length>100);
+      assert((await renderToPDFBuffer(bars)).buffer.length>100);
+      if(factory===chart){
+        const edited=bars.editLookupData({target:"ages",lookup:{data:"people",key:"name",fields:["age"],as:["years"]}});
+        assert.equal(edited.semanticSpec.layers[0].encoding.y.field,"years");
+        assert.deepEqual(edited.graphicSpec.objects.barPlot.items,bars.graphicSpec.objects.barPlot.items);
+        assert.equal(edited.graphicSpec.objects.yAxisTitle.properties.text,"mean(years)");
+        const revised=bars.reviseData({source:"people",id:"peopleV2",values:[{name:"A",age:30},{name:"B",age:45}]});
+        const id=revised.materializationConfigs.data.lookup.ages.current;
+        assert.deepEqual(revised.semanticSpec.datasets.find(d=>d.id===id).values.map(r=>r.age),[45,30]);
+      }else assert.equal(bars.editLookupData,undefined);
+    }
+
+    for (const factory of [chart,basicChart]) {
+      const arrayRows=[{amounts:[1,2],labels:["A","B"],group:"alpha"},{amounts:[3,4,5],labels:["C","D"],group:"beta"}];
+      const base=factory().createCanvas().createData({values:arrayRows});
+      const expanded=base.createFlattenData({id:"expanded",fields:["amounts","labels"],as:["x","label"]});
+      assert.deepEqual(expanded.semanticSpec.datasets[1].values.map(r=>[r.x,r.label]),[[1,"A"],[2,"B"],[3,"C"],[4,"D"],[5,null]]);
+      assert.deepEqual(expanded.semanticSpec.datasets[0].values,arrayRows);
+      assert.equal(base.semanticSpec.datasets.length,1);
+      assert.throws(()=>base.createFlattenData({id:"bad",fields:["group"]}),/array/);
+      const points=expanded.createScatterPlot({x:"x",y:"x",guides:false});
+      assert.equal(points.graphicSpec.objects.scatterPlot.items.length,5);
+      assert.ok(renderToSVG(points).includes("<circle"));
+      assert.ok((await renderToPNGBuffer(points)).buffer.length>100);
+      assert.deepEqual(deserializeProgram(serializeProgram(points)).semanticSpec,points.semanticSpec);
+      if(factory===chart){
+        const renamed=points.editFlattenData({target:"expanded",as:["value","category"]});
+        assert.equal(renamed.semanticSpec.layers[0].encoding.x.field,"value");
+        assert.equal(renderToSVG(renamed),renderToSVG(points));
+        assert.equal(points.reviseData({source:"data",id:"newArrays",values:[{amounts:[4],labels:[],group:"alpha"}]}).graphicSpec.objects.scatterPlot.items.length,1);
+      } else assert.equal(points.editFlattenData,undefined);
+    }
+
+    for (const factory of [chart,basicChart]) {
+      const lineRows=[undefined,null,"Reference"].flatMap(kind=>[0,1].map(x=>({x,y:x,...(kind===undefined?{}:{kind})})));
+      const pendingColor=factory().createCanvas().createData({values:lineRows}).createLineMark()
+        .encodeColor({field:"kind",scale:{domain:["Reference"],unknown:"transparent"}});
+      assert.throws(()=>pendingColor.encodeX({field:"x",bin:{maxBins:4}}),/Cartesian line/);
+      if(factory===chart) assert.throws(()=>pendingColor.encodeTheta({field:"x"}),/Cartesian line/);
+      const missingColor=factory().createCanvas({width:440,height:220,margin:{left:20,right:160,top:10,bottom:20}})
+        .createData({id:"raw",values:lineRows})
+        .createLinePlot({id:"paths",x:"x",y:"y",color:{field:"kind",scale:{domain:["Regression","Reference"],range:["firebrick","black"],unknown:"transparent"}},guides:false})
+        .createLegend({channels:["color"],title:"Line"});
+      assert.deepEqual(missingColor.graphicSpec.objects.paths.items.map(item=>item.properties.stroke),["transparent","transparent","black"]);
+      assert.deepEqual(missingColor.semanticSpec.datasets[0].values,lineRows);
+      assert.deepEqual(missingColor.resolvedScales.color.domain,["Regression","Reference"]);
+      assert.deepEqual(deserializeProgram(serializeProgram(missingColor)).graphicSpec,missingColor.graphicSpec);
+      assert.match(renderToSVG(missingColor),/Regression/);
+      assert.ok((await renderToPNGBuffer(missingColor)).buffer.length>100);
+      assert.ok((await renderToPDFBuffer(missingColor)).buffer.length>100);
+    }
+
+    for (const factory of [chart,basicChart]) {
+      const dashRows=[{x:0,y:1,g:"A"},{x:1,y:1,g:"A"},{x:0,y:2,g:"B"},{x:1,y:2,g:"B"}];
+      const fixedDash=factory().createCanvas({width:500,height:300,margin:60})
+        .createData({values:dashRows}).createLinePlot({x:"x",y:"y",guides:false})
+        .encodeGroup({field:"g"}).encodeStrokeDash({field:"g"})
+        .editLineMark({stroke:"orange",opacity:0.6})
+        .createLegend({symbol:{layers:[{type:"line",length:10,lineWidth:1,opacity:1}]}});
+      const samples=program=>program.graphicSpec.objects.seriesLegendSymbols.items.map(item=>item.properties);
+      assert.deepEqual(samples(fixedDash).map(item=>item.stroke),["orange","orange"]);
+      assert.ok(samples(fixedDash).every(item=>item.opacity===1));
+      const changed=fixedDash.editLineMark({stroke:"purple"});
+      assert.deepEqual(samples(changed).map(item=>item.stroke),["purple","purple"]);
+      assert.deepEqual(samples(fixedDash).map(item=>item.stroke),["orange","orange"]);
+      assert.deepEqual(deserializeProgram(serializeProgram(changed)).graphicSpec,changed.graphicSpec);
+    }
+
+    const underlayPlot=createPlotUnderlayProgram();
+    assert.deepEqual(underlayPlot.graphicSpec.objects["plot-main"].children,
+      ["horizontalGridLines","plotBorder","xAxisLine","barPlot"]);
+    assert.equal(underlayPlot.guideConfigs.axis.x.frame.underlay,true);
+    assert.equal(underlayPlot.materializationConfigs.canvas.plotBorder.underlay,true);
+    assert.deepEqual(deserializeProgram(serializeProgram(underlayPlot)).graphicSpec,underlayPlot.graphicSpec);
+    const defaultPlot=underlayPlot.editXAxis({underlay:false}).editCanvas({plotBorder:{underlay:false}});
+    assert.deepEqual(defaultPlot.graphicSpec,createPlotUnderlayProgram({axisUnderlay:false,borderUnderlay:false}).graphicSpec);
+    assert.notEqual(renderToSVG(underlayPlot),renderToSVG(defaultPlot));
+    assert.ok((await renderToPNGBuffer(underlayPlot)).buffer.length>100);
+    assert.ok((await renderToPDFBuffer(underlayPlot)).buffer.length>100);
+    const onlyOrder=underlayPlot.editGraphics({target:"plot-main",property:"children",
+      value:["horizontalGridLines","barPlot","plotBorder","xAxisLine"]});
+    assert.deepEqual(onlyOrder.graphicSpec,defaultPlot.graphicSpec);
+    assert.throws(()=>underlayPlot.editGraphics({target:"plot-main",property:"children",value:["barPlot"]}));
+
+    const sharedLane=createFacetSharedTopLaneProgram();
+    assert.equal(sharedLane.compositionSpec.topLane,"shared");
+    assert.deepEqual(sharedLane.graphicSpec.objects.canvas.properties,{width:508,height:262,background:"white"});
+    assert.deepEqual(deserializeProgram(serializeProgram(sharedLane)).graphicSpec,sharedLane.graphicSpec);
+    const stackedLane=sharedLane.editCompositionLayout({topLane:"stacked"});
+    assert.equal(Object.hasOwn(stackedLane.compositionSpec,"topLane"),false);
+    assert.equal(stackedLane.graphicSpec.objects.canvas.properties.height,302);
+    assert.deepEqual(stackedLane.editCompositionLayout({topLane:"shared"}).graphicSpec,sharedLane.graphicSpec);
+    assert.throws(()=>sharedLane.editTitle({offset:20}),/Shared facet top lane/);
+    assert.ok(renderToSVG(sharedLane).includes("Grouped Bar Chart"));
+    assert.ok((await renderToPNGBuffer(sharedLane)).buffer.length>100);
+    assert.ok((await renderToPDFBuffer(sharedLane)).buffer.length>100);
+
+    const spacedBase = chart().createCanvas({width:500,height:400,margin:130})
+      .createData({values:[{x:0,y:0,v:0},{x:1,y:1,v:1}]})
+      .createScatterPlot({x:"x",y:"y",guides:false}).encodeSize({field:"v"});
+    const spacedControl = spacedBase.createLegend({channels:["size"]});
+    const spaced = spacedControl.editLegendLayout({rowPadding:7,titlePadding:20});
+    assert.equal(spaced.guideConfigs.legend.size.rowPadding,7);
+    assert.equal(spaced.guideConfigs.legend.size.titlePadding,20);
+    assert.deepEqual(spacedBase.createLegend({channels:["size"],rowPadding:7,titlePadding:20}).graphicSpec,spaced.graphicSpec);
+    assert.deepEqual(deserializeProgram(serializeProgram(spaced)).editCanvas({width:550}).graphicSpec,spaced.editCanvas({width:550}).graphicSpec);
+    assert.deepEqual(spaced.editLegend({rowPadding:"auto",titlePadding:"auto"}).graphicSpec,spacedControl.graphicSpec);
+    assert.notEqual(renderToSVG(spaced),renderToSVG(spacedControl));
+    assert.ok((await renderToPNGBuffer(spaced)).buffer.length>100);
+    assert.ok((await renderToPDFBuffer(spaced)).buffer.length>100);
+    assert.throws(()=>spaced.editLegendLayout({rowPadding:-1}));
+    const spacedBasic = basicChart().createCanvas({width:500,height:400,margin:130})
+      .createData({values:[{x:0,y:0,g:"A"},{x:1,y:1,g:"B"}]})
+      .createScatterPlot({x:"x",y:"y",guides:false}).encodeColor({field:"g"})
+      .createLegend({rowPadding:0,titlePadding:20});
+    assert.equal(spacedBasic.guideConfigs.legend.color.rowPadding,0);
+    assert.equal(spacedBasic.editLegendLayout,undefined);
+
+    const clipBase = chart().createCanvas({width:240,height:180,margin:40})
+      .createData({values:[{x:-1,y:4},{x:5,y:4}]})
+      .createScatterPlot({x:{field:"x",scale:{domain:[0,10]}},y:{field:"y",scale:{domain:[0,8]}},guides:false});
+    const clipped = clipBase.editPointMark({clip:true});
+    assert.deepEqual(clipped.graphicSpec.objects.scatterPlot.clip,{x:40,y:40,width:160,height:100});
+    assert.deepEqual(clipped.graphicSpec.objects.scatterPlot.items,clipBase.graphicSpec.objects.scatterPlot.items);
+    assert.equal((renderToSVG(clipped).match(/clip-path=/g)||[]).length,1);
+    assert.deepEqual(clipped.editPointMark({clip:false}).graphicSpec,clipBase.graphicSpec);
+    assert.deepEqual(deserializeProgram(serializeProgram(clipped)).graphicSpec,clipped.graphicSpec);
+    assert.notDeepEqual((await renderToPNGBuffer(clipped)).buffer,(await renderToPNGBuffer(clipBase)).buffer);
+
+    const paletteBase = chart().createCanvas({width:240,height:180,margin:30})
+      .createData({values:[{x:0,y:1,v:0},{x:1,y:2,v:0.3},{x:2,y:3,v:1}]})
+      .createScatterPlot({x:"x",y:"y",guides:false});
+    const paletteDescriptor = Object.freeze({name:"turbo",count:64,extent:Object.freeze([0.1,0.9])});
+    const paletteTop = paletteBase.encodeStroke({field:"v",fieldType:"quantitative",scale:{type:"sequential",domain:[0,1],palette:paletteDescriptor}});
+    const paletteRange = paletteBase.encodeStroke({field:"v",fieldType:"quantitative",scale:{type:"sequential",domain:[0,1],range:{palette:paletteDescriptor}}});
+    assert.deepEqual(paletteTop.semanticSpec,paletteRange.semanticSpec);
+    assert.deepEqual(paletteTop.graphicSpec,paletteRange.graphicSpec);
+    assert.ok(Object.values(paletteTop.resolvedScales).some(scale=>scale.range.length===64));
+    assert.deepEqual(deserializeProgram(serializeProgram(paletteTop)).graphicSpec,paletteTop.graphicSpec);
+
+    const intervalRows = Object.freeze([Object.freeze({x0:0,x1:2})]);
+    const intervalBase = chart().createCanvas({width:240,height:160,margin:20})
+      .createData({values:intervalRows}).createRectMark({id:"period"})
+      .encodeXRange({lower:"x0",upper:"x1",scale:{domain:[0,2],nice:false}});
+    const directInterval = intervalBase.encodeY({datum:45000,scale:{domain:[0,45000],nice:false}}).encodeY2({datum:0});
+    const rangedInterval = intervalBase.encodeYRange({lower:{datum:45000},upper:{datum:0},scale:{domain:[0,45000],nice:false}});
+    assert.deepEqual(rangedInterval.semanticSpec,directInterval.semanticSpec);
+    assert.deepEqual(rangedInterval.graphicSpec,directInterval.graphicSpec);
+    assert.equal(rangedInterval.graphicSpec.objects.period.items[0].properties.y,20);
+    assert.equal(rangedInterval.graphicSpec.objects.period.items[0].properties.height,120);
+    assert.equal(renderToSVG(rangedInterval),renderToSVG(directInterval));
+    assert.deepEqual((await renderToPNGBuffer(rangedInterval)).buffer,(await renderToPNGBuffer(directInterval)).buffer);
+    assert.deepEqual(rangedInterval.semanticSpec.datasets[0].values,intervalRows);
+    assert.deepEqual(deserializeProgram(serializeProgram(rangedInterval)).graphicSpec,rangedInterval.graphicSpec);
+    assert.ok((await renderToPDFBuffer(rangedInterval)).buffer.length>100);
+
+    {
+      const neutralHueExpected = ["#4682b4","#6090bd","#789fc6","#8faecf","#a5bed8","#bbcde2","#d1ddeb","#e7edf4","#fdfdfd"];
+      const neutralHueRows = Array.from({length:9},(_,i)=>({x:i,y:i,v:i/8}));
+      const neutralHue = chart().createCanvas({width:600,height:500,margin:100})
+        .createData({values:neutralHueRows}).createScatterPlot({x:"x",y:"y",guides:false})
+        .encodeColor({field:"v",fieldType:"quantitative",scale:{domain:[0,1],range:["#4682b4","#fdfdfd"],interpolate:"hcl",whitePoint:"d50"}})
+        .createLegend({title:false,representation:"symbols",values:[0,.5,1]});
+      assert.deepEqual(neutralHue.graphicSpec.objects.scatterPlot.items.map(item=>item.properties.fill),neutralHueExpected);
+      assert.deepEqual(neutralHue.graphicSpec.objects.colorGradientSymbols.items.map(item=>item.properties.fill),[neutralHueExpected[0],neutralHueExpected[4],neutralHueExpected[8]]);
+      assert.deepEqual(deserializeProgram(serializeProgram(neutralHue)).graphicSpec,neutralHue.graphicSpec);
+      const neutralHueLab = neutralHue.editColorScale({interpolate:"lab",whitePoint:"d50"});
+      assert.equal(renderToSVG(neutralHue),renderToSVG(neutralHueLab));
+      assert.deepEqual((await renderToPNGBuffer(neutralHue)).buffer,(await renderToPNGBuffer(neutralHueLab)).buffer);
+      assert.deepEqual(neutralHue.editColorScale({reverse:true}).graphicSpec.objects.scatterPlot.items.map(item=>item.properties.fill),neutralHueExpected.toReversed());
+      assert.deepEqual(neutralHue.semanticSpec.datasets[0].values,neutralHueRows);
+      const foldPartitionRows = [{country:"USA",gold:10,silver:20},{country:"Canada",gold:7,silver:26}];
+      const foldPartitionUnit = chart().createCanvas({width:160,height:320,margin:{left:45,right:10,top:70,bottom:50}})
+        .createData({values:foldPartitionRows}).createFoldData({id:"long",fields:["gold","silver"],as:{key:"k",value:"v"}})
+        .createBarPlot({x:"country",y:"v",guides:false});
+      const foldPartition = foldPartitionUnit.facet({field:"k",data:"long",columns:2});
+      assert.deepEqual(foldPartition.compositionSpec.facet.values,["gold","silver"]);
+      const foldPanelValues = foldPartition.compositionSpec.children.map(id=>{
+        const c=foldPartition.children[id],d=c.semanticSpec.datasets.find(d=>d.id===c.semanticSpec.layers[0].data);
+        assert.deepEqual(c.semanticSpec.datasets[0].values,foldPartitionRows);
+        assert.equal(c.semanticSpec.datasets.find(d=>d.id==="long").values.length,4);
+        return d.values.map(r=>r.v);
+      });
+      assert.deepEqual(foldPanelValues,[[10,7],[20,26]]);
+      const foldRestored = deserializeProgram(serializeProgram(foldPartition));
+      assert.equal(renderToSVG(foldRestored),renderToSVG(foldPartition));
+      assert.deepEqual((await renderToPNGBuffer(foldPartition)).buffer,(await renderToPNGBuffer(foldRestored)).buffer);
+      assert.ok((await renderToPDFBuffer(foldPartition)).buffer.length>100);
+      const facetNumericRows = [{x:0,y:0,v:0,g:"a"},{x:1,y:1,v:1,g:"b"}];
+      const facetNumericScale = {domain:[0,1],range:["red","blue"],interpolate:"lab",whitePoint:"d50"};
+      const facetNumericUnit = chart().createCanvas({width:800,height:800,margin:200})
+        .createData({values:facetNumericRows}).createScatterPlot({x:"x",y:"y",guides:false})
+        .encodeColor({field:"v",fieldType:"quantitative",scale:facetNumericScale})
+        .encodeStroke({field:"v",fieldType:"quantitative",scale:facetNumericScale});
+      const facetNumeric = facetNumericUnit.facet({field:"g",guides:{legend:"shared"}});
+      assert.deepEqual(Object.keys(facetNumeric.guideConfigs.legend),["gradient","strokeGradient"]);
+      const facetNumericRestored = deserializeProgram(serializeProgram(facetNumeric));
+      assert.deepEqual(facetNumericRestored.graphicSpec,facetNumeric.graphicSpec);
+      assert.equal(renderToSVG(facetNumeric),renderToSVG(facetNumericRestored));
+      const facetNumericPng = await renderToPNGBuffer(facetNumeric);
+      assert.ok(facetNumericPng.buffer.byteLength > 1000);
+      assert.deepEqual(facetNumericPng.buffer,(await renderToPNGBuffer(facetNumericRestored)).buffer);
+      assert.deepEqual(facetNumericUnit.semanticSpec.datasets[0].values,facetNumericRows);
+      for (const child of Object.values(facetNumeric.children)) {
+        assert.equal(child.graphicSpec.objects.canvas.properties.height,800);
+        assert.deepEqual(child.guideConfigs.legend ?? {},{});
+      }
+
+    }
+
+    assert.equal(createTransitionScene(chart().createCanvas({width:100,height:100,margin:0})).version, 1);
     const bootstrapRows = [{x:0,y:0},{x:0,y:1},{x:0,y:2},{x:0,y:30}];
     const bootstrapSummary = chart().createData({values:bootstrapRows}).createSummaryData({id:"ci",groupBy:"x",aggregates:[
       {field:"y",op:{op:"ciLower",method:{type:"bootstrap",seed:1}},as:"lower"},
@@ -170,13 +576,23 @@ async function testNodeConsumer(directory) {
       assert.ok((await renderToPNGBuffer(dashedGuides)).buffer.length > 100);
       assert.ok((await renderToPDFBuffer(dashedGuides)).buffer.length > 100);
     }
-    for (const factory of [chart, basicChart]) for (const shape of ["wedge", "arrow"]) {
+    const polygonVertices = [{x:-1.5,y:-1.5},{x:1.5,y:-1.5},{x:0,y:1.5}];
+    for (const factory of [chart, basicChart]) for (const shape of ["wedge", "arrow",
+      {polygon:polygonVertices}, {polygon:polygonVertices,normalization:"radius"}]) {
       const directional = factory().createCanvas({width: 300, height: 200, margin: 50})
         .createData({values:[{x:0,y:0,g:"A"},{x:1,y:1,g:"B"}]})
         .createScatterPlot({x:"x",y:"y",point:{shape},guides:false});
       assert.equal(directional.graphicSpec.objects.scatterPlot.items[0].type, "path");
       assert.deepEqual(deserializeProgram(serializeProgram(directional)).graphicSpec, directional.graphicSpec);
       assert.ok((await renderToPNGBuffer(directional)).buffer.length > 100);
+      if (typeof shape === "object") {
+        const encoded = directional.encodeShape({field:"g",scale:{domain:["A","B"],
+          range:[shape,"circle"],unknown:shape}}).createLegend({channels:["shape"]});
+        assert.equal(encoded.graphicSpec.objects.scatterPlot.items[0].type,"path");
+        assert.equal(encoded.graphicSpec.objects.scatterPlot.items[1].type,"circle");
+        assert.deepEqual(deserializeProgram(serializeProgram(encoded)).graphicSpec,encoded.graphicSpec);
+        assert.ok((await renderToPDFBuffer(encoded)).buffer.length > 100);
+      }
     }
 
     const mappedSize = chart().createCanvas({width:700,height:500,margin:160})
@@ -311,9 +727,12 @@ async function testNodeConsumer(directory) {
     for (const [settings, expected] of [
       [{interpolate:"lab",whitePoint:"d50",range:["red","blue"]}, "#c10088"],
       [{type:"pow",exponent:3,range:["black","white"]}, "#202020"],
-      [{interpolate:"cubehelix",gamma:2.2,range:["black","white"]}, "#373737"]
+      [{interpolate:"cubehelix",gamma:2.2,range:["black","white"]}, "#373737"],
+      [{interpolate:"cubehelix",gamma:0,range:["#75190b","#90f2a4"]}, "#d2d87c"],
+      [{interpolate:"cubehelix",gamma:-.1,range:["#75190b","#90f2a4"]}, "#dce195"]
     ]) {
-      const controls = chart().createCanvas({width:600,height:500,margin:{left:70,top:70,right:180,bottom:70}})
+      for (const factory of [chart, basicChart]) {
+      const controls = factory().createCanvas({width:600,height:500,margin:{left:70,top:70,right:180,bottom:70}})
         .createData({values:[{x:0,y:0,v:0},{x:1,y:1,v:.5},{x:2,y:2,v:1}]})
         .createScatterPlot({x:"x",y:"y",guides:false})
         .encodeColor({field:"v",fieldType:"quantitative",scale:{domain:[0,1],...settings}})
@@ -322,6 +741,9 @@ async function testNodeConsumer(directory) {
       assert.equal(controls.graphicSpec.objects.colorGradientSymbols.items[1].properties.fill, expected);
       assert.deepEqual(deserializeProgram(serializeProgram(controls)).graphicSpec,controls.graphicSpec);
       assert.ok((await renderToPNGBuffer(controls)).buffer.length>100);
+      assert.ok((await renderToPDFBuffer(controls)).buffer.length>100);
+      assert.ok(renderToSVG(controls).includes(expected));
+      }
     }
     const longLine = chart().createCanvas({ width: 440, height: 340, margin: 20 })
       .createData({ values: Array.from({ length: 12070 }, (_, i) => ({ x: i, y: i % 11 })) })
@@ -828,6 +1250,10 @@ async function testNodeConsumer(directory) {
       item => item.properties.text
     ), ["X", "Y", "Alpha", "B"]);
     assert.match(renderToSVG(installedFacetHeaders), />Alpha</);
+    const installedFieldTitle = installedFacetHeaders.editFacetHeaders({role:"row",title:{text:"Region"}});
+    assert.equal(installedFieldTitle.graphicSpec.objects["facetGrid-headers"].items.at(-1).properties.text,"Region");
+    assert.match(renderToSVG(installedFieldTitle),/>Region</);
+    assert.deepEqual(installedFieldTitle.editFacetHeaders({role:"row",title:false}).graphicSpec,installedFacetHeaders.graphicSpec);
     const statisticalReferences = program
       .createReferenceLine({
         id: "packageMean",
@@ -1420,6 +1846,31 @@ async function testNodeConsumer(directory) {
         .createScatterPlot({ x: "x", y: "y", point: { radius: 4 }, guides: false });
       assert.equal(radius.graphicSpec.objects.scatterPlot.items[0].properties.radius, 4);
     }
+    for (const factory of [chart, basicChart]) {
+      const orderedDash = factory().createCanvas({ width: 260, height: 180, margin: 24 })
+        .createData({ values: [
+          { level: 2, x: 0, y: 20 }, { level: 2, x: 1, y: 20 },
+          { level: 1, x: 0, y: 10 }, { level: 1, x: 1, y: 10 }
+        ] }).createLinePlot({ x: "x", y: "y", guides: false })
+        .encodeStrokeDash({ field: "level", fieldType: "ordinal", scale: { domain: [1, 2], range: [[1, 0], [4, 2]] } });
+      assert.equal(orderedDash.semanticSpec.layers[0].encoding.strokeDash.fieldType, "ordinal");
+      assert.deepEqual(orderedDash.resolvedScales.strokeDash.domain, [1, 2]);
+      assert.deepEqual(orderedDash.graphicSpec.objects.linePlot.items.map(item => item.properties.strokeDash), [[4, 2], [1, 0]]);
+      const fallbackDash = orderedDash.encodeStrokeDash({ field: "level", fieldType: "ordinal",
+        scale: { domain: [1], range: [[1, 0], [4, 2]], unknown: [] } });
+      assert.deepEqual(fallbackDash.graphicSpec.objects.linePlot.items.map(item => item.properties.strokeDash), [[], [1, 0]]);
+      assert.deepEqual(fallbackDash.resolvedScales.strokeDash.domain, [1]);
+      assert.deepEqual(deserializeProgram(serializeProgram(fallbackDash)).graphicSpec, fallbackDash.graphicSpec);
+      if (factory === basicChart) {
+        assert.equal(typeof fallbackDash.editScale, "undefined");
+        assert.equal(typeof fallbackDash.editStrokeDashScale, "undefined");
+        assert.equal(typeof fallbackDash.editLegend, "undefined");
+      }
+      if (factory === chart) {
+        assert.throws(() => fallbackDash.editStrokeDashScale({ unknown: undefined }), /outside/);
+        assert.deepEqual(fallbackDash.editStrokeDashScale({ unknown: "dotted" }).graphicSpec.objects.linePlot.items.map(item => item.properties.strokeDash), [[1, 3], [1, 0]]);
+      }
+    }
     const ruleSource = chart().createCanvas().createData({ values: [{ x: 1 }, { x: 2 }] });
     const styledRule = ruleSource.createRuleMark({ stroke: "red", strokeWidth: 0, opacity: 0.5 })
       .encodeX({ field: "x", fieldType: "quantitative" }).editRuleMark({ strokeDash: "dashed", opacity: 0.8 });
@@ -1432,7 +1883,8 @@ async function testNodeConsumer(directory) {
       { x: 2, y: 3, lower: 2, upper: 4, group: "A" }
     ] }).createErrorBand({ x: { field: "x" },
       y: { center: "y", lower: "lower", upper: "upper" }, groupBy: "group", fill: "red" });
-    assert.throws(() => filledBand.encodeColor({ field: "group" }), /constant appearance/);
+    assert.equal(filledBand.encodeColor({ field: "group" })
+      .semanticSpec.layers[0].encoding.color.field, "group");
     assert.equal(filledBand.editErrorBand({ fill: false }).encodeColor({ field: "group" })
       .semanticSpec.layers[0].encoding.color.field, "group");
     for (const factory of [chart, basicChart]) {
@@ -2137,6 +2589,20 @@ async function testNodeConsumer(directory) {
         .properties.fill.type,
       "linear-gradient"
     );
+    const styledGradient = gradientPlotFacade
+      .encodeColor({ target: "gradientPlot", value: "#e45756" })
+      .encodeOpacity({ target: "gradientPlot", value: 0.5 })
+      .encodeStroke({ target: "gradientPlot", value: "#000000" })
+      .encodeStrokeWidth({ target: "gradientPlot", value: 2 })
+      .editGradientPlot({ density: { bandwidth: 1 } });
+    const gradientAppearance = styledGradient.graphicSpec.objects.gradientPlot.items[0].properties;
+    assert.equal(gradientAppearance.opacity, 0.5);
+    assert.equal(gradientAppearance.stroke, "#000000");
+    assert.equal(gradientAppearance.strokeWidth, 2);
+    assert.equal(gradientAppearance.fill.type, "linear-gradient");
+    assert.notDeepEqual(gradientAppearance.fill,
+      gradientPlotFacade.graphicSpec.objects.gradientPlot.items[0].properties.fill);
+    assert.ok(renderToSVG(styledGradient).startsWith("<svg "));
     const violinPlotFacade = chart()
       .createCanvas({ width: 180, height: 140, margin: 20 })
       .createData({ values: [
@@ -3108,6 +3574,43 @@ async function testMcpConsumer(directory) {
 }
 
 async function testTypeScriptConsumer(directory) {
+  const formatsFile=path.join(directory,"value-formats.mts");
+  await writeFile(formatsFile,`
+type FullFormatsProgram = ReturnType<typeof import("ggaction").chart>;
+type BasicFormatsProgram = ReturnType<typeof import("ggaction/basic").chart>;
+const groupedFull: Parameters<FullFormatsProgram["createXAxisLabels"]>[0] = {format:",.0f"};
+const weekdayFull: Parameters<FullFormatsProgram["createXAxisLabels"]>[0] = {format:"%a"};
+const groupedBasic: Parameters<BasicFormatsProgram["createLinePlot"]>[0] = {x:"x",y:"y",guides:{axes:{x:{ticksAndLabels:{labels:{format:",.2f"}}}}}};
+const weekdayBasic: Parameters<BasicFormatsProgram["createLinePlot"]>[0] = {x:{field:"date",fieldType:"temporal"},y:"y",guides:{axes:{x:{ticksAndLabels:{labels:{format:"%a"}}}}}};
+declare const fullLookup: FullFormatsProgram;
+declare const basicLookup: BasicFormatsProgram;
+fullLookup.createLookupData({id:"ages",field:"person",lookup:{data:"people",key:"name",fields:["age"]}});
+basicLookup.createLookupData({id:"ages",field:"person",lookup:{data:"people",key:"name",fields:["age"]}});
+fullLookup.editLookupData({target:"ages",lookup:{data:"people",key:"name",fields:["age"],as:["years"]}});
+// @ts-expect-error lookup reference is explicit
+fullLookup.createLookupData({id:"ages",field:"person",lookup:{key:"name",fields:["age"]}});
+// @ts-expect-error nested edit replaces a complete lookup definition
+fullLookup.editLookupData({target:"ages",lookup:{key:"name"}});
+// @ts-expect-error Basic is creation only
+basicLookup.editLookupData({target:"ages",field:"other"});
+declare const numericText: FullFormatsProgram;
+numericText.encodeDx({field:"shift"}).encodeDy({value:-6});
+numericText.encodeChannels({target:"text",channels:{dx:{field:"shift"},dy:{value:0}}});
+numericText.removeEncoding({channel:"dx"});
+// @ts-expect-error direct offsets have no scale
+numericText.encodeDx({field:"shift",scale:{}});
+// @ts-expect-error field/value union is exclusive
+numericText.encodeDy({field:"shift",value:1});
+// @ts-expect-error Basic retains its Text-family exclusion
+type BasicNumericTextOffset = BasicFormatsProgram["encodeDx"];
+const overlapFull: Parameters<FullFormatsProgram["createYAxisTitle"]>[0] = {overlap:"allow"};
+const overlapBasic: Parameters<BasicFormatsProgram["createAxes"]>[0] = {y:{title:{overlap:"allow"}}};
+// @ts-expect-error title overlap is a closed string policy
+const overlapInvalid: Parameters<FullFormatsProgram["createYAxisTitle"]>[0] = {overlap:true};
+// @ts-expect-error grouped scientific notation remains unsupported
+const invalidGrouped: Parameters<FullFormatsProgram["createXAxisLabels"]>[0] = {format:",.2e"};
+`);
+  run(process.execPath,[tscCommand,"--noEmit","--strict","--skipLibCheck","--target","ES2022","--module","NodeNext","--moduleResolution","NodeNext",formatsFile],directory);
   const extensionAuthoring = await readFile(
     path.join(root, "examples", "extension-typescript", "program.ts"),
     "utf8"
@@ -3210,7 +3713,9 @@ async function testTypeScriptConsumer(directory) {
       type TimeUnitDataOptions,
       type ViolinPlotOptions,
       type WindowDataOptions,
-      type YStackMode
+      type YStackMode,
+      type LinearNiceCountOptions,
+      type AxisTickRounding
     } from "ggaction";
     import { action, ChartProgram as ExtensionProgram } from "ggaction/extension";
     import {
@@ -3276,6 +3781,46 @@ async function testTypeScriptConsumer(directory) {
     basicChart().createTextPlot({ x: "x", y: "y", text: "label" });
 
     chart().createScatterPlot({ x: "x", y: "y", stroke: "group", point: { strokeWidth: 2 } });
+    const linearNice: LinearNiceCountOptions = {count:10};
+    const tickRounding: AxisTickRounding = "nearest";
+    chart().createYAxis({ticksAndLabels:{rounding:tickRounding}});
+    chart().editYAxisTicksAndLabels({rounding:tickRounding});
+    basicChart().createYAxis({ticksAndLabels:{rounding:tickRounding}});
+    // @ts-expect-error Cartesian rounding is not a Polar option
+    chart().createThetaAxisTicks({rounding:tickRounding});
+    chart().createLinePlot({x:"x",y:{field:"y",scale:{nice:linearNice}}});
+    basicChart().createLinePlot({x:"x",y:{field:"y",scale:{nice:linearNice}}});
+    chart().editYScale({nice:linearNice});
+    // @ts-expect-error temporal position scales retain boolean nice
+    chart().encodeX({field:"date",fieldType:"temporal",scale:{nice:linearNice}});
+    // @ts-expect-error transformed position scales retain boolean nice
+    chart().editYScale({type:"sqrt",nice:linearNice});
+    chart().encodeYRange({ lower: { datum: 45000 }, upper: { datum: 0 }, scale: { domain: [0, 45000], nice: false } });
+    chart().encodeXRange({ lower: { datum: 1 }, upper: "high" });
+    // @ts-expect-error numeric range constants remain numeric
+    chart().encodeXRange({ lower: { datum: "1" }, upper: "high" });
+    // @ts-expect-error temporal datum ranges are not added by numeric wrapper support
+    chart().encodeXRange({ lower: { datum: 1 }, upper: { datum: 2 }, fieldType: "temporal" });
+    // @ts-expect-error Basic retains individual endpoint actions
+    basicChart().encodeYRange({ lower: { datum: 1 }, upper: { datum: 2 } });
+    const sampledPalette = { name: "turbo", count: 64, extent: [0.1, 0.9] } as const;
+    for (const scale of [{ type: "sequential", palette: sampledPalette },
+      { type: "sequential", range: { palette: sampledPalette } }] as const) {
+      chart().encodeColor({ field: "value", fieldType: "quantitative", scale });
+      basicChart().encodeColor({ field: "value", fieldType: "quantitative", scale });
+      chart().encodeStroke({ field: "value", fieldType: "quantitative", scale });
+      chart().encodeChannels({ target: "points", channels: {
+        color: { field: "value", fieldType: "quantitative", scale },
+        stroke: { field: "value", fieldType: "quantitative", scale }
+      } });
+      basicChart().createScatterPlot({ x: "x", y: "y", stroke: { field: "value", fieldType: "quantitative", scale } });
+    }
+    // @ts-expect-error palette counts remain numeric
+    chart().encodeStroke({ field: "v", fieldType: "quantitative", scale: { palette: { name: "turbo", count: "64" } } });
+    // @ts-expect-error nested palette names remain closed
+    chart().encodeColor({ field: "v", fieldType: "quantitative", scale: { range: { palette: { name: "unknown" } } } });
+    // @ts-expect-error range wrappers do not accept sampling keys directly
+    chart().encodeColor({ field: "v", fieldType: "quantitative", scale: { range: { palette: "turbo", count: 64 } } });
     basicChart().createScatterPlot({ x: "x", y: "y", stroke: { field: "amount", fieldType: "quantitative" } });
     // @ts-expect-error Basic authors stroke through the facade
     basicChart().encodeStroke({ field: "group" });
@@ -3309,6 +3854,8 @@ async function testTypeScriptConsumer(directory) {
     chart().createLegend({ overflow: { maxItems: 3, summary: "truncate" } });
     const themeOptions: ApplyThemeOptions = { theme: themeName };
     const themedProgram: ChartProgram = program.applyTheme(themeOptions).removeTheme();
+    const transitionScene: import("ggaction/scene").TransitionScene = (await import("ggaction/scene")).createTransitionScene(program);
+    void transitionScene;
     const inspection: ProgramInspection = inspectProgram(program);
     const description: ActionDescription = describeAction(program, {
       action: "createData",
@@ -3463,6 +4010,10 @@ async function testTypeScriptConsumer(directory) {
       align: "start"
     };
     program.editFacetHeaders(facetHeaderOptions);
+    program.editFacetHeaders({role:"column",title:{text:"Region",rotation:{value:-90,unit:"degrees"}}});
+    program.editFacetHeaders({role:"column",title:false});
+    // @ts-expect-error Field-title options are closed.
+    program.editFacetHeaders({role:"column",title:{padding:1}});
     // @ts-expect-error Canvas fitting is Full only
     basicChart().fitCanvas(fitOptions);
     program.createCanvas({ plotBorder: {} });
@@ -4728,6 +5279,24 @@ async function testTypeScriptConsumer(directory) {
       includeEmpty: false
     };
     const editedBinned: ChartProgram = binned.editBin2DData(binEdit);
+    const clippingTypes: ChartProgram = chart();
+    clippingTypes.createPointMark({clip:true}); clippingTypes.editPointMark({clip:false});
+    clippingTypes.createLineMark({clip:true}); clippingTypes.editLineMark({clip:false});
+    clippingTypes.createAreaMark({clip:true}); clippingTypes.editAreaMark({clip:false});
+    clippingTypes.createBarMark({clip:true}); clippingTypes.editBarMark({clip:false});
+    clippingTypes.createRectMark({clip:true}); clippingTypes.editRectMark({clip:false});
+    clippingTypes.createRuleMark({clip:true}); clippingTypes.editRuleMark({clip:false});
+    clippingTypes.createTextMark({clip:true}); clippingTypes.editTextMark({clip:false});
+    clippingTypes.createTickMark({clip:true}); clippingTypes.editTickMark({clip:false});
+    clippingTypes.createScatterPlot({x:"x",y:"y",point:{clip:true}});
+    clippingTypes.createLinePlot({x:"x",y:"y",line:{clip:true}});
+    // @ts-expect-error clip uses a boolean
+    clippingTypes.editPointMark({clip:"true"});
+    // @ts-expect-error Cartesian clip is not part of Polar facade styles
+    clippingTypes.createPolarScatterPlot({theta:"x",radius:"y",point:{clip:true}});
+    // @ts-expect-error Arc does not use Cartesian clipping
+    clippingTypes.createArcMark({clip:true});
+
     const inspected = chart()
       .createCanvas()
       .createData({ values: [{ x: 1, y: 2 }] })
@@ -4841,7 +5410,7 @@ async function testTypeScriptConsumer(directory) {
       .editLegend({ border: { padding: 8 }, title: false });
     const jitterOffset: JitterMaxOffset = { pixels: 2 };
     const jitterOptions: JitterPointsOptions = {
-      channel: "x",
+      channel: "both",
       maxOffset: jitterOffset,
       key: "x"
     };
@@ -4946,10 +5515,29 @@ async function testTypeScriptConsumer(directory) {
     chart().createReferenceBand({ space: "plot", x: [0.2, 0.6] });
     // @ts-expect-error Plot reference coordinates are numeric.
     chart().createReferenceLine({ space: "plot", x: "0.5" });
+    const polygonShape: import("ggaction").PointPolygonShape = {
+      polygon: [{x:0,y:0},{x:1,y:0},{x:0,y:1}], normalization: "radius"
+    };
+    const basicPolygonShape: import("ggaction/basic").PointPolygonShape = polygonShape;
+    program.createPointMark({shape:polygonShape});
+    basicChart().createPointMark({shape:basicPolygonShape});
+    program.encodeShape({field:"category",scale:{range:[polygonShape,"circle"],unknown:polygonShape}});
+    // @ts-expect-error polygon normalization is a closed vocabulary.
+    program.editPointMark({shape:{polygon:[],normalization:"automatic"}});
     chart().encodeSize({ field: "m", scale: { type: "log", domain: [1, 100], base: 10 } });
     chart().encodeSize({ field: "m", scale: { type: "pow", domain: [0, 100], exponent: 2 } });
     chart().encodeSize({ field: "m", scale: { type: "threshold", domain: [10], range: [20, 80] } });
     chart().editSizeScale({ type: "quantile", domain: "auto", range: [20, 40, 80] });
+    program.encodeStrokeDash({ field: "level", fieldType: "ordinal", scale: { domain: [1, 2], range: [[1, 0], [4, 2]], unknown: [] } });
+    program.editStrokeDashScale({ unknown: "dotted" });
+    program.editStrokeDashScale({ unknown: undefined });
+    basicChart().encodeStrokeDash({ field: "level", fieldType: "ordinal" });
+    chart().createLinePlot({ x: "x", y: "y", strokeDash: { field: "level", fieldType: "ordinal" } });
+    program.encodeChannels({ target: "paths", channels: { strokeDash: { field: "level", fieldType: "ordinal" } } });
+    // @ts-expect-error Stroke dash does not become a continuous channel.
+    program.encodeStrokeDash({ field: "level", fieldType: "quantitative" });
+    // @ts-expect-error Constant dash still rejects fieldType.
+    program.encodeStrokeDash({ value: "solid", fieldType: "ordinal" });
     program.encodeSize({ field: "category", fieldType: "nominal", scale: { domain: [10, "10", false], range: [9, 81, 25] } });
     program.editSizeScale({ type: "ordinal", domain: [false, "10", 10], range: [25] });
     basicChart().createScatterPlot({ x: "x", y: "y", size: { field: "group", fieldType: "ordinal" } });
@@ -5055,6 +5643,18 @@ async function testTypeScriptConsumer(directory) {
     opacityLegendTypes.createGuides({ legend: { channels: ["opacity"], symbol: { radius: 9 }, clipHeight: 12 } });
     opacityLegendTypes.editLegendSymbols({clipHeight:"auto"});
     opacityLegendTypes.editLegendBlock({target:"points",channel:"opacity",clipHeight:8});
+    const legendSpacingCreate: import("ggaction").LegendOptions = {rowPadding:0,titlePadding:20};
+    chart().createLegend(legendSpacingCreate).editLegend({rowPadding:"auto",titlePadding:7});
+    chart().editLegendLayout({channel:"size",rowPadding:7,titlePadding:"auto"});
+    basicChart().createLegend(legendSpacingCreate);
+    // @ts-expect-error Creation accepts numbers only.
+    chart().createLegend({rowPadding:"auto"});
+    // @ts-expect-error A focused layout edit does not accept false as reset.
+    chart().editLegendLayout({titlePadding:false});
+    // @ts-expect-error Basic keeps its creation-only lifecycle.
+    basicChart().editLegendLayout({rowPadding:7});
+    // @ts-expect-error Title style edits do not own layout spacing.
+    chart().editLegendTitle({titlePadding:20});
     // @ts-expect-error Creation does not accept edit-only auto.
     opacityLegendTypes.createLegend({clipHeight:"auto"});
     // @ts-expect-error Opacity symbol radius must be numeric.
@@ -5180,6 +5780,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "summary-data",
       "bin-data",
       "fold-data",
+      "named-dataset-lookup",
       "computed-data",
       "derived-data-editing",
       "safe-resource-removal",
@@ -5196,6 +5797,8 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "offset-scale-editing",
       "stroke-color-encoding-and-legends",
       "atomic-channel-encoding",
+      "axis-title-label-overlap-policy",
+      "numeric-independent-text-offsets",
       "statistical-references",
       "coordinate-aspect-and-polar-frame-editing",
       "facet-grid-repeat-and-named-composition-editing",
@@ -5206,6 +5809,16 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "right-categorical-legend-offset",
       "grouped-corner-and-free-legend-placement",
       "sequential-palette-count",
+      "ranged-numeric-datum-wrapper-parity",
+      "neutral-hcl-hue-borrowing",
+      "facet-numeric-legend-inference",
+      "explicit-fold-facet-partition",
+      "shared-facet-top-lane",
+      "rotated-facet-headers",
+      "count-based-linear-position-domains",
+      "nearest-step-linear-axis-ticks",
+      "per-axis-numeric-tick-precision",
+      "explicit-axis-and-border-underlays",
       "typescript",
       "basic-entry-runtime-and-types",
       "tutorial-consumers",

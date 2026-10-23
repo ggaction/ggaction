@@ -1,3 +1,4 @@
+import { validateGraphicClip } from "../../grammar/schemas/graphicClip.js";
 import { validateGraphicItemLimit } from "../../core/validation.js";
 import { closedAction } from "../../core/action.js";
 import { cloneAndFreeze, freezeOwned, isPlainObject } from "../../core/immutable.js";
@@ -13,7 +14,8 @@ import { validateConcreteGraphicValue } from
 import {
   collectGraphicSubtreeIds,
   findGraphicParent,
-  requireGraphic
+  requireGraphic,
+  resolveGraphicChildOrder
 } from "../../grammar/schemas/graphicTree.js";
 
 function setGraphicProperty(properties, property, value) {
@@ -96,6 +98,7 @@ function editGeneratedItem(owner, itemIndex, property, value) {
   const type = item.type ?? owner.type;
   validateGraphicProperty(type, property);
   validateConcreteGraphicValue(type, property, value);
+  if (Object.is(item.properties[property], value)) return owner;
   items[itemIndex] = freezeOwned({
     ...item,
     properties: setGraphicProperty(item.properties, property, value)
@@ -126,17 +129,20 @@ function editItems(owner, property, value, id, program) {
       `${owner.type}.${property} requires ${owner.items.length} values, received ${value.length}.`
     );
   }
+  let changed = false;
   const items = owner.items.map((item, index) => {
     const itemValue = Array.isArray(value) ? value[index] : value;
     const type = item.type ?? owner.type;
     validateGraphicProperty(type, property);
     validateConcreteGraphicValue(type, property, itemValue);
+    if (Object.is(item.properties[property], itemValue)) return item;
+    changed = true;
     return freezeOwned({
       ...item,
       properties: setGraphicProperty(item.properties, property, itemValue)
     });
   });
-  return freezeOwned({ ...owner, items: freezeOwned(items) });
+  return changed ? freezeOwned({ ...owner, items: freezeOwned(items) }) : owner;
 }
 
 function removeGraphicTree(graphicSpec, id) {
@@ -188,11 +194,27 @@ const editGraphics = /* @__PURE__ */ closedAction(
       return this._clone({ graphicSpec: removeGraphicTree(this.graphicSpec, found.id) });
     }
 
+    if (property === "children") {
+      const children = freezeOwned(resolveGraphicChildOrder(this.graphicSpec, target, value));
+      const updated = freezeOwned({ ...found.object, children });
+      return this._clone({ graphicSpec: freezeOwned({ ...this.graphicSpec,
+        objects: freezeOwned({ ...this.graphicSpec.objects, [target]: updated }) }) });
+    }
+
     const ownerId = found.kind === "item" ? found.ownerId : found.id;
     const owner = found.kind === "item" ? found.owner : found.object;
     if (owner.items !== undefined) validateGraphicItemLimit(owner.items.length, resolveGraphicItemCapacity(this, {
       id: ownerId, label: "Graphic collection length"
     }));
+    if (property === "clip") {
+      if (found.kind !== "object") throw new Error("Graphic clip requires a named owner, not a generated item.");
+      if (owner.type === "canvas") validateGraphicClip(value, owner.type);
+      if (value !== false) validateGraphicClip(value, owner.type);
+      const {clip: previous, ...rest} = owner;
+      const updated = value === false ? freezeOwned(rest) : freezeOwned({...rest, clip: cloneAndFreeze(value)});
+      return this._clone({graphicSpec: freezeOwned({...this.graphicSpec,
+        objects: freezeOwned({...this.graphicSpec.objects, [ownerId]: updated})})});
+    }
     const replacesDrawableItems =
       found.kind === "object" && property === "items" &&
       owner.items !== undefined && owner.type !== "collection";
@@ -203,7 +225,8 @@ const editGraphics = /* @__PURE__ */ closedAction(
           : owner.type, property);
     let updated;
     if (replacesDrawableItems) {
-      updated = replaceDrawableItems(value, ownerId, owner.type, this);
+      updated = freezeOwned({...replaceDrawableItems(value, ownerId, owner.type, this),
+        ...(owner.clip === undefined ? {} : {clip: owner.clip})});
     } else if (found.kind === "item") {
       if (validatedProperty === "length" || validatedProperty === "items") {
         throw new Error(`${validatedProperty} can only target an owning graphic.`);
@@ -224,6 +247,7 @@ const editGraphics = /* @__PURE__ */ closedAction(
       validateGraphicItemLimit(value, resolveGraphicItemCapacity(this, { id: ownerId, label: "Graphic collection length" }));
       updated = freezeOwned({
         type: owner.type,
+        ...(owner.clip === undefined ? {} : {clip: owner.clip}),
         items: freezeOwned(Array.from({ length: value }, (_, index) => freezeOwned({
           id: `${ownerId}:${index}`,
           properties: index === 0 ? owner.properties : freezeOwned({})
@@ -236,6 +260,7 @@ const editGraphics = /* @__PURE__ */ closedAction(
         properties: setGraphicProperty(owner.properties, validatedProperty, value)
       });
     }
+    if (updated === owner) return this;
     return this._clone({
       graphicSpec: freezeOwned({
         ...this.graphicSpec,

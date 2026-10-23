@@ -1,4 +1,5 @@
 import{normalizeLegendClipHeight}from"../../../../grammar/legendClip.js";
+import {normalizeLegendSpacing,validateLegendSpacing} from "../../../../grammar/legendSpacing.js";
 import { normalizeLegendBorderDash } from "../../../../grammar/legendBorder.js";
 import { LEGEND_TITLE_STYLE_KEYS, validateLegendTitleAlignment } from "../../../../grammar/legendTitleStyle.js";
 import { PLOT_LEGEND_POSITIONS, isPlotLegend } from "../../../../layout/legend.js";
@@ -34,6 +35,7 @@ const OPTIONS = Object.freeze([
   "labels",
   "titleStyle",
   "itemGap",
+  "rowPadding", "titlePadding",
   "border",
   "overflow"
 ]);
@@ -147,6 +149,7 @@ export function normalizeOptions(args, kind, { internalSymbol = false } = {}) {
     ? DEFAULT_VERTICAL_LEGEND_ITEM_GAP
     : position === "top" ? 24 : 20);
   const layout = args.layout === undefined ? "edge" : args.layout;
+  validateLegendSpacing(kind,{...args,layout});
   if (!["edge", "legacy-bottom"].includes(layout)) {
     throw new Error(`Unsupported legend layout "${layout}".`);
   }
@@ -198,6 +201,7 @@ export function normalizeOptions(args, kind, { internalSymbol = false } = {}) {
   const overflow = normalizeLegendOverflow(args.overflow);
   return {
     ...(args.clipHeight===undefined?{}:{clipHeight:normalizeLegendClipHeight(args.clipHeight)}),
+    ...normalizeLegendSpacing(args),
     ...(overflow === undefined ? {} : { overflow }),
     target: args.target,
     channels: args.channels,

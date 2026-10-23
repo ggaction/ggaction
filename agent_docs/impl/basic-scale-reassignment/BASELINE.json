@@ -1,0 +1,25 @@
+{
+  "results": [
+    {
+      "route": "public-existing-encoding-reassignment",
+      "status": "rejected",
+      "error": "program.editScale is not a function"
+    },
+    {
+      "route": "existing-wrapped-owner-capability-control",
+      "status": "built",
+      "patterns": [
+        [
+          1,
+          3
+        ],
+        [
+          1,
+          3
+        ]
+      ],
+      "publicEditScale": "undefined",
+      "publicEditLegend": "undefined"
+    }
+  ]
+}

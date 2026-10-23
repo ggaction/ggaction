@@ -262,16 +262,20 @@ function exactSignatureFromSource(source, name) {
     .replace(/\s+/g, " ");
 }
 
-function topLevelPropertySymbols(checker, type) {
+function topLevelPropertySymbols(checker, type, project, declaration) {
   const properties = new Map();
+  const prohibited = property => checker.typeToString(checker.getNonNullableType(
+    checker.getTypeOfSymbolAtLocation(property, property.valueDeclaration?.resolve(project) ?? declaration)
+  )) === "never";
   const visit = current => {
     for (const property of checker.getPropertiesOfType(current)) {
-      if (!properties.has(property.name)) properties.set(property.name, property);
+      const previous = properties.get(property.name);
+      if (!previous || prohibited(previous) && !prohibited(property)) properties.set(property.name, property);
     }
     for (const constituent of current.getTypes?.() ?? []) visit(constituent);
   };
   visit(type);
-  return [...properties.values()];
+  return [...properties.values()].filter(property => !prohibited(property));
 }
 
 export async function declaredActionMetadata(actions) {
@@ -304,7 +308,7 @@ export async function declaredActionMetadata(actions) {
         const commonProperties = new Map(
           checker.getPropertiesOfType(parameterType).map(property => [property.name, property])
         );
-        for (const property of topLevelPropertySymbols(checker, parameterType)) {
+        for (const property of topLevelPropertySymbols(checker, parameterType, project, declaration)) {
           const propertyDeclaration = property.valueDeclaration?.resolve(project) ?? declaration;
           const commonProperty = commonProperties.get(property.name);
           options.push({
@@ -388,6 +392,7 @@ function representativeValue(action, option) {
     const literal = firstQuotedLiteral(option.type);
     if (literal !== undefined) return literal;
   }
+  if (option.type.includes("RotationInput")) return { value: 45, unit: "degrees" };
   if (Object.hasOwn(named, option.name)) return named[option.name];
   const literal = firstQuotedLiteral(option.type);
   if (literal !== undefined) return literal;
@@ -569,7 +574,7 @@ export function validateActionCards({ cards, actions, declarations, routes }) {
     assertSnippet(action, declaration, card.snippet);
     const bytes = Buffer.byteLength(JSON.stringify(card), "utf8");
     // Keep every public selector literal in the complete editLegend option inventory.
-    const byteLimit = card.name === "editLegend" ? 3860 : card.name === "createLegend" ? 3530 : 3360;
+    const byteLimit = compactActionCardByteLimit(card.name);
     if (bytes > byteLimit) throw new Error(`${card.name} compact card is ${bytes} bytes (limit ${byteLimit}).`);
     maxBytes = Math.max(maxBytes, bytes);
     totalBytes += bytes;
@@ -586,6 +591,11 @@ export function validateActionCards({ cards, actions, declarations, routes }) {
       .sort((left, right) => left - right)[Math.floor(cards.length / 2)],
     totalBytes
   };
+}
+
+export function compactActionCardByteLimit(name) {
+  return {editLegend: 4220, createLegend: 3810, createMarkLabels: 3420,
+    createAnnotation: 3420, createRegressionPlot: 3370, createReferenceBand: 3450}[name] ?? 3360;
 }
 
 export async function buildActionCards() {

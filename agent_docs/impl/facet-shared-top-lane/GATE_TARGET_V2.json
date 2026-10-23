@@ -1,0 +1,21 @@
+{
+  "state": "approved",
+  "scope": "Declaration-order-only target correction; exact same visual primitive, API/state/design unchanged",
+  "originalVisualReviewCommit": "f131d7bb3bfcdb2a0856859e2e65818565dfeebd",
+  "primitive": "target-v2.primitive.mjs",
+  "primitiveSha256": "ac974ed07a03e45f16394fcb6ae97e7e0ce6a25291b08d378d286016e6eb25d2",
+  "evidenceSha256": "35ea90492e73500c1f578777bcb324ee6eef48a38cc8516aa9f802f07ede9b4c",
+  "targetSvgSha256": "1389aa64822a761dfa42c4d164dc4b0b58e8113fa751eca63f4e1e5957f7a918",
+  "targetPngSha256": "b58e155ae631c70b16e1aaa0cb9b65930bdbddf2a5c058298c1197fd1a14e482",
+  "targetPngDpr2Sha256": "a281c3b850ab61db9527d668b3b6254ad3a54996813375f02a32d413b875bfc5",
+  "originalPngAndDpr2PngByteExact": true,
+  "allGeometryPaintTextAndDrawOrderUnchanged": true,
+  "rendererUnchanged": true,
+  "acceptanceToleranceUnchanged": true,
+  "sourceOfOrder": "Existing stacked baseline only, not proposed public implementation",
+  "chartPixelsInspected": false,
+  "schoolCalls": 0,
+  "reviewCommit": "5b9072984e6650c097b34aa72862947c90561ca8",
+  "approvalRecord": "APPROVAL_TARGET_V2.json",
+  "approvalRecordSha256": "caeb3ba40579ac5e3e9724bd3e5010acd9011e16e5700c06df5226b9bba865d7"
+}

@@ -1,5 +1,6 @@
 import { freezeOwned, isPlainObject } from "./immutable.js";
 import { validateUserId } from "./identifiers.js";
+import {datasetInputReferences} from "./datasetReferences.js";
 
 export const RESOURCE_KINDS = Object.freeze([
   "data", "scale", "coordinate", "mark", "selection"
@@ -71,8 +72,8 @@ export function collectSemanticDataReferences(program) {
     append(references, reference("data", layer.data, "layer", layer.id, ["data"]));
   }
   for (const dataset of program.semanticSpec.datasets) {
-    append(references, reference(
-      "data", dataset.source, "dataset", dataset.id, ["source"]
+    for(const input of datasetInputReferences(dataset))append(references,reference(
+      "data",input.id,"dataset",dataset.id,input.path
     ));
   }
   return freezeOwned(references);
@@ -167,7 +168,8 @@ export function collectMarkConfigReferences(program) {
         (root === "errorBandBoundary" && key === "owner") ||
         (parentPath.length === 0 && key === "boxSpanOwner") ||
         (root === "raincloudPlot" && (
-          key === "ownerId" || parentPath[1] === "childIds" ||
+          key === "ownerId" ||
+          (parentPath[1] === "childIds" && config.raincloudPlot.ownedChildIds?.includes(value)) ||
           parentPath[1] === "ownedChildIds"
         ))
       ) {

@@ -12,7 +12,7 @@ import {
 
 export const GRADIENT_PLOT_OPTIONS = Object.freeze([
   "id", "target", "data", "x", "y", "coordinate", "density", "width",
-  "gradient", "center", "guides"
+  "gradient", "center", "color", "guides"
 ]);
 
 function plain(value, keys, label, operation) {

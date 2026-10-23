@@ -1,3 +1,4 @@
+import { applyItemMissingPolicy } from "../../../grammar/itemMissing.js";
 import { readSeriesIdentity } from "../../../grammar/pathSeries.js";
 import { deriveAreaSeries } from "../../../grammar/areaSeries.js";
 import { deriveBarAggregates } from "../../../grammar/bars/aggregate.js";
@@ -44,7 +45,7 @@ export function resolveHistogramCountValues(program, consumer) {
       `Histogram mark "${consumer.layer.id}" requires an existing dataset.`
     );
   }
-  const input = resolveHistogramInput(dataset, xEncoding);
+  const input = resolveHistogramInput(dataset, xEncoding, consumer.layer.encoding.y);
   const xValues = input.values;
   const bins = resolveHistogramBins({
     values: xValues,
@@ -63,10 +64,10 @@ export function resolveHistogramCountValues(program, consumer) {
 
 function resolveHistogramPartitions(program, consumer) {
   const layer = consumer.layer;
-  const dataset = findDataset(program, layer.data);
+  const dataset = applyItemMissingPolicy(layer, findDataset(program, layer.data));
   const xEncoding = layer.encoding.x;
   const xScale = findScale(program, xEncoding.scale);
-  const input = resolveHistogramInput(dataset, xEncoding);
+  const input = resolveHistogramInput(dataset, xEncoding, consumer.layer.encoding.y);
   const xValues = input.values;
   const bins = resolveHistogramBins({
     values: xValues,

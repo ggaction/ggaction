@@ -33,7 +33,7 @@ export const createAreaPlot = /* @__PURE__ */ action({ op: OPERATION, descriptio
   validateAreaEndpointPair(normalizeAreaBound(lower), normalizeAreaBound(upper));
   const groupBy = args.groupBy === undefined ? undefined : normalizeGroupFields(args.groupBy);
   const area = omitUndefinedOptions(normalizeAppearance(args.area, [
-    "fill", "opacity", "stroke", "strokeWidth", "curve",
+    "clip",     "fill", "opacity", "stroke", "strokeWidth", "curve",
     ...STROKE_STYLE_PROPERTIES
   ], `${OPERATION} area`));
   const color = args.color === undefined ? undefined : normalizeCategoricalColor(args.color, `${OPERATION} color`);

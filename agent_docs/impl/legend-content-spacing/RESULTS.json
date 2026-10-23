@@ -1,0 +1,146 @@
+{
+  "status": "verified-unreleased-library-candidate",
+  "issue": 225,
+  "publicRelease": false,
+  "regularReleaseAtDistinctFamilies": 1413,
+  "chartFamiliesCompleted": 1240,
+  "schoolModelCalls": 0,
+  "approval": "APPROVAL_TARGET_V2.json",
+  "target": "TARGET_V2_EVIDENCE.json",
+  "noChartPixelsViewed": true,
+  "passed": {
+    "focusedBeforeBoundaryMove": 42,
+    "boundaryAndDiscoveryAndSpacing": 61,
+    "inventory": 3,
+    "noOptInPublicExamplesExact": 91,
+    "renderPNGAndPDF": 3,
+    "installedPackageConsumer": true,
+    "browserEngines": {
+      "chromium": 7,
+      "firefox": 7,
+      "webkit": 7
+    },
+    "publicBrowserExample": 1,
+    "fullUnitContractsDocsCharts": 4720,
+    "documentationEnvironmentPreflight": true,
+    "builtDocumentationPages": 150,
+    "finalBuiltDocsBrowser": {
+      "desktopSearchKeyboardAndNoJavascript": true,
+      "automatedAccessibility": true,
+      "allPagesAtWidths": [
+        320,
+        390,
+        768
+      ]
+    },
+    "finalExactTarballConsumer": true
+  },
+  "pending": [
+    "Node24 protected-release remeasurement and regular1413-family runtime/docs/dataset/viewer integration"
+  ],
+  "failuresPreserved": [
+    "all-v1: six missing registration/boundary/package/source-link conditions; runtime boundary and registrations corrected, final rerun pending",
+    "docs-generate-v1/v2: compact createLegend3804/editLegend4220 exceeded old caps; minimum ten-byte steps only",
+    "package-check-v1/v2/v3: entries596, packed847008, unpacked4108965 exceeded old caps; minimum measured caps only",
+    "package-consumer-v1: full gzip419180 exceeded418000; final full419185/basic206425 measured, caps420000/207000",
+    "all-v2: one documented bundle-ceiling mismatch; corrected README/architecture numeric ceilings, focused3passed, all-v3 4720/4720passed.",
+    "Final tarball packaging first invocation used a relative output path against staged npm cwd and failed ENOENT. Repeated with absolute output path; no library behavior or budget changed.",
+    "Boundary regression initially imported grammar from pure layout. Validation moved to the owning categorical action normalization/edit, preserving source import boundaries and atomic rejection."
+  ],
+  "package": {
+    "name": "ggaction",
+    "version": "0.0.21",
+    "file": "/Users/hyeonjeon/Projects/ggaction-feature-review-0.0.19/.artifacts/legend-content-spacing/candidate-final/ggaction-0.0.21.tgz",
+    "entryCount": 596,
+    "packedBytes": 847024,
+    "unpackedBytes": 4108969,
+    "sha256": "9f9f5617ca39e4068406474e2fd784086ff567253b0be4698d6bcde342b7daeb",
+    "integrity": "sha512-ELevTgZD7ng4if7GbIk7wwnfSPmCcwP0ihxpQ3/mAKJ0vMsfgF+ag2xRIxaZDGfDI6bxopS+1Zh4vFAKVynsfQ==",
+    "limits": {
+      "entries": 596,
+      "packedBytes": 848000,
+      "unpackedBytes": 4109000
+    },
+    "node": "22.23.1",
+    "node24ProtectedReleaseRemeasurementPending": true
+  },
+  "bindings": [
+    {
+      "path": ".artifacts/legend-content-spacing-focused-v3.log",
+      "sha256": "fd63a8e5d44f78b814c119872c202c250f7be6a9ab880200bfb988f766ba2ee9"
+    },
+    {
+      "path": ".artifacts/legend-content-spacing-boundaries-v3.log",
+      "sha256": "139811f6ab9e0e4c5cb429557883688c5333cc5caf59c94d0f47148dfc44ec19"
+    },
+    {
+      "path": ".artifacts/legend-content-spacing-inventory-v2.log",
+      "sha256": "c4d9ac9315cd9a7da78b021aadb3fd9a6748054816711aa59aae13db5ca2fab7"
+    },
+    {
+      "path": ".artifacts/legend-content-spacing-default-parity.json",
+      "sha256": "1966a219bea6ebfeec4df9d29916619db385be15e4b6ba57039f1c57c3e40bdd"
+    },
+    {
+      "path": ".artifacts/legend-content-spacing-render-v2.log",
+      "sha256": "2ea18c6cc53b17095fe6e8c3c19a7432e96e42d9e540fa8b21cdc8418aad408a"
+    },
+    {
+      "path": ".artifacts/legend-content-spacing-package-check-v5.log",
+      "sha256": "4be8b3ee74df5ff639d89bede19f09ad81fc7fbf1e52015d27448ac16d40825b"
+    },
+    {
+      "path": ".artifacts/legend-content-spacing-package-consumer-v2.log",
+      "sha256": "9f85b46e49c393bc19446df4a2be082101bdf2428168392b1563087ec8c9be47"
+    },
+    {
+      "path": ".artifacts/legend-content-spacing-browser-compat-v1.log",
+      "sha256": "bd7d53cd796a46be793ad79b77c634553b5fc755a43a979a6831312fdbad9d73"
+    },
+    {
+      "path": ".artifacts/legend-content-spacing-browser-firefox-v1.log",
+      "sha256": "d41b1cc68b593f17fd273c051d29464f87eb1eb96be91c074be9be8b725e6e98"
+    },
+    {
+      "path": ".artifacts/legend-content-spacing-browser-webkit-v1.log",
+      "sha256": "b17e7acf43b7e7a746254739fe531edbec67649c41924df712fa628cafbe550b"
+    },
+    {
+      "path": ".artifacts/legend-content-spacing-public-browser-v1.log",
+      "sha256": "894590cb7662e975f5ff29c6f57d1695426f636f5d326314709471d6dbf180a8"
+    },
+    {
+      "path": ".artifacts/legend-content-spacing-all-v3.log",
+      "sha256": "8fcc683dfca5c3ed5615b36e840df68d616af5bb6e1038f517c5161ea3470313"
+    },
+    {
+      "path": ".artifacts/legend-content-spacing-docs-preflight-v1.log",
+      "sha256": "5498bb281530d50ed1534e8ebfce1934e86f6c7a33491aa407ff4db951e1674d"
+    },
+    {
+      "path": ".artifacts/legend-content-spacing-docs-built-v3.log",
+      "sha256": "8b67b737002bb9a40f52b91eba9a2aba91b043a875723aacaf5ca645421b217d"
+    },
+    {
+      "path": ".artifacts/legend-content-spacing-docs-browser-v2.log",
+      "sha256": "a6c413832c2ac970262d660fe51fe2b6b1ac8d6ab97e797817fdb77cd9193c60"
+    },
+    {
+      "path": ".artifacts/legend-content-spacing-final-artifact-consumer-v1.log",
+      "sha256": "e992b70b0035fc8715e09751fa1b4f3bc3c4cf562209e50cb13c1d31686e3768"
+    },
+    {
+      "path": ".artifacts/legend-content-spacing-candidate-final-package-v2.json",
+      "sha256": "135368bf4ec8448ef3d88faea332147b1e7b5bcc3a94bae20f5b905f79550ed1"
+    }
+  ],
+  "verifiedAt": "2026-10-19T01:27:35.537Z",
+  "runtimeSourceCommit": "8a9b125af57250efb8683175b1bcca08033df07e",
+  "contractId": "sha256:ba182b200109d6592dc72ddd7afea1562aa6e5dd11349bf196575b10b72fd8dd",
+  "scope": "Verified library candidate only. Issue remains open until regular 1413-family integration; published package and translation runtime remain0.0.21.",
+  "browserBundleGzipBytes": {
+    "full": 419185,
+    "basic": 206425,
+    "svg": 7554
+  }
+}

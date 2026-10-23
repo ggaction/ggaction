@@ -1,5 +1,6 @@
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
 import { MAX_GENERATED_ITEMS } from "../core/validation.js";
+import { niceLinearCountDomain, normalizeScaleNice } from "./scales/continuous.js";
 import {
   alignNumericStep,
   cleanNumericValue,
@@ -299,7 +300,18 @@ function niceBins(extent, maxBins) {
   return equalBins(extent, maxBins);
 }
 
-export function resolveHistogramBins({
+export function resolveHistogramBins(options) {
+  if (isPlainObject(options.nice)) {
+    const { count } = normalizeScaleNice("linear", options.nice);
+    const bins = resolveBooleanHistogramBins({ ...options, nice: true });
+    return options.domain === undefined || options.domain === "auto"
+      ? cloneAndFreeze({ ...bins, domain: niceLinearCountDomain(bins.domain, count) })
+      : bins;
+  }
+  return resolveBooleanHistogramBins(options);
+}
+
+function resolveBooleanHistogramBins({
   values,
   bin,
   maxBins,

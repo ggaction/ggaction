@@ -1,0 +1,36 @@
+{
+  "status": "exact-public-primitive-convergence-pass",
+  "targetLogicalCanvas": {
+    "width": 185,
+    "height": 195
+  },
+  "renderPixelRatio": 2,
+  "physicalRaster": {
+    "width": 370,
+    "height": 390
+  },
+  "graphicsDrawingOrderAndRendererCallsExact": true,
+  "sameRunDecodedPixelsExact": true,
+  "records": [
+    {
+      "name": "primitive",
+      "width": 370,
+      "height": 390,
+      "pngSha256": "aaec394b95fce0d516f9f645000dca54112173eb88a09231f524a60f9d384a93",
+      "decodedPixelSha256": "eb8b449b5619835304db476c2db160497c2afdb57697f5b71bc8370afedc0e4b",
+      "decodedBytes": 577200,
+      "inkPixels": 7420
+    },
+    {
+      "name": "user-facing",
+      "width": 370,
+      "height": 390,
+      "pngSha256": "aaec394b95fce0d516f9f645000dca54112173eb88a09231f524a60f9d384a93",
+      "decodedPixelSha256": "eb8b449b5619835304db476c2db160497c2afdb57697f5b71bc8370afedc0e4b",
+      "decodedBytes": 577200,
+      "inkPixels": 7420
+    }
+  ],
+  "stableArtifactDirectory": ".artifacts/test/png/charts/facet-headers/facet-header-rotation/left-vertical",
+  "manualImageInspection": false
+}

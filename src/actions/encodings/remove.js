@@ -33,7 +33,7 @@ const OPTIONS = Object.freeze(["target", "channel"]);
 const REMOVABLE_CHANNELS = Object.freeze([
   "x", "y", "x2", "y2", "xOffset", "yOffset", "theta", "radius",
   "color", "stroke", "strokeDash", "strokeWidth", "size", "shape", "group",
-  "angle", "opacity", "text"
+  "angle", "opacity", "text", "dx", "dy"
 ]);
 const REMOVE_AXIS = Object.freeze({
   x: "removeXAxis",

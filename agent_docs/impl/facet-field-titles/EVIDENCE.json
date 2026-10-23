@@ -1,0 +1,102 @@
+{
+  "status": "verified-local-implementation-not-published",
+  "issue": 254,
+  "implementationCommit": "8426b235d1c624645fa9fd515961b13878b819ca",
+  "node": "v22.23.1",
+  "ruby": "3.3.12",
+  "normal": {
+    "tests": 5160,
+    "pass": 5160,
+    "fail": 0
+  },
+  "focusedTests": 38,
+  "inventoryTests": 17,
+  "installedConsumerGroups": 66,
+  "publicBrowserExamples": 98,
+  "documentationBuiltPages": 150,
+  "documentationResponsiveWidths": [
+    320,
+    390,
+    768
+  ],
+  "newLayoutCoverage": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "browserBundles": {
+    "full": {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 542,
+      "minifiedBytes": 1579813,
+      "gzipBytes": 428792
+    },
+    "basic": {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 325,
+      "minifiedBytes": 765025,
+      "gzipBytes": 215718
+    },
+    "svg": {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 19,
+      "minifiedBytes": 23548,
+      "gzipBytes": 7567
+    }
+  },
+  "logs": {
+    "normal": {
+      "path": "/tmp/ggaction-facet-field-titles-all-v3.log",
+      "sha256": "73adf2a88f1f29edc6fcb3fdeef62fb5e51b09cc075a055bd9af9de222030d87",
+      "bytes": 1077322
+    },
+    "focused": {
+      "path": "/tmp/ggaction-facet-field-titles-focused-v5.log",
+      "sha256": "289e822f714e3b84808f9225741e63d3bc465ff936bdc9c6b286d2faa7eddf4a",
+      "bytes": 8384
+    },
+    "inventories": {
+      "path": "/tmp/ggaction-facet-field-titles-inventories-v2.log",
+      "sha256": "7e0ffc5e1ac489d37cd117806000516fba7c10fedf54519d2dcf12e00e76ec77",
+      "bytes": 3479
+    },
+    "coverage": {
+      "path": "/tmp/ggaction-facet-field-titles-coverage-v1.log",
+      "sha256": "93896d6fa1d97aa11e8279f2eb1ed9e487f98772396c99cf362d1b1c97f59a55",
+      "bytes": 8264
+    },
+    "packageConsumer": {
+      "path": "/tmp/ggaction-facet-field-titles-package-consumer-v2.log",
+      "sha256": "ad008dd9fe161b5a6e80c2d97be41f2be3bf5fbb1b76a439a3e4ab660374eb5c",
+      "bytes": 2900
+    },
+    "documentation": {
+      "path": "/tmp/ggaction-facet-field-titles-docs-verify-v2.log",
+      "sha256": "93304c55ff54d75f8ded6bbb1f68de50612c00925fcc2659071977dcce2c23a2",
+      "bytes": 36078
+    },
+    "publicBrowser": {
+      "path": "/tmp/ggaction-facet-field-titles-public-browser-v1.log",
+      "sha256": "5df3a33efdeb4e02ecf281559d604e131a1545613a831e2ea056e6c20e08735e",
+      "bytes": 18106
+    }
+  },
+  "commands": [
+    "npm test",
+    "npm run test:package",
+    "PATH=/opt/homebrew/opt/ruby@3.3/bin:$PATH npm run docs:verify",
+    "npm run test:browser -- browser/public-examples.browser.js"
+  ],
+  "priorFailedSweepsRetained": [
+    "/tmp/ggaction-facet-field-titles-all-v1.log",
+    "/tmp/ggaction-facet-field-titles-all-v2.log"
+  ],
+  "priorFailures": "New example inventory/remote source provenance and measured package/search/architecture ceilings synchronized before final clean normal sweep; no tolerance changes.",
+  "sourceNeutral": true,
+  "noImageInspection": true,
+  "registryPublished": false,
+  "releaseCadence": "200 newly completed source families; next public checkpoint1413"
+}

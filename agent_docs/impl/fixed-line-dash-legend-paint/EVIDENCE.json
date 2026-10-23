@@ -1,0 +1,119 @@
+{
+  "status": "verified-unreleased-library-fix",
+  "issue": 239,
+  "parentSourceCommit": "47270e126e881c378c3e66aa32dbaccecdc913b1",
+  "scope": "Fixed target line stroke fallback for categorical dash legend samples",
+  "source": {
+    "path": "src/actions/guides/legends/categorical/layout.js",
+    "sha256": "e55751e0b4be9eac4f7436a42d53877eedc61b13b28de00261aab27ed73d8600"
+  },
+  "focused": {
+    "tests": 9,
+    "pass": 9,
+    "fail": 0,
+    "log": {
+      "path": ".artifacts/fixed-line-dash-legend-focused-v3.log",
+      "sha256": "e90f075a09e97269d1fd16e582796a15063fb1453d78bff9e359aff8204e625c"
+    },
+    "suite": {
+      "path": "test/unit/actions/guides/fixed-line-dash-legend-paint.test.js",
+      "sha256": "16819cf9ae217e41789613a52fbea205ce65359de80d391fc8a9eb50dda1db9d"
+    }
+  },
+  "normal": {
+    "tests": 4827,
+    "pass": 4827,
+    "fail": 0,
+    "log": {
+      "path": ".artifacts/fixed-line-dash-legend-normal-v2.log",
+      "sha256": "bfb4ea2e509fc7e89dfdd293b5b0edf587882f53f4b3d4291028cfa8a54d1eac"
+    },
+    "earlierFailure": "Initial full normal run found stale generated documentation provenance; regenerate canonical provenance, preserve first log, and rerun full normal cleanly."
+  },
+  "installedPackageConsumer": {
+    "pass": true,
+    "checkGroups": 62,
+    "FullAndBasicFixedDashPaintAndLaterEditAndPersistence": true,
+    "archiveSha256": "304e15ad4a83a4cf055256812343033afa414453a198038f20d94bbb7efdb3ce",
+    "browserBundles": {
+      "full": {
+        "specifier": "ggaction",
+        "chunks": 1,
+        "modules": 534,
+        "minifiedBytes": 1557700,
+        "gzipBytes": 422096
+      },
+      "basic": {
+        "specifier": "ggaction/basic",
+        "chunks": 1,
+        "modules": 316,
+        "minifiedBytes": 739549,
+        "gzipBytes": 208511
+      },
+      "svg": {
+        "specifier": "ggaction/svg",
+        "chunks": 1,
+        "modules": 19,
+        "minifiedBytes": 23548,
+        "gzipBytes": 7567
+      }
+    },
+    "log": {
+      "path": ".artifacts/fixed-line-dash-legend-consumer.log",
+      "sha256": "38bf51a34500e829fdc90037b522f4d1f6f7676aaf69fcce6b64d3d46a448a63"
+    },
+    "consumerSource": {
+      "path": "scripts/package-consumer.js",
+      "sha256": "f1c0681bb96fbd1044b629a4421b6266a41713f0f23fec0fc7483045da90cbdb"
+    }
+  },
+  "currentContract": {
+    "path": "agent_docs/contract/current/LEGEND_AND_TITLE.md",
+    "sha256": "a65f737eaeb81a474eb6ba43ce40d67e831721cdb05b12fa193e1b5d49cfa04d"
+  },
+  "publicDocumentation": {
+    "path": "docs/api/legends/categorical.md",
+    "sha256": "cb6ac9c5cb3cad1e335f1b9b82f87766f0d011c8107b57525e1493a724641b6f"
+  },
+  "generatedDocumentation": [
+    {
+      "path": "docs/llms-full.txt",
+      "sha256": "b0238062e51160b0b12c19b69213f58ff2f918e9e7ed1c2721c372f5248d52f1"
+    },
+    {
+      "path": "docs/llms-manifest.json",
+      "sha256": "952af281e6120719fb458ca77e0da29b2c1b1249b2dd0fc0cae424bc34e14742"
+    },
+    {
+      "path": "docs/_data/provenance.json",
+      "sha256": "3398f24e2a51e708dcc2671662ba8c639da2d0d9120b5dbb7300e277384cb586"
+    },
+    {
+      "path": "docs/doc-provenance.json",
+      "sha256": "3398f24e2a51e708dcc2671662ba8c639da2d0d9120b5dbb7300e277384cb586"
+    }
+  ],
+  "declarationsChanged": false,
+  "declarationsReason": "No action, option, type or persisted-schema change.",
+  "architectureChanged": false,
+  "sourceAndCallerInputsImmutable": true,
+  "publicApproval": "APPROVAL.json",
+  "activeTranslationRuntimeChanged": false,
+  "registryPublication": false,
+  "docsDeployment": false,
+  "issueClosed": false,
+  "cohortCompatibility": "Deferred integration obligation: rerun current complete chart cohort before adopting this source/package into authoring or the next authorized public batch release. This source/consumer verification is not a current-cohort compatibility claim.",
+  "chartPixelsInspected": false,
+  "implementationCommit": "c1484d37",
+  "cleanSourceMetadataFollowup": {
+    "reason": "After the source checkpoint, regenerate canonical provenance from the clean source commit. Runtime source/types/package content remain unchanged; docs-only followup preserves that exact source identity.",
+    "sourceCommit": "c1484d37",
+    "docsChecks": 120,
+    "pass": 120,
+    "fail": 0,
+    "log": {
+      "path": ".artifacts/fixed-line-dash-legend-docs-tests-clean.log",
+      "sha256": "86c25992d52b9a041bed4b6fff497fb59382396b479ece3dc629dc12fa37033a"
+    }
+  }
+}

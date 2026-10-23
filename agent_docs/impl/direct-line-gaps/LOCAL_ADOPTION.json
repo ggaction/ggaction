@@ -1,0 +1,79 @@
+{
+  "status": "active-local-candidate-publication-pending",
+  "candidateCommit": "ef8a79b94fca76cf41f90249ed822d2a1bcb95e3",
+  "archiveSha256": "6043b5aa1b047ec2ab80c8d1a755efbf12e4b65e8bfa41adb6bbea85e3431cf5",
+  "existingNativeSvgCompatibility": {
+    "families": 1326,
+    "programs": 9686,
+    "differences": 0,
+    "bindingChecks": 18309,
+    "sequential": true,
+    "notFreshHistoricalSemanticOrPngAudit": true
+  },
+  "freshFeatureConsumerFamily": {
+    "sourceId": "0549",
+    "SchoolPrograms": 8,
+    "SchoolTokens": 33119,
+    "SchoolResponses": 9,
+    "actions": [
+      15,
+      15,
+      17,
+      19,
+      21,
+      23,
+      24,
+      25
+    ],
+    "maximumRootOptions": 3,
+    "normalChecks": 435,
+    "freshNormalChecks": 435,
+    "independentColdChecks": 247,
+    "finalAuditChecks": 84,
+    "rawRows": [
+      55,
+      945
+    ],
+    "missingUSRowIndex": 933,
+    "USRunVertices": [
+      933,
+      11
+    ],
+    "allStagesSameNativeSvgAndPng": true,
+    "originalCanvas": [
+      481,
+      362
+    ],
+    "plot": [
+      450,
+      300
+    ],
+    "sourceGlyphsMatched": 27,
+    "rawRowsPruned": false
+  },
+  "completedPrivateFamilies": 1327,
+  "publicFamilies": 1213,
+  "nextRegularPublicationFamilies": 1413,
+  "issue": 259,
+  "issueClosurePendingPublicRelease": true,
+  "registryPublished": false,
+  "chartImagesInspected": false,
+  "privateProofBindings": [
+    {
+      "privateReport": "reports/v12-runtime-batch200-line-gaps-current1326-compatibility.json",
+      "sha256": "0d647b51f3b1503552ffbaa22fd0b8a6840feac5b1e45e86acda75162490a6af"
+    },
+    {
+      "privateReport": "reports/v12-batch200-line-gaps-local-candidate-activation.json",
+      "sha256": "64f9f4c9424fe2c73d4b8ea78ad017691ca179e7f82a0177c176547aa28440e7"
+    },
+    {
+      "privateReport": "reports/v12-sequential1500-source-0549-summary.json",
+      "sha256": "57100fe4e4f50a84645cde08851fbb3dda2a685716c36ad0ce7eb9f54e453d5f"
+    },
+    {
+      "privateReport": "reports/v12-sequential1500-source0549-independent-cold-v1.json",
+      "sha256": "81c88763e3a55bc8241c21d26881b213bd3306e3f9ee6dc8d7ca1049ae9b2304"
+    }
+  ]
+}

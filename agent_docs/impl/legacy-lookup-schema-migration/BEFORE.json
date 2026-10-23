@@ -1,0 +1,14 @@
+{
+  "gate": "approved-by-direct-standing-human-instruction",
+  "sourceCommit": "0b8ebd9fb13a07f07c6b1a0819e2aeee3271c82e",
+  "scope": "Exact private validation deferral and unchanged strict final import in PROPOSAL.md",
+  "failureLog": "/tmp/ggaction-legacy-lookup-migration-before-v1.json",
+  "failureLogSha256": "aa192a5a909a76a52b56c88bd0e30421e4e5262f5889d199374f91234ff1c592",
+  "actualFailureOutput": "{\n  status: 'reproduced-pre-migration-schema-requirement',\n  error: 'Lookup dataset \"reference\" requires schema.',\n  valuesBeforeSave: [ '020', '013', null ]\n}\n",
+  "newPublicAPI": false,
+  "newPersistedFormat": false,
+  "visualOutputChanged": false,
+  "SchoolRequests": 0,
+  "publicRelease": false,
+  "releaseAt": 1413
+}

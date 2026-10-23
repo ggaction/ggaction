@@ -1,3 +1,4 @@
+import {resolveDatasetTransformInputs} from "./shared.js";
 import { closedAction } from "../../core/action.js";
 import { validateGraphicItemLimit } from "../../core/validation.js";
 import { resolveGraphicItemCapacity } from "../../selectors/graphicCapacity.js";
@@ -49,11 +50,14 @@ export const createDerivedData = /* @__PURE__ */ closedAction(
     if (!hasDataset(this, source)) {
       throw new Error(`Unknown source dataset "${source}".`);
     }
+    const transforms=args.transform?.[0]?.type==="lookup"
+      ? [resolveDatasetTransformInputs(this,args.transform[0])]
+      : args.transform;
     const created = this
       .editSemantic({ property: `dataset[${id}].source`, value: source })
-      .editSemantic({ property: `dataset[${id}].transform`, value: args.transform });
+      .editSemantic({ property: `dataset[${id}].transform`, value: transforms });
     const input = resolveDatasetReference(created, source, "Source dataset");
-    const transform = args.transform[0];
+    const transform = transforms[0];
     assertFieldsAvailable(input.schema, transformInputFields(transform), {
       data: input.id,
       operation: "createDerivedData"

@@ -22,6 +22,12 @@ and Canvas or scale updates, regardless of authoring order. Increase the margin
 or change offsets when space is insufficient; a failed action preserves the
 earlier program.
 
+Automatic axis titles use the source field or aggregate. Statistical reference
+lines and bands reuse that title; their internal output columns do not introduce
+another measure name.
+Grouped summary outputs use their aggregate and source field, including after
+changing the source measure while retaining an output alias.
+
 An omitted offset for a vertical Y-axis title reserves a quarter-em ink gap when
 its estimated text box is clamped to the Canvas edge. This applies at every font
 size when the extra reserve fits beside the actual axis labels. If it would
@@ -36,11 +42,56 @@ use an end anchor inferred from their rotation and axis side. Reserve enough
 margin for the full label length and the axis title. Rotation does not enlarge a
 fixed Canvas or change its margins.
 
+## Choose nearest-step linear ticks
+
+Set `rounding: "nearest"` on Cartesian tick selection when automatic ticks should
+choose the nearest 1–2–5 decade step. The default count density is 5: a 0–140
+domain gets labels 0, 20, …, 140. Count is an approximate density, not an exact
+number of ticks. Omission keeps the existing behavior; `"ceiling"` restores it.
+
+{% include chart-example.html id="linear-nearest-ticks" %}
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas({ plot: { width: 200, height: 120 }, margin: { left: 40, top: 20, right: 20, bottom: 30 } })
+  .createData({ values: [{ x: 0, y: 0 }, { x: 1, y: 133 }] })
+  .createLinePlot({
+    x: { field: "x", scale: { domain: [0, 1] } },
+    y: { field: "y", scale: { domain: [0, 140] } },
+    guides: {
+      axes: { x: false, y: { title: false, ticksAndLabels: { rounding: "nearest" } } },
+      grid: false,
+      legend: false
+    }
+  });
+```
+
+Complete axes, grouped ticks-and-labels, and focused Cartesian tick/label actions
+accept the same option. It is restricted to count-mode linear axes. Explicit
+`values`, temporal/transformed/discrete axes, and Polar/Parallel axes reject it.
+When editing a values-mode axis, also provide `count` to select automatic ticks.
+
+Once selected on ticks, count/rounding/value edits update existing labels and
+inferred grids together. Label-only edits must agree with existing ticks. A
+label-only axis does not supply a grid policy. Explicit grid count/values use
+their existing independent policy; `values: "auto"` restores inference from
+ticks. Named axes with conflicting policies need explicit grid selection.
+Independent facets choose ticks from each actual child domain, and data/Canvas/
+scale updates and saved programs preserve the policy.
+
 ## Keep endpoint labels inside the axis span
 
 Set Cartesian labels `flush: true` to keep unrotated text bounds inside the mapped scale span. This moves text inward only when its bounds cross an endpoint, without changing tick positions, text, font sizes or the outward gap. It works on X and Y axes, retains `alongOffset`, and moves wrapped lines together. The default is `false`. Rotated labels and text wider than the entire span are rejected.
 
-Flush preserves the existing overlap policy. When adjacent labels intentionally overlap, request `overlap: "allow"`; this does not disable Canvas or title collision checks. Specify required flush geometry at complete-axis creation so the initial axis also fits.
+Flush preserves the existing overlap policy. When adjacent labels intentionally overlap, request `overlap: "allow"`; this does not disable Canvas or title collision checks. Specify required flush geometry at complete-axis creation so the initial axis also fits. An independently explicit `title.overlap: "allow"` permits that title to intersect its own labels; see [intentional title-label overlap](axes/complete.md#intentional-title-label-overlap).
 
 ## Color individual tick labels
 
@@ -48,7 +99,22 @@ Use Cartesian labels `colorMap: [{ value, color }]` for per-value colors. Lookup
 
 ## Override displayed tick text
 
+Numeric labels accept `format: ","` for integer grouping (`1234` becomes `1,234`) or
+`format: ",.2f"` for grouping with two decimal places. The existing precision range is
+0–12. Grouped percent and scientific formats are unsupported. Temporal labels accept
+`format: "%a"` for UTC weekday names such as `Mon`. Formatting changes displayed text;
+it preserves raw values, scale domains and tick positions.
+
 Cartesian label `labelMap` works with categorical values, numeric ticks and time ticks. Provide typed `{ value, label }` entries. Continuous keys must be finite numbers; time keys use Unix milliseconds. Missing entries retain the normal formatter, and `"auto"` clears the map. Scale domains, tick positions and raw data are preserved. Use focused labels, nested ticks-and-labels or whole-axis editors to update the same policy.
+
+
+Numeric axes also accept `format: "ticks"`: infer fixed decimal places from each
+axis's settled tick spacing, retaining `0.00` at a `0.05` step and integer labels
+at a `100` step. Independent facets resolve their own precision. Omitted/auto
+output is unchanged; time and discrete scales reject this numeric option.
+See [numeric label formats](axes/complete.md) for
+precision limits and replay behavior.
+
 
 ## Shift ticks and labels along an axis
 
@@ -256,6 +322,24 @@ Axis label and title weights follow the shared
 Use either `ticksAndLabels` or the independent `ticks`/`labels` options in one
 call. The action validates the entire request before editing any component, so
 an invalid later component cannot leave a partial result.
+
+## Edit several existing axes
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```js
+// Fragment: program already contains x and y axes.
+program.editAxes({
+  x: { labels: { fontSize: 11 } },
+  y: { ticksAndLabels: { count: 4, labels: { fontSize: 11 } } }
+});
+```
+
+`editAxes` groups existing channel editors in one atomic call. Omitted axes are preserved; it never creates an absent axis. See the [action reference](../reference/actions/guides.md#editaxes) for the complete signature.
 
 ## Errors and limitations
 

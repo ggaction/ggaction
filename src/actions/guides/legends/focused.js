@@ -21,7 +21,7 @@ const editLegendLayout = /* @__PURE__ */ makeFocusedLegendEdit({
   name: "editLegendLayout",
   options: [
     "position", "layout", "align", "direction", "columns", "offset", "blockLayout", "at",
-    "titlePosition", "itemGap"
+    "titlePosition", "itemGap", "rowPadding", "titlePadding"
   ],
   map: args => args
 });

@@ -7,6 +7,10 @@ import { normalizeGroupFields } from "../../grammar/pathSeries.js";
 import { readNominalField, readQuantitativeField } from
   "../../grammar/scales/fields.js";
 import { findDataset } from "../../selectors/datasets.js";
+import { resolveEligibleLayer } from "../../selectors/layers.js";
+import { planDerivedDataRevision } from "../../materialization/dataProvenance.js";
+import { applyLayerDataRematerialization } from "../../materialization/dependencies.js";
+import { deriveFoldRows, normalizeFoldTransform } from "../../grammar/fold.js";
 import {
   normalizeAppearance,
   normalizeEncoding,
@@ -76,13 +80,13 @@ function normalizeValue(value, operation) {
   return { ...omitUndefinedOptions(result), fieldType: "quantitative" };
 }
 
-function normalizeWide(value, id, operation) {
+function normalizeWide(value, id, operation, minimum = 3) {
   if (!isPlainObject(value)) {
     throw new TypeError(`${operation} wide must be a plain object.`);
   }
   validateOptionObject(value, WIDE_OPTIONS, `${operation} wide`);
-  if (!Array.isArray(value.fields) || value.fields.length < 3) {
-    throw new Error(`${operation} wide.fields must contain at least three fields.`);
+  if (!Array.isArray(value.fields) || value.fields.length < minimum) {
+    throw new Error(`${operation} wide.fields must contain at least ${minimum === 3 ? "three" : "two"} fields.`);
   }
   const fields = [...value.fields];
   for (const field of fields) validateNonEmptyString(field, `${operation} wide field`);
@@ -301,5 +305,61 @@ export const createRadarPlot = /* @__PURE__ */ action(
       ...next.markConfigs[id],
       compositionRole: "radar"
     });
+  }
+);
+
+export const editRadarPlot = /* @__PURE__ */ action(
+  {
+    op: "editRadarPlot",
+    description: "Revise a wide Radar plot's dimensions and order while preserving its series and appearance."
+  },
+  function (args = {}) {
+    const operation = "editRadarPlot";
+    validateFacadeOptions(args, ["target", "wide"], operation);
+    validateOptionObject(args.wide, ["fields"], `${operation} wide`);
+    const owner = resolveEligibleLayer(this, {
+      target: args.target,
+      label: "wide Radar plot",
+      predicate: layer => this.markConfigs[layer.id]?.compositionRole === "radar" &&
+        findDataset(this, layer.data)?.transform?.[0]?.type === "fold"
+    });
+    const previous = findDataset(this, owner.data);
+    const prior = previous.transform[0];
+    const source = findDataset(this, previous.source);
+    const wide = normalizeWide({ ...args.wide, as: prior.as }, owner.id, operation, 2);
+    for (const field of wide.fields) readQuantitativeField(source.values, field);
+    const transform = normalizeFoldTransform(wide, previous.id);
+    const rows = deriveFoldRows(source.values, transform);
+    const group = owner.encoding.group;
+    const groupBy = group?.fields ?? (group?.field ? [group.field] : []);
+    validateRadarRows(rows, { category: prior.as.key, value: prior.as.value,
+      groupBy, order: wide.fields }, operation);
+    const revision = planDerivedDataRevision(this, {
+      owner: owner.id, role: "RadarData", previous: previous.id, consumers: [owner.id]
+    });
+    let next = this.createFoldData({
+      id: revision.id, source: source.id, fields: wide.fields, as: prior.as
+    }).rebindLayerData(revision.rebinds[0]);
+    const theta = owner.encoding.theta.scale;
+    const revisedValues = config => {
+      const full = config.inferredValues || !Array.isArray(config.values) ||
+        config.values.length === prior.fields.length && prior.fields.every(field => config.values.includes(field));
+      const retained = full ? wide.fields : config.values.filter(field => wide.fields.includes(field));
+      return { ...config, mode: "values", values: retained.length ? retained : wide.fields };
+    };
+    for (const [id, axis] of Object.entries(next.semanticSpec.guides.axis ?? {})) {
+      if (axis.scale !== theta) continue;
+      for (const role of ["ticks", "labels"]) {
+        const config = next.guideConfigs.axis?.[id]?.[role];
+        if (config) next = next._withGuideConfig(id, role, revisedValues(config));
+      }
+    }
+    const thetaGrid = next.guideConfigs.grid?.theta;
+    if (thetaGrid?.scale === theta) next = next._withGridConfig("theta", revisedValues(thetaGrid));
+    next = next.editThetaScale({ target: owner.id, domain: wide.fields });
+    next = applyLayerDataRematerialization(next, owner.id);
+    if (next.markConfigs[owner.id]?.closed !== true) next = next.editLineMark({ target: owner.id, closed: true });
+    return next.releaseDerivedData(revision.release)
+      ._withContext({ currentMark: owner.id, currentData: source.id });
   }
 );

@@ -63,7 +63,7 @@ program.encodeYRange({ lower: "value", upper: { datum: 0 } });
 program.encodeXRange({ lower: { datum: 1 }, upper: "value", scale: { type: "log" } });
 program.encodeX2({ datum: 1 });
 program.encodeY2({ datum: 0 });
-// @ts-expect-error at least one field endpoint
+// Shared range encoders also serve Rect/Rule; Area's minimum field is runtime-checked.
 program.encodeYRange({ lower: { datum: 1 }, upper: { datum: 2 } });
 // @ts-expect-error constants are quantitative
 program.encodeXRange({ lower: { datum: 1 }, upper: "value", fieldType: "temporal" });

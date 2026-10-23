@@ -1,0 +1,20 @@
+{
+  "status": "approved-under-direct-standing-user-instruction",
+  "instruction": "지금까지 모든 질문, 앞으로 할 모든 질문 승인함. 새로운 릴리즈는 200개 단위로 하자",
+  "scope": "Restore same-type bound-scale reassignment through existing Basic encoding actions using the existing wrapped scale-edit owner; preserve Full overrides and type-transition restrictions, immutable shared-consumer preflight and Basic public editor boundaries.",
+  "proposal": "agent_docs/impl/basic-scale-reassignment/PROPOSAL.md",
+  "issue": "https://github.com/ggaction/ggaction/issues/242",
+  "newAction": false,
+  "newPublicOption": false,
+  "newPersistedKey": false,
+  "newRendererOrVisualTarget": false,
+  "publicBasicEditorAdded": false,
+  "reapprovalRequested": false,
+  "libraryImplementationStarted": true,
+  "currentSuccessfulFamilies": 1282,
+  "currentPublicFamilies": 1213,
+  "regularPublicReleaseAtCompletedFamilies": 1413,
+  "publicationAtThisCheckpoint": false,
+  "basicInternalTraceOwnerAdded": "editScale",
+  "persistedFormatOrKeyAdded": false
+}

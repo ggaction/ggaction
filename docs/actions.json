@@ -1,9 +1,9 @@
 {
   "schemaVersion": 3,
-  "packageVersion": "0.0.21",
+  "packageVersion": "0.0.22",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 284,
+  "count": 293,
   "cards": [
     {
       "schemaVersion": 3,
@@ -99,7 +99,7 @@
         {
           "name": "plotBorder",
           "required": false,
-          "type": "false | { color?: string | undefined; lineWidth?: number | undefined; } | undefined"
+          "type": "false | { color?: string | undefined; lineWidth?: number | undefined; underlay?: boolean | undefined; } | undefined"
         }
       ],
       "callPatterns": [
@@ -206,7 +206,7 @@
         {
           "name": "plotBorder",
           "required": false,
-          "type": "false | { color?: string | undefined; lineWidth?: number | undefined; } | undefined"
+          "type": "false | { color?: string | undefined; lineWidth?: number | undefined; underlay?: boolean | undefined; } | undefined"
         }
       ],
       "callPatterns": [
@@ -1334,6 +1334,184 @@
       "snippet": "program.createBinData({ id: \"bin-data-1\", field: \"value\" })",
       "errors": [],
       "route": "/reference/actions/statistics/#createbindata"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "createLookupData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "summary": "Copy fields from one named table without changing primary row order or count.",
+      "signature": "createLookupData(options: LookupDataOptions): ChartProgram;",
+      "intents": [
+        "create lookup data",
+        "create",
+        "add",
+        "statistical layer",
+        "statistical transform",
+        "named table lookup",
+        "copy reference fields"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "source dataset"
+        ],
+        "owns": [
+          "named table lookup"
+        ],
+        "idOptions": [
+          "id",
+          "source"
+        ]
+      },
+      "authoringRoles": [
+        "H1"
+      ],
+      "wraps": [
+        "createDerivedData"
+      ],
+      "editableVia": [
+        "editLookupData"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default",
+          "basic"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "source",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "source dataset"
+        ],
+        "allowsEmpty": true
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "source",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "field",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "lookup",
+          "required": true,
+          "type": "{ data: string; key: string; fields: readonly string[]; as?: readonly string[] | undefined; }"
+        }
+      ],
+      "callPatterns": [
+        "createLookupData({ id, field, lookup, source? })"
+      ],
+      "snippet": "program.createLookupData({ id: \"ages\", field: \"person\", lookup: { data: \"people\", key: \"name\", fields: [\"age\"] } })",
+      "errors": [],
+      "route": "/reference/actions/statistics/#createlookupdata"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "createFlattenData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "summary": "Expand parallel array columns into index-aligned rows; shorter arrays pad with null.",
+      "signature": "createFlattenData(options: FlattenDataOptions): ChartProgram;",
+      "intents": [
+        "create flatten data",
+        "create",
+        "add",
+        "statistical layer",
+        "statistical transform",
+        "aligned array data",
+        "parallel array expansion"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "source dataset"
+        ],
+        "owns": [
+          "aligned array data"
+        ],
+        "idOptions": [
+          "id",
+          "source"
+        ]
+      },
+      "authoringRoles": [
+        "H1"
+      ],
+      "wraps": [
+        "createDerivedData"
+      ],
+      "editableVia": [
+        "editFlattenData"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default",
+          "basic"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "source",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "omitted optional options",
+          "strategy": "documented-default"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "source dataset"
+        ],
+        "allowsEmpty": true
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "source",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "fields",
+          "required": true,
+          "type": "readonly string[]"
+        },
+        {
+          "name": "as",
+          "required": false,
+          "type": "readonly string[] | undefined"
+        }
+      ],
+      "callPatterns": [
+        "createFlattenData({ id, fields, source?, as? })"
+      ],
+      "snippet": "program.createFlattenData({ id: \"expanded\", fields: [\"amounts\", \"labels\"], as: [\"amount\", \"label\"] })",
+      "errors": [],
+      "route": "/reference/actions/statistics/#createflattendata"
     },
     {
       "schemaVersion": 3,
@@ -3154,6 +3332,178 @@
       "snippet": "program.editFilteredData({ target: \"filtered\", oneOf: [1] })",
       "errors": [],
       "route": "/reference/actions/charts-data/#editfiltereddata"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editLookupData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "summary": "Edits named table lookup, including settings for copy reference fields.",
+      "signature": "editLookupData(options: EditLookupDataOptions): ChartProgram;",
+      "intents": [
+        "edit lookup data",
+        "edit",
+        "change",
+        "statistical layer",
+        "statistical transform",
+        "named table lookup",
+        "copy reference fields"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing named table lookup",
+          "source dataset"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H1",
+        "H3"
+      ],
+      "wraps": [
+        "editDerivedData"
+      ],
+      "editableVia": [
+        "editLookupData"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing named table lookup",
+          "source dataset"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "dependents",
+          "required": false,
+          "type": "DerivedDataDependents | undefined"
+        },
+        {
+          "name": "field",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "lookup",
+          "required": false,
+          "type": "{ data: string; key: string; fields: readonly string[]; as?: readonly string[] | undefined; } | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editLookupData({ target, dependents?, field?, lookup? })"
+      ],
+      "snippet": "program.editLookupData({ target: \"ages\", lookup: { data: \"people\", key: \"name\", fields: [\"age\"], as: [\"years\"] } })",
+      "errors": [],
+      "route": "/reference/actions/statistics/#editlookupdata"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editFlattenData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "summary": "Edits aligned array data, including settings for parallel array expansion.",
+      "signature": "editFlattenData(options: EditFlattenDataOptions): ChartProgram;",
+      "intents": [
+        "edit flatten data",
+        "edit",
+        "change",
+        "statistical layer",
+        "statistical transform",
+        "aligned array data",
+        "parallel array expansion"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing aligned array data",
+          "source dataset"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H1",
+        "H3"
+      ],
+      "wraps": [
+        "editDerivedData"
+      ],
+      "editableVia": [
+        "editFlattenData"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing aligned array data",
+          "source dataset"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "dependents",
+          "required": false,
+          "type": "DerivedDataDependents | undefined"
+        },
+        {
+          "name": "fields",
+          "required": false,
+          "type": "readonly string[] | undefined"
+        },
+        {
+          "name": "as",
+          "required": false,
+          "type": "readonly string[] | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editFlattenData({ target, dependents?, fields?, as? })"
+      ],
+      "snippet": "program.editFlattenData({ target: \"expanded\", as: [\"amount\", \"category\"] })",
+      "errors": [],
+      "route": "/reference/actions/statistics/#editflattendata"
     },
     {
       "schemaVersion": 3,
@@ -5033,8 +5383,8 @@
       "name": "createPointMark",
       "layer": "user-facing",
       "domain": "marks",
-      "summary": "Create a semantic point mark with one of 12 equal-area shape realizations.",
-      "signature": "createPointMark(options?: StrokeStyleDetails & { id?: string; data?: string; missing?: \"error\" | \"skip\"; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;",
+      "summary": "Create a point mark using fourteen named shapes or polygons with area/radius normalization.",
+      "signature": "createPointMark(options?: StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: \"error\" | \"skip\"; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;",
       "intents": [
         "create point mark",
         "create",
@@ -5118,6 +5468,11 @@
           "type": "number | undefined"
         },
         {
+          "name": "clip",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
           "name": "id",
           "required": false,
           "type": "string | undefined"
@@ -5159,7 +5514,7 @@
         }
       ],
       "callPatterns": [
-        "createPointMark({ id?, data?, lineCap?, lineJoin?, miterLimit?, missing?, shape?, fill? })"
+        "createPointMark({ id?, data?, lineCap?, lineJoin?, miterLimit?, clip?, missing?, shape? })"
       ],
       "snippet": "program.createPointMark({})",
       "errors": [],
@@ -5171,7 +5526,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Creates short tick glyphs for compact one-dimensional distributions or aligned value marks.",
-      "signature": "createTickMark(options?: StrokeStyleDetails & { id?: string; data?: string; missing?: \"error\" | \"skip\"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;",
+      "signature": "createTickMark(options?: StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: \"error\" | \"skip\"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;",
       "intents": [
         "create tick mark",
         "create",
@@ -5259,6 +5614,11 @@
           "type": "number | undefined"
         },
         {
+          "name": "clip",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
           "name": "id",
           "required": false,
           "type": "string | undefined"
@@ -5295,11 +5655,200 @@
         }
       ],
       "callPatterns": [
-        "createTickMark({ id?, data?, lineCap?, lineJoin?, miterLimit?, missing?, length?, stroke? })"
+        "createTickMark({ id?, data?, lineCap?, lineJoin?, miterLimit?, clip?, missing?, length? })"
       ],
       "snippet": "program.createTickMark({})",
       "errors": [],
       "route": "/reference/actions/marks/#createtickmark"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "createStatisticalReference",
+      "layer": "user-facing",
+      "domain": "marks",
+      "summary": "Create a statistical line or interval through one public action.",
+      "signature": "createStatisticalReference(options: CreateStatisticalReferenceOptions): ChartProgram;",
+      "intents": [
+        "create statistical reference",
+        "create",
+        "add",
+        "graphical mark",
+        "mark appearance",
+        "statistical reference",
+        "interval"
+      ],
+      "lifecycle": "Aggregate create-only",
+      "resources": {
+        "prerequisites": [
+          "dataset and coordinate context"
+        ],
+        "owns": [
+          "statistical reference"
+        ],
+        "idOptions": [
+          "id",
+          "source"
+        ]
+      },
+      "authoringRoles": [
+        "H1",
+        "H2"
+      ],
+      "wraps": [
+        "createReferenceLine",
+        "createReferenceBand"
+      ],
+      "editableVia": [],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [
+        {
+          "path": "opacity",
+          "unit": "probability"
+        },
+        {
+          "path": "strokeWidth",
+          "unit": "logical-pixel"
+        }
+      ],
+      "inference": [
+        {
+          "input": "source",
+          "strategy": "explicit"
+        },
+        {
+          "input": "omitted optional options",
+          "strategy": "documented-default"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "dataset and coordinate context"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "source",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "axis",
+          "required": true,
+          "type": "\"x\" | \"y\""
+        },
+        {
+          "name": "population",
+          "required": false,
+          "type": "\"boundData\" | \"visibleItems\" | undefined"
+        },
+        {
+          "name": "field",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "groupBy",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "lineCap",
+          "required": false,
+          "type": "\"butt\" | \"round\" | \"square\" | undefined"
+        },
+        {
+          "name": "lineJoin",
+          "required": false,
+          "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+        },
+        {
+          "name": "miterLimit",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "opacity",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "stroke",
+          "required": false,
+          "type": "string | false | undefined"
+        },
+        {
+          "name": "strokeWidth",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "statistics",
+          "required": false,
+          "type": "readonly [ReferenceStatistic, ReferenceStatistic] | undefined"
+        },
+        {
+          "name": "statistic",
+          "required": false,
+          "type": "ReferenceStatistic | undefined"
+        },
+        {
+          "name": "cornerRadius",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "cornerRadiusTopLeft",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "cornerRadiusTopRight",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "cornerRadiusBottomRight",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "cornerRadiusBottomLeft",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "clip",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "fill",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "strokeDash",
+          "required": false,
+          "type": "DashPattern | DashStyle | undefined"
+        }
+      ],
+      "callPatterns": [
+        "createStatisticalReference({ source, axis, statistic?, statistics? })"
+      ],
+      "snippet": "program.createStatisticalReference({ source: \"points\", axis: \"y\" })",
+      "errors": [],
+      "route": "/reference/actions/marks/#createstatisticalreference"
     },
     {
       "schemaVersion": 3,
@@ -5338,7 +5887,8 @@
       ],
       "wraps": [
         "createRuleMark",
-        "encodeY"
+        "encodeY",
+        "createDerivedData"
       ],
       "editableVia": [
         "editRuleMark",
@@ -5482,6 +6032,11 @@
           "type": "string | undefined"
         },
         {
+          "name": "groupBy",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
           "name": "statistic",
           "required": false,
           "type": "ReferenceStatistic"
@@ -5533,7 +6088,8 @@
       "wraps": [
         "createRectMark",
         "encodeX",
-        "encodeX2"
+        "encodeX2",
+        "createDerivedData"
       ],
       "editableVia": [
         "editRuleMark",
@@ -5707,13 +6263,18 @@
           "type": "string | undefined"
         },
         {
+          "name": "groupBy",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
           "name": "statistics",
           "required": false,
           "type": "readonly [ReferenceStatistic, ReferenceStatistic]"
         }
       ],
       "callPatterns": [
-        "createReferenceBand({ space: \"plot\", y: [0.2, 0.8] })"
+        "createReferenceBand({ y: [2, 6] })"
       ],
       "snippet": "program.createReferenceBand({ x: [2, 6] })",
       "errors": [],
@@ -5815,6 +6376,11 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "clip",
+          "required": false,
+          "type": "boolean | undefined"
+        },
         {
           "name": "lineHeight",
           "required": false,
@@ -6299,6 +6865,11 @@
       },
       "options": [
         {
+          "name": "clip",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
           "name": "lineHeight",
           "required": false,
           "type": "number | undefined"
@@ -6520,6 +7091,11 @@
       },
       "options": [
         {
+          "name": "clip",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
           "name": "lineHeight",
           "required": false,
           "type": "number | undefined"
@@ -6611,7 +7187,7 @@
         }
       ],
       "callPatterns": [
-        "createTextMark({ id?, data?, source?, lineHeight?, blockAlign?, inheritColor?, text?, missing? })"
+        "createTextMark({ id?, data?, source?, clip?, lineHeight?, blockAlign?, inheritColor?, text? })"
       ],
       "snippet": "program.createTextMark({})",
       "errors": [],
@@ -6693,6 +7269,11 @@
           "type": "string | undefined"
         },
         {
+          "name": "clip",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
           "name": "lineHeight",
           "required": false,
           "type": "number | undefined"
@@ -6764,9 +7345,9 @@
         }
       ],
       "callPatterns": [
-        "editTextMark({ target?, lineHeight?, blockAlign?, inheritColor?, missing?, fill?, opacity?, fontSize? })"
+        "editTextMark({ target?, clip?, lineHeight?, blockAlign?, inheritColor?, missing?, fill?, opacity? })"
       ],
-      "snippet": "program.editTextMark({ lineHeight: 1 })",
+      "snippet": "program.editTextMark({ clip: true })",
       "errors": [],
       "route": "/reference/actions/marks/#edittextmark"
     },
@@ -6941,7 +7522,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Change constant point shape, fill, opacity, or outline appearance and rematerialize its concrete items.",
-      "signature": "editPointMark(options: StrokeStyleDetails & { target?: string; missing?: \"error\" | \"skip\"; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;",
+      "signature": "editPointMark(options: StrokeStyleDetails & { clip?: boolean; target?: string; missing?: \"error\" | \"skip\"; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;",
       "intents": [
         "edit point mark",
         "edit",
@@ -7013,6 +7594,11 @@
           "type": "number | undefined"
         },
         {
+          "name": "clip",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
           "name": "target",
           "required": false,
           "type": "string | undefined"
@@ -7049,7 +7635,7 @@
         }
       ],
       "callPatterns": [
-        "editPointMark({ target?, lineCap?, lineJoin?, miterLimit?, missing?, shape?, fill?, opacity? })"
+        "editPointMark({ target?, lineCap?, lineJoin?, miterLimit?, clip?, missing?, shape?, fill? })"
       ],
       "snippet": "program.editPointMark({ fill: \"#f28e2b\" })",
       "errors": [],
@@ -7061,7 +7647,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Partially edit Tick length or constant line appearance while preserving data, position, and other assignments.",
-      "signature": "editTickMark(options: StrokeStyleDetails & { target?: string; missing?: \"error\" | \"skip\"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;",
+      "signature": "editTickMark(options: StrokeStyleDetails & { clip?: boolean; target?: string; missing?: \"error\" | \"skip\"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;",
       "intents": [
         "edit tick mark",
         "edit",
@@ -7137,6 +7723,11 @@
           "type": "number | undefined"
         },
         {
+          "name": "clip",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
           "name": "target",
           "required": false,
           "type": "string | undefined"
@@ -7168,7 +7759,7 @@
         }
       ],
       "callPatterns": [
-        "editTickMark({ target?, lineCap?, lineJoin?, miterLimit?, missing?, length?, stroke?, strokeWidth? })"
+        "editTickMark({ target?, lineCap?, lineJoin?, miterLimit?, clip?, missing?, length?, stroke? })"
       ],
       "snippet": "program.editTickMark({ lineCap: \"butt\" })",
       "errors": [],
@@ -7179,7 +7770,7 @@
       "name": "jitterPoints",
       "layer": "user-facing",
       "domain": "marks",
-      "summary": "Assign deterministic bounded graphical jitter to one Cartesian point mark.",
+      "summary": "Assign deterministic bounded graphical jitter to one Cartesian point mark with channel: \"x\", \"y\", or \"both\".",
       "signature": "jitterPoints(options: JitterPointsOptions): ChartProgram;",
       "intents": [
         "jitter points",
@@ -7238,7 +7829,7 @@
         {
           "name": "channel",
           "required": true,
-          "type": "\"x\" | \"y\""
+          "type": "\"both\" | \"x\" | \"y\""
         },
         {
           "name": "maxOffset",
@@ -7563,7 +8154,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Create a semantic line mark and empty path collection.",
-      "signature": "createLineMark(options?: StrokeStyleDetails & { id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;",
+      "signature": "createLineMark(options?: StrokeStyleDetails & { clip?: boolean; missing?: \"error\" | \"break\"; id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;",
       "intents": [
         "create line mark",
         "create",
@@ -7647,6 +8238,16 @@
           "type": "number | undefined"
         },
         {
+          "name": "clip",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "missing",
+          "required": false,
+          "type": "\"break\" | \"error\" | undefined"
+        },
+        {
           "name": "id",
           "required": false,
           "type": "string | undefined"
@@ -7688,7 +8289,7 @@
         }
       ],
       "callPatterns": [
-        "createLineMark({ id?, data?, lineCap?, lineJoin?, miterLimit?, strokeWidth?, curve?, tension? })"
+        "createLineMark({ id?, data?, lineCap?, lineJoin?, miterLimit?, clip?, missing?, strokeWidth? })"
       ],
       "snippet": "program.createLineMark({})",
       "errors": [],
@@ -7699,8 +8300,8 @@
       "name": "editLineMark",
       "layer": "user-facing",
       "domain": "marks",
-      "summary": "Edit line appearance and rematerialize concrete path commands without changing semantic encodings.",
-      "signature": "editLineMark(options: StrokeStyleDetails & { target?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;",
+      "summary": "Edit line appearance or its explicit missing-coordinate policy and rematerialize concrete path commands without changing field encodings.",
+      "signature": "editLineMark(options: StrokeStyleDetails & { clip?: boolean; missing?: \"error\" | \"break\"; target?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;",
       "intents": [
         "edit line mark",
         "edit",
@@ -7772,6 +8373,16 @@
           "type": "number | undefined"
         },
         {
+          "name": "clip",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "missing",
+          "required": false,
+          "type": "\"break\" | \"error\" | undefined"
+        },
+        {
           "name": "target",
           "required": false,
           "type": "string | undefined"
@@ -7808,7 +8419,7 @@
         }
       ],
       "callPatterns": [
-        "editLineMark({ target?, lineCap?, lineJoin?, miterLimit?, strokeWidth?, curve?, tension?, stroke? })"
+        "editLineMark({ target?, lineCap?, lineJoin?, miterLimit?, clip?, missing?, strokeWidth?, curve? })"
       ],
       "snippet": "program.editLineMark({ lineCap: \"butt\" })",
       "errors": [],
@@ -7820,7 +8431,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Create a semantic bar mark and empty rect collection.",
-      "signature": "createBarMark(options?: RectStyleDetails & { id?: string; data?: string; orientation?: \"vertical\" | \"horizontal\"; missing?: \"error\" | \"skip\"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;",
+      "signature": "createBarMark(options?: RectStyleDetails & { clip?: boolean; id?: string; data?: string; orientation?: \"vertical\" | \"horizontal\"; missing?: \"error\" | \"skip\"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;",
       "intents": [
         "create bar mark",
         "create",
@@ -7929,6 +8540,11 @@
           "type": "number | undefined"
         },
         {
+          "name": "clip",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
           "name": "id",
           "required": false,
           "type": "string | undefined"
@@ -7982,7 +8598,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Edit whole-bar appearance and rematerialize every concrete rectangle.",
-      "signature": "editBarMark(options: RectStyleDetails & { target?: string; blend?: \"normal\" | \"difference\"; missing?: \"error\" | \"skip\"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;",
+      "signature": "editBarMark(options: RectStyleDetails & { clip?: boolean; target?: string; blend?: \"normal\" | \"difference\"; missing?: \"error\" | \"skip\"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;",
       "intents": [
         "edit bar mark",
         "edit",
@@ -8079,6 +8695,11 @@
           "type": "number | undefined"
         },
         {
+          "name": "clip",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
           "name": "target",
           "required": false,
           "type": "string | undefined"
@@ -8127,7 +8748,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Create a semantic area mark and empty path collection.",
-      "signature": "createAreaMark(options?: StrokeStyleDetails & { id?: string; data?: string; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: \"error\" | \"break\"; }): ChartProgram;",
+      "signature": "createAreaMark(options?: StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: \"error\" | \"break\"; }): ChartProgram;",
       "intents": [
         "create area mark",
         "create",
@@ -8209,6 +8830,11 @@
           "type": "number | undefined"
         },
         {
+          "name": "clip",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
           "name": "id",
           "required": false,
           "type": "string | undefined"
@@ -8250,7 +8876,7 @@
         }
       ],
       "callPatterns": [
-        "createAreaMark({ id?, data?, lineCap?, lineJoin?, miterLimit?, fill?, opacity?, stroke? })"
+        "createAreaMark({ id?, data?, lineCap?, lineJoin?, miterLimit?, clip?, fill?, opacity? })"
       ],
       "snippet": "program.createAreaMark({})",
       "errors": [],
@@ -8262,7 +8888,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Create a semantic rule mark and empty line collection.",
-      "signature": "createRuleMark(options?: { id?: string; data?: string; missing?: \"error\" | \"skip\" } & RuleStyleOptions): ChartProgram;",
+      "signature": "createRuleMark(options?: { clip?: boolean; id?: string; data?: string; missing?: \"error\" | \"skip\" } & RuleStyleOptions): ChartProgram;",
       "intents": [
         "create rule mark",
         "create",
@@ -8332,6 +8958,11 @@
       },
       "options": [
         {
+          "name": "clip",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
           "name": "id",
           "required": false,
           "type": "string | undefined"
@@ -8383,7 +9014,7 @@
         }
       ],
       "callPatterns": [
-        "createRuleMark({ id?, data?, missing?, stroke?, strokeWidth?, strokeDash?, opacity?, lineCap? })"
+        "createRuleMark({ id?, data?, clip?, missing?, stroke?, strokeWidth?, strokeDash?, opacity? })"
       ],
       "snippet": "program.createRuleMark({})",
       "errors": [],
@@ -8395,7 +9026,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Edit constant Rule appearance through the four existing encoding owners.",
-      "signature": "editRuleMark(options: { target?: string; missing?: \"error\" | \"skip\" } & RuleStyleOptions): ChartProgram;",
+      "signature": "editRuleMark(options: { clip?: boolean; target?: string; missing?: \"error\" | \"skip\" } & RuleStyleOptions): ChartProgram;",
       "intents": [
         "edit rule mark",
         "edit",
@@ -8455,6 +9086,11 @@
       },
       "options": [
         {
+          "name": "clip",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
           "name": "target",
           "required": false,
           "type": "string | undefined"
@@ -8501,7 +9137,7 @@
         }
       ],
       "callPatterns": [
-        "editRuleMark({ target?, missing?, stroke?, strokeWidth?, strokeDash?, opacity?, lineCap?, lineJoin? })"
+        "editRuleMark({ target?, clip?, missing?, stroke?, strokeWidth?, strokeDash?, opacity?, lineCap? })"
       ],
       "snippet": "program.editRuleMark({ stroke: \"#334155\" })",
       "errors": [],
@@ -8513,7 +9149,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Edit constant area appearance.",
-      "signature": "editAreaMark(options: StrokeStyleDetails & { target?: string; fill?: FillPaint; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: \"error\" | \"break\"; }): ChartProgram;",
+      "signature": "editAreaMark(options: StrokeStyleDetails & { clip?: boolean; target?: string; fill?: FillPaint; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: \"error\" | \"break\"; }): ChartProgram;",
       "intents": [
         "edit area mark",
         "edit",
@@ -8585,6 +9221,11 @@
           "type": "number | undefined"
         },
         {
+          "name": "clip",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
           "name": "target",
           "required": false,
           "type": "string | undefined"
@@ -8621,7 +9262,7 @@
         }
       ],
       "callPatterns": [
-        "editAreaMark({ target?, lineCap?, lineJoin?, miterLimit?, fill?, opacity?, stroke?, strokeWidth? })"
+        "editAreaMark({ target?, lineCap?, lineJoin?, miterLimit?, clip?, fill?, opacity?, stroke? })"
       ],
       "snippet": "program.editAreaMark({ lineCap: \"butt\" })",
       "errors": [],
@@ -8728,7 +9369,7 @@
         {
           "name": "scale",
           "required": false,
-          "type": "CategoricalPositionScaleOptions | NonPointCategoricalPositionScaleOptions | NonPointQuantitativePositionScaleOptions | NonPointTemporalPositionScaleOptions | QuantitativePositionScaleOptions | TemporalPositionScaleOptions | undefined"
+          "type": "CategoricalPositionScaleOptions | NonPointCategoricalPositionScaleOptions | NonPointQuantitativePositionScaleOptions | QuantitativePositionScaleOptions | NonPointTemporalPositionScaleOptions | TemporalPositionScaleOptions | undefined"
         },
         {
           "name": "datum",
@@ -8748,7 +9389,7 @@
         {
           "name": "aggregate",
           "required": false,
-          "type": "undefined"
+          "type": "AggregateOperation"
         },
         {
           "name": "temporalUnit",
@@ -8865,7 +9506,7 @@
         {
           "name": "scale",
           "required": false,
-          "type": "CategoricalPositionScaleOptions | NonPointCategoricalPositionScaleOptions | NonPointQuantitativePositionScaleOptions | NonPointTemporalPositionScaleOptions | QuantitativePositionScaleOptions | TemporalPositionScaleOptions | undefined"
+          "type": "CategoricalPositionScaleOptions | NonPointCategoricalPositionScaleOptions | NonPointQuantitativePositionScaleOptions | QuantitativePositionScaleOptions | NonPointTemporalPositionScaleOptions | TemporalPositionScaleOptions | undefined"
         },
         {
           "name": "datum",
@@ -8875,7 +9516,7 @@
         {
           "name": "aggregate",
           "required": false,
-          "type": "undefined"
+          "type": "AggregateOperation"
         },
         {
           "name": "stack",
@@ -9081,7 +9722,7 @@
         {
           "name": "temporalUnit",
           "required": false,
-          "type": "undefined"
+          "type": "TemporalInputUnit | undefined"
         }
       ],
       "callPatterns": [
@@ -9164,12 +9805,17 @@
       },
       "options": [
         {
-          "name": "field",
-          "required": true,
-          "type": "string"
+          "name": "value",
+          "required": false,
+          "type": "string | undefined"
         },
         {
           "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "field",
           "required": false,
           "type": "string | undefined"
         },
@@ -9205,9 +9851,9 @@
         }
       ],
       "callPatterns": [
-        "encodeColor({ field, target?, scale?, fieldType?, palette?, layout?, aggregate?, temporalUnit? })"
+        "encodeColor({ target?, scale?, value?, field?, fieldType?, palette?, layout?, aggregate? })"
       ],
-      "snippet": "program.encodeColor({ field: \"value\" })",
+      "snippet": "program.encodeColor({ value: \"value\" })",
       "errors": [],
       "route": "/reference/actions/encodings/#encodecolor"
     },
@@ -9216,7 +9862,7 @@
       "name": "encodeStrokeDash",
       "layer": "user-facing",
       "domain": "encodings",
-      "summary": "Create or replace nominal line-series or rule dash patterns, or apply one constant named/direct pattern.",
+      "summary": "Create or replace nominal/ordinal line-series or rule dash patterns, or apply one constant named/direct pattern.",
       "signature": "encodeStrokeDash(options: StrokeDashEncodingOptions): ChartProgram;",
       "intents": [
         "encode stroke dash",
@@ -9295,7 +9941,7 @@
         {
           "name": "fieldType",
           "required": false,
-          "type": "\"nominal\" | undefined"
+          "type": "\"nominal\" | \"ordinal\" | undefined"
         },
         {
           "name": "scale",
@@ -9423,7 +10069,7 @@
       "name": "encodeStrokeWidth",
       "layer": "user-facing",
       "domain": "encodings",
-      "summary": "Assign a non-negative finite logical Canvas width to a Line or Rule.",
+      "summary": "Assign a non-negative finite logical Canvas width to a Line, Rule, or Rect.",
       "signature": "encodeStrokeWidth(options: StrokeWidthEncodingOptions): ChartProgram;",
       "intents": [
         "encode stroke width",
@@ -9472,6 +10118,10 @@
         {
           "input": "scale",
           "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "scale",
+          "strategy": "documented-auto"
         }
       ],
       "completionRequirements": {
@@ -9506,7 +10156,7 @@
         {
           "name": "scale",
           "required": false,
-          "type": "NonPointQuantitativePositionScaleOptions | undefined"
+          "type": "(Omit<ScaleFields<\"base\" | \"clamp\" | \"constant\" | \"exponent\" | \"id\" | \"reverse\" | \"zero\"> & { domain?: \"auto\" | readonly [number, number] | undefined; range?: \"auto\" | readonly [...] | undefined; } & { ...; }, \"nice\"> & { ...; }) | (Omit<...> & { ...; }) | undefined"
         }
       ],
       "callPatterns": [
@@ -9521,7 +10171,7 @@
       "name": "encodeSize",
       "layer": "user-facing",
       "domain": "encodings",
-      "summary": "Encode or replace a quantitative field as equal-area point size.",
+      "summary": "Encode point size as area; radius-normalized polygons use reference-circle area.",
       "signature": "encodeSize(options: SizeEncodingOptions): ChartProgram;",
       "intents": [
         "encode size",
@@ -9583,12 +10233,17 @@
       },
       "options": [
         {
-          "name": "field",
-          "required": true,
-          "type": "string"
+          "name": "value",
+          "required": false,
+          "type": "number | undefined"
         },
         {
           "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "field",
           "required": false,
           "type": "string | undefined"
         },
@@ -9604,9 +10259,9 @@
         }
       ],
       "callPatterns": [
-        "encodeSize({ field, target?, scale?, fieldType? })"
+        "encodeSize({ target?, scale?, value?, field?, fieldType? })"
       ],
-      "snippet": "program.encodeSize({ field: \"value\" })",
+      "snippet": "program.encodeSize({ value: 1 })",
       "errors": [],
       "route": "/reference/actions/encodings/#encodesize"
     },
@@ -9615,7 +10270,7 @@
       "name": "encodeShape",
       "layer": "user-facing",
       "domain": "encodings",
-      "summary": "Encode or replace a nominal field with the shared 12-value point-shape vocabulary.",
+      "summary": "Encode a nominal field as fourteen named shapes or polygons with area/radius normalization.",
       "signature": "encodeShape(options: ShapeEncodingOptions): ChartProgram;",
       "intents": [
         "encode shape",
@@ -9802,7 +10457,7 @@
       "name": "encodeOpacity",
       "layer": "user-facing",
       "domain": "encodings",
-      "summary": "Apply a constant point/rule/line opacity from 0 to 1, or map a quantitative field through a linear opacity scale.",
+      "summary": "Apply a constant point/rule/line/bar/rect opacity from 0 to 1, or map a quantitative field through a linear opacity scale.",
       "signature": "encodeOpacity(options: OpacityEncodingOptions): ChartProgram;",
       "intents": [
         "encode opacity",
@@ -10687,7 +11342,7 @@
         {
           "name": "temporalUnit",
           "required": false,
-          "type": "undefined"
+          "type": "TemporalInputUnit | undefined"
         }
       ],
       "callPatterns": [
@@ -10772,6 +11427,16 @@
       },
       "options": [
         {
+          "name": "lower",
+          "required": true,
+          "type": "string | { datum: number; }"
+        },
+        {
+          "name": "upper",
+          "required": true,
+          "type": "string | { datum: number; }"
+        },
+        {
           "name": "target",
           "required": false,
           "type": "string | undefined"
@@ -10795,16 +11460,6 @@
           "name": "scale",
           "required": false,
           "type": "NonPointQuantitativePositionScaleOptions | NonPointTemporalPositionScaleOptions | undefined"
-        },
-        {
-          "name": "lower",
-          "required": true,
-          "type": "string | { datum: number; }"
-        },
-        {
-          "name": "upper",
-          "required": true,
-          "type": "string | { datum: number; }"
         }
       ],
       "callPatterns": [
@@ -10889,6 +11544,16 @@
       },
       "options": [
         {
+          "name": "lower",
+          "required": true,
+          "type": "string | { datum: number; }"
+        },
+        {
+          "name": "upper",
+          "required": true,
+          "type": "string | { datum: number; }"
+        },
+        {
           "name": "target",
           "required": false,
           "type": "string | undefined"
@@ -10912,16 +11577,6 @@
           "name": "scale",
           "required": false,
           "type": "NonPointQuantitativePositionScaleOptions | NonPointTemporalPositionScaleOptions | undefined"
-        },
-        {
-          "name": "lower",
-          "required": true,
-          "type": "string | { datum: number; }"
-        },
-        {
-          "name": "upper",
-          "required": true,
-          "type": "string | { datum: number; }"
         }
       ],
       "callPatterns": [
@@ -11438,7 +12093,7 @@
       "layer": "user-facing",
       "domain": "encodings",
       "summary": "Remove one active semantic encoding, its generated companions, matching guide blocks, and stale concrete values.",
-      "signature": "removeEncoding(options: { target?: string; channel: | \"x\" | \"y\" | \"x2\" | \"y2\" | \"xOffset\" | \"yOffset\" | \"theta\" | \"radius\" | \"color\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\" | \"size\" | \"shape\" | \"angle\" | \"group\" | \"opacity\" | \"text\"; }): ChartProgram;",
+      "signature": "removeEncoding(options: { target?: string; channel: | \"x\" | \"y\" | \"x2\" | \"y2\" | \"xOffset\" | \"yOffset\" | \"theta\" | \"radius\" | \"color\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\" | \"size\" | \"shape\" | \"angle\" | \"group\" | \"opacity\" | \"text\" | \"dx\" | \"dy\"; }): ChartProgram;",
       "intents": [
         "remove encoding",
         "remove",
@@ -11494,7 +12149,7 @@
         {
           "name": "channel",
           "required": true,
-          "type": "\"angle\" | \"color\" | \"group\" | \"opacity\" | \"radius\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\" | \"text\" | \"theta\" | \"x\" | \"x2\" | \"xOffset\" | \"y\" | \"y2\" | \"yOffset\""
+          "type": "\"angle\" | \"color\" | \"dx\" | \"dy\" | \"group\" | \"opacity\" | \"radius\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\" | \"text\" | \"theta\" | \"x\" | \"x2\" | \"xOffset\" | \"y\" | \"y2\" | \"yOffset\""
         }
       ],
       "callPatterns": [
@@ -11605,6 +12260,182 @@
       "snippet": "program.encodeText({ field: \"label\" })",
       "errors": [],
       "route": "/reference/actions/encodings/#encodetext"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "encodeDx",
+      "layer": "user-facing",
+      "domain": "encodings",
+      "summary": "Move each independent Text glyph horizontally by finite signed logical pixels.",
+      "signature": "encodeDx(options: TextOffsetEncodingOptions): ChartProgram;",
+      "intents": [
+        "encode dx",
+        "encode",
+        "map field",
+        "visual encoding",
+        "field mapping",
+        "horizontal text offset",
+        "text pixel shift"
+      ],
+      "lifecycle": "Assignment",
+      "resources": {
+        "prerequisites": [
+          "target mark",
+          "field in the target dataset"
+        ],
+        "owns": [
+          "horizontal text offset assignment"
+        ],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "removeEncoding"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [
+        {
+          "path": "value",
+          "unit": "logical-pixel"
+        }
+      ],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "target mark",
+          "field in the target dataset"
+        ],
+        "allowsEmpty": true
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "value",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "field",
+          "required": false,
+          "type": "string | undefined"
+        }
+      ],
+      "callPatterns": [
+        "encodeDx({ target?, field })",
+        "encodeDx({ target?, value })"
+      ],
+      "snippet": "program.encodeDx({ value: 8 })",
+      "errors": [],
+      "route": "/reference/actions/encodings/#encodedx"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "encodeDy",
+      "layer": "user-facing",
+      "domain": "encodings",
+      "summary": "The corresponding independent Text vertical offset; positive values move down.",
+      "signature": "encodeDy(options: TextOffsetEncodingOptions): ChartProgram;",
+      "intents": [
+        "encode dy",
+        "encode",
+        "map field",
+        "visual encoding",
+        "field mapping",
+        "vertical text offset",
+        "text pixel shift"
+      ],
+      "lifecycle": "Assignment",
+      "resources": {
+        "prerequisites": [
+          "target mark",
+          "field in the target dataset"
+        ],
+        "owns": [
+          "vertical text offset assignment"
+        ],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "removeEncoding"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [
+        {
+          "path": "value",
+          "unit": "logical-pixel"
+        }
+      ],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "target mark",
+          "field in the target dataset"
+        ],
+        "allowsEmpty": true
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "value",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "field",
+          "required": false,
+          "type": "string | undefined"
+        }
+      ],
+      "callPatterns": [
+        "encodeDy({ target?, field })",
+        "encodeDy({ target?, value })"
+      ],
+      "snippet": "program.encodeDy({ value: 8 })",
+      "errors": [],
+      "route": "/reference/actions/encodings/#encodedy"
     },
     {
       "schemaVersion": 3,
@@ -13674,6 +14505,11 @@
           "type": "string | undefined"
         },
         {
+          "name": "color",
+          "required": false,
+          "type": "string | { field: string; fieldType?: \"nominal\" | \"ordinal\" | undefined; scale?: NonPointCategoricalColorScaleOptions | undefined; palette?: Palette | undefined; } | { ...; } | undefined"
+        },
+        {
           "name": "whisker",
           "required": false,
           "type": "BoxPlotWhisker | undefined"
@@ -13966,6 +14802,11 @@
           "name": "coordinate",
           "required": false,
           "type": "string | undefined"
+        },
+        {
+          "name": "color",
+          "required": false,
+          "type": "{ value: string; } | BasicColorChannel | undefined"
         },
         {
           "name": "density",
@@ -14835,7 +15676,9 @@
         "createYAxis",
         "createParallelAxes"
       ],
-      "editableVia": [],
+      "editableVia": [
+        "editAxes"
+      ],
       "supports": {
         "entryPoints": [
           "default",
@@ -14975,6 +15818,11 @@
       },
       "options": [
         {
+          "name": "underlay",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
           "name": "id",
           "required": false,
           "type": "string | undefined"
@@ -15016,7 +15864,7 @@
         }
       ],
       "callPatterns": [
-        "createXAxis({ id?, scale?, coordinate?, offset?, position?, line?, ticksAndLabels?, title? })"
+        "createXAxis({ id?, scale?, coordinate?, underlay?, offset?, position?, line?, ticksAndLabels? })"
       ],
       "snippet": "program.createXAxis({})",
       "errors": [],
@@ -15099,6 +15947,11 @@
       },
       "options": [
         {
+          "name": "underlay",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
           "name": "id",
           "required": false,
           "type": "string | undefined"
@@ -15140,7 +15993,7 @@
         }
       ],
       "callPatterns": [
-        "createYAxis({ id?, scale?, coordinate?, offset?, position?, line?, ticksAndLabels?, title? })"
+        "createYAxis({ id?, scale?, coordinate?, underlay?, offset?, position?, line?, ticksAndLabels? })"
       ],
       "snippet": "program.createYAxis({})",
       "errors": [],
@@ -15651,6 +16504,11 @@
           "type": "number | undefined"
         },
         {
+          "name": "rounding",
+          "required": false,
+          "type": "AxisTickRounding | undefined"
+        },
+        {
           "name": "values",
           "required": false,
           "type": "readonly AxisValue[] | undefined"
@@ -15687,7 +16545,7 @@
         }
       ],
       "callPatterns": [
-        "createXAxisTicks({ target?, scale?, position?, count?, values?, color?, lineWidth?, length? })"
+        "createXAxisTicks({ target?, scale?, position?, count?, rounding?, values?, color?, lineWidth? })"
       ],
       "snippet": "program.createXAxisTicks({})",
       "errors": [],
@@ -15804,6 +16662,11 @@
           "type": "number | undefined"
         },
         {
+          "name": "rounding",
+          "required": false,
+          "type": "AxisTickRounding | undefined"
+        },
+        {
           "name": "values",
           "required": false,
           "type": "readonly AxisValue[] | undefined"
@@ -15840,7 +16703,7 @@
         }
       ],
       "callPatterns": [
-        "createYAxisTicks({ target?, scale?, position?, count?, values?, color?, lineWidth?, length? })"
+        "createYAxisTicks({ target?, scale?, position?, count?, rounding?, values?, color?, lineWidth? })"
       ],
       "snippet": "program.createYAxisTicks({})",
       "errors": [],
@@ -15968,6 +16831,11 @@
           "name": "count",
           "required": false,
           "type": "number | undefined"
+        },
+        {
+          "name": "rounding",
+          "required": false,
+          "type": "AxisTickRounding | undefined"
         },
         {
           "name": "values",
@@ -16104,6 +16972,11 @@
           "name": "count",
           "required": false,
           "type": "number | undefined"
+        },
+        {
+          "name": "rounding",
+          "required": false,
+          "type": "AxisTickRounding | undefined"
         },
         {
           "name": "values",
@@ -16245,6 +17118,11 @@
           "type": "number | undefined"
         },
         {
+          "name": "rounding",
+          "required": false,
+          "type": "AxisTickRounding | undefined"
+        },
+        {
           "name": "values",
           "required": false,
           "type": "readonly AxisValue[] | undefined"
@@ -16331,7 +17209,7 @@
         }
       ],
       "callPatterns": [
-        "createXAxisLabels({ target?, scale?, position?, count?, values?, labelMap?, offset?, format? })"
+        "createXAxisLabels({ target?, scale?, position?, count?, rounding?, values?, labelMap?, offset? })"
       ],
       "snippet": "program.createXAxisLabels({})",
       "errors": [],
@@ -16464,6 +17342,11 @@
           "type": "number | undefined"
         },
         {
+          "name": "rounding",
+          "required": false,
+          "type": "AxisTickRounding | undefined"
+        },
+        {
           "name": "values",
           "required": false,
           "type": "readonly AxisValue[] | undefined"
@@ -16550,7 +17433,7 @@
         }
       ],
       "callPatterns": [
-        "createYAxisLabels({ target?, scale?, position?, count?, values?, labelMap?, offset?, format? })"
+        "createYAxisLabels({ target?, scale?, position?, count?, rounding?, values?, labelMap?, offset? })"
       ],
       "snippet": "program.createYAxisLabels({})",
       "errors": [],
@@ -16745,6 +17628,11 @@
           "name": "count",
           "required": false,
           "type": "number | undefined"
+        },
+        {
+          "name": "rounding",
+          "required": false,
+          "type": "AxisTickRounding | undefined"
         },
         {
           "name": "values",
@@ -16950,6 +17838,11 @@
           "type": "number | undefined"
         },
         {
+          "name": "rounding",
+          "required": false,
+          "type": "AxisTickRounding | undefined"
+        },
+        {
           "name": "values",
           "required": false,
           "type": "readonly AxisValue[] | undefined"
@@ -17056,6 +17949,11 @@
           "type": "number | undefined"
         },
         {
+          "name": "rounding",
+          "required": false,
+          "type": "AxisTickRounding | undefined"
+        },
+        {
           "name": "values",
           "required": false,
           "type": "readonly AxisValue[] | undefined"
@@ -17072,7 +17970,7 @@
         }
       ],
       "callPatterns": [
-        "createXAxisTicksAndLabels({ target?, scale?, position?, count?, values?, ticks?, labels? })"
+        "createXAxisTicksAndLabels({ target?, scale?, position?, count?, rounding?, values?, ticks?, labels? })"
       ],
       "snippet": "program.createXAxisTicksAndLabels({})",
       "errors": [],
@@ -17172,6 +18070,11 @@
           "type": "number | undefined"
         },
         {
+          "name": "rounding",
+          "required": false,
+          "type": "AxisTickRounding | undefined"
+        },
+        {
           "name": "values",
           "required": false,
           "type": "readonly AxisValue[] | undefined"
@@ -17188,7 +18091,7 @@
         }
       ],
       "callPatterns": [
-        "createYAxisTicksAndLabels({ target?, scale?, position?, count?, values?, ticks?, labels? })"
+        "createYAxisTicksAndLabels({ target?, scale?, position?, count?, rounding?, values?, ticks?, labels? })"
       ],
       "snippet": "program.createYAxisTicksAndLabels({})",
       "errors": [],
@@ -17273,6 +18176,11 @@
           "type": "number | undefined"
         },
         {
+          "name": "rounding",
+          "required": false,
+          "type": "AxisTickRounding | undefined"
+        },
+        {
           "name": "values",
           "required": false,
           "type": "readonly AxisValue[] | undefined"
@@ -17289,7 +18197,7 @@
         }
       ],
       "callPatterns": [
-        "editXAxisTicksAndLabels({ target?, position?, count?, values?, ticks?, labels? })"
+        "editXAxisTicksAndLabels({ target?, position?, count?, rounding?, values?, ticks?, labels? })"
       ],
       "snippet": "program.editXAxisTicksAndLabels({ position: \"bottom\" })",
       "errors": [],
@@ -17374,6 +18282,11 @@
           "type": "number | undefined"
         },
         {
+          "name": "rounding",
+          "required": false,
+          "type": "AxisTickRounding | undefined"
+        },
+        {
           "name": "values",
           "required": false,
           "type": "readonly AxisValue[] | undefined"
@@ -17390,7 +18303,7 @@
         }
       ],
       "callPatterns": [
-        "editYAxisTicksAndLabels({ target?, position?, count?, values?, ticks?, labels? })"
+        "editYAxisTicksAndLabels({ target?, position?, count?, rounding?, values?, ticks?, labels? })"
       ],
       "snippet": "program.editYAxisTicksAndLabels({ position: \"left\" })",
       "errors": [],
@@ -17498,6 +18411,11 @@
           "type": "\"center\" | \"left\" | \"right\" | undefined"
         },
         {
+          "name": "overlap",
+          "required": false,
+          "type": "\"allow\" | \"error\" | undefined"
+        },
+        {
           "name": "baseline",
           "required": false,
           "type": "\"alphabetic\" | \"bottom\" | \"hanging\" | \"ideographic\" | \"middle\" | \"top\" | undefined"
@@ -17554,7 +18472,7 @@
         }
       ],
       "callPatterns": [
-        "createXAxisTitle({ target?, scale?, alongOffset?, align?, baseline?, text?, position?, at? })"
+        "createXAxisTitle({ target?, scale?, alongOffset?, align?, overlap?, baseline?, text?, position? })"
       ],
       "snippet": "program.createXAxisTitle({})",
       "errors": [],
@@ -17662,6 +18580,11 @@
           "type": "\"center\" | \"left\" | \"right\" | undefined"
         },
         {
+          "name": "overlap",
+          "required": false,
+          "type": "\"allow\" | \"error\" | undefined"
+        },
+        {
           "name": "baseline",
           "required": false,
           "type": "\"alphabetic\" | \"bottom\" | \"hanging\" | \"ideographic\" | \"middle\" | \"top\" | undefined"
@@ -17718,7 +18641,7 @@
         }
       ],
       "callPatterns": [
-        "createYAxisTitle({ target?, scale?, alongOffset?, align?, baseline?, text?, position?, at? })"
+        "createYAxisTitle({ target?, scale?, alongOffset?, align?, overlap?, baseline?, text?, position? })"
       ],
       "snippet": "program.createYAxisTitle({})",
       "errors": [],
@@ -17815,6 +18738,11 @@
           "type": "\"center\" | \"left\" | \"right\" | undefined"
         },
         {
+          "name": "overlap",
+          "required": false,
+          "type": "\"allow\" | \"error\" | undefined"
+        },
+        {
           "name": "baseline",
           "required": false,
           "type": "\"alphabetic\" | \"bottom\" | \"hanging\" | \"ideographic\" | \"middle\" | \"top\" | undefined"
@@ -17866,7 +18794,7 @@
         }
       ],
       "callPatterns": [
-        "editXAxisTitle({ target?, alongOffset?, align?, baseline?, text?, position?, at?, offset? })"
+        "editXAxisTitle({ target?, alongOffset?, align?, overlap?, baseline?, text?, position?, at? })"
       ],
       "snippet": "program.editXAxisTitle({ alongOffset: 1 })",
       "errors": [],
@@ -17963,6 +18891,11 @@
           "type": "\"center\" | \"left\" | \"right\" | undefined"
         },
         {
+          "name": "overlap",
+          "required": false,
+          "type": "\"allow\" | \"error\" | undefined"
+        },
+        {
           "name": "baseline",
           "required": false,
           "type": "\"alphabetic\" | \"bottom\" | \"hanging\" | \"ideographic\" | \"middle\" | \"top\" | undefined"
@@ -18014,11 +18947,95 @@
         }
       ],
       "callPatterns": [
-        "editYAxisTitle({ target?, alongOffset?, align?, baseline?, text?, position?, at?, offset? })"
+        "editYAxisTitle({ target?, alongOffset?, align?, overlap?, baseline?, text?, position?, at? })"
       ],
       "snippet": "program.editYAxisTitle({ alongOffset: 1 })",
       "errors": [],
       "route": "/reference/actions/guides/#edityaxistitle"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editAxes",
+      "layer": "user-facing",
+      "domain": "axes",
+      "summary": "Edits x and y axes, including settings for Cartesian guides.",
+      "signature": "editAxes(options: EditAxesOptions): ChartProgram;",
+      "intents": [
+        "edit axes",
+        "edit",
+        "change",
+        "axis guide",
+        "scale annotation",
+        "x and y axes",
+        "Cartesian guides"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing x and y axes",
+          "compatible scale or encoding context"
+        ],
+        "owns": [],
+        "idOptions": []
+      },
+      "authoringRoles": [
+        "H3"
+      ],
+      "wraps": [
+        "editXAxis",
+        "editYAxis"
+      ],
+      "editableVia": [
+        "editAxes"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing x and y axes",
+          "compatible scale or encoding context"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "x",
+          "required": false,
+          "type": "false | EditAxisOptions<XAxisPosition> | readonly [EditAxisOptions<XAxisPosition> & { target: string; }, ...(EditAxisOptions<XAxisPosition> & { ...; })[]] | undefined"
+        },
+        {
+          "name": "y",
+          "required": false,
+          "type": "false | EditAxisOptions<YAxisPosition> | readonly [EditAxisOptions<YAxisPosition> & { target: string; }, ...(EditAxisOptions<YAxisPosition> & { ...; })[]] | undefined"
+        },
+        {
+          "name": "theta",
+          "required": false,
+          "type": "false | EditThetaAxisOptions | undefined"
+        },
+        {
+          "name": "radius",
+          "required": false,
+          "type": "false | EditRadialAxisOptions | undefined"
+        },
+        {
+          "name": "parallel",
+          "required": false,
+          "type": "false | readonly [ParallelAxisComponentsOptions, ...ParallelAxisComponentsOptions[]] | ParallelAxisComponentsOptions | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editAxes({ x?, y?, theta?, radius?, parallel? })"
+      ],
+      "snippet": "program.editAxes({ x: { labels: { fontSize: 11 } }, y: { labels: { fontSize: 11 } } })",
+      "errors": [],
+      "route": "/reference/actions/guides/#editaxes"
     },
     {
       "schemaVersion": 3,
@@ -18051,9 +19068,9 @@
         "H3"
       ],
       "wraps": [
+        "editXAxisLabels",
         "editXAxisLine",
         "editXAxisTicks",
-        "editXAxisLabels",
         "editXAxisTitle"
       ],
       "editableVia": [
@@ -18085,6 +19102,11 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "underlay",
+          "required": false,
+          "type": "boolean | undefined"
+        },
         {
           "name": "target",
           "required": false,
@@ -18127,7 +19149,7 @@
         }
       ],
       "callPatterns": [
-        "editXAxis({ target?, offset?, position?, line?, ticks?, labels?, ticksAndLabels?, title? })"
+        "editXAxis({ target?, underlay?, offset?, position?, line?, ticks?, labels?, ticksAndLabels? })"
       ],
       "snippet": "program.editXAxis({ position: \"bottom\" })",
       "errors": [],
@@ -18164,6 +19186,7 @@
         "H3"
       ],
       "wraps": [
+        "editYAxisLabels",
         "editYAxisLine",
         "editYAxisTitle"
       ],
@@ -18196,6 +19219,11 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "underlay",
+          "required": false,
+          "type": "boolean | undefined"
+        },
         {
           "name": "target",
           "required": false,
@@ -18238,7 +19266,7 @@
         }
       ],
       "callPatterns": [
-        "editYAxis({ target?, offset?, position?, line?, ticks?, labels?, ticksAndLabels?, title? })"
+        "editYAxis({ target?, underlay?, offset?, position?, line?, ticks?, labels?, ticksAndLabels? })"
       ],
       "snippet": "program.editYAxis({ position: \"left\" })",
       "errors": [],
@@ -19212,7 +20240,7 @@
       "name": "createLegend",
       "layer": "user-facing",
       "domain": "legend_and_title",
-      "summary": "Create categorical, point-size, continuous-color gradient, discretized-color interval, or field-opacity sample legends.",
+      "summary": "rowPadding sets non-negative finite occupied edge-to-edge vertical row gaps for item-based legends; titlePadding independently sets title-to-body spacing for every family.",
       "signature": "createLegend(options?: LegendOptions): ChartProgram;",
       "intents": [
         "create legend",
@@ -19260,6 +20288,14 @@
         {
           "path": "count",
           "unit": "count"
+        },
+        {
+          "path": "rowPadding",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "titlePadding",
+          "unit": "logical-pixel"
         }
       ],
       "inference": [
@@ -19401,6 +20437,16 @@
           "type": "number | undefined"
         },
         {
+          "name": "rowPadding",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "titlePadding",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "border",
           "required": false,
           "type": "boolean | LegendBorderOptions | undefined"
@@ -19457,6 +20503,14 @@
       },
       "units": [
         {
+          "path": "rowPadding",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "titlePadding",
+          "unit": "logical-pixel"
+        },
+        {
           "path": "columns",
           "unit": "count"
         },
@@ -19472,6 +20526,14 @@
       "inference": [
         {
           "input": "clipHeight",
+          "strategy": "documented-auto"
+        },
+        {
+          "input": "rowPadding",
+          "strategy": "documented-auto"
+        },
+        {
+          "input": "titlePadding",
           "strategy": "documented-auto"
         },
         {
@@ -19498,6 +20560,16 @@
       "options": [
         {
           "name": "clipHeight",
+          "required": false,
+          "type": "number | \"auto\" | undefined"
+        },
+        {
+          "name": "rowPadding",
+          "required": false,
+          "type": "number | \"auto\" | undefined"
+        },
+        {
+          "name": "titlePadding",
           "required": false,
           "type": "number | \"auto\" | undefined"
         },
@@ -19628,7 +20700,7 @@
         }
       ],
       "callPatterns": [
-        "editLegend({ target?, clipHeight?, channel?, position?, direction?, titleStyle?, channels?, title? })"
+        "editLegend({ target?, clipHeight?, rowPadding?, titlePadding?, channel?, position?, direction?, titleStyle? })"
       ],
       "snippet": "program.editLegend({ channels: [\"color\", \"size\"], count: 3 })",
       "errors": [],
@@ -19826,6 +20898,14 @@
         {
           "path": "offset",
           "unit": "logical-pixel"
+        },
+        {
+          "path": "rowPadding",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "titlePadding",
+          "unit": "logical-pixel"
         }
       ],
       "inference": [
@@ -19835,6 +20915,14 @@
         },
         {
           "input": "direction",
+          "strategy": "documented-auto"
+        },
+        {
+          "input": "rowPadding",
+          "strategy": "documented-auto"
+        },
+        {
+          "input": "titlePadding",
           "strategy": "documented-auto"
         }
       ],
@@ -19906,6 +20994,16 @@
           "name": "itemGap",
           "required": false,
           "type": "number | undefined"
+        },
+        {
+          "name": "rowPadding",
+          "required": false,
+          "type": "number | \"auto\" | undefined"
+        },
+        {
+          "name": "titlePadding",
+          "required": false,
+          "type": "number | \"auto\" | undefined"
         }
       ],
       "callPatterns": [
@@ -21077,7 +22175,7 @@
         {
           "name": "nice",
           "required": false,
-          "type": "boolean | undefined"
+          "type": "boolean | LinearNiceCountOptions | undefined"
         },
         {
           "name": "zero",
@@ -21284,7 +22382,7 @@
         {
           "name": "nice",
           "required": false,
-          "type": "boolean | undefined"
+          "type": "boolean | LinearNiceCountOptions | undefined"
         },
         {
           "name": "zero",
@@ -21474,7 +22572,7 @@
         {
           "name": "type",
           "required": false,
-          "type": "\"band\" | \"point\" | \"time\" | QuantitativePositionScaleType | undefined"
+          "type": "\"band\" | \"linear\" | \"log\" | \"point\" | \"pow\" | \"sqrt\" | \"symlog\" | \"time\" | undefined"
         },
         {
           "name": "domain",
@@ -21512,17 +22610,17 @@
           "type": "number | undefined"
         },
         {
+          "name": "clamp",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
           "name": "nice",
           "required": false,
           "type": "boolean | undefined"
         },
         {
           "name": "zero",
-          "required": false,
-          "type": "boolean | undefined"
-        },
-        {
-          "name": "clamp",
           "required": false,
           "type": "boolean | undefined"
         },
@@ -21649,7 +22747,7 @@
         {
           "name": "type",
           "required": false,
-          "type": "\"band\" | \"point\" | \"time\" | QuantitativePositionScaleType | undefined"
+          "type": "\"band\" | \"linear\" | \"log\" | \"point\" | \"pow\" | \"sqrt\" | \"symlog\" | \"time\" | undefined"
         },
         {
           "name": "domain",
@@ -21687,17 +22785,17 @@
           "type": "number | undefined"
         },
         {
+          "name": "clamp",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
           "name": "nice",
           "required": false,
           "type": "boolean | undefined"
         },
         {
           "name": "zero",
-          "required": false,
-          "type": "boolean | undefined"
-        },
-        {
-          "name": "clamp",
           "required": false,
           "type": "boolean | undefined"
         },
@@ -22078,7 +23176,7 @@
         {
           "name": "type",
           "required": false,
-          "type": "\"band\" | \"point\" | QuantitativePositionScaleType | undefined"
+          "type": "\"band\" | \"linear\" | \"log\" | \"point\" | \"pow\" | \"sqrt\" | \"symlog\" | undefined"
         },
         {
           "name": "domain",
@@ -22116,11 +23214,6 @@
           "type": "number | undefined"
         },
         {
-          "name": "nice",
-          "required": false,
-          "type": "boolean | undefined"
-        },
-        {
           "name": "zero",
           "required": false,
           "type": "boolean | undefined"
@@ -22144,6 +23237,11 @@
           "name": "constant",
           "required": false,
           "type": "number | undefined"
+        },
+        {
+          "name": "nice",
+          "required": false,
+          "type": "boolean | LinearNiceCountOptions | undefined"
         }
       ],
       "callPatterns": [
@@ -22541,12 +23639,12 @@
         {
           "name": "range",
           "required": false,
-          "type": "\"auto\" | readonly string[] | { readonly palette: Palette; } | readonly [string, string, ...string[]] | undefined"
+          "type": "\"auto\" | readonly string[] | { readonly palette: Palette; } | { readonly palette: Palette; } | readonly [string, string, ...string[]] | undefined"
         },
         {
           "name": "palette",
           "required": false,
-          "type": "\"accent\" | \"bluegreen\" | \"blueorange\" | \"bluepurple\" | \"blues\" | \"brownbluegreen\" | \"browns\" | \"category10\" | \"category20\" | \"category20b\" | \"category20c\" | \"cividis\" | \"dark2\" | ... 60 more ... | undefined"
+          "type": "\"accent\" | \"bluegreen\" | \"blueorange\" | \"bluepurple\" | \"blues\" | \"brownbluegreen\" | \"browns\" | \"category10\" | \"category20\" | \"category20b\" | \"category20c\" | \"cividis\" | \"dark2\" | ... 59 more ... | undefined"
         },
         {
           "name": "type",
@@ -22710,12 +23808,12 @@
         {
           "name": "range",
           "required": false,
-          "type": "\"auto\" | readonly string[] | { readonly palette: Palette; } | readonly [string, string, ...string[]] | undefined"
+          "type": "\"auto\" | readonly string[] | { readonly palette: Palette; } | { readonly palette: Palette; } | readonly [string, string, ...string[]] | undefined"
         },
         {
           "name": "palette",
           "required": false,
-          "type": "\"accent\" | \"bluegreen\" | \"blueorange\" | \"bluepurple\" | \"blues\" | \"brownbluegreen\" | \"browns\" | \"category10\" | \"category20\" | \"category20b\" | \"category20c\" | \"cividis\" | \"dark2\" | ... 60 more ... | undefined"
+          "type": "\"accent\" | \"bluegreen\" | \"blueorange\" | \"bluepurple\" | \"blues\" | \"brownbluegreen\" | \"browns\" | \"category10\" | \"category20\" | \"category20b\" | \"category20c\" | \"cividis\" | \"dark2\" | ... 59 more ... | undefined"
         },
         {
           "name": "type",
@@ -22969,11 +24067,6 @@
           "type": "string | undefined"
         },
         {
-          "name": "nice",
-          "required": false,
-          "type": "boolean | undefined"
-        },
-        {
           "name": "zero",
           "required": false,
           "type": "boolean | undefined"
@@ -22985,6 +24078,11 @@
         },
         {
           "name": "reverse",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "nice",
           "required": false,
           "type": "boolean | undefined"
         },
@@ -23010,7 +24108,7 @@
         }
       ],
       "callPatterns": [
-        "editOpacityScale({ id?, target?, nice?, zero?, clamp?, reverse?, type?, domain? })"
+        "editOpacityScale({ id?, target?, zero?, clamp?, reverse?, nice?, type?, domain? })"
       ],
       "snippet": "program.editOpacityScale({ range: [0.2, 0.9] })",
       "errors": [],
@@ -23195,11 +24293,6 @@
           "type": "string | undefined"
         },
         {
-          "name": "nice",
-          "required": false,
-          "type": "boolean | undefined"
-        },
-        {
           "name": "zero",
           "required": false,
           "type": "boolean | undefined"
@@ -23230,11 +24323,6 @@
           "type": "number | undefined"
         },
         {
-          "name": "type",
-          "required": false,
-          "type": "QuantitativePositionScaleType | undefined"
-        },
-        {
           "name": "domain",
           "required": false,
           "type": "\"auto\" | readonly [number, number] | undefined"
@@ -23243,10 +24331,20 @@
           "name": "range",
           "required": false,
           "type": "\"auto\" | readonly [number, number] | undefined"
+        },
+        {
+          "name": "type",
+          "required": false,
+          "type": "\"linear\" | \"log\" | \"pow\" | \"sqrt\" | \"symlog\" | undefined"
+        },
+        {
+          "name": "nice",
+          "required": false,
+          "type": "boolean | undefined"
         }
       ],
       "callPatterns": [
-        "editStrokeWidthScale({ id?, target?, nice?, zero?, clamp?, reverse?, base?, exponent? })"
+        "editStrokeWidthScale({ id?, target?, zero?, clamp?, reverse?, base?, exponent?, constant? })"
       ],
       "snippet": "program.editStrokeWidthScale({ range: [1, 8] })",
       "errors": [],
@@ -23341,10 +24439,15 @@
           "name": "range",
           "required": false,
           "type": "\"auto\" | readonly (DashPattern | DashStyle)[] | undefined"
+        },
+        {
+          "name": "unknown",
+          "required": false,
+          "type": "DashPattern | DashStyle | undefined"
         }
       ],
       "callPatterns": [
-        "editStrokeDashScale({ id?, target?, type?, domain?, range? })"
+        "editStrokeDashScale({ id?, target?, type?, domain?, range?, unknown? })"
       ],
       "snippet": "program.editStrokeDashScale({ range: [[], [4, 2]] })",
       "errors": [],
@@ -28196,10 +29299,15 @@
           "name": "spacing",
           "required": false,
           "type": "\"canvas\" | \"plot\" | undefined"
+        },
+        {
+          "name": "topLane",
+          "required": false,
+          "type": "FacetTopLaneMode | undefined"
         }
       ],
       "callPatterns": [
-        "editCompositionLayout({ columns?, gap?, align?, padding?, spacing? })"
+        "editCompositionLayout({ columns?, gap?, align?, padding?, spacing?, topLane? })"
       ],
       "snippet": "program.editCompositionLayout({ columns: 2 })",
       "errors": [],
@@ -28618,6 +29726,11 @@
           "name": "spacing",
           "required": false,
           "type": "\"canvas\" | \"plot\" | undefined"
+        },
+        {
+          "name": "topLane",
+          "required": false,
+          "type": "FacetTopLaneMode | undefined"
         }
       ],
       "callPatterns": [
@@ -28755,6 +29868,11 @@
           "name": "spacing",
           "required": false,
           "type": "\"canvas\" | \"plot\" | undefined"
+        },
+        {
+          "name": "topLane",
+          "required": false,
+          "type": "FacetTopLaneMode | undefined"
         }
       ],
       "callPatterns": [
@@ -28896,6 +30014,11 @@
           "name": "spacing",
           "required": false,
           "type": "\"canvas\" | \"plot\" | undefined"
+        },
+        {
+          "name": "topLane",
+          "required": false,
+          "type": "FacetTopLaneMode | undefined"
         }
       ],
       "callPatterns": [
@@ -28959,12 +30082,17 @@
       "options": [
         {
           "name": "program",
-          "required": true,
-          "type": "ChartProgram"
+          "required": false,
+          "type": "ChartProgram | undefined"
+        },
+        {
+          "name": "action",
+          "required": false,
+          "type": "{ method: string; options?: Readonly<Record<string, unknown>> | undefined; } | undefined"
         }
       ],
       "callPatterns": [
-        "editFacetSource({ program })"
+        "editFacetSource({ program?, action? })"
       ],
       "snippet": "program.editFacetSource({ program: chart().createCanvas({}).createData({ values: [] }) })",
       "errors": [],
@@ -29015,6 +30143,10 @@
         {
           "path": "offset",
           "unit": "logical-pixel"
+        },
+        {
+          "path": "rotation",
+          "unit": "angle"
         }
       ],
       "inference": [
@@ -29058,6 +30190,11 @@
           "type": "number | undefined"
         },
         {
+          "name": "anchor",
+          "required": false,
+          "type": "\"content\" | \"plot\" | undefined"
+        },
+        {
           "name": "role",
           "required": false,
           "type": "FacetHeaderRole | undefined"
@@ -29076,10 +30213,20 @@
           "name": "align",
           "required": false,
           "type": "FacetHeaderAlign | undefined"
+        },
+        {
+          "name": "rotation",
+          "required": false,
+          "type": "RotationInput | undefined"
+        },
+        {
+          "name": "title",
+          "required": false,
+          "type": "false | FacetHeaderTitleOptions | undefined"
         }
       ],
       "callPatterns": [
-        "editFacetHeaders({ fontSize?, fontFamily?, fontWeight?, color?, offset?, role?, labelMap?, side? })"
+        "editFacetHeaders({ fontSize?, fontFamily?, fontWeight?, color?, offset?, anchor?, role?, labelMap? })"
       ],
       "snippet": "program.editFacetHeaders({ fontSize: 1 })",
       "errors": [],
@@ -29348,6 +30495,11 @@
       },
       "options": [
         {
+          "name": "missing",
+          "required": false,
+          "type": "\"error\" | \"skip\" | undefined"
+        },
+        {
           "name": "id",
           "required": false,
           "type": "string | undefined"
@@ -29395,7 +30547,7 @@
         {
           "name": "point",
           "required": false,
-          "type": "(StrokeStyleDetails & { radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
+          "type": "(StrokeStyleDetails & { clip?: boolean | undefined; radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
         },
         {
           "name": "guides",
@@ -29404,7 +30556,7 @@
         }
       ],
       "callPatterns": [
-        "createScatterPlot({ x, y, id?, data?, coordinate?, color?, stroke?, size? })"
+        "createScatterPlot({ x, y, id?, data?, coordinate?, missing?, color?, stroke? })"
       ],
       "snippet": "program.createScatterPlot({ x: \"x\", y: \"y\" })",
       "errors": [],
@@ -29613,7 +30765,7 @@
         {
           "name": "point",
           "required": false,
-          "type": "(StrokeStyleDetails & { radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
+          "type": "(StrokeStyleDetails & { clip?: boolean | undefined; radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
         },
         {
           "name": "labels",
@@ -29750,12 +30902,12 @@
         {
           "name": "point",
           "required": false,
-          "type": "(StrokeStyleDetails & { radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
+          "type": "(StrokeStyleDetails & { clip?: boolean | undefined; radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
         },
         {
           "name": "stem",
           "required": false,
-          "type": "RuleStyleOptions | undefined"
+          "type": "(RuleStyleOptions & { clip?: boolean | undefined; }) | undefined"
         },
         {
           "name": "labels",
@@ -29892,17 +31044,17 @@
         {
           "name": "startPoint",
           "required": false,
-          "type": "(StrokeStyleDetails & { radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
+          "type": "(StrokeStyleDetails & { clip?: boolean | undefined; radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
         },
         {
           "name": "endPoint",
           "required": false,
-          "type": "(StrokeStyleDetails & { radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
+          "type": "(StrokeStyleDetails & { clip?: boolean | undefined; radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
         },
         {
           "name": "connector",
           "required": false,
-          "type": "RuleStyleOptions | undefined"
+          "type": "(RuleStyleOptions & { clip?: boolean | undefined; }) | undefined"
         },
         {
           "name": "labels",
@@ -30196,12 +31348,12 @@
         {
           "name": "color",
           "required": false,
-          "type": "LineCategoricalColorChannel | undefined"
+          "type": "LineCategoricalColorChannel<NonPointCategoricalColorScaleOptions> | undefined"
         },
         {
           "name": "line",
           "required": false,
-          "type": "(StrokeStyleDetails & { strokeWidth?: number | undefined; stroke?: string | undefined; opacity?: number | undefined; }) | undefined"
+          "type": "(StrokeStyleDetails & { clip?: boolean | undefined; strokeWidth?: number | undefined; stroke?: string | undefined; opacity?: number | undefined; }) | undefined"
         },
         {
           "name": "labels",
@@ -30333,7 +31485,7 @@
         {
           "name": "color",
           "required": false,
-          "type": "false | LineCategoricalColorChannel | undefined"
+          "type": "false | LineCategoricalColorChannel<NonPointCategoricalColorScaleOptions> | undefined"
         }
       ],
       "callPatterns": [
@@ -30450,7 +31602,7 @@
         {
           "name": "point",
           "required": false,
-          "type": "(StrokeStyleDetails & { radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
+          "type": "(StrokeStyleDetails & { clip?: boolean | undefined; radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
         },
         {
           "name": "errorBar",
@@ -30591,7 +31743,7 @@
         {
           "name": "point",
           "required": false,
-          "type": "(StrokeStyleDetails & { radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
+          "type": "(StrokeStyleDetails & { clip?: boolean | undefined; radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
         },
         {
           "name": "guides",
@@ -30776,7 +31928,7 @@
         {
           "name": "color",
           "required": false,
-          "type": "LineCategoricalColorChannel | undefined"
+          "type": "LineCategoricalColorChannel<CategoricalColorScaleOptions> | undefined"
         },
         {
           "name": "groupBy",
@@ -30786,12 +31938,12 @@
         {
           "name": "strokeDash",
           "required": false,
-          "type": "Omit<{ field: string; value?: undefined; target?: string | undefined; fieldType?: \"nominal\" | undefined; scale?: DashScaleOptions | undefined; }, \"target\"> | Omit<...> | undefined"
+          "type": "Omit<{ field: string; value?: undefined; target?: string | undefined; fieldType?: \"nominal\" | \"ordinal\" | undefined; scale?: DashScaleOptions | undefined; }, \"target\"> | Omit<...> | undefined"
         },
         {
           "name": "line",
           "required": false,
-          "type": "(StrokeStyleDetails & { strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; tension?: number | undefined; stroke?: string | undefined; opacity?: number | undefined; closed?: false | undefined; }) | undefined"
+          "type": "(StrokeStyleDetails & { clip?: boolean | undefined; missing?: \"break\" | \"error\" | undefined; strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; tension?: number | undefined; stroke?: string | undefined; opacity?: number | undefined; closed?: false | undefined; }) | undefined"
         },
         {
           "name": "guides",
@@ -30917,7 +32069,7 @@
         {
           "name": "point",
           "required": false,
-          "type": "(StrokeStyleDetails & { radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
+          "type": "Omit<StrokeStyleDetails & { clip?: boolean | undefined; radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }, \"clip\"> | undefined"
         },
         {
           "name": "guides",
@@ -30969,7 +32121,9 @@
       "wraps": [
         "createLineMark",
         "encodeTheta",
-        "encodeR"
+        "encodeR",
+        "encodeGroup",
+        "encodeColor"
       ],
       "editableVia": [],
       "supports": {
@@ -31028,7 +32182,7 @@
         {
           "name": "color",
           "required": false,
-          "type": "LineCategoricalColorChannel | undefined"
+          "type": "LineCategoricalColorChannel<NonPointCategoricalColorScaleOptions> | undefined"
         },
         {
           "name": "groupBy",
@@ -31038,12 +32192,12 @@
         {
           "name": "strokeDash",
           "required": false,
-          "type": "Omit<{ field: string; value?: undefined; target?: string | undefined; fieldType?: \"nominal\" | undefined; scale?: DashScaleOptions | undefined; }, \"target\"> | Omit<...> | undefined"
+          "type": "Omit<{ value: DashPattern | DashStyle; field?: undefined; target?: string | undefined; fieldType?: undefined; scale?: undefined; }, \"target\"> | (Omit<Omit<...>, \"scale\"> & { ...; }) | undefined"
         },
         {
           "name": "line",
           "required": false,
-          "type": "(Omit<StrokeStyleDetails & { strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; tension?: number | undefined; stroke?: string | undefined; opacity?: number | undefined; closed?: false | undefined; }, \"closed\" | ... 1 more ... | \"tension\"> & { ...; }) | undefined"
+          "type": "(Omit<StrokeStyleDetails & { clip?: boolean | undefined; missing?: \"break\" | \"error\" | undefined; strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; tension?: number | undefined; stroke?: string | undefined; opacity?: number | undefined; closed?: false | undefined; }, \"clip\" | ... 3 more ... |..."
         },
         {
           "name": "guides",
@@ -31093,9 +32247,12 @@
         "H0"
       ],
       "wraps": [
+        "createFoldData",
         "createPolarLinePlot"
       ],
-      "editableVia": [],
+      "editableVia": [
+        "editRadarPlot"
+      ],
       "supports": {
         "entryPoints": [
           "default"
@@ -31152,17 +32309,17 @@
         {
           "name": "color",
           "required": false,
-          "type": "LineCategoricalColorChannel | undefined"
+          "type": "LineCategoricalColorChannel<NonPointCategoricalColorScaleOptions> | undefined"
         },
         {
           "name": "strokeDash",
           "required": false,
-          "type": "Omit<{ field: string; value?: undefined; target?: string | undefined; fieldType?: \"nominal\" | undefined; scale?: DashScaleOptions | undefined; }, \"target\"> | Omit<...> | undefined"
+          "type": "Omit<{ value: DashPattern | DashStyle; field?: undefined; target?: string | undefined; fieldType?: undefined; scale?: undefined; }, \"target\"> | (Omit<Omit<...>, \"scale\"> & { ...; }) | undefined"
         },
         {
           "name": "line",
           "required": false,
-          "type": "(Omit<StrokeStyleDetails & { strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; tension?: number | undefined; stroke?: string | undefined; opacity?: number | undefined; closed?: false | undefined; }, \"closed\" | ... 1 more ... | \"tension\"> & { ...; }) | undefined"
+          "type": "(Omit<StrokeStyleDetails & { clip?: boolean | undefined; missing?: \"break\" | \"error\" | undefined; strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; tension?: number | undefined; stroke?: string | undefined; opacity?: number | undefined; closed?: false | undefined; }, \"clip\" | ... 3 more ... |..."
         },
         {
           "name": "guides",
@@ -31192,6 +32349,83 @@
       "snippet": "program.createRadarPlot({ category: \"category\", value: \"value\" })",
       "errors": [],
       "route": "/reference/actions/charts-data/#createradarplot"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editRadarPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "summary": "Edits radar plot, including settings for radar chart.",
+      "signature": "editRadarPlot(options: EditRadarPlotOptions): ChartProgram;",
+      "intents": [
+        "edit radar plot",
+        "edit",
+        "change",
+        "complete chart",
+        "chart facade",
+        "radar plot",
+        "radar chart"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing radar plot",
+          "canvas and dataset context"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H1",
+        "H3"
+      ],
+      "wraps": [
+        "createFoldData",
+        "editThetaScale"
+      ],
+      "editableVia": [
+        "editRadarPlot"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing radar plot",
+          "canvas and dataset context"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "wide",
+          "required": true,
+          "type": "{ fields: readonly [string, string, ...string[]]; }"
+        }
+      ],
+      "callPatterns": [
+        "editRadarPlot({ target?, wide: { fields } })"
+      ],
+      "snippet": "program.editRadarPlot({ target: \"radarPlot\", wide: { fields: [\"quality\", \"speed\"] } })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#editradarplot"
     },
     {
       "schemaVersion": 3,
@@ -31411,7 +32645,7 @@
         {
           "name": "point",
           "required": false,
-          "type": "(StrokeStyleDetails & { radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
+          "type": "(StrokeStyleDetails & { clip?: boolean | undefined; radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
         },
         {
           "name": "guides",
@@ -31541,7 +32775,7 @@
         {
           "name": "point",
           "required": false,
-          "type": "(StrokeStyleDetails & { radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
+          "type": "(StrokeStyleDetails & { clip?: boolean | undefined; radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
         },
         {
           "name": "packing",
@@ -31695,7 +32929,7 @@
         {
           "name": "color",
           "required": false,
-          "type": "LineCategoricalColorChannel | undefined"
+          "type": "false | RaincloudColorChannel | undefined"
         },
         {
           "name": "guides",
@@ -31826,7 +33060,7 @@
         {
           "name": "color",
           "required": false,
-          "type": "false | LineCategoricalColorChannel | undefined"
+          "type": "false | RaincloudColorChannel | undefined"
         }
       ],
       "callPatterns": [
@@ -31842,7 +33076,7 @@
       "name": "createBarPlot",
       "layer": "user-facing",
       "domain": "charts",
-      "summary": "Create categorical or temporal bars with quantitative measures; use color.layout for grouped or stacked partitions, not top-level stack/groupBy; width defaults to 0.72 of the slot and guides are inferred unless disabled.",
+      "summary": "Create categorical, temporal or binned bars with quantitative measures; bin rectangles fill their complete intervals, while category bars default to 0.72 of the slot.",
       "signature": "createBarPlot(options: CreateBarPlotOptions): ChartProgram;",
       "intents": [
         "create bar plot",
@@ -31919,6 +33153,11 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "missing",
+          "required": false,
+          "type": "\"error\" | \"skip\" | undefined"
+        },
         {
           "name": "id",
           "required": false,
@@ -32377,12 +33616,12 @@
         {
           "name": "color",
           "required": false,
-          "type": "LineCategoricalColorChannel | undefined"
+          "type": "LineCategoricalColorChannel<NonPointCategoricalColorScaleOptions> | undefined"
         },
         {
           "name": "strokeDash",
           "required": false,
-          "type": "Omit<{ field: string; value?: undefined; target?: string | undefined; fieldType?: \"nominal\" | undefined; scale?: DashScaleOptions | undefined; }, \"target\"> | Omit<...> | undefined"
+          "type": "Omit<{ value: DashPattern | DashStyle; field?: undefined; target?: string | undefined; fieldType?: undefined; scale?: undefined; }, \"target\"> | (Omit<Omit<...>, \"scale\"> & { ...; }) | undefined"
         },
         {
           "name": "line",
@@ -32477,6 +33716,11 @@
       },
       "options": [
         {
+          "name": "clip",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
           "name": "id",
           "required": false,
           "type": "string | undefined"
@@ -32553,7 +33797,7 @@
         }
       ],
       "callPatterns": [
-        "createRectMark({ id?, data?, missing?, fill?, opacity?, stroke?, strokeWidth?, lineCap? })"
+        "createRectMark({ id?, data?, clip?, missing?, fill?, opacity?, stroke?, strokeWidth? })"
       ],
       "snippet": "program.createRectMark({})",
       "errors": [],
@@ -32665,6 +33909,11 @@
           "name": "cornerRadiusBottomLeft",
           "required": false,
           "type": "number | undefined"
+        },
+        {
+          "name": "clip",
+          "required": false,
+          "type": "boolean | undefined"
         },
         {
           "name": "missing",
@@ -33280,7 +34529,7 @@
         {
           "name": "area",
           "required": false,
-          "type": "(StrokeStyleDetails & { fill?: FillPaint | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; }) | undefined"
+          "type": "(StrokeStyleDetails & { clip?: boolean | undefined; fill?: FillPaint | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; }) | undefined"
         },
         {
           "name": "guides",
@@ -33444,7 +34693,7 @@
         {
           "name": "area",
           "required": false,
-          "type": "(StrokeStyleDetails & { opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; }) | undefined"
+          "type": "(StrokeStyleDetails & { clip?: boolean | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; }) | undefined"
         },
         {
           "name": "guides",
@@ -33569,7 +34818,7 @@
         {
           "name": "area",
           "required": false,
-          "type": "(StrokeStyleDetails & { fill?: FillPaint | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; }) | undefined"
+          "type": "(StrokeStyleDetails & { clip?: boolean | undefined; fill?: FillPaint | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; }) | undefined"
         },
         {
           "name": "guides",

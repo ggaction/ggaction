@@ -1,12 +1,34 @@
 import { rejectUnknownProperties as rejectUnknownKeys } from "../core/validation.js";
 import { aggregateRows } from "./aggregate.js";
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
+import { scalarKey } from "./transformKeys.js";
 
 const STATISTIC_KEYS = Object.freeze(["op", "p"]);
 const SIMPLE_STATISTICS = new Set(["mean", "median", "min", "max"]);
 const POPULATIONS = new Set(["boundData", "visibleItems"]);
 const TRANSFORM_KEYS = Object.freeze(["type", "target"]);
 
+export function normalizeReferenceGroupBy(value) {
+  if (value === undefined) return undefined;
+  if (typeof value !== "string" || value.length === 0) {
+    throw new TypeError("Statistical reference groupBy must be a non-empty field name.");
+  }
+  return value;
+}
+
+export function partitionReferenceRows(rows, groupBy) {
+  if (groupBy === undefined) return [{ rows }];
+  const groups = new Map();
+  for (const [index, row] of rows.entries()) {
+    if (!isPlainObject(row) || !Object.hasOwn(row, groupBy)) {
+      throw new Error(`Statistical reference groupBy field "${groupBy}" is missing at item ${index}.`);
+    }
+    const group = row[groupBy], key = scalarKey(group, "Statistical reference groupBy");
+    if (!groups.has(key)) groups.set(key, { key, group, rows: [] });
+    groups.get(key).rows.push(row);
+  }
+  return [...groups.values()];
+}
 
 export function normalizeReferenceStatistic(value, label = "Reference statistic") {
   if (!isPlainObject(value)) {

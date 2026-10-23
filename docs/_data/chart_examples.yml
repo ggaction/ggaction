@@ -1458,6 +1458,22 @@
   tasks: appearance guide editing
   url: /api/legends/categorical/#independent-legend-appearance
 
+- id: legend-content-spacing
+  example: /examples/legend-content-spacing/
+  title: Equal gaps between different-sized legend rows
+  image: /assets/images/legend-content-spacing.png
+  alt: Three blue size samples have equal seven-pixel gaps and clear a separate title by twenty pixels
+  width: 640
+  height: 480
+  thumbnail: /assets/images/legend-content-spacing-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 480
+  caption: Painted sample heights of 18, 26 and 42 pixels have equal 7-pixel gaps; the title clears the body by 20 pixels.
+  summary: Set occupied row gaps separately from title padding and legacy center pitch.
+  actions: createLegend · editLegendLayout
+  tasks: appearance guide editing
+  url: /api/legends/#space-rows-by-content
+
 - id: legend-recipe-opacity
   example: /examples/legend-recipe-opacity/
   title: Opacity of a layered legend recipe
@@ -1505,3 +1521,125 @@
   actions: createSummaryData · createAreaPlot · createLineMark
   tasks: statistics dataflow uncertainty
   url: /api/data/summaries-and-shaping/#bootstrap-mean-confidence-intervals
+
+- id: facet-shared-top-lane
+  example: /examples/facet-shared-top-lane/
+  title: Share the existing facet top margin
+  image: /assets/images/facet-shared-top-lane.png
+  alt: Seven grouped bar panels retain their full height below a title and day headers in the existing top margin
+  width: 1016
+  height: 524
+  thumbnail: /assets/images/facet-shared-top-lane-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 330
+  caption: Seven 40 by 200 plots share one top margin for the parent title and panel headers.
+  summary: Keep fixed plot sizes while reusing existing top space for titles and facet headers.
+  actions: facet · editCompositionLayout · editFacetHeaders
+  tasks: composition layout
+  url: /api/composition/facets/#share-the-existing-top-margin
+
+- id: plot-guide-underlays
+  example: /examples/plot-guide-underlays/
+  title: Composite marks over guides
+  image: /assets/images/plot-guide-underlays.png
+  alt: Two rounded difference-blended bars use the gray axis and plot border as their backdrop
+  width: 480
+  height: 360
+  thumbnail: /assets/images/plot-guide-underlays-thumb.png
+  thumbnail_width: 480
+  thumbnail_height: 360
+  caption: The axis and border paint first, so opaque difference blending uses the existing guides as its backdrop.
+  summary: Move a complete Cartesian axis or plot border behind ordinary marks without changing geometry.
+  actions: createXAxis · editXAxis · editCanvas
+  tasks: composition appearance editing
+  url: /api/axes/complete/#composite-marks-over-guides
+
+- id: facet-header-rotation
+  example: /examples/facet-header-rotation/
+  title: Vertical region headers
+  image: /assets/images/facet-header-rotation.png
+  alt: Two line panels labeled North and South vertically along their left edge
+  width: 370
+  height: 390
+  thumbnail: /assets/images/facet-header-rotation-thumb.png
+  thumbnail_width: 370
+  thumbnail_height: 390
+  caption: Rotated panel names use existing margin space while both plots keep their dimensions.
+  summary: Put panel names beside their plots with an explicit header rotation.
+  actions: facet · editFacetHeaders · editCompositionLayout
+  tasks: composition comparison
+  url: /api/composition/facets/#rotate-panel-headers
+  home_group: essentials
+  home_order: 155
+
+- id: lookup-data
+  example: /examples/lookup-data/
+  title: Mean age by group
+  image: /assets/images/lookup-data.png
+  alt: Three bars showing mean age for groups First, Second and Third
+  width: 800
+  height: 560
+  thumbnail: /assets/images/lookup-data-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 448
+  caption: Names connect two separate tables before the chart calculates each group mean.
+  summary: Copy typed reference values while keeping both original tables unchanged.
+  actions: createData · createLookupData · createBarPlot
+  tasks: data comparison
+  url: /api/data/summaries-and-shaping/#named-table-lookup
+  home_group: essentials
+  home_order: 156
+
+- id: facet-field-titles
+  example: /examples/facet-field-titles/
+  title: One field title across two panels
+  image: /assets/images/facet-field-titles.png
+  alt: Two line panels with vertical North and South names and one shared Region title
+  width: 430
+  height: 390
+  thumbnail: /assets/images/facet-field-titles-thumb.png
+  thumbnail_width: 430
+  thumbnail_height: 390
+  caption: A single field title spans the occupied plots while each panel keeps its own name.
+  summary: Add an independent field title to existing facet headers.
+  actions: facet · editFacetHeaders · editCompositionLayout
+  tasks: composition comparison
+  url: /api/composition/facets/#name-the-complete-facet-field
+  home_group: essentials
+  home_order: 157
+
+- id: linear-nice-count
+  example: /examples/linear-nice-count/
+  title: Count-based automatic linear domain
+  image: /assets/images/linear-nice-count.png
+  alt: A line reaching 108 within an automatically rounded 0 through 110 Y domain
+  width: 520
+  height: 340
+  thumbnail: /assets/images/linear-nice-count-thumb.png
+  thumbnail_width: 520
+  thumbnail_height: 340
+  caption: Count density 10 rounds the automatic Y domain to 0–110 while preserving all three data points.
+  summary: Choose automatic linear domain rounding without hard-coding a range for every panel.
+  actions: createLinePlot · editYScale · editFacetScales
+  tasks: scales comparison
+  url: /api/scales/#count-based-linear-domain-rounding
+  home_group: essentials
+  home_order: 158
+
+- id: linear-nearest-ticks
+  example: /examples/linear-nearest-ticks/
+  title: Nearest-step automatic linear ticks
+  image: /assets/images/linear-nearest-ticks.png
+  alt: A blue line on a Y axis labeled 0 through 140 at intervals of 20
+  width: 520
+  height: 340
+  thumbnail: /assets/images/linear-nearest-ticks-thumb.png
+  thumbnail_width: 520
+  thumbnail_height: 340
+  caption: Nearest-step density 5 selects 20-unit ticks while preserving the complete scale and data.
+  summary: Use one automatic tick policy across independently scaled facet panels.
+  actions: createLinePlot · createYAxis · editYAxisTicksAndLabels
+  tasks: axes comparison
+  url: /api/axes/#choose-nearest-step-linear-ticks
+  home_group: essentials
+  home_order: 159

@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import { resolveFacetLayout } from "../../../../src/layout/facets.js";
+import { getErrorDetails } from "../../../../src/diagnostics.js";
 
 const children = ["a", "b", "c"].map((id, index) => ({
   id,
@@ -191,4 +192,26 @@ test("validates exact plot spacing bounds and retains a single outer margin allo
     assert.throws(() => resolveFacetLayout({ ...options, plots: invalid }), /Plot spacing requires/);
   }
   assert.throws(() => resolveFacetLayout({ ...options, spacing: "wrong" }), /Unknown facet spacing/);
+});
+
+test("reports the measured header gap across both facet directions without changing the requested layout", () => {
+  const cells = ["a", "b", "c", "d"].map(id => ({ id, width: 200, height: 140 }));
+  const options = { children: cells, columns: 2, spacing: "plot", gap: 4,
+    plots: cells.map(child => ({ id: child.id, x: 80, y: 20, width: 100, height: 100 })),
+    headerLayout: { cellRows: { top: [8, 14], bottom: [6, 0] },
+      cellColumns: { left: [5, 16], right: [12, 0] } } };
+  const original = structuredClone(options);
+  assert.throws(() => resolveFacetLayout(options), error => {
+    const details = getErrorDetails(error);
+    assert.equal(details.code, "invalid-value");
+    assert.equal(details.optionPath, "gap");
+    assert.equal(details.actual, 4);
+    assert.equal(details.limit, 28);
+    return true;
+  });
+  assert.throws(() => resolveFacetLayout({ ...options, gap: 27 }), /gap is too small/);
+  const layout = resolveFacetLayout({ ...options, gap: 28 });
+  assert.equal(layout.children[1].x - layout.children[0].x, 128);
+  assert.equal(layout.children[2].y - layout.children[0].y, 128);
+  assert.deepEqual(options, original);
 });

@@ -78,6 +78,16 @@ order; provide more margin space or different offsets. Canvas and scale updates
 apply the same check after dependent guides have moved. A failed action leaves
 the earlier program unchanged.
 
+When you omit an external legend's `offset`, its existing family gap follows
+any axis on the same edge. This applies to all four edges, including named
+right Y axes: the whole side legend sits beyond the occupied axis labels,
+title, ticks and strokes, while its top remains aligned to the plot top.
+The categorical default gap remains 8 pixels; standalone continuous and size
+families retain 30 pixels. Borders participate in the occupied gap. Axis
+edits, removal and Canvas/data/scale replay recalculate the same placement.
+An explicit `offset`, including `0` or `8`, remains measured from the plot;
+free anchors, plot corners and `legacy-bottom` keep their own rules.
+
 A single top/bottom edge legend keeps its actual outer bounds aligned to the
 plot after content, border, style or Canvas changes. Its `offset` includes the
 border stroke, so adding a border preserves the requested plot-to-legend gap.
@@ -153,7 +163,7 @@ const restored = edited.editLegendTitle({ title: false })
   .editLegendTitle({ title: "auto" });
 ```
 
-For continuous size, opacity, stroke-width, and color-symbol legends, `values` replaces the
+For continuous size, opacity, stroke-width, color-symbol and color/stroke-gradient legends, `values` replaces the
 automatic samples with exact values:
 
 <!-- snippet-context:start -->
@@ -180,7 +190,8 @@ sorted or clamped. Layout, title, style, theme, and Canvas edits preserve the
 array. A later scale, data, encoding, or facet change that would put a stored
 sample outside its effective domain fails without changing the earlier
 program. On a combined or multi-block legend, use `editLegendBlock()` to name
-the sampled channel whose values should change.
+a sampled channel. For gradient ticks, select the existing block with
+`editLegend({ channel: "color", values: [10, 50, 100] })` instead.
 
 Size samples retain the encoded area mapping. For continuous size scales, count
 must be an integer from 2 through 10,000 when automatic sampling is active.
@@ -380,7 +391,7 @@ program
 
 | Action | Accepted component options |
 | --- | --- |
-| `editLegendLayout` | `position`, `blockLayout`, `at`, `layout`, `align`, `direction`, `columns`, `offset`, `titlePosition`, `itemGap` |
+| `editLegendLayout` | `position`, `blockLayout`, `at`, `layout`, `align`, `direction`, `columns`, `offset`, `titlePosition`, `itemGap`, `rowPadding`, `titlePadding` |
 | `editLegendLabels` | `offset`, `color`, `fontSize`, `fontFamily`, `fontWeight`, continuous `format` |
 | `editLegendTitle` | `title`, `color`, `fontSize`, `fontFamily`, `fontWeight` |
 | `editLegendSymbols` | `symbol`, `count`, `gradient` |
@@ -391,6 +402,17 @@ legend is inferable. The actions use `editLegend` internally, so title modes,
 partial nested merges, legend-kind compatibility, layout errors, and
 rematerialization behavior remain identical. At least one component option is
 required.
+
+`rowPadding` and `titlePadding` accept non-negative finite numbers or `"auto"`
+in both whole and focused layout edits. An omitted or `undefined` field preserves
+its policy; `"auto"` removes it and restores the original layout. Use `channel`
+to edit one block. `editLegendTitle` changes title text/style only, and
+`editLegendBlock({gap})` keeps its original uniform-gap contract. Explicit
+content spacing takes precedence over the corresponding old gap while active.
+When combining blocks with conflicting spacing policies, choose the resulting
+policy explicitly in the same whole edit. A split that would leave row padding
+on a gradient requires an explicit `rowPadding: "auto"` reset. No layout edit
+enlarges the Canvas or drops items to make content fit.
 
 Legend label and title weights follow the shared
 [Canvas font-weight policy](../marks/text.md#font-weights).

@@ -268,8 +268,33 @@ function generatedField(name, storageType, transform, role, inputs = []) {
   };
 }
 
-export function deriveTransformSchema(inputSchema, transform, values, { sourceId, ownerId, sourceTransform } = {}) {
+export function datasetSchemaContext(source,transform,ownerId,resolveInput) {
+  const context={sourceId:source.id,ownerId,sourceTransform:source.transform?.[0]};
+  if(transform.type==="lookup"){
+    const input=resolveInput(transform.lookup.data);
+    if(input?.schema===undefined)throw new Error(`Lookup dataset "${transform.lookup.data}" requires schema.`);
+    assertFieldsAvailable(source.schema,[transform.field],{data:source.id,operation:"Lookup"});
+    assertFieldsAvailable(input.schema,[transform.lookup.key,...transform.lookup.fields],{data:input.id,operation:"Lookup"});
+    context.lookupSchema=input.schema;context.lookupSourceId=input.id;
+  }
+  return context;
+}
+
+export function deriveTransformSchema(inputSchema, transform, values, { sourceId, ownerId, sourceTransform,lookupSchema,lookupSourceId } = {}) {
   const input = validateDatasetSchema(inputSchema);
+  if(transform.type==="lookup"){
+    const right=validateDatasetSchema(lookupSchema),fields=input.fields.map(field=>({...field}));
+    for(let i=0;i<transform.lookup.fields.length;i++){
+      const field=transform.lookup.fields[i],name=transform.lookup.as[i];
+      if(fields.some(f=>f.name===name))throw new Error(`Lookup output field "${name}" already exists in primary data.`);
+      const inherited=right.fields.find(f=>f.name===field);
+      const references=[{data:sourceId,field:transform.field},{data:lookupSourceId,field:transform.lookup.key},{data:lookupSourceId,field}];
+      fields.push({name,storageType:inherited?.storageType??"unknown",nullable:true,optional:false,lineage:{
+        inputs:[...new Map(references.map(r=>[JSON.stringify(r),r])).values()],owner:ownerId,role:`lookup:${field}`
+      }});
+    }
+    return cloneAndFreeze({version:1,completeness:input.completeness==="known"||fields.length>0?"known":"unknown",origin:"derived",fields});
+  }
   const definition = { ...transform, __sourceId: sourceId, __ownerId: ownerId };
   const retain = ["filter", "markFilter", "sort", "computed", "timeUnit", "window", "normalize", "stack", "impute", "complete"];
   let fields = retain.includes(transform.type) ? input.fields.map(field => ({ ...field })) : [];
@@ -354,6 +379,11 @@ export function deriveTransformSchema(inputSchema, transform, values, { sourceId
     for (const [role, name] of Object.entries(transform.as ?? {})) {
       push(generatedField(name, "number", definition, role, [transform.field]));
     }
+  } else if (transform.type === "flatten") {
+    fields = input.fields.map(field => ({ ...field }));
+    transform.fields.forEach((field, index) => {
+      push(generatedField(transform.as[index], "unknown", definition, `value:${field}`, [field]));
+    });
   } else if (transform.type === "fold") {
     fields = input.fields.filter(field => !transform.fields.includes(field.name)).map(field => ({ ...field }));
     push(generatedField(transform.as.key, "string", definition, "key", transform.fields));

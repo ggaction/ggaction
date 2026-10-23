@@ -356,5 +356,12 @@
       "file": "examples/hierarchical-authoring/program.js",
       "exported": "createHierarchicalAuthoring"
     }
+  },
+  "api/marks/line-area.md": {
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "gaps",
+    "contains": "const gaps =",
+    "prerequisites": "Import ggaction in an ES module; all observations and required setup are included in this program."
   }
 }

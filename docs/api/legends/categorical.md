@@ -15,6 +15,11 @@ quantitative point-size, continuous-color gradient, and field-opacity legends.
 It also infers interval swatches for quantize, quantile, and threshold point
 color scales.
 
+For a line legend that explains a categorical dash pattern, samples inherit the
+line’s fixed stroke color. Mapped color or stroke scales and explicit legend-block
+symbol overrides take precedence. Editing the line’s fixed color updates its
+existing samples; the sample recipe’s opacity remains independent of mark opacity.
+
 <!-- snippet-context:start -->
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
@@ -97,22 +102,29 @@ preserves its remaining shape legend.
 | `align` | `"left"`, `"center"`, or `"right"` | `"center"` |
 | `direction` | `"horizontal"` or `"vertical"` | `"vertical"` at either side; `"horizontal"` at top/bottom |
 | `columns` | positive integer | all items in one row at top |
-| `offset` | non-negative number | `8` |
+| `offset` | non-negative number | `8`; omission clears an occupied same-edge axis, explicit values stay plot-relative |
 | `titlePosition` | `"top"` or `"left"` | `"top"` |
 | `title` | non-empty string or `false` | encoded field name; `false` initially hides it |
 | `symbol` | `"auto"`, shorthand object, or layered recipe | inferred from mark |
 | `labels` | label style object | default sans-serif label style |
 | `titleStyle` | title style object | default sans-serif title style |
 | `itemGap` | positive number | `18` for vertical items; horizontal items keep `24` at top and `20` at bottom |
+| `rowPadding` | non-negative finite number | omitted; opt into occupied edge-to-edge vertical row spacing |
+| `titlePadding` | non-negative finite number | omitted; independently set title-to-body spacing |
 | `border` | boolean or border style object | `false` |
 | `count` | size-legend symbol count from `2` through `10,000` | `5` for point legends |
 | `gradient` | `{ length?, thickness? }` with positive values | `{ length: 120, thickness: 12 }` |
 
 Pass `position: "bottom"` explicitly to place the legend below the plot.
-Vertical items reserve the larger of `itemGap`, painted sample height, and
+Without `rowPadding`, vertical items reserve the larger of `itemGap`, painted sample height, and
 `labels.fontSize * 1.2`. This conservative line-height allowance retains the
 18-pixel pitch for ordinary 12-pixel labels and grows for larger labels; it is
 not a font-specific glyph-height guarantee. Horizontal grids are unchanged.
+Opt-in [content spacing](../legends.md#space-rows-by-content) uses each row's
+actual sample and logical text bounds. It takes precedence over the vertical
+pitch while retaining `itemGap` for column separation and later reset. Both
+spacing policies override the corresponding legacy `editLegendBlock({gap})`
+distance while active; resetting them restores that retained fallback.
 For a combined categorical-and-size legend, `title: false` hides the categorical
 title; the size block retains its independent title, matching `editLegend`.
 Bottom legends use the same item grid as top legends and can use left, center,

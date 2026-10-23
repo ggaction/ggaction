@@ -6,6 +6,7 @@ import {
 import {
   alignNumericStep,
   cleanNumericValue,
+  nearestNumericIncrement,
   niceNumericStep,
   normalizeNumericRange
 } from "./numeric.js";
@@ -36,12 +37,64 @@ function ticksForStep(start, end, step, low, high, scale) {
   return values;
 }
 
-export function niceTicks(domain, count) {
+export function validateTickRounding(rounding, optional = true) {
+  if ((!optional || rounding !== undefined) && !["ceiling", "nearest"].includes(rounding)) {
+    throw new TypeError('Tick rounding must be "ceiling" or "nearest".');
+  }
+}
+
+export function validateTickSelectionRounding(config, scaleType) {
+  validateTickRounding(config.rounding, !Object.hasOwn(config, "rounding"));
+  if (config.rounding !== undefined && (config.mode !== "count" || scaleType !== "linear")) {
+    throw new Error("Tick rounding requires an automatic linear Cartesian axis.");
+  }
+  if (config.rounding !== undefined) {
+    if (!Number.isInteger(config.count) || config.count <= 0) {
+      throw new RangeError("Tick rounding count must be a positive integer.");
+    }
+    validateGeneratedItemLimit(config.count, "Tick rounding count");
+  }
+}
+
+export function axisTickSelection(config) {
+  return config.mode === "values" ? { mode: "values", values: config.values } : {
+    mode: "count", count: config.count,
+    ...(config.rounding === "nearest" ? { rounding: "nearest" } : {})
+  };
+}
+
+function nearestTicks(low, high, count) {
+  let start = low, end = high, scale = 1;
+  let increment = nearestNumericIncrement(end - start, count);
+  if (increment === null) {
+    const normalized = normalizeNumericRange(low, high);
+    ({ start, end, scale } = normalized);
+    increment = nearestNumericIncrement(normalized.span, count);
+  }
+  if (increment === null) return cloneAndFreeze([low, high]);
+  const first = Math.ceil(increment < 0 ? start * -increment : start / increment);
+  const last = Math.floor(increment < 0 ? end * -increment : end / increment);
+  const length = last - first + 1;
+  if (!Number.isFinite(length) || length <= 0) return cloneAndFreeze([low, high]);
+  const size = Math.min(length, MAX_GENERATED_ITEMS), values = [];
+  for (let index = 0; index < size; index++) {
+    const offset = length === size ? index : Math.round(index * (length - 1) / (size - 1));
+    const at = first + offset;
+    const value = (increment < 0 ? at / -increment : at * increment) * scale;
+    if (Number.isFinite(value) && value >= low && value <= high &&
+        (values.length === 0 || value > values.at(-1))) values.push(value === 0 ? 0 : value);
+  }
+  return cloneAndFreeze(values.length > 0 ? values : [low, high]);
+}
+
+export function niceTicks(domain, count, rounding = "ceiling") {
+  validateTickRounding(rounding);
   if (!Number.isInteger(count) || count <= 0) throw new RangeError("Tick count must be a positive integer.");
   const effectiveCount = Math.min(count, MAX_GENERATED_ITEMS);
   const low = Math.min(...domain);
   const high = Math.max(...domain);
   if (low === high) return cloneAndFreeze([low]);
+  if (rounding === "nearest") return nearestTicks(low, high, effectiveCount);
   const directSpan = high - low;
   if (Number.isFinite(directSpan) && directSpan > 0) {
     const directStep = niceNumericStep(directSpan, effectiveCount);
@@ -253,4 +306,42 @@ export function formatTimeTicks(values, domain) {
     }
   }
   return cloneAndFreeze(values.map(value => String(value)));
+}
+
+
+// Fixed numeric display precision belongs to one settled axis, not its dataset.
+// Sorting a copied distinct list preserves the caller's tick and painter order.
+export function formatNumericTickValues(values) {
+  if (!Array.isArray(values) || !values.every(Number.isFinite)) {
+    throw new TypeError("Numeric tick formatting requires finite tick values.");
+  }
+  const ordered = [...new Set(values)].sort((a, b) => a - b);
+  if (ordered.length === 0) return [];
+  let step = Infinity;
+  for (let index = 1; index < ordered.length; index += 1) {
+    step = Math.min(step, ordered[index] - ordered[index - 1]);
+  }
+  let precision;
+  if (ordered.length === 1) {
+    const normalized = Number(ordered[0].toPrecision(12));
+    const [coefficient, exponent = "0"] = String(normalized).split("e");
+    precision = Math.max(0, (coefficient.split(".")[1]?.length ?? 0) - Number(exponent));
+  } else {
+    const normalizedStep = Number(step.toPrecision(12));
+    precision = Math.max(0, -Math.floor(Math.log10(normalizedStep)));
+  }
+  if (precision > 12) {
+    throw new RangeError("Numeric tick format supports at most 12 decimals.");
+  }
+  const fixed = (value, digits) => {
+    const label = value.toFixed(digits);
+    return Number(label) === 0 ? (0).toFixed(digits) : label.replace(/^-/, "−");
+  };
+  for (; precision <= 12; precision += 1) {
+    const labels = ordered.map(value => fixed(value, precision));
+    if (new Set(labels).size === labels.length) {
+      return values.map(value => fixed(value, precision));
+    }
+  }
+  throw new RangeError("Numeric tick format cannot distinguish values within 12 decimals.");
 }

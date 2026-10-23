@@ -1,7 +1,10 @@
+import { resolveGraphicClipBounds, resolveGraphicParentOffset } from "./grammar/schemas/graphicBounds.js";
+import { resolveFacetDefinition, resolveFacetGridDefinition } from "./grammar/facets/index.js";
+import { APPEARANCE_MARK_TYPES } from "./core/vocabulary.js";
 import { ChartProgram } from "./ChartProgram.js";
 import { BasicChartProgram } from "./BasicChartProgram.js";
 import { getWrappedActionMetadata } from "./core/action.js";
-import { cloneAndFreeze, isPlainObject } from "./core/immutable.js";
+import { cloneAndFreeze, isOwned, isPlainObject } from "./core/immutable.js";
 import { encodeValue } from "./persistence/codec.js";
 import {
   findDataset,
@@ -103,11 +106,12 @@ export function describeAction(program, { action, target, options = {} } = {}) {
         findings: [{ severity: "error", code: "incompatible-resource", reason: "target-mismatch", message: `Inspection target "${target.id}" conflicts with options.target "${options.target}".`, resource: resourceRef(target.kind, target.id, target.childPath), optionPath: "target" }]
       });
     }
-    if (action === "encodeShape" && (target.kind !== "mark" || targetResource.mark?.type !== "point")) {
+    const markTypes = APPEARANCE_MARK_TYPES[action];
+    if (markTypes && (target.kind !== "mark" || !markTypes.includes(targetResource.mark?.type))) {
       return cloneAndFreeze({
         version: 1, action, applicability: "unsupported", parameterDefinitions: [], requirements: [],
         checks: [{ name: "target", status: "not_applicable", evidencePaths: ["target"], findings: [] }],
-        findings: [{ severity: "info", code: "unsupported-combination", reason: "mark-type", message: "encodeShape supports Point marks.", resource: resourceRef(target.kind, target.id, target.childPath) }]
+        findings: [{ severity: "info", code: "unsupported-combination", reason: "mark-type", message: `${action} supports ${markTypes.join(", ")} marks.`, resource: resourceRef(target.kind, target.id, target.childPath) }]
       });
     }
   }
@@ -133,8 +137,17 @@ export function describeAction(program, { action, target, options = {} } = {}) {
   const missing = required.filter(key => options[key] === undefined);
   let fieldFinding = [];
   if (targetResource !== undefined && target.kind === "mark") {
+    const scoped = atChildPath(program, target.childPath);
+    // Plot editors address source roles, whereas encoding actions address the
+    // mark's materialized rows. Inspect the same data owner as the public call.
+    const owner = action.startsWith("edit") && action.endsWith("Plot")
+      ? Object.entries(scoped.markConfigs[target.id] ?? {}).find(([key]) =>
+          key.toLowerCase() === action.slice(4).toLowerCase())?.[1]
+      : undefined;
+    const sourceData = owner?.source === undefined ? targetResource.data
+      : options.data ?? owner.source;
     const schema = getDatasetSchema(program, {
-      data: targetResource.data,
+      data: sourceData,
       childPath: target.childPath
     }).schema;
     if (schema.completeness === "known") {
@@ -148,9 +161,18 @@ export function describeAction(program, { action, target, options = {} } = {}) {
           code: "missing-resource",
           reason: "field-unavailable",
           message: `Dataset does not contain field "${options[definition.path]}".`,
-          resource: resourceRef("data", targetResource.data, target.childPath),
+          resource: resourceRef("data", sourceData, target.childPath),
           optionPath: definition.path
         }));
+    }
+  }
+  if (unknown === undefined && missing.length === 0 &&
+      ((action === "facet" && options.field) || (action === "facetGrid" && options.rows && options.columns))) {
+    try {
+      (action === "facet" ? resolveFacetDefinition : resolveFacetGridDefinition)(program.semanticSpec, options);
+    } catch (error) {
+      fieldFinding.push({ severity: "error", code: "unsupported-combination", reason: "facet-partition",
+        message: error.message, optionPath: "data" });
     }
   }
   const finding = unknown !== undefined
@@ -186,6 +208,25 @@ function canonical(value) {
   return JSON.stringify(encodeValue(canonicalInput(value)));
 }
 
+const equalOwned = new WeakMap();
+function equalValue(a, b) {
+  if (Object.is(a, b)) return true;
+  if (a === null || b === null || typeof a !== "object" || typeof b !== "object") return false;
+  if (Array.isArray(a) !== Array.isArray(b)) return false;
+  if (!Array.isArray(a) && (!isPlainObject(a) || !isPlainObject(b))) return canonical(a) === canonical(b);
+  const cacheable = isOwned(a) && isOwned(b);
+  const cached = cacheable ? equalOwned.get(a)?.get(b) : undefined;
+  if (cached !== undefined) return cached;
+  const keys = Object.keys(a);
+  const equal = (!Array.isArray(a) || a.length === b.length) && keys.length === Object.keys(b).length &&
+    keys.every(key => Object.hasOwn(b, key) && equalValue(a[key], b[key]));
+  if (cacheable) {
+    if (!equalOwned.has(a)) equalOwned.set(a, new WeakMap());
+    equalOwned.get(a).set(b, equal);
+  }
+  return equal;
+}
+
 function resources(program, childPath = [], output = []) {
   for (const value of program.semanticSpec.datasets) output.push({ ref: resourceRef("data", value.id, childPath), value });
   for (const [orderIndex, value] of program.semanticSpec.layers.entries()) output.push({
@@ -195,7 +236,7 @@ function resources(program, childPath = [], output = []) {
   for (const value of program.semanticSpec.scales) output.push({ ref: resourceRef("scale", value.id, childPath), value: { semantic: value, resolved: program.resolvedScales[value.id] } });
   for (const value of program.semanticSpec.coordinates) output.push({ ref: resourceRef("coordinate", value.id, childPath), value });
   for (const [id, value] of Object.entries(program.semanticSpec.guides)) output.push({ ref: resourceRef("guide", id, childPath), value: { semantic: value, graphic: program.graphicSpec.objects[id], config: program.guideConfigs[id] } });
-  if (Object.keys(program.semanticSpec.title).length) output.push({ ref: resourceRef("guide", "title", childPath), value: { semantic: program.semanticSpec.title, config: program.guideConfigs.title } });
+  if (Object.keys(program.semanticSpec.title).length) output.push({ ref: resourceRef("guide", "title", childPath), value: { semantic: program.semanticSpec.title, config: program.titleConfig } });
   if (program.graphicSpec.objects.canvas !== undefined) output.push({
     ref: resourceRef("canvas", "canvas", childPath),
     value: program.graphicSpec.objects.canvas
@@ -213,9 +254,9 @@ function effect(kind) { return kind === "data" ? "data" : kind === "scale" ? "sc
 function changeEffect(a, b, kind) {
   if (kind !== "mark" || a === undefined || b === undefined) return effect(kind);
   if (a.value.orderIndex !== b.value.orderIndex) return "structure";
-  if (canonical(a.value.semantic?.encoding) !== canonical(b.value.semantic?.encoding) ||
+  if (!equalValue(a.value.semantic?.encoding, b.value.semantic?.encoding) ||
       a.value.semantic?.data !== b.value.semantic?.data) return "binding";
-  if (canonical(a.value.semantic) !== canonical(b.value.semantic)) return "structure";
+  if (!equalValue(a.value.semantic, b.value.semantic)) return "structure";
   return "style";
 }
 
@@ -228,10 +269,10 @@ export function comparePrograms(before, after, { target } = {}) {
   const keys = [...new Set([...left.keys(), ...right.keys()])].sort();
   let changes = keys.flatMap(key => {
     const a = left.get(key); const b = right.get(key); const item = a ?? b;
-    if (a !== undefined && b !== undefined && canonical(a.value) === canonical(b.value)) return [];
+    if (a !== undefined && b !== undefined && equalValue(a.value, b.value)) return [];
     const semanticRoles = item.ref.kind === "mark" && a !== undefined && b !== undefined
       ? [...new Set([...Object.keys(a.value.semantic?.encoding ?? {}), ...Object.keys(b.value.semantic?.encoding ?? {})])]
-        .filter(role => canonical(a.value.semantic?.encoding?.[role]) !== canonical(b.value.semantic?.encoding?.[role]))
+        .filter(role => !equalValue(a.value.semantic?.encoding?.[role], b.value.semantic?.encoding?.[role]))
       : [];
     return [{ resource: item.ref, operation: a === undefined ? "add" : b === undefined ? "remove" : "modify", effect: changeEffect(a, b, item.ref.kind), roles: semanticRoles }];
   });
@@ -339,11 +380,15 @@ function inspectMark(program, layer, childPath) {
   const opacityZero = items.filter(item => item.properties.opacity === 0).length;
   const zeroSize = items.filter(item => { const b = itemBounds(item.properties, item.type ?? graphic?.type); return b !== null && b.width === 0 && b.height === 0; }).length;
   const bounds = items.map(item => itemBounds(item.properties, item.type ?? graphic?.type)).filter(Boolean);
-  const canvas = program.graphicSpec.objects.canvas?.properties;
-  const outside = Number.isFinite(canvas?.width) && Number.isFinite(canvas?.height)
-    ? bounds.filter(bound => bound.x + bound.width < 0 || bound.y + bound.height < 0 ||
-        bound.x > canvas.width || bound.y > canvas.height).length
-    : null;
+  const clip = graphic === undefined ? undefined : resolveGraphicClipBounds(program.graphicSpec, layer.id, {rootViewport: true});
+  const offset = graphic === undefined ? [0,0] : resolveGraphicParentOffset(program.graphicSpec, layer.id);
+  const outsideIndices = clip === undefined ? null : items.flatMap((item,index) => {
+    const b = itemBounds(item.properties, item.type ?? graphic.type);
+    return b !== null && (clip.right <= clip.left || clip.bottom <= clip.top ||
+      b.x + offset[0] + b.width < clip.left || b.y + offset[1] + b.height < clip.top ||
+      b.x + offset[0] > clip.right || b.y + offset[1] > clip.bottom) ? [index] : [];
+  });
+  const outside = outsideIndices?.length ?? null;
   const union = bounds.length === 0 ? null : {
     x: Math.min(...bounds.map(item => item.x)), y: Math.min(...bounds.map(item => item.y)),
     width: Math.max(...bounds.map(item => item.x + item.width)) - Math.min(...bounds.map(item => item.x)),
@@ -358,7 +403,7 @@ function inspectMark(program, layer, childPath) {
     visibleCandidates: geometrySupported ? Math.max(0, items.length - new Set([
       ...items.map((item, index) => item.properties.opacity === 0 ? index : -1),
       ...items.map((item, index) => { const b = itemBounds(item.properties, item.type ?? graphic?.type); return b !== null && b.width === 0 && b.height === 0 ? index : -1; }),
-      ...(outside === null ? [] : items.map((item, index) => { const b = itemBounds(item.properties, item.type ?? graphic?.type); return b !== null && (b.x + b.width < 0 || b.y + b.height < 0 || b.x > canvas.width || b.y > canvas.height) ? index : -1; }))
+      ...(outsideIndices ?? [])
     ].filter(index => index >= 0)).size) : null,
     flags: [
       { reason: "opacity-zero", count: opacityZero },
@@ -370,7 +415,7 @@ function inspectMark(program, layer, childPath) {
     bounds: union,
     sourceRefs: dataset === undefined ? [] : [resourceRef("data", dataset.id, childPath)],
     checks: [
-      { name: "concrete-structure", status: graphic === undefined ? "failed" : logicalSupported ? "passed" : "not_applicable", evidencePaths: [layer.id], findings: [] },
+      { name: "concrete-structure", status: graphic === undefined && !program.compositionSpec?.facet ? "failed" : logicalSupported ? "passed" : "not_applicable", evidencePaths: [layer.id], findings: [] },
       { name: "pixel-visibility", status: "not_run", evidencePaths: [], findings: [] }
     ]
   };

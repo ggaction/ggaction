@@ -10,6 +10,9 @@ import { createBlendProgram } from "./bar-compositing/program.js";
 
 import {createCombinedLegendsProgram} from './combined-legends/program.js';
 import {createLegendAppearanceProgram} from "./legend-appearance/program.js";
+import {createLegendContentSpacingProgram} from "./legend-content-spacing/program.js";
+import {createPlotUnderlayProgram} from "./plot-guide-underlays/program.js";
+import {createFacetSharedTopLaneProgram} from "./facet-shared-top-lane/program.js";
 import {createGradientBlockProgram} from "./legend-layout/program.js";
 import {createRecipeOpacityProgram} from "./legend-recipe-opacity/program.js";
 import {createSymbolWindowProgram} from "./symbol-window/program.js";
@@ -118,6 +121,11 @@ import { createCrossFeatureDashboard } from
 import { createProgramCompositionExample } from
   "./program-composition/program.js";
 import { createFacetGridExample } from "./facet-grid/program.js";
+import { createLookupExample } from "./lookup-data/program.js";
+import { createFacetFieldTitles } from "./facet-field-titles/program.js";
+import { createLinearNiceCount } from "./linear-nice-count/program.js";
+import { createLinearNearestTicks } from "./linear-nearest-ticks/program.js";
+import { createFacetHeaderRotation } from "./facet-header-rotation/program.js";
 import { createRepeatChartsExample } from "./repeat-charts/program.js";
 import {
   createGroupedMaximumPointHighlight,
@@ -245,6 +253,12 @@ export const PUBLIC_CHARTS = Object.freeze([
     browser:{path:"legend-recipe-opacity/",canvas:"#chart",state:{global:"__ggactionExample",expected:{id:"legend-recipe-opacity",width:480,height:270}}}}),
   example({id:"legend-appearance",data:{},width:400,height:240,docsGroup:"tutorials",createProgram:createLegendAppearanceProgram,
     browser:{path:"legend-appearance/",canvas:"#chart",state:{global:"__ggactionExample",expected:{id:"legend-appearance",width:400,height:240}}}}),
+  example({id:"legend-content-spacing",data:{},width:320,height:240,docsGroup:"tutorials",createProgram:createLegendContentSpacingProgram,
+    browser:{path:"legend-content-spacing/",canvas:"#chart",state:{global:"__ggactionExample",expected:{id:"legend-content-spacing",width:320,height:240}}}}),
+  example({id:"plot-guide-underlays",data:{},width:240,height:180,docsGroup:"tutorials",createProgram:createPlotUnderlayProgram,
+    browser:{path:"plot-guide-underlays/",canvas:"#chart",state:{global:"__ggactionExample",expected:{id:"plot-guide-underlays",width:240,height:180}}}}),
+  example({id:"facet-shared-top-lane",data:{},width:508,height:262,docsGroup:"tutorials",createProgram:createFacetSharedTopLaneProgram,
+    browser:{path:"facet-shared-top-lane/",canvas:"#chart",state:{global:"__ggactionExample",expected:{id:"facet-shared-top-lane",width:508,height:262}}}}),
   example({id:"symbol-window",data:{},width:400,height:200,docsGroup:"tutorials",createProgram:createSymbolWindowProgram,
     browser:{path:"symbol-window/",canvas:"#chart",state:{global:"__ggactionExample",expected:{id:"symbol-window",width:400,height:200}}}}),
   example({
@@ -431,6 +445,35 @@ export const PUBLIC_CHARTS = Object.freeze([
     createProgram: () => createFacetGridExample(),
     docsGroup: "charts",
     browser: { path: "facet-grid/", canvas: "#chart" }
+  }),
+  example({
+    id: "lookup-data", data: {}, width: 400, height: 280,
+    createProgram: () => createLookupExample(), docsGroup: "charts",
+    browser: { path: "lookup-data/", canvas: "#chart" }
+  }),
+  example({
+    id: "linear-nice-count", data: {}, width: 260, height: 170,
+    createProgram: () => createLinearNiceCount(), docsGroup: "charts",
+    browser: { path: "linear-nice-count/", canvas: "#chart" }
+  }),
+  example({
+    id: "linear-nearest-ticks", data: {}, width: 260, height: 170,
+    createProgram: () => createLinearNearestTicks(), docsGroup: "charts",
+    browser: { path: "linear-nearest-ticks/", canvas: "#chart" }
+  }),
+  example({
+    id: "facet-field-titles", data: {}, width: 215, height: 195,
+    createProgram: () => createFacetFieldTitles(), docsGroup: "charts",
+    browser: { path: "facet-field-titles/", canvas: "#chart" }
+  }),
+  example({
+    id: "facet-header-rotation",
+    data: {},
+    width: 185,
+    height: 195,
+    createProgram: () => createFacetHeaderRotation(),
+    docsGroup: "charts",
+    browser: { path: "facet-header-rotation/", canvas: "#chart" }
   }),
   example({
     id: "repeat-charts",

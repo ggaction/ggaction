@@ -43,6 +43,12 @@ it is inferred only when unique. Child legend styles are independent. Use `"shar
 to promote or infer the template legend with its existing behavior, and `false` for
 no parent shared guide. Child dimensions and margins stay fixed.
 
+Automatic `"shared"` inference keeps continuous or discretized color and stroke
+in separate native legend blocks, each using its own scale. Compatible ordinal
+channels keep their combined categorical symbols. A mark with numeric color can
+also retain an ordinal shape companion. Existing child legend owners keep
+their configured styles when promoted.
+
 Existing legend editors, channel/block selectors and removal work on facet, grid and
 repeat parents. A missing parent legend can be declared with
 `editFacetGuides({ legend: { position: "top-left" } })`. Removing the final block keeps
@@ -68,6 +74,53 @@ color and size encode the same quantitative field with matching domain endpoints
 The two channels select one combined block. Both scale bindings, samples and
 `clipHeight` survive saving, loading and layout edits; removing that block leaves
 other parent legend blocks intact.
+
+## Rotate panel headers
+
+{% include chart-example.html id="facet-header-rotation" %}
+
+Put a region name beside its panel with the existing header editor:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```js
+program.editFacetHeaders({
+  role: "column",
+  side: "left",
+  rotation: { value: -90, unit: "degrees" }
+});
+```
+
+This is a fragment for an existing facet program. A one-field facet uses the
+`column` header role for each panel, including panels arranged in one column.
+Grid facets also provide a `row` role. The [complete example](https://github.com/ggaction/ggaction/tree/{{ site.data.provenance.exampleSourceRef }}/examples/facet-header-rotation)
+declares the axes and grid before arranging the two region panels.
+
+The same `rotation` option is available in common `headers` and in
+`headers.row` or `headers.column` during `facet`, `facetGrid` and `repeatCharts`.
+A number means radians; the structured form makes the unit explicit. Omission
+preserves the current choice, and `0` restores the unrotated layout.
+
+For role headers, `offset` measures the outward gap to the rotated text block;
+`align` positions that block along the plot edge. The layout reserves its rotated
+width or height. With plot spacing, an outer rotated header uses existing child
+margin space before reserving more. Child plots keep their sizes. Text that
+crosses the Canvas, another header or a retained guide still fails clearly.
+Legacy headers inside child canvases retain their existing anchor when rotated;
+increase their margin or offset when the rotated text needs more room.
+
+For an existing facet with plot spacing, the fragment
+`program.editFacetHeaders({ anchor: "content" })` moves each header outward when its
+marks extend beyond the plot edge. Alignment along the edge still follows the plot.
+This uses concrete mark geometry, including strokes and clipping, regardless of
+opacity; axes, legends and titles are excluded. The same option works in initial
+`headers`, including row and column overrides. Field titles keep their plot anchor.
+Omission or `anchor: "plot"` preserves the existing placement. Content anchoring
+requires `spacing: "plot"` and sufficient space; it never changes child plot sizes.
 
 ## Repeat the current chart by a field
 
@@ -118,15 +171,31 @@ a positive value wraps cells row-major. A facet uses the shared 10,000 generated
 and source-row count multiplied by child count must not exceed the shared
 10,000,000-unit work budget.
 
+To facet on a key created by `createFoldData`, pass its materialized dataset ID
+explicitly as `data`. Every repeated layer must depend on that fold snapshot.
+The original wide rows, fold definition and complete folded table remain intact;
+each child filters the folded table, then replays only downstream transforms.
+Omitting `data` keeps the usual row-preserving inference. Other statistical
+transforms do not become valid partition anchors. `facetGrid` accepts the same
+explicit fold boundary. Changing a fold definition creates a new snapshot;
+select that snapshot explicitly when creating a new composition.
+
+Explicit tick, label, and grid values are intersected with each cell domain; shared scales restore the source selection.
+
+Final-item `filterMarks` recipes are also evaluated within each partition, after
+the target mark has been rebound to that partition. Empty matches preserve
+shared-scale panels, and `editFacetSource` can add, replace, or remove the filter.
+
 | Option | Default | Effect |
 | --- | --- | --- |
 | `id` | `"facet"` | Names the parent and deterministic child namespaces |
-| `field` | required | Direct-source field whose values define cells |
-| `data` | unique common ancestor | Selects the row-preserving partition dataset explicitly |
+| `field` | required | Field in the selected partition dataset whose values define cells |
+| `data` | unique common ancestor | Selects a common row-preserving ancestor, or an explicit materialized fold snapshot shared by every layer |
 | `values` | source first-appearance order | Selects and orders a non-empty set of observed scalar values |
 | `columns` | number of values | Sets the grid column count |
 | `gap` | `16` | Sets horizontal and vertical cell spacing |
 | `spacing` | `"canvas"` | Measures gaps between child canvases or, with `"plot"`, inner plot tracks |
+| `topLane` | `"stacked"` | With plot spacing, `"shared"` places parent title and top headers in the existing top margin |
 | `align` | `"center"` | Aligns unequal cells inside grid tracks |
 | `padding` | `0` on every side | Adds scalar or four-side parent padding |
 | `scales` | every used role `"shared"` | Sets `"shared"` or `"independent"` per `x`, `y`, `xOffset`, `yOffset`, `theta`, public `r`, `color`, `stroke`, `size`, `shape`, `opacity`, `strokeDash`, or all `parallelDimensions` |
@@ -432,3 +501,91 @@ otherwise the action reports a collision. `guides: { axes: "outer" }` removes
 interior axes, but remaining edge labels still need enough space. Increasing the
 gap or changing guide/header settings resolves those collisions without changing
 panel dimensions.
+
+## Share the existing top margin
+
+{% include chart-example.html id="facet-shared-top-lane" %}
+
+With plot spacing, `topLane: "shared"` lets the parent title and top headers use the
+existing child top margin and parent padding. The default `"stacked"` reserves their
+height separately. This complete program retains seven 40 × 200 plots inside a
+508 × 262 Canvas, including the upper Y-axis endpoint:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```js
+import { chart } from "ggaction";
+
+export const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+export const rows = days.flatMap(panel => [{panel,group:'a',value:13},{panel,group:'b',value:14}]);
+
+export function createFacetLaneUnit() {
+  return chart().createCanvas({width:136,height:262,margin:{left:40,right:56,top:43,bottom:19}})
+    .createData({values:rows})
+    .createBarPlot({x:'group',y:{field:'value',scale:{domain:[0,50],nice:false}},guides:false})
+    .encodeColor({field:'group',layout:'overlay'})
+    .createAxes({x:{title:false,ticksAndLabels:{labels:{fontSize:10,color:'black',offset:5.5}}},
+      y:{ticksAndLabels:{values:[0,10,20,30,40,50],labels:{fontSize:10,color:'black',alongOffset:.890625}},title:false}})
+    .createLegend({title:'group',titleStyle:{fontSize:10},labels:{fontSize:10}});
+}
+
+export function createFacetSharedTopLaneProgram() {
+  return createFacetLaneUnit().facet({field:'panel',values:days})
+    .editFacetGuides({axes:'outer',legend:'shared'})
+    .editCompositionLayout({spacing:'plot',gap:22})
+    .editFacetHeaders({fontSize:10,fontWeight:400,offset:10.609375})
+    .createTitle({text:'Grouped Bar Chart',align:'left',offset:-2.953125,
+      titleStyle:{fontSize:13,fontWeight:700,color:'black'}})
+    .editCompositionLayout({topLane:"shared"});
+}
+
+const program = createFacetSharedTopLaneProgram();
+```
+
+The same option works at facet, grid and repeat creation or in
+`editCompositionLayout`. Text must fit and clear the plots and retained labels;
+insufficient space reports a collision. Adjust explicit padding, title or header
+settings to make space. The action keeps child dimensions and font sizes.
+
+Omitting the option in an edit preserves it. Reset with
+`editCompositionLayout({ topLane: "stacked" })`. To switch back to Canvas spacing,
+reset both together: `editCompositionLayout({ spacing: "canvas", topLane: "stacked" })`.
+Concat compositions reject this option. Shared legend placement keeps its existing
+edge, offset and occupied bounds.
+
+
+## Name the complete facet field
+
+{% include chart-example.html id="facet-field-titles" %}
+
+Panel names identify individual values; a field title names what all panels share.
+Use the complete runnable example linked above.
+Create a title through `headers.column.title`, or edit a prepared facet with
+`editFacetHeaders({ role: "column", title: { text: "Region" } })`. Grids also support
+`role: "row"`. Repeats require an explicit title text, just like ordinary facets.
+
+A field title appears once across the union of occupied plots, including wrapped
+or sparse layouts. It is independent of `createTitle`. Its font inherits the role
+header unless overridden. Initial creation requires nonempty one-line `text`;
+later title objects merge their changes. `title: false` removes the role title.
+Common headers and `role: "all"` cannot own a title.
+
+Title options are `text`, `fontSize`, `fontFamily`, `fontWeight`, `color`, `offset`,
+`align`, `rotation`, and `alongOffset`. Alignment defaults to `"center"`, with
+`"start"` and `"end"` also available. Rotation defaults to horizontal on top/bottom,
+−90° on the left and +90° on the right; explicit rotations use the usual radians
+or `{ value, unit }` form. `alongOffset` shifts along that edge.
+
+The title's `offset` measures the distance to its nearest rotated ink edge from
+the plot union with plot spacing, or the occupied child Canvas union with Canvas
+spacing. The default clears same-side category headers and retained child margins
+by 8 pixels. An explicit offset preserves that requested distance. Existing outer
+margin and header space is reused once; only the remaining title lane is reserved.
+Titles must fit without overlapping panel headers, plots or retained chart text.
+A conflicting edit fails atomically. Omitting all title options preserves existing
+charts exactly, and source, layout, theme, font metrics and saved editable programs
+retain the field-title owner.

@@ -25,6 +25,14 @@ p.createLinePlot({x:'x',y:'y',guides:{axes:{x:{ticksAndLabels:{labels:{alongOffs
 p.editXAxis({labels:{flush:true,colorMap:[{value:20,color:'green'}]}});
 p.createXAxisLabels({color:'red',colorMap:[{value:'2',color:'green'}]});
 p.editYAxisLabels({colorMap:'auto'});
+p.createAxes({y:{title:{overlap:'allow'}}});
+p.createGuides({axes:{x:{title:{overlap:'allow'}}}});
+p.createYAxisTitle({overlap:'allow'});p.editXAxisTitle({overlap:'error'});
+p.editYAxis({title:{overlap:'error'}});
+// @ts-expect-error title collision policy is a closed two-string vocabulary
+p.createYAxisTitle({overlap:true});
+// @ts-expect-error Cartesian title policy does not apply to polar titles
+p.createThetaAxisTitle({overlap:'allow'});
 // @ts-expect-error color overrides require string colors
 p.editXAxisLabels({colorMap:[{value:1,color:2}]});
 // @ts-expect-error Cartesian label color maps do not apply to polar labels

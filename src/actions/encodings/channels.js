@@ -24,13 +24,14 @@ import {
 import { buildMaterializationPlan } from "../../materialization/planner.js";
 import { hasMaterializedLegend } from "../../materialization/legends.js";
 import { rebindPositionGuides } from "./shared.js";
-import { withoutPreviewLayerEncodings } from
+import { withoutPreviewLayerEncodings, withPreviewLayerEncodings } from
   "../primitives/semanticAction.js";
+import { isIndependentText, normalizeTextOffsetAssignment } from "../../grammar/text.js";
 
 export const ENCODING_CHANNEL_ORDER = Object.freeze([
   "x", "y", "x2", "y2", "theta", "r", "xOffset", "yOffset",
   "group", "pathOrder", "color", "stroke", "size", "shape",
-  "opacity", "strokeWidth", "strokeDash", "angle", "text"
+  "opacity", "strokeWidth", "strokeDash", "angle", "text", "dx", "dy"
 ]);
 
 const CHANNEL_METHODS = Object.freeze({
@@ -52,7 +53,9 @@ const CHANNEL_METHODS = Object.freeze({
   strokeWidth: "encodeStrokeWidth",
   strokeDash: "encodeStrokeDash",
   angle: "encodeAngle",
-  text: "encodeText"
+  text: "encodeText",
+  dx: "encodeDx",
+  dy: "encodeDy"
 });
 
 const FORBIDDEN_PAYLOAD_KEYS = Object.freeze(["target", "coordinate", "id"]);
@@ -340,6 +343,14 @@ function applyEncodingDraft(program, target, requests) {
     target,
     requests
   );
+  if (isIndependentText(findLayer(draft, target))) {
+    const offsets = requests.filter(request => ["dx", "dy"].includes(request.channel));
+    if (offsets.length) {
+      draft = withPreviewLayerEncodings(draft, { id: target, encodings: Object.fromEntries(
+        offsets.map(({ channel, payload }) => [channel, normalizeTextOffsetAssignment(payload, channel)])
+      ) });
+    }
+  }
   for (const { channel, payload } of requests) {
     const focusedAction = draft[CHANNEL_METHODS[channel]];
     draft = invokeWrappedActionImplementation(

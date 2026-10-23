@@ -1,3 +1,4 @@
+import { htmlElementIds } from "./html-element-ids.js";
 import { SEARCH_INDEX_MAX_BYTES } from "./generate-doc-search-index.js";
 import assert from "node:assert/strict";
 import { access, readFile, readdir, stat } from "node:fs/promises";
@@ -33,7 +34,7 @@ async function documentIds(file) {
   if (!idCache.has(file)) {
     const html = await readFile(file, "utf8");
     idCache.set(file, new Set(
-      [...html.matchAll(/\sid=["']([^"']+)["']/g)].map(match => match[1])
+      htmlElementIds(html)
     ));
   }
   return idCache.get(file);
@@ -86,7 +87,7 @@ for (const file of htmlFiles) {
   canonicalUrls.push(html.match(/<link rel="canonical" href="([^"]+)"/)?.[1]);
   assert.match(html, /<meta name="description" content="[^"]{45,}"/, `${file} description`);
   assert.match(html, /<meta property="og:image" content="https:\/\/ggaction\.github\.io\/ggaction\//, `${file} social image`);
-  const ids = [...html.matchAll(/\sid=["']([^"']+)["']/g)].map(match => match[1]);
+  const ids = htmlElementIds(html);
   assert.equal(new Set(ids).size, ids.length, `${file} contains duplicate ids`);
   const images = [...html.matchAll(/<img\b([^>]*)>/g)];
   assert.ok(images.filter(image => /fetchpriority="high"/.test(image[1])).length <= 1, `${file} prioritizes more than one figure`);

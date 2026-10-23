@@ -1,7 +1,10 @@
+import {resolveDatasetTransformInputs} from "./shared.js";
 import { action, closedAction } from "../../core/action.js";
 import { isPlainObject } from "../../core/immutable.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { validateKeys } from "../../core/validation.js";
+import {orderedDatasetDependents} from "../../grammar/datasetDependencies.js";
+import {rebindTransformDatasetInputs} from "../../core/datasetReferences.js";
 import {
   findTransformPolicy,
   normalizeDatasetTransformEdit,
@@ -33,6 +36,8 @@ const CREATOR_BY_TYPE = Object.freeze({
   density: "createDensityData",
   ecdf: "createECDFData",
   filter: "filterData",
+  flatten: "createFlattenData",
+  lookup:"createLookupData",
   fold: "createFoldData",
   impute: "createImputedData",
   interval: "createIntervalData",
@@ -53,6 +58,8 @@ const REVISION_ROLE = Object.freeze({
   density: "DensityData",
   ecdf: "ECDFData",
   filter: "FilteredData",
+  flatten: "FlattenData",
+  lookup:"LookupData",
   fold: "FoldData",
   impute: "ImputedData",
   interval: "IntervalData",
@@ -168,30 +175,9 @@ export function normalizeDerivedDependentPolicy(value) {
 }
 
 function downstreamDatasets(program, root) {
-  const order = new Map(
-    program.semanticSpec.datasets.map((dataset, index) => [dataset.id, index])
-  );
-  const bySource = new Map();
-  for (const dataset of program.semanticSpec.datasets) {
-    if (dataset.source === undefined) continue;
-    const children = bySource.get(dataset.source) ?? [];
-    children.push(dataset);
-    bySource.set(dataset.source, children);
-  }
-  for (const children of bySource.values()) {
-    children.sort((left, right) => order.get(left.id) - order.get(right.id));
-  }
-
-  const result = [];
-  const visiting = new Set();
-  const visited = new Set();
-  function visit(id) {
-    if (visiting.has(id)) {
-      throw new Error(`Derived dataset dependency graph contains a cycle at "${id}".`);
-    }
-    if (visited.has(id)) return;
-    visiting.add(id);
-    for (const child of bySource.get(id) ?? []) {
+  // Statistical reference data is an owned cache; its mark lifecycle replays it.
+  const result=orderedDatasetDependents(program.semanticSpec.datasets,root,{skip:dataset=>dataset.transform?.[0]?.type==="statisticalReference"});
+  for(const child of result){
       if (child.transform?.length !== 1) {
         throw new Error(
           `Derived dataset "${child.id}" requires one replayable transform.`
@@ -204,16 +190,7 @@ function downstreamDatasets(program, root) {
           `"${child.transform[0].type ?? "unknown"}".`
         );
       }
-      // Statistical reference data is an owned cache. Its mark lifecycle
-      // reconnects and recomputes it after the visible source mark is rebound.
-      if (child.transform[0].type === "statisticalReference") continue;
-      result.push(child);
-      visit(child.id);
-    }
-    visiting.delete(id);
-    visited.add(id);
   }
-  visit(root);
   return result;
 }
 
@@ -260,6 +237,7 @@ function buildRevisionPlan(
       `Derived dataset "${resolved.owner}" cannot use one of its dependents as source.`
     );
   }
+  if(definition?.type==="lookup"&&[resolved.current,...downstream.map(d=>d.id)].includes(definition.lookup.data))throw new Error(`Derived dataset "${resolved.owner}" cannot use its own result or dependent as lookup data.`);
   const reserved = new Set(resolved.revision === undefined ? [] : [resolved.revision]);
   const revisions = [];
   const replacements = new Map();
@@ -273,7 +251,7 @@ function buildRevisionPlan(
       old: dataset.id,
       id,
       source,
-      transform,
+      transform:rebindTransformDatasetInputs(transform,replacements),
       family: ownerRecord?.family,
       owner: ownerRecord?.owner
     };
@@ -422,7 +400,7 @@ export const editDerivedData = /* @__PURE__ */ closedAction(
       args.target,
       args.definition.type
     );
-    const definition = requestedDatasetTransform(args.definition);
+    const definition = resolveDatasetTransformInputs(this,requestedDatasetTransform(args.definition));
     findTransformPolicy(definition.type).validate(definition);
     const previous = requestedDatasetTransform(resolved.dataset.transform[0]);
     if (sameRequested(definition, previous)) return this;
@@ -476,6 +454,12 @@ export const editComputedData = /* @__PURE__ */ focusedEditor(
 );
 export const editFilteredData = /* @__PURE__ */ focusedEditor(
   "editFilteredData", "filter", ["field", "oneOf", "noneOf", "predicate", "range", "nulls"]
+);
+export const editFlattenData = /* @__PURE__ */ focusedEditor(
+  "editFlattenData", "flatten", ["fields", "as"]
+);
+export const editLookupData=/* @__PURE__ */focusedEditor(
+  "editLookupData","lookup",["field","lookup"]
 );
 export const editFoldData = /* @__PURE__ */ focusedEditor(
   "editFoldData", "fold", ["fields", "as"]
@@ -549,6 +533,8 @@ export const EDIT_DERIVED_DATA_ACTIONS = Object.freeze({
   editDerivedData,
   editComputedData,
   editFilteredData,
+  editFlattenData,
+  editLookupData,
   editFoldData,
   editSummaryData,
   editBinData,

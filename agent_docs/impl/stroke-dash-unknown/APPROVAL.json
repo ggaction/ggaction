@@ -1,0 +1,17 @@
+{
+  "status": "approved-under-direct-standing-user-instruction",
+  "instruction": "지금까지 모든 질문, 앞으로 할 모든 질문 승인함. 새로운 릴리즈는 200개 단위로 하자",
+  "scope": "Ongoing chart translation, pipeline and ggaction improvements; explicit categorical stroke-dash unknown fallback on Cartesian Line/Rule; reuse existing stored unknown and dash normalization, preserve default strict behavior, raw series identity, existing visual targets, complete atomicity and current other-channel policies.",
+  "proposal": "agent_docs/impl/stroke-dash-unknown/PROPOSAL.md",
+  "issue": "https://github.com/ggaction/ggaction/issues/241",
+  "newAction": false,
+  "newPersistedKey": false,
+  "newMarkOrVisualTarget": false,
+  "reapprovalRequested": false,
+  "libraryImplementationStarted": true,
+  "regularPublicReleaseAtCompletedFamilies": 1413,
+  "currentPublicFamilies": 1213,
+  "currentCompletedFamilies": 1281,
+  "publicPublicationAuthorizedAtThisDesignCheckpoint": false,
+  "implementationScopeUnchanged": true
+}

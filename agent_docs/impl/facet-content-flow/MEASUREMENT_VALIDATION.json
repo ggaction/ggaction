@@ -1,0 +1,145 @@
+{
+  "status": "verified-native-content-measurement-preparation",
+  "baseCommit": "2f615350c6fb2cbd260daea129ed9e43336c72ac",
+  "sourceBindings": [
+    {
+      "path": "src/materialization/facets.js",
+      "sha256": "8936bfb751dfc6b97efa2b2bf377c3a4c5b6dfbb9fab7d34b244e5a8f680f851"
+    },
+    {
+      "path": "src/materialization/facetGuides/placement.js",
+      "sha256": "042ae29af264849bd3b7febad5cde39d6da9fc40e257a1b114d2bb4d99c72a77"
+    },
+    {
+      "path": "test/unit/actions/composition/facet-content-measurement.test.js",
+      "sha256": "7011bc9e6fe2d98a514ad2af04a71f02313fc90f5a934adc597cf3654416a8b1"
+    }
+  ],
+  "tests": {
+    "normal": {
+      "pass": 5301,
+      "fail": 0,
+      "evidence": {
+        "path": ".artifacts/facet-content-measurement-normal-v4.log",
+        "sha256": "090004a2e0a8db50b18c5774172f0161c10df8120bb2434a831efe20900e2b67"
+      }
+    },
+    "focusedPureAndNative": {
+      "pass": 17,
+      "fail": 0,
+      "evidence": {
+        "path": ".artifacts/facet-content-measurement-focused-v6.log",
+        "sha256": "5847b676ff0d32c8a4e8b4032b47d2dee84f2d224afb3a2bd8b83b6ebe059051"
+      }
+    }
+  },
+  "package": {
+    "entries": 613,
+    "packedBytes": 871897,
+    "unpackedBytes": 4192293,
+    "proof": {
+      "path": ".artifacts/facet-content-measurement-package-v4.json",
+      "sha256": "f6ae56c3f1cf8ce351451cbaf796e42ef003663de4081ace5910433fa095c852"
+    },
+    "budgets": {
+      "entries": 613,
+      "packedBytes": 872000,
+      "unpackedBytes": 4193000
+    },
+    "archiveSha256": "122e1223b9b3093b7d8719e73f07b3a141c5461d6ffe22ca3fac9ecf80594cdc",
+    "scope": "Exact precommit archive; translation runtime remains unchanged."
+  },
+  "nativeReferenceDiagnostic": {
+    "proofSha256": "69c8d4142cc2107becfde794f0473a9993bf74d21ea64d89ae3328c0ab0b4321",
+    "sourceFamilies": 1,
+    "childHeaders": 3,
+    "separateFooterOwners": 3,
+    "nativeMeasuredOrigins": [
+      [
+        0,
+        0
+      ],
+      [
+        173,
+        0
+      ],
+      [
+        346,
+        0
+      ]
+    ],
+    "originalOrigins": [
+      [
+        0,
+        0
+      ],
+      [
+        199,
+        0
+      ],
+      [
+        393,
+        0
+      ]
+    ],
+    "originalNativeExact": false,
+    "discovery": "Previous private diagnostic measured internal y axes removed from actual parent; source needs per-channel axis ownership before content materialization can match it."
+  },
+  "performanceSmoke": {
+    "points": 20000,
+    "owners": 2,
+    "measurementMillisecondsObserved": 20.363125000000082,
+    "timingIsDiagnosticNotAGate": true
+  },
+  "retainedFailures": [
+    ".artifacts/facet-content-measurement-focused-v1.log",
+    ".artifacts/facet-content-measurement-focused-v2.log",
+    ".artifacts/facet-content-measurement-focused-v3.log",
+    ".artifacts/facet-content-measurement-normal-v1.log",
+    ".artifacts/facet-content-measurement-normal-v2.log",
+    ".artifacts/facet-content-measurement-package-v1.log"
+  ],
+  "sourceCoordinateArraysInjected": false,
+  "newPublicApi": false,
+  "publicContentMaterializationConnected": false,
+  "existingFacetAxisPolicyChanged": false,
+  "installedTranslationRuntimeChanged": false,
+  "successfulTranslationCountChanged": false,
+  "SchoolRequests": 0,
+  "SchoolTokens": 0,
+  "imagesInspected": false,
+  "issueClosed": false,
+  "publicRelease": false,
+  "remainingContract": "INTEGRATION_PLAN.md",
+  "installedConsumer": {
+    "status": "passed",
+    "evidence": {
+      "path": ".artifacts/facet-content-measurement-installed-consumer-v1.log",
+      "sha256": "99cb1c7aa395a22695d8399dac5403093deab3561556fd69fb5f8c27dbb0858b"
+    },
+    "browserBundles": {
+      "full": {
+        "specifier": "ggaction",
+        "chunks": 1,
+        "modules": 544,
+        "minifiedBytes": 1593304,
+        "gzipBytes": 433191
+      },
+      "basic": {
+        "specifier": "ggaction/basic",
+        "chunks": 1,
+        "modules": 327,
+        "minifiedBytes": 776117,
+        "gzipBytes": 219107
+      },
+      "svg": {
+        "specifier": "ggaction/svg",
+        "chunks": 1,
+        "modules": 19,
+        "minifiedBytes": 23548,
+        "gzipBytes": 7567
+      }
+    },
+    "checkCount": 69
+  }
+}

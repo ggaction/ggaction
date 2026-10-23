@@ -1,5 +1,5 @@
 import { selectCartesianAxis, axisTargetArgs, assertCartesianAxisSideAvailable } from "../../../selectors/axes.js";
-import { validateAxisPosition } from "./policy.js";
+import { validateAxisPosition, resolveAxisFrameConfig } from "./policy.js";
 import { withGuideLayoutValidation } from "../../../materialization/guides/layout.js";
 import { action } from "../../../core/action.js";
 import { isPlainObject } from "../../../core/immutable.js";
@@ -14,21 +14,21 @@ import {
 } from "./components.js";
 
 const OPTIONS = Object.freeze([
-  "target", "position", "line", "ticks", "labels", "ticksAndLabels", "title", "offset"
+  "target", "position", "line", "ticks", "labels", "ticksAndLabels", "title", "offset", "underlay"
 ]);
 const LINE_OPTIONS = Object.freeze(["color", "lineWidth"]);
 const TICK_OPTIONS = Object.freeze([
-  "count", "values", "length", "color", "lineWidth", "alongOffset", "strokeDash", "strokeDashMap"
+  "count", "values", "rounding", "length", "color", "lineWidth", "alongOffset", "strokeDash", "strokeDashMap"
 ]);
 const LABEL_OPTIONS = Object.freeze([
-  "count", "values", "offset", "format", "color", "fontSize",
+  "count", "values", "rounding", "offset", "format", "color", "fontSize",
   "fontFamily", "fontWeight", "rotation", "maxWidth", "wrap",
   "lineHeight", "overlap", "alongOffset", "labelMap", "flush", "colorMap", "align"
 ]);
-const GROUP_OPTIONS = Object.freeze(["count", "values", "ticks", "labels"]);
+const GROUP_OPTIONS = Object.freeze(["count", "values", "rounding", "ticks", "labels"]);
 const TITLE_OPTIONS = Object.freeze([
   "text", "at", "offset", "rotation", "color", "fontSize",
-  "fontFamily", "fontWeight", "alongOffset", "align", "baseline"
+  "fontFamily", "fontWeight", "alongOffset", "align", "baseline", "overlap"
 ]);
 
 function validateNested(args, key, options, operation, { allowFalse = false } = {}) {
@@ -43,6 +43,7 @@ function validateNested(args, key, options, operation, { allowFalse = false } = 
 
 function validateArgs(args, operation) {
   if (Object.hasOwn(args, "offset")) validateNonNegativeFinite(args.offset, "Axis frame offset");
+  resolveAxisFrameConfig(undefined, args);
   validateOptionObject(args, OPTIONS, operation, {
     allowEmpty: false,
     emptyMessage: `${operation} requires at least one axis change.`,
@@ -96,7 +97,7 @@ function buildPlan(program, channel, args, operation, axisId = channel) {
       plan.push({ kind: "remove", component });
     } else if (value !== undefined) {
       plan.push({ kind: "edit", operation: edit, args: { ...shared, ...value } });
-    } else if ((args.position !== undefined || Object.hasOwn(args, "offset")) && hasComponent(program, channel, component, axisId)) {
+    } else if ((args.position !== undefined || Object.hasOwn(args, "offset") || Object.hasOwn(args, "underlay")) && hasComponent(program, channel, component, axisId)) {
       plan.push({ kind: "edit", operation: edit, args: shared });
     }
   };
@@ -165,7 +166,9 @@ function makeEditAxis(channel) {
           coordinate: selected.owner.coordinate, position });
         source = source.editSemantic({ property: `guide.axis.${axisId}.position`, value: position });
       }
-      if (Object.hasOwn(args, "offset")) source = source._withGuideConfig(axisId, "frame", { offset: args.offset });
+      const frame = resolveAxisFrameConfig(source.guideConfigs.axis?.[axisId]?.frame, args);
+      source = frame === undefined ? source._withoutMaterializationConfig(["guides", "axis", axisId, "frame"])
+        : source._withGuideConfig(axisId, "frame", frame);
       const plan = buildPlan(source, channel, args, operation, axisId);
 
       // Run the complete proposal against an immutable speculative branch so a

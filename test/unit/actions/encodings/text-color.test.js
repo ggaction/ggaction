@@ -30,7 +30,7 @@ test("attached labels explicitly inherit point stroke and follow source scale ed
 test("text color conflicts and unsupported inheritance fail explicitly",()=>{
  assert.throws(()=>text().editTextMark({inheritColor:"fill"}),/source-owned/);
  assert.throws(()=>text().editTextMark({inheritColor:"invalid"}),/source-owned|inheritColor/);
- assert.throws(()=>text().editTextMark({fill:"black"}).encodeColor({field:"g"}),/constant appearance/);
+ assert.equal(text().editTextMark({fill:"black"}).encodeColor({field:"g"}).semanticSpec.layers[0].encoding.color.field,"g");
  assert.throws(()=>text().encodeColor({field:"g"}).editTextMark({fill:"black"}),/conflicts/);
  assert.throws(()=>text().encodeColor({field:"g",layout:"stack"}),/not supported/);
 });

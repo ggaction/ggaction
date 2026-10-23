@@ -52,7 +52,7 @@ export const createHorizonPlot = /* @__PURE__ */ action({
   const { id: requestedId, data: requestedData, coordinate, x: requestedX, y: requestedY,
     area: requestedArea, guides: requestedGuides, ...horizon } = omitUndefinedOptions(args);
   const { opacity, ...area } = omitUndefinedOptions(normalizeAppearance(requestedArea,
-    ["opacity", "stroke", "strokeWidth", "curve", ...STROKE_STYLE_PROPERTIES],
+    ["clip", "opacity", "stroke", "strokeWidth", "curve", ...STROKE_STYLE_PROPERTIES],
     `${OPERATION} area`));
   for (const [key, value] of Object.entries({ ...horizon, ...area })) {
     if (value === null) throw new TypeError(`${OPERATION} ${key} cannot be null.`);

@@ -3,6 +3,7 @@ import {
   resolveTextBounds
 } from "../../core/textMetrics.js";
 import { interpolateNumber } from "../numeric.js";
+import { graphicClipBounds, intersectClipBounds } from "./graphicClip.js";
 import { resolveStrokeDetails } from "../strokeStyle.js";
 import {
   findGraphic,
@@ -452,7 +453,7 @@ function canvasOffset(object, property) {
   return Number.isFinite(value) ? value : 0;
 }
 
-function ancestorOffset(graphicSpec, target) {
+export function resolveGraphicParentOffset(graphicSpec, target) {
   const offset = [0, 0];
   const visited = new Set();
   let current = target;
@@ -476,11 +477,15 @@ function intersectVisibleBounds(bounds,clip) {
   return result.right<=result.left||result.bottom<=result.top?undefined:result;
 }
 
-function clipAncestorBounds(graphicSpec,id,bounds) {
+function clipAncestorBounds(graphicSpec,id,bounds,includeOwnerClips) {
   let parent=findGraphicParent(graphicSpec,id);
   while(parent!==undefined){
+    if (includeOwnerClips && parent.object.clip !== undefined) {
+      bounds = intersectVisibleBounds(bounds, graphicClipBounds(parent.object.clip,
+        ...resolveGraphicParentOffset(graphicSpec, parent.id)));
+    }
     if(parent.object.type==="canvas"&&findGraphicParent(graphicSpec,parent.id)!==undefined){
-      const [x,y]=ancestorOffset(graphicSpec,parent.id),p=parent.object.properties;
+      const [x,y]=resolveGraphicParentOffset(graphicSpec,parent.id),p=parent.object.properties;
       bounds=intersectVisibleBounds(bounds,{left:x+(p.x??0),right:x+(p.x??0)+p.width,top:y+(p.y??0),bottom:y+(p.y??0)+p.height});
     }
     parent=findGraphicParent(graphicSpec,parent.id);
@@ -488,7 +493,27 @@ function clipAncestorBounds(graphicSpec,id,bounds) {
   return bounds;
 }
 
-function objectBounds(graphicSpec, id, object, ancestors, x, y, profile) {
+// Effective rectangular visibility, including the named owner itself. Inspection
+// can opt into the root viewport without changing geometry/selection properties.
+export function resolveGraphicClipBounds(graphicSpec, target, {rootViewport = false} = {}) {
+  const found = requireGraphic(graphicSpec, target);
+  let current = found.kind === "item" ? found.ownerId : found.id;
+  let clip;
+  while (current !== undefined) {
+    const object = graphicSpec.objects[current];
+    const offset = resolveGraphicParentOffset(graphicSpec, current);
+    const parent = findGraphicParent(graphicSpec, current);
+    const local = object.clip !== undefined ? graphicClipBounds(object.clip, ...offset)
+      : object.type === "canvas" && (parent !== undefined || rootViewport)
+        ? graphicClipBounds({...object.properties, x: parent === undefined ? 0 : object.properties.x,
+            y: parent === undefined ? 0 : object.properties.y}, ...offset) : undefined;
+    if (local !== undefined) clip = clip === undefined ? local : intersectClipBounds(clip, local);
+    current = parent?.id;
+  }
+  return clip;
+}
+
+function objectBounds(graphicSpec, id, object, ancestors, x, y, profile, includeOwnerClips) {
   if (ancestors.has(id)) {
     throw new Error(`Graphic attachment cycle includes "${id}".`);
   }
@@ -508,7 +533,7 @@ function objectBounds(graphicSpec, id, object, ancestors, x, y, profile) {
       throw new Error(`Unknown attached graphic "${childId}".`);
     }
     const bounds = objectBounds(
-      graphicSpec, childId, child.object, ancestors, childX, childY, profile
+      graphicSpec, childId, child.object, ancestors, childX, childY, profile, includeOwnerClips
     );
     if (bounds !== undefined) {
       result = includeExtent(
@@ -520,28 +545,31 @@ function objectBounds(graphicSpec, id, object, ancestors, x, y, profile) {
     result=intersectVisibleBounds(result,{left:childX,right:childX+object.properties.width,
       top:childY,bottom:childY+object.properties.height});
   }
+  if (includeOwnerClips && object.clip !== undefined) result = intersectVisibleBounds(result, graphicClipBounds(object.clip, x, y));
   ancestors.delete(id);
   return result;
 }
 
-export function resolveConcreteGraphicBounds(graphicSpec, target, profile) {
+export function resolveConcreteGraphicBounds(graphicSpec, target, profile, {includeOwnerClips = true} = {}) {
   const found = requireGraphic(graphicSpec, target);
   const anchor=found.kind==="item"?found.ownerId:found.id;
-  const [x, y] = ancestorOffset(graphicSpec, anchor);
+  const [x, y] = resolveGraphicParentOffset(graphicSpec, anchor);
   return requireFiniteBounds(clipAncestorBounds(graphicSpec,anchor,found.kind === "item"
-    ? translateBounds(
+    ? (!includeOwnerClips || found.owner.clip === undefined ? translateBounds(
       resolvePrimitiveGraphicBounds(found.object.type ?? found.owner.type, found.object.properties, profile),
       x,
       y
-    )
-    : objectBounds(graphicSpec, found.id, found.object, new Set(), x, y, profile)));
+    ) : intersectVisibleBounds(translateBounds(
+      resolvePrimitiveGraphicBounds(found.object.type ?? found.owner.type, found.object.properties, profile), x, y
+    ), graphicClipBounds(found.owner.clip, x, y)))
+    : objectBounds(graphicSpec, found.id, found.object, new Set(), x, y, profile, includeOwnerClips), includeOwnerClips));
 }
 
-export function unionConcreteGraphicBounds(graphicSpec, targets, profile) {
+export function unionConcreteGraphicBounds(graphicSpec, targets, profile, options) {
   if (!Array.isArray(targets)) {
     throw new TypeError("Graphic bounds targets must be an array.");
   }
   return unionBounds(targets.map(target =>
-    resolveConcreteGraphicBounds(graphicSpec, target, profile)
+    resolveConcreteGraphicBounds(graphicSpec, target, profile, options)
   ));
 }

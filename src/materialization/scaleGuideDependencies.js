@@ -16,14 +16,22 @@ const GRIDS = Object.freeze([
   Object.freeze({ role: "radial", op: "rematerializeRadialGrid" })
 ]);
 
-export function planAxisTickGridRematerialization(program, channel, axisId = channel) {
+export function planAxisTickGridRematerialization(program, channel, axisId = channel, { syncLabels = false } = {}) {
   const ticks = program.guideConfigs.axis?.[axisId]?.ticks;
   const role = channel === "x" ? "vertical" : "horizontal";
   const config = program.guideConfigs.grid?.[role];
-  return buildMaterializationPlan({ guides:
-    config?.inferredValues === true && config.scale === ticks?.scale
-      ? GRIDS.filter(grid => grid.role === role).map(grid => ({ op: grid.op })) : []
-  });
+  const labels = syncLabels && program.guideConfigs.axis?.[axisId]?.labels
+    ? [{ op: `edit${channel.toUpperCase()}AxisLabels`, args: {
+      ...axisTargetArgs(axisId, channel),
+      ...(ticks.mode === "values" ? { values: ticks.values } : {
+        count: ticks.count,
+        ...(ticks.rounding === undefined ? {} : { rounding: ticks.rounding })
+      })
+    } }] : [];
+  return buildMaterializationPlan({ guides: [...labels,
+    ...(config?.inferredValues === true && config.scale === ticks?.scale
+      ? GRIDS.filter(grid => grid.role === role).map(grid => ({ op: grid.op })) : [])
+  ] });
 }
 
 function usesPositionalScale(program, id) {

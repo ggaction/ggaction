@@ -1,0 +1,32 @@
+{
+  "status": "pass",
+  "exactCompleteGraphicAndOrder": true,
+  "exactSameRunDecodedPng": true,
+  "pngSha256": "d585e062ba4aa2b1d7c48ecf165e25115724e0e62092a03e70c21d251c54c75c",
+  "graphicSha256": "8c4e14c48d30561c14bf05d64c1e6eb9866fdce9d0d3bc092d1bb180c628f72a",
+  "targetEvidence": "TARGET_EVIDENCE.json",
+  "targetEvidenceSha256": "42919017d605633cddada0c76360843d71129b460b0ecd377ecada326c8914fe",
+  "actualPublicTopLevelActions": [
+    "createCanvas",
+    "createData",
+    "createTextPlot",
+    "editTextMark",
+    "encodeDx",
+    "encodeDy"
+  ],
+  "targetPublicCallChain": [
+    "chart()",
+    ".createCanvas({width:500,height:300,margin:80})",
+    ".createData({values:rows})",
+    ".createTextPlot({x:{field:'x',scale:{domain:[0,10]}},y:{field:'y',scale:{domain:[0,10]}},text:{field:'label'}})",
+    ".editTextMark({fontSize:20,align:'center',baseline:'middle'})",
+    ".encodeDx({field:'dx'})",
+    ".encodeDy({field:'dy'})"
+  ],
+  "rawRowsPreserved": true,
+  "plotInk": 1372,
+  "approvedArtifactDirectory": "/Users/hyeonjeon/Projects/ggaction-feature-review-0.0.19/.artifacts/test/png/charts/text/text-offsets/signed-fields",
+  "reviewSubtreeRemoved": true,
+  "chartPixelsInspected": false,
+  "registryPublished": false
+}

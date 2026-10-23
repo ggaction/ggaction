@@ -41,7 +41,9 @@ export const ENCODING_CHANNELS = Object.freeze([
   "group",
   "pathOrder",
   "opacity",
-  "text"
+  "text",
+  "dx",
+  "dy"
 ]);
 
 const CARTESIAN_MARK_TYPES = Object.freeze([
@@ -118,7 +120,7 @@ export const POSITION_CHANNEL_DEFINITIONS = Object.freeze({
 
 export const SCALED_ENCODING_CHANNELS = Object.freeze(
   ENCODING_CHANNELS.filter(channel =>
-    !["angle", "group", "pathOrder", "text"].includes(channel)
+    !["angle", "group", "pathOrder", "text", "dx", "dy"].includes(channel)
   )
 );
 
@@ -175,6 +177,9 @@ export const FACET_SCALE_RESOLUTIONS = Object.freeze([
   "shared",
   "independent"
 ]);
+
+export const FACET_TOP_LANE_MODES = Object.freeze(["stacked", "shared"]);
+export const DEFAULT_FACET_TOP_LANE = "stacked";
 
 export function getPositionChannelDefinition(channel) {
   return POSITION_CHANNEL_DEFINITIONS[channel];
@@ -242,3 +247,20 @@ export const LEGEND_POSITIONS = Object.freeze(["left", "right", "top", "bottom",
 export const LEGEND_BLOCK_LAYOUTS = Object.freeze(["row", "column", "wrap"]);
 
 export const AXIS_RESOURCE_CHANNELS = Object.freeze(["x", "y", "theta", "radius", "parallel"]);
+
+// Shared target policy for authoring and read-only action inspection.
+const marks = (...types) => Object.freeze(types);
+export const APPEARANCE_MARK_TYPES = Object.freeze({
+  encodeColor: marks('point', 'line', 'bar', 'area', 'arc', 'rect', 'text'),
+  encodeStroke: marks('point', 'line', 'area', 'bar', 'rect', 'arc', 'rule', 'tick'),
+  encodeOpacity: marks('point', 'rule', 'line', 'bar', 'rect'),
+  encodeStrokeWidth: marks('rule', 'line', 'rect'),
+  encodeStrokeDash: marks('line', 'rule'),
+  encodeSize: marks('point'),
+  encodeShape: marks('point'),
+  encodeAngle: marks('point', 'tick')
+});
+
+// Generated default action methods: start
+export const DEFAULT_ACTION_METHODS = /* @__PURE__ */ Object.freeze(["createCanvas","editCanvas","fitCanvas","applyTextMetrics","removeTextMetrics","applyTheme","removeTheme","createData","reviseData","removeData","removeScale","removeCoordinate","bindMarkData","filterData","createSummaryData","createBinData","createLookupData","createFlattenData","createFoldData","createComputedData","createNormalizedData","createSortedData","createCompleteData","createImputedData","createStackData","createDensityData","createRegressionData","createRegressionStatisticsData","createWindowData","createTimeUnitData","createBin2DData","editBin2DData","editDerivedData","editComputedData","editFilteredData","editLookupData","editFlattenData","editFoldData","editSummaryData","editBinData","editTimeUnitData","editWindowData","editDensityData","editStackData","editRegressionData","editRegressionStatisticsData","editIntervalData","editECDFData","editNormalizedData","editSortedData","editCompleteData","editImputedData","createIntervalData","createECDFData","createPointMark","createTickMark","createStatisticalReference","createReferenceLine","createReferenceBand","createMarkLabels","editMarkLabelSelection","editMarkLabelPlacement","removeMarkLabels","createAnnotation","createTextMark","editTextMark","layoutLabels","removeLabelLayout","editPointMark","editTickMark","jitterPoints","removeJitter","packPoints","removePointPacking","removeMark","createLineMark","editLineMark","createBarMark","editBarMark","createAreaMark","createRuleMark","editRuleMark","editAreaMark","encodeX","encodeY","encodeChannels","encodeX2","encodeColor","encodeStrokeDash","encodeStroke","encodeStrokeWidth","encodeSize","encodeShape","encodeAngle","encodeOpacity","encodeRadius","encodeTheta","encodeR","encodePointRadius","removePointRadius","encodeXOffset","encodeYOffset","encodeY2","encodeYRange","encodeXRange","encodeGroup","encodePathOrder","encodeParallelCoordinates","removePathOrder","orderCategories","removeCategoryOrder","removeEncoding","encodeText","encodeDx","encodeDy","encodeHistogram","encodeDensity","editDensity","encodeHorizon","editHorizon","encodeBarWidth","createRegression","editRegression","createErrorBar","editErrorBar","createErrorBand","editErrorBand","editErrorBandBoundary","createBoxPlot","editBoxPlot","createGradientPlot","editGradientPlot","createViolinPlot","editViolinPlot","createParallelAxes","createParallelAxis","editParallelAxis","removeParallelAxis","removeParallelAxes","createAxes","createXAxis","createYAxis","createXAxisLine","createYAxisLine","editXAxisLine","editYAxisLine","createXAxisTicks","createYAxisTicks","editXAxisTicks","editYAxisTicks","createXAxisLabels","createYAxisLabels","editXAxisLabels","editYAxisLabels","createXAxisTicksAndLabels","createYAxisTicksAndLabels","editXAxisTicksAndLabels","editYAxisTicksAndLabels","createXAxisTitle","createYAxisTitle","editXAxisTitle","editYAxisTitle","editAxes","editXAxis","editYAxis","removeXAxis","removeYAxis","createGrid","createHorizontalGrid","createVerticalGrid","editHorizontalGrid","editVerticalGrid","editGrid","removeGrid","createLegend","editLegend","editLegendBlock","editLegendLayout","editLegendLabels","editLegendTitle","editLegendSymbols","editLegendBorder","createGuides","removeLegend","createTitle","editTitle","removeTitle","createCoordinate","editCoordinate","createScale","editScale","editXScale","editYScale","editXOffsetScale","editYOffsetScale","editParallelScale","editThetaScale","editRScale","editColorScale","editStrokeScale","editSizeScale","editOpacityScale","editShapeScale","editStrokeWidthScale","editStrokeDashScale","createDerivedData","createRegressionBand","editRegressionBand","createRegressionLine","editRegressionLine","filterMarks","removeMarkFilter","selectMarks","editMarkSelection","removeMarkHighlight","removeMarkSelection","highlightMarks","editSemantic","createGraphics","editGraphics","createArcMark","editArcMark","createThetaAxis","createRadialAxis","editThetaAxis","editRadialAxis","removeThetaAxis","removeRadialAxis","createThetaAxisLine","editThetaAxisLine","createRadialAxisLine","editRadialAxisLine","createThetaAxisTicks","editThetaAxisTicks","createRadialAxisTicks","editRadialAxisTicks","createThetaAxisLabels","editThetaAxisLabels","createRadialAxisLabels","editRadialAxisLabels","createThetaAxisTitle","editThetaAxisTitle","createRadialAxisTitle","editRadialAxisTitle","createThetaGrid","createRadialGrid","editThetaGrid","editRadialGrid","editCompositionLayout","replaceCompositionChild","insertCompositionChild","removeCompositionChild","reorderCompositionChildren","facet","facetGrid","repeatCharts","editFacetSource","editFacetHeaders","editFacetScales","editFacetGuides","createScatterPlot","createTextPlot","createDotPlot","createLollipopPlot","createDumbbellPlot","editEndpointPlot","createECDFPlot","editECDFPlot","createIntervalPlot","createRegressionPlot","createLinePlot","createPolarScatterPlot","createPolarLinePlot","createRadarPlot","editRadarPlot","createRugPlot","createStripPlot","createBeeswarmPlot","createRaincloudPlot","editRaincloudPlot","createBarPlot","createHistogram","createHeatmap","createParallelCoordinates","createRectMark","editRectMark","createPiePlot","createRosePlot","createRadialBarPlot","createDensityPlot","createHorizonPlot","createAreaPlot","layoutSeries"]);
+// Generated default action methods: end

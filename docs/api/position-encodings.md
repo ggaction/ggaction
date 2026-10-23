@@ -23,6 +23,7 @@ resolve a channel scale, and explicitly materialize the affected graphics.
 | `encodeTheta` | point, line, arc | point/line: quantitative, temporal, ordinal, nominal; arc: quantitative, ordinal, nominal | arc maps direct quantitative values, category counts, or category-weighted sums to proportional sectors |
 | `encodeR` | point, line, arc | point/line/arc: quantitative | radial position; arc combines it with a categorical theta band |
 | `encodeParallelCoordinates` | line | line: quantitative, ordinal | atomic ordered dimensions; one namespaced scale and axis per dimension |
+| `encodeDx` / `encodeDy` | text | text: quantitative | independent Text only; finite field or constant logical-pixel offsets, no scale or guide; field offsets establish row grain |
 
 <!-- action-capabilities:position:end -->
 
@@ -175,6 +176,18 @@ and share its scale, coordinate, and field type. `x` alone draws a vertical
 full-span rule; `y` alone draws a horizontal full-span rule. `x+y+y2` and
 `y+x+x2` draw bounded intervals, while all four endpoints draw a diagonal.
 Calling the same action again replaces only that endpoint.
+
+## Quantitative ranges
+
+Full `encodeXRange` and `encodeYRange` accept field names or finite
+`{ datum: number }` bounds for Rect and Rule marks. Either or both bounds may
+be constants; the two endpoints share one scale and coordinate. No source rows
+or columns are added. The wrapper validates the final pair before changing it
+and records the ordinary primary/secondary encoding actions.
+
+Bar ranges require two fields. Temporal ranges also require two fields;
+use the individual position encoders for temporal constants. Area bounds retain
+the more specific requirements below.
 
 ## Area bounds
 

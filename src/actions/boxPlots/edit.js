@@ -27,6 +27,8 @@ import {
 import { resolveBoxOrientation } from "./resolve.js";
 import { requestedRectStyleDetails } from "../../grammar/roundedRect.js";
 import { requestedStrokeDetails } from "../../grammar/strokeStyle.js";
+import { getSourceDependentMarkSteps } from "../../materialization/marks/index.js";
+import { applyMaterializationPlan, buildMaterializationPlan } from "../../materialization/planner.js";
 
 const OPTIONS = Object.freeze([
   "target", "data", "x", "y", "summary", "whisker", "width", "outliers", "box",
@@ -420,6 +422,12 @@ export const editBoxPlot = /* @__PURE__ */ closedAction(
             })
             .encodeRadius({ target: current.outlierId, value: outlier.radius });
         }
+        // Rebind/statistical owners must see the completed revised roles, not
+        // the previous summary or the intermediate component encodings.
+        const dependentMarks = [owner.id, current.whiskerId, ...capIds, current.medianId,
+          ...(hasOutliers ? [current.outlierId] : [])]
+          .flatMap(id => getSourceDependentMarkSteps(next, id));
+        next = applyMaterializationPlan(next, buildMaterializationPlan({ marks: dependentMarks }));
         next = next.releaseDerivedData(summaryRevision.release);
         if (current.outlierDataId !== undefined) {
           next = next.releaseDerivedData({ id: current.outlierDataId });

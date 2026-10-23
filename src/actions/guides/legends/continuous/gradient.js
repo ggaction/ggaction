@@ -2,6 +2,8 @@ import{validateLegendClip}from"../../../../grammar/legendClip.js";
 import{hasLegendClipGraphics}from"../../../../materialization/legendClip.js";
 import { normalizeColorSymbols, resolveColorSymbolsLayout, materializeColorSymbols } from "./colorSymbols.js";
 import { alignLegendTitle, resolveLegendTitleText } from "../../../../layout/legendText.js";
+import {resolveLegendContentSpacing} from "../../../../layout/legendSpacing.js";
+import {validateLegendSpacing} from "../../../../grammar/legendSpacing.js";
 import { intrinsicLegendConfig } from "../../../../materialization/legendGroups.js";
 import { mapContinuousScaleValues, transformedTicks } from "../../../../grammar/scales/index.js";
 import { action, closedAction } from "../../../../core/action.js";
@@ -27,11 +29,13 @@ import {
 import { resolveLegendGraphicPlacement } from
   "../../../../materialization/graphicHierarchy.js";
 import { resolveEffectiveLegendBlockConfig } from "../blocks.js";
+import { readLegendSampling, validateSamplingAgainstScale } from "../sampling.js";
 
 export const DEFAULT_GRADIENT_SIZE = DEFAULT_LEGEND_GRADIENT;
 
 export function resolveGradientLayout(program, config, scale, label = "Gradient legend", stripStrokeWidth = 0) {
   validateLegendClip("gradient",config);
+  validateLegendSpacing("gradient",config);
   if (config.representation === "symbols") return resolveColorSymbolsLayout(program, config, scale);
   config = intrinsicLegendConfig(program, config);
   const { plot, canvas } = resolveContinuousBounds(program);
@@ -71,13 +75,15 @@ export function resolveGradientLayout(program, config, scale, label = "Gradient 
         align: "center"
       };
   const transformed = ["log", "pow", "sqrt", "symlog"].includes(scale.type);
-  const values = transformed
+  const sampling = validateSamplingAgainstScale(readLegendSampling(config), scale, label);
+  const exact = sampling.mode === "values";
+  const values = exact ? [...sampling.values] : transformed
     ? transformedTicks(scale.type, scale.domain, config.count,
         scale.type === "log" ? {base: scale.base}
           : scale.type === "pow" ? {exponent: scale.exponent}
           : scale.type === "symlog" ? {constant: scale.constant} : {})
     : [...sampleContinuousValues(scale.domain, config.count)];
-  if (scale.midpoint !== undefined && !values.includes(scale.midpoint)) {
+  if (!exact && scale.midpoint !== undefined && !values.includes(scale.midpoint)) {
     values.push(scale.midpoint);
     values.sort((a, b) => scale.domain[1] > scale.domain[0] ? a - b : b - a);
   }
@@ -87,12 +93,12 @@ export function resolveGradientLayout(program, config, scale, label = "Gradient 
     config.fieldType,
     config.labels.format
   );
-  const fractions = transformed ? mapContinuousScaleValues(values, {...scale, range: [0, 1]})
-    : values.map((value, index) => scale.midpoint === undefined
+  const fractions = transformed || exact ? mapContinuousScaleValues(values, {...scale, range: [0, 1]})
+    : values.map((value, index) => !exact && scale.midpoint === undefined
     ? index / (values.length - 1)
     : inverseLerp(value, ...scale.domain));
   const labelOffset = config.labels.offset;
-  const labels = vertical
+  let labels = vertical
     ? fractions.map(fraction => ({
         x: config.position === "left"
           ? x - labelOffset : x + thickness + labelOffset,
@@ -104,7 +110,7 @@ export function resolveGradientLayout(program, config, scale, label = "Gradient 
         y: y + thickness + labelOffset + config.labels.fontSize / 2,
         align: "center"
       }));
-  const ticks = vertical
+  let ticks = vertical
     ? labels.map(label => ({
         x1: config.position === "left" ? x : x + thickness,
         y1: label.y,
@@ -147,8 +153,20 @@ export function resolveGradientLayout(program, config, scale, label = "Gradient 
     config.title,
     config.titleStyle
   , program.materializationConfigs.textMetrics, { hardBreaks: true });
-  const occupiedBounds = [stripBounds, ...tickBounds, ...labelBounds,
+  let occupiedBounds = [stripBounds, ...tickBounds, ...labelBounds,
     ...(config.titleVisible === false ? [] : [titleBounds])];
+  const spacing = config.titlePadding === undefined ? undefined : resolveLegendContentSpacing(config,[{row:0,x,y,bounds:[
+    {left:stripBounds.left-stripStrokeWidth/2,right:stripBounds.right+stripStrokeWidth/2,
+      top:stripBounds.top-stripStrokeWidth/2,bottom:stripBounds.bottom+stripStrokeWidth/2},
+    ...tickBounds,...labelBounds.filter((_,index) => texts[index] !== "")
+  ]}],titleBounds);
+  if (spacing !== undefined) {
+    const {dx,dy}=spacing.offsets[0];x+=dx;y+=dy;
+    labels=labels.map(point=>({...point,x:point.x+dx,y:point.y+dy}));
+    ticks=ticks.map(tick=>({...tick,x1:tick.x1+dx,x2:tick.x2+dx,y1:tick.y1+dy,y2:tick.y2+dy}));
+    title={...title,x:title.x+spacing.titleOffset.dx,y:title.y+spacing.titleOffset.dy};
+    occupiedBounds=spacing.bounds;
+  }
   assertLegendBoundsInsideCanvas(
     occupiedBounds,
     canvas,

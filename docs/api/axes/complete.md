@@ -9,6 +9,53 @@ title: Complete Axes and Labels
 
 [Axis family overview](../axes.md)
 
+## Composite marks over guides
+
+{% include chart-example.html id="plot-guide-underlays" %}
+
+Use `underlay: true` when the complete Cartesian axis should be painted before
+ordinary marks. The plot border accepts the same choice. This makes guides part
+of the backdrop for a difference-blended bar. Geometry, clips and source rows
+stay the same; the drawing order changes.
+
+This complete example declares the axis first and then edits its placement:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```js
+import {chart} from "ggaction";
+export const rows=[{category:'a',value:6},{category:'b',value:9}];
+export function createPlotUnderlayProgram({axisUnderlay=true,borderUnderlay=true,blend="difference"}={}){return chart()
+ .createCanvas({width:240,height:180,margin:{left:40,right:20,top:20,bottom:40}})
+ .editCanvas({plotBorder:{color:'#ddd',lineWidth:1,underlay:borderUnderlay}})
+ .createData({values:rows})
+ .createBarPlot({x:'category',y:{field:'value',scale:{domain:[0,10],nice:false}},guides:false})
+ .encodeBarWidth({band:1})
+ .editBarMark({fill:'yellow',stroke:'yellow',strokeWidth:4})
+ .editBarMark({cornerRadius:10,blend})
+ .createXAxis({line:{color:'#888',lineWidth:2},ticksAndLabels:false,title:false})
+ .createGrid({horizontal:{values:[0,5,10],color:'#ddd',lineWidth:1},vertical:false})
+ .editXAxis({underlay:axisUnderlay});}
+
+const program = createPlotUnderlayProgram();
+```
+
+The option also works in `createXAxis`, `createYAxis`, nested `createAxes`,
+guides and chart facades. Select a named axis through the existing `target` on
+whole-axis edits. Focused component editors and Polar/Parallel axes keep their
+existing options.
+
+Omitted edits preserve placement. `editXAxis({ underlay: false })` restores
+the ordinary overlay. Frame offsets and placement edits preserve each other.
+All retained components move as one axis; marks and text keep their relative order.
+Nonpositive Cartesian grids remain behind these underlays, and positive grid
+`zIndex` values keep their existing position after marks. Source, scale, data,
+Canvas, theme, facet and editable-persistence replay retain the requested placement.
+
 ## Independent named Cartesian axes
 
 {% include chart-example.html id="axis-owners" %}
@@ -274,11 +321,41 @@ program.createXAxis({
 ```
 
 `overlap` defaults to `"error"`. Explicit `"allow"` permits label-to-label
-intersection while Canvas overflow and axis-title collisions still fail.
+intersection. Canvas overflow still fails; title-label collisions are controlled
+separately by the title policy below.
 `editXAxisLabels({ maxWidth: false })` or its y counterpart removes wrapping;
 that reset cannot include `wrap` or `lineHeight` in the same call. Canvas and
 scale replay rebuild the same lines from the stored policy. The 10,000-item
 limit applies after wrapping.
+
+### Intentional title-label overlap
+
+A Cartesian title defaults to `overlap: "error"`. Set `title.overlap: "allow"`
+when that title is deliberately placed across its own axis labels. This keeps
+Canvas bounds and label-label checks active. Apply `labels.overlap` separately
+when neighboring labels also overlap.
+
+Fragment after a data-backed Cartesian chart has been created:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```javascript
+.createAxes({
+  y: {
+    ticksAndLabels: { labels: { overlap: "allow" } },
+    title: { text: "Group", offset: 80, overlap: "allow" }
+  }
+})
+```
+
+Focused title editors and whole-axis edits accept the same policy. Omitted edits
+preserve it; an explicit `"error"` reset must fit without that collision. The
+policy belongs to one axis title and remains valid when labels are created or
+edited later, including named axes, facets and saved programs.
 
 Cartesian title text preserves explicit hard line breaks as a centered block.
 See [axis-title text and rotation](../../reference/actions/guides.md#ticklabel-groups-and-axis-titles)
@@ -288,6 +365,32 @@ Cartesian title `rotation` accepts a finite legacy number in radians or an
 explicit `{ value, unit: "degrees" | "radians" }` object. Both forms normalize
 to radians before materialization. This does not change the degree-valued
 `angle` used to place radial-axis components.
+
+
+Use axis-only `format: "ticks"` to infer fixed decimal precision from each axis's
+settled numeric tick spacing. A step of `0.05` preserves labels such as `0.00`
+and `−0.10`; a step of `100` uses integers. Independent facet scales calculate
+precision separately from one shared recipe. Existing display-label maps take
+precedence, and omitted/`"auto"` output stays unchanged. This option works on
+numeric Cartesian, Polar and Parallel axes; time and discrete axes reject it.
+The smallest positive spacing is normalized to twelve significant digits before
+choosing precision. Precision increases only to distinguish different ticks,
+up to twelve decimals; finer unsupported precision is rejected. One tick uses
+its normalized decimal places, and an empty tick list stays empty. Values,
+domains and tick positions are preserved. Edits and replay recompute the labels.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```js
+// Fragment: after creating a numeric y encoding.
+program.createYAxis({
+  ticksAndLabels: { labels: { format: "ticks" } }
+});
+```
 
 Numeric label formats use `.0f` through `.12f` for fixed decimals, `.0%`
 through `.12%` for percentages, and `.0e` through `.12e` for scientific

@@ -20,11 +20,25 @@ The body fill is a backend-neutral `LinearGradientPaint`. With no color encoding
 palette. A later categorical `encodeColor` owns category hue and density modulates that hue's lightness and opacity. The
 neutral density legend remains independent from the categorical hue scale.
 
+고정 `encodeColor.value`와 `editRectMark.fill`도 strip의 기준 hue를 바꾸고 밀도에 따른
+lightness/opacity를 유지한다. Field color는 실제 profile row의 해당 값을 소비하며 category만
+잘못 대입하지 않는다. Hue는 공유 continuous-color grammar의 hex/basic named/RGB/HSL 값을
+정규화한다. Opacity, stroke, strokeWidth의 상수/필드 값과 rect corner/stroke appearance는
+기존 mark config와 semantic encoding에서 materialize하며 Canvas/scale/density/facet replay에 보존한다.
+이 owner는 기존 rect materialization policy의 완성된 consumer다.
+
+Density legend의 canonical owner는 기존 gradientPlot.guides.legend다. 독립 density scale과
+namespaced graphics를 유지하며 `guide.legend.color`를 점유하지 않는다. 따라서 hue legend의
+create/edit/remove가 밀도 범례를 덮어쓰지 않는다. Side legend lane이 확정된 뒤 밀도 범례를
+오른쪽 바깥에 다시 배치한다. 이전 snapshot의 같은 density scale placeholder는 제거할 수 있다.
+다른 gradient owner의 density legend 동시 생성은 기존처럼 명시적으로 거부한다.
+Facet guide 정책은 local density graphics를 제거하며 shared density legend는 여전히 지원하지 않는다.
+
 ## `createGradientPlot`
 
 ```typescript
 createGradientPlot({
-  id?, target?, data?, x?, y?, coordinate?,
+  id?, target?, data?, x?, y?, coordinate?, color?: BasicColorChannel | { value: string },
   density?: {
     bandwidth?: "auto" | PositiveFinite,
     extent?: "auto" | OrderedFinitePair,
@@ -60,6 +74,11 @@ createGradientPlot({
   `materializeGradientPlotFill`, optional `createGradientPlotCenter`, and guide components.
 - A profile revision always reads the raw source dataset directly. Requested automatic parameters remain in provenance beside
   resolved bandwidth, extent, and intensity domain.
+- `color` accepts the existing string field, field/scale, or constant value encoding vocabulary and calls
+  `encodeColor` on the completed strip owner before guides. Deferred positions retain this intent.
+  This has the same result as creation followed by `encodeColor`: hue follows that encoding while density
+  controls the existing lightness/opacity profile. The neutral density legend keeps its existing separate ownership.
+  The parameter does not add subgroup profile generation or unrelated fields to the profile dataset.
 
 ### Effects and errors
 
@@ -80,7 +99,7 @@ createGradientPlot({
 
 ### Formal values — `createGradientPlot`
 
-- Implemented: `createGradientPlot({ id?: UserId; target?: UserId; data?: UserId; x?: GradientPlotPositionChannel; y?: GradientPlotPositionChannel; coordinate?: UserId; density?: GradientPlotDensityOptions; width?: { band?: UnitIntervalExclusive }; gradient?: { palette?: Palette; opacity?: readonly [UnitInterval, UnitInterval] }; center?: false | GradientPlotCenterOptions; guides?: false | CreateGuidesOptions } = {})`.
+- Implemented: `createGradientPlot({ id?: UserId; target?: UserId; data?: UserId; x?: GradientPlotPositionChannel; y?: GradientPlotPositionChannel; coordinate?: UserId; color?: BasicColorChannel | { value: string }; density?: GradientPlotDensityOptions; width?: { band?: UnitIntervalExclusive }; gradient?: { palette?: Palette; opacity?: readonly [UnitInterval, UnitInterval] }; center?: false | GradientPlotCenterOptions; guides?: false | CreateGuidesOptions } = {})`.
 - Proposed (NOT IMPLEMENTED): subgroup offsets, multiple profile overlays, and independent per-category intensity domains.
 
 ### Value coverage — `createGradientPlot`
@@ -89,6 +108,8 @@ createGradientPlot({
   selection/highlight, text, filtered-source, horizontal, and facet cases.
 - No proposal is required for the approved first implementation. Evidence:
   `test/unit/actions/statistics/gradient-plot-consumers.test.js` and `test/charts/cars-gradient-plot/`.
+- ✅ Covered: initial field/fixed color, deferred completion, exact direct-followup equality, guides and serialization.
+- Evidence: `test/unit/actions/statistics/distribution-color-facades.test.js`.
 
 ## `editGradientPlot`
 
@@ -108,6 +129,8 @@ editGradientPlot({
 - Data/role edit은 raw source에서 new profile revision을 만들고 stable strip/center IDs에 explicit rebind한다.
   Orientation change는 category/measure scale IDs를 새 channel로 handoff하고 axis title/tick mode와 continuous grid
   direction을 갱신한 뒤 structured paint, optional center와 density legend를 rematerialize한다.
+- Category 역할이 바뀌면 이전 category를 사용하던 categorical color/stroke도 새 역할을 따른다.
+  변경된 변수의 명시 tick subset은 새 domain으로 재추론하며 기존 label appearance는 유지한다.
 - Width, palette, opacity, and center appearance retain the existing profile dataset.
 - `center: false` removes its semantic layer, graphic, and materialization config. A later center object recreates the same
   deterministic owned role.
@@ -144,3 +167,8 @@ bounds whose raw span overflows.
 - Cartesian facets partition raw rows first, replay one namespaced profile per child, rebind body and center layers, and store
   the replayed source/profile/intensity-domain identity in each child config.
 - Facet legends remain governed by the facet guide contract. A shared custom density legend is not implemented.
+- Statistical references use the raw measure observations for `boundData` and the per-strip center
+  values for `visibleItems`. Grouped raw statistics can use other source columns. Their materializer
+  reuses resolved source position scales rather than entering a recursive source/reference plan.
+- Appearance, guide coexistence, raw/grouped reference values, and replay evidence:
+  `test/unit/actions/statistics/gradient-appearance.test.js`.

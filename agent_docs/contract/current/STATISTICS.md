@@ -160,6 +160,9 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - Without data-role options or `statistics`, the edit retains the existing interval dataset. Main and cap
   appearance is reconciled through one wrapped `rematerializeErrorBar` action; generated cap IDs are not public
   parameters. Attached mark labels are rebound with interval revisions, and stored selections/highlights replay.
+- A center point owned by `createIntervalPlot` follows the same data, position, orientation and offset revision.
+  Its appearance stays unchanged. Independent consumers of the previous interval dataset stay on that dataset.
+  Evidence: `test/unit/actions/error-bars/edit-error-bar.test.js`.
 
 ### Formal values — `editErrorBar`
 
@@ -255,7 +258,7 @@ without naming generated child layers.
   convert between statistical and explicit center/lower/upper intervals while retaining the body and enabled
   boundary IDs. `groupBy` replaces the path grouping field and `groupBy: false` removes it.
 - Constant fill conflicts with an active color encoding. Remove color with `removeEncoding({ channel: "color" })`
-  first; this also updates the owned legend. Conversely, encodeColor rejects an explicit ErrorBand fill.
+  first; this also updates the owned legend. encodeColor field assignment explicitly replaces an ErrorBand constant fill.
 - Edit-only `fill: false` removes the constant override, restoring active encoded color or the theme default.
   It is not transparency and is invalid at creation. Opacity and curve preserve interval data.
 - `statistics` follows `editErrorBar`: it is statistical-owner-only, validates the complete partial merge, revisions

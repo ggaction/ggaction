@@ -47,7 +47,21 @@ agent가 다음을 빠르게 이해하기 위한 내부 아키텍처 문서다.
 - Canvas, SVG, PNG와 PDF renderer가 무엇을 읽는가
 - 새로운 기능을 어느 계층에 추가해야 하는가
 
+이 기능의 실측 artifact는611entries/868800packed/4190208unpacked bytes다. Packed869000한도는 유지하고 unpacked만 최소1000byte 단위4191000으로 갱신한다. Full gzip431608은 기존432000이내이며 Basic218187에 대해서만219000으로 갱신한다. 이전 Basic218000·unpacked4188000을 통과했다고 주장하지 않는다.
+
+명시적 axis `format:"ticks"`는 기존 순수 tick grammar가 settled values별 fixed precision을 계산하고 기존 guide action이 문자열을 materialize한다. 저장 owner는 기존 axis label config이며 schema/renderer 경계는 바꾸지 않는다. 정확한 값·한도·재물질화는 current `AXES.md`가 소유한다.
+
 ## 핵심 결론
+
+Gradient strip도 기존 rect completeness policy와 동일한 외형 materialization owner를 사용한다.
+색상/불투명도/테두리는 canonical mark config와 encoding에서 읽고, facet plan이 해결한 scale은
+다시 추론하지 않는다. 독립 density guide는 기존 gradientPlot.guides.legend가 소유하며 hue channel의
+semantic legend slot을 점유하지 않는다. Side legend lane 이후 wrapped density guide materializer로
+배치한다. Statistical reference는 source position scale을 재사용하여 순환 재계산을 막는다.
+정확한 동작은 current/GRADIENT_PLOTS.md와 MARKS.md 계약 및 회귀 테스트가 소유한다.
+
+Point jitter의 `channel: "both"`도 기존 jitter policy 한 곳이 소유한다. 기존 단일 축 grammar를 x/y 각각 호출하고, 같은 wrapped point materializer가 두 concrete 좌표를 함께 갱신한다. Both의 resolved metadata만 축별 resolution을 `axes.x/y`로 묶으며 renderer나 semantic state 경계는 바뀌지 않는다.
+Both와 아래 compact action vocabulary를 포함한 package entry는591이며 실측847924packed/4099551unpacked bytes다. 기존847000/4094000을 초과하여 최소1000bytes 단위인848000/4100000으로만 갱신한다.
 
 `ggaction`은 완성된 선언형 specification을 renderer가 자동으로 compile하는
 라이브러리가 아니다. 사용자가 호출한 domain action이 의미 상태를 기록하고, 필요한
@@ -86,6 +100,48 @@ rematerialization plan이 이 binding을 읽어 명시 domain·coordinate bounds
 Axis 전용 typography는 기존 theme frame의 partial token을 사용한다. 초기 축 layout 전에
 active font 기본값을 읽고, theme 변경 시 기존 guide config와 concrete text bounds를 함께
 갱신한다. Facet 초기 header 스타일은 기존 header config에 정규화하며 editor와 같은 검증을 사용한다.
+
+병렬 배열 expansion은 기존 derived-data 계층을 사용한다. 순수 `grammar/flatten.js`가
+index-aligned row/null padding과 한도를 소유하고, wrapped creator/materializer가 정규화한
+`flatten` 정의·typed schema lineage·immutable values를 기존 dataset에 저장한다. Full의
+derived revision/replay와 statistical facet topology가 같은 registry를 소비한다. Basic은
+생성·materialization만 추가하며 편집 surface는 늘리지 않는다. Renderer와 자동 compiler
+경계는 변하지 않는다. 정확한 공개 계약은 `contract/current/CORE.md`가 소유한다. 새 grammar/action module2개로
+package entry는602→604다. 마지막 grammar 검증을 포함한 staging unpacked4129044bytes는
+4129000을44bytes 초과하여 기존 최소1000단위 정책으로4130000까지 조정했다. Packed의
+853242bytes 측정은854000, search의837668bytes 측정은838000한도로만 반영하며 이전
+한도 통과를 주장하지 않는다. 정확한 최종 수치와 browser gzip은 설치 consumer evidence가
+소유한다. Full gzip423024와 Basic209555bytes는 각각 이전 한도423000/209000을
+24/555bytes 초과해 최소1000단위424000/210000으로 조정했다. SVG25000은 유지한다.
+
+Named-dataset lookup은 기존 derived-data 계층의 첫 명시적 이중 입력이다.
+`core/datasetReferences.js`가 primary source와 lookup.data의 canonical reference path를 한 번
+소유하고 resource cleanup/revision/persistence가 공유한다. `grammar/datasetDependencies.js`는
+기존 unary DFS 순서를 보존하는 stable topological descendant 순서와 양쪽 ancestor 순서를
+계산한다. `grammar/lookup.js`는 row-preserving typed key 계산과 한도를 소유한다.
+wrapped data action은 두 schema/values를 preflight하고 기존 semantic primitive를 명시적으로
+호출한다. typed schema는 양쪽 입력 lineage를 기록한다. Facet은 primary만 분할하고 reference
+표는 보존하며, repeat는 직접 materialized lookup의 encoding만 바꾸도록 제한적으로 허용한다.
+기존 semantic/graphic 분리, renderer와 자동 compiler 부재는 바뀌지 않는다. 정확한 값 계약은
+`contract/current/CORE.md`가 소유한다. 새 shared reference/grammar/action module4개로
+entry605→609다. Staging 실측861631packed/4160293unpacked bytes와 search846355bytes를
+기존 최소1000단위862000/4161000/847000으로만 반영한다. 이전 한도 통과를 주장하지 않는다.
+Full427506/Basic215605gzip bytes를 최소1000단위428000/216000으로 반영하며 SVG25000은 유지한다.
+최종 archive와 browser gzip은 설치 consumer evidence가 소유한다.
+
+역할별 facet field title은 기존 `materializationConfigs.facets[id].headers` 소유자에
+보존한다. 순수 `layout/facetHeaderTitles.js`가 전체 점유 plot 정렬과 기존 외곽 예약의
+중복 제거를 소유한다. 기존 header materializer가 category 뒤 제목 text를 같은 collection에
+명시적으로 추가하고 최종 facet materializer가 보존 text 충돌을 검사한다. renderer와
+semantic 데이터 경계는 바뀌지 않는다. 정확한 옵션은 current COMPOSITION 계약이 소유한다.
+새 순수 layout module 한 개로 entry609→610이다. Package staging4167062unpacked bytes와
+863468packed bytes, search847333bytes, Full428792gzip bytes가 이전 한도를 초과했다.
+기존 최소1000단위 정책으로4168000/864000/848000/429000으로만 조정하며 Basic216000,
+SVG25000은 유지한다. 이전 한도 통과를 주장하지 않으며 최종 archive는 패키지 evidence가 소유한다.
+
+외형 encoding의 mark 지원 범위는 `core/vocabulary.js`가 소유하며 실제 action과 inspection이 함께 사용한다. Facet source action descriptor는 기존 retained semantic/config를 복원하여 기존 wrapped mark/guide materializer와 facet derivation을 호출한다. 새 renderer나 별도 source-state 복제본을 추가하지 않는다. 기존 vocabulary owner를 재사용하여 package entry는591을 유지한다. Rect 외형과 facet source action/inspection 확장의 실측846294packed/4093902unpacked bytes에 따라 최소1000byte 단위 ceiling을847000/4094000으로 갱신했다.
+Facet source의 공개 action allowlist는 action-card 원본에서 생성한 `core/vocabulary.js`의 함수명 목록만 소비한다. 상세 inspection metadata는 inspection entry에 남겨 전체 authoring bundle에 불필요한 parameter table이 들어가지 않는다. Boundary 계약은 기존 계층 의존성을 유지하고 두 목록의 일치를 검사한다.
+같은 Node23.5.0 환경에서 이전 HEAD의 설치 consumer gzip은 Full431416/Basic213742 bytes로 기존417000/205000 한도를 이미 초과했다. 현재는 Full421644/Basic213862 bytes이며 Full은9772bytes 감소했다. 실측을 숨기지 않고 해당 한도를 최소1000bytes 단위422000/214000으로 갱신하고 SVG25000은 유지한다.
 
 ## 전체 계층
 
@@ -178,6 +234,11 @@ import { chart, render } from "ggaction/basic";
 - production Vite consumer의 minimal scatter build는 아래 browser bundle regression ceiling으로 검증한다.
 - `render()`는 default entry와 동일한 `graphicSpec`-only Canvas renderer다.
 
+Basic의 기존 encoding 재할당은 같은 타입의 scale에 한해 Full과 같은 wrapped editScale owner를
+내부 dispatch로 재사용한다. Public editor method를 등록하지 않고, 이미 존재하는 editScale op만
+Basic의 builtin trace 목록에 기록해 저장을 완결한다. 타입 전환 경계·저장 format·기존 Full 복원은
+바뀌지 않는다. 정확한 조건과 값은 Current ENCODINGS/CORE 계약이 소유한다.
+
 ### `ggaction/extension`
 
 action author를 위한 public extension boundary다.
@@ -254,6 +315,10 @@ Facet은 기존100-child 전용 ceiling 대신 공통 generated-item/work budget
 
 `src/inspection.js`의 browser-safe read-only entry는 저장된 dataset schema, action의 정적 적용 가능성, 두 프로그램의 resource 변화, materialized graphic의 구조와 가시 후보를 조회한다. 조회는 action을 실행하거나 program, trace, context를 바꾸지 않는다. 계산이나 pixel 확인을 수행하지 않은 검사는 `not_run`, 알 수 없는 extension 의미는 `unverified`, 지원하지 않는 concrete owner는 partial coverage로 반환한다.
 
+### `ggaction/scene`
+
+Browser-safe read-only transition scenes reuse concrete SVG serialization and existing selection-grain ownership. They add no action or persisted state; the exact public scene contract is documented in [Rendering](../docs/api/rendering.md#transition-scenes).
+
 ### `ggaction/diagnostics`
 
 `getErrorDetails(error)`로 stable code와 선택적인 operation/option/resource/budget metadata를 읽는 browser-safe entry다. Error identity/class를 보존하고 원본 data row를 저장하지 않는다. 상세 계약은 `docs/errors-and-recovery.md`가 소유한다.
@@ -325,15 +390,38 @@ Measured artifact growth is 569 entries / 798,338 packed / 3,914,211 unpacked by
 ceilings become 569 / 799,000 / 3,915,000, keeping browser limits unchanged. Search is 815,026 bytes;
 its independent ceiling becomes 816,000. These are growth adjustments, not previous-limit passes.
 
+범주형 점선의 explicit unknown 문서 추가 후 search-index는838,297bytes이며 최소1000단위
+839,000bytes로 상한을 조정한다. 실제 지원 설명을 삭제하지 않으며 이전838,000bytes
+통과로 보고하지 않는다. 기존 aligned expansion 후보에서 측정한 Full423,024/Basic209,555
+bytes에 따라 이미 설정된424,000/210,000bytes executable 상한과 아래 표·README를 동기화한다.
+
+Basic의 기존 encoding 재할당은 Full 공개 editor 등록 없이 같은 wrapped scale owner를
+재사용한다. 실제 설치 consumer는 Full423292/Basic213178gzipbytes로 Basic만 기존210000을
+넘어 최소1000단위214000으로 갱신한다. 패키지unpacked4130403bytes와 검색839201bytes도
+각각 기존4130000/839000을 넘어4131000/840000으로만 조정한다. Full424000/SVG25000,
+604entries/packed854000과 동작·시각 오차 한도는 유지한다. 이전 한도 통과로 보고하지 않는다.
+
+독립 Text 숫자 오프셋은 기존 encoding, 순수 Text grammar와 Text materializer를 재사용한다. 새 상태 owner나 renderer boundary는 없으며, 실측 Full gzip424768bytes에 따라 한도만425000으로 보정한다. Basic214000/SVG25000은 유지한다.
+
 ### Browser bundle regression ceilings
 
 Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 않아야 한다.
 
 | Entry | Gzip ceiling |
 | --- | ---: |
-| `ggaction` | 417,000 bytes |
-| `ggaction/basic` | 205,000 bytes |
+| `ggaction` | 448,000 bytes |
+| `ggaction/basic` | 231,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
+
+Nearest-step Cartesian tick policy와 저장 검증 추가 후 Node22 installed consumer 실측은
+Full430245/Basic217094bytes다. 최소1000bytes 단위431000/218000을 적용한다.
+패키지는610entries/packed866313/unpacked4180025bytes이며 예산은867000/4181000bytes다.
+파일 수와 SVG 예산을 유지한다. 이전 예산 통과를 뜻하지 않는다.
+
+Count 기반 linear domain 계산과 bin consumer 동기화 후 Node22 installed consumer 실측은
+Full429489/Basic216395/SVG7567bytes다. 최소1000bytes 단위로 Full430000/Basic217000을
+적용한다. 패키지 실측은610entries/packed865022/unpacked4172293bytes이며 파일 수와
+SVG 예산은 유지한다. 이는 새 기능의 측정 증가분이며 이전 예산 통과로 보고하지 않는다.
 
 0.0.20의 Area 정량 색상과 seeded mean CI 추가 후 Node20.20.2 installed consumer는
 Full416480/Basic204183bytes다. Node22의415595/203811만으로 지원 환경 전체 통과를
@@ -524,6 +612,7 @@ Action scope는 unit/composition/any를 구분한다. Package composition은 com
 Facet/repeat는 retained source에서 다음 transaction을 수행한다.
 
 1. Dataset ancestry에서 partition anchor와 transform DAG를 pure planner로 결정한다.
+   Omitted anchor는 기존 row-preserving inference를 유지한다. 명시한 공통 materialized fold snapshot은 그 뒤에 cell filter를 붙이는 경계로 허용하며 원래 wide source와 fold 정의/전체 행은 보존한다. Fold를 row-preserving으로 재분류하거나 새 저장 alias를 만들지 않는다.
 2. Child별 partition과 canonical transform replay, layer 및 private owner reference rebind를 wrapped action으로 실행한다.
 3. 모든 candidate의 semantic scale intent를 비교해 shared/independent domain을 확정한다.
 4. Child-local coordinate range로 mark, guide, label, selection/highlight와 style을 materialize한다.
@@ -676,6 +765,13 @@ graphicSpec.order
 domain action은 이 owner와 sibling placement를 infer하지만, extension primitive는 `parent`, `before`,
 `after`를 명시하며 parent를 생략한 explicit top-level graphic도 계속 지원한다.
 
+명시적인 guide underlay는 기존 frame/Canvas config에서만 intent를 소유한다. 순수 draw-order 계산을
+internal wrapped materializer가 호출하고 `editGraphics`의 exact children-permutation 편집으로
+반영한다. Graphic ID/content/object 선언 순서를 재생성하지 않으며 renderer는 여전히 concrete tree만
+읽는다. Policy가 없는 기존 authoring 경로에는 이 reconciliation을 추가하지 않는다. 정확한 API는
+[축 계약](contract/current/AXES.md#cartesian-axis-underlays), [Canvas 계약](contract/current/CORE.md),
+[primitive 계약](contract/current/PRIMITIVES.md#editgraphics)이 소유한다.
+
 ### Graphic type
 
 현재 type은 다음과 같다.
@@ -713,7 +809,8 @@ points: {
 ```
 
 서로 다른 point shape를 한 collection에 저장해야 하면 각 item이 자신의 concrete type을 가진다.
-Shared point-shape grammar가 12-value vocabulary, validation과 equal-area geometry를 한 번 소유한다.
+Shared point-shape grammar가 fourteen named shapes와 explicit simple polygons의 validation 및
+area/radius-normalized geometry를 한 번 소유한다.
 Circle은 `circle`, square는 `rect`, 나머지 shape는 renderer-neutral closed `path`가 된다.
 
 ```javascript
@@ -753,6 +850,8 @@ Text bounds는 `core/textMetrics.js`의 deterministic code-point width policy를
 baseline과 rotation까지 적용한 concrete bounds를 반환하며 axis label/title, chart title과 `graphicBounds`가 같은
 계산을 공유한다. Renderer의 platform text measurement는 drawing 품질에만 사용되고 layout topology를 결정하지
 않는다.
+
+Named non-Canvas owner는 optional resolved `clip: {x,y,width,height}`를 가질 수 있다. 같은 parent frame에서 전체 items/subtree의 보이는 영역만 제한하며 좌표/identity를 재작성하지 않는다. Request는 canonical mark config가, rectangle은 owning materializer가, drawing은 graphic-only renderer가 각각 소유한다. 자기/조상 clip의 교집합은 공통 visible-bounds/isolated-paint 경로가 적용한다. 정확한 API는 [mark clipping](contract/current/MARKS.md#shared-cartesian-plot-clipping)과 [primitive editor](contract/current/PRIMITIVES.md#editgraphics)에 둔다.
 
 ### Shared concrete-graphic contract
 
@@ -1372,6 +1471,8 @@ semantic color scale/domain/data는 바꾸지 않는다. 기존 continuous consu
 Renderer는 representation을 해석하지 않고 완성된 concrete primitives만 읽는다.
 
 Family action은 scale/content/appearance를 검증하고 intrinsic concrete recipe를 만든다. `layout/legendItems.js`는 실제 sample stroke/path bounds와 formatted text를 측정해 공통 occupied item slot을 계산한다. Size/interval/stroke-width는 categorical symbol implementation을 복제하지 않고 같은 layout owner에 자기 recipe를 제공한다.
+
+선택적 content spacing의 검증·reset은 `grammar/legendSpacing.js`가, 이미 측정한 concrete row/title bounds의 순수 이동 계산은 `layout/legendSpacing.js`가 소유한다. Family config에는 선택적 numeric authoring intent만 저장하고 계산된 row geometry나 renderer 전용 상태를 저장하지 않는다. Item 공통 경로와 opacity/gradient 경로는 같은 순수 계산을 호출하며 기존 wrapped materialization이 결과를 적용한다. 정확한 지원 범위·기본값·전환은 [현재 범례 계약](contract/current/LEGEND_AND_TITLE.md)을 따른다.
 
 `layout/legendLane.js`는 family-independent concrete block을 edge별로 배치한다. Wrapped side/horizontal lane owner만 그 계산 결과를 graphics에 적용한다. Border와 title을 포함한 occupied bounds로 최종 Canvas/guide collision을 검증한다. Multi-block packaging과 single-block alignment를 혼동하지 않는다. Legacy-bottom은 별도 명시된 placement 계약이며 option 존재 여부로 추측하지 않는다.
 
@@ -2536,3 +2637,198 @@ entries591/packed842000과 browser/search/coverage 기준은 유지한다.
 PR217 CI39034674598 package24의 Ubuntu/Node24.21.0 실제 설치 consumer에서 Full gzip은
 415484bytes로415000을 넘었다(job117402000022). Full만 다음 최소1000bytes 단계
 416000으로 갱신하며 Basic204000/SVG25000·package·search·coverage 기준은 유지한다.
+
+### Cartesian owner clipping measurement checkpoint
+
+기존 API에 optional boolean과 concrete owner rectangle을 추가하면서 resource selector·rectangle schema·materialization의 세 owner가 package entries591→594가 되었다. Node22.23.1/npm10.9.8 staged 실측은 packed843921/unpacked4095633bytes로 기존842000/4087000과 entries591을 초과한다. 실제 기존 검사 실패를 보존하고 entries594 및 최소1000byte 단계844000/4096000으로만 조정한다. Node24 protected-release 크기는 다음 정기 배포에서 반드시 다시 측정하며 이번 수치를 Node24 통과로 주장하지 않는다.
+
+Compact card는 clip option을 실제 노출하는 createMarkLabels3420/createAnnotation3414/createRegressionPlot3370bytes가 기존3360을 초과한다. 해당 세 cap만 최소10byte 단위3420/3420/3370으로 갱신하고 default3360과 legend3530/3860, median1896은 유지한다. Validator와 contract test는 한 budget owner를 참조하며 option 또는 supported value를 삭제하지 않았다. ReferenceBand와 Polar/Radar/Parallel의 상속 타입에 Cartesian clip이 잘못 유입되지 않도록 명시적으로 제외했다.
+
+같은 staged artifact의 실제 설치 consumer bundle은 Full417514/Basic205024/SVG7554gzip bytes다. 기존417000/205000 초과를 보존하고 Full418000/Basic206000으로 최소1000byte씩만 갱신한다. SVG25000과 모든 기능/검증/coverage 한도는 유지한다.
+
+### Facet top margin sharing
+
+Facet의 opt-in topLane 정책은 compositionSpec 한 곳에 저장한다. Pure layout이 기존 top margin과
+예약량을 계산하고 materialization이 final graphic-tree text bounds를 수집하여 pure collision 검사에
+전달한다. 기존 explicit wrapped rematerialization과 renderer의 concrete-only 경계는 유지한다.
+정확한 동작은 current/COMPOSITION.md의 Shared facet top lane이 소유한다.
+
+새 pure layout/final concrete 검사 두 owner로 package entries가598이 되었다. Node22.23.1 staged
+실측848529packed/4114879unpackedbytes는 기존848000/4109000을 초과하므로 최소1000byte 단위
+849000/4115000으로만 갱신한다. 실제 설치 browser consumer는 Full419868/Basic206509gzipbytes로
+기존420000/207000 안에 있다. SVG25000과 모든 그림/수치/coverage 기준은 유지한다. 이전 상한
+실패를 보존하며 Node24 protected-release 실측은 다음 정기 배포에서 별도로 필요하다.
+
+같은 qualification에서 이미 허용된 concrete text:""를 renderer의 추가 non-empty 검사가 거부하는
+불일치를 찾았다. Canvas/SVG가 기존 concrete value validator를 직접 재사용하도록 복원했다.
+새 schema나 renderer semantic inference는 없다. 수정된 staged unpacked4115014bytes가 이전4115000을
+14bytes 넘었으므로 해당 실패를 보존하고 최소다음1000byte 단계4116000만 적용한다.
+
+### Explicit guide underlay budgets
+
+Draw-order 계산/materializer/wrapped action과 grid resource selector의 네 owner를 추가해 package
+entries는602가 되었다. Node22.23.1 staged 실측851052packed/4124450unpackedbytes는 이전
+849000/4116000을 초과한다. 실제 실패를 보존하고 entries602와 최소1000byte 단계852000/4125000만
+적용한다. Installed browser consumer의 Full421169/Basic207723gzip도 이전420000/207000을 넘었다.
+기존 실패를 보존하고 해당 cap만422000/208000으로 올린다. SVG25000과 data/path/그림/수치/coverage
+기준은 그대로다. Node24 protected-release 수치는 다음 정기 배포에서 별도로 다시 측정한다.
+
+같은 underlay 문서의 search-index는834254bytes로 기존833000 한도를 넘었다. 실제 두 normal-suite
+실패를 보존하고 search cap만 최소다음1000byte 단계835000으로 조정한다. 검색 내용이나 action
+coverage를 삭제하지 않으며 runtime/renderer/수치/그림 기준에는 영향이 없다.
+
+### Inferred side legend axis clearance
+
+기존 guide resource resolver와 side lane materializer가 같은 edge axis의 occupied extent 뒤에
+기존 family gap을 적용한다. 기존 guide-layout transaction은 관련 side-axis 변경·제거 때
+wrapped legend materialization을 먼저 재생해 이전 translation을 누적하지 않는다. 새 state,
+cache, public action/type 또는 renderer/package ownership 경계는 없고 stored offset과
+inferredOffset의 기존 소유권을 유지한다. 정확한 inference는 current/LEGEND_AND_TITLE.md가 소유한다.
+
+Node22.23.1 staged unpacked4126126bytes가 기존4125000을1126bytes 초과했다. Normal4806중
+4805pass/해당 package-size1fail 기록을 보존하고 unpacked cap만 최소1000byte 단계4127000으로
+갱신한다. Entries602, packed852000, Full422000/SVG25000과 source/data/numeric/visual/coverage
+기준은 유지한다. Installed consumer의 Basic208009gzipbytes 실패 뒤 edge-distance 계산을 단순화해
+208003bytes를 실측했다. 이 실제 실패와 측정을 보존하고 Basic cap만 최소다음1000byte 단계209000으로
+갱신한다. Node24 protected-release 측정은 정기1413-family 배포에서 별도 필요하다.
+
+### Categorical line fallback measurement checkpoint
+
+행 단위 categorical Cartesian Line의 explicit-domain unknown 색상도 기존 scale/color consumer 정책과
+pathSeries grouping owner를 재사용한다. Missing/null key는 계산용 identity에서만 구분하고 semantic/raw
+state에 sentinel을 추가하지 않는다. State·renderer·package 경계는 바꾸지 않는다. 실제 설치 Full gzip
+422002bytes가422000을 초과하여 최소1000byte 경계423000으로만 갱신한다. Basic208440≤209000과
+SVG25000, package·coverage·pixel 오차 한도는 유지한다. 자세한 동작은 Current CORE/ENCODINGS/MARKS,
+검증 기록은 `impl/categorical-line-unknown/PROPOSAL.md`를 따른다.
+
+### Explicit facet header rotation
+
+회전 의도는 기존 facet headers의 common/row/column 설정 한 곳에만 저장한다. 생성·편집은 기존
+rotation grammar로 단위를 정규화한다. 순수 `grammar/facetHeaders.js`가 저장된 유한 radians 검증을
+소유하고 materializer와 persistence가 공유하므로 import 검증은 materialization에 의존하지 않는다.
+기존 concrete text와 rotated bounds를 재사용하며 renderer와 public export 경계는 바뀌지 않는다.
+외곽 회전 헤더 예약은 이미 있는 child margin을 한 번만 계산하고, 내부 간격과 실제 bounds 검사는 유지한다.
+정확한 공개 계약은 Current COMPOSITION의 facet headers가 소유한다.
+
+새 pure validator 한 모듈로 package entries604→605다. Node22.23.1/npm10.9.8 official staging 실측은
+packed856430/unpacked4139194bytes로 기존856000/4137000을 초과했다. 실제 실패를 보존하고 각각 최소
+다음1000byte 경계857000/4140000으로만 갱신한다. 새 grammar에도 기존 공식 staging compaction을 적용한다.
+Browser Full/Basic/SVG, coverage, 데이터, 수치·그림 오차 한도는 유지한다. Node24 protected-release 측정은
+다음 정기1413-family 공개 배포에서 별도로 확인한다.
+
+같은 설치 검증의 실제 Full browser gzip425480bytes가 기존425000을480bytes 넘었다. 실제 consumer 실패를
+보존하고 Full cap만 최소다음1000byte 단계426000으로 보정한다. Basic214000/SVG25000과 기타 기준은 유지한다.
+
+### Content-bounds facet flow kernel checkpoint
+
+순수 `layout/facetContentFlow.js`는 전달된 cell bounds에서 독립 행/열 origin과
+shared footer의 마지막 논리 column owner 및 공통 trailing edge를 계산한다.
+아직 action/materialization에 연결하지 않았으므로 public API, canonical state,
+renderer와 기존 출력 경계는 바뀌지 않는다. 남은 연결과 native 측정 결정은
+`impl/facet-content-flow/PROPOSAL.md`가 기록하며 Current 지원으로 주장하지 않는다.
+
+새 pure module 하나 때문에 실제 package entry612가 기존611한도를 초과했다.
+이후 footer kernel의 actual packed869314bytes가 기존869000을 넘었다. 두 실패
+로그를 보존하고 entries612와 최소다음1000byte 단계 packed870000만 적용한다.
+Unpacked4183555bytes는 기존4191000이내라 그대로 유지한다. 이 수치는
+Node22.23.1/npm10.9.8의 로컬 staging 측정이며 공개 registry 설치나 Node24
+protected release 통과가 아니다. 번역에 설치된 candidate는 별도 검증과 활성화
+전까지 바꾸지 않는다.
+
+
+### Native facet content measurement preparation
+
+기존 facet materializer에 내부 측정 단계를 준비했다. 실제 guide 적용과 동일한 ownership
+planner로 제거할 axis component와 승격할 legend를 구분하고, 유지할 child graph와 개별 cell
+header를 기존 concrete bounds/clip/text-metric owner로 측정한다. Shared bottom axis는 별도
+footer 범위로 분리한다. Owner offset과 clip은 collection마다 한 번 계산해 item 수에 비례해
+순회한다. 새 spacing/anchor API, 저장 상태, renderer 또는 자동 materialization 경계는 없다.
+Public content layout 연결과 channel별 axis 정책은 아직 미구현이며
+`impl/facet-content-flow/PROPOSAL.md`가 남은 범위를 기록한다.
+
+Node22.23.1의 실제 official staging이 613entries/871866packed/4192188unpackedbytes여서
+기존871000/4191000 한도를 초과했다. 실제 실패를 보존하고 entries613은 유지하며 packed872000,
+unpacked4193000으로 최소1000byte 단계만 적용한다. 수치·그림·data/command 한도는 바꾸지 않는다.
+후속 doc provenance 재생성 이후의 최종 크기와 검증 로그는 measurement evidence가 기록한다.
+이 준비 단계는 설치된 번역 runtime이나 공개 registry 배포를 바꾸지 않는다.
+
+### Explicit simple polygon point shapes
+
+공유 `grammar/pointPolygon.js`가 닫힌 vertex schema, 단순성·유한 범위 검증,
+불변 canonical copy와 raw area를 소유한다. `pointShapes.js`는 기존 named shape와
+명시적 polygon에 같은 concrete closed-path 생성·회전·extent 규칙을 적용한다.
+정규화 의도는 constant mark config 또는 semantic shape scale 한 곳에 보존하며,
+renderer는 이전과 같은 concrete path만 읽는다. 자동 named range는 바꾸지 않는다.
+Point materializer와 polygon highlight 교체는 기존 공통 work limit으로 할당 전
+command work를 검사한다. 정확한 공개 계약은 Current MARKS/ENCODINGS/MARK_SELECTION이 소유한다.
+
+새 grammar module로 실측613entries가 이전612를 초과해613만 적용한다. Actual
+packed870658bytes는870000을 넘어서 최소 다음1000byte 경계871000을 적용했다.
+Unpacked4188709는4191000이내이므로 유지했다. 후속 highlight preflight까지 포함한
+installed bundle은 Full433179/Basic219107gzip bytes여서 각각434000/220000으로만
+올린다. SVG25000 한도는 그대로다. Search index850818bytes도 기존850000을 넘어서
+851000으로만 올렸다. 실패 로그와 최종 측정은 `impl/polygon-point-shapes/EVIDENCE.json`에
+기록한다. 수치·그림 오차나 데이터 한도는 바꾸지 않았으며 이 측정은 로컬 Node22 staging이다.
+새 공개 registry 버전·Node24 protected release·번역 runtime 활성화는 별도 검증 사항이다.
+
+
+### Fixed/field appearance integration measurement
+
+사용자 요청의 고정값/필드 전환은 기존 materialization config·semantic encoding·scale resource
+owner를 재사용한다. 별도 상태 schema나 렌더러 경계를 추가하지 않는다. macOS/Node23.5.0/
+npm11.18.0 staged package 실측은591entries/843246packed/4088383unpacked bytes다.
+기존842000/4087000 검사는 실패했으며, 내용을 줄이지 않고 다음 최소1000bytes 단위인
+844000/4089000으로만 올린다. Entries591과 browser/search/coverage 기준은 유지한다.
+
+
+### Native correctness integration package measurement
+
+2026-10-20 composite Box filtering, facet derived-data/guide replay, sparse Area, and
+source-facing Horizon/ECDF guides add required runtime behavior. Installed consumer
+measurements on Node23.5.0 are Full423043 / Basic214385 gzip bytes, compared with the
+previous recorded421644 /213862. The existing422000 /214000 checks failed and are
+not reported as passing. The minimum1000-byte ceilings become Full424000 /Basic215000;
+SVG25000 and package entry/packed/unpacked limits remain unchanged. Final identical
+facet guide reuse avoids rebuilding completed panels without changing exports or
+explicit guide creation semantics. This is a measured correctness-feature allowance,
+not a bundle optimization claim.
+
+## 읽기 전용 전환 장면과 외부 재생기
+
+사용자가 2026-10-22 승인한 분리 구조에 따라 `ggaction/scene`의
+`createTransitionScene(program)`은 버전 1 장면 계약을 제공한다. 기존 selection의
+멤버 정보를 도형 대응 키로 투영하고, renderer 내부 공유 SVG serialization은
+완성된 graphicSpec과 불투명 키만 읽는다. scene은 직렬화 가능한 읽기 전용 파생물이며
+semanticSpec, graphicSpec, trace 또는 저장 스키마에 animation 상태를 추가하지 않는다.
+범위와 제한은 docs/api/rendering.md의 Transition scenes가 소유한다.
+별도 `@ggaction/transition` 패키지가 장면 비교, 브라우저 재생, interruption을 소유한다.
+
+전환 scene 도입의 staging package는 597 entries, packed 861033, unpacked 4130339 bytes로
+검증했다. 해당 공개 entry와 type 및 공유 serializer를 포함하기 위해 package 한도를
+597/862000/4131000으로 최소 조정했다. 설치 consumer의 Full/Basic gzip은
+429327/215922 bytes로 측정되어 한도는 430000/216000이며 SVG 한도는 유지한다.
+
+
+### Combined release integration
+
+The release integration retains both independently developed action families and the translation fixes. Native line color fallback and density split grouping share one path-series owner with explicit scale and grouping inputs. Inferred side legend reflow compares current axis ink and retains grouped block offsets; explicit placement stays authored. Facet content anchors retain their concrete content boundary, while rotation, field titles and the shared top lane retain their dedicated layout owners. Source editing carries the existing canonical header configuration into the first rebuild instead of materializing a temporary default header recipe.
+
+The extracted SVG serializer preserves concrete clipping, multiline text and default SVG output; the separate read-only scene entry reuses it. Named semantic layer lookup remains in the shared selector. Public declarations, current contracts, compact action data, documentation generation and tests describe the combined surface.
+
+Measured installed artifact before final documentation provenance:619entries,892139packed/4246020unpacked bytes; minimal ceilings619/893000/4247000. Installed full/basic/SVG browser consumers measured446832/229814/7567gzip bytes, so the next1000-byte full/basic ceilings are447000/230000 and SVG stays25000. Public search measured855807bytes and its next1000-byte ceiling is856000. These are measured feature costs, not new geometry tolerances or data limits. Exact final artifact and publication evidence remain required.
+### Canvas 전환 장면
+
+2026-10-22 사용자가 `createTransitionScene(program, {format: "canvas"})`와
+`renderTransitionScene(scene, context, {pixelRatio})` 공개 계약을 명시적으로 승인했다.
+기존 version 1 SVG 계약은 유지한다. Version 2는 동일한 불투명 correspondence key와
+순서·offset·clip을 갖고 SVG 대신 이미 materialize된 concrete properties를 보존한다.
+두 형식은 `renderers/transitionScene.js`의 순회 한 곳을 공유한다. Canvas adapter는
+이 장면을 temporary graphicSpec으로 배치해 기존 native renderer를 호출한다.
+시간·보간·중단은 별도 transition 패키지 책임이며 semanticSpec, action trace나 project
+저장 schema를 변경하지 않는다. 정확한 계약은 docs/api/rendering.md가 소유한다.
+
+Canvas 장면 shared traversal/adapter 2개로 package entry는597→599다. 실제 staged
+artifact는862828packed/4135439unpacked bytes로 이전862000/4131000한도를 초과했다.
+최소1000bytes 단위 ceiling인863000/4136000으로 갱신하며 이전 한도 통과를 주장하지 않는다.
+
+Final combined Canvas-scene integration measures621entries/894453packed/4253311unpacked bytes locally. Clean-runner npm/zlib variation was measured at1649 packed bytes and384 full-browser gzip bytes before this last scene addition. Explicit ceilings are621/897000/4254000 and448000/231000/25000 for Full/Basic/SVG gzip, retaining a sub1000-byte browser compression envelope. Search measures856486bytes, bounded at857000. Canvas scene traversal retains optional concrete clip frames in addition to their intersection, with shared native clip ancestors, preserving fractional coverage without renderer tolerance changes.

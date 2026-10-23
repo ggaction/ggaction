@@ -4,6 +4,7 @@ import {
 import {
   mapContinuousScaleValues,
   mapOrdinalPositionValues,
+  readScaleField,
   normalizeStrokeDashPattern
 } from "../../../grammar/scales/index.js";
 import { buildCurvePathCommands } from
@@ -55,7 +56,9 @@ export function resolveParallelLineMaterialization({
   );
   const sourceRows = items.map(item => rows[item.sourceRowIndex]);
   const mapAppearance = appearanceMapper(layer, resolvedScales,
-    field => sourceRows.map(row => row[field]));
+    (field, channel, encoding) => readScaleField(sourceRows, field, encoding.fieldType, {
+      temporalUnit: encoding.temporalUnit
+    }));
   return {
     commands: items.map(item => item.commands),
     strokes: layer.encoding?.stroke?.scale !== undefined
@@ -99,7 +102,7 @@ export function resolvePositionedLineMaterialization({
   const lineOptions = polar
     ? { thetaDomain: resolvedScales[thetaScaleId].domain }
     : { xBinBoundaries, xDomain: resolvedScales[xScaleId].domain };
-  const derived = deriveLineSeries(rows, layer, lineOptions);
+  const derived = deriveLineSeries(rows, layer, { ...lineOptions, scales: resolvedScales });
   const commands = polar
     ? derived.series.map(series => buildPolarLinePathCommands({
         series: series.values,
@@ -134,7 +137,8 @@ export function resolvePositionedLineMaterialization({
       derived.series,
       field,
       channel,
-      encoding
+      encoding,
+      channel === "color" ? resolvedScales[encoding.scale] : undefined
     ));
   return {
     commands,

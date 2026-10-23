@@ -1,4 +1,6 @@
 import { cartesianAxisOwners } from "../../../selectors/axes.js";
+import { gridNames } from "../../../selectors/grids.js";
+export { gridNames };
 import { axisGraphicIds } from "../../../materialization/guides/resources.js";
 import { isNominalValue } from "../../../grammar/scales/fields.js";
 import { patchGuideDash, validateGuideDash, normalizeGuideDashMap, resolveGuideDashes } from "../../../grammar/guideDash.js";
@@ -40,16 +42,6 @@ const DEFAULT_STYLE = Object.freeze({
   lineWidth: 1,
   strokeDash: Object.freeze([])
 });
-
-export function gridNames(direction) {
-  const prefix = direction === "horizontal" ? "Horizontal" : "Vertical";
-  return {
-    channel: direction === "horizontal" ? "y" : "x",
-    create: `create${prefix}Grid`,
-    rematerialize: `rematerialize${prefix}Grid`,
-    graphic: `${direction}GridLines`
-  };
-}
 
 function validateStrokeDash(value) {
   return validateGuideDash(value, "Grid strokeDash");
@@ -215,10 +207,12 @@ export function resolveGridConfig(program, direction, args, resources) {
 export function refreshGridConfig(program, config) {
   if (config.inferredValues !== true) return config;
   const channel = config.direction === "horizontal" ? "y" : "x";
+  const inferred = inferGridTickConfig(program, channel, config.scale);
   const refreshed = {
     ...config,
-    ...inferGridTickConfig(program, channel, config.scale)
+    ...inferred
   };
+  if (inferred.rounding === undefined) delete refreshed.rounding;
   if (refreshed.mode === "values") delete refreshed.count;
   else delete refreshed.values;
   return refreshed;
@@ -232,11 +226,13 @@ export function editGridConfig(previous, args) {
     )
   };
   if (Object.hasOwn(args, "count")) {
+    delete config.rounding;
     config.mode = "count";
     config.count = args.count;
     config.inferredValues = false;
     delete config.values;
   } else if (Array.isArray(args.values)) {
+    delete config.rounding;
     config.mode = "values";
     config.values = args.values;
     config.inferredValues = false;

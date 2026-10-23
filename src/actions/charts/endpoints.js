@@ -9,6 +9,7 @@ import {
   validateNonNegativeFinite,
   validateOptionObject
 } from "../../core/validation.js";
+import { retainStatisticalDependents, restoreStatisticalDependents } from "../marks/dependentReferences.js";
 import { findDataset } from "../../selectors/datasets.js";
 import { findSemanticScale } from "../../selectors/scales.js";
 import {
@@ -33,14 +34,14 @@ const DUMBBELL_OPTIONS = Object.freeze([
 const CATEGORY_OPTIONS = Object.freeze(["field", "fieldType", "scale"]);
 const VALUE_OPTIONS = Object.freeze(["field", "fieldType", "scale"]);
 const POINT_OPTIONS = Object.freeze([
-  "shape", "fill", "opacity", "stroke", "strokeWidth", "radius",
+  "clip",   "shape", "fill", "opacity", "stroke", "strokeWidth", "radius",
   ...STROKE_STYLE_PROPERTIES
 ]);
 const RULE_OPTIONS = Object.freeze([
-  "stroke", "strokeWidth", "strokeDash", "opacity", ...STROKE_STYLE_PROPERTIES
+  "clip", "stroke", "strokeWidth", "strokeDash", "opacity", ...STROKE_STYLE_PROPERTIES
 ]);
 const LABEL_OPTIONS = Object.freeze([
-  "endpoint", "field", "value", "content", "normalizeBy", "format", "layout",
+  "clip",   "endpoint", "field", "value", "content", "normalizeBy", "format", "layout",
   "fill", "opacity", "fontSize", "fontFamily", "fontWeight", "align", "baseline",
   "rotation", "dx", "dy"
 ]);
@@ -435,6 +436,49 @@ function reviseRequestedScales(program, ownerId, revised, changes) {
   return next;
 }
 
+function reviseRoleGuideSamples(program, owner, current, revised, changes) {
+  const categoryAxis = current.orientation === "vertical" ? "x" : "y";
+  const valueAxis = categoryAxis === "x" ? "y" : "x";
+  const field = value => typeof value === "string" ? value : value?.field;
+  const axes = new Set();
+  for (const key of changes) {
+    if (["data", "orientation"].includes(key) && revised[key] !== current.options[key]) {
+      axes.add("x"); axes.add("y");
+    } else if (key === "category" &&
+      (field(revised.category) !== current.roles.category.field || revised.category?.scale)) {
+      axes.add(categoryAxis);
+    } else if (["value", "start", "end"].includes(key) &&
+      (field(revised[key]) !== current.roles[key]?.field || revised[key]?.scale) ||
+      ["summary", "baseline"].includes(key) && revised[key] !== current.options[key]) {
+      axes.add(valueAxis);
+    }
+  }
+  let next = program;
+  for (const axis of axes) {
+    const saved = revised.guides?.axes?.[axis]?.ticksAndLabels;
+    if (saved?.values) {
+      const { values, ...rest } = saved;
+      revised.guides = { ...revised.guides, axes: { ...revised.guides.axes,
+        [axis]: { ...revised.guides.axes[axis], ticksAndLabels: {
+          ...rest, ...(axis === categoryAxis ? {} : { count: Math.max(2, values.length) })
+        } }
+      } };
+    }
+    const scale = owner.encoding[axis]?.scale;
+    for (const [id, config] of Object.entries(next.guideConfigs.axis ?? {})) {
+      if (config.ticks?.scale !== scale || config.ticks.mode !== "values") continue;
+      const refresh = part => {
+        if (axis === categoryAxis) return { ...part, inferredValues: true };
+        const { values, ...rest } = part;
+        return { ...rest, mode: "count", count: Math.max(2, values?.length ?? 5), inferredValues: false };
+      };
+      next = next._withGuideConfig(id, "ticks", refresh(config.ticks));
+      if (config.labels) next = next._withGuideConfig(id, "labels", refresh(config.labels));
+    }
+  }
+  return next;
+}
+
 export const editEndpointPlot = /* @__PURE__ */ action(
   { op: "editEndpointPlot", description: "Atomically revise an endpoint plot's semantic roles." },
   function (args = {}) {
@@ -452,8 +496,13 @@ export const editEndpointPlot = /* @__PURE__ */ action(
     }
     const revised = { ...current.options };
     for (const key of changes) revised[key] = args[key];
-    let next = this.removeMark({ target: owner.id });
+    const axes = { fromAxis: current.orientation === "vertical" ? "y" : "x",
+      toAxis: revised.orientation === "vertical" ? "y" : "x" };
+    const retained = retainStatisticalDependents(this, owner.id);
+    let next = reviseRoleGuideSamples(retained.program, owner, current, revised, changes);
+    next = next.removeMark({ target: owner.id });
     next = reviseRequestedScales(next, owner.id, revised, changes);
-    return next[KIND_METHOD[current.kind]](revised);
+    const rebuilt = next[KIND_METHOD[current.kind]](revised);
+    return restoreStatisticalDependents(rebuilt, retained.references, { ...axes, fallbackSource: owner.id });
   }
 );

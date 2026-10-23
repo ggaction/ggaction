@@ -15,13 +15,40 @@ test("declares channel-specific scale editors with channel-appropriate options",
     await writeFile(file, `
 import type { ChartProgram } from ${JSON.stringify(path.join(root, "types/program.js"))};
 import type { BasicChartProgram } from ${JSON.stringify(path.join(root, "types/basic.js"))};
-import type { EditColorScaleOptions, EditRScaleOptions, EditStrokeScaleOptions } from ${JSON.stringify(path.join(root, "types/index.js"))};
+import type { EditColorScaleOptions, EditRScaleOptions, EditStrokeScaleOptions, LinearNiceCountOptions } from ${JSON.stringify(path.join(root, "types/index.js"))};
 declare const p: ChartProgram;
 declare const basic: BasicChartProgram;
+const niceCount: LinearNiceCountOptions = { count: 10 };
+p.createLinePlot({ x: "x", y: { field: "y", scale: { nice: niceCount } } });
+basic.createLinePlot({ x: "x", y: { field: "y", scale: { nice: niceCount } } });
+p.editYScale({ nice: niceCount });
+p.editScale({ id: "y", nice: niceCount });
+// @ts-expect-error temporal position scales keep boolean nice
+p.encodeX({ field: "date", fieldType: "temporal", scale: { nice: niceCount } });
+// @ts-expect-error transformed position scales keep boolean nice
+p.editYScale({ type: "sqrt", nice: niceCount });
+// @ts-expect-error size has no nice option
+p.encodeSize({ field: "y", scale: { nice: niceCount } });
+// @ts-expect-error color has no nice option
+p.editColorScale({ nice: niceCount });
+// @ts-expect-error opacity nice remains boolean-only
+p.encodeOpacity({ field: "y", scale: { nice: niceCount } });
+// @ts-expect-error stroke width nice remains boolean-only
+p.encodeStrokeWidth({ field: "y", scale: { nice: niceCount } });
+// @ts-expect-error dash fallback is limited to Cartesian lines and rules
+p.createParallelCoordinates({ dimensions: ["x", "y"], strokeDash: { field: "kind", scale: { unknown: "dashed" } } });
+// @ts-expect-error polar lines do not accept dash fallback
+p.createPolarLinePlot({ theta: "x", radius: "y", strokeDash: { field: "kind", scale: { unknown: "dashed" } } });
 const colorOptions: EditColorScaleOptions = { palette: "set2" };
 const radiusOptions: EditRScaleOptions = { domain: [0, 10] };
 const strokeOptions: EditStrokeScaleOptions = { target: "points", palette: "set2" };
 p.editColorScale(colorOptions);
+p.createLinePlot({ x: "x", y: "y", color: { field: "kind", scale: { domain: ["A"], unknown: "transparent" } } });
+basic.createLinePlot({ x: "x", y: "y", color: { field: "kind", scale: { domain: ["A"], unknown: "transparent" } } });
+// @ts-expect-error polar line color does not support a categorical unknown paint
+p.createPolarLinePlot({ theta: "x", radius: "y", color: { field: "kind", scale: { domain: ["A"], unknown: "transparent" } } });
+// @ts-expect-error rect color does not support a categorical unknown paint
+p.createHeatmap({ x: "x", y: "y", color: { field: "kind", scale: { domain: ["A"], unknown: "transparent" } } });
 p.editRScale(radiusOptions);
 p.editStrokeScale(strokeOptions);
 p.editXScale({ target: "points", type: "log", domain: [1, 100], base: 10 });
@@ -35,6 +62,10 @@ p.encodeColor({ field: "m", fieldType: "quantitative", scale: { type: "sqrt" } }
 basic.encodeColor({ field: "m", fieldType: "quantitative", scale: { type: "sqrt" } });
 p.encodeColor({ field: "m", fieldType: "quantitative", scale: { type: "pow", exponent: 3, interpolate: "lab", whitePoint: "d50" } });
 basic.encodeColor({ field: "m", fieldType: "quantitative", scale: { interpolate: "cubehelix", gamma: 2.2 } });
+basic.encodeColor({ field: "m", fieldType: "quantitative", scale: { interpolate: "cubehelix-long", gamma: 0 } });
+p.encodeColor({ field: "m", fieldType: "quantitative", scale: { interpolate: "cubehelix-long", gamma: -0.1 } });
+p.editColorScale({ gamma: 0 });
+p.editStrokeScale({ target: "points", gamma: -0.1 });
 p.editColorScale({ interpolate: "hcl", whitePoint: "d50" });
 p.editColorScale({ whitePoint: "auto" });
 p.editColorScale({ gamma: "auto" });

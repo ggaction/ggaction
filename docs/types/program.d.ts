@@ -108,7 +108,7 @@ export type JitterMaxOffset =
   | { pixels?: never; band: number };
 export interface JitterPointsOptions {
   target?: string;
-  channel: "x" | "y";
+  channel: "x" | "y" | "both";
   maxOffset: JitterMaxOffset;
   seed?: string | number;
   key?: string;
@@ -170,7 +170,10 @@ export interface EditCompositionLayoutOptions {
   padding?: number | CompositionPadding;
   /** Interpret gap between child canvases (default) or inner plot regions. */
   spacing?: "canvas" | "plot";
+  /** Share existing top margin with parent title and headers; requires plot spacing. Stacked restores the default. */
+  topLane?: FacetTopLaneMode;
 }
+export type FacetTopLaneMode = "stacked" | "shared";
 export interface ReplaceCompositionChildOptions {
   target: string;
   program: ChartProgram;
@@ -216,6 +219,7 @@ export interface FacetGuideOptions {
 export interface FacetOptions {
   id?: string;
   field: string;
+  /** Common row-preserving ancestor, or an explicit materialized fold ancestor of every layer. */
   data?: string;
   values?: readonly DatasetScalar[];
   columns?: number;
@@ -227,6 +231,8 @@ export interface FacetOptions {
   headers?: FacetHeadersOptions;
   /** Interpret gap between child canvases (default) or inner plot regions. */
   spacing?: "canvas" | "plot";
+  /** Share the existing top margin rather than adding title/header reservations. Requires plot spacing. */
+  topLane?: FacetTopLaneMode;
 }
 export interface FacetGridRole {
   field: string;
@@ -246,6 +252,8 @@ export interface FacetGridOptions {
   headers?: FacetHeadersOptions;
   /** Interpret gap between child canvases (default) or inner plot regions. */
   spacing?: "canvas" | "plot";
+  /** Share the existing top margin rather than adding title/header reservations. Requires plot spacing. */
+  topLane?: FacetTopLaneMode;
 }
 export interface RepeatChartsOptions {
   id?: string;
@@ -261,20 +269,42 @@ export interface RepeatChartsOptions {
   headers?: FacetHeadersOptions;
   /** Interpret gap between child canvases (default) or inner plot regions. */
   spacing?: "canvas" | "plot";
+  /** Share the existing top margin rather than adding title/header reservations. Requires plot spacing. */
+  topLane?: FacetTopLaneMode;
 }
-export interface EditFacetSourceOptions { program: ChartProgram; }
+export type EditFacetSourceOptions =
+  | { program: ChartProgram; action?: never }
+  | { program?: never; action: { method: string; options?: Readonly<Record<string, unknown>> } };
+export interface FacetHeaderTitleOptions {
+  /** Required when introducing a title; edits preserve the existing text. One line. */
+  text?: string;
+  fontSize?: number;
+  fontFamily?: string;
+  fontWeight?: string | number;
+  color?: string;
+  offset?: number;
+  align?: FacetHeaderAlign;
+  rotation?: RotationInput;
+  alongOffset?: number;
+}
 export interface EditFacetHeadersOptions {
   fontSize?: number;
   fontFamily?: string;
   fontWeight?: string | number;
   color?: string;
   offset?: number;
+  /** Content follows concrete mark bounds with plot spacing; plot preserves existing placement. */
+  anchor?: "plot" | "content";
   role?: FacetHeaderRole;
   labelMap?: DisplayLabelMap | "auto";
   side?: FacetHeaderSide;
   align?: FacetHeaderAlign;
+  /** Numbers are radians; zero restores the existing unrotated header layout. */
+  rotation?: RotationInput;
+  /** Requires an explicit row or column role. False removes that role's field title. */
+  title?: FacetHeaderTitleOptions | false;
 }
-export type FacetHeadersOptions = Omit<EditFacetHeadersOptions, "role" | "side"> & {
+export type FacetHeadersOptions = Omit<EditFacetHeadersOptions, "role" | "side" | "title"> & {
   row?: Omit<EditFacetHeadersOptions, "role">;
   column?: Omit<EditFacetHeadersOptions, "role">;
 };
@@ -295,6 +325,8 @@ export interface FacetCompositionSpec {
   readonly children: readonly string[];
   readonly columns: number;
   readonly spacing?: "canvas" | "plot";
+  /** Canonical opt-in intent; stacked is represented by omission. */
+  readonly topLane?: "shared";
   readonly gap: number;
   readonly align: CompositionAlign;
   readonly padding: Readonly<Required<CompositionPadding>>;
@@ -796,6 +828,21 @@ export interface DatasetBinTransform {
     readonly boundaries: readonly [number, number, ...number[]];
   };
 }
+export interface DatasetFlattenTransform {
+  readonly type: "flatten";
+  readonly fields: readonly string[];
+  readonly as: readonly string[];
+}
+export interface DatasetLookupTransform {
+  readonly type: "lookup";
+  readonly field: string;
+  readonly lookup: {
+    readonly data: string;
+    readonly key: string;
+    readonly fields: readonly string[];
+    readonly as: readonly string[];
+  };
+}
 export interface DatasetFoldTransform {
   readonly type: "fold";
   readonly fields: readonly string[];
@@ -962,6 +1009,8 @@ export type DatasetTransform =
   | DatasetImputedTransform
   | DatasetNormalizedTransform
   | DatasetFilterTransform
+  | DatasetFlattenTransform
+  | DatasetLookupTransform
   | DatasetFoldTransform
   | DatasetRegressionTransform
   | DatasetRegressionStatisticsTransform
@@ -1128,6 +1177,7 @@ export type ParameterizedAggregateOperation =
 export type AggregateOperation =
   | ScalarAggregateOperation
   | ParameterizedAggregateOperation;
+/** HCL modes borrow a chromatic endpoint's hue across an exact RGB-neutral endpoint. */
 export type ContinuousColorInterpolation =
   | "rgb"
   | "hsl"
@@ -1137,6 +1187,11 @@ export type ContinuousColorInterpolation =
   | "hcl-long"
   | "cubehelix"
   | "cubehelix-long";
+/** A simple polygon around its unchanged input origin; defaults to equal-area normalization. */
+export type PointPolygonShape = {
+  polygon: readonly { x: number; y: number }[];
+  normalization?: "area" | "radius";
+};
 export type PointShape =
   | "circle"
   | "square"
@@ -1151,7 +1206,8 @@ export type PointShape =
   | "hexagon"
   | "wye"
   | "wedge"
-  | "arrow";
+  | "arrow"
+  | PointPolygonShape;
 export type StrokeStyleDetails = {
   lineCap?: "butt" | "round" | "square";
   lineJoin?: "miter" | "round" | "bevel";
@@ -1306,7 +1362,13 @@ export interface GraphicItem {
   readonly properties: Readonly<Record<string, unknown>>;
 }
 
+export interface GraphicClipRect {
+  readonly x: number; readonly y: number; readonly width: number; readonly height: number;
+}
+
 export interface GraphicObject {
+  /** Optional named non-Canvas owner clip in its unchanged parent frame. */
+  readonly clip?: GraphicClipRect;
   readonly type: GraphicType;
   readonly properties?: Readonly<Record<string, unknown>>;
   readonly items?: readonly GraphicItem[];
@@ -1331,6 +1393,8 @@ export interface CanvasOptions {
     color?: string;
     /** Positive finite width smaller than both plot dimensions. Defaults to 1. */
     lineWidth?: number;
+    /** Paint this border before ordinary marks. Defaults to false. */
+    underlay?: boolean;
   };
 }
 
@@ -1353,12 +1417,16 @@ export type RotationUnit = "radians" | "degrees";
 export type RotationInput = number | { value: number; unit: RotationUnit };
 type ValueFormatDigit = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
 type ValueFormatPrecision = ValueFormatDigit | 10 | 11 | 12 | `0${ValueFormatDigit}`;
-type TimeAxisDirective = "Y" | "m" | "d" | "b" | "H" | "M" | "S" | "L";
-export type NumericFormatString = `.${ValueFormatPrecision}${"f" | "%" | "e"}`;
+type TimeAxisDirective = "Y" | "m" | "d" | "b" | "a" | "H" | "M" | "S" | "L";
+export type NumericFormatString =
+  | `.${ValueFormatPrecision}${"f" | "%" | "e"}`
+  | ","
+  | `,.${ValueFormatPrecision}f`;
 export type UtcFormatString = `${string}%${TimeAxisDirective}${string}`;
 export type ValueFormat = "auto" | NumericFormatString | UtcFormatString;
 export type AxisFormatString = NumericFormatString | UtcFormatString;
 export type AxisFormat =
+  | "ticks"
   | ValueFormat
   | { decimals: number };
 export type AxisValue = string | boolean | number;
@@ -1412,12 +1480,14 @@ export interface AxisLabelLayoutOptions {
   /** Defaults to error; allow stores an intentional label-label overlap policy. */
   overlap?: "error" | "allow";
 }
+export type AxisTickRounding = "ceiling" | "nearest";
 export interface AxisTicksAndLabelsOptions<P extends string> {
   /** Axis resource identity; omission prefers canonical, then a unique named owner. */
   target?: string;
   scale?: string;
   position?: P;
   count?: number;
+  rounding?: AxisTickRounding;
   values?: readonly AxisValue[];
   ticks?: CartesianAxisTickStyleOptions;
   labels?: CartesianAxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions;
@@ -1428,6 +1498,8 @@ export interface AxisTitleOptions<P extends string> {
   /** Signed logical pixels: positive right for x, down for y, independent of scale reversal. */
   alongOffset?: number;
   align?: "left" | "center" | "right";
+  /** Defaults to error; allow permits only this title to intersect its own axis labels. */
+  overlap?: "error" | "allow";
   baseline?: "top" | "hanging" | "middle" | "alphabetic" | "ideographic" | "bottom";
   /** Hard breaks retain ordered lines with the chosen block baseline, spaced at 1.2 times fontSize. */
   text?: string;
@@ -1443,6 +1515,8 @@ export interface AxisTitleOptions<P extends string> {
   fontWeight?: string | number;
 }
 export interface CompleteAxisOptions<P extends string> {
+  /** Paint the complete Cartesian axis before ordinary marks. Defaults to false. */
+  underlay?: boolean;
   /** Omission retains the canonical x/y identity. */
   id?: string;
   /** Non-negative outward displacement of the complete axis frame in logical pixels. */
@@ -1472,6 +1546,7 @@ export interface AxisTickOptions<P extends string>
   scale?: string;
   position?: P;
   count?: number;
+  rounding?: AxisTickRounding;
   values?: readonly AxisValue[];
 }
 /** Cartesian label maps use typed category values or finite numeric/timestamp keys on continuous scales. Empty mapped labels are omitted without removing ticks. */
@@ -1482,6 +1557,7 @@ export interface AxisLabelOptions<P extends string>
   scale?: string;
   position?: P;
   count?: number;
+  rounding?: AxisTickRounding;
   values?: readonly AxisValue[];
 }
 
@@ -1804,6 +1880,11 @@ export type EditCoordinateOptions = EditCoordinateTarget & (
 
 export type RadialMapping = "area" | "radius-length";
 
+/** Automatic linear position-domain rounding density, not a guide tick count. */
+export interface LinearNiceCountOptions {
+  readonly count: number;
+}
+
 export interface ScaleOptions {
   radialMapping?: RadialMapping;
   id?: string;
@@ -1811,7 +1892,7 @@ export interface ScaleOptions {
   domain?: "auto" | readonly unknown[];
   emptyDomain?: "preserve" | "require-explicit";
   range?: ScaleRange;
-  nice?: boolean;
+  nice?: boolean | LinearNiceCountOptions;
   zero?: boolean;
   clamp?: boolean;
   reverse?: boolean;
@@ -1825,6 +1906,7 @@ export interface ScaleOptions {
   palette?: Palette;
   interpolate?: ContinuousColorInterpolation;
   whitePoint?: "d65" | "d50";
+  /** Finite Cubehelix lightness gamma, including zero and negative values. Defaults to 1. */
   gamma?: number;
   midpoint?: number | "auto";
   unknown?: unknown;
@@ -1834,25 +1916,31 @@ export type QuantitativePositionScaleType =
   | "linear" | "log" | "pow" | "sqrt" | "symlog";
 type ScaleFields<Keys extends keyof ScaleOptions> = Pick<ScaleOptions, Keys>;
 export type NonPointQuantitativePositionScaleOptions = ScaleFields<
-  "id" | "nice" | "zero" | "clamp" | "reverse" |
+  "id" | "zero" | "clamp" | "reverse" |
   "base" | "exponent" | "constant"
 > & {
-  type?: QuantitativePositionScaleType;
   domain?: "auto" | readonly [number, number];
   range?: "auto" | readonly [number, number];
-};
+} & (
+  | { type?: "linear"; nice?: boolean | LinearNiceCountOptions }
+  | { type: Exclude<QuantitativePositionScaleType, "linear">; nice?: boolean }
+);
 export type QuantitativePositionScaleOptions =
   NonPointQuantitativePositionScaleOptions & { unknown?: number };
 export type ZeroSupportingPositionScaleType =
   | "linear" | "pow" | "sqrt" | "symlog";
 export type NonPointZeroSupportingPositionScaleOptions = Omit<
   NonPointQuantitativePositionScaleOptions,
-  "base" | "type"
-> & { type?: ZeroSupportingPositionScaleType };
+  "base" | "type" | "nice"
+> & (
+  | { type?: "linear"; nice?: boolean | LinearNiceCountOptions }
+  | { type: Exclude<ZeroSupportingPositionScaleType, "linear">; nice?: boolean }
+);
 export type NonPointTemporalPositionScaleOptions = ScaleFields<
-  "id" | "nice" | "clamp" | "reverse"
+  "id" | "clamp" | "reverse"
 > & {
   type?: "time";
+  nice?: boolean;
   domain?: "auto" | readonly [number, number];
   range?: "auto" | readonly [number, number];
 };
@@ -1968,7 +2056,7 @@ export interface EditScaleOptions {
   domain?: "auto" | readonly unknown[];
   emptyDomain?: "preserve" | "require-explicit";
   range?: ScaleRange;
-  nice?: boolean;
+  nice?: boolean | LinearNiceCountOptions;
   zero?: boolean;
   clamp?: boolean;
   reverse?: boolean;
@@ -1982,6 +2070,7 @@ export interface EditScaleOptions {
   palette?: Palette;
   interpolate?: ContinuousColorInterpolation;
   whitePoint?: "d65" | "d50" | "auto";
+  /** Finite Cubehelix lightness gamma; auto restores 1. */
   gamma?: number | "auto";
   midpoint?: number | "auto";
   unknown?: unknown;
@@ -2054,7 +2143,8 @@ export type EditSizeScaleOptions = FocusedScaleSelection &
 export type EditOpacityScaleOptions = FocusedScaleSelection & WithoutScaleId<OpacityScaleOptions>;
 export type EditShapeScaleOptions = FocusedScaleSelection & WithoutScaleId<ShapeScaleOptions>;
 export type EditStrokeWidthScaleOptions = FocusedScaleSelection & WithoutScaleId<StrokeWidthScaleOptions>;
-export type EditStrokeDashScaleOptions = FocusedScaleSelection & WithoutScaleId<DashScaleOptions>;
+export type EditStrokeDashScaleOptions = FocusedScaleSelection &
+  Omit<WithoutScaleId<DashScaleOptions>, "unknown"> & { unknown?: DashStyle | DashPattern | undefined };
 
 interface PositionEncodingBase {
   field: string;
@@ -2226,26 +2316,25 @@ export type SecondaryPositionEncodingOptions =
   | { datum: unknown; field?: never; fieldType?: "quantitative"; target?: string; scale?: { id?: string }; coordinate?: string }
   | ({ field: string; datum?: never; target?: string; scale?: { id?: string }; coordinate?: string } & TemporalBindingBranch);
 
-type AreaRangePositionEncodingOptions = {
+type QuantitativeRangePositionEncodingOptions = {
+  lower: string | { datum: number };
+  upper: string | { datum: number };
   target?: string;
   coordinate?: string;
   fieldType?: "quantitative";
   temporalUnit?: never;
   scale?: NonPointQuantitativePositionScaleOptions;
-} & (
-  | { lower: string; upper: { datum: number } }
-  | { lower: { datum: number }; upper: string }
-);
+};
 
-type RangePositionEncodingOptions = AreaRangePositionEncodingOptions | {
+type RangePositionEncodingOptions = QuantitativeRangePositionEncodingOptions | {
   lower: string;
   upper: string;
   target?: string;
   coordinate?: string;
-} & (
-  | { fieldType?: "quantitative"; temporalUnit?: never; scale?: NonPointQuantitativePositionScaleOptions }
-  | { fieldType: "temporal"; temporalUnit?: TemporalInputUnit; scale?: NonPointTemporalPositionScaleOptions }
-);
+  fieldType: "temporal";
+  temporalUnit?: TemporalInputUnit;
+  scale?: NonPointTemporalPositionScaleOptions;
+};
 
 export type HistogramEncodingOptions = {
   field: string;
@@ -2271,6 +2360,8 @@ export interface CategoricalEncodingOptions {
   fieldType?: "nominal" | "ordinal";
   scale?: CategoricalColorScaleOptions;
   palette?: Palette;
+  /** Aggregate bars default to overlay for their category field, otherwise group;
+   * existing groups and stored or explicit layouts take precedence. */
   layout?: ColorLayout;
 }
 
@@ -2463,6 +2554,18 @@ export interface FoldDataOutputFields {
   key?: string;
   value?: string;
 }
+export interface FlattenDataOptions {
+  id: string;
+  source?: string;
+  fields: readonly string[];
+  as?: readonly string[];
+}
+export interface LookupDataOptions {
+  id: string;
+  source?: string;
+  field: string;
+  lookup: { data: string; key: string; fields: readonly string[]; as?: readonly string[] };
+}
 export interface FoldDataOptions {
   id: string;
   source?: string;
@@ -2615,6 +2718,8 @@ export type EditFilteredDataOptions = FilterModePatch & {
   nulls?: "include" | "exclude" | false;
   dependents?: DerivedDataDependents;
 };
+export type EditFlattenDataOptions = FocusedDerivedDataEdit<FlattenDataOptions>;
+export type EditLookupDataOptions = FocusedDerivedDataEdit<LookupDataOptions>;
 export type EditFoldDataOptions = FocusedDerivedDataEdit<FoldDataOptions>;
 export type EditSummaryDataOptions = FocusedWeightedDerivedDataEdit<
   SummaryDataOptions,
@@ -2765,6 +2870,12 @@ export interface BoxPlotOptions {
   x?: BoxPlotPositionChannel;
   y?: BoxPlotPositionChannel;
   coordinate?: string;
+  color?: string | {
+    field: string;
+    fieldType?: "nominal" | "ordinal";
+    scale?: NonPointCategoricalColorScaleOptions;
+    palette?: Palette;
+  } | { value: string };
   whisker?: BoxPlotWhisker;
   width?: BoxPlotWidth;
   outliers?: boolean;
@@ -2842,6 +2953,7 @@ export interface GradientPlotOptions {
   x?: GradientPlotPositionChannel;
   y?: GradientPlotPositionChannel;
   coordinate?: string;
+  color?: BasicColorChannel | { value: string };
   density?: GradientPlotDensityOptions;
   width?: { band?: number };
   gradient?: GradientPlotAppearanceOptions;
@@ -2993,6 +3105,7 @@ type BandPositionChannel = FacadePositionChannel<
   NonPointTemporalPositionScaleOptions,
   NonPointBandPositionScaleOptions
 >;
+/** With binned quantitative X, aggregate Y per exact interval (and optional series). */
 type BarYPositionChannel =
   | string
   | {
@@ -3060,12 +3173,12 @@ type HistogramCategoricalColorChannel =
       palette?: Palette;
       layout?: Exclude<ColorLayout, "center">;
     };
-type LineCategoricalColorChannel =
+type LineCategoricalColorChannel<Scale = NonPointCategoricalColorScaleOptions> =
   | string
   | {
       field: string;
       fieldType?: "nominal" | "ordinal";
-      scale?: NonPointCategoricalColorScaleOptions;
+      scale?: Scale;
       palette?: Palette;
     };
 type QuantitativeBarColorChannel = {
@@ -3118,6 +3231,10 @@ export type BasicStrokeDashChannel =
     ? T extends unknown ? Omit<T, "target"> : never
     : never;
 
+type NonCartesianStrokeDashChannel = BasicStrokeDashChannel extends infer T
+  ? T extends { field: string } ? Omit<T, "scale"> & { scale?: Omit<DashScaleOptions, "unknown"> } : T
+  : never;
+
 export type ParallelMissingPolicy = "break" | "drop-row" | "error";
 export type ParallelDimension = string | ({
   field: string;
@@ -3153,7 +3270,7 @@ export interface CreateParallelCoordinatesOptions {
   key?: string;
   missing?: ParallelMissingPolicy;
   color?: LineCategoricalColorChannel;
-  strokeDash?: BasicStrokeDashChannel;
+  strokeDash?: NonCartesianStrokeDashChannel;
   line?: StrokeStyleDetails & {
     strokeWidth?: number;
     stroke?: string;
@@ -3165,6 +3282,8 @@ export interface CreateParallelCoordinatesOptions {
 }
 
 export interface CreateScatterPlotOptions {
+  /** Forward the native mark missing-value policy. */
+  missing?: "error" | "skip";
   id?: string;
   data?: string;
   coordinate?: string;
@@ -3175,6 +3294,7 @@ export interface CreateScatterPlotOptions {
   size?: BasicSizeChannel;
   shape?: BasicShapeChannel;
   point?: StrokeStyleDetails & {
+    clip?: boolean;
     radius?: number;
     shape?: PointShape;
     fill?: string;
@@ -3278,7 +3398,7 @@ export interface CreateLollipopPlotOptions extends EndpointPlotBaseOptions {
   value: EndpointValueChannel;
   baseline?: number;
   point?: CreateScatterPlotOptions["point"];
-  stem?: RuleStyleOptions;
+  stem?: RuleStyleOptions & { clip?: boolean };
   labels?: false | EndpointLabelOptions;
 }
 export interface CreateDumbbellPlotOptions extends EndpointPlotBaseOptions {
@@ -3286,7 +3406,7 @@ export interface CreateDumbbellPlotOptions extends EndpointPlotBaseOptions {
   end: EndpointValueChannel;
   startPoint?: CreateScatterPlotOptions["point"];
   endPoint?: CreateScatterPlotOptions["point"];
-  connector?: RuleStyleOptions;
+  connector?: RuleStyleOptions & { clip?: boolean };
   labels?: false | (EndpointLabelOptions & { endpoint?: "start" | "end" | "both" });
 }
 export type EditEndpointPlotOptions = { target?: string } & Partial<Pick<
@@ -3307,7 +3427,7 @@ export interface CreateECDFPlotOptions {
   missing?: "drop" | "error";
   as?: ECDFOutputFields;
   color?: string | LineCategoricalColorChannel;
-  line?: StrokeStyleDetails & { strokeWidth?: number; stroke?: string; opacity?: number };
+  line?: StrokeStyleDetails & { clip?: boolean; strokeWidth?: number; stroke?: string; opacity?: number };
   labels?: false | EndpointLabelOptions;
   guides?: false | CartesianPathGuideOptions;
 }
@@ -3358,7 +3478,7 @@ export interface CreatePolarScatterPlotOptions {
   color?: BasicColorChannel;
   size?: BasicSizeChannel;
   shape?: BasicShapeChannel;
-  point?: CreateScatterPlotOptions["point"];
+  point?: Omit<NonNullable<CreateScatterPlotOptions["point"]>, "clip">;
   guides?: false | PolarPointGuideOptions;
 }
 export interface CreatePolarLinePlotOptions {
@@ -3369,8 +3489,8 @@ export interface CreatePolarLinePlotOptions {
   radius: PolarRadiusChannel;
   color?: LineCategoricalColorChannel;
   groupBy?: string | readonly [string, ...string[]];
-  strokeDash?: BasicStrokeDashChannel;
-  line?: Omit<NonNullable<CreateLinePlotOptions["line"]>, "closed" | "curve" | "tension"> & {
+  strokeDash?: NonCartesianStrokeDashChannel;
+  line?: Omit<NonNullable<CreateLinePlotOptions["line"]>, "clip" | "missing" | "closed" | "curve" | "tension"> & {
     curve?: "linear";
     closed?: boolean;
   };
@@ -3435,8 +3555,8 @@ export type CreateRadarPlotOptions = {
     ...RadarCategoryValue[]
   ];
   color?: LineCategoricalColorChannel;
-  strokeDash?: BasicStrokeDashChannel;
-  line?: Omit<NonNullable<CreateLinePlotOptions["line"]>, "closed" | "curve" | "tension"> & {
+  strokeDash?: NonCartesianStrokeDashChannel;
+  line?: Omit<NonNullable<CreateLinePlotOptions["line"]>, "clip" | "missing" | "closed" | "curve" | "tension"> & {
     curve?: "linear";
     closed?: true;
   };
@@ -3445,6 +3565,10 @@ export type CreateRadarPlotOptions = {
   | { category: RadarCategoryChannel; value: PolarRadiusChannel; wide?: never }
   | { wide: RadarWideOptions; category?: never; value?: never }
 );
+export interface EditRadarPlotOptions {
+  target?: string;
+  wide: { fields: readonly [string, string, ...string[]] };
+}
 export type RugMeasureChannel = string | (
   | {
       field: string;
@@ -3460,6 +3584,7 @@ export type RugMeasureChannel = string | (
     }
 );
 export interface RugTickOptions extends StrokeStyleDetails {
+  clip?: boolean;
   length?: number;
   stroke?: string;
   strokeWidth?: number;
@@ -3512,6 +3637,7 @@ export type CreateStripPlotOptions = {
   size?: BasicSizeChannel;
   shape?: BasicShapeChannel;
   point?: StrokeStyleDetails & {
+    clip?: boolean;
     radius?: number;
     shape?: PointShape;
     fill?: string;
@@ -3539,6 +3665,7 @@ export type CreateBeeswarmPlotOptions = {
   size?: BasicSizeChannel;
   shape?: BasicShapeChannel;
   point?: StrokeStyleDetails & {
+    clip?: boolean;
     radius?: number;
     shape?: PointShape;
     fill?: string;
@@ -3604,6 +3731,7 @@ export type RaincloudValueChannel = string | {
   fieldType?: "quantitative";
   scale?: NonPointQuantitativePositionScaleOptions;
 };
+export type RaincloudColorChannel = LineCategoricalColorChannel | { value: string };
 export interface CreateRaincloudPlotOptions {
   id?: string;
   data?: string;
@@ -3615,7 +3743,7 @@ export interface CreateRaincloudPlotOptions {
   density?: false | RaincloudDensityOptions;
   summary?: false | RaincloudSummaryOptions;
   points?: false | RaincloudPointsOptions;
-  color?: LineCategoricalColorChannel;
+  color?: false | RaincloudColorChannel;
   guides?: false | CartesianCategoricalPointGuideOptions;
 }
 export interface EditRaincloudPlotOptions {
@@ -3628,7 +3756,7 @@ export interface EditRaincloudPlotOptions {
   density?: false | RaincloudDensityOptions;
   summary?: false | RaincloudSummaryOptions;
   points?: false | RaincloudPointsOptions;
-  color?: false | LineCategoricalColorChannel;
+  color?: false | RaincloudColorChannel;
 }
 
 export type GroupEncodingOptions = { target?: string; fieldType?: "nominal" } & (
@@ -3653,7 +3781,7 @@ export type CreateAreaPlotOptions = {
   groupBy?: string | readonly [string, ...string[]];
   layout?: Exclude<ColorLayout, "group">; missing?: "error" | "break";
   color?: string | { field: string; fieldType?: "nominal" | "ordinal"; scale?: NonPointCategoricalColorScaleOptions; palette?: Palette };
-  area?: StrokeStyleDetails & { fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
+  area?: StrokeStyleDetails & { clip?: boolean; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
   guides?: false | (Omit<DensityPlotGuideOptions, "grid"> & { grid?: false | CartesianGridOptions });
 } & (
   | { valueChannel?: "y"; x: AreaPlotIndependentChannel; y: Exclude<AreaPlotMeasureChannel, { lower: unknown }>; baseline?: number }
@@ -3668,10 +3796,12 @@ export interface CreateLinePlotOptions {
   coordinate?: string;
   x: LineXPositionChannel;
   y: LineYPositionChannel;
-  color?: LineCategoricalColorChannel;
+  color?: LineCategoricalColorChannel<CategoricalColorScaleOptions>;
   groupBy?: string | readonly [string, ...string[]];
   strokeDash?: BasicStrokeDashChannel;
   line?: StrokeStyleDetails & {
+    clip?: boolean;
+    missing?: "error" | "break";
     strokeWidth?: number;
     curve?: CurveInterpolation;
     tension?: number;
@@ -3721,6 +3851,8 @@ type BarRangeOppositePositionChannel = string | {
   stack?: never;
 };
 export type CreateBarPlotOptions = {
+  /** Forward the native mark missing-value policy. */
+  missing?: "error" | "skip";
   id?: string;
   data?: string;
   coordinate?: string;
@@ -3728,6 +3860,7 @@ export type CreateBarPlotOptions = {
   color?: BarColorChannel;
   width?: Omit<BarWidthOptions, "target" | "interval">;
   bar?: RectStyleDetails & {
+    clip?: boolean;
     fill?: FillPaint;
     opacity?: number;
     stroke?: FilledMarkStroke;
@@ -3747,6 +3880,7 @@ export type CreateHistogramOptions = BasicHistogramEncoding & {
   field: string;
   color?: HistogramCategoricalColorChannel;
   bar?: RectStyleDetails & {
+    clip?: boolean;
     fill?: FillPaint;
     opacity?: number;
     stroke?: FilledMarkStroke;
@@ -3777,7 +3911,7 @@ export interface CreateHorizonPlotOptions {
   missing?: HorizonMissingPolicy;
   overflow?: HorizonOverflowPolicy;
   palette?: HorizonPaletteOptions;
-  area?: StrokeStyleDetails & { opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
+  area?: StrokeStyleDetails & { clip?: boolean; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
   guides?: false | HorizonPlotGuideOptions;
 }
 
@@ -3809,7 +3943,7 @@ export interface CreateDensityPlotOptions {
     palette?: Palette;
     layout?: "overlay";
   };
-  area?: StrokeStyleDetails & { fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
+  area?: StrokeStyleDetails & { clip?: boolean; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
   guides?: false | DensityPlotGuideOptions;
 }
 
@@ -3866,6 +4000,7 @@ export interface HeatmapBaseOptions {
   data?: string;
   coordinate?: string;
   rect?: RectStyleDetails & {
+    clip?: boolean;
     opacity?: number;
     stroke?: string | false;
     strokeWidth?: number;
@@ -4046,6 +4181,7 @@ export interface YOffsetEncodingOptions extends OffsetEncodingOptions {}
 export type TextFormat = ValueFormat;
 
 export interface TextMarkOptions {
+  clip?: boolean;
   /** Logical-pixel baseline spacing; defaults to 1.2 times fontSize. */
   lineHeight?: number;
   /** Anchor the first line or center the complete multiline block. */
@@ -4119,6 +4255,7 @@ export interface RemoveLabelLayoutOptions {
 }
 
 export interface RectMarkOptions extends RectStyleDetails {
+  clip?: boolean;
   id?: string;
   data?: string;
   missing?: "error" | "skip";
@@ -4256,6 +4393,7 @@ export interface DashScaleOptions {
   type?: "ordinal";
   domain?: "auto" | readonly unknown[];
   range?: "auto" | readonly (DashStyle | DashPattern)[];
+  unknown?: DashStyle | DashPattern;
 }
 
 export type StrokeDashEncodingOptions =
@@ -4263,7 +4401,7 @@ export type StrokeDashEncodingOptions =
       field: string;
       value?: never;
       target?: string;
-      fieldType?: "nominal";
+      fieldType?: "nominal" | "ordinal";
       scale?: DashScaleOptions;
     }
   | {
@@ -4280,11 +4418,8 @@ export type NonPointContinuousColorScaleOptions = ScaleFields<
   base?: number;
   constant?: number;
   domain?: "auto" | readonly [unknown, unknown];
-  range?: "auto" | readonly [string, string, ...string[]];
-  palette?: PaletteName | {
-    name: PaletteName;
-    extent?: readonly [number, number];
-  };
+  range?: "auto" | readonly [string, string, ...string[]] | { readonly palette: Palette };
+  palette?: Palette;
 } & (
   | { type: "pow"; exponent?: number }
   | { type?: "sequential" | "log" | "sqrt" | "symlog"; exponent?: never }
@@ -4331,12 +4466,16 @@ export type DiscretizedColorScaleOptions =
 /** Area quantitative color requires one finite value per existing series;
  * aggregate, temporal color and unknown fallback remain mark-specific restrictions.
  * Area authoring uses the Full facade; createAreaPlot.color stays categorical.
+ * Tick quantitative/temporal color paints its stroke and excludes a simultaneous stroke encoding.
  */
 export type ColorEncodingOptions =
-  | CategoricalEncodingOptions
+  | { value: string; target?: string; field?: never; fieldType?: never;
+      scale?: never; palette?: never; layout?: never; aggregate?: never; temporalUnit?: never }
+  | (CategoricalEncodingOptions & { value?: never })
   | {
       field: string;
       target?: string;
+      value?: never;
       fieldType: "quantitative";
       aggregate?: AggregateOperation;
       scale?: ContinuousColorScaleOptions | DiscretizedColorScaleOptions;
@@ -4346,6 +4485,7 @@ export type ColorEncodingOptions =
   | {
       field: string;
       target?: string;
+      value?: never;
       fieldType: "temporal";
       temporalUnit?: TemporalInputUnit;
       aggregate?: never;
@@ -4391,14 +4531,16 @@ export type StrokeEncodingOptions =
     };
 
 export type OpacityScaleOptions = ScaleFields<
-  "id" | "nice" | "zero" | "clamp" | "reverse"
+  "id" | "zero" | "clamp" | "reverse"
 > & {
+  nice?: boolean;
   type?: "linear";
   domain?: "auto" | readonly [number, number];
   range?: "auto" | readonly [number, number];
   unknown?: number;
 };
 
+/** Constant or quantitative opacity on Point, Rule, Line, Bar, or row-owned Rect marks. */
 export type OpacityEncodingOptions =
   | { value: number; field?: never; target?: string; fieldType?: never; scale?: never }
   | {
@@ -4409,7 +4551,9 @@ export type OpacityEncodingOptions =
       scale?: OpacityScaleOptions;
     };
 
-export type StrokeWidthScaleOptions = NonPointQuantitativePositionScaleOptions;
+export type StrokeWidthScaleOptions = NonPointQuantitativePositionScaleOptions extends infer T
+  ? T extends unknown ? Omit<T, "nice"> & { nice?: boolean } : never
+  : never;
 
 export interface RuleStyleOptions extends StrokeStyleDetails {
   stroke?: string;
@@ -4432,8 +4576,11 @@ type DynamicReferenceBinding = {
   readonly id?: string;
   readonly source: string;
   readonly axis: "x" | "y";
+  /** Distribution/endpoint measurement axes and quantitative Horizon X use original bound observations, retaining multiplicity. Horizon folded Y is unsupported. */
   readonly population?: "boundData" | "visibleItems";
   readonly field?: string;
+  /** Compute a separate reference for each observed value of this field. */
+  readonly groupBy?: string;
   readonly x?: never;
   readonly y?: never;
   readonly space?: never;
@@ -4441,18 +4588,26 @@ type DynamicReferenceBinding = {
   readonly coordinate?: never;
   readonly temporalUnit?: never;
 };
+/** A statistical line (mean by default) or an exact two-statistic interval. */
+export type CreateStatisticalReferenceOptions = DynamicReferenceBinding & (
+  | (RuleStyleOptions & { readonly statistic?: ReferenceStatistic; readonly statistics?: never })
+  | (Omit<RectMarkOptions, "id" | "data" | "source" | "missing"> & {
+      readonly statistics: readonly [ReferenceStatistic, ReferenceStatistic]; readonly statistic?: never;
+    })
+);
 export type CreateReferenceLineOptions =
   | ({ id?: string } & RuleStyleOptions & ReferenceBinding<unknown, number>)
   | (DynamicReferenceBinding & RuleStyleOptions & {
       readonly statistic: ReferenceStatistic;
     });
 export type CreateReferenceBandOptions =
-  | (Omit<RectMarkOptions, "data"> &
+  | (Omit<RectMarkOptions, "clip" | "data"> &
       ReferenceBinding<readonly [unknown, unknown], readonly [number, number]>)
-  | (DynamicReferenceBinding & Omit<RectMarkOptions, "id" | "data" | "source"> & {
+  | (DynamicReferenceBinding & Omit<RectMarkOptions, "clip" | "id" | "data" | "source"> & {
       readonly statistics: readonly [ReferenceStatistic, ReferenceStatistic];
     });
 
+/** Constant or quantitative stroke width on Line, Rule, or row-owned Rect marks. */
 export type StrokeWidthEncodingOptions =
   | {
       value: number;
@@ -4469,13 +4624,17 @@ export type StrokeWidthEncodingOptions =
       scale?: StrokeWidthScaleOptions;
     };
 
-export type SizeEncodingOptions = {
+/** Constant value and scale ranges are graphical areas in square pixels. */
+export type SizeEncodingOptions =
+  | { value: number; target?: string; field?: never; fieldType?: never; scale?: never }
+  | ({
+  value?: never;
   field: string;
   target?: string;
 } & (
   | { fieldType?: "quantitative"; scale?: SizeScaleOptions }
   | { fieldType: "nominal" | "ordinal"; scale?: CategoricalSizeScaleOptions }
-);
+));
 
 export type ShapeEncodingOptions = {
   field: string;
@@ -4487,6 +4646,11 @@ export type ShapeEncodingOptions = {
 export type AngleEncodingOptions =
   | { target?: string; value: number; field?: never; fieldType?: never }
   | { target?: string; field: string; fieldType?: "quantitative"; value?: never };
+
+/** Unscaled, signed logical-pixel offsets for independent Text marks. */
+export type TextOffsetEncodingOptions =
+  | { target?: string; value: number; field?: never }
+  | { target?: string; field: string; value?: never };
 
 type WithoutEncodingTarget<T> = T extends unknown
   ? Omit<T, "target" | "coordinate">
@@ -4512,6 +4676,8 @@ export interface EncodingChannelAssignments {
   strokeDash?: WithoutEncodingTarget<StrokeDashEncodingOptions>;
   angle?: WithoutEncodingTarget<AngleEncodingOptions>;
   text?: WithoutEncodingTarget<TextEncodingOptions>;
+  dx?: WithoutEncodingTarget<TextOffsetEncodingOptions>;
+  dy?: WithoutEncodingTarget<TextOffsetEncodingOptions>;
 }
 
 type AtLeastOne<T> = {
@@ -4802,7 +4968,7 @@ export interface LegendOptions {
   /** false hides the title while retaining its inferred field text. */
   /** LF, CRLF and CR preserve explicit title lines, including blank lines. */
   title?: string | false;
-  /** Exact ascending samples for continuous size, opacity, stroke-width, or color with representation symbols. Cannot be combined with count. */
+  /** Exact ascending samples for continuous size, opacity, stroke-width, color symbols, or color/stroke gradient ticks. Cannot be combined with count. */
   values?: readonly number[];
   count?: number;
   /** Body-only opacity defaults to 1; edits preserve omitted fields. */
@@ -4813,6 +4979,10 @@ export interface LegendOptions {
   titleStyle?: LegendTitleStyleOptions;
   /** Vertical items default to 18 logical pixels; the pitch grows to fit samples and labels. */
   itemGap?: number;
+  /** Non-negative gap between occupied item rows; overrides vertical itemGap pitch. Item legends in edge layout only. */
+  rowPadding?: number;
+  /** Non-negative gap between visible title and body bounds; legacy-bottom is excluded. */
+  titlePadding?: number;
   border?: boolean | LegendBorderOptions;
 }
 
@@ -4857,8 +5027,12 @@ export interface LegendTitleStyleEditOptions extends Omit<LegendTitleStyleOption
 }
 
 export interface EditLegendOptions
-  extends Omit<LegendOptions, "title" | "values" | "titleStyle" | "direction" | "position" | "clipHeight"> {
+  extends Omit<LegendOptions, "title" | "values" | "titleStyle" | "direction" | "position" | "clipHeight" | "rowPadding" | "titlePadding"> {
   clipHeight?: number | "auto";
+  /** auto removes the row policy and restores the retained itemGap behavior. */
+  rowPadding?: number | "auto";
+  /** auto removes the title/body spacing override. */
+  titlePadding?: number | "auto";
   /** Select one existing block; cannot accompany channels. */
   channel?: LegendChannel;
   /** inherit is allowed only with a singular channel selector. */
@@ -4896,6 +5070,10 @@ export interface EditLegendLayoutOptions {
   titlePosition?: "top" | "left" | "bottom";
   /** Explicit spacing override; vertical creation defaults to 18 logical pixels. */
   itemGap?: number;
+  /** Non-negative occupied-row gap; auto restores the retained legacy pitch. */
+  rowPadding?: number | "auto";
+  /** Non-negative visible-title/body gap; auto restores the family default. */
+  titlePadding?: number | "auto";
 }
 
 export interface EditLegendLabelsOptions extends LegendTextOptions {
@@ -4928,7 +5106,18 @@ export interface EditLegendBorderOptions {
   border: boolean | LegendBorderOptions;
 }
 
+/** Omitted/false axes are preserved; component false values remove existing components. */
+export interface EditAxesOptions {
+  x?: false | EditAxisOptions<XAxisPosition> | readonly [EditAxisOptions<XAxisPosition> & { target: string }, ...(EditAxisOptions<XAxisPosition> & { target: string })[]];
+  y?: false | EditAxisOptions<YAxisPosition> | readonly [EditAxisOptions<YAxisPosition> & { target: string }, ...(EditAxisOptions<YAxisPosition> & { target: string })[]];
+  theta?: false | EditThetaAxisOptions;
+  radius?: false | EditRadialAxisOptions;
+  parallel?: false | EditParallelAxisOptions | readonly [EditParallelAxisOptions, ...EditParallelAxisOptions[]];
+}
+
 export interface EditAxisOptions<P extends string> {
+  /** Omission preserves placement; false restores the ordinary overlay. */
+  underlay?: boolean;
   target?: string;
   /** Omitted edits preserve the frame; zero restores the plot-edge frame. */
   offset?: number;
@@ -5062,6 +5251,8 @@ export class ChartProgram {
   createDensityData(options: DensityDataOptions): ChartProgram;
   createSummaryData(options: SummaryDataOptions): ChartProgram;
   createBinData(options: BinDataOptions): ChartProgram;
+  createFlattenData(options: FlattenDataOptions): ChartProgram;
+  createLookupData(options: LookupDataOptions): ChartProgram;
   createFoldData(options: FoldDataOptions): ChartProgram;
   createComputedData(options: ComputedDataOptions): ChartProgram;
   createNormalizedData(options: NormalizedDataOptions): ChartProgram;
@@ -5080,6 +5271,8 @@ export class ChartProgram {
   editDerivedData(options: EditDerivedDataOptions): ChartProgram;
   editComputedData(options: EditComputedDataOptions): ChartProgram;
   editFilteredData(options: EditFilteredDataOptions): ChartProgram;
+  editFlattenData(options: EditFlattenDataOptions): ChartProgram;
+  editLookupData(options: EditLookupDataOptions): ChartProgram;
   editFoldData(options: EditFoldDataOptions): ChartProgram;
   editSummaryData(options: EditSummaryDataOptions): ChartProgram;
   editBinData(options: EditBinDataOptions): ChartProgram;
@@ -5098,6 +5291,7 @@ export class ChartProgram {
 
   /** One point layer accepts at most 50,000 selected rows, before missing-value filtering. */
   createPointMark(options?: StrokeStyleDetails & {
+    clip?: boolean;
     id?: string;
     data?: string;
     missing?: "error" | "skip";
@@ -5108,6 +5302,7 @@ export class ChartProgram {
     strokeWidth?: number;
   }): ChartProgram;
   editPointMark(options: StrokeStyleDetails & {
+    clip?: boolean;
     target?: string;
     missing?: "error" | "skip";
     shape?: PointShape;
@@ -5117,6 +5312,7 @@ export class ChartProgram {
     strokeWidth?: number;
   }): ChartProgram;
   createTickMark(options?: StrokeStyleDetails & {
+    clip?: boolean;
     id?: string;
     data?: string;
     missing?: "error" | "skip";
@@ -5126,6 +5322,7 @@ export class ChartProgram {
     opacity?: number;
   }): ChartProgram;
   editTickMark(options: StrokeStyleDetails & {
+    clip?: boolean;
     target?: string;
     missing?: "error" | "skip";
     length?: number;
@@ -5138,6 +5335,8 @@ export class ChartProgram {
   packPoints(options: PackPointsOptions): ChartProgram;
   removePointPacking(options?: RemovePointPackingOptions): ChartProgram;
   createLineMark(options?: StrokeStyleDetails & {
+    clip?: boolean;
+    missing?: "error" | "break";
     id?: string;
     data?: string;
     strokeWidth?: number;
@@ -5148,6 +5347,8 @@ export class ChartProgram {
     closed?: boolean;
   }): ChartProgram;
   editLineMark(options: StrokeStyleDetails & {
+    clip?: boolean;
+    missing?: "error" | "break";
     target?: string;
     strokeWidth?: number;
     curve?: CurveInterpolation;
@@ -5157,6 +5358,7 @@ export class ChartProgram {
     closed?: boolean;
   }): ChartProgram;
   createBarMark(options?: RectStyleDetails & {
+    clip?: boolean;
     id?: string;
     data?: string;
     orientation?: "vertical" | "horizontal";
@@ -5167,6 +5369,7 @@ export class ChartProgram {
     strokeWidth?: number;
   }): ChartProgram;
   editBarMark(options: RectStyleDetails & {
+    clip?: boolean;
     target?: string;
     blend?: "normal" | "difference";
     missing?: "error" | "skip";
@@ -5176,6 +5379,7 @@ export class ChartProgram {
     strokeWidth?: number;
   }): ChartProgram;
   createAreaMark(options?: StrokeStyleDetails & {
+    clip?: boolean;
     id?: string;
     data?: string;
     fill?: FillPaint;
@@ -5206,8 +5410,8 @@ export class ChartProgram {
   }): ChartProgram;
   createRectMark(options?: RectMarkOptions): ChartProgram;
   editRectMark(options: EditRectMarkOptions): ChartProgram;
-  createRuleMark(options?: { id?: string; data?: string; missing?: "error" | "skip" } & RuleStyleOptions): ChartProgram;
-  editRuleMark(options: { target?: string; missing?: "error" | "skip" } & RuleStyleOptions): ChartProgram;
+  createRuleMark(options?: { clip?: boolean; id?: string; data?: string; missing?: "error" | "skip" } & RuleStyleOptions): ChartProgram;
+  editRuleMark(options: { clip?: boolean; target?: string; missing?: "error" | "skip" } & RuleStyleOptions): ChartProgram;
   createTextMark(options?: TextMarkOptions): ChartProgram;
   createTextPlot(options: CreateTextPlotOptions): ChartProgram;
   createMarkLabels(options?: CreateMarkLabelsOptions): ChartProgram;
@@ -5215,12 +5419,14 @@ export class ChartProgram {
   editMarkLabelPlacement(options: EditMarkLabelPlacementOptions): ChartProgram;
   removeMarkLabels(options: RemoveMarkLabelsOptions): ChartProgram;
   createAnnotation(options: CreateAnnotationOptions): ChartProgram;
+  createStatisticalReference(options: CreateStatisticalReferenceOptions): ChartProgram;
   createReferenceLine(options: CreateReferenceLineOptions): ChartProgram;
   createReferenceBand(options: CreateReferenceBandOptions): ChartProgram;
   editTextMark(options: EditTextMarkOptions): ChartProgram;
   layoutLabels(options?: LabelLayoutOptions): ChartProgram;
   removeLabelLayout(options?: RemoveLabelLayoutOptions): ChartProgram;
   editAreaMark(options: StrokeStyleDetails & {
+    clip?: boolean;
     target?: string;
     fill?: FillPaint;
     opacity?: number;
@@ -5261,9 +5467,11 @@ export class ChartProgram {
     channel:
       | "x" | "y" | "x2" | "y2" | "xOffset" | "yOffset"
       | "theta" | "radius" | "color" | "stroke" | "strokeDash" | "strokeWidth"
-      | "size" | "shape" | "angle" | "group" | "opacity" | "text";
+      | "size" | "shape" | "angle" | "group" | "opacity" | "text" | "dx" | "dy";
   }): ChartProgram;
   encodeText(options: TextEncodingOptions): ChartProgram;
+  encodeDx(options: TextOffsetEncodingOptions): ChartProgram;
+  encodeDy(options: TextOffsetEncodingOptions): ChartProgram;
   encodeHistogram(options: HistogramEncodingOptions): ChartProgram;
   encodeDensity(options: DensityEncodingOptions): ChartProgram;
   editDensity(options: EditDensityOptions): ChartProgram;
@@ -5300,6 +5508,7 @@ export class ChartProgram {
   createPolarScatterPlot(options: CreatePolarScatterPlotOptions): ChartProgram;
   createPolarLinePlot(options: CreatePolarLinePlotOptions): ChartProgram;
   createRadarPlot(options: CreateRadarPlotOptions): ChartProgram;
+  editRadarPlot(options: EditRadarPlotOptions): ChartProgram;
   createRugPlot(options: CreateRugPlotOptions): ChartProgram;
   createStripPlot(options: CreateStripPlotOptions): ChartProgram;
   createBeeswarmPlot(options: CreateBeeswarmPlotOptions): ChartProgram;
@@ -5322,6 +5531,7 @@ export class ChartProgram {
   removeParallelAxis(options: RemoveParallelAxisOptions): ChartProgram;
   removeParallelAxes(options?: ParallelAxesOptions): ChartProgram;
   createAxes(options?: CreateAxesOptions): ChartProgram;
+  editAxes(options: EditAxesOptions): ChartProgram;
   createXAxis(options?: CompleteAxisOptions<XAxisPosition>): ChartProgram;
   createYAxis(options?: CompleteAxisOptions<YAxisPosition>): ChartProgram;
   createThetaAxis(options?: CompleteThetaAxisOptions): ChartProgram;

@@ -2,6 +2,7 @@ import { closedAction } from "../../core/action.js";
 
 import { findDataset } from "../../selectors/datasets.js";
 import { findSemanticScale } from "../../selectors/scales.js";
+import { normalizeEncoding } from "../charts/shared.js";
 import {
   GRADIENT_PLOT_OPTIONS,
   gradientEncodingArgs,
@@ -49,6 +50,7 @@ export const createGradientPlot = /* @__PURE__ */ closedAction(
     const width = resolveGradientWidth(args.width);
     const gradient = resolveGradientAppearance(args.gradient);
     const center = resolveGradientCenter(args.center);
+    const color = normalizeEncoding(args.color, "createGradientPlot color");
     const guides = resolveGradientGuides(args.guides);
     const category = positions.orientation === "vertical"
       ? positions.x
@@ -70,11 +72,11 @@ export const createGradientPlot = /* @__PURE__ */ closedAction(
         width,
         gradient,
         center,
+        ...(color === undefined ? {} : { color }),
         guides
       },
       itemFilterable: false,
-      stroke: false,
-      strokeWidth: 0
+      stroke: false
     });
     if (positions.x !== undefined) {
       next = next.encodeX({

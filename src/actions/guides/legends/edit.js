@@ -1,4 +1,5 @@
 import {resolveColorSizeEdit,createColorSizeLegendFromConfig} from './colorSize.js';
+import {prepareLegendSpacingEdit,patchLegendSpacing,validateLegendSpacing} from "../../../grammar/legendSpacing.js";
 import {patchLegendClipHeight, validateLegendClip} from "../../../grammar/legendClip.js";
 import { validateLegendCombine, validateMappedSizeShapeSymbol } from "../../../grammar/legendCombinations.js";
 import { legendBlockDescriptors } from "./target.js";
@@ -60,7 +61,7 @@ import { planLegendBlockTransitions } from "./transition.js";
 
 const OPTIONS = Object.freeze([
   "target", "channel", "channels", "position", "layout", "align", "direction", "columns", "offset",
-  "titlePosition", "title", "symbol", "labels", "titleStyle", "itemGap",
+  "titlePosition", "title", "symbol", "labels", "titleStyle", "itemGap", "rowPadding", "titlePadding",
   "border", "count", "values", "gradient", "representation", "order", "overflow", "blockLayout", "at", "combine", "clipHeight"
 ]);
 
@@ -95,7 +96,7 @@ function reconcileGraphic(program, id, shouldExist, definition) {
 function resolveColorRepresentationEdit(program, previous, args) {
   const representation = args.representation ?? previous.representation ?? "gradient";
   if (!["gradient", "symbols"].includes(representation)) throw new Error("Legend representation must be gradient or symbols.");
-  const allowed = ["target", "representation", "position", "align", "offset", "title", "labels", "titleStyle", "titlePosition", "border", "count", ...(representation === "symbols" ? ["symbol", "values", "itemGap", "layout", "direction", "columns"] : ["gradient", "direction"])];
+  const allowed = ["target", "representation", "position", "align", "offset", "title", "labels", "titleStyle", "titlePosition", "border", "count", "values", ...(representation === "symbols" ? ["symbol", "itemGap", "layout", "direction", "columns"] : ["gradient", "direction"])];
   for (const key of Object.keys(args)) if (!allowed.includes(key)) throw new Error(`Color ${representation} legend does not accept ${key}.`);
   const switching = (previous.representation ?? "gradient") !== representation;
   const titleMode = args.title;
@@ -110,7 +111,9 @@ function resolveColorRepresentationEdit(program, previous, args) {
   let normalized;
   if (representation === "symbols") {
     if (args.symbol !== undefined && args.symbol !== "auto") validateOptionObject(args.symbol, ["type", "radius", "stroke", "strokeWidth"], "Sampled color symbol");
-    const sample = switching ? { count: previous.count } : {};
+    const priorSampling = readLegendSampling(previous);
+    const sample = switching ? priorSampling.mode === "values"
+      ? { values: priorSampling.values } : { count: priorSampling.count } : {};
     for (const key of ["values", "count"]) if (Object.hasOwn(args, key)) sample[key] = args[key];
     if (Object.hasOwn(args, "values")) delete sample.count;
     if (Object.hasOwn(args, "count")) sample.count = args.count;
@@ -122,10 +125,14 @@ function resolveColorRepresentationEdit(program, previous, args) {
       symbol: args.symbol === "auto" ? "auto" : args.symbol === undefined ? (switching ? undefined : previous.symbol) : { ...(switching ? {} : previous.symbol), ...args.symbol }
     }, switching ? { count: previous.count } : previous, "edit");
   } else {
+    const sampling = normalizeLegendSampling(args, {
+      previous, operation: "edit", label: "Gradient legend"
+    });
     normalized = normalizeContinuousLegend({ ...common,
       ...(args.direction === "auto" ? {} : args.direction !== undefined
         ? { direction: args.direction } : previous.gradientDirection === undefined ? {} : { direction: previous.gradientDirection }),
-      count: args.count ?? (switching ? readLegendSampling(previous).count : previous.count) }, "gradient");
+      count: sampling.count }, "gradient");
+    if (sampling.mode === "values") normalized.sampling = sampling;
     const gradient = normalizeLegendGradient(args.gradient, switching ? undefined : previous.gradient);
     normalized.gradient = gradient;
   }
@@ -143,11 +150,12 @@ function resolveColorRepresentationEdit(program, previous, args) {
 }
 
 function resolveContinuousEdit(program, kind, previous, args) {
+  ({previous,args}=prepareLegendSpacingEdit(previous,args));
   if (kind === "gradient" && (previous.representation === "symbols" || args.representation !== undefined)) return resolveColorRepresentationEdit(program, previous, args);
   const gradient = ["gradient", "strokeGradient"].includes(kind);
   const allowed = gradient
     ? ["target", "position", "align", "offset", "title", "labels",
-      "titleStyle", "titlePosition", "border", "count", "gradient", "representation", "direction"]
+      "titleStyle", "titlePosition", "border", "count", "values", "gradient", "representation", "direction"]
     : ["target", "position", "align", "offset", "title", "symbol", "labels",
       "titleStyle", "titlePosition", "itemGap", "border", "count", "values"];
   for (const key of Object.keys(args)) {
@@ -170,17 +178,17 @@ function resolveContinuousEdit(program, kind, previous, args) {
   const enteringInline = kind === "opacity" &&
     titlePosition === "left" && previous.titlePosition !== "left";
   const labels = mergeObject(previous.labels, args.labels);
-  const sampling = gradient ? undefined : normalizeLegendSampling(args, {
+  const sampling = normalizeLegendSampling(args, {
     previous,
     operation: "edit",
-    label: "Opacity legend"
+    label: gradient ? "Gradient legend" : "Opacity legend"
   });
   const normalized = normalizeContinuousLegend({
     target: previous.target,
     position: args.position ?? previous.position,
     align: args.align ?? previous.align,
     offset: args.offset ?? previous.offset,
-    ...(gradient ? { count: args.count ?? previous.count,
+    ...(gradient ? { count: sampling.count,
       ...(args.direction === "auto" ? {} : args.direction !== undefined ? { direction: args.direction }
         : previous.gradientDirection === undefined ? {} : { direction: previous.gradientDirection }) } : {}),
     titlePosition,
@@ -196,10 +204,11 @@ function resolveContinuousEdit(program, kind, previous, args) {
     } : {})
   }, gradient ? "gradient" : kind);
   const { count: _legacyCount, ...canonicalPrevious } = previous;
+  const { sampling: _priorSampling, ...gradientPrevious } = previous;
   const config = {
-    ...(gradient ? previous : canonicalPrevious),
+    ...(gradient ? gradientPrevious : canonicalPrevious),
     ...normalized,
-    ...(gradient ? {} : { sampling }),
+    ...(gradient && sampling.mode !== "values" ? {} : { sampling }),
     inferredTitle,
     titleVisible
   };
@@ -241,6 +250,7 @@ function editContinuous(program, kind, previous, args) {
 }
 
 function resolveIntervalEdit(program, previous, args, channel = "color") {
+  ({previous,args}=prepareLegendSpacingEdit(previous,args));
   for (const key of Object.keys(args)) {
     if (![
       "target", "position", "align", "direction", "offset", "title",
@@ -321,6 +331,7 @@ function editInterval(program, previous, args, channel = "color") {
 }
 
 function resolveSampledLegendEdit(program, kind, previous, args, preserveAppearance = false) {
+  ({previous,args}=prepareLegendSpacingEdit(previous,args));
   const size = kind === "size";
   const label = size ? "size" : "stroke-width";
   const allowed = ["target", "title", "count", "values", "labels", "titleStyle",
@@ -440,6 +451,8 @@ function resolveCompanionSizeEdit(program, previous, size, args) {
 }
 
 function resolveCategoricalEdit(program, kind, previous, size, args, storedOrder = program.semanticSpec.guides.legend?.[kind]?.order) {
+  if (size !== undefined) size=patchLegendSpacing(size,args);
+  ({previous,args}=prepareLegendSpacingEdit(previous,args));
   if (args.values !== undefined) {
     throw new Error(
       "Combined and categorical legends require a channel block selector for exact values."
@@ -502,6 +515,7 @@ function resolveCategoricalEdit(program, kind, previous, size, args, storedOrder
     inferredSymbol,
     titleVisible
   };
+  validateLegendSpacing(kind,config);
   const order = args.order === undefined
     ? storedOrder
     : normalizeLegendOrder(args.order);
@@ -658,7 +672,7 @@ function editLegendContent(program, target, args, positionIntent = {position: ar
     }
     else plan.config = resolveContinuousEdit(view, plan.kind, plan.config, patch).config;
   }
-  plans = planLegendBlockTransitions(program, target, plans, positionIntent.position);
+  plans = planLegendBlockTransitions(program, target, plans, positionIntent.position, args);
   // The complete final content and styles are validated before removing resources.
   for (const { kind, config } of plans) view = view._withLegendConfig(kind, config);
   if (categorical !== undefined) resolveLayout(view, categorical.config);
@@ -756,7 +770,7 @@ function editLegendImplementation(args = {}, skipGroup = false, positionIntent =
       const prepared = prepareLegendGroup(this, args, target, { corner: PLOT_LEGEND_POSITIONS.includes(args.position) });
       const { channels, ...patch } = prepared.options;
       if (channels !== undefined) return editLegendContent(prepared.program, target, prepared.options, positionIntent);
-      const layoutKeys = ["position", "layout", "align", "direction", "columns", "offset", "titlePosition", "itemGap"];
+      const layoutKeys = ["position", "layout", "align", "direction", "columns", "offset", "titlePosition", "itemGap", "rowPadding", "titlePadding"];
       const layoutOnly = Object.keys(patch).every(key => key === "target" || layoutKeys.includes(key));
       if (layoutOnly) {
         let next = prepared.program;

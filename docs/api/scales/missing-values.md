@@ -31,12 +31,24 @@ channel: position uses a finite coordinate, color a non-empty string, size a
 non-negative area, opacity a value from `0` to `1`, and shape one supported
 point shape.
 
-This policy is intentionally limited to row-owned point items. A missing value
-inside a line/area path, bar aggregate, rule, xOffset group, or stroke-dash
-series could change item topology; those consumers reject `unknown` until they
-have a separate topology-safe policy. A direct unattached scale stores its
-fallback and defers channel validation until attachment. Set
-`unknown: undefined` with `editScale` to remove an existing fallback.
+Missing or invalid row fallback is limited to row-owned point items, with one
+separate line-color policy: a Cartesian line with nominal/ordinal color and an
+explicit nonempty ordinal domain can use an unknown paint while preserving raw
+series identities. Missing and null colors use that paint; malformed category
+objects, arrays and non-finite numbers still fail.
+
+Cartesian line and rule stroke-dash scales support `unknown` for valid raw
+categories outside a domain. The fallback is a named dash style or direct
+pattern, including `[]` for a solid stroke. It does not permit missing or invalid
+categories, add domain or legend entries, or merge different raw series.
+Parallel, polar, aggregate and binned path topologies reject this fallback.
+See [Ordinal and stroke dash scales](./ordinal-and-dash.md).
+
+Other grouped and aggregate consumers retain their existing strict policy.
+A direct unattached scale stores its fallback and defers channel validation
+until attachment. Set `unknown: undefined` with `editScale` to remove an existing
+fallback. The edit fails atomically if any dependent consumer would become
+invalid. The focused `editStrokeDashScale` supports the same removal.
 
 ## Related
 

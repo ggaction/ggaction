@@ -528,6 +528,12 @@ Start with legend blocks, then edit orientation, title, border and one local anc
 
 Representative actions: `createLegend`, `editLegendLayout`, `editLegendBorder`, `editLegendBlock`. [Documentation](https://ggaction.github.io/ggaction/api/legends/categorical/#independent-legend-appearance).
 
+### [Equal gaps between different-sized legend rows](./legend-content-spacing/)
+
+Set occupied row gaps separately from title padding and legacy center pitch.
+
+Representative actions: `createLegend`, `editLegendLayout`. [Documentation](https://ggaction.github.io/ggaction/api/legends/#space-rows-by-content).
+
 ### [Opacity of a layered legend recipe](./legend-recipe-opacity/)
 
 Style an existing legend with a complete line and point recipe.
@@ -545,6 +551,48 @@ Representative actions: `createAreaPlot`, `encodeGroup`, `encodeColor`, `layoutS
 Preserve raw observations and calculate reusable asymmetric intervals before drawing existing areas and lines.
 
 Representative actions: `createSummaryData`, `createAreaPlot`, `createLineMark`. [Documentation](https://ggaction.github.io/ggaction/api/data/summaries-and-shaping/#bootstrap-mean-confidence-intervals).
+
+### [Share the existing facet top margin](./facet-shared-top-lane/)
+
+Keep fixed plot sizes while reusing existing top space for titles and facet headers.
+
+Representative actions: `facet`, `editCompositionLayout`, `editFacetHeaders`. [Documentation](https://ggaction.github.io/ggaction/api/composition/facets/#share-the-existing-top-margin).
+
+### [Composite marks over guides](./plot-guide-underlays/)
+
+Move a complete Cartesian axis or plot border behind ordinary marks without changing geometry.
+
+Representative actions: `createXAxis`, `editXAxis`, `editCanvas`. [Documentation](https://ggaction.github.io/ggaction/api/axes/complete/#composite-marks-over-guides).
+
+### [Vertical region headers](./facet-header-rotation/)
+
+Put panel names beside their plots with an explicit header rotation.
+
+Representative actions: `facet`, `editFacetHeaders`, `editCompositionLayout`. [Documentation](https://ggaction.github.io/ggaction/api/composition/facets/#rotate-panel-headers).
+
+### [Mean age by group](./lookup-data/)
+
+Copy typed reference values while keeping both original tables unchanged.
+
+Representative actions: `createData`, `createLookupData`, `createBarPlot`. [Documentation](https://ggaction.github.io/ggaction/api/data/summaries-and-shaping/#named-table-lookup).
+
+### [One field title across two panels](./facet-field-titles/)
+
+Add an independent field title to existing facet headers.
+
+Representative actions: `facet`, `editFacetHeaders`, `editCompositionLayout`. [Documentation](https://ggaction.github.io/ggaction/api/composition/facets/#name-the-complete-facet-field).
+
+### [Count-based automatic linear domain](./linear-nice-count/)
+
+Choose automatic linear domain rounding without hard-coding a range for every panel.
+
+Representative actions: `createLinePlot`, `editYScale`, `editFacetScales`. [Documentation](https://ggaction.github.io/ggaction/api/scales/#count-based-linear-domain-rounding).
+
+### [Nearest-step automatic linear ticks](./linear-nearest-ticks/)
+
+Use one automatic tick policy across independently scaled facet panels.
+
+Representative actions: `createLinePlot`, `createYAxis`, `editYAxisTicksAndLabels`. [Documentation](https://ggaction.github.io/ggaction/api/axes/#choose-nearest-step-linear-ticks).
 
 ## Development fixtures
 

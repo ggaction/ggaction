@@ -60,6 +60,7 @@ export function resolveLineItems(program, layer, dataset) {
     dataset.values,
     layer,
     {
+      scales: program.semanticSpec.scales,
       xDomain: program.resolvedScales[x?.scale]?.domain,
       ...(x?.bin === undefined ? {} : {
           xBinBoundaries: resolveLineBins(

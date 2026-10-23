@@ -1,0 +1,111 @@
+{
+  "status": "runtime-package-and-browser-verified-awaiting-source-link-commit-and-full-coverage",
+  "issue": 256,
+  "normal": {
+    "tests": 5221,
+    "pass": 5220,
+    "fail": 1,
+    "remainingFailure": "New canonical example Git source link requires the implementation commit; regenerate provenance and rerun after commit."
+  },
+  "focusedTests": 19,
+  "numericAndLifecycleRegressionTests": 90,
+  "installedConsumerGroups": 68,
+  "publicBrowserExamples": 100,
+  "minimalCanonicalPublicActions": 3,
+  "primitivePublicGraphicsSVGAndPNGsExact": true,
+  "pngSha256": {
+    "ratio1": "1c4efd783e08b95aaf8d829b07dba58cfdc4e815841122ad13d3013c4990c6e3",
+    "ratio2": "087cacca3a3711ea2b9734e21af0cd1099742bb03105a4553b61d0e0ae59ab30"
+  },
+  "reviewArtifactGraduatedTo": ".artifacts/test/png/charts/axes/linear-nearest-ticks/default",
+  "package": {
+    "entries": 610,
+    "packedBytes": 866313,
+    "unpackedBytes": 4180025
+  },
+  "browserBundleGzip": {
+    "full": 430245,
+    "basic": 217094,
+    "svg": 7567
+  },
+  "searchBytes": 849318,
+  "priorFailures": "Preserved API-fixture corrections (grid method names and complete Canvas plot dimensions), a corrupt semantic/resolved scale pair corrected to exercise the intended guard, and measured package/search bounds. Existing checks and numerical tolerances are unchanged.",
+  "logs": {
+    "all-normal-v1": {
+      "path": "/tmp/ggaction-linear-nearest-ticks-all-normal-v1.log",
+      "sha256": "f127c3fa6f6c08e12ac8a310b8211b03d327cbf410fa5e84170f8458e5494cbe",
+      "bytes": 1092332
+    },
+    "all-normal-v2": {
+      "path": "/tmp/ggaction-linear-nearest-ticks-all-normal-v2.log",
+      "sha256": "dc59c35e6da900b2099be37c146d449f0c67f83eb417c4b423e20d74e9fef2d8",
+      "bytes": 1090489
+    },
+    "package-consumer-v1": {
+      "path": "/tmp/ggaction-linear-nearest-ticks-package-consumer-v1.log",
+      "sha256": "fbcbe8048a6e6365271b3d320d7b901cecb180fa8ebd8a36daa4fa4d20b7b3d7",
+      "bytes": 2981
+    },
+    "public-browser-v1": {
+      "path": "/tmp/ggaction-linear-nearest-ticks-public-browser-v1.log",
+      "sha256": "61dedb72534c5299a3ffc30a2ab3d36efd30d8f3ae26f64ed1e48ec86043de34",
+      "bytes": 18368
+    },
+    "focused-v4": {
+      "path": "/tmp/ggaction-linear-nearest-ticks-focused-v4.log",
+      "sha256": "ff2e79d14def2af445200245a1b2439c3bae809192f2440ef172c319cd0c8506",
+      "bytes": 4269
+    },
+    "numeric-and-lifecycle-v2": {
+      "path": "/tmp/ggaction-linear-nearest-ticks-numeric-and-lifecycle-v2.log",
+      "sha256": "2bce32734356204d75c7911b4a32aaf9bfa0c5e98690efe80e90813a2c9d8ccd",
+      "bytes": 17514
+    },
+    "render-v1": {
+      "path": "/tmp/ggaction-linear-nearest-ticks-render-v1.log",
+      "sha256": "2132386928ada209e96466a0d314a42de23cb50e14a6e04577e070fb7fb851a9",
+      "bytes": 263
+    },
+    "public-v1": {
+      "path": "/tmp/ggaction-linear-nearest-ticks-public-v1.log",
+      "sha256": "142532f4fc8d08c6c50a19875a29fb17f198551c6e8f86a585a22332b58d7225",
+      "bytes": 5005
+    },
+    "public-v2": {
+      "path": "/tmp/ggaction-linear-nearest-ticks-public-v2.log",
+      "sha256": "845e3da87215b718cd93d7dd0725213fd3e0f453abfb0f4f97ef16f73fa86291",
+      "bytes": 3100
+    },
+    "public-v3": {
+      "path": "/tmp/ggaction-linear-nearest-ticks-public-v3.log",
+      "sha256": "fdd1b2a2a3333aa32bf7f178b18838fbbea5682509a04bd561ac8927d007e6aa",
+      "bytes": 2652
+    },
+    "public-v4": {
+      "path": "/tmp/ggaction-linear-nearest-ticks-public-v4.log",
+      "sha256": "8b03aaba42b46d7189a61206236f1504fa144e0ed7f92cdb8aafecb9d34eb726",
+      "bytes": 2495
+    },
+    "public-v5": {
+      "path": "/tmp/ggaction-linear-nearest-ticks-public-v5.log",
+      "sha256": "82cad0c615775097eb0b3527217b99898ebd72cf6073a5a6232e34416085b1f8",
+      "bytes": 3593
+    },
+    "public-v6": {
+      "path": "/tmp/ggaction-linear-nearest-ticks-public-v6.log",
+      "sha256": "2a264eefd0b5697ea237f26039e606098de349798641d26e3382b2911e1573a2",
+      "bytes": 3593
+    },
+    "focused-v3": {
+      "path": "/tmp/ggaction-linear-nearest-ticks-focused-v3.log",
+      "sha256": "c04b43c6eff4fbcc5c470412ab7da5722ffac942a2fa107e3170bffe223fd309",
+      "bytes": 6214
+    }
+  },
+  "sourceNeutral": true,
+  "noImageInspection": true,
+  "activeTranslationRuntimeChanged": false,
+  "SchoolRequests": 0,
+  "registryPublished": false,
+  "regularReleaseAt": 1413
+}

@@ -32,7 +32,7 @@ export function resolveBarOrientation(layer) {
   const x = layer.encoding?.x;
   const y = layer.encoding?.y;
   if (hasNumericCenters(layer)) return layer.mark.orientation;
-  if (x?.bin !== undefined && y?.aggregate === "count") {
+  if (x?.bin !== undefined && isAggregate(y?.aggregate)) {
     return BAR_ORIENTATIONS.vertical;
   }
   if (isBarCategoryEncoding(x) && y?.fieldType === "quantitative" && layer.encoding?.y2?.fieldType === "quantitative") {
@@ -68,7 +68,7 @@ export function resolveBarGrain(layer) {
 
   if (
     x?.bin !== undefined &&
-    y?.aggregate === "count"
+    isAggregate(y?.aggregate)
   ) {
     return BAR_GRAINS.histogram;
   }

@@ -5,6 +5,8 @@ title: Program Inspection
 
 # Program Inspection
 
+Repeated comparisons reuse unchanged immutable resources while preserving exact value comparisons and change reports.
+
 The browser-safe `ggaction/inspection` entry reads a closed Full or Basic
 program without executing an action or changing its trace, context, or cached
 materialization. Every returned object is immutable and carries `version: 1`
@@ -44,10 +46,15 @@ const description = describeAction(program, {
 `parameterDefinitions` comes from the same generated action-card and type
 contract as the public reference. Required options, unknown options, an
 explicit target mismatch, known missing fields, and supported mark-family
-constraints appear in `requirements`, `checks`, and structured `findings`.
+constraints use the same appearance-channel policy as the actual encoding actions
+(including Rect opacity and stroke width) and appear in `requirements`, `checks`, and structured `findings`.
 `applicability: "supported"` means the static checks passed; numerical fitting,
 allocation, and rendering remain `not_run`. Registered extension actions with
 no built-in descriptor return `unverified`.
+
+Literal comparison values in `filterMarks`, `selectMarks`, and `editMarkSelection`
+are not field references. Their `field` option selects the column; a string
+`value` such as a category name is checked as a literal.
 
 ## Compare immutable revisions
 
@@ -60,7 +67,8 @@ const dataScoped = comparePrograms(before, after, {
 
 The full comparison includes datasets and values, layer order and bindings,
 scales, coordinates, guides, Canvas settings, composition intent, and
-user-authored appearance. It ignores trace-only IDs, current selection context,
+user-authored appearance. Title position, alignment, and typography are included
+even when the title text is unchanged. It ignores trace-only IDs, current selection context,
 and cache identity. Changes are classified as `data`, `binding`, `structure`,
 `scale`, `guide`, or `style`. A targeted comparison also includes changed
 downstream consumers and sets `completeProgramComparison: false`.
@@ -95,3 +103,12 @@ Targets use `{ kind, id, childPath? }`, where `kind` is `data`, `mark`, `scale`,
 [Data updates and snapshots](./data-updates.md) ·
 [ChartProgram and immutability](./concepts/chart-program.md) ·
 [Errors and recovery](./errors-and-recovery.md)
+
+A facet parent retains source semantics, while its drawable marks belong to the
+child panels. The parent's retained mark template reports concrete structure as
+`not_applicable`; inspection still checks each actual child graphic.
+
+Facet preflight also checks partition ancestry and supported transform replay
+using the same pure dependency planner as facet creation. Aggregate output fields
+that are not valid partition ancestors return a `facet-partition` finding before
+any chart action executes.

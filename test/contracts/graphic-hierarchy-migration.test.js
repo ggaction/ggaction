@@ -25,20 +25,28 @@ const LOADERS = Object.freeze({
 });
 
 const EXPECTED_DRAW_ORDER = Object.freeze({
+  "linear-nice-count": ["canvas", "linePlot"],
+  "linear-nearest-ticks": ["canvas", "linePlot", "yAxisLine", "yAxisTicks", "yAxisLabels"],
+  "lookup-data": ["canvas", "horizontalGridLines", "barPlot", "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle", "yAxisLine", "yAxisTicks", "yAxisLabels", "yAxisTitle"],
   "bootstrap-mean-ci": ["canvas", "areaPlot", "meanLine"],
   "continuous-area-color": ["canvas", "areaPlot"],
   "named-shapes": ["canvas", "scatterPlot", "labels"],
   "combined-legends": [],
   "legend-layout": ["canvas", "scatterPlot", "sizeLegendSymbols", "sizeLegendLabels", "colorGradientBackground", "colorGradientStrips", "colorGradientTicks", "colorGradientLabels", "colorGradientTitle"],
   "legend-recipe-opacity": ["canvas", "scatterPlot", "colorLegendSymbolLines", "colorLegendSymbolPoints", "colorLegendLabels"],
+  "legend-content-spacing": ["canvas", "scatterPlot", "sizeLegendSymbols", "sizeLegendLabels", "sizeLegendTitle"],
   "axis-owners": [
     "canvas", "horizontalGridLines", "scatterPlot", "xAxisLine", "xAxisTitle",
     "axis_quantity__Line", "axis_quantity__Ticks", "axis_quantity__Labels", "axis_quantity__Title",
     "axis_share__Line", "axis_share__Ticks", "axis_share__Labels", "axis_share__Title"
   ],
   "bar-compositing": ["canvas", "barPlot"],
+  "plot-guide-underlays": ["canvas", "horizontalGridLines", "plotBorder", "xAxisLine", "barPlot"],
   "legend-appearance": ["canvas", "scatterPlot", "colorLegendSymbolPoints", "colorLegendLabels"],
   "shared-facet-owner": [],
+  "facet-shared-top-lane": [],
+  "facet-header-rotation": [],
+  "facet-field-titles": [],
   "symbol-window": ["canvas", "scatterPlot", "sizeLegendSymbols", "sizeLegendLabels"],
   "color-controls": ["canvas", "gamma1", "gamma22", "power"],
   "color-white-point": ["canvas", "d65", "d50"],
@@ -432,12 +440,16 @@ test("locks the complete public graphic hierarchy inventory", () => {
       assert.equal(rootChildren.slice(0, childCount).every(id =>
         program.graphicSpec.objects[id].type === "canvas"
       ), true);
-      const expectedParentChildren = chart.id === "facet-grid"
+      const expectedParentChildren = ["facet-header-rotation", "facet-field-titles"].includes(chart.id)
+        ? ["facet-headers"]
+        : chart.id === "facet-grid"
         ? ["matrix-headers"]
         : chart.id === "repeat-charts"
           ? ["metrics-headers", "metrics-shared-legend"]
           : chart.id === "shared-facet-owner"
             ? ["facet-headers", "facet-shared-legend"]
+          : chart.id === "facet-shared-top-lane"
+            ? ["facet-headers", "facet-shared-legend", "chartTitle"]
           : ["facet-headers", "facet-legend", "chartTitle", "chartSubtitle"];
       assert.deepEqual(rootChildren.slice(childCount), expectedParentChildren);
       for (const childId of rootChildren) {

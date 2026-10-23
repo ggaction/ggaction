@@ -97,6 +97,80 @@ members using the same edge rules as Histogram.
 [Source and Derived Data](../../api/data/source-and-derived.md#createbindata-id-source-field-binoptions)
 
 
+## `createLookupData`
+
+**API layer:** user-facing. **Authoring roles:** H1.
+
+**Availability:** Available by v0.0.22. See [release compatibility](../../version.md).
+
+```typescript
+createLookupData(options: LookupDataOptions): ChartProgram;
+```
+
+Named option contracts: [`LookupDataOptions`](./../types.md#type-lookupdataoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Required | `string` |
+| `source` | Optional / branch-dependent | `string \| undefined` |
+| `field` | Required | `string` |
+| `lookup` | Required | `{ data: string; key: string; fields: readonly string[]; as?: readonly string[] \| undefined; }` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createLookupData({ id, source?, field, lookup: { data, key, fields, as? } })
+```
+
+Copy fields from one named table without changing primary row order or count.
+Keys keep their scalar types; unmatched rows receive null, and duplicate reference keys reject.
+Full and Basic support creation. [Named table lookup](../../api/data/summaries-and-shaping.md#named-table-lookup)
+
+
+## `createFlattenData`
+
+**API layer:** user-facing. **Authoring roles:** H1.
+
+**Availability:** Available by v0.0.22. See [release compatibility](../../version.md).
+
+```typescript
+createFlattenData(options: FlattenDataOptions): ChartProgram;
+```
+
+Named option contracts: [`FlattenDataOptions`](./../types.md#type-flattendataoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Required | `string` |
+| `source` | Optional / branch-dependent | `string \| undefined` |
+| `fields` | Required | `readonly string[]` |
+| `as` | Optional / branch-dependent | `readonly string[] \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createFlattenData({ id, source?, fields, as? })
+```
+
+Expand parallel array columns into index-aligned rows; shorter arrays pad with null.
+Retain raw ancestors and original row/index order. Full and Basic support creation.
+[Aligned array data](../../api/data/summaries-and-shaping.md#createflattendata-id-source-fields-as)
+
+
 ## `createFoldData`
 
 **API layer:** user-facing. **Authoring roles:** H1.
@@ -174,7 +248,7 @@ expression, including explicit nested scalar `getPath` and first-occurrence
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
-**Availability:** Available by v0.0.21. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.22. See [release compatibility](../../version.md).
 
 ```typescript
 createNormalizedData(options: NormalizedDataOptions): ChartProgram;
@@ -217,7 +291,7 @@ percent-change values independently within each group.
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
-**Availability:** Available by v0.0.21. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.22. See [release compatibility](../../version.md).
 
 ```typescript
 createSortedData(options: SortedDataOptions): ChartProgram;
@@ -253,7 +327,7 @@ null placement, and quantitative, categorical, or temporal comparison.
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
-**Availability:** Available by v0.0.21. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.22. See [release compatibility](../../version.md).
 
 ```typescript
 createCompleteData(options: CompleteDataOptions): ChartProgram;
@@ -294,7 +368,7 @@ explicit fill and source-membership provenance for synthesized rows.
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
-**Availability:** Available by v0.0.21. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.22. See [release compatibility](../../version.md).
 
 ```typescript
 createImputedData(options: ImputedDataOptions): ChartProgram;
@@ -375,7 +449,7 @@ by Bar and Area layouts. [Source and Derived Data](../../api/data/source-and-der
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.21. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.22. See [release compatibility](../../version.md).
 
 ```typescript
 editComputedData(options: EditComputedDataOptions): ChartProgram;
@@ -401,11 +475,71 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 
 
 
+## `editLookupData`
+
+**API layer:** user-facing. **Authoring roles:** H1, H3.
+
+**Availability:** Available by v0.0.22. See [release compatibility](../../version.md).
+
+```typescript
+editLookupData(options: EditLookupDataOptions): ChartProgram;
+```
+
+Named option contracts: [`EditLookupDataOptions`](./../types.md#type-editlookupdataoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Required | `string` |
+| `dependents` | Optional / branch-dependent | `DerivedDataDependents \| undefined` |
+| `field` | Optional / branch-dependent | `string \| undefined` |
+| `lookup` | Optional / branch-dependent | `{ data: string; key: string; fields: readonly string[]; as?: readonly string[] \| undefined; } \| undefined` |
+
+</details>
+
+Behavior, inference, resets, and errors: [Focused statistical data editing](./statistics.md#focused-statistical-data-editing).
+
+
+
+## `editFlattenData`
+
+**API layer:** user-facing. **Authoring roles:** H1, H3.
+
+**Availability:** Available by v0.0.22. See [release compatibility](../../version.md).
+
+```typescript
+editFlattenData(options: EditFlattenDataOptions): ChartProgram;
+```
+
+Named option contracts: [`EditFlattenDataOptions`](./../types.md#type-editflattendataoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Required | `string` |
+| `dependents` | Optional / branch-dependent | `DerivedDataDependents \| undefined` |
+| `fields` | Optional / branch-dependent | `readonly string[] \| undefined` |
+| `as` | Optional / branch-dependent | `readonly string[] \| undefined` |
+
+</details>
+
+Behavior, inference, resets, and errors: [Focused statistical data editing](./statistics.md#focused-statistical-data-editing).
+
+
+
 ## `editFoldData`
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.21. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.22. See [release compatibility](../../version.md).
 
 ```typescript
 editFoldData(options: EditFoldDataOptions): ChartProgram;
@@ -435,7 +569,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.21. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.22. See [release compatibility](../../version.md).
 
 ```typescript
 editSummaryData(options: EditSummaryDataOptions): ChartProgram;
@@ -469,7 +603,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.21. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.22. See [release compatibility](../../version.md).
 
 ```typescript
 editBinData(options: EditBinDataOptions): ChartProgram;
@@ -509,7 +643,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.21. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.22. See [release compatibility](../../version.md).
 
 ```typescript
 editStackData(options: EditStackDataOptions): ChartProgram;
@@ -542,7 +676,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.21. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.22. See [release compatibility](../../version.md).
 
 ```typescript
 editIntervalData(options: EditIntervalDataOptions): ChartProgram;
@@ -578,7 +712,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.21. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.22. See [release compatibility](../../version.md).
 
 ```typescript
 editECDFData(options: EditECDFDataOptions): ChartProgram;
@@ -611,7 +745,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.21. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.22. See [release compatibility](../../version.md).
 
 ```typescript
 editNormalizedData(options: EditNormalizedDataOptions): ChartProgram;
@@ -647,7 +781,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.21. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.22. See [release compatibility](../../version.md).
 
 ```typescript
 editSortedData(options: EditSortedDataOptions): ChartProgram;
@@ -676,7 +810,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./charts-da
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.21. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.22. See [release compatibility](../../version.md).
 
 ```typescript
 editCompleteData(options: EditCompleteDataOptions): ChartProgram;
@@ -710,7 +844,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.21. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.22. See [release compatibility](../../version.md).
 
 ```typescript
 editImputedData(options: EditImputedDataOptions): ChartProgram;
@@ -1204,6 +1338,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `x` | Optional / branch-dependent | `BoxPlotPositionChannel \| undefined` |
 | `y` | Optional / branch-dependent | `BoxPlotPositionChannel \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `color` | Optional / branch-dependent | `string \| { field: string; fieldType?: "nominal" \| "ordinal" \| undefined; scale?: NonPointCategoricalColorScaleOptions \| undefined; palette?: Palette \| undefined; } \| { ...; } \| undefined` |
 | `whisker` | Optional / branch-dependent | `BoxPlotWhisker \| undefined` |
 | `width` | Optional / branch-dependent | `BoxPlotWidth \| undefined` |
 | `outliers` | Optional / branch-dependent | `boolean \| undefined` |
@@ -1218,7 +1353,7 @@ The following call patterns are abbreviated examples; the declaration above owns
 
 ```javascript
 createBoxPlot({
-  id?, target?, data?, x?, y?, coordinate?, summary?, whisker?, width?, outliers?,
+  id?, target?, data?, x?, y?, coordinate?, color?, summary?, whisker?, width?, outliers?,
   box?, median?, outlier?, guides?
 } = {})
 ```
@@ -1230,6 +1365,8 @@ median rules, and optional point outliers. Tukey factor, band width, component
 appearance, and outlier creation are configurable. [Box plots](../../api/box-plots.md)
 Guides remain opt-in for compatibility: pass `guides: {}` or nested options to
 ensure compatible guides inside the facade; omission and `false` create none.
+Optional `color` uses the ordinary field/fixed encoding on the body after
+position completion and before guides. It cannot be combined with explicit `box.fill`.
 
 
 ## `editBoxPlot`
@@ -1301,6 +1438,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `x` | Optional / branch-dependent | `BoxPlotPositionChannel \| undefined` |
 | `y` | Optional / branch-dependent | `BoxPlotPositionChannel \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `color` | Optional / branch-dependent | `{ value: string; } \| BasicColorChannel \| undefined` |
 | `density` | Optional / branch-dependent | `GradientPlotDensityOptions \| undefined` |
 | `width` | Optional / branch-dependent | `{ band?: number \| undefined; } \| undefined` |
 | `gradient` | Optional / branch-dependent | `GradientPlotAppearanceOptions \| undefined` |
@@ -1313,7 +1451,7 @@ The following call patterns are abbreviated examples; the declaration above owns
 
 ```javascript
 createGradientPlot({
-  id?, target?, data?, x?, y?, coordinate?, density?, width?, gradient?,
+  id?, target?, data?, x?, y?, coordinate?, color?, density?, width?, gradient?,
   center?, guides?
 } = {})
 ```
@@ -1324,6 +1462,8 @@ encoded layer, or completed later. Defaults are Gaussian auto density, 64
 samples, width band `0.7`, no outline, a median center rule, and applicable
 guides. A categorical `encodeColor` owns strip hue while density continues to
 control lightness and opacity.
+Optional `color` applies that same field/fixed encoding at creation or deferred
+position completion, before guides.
 [Statistical actions](../../reference/actions/statistics.md#creategradientplot)
 
 
@@ -1645,7 +1785,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `valueScale` | Optional / branch-dependent | `NonPointQuantitativePositionScaleOptions \| undefined` |
 | `densityScale` | Optional / branch-dependent | `NonPointZeroSupportingPositionScaleOptions \| undefined` |
 | `color` | Optional / branch-dependent | `string \| { field: string; fieldType?: "nominal" \| "ordinal" \| undefined; scale?: NonPointCategoricalColorScaleOptions \| undefined; palette?: Palette \| undefined; layout?: "overlay" \| undefined; } \| undefined` |
-| `area` | Optional / branch-dependent | `(StrokeStyleDetails & { fill?: FillPaint \| undefined; opacity?: number \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; }) \| undefined` |
+| `area` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; fill?: FillPaint \| undefined; opacity?: number \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| DensityPlotGuideOptions \| undefined` |
 
 </details>
@@ -1704,7 +1844,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `missing` | Optional / branch-dependent | `HorizonMissingPolicy \| undefined` |
 | `overflow` | Optional / branch-dependent | `HorizonOverflowPolicy \| undefined` |
 | `palette` | Optional / branch-dependent | `HorizonPaletteOptions \| undefined` |
-| `area` | Optional / branch-dependent | `(StrokeStyleDetails & { opacity?: number \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; }) \| undefined` |
+| `area` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; opacity?: number \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| HorizonPlotGuideOptions \| undefined` |
 
 </details>
@@ -1731,6 +1871,8 @@ The vertical grid follows continuous original x and rejects explicit `bandPositi
 
 ```javascript
 editComputedData({ target, as?, expression?, dependents? })
+editLookupData({ target, field?, lookup?, dependents? })
+editFlattenData({ target, fields?, as?, dependents? })
 editFoldData({ target, fields?, as?, dependents? })
 editSummaryData({ target, groupBy?, aggregates?, members?, weight?, dependents? })
 editBinData({ target, field?, maxBins? | step? | boundaries?, extent?, nice?, zero?, includeEmpty?, members?, as?, weight?, dependents? })

@@ -1,4 +1,4 @@
-import { cloneAndFreeze } from "../../core/immutable.js";
+import { cloneAndFreeze, isOwned, isPlainObject } from "../../core/immutable.js";
 import {
   readNominalField,
   readQuantitativeField
@@ -17,7 +17,33 @@ import {
 export const REGRESSION_LOWER_FIELD = "__regression_ci_lower";
 export const REGRESSION_UPPER_FIELD = "__regression_ci_upper";
 
-export function deriveRegression(values, {
+const regressionResults = new WeakMap();
+const parameterKeys = ["x", "y", "groupBy", "method", "degree", "span", "robustIterations",
+  "confidenceMethod", "level", "confidence", "interval", "predict", "missing"];
+
+export function deriveRegression(values, options = {}) {
+  if (!isOwned(values) || !isPlainObject(options) || parameterKeys.some(key => {
+    const descriptor = Object.getOwnPropertyDescriptor(options, key);
+    return descriptor ? !Object.hasOwn(descriptor, "value") : key in options;
+  })) return computeRegression(values, options);
+  const entries = parameterKeys.map(key => options[key]);
+  const cacheable = isOwned(values) && entries.every(value => value === undefined || value === null ||
+    typeof value === "string" || typeof value === "boolean" ||
+    typeof value === "number" && Number.isFinite(value) && !Object.is(value, -0));
+  const key = cacheable ? JSON.stringify(entries.map(value => [typeof value, value])) : undefined;
+  const cached = cacheable ? regressionResults.get(values)?.get(key) : undefined;
+  if (cached !== undefined) return cached;
+  const result = computeRegression(values, options);
+  if (cacheable) {
+    if (!regressionResults.has(values)) regressionResults.set(values, new Map());
+    const cache = regressionResults.get(values);
+    if (cache.size >= 32) cache.delete(cache.keys().next().value);
+    cache.set(key, result);
+  }
+  return result;
+}
+
+function computeRegression(values, {
   x,
   y,
   groupBy,

@@ -1,0 +1,366 @@
+{
+  "status": "implemented-source-and-installed-package-verified-immutable-candidate-pending",
+  "issue": 250,
+  "authority": "Direct human standing approval; public release at1413; sequential translation, no manual chart image inspection",
+  "sourceImplementationCommit": "fff362e8",
+  "verifiedSourceHead": "9adf3b72bd11f8087a3f0ddbb7360a8d7d3f2f73",
+  "normalInitial": {
+    "tests": 5062,
+    "pass": 5053,
+    "fail": 9,
+    "failures": [
+      "primitive literal floating endpoint",
+      "RotationInput compact example seed",
+      "RotationInput task example seed",
+      "new graphic hierarchy inventory",
+      "package size",
+      "reverse persistence materialization dependency",
+      "capability sort order",
+      "new example Git source link before commit",
+      "generated gallery count"
+    ]
+  },
+  "normalIntermediate": {
+    "v2": {
+      "tests": 5062,
+      "pass": 5062,
+      "fail": 0
+    },
+    "v3": {
+      "tests": 5062,
+      "pass": 5061,
+      "fail": 1,
+      "failure": "canonical architecture browser ceiling table was stale after measured Full size update"
+    }
+  },
+  "normal": {
+    "tests": 5062,
+    "pass": 5062,
+    "fail": 0
+  },
+  "focusedFeatureTests": 50,
+  "installedConsumerGroups": 65,
+  "installedConsumer": {
+    "package": "ggaction@0.0.21",
+    "source": "ggaction-0.0.21.tgz",
+    "sha256": "4288d687e9d6cbec575da68b4352d0fe36ba2cc4f3e931df528a1bf0f2f0506a",
+    "browserBundles": {
+      "full": {
+        "specifier": "ggaction",
+        "chunks": 1,
+        "modules": 537,
+        "minifiedBytes": 1567990,
+        "gzipBytes": 425480
+      },
+      "basic": {
+        "specifier": "ggaction/basic",
+        "chunks": 1,
+        "modules": 321,
+        "minifiedBytes": 758812,
+        "gzipBytes": 213913
+      },
+      "svg": {
+        "specifier": "ggaction/svg",
+        "chunks": 1,
+        "modules": 19,
+        "minifiedBytes": 23548,
+        "gzipBytes": 7567
+      }
+    },
+    "mcp": {
+      "coldStartMilliseconds": 208
+    },
+    "checks": [
+      "node",
+      "linear-regression-statistics-cache-and-source-revision",
+      "extension",
+      "pdf",
+      "png",
+      "svg",
+      "inspection",
+      "numeric-font-weight",
+      "point-jitter",
+      "point-packing",
+      "mark-label-removal",
+      "selected-mark-labels",
+      "semantic-label-placement",
+      "beeswarm-plot",
+      "raincloud-plot",
+      "path-order",
+      "time-unit-data",
+      "summary-data",
+      "bin-data",
+      "fold-data",
+      "computed-data",
+      "derived-data-editing",
+      "safe-resource-removal",
+      "advanced-authoring-integration",
+      "normalized-data",
+      "complete-data",
+      "imputed-data",
+      "stack-data",
+      "window-data",
+      "bin2d-data",
+      "binned-heatmap",
+      "parallel-coordinates",
+      "parallel-dimension-scale-editing",
+      "offset-scale-editing",
+      "stroke-color-encoding-and-legends",
+      "atomic-channel-encoding",
+      "axis-title-label-overlap-policy",
+      "numeric-independent-text-offsets",
+      "statistical-references",
+      "coordinate-aspect-and-polar-frame-editing",
+      "facet-grid-repeat-and-named-composition-editing",
+      "non-cartesian-facet-grid-and-repeat",
+      "horizon",
+      "violin-plot",
+      "polar-radar-rug-strip-ecdf-facades",
+      "right-categorical-legend-offset",
+      "grouped-corner-and-free-legend-placement",
+      "sequential-palette-count",
+      "ranged-numeric-datum-wrapper-parity",
+      "neutral-hcl-hue-borrowing",
+      "facet-numeric-legend-inference",
+      "explicit-fold-facet-partition",
+      "shared-facet-top-lane",
+      "rotated-facet-headers",
+      "explicit-axis-and-border-underlays",
+      "typescript",
+      "basic-entry-runtime-and-types",
+      "tutorial-consumers",
+      "minimal-browser-bundle-measurement",
+      "private-export-rejection",
+      "installed-local-mcp",
+      "direct-mcp-byte-equality",
+      "task-packet-v5-authoring-execution",
+      "explicit-unresolved-docs-fallback",
+      "terminal-unsupported-no-fallback"
+    ]
+  },
+  "cleanSourceDocumentationTests": 120,
+  "builtDocumentationPages": 150,
+  "docsBrowser": {
+    "allPagesWidths": [
+      320,
+      390,
+      768
+    ],
+    "currentChangedPage": {
+      "status": "pass",
+      "changedPage": "/api/composition/facets/#rotate-panel-headers",
+      "results": [
+        {
+          "width": 320,
+          "loadedImage": [
+            370,
+            390
+          ],
+          "horizontalOverflow": false,
+          "accessibilityViolations": 0,
+          "pageErrors": 0
+        },
+        {
+          "width": 390,
+          "loadedImage": [
+            370,
+            390
+          ],
+          "horizontalOverflow": false,
+          "accessibilityViolations": 0,
+          "pageErrors": 0
+        },
+        {
+          "width": 768,
+          "loadedImage": [
+            370,
+            390
+          ],
+          "horizontalOverflow": false,
+          "accessibilityViolations": 0,
+          "pageErrors": 0
+        }
+      ],
+      "chartPixelsInspected": false
+    },
+    "accessibilityViolations": 0
+  },
+  "browserExamples": {
+    "tests": 96,
+    "pass": 96,
+    "fail": 0
+  },
+  "render": {
+    "tests": 1,
+    "pass": 1,
+    "fail": 0
+  },
+  "publicPrimitiveEvidence": "PUBLIC_TARGET_EVIDENCE.json",
+  "package": {
+    "entries": 605,
+    "packedBytes": 856432,
+    "unpackedBytes": 4139194,
+    "previousPackedLimit": 856000,
+    "previousUnpackedLimit": 4137000,
+    "newPackedLimit": 857000,
+    "newUnpackedLimit": 4140000,
+    "previousFullGzipLimit": 425000,
+    "measuredFullGzip": 425480,
+    "newFullGzipLimit": 426000,
+    "BasicGzip": 213913,
+    "BasicGzipLimitUnchanged": 214000,
+    "svgGzipLimitUnchanged": 25000,
+    "policy": "Only measured minimum1000-byte ceilings; no data/numeric/pixel/coverage relaxation"
+  },
+  "fullCurrentNativeCompatibilityPending": {
+    "families": 1295,
+    "programs": 9438,
+    "epochs": [
+      "vl_0702",
+      "vl_1029"
+    ]
+  },
+  "publicReleaseAt": 1413,
+  "activeTranslationRuntimeChanged": false,
+  "registryPublished": false,
+  "SchoolRequests": 0,
+  "logs": [
+    {
+      "path": "/tmp/ggaction-facet-header-rotation-browser-examples-v1.log",
+      "sha256": "a3153093c627816ef29f4099e52aa702f96d9d5103e1b2a79ce7f72ea1b92c36"
+    },
+    {
+      "path": "/tmp/ggaction-facet-header-rotation-clean-docs-v1.log",
+      "sha256": "e5aa400c34cd558fa671c14bc6660144199fda1e338badfec32a8cf139d486fc"
+    },
+    {
+      "path": "/tmp/ggaction-facet-header-rotation-consumer-v1.log",
+      "sha256": "fbc868e4209bb794e6c869a20269fb2a89d9f2fd3eb9370ebd81d02c261526a5"
+    },
+    {
+      "path": "/tmp/ggaction-facet-header-rotation-consumer-v2.log",
+      "sha256": "c66b8deb904b9cdd15b6d0e2c59374b00b1fbd8d39129b10d371a21a1236c792"
+    },
+    {
+      "path": "/tmp/ggaction-facet-header-rotation-contract-catalog-v1.log",
+      "sha256": "846516c89bd9e713e67040f35c50e9126aea448255913ca7d03cf8265c98184f"
+    },
+    {
+      "path": "/tmp/ggaction-facet-header-rotation-contract-catalog-v2.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/tmp/ggaction-facet-header-rotation-current-page-v1.log",
+      "sha256": "62097f1d04ff430dc17c9a5003b1e1ef357634c84c1970e9744dbf15ec7063f1"
+    },
+    {
+      "path": "/tmp/ggaction-facet-header-rotation-doc-truth-v1.log",
+      "sha256": "18ea5a24fad12cd07964a7bed0001e07d6d41e01d3b0e365ffce47d20bfaaa6f"
+    },
+    {
+      "path": "/tmp/ggaction-facet-header-rotation-docs-browser-v1.log",
+      "sha256": "a6c413832c2ac970262d660fe51fe2b6b1ac8d6ab97e797817fdb77cd9193c60"
+    },
+    {
+      "path": "/tmp/ggaction-facet-header-rotation-docs-build-v1.log",
+      "sha256": "9b6aa72f3574849921bfd259d5eb36cfb9b63d5d4956da958d01fee585f88913"
+    },
+    {
+      "path": "/tmp/ggaction-facet-header-rotation-docs-built-v1.log",
+      "sha256": "8b67b737002bb9a40f52b91eba9a2aba91b043a875723aacaf5ca645421b217d"
+    },
+    {
+      "path": "/tmp/ggaction-facet-header-rotation-docs-generate-v1.log",
+      "sha256": "70fb6848f53177ef8f9ea6d7aaef344a0183670265706b61488cba0d609510b7"
+    },
+    {
+      "path": "/tmp/ggaction-facet-header-rotation-docs-generate-v2.log",
+      "sha256": "076b737c126c3fdcbdfa6900f628601c61899c3b01241d7fe5b6d391569c1c4b"
+    },
+    {
+      "path": "/tmp/ggaction-facet-header-rotation-docs-generate-v3.log",
+      "sha256": "076b737c126c3fdcbdfa6900f628601c61899c3b01241d7fe5b6d391569c1c4b"
+    },
+    {
+      "path": "/tmp/ggaction-facet-header-rotation-docs-generate-v4.log",
+      "sha256": "076b737c126c3fdcbdfa6900f628601c61899c3b01241d7fe5b6d391569c1c4b"
+    },
+    {
+      "path": "/tmp/ggaction-facet-header-rotation-docs-generate-v5.log",
+      "sha256": "076b737c126c3fdcbdfa6900f628601c61899c3b01241d7fe5b6d391569c1c4b"
+    },
+    {
+      "path": "/tmp/ggaction-facet-header-rotation-docs-preflight-v1.log",
+      "sha256": "5498bb281530d50ed1534e8ebfce1934e86f6c7a33491aa407ff4db951e1674d"
+    },
+    {
+      "path": "/tmp/ggaction-facet-header-rotation-focused-v2.log",
+      "sha256": "700aa4d713fa06c4469982a0c7b836752cfb1b959694a590cf2c0bcd5ab4c8ba"
+    },
+    {
+      "path": "/tmp/ggaction-facet-header-rotation-focused-v3.log",
+      "sha256": "489030de8b430ca6ba8c5d7e200173de481f2243c5bc08e577ccabc870ea45c3"
+    },
+    {
+      "path": "/tmp/ggaction-facet-header-rotation-focused-v4.log",
+      "sha256": "057a8585f435738032eb5a181ae7364d701f66c2958f503185dc98d98fe61563"
+    },
+    {
+      "path": "/tmp/ggaction-facet-header-rotation-focused-v5.log",
+      "sha256": "8e6edaaa3cd09db0a4ec574471999acfe9818fe948fdeff5d9b1e6fa6c2e770e"
+    },
+    {
+      "path": "/tmp/ggaction-facet-header-rotation-focused-v6.log",
+      "sha256": "74fb4d8759e78284ae91fe4a07b1a000184014327e08f909ea79af9d2416d2e4"
+    },
+    {
+      "path": "/tmp/ggaction-facet-header-rotation-gallery-v1.log",
+      "sha256": "f402851d7b05266c293ec0900cec9b78d43b35d00ba9602032d1e4cc50c7cbb9"
+    },
+    {
+      "path": "/tmp/ggaction-facet-header-rotation-initial-focused-v1.log",
+      "sha256": "e2ba951e85ba084c8feb50663c9e9e7180b4d2277db188497c7043345e6b016a"
+    },
+    {
+      "path": "/tmp/ggaction-facet-header-rotation-integration-focused-v1.log",
+      "sha256": "ab4fa2737cfd87b773e2017225ea34facb41ef6f4e1324ab8a99fe6d760147e3"
+    },
+    {
+      "path": "/tmp/ggaction-facet-header-rotation-integration-focused-v2.log",
+      "sha256": "341700208cbe9d4a452571631dedf731758ed8ed03ded0999e286b785c90c105"
+    },
+    {
+      "path": "/tmp/ggaction-facet-header-rotation-normal-v1.log",
+      "sha256": "76d3d1567f75c29645cd3dcd9dc2a09d58551b48840878ea5328d40f74dd32bb"
+    },
+    {
+      "path": "/tmp/ggaction-facet-header-rotation-normal-v2.log",
+      "sha256": "ddccd632de2be2de14779e1f831652ba925ae88d562ab502e1d05cd7c927f7b9"
+    },
+    {
+      "path": "/tmp/ggaction-facet-header-rotation-normal-v3.log",
+      "sha256": "e1ac7e50ac4e39e1c4825ad2169ad39dd4a1d9d00ba463e75da3f1c94d5ebdae"
+    },
+    {
+      "path": "/tmp/ggaction-facet-header-rotation-normal-v4.log",
+      "sha256": "6a112542ad86928420b0bf563b6e1250b5dafb6a8641831fef013a9eb965110c"
+    },
+    {
+      "path": "/tmp/ggaction-facet-header-rotation-package-v2.log",
+      "sha256": "2a485a87cc234b2bf128586ddec0482907c9ccf4bbe102ca10b5d82297ab82b3"
+    },
+    {
+      "path": "/tmp/ggaction-facet-header-rotation-package-v4.log",
+      "sha256": "1209ef1dbc3ee33846f74dd4a351d6de3ab671c5c3acce65a74c1cd98eafc9e4"
+    },
+    {
+      "path": "/tmp/ggaction-facet-header-rotation-primitive-target-v1.log",
+      "sha256": "3b107efe98ca2353ddfebb333d2bd8f66036554b0ba2ca68dc3252dee81baefe"
+    },
+    {
+      "path": "/tmp/ggaction-facet-header-rotation-render-v1.log",
+      "sha256": "56ba80415c52f2be99a4e29cd8892a3c3b0ceb69534e3f9ca7fb9f629bbba4f0"
+    }
+  ],
+  "publicTargetMeasurementInitialHarnessError": "An ad hoc evidence writer incorrectly expected physical185x195 for the default pixelRatio2; corrected to physical370x390, logical185x195. Exact decoded pair passed both times; no runtime change or tolerance relaxation."
+}

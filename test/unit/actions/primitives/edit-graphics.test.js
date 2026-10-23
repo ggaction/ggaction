@@ -3,6 +3,19 @@ import test from "node:test";
 
 import { chart } from "../../../../src/ChartProgram.js";
 
+test("unchanged collection edits retain graphics while preserving validation and action traces", () => {
+  const before = chart().createGraphics({ id: "points", type: "circle", length: 3 })
+    .editGraphics({ target: "points", property: "radius", value: 5 });
+  const after = before.editGraphics({ target: "points", property: "radius", value: [5, 5, 5] });
+  assert.equal(after.graphicSpec, before.graphicSpec);
+  assert.equal(after.trace.children.length, before.trace.children.length + 1);
+  const changed = after.editGraphics({ target: "points", property: "radius", value: [5, 6, 5] });
+  assert.equal(changed.graphicSpec.objects.points.items[0], before.graphicSpec.objects.points.items[0]);
+  assert.equal(changed.graphicSpec.objects.points.items[2], before.graphicSpec.objects.points.items[2]);
+  assert.equal(changed.graphicSpec.objects.points.items[1].properties.radius, 6);
+  assert.throws(() => after.editGraphics({ target: "points", property: "radius", value: [5, -1, 5] }));
+});
+
 test("edits a single graphic without mutating an earlier program", () => {
   const canvas = chart().createGraphics({ id: "canvas", type: "canvas" });
   const resized = canvas.editGraphics({

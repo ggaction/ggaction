@@ -8,19 +8,47 @@ Exact internal graphic ID spelling is not a public authoring option.
 
 ## Facet spacing policy
 
+헤더 lane으로 plot gap이 부족하면 기존 오류 메시지를 유지하며 `getErrorDetails`에
+`code: "invalid-value"`, `optionPath: "gap"`, 요청값 `actual`, 헤더의 최소 간격 `limit`을 제공한다.
+이 하한은 guide 충돌까지 허용한다는 보장이 아니며 수정된 요청은 다시 검증한다.
+
 Facet, grid, repeat 및 facet의 `editCompositionLayout`은 `spacing: "canvas" | "plot"`을 받는다.
 기본 canvas는 기존 cell Canvas 사이 gap이다. plot은 내부 data region의 grid track 사이 gap이며
 child plot 크기는 유지한다. 바깥 여백은 각 방향 child margin의 최댓값을 외곽에 한 번 배정한다.
-Role/legacy header는 plot edge에 배치하고 내부 header 예약은 gap 안에 들어가야 한다.
+Role/legacy header의 긴 축은 plot에 맞추고, 수직 방향은 retained Cartesian/Polar/Parallel guide text와
+local legend의 concrete ink 바깥에 offset만큼 배치한다. 내부 guide/header 예약은 gap 안에 들어가야 한다.
+바깥 header lane은 inferred parent Canvas에 예약하며 child Canvas와 명시적 plot gap은 바꾸지 않는다.
 남겨둔 축/범례/헤더가 다른 panel plot 또는 다른 panel guide와 겹치면 원자적으로 거부한다.
 Panel background는 plot 안에만 그려 인접 panel을 덮지 않으며 parent background가 외곽을 채운다.
 Shared legend와 title의 parent 예약은 기존 규칙을 유지한다. Concat에는 spacing 옵션을 거부한다.
 Evidence: `test/unit/actions/composition/facet-plot-spacing.test.js`, `test/unit/grammar/layout/facets.test.js`.
+Guide text/header clearance and source-style replay: `test/unit/actions/composition/facet-guide-header-clearance.test.js`.
+
+## Shared facet top lane
+
+The existing `facet`, `facetGrid`, `repeatCharts`, and facet `editCompositionLayout` accept
+`topLane: "stacked" | "shared"`. Omitted creation and explicit stacked retain the existing additive title/header
+layout and store no field. Shared requires plot spacing and stores only `compositionSpec.topLane: "shared"`.
+Edits that omit the option or pass undefined preserve it; explicit stacked removes it. Switching to canvas
+spacing while shared requires stacked in the same call. Concat rejects this option, including stacked.
+
+Shared uses the existing child top margin plus explicit parent padding for title and first-row top headers,
+without adding those two reservations again. Child plot and Canvas sizes, internal row/header gap checks,
+other header sides and existing shared-legend placement remain unchanged. Final concrete parent title, subtitle
+and header text must fit the parent Canvas, clear child plots, each other, and retained visible text. Nested
+Canvas translation, rotation and ancestor clipping use ordinary graphic bounds; empty or invisible text does
+not occupy a lane. Insufficient space fails atomically without shrinking fonts, hiding endpoints, expanding
+margins or relaxing standalone bounds. Existing stored policy survives layout, source, scale, guide, title,
+header, theme, text-metric and editable-persistence replay.
+
+Evidence: `test/unit/layout/facet-top-lane.test.js`, `test/unit/actions/composition/facet-top-lane.test.js`,
+`test/contracts/facet-top-lane-types.test.js`, and `test/charts/facet-shared-top-lane/`.
 
 ## `facet`
 
-- Signature: `facet({ id?, field, data?, values?, columns?, gap?, spacing?, align?, padding?, scales?, guides?, headers? })`.
+- Signature: `facet({ id?, field, data?, values?, columns?, gap?, spacing?, topLane?, align?, padding?, scales?, guides?, headers? })`.
 - `field` is required. Omitted `data` resolves only when every eligible repeated layer has one unique common row-preserving ancestor.
+- Explicit `data` may also select a materialized fold or aligned-array flatten snapshot that is an ancestor of every repeated layer. Cells filter that snapshot and replay only its descendants; raw rows and the original expansion definition/materialization remain intact. Fold and flatten stay cardinality-changing transforms, omitted inference is unchanged, and other statistical anchors remain unsupported. Missing/noncommon/nonmaterialized boundaries and absent fields fail atomically. This also applies to explicit `facetGrid.data`. Data revisions rebind the stored partition snapshot through the existing retained-template DAG; changing the expansion definition can explicitly select its new snapshot in a new composition. Evidence: `test/unit/actions/composition/fold-facet-partition.test.js`, `test/unit/grammar/facet-dependencies.test.js`.
 - Supported sources are complete Cartesian point, line, area, histogram bar, aggregate bar, ranged bar, rule, data-bound text,
   regression, density, interval/error-band, and box-plot programs; Polar Point, Line, direct Arc, Pie, Rose and Radar;
   and Parallel-coordinate programs whose visible layers share one valid partition anchor and one coordinate family.
@@ -28,14 +56,20 @@ Evidence: `test/unit/actions/composition/facet-plot-spacing.test.js`, `test/unit
 - Evidence: `test/unit/actions/composition/facet-text.test.js`.
 - Facet values use source first-appearance order. Explicit `values` is a unique observed-value list whose exact order controls
   child, header and layout order. Omitted `columns` creates one row; a positive integer wraps cells row-major.
-- Omitted scale policies are shared. `x`, `y`, `xOffset`, `yOffset`, `theta`, `r`, `color`, `stroke`, `size`, `shape`,
+- Omitted scale policies are shared unless another explicitly selected channel uses the same physical scale. In that case omitted aliases inherit its policy transitively; two explicitly contradictory policies still reject. `x`, `y`, `xOffset`, `yOffset`, `theta`, `r`, `color`, `stroke`, `size`, `shape`,
   `opacity`, `strokeDash`, and `parallelDimensions` accept `"shared" | "independent"` when the role is used. Public
   `r` resolves the semantic `radius` binding; `radius` is not an accepted facet-policy alias. The single
   `parallelDimensions` policy applies separately to every dimension scale and never unions different dimensions.
   Explicit semantic domains override either policy. Histogram children share one bin-boundary set only when x is shared.
+- Box-plot body, whisker/cap/median rules, and outliers consume the same resolved facet scales;
+  component or highlight rematerialization must not replace shared domains with cell-local domains.
+  Evidence: `test/unit/actions/composition/facet-box-geometry.test.js`.
+- 각 cell의 명시적 tick/label/grid values는 해결된 domain과 교집합으로 파생한다. 원본 guide intent는 parent에 보존하므로 shared policy로 돌아가면 전체 선택이 복원된다. Unit의 잘못된 명시적 값 검증은 그대로 유지한다.
 - Filter, regression, density, interval, box-summary, and box-outlier dependencies replay topologically from each
   filtered cell source through `replayDerivedData`. Every affected layer is explicitly rebound through
   `rebindLayerData` before one deduplicated rematerialization plan runs.
+- `markFilter`도 partition source에 target mark를 먼저 rebind/materialize한 뒤 같은 selector recipe를
+  실행한다. 빈 결과의 shared-scale cell은 유지하며 원본 filter/remove 이력은 바뀌지 않는다.
 - `guides.axes` is `"each"` by default. `"outer"` keeps x axes on the bottommost occupied cell in each column and y
   axes on the leftmost occupied cell in each row, including an incomplete final row. Polar theta/radius and Parallel
   dimension axes remain child-local; requesting `"outer"` for either family is an atomic error.
@@ -49,6 +83,7 @@ Evidence: `test/unit/actions/composition/facet-plot-spacing.test.js`, `test/unit
   and margins remain unchanged. The inferred parent Canvas contains both the child snapshots and the occupied
   legend bounds, translating the complete child layout when a left/top guide needs additional space. Shared side legends align their complete occupied top (including border strokes) to the translated child-plot union top; parent titles and headers do not set this anchor. This also applies to inferred categorical shared legends and layout/guide-policy replay. An inferred legacy
   categorical legend defaults to `"right"`; the legacy shared-string policy has no separate position input.
+- When shared-string inference finds continuous or discretized color/stroke on one eligible target, it creates independent native channel owners instead of an ordinal series. Remaining ordinal color/stroke/shape/strokeDash channels keep their compatible categorical block. Multiple numeric blocks retain their own scale and automatic samples; the private capture Canvas may grow to hold them, without resizing child plots. Explicitly authored child owners continue through the existing promotion path. Evidence: `test/unit/actions/composition/facet-legend-scale-inference.test.js`.
 - `guides.legend: LegendOptions` directly declares one parent guide. Its target names the source template mark; omitted target must be unique. Unit defaults apply independently of incidental child legend styles. Final placement uses the bounding rectangle of occupied child inner plots, including gaps. Corners and free `at` must fit that union; outside groups use actual retained guide lanes and the inferred parent Canvas. Child Canvas sizes/margins remain unchanged. Family validation, grouped/local placement, combined mappings, borders and samples reuse the unit owners.
 - `editLegend`, focused legend editors, `editLegendBlock` and `removeLegend` accept facet/facetGrid/repeat parents with an existing shared owner. Concat and absent owners reject. `createLegend` stays unit-only; use `editFacetGuides({legend:{…}})` to declare a missing parent owner. Source mark/channel selectors retain their unit closed contracts. A focused edit of `"shared"` normalizes the current native owner while preserving automatic title/sample/offset flags. Partial removal retains other blocks; final removal sets false and cannot resurrect on replay.
 - Authored intent is owned once by `compositionSpec.facet.guides.legend`. Public input remains closed `LegendOptions`; returned/imported authored state uses a private closed tagged block normal form. Parent native guide configs/graphics are derived from it. Child templates/programs do not store parent intent. False clears the parent owner, shared resets template promotion/inference, and another object replaces the declaration. Scale/data/source/theme/text metrics/headers/layout/persistence replay must preserve all authored settings or fail atomically on incompatible bindings, independent appearance scales, recipe changes, overflow or occupied-text collision. Existing no-override shared-string rendering remains unchanged.
@@ -72,7 +107,7 @@ Evidence: `test/unit/actions/composition/facet-plot-spacing.test.js`, `test/unit
 
 ### Formal values — `facet`
 
-- Implemented: `facet({ id?: UserId; field: NonEmptyString; data?: ExistingRowPreservingDatasetId; values?: NonEmptyUniqueObservedScalarArray; columns?: PositiveInteger; gap?: NonNegativeFinite; spacing?: "canvas" | "plot"; align?: "start" | "center" | "end"; padding?: NonNegativeFinite | Partial<FourSidePadding>; scales?: Partial<Record<FacetScaleChannel, "shared" | "independent">>; guides?: { axes?: "each" | "outer"; legend?: false | "shared" | LegendOptions }; headers?: FacetHeadersOptions }): ChartProgram`.
+- Implemented: `facet({ id?: UserId; field: NonEmptyString; data?: ExistingDatasetId; values?: NonEmptyUniqueObservedScalarArray; columns?: PositiveInteger; gap?: NonNegativeFinite; spacing?: "canvas" | "plot"; topLane?: "stacked" | "shared"; align?: "start" | "center" | "end"; padding?: NonNegativeFinite | Partial<FourSidePadding>; scales?: Partial<Record<FacetScaleChannel, "shared" | "independent">>; guides?: { axes?: "each" | "outer"; legend?: false | "shared" | LegendOptions }; headers?: FacetHeadersOptions }): ChartProgram`.
 - Implemented non-Cartesian families: Polar Point/Line/direct Arc/Pie/Rose/Radar and Parallel coordinates.
 - Proposed (NOT IMPLEMENTED): —
 
@@ -114,7 +149,7 @@ Evidence: `test/unit/actions/composition/facet-plot-spacing.test.js`, `test/unit
 
 ## `facetGrid`
 
-- Signature: `facetGrid({ id?, data?, rows, columns, combinations?, gap?, spacing?, align?, padding?, scales?, guides?, headers? })`.
+- Signature: `facetGrid({ id?, data?, rows, columns, combinations?, gap?, spacing?, topLane?, align?, padding?, scales?, guides?, headers? })`.
 - `rows` and `columns` each require a different source field and accept an optional unique observed `values` order.
   Omitted orders use first appearance independently on each field.
 - `combinations: "observed"` is the default. It creates only observed pairs while retaining their true row and column
@@ -129,7 +164,7 @@ Evidence: `test/unit/actions/composition/facet-plot-spacing.test.js`, `test/unit
 
 ### Formal values — `facetGrid`
 
-- Implemented: `facetGrid({ id?: UserId; data?: ExistingRowPreservingDatasetId; rows: { field: NonEmptyString; values?: NonEmptyUniqueObservedScalarArray }; columns: { field: NonEmptyString; values?: NonEmptyUniqueObservedScalarArray }; combinations?: "observed" | "full"; gap?: NonNegativeFinite; spacing?: "canvas" | "plot"; align?: CompositionAlign; padding?: CompositionPaddingInput; scales?: FacetScaleResolutions; guides?: FacetGuideOptions; headers?: FacetHeadersOptions }): ChartProgram`.
+- Implemented: `facetGrid({ id?: UserId; data?: ExistingDatasetId; rows: { field: NonEmptyString; values?: NonEmptyUniqueObservedScalarArray }; columns: { field: NonEmptyString; values?: NonEmptyUniqueObservedScalarArray }; combinations?: "observed" | "full"; gap?: NonNegativeFinite; spacing?: "canvas" | "plot"; topLane?: "stacked" | "shared"; align?: CompositionAlign; padding?: CompositionPaddingInput; scales?: FacetScaleResolutions; guides?: FacetGuideOptions; headers?: FacetHeadersOptions }): ChartProgram`.
 - Implemented for the same Cartesian, Polar and Parallel families and policies as `facet`.
 - Proposed (NOT IMPLEMENTED): —
 
@@ -144,7 +179,7 @@ Evidence: `test/unit/actions/composition/facet-plot-spacing.test.js`, `test/unit
 
 ## `repeatCharts`
 
-- Signature: `repeatCharts({ id?, target?, channel, fields, columns?, gap?, spacing?, align?, padding?, scales?, guides?, headers? })`.
+- Signature: `repeatCharts({ id?, target?, channel, fields, columns?, gap?, spacing?, topLane?, align?, padding?, scales?, guides?, headers? })`.
 - Repeats one complete direct-source mark by replacing an eligible field role across an ordered unique field list.
   Cartesian marks accept `x` or `y`; Polar Point/Line/direct field-bound Arc/Rose accept `theta` or public `r`; Parallel
   coordinates accept `{ parallelDimension: field }` and replace exactly that dimension while preserving its position,
@@ -161,7 +196,7 @@ Evidence: `test/unit/actions/composition/facet-plot-spacing.test.js`, `test/unit
 
 ### Formal values — `repeatCharts`
 
-- Implemented: `repeatCharts({ id?: UserId; target?: EligibleDirectMarkId; channel: "x" | "y" | "theta" | "r" | { parallelDimension: NonEmptyString }; fields: NonEmptyUniqueFieldTuple; columns?: PositiveInteger; gap?: NonNegativeFinite; spacing?: "canvas" | "plot"; align?: CompositionAlign; padding?: CompositionPaddingInput; scales?: FacetScaleResolutions; guides?: FacetGuideOptions; headers?: FacetHeadersOptions }): ChartProgram`.
+- Implemented: `repeatCharts({ id?: UserId; target?: EligibleDirectMarkId; channel: "x" | "y" | "theta" | "r" | { parallelDimension: NonEmptyString }; fields: NonEmptyUniqueFieldTuple; columns?: PositiveInteger; gap?: NonNegativeFinite; spacing?: "canvas" | "plot"; topLane?: "stacked" | "shared"; align?: CompositionAlign; padding?: CompositionPaddingInput; scales?: FacetScaleResolutions; guides?: FacetGuideOptions; headers?: FacetHeadersOptions }): ChartProgram`.
 - Explicitly rejected: Pie/Radar raw positional-role replacement, composite statistical roles, derived target datasets,
   two-dimensional repeat matrices, and outer axes.
 - Proposed (NOT IMPLEMENTED): —
@@ -178,7 +213,9 @@ Evidence: `test/unit/actions/composition/facet-plot-spacing.test.js`, `test/unit
 
 ## `editFacetSource`
 
-- Signature: `editFacetSource({ program })`.
+- Signature: `editFacetSource({ program })` 또는 `editFacetSource({ action: { method, options? } })`.
+- `describeAction`의 facet/facetGrid preflight는 같은 pure dependency planner로 partition ancestry를 검사하며 action을 실행하지 않는다.
+- 두 입력은 상호 배타적이다. `action`은 retained source unit에 실제 wrapped chart-authoring 함수를 한 번 실행한 후 기존 facet/grid/repeat recipe를 다시 적용한다. Primitive, materialization, composition 함수와 알 수 없는 함수는 거부한다. Full-data item과 원래 axis config를 복원하므로 partitioned seed child의 item grain이나 outer-axis 생략을 source 의미로 사용하지 않는다. 새로운 label/statistical-reference config를 보존하고 전체 transaction은 하나의 `editFacetSource` trace node이다.
 - Requires a facet, grid or repeat parent and one complete unit `ChartProgram`. It reapplies the current partition or
   repeat recipe to the revised unit while preserving explicit value/field order, IDs when the recipe cardinality is
   unchanged, layout, scale/guide policy, parent header styling and parent title.
@@ -190,7 +227,7 @@ Evidence: `test/unit/actions/composition/facet-plot-spacing.test.js`, `test/unit
 
 ### Formal values — `editFacetSource`
 
-- Implemented: `editFacetSource({ program: CompleteUnitChartProgram }): ChartProgram`.
+- Implemented: `editFacetSource({ program: CompleteUnitChartProgram } | { action: { method: PublicUnitActionName, options?: object } }): ChartProgram`.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `editFacetSource`
@@ -198,11 +235,11 @@ Evidence: `test/unit/actions/composition/facet-plot-spacing.test.js`, `test/unit
 - ✅ Covered: one-field, grid and repeat recipe replay, revised rows under retained Cartesian/Polar/Parallel domains,
   stable policy and IDs, attached-label/selection/placement/theme/style preservation, revised-unit Canvas replay,
   title/header preservation, nested action trace and immutable failure.
-- Evidence: `test/unit/actions/composition/facet-grid-repeat.test.js`.
+- Evidence: `test/unit/actions/composition/facet-grid-repeat.test.js`, `test/unit/actions/facet-source-action.test.js`.
 
 ## `editFacetHeaders`
 
-- Signature: `editFacetHeaders({ fontSize?, fontFamily?, fontWeight?, color?, offset?, role?, labelMap?, side?, align? })`.
+- Signature: `editFacetHeaders({ fontSize?, fontFamily?, fontWeight?, color?, offset?, role?, labelMap?, side?, align?, rotation?, title?, anchor? })`.
 - Requires a facet composition and at least one appearance change.
 - Unqualified edits use `role:"all"` and update common style/mapping while preserving the legacy one-header-per-cell
   topology. `role:"row" | "column"` activates role mode. A row-column grid then owns one header per occupied
@@ -219,28 +256,73 @@ Evidence: `test/unit/actions/composition/facet-plot-spacing.test.js`, `test/unit
   including wrapped rows, without resizing child canvases. `align:"start" | "center" | "end"` applies
   along the occupied plot span. `side` requires an explicit row/column role. Role strips reserve measured space in
   the parent layout before child placement, so font, map, side, layout, title and shared-legend changes converge.
+- `rotation?: RotationInput`은 기존 숫자 radians 또는 `{ value, unit: "radians" | "degrees" }`를 받는다.
+  생성 공통/row/column 헤더와 편집이 같은 정규화를 쓰며, 유한 radians만 기존
+  `materializationConfigs.facets[id].headers` 소유자에 저장한다. 생략은 기존 의도를 유지하고
+  0은 기존 비회전 그래픽·예약으로 복원한다. common보다 role의 명시 값이 우선한다.
+- nonzero 회전 role 헤더와 plot-spacing legacy 헤더는 회전된 글자 블록의 가까운 경계를
+  해당 edge에서 `offset`만큼 바깥에 두고, `align`은 회전된 블록을 edge를 따라 정렬한다.
+  Canvas-spacing legacy 헤더는 기존 안쪽 anchor를 유지하며 회전한다. 폭/높이·Canvas 이탈·겹침은
+  회전된 실제 concrete bounds로 검사한다. 빈 표시 문자열은 기존처럼 예약하지 않는다.
+- plot-spacing의 회전 외곽 헤더는 이미 보존된 child margin을 중복 예약하지 않고 넘는 부분만
+  추가 예약한다. 내부 row/column 사이의 전체 헤더 두께와 offset은 기존 gap 검사에 포함된다.
+  생략/0도의 기존 출력과 경계 조건은 바꾸지 않는다. source/theme/text-metric/layout 및
+  editable persistence 재생은 회전을 보존하고, 잘못된 각도/단위/비정규 저장 값은 원자적으로 거부한다.
 - Editing preserves child identity, semantic facet values, shared scales and layout order, then rematerializes the
   parent snapshot. Clipping, snapshot intersection or header-header overlap fails atomically.
+- `anchor:"content"` requires plot spacing. The outward anchor follows the union of each selected child's
+  plot rectangle and concrete semantic mark bounds, including strokes, collection children, translations and
+  clipping. Opacity does not alter these geometric bounds. Axes, grids, legends, titles and extension-only
+  graphics are excluded. Alignment along the edge continues to use the plot span. Mark overflow is included
+  in header reservations. Common/role precedence, all four sides, rotation and editable replay apply normally.
+  Role field titles retain their existing plot anchor; their inferred offset clears the content-anchored labels.
+  Omission or `anchor:"plot"` preserves existing placement, including canvas spacing. No default anchor field
+  is inserted into older configurations. Invalid values, content with canvas spacing, clipping and collisions
+  reject atomically; child dimensions and clips are never changed to make a header fit.
+
+- 역할별 `title`은 전체 점유 plot 합집합에 한 번 정렬하는 필드 제목이다. 생성
+  `headers.column.title` 및 grid `headers.row.title`도 같은 옵션을 받는다. common/all은
+  거부한다. 최초 객체는 비어 있지 않은 한 줄 text가 필수이고 이후는 부분 병합한다.
+  생략은 보존, false는 제거다. text/fontSize/fontFamily/fontWeight/color/offset/align/
+  rotation/alongOffset만 받는다. 글꼴·색상은 역할 헤더를 상속하며 align 기본 center,
+  회전 기본 top/bottom 0,left -π/2,right +π/2다. 회전은 유한 정규 radians로 저장한다.
+- offset은 plot-spacing에서 plot 합집합, canvas-spacing에서 child Canvas 합집합과
+  회전된 제목 가까운 경계 사이 비음수 거리다. 기본은 같은 쪽 헤더 최대 두께+offset과
+  보존 child margin 중 큰 값+8이다. alongOffset은 edge 방향의 유한 signed 이동이다.
+  외곽 cell/role 예약과 child margin은 중복 사용하지 않고 필요한 초과분만 예약한다.
+- 제목은 기존 header collection 끝에 column,row 순서로 concrete text가 된다. 모든
+  Canvas/plot/헤더/보존 축·범례·차트 제목 text 충돌을 최종 상태에서 원자 검사한다.
+  제목 없는 기존 graphic 출력은 유지한다. layout/source/data/theme/textMetrics 및
+  editable persistence 재생을 지원하며 잘못된 저장 title은 거부한다.
 
 ### Formal values — `editFacetHeaders`
 
-- Implemented: `editFacetHeaders({ fontSize?: PositiveFinite; fontFamily?: NonEmptyString; fontWeight?: NonEmptyString | Finite; color?: NonEmptyString; offset?: NonNegativeFinite; role?: "all" | "row" | "column"; labelMap?: DisplayLabelMap | "auto"; side?: "top" | "bottom" | "left" | "right"; align?: "start" | "center" | "end" }): ChartProgram`, with the role-specific side restrictions above.
+- Implemented: `editFacetHeaders({ fontSize?: PositiveFinite; fontFamily?: NonEmptyString; fontWeight?: NonEmptyString | Finite; color?: NonEmptyString; offset?: NonNegativeFinite; role?: "all" | "row" | "column"; labelMap?: DisplayLabelMap | "auto"; side?: "top" | "bottom" | "left" | "right"; align?: "start" | "center" | "end"; rotation?: RotationInput; title?: FacetHeaderTitleOptions | false; anchor?: "plot" | "content" }): ChartProgram`, with the role-specific side restrictions above.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `editFacetHeaders`
 
 - ✅ Covered: legacy child-plot alignment, typed common and role maps, precedence/reset, deterministic row/column
   item order, four sides, three alignments, empty labels, exact strip reservation, source/layout replay, immutable
-  prior state, invalid role/side/map, empty edit and non-facet rejection.
+  prior state, invalid role/side/map, empty edit and non-facet rejection. Rotation adds initial/edit equality,
+  four sides, three block alignments, finite angles/units, zero reset, inherited overrides, exact primitive pixels,
+  outer-margin reuse, collision/overflow and persistence rejection without relaxing existing bounds.
+- Content anchoring evidence: `test/unit/actions/composition/facet-content-headers.test.js` and
+  `test/contracts/facet-content-header-types.test.js` cover per-panel geometry, strokes/clips, four sides,
+  rotation, inherited overrides, field titles, fixed shared top space, source/layout/theme/metrics replay,
+  saved programs, unchanged defaults and atomic rejection.
 - Evidence: `test/unit/actions/composition/facet.test.js`,
   `test/unit/actions/composition/facet-display-headers.test.js`,
   `test/unit/actions/composition/facet-side-headers.test.js`,
   `test/unit/grammar/layout/facets.test.js`, and
-  `test/charts/cars-origin-scatterplot-facet/facet-variants.test.js`.
+  `test/charts/cars-origin-scatterplot-facet/facet-variants.test.js`,
+  `test/unit/actions/composition/facet-header-rotation.test.js`,
+  `test/contracts/facet-header-rotation-types.test.js`, and
+  `test/charts/facet-header-rotation/`.
 
 ## `editCompositionLayout`
 
-- Signature: `editCompositionLayout({ columns?, gap?, spacing?, align?, padding? })`.
+- Signature: `editCompositionLayout({ columns?, gap?, spacing?, topLane?, align?, padding? })`.
 - Requires an existing composition program and at least one layout option.
 - `columns`: positive integer for one-field facet and repeat layouts, no larger than the retained child count.
   A row-column grid keeps the width of its declared column domain; concat compositions reject it.
@@ -254,7 +336,7 @@ Evidence: `test/unit/actions/composition/facet-plot-spacing.test.js`, `test/unit
 
 ### Formal values — `editCompositionLayout`
 
-- Implemented: `editCompositionLayout({ columns?: PositiveInteger; gap?: NonNegativeFinite; spacing?: "canvas" | "plot"; align?: "start" | "center" | "end"; padding?: NonNegativeFinite | Partial<FourSidePadding> }): ChartProgram`.
+- Implemented: `editCompositionLayout({ columns?: PositiveInteger; gap?: NonNegativeFinite; spacing?: "canvas" | "plot"; topLane?: "stacked" | "shared"; align?: "start" | "center" | "end"; padding?: NonNegativeFinite | Partial<FourSidePadding> }): ChartProgram`.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `editCompositionLayout`
@@ -264,6 +346,14 @@ Evidence: `test/unit/actions/composition/facet-plot-spacing.test.js`, `test/unit
 - Evidence: `test/unit/actions/composition/concat.test.js`, `test/unit/actions/composition/facet.test.js`,
   `test/unit/actions/composition/facet-editing.test.js`,
   `test/charts/program-composition/variants/layouts/public.test.js`.
+
+### Named lookup data composition
+
+- A row-preserving lookup may be faceted by a primary or copied field. Partition only the primary
+  branch, retain its complete reference table, and replay both-input revisions atomically.
+- `repeat` accepts a direct materialized lookup dataset and changes only the selected encoding
+  fields. It does not rewrite lookup inputs. Other derived-data repeat restrictions remain.
+- Evidence: `test/unit/actions/composition/lookup-facets.test.js`.
 
 ## `editFacetScales`
 
@@ -446,3 +536,8 @@ Evidence: `test/unit/actions/composition/facet-plot-spacing.test.js`, `test/unit
   `test/contracts/polar-parallel-facets.test.js`, and
   `test/contracts/visual-capability-surface.test.js`, plus
   `test/unit/renderers/pdf-renderer.test.js` for backend translation parity.
+
+
+### Retained header recipe during source edits
+
+`editFacetSource` carries the existing canonical header configuration into the first native facet rebuild. It never validates an intermediate default header layout before restoring authored rotation, field titles or content anchors. The public header options and final atomicity contract are unchanged.

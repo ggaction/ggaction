@@ -1,6 +1,7 @@
 import { measureTextWidth, resolveTextBounds } from "../core/textMetrics.js";
 import { alignLegendStart, resolveLegendGrid, isPlotLegend, legendLabelLineHeight } from "./legend.js";
 import { alignLegendTitle, resolveLegendTitleText } from "./legendText.js";
+import {resolveLegendContentSpacing} from "./legendSpacing.js";
 
 // Measure item content before choosing its edge. Family owners supply the
 // sample dimensions and formatted labels; this module does not inspect scales.
@@ -28,6 +29,7 @@ export function resolveLegendItemLayout(plot, config, labels, symbol, canvas, pr
   let symbolX;
   let labelX;
   let itemY;
+  let itemRows;
   let title;
   if (config.layout === "legacy-bottom") {
     const widths = labels.map(text => sampleWidth + config.labels.offset + measureTextWidth(text, config.labels, profile));
@@ -41,6 +43,7 @@ export function resolveLegendItemLayout(plot, config, labels, symbol, canvas, pr
     });
     labelX = symbolX.map(value => value + sampleRight + config.labels.offset);
     itemY = labels.map(() => canvas.height - 28);
+    itemRows = labels.map(() => 0);
     title = { x: x + width / 2, y: canvas.height - 52, align: "center" };
   } else if (side) {
     const grid = resolveLegendGrid({
@@ -73,6 +76,7 @@ export function resolveLegendItemLayout(plot, config, labels, symbol, canvas, pr
       firstY = titleBounds.bottom + 12 - itemTop;
     }
     itemY = grid.cells.map(cell => firstY + cell.row * pitch);
+    itemRows = grid.cells.map(cell => cell.row);
     title = { x, y: plot.y + 20, align: "left" };
   } else {
     const grid = resolveLegendGrid({ ...config, domain: labels }, sampleWidth, labels.length, sampleHeight, profile);
@@ -95,27 +99,39 @@ export function resolveLegendItemLayout(plot, config, labels, symbol, canvas, pr
     symbolX = grid.cells.map(cell => gridX + columns[cell.column] - sampleLeft);
     labelX = symbolX.map(value => value + sampleRight + config.labels.offset);
     itemY = grid.cells.map(cell => gridY + grid.rowHeight / 2 + cell.row * (grid.rowHeight + config.itemGap));
+    itemRows = grid.cells.map(cell => cell.row);
     title = inline ? { x, y: y + height / 2, align: "left" }
       : { x: x + width / 2, y: y + titleHeight / 2, align: "center" };
   }
   const textBounds = (x, y, text, style, align = "left") => resolveTextBounds({
     x, y, text, ...style, textAlign: align, textBaseline: "middle"
   }, profile);
-  const bodyBounds = [
-    ...labels.map((label, index) => textBounds(labelX[index], itemY[index], label, config.labels)),
-    ...symbolX.map((x, index) => {
+  const labelBounds = labels.map((label,index) => textBounds(labelX[index],itemY[index],label,config.labels));
+  const symbolItemBounds = symbolX.map((x, index) => {
       const local = sampleBounds[index];
       return { left: x + local.left, right: x + local.right,
         top: itemY[index] + local.top, bottom: itemY[index] + local.bottom };
-    })
-  ];
+    });
+  const spacingItems = config.rowPadding === undefined && config.titlePadding === undefined ? undefined
+    : labels.map((label,index) => ({row:itemRows[index],x:symbolX[index],y:itemY[index],bounds:[
+    ...(label === "" ? [] : [labelBounds[index]]),
+    ...(symbol.itemBounds !== undefined && index >= symbol.itemBounds.length ? [] : [symbolItemBounds[index]])
+  ]}));
+  const bodyBounds = spacingItems === undefined
+    ? [...labelBounds,...symbolItemBounds] : spacingItems.flatMap(item => item.bounds);
   if (titleVisible) title = alignLegendTitle(title, config.title, config.titleStyle, bodyBounds, profile);
-  const bounds = [
-    ...(titleVisible ? [resolveTextBounds({ x: title.x, y: title.y,
+  const titleBounds = titleVisible ? resolveTextBounds({ x: title.x, y: title.y,
       text: config.title, ...config.titleStyle, lines: titleText.lines,
-      textAlign: title.align, textBaseline: "middle" }, profile)] : []),
-    ...bodyBounds
-  ];
+      textAlign: title.align, textBaseline: "middle" }, profile) : undefined;
+  let bounds = [...(titleVisible ? [titleBounds] : []),...bodyBounds];
+  const spacing = spacingItems === undefined ? undefined : resolveLegendContentSpacing(config,spacingItems,titleBounds);
+  if (spacing !== undefined) {
+    symbolX = symbolX.map((x,index) => x+spacing.offsets[index].dx);
+    labelX = labelX.map((x,index) => x+spacing.offsets[index].dx);
+    itemY = itemY.map((y,index) => y+spacing.offsets[index].dy);
+    title = {...title,x:title.x+spacing.titleOffset.dx,y:title.y+spacing.titleOffset.dy};
+    bounds = spacing.bounds;
+  }
   if (config.layout === "legacy-bottom") {
     const itemBounds = titleVisible ? bounds.slice(1) : bounds;
     if (titleVisible && itemBounds.some(bound => bound.top < bounds[0].bottom)) {

@@ -183,8 +183,12 @@ function labToRgb({ l, a, b }, whitePoint = "d65") {
   };
 }
 
-function labToHcl({ l, a, b }) {
-  return { h: hue(Math.atan2(b, a) * 180 / Math.PI), c: Math.hypot(a, b), l };
+function labToHcl({ l, a, b }, neutral = false) {
+  return {
+    h: neutral ? undefined : hue(Math.atan2(b, a) * 180 / Math.PI),
+    c: neutral ? 0 : Math.hypot(a, b),
+    l
+  };
 }
 
 function hclToLab({ h, c, l }) {
@@ -251,25 +255,44 @@ function mix(left, right, amount, method, options) {
     }, whitePoint);
   }
   if (method.startsWith("hcl")) {
-    const a = labToHcl(rgbToLab(left, whitePoint));
-    const b = labToHcl(rgbToLab(right, whitePoint));
+    const a = labToHcl(rgbToLab(left, whitePoint), left.r === left.g && left.g === left.b);
+    const b = labToHcl(rgbToLab(right, whitePoint), right.r === right.g && right.g === right.b);
     return labToRgb(hclToLab({
-      h: interpolateHue(a.h, b.h, amount, method.endsWith("-long")),
+      h: a.h === undefined ? b.h ?? 0
+        : b.h === undefined ? a.h
+          : interpolateHue(a.h, b.h, amount, method.endsWith("-long")),
       c: a.c + (b.c - a.c) * amount,
       l: a.l + (b.l - a.l) * amount
     }), whitePoint);
   }
   const a = rgbToCubehelix(left);
   const b = rgbToCubehelix(right);
-  const lightnessAmount = amount ** (options.gamma ?? 1);
-  if (!Number.isFinite(lightnessAmount)) {
+  const gamma = options.gamma ?? 1;
+  const lightnessAmount = amount ** gamma;
+  const singular = gamma < 0 && amount === 0;
+  if (!Number.isFinite(lightnessAmount) && !singular) {
     throw new RangeError("Continuous cubehelix gamma produced a nonfinite interpolation.");
   }
-  return cubehelixToRgb({
+  const saturation = a.s + (b.s - a.s) * amount;
+  const lightness = singular && a.l === b.l
+    ? a.l : a.l + (b.l - a.l) * lightnessAmount;
+  if (singular && saturation === 0) {
+    const channel = Number.isNaN(lightness) ? 0 : clamp(lightness);
+    return { r: channel, g: channel, b: channel };
+  }
+  const rgb = cubehelixToRgb({
     h: interpolateHue(a.h, b.h, amount, method.endsWith("-long")),
-    s: a.s + (b.s - a.s) * amount,
-    l: a.l + (b.l - a.l) * lightnessAmount
+    s: saturation,
+    l: lightness
   });
+  if (singular) {
+    return Object.fromEntries(Object.entries(rgb).map(([channel, value]) =>
+      [channel, Number.isNaN(value) ? 0 : clamp(value)]));
+  }
+  if (gamma < 0 && !Object.values(rgb).every(Number.isFinite)) {
+    throw new RangeError("Continuous cubehelix gamma produced a nonfinite interpolation.");
+  }
+  return rgb;
 }
 
 export function validateContinuousColorInterpolation(value) {
@@ -294,8 +317,8 @@ export function normalizeColorInterpolationOptions(interpolation, options = {}) 
     if (!["cubehelix", "cubehelix-long"].includes(interpolation)) {
       throw new Error("Scale gamma requires cubehelix interpolation.");
     }
-    if (!Number.isFinite(options.gamma) || options.gamma <= 0) {
-      throw new RangeError("Scale gamma must be a positive finite number.");
+    if (!Number.isFinite(options.gamma)) {
+      throw new RangeError("Scale gamma must be a finite number.");
     }
     result.gamma = options.gamma;
   }

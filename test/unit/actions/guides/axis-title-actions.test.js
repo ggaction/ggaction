@@ -11,6 +11,53 @@ function program() {
     .encodeY({ field: "y" });
 }
 
+test("infers a fieldless row-count summary title and preserves explicit titles", () => {
+  const base = chart()
+    .createCanvas({ width: 400, height: 300, margin: 65 })
+    .createData({ id: "observations", values: [{ weather: "rain" }, { weather: "sun" }, { weather: "rain" }] })
+    .createSummaryData({ id: "counts", source: "observations", groupBy: ["weather"], aggregates: [{ op: "count", as: "count" }] })
+    .createBarPlot({ id: "plot", data: "counts", x: "weather", y: "count", guides: false });
+  const guided = base.createGuides();
+  assert.equal(guided.semanticSpec.guides.axis.y.title, "count");
+  assert.equal(guided.graphicSpec.objects.yAxisTitle.properties.text, "count");
+  assert.equal(guided.editYAxisTitle({ text: "Observations" }).graphicSpec.objects.yAxisTitle.properties.text, "Observations");
+  assert.equal(base.semanticSpec.guides.axis, undefined);
+});
+
+test("ECDF guides use source-facing titles through measure revisions", () => {
+  const original = chart().createCanvas({ width: 600, height: 450, margin: 100 })
+    .createData({ values: [{ income: 1, weight: 5 }, { income: 2, weight: 8 }, { income: 3, weight: 10 }] })
+    .createECDFPlot({ id: "plot", field: "income" });
+  assert.equal(original.graphicSpec.objects.xAxisTitle.properties.text, "income");
+  assert.equal(original.graphicSpec.objects.yAxisTitle.properties.text, "Cumulative probability");
+  const edited = original.editECDFPlot({ target: "plot", field: "weight" });
+  assert.equal(edited.graphicSpec.objects.xAxisTitle.properties.text, "weight");
+  assert.equal(original.graphicSpec.objects.xAxisTitle.properties.text, "income");
+});
+
+test("gradient bounds and center infer one source title in either orientation", () => {
+  for (const horizontal of [false, true]) for (const center of [false, {}]) {
+    const category = { field: "group", fieldType: "nominal" };
+    const axis = horizontal ? "x" : "y";
+    const original = chart().createCanvas({ width: 600, height: 450, margin: 100 })
+      .createData({ values: [
+        { group: "A", value: 1, other: 4 }, { group: "A", value: 2, other: 8 },
+        { group: "B", value: 3, other: 6 }, { group: "B", value: 4, other: 10 }
+      ] })
+      .createGradientPlot({ id: "plot", x: horizontal ? "value" : category,
+        y: horizontal ? category : "value", center, guides: false });
+    const guided = original.createGuides();
+    assert.equal(guided.semanticSpec.guides.axis[axis].title, "value");
+    assert.equal(guided.graphicSpec.objects[`${axis}AxisTitle`].properties.text, "value");
+    const edited = guided.editGradientPlot({ target: "plot", [axis]: { field: "other" } });
+    assert.equal(edited.graphicSpec.objects[`${axis}AxisTitle`].properties.text, "other");
+    assert.equal(guided.graphicSpec.objects[`${axis}AxisTitle`].properties.text, "value");
+    const titled = guided[horizontal ? "editXAxisTitle" : "editYAxisTitle"]({ text: "Custom" });
+    assert.equal(titled.editGradientPlot({ target: "plot", [axis]: { field: "other" } })
+      .graphicSpec.objects[`${axis}AxisTitle`].properties.text, "Custom");
+  }
+});
+
 test("infers title text and materializes centered x/y titles", () => {
   const before = program();
   const result = before.createXAxisTitle().createYAxisTitle();
@@ -184,3 +231,27 @@ for (const channel of ["X", "Y"]) {
     assert.equal(labelsFirst.guideConfigs.axis[prefix].title.at, "center");
   });
 }
+
+
+test("filtered revised box owners retain the source measure title", () => {
+  const original = chart().createCanvas({width:600,height:450,margin:90})
+    .createData({values:["A","B"].flatMap((category,index)=>[1,2,3,4,20].map(value=>({category,value,width:value/2+index})))})
+    .createBoxPlot({id:"plot",x:{field:"category",fieldType:"nominal"},y:{field:"value"},guides:false})
+    .editBoxPlot({target:"plot",whisker:{type:"minmax"}})
+    .editBoxPlot({target:"plot",y:{field:"width",fieldType:"quantitative"}});
+  const filtered=original.filterMarks({target:"plot",channel:"x",op:"eq",value:"A",mode:"replace"}).createGuides();
+  assert.equal(filtered.graphicSpec.objects.yAxisTitle.properties.text,"width");
+  assert.equal(filtered.graphicSpec.objects.plot.items.length,1);
+  assert.equal(filtered.graphicSpec.objects.plotMedian.items.length,1);
+  assert.equal(filtered.removeMarkFilter({target:"plot"}).graphicSpec.objects.yAxisTitle.properties.text,"width");
+  assert.equal(original.graphicSpec.objects.plot.items.length,2);
+});
+
+test("filtered aggregate summaries keep derived titles instead of internal output fields", () => {
+  const p=chart().createCanvas({width:500,height:400,margin:70})
+    .createData({values:[{category:"A",amount:2},{category:"B",amount:8}]})
+    .createSummaryData({id:"totals",groupBy:["category"],aggregates:[{op:"sum",field:"amount",as:"computed_total"}]})
+    .createBarPlot({id:"plot",data:"totals",x:"category",y:"computed_total",guides:false})
+    .filterMarks({target:"plot",channel:"x",op:"eq",value:"A"}).createGuides();
+  assert.equal(p.graphicSpec.objects.yAxisTitle.properties.text,"sum(amount)");
+});

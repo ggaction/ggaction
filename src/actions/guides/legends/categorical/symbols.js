@@ -55,14 +55,14 @@ function makeEditSymbol(type) {
         ? "collection"
         : { line: "line", point: "circle", swatch: "rect" }[type];
       const actual = this.graphicSpec.objects[id]?.type;
-      const compatibleStyledSwatch = styledSwatch && ["rect", "collection"].includes(actual);
-      if (actual !== expected && !compatibleStyledSwatch) {
+      const compatibleSwatch = type === "swatch" && ["rect", "collection"].includes(actual);
+      if (actual !== expected && !compatibleSwatch) {
         throw new Error(`${op} requires existing ${type} symbols.`);
       }
       const layout = resolveLayout(this, config);
       const appearance = resolveAppearance(this, config);
       let next = this;
-      if (!dynamicPoint && !styledSwatch) {
+      if (!dynamicPoint && !styledSwatch && actual !== "collection") {
         next = next.editGraphics({
           target: id,
           property: "length",

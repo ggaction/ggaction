@@ -1,0 +1,16 @@
+{
+  "status": "primitive-target-verified-before-public-implementation",
+  "dimensions": {
+    "width": 500,
+    "height": 220
+  },
+  "plotInkPixels": 458,
+  "pngSha256": "284cd0031a05dfdeebdb9d5c77cb54b71d0627c1e801ea4f207e5c547012ea07",
+  "graphicSha256": "f29a9e98349035a7a42ed1e3796b3a564b4a7905dec172d5d3ffb9aa32434efc",
+  "targetSourceSha256": "3ef47b83563a211d13276b4eadbfda13d76116018904b0de6bdd6b92e68ee19d",
+  "currentStrictTitleCollisionProved": true,
+  "chartPixelsInspected": false,
+  "publicPrimitiveEqualityPending": true,
+  "artifact": ".artifacts/test/png/review/cartesian-axis-title/intentional-overlap/target.png",
+  "userStandingApprovalRecorded": "PROPOSAL.md"
+}

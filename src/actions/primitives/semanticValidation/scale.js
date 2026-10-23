@@ -8,6 +8,7 @@ import {
   validateSemanticScaleType
 } from "../../../grammar/scales/index.js";
 import { findSemanticScale } from "../../../selectors/scales.js";
+import { normalizeScaleNice } from "../../../grammar/scales/continuous.js";
 import { findScaleConsumers } from "../../scales/consumers/index.js";
 
 function isOffsetScale(program, id, existing) {
@@ -51,6 +52,7 @@ export function validateScaleSemanticValue(program, parsed, value) {
         ["paddingInner", "paddingOuter", "align"].includes(owned)
       ) continue;
       validateScalePropertyForType(value, owned);
+      if (owned === "nice") normalizeScaleNice(value, existing[owned]);
     }
     return;
   }
@@ -62,7 +64,12 @@ export function validateScaleSemanticValue(program, parsed, value) {
     return;
   }
   if (property === "range") return validateSemanticScaleRange(value);
-  if (["nice", "zero", "clamp", "reverse"].includes(property)) {
+  if (property === "nice") {
+    normalizeScaleNice(existing?.type, value);
+    validateOwnedProperty(program, parsed.id, existing, property);
+    return;
+  }
+  if (["zero", "clamp", "reverse"].includes(property)) {
     if (typeof value !== "boolean") {
       throw new TypeError(`Scale ${property} must be a boolean.`);
     }

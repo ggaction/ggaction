@@ -31,11 +31,11 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `fieldType` | Optional / branch-dependent | `FieldType \| undefined` |
-| `scale` | Optional / branch-dependent | `CategoricalPositionScaleOptions \| NonPointCategoricalPositionScaleOptions \| NonPointQuantitativePositionScaleOptions \| NonPointTemporalPositionScaleOptions \| QuantitativePositionScaleOptions \| TemporalPositionScaleOptions \| undefined` |
+| `scale` | Optional / branch-dependent | `CategoricalPositionScaleOptions \| NonPointCategoricalPositionScaleOptions \| NonPointQuantitativePositionScaleOptions \| QuantitativePositionScaleOptions \| NonPointTemporalPositionScaleOptions \| TemporalPositionScaleOptions \| undefined` |
 | `datum` | Optional / branch-dependent | `unknown` |
 | `bin` | Optional / branch-dependent | `{ maxBins?: number \| undefined; step?: undefined; boundaries?: undefined; } \| { maxBins?: undefined; step: number; boundaries?: undefined; } \| { maxBins?: undefined; step?: undefined; boundaries: readonly [...]; } \| undefined` |
 | `stack` | Optional / branch-dependent | `StackMode \| undefined` |
-| `aggregate` | Optional / branch-dependent | `undefined` |
+| `aggregate` | Optional / branch-dependent | `AggregateOperation` |
 | `temporalUnit` | Optional / branch-dependent | `TemporalInputUnit \| undefined` |
 
 </details>
@@ -80,9 +80,9 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `fieldType` | Optional / branch-dependent | `FieldType \| undefined` |
-| `scale` | Optional / branch-dependent | `CategoricalPositionScaleOptions \| NonPointCategoricalPositionScaleOptions \| NonPointQuantitativePositionScaleOptions \| NonPointTemporalPositionScaleOptions \| QuantitativePositionScaleOptions \| TemporalPositionScaleOptions \| undefined` |
+| `scale` | Optional / branch-dependent | `CategoricalPositionScaleOptions \| NonPointCategoricalPositionScaleOptions \| NonPointQuantitativePositionScaleOptions \| QuantitativePositionScaleOptions \| NonPointTemporalPositionScaleOptions \| TemporalPositionScaleOptions \| undefined` |
 | `datum` | Optional / branch-dependent | `unknown` |
-| `aggregate` | Optional / branch-dependent | `undefined` |
+| `aggregate` | Optional / branch-dependent | `AggregateOperation` |
 | `stack` | Optional / branch-dependent | `YStackMode \| undefined` |
 | `temporalUnit` | Optional / branch-dependent | `TemporalInputUnit \| undefined` |
 
@@ -133,7 +133,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `scale` | Optional / branch-dependent | `{ id?: string \| undefined; } \| { id?: string \| undefined; } \| { id?: string \| undefined; } \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
-| `temporalUnit` | Optional / branch-dependent | `undefined` |
+| `temporalUnit` | Optional / branch-dependent | `TemporalInputUnit \| undefined` |
 
 </details>
 
@@ -168,8 +168,9 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `field` | Required | `string` |
+| `value` | Optional / branch-dependent | `string \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
+| `field` | Optional / branch-dependent | `string \| undefined` |
 | `fieldType` | Optional / branch-dependent | `"nominal" \| "ordinal" \| "quantitative" \| "temporal" \| undefined` |
 | `scale` | Optional / branch-dependent | `ContinuousColorScaleOptions \| DiscretizedColorScaleOptions \| CategoricalColorScaleOptions \| (Omit<...> & { ...; }) \| undefined` |
 | `palette` | Optional / branch-dependent | `Palette \| undefined` |
@@ -187,9 +188,9 @@ The following call patterns are abbreviated examples; the declaration above owns
 
 | Mode | Supported marks | Field types | Important options |
 | --- | --- | --- | --- |
-| Categorical | point, line, area, bar, rect, arc, text | point/line/area/bar/rect/arc/text: nominal, ordinal | bar/area layout; arc overlay; palette and ordinal scale |
-| Continuous | point, aggregate bar, rect, text, area | point/rect/text: quantitative, temporal; aggregate bar/area: quantitative | sequential scale; aggregate required for a different bar measure; area requires one finite value per existing series |
-| Discretized continuous | point, aggregate bar, rect, text, area | point/aggregate bar/rect/text/area: quantitative | quantize, quantile, or threshold scale; area requires one finite value per existing series |
+| Categorical | point, line, area, bar, rect, arc, text | point/line/area/bar/rect/arc/text: nominal, ordinal | bar/area layout; arc overlay; palette and ordinal scale; explicit-domain row-owned Cartesian line color supports unknown paint |
+| Continuous | point, aggregate bar, rect, text, area, tick | point/rect/text/tick: quantitative, temporal; aggregate bar/area: quantitative | sequential scale; aggregate required for a different bar measure; area requires one finite value per existing series; tick paints its centered segment and rejects simultaneous stroke |
+| Discretized continuous | point, aggregate bar, rect, text, area, tick | point/aggregate bar/rect/text/area/tick: quantitative | quantize, quantile, or threshold scale; area requires one finite value per existing series; tick maps colors per row |
 
 <!-- action-capabilities:color:end -->
 
@@ -222,10 +223,28 @@ aggregate, temporal color, or point-only unknown fallback are supported. Use
 `encodeColor` after a complete `createAreaPlot`, whose color option remains categorical.
 The real color scale drives fills and legends and uses one sample per series for
 automatic quantile domains. Basic does not expose Area authoring.
+Tick quantitative/temporal color paints its segment, using color gradients,
+intervals or samples without changing geometry. Remove the existing color or
+stroke encoding before switching channels or setting constant stroke.
+Categorical color, aggregate, layout and point-only unknown remain unsupported;
+Basic gains no Tick authoring.
 
 Row-owned rects accept categorical or continuous color. Arc sectors accept
-categorical color with optional overlay layout.
+categorical color with optional overlay layout, or continuous/discretized color
+with one value per sector. Aggregated sectors require that value to be constant
+within their category; no implicit color aggregation is invented. Gradient and
+interval legends use the same scale mapping. Automatic quantile domains use one
+sample per sector.
+When changing a target between categorical and continuous color families, an
+omitted scale ID detaches from an incompatible shared scale into a target-owned
+scale. Explicit shared IDs keep strict consumer validation. Other consumers,
+such as grouped regression lines, retain their original mapping.
 [Series encodings](../../api/series-encodings.md)
+
+Existing field encodings in `ggaction/basic` can reassign settings on a bound
+scale of the same type, updating every consumer atomically. Generic/focused
+scale editors and legend editors remain Full-only; scale-type transitions use
+Full or a new scale ID in Basic. [Encoding reassignment](../../api/encodings.md#reassign-an-existing-encoding)
 
 
 ## `encodeStrokeDash`
@@ -250,7 +269,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `field` | Optional / branch-dependent | `string \| undefined` |
 | `value` | Optional / branch-dependent | `DashPattern \| DashStyle \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
-| `fieldType` | Optional / branch-dependent | `"nominal" \| undefined` |
+| `fieldType` | Optional / branch-dependent | `"nominal" \| "ordinal" \| undefined` |
 | `scale` | Optional / branch-dependent | `DashScaleOptions \| undefined` |
 
 </details>
@@ -264,9 +283,11 @@ encodeStrokeDash(
 )
 ```
 
-Create or replace nominal line-series or rule dash patterns, or apply one
+Create or replace nominal/ordinal line-series or rule dash patterns, or apply one
 constant named/direct pattern. Named styles are `solid`, `dashed`, `dotted`, and
-`dashdot`.
+`dashdot`. Cartesian line/rule `scale.unknown` accepts the same named or direct
+pattern for valid categories outside a domain; missing categories remain errors,
+and domain, legend and raw series identities stay unchanged.
 [Series encodings](../../api/series-encodings.md)
 
 
@@ -336,7 +357,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `field` | Optional / branch-dependent | `string \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `fieldType` | Optional / branch-dependent | `"quantitative" \| undefined` |
-| `scale` | Optional / branch-dependent | `NonPointQuantitativePositionScaleOptions \| undefined` |
+| `scale` | Optional / branch-dependent | `(Omit<ScaleFields<"base" \| "clamp" \| "constant" \| "exponent" \| "id" \| "reverse" \| "zero"> & { domain?: "auto" \| readonly [number, number] \| undefined; range?: "auto" \| readonly [...] \| undefined; } & { ...; }, "nice"> & { ...; }) \| (Omit<...> & { ...; }) \| undefined` |
 
 </details>
 
@@ -347,8 +368,8 @@ encodeStrokeWidth({ value, target? })
 encodeStrokeWidth({ field, target?, fieldType?, scale? })
 ```
 
-Assign a non-negative finite logical Canvas width to a Line or Rule. Field mode
-maps one quantitative value per rule row or complete line series. Constant mode
+Assign a non-negative finite logical Canvas width to a Line, Rule, or Rect. Field mode
+maps one quantitative value per rule/rect row or complete line series. Constant mode
 clears the field and its own sampled width legend; fieldType/scale are invalid in
 constant mode. Active channel selections must be removed before replacement.
 [Appearance encodings](../../api/appearance.md)
@@ -373,8 +394,9 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `field` | Required | `string` |
+| `value` | Optional / branch-dependent | `number \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
+| `field` | Optional / branch-dependent | `string \| undefined` |
 | `fieldType` | Optional / branch-dependent | `"nominal" \| "ordinal" \| "quantitative" \| undefined` |
 | `scale` | Optional / branch-dependent | `SizeScaleOptions \| CategoricalSizeScaleOptions \| undefined` |
 
@@ -386,7 +408,7 @@ The following call patterns are abbreviated examples; the declaration above owns
 encodeSize({ field, target?, fieldType?, scale? })
 ```
 
-Encode or replace a quantitative field as equal-area point size. The automatic area range
+Encode point size as area; radius-normalized polygons use reference-circle area. The automatic area range
 is `[24, 196]`. Size scales support continuous `linear`, `log`, `sqrt`, and
 `pow` mappings plus discrete `quantize`, `quantile`, and `threshold` mappings.
 [Appearance encodings](../../api/appearance.md)
@@ -424,7 +446,7 @@ The following call patterns are abbreviated examples; the declaration above owns
 encodeShape({ field, target?, fieldType?, scale? })
 ```
 
-Encode or replace a nominal field with the shared 12-value point-shape vocabulary.
+Encode a nominal field as fourteen named shapes or polygons with area/radius normalization.
 Explicit ranges may repeat shapes; provide one entry per domain value. Automatic ranges remain distinct.
 [Appearance encodings](../../api/appearance.md)
 
@@ -502,7 +524,7 @@ encodeOpacity({ value, target? })
 encodeOpacity({ field, target?, fieldType?, scale? })
 ```
 
-Apply a constant point/rule/line opacity from `0` to `1`, or map a quantitative field
+Apply a constant point/rule/line/bar/rect opacity from `0` to `1`, or map a quantitative field
 through a linear opacity scale. The two modes are mutually exclusive and may
 replace each other through the same action. Lines require one raw field value per
 series and support sampled opacity legends. Constant mode clears its field and
@@ -811,7 +833,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `scale` | Optional / branch-dependent | `{ id?: string \| undefined; } \| { id?: string \| undefined; } \| { id?: string \| undefined; } \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
-| `temporalUnit` | Optional / branch-dependent | `undefined` |
+| `temporalUnit` | Optional / branch-dependent | `TemporalInputUnit \| undefined` |
 
 </details>
 
@@ -846,13 +868,13 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `lower` | Required | `string \| { datum: number; }` |
+| `upper` | Required | `string \| { datum: number; }` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `fieldType` | Optional / branch-dependent | `"quantitative" \| "temporal" \| undefined` |
 | `temporalUnit` | Optional / branch-dependent | `TemporalInputUnit \| undefined` |
 | `scale` | Optional / branch-dependent | `NonPointQuantitativePositionScaleOptions \| NonPointTemporalPositionScaleOptions \| undefined` |
-| `lower` | Required | `string \| { datum: number; }` |
-| `upper` | Required | `string \| { datum: number; }` |
 
 </details>
 
@@ -885,13 +907,13 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `lower` | Required | `string \| { datum: number; }` |
+| `upper` | Required | `string \| { datum: number; }` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `fieldType` | Optional / branch-dependent | `"quantitative" \| "temporal" \| undefined` |
 | `temporalUnit` | Optional / branch-dependent | `TemporalInputUnit \| undefined` |
 | `scale` | Optional / branch-dependent | `NonPointQuantitativePositionScaleOptions \| NonPointTemporalPositionScaleOptions \| undefined` |
-| `lower` | Required | `string \| { datum: number; }` |
-| `upper` | Required | `string \| { datum: number; }` |
 
 </details>
 
@@ -1136,7 +1158,7 @@ first-appearance order. [Category ordering](../../api/position/category-ordering
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-removeEncoding(options: { target?: string; channel: | "x" | "y" | "x2" | "y2" | "xOffset" | "yOffset" | "theta" | "radius" | "color" | "stroke" | "strokeDash" | "strokeWidth" | "size" | "shape" | "angle" | "group" | "opacity" | "text"; }): ChartProgram;
+removeEncoding(options: { target?: string; channel: | "x" | "y" | "x2" | "y2" | "xOffset" | "yOffset" | "theta" | "radius" | "color" | "stroke" | "strokeDash" | "strokeWidth" | "size" | "shape" | "angle" | "group" | "opacity" | "text" | "dx" | "dy"; }): ChartProgram;
 ```
 
 <details markdown="1">
@@ -1147,7 +1169,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `target` | Optional / branch-dependent | `string \| undefined` |
-| `channel` | Required | `"angle" \| "color" \| "group" \| "opacity" \| "radius" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| "text" \| "theta" \| "x" \| "x2" \| "xOffset" \| "y" \| "y2" \| "yOffset"` |
+| `channel` | Required | `"angle" \| "color" \| "dx" \| "dy" \| "group" \| "opacity" \| "radius" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| "text" \| "theta" \| "x" \| "x2" \| "xOffset" \| "y" \| "y2" \| "yOffset"` |
 
 </details>
 
@@ -1201,6 +1223,84 @@ Assign exactly one field, constant value, or semantic content to a text mark.
 `format` accepts `"auto"`, `.0`–`.12` precision with `f`, `%`, or `e`, or a UTC
 pattern composed from `%Y`, `%m`, `%d`, `%b`, `%%`, and literals. Reassignment
 replaces the previous content branch. [Text marks](../../api/marks/text.md)
+
+
+## `encodeDx`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Available by v0.0.22. See [release compatibility](../../version.md).
+
+```typescript
+encodeDx(options: TextOffsetEncodingOptions): ChartProgram;
+```
+
+Named option contracts: [`TextOffsetEncodingOptions`](./../types.md#type-textoffsetencodingoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `value` | Optional / branch-dependent | `number \| undefined` |
+| `field` | Optional / branch-dependent | `string \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+encodeDx({ target?, field })
+encodeDx({ target?, value })
+```
+
+Move each independent Text glyph horizontally by finite signed logical pixels.
+Choose exactly one numeric field or constant; no scale is created. The encoding
+overrides the mark's constant dx. Removing it restores that constant. Field-bound
+offsets participate in row grain and the Text missing-row policy. Full only;
+source-owned labels and other marks are rejected.
+[Text offsets](../../api/marks/text.md#numeric-pixel-offsets)
+
+
+## `encodeDy`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Available by v0.0.22. See [release compatibility](../../version.md).
+
+```typescript
+encodeDy(options: TextOffsetEncodingOptions): ChartProgram;
+```
+
+Named option contracts: [`TextOffsetEncodingOptions`](./../types.md#type-textoffsetencodingoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `value` | Optional / branch-dependent | `number \| undefined` |
+| `field` | Optional / branch-dependent | `string \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+encodeDy({ target?, field })
+encodeDy({ target?, value })
+```
+
+The corresponding independent Text vertical offset; positive values move down.
+It preserves dx and follows the same field/constant, removal, row-grain and atomic
+validation rules. Set both through existing `encodeChannels({target,channels})`.
+[Text offsets](../../api/marks/text.md#numeric-pixel-offsets)
 
 
 ## `encodeHistogram`

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "source": "generated lifecycle smoke corpus plus selection lifecycle",
-  "actionCount": 284,
+  "actionCount": 293,
   "relationships": [
     {
       "name": "createCanvas",
@@ -98,6 +98,18 @@
     },
     {
       "name": "createBinData",
+      "wraps": [
+        "createDerivedData"
+      ]
+    },
+    {
+      "name": "createLookupData",
+      "wraps": [
+        "createDerivedData"
+      ]
+    },
+    {
+      "name": "createFlattenData",
       "wraps": [
         "createDerivedData"
       ]
@@ -208,6 +220,18 @@
     },
     {
       "name": "editFilteredData",
+      "wraps": [
+        "editDerivedData"
+      ]
+    },
+    {
+      "name": "editLookupData",
+      "wraps": [
+        "editDerivedData"
+      ]
+    },
+    {
+      "name": "editFlattenData",
       "wraps": [
         "editDerivedData"
       ]
@@ -331,10 +355,18 @@
       ]
     },
     {
+      "name": "createStatisticalReference",
+      "wraps": [
+        "createReferenceLine",
+        "createReferenceBand"
+      ]
+    },
+    {
       "name": "createReferenceLine",
       "wraps": [
         "createRuleMark",
-        "encodeY"
+        "encodeY",
+        "createDerivedData"
       ]
     },
     {
@@ -342,7 +374,8 @@
       "wraps": [
         "createRectMark",
         "encodeX",
-        "encodeX2"
+        "encodeX2",
+        "createDerivedData"
       ]
     },
     {
@@ -689,6 +722,18 @@
     },
     {
       "name": "encodeText",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "encodeDx",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "encodeDy",
       "wraps": [
         "editSemantic"
       ]
@@ -1051,17 +1096,25 @@
       ]
     },
     {
+      "name": "editAxes",
+      "wraps": [
+        "editXAxis",
+        "editYAxis"
+      ]
+    },
+    {
       "name": "editXAxis",
       "wraps": [
+        "editXAxisLabels",
         "editXAxisLine",
         "editXAxisTicks",
-        "editXAxisLabels",
         "editXAxisTitle"
       ]
     },
     {
       "name": "editYAxis",
       "wraps": [
+        "editYAxisLabels",
         "editYAxisLine",
         "editYAxisTitle"
       ]
@@ -1770,13 +1823,23 @@
       "wraps": [
         "createLineMark",
         "encodeTheta",
-        "encodeR"
+        "encodeR",
+        "encodeGroup",
+        "encodeColor"
       ]
     },
     {
       "name": "createRadarPlot",
       "wraps": [
+        "createFoldData",
         "createPolarLinePlot"
+      ]
+    },
+    {
+      "name": "editRadarPlot",
+      "wraps": [
+        "createFoldData",
+        "editThetaScale"
       ]
     },
     {

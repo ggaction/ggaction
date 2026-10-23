@@ -1,4 +1,4 @@
-import { validateContinuousColorConsumer } from "../../grammar/scales/colorConsumers.js";
+import { validateCategoricalColorConsumer, validateContinuousColorConsumer } from "../../grammar/scales/colorConsumers.js";
 import {
   hasOrdinalDomain,
   isContinuousColorScaleType,
@@ -249,8 +249,10 @@ function normalizeDefinition(program, scale, channel, consumers, patch) {
     ? normalizedPatch.unknown
     : typeChanged ? undefined : scale.unknown;
   if (unknown !== undefined) {
-    if (consumers.some(consumer => consumer.layer.mark?.type !== "point")) {
-      throw new Error("Scale unknown currently requires row-owned point consumers.");
+    for (const consumer of consumers) {
+      if (consumer.layer.mark?.type !== "point") {
+        validateCategoricalColorConsumer(consumer.layer, consumer.encoding, { ...definition, unknown }, consumer.channel);
+      }
     }
     definition.unknown = consumers.length === 0
       ? unknown

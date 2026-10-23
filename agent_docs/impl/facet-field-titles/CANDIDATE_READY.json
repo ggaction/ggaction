@@ -1,0 +1,11 @@
+{
+  "status": "verified-library-awaiting-external-current1306-native-replay",
+  "runtimeImplementationCommit": "8426b235d1c624645fa9fd515961b13878b819ca",
+  "cleanSourceDocumentationTests": 120,
+  "normalTests": 5160,
+  "publicBrowserExamples": 98,
+  "installedConsumerGroups": 66,
+  "issue": 254,
+  "sourcePackageEntries": 610,
+  "registryPublished": false
+}

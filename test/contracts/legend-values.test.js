@@ -324,9 +324,9 @@ test("rejects malformed, conflicting, unsupported, and out-of-domain values atom
     field: "value",
     fieldType: "quantitative"
   });
-  assert.throws(
-    () => gradient.createLegend({ channels: ["color"], values: [10, 50] }),
-    /Gradient legends do not support/
+  assert.deepEqual(
+    texts(gradient.createLegend({ channels: ["color"], values: [10, 50] }), "colorGradient"),
+    ["10", "50"]
   );
 });
 

@@ -1,4 +1,8 @@
-import { cloneAndFreeze } from "../core/immutable.js";
+import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
+import { schemaField } from "./datasetSchema.js";
+import { readQuantitativeField } from "./scales/fields.js";
+import { applyItemMissingPolicy } from "./itemMissing.js";
+import { validateOptionObject } from "../core/validation.js";
 import { validateConcreteGraphicValue } from "./schemas/concreteGraphic.js";
 import {
   formatValue,
@@ -9,6 +13,66 @@ import { resolveRotation } from "./rotation.js";
 
 export function isSourceOwnedText(layer) {
   return layer?.mark?.type === "text" && layer.source !== undefined;
+}
+
+export function isIndependentText(layer) {
+  return layer?.mark?.type === "text" && layer.source === undefined;
+}
+
+export function validateTextOffsetEncoding(encoding, channel) {
+  if (!isPlainObject(encoding)) throw new TypeError(`Text ${channel} encoding must be an object.`);
+  const field = Object.hasOwn(encoding, "field");
+  const datum = Object.hasOwn(encoding, "datum");
+  if (field === datum) throw new Error(`Text ${channel} requires exactly one field or datum.`);
+  const allowed = field ? ["field", "fieldType"] : ["datum"];
+  if (Object.keys(encoding).some(key => !allowed.includes(key))) {
+    throw new Error(`Unsupported Text ${channel} encoding option.`);
+  }
+  if (field) {
+    if (typeof encoding.field !== "string" || encoding.field.length === 0 ||
+        encoding.fieldType !== "quantitative") {
+      throw new TypeError(`Text ${channel} requires a quantitative field.`);
+    }
+  } else if (!Number.isFinite(encoding.datum)) {
+    throw new TypeError(`Text ${channel} datum must be finite logical pixels.`);
+  }
+}
+
+export function normalizeTextOffsetAssignment(args, channel) {
+  const operation = channel === "dx" ? "encodeDx" : "encodeDy";
+  validateOptionObject(args, ["target", "field", "value"], operation);
+  const field = Object.hasOwn(args, "field");
+  if (field === Object.hasOwn(args, "value")) {
+    throw new Error(`${operation} requires exactly one of field or value.`);
+  }
+  const encoding = field ? { field: args.field, fieldType: "quantitative" } : { datum: args.value };
+  validateTextOffsetEncoding(encoding, channel);
+  return cloneAndFreeze(encoding);
+}
+
+// Resolve missing rows once for positions, content, color and both pixel offsets.
+export function resolveTextOffsetDataset(layer, sourceDataset) {
+  const channels = ["dx", "dy"].filter(channel => layer.encoding?.[channel] !== undefined);
+  if (channels.length && !isIndependentText(layer)) {
+    throw new Error("Numeric text offsets require independent Text marks.");
+  }
+  const dataset = applyItemMissingPolicy(layer, sourceDataset);
+  for (const channel of channels) {
+    const encoding = layer.encoding[channel];
+    validateTextOffsetEncoding(encoding, channel);
+    if (!Object.hasOwn(encoding, "field")) continue;
+    if (sourceDataset.values.length === 0 &&
+        schemaField(sourceDataset.schema, encoding.field)?.storageType !== "number") {
+      throw new Error(`Empty Text ${channel} data requires a known numeric field "${encoding.field}".`);
+    }
+    readQuantitativeField(dataset.values, encoding.field);
+  }
+  return dataset;
+}
+
+export function textOffsetValue(encoding, row, fallback) {
+  if (encoding === undefined) return fallback;
+  return Object.hasOwn(encoding, "field") ? row[encoding.field] : encoding.datum;
 }
 
 export const TEXT_MARK_STYLE_OPTIONS = Object.freeze([

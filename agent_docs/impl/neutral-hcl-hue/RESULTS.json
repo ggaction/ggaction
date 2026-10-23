@@ -1,0 +1,222 @@
+{
+  "status": "verified-local-candidate-not-published",
+  "issue": 227,
+  "parent": "909efbedead1a56fbcc3e52b2e68ecfe824c98e3",
+  "node": "22.23.1",
+  "newPublicActionsOrOptions": false,
+  "persistedSchemaChanged": false,
+  "neutralPolicy": "Strict parsed R==G==B, chroma0, undefined hue; borrow the chromatic hue, or use hue0 for two neutrals. Existing matrices and byte rounding unchanged.",
+  "checks": {
+    "unit": {
+      "status": "pass",
+      "tests": 3327,
+      "logSha256": "b0596c2732cea7421cb827bb38e1e9ce5a7dc650b7c50a5d0bd82acfcf9ee2ed"
+    },
+    "contracts": {
+      "status": "pass",
+      "tests": 576,
+      "logSha256": "83dd59684e86985ee13085a85ad843cf002a8307a63b33f645cf7ce742b4c302"
+    },
+    "docs": {
+      "status": "pass",
+      "tests": 120,
+      "logSha256": "ce1a685bbdc257bed8209a645a2167766ec969fa422f1dbcbcf13ac96fc01c99"
+    },
+    "charts": {
+      "status": "pass",
+      "tests": 620,
+      "logSha256": "5ab567f842df9b42ea847670b2d63d8abc88418dcff8c5865000012c0214f5aa"
+    },
+    "before-runtime": {
+      "logSha256": "0c1702ba0ffd2049016316d842dc19af529d3ec2160943f1fba85447c7358ae8",
+      "historyPreserved": true
+    },
+    "after-runtime": {
+      "logSha256": "07bc2a9a0bd198c374d58cbe894393441af854d74a066e18bd968c81ef2fee03",
+      "historyPreserved": true
+    },
+    "focused": {
+      "logSha256": "98dd989cdecee889fda12f9db7ae39be3dd9ee98a3d2667c94cca87c6dffaf34",
+      "historyPreserved": true
+    },
+    "consumer-diagnostic": {
+      "logSha256": "147686f9ebc54c4100966b16fbb508589219591f78c10d44e99afd786a69c932",
+      "historyPreserved": true
+    },
+    "focused-explicit-owners": {
+      "logSha256": "4dd3164c6bdcd2f3fbf945df2ceec832823bab4744624940119dd24770df58ce",
+      "historyPreserved": true
+    },
+    "docs-generate": {
+      "logSha256": "aa09abdc257457272a73402f6b91ca3d20f22fce033abf7e9df11142a5689dce",
+      "historyPreserved": true
+    },
+    "package-consumer": {
+      "logSha256": "257ab319f06fb93ffa81ba054d517c70be2b72ba65c85181cacefc83eaf3e828",
+      "historyPreserved": true
+    },
+    "package-consumer-explicit-d50": {
+      "logSha256": "973cbc0a32b06e393a27ab110d3de65c60b16a6bedb3ba390a841e6f3f3a9130",
+      "historyPreserved": true
+    },
+    "package-check": {
+      "logSha256": "145caf64e7a475aba6566c4f6ab49c63385cf534cbd73eefc1a3822c4d8d1bff",
+      "historyPreserved": true
+    },
+    "private-preview": {
+      "logSha256": "9b69a041729e72ddaa9988fbf46ffedc53887414efc0a24e3c32606627f922e1",
+      "historyPreserved": true
+    }
+  },
+  "normalTests": 4643,
+  "independentOracles": "Cartesian Lab matrix-vector neutral path plus literal RGB witnesses; no hue/polar interpolation or runtime import in oracle.",
+  "sourceCellsExact": 36,
+  "wholeDomainExactSamplesPerMode": 16385,
+  "wholeDomainModes": [
+    "hcl",
+    "hcl-long"
+  ],
+  "protectedPriorVectors": 51,
+  "protectedPriorColorValues": 561,
+  "exactPrimitiveRGBAComparisons": 4,
+  "publicConsumers": [
+    "Full and Basic point fill",
+    "Field-driven stroke",
+    "Continuous gradient legends",
+    "Color sample-symbol legends",
+    "Scale edits/reset/reverse",
+    "Raw revision replay",
+    "Explicit shared facet legend owners",
+    "Editable persistence",
+    "Installed SVG and PNG parity with explicit Lab/D50"
+  ],
+  "separateExistingDefect": {
+    "issue": 231,
+    "automaticSharedFacetInferenceNotPassed": true,
+    "explicitContinuousOwnerFlowVerifiedAgainstPublished21": true,
+    "implementationPendingAfterThisCheckpoint": true
+  },
+  "failedHistory": [
+    "Original neutral hue regression fails retained.",
+    "A new automatic color+stroke shared facet test exposed an independent existing defect; published21 reproduction and issue231 retained. Neutral consumer test uses supported explicit owners and does not claim automatic inference passed.",
+    "First package reference changed interpolation without re-supplying D50, so it used default D65. Final like-for-like Lab reference explicitly supplies D50; no color tolerance or runtime matrix change."
+  ],
+  "installedCandidate": {
+    "package": "ggaction@0.0.21",
+    "source": "ggaction-0.0.21.tgz",
+    "sha256": "1847eaaaaa3b704f326770754b872e80c3fa5bc3a364fd13717d509c22d7cc27",
+    "browserBundles": {
+      "full": {
+        "specifier": "ggaction",
+        "chunks": 1,
+        "modules": 523,
+        "minifiedBytes": 1537453,
+        "gzipBytes": 415966
+      },
+      "basic": {
+        "specifier": "ggaction/basic",
+        "chunks": 1,
+        "modules": 307,
+        "minifiedBytes": 724269,
+        "gzipBytes": 203857
+      },
+      "svg": {
+        "specifier": "ggaction/svg",
+        "chunks": 1,
+        "modules": 18,
+        "minifiedBytes": 22817,
+        "gzipBytes": 7325
+      }
+    },
+    "mcp": {
+      "coldStartMilliseconds": 349
+    },
+    "checks": [
+      "node",
+      "linear-regression-statistics-cache-and-source-revision",
+      "extension",
+      "pdf",
+      "png",
+      "svg",
+      "inspection",
+      "numeric-font-weight",
+      "point-jitter",
+      "point-packing",
+      "mark-label-removal",
+      "selected-mark-labels",
+      "semantic-label-placement",
+      "beeswarm-plot",
+      "raincloud-plot",
+      "path-order",
+      "time-unit-data",
+      "summary-data",
+      "bin-data",
+      "fold-data",
+      "computed-data",
+      "derived-data-editing",
+      "safe-resource-removal",
+      "advanced-authoring-integration",
+      "normalized-data",
+      "complete-data",
+      "imputed-data",
+      "stack-data",
+      "window-data",
+      "bin2d-data",
+      "binned-heatmap",
+      "parallel-coordinates",
+      "parallel-dimension-scale-editing",
+      "offset-scale-editing",
+      "stroke-color-encoding-and-legends",
+      "atomic-channel-encoding",
+      "statistical-references",
+      "coordinate-aspect-and-polar-frame-editing",
+      "facet-grid-repeat-and-named-composition-editing",
+      "non-cartesian-facet-grid-and-repeat",
+      "horizon",
+      "violin-plot",
+      "polar-radar-rug-strip-ecdf-facades",
+      "right-categorical-legend-offset",
+      "grouped-corner-and-free-legend-placement",
+      "sequential-palette-count",
+      "ranged-numeric-datum-wrapper-parity",
+      "neutral-hcl-hue-borrowing",
+      "typescript",
+      "basic-entry-runtime-and-types",
+      "tutorial-consumers",
+      "minimal-browser-bundle-measurement",
+      "private-export-rejection",
+      "installed-local-mcp",
+      "direct-mcp-byte-equality",
+      "task-packet-v5-authoring-execution",
+      "explicit-unresolved-docs-fallback",
+      "terminal-unsupported-no-fallback"
+    ]
+  },
+  "archive": {
+    "entryCount": 591,
+    "packedBytes": 840584,
+    "unpackedBytes": 4077267
+  },
+  "runtimeInputsSha256": {
+    "src/grammar/scales/color.js": "c213ce37c36a5bab10b8c79d0163cb4f1337956a4f71e6f290961c903c23798d",
+    "src/actions/encodings/ranged.js": "4b06c46221e100bf2431549e852cc4121d0408d39f4ec31554f7ec95079310c0",
+    "src/inspectionDescriptors.js": "e36e2da62125de9735d5db5b7a982217006dbf9028bb71fd2494a5f847e7a2f7",
+    "types/program.d.ts": "ed17937c33765fe2d280fa1b12e2b6f4e64d9ba4876b536277a96ddbd97db944",
+    "package.json": "de171fb93d47abc584a4a22622bc86217c67e3b832fea1cd7bf696d9e1317ce3",
+    "knowledge/action-cards.json": "c8e6b689e561aba6cddca9a0081e9e91751c2f8710b50fd48b5bfda7fc4e24e3"
+  },
+  "schoolCalls": 0,
+  "chartPixelsInspected": false,
+  "publication": false,
+  "releaseChecks": "Node24 protected release/size-budget measurement, canonical registry archive, live docs and dataset synchronization remain due at1413; no budget increase or publication performed.",
+  "sourceCheckpoint": "af762df6289253b88c2e135a426f100cefcbcf5a",
+  "postCommitDocs": {
+    "status": "pass",
+    "tests": 120,
+    "logSha256": "44e37eebb18af8fdc3381a4230224ff78df1d7ab7fa97938427bcfea83960a6e",
+    "provenanceSourceCommit": "af762df6289253b88c2e135a426f100cefcbcf5a",
+    "provenanceStatus": "development",
+    "testedRuntimeAndPackedInputsUnchanged": true,
+    "existingInterpolationControlResetClarified": true
+  }
+}

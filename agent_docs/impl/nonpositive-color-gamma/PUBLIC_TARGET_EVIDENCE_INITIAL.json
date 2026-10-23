@@ -1,0 +1,38 @@
+{
+  "status": "pass",
+  "issue": 249,
+  "grammarSourceSha256": "3e7378c78be4785b9b52e64d24916bca78fab104e0a202fde732899a7cf21abf",
+  "programSourceSha256": "10a19a51a84bbb125e1e81881bfb1c5b4218f864529d1bc8b27181628906c6ac",
+  "results": [
+    {
+      "gamma": 0,
+      "variant": "zero-gamma",
+      "graphicExact": true,
+      "orderExact": true,
+      "decodedPixelBytes": 518400,
+      "decodedPixelsExact": true,
+      "targetPngSha256": "00be6af6169467d0ee7b7ac851a9fa7e726f0d88e32d057353f9b74e072e8d18",
+      "actualPngSha256": "00be6af6169467d0ee7b7ac851a9fa7e726f0d88e32d057353f9b74e072e8d18",
+      "targetGraduatedFrom": ".artifacts/test/png/review/nonpositive-color-gamma/zero-gamma",
+      "targetGraduatedTo": ".artifacts/test/png/charts/color-scales/color-controls/zero-gamma",
+      "publicTopLevelCalls": 19,
+      "chartPixelsInspected": false
+    },
+    {
+      "gamma": -0.1,
+      "variant": "negative-gamma",
+      "graphicExact": true,
+      "orderExact": true,
+      "decodedPixelBytes": 518400,
+      "decodedPixelsExact": true,
+      "targetPngSha256": "335d683578da2f61db7e846d09fa2df248d829fe799fa6943d0b7406d9b9c890",
+      "actualPngSha256": "335d683578da2f61db7e846d09fa2df248d829fe799fa6943d0b7406d9b9c890",
+      "targetGraduatedFrom": ".artifacts/test/png/review/nonpositive-color-gamma/negative-gamma",
+      "targetGraduatedTo": ".artifacts/test/png/charts/color-scales/color-controls/negative-gamma",
+      "publicTopLevelCalls": 19,
+      "chartPixelsInspected": false
+    }
+  ],
+  "manualImageInspection": false,
+  "standingHumanApprovalReused": true
+}

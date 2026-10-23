@@ -1,0 +1,164 @@
+{
+  "status": "existing-primitive-target-rendered-spacing-not-yet-implemented",
+  "runtimeBaselineCommit": "24c6cbc8682998ff136842847a3164976985cdd9",
+  "scriptSha256": "5bb20b535d1f8c63f59ec3b571bfb001675ce33081686ea6abda121ea794e9aa",
+  "canvas": {
+    "width": 320,
+    "height": 240
+  },
+  "plot": {
+    "x": 40,
+    "y": 30,
+    "width": 140,
+    "height": 160
+  },
+  "radii": [
+    8,
+    12,
+    20
+  ],
+  "paintedSampleHeights": [
+    18,
+    26,
+    42
+  ],
+  "titleHeight": 14,
+  "titleGraphicY": 30,
+  "titleGraphicBaseline": "top",
+  "titleCenterY": 37,
+  "sampleCenterY": [
+    73,
+    102,
+    143
+  ],
+  "sampleCenterDistances": [
+    29,
+    41
+  ],
+  "samplePaintedEdgeGaps": [
+    7,
+    7
+  ],
+  "titlePaintedBodyGap": 20,
+  "sourceRows": [
+    {
+      "x": 0,
+      "y": 0,
+      "v": 0
+    },
+    {
+      "x": 1,
+      "y": 1,
+      "v": 80
+    },
+    {
+      "x": 2,
+      "y": 2,
+      "v": 336
+    }
+  ],
+  "pointCenters": [
+    [
+      40,
+      190
+    ],
+    [
+      110,
+      110
+    ],
+    [
+      180,
+      30
+    ]
+  ],
+  "unrelatedPrimitivesUnchanged": true,
+  "before": [
+    {
+      "option": "rowPadding",
+      "phase": "create",
+      "error": "Unknown createSizeLegend option \"rowPadding\"."
+    },
+    {
+      "option": "rowPadding",
+      "phase": "whole-edit",
+      "error": "Unknown editLegend option \"rowPadding\"."
+    },
+    {
+      "option": "rowPadding",
+      "phase": "layout-edit",
+      "error": "Unknown editLegendLayout option \"rowPadding\"."
+    },
+    {
+      "option": "titlePadding",
+      "phase": "create",
+      "error": "Unknown createSizeLegend option \"titlePadding\"."
+    },
+    {
+      "option": "titlePadding",
+      "phase": "whole-edit",
+      "error": "Unknown editLegend option \"titlePadding\"."
+    },
+    {
+      "option": "titlePadding",
+      "phase": "layout-edit",
+      "error": "Unknown editLegendLayout option \"titlePadding\"."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "uniform-control",
+      "svgSha256": "6c2d83e3a6dd4a31902381e74da6e7e36f2d1b4282c9475e1929f8e49aff1a3d",
+      "pngSha256": "61f0fa28d5b7e1d02a082ed309c8bfb050b739ba64fc86e70397caedcd40290e",
+      "pngDpr2Sha256": "0eba6e03c41fc0f67dafe35528210e1ea0fbbff614781de3faacc57bb1c909a8",
+      "pdfSha256": "af52701051b5d114ece98b9794981124766b53a2c31c2cb195a56c04fe0390f2"
+    },
+    {
+      "name": "content-spacing-primitive-target",
+      "svgSha256": "38f9d73a518fbd1704f47d76cd63396edd777ea598454ba44f78d971ebdfdef4",
+      "pngSha256": "a413670c4997a60162f739ad38c17bab22ba6bf3bbf5d834c56083d384bdea82",
+      "pngDpr2Sha256": "e6728469ba393cf5d0ea655edab693c1e07d48f8b045f897ad2943b396935298",
+      "pdfSha256": "a714ed04a432a990b21e15af29e308b54b30356e77939dd98e0713aec7c532bb"
+    }
+  ],
+  "schoolCalls": 0,
+  "chartPixelsInspected": false,
+  "plotInkEvidence": {
+    "status": "pass",
+    "targetProofSha256": "65515a38291b3a598a5b23c3dff7c1ddbc2f7e62d0f8dce791ddfb912feb7843",
+    "samples": [
+      {
+        "ratio": 1,
+        "plotInkPixels": 863,
+        "unchangedPlotRgbaSha256": "dfe79354138e37c0cac26a7fb769ec19a890d6862de205a9a23567f4c6797463",
+        "wholeImageChannelDifferences": 9263,
+        "plotRgbaExact": true
+      },
+      {
+        "ratio": 2,
+        "plotInkPixels": 3350,
+        "unchangedPlotRgbaSha256": "cf8b92c5370dd3bb0348f7d2dd94765760531ab39dc9b662c0a85c52a860b7ab",
+        "wholeImageChannelDifferences": 33514,
+        "plotRgbaExact": true
+      }
+    ],
+    "chartPixelsInspected": false,
+    "schoolCalls": 0
+  },
+  "preparationFailures": [
+    {
+      "log": ".artifacts/legend-content-spacing-target-v1.log",
+      "error": "Review control omitted required explicit editLegendBlock target; control call corrected without runtime changes."
+    },
+    {
+      "log": ".artifacts/legend-content-spacing-target-v2.log",
+      "error": "Review assertion assumed a middle baseline, but existing concrete title uses top. Target retains the same visual center37 with concrete top30. Public API/visual design unchanged."
+    },
+    {
+      "stage": "review-checklist-metadata",
+      "error": "Python stdin source encoding failed; shell block lacked set -e and committed the already verified three-file design package. No runtime source changed. Subsequent checklist/evidence metadata is recorded with set -e and Node; original terminal failure remains in task history."
+    }
+  ],
+  "proposalSha256": "b4f2c0e77496afe36076cca930966b69a85b30c6109d5db604f032618db0aa3f",
+  "runtimeAndPackageInputsChanged": false,
+  "cumulativeEvidenceReusedFrom": "24c6cbc8682998ff136842847a3164976985cdd9"
+}

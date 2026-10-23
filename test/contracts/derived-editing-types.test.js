@@ -53,6 +53,28 @@ void summary;
 p.editDerivedData(generic);
 p.editComputedData({ target: "computed", as: "result" });
 p.editFilteredData({ target: "filtered", range: { min: 0, max: 1 } });
+p.createLookupData({id:"ages",field:"person",lookup:{data:"people",key:"name",fields:["age"]}});
+basic.createLookupData({id:"ages",field:"person",lookup:{data:"people",key:"name",fields:["age"],as:["years"]}});
+p.editLookupData({target:"ages",lookup:{data:"people",key:"name",fields:["age"],as:["years"]}});
+p.editDerivedData({target:"ages",definition:{type:"lookup",field:"person",lookup:{data:"people",key:"name",fields:["age"],as:["years"]}}});
+// @ts-expect-error reference dataset is required
+p.createLookupData({id:"bad",field:"person",lookup:{key:"name",fields:["age"]}});
+// @ts-expect-error aliases must be an array
+p.createLookupData({id:"bad",field:"person",lookup:{data:"people",key:"name",fields:["age"],as:"years"}});
+// @ts-expect-error nested reference edits replace the complete object
+p.editLookupData({target:"ages",lookup:{key:"name"}});
+// @ts-expect-error focused editor does not replace primary source
+p.editLookupData({target:"ages",source:"new"});
+// @ts-expect-error Full only
+basic.editLookupData({target:"ages",field:"other"});
+p.createFlattenData({ id:"expanded", fields:["a","b"], as:["x","label"] });
+basic.createFlattenData({ id:"expanded", fields:["a"] });
+p.editFlattenData({ target:"expanded", as:["value","label"] });
+p.editDerivedData({ target:"expanded", definition:{type:"flatten",fields:["a"],as:["x"]} });
+// @ts-expect-error scalar alias is not an array
+p.createFlattenData({id:"bad",fields:["a"],as:"value"});
+// @ts-expect-error derived editors remain Full-only
+basic.editFlattenData({target:"expanded",as:["value"]});
 p.editFoldData({ target: "fold", fields: ["a", "b"] });
 p.editSummaryData({ target: "summary", aggregates: [{ op: "mean", field: "x", as: "mean" }] });
 p.editBinData({ target: "bins", boundaries: [0, 1], weight: false });
@@ -111,7 +133,7 @@ basic.editComputedData({ target: "computed", as: "z" });
 
 test("publishes every derived editor as Current and renders a revised owner", async t => {
   const names = [
-    "editDerivedData", "editComputedData", "editFilteredData", "editFoldData",
+    "editDerivedData", "editComputedData", "editFilteredData", "editLookupData", "editFlattenData", "editFoldData",
     "editSummaryData", "editBinData", "editTimeUnitData", "editWindowData",
     "editDensityData", "editStackData", "editRegressionData",
     "editIntervalData", "editECDFData", "editNormalizedData",

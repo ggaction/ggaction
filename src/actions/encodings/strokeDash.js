@@ -1,8 +1,9 @@
+import { APPEARANCE_MARK_TYPES } from "../../core/vocabulary.js";
 import { action } from "../../core/action.js";
 import {
   normalizeStrokeDashPattern,
   readNominalField,
-  validateNominalFieldType
+  validateCategoricalFieldType
 } from "../../grammar/scales/index.js";
 import { resolveStrokeDashScaleDefinition } from "../scales/definitions.js";
 import {
@@ -14,6 +15,7 @@ import {
   validateOptions
 } from "./shared.js";
 import { findLayer } from "../../selectors/layers.js";
+import { validateCategoricalColorConsumer } from "../../grammar/scales/colorConsumers.js";
 import { validatePathSeriesAppearance } from "../../grammar/pathSeries.js";
 import { applyRequestedItemMissingPolicy } from
   "../../grammar/itemMissing.js";
@@ -63,7 +65,7 @@ function reconcileLegendAfterDashRemoval(program, target) {
 const encodeStrokeDash = /* @__PURE__ */ action(
   {
     op: "encodeStrokeDash",
-    description: "Encode a nominal field as line stroke dash."
+    description: "Encode a categorical field as line stroke dash."
   },
   function (args = {}) {
     validateOptions(args, STROKE_DASH_ENCODING_OPTIONS, "encodeStrokeDash");
@@ -78,7 +80,7 @@ const encodeStrokeDash = /* @__PURE__ */ action(
     const { id: target, dataset: sourceDataset, layer } = resolveTarget(
       this,
       args.target,
-      ["line", "rule"],
+      APPEARANCE_MARK_TYPES.encodeStrokeDash,
       "line or rule mark"
     );
     const dataset = hasField
@@ -88,7 +90,7 @@ const encodeStrokeDash = /* @__PURE__ */ action(
       normalizeStrokeDashPattern(args.value);
       validatePathSeriesAppearance(dataset.values, {
         ...layer, encoding: { ...layer.encoding, strokeDash: { datum: args.value } }
-      });
+      }, this.semanticSpec.scales);
       let next = layer.encoding?.strokeDash === undefined
         ? this
         : this.clearStrokeDashEncoding({ target });
@@ -100,20 +102,16 @@ const encodeStrokeDash = /* @__PURE__ */ action(
       return rematerializeEncoding(next, target, "strokeDash", undefined, layer);
     }
 
-    const fieldType = validateNominalFieldType(args.fieldType ?? "nominal");
+    const fieldType = validateCategoricalFieldType(args.fieldType ?? "nominal");
     validatePathSeriesAppearance(dataset.values, {
       ...layer, encoding: { ...layer.encoding, strokeDash: { field: args.field, fieldType } }
-    });
+    }, this.semanticSpec.scales);
     const previous = layer.encoding?.strokeDash;
     const requestedScale = previous?.field === args.field
       ? resolveReassignmentScaleOptions(previous, args.scale ?? {})
       : args.scale ?? {};
     const scale = resolveStrokeDashScaleDefinition(this, requestedScale);
-    if (Object.hasOwn(scale, "unknown")) {
-      throw new Error(
-        "StrokeDash scale unknown is not supported for grouped line or rule paths."
-      );
-    }
+    validateCategoricalColorConsumer(layer, { field: args.field, fieldType }, scale, "strokeDash");
     readNominalField(dataset.values, args.field);
 
     let next = previous === undefined

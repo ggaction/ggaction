@@ -1,0 +1,151 @@
+{
+  "status": "implemented-verified-pushed-candidate-pending-200-family-release",
+  "issue": 233,
+  "baselineCommit": "8232b523dd34146bd0dcf304d61c4e37405613a0",
+  "standingApproval": "PROPOSAL.md",
+  "normalSuite": {
+    "tests": 4777,
+    "pass": 4777,
+    "fail": 0
+  },
+  "focusedUnitAndTypes": 16,
+  "docsTests": 120,
+  "builtPages": 150,
+  "responsiveWidths": [
+    320,
+    390,
+    768
+  ],
+  "renderers": {
+    "status": "pass",
+    "sameGraphic": true,
+    "sameSvg": true,
+    "svgSha256": "1da15aedc1ffc9b4f810b880132caf673641fc35f9f6ac66a3e8fa82b239ed84",
+    "rasters": [
+      {
+        "pixelRatio": 1,
+        "width": 420,
+        "height": 280,
+        "decodedRgbaSha256": "a518345be917923ef962a1d06ae029c15fe93c5abc9f3c194e5370f2bb9ee753",
+        "exactDecodedNominalOrdinal": true,
+        "plotInkPixels": 434
+      },
+      {
+        "pixelRatio": 2,
+        "width": 840,
+        "height": 560,
+        "decodedRgbaSha256": "24d60e24134faa8992487e67c48c9fba4bf2a9027f81cc41a836b4d59e3cb4b6",
+        "exactDecodedNominalOrdinal": true,
+        "plotInkPixels": 1736
+      }
+    ],
+    "sameDecodedPdfStreams": true,
+    "pdfWidth": 420,
+    "pdfHeight": 280,
+    "rawRowsUnchanged": true,
+    "ordinalIntentPersisted": true,
+    "chartPixelsInspected": false,
+    "publicRelease": false
+  },
+  "documentParity": {
+    "status": "pass",
+    "baselineCommit": "8232b523dd34146bd0dcf304d61c4e37405613a0",
+    "documentPrograms": 95,
+    "imageAndThumbnailFiles": 190,
+    "everyGeneratedPngByteExact": true,
+    "chartPixelsInspected": false
+  },
+  "package": {
+    "name": "ggaction",
+    "version": "0.0.21",
+    "file": "/Users/hyeonjeon/Projects/ggaction-feature-review-0.0.19/.artifacts/ordinal-stroke-dash/candidate-v1/ggaction-0.0.21.tgz",
+    "entryCount": 602,
+    "packedBytes": 851062,
+    "unpackedBytes": 4124739,
+    "sha256": "c0eaede73e754d3b4477a9a1e29187c1e665799599406f5c1bca74808f281fb7",
+    "integrity": "sha512-A01UX5pbVg2fs7ybEocNIVL5rghYDtSdXsqLnHaGstBymStfwK5Cvj7P8pqjWUPSE7vLzOM4FIylvYaVeazpjQ==",
+    "publicRelease": false
+  },
+  "consumer": {
+    "pass": true,
+    "fullAndBasicOrdinalDashRuntimeAndTypes": true,
+    "browserBundles": {
+      "full": {
+        "specifier": "ggaction",
+        "chunks": 1,
+        "modules": 534,
+        "minifiedBytes": 1554791,
+        "gzipBytes": 421160
+      },
+      "basic": {
+        "specifier": "ggaction/basic",
+        "chunks": 1,
+        "modules": 316,
+        "minifiedBytes": 736726,
+        "gzipBytes": 207727
+      },
+      "svg": {
+        "specifier": "ggaction/svg",
+        "chunks": 1,
+        "modules": 19,
+        "minifiedBytes": 23548,
+        "gzipBytes": 7567
+      }
+    }
+  },
+  "receipts": [
+    {
+      "path": ".artifacts/ordinal-stroke-dash/focused-types-v2.log",
+      "sha256": "906f898b1ef58624b3e53aa53cc783cb61e2870ffbe63ff6bb0aeab2a13c65c2"
+    },
+    {
+      "path": ".artifacts/ordinal-stroke-dash/normal-v1.log",
+      "sha256": "670bac9cb487c866fa244bb5cb386b2be6db7a6c220e6a2f4fa76e759d135e01"
+    },
+    {
+      "path": ".artifacts/ordinal-stroke-dash/docs-generate-v2.log",
+      "sha256": "288aed8ac15e0fa7b5f32b65082438b7a018da743dbf707c1874aac3deb37a4c"
+    },
+    {
+      "path": ".artifacts/ordinal-stroke-dash/docs-tests-v1.log",
+      "sha256": "b2e83f33db036951497ce475460ad67c0bafcdcb47baca9180407a4ce97fc62d"
+    },
+    {
+      "path": ".artifacts/ordinal-stroke-dash/docs-build-v3.log",
+      "sha256": "4033ddf344bc1489b8679fde813624207481b10fcd5512b989d96326c5cae8f3"
+    },
+    {
+      "path": ".artifacts/ordinal-stroke-dash/docs-built-v1.log",
+      "sha256": "8b67b737002bb9a40f52b91eba9a2aba91b043a875723aacaf5ca645421b217d"
+    },
+    {
+      "path": ".artifacts/ordinal-stroke-dash/docs-browser-v1.log",
+      "sha256": "a6c413832c2ac970262d660fe51fe2b6b1ac8d6ab97e797817fdb77cd9193c60"
+    },
+    {
+      "path": ".artifacts/ordinal-stroke-dash/renderers-proof-v2.json",
+      "sha256": "28ac06da238fae81c8394c0073ced2f7e9752738eb4f4d09155dfced31131797"
+    },
+    {
+      "path": ".artifacts/ordinal-stroke-dash/document-image-parity-v1.json",
+      "sha256": "4376369a93597a7a0bc6e2c6b277b74335935b891fb74914a3a18baaa0755edf"
+    },
+    {
+      "path": ".artifacts/ordinal-stroke-dash/package-proof-v1.json",
+      "sha256": "95ee39667c9ab5436f76078bb8deb73dae1232b1c6f5262b7d853b32bd05931e"
+    },
+    {
+      "path": ".artifacts/ordinal-stroke-dash/package-consumer-v1.log",
+      "sha256": "bf2598bcd37c9f78f8f64a3a4a9b20e47d32b908f95bece0aa7f4739a1b1599f"
+    }
+  ],
+  "publicRelease": false,
+  "nextRegularReleaseAt": 1413,
+  "schoolRequests": 0,
+  "schoolTokens": 0,
+  "chartPixelsInspected": false,
+  "recordedAt": "2026-10-19T10:19:09.718245+00:00",
+  "implementationCommit": "5f22e3755b09880ab33276e62da0cc1ac5f143c6",
+  "remoteSourceHeadVerified": "5f22e3755b09880ab33276e62da0cc1ac5f143c6",
+  "branch": "codex/batch200-library-fixes"
+}

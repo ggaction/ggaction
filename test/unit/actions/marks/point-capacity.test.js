@@ -72,9 +72,9 @@ test("primitive capacity proves semantic point ownership and retains independent
   assert.throws(() => other.createTickMark().encodeX({ field: "x" }).encodeY({ field: "y" }), /10000/);
   assert.throws(() => other.createRectMark().encodeX({ field: "x" }).encodeX2({ datum: 10002 })
     .encodeY({ field: "y" }).encodeY2({ datum: 101 }), /10000/);
-  const commands = Array.from({ length: 20001 }, (_, i) => ({ op: i ? "L" : "M", x: i, y: 0 }));
+  const commands = Array.from({ length: 30001 }, (_, i) => ({ op: i ? "L" : "M", x: i, y: 0 }));
   assert.throws(() => chart().createGraphics({ id: "path", type: "path" })
-    .editGraphics({ target: "path", property: "commands", value: commands }), /20000/);
+    .editGraphics({ target: "path", property: "commands", value: commands }), /30000/);
 });
 
 test("raw source revisions reject overflow before missing rows can hide allocation", () => {

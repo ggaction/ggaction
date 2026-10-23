@@ -81,8 +81,8 @@ const diamonds = program.editPointMark({
 
 `target` may be omitted for the current or only point mark. Supported shapes
 are `circle`, `square`, `diamond`, four directional triangles, `plus`, `cross`,
-`star`, `hexagon`, `wye`, `wedge`, and `arrow`. Every recipe preserves the same logical target
-area. `wedge` is a narrow upward triangle centered at its centroid; `arrow` is an upward
+`star`, `hexagon`, `wye`, `wedge`, and `arrow`, or an explicit simple polygon
+described below. Named recipes preserve the same logical target area. `wedge` is a narrow upward triangle centered at its centroid; `arrow` is an upward
 seven-vertex arrow anchored at its bounding-box center. Angle encodings rotate either clockwise around
 that anchor. A constant shape conflicts with field-driven `encodeShape`, and constant
 fill conflicts with a semantic color encoding.
@@ -95,6 +95,45 @@ The cap, join, and miter options follow the shared
 [Mark Style](../appearance/mark-style.md#stroke-caps-joins-and-rounded-rectangles)
 contract. They are retained even though a circular glyph has no visible cap or
 corner, so a later shape or stroke replay does not discard authored style.
+
+## Explicit polygon shapes
+
+Pass `{ polygon: [{ x, y }, ...], normalization? }` wherever a point shape is
+accepted: constant creation/editing, scatter `point.shape`, shape scale
+`range` or `unknown`, and highlights. The same glyph geometry is used in legends.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```javascript
+const triangle = {
+  polygon: [{ x: -1.5, y: -1.5 }, { x: 1.5, y: -1.5 }, { x: 0, y: 1.5 }]
+};
+const customPoints = program.editPointMark({ shape: triangle });
+```
+
+The input origin `(0, 0)` remains the point anchor. Default `normalization:
+"area"` scales vertices by `sqrt(area / polygonArea)` and preserves the requested
+physical area. Choose `normalization: "radius"` to scale each coordinate by
+`sqrt(area / PI)` instead. With `encodePointRadius({ value: 2 })`, one input unit
+then equals two logical pixels; a square from −1 to 1 has side length 4.
+In radius mode, `encodeSize` values describe reference-circle area, so different
+polygons can have different physical areas for the same value. Angle rotates
+clockwise about the authored origin in either mode.
+
+A shape has 3–1,024 vertices after removing one repeated closing vertex.
+Coordinates must be finite numbers with magnitude at most 1,000,000. Only
+`polygon` and `normalization` are accepted on the shape, and only `x` and `y` on
+each vertex. Concave shapes and either winding work; zero-area polygons,
+zero-length or backtracking edges, crossing, overlap, and nonadjacent touching
+are rejected. SVG strings, curves, and holes are unsupported. A point layer's
+custom polygons may generate at most 10,000,000 path commands, including each
+closing command, independently of its point-count limit. Polygon highlight
+replacement checks the resulting selected paths plus retained paths before
+allocating the new geometry.
 
 ## Directional shapes and area {#directional-shapes-and-area}
 
@@ -133,7 +172,7 @@ const separated = program.jitterPoints({
 | Option | Type | Default or inference |
 | --- | --- | --- |
 | `target` | existing Cartesian point ID | current or only eligible point mark |
-| `channel` | `"x"` or `"y"` | required |
+| `channel` | `"x"`, `"y"`, or `"both"` | required |
 | `maxOffset` | `{ pixels: positiveNumber }` or `{ band: number }` | required; exactly one form |
 | `seed` | string or finite number | `0` |
 | `key` | non-empty field name | source-row index identity |
@@ -143,6 +182,10 @@ position scale. The final glyph remains inside both its category slot and plot
 bounds. Pixel offsets work with quantitative or categorical positions. The
 seed and item identity produce stable offsets; use a unique `key` when offsets
 must remain attached to rows after data reordering.
+
+Use `channel: "both"` to jitter X and Y in one call. Each axis gets an independent,
+deterministic offset with the same `maxOffset` limit. Pixel offsets support mixed
+position types; band offsets require categorical slots on both axes.
 
 Calling `jitterPoints` again replaces the target policy and recomputes from the
 semantic base position, so offsets never accumulate. Canvas, scale, data,

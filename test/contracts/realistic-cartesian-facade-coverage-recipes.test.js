@@ -29,17 +29,17 @@ const actionCards = JSON.parse(readFileSync(
 const inventoryPromise = buildPublicOptionInventory(actionCards);
 const ACTIONS = new Set(REALISTIC_CARTESIAN_FACADE_COVERAGE_EXPECTED_ACTIONS);
 const EXPECTED_TARGETS = Object.freeze({
-  createScatterPlot: Object.freeze({ requirements: 561, diversity: 14 }),
-  createBarPlot: Object.freeze({ requirements: 513, diversity: 11 }),
-  createLinePlot: Object.freeze({ requirements: 425, diversity: 8 }),
-  createParallelCoordinates: Object.freeze({ requirements: 142, diversity: 5 })
+  createScatterPlot: Object.freeze({ requirements: 598, diversity: 14 }),
+  createBarPlot: Object.freeze({ requirements: 541, diversity: 11 }),
+  createLinePlot: Object.freeze({ requirements: 460, diversity: 8 }),
+  createParallelCoordinates: Object.freeze({ requirements: 145, diversity: 5 })
 });
 const EXPECTED_REQUIREMENT_DIGESTS = Object.freeze({
   // Locked after public declarations match the runtime-supported facade branches.
-  createScatterPlot: "6c2e61bf911a89e842fe0bb1db77a6df377519070e051f44632c78604cb130db",
-  createBarPlot: "a4925c1c2cfba74a2e2da2ea0202701f30f6e68888dccda9dcd167e5b1da5e7d",
-  createLinePlot: "3822bbb468d2e83729ce937a0d66f9684819d7fb93b90a7c24fbc0a9749b88b9",
-  createParallelCoordinates: "31d6dede797abed76c3adfb3c3e443795352080a636ce244749e1ab0c6d3e979"
+  createScatterPlot: "2734d2ee850cb5ad02242f1b5eabf3331f49dadd40f940f49703277132df098c",
+  createBarPlot: "c6c3a2043d0309482adda2a60d34a955c564a247876eb2f12271ad1149a7c8a5",
+  createLinePlot: "7764377653a119fbe84e86d28a1342b716354692fbae2b667b40b913a66267d1",
+  createParallelCoordinates: "dd687aadf208a582f00997f78518ebb4b38e5ecaf13b8e05f4764169788c4b15"
 });
 const EXPECTED_DIVERSITY_DIGESTS = Object.freeze({
   createScatterPlot: "aa76940d26228ff5642db8d1831a6cd8538b07223a4f5cef851ef2e75efa2e73",
@@ -720,9 +720,9 @@ test("locks the exact assigned option, literal, aggregate, and diversity target 
     actionRequirementCount += requirementIds.length;
     diversityCount += diversityIds.length;
   }
-  assert.equal(actionRequirementCount, 1641);
+  assert.equal(actionRequirementCount, 1744);
   assert.equal(target.familyLiterals.length, 15);
-  assert.equal(actionRequirementCount + target.familyLiterals.length, 1656);
+  assert.equal(actionRequirementCount + target.familyLiterals.length, 1759);
   assert.equal(diversityCount, 38);
 });
 

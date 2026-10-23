@@ -15,7 +15,7 @@ title: Series Encodings
 | `encodeOpacity` | `encodeOpacity({ field: "quality" })` | Current Point/Rule/Line/Bar; quantitative field | One opacity per item, series, or bar cell |
 | `encodeColor` | `encodeColor({ field: "group" })` | Current mark, nominal default or explicit ordinal field type, color scale | Semantic grouping and concrete color |
 | `encodeStroke` | `encodeStroke({ field: "status" })` | Current supported mark; independent stroke scale | Item or series outline color without replacing fill |
-| `encodeStrokeDash` | `encodeStrokeDash({ field: "group" })` | Current line/rule mark and dash scale | Field-driven or constant concrete dash |
+| `encodeStrokeDash` | `encodeStrokeDash({ field: "group" })` | Current line/rule; nominal default or explicit ordinal field type | Field-driven or constant concrete dash |
 | `encodeStrokeWidth` | `encodeStrokeWidth({ field: "weight" })` | Current line/rule; independent quantitative scale | Rule-item or line-series widths |
 | `encodePathOrder` | `encodePathOrder({ field: "year" })` | Current or unique compatible Cartesian path; ascending default | Stable per-series vertex order without a scale |
 | `encodeParallelCoordinates` | `encodeParallelCoordinates({ dimensions: ["a", "b"] })` | Current line, Parallel coordinate, local scales, `break` missing policy | One row path across ordered dimension axes |
@@ -97,12 +97,15 @@ dimension scales, row identity, missing policies, and lifecycle behavior.
 
 ## Errors and limitations
 
-Stroke-dash and explicit group fields must be nominal. Color fields may be
+Explicit group fields must be nominal. Color and stroke-dash fields may be
 nominal or ordinal. Without an explicit Line group, color and field-driven dash
 must use the same field. Explicit identity allows different appearance fields
 when each is unique within the series. Center/stack/fill Area retains matching
 single-field color/group ownership.
 Combined line legends also require matching ordered domains.
+Cartesian line and rule dash scales accept an explicit `unknown` style for valid
+categories outside a domain, preserving raw series and legend membership.
+Missing or malformed categories remain errors. See [Stroke dash](./series/stroke-dash.md).
 Stroke width is quantitative and independent of point size. A line series must
 have exactly one width value across all contributing rows; segment-local and
 tapered widths are unsupported.

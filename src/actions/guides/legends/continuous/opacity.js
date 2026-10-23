@@ -2,6 +2,8 @@ import{validateLegendClip}from"../../../../grammar/legendClip.js";
 import{hasLegendClipGraphics,applyLegendClipGraphics}from"../../../../materialization/legendClip.js";
 import { intrinsicLegendConfig } from "../../../../materialization/legendGroups.js";
 import { alignLegendTitle, resolveLegendTitleText } from "../../../../layout/legendText.js";
+import {resolveLegendContentSpacing} from "../../../../layout/legendSpacing.js";
+import {validateLegendSpacing} from "../../../../grammar/legendSpacing.js";
 import { editGraphicProperties } from "../../../primitives/graphicProperties.js";
 import { action, closedAction } from "../../../../core/action.js";
 import { isPlainObject } from "../../../../core/immutable.js";
@@ -91,6 +93,7 @@ function resolveOpacityConfig(program, config) {
 
 function resolveOpacityLayout(program, config, scale) {
   validateLegendClip("opacity",config);
+  validateLegendSpacing("opacity",config);
   config = intrinsicLegendConfig(program, config);
   const { plot, canvas } = resolveContinuousBounds(program);
   const vertical = ["right", "left"].includes(config.position);
@@ -210,7 +213,18 @@ function resolveOpacityLayout(program, config, scale) {
     config.title,
     config.titleStyle
   , program.materializationConfigs.textMetrics, { hardBreaks: true });
-  const occupiedBounds = [...(config.titleVisible === false ? [] : [titleBounds]), ...labelBounds, ...symbolBounds];
+  let occupiedBounds = [...(config.titleVisible === false ? [] : [titleBounds]), ...labelBounds, ...symbolBounds];
+  const spacing = config.rowPadding === undefined && config.titlePadding === undefined ? undefined
+    : resolveLegendContentSpacing(config,symbols.map((symbol,index) => ({
+    row:vertical ? index : 0,x:symbol.x,y:symbol.y,
+    bounds:[symbolBounds[index],...(texts[index] === "" ? [] : [labelBounds[index]])]
+  })),titleBounds);
+  if (spacing !== undefined) {
+    symbols = symbols.map((point,index) => ({...point,x:point.x+spacing.offsets[index].dx,y:point.y+spacing.offsets[index].dy}));
+    labels = labels.map((point,index) => ({...point,x:point.x+spacing.offsets[index].dx,y:point.y+spacing.offsets[index].dy}));
+    title = {...title,x:title.x+spacing.titleOffset.dx,y:title.y+spacing.titleOffset.dy};
+    occupiedBounds = spacing.bounds;
+  }
   assertLegendBoundsInsideCanvas(
     occupiedBounds,
     canvas,

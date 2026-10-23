@@ -4,6 +4,79 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+## [0.0.22] - 2026-10-23
+
+- Add opt-in plot clipping to supported Cartesian mark layers, with native/SVG/PNG/PDF parity and immutable owner replay.
+- Add validated simple polygon point shapes, retaining area/radius normalization in marks, shape scales, legends and persistence.
+- Support explicit fold-produced facet partition keys and rotated facet headers without changing original input rows.
+- Allow explicit Cartesian axis-title overlap with labels; preserve strict collision checks when omitted.
+- Preserve exact continuous-legend sampling endpoints, avoiding rounded-domain extrapolation.
+- Keep opacity/stroke-width `nice` declarations boolean-only and restrict categorical dash fallback declarations to Cartesian consumers, matching the existing runtime role checks.
+
+- Add native Canvas transition scenes and drawing through `ggaction/scene`, preserving explicit owner/nested clips, fractional viewport coverage, immutable scene identity and the existing SVG scene contract.
+
+- Update locked Hono to 4.13.13, Vite to 6.4.5 and ip-address to 10.7.4; preserve native platform metadata and verify the existing browser/MCP consumers.
+
+- Add opt-in facet header `anchor: "content"` for plot spacing, following concrete mark overflow while preserving along-edge plot alignment, clipping, role overrides and editable replay.
+
+- Add explicit axis `format: "ticks"` for per-axis numeric tick precision, including independent facets, while preserving existing automatic formatting.
+
+- Add opt-in `missing: "break"` for direct Cartesian quantitative/temporal lines, preserving raw observations, independent axis domains and curve restarts across gaps, including filtering, immutable edits and saved programs. Strict defaults remain unchanged.
+
+- Add opt-in `nice: { count }` rounding for automatic linear position domains, preserving existing boolean behavior, independent facet ranges, immutable edits and saved programs.
+- Add opt-in nearest-step linear Cartesian ticks with matching labels, inferred grids, named owners, independent facets and editable saved programs.
+- Fix editable version-1 lookup schema migration while retaining strict references, typed keys, raw rows and final schema validation.
+
+- Add independent role-scoped facet field titles through existing header creation and editing, with rotated placement, immutable partial edits, removal and collision-checked replay.
+
+- Add `createLookupData` / `editLookupData` for typed lookup between named datasets, preserving primary rows and both raw inputs.
+- Support immutable lookup edits, revisions from either input, typed lineage, persistence,
+  facet/grid composition and encoding repeats over direct lookup results.
+
+- Support finite zero and negative Cubehelix lightness gamma, including explicit zero-position RGB boundaries, shared color/stroke legends and immutable replay.
+
+- Add `encodeDx` and `encodeDy` for direct numeric independent Text offsets, including atomic channel assignment, immutable data replay and saved programs. Basic retains its Text-family exclusion.
+
+- Support quantitative/temporal Tick color mappings and their filled gradient, interval and sampled-color legends, preserving geometry, raw data, existing stroke-only behavior and explicit channel switching.
+
+- Support exact continuous color/stroke gradient tick values through existing legend creation and editing, with mapped positions, explicit reset, retained representation sampling and atomic domain validation.
+
+- Raise the bounded per-path capacity to 30,000 commands, preserving interpolation/area expansion checks, immutable native edits and independent allocation limits.
+
+- Add `createFlattenData` / `editFlattenData` for aligned parallel-array data expansion with null padding, immutable raw ancestors, typed lineage, Full derived editing/replay and Basic creation.
+
+- Inherit fixed line colors in categorical dash legends while preserving mapped colors, explicit sample overrides and independent sample opacity.
+
+- Place inferred external side legends beyond occupied same-edge axes, preserving family gaps, plot-top alignment, explicit offsets and immutable guide replay.
+
+- Fix categorical symbol recipe edits from rounded bar samples to plain swatches, including restoration to automatic samples and facet/data replay.
+
+- Support explicit ordinal stroke-dash fields in existing line/rule, facade and bulk encodings, preserving categorical domain order and immutable rematerialization.
+
+- Add explicit Cartesian-axis and plot-border underlays, with strict existing-container child-order editing.
+- Add opt-in facet `topLane: "shared"` with plot spacing, fixed child sizes, collision validation and editable persistence. Render blank mapped text consistently.
+- Add opt-in content-aware legend `rowPadding` and independent `titlePadding`, with focused editing, explicit reset and retained replay intent.
+- Fix HCL and HCL-long hue handling at exact neutral RGB endpoints for D50 and D65.
+- Support finite numeric datum bounds in Rect/Rule range encoders, with final-pair validation and unchanged source data.
+- Align continuous color and stroke TypeScript palette descriptors with existing runtime count, extent and nested range forms.
+- Reuse validated immutable composition state and namespaced child graphics during layout edits, preserving validation of changed state and caller-owned inputs.
+- Report measured minimum facet header spacing through existing structured error diagnostics so clients can retry without repeated gap searches.
+- Add `editRadarPlot` to atomically edit the selected dimensions and order of a wide Radar chart while preserving its closed paths, groups, appearance and guides.
+- Accept color in Box and Gradient plot creation, support continuous Arc color, and preserve compound-chart color and filtering through edits and facets.
+- Compute distribution and endpoint statistical references from their source observations; retain and recompute independently authored reference layers through owner edits.
+- Resolve compatible facet color/stroke policies and combined legend domains consistently. Automatic `createGuides` accepts a chart with no applicable guides.
+- Reserve Polar and Parallel axis text in facet header and shared-legend placement; inferred outside legends also clear Polar labels after typography changes.
+- Apply Histogram missing-value policy consistently to marks, scales, guides, labels and selections, and expose actual bin intervals as category labels.
+
+- Add `createStatisticalReference` for a native mean/median/extreme/quantile line or exact percentile interval, with dark solid line defaults and existing statistical reference replay and ownership.
+
+- Preserve aggregate bar positions and widths when categorical color repeats the category-axis field and no group or layout was already specified.
+
+- Infer left/right legend clearance from occupied axis guides and reflow it after axis edits or removal; exact-inner Canvas sizing also fits inferred edge legend groups.
+- Detect chart title position and typography changes in `comparePrograms` when the title text is unchanged.
+- Add `editAxes` to edit selected Cartesian, Polar, or Parallel axes through one atomic public action, with existing channel-editor options and explicit named-axis selection.
+- Forward native `missing: "error" | "skip"` through `createScatterPlot` and `createBarPlot` without changing source rows.
+
 ## [0.0.21] - 2026-10-18
 
 - Fix precision loss and collapsed bounds in bootstrap interval data and charts.

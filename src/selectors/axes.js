@@ -2,6 +2,12 @@
 const CARTESIAN_CHANNELS = Object.freeze(["x", "y"]);
 const COMPONENTS = Object.freeze(["line", "ticks", "labels", "title"]);
 
+export const PARALLEL_AXIS_PARTS = COMPONENTS;
+export const PARALLEL_AXIS_GRAPHICS = Object.freeze({
+  line: "parallelAxisLines", ticks: "parallelAxisTicks",
+  labels: "parallelAxisLabels", title: "parallelAxisTitles"
+});
+
 export function cartesianAxisOwners(program) {
   const semantics = program.semanticSpec?.guides?.axis ?? {};
   const configs = (program.guideConfigs ?? program.materializationConfigs?.guides)?.axis ?? {};
@@ -72,6 +78,9 @@ export function assertCartesianAxisSideAvailable(program, { id, channel, coordin
 }
 
 export function axisGraphicIds(channel, axisId = channel) {
+  if (channel === "parallel" && axisId === channel) {
+    return ["parallelAxisLines", "parallelAxisTicks", "parallelAxisLabels", "parallelAxisTitles"];
+  }
   const components = ["Line", "Ticks", "Labels", "Title"];
   if (axisId !== channel) return components.map(component => `axis_${axisId}__${component}`);
   const prefix = channel === "radius" ? "radial" : channel;

@@ -1,6 +1,6 @@
 import { cloneAndFreeze, isPlainObject } from "../../core/immutable.js";
 import { validateUnitInterval } from "../../core/validation.js";
-import { POINT_SHAPES } from "../pointShapes.js";
+import { POINT_SHAPES, validatePointShape } from "../pointShapes.js";
 import {
   normalizePalette,
   resolvePalette
@@ -84,14 +84,17 @@ export function validateShapeRange(range) {
   if (range === "auto") return range;
   if (
     !Array.isArray(range) ||
-    range.length === 0 ||
-    !range.every(shape => POINT_SHAPES.includes(shape))
+    range.length === 0
   ) {
     throw new TypeError(
       "Shape range must contain supported point shapes."
     );
   }
-  return cloneAndFreeze(range);
+  try {
+    return cloneAndFreeze(range.map(validatePointShape));
+  } catch (cause) {
+    throw new TypeError("Shape range must contain supported point shapes.", { cause });
+  }
 }
 
 function validateAscendingAppearanceRange(range, label) {

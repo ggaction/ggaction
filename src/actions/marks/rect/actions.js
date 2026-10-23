@@ -1,3 +1,5 @@
+import { materializeMarkClip } from "../../../materialization/markClip.js";
+import { requestedMarkClip, validateMarkClipCoordinate } from "../../../selectors/markClip.js";
 import { action } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
 import {
@@ -33,7 +35,7 @@ import { applyItemMissingPolicy, validateItemMissing } from
   "../../../grammar/itemMissing.js";
 
 const STYLE_OPTIONS = Object.freeze([
-  "fill", "opacity", "stroke", "strokeWidth", ...RECT_RADIUS_PROPERTIES,
+  "clip", "fill", "opacity", "stroke", "strokeWidth", ...RECT_RADIUS_PROPERTIES,
   ...STROKE_STYLE_PROPERTIES
 ]);
 const CREATE_OPTIONS = Object.freeze(["id", "data", "missing", ...STYLE_OPTIONS]);
@@ -55,6 +57,7 @@ const createRectMark = /* @__PURE__ */ action(
   { op: "createRectMark", description: "Create a semantic rectangular cell layer." },
   function (args = {}) {
     validateMarkOptions(args, CREATE_OPTIONS, "createRectMark");
+    requestedMarkClip(args);
     requestedRectStyleDetails(args, "createRectMark");
     const id = resolveMarkId(this, args.id, {
       defaultId: "rect",
@@ -109,6 +112,7 @@ const rematerializeRectMark = /* @__PURE__ */ action(
     const highlighted = rematerializeHighlightBaseline(this, {
       target: id,
       operation: "rematerializeRectMark",
+      scales: args.scales,
       resetProperty: "items",
       resetValue: []
     });
@@ -126,7 +130,7 @@ const rematerializeRectMark = /* @__PURE__ */ action(
       throw new Error(`Rect mark "${id}" requires rect collection graphics.`);
     }
     if (this.markConfigs[id]?.gradientPlot?.materialized === true) {
-      return this.materializeGradientPlotFill({ id });
+      return materializeMarkClip(this.materializeGradientPlotFill({ id, scales: args.scales }), id);
     }
     const sourceDataset = findDataset(this, layer.data);
     if (sourceDataset === undefined) {
@@ -146,12 +150,12 @@ const rematerializeRectMark = /* @__PURE__ */ action(
         next = next.rematerializeScale({ id: scale, marks: false });
       }
     }
-    return replaceGraphicItems(
+    return materializeMarkClip(replaceGraphicItems(
       next,
       id,
       "rect",
       resolveRectGraphicItems(next, layer, dataset)
-    );
+    ), id);
   }
 );
 
@@ -159,6 +163,7 @@ const editRectMark = /* @__PURE__ */ action(
   { op: "editRectMark", description: "Edit rectangular cell appearance." },
   function (args = {}) {
     validateMarkOptions(args, EDIT_OPTIONS, "editRectMark");
+    requestedMarkClip(args);
     requestedRectStyleDetails(args, "editRectMark");
     if (!["missing", ...STYLE_OPTIONS].some(option => Object.hasOwn(args, option))) {
       throw new Error("editRectMark requires at least one editable property.");
@@ -171,6 +176,12 @@ const editRectMark = /* @__PURE__ */ action(
       throw new Error(
         "editRectMark stroke conflicts with a field encoding; use encodeStroke with value to replace it."
       );
+    }
+    validateMarkClipCoordinate(this, layer, args.clip ?? this.markConfigs[layer.id]?.clip);
+    for (const channel of ["opacity", "strokeWidth"]) {
+      if (Object.hasOwn(args, channel) && layer.encoding?.[channel] !== undefined) {
+        throw new Error(`editRectMark ${channel} conflicts with a field encoding; use ${channel === "opacity" ? "encodeOpacity" : "encodeStrokeWidth"} with value to replace it.`);
+      }
     }
     const semantic = Object.hasOwn(args, "missing")
       ? this.editSemantic({
@@ -185,6 +196,7 @@ const editRectMark = /* @__PURE__ */ action(
           args,
           semantic.markConfigs[layer.id] ?? DEFAULT_RECT_MARK
         ),
+        ...requestedMarkClip(args),
         fillExplicit: Object.hasOwn(args, "fill")
           ? true
           : semantic.markConfigs[layer.id]?.fillExplicit ?? false

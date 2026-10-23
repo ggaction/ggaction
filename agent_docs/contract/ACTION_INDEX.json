@@ -328,6 +328,42 @@
       }
     },
     {
+      "name": "createLookupData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Copy named reference fields while preserving primary rows; edit with editLookupData",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "createlookupdata"
+      }
+    },
+    {
+      "name": "createFlattenData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Create aligned array rows; revise the logical owner with editFlattenData",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "createflattendata"
+      }
+    },
+    {
       "name": "createFoldData",
       "layer": "user-facing",
       "domain": "statistics",
@@ -631,6 +667,42 @@
       "contract": {
         "file": "agent_docs/contract/current/CORE.md",
         "anchor": "editfiltereddata"
+      }
+    },
+    {
+      "name": "editLookupData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Revise typed lookup inputs and aliases with atomic dependent replay",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "editlookupdata"
+      }
+    },
+    {
+      "name": "editFlattenData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Partially revise aligned array expansion with atomic dependent replay",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "editflattendata"
       }
     },
     {
@@ -976,6 +1048,24 @@
       }
     },
     {
+      "name": "createStatisticalReference",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Aggregate create-only",
+      "update": "Existing rule/rect, encoding and scale actions; removeMark owns deletion",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/MARKS.md",
+        "anchor": "createstatisticalreference"
+      }
+    },
+    {
       "name": "createReferenceLine",
       "layer": "user-facing",
       "domain": "marks",
@@ -1215,7 +1305,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Assignment",
-      "update": "Same action replaces the target jitter assignment; `removeJitter` removes it",
+      "update": "Same action replaces the X, Y, or both-axis jitter assignment; `removeJitter` removes it",
       "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
@@ -1521,7 +1611,7 @@
       "domain": "encodings",
       "status": "implemented",
       "lifecycle": "Assignment",
-      "update": "Same action replaces compatible color grouping",
+      "update": "Reassign supported field color; Tick supports numeric/temporal segment color with explicit stroke-channel switching",
       "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
@@ -1539,7 +1629,7 @@
       "domain": "encodings",
       "status": "implemented",
       "lifecycle": "Assignment",
-      "update": "Same action atomically replaces field, constant value, and scale binding",
+      "update": "Same action atomically replaces nominal/ordinal field, constant value, and scale binding",
       "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
@@ -1575,7 +1665,7 @@
       "domain": "encodings",
       "status": "implemented",
       "lifecycle": "Assignment",
-      "update": "Same action replaces constant rule width or field-driven line/rule width",
+      "update": "Same action replaces constant or field-driven line/rule/rect width",
       "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
@@ -1611,7 +1701,7 @@
       "domain": "encodings",
       "status": "implemented",
       "lifecycle": "Assignment",
-      "update": "Assign an ordinal field to fourteen named equal-area point shapes, including wedge and arrow",
+      "update": "Assign an ordinal field to fourteen named point shapes or explicit simple polygons with area or radius normalization",
       "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
@@ -1647,7 +1737,7 @@
       "domain": "encodings",
       "status": "implemented",
       "lifecycle": "Assignment",
-      "update": "Same action replaces the constant value",
+      "update": "Same action replaces constant or field opacity on point/rule/line/bar/rect marks",
       "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
@@ -1981,6 +2071,42 @@
       "contract": {
         "file": "agent_docs/contract/current/ENCODINGS.md",
         "anchor": "encodetext"
+      }
+    },
+    {
+      "name": "encodeDx",
+      "layer": "user-facing",
+      "domain": "encodings",
+      "status": "implemented",
+      "lifecycle": "Assignment",
+      "update": "Same action replaces the complete independent Text pixel offset field or constant",
+      "audit": "Reassignment and removal fallback - Implemented",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/ENCODINGS.md",
+        "anchor": "encodedx"
+      }
+    },
+    {
+      "name": "encodeDy",
+      "layer": "user-facing",
+      "domain": "encodings",
+      "status": "implemented",
+      "lifecycle": "Assignment",
+      "update": "Same action replaces the complete independent Text pixel offset field or constant",
+      "audit": "Reassignment and removal fallback - Implemented",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/ENCODINGS.md",
+        "anchor": "encodedy"
       }
     },
     {
@@ -2830,6 +2956,24 @@
       }
     },
     {
+      "name": "editAxes",
+      "layer": "user-facing",
+      "domain": "axes",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Atomically delegates selected existing axes to their channel editors",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/AXES.md",
+        "anchor": "editaxes"
+      }
+    },
+    {
       "name": "editXAxis",
       "layer": "user-facing",
       "domain": "axes",
@@ -3033,7 +3177,7 @@
       "domain": "legend_and_title",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editLegend` edits content, layout, appearance, and exact sampled values",
+      "update": "`editLegend` edits content, layout, appearance, exact samples and gradient ticks",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -3051,7 +3195,7 @@
       "domain": "legend_and_title",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edit whole-target content or select one existing channel block for layout, appearance and samples",
+      "update": "Edit whole-target content or select one existing channel block for layout, appearance, samples and gradient ticks",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -4365,7 +4509,7 @@
       "domain": "composition",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits concat layout or facet columns/layout",
+      "update": "Edits concat layout or facet columns/layout; optional shared top lane with plot spacing",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -4455,7 +4599,7 @@
       "domain": "composition",
       "status": "implemented",
       "lifecycle": "Aggregate create-only",
-      "update": "Creates immutable derived child views",
+      "update": "Creates immutable derived child views; optional shared top lane with plot spacing",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -4473,7 +4617,7 @@
       "domain": "composition",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Creates ordered row-column facet cells",
+      "update": "Creates ordered row-column facet cells; optional shared top lane with plot spacing",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -4491,7 +4635,7 @@
       "domain": "composition",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Repeats one eligible Cartesian or Polar role or one Parallel dimension across fields",
+      "update": "Repeats one eligible Cartesian or Polar role or one Parallel dimension across fields; optional shared top lane with plot spacing",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -4509,7 +4653,7 @@
       "domain": "composition",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Replays a facet or repeat recipe on a revised unit",
+      "update": "Reapply retained facet recipe to a complete unit program or one public unit source action.",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -4527,7 +4671,7 @@
       "domain": "composition",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits parent-owned common, row, or column facet headers, including side, alignment, style, and typed display labels",
+      "update": "Edits parent-owned common, row, or column facet headers, including side, alignment, rotation, content anchoring, style, typed display labels, and one field title per role",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -4821,10 +4965,28 @@
         "effects": "complete",
         "tests": "complete"
       },
-      "update": "Explicit Fold plus existing Polar line, category order, group, appearance, scale and guide actions",
+      "update": "editRadarPlot revises wide dimensions atomically; existing Polar appearance, scale and guide actions remain available",
       "contract": {
         "file": "agent_docs/contract/current/COMPLETE_CHARTS.md",
         "anchor": "createradarplot"
+      }
+    },
+    {
+      "name": "editRadarPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "update": "Revises owned wide-fold dimensions, theta order and radius geometry while preserving group, appearance and guide intent",
+      "contract": {
+        "file": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "anchor": "editradarplot"
       }
     },
     {
@@ -5173,6 +5335,8 @@
       "materializeGradientPlot",
       "materializeGradientPlotFill",
       "materializeFilteredData",
+      "materializeLookupData",
+      "materializeFlattenData",
       "materializeFoldData",
       "materializeMarkFilteredData",
       "materializeIntervalData",
@@ -5213,6 +5377,7 @@
       "rematerializeOpacityLegend",
       "rematerializeParallelAxes",
       "rematerializePlotBorder",
+      "rematerializePlotDrawOrder",
       "rematerializePointMark",
       "rematerializeRadialGrid",
       "rematerializeRectMark",
