@@ -215,15 +215,15 @@ test("derives a bounded public option inventory without runtime prototype paths"
   const inventory = await buildPublicOptionInventory(actionCards);
 
   assert.equal(inventory.counts.publicActions, 286);
-  assert.equal(inventory.counts.topLevelOptionPaths, 2500);
-  assert.equal(inventory.counts.nestedOptionPaths, 16127);
-  assert.equal(inventory.counts.optionPaths, 18627);
-  assert.equal(inventory.counts.requiredOptionPaths, 13310);
-  assert.equal(inventory.counts.excludedOptionPaths, 5317);
-  assert.equal(inventory.counts.topLevelCategoricalPaths, 878);
-  assert.equal(inventory.counts.topLevelLiteralValues, 3618);
-  assert.equal(inventory.counts.literalFamilies, 190);
-  assert.equal(inventory.counts.pathLiteralRequirements, 9774);
+  assert.equal(inventory.counts.topLevelOptionPaths, 2506);
+  assert.equal(inventory.counts.nestedOptionPaths, 16462);
+  assert.equal(inventory.counts.optionPaths, 18968);
+  assert.equal(inventory.counts.requiredOptionPaths, 13501);
+  assert.equal(inventory.counts.excludedOptionPaths, 5467);
+  assert.equal(inventory.counts.topLevelCategoricalPaths, 884);
+  assert.equal(inventory.counts.topLevelLiteralValues, 3626);
+  assert.equal(inventory.counts.literalFamilies, 193);
+  assert.equal(inventory.counts.pathLiteralRequirements, 9903);
   assert.equal(inventory.counts.familyLiteralRequirements, 442);
   assert.equal(inventory.counts.pathDiversityRequirements, 391);
   const bootstrapMethodRoots = [
@@ -417,7 +417,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
       ...counts,
       [value.reason]: (counts[value.reason] ?? 0) + 1
     }), {}),
-    { "redacted-array": 5317 }
+    { "redacted-array": 5467 }
   );
   const values = id => optionById.get(id)?.values ?? [];
   assert.equal(optionById.has("option-path:createScatterPlot.x.scale.palette"), false);
@@ -461,7 +461,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
     "option-path:createData.values[]"), false);
   assert.equal(ledger.requirements.some(requirement => requirement.id ===
     "option-path:createDerivedData.transform[].type"), false);
-  assert.equal(ledger.requirements.length, 23816);
+  assert.equal(ledger.requirements.length, 24136);
   const directBootstrapMethods = bootstrapMethodRoots.filter(root => !root.includes("[]"));
   const directBootstrapOptions = directBootstrapMethods.flatMap(root =>
     ["samples", "seed", "type"].map(key => `option-path:${root}.${key}`));

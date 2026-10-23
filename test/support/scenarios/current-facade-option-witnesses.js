@@ -5,6 +5,8 @@ const clippedPoints = new Set(['createScatterPlot','createStripPlot','createBees
 export function currentFacadeOptionWitnesses(args,{action,index,program}={}) {
   const result=structuredClone(args);
   const statistical=['createBoxPlot','createViolinPlot','createGradientPlot','createHistogram','createHeatmap'].includes(action);
+  const hierarchicalAxes=['createAreaPlot','createBeeswarmPlot','createDensityPlot','createHorizonPlot','createRaincloudPlot','createRugPlot','createStripPlot'].includes(action);
+  const cartesianAxes=['createScatterPlot','createBarPlot','createLinePlot'].includes(action);
   if(['createAreaPlot','createDensityPlot','createHorizonPlot','createStripPlot','createBeeswarmPlot','createRaincloudPlot'].includes(action)&&[2,6,7,8,9,12].includes(index)) {
     for(const key of ['x','y','value']) {
       const scale=result[key]?.scale;
@@ -90,8 +92,8 @@ export function currentFacadeOptionWitnesses(args,{action,index,program}={}) {
     if(axis.title&&typeof axis.title==='object')axis.title.overlap=Math.floor(index/2)%2?'allow':'error';
     const ticks=axis.ticksAndLabels;
     if(ticks&&typeof ticks==='object'){
-      if(statistical&&ticks.labels&&typeof ticks.labels==='object'){
-        ticks.labels.flushThreshold=index%2===0?'auto':4;
+      if((statistical||hierarchicalAxes||cartesianAxes)&&ticks.labels&&typeof ticks.labels==='object'){
+        ticks.labels.flushThreshold=action==='createRugPlot'||index%2===0?'auto':4;
         if(axis.title&&typeof axis.title==='object')axis.title.offset={from:'labels',gap:12+index%3*4};
       }
       if(statistical&&scales[axis.scale]?.type==='linear') {delete ticks.values;ticks.count=4;}
