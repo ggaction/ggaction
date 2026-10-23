@@ -7,7 +7,7 @@
 - [x] bin 작업자의 clean package/docs 읽기 종료 및 I 편집 freeze 해제 확인
 - [x] 하나의 저장 의도와 Cartesian create/edit/replay/persistence 구현
 - [x] focused/cumulative/default 호환·normal·packed·browser·docs 검증
-- [ ] coherent commit/push와 실제 결과·제한 기록
+- [x] coherent commit/push와 실제 결과·제한 기록
 
 Gate 상태: **approved**. ROOT 승인 기록은 번역 workspace의
 `reports/v13-axis-title-label-relative-offset-root-approval-v1.json`이며 원격 Gate의 여섯
@@ -66,3 +66,11 @@ inventory를 별도 보존했다. Linux/Windows 원격 release matrix와 실제 
 이미지 VLM/사람의 그림 검사는 수행하지 않았다. 픽셀 동등성과 수치·공개 패키지 검증은
 자동 증거이며 새 registry publication, 활성 번역 runtime 채택, 전체 원본 차트 번역 완료를
 의미하지 않는다.
+
+## 검증한 소스 checkpoint
+
+구현과 검증 입력은 `d99614f99c8d43b68af44e5bd5cf3e2e6b7c34b0`으로 commit/push했다.
+번역 workspace의 `reports/v13-axis-title-label-relative-offset-implementation-qualified-v1.json`
+(SHA256 `4cdf2afe0d9754c58f8da6168f6ea1a5cd01e763081d64ce397d417923a60ed6`)이
+62개 변경 파일·11개 runtime/type 입력과 각 실제 검사 로그를 결합한다.
+이후 문서 provenance만 clean source commit을 가리키도록 재생성한다.
