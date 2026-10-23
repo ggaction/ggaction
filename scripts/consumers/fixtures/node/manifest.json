@@ -117,6 +117,10 @@
     "file": "guides.mjs",
     "cases": [
       {
+        "id": "guides/axis-label-edge-threshold",
+        "statements": 1
+      },
+      {
         "id": "guides/create-horizontal-grid",
         "statements": 1
       },

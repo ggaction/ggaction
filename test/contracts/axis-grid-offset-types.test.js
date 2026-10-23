@@ -26,6 +26,13 @@ p.createLinePlot({x:'x',y:'y',guides:{axes:{x:{ticksAndLabels:{labels:{alongOffs
 p.editXAxis({labels:{flush:true,colorMap:[{value:20,color:'green'}]}});
 p.createXAxisLabels({color:'red',colorMap:[{value:'2',color:'green'}]});
 p.editYAxisLabels({colorMap:'auto'});
+p.createXAxis({ticksAndLabels:{labels:{flush:true,flushThreshold:1}}});
+p.editYAxisLabels({flushThreshold:'auto'});
+p.createGuides({axes:{y:{ticksAndLabels:{labels:{flushThreshold:0}}}}});
+// @ts-expect-error threshold is a number or the auto reset literal
+p.editXAxisLabels({flushThreshold:'1'});
+// @ts-expect-error Cartesian threshold is not a polar label option
+p.createThetaAxisLabels({flushThreshold:1});
 p.createAxes({y:{title:{overlap:'allow'}}});
 p.createGuides({axes:{x:{title:{overlap:'allow'}}}});
 p.createYAxisTitle({overlap:'allow'});p.editXAxisTitle({overlap:'error'});

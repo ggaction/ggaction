@@ -87,6 +87,7 @@ const COMPACT_JAVASCRIPT_FILES = Object.freeze([
   "src/grammar/legendBlocks.js",
   "src/core/graphicProperties.js",
   "src/grammar/axisTextPlacement.js",
+  "src/actions/guides/axes/labels.js",
   "src/grammar/guideDash.js",
   "knowledge/task-resolver.js",
   "src/grammar/scales/color.js",

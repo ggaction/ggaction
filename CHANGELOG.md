@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Add optional Cartesian label `flushThreshold` to align only mapped ticks near range edges, preserving full-containment defaults and editable replay.
+
 ## [0.0.23] - 2026-10-23
 
 - Add independent full-content facet packing, view-aware headers and per-channel Cartesian axis policies with unclipped shared footer axes.

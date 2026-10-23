@@ -2745,7 +2745,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editXAxisLabels` edits style, layout, and typed categorical display labels; signed along-axis displacement is preserved during replay; opt-in flush contains unrotated label bounds inside the axis span; typed per-value color overrides retain global fallback",
+      "update": "`editXAxisLabels` edits style, layout, and typed categorical display labels; signed along-axis displacement is preserved during replay; opt-in flush contains unrotated label bounds inside the axis span, with optional mapped-tick edge distance and auto reset; typed per-value color overrides retain global fallback",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -2763,7 +2763,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editYAxisLabels` edits style, layout, and typed categorical display labels; signed along-axis displacement is preserved during replay; opt-in flush contains unrotated label bounds inside the axis span; typed per-value color overrides retain global fallback",
+      "update": "`editYAxisLabels` edits style, layout, and typed categorical display labels; signed along-axis displacement is preserved during replay; opt-in flush contains unrotated label bounds inside the axis span, with optional mapped-tick edge distance and auto reset; typed per-value color overrides retain global fallback",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -2781,7 +2781,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits x-axis label style/layout and sets or resets a typed categorical labelMap; signed along-axis displacement is preserved during replay; opt-in flush contains unrotated label bounds inside the axis span; typed per-value color overrides retain global fallback",
+      "update": "Edits x-axis label style/layout and sets or resets a typed categorical labelMap; signed along-axis displacement is preserved during replay; opt-in flush contains unrotated label bounds inside the axis span, with optional mapped-tick edge distance and auto reset; typed per-value color overrides retain global fallback",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -2799,7 +2799,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits y-axis label style/layout and sets or resets a typed categorical labelMap; signed along-axis displacement is preserved during replay; opt-in flush contains unrotated label bounds inside the axis span; typed per-value color overrides retain global fallback",
+      "update": "Edits y-axis label style/layout and sets or resets a typed categorical labelMap; signed along-axis displacement is preserved during replay; opt-in flush contains unrotated label bounds inside the axis span, with optional mapped-tick edge distance and auto reset; typed per-value color overrides retain global fallback",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",

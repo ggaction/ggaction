@@ -35,7 +35,7 @@ const LABEL_OPTIONS = Object.freeze([
   "overlap",
   "labelMap",
   "alongOffset",
-  "flush",
+  "flush", "flushThreshold",
   "colorMap",
   "align"
 ]);

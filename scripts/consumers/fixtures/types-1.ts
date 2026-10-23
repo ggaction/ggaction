@@ -31,3 +31,9 @@ const overlapBasic: Parameters<BasicFormatsProgram["createAxes"]>[0] = {y:{title
 const overlapInvalid: Parameters<FullFormatsProgram["createYAxisTitle"]>[0] = {overlap:true};
 // @ts-expect-error grouped scientific notation remains unsupported
 const invalidGrouped: Parameters<FullFormatsProgram["createXAxisLabels"]>[0] = {format:",.2e"};
+
+const flushThresholdFull: Parameters<FullFormatsProgram["createXAxisLabels"]>[0] = {flush:true,flushThreshold:1};
+const flushThresholdBasic: Parameters<BasicFormatsProgram["createAxes"]>[0] = {x:{ticksAndLabels:{labels:{flush:true,flushThreshold:0}}}};
+fullLookup.editXAxisLabels({flushThreshold:"auto"});
+// @ts-expect-error threshold reset is the exact auto literal
+fullLookup.editXAxisLabels({flushThreshold:"1"});

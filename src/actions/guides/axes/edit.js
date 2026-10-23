@@ -23,7 +23,7 @@ const TICK_OPTIONS = Object.freeze([
 const LABEL_OPTIONS = Object.freeze([
   "count", "values", "rounding", "offset", "format", "color", "fontSize",
   "fontFamily", "fontWeight", "rotation", "maxWidth", "wrap",
-  "lineHeight", "overlap", "alongOffset", "labelMap", "flush", "colorMap", "align"
+  "lineHeight", "overlap", "alongOffset", "labelMap", "flush", "flushThreshold", "colorMap", "align"
 ]);
 const GROUP_OPTIONS = Object.freeze(["count", "values", "rounding", "ticks", "labels"]);
 const TITLE_OPTIONS = Object.freeze([
@@ -68,7 +68,7 @@ function validateArgs(args, operation) {
   if (args.ticksAndLabels !== false && args.ticksAndLabels?.labels !== undefined) {
     validateNested(args.ticksAndLabels, "labels", [
       "offset", "format", "color", "fontSize", "fontFamily", "fontWeight",
-      "rotation", "maxWidth", "wrap", "lineHeight", "overlap", "alongOffset", "labelMap", "flush", "colorMap", "align"
+      "rotation", "maxWidth", "wrap", "lineHeight", "overlap", "alongOffset", "labelMap", "flush", "flushThreshold", "colorMap", "align"
     ], `${operation}.ticksAndLabels`);
   }
 }

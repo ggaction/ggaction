@@ -1469,6 +1469,8 @@ export interface CartesianAxisLabelStyleOptions extends AxisLabelStyleOptions {
   colorMap?: CartesianAxisLabelColorMap | "auto";
   /** Keep unrotated label bounds inside the mapped axis span; defaults to false. */
   flush?: boolean;
+  /** Only flush mapped ticks within this non-negative distance of a range edge. Auto restores all-label containment. */
+  flushThreshold?: number | "auto";
   /** Signed displacement from the mapped tick position, independent of outward offset. */
   alongOffset?: number;
 }

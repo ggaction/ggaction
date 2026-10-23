@@ -3,9 +3,9 @@
   "packageVersion": "0.0.23",
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
-    "status": "published-release",
-    "contractId": "sha256:d4a3b46c05b696b43389ec3e4bc2aaa89584ef20e01d5e64b8c61a316fe2c004",
-    "sourceCommit": "12b66b229f9a4dae1cfa580929b74e7e178c02c9",
+    "status": "development",
+    "contractId": "sha256:39588058a0ca2a1bfa7743c118689c38c2afe366b1e398a91fe4b561549b2351",
+    "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -65,8 +65,8 @@
         "long-requests-and-execution-recovery",
         "related"
       ],
-      "bytes": 12058,
-      "sha256": "229ce23b5b477e1e847e7927a4a5e9f554841df1a69ec17271b03738169bc3d7"
+      "bytes": 11986,
+      "sha256": "c14c078d0d79db1cb04ee38a587d53a79e71b64caa952352b8ea4e083bc94523"
     },
     {
       "order": 4,
@@ -2072,8 +2072,8 @@
         "focused-channel-scale-editors",
         "related"
       ],
-      "bytes": 172463,
-      "sha256": "b04a14990863426b63587a6f6696dd98840109ed051ce0c22f91c622614737d1"
+      "bytes": 172835,
+      "sha256": "bccd624168ac5af99cc80af339844b1e0c16b76453ba29092339e2a8b8616471"
     },
     {
       "order": 119,
@@ -2118,8 +2118,8 @@
         "editrectmark",
         "related"
       ],
-      "bytes": 77253,
-      "sha256": "281073bc9982af45ffb168b009143cd6f022270e3571d6803d1bbb3c0687d12a"
+      "bytes": 77301,
+      "sha256": "c248475a9b70b9f848944ffc54ab7f434d8b4700a9ab08682778c43d6ed55504"
     },
     {
       "order": 120,
@@ -2170,8 +2170,8 @@
         "encodechannels",
         "related"
       ],
-      "bytes": 66432,
-      "sha256": "4ca3394e152a8d6dde23eba7c16d0a41215f94e65177c0dc28c244c29f82dd66"
+      "bytes": 66456,
+      "sha256": "2661581ddc9fac459b197660058c5cd3a04cd8b77a30d854d296c6aa125d7db3"
     },
     {
       "order": 121,
@@ -2230,8 +2230,8 @@
         "semantic-resources-and-regression-layers",
         "related"
       ],
-      "bytes": 84559,
-      "sha256": "072320a2dcc74a8f74037b8d7237b9ff15f4421fc779e65afe960f53f5fc6946"
+      "bytes": 84787,
+      "sha256": "6ea695ab41db21af9b2fff6eafc4af429fbfbc3adefd35d4e37165dff1fbaa00"
     },
     {
       "order": 122,
@@ -2328,8 +2328,8 @@
         "focused-legend-edits",
         "related"
       ],
-      "bytes": 137893,
-      "sha256": "e7340d77988183d1eaa5ab0024685267cb8abce9cf870e39e6a02c201c21caf4"
+      "bytes": 138630,
+      "sha256": "7d688fc6de68cad642c150a0214710c8f518c0fc458a7f88daf78d3793397f7b"
     },
     {
       "order": 123,
@@ -2353,8 +2353,8 @@
         "directional-grids",
         "related"
       ],
-      "bytes": 10273,
-      "sha256": "64b7bcb6639c0404d11c6552ca898eacef744bb53943f503fd20b3d8826085e4"
+      "bytes": 10285,
+      "sha256": "8254783a14842402919b5ff7afd3faa0628e393e51b4035403b3afc61811071e"
     },
     {
       "order": 124,
@@ -3067,8 +3067,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 358560,
-      "sha256": "d8b7c4abb14865c3404032843d65bee81b780cca7da4e989ff428ee6544bfc95"
+      "bytes": 358717,
+      "sha256": "b98ff7e4c02ad8d537a28bb5e82b8b49a7861b49798f991b75e28ca80676d03c"
     },
     {
       "order": 127,
@@ -3101,8 +3101,8 @@
         "clip-a-named-graphic-owner",
         "scale-materialization"
       ],
-      "bytes": 19022,
-      "sha256": "7b4f127cce895d2433614661e65200f2918cdef2c01e58741856991eb6f34d88"
+      "bytes": 18950,
+      "sha256": "9f4dface42ad85d51435341bf7599d7bc74c9adb44c36c67225dcd90f3d5be55"
     },
     {
       "order": 129,
@@ -3431,8 +3431,8 @@
         "choose-the-matching-documentation",
         "migration-from-v0013"
       ],
-      "bytes": 3039,
-      "sha256": "29ddb467404ba0d4676d36fb659359e8c9686dcb33b887761382d4548d811cdf"
+      "bytes": 3000,
+      "sha256": "45596703f09bca603bc3e476e0bb8fc9162447c63eefcca590f37cd6db11069a"
     },
     {
       "order": 150,
@@ -3448,8 +3448,8 @@
         "createaxesoptions",
         "intentional-title-label-overlap"
       ],
-      "bytes": 24962,
-      "sha256": "3880af58c6cd3cad44bffecce9e0b763943dec39fec595bbfcddeb5f5f152ba2"
+      "bytes": 25617,
+      "sha256": "581c5ca460ab1247395b9d8565242fe4be917628363c5ab0e8e28e2901d856bb"
     }
   ]
 }

@@ -1,3 +1,4 @@
+import { validateNonNegativeFinite } from "../core/validation.js";
 import { resolveTextLines } from "../core/textMetrics.js";
 
 export function validateAxisTextPlacement(value, { title = false } = {}) {
@@ -36,4 +37,9 @@ export function axisTitleTextLines(text, config) {
 
 export function axisTitleAllowsLabelOverlap(config) {
   return config?.overlap === "allow";
+}
+
+export function validateAxisLabelFlushThreshold(value, { allowReset = false } = {}) {
+  if (value === undefined || (allowReset && value === "auto")) return;
+  validateNonNegativeFinite(value, "Label flushThreshold");
 }

@@ -2,7 +2,7 @@ import { axisTitleAllowsLabelOverlap } from "../../../grammar/axisTextPlacement.
 import { selectCartesianAxis, axisTargetArgs } from "../../../selectors/axes.js";
 import { axisGraphicIds } from "../../../materialization/guides/resources.js";
 import { axisThemeTypography } from "../../theme/state.js";
-import { validateAxisTextPlacement } from "../../../grammar/axisTextPlacement.js";
+import { validateAxisLabelFlushThreshold, validateAxisTextPlacement } from "../../../grammar/axisTextPlacement.js";
 import { canvasOverflowError } from "../../../layout/canvas.js";
 import { withGuideLayoutValidation } from "../../../materialization/guides/layout.js";
 import { action } from "../../../core/action.js";
@@ -55,7 +55,7 @@ import {
 const OPTIONS = [
   "target", "scale", "position", "count", "values", "rounding", "offset", "format", "color",
   "fontSize", "fontFamily", "fontWeight", "rotation", "maxWidth", "wrap",
-  "lineHeight", "overlap", "labelMap", "alongOffset", "flush", "colorMap", "align"
+  "lineHeight", "overlap", "labelMap", "alongOffset", "flush", "flushThreshold", "colorMap", "align"
 ];
 
 const DEFAULTS = {
@@ -95,6 +95,7 @@ function validateOptions(args, operation, create) {
     throw new Error(`${operation} cannot use rounding and values together.`);
   }
   validateAxisTextPlacement(args);
+  validateAxisLabelFlushThreshold(args.flushThreshold, { allowReset: true });
   validateOptionObject(
     args,
     create ? OPTIONS : OPTIONS.filter(key => key !== "scale"),
@@ -129,6 +130,7 @@ function validateConfig(channel, config) {
   validateNonNegativeFinite(config.offset, "Label offset");
   validateTextStyle(config, "Label");
   validateAxisFormat(config.format);
+  validateAxisLabelFlushThreshold(config.flushThreshold);
   if (config.flush === true && config.rotation !== 0) throw new Error("Label flush requires unrotated Cartesian labels.");
   if (!Number.isFinite(config.rotation)) {
     throw new TypeError("Label rotation must resolve to finite radians.");
@@ -151,8 +153,9 @@ function validateConfig(channel, config) {
   }
 }
 
-function normalizeAxisLabelMaps(program, config, args, operation) {
+function normalizeAxisLabelConfig(program, config, args, operation) {
   const next = { ...config };
+  if (args.flushThreshold === "auto") delete next.flushThreshold;
   for (const [property, normalize] of [
     ["labelMap", normalizeDisplayLabelMap],
     ["colorMap", normalizeDisplayColorMap]
@@ -341,16 +344,19 @@ function resolve(program, channel, config, axisId = channel) {
     const low = Math.min(...scale.range) + (config.alongOffset ?? 0);
     const high = Math.max(...scale.range) + (config.alongOffset ?? 0);
     const grouped = unionLabelBounds(labelBounds.map((bounds, index) => ({ bounds, group: resolved.groups[index] })));
-    const shifts = grouped.map(item => {
+    const shifts = grouped.map((item, index) => {
+      const position = positions[index] + (config.alongOffset ?? 0);
+      if (config.flushThreshold !== undefined &&
+          Math.min(Math.abs(position - low), Math.abs(position - high)) > config.flushThreshold) return 0;
       if (item[highKey] - item[lowKey] > high - low + 1e-9) {
         throw new Error(`The ${channel}-axis label cannot flush inside the scale span.`);
       }
       return item[lowKey] < low ? low - item[lowKey]
         : item[highKey] > high ? high - item[highKey] : 0;
     });
-    const positions = resolved[along];
+    const labelPositions = resolved[along];
     resolved[along] = resolved.text.map((_, index) =>
-      (Array.isArray(positions) ? positions[index] : positions) + shifts[resolved.groups[index]]);
+      (Array.isArray(labelPositions) ? labelPositions[index] : labelPositions) + shifts[resolved.groups[index]]);
     labelBounds = labelBounds.map((item, index) => {
       const delta = shifts[resolved.groups[index]];
       return { ...item, [lowKey]: item[lowKey] + delta, [highKey]: item[highKey] + delta };
@@ -423,7 +429,7 @@ function makeEdit(channel) {
       ...(explicitMode ? { inferredValues: false } : {}),
       mode
     }, args, op);
-    config = normalizeAxisLabelMaps(this, config, args, op);
+    config = normalizeAxisLabelConfig(this, config, args, op);
     if (mode === "values") {
       delete config.count;
       if (!Object.hasOwn(args, "rounding")) delete config.rounding;
@@ -505,7 +511,7 @@ function makeCreate(channel) {
         (ticks?.inferredValues === true || inferredDiscreteValues !== undefined),
       mode
     }, args, op);
-    config = normalizeAxisLabelMaps(this, config, args, op);
+    config = normalizeAxisLabelConfig(this, config, args, op);
     if (mode === "values") {
       config.values ??= ticks?.values ?? inferredDiscreteValues;
       if (!Object.hasOwn(args, "rounding")) delete config.rounding;

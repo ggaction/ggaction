@@ -14,6 +14,23 @@ import {createFacetSharedTopLaneProgram} from "./facet-lane-public.js";
 import {createPlotUnderlayProgram} from "./plot-underlay-public.js";
 
 export const cases = [
+  { id: "guides/axis-label-edge-threshold", async run() {
+    for (const factory of [chart, basicChart]) {
+      const base = factory().createCanvas({width:420,height:300,margin:60})
+        .createData({values:[{x:0,y:0},{x:30,y:30}]})
+        .createLinePlot({x:{field:"x",scale:{domain:[0,30]}},y:"y",guides:false});
+      const labels = {fontSize:10,flush:true,labelMap:[{value:0,label:"Start"},{value:29,label:"Last"}]};
+      const legacy = base.createXAxis({title:false,ticksAndLabels:{values:[0,29],labels}});
+      const p = base.createXAxis({title:false,ticksAndLabels:{values:[0,29],labels:{...labels,flushThreshold:1}}});
+      assert.equal(p.graphicSpec.objects.xAxisLabels.items[1].properties.x,350);
+      assert.notEqual(p.graphicSpec.objects.xAxisLabels.items[1].properties.x,legacy.graphicSpec.objects.xAxisLabels.items[1].properties.x);
+      assert.deepEqual(deserializeProgram(serializeProgram(p)).graphicSpec,p.graphicSpec);
+      if (factory === chart) assert.deepEqual(p.editXAxisLabels({flushThreshold:"auto"}).graphicSpec,legacy.graphicSpec);
+      assert(renderToSVG(p).includes("Last"));
+      assert.equal((await renderToPNGBuffer(p)).width,420);
+      assert.equal((await renderToPDFBuffer(p)).buffer.subarray(0,4).toString(),"%PDF");
+    }
+  } },
   { id: "guides/create-horizontal-grid", async run() {
 {
       const {createLinearNearestTicks}=await import("./linear-nearest-ticks-public.js");

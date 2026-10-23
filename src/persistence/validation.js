@@ -30,7 +30,7 @@ import { isContinuousSizeScaleType } from "../grammar/scales/size.js";
 import { validateGraphicItemLimit } from "../core/validation.js";
 import { LEGEND_TITLE_STYLE_KEYS, validateLegendTitleAlignment } from "../grammar/legendTitleStyle.js";
 import { validateGuideDash, normalizeGuideDashMap } from "../grammar/guideDash.js";
-import { validateAxisTextPlacement } from "../grammar/axisTextPlacement.js";
+import { validateAxisLabelFlushThreshold, validateAxisTextPlacement } from "../grammar/axisTextPlacement.js";
 import { validateTickSelectionRounding, axisTickSelection } from "../grammar/ticks.js";
 import { validateAreaPaintConfig } from "../grammar/areaPaint.js";
 import { validateOptionObject, validateKeys, validatePositiveFinite, validateNonNegativeFinite, validateNonEmptyString, validateGeneratedItemLimit } from "../core/validation.js";
@@ -236,6 +236,10 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
   }
   const cartesianOwners = cartesianAxisOwners(program);
   for (const [id, axis] of Object.entries(program.guideConfigs.axis ?? {})) {
+    if (axis?.labels?.flushThreshold !== undefined) {
+      if (!cartesianOwners.some(owner => owner.id === id)) throw invalidSnapshot("Label flushThreshold requires a Cartesian axis owner.", path);
+      validateAxisLabelFlushThreshold(axis.labels.flushThreshold);
+    }
     for (const config of [axis?.ticks, axis?.labels]) {
       if (config === undefined || !Object.hasOwn(config, "rounding")) continue;
       if (!cartesianOwners.some(owner => owner.id === id)) {

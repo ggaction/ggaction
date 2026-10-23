@@ -210,6 +210,8 @@ Cartesian `ticksAndLabels.labels.colorMap` accepts typed `{ value, color }` entr
 
 Use `ticksAndLabels.labels.flush: true` to keep unrotated X or Y label bounds inside the mapped axis span. It defaults to false and preserves the normal overlap policy; use explicit `overlap: "allow"` when neighboring labels intentionally overlap. Text, fonts and tick positions are retained. Rotated labels and a label wider than the entire span are rejected.
 
+Set `ticksAndLabels.labels.flushThreshold` to a non-negative number when only ticks near a range edge should flush. Selection uses the mapped tick position, not the amount of text overflowing the edge. For example, `labels: { flush: true, flushThreshold: 1 }` only adjusts labels whose ticks are within one logical pixel of either endpoint. `0` selects exact endpoints. Omission preserves full label containment. Focused or whole-axis edits accept `flushThreshold: "auto"` to restore that behavior; omitted edits preserve the threshold. A stored threshold has no effect while `flush` is false. Reversed axes and wrapped label groups use the same policy.
+
 Cartesian `ticksAndLabels.ticks.alongOffset` and `ticksAndLabels.labels.alongOffset` independently shift mapped positions in logical pixels. Positive moves right for X and down for Y; the default is zero. This preserves scale data and the outward label `offset`.
 
 Use either `count` or exact data-space `values` for ticks. Ambiguous coordinates

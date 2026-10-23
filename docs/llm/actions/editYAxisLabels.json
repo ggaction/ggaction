@@ -3,7 +3,7 @@
   "name": "editYAxisLabels",
   "layer": "user-facing",
   "domain": "axes",
-  "summary": "Edits y-axis labels, including settings for vertical tick text.",
+  "summary": "Edits y-axis labels, including settings for vertical text.",
   "signature": "editYAxisLabels(options?: Omit<AxisLabelOptions<YAxisPosition>, \"scale\">): ChartProgram;",
   "intents": [
     "edit y axis labels",
@@ -12,7 +12,7 @@
     "axis guide",
     "scale annotation",
     "y-axis labels",
-    "vertical tick text"
+    "vertical text"
   ],
   "lifecycle": "Mutable resource",
   "resources": {
@@ -80,6 +80,10 @@
       "strategy": "documented-auto"
     },
     {
+      "input": "flushThreshold",
+      "strategy": "documented-auto"
+    },
+    {
       "input": "target",
       "strategy": "explicit-current-unique-or-error"
     }
@@ -142,6 +146,11 @@
       "name": "flush",
       "required": false,
       "type": "boolean | undefined"
+    },
+    {
+      "name": "flushThreshold",
+      "required": false,
+      "type": "number | \"auto\" | undefined"
     },
     {
       "name": "alongOffset",
