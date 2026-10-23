@@ -54,8 +54,12 @@ unpacked bytes이며 SHA256 `94fcb5460d1c1d6c59f7e0da9e3b6544b7473c870966330df64
 ## 후속 경계
 
 소스·테스트·Current 계약·공개 문서·생성물을 함께 verified commit/push한다.
-그 실제 source commit/checksum을 가리키도록 provenance 생성물을 후속 metadata checkpoint에서
-갱신한다. 설계 Gate commit을 구현된 runtime의 source commit으로 쓰지 않는다.
+구현 checkpoint는 `0b717e7ed2e9bc6f455cfc7b98288785b9ad2223`이며, 후속 metadata는
+이 실제 source commit과 contract checksum
+`sha256:310e928037990f408f8ee790dcdd0e5c9455b8f645554a58e91ef8e34a8f7e06`을
+가리킨다. 설계 Gate commit을 구현된 runtime의 source commit으로 쓰지 않는다.
+Commit 후 전체 docs 검사도 152/152 PASS(exit0),
+`.artifacts/test/facet-axis-gaps-docs-after-commit-v1.log`에 보존했다.
 새 package/docs와 기존 전체 accepted 프로그램의 호환 검증이 끝나기 전에는 P runtime을
 활성화하지 않는다. 0999/0557은 별도 native/source/protocol qualification과 실제 School
 normal/cold/final 검증 전까지 미집계다. 공개 이슈의 released 처리는 1400 registry release 이후다.
