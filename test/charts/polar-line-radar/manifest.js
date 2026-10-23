@@ -108,9 +108,10 @@ export const visualVariants = Object.freeze([
     visualSignature: {
       inkRatio: { min: 0.0388, max: 0.0475 },
       inkBounds: {
-        // Platform font extents are measured independently; tolerances stay fixed.
+        // Side legends clear outward guide ink; Linux extent is independently measured.
+        // Primitive/public geometry and pixels stay exact; raster tolerances stay fixed.
         ...(process.platform === "linux"
-          ? { x: 40, y: 45, width: 647, height: 552 }
+          ? { x: 40, y: 45, width: 659.5, height: 552 }
           : { x: 39.5, y: 41.25, width: 649, height: 555 }),
         tolerance: { x: 3.5, y: 1.5, width: 11, height: 1.5 }
       }

@@ -60,6 +60,14 @@ export function appendRealisticColorControls(program) {
     if (scale.gamma) next=next.editStrokeScale({target:id,gamma:"auto"});
     next=next.removeMark({target:id});
     const color={field:"category",fieldType:"nominal",scale:{type:"ordinal",range:realisticPaletteRange(ordinal)}};
+    for (const action of ["createBoxPlot", "createGradientPlot"]) {
+      const owner=`color-control-${action}-${ordinal}`;
+      next=next[action]({id:owner,...(action === "createGradientPlot" ? {target:`color-control-createBoxPlot-${ordinal}`} : {}),data:"analysisRows",coordinate:`${owner}-coordinate`,
+        x:{field:"category",fieldType:"nominal",scale:{id:`${owner}-x`,type:"band"}},
+        y:{field:"positiveY",fieldType:"quantitative",scale:{id:`${owner}-y`,type:"linear"}},
+        color:{...color,scale:{...color.scale,id:`${owner}-color`}},guides:false});
+      if(action === "createGradientPlot")next=next.removeMark({target:owner}).removeMark({target:`color-control-createBoxPlot-${ordinal}`});
+    }
     const ecdf=`color-control-ecdf-${ordinal}`;
     next=next.createECDFPlot({id:ecdf,data:"analysisRows",coordinate:`${ecdf}-coordinate`,
       field:"positiveY",groupBy:"category",color:{...color,scale:{...color.scale,id:`${ecdf}-color`}},guides:false})

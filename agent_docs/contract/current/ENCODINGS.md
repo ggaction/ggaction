@@ -30,7 +30,7 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
   밀도 기준 1·2·5 decade 경계 확장을 적용한다. count는 guide tick 수를 고정하지 않는다.
   explicit domain이 우선하며 zero 이후 constant domain은 그대로다. 유한 endpoint 포함과
   수치 한계를 보존하고 10회 안에 고정 경계가 없으면 관측 domain을 유지한다.
-  time/transformed/discrete/color/size 및 nice를 금지하는 measured radius에는 object를 거부한다.
+  time/transformed/discrete/color/size/opacity/strokeWidth 및 nice를 금지하는 measured radius에는 object를 거부한다.
   caller object는 복사·freeze하며 semantic scale의 nice 한 곳에 저장한다. 공통/focused editor,
   data revision/filter, shared consumer, independent facet, persistence가 같은 정책을 사용한다.
   binned position은 기존 nice:true bin 경계·소속을 유지한 뒤 최종 auto domain만 count로 확장한다.

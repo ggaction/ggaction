@@ -31,6 +31,14 @@ p.editYScale({ type: "sqrt", nice: niceCount });
 p.encodeSize({ field: "y", scale: { nice: niceCount } });
 // @ts-expect-error color has no nice option
 p.editColorScale({ nice: niceCount });
+// @ts-expect-error opacity nice remains boolean-only
+p.encodeOpacity({ field: "y", scale: { nice: niceCount } });
+// @ts-expect-error stroke width nice remains boolean-only
+p.encodeStrokeWidth({ field: "y", scale: { nice: niceCount } });
+// @ts-expect-error dash fallback is limited to Cartesian lines and rules
+p.createParallelCoordinates({ dimensions: ["x", "y"], strokeDash: { field: "kind", scale: { unknown: "dashed" } } });
+// @ts-expect-error polar lines do not accept dash fallback
+p.createPolarLinePlot({ theta: "x", radius: "y", strokeDash: { field: "kind", scale: { unknown: "dashed" } } });
 const colorOptions: EditColorScaleOptions = { palette: "set2" };
 const radiusOptions: EditRScaleOptions = { domain: [0, 10] };
 const strokeOptions: EditStrokeScaleOptions = { target: "points", palette: "set2" };

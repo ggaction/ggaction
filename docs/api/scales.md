@@ -317,3 +317,7 @@ require explicit removal and recreation; see [color transitions](./scales/discre
 [Position encodings](./position-encodings.md) ·
 [Series encodings](./series-encodings.md) · [Semantic and graphical state](../concepts/semantic-and-graphics.md) ·
 [Troubleshooting](../troubleshooting.md)
+
+Count-based `nice` belongs to linear position scales. Opacity and stroke-width
+encoding scales retain boolean `nice`; categorical dash fallbacks apply only to
+Cartesian lines and rules, not Parallel or Polar facades.

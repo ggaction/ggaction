@@ -3231,6 +3231,10 @@ export type BasicStrokeDashChannel =
     ? T extends unknown ? Omit<T, "target"> : never
     : never;
 
+type NonCartesianStrokeDashChannel = BasicStrokeDashChannel extends infer T
+  ? T extends { field: string } ? Omit<T, "scale"> & { scale?: Omit<DashScaleOptions, "unknown"> } : T
+  : never;
+
 export type ParallelMissingPolicy = "break" | "drop-row" | "error";
 export type ParallelDimension = string | ({
   field: string;
@@ -3266,7 +3270,7 @@ export interface CreateParallelCoordinatesOptions {
   key?: string;
   missing?: ParallelMissingPolicy;
   color?: LineCategoricalColorChannel;
-  strokeDash?: BasicStrokeDashChannel;
+  strokeDash?: NonCartesianStrokeDashChannel;
   line?: StrokeStyleDetails & {
     strokeWidth?: number;
     stroke?: string;
@@ -3485,7 +3489,7 @@ export interface CreatePolarLinePlotOptions {
   radius: PolarRadiusChannel;
   color?: LineCategoricalColorChannel;
   groupBy?: string | readonly [string, ...string[]];
-  strokeDash?: BasicStrokeDashChannel;
+  strokeDash?: NonCartesianStrokeDashChannel;
   line?: Omit<NonNullable<CreateLinePlotOptions["line"]>, "clip" | "missing" | "closed" | "curve" | "tension"> & {
     curve?: "linear";
     closed?: boolean;
@@ -3551,7 +3555,7 @@ export type CreateRadarPlotOptions = {
     ...RadarCategoryValue[]
   ];
   color?: LineCategoricalColorChannel;
-  strokeDash?: BasicStrokeDashChannel;
+  strokeDash?: NonCartesianStrokeDashChannel;
   line?: Omit<NonNullable<CreateLinePlotOptions["line"]>, "clip" | "missing" | "closed" | "curve" | "tension"> & {
     curve?: "linear";
     closed?: true;
@@ -4527,8 +4531,9 @@ export type StrokeEncodingOptions =
     };
 
 export type OpacityScaleOptions = ScaleFields<
-  "id" | "nice" | "zero" | "clamp" | "reverse"
+  "id" | "zero" | "clamp" | "reverse"
 > & {
+  nice?: boolean;
   type?: "linear";
   domain?: "auto" | readonly [number, number];
   range?: "auto" | readonly [number, number];
@@ -4546,7 +4551,9 @@ export type OpacityEncodingOptions =
       scale?: OpacityScaleOptions;
     };
 
-export type StrokeWidthScaleOptions = NonPointQuantitativePositionScaleOptions;
+export type StrokeWidthScaleOptions = NonPointQuantitativePositionScaleOptions extends infer T
+  ? T extends unknown ? Omit<T, "nice"> & { nice?: boolean } : never
+  : never;
 
 export interface RuleStyleOptions extends StrokeStyleDetails {
   stroke?: string;

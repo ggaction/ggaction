@@ -1614,6 +1614,10 @@ function buildScaleVocabulary(factors) {
         createObjectPalette: true
       })
     : undefined;
+  if (variant.kind === "position" && variant.type === "linear") {
+    definitions.create.nice = { count: 5 };
+    definitions.edit.nice = { count: 7 };
+  }
   let program = chart()
     .createCanvas(canvas())
     .createData({ id: "analysisRows", values: view.rows })

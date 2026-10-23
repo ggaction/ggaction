@@ -2888,7 +2888,7 @@ export interface CreateParallelCoordinatesOptions {
   key?: string;
   missing?: ParallelMissingPolicy;
   color?: LineCategoricalColorChannel;
-  strokeDash?: BasicStrokeDashChannel;
+  strokeDash?: NonCartesianStrokeDashChannel;
   line?: StrokeStyleDetails & {
     strokeWidth?: number;
     stroke?: string;
@@ -2902,7 +2902,7 @@ export interface CreateParallelCoordinatesOptions {
 
 </details>
 
-Related types: [`ParallelDimension`](#type-paralleldimension) · [`ParallelMissingPolicy`](#type-parallelmissingpolicy) · [`LineCategoricalColorChannel`](#type-linecategoricalcolorchannel) · [`BasicStrokeDashChannel`](#type-basicstrokedashchannel) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`ParallelGuideOptions`](#type-parallelguideoptions).
+Related types: [`ParallelDimension`](#type-paralleldimension) · [`ParallelMissingPolicy`](#type-parallelmissingpolicy) · [`LineCategoricalColorChannel`](#type-linecategoricalcolorchannel) · [`NonCartesianStrokeDashChannel`](#type-noncartesianstrokedashchannel) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`ParallelGuideOptions`](#type-parallelguideoptions).
 
 ### `CreatePiePlotOptions` {#type-createpieplotoptions}
 
@@ -2940,7 +2940,7 @@ export interface CreatePolarLinePlotOptions {
   radius: PolarRadiusChannel;
   color?: LineCategoricalColorChannel;
   groupBy?: string | readonly [string, ...string[]];
-  strokeDash?: BasicStrokeDashChannel;
+  strokeDash?: NonCartesianStrokeDashChannel;
   line?: Omit<NonNullable<CreateLinePlotOptions["line"]>, "clip" | "missing" | "closed" | "curve" | "tension"> & {
     curve?: "linear";
     closed?: boolean;
@@ -2951,7 +2951,7 @@ export interface CreatePolarLinePlotOptions {
 
 </details>
 
-Related types: [`PolarThetaChannel`](#type-polarthetachannel) · [`PolarRadiusChannel`](#type-polarradiuschannel) · [`LineCategoricalColorChannel`](#type-linecategoricalcolorchannel) · [`BasicStrokeDashChannel`](#type-basicstrokedashchannel) · [`CreateLinePlotOptions`](#type-createlineplotoptions) · [`PolarPathGuideOptions`](#type-polarpathguideoptions).
+Related types: [`PolarThetaChannel`](#type-polarthetachannel) · [`PolarRadiusChannel`](#type-polarradiuschannel) · [`LineCategoricalColorChannel`](#type-linecategoricalcolorchannel) · [`NonCartesianStrokeDashChannel`](#type-noncartesianstrokedashchannel) · [`CreateLinePlotOptions`](#type-createlineplotoptions) · [`PolarPathGuideOptions`](#type-polarpathguideoptions).
 
 ### `CreatePolarScatterPlotOptions` {#type-createpolarscatterplotoptions}
 
@@ -2995,7 +2995,7 @@ export type CreateRadarPlotOptions = {
     ...RadarCategoryValue[]
   ];
   color?: LineCategoricalColorChannel;
-  strokeDash?: BasicStrokeDashChannel;
+  strokeDash?: NonCartesianStrokeDashChannel;
   line?: Omit<NonNullable<CreateLinePlotOptions["line"]>, "clip" | "missing" | "closed" | "curve" | "tension"> & {
     curve?: "linear";
     closed?: true;
@@ -3009,7 +3009,7 @@ export type CreateRadarPlotOptions = {
 
 </details>
 
-Related types: [`RadarCategoryValue`](#type-radarcategoryvalue) · [`LineCategoricalColorChannel`](#type-linecategoricalcolorchannel) · [`BasicStrokeDashChannel`](#type-basicstrokedashchannel) · [`CreateLinePlotOptions`](#type-createlineplotoptions) · [`RadarGuideOptions`](#type-radarguideoptions) · [`RadarCategoryChannel`](#type-radarcategorychannel) · [`PolarRadiusChannel`](#type-polarradiuschannel) · [`RadarWideOptions`](#type-radarwideoptions).
+Related types: [`RadarCategoryValue`](#type-radarcategoryvalue) · [`LineCategoricalColorChannel`](#type-linecategoricalcolorchannel) · [`NonCartesianStrokeDashChannel`](#type-noncartesianstrokedashchannel) · [`CreateLinePlotOptions`](#type-createlineplotoptions) · [`RadarGuideOptions`](#type-radarguideoptions) · [`RadarCategoryChannel`](#type-radarcategorychannel) · [`PolarRadiusChannel`](#type-polarradiuschannel) · [`RadarWideOptions`](#type-radarwideoptions).
 
 ### `CreateRadialAxisLabelsOptions` {#type-createradialaxislabelsoptions}
 
@@ -8491,6 +8491,21 @@ export type NamedCompleteAxis<P extends string> = CompleteAxisOptions<P> & { id:
 
 Related types: [`CompleteAxisOptions`](#type-completeaxisoptions).
 
+### `NonCartesianStrokeDashChannel` {#type-noncartesianstrokedashchannel}
+
+<details markdown="1">
+<summary>Expand NonCartesianStrokeDashChannel</summary>
+
+```typescript
+type NonCartesianStrokeDashChannel = BasicStrokeDashChannel extends infer T
+  ? T extends { field: string } ? Omit<T, "scale"> & { scale?: Omit<DashScaleOptions, "unknown"> } : T
+  : never;
+```
+
+</details>
+
+Related types: [`BasicStrokeDashChannel`](#type-basicstrokedashchannel) · [`DashScaleOptions`](#type-dashscaleoptions).
+
 ### `NonPointBandPositionScaleOptions` {#type-nonpointbandpositionscaleoptions}
 
 <details markdown="1">
@@ -8908,8 +8923,9 @@ Related types: [`OpacityScaleOptions`](#type-opacityscaleoptions).
 
 ```typescript
 export type OpacityScaleOptions = ScaleFields<
-  "id" | "nice" | "zero" | "clamp" | "reverse"
+  "id" | "zero" | "clamp" | "reverse"
 > & {
+  nice?: boolean;
   type?: "linear";
   domain?: "auto" | readonly [number, number];
   range?: "auto" | readonly [number, number];
@@ -11714,7 +11730,9 @@ Related types: [`StrokeWidthScaleOptions`](#type-strokewidthscaleoptions).
 <summary>Expand StrokeWidthScaleOptions</summary>
 
 ```typescript
-export type StrokeWidthScaleOptions = NonPointQuantitativePositionScaleOptions;
+export type StrokeWidthScaleOptions = NonPointQuantitativePositionScaleOptions extends infer T
+  ? T extends unknown ? Omit<T, "nice"> & { nice?: boolean } : never
+  : never;
 ```
 
 </details>

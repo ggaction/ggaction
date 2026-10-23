@@ -1,3 +1,4 @@
+import { currentFacadeOptionWitnesses } from "./current-facade-option-witnesses.js";
 import { realisticColorControls, realisticPaletteRange } from "./realistic-color-controls.js";
 import { chart } from "../../../src/index.js";
 import { summarizeArgs } from "../../../src/core/action.js";
@@ -1078,11 +1079,11 @@ function guideOptions(variant, program, options, action) {
 
 function buildFacade(factors, action, optionsFactory) {
   const view = viewFor(factors);
-  const options = optionsFactory(factors, view);
+  const options = currentFacadeOptionWitnesses(optionsFactory(factors, view), {action,index:factors.variant.ordinal});
   const base = programForGuide(view);
   const positioned = base[action]({ ...options, guides: false });
-  const program = base[action]({ ...options,
-    guides: guideOptions(factors.variant, positioned, options, action) });
+  const program = base[action](currentFacadeOptionWitnesses({ ...options,
+    guides: guideOptions(factors.variant, positioned, options, action) }, {action,index:factors.variant.ordinal,program:positioned}));
   return finish(program, contextFor(factors.dataset, view, action), action, factors.variant);
 }
 
@@ -1264,14 +1265,15 @@ function buildParallel(factors) {
 }
 
 function expectedFacadeArgs(action, factors, view, program) {
-  const options = action === "createScatterPlot"
+  const originalOptions = action === "createScatterPlot"
     ? scatterOptions(factors, view)
     : action === "createBarPlot"
       ? barOptions(factors, view)
       : action === "createLinePlot"
         ? lineOptions(factors, view)
         : parallelOptions(factors, view);
-  return summarizeArgs({ ...options, guides: guideOptions(factors.variant, program, options, action) });
+  const options=currentFacadeOptionWitnesses(originalOptions,{action,index:factors.variant.ordinal});
+  return summarizeArgs(currentFacadeOptionWitnesses({ ...options, guides: guideOptions(factors.variant, program, options, action) }, {action,index:factors.variant.ordinal,program}));
 }
 
 function coverageSchedule(variants) {

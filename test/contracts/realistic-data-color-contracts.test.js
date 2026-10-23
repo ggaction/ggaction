@@ -169,8 +169,8 @@ test("palette range objects have actual public 5/3 witnesses at every restored c
   const {REALISTIC_STATISTICAL_FACADE_COVERAGE_RECIPES:statisticalRecipes}=await import("../support/scenarios/realistic-statistical-facade-coverage-recipes.js");
   const inventory=await buildPublicOptionInventory(JSON.parse(readFileSync(new URL("../../knowledge/action-cards.json",import.meta.url))));
   const options=inventory.optionPaths.filter(option=>option.required&&/(?:^|\.)range\.palette(?:\.|$)/u.test(option.path));
-  assert.equal(options.length,124);
-  assert.equal(digest(options.map(value=>value.id)),"7dd3a0dccf3b59ec06d048dfb05b1f36bf055ef63c9281aa0f5a8f24b9cfcfaa");
+  assert.equal(options.length,132);
+  assert.equal(digest(options.map(value=>value.id)),"c738d65c67f93b1f419d0c2dd89a80003cf41c0d3a1e0a3831a2675b2d660daf");
   const stats=new Map(options.map(option=>[option.id,{occurrences:0,datasets:new Set(),values:new Set()}]));
   let builds=0;
   function record(program,dataset,metadata){
@@ -218,7 +218,7 @@ test("palette range objects have actual public 5/3 witnesses at every restored c
       }
       build(encodingRecipes.find(recipe=>recipe.id.includes("appearance")),dataset);
       for(const recipe of cartesianRecipes){
-        // This fixed124-leaf contract owns the original three named-object recipes.
+        // This fixed132-leaf contract owns the original three named-object recipes.
         // Later string-palette and combined-legend variants have independent strict ledgers.
         const variants=recipe.factorsForDataset(dataset).variant.filter(variant=>variant.ordinal>=36&&variant.ordinal<=38);
         assert.deepEqual(variants.map(variant=>variant.ordinal),[36,37,38]);

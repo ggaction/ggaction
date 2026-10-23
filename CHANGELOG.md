@@ -6,6 +6,13 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## [0.0.22] - 2026-10-23
 
+- Add opt-in plot clipping to supported Cartesian mark layers, with native/SVG/PNG/PDF parity and immutable owner replay.
+- Add validated simple polygon point shapes, retaining area/radius normalization in marks, shape scales, legends and persistence.
+- Support explicit fold-produced facet partition keys and rotated facet headers without changing original input rows.
+- Allow explicit Cartesian axis-title overlap with labels; preserve strict collision checks when omitted.
+- Preserve exact continuous-legend sampling endpoints, avoiding rounded-domain extrapolation.
+- Keep opacity/stroke-width `nice` declarations boolean-only and restrict categorical dash fallback declarations to Cartesian consumers, matching the existing runtime role checks.
+
 - Add native Canvas transition scenes and drawing through `ggaction/scene`, preserving explicit owner/nested clips, fractional viewport coverage, immutable scene identity and the existing SVG scene contract.
 
 - Update locked Hono to 4.13.13, Vite to 6.4.5 and ip-address to 10.7.4; preserve native platform metadata and verify the existing browser/MCP consumers.

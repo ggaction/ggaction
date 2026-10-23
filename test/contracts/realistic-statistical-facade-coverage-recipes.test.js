@@ -396,6 +396,8 @@ function requirementAction(id) {
 }
 
 function legacyScaleTarget(option) {
+  // Freeze the retired surface; current nice.count is checked by full current coverage.
+  if (option.path.endsWith(".nice.count")) return false;
   return (LEGACY_SCALE_ROOTS[option.action] ?? []).some(root =>
     option.path === root || option.path.startsWith(`${root}.`)
   );

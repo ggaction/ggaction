@@ -1,3 +1,4 @@
+import { currentFacadeOptionWitnesses } from "./current-facade-option-witnesses.js";
 import { realisticColorControls, realisticPaletteRange } from "./realistic-color-controls.js";
 import { chart } from "../../../src/index.js";
 
@@ -142,7 +143,6 @@ const GUIDE_PROFILES = freeze([
     orientation: "horizontal",
     axisType: "cartesian",
     tickMode: "values",
-    axisFalse: "x",
     format: ".1f",
     legendProfile: 2
   },
@@ -395,7 +395,7 @@ function profilesForAction(action) {
       tickMode:"values",format:".1f",rangePalette:realisticPaletteRange(index)})).concat(["viridis", "magma"].map(name => ({
       id: `${slug(action)}-range-palette-${name}`, guideMode: "none", orientation: "vertical",
       tickMode: "values", format: ".1f", rangePalette: { palette: name } }))) : [];
-  return freeze([...GUIDE_PROFILES, ...featureProfiles.map((profile, index) => index < 2 || profile.pregridded
+  return freeze([...GUIDE_PROFILES, ...featureProfiles.map((profile, index) => index < 4 || profile.pregridded || ["createViolinPlot", "createHeatmap"].includes(action)
     ? { ...profile, guideMode: "cartesian", axisType: "cartesian", legend: false } : profile), ...rangeProfiles]);
 }
 
@@ -833,7 +833,8 @@ function guideOptions(profile, resources, context, ordinal, action) {
   };
 }
 
-function createOwnedFacade(base, action, args) {
+function createOwnedFacade(base, action, args, ordinal) {
+  args=currentFacadeOptionWitnesses(args,{action,index:ordinal,program:base});
   const candidate = base[action]({ ...args, guides: false });
   if (args.guides === false) return candidate;
   const layer = candidate.semanticSpec.layers.find(layer => layer.id === args.id);
@@ -889,11 +890,11 @@ function createOwnedFacade(base, action, args) {
       axes.y.position = legend.position === "left" ? "right" : "left";
     }
   }
-  return base[action]({ ...args, guides: {
+  return base[action](currentFacadeOptionWitnesses({ ...args, guides: {
     axes: requested.axes === false ? false : axes,
     grid: requested.grid === false || Object.values(grid).every(value => value === false) ? false : grid,
     legend
-  } });
+  } }, {action,index:ordinal,program:candidate}));
 }
 
 function sourceProgram(view, profile, action) {
@@ -1090,7 +1091,7 @@ function quantitativeScale(id, type, profileIndex) {
     domain: "auto",
     range: "auto",
     // Nice log domains can round a small positive boundary to zero.
-    nice: type === "log" ? false : booleans.nice,
+    nice: type === "linear" && profileIndex % 3 === 0 ? {count: 5} : type === "log" ? false : booleans.nice,
     clamp: booleans.clamp,
     reverse: booleans.reverse,
     ...(type === "log" ? { base: 2 } : { zero: booleans.zero }),
@@ -1215,6 +1216,13 @@ function categoricalColor(action, field, ordinal, layout, rangePalette) {
   }
 }
 
+function distributionColor(action, ordinal) {
+  if (ordinal >= 12) return undefined;
+  const range = ordinal >= 8 && ordinal <= 9 ? realisticPaletteRange(ordinal - 8)
+    : ordinal >= 10 ? {palette: ordinal % 2 ? "magma" : "viridis"} : undefined;
+  return categoricalColor(action, "category", ordinal, undefined, range);
+}
+
 function gradientPalette(ordinal) {
   switch (ordinal % 4) {
     case 0: return "blues";
@@ -1233,6 +1241,7 @@ function buildBox(factors) {
   const resources = guideResources(view, context, profile.orientation);
   let program = createOwnedFacade(sourceProgram(view, profile, "createBoxPlot"), "createBoxPlot", {
     id: "facadeBoxes",
+    color: distributionColor("createBoxPlot", ordinal),
     target: "contextPoints",
     data: "analysisRows",
     coordinate: "main",
@@ -1246,7 +1255,7 @@ function buildBox(factors) {
     },
     outliers: true,
     box: {
-      fill: feature === 3 ? "#fde68a" : "#dbeafe",
+      ...(ordinal >= 12 ? {fill: feature === 3 ? "#fde68a" : "#dbeafe"} : {}),
       opacity: feature === 4 ? 0.58 : 0.78,
       stroke: feature === 3 ? "#78350f" : "#1e3a8a",
       strokeWidth: feature === 3 ? 1.8 : 1.1
@@ -1261,7 +1270,7 @@ function buildBox(factors) {
       opacity: feature === 4 ? 0.45 : 0.72
     },
     guides: guideOptions(profile, resources, context, ordinal, "createBoxPlot")
-  });
+  }, ordinal);
   program = program.editBoxPlot({
     target: "facadeBoxes",
     outlier: {
@@ -1302,6 +1311,7 @@ function buildGradient(factors) {
       };
   let program = createOwnedFacade(sourceProgram(view, profile, "createGradientPlot"), "createGradientPlot", {
     id: "facadeGradients",
+    color: distributionColor("createGradientPlot", ordinal),
     target: "contextPoints",
     data: "analysisRows",
     coordinate: "main",
@@ -1315,7 +1325,7 @@ function buildGradient(factors) {
     },
     center,
     guides: guideOptions(profile, resources, context, ordinal, "createGradientPlot")
-  });
+  }, ordinal);
   const editedPalette = [
     "reds",
     "blues",
@@ -1392,7 +1402,7 @@ function buildViolin(factors) {
           : curves[ordinal % curves.length]
     },
     guides: guideOptions(profile, resources, context, ordinal, "createViolinPlot")
-  });
+  }, ordinal);
   return titleProgram(program, context, profile, "split violin plot");
 }
 
@@ -1567,7 +1577,7 @@ function buildHeatmap(factors) {
       },
       color: heatmapColor(profile, ordinal),
       guides: guideOptions(profile, resources, context, ordinal, "createHeatmap")
-    });
+    }, ordinal);
   } else {
     const xTypeIndex = ordinal % QUANTITATIVE_SCALE_TYPES.length;
     const yTypeIndex = (ordinal + 2) % QUANTITATIVE_SCALE_TYPES.length;
@@ -1624,7 +1634,7 @@ function buildHeatmap(factors) {
       color: profile.rangePalette ? {scale:{id:`createheatmap-color-${ordinal}`,type:"sequential",domain:"auto",range:profile.rangePalette}}
         : heatmapBinnedColor(ordinal + (profile.paletteOffset ?? 0), profile.colorType),
       guides: guideOptions(profile, resources, context, ordinal, "createHeatmap")
-    });
+    }, ordinal);
   }
   return titleProgram(
     materializeGuideProxyGeometry(program, view),
@@ -1713,7 +1723,7 @@ function buildHistogram(factors) {
       ordinal,
       "createHistogram"
     )
-  });
+  }, ordinal);
   return titleProgram(
     materializeGuideProxyGeometry(program, view),
     context,

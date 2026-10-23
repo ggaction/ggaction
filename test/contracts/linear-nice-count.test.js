@@ -75,10 +75,14 @@ test("time/transformed/type edits cannot retain an incompatible count object",()
   }
   const changed=p.editYScale({type:"sqrt"});assert.equal(changed.semanticSpec.scales.find(s=>s.id==="y").nice,undefined);
 });
-test("count policy does not broaden color or size scale roles",()=>{
+test("count policy remains limited to position scales",()=>{
   const p=chart().createCanvas().createData({values:[{x:0,y:0},{x:1,y:108}]}).createScatterPlot({x:"x",y:"y",guides:false});
   assert.throws(()=>p.encodeColor({field:"y",fieldType:"quantitative",scale:{nice:{count:10}}}));
   assert.throws(()=>p.encodeSize({field:"y",scale:{nice:{count:10}}}));
+  assert.throws(()=>p.encodeOpacity({field:"y",scale:{nice:{count:10}}}),/nice must be a boolean/);
+  const line=chart().createCanvas().createData({values:[{x:0,y:1,width:2},{x:1,y:108,width:2}]}).createLinePlot({x:"x",y:"y",guides:false}),before=serializeProgram(line);
+  assert.throws(()=>line.encodeStrokeWidth({field:"width",scale:{nice:{count:10}}}),/nice must be a boolean/);
+  assert.equal(serializeProgram(line),before);
 });
 test("corrupt semantic count objects are rejected on restore",()=>{
   const stored=serializeProgram(fixture());for(const bad of[{count:0},{count:10,extra:true},{count:"10"}]){

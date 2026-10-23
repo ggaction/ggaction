@@ -10118,6 +10118,10 @@
         {
           "input": "scale",
           "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "scale",
+          "strategy": "documented-auto"
         }
       ],
       "completionRequirements": {
@@ -10152,7 +10156,7 @@
         {
           "name": "scale",
           "required": false,
-          "type": "NonPointQuantitativePositionScaleOptions | undefined"
+          "type": "(Omit<ScaleFields<\"base\" | \"clamp\" | \"constant\" | \"exponent\" | \"id\" | \"reverse\" | \"zero\"> & { domain?: \"auto\" | readonly [number, number] | undefined; range?: \"auto\" | readonly [...] | undefined; } & { ...; }, \"nice\"> & { ...; }) | (Omit<...> & { ...; }) | undefined"
         }
       ],
       "callPatterns": [
@@ -24063,11 +24067,6 @@
           "type": "string | undefined"
         },
         {
-          "name": "nice",
-          "required": false,
-          "type": "boolean | LinearNiceCountOptions | undefined"
-        },
-        {
           "name": "zero",
           "required": false,
           "type": "boolean | undefined"
@@ -24079,6 +24078,11 @@
         },
         {
           "name": "reverse",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "nice",
           "required": false,
           "type": "boolean | undefined"
         },
@@ -24104,7 +24108,7 @@
         }
       ],
       "callPatterns": [
-        "editOpacityScale({ id?, target?, nice?, zero?, clamp?, reverse?, type?, domain? })"
+        "editOpacityScale({ id?, target?, zero?, clamp?, reverse?, nice?, type?, domain? })"
       ],
       "snippet": "program.editOpacityScale({ range: [0.2, 0.9] })",
       "errors": [],
@@ -24336,7 +24340,7 @@
         {
           "name": "nice",
           "required": false,
-          "type": "boolean | LinearNiceCountOptions | undefined"
+          "type": "boolean | undefined"
         }
       ],
       "callPatterns": [
@@ -32188,7 +32192,7 @@
         {
           "name": "strokeDash",
           "required": false,
-          "type": "Omit<{ field: string; value?: undefined; target?: string | undefined; fieldType?: \"nominal\" | \"ordinal\" | undefined; scale?: DashScaleOptions | undefined; }, \"target\"> | Omit<...> | undefined"
+          "type": "Omit<{ value: DashPattern | DashStyle; field?: undefined; target?: string | undefined; fieldType?: undefined; scale?: undefined; }, \"target\"> | (Omit<Omit<...>, \"scale\"> & { ...; }) | undefined"
         },
         {
           "name": "line",
@@ -32310,7 +32314,7 @@
         {
           "name": "strokeDash",
           "required": false,
-          "type": "Omit<{ field: string; value?: undefined; target?: string | undefined; fieldType?: \"nominal\" | \"ordinal\" | undefined; scale?: DashScaleOptions | undefined; }, \"target\"> | Omit<...> | undefined"
+          "type": "Omit<{ value: DashPattern | DashStyle; field?: undefined; target?: string | undefined; fieldType?: undefined; scale?: undefined; }, \"target\"> | (Omit<Omit<...>, \"scale\"> & { ...; }) | undefined"
         },
         {
           "name": "line",
@@ -33617,7 +33621,7 @@
         {
           "name": "strokeDash",
           "required": false,
-          "type": "Omit<{ field: string; value?: undefined; target?: string | undefined; fieldType?: \"nominal\" | \"ordinal\" | undefined; scale?: DashScaleOptions | undefined; }, \"target\"> | Omit<...> | undefined"
+          "type": "Omit<{ value: DashPattern | DashStyle; field?: undefined; target?: string | undefined; fieldType?: undefined; scale?: undefined; }, \"target\"> | (Omit<Omit<...>, \"scale\"> & { ...; }) | undefined"
         },
         {
           "name": "line",

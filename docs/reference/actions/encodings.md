@@ -357,7 +357,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `field` | Optional / branch-dependent | `string \| undefined` |
 | `target` | Optional / branch-dependent | `string \| undefined` |
 | `fieldType` | Optional / branch-dependent | `"quantitative" \| undefined` |
-| `scale` | Optional / branch-dependent | `NonPointQuantitativePositionScaleOptions \| undefined` |
+| `scale` | Optional / branch-dependent | `(Omit<ScaleFields<"base" \| "clamp" \| "constant" \| "exponent" \| "id" \| "reverse" \| "zero"> & { domain?: "auto" \| readonly [number, number] \| undefined; range?: "auto" \| readonly [...] \| undefined; } & { ...; }, "nice"> & { ...; }) \| (Omit<...> & { ...; }) \| undefined` |
 
 </details>
 
@@ -1229,7 +1229,7 @@ replaces the previous content branch. [Text marks](../../api/marks/text.md)
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.22. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 encodeDx(options: TextOffsetEncodingOptions): ChartProgram;
@@ -1269,7 +1269,7 @@ source-owned labels and other marks are rejected.
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.22. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 encodeDy(options: TextOffsetEncodingOptions): ChartProgram;

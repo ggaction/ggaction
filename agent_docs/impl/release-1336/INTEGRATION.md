@@ -76,3 +76,28 @@ exclude quoted/example attributes. All 125 documentation source tests and all
 150 built pages pass. Library source and the packaged runtime are unchanged.
 
 Linux normal CI found two clipping assertions tied to macOS-compressed PNG byte hashes. The independent same-run primitive/public pixel assertions already passed. PNG export is now decoded and compared exactly to that primitive/control, retaining the frozen SVG hash and all clip/PDF/restore assertions. This removes platform-specific compression identity from an image-content contract; no pixel tolerance is introduced.
+
+The final option-surface audit narrows accidental shared-type leakage: count-based
+`nice` is limited to linear position roles, and categorical dash fallbacks are
+limited to Cartesian consumers. Existing runtime rejection is retained and
+TypeScript negative controls plus atomic runtime checks enforce it. Actual pinned
+real-data fixture calls cover the new valid options without lowering the five-call,
+three-dataset floors. Current inventory fingerprints are refreshed; the historical
+retired-scale counterfactual remains frozen independently.
+
+The Polar trend signature uses the measured Linux width659.5 after the approved
+same-edge guide clearance repair. Its primitive/public geometry and pixels remain
+exact, and the existing raster tolerances are unchanged. All5499 normal tests,
+125documentation source tests,150built pages and the complete320/390/768browser
+harness pass. Complete release notes and role declarations measure4254609unpacked
+bytes; the explicit unpacked budget moves to the next1000-byte boundary4255000.
+
+Current real-data closure is verified: the830-chart Cartesian schedule, direct
+encoding and132-leaf palette ledgers, every hierarchical facade requirement and
+the540-chart statistical schedule all pass. Both the original retired-surface
+counterfactual and current option/diversity floors remain active. New distribution
+color witnesses retain separate fixed-fill profiles; explicit color/fill conflicts
+remain rejected. Additional linear Rug profiles preserve all original transformed
+profiles while exercising both automatic tick policies in each orientation.
+The621-entry exact installed0.0.22source-built consumer passes; this is not yet
+registry publication.
