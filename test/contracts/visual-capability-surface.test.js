@@ -79,7 +79,7 @@ test("keeps closed polar lines and advanced facets in the strict public types", 
   const rootDeclarations = readFileSync(new URL("../../types/index.d.ts", import.meta.url), "utf8");
   assert.match(declarations, /createLineMark\(options\?: StrokeStyleDetails & \{[\s\S]*?closed\?: boolean;/);
   assert.match(declarations, /editLineMark\(options: StrokeStyleDetails & \{[\s\S]*?closed\?: boolean;/);
-  assert.match(declarations, /export interface FacetGuideOptions \{[\s\S]*?axes\?: "each" \| "outer";/);
+  assert.match(declarations, /export interface FacetGuideOptions \{[\s\S]*?axes\?: "each" \| "outer" \| \{ x\?: "each" \| "outer"; y\?: "each" \| "outer" \}/);
   assert.match(declarations, /guides\?: FacetGuideOptions/);
   assert.match(rootDeclarations, /FacetGuideOptions/);
 });

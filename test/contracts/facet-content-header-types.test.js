@@ -22,6 +22,16 @@ p.facetGrid({rows:{field:'row'},columns:{field:'group'},spacing:'plot',headers:{
 p.repeatCharts({channel:'y',fields:['a','b'],spacing:'plot',headers});
 p.editFacetHeaders({role:'column',anchor:'content'});
 p.editFacetHeaders({anchor:'plot'});
+p.facet({field:'group',spacing:'content',headers:{anchor:'view'},guides:{axes:{x:'outer'}}});
+p.editFacetGuides({axes:{y:'each'}});
+p.editCompositionLayout({spacing:'content'});
+p.repeatCharts({channel:'y',fields:['a','b'],spacing:'content',headers:{anchor:'view'}});
+// @ts-expect-error keyed grids retain aligned tracks
+p.facetGrid({rows:{field:'row'},columns:{field:'group'},spacing:'content'});
+// @ts-expect-error axis channel vocabulary is closed
+p.editFacetGuides({axes:{theta:'outer'}});
+// @ts-expect-error axis mode vocabulary is closed
+p.editFacetGuides({axes:{x:'shared'}});
 // @ts-expect-error closed anchor values
 p.editFacetHeaders({anchor:'marks'});
 // @ts-expect-error no automatic sentinel

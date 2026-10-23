@@ -147,3 +147,11 @@ composition untouched.
 These structural actions and `replaceCompositionChild` apply only to concat
 parents. Facet-derived children remain governed by their canonical recipe and
 the facet-specific edit actions.
+
+For Cartesian facets, `editFacetGuides({ axes: { x: "outer" } })` changes only the X policy;
+the Y policy stays unchanged. Scalar `"each"` or `"outer"` changes both channels. At creation,
+omitted object channels default to `"each"`. Empty or unknown channel policies are rejected.
+Wrapped layouts can switch to `editCompositionLayout({ spacing: "content" })` to pack native
+content bounds independently; keyed grids reject this mode. Reset `topLane` to `"stacked"`
+in the same call when switching from a shared plot lane. Header `anchor: "view"` includes
+retained guides in its outward clearance and is available with plot or content spacing.

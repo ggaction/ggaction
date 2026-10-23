@@ -5,7 +5,7 @@ export interface EditFacetHeadersOptions {
   color?: string;
   offset?: number;
   /** Content follows concrete mark bounds with plot spacing; plot preserves existing placement. */
-  anchor?: "plot" | "content";
+  anchor?: "plot" | "content" | "view";
   role?: FacetHeaderRole;
   labelMap?: DisplayLabelMap | "auto";
   side?: FacetHeaderSide;

@@ -101,7 +101,7 @@ test("rejects invalid facet partition, scale, and guide contracts", () => {
         scales: { ...base.facet.scales, x: "linked" }
       }
     }, /one shared or independent/],
-    [{ ...base, facet: { ...base.facet, guides: { axes: "all", legend: false } } }, /guides requires/]
+    [{ ...base, facet: { ...base.facet, guides: { axes: "all", legend: false } } }, /Facet axes/]
   ];
 
   for (const [spec, error] of invalidFacets) {

@@ -78,7 +78,7 @@
     {
       "name": "spacing",
       "required": false,
-      "type": "\"canvas\" | \"plot\" | undefined"
+      "type": "\"canvas\" | \"content\" | \"plot\" | undefined"
     },
     {
       "name": "topLane",

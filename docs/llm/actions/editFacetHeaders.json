@@ -92,7 +92,7 @@
     {
       "name": "anchor",
       "required": false,
-      "type": "\"content\" | \"plot\" | undefined"
+      "type": "\"content\" | \"plot\" | \"view\" | undefined"
     },
     {
       "name": "role",

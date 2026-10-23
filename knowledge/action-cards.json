@@ -29314,7 +29314,7 @@
         {
           "name": "spacing",
           "required": false,
-          "type": "\"canvas\" | \"plot\" | undefined"
+          "type": "\"canvas\" | \"content\" | \"plot\" | undefined"
         },
         {
           "name": "topLane",
@@ -29741,7 +29741,7 @@
         {
           "name": "spacing",
           "required": false,
-          "type": "\"canvas\" | \"plot\" | undefined"
+          "type": "\"canvas\" | \"content\" | \"plot\" | undefined"
         },
         {
           "name": "topLane",
@@ -30029,7 +30029,7 @@
         {
           "name": "spacing",
           "required": false,
-          "type": "\"canvas\" | \"plot\" | undefined"
+          "type": "\"canvas\" | \"content\" | \"plot\" | undefined"
         },
         {
           "name": "topLane",
@@ -30208,7 +30208,7 @@
         {
           "name": "anchor",
           "required": false,
-          "type": "\"content\" | \"plot\" | undefined"
+          "type": "\"content\" | \"plot\" | \"view\" | undefined"
         },
         {
           "name": "role",
@@ -30420,7 +30420,7 @@
         {
           "name": "axes",
           "required": false,
-          "type": "\"each\" | \"outer\" | undefined"
+          "type": "\"each\" | \"outer\" | { x?: \"each\" | \"outer\" | undefined; y?: \"each\" | \"outer\" | undefined; } | undefined"
         },
         {
           "name": "legend",

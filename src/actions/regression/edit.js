@@ -1,4 +1,5 @@
-import { validateRegressionPlacement, reconcileRegressionPlacement } from "../../materialization/graphicHierarchy.js";
+import { reconcileRegressionPlacement } from "../../materialization/graphicHierarchy.js";
+import { validateRegressionPlacement } from "../../grammar/regression/parameters.js";
 import { closedAction } from "../../core/action.js";
 import { isPlainObject } from "../../core/immutable.js";
 import { validateUserId } from "../../core/identifiers.js";

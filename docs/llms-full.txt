@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.22.
 
-Contract: sha256:508ea18c3c3c4029b62372845992943d81267f50f0f23ac374480d71c2b07bad. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:911e194881c03ddb5b1917000da66e3058c8f6ee324cee3bfea18fe8803a5fea. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -18936,7 +18936,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `gap` | Optional / branch-dependent | `number \| undefined` |
 | `align` | Optional / branch-dependent | `CompositionAlign \| undefined` |
 | `padding` | Optional / branch-dependent | `number \| CompositionPadding \| undefined` |
-| `spacing` | Optional / branch-dependent | `"canvas" \| "plot" \| undefined` |
+| `spacing` | Optional / branch-dependent | `"canvas" \| "content" \| "plot" \| undefined` |
 | `topLane` | Optional / branch-dependent | `FacetTopLaneMode \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
@@ -19099,7 +19099,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `scales` | Optional / branch-dependent | `FacetScaleResolutions \| undefined` |
 | `guides` | Optional / branch-dependent | `FacetGuideOptions \| undefined` |
 | `headers` | Optional / branch-dependent | `FacetHeadersOptions \| undefined` |
-| `spacing` | Optional / branch-dependent | `"canvas" \| "plot" \| undefined` |
+| `spacing` | Optional / branch-dependent | `"canvas" \| "content" \| "plot" \| undefined` |
 | `topLane` | Optional / branch-dependent | `FacetTopLaneMode \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
@@ -19218,7 +19218,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `scales` | Optional / branch-dependent | `FacetScaleResolutions \| undefined` |
 | `guides` | Optional / branch-dependent | `FacetGuideOptions \| undefined` |
 | `headers` | Optional / branch-dependent | `FacetHeadersOptions \| undefined` |
-| `spacing` | Optional / branch-dependent | `"canvas" \| "plot" \| undefined` |
+| `spacing` | Optional / branch-dependent | `"canvas" \| "content" \| "plot" \| undefined` |
 | `topLane` | Optional / branch-dependent | `FacetTopLaneMode \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
@@ -19294,7 +19294,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
-| `anchor` | Optional / branch-dependent | `"content" \| "plot" \| undefined` |
+| `anchor` | Optional / branch-dependent | `"content" \| "plot" \| "view" \| undefined` |
 | `role` | Optional / branch-dependent | `FacetHeaderRole \| undefined` |
 | `labelMap` | Optional / branch-dependent | `"auto" \| DisplayLabelMap \| undefined` |
 | `side` | Optional / branch-dependent | `FacetHeaderSide \| undefined` |
@@ -19382,7 +19382,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `axes` | Optional / branch-dependent | `"each" \| "outer" \| undefined` |
+| `axes` | Optional / branch-dependent | `"each" \| "outer" \| { x?: "each" \| "outer" \| undefined; y?: "each" \| "outer" \| undefined; } \| undefined` |
 | `legend` | Optional / branch-dependent | `"shared" \| false \| LegendOptions \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
@@ -33774,8 +33774,8 @@ export interface EditCompositionLayoutOptions {
   gap?: number;
   align?: CompositionAlign;
   padding?: number | CompositionPadding;
-  /** Interpret gap between child canvases (default) or inner plot regions. */
-  spacing?: "canvas" | "plot";
+  /** Interpret gap between child canvases (default), inner plots, or retained full content (wrapped facets). */
+  spacing?: "canvas" | "plot" | "content";
   /** Share existing top margin with parent title and headers; requires plot spacing. Stacked restores the default. */
   topLane?: FacetTopLaneMode;
 }
@@ -34005,7 +34005,7 @@ export interface EditFacetHeadersOptions {
   color?: string;
   offset?: number;
   /** Content follows concrete mark bounds with plot spacing; plot preserves existing placement. */
-  anchor?: "plot" | "content";
+  anchor?: "plot" | "content" | "view";
   role?: FacetHeaderRole;
   labelMap?: DisplayLabelMap | "auto";
   side?: FacetHeaderSide;
@@ -35203,7 +35203,7 @@ export interface FacetGridOptions {
   scales?: FacetScaleResolutions;
   guides?: FacetGuideOptions;
   headers?: FacetHeadersOptions;
-  /** Interpret gap between child canvases (default) or inner plot regions. */
+  /** Interpret gap between child canvases (default), inner plots, or retained full content (wrapped facets). */
   spacing?: "canvas" | "plot";
   /** Share the existing top margin rather than adding title/header reservations. Requires plot spacing. */
   topLane?: FacetTopLaneMode;
@@ -35231,7 +35231,7 @@ Related types: [`DatasetScalar`](./reference/types/#type-datasetscalar).
 
 ```typescript
 export interface FacetGuideOptions {
-  axes?: "each" | "outer";
+  axes?: "each" | "outer" | { x?: "each" | "outer"; y?: "each" | "outer" };
   legend?: false | "shared" | LegendOptions;
 }
 ```
@@ -35314,8 +35314,8 @@ export interface FacetOptions {
   scales?: FacetScaleResolutions;
   guides?: FacetGuideOptions;
   headers?: FacetHeadersOptions;
-  /** Interpret gap between child canvases (default) or inner plot regions. */
-  spacing?: "canvas" | "plot";
+  /** Interpret gap between child canvases (default), inner plots, or retained full content (wrapped facets). */
+  spacing?: "canvas" | "plot" | "content";
   /** Share the existing top margin rather than adding title/header reservations. Requires plot spacing. */
   topLane?: FacetTopLaneMode;
 }
@@ -38743,8 +38743,8 @@ export interface RepeatChartsOptions {
   scales?: FacetScaleResolutions;
   guides?: FacetGuideOptions;
   headers?: FacetHeadersOptions;
-  /** Interpret gap between child canvases (default) or inner plot regions. */
-  spacing?: "canvas" | "plot";
+  /** Interpret gap between child canvases (default), inner plots, or retained full content (wrapped facets). */
+  spacing?: "canvas" | "plot" | "content";
   /** Share the existing top margin rather than adding title/header reservations. Requires plot spacing. */
   topLane?: FacetTopLaneMode;
 }
@@ -41612,7 +41612,7 @@ This uses concrete mark geometry, including strokes and clipping, regardless of
 opacity; axes, legends and titles are excluded. The same option works in initial
 `headers`, including row and column overrides. Field titles keep their plot anchor.
 Omission or `anchor: "plot"` preserves the existing placement. Content anchoring
-requires `spacing: "plot"` and sufficient space; it never changes child plot sizes.
+requires `spacing: "plot"` or `"content"` and sufficient space; it never changes child plot sizes.
 
 ## Repeat the current chart by a field
 
@@ -41680,13 +41680,13 @@ shared-scale panels, and `editFacetSource` can add, replace, or remove the filte
 | `values` | source first-appearance order | Selects and orders a non-empty set of observed scalar values |
 | `columns` | number of values | Sets the grid column count |
 | `gap` | `16` | Sets horizontal and vertical cell spacing |
-| `spacing` | `"canvas"` | Measures gaps between child canvases or, with `"plot"`, inner plot tracks |
+| `spacing` | `"canvas"` | Measures gaps between child canvases or, with `"plot"`, inner plot tracks; `"content"` independently packs full retained bounds |
 | `topLane` | `"stacked"` | With plot spacing, `"shared"` places parent title and top headers in the existing top margin |
 | `align` | `"center"` | Aligns unequal cells inside grid tracks |
 | `padding` | `0` on every side | Adds scalar or four-side parent padding |
 | `scales` | every used role `"shared"` | Sets `"shared"` or `"independent"` per `x`, `y`, `xOffset`, `yOffset`, `theta`, public `r`, `color`, `stroke`, `size`, `shape`, `opacity`, `strokeDash`, or all `parallelDimensions` |
 | `headers` | default header style | Common text style/map plus optional `row` and `column` overrides; role objects also accept `side` |
-| `guides.axes` | `"each"` | `"outer"` keeps occupied-edge Cartesian x/y axes; Polar and Parallel axes remain local and reject `"outer"` |
+| `guides.axes` | `"each"` | `"outer"` keeps occupied-edge Cartesian x/y axes; `{ x: "outer", y: "each" }` shares only X; Polar and Parallel axes remain local and reject `"outer"` |
 | `guides.legend` | `false` | `"shared"` promotes one compatible parent-owned categorical, gradient, discretized-color, size, or opacity legend |
 
 Author the legend position on the unit chart before calling `facet`. Promotion
@@ -42031,6 +42031,26 @@ A conflicting edit fails atomically. Omitting all title options preserves existi
 charts exactly, and source, layout, theme, font metrics and saved editable programs
 retain the field-title owner.
 
+## Independently packed panels
+
+For an existing Cartesian program with axes, this fragment packs complete visible panel
+bounds while keeping every Y axis and one common bottom X footer per occupied column:
+
+Use `program.facet({ field: "group", columns: 2, spacing: "content", gap: 16,
+headers: { anchor: "view" }, guides: { axes: { x: "outer", y: "each" } } })`.
+The program must already contain a `group` field and Cartesian mark encodings.
+
+Panel plot sizes and logical group order stay fixed. Different axis labels or mark overflow
+can give panels in the same logical row different plot origins. `gap` adds clearance between
+measured content bounds. The parent Canvas includes the final footer, title and legend lanes.
+The full-body `view` header anchor includes retained guides; `content` continues to measure
+marks and the plot only. Both anchors accept plot or content spacing.
+
+Use content spacing with wrapped `facet` or `repeatCharts`. Keyed `facetGrid` retains aligned
+tracks and rejects it. Shared top lanes require plot spacing. Repeat keeps axes local and
+rejects any `outer` channel. Per-channel policies require Cartesian coordinates.
+`align` controls slots in canvas/plot spacing; content flow uses independent measured bounds.
+
 <!-- Source: /api/composition/editing/ -->
 
 # Editing Compositions
@@ -42182,6 +42202,14 @@ composition untouched.
 These structural actions and `replaceCompositionChild` apply only to concat
 parents. Facet-derived children remain governed by their canonical recipe and
 the facet-specific edit actions.
+
+For Cartesian facets, `editFacetGuides({ axes: { x: "outer" } })` changes only the X policy;
+the Y policy stays unchanged. Scalar `"each"` or `"outer"` changes both channels. At creation,
+omitted object channels default to `"each"`. Empty or unknown channel policies are rejected.
+Wrapped layouts can switch to `editCompositionLayout({ spacing: "content" })` to pack native
+content bounds independently; keyed grids reject this mode. Reset `topLane` to `"stacked"`
+in the same call when switching from a shared plot lane. Header `anchor: "view"` includes
+retained guides in its outward clearance and is available with plot or content spacing.
 
 <!-- Source: /api/marks/labels/ -->
 
@@ -43301,7 +43329,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:508ea18c3c3c4029b62372845992943d81267f50f0f23ac374480d71c2b07bad` |
+| Contract fingerprint | `sha256:911e194881c03ddb5b1917000da66e3058c8f6ee324cee3bfea18fe8803a5fea` |
 | Example and dataset source | `6422776b0a379c8c89809f41b434f366fbc1f143` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

@@ -1,3 +1,4 @@
+import { validateRegressionPlacement } from "../grammar/regression/parameters.js";
 import { cartesianAxisOwners } from "../selectors/axes.js";
 import { axisGraphicIds } from "./guides/resources.js";
 import {
@@ -122,13 +123,6 @@ export function preserveGraphicPlacement(program, id) {
     ...(parent?.kind === "parent" ? { parent: parent.id } : {}),
     ...(next === undefined ? {} : { before: next })
   };
-}
-
-export function validateRegressionPlacement(value) {
-  if (value !== undefined && !["source", "plot-last"].includes(value)) {
-    throw new Error('Regression placement must be "source" or "plot-last".');
-  }
-  return value ?? "source";
 }
 
 export function reconcileRegressionPlacement(program, ownerId) {

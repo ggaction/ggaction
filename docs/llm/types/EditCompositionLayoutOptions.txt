@@ -3,8 +3,8 @@ export interface EditCompositionLayoutOptions {
   gap?: number;
   align?: CompositionAlign;
   padding?: number | CompositionPadding;
-  /** Interpret gap between child canvases (default) or inner plot regions. */
-  spacing?: "canvas" | "plot";
+  /** Interpret gap between child canvases (default), inner plots, or retained full content (wrapped facets). */
+  spacing?: "canvas" | "plot" | "content";
   /** Share existing top margin with parent title and headers; requires plot spacing. Stacked restores the default. */
   topLane?: FacetTopLaneMode;
 }

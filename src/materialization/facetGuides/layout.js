@@ -1,3 +1,4 @@
+import { cartesianAxisOwners, axisGraphicIds } from "../../selectors/axes.js";
 import { resolveAuthoredFacetLegendLayout } from "./ownerLayout.js";
 import { PLOT_LEGEND_POSITIONS } from "../../layout/legend.js";
 import { resolveConcreteGraphicBounds } from "../../grammar/schemas/graphicBounds.js";
@@ -14,9 +15,14 @@ function retainedGuideBounds(program, layout, plots, headers) {
   const bounds = [];
   for (const cell of layout.children) {
     const child = program.children[cell.id];
+    const footerIds = new Set(cell.footerShift === undefined ? [] : cartesianAxisOwners(child)
+      .filter(owner => owner.channel === "x").flatMap(owner =>
+        ["line", "ticks", "labels", "title"].flatMap((component, index) =>
+          owner.config?.[component]?.position === "bottom" ? [axisGraphicIds(owner.channel, owner.id)[index]] : [])));
+
     for (const id of retainedFacetGuideIds(program, cell.id)) {
       const value = resolveConcreteGraphicBounds(child.graphicSpec, id, profile);
-      if (value !== undefined) bounds.push(translated(value, cell.x, cell.y));
+      if (value !== undefined) bounds.push(translated(value, cell.x, cell.y + (footerIds.has(id) ? cell.footerShift : 0)));
     }
   }
   const { items } = resolveFacetHeaderItems(layout, plots, headers);

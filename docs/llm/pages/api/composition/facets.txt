@@ -101,7 +101,7 @@ This uses concrete mark geometry, including strokes and clipping, regardless of
 opacity; axes, legends and titles are excluded. The same option works in initial
 `headers`, including row and column overrides. Field titles keep their plot anchor.
 Omission or `anchor: "plot"` preserves the existing placement. Content anchoring
-requires `spacing: "plot"` and sufficient space; it never changes child plot sizes.
+requires `spacing: "plot"` or `"content"` and sufficient space; it never changes child plot sizes.
 
 ## Repeat the current chart by a field
 
@@ -169,13 +169,13 @@ shared-scale panels, and `editFacetSource` can add, replace, or remove the filte
 | `values` | source first-appearance order | Selects and orders a non-empty set of observed scalar values |
 | `columns` | number of values | Sets the grid column count |
 | `gap` | `16` | Sets horizontal and vertical cell spacing |
-| `spacing` | `"canvas"` | Measures gaps between child canvases or, with `"plot"`, inner plot tracks |
+| `spacing` | `"canvas"` | Measures gaps between child canvases or, with `"plot"`, inner plot tracks; `"content"` independently packs full retained bounds |
 | `topLane` | `"stacked"` | With plot spacing, `"shared"` places parent title and top headers in the existing top margin |
 | `align` | `"center"` | Aligns unequal cells inside grid tracks |
 | `padding` | `0` on every side | Adds scalar or four-side parent padding |
 | `scales` | every used role `"shared"` | Sets `"shared"` or `"independent"` per `x`, `y`, `xOffset`, `yOffset`, `theta`, public `r`, `color`, `stroke`, `size`, `shape`, `opacity`, `strokeDash`, or all `parallelDimensions` |
 | `headers` | default header style | Common text style/map plus optional `row` and `column` overrides; role objects also accept `side` |
-| `guides.axes` | `"each"` | `"outer"` keeps occupied-edge Cartesian x/y axes; Polar and Parallel axes remain local and reject `"outer"` |
+| `guides.axes` | `"each"` | `"outer"` keeps occupied-edge Cartesian x/y axes; `{ x: "outer", y: "each" }` shares only X; Polar and Parallel axes remain local and reject `"outer"` |
 | `guides.legend` | `false` | `"shared"` promotes one compatible parent-owned categorical, gradient, discretized-color, size, or opacity legend |
 
 Author the legend position on the unit chart before calling `facet`. Promotion
@@ -519,3 +519,23 @@ Titles must fit without overlapping panel headers, plots or retained chart text.
 A conflicting edit fails atomically. Omitting all title options preserves existing
 charts exactly, and source, layout, theme, font metrics and saved editable programs
 retain the field-title owner.
+
+## Independently packed panels
+
+For an existing Cartesian program with axes, this fragment packs complete visible panel
+bounds while keeping every Y axis and one common bottom X footer per occupied column:
+
+Use `program.facet({ field: "group", columns: 2, spacing: "content", gap: 16,
+headers: { anchor: "view" }, guides: { axes: { x: "outer", y: "each" } } })`.
+The program must already contain a `group` field and Cartesian mark encodings.
+
+Panel plot sizes and logical group order stay fixed. Different axis labels or mark overflow
+can give panels in the same logical row different plot origins. `gap` adds clearance between
+measured content bounds. The parent Canvas includes the final footer, title and legend lanes.
+The full-body `view` header anchor includes retained guides; `content` continues to measure
+marks and the plot only. Both anchors accept plot or content spacing.
+
+Use content spacing with wrapped `facet` or `repeatCharts`. Keyed `facetGrid` retains aligned
+tracks and rejects it. Shared top lanes require plot spacing. Repeat keeps axes local and
+rejects any `outer` channel. Per-channel policies require Cartesian coordinates.
+`align` controls slots in canvas/plot spacing; content flow uses independent measured bounds.

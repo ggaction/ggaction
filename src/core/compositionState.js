@@ -1,3 +1,4 @@
+import { normalizeFacetAxes } from "./facetAxisPolicy.js";
 import { isOwned, isPlainObject } from "./immutable.js";
 import { ownProgramState } from "./programState.js";
 import {
@@ -43,6 +44,7 @@ function validateFacetSpec(compositionSpec) {
   }
   const grid = compositionSpec.facet.grid;
   const repeat = compositionSpec.facet.repeat;
+  if (grid !== undefined && compositionSpec.spacing === "content") throw new Error("Content flow requires a wrapped facet.");
   if (grid !== undefined && repeat !== undefined) {
     throw new Error("Facet compositionSpec cannot combine grid and repeat recipes.");
   }
@@ -204,10 +206,10 @@ function validateFacetSpec(compositionSpec) {
     );
   }
   const guides = compositionSpec.facet.guides;
+  normalizeFacetAxes(guides?.axes, "each", { stored: true });
   if (
     !isPlainObject(guides) ||
     Object.keys(guides).some(key => !["axes", "legend"].includes(key)) ||
-    !["each", "outer"].includes(guides.axes) ||
     (![false, "shared"].includes(guides.legend) && !isPlainObject(guides.legend))
   ) {
     throw new Error(
@@ -289,8 +291,8 @@ export function ownCompositionSpec(compositionSpec, children) {
     throw new TypeError("compositionSpec.id must be a non-empty string.");
   }
   const facet = compositionSpec.type === "facet";
-  if (compositionSpec.spacing !== undefined && (!facet || !["plot", "canvas"].includes(compositionSpec.spacing))) {
-    throw new Error("compositionSpec.spacing requires a facet and canvas or plot spacing.");
+  if (compositionSpec.spacing !== undefined && (!facet || !["plot", "canvas", "content"].includes(compositionSpec.spacing))) {
+    throw new Error("compositionSpec.spacing requires a facet and canvas, plot, or content spacing.");
   }
   if (compositionSpec.topLane !== undefined && (!facet ||
       !FACET_TOP_LANE_MODES.includes(compositionSpec.topLane) ||

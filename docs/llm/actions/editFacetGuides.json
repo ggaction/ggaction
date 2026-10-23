@@ -49,7 +49,7 @@
     {
       "name": "axes",
       "required": false,
-      "type": "\"each\" | \"outer\" | undefined"
+      "type": "\"each\" | \"outer\" | { x?: \"each\" | \"outer\" | undefined; y?: \"each\" | \"outer\" | undefined; } | undefined"
     },
     {
       "name": "legend",

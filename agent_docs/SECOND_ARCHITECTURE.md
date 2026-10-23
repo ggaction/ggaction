@@ -30,6 +30,14 @@ semantic 상태 → 명시적 materialization → concrete graphicSpec 순서다
 현재 한도는 package/consumer/search 검사의 상수와 현재 실행 결과가 기준이다.
 아래 설명에 남은 과거 checkpoint 수치를 현재 제한으로 해석하지 않는다.
 
+## Content facet 배치 소유권
+
+`core/facetAxisPolicy.js`가 생성·편집·저장 복원에서 공유하는 channel 정책을 검증한다.
+`materialization/facetContentBounds.js`는 실제 retained graphic을 측정하고 기존 순수
+content-flow layout kernel에 전달한다. 공통 bottom footer는 부모 Canvas에 materialize하여
+child viewport clipping과 분리한다. Renderer와 semantic/graphic 경계는 유지한다.
+공개 옵션은 [composition 계약](contract/current/COMPOSITION.md)이 소유한다.
+
 ## 문서의 위치
 
 > 과거 checkpoint 수치 포함. 현재 한도는 실행 검사에서 확인한다.

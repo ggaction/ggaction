@@ -2017,7 +2017,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `gap` | Optional / branch-dependent | `number \| undefined` |
 | `align` | Optional / branch-dependent | `CompositionAlign \| undefined` |
 | `padding` | Optional / branch-dependent | `number \| CompositionPadding \| undefined` |
-| `spacing` | Optional / branch-dependent | `"canvas" \| "plot" \| undefined` |
+| `spacing` | Optional / branch-dependent | `"canvas" \| "content" \| "plot" \| undefined` |
 | `topLane` | Optional / branch-dependent | `FacetTopLaneMode \| undefined` |
 
 </details>
@@ -2200,7 +2200,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `scales` | Optional / branch-dependent | `FacetScaleResolutions \| undefined` |
 | `guides` | Optional / branch-dependent | `FacetGuideOptions \| undefined` |
 | `headers` | Optional / branch-dependent | `FacetHeadersOptions \| undefined` |
-| `spacing` | Optional / branch-dependent | `"canvas" \| "plot" \| undefined` |
+| `spacing` | Optional / branch-dependent | `"canvas" \| "content" \| "plot" \| undefined` |
 | `topLane` | Optional / branch-dependent | `FacetTopLaneMode \| undefined` |
 
 </details>
@@ -2327,7 +2327,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `scales` | Optional / branch-dependent | `FacetScaleResolutions \| undefined` |
 | `guides` | Optional / branch-dependent | `FacetGuideOptions \| undefined` |
 | `headers` | Optional / branch-dependent | `FacetHeadersOptions \| undefined` |
-| `spacing` | Optional / branch-dependent | `"canvas" \| "plot" \| undefined` |
+| `spacing` | Optional / branch-dependent | `"canvas" \| "content" \| "plot" \| undefined` |
 | `topLane` | Optional / branch-dependent | `FacetTopLaneMode \| undefined` |
 
 </details>
@@ -2411,7 +2411,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
-| `anchor` | Optional / branch-dependent | `"content" \| "plot" \| undefined` |
+| `anchor` | Optional / branch-dependent | `"content" \| "plot" \| "view" \| undefined` |
 | `role` | Optional / branch-dependent | `FacetHeaderRole \| undefined` |
 | `labelMap` | Optional / branch-dependent | `"auto" \| DisplayLabelMap \| undefined` |
 | `side` | Optional / branch-dependent | `FacetHeaderSide \| undefined` |
@@ -2507,7 +2507,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `axes` | Optional / branch-dependent | `"each" \| "outer" \| undefined` |
+| `axes` | Optional / branch-dependent | `"each" \| "outer" \| { x?: "each" \| "outer" \| undefined; y?: "each" \| "outer" \| undefined; } \| undefined` |
 | `legend` | Optional / branch-dependent | `"shared" \| false \| LegendOptions \| undefined` |
 
 </details>

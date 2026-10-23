@@ -10,8 +10,8 @@ export interface RepeatChartsOptions {
   scales?: FacetScaleResolutions;
   guides?: FacetGuideOptions;
   headers?: FacetHeadersOptions;
-  /** Interpret gap between child canvases (default) or inner plot regions. */
-  spacing?: "canvas" | "plot";
+  /** Interpret gap between child canvases (default), inner plots, or retained full content (wrapped facets). */
+  spacing?: "canvas" | "plot" | "content";
   /** Share the existing top margin rather than adding title/header reservations. Requires plot spacing. */
   topLane?: FacetTopLaneMode;
 }

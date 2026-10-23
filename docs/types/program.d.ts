@@ -169,8 +169,8 @@ export interface EditCompositionLayoutOptions {
   gap?: number;
   align?: CompositionAlign;
   padding?: number | CompositionPadding;
-  /** Interpret gap between child canvases (default) or inner plot regions. */
-  spacing?: "canvas" | "plot";
+  /** Interpret gap between child canvases (default), inner plots, or retained full content (wrapped facets). */
+  spacing?: "canvas" | "plot" | "content";
   /** Share existing top margin with parent title and headers; requires plot spacing. Stacked restores the default. */
   topLane?: FacetTopLaneMode;
 }
@@ -214,7 +214,7 @@ interface StoredFacetLegendIntent {
   readonly groups: Readonly<Record<string, unknown>>;
 }
 export interface FacetGuideOptions {
-  axes?: "each" | "outer";
+  axes?: "each" | "outer" | { x?: "each" | "outer"; y?: "each" | "outer" };
   legend?: false | "shared" | LegendOptions;
 }
 export interface FacetOptions {
@@ -230,8 +230,8 @@ export interface FacetOptions {
   scales?: FacetScaleResolutions;
   guides?: FacetGuideOptions;
   headers?: FacetHeadersOptions;
-  /** Interpret gap between child canvases (default) or inner plot regions. */
-  spacing?: "canvas" | "plot";
+  /** Interpret gap between child canvases (default), inner plots, or retained full content (wrapped facets). */
+  spacing?: "canvas" | "plot" | "content";
   /** Share the existing top margin rather than adding title/header reservations. Requires plot spacing. */
   topLane?: FacetTopLaneMode;
 }
@@ -251,7 +251,7 @@ export interface FacetGridOptions {
   scales?: FacetScaleResolutions;
   guides?: FacetGuideOptions;
   headers?: FacetHeadersOptions;
-  /** Interpret gap between child canvases (default) or inner plot regions. */
+  /** Interpret gap between child canvases (default), inner plots, or retained full content (wrapped facets). */
   spacing?: "canvas" | "plot";
   /** Share the existing top margin rather than adding title/header reservations. Requires plot spacing. */
   topLane?: FacetTopLaneMode;
@@ -268,8 +268,8 @@ export interface RepeatChartsOptions {
   scales?: FacetScaleResolutions;
   guides?: FacetGuideOptions;
   headers?: FacetHeadersOptions;
-  /** Interpret gap between child canvases (default) or inner plot regions. */
-  spacing?: "canvas" | "plot";
+  /** Interpret gap between child canvases (default), inner plots, or retained full content (wrapped facets). */
+  spacing?: "canvas" | "plot" | "content";
   /** Share the existing top margin rather than adding title/header reservations. Requires plot spacing. */
   topLane?: FacetTopLaneMode;
 }
@@ -295,7 +295,7 @@ export interface EditFacetHeadersOptions {
   color?: string;
   offset?: number;
   /** Content follows concrete mark bounds with plot spacing; plot preserves existing placement. */
-  anchor?: "plot" | "content";
+  anchor?: "plot" | "content" | "view";
   role?: FacetHeaderRole;
   labelMap?: DisplayLabelMap | "auto";
   side?: FacetHeaderSide;
@@ -325,7 +325,7 @@ export interface FacetCompositionSpec {
   readonly type: "facet";
   readonly children: readonly string[];
   readonly columns: number;
-  readonly spacing?: "canvas" | "plot";
+  readonly spacing?: "canvas" | "plot" | "content";
   /** Canonical opt-in intent; stacked is represented by omission. */
   readonly topLane?: "shared";
   readonly gap: number;
@@ -355,7 +355,7 @@ export interface FacetCompositionSpec {
     };
     readonly scales: Readonly<Required<FacetScaleResolutions>>;
     readonly guides: {
-      readonly axes: "each" | "outer";
+      readonly axes: "each" | "outer" | { readonly x: "each" | "outer"; readonly y: "each" | "outer" };
       readonly legend: false | "shared" | Readonly<LegendOptions> | StoredFacetLegendIntent;
     };
   };

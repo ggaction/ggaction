@@ -1,5 +1,8 @@
 import { cloneAndFreeze, isPlainObject } from "../../core/immutable.js";
 
+
+import { normalizeFacetAxes, facetAxisMode, hasOuterFacetAxes } from "../../core/facetAxisPolicy.js";
+
 const LEGEND_FAMILIES = Object.freeze({
   series: "categorical",
   color: "categorical",
@@ -243,9 +246,7 @@ export function planFacetGuideOwnership({
   if (!Array.isArray(children) || children.length !== cells.length) {
     throw new Error("Facet guide ownership requires one child descriptor per placement.");
   }
-  if (!["each", "outer"].includes(axes)) {
-    throw new Error("Facet axes must be each or outer.");
-  }
+  axes = normalizeFacetAxes(axes, "each", { stored: true });
   if (![false, "shared"].includes(legend) && !isPlainObject(legend)) {
     throw new Error("Facet legend must be false or shared.");
   }
@@ -264,11 +265,12 @@ export function planFacetGuideOwnership({
       const presentAxes = descriptor.axes ?? [];
       const records = descriptor.axisOwners;
       const removed = {};
-      const keepAxes = axes === "each" ? presentAxes : records === undefined
-        ? presentAxes.filter(channel => outer.children[cell.id][channel])
+      const keepAxes = !hasOuterFacetAxes(axes) ? presentAxes : records === undefined
+        ? presentAxes.filter(channel => facetAxisMode(axes, channel) === "each" || outer.children[cell.id][channel])
         : presentAxes.filter(id => {
           const owner = records.find(owner => owner.id === id);
           if (owner === undefined) throw new Error("Facet axis descriptors must identify every retained owner.");
+          if (facetAxisMode(axes, owner.channel) === "each") return true;
           const components = Object.entries(owner.components);
           const remove = components.filter(([, side]) => !sides[side]?.includes(cell.id)).map(([component]) => component);
           if (remove.length > 0 && remove.length < components.length) removed[id] = remove;

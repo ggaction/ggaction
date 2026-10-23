@@ -150,3 +150,13 @@ test("chart-title-first legends preserve explicit border and title restoration a
     assert.deepEqual(restored.removeLegend().graphicSpec, src.graphicSpec);
   }
 });
+
+
+test("rotated guide bounds tolerate roundoff at contact while retaining real overlap errors", () => {
+  const a = {id: "title", kind: "title", position: "left",
+    bounds: {left: 8, right: 30.000000000000004, top: 29, bottom: 97}};
+  const b = {id: "legend", kind: "legend", position: "left",
+    bounds: {left: 30, right: 60, top: 29, bottom: 128}};
+  assert.doesNotThrow(() => assertGuideCollisionBlocks([a, b]));
+  assert.throws(() => assertGuideCollisionBlocks([a, {...b, bounds: {...b.bounds, left: 30 - 1e-8}}]), /overlap/);
+});

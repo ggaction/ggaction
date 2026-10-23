@@ -4,13 +4,14 @@
 
 - [x] 순수 packing/footer kernel
 - [x] 동일 guide ownership을 사용한 native child 경계 측정
-- [ ] 아래 channel별 axis 정책 구현·저장·replay·type·문서
-- [ ] `spacing:"content"`/header `anchor:"view"` 연결
-- [ ] Native materialization, footer, title/legend/nesting 검증
+- [x] 아래 channel별 axis 정책 구현·저장·replay·type·문서
+- [x] `spacing:"content"`/header `anchor:"view"` 연결
+- [x] Native materialization, footer, title/legend/nesting 검증
 - [ ] 두 원본의 독립 source/native 검증과 실제 School 번역
 - [ ] 새 exact package와 문서 snapshot/현재 1,335개 호환 검사 뒤 runtime 채택
 
-현재 native 측정까지의 내부 checkpoint다. 다음 공개 API가 이미 존재한다고 주장하지 않는다.
+0.0.23 통합 후보에서 아래 공개 API 연결과 native lifecycle 검증을 구현했다.
+원본 번역과 fidelity 승인은 별도 미완료이며 이 문서는 그것을 완료로 주장하지 않는다.
 기존 사용자 요청의 번역에 필요한 ggaction 수정 및 in-scope 향후 질문 포괄 승인 근거는
 [원래 proposal](PROPOSAL.md#승인과-범위)을 따른다. 추가적인 확인 질문은 만들지 않는다.
 이미지/VLM 확인은 하지 않으며 수치·DOM·concrete graphic으로 검증한다.

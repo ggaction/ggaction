@@ -1,4 +1,6 @@
-import { validateRegressionPlacement } from "../materialization/graphicHierarchy.js";
+import { validateFacetAxisPolicy } from "../core/facetAxisPolicy.js";
+import { resolveFacetFamily } from "../grammar/facets/dependencies.js";
+import { validateRegressionPlacement } from "../grammar/regression/parameters.js";
 import { validateGraphicClip } from "../grammar/schemas/graphicClip.js";
 import { validatePointShape } from "../grammar/pointShapes.js";
 import {deriveLookupRows,sameLookupValue} from "../grammar/lookup.js";
@@ -216,6 +218,8 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
     validateAuthoredFacetLegend(program, program.compositionSpec.facet.guides.legend);
   }
   if (program.compositionSpec?.type === "facet") {
+    validateFacetAxisPolicy(program.compositionSpec.facet.guides.axes,
+      resolveFacetFamily(program.semanticSpec).family, program.compositionSpec.facet.repeat !== undefined);
     const headers = program.materializationConfigs.facets?.[program.compositionSpec.id]?.headers;
     if (headers !== undefined) validateFacetHeaderRotations(headers);
     if (headers?.row?.title !== undefined && program.compositionSpec.facet.grid === undefined) {

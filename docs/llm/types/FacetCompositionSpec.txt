@@ -3,7 +3,7 @@ export interface FacetCompositionSpec {
   readonly type: "facet";
   readonly children: readonly string[];
   readonly columns: number;
-  readonly spacing?: "canvas" | "plot";
+  readonly spacing?: "canvas" | "plot" | "content";
   /** Canonical opt-in intent; stacked is represented by omission. */
   readonly topLane?: "shared";
   readonly gap: number;
@@ -33,7 +33,7 @@ export interface FacetCompositionSpec {
     };
     readonly scales: Readonly<Required<FacetScaleResolutions>>;
     readonly guides: {
-      readonly axes: "each" | "outer";
+      readonly axes: "each" | "outer" | { readonly x: "each" | "outer"; readonly y: "each" | "outer" };
       readonly legend: false | "shared" | Readonly<LegendOptions> | StoredFacetLegendIntent;
     };
   };

@@ -5,9 +5,9 @@
 - [x] 원격 branch 3개, 전체 PR 72개, issue/PR 263개, release 21개 조사
 - [x] v0.0.22 release workflow 성공 확인
 - [x] 문서/테스트 개선 branch와 축/제목 branch 통합; 집중 검사 16개 통과
-- [ ] #253 nullable calendar 정책
-- [ ] #244 독립 Steffen 곡선
-- [ ] #238 회귀 layer의 plot-last 배치
+- [x] #253 nullable calendar 정책
+- [x] #244 독립 Steffen 곡선
+- [x] #238 회귀 layer의 plot-last 배치
 - [ ] #258 content facet 배치와 channel별 axis 소유권
 - [ ] 전체 source/coverage/realistic/render/browser/package/docs/platform CI
 - [ ] exact annotated tag의 동일 candidate로 npm/GitHub/Pages 배포 검증
@@ -57,3 +57,20 @@ in-scope API 결정에 대한 포괄 승인을 기록한다. 같은 문제 범�
 실패를 skip/continue-on-error로 숨기지 않는다. 버전은 직전 0.0.22의 다음 patch
 0.0.23으로 준비하며 CI 통과 커밋을 merge/tag한다. 배포 후 registry 버전/무결성,
 GitHub release 및 문서 identity를 확인한 뒤 완료한다.
+
+
+## 통합 검증 기록
+
+- 미병합 폐쇄 PR #39–43: GitHub closure comment에서 #44 통합을 확인했고 현행
+  datum/series scale, bar shorthand, arc label 테스트와 의존성 lock에 대응한다.
+- #25: #27과 0.0.9로 대체된 중간 평가 branch다. 실패한 구형 코드를 재도입하지 않는다.
+- #5: repository maintainer가 별도 demo 저장소 대상으로 거부한 작업이다. 현재 라이브러리에
+  강제 재도입하지 않는다. 위 폐쇄 사유는 이번 세션에서 GitHub API로 확인했다.
+- #258 집중 composition/guide 검사 284개 통과. 추가 source/theme/text/nesting/named-axis
+  검사는 6개 통과. 공통 footer의 자식 Canvas clipping을 부모 소유권으로 수정했다.
+- 새 core axis-policy와 native measurement module 두 개에 따라 package entry 621→623.
+  실제 packed 899462/unpacked 4271487 bytes를 측정하고 최소 1000-byte 단위 한도
+  900000/4272000으로 조정했다. 이전 한도 실패 로그는 workspace study에 보존한다.
+- 외부 원본 family의 model-authored translation과 수치 fidelity 승인은 이 저장소의
+  native capability 완료와 별도다. #258의 해당 검증이 없으면 issue를 닫거나 family가
+  완성되었다고 보고하지 않는다.

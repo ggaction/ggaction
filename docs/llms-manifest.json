@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:508ea18c3c3c4029b62372845992943d81267f50f0f23ac374480d71c2b07bad",
+    "contractId": "sha256:911e194881c03ddb5b1917000da66e3058c8f6ee324cee3bfea18fe8803a5fea",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -2072,8 +2072,8 @@
         "focused-channel-scale-editors",
         "related"
       ],
-      "bytes": 172707,
-      "sha256": "05956d72391784bd0dfccafde66b4fb3cea910e92b836b6220cd680508149240"
+      "bytes": 172835,
+      "sha256": "bccd624168ac5af99cc80af339844b1e0c16b76453ba29092339e2a8b8616471"
     },
     {
       "order": 119,
@@ -3067,8 +3067,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 358330,
-      "sha256": "97b800f1f4617ac657203a6705d2a64095f2b88b3c0fadab36256cba0ca8f6f6"
+      "bytes": 358560,
+      "sha256": "d8b7c4abb14865c3404032843d65bee81b780cca7da4e989ff428ee6544bfc95"
     },
     {
       "order": 127,
@@ -3176,10 +3176,11 @@
         "repeat-a-positional-encoding-across-fields",
         "space-between-plots",
         "share-the-existing-top-margin",
-        "name-the-complete-facet-field"
+        "name-the-complete-facet-field",
+        "independently-packed-panels"
       ],
-      "bytes": 26996,
-      "sha256": "3c9325428b87e0d6950ea6ff8a4c30d333225b57cacfc803c6da011b18274da7"
+      "bytes": 28353,
+      "sha256": "a349ef88be0dcbeb363268a31e71e941e6b29874b5016255fc9ea94b2b68c844"
     },
     {
       "order": 134,
@@ -3194,8 +3195,8 @@
         "replace-one-stable-slot",
         "insert-remove-and-reorder-named-concat-children"
       ],
-      "bytes": 6978,
-      "sha256": "1e769c97efc0abf34cec5e36643f27950e37b944a5684873925c24aa930a425b"
+      "bytes": 7622,
+      "sha256": "d519be03494fb78d9578a8328768c50b8ecb2f0808c3e40003284c070b2f495e"
     },
     {
       "order": 135,
@@ -3431,7 +3432,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "5e3bae28908f2243fcd58bcd2a2a237568007810d67ac08622f7e60d68532571"
+      "sha256": "e8b2ee364f557f8f1b83a0e3a8d09bcece9ed76393a676df0fa372357d200f29"
     },
     {
       "order": 150,

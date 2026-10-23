@@ -4,6 +4,9 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Add independent full-content facet packing, view-aware headers and per-channel Cartesian axis policies with unclipped shared footer axes.
+- Avoid false title/legend collisions from floating-point roundoff at touching edges.
+
 - Add opt-in `placement: "plot-last"` for regression fits and bands, preserving source attachment by default and retaining placement through edits and restoration.
 
 - Add explicit `monotone-steffen` interpolation for lines, areas and interval boundaries while preserving existing monotone output.

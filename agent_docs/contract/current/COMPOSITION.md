@@ -24,6 +24,29 @@ Shared legend와 title의 parent 예약은 기존 규칙을 유지한다. Concat
 Evidence: `test/unit/actions/composition/facet-plot-spacing.test.js`, `test/unit/grammar/layout/facets.test.js`.
 Guide text/header clearance and source-style replay: `test/unit/actions/composition/facet-guide-header-clearance.test.js`.
 
+## Independent content flow
+
+Wrapped `facet` and `repeatCharts` also accept `spacing:"content"`; keyed `facetGrid` rejects it.
+Native retained marks, axes, local legends and individual headers determine independent plot origins.
+The stable row-major logical order is unchanged even when plot origins in the same row differ.
+Gap adds clearance between measured content; child plot dimensions and data remain unchanged.
+`topLane:"shared"` remains exclusive to plot spacing. Content flow ignores track alignment because
+it packs measured bounds rather than equal-size slots. Edits, source replay and persistence retain this policy.
+Bottom outer X guides are detached from child viewports and placed at one common trailing body edge,
+using the last logical occupied child in each column. Other component sides retain occupied-edge ownership.
+Parent title/legend lanes and nested snapshots include these footer guides in their final bounds.
+
+`guides.axes` accepts scalar `"each" | "outer"` or a nonempty object `{x?,y?}` with those modes.
+Creation defaults omitted object channels to each; editing preserves their previous mode. Scalar edits reset
+both channels. Stored objects contain both keys; unknown keys, empty objects and invalid modes reject.
+Object policies require Cartesian coordinates; repeat rejects any outer channel. Existing scalar storage is unchanged.
+
+Header `anchor:"view"` uses retained native body bounds, including axes, and excludes shared bottom footers.
+It requires plot or content spacing. Existing `anchor:"content"` retains mark-only bounds and also accepts
+content spacing. Both preserve long-axis plot alignment. Role titles keep their outer reservations.
+Evidence: `test/unit/actions/composition/facet-content-flow.test.js`,
+`test/contracts/facet-content-header-types.test.js`.
+
 ## Shared facet top lane
 
 The existing `facet`, `facetGrid`, `repeatCharts`, and facet `editCompositionLayout` accept
@@ -107,7 +130,7 @@ Evidence: `test/unit/layout/facet-top-lane.test.js`, `test/unit/actions/composit
 
 ### Formal values — `facet`
 
-- Implemented: `facet({ id?: UserId; field: NonEmptyString; data?: ExistingDatasetId; values?: NonEmptyUniqueObservedScalarArray; columns?: PositiveInteger; gap?: NonNegativeFinite; spacing?: "canvas" | "plot"; topLane?: "stacked" | "shared"; align?: "start" | "center" | "end"; padding?: NonNegativeFinite | Partial<FourSidePadding>; scales?: Partial<Record<FacetScaleChannel, "shared" | "independent">>; guides?: { axes?: "each" | "outer"; legend?: false | "shared" | LegendOptions }; headers?: FacetHeadersOptions }): ChartProgram`.
+- Implemented: `facet({ id?: UserId; field: NonEmptyString; data?: ExistingDatasetId; values?: NonEmptyUniqueObservedScalarArray; columns?: PositiveInteger; gap?: NonNegativeFinite; spacing?: "canvas" | "plot" | "content"; topLane?: "stacked" | "shared"; align?: "start" | "center" | "end"; padding?: NonNegativeFinite | Partial<FourSidePadding>; scales?: Partial<Record<FacetScaleChannel, "shared" | "independent">>; guides?: { axes?: "each" | "outer" | { x?: "each" | "outer"; y?: "each" | "outer" }; legend?: false | "shared" | LegendOptions }; headers?: FacetHeadersOptions }): ChartProgram`.
 - Implemented non-Cartesian families: Polar Point/Line/direct Arc/Pie/Rose/Radar and Parallel coordinates.
 - Proposed (NOT IMPLEMENTED): —
 
@@ -196,7 +219,7 @@ Evidence: `test/unit/layout/facet-top-lane.test.js`, `test/unit/actions/composit
 
 ### Formal values — `repeatCharts`
 
-- Implemented: `repeatCharts({ id?: UserId; target?: EligibleDirectMarkId; channel: "x" | "y" | "theta" | "r" | { parallelDimension: NonEmptyString }; fields: NonEmptyUniqueFieldTuple; columns?: PositiveInteger; gap?: NonNegativeFinite; spacing?: "canvas" | "plot"; topLane?: "stacked" | "shared"; align?: CompositionAlign; padding?: CompositionPaddingInput; scales?: FacetScaleResolutions; guides?: FacetGuideOptions; headers?: FacetHeadersOptions }): ChartProgram`.
+- Implemented: `repeatCharts({ id?: UserId; target?: EligibleDirectMarkId; channel: "x" | "y" | "theta" | "r" | { parallelDimension: NonEmptyString }; fields: NonEmptyUniqueFieldTuple; columns?: PositiveInteger; gap?: NonNegativeFinite; spacing?: "canvas" | "plot" | "content"; topLane?: "stacked" | "shared"; align?: CompositionAlign; padding?: CompositionPaddingInput; scales?: FacetScaleResolutions; guides?: FacetGuideOptions; headers?: FacetHeadersOptions }): ChartProgram`.
 - Explicitly rejected: Pie/Radar raw positional-role replacement, composite statistical roles, derived target datasets,
   two-dimensional repeat matrices, and outer axes.
 - Proposed (NOT IMPLEMENTED): —
@@ -270,7 +293,7 @@ Evidence: `test/unit/layout/facet-top-lane.test.js`, `test/unit/actions/composit
   editable persistence 재생은 회전을 보존하고, 잘못된 각도/단위/비정규 저장 값은 원자적으로 거부한다.
 - Editing preserves child identity, semantic facet values, shared scales and layout order, then rematerializes the
   parent snapshot. Clipping, snapshot intersection or header-header overlap fails atomically.
-- `anchor:"content"` requires plot spacing. The outward anchor follows the union of each selected child's
+- `anchor:"content"` requires plot or content spacing. The outward anchor follows the union of each selected child's
   plot rectangle and concrete semantic mark bounds, including strokes, collection children, translations and
   clipping. Opacity does not alter these geometric bounds. Axes, grids, legends, titles and extension-only
   graphics are excluded. Alignment along the edge continues to use the plot span. Mark overflow is included
@@ -297,7 +320,7 @@ Evidence: `test/unit/layout/facet-top-lane.test.js`, `test/unit/actions/composit
 
 ### Formal values — `editFacetHeaders`
 
-- Implemented: `editFacetHeaders({ fontSize?: PositiveFinite; fontFamily?: NonEmptyString; fontWeight?: NonEmptyString | Finite; color?: NonEmptyString; offset?: NonNegativeFinite; role?: "all" | "row" | "column"; labelMap?: DisplayLabelMap | "auto"; side?: "top" | "bottom" | "left" | "right"; align?: "start" | "center" | "end"; rotation?: RotationInput; title?: FacetHeaderTitleOptions | false; anchor?: "plot" | "content" }): ChartProgram`, with the role-specific side restrictions above.
+- Implemented: `editFacetHeaders({ fontSize?: PositiveFinite; fontFamily?: NonEmptyString; fontWeight?: NonEmptyString | Finite; color?: NonEmptyString; offset?: NonNegativeFinite; role?: "all" | "row" | "column"; labelMap?: DisplayLabelMap | "auto"; side?: "top" | "bottom" | "left" | "right"; align?: "start" | "center" | "end"; rotation?: RotationInput; title?: FacetHeaderTitleOptions | false; anchor?: "plot" | "content" | "view" }): ChartProgram`, with the role-specific side restrictions above.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `editFacetHeaders`
@@ -336,7 +359,7 @@ Evidence: `test/unit/layout/facet-top-lane.test.js`, `test/unit/actions/composit
 
 ### Formal values — `editCompositionLayout`
 
-- Implemented: `editCompositionLayout({ columns?: PositiveInteger; gap?: NonNegativeFinite; spacing?: "canvas" | "plot"; topLane?: "stacked" | "shared"; align?: "start" | "center" | "end"; padding?: NonNegativeFinite | Partial<FourSidePadding> }): ChartProgram`.
+- Implemented: `editCompositionLayout({ columns?: PositiveInteger; gap?: NonNegativeFinite; spacing?: "canvas" | "plot" | "content"; topLane?: "stacked" | "shared"; align?: "start" | "center" | "end"; padding?: NonNegativeFinite | Partial<FourSidePadding> }): ChartProgram`.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `editCompositionLayout`
@@ -394,7 +417,7 @@ Evidence: `test/unit/layout/facet-top-lane.test.js`, `test/unit/actions/composit
 
 - Signature: `editFacetGuides({ axes?, legend? })`.
 - Requires an existing facet composition and at least one supplied guide policy. Omitted policy preserves current
-  intent. `axes` accepts `"each" | "outer"`; `legend` accepts `false | "shared"`.
+  intent. `axes` accepts scalar or per-channel policies described above; `legend` accepts `false | "shared" | LegendOptions`.
 - Every child is rederived from the retained canonical unit state under the current scale policy before parent guide
   ownership is reconciled. Child guide configs come from retained unit children; parent-inferred shared legends never become
   child-owned guides. Removing a shared inferred legend also removes its parent-only config before recomposition.
@@ -406,7 +429,7 @@ Evidence: `test/unit/layout/facet-top-lane.test.js`, `test/unit/actions/composit
 
 ### Formal values — `editFacetGuides`
 
-- Implemented: `editFacetGuides({ axes?: "each" | "outer"; legend?: false | "shared" | LegendOptions }): ChartProgram`.
+- Implemented: `editFacetGuides({ axes?: "each" | "outer" | { x?: "each" | "outer"; y?: "each" | "outer" }; legend?: false | "shared" | LegendOptions }): ChartProgram`.
 - Polar and Parallel child-local guide replay is implemented; their outer-axis promotion is explicitly unsupported.
 - Proposed (NOT IMPLEMENTED): —
 
