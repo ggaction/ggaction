@@ -1105,18 +1105,18 @@
     {
       "name": "editXAxis",
       "wraps": [
+        "editXAxisLabels",
         "editXAxisLine",
         "editXAxisTicks",
-        "editXAxisLabels",
         "editXAxisTitle"
       ]
     },
     {
       "name": "editYAxis",
       "wraps": [
+        "editYAxisLabels",
         "editYAxisLine",
-        "editYAxisTitle",
-        "editYAxisLabels"
+        "editYAxisTitle"
       ]
     },
     {
@@ -1831,8 +1831,8 @@
     {
       "name": "createRadarPlot",
       "wraps": [
-        "createPolarLinePlot",
-        "createFoldData"
+        "createFoldData",
+        "createPolarLinePlot"
       ]
     },
     {

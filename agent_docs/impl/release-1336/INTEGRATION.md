@@ -111,3 +111,10 @@ charts,7global inventory/anti-inflation controls and6Cartesian controls pass.
 The original source/lineage, direct-root and diversity assertions remain active.
 These follow-ups change test evidence only; the published-source contract and
 621-entry runtime artifact are unchanged frome9349060.
+
+Adding the actual lifecycle root calls also changes the first-observed ordering
+of three generated child-action lists. Regenerate relationships, action cards
+and their public documentation together; do not weaken the exact generated
+hierarchy assertion. All10compact-card checks and125documentation checks pass.
+The contract identity and rendering source remain unchanged; the release archive
+includes the refreshed knowledge metadata and will be replayed canonically.

@@ -19068,9 +19068,9 @@
         "H3"
       ],
       "wraps": [
+        "editXAxisLabels",
         "editXAxisLine",
         "editXAxisTicks",
-        "editXAxisLabels",
         "editXAxisTitle"
       ],
       "editableVia": [
@@ -19186,9 +19186,9 @@
         "H3"
       ],
       "wraps": [
+        "editYAxisLabels",
         "editYAxisLine",
-        "editYAxisTitle",
-        "editYAxisLabels"
+        "editYAxisTitle"
       ],
       "editableVia": [
         "editYAxis"
@@ -32247,8 +32247,8 @@
         "H0"
       ],
       "wraps": [
-        "createPolarLinePlot",
-        "createFoldData"
+        "createFoldData",
+        "createPolarLinePlot"
       ],
       "editableVia": [
         "editRadarPlot"
