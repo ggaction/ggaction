@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 
 import {
   assertCriticalCoverage,
+  assertSourceCoverage,
   CRITICAL_COVERAGE_FLOORS,
   parseCoverageTable
 } from "./coverage-policy.js";
@@ -212,6 +213,7 @@ function run(suite, selectors, shard) {
   if (result.error) throw result.error;
   if (coverage) {
     if (result.status === 0) {
+      assertSourceCoverage(result.stdout);
       assertCriticalCoverage(result.stdout);
       process.stdout.write(coverageSummary(result.stdout));
       process.stderr.write(result.stderr);

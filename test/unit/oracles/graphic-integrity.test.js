@@ -121,3 +121,10 @@ test("rejects wrong geometry types without crashing on malformed containers", ()
   }
   assert.ok(inspectGraphicIntegrity(program({canvas:{type:"canvas",properties:{width:100,height:100},children:42}})).issues.length);
 });
+
+test("rejects malformed XML and invalid geometry regardless of quote style", () => {
+ for (const svg of ['<svg><g></svg>', '<svg><circle cx="broken" /></svg>', "<svg><circle cx='NaN'/></svg>", '<svg><circle cx="null"/></svg>']) {
+  assert.throws(() => assertSvgIntegrity(svg));
+ }
+ assert.doesNotThrow(() => assertSvgIntegrity('<svg><text>NaN &amp; Infinity</text><circle cx="1e2" cy="2" r="1"/></svg>'));
+});

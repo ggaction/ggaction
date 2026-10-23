@@ -1,3 +1,4 @@
+import { assertSvgIntegrity } from "../oracles/svg-integrity.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -20,6 +21,7 @@ test("renders every public chart through the SVG concrete schema", () => {
   for (const chart of PUBLIC_CHARTS) {
     const program = chart.createProgram(chartData(chart.data));
     const svg = renderToSVG(program, { title: chart.id });
+    assertSvgIntegrity(svg, chart.id);
 
     assert.match(
       svg,

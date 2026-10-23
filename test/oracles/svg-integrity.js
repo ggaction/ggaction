@@ -1,3 +1,4 @@
+import { DOMParser } from "@xmldom/xmldom";
 import assert from "node:assert/strict";
 
 const NUMERIC_ATTRIBUTES = new Set([
@@ -9,23 +10,29 @@ const NUMERIC_ATTRIBUTES = new Set([
 
 export function assertSvgIntegrity(svg, label = "SVG") {
   assert.match(svg, /^<svg\b/u, label);
-  assert.match(svg, /<\/svg>$/u, `${label} must close its SVG root.`);
-  // User-authored text and ids may legitimately spell these tokens. Restrict
-  // this check to attributes that encode numeric geometry or transforms.
-  for (const match of svg.matchAll(/\s([\w:-]+)="([^"]*)"/gu)) {
-    if (!NUMERIC_ATTRIBUTES.has(match[1])) continue;
-    assert.doesNotMatch(
-      match[2],
-      /(?:NaN|[+-]?Infinity|undefined)/u,
-      `${label} has an invalid ${match[1]} attribute.`
-    );
+  const document = new DOMParser({ onError: (_level, message) => {
+    throw new Error(`${label}: ${message}`);
+  } }).parseFromString(svg, "image/svg+xml");
+  assert.equal(document.documentElement?.localName, "svg", label);
+  const ids = new Set();
+  const references = [];
+  const scalar = /^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?(?:%|px|em|ex|pt|pc|cm|mm|in)?$/;
+  for (const element of Array.from(document.getElementsByTagName("*"))) {
+    for (const attribute of Array.from(element.attributes)) {
+      const { name, value } = attribute;
+      if (name === "id") {
+        assert.ok(!ids.has(value), `${label} repeats an SVG id.`);
+        ids.add(value);
+      }
+      for (const match of value.matchAll(/url\(#([^\)]+)\)/gu)) references.push(match[1]);
+      if (["href", "xlink:href"].includes(name) && value.startsWith("#")) references.push(value.slice(1));
+      if (!NUMERIC_ATTRIBUTES.has(name)) continue;
+      assert.doesNotMatch(value, /(?:NaN|[+-]?Infinity|undefined)/u, `${label} has an invalid ${name} attribute.`);
+      if (!["viewBox", "transform", "d", "points", "stroke-dasharray"].includes(name)) {
+        assert.match(value.trim(), scalar, `${label} has an invalid ${name} attribute.`);
+        assert.ok(Number.isFinite(Number.parseFloat(value)), `${label} has a nonfinite ${name}.`);
+      }
+    }
   }
-  const ids = [...svg.matchAll(/\bid="([^"]+)"/gu)].map(match => match[1]);
-  assert.equal(new Set(ids).size, ids.length, `${label} repeats an SVG id.`);
-  for (const match of svg.matchAll(/url\(#([^\)]+)\)/gu)) {
-    assert.equal(ids.includes(match[1]), true, `${label} has a dangling SVG resource.`);
-  }
-  for (const match of svg.matchAll(/\b(?:href|xlink:href)="#([^"]+)"/gu)) {
-    assert.equal(ids.includes(match[1]), true, `${label} has a dangling SVG href.`);
-  }
+  for (const reference of references) assert.ok(ids.has(reference), `${label} has a dangling SVG resource or href.`);
 }
