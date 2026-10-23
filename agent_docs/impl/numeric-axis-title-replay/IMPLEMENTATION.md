@@ -6,7 +6,7 @@
 - [x] 같은 owner의 실제 미래 title leaf만으로 scoped deferral 하는 최소 수정 승인 확인
 - [x] 새 공개 API/저장 schema/허용오차 없이 기존 materialization plan에 연결
 - [x] 누적 normal·실제 패키지·browser·문서 검증
-- [ ] coherent commit/push와 clean-source metadata 동기화
+- [x] coherent commit/push와 clean-source metadata 동기화
 
 이 작업은 [#268](https://github.com/ggaction/ggaction/issues/268)을 복원한다.
 ROOT는 사용자의 기존 버그 수정·모든 질문 승인 범위에서 다음 정확한 설계를 검토·승인했다.
@@ -75,3 +75,12 @@ artifact identity, 모든 페이지의320/390/768px interaction/containment 검�
 
 이 결과가 cap 측정 전의 #267 normal과 누락 발견 당시5671/5672를 시간 순서대로 보완한다.
 기존 성공·실패 원문은 번역 workspace에 보존하며 과거 결과를 현재 결과로 덮어쓰지 않는다.
+
+## 검증한 소스 checkpoint
+
+구현은 `c12a2c5ed1353915eb13dff0bb8cd1e2006f6c21`로 commit/push했다. 번역 workspace의
+`reports/v13-axis-title-prospective-replay-implementation-qualified-v1.json`
+(SHA256 `9febe57a56e7ebda96adc8b47e4c70bf5ebb34b9c4eb2873dd08cfbe1d9f1efd`)이
+23개 변경 파일과 각 검증 로그를 결합한다. Runtime 세 파일과 README/공식 budget table/한도는
+최종5672/5672 입력과 같다. Clean-source 문서 provenance만 이 소스 commit을 가리키도록
+별도 재생성하며 runtime/package 내용은 바꾸지 않는다.
