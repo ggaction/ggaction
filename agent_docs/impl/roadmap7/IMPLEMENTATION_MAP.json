@@ -103,7 +103,7 @@
       ],
       "existingRegressionTests": [
         "test/unit/actions/data/complete-impute-data.test.js",
-        "test/contracts/phase2-data-types.test.js",
+        "test/contracts/data-completion-types.test.js",
         "test/contracts/transform-registry.test.js"
       ],
       "suggestedNewTest": "test/unit/actions/data/complete-impute-data.test.js",
@@ -226,7 +226,7 @@
       "existingRegressionTests": [
         "test/unit/grammar/transforms/time-unit.test.js",
         "test/unit/actions/data/time-unit-data.test.js",
-        "test/contracts/phase2-data-types.test.js"
+        "test/contracts/data-completion-types.test.js"
       ],
       "suggestedNewTest": "test/unit/actions/data/time-unit-data.test.js",
       "acceptanceCases": [
@@ -273,7 +273,7 @@
       "existingRegressionTests": [
         "test/unit/grammar/transforms/window.test.js",
         "test/unit/actions/data/window-data.test.js",
-        "test/contracts/phase2-data-types.test.js"
+        "test/contracts/data-completion-types.test.js"
       ],
       "suggestedNewTest": "test/unit/actions/data/window-data.test.js",
       "acceptanceCases": [

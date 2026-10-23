@@ -1,3 +1,4 @@
+import { compileTypeScript } from "../support/typescript.js";
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
 import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
@@ -121,8 +122,7 @@ p.editCompleteData({ target: "completed", values: [1], sequence: { start: 0, end
 // @ts-expect-error Full only
 basic.editComputedData({ target: "computed", as: "z" });
 `);
-    const result = spawnSync(process.execPath, [path.join(root, "node_modules/typescript/bin/tsc"),
-      "--noEmit", "--strict", "--skipLibCheck", "--target", "ES2022",
+    const result = compileTypeScript(["--noEmit", "--strict", "--skipLibCheck", "--target", "ES2022",
       "--module", "NodeNext", "--moduleResolution", "NodeNext", file
     ], { encoding: "utf8", cwd: root });
     assert.equal(result.status, 0, `${result.stdout}\n${result.stderr}`);

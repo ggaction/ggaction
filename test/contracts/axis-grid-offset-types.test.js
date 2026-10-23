@@ -1,3 +1,4 @@
+import { compileTypeScript } from "../support/typescript.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { mkdtemp, writeFile, rm } from "node:fs/promises";
@@ -50,7 +51,7 @@ p.editParallelAxisLabels({alongOffset:10});
 // @ts-expect-error Cartesian displacement does not apply to polar grids
 p.editRadialGrid({alongOffset:10});
 `);
-    const result = spawnSync(process.execPath, [path.join(root, "node_modules/typescript/bin/tsc"),"--noEmit", "--strict", "--skipLibCheck", "--target", "ES2022", "--module", "NodeNext", "--moduleResolution", "NodeNext", file], { cwd: root, encoding: "utf8" });
+    const result = compileTypeScript(["--noEmit", "--strict", "--skipLibCheck", "--target", "ES2022", "--module", "NodeNext", "--moduleResolution", "NodeNext", file], { cwd: root, encoding: "utf8" });
     assert.equal(result.status, 0, result.stdout + result.stderr);
   } finally { await rm(dir, { recursive: true, force: true }); }
 });

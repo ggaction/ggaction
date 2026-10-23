@@ -1,3 +1,4 @@
+import { compileTypeScript } from "../support/typescript.js";
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
 import { mkdtemp, rm, writeFile } from "node:fs/promises";
@@ -52,8 +53,7 @@ p.createThetaAxis({id:"angle"});
 // @ts-expect-error Cartesian selectors do not extend polar remover contracts.
 p.removeThetaAxis({target:"angle"});
 `);
-    const result = spawnSync(process.execPath, [path.join(root, "node_modules/typescript/bin/tsc"),
-      "--noEmit", "--strict", "--skipLibCheck", "--target", "ES2022",
+    const result = compileTypeScript(["--noEmit", "--strict", "--skipLibCheck", "--target", "ES2022",
       "--module", "NodeNext", "--moduleResolution", "NodeNext", file
     ], { cwd: root, encoding: "utf8" });
     assert.equal(result.status, 0, result.stdout + result.stderr);

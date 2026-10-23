@@ -1,3 +1,4 @@
+import { compileTypeScript } from "../support/typescript.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { mkdtemp, writeFile, rm } from "node:fs/promises";
@@ -9,9 +10,9 @@ import { spawnSync } from "node:child_process";
 const root = fileURLToPath(new URL("../../", import.meta.url));
 
 test("declares Full-only completion, imputation, calendar, and duration windows", async () => {
-  const directory = await mkdtemp(path.join(tmpdir(), "ggaction-phase2-types-"));
+  const directory = await mkdtemp(path.join(tmpdir(), "ggaction-data-completion-types-"));
   try {
-    const file = path.join(directory, "phase2.mts");
+    const file = path.join(directory, "data-completion.mts");
     await writeFile(file, `
 import type { ChartProgram } from ${JSON.stringify(path.join(root, "types/program.js"))};
 import type { BasicChartProgram } from ${JSON.stringify(path.join(root, "types/basic.js"))};
@@ -57,8 +58,7 @@ p.createWindowData({ id: "bad", sortBy: [{ field: "t" }], operations: [{ op: "mo
 // @ts-expect-error Full only
 basic.createCompleteData({ id: "complete", key: "t", values: [1] });
 `);
-    const result = spawnSync(process.execPath, [path.join(root, "node_modules/typescript/bin/tsc"),
-      "--noEmit", "--strict", "--skipLibCheck", "--target", "ES2022",
+    const result = compileTypeScript(["--noEmit", "--strict", "--skipLibCheck", "--target", "ES2022",
       "--module", "NodeNext", "--moduleResolution", "NodeNext", file
     ], { encoding: "utf8", cwd: root });
     assert.equal(result.status, 0, `${result.stdout}\n${result.stderr}`);

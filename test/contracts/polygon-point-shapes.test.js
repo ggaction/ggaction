@@ -1,3 +1,4 @@
+import { compileTypeScript } from "../support/typescript.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { mkdtemp, rm, writeFile, readFile } from "node:fs/promises";
@@ -56,7 +57,7 @@ p.editPointMark({shape:{polygon:[{x:0,y:0,z:0}]}});
 p.editPointMark({shape:"M0,0L1,0L0,1Z"});
 void s;
 `);
-    const result = spawnSync(process.execPath, [path.join(root, "node_modules/typescript/bin/tsc"), "--strict", "--noEmit", "--module", "NodeNext", "--moduleResolution", "NodeNext", "--target", "ES2022", "--skipLibCheck", file], { encoding: "utf8" });
+    const result = compileTypeScript(["--strict", "--noEmit", "--module", "NodeNext", "--moduleResolution", "NodeNext", "--target", "ES2022", "--skipLibCheck", file], { encoding: "utf8" });
     assert.equal(result.status, 0, result.stdout + result.stderr);
   } finally { await rm(directory, { recursive: true, force: true }); }
 });

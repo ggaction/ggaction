@@ -1,3 +1,4 @@
+import { compileTypeScript } from "../support/typescript.js";
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import {mkdtemp,writeFile,rm} from 'node:fs/promises';
@@ -51,7 +52,7 @@ p.createParallelCoordinates({dimensions:['x','y'],line:{clip:true}});
 p.createRadarPlot({category:'cat',value:'y',line:{clip:true}});
 void rect;
 `);
-  const r=spawnSync(process.execPath, [path.join(root, "node_modules/typescript/bin/tsc"),'--noEmit','--strict','--skipLibCheck','--target','ES2022','--module','NodeNext','--moduleResolution','NodeNext',file],{encoding:'utf8',cwd:root});
+  const r=compileTypeScript(['--noEmit','--strict','--skipLibCheck','--target','ES2022','--module','NodeNext','--moduleResolution','NodeNext',file],{encoding:'utf8',cwd:root});
   assert.equal(r.status,0,r.stdout+'\n'+r.stderr);
  }finally{await rm(dir,{recursive:true,force:true});}
 });

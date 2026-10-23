@@ -1,3 +1,4 @@
+import { compileTypeScript } from "../support/typescript.js";
 import assert from 'node:assert/strict';import test from 'node:test';import{spawnSync}from'node:child_process';import{mkdtemp,rm,writeFile}from'node:fs/promises';import{tmpdir}from'node:os';import path from'node:path';import{fileURLToPath}from'node:url';
 const root=fileURLToPath(new URL('../../',import.meta.url));
 test('numeric Text offset types retain exact unions and Basic exclusion',async()=>{const dir=await mkdtemp(path.join(tmpdir(),'ggaction-text-offset-types-'));try{const file=path.join(dir,'consumer.mts');await writeFile(file,`
@@ -21,4 +22,4 @@ p.encodeDy({value:'2'});
 basic().encodeDx({value:1});
 // @ts-expect-error Basic retains its Text family exclusion
 basic().encodeDy({field:'shift'});
-`);const r=spawnSync(process.execPath, [path.join(root, "node_modules/typescript/bin/tsc"),'--noEmit','--strict','--exactOptionalPropertyTypes','--skipLibCheck','--target','ES2022','--module','NodeNext','--moduleResolution','NodeNext',file],{cwd:root,encoding:'utf8'});assert.equal(r.status,0,r.stdout+r.stderr);}finally{await rm(dir,{recursive:true,force:true});}});
+`);const r=compileTypeScript(['--noEmit','--strict','--exactOptionalPropertyTypes','--skipLibCheck','--target','ES2022','--module','NodeNext','--moduleResolution','NodeNext',file],{cwd:root,encoding:'utf8'});assert.equal(r.status,0,r.stdout+r.stderr);}finally{await rm(dir,{recursive:true,force:true});}});

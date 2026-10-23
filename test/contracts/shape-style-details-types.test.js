@@ -1,3 +1,4 @@
+import { compileTypeScript } from "../support/typescript.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { mkdtemp, rm, writeFile } from "node:fs/promises";
@@ -166,8 +167,7 @@ p.createLegend({ symbol: { layers: [{ type: "swatch", cornerRadius: 2 }] } });
 p.editLegendBlock({ target: "legend", channel: "color", symbol: { lineCap: "round" } });
 `);
 
-    const result = spawnSync(process.execPath, [path.join(root, "node_modules/typescript/bin/tsc"),
-      "--noEmit",
+    const result = compileTypeScript(["--noEmit",
       "--strict",
       "--skipLibCheck",
       "--target",

@@ -1,0 +1,750 @@
+[
+  {
+    "file": "composition.mjs",
+    "cases": [
+      {
+        "id": "composition/content-facet",
+        "statements": 3
+      },
+      {
+        "id": "composition/program",
+        "statements": 100
+      },
+      {
+        "id": "composition/deserialize-program",
+        "statements": 1
+      },
+      {
+        "id": "composition/shared-lane",
+        "statements": 12
+      },
+      {
+        "id": "composition/create-canvas",
+        "statements": 1
+      },
+      {
+        "id": "composition/windowed",
+        "statements": 4
+      },
+      {
+        "id": "composition/parent-legend",
+        "statements": 7
+      },
+      {
+        "id": "composition/parent-combined",
+        "statements": 13
+      },
+      {
+        "id": "composition/initial-headers",
+        "statements": 4
+      },
+      {
+        "id": "composition/many-panels",
+        "statements": 9
+      },
+      {
+        "id": "composition/compact-facet",
+        "statements": 13
+      },
+      {
+        "id": "composition/plot-anchored-facet",
+        "statements": 8
+      },
+      {
+        "id": "composition/package-polar-rows",
+        "statements": 15
+      },
+      {
+        "id": "composition/package-parallel-unit",
+        "statements": 13
+      }
+    ]
+  },
+  {
+    "file": "package-entries.mjs",
+    "cases": [
+      {
+        "id": "package-entries/create-canvas",
+        "statements": 1
+      },
+      {
+        "id": "package-entries/create-canvas-2",
+        "statements": 1
+      },
+      {
+        "id": "package-entries/clip-base",
+        "statements": 8
+      },
+      {
+        "id": "package-entries/long-line",
+        "statements": 5
+      },
+      {
+        "id": "package-entries/create-canvas-3",
+        "statements": 1
+      },
+      {
+        "id": "package-entries/precomputed-box",
+        "statements": 7
+      },
+      {
+        "id": "package-entries/text-plot",
+        "statements": 5
+      },
+      {
+        "id": "package-entries/exponential-regression",
+        "statements": 6
+      },
+      {
+        "id": "package-entries/create-canvas-4",
+        "statements": 1
+      },
+      {
+        "id": "package-entries/create-canvas-5",
+        "statements": 1
+      },
+      {
+        "id": "package-entries/centered",
+        "statements": 4
+      },
+      {
+        "id": "package-entries/entry-surface",
+        "statements": 1
+      }
+    ]
+  },
+  {
+    "file": "guides.mjs",
+    "cases": [
+      {
+        "id": "guides/create-horizontal-grid",
+        "statements": 1
+      },
+      {
+        "id": "guides/create-canvas",
+        "statements": 1
+      },
+      {
+        "id": "guides/create-canvas-2",
+        "statements": 1
+      },
+      {
+        "id": "guides/create-canvas-3",
+        "statements": 1
+      },
+      {
+        "id": "guides/create-canvas-4",
+        "statements": 1
+      },
+      {
+        "id": "guides/underlay-plot",
+        "statements": 13
+      },
+      {
+        "id": "guides/spaced-base",
+        "statements": 12
+      },
+      {
+        "id": "guides/spaced-basic",
+        "statements": 3
+      },
+      {
+        "id": "guides/create-canvas-5",
+        "statements": 1
+      },
+      {
+        "id": "guides/polygon-vertices",
+        "statements": 2
+      },
+      {
+        "id": "guides/mapped-size",
+        "statements": 15
+      },
+      {
+        "id": "guides/independent-ramp",
+        "statements": 6
+      },
+      {
+        "id": "guides/create-canvas-6",
+        "statements": 1
+      },
+      {
+        "id": "guides/create-canvas-7",
+        "statements": 1
+      },
+      {
+        "id": "guides/blank-lines",
+        "statements": 6
+      },
+      {
+        "id": "guides/blank-legend",
+        "statements": 6
+      },
+      {
+        "id": "guides/create-canvas-8",
+        "statements": 1
+      },
+      {
+        "id": "guides/create-canvas-9",
+        "statements": 1
+      },
+      {
+        "id": "guides/create-canvas-10",
+        "statements": 1
+      },
+      {
+        "id": "guides/create-canvas-11",
+        "statements": 1
+      },
+      {
+        "id": "guides/inside-legend",
+        "statements": 6
+      },
+      {
+        "id": "guides/stroked",
+        "statements": 4
+      },
+      {
+        "id": "guides/create-canvas-12",
+        "statements": 1
+      },
+      {
+        "id": "guides/category-sizes",
+        "statements": 10
+      },
+      {
+        "id": "guides/bounded-combined-seed",
+        "statements": 5
+      },
+      {
+        "id": "guides/installed-appearance",
+        "statements": 5
+      },
+      {
+        "id": "guides/installed-display-axis",
+        "statements": 3
+      },
+      {
+        "id": "guides/installed-facet-headers",
+        "statements": 7
+      },
+      {
+        "id": "guides/polar-base",
+        "statements": 27
+      },
+      {
+        "id": "guides/axis-lifecycle",
+        "statements": 7
+      },
+      {
+        "id": "guides/fitted-labels",
+        "statements": 5
+      },
+      {
+        "id": "guides/create-canvas-13",
+        "statements": 1
+      },
+      {
+        "id": "guides/transition-rows",
+        "statements": 10
+      },
+      {
+        "id": "guides/joint-pie",
+        "statements": 5
+      },
+      {
+        "id": "guides/ordered-pie",
+        "statements": 6
+      },
+      {
+        "id": "guides/create-canvas-14",
+        "statements": 1
+      },
+      {
+        "id": "guides/measured-radius",
+        "statements": 9
+      },
+      {
+        "id": "guides/parallel-facade",
+        "statements": 16
+      },
+      {
+        "id": "guides/shape-legend-base",
+        "statements": 6
+      },
+      {
+        "id": "guides/create-canvas-15",
+        "statements": 1
+      },
+      {
+        "id": "guides/create-canvas-16",
+        "statements": 1
+      },
+      {
+        "id": "guides/create-canvas-17",
+        "statements": 1
+      },
+      {
+        "id": "guides/create-canvas-18",
+        "statements": 1
+      },
+      {
+        "id": "guides/create-canvas-19",
+        "statements": 1
+      },
+      {
+        "id": "guides/create-canvas-20",
+        "statements": 1
+      },
+      {
+        "id": "guides/legend-content-base",
+        "statements": 52
+      },
+      {
+        "id": "guides/entry-surface",
+        "statements": 1
+      },
+      {
+        "id": "guides/create-canvas-21",
+        "statements": 1
+      },
+      {
+        "id": "guides/create-canvas-22",
+        "statements": 1
+      },
+      {
+        "id": "guides/bottom-legend-base",
+        "statements": 6
+      },
+      {
+        "id": "guides/edited-size-legend",
+        "statements": 8
+      },
+      {
+        "id": "guides/create-canvas-23",
+        "statements": 1
+      },
+      {
+        "id": "guides/discrete-size",
+        "statements": 3
+      },
+      {
+        "id": "guides/create-canvas-24",
+        "statements": 1
+      },
+      {
+        "id": "guides/weighted-rules",
+        "statements": 9
+      },
+      {
+        "id": "guides/comparison-rows",
+        "statements": 10
+      },
+      {
+        "id": "guides/entry-surface-2",
+        "statements": 1
+      },
+      {
+        "id": "guides/histogram-labels",
+        "statements": 10
+      },
+      {
+        "id": "guides/reference-rect",
+        "statements": 4
+      },
+      {
+        "id": "guides/source-text-scale",
+        "statements": 4
+      },
+      {
+        "id": "guides/standalone-axis",
+        "statements": 8
+      },
+      {
+        "id": "guides/explicit-rotations",
+        "statements": 2
+      },
+      {
+        "id": "guides/semantic-labels",
+        "statements": 20
+      },
+      {
+        "id": "guides/legend-base",
+        "statements": 7
+      }
+    ]
+  },
+  {
+    "file": "encodings.mjs",
+    "cases": [
+      {
+        "id": "encodings/edit-y-scale",
+        "statements": 1
+      },
+      {
+        "id": "encodings/create-canvas",
+        "statements": 1
+      },
+      {
+        "id": "encodings/palette-base",
+        "statements": 8
+      },
+      {
+        "id": "encodings/interval-rows",
+        "statements": 13
+      },
+      {
+        "id": "encodings/numeric-area",
+        "statements": 6
+      },
+      {
+        "id": "encodings/blended-bar",
+        "statements": 11
+      },
+      {
+        "id": "encodings/resource-cleanup",
+        "statements": 4
+      },
+      {
+        "id": "encodings/entry-surface",
+        "statements": 1
+      },
+      {
+        "id": "encodings/entry-surface-2",
+        "statements": 1
+      },
+      {
+        "id": "encodings/polar-frame",
+        "statements": 3
+      },
+      {
+        "id": "encodings/basic-themed",
+        "statements": 2
+      },
+      {
+        "id": "encodings/scatter-facade",
+        "statements": 3
+      },
+      {
+        "id": "encodings/basic-scatter",
+        "statements": 4
+      },
+      {
+        "id": "encodings/rule-source",
+        "statements": 4
+      },
+      {
+        "id": "encodings/filled-band",
+        "statements": 3
+      },
+      {
+        "id": "encodings/create-canvas-2",
+        "statements": 1
+      },
+      {
+        "id": "encodings/timed-horizon",
+        "statements": 3
+      },
+      {
+        "id": "encodings/horizon",
+        "statements": 3
+      },
+      {
+        "id": "encodings/area-rows",
+        "statements": 18
+      },
+      {
+        "id": "encodings/line-facade",
+        "statements": 7
+      },
+      {
+        "id": "encodings/ordered-line-facade",
+        "statements": 3
+      },
+      {
+        "id": "encodings/offset-scale-facade",
+        "statements": 6
+      },
+      {
+        "id": "encodings/ordered-categories",
+        "statements": 3
+      },
+      {
+        "id": "encodings/midpoint-plot",
+        "statements": 3
+      },
+      {
+        "id": "encodings/binned-heatmap-facade",
+        "statements": 3
+      },
+      {
+        "id": "encodings/gradient-plot-facade",
+        "statements": 11
+      },
+      {
+        "id": "encodings/weighted-arcs",
+        "statements": 3
+      },
+      {
+        "id": "encodings/text-datum",
+        "statements": 3
+      },
+      {
+        "id": "encodings/annotation-source",
+        "statements": 4
+      },
+      {
+        "id": "encodings/utc-text",
+        "statements": 2
+      },
+      {
+        "id": "encodings/text-source",
+        "statements": 7
+      },
+      {
+        "id": "encodings/font-weight-program",
+        "statements": 3
+      },
+      {
+        "id": "encodings/sequential-count",
+        "statements": 2
+      },
+      {
+        "id": "encodings/direct-sequential-count",
+        "statements": 3
+      }
+    ]
+  },
+  {
+    "file": "authoring.mjs",
+    "cases": [
+      {
+        "id": "authoring/create-canvas",
+        "statements": 1
+      },
+      {
+        "id": "authoring/entry-surface",
+        "statements": 1
+      },
+      {
+        "id": "authoring/entry-surface-2",
+        "statements": 1
+      },
+      {
+        "id": "authoring/entry-surface-3",
+        "statements": 1
+      },
+      {
+        "id": "authoring/entry-surface-4",
+        "statements": 1
+      },
+      {
+        "id": "authoring/entry-surface-5",
+        "statements": 1
+      },
+      {
+        "id": "authoring/entry-surface-6",
+        "statements": 1
+      },
+      {
+        "id": "authoring/entry-surface-7",
+        "statements": 1
+      },
+      {
+        "id": "authoring/entry-surface-8",
+        "statements": 1
+      },
+      {
+        "id": "authoring/radar-wide",
+        "statements": 3
+      },
+      {
+        "id": "authoring/entry-surface-9",
+        "statements": 1
+      },
+      {
+        "id": "authoring/entry-surface-10",
+        "statements": 1
+      },
+      {
+        "id": "authoring/entry-surface-11",
+        "statements": 1
+      },
+      {
+        "id": "authoring/entry-surface-12",
+        "statements": 1
+      },
+      {
+        "id": "authoring/entry-surface-13",
+        "statements": 1
+      },
+      {
+        "id": "authoring/entry-surface-14",
+        "statements": 1
+      },
+      {
+        "id": "authoring/entry-surface-15",
+        "statements": 1
+      },
+      {
+        "id": "authoring/entry-surface-16",
+        "statements": 1
+      },
+      {
+        "id": "authoring/entry-surface-17",
+        "statements": 1
+      },
+      {
+        "id": "authoring/entry-surface-18",
+        "statements": 1
+      },
+      {
+        "id": "authoring/entry-surface-19",
+        "statements": 1
+      },
+      {
+        "id": "authoring/entry-surface-20",
+        "statements": 1
+      },
+      {
+        "id": "authoring/binned",
+        "statements": 5
+      },
+      {
+        "id": "authoring/create-canvas-2",
+        "statements": 1
+      },
+      {
+        "id": "authoring/regression-opt-out",
+        "statements": 2
+      },
+      {
+        "id": "authoring/entry-surface-21",
+        "statements": 1
+      },
+      {
+        "id": "authoring/entry-surface-22",
+        "statements": 1
+      },
+      {
+        "id": "authoring/bar-facade",
+        "statements": 2
+      },
+      {
+        "id": "authoring/histogram-facade",
+        "statements": 2
+      },
+      {
+        "id": "authoring/heatmap-facade",
+        "statements": 2
+      },
+      {
+        "id": "authoring/violin-plot-facade",
+        "statements": 3
+      },
+      {
+        "id": "authoring/create-canvas-3",
+        "statements": 1
+      },
+      {
+        "id": "authoring/reference-facades",
+        "statements": 5
+      }
+    ]
+  },
+  {
+    "file": "data-transforms.mjs",
+    "cases": [
+      {
+        "id": "data-transforms/bootstrap-rows",
+        "statements": 8
+      },
+      {
+        "id": "data-transforms/extracted",
+        "statements": 5
+      },
+      {
+        "id": "data-transforms/calendar",
+        "statements": 4
+      },
+      {
+        "id": "data-transforms/installed-data-flow",
+        "statements": 5
+      },
+      {
+        "id": "data-transforms/monthly",
+        "statements": 2
+      },
+      {
+        "id": "data-transforms/local-week",
+        "statements": 2
+      },
+      {
+        "id": "data-transforms/summarized",
+        "statements": 2
+      },
+      {
+        "id": "data-transforms/large-summary",
+        "statements": 4
+      },
+      {
+        "id": "data-transforms/weighted-summary",
+        "statements": 2
+      },
+      {
+        "id": "data-transforms/reusable-bins",
+        "statements": 2
+      },
+      {
+        "id": "data-transforms/folded",
+        "statements": 2
+      },
+      {
+        "id": "data-transforms/computed",
+        "statements": 7
+      },
+      {
+        "id": "data-transforms/classified",
+        "statements": 3
+      },
+      {
+        "id": "data-transforms/completed",
+        "statements": 4
+      },
+      {
+        "id": "data-transforms/stacked",
+        "statements": 2
+      },
+      {
+        "id": "data-transforms/elapsed",
+        "statements": 2
+      },
+      {
+        "id": "data-transforms/normal-interval",
+        "statements": 3
+      },
+      {
+        "id": "data-transforms/normal-regression",
+        "statements": 10
+      }
+    ]
+  },
+  {
+    "file": "selection.mjs",
+    "cases": [
+      {
+        "id": "selection/temporal-rect",
+        "statements": 2
+      }
+    ]
+  },
+  {
+    "file": "extension.mjs",
+    "cases": [
+      {
+        "id": "extension/passthrough",
+        "statements": 8
+      }
+    ]
+  }
+]

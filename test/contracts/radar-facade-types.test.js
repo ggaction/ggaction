@@ -1,3 +1,4 @@
+import { compileTypeScript } from "../support/typescript.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { mkdtemp, writeFile, rm } from "node:fs/promises";
@@ -58,8 +59,7 @@ p.createRadarPlot({ category: "dimension", value: "score", line: { curve: "basis
 // @ts-expect-error Full only
 basic.createRadarPlot({ category: "dimension", value: "score" });
 `);
-    const result = spawnSync(process.execPath, [path.join(root, "node_modules/typescript/bin/tsc"),
-      "--noEmit", "--strict", "--skipLibCheck", "--target", "ES2022",
+    const result = compileTypeScript(["--noEmit", "--strict", "--skipLibCheck", "--target", "ES2022",
       "--module", "NodeNext", "--moduleResolution", "NodeNext", file
     ], { encoding: "utf8", cwd: root });
     assert.equal(result.status, 0, `${result.stdout}\n${result.stderr}`);

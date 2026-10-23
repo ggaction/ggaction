@@ -134,3 +134,17 @@ Node report, per-file `metrics.json`, and a receipt with the commit, dirty paths
 and tracked-diff digest under `.artifacts/coverage/`. CI retains these on success
 and failure for 14 days. The separate peer-compatibility job exercises the latest
 compatible native peer; baseline qualification remains lockfile-pinned.
+
+
+Installed package qualification is owned by `scripts/consumers/`: Node public
+contracts, MCP transport, declarations, and optional peer installation have
+separate runners. Editable Node fixtures are grouped by contract owner and
+registered in `fixtures/node/manifest.json`. Every case gets its own status,
+duration, and original error in `.artifacts/consumers/node-cases.json`; independent
+qualification phases continue after a failure and write `qualification.json`.
+The package install is shared and its directory is always reclaimed.
+
+Type contract tests use `test/support/typescript.js`, which preserves each
+fixture's compiler options and negative assertions, invokes the compiler through
+Node on every platform, applies a 60-second deadline, and records compiler
+version, arguments, diagnostics, and status under `.artifacts/types/`.

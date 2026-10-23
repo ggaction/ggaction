@@ -1,3 +1,4 @@
+import { compileTypeScript } from "../support/typescript.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { mkdtemp, writeFile, rm } from "node:fs/promises";
@@ -54,7 +55,7 @@ basic.removeParallelAxis({ field: "a" });
 // @ts-expect-error Basic has no Parallel guides
 basic.removeParallelAxes();
 `);
-    const result = spawnSync(process.execPath, [path.join(root, "node_modules/typescript/bin/tsc"),"--noEmit", "--strict", "--skipLibCheck",
+    const result = compileTypeScript(["--noEmit", "--strict", "--skipLibCheck",
       "--target", "ES2022", "--module", "NodeNext", "--moduleResolution", "NodeNext", file], { encoding: "utf8", cwd: root });
     assert.equal(result.status, 0, `${result.stdout}\n${result.stderr}`);
   } finally { await rm(directory, { recursive: true, force: true }); }

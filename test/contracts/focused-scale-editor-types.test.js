@@ -1,3 +1,4 @@
+import { compileTypeScript } from "../support/typescript.js";
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
 import { mkdtemp, rm, writeFile } from "node:fs/promises";
@@ -11,9 +12,9 @@ import { ACTION_INDEX } from "../support/action-contracts.js";
 const root = fileURLToPath(new URL("../../", import.meta.url));
 
 test("declares the Full-only field-selected Parallel scale editor", async () => {
-  const directory = await mkdtemp(path.join(tmpdir(), "ggaction-phase5-types-"));
+  const directory = await mkdtemp(path.join(tmpdir(), "ggaction-focused-scale-editor-types-"));
   try {
-    const file = path.join(directory, "phase5.mts");
+    const file = path.join(directory, "focused-scale-editor.mts");
     await writeFile(file, `
 import type {
   ChartProgram,
@@ -56,8 +57,7 @@ basic.editParallelScale({ target: "lines", dimension: "amount", reverse: true })
 // @ts-expect-error advanced offset editor is Full-only
 basic.editXOffsetScale({ target: "bars", padding: 0.2 });
 `);
-    const result = spawnSync(process.execPath, [path.join(root, "node_modules/typescript/bin/tsc"),
-      "--noEmit", "--strict", "--skipLibCheck", "--target", "ES2022",
+    const result = compileTypeScript(["--noEmit", "--strict", "--skipLibCheck", "--target", "ES2022",
       "--module", "NodeNext", "--moduleResolution", "NodeNext", file
     ], { encoding: "utf8", cwd: root });
     assert.equal(result.status, 0, `${result.stdout}\n${result.stderr}`);

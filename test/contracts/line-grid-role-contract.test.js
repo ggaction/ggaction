@@ -1,3 +1,4 @@
+import { compileTypeScript } from "../support/typescript.js";
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
 import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
@@ -120,8 +121,7 @@ const invalidHorizontal = {bandPosition:"boundary" as const};
 // @ts-expect-error Non-fresh objects must not bypass the prohibited property.
 p.createLinePlot({x:"x",y:"y",guides:{grid:{horizontal:invalidHorizontal}}});
 `);
-    const result = spawnSync(process.execPath, [path.join(root, "node_modules/typescript/bin/tsc"),
-      "--noEmit", "--strict", "--skipLibCheck", "--target", "ES2022",
+    const result = compileTypeScript(["--noEmit", "--strict", "--skipLibCheck", "--target", "ES2022",
       "--module", "NodeNext", "--moduleResolution", "NodeNext", file
     ], { cwd: root, encoding: "utf8" });
     assert.equal(result.status, 0, result.stdout + result.stderr);

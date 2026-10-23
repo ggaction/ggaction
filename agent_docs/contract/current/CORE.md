@@ -815,7 +815,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - ✅ Covered: duplicate/mixed/domain-missing/collision/budget errors, immutable caller rows/options/program and trace hierarchy.
 - ✅ Covered: transform registry and facet-local statistical replay.
 - Evidence: `test/unit/actions/data/complete-impute-data.test.js`, `test/contracts/transform-registry.test.js`,
-  `test/contracts/phase2-data-types.test.js`.
+  `test/contracts/data-completion-types.test.js`.
 
 ## `createImputedData`
 
@@ -850,7 +850,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - ✅ Covered: nullish-only missing policy, method/type/field/sort/edge errors and immutable failure.
 - ✅ Covered: transform registry and facet-local statistical replay.
 - Evidence: `test/unit/actions/data/complete-impute-data.test.js`, `test/contracts/transform-registry.test.js`,
-  `test/contracts/phase2-data-types.test.js`.
+  `test/contracts/data-completion-types.test.js`.
 
 ## `createStackData`
 
@@ -2032,7 +2032,7 @@ type EditableCurrentScale = {
 - Available only in the Full entry.
 - Evidence: `test/unit/actions/scales/offset-scale.test.js`,
   `test/unit/actions/encodings/x-offset-encoding.test.js`, and
-  `test/contracts/phase5-scale-types.test.js`.
+  `test/contracts/focused-scale-editor-types.test.js`.
 
 ### Formal values — `editXOffsetScale`
 
@@ -2056,7 +2056,7 @@ type EditableCurrentScale = {
   mirrors the nested y range and rematerializes all dependent marks.
 - Evidence: `test/unit/actions/scales/offset-scale.test.js`,
   `test/unit/actions/encodings/y-offset-encoding.test.js`, and
-  `test/contracts/phase5-scale-types.test.js`.
+  `test/contracts/focused-scale-editor-types.test.js`.
 
 ### Formal values — `editYOffsetScale`
 
@@ -2089,7 +2089,7 @@ type EditableCurrentScale = {
 - `dimension`: ✅ Covered exact quantitative/ordinal field, post-reorder identity, unknown/empty field; title/index inference is absent by contract.
 - scale patch: ✅ Covered domain, reverse, ordinal domain ordering, empty patch, branch-incompatible padding/type, path and axis refresh.
 - lifecycle: ✅ Covered immutable prior program, wrapped trace, Canvas-compatible explicit range, and field-based resolution after dimension reorder.
-- Evidence: `test/unit/actions/scales/parallel-scale.test.js`, `test/contracts/phase5-scale-types.test.js`.
+- Evidence: `test/unit/actions/scales/parallel-scale.test.js`, `test/contracts/focused-scale-editor-types.test.js`.
 
 ## `editThetaScale`
 

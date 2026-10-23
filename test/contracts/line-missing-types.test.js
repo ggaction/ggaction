@@ -1,3 +1,4 @@
+import { compileTypeScript } from "../support/typescript.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { spawnSync } from "node:child_process";
@@ -27,8 +28,7 @@ p.editLineMark({ missing: false });
 // @ts-expect-error Polar does not expose direct Cartesian missing intent
 const polar: NonNullable<CreatePolarLinePlotOptions['line']> = { missing: 'break' };
 `);
-    const result = spawnSync(process.execPath, [path.join(root, "node_modules/typescript/bin/tsc"),
-      "--noEmit", "--strict", "--exactOptionalPropertyTypes", "--skipLibCheck",
+    const result = compileTypeScript(["--noEmit", "--strict", "--exactOptionalPropertyTypes", "--skipLibCheck",
       "--target", "ES2022", "--module", "NodeNext", "--moduleResolution", "NodeNext", file
     ], { cwd: root, encoding: "utf8" });
     assert.equal(result.status, 0, result.stdout + result.stderr);
