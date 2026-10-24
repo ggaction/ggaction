@@ -274,3 +274,8 @@ Wrapped layouts can switch to `editCompositionLayout({ spacing: "content" })` to
 content bounds independently; keyed grids reject this mode. Reset `topLane` to `"stacked"`
 in the same call when switching from a shared plot lane. Header `anchor: "view"` includes
 retained guides in its outward clearance and is available with plot or content spacing.
+
+When color is shared, compatible same-field color/shape legends and color-only legends
+are collected into one outer legend. The combined symbols retain their shape meaning;
+unrelated size legends and conflicting shape mappings remain separate. Disabling color
+sharing restores the original child legends, including in nested and faceted views.

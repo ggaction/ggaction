@@ -1,3 +1,4 @@
+import { resolveGraphicParentOffset } from "../grammar/schemas/graphicBounds.js";
 import { sharedCompositionColorLegend } from "./compositionLegends.js";
 import { translateGraphic } from "./graphicTranslation.js";
 import { compositionTitleLayout, materializeCompositionTitle } from "./compositionTitle.js";
@@ -241,7 +242,8 @@ export function materializeCompositionGraphics(program) {
     for (const root of roots) {
       const key = namespaceGraphicId(id, root);
       next = attachSnapshotObject(next, snapshot, key, id);
-      next = translateGraphic(next, key, -bounds.left, -bounds.top);
+      const [parentX, parentY] = resolveGraphicParentOffset(source.graphicSpec, root);
+      next = translateGraphic(next, key, parentX - bounds.left, parentY - bounds.top);
     }
     next = next.editGraphics({ target: "canvas", property: "width", value: layout.width + width + 16 })
       .editGraphics({ target: "canvas", property: "height", value: Math.max(layout.height, plot.y + height + 8 + bottomTitle) });

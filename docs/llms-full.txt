@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.25.
 
-Contract: sha256:5a5621d6df89b4468190fef7797f43ca6650c791722efdba28958a72ab447955. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:a5c09f41f2858bd1a3117ef3b84fbbff72c74b613b330e8f5c50051fc7ea5a65. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -42976,6 +42976,11 @@ content bounds independently; keyed grids reject this mode. Reset `topLane` to `
 in the same call when switching from a shared plot lane. Header `anchor: "view"` includes
 retained guides in its outward clearance and is available with plot or content spacing.
 
+When color is shared, compatible same-field color/shape legends and color-only legends
+are collected into one outer legend. The combined symbols retain their shape meaning;
+unrelated size legends and conflicting shape mappings remain separate. Disabling color
+sharing restores the original child legends, including in nested and faceted views.
+
 <!-- Source: /api/marks/labels/ -->
 
 # Attached Mark Labels
@@ -44095,7 +44100,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:5a5621d6df89b4468190fef7797f43ca6650c791722efdba28958a72ab447955` |
+| Contract fingerprint | `sha256:a5c09f41f2858bd1a3117ef3b84fbbff72c74b613b330e8f5c50051fc7ea5a65` |
 | Example and dataset source | `ab206c446ae5010eecfd859427775c4785d8aed4` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

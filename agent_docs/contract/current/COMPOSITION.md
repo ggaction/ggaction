@@ -686,11 +686,15 @@ The outer trace records one requested function; retained child traces contain th
 - `createTitle`/`editTitle`/`removeTitle` without a target own one parent title resource.
   Explicit child paths retain per-view title behavior. Four-edge title/subtitle lanes
   align to the translated plot union and rematerialize after layout and child edits.
-- A shared color scale collects color-only guide snapshots into one outer-right legend.
-  The first visible guide in ordered children supplies presentation; the native shared
-  scale supplies its domain. Canonical child guides remain unchanged and reappear when
-  sharing is disabled. Combined guides for unshared channels remain local.
+- A shared color scale collects compatible guide snapshots into one outer-right legend.
+  A same-field categorical block that explains color plus shape/stroke/etc. also covers
+  color-only blocks when its category mappings agree. Prefer the most informative block,
+  then the first visible child for equal coverage. Conflicting extra mappings remain local;
+  unrelated size/other-field blocks are retained. Nested compositions collect only displayed
+  blocks, including already-promoted combined legends, without deleting incompatible explanations.
+  The native shared scale supplies the color domain. Canonical child guides remain unchanged
+  and reappear when sharing is disabled.
 - Equal child Canvas backgrounds fill parent gaps/padding and title/legend lanes.
   Mixed backgrounds preserve the existing parent surface (initially white).
 - Serialization, nested child edits, and repeated guide creation preserve these rules.
-- Evidence: `test/unit/actions/composition/concat-guides.test.js`.
+- Evidence: `test/unit/actions/composition/concat-guides.test.js` and `shared-combined-legends.test.js`.
