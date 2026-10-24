@@ -38,11 +38,13 @@ program.removeLegend({ target: "plot", channels: ["color"], suppress: true })
 import { chart } from "ggaction";
 const p = chart().createCanvas({plot:{width:260,height:260},margin:100})
   .createData({id:"data",values:[{x:1,y:2,g:"A"},{x:2,y:3,g:"B"}]})
-  .createScatterPlot({id:"plot",x:"x",y:"y",color:"g"}).createGuides();
+  .createScatterPlot({id:"plot",x:"x",y:"y",color:{field:"g",fieldType:"nominal"}})
+  .createGuides({legend:{target:"plot",channels:["color"]}});
 const removed = p.removeLegend({target:"plot",channels:["color"]});
 // p.guideConfigs.legend: color
 // removed.guideConfigs.legend: empty
-// removed.createGuides().guideConfigs.legend: color (재생성)
+// 앱의 uncovered-channel 자동 suffix:
+// removed.createGuides({legend:{target:"plot",channels:["color"]}}).guideConfigs.legend: color (재생성)
 ```
 
 ## 검증 및 문서 영향
