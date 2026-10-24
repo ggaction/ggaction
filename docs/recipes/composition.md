@@ -48,6 +48,7 @@ Use `type: "point"` for points at those same result positions. The default `seri
 keeps each source group; `series: "total"` follows the outer endpoints of stacked bars.
 To connect scatterplot results, supply an explicit `orderBy: "x"` or `"y"`.
 Style the new layer with the usual `encodeColor`, `encodeSize`, `encodeStroke` and mark editors.
+Field mappings use the current result items, including after source filters and within each facet.
 Edit the source to change linked positions. `editOverlay({ target: "trend", follow: false })`
 freezes the current geometry as an independent normalized plot snapshot; further source edits
 no longer move it. Independent axis scales require explicit axis selection when creating guides.

@@ -1,7 +1,7 @@
 import { findCoordinate } from "../selectors/coordinates.js";
 import { requireLayer } from "../selectors/layers.js";
 import { requireMaterializedDataset } from "../selectors/datasets.js";
-import { resolveBarItems } from "./selection/items/bar.js";
+import { resolveBarItems, resolveBarItemDefinitions } from "./selection/items/bar.js";
 import { resolvePointItems } from "./selection/items/point.js";
 import { applyItemMissingPolicy } from "../grammar/itemMissing.js";
 import { resolveBarChannels, resolveBarColorLayout } from "../grammar/bars/policy.js";
@@ -11,7 +11,7 @@ import { deriveLineSeries, resolveLineBins } from "../grammar/lineSeries.js";
 import { deriveAreaSeries, deriveCenteredAreaSeries, deriveDensityAreaSeries, layoutDensityAreaSeries } from "../grammar/areaSeries.js";
 import { findUpstreamTransform } from "./dataProvenance.js";
 import { requireSemanticScale } from "../selectors/scales.js";
-import { uniqueFields } from "./selection/items/common.js";
+import { uniqueFields, ownFields, channelMapFromRow } from "./selection/items/common.js";
 import { pointGraphicAnchor } from "../grammar/pointShapes.js";
 import { mapScaleConsumerValues } from "./scales/map.js";
 import { resolveDirectionValues } from "../grammar/direction.js";
@@ -61,7 +61,7 @@ function itemGroups(items, source, binding) {
   return [...groups.values()];
 }
 
-export function resolveOverlaySeries(program, binding) {
+export function resolveOverlaySeries(program, binding, { geometry = true } = {}) {
   const source = requireLayer(program, binding.source);
   if (findCoordinate(program, source.coordinate)?.type !== "cartesian" ||
       !["bar", "point", "line", "area"].includes(source.mark.type)) {
@@ -76,15 +76,21 @@ export function resolveOverlaySeries(program, binding) {
     const bar = source.mark.type === "bar";
     if (!bar && !binding.orderBy) throw new Error("Connecting point results requires explicit orderBy x or y.");
     const channels = bar ? resolveBarChannels(source) : { category: binding.orderBy, measure: binding.orderBy === "y" ? "x" : "y" };
-    const items = bar ? resolveBarItems(program, source, dataset, "item") : resolvePointItems(program, source, dataset);
-    const graphics = bar ? undefined : new Map(program.graphicSpec.objects[source.id].items.map(item => [item.id, item]));
+    // Scale domains need the new final item grain before source graphics have
+    // been rebuilt (for example, after facet filtering). Geometry consumers
+    // still resolve and validate the fully materialized source collections.
+    const items = geometry
+      ? bar ? resolveBarItems(program, source, dataset, "item") : resolvePointItems(program, source, dataset)
+      : bar ? resolveBarItemDefinitions(program, source, dataset)
+        : dataset.values.map(row => ({ fields: ownFields(row), channels: channelMapFromRow(row, source), members: [row] }));
+    const graphics = bar || !geometry ? undefined : new Map(program.graphicSpec.objects[source.id].items.map(item => [item.id, item]));
     const anchors = items.map(item => {
       const p = item.properties;
       const measure = item.channels[`${channels.measure}2`] ?? item.channels[channels.measure];
-      const point = bar ? p : sourcePointAnchor(program, source, item, graphics);
-      const endpoint = bar ? mapPosition(program, source, channels.measure, measure) : point[channels.measure];
-      const x = bar && channels.category === "x" ? p.x + p.width / 2 : channels.measure === "x" ? endpoint : point.x;
-      const y = bar && channels.category === "y" ? p.y + p.height / 2 : channels.measure === "y" ? endpoint : point.y;
+      const point = !geometry ? item.channels : bar ? p : sourcePointAnchor(program, source, item, graphics);
+      const endpoint = bar && geometry ? mapPosition(program, source, channels.measure, measure) : point[channels.measure];
+      const x = geometry && bar && channels.category === "x" ? p.x + p.width / 2 : channels.measure === "x" ? endpoint : point.x;
+      const y = geometry && bar && channels.category === "y" ? p.y + p.height / 2 : channels.measure === "y" ? endpoint : point.y;
       const category = item.channels[channels.category];
       const categoryEnd = item.channels[`${channels.category}2`];
       const categoryScale = program.resolvedScales[source.encoding[channels.category].scale];
@@ -95,7 +101,7 @@ export function resolveOverlaySeries(program, binding) {
         channels: { ...item.channels, ...(bar ? { [channels.measure]: measure, [channels.category]: categoryValue } : {}) },
         ...(["point", "band", "ordinal"].includes(categoryScale.type) ? { categoryIndex: categoryScale.domain.indexOf(category) } : {}),
         ...(bar && channels.category === "x" && source.encoding.x.bin ? { bin: [category, categoryEnd] } : {}) };
-    }).filter(item => Number.isFinite(item.x) && Number.isFinite(item.y));
+    }).filter(item => !geometry || Number.isFinite(item.x) && Number.isFinite(item.y));
     let groups = itemGroups(anchors, source, binding);
     if (bar && binding.series === "total") {
       if (overlayGroupFields(source).length && !["stack", "fill", "diverging"].includes(resolveBarColorLayout(source))) {

@@ -64,7 +64,7 @@ export function readConsumerFieldValues(
 ) {
   const { field, fieldType, temporalUnit } = consumer.encoding;
   if (consumer.layer.derivedBindings?.overlay) {
-    const groups = resolveOverlaySeries(program, consumer.layer.derivedBindings.overlay);
+    const groups = resolveOverlaySeries(program, consumer.layer.derivedBindings.overlay, { geometry: false });
     const rows = consumer.layer.mark.type === "point" ? groups.flatMap(group => group.points.map(point => point.fields))
       : groups.map(group => uniqueFields(group.points.map(point => point.fields)));
     return readScaleField(rows, field, fieldType, { allowUnknown: Object.hasOwn(scale, "unknown"), temporalUnit });

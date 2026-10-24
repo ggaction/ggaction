@@ -21,7 +21,7 @@
 ### Value coverage — `createOverlay`
 
 - Proposed (NOT IMPLEMENTED): None. No additional proposal is part of this contract.
-- ✅ Covered. Evidence: `test/unit/actions/marks/linked-overlay.test.js` covers aggregate edits, orientations, grouping, normalized/negative stacks, glyphs, bins, line/area boundaries, source color inheritance, independent appearance, item grain, facet, persistence, immutable rejection and dependency removal. Representative primitive/public/pixel equivalence is in `test/charts/linked-composition/` and the public flow in `examples/linked-overlay/program.js`.
+- ✅ Covered. Evidence: `test/unit/actions/marks/linked-overlay.test.js` covers aggregate edits, orientations, grouping, normalized/negative stacks, glyphs, bins, line/area boundaries, source color inheritance, independent appearance, item grain, facet, persistence, immutable rejection and dependency removal. `test/unit/actions/marks/linked-overlay-rematerialization.test.js` verifies variable appearance encodings across filtered scatter, aggregate and histogram source grains, facet child replay, persistence and source filter restoration. Representative primitive/public/pixel equivalence is in `test/charts/linked-composition/` and the public flow in `examples/linked-overlay/program.js`.
 
 ## `editOverlay`
 
