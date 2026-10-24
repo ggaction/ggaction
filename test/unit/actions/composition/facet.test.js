@@ -363,10 +363,9 @@ test("validates facet scope, sources, guides, and structural edits atomically", 
     () => faceted.editFacetHeaders(),
     /requires at least one change/
   );
-  assert.throws(
-    () => hconcat({ programs: [base, base] }).createTitle({ text: "No" }),
-    /not available on this composition/
-  );
+  const titled = hconcat({ programs: [base, base] }).createTitle({ text: "Overview" });
+  assert.equal(titled.semanticSpec.title.text, "Overview");
+  assert.equal(titled.children["view-1"].semanticSpec.title.text, undefined);
 });
 
 

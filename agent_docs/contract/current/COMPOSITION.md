@@ -664,3 +664,18 @@ all changed ancestors and shared-domain constraints are materialized from the co
 state. A failure returns no partially edited program. Duplicate targets, unknown paths and
 ambiguous native targets reject. Facet source edits use `editFacetSource`; paths through generated facet cells are rejected to avoid losing edits on source replay. Parent/source overlapping target lists must be structurally valid.
 The outer trace records one requested function; retained child traces contain the native edits.
+
+
+## Concat parent titles, shared color guide, and uniform surfaces
+
+- `createTitle`/`editTitle`/`removeTitle` without a target own one parent title resource.
+  Explicit child paths retain per-view title behavior. Four-edge title/subtitle lanes
+  align to the translated plot union and rematerialize after layout and child edits.
+- A shared color scale collects color-only guide snapshots into one outer-right legend.
+  The first visible guide in ordered children supplies presentation; the native shared
+  scale supplies its domain. Canonical child guides remain unchanged and reappear when
+  sharing is disabled. Combined guides for unshared channels remain local.
+- Equal child Canvas backgrounds fill parent gaps/padding and title/legend lanes.
+  Mixed backgrounds preserve the existing parent surface (initially white).
+- Serialization, nested child edits, and repeated guide creation preserve these rules.
+- Evidence: `test/unit/actions/composition/concat-guides.test.js`.

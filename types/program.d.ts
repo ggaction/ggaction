@@ -5705,7 +5705,9 @@ export class ChartProgram {
   editLegendBorder(options: TargetedOptions<EditLegendBorderOptions>): ChartProgram;
   removeLegend(options?: TargetedOptions<RemoveLegendOptions>): ChartProgram;
   createGuides(options?: TargetedOptions<CreateGuidesOptions>): ChartProgram;
+  /** Omit target for one overall unit/facet/concat title; childPath targets one view. */
   createTitle(options: TargetedOptions<TitleOptions>): ChartProgram;
+  /** Edit the selected view title, or the overall composition title when target is omitted. */
   editTitle(options: TargetedOptions<EditTitleOptions>): ChartProgram;
   removeTitle(): ChartProgram;
 

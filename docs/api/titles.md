@@ -19,10 +19,14 @@ title: Titles
 
 Creates one chart title and an optional subtitle on any Canvas edge.
 
-Facet parents support the same four edges. Their inferred Canvas reserves an outer
+Facet and concat parents support the same four edges. Their inferred Canvas reserves an outer
 lane for the title and subtitle, outside retained axes, headers and shared legends.
 Alignment follows the union of the child plots; left and right titles rotate with
-their subtitle. Editing the title or facet layout recomputes that lane.
+their subtitle. Editing the title or composition layout recomputes that lane.
+
+On a concat parent, omit `target` to create or edit one overall title. Use
+`target: { childPath: ["main"] }` to title only the named child view. Parent and
+child titles are independent; removing the parent title preserves child titles.
 
 <!-- snippet-context:start -->
 
