@@ -114,3 +114,36 @@ test("X and Y numeric and omitted offsets converge through Canvas shrink and exp
     assert.equal(Object.hasOwn(r.context, "pendingMaterializationPlan"), false);
   }
 });
+
+function compactAxis(axisId = "y", position = "left") {
+  return chart().createCanvas({ width: 340, height: 295,
+    margin: { left: 57, right: 83, top: 57, bottom: 38 } })
+    .createData({ values: [{ x: 0, y: 6 }, { x: 1, y: 10 }, { x: 2, y: 16 }] })
+    .createLinePlot({ x: { field: "x", scale: { domain: [0, 2] } },
+      y: { field: "y", scale: { domain: [5, 16] } }, guides: false })
+    .createYAxis({ ...(axisId === "y" ? {} : { id: axisId, scale: "y" }), position,
+      ticksAndLabels: { values: [6, 8, 10, 12, 14, 16],
+        ticks: { length: 5, alongOffset: 0.5 },
+        labels: { fontSize: 10, format: ".2f", offset: 6.5, alongOffset: 0.890625 } },
+      title: { text: "Quantity", fontSize: 11, fontWeight: 700, offset: 40.5, alongOffset: 0.5 } });
+}
+
+for (const [axisId, position] of [["y", "left"], ["measure", "right"]]) {
+  test(`whole ${position} frame edits compare numeric titles in their final owner geometry`, () => {
+    const p = compactAxis(axisId, position), before = serializeProgram(p);
+    const target = axisId === "y" ? {} : { target: axisId };
+    const originalTitle = { text: "Quantity", fontSize: 11, fontWeight: 700, offset: 40.5, alongOffset: 0.5 };
+    const q = p.editYAxis({ ...target, offset: 4 });
+    const reference = p.editYAxis({ ...target, title: false })
+      .editYAxis({ ...target, offset: 4 })
+      .createYAxisTitle({ ...target, ...originalTitle });
+    assert.deepEqual(q.graphicSpec, reference.graphicSpec);
+    assert.deepEqual(q.editYAxis({ ...target, offset: 0 }).graphicSpec, p.graphicSpec);
+    assert.deepEqual(deserializeProgram(serializeProgram(q)).graphicSpec, q.graphicSpec);
+    assert.equal(Object.hasOwn(q.context, "pendingMaterializationPlan"), false);
+    assert.equal(Object.hasOwn(q.context, "pendingRelativeTitleAxis"), false);
+    assert.throws(() => q.editYAxisLabels({ ...target, offset: 20 }), /overlap/);
+    assert.throws(() => p.editYAxis({ ...target, offset: 4, labels: { offset: 20 } }), /overlap/);
+    assert.equal(serializeProgram(p), before);
+  });
+}

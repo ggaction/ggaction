@@ -123,6 +123,8 @@ program
 
 The complete-axis `offset` moves its line, ticks, labels and title outward together.
 It must be non-negative; zero restores the plot edge. Marks and grids stay fixed.
+Whole-axis edits validate labels against the final title position on the same axis,
+including numeric title offsets. A genuine final collision still rejects the edit.
 The nested title `offset` is signed: positive outward, negative into the plot.
 `alongOffset` is a separate translation along the axis: positive right for X and
 down for Y, even with a reversed scale. Numeric `at` still means a scale-domain value.

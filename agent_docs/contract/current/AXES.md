@@ -1222,6 +1222,7 @@ Ticks/labels의 count와 values는 배타적이고 같은 existing mode/default 
   기록한다. Object edit는 wrapped leaf action, removal은 `editSemantic({ remove: true })`와
   `editGraphics({ remove: true })`를 사용한다. 마지막 component 제거는 wrapped `removeXAxis`가 empty axis semantic과
   config를 정리한다.
+- Whole-axis sibling edit는 기존 prospective materialization plan을 공유한다. Numeric title도 같은 owner의 최종 frame 위치와 labels를 비교하며 실제 최종 충돌과 focused label-only 충돌은 계속 atomic reject한다.
 - Retained scale, coordinate, mark encoding, source data와 opposite axis는 보존한다. Removed config/graphic은 Canvas 또는
   scale rematerialization plan에 다시 들어가지 않으며 ordinary component/complete-axis create action으로 복원한다.
 - Errors: empty/unknown/nested-invalid options, group/leaf combination, requested missing edit/removal leaf,

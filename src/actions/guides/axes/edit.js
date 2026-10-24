@@ -2,6 +2,7 @@ import { selectCartesianAxis, axisTargetArgs, assertCartesianAxisSideAvailable }
 import { validateAxisPosition, resolveAxisFrameConfig } from "./policy.js";
 import { withGuideLayoutValidation, withPendingRelativeAxisTitle } from "../../../materialization/guides/layout.js";
 import { action } from "../../../core/action.js";
+import { applyMaterializationPlan } from "../../../materialization/planner.js";
 import { isPlainObject } from "../../../core/immutable.js";
 import { isLabelRelativeTitleOffset } from "../../../grammar/axisTextPlacement.js";
 import { validateKeys, validateOptionObject, validateNonNegativeFinite } from "../../../core/validation.js";
@@ -143,10 +144,22 @@ function applyPlan(program, channel, plan, operation, axisId = channel) {
     plan.some(step => step.kind === "remove" && step.component === "title")
     ? [...plan.filter(step => step.kind === "remove" && step.component === "title"),
       ...plan.filter(step => !(step.kind === "remove" && step.component === "title"))] : plan;
-  for (const step of ordered) {
-    next = step.kind === "remove"
-      ? removeComponent(next, channel, step.component, axisId)
-      : next[step.operation](step.args);
+  // Consecutive sibling edits share the existing prospective plan so labels
+  // are checked against a numeric title after it reaches the same new frame.
+  // Keep removals in their established order and retain wrapped leaf actions.
+  for (let index = 0; index < ordered.length;) {
+    const step = ordered[index];
+    if (step.kind === "remove") {
+      next = removeComponent(next, channel, step.component, axisId);
+      index += 1;
+      continue;
+    }
+    const edits = [];
+    while (index < ordered.length && ordered[index].kind === "edit") {
+      const edit = ordered[index++];
+      edits.push({ op: edit.operation, args: edit.args });
+    }
+    next = applyMaterializationPlan(next, edits);
   }
 
   const hasRetainedGraphic = AXIS_COMPONENTS.some(
