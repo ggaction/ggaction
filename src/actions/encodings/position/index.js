@@ -34,6 +34,7 @@ function encodePosition(program, channel, args, operation) {
     companion,
     clearRadialMapping
   } = resolvePositionEncoding(program, channel, args, operation);
+  if (layer.derivedBindings?.overlay) throw new Error("Overlay position follows its source; edit the source or detach the overlay first.");
 
   let next = program
     .createCoordinate({

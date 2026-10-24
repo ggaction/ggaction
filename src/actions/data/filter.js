@@ -1,3 +1,4 @@
+import { assertIndependentOverlayGeometry } from "../../grammar/overlay.js";
 import { findRaincloudParent } from "../../selectors/raincloud.js";
 import { filterRaincloud, materializeRaincloudFilter, removeRaincloudFilter } from "./raincloudFilter.js";
 import { closedAction } from "../../core/action.js";
@@ -320,6 +321,7 @@ export const filterMarks = /* @__PURE__ */ closedAction(
         candidate.data !== undefined &&
         findSelectionPolicy(candidate.mark?.type) !== undefined
     });
+    assertIndependentOverlayGeometry(layer, "filterMarks");
     if (this.markConfigs[layer.id]?.itemFilterable === false) {
       throw new Error(
         `filterMarks does not support composite mark "${layer.id}"; filter its source dataset first.`

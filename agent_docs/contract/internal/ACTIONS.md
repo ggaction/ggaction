@@ -14,6 +14,7 @@ domain action을 통해서만 실행한다.
 
 | Internal action | Owning domain |
 | --- | --- |
+| `rematerializeOverlay` | `createOverlay`, `editOverlay`, and explicit source result dependencies |
 | `materializeBoxSummaryData` | `createBoxPlot` summary data |
 | `materializeBoxOutlierData` | `createBoxPlot` optional outlier data |
 | `materializeBoxPlot` | deferred `createBoxPlot` completion and position encodings |

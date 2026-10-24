@@ -457,6 +457,11 @@ export function buildActionRelationshipPrograms() {
   });
   return [
     ...descriptors.map(buildScenario),
+    chart().createCanvas({ width: 400, height: 300, margin: 40 })
+      .createData({ values: [{ x: "A", y: 2 }, { x: "B", y: 4 }] })
+      .createBarPlot({ id: "bars", x: "x", y: "y", guides: false })
+      .createOverlay({ id: "trend", source: "bars" })
+      .editOverlay({ target: "trend", missing: "connect" }),
     ...[false, true].map(band => chart()
       .createCanvas({ width: 400, height: 300, margin: 40 })
       .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 4 }] })

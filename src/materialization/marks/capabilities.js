@@ -37,6 +37,7 @@ export function canMaterializeTick(_program, layer) {
 }
 
 export function canMaterializeLine(program, layer) {
+  if (layer.derivedBindings?.overlay) return hasCartesianPositionScales(layer);
   const parallel = layer.encoding?.parallel;
   if (parallel !== undefined) {
     const coordinate = findCoordinate(program, layer.coordinate);

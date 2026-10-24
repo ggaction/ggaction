@@ -9,6 +9,7 @@ import { ruleSelectionPolicy } from "./rule.js";
 import { tickSelectionPolicy } from "./tick.js";
 import { rectSelectionPolicy } from "./rect.js";
 import { applyItemMissingPolicy } from "../../../grammar/itemMissing.js";
+import { resolveOverlayItems } from "../items/overlay.js";
 
 const POLICIES = Object.freeze({
   arc: arcSelectionPolicy,
@@ -35,6 +36,10 @@ export function requireSelectionPolicy(markType) {
 
 export function resolveMarkItems(program, target, grain = "item") {
   const layer = requireLayer(program, target, `Unknown mark target "${target}"`);
+  if (layer.derivedBindings?.overlay) {
+    if (grain !== "item") throw new Error(`Overlay "${target}" supports item selection grain.`);
+    return resolveOverlayItems(program, layer);
+  }
   const dataset = findDataset(program, layer.data);
   if (dataset === undefined) {
     throw new Error(`Mark "${target}" requires an existing dataset for selection.`);

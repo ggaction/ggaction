@@ -291,5 +291,7 @@
   "createDensityPlot": "/reference/actions/statistics/#createdensityplot",
   "createHorizonPlot": "/reference/actions/statistics/#createhorizonplot",
   "createAreaPlot": "/reference/actions/charts-data/#createareaplot",
-  "layoutSeries": "/reference/actions/encodings/#layoutseries"
+  "layoutSeries": "/reference/actions/encodings/#layoutseries",
+  "createOverlay": "/reference/actions/marks/#createoverlay",
+  "editOverlay": "/reference/actions/marks/#editoverlay"
 }

@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 3,
+  "name": "editOverlay",
+  "layer": "user-facing",
+  "domain": "marks",
+  "summary": "Change an overlay's dependency or gap policy.",
+  "signature": "editOverlay(options: EditOverlayOptions): ChartProgram;",
+  "intents": [
+    "edit overlay",
+    "edit",
+    "change",
+    "graphical mark",
+    "mark appearance",
+    "overlay",
+    "linked result layer"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing overlay"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target",
+      "source"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "editOverlay"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "source",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing overlay"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "follow",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "source",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "series",
+      "required": false,
+      "type": "\"source\" | \"total\" | undefined"
+    },
+    {
+      "name": "missing",
+      "required": false,
+      "type": "\"break\" | \"connect\" | undefined"
+    },
+    {
+      "name": "orderBy",
+      "required": false,
+      "type": "\"x\" | \"y\" | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editOverlay({ target?, source?, follow?, series?, missing?, orderBy? })"
+  ],
+  "snippet": "program.editOverlay({ target: \"overlay\", missing: \"connect\" })",
+  "errors": [],
+  "route": "/reference/actions/marks/#editoverlay"
+}

@@ -99,6 +99,8 @@ interface ChartProgramActions {
   removeMarkLabels(options: RemoveMarkLabelsOptions): ChartProgram;
   createAnnotation(options: CreateAnnotationOptions): ChartProgram;
   createStatisticalReference(options: CreateStatisticalReferenceOptions): ChartProgram;
+  createOverlay(options?: CreateOverlayOptions): ChartProgram;
+  editOverlay(options: EditOverlayOptions): ChartProgram;
   createReferenceLine(options: CreateReferenceLineOptions): ChartProgram;
   createReferenceBand(options: CreateReferenceBandOptions): ChartProgram;
   editTextMark(options: EditTextMarkOptions): ChartProgram;
@@ -2469,6 +2471,24 @@ export type CreateMarkLabelsOptions = Omit<TextMarkOptions, "data" | "text"> & {
 
 Related types: [`TextMarkOptions`](../../../reference/types/#type-textmarkoptions) · [`LabelLayoutOptions`](../../../reference/types/#type-labellayoutoptions) · [`MarkLabelPlacement`](../../../reference/types/#type-marklabelplacement) · [`TextEncodingOptions`](../../../reference/types/#type-textencodingoptions) · [`TextFormat`](../../../reference/types/#type-textformat) · [`MarkLabelSelectionOptions`](../../../reference/types/#type-marklabelselectionoptions).
 
+### `CreateOverlayOptions` {#type-createoverlayoptions}
+
+ Expand CreateOverlayOptions
+
+```typescript
+export type CreateOverlayOptions = {
+  id?: string;
+  source?: string;
+  basis?: "visibleItems";
+  series?: "source" | "total";
+  missing?: "break" | "connect";
+  orderBy?: "x" | "y";
+} & ({ type?: "line"; line?: OverlayLineAppearance; point?: never } |
+  { type: "point"; point?: OverlayPointAppearance; line?: never });
+```
+
+Related types: [`OverlayLineAppearance`](../../../reference/types/#type-overlaylineappearance) · [`OverlayPointAppearance`](../../../reference/types/#type-overlaypointappearance).
+
 ### `CreateParallelAxisOptions` {#type-createparallelaxisoptions}
 
  Expand CreateParallelAxisOptions
@@ -4823,6 +4843,16 @@ export type EditOpacityScaleOptions = FocusedScaleSelection & WithoutScaleId<Opa
 ```
 
 Related types: [`FocusedScaleSelection`](../../../reference/types/#type-focusedscaleselection) · [`WithoutScaleId`](../../../reference/types/#type-withoutscaleid) · [`OpacityScaleOptions`](../../../reference/types/#type-opacityscaleoptions).
+
+### `EditOverlayOptions` {#type-editoverlayoptions}
+
+ Expand EditOverlayOptions
+
+```typescript
+export type EditOverlayOptions = { target?: string } & ({ follow: false; source?: never;
+  series?: never; missing?: never; orderBy?: never } | { follow?: true; source?: string;
+  series?: "source" | "total"; missing?: "break" | "connect"; orderBy?: "x" | "y" });
+```
 
 ### `EditParallelAxisOptions` {#type-editparallelaxisoptions}
 
@@ -7619,6 +7649,41 @@ export type OrderCategoriesOptions = {
 ```
 
 Related types: [`CategoryOrder`](../../../reference/types/#type-categoryorder).
+
+### `OverlayLineAppearance` {#type-overlaylineappearance}
+
+ Expand OverlayLineAppearance
+
+```typescript
+export interface OverlayLineAppearance extends StrokeStyleDetails {
+  clip?: boolean;
+  stroke?: string;
+  strokeWidth?: number;
+  opacity?: number;
+  curve?: CurveInterpolation;
+  tension?: number;
+  closed?: boolean;
+}
+```
+
+Related types: [`StrokeStyleDetails`](../../../reference/types/#type-strokestyledetails) · [`CurveInterpolation`](../../../reference/types/#type-curveinterpolation).
+
+### `OverlayPointAppearance` {#type-overlaypointappearance}
+
+ Expand OverlayPointAppearance
+
+```typescript
+export interface OverlayPointAppearance extends StrokeStyleDetails {
+  clip?: boolean;
+  shape?: PointShape;
+  fill?: string;
+  stroke?: FilledMarkStroke;
+  strokeWidth?: number;
+  opacity?: number;
+}
+```
+
+Related types: [`StrokeStyleDetails`](../../../reference/types/#type-strokestyledetails) · [`PointShape`](../../../reference/types/#type-pointshape) · [`FilledMarkStroke`](../../../reference/types/#type-filledmarkstroke).
 
 ### `PackPointsOptions` {#type-packpointsoptions}
 

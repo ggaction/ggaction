@@ -1,7 +1,7 @@
 # Documentation Version
 
 The current site documents **ggaction 0.0.24** with a
-**published-release** contract.
+**development** contract.
 A `published-release` contract matches that package version. A `development`
 contract can include newer behavior; its package version alone does not establish
 API availability. Each action entry identifies its release availability.
@@ -9,11 +9,11 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:e755591a2e5f5e2b494867583876e28020a478c5220b77bdc6ad469a6224891d` |
-| Example and dataset source | `6422776b0a379c8c89809f41b434f366fbc1f143` |
-| Runtime source commit | `5f952f59b9ca236e8e9cff477c4f51067f2f8ea9` |
+| Contract fingerprint | `sha256:0892faaedffaf841ca092fc636e10e926c1c3f6bc6f67c5099da1db5d6643809` |
+| Example and dataset source | `codex/overlay-composition-v025` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
-| Declared actions here | 293 |
+| Declared actions here | 295 |
 | Declared actions in that release | 234 |
 
 ## Choose the matching documentation

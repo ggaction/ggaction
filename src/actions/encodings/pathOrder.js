@@ -1,3 +1,4 @@
+import { assertIndependentOverlayGeometry } from "../../grammar/overlay.js";
 import { closedAction } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { validateNonEmptyString } from "../../core/validation.js";
@@ -86,6 +87,7 @@ const encodePathOrder = /* @__PURE__ */ closedAction(
     }
     const order = validatePathOrderDirection(args.order ?? "ascending");
     const layer = resolvePathOrderLayer(this, args.target);
+    assertIndependentOverlayGeometry(layer, "encodePathOrder");
     const dataset = assertPathOrderCompatible(this, layer, "encodePathOrder");
     readQuantitativeField(dataset.values, field);
 

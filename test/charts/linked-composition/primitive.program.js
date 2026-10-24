@@ -1,9 +1,6 @@
 import { chart, hconcat } from "../../../src/index.js";
-
-export const rows = [
-  { month: "Jan", sales: 20 }, { month: "Feb", sales: 45 },
-  { month: "Mar", sales: 30 }, { month: "Apr", sales: 65 }
-];
+import { rows } from "../../../examples/linked-overlay/program.js";
+export { rows };
 
 export function barPrimitive() {
   return chart()

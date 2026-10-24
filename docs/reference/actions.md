@@ -80,6 +80,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createLookupData`](./actions/statistics.md#createlookupdata) | H1 | user-facing | statistics |
 | [`createMarkLabels`](./actions/marks.md#createmarklabels) | H1, H2 | user-facing | marks |
 | [`createNormalizedData`](./actions/statistics.md#createnormalizeddata) | H1 | user-facing | statistics |
+| [`createOverlay`](./actions/marks.md#createoverlay) | H1, H2 | user-facing | marks |
 | [`createParallelAxes`](./actions/guides.md#createparallelaxes) | H3 | user-facing | axes |
 | [`createParallelAxis`](./actions/guides.md#createparallelaxis) | H3 | user-facing | axes |
 | [`createParallelCoordinates`](./actions/charts-data.md#createparallelcoordinates) | H0 | user-facing | charts |
@@ -191,6 +192,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editMarkSelection`](./actions/advanced.md#editmarkselection) | H3 | advanced | mark-selection |
 | [`editNormalizedData`](./actions/statistics.md#editnormalizeddata) | H1, H3 | user-facing | statistics |
 | [`editOpacityScale`](./actions/charts-data.md#editopacityscale) | H2 | user-facing | core |
+| [`editOverlay`](./actions/marks.md#editoverlay) | H3 | user-facing | marks |
 | [`editParallelAxis`](./actions/guides.md#editparallelaxis) | H3 | user-facing | axes |
 | [`editParallelScale`](./actions/charts-data.md#editparallelscale) | H2 | user-facing | core |
 | [`editPointMark`](./actions/marks.md#editpointmark) | H3 | user-facing | marks |

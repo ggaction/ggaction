@@ -68,6 +68,7 @@ const ENTITY_PATHS = Object.freeze({
       "mark.orientation",
       "mark.blend",
       "derivedBindings.regression",
+      "derivedBindings.overlay",
       "layout.mode",
       ...ENCODING_PATHS
     ])

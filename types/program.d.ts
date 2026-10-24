@@ -1330,10 +1330,42 @@ export interface SemanticLayer {
   readonly coordinate?: string;
   readonly mark?: Readonly<{ type?: string; missing?: "error" | "break" | "skip"; blend?: "difference"; [key: string]: unknown }>;
   readonly layout?: Readonly<{ mode?: ColorLayout }>;
-  readonly derivedBindings?: Readonly<{ regression?: Readonly<{ mode: "follow"; roles: readonly ["data", "x", "y"] }> }>;
+  readonly derivedBindings?: Readonly<{ regression?: Readonly<{ mode: "follow"; roles: readonly ["data", "x", "y"] }>;
+    overlay?: Readonly<{ source: string; basis: "visibleItems"; mode: "follow"; series: "source" | "total";
+      missing: "break" | "connect"; orderBy?: "x" | "y"; inheritColor: boolean }> }>;
   readonly encoding?: Readonly<Record<string, Readonly<Record<string, unknown>>>>;
   readonly [key: string]: unknown;
 }
+
+export interface OverlayLineAppearance extends StrokeStyleDetails {
+  clip?: boolean;
+  stroke?: string;
+  strokeWidth?: number;
+  opacity?: number;
+  curve?: CurveInterpolation;
+  tension?: number;
+  closed?: boolean;
+}
+export interface OverlayPointAppearance extends StrokeStyleDetails {
+  clip?: boolean;
+  shape?: PointShape;
+  fill?: string;
+  stroke?: FilledMarkStroke;
+  strokeWidth?: number;
+  opacity?: number;
+}
+export type CreateOverlayOptions = {
+  id?: string;
+  source?: string;
+  basis?: "visibleItems";
+  series?: "source" | "total";
+  missing?: "break" | "connect";
+  orderBy?: "x" | "y";
+} & ({ type?: "line"; line?: OverlayLineAppearance; point?: never } |
+  { type: "point"; point?: OverlayPointAppearance; line?: never });
+export type EditOverlayOptions = { target?: string } & ({ follow: false; source?: never;
+  series?: never; missing?: never; orderBy?: never } | { follow?: true; source?: string;
+  series?: "source" | "total"; missing?: "break" | "connect"; orderBy?: "x" | "y" });
 
 export interface SemanticScale {
   readonly id: string;
@@ -5438,6 +5470,8 @@ export class ChartProgram {
   removeMarkLabels(options: RemoveMarkLabelsOptions): ChartProgram;
   createAnnotation(options: CreateAnnotationOptions): ChartProgram;
   createStatisticalReference(options: CreateStatisticalReferenceOptions): ChartProgram;
+  createOverlay(options?: CreateOverlayOptions): ChartProgram;
+  editOverlay(options: EditOverlayOptions): ChartProgram;
   createReferenceLine(options: CreateReferenceLineOptions): ChartProgram;
   createReferenceBand(options: CreateReferenceBandOptions): ChartProgram;
   editTextMark(options: EditTextMarkOptions): ChartProgram;

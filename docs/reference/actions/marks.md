@@ -99,7 +99,7 @@ Length defaults to `14`; stroke width defaults to `2`. [Marks](../../api/marks.m
 
 **API layer:** user-facing. **Authoring roles:** H1, H2.
 
-**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 createStatisticalReference(options: CreateStatisticalReferenceOptions): ChartProgram;
@@ -370,7 +370,7 @@ keeps its percentage of the complete source.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editMarkLabelSelection(options: EditMarkLabelSelectionOptions): ChartProgram;
@@ -412,7 +412,7 @@ rebound with this action or removed.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editMarkLabelPlacement(options: EditMarkLabelPlacementOptions): ChartProgram;
@@ -456,7 +456,7 @@ Pass `"auto"` to restore the legacy source anchor and remove the owned placement
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 removeMarkLabels(options: RemoveMarkLabelsOptions): ChartProgram;
@@ -1624,6 +1624,83 @@ Global `cornerRadius` and per-corner `cornerRadiusTopLeft`, `cornerRadiusTopRigh
 `cornerRadiusBottomRight`, and `cornerRadiusBottomLeft` use non-negative logical pixels.
 Each corner override wins over the global fallback and clamps to half the smaller item side.
 Omitted corners fall back to the global radius or zero; edits retain unspecified overrides.
+
+
+## `createOverlay`
+
+**API layer:** user-facing. **Authoring roles:** H1, H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+createOverlay(options?: CreateOverlayOptions): ChartProgram;
+```
+
+Named option contracts: [`CreateOverlayOptions`](./../types.md#type-createoverlayoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `source` | Optional / branch-dependent | `string \| undefined` |
+| `basis` | Optional / branch-dependent | `"visibleItems" \| undefined` |
+| `series` | Optional / branch-dependent | `"source" \| "total" \| undefined` |
+| `missing` | Optional / branch-dependent | `"break" \| "connect" \| undefined` |
+| `orderBy` | Optional / branch-dependent | `"x" \| "y" \| undefined` |
+| `type` | Optional / branch-dependent | `"line" \| "point" \| undefined` |
+| `line` | Optional / branch-dependent | `OverlayLineAppearance \| undefined` |
+| `point` | Optional / branch-dependent | `OverlayPointAppearance \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createOverlay({ id?, source?, type?, basis?, series?, missing?, orderBy?, line?, point? } = {})
+```
+
+Add a line or point layer that follows a source mark's visible results. Bar overlays connect actual bar endpoints after aggregation, binning, grouping or stacking. `type` defaults to `line`; `series` defaults to `source`. Use `series: "total"` for the outer endpoints of stacked bars. Connecting a scatterplot requires `orderBy: "x"` or `"y"`. Appearance remains independently editable through ordinary encoding and mark actions. Inherited source colors stop following when the overlay receives an explicit color assignment.
+
+
+## `editOverlay`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+editOverlay(options: EditOverlayOptions): ChartProgram;
+```
+
+Named option contracts: [`EditOverlayOptions`](./../types.md#type-editoverlayoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `follow` | Optional / branch-dependent | `boolean \| undefined` |
+| `source` | Optional / branch-dependent | `string \| undefined` |
+| `series` | Optional / branch-dependent | `"source" \| "total" \| undefined` |
+| `missing` | Optional / branch-dependent | `"break" \| "connect" \| undefined` |
+| `orderBy` | Optional / branch-dependent | `"x" \| "y" \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editOverlay({ target?, source?, series?, missing?, orderBy?, follow? })
+```
+
+Change an overlay's dependency or gap policy. `follow: false` freezes current result geometry as an independent, normalized plot snapshot; it cannot be combined with other edits. Edit the source to change a following overlay's positions. Ordinary mark and encoding actions change its appearance.
 
 
 ## Related

@@ -2392,5 +2392,22 @@
     ],
     "layer": "user-facing",
     "domain": "encodings"
+  },
+  "createOverlay": {
+    "operation": "create",
+    "authoringRoles": [
+      "H1",
+      "H2"
+    ],
+    "layer": "user-facing",
+    "domain": "marks"
+  },
+  "editOverlay": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "marks"
   }
 }

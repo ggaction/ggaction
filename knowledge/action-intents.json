@@ -923,6 +923,11 @@
     "StatisticalReference": [
       "statistical reference",
       "interval"
+    ],
+    "Overlay": [
+      "overlay",
+      "linked result layer",
+      "layered chart"
     ]
   },
   "summaryOverrides": {
@@ -1662,6 +1667,13 @@
     "createStatisticalReference": {
       "source": "points",
       "axis": "y"
+    },
+    "createOverlay": {
+      "source": "bars"
+    },
+    "editOverlay": {
+      "target": "overlay",
+      "missing": "connect"
     }
   },
   "callPatternOverrides": {

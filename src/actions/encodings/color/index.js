@@ -1,9 +1,10 @@
+import { findLayer } from "../../../selectors/layers.js";
 import { findRaincloudParent } from "../../../selectors/raincloud.js";
 import { APPEARANCE_MARK_TYPES } from "../../../core/vocabulary.js";
 import { removeEncoding } from "../remove.js";
 import { validateNonEmptyString } from "../../../core/validation.js";
 import { inferSeriesGroup } from "../shared.js";
-import { action } from "../../../core/action.js";
+import { action, invokeWrappedActionImplementation } from "../../../core/action.js";
 import {
   readNominalField,
   readScaleField,
@@ -63,6 +64,12 @@ const encodeColor = /* @__PURE__ */ action(
     if (raincloud !== undefined) {
       const { target, ...color } = args;
       return this.editRaincloudPlot({ target, color });
+    }
+    const overlayTarget = findLayer(this, args.target ?? this.context.currentMark);
+    if (overlayTarget?.derivedBindings?.overlay?.inheritColor) {
+      const next = this.editSemantic({ property: `layer[${overlayTarget.id}].derivedBindings.overlay`,
+        value: { ...overlayTarget.derivedBindings.overlay, inheritColor: false } });
+      return invokeWrappedActionImplementation(encodeColor, next, args);
     }
     if (hasValue) {
       if (COLOR_ENCODING_OPTIONS.some(key => !["target", "value"].includes(key) && args[key] !== undefined)) {

@@ -1,6 +1,10 @@
 import type { ChartProgram, CompositionOptions } from "./program.js";
 
 export type {
+  CreateOverlayOptions,
+  EditOverlayOptions,
+  OverlayLineAppearance,
+  OverlayPointAppearance,
   LinearNiceCountOptions,
   AxisTickRounding,
   ArcInnerRadius,

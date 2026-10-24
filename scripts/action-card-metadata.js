@@ -33,6 +33,7 @@ const coreH3Names = new Set([
   "removeTheme"
 ]);
 const analyticMarkNames = new Set([
+  "createOverlay",
   "createStatisticalReference",
   "createReferenceLine",
   "createReferenceBand",
@@ -41,6 +42,7 @@ const analyticMarkNames = new Set([
 ]);
 
 const explicitFacadeEditors = Object.freeze({
+  createOverlay: ["editOverlay", "editLineMark", "editPointMark"],
   createDotPlot: ["editEndpointPlot"],
   createLollipopPlot: ["editEndpointPlot"],
   createDumbbellPlot: ["editEndpointPlot"],

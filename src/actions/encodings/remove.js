@@ -221,6 +221,9 @@ export const removeEncoding = /* @__PURE__ */ closedAction(
       );
     }
     const layer = resolveTarget(this, args.target, args.channel);
+    if (layer.derivedBindings?.overlay && ["x", "y", "x2", "y2", "xOffset", "yOffset", "group", "pathOrder"].includes(args.channel)) {
+      throw new Error("Overlay geometry follows its source; edit the source or detach the overlay first.");
+    }
     if (args.channel === "group" && layer.layout?.mode !== undefined && layer.layout.mode !== "overlay") throw new Error("Remove active series layout before removing its group.");
     if (args.channel === "theta" && layer.mark.type === "arc" &&
       ["count", "sum"].includes(layer.encoding?.radius?.aggregate)) {
@@ -254,6 +257,10 @@ export const removeEncoding = /* @__PURE__ */ closedAction(
       .filter(item => item.scale !== undefined);
 
     let next = this;
+    if (args.channel === "color" && layer.derivedBindings?.overlay?.inheritColor) {
+      next = next.editSemantic({ property: `layer[${layer.id}].derivedBindings.overlay`,
+        value: { ...layer.derivedBindings.overlay, inheritColor: false } });
+    }
     for (const channel of channels) {
       next = next.editSemantic({
         property: `layer[${layer.id}].encoding.${channel}`,

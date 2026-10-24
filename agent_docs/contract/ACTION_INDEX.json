@@ -5312,6 +5312,42 @@
         "effects": "complete",
         "tests": "complete"
       }
+    },
+    {
+      "name": "createOverlay",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Stable create-only",
+      "update": "editOverlay edits dependency; native mark and encoding editors own appearance; removeMark owns deletion",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/OVERLAYS.md",
+        "anchor": "createoverlay"
+      }
+    },
+    {
+      "name": "editOverlay",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "editOverlay edits dependency; native mark and encoding editors own appearance; removeMark owns deletion",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/OVERLAYS.md",
+        "anchor": "editoverlay"
+      }
     }
   ],
   "plannedActions": [],
@@ -5394,7 +5430,8 @@
       "rematerializeTickMark",
       "rematerializeTitle",
       "rematerializeVerticalGrid",
-      "materializeSortedData"
+      "materializeSortedData",
+      "rematerializeOverlay"
     ],
     "guideComponents": [
       "createLegendBackground",

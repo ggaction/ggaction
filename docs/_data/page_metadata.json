@@ -228,7 +228,7 @@
     "title": "Composition Recipe",
     "source": "docs/recipes/composition.md",
     "editSource": "docs/recipes/composition.md",
-    "description": "pointRows and barRows are arrays of plain row objects containing the named fields. Every child must already have one complete materialized Canvas.",
+    "description": "createOverlay adds a separately editable layer that follows another mark's final results.",
     "image": "/assets/images/program-composition.png"
   },
   "/recipes/facet/": {

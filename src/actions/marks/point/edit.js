@@ -1,3 +1,4 @@
+import { assertIndependentOverlayGeometry } from "../../../grammar/overlay.js";
 import { requestedMarkClip, validateMarkClipCoordinate } from "../../../selectors/markClip.js";
 import { action } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
@@ -45,6 +46,7 @@ export const editPointMark = /* @__PURE__ */ action(
       predicate: candidate => candidate.mark?.type === "point",
       label: "point mark"
     });
+    if (Object.hasOwn(args, "missing")) assertIndependentOverlayGeometry(layer, "editPointMark missing");
     const id = layer.id;
     if (Object.hasOwn(args, "shape") && layer.encoding?.shape !== undefined) {
       throw new Error(

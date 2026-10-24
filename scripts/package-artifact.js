@@ -23,9 +23,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 624, // Previous623 files plus the shared facet axis-gap owner.
-  packedBytes: 904_000, // Node22 measured901255 after complete-axis compaction; 624 files.
-  unpackedBytes: 4_272_000 // Measured 4,262,868 bytes after complete-axis compaction.
+  entries: 629, // 624 files plus five linked-overlay runtime modules.
+  packedBytes: 918_000, // Canonical package measured 911556 bytes with linked overlays.
+  unpackedBytes: 4_320_000 // Canonical package measured 4,305,819 bytes.
 });
 
 const REQUIRED_FILES = Object.freeze([

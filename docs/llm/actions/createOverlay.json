@@ -1,0 +1,119 @@
+{
+  "schemaVersion": 3,
+  "name": "createOverlay",
+  "layer": "user-facing",
+  "domain": "marks",
+  "summary": "Add a line or point layer that follows a source mark's visible results.",
+  "signature": "createOverlay(options?: CreateOverlayOptions): ChartProgram;",
+  "intents": [
+    "create overlay",
+    "create",
+    "add",
+    "graphical mark",
+    "mark appearance",
+    "overlay",
+    "linked result layer"
+  ],
+  "lifecycle": "Stable create-only",
+  "resources": {
+    "prerequisites": [
+      "dataset and coordinate context"
+    ],
+    "owns": [
+      "overlay"
+    ],
+    "idOptions": [
+      "id",
+      "source"
+    ]
+  },
+  "authoringRoles": [
+    "H1",
+    "H2"
+  ],
+  "wraps": [
+    "createLineMark",
+    "editSemantic"
+  ],
+  "editableVia": [
+    "editOverlay",
+    "editLineMark",
+    "editPointMark"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "source",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "dataset and coordinate context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "source",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "basis",
+      "required": false,
+      "type": "\"visibleItems\" | undefined"
+    },
+    {
+      "name": "series",
+      "required": false,
+      "type": "\"source\" | \"total\" | undefined"
+    },
+    {
+      "name": "missing",
+      "required": false,
+      "type": "\"break\" | \"connect\" | undefined"
+    },
+    {
+      "name": "orderBy",
+      "required": false,
+      "type": "\"x\" | \"y\" | undefined"
+    },
+    {
+      "name": "type",
+      "required": false,
+      "type": "\"line\" | \"point\" | undefined"
+    },
+    {
+      "name": "line",
+      "required": false,
+      "type": "OverlayLineAppearance | undefined"
+    },
+    {
+      "name": "point",
+      "required": false,
+      "type": "OverlayPointAppearance | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createOverlay({ id?, source?, basis?, series?, missing?, orderBy?, type?, line? })"
+  ],
+  "snippet": "program.createOverlay({ source: \"bars\" })",
+  "errors": [],
+  "route": "/reference/actions/marks/#createoverlay"
+}

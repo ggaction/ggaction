@@ -182,6 +182,8 @@ export function inferAxisTitleText(program, channel, scaleId) {
   const primaryTitles = new Set();
   for (const layer of program.semanticSpec.layers) {
     if (isSourceOwnedText(layer)) continue;
+    // Linked overlays consume the source's resolved positions, not a second axis meaning.
+    if (layer.derivedBindings?.overlay) continue;
     // Reference statistics reuse the source axis title.
     if (program.markConfigs[layer.id]?.statisticalReference !== undefined) continue;
     const primary = layer.encoding?.[channel];

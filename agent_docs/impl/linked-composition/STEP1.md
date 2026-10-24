@@ -20,7 +20,9 @@ createAdjacentPlot/editCompositionScales, 기존 concat 확장, 명시적 target
 사용자는 상단바 All/차트/overlay selector와 차트 네 가장자리의 + UI를 추가 승인했다.
 기존 semanticSpec/graphicSpec/renderer 경계 및 immutable 프로그램을 유지한다.
 
-Visual Gate: ready-for-review. 새 mark primitive를 도입하지 않지만 결과 추종 bar+line 및 공유 Y
+Visual Gate: approved. 사용자가 두 렌더에 대해 “이 기준으로 진행”이라고 명시적으로 답변했다.
+검토 revision: 9e4d6d6d7b03ea5bbadde894b7a55fbe360a99e4.
+새 mark primitive를 도입하지 않지만 결과 추종 bar+line 및 공유 Y
 병치의 대표 렌더를 test/gates/linked-composition에서 준비해 명시적 확인을 받는다.
 이 Gate는 해당 공개 chart flow 구현에만 적용하며 upstream 통합·코퍼스·범위 선택
 기반 작업은 계속한다. 패키지 게시·사이트 배포의 정확한 릴리스 revision은 최종 검증 후 확정한다.
@@ -43,3 +45,18 @@ Visual Gate: ready-for-review. 새 mark primitive를 도입하지 않지만 결�
 Canvas/transition 브라우저, 실행 가능한 코드·저장복원·내보내기.
 릴리스 단계: package consumer/boundary, 문서 생성 및 build, 전체 필수 suite와 성능
 반복 편집(20/50/100 actions), 원격 commit 일치. 실패를 제외하거나 완료로 표시하지 않는다.
+
+### 결과 추종 overlay 체크포인트
+
+- `createOverlay` / `editOverlay`의 공개 타입·inspection·계약·영문 문서·실행 예제를 구현했다.
+- source의 최종 bar/bin/stack/group/point/line/area geometry를 사용한다. 원본 변경,
+  facet, 색상 독립 편집, geometry 잠금, 명시적 detach, 저장·복원 경로를 검증했다.
+- 승인된 primitive의 stable 위치는 `test/charts/linked-composition/`이다.
+  공개 overlay와 primitive는 graphicSpec/SVG 및 decoded PNG pixels가 일치한다.
+- library unit 전체 4,261/4,261 통과. contracts 656개 중 두 inventory/selector 문제를 수정하고
+  해당 파일의 focused 검사를 다시 통과했다. overlay 추가 타입 검사 2/2, edge 검사 19/19,
+  실제 Chromium 공개 Canvas 예제 1/1 통과. docs:generate 완료.
+- Tick 수치 색상 회귀를 함께 발견·수정했고 관련 17개 기존 검사도 통과했다.
+- 앱 v0.0.24 baseline은 369개 중 23개 실패하며 주로 자동 Canvas centering/replay 관련이다.
+  앱 통합 단계에서 실제 replay와 저장 결과를 검증하여 해결할 예정이며 완료로 간주하지 않는다.
+- 공유 축 병치, 대상 selector, 코퍼스 갱신, 앱/transition 연결 및 릴리스 검증은 아직 진행 전이다.

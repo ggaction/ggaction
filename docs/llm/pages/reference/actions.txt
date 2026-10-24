@@ -68,6 +68,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createLookupData`](../../../reference/actions/statistics/#createlookupdata) | H1 | user-facing | statistics |
 | [`createMarkLabels`](../../../reference/actions/marks/#createmarklabels) | H1, H2 | user-facing | marks |
 | [`createNormalizedData`](../../../reference/actions/statistics/#createnormalizeddata) | H1 | user-facing | statistics |
+| [`createOverlay`](../../../reference/actions/marks/#createoverlay) | H1, H2 | user-facing | marks |
 | [`createParallelAxes`](../../../reference/actions/guides/#createparallelaxes) | H3 | user-facing | axes |
 | [`createParallelAxis`](../../../reference/actions/guides/#createparallelaxis) | H3 | user-facing | axes |
 | [`createParallelCoordinates`](../../../reference/actions/charts-data/#createparallelcoordinates) | H0 | user-facing | charts |
@@ -179,6 +180,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editMarkSelection`](../../../reference/actions/advanced/#editmarkselection) | H3 | advanced | mark-selection |
 | [`editNormalizedData`](../../../reference/actions/statistics/#editnormalizeddata) | H1, H3 | user-facing | statistics |
 | [`editOpacityScale`](../../../reference/actions/charts-data/#editopacityscale) | H2 | user-facing | core |
+| [`editOverlay`](../../../reference/actions/marks/#editoverlay) | H3 | user-facing | marks |
 | [`editParallelAxis`](../../../reference/actions/guides/#editparallelaxis) | H3 | user-facing | axes |
 | [`editParallelScale`](../../../reference/actions/charts-data/#editparallelscale) | H2 | user-facing | core |
 | [`editPointMark`](../../../reference/actions/marks/#editpointmark) | H3 | user-facing | marks |

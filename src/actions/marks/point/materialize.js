@@ -34,7 +34,7 @@ import { findLayer } from "../../../selectors/layers.js";
 import { resolveGraphicItemCapacity } from "../../../selectors/graphicCapacity.js";
 import { getMarkGraphicTypes } from "../../../core/vocabulary.js";
 import { canMaterializePoint } from "../../../materialization/marks/capabilities.js";
-import { rematerializeHighlightBaseline } from "../lifecycle.js";
+import { rematerializeHighlightBaseline, materializeFollowingOverlays } from "../lifecycle.js";
 import {
   resolveRowEncodingValues,
   resolveRowPositionValues
@@ -307,6 +307,7 @@ export const rematerializePointMark = /* @__PURE__ */ action(
   function (args = {}) {
     validateMarkOptions(args, REMATERIALIZE_OPTIONS, "rematerializePointMark");
     const id = validateUserId(args.id, "Point mark id");
+    if (findLayer(this, id)?.derivedBindings?.overlay) return this.rematerializeOverlay({ id });
     const highlighted = rematerializeHighlightBaseline(this, {
       target: id,
       operation: "rematerializePointMark",
@@ -453,11 +454,11 @@ export const rematerializePointMark = /* @__PURE__ */ action(
           ...strokeDetails
         });
       });
-      return materializeMarkClip(jittered.program.editGraphics({
+      return materializeFollowingOverlays(materializeMarkClip(jittered.program.editGraphics({
         target: id,
         property: "items",
         value: items
-      }), id);
+      }), id), id);
     }
 
     let next = graphic.items.length === dataset.values.length
@@ -552,6 +553,6 @@ export const rematerializePointMark = /* @__PURE__ */ action(
     for (const [property, value] of Object.entries(strokeDetails)) {
       next = next.editGraphics({ target: id, property, value });
     }
-    return materializeMarkClip(next, id);
+    return materializeFollowingOverlays(materializeMarkClip(next, id), id);
   }
 );

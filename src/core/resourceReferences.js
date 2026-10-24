@@ -134,6 +134,10 @@ export function collectMarkConfigReferences(program) {
     append(references, reference(
       "mark", layer.source, "layer", layer.id, ["source"]
     ));
+    append(references, reference(
+      "mark", layer.derivedBindings?.overlay?.source, "layer", layer.id,
+      ["derivedBindings", "overlay", "source"]
+    ));
   }
   for (const [ownerId, config] of Object.entries(program.markConfigs)) {
     collectKnownKeys(config, [], (key, value, path, parentPath) => {

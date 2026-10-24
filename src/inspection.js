@@ -136,6 +136,20 @@ export function describeAction(program, { action, target, options = {} } = {}) {
   const required = descriptor?.options.filter(option => option.required).map(option => option.path) ?? [];
   const missing = required.filter(key => options[key] === undefined);
   let fieldFinding = [];
+  if (["createOverlay", "editOverlay"].includes(action)) {
+    const scoped = atChildPath(program, target?.childPath);
+    const id = action === "createOverlay" ? options.source ?? target?.id ?? scoped.context.currentMark
+      : options.target ?? target?.id ?? scoped.context.currentMark;
+    const layer = findLayer(scoped, id);
+    if (layer === undefined) missing.push(action === "createOverlay" ? "source" : "target");
+    else if (action === "editOverlay" ? !layer.derivedBindings?.overlay :
+      layer.derivedBindings?.overlay || !["bar", "line", "point", "area"].includes(layer.mark?.type) ||
+      findCoordinate(scoped, layer.coordinate)?.type !== "cartesian") {
+      fieldFinding.push({ severity: "error", code: "unsupported-combination", reason: "overlay-source",
+        message: action === "createOverlay" ? "Overlay requires an independent Cartesian bar, line, area, or point source."
+          : "editOverlay requires a linked overlay target." });
+    } else if (action === "createOverlay" && layer.mark.type === "point" && options.type !== "point" && !options.orderBy) missing.push("orderBy");
+  }
   if (targetResource !== undefined && target.kind === "mark") {
     const scoped = atChildPath(program, target.childPath);
     // Plot editors address source roles, whereas encoding actions address the
@@ -152,7 +166,7 @@ export function describeAction(program, { action, target, options = {} } = {}) {
     }).schema;
     if (schema.completeness === "known") {
       const fields = new Set(schema.fields.map(field => field.name));
-      fieldFinding = (descriptor?.options ?? [])
+      fieldFinding.push(...(descriptor?.options ?? [])
         .filter(definition => definition.kind === "field" &&
           typeof options[definition.path] === "string" &&
           !fields.has(options[definition.path]))
@@ -163,7 +177,7 @@ export function describeAction(program, { action, target, options = {} } = {}) {
           message: `Dataset does not contain field "${options[definition.path]}".`,
           resource: resourceRef("data", sourceData, target.childPath),
           optionPath: definition.path
-        }));
+        })));
     }
   }
   if (unknown === undefined && missing.length === 0 &&
@@ -413,7 +427,10 @@ function inspectMark(program, layer, childPath) {
         ? Math.max(0, dataset.values.length - items.length) : null }
     ],
     bounds: union,
-    sourceRefs: dataset === undefined ? [] : [resourceRef("data", dataset.id, childPath)],
+    sourceRefs: [
+      ...(dataset === undefined ? [] : [resourceRef("data", dataset.id, childPath)]),
+      ...(layer.derivedBindings?.overlay ? [resourceRef("mark", layer.derivedBindings.overlay.source, childPath)] : [])
+    ],
     checks: [
       { name: "concrete-structure", status: graphic === undefined && !program.compositionSpec?.facet ? "failed" : logicalSupported ? "passed" : "not_applicable", evidencePaths: [layer.id], findings: [] },
       { name: "pixel-visibility", status: "not_run", evidencePaths: [], findings: [] }

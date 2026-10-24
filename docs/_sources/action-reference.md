@@ -1581,6 +1581,22 @@ Global `cornerRadius` and per-corner `cornerRadiusTopLeft`, `cornerRadiusTopRigh
 Each corner override wins over the global fallback and clamps to half the smaller item side.
 Omitted corners fall back to the global radius or zero; edits retain unspecified overrides.
 
+### `createOverlay`
+
+```javascript
+createOverlay({ id?, source?, type?, basis?, series?, missing?, orderBy?, line?, point? } = {})
+```
+
+Add a line or point layer that follows a source mark's visible results. Bar overlays connect actual bar endpoints after aggregation, binning, grouping or stacking. `type` defaults to `line`; `series` defaults to `source`. Use `series: "total"` for the outer endpoints of stacked bars. Connecting a scatterplot requires `orderBy: "x"` or `"y"`. Appearance remains independently editable through ordinary encoding and mark actions. Inherited source colors stop following when the overlay receives an explicit color assignment.
+
+### `editOverlay`
+
+```javascript
+editOverlay({ target?, source?, series?, missing?, orderBy?, follow? })
+```
+
+Change an overlay's dependency or gap policy. `follow: false` freezes current result geometry as an independent, normalized plot snapshot; it cannot be combined with other edits. Edit the source to change a following overlay's positions. Ordinary mark and encoding actions change its appearance.
+
 ### `createStatisticalReference`
 
 ```javascript

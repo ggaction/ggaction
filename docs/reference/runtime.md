@@ -25,6 +25,10 @@ These blocks are generated from the declaration file owned by each package entry
 
 ```typescript
 export type {
+  CreateOverlayOptions,
+  EditOverlayOptions,
+  OverlayLineAppearance,
+  OverlayPointAppearance,
   LinearNiceCountOptions,
   AxisTickRounding,
   ArcInnerRadius,

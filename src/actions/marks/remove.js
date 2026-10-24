@@ -4,6 +4,7 @@ import { isSourceOwnedText } from "../../grammar/text.js";
 import { closedAction } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
 
+import { findSemanticScale } from "../../selectors/scales.js";
 import { findDataset } from "../../selectors/datasets.js";
 import { findLayer } from "../../selectors/layers.js";
 import { applyDetachedScaleRematerialization } from "../../materialization/dependencies.js";
@@ -222,6 +223,7 @@ export const removeMark = /* @__PURE__ */ closedAction(
     }
     const previousLayers = ids.map(id => findLayer(this, id));
     const derived = ownedDerivedData(this, ids);
+    const ownedScales = new Set(ids.map(id => this.markConfigs[id]?.seriesOffsetScale).filter(Boolean));
     const positionScales = usedPositionScales(this, ids);
     let next = this;
 
@@ -277,6 +279,11 @@ export const removeMark = /* @__PURE__ */ closedAction(
       }
     }
     next = applyDetachedScaleRematerialization(next, previousLayers);
+    for (const id of ownedScales) {
+      const references = collectResourceReferences(next, { kind: "scale", id })
+        .filter(reference => reference.strength !== "context");
+      if (references.length === 0 && findSemanticScale(next, id) !== undefined) next = next.removeScale({ id });
+    }
     return next._withContext({
       ...(ids.includes(this.context.currentMark) ? { currentMark: undefined } : {}),
       ...(selectionCleanup.selectionIds.includes(this.context.currentSelection)

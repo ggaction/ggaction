@@ -1,4 +1,5 @@
 import { materializeMarkClip } from "../../materialization/markClip.js";
+import { materializeFollowingOverlays } from "./lifecycle.js";
 import { isSourceOwnedText } from "../../grammar/text.js";
 import {
   resolveOptionalUserId,
@@ -244,5 +245,5 @@ export function editMarkGraphic(program, target, properties) {
   for (const [property, value] of Object.entries(properties)) {
     program = program.editGraphics({ target, property, value });
   }
-  return materializeMarkClip(program, target);
+  return materializeFollowingOverlays(materializeMarkClip(program, target), target);
 }
