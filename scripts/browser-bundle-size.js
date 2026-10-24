@@ -5,8 +5,8 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 454_000, // Node24 prospective axis-title replay measured453148 gzip bytes.
-  "ggaction/basic": 233_000, // Node24 prospective axis-title replay measured232016 gzip bytes.
+  ggaction: 464_500, // Scoped targets, shared layout and reactive overlays: measured 463206 gzip bytes.
+  "ggaction/basic": 239_000, // Shared immutable dispatch/layout infrastructure: measured 237880 gzip bytes.
   "ggaction/svg": 25_000
 });
 

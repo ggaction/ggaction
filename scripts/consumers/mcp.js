@@ -57,7 +57,7 @@ export async function testMcpConsumer(directory) {
   const installedCards = new Map(actionCards.cards.map(card => [card.name, card]));
   if (
     installedCards.get("editLegendBlock")?.signature !==
-      "editLegendBlock(options: EditLegendBlockOptions): ChartProgram;" ||
+      "editLegendBlock(options: TargetedOptions<EditLegendBlockOptions>): ChartProgram;" ||
     installedCards.get("editLegendBlock")?.supports.entryPoints.join(",") !== "default" ||
     installedCards.get("editLegendBlock")?.inference.find(entry =>
       entry.input === "target")?.strategy !== "explicit" ||
@@ -68,7 +68,7 @@ export async function testMcpConsumer(directory) {
   }
     if (
       installedCards.get("editMarkLabelSelection")?.signature !==
-      "editMarkLabelSelection(options: EditMarkLabelSelectionOptions): ChartProgram;" ||
+      "editMarkLabelSelection(options: TargetedOptions<EditMarkLabelSelectionOptions>): ChartProgram;" ||
     installedCards.get("editMarkLabelSelection")?.supports.entryPoints.join(",") !== "default" ||
     installedCards.get("editMarkLabelSelection")?.inference.find(entry => entry.input === "target")?.strategy !== "explicit"
   ) {
@@ -76,7 +76,7 @@ export async function testMcpConsumer(directory) {
     }
     if (
       installedCards.get("editMarkLabelPlacement")?.signature !==
-        "editMarkLabelPlacement(options: EditMarkLabelPlacementOptions): ChartProgram;" ||
+        "editMarkLabelPlacement(options: TargetedOptions<EditMarkLabelPlacementOptions>): ChartProgram;" ||
       installedCards.get("editMarkLabelPlacement")?.supports.entryPoints.join(",") !== "default" ||
       installedCards.get("editMarkLabelPlacement")?.inference.find(entry => entry.input === "target")?.strategy !== "explicit"
     ) {
@@ -84,14 +84,14 @@ export async function testMcpConsumer(directory) {
     }
   if (
     installedCards.get("editCoordinate")?.signature !==
-      "editCoordinate(options: EditCoordinateOptions): ChartProgram;" ||
+      "editCoordinate(options: TargetedOptions<EditCoordinateOptions>): ChartProgram;" ||
     installedCards.get("editCoordinate")?.supports.entryPoints.join(",") !== "default"
   ) {
     throw new Error("Installed coordinate aspect discovery metadata is stale.");
   }
   if (
     installedCards.get("removeMarkLabels")?.signature !==
-      "removeMarkLabels(options: RemoveMarkLabelsOptions): ChartProgram;" ||
+      "removeMarkLabels(options: TargetedOptions<RemoveMarkLabelsOptions>): ChartProgram;" ||
     installedCards.get("removeMarkLabels")?.supports.entryPoints.join(",") !== "default" ||
     installedCards.get("removeMarkLabels")?.inference.some(entry => entry.strategy !== "explicit")
   ) {
@@ -99,44 +99,44 @@ export async function testMcpConsumer(directory) {
   }
   if (
     installedCards.get("encodeChannels")?.signature !==
-      "encodeChannels(options: EncodeChannelsOptions): ChartProgram;" ||
+      "encodeChannels(options: TargetedOptions<EncodeChannelsOptions>): ChartProgram;" ||
     installedCards.get("encodeChannels")?.supports.entryPoints.join(",") !== "default"
   ) {
     throw new Error("Installed atomic encoding discovery metadata is stale.");
   }
   if (installedCards.get("createNormalizedData")?.signature !==
-    "createNormalizedData(options: NormalizedDataOptions): ChartProgram;") {
+    "createNormalizedData(options: TargetedOptions<NormalizedDataOptions>): ChartProgram;") {
     throw new Error("Installed normalization discovery metadata is stale.");
   }
   if (
     installedCards.get("createCompleteData")?.signature !==
-      "createCompleteData(options: CompleteDataOptions): ChartProgram;" ||
+      "createCompleteData(options: TargetedOptions<CompleteDataOptions>): ChartProgram;" ||
     installedCards.get("createImputedData")?.signature !==
-      "createImputedData(options: ImputedDataOptions): ChartProgram;"
+      "createImputedData(options: TargetedOptions<ImputedDataOptions>): ChartProgram;"
   ) {
     throw new Error("Installed missing-data discovery metadata is stale.");
   }
   if (
     installedCards.get("editDerivedData")?.signature !==
-      "editDerivedData(options: EditDerivedDataOptions): ChartProgram;" ||
+      "editDerivedData(options: TargetedOptions<EditDerivedDataOptions>): ChartProgram;" ||
     installedCards.get("editComputedData")?.signature !==
-      "editComputedData(options: EditComputedDataOptions): ChartProgram;"
+      "editComputedData(options: TargetedOptions<EditComputedDataOptions>): ChartProgram;"
   ) {
     throw new Error("Installed derived-data editing metadata is stale.");
   }
   if (installedCards.get("editParallelScale")?.signature !==
-    "editParallelScale(options: EditParallelScaleOptions): ChartProgram;") {
+    "editParallelScale(options: TargetedOptions<EditParallelScaleOptions>): ChartProgram;") {
     throw new Error("Installed Parallel scale editing metadata is stale.");
   }
   if (installedCards.get("editStrokeScale")?.signature !==
-    "editStrokeScale(options: EditStrokeScaleOptions): ChartProgram;") {
+    "editStrokeScale(options: TargetedOptions<EditStrokeScaleOptions>): ChartProgram;") {
     throw new Error("Installed stroke scale editing metadata is stale.");
   }
   if (
     installedCards.get("editXOffsetScale")?.signature !==
-      "editXOffsetScale(options: EditXOffsetScaleOptions): ChartProgram;" ||
+      "editXOffsetScale(options: TargetedOptions<EditXOffsetScaleOptions>): ChartProgram;" ||
     installedCards.get("editYOffsetScale")?.signature !==
-      "editYOffsetScale(options: EditYOffsetScaleOptions): ChartProgram;"
+      "editYOffsetScale(options: TargetedOptions<EditYOffsetScaleOptions>): ChartProgram;"
   ) {
     throw new Error("Installed offset-scale editing metadata is stale.");
   }
