@@ -202,37 +202,51 @@ export interface RemoveCompositionChildOptions { target: string; }
 export interface ReorderCompositionChildrenOptions {
   order: readonly [string, ...string[]];
 }
-type AdjacentConstructorOptions<T> = T extends unknown ? Omit<T, "id"> : never;
+type AdjacentConstructorOptions<T> = T extends unknown ? Partial<Omit<T, "id">> : never;
 export type AdjacentPlotSpecification =
-  | { action: "createScatterPlot"; options: AdjacentConstructorOptions<CreateScatterPlotOptions> }
+  | { action: "createScatterPlot"; options?: AdjacentConstructorOptions<CreateScatterPlotOptions> }
   | { action: "createLinePlot"; options?: Partial<AdjacentConstructorOptions<CreateLinePlotOptions>> }
   | { action: "createBarPlot"; options?: Partial<AdjacentConstructorOptions<CreateBarPlotOptions>> }
-  | { action: "createAreaPlot"; options: AdjacentConstructorOptions<CreateAreaPlotOptions> }
-  | { action: "createDotPlot"; options: AdjacentConstructorOptions<CreateDotPlotOptions> }
-  | { action: "createLollipopPlot"; options: AdjacentConstructorOptions<CreateLollipopPlotOptions> }
-  | { action: "createDumbbellPlot"; options: AdjacentConstructorOptions<CreateDumbbellPlotOptions> }
-  | { action: "createECDFPlot"; options: AdjacentConstructorOptions<CreateECDFPlotOptions> }
-  | { action: "createIntervalPlot"; options: AdjacentConstructorOptions<CreateIntervalPlotOptions> }
-  | { action: "createRegressionPlot"; options: AdjacentConstructorOptions<CreateRegressionPlotOptions> }
-  | { action: "createRugPlot"; options: AdjacentConstructorOptions<CreateRugPlotOptions> }
-  | { action: "createStripPlot"; options: AdjacentConstructorOptions<CreateStripPlotOptions> }
-  | { action: "createBeeswarmPlot"; options: AdjacentConstructorOptions<CreateBeeswarmPlotOptions> }
-  | { action: "createRaincloudPlot"; options: AdjacentConstructorOptions<CreateRaincloudPlotOptions> }
-  | { action: "createBoxPlot"; options: AdjacentConstructorOptions<BoxPlotOptions> }
-  | { action: "createGradientPlot"; options: AdjacentConstructorOptions<GradientPlotOptions> }
-  | { action: "createViolinPlot"; options: AdjacentConstructorOptions<ViolinPlotOptions> }
-  | { action: "createDensityPlot"; options: AdjacentConstructorOptions<CreateDensityPlotOptions> }
-  | { action: "createHorizonPlot"; options: AdjacentConstructorOptions<CreateHorizonPlotOptions> }
-  | { action: "createHistogram"; options: AdjacentConstructorOptions<CreateHistogramOptions> }
-  | { action: "createHeatmap"; options: AdjacentConstructorOptions<CreateHeatmapOptions> }
-  | { action: "createPiePlot"; options: AdjacentConstructorOptions<CreatePiePlotOptions> }
-  | { action: "createRosePlot"; options: AdjacentConstructorOptions<CreateRosePlotOptions> }
-  | { action: "createRadialBarPlot"; options: AdjacentConstructorOptions<CreateRadialBarPlotOptions> }
-  | { action: "createPolarScatterPlot"; options: AdjacentConstructorOptions<CreatePolarScatterPlotOptions> }
-  | { action: "createPolarLinePlot"; options: AdjacentConstructorOptions<CreatePolarLinePlotOptions> }
-  | { action: "createRadarPlot"; options: AdjacentConstructorOptions<CreateRadarPlotOptions> }
-  | { action: "createParallelCoordinates"; options: AdjacentConstructorOptions<CreateParallelCoordinatesOptions> }
-  | { action: "createTextPlot"; options: AdjacentConstructorOptions<CreateTextPlotOptions> };
+  | { action: "createAreaPlot"; options?: AdjacentConstructorOptions<CreateAreaPlotOptions> }
+  | { action: "createDotPlot"; options?: AdjacentConstructorOptions<CreateDotPlotOptions> }
+  | { action: "createLollipopPlot"; options?: AdjacentConstructorOptions<CreateLollipopPlotOptions> }
+  | { action: "createDumbbellPlot"; options?: AdjacentConstructorOptions<CreateDumbbellPlotOptions> }
+  | { action: "createECDFPlot"; options?: AdjacentConstructorOptions<CreateECDFPlotOptions> }
+  | { action: "createIntervalPlot"; options?: AdjacentConstructorOptions<CreateIntervalPlotOptions> }
+  | { action: "createRegressionPlot"; options?: AdjacentConstructorOptions<CreateRegressionPlotOptions> }
+  | { action: "createRugPlot"; options?: AdjacentConstructorOptions<CreateRugPlotOptions> }
+  | { action: "createStripPlot"; options?: AdjacentConstructorOptions<CreateStripPlotOptions> }
+  | { action: "createBeeswarmPlot"; options?: AdjacentConstructorOptions<CreateBeeswarmPlotOptions> }
+  | { action: "createRaincloudPlot"; options?: AdjacentConstructorOptions<CreateRaincloudPlotOptions> }
+  | { action: "createBoxPlot"; options?: AdjacentConstructorOptions<BoxPlotOptions> }
+  | { action: "createGradientPlot"; options?: AdjacentConstructorOptions<GradientPlotOptions> }
+  | { action: "createViolinPlot"; options?: AdjacentConstructorOptions<ViolinPlotOptions> }
+  | { action: "createDensityPlot"; options?: AdjacentConstructorOptions<CreateDensityPlotOptions> }
+  | { action: "createHorizonPlot"; options?: AdjacentConstructorOptions<CreateHorizonPlotOptions> }
+  | { action: "createHistogram"; options?: AdjacentConstructorOptions<CreateHistogramOptions> }
+  | { action: "createHeatmap"; options?: AdjacentConstructorOptions<CreateHeatmapOptions> }
+  | { action: "createPiePlot"; options?: AdjacentConstructorOptions<CreatePiePlotOptions> }
+  | { action: "createRosePlot"; options?: AdjacentConstructorOptions<CreateRosePlotOptions> }
+  | { action: "createRadialBarPlot"; options?: AdjacentConstructorOptions<CreateRadialBarPlotOptions> }
+  | { action: "createPolarScatterPlot"; options?: AdjacentConstructorOptions<CreatePolarScatterPlotOptions> }
+  | { action: "createPolarLinePlot"; options?: AdjacentConstructorOptions<CreatePolarLinePlotOptions> }
+  | { action: "createRadarPlot"; options?: AdjacentConstructorOptions<CreateRadarPlotOptions> }
+  | { action: "createParallelCoordinates"; options?: AdjacentConstructorOptions<CreateParallelCoordinatesOptions> }
+  | { action: "createTextPlot"; options?: AdjacentConstructorOptions<CreateTextPlotOptions> };
+/** A native constructor with positional/data decisions inferred from the source. */
+export type LayerPlotSpecification = {
+  [Action in AdjacentPlotSpecification["action"]]: {
+    action: Action;
+    options?: Partial<NonNullable<Extract<AdjacentPlotSpecification, { action: Action }>["options"]>>;
+  }
+}[AdjacentPlotSpecification["action"]];
+export interface CreateLayerPlotOptions {
+  id?: string;
+  source?: string;
+  plot: LayerPlotSpecification;
+  placement?: "front" | "back";
+}
+
 export interface CreateAdjacentPlotOptions {
   id?: string;
   /** Source mark in a unit/facet, or an explicit panel path relative to the receiving concat. */
@@ -3339,17 +3353,15 @@ export type ParallelDimension = string | ({
 } & (
   | {
       fieldType: "quantitative";
-      scale?: WithoutScaleId<QuantitativePositionScaleOptions>;
+      scale?: QuantitativePositionScaleOptions;
     }
   | {
       fieldType: "ordinal";
-      scale?: WithoutScaleId<CategoricalPositionScaleOptions>;
+      scale?: CategoricalPositionScaleOptions;
     }
   | {
       fieldType?: undefined;
-      scale?: WithoutScaleId<
-        QuantitativePositionScaleOptions | CategoricalPositionScaleOptions
-      >;
+      scale?: QuantitativePositionScaleOptions | CategoricalPositionScaleOptions;
     }
 ));
 export interface ParallelCoordinatesEncodingOptions {
@@ -5523,6 +5535,7 @@ export class ChartProgram {
   createAnnotation(options: TargetedOptions<CreateAnnotationOptions>): ChartProgram;
   createStatisticalReference(options: TargetedOptions<CreateStatisticalReferenceOptions>): ChartProgram;
   createOverlay(options?: TargetedOptions<CreateOverlayOptions>): ChartProgram;
+  createLayerPlot(options: TargetedOptions<CreateLayerPlotOptions>): ChartProgram;
   createAdjacentPlot(options?: TargetedOptions<CreateAdjacentPlotOptions>): ChartProgram;
   editCompositionScales(options: TargetedOptions<EditCompositionScalesOptions>): ChartProgram;
   editOverlay(options: TargetedOptions<EditOverlayOptions>): ChartProgram;

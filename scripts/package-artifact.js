@@ -23,9 +23,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 634, // Linked overlay plus five composition/target runtime modules.
-  packedBytes: 934_000, // Canonical composition package measured 921,629 bytes.
-  unpackedBytes: 4_410_000 // Canonical composition package measured 4,384,849 bytes.
+  entries: 641, // Independent layer action, role/provenance planners and inspection metadata.
+  packedBytes: 945_000, // Independent layer composition measured 936,639 bytes.
+  unpackedBytes: 4_470_000 // Independent layer composition measured 4,439,519 bytes.
 });
 
 const REQUIRED_FILES = Object.freeze([

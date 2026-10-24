@@ -14,7 +14,7 @@ export function resolveBinnedPositionDomain({
   );
   if (binnedPositions.length === 0) return undefined;
   const independentConsumers = valuesByConsumer.filter(({ consumer, scalePolicy }) =>
-    scalePolicy !== false && !isSourceOwnedText(consumer.layer)
+    scalePolicy !== false && !isSourceOwnedText(consumer.layer) && consumer.layer.mark?.type !== "tick"
   );
   if (channel !== "x" || binnedPositions.length !== independentConsumers.length) {
     throw new Error(

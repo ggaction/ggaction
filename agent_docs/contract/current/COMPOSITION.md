@@ -632,12 +632,10 @@ policies govern final snapshots; no bitmap stretching is involved.
 The new chart receives an independent snapshot of the source's materialized data and theme.
 `plot.options.data` may name another materialized dataset in the same source view.
 `plot.options.id` is rejected; the top-level `id` owns both the new view and mark. The default is a line,
-right placement, plot alignment, and shared Y. Left also shares Y; top/bottom share X. Caller
+right placement and plot alignment. Horizontal placement defaults to shared Y and vertical placement to shared X only when field, measurement operations and Cartesian coordinate meanings are compatible. Caller
 `share` replaces the default. No layer or data dependency is introduced between adjacent views.
 
-Line and bar defaults inherit fields, field types, aggregation and bins; shared channels also
-inherit scale definitions. Other constructors, including area, require their native options;
-aggregation is never silently discarded. All constructors
+All constructor defaults use the shared positional-role registry to recover original input fields and data. Line/bar retain supported aggregation and bins; point/distribution charts use original observations. Different measurement operations disable automatic sharing; explicit incompatible sharing rejects. Shared channels inherit scale definitions. Ambiguous additional roles require native options. All constructors
 retain their ordinary validity and data-shape requirements. Explicit native plot options override
 inferred values. New chart appearance uses its constructor; inherited theme/text metrics are retained.
 
@@ -698,3 +696,28 @@ The outer trace records one requested function; retained child traces contain th
   Mixed backgrounds preserve the existing parent surface (initially white).
 - Serialization, nested child edits, and repeated guide creation preserve these rules.
 - Evidence: `test/unit/actions/composition/concat-guides.test.js` and `shared-combined-legends.test.js`.
+
+## `createLayerPlot`
+
+- Signature: `createLayerPlot({ id?, source?, plot, placement? })`.
+- Adds an independent native plot in an existing unit view. `plot.action` uses the same constructor registry as `createAdjacentPlot`; `plot.options` contains that constructor's options with source data and positional fields safely inferred. The top-level `id` owns the new plot; nested `options.id` is rejected. The default `layer` ID is available once. Scoped targets and `editFacetSource` reuse ordinary composition dispatch.
+- `source` selects an independent plot owner. Compound Box/Violin/Gradient/Interval/Endpoint/Raincloud and derived dataset provenance resolve to the original input fields rather than internal statistical aliases. Read-only `getPlotComposition(program, { target?, childPath? })` from `ggaction/inspection` exposes version 1, owner, recursive ownedMarks, source data, coordinate, channels, dimensions and measurement provenance. It does not render or mutate a program.
+- Layering requires compatible coordinate families, source fields, field types, temporal units and measurement units. Raw values, mean/median/quantile summaries share the original value unit. Count, sum, density, cumulative probability, normalized and folded values do not silently become raw observations. A count histogram can share its measure axis with a Rug; density/ECDF cannot be laid on count heights. Radar and Parallel layers require identical dimensions/order. Horizon layers require identical folding parameters. Ambiguous roles (e.g. Dumbbell's second measure) need explicit options.
+- Shared named scales are reused, never reset by constructor defaults. Explicit conflicting scale definitions are rejected; edit the shared resource first. When a distribution requires band geometry, an existing categorical point scale is promoted with a native `editScale` child action so all consumers align. Parallel dimension `scale.id` can name an existing compatible scale.
+- Implicitly re-encoding one positional field on a shared scale rejects if it would change the meaning still used by another independent owner. Explicit scale IDs retain the ordinary native resource semantics; a different scale remains subject to the existing guide-rebinding constraints. Pie layers preserve the exact category partition and weight; Rose and Radial Bar layers must retain the same area or radius-length mapping.
+- `placement` is `front` (default) or `back`. All owned marks move as one block within their existing graphic parent; guides retain their relative order. Independent appearance edits target the new owner; shared scale edits affect all consumers. Constructors consume existing guides (`guides:false`); call `createGuides` once after constructing the view.
+- Color uses the source mapping when its field is available at the new layer's statistical grain. Category-only summaries omit an unrelated inherited color while preserving the source layer's mapping; an explicit unsupported color rejects. Interval summaries infer categorical color as groupBy. An explicit Violin split preserves its split-field color. Endpoint summaries require color to be the category; continuous distribution grouping is rejected. Distinct coordinate families and incompatible units remain available through independent `createAdjacentPlot`.
+- Existing `createOverlay` remains the explicit `visibleItems` follower. `createLayerPlot` recomputes its own native statistics from shared source data and is not a second follower implementation or stored chart recipe.
+- `describeAction` uses the same constructor planner to report incompatible roles/units without constructing chart candidates. Successful preflight does not replace the native constructor's data-level validation.
+
+### Formal values — `createLayerPlot`
+
+- Implemented: `createLayerPlot({ id?: UserId, source?: ExistingIndependentMarkId, plot: LayerPlotSpecification, placement?: "front"|"back" }): ChartProgram`.
+- `LayerPlotSpecification` is the native adjacent constructor union with optional inferable options. No app-only action or prototype patch is used. Default guide creation is suppressed; explicit non-false nested guides are rejected because guides belong to the shared view.
+- Proposed (NOT IMPLEMENTED): None.
+- Lifecycle: structural create-only; native constructor-specific editors, encoding actions, shared scale editors and `removeMark` own subsequent changes.
+
+### Value coverage — `createLayerPlot`
+
+- ✅ Covered. Evidence: `test/charts/linked-composition/variants/independent-layers/`: approved visual targets, 148 directional constructor combinations, shared resource/ownership, independent appearance, persistence and resize.
+- `test/unit/actions/composition/layer-plot.test.js`: incompatible units/coordinates, immutable failures, facet/nested concat and source updates.

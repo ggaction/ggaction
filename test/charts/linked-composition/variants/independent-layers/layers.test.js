@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { serializeProgram, deserializeProgram } from '../../../src/persistence.js';
-import { createTransitionScene } from '../../../src/scene.js';
+import { serializeProgram, deserializeProgram } from '../../../../../src/persistence.js';
+import { createTransitionScene } from '../../../../../src/scene.js';
 import { build, variants, rows } from './manifest.js';
 
 for (const variant of variants) test(`${variant.id}: common measurement, editable owners, replay and resize`, () => {

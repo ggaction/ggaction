@@ -329,6 +329,20 @@ Remove the most recently applied theme scope on that receiver. Composition
 removal deletes only that composition's frame, so a previously hidden child or
 ancestor theme becomes active again. Explicit local styles remain unchanged.
 
+### `createLayerPlot`
+
+```javascript
+createLayerPlot({ id?, source?, plot: { action, options? }, placement?: "front" | "back" })
+```
+
+Add an independent native chart to the source chart's coordinates. Data and positional
+roles are inferred from the original fields, including distribution summaries. Compatible
+measurement units and named scales are shared; appearance remains independently editable.
+The entire owned mark group moves together in front of or behind the source.
+`getPlotComposition(program, { target })` from `ggaction/inspection` describes the source
+roles. Use `createOverlay` to follow already computed visible results instead.
+[Independent layers and adjacent charts](../api/composition/editing.md)
+
 ### `createAdjacentPlot`
 
 ```javascript
@@ -337,11 +351,12 @@ createAdjacentPlot({ id?, source?, position?, plot?, share?, gap?, align? } = {}
 
 Add an independent chart next to a unit or facet view. Placement is left, right, top or bottom.
 The default line inherits source fields, binning and aggregation; `plot: { action, options }`
-selects any built-in chart constructor with its native options. Area and other constructors
-require explicit field options. `plot.options.data` selects a materialized source-view dataset;
+selects any built-in chart constructor. Original fields and data are inferred through each
+constructor's native positional roles; ambiguous additional fields require explicit options. `plot.options.data` selects a materialized source-view dataset;
 the adjacent view receives its own snapshot. The top-level `id` owns its view and mark.
-Horizontal placement shares Y by default; vertical placement shares X. `share` replaces that
-default. `align: "plot"` matches actual plot frames without stretching text or symbols.
+Horizontal placement shares compatible Y meanings by default; vertical placement shares
+compatible X meanings. Different aggregates or coordinate families stay independent. An
+explicit `share` replaces that default and rejects incompatible meanings. `align: "plot"` matches actual plot frames without stretching text or symbols.
 [Shared scales and adjacent charts](../api/composition/editing.md)
 
 ### `editCompositionScales`

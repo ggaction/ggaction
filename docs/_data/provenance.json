@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "status": "development",
   "packageVersion": "0.0.25",
-  "contractId": "sha256:8cd24ba8463988e7fa5d2784f87d5526c92af8e5196eb3ec44852def2ffbf9a4",
+  "contractId": "sha256:973d2f8c7fb868a47c8b37261b63098a619bfa9ddd2ec831636c1a27a48ae46d",
   "sourceCommit": null,
   "sourceRef": "main",
   "exampleSourceRef": "ab206c446ae5010eecfd859427775c4785d8aed4",
@@ -11,7 +11,7 @@
     "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
     "actionCount": 234
   },
-  "actionCount": 297,
+  "actionCount": 298,
   "actionAvailability": {
     "createCanvas": {
       "availableBy": "v0.0.13"
@@ -316,6 +316,10 @@
       "status": "development"
     },
     "createOverlay": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "createLayerPlot": {
       "introducedAfter": "v0.0.13",
       "status": "development"
     },

@@ -294,6 +294,7 @@
   "layoutSeries": "/reference/actions/encodings/#layoutseries",
   "createOverlay": "/reference/actions/marks/#createoverlay",
   "editOverlay": "/reference/actions/marks/#editoverlay",
+  "createLayerPlot": "/reference/actions/charts-data/#createlayerplot",
   "createAdjacentPlot": "/reference/actions/charts-data/#createadjacentplot",
   "editCompositionScales": "/reference/actions/charts-data/#editcompositionscales"
 }

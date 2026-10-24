@@ -14,6 +14,7 @@ const DIMENSION_OPTIONS = Object.freeze([
 const FIELD_TYPES = new Set(["quantitative", "ordinal"]);
 const MISSING_POLICIES = new Set(["break", "drop-row", "error"]);
 const DIMENSION_SCALE_OPTIONS = Object.freeze([
+  "id",
   "type", "domain", "range", "nice", "zero", "clamp", "reverse",
   "base", "exponent", "constant", "paddingInner", "paddingOuter",
   "padding", "align", "unknown"
@@ -118,7 +119,7 @@ export function normalizeParallelDimensions(rows, dimensions, target) {
       field,
       fieldType,
       title: dimension.title ?? field,
-      scale: `${target}-parallel-${index}`,
+      scale: scale.id === undefined ? `${target}-parallel-${index}` : validateUserId(scale.id, "Parallel dimension scale id"),
       scaleOptions: scale
     };
   });

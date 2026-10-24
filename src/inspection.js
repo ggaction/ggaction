@@ -1,4 +1,7 @@
-import { resolveAdjacentSource } from "./selectors/adjacentSource.js";
+import { facetUnitTemplate } from "./actions/facets/actions.js";
+import { plotComposition } from "./selectors/plotComposition.js";
+import { planLayerPlot } from "./actions/composition/layerPlan.js";
+import { resolveAdjacentSource } from "./materialization/adjacentSource.js";
 import { normalizeActionTargets } from "./grammar/actionTargets.js";
 import { resolveGraphicClipBounds, resolveGraphicParentOffset } from "./grammar/schemas/graphicBounds.js";
 import { resolveFacetDefinition, resolveFacetGridDefinition } from "./grammar/facets/index.js";
@@ -77,6 +80,12 @@ function findResource(program, target) {
 
 function resourceRef(kind, id, childPath) {
   return { kind, id, ...(childPath?.length ? { childPath: [...childPath] } : {}) };
+}
+
+export function getPlotComposition(program, { target, childPath } = {}) {
+  requireProgram(program);
+  if (isPlainObject(target)) { childPath = target.childPath; target = target.id; }
+  return cloneAndFreeze(plotComposition(atChildPath(program, childPath), target));
 }
 
 export function getDatasetSchema(program, { data, childPath } = {}) {
@@ -169,6 +178,10 @@ export function describeAction(program, { action, target, options = {} } = {}) {
   const required = descriptor?.options.filter(option => option.required).map(option => option.path) ?? [];
   const missing = required.filter(key => options[key] === undefined);
   let fieldFinding = [];
+  if (action === "createLayerPlot") {
+    try { const local=atChildPath(program, target?.childPath); planLayerPlot(local.compositionSpec?.type === "facet" ? facetUnitTemplate(local,true) : local, { ...options, source: options.source ?? target?.id }); }
+    catch (error) { fieldFinding.push({ severity: "error", code: "unsupported-combination", reason: "layer-compatibility", message: error.message }); }
+  }
   if (action === "createAdjacentPlot") {
     const scoped = atChildPath(program, target?.childPath);
     try { resolveAdjacentSource(scoped, options.source ?? target?.id); }

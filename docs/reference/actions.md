@@ -74,6 +74,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createImputedData`](./actions/statistics.md#createimputeddata) | H1 | user-facing | statistics |
 | [`createIntervalData`](./actions/statistics.md#createintervaldata) | H1 | user-facing | statistics |
 | [`createIntervalPlot`](./actions/charts-data.md#createintervalplot) | H0, H1 | user-facing | charts |
+| [`createLayerPlot`](./actions/charts-data.md#createlayerplot) | H0 | user-facing | composition |
 | [`createLegend`](./actions/guides.md#createlegend) | H3 | user-facing | legend_and_title |
 | [`createLineMark`](./actions/marks.md#createlinemark) | H2 | user-facing | marks |
 | [`createLinePlot`](./actions/charts-data.md#createlineplot) | H0 | user-facing | charts |

@@ -16,8 +16,9 @@ title: Editing Compositions
 Call `createAdjacentPlot` on a complete chart to add a new view to its left, right,
 top or bottom. By default it creates a line using the source fields and aggregation.
 Supply `plot: { action: "createScatterPlot", options: { x: "month", y: "sales" } }`
-(or another native constructor) to select a different chart. Area and other chart families
-require their native options, including any prepared summary-data fields. The new chart
+(or another native constructor) to select a different chart. All native constructor families can infer their source data and unambiguous positional
+roles, including original fields behind statistical plots. Supply native options
+for any role that cannot be inferred, such as a second Dumbbell measure. The new chart
 has independent data and appearance; use `createOverlay` when it should follow results.
 
 The selected source mark's ID names the original view; the new `id` names both the
@@ -279,3 +280,56 @@ When color is shared, compatible same-field color/shape legends and color-only l
 are collected into one outer legend. The combined symbols retain their shape meaning;
 unrelated size legends and conflicting shape mappings remain separate. Disabling color
 sharing restores the original child legends, including in nested and faceted views.
+
+## Layer a native chart
+
+Use `createLayerPlot` for independently computed plots over the same measurements:
+
+<!-- snippet-context:start -->
+
+> **Executable complete.** Self-contained deterministic observations with shared measurement scales and independent native layers.
+
+<!-- snippet-context:end -->
+
+```js
+import { chart } from "ggaction";
+import { getPlotComposition, describeAction } from "ggaction/inspection";
+const data = Array.from({ length: 36 }, (_, i) => ({ group: i % 2 ? "A" : "B", value: 2 + i % 11 }));
+const program = chart()
+  .createCanvas({ plot: { width: 360, height: 300 }, margin: 90 })
+  .createData({ values: data })
+  .createBeeswarmPlot({ id: "observations", x: "group", y: "value" })
+  .createLayerPlot({
+    id: "summary",
+    source: "observations",
+    plot: { action: "createBoxPlot", options: {
+      width: { band: 0.4 }, outliers: false, box: { opacity: 0.25 }
+    } },
+    placement: "back"
+  })
+  .createGuides();
+const source = getPlotComposition(program, { target: "summary" });
+// source.channels.y.field is "value", not the internal Q1 column.
+const check = describeAction(program, { action: "createLayerPlot", options: {
+  id: "samples", source: "summary", plot: { action: "createStripPlot" }
+} });
+```
+
+The new plot shares coordinates and compatible scales, including the original
+fields behind a statistical chart. Its appearance remains independently editable.
+`placement: "back"` puts the entire compound plot behind existing marks.
+Use native encodings and plot editors to adjust each layer. Shared scale edits
+apply to every consumer. Color is inherited when available at the layer's grain.
+
+Use `createOverlay` when a line or point should **follow the existing visible
+results**, such as stacked bar endpoints. Use `createLayerPlot` for independent
+observations/distributions, such as Beeswarm + Box or Violin + Box + Strip.
+Different units or coordinates belong in an adjacent chart. In particular,
+histogram counts, density and cumulative probability cannot share one height
+scale. A Rug can reuse only their measurement axis.
+
+
+
+Preflight uses constructor roles without rendering all candidates. Native
+constructors still validate data-dependent conditions when invoked. Layering
+inside a facet uses `editFacetSource`; inside a concat, use a scoped `target`.

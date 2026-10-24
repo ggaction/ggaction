@@ -161,5 +161,15 @@
     "rendering": "authoring-only",
     "result": "pair, withWideBottom",
     "prerequisites": "Import chart from ggaction. This complete example includes all data and adds a full-width line below an existing pair using an explicit source panel."
+  },
+  {
+    "id": "native-layer-composition",
+    "file": "api/composition/editing.md",
+    "contains": "const data = Array.from",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "Self-contained deterministic observations with shared measurement scales and independent native layers.",
+    "rendering": "authoring-only"
   }
 ]

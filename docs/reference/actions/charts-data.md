@@ -3910,6 +3910,48 @@ Edit the result with range/endpoint encodings, encodeGroup, layoutSeries, editAr
 See the [Area and series layout tutorial](../../tutorials/area-layout.md).
 
 
+## `createLayerPlot`
+
+**API layer:** user-facing. **Authoring roles:** H0.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+createLayerPlot(options: TargetedOptions<CreateLayerPlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`CreateLayerPlotOptions`](./../types.md#type-createlayerplotoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `source` | Optional / branch-dependent | `string \| undefined` |
+| `plot` | Required | `LayerPlotSpecification` |
+| `placement` | Optional / branch-dependent | `"back" \| "front" \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createLayerPlot({ id?, source?, plot: { action, options? }, placement?: "front" | "back" })
+```
+
+Add an independent native chart to the source chart's coordinates. Data and positional
+roles are inferred from the original fields, including distribution summaries. Compatible
+measurement units and named scales are shared; appearance remains independently editable.
+The entire owned mark group moves together in front of or behind the source.
+`getPlotComposition(program, { target })` from `ggaction/inspection` describes the source
+roles. Use `createOverlay` to follow already computed visible results instead.
+[Independent layers and adjacent charts](../../api/composition/editing.md)
+
+
 ## `createAdjacentPlot`
 
 **API layer:** user-facing. **Authoring roles:** H0.
@@ -3948,11 +3990,12 @@ createAdjacentPlot({ id?, source?, position?, plot?, share?, gap?, align? } = {}
 
 Add an independent chart next to a unit or facet view. Placement is left, right, top or bottom.
 The default line inherits source fields, binning and aggregation; `plot: { action, options }`
-selects any built-in chart constructor with its native options. Area and other constructors
-require explicit field options. `plot.options.data` selects a materialized source-view dataset;
+selects any built-in chart constructor. Original fields and data are inferred through each
+constructor's native positional roles; ambiguous additional fields require explicit options. `plot.options.data` selects a materialized source-view dataset;
 the adjacent view receives its own snapshot. The top-level `id` owns its view and mark.
-Horizontal placement shares Y by default; vertical placement shares X. `share` replaces that
-default. `align: "plot"` matches actual plot frames without stretching text or symbols.
+Horizontal placement shares compatible Y meanings by default; vertical placement shares
+compatible X meanings. Different aggregates or coordinate families stay independent. An
+explicit `share` replaces that default and rejects incompatible meanings. `align: "plot"` matches actual plot frames without stretching text or symbols.
 [Shared scales and adjacent charts](../../api/composition/editing.md)
 
 

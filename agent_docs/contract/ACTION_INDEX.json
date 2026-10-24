@@ -5350,6 +5350,24 @@
       }
     },
     {
+      "name": "createLayerPlot",
+      "layer": "user-facing",
+      "domain": "composition",
+      "status": "implemented",
+      "lifecycle": "Structural create-only",
+      "update": "Native constructor editors, encoding actions and removeMark own independent layer edits",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/COMPOSITION.md",
+        "anchor": "createlayerplot"
+      }
+    },
+    {
       "name": "createAdjacentPlot",
       "layer": "user-facing",
       "domain": "composition",

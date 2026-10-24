@@ -3,7 +3,7 @@ import { compositionPlotBounds } from "../../materialization/composition.js";
 import { closedAction, getWrappedActionMetadata } from "../../core/action.js";
 import { validateOptionObject } from "../../core/validation.js";
 import { validateUserId } from "../../core/identifiers.js";
-import { resolveAdjacentSource } from "../../selectors/adjacentSource.js";
+import { resolveAdjacentSource } from "../../materialization/adjacentSource.js";
 import { requireMaterializedDataset } from "../../selectors/datasets.js";
 import { findSemanticScale } from "../../selectors/scales.js";
 import { inheritTextMetrics } from "../textMetrics/index.js";
@@ -11,23 +11,10 @@ import { resolveEffectiveThemeFrame } from "../theme/state.js";
 import { normalizeCompositionShares } from "../../core/compositionScales.js";
 import { hconcatAction, vconcatAction } from "./actions.js";
 
-export const ADJACENT_PLOT_ACTIONS = Object.freeze([
-  "createScatterPlot", "createLinePlot", "createBarPlot", "createAreaPlot", "createDotPlot", "createLollipopPlot",
-  "createDumbbellPlot", "createECDFPlot", "createIntervalPlot", "createRegressionPlot", "createRugPlot", "createStripPlot",
-  "createBeeswarmPlot", "createRaincloudPlot", "createBoxPlot", "createGradientPlot", "createViolinPlot", "createDensityPlot",
-  "createHorizonPlot", "createHistogram", "createHeatmap", "createPiePlot", "createRosePlot", "createRadialBarPlot",
-  "createPolarScatterPlot", "createPolarLinePlot", "createRadarPlot", "createParallelCoordinates", "createTextPlot"
-]);
-
-function inheritedPosition(program, layer, channel, share) {
-  const encoding = layer.encoding?.[channel];
-  if (!encoding?.field) return undefined;
-  const { field, fieldType, aggregate, bin, temporalUnit } = encoding;
-  const scale = findSemanticScale(program, encoding.scale);
-  return { field, fieldType, ...(aggregate === undefined ? {} : { aggregate }),
-    ...(bin === undefined ? {} : { bin }), ...(temporalUnit === undefined ? {} : { temporalUnit }),
-    ...(scale === undefined || !share[channel] ? {} : { scale: Object.fromEntries(Object.entries(scale).filter(([key]) => key !== "id")) }) };
-}
+import { plotComposition } from "../../selectors/plotComposition.js";
+import { inferCompositionOptions, constructorChannels } from "../../grammar/plotComposition.js";
+import { COMPOSITION_PLOT_ACTIONS } from "../../grammar/plotComposition.js";
+export const ADJACENT_PLOT_ACTIONS = COMPOSITION_PLOT_ACTIONS;
 
 const createAdjacentPlot = /* @__PURE__ */ closedAction({
   op: "createAdjacentPlot", description: "Add a chart beside the current view with shared scales and aligned plots.", scope: "any"
@@ -38,7 +25,7 @@ const createAdjacentPlot = /* @__PURE__ */ closedAction({
   const position = args.position ?? "right";
   if (!["left", "right", "top", "bottom"].includes(position)) throw new Error("Adjacent position must be left, right, top, or bottom.");
   const horizontal = ["left", "right"].includes(position);
-  const share = normalizeCompositionShares(args.share ?? { [horizontal ? "y" : "x"]: true });
+  const share = { ...normalizeCompositionShares(args.share ?? { [horizontal ? "y" : "x"]: true }) };
   const plot = args.plot ?? { action: "createLinePlot", options: {} };
   validateOptionObject(plot, ["action", "options"], "Adjacent plot");
   const action = plot.action ?? "createLinePlot";
@@ -49,7 +36,8 @@ const createAdjacentPlot = /* @__PURE__ */ closedAction({
   const supplied = plot.options ?? {};
   if (supplied === null || typeof supplied !== "object" || Array.isArray(supplied)) throw new TypeError("Adjacent plot options must be an object.");
   if (Object.hasOwn(supplied, "id")) throw new Error("Adjacent plot id is owned by the adjacent view; use the top-level id.");
-  const dataset = requireMaterializedDataset(template, supplied.data ?? source.data);
+  const meaning = plotComposition(template,source.id);
+  const dataset = requireMaterializedDataset(template, supplied.data ?? meaning.data);
   const bounds = compositionPlotBounds(this);
   const sourceBounds = compositionPlotBounds(sourceView);
   const canvas = this.graphicSpec.objects.canvas.properties;
@@ -59,20 +47,20 @@ const createAdjacentPlot = /* @__PURE__ */ closedAction({
   const theme = resolveEffectiveThemeFrame(template.materializationConfigs.theme);
   if (theme) child = child.applyTheme({ theme: { base: theme.name, tokens: theme.tokens } });
   child = inheritTextMetrics(template, child).createData({ id: dataset.id, values: dataset.values });
-  const inherit = ["createLinePlot", "createBarPlot"].includes(action);
-  const defaults = inherit ? Object.fromEntries(["x", "y"].flatMap(channel => {
-    const value = inheritedPosition(sourceView, source, channel, share);
-    return value ? [[channel, value]] : [];
-  })) : {};
-  const color = source.encoding?.color;
-  if (inherit && color && ["nominal", "ordinal"].includes(color.fieldType)) {
-    const { id: _id, ...scale } = findSemanticScale(sourceView, color.scale);
-    defaults.color = { field: color.field, fieldType: color.fieldType, scale };
+  const options = { ...inferCompositionOptions(meaning,action,supplied), id, data:dataset.id };
+  const roles=constructorChannels(action,options,meaning);
+  if(args.share===undefined) {
+    for(const channel of Object.keys(share)) {
+      const from=meaning.channels[channel],to=roles[channel];
+      if(!from||!to||from.field!==to.field||JSON.stringify(from.measurement.operations)!==JSON.stringify(to.operations)||
+        (meaning.coordinate?.type??'cartesian')!=='cartesian') delete share[channel];
+    }
   }
-  const options = { ...defaults, ...supplied, id, data: dataset.id };
-  for (const channel of ["x", "y"]) {
-    const selected = typeof supplied[channel] === "string" ? { field: supplied[channel] } : supplied[channel];
-    if (selected && defaults[channel]?.field === selected.field) options[channel] = { ...defaults[channel], ...selected };
+  for(const channel of ['x','y','color']) {
+    const role=meaning.channels[channel],selected=options[channel];
+    if(!role || (channel!=='color'&&!share[channel]) || !selected || selected.field!==role.field)continue;
+    const scale=findSemanticScale(template,role.scale);
+    if(scale) { const {id:_scaleId,...definition}=scale; if(selected.scale?.palette!==undefined) delete definition.range; options[channel]={...selected,scale:{...definition,...selected.scale}}; }
   }
   child = child[action](options);
   const original = new this.constructor({ ...this, actionStack: [], actionSequence: this._actionSequence });

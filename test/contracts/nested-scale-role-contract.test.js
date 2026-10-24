@@ -847,9 +847,9 @@ function buildScaleWitness(action, path, type) {
   }
 }
 
-function adjacentScaleWitness(option, type, inventory) {
+function compositionScaleWitness(option, type, inventory) {
   const nestedPath = option.path.replace(/^plot\.options\./, "");
-  const constructors = inventory.optionPaths.filter(candidate => candidate.action !== "createAdjacentPlot" &&
+  const constructors = inventory.optionPaths.filter(candidate => !["createAdjacentPlot", "createLayerPlot"].includes(candidate.action) &&
     /^create(?:.*Plot|Histogram|Heatmap|ParallelCoordinates)$/.test(candidate.action) &&
     candidate.path === nestedPath && candidate.values.includes(`string:${type}`));
   let lastError;
@@ -862,6 +862,11 @@ function adjacentScaleWitness(option, type, inventory) {
     if (!captured) continue;
     try {
       const { id: _id, data, ...options } = captured.args;
+      if (option.action === "createLayerPlot") {
+        const base = captured.program[candidate.action]({ ...captured.args, id:"basis", guides:false });
+        return base.createLayerPlot({ id:"comparison", source:"basis",
+          plot:{ action:candidate.action, options:{ ...options, ...(data ? {data} : {}), guides:false } } });
+      }
       const dataset = captured.program.semanticSpec.datasets.find(dataset => dataset.id === (data ?? captured.program.context.currentData));
       const base = source().createScatterPlot({ id: "basis", x: "x", y: "y", guides: false })
         .createData({ id: "adjacent-input", values: dataset.values });
@@ -869,7 +874,7 @@ function adjacentScaleWitness(option, type, inventory) {
         plot: { action: candidate.action, options: { ...options, data: "adjacent-input" } } });
     } catch (error) { lastError = error; }
   }
-  throw lastError ?? new Error(`No native adjacent constructor for ${option.path}=${type}.`);
+  throw lastError ?? new Error(`No compatible native composition constructor for ${option.path}=${type}.`);
 }
 
 test("derives only role-reachable nested scale type paths", async () => {
@@ -880,9 +885,10 @@ test("derives only role-reachable nested scale type paths", async () => {
     /(?:^|\.)(?:xScale|yScale|valueScale|densityScale|radiusScale|scale)\.type$/u.test(option.path)
   );
 
-  assert.equal(scaleTypes.filter(option => option.action !== "createAdjacentPlot").length, 152);
+  assert.equal(scaleTypes.filter(option => !["createAdjacentPlot", "createLayerPlot"].includes(option.action)).length, 152);
   assert.equal(scaleTypes.filter(option => option.action === "createAdjacentPlot").length, 22);
-  assert.equal(scaleTypes.filter(option => option.action !== "createAdjacentPlot").reduce((sum, option) => sum + option.values.length, 0), 699);
+  assert.equal(scaleTypes.filter(option => option.action === "createLayerPlot").length, 22);
+  assert.equal(scaleTypes.filter(option => !["createAdjacentPlot", "createLayerPlot"].includes(option.action)).reduce((sum, option) => sum + option.values.length, 0), 699);
   assert.ok(options.get("option-path:createLinePlot.x.scale.type").values.includes("string:band"));
   assert.ok(options.get("option-path:createLinePlot.x.scale.type").values.includes("string:point"));
   assert.ok(options.get("option-path:encodeColor.scale.type").values.includes("string:log"));
@@ -924,7 +930,7 @@ test("executes every strict nested scale type path and literal", async () => {
       const type = decodeURIComponent(valueKey.slice("string:".length));
       let program;
       try {
-        program = option.action === "createAdjacentPlot" ? adjacentScaleWitness(option, type, inventory)
+        program = ["createAdjacentPlot", "createLayerPlot"].includes(option.action) ? compositionScaleWitness(option, type, inventory)
           : buildScaleWitness(option.action, option.path, type);
       } catch (error) {
         throw new Error(`${option.id}=${type}: ${error.message}`, { cause: error });

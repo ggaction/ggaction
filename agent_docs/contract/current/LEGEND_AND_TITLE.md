@@ -221,6 +221,8 @@ type TitleWrap = "word" | "character";
 - 선언 검증: `test/contracts/sampled-color-legend-types.test.js`는 Full/Basic 생성, Full 편집, scatter/heatmap nested guides, closed representation vocabulary와 categorical/Pie/Basic 경계를 검증한다.
 - Basic은 기존 생성 경로를 제공하고 Full은 편집 lifecycle을 제공한다. Point/aggregate Bar/Rect/Text의 기존 continuous-color 소비 경로를 그대로 사용한다. 동작의 검증 증거는 이 기능의 unit/contracts/package consumer tests와 구현 완료 기록에 연결한다. 아직 실행되지 않은 조합은 coverage complete라고 표시하지 않는다.
 
+Canonical automatically named two-dimensional count fields infer the legend title `Count` using the Bin2D owner and its output-field contract, including when guide creation is deferred until after layering. Authored output aliases and explicit titles remain unchanged.
+
 ### Formal values — `createLegend`
 
 - Implemented: `createLegend({ target?: UserId; channels?: readonly LegendChannel[]; representation?: "gradient" | "symbols"; position?: LegendPosition; blockLayout?: "row" | "column" | "wrap"; at?: { x: Finite; y: Finite }; layout?: "edge" | "legacy-bottom"; align?: LegendAlign; direction?: LegendDirection; columns?: PositiveInteger; offset?: NonNegativeFinite; titlePosition?: "top" | "left" | "bottom"; title?: NonEmptyString; symbol?: "auto" | LegendSymbolLayer | { layers: readonly LegendSymbolLayer[] }; labels?: LegendTextOptions; titleStyle?: TextStyle; itemGap?: PositiveFinite; rowPadding?: NonNegativeFinite; titlePadding?: NonNegativeFinite; border?: LegendBorder; count?: IntegerAtLeast2; values?: readonly number[]; gradient?: { length?: PositiveFinite; thickness?: PositiveFinite; opacity?: UnitInterval }; order?: "scale" | { values: readonly CategoryValue[] } | { channel: "x"|"y"|"theta" } } = {})`

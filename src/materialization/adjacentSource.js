@@ -1,7 +1,7 @@
 import { isPlainObject } from "../core/immutable.js";
 import { normalizeActionTargets } from "../grammar/actionTargets.js";
-import { resolveEligibleLayer } from "./layers.js";
-import { ownership } from "./markOwners.js";
+import { resolveEligibleLayer } from "../selectors/layers.js";
+import { ownership } from "../selectors/markOwners.js";
 
 // Creation and inspection share the same explicit source ownership contract.
 export function resolveAdjacentSource(program, source) {

@@ -39,7 +39,7 @@ function collect(child) {
     const id = `${child.compositionSpec.id}-shared-color-legend`;
     if (child.graphicSpec.objects[id]) {
       const representative = sharedCompositionColorLegend(child, child.children);
-      if (representative) candidates.push({ ...representative, source: child, roots: [id], remove: [id],
+      if (representative) candidates.push({ ...representative, source: child, roots: child.graphicSpec.objects[id].children ?? [id], remove: [id],
         bounds: unionConcreteGraphicBounds(child.graphicSpec, [id], child.materializationConfigs.textMetrics) });
     }
   } else {

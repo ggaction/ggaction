@@ -1,3 +1,5 @@
+import { inferBin2DFieldTitle } from '../../../../grammar/bin2d.js';
+import { findDataset } from '../../../../selectors/datasets.js';
 import{validateLegendClip}from"../../../../grammar/legendClip.js";
 import{hasLegendClipGraphics}from"../../../../materialization/legendClip.js";
 import { normalizeColorSymbols, resolveColorSymbolsLayout, materializeColorSymbols } from "./colorSymbols.js";
@@ -220,6 +222,10 @@ export function resolveGradientConfig(program, config, channel = "color") {
     encoding.scale,
     "sequential"
   );
+  const binOwner = Object.entries(program.materializationConfigs.data?.bin2d ?? {})
+    .find(([, config]) => config.current === layer.data)?.[0] ?? layer.data;
+  const binTransform = findDataset(program, layer.data)?.transform?.find(transform => transform.type === 'bin2d');
+  const inferredTitle = inferBin2DFieldTitle(binTransform, binOwner, encoding.field);
   return {
     layer,
     encoding,
@@ -229,7 +235,7 @@ export function resolveGradientConfig(program, config, channel = "color") {
       target: layer.id,
       scale: encoding.scale,
       fieldType: encoding.fieldType,
-      title: config.inferredTitle ? encoding.field : config.title,
+      title: config.inferredTitle ? inferredTitle : config.title,
       domain: scale.domain
     }
   };

@@ -457,6 +457,10 @@ export function buildActionRelationshipPrograms() {
   });
   return [
     ...descriptors.map(buildScenario),
+    chart().createCanvas({plot:{width:300,height:220},margin:60})
+      .createData({values:[{group:"A",value:2},{group:"A",value:3},{group:"B",value:4}]})
+      .createBeeswarmPlot({id:"points",x:"group",y:"value",guides:false})
+      .createLayerPlot({id:"summary",source:"points",plot:{action:"createBoxPlot"}}),
     chart()
     .createCanvas({ plot: { width: 200, height: 200 }, margin: 70 })
     .createData({ values: [{ x: "A", y: 2 }, { x: "B", y: 3 }] })

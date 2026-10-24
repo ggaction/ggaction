@@ -2410,6 +2410,14 @@
     "layer": "user-facing",
     "domain": "marks"
   },
+  "createLayerPlot": {
+    "operation": "create",
+    "authoringRoles": [
+      "H0"
+    ],
+    "layer": "user-facing",
+    "domain": "composition"
+  },
   "createAdjacentPlot": {
     "operation": "create",
     "authoringRoles": [

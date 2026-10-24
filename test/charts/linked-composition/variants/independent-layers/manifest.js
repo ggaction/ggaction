@@ -1,4 +1,4 @@
-import { chart } from '../../../src/index.js';
+import { chart } from '../../../../../src/index.js';
 
 export const rows = Array.from({ length: 72 }, (_, i) => ({
   group: ['A', 'B', 'C'][i % 3], value: 8 + (i % 3) * 4 + (i * 7 % 19) / 3,
@@ -14,20 +14,28 @@ export const variants = [{
   id: 'beeswarm-box', title: 'Beeswarm + box: observations and distribution',
   calls: [...baseCalls,
     { method: 'createBeeswarmPlot', args: { id: 'observations', data: 'observations', x, y, point: { radius: 3, opacity: .65, fill: '#4c78a8' }, guides: false } },
-    { method: 'createBoxPlot', args: { id: 'summary', data: 'observations', coordinate: 'main', x, y, box: { opacity: .25, fill: '#e45756', stroke: '#8d2424' }, width: { band: .4 }, outliers: false, guides: false } },
+    { method:'createLayerPlot',args:{id:'summary',source:'observations',plot:{action:'createBoxPlot',options:{box:{opacity:.25,fill:'#e45756',stroke:'#8d2424'},width:{band:.4},outliers:false}}} },
     { method: 'createGuides', args: { axes: { x: {}, y: {} }, legend: false } },
     { method: 'createTitle', args: { text: 'Beeswarm + box' } }],
-  target: `.createBeeswarmPlot({ id: 'observations', data: 'data', x: 'group', y: 'value' })\n.createLayerPlot({ id: 'summary', source: 'observations', plot: { action: 'createBoxPlot', options: { width: { band: 0.4 }, outliers: false, box: { opacity: 0.25 } } } })`
 }, {
   id: 'violin-box-points', title: 'Violin + box + observations: three independently editable layers',
   calls: [...baseCalls,
     { method: 'createViolinPlot', args: { id: 'density', data: 'observations', x, y, area: { opacity: .25 }, guides: false } },
-    { method: 'createBoxPlot', args: { id: 'summary', data: 'observations', coordinate: 'main', x, y, width: { band: .2 }, outliers: false, box: { opacity: .5 }, guides: false } },
-    { method: 'createBeeswarmPlot', args: { id: 'samples', data: 'observations', coordinate: 'main', x, y, point: { radius: 2, opacity: .55, fill: '#e45756' }, guides: false } },
+    { method:'createLayerPlot',args:{id:'summary',source:'density',plot:{action:'createBoxPlot',options:{width:{band:.2},outliers:false,box:{opacity:.5}}}} },
+    { method:'createLayerPlot',args:{id:'samples',source:'density',plot:{action:'createBeeswarmPlot',options:{point:{radius:2,opacity:.55,fill:'#e45756'}}}} },
     { method: 'createGuides', args: { axes: { x: {}, y: {} }, legend: false } },
     { method: 'createTitle', args: { text: 'Violin + box + points' } }],
-  target: `.createViolinPlot({ id: 'density', data: 'data', x: { field: 'group' }, y: { field: 'value' } })\n.createLayerPlot({ id: 'summary', source: 'density', plot: { action: 'createBoxPlot', options: { width: { band: 0.2 }, outliers: false } } })\n.createLayerPlot({ id: 'samples', source: 'density', plot: { action: 'createBeeswarmPlot', options: { point: { radius: 2, opacity: 0.55 } } } })`
 }];
+export function publicCallChain(variant) {
+  return 'chart()\n' + variant.calls.map(call=>`  .${call.method}(${JSON.stringify(call.args)})`).join('\n') + ';';
+}
 export function build(variant) {
-  return variant.calls.reduce((program, call) => program[call.method](call.args), chart());
+  return variant.calls.reduce((program,call)=>program[call.method](call.args),chart());
+}
+// Approved primitive composition: explicitly bind each existing constructor to
+// the same input, coordinate and scales, without the new layer planner.
+export function buildPrimitive(variant) {
+  return variant.calls.reduce((program,call)=>call.method==='createLayerPlot'
+    ? program[call.args.plot.action]({id:call.args.id,data:'observations',coordinate:'main',x,y,...call.args.plot.options,guides:false})
+    : program[call.method](call.args),chart());
 }

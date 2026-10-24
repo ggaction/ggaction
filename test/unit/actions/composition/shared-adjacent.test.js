@@ -150,7 +150,8 @@ test("adjacent views inherit theme and may select a prepared dataset explicitly"
   assert.equal(area.graphicSpec.objects.area.items[0].properties.fill, "#ff0000");
   assert.equal(area.materializationConfigs.theme.frames.at(-1).tokens.fontFamily, "Arial");
   assert.throws(() => source.createAdjacentPlot({ plot: { action: "createLinePlot", options: { id: "ignored" } } }), /top-level id/);
-  assert.throws(() => source.createAdjacentPlot({ plot: { action: "createAreaPlot" } }), /field/);
+  const inferred=source.createAdjacentPlot({plot:{action:"createAreaPlot"}});
+  assert.equal(inferred.children.adjacent.semanticSpec.layers[0].encoding.y.field,"y");
 });
 
 test("shared categorical domains union stable order and reset without losing authored values", () => {

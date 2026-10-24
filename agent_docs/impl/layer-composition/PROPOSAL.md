@@ -8,10 +8,10 @@
 - [x] 앱 체크아웃에서 29종 × 29종 × 가로/세로 = 1,682개 독립 concat의 Canvas scene 생성 확인
 - [x] Gate: 아래 신규 공개 API와 목표 그림 승인 (`approved`)
   - 사용자 명시 승인: 2026-10-24 “API 계약과 그림을 기준으로 구현 진행할까? -> 구현하자”. 검토 revision `773e7181` / 앱 `4634f0d`.
-- [ ] 승인 후 native 구현·타입·inspection·저장/복원·문서 동기화
-- [ ] 앱 Add overlay / Add adjacent 카드 연결, 편집 대상·Undo/Redo·Canvas transition 검증
+- [x] 승인 후 native 구현·타입·inspection·저장/복원·문서 동기화
+- [x] 앱 Add overlay / Add adjacent 카드 연결, 편집 대상·Undo/Redo·Canvas transition 검증
 
-사용자 요청(2026-10-24): 비스웜+박스플롯을 포함해 overlay/concat의 가능한 경우를 폭넓게 조사하고 일반적으로 지원한다. 이 요청은 기능 구현을 승인하지만 신규 공개 함수의 정확한 계약은 아직 확인되지 않았다. 루트 AGENTS의 공개 API 및 impl/AGENTS의 visual Gate를 이 문서로 묶어 한 번 확인한다. 검토 revision에서는 라이브러리 API와 앱 동작을 변경하지 않았다.
+사용자 요청(2026-10-24): 비스웜+박스플롯을 포함해 overlay/concat의 가능한 경우를 폭넓게 조사하고 일반적으로 지원한다. 이 요청은 기능 구현을 승인하지만 신규 공개 함수의 정확한 계약은 2026-10-24 사용자에게 승인되었다. 루트 AGENTS의 공개 API 및 impl/AGENTS의 visual Gate를 이 문서로 묶어 한 번 확인한다. 검토 revision에서는 라이브러리 API와 앱 동작을 변경하지 않았다.
 
 ## 문제와 구현 경계
 
@@ -19,7 +19,7 @@
 
 원본 plot recipe를 복사해 별도 runtime을 만들지 않는다. 기존 불변 semanticSpec, native materializer, composite ownership, concrete graphicSpec을 재사용한다. renderer는 그대로 유지한다. 기존 follow binding과 snapshot/detach 동작도 보존한다.
 
-## 제안 API (미구현)
+## 승인 API
 
 ```js
 program.createLayerPlot({
@@ -81,13 +81,13 @@ getPlotComposition(program, { target: 'observations' }); // ggaction/inspection
 
 ## 검증과 Gate 증거
 
-`test/gates/layer-composition/manifest.js`가 입력·기존 실행 체인·제안 호출·제목을 단독 소유한다.
+`test/charts/linked-composition/variants/independent-layers/manifest.js`가 입력·기존 실행 체인·제안 호출·제목을 단독 소유한다.
 
 ```sh
-node --test test/gates/layer-composition/layers.test.js test/gates/layer-composition/png.render.js
+node --test test/charts/linked-composition/variants/independent-layers/layers.test.js test/charts/linked-composition/variants/independent-layers/png.render.js
 ```
 
-4 tests 통과: 실제 공통 x/y scale, 72개 관측 유지, compound owner, 독립 opacity 편집, resize, 불변 이전 상태, 저장 복원 동일 Canvas scene 및 PNG. Review 그림은 `.artifacts/test/png/review/layer-composition/{beeswarm-box,violin-box-points}/target.png`이다. 아직 신규 함수의 동작을 검증한 것이 아니다.
+4 tests 통과: 실제 공통 x/y scale, 72개 관측 유지, compound owner, 독립 opacity 편집, resize, 불변 이전 상태, 저장 복원 동일 Canvas scene 및 PNG. 승인된 그림은 `.artifacts/test/png/charts/linked-composition/independent-layers/{beeswarm-box,violin-box-points}/target.png`에 재생성한다. 이 stable slice는 실제 신규 createLayerPlot 호출로 관측/요약 기하와 재생을 검증한다.
 
 앱 audit는 8개 실제 데이터셋과 Radar/Horizon deterministic fixture로 29종 생성 후 모든 순서쌍의 hconcat/vconcat Canvas scene을 구성했다. **1,682/1,682 성공**. 이는 서로 독립된 완성 chart의 병치 capability이며, 자동 role inference, UI 카드 도달성, 공유축의 1,682조합 성공을 의미하지 않는다. 재현 스크립트와 분류표는 부모 저장소의 `scripts/audit-composition-space.js`, `docs/composition-expansion.md`에 있다.
 
@@ -96,3 +96,11 @@ node --test test/gates/layer-composition/layers.test.js test/gates/layer-composi
 ## 승인 질문
 
 기존 follow `createOverlay`를 유지하면서 위 `createLayerPlot` + `getPlotComposition` 계약과 두 목표 그림을 기준으로 구현할지 확인한다. 위 사용자 응답으로 승인되었으므로 native 구현과 앱 통합을 진행한다. npm publish/Pages deploy는 이 승인에 포함되지 않는다.
+
+## 구현 결과
+
+승인된 두 공개 API를 구현했다. 원본 변수 provenance와 constructor role registry를 layer/adjacent/inspection이 공유하며, 별도의 layer recipe state를 저장하지 않는다. `createLayerPlot`은 기존 native constructor와 encoding/scale action을 오케스트레이션한다. 계획은 actions/composition/layerPlan.js, 역할 추론은 grammar/plotComposition.js, read-only provenance는 selectors/plotComposition.js가 소유한다. 배치는 editGraphics children primitive를 통해 처리한다.
+
+앱은 Add overlay의 Layer chart / Follow results 모드를 제공한다. 선택된 owner, 원본 데이터, 호환 단위에 따라 후보를 생성하고 필요한 파라미터와 앞/뒤 배치를 제공한다. Raincloud의 public facade ID까지 예약하여 연속 추가를 지원한다. 같은 compound chart의 내부 mark를 Target 버튼에 분해해 표시하지 않는다.
+
+검증: 148개 directional constructor 조합, 6개 radial partition 조합, 비호환 의미/단위 거부, 공유축 편집, 원본 데이터 수정, compound ordering, facet/nested concat, Canvas scene과 PNG 저장·복원. 앱의 enum/slider 경계값 및 Iris/Tips/Cars/Barley 브라우저 Apply·Undo/Redo·복원·반복 hover를 검증한다. 세부 최종 실행 결과는 부모 저장소 docs/composition-expansion.md에 기록한다. npm publishing과 docs deployment는 별도이며 실행하지 않았다.

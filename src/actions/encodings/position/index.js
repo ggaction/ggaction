@@ -1,3 +1,4 @@
+import { assertSharedPositionMeaning } from '../../../selectors/plotComposition.js';
 import { stackLayoutMode } from "../seriesLayout.js";
 import { resolveBarGrain } from "../../../grammar/bars/policy.js";
 import { action } from "../../../core/action.js";
@@ -36,6 +37,10 @@ function encodePosition(program, channel, args, operation) {
   } = resolvePositionEncoding(program, channel, args, operation);
   if (layer.derivedBindings?.overlay) throw new Error("Overlay position follows its source; edit the source or detach the overlay first.");
 
+  if (args.scale?.id === undefined) assertSharedPositionMeaning(program, layer, channel, {
+    ...(hasField ? { field } : { datum }), fieldType, temporalUnit,
+    scale: scale.id, aggregate, bin, stack
+  });
   let next = program
     .createCoordinate({
       id: coordinate.id,

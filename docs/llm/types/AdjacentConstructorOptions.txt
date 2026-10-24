@@ -1,1 +1,1 @@
-type AdjacentConstructorOptions<T> = T extends unknown ? Omit<T, "id"> : never;
+type AdjacentConstructorOptions<T> = T extends unknown ? Partial<Omit<T, "id">> : never;

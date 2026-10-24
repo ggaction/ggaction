@@ -4,6 +4,10 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Add `createLayerPlot` and `getPlotComposition` inspection for independent native layers with original-field provenance, shared compatible scales, compound ownership, and front/back placement.
+- Infer adjacent chart inputs through native positional roles across Cartesian, Polar, and Parallel families; keep different statistical measurements on independent axes by default.
+- Collect compatible nested shared color/shape legends once, preserve unrelated size guides, and infer deferred binned-count legend titles from their statistical meaning.
+
 ## [0.0.25] - 2026-10-24
 
 - Add `createOverlay` and `editOverlay` for independent line/point layers that follow a source's materialized endpoints, including bins, stacks, groups and facets; support explicit detachment.

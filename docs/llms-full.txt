@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.25.
 
-Contract: sha256:b4aa7a4e85a9d8cf40386995c201486aa9cb55e59534eebfa7f2a4f92057bab6. Status: development. Runtime source: c525da4376688faab53e2dd4a9d715d9da58d909. Release baseline: v0.0.13.
+Contract: sha256:973d2f8c7fb868a47c8b37261b63098a619bfa9ddd2ec831636c1a27a48ae46d. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/c525da4376688faab53e2dd4a9d715d9da58d909/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/c525da4376688faab53e2dd4a9d715d9da58d909/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -4642,7 +4642,7 @@ type ParallelDimension = string | {
   field: string;
   fieldType?: "quantitative" | "ordinal";
   title?: string;
-  scale?: Omit<ScaleOptions, "id">;
+  scale?: ScaleOptions;
 };
 ```
 
@@ -4650,9 +4650,10 @@ type ParallelDimension = string | {
 - Finite numeric values infer `quantitative`; consistent strings infer
  `ordinal`. Declare numeric categories as `ordinal` explicitly.
 - `title` defaults to the field name.
-- Scale IDs are namespaced from the mark and dimension position. Supply scale
- behavior such as `type`, `domain`, `range`, `nice`, `zero`, or `reverse`, not
- another `id`.
+- Scale IDs default to the mark and dimension position. Supply an existing
+ compatible `scale.id` to share that dimension with another profile layer.
+ Shared scale edits affect every consumer. Other options configure `type`,
+ `domain`, `range`, `nice`, `zero`, or `reverse`.
 
 ## Row identity and missing values
 
@@ -17020,6 +17021,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createImputedData`](./reference/actions/statistics/#createimputeddata) | H1 | user-facing | statistics |
 | [`createIntervalData`](./reference/actions/statistics/#createintervaldata) | H1 | user-facing | statistics |
 | [`createIntervalPlot`](./reference/actions/charts-data/#createintervalplot) | H0, H1 | user-facing | charts |
+| [`createLayerPlot`](./reference/actions/charts-data/#createlayerplot) | H0 | user-facing | composition |
 | [`createLegend`](./reference/actions/guides/#createlegend) | H3 | user-facing | legend_and_title |
 | [`createLineMark`](./reference/actions/marks/#createlinemark) | H2 | user-facing | marks |
 | [`createLinePlot`](./reference/actions/charts-data/#createlineplot) | H0 | user-facing | charts |
@@ -20795,6 +20797,44 @@ Guides default to compatible Cartesian axes/grid and an optional categorical col
 Edit the result with range/endpoint encodings, encodeGroup, layoutSeries, editAreaMark and scale/guide actions.
 See the [Area and series layout tutorial](./tutorials/area-layout/).
 
+## `createLayerPlot`
+
+**API layer:** user-facing. **Authoring roles:** H0.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+createLayerPlot(options: TargetedOptions<CreateLayerPlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`CreateLayerPlotOptions`](./reference/types/#type-createlayerplotoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `source` | Optional / branch-dependent | `string \| undefined` |
+| `plot` | Required | `LayerPlotSpecification` |
+| `placement` | Optional / branch-dependent | `"back" \| "front" \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createLayerPlot({ id?, source?, plot: { action, options? }, placement?: "front" | "back" })
+```
+
+Add an independent native chart to the source chart's coordinates. Data and positional
+roles are inferred from the original fields, including distribution summaries. Compatible
+measurement units and named scales are shared; appearance remains independently editable.
+The entire owned mark group moves together in front of or behind the source.
+`getPlotComposition(program, { target })` from `ggaction/inspection` describes the source
+roles. Use `createOverlay` to follow already computed visible results instead.
+[Independent layers and adjacent charts](./api/composition/editing/)
+
 ## `createAdjacentPlot`
 
 **API layer:** user-facing. **Authoring roles:** H0.
@@ -20830,11 +20870,12 @@ createAdjacentPlot({ id?, source?, position?, plot?, share?, gap?, align? } = {}
 
 Add an independent chart next to a unit or facet view. Placement is left, right, top or bottom.
 The default line inherits source fields, binning and aggregation; `plot: { action, options }`
-selects any built-in chart constructor with its native options. Area and other constructors
-require explicit field options. `plot.options.data` selects a materialized source-view dataset;
+selects any built-in chart constructor. Original fields and data are inferred through each
+constructor's native positional roles; ambiguous additional fields require explicit options. `plot.options.data` selects a materialized source-view dataset;
 the adjacent view receives its own snapshot. The top-level `id` owns its view and mark.
-Horizontal placement shares Y by default; vertical placement shares X. `share` replaces that
-default. `align: "plot"` matches actual plot frames without stretching text or symbols.
+Horizontal placement shares compatible Y meanings by default; vertical placement shares
+compatible X meanings. Different aggregates or coordinate families stay independent. An
+explicit `share` replaces that default and rejects incompatible meanings. `align: "plot"` matches actual plot frames without stretching text or symbols.
 [Shared scales and adjacent charts](./api/composition/editing/)
 
 ## `editCompositionScales`
@@ -29961,6 +30002,30 @@ export function getDatasetSchema(program: ProgramInput, options: {readonly data:
 export function describeAction(program: ProgramInput, options: {readonly action:string;readonly target?:InspectionTarget;readonly options?:Readonly<Record<string,unknown>>}): ActionDescription;
 export function comparePrograms(before: ProgramInput, after: ProgramInput, options?: {readonly target?:InspectionTarget}): ProgramComparison;
 export function inspectProgram(program: ProgramInput, options?: {readonly target?:InspectionTarget}): ProgramInspection;
+
+export interface PlotCompositionChannel {
+  readonly field?: string;
+  readonly fields?: readonly string[];
+  readonly fieldType: string;
+  readonly scale: string;
+  readonly data: string;
+  readonly measurement: Readonly<{ unit: string; operations: readonly string[]; parameters?: Readonly<Record<string, unknown>> }>;
+  readonly bin?: Readonly<Record<string, unknown>>;
+  readonly temporalUnit?: string;
+}
+export interface PlotComposition {
+  readonly version: 1;
+  readonly owner: string;
+  readonly ownedMarks: readonly string[];
+  readonly data: string;
+  readonly coordinate?: Readonly<{ id: string; type: string }>;
+  readonly mark: string;
+  readonly channels: Readonly<Record<string, PlotCompositionChannel>>;
+  readonly dimensions?: readonly PlotCompositionChannel[];
+  readonly role?: string;
+  readonly groupBy?: string | readonly string[];
+}
+export function getPlotComposition(program: ProgramInput, options?: { readonly target?: string | { readonly childPath: readonly string[]; readonly id: string }; readonly childPath?: readonly string[] }): PlotComposition;
 ```
 
 #### `ggaction/scene`
@@ -30132,6 +30197,7 @@ interface ChartProgramActions {
   createAnnotation(options: TargetedOptions<CreateAnnotationOptions>): ChartProgram;
   createStatisticalReference(options: TargetedOptions<CreateStatisticalReferenceOptions>): ChartProgram;
   createOverlay(options?: TargetedOptions<CreateOverlayOptions>): ChartProgram;
+  createLayerPlot(options: TargetedOptions<CreateLayerPlotOptions>): ChartProgram;
   createAdjacentPlot(options?: TargetedOptions<CreateAdjacentPlotOptions>): ChartProgram;
   editCompositionScales(options: TargetedOptions<EditCompositionScalesOptions>): ChartProgram;
   editOverlay(options: TargetedOptions<EditOverlayOptions>): ChartProgram;
@@ -30363,7 +30429,7 @@ Related types: [`ScopedActionTarget`](./reference/types/#type-scopedactiontarget
  Expand AdjacentConstructorOptions
 
 ```typescript
-type AdjacentConstructorOptions<T> = T extends unknown ? Omit<T, "id"> : never;
+type AdjacentConstructorOptions<T> = T extends unknown ? Partial<Omit<T, "id">> : never;
 ```
 
 ### `AdjacentPlotSpecification` {#type-adjacentplotspecification}
@@ -30372,35 +30438,36 @@ type AdjacentConstructorOptions<T> = T extends unknown ? Omit<T, "id"> : never;
 
 ```typescript
 export type AdjacentPlotSpecification =
-  | { action: "createScatterPlot"; options: AdjacentConstructorOptions<CreateScatterPlotOptions> }
+  | { action: "createScatterPlot"; options?: AdjacentConstructorOptions<CreateScatterPlotOptions> }
   | { action: "createLinePlot"; options?: Partial<AdjacentConstructorOptions<CreateLinePlotOptions>> }
   | { action: "createBarPlot"; options?: Partial<AdjacentConstructorOptions<CreateBarPlotOptions>> }
-  | { action: "createAreaPlot"; options: AdjacentConstructorOptions<CreateAreaPlotOptions> }
-  | { action: "createDotPlot"; options: AdjacentConstructorOptions<CreateDotPlotOptions> }
-  | { action: "createLollipopPlot"; options: AdjacentConstructorOptions<CreateLollipopPlotOptions> }
-  | { action: "createDumbbellPlot"; options: AdjacentConstructorOptions<CreateDumbbellPlotOptions> }
-  | { action: "createECDFPlot"; options: AdjacentConstructorOptions<CreateECDFPlotOptions> }
-  | { action: "createIntervalPlot"; options: AdjacentConstructorOptions<CreateIntervalPlotOptions> }
-  | { action: "createRegressionPlot"; options: AdjacentConstructorOptions<CreateRegressionPlotOptions> }
-  | { action: "createRugPlot"; options: AdjacentConstructorOptions<CreateRugPlotOptions> }
-  | { action: "createStripPlot"; options: AdjacentConstructorOptions<CreateStripPlotOptions> }
-  | { action: "createBeeswarmPlot"; options: AdjacentConstructorOptions<CreateBeeswarmPlotOptions> }
-  | { action: "createRaincloudPlot"; options: AdjacentConstructorOptions<CreateRaincloudPlotOptions> }
-  | { action: "createBoxPlot"; options: AdjacentConstructorOptions<BoxPlotOptions> }
-  | { action: "createGradientPlot"; options: AdjacentConstructorOptions<GradientPlotOptions> }
-  | { action: "createViolinPlot"; options: AdjacentConstructorOptions<ViolinPlotOptions> }
-  | { action: "createDensityPlot"; options: AdjacentConstructorOptions<CreateDensityPlotOptions> }
-  | { action: "createHorizonPlot"; options: AdjacentConstructorOptions<CreateHorizonPlotOptions> }
-  | { action: "createHistogram"; options: AdjacentConstructorOptions<CreateHistogramOptions> }
-  | { action: "createHeatmap"; options: AdjacentConstructorOptions<CreateHeatmapOptions> }
-  | { action: "createPiePlot"; options: AdjacentConstructorOptions<CreatePiePlotOptions> }
-  | { action: "createRosePlot"; options: AdjacentConstructorOptions<CreateRosePlotOptions> }
-  | { action: "createRadialBarPlot"; options: AdjacentConstructorOptions<CreateRadialBarPlotOptions> }
-  | { action: "createPolarScatterPlot"; options: AdjacentConstructorOptions<CreatePolarScatterPlotOptions> }
-  | { action: "createPolarLinePlot"; options: AdjacentConstructorOptions<CreatePolarLinePlotOptions> }
-  | { action: "createRadarPlot"; options: AdjacentConstructorOptions<CreateRadarPlotOptions> }
-  | { action: "createParallelCoordinates"; options: AdjacentConstructorOptions<CreateParallelCoordinatesOptions> }
-  | { action: "createTextPlot"; options: AdjacentConstructorOptions<CreateTextPlotOptions> };
+  | { action: "createAreaPlot"; options?: AdjacentConstructorOptions<CreateAreaPlotOptions> }
+  | { action: "createDotPlot"; options?: AdjacentConstructorOptions<CreateDotPlotOptions> }
+  | { action: "createLollipopPlot"; options?: AdjacentConstructorOptions<CreateLollipopPlotOptions> }
+  | { action: "createDumbbellPlot"; options?: AdjacentConstructorOptions<CreateDumbbellPlotOptions> }
+  | { action: "createECDFPlot"; options?: AdjacentConstructorOptions<CreateECDFPlotOptions> }
+  | { action: "createIntervalPlot"; options?: AdjacentConstructorOptions<CreateIntervalPlotOptions> }
+  | { action: "createRegressionPlot"; options?: AdjacentConstructorOptions<CreateRegressionPlotOptions> }
+  | { action: "createRugPlot"; options?: AdjacentConstructorOptions<CreateRugPlotOptions> }
+  | { action: "createStripPlot"; options?: AdjacentConstructorOptions<CreateStripPlotOptions> }
+  | { action: "createBeeswarmPlot"; options?: AdjacentConstructorOptions<CreateBeeswarmPlotOptions> }
+  | { action: "createRaincloudPlot"; options?: AdjacentConstructorOptions<CreateRaincloudPlotOptions> }
+  | { action: "createBoxPlot"; options?: AdjacentConstructorOptions<BoxPlotOptions> }
+  | { action: "createGradientPlot"; options?: AdjacentConstructorOptions<GradientPlotOptions> }
+  | { action: "createViolinPlot"; options?: AdjacentConstructorOptions<ViolinPlotOptions> }
+  | { action: "createDensityPlot"; options?: AdjacentConstructorOptions<CreateDensityPlotOptions> }
+  | { action: "createHorizonPlot"; options?: AdjacentConstructorOptions<CreateHorizonPlotOptions> }
+  | { action: "createHistogram"; options?: AdjacentConstructorOptions<CreateHistogramOptions> }
+  | { action: "createHeatmap"; options?: AdjacentConstructorOptions<CreateHeatmapOptions> }
+  | { action: "createPiePlot"; options?: AdjacentConstructorOptions<CreatePiePlotOptions> }
+  | { action: "createRosePlot"; options?: AdjacentConstructorOptions<CreateRosePlotOptions> }
+  | { action: "createRadialBarPlot"; options?: AdjacentConstructorOptions<CreateRadialBarPlotOptions> }
+  | { action: "createPolarScatterPlot"; options?: AdjacentConstructorOptions<CreatePolarScatterPlotOptions> }
+  | { action: "createPolarLinePlot"; options?: AdjacentConstructorOptions<CreatePolarLinePlotOptions> }
+  | { action: "createRadarPlot"; options?: AdjacentConstructorOptions<CreateRadarPlotOptions> }
+  | { action: "createParallelCoordinates"; options?: AdjacentConstructorOptions<CreateParallelCoordinatesOptions> }
+  | { action: "createTextPlot"; options?: AdjacentConstructorOptions<CreateTextPlotOptions> };
+/** A native constructor with positional/data decisions inferred from the source. */
 ```
 
 Related types: [`AdjacentConstructorOptions`](./reference/types/#type-adjacentconstructoroptions) · [`CreateScatterPlotOptions`](./reference/types/#type-createscatterplotoptions) · [`CreateLinePlotOptions`](./reference/types/#type-createlineplotoptions) · [`CreateBarPlotOptions`](./reference/types/#type-createbarplotoptions) · [`CreateAreaPlotOptions`](./reference/types/#type-createareaplotoptions) · [`CreateDotPlotOptions`](./reference/types/#type-createdotplotoptions) · [`CreateLollipopPlotOptions`](./reference/types/#type-createlollipopplotoptions) · [`CreateDumbbellPlotOptions`](./reference/types/#type-createdumbbellplotoptions) · [`CreateECDFPlotOptions`](./reference/types/#type-createecdfplotoptions) · [`CreateIntervalPlotOptions`](./reference/types/#type-createintervalplotoptions) · [`CreateRegressionPlotOptions`](./reference/types/#type-createregressionplotoptions) · [`CreateRugPlotOptions`](./reference/types/#type-createrugplotoptions) · [`CreateStripPlotOptions`](./reference/types/#type-createstripplotoptions) · [`CreateBeeswarmPlotOptions`](./reference/types/#type-createbeeswarmplotoptions) · [`CreateRaincloudPlotOptions`](./reference/types/#type-createraincloudplotoptions) · [`BoxPlotOptions`](./reference/types/#type-boxplotoptions) · [`GradientPlotOptions`](./reference/types/#type-gradientplotoptions) · [`ViolinPlotOptions`](./reference/types/#type-violinplotoptions) · [`CreateDensityPlotOptions`](./reference/types/#type-createdensityplotoptions) · [`CreateHorizonPlotOptions`](./reference/types/#type-createhorizonplotoptions) · [`CreateHistogramOptions`](./reference/types/#type-createhistogramoptions) · [`CreateHeatmapOptions`](./reference/types/#type-createheatmapoptions) · [`CreatePiePlotOptions`](./reference/types/#type-createpieplotoptions) · [`CreateRosePlotOptions`](./reference/types/#type-createroseplotoptions) · [`CreateRadialBarPlotOptions`](./reference/types/#type-createradialbarplotoptions) · [`CreatePolarScatterPlotOptions`](./reference/types/#type-createpolarscatterplotoptions) · [`CreatePolarLinePlotOptions`](./reference/types/#type-createpolarlineplotoptions) · [`CreateRadarPlotOptions`](./reference/types/#type-createradarplotoptions) · [`CreateParallelCoordinatesOptions`](./reference/types/#type-createparallelcoordinatesoptions) · [`CreateTextPlotOptions`](./reference/types/#type-createtextplotoptions).
@@ -32514,6 +32581,21 @@ export type CreateIntervalPlotOptions = IntervalPlotBaseOptions & (
 ```
 
 Related types: [`IntervalPlotBaseOptions`](./reference/types/#type-intervalplotbaseoptions) · [`ErrorBarPositionChannel`](./reference/types/#type-errorbarpositionchannel) · [`ErrorBarIntervalChannel`](./reference/types/#type-errorbarintervalchannel).
+
+### `CreateLayerPlotOptions` {#type-createlayerplotoptions}
+
+ Expand CreateLayerPlotOptions
+
+```typescript
+export interface CreateLayerPlotOptions {
+  id?: string;
+  source?: string;
+  plot: LayerPlotSpecification;
+  placement?: "front" | "back";
+}
+```
+
+Related types: [`LayerPlotSpecification`](./reference/types/#type-layerplotspecification).
 
 ### `CreateLinePlotOptions` {#type-createlineplotoptions}
 
@@ -36888,6 +36970,21 @@ export interface LabelLeaderOptions {
 }
 ```
 
+### `LayerPlotSpecification` {#type-layerplotspecification}
+
+ Expand LayerPlotSpecification
+
+```typescript
+export type LayerPlotSpecification = {
+  [Action in AdjacentPlotSpecification["action"]]: {
+    action: Action;
+    options?: Partial<NonNullable<Extract<AdjacentPlotSpecification, { action: Action }>["options"]>>;
+  }
+}[AdjacentPlotSpecification["action"]];
+```
+
+Related types: [`AdjacentPlotSpecification`](./reference/types/#type-adjacentplotspecification).
+
 ### `LegendBlockSymbolPatch` {#type-legendblocksymbolpatch}
 
  Expand LegendBlockSymbolPatch
@@ -37977,22 +38074,20 @@ export type ParallelDimension = string | ({
 } & (
   | {
       fieldType: "quantitative";
-      scale?: WithoutScaleId<QuantitativePositionScaleOptions>;
+      scale?: QuantitativePositionScaleOptions;
     }
   | {
       fieldType: "ordinal";
-      scale?: WithoutScaleId<CategoricalPositionScaleOptions>;
+      scale?: CategoricalPositionScaleOptions;
     }
   | {
       fieldType?: undefined;
-      scale?: WithoutScaleId<
-        QuantitativePositionScaleOptions | CategoricalPositionScaleOptions
-      >;
+      scale?: QuantitativePositionScaleOptions | CategoricalPositionScaleOptions;
     }
 ));
 ```
 
-Related types: [`WithoutScaleId`](./reference/types/#type-withoutscaleid) · [`QuantitativePositionScaleOptions`](./reference/types/#type-quantitativepositionscaleoptions) · [`CategoricalPositionScaleOptions`](./reference/types/#type-categoricalpositionscaleoptions).
+Related types: [`QuantitativePositionScaleOptions`](./reference/types/#type-quantitativepositionscaleoptions) · [`CategoricalPositionScaleOptions`](./reference/types/#type-categoricalpositionscaleoptions).
 
 ### `ParallelGuideOptions` {#type-parallelguideoptions}
 
@@ -41431,12 +41526,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/c525da4376688faab53e2dd4a9d715d9da58d909/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/c525da4376688faab53e2dd4a9d715d9da58d909/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -42746,8 +42841,9 @@ rejects any `outer` channel. Per-channel policies require Cartesian coordinates.
 Call `createAdjacentPlot` on a complete chart to add a new view to its left, right,
 top or bottom. By default it creates a line using the source fields and aggregation.
 Supply `plot: { action: "createScatterPlot", options: { x: "month", y: "sales" } }`
-(or another native constructor) to select a different chart. Area and other chart families
-require their native options, including any prepared summary-data fields. The new chart
+(or another native constructor) to select a different chart. All native constructor families can infer their source data and unambiguous positional
+roles, including original fields behind statistical plots. Supply native options
+for any role that cannot be inferred, such as a second Dumbbell measure. The new chart
 has independent data and appearance; use `createOverlay` when it should follow results.
 
 The selected source mark's ID names the original view; the new `id` names both the
@@ -42980,6 +43076,53 @@ When color is shared, compatible same-field color/shape legends and color-only l
 are collected into one outer legend. The combined symbols retain their shape meaning;
 unrelated size legends and conflicting shape mappings remain separate. Disabling color
 sharing restores the original child legends, including in nested and faceted views.
+
+## Layer a native chart
+
+Use `createLayerPlot` for independently computed plots over the same measurements:
+
+> **Executable complete.** Self-contained deterministic observations with shared measurement scales and independent native layers.
+
+```js
+import { chart } from "ggaction";
+import { getPlotComposition, describeAction } from "ggaction/inspection";
+const data = Array.from({ length: 36 }, (_, i) => ({ group: i % 2 ? "A" : "B", value: 2 + i % 11 }));
+const program = chart()
+  .createCanvas({ plot: { width: 360, height: 300 }, margin: 90 })
+  .createData({ values: data })
+  .createBeeswarmPlot({ id: "observations", x: "group", y: "value" })
+  .createLayerPlot({
+    id: "summary",
+    source: "observations",
+    plot: { action: "createBoxPlot", options: {
+      width: { band: 0.4 }, outliers: false, box: { opacity: 0.25 }
+    } },
+    placement: "back"
+  })
+  .createGuides();
+const source = getPlotComposition(program, { target: "summary" });
+// source.channels.y.field is "value", not the internal Q1 column.
+const check = describeAction(program, { action: "createLayerPlot", options: {
+  id: "samples", source: "summary", plot: { action: "createStripPlot" }
+} });
+```
+
+The new plot shares coordinates and compatible scales, including the original
+fields behind a statistical chart. Its appearance remains independently editable.
+`placement: "back"` puts the entire compound plot behind existing marks.
+Use native encodings and plot editors to adjust each layer. Shared scale edits
+apply to every consumer. Color is inherited when available at the layer's grain.
+
+Use `createOverlay` when a line or point should **follow the existing visible
+results**, such as stacked bar endpoints. Use `createLayerPlot` for independent
+observations/distributions, such as Beeswarm + Box or Violin + Box + Strip.
+Different units or coordinates belong in an adjacent chart. In particular,
+histogram counts, density and cumulative probability cannot share one height
+scale. A Rug can reuse only their measurement axis.
+
+Preflight uses constructor roles without rendering all candidates. Native
+constructors still validate data-dependent conditions when invoked. Layering
+inside a facet uses `editFacetSource`; inside a concat, use a scoped `target`.
 
 <!-- Source: /api/marks/labels/ -->
 
@@ -44058,6 +44201,7 @@ can defer roles, so merely calling them does not necessarily produce a complete 
 | One complete chart plus row and column fields | [`facetGrid`](./reference/actions/charts-data/#facetgrid) | default | [`editFacetSource`](./reference/actions/charts-data/#editfacetsource) · [`editFacetHeaders`](./reference/actions/charts-data/#editfacetheaders) · [`editFacetScales`](./reference/actions/charts-data/#editfacetscales) · [`editFacetGuides`](./reference/actions/charts-data/#editfacetguides) · [`editCompositionLayout`](./reference/actions/charts-data/#editcompositionlayout) |
 | One eligible mark role and an ordered field list | [`repeatCharts`](./reference/actions/charts-data/#repeatcharts) | default | [`editFacetSource`](./reference/actions/charts-data/#editfacetsource) · [`editFacetHeaders`](./reference/actions/charts-data/#editfacetheaders) · [`editFacetScales`](./reference/actions/charts-data/#editfacetscales) · [`editFacetGuides`](./reference/actions/charts-data/#editfacetguides) · [`editCompositionLayout`](./reference/actions/charts-data/#editcompositionlayout) |
 | One complete chart plus a new independent chart; explicit shared scales and aligned plot frames | [`createAdjacentPlot`](./reference/actions/charts-data/#createadjacentplot) | default | [`editCompositionLayout`](./reference/actions/charts-data/#editcompositionlayout) · [`editCompositionScales`](./reference/actions/charts-data/#editcompositionscales) · [`replaceCompositionChild`](./reference/actions/charts-data/#replacecompositionchild) |
+| Independent native plot on compatible existing coordinates and measurement units | [`createLayerPlot`](./reference/actions/charts-data/#createlayerplot) | default | [`encodeColor`](./reference/actions/encodings/#encodecolor) · [`encodeOpacity`](./reference/actions/encodings/#encodeopacity) · [`removeMark`](./reference/actions/marks/#removemark) |
 
 ## Compose or refine
 
@@ -44100,11 +44244,11 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:b4aa7a4e85a9d8cf40386995c201486aa9cb55e59534eebfa7f2a4f92057bab6` |
+| Contract fingerprint | `sha256:973d2f8c7fb868a47c8b37261b63098a619bfa9ddd2ec831636c1a27a48ae46d` |
 | Example and dataset source | `ab206c446ae5010eecfd859427775c4785d8aed4` |
-| Runtime source commit | `c525da4376688faab53e2dd4a9d715d9da58d909` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
-| Declared actions here | 297 |
+| Declared actions here | 298 |
 | Declared actions in that release | 234 |
 
 ## Choose the matching documentation

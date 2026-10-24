@@ -74,7 +74,7 @@ type ParallelDimension = string | {
   field: string;
   fieldType?: "quantitative" | "ordinal";
   title?: string;
-  scale?: Omit<ScaleOptions, "id">;
+  scale?: ScaleOptions;
 };
 ```
 
@@ -82,9 +82,10 @@ type ParallelDimension = string | {
 - Finite numeric values infer `quantitative`; consistent strings infer
   `ordinal`. Declare numeric categories as `ordinal` explicitly.
 - `title` defaults to the field name.
-- Scale IDs are namespaced from the mark and dimension position. Supply scale
-  behavior such as `type`, `domain`, `range`, `nice`, `zero`, or `reverse`, not
-  another `id`.
+- Scale IDs default to the mark and dimension position. Supply an existing
+  compatible `scale.id` to share that dimension with another profile layer.
+  Shared scale edits affect every consumer. Other options configure `type`,
+  `domain`, `range`, `nice`, `zero`, or `reverse`.
 
 ## Row identity and missing values
 

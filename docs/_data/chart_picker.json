@@ -40,6 +40,7 @@
     "facet": "One complete chart and an eligible shared ancestor field",
     "facetGrid": "One complete chart plus row and column fields",
     "repeatCharts": "One eligible mark role and an ordered field list",
-    "createAdjacentPlot": "One complete chart plus a new independent chart; explicit shared scales and aligned plot frames"
+    "createAdjacentPlot": "One complete chart plus a new independent chart; explicit shared scales and aligned plot frames",
+    "createLayerPlot": "Independent native plot on compatible existing coordinates and measurement units"
   }
 }

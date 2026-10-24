@@ -46,7 +46,7 @@ Existing Cartesian Scatter/Line/Bar/Histogram/Heatmap/Text, Area/Density/ECDF/Ho
 - 범례는 kind·channels·scale IDs·domain/order·symbol layer 구성이 호환돼야 한다. Point/Line의 다른 symbol
   recipe는 자동 병합하지 않는다. 재사용한 범례는 원래 target을 유지한다. 명시한 layout/style 차이는 conflict다.
 - Histogram의 shared x scale은 각 consumer가 계산한 bin boundaries가 모두 같을 때만 자동 ticks를 재사용한다.
-  Parallel의 별도 facade는 각자 dimension scale IDs를 만들므로 다른 owner의 축을 자동 공유하지 않는다.
+  Parallel facades generate dimension scale IDs by default; explicit dimension scale.id or createLayerPlot can bind compatible shared scales.
   Gradient density legend도 owner별 density scale ID가 달라 다른 owner/family의 color legend를 덮어쓰지 않는다.
 - Explicit axes direction object에서 생략 방향은 요청하지 않는다. `axes:{x:false}`는 축을 만들지 않고 `axes:{x:false,y:{}}`는 y만 요청한다.
 - `guides:false` 또는 nested branch false는 기존 guide를 삭제하지 않는다. 세 branch 모두 false인 facade는

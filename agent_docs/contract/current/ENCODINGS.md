@@ -57,6 +57,10 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
   field type, channel, mark grain과 existing consumers에 맞는 subset을 검증한다.
 - Proposed: —
 
+### Shared position meaning
+
+An implicit field/type/unit reassignment on a complete plot cannot reuse a scale while another independent owner still consumes the old meaning. Supply an explicit scale ID to choose the resource deliberately; existing all-consumer validation and guide-rebinding constraints still apply. New incomplete mark assignments and same-unit statistical summaries retain ordinary inference. This applies to Cartesian and Polar position encodings.
+
 ### Basic encoding scale reassignment
 
 Basic에 이미 제공되는 field encoding을 다시 호출하면 같은 타입의 bound scale 설정을 갱신한다.

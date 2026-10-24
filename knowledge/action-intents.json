@@ -939,6 +939,11 @@
       "shared scales",
       "shared domains",
       "independent scales"
+    ],
+    "LayerPlot": [
+      "layered chart",
+      "independent plot layer",
+      "shared coordinates"
     ]
   },
   "summaryOverrides": {
@@ -1697,6 +1702,12 @@
     "editCompositionScales": {
       "share": {
         "y": true
+      }
+    },
+    "createLayerPlot": {
+      "source": "points",
+      "plot": {
+        "action": "createBoxPlot"
       }
     }
   },

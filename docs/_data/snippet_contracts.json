@@ -823,6 +823,22 @@
     "executable": false
   },
   {
+    "file": "api/composition/editing.md",
+    "block": 8,
+    "heading": "Layer a native chart",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [
+      "source: \"observations\"",
+      "target: \"summary\"",
+      "source: \"summary\""
+    ],
+    "prerequisites": "Self-contained deterministic observations with shared measurement scales and independent native layers.",
+    "sha256": "0851aad4af09f444c2f6d3391ea9d71edb0815af46092e53d2ecc49a11208ec2",
+    "executable": true
+  },
+  {
     "file": "api/composition/facets.md",
     "block": 1,
     "heading": "Use different horizontal and vertical gaps",

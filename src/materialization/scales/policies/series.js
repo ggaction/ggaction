@@ -36,8 +36,10 @@ export function resolveSeriesLayoutDomain({
         layout === "overlay" ||
         Object.hasOwn(directEncoding, "datum") ||
         (
-          aggregate !== "count" &&
-          directEncoding.field === layoutConsumer.encoding.field
+          directEncoding.field === layoutConsumer.encoding.field && (
+            aggregate !== "count" || (directEncoding.aggregate === "count" &&
+              JSON.stringify(consumer.layer.encoding.x?.bin) === JSON.stringify(layoutConsumer.layer.encoding.x?.bin))
+          )
         )
       );
     })

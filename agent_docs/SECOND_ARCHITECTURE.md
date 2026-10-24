@@ -638,6 +638,7 @@ Automatic statistical parameter의 요청과 계산값은 서로 다른 provenan
 action은 기존 instance를 바꾸지 않고 새로운 instance를 반환한다.
 
 Named dataset, layer, scale, coordinate의 exact ID lookup은 `selectors/`만 소유한다.
+Independent layer/adjacent creation plans live in `actions/composition/layerPlan.js` and `materialization/adjacentSource.js`; pure role inference lives in `grammar/plotComposition.js`, and read-only original field/measurement lookup lives in `selectors/plotComposition.js`.
 `selectors/graphicCapacity.js`는 semantic point owner와 retained child namespace identity를
 추적한다. namespace encoding도 이 순수 selector owner가 소유하며 composition materializer는
 이를 재사용한다. 수치 한도 검증은 core validation에 남고 persistence는 materializer를 호출하지 않는다.

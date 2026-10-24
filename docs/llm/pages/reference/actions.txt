@@ -62,6 +62,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createImputedData`](../../../reference/actions/statistics/#createimputeddata) | H1 | user-facing | statistics |
 | [`createIntervalData`](../../../reference/actions/statistics/#createintervaldata) | H1 | user-facing | statistics |
 | [`createIntervalPlot`](../../../reference/actions/charts-data/#createintervalplot) | H0, H1 | user-facing | charts |
+| [`createLayerPlot`](../../../reference/actions/charts-data/#createlayerplot) | H0 | user-facing | composition |
 | [`createLegend`](../../../reference/actions/guides/#createlegend) | H3 | user-facing | legend_and_title |
 | [`createLineMark`](../../../reference/actions/marks/#createlinemark) | H2 | user-facing | marks |
 | [`createLinePlot`](../../../reference/actions/charts-data/#createlineplot) | H0 | user-facing | charts |

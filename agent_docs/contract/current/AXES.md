@@ -154,6 +154,8 @@ Continuous labelMap evidence: `test/unit/actions/guides/continuous-axis-display-
 
 ## Shared axis-title contract
 
+- 같은 원본 측정값의 통계 레이어들은 provenance로 내부 생성 열을 해석한다. 명시적으로 서로 다른 측정값을 같은 value 축에 겹치면, 하나의 point title로 추론되지 않는 경우 원본 이름을 consumer 순서로 ` / `로 연결한다. 원본 field와 동일한 compound의 기본 title은 이 추론에 참여하며, 별도로 지정한 title과 충돌하면 기존 명시적 제목 규칙을 유지한다. Evidence: `test/unit/actions/composition/layer-plot.test.js`.
+
 - Create: `text?`, `scale?`, `position?`, `at?`, `offset?`, `rotation?`, `color?`, `fontSize?`,
   `fontFamily?`, `fontWeight?`, `overlap?`; edit에서는 scale을 제외한다.
 - `text`: non-empty string. 생략하면 unique connected field/aggregate 또는 density provenance에서 추론한다.

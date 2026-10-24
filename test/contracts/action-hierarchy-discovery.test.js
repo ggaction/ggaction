@@ -23,6 +23,7 @@ const completeChartActions = [
   "createHistogram",
   "createHorizonPlot",
   "createIntervalPlot",
+  "createLayerPlot",
   "createLinePlot",
   "createLollipopPlot",
   "createParallelCoordinates",
@@ -109,9 +110,9 @@ test("discovery separates completion from resource validity", async () => {
     state,
     entries.length
   ])), {
-    contextual: actionCards.length - 36,
+    contextual: actionCards.length - 37,
     deferred: 2,
-    complete: 31,
+    complete: 32,
     "not-applicable": 3
   });
   assert.deepEqual(byState.deferred.map(card => card.name), [
