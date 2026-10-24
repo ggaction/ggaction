@@ -29,7 +29,8 @@
     "contracts/realistic-statistical-facade-coverage-recipes.test.js": 98393,
     "contracts/realistic-combined-legend-witness.test.js": 1338,
     "contracts/realistic-data-color-contracts.test.js": 50176,
-    "contracts/realistic-legend-option-witness.test.js": 5886
+    "contracts/realistic-legend-option-witness.test.js": 5886,
+    "contracts/realistic-scoped-composition.test.js": 843
   },
   "localMeasurementNotes": {
     "contracts/realistic-combined-legend-witness.test.js": {
@@ -39,6 +40,10 @@
     "contracts/realistic-legend-option-witness.test.js": {
       "environment": "macOS, Node22.23.1, max-old-space-size512",
       "measurement": "Sum of the four successful actual test durations from the official realistic selector, 5885.861667ms, rounded up; three authentic TidyTuesday datasets, five public facade/legend lifecycle repetitions. Scheduling weight only; no coverage instrumentation."
+    },
+    "contracts/realistic-scoped-composition.test.js": {
+      "environment": "macOS, Node 24.8.0",
+      "measurement": "Complete successful file duration 842.251625 ms rounded up; five pinned sources, each four constructor families with scoped and atomic edits. Scheduling estimate only."
     }
   },
   "localMeasurements": {

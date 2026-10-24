@@ -189,6 +189,8 @@ function digest(ids) {
 function targetInventory(inventory) {
   const options = inventory.optionPaths.filter(option =>
     option.required && ACTIONS.has(option.action) &&
+    // Composition routing has its own actual-data matrix in realistic-scoped-composition.test.js.
+    !/^target(?:\.|$)/u.test(option.path) &&
     !OTHER_RECIPE_REQUIREMENT_IDS.has(option.id)
   );
   const literals = inventory.pathLiteralRequirements.filter(requirement => {

@@ -76,13 +76,15 @@ test("covers every hierarchical facade option, literal and diversity requirement
 }, async () => {
   const inventory = await buildPublicOptionInventory(actionCards);
   const options = inventory.optionPaths.filter(option =>
-    option.required && ACTIONS.has(option.action)
+    // Constructors inherit scoped routing, owned by realistic-scoped-composition.test.js.
+    option.required && ACTIONS.has(option.action) && !/^target(?:\.|$)/u.test(option.path)
   );
+  const optionIds = new Set(options.map(option => option.id));
   const literals = inventory.pathLiteralRequirements.filter(requirement =>
-    ACTIONS.has(actionFromOptionPath(requirement.optionPath))
+    optionIds.has(requirement.optionPath)
   );
   const diversity = inventory.pathDiversityRequirements.filter(requirement =>
-    ACTIONS.has(actionFromOptionPath(requirement.optionPath))
+    optionIds.has(requirement.optionPath)
   );
   const optionStats = new Map(options.map(option => [option.id, emptyStats()]));
   const literalStats = new Map(literals.map(requirement => [requirement.id, emptyStats()]));

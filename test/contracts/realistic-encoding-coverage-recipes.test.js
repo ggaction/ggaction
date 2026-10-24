@@ -90,7 +90,8 @@ function directEntries(program, action) {
 function targetInventory(inventory) {
   const actions = new Set(REALISTIC_ENCODING_COVERAGE_EXPECTED_ACTIONS);
   const options = inventory.optionPaths.filter(option =>
-    option.required && actions.has(option.action)
+    // Scoped routing is exercised on real datasets in realistic-scoped-composition.test.js.
+    option.required && actions.has(option.action) && !option.path.startsWith("target.")
   );
   const optionIds = new Set(options.map(option => option.id));
   return Object.freeze({

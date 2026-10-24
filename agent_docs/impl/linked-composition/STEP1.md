@@ -4,13 +4,13 @@
 
 - [x] 사용자 승인: 2026-10-24의 상세 계획 뒤 사용자가 “좋아. 그렇게 해서 … v0.0.25 … transition … autocomplete”라고 실행을 지시함.
 - [x] v0.0.24(fd5c4073)까지 기존 feature branch를 fast-forward하여 이전 기능을 보존함.
-- [ ] 기존 라이브러리 및 앱 baseline 검증.
+- [x] 기존 라이브러리 및 앱 baseline 검증 및 통합 회귀 해결.
 - [x] 새 시각적 결과의 primitive와 실행 가능한 검증 패키지.
 - [x] 시각적 결과 확인 후 overlay 및 병치 공개 action 구현.
 - [x] 타입·inspection·Current 계약·영문 문서·생성 파일 동기화.
-- [ ] 새 코퍼스 전체 수집, 구조 추출, 모델 재학습.
-- [ ] 대상별 추천, All/패널/overlay 선택, 네 방향 +, 코드/History/transition 연결.
-- [ ] release 검증 및 commit/push 원격 일치 확인.
+- [x] 새 코퍼스 전체 수집, 구조 추출, 모델 재학습.
+- [x] 대상별 추천, All/패널/overlay 선택, 네 방향 +, 코드/History/transition 연결.
+- [x] 구현 release 검증 완료. 각 체크포인트 push 및 원격 일치를 확인하며, 보호된 게시 작업은 별도 승인 대상.
 
 ## 승인 범위
 
@@ -78,3 +78,40 @@ Canvas/transition 브라우저, 실행 가능한 코드·저장복원·내보내
 - Full unit 4,276/4,276, chart 645/645, browser 294/294 and documentation 153/153 tests passed. Built docs passed 150 pages, 1,148 machine-artifact identities and desktop/mobile browser checks before the version-only refresh.
 - Full contracts passed 658/659; the remaining check identified old documented bundle ceilings. Canonical architecture and README now match the measured package-consumer ceilings. Installed Full/Basic/MCP/TypeScript consumers passed after updating scoped declaration signatures.
 - Extended the existing composition lifecycle scenario to execute all four new public actions at its root, including scoped child ownership and shared domains. Its three independent integrity/inventory/effect tests pass. Full realistic, source coverage, final package/provenance and app integration checks continue; this checkpoint does not declare release readiness.
+
+
+## App and full-corpus integration evidence
+
+- The app checkpoint `aab639496ceea2af966e532b1a96b1619ab2c5a2` is pushed to
+  `ggaction/vis-autocomplete` main. App tests: 380/380. Cars, Barley, Iris and Stocks
+  browser workflows cover all four adjacency directions, both display modes, three
+  explicit targets, 160 rapid pointer moves, saved projects, Undo/Redo and reload.
+- Transition 0.1.1 checkpoint `1693936a04c67c3272805a24a1fb87491da7c874` is pushed.
+  Its Canvas clip interpolation preserves interrupted transitions in nested panels.
+- Corpus `58791ace7212cacb98c2b64e3f92280722ab638e`: all 1,387 chart families,
+  10,174 stage programs and 1,452 JSON sources feed training. Per-chart union avoids
+  stage duplication; structural ownership separates composed panels and data sources.
+  No family was skipped and no unknown method or unresolved owner remained.
+- Every corpus module was executed: 10,159 valid materialized canvases; 15 failures
+  (`vl_1686` G1–G7 and `vl_1757` G1–G8) reproduce unchanged on clean v0.0.24.
+  All are retained for learning. This check does not assert all-corpus pixel parity.
+- Source coverage run: 5,736/5,736 tests; 95.67% lines, 93.08% branches, 98.69%
+  functions and all 175 critical floors passed. Installed-package consumers and
+  the built docs (150 pages, 1,148 machine artifacts, desktop/mobile layouts) pass.
+- New generic target-routing options have a separate five-dataset/four-constructor
+  real-data matrix. Existing native-option ledgers remain intact. Adjacent palette
+  paths have actual rendered witnesses. Updated composition lifecycle metadata now
+  records the new create calls and the final geometric effect of alignment.
+- Four exhaustive realistic file shards were run; their failed inventory witnesses
+  were repaired and rechecked. Node 24 numerical/resource differences are isolated
+  from source regressions; required resource checks use Node 22. All 271 cases in
+  the exhaustive realistic sweep are accounted for by the passing shard cases
+  and corrected focused reruns. The affected generator/runner/effect files were
+  additionally rerun in full: 54/54 passed. Process isolation passed 3/3: 216 and
+  360 descriptors and final states match, with the larger run using 441,597,952
+  combined RSS bytes under the unchanged 512 MiB limit.
+- A 100-edit app benchmark covers two panels and an overlay, retained calculation
+  state and Canvas scenes. It observed no progressive growth at checkpoints
+  1/20/50/100; contended timing is not a browser frame-rate guarantee.
+- No package publication, PR creation, release tag or documentation deployment has
+  been authorized or performed for this version. Those remain separate operations.
