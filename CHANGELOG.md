@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Infer quantitative typing for numeric constant Rule secondary endpoints when `fieldType` is omitted, matching the existing declaration while retaining field-based endpoint validation.
+
 - Fix Canvas replay comparing new axis labels with a stale numeric sibling title position.
 
 - Add Cartesian axis title `offset: { from: "labels", gap }` with same-owner label-aware replay, preserving numeric and omitted defaults.
