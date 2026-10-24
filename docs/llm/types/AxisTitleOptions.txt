@@ -12,8 +12,8 @@ export interface AxisTitleOptions<P extends string> {
   scale?: string;
   position?: P;
   at?: "start" | "center" | "end" | number;
-  /** Signed distance from the axis frame: positive outward, negative inward. */
-  offset?: number;
+  /** Signed distance from the axis frame, or a nonnegative gap outside same-owner labels. */
+  offset?: AxisTitleOffset;
   rotation?: RotationInput;
   color?: string;
   fontSize?: number;

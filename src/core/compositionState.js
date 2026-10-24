@@ -1,3 +1,4 @@
+import { normalizeFacetGap } from "./facetGap.js";
 import { normalizeFacetAxes } from "./facetAxisPolicy.js";
 import { isOwned, isPlainObject } from "./immutable.js";
 import { ownProgramState } from "./programState.js";
@@ -242,7 +243,9 @@ function validateCompositionChildren(compositionSpec, childIds, facet) {
 }
 
 function validateLayout(compositionSpec) {
-  if (!Number.isFinite(compositionSpec.gap) || compositionSpec.gap < 0) {
+  if (compositionSpec.type === "facet") {
+    normalizeFacetGap(compositionSpec.gap, "compositionSpec.gap");
+  } else if (!Number.isFinite(compositionSpec.gap) || compositionSpec.gap < 0) {
     throw new RangeError("compositionSpec.gap must be a non-negative finite number.");
   }
   if (!["start", "center", "end"].includes(compositionSpec.align)) {

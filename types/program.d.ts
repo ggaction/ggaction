@@ -164,9 +164,11 @@ export interface CompositionOptions {
   align?: CompositionAlign;
   padding?: number | CompositionPadding;
 }
+/** Facets may set independent axis gaps; concat continues to require a number. */
+export type FacetGap = number | Readonly<{ x: number; y: number }>;
 export interface EditCompositionLayoutOptions {
   columns?: number;
-  gap?: number;
+  gap?: FacetGap;
   align?: CompositionAlign;
   padding?: number | CompositionPadding;
   /** Interpret gap between child canvases (default), inner plots, or retained full content (wrapped facets). */
@@ -224,7 +226,7 @@ export interface FacetOptions {
   data?: string;
   values?: readonly DatasetScalar[];
   columns?: number;
-  gap?: number;
+  gap?: FacetGap;
   align?: CompositionAlign;
   padding?: number | CompositionPadding;
   scales?: FacetScaleResolutions;
@@ -245,7 +247,7 @@ export interface FacetGridOptions {
   rows: FacetGridRole;
   columns: FacetGridRole;
   combinations?: "observed" | "full";
-  gap?: number;
+  gap?: FacetGap;
   align?: CompositionAlign;
   padding?: number | CompositionPadding;
   scales?: FacetScaleResolutions;
@@ -262,7 +264,7 @@ export interface RepeatChartsOptions {
   channel: "x" | "y" | "theta" | "r" | { parallelDimension: string };
   fields: readonly [string, ...string[]];
   columns?: number;
-  gap?: number;
+  gap?: FacetGap;
   align?: CompositionAlign;
   padding?: number | CompositionPadding;
   scales?: FacetScaleResolutions;
@@ -328,7 +330,7 @@ export interface FacetCompositionSpec {
   readonly spacing?: "canvas" | "plot" | "content";
   /** Canonical opt-in intent; stacked is represented by omission. */
   readonly topLane?: "shared";
-  readonly gap: number;
+  readonly gap: FacetGap;
   readonly align: CompositionAlign;
   readonly padding: Readonly<Required<CompositionPadding>>;
   readonly facet: {
@@ -755,6 +757,7 @@ export type DatasetTimeUnitTransform = DatasetTimeUnitTransformBase & (
       readonly weekRule: "calendar" | "iso";
     }
 );
+export type Bin2DAssignment = "edges" | "step";
 export interface Bin2DCounts {
   x: number;
   y: number;
@@ -781,6 +784,7 @@ export interface DatasetBin2DOutputFields {
 }
 export interface DatasetBin2DTransform {
   readonly type: "bin2d";
+  readonly assignment?: "step";
   readonly x: string;
   readonly y: string;
   readonly bins: Readonly<Bin2DCounts>;
@@ -1469,6 +1473,8 @@ export interface CartesianAxisLabelStyleOptions extends AxisLabelStyleOptions {
   colorMap?: CartesianAxisLabelColorMap | "auto";
   /** Keep unrotated label bounds inside the mapped axis span; defaults to false. */
   flush?: boolean;
+  /** Only flush mapped ticks within this non-negative distance of a range edge. Auto restores all-label containment. */
+  flushThreshold?: number | "auto";
   /** Signed displacement from the mapped tick position, independent of outward offset. */
   alongOffset?: number;
 }
@@ -1494,6 +1500,7 @@ export interface AxisTicksAndLabelsOptions<P extends string> {
   ticks?: CartesianAxisTickStyleOptions;
   labels?: CartesianAxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions;
 }
+export type AxisTitleOffset = number | Readonly<{ from: "labels"; gap: number }>;
 export interface AxisTitleOptions<P extends string> {
   /** Axis resource identity; omission prefers canonical, then a unique named owner. */
   target?: string;
@@ -1508,8 +1515,8 @@ export interface AxisTitleOptions<P extends string> {
   scale?: string;
   position?: P;
   at?: "start" | "center" | "end" | number;
-  /** Signed distance from the axis frame: positive outward, negative inward. */
-  offset?: number;
+  /** Signed distance from the axis frame, or a nonnegative gap outside same-owner labels. */
+  offset?: AxisTitleOffset;
   rotation?: RotationInput;
   color?: string;
   fontSize?: number;
@@ -2673,6 +2680,7 @@ export interface Bin2DDataOptions {
   y: string;
   bins?: number | Bin2DCounts;
   extent?: Bin2DExtent;
+  assignment?: "edges" | "step";
   includeEmpty?: boolean;
   members?: boolean;
   as?: Bin2DOutputFields;
@@ -2685,6 +2693,7 @@ export interface EditBin2DDataOptions {
   y?: string;
   bins?: number | Bin2DCounts;
   extent?: Bin2DExtent;
+  assignment?: "edges" | "step";
   includeEmpty?: boolean;
   members?: boolean;
   as?: DatasetBin2DOutputFields;
@@ -4043,6 +4052,7 @@ export interface BinnedHeatmapColorOptions {
 export interface HeatmapBinOptions {
   bins?: number | Bin2DCounts;
   extent?: Bin2DExtent;
+  assignment?: "edges" | "step";
   includeEmpty?: boolean;
 }
 
@@ -5193,6 +5203,8 @@ export interface TitleOptions {
   maxWidth?: number;
   wrap?: "word" | "character";
   lineHeight?: number;
+  /** Subtitle-only line spacing; overrides lineHeight without requiring maxWidth. */
+  subtitleLineHeight?: number;
   titleStyle?: TitleTextStyleOptions;
   subtitleStyle?: TitleTextStyleOptions;
 }

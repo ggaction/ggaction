@@ -19,10 +19,10 @@ import { normalizeDatasetTransformEdit } from "../../grammar/transforms.js";
 export { materializeBin2DData } from "./bin2dMaterialize.js";
 
 const OPTIONS = Object.freeze([
-  "id", "source", "x", "y", "bins", "extent", "includeEmpty", "members", "as"
+  "id", "source", "x", "y", "bins", "extent", "assignment", "includeEmpty", "members", "as"
 ]);
 const EDIT_OPTIONS = Object.freeze([
-  "target", "source", "x", "y", "bins", "extent", "includeEmpty",
+  "target", "source", "x", "y", "bins", "extent", "assignment", "includeEmpty",
   "members", "as", "dependents"
 ]);
 const EDITABLE = Object.freeze(EDIT_OPTIONS.filter(option =>

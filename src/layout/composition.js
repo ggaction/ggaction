@@ -1,3 +1,4 @@
+import { validateCompositionSpacing } from "../core/facetGap.js";
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
 
 const DIRECTIONS = ["horizontal", "vertical"];
@@ -11,12 +12,7 @@ export const DEFAULT_COMPOSITION_LAYOUT = cloneAndFreeze({
   padding: { top: 0, right: 0, bottom: 0, left: 0 }
 });
 
-export function validateCompositionSpacing(value, label) {
-  if (!Number.isFinite(value) || value < 0) {
-    throw new RangeError(`${label} must be a non-negative finite number.`);
-  }
-  return value;
-}
+export { validateCompositionSpacing } from "../core/facetGap.js";
 
 function validatePaddingBase(base) {
   if (!isPlainObject(base)) {

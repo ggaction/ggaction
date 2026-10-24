@@ -174,3 +174,73 @@ test("rejects invalid bins, extents, fields, and silent data loss", () => {
     /at least one row with finite x and y/
   );
 });
+
+test("keeps default edge assignment byte-identical and stores only explicit step", () => {
+  assert.equal(JSON.stringify(transform()), JSON.stringify(transform({ assignment: "edges" })));
+  assert.equal(Object.hasOwn(transform(), "assignment"), false);
+  assert.equal(transform({ assignment: "step" }).assignment, "step");
+  for (const assignment of [null, false, 0, "auto", {}, []]) {
+    assert.throws(() => transform({ assignment }), /assignment must be "edges" or "step"/);
+  }
+  assert.throws(() => validateBin2DTransform({ ...transform(), assignment: "edges" }), /Stored 2D bin assignment/);
+});
+
+function assignmentResult(rows, assignment, overrides = {}) {
+  return deriveBin2DRows(rows, transform({
+    bins: { x: 50, y: 48 }, extent: { x: [-5, 5], y: [-4.8, 4.8] }, members: true, assignment,
+    as: { x0: "x0", x1: "x1", y0: "y0", y1: "y1", count: "count", members: "members" }, ...overrides
+  }));
+}
+
+test("step assignment distinguishes rounded boundaries without moving values away from them", () => {
+  const rows = [{ x: -4.89, y: -4.67 }, { x: 0.6, y: 0.6 }, { x: 4.94, y: 4.67 }];
+  const edges = assignmentResult(rows, "edges");
+  const step = assignmentResult(rows, "step");
+  assert.deepEqual(edges.values[1], { x0: 0.40000000000000036, x1: 0.6000000000000005,
+    y0: 0.5999999999999996, y1: 0.7999999999999998, count: 1, members: [1] });
+  assert.deepEqual(step.values[1], { x0: 0.6000000000000005, x1: 0.8000000000000007,
+    y0: 0.5999999999999996, y1: 0.7999999999999998, count: 1, members: [1] });
+  assert.deepEqual(edges.resolved.edges, step.resolved.edges);
+  const below = assignmentResult([{ x: 0.6 - 1e-12, y: 0.6 - 1e-12 }], "step");
+  assert.equal(below.values[0].x0, edges.values[1].x0);
+  assert.equal(below.values[0].y0, 0.39999999999999947);
+});
+
+for (const assignment of ["edges", "step"]) {
+  test(`${assignment} conserves finite members, exact boundaries and row-major order`, () => {
+    const rows = [{ x: -2, y: -2 }, { x: -1, y: -1 }, { x: 0, y: 0 }, { x: 1, y: 1 }, { x: 2, y: 2 },
+      { x: 0, y: 0 }, { x: null, y: 0 }, { x: Infinity, y: 0 }, { x: 0, y: NaN }];
+    const result = assignmentResult(rows, assignment, { bins: 4, extent: { x: [-2, 2], y: [-2, 2] }, includeEmpty: true });
+    assert.equal(result.values.length, 16);
+    assert.deepEqual(result.values.filter(row => row.count).map(row => row.members), [[0], [1], [2, 5], [3, 4]]);
+    assert.equal(result.values.reduce((n, row) => n + row.count, 0), 6);
+    assert.deepEqual(result.values.map(row => [row.x0, row.y0]), Array.from({ length: 16 }, (_, i) => [-2 + i % 4, -2 + Math.floor(i / 4)]));
+    assert.throws(() => assignmentResult([{ x: 6, y: 0 }], assignment), /extent must contain every eligible value/);
+    assert.throws(() => assignmentResult([{ x: null, y: 0 }], assignment), /at least one row/);
+    assert.throws(() => assignmentResult([{ x: 5e-324, y: 0 }, { x: 1e-323, y: 1 }], assignment,
+      { bins: { x: 2, y: 1 }, extent: undefined }), /cannot represent/);
+  });
+}
+
+test("step assignment handles full finite range, single bins and the maximum axis count", () => {
+  for (const bins of [1, 2, 10_000]) {
+    const result = assignmentResult([{ x: -1e308, y: -1e308 }, { x: 0, y: 0 }, { x: 9e307, y: 9e307 }, { x: 1e308, y: 1e308 }], "step",
+      { bins: { x: bins, y: 1 }, extent: { x: [-1e308, 1e308], y: [-1e308, 1e308] } });
+    assert.equal(result.values.reduce((n, row) => n + row.count, 0), 4);
+    assert.equal(result.values[0].x0, -1e308);
+    assert.equal(result.values.at(-1).x1, 1e308);
+    assert.equal(result.resolved.edges.x.every(Number.isFinite), true);
+  }
+  assert.equal(transform({ assignment: "step", bins: { x: 10_000, y: 100 } }).bins.x, 10_000);
+  assert.throws(() => transform({ assignment: "step", bins: { x: 10_000, y: 101 } }), /at most 1000000 cells/);
+});
+
+test("step policy applies independently to either axis and exact stored edges", () => {
+  const definition = transform({ assignment: "step", bins: { x: 1, y: 50 }, extent: { x: [0, 1], y: [-5, 5] }, members: true });
+  const result = deriveBin2DRows([{ x: 0, y: 0.6 }, { x: 1, y: 0.6000000000000005 }, { x: 0.5, y: 0.6 - 1e-12 }], definition);
+  assert.equal(result.values.length, 2);
+  assert.deepEqual(result.values.map(row => row.__cells_members), [[2], [0, 1]]);
+  const tiny = assignmentResult([{ x: -Number.MIN_VALUE, y: 0 }, { x: 0, y: 0.5 }, { x: Number.MIN_VALUE, y: 1 }], "step",
+    { bins: { x: 2, y: 1 }, extent: { x: [-Number.MIN_VALUE, Number.MIN_VALUE], y: [0, 1] } });
+  assert.deepEqual(tiny.values.map(row => row.members), [[0], [1, 2]]);
+});

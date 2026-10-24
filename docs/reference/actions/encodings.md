@@ -141,11 +141,13 @@ The following call patterns are abbreviated examples; the declaration above owns
 
 ```javascript
 encodeX2({ field, target?, fieldType, scale?, coordinate? })
-encodeX2({ datum, target?, fieldType, scale?, coordinate? })
+encodeX2({ datum, target?, fieldType?, scale?, coordinate? })
 ```
 
 Assign an area, ranged-bar, or rect upper edge, or a rule secondary x endpoint.
 It requires an existing x and shares its scale and coordinate.
+A rule numeric datum defaults to `fieldType: "quantitative"` and must be finite.
+Rule field endpoints and nonnumeric datum endpoints require an explicit matching type.
 [Position encodings](../../api/position-encodings.md)
 
 
@@ -841,11 +843,13 @@ The following call patterns are abbreviated examples; the declaration above owns
 
 ```javascript
 encodeY2({ field, target?, fieldType, scale?, coordinate? })
-encodeY2({ datum, target?, fieldType, scale?, coordinate? }) // rule
+encodeY2({ datum, target?, fieldType?, scale?, coordinate? }) // rule
 ```
 
 Assign an area, ranged-bar, or rect upper edge, or a rule secondary y endpoint.
 It requires an existing y and shares its scale and coordinate.
+A rule numeric datum defaults to `fieldType: "quantitative"` and must be finite.
+Rule field endpoints and nonnumeric datum endpoints require an explicit matching type.
 [Position encodings](../../api/position-encodings.md)
 
 
@@ -1229,7 +1233,7 @@ replaces the previous content branch. [Text marks](../../api/marks/text.md)
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
 
 ```typescript
 encodeDx(options: TextOffsetEncodingOptions): ChartProgram;
@@ -1269,7 +1273,7 @@ source-owned labels and other marks are rejected.
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
 
 ```typescript
 encodeDy(options: TextOffsetEncodingOptions): ChartProgram;

@@ -602,11 +602,11 @@
     "reason": "Not a standalone executable contract. Requires the imports, resource state, and branch in \"`removeCoordinate({ id })` {#removecoordinate-id}\" on docs/api/coordinates.md. Review this context when editing; register a fixture in snippet_cases.json to claim execution coverage."
   },
   {
-    "id": "docs/api/data/bin2d.md#-createbin2ddata-id-source-x-y-bins-extent-includeempty-members-as-:1",
+    "id": "docs/api/data/bin2d.md#-createbin2ddata-id-source-x-y-bins-extent-assignment-includeempty-members-as-:1",
     "sha256": "d87cff59bff8be77c7c72fe1a4fb54399b3598a932569b114a2367e688ab5d87",
     "mode": "contextual-fragment",
     "owner": "docs/api/data/bin2d.md",
-    "reason": "Not a standalone executable contract. Requires the imports, resource state, and branch in \"`createBin2DData({ id, source?, x, y, bins?, extent?, includeEmpty?, members?, as? })`\" on docs/api/data/bin2d.md. Review this context when editing; register a fixture in snippet_cases.json to claim execution coverage."
+    "reason": "Not a standalone executable contract. Requires the imports, resource state, and branch in \"`createBin2DData({ id, source?, x, y, bins?, extent?, assignment?, includeEmpty?, members?, as? })`\" on docs/api/data/bin2d.md. Review this context when editing; register a fixture in snippet_cases.json to claim execution coverage."
   },
   {
     "id": "docs/api/data/bin2d.md#-editbin2ddata-:1",

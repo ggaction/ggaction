@@ -24,6 +24,28 @@ Shared legend와 title의 parent 예약은 기존 규칙을 유지한다. Concat
 Evidence: `test/unit/actions/composition/facet-plot-spacing.test.js`, `test/unit/grammar/layout/facets.test.js`.
 Guide text/header clearance and source-style replay: `test/unit/actions/composition/facet-guide-header-clearance.test.js`.
 
+## Independent axis gaps
+
+Facet, facetGrid, repeatCharts와 facet의 editCompositionLayout은 기존 숫자 gap 또는
+정확히 `{x: NonNegativeFinite, y: NonNegativeFinite}`를 받는다. 숫자는 두 방향에 같은
+간격을 적용하고 저장 표현·기본값·기존 오류를 유지한다. 객체는 두 축을 모두 명시해야 하며
+partial/unknown key/비유한/음수 값은 거부한다. 객체 편집은 전체 교체이고 gap 생략은 보존이다.
+Concat 생성·편집은 계속 숫자만 받는다. 한 행이나 한 열이어도 객체 양축을 모두 검증한다.
+
+Canvas/plot spacing의 열 간격은 x, 행 간격은 y다. Content spacing의 가로·세로 retained
+bounds clearance에 각각 적용한다. 기존 spacing/family 제한, 셀 순서, shared footer/legend,
+header anchor, topLane, 제목, plot 크기, concrete overlap 검사는 바꾸지 않는다.
+Plot header의 두 방향 최소 clearance를 각각 검사하며 큰 다른 축 값으로 상쇄하지 않는다.
+객체 오류 상세는 `gap.x`/`gap.y`와 해당 요청값/최소값을 쓰고, 잘못된 객체 형식은 `gap`이다.
+기존 scalar header 오류는 기존 `gap` 경로와 두 방향 중 큰 최소값을 유지한다.
+
+`compositionSpec.gap`은 숫자 또는 두 키 객체 원형 그대로 한 번 저장한다. Object 입력은
+구조 복사·freeze하고 편집·파생 replay·저장 복원에 보존한다. 객체 누적 좌표와 크기의 overflow는
+거부하며 실패한 action은 이전 program과 trace를 변경하지 않는다.
+Evidence: `test/unit/layout/facet-axis-gaps.test.js`,
+`test/unit/actions/composition/facet-axis-gaps.test.js`,
+`scripts/consumers/fixtures/facet-axis-gaps.ts`.
+
 ## Independent content flow
 
 Wrapped `facet` and `repeatCharts` also accept `spacing:"content"`; keyed `facetGrid` rejects it.
@@ -130,7 +152,7 @@ Evidence: `test/unit/layout/facet-top-lane.test.js`, `test/unit/actions/composit
 
 ### Formal values — `facet`
 
-- Implemented: `facet({ id?: UserId; field: NonEmptyString; data?: ExistingDatasetId; values?: NonEmptyUniqueObservedScalarArray; columns?: PositiveInteger; gap?: NonNegativeFinite; spacing?: "canvas" | "plot" | "content"; topLane?: "stacked" | "shared"; align?: "start" | "center" | "end"; padding?: NonNegativeFinite | Partial<FourSidePadding>; scales?: Partial<Record<FacetScaleChannel, "shared" | "independent">>; guides?: { axes?: "each" | "outer" | { x?: "each" | "outer"; y?: "each" | "outer" }; legend?: false | "shared" | LegendOptions }; headers?: FacetHeadersOptions }): ChartProgram`.
+- Implemented: `facet({ id?: UserId; field: NonEmptyString; data?: ExistingDatasetId; values?: NonEmptyUniqueObservedScalarArray; columns?: PositiveInteger; gap?: NonNegativeFinite | { x: NonNegativeFinite; y: NonNegativeFinite }; spacing?: "canvas" | "plot" | "content"; topLane?: "stacked" | "shared"; align?: "start" | "center" | "end"; padding?: NonNegativeFinite | Partial<FourSidePadding>; scales?: Partial<Record<FacetScaleChannel, "shared" | "independent">>; guides?: { axes?: "each" | "outer" | { x?: "each" | "outer"; y?: "each" | "outer" }; legend?: false | "shared" | LegendOptions }; headers?: FacetHeadersOptions }): ChartProgram`.
 - Implemented non-Cartesian families: Polar Point/Line/direct Arc/Pie/Rose/Radar and Parallel coordinates.
 - Proposed (NOT IMPLEMENTED): —
 
@@ -187,7 +209,7 @@ Evidence: `test/unit/layout/facet-top-lane.test.js`, `test/unit/actions/composit
 
 ### Formal values — `facetGrid`
 
-- Implemented: `facetGrid({ id?: UserId; data?: ExistingDatasetId; rows: { field: NonEmptyString; values?: NonEmptyUniqueObservedScalarArray }; columns: { field: NonEmptyString; values?: NonEmptyUniqueObservedScalarArray }; combinations?: "observed" | "full"; gap?: NonNegativeFinite; spacing?: "canvas" | "plot"; topLane?: "stacked" | "shared"; align?: CompositionAlign; padding?: CompositionPaddingInput; scales?: FacetScaleResolutions; guides?: FacetGuideOptions; headers?: FacetHeadersOptions }): ChartProgram`.
+- Implemented: `facetGrid({ id?: UserId; data?: ExistingDatasetId; rows: { field: NonEmptyString; values?: NonEmptyUniqueObservedScalarArray }; columns: { field: NonEmptyString; values?: NonEmptyUniqueObservedScalarArray }; combinations?: "observed" | "full"; gap?: NonNegativeFinite | { x: NonNegativeFinite; y: NonNegativeFinite }; spacing?: "canvas" | "plot"; topLane?: "stacked" | "shared"; align?: CompositionAlign; padding?: CompositionPaddingInput; scales?: FacetScaleResolutions; guides?: FacetGuideOptions; headers?: FacetHeadersOptions }): ChartProgram`.
 - Implemented for the same Cartesian, Polar and Parallel families and policies as `facet`.
 - Proposed (NOT IMPLEMENTED): —
 
@@ -219,7 +241,7 @@ Evidence: `test/unit/layout/facet-top-lane.test.js`, `test/unit/actions/composit
 
 ### Formal values — `repeatCharts`
 
-- Implemented: `repeatCharts({ id?: UserId; target?: EligibleDirectMarkId; channel: "x" | "y" | "theta" | "r" | { parallelDimension: NonEmptyString }; fields: NonEmptyUniqueFieldTuple; columns?: PositiveInteger; gap?: NonNegativeFinite; spacing?: "canvas" | "plot" | "content"; topLane?: "stacked" | "shared"; align?: CompositionAlign; padding?: CompositionPaddingInput; scales?: FacetScaleResolutions; guides?: FacetGuideOptions; headers?: FacetHeadersOptions }): ChartProgram`.
+- Implemented: `repeatCharts({ id?: UserId; target?: EligibleDirectMarkId; channel: "x" | "y" | "theta" | "r" | { parallelDimension: NonEmptyString }; fields: NonEmptyUniqueFieldTuple; columns?: PositiveInteger; gap?: NonNegativeFinite | { x: NonNegativeFinite; y: NonNegativeFinite }; spacing?: "canvas" | "plot" | "content"; topLane?: "stacked" | "shared"; align?: CompositionAlign; padding?: CompositionPaddingInput; scales?: FacetScaleResolutions; guides?: FacetGuideOptions; headers?: FacetHeadersOptions }): ChartProgram`.
 - Explicitly rejected: Pie/Radar raw positional-role replacement, composite statistical roles, derived target datasets,
   two-dimensional repeat matrices, and outer axes.
 - Proposed (NOT IMPLEMENTED): —
@@ -349,7 +371,7 @@ Evidence: `test/unit/layout/facet-top-lane.test.js`, `test/unit/actions/composit
 - Requires an existing composition program and at least one layout option.
 - `columns`: positive integer for one-field facet and repeat layouts, no larger than the retained child count.
   A row-column grid keeps the width of its declared column domain; concat compositions reject it.
-- `gap`: non-negative finite distance between adjacent child slots.
+- `gap`: non-negative finite distance between adjacent child slots, or a closed `{x,y}` pair on facet parents only (see Independent axis gaps).
 - `align`: `"start" | "center" | "end"` on the cross axis.
 - `padding`: a non-negative scalar for all sides or a partial `{ top?, right?, bottom?, left? }` patch.
 - Effect: preserves the ordered child IDs and child program references, then rebuilds the complete parent snapshot
@@ -359,7 +381,7 @@ Evidence: `test/unit/layout/facet-top-lane.test.js`, `test/unit/actions/composit
 
 ### Formal values — `editCompositionLayout`
 
-- Implemented: `editCompositionLayout({ columns?: PositiveInteger; gap?: NonNegativeFinite; spacing?: "canvas" | "plot" | "content"; topLane?: "stacked" | "shared"; align?: "start" | "center" | "end"; padding?: NonNegativeFinite | Partial<FourSidePadding> }): ChartProgram`.
+- Implemented: `editCompositionLayout({ columns?: PositiveInteger; gap?: NonNegativeFinite | { x: NonNegativeFinite; y: NonNegativeFinite }; spacing?: "canvas" | "plot" | "content"; topLane?: "stacked" | "shared"; align?: "start" | "center" | "end"; padding?: NonNegativeFinite | Partial<FourSidePadding> }): ChartProgram`.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `editCompositionLayout`

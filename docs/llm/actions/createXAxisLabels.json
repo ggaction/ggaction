@@ -3,7 +3,7 @@
   "name": "createXAxisLabels",
   "layer": "user-facing",
   "domain": "axes",
-  "summary": "Creates x-axis labels for horizontal tick text.",
+  "summary": "Creates x-axis labels for horizontal text.",
   "signature": "createXAxisLabels(options?: AxisLabelOptions<XAxisPosition>): ChartProgram;",
   "intents": [
     "create x axis labels",
@@ -12,7 +12,7 @@
     "axis guide",
     "scale annotation",
     "x-axis labels",
-    "horizontal tick text"
+    "horizontal text"
   ],
   "lifecycle": "Mutable resource",
   "resources": {
@@ -89,6 +89,10 @@
     },
     {
       "input": "colorMap",
+      "strategy": "documented-auto"
+    },
+    {
+      "input": "flushThreshold",
       "strategy": "documented-auto"
     },
     {
@@ -183,6 +187,11 @@
       "name": "flush",
       "required": false,
       "type": "boolean | undefined"
+    },
+    {
+      "name": "flushThreshold",
+      "required": false,
+      "type": "number | \"auto\" | undefined"
     },
     {
       "name": "alongOffset",

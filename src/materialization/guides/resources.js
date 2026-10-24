@@ -1,7 +1,15 @@
-import { axisGraphicIds } from "../../selectors/axes.js";
+import { axisGraphicIds, selectCartesianAxis } from "../../selectors/axes.js";
 export { axisGraphicIds };
 import { localLegendPosition, localLegendPlacement } from "../legendGroups.js";
 import { resolveConcreteGraphicBounds, unionConcreteGraphicBounds } from "../../grammar/schemas/graphicBounds.js";
+
+export function hasPendingAxisTitleRematerialization(program, channel, axisId) {
+  const pending = program.context.pendingMaterializationPlan;
+  if (pending === undefined) return false;
+  const op = `edit${channel.toUpperCase()}AxisTitle`;
+  return pending.steps.slice(pending.next).some(step => step.op === op &&
+    selectCartesianAxis(program, channel, step.args).id === axisId);
+}
 
 // Only domain-owned guides participate. Extension primitives may deliberately
 // overlap, and a combined categorical/size legend is one occupied group.

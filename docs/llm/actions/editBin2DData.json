@@ -97,6 +97,11 @@
       "type": "Bin2DExtent | undefined"
     },
     {
+      "name": "assignment",
+      "required": false,
+      "type": "\"edges\" | \"step\" | undefined"
+    },
+    {
       "name": "includeEmpty",
       "required": false,
       "type": "boolean | undefined"
@@ -118,7 +123,7 @@
     }
   ],
   "callPatterns": [
-    "editBin2DData({ target?, source?, x?, y?, bins?, extent?, includeEmpty?, members? })"
+    "editBin2DData({ target?, source?, x?, y?, bins?, extent?, assignment?, includeEmpty? })"
   ],
   "snippet": "program.editBin2DData({ x: \"x\" })",
   "errors": [],

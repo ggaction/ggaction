@@ -626,11 +626,11 @@
     ],
     "XAxisLabels": [
       "x-axis labels",
-      "horizontal tick text"
+      "horizontal text"
     ],
     "YAxisLabels": [
       "y-axis labels",
-      "vertical tick text"
+      "vertical text"
     ],
     "ThetaAxisLabels": [
       "theta-axis labels",

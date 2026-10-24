@@ -1,4 +1,5 @@
 import { axisGraphicIds } from "../../../materialization/guides/resources.js";
+import { isLabelRelativeTitleOffset } from "../../../grammar/axisTextPlacement.js";
 
 export const AXIS_COMPONENTS = Object.freeze(["line", "ticks", "labels", "title"]);
 
@@ -31,6 +32,10 @@ export function assertRemovableAxisComponent(program, channel, component, operat
 }
 
 export function removeAxisComponent(program, channel, component, axisId = channel) {
+  if (component === "labels" && isLabelRelativeTitleOffset(program.guideConfigs.axis?.[axisId]?.title?.offset) &&
+      program.context.pendingRelativeTitleAxis !== axisId) {
+    throw new Error("Remove the label-relative axis title together with its labels.");
+  }
   const id = axisComponentId(channel, component, axisId);
   let next = program;
   if (component === "title" && next.semanticSpec.guides.axis?.[axisId]?.title !== undefined) {

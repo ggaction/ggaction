@@ -1,8 +1,13 @@
+import { resolveAxisTickEditConfig } from "./ticks.js";
+import { resolveAxisLabelEditConfig } from "./labels.js";
+import { validateAxisTickGroupEditConfig } from "./tickGroups.js";
 import { selectCartesianAxis, axisTargetArgs, assertCartesianAxisSideAvailable } from "../../../selectors/axes.js";
 import { validateAxisPosition, resolveAxisFrameConfig } from "./policy.js";
-import { withGuideLayoutValidation } from "../../../materialization/guides/layout.js";
+import { withGuideLayoutValidation, withPendingRelativeAxisTitle } from "../../../materialization/guides/layout.js";
 import { action } from "../../../core/action.js";
+import { applyMaterializationPlan } from "../../../materialization/planner.js";
 import { isPlainObject } from "../../../core/immutable.js";
+import { isLabelRelativeTitleOffset } from "../../../grammar/axisTextPlacement.js";
 import { validateKeys, validateOptionObject, validateNonNegativeFinite } from "../../../core/validation.js";
 
 import {
@@ -23,7 +28,7 @@ const TICK_OPTIONS = Object.freeze([
 const LABEL_OPTIONS = Object.freeze([
   "count", "values", "rounding", "offset", "format", "color", "fontSize",
   "fontFamily", "fontWeight", "rotation", "maxWidth", "wrap",
-  "lineHeight", "overlap", "alongOffset", "labelMap", "flush", "colorMap", "align"
+  "lineHeight", "overlap", "alongOffset", "labelMap", "flush", "flushThreshold", "colorMap", "align"
 ]);
 const GROUP_OPTIONS = Object.freeze(["count", "values", "rounding", "ticks", "labels"]);
 const TITLE_OPTIONS = Object.freeze([
@@ -68,7 +73,7 @@ function validateArgs(args, operation) {
   if (args.ticksAndLabels !== false && args.ticksAndLabels?.labels !== undefined) {
     validateNested(args.ticksAndLabels, "labels", [
       "offset", "format", "color", "fontSize", "fontFamily", "fontWeight",
-      "rotation", "maxWidth", "wrap", "lineHeight", "overlap", "alongOffset", "labelMap", "flush", "colorMap", "align"
+      "rotation", "maxWidth", "wrap", "lineHeight", "overlap", "alongOffset", "labelMap", "flush", "flushThreshold", "colorMap", "align"
     ], `${operation}.ticksAndLabels`);
   }
 }
@@ -84,6 +89,14 @@ function names(channel) {
     title: `edit${prefix}AxisTitle`,
     remove: `remove${prefix}Axis`
   };
+}
+
+function validateNestedEditConfig(program, channel, args, axisId) {
+  if (isPlainObject(args.ticks)) resolveAxisTickEditConfig(program, channel, args.ticks, axisId);
+  if (isPlainObject(args.labels)) resolveAxisLabelEditConfig(program, channel, args.labels, axisId);
+  if (isPlainObject(args.ticksAndLabels)) {
+    validateAxisTickGroupEditConfig(program, channel, args.ticksAndLabels, axisId);
+  }
 }
 
 function buildPlan(program, channel, args, operation, axisId = channel) {
@@ -129,11 +142,35 @@ function buildPlan(program, channel, args, operation, axisId = channel) {
 }
 
 function applyPlan(program, channel, plan, operation, axisId = channel) {
+  const pendingTitle = isLabelRelativeTitleOffset(program.guideConfigs.axis?.[axisId]?.title?.offset) &&
+    plan.some(step => step.kind === "edit" && step.operation === operation.title);
+  // The title leaf validates the final sibling state once, including side
+  // transitions and a simultaneous switch back to a numeric offset.
+  if (pendingTitle && program.context.pendingRelativeTitleAxis !== axisId) {
+    return withPendingRelativeAxisTitle(program, axisId, next => applyPlan(next, channel, plan, operation, axisId));
+  }
   let next = program;
-  for (const step of plan) {
-    next = step.kind === "remove"
-      ? removeComponent(next, channel, step.component, axisId)
-      : next[step.operation](step.args);
+  // A combined removal has no retained dependency; remove the title first.
+  const ordered = isLabelRelativeTitleOffset(program.guideConfigs.axis?.[axisId]?.title?.offset) &&
+    plan.some(step => step.kind === "remove" && step.component === "title")
+    ? [...plan.filter(step => step.kind === "remove" && step.component === "title"),
+      ...plan.filter(step => !(step.kind === "remove" && step.component === "title"))] : plan;
+  // Consecutive sibling edits share the existing prospective plan so labels
+  // are checked against a numeric title after it reaches the same new frame.
+  // Keep removals in their established order and retain wrapped leaf actions.
+  for (let index = 0; index < ordered.length;) {
+    const step = ordered[index];
+    if (step.kind === "remove") {
+      next = removeComponent(next, channel, step.component, axisId);
+      index += 1;
+      continue;
+    }
+    const edits = [];
+    while (index < ordered.length && ordered[index].kind === "edit") {
+      const edit = ordered[index++];
+      edits.push({ op: edit.operation, args: edit.args });
+    }
+    next = applyMaterializationPlan(next, edits);
   }
 
   const hasRetainedGraphic = AXIS_COMPONENTS.some(
@@ -159,6 +196,7 @@ function makeEditAxis(channel) {
       validateArgs(args, operation.operation);
       const selected = selectCartesianAxis(this, channel, args, { whole: true });
       const axisId = selected.id; args = selected.options;
+      validateNestedEditConfig(this, channel, args, axisId);
       let source = this;
       if (selected.owner?.named && args.position !== undefined) {
         const position = validateAxisPosition(channel, args.position);

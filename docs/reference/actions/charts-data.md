@@ -128,7 +128,7 @@ default overflow policy rejects an unsatisfied minimum plot atomically;
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
 
 ```typescript
 applyTextMetrics(options: ApplyTextMetricsOptions): ChartProgram;
@@ -162,7 +162,7 @@ exact profile format, matching rules, propagation, and executable example.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
 
 ```typescript
 removeTextMetrics(): ChartProgram;
@@ -328,7 +328,7 @@ Create one immutable named dataset. [Data](../../api/data.md)
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
 
 ```typescript
 reviseData<Row extends object>(options: ReviseDataOptions<Row>): ChartProgram;
@@ -365,7 +365,7 @@ See [Data updates](../../data-updates.md#revise-a-source-and-its-dependent-chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
 
 ```typescript
 removeData(options: RemoveResourceOptions): ChartProgram;
@@ -402,7 +402,7 @@ does not infer, cascade, or change graphics.
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
 
 ```typescript
 removeScale(options: RemoveResourceOptions): ChartProgram;
@@ -437,7 +437,7 @@ graphics. [Scale Options](../../api/scales.md#removescale-id)
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
 
 ```typescript
 removeCoordinate(options: RemoveResourceOptions): ChartProgram;
@@ -651,7 +651,7 @@ adds residual reweighting; see [regression](../../api/regression.md) for the est
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
 
 ```typescript
 createRegressionStatisticsData(options: RegressionStatisticsDataOptions): ChartProgram;
@@ -794,6 +794,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `y` | Required | `string` |
 | `bins` | Optional / branch-dependent | `number \| Bin2DCounts \| undefined` |
 | `extent` | Optional / branch-dependent | `Bin2DExtent \| undefined` |
+| `assignment` | Optional / branch-dependent | `"edges" \| "step" \| undefined` |
 | `includeEmpty` | Optional / branch-dependent | `boolean \| undefined` |
 | `members` | Optional / branch-dependent | `boolean \| undefined` |
 | `as` | Optional / branch-dependent | `Bin2DOutputFields \| undefined` |
@@ -838,6 +839,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `y` | Optional / branch-dependent | `string \| undefined` |
 | `bins` | Optional / branch-dependent | `number \| Bin2DCounts \| undefined` |
 | `extent` | Optional / branch-dependent | `Bin2DExtent \| undefined` |
+| `assignment` | Optional / branch-dependent | `"edges" \| "step" \| undefined` |
 | `includeEmpty` | Optional / branch-dependent | `boolean \| undefined` |
 | `members` | Optional / branch-dependent | `boolean \| undefined` |
 | `as` | Optional / branch-dependent | `DatasetBin2DOutputFields \| undefined` |
@@ -864,7 +866,7 @@ rebind direct visual consumers, and safely release the prior revision.
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
 
 ```typescript
 editDerivedData(options: EditDerivedDataOptions): ChartProgram;
@@ -893,7 +895,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./charts-da
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
 
 ```typescript
 editFilteredData(options: EditFilteredDataOptions): ChartProgram;
@@ -927,7 +929,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./charts-da
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
 
 ```typescript
 editTimeUnitData(options: EditTimeUnitDataOptions): ChartProgram;
@@ -963,7 +965,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./charts-da
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
 
 ```typescript
 editWindowData(options: EditWindowDataOptions): ChartProgram;
@@ -995,7 +997,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./charts-da
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
 
 ```typescript
 editDensityData(options: EditDensityDataOptions): ChartProgram;
@@ -1033,7 +1035,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./charts-da
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
 
 ```typescript
 editRegressionData(options: EditRegressionDataOptions): ChartProgram;
@@ -1074,7 +1076,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./charts-da
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
 
 ```typescript
 editRegressionStatisticsData(options?: EditRegressionStatisticsDataOptions): ChartProgram;
@@ -1138,7 +1140,7 @@ Behavior, inference, resets, and errors: [Semantic resources and regression laye
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
 
 ```typescript
 editCoordinate(options: EditCoordinateOptions): ChartProgram;
@@ -1265,7 +1267,7 @@ Behavior, inference, resets, and errors: [Extension and scale contracts](./exten
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
 
 ```typescript
 editXScale(options: EditXScaleOptions): ChartProgram;
@@ -1308,7 +1310,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
 
 ```typescript
 editYScale(options: EditYScaleOptions): ChartProgram;
@@ -1351,7 +1353,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
 
 ```typescript
 editXOffsetScale(options: EditXOffsetScaleOptions): ChartProgram;
@@ -1384,7 +1386,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
 
 ```typescript
 editYOffsetScale(options: EditYOffsetScaleOptions): ChartProgram;
@@ -1417,7 +1419,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
 
 ```typescript
 editParallelScale(options: EditParallelScaleOptions): ChartProgram;
@@ -1460,7 +1462,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
 
 ```typescript
 editThetaScale(options: EditThetaScaleOptions): ChartProgram;
@@ -1499,7 +1501,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
 
 ```typescript
 editRScale(options: EditRScaleOptions): ChartProgram;
@@ -1538,7 +1540,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
 
 ```typescript
 editColorScale(options: EditColorScaleOptions): ChartProgram;
@@ -1580,7 +1582,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
 
 ```typescript
 editStrokeScale(options: EditStrokeScaleOptions): ChartProgram;
@@ -1621,7 +1623,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
 
 ```typescript
 editSizeScale(options: EditSizeScaleOptions): ChartProgram;
@@ -1657,7 +1659,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
 
 ```typescript
 editOpacityScale(options: EditOpacityScaleOptions): ChartProgram;
@@ -1693,7 +1695,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
 
 ```typescript
 editShapeScale(options: EditShapeScaleOptions): ChartProgram;
@@ -1725,7 +1727,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
 
 ```typescript
 editStrokeWidthScale(options: EditStrokeWidthScaleOptions): ChartProgram;
@@ -1763,7 +1765,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./chart
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
 
 ```typescript
 editStrokeDashScale(options: EditStrokeDashScaleOptions): ChartProgram;
@@ -2014,7 +2016,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `columns` | Optional / branch-dependent | `number \| undefined` |
-| `gap` | Optional / branch-dependent | `number \| undefined` |
+| `gap` | Optional / branch-dependent | `FacetGap \| undefined` |
 | `align` | Optional / branch-dependent | `CompositionAlign \| undefined` |
 | `padding` | Optional / branch-dependent | `number \| CompositionPadding \| undefined` |
 | `spacing` | Optional / branch-dependent | `"canvas" \| "content" \| "plot" \| undefined` |
@@ -2031,7 +2033,10 @@ editCompositionLayout({ columns?, gap?, spacing?, align?, padding? })
 Edit spacing, cross-axis alignment, or outer padding on an existing composition.
 `columns` changes wrapping only on a facet composition and is rejected for concat.
 Omitted values are preserved, child identity is unchanged, and the parent snapshot
-is rebuilt from retained child programs.
+is rebuilt from retained child programs. Facet parents accept `gap: {x, y}` to
+set horizontal and vertical distances separately; both keys are required and each
+value must be finite and non-negative. A pair replaces both axes, while an omitted
+gap preserves its current form. Concat continues to require a numeric gap.
 
 
 ## `replaceCompositionChild`
@@ -2194,7 +2199,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `values` | Optional / branch-dependent | `readonly DatasetScalar[] \| undefined` |
 | `columns` | Optional / branch-dependent | `number \| undefined` |
-| `gap` | Optional / branch-dependent | `number \| undefined` |
+| `gap` | Optional / branch-dependent | `FacetGap \| undefined` |
 | `align` | Optional / branch-dependent | `CompositionAlign \| undefined` |
 | `padding` | Optional / branch-dependent | `number \| CompositionPadding \| undefined` |
 | `scales` | Optional / branch-dependent | `FacetScaleResolutions \| undefined` |
@@ -2235,6 +2240,15 @@ anchors use the union and preserve child dimensions, automatic policies and edit
 persistence. See [parent legend creation](../../api/composition/facets.md#declare-a-legend-for-the-complete-facet).
 See [Program composition](../../api/composition.md#repeat-the-current-chart-by-a-field).
 
+Facet, grid and field repetition also accept `gap: {x, y}`. A number still applies
+one distance in both directions and keeps its stored form. A pair must contain
+exactly those two finite non-negative values; partial objects and unknown keys
+reject, even for one row or column. The distances separate child canvases, plots,
+or retained content according to the existing spacing mode. Grid still supports
+only canvas/plot spacing. Header clearance and final overlap checks remain active
+independently in both directions. The pair survives layout edits, source replay
+and editable persistence. See [independent axis gaps](../../api/composition/facets.md#use-different-horizontal-and-vertical-gaps).
+
 Creation options for `facet`, `facetGrid`, and `repeatCharts` accept `headers`.
 Set common `fontSize`, `fontFamily`, `fontWeight`, `color`, `offset`, `align`, or
 `labelMap`, and optional `row`/`column` objects with role-specific overrides and
@@ -2273,7 +2287,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `rows` | Required | `FacetGridRole` |
 | `columns` | Required | `FacetGridRole` |
 | `combinations` | Optional / branch-dependent | `"full" \| "observed" \| undefined` |
-| `gap` | Optional / branch-dependent | `number \| undefined` |
+| `gap` | Optional / branch-dependent | `FacetGap \| undefined` |
 | `align` | Optional / branch-dependent | `CompositionAlign \| undefined` |
 | `padding` | Optional / branch-dependent | `number \| CompositionPadding \| undefined` |
 | `scales` | Optional / branch-dependent | `FacetScaleResolutions \| undefined` |
@@ -2321,7 +2335,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `channel` | Required | `"r" \| "theta" \| "x" \| "y" \| { parallelDimension: string; }` |
 | `fields` | Required | `readonly [string, ...string[]]` |
 | `columns` | Optional / branch-dependent | `number \| undefined` |
-| `gap` | Optional / branch-dependent | `number \| undefined` |
+| `gap` | Optional / branch-dependent | `FacetGap \| undefined` |
 | `align` | Optional / branch-dependent | `CompositionAlign \| undefined` |
 | `padding` | Optional / branch-dependent | `number \| CompositionPadding \| undefined` |
 | `scales` | Optional / branch-dependent | `FacetScaleResolutions \| undefined` |
@@ -2572,7 +2586,7 @@ appearance encodings. [Basic Charts](../../api/basic-charts.md#createscatterplot
 
 **API layer:** user-facing. **Authoring roles:** H0.
 
-**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
 
 ```typescript
 createTextPlot(options: CreateTextPlotOptions): ChartProgram;
@@ -3167,7 +3181,7 @@ are used as supplied; the facade does not infer normalization. [Polar positions]
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
 
 ```typescript
 editRadarPlot(options: EditRadarPlotOptions): ChartProgram;

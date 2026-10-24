@@ -338,7 +338,10 @@ editCompositionLayout({ columns?, gap?, spacing?, align?, padding? })
 Edit spacing, cross-axis alignment, or outer padding on an existing composition.
 `columns` changes wrapping only on a facet composition and is rejected for concat.
 Omitted values are preserved, child identity is unchanged, and the parent snapshot
-is rebuilt from retained child programs.
+is rebuilt from retained child programs. Facet parents accept `gap: {x, y}` to
+set horizontal and vertical distances separately; both keys are required and each
+value must be finite and non-negative. A pair replaces both axes, while an omitted
+gap preserves its current form. Concat continues to require a numeric gap.
 
 ### `replaceCompositionChild`
 
@@ -405,6 +408,15 @@ unit-only. Target IDs name source marks. Corners/free coordinates and block-loca
 anchors use the union and preserve child dimensions, automatic policies and editable
 persistence. See [parent legend creation](../api/composition/facets.md#declare-a-legend-for-the-complete-facet).
 See [Program composition](../api/composition.md#repeat-the-current-chart-by-a-field).
+
+Facet, grid and field repetition also accept `gap: {x, y}`. A number still applies
+one distance in both directions and keeps its stored form. A pair must contain
+exactly those two finite non-negative values; partial objects and unknown keys
+reject, even for one row or column. The distances separate child canvases, plots,
+or retained content according to the existing spacing mode. Grid still supports
+only canvas/plot spacing. Header clearance and final overlap checks remain active
+independently in both directions. The pair survives layout edits, source replay
+and editable persistence. See [independent axis gaps](../api/composition/facets.md#use-different-horizontal-and-vertical-gaps).
 
 Creation options for `facet`, `facetGrid`, and `repeatCharts` accept `headers`.
 Set common `fontSize`, `fontFamily`, `fontWeight`, `color`, `offset`, `align`, or
@@ -1877,22 +1889,26 @@ source-owned Text continues to reject direct position replacement.
 
 ```javascript
 encodeY2({ field, target?, fieldType, scale?, coordinate? })
-encodeY2({ datum, target?, fieldType, scale?, coordinate? }) // rule
+encodeY2({ datum, target?, fieldType?, scale?, coordinate? }) // rule
 ```
 
 Assign an area, ranged-bar, or rect upper edge, or a rule secondary y endpoint.
 It requires an existing y and shares its scale and coordinate.
+A rule numeric datum defaults to `fieldType: "quantitative"` and must be finite.
+Rule field endpoints and nonnumeric datum endpoints require an explicit matching type.
 [Position encodings](../api/position-encodings.md)
 
 ### `encodeX2`
 
 ```javascript
 encodeX2({ field, target?, fieldType, scale?, coordinate? })
-encodeX2({ datum, target?, fieldType, scale?, coordinate? })
+encodeX2({ datum, target?, fieldType?, scale?, coordinate? })
 ```
 
 Assign an area, ranged-bar, or rect upper edge, or a rule secondary x endpoint.
 It requires an existing x and shares its scale and coordinate.
+A rule numeric datum defaults to `fieldType: "quantitative"` and must be finite.
+Rule field endpoints and nonnumeric datum endpoints require an explicit matching type.
 [Position encodings](../api/position-encodings.md)
 
 ### `encodeYRange`
@@ -3236,19 +3252,19 @@ editYAxisTicks({ position?, count?, values?, length?, color?, lineWidth?, alongO
 
 createXAxisLabels({
   scale?, position?, count?, values?, offset?, format?, color?,
-  fontSize?, fontFamily?, fontWeight?, alongOffset?, flush?, labelMap?, colorMap?
+  fontSize?, fontFamily?, fontWeight?, alongOffset?, flush?, flushThreshold?, labelMap?, colorMap?
 })
 createYAxisLabels({
   scale?, position?, count?, values?, offset?, format?, color?,
-  fontSize?, fontFamily?, fontWeight?, alongOffset?, flush?, labelMap?, colorMap?
+  fontSize?, fontFamily?, fontWeight?, alongOffset?, flush?, flushThreshold?, labelMap?, colorMap?
 })
 editXAxisLabels({
   position?, count?, values?, offset?, format?, color?,
-  fontSize?, fontFamily?, fontWeight?, alongOffset?, flush?, labelMap?, colorMap?
+  fontSize?, fontFamily?, fontWeight?, alongOffset?, flush?, flushThreshold?, labelMap?, colorMap?
 })
 editYAxisLabels({
   position?, count?, values?, offset?, format?, color?,
-  fontSize?, fontFamily?, fontWeight?, alongOffset?, flush?, labelMap?, colorMap?
+  fontSize?, fontFamily?, fontWeight?, alongOffset?, flush?, flushThreshold?, labelMap?, colorMap?
 })
 ```
 
@@ -3257,6 +3273,11 @@ Label `format` accepts `"auto"`, `{ decimals }`, `.0`–`.12` precision with
 `f`, `%`, or `e`, or a UTC sequence of `%Y/%m/%d/%b` directives and literals
 when compatible with the resolved scale. Use `%%` for a literal percent;
 unknown or dangling directives reject.
+
+Cartesian `flushThreshold` optionally limits `flush: true` to mapped ticks within a
+non-negative logical-pixel distance of a range edge. Omission preserves complete
+label containment. Use `"auto"` to clear a stored threshold; zero selects exact
+endpoints. Text bounds do not control threshold selection.
 
 ### Tick/label groups and axis titles
 

@@ -26,7 +26,7 @@ const RECT_OPTIONS = [
   "clip",   "opacity", "stroke", "strokeWidth", ...RECT_STYLE_PROPERTIES
 ];
 const BIN_OPTIONS = [
-  "bins", "extent", "includeEmpty"
+  "bins", "extent", "assignment", "includeEmpty"
 ];
 const BINNED_POSITION_OPTIONS = [
   "field", "fieldType", "scale"

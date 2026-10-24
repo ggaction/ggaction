@@ -141,6 +141,38 @@ function geometry(program, channel, config, axisId = channel) {
   return resolved;
 }
 
+export function resolveAxisTickEditConfig(program, channel, args, axisId = channel) {
+  const op = channel === "x" ? "editXAxisTicks" : "editYAxisTicks";
+  validateOptions(args, op, false);
+  const previous = program.guideConfigs.axis?.[axisId]?.ticks;
+  if (!previous) throw new Error(`${op} requires tick configuration.`);
+  const explicitMode = Object.hasOwn(args, "values") || Object.hasOwn(args, "count");
+  const inferredValues = !explicitMode && previous.inferredValues === true
+    ? inferHistogramBoundaries(program, channel, previous.scale) ??
+      (["ordinal", "band", "point"].includes(
+        program.resolvedScales[previous.scale]?.type
+      )
+        ? program.resolvedScales[previous.scale].domain
+        : undefined)
+    : undefined;
+  const mode = Object.hasOwn(args, "values") || inferredValues !== undefined
+    ? "values"
+    : Object.hasOwn(args, "count") ? "count" : previous.mode;
+  const config = patchGuideDash({
+    ...previous,
+    ...args,
+    ...(inferredValues === undefined ? {} : { values: inferredValues }),
+    ...(explicitMode ? { inferredValues: false } : {}),
+    mode
+  }, args);
+  if (mode === "values") {
+    delete config.count;
+    if (!Object.hasOwn(args, "rounding")) delete config.rounding;
+  } else delete config.values;
+  validateConfig(channel, config);
+  return config;
+}
+
 function makeEdit(channel) {
   const op = channel === "x" ? "editXAxisTicks" : "editYAxisTicks";
   return action({ op, description: `Edit concrete ${channel}-axis ticks.` }, withGuideLayoutValidation(function (args = {}) {
@@ -149,32 +181,9 @@ function makeEdit(channel) {
     const axisId = selected.id; args = selected.options;
     const id = axisGraphicIds(channel, axisId)[1];
     if (this.graphicSpec.objects[id]?.type !== "line") throw new Error(`${op} requires existing axis ticks.`);
+    const config = resolveAxisTickEditConfig(this, channel, args, axisId);
     const previous = this.guideConfigs.axis?.[axisId]?.ticks;
-    if (!previous) throw new Error(`${op} requires tick configuration.`);
     const explicitMode = Object.hasOwn(args, "values") || Object.hasOwn(args, "count");
-    const inferredValues = !explicitMode && previous.inferredValues === true
-      ? inferHistogramBoundaries(this, channel, previous.scale) ??
-        (["ordinal", "band", "point"].includes(
-          this.resolvedScales[previous.scale]?.type
-        )
-          ? this.resolvedScales[previous.scale].domain
-          : undefined)
-      : undefined;
-    const mode = Object.hasOwn(args, "values") || inferredValues !== undefined
-      ? "values"
-      : Object.hasOwn(args, "count") ? "count" : previous.mode;
-    const config = patchGuideDash({
-      ...previous,
-      ...args,
-      ...(inferredValues === undefined ? {} : { values: inferredValues }),
-      ...(explicitMode ? { inferredValues: false } : {}),
-      mode
-    }, args);
-    if (mode === "values") {
-      delete config.count;
-      if (!Object.hasOwn(args, "rounding")) delete config.rounding;
-    } else delete config.values;
-    validateConfig(channel, config);
     const resolved = geometry(this, channel, config, axisId);
     let next = this._withGuideConfig(axisId, config).editGraphics({ target: id, property: "length", value: resolved.values.length });
     for (const property of ["x1", "y1", "x2", "y2"]) next = next.editGraphics({ target: id, property, value: resolved[property] });

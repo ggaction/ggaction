@@ -11,7 +11,7 @@ const MAX_CELLS = 1_000_000;
 
 const TRANSFORM_KEYS = Object.freeze([
   "type", "x", "y", "bins", "extent", "includeEmpty", "members", "as",
-  "resolved"
+  "resolved", "assignment"
 ]);
 const AXIS_KEYS = Object.freeze(["x", "y"]);
 const FIELD_KEYS = Object.freeze(["x0", "x1", "y0", "y1", "count", "members"]);
@@ -180,6 +180,11 @@ export function validateBin2DTransform(transform) {
   }
   requireField(transform.x, "2D bin x field");
   requireField(transform.y, "2D bin y field");
+  if (transform.assignment !== undefined && transform.assignment !== "step") {
+    throw new TypeError(
+      'Stored 2D bin assignment must be "step" or omitted.'
+    );
+  }
   validateBins(transform.bins);
   validateRequestedExtent(transform.extent);
   if (typeof transform.includeEmpty !== "boolean") {
@@ -201,10 +206,16 @@ export function normalizeBin2DTransform({
   y,
   bins,
   extent,
+  assignment = "edges",
   includeEmpty = false,
   members = false,
   as
 } = {}) {
+  if (assignment !== "edges" && assignment !== "step") {
+    throw new TypeError(
+      '2D bin assignment must be "edges" or "step".'
+    );
+  }
   const normalizedBins = normalizeBins(bins);
   const transform = {
     type: "bin2d",
@@ -214,7 +225,8 @@ export function normalizeBin2DTransform({
     extent: normalizeRequestedExtent(extent),
     includeEmpty,
     members,
-    as: normalizeOutputFields(id, as, members)
+    as: normalizeOutputFields(id, as, members),
+    ...(assignment === "step" ? { assignment } : {})
   };
   validateBin2DTransform(transform);
   return cloneAndFreeze(transform);
@@ -266,6 +278,20 @@ function findBinIndex(value, edges) {
   return low;
 }
 
+function findStepBinIndex(value, extent, count) {
+  if (count === 1 || value === extent[1]) return count - 1;
+  const [minimum, maximum] = extent;
+  const span = maximum - minimum;
+  const step = Number.isFinite(span)
+    ? span / count
+    : maximum / count - minimum / count;
+  const distance = value - minimum;
+  const position = Number.isFinite(distance)
+    ? distance / step
+    : value / step - minimum / step;
+  return Math.max(0, Math.min(count - 1, Math.floor(1e-14 + position)));
+}
+
 export function deriveBin2DRows(rows, transform) {
   if (!Array.isArray(rows)) {
     throw new TypeError("2D bin source rows must be an array.");
@@ -304,8 +330,12 @@ export function deriveBin2DRows(rows, transform) {
     () => []
   );
   for (const item of eligible) {
-    const xIndex = findBinIndex(item.row[transform.x], edges.x);
-    const yIndex = findBinIndex(item.row[transform.y], edges.y);
+    const xIndex = transform.assignment === "step"
+      ? findStepBinIndex(item.row[transform.x], extent.x, transform.bins.x)
+      : findBinIndex(item.row[transform.x], edges.x);
+    const yIndex = transform.assignment === "step"
+      ? findStepBinIndex(item.row[transform.y], extent.y, transform.bins.y)
+      : findBinIndex(item.row[transform.y], edges.y);
     buckets[yIndex * transform.bins.x + xIndex].push(item.index);
   }
   const values = [];

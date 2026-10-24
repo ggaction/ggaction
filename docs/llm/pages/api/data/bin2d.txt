@@ -11,7 +11,7 @@ concrete cell bounds and counts as immutable datasets, so ordinary ranged
 rectangles or other marks can consume the result without asking the renderer to
 perform data transforms.
 
-## `createBin2DData({ id, source?, x, y, bins?, extent?, includeEmpty?, members?, as? })`
+## `createBin2DData({ id, source?, x, y, bins?, extent?, assignment?, includeEmpty?, members?, as? })`
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
@@ -43,6 +43,7 @@ const program = chart()
 | `x`, `y` | quantitative field names | required |
 | `bins` | positive integer or `{ x, y }` | `{ x: 10, y: 10 }` |
 | `extent` | `{ x?: [min, max], y?: [min, max] }` | eligible min/max per axis |
+| `assignment` | `"edges"` or `"step"` | `"edges"` |
 | `includeEmpty` | boolean | `false` |
 | `members` | boolean | `false` |
 | `as` | partial output-field object | namespaced from `id` |
@@ -52,10 +53,26 @@ cells in total. These limits are validated before any cell storage is
 allocated, including when the transform is reached through `createHeatmap` or
 `editBin2DData`.
 
-Only rows with finite values for both fields are eligible. Cells are half-open:
-`[lower, upper)`. The last cell on each axis includes its upper endpoint, so
-every eligible row belongs to exactly one cell. Output rows are ordered from low
-to high y and then low to high x.
+Only rows with finite values for both fields are eligible. Default `assignment: "edges"`
+compares each value with the actual stored edges: cells are half-open `[lower, upper)`,
+and the last cell includes its upper endpoint. This default is omitted from stored
+provenance, preserving existing snapshots.
+
+Explicit `assignment: "step"` instead computes the logical uniform index
+`floor(1e-14 + (value - min) / step)` on each axis, then clamps it to the valid
+index range. The fixed index increment is part of this policy, not a configurable
+tolerance. `step = (max - min) / bins`; overflowing subtraction uses
+`max / bins - min / bins`, and an overflowing value difference uses
+`value / step - min / step`. A one-bin axis assigns index zero; the final upper
+endpoint always belongs to the last bin. Explicit extents are still validated
+before assignment, so clamping cannot accept out-of-range rows.
+
+Both policies generate identical stored edges. Floating-point rounding can place
+a value just below a stored edge while `step` assigns it to the logical upper
+cell. For extent `[-5, 5]` with 50 bins, input `0.6` falls below the stored edge
+`0.6000000000000005` under `edges`, but enters the upper cell under `step`.
+A value `0.6 - 1e-12` remains below it. Both policies assign every eligible row
+once and order output from low to high y, then low to high x.
 
 The stored transform includes the resolved axis extents and edge arrays. An
 explicit extent must contain every eligible value; the action throws rather
@@ -83,7 +100,7 @@ unreferenced previous revision.
 
 ## `editBin2DData`
 
-`editBin2DData({ target?, source?, x?, y?, bins?, extent?, includeEmpty?, members?, as?, dependents? })`
+`editBin2DData({ target?, source?, x?, y?, bins?, extent?, assignment?, includeEmpty?, members?, as?, dependents? })`
 
 Use `editBin2DData` when only part of the current transform should change:
 
@@ -103,7 +120,8 @@ exists. Multiple owners without a current match are ambiguous and require
 `target`.
 
 Every omitted top-level option is preserved from the current requested
-provenance. Supplying `extent` replaces the complete extent decision and an
+provenance. `assignment: "edges"` restores the default and removes stored `step`
+provenance; an unchanged policy is a no-op and is rejected. Supplying `extent` replaces the complete extent decision and an
 omitted axis inside that object returns to automatic extent. Supplying `as`
 requires the complete `x0`, `x1`, `y0`, `y1`, and `count` output map, plus
 `members` when member indexes are enabled. When `as` is omitted, enabling

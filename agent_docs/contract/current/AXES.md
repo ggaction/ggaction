@@ -90,7 +90,7 @@ Cartesian line/ticks/labels/title의 실제 occupied bounds는 각 component pos
 
 - Create parameters: `scale?`, `position?`, `count?`, `values?`, `offset?`, `format?`, `color?`,
   `fontSize?`, `fontFamily?`, `fontWeight?`, `rotation?`, `maxWidth?`, `wrap?`, `lineHeight?`,
-  `overlap?`, `labelMap?`, `alongOffset?`, `flush?`, `colorMap?`; edit에서는 scale을 제외한다.
+  `overlap?`, `labelMap?`, `alongOffset?`, `flush?`, `flushThreshold?`, `colorMap?`; edit에서는 scale을 제외한다.
 - `count`/`values`/`rounding`: tick contract와 같으며 existing ticks가 있으면 생략 시 그 정책을 재사용한다.
 - `offset`: non-negative finite number; x default `18`, y default `12`.
 - `alongOffset`: signed finite logical pixels, 기본 `0`. Mapped label 위치에서 X는 오른쪽, Y는 아래쪽으로 이동한다. Tick offset을 상속하지 않는 독립 절대값이다. 기존 `offset`은 축 바깥쪽 간격으로 유지된다.
@@ -102,6 +102,8 @@ Cartesian line/ticks/labels/title의 실제 occupied bounds는 각 component pos
 - `color`: non-empty string; `fontSize`: positive finite; `fontFamily`: non-empty string;
   `fontWeight`: string 또는 finite number.
 - `flush`: boolean, 기본 `false`. Cartesian unrotated label의 실제 occupied bounds를 mapped scale span 안으로 이동한다. X/Y 모두 지원하고 alongOffset을 span에도 더한다. Tick, domain, font, text와 바깥쪽 offset은 바꾸지 않는다. Wrapped label은 group 전체를 같은 거리만큼 이동한다. Label이 span보다 크면 오류이며 rotation이 0이 아니면 true를 거부한다. Label-label overlap은 기존 overlap 정책을 그대로 사용하므로 flush가 overlap을 묵시적으로 허용하지 않는다.
+- `flushThreshold`: optional non-negative finite logical-pixel distance or `"auto"`, for Cartesian labels only. With `flush:true`, only groups whose mapped raw tick position is within the distance of either scale range endpoint receive existing flush containment. Selection never uses text overflow distance. Zero selects exact endpoints. alongOffset applies to both range and tick, including reversed ranges. Omission preserves existing full containment; edit omission preserves stored intent; `"auto"` removes it. Creation `"auto"` equals omission. `flush:false` retains dormant intent. Wrapped lines move as one raw tick group. Rotation, Canvas and overlap checks remain unchanged. Editable persistence accepts only numeric stored intent and a Cartesian owner. Evidence: `test/unit/actions/guides/axis-label-flush-threshold.test.js`, `test/contracts/axis-grid-offset-types.test.js`.
+
 - `rotation`: `RotationInput`이며 숫자는 radians, 구조형 값은 radians/degrees를 명시한다. 기본값은 `0`이고
   materialization config에는 radians로 정규화한다.
   회전된 Cartesian label의 전체 occupied bounds는 고정 Canvas와 자동 plot 크기 모두에서
@@ -147,7 +149,7 @@ Continuous labelMap evidence: `test/unit/actions/guides/continuous-axis-display-
 - Create: `scale?`, `position?`, `count?`, `values?`, `ticks?`, `labels?`.
 - Edit: create option에서 scale을 제외하며 빈 edit는 오류다.
 - `ticks`: `{ length?, color?, lineWidth?, alongOffset? }`.
-- `labels`: `{ offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, rotation?, maxWidth?, wrap?, lineHeight?, overlap?, labelMap?, alongOffset?, flush?, colorMap? }`; `labelMap`은 categorical/continuous Cartesian scale에 적용한다.
+- `labels`: `{ offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, rotation?, maxWidth?, wrap?, lineHeight?, overlap?, labelMap?, alongOffset?, flush?, flushThreshold?, colorMap? }`; `labelMap`은 categorical/continuous Cartesian scale에 적용한다.
 - Effect: shared count/values를 tick과 label child에 원자적으로 전달한다. nested appearance는 해당 child만 바꾼다.
 
 ## Shared axis-title contract
@@ -163,6 +165,20 @@ Continuous labelMap evidence: `test/unit/actions/guides/continuous-axis-display-
   적용하며 명시적인 사용자 제목은 유지한다. Evidence: `test/unit/actions/guides/axis-title-actions.test.js`.
 - `at`: `"start" | "center" | "end"` 또는 continuous scale domain 안의 finite number; 기본 center.
 - `offset`: signed finite; positive outward, negative inward; inferred preferred defaults x `42`, y `52`.
+  Cartesian title에 한해 closed `{from:"labels",gap:Finite>=0}`도 허용한다. 같은 owner와
+  physical side의 nonempty concrete label occupied bounds 바깥에 gap을 둔다. 빈 display
+  label은 제외하며 기준 labels 부재·side 불일치·unknown key·nonfinite/negative gap은 오류다.
+  객체를 기존 `title.offset`에 한 번 저장하고 `inferredOffset:false`로 구분한다. 계산한 숫자는
+  materialization 지역값이며 별도 resolved metadata나 renderer intent를 저장하지 않는다.
+  label preflight와 재구현은 하나의 inferred-or-relative dependency predicate를 쓴다.
+  label text/font/format/profile, scale/data/Canvas/theme, shared/independent facet/source 편집과
+  editable persistence에서 현재 label bounds로 재계산한다. relative title+last labels 동시
+  삭제와 같은 whole-axis sibling 편집은 최종 상태로 원자적으로 검증한다. 객체 edit는 전체
+  교체, numeric edit는 상대 모드 종료, edit 생략은 기존 intent 유지다. numeric/전체 생략
+  defaults와 오류 정책은 그대로다. Polar/Parallel에는 객체형을 허용하지 않는다.
+  Evidence: `test/unit/actions/guides/axis-title-label-relative-offset.test.js`,
+  `test/browser/axis-title-label-relative-offset.browser.js` (네 independent child의 정확한
+  anchors와 같은 실행 numeric public reference 대비 decoded RGBA exact equality).
 - `rotation`: `RotationInput = Finite | { value: Finite; unit: "degrees" | "radians" }`. 기존 finite 숫자는
   radians 의미를 유지하고 구조형 입력은 단위를 명시한다. 둘 다 stored materialization config에서 radians로
   정규화한다. x bottom/top default `0`, y left default `-Math.PI / 2`, y right default `Math.PI / 2`이며
@@ -1206,6 +1222,7 @@ Ticks/labels의 count와 values는 배타적이고 같은 existing mode/default 
   기록한다. Object edit는 wrapped leaf action, removal은 `editSemantic({ remove: true })`와
   `editGraphics({ remove: true })`를 사용한다. 마지막 component 제거는 wrapped `removeXAxis`가 empty axis semantic과
   config를 정리한다.
+- Whole-axis sibling edit는 기존 prospective materialization plan을 공유한다. Numeric title도 같은 owner의 최종 frame 위치와 labels를 비교하며 실제 최종 충돌과 focused label-only 충돌은 계속 atomic reject한다.
 - Retained scale, coordinate, mark encoding, source data와 opposite axis는 보존한다. Removed config/graphic은 Canvas 또는
   scale rematerialization plan에 다시 들어가지 않으며 ordinary component/complete-axis create action으로 복원한다.
 - Errors: empty/unknown/nested-invalid options, group/leaf combination, requested missing edit/removal leaf,

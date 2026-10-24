@@ -2,9 +2,9 @@
 
 
 
-Package metadata version: 0.0.23.
+Package metadata version: 0.0.24.
 
-Contract: sha256:d4a3b46c05b696b43389ec3e4bc2aaa89584ef20e01d5e64b8c61a316fe2c004. Status: published-release. Runtime source: 12b66b229f9a4dae1cfa580929b74e7e178c02c9. Release baseline: v0.0.13.
+Contract: sha256:e755591a2e5f5e2b494867583876e28020a478c5220b77bdc6ad469a6224891d. Status: published-release. Runtime source: 5f952f59b9ca236e8e9cff477c4f51067f2f8ea9. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -28,7 +28,7 @@ Build, inspect, select, and revise charts one meaningful action at a time.
 Start with a complete example, then use the API pages when you need to customize
 one part. The main, basic, extension, SVG, PNG, and PDF entry points include TypeScript declarations.
 
- Experimental 0.0.23 · APIs may change before 1.0.0. Review the [changelog](https://github.com/ggaction/ggaction/blob/main/CHANGELOG.md) when upgrading.
+ Experimental 0.0.24 · APIs may change before 1.0.0. Review the [changelog](https://github.com/ggaction/ggaction/blob/main/CHANGELOG.md) when upgrading.
 
 ## Start here
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/12b66b229f9a4dae1cfa580929b74e7e178c02c9/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/5f952f59b9ca236e8e9cff477c4f51067f2f8ea9/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/12b66b229f9a4dae1cfa580929b74e7e178c02c9/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/5f952f59b9ca236e8e9cff477c4f51067f2f8ea9/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -4491,6 +4491,10 @@ domains default to the resolved bin extents, while an explicit position scale
 option takes precedence. `color` is optional in binned mode and may configure
 the generated quantitative count scale, but cannot supply another field.
 
+Binned `bin.assignment` accepts `"edges"` (default) or `"step"`; the
+[2D-bin assignment contract](./api/data/bin2d/) defines their boundary behavior.
+The high-level and explicit data-action paths store the same policy.
+
 The stable default mark ID is `heatmap`. Binned mode owns a namespaced derived
 dataset and records `createBin2DData` as a wrapped child action. Default guide
 titles use the original x/y field names and `Count`, never generated field
@@ -5814,7 +5818,7 @@ concrete cell bounds and counts as immutable datasets, so ordinary ranged
 rectangles or other marks can consume the result without asking the renderer to
 perform data transforms.
 
-## `createBin2DData({ id, source?, x, y, bins?, extent?, includeEmpty?, members?, as? })`
+## `createBin2DData({ id, source?, x, y, bins?, extent?, assignment?, includeEmpty?, members?, as? })`
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
@@ -5846,6 +5850,7 @@ const program = chart()
 | `x`, `y` | quantitative field names | required |
 | `bins` | positive integer or `{ x, y }` | `{ x: 10, y: 10 }` |
 | `extent` | `{ x?: [min, max], y?: [min, max] }` | eligible min/max per axis |
+| `assignment` | `"edges"` or `"step"` | `"edges"` |
 | `includeEmpty` | boolean | `false` |
 | `members` | boolean | `false` |
 | `as` | partial output-field object | namespaced from `id` |
@@ -5855,10 +5860,26 @@ cells in total. These limits are validated before any cell storage is
 allocated, including when the transform is reached through `createHeatmap` or
 `editBin2DData`.
 
-Only rows with finite values for both fields are eligible. Cells are half-open:
-`[lower, upper)`. The last cell on each axis includes its upper endpoint, so
-every eligible row belongs to exactly one cell. Output rows are ordered from low
-to high y and then low to high x.
+Only rows with finite values for both fields are eligible. Default `assignment: "edges"`
+compares each value with the actual stored edges: cells are half-open `[lower, upper)`,
+and the last cell includes its upper endpoint. This default is omitted from stored
+provenance, preserving existing snapshots.
+
+Explicit `assignment: "step"` instead computes the logical uniform index
+`floor(1e-14 + (value - min) / step)` on each axis, then clamps it to the valid
+index range. The fixed index increment is part of this policy, not a configurable
+tolerance. `step = (max - min) / bins`; overflowing subtraction uses
+`max / bins - min / bins`, and an overflowing value difference uses
+`value / step - min / step`. A one-bin axis assigns index zero; the final upper
+endpoint always belongs to the last bin. Explicit extents are still validated
+before assignment, so clamping cannot accept out-of-range rows.
+
+Both policies generate identical stored edges. Floating-point rounding can place
+a value just below a stored edge while `step` assigns it to the logical upper
+cell. For extent `[-5, 5]` with 50 bins, input `0.6` falls below the stored edge
+`0.6000000000000005` under `edges`, but enters the upper cell under `step`.
+A value `0.6 - 1e-12` remains below it. Both policies assign every eligible row
+once and order output from low to high y, then low to high x.
 
 The stored transform includes the resolved axis extents and edge arrays. An
 explicit extent must contain every eligible value; the action throws rather
@@ -5886,7 +5907,7 @@ unreferenced previous revision.
 
 ## `editBin2DData`
 
-`editBin2DData({ target?, source?, x?, y?, bins?, extent?, includeEmpty?, members?, as?, dependents? })`
+`editBin2DData({ target?, source?, x?, y?, bins?, extent?, assignment?, includeEmpty?, members?, as?, dependents? })`
 
 Use `editBin2DData` when only part of the current transform should change:
 
@@ -5906,7 +5927,8 @@ exists. Multiple owners without a current match are ambiguous and require
 `target`.
 
 Every omitted top-level option is preserved from the current requested
-provenance. Supplying `extent` replaces the complete extent decision and an
+provenance. `assignment: "edges"` restores the default and removes stored `step`
+provenance; an unchanged policy is a no-op and is rejected. Supplying `extent` replaces the complete extent decision and an
 omitted axis inside that object returns to automatic extent. Supplying `as`
 requires the complete `x0`, `x1`, `y0`, `y1`, and `count` output map, plus
 `members` when member indexes are enabled. When `as` is omitted, enabling
@@ -9360,6 +9382,7 @@ program.createTitle({
 | `maxWidth` | positive number | omitted; no wrapping |
 | `wrap` | `"word"` or `"character"` | `"word"` when `maxWidth` is set |
 | `lineHeight` | positive number | each font size × `1.2` |
+| `subtitleLineHeight` | finite number ≥ subtitle font size | shared `lineHeight`, or subtitle font size × `1.2` |
 | `titleStyle` | text style object | default title style |
 | `subtitleStyle` | text style object | default subtitle style |
 
@@ -9411,6 +9434,15 @@ is set. Leading, interior, and trailing blank lines reserve vertical spacing
 without creating empty painted text. Each title or subtitle must contain at
 least one non-empty hard line. Font-family and color values remain single-line
 strings.
+
+Set `subtitleLineHeight` to control only the subtitle's line spacing. For example,
+`subtitleStyle: { fontSize: 8 }, subtitleLineHeight: 10` keeps a larger heading
+unchanged while spacing credit lines by 10 logical pixels. This option supports
+explicit line breaks without `maxWidth`, and overrides shared `lineHeight` only
+for the subtitle. Omitted edits retain it, including while `subtitle: false`
+hides the subtitle. Its value must cover the stored subtitle font size even
+while hidden; increasing that font size requires a compatible spacing in the
+same edit. Removing the complete title removes the setting as well.
 
 The requested margin must contain the actual title block. A title must also
 avoid guides reserved on the same edge. Creation fails instead of expanding
@@ -13124,6 +13156,39 @@ size when the extra reserve fits beside the actual axis labels. If it would
 introduce a label collision, placement keeps the existing Canvas-fit offset.
 Automatic margin fitting keeps space for the inferred ink reserve.
 Explicit offsets and preferred placement with sufficient margin stay exact.
+
+## Keep a title outside its labels
+
+Cartesian axis titles accept `offset: { from: "labels", gap: 8 }`. The gap is a
+finite non-negative distance in logical pixels outside the occupied label block.
+It follows the same axis owner and physical side, including rotated labels and
+independent facet scales. Declare the axis first, then refine its title:
+
+> **Executable complete.** Import chart from ggaction; all rows and both axes are declared in this complete program.
+
+```js
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas({ width: 500, height: 360, margin: 90 })
+  .createData({ values: [{ distance: 0, amount: 0 }, { distance: 1, amount: 120 }] })
+  .createScatterPlot({ x: "distance", y: "amount" })
+  .editYAxisTitle({ offset: { from: "labels", gap: 8 } });
+```
+
+The stored offset retains this intent. Label text, fonts, scales, data, Canvas,
+theme and text metrics can change the resulting distance without replacing it
+with a fixed number. Empty display labels do not contribute; at least one
+nonempty label on the same side is required. Remove the title together with its
+last labels, or switch its offset to a number. The existing collision and Canvas
+checks still apply, including when `overlap: "allow"` is set.
+
+Numeric offsets keep their signed distance from the axis frame; omitted offsets
+keep their existing automatic defaults. An omitted edit preserves either mode.
+The relative object accepts only `from` and `gap`. It is not a Polar/Parallel
+title option, an axis frame offset, or a label offset.
+
+## Rotate labels outside the plot
 
 Rotated Cartesian labels stay outside their selected plot edge in both fixed-size
 and automatic-plot Canvases. `offset` measures the gap to the complete rotated
@@ -17265,7 +17330,7 @@ default overflow policy rejects an unsatisfied minimum plot atomically;
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 applyTextMetrics(options: ApplyTextMetricsOptions): ChartProgram;
@@ -17295,7 +17360,7 @@ exact profile format, matching rules, propagation, and executable example.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 removeTextMetrics(): ChartProgram;
@@ -17445,7 +17510,7 @@ Create one immutable named dataset. [Data](./api/data/)
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 reviseData<Row extends object>(options: ReviseDataOptions<Row>): ChartProgram;
@@ -17478,7 +17543,7 @@ See [Data updates](./data-updates/#revise-a-source-and-its-dependent-chart).
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 removeData(options: RemoveResourceOptions): ChartProgram;
@@ -17511,7 +17576,7 @@ does not infer, cascade, or change graphics.
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 removeScale(options: RemoveResourceOptions): ChartProgram;
@@ -17542,7 +17607,7 @@ graphics. [Scale Options](./api/scales/#removescale-id)
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 removeCoordinate(options: RemoveResourceOptions): ChartProgram;
@@ -17736,7 +17801,7 @@ adds residual reweighting; see [regression](./api/regression/) for the estimator
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 createRegressionStatisticsData(options: RegressionStatisticsDataOptions): ChartProgram;
@@ -17866,6 +17931,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `y` | Required | `string` |
 | `bins` | Optional / branch-dependent | `number \| Bin2DCounts \| undefined` |
 | `extent` | Optional / branch-dependent | `Bin2DExtent \| undefined` |
+| `assignment` | Optional / branch-dependent | `"edges" \| "step" \| undefined` |
 | `includeEmpty` | Optional / branch-dependent | `boolean \| undefined` |
 | `members` | Optional / branch-dependent | `boolean \| undefined` |
 | `as` | Optional / branch-dependent | `Bin2DOutputFields \| undefined` |
@@ -17906,6 +17972,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `y` | Optional / branch-dependent | `string \| undefined` |
 | `bins` | Optional / branch-dependent | `number \| Bin2DCounts \| undefined` |
 | `extent` | Optional / branch-dependent | `Bin2DExtent \| undefined` |
+| `assignment` | Optional / branch-dependent | `"edges" \| "step" \| undefined` |
 | `includeEmpty` | Optional / branch-dependent | `boolean \| undefined` |
 | `members` | Optional / branch-dependent | `boolean \| undefined` |
 | `as` | Optional / branch-dependent | `DatasetBin2DOutputFields \| undefined` |
@@ -17929,7 +17996,7 @@ rebind direct visual consumers, and safely release the prior revision.
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 editDerivedData(options: EditDerivedDataOptions): ChartProgram;
@@ -17953,7 +18020,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./reference
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 editFilteredData(options: EditFilteredDataOptions): ChartProgram;
@@ -17982,7 +18049,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./reference
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 editTimeUnitData(options: EditTimeUnitDataOptions): ChartProgram;
@@ -18013,7 +18080,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./reference
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 editWindowData(options: EditWindowDataOptions): ChartProgram;
@@ -18040,7 +18107,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./reference
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 editDensityData(options: EditDensityDataOptions): ChartProgram;
@@ -18073,7 +18140,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./reference
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 editRegressionData(options: EditRegressionDataOptions): ChartProgram;
@@ -18109,7 +18176,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./reference
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 editRegressionStatisticsData(options?: EditRegressionStatisticsDataOptions): ChartProgram;
@@ -18164,7 +18231,7 @@ Behavior, inference, resets, and errors: [Semantic resources and regression laye
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 editCoordinate(options: EditCoordinateOptions): ChartProgram;
@@ -18276,7 +18343,7 @@ Behavior, inference, resets, and errors: [Extension and scale contracts](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 editXScale(options: EditXScaleOptions): ChartProgram;
@@ -18314,7 +18381,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 editYScale(options: EditYScaleOptions): ChartProgram;
@@ -18352,7 +18419,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 editXOffsetScale(options: EditXOffsetScaleOptions): ChartProgram;
@@ -18380,7 +18447,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 editYOffsetScale(options: EditYOffsetScaleOptions): ChartProgram;
@@ -18408,7 +18475,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 editParallelScale(options: EditParallelScaleOptions): ChartProgram;
@@ -18446,7 +18513,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 editThetaScale(options: EditThetaScaleOptions): ChartProgram;
@@ -18480,7 +18547,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 editRScale(options: EditRScaleOptions): ChartProgram;
@@ -18514,7 +18581,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 editColorScale(options: EditColorScaleOptions): ChartProgram;
@@ -18551,7 +18618,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 editStrokeScale(options: EditStrokeScaleOptions): ChartProgram;
@@ -18587,7 +18654,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 editSizeScale(options: EditSizeScaleOptions): ChartProgram;
@@ -18618,7 +18685,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 editOpacityScale(options: EditOpacityScaleOptions): ChartProgram;
@@ -18649,7 +18716,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 editShapeScale(options: EditShapeScaleOptions): ChartProgram;
@@ -18676,7 +18743,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 editStrokeWidthScale(options: EditStrokeWidthScaleOptions): ChartProgram;
@@ -18709,7 +18776,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 editStrokeDashScale(options: EditStrokeDashScaleOptions): ChartProgram;
@@ -18933,7 +19000,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `columns` | Optional / branch-dependent | `number \| undefined` |
-| `gap` | Optional / branch-dependent | `number \| undefined` |
+| `gap` | Optional / branch-dependent | `FacetGap \| undefined` |
 | `align` | Optional / branch-dependent | `CompositionAlign \| undefined` |
 | `padding` | Optional / branch-dependent | `number \| CompositionPadding \| undefined` |
 | `spacing` | Optional / branch-dependent | `"canvas" \| "content" \| "plot" \| undefined` |
@@ -18948,7 +19015,10 @@ editCompositionLayout({ columns?, gap?, spacing?, align?, padding? })
 Edit spacing, cross-axis alignment, or outer padding on an existing composition.
 `columns` changes wrapping only on a facet composition and is rejected for concat.
 Omitted values are preserved, child identity is unchanged, and the parent snapshot
-is rebuilt from retained child programs.
+is rebuilt from retained child programs. Facet parents accept `gap: {x, y}` to
+set horizontal and vertical distances separately; both keys are required and each
+value must be finite and non-negative. A pair replaces both axes, while an omitted
+gap preserves its current form. Concat continues to require a numeric gap.
 
 ## `replaceCompositionChild`
 
@@ -19093,7 +19163,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `values` | Optional / branch-dependent | `readonly DatasetScalar[] \| undefined` |
 | `columns` | Optional / branch-dependent | `number \| undefined` |
-| `gap` | Optional / branch-dependent | `number \| undefined` |
+| `gap` | Optional / branch-dependent | `FacetGap \| undefined` |
 | `align` | Optional / branch-dependent | `CompositionAlign \| undefined` |
 | `padding` | Optional / branch-dependent | `number \| CompositionPadding \| undefined` |
 | `scales` | Optional / branch-dependent | `FacetScaleResolutions \| undefined` |
@@ -19132,6 +19202,15 @@ anchors use the union and preserve child dimensions, automatic policies and edit
 persistence. See [parent legend creation](./api/composition/facets/#declare-a-legend-for-the-complete-facet).
 See [Program composition](./api/composition/#repeat-the-current-chart-by-a-field).
 
+Facet, grid and field repetition also accept `gap: {x, y}`. A number still applies
+one distance in both directions and keeps its stored form. A pair must contain
+exactly those two finite non-negative values; partial objects and unknown keys
+reject, even for one row or column. The distances separate child canvases, plots,
+or retained content according to the existing spacing mode. Grid still supports
+only canvas/plot spacing. Header clearance and final overlap checks remain active
+independently in both directions. The pair survives layout edits, source replay
+and editable persistence. See [independent axis gaps](./api/composition/facets/#use-different-horizontal-and-vertical-gaps).
+
 Creation options for `facet`, `facetGrid`, and `repeatCharts` accept `headers`.
 Set common `fontSize`, `fontFamily`, `fontWeight`, `color`, `offset`, `align`, or
 `labelMap`, and optional `row`/`column` objects with role-specific overrides and
@@ -19168,7 +19247,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `rows` | Required | `FacetGridRole` |
 | `columns` | Required | `FacetGridRole` |
 | `combinations` | Optional / branch-dependent | `"full" \| "observed" \| undefined` |
-| `gap` | Optional / branch-dependent | `number \| undefined` |
+| `gap` | Optional / branch-dependent | `FacetGap \| undefined` |
 | `align` | Optional / branch-dependent | `CompositionAlign \| undefined` |
 | `padding` | Optional / branch-dependent | `number \| CompositionPadding \| undefined` |
 | `scales` | Optional / branch-dependent | `FacetScaleResolutions \| undefined` |
@@ -19212,7 +19291,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `channel` | Required | `"r" \| "theta" \| "x" \| "y" \| { parallelDimension: string; }` |
 | `fields` | Required | `readonly [string, ...string[]]` |
 | `columns` | Optional / branch-dependent | `number \| undefined` |
-| `gap` | Optional / branch-dependent | `number \| undefined` |
+| `gap` | Optional / branch-dependent | `FacetGap \| undefined` |
 | `align` | Optional / branch-dependent | `CompositionAlign \| undefined` |
 | `padding` | Optional / branch-dependent | `number \| CompositionPadding \| undefined` |
 | `scales` | Optional / branch-dependent | `FacetScaleResolutions \| undefined` |
@@ -19440,7 +19519,7 @@ appearance encodings. [Basic Charts](./api/basic-charts/#createscatterplot)
 
 **API layer:** user-facing. **Authoring roles:** H0.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 createTextPlot(options: CreateTextPlotOptions): ChartProgram;
@@ -19983,7 +20062,7 @@ are used as supplied; the facade does not infer normalization. [Polar positions]
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 editRadarPlot(options: EditRadarPlotOptions): ChartProgram;
@@ -20761,7 +20840,7 @@ Length defaults to `14`; stroke width defaults to `2`. [Marks](./api/marks/)
 
 **API layer:** user-facing. **Authoring roles:** H1, H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 createStatisticalReference(options: CreateStatisticalReferenceOptions): ChartProgram;
@@ -21016,7 +21095,7 @@ keeps its percentage of the complete source.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 editMarkLabelSelection(options: EditMarkLabelSelectionOptions): ChartProgram;
@@ -21054,7 +21133,7 @@ rebound with this action or removed.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 editMarkLabelPlacement(options: EditMarkLabelPlacementOptions): ChartProgram;
@@ -21094,7 +21173,7 @@ Pass `"auto"` to restore the legacy source anchor and remove the owned placement
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 removeMarkLabels(options: RemoveMarkLabelsOptions): ChartProgram;
@@ -22291,11 +22370,13 @@ The following call patterns are abbreviated examples; the declaration above owns
 
 ```javascript
 encodeX2({ field, target?, fieldType, scale?, coordinate? })
-encodeX2({ datum, target?, fieldType, scale?, coordinate? })
+encodeX2({ datum, target?, fieldType?, scale?, coordinate? })
 ```
 
 Assign an area, ranged-bar, or rect upper edge, or a rule secondary x endpoint.
 It requires an existing x and shares its scale and coordinate.
+A rule numeric datum defaults to `fieldType: "quantitative"` and must be finite.
+Rule field endpoints and nonnumeric datum endpoints require an explicit matching type.
 [Position encodings](./api/position-encodings/)
 
 ## `encodeColor`
@@ -22923,11 +23004,13 @@ The following call patterns are abbreviated examples; the declaration above owns
 
 ```javascript
 encodeY2({ field, target?, fieldType, scale?, coordinate? })
-encodeY2({ datum, target?, fieldType, scale?, coordinate? }) // rule
+encodeY2({ datum, target?, fieldType?, scale?, coordinate? }) // rule
 ```
 
 Assign an area, ranged-bar, or rect upper edge, or a rule secondary y endpoint.
 It requires an existing y and shares its scale and coordinate.
+A rule numeric datum defaults to `fieldType: "quantitative"` and must be finite.
+Rule field endpoints and nonnumeric datum endpoints require an explicit matching type.
 [Position encodings](./api/position-encodings/)
 
 ## `encodeYRange`
@@ -23270,7 +23353,7 @@ replaces the previous content branch. [Text marks](./api/marks/text/)
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 encodeDx(options: TextOffsetEncodingOptions): ChartProgram;
@@ -23306,7 +23389,7 @@ source-owned labels and other marks are rejected.
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 encodeDy(options: TextOffsetEncodingOptions): ChartProgram;
@@ -23751,7 +23834,7 @@ members using the same edge rules as Histogram.
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 createLookupData(options: LookupDataOptions): ChartProgram;
@@ -23784,7 +23867,7 @@ Full and Basic support creation. [Named table lookup](./api/data/summaries-and-s
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 createFlattenData(options: FlattenDataOptions): ChartProgram;
@@ -23882,7 +23965,7 @@ expression, including explicit nested scalar `getPath` and first-occurrence
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 createNormalizedData(options: NormalizedDataOptions): ChartProgram;
@@ -23921,7 +24004,7 @@ percent-change values independently within each group.
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 createSortedData(options: SortedDataOptions): ChartProgram;
@@ -23953,7 +24036,7 @@ null placement, and quantitative, categorical, or temporal comparison.
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 createCompleteData(options: CompleteDataOptions): ChartProgram;
@@ -23990,7 +24073,7 @@ explicit fill and source-membership provenance for synthesized rows.
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 createImputedData(options: ImputedDataOptions): ChartProgram;
@@ -24063,7 +24146,7 @@ by Bar and Area layouts. [Source and Derived Data](./api/data/source-and-derived
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 editComputedData(options: EditComputedDataOptions): ChartProgram;
@@ -24088,7 +24171,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./re
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 editLookupData(options: EditLookupDataOptions): ChartProgram;
@@ -24113,7 +24196,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./re
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 editFlattenData(options: EditFlattenDataOptions): ChartProgram;
@@ -24138,7 +24221,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./re
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 editFoldData(options: EditFoldDataOptions): ChartProgram;
@@ -24163,7 +24246,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./re
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 editSummaryData(options: EditSummaryDataOptions): ChartProgram;
@@ -24192,7 +24275,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./re
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 editBinData(options: EditBinDataOptions): ChartProgram;
@@ -24227,7 +24310,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./re
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 editStackData(options: EditStackDataOptions): ChartProgram;
@@ -24255,7 +24338,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./re
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 editIntervalData(options: EditIntervalDataOptions): ChartProgram;
@@ -24286,7 +24369,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./re
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 editECDFData(options: EditECDFDataOptions): ChartProgram;
@@ -24314,7 +24397,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./re
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 editNormalizedData(options: EditNormalizedDataOptions): ChartProgram;
@@ -24345,7 +24428,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./re
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 editSortedData(options: EditSortedDataOptions): ChartProgram;
@@ -24369,7 +24452,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./reference
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 editCompleteData(options: EditCompleteDataOptions): ChartProgram;
@@ -24398,7 +24481,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./re
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 editImputedData(options: EditImputedDataOptions): ChartProgram;
@@ -25920,6 +26003,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `colorMap` | Optional / branch-dependent | `"auto" \| CartesianAxisLabelColorMap \| undefined` |
 | `flush` | Optional / branch-dependent | `boolean \| undefined` |
+| `flushThreshold` | Optional / branch-dependent | `number \| "auto" \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
 | `maxWidth` | Optional / branch-dependent | `number \| false \| undefined` |
@@ -25963,6 +26047,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `colorMap` | Optional / branch-dependent | `"auto" \| CartesianAxisLabelColorMap \| undefined` |
 | `flush` | Optional / branch-dependent | `boolean \| undefined` |
+| `flushThreshold` | Optional / branch-dependent | `number \| "auto" \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
 | `maxWidth` | Optional / branch-dependent | `number \| false \| undefined` |
@@ -26000,6 +26085,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `colorMap` | Optional / branch-dependent | `"auto" \| CartesianAxisLabelColorMap \| undefined` |
 | `flush` | Optional / branch-dependent | `boolean \| undefined` |
+| `flushThreshold` | Optional / branch-dependent | `number \| "auto" \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
 | `maxWidth` | Optional / branch-dependent | `number \| false \| undefined` |
@@ -26042,6 +26128,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `colorMap` | Optional / branch-dependent | `"auto" \| CartesianAxisLabelColorMap \| undefined` |
 | `flush` | Optional / branch-dependent | `boolean \| undefined` |
+| `flushThreshold` | Optional / branch-dependent | `number \| "auto" \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
 | `maxWidth` | Optional / branch-dependent | `number \| false \| undefined` |
@@ -26197,7 +26284,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
 | `at` | Optional / branch-dependent | `number \| "center" \| "end" \| "start" \| undefined` |
-| `offset` | Optional / branch-dependent | `number \| undefined` |
+| `offset` | Optional / branch-dependent | `AxisTitleOffset \| undefined` |
 | `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
@@ -26233,7 +26320,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
 | `at` | Optional / branch-dependent | `number \| "center" \| "end" \| "start" \| undefined` |
-| `offset` | Optional / branch-dependent | `number \| undefined` |
+| `offset` | Optional / branch-dependent | `AxisTitleOffset \| undefined` |
 | `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
@@ -26268,7 +26355,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `text` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
 | `at` | Optional / branch-dependent | `number \| "center" \| "end" \| "start" \| undefined` |
-| `offset` | Optional / branch-dependent | `number \| undefined` |
+| `offset` | Optional / branch-dependent | `AxisTitleOffset \| undefined` |
 | `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
@@ -26303,7 +26390,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `text` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
 | `at` | Optional / branch-dependent | `number \| "center" \| "end" \| "start" \| undefined` |
-| `offset` | Optional / branch-dependent | `number \| undefined` |
+| `offset` | Optional / branch-dependent | `AxisTitleOffset \| undefined` |
 | `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
@@ -26316,7 +26403,7 @@ Behavior, inference, resets, and errors: [Tick/label groups and axis titles](./r
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 editAxes(options: EditAxesOptions): ChartProgram;
@@ -26894,7 +26981,7 @@ dependent replay that would invalidate a stored exact sample fails atomically.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 editLegendBlock(options: EditLegendBlockOptions): ChartProgram;
@@ -27187,6 +27274,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `maxWidth` | Optional / branch-dependent | `number \| undefined` |
 | `wrap` | Optional / branch-dependent | `"character" \| "word" \| undefined` |
 | `lineHeight` | Optional / branch-dependent | `number \| undefined` |
+| `subtitleLineHeight` | Optional / branch-dependent | `number \| undefined` |
 | `titleStyle` | Optional / branch-dependent | `TitleTextStyleOptions \| undefined` |
 | `subtitleStyle` | Optional / branch-dependent | `TitleTextStyleOptions \| undefined` |
 
@@ -27234,6 +27322,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `maxWidth` | Optional / branch-dependent | `number \| undefined` |
 | `wrap` | Optional / branch-dependent | `"character" \| "word" \| undefined` |
 | `lineHeight` | Optional / branch-dependent | `number \| undefined` |
+| `subtitleLineHeight` | Optional / branch-dependent | `number \| undefined` |
 | `titleStyle` | Optional / branch-dependent | `TitleTextStyleOptions \| undefined` |
 | `subtitleStyle` | Optional / branch-dependent | `TitleTextStyleOptions \| undefined` |
 
@@ -28195,19 +28284,19 @@ editYAxisTicks({ position?, count?, values?, length?, color?, lineWidth?, alongO
 
 createXAxisLabels({
   scale?, position?, count?, values?, offset?, format?, color?,
-  fontSize?, fontFamily?, fontWeight?, alongOffset?, flush?, labelMap?, colorMap?
+  fontSize?, fontFamily?, fontWeight?, alongOffset?, flush?, flushThreshold?, labelMap?, colorMap?
 })
 createYAxisLabels({
   scale?, position?, count?, values?, offset?, format?, color?,
-  fontSize?, fontFamily?, fontWeight?, alongOffset?, flush?, labelMap?, colorMap?
+  fontSize?, fontFamily?, fontWeight?, alongOffset?, flush?, flushThreshold?, labelMap?, colorMap?
 })
 editXAxisLabels({
   position?, count?, values?, offset?, format?, color?,
-  fontSize?, fontFamily?, fontWeight?, alongOffset?, flush?, labelMap?, colorMap?
+  fontSize?, fontFamily?, fontWeight?, alongOffset?, flush?, flushThreshold?, labelMap?, colorMap?
 })
 editYAxisLabels({
   position?, count?, values?, offset?, format?, color?,
-  fontSize?, fontFamily?, fontWeight?, alongOffset?, flush?, labelMap?, colorMap?
+  fontSize?, fontFamily?, fontWeight?, alongOffset?, flush?, flushThreshold?, labelMap?, colorMap?
 })
 ```
 
@@ -28216,6 +28305,11 @@ Label `format` accepts `"auto"`, `{ decimals }`, `.0`–`.12` precision with
 `f`, `%`, or `e`, or a UTC sequence of `%Y/%m/%d/%b` directives and literals
 when compatible with the resolved scale. Use `%%` for a literal percent;
 unknown or dangling directives reject.
+
+Cartesian `flushThreshold` optionally limits `flush: true` to mapped ticks within a
+non-negative logical-pixel distance of a range edge. Omission preserves complete
+label containment. Use `"auto"` to clear a stored threshold; zero selects exact
+endpoints. Text bounds do not control threshold selection.
 
 ## Tick/label groups and axis titles
 
@@ -28333,7 +28427,7 @@ Each declared action has an exact signature and its own stable link. Option tabl
 
 **API layer:** advanced. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.23. See [release compatibility](./version/).
+**Availability:** Available by v0.0.24. See [release compatibility](./version/).
 
 ```typescript
 encodeChannels(options: EncodeChannelsOptions): ChartProgram;
@@ -28698,6 +28792,7 @@ export type {
   AxisTicksAndLabelsOptions,
   AxisTickStyleOptions,
   AxisTitleOptions,
+  AxisTitleOffset,
   AxisValue,
   DisplayLabelMap,
   DisplayLabelOptions,
@@ -28707,6 +28802,7 @@ export type {
   BinnedHeatmapColorOptions,
   BinnedHeatmapOptions,
   BinnedHeatmapPositionChannel,
+  Bin2DAssignment,
   Bin2DCounts,
   Bin2DDataOptions,
   Bin2DExtent,
@@ -28958,6 +29054,7 @@ export type {
   FieldType,
   FillPaint,
   FacetCompositionSpec,
+  FacetGap,
   FacetGuideOptions,
   FacetOptions,
   FacetTopLaneMode,
@@ -29150,11 +29247,13 @@ export type {
   CartesianGuideDashMap,
   AxisTicksAndLabelsOptions,
   AxisTitleOptions,
+  AxisTitleOffset,
   DisplayLabelMap,
   DisplayLabelOptions,
   ApplyThemeOptions,
   BarWidthOptions,
   BasicSeriesLayoutOptions,
+  Bin2DAssignment,
   Bin2DDataOptions,
   CanvasOptions,
   ColorEncodingOptions,
@@ -30187,6 +30286,14 @@ export interface AxisTicksAndLabelsOptions<P extends string> {
 
 Related types: [`AxisTickRounding`](./reference/types/#type-axistickrounding) · [`AxisValue`](./reference/types/#type-axisvalue) · [`CartesianAxisTickStyleOptions`](./reference/types/#type-cartesianaxistickstyleoptions) · [`CartesianAxisLabelStyleOptions`](./reference/types/#type-cartesianaxislabelstyleoptions) · [`AxisLabelLayoutOptions`](./reference/types/#type-axislabellayoutoptions) · [`DisplayLabelOptions`](./reference/types/#type-displaylabeloptions).
 
+### `AxisTitleOffset` {#type-axistitleoffset}
+
+ Expand AxisTitleOffset
+
+```typescript
+export type AxisTitleOffset = number | Readonly<{ from: "labels"; gap: number }>;
+```
+
 ### `AxisTitleOptions` {#type-axistitleoptions}
 
  Expand AxisTitleOptions
@@ -30206,8 +30313,8 @@ export interface AxisTitleOptions<P extends string> {
   scale?: string;
   position?: P;
   at?: "start" | "center" | "end" | number;
-  /** Signed distance from the axis frame: positive outward, negative inward. */
-  offset?: number;
+  /** Signed distance from the axis frame, or a nonnegative gap outside same-owner labels. */
+  offset?: AxisTitleOffset;
   rotation?: RotationInput;
   color?: string;
   fontSize?: number;
@@ -30216,7 +30323,7 @@ export interface AxisTitleOptions<P extends string> {
 }
 ```
 
-Related types: [`RotationInput`](./reference/types/#type-rotationinput).
+Related types: [`AxisTitleOffset`](./reference/types/#type-axistitleoffset) · [`RotationInput`](./reference/types/#type-rotationinput).
 
 ### `AxisValue` {#type-axisvalue}
 
@@ -30509,6 +30616,7 @@ export interface Bin2DDataOptions {
   y: string;
   bins?: number | Bin2DCounts;
   extent?: Bin2DExtent;
+  assignment?: "edges" | "step";
   includeEmpty?: boolean;
   members?: boolean;
   as?: Bin2DOutputFields;
@@ -30915,6 +31023,8 @@ export interface CartesianAxisLabelStyleOptions extends AxisLabelStyleOptions {
   colorMap?: CartesianAxisLabelColorMap | "auto";
   /** Keep unrotated label bounds inside the mapped axis span; defaults to false. */
   flush?: boolean;
+  /** Only flush mapped ticks within this non-negative distance of a range edge. Auto restores all-label containment. */
+  flushThreshold?: number | "auto";
   /** Signed displacement from the mapped tick position, independent of outward offset. */
   alongOffset?: number;
 }
@@ -32593,6 +32703,7 @@ export interface DatasetBin2DOutputFields {
 ```typescript
 export interface DatasetBin2DTransform {
   readonly type: "bin2d";
+  readonly assignment?: "step";
   readonly x: string;
   readonly y: string;
   readonly bins: Readonly<Bin2DCounts>;
@@ -33685,6 +33796,7 @@ export interface EditBin2DDataOptions {
   y?: string;
   bins?: number | Bin2DCounts;
   extent?: Bin2DExtent;
+  assignment?: "edges" | "step";
   includeEmpty?: boolean;
   members?: boolean;
   as?: DatasetBin2DOutputFields;
@@ -33771,7 +33883,7 @@ Related types: [`FocusedDerivedDataEdit`](./reference/types/#type-focusedderived
 ```typescript
 export interface EditCompositionLayoutOptions {
   columns?: number;
-  gap?: number;
+  gap?: FacetGap;
   align?: CompositionAlign;
   padding?: number | CompositionPadding;
   /** Interpret gap between child canvases (default), inner plots, or retained full content (wrapped facets). */
@@ -33781,7 +33893,7 @@ export interface EditCompositionLayoutOptions {
 }
 ```
 
-Related types: [`CompositionAlign`](./reference/types/#type-compositionalign) · [`CompositionPadding`](./reference/types/#type-compositionpadding) · [`FacetTopLaneMode`](./reference/types/#type-facettoplanemode).
+Related types: [`FacetGap`](./reference/types/#type-facetgap) · [`CompositionAlign`](./reference/types/#type-compositionalign) · [`CompositionPadding`](./reference/types/#type-compositionpadding) · [`FacetTopLaneMode`](./reference/types/#type-facettoplanemode).
 
 ### `EditComputedDataOptions` {#type-editcomputeddataoptions}
 
@@ -35186,6 +35298,14 @@ type FacadePositionChannel<Quantitative, Temporal, Categorical> =
 
 Related types: [`PositionEncodingBase`](./reference/types/#type-positionencodingbase) · [`PositionScaleBranches`](./reference/types/#type-positionscalebranches).
 
+### `FacetGap` {#type-facetgap}
+
+ Expand FacetGap
+
+```typescript
+export type FacetGap = number | Readonly<{ x: number; y: number }>;
+```
+
 ### `FacetGridOptions` {#type-facetgridoptions}
 
  Expand FacetGridOptions
@@ -35197,7 +35317,7 @@ export interface FacetGridOptions {
   rows: FacetGridRole;
   columns: FacetGridRole;
   combinations?: "observed" | "full";
-  gap?: number;
+  gap?: FacetGap;
   align?: CompositionAlign;
   padding?: number | CompositionPadding;
   scales?: FacetScaleResolutions;
@@ -35210,7 +35330,7 @@ export interface FacetGridOptions {
 }
 ```
 
-Related types: [`FacetGridRole`](./reference/types/#type-facetgridrole) · [`CompositionAlign`](./reference/types/#type-compositionalign) · [`CompositionPadding`](./reference/types/#type-compositionpadding) · [`FacetScaleResolutions`](./reference/types/#type-facetscaleresolutions) · [`FacetGuideOptions`](./reference/types/#type-facetguideoptions) · [`FacetHeadersOptions`](./reference/types/#type-facetheadersoptions) · [`FacetTopLaneMode`](./reference/types/#type-facettoplanemode).
+Related types: [`FacetGridRole`](./reference/types/#type-facetgridrole) · [`FacetGap`](./reference/types/#type-facetgap) · [`CompositionAlign`](./reference/types/#type-compositionalign) · [`CompositionPadding`](./reference/types/#type-compositionpadding) · [`FacetScaleResolutions`](./reference/types/#type-facetscaleresolutions) · [`FacetGuideOptions`](./reference/types/#type-facetguideoptions) · [`FacetHeadersOptions`](./reference/types/#type-facetheadersoptions) · [`FacetTopLaneMode`](./reference/types/#type-facettoplanemode).
 
 ### `FacetGridRole` {#type-facetgridrole}
 
@@ -35308,7 +35428,7 @@ export interface FacetOptions {
   data?: string;
   values?: readonly DatasetScalar[];
   columns?: number;
-  gap?: number;
+  gap?: FacetGap;
   align?: CompositionAlign;
   padding?: number | CompositionPadding;
   scales?: FacetScaleResolutions;
@@ -35321,7 +35441,7 @@ export interface FacetOptions {
 }
 ```
 
-Related types: [`DatasetScalar`](./reference/types/#type-datasetscalar) · [`CompositionAlign`](./reference/types/#type-compositionalign) · [`CompositionPadding`](./reference/types/#type-compositionpadding) · [`FacetScaleResolutions`](./reference/types/#type-facetscaleresolutions) · [`FacetGuideOptions`](./reference/types/#type-facetguideoptions) · [`FacetHeadersOptions`](./reference/types/#type-facetheadersoptions) · [`FacetTopLaneMode`](./reference/types/#type-facettoplanemode).
+Related types: [`DatasetScalar`](./reference/types/#type-datasetscalar) · [`FacetGap`](./reference/types/#type-facetgap) · [`CompositionAlign`](./reference/types/#type-compositionalign) · [`CompositionPadding`](./reference/types/#type-compositionpadding) · [`FacetScaleResolutions`](./reference/types/#type-facetscaleresolutions) · [`FacetGuideOptions`](./reference/types/#type-facetguideoptions) · [`FacetHeadersOptions`](./reference/types/#type-facetheadersoptions) · [`FacetTopLaneMode`](./reference/types/#type-facettoplanemode).
 
 ### `FacetScaleResolution` {#type-facetscaleresolution}
 
@@ -35818,6 +35938,7 @@ Related types: [`RectStyleDetails`](./reference/types/#type-rectstyledetails) ·
 export interface HeatmapBinOptions {
   bins?: number | Bin2DCounts;
   extent?: Bin2DExtent;
+  assignment?: "edges" | "step";
   includeEmpty?: boolean;
 }
 ```
@@ -38737,7 +38858,7 @@ export interface RepeatChartsOptions {
   channel: "x" | "y" | "theta" | "r" | { parallelDimension: string };
   fields: readonly [string, ...string[]];
   columns?: number;
-  gap?: number;
+  gap?: FacetGap;
   align?: CompositionAlign;
   padding?: number | CompositionPadding;
   scales?: FacetScaleResolutions;
@@ -38750,7 +38871,7 @@ export interface RepeatChartsOptions {
 }
 ```
 
-Related types: [`CompositionAlign`](./reference/types/#type-compositionalign) · [`CompositionPadding`](./reference/types/#type-compositionpadding) · [`FacetScaleResolutions`](./reference/types/#type-facetscaleresolutions) · [`FacetGuideOptions`](./reference/types/#type-facetguideoptions) · [`FacetHeadersOptions`](./reference/types/#type-facetheadersoptions) · [`FacetTopLaneMode`](./reference/types/#type-facettoplanemode).
+Related types: [`FacetGap`](./reference/types/#type-facetgap) · [`CompositionAlign`](./reference/types/#type-compositionalign) · [`CompositionPadding`](./reference/types/#type-compositionpadding) · [`FacetScaleResolutions`](./reference/types/#type-facetscaleresolutions) · [`FacetGuideOptions`](./reference/types/#type-facetguideoptions) · [`FacetHeadersOptions`](./reference/types/#type-facetheadersoptions) · [`FacetTopLaneMode`](./reference/types/#type-facettoplanemode).
 
 ### `ReplaceCompositionChildOptions` {#type-replacecompositionchildoptions}
 
@@ -39914,6 +40035,8 @@ export interface TitleOptions {
   maxWidth?: number;
   wrap?: "word" | "character";
   lineHeight?: number;
+  /** Subtitle-only line spacing; overrides lineHeight without requiring maxWidth. */
+  subtitleLineHeight?: number;
   titleStyle?: TitleTextStyleOptions;
   subtitleStyle?: TitleTextStyleOptions;
 }
@@ -40776,12 +40899,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/12b66b229f9a4dae1cfa580929b74e7e178c02c9/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/5f952f59b9ca236e8e9cff477c4f51067f2f8ea9/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/12b66b229f9a4dae1cfa580929b74e7e178c02c9/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/5f952f59b9ca236e8e9cff477c4f51067f2f8ea9/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -41513,6 +41636,35 @@ offer cross-child removal; call the action in the program that owns the resource
 
 [Family overview](./api/composition/) · [Exact action lookup](./reference/actions/)
 
+## Use different horizontal and vertical gaps
+
+A facet can set `gap: { x: 32, y: 48 }` to leave more space between rows than
+between columns. The existing number form applies the same gap in both directions.
+This complete example preserves one plot per panel:
+
+> **Executable complete.** Import chart from ggaction. This complete program includes all four panel rows and retains the original dataset while creating the facet.
+
+```js
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas({ width: 240, height: 180 })
+  .createData({ values: [
+    { panel: "A", x: 1, y: 2 }, { panel: "B", x: 2, y: 3 },
+    { panel: "C", x: 3, y: 1 }, { panel: "D", x: 4, y: 4 }
+  ] })
+  .createScatterPlot({ x: "x", y: "y" })
+  .facet({ field: "panel", columns: 2, gap: { x: 32, y: 48 } });
+```
+
+Both keys are required, even for a single row or column. Values must be finite and
+non-negative; partial objects and unknown keys are rejected. The same pair is
+supported by field repetition and row-column grids. Existing spacing rules still
+apply: canvas gaps separate child canvases, plot gaps separate data regions, and
+content gaps separate retained content. A row-column grid still rejects content
+spacing. Titles, headers, guides and legends keep their existing ownership and
+collision checks. Concat continues to accept only a number.
+
 ## Declare a legend for the complete facet
 
 Pass a legend object to `guides.legend` to create it against the combined inner plots.
@@ -42079,7 +42231,9 @@ const twoColumns = faceted.editCompositionLayout({ columns: 2, gap: 28 });
 ```
 
 At least one option is required. Omitted values retain their current settings;
-a partial padding object updates only the named sides. The action preserves all
+a partial padding object updates only the named sides. A facet gap pair always
+requires both `x` and `y` and replaces the complete pair; `gap: 28` resets both
+directions to the same distance. Concat gaps remain numbers. The action preserves all
 child IDs and references and rebuilds the parent snapshot.
 
 Facet parents use this same action for `gap`, `align`, and `padding`; derived
@@ -43320,7 +43474,7 @@ smaller package, and a low-level domain action is not automatically an extension
 
 # Documentation Version
 
-The current site documents **ggaction 0.0.23** with a
+The current site documents **ggaction 0.0.24** with a
 **published-release** contract.
 A `published-release` contract matches that package version. A `development`
 contract can include newer behavior; its package version alone does not establish
@@ -43329,9 +43483,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:d4a3b46c05b696b43389ec3e4bc2aaa89584ef20e01d5e64b8c61a316fe2c004` |
+| Contract fingerprint | `sha256:e755591a2e5f5e2b494867583876e28020a478c5220b77bdc6ad469a6224891d` |
 | Example and dataset source | `6422776b0a379c8c89809f41b434f366fbc1f143` |
-| Runtime source commit | `12b66b229f9a4dae1cfa580929b74e7e178c02c9` |
+| Runtime source commit | `5f952f59b9ca236e8e9cff477c4f51067f2f8ea9` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 293 |
 | Declared actions in that release | 234 |
@@ -43476,6 +43630,8 @@ program
 
 The complete-axis `offset` moves its line, ticks, labels and title outward together.
 It must be non-negative; zero restores the plot edge. Marks and grids stay fixed.
+Whole-axis edits validate labels against the final title position on the same axis,
+including numeric title offsets. A genuine final collision still rejects the edit.
 The nested title `offset` is signed: positive outward, negative into the plot.
 `alongOffset` is a separate translation along the axis: positive right for X and
 down for Y, even with a reversed scale. Numeric `at` still means a scale-domain value.
@@ -43554,6 +43710,8 @@ Each x/y axis option supports:
 Cartesian `ticksAndLabels.labels.colorMap` accepts typed `{ value, color }` entries. It overrides individual raw tick colors and falls back to `labels.color`; it does not depend on the displayed text. Use `"auto"` to remove the map. Continuous keys must be finite numeric/timestamp values.
 
 Use `ticksAndLabels.labels.flush: true` to keep unrotated X or Y label bounds inside the mapped axis span. It defaults to false and preserves the normal overlap policy; use explicit `overlap: "allow"` when neighboring labels intentionally overlap. Text, fonts and tick positions are retained. Rotated labels and a label wider than the entire span are rejected.
+
+Set `ticksAndLabels.labels.flushThreshold` to a non-negative number when only ticks near a range edge should flush. Selection uses the mapped tick position, not the amount of text overflowing the edge. For example, `labels: { flush: true, flushThreshold: 1 }` only adjusts labels whose ticks are within one logical pixel of either endpoint. `0` selects exact endpoints. Omission preserves full label containment. Focused or whole-axis edits accept `flushThreshold: "auto"` to restore that behavior; omitted edits preserve the threshold. A stored threshold has no effect while `flush` is false. Reversed axes and wrapped label groups use the same policy.
 
 Cartesian `ticksAndLabels.ticks.alongOffset` and `ticksAndLabels.labels.alongOffset` independently shift mapped positions in logical pixels. Positive moves right for X and down for Y; the default is zero. This preserves scale data and the outward label `offset`.
 

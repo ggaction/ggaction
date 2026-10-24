@@ -26,10 +26,33 @@ p.createLinePlot({x:'x',y:'y',guides:{axes:{x:{ticksAndLabels:{labels:{alongOffs
 p.editXAxis({labels:{flush:true,colorMap:[{value:20,color:'green'}]}});
 p.createXAxisLabels({color:'red',colorMap:[{value:'2',color:'green'}]});
 p.editYAxisLabels({colorMap:'auto'});
+p.createXAxis({ticksAndLabels:{labels:{flush:true,flushThreshold:1}}});
+p.editYAxisLabels({flushThreshold:'auto'});
+p.createGuides({axes:{y:{ticksAndLabels:{labels:{flushThreshold:0}}}}});
+// @ts-expect-error threshold is a number or the auto reset literal
+p.editXAxisLabels({flushThreshold:'1'});
+// @ts-expect-error Cartesian threshold is not a polar label option
+p.createThetaAxisLabels({flushThreshold:1});
 p.createAxes({y:{title:{overlap:'allow'}}});
 p.createGuides({axes:{x:{title:{overlap:'allow'}}}});
 p.createYAxisTitle({overlap:'allow'});p.editXAxisTitle({overlap:'error'});
 p.editYAxis({title:{overlap:'error'}});
+p.createYAxis({title:{offset:{from:'labels',gap:4}}});
+p.createAxes({x:{title:{offset:{from:'labels',gap:0}}}});
+p.createGuides({axes:{y:{title:{offset:{from:'labels',gap:5}}}}});
+p.createYAxisTitle({target:'right',offset:{from:'labels',gap:5}});
+p.editXAxisTitle({offset:{from:'labels',gap:3}});
+p.editYAxis({title:{offset:{from:'labels',gap:2}}});
+// @ts-expect-error closed relative origin
+p.createYAxisTitle({offset:{from:'plot',gap:3}});
+// @ts-expect-error required numeric gap
+p.editXAxisTitle({offset:{from:'labels'}});
+// @ts-expect-error relative title input does not apply to label offset
+p.createYAxisLabels({offset:{from:'labels',gap:3}});
+// @ts-expect-error relative title input does not apply to Polar titles
+p.createThetaAxisTitle({offset:{from:'labels',gap:3}});
+// @ts-expect-error relative title input does not apply to Parallel titles
+p.editParallelAxis({field:'x',title:{offset:{from:'labels',gap:3}}});
 // @ts-expect-error title collision policy is a closed two-string vocabulary
 p.createYAxisTitle({overlap:true});
 // @ts-expect-error Cartesian title policy does not apply to polar titles

@@ -1,4 +1,5 @@
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
+import { normalizeFacetGap, facetGapAxis, assertFacetGapFinite } from "../core/facetGap.js";
 import { normalizeFacetTopLane } from "./facetTopLane.js";
 import { annotateError } from "../core/diagnostics.js";
 import {
@@ -149,7 +150,8 @@ export function resolveFacetLayout({
   ));
   const resolvedColumns = coordinates?.columns ??
     resolveColumns(columns, resolvedChildren.length);
-  const resolvedGap = validateCompositionSpacing(gap, "Facet gap");
+  const resolvedGap = normalizeFacetGap(gap, "Facet gap");
+  const gapX = facetGapAxis(resolvedGap, "x"), gapY = facetGapAxis(resolvedGap, "y");
   const resolvedAlign = normalizeCompositionAlign(align);
   const requestedPadding = normalizeCompositionPadding(padding);
   const resolvedPadding = Object.fromEntries(Object.keys(requestedPadding).map(side =>
@@ -188,17 +190,31 @@ export function resolveFacetLayout({
     Math.ceil(resolvedChildren.length / resolvedColumns);
   let headers = normalizeHeaderLayout(headerLayout, rowCount, resolvedColumns);
   if (spacing === "plot") {
-    let minimumGap = 0;
-    for (const [before, after] of [[headers.cellRows.bottom, headers.cellRows.top],
-      [headers.cellColumns?.right ?? [], headers.cellColumns?.left ?? []]]) {
+    const minimum = { x: 0, y: 0 };
+    for (const [axis, before, after] of [
+      ["y", headers.cellRows.bottom, headers.cellRows.top],
+      ["x", headers.cellColumns?.right ?? [], headers.cellColumns?.left ?? []]
+    ]) {
       for (let index = 1; index < before.length; index += 1) {
-        minimumGap = Math.max(minimumGap, before[index - 1] + after[index]);
+        minimum[axis] = Math.max(minimum[axis], before[index - 1] + after[index]);
       }
     }
-    if (minimumGap > resolvedGap) {
-      throw annotateError(new Error("Plot spacing gap is too small for the facet headers."), {
-        code: "invalid-value", optionPath: "gap", actual: resolvedGap, limit: minimumGap
-      });
+    if (typeof resolvedGap === "number") {
+      const minimumGap = Math.max(minimum.y, minimum.x);
+      if (minimumGap > resolvedGap) {
+        throw annotateError(new Error("Plot spacing gap is too small for the facet headers."), {
+          code: "invalid-value", optionPath: "gap", actual: resolvedGap, limit: minimumGap
+        });
+      }
+    } else {
+      for (const axis of ["x", "y"]) {
+        if (minimum[axis] > resolvedGap[axis]) {
+          throw annotateError(new Error("Plot spacing gap is too small for the facet headers."), {
+            code: "invalid-value", optionPath: `gap.${axis}`,
+            actual: resolvedGap[axis], limit: minimum[axis]
+          });
+        }
+      }
     }
     headers = { outer: {
       top: headers.outer.top + headers.cellRows.top[0],
@@ -227,13 +243,13 @@ export function resolveFacetLayout({
     resolvedPadding.left + headers.outer.left + columnWidths.slice(0, column)
       .reduce((sum, width, index) =>
         sum + columnHeaders.left[index] + width + columnHeaders.right[index], 0) +
-      resolvedGap * column + columnHeaders.left[column]
+      gapX * column + columnHeaders.left[column]
   );
   const rowStarts = rowHeights.map((_, row) =>
     titleReservation + resolvedPadding.top + headers.outer.top +
     rowHeights.slice(0, row).reduce((sum, height, index) =>
       sum + headers.cellRows.top[index] + height + headers.cellRows.bottom[index], 0) +
-    resolvedGap * row + headers.cellRows.top[row]
+    gapY * row + headers.cellRows.top[row]
   );
   const placements = resolvedChildren.map((child, index) => {
     const column = coordinates === undefined
@@ -266,7 +282,7 @@ export function resolveFacetLayout({
     columnWidths.reduce((sum, width) => sum + width, 0) +
     columnHeaders.left.reduce((sum, amount) => sum + amount, 0) +
     columnHeaders.right.reduce((sum, amount) => sum + amount, 0) +
-    resolvedGap * Math.max(0, resolvedColumns - 1) +
+    gapX * Math.max(0, resolvedColumns - 1) +
     headers.outer.right +
     resolvedPadding.right;
   const gridHeight = titleReservation + resolvedPadding.top +
@@ -274,7 +290,7 @@ export function resolveFacetLayout({
     rowHeights.reduce((sum, height) => sum + height, 0) +
     headers.cellRows.top.reduce((sum, amount) => sum + amount, 0) +
     headers.cellRows.bottom.reduce((sum, amount) => sum + amount, 0) +
-    resolvedGap * Math.max(0, rowCount - 1) +
+    gapY * Math.max(0, rowCount - 1) +
     headers.outer.bottom +
     resolvedPadding.bottom;
   if (spacing === "plot") {
@@ -284,6 +300,16 @@ export function resolveFacetLayout({
       placements[index].y -= plot.y;
       placements[index].width = originalChildren[index].width;
       placements[index].height = originalChildren[index].height;
+    }
+  }
+  if (typeof resolvedGap !== "number") {
+    for (const [axis, total, dimension] of [
+      ["x", gridWidth + (sideLegend ? legendLane : 0), "width"],
+      ["y", gridHeight + (sideLegend ? 0 : legendLane), "height"]
+    ]) {
+      assertFacetGapFinite(resolvedGap, axis,
+        [total, ...placements.flatMap(cell => [cell[axis], cell[dimension],
+          cell[axis] + cell[dimension]])], "Facet layout exceeds finite bounds.");
     }
   }
   return cloneAndFreeze({

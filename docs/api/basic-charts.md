@@ -382,6 +382,10 @@ domains default to the resolved bin extents, while an explicit position scale
 option takes precedence. `color` is optional in binned mode and may configure
 the generated quantitative count scale, but cannot supply another field.
 
+Binned `bin.assignment` accepts `"edges"` (default) or `"step"`; the
+[2D-bin assignment contract](./data/bin2d.md) defines their boundary behavior.
+The high-level and explicit data-action paths store the same policy.
+
 The stable default mark ID is `heatmap`. Binned mode owns a namespaced derived
 dataset and records `createBin2DData` as a wrapped child action. Default guide
 titles use the original x/y field names and `Count`, never generated field

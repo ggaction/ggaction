@@ -37,6 +37,7 @@ program.createTitle({
 | `maxWidth` | positive number | omitted; no wrapping |
 | `wrap` | `"word"` or `"character"` | `"word"` when `maxWidth` is set |
 | `lineHeight` | positive number | each font size × `1.2` |
+| `subtitleLineHeight` | finite number ≥ subtitle font size | shared `lineHeight`, or subtitle font size × `1.2` |
 | `titleStyle` | text style object | default title style |
 | `subtitleStyle` | text style object | default subtitle style |
 
@@ -88,6 +89,15 @@ is set. Leading, interior, and trailing blank lines reserve vertical spacing
 without creating empty painted text. Each title or subtitle must contain at
 least one non-empty hard line. Font-family and color values remain single-line
 strings.
+
+Set `subtitleLineHeight` to control only the subtitle's line spacing. For example,
+`subtitleStyle: { fontSize: 8 }, subtitleLineHeight: 10` keeps a larger heading
+unchanged while spacing credit lines by 10 logical pixels. This option supports
+explicit line breaks without `maxWidth`, and overrides shared `lineHeight` only
+for the subtitle. Omitted edits retain it, including while `subtitle: false`
+hides the subtitle. Its value must cover the stored subtitle font size even
+while hidden; increasing that font size requires a compatible spacing in the
+same edit. Removing the complete title removes the setting as well.
 
 The requested margin must contain the actual title block. A title must also
 avoid guides reserved on the same edge. Creation fails instead of expanding

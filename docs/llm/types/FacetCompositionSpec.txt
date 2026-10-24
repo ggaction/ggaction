@@ -6,7 +6,7 @@ export interface FacetCompositionSpec {
   readonly spacing?: "canvas" | "plot" | "content";
   /** Canonical opt-in intent; stacked is represented by omission. */
   readonly topLane?: "shared";
-  readonly gap: number;
+  readonly gap: FacetGap;
   readonly align: CompositionAlign;
   readonly padding: Readonly<Required<CompositionPadding>>;
   readonly facet: {

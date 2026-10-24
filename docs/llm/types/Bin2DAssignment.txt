@@ -1,0 +1,1 @@
+export type Bin2DAssignment = "edges" | "step";

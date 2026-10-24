@@ -1,5 +1,5 @@
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
-import { validateCompositionSpacing } from "./composition.js";
+import { normalizeFacetGap, facetGapAxis, assertFacetGapFinite } from "../core/facetGap.js";
 
 /** Pack ordered full content bounds without imposing common plot origins. */
 export function resolveFacetContentFlow({ children, columns, gap = 16 } = {}) {
@@ -11,7 +11,8 @@ export function resolveFacetContentFlow({ children, columns, gap = 16 } = {}) {
     throw new RangeError("Facet content flow columns must be a positive integer.");
   }
   columns = Math.min(columns, children.length);
-  validateCompositionSpacing(gap, "Facet content flow gap");
+  gap = normalizeFacetGap(gap, "Facet content flow gap");
+  const gapX = facetGapAxis(gap, "x"), gapY = facetGapAxis(gap, "y");
   const ids = new Set();
   const rightExtents = Array(columns).fill(0);
   const bottomExtents = Array(Math.ceil(children.length / columns)).fill(0);
@@ -35,16 +36,23 @@ export function resolveFacetContentFlow({ children, columns, gap = 16 } = {}) {
   const columnOrigins = Array(columns).fill(0);
   let x = 0;
   const placed = cells.map(cell => {
-    x = cell.column === 0 ? 0 : x + rightExtents[cell.column - 1] + gap +
+    x = cell.column === 0 ? 0 : x + rightExtents[cell.column - 1] + gapX +
       Math.max(0, Math.ceil(-cell.bounds.left));
     if (cell.row > 0) {
-      columnOrigins[cell.column] += bottomExtents[cell.row - 1] + gap +
+      columnOrigins[cell.column] += bottomExtents[cell.row - 1] + gapY +
         Math.max(0, Math.ceil(-cell.bounds.top));
     }
     const y = columnOrigins[cell.column];
-    if (![x, y, x + cell.bounds.left, x + cell.bounds.right,
-      y + cell.bounds.top, y + cell.bounds.bottom].every(Number.isFinite)) {
-      throw new RangeError("Facet content flow exceeds finite layout bounds.");
+    if (typeof gap === "number") {
+      if (![x, y, x + cell.bounds.left, x + cell.bounds.right,
+        y + cell.bounds.top, y + cell.bounds.bottom].every(Number.isFinite)) {
+        throw new RangeError("Facet content flow exceeds finite layout bounds.");
+      }
+    } else {
+      assertFacetGapFinite(gap, "x", [x, x + cell.bounds.left, x + cell.bounds.right],
+        "Facet content flow exceeds finite layout bounds.");
+      assertFacetGapFinite(gap, "y", [y, y + cell.bounds.top, y + cell.bounds.bottom],
+        "Facet content flow exceeds finite layout bounds.");
     }
     return {
       id: cell.id, column: cell.column, row: cell.row, x, y,

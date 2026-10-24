@@ -1,5 +1,6 @@
 export interface DatasetBin2DTransform {
   readonly type: "bin2d";
+  readonly assignment?: "step";
   readonly x: string;
   readonly y: string;
   readonly bins: Readonly<Bin2DCounts>;

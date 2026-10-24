@@ -8,7 +8,7 @@ import {
 import { findDataset } from "../../selectors/datasets.js";
 
 const OPTIONS = Object.freeze([
-  "id", "source", "x", "y", "bins", "extent", "includeEmpty", "members", "as"
+  "id", "source", "x", "y", "bins", "extent", "assignment", "includeEmpty", "members", "as"
 ]);
 
 export const createBasicBin2DData = /* @__PURE__ */ closedAction(

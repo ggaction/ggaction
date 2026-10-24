@@ -14,6 +14,23 @@ import {createFacetSharedTopLaneProgram} from "./facet-lane-public.js";
 import {createPlotUnderlayProgram} from "./plot-underlay-public.js";
 
 export const cases = [
+  { id: "guides/axis-label-edge-threshold", async run() {
+    for (const factory of [chart, basicChart]) {
+      const base = factory().createCanvas({width:420,height:300,margin:60})
+        .createData({values:[{x:0,y:0},{x:30,y:30}]})
+        .createLinePlot({x:{field:"x",scale:{domain:[0,30]}},y:"y",guides:false});
+      const labels = {fontSize:10,flush:true,labelMap:[{value:0,label:"Start"},{value:29,label:"Last"}]};
+      const legacy = base.createXAxis({title:false,ticksAndLabels:{values:[0,29],labels}});
+      const p = base.createXAxis({title:false,ticksAndLabels:{values:[0,29],labels:{...labels,flushThreshold:1}}});
+      assert.equal(p.graphicSpec.objects.xAxisLabels.items[1].properties.x,350);
+      assert.notEqual(p.graphicSpec.objects.xAxisLabels.items[1].properties.x,legacy.graphicSpec.objects.xAxisLabels.items[1].properties.x);
+      assert.deepEqual(deserializeProgram(serializeProgram(p)).graphicSpec,p.graphicSpec);
+      if (factory === chart) assert.deepEqual(p.editXAxisLabels({flushThreshold:"auto"}).graphicSpec,legacy.graphicSpec);
+      assert(renderToSVG(p).includes("Last"));
+      assert.equal((await renderToPNGBuffer(p)).width,420);
+      assert.equal((await renderToPDFBuffer(p)).buffer.subarray(0,4).toString(),"%PDF");
+    }
+  } },
   { id: "guides/create-horizontal-grid", async run() {
 {
       const {createLinearNearestTicks}=await import("./linear-nearest-ticks-public.js");
@@ -303,6 +320,21 @@ assert.deepEqual(blankLines.graphicSpec.objects.chartSubtitle.items.map(item => 
 assert.doesNotThrow(() => renderToSVG(blankLines));
 assert.deepEqual(deserializeProgram(serializeProgram(blankLines)).graphicSpec, blankLines.graphicSpec);
 assert.ok((await renderToPNGBuffer(blankLines)).buffer.length > 1000);
+  } },
+  { id: "guides/subtitle-line-spacing", async run() {
+const title = chart().createCanvas({ width: 360, height: 260, margin: 100 })
+      .createTitle({ text: "Heading", subtitle: "First\nSecond",
+        titleStyle: { fontSize: 13 }, subtitleStyle: { fontSize: 8 }, subtitleLineHeight: 10 });
+const positions = title.graphicSpec.objects.chartSubtitle.items.map(item => item.properties.y);
+assert.equal(positions[1] - positions[0], 10);
+const edited = title.editTitle({ subtitleLineHeight: 12 });
+assert.equal(edited.titleConfig.subtitleLineHeight, 12);
+assert.equal(title.titleConfig.subtitleLineHeight, 10);
+assert.deepEqual(deserializeProgram(serializeProgram(edited)).graphicSpec, edited.graphicSpec);
+assert.doesNotThrow(() => renderToSVG(edited));
+assert.ok((await renderToPNGBuffer(edited)).buffer.length > 100);
+assert.ok((await renderToPDFBuffer(edited)).buffer.length > 100);
+assert.throws(() => title.editTitle({ subtitleLineHeight: 7 }), /subtitleLineHeight/);
   } },
   { id: "guides/blank-legend", async run() {
 const blankLegend = chart().createCanvas({ width: 600, height: 500, margin: 160 })

@@ -289,6 +289,7 @@ createHeatmap({
     bins?: PositiveInteger | { x: PositiveInteger; y: PositiveInteger };
     extent?: { x?: [Finite, Finite]; y?: [Finite, Finite] };
     includeEmpty?: boolean;
+    assignment?: "edges" | "step";
   };
   color?: FieldName | ColorEncodingOptionsWithoutTarget | {
     scale?: NonPointContinuousColorScaleOptions | NonPointDiscretizedColorScaleOptions;
@@ -307,6 +308,7 @@ createHeatmap({
   missing combinations are not synthesized.
 - With `bin`, x/y are raw quantitative fields and color field ownership moves to the generated count. `color` is optional
   and may configure only the continuous/discretized scale or palette.
+- Binned `assignment` forwards the [2D-bin policy](CORE.md#createbin2ddata): default `"edges"` or explicit `"step"`.
 - Binned `bins` defaults to `{ x: 10, y: 10 }`; `includeEmpty` defaults to `true`, unlike the low-level data action.
 - Omitted extents are resolved from finite eligible values. Position domains default to those resolved extents so the
   final upper endpoints map to the plot boundary.

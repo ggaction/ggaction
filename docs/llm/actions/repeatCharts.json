@@ -99,7 +99,7 @@
     {
       "name": "gap",
       "required": false,
-      "type": "number | undefined"
+      "type": "FacetGap | undefined"
     },
     {
       "name": "align",

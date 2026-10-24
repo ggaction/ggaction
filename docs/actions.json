@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "packageVersion": "0.0.23",
+  "packageVersion": "0.0.24",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
   "count": 293,
@@ -2919,6 +2919,11 @@
           "type": "Bin2DExtent | undefined"
         },
         {
+          "name": "assignment",
+          "required": false,
+          "type": "\"edges\" | \"step\" | undefined"
+        },
+        {
           "name": "includeEmpty",
           "required": false,
           "type": "boolean | undefined"
@@ -2935,7 +2940,7 @@
         }
       ],
       "callPatterns": [
-        "createBin2DData({ id, x, y, source?, bins?, extent?, includeEmpty?, members? })"
+        "createBin2DData({ id, x, y, source?, bins?, extent?, assignment?, includeEmpty? })"
       ],
       "snippet": "program.createBin2DData({ id: \"bin2-d-data-1\", x: \"x\", y: \"y\" })",
       "errors": [],
@@ -3040,6 +3045,11 @@
           "type": "Bin2DExtent | undefined"
         },
         {
+          "name": "assignment",
+          "required": false,
+          "type": "\"edges\" | \"step\" | undefined"
+        },
+        {
           "name": "includeEmpty",
           "required": false,
           "type": "boolean | undefined"
@@ -3061,7 +3071,7 @@
         }
       ],
       "callPatterns": [
-        "editBin2DData({ target?, source?, x?, y?, bins?, extent?, includeEmpty?, members? })"
+        "editBin2DData({ target?, source?, x?, y?, bins?, extent?, assignment?, includeEmpty? })"
       ],
       "snippet": "program.editBin2DData({ x: \"x\" })",
       "errors": [],
@@ -17016,7 +17026,7 @@
       "name": "createXAxisLabels",
       "layer": "user-facing",
       "domain": "axes",
-      "summary": "Creates x-axis labels for horizontal tick text.",
+      "summary": "Creates x-axis labels for horizontal text.",
       "signature": "createXAxisLabels(options?: AxisLabelOptions<XAxisPosition>): ChartProgram;",
       "intents": [
         "create x axis labels",
@@ -17025,7 +17035,7 @@
         "axis guide",
         "scale annotation",
         "x-axis labels",
-        "horizontal tick text"
+        "horizontal text"
       ],
       "lifecycle": "Mutable resource",
       "resources": {
@@ -17102,6 +17112,10 @@
         },
         {
           "input": "colorMap",
+          "strategy": "documented-auto"
+        },
+        {
+          "input": "flushThreshold",
           "strategy": "documented-auto"
         },
         {
@@ -17198,6 +17212,11 @@
           "type": "boolean | undefined"
         },
         {
+          "name": "flushThreshold",
+          "required": false,
+          "type": "number | \"auto\" | undefined"
+        },
+        {
           "name": "alongOffset",
           "required": false,
           "type": "number | undefined"
@@ -17240,7 +17259,7 @@
       "name": "createYAxisLabels",
       "layer": "user-facing",
       "domain": "axes",
-      "summary": "Creates y-axis labels for vertical tick text.",
+      "summary": "Creates y-axis labels for vertical text.",
       "signature": "createYAxisLabels(options?: AxisLabelOptions<YAxisPosition>): ChartProgram;",
       "intents": [
         "create y axis labels",
@@ -17249,7 +17268,7 @@
         "axis guide",
         "scale annotation",
         "y-axis labels",
-        "vertical tick text"
+        "vertical text"
       ],
       "lifecycle": "Mutable resource",
       "resources": {
@@ -17326,6 +17345,10 @@
         },
         {
           "input": "colorMap",
+          "strategy": "documented-auto"
+        },
+        {
+          "input": "flushThreshold",
           "strategy": "documented-auto"
         },
         {
@@ -17422,6 +17445,11 @@
           "type": "boolean | undefined"
         },
         {
+          "name": "flushThreshold",
+          "required": false,
+          "type": "number | \"auto\" | undefined"
+        },
+        {
           "name": "alongOffset",
           "required": false,
           "type": "number | undefined"
@@ -17464,7 +17492,7 @@
       "name": "editXAxisLabels",
       "layer": "user-facing",
       "domain": "axes",
-      "summary": "Edits x-axis labels, including settings for horizontal tick text.",
+      "summary": "Edits x-axis labels, including settings for horizontal text.",
       "signature": "editXAxisLabels(options?: Omit<AxisLabelOptions<XAxisPosition>, \"scale\">): ChartProgram;",
       "intents": [
         "edit x axis labels",
@@ -17473,7 +17501,7 @@
         "axis guide",
         "scale annotation",
         "x-axis labels",
-        "horizontal tick text"
+        "horizontal text"
       ],
       "lifecycle": "Mutable resource",
       "resources": {
@@ -17541,6 +17569,10 @@
           "strategy": "documented-auto"
         },
         {
+          "input": "flushThreshold",
+          "strategy": "documented-auto"
+        },
+        {
           "input": "target",
           "strategy": "explicit-current-unique-or-error"
         }
@@ -17603,6 +17635,11 @@
           "name": "flush",
           "required": false,
           "type": "boolean | undefined"
+        },
+        {
+          "name": "flushThreshold",
+          "required": false,
+          "type": "number | \"auto\" | undefined"
         },
         {
           "name": "alongOffset",
@@ -17672,7 +17709,7 @@
       "name": "editYAxisLabels",
       "layer": "user-facing",
       "domain": "axes",
-      "summary": "Edits y-axis labels, including settings for vertical tick text.",
+      "summary": "Edits y-axis labels, including settings for vertical text.",
       "signature": "editYAxisLabels(options?: Omit<AxisLabelOptions<YAxisPosition>, \"scale\">): ChartProgram;",
       "intents": [
         "edit y axis labels",
@@ -17681,7 +17718,7 @@
         "axis guide",
         "scale annotation",
         "y-axis labels",
-        "vertical tick text"
+        "vertical text"
       ],
       "lifecycle": "Mutable resource",
       "resources": {
@@ -17749,6 +17786,10 @@
           "strategy": "documented-auto"
         },
         {
+          "input": "flushThreshold",
+          "strategy": "documented-auto"
+        },
+        {
           "input": "target",
           "strategy": "explicit-current-unique-or-error"
         }
@@ -17811,6 +17852,11 @@
           "name": "flush",
           "required": false,
           "type": "boolean | undefined"
+        },
+        {
+          "name": "flushThreshold",
+          "required": false,
+          "type": "number | \"auto\" | undefined"
         },
         {
           "name": "alongOffset",
@@ -18381,6 +18427,10 @@
           "unit": "logical-pixel"
         },
         {
+          "path": "offset.gap",
+          "unit": "logical-pixel"
+        },
+        {
           "path": "offset",
           "unit": "logical-pixel"
         },
@@ -18463,7 +18513,7 @@
         {
           "name": "offset",
           "required": false,
-          "type": "number | undefined"
+          "type": "AxisTitleOffset | undefined"
         },
         {
           "name": "rotation",
@@ -18550,6 +18600,10 @@
           "unit": "logical-pixel"
         },
         {
+          "path": "offset.gap",
+          "unit": "logical-pixel"
+        },
+        {
           "path": "offset",
           "unit": "logical-pixel"
         },
@@ -18632,7 +18686,7 @@
         {
           "name": "offset",
           "required": false,
-          "type": "number | undefined"
+          "type": "AxisTitleOffset | undefined"
         },
         {
           "name": "rotation",
@@ -18715,6 +18769,10 @@
           "unit": "logical-pixel"
         },
         {
+          "path": "offset.gap",
+          "unit": "logical-pixel"
+        },
+        {
           "path": "offset",
           "unit": "logical-pixel"
         },
@@ -18785,7 +18843,7 @@
         {
           "name": "offset",
           "required": false,
-          "type": "number | undefined"
+          "type": "AxisTitleOffset | undefined"
         },
         {
           "name": "rotation",
@@ -18868,6 +18926,10 @@
           "unit": "logical-pixel"
         },
         {
+          "path": "offset.gap",
+          "unit": "logical-pixel"
+        },
+        {
           "path": "offset",
           "unit": "logical-pixel"
         },
@@ -18938,7 +19000,7 @@
         {
           "name": "offset",
           "required": false,
-          "type": "number | undefined"
+          "type": "AxisTitleOffset | undefined"
         },
         {
           "name": "rotation",
@@ -21717,6 +21779,11 @@
           "type": "number | undefined"
         },
         {
+          "name": "subtitleLineHeight",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "titleStyle",
           "required": false,
           "type": "TitleTextStyleOptions | undefined"
@@ -21846,6 +21913,11 @@
         },
         {
           "name": "lineHeight",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "subtitleLineHeight",
           "required": false,
           "type": "number | undefined"
         },
@@ -29299,7 +29371,7 @@
         {
           "name": "gap",
           "required": false,
-          "type": "number | undefined"
+          "type": "FacetGap | undefined"
         },
         {
           "name": "align",
@@ -29711,7 +29783,7 @@
         {
           "name": "gap",
           "required": false,
-          "type": "number | undefined"
+          "type": "FacetGap | undefined"
         },
         {
           "name": "align",
@@ -29853,7 +29925,7 @@
         {
           "name": "gap",
           "required": false,
-          "type": "number | undefined"
+          "type": "FacetGap | undefined"
         },
         {
           "name": "align",
@@ -29999,7 +30071,7 @@
         {
           "name": "gap",
           "required": false,
-          "type": "number | undefined"
+          "type": "FacetGap | undefined"
         },
         {
           "name": "align",

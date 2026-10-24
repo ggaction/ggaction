@@ -38,6 +38,11 @@ content-flow layout kernel에 전달한다. 공통 bottom footer는 부모 Canva
 child viewport clipping과 분리한다. Renderer와 semantic/graphic 경계는 유지한다.
 공개 옵션은 [composition 계약](contract/current/COMPOSITION.md)이 소유한다.
 
+Facet의 가로·세로 간격은 기존 `compositionSpec.gap` 한 곳에 숫자 또는 닫힌 `{x,y}`로
+보존한다. 순수 `core/facetGap.js`가 생성·편집·grid/content 배치·저장 복원의 검증을
+공유하며, 각 materializer는 해결된 축별 간격을 사용한다. Concat은 숫자 계약을 유지하고
+renderer/state 경계는 바뀌지 않는다. 정확한 값 계약은 current COMPOSITION이 소유한다.
+
 ## 문서의 위치
 
 > 과거 checkpoint 수치 포함. 현재 한도는 실행 검사에서 확인한다.
@@ -466,8 +471,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 452,000 bytes |
-| `ggaction/basic` | 231,000 bytes |
+| `ggaction` | 454,000 bytes |
+| `ggaction/basic` | 233,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 
@@ -2651,3 +2656,52 @@ The extracted SVG serializer preserves concrete clipping, multiline text and def
 이 장면을 temporary graphicSpec으로 배치해 기존 native renderer를 호출한다.
 시간·보간·중단은 별도 transition 패키지 책임이며 semanticSpec, action trace나 project
 저장 schema를 변경하지 않는다. 정확한 계약은 docs/api/rendering.md가 소유한다.
+
+### Cartesian title label-relative offset measurement
+
+Cartesian 제목은 기존 `guideConfigs.axis[id].title.offset` 한 곳에 숫자 또는 닫힌
+`{from:"labels",gap}` 의도를 저장한다. 기존 guide materializer가 같은 owner의 실제
+레이블 bounds로 local numeric geometry만 계산하며 renderer나 추가 저장 owner는 없다.
+Whole-axis edit의 형제 교체 scope는 materialization owner의 private context에서만 유지한다.
+정확한 계약은 Current AXES와 공개 axes 문서가 소유한다.
+
+macOS/Node22.23.1 installed canonical consumer의 Full452644/Basic231356gzip bytes가
+기존452000/231000을 초과했다. 이전 실패는 구현 검증 기록에 보존하고 기존1000byte
+최소 단위에 따라453000/232000으로만 갱신한다. SVG25000, package624entries 및
+902000packed/4272000unpacked, storage quota, coverage, 오류·수치·픽셀 기준은 유지한다.
+이 수치는 새 registry 배포나 활성 번역 runtime 채택의 증거가 아니다.
+
+같은 canonical source의 Node24.22.1 실제 archive는903474bytes로 기존902000을
+초과했다. Node22.23.1 archive901292bytes와624개 entry의 path/content SHA/size/mode/type/link를
+비교해 차이0을 확인했다. 두 archive bytes·SHA는 다르므로 같은 archive로 주장하지 않는다.
+이 별도 측정 검토 뒤 packed 한도만 최소1000byte 단계904000으로 갱신한다.
+624entries/4272000unpacked 및 위의 나머지 기준은 유지한다.
+
+### Prospective guide sibling validation
+
+기존 generic materialization planner는 normalized/dedup plan과 다음 step index를 실행 중
+private context로만 노출한다. Guide resource owner가 기존 axis selector로 같은 owner의
+실제 미래 title leaf를 확인하면 이전 numeric title과의 중간 충돌만 미룬다. Title leaf와
+outer guide transaction의 최종 geometry/Canvas/collision 검사는 유지한다. Immutable step
+반환·중첩 실행은 이전 context scope를 복원하고 실패 branch는 이전 program을 바꾸지 않는다.
+새 공개 옵션·저장 owner·renderer 의미 해석은 없다. 정확한 동작은 Current CORE가 소유한다.
+
+Node24.22.1 실제 installed consumer에서 Full453148/Basic232016gzip bytes가 직전
+453000/232000을148/16bytes 초과했다. 필요한 owner 검증과 final collision 검사는 줄이지 않고
+별도 측정 검토 후 기존1000byte 최소 단계454000/233000으로만 갱신한다. Canonical table과
+README도 같은 값을 명시하며 보호 documentation-truth test는 바꾸지 않는다. SVG25000,
+package624entries/904000packed/4272000unpacked, storage·수치·픽셀·오류·coverage 기준은 유지한다.
+
+
+Whole-axis edit도 기존 prospective planner를 연속된 wrapped leaf edit 구간에 재사용한다.
+기존 removal 순서는 유지하며 numeric 제목과 레이블이 같은 새 axis frame으로 이동한 최종
+형제 상태를 검증한다. Planner context는 반환 시 복원되고 실제 최종 충돌·focused label-only
+충돌은 계속 거절한다. 정확한 aggregate 동작은 Current AXES가 소유한다.
+
+공식 package staging은 기존 JavaScript compaction 대상에 complete-axis edit owner를 포함한다.
+원본 파일과 공개 action 이름·저장 schema·파일 allowlist는 유지한다. 앞선 실제 CI의
+904236packed 초과 실패를 보존하고, Node22.23.1 canonical staged 실측은624entries,
+901255packed/4262868unpacked bytes다. 기존904000/4272000 및 browser·storage·수치·기하·coverage
+한도는 모두 유지한다. 설치한 package의 whole-axis 이동·복원·persistence·실제 충돌 거절을
+기존 공개 API consumer case에서 함께 검증한다. 이 로컬 측정은 새 registry 배포나 Node24
+전체 검증을 대신하지 않는다.

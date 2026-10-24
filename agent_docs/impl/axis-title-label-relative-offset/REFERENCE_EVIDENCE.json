@@ -1,0 +1,119 @@
+{
+  "schemaVersion": 1,
+  "status": "existing-public-numeric-offset-primitive-reference-pass",
+  "gateStatus": "ready-for-review",
+  "implementationStatus": "not-started",
+  "SchoolRequests": 0,
+  "admissions": 0,
+  "newPublicAPIImplemented": false,
+  "plannedAPIExecuted": false,
+  "rendererCoordinatesPatched": false,
+  "imagesInspected": false,
+  "baselineRuntime": {
+    "runtimeCommit": "55c8a634e144fd95bb754f1222e44a700e75a448",
+    "packageVersion": "0.0.23",
+    "publicationStatus": "unreleased-local-candidate",
+    "candidateOnly": true,
+    "registryPublished": false,
+    "archivePath": "artifacts/runtime-releases/ggaction-v13-facet-axis-gaps-55c8a634/ggaction-0.0.23.tgz",
+    "archiveSha256": "94fcb5460d1c1d6c59f7e0da9e3b6544b7473c870966330df6477986c2947171",
+    "verifiedFiles": 624
+  },
+  "runtimeProof": {
+    "path": "artifacts/runtime-releases/ggaction-v13-facet-axis-gaps-55c8a634/package-proof.json",
+    "sha256": "5645dc24f8af0bacc69eb18afd4aac110d786b32956383b63d34a2fe8edec504",
+    "bytes": 69116
+  },
+  "runtimeFileInventory": {
+    "path": "artifacts/runtime-releases/ggaction-v13-facet-axis-gaps-55c8a634/file-inventory.json",
+    "sha256": "65a1a797dbf731cf7100f796480f59736e03f74228e5d86cf56d53fad2d6c38e"
+  },
+  "runtimePackage": "artifacts/runtime-releases/ggaction-v13-facet-axis-gaps-55c8a634/package",
+  "existingNumericReference": {
+    "browser": "153.0.8010.12",
+    "dimensions": {
+      "width": 1016,
+      "height": 302
+    },
+    "axes": [
+      {
+        "id": "narrow-a",
+        "offset": 20.9833984375,
+        "titleAnchorX": 13.0166015625,
+        "titleY": 159.5
+      },
+      {
+        "id": "wide-a",
+        "offset": 26.544921875,
+        "titleAnchorX": 7.455078125,
+        "titleY": 159.5
+      },
+      {
+        "id": "wide-b",
+        "offset": 26.544921875,
+        "titleAnchorX": 7.455078125,
+        "titleY": 159.5
+      },
+      {
+        "id": "narrow-b",
+        "offset": 20.9833984375,
+        "titleAnchorX": 13.0166015625,
+        "titleY": 159.5
+      }
+    ],
+    "sameRunFuturePublicDecodedRGBARequirement": "exact",
+    "source1930FullChartCompletionClaimed": false
+  },
+  "gateInputs": [
+    {
+      "file": "fixture.json",
+      "sha256": "5ec097d7240ffcef2f5a0a96da4174ecee57a3ffe1834f9e6a65e09b6450e67d"
+    },
+    {
+      "file": "primitive-reference-v2.mjs",
+      "sha256": "488a0e321fbfbd422db60a936dd21d28c98ce80a7c655f9dea21c4377b816973"
+    },
+    {
+      "file": "proposed-public.mjs",
+      "sha256": "47f59569d83721aacabe20a4924d067b3ca67d6dc8c9e4ea46ff211aa9fa4b11"
+    },
+    {
+      "file": "render-reference-v2.mjs",
+      "sha256": "fd0924d490a6844c28746ced686a4f09cd5afb2e026598da9d9c20eee6d39f9b"
+    }
+  ],
+  "renderedArtifacts": [
+    {
+      "path": ".artifacts/test/png/review/axis-title-label-relative-offset/four-independent-label-widths/reference.svg",
+      "sha256": "93584d3ee9d25f91d63237105fa2af57d54dfe7090d435ba1dd36eeae58fbe36",
+      "bytes": 9776
+    },
+    {
+      "path": ".artifacts/test/png/review/axis-title-label-relative-offset/four-independent-label-widths/reference.png",
+      "sha256": "22acf0c8c38e14577c2e86dc2b008e57d78d9988dc7d9c9128c1d54c4c538366",
+      "bytes": 14065
+    },
+    {
+      "path": ".artifacts/test/png/review/axis-title-label-relative-offset/four-independent-label-widths/variant.json",
+      "sha256": "0e4c40be3e8b3a149dce2b2669683d9a52aefea768956705b22566fa92eccd79",
+      "bytes": 989
+    },
+    {
+      "path": ".artifacts/test/png/review/axis-title-label-relative-offset/four-independent-label-widths/proof.json",
+      "sha256": "4049e3eb690a41fd3f4af4667c0a6fb573128be9e422cc5d02f5c67624affa93",
+      "bytes": 159589
+    }
+  ],
+  "runtimeInputsCount": 574,
+  "failurePreserved": {
+    "path": "agent_docs/impl/axis-title-label-relative-offset/FAILED_REFERENCE_ATTEMPT_V1.json",
+    "sha256": "5ec384774e2afd9a9c078b1542d0184a063137e860a718ecebfd20f5d63d58ca",
+    "bytes": 635
+  },
+  "independentSourceDiagnostic": {
+    "path": "reports/v13-source1930-axis-title-vocabulary-diagnosis-v1.json",
+    "sha256": "c25e27f18069464036c28a33dba99f63a48ef94e0f25469649f7ded27382d312",
+    "bytes": 13496
+  },
+  "scope": "Existing public numeric-offset reference only; planned label-relative offset has not been implemented or executed. Source1930 remains unadmitted and incomplete."
+}

@@ -4,6 +4,24 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+## [0.0.24] - 2026-10-24
+
+- Add independent `subtitleLineHeight` to title creation and editing, preserving shared spacing and omitted defaults through layout replay and saved programs.
+
+- Infer quantitative typing for numeric constant Rule secondary endpoints when `fieldType` is omitted, matching the existing declaration while retaining field-based endpoint validation.
+
+- Fix Canvas replay and complete-axis frame edits comparing new axis labels with a stale numeric sibling title position.
+- Preserve strict nested tick/label validation and numeric-map errors in complete-axis edits before replay planning.
+
+- Add Cartesian axis title `offset: { from: "labels", gap }` with same-owner label-aware replay, preserving numeric and omitted defaults.
+
+- Add explicit `assignment: "step"` for rectangular 2D bins and binned heatmaps, preserving the default strict edge policy and immutable replay.
+
+- Add independent horizontal/vertical facet gaps with closed `{ x, y }` input, immutable replay and unchanged numeric/concat spacing.
+- Preserve a facet parent title when revising its source data without introducing titles in child charts.
+
+- Add optional Cartesian label `flushThreshold` to align only mapped ticks near range edges, preserving full-containment defaults and editable replay.
+
 ## [0.0.23] - 2026-10-23
 
 - Add independent full-content facet packing, view-aware headers and per-channel Cartesian axis policies with unclipped shared footer axes.

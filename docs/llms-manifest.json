@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "packageVersion": "0.0.23",
+  "packageVersion": "0.0.24",
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "published-release",
-    "contractId": "sha256:d4a3b46c05b696b43389ec3e4bc2aaa89584ef20e01d5e64b8c61a316fe2c004",
-    "sourceCommit": "12b66b229f9a4dae1cfa580929b74e7e178c02c9",
+    "contractId": "sha256:e755591a2e5f5e2b494867583876e28020a478c5220b77bdc6ad469a6224891d",
+    "sourceCommit": "5f952f59b9ca236e8e9cff477c4f51067f2f8ea9",
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -30,7 +30,7 @@
         "go-deeper"
       ],
       "bytes": 2429,
-      "sha256": "e07a79c6664170f6ff5ca3def5e7c056087afdd9b927df39c1c1440914dc570b"
+      "sha256": "0eaeab49c28bfee4f4ece0bd89fd960391097f3f41683cdc681a6089ac02efc5"
     },
     {
       "order": 2,
@@ -66,7 +66,7 @@
         "related"
       ],
       "bytes": 12058,
-      "sha256": "229ce23b5b477e1e847e7927a4a5e9f554841df1a69ec17271b03738169bc3d7"
+      "sha256": "eb292f759feb165570c040c027d71ded0df0a58fbc5c6ae7a28ec8fd2dd0cf80"
     },
     {
       "order": 4,
@@ -729,8 +729,8 @@
         "advanced-authoring",
         "createtextplot"
       ],
-      "bytes": 19199,
-      "sha256": "5b54e1f3cd85264cd388834a3bf374f40df46e7c6fad620eb7819b2346647257"
+      "bytes": 19419,
+      "sha256": "c9a0332347de761be253236d5c572d67060f36cdf10f5054d1a3bd5cae81ab28"
     },
     {
       "order": 47,
@@ -878,13 +878,13 @@
       "source": "api/data/bin2d.md",
       "headings": [
         "rectangular-2d-bins",
-        "createbin2ddata-id-source-x-y-bins-extent-includeempty-members-as",
+        "createbin2ddata-id-source-x-y-bins-extent-assignment-includeempty-members-as",
         "revisions",
         "editbin2ddata",
         "related"
       ],
-      "bytes": 6026,
-      "sha256": "8f6ce0be7ee7626435c53452e58742837f3801050511184c9bb717cafd28b05f"
+      "bytes": 7319,
+      "sha256": "3a6c63be6b90ea40e6f80d7987a86f944c0f47dcef3a91268ec131ec7bbe33d5"
     },
     {
       "order": 56,
@@ -1187,8 +1187,8 @@
         "shift-a-title-along-its-edge",
         "related"
       ],
-      "bytes": 7525,
-      "sha256": "8b5b41997ad12f9432d888dbea5a3a858eb0a7e0064689c9224692265483f556"
+      "bytes": 8265,
+      "sha256": "974ca32b1ea2351a4c0294bda13d983b549948fbe95d716d6671c2008e9fc9fa"
     },
     {
       "order": 72,
@@ -1585,6 +1585,8 @@
       "headings": [
         "axes",
         "at-a-glance",
+        "keep-a-title-outside-its-labels",
+        "rotate-labels-outside-the-plot",
         "choose-nearest-step-linear-ticks",
         "keep-endpoint-labels-inside-the-axis-span",
         "color-individual-tick-labels",
@@ -1601,8 +1603,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 17816,
-      "sha256": "2f0be5a5705934fb7f510c1a2207dc8700e10091e88808ec57ea097e5aa61bb1"
+      "bytes": 19393,
+      "sha256": "8dc04536486a2170fa33b161c0ead4ef5ed73a10e55470cd2cdcb8e0b6317389"
     },
     {
       "order": 96,
@@ -2072,8 +2074,8 @@
         "focused-channel-scale-editors",
         "related"
       ],
-      "bytes": 172463,
-      "sha256": "b04a14990863426b63587a6f6696dd98840109ed051ce0c22f91c622614737d1"
+      "bytes": 173604,
+      "sha256": "e7ea453b8f182d23c2dd0f84128b0a1c69a69e71f5118b55650e9d259c6e2014"
     },
     {
       "order": 119,
@@ -2119,7 +2121,7 @@
         "related"
       ],
       "bytes": 77253,
-      "sha256": "281073bc9982af45ffb168b009143cd6f022270e3571d6803d1bbb3c0687d12a"
+      "sha256": "5f8713447da8ec6ed0e368a2fc3c084264402c03aabe5c0d293d082619eb6170"
     },
     {
       "order": 120,
@@ -2170,8 +2172,8 @@
         "encodechannels",
         "related"
       ],
-      "bytes": 66432,
-      "sha256": "4ca3394e152a8d6dde23eba7c16d0a41215f94e65177c0dc28c244c29f82dd66"
+      "bytes": 66770,
+      "sha256": "7c7008214c69051ac642e77e9a55628288b7f399ac967c92e117e3958dc44873"
     },
     {
       "order": 121,
@@ -2231,7 +2233,7 @@
         "related"
       ],
       "bytes": 84559,
-      "sha256": "072320a2dcc74a8f74037b8d7237b9ff15f4421fc779e65afe960f53f5fc6946"
+      "sha256": "7aa9abe4dae07df6cb2f8b9de523bed45a49f8ed79f129fd8a77cec752a635b8"
     },
     {
       "order": 122,
@@ -2328,8 +2330,8 @@
         "focused-legend-edits",
         "related"
       ],
-      "bytes": 137893,
-      "sha256": "e7340d77988183d1eaa5ab0024685267cb8abce9cf870e39e6a02c201c21caf4"
+      "bytes": 138800,
+      "sha256": "a870d88ee2023abb05c69ac15d6c1d5fb2bed94494dabf59ac743d0fdd3fa947"
     },
     {
       "order": 123,
@@ -2354,7 +2356,7 @@
         "related"
       ],
       "bytes": 10273,
-      "sha256": "64b7bcb6639c0404d11c6552ca898eacef744bb53943f503fd20b3d8826085e4"
+      "sha256": "04d0b46a8c7374d3e8b9356f7dd90227938c8096d94e9461a3f2fdd55647f0e0"
     },
     {
       "order": 124,
@@ -2395,8 +2397,8 @@
         "rendering-functions",
         "internal-trace-operations"
       ],
-      "bytes": 27773,
-      "sha256": "4cd0256c0cce196b7616acff0165fa5cfe75b685ac4cf460327296e75a906877"
+      "bytes": 27861,
+      "sha256": "5288714c81143ee290e03334980ecd70b3c9fcfc9730807762d5d9994da79c6c"
     },
     {
       "order": 126,
@@ -2426,6 +2428,7 @@
         "type-axistickrounding",
         "type-axistickstyleoptions",
         "type-axisticksandlabelsoptions",
+        "type-axistitleoffset",
         "type-axistitleoptions",
         "type-axisvalue",
         "type-bandpositionchannel",
@@ -2726,6 +2729,7 @@
         "type-errorbarstatisticalintervalchannel",
         "type-existingsizescaleeditpatch",
         "type-facadepositionchannel",
+        "type-facetgap",
         "type-facetgridoptions",
         "type-facetgridrole",
         "type-facetguideoptions",
@@ -3067,8 +3071,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 358560,
-      "sha256": "d8b7c4abb14865c3404032843d65bee81b780cca7da4e989ff428ee6544bfc95"
+      "bytes": 359570,
+      "sha256": "e5cebe52bd6a0588fdd28ca0249d7c5ae3a075045940e48abe24c24180e4311e"
     },
     {
       "order": 127,
@@ -3102,7 +3106,7 @@
         "scale-materialization"
       ],
       "bytes": 19022,
-      "sha256": "7b4f127cce895d2433614661e65200f2918cdef2c01e58741856991eb6f34d88"
+      "sha256": "4f5fb2fe704f40c1c6ee0059be9cd1b39ca316abfc80d7e87a6dc8acfc7bd30a"
     },
     {
       "order": 129,
@@ -3169,6 +3173,7 @@
       "source": "api/composition/facets.md",
       "headings": [
         "facets-and-field-repetition",
+        "use-different-horizontal-and-vertical-gaps",
         "declare-a-legend-for-the-complete-facet",
         "rotate-panel-headers",
         "repeat-the-current-chart-by-a-field",
@@ -3179,8 +3184,8 @@
         "name-the-complete-facet-field",
         "independently-packed-panels"
       ],
-      "bytes": 28353,
-      "sha256": "a349ef88be0dcbeb363268a31e71e941e6b29874b5016255fc9ea94b2b68c844"
+      "bytes": 29696,
+      "sha256": "c1fbe40f64713681e5c306371a13494a2e1ed91ba85571f89d38b492c825c393"
     },
     {
       "order": 134,
@@ -3195,8 +3200,8 @@
         "replace-one-stable-slot",
         "insert-remove-and-reorder-named-concat-children"
       ],
-      "bytes": 7622,
-      "sha256": "d519be03494fb78d9578a8328768c50b8ecb2f0808c3e40003284c070b2f495e"
+      "bytes": 7787,
+      "sha256": "2f4598ea9b190c9096a037fcc6978c440dd6c141224b969b058de65de1e1f605"
     },
     {
       "order": 135,
@@ -3432,7 +3437,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3039,
-      "sha256": "29ddb467404ba0d4676d36fb659359e8c9686dcb33b887761382d4548d811cdf"
+      "sha256": "b1d7f4ce92634c432279e1f9e04214f32e4349b8ac64e896644a4744f08a3182"
     },
     {
       "order": 150,
@@ -3448,8 +3453,8 @@
         "createaxesoptions",
         "intentional-title-label-overlap"
       ],
-      "bytes": 24962,
-      "sha256": "3880af58c6cd3cad44bffecce9e0b763943dec39fec595bbfcddeb5f5f152ba2"
+      "bytes": 25784,
+      "sha256": "bb56f73ee40d5e569c45abb4e6ff50281ffae4d9a5155e377b4783a6a1a62efc"
     }
   ]
 }

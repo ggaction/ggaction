@@ -572,6 +572,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `colorMap` | Optional / branch-dependent | `"auto" \| CartesianAxisLabelColorMap \| undefined` |
 | `flush` | Optional / branch-dependent | `boolean \| undefined` |
+| `flushThreshold` | Optional / branch-dependent | `number \| "auto" \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
 | `maxWidth` | Optional / branch-dependent | `number \| false \| undefined` |
@@ -620,6 +621,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `colorMap` | Optional / branch-dependent | `"auto" \| CartesianAxisLabelColorMap \| undefined` |
 | `flush` | Optional / branch-dependent | `boolean \| undefined` |
+| `flushThreshold` | Optional / branch-dependent | `number \| "auto" \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
 | `maxWidth` | Optional / branch-dependent | `number \| false \| undefined` |
@@ -662,6 +664,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `colorMap` | Optional / branch-dependent | `"auto" \| CartesianAxisLabelColorMap \| undefined` |
 | `flush` | Optional / branch-dependent | `boolean \| undefined` |
+| `flushThreshold` | Optional / branch-dependent | `number \| "auto" \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
 | `maxWidth` | Optional / branch-dependent | `number \| false \| undefined` |
@@ -709,6 +712,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `colorMap` | Optional / branch-dependent | `"auto" \| CartesianAxisLabelColorMap \| undefined` |
 | `flush` | Optional / branch-dependent | `boolean \| undefined` |
+| `flushThreshold` | Optional / branch-dependent | `number \| "auto" \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
 | `maxWidth` | Optional / branch-dependent | `number \| false \| undefined` |
@@ -889,7 +893,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
 | `at` | Optional / branch-dependent | `number \| "center" \| "end" \| "start" \| undefined` |
-| `offset` | Optional / branch-dependent | `number \| undefined` |
+| `offset` | Optional / branch-dependent | `AxisTitleOffset \| undefined` |
 | `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
@@ -930,7 +934,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
 | `at` | Optional / branch-dependent | `number \| "center" \| "end" \| "start" \| undefined` |
-| `offset` | Optional / branch-dependent | `number \| undefined` |
+| `offset` | Optional / branch-dependent | `AxisTitleOffset \| undefined` |
 | `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
@@ -970,7 +974,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `text` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
 | `at` | Optional / branch-dependent | `number \| "center" \| "end" \| "start" \| undefined` |
-| `offset` | Optional / branch-dependent | `number \| undefined` |
+| `offset` | Optional / branch-dependent | `AxisTitleOffset \| undefined` |
 | `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
@@ -1010,7 +1014,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `text` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
 | `at` | Optional / branch-dependent | `number \| "center" \| "end" \| "start" \| undefined` |
-| `offset` | Optional / branch-dependent | `number \| undefined` |
+| `offset` | Optional / branch-dependent | `AxisTitleOffset \| undefined` |
 | `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
@@ -1027,7 +1031,7 @@ Behavior, inference, resets, and errors: [Tick/label groups and axis titles](./g
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
 
 ```typescript
 editAxes(options: EditAxesOptions): ChartProgram;
@@ -1671,7 +1675,7 @@ dependent replay that would invalidate a stored exact sample fails atomically.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.23. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
 
 ```typescript
 editLegendBlock(options: EditLegendBlockOptions): ChartProgram;
@@ -2002,6 +2006,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `maxWidth` | Optional / branch-dependent | `number \| undefined` |
 | `wrap` | Optional / branch-dependent | `"character" \| "word" \| undefined` |
 | `lineHeight` | Optional / branch-dependent | `number \| undefined` |
+| `subtitleLineHeight` | Optional / branch-dependent | `number \| undefined` |
 | `titleStyle` | Optional / branch-dependent | `TitleTextStyleOptions \| undefined` |
 | `subtitleStyle` | Optional / branch-dependent | `TitleTextStyleOptions \| undefined` |
 
@@ -2053,6 +2058,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `maxWidth` | Optional / branch-dependent | `number \| undefined` |
 | `wrap` | Optional / branch-dependent | `"character" \| "word" \| undefined` |
 | `lineHeight` | Optional / branch-dependent | `number \| undefined` |
+| `subtitleLineHeight` | Optional / branch-dependent | `number \| undefined` |
 | `titleStyle` | Optional / branch-dependent | `TitleTextStyleOptions \| undefined` |
 | `subtitleStyle` | Optional / branch-dependent | `TitleTextStyleOptions \| undefined` |
 
@@ -3125,19 +3131,19 @@ editYAxisTicks({ position?, count?, values?, length?, color?, lineWidth?, alongO
 
 createXAxisLabels({
   scale?, position?, count?, values?, offset?, format?, color?,
-  fontSize?, fontFamily?, fontWeight?, alongOffset?, flush?, labelMap?, colorMap?
+  fontSize?, fontFamily?, fontWeight?, alongOffset?, flush?, flushThreshold?, labelMap?, colorMap?
 })
 createYAxisLabels({
   scale?, position?, count?, values?, offset?, format?, color?,
-  fontSize?, fontFamily?, fontWeight?, alongOffset?, flush?, labelMap?, colorMap?
+  fontSize?, fontFamily?, fontWeight?, alongOffset?, flush?, flushThreshold?, labelMap?, colorMap?
 })
 editXAxisLabels({
   position?, count?, values?, offset?, format?, color?,
-  fontSize?, fontFamily?, fontWeight?, alongOffset?, flush?, labelMap?, colorMap?
+  fontSize?, fontFamily?, fontWeight?, alongOffset?, flush?, flushThreshold?, labelMap?, colorMap?
 })
 editYAxisLabels({
   position?, count?, values?, offset?, format?, color?,
-  fontSize?, fontFamily?, fontWeight?, alongOffset?, flush?, labelMap?, colorMap?
+  fontSize?, fontFamily?, fontWeight?, alongOffset?, flush?, flushThreshold?, labelMap?, colorMap?
 })
 ```
 
@@ -3146,6 +3152,11 @@ Label `format` accepts `"auto"`, `{ decimals }`, `.0`–`.12` precision with
 `f`, `%`, or `e`, or a UTC sequence of `%Y/%m/%d/%b` directives and literals
 when compatible with the resolved scale. Use `%%` for a literal percent;
 unknown or dangling directives reject.
+
+Cartesian `flushThreshold` optionally limits `flush: true` to mapped ticks within a
+non-negative logical-pixel distance of a range edge. Omission preserves complete
+label containment. Use `"auto"` to clear a stored threshold; zero selects exact
+endpoints. Text bounds do not control threshold selection.
 
 ## Tick/label groups and axis titles
 

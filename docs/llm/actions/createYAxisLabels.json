@@ -3,7 +3,7 @@
   "name": "createYAxisLabels",
   "layer": "user-facing",
   "domain": "axes",
-  "summary": "Creates y-axis labels for vertical tick text.",
+  "summary": "Creates y-axis labels for vertical text.",
   "signature": "createYAxisLabels(options?: AxisLabelOptions<YAxisPosition>): ChartProgram;",
   "intents": [
     "create y axis labels",
@@ -12,7 +12,7 @@
     "axis guide",
     "scale annotation",
     "y-axis labels",
-    "vertical tick text"
+    "vertical text"
   ],
   "lifecycle": "Mutable resource",
   "resources": {
@@ -89,6 +89,10 @@
     },
     {
       "input": "colorMap",
+      "strategy": "documented-auto"
+    },
+    {
+      "input": "flushThreshold",
       "strategy": "documented-auto"
     },
     {
@@ -183,6 +187,11 @@
       "name": "flush",
       "required": false,
       "type": "boolean | undefined"
+    },
+    {
+      "name": "flushThreshold",
+      "required": false,
+      "type": "number | \"auto\" | undefined"
     },
     {
       "name": "alongOffset",

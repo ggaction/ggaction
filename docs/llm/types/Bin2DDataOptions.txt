@@ -5,6 +5,7 @@ export interface Bin2DDataOptions {
   y: string;
   bins?: number | Bin2DCounts;
   extent?: Bin2DExtent;
+  assignment?: "edges" | "step";
   includeEmpty?: boolean;
   members?: boolean;
   as?: Bin2DOutputFields;

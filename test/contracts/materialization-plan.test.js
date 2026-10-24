@@ -343,3 +343,34 @@ test("plans each unique scale after one layer changes data", () => {
     /Layer "missing" does not exist/
   );
 });
+
+test("scopes normalized remaining steps privately and restores nested execution context", async () => {
+  const { ChartProgram } = await import("../../src/core/ChartProgram.js");
+  const observations = [];
+  class Probe extends ChartProgram {
+    observe() { observations.push(this.context.pendingMaterializationPlan); return this; }
+    nested() {
+      const before = this.context.pendingMaterializationPlan;
+      const result = applyMaterializationPlan(this, [{ op: "observe" }]);
+      assert.deepEqual(result.context.pendingMaterializationPlan, before);
+      return result;
+    }
+    fail() { throw new Error("Scoped failure"); }
+  }
+  const p = new Probe();
+  const next = applyMaterializationPlan(p, [
+    { op: "observe" }, { op: "observe" }, { op: "nested" }, { op: "observe", args: { last: true } }
+  ]);
+  assert.equal(observations.length, 3);
+  assert.equal(observations[0].steps.length, 3);
+  assert.equal(observations[0].next, 1);
+  assert.equal(observations[1].steps.length, 1);
+  assert.equal(observations[1].next, 1);
+  assert.equal(observations[2].next, 3);
+  assert.equal(Object.isFrozen(observations[0].steps), true);
+  assert.equal(Object.isFrozen(observations[0].steps[0]), true);
+  assert.equal(Object.hasOwn(next.context, "pendingMaterializationPlan"), false);
+  assert.equal(Object.hasOwn(p.context, "pendingMaterializationPlan"), false);
+  assert.throws(() => applyMaterializationPlan(p, [{ op: "fail" }]), /Scoped failure/);
+  assert.equal(Object.hasOwn(p.context, "pendingMaterializationPlan"), false);
+});

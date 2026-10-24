@@ -1,8 +1,8 @@
-import { axisTitleAllowsLabelOverlap } from "../../../grammar/axisTextPlacement.js";
+import { axisTitleAllowsLabelOverlap, axisTitleFollowsLabels } from "../../../grammar/axisTextPlacement.js";
 import { selectCartesianAxis, axisTargetArgs } from "../../../selectors/axes.js";
-import { axisGraphicIds } from "../../../materialization/guides/resources.js";
+import { axisGraphicIds, hasPendingAxisTitleRematerialization } from "../../../materialization/guides/resources.js";
 import { axisThemeTypography } from "../../theme/state.js";
-import { validateAxisTextPlacement } from "../../../grammar/axisTextPlacement.js";
+import { validateAxisLabelFlushThreshold, validateAxisTextPlacement } from "../../../grammar/axisTextPlacement.js";
 import { canvasOverflowError } from "../../../layout/canvas.js";
 import { withGuideLayoutValidation } from "../../../materialization/guides/layout.js";
 import { action } from "../../../core/action.js";
@@ -55,7 +55,7 @@ import {
 const OPTIONS = [
   "target", "scale", "position", "count", "values", "rounding", "offset", "format", "color",
   "fontSize", "fontFamily", "fontWeight", "rotation", "maxWidth", "wrap",
-  "lineHeight", "overlap", "labelMap", "alongOffset", "flush", "colorMap", "align"
+  "lineHeight", "overlap", "labelMap", "alongOffset", "flush", "flushThreshold", "colorMap", "align"
 ];
 
 const DEFAULTS = {
@@ -95,6 +95,7 @@ function validateOptions(args, operation, create) {
     throw new Error(`${operation} cannot use rounding and values together.`);
   }
   validateAxisTextPlacement(args);
+  validateAxisLabelFlushThreshold(args.flushThreshold, { allowReset: true });
   validateOptionObject(
     args,
     create ? OPTIONS : OPTIONS.filter(key => key !== "scale"),
@@ -129,6 +130,7 @@ function validateConfig(channel, config) {
   validateNonNegativeFinite(config.offset, "Label offset");
   validateTextStyle(config, "Label");
   validateAxisFormat(config.format);
+  validateAxisLabelFlushThreshold(config.flushThreshold);
   if (config.flush === true && config.rotation !== 0) throw new Error("Label flush requires unrotated Cartesian labels.");
   if (!Number.isFinite(config.rotation)) {
     throw new TypeError("Label rotation must resolve to finite radians.");
@@ -151,8 +153,9 @@ function validateConfig(channel, config) {
   }
 }
 
-function normalizeAxisLabelMaps(program, config, args, operation) {
+function normalizeAxisLabelConfig(program, config, args, operation) {
   const next = { ...config };
+  if (args.flushThreshold === "auto") delete next.flushThreshold;
   for (const [property, normalize] of [
     ["labelMap", normalizeDisplayLabelMap],
     ["colorMap", normalizeDisplayColorMap]
@@ -341,16 +344,19 @@ function resolve(program, channel, config, axisId = channel) {
     const low = Math.min(...scale.range) + (config.alongOffset ?? 0);
     const high = Math.max(...scale.range) + (config.alongOffset ?? 0);
     const grouped = unionLabelBounds(labelBounds.map((bounds, index) => ({ bounds, group: resolved.groups[index] })));
-    const shifts = grouped.map(item => {
+    const shifts = grouped.map((item, index) => {
+      const position = positions[index] + (config.alongOffset ?? 0);
+      if (config.flushThreshold !== undefined &&
+          Math.min(Math.abs(position - low), Math.abs(position - high)) > config.flushThreshold) return 0;
       if (item[highKey] - item[lowKey] > high - low + 1e-9) {
         throw new Error(`The ${channel}-axis label cannot flush inside the scale span.`);
       }
       return item[lowKey] < low ? low - item[lowKey]
         : item[highKey] > high ? high - item[highKey] : 0;
     });
-    const positions = resolved[along];
+    const labelPositions = resolved[along];
     resolved[along] = resolved.text.map((_, index) =>
-      (Array.isArray(positions) ? positions[index] : positions) + shifts[resolved.groups[index]]);
+      (Array.isArray(labelPositions) ? labelPositions[index] : labelPositions) + shifts[resolved.groups[index]]);
     labelBounds = labelBounds.map((item, index) => {
       const delta = shifts[resolved.groups[index]];
       return { ...item, [lowKey]: item[lowKey] + delta, [highKey]: item[highKey] + delta };
@@ -390,11 +396,42 @@ function resolve(program, channel, config, axisId = channel) {
     ? resolveConcreteGraphicBounds(program.graphicSpec, axisGraphicIds(channel, axisId)[3], program.materializationConfigs.textMetrics)
     : undefined;
   if (title && !axisTitleAllowsLabelOverlap(program.guideConfigs.axis?.[axisId]?.title) &&
-    program.guideConfigs.axis?.[axisId]?.title?.inferredOffset !== true &&
+    !axisTitleFollowsLabels(program.guideConfigs.axis?.[axisId]?.title) &&
+    !hasPendingAxisTitleRematerialization(program, channel, axisId) &&
     labelBounds.some(item => textBoundsIntersect(item, title))) {
     throw new Error(`The ${channel}-axis labels overlap the axis title.`);
   }
   return resolved;
+}
+
+export function resolveAxisLabelEditConfig(program, channel, args, axisId = channel) {
+  const op = channel === "x" ? "editXAxisLabels" : "editYAxisLabels";
+  validateOptions(args, op, false);
+  const previous = program.guideConfigs.axis?.[axisId]?.labels;
+  if (!previous) throw new Error(`${op} requires label configuration.`);
+  const explicitMode = Object.hasOwn(args, "values") || Object.hasOwn(args, "count");
+  const ticks = program.guideConfigs.axis?.[axisId]?.ticks;
+  const inferredValues = !explicitMode && previous.inferredValues === true &&
+    ticks?.mode === "values"
+    ? ticks.values
+    : undefined;
+  const mode = Object.hasOwn(args, "values") || inferredValues !== undefined
+    ? "values"
+    : Object.hasOwn(args, "count") ? "count" : previous.mode;
+  let config = normalizeLabelLayout({
+    ...previous,
+    ...args,
+    ...(inferredValues === undefined ? {} : { values: inferredValues }),
+    ...(explicitMode ? { inferredValues: false } : {}),
+    mode
+  }, args, op);
+  config = normalizeAxisLabelConfig(program, config, args, op);
+  if (mode === "values") {
+    delete config.count;
+    if (!Object.hasOwn(args, "rounding")) delete config.rounding;
+  } else delete config.values;
+  validateConfig(channel, config);
+  return config;
 }
 
 function makeEdit(channel) {
@@ -405,30 +442,7 @@ function makeEdit(channel) {
     const axisId = selected.id; args = selected.options;
     const id = axisGraphicIds(channel, axisId)[2];
     if (this.graphicSpec.objects[id]?.type !== "text") throw new Error(`${op} requires existing axis labels.`);
-    const previous = this.guideConfigs.axis?.[axisId]?.labels;
-    if (!previous) throw new Error(`${op} requires label configuration.`);
-    const explicitMode = Object.hasOwn(args, "values") || Object.hasOwn(args, "count");
-    const ticks = this.guideConfigs.axis?.[axisId]?.ticks;
-    const inferredValues = !explicitMode && previous.inferredValues === true &&
-      ticks?.mode === "values"
-      ? ticks.values
-      : undefined;
-    const mode = Object.hasOwn(args, "values") || inferredValues !== undefined
-      ? "values"
-      : Object.hasOwn(args, "count") ? "count" : previous.mode;
-    let config = normalizeLabelLayout({
-      ...previous,
-      ...args,
-      ...(inferredValues === undefined ? {} : { values: inferredValues }),
-      ...(explicitMode ? { inferredValues: false } : {}),
-      mode
-    }, args, op);
-    config = normalizeAxisLabelMaps(this, config, args, op);
-    if (mode === "values") {
-      delete config.count;
-      if (!Object.hasOwn(args, "rounding")) delete config.rounding;
-    } else delete config.values;
-    validateConfig(channel, config);
+    const config = resolveAxisLabelEditConfig(this, channel, args, axisId);
     assertTickCompatibility(this.guideConfigs.axis?.[axisId]?.ticks, config, op);
     const resolved = resolve(this, channel, config, axisId);
     let next = this._withGuideConfig(axisId, "labels", config);
@@ -453,7 +467,7 @@ function makeEdit(channel) {
       next = next.editGraphics({ target: id, property, value });
     }
     const titleConfig = next.guideConfigs.axis?.[axisId]?.title;
-    if (titleConfig?.inferredOffset === true) {
+    if (axisTitleFollowsLabels(titleConfig) && next.context.pendingRelativeTitleAxis !== axisId) {
       const editTitle = channel === "x" ? "editXAxisTitle" : "editYAxisTitle";
       next = next[editTitle](axisId === channel ? undefined : axisTargetArgs(axisId, channel));
     }
@@ -505,7 +519,7 @@ function makeCreate(channel) {
         (ticks?.inferredValues === true || inferredDiscreteValues !== undefined),
       mode
     }, args, op);
-    config = normalizeAxisLabelMaps(this, config, args, op);
+    config = normalizeAxisLabelConfig(this, config, args, op);
     if (mode === "values") {
       config.values ??= ticks?.values ?? inferredDiscreteValues;
       if (!Object.hasOwn(args, "rounding")) delete config.rounding;

@@ -79,6 +79,9 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   - Effect: width/height/margin은 auto-range scale을 시작점으로 모든 registered consumer의
     deterministic materialization plan을 실행한다. background만 바꾸면 consumer를 다시 만들지 않는다.
   - Interaction: explicit scale range는 Canvas bounds 변경으로 재계산되지 않는다.
+  - Axis labels는 같은 deterministic plan에서 뒤이어 다시 배치할 동일 owner의 title을
+    이전 위치와 비교하지 않는다. 실제 title leaf와 최종 guide 검사로 새 상태의 충돌을 거부한다.
+    Label-only edit이나 다른 owner의 title은 이 형제 replay 범위에 해당하지 않는다.
 - `plot`: 생략하면 기존 모드를 유지한다. 새 내부 크기 또는 `false`로 전환할 수 있다. 활성 모드에서 margin 편집은 내부 크기를 유지하며 외부 Canvas를 재계산한다.
 - `plotBorder`: 생략하면 현재 설정을 유지한다. `false`는 설정을 비활성화하고 concrete border를 제거한다.
   객체는 complete style configuration이며 partial patch가 아니다. 생략한 style field는 이전 값 대신
@@ -1583,7 +1586,7 @@ source row의 prototype을 바꾸거나 결과를 누락하지 않는다. 뒤 op
 
 ## `createBin2DData`
 
-- Signature: `createBin2DData({ id, source?, x, y, bins?, extent?, includeEmpty?, members?, as? })`
+- Signature: `createBin2DData({ id, source?, x, y, bins?, extent?, assignment?, includeEmpty?, members?, as? })`
 - Lifecycle: stable logical owner를 가진 mutable resource다. 첫 호출은 `id` dataset을 만들고, 같은 `id`의
   후속 호출은 deterministic revision dataset을 만든 뒤 direct layer consumer를 명시적으로 rebind하고 이전
   unreferenced revision을 release한다. Earlier program과 caller input은 바뀌지 않는다.
@@ -1594,6 +1597,13 @@ source row의 prototype을 바꾸거나 결과를 누락하지 않는다. 뒤 op
   전체 grid는 최대 1,000,000 cells다.
 - `extent`: optional `{ x?, y? }` explicit increasing finite endpoints다. 생략 axis는 eligible min/max를 쓴다.
   Explicit extent는 모든 eligible 값을 포함해야 하며 auto extent가 constant면 오류다.
+- `assignment`: `"edges" | "step"`, 기본 `"edges"`. 기본은 실제 저장 edge의 strict half-open 비교를
+  그대로 사용하고 저장 property를 생략한다. 명시 step은 축마다 nominal step을 사용해
+  `floor(1e-14 + (value-minimum)/step)`를 계산하고 index를 0..bins-1로 제한한다. 1 bin은 index0,
+  마지막 upper endpoint는 마지막 bin이다. Span overflow는 `maximum/bins-minimum/bins`,
+  차이 overflow는 `value/step-minimum/step`를 사용한다. Extent 포함 여부는 먼저 검증한다.
+  고정 index increment는 정책의 일부이며 비교 허용오차가 아니다. Edge 생성은 동일하고, step 소속은
+  반올림된 저장 edge와 strict 비교한 소속과 다를 수 있다. Persisted transform에는 `assignment?: "step"`만 허용한다.
 - `includeEmpty`: 기본 `false`. `true`면 deterministic y-major/x-minor 순서로 빈 cell도 저장한다.
 - `members`: 기본 `false`. `true`면 source row object가 아니라 source row index array를 cell에 저장한다.
 - `as`: generated `x0/x1/y0/y1/count/members` field 이름을 부분 override한다. Default는 `id` namespace를 쓴다.
@@ -1603,7 +1613,7 @@ source row의 prototype을 바꾸거나 결과를 누락하지 않는다. 뒤 op
   binding에서 다시 materialize된다. Optional members
   output을 제거할 때 남은 direct consumer binding이 이를 참조하면 revision을 원자적으로 거부한다.
 - Effect: normalized request와 resolved extent/edges/count metadata를 transform provenance에 저장하고, 각 cell의
-  lower/upper bounds와 count를 immutable values로 저장한다. Cell은 `[lower, upper)`이며 마지막 upper bound만
+  lower/upper bounds와 count를 immutable values로 저장한다. 기본 edges cell은 `[lower, upper)`이며 마지막 upper bound만
   포함한다. 모든 edge는 finite strictly increasing number다. Full finite numeric range처럼 raw span이 overflow하는
   extent도 안정적으로 보간하며, 요청한 bin 수만큼 서로 다른 edge를 표현할 수 없으면 bin 수를 조용히 줄이지 않고
   materialization 전에 `RangeError`를 던진다.
@@ -1616,7 +1626,7 @@ source row의 prototype을 바꾸거나 결과를 누락하지 않는다. 뒤 op
 
 ### Formal values — `createBin2DData`
 
-- Implemented: `createBin2DData({ id: UserId; source?: UserId; x: FieldName; y: FieldName; bins?: PositiveInteger | { x: PositiveInteger; y: PositiveInteger }; extent?: { x?: [FiniteNumber, FiniteNumber]; y?: [FiniteNumber, FiniteNumber] }; includeEmpty?: boolean; members?: boolean; as?: { x0?, x1?, y0?, y1?, count?, members? } })`
+- Implemented: `createBin2DData({ id: UserId; source?: UserId; x: FieldName; y: FieldName; bins?: PositiveInteger | { x: PositiveInteger; y: PositiveInteger }; extent?: { x?: [FiniteNumber, FiniteNumber]; y?: [FiniteNumber, FiniteNumber] }; assignment?: "edges" | "step"; includeEmpty?: boolean; members?: boolean; as?: { x0?, x1?, y0?, y1?, count?, members? } })`
 - Planned (NOT IMPLEMENTED): dependent derived-dataset revision cascade, weighted cells, hexagonal/adaptive bins.
 - Proposed (NOT IMPLEMENTED): —
 
@@ -1626,6 +1636,8 @@ source row의 prototype을 바꾸거나 결과를 누락하지 않는다. 뒤 op
   - ✅ Covered: scalar/per-axis counts, automatic/partial/complete explicit extents, interior and final boundaries,
     row-major order, empty omission/inclusion, constant extent, per-axis/total limits, full finite-range interpolation,
     unrepresentable edge count and silent-loss rejection.
+  - ✅ Covered: default/explicit edge byte equality, step rounded-boundary assignment, fixed index increment,
+    1e-12-below rejection of upward reassignment, full finite range and immutable replay.
 - Output
   - ✅ Covered: namespaced/partial/custom fields, optional member indexes, unique fields, count conservation and
     independent Cars oracle parity.
@@ -1638,13 +1650,15 @@ source row의 prototype을 바꾸거나 결과를 누락하지 않는다. 뒤 op
 
 ## `editBin2DData`
 
-- Signature: `editBin2DData({ target?, source?, x?, y?, bins?, extent?, includeEmpty?, members?, as?, dependents? })`.
+- Signature: `editBin2DData({ target?, source?, x?, y?, bins?, extent?, assignment?, includeEmpty?, members?, as?, dependents? })`.
 - Target: `target`은 materialization registry의 stable logical Bin2D owner ID다. 생략하면
   `context.currentData`가 가리키는 current revision의 owner, 그 다음 유일한 owner를 사용한다. Current match가 없고
   owner가 둘 이상이면 명시적 `target`을 요구하며 첫 owner를 선택하지 않는다.
 - Partial edit: `target` 외 최소 한 option과 complete candidate 기준 실제 source/transform 변화가 필요하다. Omitted
   top-level option은 current revision의 requested transform provenance에서 보존한다. Explicit `bins`와 `extent`는
   create-time vocabulary 전체를 교체하므로 `extent` object에서 생략한 axis는 automatic extent로 돌아간다.
+- Assignment edit: 생략하면 이전 정책을 보존한다. `"edges"`는 optional step provenance를 제거하고 기본 의미로 복구한다.
+  동일 정책만 지정하는 edit는 기존 no-op 오류로 거부한다.
 - Output and members: explicit `as`는 `x0/x1/y0/y1/count`와, `members: true`일 때 `members`까지 complete output map을
   요구한다. `as`를 생략하고 members를 켜면 logical owner namespace의 members field를 추가하고, 끄면 prior members
   output을 제거한다. 다른 output field는 보존한다.
@@ -1663,7 +1677,7 @@ source row의 prototype을 바꾸거나 결과를 누락하지 않는다. 뒤 op
 
 ### Formal values — `editBin2DData`
 
-- Implemented: `editBin2DData({ target?: UserId; source?: UserId; x?: FieldName; y?: FieldName; bins?: PositiveInteger | { x: PositiveInteger; y: PositiveInteger }; extent?: { x?: [FiniteNumber, FiniteNumber]; y?: [FiniteNumber, FiniteNumber] }; includeEmpty?: boolean; members?: boolean; as?: { x0: FieldName; x1: FieldName; y0: FieldName; y1: FieldName; count: FieldName; members?: FieldName }; dependents?: "reject" | "recompute" })`.
+- Implemented: `editBin2DData({ target?: UserId; source?: UserId; x?: FieldName; y?: FieldName; bins?: PositiveInteger | { x: PositiveInteger; y: PositiveInteger }; extent?: { x?: [FiniteNumber, FiniteNumber]; y?: [FiniteNumber, FiniteNumber] }; assignment?: "edges" | "step"; includeEmpty?: boolean; members?: boolean; as?: { x0: FieldName; x1: FieldName; y0: FieldName; y1: FieldName; count: FieldName; members?: FieldName }; dependents?: "reject" | "recompute" })`.
 - Planned (NOT IMPLEMENTED): weighted cells, hexagonal/adaptive bins.
 - Proposed (NOT IMPLEMENTED): —
 

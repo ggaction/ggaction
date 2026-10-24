@@ -157,6 +157,17 @@ test("scale spacing units agree across every generic and focused editor", async 
   }
 });
 
+test("Cartesian title cards retain numeric and relative gap logical-pixel units", async () => {
+  const { cards } = JSON.parse(await readFile(cardFile, "utf8"));
+  for (const name of ["createXAxisTitle", "createYAxisTitle", "editXAxisTitle", "editYAxisTitle"]) {
+    const card = cards.find(value => value.name === name);
+    assert.match(card.options.find(value => value.name === "offset").type, /AxisTitleOffset/);
+    for (const path of ["offset", "offset.gap"]) {
+      assert.deepEqual(card.units.filter(value => value.path === path), [{ path, unit: "logical-pixel" }]);
+    }
+  }
+});
+
 test("action cards separate entry support, units, inference, and completion", async () => {
   const artifact = JSON.parse(await readFile(cardFile, "utf8"));
   const byName = new Map(artifact.cards.map(card => [card.name, card]));

@@ -9,6 +9,17 @@ import { resolveGuideCollisionBlocks } from "./resources.js";
 import { hasPlotUnderlays } from "../plotDrawOrder.js";
 export { resolveGuideCollisionBlocks } from "./resources.js";
 
+// Whole-axis edits can replace label and relative-title siblings together.
+// Keep their temporary dependency scope out of persisted and returned context.
+export function withPendingRelativeAxisTitle(program, axisId, apply) {
+  const result = apply(program._withContext({ pendingRelativeTitleAxis: axisId }));
+  const { pendingRelativeTitleAxis: _pending, ...context } = result.context;
+  if (Object.hasOwn(program.context, "pendingRelativeTitleAxis")) {
+    context.pendingRelativeTitleAxis = program.context.pendingRelativeTitleAxis;
+  }
+  return result._clone({ context });
+}
+
 // Defer cross-guide checks while sibling materializers still carry old
 // coordinates. The scope is transient and never survives a returned program.
 export function withGuideLayoutTransaction(program, apply) {

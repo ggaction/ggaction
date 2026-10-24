@@ -892,7 +892,7 @@ test("directly covers every newly targeted action option and broad maximal paths
   const newActionOptions = inventory.optionPaths.filter(option =>
     option.required && NEW_DIRECT_ACTIONS.includes(option.action)
   );
-  assert.equal(newActionOptions.length, 64);
+  assert.equal(newActionOptions.length, 65);
   assert.deepEqual(
     newActionOptions.filter(option => !directlyObserves(entries, option)).map(option => option.id),
     []
@@ -905,6 +905,7 @@ test("directly covers every newly targeted action option and broad maximal paths
   assert.ok(observedBroad.length >= 300, `${observedBroad.length}/${broadOptions.length} paths`);
 
   const traces = action => entries.filter(entry => entry.op === action).map(entry => entry.args);
+  assert.ok(traces("editBin2DData").some(args => args.assignment === "edges"));
   assert.ok(traces("createHistogram").some(args => args.maxBins !== undefined));
   assert.ok(traces("createHistogram").some(args => args.binStep !== undefined));
   assert.ok(traces("createHistogram").some(args => args.binBoundariesCount > 0));

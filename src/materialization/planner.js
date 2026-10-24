@@ -1,3 +1,5 @@
+import { cloneAndFreeze } from "../core/immutable.js";
+
 const STAGES = Object.freeze([
   "scales",
   "marks",
@@ -116,16 +118,29 @@ export function buildMaterializationPlan(stages = {}) {
 
 export function applyMaterializationPlan(program, plan) {
   const steps = deduplicateSteps(normalizeSteps(plan));
+  const ownedSteps = typeof program?._withContext === "function" ? cloneAndFreeze(steps) : steps;
   let next = program;
-  for (const step of steps) {
+  for (const [index, step] of steps.entries()) {
     if (typeof next?.[step.op] !== "function") {
       throw new Error(
         `Materialization operation "${step.op}" is not available on the program.`
       );
     }
-    next = step.args === undefined
-      ? next[step.op]()
-      : next[step.op](step.args);
+    const previous = next;
+    // Only execution context exposes the remaining normalized plan. Domain
+    // owners decide which pending sibling operations affect their preflight.
+    const scoped = typeof previous._withContext === "function";
+    const current = scoped ? previous._withContext({ pendingMaterializationPlan: {
+      steps: ownedSteps, next: index + 1
+    } }) : previous;
+    next = step.args === undefined ? current[step.op]() : current[step.op](step.args);
+    if (scoped) {
+      const { pendingMaterializationPlan: _pending, ...context } = next.context;
+      if (Object.hasOwn(previous.context, "pendingMaterializationPlan")) {
+        context.pendingMaterializationPlan = previous.context.pendingMaterializationPlan;
+      }
+      next = next._clone({ context });
+    }
   }
   return next;
 }

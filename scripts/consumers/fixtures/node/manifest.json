@@ -117,6 +117,10 @@
     "file": "guides.mjs",
     "cases": [
       {
+        "id": "guides/axis-label-edge-threshold",
+        "statements": 1
+      },
+      {
         "id": "guides/create-horizontal-grid",
         "statements": 1
       },
@@ -175,6 +179,10 @@
       {
         "id": "guides/blank-lines",
         "statements": 6
+      },
+      {
+        "id": "guides/subtitle-line-spacing",
+        "statements": 11
       },
       {
         "id": "guides/blank-legend",
@@ -744,6 +752,24 @@
       {
         "id": "extension/passthrough",
         "statements": 8
+      }
+    ]
+  },
+  {
+    "file": "axis-title-relative.mjs",
+    "cases": [
+      {
+        "id": "guides/label-relative-axis-title",
+        "statements": 1
+      }
+    ]
+  },
+  {
+    "file": "axis-title-replay.mjs",
+    "cases": [
+      {
+        "id": "guides/prospective-numeric-axis-title-replay",
+        "statements": 11
       }
     ]
   }

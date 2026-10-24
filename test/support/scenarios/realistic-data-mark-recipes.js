@@ -576,6 +576,7 @@ function buildBinnedHeatmap(factors) {
     .editBin2DData({
       target: `${id}Bin2DData`,
       source: "analysisRows",
+      assignment: "edges",
       x: "secondary",
       y: "value",
       bins: { x: factors.bins + 1, y: factors.bins },

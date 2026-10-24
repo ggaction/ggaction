@@ -83,11 +83,11 @@ function encodeSecondaryPosition(program, channel, args, operation, types) {
   if (!rule && !area && !rect && (!hasField || hasDatum)) {
     throw new Error(`${operation} requires a field for a ranged mark.`);
   }
-  if (rule && args.fieldType === undefined) {
+  if (rule && hasField && args.fieldType === undefined) {
     throw new Error(`${operation} requires fieldType for a rule mark.`);
   }
   const fieldType = rule
-    ? validateSemanticFieldType(args.fieldType)
+    ? validateSemanticFieldType(args.fieldType ?? "quantitative")
     : layer.mark.type === "rect"
       ? args.fieldType ?? primary.fieldType
       : args.fieldType ?? "quantitative";

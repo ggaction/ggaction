@@ -1,3 +1,5 @@
+import { resolveAxisTickEditConfig } from "./ticks.js";
+import { resolveAxisLabelEditConfig } from "./labels.js";
 import { withGuideLayoutValidation } from "../../../materialization/guides/layout.js";
 import { action } from "../../../core/action.js";
 import { isPlainObject } from "../../../core/immutable.js";
@@ -35,7 +37,7 @@ const LABEL_OPTIONS = Object.freeze([
   "overlap",
   "labelMap",
   "alongOffset",
-  "flush",
+  "flush", "flushThreshold",
   "colorMap",
   "align"
 ]);
@@ -92,6 +94,19 @@ function names(channel) {
     editTicks: `edit${prefix}AxisTicks`,
     editLabels: `edit${prefix}AxisLabels`
   };
+}
+
+// Validate original options before a materialization plan stores normalized arguments.
+export function validateAxisTickGroupEditConfig(program, channel, args, axisId = channel) {
+  validateAxisTickGroupArgs(args, names(channel).edit, false);
+  const shared = select(args, SHARED_EDIT);
+  const hasShared = Object.keys(shared).length > 0;
+  if (hasShared || Object.hasOwn(args, "ticks")) {
+    resolveAxisTickEditConfig(program, channel, { ...shared, ...(args.ticks ?? {}) }, axisId);
+  }
+  if (hasShared || Object.hasOwn(args, "labels")) {
+    resolveAxisLabelEditConfig(program, channel, { ...shared, ...(args.labels ?? {}) }, axisId);
+  }
 }
 
 function makeCreate(channel) {
