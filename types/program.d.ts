@@ -237,7 +237,7 @@ export type AdjacentPlotSpecification =
 export type LayerPlotSpecification = {
   [Action in AdjacentPlotSpecification["action"]]: {
     action: Action;
-    options?: Partial<NonNullable<Extract<AdjacentPlotSpecification, { action: Action }>["options"]>>;
+    options?: Partial<NonNullable<Extract<AdjacentPlotSpecification, { action: Action }>["options"]>> & { guides?: false };
   }
 }[AdjacentPlotSpecification["action"]];
 export interface CreateLayerPlotOptions {

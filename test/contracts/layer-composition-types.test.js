@@ -15,6 +15,7 @@ import {getPlotComposition} from ${JSON.stringify(path.join(root,'types/inspecti
 const p=chart().createLayerPlot({id:'summary',source:'points',plot:{action:'createBoxPlot',options:{width:{band:.4},outliers:false}},placement:'back'});
 p.createLayerPlot({plot:{action:'createParallelCoordinates',options:{dimensions:[{field:'a',fieldType:'quantitative',scale:{id:'a-scale'}},'b']}}});
 p.createAdjacentPlot({plot:{action:'createAreaPlot'}});
+p.createLayerPlot({plot:{action:'createScatterPlot',options:{guides:false}}});
 getPlotComposition(p,{target:{childPath:['left'],id:'summary'}}).channels.y.measurement.unit;
 // @ts-expect-error outer id owns the chart identity
 p.createLayerPlot({plot:{action:'createBoxPlot',options:{id:'ignored'}}});
@@ -24,6 +25,8 @@ p.createLayerPlot({plot:{action:'arbitraryPlot'}});
 p.createLayerPlot({plot:{action:'createScatterPlot'},placement:20});
 // @ts-expect-error Box width uses the native width object
 p.createLayerPlot({plot:{action:'createBoxPlot',options:{width:40}}});
+// @ts-expect-error layers consume shared guides; createGuides owns their creation
+p.createLayerPlot({plot:{action:'createScatterPlot',options:{guides:{}}}});
 `);
  const result=compileTypeScript(['--noEmit','--strict','--skipLibCheck','--target','ES2022','--module','NodeNext','--moduleResolution','NodeNext',file]);assert.equal(result.status,0,`${result.stdout}\n${result.stderr}`);
  }finally{await rm(dir,{recursive:true,force:true});}
