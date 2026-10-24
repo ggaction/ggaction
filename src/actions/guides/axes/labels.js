@@ -404,6 +404,36 @@ function resolve(program, channel, config, axisId = channel) {
   return resolved;
 }
 
+export function resolveAxisLabelEditConfig(program, channel, args, axisId = channel) {
+  const op = channel === "x" ? "editXAxisLabels" : "editYAxisLabels";
+  validateOptions(args, op, false);
+  const previous = program.guideConfigs.axis?.[axisId]?.labels;
+  if (!previous) throw new Error(`${op} requires label configuration.`);
+  const explicitMode = Object.hasOwn(args, "values") || Object.hasOwn(args, "count");
+  const ticks = program.guideConfigs.axis?.[axisId]?.ticks;
+  const inferredValues = !explicitMode && previous.inferredValues === true &&
+    ticks?.mode === "values"
+    ? ticks.values
+    : undefined;
+  const mode = Object.hasOwn(args, "values") || inferredValues !== undefined
+    ? "values"
+    : Object.hasOwn(args, "count") ? "count" : previous.mode;
+  let config = normalizeLabelLayout({
+    ...previous,
+    ...args,
+    ...(inferredValues === undefined ? {} : { values: inferredValues }),
+    ...(explicitMode ? { inferredValues: false } : {}),
+    mode
+  }, args, op);
+  config = normalizeAxisLabelConfig(program, config, args, op);
+  if (mode === "values") {
+    delete config.count;
+    if (!Object.hasOwn(args, "rounding")) delete config.rounding;
+  } else delete config.values;
+  validateConfig(channel, config);
+  return config;
+}
+
 function makeEdit(channel) {
   const op = channel === "x" ? "editXAxisLabels" : "editYAxisLabels";
   return action({ op, description: `Edit concrete ${channel}-axis labels.` }, withGuideLayoutValidation(function (args = {}) {
@@ -412,30 +442,7 @@ function makeEdit(channel) {
     const axisId = selected.id; args = selected.options;
     const id = axisGraphicIds(channel, axisId)[2];
     if (this.graphicSpec.objects[id]?.type !== "text") throw new Error(`${op} requires existing axis labels.`);
-    const previous = this.guideConfigs.axis?.[axisId]?.labels;
-    if (!previous) throw new Error(`${op} requires label configuration.`);
-    const explicitMode = Object.hasOwn(args, "values") || Object.hasOwn(args, "count");
-    const ticks = this.guideConfigs.axis?.[axisId]?.ticks;
-    const inferredValues = !explicitMode && previous.inferredValues === true &&
-      ticks?.mode === "values"
-      ? ticks.values
-      : undefined;
-    const mode = Object.hasOwn(args, "values") || inferredValues !== undefined
-      ? "values"
-      : Object.hasOwn(args, "count") ? "count" : previous.mode;
-    let config = normalizeLabelLayout({
-      ...previous,
-      ...args,
-      ...(inferredValues === undefined ? {} : { values: inferredValues }),
-      ...(explicitMode ? { inferredValues: false } : {}),
-      mode
-    }, args, op);
-    config = normalizeAxisLabelConfig(this, config, args, op);
-    if (mode === "values") {
-      delete config.count;
-      if (!Object.hasOwn(args, "rounding")) delete config.rounding;
-    } else delete config.values;
-    validateConfig(channel, config);
+    const config = resolveAxisLabelEditConfig(this, channel, args, axisId);
     assertTickCompatibility(this.guideConfigs.axis?.[axisId]?.ticks, config, op);
     const resolved = resolve(this, channel, config, axisId);
     let next = this._withGuideConfig(axisId, "labels", config);

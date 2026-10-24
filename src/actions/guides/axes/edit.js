@@ -1,3 +1,6 @@
+import { resolveAxisTickEditConfig } from "./ticks.js";
+import { resolveAxisLabelEditConfig } from "./labels.js";
+import { validateAxisTickGroupEditConfig } from "./tickGroups.js";
 import { selectCartesianAxis, axisTargetArgs, assertCartesianAxisSideAvailable } from "../../../selectors/axes.js";
 import { validateAxisPosition, resolveAxisFrameConfig } from "./policy.js";
 import { withGuideLayoutValidation, withPendingRelativeAxisTitle } from "../../../materialization/guides/layout.js";
@@ -86,6 +89,14 @@ function names(channel) {
     title: `edit${prefix}AxisTitle`,
     remove: `remove${prefix}Axis`
   };
+}
+
+function validateNestedEditConfig(program, channel, args, axisId) {
+  if (isPlainObject(args.ticks)) resolveAxisTickEditConfig(program, channel, args.ticks, axisId);
+  if (isPlainObject(args.labels)) resolveAxisLabelEditConfig(program, channel, args.labels, axisId);
+  if (isPlainObject(args.ticksAndLabels)) {
+    validateAxisTickGroupEditConfig(program, channel, args.ticksAndLabels, axisId);
+  }
 }
 
 function buildPlan(program, channel, args, operation, axisId = channel) {
@@ -185,6 +196,7 @@ function makeEditAxis(channel) {
       validateArgs(args, operation.operation);
       const selected = selectCartesianAxis(this, channel, args, { whole: true });
       const axisId = selected.id; args = selected.options;
+      validateNestedEditConfig(this, channel, args, axisId);
       let source = this;
       if (selected.owner?.named && args.position !== undefined) {
         const position = validateAxisPosition(channel, args.position);
