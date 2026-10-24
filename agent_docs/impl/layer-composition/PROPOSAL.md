@@ -6,11 +6,12 @@
 - [x] 기존 공개 함수로 Beeswarm + Box, Violin + Box + Beeswarm 목표 그림 구성
 - [x] 공통 좌표·척도, 독립 스타일 편집, resize, 저장/복원, 동일 PNG 검증
 - [x] 앱 체크아웃에서 29종 × 29종 × 가로/세로 = 1,682개 독립 concat의 Canvas scene 생성 확인
-- [ ] Gate: 아래 신규 공개 API와 목표 그림 승인 (`ready-for-review`)
+- [x] Gate: 아래 신규 공개 API와 목표 그림 승인 (`approved`)
+  - 사용자 명시 승인: 2026-10-24 “API 계약과 그림을 기준으로 구현 진행할까? -> 구현하자”. 검토 revision `773e7181` / 앱 `4634f0d`.
 - [ ] 승인 후 native 구현·타입·inspection·저장/복원·문서 동기화
 - [ ] 앱 Add overlay / Add adjacent 카드 연결, 편집 대상·Undo/Redo·Canvas transition 검증
 
-사용자 요청(2026-10-24): 비스웜+박스플롯을 포함해 overlay/concat의 가능한 경우를 폭넓게 조사하고 일반적으로 지원한다. 이 요청은 기능 구현을 승인하지만 신규 공개 함수의 정확한 계약은 아직 확인되지 않았다. 루트 AGENTS의 공개 API 및 impl/AGENTS의 visual Gate를 이 문서로 묶어 한 번 확인한다. 현재 라이브러리 API와 앱 동작은 변경하지 않았다.
+사용자 요청(2026-10-24): 비스웜+박스플롯을 포함해 overlay/concat의 가능한 경우를 폭넓게 조사하고 일반적으로 지원한다. 이 요청은 기능 구현을 승인하지만 신규 공개 함수의 정확한 계약은 아직 확인되지 않았다. 루트 AGENTS의 공개 API 및 impl/AGENTS의 visual Gate를 이 문서로 묶어 한 번 확인한다. 검토 revision에서는 라이브러리 API와 앱 동작을 변경하지 않았다.
 
 ## 문제와 구현 경계
 
@@ -94,4 +95,4 @@ node --test test/gates/layer-composition/layers.test.js test/gates/layer-composi
 
 ## 승인 질문
 
-기존 follow `createOverlay`를 유지하면서 위 `createLayerPlot` + `getPlotComposition` 계약과 두 목표 그림을 기준으로 구현할지 확인한다. `ready-for-review`에서 사용자 응답 전 새 public action/schema를 구현하지 않는다. npm publish/Pages deploy는 이 승인에 포함되지 않는다.
+기존 follow `createOverlay`를 유지하면서 위 `createLayerPlot` + `getPlotComposition` 계약과 두 목표 그림을 기준으로 구현할지 확인한다. 위 사용자 응답으로 승인되었으므로 native 구현과 앱 통합을 진행한다. npm publish/Pages deploy는 이 승인에 포함되지 않는다.
