@@ -56,6 +56,11 @@ Conflicting explicit domains reject the whole operation. Automatically inferred 
 are combined afresh after each edit, so they can grow and shrink. Authored child domains
 are preserved: `editCompositionScales({ share: { y: false } })` restores independent Y.
 A shared palette change must target all affected views in the same atomic call.
+For a faceted child, sharing uses the union of the displayed cell domains after
+partitioning, aggregation and stacking, rather than the unpartitioned source's
+domain. The resulting domain applies to every cell and adjacent view, including
+cells whose facet scale policy was independent. Disabling the outer sharing
+restores the facet's original scale policies and inferred domains.
 
 `align: "plot"` aligns both ends of the shared-axis plot frames. It rematerializes
 render snapshots at a common plot extent while preserving child margins and authored

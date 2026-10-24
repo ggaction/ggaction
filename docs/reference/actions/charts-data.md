@@ -3930,7 +3930,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `id` | Optional / branch-dependent | `string \| undefined` |
-| `source` | Optional / branch-dependent | `string \| undefined` |
+| `source` | Optional / branch-dependent | `string \| { childPath: readonly string[]; id: string; } \| undefined` |
 | `position` | Optional / branch-dependent | `"bottom" \| "left" \| "right" \| "top" \| undefined` |
 | `plot` | Optional / branch-dependent | `AdjacentPlotSpecification \| undefined` |
 | `share` | Optional / branch-dependent | `CompositionShares \| undefined` |

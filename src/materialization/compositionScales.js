@@ -4,6 +4,25 @@ import { ownership } from "../selectors/markOwners.js";
 import { findCoordinate } from "../selectors/coordinates.js";
 import { hasOrdinalDomain } from "../grammar/scales/types.js";
 
+// A facet retains an unpartitioned source recipe at its root. Its resolved
+// source scale is not a displayed scale: aggregation/stacking is recomputed in
+// each cell. Read the actual cell domains, including independent facet scales.
+function displayedDomains(program, id) {
+  if (program.compositionSpec?.type === "facet") {
+    return program.compositionSpec.children.flatMap(child => displayedDomains(program.children[child], id));
+  }
+  return program.resolvedScales[id] ? [program.resolvedScales[id].domain] : [];
+}
+
+function mergeDomains(scale, domains, channel) {
+  if (hasOrdinalDomain(scale.type)) return [...new Set(domains.flat())];
+  if (scale.type === "quantile") return domains.flat().toSorted((a, b) => a - b);
+  if (!domains.length || domains.some(domain => domain.length !== 2 || domain.some(value => !Number.isFinite(value)))) {
+    throw new Error(`Shared ${channel} requires finite domains or compatible ordinal categories.`);
+  }
+  return [Math.min(...domains.flat()), Math.max(...domains.flat())];
+}
+
 function bindings(program, channel, path = []) {
   if (program.compositionSpec && program.compositionSpec.type !== "facet") return Object.entries(program.children).flatMap(([id, child]) => bindings(child, channel, [...path, id]));
   const owners = ownership(program);
@@ -24,7 +43,8 @@ function bindings(program, channel, path = []) {
     if (previous && JSON.stringify(previous.meaning) !== JSON.stringify(meaning)) {
       throw new Error(`Shared ${channel} has ambiguous field meaning inside a view.`);
     }
-    entries.set(scale.id, { path, program, scale, meaning, domain: program.resolvedScales[scale.id].domain });
+    entries.set(scale.id, { path, program, scale, meaning,
+      domain: mergeDomains(scale, displayedDomains(program, scale.id), channel) });
   }
   if (!entries.size) throw new Error(`Shared ${channel} is not encoded in view "${path.join("/") || "root"}".`);
   return [...entries.values()];
@@ -52,13 +72,7 @@ function unionDomain(entries, channel) {
   // An explicit common domain is intentional. Otherwise derive a fresh union on
   // each composition edit; never feed yesterday's union back into inference.
   if (explicit.length) return explicit[0];
-  const domains = entries.map(entry => entry.domain);
-  if (hasOrdinalDomain(first.scale.type)) return [...new Set(domains.flat())];
-  if (first.scale.type === "quantile") return domains.flat().toSorted((a, b) => a - b);
-  if (domains.some(domain => domain.length !== 2 || domain.some(value => !Number.isFinite(value)))) {
-    throw new Error(`Shared ${channel} requires finite domains or compatible ordinal categories.`);
-  }
-  return [Math.min(...domains.flat()), Math.max(...domains.flat())];
+  return mergeDomains(first.scale, entries.map(entry => entry.domain), channel);
 }
 
 function updatePath(program, path, callback) {
@@ -96,7 +110,8 @@ export function resolveSharedCompositionChildren(children, requested) {
     }
     seen.set(key, domain);
     result = { ...result, [id]: updatePath(result[id], path, child => {
-      if (JSON.stringify(child.resolvedScales[scale.id]?.domain) === JSON.stringify(domain)) return child;
+      if (JSON.stringify(child.resolvedScales[scale.id]?.domain) === JSON.stringify(domain) &&
+          displayedDomains(child, scale.id).every(value => JSON.stringify(value) === JSON.stringify(domain))) return child;
       return child.compositionSpec?.type === "facet"
         ? child.editFacetSource({ action: { method: "editScale", options: { id: scale.id, domain } } })
         : child.editScale({ id: scale.id, domain });

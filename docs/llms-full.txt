@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.25.
 
-Contract: sha256:8cd24ba8463988e7fa5d2784f87d5526c92af8e5196eb3ec44852def2ffbf9a4. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:5a5621d6df89b4468190fef7797f43ca6650c791722efdba28958a72ab447955. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -20814,7 +20814,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `id` | Optional / branch-dependent | `string \| undefined` |
-| `source` | Optional / branch-dependent | `string \| undefined` |
+| `source` | Optional / branch-dependent | `string \| { childPath: readonly string[]; id: string; } \| undefined` |
 | `position` | Optional / branch-dependent | `"bottom" \| "left" \| "right" \| "top" \| undefined` |
 | `plot` | Optional / branch-dependent | `AdjacentPlotSpecification \| undefined` |
 | `share` | Optional / branch-dependent | `CompositionShares \| undefined` |
@@ -42795,6 +42795,11 @@ Conflicting explicit domains reject the whole operation. Automatically inferred 
 are combined afresh after each edit, so they can grow and shrink. Authored child domains
 are preserved: `editCompositionScales({ share: { y: false } })` restores independent Y.
 A shared palette change must target all affected views in the same atomic call.
+For a faceted child, sharing uses the union of the displayed cell domains after
+partitioning, aggregation and stacking, rather than the unpartitioned source's
+domain. The resulting domain applies to every cell and adjacent view, including
+cells whose facet scale policy was independent. Disabling the outer sharing
+restores the facet's original scale policies and inferred domains.
 
 `align: "plot"` aligns both ends of the shared-axis plot frames. It rematerializes
 render snapshots at a common plot extent while preserving child margins and authored
@@ -44090,7 +44095,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:8cd24ba8463988e7fa5d2784f87d5526c92af8e5196eb3ec44852def2ffbf9a4` |
+| Contract fingerprint | `sha256:5a5621d6df89b4468190fef7797f43ca6650c791722efdba28958a72ab447955` |
 | Example and dataset source | `ab206c446ae5010eecfd859427775c4785d8aed4` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

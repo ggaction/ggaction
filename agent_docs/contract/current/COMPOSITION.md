@@ -598,6 +598,12 @@ conflicting domains reject. One common explicit domain is authoritative; otherwi
 child domains are unioned, ordinal categories in stable first-seen order. Shared appearance
 requires compatible palette/range. Source-dependent overlays do not introduce another scale owner.
 
+A facet contributes its displayed cell domains after partition-local aggregation and stacking,
+not the retained unpartitioned source template's resolved domain. Outer sharing applies the
+union to every rendered cell, even when the facet originally used independent scales or its
+source template already happened to equal the union. Authored explicit domains remain
+authoritative. Disabling outer sharing restores the original facet policies and cell inference.
+
 Canonical children retain authored domains and dimensions. The composition materializer derives
 shared render snapshots on every child edit. Disabling sharing restores independent inference;
 it does not retain the previous union as an authored fixed domain. Immutable-owner WeakMaps
