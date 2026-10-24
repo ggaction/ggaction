@@ -474,6 +474,7 @@ Default id는 `raincloudPlot`; lifecycle은 stable mutable composite다.
 
 - ✅ Covered: source/role/orientation/side와 component type/enablement atomic revision, stable IDs, stale derived-data
   release, lower style retention boundary와 invalid target/options rollback.
+- ✅ Covered: categorical palette replacement reuses the owner scale across enabled component variants, preserves explicit shared legends, supports fixed-to-field restoration, and rejects invalid palettes atomically.
 - Evidence: `test/unit/actions/charts/raincloud-facade.test.js`, `test/unit/actions/charts/raincloud-owner-operations.test.js`, `test/contracts/raincloud-types.test.js`.
 
 ## `createRosePlot`

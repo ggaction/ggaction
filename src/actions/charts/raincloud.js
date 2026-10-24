@@ -5,6 +5,7 @@ import { validateOptionObject } from "../../core/validation.js";
 import { findDataset } from "../../selectors/datasets.js";
 import { findLayer } from "../../selectors/layers.js";
 import { findSemanticScale } from "../../selectors/scales.js";
+import { resolveColorScaleDefinition } from "../scales/definitions.js";
 import { retainStatisticalDependents, restoreStatisticalDependents } from "../marks/dependentReferences.js";
 import { resolveViolinRoles } from "../violinPlots/create.js";
 import {
@@ -317,7 +318,11 @@ function alignExistingRoleScales(program, config) {
   for (const encoding of [config.category, config.value, config.color]) {
     const scale = encoding?.scale;
     if (!isPlainObject(scale) || findSemanticScale(next, scale.id) === undefined) continue;
-    const patch = Object.fromEntries(Object.entries(scale).filter(
+    // Rebuilding removes the owned consumers first. Normalize the known color
+    // role before editing its retained resource, so palette does not depend on
+    // a temporarily absent consumer to infer that role.
+    const definition = encoding === config.color ? resolveColorScaleDefinition(next, scale) : scale;
+    const patch = Object.fromEntries(Object.entries(definition).filter(
       ([property, value]) => property !== "id" && value !== undefined
     ));
     if (Object.keys(patch).length > 0) next = next.editScale({ id: scale.id, ...patch });
