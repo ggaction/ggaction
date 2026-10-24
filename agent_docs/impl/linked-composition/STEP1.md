@@ -1,0 +1,45 @@
+# v0.0.25: 결과 추종 overlay와 공유 scale 병치
+
+## 진행 상태
+
+- [x] 사용자 승인: 2026-10-24의 상세 계획 뒤 사용자가 “좋아. 그렇게 해서 … v0.0.25 … transition … autocomplete”라고 실행을 지시함.
+- [x] v0.0.24(fd5c4073)까지 기존 feature branch를 fast-forward하여 이전 기능을 보존함.
+- [ ] 기존 라이브러리 및 앱 baseline 검증.
+- [x] 새 시각적 결과의 primitive와 실행 가능한 검증 패키지.
+- [ ] 시각적 결과 확인 후 overlay 및 병치 공개 action 구현.
+- [ ] 타입·inspection·Current 계약·영문 문서·생성 파일 동기화.
+- [ ] 새 코퍼스 전체 수집, 구조 추출, 모델 재학습.
+- [ ] 대상별 추천, All/패널/overlay 선택, 네 방향 +, 코드/History/transition 연결.
+- [ ] release 검증 및 commit/push 원격 일치 확인.
+
+## 승인 범위
+
+API/구조 Gate: approved. 앞선 상세 계획의 createOverlay/editOverlay,
+createAdjacentPlot/editCompositionScales, 기존 concat 확장, 명시적 target selector,
+복수 대상 원자적 편집, 공유 domain과 plot 정렬, 명시적 rematerialization 계획을 재사용한다.
+사용자는 상단바 All/차트/overlay selector와 차트 네 가장자리의 + UI를 추가 승인했다.
+기존 semanticSpec/graphicSpec/renderer 경계 및 immutable 프로그램을 유지한다.
+
+Visual Gate: ready-for-review. 새 mark primitive를 도입하지 않지만 결과 추종 bar+line 및 공유 Y
+병치의 대표 렌더를 test/gates/linked-composition에서 준비해 명시적 확인을 받는다.
+이 Gate는 해당 공개 chart flow 구현에만 적용하며 upstream 통합·코퍼스·범위 선택
+기반 작업은 계속한다. 패키지 게시·사이트 배포의 정확한 릴리스 revision은 최종 검증 후 확정한다.
+
+## 시각적 검토 증거
+
+- 실행 원본·제안 호출: `test/gates/linked-composition/primitive.program.js`의 variants.
+- focused: `node --test test/gates/linked-composition/primitive.test.js` 2/2 통과.
+- 렌더: `node test/gates/linked-composition/png.render.js`; 두 PNG의 plot ink 검사.
+- 출력: `.artifacts/test/png/review/linked-composition/{bar-line,shared-y}/primitive.png`.
+- 의미: 첫 그림은 집계 Bar 중심의 값 끝점을 Line이 연결한다. 두 번째 그림은
+  두 panel의 Y domain과 plot 상하 위치가 같다. 아직 source-follow/shared-domain
+  동적 갱신은 구현하지 않은 기존 primitive 기준이며 새 API가 이미 실행된다고 주장하지 않는다.
+- upstream의 library unit와 앱 전체 baseline은 별도 실행 중이며 API Gate 증거와 구분한다.
+
+## 체크포인트 검증
+
+변경 단계: 영향을 받는 numerical/geometry/unit/contract 테스트와 타입 및 inspection.
+통합 단계: library unit/contracts, 앱 전체 테스트, 코퍼스 전체 accepted programs,
+Canvas/transition 브라우저, 실행 가능한 코드·저장복원·내보내기.
+릴리스 단계: package consumer/boundary, 문서 생성 및 build, 전체 필수 suite와 성능
+반복 편집(20/50/100 actions), 원격 commit 일치. 실패를 제외하거나 완료로 표시하지 않는다.
