@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "packageVersion": "0.0.24",
+  "packageVersion": "0.0.25",
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:14d5b40b0994b3797725e75118da6588ca2b50e49a485fb96afe729865eb03b4",
-    "sourceCommit": "ab206c446ae5010eecfd859427775c4785d8aed4",
+    "contractId": "sha256:09c44595ce43236f2f3ce02d750b8aa3323bb73c3b1993c39d02594f4ccd6e2d",
+    "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -30,7 +30,7 @@
         "go-deeper"
       ],
       "bytes": 2429,
-      "sha256": "0eaeab49c28bfee4f4ece0bd89fd960391097f3f41683cdc681a6089ac02efc5"
+      "sha256": "b9e3ce72cf9427cd2647db6bbab1b80ac89b995050583e69c367b5cbb7c4b79b"
     },
     {
       "order": 2,
@@ -65,8 +65,8 @@
         "long-requests-and-execution-recovery",
         "related"
       ],
-      "bytes": 12058,
-      "sha256": "72dbd343528fed57b8fbc20130a17ba0b6a383288de83ad90e067ac8b85b08cc"
+      "bytes": 11986,
+      "sha256": "c14c078d0d79db1cb04ee38a587d53a79e71b64caa952352b8ea4e083bc94523"
     },
     {
       "order": 4,
@@ -3122,8 +3122,8 @@
         "clip-a-named-graphic-owner",
         "scale-materialization"
       ],
-      "bytes": 19022,
-      "sha256": "20c5a4bc30ea3a222ae36bc2fb5631fb6da96a41ef8c32fd4fd898cd34bb8d58"
+      "bytes": 18950,
+      "sha256": "9f4dface42ad85d51435341bf7599d7bc74c9adb44c36c67225dcd90f3d5be55"
     },
     {
       "order": 129,
@@ -3455,8 +3455,8 @@
         "choose-the-matching-documentation",
         "migration-from-v0013"
       ],
-      "bytes": 3033,
-      "sha256": "c76b2c41a694aae4dd8a34aefb58077c7050edb8c1eda0140682f390e790485d"
+      "bytes": 3000,
+      "sha256": "e76ea8f7512b21927fbb78d6c9403fdc22e3bb0d1cb9a6a05349df00f10a52db"
     },
     {
       "order": 150,

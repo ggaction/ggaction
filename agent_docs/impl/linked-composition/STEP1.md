@@ -71,3 +71,10 @@ Canvas/transition 브라우저, 실행 가능한 코드·저장복원·내보내
 - Canonical package: 634 entries, 921,682 compressed bytes and 4,385,119 uncompressed bytes. Tight budgets updated for five composition/target modules and typed metadata.
 - Documentation generation and executable examples are synchronized. Exact Git-linked source/provenance checks require the checkpoint commit, then regenerated immutable source links.
 - App target toolbar, edge addition UI, full refreshed corpus/model training, transition integration and v0.0.25 release preparation remain in the authorized implementation scope.
+
+## Version 0.0.25 integration checkpoint
+
+- Prepared package/runtime/lockfile/README/discovery/documentation version 0.0.25; no registry publish, tag or docs deployment has occurred.
+- Full unit 4,276/4,276, chart 645/645, browser 294/294 and documentation 153/153 tests passed. Built docs passed 150 pages, 1,148 machine-artifact identities and desktop/mobile browser checks before the version-only refresh.
+- Full contracts passed 658/659; the remaining check identified old documented bundle ceilings. Canonical architecture and README now match the measured package-consumer ceilings. Installed Full/Basic/MCP/TypeScript consumers passed after updating scoped declaration signatures.
+- Extended the existing composition lifecycle scenario to execute all four new public actions at its root, including scoped child ownership and shared domains. Its three independent integrity/inventory/effect tests pass. Full realistic, source coverage, final package/provenance and app integration checks continue; this checkpoint does not declare release readiness.

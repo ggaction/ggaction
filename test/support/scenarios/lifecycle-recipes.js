@@ -898,6 +898,11 @@ function buildCompositionLifecycle(factors) {
     gap: 8,
     padding: 4
   })
+    .createOverlay({ target: { childPath: ["left"] }, id: "followingLine", source: "point", type: "line", orderBy: "x" })
+    .editOverlay({ target: { childPath: ["left"], id: "followingLine" }, orderBy: "y" })
+    .createAdjacentPlot({ target: { childPath: ["left"] }, id: "followingPanel", source: "point", position: "bottom",
+      share: { x: true }, plot: { action: "createLinePlot", options: { x: "x", y: "positive", guides: false } } })
+    .editCompositionScales({ share: { y: true } })
     .editCompositionLayout({
       gap: factors.gap,
       padding: factors.padding,
@@ -2364,6 +2369,7 @@ export const REALISTIC_LIFECYCLE_REQUIRED_FEATURES = Object.freeze([
 ]);
 
 export const LIFECYCLE_EXPECTED_ACTIONS = Object.freeze([
+  "createOverlay", "editOverlay", "createAdjacentPlot", "editCompositionScales",
   "reviseData", "applyTextMetrics", "removeTextMetrics",
   "filterData", "createRegressionData", "createWindowData", "createTimeUnitData",
   "createSortedData", "editSortedData",
