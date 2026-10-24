@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.25.
 
-Contract: sha256:c8523eb49a7120ab42de53c81d10522b81035d638134ad41eae5843de74a83c9. Status: development. Runtime source: 43a8b05063087d3294b04d75c723ef4d125946bc. Release baseline: v0.0.13.
+Contract: sha256:084809cc6bd8e991487720493139e7badd745d8500bf4ba98c95c5d5d0c3f84e. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/43a8b05063087d3294b04d75c723ef4d125946bc/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/43a8b05063087d3294b04d75c723ef4d125946bc/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -3510,6 +3510,7 @@ Use `type: "point"` for points at those same result positions. The default `seri
 keeps each source group; `series: "total"` follows the outer endpoints of stacked bars.
 To connect scatterplot results, supply an explicit `orderBy: "x"` or `"y"`.
 Style the new layer with the usual `encodeColor`, `encodeSize`, `encodeStroke` and mark editors.
+Field mappings use the current result items, including after source filters and within each facet.
 Edit the source to change linked positions. `editOverlay({ target: "trend", follow: false })`
 freezes the current geometry as an independent normalized plot snapshot; further source edits
 no longer move it. Independent axis scales require explicit axis selection when creating guides.
@@ -9537,6 +9538,12 @@ Canvas and SVG need only `npm install ggaction`. For Node PNG and PDF, install
 the optional native backend with `npm install ggaction @napi-rs/canvas`.
 Importing the PNG/PDF entry works without the backend; calling it then reports
 the required installation command. No dependency is installed automatically.
+
+Node PNG/PDF keep the requested font families first and append installed common
+CJK, Unicode, and emoji fallback families for missing glyphs. Text and layout
+remain unchanged; fonts are never downloaded. Install an appropriate font on the
+export host for the scripts you use, or specify your own ordered font-family list.
+Browser Canvas and SVG use the browser's font resolution.
 
 ## At a glance
 
@@ -41389,12 +41396,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/43a8b05063087d3294b04d75c723ef4d125946bc/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/43a8b05063087d3294b04d75c723ef4d125946bc/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -44014,9 +44021,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:c8523eb49a7120ab42de53c81d10522b81035d638134ad41eae5843de74a83c9` |
+| Contract fingerprint | `sha256:084809cc6bd8e991487720493139e7badd745d8500bf4ba98c95c5d5d0c3f84e` |
 | Example and dataset source | `ab206c446ae5010eecfd859427775c4785d8aed4` |
-| Runtime source commit | `43a8b05063087d3294b04d75c723ef4d125946bc` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 297 |
 | Declared actions in that release | 234 |
