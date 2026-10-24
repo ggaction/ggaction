@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.25.
 
-Contract: sha256:2a0c1cff7ee097c16a17dd895fb26d06abcc694d5e81179849bca5b6e17efad2. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:efc43a827dfb218663dbc3e532cfb6d22bd4680d23bc8cfd51ecab99afb9836e. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -13777,6 +13777,11 @@ remembered automatic sample count. Automatic samples retain exact domain endpoin
 `editLegend({ channel: "color", values: [40, 60, 80] })` on an existing matching
 scale. Use `editLegendBlock()` for sampled blocks, order, title, labels, spacing,
 and supported symbol appearance when a target has multiple blocks.
+Automatic symlog gradient ticks spread across the transformed scale and include
+zero when it replaces an interior sample. Automatic log, power, square-root and
+symlog gradient labels are reduced when they would overlap; the stored `count`
+remains the requested sampling count. A longer gradient or smaller label font can
+show more ticks. Explicit `values` always remain exact, including close labels.
 Right-side layout requires sufficient right margin; bottom layout requires
 sufficient bottom margin; top layout requires enough top margin for its title,
 item grid, offset, and optional border. A fixed outer Canvas reports a layout error when there is insufficient space. Use
@@ -44026,7 +44031,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:2a0c1cff7ee097c16a17dd895fb26d06abcc694d5e81179849bca5b6e17efad2` |
+| Contract fingerprint | `sha256:efc43a827dfb218663dbc3e532cfb6d22bd4680d23bc8cfd51ecab99afb9836e` |
 | Example and dataset source | `ab206c446ae5010eecfd859427775c4785d8aed4` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

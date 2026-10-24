@@ -97,13 +97,16 @@ for(const position of ['left','right','top','bottom','top-left','top-right','bot
   assert.deepEqual(deserializeProgram(serializeProgram(r)).graphicSpec,r.graphicSpec);
 });
 
-test('count validation and log/symlog/midpoint sampling reuse existing continuous semantics',()=>{
+test('color symbols retain value-space samples independently of gradient tick spacing',()=>{
   const p=source();
   for(const count of [0,1,2.2,10001]) assert.throws(()=>p.createLegend({representation:'symbols',count}));
   for(const type of ['log','symlog']) {
     const q=p.editColorScale({type,domain:[1,100]}).createLegend({representation:'symbols',count:5});
     const gradient=p.editColorScale({type,domain:[1,100]}).createLegend({count:5});
-    assert.deepEqual(q.graphicSpec.objects.colorGradientLabels.items.map(i=>i.properties.text),gradient.graphicSpec.objects.colorGradientLabels.items.map(i=>i.properties.text));
+    const expected=type==='log'?['1','10','100']:['20','40','60','80','100'];
+    assert.deepEqual(q.graphicSpec.objects.colorGradientLabels.items.map(i=>i.properties.text),expected);
+    const switched=gradient.editLegend({representation:'symbols'});
+    assert.deepEqual(switched.graphicSpec.objects.colorGradientLabels.items.map(i=>i.properties.text),expected);
   }
   const mid=p.editColorScale({domain:[1,9],midpoint:4}).createLegend({representation:'symbols',count:3});
   assert.equal(symbols(mid).length,4);

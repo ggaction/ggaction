@@ -8,6 +8,7 @@ import {
   normalizeTransformParameters,
   resolveMappingRange,
   resolveTransformedDomain,
+  sampleSymlogValues,
   transformedTicks,
   validateCompleteScaleType,
   validateScaleTypeForRole,
@@ -352,4 +353,40 @@ test("creates deterministic transformed ticks and frozen results", () => {
   );
   assert.equal(boundedLogTicks.length <= 10_000, true);
   assert.equal(boundedLogTicks.every(Number.isFinite), true);
+});
+
+test("symlog samples distribute signed values across transformed space without changing axis ticks", () => {
+  for (const constant of [0.01, 1, 10]) {
+    const domain = [-99 * constant, 99 * constant];
+    const expected = [-99, -9, 0, 9, 99].map(value => value * constant);
+    const samples = sampleSymlogValues(domain, 5, { constant });
+    samples.forEach((value, index) => assert.ok(Math.abs(value - expected[index]) < 1e-9));
+    assert.deepEqual(sampleSymlogValues([...domain].reverse(), 5, { constant }), [...samples].reverse());
+    assert.ok(Object.isFrozen(samples));
+  }
+  const domain = Object.freeze([-20839, 955]);
+  const values = sampleSymlogValues(domain, 5);
+  const fractions = mapTransformedValues(values, domain, [0, 1], { type: "symlog" });
+  assert.equal(values[0], domain[0]);
+  assert.equal(values.at(-1), domain[1]);
+  assert.equal(values[2], 0);
+  assert.ok(fractions.every((value, index) => index === 0 || value - fractions[index - 1] > 0.15));
+  assert.deepEqual(transformedTicks("symlog", domain, 5), [-20000, -15000, -10000, -5000, 0]);
+  assert.deepEqual(sampleSymlogValues(domain, 2), domain);
+});
+
+test("symlog sampling preserves finite monotone endpoints at extreme magnitudes", () => {
+  for (const constant of [1e-300, 1, 1e300]) {
+    for (const domain of [[-1e300, 1e300], [0, 1e300], [-1e-300, 1e-300], [1e-300, 1e-299]]) {
+      const values = sampleSymlogValues(domain, 7, { constant });
+      assert.equal(values[0], domain[0]);
+      assert.equal(values.at(-1), domain[1]);
+      assert.ok(values.every(Number.isFinite));
+      assert.ok(values.every((value, index) => index === 0 || value > values[index - 1]));
+    }
+  }
+  for (const count of [0, 1, 2.5, 10001, Infinity]) {
+    assert.throws(() => sampleSymlogValues([-1, 1], count), /Sample count/);
+  }
+  assert.throws(() => sampleSymlogValues([-1, 1], 5, { constant: 0 }));
 });
