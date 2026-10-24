@@ -24,8 +24,8 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 export const PACKAGE_LIMITS = Object.freeze({
   entries: 624, // Previous623 files plus the shared facet axis-gap owner.
-  packedBytes: 904_000, // Node24 measured903474; Node22/24 have624 exact file contents.
-  unpackedBytes: 4_272_000 // Measured 4,271,487 bytes after synchronized release features.
+  packedBytes: 904_000, // Node22 measured901255 after complete-axis compaction; 624 files.
+  unpackedBytes: 4_272_000 // Measured 4,262,868 bytes after complete-axis compaction.
 });
 
 const REQUIRED_FILES = Object.freeze([
@@ -87,6 +87,7 @@ const COMPACT_JAVASCRIPT_FILES = Object.freeze([
   "src/grammar/legendBlocks.js",
   "src/core/graphicProperties.js",
   "src/grammar/axisTextPlacement.js",
+  "src/actions/guides/axes/edit.js",
   "src/actions/guides/axes/labels.js",
   "src/actions/guides/axes/titles.js",
   "src/grammar/guideDash.js",

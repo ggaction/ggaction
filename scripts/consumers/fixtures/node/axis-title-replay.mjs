@@ -24,4 +24,21 @@ export const cases = [{ id: "guides/prospective-numeric-axis-title-replay", asyn
     const png = await renderToPNGBuffer(q);
     assert.equal(png.width, 154); assert.equal(png.height, 177);
   }
+  const createFramed = offset => chart()
+    .createCanvas({ width: 270, height: 295, margin: { left: 57, right: 13, top: 57, bottom: 38 } })
+    .createData({ values: [{ x: 0, y: 6 }, { x: 1, y: 10 }, { x: 2, y: 16 }] })
+    .createLinePlot({ x: { field: "x", scale: { domain: [0, 2] } },
+      y: { field: "y", scale: { domain: [5, 16] } }, guides: false })
+    .createYAxis({ offset, ticksAndLabels: { values: [6, 8, 10, 12, 14, 16],
+      ticks: { length: 5, alongOffset: 0.5 },
+      labels: { fontSize: 10, format: ".2f", offset: 6.5, alongOffset: 0.890625 } },
+      title: { text: "Quantity", fontSize: 11, fontWeight: 700, offset: 40.5, alongOffset: 0.5 } });
+  const framed = createFramed(0), original = serializeProgram(framed);
+  const moved = framed.editYAxis({ offset: 4 });
+  assert.deepEqual(moved.graphicSpec, createFramed(4).graphicSpec);
+  assert.deepEqual(moved.editYAxis({ offset: 0 }).graphicSpec, framed.graphicSpec);
+  assert.deepEqual(deserializeProgram(serializeProgram(moved)).graphicSpec, moved.graphicSpec);
+  assert.throws(() => moved.editYAxisLabels({ offset: 20 }), /overlap/);
+  assert.equal(serializeProgram(framed), original);
+
 } }];

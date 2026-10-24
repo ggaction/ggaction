@@ -2691,3 +2691,17 @@ Node24.22.1 실제 installed consumer에서 Full453148/Basic232016gzip bytes가 
 별도 측정 검토 후 기존1000byte 최소 단계454000/233000으로만 갱신한다. Canonical table과
 README도 같은 값을 명시하며 보호 documentation-truth test는 바꾸지 않는다. SVG25000,
 package624entries/904000packed/4272000unpacked, storage·수치·픽셀·오류·coverage 기준은 유지한다.
+
+
+Whole-axis edit도 기존 prospective planner를 연속된 wrapped leaf edit 구간에 재사용한다.
+기존 removal 순서는 유지하며 numeric 제목과 레이블이 같은 새 axis frame으로 이동한 최종
+형제 상태를 검증한다. Planner context는 반환 시 복원되고 실제 최종 충돌·focused label-only
+충돌은 계속 거절한다. 정확한 aggregate 동작은 Current AXES가 소유한다.
+
+공식 package staging은 기존 JavaScript compaction 대상에 complete-axis edit owner를 포함한다.
+원본 파일과 공개 action 이름·저장 schema·파일 allowlist는 유지한다. 앞선 실제 CI의
+904236packed 초과 실패를 보존하고, Node22.23.1 canonical staged 실측은624entries,
+901255packed/4262868unpacked bytes다. 기존904000/4272000 및 browser·storage·수치·기하·coverage
+한도는 모두 유지한다. 설치한 package의 whole-axis 이동·복원·persistence·실제 충돌 거절을
+기존 공개 API consumer case에서 함께 검증한다. 이 로컬 측정은 새 registry 배포나 Node24
+전체 검증을 대신하지 않는다.
