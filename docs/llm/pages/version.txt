@@ -10,8 +10,8 @@ The comparison baseline below is the older release used by the migration notes.
 | Identity | Value |
 | --- | --- |
 | Contract fingerprint | `sha256:14d5b40b0994b3797725e75118da6588ca2b50e49a485fb96afe729865eb03b4` |
-| Example and dataset source | `codex/overlay-composition-v025` |
-| Runtime source commit | `current` |
+| Example and dataset source | `ab206c446ae5010eecfd859427775c4785d8aed4` |
+| Runtime source commit | `ab206c446ae5010eecfd859427775c4785d8aed4` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 297 |
 | Declared actions in that release | 234 |

@@ -3,9 +3,9 @@
   "status": "development",
   "packageVersion": "0.0.24",
   "contractId": "sha256:14d5b40b0994b3797725e75118da6588ca2b50e49a485fb96afe729865eb03b4",
-  "sourceCommit": null,
-  "sourceRef": "main",
-  "exampleSourceRef": "codex/overlay-composition-v025",
+  "sourceCommit": "ab206c446ae5010eecfd859427775c4785d8aed4",
+  "sourceRef": "ab206c446ae5010eecfd859427775c4785d8aed4",
+  "exampleSourceRef": "ab206c446ae5010eecfd859427775c4785d8aed4",
   "baseline": {
     "tag": "v0.0.13",
     "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",

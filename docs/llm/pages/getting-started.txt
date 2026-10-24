@@ -138,11 +138,11 @@ across the supported Node release matrix.
 ## Runnable repository examples
 
 Use the
-[generated repository example index](https://github.com/ggaction/ggaction/blob/codex/overlay-composition-v025/examples/README.md)
+[generated repository example index](https://github.com/ggaction/ggaction/blob/ab206c446ae5010eecfd859427775c4785d8aed4/examples/README.md)
 for complete runnable modules. Browse the
 [chart gallery](../../gallery/) for visual examples,
 or use
-the [Quarto and Observable JS example](https://github.com/ggaction/ggaction/tree/codex/overlay-composition-v025/examples/quarto-ojs/)
+the [Quarto and Observable JS example](https://github.com/ggaction/ggaction/tree/ab206c446ae5010eecfd859427775c4785d8aed4/examples/quarto-ojs/)
 when authoring an `.qmd` document.
 
 ## Next
