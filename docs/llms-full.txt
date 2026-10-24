@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.24.
 
-Contract: sha256:d089b881de362244e3fb5f4adf86eab2b60b26364b41163213c7e5dc87b588cd. Status: published-release. Runtime source: bbd1550a041920c49ce00dd34ebf6aa5c2f9b3a2. Release baseline: v0.0.13.
+Contract: sha256:9e736a4a6bd1c377af7df43ef182de0acc9fabc9ced23335cc5d6060d6dd7812. Status: published-release. Runtime source: b16b3351da881714e88392712827d29646f78278. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/bbd1550a041920c49ce00dd34ebf6aa5c2f9b3a2/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/b16b3351da881714e88392712827d29646f78278/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/bbd1550a041920c49ce00dd34ebf6aa5c2f9b3a2/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/b16b3351da881714e88392712827d29646f78278/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -40885,12 +40885,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/bbd1550a041920c49ce00dd34ebf6aa5c2f9b3a2/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/b16b3351da881714e88392712827d29646f78278/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/bbd1550a041920c49ce00dd34ebf6aa5c2f9b3a2/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/b16b3351da881714e88392712827d29646f78278/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -43469,9 +43469,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:d089b881de362244e3fb5f4adf86eab2b60b26364b41163213c7e5dc87b588cd` |
+| Contract fingerprint | `sha256:9e736a4a6bd1c377af7df43ef182de0acc9fabc9ced23335cc5d6060d6dd7812` |
 | Example and dataset source | `6422776b0a379c8c89809f41b434f366fbc1f143` |
-| Runtime source commit | `bbd1550a041920c49ce00dd34ebf6aa5c2f9b3a2` |
+| Runtime source commit | `b16b3351da881714e88392712827d29646f78278` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 293 |
 | Declared actions in that release | 234 |
@@ -43616,6 +43616,8 @@ program
 
 The complete-axis `offset` moves its line, ticks, labels and title outward together.
 It must be non-negative; zero restores the plot edge. Marks and grids stay fixed.
+Whole-axis edits validate labels against the final title position on the same axis,
+including numeric title offsets. A genuine final collision still rejects the edit.
 The nested title `offset` is signed: positive outward, negative into the plot.
 `alongOffset` is a separate translation along the axis: positive right for X and
 down for Y, even with a reversed scale. Numeric `at` still means a scale-domain value.
