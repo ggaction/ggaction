@@ -217,3 +217,22 @@ test("incomplete sources fail with an actionable position requirement", () => {
   const p = chart().createCanvas().createData({ values: rows }).createPointMark({ id: "points" }).encodeX({ target: "points", field: "x", fieldType: "nominal" });
   assert.throws(() => p.createOverlay({ source: "points", orderBy: "x" }), /complete x and y/);
 });
+
+
+test("line selection resolves final series membership and missing segments", () => {
+  const p = bars({ color: { field: "group", layout: "stack" } })
+    .createOverlay({ id: "trend", source: "bars" });
+  const items = resolveMarkItems(p, "trend");
+  assert.equal(items.length, 2);
+  assert.deepEqual(items.map(item => item.fields.group).sort(), ["one", "two"]);
+  assert.deepEqual(items.map(item => item.members.length), [3, 2]);
+  assert.ok(items.every(item => item.graphicIds.length === 1));
+  const selected = p.selectMarks({ target: "trend", field: "group", op: "eq", value: "one" });
+  assert.deepEqual(selected.graphicSpec, p.graphicSpec);
+  const sparse = bars({ values: [{ x: "A", y: 4 }, { x: "C", y: 8 }] })
+    .editXScale({ target: "bars", domain: ["A", "B", "C"] })
+    .createOverlay({ id: "trend", source: "bars" });
+  assert.deepEqual(resolveMarkItems(sparse, "trend").map(item => item.members.length), [1, 1]);
+  assert.deepEqual(resolveMarkItems(sparse.editOverlay({ target: "trend", missing: "connect" }), "trend")
+    .map(item => item.members.length), [2]);
+});

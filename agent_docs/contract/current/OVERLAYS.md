@@ -39,3 +39,5 @@
 
 - Proposed (NOT IMPLEMENTED): None. No additional proposal is part of this contract.
 - ✅ Covered. Evidence: `test/unit/actions/marks/linked-overlay.test.js` covers source updates, total selection, exclusive detachment, exact frozen geometry, independent source edits/removal and editable serialization. `test/contracts/linked-overlay.test.js` verifies inspection metadata and one top-level action per recommendation.
+
+Accessible-data export resolves linked overlay vertices at their final aggregate grain, preserving series fields and following source edits. It does not re-aggregate the source rows as an independent line.
