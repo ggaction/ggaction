@@ -15,6 +15,40 @@ The selected source mark's ID names the original view; the new `id` names both t
 adjacent view and its initial mark. Nested concats use explicit child paths when adding
 another view. A facet is one editable source view; generated cells remain derived.
 
+To attach one wide chart below an entire row (or a tall chart beside a column),
+select the concat itself as the receiver. Its original composition ID names the
+preserved group inside the new parent. A concat requires an explicit structured
+`source: { childPath, id }`; the source path is **relative to the receiving group**.
+It identifies the unit or facet supplying data and defaults, independently of where
+the new chart is attached. Overlays and generated facet cells cannot be sources.
+
+> **Executable complete.** Import chart from ggaction. This complete example includes all data and adds a full-width line below an existing pair using an explicit source panel.
+
+```javascript
+import { chart } from "ggaction";
+
+const values = [{ month: 1, sales: 20 }, { month: 2, sales: 35 }];
+const bars = chart().createCanvas({ plot: { width: 240, height: 220 }, margin: 80 })
+  .createData({ id: "sales", values })
+  .createBarPlot({ id: "bars", x: "month", y: "sales" });
+const pair = bars.createAdjacentPlot({ id: "line", source: "bars", position: "right" });
+const withWideBottom = pair.createAdjacentPlot({
+  id: "bottom",
+  source: { childPath: ["bars"], id: "bars" },
+  position: "bottom",
+  plot: { action: "createLinePlot", options: { x: "month", y: "sales" } },
+  share: { x: true },
+  align: "plot"
+});
+```
+
+Top/bottom additions span the receiving group's plot-union width; left/right
+additions span its plot-union height. The other dimension comes from the explicit
+source view. This changes plot geometry without stretching text or symbols.
+To attach to an inner group, set `target: { childPath: ["group"] }` and provide a
+source path relative to that group. Existing group titles remain local to it.
+The new chart ID must differ from the preserved group's composition ID.
+
 Horizontal placement defaults to shared Y and vertical placement to shared X.
 Explicit `share` replaces that default. `hconcat` and `vconcat` also accept `share`.
 Shared channels must use compatible fields, measurement units and scale mappings.

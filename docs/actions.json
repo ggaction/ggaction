@@ -36664,7 +36664,7 @@
         {
           "name": "source",
           "required": false,
-          "type": "string | undefined"
+          "type": "string | { childPath: readonly string[]; id: string; } | undefined"
         },
         {
           "name": "position",

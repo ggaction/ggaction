@@ -234,7 +234,10 @@ export type AdjacentPlotSpecification =
   | { action: "createParallelCoordinates"; options: AdjacentConstructorOptions<CreateParallelCoordinatesOptions> }
   | { action: "createTextPlot"; options: AdjacentConstructorOptions<CreateTextPlotOptions> };
 export interface CreateAdjacentPlotOptions {
-  id?: string; source?: string; position?: "left" | "right" | "top" | "bottom";
+  id?: string;
+  /** Source mark in a unit/facet, or an explicit panel path relative to the receiving concat. */
+  source?: string | { childPath: readonly string[]; id: string };
+  position?: "left" | "right" | "top" | "bottom";
   plot?: AdjacentPlotSpecification; share?: CompositionShares; gap?: number;
   align?: CompositionAlign | "plot";
 }
@@ -5705,7 +5708,9 @@ export class ChartProgram {
   editLegendBorder(options: TargetedOptions<EditLegendBorderOptions>): ChartProgram;
   removeLegend(options?: TargetedOptions<RemoveLegendOptions>): ChartProgram;
   createGuides(options?: TargetedOptions<CreateGuidesOptions>): ChartProgram;
+  /** Omit target for one overall unit/facet/concat title; childPath targets one view. */
   createTitle(options: TargetedOptions<TitleOptions>): ChartProgram;
+  /** Edit the selected view title, or the overall composition title when target is omitted. */
   editTitle(options: TargetedOptions<EditTitleOptions>): ChartProgram;
   removeTitle(): ChartProgram;
 

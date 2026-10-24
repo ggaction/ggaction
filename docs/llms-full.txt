@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.25.
 
-Contract: sha256:5683139482bafda8265cf1f65bc6dfce9a16f455e91c69a32fc64c1c208f1e11. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:8cd24ba8463988e7fa5d2784f87d5526c92af8e5196eb3ec44852def2ffbf9a4. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -32149,7 +32149,10 @@ export type CoordinateAspectAlign = "start" | "center" | "end";
 
 ```typescript
 export interface CreateAdjacentPlotOptions {
-  id?: string; source?: string; position?: "left" | "right" | "top" | "bottom";
+  id?: string;
+  /** Source mark in a unit/facet, or an explicit panel path relative to the receiving concat. */
+  source?: string | { childPath: readonly string[]; id: string };
+  position?: "left" | "right" | "top" | "bottom";
   plot?: AdjacentPlotSpecification; share?: CompositionShares; gap?: number;
   align?: CompositionAlign | "plot";
 }
@@ -42751,6 +42754,40 @@ The selected source mark's ID names the original view; the new `id` names both t
 adjacent view and its initial mark. Nested concats use explicit child paths when adding
 another view. A facet is one editable source view; generated cells remain derived.
 
+To attach one wide chart below an entire row (or a tall chart beside a column),
+select the concat itself as the receiver. Its original composition ID names the
+preserved group inside the new parent. A concat requires an explicit structured
+`source: { childPath, id }`; the source path is **relative to the receiving group**.
+It identifies the unit or facet supplying data and defaults, independently of where
+the new chart is attached. Overlays and generated facet cells cannot be sources.
+
+> **Executable complete.** Import chart from ggaction. This complete example includes all data and adds a full-width line below an existing pair using an explicit source panel.
+
+```javascript
+import { chart } from "ggaction";
+
+const values = [{ month: 1, sales: 20 }, { month: 2, sales: 35 }];
+const bars = chart().createCanvas({ plot: { width: 240, height: 220 }, margin: 80 })
+  .createData({ id: "sales", values })
+  .createBarPlot({ id: "bars", x: "month", y: "sales" });
+const pair = bars.createAdjacentPlot({ id: "line", source: "bars", position: "right" });
+const withWideBottom = pair.createAdjacentPlot({
+  id: "bottom",
+  source: { childPath: ["bars"], id: "bars" },
+  position: "bottom",
+  plot: { action: "createLinePlot", options: { x: "month", y: "sales" } },
+  share: { x: true },
+  align: "plot"
+});
+```
+
+Top/bottom additions span the receiving group's plot-union width; left/right
+additions span its plot-union height. The other dimension comes from the explicit
+source view. This changes plot geometry without stretching text or symbols.
+To attach to an inner group, set `target: { childPath: ["group"] }` and provide a
+source path relative to that group. Existing group titles remain local to it.
+The new chart ID must differ from the preserved group's composition ID.
+
 Horizontal placement defaults to shared Y and vertical placement to shared X.
 Explicit `share` replaces that default. `hconcat` and `vconcat` also accept `share`.
 Shared channels must use compatible fields, measurement units and scale mappings.
@@ -44053,7 +44090,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:5683139482bafda8265cf1f65bc6dfce9a16f455e91c69a32fc64c1c208f1e11` |
+| Contract fingerprint | `sha256:8cd24ba8463988e7fa5d2784f87d5526c92af8e5196eb3ec44852def2ffbf9a4` |
 | Example and dataset source | `ab206c446ae5010eecfd859427775c4785d8aed4` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

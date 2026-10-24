@@ -234,7 +234,10 @@ export type AdjacentPlotSpecification =
   | { action: "createParallelCoordinates"; options: AdjacentConstructorOptions<CreateParallelCoordinatesOptions> }
   | { action: "createTextPlot"; options: AdjacentConstructorOptions<CreateTextPlotOptions> };
 export interface CreateAdjacentPlotOptions {
-  id?: string; source?: string; position?: "left" | "right" | "top" | "bottom";
+  id?: string;
+  /** Source mark in a unit/facet, or an explicit panel path relative to the receiving concat. */
+  source?: string | { childPath: readonly string[]; id: string };
+  position?: "left" | "right" | "top" | "bottom";
   plot?: AdjacentPlotSpecification; share?: CompositionShares; gap?: number;
   align?: CompositionAlign | "plot";
 }

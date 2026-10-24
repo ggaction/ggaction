@@ -1,3 +1,4 @@
+import { resolveAdjacentSource } from "./selectors/adjacentSource.js";
 import { normalizeActionTargets } from "./grammar/actionTargets.js";
 import { resolveGraphicClipBounds, resolveGraphicParentOffset } from "./grammar/schemas/graphicBounds.js";
 import { resolveFacetDefinition, resolveFacetGridDefinition } from "./grammar/facets/index.js";
@@ -170,17 +171,14 @@ export function describeAction(program, { action, target, options = {} } = {}) {
   let fieldFinding = [];
   if (action === "createAdjacentPlot") {
     const scoped = atChildPath(program, target?.childPath);
-    if (scoped.compositionSpec && scoped.compositionSpec.type !== "facet") fieldFinding.push({ severity: "error", code: "unsupported-combination", reason: "composition-scope", message: "Select a unit or facet view with childPath before adding an adjacent chart." });
-    else {
-      const owners = ownership(scoped);
-      try { resolveEligibleLayer(scoped, { target: options.source ?? target?.id, targetOption: "source", label: "adjacent chart source",
-        predicate: layer => !owners.has(layer.id) && !layer.derivedBindings?.overlay && layer.data !== undefined }); }
-      catch (error) {
-        if (options.source || target?.id) fieldFinding.push({ severity: "error", code: "missing-resource", reason: "adjacent-source", message: error.message });
-        else missing.push("source");
-      }
+    try { resolveAdjacentSource(scoped, options.source ?? target?.id); }
+    catch (error) {
+      if (options.source || target?.id || (scoped.compositionSpec && scoped.compositionSpec.type !== "facet"))
+        fieldFinding.push({ severity: "error", code: "missing-resource", reason: "adjacent-source", message: error.message });
+      else missing.push("source");
     }
   }
+
   if (action === "editCompositionScales") {
     if (!program.compositionSpec || program.compositionSpec.type === "facet") fieldFinding.push({ severity: "error", code: "unsupported-combination", reason: "composition-scope", message: "editCompositionScales requires a concat parent." });
     if (options.share !== undefined) try {

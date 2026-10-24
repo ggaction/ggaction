@@ -23,6 +23,14 @@ row.encodeColor({ target: [{ childPath: ["left"], id: "bars" }, { childPath: ["r
 row.createTitle({ target: { childPath: ["left"] }, text: "Sales" });
 row.encodeOpacity({ target: ["bars", "line"], value: 0.5 });
 row.createAdjacentPlot({ target: { childPath: ["left"] }, id: "more" });
+row.createAdjacentPlot({ source: { childPath: ["left"] as const, id: "bars" }, id: "bottom", position: "bottom" });
+row.createAdjacentPlot({ target: { childPath: ["group"] }, source: { childPath: ["right"], id: "trend" } });
+// @ts-expect-error group sources require an explicit mark
+row.createAdjacentPlot({ source: { childPath: ["left"] } });
+// @ts-expect-error source paths are arrays
+row.createAdjacentPlot({ source: { childPath: "left", id: "bars" } });
+// @ts-expect-error source selectors have no wildcard
+row.createAdjacentPlot({ source: { childPath: [], id: "bars", all: true } });
 basicChart().encodeColor({ target: "bars", value: "red" });
 // @ts-expect-error empty target list is ambiguous
 row.encodeOpacity({ target: [], value: 0.5 });
@@ -59,6 +67,7 @@ test("inspection exposes adjacency policies and respects explicit editable view 
   assert.equal(describeAction(p, { action: "editCompositionScales", options: { share: { y: true } } }).applicability, "incompatible");
   const row = p.createAdjacentPlot({ id: "line" });
   assert.equal(describeAction(row, { action: "createAdjacentPlot" }).applicability, "incompatible");
+  assert.equal(describeAction(row, { action: "createAdjacentPlot", options: { source: { childPath: ["bars"], id: "bars" } } }).applicability, "supported");
   assert.equal(describeAction(row, { action: "encodeColor", options: { target: { childPath: ["line"], id: "line" }, value: "red" } }).applicability, "supported");
   assert.equal(describeAction(row, { action: "editCompositionScales", options: { share: {} } }).applicability, "incompatible");
   assert.equal(describeAction(row, { action: "editCompositionScales", options: { share: { y: false } } }).applicability, "supported");

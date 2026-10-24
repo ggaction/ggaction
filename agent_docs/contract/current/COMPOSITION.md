@@ -611,10 +611,19 @@ facets resize their source plot through editFacetSource. Text and symbols are re
 
 ## `createAdjacentPlot`
 
-Creates a concat parent around the current complete unit or facet view and one new chart. `source` is an
+Creates a concat parent around the receiving complete unit, facet, or concat view and one new chart. On units/facets, `source` is an
 explicit/current/unique independent mark; `id` names the new view and mark (default `adjacent`,
 which must differ from the source view ID). Original view ID is the selected source mark ID.
-The new chart receives an independent snapshot of the source's materialized data and Canvas frame.
+A concat receiver requires `source: { childPath: readonly string[], id: ExistingIndependentMarkId }`.
+The path is relative to the receiving view selected by `target.childPath` (root when omitted),
+and must resolve to a unit or facet base mark. Missing paths/IDs, a concat source, an overlay
+source, or a generated facet cell reject atomically. There is no implicit first-child source.
+The existing concat is retained under its composition ID; a colliding new ID rejects.
+For top/bottom, the new plot width is the receiver's plot-union width and its height comes from
+the source view. Left/right use the receiver's plot-union height and source width. Group-local
+titles and guide settings remain attached to the original group. Existing alignment and sharing
+policies govern final snapshots; no bitmap stretching is involved.
+The new chart receives an independent snapshot of the source's materialized data and theme.
 `plot.options.data` may name another materialized dataset in the same source view.
 `plot.options.id` is rejected; the top-level `id` owns both the new view and mark. The default is a line,
 right placement, plot alignment, and shared Y. Left also shares Y; top/bottom share X. Caller
@@ -628,12 +637,12 @@ inferred values. New chart appearance uses its constructor; inherited theme/text
 
 ### Formal values — `createAdjacentPlot`
 
-- Implemented: `createAdjacentPlot({ id?: UserId, source?: ExistingIndependentMarkId, position?: "left"|"right"|"top"|"bottom", plot?: AdjacentPlotSpecification, share?: CompositionShares, gap?: NonNegativeFinite, align?: "plot"|"start"|"center"|"end" }): ChartProgram`.
+- Implemented: `createAdjacentPlot({ id?: UserId, source?: ExistingIndependentMarkId | { childPath: readonly string[], id: ExistingIndependentMarkId }, position?: "left"|"right"|"top"|"bottom", plot?: AdjacentPlotSpecification, share?: CompositionShares, gap?: NonNegativeFinite, align?: "plot"|"start"|"center"|"end" }): ChartProgram`.
 - Proposed (NOT IMPLEMENTED): None.
 
 ### Value coverage — `createAdjacentPlot`
 
-- ✅ Covered. Evidence: `test/unit/actions/composition/shared-adjacent.test.js`, `test/charts/linked-composition/`, and `examples/shared-adjacent/` cover four edges, shared domains, primitive/pixel equivalence, nesting, persistence, and atomic target edits.
+- ✅ Covered. Evidence: `test/unit/actions/composition/shared-adjacent.test.js`, `test/unit/actions/composition/adjacent-groups.test.js` (group extent, explicit relative sources, scoped edits, titles, legends, and rejection), `test/charts/linked-composition/`, and `examples/shared-adjacent/` cover four edges, shared domains, primitive/pixel equivalence, nesting, persistence, and atomic target edits.
 
 ## `editCompositionScales`
 

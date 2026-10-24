@@ -3,10 +3,9 @@ import { compositionPlotBounds } from "../../materialization/composition.js";
 import { closedAction, getWrappedActionMetadata } from "../../core/action.js";
 import { validateOptionObject } from "../../core/validation.js";
 import { validateUserId } from "../../core/identifiers.js";
-import { resolveEligibleLayer } from "../../selectors/layers.js";
+import { resolveAdjacentSource } from "../../selectors/adjacentSource.js";
 import { requireMaterializedDataset } from "../../selectors/datasets.js";
 import { findSemanticScale } from "../../selectors/scales.js";
-import { ownership } from "../../selectors/markOwners.js";
 import { inheritTextMetrics } from "../textMetrics/index.js";
 import { resolveEffectiveThemeFrame } from "../theme/state.js";
 import { normalizeCompositionShares } from "../../core/compositionScales.js";
@@ -33,8 +32,9 @@ function inheritedPosition(program, layer, channel, share) {
 const createAdjacentPlot = /* @__PURE__ */ closedAction({
   op: "createAdjacentPlot", description: "Add a chart beside the current view with shared scales and aligned plots.", scope: "any"
 }, ["id", "source", "position", "plot", "share", "gap", "align"], function (args = {}) {
-  if (this.compositionSpec && this.compositionSpec.type !== "facet") throw new Error("Choose an explicit childPath before adding an adjacent plot to a concat.");
-  const template = this.compositionSpec ? facetUnitTemplate(this, true) : this;
+  const grouped = this.compositionSpec && this.compositionSpec.type !== "facet";
+  const { view: sourceView, layer: source } = resolveAdjacentSource(this, args.source);
+  const template = sourceView.compositionSpec ? facetUnitTemplate(sourceView, true) : sourceView;
   const position = args.position ?? "right";
   if (!["left", "right", "top", "bottom"].includes(position)) throw new Error("Adjacent position must be left, right, top, or bottom.");
   const horizontal = ["left", "right"].includes(position);
@@ -43,31 +43,30 @@ const createAdjacentPlot = /* @__PURE__ */ closedAction({
   validateOptionObject(plot, ["action", "options"], "Adjacent plot");
   const action = plot.action ?? "createLinePlot";
   if (!ADJACENT_PLOT_ACTIONS.includes(action) || !getWrappedActionMetadata(this[action])) throw new Error(`Unknown adjacent plot action "${action}".`);
-  const owners = ownership(this);
-  const source = resolveEligibleLayer(this, { target: args.source, targetOption: "source", label: "adjacent chart source",
-    predicate: layer => !owners.has(layer.id) && !layer.derivedBindings?.overlay && layer.data !== undefined });
   const id = args.id === undefined ? "adjacent" : validateUserId(args.id, "Adjacent view id");
-  const sourceId = source.id;
+  const sourceId = grouped ? this.compositionSpec.id : source.id;
   if (id === sourceId) throw new Error("Adjacent view id must differ from its source view id.");
   const supplied = plot.options ?? {};
   if (supplied === null || typeof supplied !== "object" || Array.isArray(supplied)) throw new TypeError("Adjacent plot options must be an object.");
   if (Object.hasOwn(supplied, "id")) throw new Error("Adjacent plot id is owned by the adjacent view; use the top-level id.");
   const dataset = requireMaterializedDataset(template, supplied.data ?? source.data);
   const bounds = compositionPlotBounds(this);
+  const sourceBounds = compositionPlotBounds(sourceView);
   const canvas = this.graphicSpec.objects.canvas.properties;
-  let child = new this.constructor().createCanvas({ plot: { width: bounds.width, height: bounds.height },
+  let child = new this.constructor().createCanvas({ plot: { width: grouped && horizontal ? sourceBounds.width : bounds.width,
+      height: grouped && !horizontal ? sourceBounds.height : bounds.height },
     margin: template.materializationConfigs.canvas.margin, background: canvas.background });
   const theme = resolveEffectiveThemeFrame(template.materializationConfigs.theme);
   if (theme) child = child.applyTheme({ theme: { base: theme.name, tokens: theme.tokens } });
   child = inheritTextMetrics(template, child).createData({ id: dataset.id, values: dataset.values });
   const inherit = ["createLinePlot", "createBarPlot"].includes(action);
   const defaults = inherit ? Object.fromEntries(["x", "y"].flatMap(channel => {
-    const value = inheritedPosition(this, source, channel, share);
+    const value = inheritedPosition(sourceView, source, channel, share);
     return value ? [[channel, value]] : [];
   })) : {};
   const color = source.encoding?.color;
   if (inherit && color && ["nominal", "ordinal"].includes(color.fieldType)) {
-    const { id: _id, ...scale } = findSemanticScale(this, color.scale);
+    const { id: _id, ...scale } = findSemanticScale(sourceView, color.scale);
     defaults.color = { field: color.field, fieldType: color.fieldType, scale };
   }
   const options = { ...defaults, ...supplied, id, data: dataset.id };

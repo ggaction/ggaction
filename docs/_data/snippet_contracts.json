@@ -721,6 +721,20 @@
   {
     "file": "api/composition/editing.md",
     "block": 1,
+    "heading": "Add an adjacent chart and share scales",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [
+      "source: \"bars\""
+    ],
+    "prerequisites": "Import chart from ggaction. This complete example includes all data and adds a full-width line below an existing pair using an explicit source panel.",
+    "sha256": "df9c376239fce696ce86921bba3f4b3196feb9e6cb87ac129fd7feb6360492d6",
+    "executable": true
+  },
+  {
+    "file": "api/composition/editing.md",
+    "block": 2,
     "heading": "Edit the layout",
     "mode": "fragment",
     "environment": "esm-context",
@@ -734,7 +748,7 @@
   },
   {
     "file": "api/composition/editing.md",
-    "block": 2,
+    "block": 3,
     "heading": "Edit the layout",
     "mode": "fragment",
     "environment": "esm-context",
@@ -748,7 +762,7 @@
   },
   {
     "file": "api/composition/editing.md",
-    "block": 3,
+    "block": 4,
     "heading": "Edit facet scale and guide policies",
     "mode": "fragment",
     "environment": "esm-context",
@@ -762,7 +776,7 @@
   },
   {
     "file": "api/composition/editing.md",
-    "block": 4,
+    "block": 5,
     "heading": "Replace the repeated source recipe",
     "mode": "fragment",
     "environment": "esm-context",
@@ -778,7 +792,7 @@
   },
   {
     "file": "api/composition/editing.md",
-    "block": 5,
+    "block": 6,
     "heading": "Replace one stable slot",
     "mode": "fragment",
     "environment": "esm-context",
@@ -794,7 +808,7 @@
   },
   {
     "file": "api/composition/editing.md",
-    "block": 6,
+    "block": 7,
     "heading": "Insert, remove, and reorder named concat children",
     "mode": "fragment",
     "environment": "esm-context",

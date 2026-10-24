@@ -151,5 +151,15 @@
     "result": "program",
     "prerequisites": "Import chart from ggaction; all rows and both axes are declared in this complete program.",
     "rendering": "authoring-only"
+  },
+  {
+    "id": "adjacent-group-placement",
+    "file": "api/composition/editing.md",
+    "contains": "const withWideBottom",
+    "mode": "complete",
+    "environment": "node-esm",
+    "rendering": "authoring-only",
+    "result": "pair, withWideBottom",
+    "prerequisites": "Import chart from ggaction. This complete example includes all data and adds a full-width line below an existing pair using an explicit source panel."
   }
 ]
