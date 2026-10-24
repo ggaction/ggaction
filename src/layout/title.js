@@ -21,7 +21,7 @@ export function buildTitleReadingBlock({ text, subtitle }, config, profile) {
     style: config.subtitleStyle, profile
   });
   const titleLineHeight = config.lineHeight ?? config.titleStyle.fontSize * 1.2;
-  const subtitleLineHeight = config.lineHeight ??
+  const subtitleLineHeight = config.subtitleLineHeight ?? config.lineHeight ??
     config.subtitleStyle.fontSize * 1.2;
   const titleCenters = lineCenters(
     titleLines,

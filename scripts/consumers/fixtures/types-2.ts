@@ -2039,3 +2039,10 @@ import {
     opacityLegendTypes.createLegend({ channels: ["opacity"], symbol: { radius: "9" } });
     // @ts-expect-error Legend precision cannot exceed twelve.
     opacityLegendTypes.createLegend({ channels: ["opacity"], labels: { format: ".13e" } });
+
+const subtitleSpacing = chart().createCanvas().createTitle({
+  text: "Heading", subtitle: "First\nSecond", subtitleLineHeight: 16
+});
+subtitleSpacing.editTitle({ subtitleLineHeight: 18 });
+// @ts-expect-error Subtitle spacing is numeric; reset strings are not public options.
+subtitleSpacing.editTitle({ subtitleLineHeight: "auto" });

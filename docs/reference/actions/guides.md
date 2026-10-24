@@ -1031,7 +1031,7 @@ Behavior, inference, resets, and errors: [Tick/label groups and axis titles](./g
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editAxes(options: EditAxesOptions): ChartProgram;
@@ -1675,7 +1675,7 @@ dependent replay that would invalidate a stored exact sample fails atomically.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
 editLegendBlock(options: EditLegendBlockOptions): ChartProgram;
@@ -2006,6 +2006,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `maxWidth` | Optional / branch-dependent | `number \| undefined` |
 | `wrap` | Optional / branch-dependent | `"character" \| "word" \| undefined` |
 | `lineHeight` | Optional / branch-dependent | `number \| undefined` |
+| `subtitleLineHeight` | Optional / branch-dependent | `number \| undefined` |
 | `titleStyle` | Optional / branch-dependent | `TitleTextStyleOptions \| undefined` |
 | `subtitleStyle` | Optional / branch-dependent | `TitleTextStyleOptions \| undefined` |
 
@@ -2057,6 +2058,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `maxWidth` | Optional / branch-dependent | `number \| undefined` |
 | `wrap` | Optional / branch-dependent | `"character" \| "word" \| undefined` |
 | `lineHeight` | Optional / branch-dependent | `number \| undefined` |
+| `subtitleLineHeight` | Optional / branch-dependent | `number \| undefined` |
 | `titleStyle` | Optional / branch-dependent | `TitleTextStyleOptions \| undefined` |
 | `subtitleStyle` | Optional / branch-dependent | `TitleTextStyleOptions \| undefined` |
 

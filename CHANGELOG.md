@@ -6,6 +6,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## [0.0.24] - 2026-10-24
 
+- Add independent `subtitleLineHeight` to title creation and editing, preserving shared spacing and omitted defaults through layout replay and saved programs.
+
 - Infer quantitative typing for numeric constant Rule secondary endpoints when `fieldType` is omitted, matching the existing declaration while retaining field-based endpoint validation.
 
 - Fix Canvas replay and complete-axis frame edits comparing new axis labels with a stale numeric sibling title position.

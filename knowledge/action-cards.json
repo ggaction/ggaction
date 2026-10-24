@@ -21779,6 +21779,11 @@
           "type": "number | undefined"
         },
         {
+          "name": "subtitleLineHeight",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "titleStyle",
           "required": false,
           "type": "TitleTextStyleOptions | undefined"
@@ -21908,6 +21913,11 @@
         },
         {
           "name": "lineHeight",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "subtitleLineHeight",
           "required": false,
           "type": "number | undefined"
         },

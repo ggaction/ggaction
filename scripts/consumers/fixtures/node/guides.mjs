@@ -321,6 +321,21 @@ assert.doesNotThrow(() => renderToSVG(blankLines));
 assert.deepEqual(deserializeProgram(serializeProgram(blankLines)).graphicSpec, blankLines.graphicSpec);
 assert.ok((await renderToPNGBuffer(blankLines)).buffer.length > 1000);
   } },
+  { id: "guides/subtitle-line-spacing", async run() {
+const title = chart().createCanvas({ width: 360, height: 260, margin: 100 })
+      .createTitle({ text: "Heading", subtitle: "First\nSecond",
+        titleStyle: { fontSize: 13 }, subtitleStyle: { fontSize: 8 }, subtitleLineHeight: 10 });
+const positions = title.graphicSpec.objects.chartSubtitle.items.map(item => item.properties.y);
+assert.equal(positions[1] - positions[0], 10);
+const edited = title.editTitle({ subtitleLineHeight: 12 });
+assert.equal(edited.titleConfig.subtitleLineHeight, 12);
+assert.equal(title.titleConfig.subtitleLineHeight, 10);
+assert.deepEqual(deserializeProgram(serializeProgram(edited)).graphicSpec, edited.graphicSpec);
+assert.doesNotThrow(() => renderToSVG(edited));
+assert.ok((await renderToPNGBuffer(edited)).buffer.length > 100);
+assert.ok((await renderToPDFBuffer(edited)).buffer.length > 100);
+assert.throws(() => title.editTitle({ subtitleLineHeight: 7 }), /subtitleLineHeight/);
+  } },
   { id: "guides/blank-legend", async run() {
 const blankLegend = chart().createCanvas({ width: 600, height: 500, margin: 160 })
       .createData({ values: [{ x: 1, y: 2, g: "" }, { x: 2, y: 3, g: "A" }] })

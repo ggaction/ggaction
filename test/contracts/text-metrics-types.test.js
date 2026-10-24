@@ -26,6 +26,12 @@ full.applyTextMetrics({profile:{...profile,measurements:[{...row,fontStyle:"ital
 full.createTitle({text:"Title",titleStyle:{fontStyle:"normal"},subtitleStyle:{fontStyle:"italic"}});
 full.editTitle({titleStyle:{fontStyle:"italic"},alongOffset:-20});
 full.createTitle({text:"Shifted",alongOffset:20});
+full.createTitle({text:"Heading",subtitle:"Credits",subtitleStyle:{fontSize:8},subtitleLineHeight:10});
+full.editTitle({subtitleLineHeight:12});
+// @ts-expect-error Subtitle spacing is numeric, without a new reset vocabulary.
+full.editTitle({subtitleLineHeight:"auto"});
+// @ts-expect-error Subtitle spacing does not accept null.
+full.createTitle({text:"Heading",subtitleLineHeight:null});
 // @ts-expect-error along-edge shift requires finite numeric input at runtime
 full.editTitle({alongOffset:"20"});
 // @ts-expect-error style is a closed vocabulary

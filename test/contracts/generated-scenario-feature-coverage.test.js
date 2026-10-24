@@ -215,11 +215,16 @@ test("derives a bounded public option inventory without runtime prototype paths"
   const inventory = await buildPublicOptionInventory(actionCards);
 
   assert.equal(inventory.counts.publicActions, 286);
-  assert.equal(inventory.counts.topLevelOptionPaths, 2506);
+  assert.equal(inventory.counts.topLevelOptionPaths, 2508);
   assert.equal(inventory.counts.nestedOptionPaths, 16462);
-  assert.equal(inventory.counts.optionPaths, 18968);
-  assert.equal(inventory.counts.requiredOptionPaths, 13501);
+  assert.equal(inventory.counts.optionPaths, 18970);
+  assert.equal(inventory.counts.requiredOptionPaths, 13503);
   assert.equal(inventory.counts.excludedOptionPaths, 5467);
+  assert.deepEqual(inventory.optionPaths.filter(option => option.path === "subtitleLineHeight")
+    .map(option => option.id).sort(), [
+      "option-path:createTitle.subtitleLineHeight",
+      "option-path:editTitle.subtitleLineHeight"
+    ]);
   assert.equal(inventory.counts.topLevelCategoricalPaths, 884);
   assert.equal(inventory.counts.topLevelLiteralValues, 3626);
   assert.equal(inventory.counts.literalFamilies, 193);
@@ -461,7 +466,13 @@ test("derives a bounded public option inventory without runtime prototype paths"
     "option-path:createData.values[]"), false);
   assert.equal(ledger.requirements.some(requirement => requirement.id ===
     "option-path:createDerivedData.transform[].type"), false);
-  assert.equal(ledger.requirements.length, 24136);
+  assert.equal(ledger.requirements.length, 24138);
+  assert.deepEqual(ledger.requirements.filter(requirement =>
+    /^(?:option-path:)(?:createTitle|editTitle)\.subtitleLineHeight$/u.test(requirement.id)
+  ).map(requirement => requirement.id).sort(), [
+    "option-path:createTitle.subtitleLineHeight",
+    "option-path:editTitle.subtitleLineHeight"
+  ]);
   const directBootstrapMethods = bootstrapMethodRoots.filter(root => !root.includes("[]"));
   const directBootstrapOptions = directBootstrapMethods.flatMap(root =>
     ["samples", "seed", "type"].map(key => `option-path:${root}.${key}`));

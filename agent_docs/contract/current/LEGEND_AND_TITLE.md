@@ -664,7 +664,7 @@ config normalization과 rematerialization을 공유한다. Evidence:
 
 ## `createTitle`
 
-- Signature: `createTitle({ text, subtitle?, position?, align?, offset?, alongOffset?, gap?, maxWidth?, wrap?, lineHeight?, titleStyle?, subtitleStyle? })`.
+- Signature: `createTitle({ text, subtitle?, position?, align?, offset?, alongOffset?, gap?, maxWidth?, wrap?, lineHeight?, subtitleLineHeight?, titleStyle?, subtitleStyle? })`.
 - `text`: 필수 non-empty string; `subtitle`은 optional non-empty string이다. 두 문자열의 LF/CRLF/CR explicit line break를 보존하고 각 hard line에 maxWidth wrapping을 적용한다. 빈 hard line은 원래 index와 줄 간격을 예약하지만 빈 text graphic은 만들지 않는다. 각 전체 문자열에는 하나 이상의 non-empty hard line이 필요하다. Renderers에는 newline 없는 non-empty concrete text item만 전달한다. Font/color 문자열은 여전히 newline을 거부한다. Evidence: `test/unit/actions/guides/title-hard-breaks.test.js`, `test/unit/actions/guides/title-blank-lines.test.js`.
 - `position`: `"top" | "bottom" | "left" | "right"`; 기본 top. top/bottom rotation은 0, left는
   `-Math.PI / 2`, right는 `Math.PI / 2`다.
@@ -680,6 +680,11 @@ config normalization과 rematerialization을 공유한다. Evidence:
   character fallback을 사용하고 character mode는 Unicode code point boundary를 보존한다.
 - `lineHeight`: positive finite number; `maxWidth`가 필요하고 title/subtitle의 resolved fontSize 이상이어야 한다.
   생략 시 각 style의 fontSize × `1.2`를 사용한다.
+- `subtitleLineHeight`: finite number이며 저장된 `subtitleStyle.fontSize` 이상. 부제가 숨겨져도 같은 검증을 적용한다.
+  부제 줄 간격만 명시/저장된 이 값 → 공통 `lineHeight` → 부제 fontSize × `1.2` 순서로 선택한다.
+  Hard line에 `maxWidth` 없이 적용할 수 있으며 제목 간격과 기존 공통 간격 검증은 바꾸지 않는다.
+  생성 시 생략하면 저장 키가 없고 편집 시 생략하면 유지한다. `subtitle:false`에서 보존하고 전체 title 제거 시 삭제한다.
+  별도 reset 어휘는 없으며 null, 비수치, 무한대, 부제 fontSize 미만은 원자적으로 거부한다.
 - `titleStyle`, `subtitleStyle`: `{ color?, fontSize?, fontFamily?, fontWeight?, fontStyle? }`; positive fontSize,
   non-empty strings와 string/finite weight를 사용한다. `fontStyle`은 `"normal" | "italic"`이며 생략 시 normal이다.
   제목과 부제에 독립 적용되고 text measurement key, wrapping, 편집, 저장/복원과 모든 renderer에 유지된다.
@@ -689,7 +694,7 @@ config normalization과 rematerialization을 공유한다. Evidence:
 
 ### Formal values — `createTitle`
 
-- Implemented: `createTitle({ text: NonEmptyString; subtitle?: NonEmptyString; position?: TitlePosition; align?: "left" | "center" | "right"; offset?: Finite; alongOffset?: Finite; gap?: NonNegativeFinite; maxWidth?: PositiveFinite; wrap?: TitleWrap; lineHeight?: PositiveFinite; titleStyle?: TextStyle; subtitleStyle?: TextStyle })`
+- Implemented: `createTitle({ text: NonEmptyString; subtitle?: NonEmptyString; position?: TitlePosition; align?: "left" | "center" | "right"; offset?: Finite; alongOffset?: Finite; gap?: NonNegativeFinite; maxWidth?: PositiveFinite; wrap?: TitleWrap; lineHeight?: PositiveFinite; subtitleLineHeight?: PositiveFinite; titleStyle?: TextStyle; subtitleStyle?: TextStyle })`
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -709,6 +714,7 @@ config normalization과 rematerialization을 공유한다. Evidence:
 - `titleStyle`, `subtitleStyle`
   - ✅ Covered: default and explicit color/fontSize/fontFamily/fontWeight, invalid values.
 - ✅ Covered: word/character wrapping, long-token fallback, Unicode, maxWidth dependency, inferred/explicit lineHeight.
+- ✅ Covered: independent subtitleLineHeight precedence, hard/wrapped/blank lines, four edges, hidden subtitle restoration, Canvas/facet replay, persistence, and atomic invalid/style/overflow rejection. Evidence: `test/unit/actions/guides/subtitle-line-height.test.js`, `test/contracts/text-metrics-types.test.js`, `test/browser/subtitle-line-height.browser.js`.
 - ✅ Covered: actual occupied-bounds failures, same-edge guide collision, Canvas rematerialization and
   primitive/public exact equivalence.
 - Evidence: `test/unit/actions/guides/title-actions.test.js` and
@@ -716,7 +722,7 @@ config normalization과 rematerialization을 공유한다. Evidence:
 
 ## `editTitle`
 
-- Signature: `editTitle({ text?, subtitle?, position?, align?, offset?, alongOffset?, gap?, maxWidth?, wrap?, lineHeight?, titleStyle?, subtitleStyle? })`.
+- Signature: `editTitle({ text?, subtitle?, position?, align?, offset?, alongOffset?, gap?, maxWidth?, wrap?, lineHeight?, subtitleLineHeight?, titleStyle?, subtitleStyle? })`.
 - 기존 chart title이 필수이며 최소 한 option을 요구한다. Omitted property는 기존 값을 유지한다.
 - `text`와 string `subtitle`은 semantic text를 교체하고 `subtitle: false`는 semantic subtitle과 concrete
   subtitle graphics를 제거한다. 이후 string subtitle로 다시 만들 수 있다.
@@ -728,7 +734,7 @@ config normalization과 rematerialization을 공유한다. Evidence:
 
 ### Formal values — `editTitle`
 
-- Implemented: `editTitle({ text?: NonEmptyString; subtitle?: NonEmptyString | false; position?: TitlePosition; align?: "left" | "center" | "right"; offset?: Finite; alongOffset?: Finite; gap?: NonNegativeFinite; maxWidth?: PositiveFinite; wrap?: TitleWrap; lineHeight?: PositiveFinite; titleStyle?: TextStyle; subtitleStyle?: TextStyle })`
+- Implemented: `editTitle({ text?: NonEmptyString; subtitle?: NonEmptyString | false; position?: TitlePosition; align?: "left" | "center" | "right"; offset?: Finite; alongOffset?: Finite; gap?: NonNegativeFinite; maxWidth?: PositiveFinite; wrap?: TitleWrap; lineHeight?: PositiveFinite; subtitleLineHeight?: PositiveFinite; titleStyle?: TextStyle; subtitleStyle?: TextStyle })`
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 

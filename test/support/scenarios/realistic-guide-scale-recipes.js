@@ -752,6 +752,7 @@ function titleOptions(context, variant, { final = false } = {}) {
     maxWidth: 800,
     wrap: ordinal % 2 === 0 ? "word" : "character",
     lineHeight: 24,
+    subtitleLineHeight: 24,
     titleStyle: {
       color: "#0f172a",
       fontSize: 24,

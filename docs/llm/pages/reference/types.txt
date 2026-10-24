@@ -10354,6 +10354,8 @@ export interface TitleOptions {
   maxWidth?: number;
   wrap?: "word" | "character";
   lineHeight?: number;
+  /** Subtitle-only line spacing; overrides lineHeight without requiring maxWidth. */
+  subtitleLineHeight?: number;
   titleStyle?: TitleTextStyleOptions;
   subtitleStyle?: TitleTextStyleOptions;
 }

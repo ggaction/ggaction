@@ -24,7 +24,7 @@ import { findCanvasGraphic } from
 
 const OPTIONS = Object.freeze([
   "text", "subtitle", "position", "align", "offset", "alongOffset", "gap", "titleStyle",
-  "subtitleStyle", "maxWidth", "wrap", "lineHeight"
+  "subtitleStyle", "maxWidth", "wrap", "lineHeight", "subtitleLineHeight"
 ]);
 const STYLE_OPTIONS = Object.freeze([
   "color", "fontSize", "fontFamily", "fontWeight", "fontStyle"
@@ -101,6 +101,9 @@ function normalizeConfig(args, defaults, { hasSubtitle }) {
   const maxWidth = args.maxWidth ?? defaults.maxWidth;
   const wrap = args.wrap ?? defaults.wrap ?? (maxWidth === undefined ? undefined : "word");
   const lineHeight = args.lineHeight ?? defaults.lineHeight;
+  const subtitleLineHeight = args.subtitleLineHeight === undefined
+    ? defaults.subtitleLineHeight
+    : args.subtitleLineHeight;
   if (!POSITIONS.includes(position)) {
     throw new Error(`Unsupported title position "${position}".`);
   }
@@ -128,6 +131,12 @@ function normalizeConfig(args, defaults, { hasSubtitle }) {
   )) {
     throw new RangeError("Chart title lineHeight must cover every visible fontSize.");
   }
+  if (subtitleLineHeight !== undefined && (
+    !Number.isFinite(subtitleLineHeight) ||
+    subtitleLineHeight < subtitleStyle.fontSize
+  )) {
+    throw new RangeError("Chart subtitleLineHeight must cover subtitleStyle.fontSize.");
+  }
   return {
     position,
     align,
@@ -136,6 +145,7 @@ function normalizeConfig(args, defaults, { hasSubtitle }) {
     gap,
     titleStyle,
     subtitleStyle,
+    ...(subtitleLineHeight === undefined ? {} : { subtitleLineHeight }),
     ...(maxWidth === undefined ? {} : { maxWidth, wrap, ...(lineHeight === undefined
       ? {}
       : { lineHeight }) })
