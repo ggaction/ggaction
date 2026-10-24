@@ -97,8 +97,10 @@ function planChannelLegendTransition(program, scale, nextType, channel) {
   return { args, channel, titleVisible: stored.titleVisible !== false, inferredOffset: stored.inferredOffset, blockOverride };
 }
 
-export function planColorLegendTransitions(program, scale, nextType) {
+export function planColorLegendTransitions(program, scale, nextType, { channel: requestedChannel, target } = {}) {
   return ["color", "stroke"].flatMap(channel => {
+    if (requestedChannel !== undefined && channel !== requestedChannel) return [];
+    if (target !== undefined && program.guideConfigs.legend?.[family(channel, scale.type)]?.target !== target) return [];
     const plan = planChannelLegendTransition(program, scale, nextType, channel);
     return plan === undefined ? [] : [plan];
   });

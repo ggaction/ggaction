@@ -18,6 +18,11 @@ scale. In `ggaction/basic`, same-type reassignment uses the same validation and
 mark, axis, grid, and legend updates as Full. Every shared consumer must remain
 valid; failure preserves the earlier program and caller data.
 
+In Full, changing color between categorical and continuous fields updates the
+matching legend family together with the mark, including when a new scale ID is
+provided. Compatible label/title styles and placement are retained. Incompatible
+family-specific legend settings still require removing and recreating that legend.
+
 Basic still has no public `editScale`, focused scale editors, or legend editors.
 Scale-type transitions require Full, or a new scale ID in Basic. Saving a Basic
 program preserves its internal actions; restoring it returns the existing

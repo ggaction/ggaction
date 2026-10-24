@@ -1,3 +1,4 @@
+import { withGuideLayoutValidation } from "../../../materialization/guides/layout.js";
 import { findLayer } from "../../../selectors/layers.js";
 import { findRaincloudParent } from "../../../selectors/raincloud.js";
 import { APPEARANCE_MARK_TYPES } from "../../../core/vocabulary.js";
@@ -42,7 +43,8 @@ import {
   COLOR_ENCODING_OPTIONS,
   resolveColorLayout,
   resolveColorScaleOptions,
-  resolveColorReassignmentScaleOptions
+  resolveColorReassignmentScaleOptions,
+  withColorLegendReassignment
 } from "./policy.js";
 
 import { applyTemporalUnit } from "../temporal.js";
@@ -54,7 +56,7 @@ const encodeColor = /* @__PURE__ */ action(
     op: "encodeColor",
     description: "Assign constant or field-driven graphical color."
   },
-  function (args = {}) {
+  withGuideLayoutValidation(function (args = {}) {
     validateOptions(args, COLOR_ENCODING_OPTIONS, "encodeColor");
     const hasValue = Object.hasOwn(args, "value");
     if (hasValue === Object.hasOwn(args, "field")) {
@@ -167,50 +169,55 @@ const encodeColor = /* @__PURE__ */ action(
       readNominalField(dataset.values, args.field);
     }
 
-    const prepared = baseline === this ? baseline : releaseDetachedEncodingScale(baseline, scale.id);
-    let next = layer.mark.type === "bar" || createsCenterGroup
-      ? inferSeriesGroup(prepared, layer, args.field, "color")
-      : prepared;
-    next = applyTemporalUnit(next, target, "color", undefined, layer.encoding?.color).editSemantic({
-      property: `layer[${target}].encoding.color.field`,
-      value: args.field
-    })
-      .editSemantic({
-        property: `layer[${target}].encoding.color.fieldType`,
-        value: fieldType
+    return withColorLegendReassignment(baseline, layer, scale, candidate => {
+      const prepared = baseline === this ? candidate : releaseDetachedEncodingScale(candidate, scale.id);
+      let next = layer.mark.type === "bar" || createsCenterGroup
+        ? inferSeriesGroup(prepared, layer, args.field, "color")
+        : prepared;
+      next = applyTemporalUnit(next, target, "color", undefined, layer.encoding?.color).editSemantic({
+        property: `layer[${target}].encoding.color.field`,
+        value: args.field
       })
-      .editSemantic({
-        property: `layer[${target}].encoding.color.scale`,
-        value: scale.id
+        .editSemantic({
+          property: `layer[${target}].encoding.color.fieldType`,
+          value: fieldType
+        })
+        .editSemantic({
+          property: `layer[${target}].encoding.color.scale`,
+          value: scale.id
+        });
+      if (layout !== undefined && (layer.mark.type === "arc" || horizonTransform !== undefined)) {
+        next = next.editSemantic({
+          property: `layer[${target}].encoding.color.layout`,
+          value: layout
+        });
+      }
+      if (layer.encoding?.color?.aggregate !== undefined) {
+        next = next.editSemantic({ property: `layer[${target}].encoding.color.aggregate`, remove: true });
+      }
+      next = applyEncodingScale(next, scale, requestedScale, {
+        reassignment: layer.encoding?.color?.scale === scale.id,
+        allowTypeChange: true
       });
-    if (layout !== undefined && (layer.mark.type === "arc" || horizonTransform !== undefined)) {
-      next = next.editSemantic({
-        property: `layer[${target}].encoding.color.layout`,
-        value: layout
-      });
-    }
-    next = applyEncodingScale(next, scale, requestedScale, {
-      reassignment: layer.encoding?.color?.scale === scale.id,
-      allowTypeChange: true
-    });
-    next = applyColorLayoutCompanion(next, {
-      target,
-      layer,
-      layout,
-      scale,
-      field: args.field,
-      horizon: horizonTransform !== undefined
-    });
-
-    return applyDetachedScaleRematerialization(applyMaterializationPlan(
-      next,
-      planEncodingRematerialization(next, {
+      next = applyColorLayoutCompanion(next, {
         target,
-        channel: "color",
-        scale: scale.id
-      })
-    ), [layer]);
-  }
+        layer,
+        layout,
+        scale,
+        field: args.field,
+        horizon: horizonTransform !== undefined
+      });
+
+      return applyDetachedScaleRematerialization(applyMaterializationPlan(
+        next,
+        planEncodingRematerialization(next, {
+          target,
+          channel: "color",
+          scale: scale.id
+        })
+      ), [layer]);
+    });
+  })
 );
 
 export function registerColorEncodingAction(ProgramClass) {

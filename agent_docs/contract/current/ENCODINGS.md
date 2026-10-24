@@ -1159,6 +1159,8 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - Categorical↔continuous reassignment with an omitted scale ID detaches an incompatible shared
   scale into `${target}-${channel}-${fieldType}` when another consumer remains. Explicit IDs
   preserve strict shared-resource validation. No other consumer is rebound.
+- Color reassignment is one guide-layout transaction: overflow recovery must replay the complete encoding/scale/legend change, never the temporary mismatched field/scale state. New scale IDs use the same color-legend family transition and compatible-style preservation rules as an in-place scale type change; only the edited target/channel transitions.
+- Evidence: `test/unit/actions/encodings/color-reassignment-legend.test.js` covers heatmap categorical/continuous transitions, layout expansion, explicit/new/shared scale identities, retained legend styling, immutable rejection and saved-program replay.
 - An explicit Raincloud facade ID dispatches color to the complete owned population through
   editRaincloudPlot; a named child remains a local mark target. Fixed colors use `{value}`;
   field colors must use the category role.

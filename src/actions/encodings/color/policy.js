@@ -1,3 +1,5 @@
+import { findSemanticScale } from "../../../selectors/scales.js";
+import { planColorLegendTransitions, applyColorLegendTransition } from "../../guides/legends/transition.js";
 import {
   BAR_GRAINS,
   inferBarColorLayout,
@@ -145,4 +147,17 @@ export function resolveColorLayout(layer, requested, barGrain, field) {
     throw new Error('Ranged area color encoding supports only "overlay" layout.');
   }
   return layout;
+}
+
+// A new scale identity can also change the existing target's legend family.
+// Keep the same transition validation/style policy used by in-place scale edits.
+export function withColorLegendReassignment(program, layer, scale, apply) {
+  const previous = findSemanticScale(program, layer.encoding?.color?.scale);
+  if (previous === undefined || previous.id === scale.id) return apply(program);
+  const plans = planColorLegendTransitions(program, previous, scale.type, { channel: "color", target: layer.id });
+  let next = program;
+  for (const plan of plans) next = next.removeLegend({ target: layer.id, channels: ["color"] });
+  next = apply(next);
+  for (const plan of plans) next = applyColorLegendTransition(next, plan);
+  return next;
 }
