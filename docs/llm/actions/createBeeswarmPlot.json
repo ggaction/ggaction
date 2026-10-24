@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "charts",
   "summary": "Create a role-safe category/measure Point chart and deterministically pack actual glyph extents within each category slot.",
-  "signature": "createBeeswarmPlot(options: CreateBeeswarmPlotOptions): ChartProgram;",
+  "signature": "createBeeswarmPlot(options: TargetedOptions<CreateBeeswarmPlotOptions>): ChartProgram;",
   "intents": [
     "create beeswarm plot",
     "create",
@@ -25,7 +25,8 @@
     "idOptions": [
       "id",
       "data",
-      "coordinate"
+      "coordinate",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -49,6 +50,10 @@
     },
     {
       "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -118,6 +123,11 @@
       "name": "y",
       "required": true,
       "type": "string | { field: string; fieldType?: \"quantitative\" | undefined; temporalUnit?: undefined; scale?: NonPointQuantitativePositionScaleOptions | undefined; } | { ...; } | { ...; }"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [

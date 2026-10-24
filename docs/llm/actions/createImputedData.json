@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "statistics",
   "summary": "Replace nullish cells by group mean (the default), constant, forward, backward, or distance-based linear imputation while preserving group boundaries and final source order.",
-  "signature": "createImputedData(options: ImputedDataOptions): ChartProgram;",
+  "signature": "createImputedData(options: TargetedOptions<ImputedDataOptions>): ChartProgram;",
   "intents": [
     "create imputed data",
     "create",
@@ -24,7 +24,8 @@
     ],
     "idOptions": [
       "id",
-      "source"
+      "source",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -45,6 +46,10 @@
   "inference": [
     {
       "input": "source",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -104,6 +109,11 @@
       "name": "sortBy",
       "required": false,
       "type": "readonly WindowSort[] | readonly [{ field: string; order?: \"ascending\" | undefined; }] | readonly [WindowSort, ...WindowSort[]] | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [

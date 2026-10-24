@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "encodings",
   "summary": "Create or compatibly update the corresponding categorical offset scale within a bar, point, or rule y category.",
-  "signature": "encodeYOffset(options: YOffsetEncodingOptions): ChartProgram;",
+  "signature": "encodeYOffset(options: TargetedOptions<YOffsetEncodingOptions>): ChartProgram;",
   "intents": [
     "encode y offset",
     "encode",
@@ -83,7 +83,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "fieldType",

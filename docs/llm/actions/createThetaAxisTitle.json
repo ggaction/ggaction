@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "axes",
   "summary": "Create missing theta-axis title independently of the other components.",
-  "signature": "createThetaAxisTitle(options?: CreateThetaAxisTitleOptions): ChartProgram;",
+  "signature": "createThetaAxisTitle(options?: TargetedOptions<CreateThetaAxisTitleOptions>): ChartProgram;",
   "intents": [
     "create theta axis title",
     "create",
@@ -24,7 +24,8 @@
     ],
     "idOptions": [
       "scale",
-      "coordinate"
+      "coordinate",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -60,6 +61,10 @@
     },
     {
       "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -114,10 +119,15 @@
       "name": "coordinate",
       "required": false,
       "type": "string | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "createThetaAxisTitle({ scale?, coordinate?, text?, offset?, color?, fontSize?, fontFamily?, fontWeight? })"
+    "createThetaAxisTitle({ scale?, coordinate?, target?, text?, offset?, color?, fontSize?, fontFamily? })"
   ],
   "snippet": "program.createThetaAxisTitle({})",
   "errors": [],

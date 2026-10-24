@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "axes",
   "summary": "Create missing theta-axis labels independently of the other components.",
-  "signature": "createThetaAxisLabels(options?: CreateThetaAxisLabelsOptions): ChartProgram;",
+  "signature": "createThetaAxisLabels(options?: TargetedOptions<CreateThetaAxisLabelsOptions>): ChartProgram;",
   "intents": [
     "create theta axis labels",
     "create",
@@ -24,7 +24,8 @@
     ],
     "idOptions": [
       "scale",
-      "coordinate"
+      "coordinate",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -68,6 +69,10 @@
     {
       "input": "labelMap",
       "strategy": "documented-auto"
+    },
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
     },
     {
       "input": "omitted optional options",
@@ -136,10 +141,15 @@
       "name": "labelMap",
       "required": false,
       "type": "\"auto\" | DisplayLabelMap | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "createThetaAxisLabels({ scale?, coordinate?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight? })"
+    "createThetaAxisLabels({ scale?, coordinate?, target?, offset?, format?, color?, fontSize?, fontFamily? })"
   ],
   "snippet": "program.createThetaAxisLabels({})",
   "errors": [],

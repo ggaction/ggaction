@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "statistics",
   "summary": "Revise the model through its stable point owner.",
-  "signature": "editRegression(options: EditRegressionOptions): ChartProgram;",
+  "signature": "editRegression(options: TargetedOptions<EditRegressionOptions>): ChartProgram;",
   "intents": [
     "edit regression",
     "edit",
@@ -71,7 +71,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "data",

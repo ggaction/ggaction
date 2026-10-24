@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "grid",
   "summary": "Edit the existing radial grid.",
-  "signature": "editRadialGrid(options: EditPolarGridOptions): ChartProgram;",
+  "signature": "editRadialGrid(options: TargetedOptions<EditPolarGridOptions>): ChartProgram;",
   "intents": [
     "edit radial grid",
     "edit",
@@ -21,7 +21,9 @@
       "compatible scale or encoding context"
     ],
     "owns": [],
-    "idOptions": []
+    "idOptions": [
+      "target"
+    ]
   },
   "authoringRoles": [
     "H3"
@@ -45,7 +47,12 @@
       "unit": "logical-pixel"
     }
   ],
-  "inference": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
   "completionRequirements": {
     "state": "contextual",
     "requires": [
@@ -79,10 +86,15 @@
       "name": "strokeDash",
       "required": false,
       "type": "readonly number[] | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "editRadialGrid({ count?, values?, color?, lineWidth?, strokeDash? })"
+    "editRadialGrid({ target?, count?, values?, color?, lineWidth?, strokeDash? })"
   ],
   "snippet": "program.editRadialGrid({ count: 5 })",
   "errors": [],

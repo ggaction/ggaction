@@ -594,6 +594,18 @@ Use one automatic tick policy across independently scaled facet panels.
 
 Representative actions: `createLinePlot`, `createYAxis`, `editYAxisTicksAndLabels`. [Documentation](https://ggaction.github.io/ggaction/api/axes/#choose-nearest-step-linear-ticks).
 
+### [Linked overlay](./linked-overlay/)
+
+A line follows the final endpoints of aggregated bars and retains independent appearance.
+
+Representative actions: `createOverlay editOverlay encodeColor`. [Documentation](https://ggaction.github.io/ggaction/recipes/composition/).
+
+### [Shared-scale adjacent charts](./shared-adjacent/)
+
+Two independent charts share a Y domain and align their actual plot frames.
+
+Representative actions: `createAdjacentPlot editCompositionScales createTitle`. [Documentation](https://ggaction.github.io/ggaction/api/composition/editing/).
+
 ## Development fixtures
 
 The catalog includes every maintained public chart program. Getting Started

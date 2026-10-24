@@ -329,6 +329,32 @@ Remove the most recently applied theme scope on that receiver. Composition
 removal deletes only that composition's frame, so a previously hidden child or
 ancestor theme becomes active again. Explicit local styles remain unchanged.
 
+### `createAdjacentPlot`
+
+```javascript
+createAdjacentPlot({ id?, source?, position?, plot?, share?, gap?, align? } = {})
+```
+
+Add an independent chart next to a unit or facet view. Placement is left, right, top or bottom.
+The default line inherits source fields, binning and aggregation; `plot: { action, options }`
+selects any built-in chart constructor with its native options. Area and other constructors
+require explicit field options. `plot.options.data` selects a materialized source-view dataset;
+the adjacent view receives its own snapshot. The top-level `id` owns its view and mark.
+Horizontal placement shares Y by default; vertical placement shares X. `share` replaces that
+default. `align: "plot"` matches actual plot frames without stretching text or symbols.
+[Shared scales and adjacent charts](../api/composition/editing.md)
+
+### `editCompositionScales`
+
+```javascript
+editCompositionScales({ share })
+```
+
+Update a nonempty subset of concat shared-channel policies. Boolean keys include x, y,
+color, stroke, size, shape, opacity, strokeWidth and strokeDash. Shared channels require
+compatible meaning and scale mapping. Canonical child settings remain intact; setting a
+channel false restores independent domain inference. This edit is atomic.
+
 ### `editCompositionLayout`
 
 ```javascript

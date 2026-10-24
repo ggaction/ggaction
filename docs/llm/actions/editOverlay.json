@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "marks",
   "summary": "Change an overlay's dependency or gap policy.",
-  "signature": "editOverlay(options: EditOverlayOptions): ChartProgram;",
+  "signature": "editOverlay(options: TargetedOptions<EditOverlayOptions>): ChartProgram;",
   "intents": [
     "edit overlay",
     "edit",
@@ -61,7 +61,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "follow",

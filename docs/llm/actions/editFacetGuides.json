@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "composition",
   "summary": "Partially change axes between \"each\" and \"outer\", or legend ownership between false and \"shared\".",
-  "signature": "editFacetGuides(options: FacetGuideOptions): ChartProgram;",
+  "signature": "editFacetGuides(options: TargetedOptions<FacetGuideOptions>): ChartProgram;",
   "intents": [
     "edit facet guides",
     "edit",
@@ -21,7 +21,9 @@
       "complete child chart program"
     ],
     "owns": [],
-    "idOptions": []
+    "idOptions": [
+      "target"
+    ]
   },
   "authoringRoles": [
     "H3"
@@ -36,7 +38,12 @@
     ]
   },
   "units": [],
-  "inference": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
   "completionRequirements": {
     "state": "contextual",
     "requires": [
@@ -55,10 +62,15 @@
       "name": "legend",
       "required": false,
       "type": "\"shared\" | false | LegendOptions | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "editFacetGuides({ axes?, legend? })"
+    "editFacetGuides({ target?, axes?, legend? })"
   ],
   "snippet": "program.editFacetGuides({ axes: \"each\" })",
   "errors": [],

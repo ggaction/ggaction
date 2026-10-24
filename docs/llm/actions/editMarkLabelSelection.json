@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "marks",
   "summary": "Replace one attached label layer's final-item membership.",
-  "signature": "editMarkLabelSelection(options: EditMarkLabelSelectionOptions): ChartProgram;",
+  "signature": "editMarkLabelSelection(options: TargetedOptions<EditMarkLabelSelectionOptions>): ChartProgram;",
   "intents": [
     "edit mark label selection",
     "edit",
@@ -61,7 +61,7 @@
     {
       "name": "target",
       "required": true,
-      "type": "string"
+      "type": "string | ActionTargetList | ScopedActionTarget"
     },
     {
       "name": "select",

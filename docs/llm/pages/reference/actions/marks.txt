@@ -9,10 +9,10 @@ Each declared action has an exact signature and its own stable link. Option tabl
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-createPointMark(options?: StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+createPointMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
 ```
 
-Named option contracts: [`StrokeStyleDetails`](../../../../reference/types/#type-strokestyledetails) · [`PointShape`](../../../../reference/types/#type-pointshape) · [`FilledMarkStroke`](../../../../reference/types/#type-filledmarkstroke).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`StrokeStyleDetails`](../../../../reference/types/#type-strokestyledetails) · [`PointShape`](../../../../reference/types/#type-pointshape) · [`FilledMarkStroke`](../../../../reference/types/#type-filledmarkstroke).
 
  Declared options
 
@@ -32,6 +32,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `stroke` | Optional / branch-dependent | `FilledMarkStroke \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
@@ -49,10 +50,10 @@ Create a point mark using fourteen named shapes or polygons with area/radius nor
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-createTickMark(options?: StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;
+createTickMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }>): ChartProgram;
 ```
 
-Named option contracts: [`StrokeStyleDetails`](../../../../reference/types/#type-strokestyledetails).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`StrokeStyleDetails`](../../../../reference/types/#type-strokestyledetails).
 
  Declared options
 
@@ -71,6 +72,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `stroke` | Optional / branch-dependent | `string \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
@@ -88,10 +90,10 @@ Length defaults to `14`; stroke width defaults to `2`. [Marks](../../../../api/m
 **Availability:** Development; added after v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-createStatisticalReference(options: CreateStatisticalReferenceOptions): ChartProgram;
+createStatisticalReference(options: TargetedOptions<CreateStatisticalReferenceOptions>): ChartProgram;
 ```
 
-Named option contracts: [`CreateStatisticalReferenceOptions`](../../../../reference/types/#type-createstatisticalreferenceoptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`CreateStatisticalReferenceOptions`](../../../../reference/types/#type-createstatisticalreferenceoptions).
 
  Declared options
 
@@ -121,6 +123,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `fill` | Optional / branch-dependent | `string \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `DashPattern \| DashStyle \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
@@ -158,10 +161,10 @@ replay, editing, facet and removal behavior. Literal reference coordinates are n
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-createReferenceLine(options: CreateReferenceLineOptions): ChartProgram;
+createReferenceLine(options: TargetedOptions<CreateReferenceLineOptions>): ChartProgram;
 ```
 
-Named option contracts: [`CreateReferenceLineOptions`](../../../../reference/types/#type-createreferencelineoptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`CreateReferenceLineOptions`](../../../../reference/types/#type-createreferencelineoptions).
 
  Declared options
 
@@ -189,6 +192,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `field` | Optional / branch-dependent | `string \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| undefined` |
 | `statistic` | Optional / branch-dependent | `ReferenceStatistic` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
@@ -220,10 +224,10 @@ The shared scale still drives both marks. Add text with `createMarkLabels({ sour
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-createReferenceBand(options: CreateReferenceBandOptions): ChartProgram;
+createReferenceBand(options: TargetedOptions<CreateReferenceBandOptions>): ChartProgram;
 ```
 
-Named option contracts: [`CreateReferenceBandOptions`](../../../../reference/types/#type-createreferencebandoptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`CreateReferenceBandOptions`](../../../../reference/types/#type-createreferencebandoptions).
 
  Declared options
 
@@ -257,6 +261,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `field` | Optional / branch-dependent | `string \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| undefined` |
 | `statistics` | Optional / branch-dependent | `readonly [ReferenceStatistic, ReferenceStatistic]` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
@@ -281,10 +286,10 @@ is needed. Both reference facades are available in the full entry point.
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-createMarkLabels(options?: CreateMarkLabelsOptions): ChartProgram;
+createMarkLabels(options?: TargetedOptions<CreateMarkLabelsOptions>): ChartProgram;
 ```
 
-Named option contracts: [`CreateMarkLabelsOptions`](../../../../reference/types/#type-createmarklabelsoptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`CreateMarkLabelsOptions`](../../../../reference/types/#type-createmarklabelsoptions).
 
  Declared options
 
@@ -318,6 +323,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `normalizeBy` | Optional / branch-dependent | `"category" \| "source" \| undefined` |
 | `select` | Optional / branch-dependent | `MarkSelector \| undefined` |
 | `selection` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
@@ -343,10 +349,10 @@ keeps its percentage of the complete source.
 **Availability:** Development; added after v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-editMarkLabelSelection(options: EditMarkLabelSelectionOptions): ChartProgram;
+editMarkLabelSelection(options: TargetedOptions<EditMarkLabelSelectionOptions>): ChartProgram;
 ```
 
-Named option contracts: [`EditMarkLabelSelectionOptions`](../../../../reference/types/#type-editmarklabelselectionoptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`EditMarkLabelSelectionOptions`](../../../../reference/types/#type-editmarklabelselectionoptions).
 
  Declared options
 
@@ -354,7 +360,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Required | `string` |
+| `target` | Required | `string \| ActionTargetList \| ScopedActionTarget` |
 | `select` | Optional / branch-dependent | `MarkSelector \| undefined` |
 | `selection` | Optional / branch-dependent | `string \| undefined` |
 | `all` | Optional / branch-dependent | `true \| undefined` |
@@ -381,10 +387,10 @@ rebound with this action or removed.
 **Availability:** Development; added after v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-editMarkLabelPlacement(options: EditMarkLabelPlacementOptions): ChartProgram;
+editMarkLabelPlacement(options: TargetedOptions<EditMarkLabelPlacementOptions>): ChartProgram;
 ```
 
-Named option contracts: [`EditMarkLabelPlacementOptions`](../../../../reference/types/#type-editmarklabelplacementoptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`EditMarkLabelPlacementOptions`](../../../../reference/types/#type-editmarklabelplacementoptions).
 
  Declared options
 
@@ -392,7 +398,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Required | `string` |
+| `target` | Required | `string \| ActionTargetList \| ScopedActionTarget` |
 | `placement` | Required | `"auto" \| MarkLabelPlacement` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
@@ -421,10 +427,10 @@ Pass `"auto"` to restore the legacy source anchor and remove the owned placement
 **Availability:** Development; added after v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-removeMarkLabels(options: RemoveMarkLabelsOptions): ChartProgram;
+removeMarkLabels(options: TargetedOptions<RemoveMarkLabelsOptions>): ChartProgram;
 ```
 
-Named option contracts: [`RemoveMarkLabelsOptions`](../../../../reference/types/#type-removemarklabelsoptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`RemoveMarkLabelsOptions`](../../../../reference/types/#type-removemarklabelsoptions).
 
  Declared options
 
@@ -432,7 +438,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `source` | Optional / branch-dependent | `string \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
@@ -457,10 +463,10 @@ to use `removeMark`.
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-createAnnotation(options: CreateAnnotationOptions): ChartProgram;
+createAnnotation(options: TargetedOptions<CreateAnnotationOptions>): ChartProgram;
 ```
 
-Named option contracts: [`CreateAnnotationOptions`](../../../../reference/types/#type-createannotationoptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`CreateAnnotationOptions`](../../../../reference/types/#type-createannotationoptions).
 
  Declared options
 
@@ -494,6 +500,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `source` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
@@ -530,10 +537,10 @@ Omit `layout` or pass `false` to retain the exact anchor. A layout object accept
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-createTextMark(options?: TextMarkOptions): ChartProgram;
+createTextMark(options?: TargetedOptions<TextMarkOptions>): ChartProgram;
 ```
 
-Named option contracts: [`TextMarkOptions`](../../../../reference/types/#type-textmarkoptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`TextMarkOptions`](../../../../reference/types/#type-textmarkoptions).
 
  Declared options
 
@@ -560,6 +567,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
 | `dx` | Optional / branch-dependent | `number \| undefined` |
 | `dy` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
@@ -593,10 +601,10 @@ centers the entire block vertically. Empty internal lines are retained.
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-editTextMark(options: EditTextMarkOptions): ChartProgram;
+editTextMark(options: TargetedOptions<EditTextMarkOptions>): ChartProgram;
 ```
 
-Named option contracts: [`EditTextMarkOptions`](../../../../reference/types/#type-edittextmarkoptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`EditTextMarkOptions`](../../../../reference/types/#type-edittextmarkoptions).
 
  Declared options
 
@@ -604,7 +612,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `lineHeight` | Optional / branch-dependent | `number \| undefined` |
 | `blockAlign` | Optional / branch-dependent | `"first" \| "middle" \| undefined` |
@@ -637,10 +645,10 @@ source or position. [Text marks](../../../../api/marks/text/)
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-layoutLabels(options?: LabelLayoutOptions): ChartProgram;
+layoutLabels(options?: TargetedOptions<LabelLayoutOptions>): ChartProgram;
 ```
 
-Named option contracts: [`LabelLayoutOptions`](../../../../reference/types/#type-labellayoutoptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`LabelLayoutOptions`](../../../../reference/types/#type-labellayoutoptions).
 
  Declared options
 
@@ -648,7 +656,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `axis` | Optional / branch-dependent | `LabelLayoutAxis \| undefined` |
 | `padding` | Optional / branch-dependent | `number \| undefined` |
 | `maxDisplacement` | Optional / branch-dependent | `number \| undefined` |
@@ -674,10 +682,10 @@ warning summary. [Text marks](../../../../api/marks/text/)
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-removeLabelLayout(options?: RemoveLabelLayoutOptions): ChartProgram;
+removeLabelLayout(options?: TargetedOptions<RemoveLabelLayoutOptions>): ChartProgram;
 ```
 
-Named option contracts: [`RemoveLabelLayoutOptions`](../../../../reference/types/#type-removelabellayoutoptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`RemoveLabelLayoutOptions`](../../../../reference/types/#type-removelabellayoutoptions).
 
  Declared options
 
@@ -685,7 +693,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
@@ -721,10 +729,10 @@ binding clears it. Domains and tick values are already normalized timestamps.
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-editPointMark(options: StrokeStyleDetails & { clip?: boolean; target?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+editPointMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
 ```
 
-Named option contracts: [`StrokeStyleDetails`](../../../../reference/types/#type-strokestyledetails) · [`PointShape`](../../../../reference/types/#type-pointshape) · [`FilledMarkStroke`](../../../../reference/types/#type-filledmarkstroke).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`StrokeStyleDetails`](../../../../reference/types/#type-strokestyledetails) · [`PointShape`](../../../../reference/types/#type-pointshape) · [`FilledMarkStroke`](../../../../reference/types/#type-filledmarkstroke).
 
  Declared options
 
@@ -736,7 +744,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `shape` | Optional / branch-dependent | `PointShape \| undefined` |
 | `fill` | Optional / branch-dependent | `string \| undefined` |
@@ -760,10 +768,10 @@ Change constant point shape, fill, opacity, or outline appearance and rematerial
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-editTickMark(options: StrokeStyleDetails & { clip?: boolean; target?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;
+editTickMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }>): ChartProgram;
 ```
 
-Named option contracts: [`StrokeStyleDetails`](../../../../reference/types/#type-strokestyledetails).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`StrokeStyleDetails`](../../../../reference/types/#type-strokestyledetails).
 
  Declared options
 
@@ -775,7 +783,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `length` | Optional / branch-dependent | `number \| undefined` |
 | `stroke` | Optional / branch-dependent | `string \| undefined` |
@@ -798,10 +806,10 @@ position, and other assignments. [Marks](../../../../api/marks/)
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-jitterPoints(options: JitterPointsOptions): ChartProgram;
+jitterPoints(options: TargetedOptions<JitterPointsOptions>): ChartProgram;
 ```
 
-Named option contracts: [`JitterPointsOptions`](../../../../reference/types/#type-jitterpointsoptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`JitterPointsOptions`](../../../../reference/types/#type-jitterpointsoptions).
 
  Declared options
 
@@ -809,7 +817,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `channel` | Required | `"both" \| "x" \| "y"` |
 | `maxOffset` | Required | `JitterMaxOffset` |
 | `seed` | Optional / branch-dependent | `string \| number \| undefined` |
@@ -833,10 +841,10 @@ replaces the previous policy from the semantic base positions. [Point marks](../
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-removeJitter(options?: RemoveJitterOptions): ChartProgram;
+removeJitter(options?: TargetedOptions<RemoveJitterOptions>): ChartProgram;
 ```
 
-Named option contracts: [`RemoveJitterOptions`](../../../../reference/types/#type-removejitteroptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`RemoveJitterOptions`](../../../../reference/types/#type-removejitteroptions).
 
  Declared options
 
@@ -844,7 +852,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
@@ -862,10 +870,10 @@ directly from its semantic encodings. [Point marks](../../../../api/marks/point/
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-packPoints(options: PackPointsOptions): ChartProgram;
+packPoints(options: TargetedOptions<PackPointsOptions>): ChartProgram;
 ```
 
-Named option contracts: [`PackPointsOptions`](../../../../reference/types/#type-packpointsoptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`PackPointsOptions`](../../../../reference/types/#type-packpointsoptions).
 
  Declared options
 
@@ -873,7 +881,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `channel` | Required | `"x" \| "y"` |
 | `maxOffset` | Optional / branch-dependent | `PointPackingMaxOffset \| undefined` |
 | `padding` | Optional / branch-dependent | `number \| undefined` |
@@ -898,10 +906,10 @@ fails atomically; `"overlap"` records unresolved best-effort placements.
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-removePointPacking(options?: RemovePointPackingOptions): ChartProgram;
+removePointPacking(options?: TargetedOptions<RemovePointPackingOptions>): ChartProgram;
 ```
 
-Named option contracts: [`RemovePointPackingOptions`](../../../../reference/types/#type-removepointpackingoptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`RemovePointPackingOptions`](../../../../reference/types/#type-removepointpackingoptions).
 
  Declared options
 
@@ -909,7 +917,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
@@ -927,10 +935,10 @@ positions. [Point marks](../../../../api/marks/point/)
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-removeMark(options?: RemoveMarkOptions): ChartProgram;
+removeMark(options?: TargetedOptions<RemoveMarkOptions>): ChartProgram;
 ```
 
-Named option contracts: [`RemoveMarkOptions`](../../../../reference/types/#type-removemarkoptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`RemoveMarkOptions`](../../../../reference/types/#type-removemarkoptions).
 
  Declared options
 
@@ -938,7 +946,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
@@ -956,10 +964,10 @@ and independently shared resources. [Marks](../../../../api/marks/)
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-createLineMark(options?: StrokeStyleDetails & { clip?: boolean; missing?: "error" | "break"; id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
+createLineMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; missing?: "error" | "break"; id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }>): ChartProgram;
 ```
 
-Named option contracts: [`StrokeStyleDetails`](../../../../reference/types/#type-strokestyledetails) · [`CurveInterpolation`](../../../../reference/types/#type-curveinterpolation).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`StrokeStyleDetails`](../../../../reference/types/#type-strokestyledetails) · [`CurveInterpolation`](../../../../reference/types/#type-curveinterpolation).
 
  Declared options
 
@@ -980,6 +988,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `stroke` | Optional / branch-dependent | `string \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `closed` | Optional / branch-dependent | `boolean \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
@@ -1005,10 +1014,10 @@ strict. Each run is a path and selection item; curves restart at each gap.
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-editLineMark(options: StrokeStyleDetails & { clip?: boolean; missing?: "error" | "break"; target?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
+editLineMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; missing?: "error" | "break"; target?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }>): ChartProgram;
 ```
 
-Named option contracts: [`StrokeStyleDetails`](../../../../reference/types/#type-strokestyledetails) · [`CurveInterpolation`](../../../../reference/types/#type-curveinterpolation).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`StrokeStyleDetails`](../../../../reference/types/#type-strokestyledetails) · [`CurveInterpolation`](../../../../reference/types/#type-curveinterpolation).
 
  Declared options
 
@@ -1021,7 +1030,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `missing` | Optional / branch-dependent | `"break" \| "error" \| undefined` |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
 | `curve` | Optional / branch-dependent | `CurveInterpolation \| undefined` |
 | `tension` | Optional / branch-dependent | `number \| undefined` |
@@ -1045,10 +1054,10 @@ concrete path commands without changing field encodings. [Marks](../../../../api
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-createBarMark(options?: RectStyleDetails & { clip?: boolean; id?: string; data?: string; orientation?: "vertical" | "horizontal"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+createBarMark(options?: TargetedOptions<RectStyleDetails & { clip?: boolean; id?: string; data?: string; orientation?: "vertical" | "horizontal"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
 ```
 
-Named option contracts: [`RectStyleDetails`](../../../../reference/types/#type-rectstyledetails) · [`FillPaint`](../../../../reference/types/#type-fillpaint) · [`FilledMarkStroke`](../../../../reference/types/#type-filledmarkstroke).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`RectStyleDetails`](../../../../reference/types/#type-rectstyledetails) · [`FillPaint`](../../../../reference/types/#type-fillpaint) · [`FilledMarkStroke`](../../../../reference/types/#type-filledmarkstroke).
 
  Declared options
 
@@ -1073,6 +1082,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `stroke` | Optional / branch-dependent | `FilledMarkStroke \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
@@ -1095,10 +1105,10 @@ Omitted corners fall back to the global radius or zero; edits retain unspecified
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-editBarMark(options: RectStyleDetails & { clip?: boolean; target?: string; blend?: "normal" | "difference"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+editBarMark(options: TargetedOptions<RectStyleDetails & { clip?: boolean; target?: string; blend?: "normal" | "difference"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
 ```
 
-Named option contracts: [`RectStyleDetails`](../../../../reference/types/#type-rectstyledetails) · [`FillPaint`](../../../../reference/types/#type-fillpaint) · [`FilledMarkStroke`](../../../../reference/types/#type-filledmarkstroke).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`RectStyleDetails`](../../../../reference/types/#type-rectstyledetails) · [`FillPaint`](../../../../reference/types/#type-fillpaint) · [`FilledMarkStroke`](../../../../reference/types/#type-filledmarkstroke).
 
  Declared options
 
@@ -1115,7 +1125,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `cornerRadiusBottomRight` | Optional / branch-dependent | `number \| undefined` |
 | `cornerRadiusBottomLeft` | Optional / branch-dependent | `number \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `blend` | Optional / branch-dependent | `"difference" \| "normal" \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
@@ -1149,10 +1159,10 @@ Omitted corners fall back to the global radius or zero; edits retain unspecified
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-createAreaMark(options?: StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
+createAreaMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }>): ChartProgram;
 ```
 
-Named option contracts: [`StrokeStyleDetails`](../../../../reference/types/#type-strokestyledetails) · [`FillPaint`](../../../../reference/types/#type-fillpaint) · [`CurveInterpolation`](../../../../reference/types/#type-curveinterpolation).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`StrokeStyleDetails`](../../../../reference/types/#type-strokestyledetails) · [`FillPaint`](../../../../reference/types/#type-fillpaint) · [`CurveInterpolation`](../../../../reference/types/#type-curveinterpolation).
 
  Declared options
 
@@ -1172,6 +1182,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
 | `curve` | Optional / branch-dependent | `CurveInterpolation \| undefined` |
 | `missing` | Optional / branch-dependent | `"break" \| "error" \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
@@ -1193,10 +1204,10 @@ Area `missing` defaults to `"error"`. `"break"` splits null/undefined measured e
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-createRuleMark(options?: { clip?: boolean; id?: string; data?: string; missing?: "error" | "skip" } & RuleStyleOptions): ChartProgram;
+createRuleMark(options?: TargetedOptions<{ clip?: boolean; id?: string; data?: string; missing?: "error" | "skip" } & RuleStyleOptions>): ChartProgram;
 ```
 
-Named option contracts: [`RuleStyleOptions`](../../../../reference/types/#type-rulestyleoptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`RuleStyleOptions`](../../../../reference/types/#type-rulestyleoptions).
 
  Declared options
 
@@ -1215,6 +1226,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
@@ -1232,10 +1244,10 @@ Create a semantic rule mark and empty line collection. The first omitted ID is
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-editRuleMark(options: { clip?: boolean; target?: string; missing?: "error" | "skip" } & RuleStyleOptions): ChartProgram;
+editRuleMark(options: TargetedOptions<{ clip?: boolean; target?: string; missing?: "error" | "skip" } & RuleStyleOptions>): ChartProgram;
 ```
 
-Named option contracts: [`RuleStyleOptions`](../../../../reference/types/#type-rulestyleoptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`RuleStyleOptions`](../../../../reference/types/#type-rulestyleoptions).
 
  Declared options
 
@@ -1244,7 +1256,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `stroke` | Optional / branch-dependent | `string \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
@@ -1271,10 +1283,10 @@ accepts the same styles. [Rule marks](../../../../api/marks/rule/)
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-editAreaMark(options: StrokeStyleDetails & { clip?: boolean; target?: string; fill?: FillPaint; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
+editAreaMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; fill?: FillPaint; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }>): ChartProgram;
 ```
 
-Named option contracts: [`StrokeStyleDetails`](../../../../reference/types/#type-strokestyledetails) · [`FillPaint`](../../../../reference/types/#type-fillpaint) · [`CurveInterpolation`](../../../../reference/types/#type-curveinterpolation).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`StrokeStyleDetails`](../../../../reference/types/#type-strokestyledetails) · [`FillPaint`](../../../../reference/types/#type-fillpaint) · [`CurveInterpolation`](../../../../reference/types/#type-curveinterpolation).
 
  Declared options
 
@@ -1286,7 +1298,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `stroke` | Optional / branch-dependent | `string \| false \| undefined` |
@@ -1310,10 +1322,10 @@ Edit constant area appearance. `stroke: false` removes an existing outline.
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-createArcMark(options?: StrokeStyleDetails & { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
+createArcMark(options?: TargetedOptions<StrokeStyleDetails & { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }>): ChartProgram;
 ```
 
-Named option contracts: [`StrokeStyleDetails`](../../../../reference/types/#type-strokestyledetails) · [`ArcInnerRadius`](../../../../reference/types/#type-arcinnerradius).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`StrokeStyleDetails`](../../../../reference/types/#type-strokestyledetails) · [`ArcInnerRadius`](../../../../reference/types/#type-arcinnerradius).
 
  Declared options
 
@@ -1332,6 +1344,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `stroke` | Optional / branch-dependent | `string \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
@@ -1351,10 +1364,10 @@ radial sectors. [Marks](../../../../api/marks/line-area/#arc-marks)
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-editArcMark(options: StrokeStyleDetails & { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;
+editArcMark(options: TargetedOptions<StrokeStyleDetails & { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }>): ChartProgram;
 ```
 
-Named option contracts: [`StrokeStyleDetails`](../../../../reference/types/#type-strokestyledetails) · [`ArcInnerRadius`](../../../../reference/types/#type-arcinnerradius).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`StrokeStyleDetails`](../../../../reference/types/#type-strokestyledetails) · [`ArcInnerRadius`](../../../../reference/types/#type-arcinnerradius).
 
  Declared options
 
@@ -1365,7 +1378,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `innerRadius` | Optional / branch-dependent | `ArcInnerRadius \| undefined` |
 | `padAngle` | Optional / branch-dependent | `number \| undefined` |
 | `fill` | Optional / branch-dependent | `string \| undefined` |
@@ -1390,10 +1403,10 @@ Edit arc geometry or appearance and rematerialize complete sector paths.
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-createRectMark(options?: RectMarkOptions): ChartProgram;
+createRectMark(options?: TargetedOptions<RectMarkOptions>): ChartProgram;
 ```
 
-Named option contracts: [`RectMarkOptions`](../../../../reference/types/#type-rectmarkoptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`RectMarkOptions`](../../../../reference/types/#type-rectmarkoptions).
 
  Declared options
 
@@ -1417,6 +1430,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `cornerRadiusTopRight` | Optional / branch-dependent | `number \| undefined` |
 | `cornerRadiusBottomRight` | Optional / branch-dependent | `number \| undefined` |
 | `cornerRadiusBottomLeft` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
@@ -1441,10 +1455,10 @@ Omitted corners fall back to the global radius or zero; edits retain unspecified
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-editRectMark(options: EditRectMarkOptions): ChartProgram;
+editRectMark(options: TargetedOptions<EditRectMarkOptions>): ChartProgram;
 ```
 
-Named option contracts: [`EditRectMarkOptions`](../../../../reference/types/#type-editrectmarkoptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`EditRectMarkOptions`](../../../../reference/types/#type-editrectmarkoptions).
 
  Declared options
 
@@ -1452,7 +1466,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
@@ -1490,10 +1504,10 @@ Omitted corners fall back to the global radius or zero; edits retain unspecified
 **Availability:** Development; added after v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-createOverlay(options?: CreateOverlayOptions): ChartProgram;
+createOverlay(options?: TargetedOptions<CreateOverlayOptions>): ChartProgram;
 ```
 
-Named option contracts: [`CreateOverlayOptions`](../../../../reference/types/#type-createoverlayoptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`CreateOverlayOptions`](../../../../reference/types/#type-createoverlayoptions).
 
  Declared options
 
@@ -1510,6 +1524,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `type` | Optional / branch-dependent | `"line" \| "point" \| undefined` |
 | `line` | Optional / branch-dependent | `OverlayLineAppearance \| undefined` |
 | `point` | Optional / branch-dependent | `OverlayPointAppearance \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
@@ -1526,10 +1541,10 @@ Add a line or point layer that follows a source mark's visible results. Bar over
 **Availability:** Development; added after v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-editOverlay(options: EditOverlayOptions): ChartProgram;
+editOverlay(options: TargetedOptions<EditOverlayOptions>): ChartProgram;
 ```
 
-Named option contracts: [`EditOverlayOptions`](../../../../reference/types/#type-editoverlayoptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`EditOverlayOptions`](../../../../reference/types/#type-editoverlayoptions).
 
  Declared options
 
@@ -1537,7 +1552,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `follow` | Optional / branch-dependent | `boolean \| undefined` |
 | `source` | Optional / branch-dependent | `string \| undefined` |
 | `series` | Optional / branch-dependent | `"source" \| "total" \| undefined` |

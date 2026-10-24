@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "axes",
   "summary": "Edits y-axis title, including settings for vertical field title.",
-  "signature": "editYAxisTitle(options?: Omit<AxisTitleOptions<YAxisPosition>, \"scale\">): ChartProgram;",
+  "signature": "editYAxisTitle(options?: TargetedOptions<Omit<AxisTitleOptions<YAxisPosition>, \"scale\">>): ChartProgram;",
   "intents": [
     "edit y axis title",
     "edit",
@@ -80,7 +80,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "alongOffset",

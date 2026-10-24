@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "marks",
   "summary": "Create a semantic text layer.",
-  "signature": "createTextMark(options?: TextMarkOptions): ChartProgram;",
+  "signature": "createTextMark(options?: TargetedOptions<TextMarkOptions>): ChartProgram;",
   "intents": [
     "create text mark",
     "create",
@@ -25,7 +25,8 @@
     "idOptions": [
       "id",
       "data",
-      "source"
+      "source",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -70,6 +71,10 @@
     },
     {
       "input": "source",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -179,10 +184,15 @@
       "name": "dy",
       "required": false,
       "type": "number | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "createTextMark({ id?, data?, source?, clip?, lineHeight?, blockAlign?, inheritColor?, text? })"
+    "createTextMark({ id?, data?, source?, target?, clip?, lineHeight?, blockAlign?, inheritColor? })"
   ],
   "snippet": "program.createTextMark({})",
   "errors": [],

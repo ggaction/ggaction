@@ -15,10 +15,10 @@ Each declared action has an exact signature and its own stable link. Option tabl
 **Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-encodeChannels(options: EncodeChannelsOptions): ChartProgram;
+encodeChannels(options: TargetedOptions<EncodeChannelsOptions>): ChartProgram;
 ```
 
-Named option contracts: [`EncodeChannelsOptions`](./../types.md#type-encodechannelsoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EncodeChannelsOptions`](./../types.md#type-encodechannelsoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -27,7 +27,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Required | `string` |
+| `target` | Required | `string \| ActionTargetList \| ScopedActionTarget` |
 | `channels` | Required | `AtLeastOne<EncodingChannelAssignments>` |
 
 </details>
@@ -70,10 +70,10 @@ from `ggaction`; use the focused encoding actions from `ggaction/basic`.
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-selectMarks(options: SelectMarksOptions): ChartProgram;
+selectMarks(options: TargetedOptions<SelectMarksOptions>): ChartProgram;
 ```
 
-Named option contracts: [`SelectMarksOptions`](./../types.md#type-selectmarksoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`SelectMarksOptions`](./../types.md#type-selectmarksoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -83,7 +83,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `id` | Optional / branch-dependent | `string \| undefined` |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `grain` | Optional / branch-dependent | `"item" \| "stack" \| undefined` |
 | `field` | Optional / branch-dependent | `string \| undefined` |
 | `channel` | Optional / branch-dependent | `"color" \| "group" \| "opacity" \| "radius" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| "theta" \| "x" \| "x2" \| "xOffset" \| "y" \| "y2" \| "yOffset" \| undefined` |
@@ -121,10 +121,10 @@ values, and properties are concrete graphical values.
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editMarkSelection(options: EditMarkSelectionOptions): ChartProgram;
+editMarkSelection(options: TargetedOptions<EditMarkSelectionOptions>): ChartProgram;
 ```
 
-Named option contracts: [`EditMarkSelectionOptions`](./../types.md#type-editmarkselectionoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditMarkSelectionOptions`](./../types.md#type-editmarkselectionoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -147,6 +147,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| readonly string[] \| undefined` |
 | `ties` | Optional / branch-dependent | `"all" \| "first" \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -169,10 +170,10 @@ replayed from a clean baseline.
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-removeMarkSelection(options?: RemoveMarkSelectionOptions): ChartProgram;
+removeMarkSelection(options?: TargetedOptions<RemoveMarkSelectionOptions>): ChartProgram;
 ```
 
-Named option contracts: [`RemoveMarkSelectionOptions`](./../types.md#type-removemarkselectionoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`RemoveMarkSelectionOptions`](./../types.md#type-removemarkselectionoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -182,6 +183,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `selection` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 

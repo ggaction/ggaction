@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "marks",
   "summary": "Edit text typography and graphical offsets without changing its semantic source or position.",
-  "signature": "editTextMark(options: EditTextMarkOptions): ChartProgram;",
+  "signature": "editTextMark(options: TargetedOptions<EditTextMarkOptions>): ChartProgram;",
   "intents": [
     "edit text mark",
     "edit",
@@ -71,7 +71,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "clip",

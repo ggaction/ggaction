@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "axes",
   "summary": "Edit the outer baseline style.",
-  "signature": "editThetaAxisLine(options?: AxisLineStyleOptions): ChartProgram;",
+  "signature": "editThetaAxisLine(options?: TargetedOptions<AxisLineStyleOptions>): ChartProgram;",
   "intents": [
     "edit theta axis line",
     "edit",
@@ -21,7 +21,9 @@
       "compatible scale or encoding context"
     ],
     "owns": [],
-    "idOptions": []
+    "idOptions": [
+      "target"
+    ]
   },
   "authoringRoles": [
     "H3"
@@ -43,7 +45,12 @@
       "unit": "logical-pixel"
     }
   ],
-  "inference": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
   "completionRequirements": {
     "state": "contextual",
     "requires": [
@@ -62,10 +69,15 @@
       "name": "lineWidth",
       "required": false,
       "type": "number | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "editThetaAxisLine({ color?, lineWidth? })"
+    "editThetaAxisLine({ target?, color?, lineWidth? })"
   ],
   "snippet": "program.editThetaAxisLine({ color: \"#f28e2b\" })",
   "errors": [],

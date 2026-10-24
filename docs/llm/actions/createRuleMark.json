@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "marks",
   "summary": "Create a semantic rule mark and empty line collection.",
-  "signature": "createRuleMark(options?: { clip?: boolean; id?: string; data?: string; missing?: \"error\" | \"skip\" } & RuleStyleOptions): ChartProgram;",
+  "signature": "createRuleMark(options?: TargetedOptions<{ clip?: boolean; id?: string; data?: string; missing?: \"error\" | \"skip\" } & RuleStyleOptions>): ChartProgram;",
   "intents": [
     "create rule mark",
     "create",
@@ -24,7 +24,8 @@
     ],
     "idOptions": [
       "id",
-      "data"
+      "data",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -58,6 +59,10 @@
   "inference": [
     {
       "input": "data",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -127,10 +132,15 @@
       "name": "miterLimit",
       "required": false,
       "type": "number | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "createRuleMark({ id?, data?, clip?, missing?, stroke?, strokeWidth?, strokeDash?, opacity? })"
+    "createRuleMark({ id?, data?, target?, clip?, missing?, stroke?, strokeWidth?, strokeDash? })"
   ],
   "snippet": "program.createRuleMark({})",
   "errors": [],

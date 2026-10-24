@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "encodings",
   "summary": "Atomically compose area or ranged-bar encodeX and encodeX2.",
-  "signature": "encodeXRange(options: RangePositionEncodingOptions): ChartProgram;",
+  "signature": "encodeXRange(options: TargetedOptions<RangePositionEncodingOptions>): ChartProgram;",
   "intents": [
     "encode x range",
     "encode",
@@ -85,7 +85,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "coordinate",

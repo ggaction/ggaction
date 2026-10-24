@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "axes",
   "summary": "Creates y-axis ticks and labels for coordinated vertical guide.",
-  "signature": "createYAxisTicksAndLabels(options?: AxisTicksAndLabelsOptions<YAxisPosition>): ChartProgram;",
+  "signature": "createYAxisTicksAndLabels(options?: TargetedOptions<AxisTicksAndLabelsOptions<YAxisPosition>>): ChartProgram;",
   "intents": [
     "create y axis ticks and labels",
     "create",
@@ -74,7 +74,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "scale",

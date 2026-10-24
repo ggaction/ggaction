@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "statistics",
   "summary": "Infer an eligible point layer and create immutable fitted data, optional grouped interval-band paths, and grouped line paths.",
-  "signature": "createRegression(options?: RegressionOptions): ChartProgram;",
+  "signature": "createRegression(options?: TargetedOptions<RegressionOptions>): ChartProgram;",
   "intents": [
     "create regression",
     "create",
@@ -69,7 +69,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "x",

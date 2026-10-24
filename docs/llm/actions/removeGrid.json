@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "grid",
   "summary": "Removes grid while preserving unrelated chart resources.",
-  "signature": "removeGrid(options?: RemoveGridOptions): ChartProgram;",
+  "signature": "removeGrid(options?: TargetedOptions<RemoveGridOptions>): ChartProgram;",
   "intents": [
     "remove grid",
     "remove",
@@ -21,7 +21,9 @@
       "compatible scale or encoding context"
     ],
     "owns": [],
-    "idOptions": []
+    "idOptions": [
+      "target"
+    ]
   },
   "authoringRoles": [
     "H3"
@@ -37,7 +39,12 @@
     ]
   },
   "units": [],
-  "inference": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
   "completionRequirements": {
     "state": "contextual",
     "requires": [
@@ -66,10 +73,15 @@
       "name": "radial",
       "required": false,
       "type": "boolean | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "removeGrid({ horizontal?, vertical?, theta?, radial? })"
+    "removeGrid({ target?, horizontal?, vertical?, theta?, radial? })"
   ],
   "snippet": "program.removeGrid({})",
   "errors": [],

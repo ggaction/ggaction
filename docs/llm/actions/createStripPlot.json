@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "charts",
   "summary": "Create a point strip from one measure or from one measure plus one categorical slot.",
-  "signature": "createStripPlot(options: CreateStripPlotOptions): ChartProgram;",
+  "signature": "createStripPlot(options: TargetedOptions<CreateStripPlotOptions>): ChartProgram;",
   "intents": [
     "create strip plot",
     "create",
@@ -25,7 +25,8 @@
     "idOptions": [
       "id",
       "data",
-      "coordinate"
+      "coordinate",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -51,6 +52,10 @@
     },
     {
       "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -120,6 +125,11 @@
       "name": "jitter",
       "required": false,
       "type": "false | StripBandJitterOptions | StripPixelJitterOptions | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [

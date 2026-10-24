@@ -4,7 +4,7 @@
   "layer": "advanced",
   "domain": "mark-selection",
   "summary": "Release one stored selection after removing its dependent highlight.",
-  "signature": "removeMarkSelection(options?: RemoveMarkSelectionOptions): ChartProgram;",
+  "signature": "removeMarkSelection(options?: TargetedOptions<RemoveMarkSelectionOptions>): ChartProgram;",
   "intents": [
     "remove mark selection",
     "remove",
@@ -22,7 +22,8 @@
     ],
     "owns": [],
     "idOptions": [
-      "selection"
+      "selection",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -42,6 +43,10 @@
     {
       "input": "selection",
       "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
     }
   ],
   "completionRequirements": {
@@ -57,10 +62,15 @@
       "name": "selection",
       "required": false,
       "type": "string | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "removeMarkSelection({ selection? })"
+    "removeMarkSelection({ selection?, target? })"
   ],
   "snippet": "program.removeMarkSelection({})",
   "errors": [],

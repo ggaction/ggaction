@@ -11,298 +11,300 @@ The action entries below provide the readable form, behavior, defaults, and rout
 
 ```typescript
 interface ChartProgramActions {
-  createCanvas(options?: CanvasOptions): ChartProgram;
-  editCanvas(options: CanvasOptions): ChartProgram;
-  fitCanvas(options?: FitCanvasOptions): ChartProgram;
-  applyTextMetrics(options: ApplyTextMetricsOptions): ChartProgram;
+  createCanvas(options?: TargetedOptions<CanvasOptions>): ChartProgram;
+  editCanvas(options: TargetedOptions<CanvasOptions>): ChartProgram;
+  fitCanvas(options?: TargetedOptions<FitCanvasOptions>): ChartProgram;
+  applyTextMetrics(options: TargetedOptions<ApplyTextMetricsOptions>): ChartProgram;
   removeTextMetrics(): ChartProgram;
-  applyTheme(options: ApplyThemeOptions): ChartProgram;
+  applyTheme(options: TargetedOptions<ApplyThemeOptions>): ChartProgram;
   removeTheme(): ChartProgram;
   createData<Row extends object>(options: CreateDataOptions<Row>): ChartProgram;
-  reviseData<Row extends object>(options: ReviseDataOptions<Row>): ChartProgram;
-  removeData(options: RemoveResourceOptions): ChartProgram;
-  removeScale(options: RemoveResourceOptions): ChartProgram;
-  removeCoordinate(options: RemoveResourceOptions): ChartProgram;
-  bindMarkData(options: BindMarkDataOptions): ChartProgram;
-  filterData(options: FilterDataOptions): ChartProgram;
-  filterMarks(options: FilterMarksOptions): ChartProgram;
-  removeMarkFilter(options?: RemoveMarkFilterOptions): ChartProgram;
-  selectMarks(options: SelectMarksOptions): ChartProgram;
-  editMarkSelection(options: EditMarkSelectionOptions): ChartProgram;
-  removeMarkHighlight(options?: RemoveMarkSelectionOptions): ChartProgram;
-  removeMarkSelection(options?: RemoveMarkSelectionOptions): ChartProgram;
-  highlightMarks(options: HighlightMarksOptions): ChartProgram;
-  createDensityData(options: DensityDataOptions): ChartProgram;
-  createSummaryData(options: SummaryDataOptions): ChartProgram;
-  createBinData(options: BinDataOptions): ChartProgram;
-  createFlattenData(options: FlattenDataOptions): ChartProgram;
-  createLookupData(options: LookupDataOptions): ChartProgram;
-  createFoldData(options: FoldDataOptions): ChartProgram;
-  createComputedData(options: ComputedDataOptions): ChartProgram;
-  createNormalizedData(options: NormalizedDataOptions): ChartProgram;
-  createCompleteData(options: CompleteDataOptions): ChartProgram;
-  createImputedData(options: ImputedDataOptions): ChartProgram;
-  createStackData(options: StackDataOptions): ChartProgram;
-  createRegressionData(options: RegressionDataOptions): ChartProgram;
-  createRegressionStatisticsData(options: RegressionStatisticsDataOptions): ChartProgram;
-  editRegressionStatisticsData(options?: EditRegressionStatisticsDataOptions): ChartProgram;
-  createIntervalData(options: IntervalDataOptions): ChartProgram;
-  createECDFData(options: ECDFDataOptions): ChartProgram;
-  createTimeUnitData(options: TimeUnitDataOptions): ChartProgram;
-  createWindowData(options: WindowDataOptions): ChartProgram;
-  createBin2DData(options: Bin2DDataOptions): ChartProgram;
-  createSortedData(options: SortedDataOptions): ChartProgram;
-  editDerivedData(options: EditDerivedDataOptions): ChartProgram;
-  editComputedData(options: EditComputedDataOptions): ChartProgram;
-  editFilteredData(options: EditFilteredDataOptions): ChartProgram;
-  editFlattenData(options: EditFlattenDataOptions): ChartProgram;
-  editLookupData(options: EditLookupDataOptions): ChartProgram;
-  editFoldData(options: EditFoldDataOptions): ChartProgram;
-  editSummaryData(options: EditSummaryDataOptions): ChartProgram;
-  editBinData(options: EditBinDataOptions): ChartProgram;
-  editTimeUnitData(options: EditTimeUnitDataOptions): ChartProgram;
-  editWindowData(options: EditWindowDataOptions): ChartProgram;
-  editDensityData(options: EditDensityDataOptions): ChartProgram;
-  editStackData(options: EditStackDataOptions): ChartProgram;
-  editRegressionData(options: EditRegressionDataOptions): ChartProgram;
-  editSortedData(options: EditSortedDataOptions): ChartProgram;
-  editIntervalData(options: EditIntervalDataOptions): ChartProgram;
-  editECDFData(options: EditECDFDataOptions): ChartProgram;
-  editNormalizedData(options: EditNormalizedDataOptions): ChartProgram;
-  editCompleteData(options: EditCompleteDataOptions): ChartProgram;
-  editImputedData(options: EditImputedDataOptions): ChartProgram;
-  editBin2DData(options: EditBin2DDataOptions): ChartProgram;
-  createPointMark(options?: StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
-  editPointMark(options: StrokeStyleDetails & { clip?: boolean; target?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
-  createTickMark(options?: StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;
-  editTickMark(options: StrokeStyleDetails & { clip?: boolean; target?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;
-  jitterPoints(options: JitterPointsOptions): ChartProgram;
-  removeJitter(options?: RemoveJitterOptions): ChartProgram;
-  packPoints(options: PackPointsOptions): ChartProgram;
-  removePointPacking(options?: RemovePointPackingOptions): ChartProgram;
-  createLineMark(options?: StrokeStyleDetails & { clip?: boolean; missing?: "error" | "break"; id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
-  editLineMark(options: StrokeStyleDetails & { clip?: boolean; missing?: "error" | "break"; target?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
-  createBarMark(options?: RectStyleDetails & { clip?: boolean; id?: string; data?: string; orientation?: "vertical" | "horizontal"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
-  editBarMark(options: RectStyleDetails & { clip?: boolean; target?: string; blend?: "normal" | "difference"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
-  createAreaMark(options?: StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
-  createArcMark(options?: StrokeStyleDetails & { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
-  editArcMark(options: StrokeStyleDetails & { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;
-  createRectMark(options?: RectMarkOptions): ChartProgram;
-  editRectMark(options: EditRectMarkOptions): ChartProgram;
-  createRuleMark(options?: { clip?: boolean; id?: string; data?: string; missing?: "error" | "skip" } & RuleStyleOptions): ChartProgram;
-  editRuleMark(options: { clip?: boolean; target?: string; missing?: "error" | "skip" } & RuleStyleOptions): ChartProgram;
-  createTextMark(options?: TextMarkOptions): ChartProgram;
-  createTextPlot(options: CreateTextPlotOptions): ChartProgram;
-  createMarkLabels(options?: CreateMarkLabelsOptions): ChartProgram;
-  editMarkLabelSelection(options: EditMarkLabelSelectionOptions): ChartProgram;
-  editMarkLabelPlacement(options: EditMarkLabelPlacementOptions): ChartProgram;
-  removeMarkLabels(options: RemoveMarkLabelsOptions): ChartProgram;
-  createAnnotation(options: CreateAnnotationOptions): ChartProgram;
-  createStatisticalReference(options: CreateStatisticalReferenceOptions): ChartProgram;
-  createOverlay(options?: CreateOverlayOptions): ChartProgram;
-  editOverlay(options: EditOverlayOptions): ChartProgram;
-  createReferenceLine(options: CreateReferenceLineOptions): ChartProgram;
-  createReferenceBand(options: CreateReferenceBandOptions): ChartProgram;
-  editTextMark(options: EditTextMarkOptions): ChartProgram;
-  layoutLabels(options?: LabelLayoutOptions): ChartProgram;
-  removeLabelLayout(options?: RemoveLabelLayoutOptions): ChartProgram;
-  editAreaMark(options: StrokeStyleDetails & { clip?: boolean; target?: string; fill?: FillPaint; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
-  encodeX(options: PositionEncodingOptions | DatumPositionEncodingOptions): ChartProgram;
-  encodeY(options: YPositionEncodingOptions | DatumPositionEncodingOptions): ChartProgram;
-  encodeTheta(options: ThetaEncodingOptions): ChartProgram;
-  encodeR(options: RadialEncodingOptions): ChartProgram;
-  encodeX2(options: SecondaryPositionEncodingOptions): ChartProgram;
-  encodeColor(options: ColorEncodingOptions): ChartProgram;
-  encodeStrokeDash(options: StrokeDashEncodingOptions): ChartProgram;
-  encodeSize(options: SizeEncodingOptions): ChartProgram;
-  encodeShape(options: ShapeEncodingOptions): ChartProgram;
-  encodeAngle(options: AngleEncodingOptions): ChartProgram;
-  encodeOpacity(options: OpacityEncodingOptions): ChartProgram;
-  encodeRadius(options: { value: number; target?: string }): ChartProgram;
-  encodePointRadius(options: { value: number; target?: string }): ChartProgram;
-  removePointRadius(options?: { target?: string }): ChartProgram;
-  encodeXOffset(options: XOffsetEncodingOptions): ChartProgram;
-  encodeYOffset(options: YOffsetEncodingOptions): ChartProgram;
-  encodeY2(options: SecondaryPositionEncodingOptions): ChartProgram;
-  encodeYRange(options: RangePositionEncodingOptions): ChartProgram;
-  encodeXRange(options: RangePositionEncodingOptions): ChartProgram;
-  encodeGroup(options: GroupEncodingOptions): ChartProgram;
-  layoutSeries(options: SeriesLayoutOptions): ChartProgram;
-  encodePathOrder(options: PathOrderEncodingOptions): ChartProgram;
-  orderCategories(options: OrderCategoriesOptions): ChartProgram;
-  encodeParallelCoordinates(options: ParallelCoordinatesEncodingOptions): ChartProgram;
-  removePathOrder(options?: RemovePathOrderOptions): ChartProgram;
-  removeCategoryOrder(options: RemoveCategoryOrderOptions): ChartProgram;
-  removeEncoding(options: { target?: string; channel: | "x" | "y" | "x2" | "y2" | "xOffset" | "yOffset" | "theta" | "radius" | "color" | "stroke" | "strokeDash" | "strokeWidth" | "size" | "shape" | "angle" | "group" | "opacity" | "text" | "dx" | "dy"; }): ChartProgram;
-  encodeText(options: TextEncodingOptions): ChartProgram;
-  encodeDx(options: TextOffsetEncodingOptions): ChartProgram;
-  encodeDy(options: TextOffsetEncodingOptions): ChartProgram;
-  encodeHistogram(options: HistogramEncodingOptions): ChartProgram;
-  encodeDensity(options: DensityEncodingOptions): ChartProgram;
-  editDensity(options: EditDensityOptions): ChartProgram;
-  encodeHorizon(options?: HorizonEncodingOptions): ChartProgram;
-  editHorizon(options: EditHorizonOptions): ChartProgram;
-  encodeBarWidth(options?: BarWidthOptions): ChartProgram;
-  encodeStroke(options: StrokeEncodingOptions): ChartProgram;
-  encodeStrokeWidth(options: StrokeWidthEncodingOptions): ChartProgram;
-  encodeChannels(options: EncodeChannelsOptions): ChartProgram;
-  createRegression(options?: RegressionOptions): ChartProgram;
-  editRegression(options: EditRegressionOptions): ChartProgram;
-  createErrorBar(options?: ErrorBarOptions): ChartProgram;
-  editErrorBar(options: EditErrorBarOptions): ChartProgram;
-  createErrorBand(options?: ErrorBandOptions): ChartProgram;
-  editErrorBand(options: EditErrorBandOptions): ChartProgram;
-  editErrorBandBoundary(options: EditErrorBandBoundaryOptions): ChartProgram;
-  createBoxPlot(options?: BoxPlotOptions): ChartProgram;
-  editBoxPlot(options: EditBoxPlotOptions): ChartProgram;
-  createGradientPlot(options?: GradientPlotOptions): ChartProgram;
-  editGradientPlot(options: EditGradientPlotOptions): ChartProgram;
-  createViolinPlot(options: ViolinPlotOptions): ChartProgram;
-  editViolinPlot(options: EditViolinPlotOptions): ChartProgram;
-  createScatterPlot(options: CreateScatterPlotOptions): ChartProgram;
-  createIntervalPlot(options: CreateIntervalPlotOptions): ChartProgram;
-  createRegressionPlot(options: CreateRegressionPlotOptions): ChartProgram;
-  createDotPlot(options: CreateDotPlotOptions): ChartProgram;
-  createLollipopPlot(options: CreateLollipopPlotOptions): ChartProgram;
-  createDumbbellPlot(options: CreateDumbbellPlotOptions): ChartProgram;
-  editEndpointPlot(options: EditEndpointPlotOptions): ChartProgram;
-  createECDFPlot(options: CreateECDFPlotOptions): ChartProgram;
-  editECDFPlot(options: EditECDFPlotOptions): ChartProgram;
-  createLinePlot(options: CreateLinePlotOptions): ChartProgram;
-  createPolarScatterPlot(options: CreatePolarScatterPlotOptions): ChartProgram;
-  createPolarLinePlot(options: CreatePolarLinePlotOptions): ChartProgram;
-  createRadarPlot(options: CreateRadarPlotOptions): ChartProgram;
-  editRadarPlot(options: EditRadarPlotOptions): ChartProgram;
-  createRugPlot(options: CreateRugPlotOptions): ChartProgram;
-  createStripPlot(options: CreateStripPlotOptions): ChartProgram;
-  createBeeswarmPlot(options: CreateBeeswarmPlotOptions): ChartProgram;
-  createRaincloudPlot(options: CreateRaincloudPlotOptions): ChartProgram;
-  editRaincloudPlot(options: EditRaincloudPlotOptions): ChartProgram;
-  createAreaPlot(options: CreateAreaPlotOptions): ChartProgram;
-  createBarPlot(options: CreateBarPlotOptions): ChartProgram;
-  createHistogram(options: CreateHistogramOptions): ChartProgram;
-  createPiePlot(options: CreatePiePlotOptions): ChartProgram;
-  createRosePlot(options: CreateRosePlotOptions): ChartProgram;
-  createRadialBarPlot(options: CreateRadialBarPlotOptions): ChartProgram;
-  createDensityPlot(options: CreateDensityPlotOptions): ChartProgram;
-  createHorizonPlot(options: CreateHorizonPlotOptions): ChartProgram;
-  createHeatmap(options: CreateHeatmapOptions): ChartProgram;
-  createParallelCoordinates(options: CreateParallelCoordinatesOptions): ChartProgram;
-  removeMark(options?: RemoveMarkOptions): ChartProgram;
-  createParallelAxes(options?: ParallelAxesOptions): ChartProgram;
-  createParallelAxis(options: CreateParallelAxisOptions): ChartProgram;
-  editParallelAxis(options: EditParallelAxisOptions): ChartProgram;
-  removeParallelAxis(options: RemoveParallelAxisOptions): ChartProgram;
-  removeParallelAxes(options?: ParallelAxesOptions): ChartProgram;
-  createAxes(options?: CreateAxesOptions): ChartProgram;
-  editAxes(options: EditAxesOptions): ChartProgram;
-  createXAxis(options?: CompleteAxisOptions<XAxisPosition>): ChartProgram;
-  createYAxis(options?: CompleteAxisOptions<YAxisPosition>): ChartProgram;
-  createThetaAxis(options?: CompleteThetaAxisOptions): ChartProgram;
-  createRadialAxis(options?: CompleteRadialAxisOptions): ChartProgram;
-  createThetaAxisLine(options?: CreateThetaAxisLineOptions): ChartProgram;
-  createRadialAxisLine(options?: CreateRadialAxisLineOptions): ChartProgram;
-  createThetaAxisTicks(options?: CreateThetaAxisTicksOptions): ChartProgram;
-  createRadialAxisTicks(options?: CreateRadialAxisTicksOptions): ChartProgram;
-  createThetaAxisLabels(options?: CreateThetaAxisLabelsOptions): ChartProgram;
-  createRadialAxisLabels(options?: CreateRadialAxisLabelsOptions): ChartProgram;
-  createThetaAxisTitle(options?: CreateThetaAxisTitleOptions): ChartProgram;
-  createRadialAxisTitle(options?: CreateRadialAxisTitleOptions): ChartProgram;
-  editThetaAxisLine(options?: AxisLineStyleOptions): ChartProgram;
-  editRadialAxisLine(options?: AxisLineStyleOptions): ChartProgram;
-  editThetaAxisTicks(options?: PolarTickOptions): ChartProgram;
-  editRadialAxisTicks(options?: PolarTickOptions): ChartProgram;
-  editThetaAxisLabels(options?: ThetaAxisLabelOptions): ChartProgram;
-  editRadialAxisLabels(options?: PolarLabelOptions): ChartProgram;
-  editThetaAxisTitle(options?: PolarTitleOptions): ChartProgram;
-  editRadialAxisTitle(options?: RadialTitleOptions): ChartProgram;
-  createXAxisLine(options?: AxisLineStyleOptions & { target?: string; scale?: string; position?: XAxisPosition }): ChartProgram;
-  createYAxisLine(options?: AxisLineStyleOptions & { target?: string; scale?: string; position?: YAxisPosition }): ChartProgram;
-  editXAxisLine(options?: AxisLineStyleOptions & { target?: string; position?: XAxisPosition }): ChartProgram;
-  editYAxisLine(options?: AxisLineStyleOptions & { target?: string; position?: YAxisPosition }): ChartProgram;
-  createXAxisTicks(options?: AxisTickOptions<XAxisPosition>): ChartProgram;
-  createYAxisTicks(options?: AxisTickOptions<YAxisPosition>): ChartProgram;
-  editXAxisTicks(options?: Omit<AxisTickOptions<XAxisPosition>, "scale">): ChartProgram;
-  editYAxisTicks(options?: Omit<AxisTickOptions<YAxisPosition>, "scale">): ChartProgram;
-  createXAxisLabels(options?: AxisLabelOptions<XAxisPosition>): ChartProgram;
-  createYAxisLabels(options?: AxisLabelOptions<YAxisPosition>): ChartProgram;
-  editXAxisLabels(options?: Omit<AxisLabelOptions<XAxisPosition>, "scale">): ChartProgram;
-  editYAxisLabels(options?: Omit<AxisLabelOptions<YAxisPosition>, "scale">): ChartProgram;
-  createXAxisTicksAndLabels(options?: AxisTicksAndLabelsOptions<XAxisPosition>): ChartProgram;
-  createYAxisTicksAndLabels(options?: AxisTicksAndLabelsOptions<YAxisPosition>): ChartProgram;
-  editXAxisTicksAndLabels(options: Omit<AxisTicksAndLabelsOptions<XAxisPosition>, "scale">): ChartProgram;
-  editYAxisTicksAndLabels(options: Omit<AxisTicksAndLabelsOptions<YAxisPosition>, "scale">): ChartProgram;
-  createXAxisTitle(options?: AxisTitleOptions<XAxisPosition>): ChartProgram;
-  createYAxisTitle(options?: AxisTitleOptions<YAxisPosition>): ChartProgram;
-  editXAxisTitle(options?: Omit<AxisTitleOptions<XAxisPosition>, "scale">): ChartProgram;
-  editYAxisTitle(options?: Omit<AxisTitleOptions<YAxisPosition>, "scale">): ChartProgram;
-  editXAxis(options: EditAxisOptions<XAxisPosition>): ChartProgram;
-  editYAxis(options: EditAxisOptions<YAxisPosition>): ChartProgram;
-  editThetaAxis(options: EditThetaAxisOptions): ChartProgram;
-  editRadialAxis(options: EditRadialAxisOptions): ChartProgram;
-  removeXAxis(options?: RemoveAxisOptions): ChartProgram;
-  removeYAxis(options?: RemoveAxisOptions): ChartProgram;
-  removeThetaAxis(options?: Omit<RemoveAxisOptions, "target">): ChartProgram;
-  removeRadialAxis(options?: Omit<RemoveAxisOptions, "target">): ChartProgram;
-  createGrid(options?: CreateGridOptions): ChartProgram;
-  createHorizontalGrid(options?: GridDirectionOptions): ChartProgram;
-  createVerticalGrid(options?: GridDirectionOptions): ChartProgram;
-  createThetaGrid(options?: PolarGridOptions): ChartProgram;
-  createRadialGrid(options?: PolarGridOptions): ChartProgram;
-  editHorizontalGrid(options: EditGridOptions): ChartProgram;
-  editVerticalGrid(options: EditGridOptions): ChartProgram;
-  editThetaGrid(options: EditPolarGridOptions): ChartProgram;
-  editRadialGrid(options: EditPolarGridOptions): ChartProgram;
-  editGrid(options: EditGridDirectionsOptions): ChartProgram;
-  removeGrid(options?: RemoveGridOptions): ChartProgram;
-  createLegend(options?: LegendOptions): ChartProgram;
-  editLegend(options: EditLegendOptions): ChartProgram;
-  editLegendBlock(options: EditLegendBlockOptions): ChartProgram;
-  editLegendLayout(options: EditLegendLayoutOptions): ChartProgram;
-  editLegendLabels(options: EditLegendLabelsOptions): ChartProgram;
-  editLegendTitle(options: EditLegendTitleOptions): ChartProgram;
-  editLegendSymbols(options: EditLegendSymbolsOptions): ChartProgram;
-  editLegendBorder(options: EditLegendBorderOptions): ChartProgram;
-  removeLegend(options?: RemoveLegendOptions): ChartProgram;
-  createGuides(options?: CreateGuidesOptions): ChartProgram;
-  createTitle(options: TitleOptions): ChartProgram;
-  editTitle(options: EditTitleOptions): ChartProgram;
+  reviseData<Row extends object>(options: TargetedOptions<ReviseDataOptions<Row>>): ChartProgram;
+  removeData(options: TargetedOptions<RemoveResourceOptions>): ChartProgram;
+  removeScale(options: TargetedOptions<RemoveResourceOptions>): ChartProgram;
+  removeCoordinate(options: TargetedOptions<RemoveResourceOptions>): ChartProgram;
+  bindMarkData(options: TargetedOptions<BindMarkDataOptions>): ChartProgram;
+  filterData(options: TargetedOptions<FilterDataOptions>): ChartProgram;
+  filterMarks(options: TargetedOptions<FilterMarksOptions>): ChartProgram;
+  removeMarkFilter(options?: TargetedOptions<RemoveMarkFilterOptions>): ChartProgram;
+  selectMarks(options: TargetedOptions<SelectMarksOptions>): ChartProgram;
+  editMarkSelection(options: TargetedOptions<EditMarkSelectionOptions>): ChartProgram;
+  removeMarkHighlight(options?: TargetedOptions<RemoveMarkSelectionOptions>): ChartProgram;
+  removeMarkSelection(options?: TargetedOptions<RemoveMarkSelectionOptions>): ChartProgram;
+  highlightMarks(options: TargetedOptions<HighlightMarksOptions>): ChartProgram;
+  createDensityData(options: TargetedOptions<DensityDataOptions>): ChartProgram;
+  createSummaryData(options: TargetedOptions<SummaryDataOptions>): ChartProgram;
+  createBinData(options: TargetedOptions<BinDataOptions>): ChartProgram;
+  createFlattenData(options: TargetedOptions<FlattenDataOptions>): ChartProgram;
+  createLookupData(options: TargetedOptions<LookupDataOptions>): ChartProgram;
+  createFoldData(options: TargetedOptions<FoldDataOptions>): ChartProgram;
+  createComputedData(options: TargetedOptions<ComputedDataOptions>): ChartProgram;
+  createNormalizedData(options: TargetedOptions<NormalizedDataOptions>): ChartProgram;
+  createCompleteData(options: TargetedOptions<CompleteDataOptions>): ChartProgram;
+  createImputedData(options: TargetedOptions<ImputedDataOptions>): ChartProgram;
+  createStackData(options: TargetedOptions<StackDataOptions>): ChartProgram;
+  createRegressionData(options: TargetedOptions<RegressionDataOptions>): ChartProgram;
+  createRegressionStatisticsData(options: TargetedOptions<RegressionStatisticsDataOptions>): ChartProgram;
+  editRegressionStatisticsData(options?: TargetedOptions<EditRegressionStatisticsDataOptions>): ChartProgram;
+  createIntervalData(options: TargetedOptions<IntervalDataOptions>): ChartProgram;
+  createECDFData(options: TargetedOptions<ECDFDataOptions>): ChartProgram;
+  createTimeUnitData(options: TargetedOptions<TimeUnitDataOptions>): ChartProgram;
+  createWindowData(options: TargetedOptions<WindowDataOptions>): ChartProgram;
+  createBin2DData(options: TargetedOptions<Bin2DDataOptions>): ChartProgram;
+  createSortedData(options: TargetedOptions<SortedDataOptions>): ChartProgram;
+  editDerivedData(options: TargetedOptions<EditDerivedDataOptions>): ChartProgram;
+  editComputedData(options: TargetedOptions<EditComputedDataOptions>): ChartProgram;
+  editFilteredData(options: TargetedOptions<EditFilteredDataOptions>): ChartProgram;
+  editFlattenData(options: TargetedOptions<EditFlattenDataOptions>): ChartProgram;
+  editLookupData(options: TargetedOptions<EditLookupDataOptions>): ChartProgram;
+  editFoldData(options: TargetedOptions<EditFoldDataOptions>): ChartProgram;
+  editSummaryData(options: TargetedOptions<EditSummaryDataOptions>): ChartProgram;
+  editBinData(options: TargetedOptions<EditBinDataOptions>): ChartProgram;
+  editTimeUnitData(options: TargetedOptions<EditTimeUnitDataOptions>): ChartProgram;
+  editWindowData(options: TargetedOptions<EditWindowDataOptions>): ChartProgram;
+  editDensityData(options: TargetedOptions<EditDensityDataOptions>): ChartProgram;
+  editStackData(options: TargetedOptions<EditStackDataOptions>): ChartProgram;
+  editRegressionData(options: TargetedOptions<EditRegressionDataOptions>): ChartProgram;
+  editSortedData(options: TargetedOptions<EditSortedDataOptions>): ChartProgram;
+  editIntervalData(options: TargetedOptions<EditIntervalDataOptions>): ChartProgram;
+  editECDFData(options: TargetedOptions<EditECDFDataOptions>): ChartProgram;
+  editNormalizedData(options: TargetedOptions<EditNormalizedDataOptions>): ChartProgram;
+  editCompleteData(options: TargetedOptions<EditCompleteDataOptions>): ChartProgram;
+  editImputedData(options: TargetedOptions<EditImputedDataOptions>): ChartProgram;
+  editBin2DData(options: TargetedOptions<EditBin2DDataOptions>): ChartProgram;
+  createPointMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
+  editPointMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
+  createTickMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }>): ChartProgram;
+  editTickMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }>): ChartProgram;
+  jitterPoints(options: TargetedOptions<JitterPointsOptions>): ChartProgram;
+  removeJitter(options?: TargetedOptions<RemoveJitterOptions>): ChartProgram;
+  packPoints(options: TargetedOptions<PackPointsOptions>): ChartProgram;
+  removePointPacking(options?: TargetedOptions<RemovePointPackingOptions>): ChartProgram;
+  createLineMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; missing?: "error" | "break"; id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }>): ChartProgram;
+  editLineMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; missing?: "error" | "break"; target?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }>): ChartProgram;
+  createBarMark(options?: TargetedOptions<RectStyleDetails & { clip?: boolean; id?: string; data?: string; orientation?: "vertical" | "horizontal"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
+  editBarMark(options: TargetedOptions<RectStyleDetails & { clip?: boolean; target?: string; blend?: "normal" | "difference"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
+  createAreaMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }>): ChartProgram;
+  createArcMark(options?: TargetedOptions<StrokeStyleDetails & { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }>): ChartProgram;
+  editArcMark(options: TargetedOptions<StrokeStyleDetails & { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }>): ChartProgram;
+  createRectMark(options?: TargetedOptions<RectMarkOptions>): ChartProgram;
+  editRectMark(options: TargetedOptions<EditRectMarkOptions>): ChartProgram;
+  createRuleMark(options?: TargetedOptions<{ clip?: boolean; id?: string; data?: string; missing?: "error" | "skip" } & RuleStyleOptions>): ChartProgram;
+  editRuleMark(options: TargetedOptions<{ clip?: boolean; target?: string; missing?: "error" | "skip" } & RuleStyleOptions>): ChartProgram;
+  createTextMark(options?: TargetedOptions<TextMarkOptions>): ChartProgram;
+  createTextPlot(options: TargetedOptions<CreateTextPlotOptions>): ChartProgram;
+  createMarkLabels(options?: TargetedOptions<CreateMarkLabelsOptions>): ChartProgram;
+  editMarkLabelSelection(options: TargetedOptions<EditMarkLabelSelectionOptions>): ChartProgram;
+  editMarkLabelPlacement(options: TargetedOptions<EditMarkLabelPlacementOptions>): ChartProgram;
+  removeMarkLabels(options: TargetedOptions<RemoveMarkLabelsOptions>): ChartProgram;
+  createAnnotation(options: TargetedOptions<CreateAnnotationOptions>): ChartProgram;
+  createStatisticalReference(options: TargetedOptions<CreateStatisticalReferenceOptions>): ChartProgram;
+  createOverlay(options?: TargetedOptions<CreateOverlayOptions>): ChartProgram;
+  createAdjacentPlot(options?: TargetedOptions<CreateAdjacentPlotOptions>): ChartProgram;
+  editCompositionScales(options: TargetedOptions<EditCompositionScalesOptions>): ChartProgram;
+  editOverlay(options: TargetedOptions<EditOverlayOptions>): ChartProgram;
+  createReferenceLine(options: TargetedOptions<CreateReferenceLineOptions>): ChartProgram;
+  createReferenceBand(options: TargetedOptions<CreateReferenceBandOptions>): ChartProgram;
+  editTextMark(options: TargetedOptions<EditTextMarkOptions>): ChartProgram;
+  layoutLabels(options?: TargetedOptions<LabelLayoutOptions>): ChartProgram;
+  removeLabelLayout(options?: TargetedOptions<RemoveLabelLayoutOptions>): ChartProgram;
+  editAreaMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; fill?: FillPaint; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }>): ChartProgram;
+  encodeX(options: TargetedOptions<PositionEncodingOptions | DatumPositionEncodingOptions>): ChartProgram;
+  encodeY(options: TargetedOptions<YPositionEncodingOptions | DatumPositionEncodingOptions>): ChartProgram;
+  encodeTheta(options: TargetedOptions<ThetaEncodingOptions>): ChartProgram;
+  encodeR(options: TargetedOptions<RadialEncodingOptions>): ChartProgram;
+  encodeX2(options: TargetedOptions<SecondaryPositionEncodingOptions>): ChartProgram;
+  encodeColor(options: TargetedOptions<ColorEncodingOptions>): ChartProgram;
+  encodeStrokeDash(options: TargetedOptions<StrokeDashEncodingOptions>): ChartProgram;
+  encodeSize(options: TargetedOptions<SizeEncodingOptions>): ChartProgram;
+  encodeShape(options: TargetedOptions<ShapeEncodingOptions>): ChartProgram;
+  encodeAngle(options: TargetedOptions<AngleEncodingOptions>): ChartProgram;
+  encodeOpacity(options: TargetedOptions<OpacityEncodingOptions>): ChartProgram;
+  encodeRadius(options: TargetedOptions<{ value: number; target?: string }>): ChartProgram;
+  encodePointRadius(options: TargetedOptions<{ value: number; target?: string }>): ChartProgram;
+  removePointRadius(options?: TargetedOptions<{ target?: string }>): ChartProgram;
+  encodeXOffset(options: TargetedOptions<XOffsetEncodingOptions>): ChartProgram;
+  encodeYOffset(options: TargetedOptions<YOffsetEncodingOptions>): ChartProgram;
+  encodeY2(options: TargetedOptions<SecondaryPositionEncodingOptions>): ChartProgram;
+  encodeYRange(options: TargetedOptions<RangePositionEncodingOptions>): ChartProgram;
+  encodeXRange(options: TargetedOptions<RangePositionEncodingOptions>): ChartProgram;
+  encodeGroup(options: TargetedOptions<GroupEncodingOptions>): ChartProgram;
+  layoutSeries(options: TargetedOptions<SeriesLayoutOptions>): ChartProgram;
+  encodePathOrder(options: TargetedOptions<PathOrderEncodingOptions>): ChartProgram;
+  orderCategories(options: TargetedOptions<OrderCategoriesOptions>): ChartProgram;
+  encodeParallelCoordinates(options: TargetedOptions<ParallelCoordinatesEncodingOptions>): ChartProgram;
+  removePathOrder(options?: TargetedOptions<RemovePathOrderOptions>): ChartProgram;
+  removeCategoryOrder(options: TargetedOptions<RemoveCategoryOrderOptions>): ChartProgram;
+  removeEncoding(options: TargetedOptions<{ target?: string; channel: | "x" | "y" | "x2" | "y2" | "xOffset" | "yOffset" | "theta" | "radius" | "color" | "stroke" | "strokeDash" | "strokeWidth" | "size" | "shape" | "angle" | "group" | "opacity" | "text" | "dx" | "dy"; }>): ChartProgram;
+  encodeText(options: TargetedOptions<TextEncodingOptions>): ChartProgram;
+  encodeDx(options: TargetedOptions<TextOffsetEncodingOptions>): ChartProgram;
+  encodeDy(options: TargetedOptions<TextOffsetEncodingOptions>): ChartProgram;
+  encodeHistogram(options: TargetedOptions<HistogramEncodingOptions>): ChartProgram;
+  encodeDensity(options: TargetedOptions<DensityEncodingOptions>): ChartProgram;
+  editDensity(options: TargetedOptions<EditDensityOptions>): ChartProgram;
+  encodeHorizon(options?: TargetedOptions<HorizonEncodingOptions>): ChartProgram;
+  editHorizon(options: TargetedOptions<EditHorizonOptions>): ChartProgram;
+  encodeBarWidth(options?: TargetedOptions<BarWidthOptions>): ChartProgram;
+  encodeStroke(options: TargetedOptions<StrokeEncodingOptions>): ChartProgram;
+  encodeStrokeWidth(options: TargetedOptions<StrokeWidthEncodingOptions>): ChartProgram;
+  encodeChannels(options: TargetedOptions<EncodeChannelsOptions>): ChartProgram;
+  createRegression(options?: TargetedOptions<RegressionOptions>): ChartProgram;
+  editRegression(options: TargetedOptions<EditRegressionOptions>): ChartProgram;
+  createErrorBar(options?: TargetedOptions<ErrorBarOptions>): ChartProgram;
+  editErrorBar(options: TargetedOptions<EditErrorBarOptions>): ChartProgram;
+  createErrorBand(options?: TargetedOptions<ErrorBandOptions>): ChartProgram;
+  editErrorBand(options: TargetedOptions<EditErrorBandOptions>): ChartProgram;
+  editErrorBandBoundary(options: TargetedOptions<EditErrorBandBoundaryOptions>): ChartProgram;
+  createBoxPlot(options?: TargetedOptions<BoxPlotOptions>): ChartProgram;
+  editBoxPlot(options: TargetedOptions<EditBoxPlotOptions>): ChartProgram;
+  createGradientPlot(options?: TargetedOptions<GradientPlotOptions>): ChartProgram;
+  editGradientPlot(options: TargetedOptions<EditGradientPlotOptions>): ChartProgram;
+  createViolinPlot(options: TargetedOptions<ViolinPlotOptions>): ChartProgram;
+  editViolinPlot(options: TargetedOptions<EditViolinPlotOptions>): ChartProgram;
+  createScatterPlot(options: TargetedOptions<CreateScatterPlotOptions>): ChartProgram;
+  createIntervalPlot(options: TargetedOptions<CreateIntervalPlotOptions>): ChartProgram;
+  createRegressionPlot(options: TargetedOptions<CreateRegressionPlotOptions>): ChartProgram;
+  createDotPlot(options: TargetedOptions<CreateDotPlotOptions>): ChartProgram;
+  createLollipopPlot(options: TargetedOptions<CreateLollipopPlotOptions>): ChartProgram;
+  createDumbbellPlot(options: TargetedOptions<CreateDumbbellPlotOptions>): ChartProgram;
+  editEndpointPlot(options: TargetedOptions<EditEndpointPlotOptions>): ChartProgram;
+  createECDFPlot(options: TargetedOptions<CreateECDFPlotOptions>): ChartProgram;
+  editECDFPlot(options: TargetedOptions<EditECDFPlotOptions>): ChartProgram;
+  createLinePlot(options: TargetedOptions<CreateLinePlotOptions>): ChartProgram;
+  createPolarScatterPlot(options: TargetedOptions<CreatePolarScatterPlotOptions>): ChartProgram;
+  createPolarLinePlot(options: TargetedOptions<CreatePolarLinePlotOptions>): ChartProgram;
+  createRadarPlot(options: TargetedOptions<CreateRadarPlotOptions>): ChartProgram;
+  editRadarPlot(options: TargetedOptions<EditRadarPlotOptions>): ChartProgram;
+  createRugPlot(options: TargetedOptions<CreateRugPlotOptions>): ChartProgram;
+  createStripPlot(options: TargetedOptions<CreateStripPlotOptions>): ChartProgram;
+  createBeeswarmPlot(options: TargetedOptions<CreateBeeswarmPlotOptions>): ChartProgram;
+  createRaincloudPlot(options: TargetedOptions<CreateRaincloudPlotOptions>): ChartProgram;
+  editRaincloudPlot(options: TargetedOptions<EditRaincloudPlotOptions>): ChartProgram;
+  createAreaPlot(options: TargetedOptions<CreateAreaPlotOptions>): ChartProgram;
+  createBarPlot(options: TargetedOptions<CreateBarPlotOptions>): ChartProgram;
+  createHistogram(options: TargetedOptions<CreateHistogramOptions>): ChartProgram;
+  createPiePlot(options: TargetedOptions<CreatePiePlotOptions>): ChartProgram;
+  createRosePlot(options: TargetedOptions<CreateRosePlotOptions>): ChartProgram;
+  createRadialBarPlot(options: TargetedOptions<CreateRadialBarPlotOptions>): ChartProgram;
+  createDensityPlot(options: TargetedOptions<CreateDensityPlotOptions>): ChartProgram;
+  createHorizonPlot(options: TargetedOptions<CreateHorizonPlotOptions>): ChartProgram;
+  createHeatmap(options: TargetedOptions<CreateHeatmapOptions>): ChartProgram;
+  createParallelCoordinates(options: TargetedOptions<CreateParallelCoordinatesOptions>): ChartProgram;
+  removeMark(options?: TargetedOptions<RemoveMarkOptions>): ChartProgram;
+  createParallelAxes(options?: TargetedOptions<ParallelAxesOptions>): ChartProgram;
+  createParallelAxis(options: TargetedOptions<CreateParallelAxisOptions>): ChartProgram;
+  editParallelAxis(options: TargetedOptions<EditParallelAxisOptions>): ChartProgram;
+  removeParallelAxis(options: TargetedOptions<RemoveParallelAxisOptions>): ChartProgram;
+  removeParallelAxes(options?: TargetedOptions<ParallelAxesOptions>): ChartProgram;
+  createAxes(options?: TargetedOptions<CreateAxesOptions>): ChartProgram;
+  editAxes(options: TargetedOptions<EditAxesOptions>): ChartProgram;
+  createXAxis(options?: TargetedOptions<CompleteAxisOptions<XAxisPosition>>): ChartProgram;
+  createYAxis(options?: TargetedOptions<CompleteAxisOptions<YAxisPosition>>): ChartProgram;
+  createThetaAxis(options?: TargetedOptions<CompleteThetaAxisOptions>): ChartProgram;
+  createRadialAxis(options?: TargetedOptions<CompleteRadialAxisOptions>): ChartProgram;
+  createThetaAxisLine(options?: TargetedOptions<CreateThetaAxisLineOptions>): ChartProgram;
+  createRadialAxisLine(options?: TargetedOptions<CreateRadialAxisLineOptions>): ChartProgram;
+  createThetaAxisTicks(options?: TargetedOptions<CreateThetaAxisTicksOptions>): ChartProgram;
+  createRadialAxisTicks(options?: TargetedOptions<CreateRadialAxisTicksOptions>): ChartProgram;
+  createThetaAxisLabels(options?: TargetedOptions<CreateThetaAxisLabelsOptions>): ChartProgram;
+  createRadialAxisLabels(options?: TargetedOptions<CreateRadialAxisLabelsOptions>): ChartProgram;
+  createThetaAxisTitle(options?: TargetedOptions<CreateThetaAxisTitleOptions>): ChartProgram;
+  createRadialAxisTitle(options?: TargetedOptions<CreateRadialAxisTitleOptions>): ChartProgram;
+  editThetaAxisLine(options?: TargetedOptions<AxisLineStyleOptions>): ChartProgram;
+  editRadialAxisLine(options?: TargetedOptions<AxisLineStyleOptions>): ChartProgram;
+  editThetaAxisTicks(options?: TargetedOptions<PolarTickOptions>): ChartProgram;
+  editRadialAxisTicks(options?: TargetedOptions<PolarTickOptions>): ChartProgram;
+  editThetaAxisLabels(options?: TargetedOptions<ThetaAxisLabelOptions>): ChartProgram;
+  editRadialAxisLabels(options?: TargetedOptions<PolarLabelOptions>): ChartProgram;
+  editThetaAxisTitle(options?: TargetedOptions<PolarTitleOptions>): ChartProgram;
+  editRadialAxisTitle(options?: TargetedOptions<RadialTitleOptions>): ChartProgram;
+  createXAxisLine(options?: TargetedOptions<AxisLineStyleOptions & { target?: string; scale?: string; position?: XAxisPosition }>): ChartProgram;
+  createYAxisLine(options?: TargetedOptions<AxisLineStyleOptions & { target?: string; scale?: string; position?: YAxisPosition }>): ChartProgram;
+  editXAxisLine(options?: TargetedOptions<AxisLineStyleOptions & { target?: string; position?: XAxisPosition }>): ChartProgram;
+  editYAxisLine(options?: TargetedOptions<AxisLineStyleOptions & { target?: string; position?: YAxisPosition }>): ChartProgram;
+  createXAxisTicks(options?: TargetedOptions<AxisTickOptions<XAxisPosition>>): ChartProgram;
+  createYAxisTicks(options?: TargetedOptions<AxisTickOptions<YAxisPosition>>): ChartProgram;
+  editXAxisTicks(options?: TargetedOptions<Omit<AxisTickOptions<XAxisPosition>, "scale">>): ChartProgram;
+  editYAxisTicks(options?: TargetedOptions<Omit<AxisTickOptions<YAxisPosition>, "scale">>): ChartProgram;
+  createXAxisLabels(options?: TargetedOptions<AxisLabelOptions<XAxisPosition>>): ChartProgram;
+  createYAxisLabels(options?: TargetedOptions<AxisLabelOptions<YAxisPosition>>): ChartProgram;
+  editXAxisLabels(options?: TargetedOptions<Omit<AxisLabelOptions<XAxisPosition>, "scale">>): ChartProgram;
+  editYAxisLabels(options?: TargetedOptions<Omit<AxisLabelOptions<YAxisPosition>, "scale">>): ChartProgram;
+  createXAxisTicksAndLabels(options?: TargetedOptions<AxisTicksAndLabelsOptions<XAxisPosition>>): ChartProgram;
+  createYAxisTicksAndLabels(options?: TargetedOptions<AxisTicksAndLabelsOptions<YAxisPosition>>): ChartProgram;
+  editXAxisTicksAndLabels(options: TargetedOptions<Omit<AxisTicksAndLabelsOptions<XAxisPosition>, "scale">>): ChartProgram;
+  editYAxisTicksAndLabels(options: TargetedOptions<Omit<AxisTicksAndLabelsOptions<YAxisPosition>, "scale">>): ChartProgram;
+  createXAxisTitle(options?: TargetedOptions<AxisTitleOptions<XAxisPosition>>): ChartProgram;
+  createYAxisTitle(options?: TargetedOptions<AxisTitleOptions<YAxisPosition>>): ChartProgram;
+  editXAxisTitle(options?: TargetedOptions<Omit<AxisTitleOptions<XAxisPosition>, "scale">>): ChartProgram;
+  editYAxisTitle(options?: TargetedOptions<Omit<AxisTitleOptions<YAxisPosition>, "scale">>): ChartProgram;
+  editXAxis(options: TargetedOptions<EditAxisOptions<XAxisPosition>>): ChartProgram;
+  editYAxis(options: TargetedOptions<EditAxisOptions<YAxisPosition>>): ChartProgram;
+  editThetaAxis(options: TargetedOptions<EditThetaAxisOptions>): ChartProgram;
+  editRadialAxis(options: TargetedOptions<EditRadialAxisOptions>): ChartProgram;
+  removeXAxis(options?: TargetedOptions<RemoveAxisOptions>): ChartProgram;
+  removeYAxis(options?: TargetedOptions<RemoveAxisOptions>): ChartProgram;
+  removeThetaAxis(options?: TargetedOptions<Omit<RemoveAxisOptions, "target">>): ChartProgram;
+  removeRadialAxis(options?: TargetedOptions<Omit<RemoveAxisOptions, "target">>): ChartProgram;
+  createGrid(options?: TargetedOptions<CreateGridOptions>): ChartProgram;
+  createHorizontalGrid(options?: TargetedOptions<GridDirectionOptions>): ChartProgram;
+  createVerticalGrid(options?: TargetedOptions<GridDirectionOptions>): ChartProgram;
+  createThetaGrid(options?: TargetedOptions<PolarGridOptions>): ChartProgram;
+  createRadialGrid(options?: TargetedOptions<PolarGridOptions>): ChartProgram;
+  editHorizontalGrid(options: TargetedOptions<EditGridOptions>): ChartProgram;
+  editVerticalGrid(options: TargetedOptions<EditGridOptions>): ChartProgram;
+  editThetaGrid(options: TargetedOptions<EditPolarGridOptions>): ChartProgram;
+  editRadialGrid(options: TargetedOptions<EditPolarGridOptions>): ChartProgram;
+  editGrid(options: TargetedOptions<EditGridDirectionsOptions>): ChartProgram;
+  removeGrid(options?: TargetedOptions<RemoveGridOptions>): ChartProgram;
+  createLegend(options?: TargetedOptions<LegendOptions>): ChartProgram;
+  editLegend(options: TargetedOptions<EditLegendOptions>): ChartProgram;
+  editLegendBlock(options: TargetedOptions<EditLegendBlockOptions>): ChartProgram;
+  editLegendLayout(options: TargetedOptions<EditLegendLayoutOptions>): ChartProgram;
+  editLegendLabels(options: TargetedOptions<EditLegendLabelsOptions>): ChartProgram;
+  editLegendTitle(options: TargetedOptions<EditLegendTitleOptions>): ChartProgram;
+  editLegendSymbols(options: TargetedOptions<EditLegendSymbolsOptions>): ChartProgram;
+  editLegendBorder(options: TargetedOptions<EditLegendBorderOptions>): ChartProgram;
+  removeLegend(options?: TargetedOptions<RemoveLegendOptions>): ChartProgram;
+  createGuides(options?: TargetedOptions<CreateGuidesOptions>): ChartProgram;
+  createTitle(options: TargetedOptions<TitleOptions>): ChartProgram;
+  editTitle(options: TargetedOptions<EditTitleOptions>): ChartProgram;
   removeTitle(): ChartProgram;
-  createCoordinate(options?: CreateCoordinateOptions): ChartProgram;
-  editCoordinate(options: EditCoordinateOptions): ChartProgram;
-  createScale(options: CreateScaleOptions): ChartProgram;
-  editScale(options: EditScaleOptions): ChartProgram;
-  editXScale(options: EditXScaleOptions): ChartProgram;
-  editYScale(options: EditYScaleOptions): ChartProgram;
-  editXOffsetScale(options: EditXOffsetScaleOptions): ChartProgram;
-  editYOffsetScale(options: EditYOffsetScaleOptions): ChartProgram;
-  editParallelScale(options: EditParallelScaleOptions): ChartProgram;
-  editThetaScale(options: EditThetaScaleOptions): ChartProgram;
-  editRScale(options: EditRScaleOptions): ChartProgram;
-  editColorScale(options: EditColorScaleOptions): ChartProgram;
-  editStrokeScale(options: EditStrokeScaleOptions): ChartProgram;
-  editSizeScale(options: EditSizeScaleOptions): ChartProgram;
-  editOpacityScale(options: EditOpacityScaleOptions): ChartProgram;
-  editShapeScale(options: EditShapeScaleOptions): ChartProgram;
-  editStrokeWidthScale(options: EditStrokeWidthScaleOptions): ChartProgram;
-  editStrokeDashScale(options: EditStrokeDashScaleOptions): ChartProgram;
-  createDerivedData(options: CreateDerivedDataOptions): ChartProgram;
-  createRegressionBand(options: CreateRegressionBandOptions): ChartProgram;
-  editRegressionBand(options: StrokeStyleDetails & { target?: string; color?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; }): ChartProgram;
-  createRegressionLine(options: CreateRegressionLineOptions): ChartProgram;
-  editRegressionLine(options: StrokeStyleDetails & { target?: string; strokeWidth?: number; curve?: CurveInterpolation; }): ChartProgram;
-  editCompositionLayout(options: EditCompositionLayoutOptions): ChartProgram;
-  replaceCompositionChild(options: ReplaceCompositionChildOptions): ChartProgram;
-  insertCompositionChild(options: InsertCompositionChildOptions): ChartProgram;
-  removeCompositionChild(options: RemoveCompositionChildOptions): ChartProgram;
-  reorderCompositionChildren(options: ReorderCompositionChildrenOptions): ChartProgram;
-  facet(options: FacetOptions): ChartProgram;
-  facetGrid(options: FacetGridOptions): ChartProgram;
-  repeatCharts(options: RepeatChartsOptions): ChartProgram;
-  editFacetSource(options: EditFacetSourceOptions): ChartProgram;
-  editFacetScales(options: FacetScaleResolutions): ChartProgram;
-  editFacetGuides(options: FacetGuideOptions): ChartProgram;
-  editFacetHeaders(options: EditFacetHeadersOptions): ChartProgram;
+  createCoordinate(options?: TargetedOptions<CreateCoordinateOptions>): ChartProgram;
+  editCoordinate(options: TargetedOptions<EditCoordinateOptions>): ChartProgram;
+  createScale(options: TargetedOptions<CreateScaleOptions>): ChartProgram;
+  editScale(options: TargetedOptions<EditScaleOptions>): ChartProgram;
+  editXScale(options: TargetedOptions<EditXScaleOptions>): ChartProgram;
+  editYScale(options: TargetedOptions<EditYScaleOptions>): ChartProgram;
+  editXOffsetScale(options: TargetedOptions<EditXOffsetScaleOptions>): ChartProgram;
+  editYOffsetScale(options: TargetedOptions<EditYOffsetScaleOptions>): ChartProgram;
+  editParallelScale(options: TargetedOptions<EditParallelScaleOptions>): ChartProgram;
+  editThetaScale(options: TargetedOptions<EditThetaScaleOptions>): ChartProgram;
+  editRScale(options: TargetedOptions<EditRScaleOptions>): ChartProgram;
+  editColorScale(options: TargetedOptions<EditColorScaleOptions>): ChartProgram;
+  editStrokeScale(options: TargetedOptions<EditStrokeScaleOptions>): ChartProgram;
+  editSizeScale(options: TargetedOptions<EditSizeScaleOptions>): ChartProgram;
+  editOpacityScale(options: TargetedOptions<EditOpacityScaleOptions>): ChartProgram;
+  editShapeScale(options: TargetedOptions<EditShapeScaleOptions>): ChartProgram;
+  editStrokeWidthScale(options: TargetedOptions<EditStrokeWidthScaleOptions>): ChartProgram;
+  editStrokeDashScale(options: TargetedOptions<EditStrokeDashScaleOptions>): ChartProgram;
+  createDerivedData(options: TargetedOptions<CreateDerivedDataOptions>): ChartProgram;
+  createRegressionBand(options: TargetedOptions<CreateRegressionBandOptions>): ChartProgram;
+  editRegressionBand(options: TargetedOptions<StrokeStyleDetails & { target?: string; color?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; }>): ChartProgram;
+  createRegressionLine(options: TargetedOptions<CreateRegressionLineOptions>): ChartProgram;
+  editRegressionLine(options: TargetedOptions<StrokeStyleDetails & { target?: string; strokeWidth?: number; curve?: CurveInterpolation; }>): ChartProgram;
+  editCompositionLayout(options: TargetedOptions<EditCompositionLayoutOptions>): ChartProgram;
+  replaceCompositionChild(options: TargetedOptions<ReplaceCompositionChildOptions>): ChartProgram;
+  insertCompositionChild(options: TargetedOptions<InsertCompositionChildOptions>): ChartProgram;
+  removeCompositionChild(options: TargetedOptions<RemoveCompositionChildOptions>): ChartProgram;
+  reorderCompositionChildren(options: TargetedOptions<ReorderCompositionChildrenOptions>): ChartProgram;
+  facet(options: TargetedOptions<FacetOptions>): ChartProgram;
+  facetGrid(options: TargetedOptions<FacetGridOptions>): ChartProgram;
+  repeatCharts(options: TargetedOptions<RepeatChartsOptions>): ChartProgram;
+  editFacetSource(options: TargetedOptions<EditFacetSourceOptions>): ChartProgram;
+  editFacetScales(options: TargetedOptions<FacetScaleResolutions>): ChartProgram;
+  editFacetGuides(options: TargetedOptions<FacetGuideOptions>): ChartProgram;
+  editFacetHeaders(options: TargetedOptions<EditFacetHeadersOptions>): ChartProgram;
   editSemantic(options: EditSemanticOptions): ChartProgram;
   createGraphics(options: { id: string; type: GraphicType; length?: number; parent?: string; before?: string; after?: string; }): ChartProgram;
   editGraphics(options: EditGraphicsOptions): ChartProgram;
@@ -312,6 +314,64 @@ interface ChartProgramActions {
 ## Named option contracts
 
 These declarations are generated from the same source as the action signatures. Follow named nested types to inspect union branches, required combinations, and shared styles. The raw [declaration file](../../../types/program.d.ts) is also available.
+
+### `ActionTargetList` {#type-actiontargetlist}
+
+ Expand ActionTargetList
+
+```typescript
+export type ActionTargetList = readonly [string | ScopedActionTarget, ...(string | ScopedActionTarget)[]];
+/** Full authoring can apply one native action atomically to named resources or views. */
+```
+
+Related types: [`ScopedActionTarget`](../../../reference/types/#type-scopedactiontarget).
+
+### `AdjacentConstructorOptions` {#type-adjacentconstructoroptions}
+
+ Expand AdjacentConstructorOptions
+
+```typescript
+type AdjacentConstructorOptions<T> = T extends unknown ? Omit<T, "id"> : never;
+```
+
+### `AdjacentPlotSpecification` {#type-adjacentplotspecification}
+
+ Expand AdjacentPlotSpecification
+
+```typescript
+export type AdjacentPlotSpecification =
+  | { action: "createScatterPlot"; options: AdjacentConstructorOptions<CreateScatterPlotOptions> }
+  | { action: "createLinePlot"; options?: Partial<AdjacentConstructorOptions<CreateLinePlotOptions>> }
+  | { action: "createBarPlot"; options?: Partial<AdjacentConstructorOptions<CreateBarPlotOptions>> }
+  | { action: "createAreaPlot"; options: AdjacentConstructorOptions<CreateAreaPlotOptions> }
+  | { action: "createDotPlot"; options: AdjacentConstructorOptions<CreateDotPlotOptions> }
+  | { action: "createLollipopPlot"; options: AdjacentConstructorOptions<CreateLollipopPlotOptions> }
+  | { action: "createDumbbellPlot"; options: AdjacentConstructorOptions<CreateDumbbellPlotOptions> }
+  | { action: "createECDFPlot"; options: AdjacentConstructorOptions<CreateECDFPlotOptions> }
+  | { action: "createIntervalPlot"; options: AdjacentConstructorOptions<CreateIntervalPlotOptions> }
+  | { action: "createRegressionPlot"; options: AdjacentConstructorOptions<CreateRegressionPlotOptions> }
+  | { action: "createRugPlot"; options: AdjacentConstructorOptions<CreateRugPlotOptions> }
+  | { action: "createStripPlot"; options: AdjacentConstructorOptions<CreateStripPlotOptions> }
+  | { action: "createBeeswarmPlot"; options: AdjacentConstructorOptions<CreateBeeswarmPlotOptions> }
+  | { action: "createRaincloudPlot"; options: AdjacentConstructorOptions<CreateRaincloudPlotOptions> }
+  | { action: "createBoxPlot"; options: AdjacentConstructorOptions<BoxPlotOptions> }
+  | { action: "createGradientPlot"; options: AdjacentConstructorOptions<GradientPlotOptions> }
+  | { action: "createViolinPlot"; options: AdjacentConstructorOptions<ViolinPlotOptions> }
+  | { action: "createDensityPlot"; options: AdjacentConstructorOptions<CreateDensityPlotOptions> }
+  | { action: "createHorizonPlot"; options: AdjacentConstructorOptions<CreateHorizonPlotOptions> }
+  | { action: "createHistogram"; options: AdjacentConstructorOptions<CreateHistogramOptions> }
+  | { action: "createHeatmap"; options: AdjacentConstructorOptions<CreateHeatmapOptions> }
+  | { action: "createPiePlot"; options: AdjacentConstructorOptions<CreatePiePlotOptions> }
+  | { action: "createRosePlot"; options: AdjacentConstructorOptions<CreateRosePlotOptions> }
+  | { action: "createRadialBarPlot"; options: AdjacentConstructorOptions<CreateRadialBarPlotOptions> }
+  | { action: "createPolarScatterPlot"; options: AdjacentConstructorOptions<CreatePolarScatterPlotOptions> }
+  | { action: "createPolarLinePlot"; options: AdjacentConstructorOptions<CreatePolarLinePlotOptions> }
+  | { action: "createRadarPlot"; options: AdjacentConstructorOptions<CreateRadarPlotOptions> }
+  | { action: "createParallelCoordinates"; options: AdjacentConstructorOptions<CreateParallelCoordinatesOptions> }
+  | { action: "createTextPlot"; options: AdjacentConstructorOptions<CreateTextPlotOptions> };
+```
+
+Related types: [`AdjacentConstructorOptions`](../../../reference/types/#type-adjacentconstructoroptions) · [`CreateScatterPlotOptions`](../../../reference/types/#type-createscatterplotoptions) · [`CreateLinePlotOptions`](../../../reference/types/#type-createlineplotoptions) · [`CreateBarPlotOptions`](../../../reference/types/#type-createbarplotoptions) · [`CreateAreaPlotOptions`](../../../reference/types/#type-createareaplotoptions) · [`CreateDotPlotOptions`](../../../reference/types/#type-createdotplotoptions) · [`CreateLollipopPlotOptions`](../../../reference/types/#type-createlollipopplotoptions) · [`CreateDumbbellPlotOptions`](../../../reference/types/#type-createdumbbellplotoptions) · [`CreateECDFPlotOptions`](../../../reference/types/#type-createecdfplotoptions) · [`CreateIntervalPlotOptions`](../../../reference/types/#type-createintervalplotoptions) · [`CreateRegressionPlotOptions`](../../../reference/types/#type-createregressionplotoptions) · [`CreateRugPlotOptions`](../../../reference/types/#type-createrugplotoptions) · [`CreateStripPlotOptions`](../../../reference/types/#type-createstripplotoptions) · [`CreateBeeswarmPlotOptions`](../../../reference/types/#type-createbeeswarmplotoptions) · [`CreateRaincloudPlotOptions`](../../../reference/types/#type-createraincloudplotoptions) · [`BoxPlotOptions`](../../../reference/types/#type-boxplotoptions) · [`GradientPlotOptions`](../../../reference/types/#type-gradientplotoptions) · [`ViolinPlotOptions`](../../../reference/types/#type-violinplotoptions) · [`CreateDensityPlotOptions`](../../../reference/types/#type-createdensityplotoptions) · [`CreateHorizonPlotOptions`](../../../reference/types/#type-createhorizonplotoptions) · [`CreateHistogramOptions`](../../../reference/types/#type-createhistogramoptions) · [`CreateHeatmapOptions`](../../../reference/types/#type-createheatmapoptions) · [`CreatePiePlotOptions`](../../../reference/types/#type-createpieplotoptions) · [`CreateRosePlotOptions`](../../../reference/types/#type-createroseplotoptions) · [`CreateRadialBarPlotOptions`](../../../reference/types/#type-createradialbarplotoptions) · [`CreatePolarScatterPlotOptions`](../../../reference/types/#type-createpolarscatterplotoptions) · [`CreatePolarLinePlotOptions`](../../../reference/types/#type-createpolarlineplotoptions) · [`CreateRadarPlotOptions`](../../../reference/types/#type-createradarplotoptions) · [`CreateParallelCoordinatesOptions`](../../../reference/types/#type-createparallelcoordinatesoptions) · [`CreateTextPlotOptions`](../../../reference/types/#type-createtextplotoptions).
 
 ### `AggregateOperation` {#type-aggregateoperation}
 
@@ -1867,6 +1927,17 @@ export interface CompositionPadding {
 }
 ```
 
+### `CompositionShares` {#type-compositionshares}
+
+ Expand CompositionShares
+
+```typescript
+export interface CompositionShares {
+  x?: boolean; y?: boolean; color?: boolean; stroke?: boolean; size?: boolean; shape?: boolean;
+  opacity?: boolean; strokeWidth?: boolean; strokeDash?: boolean;
+}
+```
+
 ### `ComputedDataOptions` {#type-computeddataoptions}
 
  Expand ComputedDataOptions
@@ -2039,6 +2110,20 @@ Related types: [`CoordinateAspectAlign`](../../../reference/types/#type-coordina
 ```typescript
 export type CoordinateAspectAlign = "start" | "center" | "end";
 ```
+
+### `CreateAdjacentPlotOptions` {#type-createadjacentplotoptions}
+
+ Expand CreateAdjacentPlotOptions
+
+```typescript
+export interface CreateAdjacentPlotOptions {
+  id?: string; source?: string; position?: "left" | "right" | "top" | "bottom";
+  plot?: AdjacentPlotSpecification; share?: CompositionShares; gap?: number;
+  align?: CompositionAlign | "plot";
+}
+```
+
+Related types: [`AdjacentPlotSpecification`](../../../reference/types/#type-adjacentplotspecification) · [`CompositionShares`](../../../reference/types/#type-compositionshares) · [`CompositionAlign`](../../../reference/types/#type-compositionalign).
 
 ### `CreateAnnotationOptions` {#type-createannotationoptions}
 
@@ -4223,7 +4308,7 @@ Related types: [`FocusedDerivedDataEdit`](../../../reference/types/#type-focused
 export interface EditCompositionLayoutOptions {
   columns?: number;
   gap?: FacetGap;
-  align?: CompositionAlign;
+  align?: CompositionAlign | "plot";
   padding?: number | CompositionPadding;
   /** Interpret gap between child canvases (default), inner plots, or retained full content (wrapped facets). */
   spacing?: "canvas" | "plot" | "content";
@@ -4233,6 +4318,16 @@ export interface EditCompositionLayoutOptions {
 ```
 
 Related types: [`FacetGap`](../../../reference/types/#type-facetgap) · [`CompositionAlign`](../../../reference/types/#type-compositionalign) · [`CompositionPadding`](../../../reference/types/#type-compositionpadding) · [`FacetTopLaneMode`](../../../reference/types/#type-facettoplanemode).
+
+### `EditCompositionScalesOptions` {#type-editcompositionscalesoptions}
+
+ Expand EditCompositionScalesOptions
+
+```typescript
+export interface EditCompositionScalesOptions { share: CompositionShares; }
+```
+
+Related types: [`CompositionShares`](../../../reference/types/#type-compositionshares).
 
 ### `EditComputedDataOptions` {#type-editcomputeddataoptions}
 
@@ -9513,6 +9608,14 @@ export type ScaleType =
   | "threshold";
 ```
 
+### `ScopedActionTarget` {#type-scopedactiontarget}
+
+ Expand ScopedActionTarget
+
+```typescript
+export interface ScopedActionTarget { childPath: readonly string[]; id?: string; }
+```
+
 ### `SecondaryPositionEncodingOptions` {#type-secondarypositionencodingoptions}
 
  Expand SecondaryPositionEncodingOptions
@@ -10037,6 +10140,16 @@ export interface SummaryDataOptions {
 ```
 
 Related types: [`SummaryAggregateOptions`](../../../reference/types/#type-summaryaggregateoptions) · [`StatisticalWeight`](../../../reference/types/#type-statisticalweight).
+
+### `TargetedOptions` {#type-targetedoptions}
+
+ Expand TargetedOptions
+
+```typescript
+export type TargetedOptions<T> = T | (T extends unknown ? Omit<T, "target"> & { target: ScopedActionTarget | ActionTargetList } : never);
+```
+
+Related types: [`ScopedActionTarget`](../../../reference/types/#type-scopedactiontarget) · [`ActionTargetList`](../../../reference/types/#type-actiontargetlist).
 
 ### `TemporalBindingBranch` {#type-temporalbindingbranch}
 

@@ -21,7 +21,7 @@ const analysisChartEditorNames = new Set([
   "editRaincloudPlot"
 ]);
 
-const h0CompositionNames = new Set(["facet", "facetGrid", "repeatCharts"]);
+const h0CompositionNames = new Set(["facet", "facetGrid", "repeatCharts", "createAdjacentPlot"]);
 const coreH3Names = new Set([
   "applyTextMetrics",
   "removeTextMetrics",
@@ -42,6 +42,7 @@ const analyticMarkNames = new Set([
 ]);
 
 const explicitFacadeEditors = Object.freeze({
+  createAdjacentPlot: ["editCompositionLayout", "editCompositionScales", "replaceCompositionChild"],
   createOverlay: ["editOverlay", "editLineMark", "editPointMark"],
   createDotPlot: ["editEndpointPlot"],
   createLollipopPlot: ["editEndpointPlot"],

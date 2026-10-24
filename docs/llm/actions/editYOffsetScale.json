@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "core",
   "summary": "Edits y-offset scale, including settings for vertical subgroup placement.",
-  "signature": "editYOffsetScale(options: EditYOffsetScaleOptions): ChartProgram;",
+  "signature": "editYOffsetScale(options: TargetedOptions<EditYOffsetScaleOptions>): ChartProgram;",
   "intents": [
     "edit y offset scale",
     "edit",
@@ -77,7 +77,7 @@
     {
       "name": "target",
       "required": true,
-      "type": "string"
+      "type": "string | ActionTargetList | ScopedActionTarget"
     },
     {
       "name": "domain",

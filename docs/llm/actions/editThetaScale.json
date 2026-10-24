@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "core",
   "summary": "Edits theta scale, including settings for angular position mapping.",
-  "signature": "editThetaScale(options: EditThetaScaleOptions): ChartProgram;",
+  "signature": "editThetaScale(options: TargetedOptions<EditThetaScaleOptions>): ChartProgram;",
   "intents": [
     "edit theta scale",
     "edit",
@@ -88,7 +88,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "type",

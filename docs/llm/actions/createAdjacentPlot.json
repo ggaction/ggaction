@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 3,
+  "name": "createAdjacentPlot",
+  "layer": "user-facing",
+  "domain": "composition",
+  "summary": "Add an independent chart next to a unit or facet view.",
+  "signature": "createAdjacentPlot(options?: TargetedOptions<CreateAdjacentPlotOptions>): ChartProgram;",
+  "intents": [
+    "create adjacent plot",
+    "create",
+    "add",
+    "chart composition",
+    "small multiples",
+    "adjacent chart",
+    "juxtaposition"
+  ],
+  "lifecycle": "Structural create-only",
+  "resources": {
+    "prerequisites": [
+      "complete child chart program"
+    ],
+    "owns": [
+      "adjacent chart"
+    ],
+    "idOptions": [
+      "id",
+      "source",
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H0"
+  ],
+  "wraps": [],
+  "editableVia": [
+    "editCompositionLayout",
+    "editCompositionScales",
+    "replaceCompositionChild"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "source",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "complete",
+    "requires": [
+      "complete child chart program"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "source",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "position",
+      "required": false,
+      "type": "\"bottom\" | \"left\" | \"right\" | \"top\" | undefined"
+    },
+    {
+      "name": "plot",
+      "required": false,
+      "type": "AdjacentPlotSpecification | undefined"
+    },
+    {
+      "name": "share",
+      "required": false,
+      "type": "CompositionShares | undefined"
+    },
+    {
+      "name": "gap",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "align",
+      "required": false,
+      "type": "\"plot\" | CompositionAlign | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
+    }
+  ],
+  "callPatterns": [
+    "createAdjacentPlot({ id?, source?, target?, position?, plot?, share?, gap?, align? })"
+  ],
+  "snippet": "program.createAdjacentPlot({ source: \"bars\", id: \"trend\", position: \"right\", share: { y: true } })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#createadjacentplot"
+}

@@ -101,6 +101,13 @@ export type {
   NamedCompleteAxis,
   ConcatCompositionSpec,
   CompositionAlign,
+  CompositionShares,
+  ScopedActionTarget,
+  ActionTargetList,
+  TargetedOptions,
+  EditCompositionScalesOptions,
+  AdjacentPlotSpecification,
+  CreateAdjacentPlotOptions,
   CompositionOptions,
   EditFacetSourceOptions,
   FacetHeaderRole,
@@ -619,7 +626,7 @@ type BasicMethodKey =
   | "createGuides";
 
 type RebindMethod<T> = T extends (...args: infer Args) => ChartProgram
-  ? (...args: Args) => BasicChartProgram
+  ? (...args: { [K in keyof Args]: Exclude<Args[K], { target: ScopedActionTarget | readonly unknown[] }> }) => BasicChartProgram
   : never;
 
 export type BasicChartProgram =

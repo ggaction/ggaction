@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { createCanvas, loadImage } from "@napi-rs/canvas";
 import { renderToPNG } from "../../../src/renderers/png.js";
 import { variants } from "./primitive.program.js";
+import { createSharedAdjacent } from "../../../examples/shared-adjacent/program.js";
 import { createLinkedOverlay } from "../../../examples/linked-overlay/program.js";
 
 for (const variant of variants) {
@@ -13,9 +14,9 @@ for (const variant of variants) {
   const context = canvas.getContext("2d");
   context.drawImage(bitmap, 0, 0);
   const pixels = context.getImageData(140, 120, 600, 450).data;
-  if (variant.id === "bar-line") {
+  {
     const primitivePixels = context.getImageData(0, 0, bitmap.width, bitmap.height).data;
-    await renderToPNG(createLinkedOverlay(), { output: `${directory}/public.png`, pixelRatio: 2 });
+    await renderToPNG(variant.id === "bar-line" ? createLinkedOverlay() : createSharedAdjacent(), { output: `${directory}/public.png`, pixelRatio: 2 });
     const publicBitmap = await loadImage(`${directory}/public.png`);
     assert.equal(publicBitmap.width, bitmap.width);
     assert.equal(publicBitmap.height, bitmap.height);

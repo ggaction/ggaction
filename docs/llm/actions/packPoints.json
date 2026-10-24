@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "marks",
   "summary": "Deterministically displace Point glyphs only on a categorical x or y axis to avoid overlap while preserving measure coordinates.",
-  "signature": "packPoints(options: PackPointsOptions): ChartProgram;",
+  "signature": "packPoints(options: TargetedOptions<PackPointsOptions>): ChartProgram;",
   "intents": [
     "pack points",
     "pack",
@@ -62,7 +62,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "channel",

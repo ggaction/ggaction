@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "legend_and_title",
   "summary": "Singular channel selects one existing block without changing sibling typography.",
-  "signature": "editLegend(options: EditLegendOptions): ChartProgram;",
+  "signature": "editLegend(options: TargetedOptions<EditLegendOptions>): ChartProgram;",
   "intents": [
     "edit legend",
     "edit",
@@ -175,7 +175,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "blockLayout",

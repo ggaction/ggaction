@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "core",
   "summary": "Edits stroke-width scale, including settings for line-width mapping.",
-  "signature": "editStrokeWidthScale(options: EditStrokeWidthScaleOptions): ChartProgram;",
+  "signature": "editStrokeWidthScale(options: TargetedOptions<EditStrokeWidthScaleOptions>): ChartProgram;",
   "intents": [
     "edit stroke width scale",
     "edit",
@@ -71,7 +71,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "zero",

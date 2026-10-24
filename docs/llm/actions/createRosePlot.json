@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "charts",
   "summary": "Create equal-angle sectors whose sector area, excluding the hole is proportional to category count or sum.",
-  "signature": "createRosePlot(options: CreateRosePlotOptions): ChartProgram;",
+  "signature": "createRosePlot(options: TargetedOptions<CreateRosePlotOptions>): ChartProgram;",
   "intents": [
     "create rose plot",
     "create",
@@ -25,7 +25,8 @@
     "idOptions": [
       "id",
       "data",
-      "coordinate"
+      "coordinate",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -61,6 +62,10 @@
     },
     {
       "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -125,10 +130,15 @@
       "name": "aggregate",
       "required": false,
       "type": "\"count\" | \"sum\" | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "createRosePlot({ category, id?, data?, coordinate?, color?, radiusScale?, arc?, guides? })"
+    "createRosePlot({ category, id?, data?, coordinate?, target?, color?, radiusScale?, arc? })"
   ],
   "snippet": "program.createRosePlot({ category: \"category\" })",
   "errors": [],

@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "core",
   "summary": "Edits color scale, including settings for color mapping.",
-  "signature": "editColorScale(options: EditColorScaleOptions): ChartProgram;",
+  "signature": "editColorScale(options: TargetedOptions<EditColorScaleOptions>): ChartProgram;",
   "intents": [
     "edit color scale",
     "edit",
@@ -83,7 +83,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "domain",

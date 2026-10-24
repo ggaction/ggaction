@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "marks",
   "summary": "Create one constant Rule spanning the other plot axis.",
-  "signature": "createReferenceLine(options: CreateReferenceLineOptions): ChartProgram;",
+  "signature": "createReferenceLine(options: TargetedOptions<CreateReferenceLineOptions>): ChartProgram;",
   "intents": [
     "create reference line",
     "create",
@@ -26,7 +26,8 @@
       "id",
       "source",
       "data",
-      "coordinate"
+      "coordinate",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -74,6 +75,10 @@
     },
     {
       "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -188,6 +193,11 @@
       "name": "statistic",
       "required": false,
       "type": "ReferenceStatistic"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [

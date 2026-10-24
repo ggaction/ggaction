@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "composition",
   "summary": "Replace one named child while preserving its slot ID and order.",
-  "signature": "replaceCompositionChild(options: ReplaceCompositionChildOptions): ChartProgram;",
+  "signature": "replaceCompositionChild(options: TargetedOptions<ReplaceCompositionChildOptions>): ChartProgram;",
   "intents": [
     "replace composition child",
     "replace",
@@ -54,7 +54,7 @@
     {
       "name": "target",
       "required": true,
-      "type": "string"
+      "type": "string | ActionTargetList | ScopedActionTarget"
     },
     {
       "name": "program",

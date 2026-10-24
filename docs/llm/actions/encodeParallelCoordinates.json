@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "encodings",
   "summary": "Atomically assign ordered dimensions and their local scales to one line mark.",
-  "signature": "encodeParallelCoordinates(options: ParallelCoordinatesEncodingOptions): ChartProgram;",
+  "signature": "encodeParallelCoordinates(options: TargetedOptions<ParallelCoordinatesEncodingOptions>): ChartProgram;",
   "intents": [
     "encode parallel coordinates",
     "encode",
@@ -64,7 +64,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "coordinate",

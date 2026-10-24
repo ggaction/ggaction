@@ -38,14 +38,29 @@ const rows = Object.freeze([
   })
 ]);
 
+// Observe only the public calls made by this test's recipe builder. The actual
+// native actions and shared prototype remain unchanged.
+let observeRecipe;
+function observed(program) {
+  if (!observeRecipe) return program;
+  return new Proxy(program, { get(target, property) {
+    const value = target[property];
+    if (typeof value !== "function") return value;
+    return (...args) => {
+      observeRecipe?.(target, property, args[0]);
+      return observed(value.apply(target, args));
+    };
+  } });
+}
+
 function source() {
-  return chart()
+  return observed(chart())
     .createCanvas({ width: 320, height: 220, margin: 20 })
     .createData({ values: rows });
 }
 
 function radarSource() {
-  return chart()
+  return observed(chart())
     .createCanvas({ width: 320, height: 220, margin: 20 })
     .createData({ values: [
       { category: "A", value: 3, series: "one", colorValue: 1 },
@@ -832,6 +847,31 @@ function buildScaleWitness(action, path, type) {
   }
 }
 
+function adjacentScaleWitness(option, type, inventory) {
+  const nestedPath = option.path.replace(/^plot\.options\./, "");
+  const constructors = inventory.optionPaths.filter(candidate => candidate.action !== "createAdjacentPlot" &&
+    /^create(?:.*Plot|Histogram|Heatmap|ParallelCoordinates)$/.test(candidate.action) &&
+    candidate.path === nestedPath && candidate.values.includes(`string:${type}`));
+  let lastError;
+  for (const candidate of constructors) {
+    let captured;
+    try {
+      observeRecipe = (program, method, args) => { if (method === candidate.action) captured = { program, args }; };
+      buildScaleWitness(candidate.action, nestedPath, type);
+    } catch (error) { lastError = error; } finally { observeRecipe = undefined; }
+    if (!captured) continue;
+    try {
+      const { id: _id, data, ...options } = captured.args;
+      const dataset = captured.program.semanticSpec.datasets.find(dataset => dataset.id === (data ?? captured.program.context.currentData));
+      const base = source().createScatterPlot({ id: "basis", x: "x", y: "y", guides: false })
+        .createData({ id: "adjacent-input", values: dataset.values });
+      return base.createAdjacentPlot({ id: "comparison", source: "basis", share: {},
+        plot: { action: candidate.action, options: { ...options, data: "adjacent-input" } } });
+    } catch (error) { lastError = error; }
+  }
+  throw lastError ?? new Error(`No native adjacent constructor for ${option.path}=${type}.`);
+}
+
 test("derives only role-reachable nested scale type paths", async () => {
   const inventory = await inventoryPromise;
   const options = new Map(inventory.optionPaths.map(option => [option.id, option]));
@@ -840,8 +880,9 @@ test("derives only role-reachable nested scale type paths", async () => {
     /(?:^|\.)(?:xScale|yScale|valueScale|densityScale|radiusScale|scale)\.type$/u.test(option.path)
   );
 
-  assert.equal(scaleTypes.length, 152);
-  assert.equal(scaleTypes.reduce((sum, option) => sum + option.values.length, 0), 699);
+  assert.equal(scaleTypes.filter(option => option.action !== "createAdjacentPlot").length, 152);
+  assert.equal(scaleTypes.filter(option => option.action === "createAdjacentPlot").length, 22);
+  assert.equal(scaleTypes.filter(option => option.action !== "createAdjacentPlot").reduce((sum, option) => sum + option.values.length, 0), 699);
   assert.ok(options.get("option-path:createLinePlot.x.scale.type").values.includes("string:band"));
   assert.ok(options.get("option-path:createLinePlot.x.scale.type").values.includes("string:point"));
   assert.ok(options.get("option-path:encodeColor.scale.type").values.includes("string:log"));
@@ -883,7 +924,8 @@ test("executes every strict nested scale type path and literal", async () => {
       const type = decodeURIComponent(valueKey.slice("string:".length));
       let program;
       try {
-        program = buildScaleWitness(option.action, option.path, type);
+        program = option.action === "createAdjacentPlot" ? adjacentScaleWitness(option, type, inventory)
+          : buildScaleWitness(option.action, option.path, type);
       } catch (error) {
         throw new Error(`${option.id}=${type}: ${error.message}`, { cause: error });
       }
@@ -891,14 +933,14 @@ test("executes every strict nested scale type path and literal", async () => {
       assert.ok(direct, option.id);
       assert.equal(nestedValue(direct.args, option.path), type, option.id);
       assert.equal(
-        Object.values(program.resolvedScales).some(scale => scale.type === type),
+        Object.values(option.action === "createAdjacentPlot" ? program.children.comparison.resolvedScales : program.resolvedScales).some(scale => scale.type === type),
         true,
         option.id
       );
       witnesses += 1;
     }
   }
-  assert.equal(witnesses, 699);
+  assert.equal(witnesses, scaleTypes.reduce((sum, option) => sum + option.values.length, 0));
 });
 
 test("materializes every role-specific nested scale type vocabulary", () => {

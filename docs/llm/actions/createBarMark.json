@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "marks",
   "summary": "Create a semantic bar mark and empty rect collection.",
-  "signature": "createBarMark(options?: RectStyleDetails & { clip?: boolean; id?: string; data?: string; orientation?: \"vertical\" | \"horizontal\"; missing?: \"error\" | \"skip\"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;",
+  "signature": "createBarMark(options?: TargetedOptions<RectStyleDetails & { clip?: boolean; id?: string; data?: string; orientation?: \"vertical\" | \"horizontal\"; missing?: \"error\" | \"skip\"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;",
   "intents": [
     "create bar mark",
     "create",
@@ -24,7 +24,8 @@
     ],
     "idOptions": [
       "id",
-      "data"
+      "data",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -57,6 +58,10 @@
   "inference": [
     {
       "input": "data",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -156,10 +161,15 @@
       "name": "strokeWidth",
       "required": false,
       "type": "number | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "createBarMark({ id?, data?, lineCap?, lineJoin?, miterLimit?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight? })"
+    "createBarMark({ id?, data?, target?, lineCap?, lineJoin?, miterLimit?, cornerRadius?, cornerRadiusTopLeft? })"
   ],
   "snippet": "program.createBarMark({})",
   "errors": [],

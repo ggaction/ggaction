@@ -1,0 +1,5 @@
+export interface CreateAdjacentPlotOptions {
+  id?: string; source?: string; position?: "left" | "right" | "top" | "bottom";
+  plot?: AdjacentPlotSpecification; share?: CompositionShares; gap?: number;
+  align?: CompositionAlign | "plot";
+}

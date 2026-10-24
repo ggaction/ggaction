@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "statistics",
   "summary": "Constant band fill conflicts with active color.",
-  "signature": "editErrorBandBoundary(options: EditErrorBandBoundaryOptions): ChartProgram;",
+  "signature": "editErrorBandBoundary(options: TargetedOptions<EditErrorBandBoundaryOptions>): ChartProgram;",
   "intents": [
     "edit error band boundary",
     "edit",
@@ -66,7 +66,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "boundary",

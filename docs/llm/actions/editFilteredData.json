@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "core",
   "summary": "Edits filtered dataset, including settings for rows matching a predicate.",
-  "signature": "editFilteredData(options: EditFilteredDataOptions): ChartProgram;",
+  "signature": "editFilteredData(options: TargetedOptions<EditFilteredDataOptions>): ChartProgram;",
   "intents": [
     "edit filtered data",
     "edit",
@@ -78,7 +78,7 @@
     {
       "name": "target",
       "required": true,
-      "type": "string"
+      "type": "string | ActionTargetList | ScopedActionTarget"
     },
     {
       "name": "field",

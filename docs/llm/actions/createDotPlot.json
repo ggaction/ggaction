@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "charts",
   "summary": "Create categorical dots from raw rows by default.",
-  "signature": "createDotPlot(options: CreateDotPlotOptions): ChartProgram;",
+  "signature": "createDotPlot(options: TargetedOptions<CreateDotPlotOptions>): ChartProgram;",
   "intents": [
     "create dot plot",
     "create",
@@ -25,7 +25,8 @@
     "idOptions": [
       "id",
       "data",
-      "coordinate"
+      "coordinate",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -54,6 +55,10 @@
     },
     {
       "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -118,6 +123,11 @@
       "name": "guides",
       "required": false,
       "type": "false | CartesianSeparateGuideOptions | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [

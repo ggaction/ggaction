@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "grid",
   "summary": "Edits grid, including settings for Cartesian reference lines.",
-  "signature": "editGrid(options: EditGridDirectionsOptions): ChartProgram;",
+  "signature": "editGrid(options: TargetedOptions<EditGridDirectionsOptions>): ChartProgram;",
   "intents": [
     "edit grid",
     "edit",
@@ -21,7 +21,9 @@
       "compatible scale or encoding context"
     ],
     "owns": [],
-    "idOptions": []
+    "idOptions": [
+      "target"
+    ]
   },
   "authoringRoles": [
     "H3"
@@ -39,7 +41,12 @@
     ]
   },
   "units": [],
-  "inference": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
   "completionRequirements": {
     "state": "contextual",
     "requires": [
@@ -68,10 +75,15 @@
       "name": "radial",
       "required": false,
       "type": "EditPolarGridOptions | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "editGrid({ horizontal?, vertical?, theta?, radial? })"
+    "editGrid({ target?, horizontal?, vertical?, theta?, radial? })"
   ],
   "snippet": "program.editGrid({ horizontal: { color: \"#dddddd\" } })",
   "errors": [],

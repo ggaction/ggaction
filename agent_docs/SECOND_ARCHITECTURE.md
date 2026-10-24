@@ -2705,3 +2705,15 @@ Whole-axis edit도 기존 prospective planner를 연속된 wrapped leaf edit 구
 한도는 모두 유지한다. 설치한 package의 whole-axis 이동·복원·persistence·실제 충돌 거절을
 기존 공개 API consumer case에서 함께 검증한다. 이 로컬 측정은 새 registry 배포나 Node24
 전체 검증을 대신하지 않는다.
+
+### Linked layers and explicitly targeted composition edits
+
+결과 추종 overlay는 `layer.derivedBindings.overlay`에 독립 source mark 참조와 정책을 보유한다.
+source mark materialization 및 dependency planner가 명시적으로 overlay materializer를 실행한다.
+`layer.source`의 소유 자식 관계와 혼용하지 않는다. Renderer는 기존 line/point graphic만 소비한다.
+
+Concat의 `compositionSpec.share`와 `align: "plot"`은 부모가 소유한다. canonical child의 authored
+scale/domain/Canvas는 보존하고 부모 materializer가 공유 domain과 정렬된 render snapshot을 파생한다.
+source child/spec identity WeakMap은 최적화일 뿐 영속 상태나 전역 자동 compiler가 아니다.
+Full action wrapper의 명시적 target selector dispatcher는 같은 native action을 immutable 후보들에
+적용한 다음 변경된 조상 snapshots를 한 번 갱신한다. 사용자가 요청한 target dispatch에만 동작한다.

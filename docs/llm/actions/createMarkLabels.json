@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "marks",
   "summary": "Label source mark items.",
-  "signature": "createMarkLabels(options?: CreateMarkLabelsOptions): ChartProgram;",
+  "signature": "createMarkLabels(options?: TargetedOptions<CreateMarkLabelsOptions>): ChartProgram;",
   "intents": [
     "create mark labels",
     "create",
@@ -25,7 +25,8 @@
     "idOptions": [
       "id",
       "source",
-      "selection"
+      "selection",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -79,6 +80,10 @@
     },
     {
       "input": "selection",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -223,6 +228,11 @@
       "name": "selection",
       "required": false,
       "type": "string | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [

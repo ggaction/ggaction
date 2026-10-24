@@ -33,7 +33,7 @@ test("publishes fitting only on Full unit programs", () => {
   const rootTypes = read("types/index.d.ts");
   const basic = read("types/basic.d.ts");
   assert.match(program, /^export interface FitCanvasOptions \{$/m);
-  assert.match(program, /^  fitCanvas\(options\?: FitCanvasOptions\): ChartProgram;$/m);
+  assert.match(program, /^  fitCanvas\(options\?: TargetedOptions<FitCanvasOptions>\): ChartProgram;$/m);
   assert.match(rootTypes, /^  FitCanvasOptions,$/m);
   assert.doesNotMatch(basic, /\bFitCanvasOptions\b/u);
   assert.doesNotMatch(basic, /\| "fitCanvas"/u);

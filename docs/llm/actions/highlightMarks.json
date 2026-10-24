@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "mark-selection",
   "summary": "Select point, bar, line, area, arc, or rule items inline or reuse a stored selection, then apply mark-specific concrete emphasis, optional complement dimming, and selected-last order.",
-  "signature": "highlightMarks(options: HighlightMarksOptions): ChartProgram;",
+  "signature": "highlightMarks(options: TargetedOptions<HighlightMarksOptions>): ChartProgram;",
   "intents": [
     "highlight marks",
     "highlight",
@@ -82,7 +82,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "select",

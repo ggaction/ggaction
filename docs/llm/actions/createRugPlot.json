@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "charts",
   "summary": "Create a one-dimensional distribution from quantitative or temporal observations.",
-  "signature": "createRugPlot(options: CreateRugPlotOptions): ChartProgram;",
+  "signature": "createRugPlot(options: TargetedOptions<CreateRugPlotOptions>): ChartProgram;",
   "intents": [
     "create rug plot",
     "create",
@@ -25,7 +25,8 @@
     "idOptions": [
       "id",
       "data",
-      "coordinate"
+      "coordinate",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -51,6 +52,10 @@
     },
     {
       "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -105,6 +110,11 @@
       "name": "edge",
       "required": true,
       "type": "\"bottom\" | \"left\" | \"right\" | \"top\""
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [

@@ -1,3 +1,6 @@
+import { resolveGraphicBounds } from "../layout/canvas.js";
+import { resolveSharedCompositionChildren } from "./compositionScales.js";
+import { resolvePlacedPlotBounds } from "../layout/composition.js";
 import { freezeOwned } from "../core/immutable.js";
 import {
   requireSingleOrderedGraphicByType
@@ -6,7 +9,7 @@ import {
   resolveCompositionLayout,
   resolveCompositionSnapshotPlacement
 } from "../layout/composition.js";
-import { namespaceGraphicSnapshot } from "./compositionSnapshot.js";
+import { namespaceGraphicSnapshot, namespaceGraphicId } from "./compositionSnapshot.js";
 
 const ZERO_MARGIN = freezeOwned({ top: 0, right: 0, bottom: 0, left: 0 });
 
@@ -34,16 +37,78 @@ export function compositionChildDescriptor(id, program) {
   };
 }
 
-export function resolveCompositionProgramLayout(program) {
-  program._assertCompositionProgram("resolveCompositionProgramLayout");
+export function compositionPlotBounds(program) {
+  if (!program.compositionSpec) return resolveGraphicBounds(program);
+  if (program.compositionSpec.type === "facet") {
+    // The retained facet already owns concrete child placements, including
+    // header/legend reservations. Read those snapshots without re-entering its
+    // materializer (which uses the shared snapshot attachment helpers below).
+    const placements = program.compositionSpec.children.map(id => {
+      const { id: canvas } = requireSingleOrderedGraphicByType(program.children[id].graphicSpec, "canvas");
+      const root = program.graphicSpec.objects[namespaceGraphicId(`${program.compositionSpec.id}-${id}`, canvas)];
+      if (!root) throw new Error("Plot alignment requires a materialized facet view.");
+      return { id, x: root.properties.x, y: root.properties.y, width: root.properties.width, height: root.properties.height };
+    });
+    return resolvePlacedPlotBounds({ placements, plots: program.compositionSpec.children.map(id =>
+      ({ id, ...resolveGraphicBounds(program.children[id]) })) });
+  }
+  const { children, layout } = prepareCompositionSnapshots(program);
+  return resolvePlacedPlotBounds({ placements: layout.children,
+    plots: layout.children.map(({ id }) => ({ id, ...compositionPlotBounds(children[id]) })) });
+}
+
+function resizeCompositionPlotExtent(program, dimension, size) {
+  const current = compositionPlotBounds(program);
+  if (Math.abs(current[dimension] - size) < 1e-6) return program;
+  if (!program.compositionSpec) return program.editCanvas({ plot: {
+    width: current.width, height: current.height, [dimension]: size } });
   const spec = program.compositionSpec;
-  return resolveCompositionLayout({
-    direction: spec.direction,
-    children: spec.children.map(id => compositionChildDescriptor(id, program.children[id])),
-    gap: spec.gap,
-    align: spec.align,
-    padding: spec.padding
-  });
+  const delta = size - current[dimension];
+  if (spec.type === "facet") {
+    const plots = Object.values(program.children).map(resolveGraphicBounds);
+    if (!plots.length || plots.some(plot => plot.width !== plots[0].width || plot.height !== plots[0].height)) {
+      throw new Error("Plot-aligned facets require uniform source plot sizes.");
+    }
+    const tracks = dimension === "width" ? spec.columns : Math.ceil(spec.children.length / spec.columns);
+    return program.editFacetSource({ action: { method: "editCanvas", options: { plot: {
+      width: plots[0].width, height: plots[0].height, [dimension]: plots[0][dimension] + delta / tracks } } } });
+  }
+  const parallel = (dimension === "width") === (spec.direction === "horizontal");
+  const increment = parallel ? delta / spec.children.length : delta;
+  const children = Object.fromEntries(spec.children.map(id => [id,
+    resizeCompositionPlotExtent(program.children[id], dimension, compositionPlotBounds(program.children[id])[dimension] + increment)]));
+  return program._withCompositionState({ compositionSpec: spec, children }).materializeComposition();
+}
+
+const snapshotCache = new WeakMap();
+export function prepareCompositionSnapshots(program) {
+  program._assertCompositionProgram("prepareCompositionSnapshots");
+  const spec = program.compositionSpec;
+  let bySpec = snapshotCache.get(program.children);
+  if (bySpec?.has(spec)) return bySpec.get(spec);
+  let children = resolveSharedCompositionChildren(program.children, spec.share);
+  if (spec.align === "plot") {
+    const dimension = spec.direction === "horizontal" ? "height" : "width";
+    const plots = Object.fromEntries(spec.children.map(id => [id, compositionPlotBounds(children[id])]));
+    const size = Math.max(...Object.values(plots).map(plot => plot[dimension]));
+    children = Object.fromEntries(spec.children.map(id => {
+      const child = children[id];
+      if (Math.abs(plots[id][dimension] - size) < 1e-6) return [id, child];
+      return [id, resizeCompositionPlotExtent(child, dimension, size)];
+    }));
+  }
+  const layout = resolveCompositionLayout({ direction: spec.direction,
+    children: spec.children.map(id => ({ ...compositionChildDescriptor(id, children[id]),
+      ...(spec.align === "plot" ? { plot: compositionPlotBounds(children[id]) } : {}) })),
+    gap: spec.gap, align: spec.align, padding: spec.padding });
+  const result = { children, layout };
+  if (!bySpec) { bySpec = new WeakMap(); snapshotCache.set(program.children, bySpec); }
+  bySpec.set(spec, result);
+  return result;
+}
+
+export function resolveCompositionProgramLayout(program) {
+  return prepareCompositionSnapshots(program).layout;
 }
 
 function resizeChildForSnapshot(program, placement) {
@@ -65,7 +130,7 @@ function resizeChildForSnapshot(program, placement) {
 }
 
 function resolveSnapshotPlacement(program, placement, layout) {
-  if (program.compositionSpec === undefined) return placement;
+  if (program.compositionSpec === undefined || layout.align === "plot") return placement;
   const canvas = requireSingleOrderedGraphicByType(program.graphicSpec, "canvas");
   return resolveCompositionSnapshotPlacement({
     direction: layout.direction,
@@ -121,7 +186,7 @@ export function clearCompositionChildren(program) {
 
 export function materializeCompositionGraphics(program) {
   program._assertCompositionProgram("materializeCompositionGraphics");
-  const layout = resolveCompositionProgramLayout(program);
+  const { layout, children } = prepareCompositionSnapshots(program);
   const background = program.graphicSpec.objects.canvas?.properties
     ?.background ?? "white";
   let next = clearCompositionChildren(program);
@@ -137,7 +202,7 @@ export function materializeCompositionGraphics(program) {
   }
 
   for (const placement of layout.children) {
-    const source = program.children[placement.id];
+    const source = children[placement.id];
     const child = resizeChildForSnapshot(source, placement);
     const snapshotPlacement = resolveSnapshotPlacement(child, placement, layout);
     const snapshot = namespaceGraphicSnapshot(child.graphicSpec, {

@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "marks",
   "summary": "Assign deterministic bounded graphical jitter to one Cartesian point mark with channel: \"x\", \"y\", or \"both\".",
-  "signature": "jitterPoints(options: JitterPointsOptions): ChartProgram;",
+  "signature": "jitterPoints(options: TargetedOptions<JitterPointsOptions>): ChartProgram;",
   "intents": [
     "jitter points",
     "jitter",
@@ -57,7 +57,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "channel",

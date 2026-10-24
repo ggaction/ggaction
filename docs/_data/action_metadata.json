@@ -2409,5 +2409,21 @@
     ],
     "layer": "user-facing",
     "domain": "marks"
+  },
+  "createAdjacentPlot": {
+    "operation": "create",
+    "authoringRoles": [
+      "H0"
+    ],
+    "layer": "user-facing",
+    "domain": "composition"
+  },
+  "editCompositionScales": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "composition"
   }
 }

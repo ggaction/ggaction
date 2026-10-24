@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "encodings",
   "summary": "Apply a constant point radius.",
-  "signature": "encodeRadius(options: { value: number; target?: string }): ChartProgram;",
+  "signature": "encodeRadius(options: TargetedOptions<{ value: number; target?: string }>): ChartProgram;",
   "intents": [
     "encode radius",
     "encode",
@@ -61,7 +61,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     }
   ],
   "callPatterns": [

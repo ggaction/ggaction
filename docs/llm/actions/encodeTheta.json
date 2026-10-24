@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "encodings",
   "summary": "Encode Polar angle in clockwise degrees from 12 o'clock.",
-  "signature": "encodeTheta(options: ThetaEncodingOptions): ChartProgram;",
+  "signature": "encodeTheta(options: TargetedOptions<ThetaEncodingOptions>): ChartProgram;",
   "intents": [
     "encode theta",
     "encode",
@@ -82,7 +82,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "scale",

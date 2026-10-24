@@ -9,6 +9,7 @@ const cardFile = new URL("../../knowledge/action-cards.json", import.meta.url);
 const basicDeclarationFile = new URL("../../types/basic.d.ts", import.meta.url);
 
 const completeChartActions = [
+  "createAdjacentPlot",
   "createAreaPlot",
   "createBarPlot",
   "createBeeswarmPlot",
@@ -43,7 +44,7 @@ const completeChartActions = [
   "repeatCharts"
 ];
 
-const compositionActions = new Set(["facet", "facetGrid", "repeatCharts"]);
+const compositionActions = new Set(["facet", "facetGrid", "repeatCharts", "createAdjacentPlot"]);
 const compositionEditors = [
   "editFacetSource",
   "editFacetHeaders",
@@ -83,7 +84,8 @@ test("complete-chart discovery reaches semantic and primitive authoring layers",
     const card = byName.get(name);
     if (compositionActions.has(name)) {
       assert.deepEqual(card.wraps, [], name);
-      assert.deepEqual(card.editableVia, compositionEditors, name);
+      assert.deepEqual(card.editableVia, name === "createAdjacentPlot"
+        ? ["editCompositionLayout", "editCompositionScales", "replaceCompositionChild"] : compositionEditors, name);
       assert.deepEqual(card.completionRequirements.requires, [
         "complete child chart program"
       ], name);
@@ -107,9 +109,9 @@ test("discovery separates completion from resource validity", async () => {
     state,
     entries.length
   ])), {
-    contextual: actionCards.length - 35,
+    contextual: actionCards.length - 36,
     deferred: 2,
-    complete: 30,
+    complete: 31,
     "not-applicable": 3
   });
   assert.deepEqual(byState.deferred.map(card => card.name), [

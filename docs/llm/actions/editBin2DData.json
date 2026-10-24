@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "core",
   "summary": "Partially revise the current or unique logical 2D-bin owner.",
-  "signature": "editBin2DData(options: EditBin2DDataOptions): ChartProgram;",
+  "signature": "editBin2DData(options: TargetedOptions<EditBin2DDataOptions>): ChartProgram;",
   "intents": [
     "edit bin2 d data",
     "edit",
@@ -69,7 +69,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "source",

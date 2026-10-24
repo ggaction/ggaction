@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "legend_and_title",
   "summary": "Edits the text style of one legend's item labels.",
-  "signature": "editLegendLabels(options: EditLegendLabelsOptions): ChartProgram;",
+  "signature": "editLegendLabels(options: TargetedOptions<EditLegendLabelsOptions>): ChartProgram;",
   "intents": [
     "edit legend labels",
     "edit",
@@ -67,7 +67,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "channel",

@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "legend_and_title",
   "summary": "rowPadding sets non-negative finite occupied edge-to-edge vertical row gaps for item-based legends; titlePadding independently sets title-to-body spacing for every family.",
-  "signature": "createLegend(options?: LegendOptions): ChartProgram;",
+  "signature": "createLegend(options?: TargetedOptions<LegendOptions>): ChartProgram;",
   "intents": [
     "create legend",
     "create",
@@ -112,7 +112,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "channels",

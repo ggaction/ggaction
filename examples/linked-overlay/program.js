@@ -17,14 +17,18 @@ export const publicCalls = [
   { op: "createTitle", args: { text: "Line follows the bar endpoints" } }
 ];
 
-export function createLinkedOverlay() {
+export function createSalesBars() {
   return chart().createCanvas(canvas)
     .createData({ id: "data", values: rows })
     .createBarMark({ id: "bars", data: "data" })
     .encodeX({ target: "bars", field: "month", fieldType: "nominal" })
     .encodeY({ target: "bars", field: "sales", aggregate: "sum", scale: { domain: [0, 80], nice: false } })
     .encodeColor({ target: "bars", value: "#9dbbd6" })
-    .createGuides()
+    .createGuides();
+}
+
+export function createLinkedOverlay() {
+  return createSalesBars()
     .createOverlay({ id: "trend", source: "bars" })
     .encodeColor({ target: "trend", value: "#1d344c" })
     .createTitle({ text: "Line follows the bar endpoints" });

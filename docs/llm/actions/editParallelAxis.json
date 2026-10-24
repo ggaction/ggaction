@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "axes",
   "summary": "Full-only field-selected Parallel guides.",
-  "signature": "editParallelAxis(options: EditParallelAxisOptions): ChartProgram;",
+  "signature": "editParallelAxis(options: TargetedOptions<EditParallelAxisOptions>): ChartProgram;",
   "intents": [
     "edit parallel axis",
     "edit",
@@ -63,7 +63,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "line",

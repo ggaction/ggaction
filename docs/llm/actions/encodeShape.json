@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "encodings",
   "summary": "Encode a nominal field as fourteen named shapes or polygons with area/radius normalization.",
-  "signature": "encodeShape(options: ShapeEncodingOptions): ChartProgram;",
+  "signature": "encodeShape(options: TargetedOptions<ShapeEncodingOptions>): ChartProgram;",
   "intents": [
     "encode shape",
     "encode",
@@ -72,7 +72,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "fieldType",

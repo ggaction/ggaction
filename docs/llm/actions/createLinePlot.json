@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "charts",
   "summary": "Create a complete Cartesian line chart.",
-  "signature": "createLinePlot(options: CreateLinePlotOptions): ChartProgram;",
+  "signature": "createLinePlot(options: TargetedOptions<CreateLinePlotOptions>): ChartProgram;",
   "intents": [
     "create line plot",
     "create",
@@ -25,7 +25,8 @@
     "idOptions": [
       "id",
       "data",
-      "coordinate"
+      "coordinate",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -55,6 +56,10 @@
     },
     {
       "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -119,10 +124,15 @@
       "name": "guides",
       "required": false,
       "type": "false | (Omit<CPathGuides, \"grid\" | \"legend\"> & { grid?: false | (Omit<CartesianGridOptions, \"horizontal\"> & { horizontal?: boolean | ... 1 more ... | undefined; }) | undefined; legend?: false | ... 1 more ... | undefined; }) | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "createLinePlot({ x, y, id?, data?, coordinate?, color?, groupBy?, strokeDash? })"
+    "createLinePlot({ x, y, id?, data?, coordinate?, target?, color?, groupBy? })"
   ],
   "snippet": "program.createLinePlot({ x: \"x\", y: \"y\" })",
   "errors": [],

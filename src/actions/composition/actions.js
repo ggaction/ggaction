@@ -1,3 +1,4 @@
+import { normalizeCompositionShares } from "../../core/compositionScales.js";
 import { resolveGraphicBounds } from "../../layout/canvas.js";
 import { inheritTextMetrics } from "../textMetrics/index.js";
 import { action, closedAction } from "../../core/action.js";
@@ -17,7 +18,7 @@ import { materializeFacetGraphics } from "../../materialization/facets.js";
 import { replayInheritedThemeFrames } from "../theme/composition.js";
 
 const CONCAT_OPTIONS = Object.freeze([
-  "id", "programs", "gap", "align", "padding"
+  "id", "programs", "gap", "align", "padding", "share"
 ]);
 const LAYOUT_EDIT_OPTIONS = Object.freeze([
   "columns", "gap", "spacing", "topLane", "align", "padding"
@@ -94,7 +95,7 @@ function normalizeCompositionInput(args, direction) {
     direction,
     children: entries.map(childDescriptor),
     ...(Object.hasOwn(args, "gap") ? { gap: args.gap } : {}),
-    ...(Object.hasOwn(args, "align") ? { align: args.align } : {}),
+    ...(Object.hasOwn(args, "align") ? { align: args.align === "plot" ? "start" : args.align } : {}),
     ...(Object.hasOwn(args, "padding") ? { padding: args.padding } : {})
   });
   return {
@@ -106,8 +107,9 @@ function normalizeCompositionInput(args, direction) {
       direction,
       children: ids,
       gap: layout.gap,
-      align: layout.align,
-      padding: layout.padding
+      align: args.align === "plot" ? "plot" : layout.align,
+      padding: layout.padding,
+      ...(args.share === undefined ? {} : { share: normalizeCompositionShares(args.share) })
     }
   };
 }
@@ -218,7 +220,7 @@ const editCompositionLayout = /* @__PURE__ */ closedAction(
           program: this.children[id]
         })),
         gap: option(args, "gap", current.gap),
-        align: option(args, "align", current.align),
+        align: option(args, "align", current.align) === "plot" ? "start" : option(args, "align", current.align),
         padding
       });
     }
@@ -231,7 +233,7 @@ const editCompositionLayout = /* @__PURE__ */ closedAction(
           ...(layout.spacing !== undefined ? { spacing: layout.spacing } : current.spacing !== undefined ? { spacing: "canvas" } : {}),
           ...(layout.topLane === undefined ? {} : { topLane: layout.topLane }) } : {}),
         gap: layout.gap,
-        align: layout.align,
+        align: current.type !== "facet" && option(args, "align", current.align) === "plot" ? "plot" : layout.align,
         padding: layout.padding
       }
     });
@@ -376,7 +378,18 @@ const reorderCompositionChildren = /* @__PURE__ */ closedAction(
   }
 );
 
+const editCompositionScales = /* @__PURE__ */ closedAction({
+  op: "editCompositionScales", description: "Edit shared scale policies across adjacent chart views.", scope: "composition"
+}, ["share"], function ({ share } = {}) {
+  requireConcat(this, "editCompositionScales");
+  if (share === undefined || !Object.keys(share).length) throw new Error("editCompositionScales requires a nonempty share edit.");
+  const patch = normalizeCompositionShares(share);
+  return applyCompositionState(this, { children: this.children,
+    compositionSpec: { ...this.compositionSpec, share: { ...this.compositionSpec.share, ...patch } } });
+});
+
 export function registerCompositionActions(ProgramClass) {
+  ProgramClass.prototype.editCompositionScales = editCompositionScales;
   ProgramClass.prototype.useProgram = useProgram;
   ProgramClass.prototype.materializeComposition = materializeComposition;
   ProgramClass.prototype.editCompositionLayout = editCompositionLayout;

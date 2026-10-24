@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "axes",
   "summary": "Creates y-axis title for vertical field title.",
-  "signature": "createYAxisTitle(options?: AxisTitleOptions<YAxisPosition>): ChartProgram;",
+  "signature": "createYAxisTitle(options?: TargetedOptions<AxisTitleOptions<YAxisPosition>>): ChartProgram;",
   "intents": [
     "create y axis title",
     "create",
@@ -91,7 +91,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "alongOffset",

@@ -23,6 +23,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`applyTextMetrics`](../../../reference/actions/charts-data/#applytextmetrics) | H3 | user-facing | core |
 | [`applyTheme`](../../../reference/actions/charts-data/#applytheme) | H3 | user-facing | core |
 | [`bindMarkData`](../../../reference/actions/charts-data/#bindmarkdata) | H2 | user-facing | core |
+| [`createAdjacentPlot`](../../../reference/actions/charts-data/#createadjacentplot) | H0 | user-facing | composition |
 | [`createAnnotation`](../../../reference/actions/marks/#createannotation) | H1, H2 | user-facing | marks |
 | [`createArcMark`](../../../reference/actions/marks/#createarcmark) | H2 | user-facing | marks |
 | [`createAreaMark`](../../../reference/actions/marks/#createareamark) | H2 | user-facing | marks |
@@ -141,6 +142,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editColorScale`](../../../reference/actions/charts-data/#editcolorscale) | H2 | user-facing | core |
 | [`editCompleteData`](../../../reference/actions/statistics/#editcompletedata) | H1, H3 | user-facing | statistics |
 | [`editCompositionLayout`](../../../reference/actions/charts-data/#editcompositionlayout) | H3 | user-facing | composition |
+| [`editCompositionScales`](../../../reference/actions/charts-data/#editcompositionscales) | H3 | user-facing | composition |
 | [`editComputedData`](../../../reference/actions/statistics/#editcomputeddata) | H1, H3 | user-facing | statistics |
 | [`editCoordinate`](../../../reference/actions/charts-data/#editcoordinate) | H2 | user-facing | core |
 | [`editDensity`](../../../reference/actions/encodings/#editdensity) | H2, H3 | user-facing | encodings |

@@ -23,9 +23,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 629, // 624 files plus five linked-overlay runtime modules.
-  packedBytes: 918_000, // Canonical package measured 911556 bytes with linked overlays.
-  unpackedBytes: 4_320_000 // Canonical package measured 4,305,819 bytes.
+  entries: 634, // Linked overlay plus five composition/target runtime modules.
+  packedBytes: 934_000, // Canonical composition package measured 921,629 bytes.
+  unpackedBytes: 4_410_000 // Canonical composition package measured 4,384,849 bytes.
 });
 
 const REQUIRED_FILES = Object.freeze([

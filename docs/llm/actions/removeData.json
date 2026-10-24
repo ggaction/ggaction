@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "core",
   "summary": "Remove one explicitly named dataset only when no mark, downstream dataset, retained recipe, or owned resource still refers to it.",
-  "signature": "removeData(options: RemoveResourceOptions): ChartProgram;",
+  "signature": "removeData(options: TargetedOptions<RemoveResourceOptions>): ChartProgram;",
   "intents": [
     "remove data",
     "remove",
@@ -22,7 +22,8 @@
     ],
     "owns": [],
     "idOptions": [
-      "id"
+      "id",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -38,7 +39,12 @@
     ]
   },
   "units": [],
-  "inference": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
   "completionRequirements": {
     "state": "contextual",
     "requires": [
@@ -52,10 +58,15 @@
       "name": "id",
       "required": true,
       "type": "string"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "removeData({ id })"
+    "removeData({ id, target? })"
   ],
   "snippet": "program.removeData({ id: \"unusedData\" })",
   "errors": [],

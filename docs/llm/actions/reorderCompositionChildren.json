@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "composition",
   "summary": "Provide every current concat child ID exactly once in its new order.",
-  "signature": "reorderCompositionChildren(options: ReorderCompositionChildrenOptions): ChartProgram;",
+  "signature": "reorderCompositionChildren(options: TargetedOptions<ReorderCompositionChildrenOptions>): ChartProgram;",
   "intents": [
     "reorder composition children",
     "edit",
@@ -21,7 +21,9 @@
       "complete child chart program"
     ],
     "owns": [],
-    "idOptions": []
+    "idOptions": [
+      "target"
+    ]
   },
   "authoringRoles": [
     "H3"
@@ -34,7 +36,12 @@
     ]
   },
   "units": [],
-  "inference": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
   "completionRequirements": {
     "state": "contextual",
     "requires": [
@@ -48,10 +55,15 @@
       "name": "order",
       "required": true,
       "type": "readonly [string, ...string[]]"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "reorderCompositionChildren({ order })"
+    "reorderCompositionChildren({ order, target? })"
   ],
   "snippet": "program.reorderCompositionChildren({ order: [\"detail\", \"overview\"] })",
   "errors": [],

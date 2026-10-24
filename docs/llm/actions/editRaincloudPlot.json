@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "charts",
   "summary": "Atomically revise one Raincloud's shared source, roles, orientation, side, and component modes while preserving its parent and child IDs.",
-  "signature": "editRaincloudPlot(options: EditRaincloudPlotOptions): ChartProgram;",
+  "signature": "editRaincloudPlot(options: TargetedOptions<EditRaincloudPlotOptions>): ChartProgram;",
   "intents": [
     "edit raincloud plot",
     "edit",
@@ -68,7 +68,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "data",

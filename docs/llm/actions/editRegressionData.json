@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "core",
   "summary": "Edits fitted values, including settings for regression transform.",
-  "signature": "editRegressionData(options: EditRegressionDataOptions): ChartProgram;",
+  "signature": "editRegressionData(options: TargetedOptions<EditRegressionDataOptions>): ChartProgram;",
   "intents": [
     "edit regression data",
     "edit",
@@ -58,7 +58,7 @@
     {
       "name": "target",
       "required": true,
-      "type": "string"
+      "type": "string | ActionTargetList | ScopedActionTarget"
     },
     {
       "name": "dependents",

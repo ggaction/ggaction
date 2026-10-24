@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "axes",
   "summary": "Edit perimeter theta labels.",
-  "signature": "editThetaAxisLabels(options?: ThetaAxisLabelOptions): ChartProgram;",
+  "signature": "editThetaAxisLabels(options?: TargetedOptions<ThetaAxisLabelOptions>): ChartProgram;",
   "intents": [
     "edit theta axis labels",
     "edit",
@@ -21,7 +21,9 @@
       "compatible scale or encoding context"
     ],
     "owns": [],
-    "idOptions": []
+    "idOptions": [
+      "target"
+    ]
   },
   "authoringRoles": [
     "H3"
@@ -55,6 +57,10 @@
     {
       "input": "labelMap",
       "strategy": "documented-auto"
+    },
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
     }
   ],
   "completionRequirements": {
@@ -110,10 +116,15 @@
       "name": "labelMap",
       "required": false,
       "type": "\"auto\" | DisplayLabelMap | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "editThetaAxisLabels({ count?, values?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight? })"
+    "editThetaAxisLabels({ target?, count?, values?, offset?, format?, color?, fontSize?, fontFamily? })"
   ],
   "snippet": "program.editThetaAxisLabels({ count: 5 })",
   "errors": [],

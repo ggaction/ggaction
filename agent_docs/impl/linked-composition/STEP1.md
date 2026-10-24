@@ -6,8 +6,8 @@
 - [x] v0.0.24(fd5c4073)까지 기존 feature branch를 fast-forward하여 이전 기능을 보존함.
 - [ ] 기존 라이브러리 및 앱 baseline 검증.
 - [x] 새 시각적 결과의 primitive와 실행 가능한 검증 패키지.
-- [ ] 시각적 결과 확인 후 overlay 및 병치 공개 action 구현.
-- [ ] 타입·inspection·Current 계약·영문 문서·생성 파일 동기화.
+- [x] 시각적 결과 확인 후 overlay 및 병치 공개 action 구현.
+- [x] 타입·inspection·Current 계약·영문 문서·생성 파일 동기화.
 - [ ] 새 코퍼스 전체 수집, 구조 추출, 모델 재학습.
 - [ ] 대상별 추천, All/패널/overlay 선택, 네 방향 +, 코드/History/transition 연결.
 - [ ] release 검증 및 commit/push 원격 일치 확인.
@@ -60,3 +60,14 @@ Canvas/transition 브라우저, 실행 가능한 코드·저장복원·내보내
 - 앱 v0.0.24 baseline은 369개 중 23개 실패하며 주로 자동 Canvas centering/replay 관련이다.
   앱 통합 단계에서 실제 replay와 저장 결과를 검증하여 해결할 예정이며 완료로 간주하지 않는다.
 - 공유 축 병치, 대상 selector, 코퍼스 갱신, 앱/transition 연결 및 릴리스 검증은 아직 진행 전이다.
+
+## Shared composition implementation checkpoint
+
+- Added createAdjacentPlot and editCompositionScales, explicit Full action target selectors and atomic target lists. Native constructor options remain closed and Basic/primitives retain their original contracts. Adjacent views may select a prepared materialized dataset and receive an independent snapshot.
+- Shared scale unions are derived from canonical children, never fed back as authored domains. Compatible mapping/measurement checks and final-state batch validation prevent partial edits. Plot alignment rematerializes unit, nested concat and facet snapshots without stretching glyphs/text.
+- Added the approved shared-adjacent public example and exact primitive/SVG/Canvas pixel equivalence; Chromium example rendering passed.
+- Unit suite: 4,275/4,275 passed. New 14-case composition suite covers four edges, domains growing/shrinking, ordinal union, independent reset, unequal margins, nested/faceted children, explicit data/theme inheritance, target atomicity and persistence.
+- Full contract run found exact-signature/inventory expectations that needed the new public target grammar, plus an architectural import cycle. The cycle was removed by reading concrete facet placements; source-boundary checks pass. All affected focused contracts and strict TypeScript declaration compilation pass. Nested-scale witnesses execute the new constructor paths as actual adjacent charts, as well as the existing 699 native cases.
+- Canonical package: 634 entries, 921,682 compressed bytes and 4,385,119 uncompressed bytes. Tight budgets updated for five composition/target modules and typed metadata.
+- Documentation generation and executable examples are synchronized. Exact Git-linked source/provenance checks require the checkpoint commit, then regenerated immutable source links.
+- App target toolbar, edge addition UI, full refreshed corpus/model training, transition integration and v0.0.25 release preparation remain in the authorized implementation scope.

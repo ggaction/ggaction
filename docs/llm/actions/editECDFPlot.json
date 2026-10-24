@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "charts",
   "summary": "Atomically revise an ECDF source or statistical role and rebuild its owned derived rows, path, final-series labels, and guides under the stable owner ID.",
-  "signature": "editECDFPlot(options: EditECDFPlotOptions): ChartProgram;",
+  "signature": "editECDFPlot(options: TargetedOptions<EditECDFPlotOptions>): ChartProgram;",
   "intents": [
     "edit ecdf plot",
     "edit",
@@ -70,7 +70,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "data",

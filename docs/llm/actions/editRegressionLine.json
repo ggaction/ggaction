@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "statistics",
   "summary": "Edits regression line, including settings for fitted curve.",
-  "signature": "editRegressionLine(options: StrokeStyleDetails & { target?: string; strokeWidth?: number; curve?: CurveInterpolation; }): ChartProgram;",
+  "signature": "editRegressionLine(options: TargetedOptions<StrokeStyleDetails & { target?: string; strokeWidth?: number; curve?: CurveInterpolation; }>): ChartProgram;",
   "intents": [
     "edit regression line",
     "edit",
@@ -79,7 +79,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "strokeWidth",

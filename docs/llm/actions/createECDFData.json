@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "statistics",
   "summary": "Create immutable sorted support, cumulative count or weight, and probability rows.",
-  "signature": "createECDFData(options: ECDFDataOptions): ChartProgram;",
+  "signature": "createECDFData(options: TargetedOptions<ECDFDataOptions>): ChartProgram;",
   "intents": [
     "create ecdf data",
     "create",
@@ -24,7 +24,8 @@
     ],
     "idOptions": [
       "id",
-      "source"
+      "source",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -45,6 +46,10 @@
   "inference": [
     {
       "input": "source",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -94,10 +99,15 @@
       "name": "as",
       "required": false,
       "type": "ECDFOutputFields | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "createECDFData({ id, field, source?, groupBy?, weight?, missing?, as? })"
+    "createECDFData({ id, field, source?, target?, groupBy?, weight?, missing?, as? })"
   ],
   "snippet": "program.createECDFData({ id: \"ecdf-data-1\", field: \"value\" })",
   "errors": [],

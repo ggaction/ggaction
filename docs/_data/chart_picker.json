@@ -36,9 +36,10 @@
     "createHeatmap": "Pre-gridded cells or two raw quantitative fields for rectangular bins",
     "createHorizonPlot": "Ordered quantitative/temporal x and foldable quantitative y"
   },
-  "Repeated chart structure": {
+  "Multiple views": {
     "facet": "One complete chart and an eligible shared ancestor field",
     "facetGrid": "One complete chart plus row and column fields",
-    "repeatCharts": "One eligible mark role and an ordered field list"
+    "repeatCharts": "One eligible mark role and an ordered field list",
+    "createAdjacentPlot": "One complete chart plus a new independent chart; explicit shared scales and aligned plot frames"
   }
 }

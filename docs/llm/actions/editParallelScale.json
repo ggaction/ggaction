@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "core",
   "summary": "Edits parallel dimension scale, including settings for field-selected parallel scale.",
-  "signature": "editParallelScale(options: EditParallelScaleOptions): ChartProgram;",
+  "signature": "editParallelScale(options: TargetedOptions<EditParallelScaleOptions>): ChartProgram;",
   "intents": [
     "edit parallel scale",
     "edit",
@@ -81,7 +81,7 @@
     {
       "name": "target",
       "required": true,
-      "type": "string"
+      "type": "string | ActionTargetList | ScopedActionTarget"
     },
     {
       "name": "dimension",

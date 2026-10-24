@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "core",
   "summary": "Edits stroke color scale, including settings for outline color mapping.",
-  "signature": "editStrokeScale(options: EditStrokeScaleOptions): ChartProgram;",
+  "signature": "editStrokeScale(options: TargetedOptions<EditStrokeScaleOptions>): ChartProgram;",
   "intents": [
     "edit stroke scale",
     "edit",
@@ -77,7 +77,7 @@
     {
       "name": "target",
       "required": true,
-      "type": "string"
+      "type": "string | ActionTargetList | ScopedActionTarget"
     },
     {
       "name": "whitePoint",

@@ -1,0 +1,1 @@
+export interface ScopedActionTarget { childPath: readonly string[]; id?: string; }

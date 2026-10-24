@@ -103,7 +103,7 @@ function usedFacetScalePolicies(program, policies) {
   );
 }
 
-function facetUnitTemplate(program, sourceAction = false) {
+export function facetUnitTemplate(program, sourceAction = false) {
   const seedId = program.compositionSpec.children.find(id =>
     program.children[id]?.semanticSpec.layers.length > 0
   ) ?? program.compositionSpec.children[0];

@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "axes",
   "summary": "Edits y axis, including settings for vertical scale guide.",
-  "signature": "editYAxis(options: EditAxisOptions<YAxisPosition>): ChartProgram;",
+  "signature": "editYAxis(options: TargetedOptions<EditAxisOptions<YAxisPosition>>): ChartProgram;",
   "intents": [
     "edit y axis",
     "edit",
@@ -70,7 +70,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "offset",

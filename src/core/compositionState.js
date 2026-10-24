@@ -1,3 +1,4 @@
+import { normalizeCompositionShares } from "./compositionScales.js";
 import { normalizeFacetGap } from "./facetGap.js";
 import { normalizeFacetAxes } from "./facetAxisPolicy.js";
 import { isOwned, isPlainObject } from "./immutable.js";
@@ -248,7 +249,7 @@ function validateLayout(compositionSpec) {
   } else if (!Number.isFinite(compositionSpec.gap) || compositionSpec.gap < 0) {
     throw new RangeError("compositionSpec.gap must be a non-negative finite number.");
   }
-  if (!["start", "center", "end"].includes(compositionSpec.align)) {
+  if (!(compositionSpec.type === "facet" ? ["start", "center", "end"] : ["start", "center", "end", "plot"]).includes(compositionSpec.align)) {
     throw new Error("compositionSpec.align must be start, center, or end.");
   }
   if (!isPlainObject(compositionSpec.padding)) {
@@ -284,7 +285,7 @@ export function ownCompositionSpec(compositionSpec, children) {
   }
   const allowed = [
     "id", "type", "direction", "children", "columns", "gap", "align",
-    "padding", "facet", "spacing", "topLane"
+    "padding", "facet", "spacing", "topLane", "share"
   ];
   const unknown = Object.keys(compositionSpec).find(key => !allowed.includes(key));
   if (unknown !== undefined) {
@@ -316,6 +317,10 @@ export function ownCompositionSpec(compositionSpec, children) {
     compositionSpec.facet !== undefined
   ) {
     throw new Error("Concat compositionSpec does not accept facet properties.");
+  }
+  if (compositionSpec.share !== undefined) {
+    if (facet) throw new Error("Facet uses scales, not composition share.");
+    normalizeCompositionShares(compositionSpec.share);
   }
   validateLayout(compositionSpec);
   const owned = ownProgramState(compositionSpec);

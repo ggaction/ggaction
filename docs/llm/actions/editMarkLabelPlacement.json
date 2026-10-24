@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "marks",
   "summary": "Replace semantic placement for one attached label layer.",
-  "signature": "editMarkLabelPlacement(options: EditMarkLabelPlacementOptions): ChartProgram;",
+  "signature": "editMarkLabelPlacement(options: TargetedOptions<EditMarkLabelPlacementOptions>): ChartProgram;",
   "intents": [
     "edit mark label placement",
     "edit",
@@ -68,7 +68,7 @@
     {
       "name": "target",
       "required": true,
-      "type": "string"
+      "type": "string | ActionTargetList | ScopedActionTarget"
     },
     {
       "name": "placement",

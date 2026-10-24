@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "axes",
   "summary": "Edit the theta title.",
-  "signature": "editThetaAxisTitle(options?: PolarTitleOptions): ChartProgram;",
+  "signature": "editThetaAxisTitle(options?: TargetedOptions<PolarTitleOptions>): ChartProgram;",
   "intents": [
     "edit theta axis title",
     "edit",
@@ -21,7 +21,9 @@
       "compatible scale or encoding context"
     ],
     "owns": [],
-    "idOptions": []
+    "idOptions": [
+      "target"
+    ]
   },
   "authoringRoles": [
     "H3"
@@ -48,7 +50,12 @@
       "unit": "logical-pixel"
     }
   ],
-  "inference": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
   "completionRequirements": {
     "state": "contextual",
     "requires": [
@@ -87,10 +94,15 @@
       "name": "fontWeight",
       "required": false,
       "type": "string | number | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "editThetaAxisTitle({ text?, offset?, color?, fontSize?, fontFamily?, fontWeight? })"
+    "editThetaAxisTitle({ target?, text?, offset?, color?, fontSize?, fontFamily?, fontWeight? })"
   ],
   "snippet": "program.editThetaAxisTitle({ text: \"Chart title\" })",
   "errors": [],

@@ -13,3 +13,10 @@ test("public linked overlay exactly matches the approved primitive drawing", () 
   assert.deepEqual(publicProgram.graphicSpec.order, primitive.graphicSpec.order);
   assert.equal(renderToSVG(publicProgram), renderToSVG(primitive));
 });
+
+for (const variant of visualVariants.slice(1)) test(`${variant.chart} matches the approved primitive drawing`, () => {
+  const actual = variant.userFacing(), expected = variant.primitive();
+  assertDisplayedProgram(variant, actual);
+  assert.deepEqual(actual.graphicSpec, expected.graphicSpec);
+  assert.equal(renderToSVG(actual), renderToSVG(expected));
+});

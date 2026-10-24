@@ -25,6 +25,7 @@ const LOADERS = Object.freeze({
 });
 
 const EXPECTED_DRAW_ORDER = Object.freeze({
+  "shared-adjacent": [],
   "linked-overlay": ["canvas","horizontalGridLines","bars","trend","xAxisLine","xAxisTicks","xAxisLabels","xAxisTitle","yAxisLine","yAxisTicks","yAxisLabels","yAxisTitle","chartTitle"],
   "linear-nice-count": ["canvas", "linePlot"],
   "linear-nearest-ticks": ["canvas", "linePlot", "yAxisLine", "yAxisTicks", "yAxisLabels"],
@@ -377,6 +378,7 @@ const EXPECTED_DRAW_ORDER = Object.freeze({
 });
 
 const EXPECTED_COMPOSITION_DRAW_LENGTH = Object.freeze({
+  "shared-adjacent": 27,
   "combined-legends": 13,
   "program-composition": 9,
   "directional-tick-plot": 28,
@@ -387,6 +389,7 @@ const EXPECTED_COMPOSITION_DRAW_LENGTH = Object.freeze({
 });
 
 const EXPECTED_COMPOSITION_CHILDREN = Object.freeze({
+  "shared-adjacent": 2,
   "combined-legends": 2,
   "program-composition": 2,
   "directional-tick-plot": 3,

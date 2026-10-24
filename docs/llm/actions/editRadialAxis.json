@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "axes",
   "summary": "Edit selected radial components; angle moves the whole axis.",
-  "signature": "editRadialAxis(options: EditRadialAxisOptions): ChartProgram;",
+  "signature": "editRadialAxis(options: TargetedOptions<EditRadialAxisOptions>): ChartProgram;",
   "intents": [
     "edit radial axis",
     "edit",
@@ -21,7 +21,9 @@
       "compatible scale or encoding context"
     ],
     "owns": [],
-    "idOptions": []
+    "idOptions": [
+      "target"
+    ]
   },
   "authoringRoles": [
     "H3"
@@ -46,7 +48,12 @@
       "unit": "degree"
     }
   ],
-  "inference": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
   "completionRequirements": {
     "state": "contextual",
     "requires": [
@@ -85,10 +92,15 @@
       "name": "ticksAndLabels",
       "required": false,
       "type": "false | PolarTicksAndLabelsOptions | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "editRadialAxis({ title?, angle?, line?, ticks?, labels?, ticksAndLabels? })"
+    "editRadialAxis({ target?, title?, angle?, line?, ticks?, labels?, ticksAndLabels? })"
   ],
   "snippet": "program.editRadialAxis({ title: { text: \"Radius\" } })",
   "errors": [],

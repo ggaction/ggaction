@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "core",
   "summary": "Create an immutable derived dataset by applying ordered row-number, rank, dense-rank, cumulative-sum, lag, lead, moving-mean, or moving-sum operations within optional partitions.",
-  "signature": "createWindowData(options: WindowDataOptions): ChartProgram;",
+  "signature": "createWindowData(options: TargetedOptions<WindowDataOptions>): ChartProgram;",
   "intents": [
     "create window data",
     "create",
@@ -24,7 +24,8 @@
     ],
     "idOptions": [
       "id",
-      "source"
+      "source",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -50,6 +51,10 @@
   "inference": [
     {
       "input": "source",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -94,10 +99,15 @@
       "name": "temporalUnit",
       "required": false,
       "type": "TemporalInputUnit | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "createWindowData({ id, operations, source?, partitionBy?, sortBy?, temporalUnit? })"
+    "createWindowData({ id, operations, source?, target?, partitionBy?, sortBy?, temporalUnit? })"
   ],
   "snippet": "program.createWindowData({ id: \"windowed\", operations: [{ op: \"movingMean\", field: \"value\", as: \"movingMean\", frame: { preceding: 2 } }] })",
   "errors": [],

@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "charts",
   "summary": "Create named start and end points with a connector.",
-  "signature": "createDumbbellPlot(options: CreateDumbbellPlotOptions): ChartProgram;",
+  "signature": "createDumbbellPlot(options: TargetedOptions<CreateDumbbellPlotOptions>): ChartProgram;",
   "intents": [
     "create dumbbell plot",
     "create",
@@ -25,7 +25,8 @@
     "idOptions": [
       "id",
       "data",
-      "coordinate"
+      "coordinate",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -56,6 +57,10 @@
     },
     {
       "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -135,6 +140,11 @@
       "name": "guides",
       "required": false,
       "type": "false | CartesianSeparateGuideOptions | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [

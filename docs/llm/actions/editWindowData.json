@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "core",
   "summary": "Edits moving window, including settings for rank.",
-  "signature": "editWindowData(options: EditWindowDataOptions): ChartProgram;",
+  "signature": "editWindowData(options: TargetedOptions<EditWindowDataOptions>): ChartProgram;",
   "intents": [
     "edit window data",
     "edit",
@@ -63,7 +63,7 @@
     {
       "name": "target",
       "required": true,
-      "type": "string"
+      "type": "string | ActionTargetList | ScopedActionTarget"
     },
     {
       "name": "dependents",

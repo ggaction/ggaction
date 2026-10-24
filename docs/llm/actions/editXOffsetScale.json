@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "core",
   "summary": "Edits x-offset scale, including settings for horizontal subgroup placement.",
-  "signature": "editXOffsetScale(options: EditXOffsetScaleOptions): ChartProgram;",
+  "signature": "editXOffsetScale(options: TargetedOptions<EditXOffsetScaleOptions>): ChartProgram;",
   "intents": [
     "edit x offset scale",
     "edit",
@@ -77,7 +77,7 @@
     {
       "name": "target",
       "required": true,
-      "type": "string"
+      "type": "string | ActionTargetList | ScopedActionTarget"
     },
     {
       "name": "domain",

@@ -457,6 +457,13 @@ export function buildActionRelationshipPrograms() {
   });
   return [
     ...descriptors.map(buildScenario),
+    chart()
+    .createCanvas({ plot: { width: 200, height: 200 }, margin: 70 })
+    .createData({ values: [{ x: "A", y: 2 }, { x: "B", y: 3 }] })
+    .createBarPlot({ id: "bars", x: "x", y: { field: "y", aggregate: "sum" } })
+    .createAdjacentPlot({ id: "line" })
+    .editCompositionScales({ share: { y: false } }),
+
     chart().createCanvas({ width: 400, height: 300, margin: 40 })
       .createData({ values: [{ x: "A", y: 2 }, { x: "B", y: 4 }] })
       .createBarPlot({ id: "bars", x: "x", y: "y", guides: false })

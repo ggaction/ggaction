@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "core",
   "summary": "Creates a named scale that maps a semantic domain to a graphical range.",
-  "signature": "createScale(options: CreateScaleOptions): ChartProgram;",
+  "signature": "createScale(options: TargetedOptions<CreateScaleOptions>): ChartProgram;",
   "intents": [
     "create scale",
     "create",
@@ -21,7 +21,8 @@
       "scale"
     ],
     "idOptions": [
-      "id"
+      "id",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -66,6 +67,10 @@
     {
       "input": "midpoint",
       "strategy": "documented-auto"
+    },
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
     },
     {
       "input": "omitted optional options",
@@ -192,10 +197,15 @@
       "name": "unknown",
       "required": false,
       "type": "unknown"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "createScale({ id, radialMapping?, type?, domain?, emptyDomain?, range?, nice?, zero? })"
+    "createScale({ id, target?, radialMapping?, type?, domain?, emptyDomain?, range?, nice? })"
   ],
   "snippet": "program.createScale({ id: \"scale-1\" })",
   "errors": [],

@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "legend_and_title",
   "summary": "Edit one logical legend block without changing sibling blocks on the same mark.",
-  "signature": "editLegendBlock(options: EditLegendBlockOptions): ChartProgram;",
+  "signature": "editLegendBlock(options: TargetedOptions<EditLegendBlockOptions>): ChartProgram;",
   "intents": [
     "edit legend block",
     "edit",
@@ -80,7 +80,7 @@
     {
       "name": "target",
       "required": true,
-      "type": "string"
+      "type": "string | ActionTargetList | ScopedActionTarget"
     },
     {
       "name": "channel",

@@ -40,9 +40,9 @@ test("keeps Parallel declarations and root type exports synchronized", () => {
   assert.match(programTypes, /^export interface ParallelCoordinatesEncodingOptions/m);
   assert.match(programTypes, /^export interface CreateParallelCoordinatesOptions/m);
   assert.match(programTypes,
-    /^  encodeParallelCoordinates\(options: ParallelCoordinatesEncodingOptions\): ChartProgram;$/m);
+    /^  encodeParallelCoordinates\(options: TargetedOptions<ParallelCoordinatesEncodingOptions>\): ChartProgram;$/m);
   assert.match(programTypes,
-    /^  createParallelCoordinates\(options: CreateParallelCoordinatesOptions\): ChartProgram;$/m);
+    /^  createParallelCoordinates\(options: TargetedOptions<CreateParallelCoordinatesOptions>\): ChartProgram;$/m);
 
   for (const name of [
     "ParallelMissingPolicy",

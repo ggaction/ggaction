@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "core",
   "summary": "Fit an existing Full unit chart by shrinking its margins on a fixed Canvas.",
-  "signature": "fitCanvas(options?: FitCanvasOptions): ChartProgram;",
+  "signature": "fitCanvas(options?: TargetedOptions<FitCanvasOptions>): ChartProgram;",
   "intents": [
     "fit canvas",
     "layout",
@@ -22,7 +22,9 @@
     "owns": [
       "canvas"
     ],
-    "idOptions": []
+    "idOptions": [
+      "target"
+    ]
   },
   "authoringRoles": [
     "H3"
@@ -52,7 +54,12 @@
       "unit": "logical-pixel"
     }
   ],
-  "inference": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
   "completionRequirements": {
     "state": "contextual",
     "requires": [
@@ -85,10 +92,15 @@
       "name": "overflow",
       "required": false,
       "type": "\"error\" | \"report\" | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "fitCanvas({ padding?, minPlotWidth?, minPlotHeight?, iterationLimit?, overflow? })"
+    "fitCanvas({ target?, padding?, minPlotWidth?, minPlotHeight?, iterationLimit?, overflow? })"
   ],
   "snippet": "program.fitCanvas({ padding: 1 })",
   "errors": [],

@@ -586,3 +586,81 @@ Evidence: `test/unit/layout/facet-top-lane.test.js`, `test/unit/actions/composit
 ### Retained header recipe during source edits
 
 `editFacetSource` carries the existing canonical header configuration into the first native facet rebuild. It never validates an intermediate default header layout before restoring authored rotation, field titles or content anchors. The public header options and final atomicity contract are unchanged.
+
+## Shared concat scales and plot alignment
+
+Concat accepts `share: CompositionShares` (`x`, `y`, `color`, `stroke`, `size`, `shape`,
+`opacity`, `strokeWidth`, `strokeDash`, each boolean). Omission leaves channels independent.
+Each enabled channel must exist in every affected unit view. Shared position scales require
+Cartesian positions. Field, field type, temporal interpretation, measurement units (count,
+squared measurement, ordinary measurement), and mapping definitions must agree. Explicit
+conflicting domains reject. One common explicit domain is authoritative; otherwise resolved
+child domains are unioned, ordinal categories in stable first-seen order. Shared appearance
+requires compatible palette/range. Source-dependent overlays do not introduce another scale owner.
+
+Canonical children retain authored domains and dimensions. The composition materializer derives
+shared render snapshots on every child edit. Disabling sharing restores independent inference;
+it does not retain the previous union as an authored fixed domain. Immutable-owner WeakMaps
+cache these derived snapshots without adding persisted state or a global semantic observer.
+
+Concat `align: "plot"` aligns both ends of the cross-axis plot. Unit render snapshots adopt the
+largest cross-axis plot extent while keeping their own margins; canonical explicit child sizes
+remain unchanged. Nested compositions distribute the required plot-extent increase across their tracks;
+facets resize their source plot through editFacetSource. Text and symbols are rematerialized, not stretched. Existing `start`/`center`/`end` behavior is unchanged. Facets keep their own
+`scales` and alignment policy.
+
+## `createAdjacentPlot`
+
+Creates a concat parent around the current complete unit or facet view and one new chart. `source` is an
+explicit/current/unique independent mark; `id` names the new view and mark (default `adjacent`,
+which must differ from the source view ID). Original view ID is the selected source mark ID.
+The new chart receives an independent snapshot of the source's materialized data and Canvas frame.
+`plot.options.data` may name another materialized dataset in the same source view.
+`plot.options.id` is rejected; the top-level `id` owns both the new view and mark. The default is a line,
+right placement, plot alignment, and shared Y. Left also shares Y; top/bottom share X. Caller
+`share` replaces the default. No layer or data dependency is introduced between adjacent views.
+
+Line and bar defaults inherit fields, field types, aggregation and bins; shared channels also
+inherit scale definitions. Other constructors, including area, require their native options;
+aggregation is never silently discarded. All constructors
+retain their ordinary validity and data-shape requirements. Explicit native plot options override
+inferred values. New chart appearance uses its constructor; inherited theme/text metrics are retained.
+
+### Formal values — `createAdjacentPlot`
+
+- Implemented: `createAdjacentPlot({ id?: UserId, source?: ExistingIndependentMarkId, position?: "left"|"right"|"top"|"bottom", plot?: AdjacentPlotSpecification, share?: CompositionShares, gap?: NonNegativeFinite, align?: "plot"|"start"|"center"|"end" }): ChartProgram`.
+- Proposed (NOT IMPLEMENTED): None.
+
+### Value coverage — `createAdjacentPlot`
+
+- ✅ Covered. Evidence: `test/unit/actions/composition/shared-adjacent.test.js`, `test/charts/linked-composition/`, and `examples/shared-adjacent/` cover four edges, shared domains, primitive/pixel equivalence, nesting, persistence, and atomic target edits.
+
+## `editCompositionScales`
+
+Edits a nonempty subset of the concat parent's `share` policies and rematerializes once. Omitted
+channels are preserved; false restores independent rendering. Incompatible requested sharing
+rejects without changing any previous program or child. Facet callers use `editFacetScales`.
+
+### Formal values — `editCompositionScales`
+
+- Implemented: `editCompositionScales({ share: NonEmpty<CompositionShares> }): ChartProgram`.
+- Proposed (NOT IMPLEMENTED): None.
+
+### Value coverage — `editCompositionScales`
+
+- ✅ Covered. Evidence: `test/unit/actions/composition/shared-adjacent.test.js`: domain growth/shrink, reset to independent, compatibility, and mutation isolation.
+
+## Explicit action targets
+
+Full authoring adds `target: { childPath: string[], id?: string }` or a nonempty array of string
+IDs and/or these selectors to ordinary action options. An empty path addresses the current
+view. `id` becomes that native action's ordinary `target`; omission selects the view itself and
+keeps the native action's existing inference. For example a title uses a path without an ID,
+while `encodeColor` identifies a mark. No wildcard silently chooses eligible marks. The UI can
+construct an explicit list for All. Basic retains its original single-target option types.
+
+Each target invokes the same public native function. Immutable candidates are edited first;
+all changed ancestors and shared-domain constraints are materialized from the complete final
+state. A failure returns no partially edited program. Duplicate targets, unknown paths and
+ambiguous native targets reject. Facet source edits use `editFacetSource`; paths through generated facet cells are rejected to avoid losing edits on source replay. Parent/source overlapping target lists must be structurally valid.
+The outer trace records one requested function; retained child traces contain the native edits.

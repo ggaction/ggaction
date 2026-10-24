@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "marks",
   "summary": "Add a line or point layer that follows a source mark's visible results.",
-  "signature": "createOverlay(options?: CreateOverlayOptions): ChartProgram;",
+  "signature": "createOverlay(options?: TargetedOptions<CreateOverlayOptions>): ChartProgram;",
   "intents": [
     "create overlay",
     "create",
@@ -24,7 +24,8 @@
     ],
     "idOptions": [
       "id",
-      "source"
+      "source",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -49,6 +50,10 @@
   "inference": [
     {
       "input": "source",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -108,10 +113,15 @@
       "name": "point",
       "required": false,
       "type": "OverlayPointAppearance | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "createOverlay({ id?, source?, basis?, series?, missing?, orderBy?, type?, line? })"
+    "createOverlay({ id?, source?, target?, basis?, series?, missing?, orderBy?, type? })"
   ],
   "snippet": "program.createOverlay({ source: \"bars\" })",
   "errors": [],

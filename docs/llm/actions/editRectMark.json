@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "marks",
   "summary": "Edit rect appearance and rematerialize complete cells.",
-  "signature": "editRectMark(options: EditRectMarkOptions): ChartProgram;",
+  "signature": "editRectMark(options: TargetedOptions<EditRectMarkOptions>): ChartProgram;",
   "intents": [
     "edit rect mark",
     "edit",
@@ -63,7 +63,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "lineCap",

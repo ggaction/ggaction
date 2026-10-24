@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "axes",
   "summary": "Edits x-axis ticks and labels, including settings for coordinated horizontal guide.",
-  "signature": "editXAxisTicksAndLabels(options: Omit<AxisTicksAndLabelsOptions<XAxisPosition>, \"scale\">): ChartProgram;",
+  "signature": "editXAxisTicksAndLabels(options: TargetedOptions<Omit<AxisTicksAndLabelsOptions<XAxisPosition>, \"scale\">>): ChartProgram;",
   "intents": [
     "edit x axis ticks and labels",
     "edit",
@@ -64,7 +64,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "position",

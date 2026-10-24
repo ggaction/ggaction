@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "charts",
   "summary": "Edits radar plot, including settings for radar chart.",
-  "signature": "editRadarPlot(options: EditRadarPlotOptions): ChartProgram;",
+  "signature": "editRadarPlot(options: TargetedOptions<EditRadarPlotOptions>): ChartProgram;",
   "intents": [
     "edit radar plot",
     "edit",
@@ -60,7 +60,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "wide",

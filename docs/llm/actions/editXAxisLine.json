@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "axes",
   "summary": "Edits x-axis line, including settings for horizontal baseline.",
-  "signature": "editXAxisLine(options?: AxisLineStyleOptions & { target?: string; position?: XAxisPosition }): ChartProgram;",
+  "signature": "editXAxisLine(options?: TargetedOptions<AxisLineStyleOptions & { target?: string; position?: XAxisPosition }>): ChartProgram;",
   "intents": [
     "edit x axis line",
     "edit",
@@ -73,7 +73,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "position",

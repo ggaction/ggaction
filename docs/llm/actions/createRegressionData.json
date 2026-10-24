@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "core",
   "summary": "Create immutable linear, polynomial, LOESS, or exponential fitted rows at observed unique x values.",
-  "signature": "createRegressionData(options: RegressionDataOptions): ChartProgram;",
+  "signature": "createRegressionData(options: TargetedOptions<RegressionDataOptions>): ChartProgram;",
   "intents": [
     "create regression data",
     "create",
@@ -24,7 +24,8 @@
     ],
     "idOptions": [
       "id",
-      "source"
+      "source",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -45,6 +46,10 @@
   "inference": [
     {
       "input": "source",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -134,10 +139,15 @@
       "name": "predict",
       "required": false,
       "type": "RegressionPredictOptions | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "createRegressionData({ id, x, y, source?, groupBy?, missing?, method?, interval? })"
+    "createRegressionData({ id, x, y, source?, target?, groupBy?, missing?, method? })"
   ],
   "snippet": "program.createRegressionData({ id: \"regression-data-1\", x: \"x\", y: \"y\" })",
   "errors": [],

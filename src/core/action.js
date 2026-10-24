@@ -5,6 +5,21 @@ import { cloneAndFreeze, freezeOwned, isOwned, isPlainObject } from "./immutable
 const metadataByWrappedAction = new WeakMap();
 const implementationByWrappedAction = new WeakMap();
 let actionCompletionHook;
+const targetDispatchers = new WeakMap();
+const UNSCOPED_PRIMITIVES = new Set(["createGraphics", "editGraphics", "editSemantic", "createData"]);
+export function registerActionTargetDispatcher(ProgramClass, dispatcher) {
+  targetDispatchers.set(ProgramClass, dispatcher);
+}
+function targetDispatcher(ProgramClass) {
+  for (let owner = ProgramClass; owner; owner = Object.getPrototypeOf(owner)) {
+    if (targetDispatchers.has(owner)) return targetDispatchers.get(owner);
+  }
+}
+
+
+export function supportsScopedActionTargets(ProgramClass, operation) {
+  return !UNSCOPED_PRIMITIVES.has(operation) && targetDispatcher(ProgramClass) !== undefined;
+}
 
 export function setActionCompletionHook(hook) {
   if (hook !== undefined && typeof hook !== "function") {
@@ -202,15 +217,17 @@ export function action(metadata, implementation) {
         throw new TypeError("Action arguments must be a plain object.");
       }
   
-      if (scope === "unit") this._assertUnitProgram(ownedMetadata.op);
-      if (scope === "composition") this._assertCompositionProgram(ownedMetadata.op);
+      const scoped = isPlainObject(args.target) || Array.isArray(args.target);
+      const dispatch = scoped && !UNSCOPED_PRIMITIVES.has(ownedMetadata.op) ? targetDispatcher(this.constructor) : undefined;
+      if (!dispatch && scope === "unit") this._assertUnitProgram(ownedMetadata.op);
+      if (!dispatch && scope === "composition") this._assertCompositionProgram(ownedMetadata.op);
   
       const summarizedArgs = summarizeArgs(args);
       const entered = this._enterAction({
         ...ownedMetadata,
         args: summarizedArgs
       });
-      let result = implementation.call(entered, args);
+      let result = dispatch ? dispatch(entered, wrappedAction, args) : implementation.call(entered, args);
   
       if (!(result instanceof this.constructor)) {
         throw new TypeError(`${ownedMetadata.op} must return a ChartProgram.`);

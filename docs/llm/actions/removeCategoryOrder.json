@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "encodings",
   "summary": "Remove one active category-order assignment and restore automatic first-appearance order.",
-  "signature": "removeCategoryOrder(options: RemoveCategoryOrderOptions): ChartProgram;",
+  "signature": "removeCategoryOrder(options: TargetedOptions<RemoveCategoryOrderOptions>): ChartProgram;",
   "intents": [
     "remove category order",
     "remove",
@@ -55,7 +55,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "channel",

@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "grid",
   "summary": "Edits horizontal grid, including settings for y reference lines.",
-  "signature": "editHorizontalGrid(options: EditGridOptions): ChartProgram;",
+  "signature": "editHorizontalGrid(options: TargetedOptions<EditGridOptions>): ChartProgram;",
   "intents": [
     "edit horizontal grid",
     "edit",
@@ -21,7 +21,9 @@
       "compatible scale or encoding context"
     ],
     "owns": [],
-    "idOptions": []
+    "idOptions": [
+      "target"
+    ]
   },
   "authoringRoles": [
     "H3"
@@ -57,6 +59,10 @@
     {
       "input": "values",
       "strategy": "documented-auto"
+    },
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
     }
   ],
   "completionRequirements": {
@@ -112,10 +118,15 @@
       "name": "strokeDash",
       "required": false,
       "type": "readonly number[] | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "editHorizontalGrid({ strokeDashMap?, alongOffset?, zIndex?, bandPosition?, count?, values?, color?, lineWidth? })"
+    "editHorizontalGrid({ target?, strokeDashMap?, alongOffset?, zIndex?, bandPosition?, count?, values?, color? })"
   ],
   "snippet": "program.editHorizontalGrid({ strokeDashMap: \"auto\" })",
   "errors": [],

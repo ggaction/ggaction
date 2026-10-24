@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "composition",
   "summary": "Reapply the current facet, grid, or repeat recipe to a revised complete unit program while preserving the partition dataset ID, ordered domains, layout, scale/guide policy, headers, and parent title.",
-  "signature": "editFacetSource(options: EditFacetSourceOptions): ChartProgram;",
+  "signature": "editFacetSource(options: TargetedOptions<EditFacetSourceOptions>): ChartProgram;",
   "intents": [
     "edit facet source",
     "edit",
@@ -21,7 +21,9 @@
       "complete child chart program"
     ],
     "owns": [],
-    "idOptions": []
+    "idOptions": [
+      "target"
+    ]
   },
   "authoringRoles": [
     "H3"
@@ -40,7 +42,12 @@
     ]
   },
   "units": [],
-  "inference": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
   "completionRequirements": {
     "state": "contextual",
     "requires": [
@@ -59,10 +66,15 @@
       "name": "action",
       "required": false,
       "type": "{ method: string; options?: Readonly<Record<string, unknown>> | undefined; } | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "editFacetSource({ program?, action? })"
+    "editFacetSource({ target?, program?, action? })"
   ],
   "snippet": "program.editFacetSource({ program: chart().createCanvas({}).createData({ values: [] }) })",
   "errors": [],

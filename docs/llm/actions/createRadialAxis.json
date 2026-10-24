@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "axes",
   "summary": "Create the complete center-to-edge radial axis; angle defaults to 90.",
-  "signature": "createRadialAxis(options?: CompleteRadialAxisOptions): ChartProgram;",
+  "signature": "createRadialAxis(options?: TargetedOptions<CompleteRadialAxisOptions>): ChartProgram;",
   "intents": [
     "create radial axis",
     "create",
@@ -24,7 +24,8 @@
     ],
     "idOptions": [
       "scale",
-      "coordinate"
+      "coordinate",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -57,6 +58,10 @@
     },
     {
       "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -101,10 +106,15 @@
       "name": "ticksAndLabels",
       "required": false,
       "type": "false | PolarTicksAndLabelsOptions | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "createRadialAxis({ scale?, coordinate?, angle?, title?, line?, ticksAndLabels? })"
+    "createRadialAxis({ scale?, coordinate?, target?, angle?, title?, line?, ticksAndLabels? })"
   ],
   "snippet": "program.createRadialAxis({})",
   "errors": [],

@@ -5348,6 +5348,42 @@
         "file": "agent_docs/contract/current/OVERLAYS.md",
         "anchor": "editoverlay"
       }
+    },
+    {
+      "name": "createAdjacentPlot",
+      "layer": "user-facing",
+      "domain": "composition",
+      "status": "implemented",
+      "lifecycle": "Structural create-only",
+      "update": "Edit the resulting concat through native scoped actions and composition editors",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/COMPOSITION.md",
+        "anchor": "createadjacentplot"
+      }
+    },
+    {
+      "name": "editCompositionScales",
+      "layer": "user-facing",
+      "domain": "composition",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edit shared channel policies without changing authored child domains",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/COMPOSITION.md",
+        "anchor": "editcompositionscales"
+      }
     }
   ],
   "plannedActions": [],

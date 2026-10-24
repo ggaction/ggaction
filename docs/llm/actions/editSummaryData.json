@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "statistics",
   "summary": "Edits grouped summary data, including settings for reusable aggregate rows.",
-  "signature": "editSummaryData(options: EditSummaryDataOptions): ChartProgram;",
+  "signature": "editSummaryData(options: TargetedOptions<EditSummaryDataOptions>): ChartProgram;",
   "intents": [
     "edit summary data",
     "edit",
@@ -59,7 +59,7 @@
     {
       "name": "target",
       "required": true,
-      "type": "string"
+      "type": "string | ActionTargetList | ScopedActionTarget"
     },
     {
       "name": "dependents",

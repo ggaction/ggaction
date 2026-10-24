@@ -293,5 +293,7 @@
   "createAreaPlot": "/reference/actions/charts-data/#createareaplot",
   "layoutSeries": "/reference/actions/encodings/#layoutseries",
   "createOverlay": "/reference/actions/marks/#createoverlay",
-  "editOverlay": "/reference/actions/marks/#editoverlay"
+  "editOverlay": "/reference/actions/marks/#editoverlay",
+  "createAdjacentPlot": "/reference/actions/charts-data/#createadjacentplot",
+  "editCompositionScales": "/reference/actions/charts-data/#editcompositionscales"
 }

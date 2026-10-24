@@ -9,6 +9,48 @@ title: Editing Compositions
 
 [Family overview](./../composition.md) · [Exact action lookup](./../../reference/actions.md)
 
+## Add an adjacent chart and share scales
+
+{% include chart-example.html id="shared-adjacent" %}
+
+Call `createAdjacentPlot` on a complete chart to add a new view to its left, right,
+top or bottom. By default it creates a line using the source fields and aggregation.
+Supply `plot: { action: "createScatterPlot", options: { x: "month", y: "sales" } }`
+(or another native constructor) to select a different chart. Area and other chart families
+require their native options, including any prepared summary-data fields. The new chart
+has independent data and appearance; use `createOverlay` when it should follow results.
+
+The selected source mark's ID names the original view; the new `id` names both the
+adjacent view and its initial mark. Nested concats use explicit child paths when adding
+another view. A facet is one editable source view; generated cells remain derived.
+
+Horizontal placement defaults to shared Y and vertical placement to shared X.
+Explicit `share` replaces that default. `hconcat` and `vconcat` also accept `share`.
+Shared channels must use compatible fields, measurement units and scale mappings.
+Conflicting explicit domains reject the whole operation. Automatically inferred domains
+are combined afresh after each edit, so they can grow and shrink. Authored child domains
+are preserved: `editCompositionScales({ share: { y: false } })` restores independent Y.
+A shared palette change must target all affected views in the same atomic call.
+
+`align: "plot"` aligns both ends of the shared-axis plot frames. It rematerializes
+render snapshots at a common plot extent while preserving child margins and authored
+sizes. This also works with nested concat and facet views. Text and symbols keep their
+sizes. The existing start, center and end Canvas alignment modes are unchanged.
+
+## Target one view, one mark, or several marks
+
+A native action accepts `target: { childPath: ["bars"], id: "trend" }` to edit the
+trend mark in the bars view. Omit `id` for a view-level operation such as `createTitle`.
+An empty child path refers to the current view. A nonempty array of selectors applies
+the same native action atomically to every listed target. In a unit chart, an array of
+mark IDs is sufficient. This is one public action and one root trace entry.
+
+An All control should enumerate the explicit compatible targets. No wildcard silently
+changes unrelated marks. A linked overlay follows source positions; edit its source
+for geometry and target the overlay for independent appearance. Generated facet cells
+are not persistent edit targets: select the facet view and use `editFacetSource`.
+The Basic entry point and low-level primitives retain their original target contracts.
+
 ## Edit the layout
 
 <!-- snippet-context:start -->

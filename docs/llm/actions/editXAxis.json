@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "axes",
   "summary": "Edits x axis, including settings for horizontal scale guide.",
-  "signature": "editXAxis(options: EditAxisOptions<XAxisPosition>): ChartProgram;",
+  "signature": "editXAxis(options: TargetedOptions<EditAxisOptions<XAxisPosition>>): ChartProgram;",
   "intents": [
     "edit x axis",
     "edit",
@@ -71,7 +71,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "offset",

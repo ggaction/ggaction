@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "core",
   "summary": "Edits shape scale, including settings for categorical shape mapping.",
-  "signature": "editShapeScale(options: EditShapeScaleOptions): ChartProgram;",
+  "signature": "editShapeScale(options: TargetedOptions<EditShapeScaleOptions>): ChartProgram;",
   "intents": [
     "edit shape scale",
     "edit",
@@ -71,7 +71,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "type",

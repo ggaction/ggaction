@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "marks",
   "summary": "Create a statistical line or interval through one public action.",
-  "signature": "createStatisticalReference(options: CreateStatisticalReferenceOptions): ChartProgram;",
+  "signature": "createStatisticalReference(options: TargetedOptions<CreateStatisticalReferenceOptions>): ChartProgram;",
   "intents": [
     "create statistical reference",
     "create",
@@ -24,7 +24,8 @@
     ],
     "idOptions": [
       "id",
-      "source"
+      "source",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -55,6 +56,10 @@
     {
       "input": "source",
       "strategy": "explicit"
+    },
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
     },
     {
       "input": "omitted optional options",
@@ -178,6 +183,11 @@
       "name": "strokeDash",
       "required": false,
       "type": "DashPattern | DashStyle | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [

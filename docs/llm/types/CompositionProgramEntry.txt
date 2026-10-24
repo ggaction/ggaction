@@ -1,3 +1,4 @@
 export type CompositionProgramEntry =
   | ChartProgram
   | { id?: string; program: ChartProgram };
+/** Explicit child paths avoid ambiguous IDs in composed charts. An empty path addresses this view. */

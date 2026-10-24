@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "legend_and_title",
   "summary": "Edits one legend's position, alignment, direction, columns, title placement, and item spacing.",
-  "signature": "editLegendLayout(options: EditLegendLayoutOptions): ChartProgram;",
+  "signature": "editLegendLayout(options: TargetedOptions<EditLegendLayoutOptions>): ChartProgram;",
   "intents": [
     "edit legend layout",
     "edit",
@@ -87,7 +87,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "channel",

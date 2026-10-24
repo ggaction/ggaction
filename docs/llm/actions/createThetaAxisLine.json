@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "axes",
   "summary": "Create missing theta-axis line independently of the other components.",
-  "signature": "createThetaAxisLine(options?: CreateThetaAxisLineOptions): ChartProgram;",
+  "signature": "createThetaAxisLine(options?: TargetedOptions<CreateThetaAxisLineOptions>): ChartProgram;",
   "intents": [
     "create theta axis line",
     "create",
@@ -24,7 +24,8 @@
     ],
     "idOptions": [
       "scale",
-      "coordinate"
+      "coordinate",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -59,6 +60,10 @@
       "strategy": "explicit-current-unique-or-error"
     },
     {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
       "input": "omitted optional options",
       "strategy": "documented-default"
     }
@@ -90,10 +95,15 @@
       "name": "coordinate",
       "required": false,
       "type": "string | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "createThetaAxisLine({ scale?, coordinate?, color?, lineWidth? })"
+    "createThetaAxisLine({ scale?, coordinate?, target?, color?, lineWidth? })"
   ],
   "snippet": "program.createThetaAxisLine({})",
   "errors": [],

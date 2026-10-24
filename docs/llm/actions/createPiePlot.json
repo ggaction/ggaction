@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "charts",
   "summary": "Create one sector per category in the full package.",
-  "signature": "createPiePlot(options: CreatePiePlotOptions): ChartProgram;",
+  "signature": "createPiePlot(options: TargetedOptions<CreatePiePlotOptions>): ChartProgram;",
   "intents": [
     "create pie plot",
     "create",
@@ -25,7 +25,8 @@
     "idOptions": [
       "id",
       "data",
-      "coordinate"
+      "coordinate",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -61,6 +62,10 @@
     },
     {
       "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -125,6 +130,11 @@
       "name": "aggregate",
       "required": false,
       "type": "\"count\" | \"sum\" | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [

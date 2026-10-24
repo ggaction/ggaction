@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 3,
+  "name": "editCompositionScales",
+  "layer": "user-facing",
+  "domain": "composition",
+  "summary": "Update a nonempty subset of concat shared-channel policies.",
+  "signature": "editCompositionScales(options: TargetedOptions<EditCompositionScalesOptions>): ChartProgram;",
+  "intents": [
+    "edit composition scales",
+    "edit",
+    "change",
+    "chart composition",
+    "small multiples",
+    "shared scales",
+    "shared domains"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing shared scales",
+      "complete child chart program"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [],
+  "editableVia": [
+    "editCompositionScales"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing shared scales",
+      "complete child chart program"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "share",
+      "required": true,
+      "type": "CompositionShares"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
+    }
+  ],
+  "callPatterns": [
+    "editCompositionScales({ share, target? })"
+  ],
+  "snippet": "program.editCompositionScales({ share: { y: true } })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#editcompositionscales"
+}

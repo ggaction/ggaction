@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "core",
   "summary": "Create observation counts, intercepts, slopes, and R-squared from an explicit existing linear fit.",
-  "signature": "createRegressionStatisticsData(options: RegressionStatisticsDataOptions): ChartProgram;",
+  "signature": "createRegressionStatisticsData(options: TargetedOptions<RegressionStatisticsDataOptions>): ChartProgram;",
   "intents": [
     "create regression statistics data",
     "create",
@@ -25,7 +25,8 @@
     ],
     "idOptions": [
       "id",
-      "source"
+      "source",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -47,6 +48,10 @@
     {
       "input": "source",
       "strategy": "explicit"
+    },
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
     }
   ],
   "completionRequirements": {
@@ -67,6 +72,11 @@
       "name": "source",
       "required": true,
       "type": "string"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [

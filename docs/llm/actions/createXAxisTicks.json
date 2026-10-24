@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "axes",
   "summary": "Creates x-axis ticks for horizontal tick marks.",
-  "signature": "createXAxisTicks(options?: AxisTickOptions<XAxisPosition>): ChartProgram;",
+  "signature": "createXAxisTicks(options?: TargetedOptions<AxisTickOptions<XAxisPosition>>): ChartProgram;",
   "intents": [
     "create x axis ticks",
     "create",
@@ -91,7 +91,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "scale",

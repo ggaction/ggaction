@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "statistics",
   "summary": "Revise one error bar's source, position/interval roles, optional categorical offset, statistics, and owned caps.",
-  "signature": "editErrorBar(options: EditErrorBarOptions): ChartProgram;",
+  "signature": "editErrorBar(options: TargetedOptions<EditErrorBarOptions>): ChartProgram;",
   "intents": [
     "edit error bar",
     "edit",
@@ -75,7 +75,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "data",

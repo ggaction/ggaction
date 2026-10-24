@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "statistics",
   "summary": "Edits empirical cumulative distribution data, including settings for sorted cumulative probabilities.",
-  "signature": "editECDFData(options: EditECDFDataOptions): ChartProgram;",
+  "signature": "editECDFData(options: TargetedOptions<EditECDFDataOptions>): ChartProgram;",
   "intents": [
     "edit ecdf data",
     "edit",
@@ -59,7 +59,7 @@
     {
       "name": "target",
       "required": true,
-      "type": "string"
+      "type": "string | ActionTargetList | ScopedActionTarget"
     },
     {
       "name": "dependents",

@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "encodings",
   "summary": "Assign an area, ranged-bar, or rect upper edge, or a rule secondary x endpoint.",
-  "signature": "encodeX2(options: SecondaryPositionEncodingOptions): ChartProgram;",
+  "signature": "encodeX2(options: TargetedOptions<SecondaryPositionEncodingOptions>): ChartProgram;",
   "intents": [
     "encode x2",
     "encode",
@@ -91,7 +91,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "scale",

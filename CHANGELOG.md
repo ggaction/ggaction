@@ -4,6 +4,10 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Add `createOverlay` and `editOverlay` for independent line/point layers that follow a source's materialized endpoints, including bins, stacks, groups and facets; support explicit detachment.
+- Add `createAdjacentPlot` and `editCompositionScales`, shared concat domains and actual plot-frame alignment across unit, nested and facet views.
+- Add explicit child-path selectors and atomic target lists to Full domain actions, preserving Basic and primitive target contracts.
+
 ## [0.0.24] - 2026-10-24
 
 - Add independent `subtitleLineHeight` to title creation and editing, preserving shared spacing and omitted defaults through layout replay and saved programs.

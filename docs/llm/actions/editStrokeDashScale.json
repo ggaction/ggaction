@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "core",
   "summary": "Edits stroke-dash scale, including settings for dash-pattern mapping.",
-  "signature": "editStrokeDashScale(options: EditStrokeDashScaleOptions): ChartProgram;",
+  "signature": "editStrokeDashScale(options: TargetedOptions<EditStrokeDashScaleOptions>): ChartProgram;",
   "intents": [
     "edit stroke dash scale",
     "edit",
@@ -71,7 +71,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "type",

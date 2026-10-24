@@ -1,9 +1,10 @@
+import { normalizeActionTargets } from "./grammar/actionTargets.js";
 import { resolveGraphicClipBounds, resolveGraphicParentOffset } from "./grammar/schemas/graphicBounds.js";
 import { resolveFacetDefinition, resolveFacetGridDefinition } from "./grammar/facets/index.js";
 import { APPEARANCE_MARK_TYPES } from "./core/vocabulary.js";
 import { ChartProgram } from "./ChartProgram.js";
 import { BasicChartProgram } from "./BasicChartProgram.js";
-import { getWrappedActionMetadata } from "./core/action.js";
+import { getWrappedActionMetadata, supportsScopedActionTargets } from "./core/action.js";
 import { cloneAndFreeze, isOwned, isPlainObject } from "./core/immutable.js";
 import { encodeValue } from "./persistence/codec.js";
 import {
@@ -11,7 +12,9 @@ import {
   hasDatasetOwner,
   resolveDatasetReference
 } from "./selectors/datasets.js";
-import { findLayer } from "./selectors/layers.js";
+import { findLayer, resolveEligibleLayer } from "./selectors/layers.js";
+import { ownership } from "./selectors/markOwners.js";
+import { normalizeCompositionShares } from "./core/compositionScales.js";
 import { findSemanticScale } from "./selectors/scales.js";
 import { findCoordinate } from "./selectors/coordinates.js";
 import { inferDatasetSchema } from "./grammar/datasetSchema.js";
@@ -86,6 +89,35 @@ export function getDatasetSchema(program, { data, childPath } = {}) {
 
 export function describeAction(program, { action, target, options = {} } = {}) {
   requireProgram(program);
+  if (!isPlainObject(options)) throw new TypeError("describeAction options must be a plain object.");
+  if (isPlainObject(options.target) || Array.isArray(options.target)) {
+    requireProgram(program);
+    if (target !== undefined) throw new Error("Use one inspection target or explicit action target selectors, not both.");
+    if (!supportsScopedActionTargets(program.constructor, action)) return cloneAndFreeze({ version: 1, action, applicability: "unsupported",
+      parameterDefinitions: [], requirements: [], checks: [], findings: [{ severity: "info", code: "unsupported-combination", reason: "entry-point", message: "Scoped action targets require a Full domain action." }] });
+    const { target: selected, ...rest } = options;
+    const selections = normalizeActionTargets(selected);
+    const results = selections.map(selection => {
+      let view = program;
+      for (const id of selection.childPath) {
+        if (view.compositionSpec?.type === "facet") throw new Error("Facet cells follow their source; use editFacetSource for persistent edits.");
+        view = atChildPath(view, [id]);
+      }
+      if (view.compositionSpec?.type === "facet" && selection.id !== undefined) throw new Error("Target a facet source through editFacetSource.");
+      const reference = selection.id === undefined || action.includes("CompositionChild") ? undefined
+        : { kind: "mark", id: selection.id };
+      return describeAction(view, { action, target: reference,
+        options: { ...rest, ...(selection.id === undefined ? {} : { target: selection.id }) } });
+    });
+    const priority = ["incompatible", "unsupported", "needs-input", "unverified", "supported"];
+    const applicability = priority.find(value => results.some(result => result.applicability === value));
+    return cloneAndFreeze({ ...results[0], applicability,
+      requirements: results.flatMap(result => result.requirements),
+      findings: results.flatMap(result => result.findings),
+      checks: results.flatMap(result => result.checks) });
+  }
+
+  requireProgram(program);
   if (typeof action !== "string" || action.length === 0) throw new TypeError("describeAction requires action.");
   if (!isPlainObject(options)) throw new TypeError("describeAction options must be a plain object.");
   let targetResource;
@@ -136,6 +168,25 @@ export function describeAction(program, { action, target, options = {} } = {}) {
   const required = descriptor?.options.filter(option => option.required).map(option => option.path) ?? [];
   const missing = required.filter(key => options[key] === undefined);
   let fieldFinding = [];
+  if (action === "createAdjacentPlot") {
+    const scoped = atChildPath(program, target?.childPath);
+    if (scoped.compositionSpec && scoped.compositionSpec.type !== "facet") fieldFinding.push({ severity: "error", code: "unsupported-combination", reason: "composition-scope", message: "Select a unit or facet view with childPath before adding an adjacent chart." });
+    else {
+      const owners = ownership(scoped);
+      try { resolveEligibleLayer(scoped, { target: options.source ?? target?.id, targetOption: "source", label: "adjacent chart source",
+        predicate: layer => !owners.has(layer.id) && !layer.derivedBindings?.overlay && layer.data !== undefined }); }
+      catch (error) {
+        if (options.source || target?.id) fieldFinding.push({ severity: "error", code: "missing-resource", reason: "adjacent-source", message: error.message });
+        else missing.push("source");
+      }
+    }
+  }
+  if (action === "editCompositionScales") {
+    if (!program.compositionSpec || program.compositionSpec.type === "facet") fieldFinding.push({ severity: "error", code: "unsupported-combination", reason: "composition-scope", message: "editCompositionScales requires a concat parent." });
+    if (options.share !== undefined) try {
+      if (!Object.keys(normalizeCompositionShares(options.share)).length) throw new Error("At least one shared-channel policy is required.");
+    } catch (error) { fieldFinding.push({ severity: "error", code: "invalid-option", reason: "share-policy", message: error.message, optionPath: "share" }); }
+  }
   if (["createOverlay", "editOverlay"].includes(action)) {
     const scoped = atChildPath(program, target?.childPath);
     const id = action === "createOverlay" ? options.source ?? target?.id ?? scoped.context.currentMark

@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:0892faaedffaf841ca092fc636e10e926c1c3f6bc6f67c5099da1db5d6643809",
+    "contractId": "sha256:14d5b40b0994b3797725e75118da6588ca2b50e49a485fb96afe729865eb03b4",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -550,14 +550,14 @@
       "source": "recipes/composition.md",
       "headings": [
         "composition-recipe",
-        "follow-a-charts-results-with-an-overlay",
         "minimal-flow",
+        "follow-a-charts-results-with-an-overlay",
         "you-must-decide",
         "the-library-infers",
         "continue"
       ],
-      "bytes": 2626,
-      "sha256": "b7871ef88cda621715a4338ba65feb1a7fbb1d496ac89a5559429f066928e0e1"
+      "bytes": 2467,
+      "sha256": "91407d15f197a74144333d94b32b6d9ad60fc2e9dd0ea97108e69d36b0852955"
     },
     {
       "order": 36,
@@ -1970,8 +1970,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 31714,
-      "sha256": "1d73cfbbd7e0114b0d13483631e32d4da30a9c01bc8cdd4c3dc63eb0e8c80c9f"
+      "bytes": 31946,
+      "sha256": "164aadd102d5e236da9675803e65fbec97f10832df10a3c9bf4fa046af13def1"
     },
     {
       "order": 118,
@@ -2071,12 +2071,14 @@
         "createroseplot",
         "createradialbarplot",
         "createareaplot",
+        "createadjacentplot",
+        "editcompositionscales",
         "focused-core-data-editing",
         "focused-channel-scale-editors",
         "related"
       ],
-      "bytes": 173976,
-      "sha256": "004d1e8c4180fef1bfeeb72f6c85c1db4d1ae05691cb1ad942ec00b449add1fc"
+      "bytes": 190725,
+      "sha256": "df3df2ee78f7b4f2014567e884577277f50faf30d22878581560cc7b1b7b4ce8"
     },
     {
       "order": 119,
@@ -2123,8 +2125,8 @@
         "editoverlay",
         "related"
       ],
-      "bytes": 80785,
-      "sha256": "a2b8fdbe166522a2fb7fe330b5b068bf3b117ed1a0b962082ed089aee57366f1"
+      "bytes": 85750,
+      "sha256": "193818d379347c520af77a0df67ab656df1f457de9d1cea4d0275722ad775e41"
     },
     {
       "order": 120,
@@ -2175,8 +2177,8 @@
         "encodechannels",
         "related"
       ],
-      "bytes": 66794,
-      "sha256": "650ff337305b90b181c8b1761c48d7b0cd1834a9719276a2504ff2ac2280fa93"
+      "bytes": 71560,
+      "sha256": "72c23cbe93ad33036bb7b648f4a7493250fd1de2ec50acf6dc94541a83ae52a6"
     },
     {
       "order": 121,
@@ -2235,8 +2237,8 @@
         "semantic-resources-and-regression-layers",
         "related"
       ],
-      "bytes": 84787,
-      "sha256": "6ea695ab41db21af9b2fff6eafc4af429fbfbc3adefd35d4e37165dff1fbaa00"
+      "bytes": 91114,
+      "sha256": "90076c089e8abb368dc1604841a69042b3be3c6fc390c40511ba605a7a2cd777"
     },
     {
       "order": 122,
@@ -2333,8 +2335,8 @@
         "focused-legend-edits",
         "related"
       ],
-      "bytes": 138824,
-      "sha256": "48e51a18c6188e46b0b12311acdbd044f88ea1fab7b61aeeff4f2fdae7f96dff"
+      "bytes": 150178,
+      "sha256": "358d7d64587f132afad55448c0bfe119bce593f07221eb76dbc4e3506e9e939c"
     },
     {
       "order": 123,
@@ -2358,8 +2360,8 @@
         "directional-grids",
         "related"
       ],
-      "bytes": 10285,
-      "sha256": "8254783a14842402919b5ff7afd3faa0628e393e51b4035403b3afc61811071e"
+      "bytes": 10865,
+      "sha256": "5d9921d71d8523da2afd643ed1b8196646e68b6e5a78a87ba11b6d7e36ed2a9c"
     },
     {
       "order": 124,
@@ -2400,8 +2402,8 @@
         "rendering-functions",
         "internal-trace-operations"
       ],
-      "bytes": 27958,
-      "sha256": "7c18e21313db876bf01036b58a696928766b0f3ec5e4b96b122bfbc11510b18b"
+      "bytes": 28218,
+      "sha256": "b59bbdf0d2fdb6f6f02bdc93f90a0cfd5e983e1c2abf1af45d49adf82644f942"
     },
     {
       "order": 126,
@@ -2412,6 +2414,9 @@
         "exact-typescript-contract",
         "exact-typescript-signatures",
         "named-option-contracts",
+        "type-actiontargetlist",
+        "type-adjacentconstructoroptions",
+        "type-adjacentplotspecification",
         "type-aggregateoperation",
         "type-angleencodingoptions",
         "type-annotationanchor",
@@ -2514,6 +2519,7 @@
         "type-completethetaaxisoptions",
         "type-compositionalign",
         "type-compositionpadding",
+        "type-compositionshares",
         "type-computeddataoptions",
         "type-computedexpression",
         "type-confidenceintervalmethod",
@@ -2524,6 +2530,7 @@
         "type-continuoussizescaleoptions",
         "type-coordinateaspect",
         "type-coordinateaspectalign",
+        "type-createadjacentplotoptions",
         "type-createannotationoptions",
         "type-createareaplotoptions",
         "type-createaxesoptions",
@@ -2643,6 +2650,7 @@
         "type-editcolorscaleoptions",
         "type-editcompletedataoptions",
         "type-editcompositionlayoutoptions",
+        "type-editcompositionscalesoptions",
         "type-editcomputeddataoptions",
         "type-editcoordinateoptions",
         "type-editcoordinatetarget",
@@ -2995,6 +3003,7 @@
         "type-scaleoptions",
         "type-scalerange",
         "type-scaletype",
+        "type-scopedactiontarget",
         "type-secondarypositionencodingoptions",
         "type-secondaryrulepositionencodingoptions",
         "type-selectmarksoptions",
@@ -3026,6 +3035,7 @@
         "type-strokewidthscaleoptions",
         "type-summaryaggregateoptions",
         "type-summarydataoptions",
+        "type-targetedoptions",
         "type-temporalbindingbranch",
         "type-temporalinputunit",
         "type-temporalpositionscaleoptions",
@@ -3078,8 +3088,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 361652,
-      "sha256": "fb9ee380026922ef52a2ff0fe400f9490f7c87b1d3d4bb1e499df07c2b33acd7"
+      "bytes": 374464,
+      "sha256": "d1f551bde4b4b86d0aa0bdc4233ff604c3b916f116a0284a3b95302ee96f77ab"
     },
     {
       "order": 127,
@@ -3201,14 +3211,16 @@
       "source": "api/composition/editing.md",
       "headings": [
         "editing-compositions",
+        "add-an-adjacent-chart-and-share-scales",
+        "target-one-view-one-mark-or-several-marks",
         "edit-the-layout",
         "edit-facet-scale-and-guide-policies",
         "replace-the-repeated-source-recipe",
         "replace-one-stable-slot",
         "insert-remove-and-reorder-named-concat-children"
       ],
-      "bytes": 7787,
-      "sha256": "2f4598ea9b190c9096a037fcc6978c440dd6c141224b969b058de65de1e1f605"
+      "bytes": 10429,
+      "sha256": "0e4e200c86f1e2416c3248db8898a0d9f0639ef6bd621d29ba426ee059ab35cc"
     },
     {
       "order": 135,
@@ -3425,13 +3437,13 @@
         "comparisons-and-intervals",
         "distributions",
         "parts-radial-values-and-dense-samples",
-        "repeated-chart-structure",
+        "multiple-views",
         "compose-or-refine",
         "three-independent-choices",
         "related"
       ],
-      "bytes": 10001,
-      "sha256": "55b08cb6a3d67e559a2a3ae65799810fe3868d53583d7122ee504a19c3820adb"
+      "bytes": 10437,
+      "sha256": "0c1a7823a08781a6a62b3a44157521d74ba9700160c1cbf16596b95224dda730"
     },
     {
       "order": 149,
@@ -3444,7 +3456,7 @@
         "migration-from-v0013"
       ],
       "bytes": 2990,
-      "sha256": "2c26e8246c8edd2a3c2806fd2da73b5cadec1cedb6a499dba02d32fadb30436d"
+      "sha256": "2149f232184736b4d02ccf8b03f2166b5d84cae17b156f6a66719e510138a8ba"
     },
     {
       "order": 150,

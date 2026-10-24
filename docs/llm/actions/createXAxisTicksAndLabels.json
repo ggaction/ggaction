@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "axes",
   "summary": "Creates x-axis ticks and labels for coordinated horizontal guide.",
-  "signature": "createXAxisTicksAndLabels(options?: AxisTicksAndLabelsOptions<XAxisPosition>): ChartProgram;",
+  "signature": "createXAxisTicksAndLabels(options?: TargetedOptions<AxisTicksAndLabelsOptions<XAxisPosition>>): ChartProgram;",
   "intents": [
     "create x axis ticks and labels",
     "create",
@@ -74,7 +74,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "scale",

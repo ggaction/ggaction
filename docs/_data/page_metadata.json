@@ -228,7 +228,7 @@
     "title": "Composition Recipe",
     "source": "docs/recipes/composition.md",
     "editSource": "docs/recipes/composition.md",
-    "description": "createOverlay adds a separately editable layer that follows another mark's final results.",
+    "description": "pointRows and barRows are arrays of plain row objects containing the named fields. Every child must already have one complete materialized Canvas.",
     "image": "/assets/images/program-composition.png"
   },
   "/recipes/facet/": {
@@ -889,7 +889,7 @@
     "title": "Editing Compositions",
     "source": "docs/api/composition/editing.md",
     "editSource": "docs/api/composition/editing.md",
-    "description": "Contextual fragment. Use an ES module with the imports, data, and prepared resource state described in this section. Caller provided receivers: row.",
+    "description": "Call createAdjacentPlot on a complete chart to add a new view to its left, right, top or bottom. By default it creates a line using the source fields and aggregation.",
     "image": "/assets/images/program-composition.png"
   },
   "/api/marks/labels/": {

@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "encodings",
   "summary": "Create and bind an immutable Horizon revision, preserve omitted settings and scale identities, and rematerialize affected consumers.",
-  "signature": "editHorizon(options: EditHorizonOptions): ChartProgram;",
+  "signature": "editHorizon(options: TargetedOptions<EditHorizonOptions>): ChartProgram;",
   "intents": [
     "edit horizon",
     "edit",
@@ -76,7 +76,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "source",

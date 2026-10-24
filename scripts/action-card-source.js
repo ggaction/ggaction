@@ -308,7 +308,15 @@ export async function declaredActionMetadata(actions) {
         const commonProperties = new Map(
           checker.getPropertiesOfType(parameterType).map(property => [property.name, property])
         );
-        for (const property of topLevelPropertySymbols(checker, parameterType, project, declaration)) {
+        // Preserve native parameter order when the Full-only target wrapper adds
+        // a union branch. Inspect the full property type so selector support is not lost.
+        const wrappedType = checker.typeToString(parameterType).startsWith("TargetedOptions<")
+          ? parameterType.getAliasTypeArguments()[0] : undefined;
+        const order = wrappedType ? topLevelPropertySymbols(checker, wrappedType, project, declaration).map(property => property.name) : [];
+        const properties = topLevelPropertySymbols(checker, parameterType, project, declaration);
+        if (wrappedType) properties.sort((a, b) =>
+          (order.includes(a.name) ? order.indexOf(a.name) : order.length) - (order.includes(b.name) ? order.indexOf(b.name) : order.length));
+        for (const property of properties) {
           const propertyDeclaration = property.valueDeclaration?.resolve(project) ?? declaration;
           const commonProperty = commonProperties.get(property.name);
           options.push({
@@ -316,7 +324,7 @@ export async function declaredActionMetadata(actions) {
             required: commonProperty !== undefined &&
               (commonProperty.flags & SymbolFlags.Optional) === 0,
             type: checker.typeToString(
-              checker.getTypeOfSymbolAtLocation(property, propertyDeclaration)
+              checker.getTypeOfSymbolAtLocation(commonProperty ?? property, propertyDeclaration)
             )
           });
         }
@@ -594,8 +602,9 @@ export function validateActionCards({ cards, actions, declarations, routes }) {
 }
 
 export function compactActionCardByteLimit(name) {
-  return {editLegend: 4220, createLegend: 3810, createMarkLabels: 3420,
-    createAnnotation: 3420, createRegressionPlot: 3460, createReferenceBand: 3450}[name] ?? 3360;
+  // Full action cards now include the common explicit-target selector and typed wrapper.
+  return 180 + ({editLegend: 4220, createLegend: 3810, createMarkLabels: 3420,
+    createAnnotation: 3420, createRegressionPlot: 3460, createReferenceBand: 3450}[name] ?? 3360);
 }
 
 export async function buildActionCards() {

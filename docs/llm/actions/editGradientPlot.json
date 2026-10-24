@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "statistics",
   "summary": "Revise one stable gradient-plot owner.",
-  "signature": "editGradientPlot(options: EditGradientPlotOptions): ChartProgram;",
+  "signature": "editGradientPlot(options: TargetedOptions<EditGradientPlotOptions>): ChartProgram;",
   "intents": [
     "edit gradient plot",
     "edit",
@@ -78,7 +78,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "data",
