@@ -205,3 +205,39 @@ test("four independent domains produce the exact numeric public reference anchor
     assert(children.every(child => child.graphicSpec.objects.yAxisTitle.properties.y === 159.5));
   }
 });
+
+test("plot-sized Canvas fits relative title font and gap changes on every physical side", () => {
+  const p = chart().createCanvas({ plot: { width: 300, height: 240 }, margin: 8 })
+    .createData({ id: "rows", values: rows }).createScatterPlot({ x: "x", y: "y", guides: false });
+  const before = serializeProgram(p);
+  let combinations = 0;
+  for (const [channel, side] of [["x", "bottom"], ["x", "top"], ["y", "left"], ["y", "right"]]) {
+    const create = channel === "x" ? "createXAxis" : "createYAxis";
+    const edit = channel === "x" ? "editXAxisTitle" : "editYAxisTitle";
+    for (const spacing of [0, 15, 30]) for (const fontSize of [8, 16, 24]) {
+      const title = { offset: relative(spacing), fontSize };
+      for (const q of [p[create]({ position: side, title }), p[create]({ position: side })[edit](title)]) {
+        close(gap(q, channel, side), spacing);
+        assert.deepEqual(q.materializationConfigs.canvas.plot, { width: 300, height: 240 });
+        assert.deepEqual(q.guideConfigs.axis[channel].title.offset, relative(spacing));
+        assert.equal(q.guideConfigs.axis[channel].title.fontSize, fontSize);
+        const titleBounds = bounds(q, `${channel}AxisTitle`), canvas = q.graphicSpec.objects.canvas.properties;
+        assert.ok(titleBounds.left >= -1e-9 && titleBounds.top >= -1e-9);
+        assert.ok(titleBounds.right <= canvas.width + 1e-9 && titleBounds.bottom <= canvas.height + 1e-9);
+        assert.deepEqual(deserializeProgram(serializeProgram(q)).graphicSpec, q.graphicSpec);
+        combinations += 1;
+      }
+    }
+  }
+  assert.equal(combinations, 72);
+  assert.equal(serializeProgram(p), before);
+});
+
+test("fixed outer Canvas still rejects relative titles outside its authored margins", () => {
+  const p = base(), before = serializeProgram(p);
+  for (const [channel, side] of [["x", "bottom"], ["x", "top"], ["y", "left"], ["y", "right"]]) {
+    assert.throws(() => p[channel === "x" ? "createXAxis" : "createYAxis"]({ position: side,
+      title: { offset: relative(500), fontSize: 24 } }), /label-relative title does not fit the Canvas margin/);
+  }
+  assert.equal(serializeProgram(p), before);
+});

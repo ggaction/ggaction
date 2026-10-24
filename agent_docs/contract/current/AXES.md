@@ -176,6 +176,9 @@ Continuous labelMap evidence: `test/unit/actions/guides/continuous-axis-display-
   삭제와 같은 whole-axis sibling 편집은 최종 상태로 원자적으로 검증한다. 객체 edit는 전체
   교체, numeric edit는 상대 모드 종료, edit 생략은 기존 intent 유지다. numeric/전체 생략
   defaults와 오류 정책은 그대로다. Polar/Parallel에는 객체형을 허용하지 않는다.
+  `createCanvas({plot:{width,height}})`의 자동 guide margin fitting은 relative title에도 적용한다.
+  네 방향 모두 font/gap을 보존하며 필요한 margin만 늘리고 plot 크기는 유지한다.
+  fixed outer Canvas에서는 margin 초과를 계속 오류로 거부하며 이전 program/trace는 불변이다.
   Evidence: `test/unit/actions/guides/axis-title-label-relative-offset.test.js`,
   `test/browser/axis-title-label-relative-offset.browser.js` (네 independent child의 정확한
   anchors와 같은 실행 numeric public reference 대비 decoded RGBA exact equality).

@@ -265,7 +265,7 @@ function resolveGeometry(program, channel, config, axisId = channel) {
   const canvas = findCanvasGraphic(program)?.properties;
   if (!canvas || !textBoundsFitCanvas(resolvedBounds, canvas)) {
     if (isLabelRelativeTitleOffset(config.offset)) {
-      throw new RangeError(`The ${channel}-axis label-relative title does not fit the Canvas margin.`);
+      throw canvasOverflowError(`The ${channel}-axis label-relative title does not fit the Canvas margin.`, [resolvedBounds], canvas);
     }
     throw canvasOverflowError(`The ${channel}-axis title does not fit the Canvas margin.`, [resolvedBounds], canvas);
   }
