@@ -1729,11 +1729,12 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `channels` | Optional / branch-dependent | `readonly ("color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth")[] \| undefined` |
+| `suppress` | Optional / branch-dependent | `boolean \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-removeLegend({ target?, channels? })
+removeLegend({ target?, channels?, suppress? })
 ```
 
 Remove every legend block owned by one mark when `channels` is omitted, or

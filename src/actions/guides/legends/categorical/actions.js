@@ -34,6 +34,7 @@ import {
   sameValues
 } from "./resolve.js";
 import { readLegendSampling } from "../sampling.js";
+import { restoreCreatedLegendChannels } from "../../../../materialization/legendSuppression.js";
 import {
   reconcileLegendBlockTitleGraphic,
   resolveEffectiveLegendBlockConfig
@@ -542,7 +543,7 @@ export function applyLegendCreationPlan(program, plan) {
 export const createLegend = /* @__PURE__ */ action(
   { op: "createLegend", description: "Create an inferred legend for selected channels." },
   withGuideLayoutValidation(function (args = {}) {
-    return recordLegendOffsetIntent(this, applyLegendCreationPlan(this, resolveLegendCreationPlan(this, args)), args, { creation: true });
+    return restoreCreatedLegendChannels(recordLegendOffsetIntent(this, applyLegendCreationPlan(this, resolveLegendCreationPlan(this, args)), args, { creation: true }));
   })
 );
 

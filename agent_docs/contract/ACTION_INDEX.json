@@ -3339,7 +3339,7 @@
       "domain": "legend_and_title",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Removes every owned block or selected complete channel blocks",
+      "update": "Removes owned or selected channel blocks; optional suppression excludes them from automatic guides until createLegend restores them",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",

@@ -462,6 +462,16 @@ Retained blocks are rematerialized when their layout depended on the removed
 content. `removeLegend` preserves mark encodings, scales, and unrelated blocks.
 A missing channel or an empty, duplicate, or unknown channel list is an error.
 
+Use `removeLegend({ target: "points", channels: ["color"], suppress: true })`
+to keep deleted channels out of subsequent `createGuides()` calls, including
+explicit automatic channel requests. The default `suppress: false` preserves
+ordinary removal and automatic regeneration. Other channels can still gain guides.
+Explicit `createLegend({ target: "points", channels: ["color"] })` restores the
+removed channel and clears its suppression. Suppression survives serialization,
+Canvas and encoding edits, facet source replay, and explicit composition child edits.
+For an existing facet, restore through `editFacetSource` with a `createLegend`
+action; ordinary post-facet `createLegend` remains unit-only.
+
 Canvas changes and relevant encoding actions explicitly rematerialize the
 legend from the latest ordinal domains and ranges. The renderer still reads
 only concrete `graphicSpec` values.

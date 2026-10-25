@@ -33,7 +33,8 @@ function collect(child) {
         const remove = candidate.remove.map(root => namespaceGraphicId(`${child.compositionSpec.id}-${id}`, root));
         // A nested composition may already have promoted this block. Its
         // canonical leaves still contain it, but its rendered snapshot does not.
-        if (remove.every(root => child.graphicSpec.objects[root])) candidates.push({ ...candidate, remove });
+        if (remove.every(root => child.graphicSpec.objects[root])) candidates.push({ ...candidate, remove,
+          targets: candidate.targets.map(target => ({ ...target, childPath: [id, ...target.childPath] })) });
       }
     }
     const id = `${child.compositionSpec.id}-shared-color-legend`;
@@ -50,6 +51,7 @@ function collect(child) {
       const bounds = unionConcreteGraphicBounds(child.graphicSpec, roots, child.materializationConfigs.textMetrics);
       if (!bounds) continue;
       candidates.push({ source: child, mappingSource: child, roots, bounds, channels, config,
+        targets: [{ childPath: [], ...(child.compositionSpec?.facet ? {} : { id: config.target }) }],
         block: describeLegendBlock(child, kind, config), remove: roots });
     }
   }
@@ -62,7 +64,8 @@ function collect(child) {
 export function sharedCompositionColorLegend(program, children) {
   if (!program.compositionSpec.share?.color) return undefined;
   const candidates = program.compositionSpec.children.flatMap(id => collect(children[id]).map(candidate => ({
-    ...candidate, remove: candidate.remove.map(root => namespaceGraphicId(`${program.compositionSpec.id}-${id}`, root))
+    ...candidate, remove: candidate.remove.map(root => namespaceGraphicId(`${program.compositionSpec.id}-${id}`, root)),
+    targets: candidate.targets.map(target => ({ ...target, childPath: [id, ...target.childPath] }))
   })));
   if (!candidates.length) return undefined;
   const ordered = [...candidates].sort((a, b) => b.channels.length - a.channels.length);
@@ -71,6 +74,7 @@ export function sharedCompositionColorLegend(program, children) {
   const representative = ordered.find(candidate => candidates.every(other => coversLegend(candidate, other)))
     ?? candidates.find(candidate => candidate.channels.length === 1);
   if (!representative) return undefined;
-  return { ...representative, remove: candidates.filter(candidate => coversLegend(representative, candidate))
-    .flatMap(candidate => candidate.remove) };
+  const collected = candidates.filter(candidate => coversLegend(representative, candidate));
+  return { ...representative, remove: collected.flatMap(candidate => candidate.remove),
+    targets: collected.flatMap(candidate => candidate.targets) };
 }

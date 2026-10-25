@@ -208,6 +208,9 @@ export function collectGuideConfigReferences(program) {
   for (const target of Object.keys(program.guideConfigs?.legendGroups ?? {})) {
     append(references, reference("mark", target, "legend", target, ["legendGroups", target]));
   }
+  for (const target of Object.keys(program.guideConfigs?.suppressedLegends ?? {})) {
+    append(references, reference("mark", target, "legend", target, ["suppressedLegends", target]));
+  }
   for (const [family, configs] of Object.entries(program.guideConfigs ?? {})) {
     collectKnownKeys(configs, [], (key, value, path, parentPath) => {
       const ownerId = parentPath.length === 0 ? family : parentPath.join(".");

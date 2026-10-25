@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Add `removeLegend({ suppress: true })` to preserve channel-specific deletion through automatic guides, facet/source replay and saved programs; explicit `createLegend` restores the selected channels.
+
 - Add `createLayerPlot` and `getPlotComposition` inspection for independent native layers with original-field provenance, shared compatible scales, compound ownership, and front/back placement.
 - Infer adjacent chart inputs through native positional roles across Cartesian, Polar, and Parallel families; keep different statistical measurements on independent axes by default.
 - Collect compatible nested shared color/shape legends once, preserve unrelated size guides, and infer deferred binned-count legend titles from their statistical meaning.

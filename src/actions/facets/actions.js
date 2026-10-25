@@ -1,6 +1,8 @@
 import { normalizeFacetAxes, validateFacetAxisPolicy } from "../../core/facetAxisPolicy.js";
 import { DEFAULT_ACTION_METHODS } from "../../core/vocabulary.js";
 import { axisGraphicIds } from "../../materialization/guides/resources.js";
+import { facetLegendIntent } from "../../materialization/facetGuides/owner.js";
+import { legendBlockChannels } from "../../grammar/legendBlocks.js";
 import { cartesianAxisOwners, axisTargetArgs } from "../../selectors/axes.js";
 import { resolveGraphicBounds } from "../../layout/canvas.js";
 import { action, closedAction, getWrappedActionMetadata } from "../../core/action.js";
@@ -720,7 +722,7 @@ export const editFacetSource = /* @__PURE__ */ closedAction(
     if (Object.hasOwn(args, "program") === Object.hasOwn(args, "action")) {
       throw new Error("editFacetSource requires exactly one of program or action.");
     }
-    let source = args.program, owner = this;
+    let source = args.program, owner = this, parentGuides = current.facet.guides;
     if (args.action !== undefined) {
       validateOptionObject(args.action, ["method", "options"], "editFacetSource action");
       const method = validateNonEmptyString(args.action.method, "editFacetSource action method");
@@ -750,6 +752,18 @@ export const editFacetSource = /* @__PURE__ */ closedAction(
         }
       }
       const revised = unit[method](args.action.options ?? {});
+      if (method === "createLegend" && parentGuides.legend?.type === "authored-legend") {
+        const restored = Object.entries(unit.guideConfigs.suppressedLegends ?? {}).flatMap(([target, { channels }]) =>
+          channels.filter(channel => !revised.guideConfigs.suppressedLegends?.[target]?.channels.includes(channel))
+            .map(channel => [target, channel]));
+        if (restored.length) {
+          const created = facetLegendIntent(revised);
+          const blocks = Object.fromEntries(Object.entries(created.blocks).filter(([kind, { config }]) =>
+            restored.some(([target, channel]) => config.target === target && legendBlockChannels(kind, config).includes(channel))));
+          parentGuides = { ...parentGuides, legend: { ...parentGuides.legend,
+            blocks: { ...parentGuides.legend.blocks, ...blocks } } };
+        }
+      }
       // Retain the wrapped source action inside this one parent transaction.
       owner = new this.constructor({ ...this, trace: revised.trace, actionStack: revised.actionStack,
         actionSequence: revised._actionSequence });
@@ -759,8 +773,8 @@ export const editFacetSource = /* @__PURE__ */ closedAction(
     if (facetConfig !== undefined) {
       base = base._withMaterializationConfig(["facets", current.id], facetConfig);
     }
-    const authored = isPlainObject(current.facet.guides.legend);
-    const guides = authored ? { ...current.facet.guides, legend: false } : current.facet.guides;
+    const authored = isPlainObject(parentGuides.legend);
+    const guides = authored ? { ...parentGuides, legend: false } : parentGuides;
     let revised;
     // Policies for channels absent from the previous source are defaults, not
     // authored requests. A newly introduced alias must inherit the policy of
@@ -814,7 +828,7 @@ export const editFacetSource = /* @__PURE__ */ closedAction(
     if (authored) {
       const spec = revised.compositionSpec;
       revised = revised._withCompositionState({ children: revised.children,
-        compositionSpec: { ...spec, facet: { ...spec.facet, guides: current.facet.guides } } });
+        compositionSpec: { ...spec, facet: { ...spec.facet, guides: parentGuides } } });
     }
     if (facetConfig !== undefined) {
       revised = revised

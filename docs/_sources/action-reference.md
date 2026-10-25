@@ -3066,7 +3066,7 @@ rematerialization as `editLegend`. At least one component change is required.
 ### `removeLegend`
 
 ```javascript
-removeLegend({ target?, channels? })
+removeLegend({ target?, channels?, suppress? })
 ```
 
 Remove every legend block owned by one mark when `channels` is omitted, or

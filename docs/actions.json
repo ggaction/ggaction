@@ -22213,10 +22213,15 @@
           "name": "channels",
           "required": false,
           "type": "readonly (\"color\" | \"opacity\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\")[] | undefined"
+        },
+        {
+          "name": "suppress",
+          "required": false,
+          "type": "boolean | undefined"
         }
       ],
       "callPatterns": [
-        "removeLegend({ target?, channels? })"
+        "removeLegend({ target?, channels?, suppress? })"
       ],
       "snippet": "program.removeLegend({})",
       "errors": [],

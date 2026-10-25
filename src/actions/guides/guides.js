@@ -9,6 +9,7 @@ import { findDataset } from "../../selectors/datasets.js";
 import { findUpstreamTransform } from
   "../../materialization/dataProvenance.js";
 import { sampleNumericRange } from "../../grammar/numeric.js";
+import { automaticLegendOptions } from "./legends/automatic.js";
 
 const OPTIONS = Object.freeze(["axes", "grid", "legend"]);
 
@@ -121,10 +122,10 @@ export function resolveGuideOptions(program, args = {}, layers = program.semanti
         args.grid,
         applicability.grid.cartesian || applicability.grid.polar
       );
-  const legend = selectOption(
+  const legend = automaticLegendOptions(program, selectOption(
     args.legend,
     applicability.legend
-  );
+  ), layers);
   return { axes, grid, legend };
 }
 

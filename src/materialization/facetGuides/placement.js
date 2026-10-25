@@ -161,7 +161,7 @@ export function prepareFacetGuideOwnership(program, placements, prepared) {
     placements,
     children,
     axes: program.compositionSpec.facet.guides.axes,
-    legend: program.compositionSpec.facet.guides.legend,
+    legend: prepared === undefined ? false : program.compositionSpec.facet.guides.legend,
     ...(prepared === undefined ? {} : { sharedLegends: prepared.compatibility })
   });
 }

@@ -585,7 +585,7 @@ config normalization과 rematerialization을 공유한다. Evidence:
 
 ## `removeLegend`
 
-- Signature: `removeLegend({ target?, channels? } = {})`.
+- Signature: `removeLegend({ target?, channels?, suppress? } = {})`.
 - `target`은 explicit mark ID 또는 unique existing legend owner로 resolve한다. Multiple owners는 `channels`가 한
   target에만 존재하더라도 explicit target을 요구해서 기존 target inference를 유지한다.
 - Omitted `channels`는 one stable mark target에 속한 모든 categorical, size, continuous color, interval, opacity와
@@ -605,9 +605,21 @@ config normalization과 rematerialization을 공유한다. Evidence:
 - Mark encodings, resolved/semantic scales와 source data는 제거하지 않는다. Shared semantic-kind state는 another
   retained block이 소유할 때 삭제하지 않는다. 모든 selector validation은 첫 state change 전에 끝난다.
 
+- `suppress`는 boolean이며 기본 false다. true이면 실제 제거된 owner/channel만
+  `materializationConfigs.guides.suppressedLegends[target].channels`에 저장한다. Fused block 제거는
+  함께 제거된 모든 채널을 기록하며 partial categorical revision의 잔여 채널은 제외한다.
+- `createGuides`의 inferred 및 explicit legend channel 선택은 이 제외 의도를 존중한다.
+  새로운 미삭제 채널은 계속 생성할 수 있다. Explicit `createLegend`는 실제 복원한 채널만 제외 목록에서 지운다.
+  다른 mark의 범례·데이터·스케일은 변하지 않는다. Mark 제거는 해당 제외 intent도 정리한다.
+- Facet parent 삭제는 같은 제외 intent를 source snapshot에 반영하여 source 편집·공유 범례 재생성에서도 유지한다.
+  Facet의 명시적 복원은 기존 `editFacetSource({action:{method:"createLegend",options:{...}}})`를 사용한다.
+  Concat은 기존 explicit child target dispatch를 사용하며 다른 child는 유지한다.
+- Evidence: `test/unit/actions/guides/legend-suppression.test.js` (불변성, 선택 채널, fused ownership,
+  facet 전후 삭제, source/Canvas/encoding replay, concat, persistence, 명시적 복원).
+
 ### Formal values — `removeLegend`
 
-- Implemented: `removeLegend(options?: { target?: UserId; channels?: readonly LegendChannel[] })`.
+- Implemented: `removeLegend(options?: { target?: UserId; channels?: readonly LegendChannel[]; suppress?: boolean })`.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `removeLegend`

@@ -22,7 +22,7 @@ import {resolveColorSizeMapping,normalizeColorSizeSymbol} from '../grammar/color
 import{validateLegendClip}from"../grammar/legendClip.js";
 import {validateLegendLayerOpacity}from"../grammar/legendOpacity.js";
 import { isSizeShapeChannels, resolveSizeShapeMapping } from "../grammar/legendCombinations.js";
-import { describeLegendBlock } from "../grammar/legendBlocks.js";
+import { describeLegendBlock, validateLegendChannels } from "../grammar/legendBlocks.js";
 import { localLegendPosition } from "../grammar/legendGroups.js";
 import { normalizeLegendBorderDash } from "../grammar/legendBorder.js";
 import { normalizeNumericDisplayLabelMap } from "../grammar/displayLabels.js";
@@ -340,6 +340,17 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
       coordinate: semanticAxis.coordinate, position: semanticAxis.position });
   }
   if (program.guideConfigs.legendGroups !== undefined) validateLegendGroupState(program.guideConfigs.legendGroups);
+  if (program.guideConfigs.suppressedLegends !== undefined) {
+    requireObject(program.guideConfigs.suppressedLegends, `${path}.materializationConfigs.guides.suppressedLegends`);
+    for (const [target, config] of Object.entries(program.guideConfigs.suppressedLegends)) {
+      validateUserId(target, "Suppressed legend target");
+      requireObject(config, `${path}.materializationConfigs.guides.suppressedLegends.${target}`);
+      if (!semantic.layers.some(layer => layer.id === target) || Object.keys(config).some(key => key !== "channels")) {
+        throw invalidSnapshot("Suppressed legend requires an existing mark and channel selection.", path);
+      }
+      validateLegendChannels(config.channels, "Suppressed legend");
+    }
+  }
   for (const [kind, config] of Object.entries(program.guideConfigs.legend ?? {})) {
     validateLegendClip(kind,config);
     validateLegendSpacing(kind,config);

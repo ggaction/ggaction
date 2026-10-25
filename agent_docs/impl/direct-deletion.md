@@ -4,10 +4,13 @@
 
 - [x] 기존 공개 삭제/축 편집/병치 API 확인
 - [x] 범례 삭제 뒤 자동 가이드 재생성 재현
-- [ ] 아래 추가 계약의 사용자 승인
-- [ ] 구현·타입·메타데이터·계약·문서·회귀 테스트
+- [x] 아래 추가 계약의 사용자 승인
+- [x] 구현·타입·메타데이터·계약·문서·회귀 테스트
 
-## API Gate — ready-for-review
+## API Gate — approved
+
+2026-10-25 사용자 응답 “이 API로 진행”으로 아래 계약을 승인했다.
+검토 기준 commit: d45ca559fcfa6b36f77063b0383a2ba358b6ed9f.
 
 사용자는 호버 경계 상자의 삭제 버튼과 Undo/Redo, 병치 패널 삭제를 요청했다.
 제목은 `removeTitle()`, 부제는 `editTitle({subtitle:false})`, 축 제목은
@@ -17,7 +20,7 @@
 새로 필요한 결정은 자동 가이드와 명시적 삭제의 공존이다.
 
 ```js
-// proposed: suppress는 선택 옵션, 생략/false는 기존 동작
+// suppress는 선택 옵션, 생략/false는 기존 동작
 program.removeLegend({ target: "plot", channels: ["color"], suppress: true })
   .createGuides(); // 해당 mark/channel 범례를 다시 만들지 않는다.
 ```
@@ -57,3 +60,15 @@ UI에서는 실제 × 클릭 뒤 Undo/Redo와 새로고침 복원까지 확인�
 
 검토 소스: 이 문서를 추가하는 Git commit. 이 Gate는 위 선택 옵션에만 적용하고,
 기존 API를 이용하는 단축키·제목·패널 삭제 구현은 독립적으로 진행한다.
+
+
+## 구현·검증 완료
+
+- `guides.suppressedLegends[target].channels`가 실제 제거한 채널의 제외 intent를 소유한다.
+  기존 remove 기본 동작은 유지하고 explicit createLegend가 생성한 채널만 복원한다.
+- Shared/authored facet의 source snapshots, 신규 채널 추론, 명시적 복원과 스타일 보존,
+  병치 child target dispatch, mark cleanup, snapshot validation을 함께 검증했다.
+- 관련 guides/composition/facet/persistence 및 TypeScript/inspection 회귀 1,340개 통과.
+- 공개 문서·생성 reference·선택형 LLM artifact freshness 등 문서 검사 156개 통과.
+- 앱은 native removeLegend를 × 버튼에 연결하고 공유 병치 범례의 실제 owner 목록을 사용한다.
+  Preview/Transition × unit/facet/concat 브라우저 검증은 앱 저장소에 유지한다.
