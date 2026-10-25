@@ -1,4 +1,5 @@
 import { splitGuideVisibility, patchGuideVisibility } from "../../../materialization/guides/visibility.js";
+import { patchLegendItemsOffset } from "../../../grammar/legendItemsOffset.js";
 import {resolveColorSizeEdit,createColorSizeLegendFromConfig} from './colorSize.js';
 import {prepareLegendSpacingEdit,patchLegendSpacing,validateLegendSpacing} from "../../../grammar/legendSpacing.js";
 import {patchLegendClipHeight, validateLegendClip} from "../../../grammar/legendClip.js";
@@ -63,7 +64,7 @@ import { planLegendBlockTransitions } from "./transition.js";
 const OPTIONS = Object.freeze([
   "target", "channel", "channels", "position", "layout", "align", "direction", "columns", "offset", "alongOffset",
   "titlePosition", "title", "symbol", "labels", "titleStyle", "itemGap", "rowPadding", "titlePadding",
-  "border", "count", "values", "gradient", "representation", "order", "overflow", "blockLayout", "at", "combine", "clipHeight"
+  "border", "count", "values", "gradient", "representation", "order", "overflow", "blockLayout", "at", "combine", "clipHeight", "itemsOffset"
 ]);
 
 function mergeObject(previous, patch) {
@@ -954,6 +955,20 @@ export const editLegend = /* @__PURE__ */ action(
       return next;
     }
     validateOptionObject(args, OPTIONS, "editLegend");
+    if (Object.hasOwn(args, "itemsOffset")) {
+      const { itemsOffset, ...rest } = args;
+      // Validate before executing any companion edit; all failures are atomic.
+      patchLegendItemsOffset({}, itemsOffset);
+      const changed = Object.keys(rest).some(key => !["target", "channel"].includes(key));
+      let next = changed ? editLegend.call(this, rest) : this;
+      const target = resolveLegendTarget(next, args.target, "editLegend");
+      const blocks = args.channel === undefined ? legendBlockDescriptors(next, target)
+        : [resolveLegendBlock(next, args, "editLegend")];
+      if (!blocks.length) throw new Error("Legend itemsOffset requires an existing legend block.");
+      for (const block of blocks) next = next._withLegendConfig(block.kind,
+        patchLegendItemsOffset(next.guideConfigs.legend[block.kind], itemsOffset));
+      return next.rematerializeLegend();
+    }
     if (!Object.hasOwn(args, "clipHeight")) return recordLegendOffsetIntent(this, editLegendImplementation.call(this, args), args);
     const {clipHeight, ...rest} = args;
     const changed = Object.keys(rest).some(key => !["target", "channel"].includes(key));

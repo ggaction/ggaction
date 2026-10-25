@@ -17,6 +17,7 @@ function optionKind(name, type, action) {
   if (/domain|range|extent/i.test(name)) return "range";
   if (name === "plot") return "object";
   if (/readonly .*\[\]|\[.*\]/.test(type)) return "array";
+  if (/\{/.test(type)) return "object";
   if (/\bboolean\b|\btrue\b|\bfalse\b/.test(type) && !/\bnumber\b|\bstring\b/.test(type)) return "boolean";
   if (/\bnumber\b/.test(type) && !/\bstring\b/.test(type)) return "number";
   if (/\bstring\b/.test(type) && !/[{[]/.test(type)) return "string";

@@ -347,6 +347,10 @@ and absent shared owners reject. Selected member removal follows native fused-bl
 
 ## `editLegend`
 
+- `itemsOffset?: {x?: Finite, y?: Finite} | "auto"`는 제목의 native anchor를 유지하면서 symbol·label 또는 gradient strip·tick·label을 함께 이동한다. 양수 x/y는 오른쪽/아래쪽 Canvas px이며 기본 0이다. Partial edit는 반대 좌표를 보존하고 omission은 intent를 보존, auto는 intent를 제거한다. Empty/unknown key·null·boolean·non-finite·다른 문자열은 atomic error다. 기존 target/channel/all selector 계약을 따른다.
+- Body offset은 해당 legend config가 단독 소유한다. Native lane/group 정렬은 offset 적용 전 geometry를 기준으로 하며 최종 concrete bounds는 이동한 body와 고정 title을 모두 포함한다. Border·clip window도 이 bounds/이동을 반영한다. Whole legend 이동은 상대 offset을 유지하고, style·Canvas·scale·filter·facet/shared/nested composition·serialization replay에서 누적하지 않는다. Facet promotion은 block 내부 symbol/label 정렬을 유지한다.
+- Evidence: `test/unit/actions/guides/legend-items-offset.test.js`, `test/contracts/guide-visibility-types.test.js`.
+
 - Signature: `editLegend({ target?, channel?, channels?, representation?, position?, blockLayout?, at?, layout?, align?, direction?, columns?, offset?, titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, rowPadding?, titlePadding?, border?, count?, values?, gradient?, order?, overflow? })`.
 - `target` selects an existing logical legend by mark ID. It may be omitted only when exactly one target owns all
   active blocks; independent targets are ambiguous.
@@ -362,8 +366,7 @@ and absent shared owners reject. Selected member removal follows native fused-bl
   the changed family configuration is the only stored owner.
 - Evidence: `test/unit/actions/guides/legend-focused-channel.test.js` covers focused/whole equivalence,
   sibling typography, absent/ambiguous selectors, persistence and data/scale/Canvas replay.
-- The complete generated `editLegend` card retains all selector literals under a 3,600-byte budget;
-  other action cards retain the existing 3,360-byte budget.
+- Generated action-card size budgets are owned by `compactActionCardByteLimit` in `scripts/action-card-source.js`; the full `editLegend` card includes the independent body-offset type.
 - Explicit `channels`는 target 전체의 최종 non-empty content 집합이다. 기존 createLegend의 compatible subset만 허용하며 child selector가 아니다. Omission은 기존 content를 유지한다. 같은 kind의 config/count/title visibility를 보존하고 categorical color↔series revision은 styles/order/compatible explicit recipe를 보존한다. 새 block은 생성 기본값을 사용하고 제외된 block과 그 설정은 제거한다. 같은 호출의 style/layout patch는 최종 content에 적용한다. 다른 target의 occupied resource나 unsupported combination은 오류다.
 - 새 categorical+size의 size block은 위치와 무관하게 categorical labels/titleStyle을 상속한다. Default title color는 두 block 모두#334155다. 기존 standalone size를 결합하면 저장된 자체 style을 보존하며 standalone default title#0f172a는 유지한다. Size label offset default12 및 명시 shared offset도 유지한다. Evidence: `test/unit/actions/guides/combined-legend-appearance.test.js`, `test/contracts/combined-legend-appearance.test.js`, `test/unit/actions/guides/legend-family-lifecycle.test.js`.
   Group placement에 opt-in하거나 edge/corner/free anchor를 바꿔도 기존 typography 상속은 유지하며, placement 상속과 독립적이다. Label/title의 color/fontSize/fontFamily/fontWeight 및 symbol paint는 Canvas/scale/data/persistence replay에도 보존한다. Evidence: `test/unit/actions/guides/grouped-legend-appearance.test.js`.

@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Add `editLegend({ itemsOffset: { x, y } })` for independent legend-body movement with anchored titles, partial/reset edits, clipping, shared composition, facet, and persistence support.
+
 - Preserve missing-value policies and original-field lineage through chart edits, numeric position aggregation, independent layers and mixed facet/ordinary scoped targets.
 - Add explicit wide Radar summary and normalization controls, and distinguish omitted color inheritance from an explicit uncolored adjacent chart or layer.
 - Preserve authored exact-plot margins while reclaiming automatic guide reservations with `fitCanvas({ align: "center" })`; keep edited and newly added legends in separate lanes.

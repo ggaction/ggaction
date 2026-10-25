@@ -67,12 +67,13 @@ export function restoreFacetLegendIntent(source, intent) {
     }
   }
   source = source._withMaterializationConfig(["guides", "legendGroups"], intent.groups);
-  return source.rematerializeLegend();
+  return source.rematerializeLegend().rematerializeSideLegendLane();
 }
 
 export function prepareAuthoredFacetLegend(program, intent = program.compositionSpec.facet.guides.legend) {
   let source = intrinsicFacetLegendSource(program);
-  source = isAuthoredFacetLegend(intent) ? restoreFacetLegendIntent(source, intent) : source.createLegend(intent);
+  source = isAuthoredFacetLegend(intent) ? restoreFacetLegendIntent(source, intent)
+    : source.createLegend(intent).rematerializeSideLegendLane();
   const kinds = Object.keys(source.guideConfigs.legend ?? {});
   for (const [kind, config] of Object.entries(source.guideConfigs.legend)) {
     const descriptor = describeLegendBlock(source, kind, config);

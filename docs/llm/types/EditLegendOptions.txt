@@ -1,13 +1,15 @@
 export interface EditLegendOptions
   extends Omit<LegendOptions, "labels" | "title" | "values" | "titleStyle" | "direction" | "position" | "clipHeight" | "rowPadding" | "titlePadding"> {
   visible?: boolean;
+  /** Body offset in pixels; auto resets. */
+  itemsOffset?: { x?: number; y?: number } | "auto";
   labels?: LegendLabelEditStyle;
   clipHeight?: number | "auto";
   /** auto removes the row policy and restores the retained itemGap behavior. */
   rowPadding?: number | "auto";
   /** auto removes the title/body spacing override. */
   titlePadding?: number | "auto";
-  /** Select one block, or all existing blocks. all reunites local placements; cannot accompany channels/combine/representation. */
+  /** Select a block or all. all excludes channels/combine/representation. */
   channel?: LegendChannel | "all";
   /** inherit is allowed only with a singular channel selector. */
   position?: "right" | "left" | "bottom" | "top" | "top-left" | "top-right" | "bottom-left" | "bottom-right" | "inherit";

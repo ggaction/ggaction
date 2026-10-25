@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.25.
 
-Contract: sha256:bf720004d3fd91cdac3915a24172a16e19e93d0d78625062ccf6779deb96b0d4. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:d123c8475367ff2f557ed39591e88c31a86bedeb8d14d2793e1f6c0449f3ab51. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -13863,6 +13863,17 @@ Fine adjustment on the same edge keeps sibling blocks in their existing slots.
 
 This moves the color block 12 logical pixels left of its normal alignment. Omit `channel` to move the target’s legend group together. Selected blocks rejoin the group with `position: "inherit"`, which clears their local shift. Free `at` placement cannot be combined with `alongOffset`; switch back to an explicit edge first. Canvas fit and guide collision checks remain active. These positions persist through data updates, facets, shared concat legends, and saved programs. Shared concat edits validate the visible parent legend against retained content; hidden child copies do not block fine positioning.
 
+To move only the entries while keeping the legend title anchored, use
+`program.editLegend({ target: "plot", channel: "color", itemsOffset: { x: 12, y: 6 } })`.
+
+Both coordinates are signed logical Canvas pixels: positive `x` moves right and positive `y` moves down.
+Symbols and labels move together; continuous legends move the gradient and its ticks/labels.
+A partial `{ x }` or `{ y }` preserves the other coordinate. Omission retains the offset;
+`itemsOffset: "auto"` restores automatic body placement. Empty objects, unknown keys, and
+non-finite coordinates are rejected. Use `channel: "all"` to apply the edit to all blocks.
+Whole-legend moves retain this relative offset. Styles, data/scale edits, facets, scoped
+compositions and saved programs preserve it, and fitting uses the shifted concrete bounds.
+
 ## Supported legend families
 
 | Legend family | Supported marks | Channels |
@@ -27440,6 +27451,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `visible` | Optional / branch-dependent | `boolean \| undefined` |
+| `itemsOffset` | Optional / branch-dependent | `"auto" \| { x?: number \| undefined; y?: number \| undefined; } \| undefined` |
 | `labels` | Optional / branch-dependent | `LegendLabelEditStyle \| undefined` |
 | `clipHeight` | Optional / branch-dependent | `number \| "auto" \| undefined` |
 | `rowPadding` | Optional / branch-dependent | `number \| "auto" \| undefined` |
@@ -35113,13 +35125,15 @@ Related types: [`LegendChannel`](./reference/types/#type-legendchannel).
 export interface EditLegendOptions
   extends Omit<LegendOptions, "labels" | "title" | "values" | "titleStyle" | "direction" | "position" | "clipHeight" | "rowPadding" | "titlePadding"> {
   visible?: boolean;
+  /** Body offset in pixels; auto resets. */
+  itemsOffset?: { x?: number; y?: number } | "auto";
   labels?: LegendLabelEditStyle;
   clipHeight?: number | "auto";
   /** auto removes the row policy and restores the retained itemGap behavior. */
   rowPadding?: number | "auto";
   /** auto removes the title/body spacing override. */
   titlePadding?: number | "auto";
-  /** Select one block, or all existing blocks. all reunites local placements; cannot accompany channels/combine/representation. */
+  /** Select a block or all. all excludes channels/combine/representation. */
   channel?: LegendChannel | "all";
   /** inherit is allowed only with a singular channel selector. */
   position?: "right" | "left" | "bottom" | "top" | "top-left" | "top-right" | "bottom-left" | "bottom-right" | "inherit";
@@ -44581,7 +44595,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:bf720004d3fd91cdac3915a24172a16e19e93d0d78625062ccf6779deb96b0d4` |
+| Contract fingerprint | `sha256:d123c8475367ff2f557ed39591e88c31a86bedeb8d14d2793e1f6c0449f3ab51` |
 | Example and dataset source | `ab206c446ae5010eecfd859427775c4785d8aed4` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

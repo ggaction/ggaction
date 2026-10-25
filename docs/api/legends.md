@@ -91,6 +91,17 @@ Fine adjustment on the same edge keeps sibling blocks in their existing slots.
 
 This moves the color block 12 logical pixels left of its normal alignment. Omit `channel` to move the target’s legend group together. Selected blocks rejoin the group with `position: "inherit"`, which clears their local shift. Free `at` placement cannot be combined with `alongOffset`; switch back to an explicit edge first. Canvas fit and guide collision checks remain active. These positions persist through data updates, facets, shared concat legends, and saved programs. Shared concat edits validate the visible parent legend against retained content; hidden child copies do not block fine positioning.
 
+To move only the entries while keeping the legend title anchored, use
+`program.editLegend({ target: "plot", channel: "color", itemsOffset: { x: 12, y: 6 } })`.
+
+Both coordinates are signed logical Canvas pixels: positive `x` moves right and positive `y` moves down.
+Symbols and labels move together; continuous legends move the gradient and its ticks/labels.
+A partial `{ x }` or `{ y }` preserves the other coordinate. Omission retains the offset;
+`itemsOffset: "auto"` restores automatic body placement. Empty objects, unknown keys, and
+non-finite coordinates are rejected. Use `channel: "all"` to apply the edit to all blocks.
+Whole-legend moves retain this relative offset. Styles, data/scale edits, facets, scoped
+compositions and saved programs preserve it, and fitting uses the shifted concrete bounds.
+
 ## Supported legend families
 
 <!-- action-capabilities:legends:start -->

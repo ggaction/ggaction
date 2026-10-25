@@ -68,6 +68,10 @@
   ],
   "inference": [
     {
+      "input": "itemsOffset",
+      "strategy": "documented-auto"
+    },
+    {
       "input": "clipHeight",
       "strategy": "documented-auto"
     },
@@ -105,6 +109,11 @@
       "name": "visible",
       "required": false,
       "type": "boolean | undefined"
+    },
+    {
+      "name": "itemsOffset",
+      "required": false,
+      "type": "\"auto\" | { x?: number | undefined; y?: number | undefined; } | undefined"
     },
     {
       "name": "labels",
@@ -253,7 +262,7 @@
     }
   ],
   "callPatterns": [
-    "editLegend({ target?, visible?, labels?, clipHeight?, rowPadding?, titlePadding?, channel?, position? })"
+    "editLegend({ target?, visible?, itemsOffset?, labels?, clipHeight?, rowPadding?, titlePadding?, channel? })"
   ],
   "snippet": "program.editLegend({ channels: [\"color\", \"size\"], count: 3 })",
   "errors": [],

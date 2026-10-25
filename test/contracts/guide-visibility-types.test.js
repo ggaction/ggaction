@@ -20,6 +20,14 @@ p.editRadialAxis({labels:{visible:false}});
 p.editParallelAxis({field:'x',visible:false,ticksAndLabels:{labels:{visible:true}}});
 p.editGrid({horizontal:{visible:false},radial:{visible:true}});
 p.editLegend({target:'plot',visible:false,labels:{visible:false},titleStyle:{visible:true}});
+p.editLegend({target:'plot',channel:'color',itemsOffset:{x:-12,y:6}});
+p.editLegend({itemsOffset:{y:0}}).editLegend({itemsOffset:'auto'});
+// @ts-expect-error body offsets require numeric coordinates
+p.editLegend({itemsOffset:{x:'12'}});
+// @ts-expect-error body offsets reject unknown coordinates
+p.editLegend({itemsOffset:{z:12}});
+// @ts-expect-error new placement is an edit, not a creation option
+p.createLegend({itemsOffset:{x:12}});
 // @ts-expect-error requires boolean
 p.editXAxis({visible:'false'});
 // @ts-expect-error nested visibility requires boolean

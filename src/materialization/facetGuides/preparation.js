@@ -1,4 +1,5 @@
 import { localLegendPosition } from "../../grammar/legendGroups.js";
+import { restoreLegendItemsOffset } from "../legendItemsOffset.js";
 import { prepareAuthoredFacetLegend, facetLegendIntent } from "./owner.js";
 import { isPlainObject } from "../../core/immutable.js";
 import { PLOT_LEGEND_POSITIONS } from "../../layout/legend.js";
@@ -220,7 +221,8 @@ export function prepareSharedFacetLegend(program) {
     const legacy = resolveLegacyCategoricalLegend(program);
     if (legacy !== undefined) return legacy;
   }
-  const source = inferred ? prepareAutoLegendSource(first) : first;
+  // Shared guides receive the offset once in the parent's final placement.
+  const source = restoreLegendItemsOffset(inferred ? prepareAutoLegendSource(first) : first);
   const kinds = legendKinds(source);
   if (!kinds.length && Object.keys(first.guideConfigs.suppressedLegends ?? {}).length) return undefined;
   if (kinds.some(kind => localLegendPosition(source.guideConfigs.legend[kind]) !== undefined)) {

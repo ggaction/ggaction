@@ -1,4 +1,5 @@
 import { restoreGuideVisibilityPaint, applyGuideVisibilityPaint } from "./visibility.js";
+import { restoreLegendItemsOffset, applyLegendItemsOffset } from "../legendItemsOffset.js";
 import {resetLegendClipGraphics, hasLegendClipGraphics}from"../legendClip.js";
 import { localLegendPosition } from "../legendGroups.js";
 import { needsLegendAxisReflow, needsSideLegendAxisReflow } from "./resources.js";
@@ -30,7 +31,7 @@ export function withGuideLayoutTransaction(program, apply) {
   let result;
   for (let attempt = 0; ; attempt += 1) {
     try {
-      let candidate = resetLegendClipGraphics(restoreGuideVisibilityPaint(program))._withContext({ deferGuideLayoutValidation: true });
+      let candidate = resetLegendClipGraphics(restoreLegendItemsOffset(restoreGuideVisibilityPaint(program)))._withContext({ deferGuideLayoutValidation: true });
       if (attempt > 0) {
         candidate = candidate
           .editGraphics({ target: "canvas", property: "width", value: plot.width + margin.left + margin.right })
@@ -60,6 +61,7 @@ export function withGuideLayoutTransaction(program, apply) {
       }
       if (plot !== undefined && result.titleConfig !== undefined) result = result.rematerializeTitle();
       if (hasPlotUnderlays(program) || hasPlotUnderlays(result)) result = result.rematerializePlotDrawOrder();
+      result = applyLegendItemsOffset(result);
       break;
     } catch (error) {
       const overflow = getErrorDetails(error)?.canvasOverflow;

@@ -30,6 +30,18 @@ semantic 상태 → 명시적 materialization → concrete graphicSpec 순서다
 현재 한도는 package/consumer/search 검사의 상수와 현재 실행 결과가 기준이다.
 아래 설명에 남은 과거 checkpoint 수치를 현재 제한으로 해석하지 않는다.
 
+## 범례 항목 이동 소유권
+
+범례 항목의 독립 이동 의도는 기존 `guideConfigs.legend`가 소유하고,
+`grammar/legendItemsOffset.js`가 검증한다. `materialization/legendItemsOffset.js`는
+guide 배치 전에 이동 전 concrete 상태를 복구하고, 최종 배치 뒤 항목 paint에만 이동을
+적용한다. 복구용 `materializationConfigs.legendItemsPaint`는 파생 상태이며,
+공유 범례의 배치 기준과 최종 occupied bounds를 분리하여 제목 위치를 보존한다.
+Renderer는 기존 concrete graphics만 소비한다. 정확한 공개 계약은
+[Legend and title](contract/current/LEGEND_AND_TITLE.md)이 소유한다.
+독립 grammar/materialization module 2개에 맞춰 package entry 한도만 647에서 649로
+변경하고 byte 한도는 유지한다.
+
 ## Content facet 배치 소유권
 
 `core/facetAxisPolicy.js`가 생성·편집·저장 복원에서 공유하는 channel 정책을 검증한다.

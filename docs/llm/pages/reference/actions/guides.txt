@@ -1417,6 +1417,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `visible` | Optional / branch-dependent | `boolean \| undefined` |
+| `itemsOffset` | Optional / branch-dependent | `"auto" \| { x?: number \| undefined; y?: number \| undefined; } \| undefined` |
 | `labels` | Optional / branch-dependent | `LegendLabelEditStyle \| undefined` |
 | `clipHeight` | Optional / branch-dependent | `number \| "auto" \| undefined` |
 | `rowPadding` | Optional / branch-dependent | `number \| "auto" \| undefined` |

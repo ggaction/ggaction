@@ -1,4 +1,5 @@
 import { compositionTitleLayout as titleLayout, materializeCompositionTitle as materializeTitle } from "./compositionTitle.js";
+import { restoreLegendItemsOffset, applyLegendItemsOffset } from "./legendItemsOffset.js";
 import { walkGraphicTreeEvents } from "../grammar/schemas/graphicTree.js";
 import { measureFacetContentChildren } from "./facetContentBounds.js";
 export { measureFacetContentChildren } from "./facetContentBounds.js";
@@ -197,6 +198,7 @@ function assertFacetFieldTitles(program, prepared) {
 }
 
 export function materializeFacetGraphics(program) {
+  program = restoreLegendItemsOffset(program);
   const preparedLegend = prepareSharedFacetLegend(program);
   const { layout, title, plot, plots, preparedHeaders } = resolveFacetProgramLayout(
     program,
@@ -242,7 +244,7 @@ export function materializeFacetGraphics(program) {
   assertFacetFieldTitles(next, preparedHeaders);
   assertFacetTopLane(next, { layout, plots,
     headerId: facetHeaderGraphicId(program.compositionSpec.id), titleIds: TITLE_IDS });
-  return next._withCanvasConfig({
+  return applyLegendItemsOffset(next)._withCanvasConfig({
     margin: ZERO_MARGIN,
     size: { width: "auto", height: "auto" }
   });

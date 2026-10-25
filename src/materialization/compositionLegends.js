@@ -4,6 +4,7 @@ import { unionConcreteGraphicBounds } from "../grammar/schemas/graphicBounds.js"
 import { namespaceGraphicId } from "./compositionSnapshot.js";
 import { localLegendPlacement } from "../grammar/legendGroups.js";
 import { mapScaleConsumerValues } from "./scales/map.js";
+import { restoreLegendItemsOffset } from "./legendItemsOffset.js";
 
 // A categorical color/shape block can explain a color-only view too. Compare
 // encoded mappings, not labels or resource IDs. Constant glyphs in another
@@ -40,11 +41,17 @@ function collect(child) {
     }
     for (const representative of compositionLegends(child, child.children)) {
       const id = representative.id;
-      if (child.graphicSpec.objects[id]) candidates.push({ ...representative, source: child,
-        roots: child.graphicSpec.objects[id].children ?? [id], remove: [id],
-        bounds: unionConcreteGraphicBounds(child.graphicSpec, [id], child.materializationConfigs.textMetrics) });
+      if (child.graphicSpec.objects[id]) {
+        const bounds = unionConcreteGraphicBounds(child.graphicSpec, [id], child.materializationConfigs.textMetrics);
+        const dx = bounds.left - representative.bounds.left, dy = bounds.top - representative.bounds.top;
+        const anchor = representative.anchorBounds ?? representative.bounds;
+        candidates.push({ ...representative, source: child,
+          roots: child.graphicSpec.objects[id].children ?? [id], remove: [id], bounds,
+          anchorBounds: { left: anchor.left + dx, right: anchor.right + dx, top: anchor.top + dy, bottom: anchor.bottom + dy } });
+      }
     }
   } else {
+    const intrinsic = restoreLegendItemsOffset(child);
     for (const [kind, config] of Object.entries(child.guideConfigs.legend ?? {})) {
       const channels = legendBlockChannels(kind, config);
       const roots = allLegendGraphicIds([kind]).filter(id => child.graphicSpec.objects[id]);
@@ -52,7 +59,8 @@ function collect(child) {
       if (!bounds) continue;
       const local = localLegendPlacement(config);
       const group = child.guideConfigs.legendGroups?.[config.target];
-      candidates.push({ source: child, mappingSource: child, roots, bounds, channels, config,
+      candidates.push({ source: child, mappingSource: child, roots, bounds,
+        anchorBounds: unionConcreteGraphicBounds(intrinsic.graphicSpec, roots, child.materializationConfigs.textMetrics), channels, config,
         targets: [{ childPath: [], ...(child.compositionSpec?.facet ? {} : { id: config.target }) }],
         block: describeLegendBlock(child, kind, config),
         placement: { ...(local ?? group?.placement ??
@@ -101,7 +109,7 @@ export function adjacentLegendPresentation(source, target, child) {
   const config = from.config, options = { ...from.placement };
   if (from.placement.inferredOffset ?? config.inferredOffset) delete options.offset;
   delete options.inferredOffset;
-  for (const key of ["labels", "titleStyle", "titlePosition", "border"]) if (config[key] !== undefined) options[key] = config[key];
+  for (const key of ["labels", "titleStyle", "titlePosition", "border", "itemsOffset"]) if (config[key] !== undefined) options[key] = config[key];
   if (!config.inferredTitle) options.title = config.titleVisible === false ? false : config.title;
   if (from.block.family === to.block.family) {
     const presentation = from.block.family === "gradient" ? ["direction", "gradient"] : ["direction", "columns", "itemGap"];

@@ -346,7 +346,7 @@ export const rematerializeSideLegendLane = /* @__PURE__ */ action(
   },
   function (args = {}) {
     noOptions(args, "rematerializeSideLegendLane");
-    if (this.context.facetLegendIntrinsic === true) return this;
+    const intrinsic = this.context.facetLegendIntrinsic === true;
     const plot = resolveGraphicBounds(this);
     const canvas = findCanvasGraphic(this)?.properties;
     if (plot === undefined || canvas === undefined) {
@@ -369,7 +369,8 @@ export const rematerializeSideLegendLane = /* @__PURE__ */ action(
         side,
         plot,
         canvas,
-        groups: groupBlocks(blocks, configs)
+        groups: groupBlocks(blocks, configs),
+        allowOverflow: intrinsic
       });
       return [{ plan, blocks, side, entries }];
     });
@@ -408,6 +409,7 @@ export const rematerializeSideLegendLane = /* @__PURE__ */ action(
           target: block.labelId, property: "textAlign", value: "left"
         });
       }
+      if (intrinsic) continue;
       for (const block of blocks) {
         if (block.backgroundId === undefined || plan.backgrounds.some(item => item.id === block.backgroundId)) continue;
         const bounds = unionLegendBounds(next, block.foregroundIds);
@@ -418,6 +420,10 @@ export const rematerializeSideLegendLane = /* @__PURE__ */ action(
         next = editLegendBorderBounds(next, background.id, background);
       }
     }
+    // Facet parents own block placement and fitting, but the native alignment
+    // of symbols and labels within each block must survive promotion/editing.
+    if (intrinsic) return plans.filter(({ entries }) => entries.length > 1).reduce((p, { entries }) =>
+      alignLegendTextBoxes(p, entries.flatMap(([kind]) => existingIds(p, kind))), next);
     for (const { side, entries } of plans) {
       const ids = entries.flatMap(([kind]) => existingIds(next, kind));
       next = alignLegendTextBoxes(next, ids);

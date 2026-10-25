@@ -17,21 +17,22 @@ export function compositionLegendEdgeClearance(plot, retained, position, occupie
 export function layoutCompositionLegend(base, plot, legend, title = {}, retained = []) {
   if (!legend) return { layout: base };
   const { bounds, placement } = legend;
+  const anchorBounds = legend.anchorBounds ?? bounds;
   const width = bounds.right - bounds.left, height = bounds.bottom - bounds.top;
   const { position = 'right', align = 'center', offset = 8, alongOffset = 0, at } = placement;
   const inferred = placement.inferredOffset ?? legend.config.inferredOffset;
   const outside = !at && ['left', 'right', 'top', 'bottom'].includes(position);
   const group = { blockLayout: 'column', inferredOffset: inferred,
     placement: at ? { at } : { position, align, offset, alongOffset } };
-  const place = group => {
-    const [value] = resolveLegendGroupPlacement({ blocks: [{ id: 'shared', bounds }],
+  const place = (group, measured = bounds) => {
+    const [value] = resolveLegendGroupPlacement({ blocks: [{ id: 'shared', bounds: anchorBounds }],
       group, plot, canvas: base, allowOverflow: true, deferCanvasFit: true });
-    return { left: bounds.left + value.dx, right: bounds.right + value.dx,
-      top: bounds.top + value.dy, bottom: bounds.bottom + value.dy };
+    return { left: measured.left + value.dx, right: measured.right + value.dx,
+      top: measured.top + value.dy, bottom: measured.bottom + value.dy };
   };
   let occupied = place(group);
   if (outside && inferred) {
-    const clearance = compositionLegendEdgeClearance(plot, retained, position, occupied);
+    const clearance = compositionLegendEdgeClearance(plot, retained, position, place(group, anchorBounds));
     occupied = place({ ...group, placement: { ...group.placement, offset: offset + clearance } });
   } else if (outside && retained.some(value => textBoundsIntersect(occupied, value))) {
     throw new Error('Shared composition legend overlaps retained chart content. Increase its offset.');
