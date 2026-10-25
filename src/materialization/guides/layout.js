@@ -71,7 +71,10 @@ export function withGuideLayoutTransaction(program, apply) {
     context.deferGuideLayoutValidation = program.context.deferGuideLayoutValidation;
   }
   const next = result._clone({ context });
-  assertGuideCollisionBlocks(resolveGuideCollisionBlocks(next.graphicSpec, next.guideConfigs, next.titleConfig, next.materializationConfigs.textMetrics));
+  const hidden = next.context.compositionCollectedLegends;
+  const guides = hidden ? { ...next.guideConfigs, legend: Object.fromEntries(Object.entries(next.guideConfigs.legend ?? {})
+    .filter(([kind]) => !hidden.includes(kind))) } : next.guideConfigs;
+  assertGuideCollisionBlocks(resolveGuideCollisionBlocks(next.graphicSpec, guides, next.titleConfig, next.materializationConfigs.textMetrics));
   return next;
 }
 

@@ -76,7 +76,7 @@ export function resolvePromotedFacetLegendLayout(program, {
   if (inferred) {
     occupied = placedBounds(prepared.bounds, plot, position, align,
       Math.max(offset, ...laneDistances.map(distance => distance + offset)), alongOffset);
-  } else if (guides.some(guide => textBoundsIntersect(occupied, guide))) {
+  } else if (!prepared.kinds.every(kind => program.context.compositionCollectedLegends?.includes(kind)) && guides.some(guide => textBoundsIntersect(occupied, guide))) {
     throw new Error("Facet shared legend overlaps retained axes or headers.");
   }
   const dx = Math.max(0, layout.padding.left - occupied.left);

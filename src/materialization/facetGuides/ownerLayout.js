@@ -55,10 +55,11 @@ export function resolveAuthoredFacetLegendLayout(program, { layout, plot, title,
           bounds.top < plot.y || bounds.bottom > plot.y + plot.height)) {
         throw new Error("Facet parent legend does not fit the final plot union.");
       }
-      if (guides.some(bound => textBoundsIntersect(bounds, bound))) {
+      const hidden = program.context.compositionCollectedLegends ?? [];
+      if (!hidden.includes(block.kind) && guides.some(bound => textBoundsIntersect(bounds, bound))) {
         throw new Error("Facet parent legend overlaps retained axes or headers.");
       }
-      if (placements.some(other => textBoundsIntersect(bounds, other.bounds))) {
+      if (!hidden.includes(block.kind) && placements.some(other => !hidden.includes(other.kind) && textBoundsIntersect(bounds, other.bounds))) {
         throw new Error("Facet parent legend blocks overlap.");
       }
       placements.push({ kind: block.kind, dx: plan.dx, dy: plan.dy, bounds, inside });

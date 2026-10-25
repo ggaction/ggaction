@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Validate scoped shared-legend positioning against the visible composition instead of hidden child legend copies, preserving local guide checks and editable snapshots.
+
 - Add signed `alongOffset` for precise edge-aligned legend positioning, including selected blocks, facets, shared concat legends, persistence, and focused layout edits.
 
 - Keep shared concat legends next to the actual plot bounds when adding adjacent charts, including faceted and Parallel views; reuse spare child margins and preserve explicit offsets.

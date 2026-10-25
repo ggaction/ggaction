@@ -726,3 +726,7 @@ The outer trace records one requested function; retained child traces contain th
 
 - ✅ Covered. Evidence: `test/charts/linked-composition/variants/independent-layers/`: approved visual targets, 148 directional constructor combinations, shared resource/ownership, independent appearance, persistence and resize.
 - `test/unit/actions/composition/layer-plot.test.js`: incompatible units/coordinates, immutable failures, facet/nested concat and source updates.
+
+### Scoped edits of collected guides
+
+A collected color/shape legend is validated in the parent layout where it is painted. Scoped public edits and local planning frames retain that visibility ownership: hidden source copies do not conflict with their former child axes. Uncollected guides still participate in native collision checks, and visible parent collisions reject atomically. The temporary editing context is removed before returning or persisting a program. Native source programs remain immutable. Evidence: `test/unit/actions/composition/shared-legend-offset.test.js`.
