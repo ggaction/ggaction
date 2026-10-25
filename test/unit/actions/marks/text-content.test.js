@@ -165,6 +165,10 @@ test("histogram source labels do not become independent bin-domain consumers", (
   assert.deepEqual(filtered.resolvedScales.x.domain, bareFiltered.resolvedScales.x.domain);
   assert.deepEqual(filtered.graphicSpec.objects.bar, bareFiltered.graphicSpec.objects.bar);
   assert.deepEqual(filtered.editCanvas({ width: 600 }).resolvedScales.x.domain, filtered.resolvedScales.x.domain);
-  assert.throws(() => p.createTextMark({ id: "independent", data: "data" })
-    .encodeX({ target: "independent", field: "value", scale: { id: "x" } }), /unbinned consumer/);
+  const withIndependent = p.createTextMark({ id: "independent", data: "data" })
+    .encodeX({ target: "independent", field: "value", scale: { id: "x" } });
+  assert.deepEqual(withIndependent.resolvedScales.x.domain, p.resolvedScales.x.domain);
+  assert.deepEqual(withIndependent.graphicSpec.objects.bar, p.graphicSpec.objects.bar);
+  assert.deepEqual(labels(withIndependent), labels(p));
+  assert.equal(withIndependent.semanticSpec.layers.find(layer => layer.id === "independent").encoding.x.field, "value");
 });

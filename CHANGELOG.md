@@ -4,6 +4,11 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Preserve missing-value policies and original-field lineage through chart edits, numeric position aggregation, independent layers and mixed facet/ordinary scoped targets.
+- Add explicit wide Radar summary and normalization controls, and distinguish omitted color inheritance from an explicit uncolored adjacent chart or layer.
+- Preserve authored exact-plot margins while reclaiming automatic guide reservations with `fitCanvas({ align: "center" })`; keep edited and newly added legends in separate lanes.
+- Batch immutable graphic removal and completed composition snapshot transfer to reduce facet and recommendation preparation cost without reducing displayed data.
+
 - Validate scoped shared-legend positioning against the visible composition instead of hidden child legend copies, preserving local guide checks and editable snapshots.
 
 - Add signed `alongOffset` for precise edge-aligned legend positioning, including selected blocks, facets, shared concat legends, persistence, and focused layout edits.

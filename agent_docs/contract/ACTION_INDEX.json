@@ -4965,7 +4965,7 @@
         "effects": "complete",
         "tests": "complete"
       },
-      "update": "editRadarPlot revises wide dimensions atomically; existing Polar appearance, scale and guide actions remain available",
+      "update": "editRadarPlot revises wide dimensions, explicit grouped profiles and normalization atomically; existing Polar appearance, scale and guide actions remain available",
       "contract": {
         "file": "agent_docs/contract/current/COMPLETE_CHARTS.md",
         "anchor": "createradarplot"
@@ -4983,7 +4983,7 @@
         "effects": "complete",
         "tests": "complete"
       },
-      "update": "Revises owned wide-fold dimensions, theta order and radius geometry while preserving group, appearance and guide intent",
+      "update": "Revises owned wide dimensions, grouped mean/median and explicit minmax normalization with bounded data revisions, preserving group, appearance and guide intent",
       "contract": {
         "file": "agent_docs/contract/current/COMPLETE_CHARTS.md",
         "anchor": "editradarplot"

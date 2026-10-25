@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.25.
 
-Contract: sha256:68492f08d9dc2cc212f82036b2c5ab7874963e6bca3be3e17742b7ab1e3486ab. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:7d1af3a0f47a6cacce7c2670ed2badfb56ebb801a73d3cb7cd8188de06e9fbf4. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -3924,8 +3924,11 @@ program.encodeY({
 });
 ```
 
-Do not share one ID across x and y, binned and unbinned consumers, or different
-aggregate/stack policies.
+Do not share one ID across x and y, different measured fields or units, or incompatible
+aggregate/stack policies. Binned and raw quantitative positions may share a scale
+when they measure the same field and units; binned consumers must agree on one
+bin definition. The common domain includes raw observations while each binned
+mark retains its own bin assignments.
 
 ## An explicit domain omits data
 
@@ -4174,6 +4177,13 @@ Basic chart actions create a complete mark, its encodings, and applicable
 guides in one traceable call. Create a Canvas and dataset first, then provide
 only the fields that define the chart.
 
+For Strip, Beeswarm, Raincloud, Dot, Lollipop, and Dumbbell plots, use
+`missing: "skip"` to exclude rows with missing required roles. The default is
+`"error"`. Raincloud and endpoint plots use the same complete observations for
+all their children, retain the original source for later role edits, and replay
+the policy when data is revised. Other statistical requirements still apply:
+for example, a density estimate needs enough varying observations per group.
+
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
 ```javascript
@@ -4333,6 +4343,13 @@ accepted because it could mean either a field or a named dash style; use
 explicit Polar mark and encoding actions for closed Polar paths. A field
 materialized by `createWindowData` can be used directly as the quantitative y
 position without applying another aggregate.
+
+An explicit aggregate also works at exact numeric positions: numeric years,
+distances, or other repeated X values produce one vertex per observed value
+and series, sorted numerically. Binning happens only when `x.bin` is supplied.
+For a horizontal aggregate line, put the aggregate on X and the independent
+numeric, temporal, or categorical positions on Y. An Area layer's compatible
+aggregate and positional scales are inherited when adding a Line layer.
 
 Line y positions use quantitative or temporal scales, so
 `guides.grid.horizontal` does not accept `bandPosition`. A categorical x with
@@ -4766,7 +4783,7 @@ defaults, restoration and dimension-reordering behavior.
 | --- | --- | --- | --- |
 | `createCanvas` | `createCanvas()` | Default size, background, and margin | Concrete Canvas and plot bounds |
 | `editCanvas` | `editCanvas({ width: 800 })` | Unspecified properties remain unchanged | Updated Canvas and affected consumers |
-| `fitCanvas` | `fitCanvas()` | Current Full-unit layout, fixed Canvas | Smallest valid quarter-pixel margins |
+| `fitCanvas` | `fitCanvas()` | Current Full-unit layout | Fit margins or reclaim outer reservations |
 
 ## `createCanvas(options?)`
 
@@ -4861,8 +4878,12 @@ dimensions to derive plot bounds. It is neither a drawable node in
 ## `fitCanvas(options?)`
 
 After marks, guides, and titles exist, a Full chart can shrink its margins while
-keeping the Canvas size fixed. Disable exact-inner sizing with `plot: false` before
-calling this action:
+keeping a fixed Canvas size unchanged. With exact-inner `plot` sizing, it instead
+keeps the plot dimensions unchanged and reclaims unused automatic guide margins.
+With the default `align: "preserve"`, authored margins remain per-edge minimums.
+Use `align: "center"` in this mode to redistribute that outer-space budget around
+the visible chart and guides. Required ink clearance is preserved, while the
+spare space is divided equally between opposite edges:
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
@@ -4886,6 +4907,7 @@ Canvas width, and Canvas height. Automatic ranges follow the fitted plot bounds.
 | `minPlotHeight` | positive finite number | `120` |
 | `iterationLimit` | integer from 1 through 64 | `32` |
 | `overflow` | `"error"` or `"report"` | `"error"` |
+| `align` | `"preserve"` or `"center"` (exact-inner only) | `"preserve"` |
 
 The default policy rejects an unsatisfied fit without changing the source
 program. `overflow: "report"` applies the last valid margins and stores the
@@ -6374,7 +6396,11 @@ order. The first action stores valid incomplete semantic and scale state while
 the path remains empty; the second completes the same final layer, resolved
 scales, and graphics in both orders. Aggregate y lines are different: their
 grain requires categorical, temporal, or binned quantitative x. Unbinned
-quantitative x does not accept aggregate y.
+quantitative x does not accept aggregate y. Horizontal lines support quantitative
+x with nominal/ordinal y, including aggregate x per y category. The same derivation
+preserves category order, grouping and visible endpoints in both orientations.
+Categorical Y may use a band horizontal grid; a quantitative axis cannot use band
+grid positioning.
 
 ### Gaps
 
@@ -7551,7 +7577,7 @@ The tables below are generated from the same reviewed capability registry used b
 | --- | --- | --- | --- | --- |
 | `encodeSize` | point | quantitative, nominal, ordinal | linear, log, sqrt, pow, quantize, quantile, threshold; ordinal for categories | row-owned point; range values are areas; remove explicit radius first |
 | `encodeShape` | point | nominal | ordinal | row-owned point; conflicts with explicit constant shape |
-| `encodeOpacity` | point, line, rule, bar | quantitative or constant | linear for field; none for constant | point/rule item, complete line series, or final bar cell; values within one series/cell must agree |
+| `encodeOpacity` | point, line, area, rule, bar, rect | quantitative or constant | linear for field; none for constant | point/rule/rect item, complete Line/Area series, or final bar cell; values within one series/cell must agree |
 | `encodeStrokeWidth` | line, rule | quantitative or constant | linear, log, sqrt, pow, symlog for field; none for constant | complete line series or rule item; width in logical pixels |
 | `encodeStrokeDash` | line, rule | nominal or constant | ordinal for field; none for constant | complete line series or rule item; series values must agree |
 | `encodeAngle` | point, tick | quantitative or constant | none | item; clockwise degrees; circles retain the angle as a visual no-op |
@@ -7573,7 +7599,7 @@ The tables below are generated from the same reviewed capability registry used b
 | Discretized color interval | point, aggregate bar, rect, tick | quantize/quantile/threshold color; rectangle swatches |
 | Discretized stroke interval | point, line, area, bar, rect, arc, rule, tick | quantize/quantile/threshold stroke; outline-colored interval symbols |
 | Size | point | size; continuous numeric samples or every discrete interval; point glyph symbol |
-| Opacity | point, line, bar | quantitative opacity samples; representative point symbol even for line consumers; Rule opacity has no legend |
+| Opacity | point, line, area, bar, rect | quantitative opacity samples; representative point symbol even for Line and Area consumers; Rule opacity has no legend |
 | Stroke width | line, rule | quantitative strokeWidth samples; line symbol |
 
 | Axis family | Create | Edit | Editable components |
@@ -10212,6 +10238,17 @@ titles, facet-header edits and existing shared-legend editors/removal are explic
 child first, then replace its slot when a concat dashboard needs a changed
 chart.
 
+## Path layer color
+
+When adding an independent path layer with `createLayerPlot`, omitted color is
+inherited only when it describes a whole series. A continuous point color that
+varies along a new Line or Polar Line defaults to a single color; it is not
+averaged or used to split the path into artificial series. Categorical colors
+and compatible per-series continuous colors are retained. Set the native
+constructor's `plot.options.color` and `groupBy` to choose another valid mapping,
+or `plot.inherit.color: false` for a single-color layer. Explicit incompatible
+color mappings are rejected. Area constructor color is categorical.
+
 ## Shared color legends
 
 With `share: { color: true }`, compatible color-only legends are collected into
@@ -10229,6 +10266,21 @@ Legend reservation and parent titles are included in the final Canvas bounds.
 Choose the position family from the semantic mark and field relationship. All
 position actions infer the current mark, use or create a compatible coordinate,
 resolve a channel scale, and explicitly materialize the affected graphics.
+
+Line aggregation groups exact observed independent-axis values and series.
+Quantitative positions remain continuous and sorted numerically; they do not
+require bins. With an explicit bin, vertices use interval midpoints instead.
+The same rule applies to aggregate Y over X or aggregate X over Y.
+
+Changing an Area's independent position also updates completed-key alignment.
+Overlay areas use observed rows; stacked areas realign unique rows at the new
+key using the existing fill policy. A stacked position cannot also be its
+measurement or series field, and duplicate group/key rows require explicit
+reaggregation of the original observations. No implicit mean of means is used.
+
+For measured polar sectors, changing the category also updates a color role
+that followed the old category. Polar guide samples follow the new domain;
+custom guide styles are preserved.
 
 ## Supported marks and modes
 
@@ -11590,7 +11642,7 @@ See [Scale options](./api/scales/) and [Legends](./api/legends/).
 | --- | --- | --- | --- | --- |
 | `encodeSize` | point | quantitative, nominal, ordinal | linear, log, sqrt, pow, quantize, quantile, threshold; ordinal for categories | row-owned point; range values are areas; remove explicit radius first |
 | `encodeShape` | point | nominal | ordinal | row-owned point; conflicts with explicit constant shape |
-| `encodeOpacity` | point, line, rule, bar | quantitative or constant | linear for field; none for constant | point/rule item, complete line series, or final bar cell; values within one series/cell must agree |
+| `encodeOpacity` | point, line, area, rule, bar, rect | quantitative or constant | linear for field; none for constant | point/rule/rect item, complete Line/Area series, or final bar cell; values within one series/cell must agree |
 | `encodeStrokeWidth` | line, rule | quantitative or constant | linear, log, sqrt, pow, symlog for field; none for constant | complete line series or rule item; width in logical pixels |
 | `encodeStrokeDash` | line, rule | nominal or constant | ordinal for field; none for constant | complete line series or rule item; series values must agree |
 | `encodeAngle` | point, tick | quantitative or constant | none | item; clockwise degrees; circles retain the angle as a visual no-op |
@@ -11606,8 +11658,8 @@ See [Scale options](./api/scales/) and [Legends](./api/legends/).
 | `encodeSize` | `encodeSize({ field: "Acceleration" })` | Current point; linear scale; area range `[24, 196]` | Semantic size and concrete equal-area symbols |
 | `encodeShape` | `encodeShape({ field: "Origin" })` | Current point; 12-value ordinal shape range | Semantic shape and mixed concrete symbols |
 | `encodeAngle` | `encodeAngle({ field: "direction" })` | Current point or Tick; direct clockwise degrees | Rotated concrete paths or line endpoints |
-| `encodeOpacity` | `encodeOpacity({ value: 0.27 })` | Current Point/Rule/Line/Bar/Rect | Constant concrete opacity |
-| `encodeOpacity` | `encodeOpacity({ field: "Acceleration" })` | Current Point/Rule/Line/Bar/Rect; linear scale; range `[0.2, 1]` | Semantic field opacity and concrete values |
+| `encodeOpacity` | `encodeOpacity({ value: 0.27 })` | Current Point/Rule/Line/Area/Bar/Rect | Constant concrete opacity |
+| `encodeOpacity` | `encodeOpacity({ field: "Acceleration" })` | Current Point/Rule/Line/Area/Bar/Rect; linear scale; range `[0.2, 1]` | Semantic field opacity and concrete values |
 | `encodeStroke` | `encodeStroke({ value: "#334155" })` | Current supported mark | Constant concrete outline color |
 | `encodeStroke` | `encodeStroke({ field: "status" })` | Current supported mark; independent ordinal stroke scale | Field-driven item or series outline |
 | `encodeStrokeWidth` | `encodeStrokeWidth({ value: 3 })` | Current Line/Rule/Rect | Constant concrete width |
@@ -11638,6 +11690,12 @@ focused pages below for selection, point appearance, and mark-specific style.
 
 Radius, constant stroke, constant rule width, constant opacity, and both bar width modes are graphical constants.
 Field stroke, field opacity, and field-driven stroke width are semantic encodings.
+
+Line and Area opacity fields must contain one finite value per existing series;
+they do not create groups or average observations. For an Area, constant
+`encodeOpacity({ value })` matches `editAreaMark({ opacity })` and also explicitly
+replaces a field encoding. Area opacity supports scale edits, sampled legends,
+facets and composition target lists, including a shared edit with Line layers.
 Angle is a scale-free semantic encoding for point and Tick glyphs; circles
 accept it as a visual no-op.
 Size cannot be combined with a constant radius. Remove that assignment with
@@ -13770,11 +13828,23 @@ whole-target content, or whole-group `blockLayout`/`at` controls.
 
 Keep an edge anchor while adjusting its position with `editLegend` or `editLegendLayout`. `offset` sets the perpendicular gap from the plot; `alongOffset` is a signed pixel shift along that edge. Positive values move right on top/bottom and in-plot corners, and down on left/right. Omission preserves the value; `0` resets the shift.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "plot"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Executable complete.** Import chart from ggaction. This complete example includes two observations, an explicit color legend and sufficient margins. Keep the returned shifted program to render the revised position.
 
 ```js
-// Fragment: program already owns the color legend for "plot".
-program.editLegend({ target: "plot", channel: "color", position: "bottom", offset: 60, alongOffset: -12 });
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas({ plot: { width: 240, height: 180 }, margin: 130 })
+  .createData({ values: [
+    { x: 1, y: 2, group: "A" },
+    { x: 3, y: 4, group: "B" }
+  ] })
+  .createScatterPlot({ id: "plot", x: "x", y: "y", color: "group", guides: false })
+  .createLegend({ target: "plot", channels: ["color"] });
+
+const shifted = program.editLegend({
+  target: "plot", channel: "color", position: "bottom", offset: 60, alongOffset: -12
+});
 ```
 
 Fine adjustment on the same edge keeps sibling blocks in their existing slots.
@@ -13792,7 +13862,7 @@ This moves the color block 12 logical pixels left of its normal alignment. Omit 
 | Discretized color interval | point, aggregate bar, rect, tick | quantize/quantile/threshold color; rectangle swatches |
 | Discretized stroke interval | point, line, area, bar, rect, arc, rule, tick | quantize/quantile/threshold stroke; outline-colored interval symbols |
 | Size | point | size; continuous numeric samples or every discrete interval; point glyph symbol |
-| Opacity | point, line, bar | quantitative opacity samples; representative point symbol even for line consumers; Rule opacity has no legend |
+| Opacity | point, line, area, bar, rect | quantitative opacity samples; representative point symbol even for Line and Area consumers; Rule opacity has no legend |
 | Stroke width | line, rule | quantitative strokeWidth samples; line symbol |
 
 ## Focused legend families
@@ -17405,6 +17475,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `align` | Optional / branch-dependent | `"center" \| "preserve" \| undefined` |
 | `padding` | Optional / branch-dependent | `number \| undefined` |
 | `minPlotWidth` | Optional / branch-dependent | `number \| undefined` |
 | `minPlotHeight` | Optional / branch-dependent | `number \| undefined` |
@@ -19702,6 +19773,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `value` | Required | `EndpointValueChannel` |
 | `point` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `labels` | Optional / branch-dependent | `false \| EndpointLabelOptions \| undefined` |
+| `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
@@ -19743,6 +19815,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `point` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `stem` | Optional / branch-dependent | `(RuleStyleOptions & { clip?: boolean \| undefined; }) \| undefined` |
 | `labels` | Optional / branch-dependent | `false \| EndpointLabelOptions \| undefined` |
+| `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
@@ -19785,6 +19858,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `endPoint` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `connector` | Optional / branch-dependent | `(RuleStyleOptions & { clip?: boolean \| undefined; }) \| undefined` |
 | `labels` | Optional / branch-dependent | `false \| (EndpointLabelOptions & { endpoint?: "both" \| "end" \| "start" \| undefined; }) \| undefined` |
+| `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
@@ -19825,6 +19899,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `category` | Optional / branch-dependent | `EndpointCategoryChannel \| undefined` |
@@ -20051,13 +20126,13 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
-| `x` | Required | `LineXPositionChannel` |
-| `y` | Required | `LineYPositionChannel` |
 | `color` | Optional / branch-dependent | `LineCategoricalColorChannel<CategoricalColorScaleOptions> \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| readonly [string, ...string[]] \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `Omit<{ field: string; value?: undefined; target?: string \| undefined; fieldType?: "nominal" \| "ordinal" \| undefined; scale?: DashScaleOptions \| undefined; }, "target"> \| Omit<...> \| undefined` |
 | `line` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; missing?: "break" \| "error" \| undefined; strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; tension?: number \| undefined; stroke?: string \| undefined; opacity?: number \| undefined; closed?: false \| undefined; }) \| undefined` |
-| `guides` | Optional / branch-dependent | `false \| (Omit<CPathGuides, "grid" \| "legend"> & { grid?: false \| (Omit<CartesianGridOptions, "horizontal"> & { horizontal?: boolean \| ... 1 more ... \| undefined; }) \| undefined; legend?: false \| ... 1 more ... \| undefined; }) \| undefined` |
+| `x` | Required | `{ field: string; fieldType?: "quantitative" \| undefined; aggregate?: AggregateOperation \| undefined; scale?: NonPointQuantitativePositionScaleOptions \| undefined; } \| { ...; } \| LineXPositionChannel` |
+| `y` | Required | `string \| (({ field: string; } & ({ fieldType: "nominal" \| "ordinal"; scale?: NonPointCategoricalPositionScaleOptions \| undefined; } \| { ...; } \| { ...; })) & { ...; }) \| ({ ...; } & { ...; }) \| ({ ...; } & { ...; }) \| ({ ...; } & { ...; })` |
+| `guides` | Optional / branch-dependent | `false \| LinePlotGuides<"horizontal"> \| LinePlotGuides<"vertical"> \| undefined` |
 | `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
@@ -20189,7 +20264,7 @@ The following call patterns are abbreviated examples; the declaration above owns
 
 ```javascript
 createRadarPlot({ id?, data?, coordinate?, category, value, groupBy?, order?, color?, strokeDash?, line?, guides? })
-createRadarPlot({ id?, data?, coordinate?, wide: { fields, as? }, groupBy?, order?, color?, strokeDash?, line?, guides? })
+createRadarPlot({ id?, data?, coordinate?, wide: { fields, as?, summary?, normalize? }, groupBy?, order?, color?, strokeDash?, line?, guides? })
 ```
 
 Create closed Radar paths from validated long rows or an explicit wide-to-long
@@ -20215,12 +20290,12 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
-| `wide` | Required | `{ fields: readonly [string, string, ...string[]]; }` |
+| `wide` | Required | `{ fields: readonly [string, string, ...string[]]; summary?: "mean" \| "median" \| false \| undefined; normalize?: "minmax" \| false \| undefined; }` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```js
-editRadarPlot({ target?, wide: { fields } })
+editRadarPlot({ target?, wide: { fields, summary?, normalize? } })
 ```
 
 Edit the dimensions and their angular order in an existing wide Radar plot. `fields` must contain
@@ -20241,7 +20316,24 @@ const revised = program.editRadarPlot({
 ```
 
 Missing, duplicate or nonnumeric fields and incompatible targets reject without changing the
-previous program. Editing dimensions does not normalize values: compare columns with compatible units.
+previous program. Omitted `summary` and `normalize` preserve the existing settings. Set
+`summary: "mean"` or `"median"` to aggregate repeated rows by the existing series identity.
+Set `normalize: "minmax"` to normalize each dimension across the resulting profiles; constant
+dimensions map to zero. Set either option to `false` to return to individual observations or
+raw units (individual observations require a unique series identity). Switching normalization
+resets the radius domain to `[0, 1]` or the raw automatic extent; dimension-only edits preserve
+an explicit domain. Original source rows and original measurements remain available.
+
+```js
+const profiles = chart().createCanvas().createData({ values: [
+  { kind: "A", speed: 10, quality: 80, cost: 100 },
+  { kind: "A", speed: 20, quality: 90, cost: 200 },
+  { kind: "B", speed: 30, quality: 70, cost: 150 }
+] }).createRadarPlot({
+  wide: { fields: ["speed", "quality", "cost"], summary: "mean", normalize: "minmax" },
+  groupBy: "kind", color: "kind"
+});
+```
 
 ## `createRugPlot`
 
@@ -20302,6 +20394,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
@@ -20344,6 +20437,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
@@ -20385,6 +20479,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
@@ -20430,6 +20525,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `category` | Optional / branch-dependent | `RaincloudCategoryChannel \| undefined` |
@@ -27210,6 +27306,10 @@ Compatible point and line categorical channels stay combined when their domains
 contain the same values, even in different orders. The first selected channel
 owns item order; each symbol still looks up its own scale by value. Independent fields,
 continuous color/stroke, opacity, and stroke width use separate native blocks.
+Adding a new dash channel to an existing color-only line legend preserves its
+appearance. A matching field extends the combined series legend; a different
+field creates a separate dash legend and retains the color block. Repeating an
+already-created channel remains an error.
 Area fill and stroke are independently selectable blocks, including stroke-only
 legends for density and horizon areas.
 For outside top/bottom legends, omitting `offset` places the occupied legend after
@@ -29136,7 +29236,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Required | `string` |
+| `target` | Required | `string \| readonly string[]` |
 | `property` | Optional / branch-dependent | `string \| undefined` |
 | `value` | Optional / branch-dependent | `unknown` |
 | `remove` | Optional / branch-dependent | `boolean \| undefined` |
@@ -30482,7 +30582,7 @@ type AdjacentConstructorOptions<T> = T extends unknown ? Partial<Omit<T, "id">> 
  Expand AdjacentPlotSpecification
 
 ```typescript
-export type AdjacentPlotSpecification =
+export type AdjacentPlotSpecification = (
   | { action: "createScatterPlot"; options?: AdjacentConstructorOptions<CreateScatterPlotOptions> }
   | { action: "createLinePlot"; options?: Partial<AdjacentConstructorOptions<CreateLinePlotOptions>> }
   | { action: "createBarPlot"; options?: Partial<AdjacentConstructorOptions<CreateBarPlotOptions>> }
@@ -30511,8 +30611,12 @@ export type AdjacentPlotSpecification =
   | { action: "createPolarLinePlot"; options?: AdjacentConstructorOptions<CreatePolarLinePlotOptions> }
   | { action: "createRadarPlot"; options?: AdjacentConstructorOptions<CreateRadarPlotOptions> }
   | { action: "createParallelCoordinates"; options?: AdjacentConstructorOptions<CreateParallelCoordinatesOptions> }
-  | { action: "createTextPlot"; options?: AdjacentConstructorOptions<CreateTextPlotOptions> };
-/** A native constructor with positional/data decisions inferred from the source. */
+  | { action: "createTextPlot"; options?: AdjacentConstructorOptions<CreateTextPlotOptions> }) & { inherit?: { color?: boolean } };
+/** A native constructor with positional/data decisions inferred from the source.
+ * Omitted color is inherited only when valid at the new plot's grain. Line and
+ * Polar Line require one color value per series; otherwise the default is a
+ * single color. Explicit color/groupBy options remain validated and authoritative.
+ */
 ```
 
 Related types: [`AdjacentConstructorOptions`](./reference/types/#type-adjacentconstructoroptions) · [`CreateScatterPlotOptions`](./reference/types/#type-createscatterplotoptions) · [`CreateLinePlotOptions`](./reference/types/#type-createlineplotoptions) · [`CreateBarPlotOptions`](./reference/types/#type-createbarplotoptions) · [`CreateAreaPlotOptions`](./reference/types/#type-createareaplotoptions) · [`CreateDotPlotOptions`](./reference/types/#type-createdotplotoptions) · [`CreateLollipopPlotOptions`](./reference/types/#type-createlollipopplotoptions) · [`CreateDumbbellPlotOptions`](./reference/types/#type-createdumbbellplotoptions) · [`CreateECDFPlotOptions`](./reference/types/#type-createecdfplotoptions) · [`CreateIntervalPlotOptions`](./reference/types/#type-createintervalplotoptions) · [`CreateRegressionPlotOptions`](./reference/types/#type-createregressionplotoptions) · [`CreateRugPlotOptions`](./reference/types/#type-createrugplotoptions) · [`CreateStripPlotOptions`](./reference/types/#type-createstripplotoptions) · [`CreateBeeswarmPlotOptions`](./reference/types/#type-createbeeswarmplotoptions) · [`CreateRaincloudPlotOptions`](./reference/types/#type-createraincloudplotoptions) · [`BoxPlotOptions`](./reference/types/#type-boxplotoptions) · [`GradientPlotOptions`](./reference/types/#type-gradientplotoptions) · [`ViolinPlotOptions`](./reference/types/#type-violinplotoptions) · [`CreateDensityPlotOptions`](./reference/types/#type-createdensityplotoptions) · [`CreateHorizonPlotOptions`](./reference/types/#type-createhorizonplotoptions) · [`CreateHistogramOptions`](./reference/types/#type-createhistogramoptions) · [`CreateHeatmapOptions`](./reference/types/#type-createheatmapoptions) · [`CreatePiePlotOptions`](./reference/types/#type-createpieplotoptions) · [`CreateRosePlotOptions`](./reference/types/#type-createroseplotoptions) · [`CreateRadialBarPlotOptions`](./reference/types/#type-createradialbarplotoptions) · [`CreatePolarScatterPlotOptions`](./reference/types/#type-createpolarscatterplotoptions) · [`CreatePolarLinePlotOptions`](./reference/types/#type-createpolarlineplotoptions) · [`CreateRadarPlotOptions`](./reference/types/#type-createradarplotoptions) · [`CreateParallelCoordinatesOptions`](./reference/types/#type-createparallelcoordinatesoptions) · [`CreateTextPlotOptions`](./reference/types/#type-createtextplotoptions).
@@ -32360,6 +32464,7 @@ Related types: [`BarColorChannel`](./reference/types/#type-barcolorchannel) · [
 
 ```typescript
 export type CreateBeeswarmPlotOptions = {
+  missing?: "error" | "skip";
   id?: string;
   data?: string;
   coordinate?: string;
@@ -32647,40 +32752,16 @@ Related types: [`LayerPlotSpecification`](./reference/types/#type-layerplotspeci
  Expand CreateLinePlotOptions
 
 ```typescript
-export interface CreateLinePlotOptions {
-  id?: string;
-  data?: string;
-  coordinate?: string;
-  x: LineXPositionChannel;
-  y: LineYPositionChannel;
-  color?: LineCategoricalColorChannel<CategoricalColorScaleOptions>;
-  groupBy?: string | readonly [string, ...string[]];
-  strokeDash?: BasicStrokeDashChannel;
-  line?: StrokeStyleDetails & {
-    clip?: boolean;
-    missing?: "error" | "break";
-    strokeWidth?: number;
-    curve?: CurveInterpolation;
-    tension?: number;
-    stroke?: string;
-    opacity?: number;
-    closed?: false;
-  };
-  guides?: false | (Omit<CPathGuides, "legend" | "grid"> & {
-    grid?: false | (Omit<CartesianGridOptions, "horizontal"> & {
-      horizontal?: boolean | (Omit<GridDirectionOptions, "bandPosition"> & {
-        /** Line y is continuous; band positioning is available only for categorical x grids. */
-        bandPosition?: never;
-      });
-    });
-    legend?: false | (Omit<PathLegendOptions, "order"> & {
-      order?: LegendValueOrder | { channel: "x"; values?: never };
-    });
-  });
-}
+export type CreateLinePlotOptions = LinePlotCommonOptions & (
+  | { x: LineXPositionChannel; y: Exclude<LineYPositionChannel, { fieldType: "nominal" | "ordinal" }>; guides?: false | LinePlotGuides<"horizontal"> }
+  | { x: string | { field: string; fieldType?: "quantitative"; aggregate?: AggregateOperation; scale?: NonPointQuantitativePositionScaleOptions };
+      y: Extract<LineYPositionChannel, { fieldType: "nominal" | "ordinal" }>; guides?: false | LinePlotGuides<"vertical"> }
+  | { x: { field: string; fieldType?: "quantitative"; aggregate: AggregateOperation; scale?: NonPointQuantitativePositionScaleOptions };
+      y: string | (Exclude<AreaPlotIndependentChannel, string> & { aggregate?: never }); guides?: false | LinePlotGuides<"vertical"> }
+);
 ```
 
-Related types: [`LineXPositionChannel`](./reference/types/#type-linexpositionchannel) · [`LineYPositionChannel`](./reference/types/#type-lineypositionchannel) · [`LineCategoricalColorChannel`](./reference/types/#type-linecategoricalcolorchannel) · [`CategoricalColorScaleOptions`](./reference/types/#type-categoricalcolorscaleoptions) · [`BasicStrokeDashChannel`](./reference/types/#type-basicstrokedashchannel) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`CurveInterpolation`](./reference/types/#type-curveinterpolation) · [`CPathGuides`](./reference/types/#type-cpathguides) · [`CartesianGridOptions`](./reference/types/#type-cartesiangridoptions) · [`GridDirectionOptions`](./reference/types/#type-griddirectionoptions) · [`PathLegendOptions`](./reference/types/#type-pathlegendoptions) · [`LegendValueOrder`](./reference/types/#type-legendvalueorder).
+Related types: [`LinePlotCommonOptions`](./reference/types/#type-lineplotcommonoptions) · [`LineXPositionChannel`](./reference/types/#type-linexpositionchannel) · [`LineYPositionChannel`](./reference/types/#type-lineypositionchannel) · [`LinePlotGuides`](./reference/types/#type-lineplotguides) · [`AggregateOperation`](./reference/types/#type-aggregateoperation) · [`NonPointQuantitativePositionScaleOptions`](./reference/types/#type-nonpointquantitativepositionscaleoptions) · [`AreaPlotIndependentChannel`](./reference/types/#type-areaplotindependentchannel).
 
 ### `CreateLollipopPlotOptions` {#type-createlollipopplotoptions}
 
@@ -32926,6 +33007,7 @@ Related types: [`CreateRosePlotOptions`](./reference/types/#type-createroseploto
 
 ```typescript
 export interface CreateRaincloudPlotOptions {
+  missing?: "error" | "skip";
   id?: string;
   data?: string;
   coordinate?: string;
@@ -33128,6 +33210,7 @@ Related types: [`DynamicReferenceBinding`](./reference/types/#type-dynamicrefere
 
 ```typescript
 export type CreateStripPlotOptions = {
+  missing?: "error" | "skip";
   id?: string;
   data?: string;
   coordinate?: string;
@@ -34612,7 +34695,7 @@ Related types: [`CreateECDFPlotOptions`](./reference/types/#type-createecdfploto
 ```typescript
 export type EditEndpointPlotOptions = { target?: string } & Partial<Pick<
   CreateDumbbellPlotOptions,
-  "data" | "coordinate" | "category" | "start" | "end" | "orientation" | "summary"
+  "data" | "coordinate" | "category" | "start" | "end" | "orientation" | "summary" | "missing"
 >> & {
   value?: EndpointValueChannel;
   baseline?: number;
@@ -34798,7 +34881,7 @@ Related types: [`GradientPlotPositionChannel`](./reference/types/#type-gradientp
 ```typescript
 export type EditGraphicsOptions =
   | { target: string; property: string; value: unknown; remove?: false }
-  | { target: string; remove: true; property?: never; value?: never };
+  | { target: string | readonly string[]; remove: true; property?: never; value?: never };
 ```
 
 ### `EditGridDirectionsOptions` {#type-editgriddirectionsoptions}
@@ -35190,7 +35273,7 @@ Related types: [`FocusedScaleSelection`](./reference/types/#type-focusedscalesel
 ```typescript
 export interface EditRadarPlotOptions {
   target?: string;
-  wide: { fields: readonly [string, string, ...string[]] };
+  wide: { fields: readonly [string, string, ...string[]]; summary?: false | "mean" | "median"; normalize?: false | "minmax" };
 }
 ```
 
@@ -35213,6 +35296,7 @@ Related types: [`EditPolarAxisOptions`](./reference/types/#type-editpolaraxisopt
 
 ```typescript
 export interface EditRaincloudPlotOptions {
+  missing?: "error" | "skip";
   target?: string;
   data?: string;
   category?: RaincloudCategoryChannel;
@@ -35640,6 +35724,7 @@ Related types: [`TextMarkOptions`](./reference/types/#type-textmarkoptions) · [
 
 ```typescript
 type EndpointPlotBaseOptions = {
+  missing?: "error" | "skip";
   id?: string;
   data?: string;
   coordinate?: string;
@@ -36269,6 +36354,8 @@ Related types: [`FilterRangeClosure`](./reference/types/#type-filterrangeclosure
 
 ```typescript
 export interface FitCanvasOptions {
+  /** Exact inner plot mode: distribute spare outer space around visible content. */
+  align?: "preserve" | "center";
   /** Minimum fitted margin on every Canvas edge. Defaults to 0. */
   padding?: number;
   /** Required final plot width. Defaults to 160. */
@@ -37025,6 +37112,7 @@ export interface LabelLeaderOptions {
 export type LayerPlotSpecification = {
   [Action in AdjacentPlotSpecification["action"]]: {
     action: Action;
+    inherit?: { color?: boolean };
     options?: Partial<NonNullable<Extract<AdjacentPlotSpecification, { action: Action }>["options"]>> & { guides?: false };
   }
 }[AdjacentPlotSpecification["action"]];
@@ -37277,6 +37365,48 @@ type LineCategoricalColorChannel<Scale = NonPointCategoricalColorScaleOptions> =
 
 Related types: [`NonPointCategoricalColorScaleOptions`](./reference/types/#type-nonpointcategoricalcolorscaleoptions) · [`Palette`](./reference/types/#type-palette).
 
+### `LinePlotCommonOptions` {#type-lineplotcommonoptions}
+
+ Expand LinePlotCommonOptions
+
+```typescript
+interface LinePlotCommonOptions {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  color?: LineCategoricalColorChannel<CategoricalColorScaleOptions>;
+  groupBy?: string | readonly [string, ...string[]];
+  strokeDash?: BasicStrokeDashChannel;
+  line?: StrokeStyleDetails & {
+    clip?: boolean;
+    missing?: "error" | "break";
+    strokeWidth?: number;
+    curve?: CurveInterpolation;
+    tension?: number;
+    stroke?: string;
+    opacity?: number;
+    closed?: false;
+  };
+ }
+```
+
+Related types: [`LineCategoricalColorChannel`](./reference/types/#type-linecategoricalcolorchannel) · [`CategoricalColorScaleOptions`](./reference/types/#type-categoricalcolorscaleoptions) · [`BasicStrokeDashChannel`](./reference/types/#type-basicstrokedashchannel) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`CurveInterpolation`](./reference/types/#type-curveinterpolation).
+
+### `LinePlotGuides` {#type-lineplotguides}
+
+ Expand LinePlotGuides
+
+```typescript
+type LinePlotGuides<Continuous extends "horizontal" | "vertical"> = Omit<CPathGuides, "legend" | "grid"> & {
+  grid?: false | (Omit<CartesianGridOptions, Continuous> & {
+    [Direction in Continuous]?: boolean | (Omit<GridDirectionOptions, "bandPosition"> & { bandPosition?: never });
+  });
+  legend?: false | (Omit<PathLegendOptions, "order"> & { order?: LegendValueOrder | { channel: Continuous extends "horizontal" ? "x" : "y"; values?: never } });
+};
+```
+
+Related types: [`CPathGuides`](./reference/types/#type-cpathguides) · [`CartesianGridOptions`](./reference/types/#type-cartesiangridoptions) · [`GridDirectionOptions`](./reference/types/#type-griddirectionoptions) · [`PathLegendOptions`](./reference/types/#type-pathlegendoptions) · [`LegendValueOrder`](./reference/types/#type-legendvalueorder).
+
 ### `LineXPositionChannel` {#type-linexpositionchannel}
 
  Expand LineXPositionChannel
@@ -37284,7 +37414,7 @@ Related types: [`NonPointCategoricalColorScaleOptions`](./reference/types/#type-
 ```typescript
 type LineXPositionChannel =
   | string
-  | ({ field: string; bin?: PositionEncodingBase["bin"] } & (
+  | ({ field: string; bin?: PositionEncodingBase["bin"]; aggregate?: never } & (
       | {
           fieldType?: "quantitative";
           scale?: NonPointQuantitativePositionScaleOptions;
@@ -37323,10 +37453,11 @@ type LineYPositionChannel =
           aggregate?: never;
           scale?: NonPointTemporalPositionScaleOptions;
         }
+      | { fieldType: "nominal" | "ordinal"; aggregate?: never; scale?: NonPointCategoricalPositionScaleOptions }
     ));
 ```
 
-Related types: [`AggregateOperation`](./reference/types/#type-aggregateoperation) · [`NonPointQuantitativePositionScaleOptions`](./reference/types/#type-nonpointquantitativepositionscaleoptions) · [`TemporalInputUnit`](./reference/types/#type-temporalinputunit) · [`NonPointTemporalPositionScaleOptions`](./reference/types/#type-nonpointtemporalpositionscaleoptions).
+Related types: [`AggregateOperation`](./reference/types/#type-aggregateoperation) · [`NonPointQuantitativePositionScaleOptions`](./reference/types/#type-nonpointquantitativepositionscaleoptions) · [`TemporalInputUnit`](./reference/types/#type-temporalinputunit) · [`NonPointTemporalPositionScaleOptions`](./reference/types/#type-nonpointtemporalpositionscaleoptions) · [`NonPointCategoricalPositionScaleOptions`](./reference/types/#type-nonpointcategoricalpositionscaleoptions).
 
 ### `LinearGradientPaint` {#type-lineargradientpaint}
 
@@ -37908,7 +38039,8 @@ export type OpacityScaleOptions = ScaleFields<
   unknown?: number;
 };
 
-/** Constant or quantitative opacity on Point, Rule, Line, Bar, or row-owned Rect marks. */
+/** Constant or quantitative opacity on Point, Rule, Line, Area, Bar, or row-owned Rect marks.
+ * Line and Area fields must be constant within each existing path series. */
 ```
 
 Related types: [`ScaleFields`](./reference/types/#type-scalefields).
@@ -38818,6 +38950,10 @@ Related types: [`PolarPathGuideOptions`](./reference/types/#type-polarpathguideo
 
 ```typescript
 export interface RadarWideOptions {
+  /** Explicit aggregation into one profile per group. False requires unique series rows. */
+  summary?: false | "mean" | "median";
+  /** Explicit min-max normalization of each selected dimension across the resulting profiles. Constant dimensions map to zero. */
+  normalize?: false | "minmax";
   fields: readonly [string, string, string, ...string[]];
   as?: { key?: string; value?: string };
 }
@@ -39794,7 +39930,7 @@ export type ScaleType =
  Expand ScopedActionTarget
 
 ```typescript
-export interface ScopedActionTarget { childPath: readonly string[]; id?: string; }
+export interface ScopedActionTarget { childPath: readonly string[]; id?: string; /** Persist this action in a facet source, then regenerate its cells. */ facetSource?: true; }
 ```
 
 ### `SecondaryPositionEncodingOptions` {#type-secondarypositionencodingoptions}
@@ -41588,7 +41724,7 @@ grouped line paths, and two concrete legends.
 
 ## `editGraphics({ target, property, value | remove })`
 
-Sets one validated concrete property or removes one named graphic subtree.
+Sets one validated concrete property or atomically removes named graphic subtrees. For removal only, `target` can be a non-empty array of IDs. Duplicate and overlapping subtrees are removed once; every target is validated before changing the program. Root Canvas and generated item removal remain invalid.
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "points"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
@@ -42893,7 +43029,9 @@ Call `createAdjacentPlot` on a complete chart to add a new view to its left, rig
 top or bottom. By default it creates a line using the source fields and aggregation.
 Supply `plot: { action: "createScatterPlot", options: { x: "month", y: "sales" } }`
 (or another native constructor) to select a different chart. All native constructor families can infer their source data and unambiguous positional
-roles, including original fields behind statistical plots. Supply native options
+roles, including original fields behind statistical plots. `plot.inherit: { color: false }`
+keeps the new chart uncolored when `plot.options.color` is omitted; the same switch
+is available for `createLayerPlot`. Explicit colors still take precedence. Supply native options
 for any role that cannot be inferred, such as a second Dumbbell measure. The new chart
 has independent data and appearance; use `createOverlay` when it should follow results.
 Input tables remain available in the new view even when its chart uses a summary, so a
@@ -42966,7 +43104,11 @@ mark IDs is sufficient. This is one public action and one root trace entry.
 An All control should enumerate the explicit compatible targets. No wildcard silently
 changes unrelated marks. A linked overlay follows source positions; edit its source
 for geometry and target the overlay for independent appearance. Generated facet cells
-are not persistent edit targets: select the facet view and use `editFacetSource`.
+are not persistent edit targets. Select the facet view and use `editFacetSource`,
+or include `facetSource: true` in its scoped selector. For example an opacity edit
+can atomically target `[{ childPath: ["facets"], id: "plot", facetSource: true },
+{ childPath: ["detail"], id: "plot" }]`. The facet source is revised and every cell
+is regenerated; the ordinary view receives the same native action directly.
 The Basic entry point and low-level primitives retain their original target contracts.
 
 ## Edit the layout
@@ -43179,7 +43321,12 @@ results**, such as stacked bar endpoints. Use `createLayerPlot` for independent
 observations/distributions, such as Beeswarm + Box or Violin + Box + Strip.
 Different units or coordinates belong in an adjacent chart. In particular,
 histogram counts, density and cumulative probability cannot share one height
-scale. A Rug can reuse only their measurement axis.
+scale. A Rug can reuse only their measurement axis. Horizontal categorical lines and
+aggregate lines can layer over horizontal bars with matching measurement units.
+Grouped, stacked and overlaid layers may share one value scale; normalized or
+centered policies cannot be mixed. A category-positioned Violin density silhouette
+has no unique endpoint per category, so `createOverlay` rejects that source and
+`describeAction` reports the same incompatibility. Use an independent native layer.
 
 Preflight uses constructor roles without rendering all candidates. Native
 constructors still validate data-dependent conditions when invoked. Layering
@@ -44305,7 +44452,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:68492f08d9dc2cc212f82036b2c5ab7874963e6bca3be3e17742b7ab1e3486ab` |
+| Contract fingerprint | `sha256:7d1af3a0f47a6cacce7c2670ed2badfb56ebb801a73d3cb7cd8188de06e9fbf4` |
 | Example and dataset source | `ab206c446ae5010eecfd859427775c4785d8aed4` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

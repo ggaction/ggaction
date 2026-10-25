@@ -27,16 +27,6 @@ function copyLegendConfig(program, source) {
   return next;
 }
 
-function removeNamespacedGraphics(program, namespace, ids) {
-  let next = program;
-  for (const id of ids) {
-    const target = namespaceGraphicId(namespace, id);
-    if (next.graphicSpec.objects[target] !== undefined) {
-      next = next.editGraphics({ target, remove: true });
-    }
-  }
-  return next;
-}
 
 function legendTranslation(prepared, plot, layout) {
   if (layout.legend?.translation !== undefined) return layout.legend.translation;
@@ -175,7 +165,13 @@ export function applyFacetGuideComposition(program, { layout, plot, synchronizeC
   }
   const prepared = prepareSharedFacetLegend(program);
   const ownership = prepareFacetGuideOwnership(program, layout.children, prepared);
-  let next = program;
+  const removals = new Set();
+  const remove = (namespace, ids) => {
+    for (const id of ids) {
+      const qualified = namespaceGraphicId(namespace, id);
+      if (program.graphicSpec.objects[qualified]) removals.add(qualified);
+    }
+  };
   for (const cell of layout.children) {
     const namespace = `${program.compositionSpec.id}-${cell.id}`;
     const childPlan = ownership.children[cell.id];
@@ -184,19 +180,27 @@ export function applyFacetGuideComposition(program, { layout, plot, synchronizeC
     // policy still removes each local copy while retaining hue legends.
     for (const [owner, config] of Object.entries(program.children[cell.id].markConfigs)) {
       if (!config.gradientPlot) continue;
-      next = removeNamespacedGraphics(next, namespace,
+      remove(namespace,
         ["DensityLegend", "DensityLegendLabels", "DensityLegendTitle"].map(suffix => `${owner}${suffix}`));
     }
     const axisOwners = cartesianAxisOwners(program.children[cell.id]);
     for (const axisId of childPlan.removeAxes) {
       const owner = axisOwners.find(owner => owner.id === axisId);
-      next = removeNamespacedGraphics(next, namespace, axisGraphicIds(owner.channel, axisId));
+      remove(namespace, axisGraphicIds(owner.channel, axisId));
     }
     for (const [axisId, components] of Object.entries(childPlan.removeAxisComponents ?? {})) {
       const owner = axisOwners.find(owner => owner.id === axisId);
       const ids = axisGraphicIds(owner.channel, axisId);
-      next = removeNamespacedGraphics(next, namespace, components.map(component => ids[["line", "ticks", "labels", "title"].indexOf(component)]));
+      remove(namespace, components.map(component => ids[["line", "ticks", "labels", "title"].indexOf(component)]));
     }
+    if (childPlan.removeLegends.length > 0) remove(namespace, allLegendGraphicIds(childPlan.removeLegends));
+  }
+  // All ownership removals are independent. Rebuild the immutable graphic map
+  // once, rather than copying every panel for each hidden guide component.
+  let next = removals.size ? program.editGraphics({ target: [...removals], remove: true }) : program;
+  for (const cell of layout.children) {
+    const namespace = `${program.compositionSpec.id}-${cell.id}`;
+    const axisOwners = cartesianAxisOwners(program.children[cell.id]);
     if (cell.footerShift !== undefined) {
       for (const owner of axisOwners.filter(owner => owner.channel === "x")) {
         for (const [index, component] of ["line", "ticks", "labels", "title"].entries()) {
@@ -212,13 +216,6 @@ export function applyFacetGuideComposition(program, { layout, plot, synchronizeC
           }
         }
       }
-    }
-    if (childPlan.removeLegends.length > 0) {
-      next = removeNamespacedGraphics(
-        next,
-        namespace,
-        allLegendGraphicIds(childPlan.removeLegends)
-      );
     }
   }
   if (prepared === undefined) {

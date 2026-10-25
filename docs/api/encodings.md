@@ -80,7 +80,7 @@ The tables below are generated from the same reviewed capability registry used b
 | --- | --- | --- | --- | --- |
 | `encodeSize` | point | quantitative, nominal, ordinal | linear, log, sqrt, pow, quantize, quantile, threshold; ordinal for categories | row-owned point; range values are areas; remove explicit radius first |
 | `encodeShape` | point | nominal | ordinal | row-owned point; conflicts with explicit constant shape |
-| `encodeOpacity` | point, line, rule, bar | quantitative or constant | linear for field; none for constant | point/rule item, complete line series, or final bar cell; values within one series/cell must agree |
+| `encodeOpacity` | point, line, area, rule, bar, rect | quantitative or constant | linear for field; none for constant | point/rule/rect item, complete Line/Area series, or final bar cell; values within one series/cell must agree |
 | `encodeStrokeWidth` | line, rule | quantitative or constant | linear, log, sqrt, pow, symlog for field; none for constant | complete line series or rule item; width in logical pixels |
 | `encodeStrokeDash` | line, rule | nominal or constant | ordinal for field; none for constant | complete line series or rule item; series values must agree |
 | `encodeAngle` | point, tick | quantitative or constant | none | item; clockwise degrees; circles retain the angle as a visual no-op |
@@ -102,7 +102,7 @@ The tables below are generated from the same reviewed capability registry used b
 | Discretized color interval | point, aggregate bar, rect, tick | quantize/quantile/threshold color; rectangle swatches |
 | Discretized stroke interval | point, line, area, bar, rect, arc, rule, tick | quantize/quantile/threshold stroke; outline-colored interval symbols |
 | Size | point | size; continuous numeric samples or every discrete interval; point glyph symbol |
-| Opacity | point, line, bar | quantitative opacity samples; representative point symbol even for line consumers; Rule opacity has no legend |
+| Opacity | point, line, area, bar, rect | quantitative opacity samples; representative point symbol even for Line and Area consumers; Rule opacity has no legend |
 | Stroke width | line, rule | quantitative strokeWidth samples; line symbol |
 
 | Axis family | Create | Edit | Editable components |

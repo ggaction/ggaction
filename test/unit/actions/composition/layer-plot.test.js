@@ -114,3 +114,19 @@ test('explicit extra endpoint shares the source scale and retains readable multi
   assert.ok(createTransitionScene(q,{format:'canvas'}).nodes.length>0);
  }
 });
+
+test('a Line layer inherits exact numeric Area aggregation and shares its coordinates',()=>{
+ const values=[{year:2010,value:6},{year:2000,value:1},{year:2000,value:3}];
+ const p=chart().createCanvas({plot:{width:300,height:200},margin:70}).createData({id:'raw',values})
+   .createSummaryData({id:'summary',source:'raw',groupBy:['year'],aggregates:[{op:'mean',field:'value',as:'value'}]})
+   .createAreaPlot({id:'area',data:'summary',x:{field:'year',fieldType:'quantitative'},y:'value'});
+ const before=serializeProgram(p),q=p.createLayerPlot({id:'line',source:'area',plot:{action:'createLinePlot'}});
+ const source=getPlotComposition(q,{target:'area'}),line=getPlotComposition(q,{target:'line'});
+ assert.deepEqual(line.channels.y.measurement.operations,['mean']);
+ assert.equal(line.channels.x.bin,undefined);
+ assert.equal(line.channels.x.scale,source.channels.x.scale);
+ assert.equal(line.channels.y.scale,source.channels.y.scale);
+ assert.equal(q.graphicSpec.objects.line.items[0].properties.commands.length,2);
+ assert.equal(serializeProgram(p),before);
+ assert.deepEqual(createTransitionScene(deserializeProgram(serializeProgram(q)),{format:'canvas'}),createTransitionScene(q,{format:'canvas'}));
+});

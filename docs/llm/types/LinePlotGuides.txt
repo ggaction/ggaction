@@ -1,0 +1,6 @@
+type LinePlotGuides<Continuous extends "horizontal" | "vertical"> = Omit<CPathGuides, "legend" | "grid"> & {
+  grid?: false | (Omit<CartesianGridOptions, Continuous> & {
+    [Direction in Continuous]?: boolean | (Omit<GridDirectionOptions, "bandPosition"> & { bandPosition?: never });
+  });
+  legend?: false | (Omit<PathLegendOptions, "order"> & { order?: LegendValueOrder | { channel: Continuous extends "horizontal" ? "x" : "y"; values?: never } });
+};

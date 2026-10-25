@@ -30,7 +30,11 @@ order. The first action stores valid incomplete semantic and scale state while
 the path remains empty; the second completes the same final layer, resolved
 scales, and graphics in both orders. Aggregate y lines are different: their
 grain requires categorical, temporal, or binned quantitative x. Unbinned
-quantitative x does not accept aggregate y.
+quantitative x does not accept aggregate y. Horizontal lines support quantitative
+x with nominal/ordinal y, including aggregate x per y category. The same derivation
+preserves category order, grouping and visible endpoints in both orientations.
+Categorical Y may use a band horizontal grid; a quantitative axis cannot use band
+grid positioning.
 
 ### Gaps
 

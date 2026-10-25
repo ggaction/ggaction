@@ -1,4 +1,4 @@
-export type AdjacentPlotSpecification =
+export type AdjacentPlotSpecification = (
   | { action: "createScatterPlot"; options?: AdjacentConstructorOptions<CreateScatterPlotOptions> }
   | { action: "createLinePlot"; options?: Partial<AdjacentConstructorOptions<CreateLinePlotOptions>> }
   | { action: "createBarPlot"; options?: Partial<AdjacentConstructorOptions<CreateBarPlotOptions>> }
@@ -27,5 +27,9 @@ export type AdjacentPlotSpecification =
   | { action: "createPolarLinePlot"; options?: AdjacentConstructorOptions<CreatePolarLinePlotOptions> }
   | { action: "createRadarPlot"; options?: AdjacentConstructorOptions<CreateRadarPlotOptions> }
   | { action: "createParallelCoordinates"; options?: AdjacentConstructorOptions<CreateParallelCoordinatesOptions> }
-  | { action: "createTextPlot"; options?: AdjacentConstructorOptions<CreateTextPlotOptions> };
-/** A native constructor with positional/data decisions inferred from the source. */
+  | { action: "createTextPlot"; options?: AdjacentConstructorOptions<CreateTextPlotOptions> }) & { inherit?: { color?: boolean } };
+/** A native constructor with positional/data decisions inferred from the source.
+ * Omitted color is inherited only when valid at the new plot's grain. Line and
+ * Polar Line require one color value per series; otherwise the default is a
+ * single color. Explicit color/groupBy options remain validated and authoritative.
+ */

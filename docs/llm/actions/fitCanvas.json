@@ -69,6 +69,11 @@
   },
   "options": [
     {
+      "name": "align",
+      "required": false,
+      "type": "\"center\" | \"preserve\" | undefined"
+    },
+    {
       "name": "padding",
       "required": false,
       "type": "number | undefined"
@@ -100,9 +105,9 @@
     }
   ],
   "callPatterns": [
-    "fitCanvas({ target?, padding?, minPlotWidth?, minPlotHeight?, iterationLimit?, overflow? })"
+    "fitCanvas({ target?, align?, padding?, minPlotWidth?, minPlotHeight?, iterationLimit?, overflow? })"
   ],
-  "snippet": "program.fitCanvas({ padding: 1 })",
+  "snippet": "program.fitCanvas({ align: \"center\" })",
   "errors": [],
   "route": "/reference/actions/charts-data/#fitcanvas"
 }

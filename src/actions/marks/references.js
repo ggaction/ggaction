@@ -410,14 +410,16 @@ function resolvePopulationValues(
     const { field } = resolveBoundPopulation(program, source, config, referenceId);
     if (field !== undefined) return strictFieldValues(dataset.values, field,
       `Statistical reference "${referenceId}" boundData`);
-    if (source.mark.type === "line" && isAggregate(source.encoding?.y?.aggregate)) {
+    if (source.mark.type === "line" && (isAggregate(source.encoding?.y?.aggregate) || isAggregate(source.encoding?.x?.aggregate))) {
       const x = source.encoding.x;
       const bins = x.bin === undefined ? undefined : resolveLineBins(
         dataset.values, source, findSemanticScale(program, x.scale)
       );
       const derived = deriveLineSeries(dataset.values, source, {
         ...(bins === undefined ? {} : { xBinBoundaries: bins.boundaries }),
-        allowSingleton: true
+        allowSingleton: true,
+        xDomain: program.resolvedScales[source.encoding.x.scale]?.domain,
+        yDomain: program.resolvedScales[source.encoding.y.scale]?.domain
       });
       return config.axis === "x" ? derived.xValues : derived.yValues;
     }

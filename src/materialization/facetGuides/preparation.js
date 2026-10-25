@@ -14,7 +14,6 @@ import { findSemanticScale } from "../../selectors/scales.js";
 import { allLegendGraphicIds } from "../guides/resources.js";
 import { DEFAULT_COLORS } from "../../theme/defaults.js";
 import { resolveLegacyCategoricalLegend } from "./legacyCategorical.js";
-import { automaticLegendOptions } from "../../actions/guides/legends/automatic.js";
 import {
   formatDistinctNumericSamples,
   sampleNumericRange
@@ -105,7 +104,11 @@ function legendRequests(program) {
 }
 
 function prepareAutoLegendSource(child) {
-  const requests = legendRequests(child).map(request => automaticLegendOptions(child, request)).filter(Boolean);
+  // Facet inference has already selected explicit eligible owner/channel pairs
+  // in legendCandidates, including suppression. Invoke the public creator with
+  // those requests; importing its action planner here reverses the dependency
+  // direction and repeats the same policy through a circular action graph.
+  const requests = legendRequests(child);
   if (!requests.length) return child;
   const canvas = child.graphicSpec.objects.canvas;
   let source = child

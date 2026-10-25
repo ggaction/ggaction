@@ -174,7 +174,7 @@ test("validates bar bin and x scale options before changing the program", () => 
 test("rejects ambiguous binned scale sharing", () => {
   const withPoint = chart()
     .createCanvas({ width: 200, height: 200 })
-    .createData({ id: "values", values: [{ value: 1 }, { value: 2 }] })
+    .createData({ id: "values", values: [{ value: 1, other: 11 }, { value: 2, other: 12 }] })
     .createPointMark({ id: "points" })
     .encodeX({
       field: "value",
@@ -185,7 +185,7 @@ test("rejects ambiguous binned scale sharing", () => {
   assert.throws(
     () =>
       withPoint.encodeX({
-        field: "value",
+        field: "other",
         bin: {},
         scale: { nice: true, zero: false }
       }),

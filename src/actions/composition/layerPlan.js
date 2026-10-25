@@ -3,7 +3,8 @@ import { validateUserId } from '../../core/identifiers.js';
 import { validateOptionObject } from '../../core/validation.js';
 import { hasLayer } from '../../selectors/layers.js';
 import { requireMaterializedDataset } from '../../selectors/datasets.js';
-import { normalizeGroupFields } from '../../grammar/pathSeries.js';
+import { normalizeGroupFields, validatePathSeriesAppearance } from '../../grammar/pathSeries.js';
+import { deriveLineSeries, resolveLineBins } from '../../grammar/lineSeries.js';
 import { findSemanticScale } from '../../selectors/scales.js';
 import { plotComposition, measurementUnit } from '../../selectors/plotComposition.js';
 import { inferCompositionOptions, constructorChannels, PLOT_COMPOSITION_ROLES, fieldEncoding } from '../../grammar/plotComposition.js';
@@ -33,7 +34,7 @@ export function planLayerPlot(program,args={}) {
   const placement=args.placement??'front';
   if(!['front','back'].includes(placement)) throw new Error('Layer placement must be front or back.');
   const spec=args.plot;
-  validateOptionObject(spec,['action','options'],'Layer plot');
+  validateOptionObject(spec,['action','options','inherit'],'Layer plot');
   if(!PLOT_COMPOSITION_ROLES[spec?.action]) throw new Error('Layer plot requires a supported native plot.action.');
   const supplied=spec.options??{};
   if(!isPlainObject(supplied)) throw new TypeError('Layer plot options must be an object.');
@@ -43,7 +44,38 @@ export function planLayerPlot(program,args={}) {
   const family=['polar','radial','radar'].includes(kind)?'polar':kind==='parallel'?'parallel':'cartesian';
   if(source.coordinate?.type!==family) throw new Error(`Cannot overlay ${family} and ${source.coordinate?.type} coordinates. Add an adjacent chart instead.`);
   if(supplied.coordinate!==undefined&&supplied.coordinate!==source.coordinate.id) throw new Error('Layer plots must reuse the source coordinate.');
-  const options=inferCompositionOptions(source,spec.action,supplied);
+  const options=inferCompositionOptions(source,spec.action,supplied,spec.inherit);
+  if (['createLinePlot','createPolarLinePlot','createAreaPlot'].includes(spec.action)) {
+    // A point's per-row color does not necessarily describe one whole path.
+    // Reuse the native series contract before deciding whether omitted color
+    // can be inherited; explicit choices must still fail rather than disappear.
+    const color=options.color===undefined?undefined:{fieldType:'nominal',...fieldEncoding(options.color)};
+    const pathColor=color && {...color,scale:color.field===source.channels.color?.field?source.channels.color.scale:color.scale?.id};
+    const path={id,mark:{type:spec.action==='createAreaPlot'?'area':'line',missing:options.line?.missing??'error'},encoding:{...(pathColor?{color:pathColor}:{}),
+      ...(options.groupBy===undefined?{}:{group:{fieldType:'nominal',fields:normalizeGroupFields(options.groupBy)}})}};
+    const rows=requireMaterializedDataset(program,options.data).values;
+    const validate=()=>{
+      if (spec.action==='createAreaPlot' && path.encoding.color && !['nominal','ordinal'].includes(color.fieldType))
+        throw new Error('createAreaPlot color requires a categorical field.');
+      validatePathSeriesAppearance(rows,path,program.semanticSpec.scales);
+      if(path.mark.type==='line') {
+        for(const channel of ['x','y','theta','radius']) if(options[channel])
+          path.encoding[channel]={...fieldEncoding(options[channel]),scale:source.channels[channel]?.scale};
+        deriveLineSeries(rows,path,{scales:program.semanticSpec.scales,
+          xBinBoundaries:path.encoding.x?.bin===undefined?undefined:
+            resolveLineBins(rows,path,findSemanticScale(program,source.channels.x?.scale)).boundaries,
+          xDomain:program.resolvedScales[source.channels.x?.scale]?.domain,
+          yDomain:program.resolvedScales[source.channels.y?.scale]?.domain,
+          thetaDomain:program.resolvedScales[source.channels.theta?.scale]?.domain});
+      }
+    };
+    try {validate();} catch (error) {
+      if (supplied.color!==undefined || options.color===undefined) throw error;
+      delete options.color;
+      delete path.encoding.color;
+      validate();
+    }
+  }
   if(spec.action==='createRegressionPlot' && ['x','y'].some(axis=>source.channels[axis]?.fieldType!=='quantitative')) throw new Error('Regression requires two quantitative source axes.');
   if(spec.action==='createBarPlot' && ['x','y'].some(axis=>options[axis]?.aggregate) && !['x','y'].some(axis=>['nominal','ordinal'].includes(options[axis]?.fieldType)||options[axis]?.bin)) throw new Error('Bar layers require a categorical or binned position.');
   if(kind==='heatmap' && ['x','y'].some(axis=>source.channels[axis]?.fieldType!=='quantitative')) throw new Error('A density heatmap layer requires two quantitative source axes.');
@@ -62,6 +94,9 @@ export function planLayerPlot(program,args={}) {
   if (options.color?.field && ['summaryXY','categoryValue'].includes(kind) && spec.action!=='createIntervalPlot' &&
       options.color.field!==category && !(spec.action==='createViolinPlot'&&options.split?.field===options.color.field))
     throw new Error('This summary color must name its category or an explicit supported split field.');
+  if (kind === 'rug' && spec.inherit?.color !== false && !options.color && source.channels.color?.field) {
+    options.color = { field: source.channels.color.field, fieldType: source.channels.color.fieldType };
+  }
   let deferredColor;
   if(['endpoint','rug'].includes(kind)&&options.color) {
     if(kind==='endpoint' && options.color.field!==options.category.field) throw new Error('Endpoint summary color must be the category field.');

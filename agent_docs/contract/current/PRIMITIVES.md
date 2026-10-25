@@ -129,7 +129,7 @@ Concrete rectangle의 outline은 네 모서리 모두 closed join을 갖는다. 
 ## `editGraphics`
 
 - Signature: `editGraphics({ target, property, value }) | editGraphics({ target, remove: true })`.
-- `target`: tree 어디에 있는 existing named graphic ID 또는 generated item ID(`points:1`).
+- `target`: assignment는 existing named graphic ID 또는 generated item ID(`points:1`). Removal은 named ID 하나 또는 비어 있지 않은 named ID 배열이다. 배열은 atomic하게 검증하며 중복·중첩 subtree는 한 번만 제거한다. 하나라도 unknown/generated item/root Canvas이면 전체 요청을 거부한다.
 - `property`: selected graphic type가 지원하는 concrete property. 공통 opaque style bag은 허용하지 않는다.
 - `value`
   - single graphic: property schema에 맞는 scalar, nested array 또는 object.
@@ -152,7 +152,7 @@ Concrete rectangle의 outline은 네 모서리 모두 closed join을 갖는다. 
 
 ### Formal values — `editGraphics`
 
-- Implemented: assignment `editGraphics({ target: UserId | GeneratedItemId; property: GraphicPropertyForTarget; value: GraphicValueForProperty })` 또는 named-subtree removal `editGraphics({ target: UserId; remove: true })`; 두 mode는 mutually exclusive다.
+- Implemented: assignment `editGraphics({ target: UserId | GeneratedItemId; property: GraphicPropertyForTarget; value: GraphicValueForProperty })` 또는 named-subtree removal `editGraphics({ target: UserId | readonly UserId[]; remove: true })`; 두 mode는 mutually exclusive다.
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 - Maybe Future (NOT IMPLEMENTED): multi-property dictionary/batch edit.

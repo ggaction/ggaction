@@ -114,6 +114,13 @@ function ownedDerivedData(program, ids) {
       candidates.add(dataset.id);
     }
   }
+  // Release leaf transforms before their complete-case input chain.
+  for (const id of ids) {
+    const config = program.markConfigs[id] ?? {};
+    for (const data of config.alignedPositionData ?? []) candidates.add(data);
+    for (const data of config.raincloudPlot?.ownedData ?? config.endpointPlot?.ownedData ?? []) candidates.add(data);
+    for (const data of [...(config.radarPlot?.ownedData ?? [])].reverse()) candidates.add(data);
+  }
   return candidates;
 }
 

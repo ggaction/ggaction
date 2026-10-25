@@ -126,3 +126,15 @@ test('faceting after deletion can infer a new size legend without recreating col
     .facet({field:'g',columns:2,guides:{legend:'shared'}});
   assert.deepEqual(channels(q),['size']);
 });
+
+test('facet automatic inference filters suppressed color before creating new categorical owners',()=>{
+  for (const channel of ['shape','stroke']) {
+    const p=base().encodeColor({field:'n',fieldType:'quantitative'})
+      .createLegend({channels:['color']}).removeLegend({channels:['color'],suppress:true});
+    const q=p[channel==='shape'?'encodeShape':'encodeStroke']({field:'g',fieldType:'nominal'})
+      .facet({field:'g',columns:2,guides:{legend:'shared'}});
+    assert.deepEqual(channels(q),[channel]);
+    assert.deepEqual(channels(roundtrip(q)),[channel]);
+    assert.ok(Object.values(q.children).every(child=>child.guideConfigs.suppressedLegends.plot.channels.includes('color')));
+  }
+});

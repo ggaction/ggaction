@@ -13,7 +13,7 @@ const DATA_VALUE_KEYS = new Set([
 const DATA_SOURCE_CONFIGS = new Set([
   "boxPlot", "density", "ecdfPlot", "endpointPlot", "errorBand", "errorBar",
   "gradientPlot", "horizon", "intervalPlot", "markFilter", "raincloudPlot",
-  "regression", "violinPlot"
+  "regression", "violinPlot", "radarPlot"
 ]);
 const MARK_ID_KEYS = new Set([
   "bandId", "bodyId", "centerId", "connectorId", "intervalId", "lineId",

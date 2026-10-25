@@ -6,7 +6,7 @@ import { compositionTitleLayout, materializeCompositionTitle } from "./compositi
 import { resolveGraphicBounds } from "../layout/canvas.js";
 import { resolveSharedCompositionChildren } from "./compositionScales.js";
 import { resolvePlacedPlotBounds } from "../layout/composition.js";
-import { freezeOwned } from "../core/immutable.js";
+import { cloneAndFreeze, freezeOwned } from "../core/immutable.js";
 import {
   requireSingleOrderedGraphicByType
 } from "../grammar/schemas/graphicTree.js";
@@ -136,8 +136,11 @@ export function prepareCompositionSnapshots(program) {
       ...(spec.align === "plot" ? { plot: compositionPlotBounds(children[id]) } : {}) })),
     gap: spec.gap, align: spec.align, padding });
   const sharedLegend = sharedCompositionColorLegend(program, children);
-  const plot = resolvePlacedPlotBounds({ placements: baseLayout.children,
-    plots: baseLayout.children.map(({ id }) => ({ id, ...compositionPlotBounds(children[id]) })) });
+  // Ordinary Canvas compositions also accept low-level graphical programs
+  // with no semantic plot margins. Only collected, plot-anchored guides need
+  // this data-region measurement; start/center/end layout uses child Canvases.
+  const plot = sharedLegend ? resolvePlacedPlotBounds({ placements: baseLayout.children,
+    plots: baseLayout.children.map(({ id }) => ({ id, ...compositionPlotBounds(children[id]) })) }) : undefined;
   const retained = sharedLegend ? retainedCompositionBounds(program, children, baseLayout, sharedLegend) : [];
   const { layout, frame: legendFrame } = layoutCompositionLegend(baseLayout, plot, sharedLegend, title, retained);
   const result = { children, layout, title, sharedLegend, legendFrame, titleConfig: program.titleConfig, semanticTitle: program.semanticSpec.title };
@@ -180,47 +183,28 @@ function resolveSnapshotPlacement(program, placement, layout) {
   });
 }
 
-function itemDefinitions(object) {
-  return object.items.map(item => ({
-    type: item.type ?? object.type,
-    properties: item.properties
-  }));
-}
-
 export function attachSnapshotObject(program, snapshot, id, parent) {
-  const object = snapshot.objects[id];
-  let next = program.createGraphics({
-    id,
-    type: object.type,
-    parent,
-    ...(object.items !== undefined && object.type !== "collection"
-      ? { length: object.items.length }
-      : {})
-  });
-  for (const [property, value] of Object.entries(object.properties ?? {})) {
-    next = next.editGraphics({ target: id, property, value });
-  }
-  if (object.items !== undefined) {
-    next = next.editGraphics({
-      target: id,
-      property: "items",
-      value: itemDefinitions(object)
-    });
-  }
-  if (object.clip !== undefined) next = next.editGraphics({target: id, property: "clip", value: object.clip});
-  for (const childId of object.children ?? []) {
-    next = attachSnapshotObject(next, snapshot, childId, id);
-  }
-  return next;
+  // Snapshot input is already materialized by the child domain actions. The
+  // enclosing materializeComposition/facet action owns this concrete transfer;
+  // there is no second semantic compilation or per-property authoring replay.
+  const objects = { ...program.graphicSpec.objects };
+  const attach = key => {
+    if (objects[key] !== undefined) throw new Error(`Graphic "${key}" already exists in the receiving snapshot.`);
+    const object = snapshot.objects[key];
+    if (!object) throw new Error(`Unknown snapshot graphic "${key}".`);
+    objects[key] = cloneAndFreeze(object);
+    for (const child of object.children ?? []) attach(child);
+  };
+  attach(id);
+  const owner = objects[parent];
+  if (!owner || !["canvas", "collection"].includes(owner.type)) throw new Error("Snapshot attachment requires a Canvas or collection parent.");
+  objects[parent] = freezeOwned({ ...owner, children: freezeOwned([...(owner.children ?? []), id]) });
+  return program._clone({ graphicSpec: freezeOwned({ ...program.graphicSpec, objects: freezeOwned(objects) }) });
 }
 
 export function clearCompositionChildren(program) {
   const canvas = program.graphicSpec.objects.canvas;
-  let next = program;
-  for (const id of canvas?.children ?? []) {
-    next = next.editGraphics({ target: id, remove: true });
-  }
-  return next;
+  return canvas?.children?.length ? program.editGraphics({ target: canvas.children, remove: true }) : program;
 }
 
 export function materializeCompositionGraphics(program) {

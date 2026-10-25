@@ -1315,6 +1315,10 @@ Compatible point and line categorical channels stay combined when their domains
 contain the same values, even in different orders. The first selected channel
 owns item order; each symbol still looks up its own scale by value. Independent fields,
 continuous color/stroke, opacity, and stroke width use separate native blocks.
+Adding a new dash channel to an existing color-only line legend preserves its
+appearance. A matching field extends the combined series legend; a different
+field creates a separate dash legend and retains the color block. Repeating an
+already-created channel remains an error.
 Area fill and stroke are independently selectable blocks, including stroke-only
 legends for density and horizon areas.
 For outside top/bottom legends, omitting `offset` places the occupied legend after

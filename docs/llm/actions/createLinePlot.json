@@ -91,16 +91,6 @@
       "type": "string | undefined"
     },
     {
-      "name": "x",
-      "required": true,
-      "type": "LineXPositionChannel"
-    },
-    {
-      "name": "y",
-      "required": true,
-      "type": "LineYPositionChannel"
-    },
-    {
       "name": "color",
       "required": false,
       "type": "LineCategoricalColorChannel<CategoricalColorScaleOptions> | undefined"
@@ -121,9 +111,19 @@
       "type": "(StrokeStyleDetails & { clip?: boolean | undefined; missing?: \"break\" | \"error\" | undefined; strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; tension?: number | undefined; stroke?: string | undefined; opacity?: number | undefined; closed?: false | undefined; }) | undefined"
     },
     {
+      "name": "x",
+      "required": true,
+      "type": "{ field: string; fieldType?: \"quantitative\" | undefined; aggregate?: AggregateOperation | undefined; scale?: NonPointQuantitativePositionScaleOptions | undefined; } | { ...; } | LineXPositionChannel"
+    },
+    {
+      "name": "y",
+      "required": true,
+      "type": "string | (({ field: string; } & ({ fieldType: \"nominal\" | \"ordinal\"; scale?: NonPointCategoricalPositionScaleOptions | undefined; } | { ...; } | { ...; })) & { ...; }) | ({ ...; } & { ...; }) | ({ ...; } & { ...; }) | ({ ...; } & { ...; })"
+    },
+    {
       "name": "guides",
       "required": false,
-      "type": "false | (Omit<CPathGuides, \"grid\" | \"legend\"> & { grid?: false | (Omit<CartesianGridOptions, \"horizontal\"> & { horizontal?: boolean | ... 1 more ... | undefined; }) | undefined; legend?: false | ... 1 more ... | undefined; }) | undefined"
+      "type": "false | LinePlotGuides<\"horizontal\"> | LinePlotGuides<\"vertical\"> | undefined"
     },
     {
       "name": "target",

@@ -66,13 +66,25 @@ Keep an edge anchor while adjusting its position with `editLegend` or `editLegen
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "plot"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Executable complete.** Import chart from ggaction. This complete example includes two observations, an explicit color legend and sufficient margins. Keep the returned shifted program to render the revised position.
 
 <!-- snippet-context:end -->
 
 ```js
-// Fragment: program already owns the color legend for "plot".
-program.editLegend({ target: "plot", channel: "color", position: "bottom", offset: 60, alongOffset: -12 });
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas({ plot: { width: 240, height: 180 }, margin: 130 })
+  .createData({ values: [
+    { x: 1, y: 2, group: "A" },
+    { x: 3, y: 4, group: "B" }
+  ] })
+  .createScatterPlot({ id: "plot", x: "x", y: "y", color: "group", guides: false })
+  .createLegend({ target: "plot", channels: ["color"] });
+
+const shifted = program.editLegend({
+  target: "plot", channel: "color", position: "bottom", offset: 60, alongOffset: -12
+});
 ```
 
 Fine adjustment on the same edge keeps sibling blocks in their existing slots.
@@ -92,7 +104,7 @@ This moves the color block 12 logical pixels left of its normal alignment. Omit 
 | Discretized color interval | point, aggregate bar, rect, tick | quantize/quantile/threshold color; rectangle swatches |
 | Discretized stroke interval | point, line, area, bar, rect, arc, rule, tick | quantize/quantile/threshold stroke; outline-colored interval symbols |
 | Size | point | size; continuous numeric samples or every discrete interval; point glyph symbol |
-| Opacity | point, line, bar | quantitative opacity samples; representative point symbol even for line consumers; Rule opacity has no legend |
+| Opacity | point, line, area, bar, rect | quantitative opacity samples; representative point symbol even for Line and Area consumers; Rule opacity has no legend |
 | Stroke width | line, rule | quantitative strokeWidth samples; line symbol |
 
 <!-- action-capabilities:legends:end -->

@@ -102,6 +102,11 @@
       "type": "false | EndpointLabelOptions | undefined"
     },
     {
+      "name": "missing",
+      "required": false,
+      "type": "\"error\" | \"skip\" | undefined"
+    },
+    {
       "name": "id",
       "required": false,
       "type": "string | undefined"

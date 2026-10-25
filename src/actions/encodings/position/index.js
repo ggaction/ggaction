@@ -1,3 +1,4 @@
+import { rebindAlignedAreaPosition } from './areaAlignment.js';
 import { assertSharedPositionMeaning } from '../../../selectors/plotComposition.js';
 import { stackLayoutMode } from "../seriesLayout.js";
 import { resolveBarGrain } from "../../../grammar/bars/policy.js";
@@ -10,12 +11,31 @@ import { findLayer } from "../../../selectors/layers.js";
 import { findSemanticScale } from "../../../selectors/scales.js";
 import { applyPositionSemantics } from "./apply.js";
 import {
+  resolveTarget,
   applyEncodingScale,
   applyDetachedScaleRematerialization,
   rebindPositionGuides
 } from "../shared.js";
 
 function encodePosition(program, channel, args, operation) {
+  program = rebindAlignedAreaPosition(program, channel, args);
+  if (channel === 'theta' && typeof program.encodeChannels === 'function') {
+    const { layer } = resolveTarget(program, args.target, ['arc', 'line', 'point']);
+    const old = layer.encoding?.theta, color = layer.encoding?.color;
+    const scale = findSemanticScale(program, layer.encoding?.radius?.scale);
+    if (layer.mark.type === 'arc' && scale?.radialMapping && old?.field &&
+        args.field !== old.field && color?.field === old.field &&
+        ['nominal', 'ordinal'].includes(args.fieldType ?? old.fieldType)) {
+      const { target: _target, coordinate, ...theta } = args;
+      if (coordinate !== undefined && coordinate !== layer.coordinate) {
+        throw new Error('encodeTheta cannot move a measured polar mark to a different coordinate.');
+      }
+      return program.editSemantic({ property: `layer[${layer.id}].encoding.color.field`, value: args.field })
+        .encodeChannels({ target: layer.id, channels: {
+        theta, color: { field: args.field, fieldType: args.fieldType ?? old.fieldType }
+      } });
+    }
+  }
   const {
     target,
     layer,
@@ -41,8 +61,16 @@ function encodePosition(program, channel, args, operation) {
     ...(hasField ? { field } : { datum }), fieldType, temporalUnit,
     scale: scale.id, aggregate, bin, stack
   });
-  let next = program
-    .createCoordinate({
+  let next = program;
+  if (previous?.field !== undefined && previous.field !== field && ['theta', 'radius'].includes(channel)) {
+    for (const [id, config] of Object.entries(next.guideConfigs.axis ?? {})) {
+      for (const part of ['ticks', 'labels']) {
+        if (config[part]?.scale !== previous.scale || config[part].mode !== 'values') continue;
+        next = next._withGuideConfig(id, part, { ...config[part], inferredValues: true });
+      }
+    }
+  }
+  next = next.createCoordinate({
       id: coordinate.id,
       type: coordinate.type,
       layers: [target]
@@ -76,7 +104,7 @@ function encodePosition(program, channel, args, operation) {
   }
   next = applyEncodingScale(next, scale, requestedScale, {
     reassignment: previous?.scale === scale.id,
-    allowTypeChange: layer.mark.type === "area"
+    allowTypeChange: layer.mark.type === "area" || previous?.field === field && previous?.fieldType === fieldType
   });
   if (["bar", "area"].includes(layer.mark.type) && Object.hasOwn(args, "stack") && args.stack !== undefined) {
     next = next.editSemantic({ property: `layer[${target}].layout.mode`, value: stackLayoutMode(args.stack) });

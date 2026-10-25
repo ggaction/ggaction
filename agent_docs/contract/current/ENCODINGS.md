@@ -2,6 +2,21 @@
 
 Current direct-action contracts for this domain. Shared notation and lifecycle rules live in [`../README.md`](../README.md).
 
+## Position changes and derived alignment
+
+When `encodeX`/`encodeY` replaces an Area's completed independent key, it binds
+Overlay areas to the observed source rows. Synthetic rows for the previous key
+are never reinterpreted as measurements. For stacked/fill areas, a distinct new
+key with unique group/key rows is completed again using the existing fill policy.
+The action rejects a measurement used as the completed key, a group used as its
+own position, or duplicate group/key rows requiring a new aggregation decision.
+It does not aggregate summary rows again. These rejections are immutable and
+explain the incompatible grain. Other consumers of the old completed data stay
+unchanged. Changing a polar field resets inferred tick/label samples to the new
+domain while preserving visual styles. For measured sectors, color follows a
+changed theta category when it previously encoded that same category; explicitly
+different color roles remain unchanged.
+
 ## Shared scale option contract
 
 공유 scale의 domain/range를 갱신하면 변경한 target뿐 아니라 모든 compatible consumer와
@@ -205,7 +220,7 @@ Source-owned Text의 inherited aliases는 domain, guide inference/rebinding, sca
   지원 불가 pair는 거부한다. Scale의 자동 zero 결정도 role이 완성될 때 적용한다.
 - Line order independence: direct quantitative line은 y가 아직 없어도 x semantic과 scale을 저장한다.
   `encodeY`가 compatible quantitative pair를 완성할 때 materialize하며 y→x와 동일한 final
-  layer/resolved scale/graphic을 만든다. Aggregate y line은 categorical/temporal x 또는 binned quantitative x를
+  layer/resolved scale/graphic을 만든다. Aggregate y line은 categorical/temporal x 또는 quantitative x를
   요구한다. Binned x는 각 resolved bin midpoint를 vertex로 사용하고 y aggregate를 bin 및 series grain에서
   계산하며 path, x domain과 y domain은 하나의 boundary set을 공유한다.
 - Layered rule datum: inherited position provenance가 있는 rule에 datum x를 작성하면 secondary endpoint가
@@ -344,9 +359,10 @@ type AggregateOperation =
 - Line order independence: direct quantitative line은 x가 아직 없어도 y semantic과 scale을 저장하고,
   compatible x가 완성되면 x→y와 동일한 final line을 materialize한다. Complete direct quantitative pair는
   row grain을 보존하고 x ascending/source-order tie로 정렬하며 같은 x의 y를 암묵적으로 합계 내지 않는다.
-  따라서 concrete path와 automatic y domain은 항상 같은 row values를 사용한다. Aggregate y는 temporal x 또는
-  binned quantitative x와 함께 final grain을 만든다. Latter는 resolved bin별 summary와 midpoint vertex를 만들고,
-  unbinned quantitative x와 aggregate y 조합은 명시적 validation error다.
+  따라서 concrete path와 automatic y domain은 항상 같은 row values를 사용한다. Aggregate y는 categorical,
+  temporal 또는 quantitative x와 함께 final grain을 만든다. Unbinned quantitative x는 정확히 같은 관측값과
+  series별로 집계하고 숫자 순서로 연결한다. Bin을 명시하면 resolved bin별 summary와 midpoint vertex를 만든다.
+  Horizontal aggregate x와 quantitative/temporal y도 축을 전치해 같은 규칙을 사용한다.
 - Layered rule datum: inherited position provenance가 있는 rule에 datum y를 작성하면 secondary endpoint가
   없는 경우 inherited x branch만 제거해 horizontal full-span을 만든다. Explicit data나 field y는 이 정리를
   적용하지 않는다.
@@ -1457,14 +1473,16 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - Signature: `encodeOpacity({ value, target? } | { field, target?, fieldType?, scale? })`
 - 상수로 전환할 때 target이 소유한 opacity legend만 제거하며 다른 layer의 범례는 보존한다.
 - `value`: field와 mutually exclusive인 finite `[0, 1]` number.
-- `field`: value와 mutually exclusive인 quantitative point/rule/line/bar/rect field. auto linear range는 `[0.2, 1]`이다.
-- `target`: optional point, rule, line, bar 또는 rect ID.
+- `field`: value와 mutually exclusive인 quantitative point/rule/line/area/bar/rect field. auto linear range는 `[0.2, 1]`이다.
+- `target`: optional point, rule, line, area, bar 또는 rect ID.
 - Effect: constant는 graphical config, field는 semantic encoding과 linear scale을 저장한다. 같은 target에
   다시 호출하면 constant↔field 또는 field↔field를 structural copy로 교체하고 target mark/legend를 rematerialize한다.
 - Line은 final-series grain이며 모든 source row의 field 값이 같아야 한다. Width처럼 implicit grouping을
   만들지 않는다. Constant mode는 fieldType/scale 및 opacity-channel selection과 충돌하고 field/own legend만
   정리한다. Field mode는 constant override를 제거한다. Line은 unknown fallback을 지원하지 않는다.
 - Field Line opacity는 scale/Canvas/filter/highlight replay와 sampled opacity legend를 지원한다.
+- Area도 기존 series당 하나의 finite quantitative 값을 사용하며 새 그룹이나 평균을 만들지 않는다. Density의 category/split grain도 같은 원칙을 따른다. 상수↔field 교체, 위치 전 field 지정, scale/Canvas/facet/composition/persistence와 sampled legend replay를 지원한다. `editAreaMark({ opacity })`는 field mode와 충돌하며 `encodeOpacity({ value })`로 명시적으로 교체한다. Field 제거 후 기본 opacity는 `0.2`이며 unknown fallback은 지원하지 않는다.
+- Evidence: `test/unit/actions/encodings/area-opacity.test.js` covers exact per-series opacity, immutable replacement/rejection, rendering, incomplete positions, and one public call across faceted Area/Line and ordinary Line targets.
 - Bar는 ranged item 또는 final aggregate/bin/series cell마다 하나의 field 값을 요구하며 opacity로 새로운 그룹을 만들지 않는다. 값이 다른 cell은 거부한다. 상수↔field 전환 시 `barAppearance.opacity`도 정리하며 `editBarMark({ opacity })`는 field mode와 충돌한다. Position 이전의 field 지정, scale/Canvas/persistence replay와 opacity sample legend를 지원한다.
 - Evidence: `test/unit/actions/encodings/bar-opacity.test.js` covers constant/field replacement, aggregate rejection, grouped/ranged/histogram cells, scale/Canvas edits, persistence and legend cleanup.
 - Rect는 discrete/ranged cell의 원본 행마다 opacity를 매핑한다. Rect의 field opacity/width와 scalar `editRectMark`는 충돌하며 같은 encoding 함수의 constant mode로 교체한다. Rect opacity unknown fallback은 지원하지 않는다. Scale/Canvas/persistence 및 sampled legend replay를 지원한다.

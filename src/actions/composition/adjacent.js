@@ -28,7 +28,7 @@ const createAdjacentPlot = /* @__PURE__ */ closedAction({
   const horizontal = ["left", "right"].includes(position);
   const share = { ...normalizeCompositionShares(args.share ?? { [horizontal ? "y" : "x"]: true }) };
   const plot = args.plot ?? { action: "createLinePlot", options: {} };
-  validateOptionObject(plot, ["action", "options"], "Adjacent plot");
+  validateOptionObject(plot, ["action", "options", "inherit"], "Adjacent plot");
   const action = plot.action ?? "createLinePlot";
   if (!ADJACENT_PLOT_ACTIONS.includes(action) || !getWrappedActionMetadata(this[action])) throw new Error(`Unknown adjacent plot action "${action}".`);
   const id = args.id === undefined ? "adjacent" : validateUserId(args.id, "Adjacent view id");
@@ -55,7 +55,7 @@ const createAdjacentPlot = /* @__PURE__ */ closedAction({
     if (input.id !== dataset.id && (input.source || !Array.isArray(input.values))) continue;
     child = child.createData({ id: input.id, values: input.values });
   }
-  const options = { ...inferCompositionOptions(meaning,action,supplied), id, data:dataset.id };
+  const options = { ...inferCompositionOptions(meaning,action,supplied,plot.inherit), id, data:dataset.id };
   const roles=constructorChannels(action,options,meaning);
   if(args.share===undefined) {
     for(const channel of Object.keys(share)) {

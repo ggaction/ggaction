@@ -3,6 +3,7 @@ import { findSemanticScale } from "../selectors/scales.js";
 import { ownership } from "../selectors/markOwners.js";
 import { findCoordinate } from "../selectors/coordinates.js";
 import { hasOrdinalDomain } from "../grammar/scales/types.js";
+import { compositionChannel } from "../selectors/plotComposition.js";
 
 // A facet retains an unpartitioned source recipe at its root. Its resolved
 // source scale is not a displayed scale: aggregation/stacking is recomputed in
@@ -36,9 +37,9 @@ function bindings(program, channel, path = []) {
     }
     const scale = findSemanticScale(program, encoding.scale);
     if (!scale || !program.resolvedScales[scale.id]) throw new Error(`Shared ${channel} requires a materialized scale.`);
-    const meaning = { field: encoding.field, fieldType: encoding.fieldType,
-      aggregateUnit: ["count", "distinct", "valid", "missing"].includes(encoding.aggregate) ? "count"
-        : ["variance", "variancep"].includes(encoding.aggregate) ? "squared" : "value", temporalUnit: encoding.temporalUnit };
+    const role = compositionChannel(program, encoding, layer.data);
+    const meaning = { field: role.field, fields: role.fields, fieldType: role.fieldType,
+      aggregateUnit: role.measurement.unit === "sum" ? "value" : role.measurement.unit, temporalUnit: role.temporalUnit };
     const previous = entries.get(scale.id);
     if (previous && JSON.stringify(previous.meaning) !== JSON.stringify(meaning)) {
       throw new Error(`Shared ${channel} has ambiguous field meaning inside a view.`);

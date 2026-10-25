@@ -11,7 +11,7 @@ import {
   unionConcreteGraphicBounds
 } from "../../../grammar/schemas/graphicBounds.js";
 import { finiteMidpoint } from "../../../grammar/numeric.js";
-import { resolveGraphicBounds } from "../../../layout/canvas.js";
+import { resolveGraphicBounds, canvasOverflowError } from "../../../layout/canvas.js";
 import {
   resolveHorizontalLegendLane,
   resolveHorizontalLegendGroup,
@@ -232,7 +232,8 @@ function edgeKinds(program, edge) {
     (layer, index) => [layer.id, index]
   ));
   return Object.entries(configs)
-    .filter(([kind, config]) => (localLegendPosition(config) === undefined || retainsLegendSlot(config)) && legendGroup(program, config.target) === undefined && legendPosition(program, kind, config) === edge)
+    .filter(([kind, config]) => (localLegendPosition(config) === undefined || retainsLegendSlot(config) ||
+      localLegendPosition(config) === edge) && legendGroup(program, config.target) === undefined && legendPosition(program, kind, config) === edge)
     .sort(([kindA, configA], [kindB, configB]) =>
       (layerOrder.get(configA.target) - layerOrder.get(configB.target)) ||
       (FAMILY_ORDER[kindA] - FAMILY_ORDER[kindB])
@@ -556,6 +557,23 @@ export const rematerializeLegendGroups = /* @__PURE__ */ action(
     for (const [kind, config] of Object.entries(next.guideConfigs.legend ?? {})) {
       const placement = localLegendPlacement(config);
       if (placement === undefined) continue;
+      // Choosing the current outside edge is still a lane placement. Only an
+      // explicit fine offset overrides its packed position; otherwise this
+      // final pass would move an edited block back over its new siblings.
+      if (placement.position === config.position && config.inferredOffset !== false &&
+          ["top", "bottom", "left", "right"].includes(config.position) && !legendGroup(next, config.target)) {
+        const along = placement.alongOffset ?? 0;
+        if (along) {
+          const horizontal = ["top", "bottom"].includes(config.position);
+          const ids = existingIds(next, kind), bounds = unionLegendBounds(next, ids);
+          const dx = horizontal ? along : 0, dy = horizontal ? 0 : along;
+          const shifted = { left: bounds.left + dx, right: bounds.right + dx, top: bounds.top + dy, bottom: bounds.bottom + dy };
+          if (shifted.left < 0 || shifted.top < 0 || shifted.right > canvas.width || shifted.bottom > canvas.height)
+            throw canvasOverflowError("Legend group requires more Canvas space.", [shifted], canvas);
+          for (const id of ids) next = translateGraphic(next, id, dx, dy);
+        }
+        continue;
+      }
       const ids = existingIds(next, kind);
       next = alignLegendTextBoxes(next, ids);
       const group = {placement: {...placement, offset: resolveLegendAxisOffset(next, placement, plot)},

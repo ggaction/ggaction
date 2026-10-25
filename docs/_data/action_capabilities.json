@@ -379,9 +379,11 @@
       "marks": [
         "point",
         "line",
-        "bar"
+        "area",
+        "bar",
+        "rect"
       ],
-      "channels": "quantitative opacity samples; representative point symbol even for line consumers; Rule opacity has no legend"
+      "channels": "quantitative opacity samples; representative point symbol even for Line and Area consumers; Rule opacity has no legend"
     },
     {
       "family": "Stroke width",
@@ -615,12 +617,14 @@
       "marks": [
         "point",
         "line",
+        "area",
         "rule",
-        "bar"
+        "bar",
+        "rect"
       ],
       "fieldTypes": "quantitative or constant",
       "scales": "linear for field; none for constant",
-      "grain": "point/rule item, complete line series, or final bar cell; values within one series/cell must agree"
+      "grain": "point/rule/rect item, complete Line/Area series, or final bar cell; values within one series/cell must agree"
     },
     {
       "action": "encodeStrokeWidth",

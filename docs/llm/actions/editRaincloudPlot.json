@@ -66,6 +66,11 @@
   },
   "options": [
     {
+      "name": "missing",
+      "required": false,
+      "type": "\"error\" | \"skip\" | undefined"
+    },
+    {
       "name": "target",
       "required": false,
       "type": "string | ActionTargetList | ScopedActionTarget | undefined"

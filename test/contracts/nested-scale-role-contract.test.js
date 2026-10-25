@@ -888,9 +888,12 @@ test("derives only role-reachable nested scale type paths", async () => {
   assert.equal(scaleTypes.filter(option => !["createAdjacentPlot", "createLayerPlot"].includes(option.action)).length, 152);
   assert.equal(scaleTypes.filter(option => option.action === "createAdjacentPlot").length, 22);
   assert.equal(scaleTypes.filter(option => option.action === "createLayerPlot").length, 22);
-  assert.equal(scaleTypes.filter(option => !["createAdjacentPlot", "createLayerPlot"].includes(option.action)).reduce((sum, option) => sum + option.values.length, 0), 699);
+  assert.equal(scaleTypes.filter(option => !["createAdjacentPlot", "createLayerPlot"].includes(option.action)).reduce((sum, option) => sum + option.values.length, 0), 701);
   assert.ok(options.get("option-path:createLinePlot.x.scale.type").values.includes("string:band"));
   assert.ok(options.get("option-path:createLinePlot.x.scale.type").values.includes("string:point"));
+  // Horizontal lines add the same categorical position roles on Y.
+  assert.ok(options.get("option-path:createLinePlot.y.scale.type").values.includes("string:band"));
+  assert.ok(options.get("option-path:createLinePlot.y.scale.type").values.includes("string:point"));
   assert.ok(options.get("option-path:encodeColor.scale.type").values.includes("string:log"));
   assert.ok(options.get("option-path:encodeColor.scale.type").values.includes("string:symlog"));
   assert.ok(options.get("option-path:encodeColor.scale.type").values.includes("string:sqrt"));

@@ -5,7 +5,7 @@ import { resolveBarItems, resolveBarItemDefinitions } from "./selection/items/ba
 import { resolvePointItems } from "./selection/items/point.js";
 import { applyItemMissingPolicy } from "../grammar/itemMissing.js";
 import { resolveBarChannels, resolveBarColorLayout } from "../grammar/bars/policy.js";
-import { overlayGroupFields, overlayPositionEncoding } from "../grammar/overlay.js";
+import { overlayGroupFields, overlayPositionEncoding, overlaySourceReason } from "../grammar/overlay.js";
 import { mapContinuousScaleValues, mapOrdinalPositionValues } from "../grammar/scales/index.js";
 import { deriveLineSeries, resolveLineBins } from "../grammar/lineSeries.js";
 import { deriveAreaSeries, deriveCenteredAreaSeries, deriveDensityAreaSeries, layoutDensityAreaSeries } from "../grammar/areaSeries.js";
@@ -63,15 +63,10 @@ function itemGroups(items, source, binding) {
 
 export function resolveOverlaySeries(program, binding, { geometry = true } = {}) {
   const source = requireLayer(program, binding.source);
-  if (findCoordinate(program, source.coordinate)?.type !== "cartesian" ||
-      !["bar", "point", "line", "area"].includes(source.mark.type)) {
-    throw new Error("Overlay source requires a Cartesian bar, point, line, or area mark.");
-  }
-  if (source.derivedBindings?.overlay) throw new Error("Overlay source must be an independent mark.");
-  if (["x", "y"].some(channel => !source.encoding?.[channel]?.scale)) {
-    throw new Error("Overlay source requires complete x and y positions.");
-  }
   const dataset = applyItemMissingPolicy(source, requireMaterializedDataset(program, source.data));
+  const density = findUpstreamTransform(program, dataset, 'density');
+  const unsupported = overlaySourceReason(source, findCoordinate(program, source.coordinate)?.type, density);
+  if (unsupported) throw new Error(unsupported);
   if (["bar", "point"].includes(source.mark.type)) {
     const bar = source.mark.type === "bar";
     if (!bar && !binding.orderBy) throw new Error("Connecting point results requires explicit orderBy x or y.");
@@ -126,11 +121,10 @@ export function resolveOverlaySeries(program, binding, { geometry = true } = {})
     return groups;
   }
   const x = source.encoding.x;
-  const density = findUpstreamTransform(program, dataset, "density");
-  if (density?.placement?.type === "category") throw new Error("Categorically placed density areas do not have a single result endpoint per category.");
   const derived = source.mark.type === "line"
     ? deriveLineSeries(dataset.values, source, { scales: program.semanticSpec.scales,
       xDomain: program.resolvedScales[x.scale]?.domain,
+      yDomain: program.resolvedScales[source.encoding.y.scale]?.domain,
       ...(x.bin ? { xBinBoundaries: resolveLineBins(dataset.values, source, requireSemanticScale(program, x.scale)).boundaries } : {}) })
     : density ? layoutDensityAreaSeries(deriveDensityAreaSeries(dataset.values, source, density), source.layout?.mode ?? source.encoding.color?.layout ?? "overlay")
       : source.encoding.y?.stack === "center" ? deriveCenteredAreaSeries(dataset.values, source)

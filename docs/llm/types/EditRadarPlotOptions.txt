@@ -1,4 +1,4 @@
 export interface EditRadarPlotOptions {
   target?: string;
-  wide: { fields: readonly [string, string, ...string[]] };
+  wide: { fields: readonly [string, string, ...string[]]; summary?: false | "mean" | "median"; normalize?: false | "minmax" };
 }

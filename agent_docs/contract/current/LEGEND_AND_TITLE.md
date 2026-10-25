@@ -53,6 +53,13 @@ type TitleWrap = "word" | "character";
 
 ## `createLegend`
 
+- Adding a new categorical channel to the same line target retains existing legend
+  appearance. A matching field extends the combined series symbol; a different
+  color/dash field uses separate color and series owners, migrating a prior
+  color-only series block when necessary. Repeating an already-created channel
+  still rejects. Owner identity and symbol appearance survive scale, Canvas and
+  persistence replay. Evidence: `test/unit/actions/guides/independent-series-legend.test.js`.
+
 - Combined categorical channels require the same category value set, not identical ordering.
   The first selected channel owns legend order; each channel maps category values through its
   own scale. Different sets still reject. The specialized size-shape recipe retains its own

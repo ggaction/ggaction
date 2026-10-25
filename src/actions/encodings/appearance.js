@@ -3,6 +3,7 @@ import { removeEncoding } from "./remove.js";
 import { canMaterializeBar } from "../../materialization/marks/index.js";
 import { action } from "../../core/action.js";
 import { validatePathSeriesAppearance } from "../../grammar/pathSeries.js";
+import { validatePathGroupAppearance } from "../../materialization/marks/grouping.js";
 import { assertEncodingSelectionCompatibility } from "../../materialization/selection/compatibility.js";
 import {
   readScaleField,
@@ -231,7 +232,7 @@ const encodeOpacity = /* @__PURE__ */ action(
       this,
       args.target,
       APPEARANCE_MARK_TYPES.encodeOpacity,
-      "point, rule, line, bar or rect mark"
+      "point, rule, line, area, bar or rect mark"
     );
     if (hasValue) {
       validateOpacityValue(args.value, "encodeOpacity");
@@ -244,7 +245,7 @@ const encodeOpacity = /* @__PURE__ */ action(
         .clearOpacityEncoding({ target })
         ._withoutMaterializationConfig(["marks", target, "opacity"])
         ._withMarkConfig(target, { ...config, opacity: args.value });
-      if (["line", "rect"].includes(layer.mark.type)) {
+      if (["line", "area", "rect"].includes(layer.mark.type)) {
         return rematerializeEncoding(next, target, "opacity", undefined, layer);
       }
       if (layer.mark.type === "bar") {
@@ -268,13 +269,15 @@ const encodeOpacity = /* @__PURE__ */ action(
       args.scale ?? {}
     );
     const scale = resolveOpacityScaleDefinition(this, requestedScale);
-    if (["line", "rect"].includes(layer.mark.type)) {
+    if (["line", "area", "rect"].includes(layer.mark.type)) {
       if (Object.hasOwn(scale, "unknown")) {
-        throw new Error("Line and Rect opacity do not support unknown fallback.");
+        throw new Error("Line, Area and Rect opacity do not support unknown fallback.");
       }
-      validatePathSeriesAppearance(dataset.values, {
+      const prospective = {
         ...layer, encoding: { ...layer.encoding, opacity: { field: args.field, fieldType } }
-      }, this.semanticSpec.scales);
+      };
+      if (layer.mark.type === "area") validatePathGroupAppearance(this, prospective, dataset);
+      else validatePathSeriesAppearance(dataset.values, prospective, this.semanticSpec.scales);
     }
     readScaleField(dataset.values, args.field, fieldType, {
       allowUnknown: Object.hasOwn(scale, "unknown")

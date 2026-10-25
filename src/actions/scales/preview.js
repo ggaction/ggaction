@@ -63,7 +63,7 @@ function resolveScalePreviewAtBounds(program, id, bounds) {
   const polarFrame = channel === "radius"
     ? resolveSharedRadiusFrame(program, consumers, bounds)
     : undefined;
-  const resolvedScale = resolveScaleMaterialization({ id, scale, channel, consumers, valuesByConsumer,
+  const resolvedScale = resolveScaleMaterialization({ program, id, scale, channel, consumers, valuesByConsumer,
     bounds: ["color", "stroke", "strokeDash", "strokeWidth", "shape", "size", "opacity", "xOffset", "yOffset"].includes(channel)
       ? undefined : bounds,
     resolvedScales: program.resolvedScales, markConfigs: program.markConfigs, polarFrame,

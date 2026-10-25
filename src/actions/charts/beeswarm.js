@@ -6,7 +6,7 @@ import { resolveFacadeId, validateFacadeOptions } from "./shared.js";
 
 const OPTIONS = Object.freeze([
   "id", "data", "coordinate", "x", "y", "color", "size", "shape",
-  "point", "packing", "guides"
+  "point", "packing", "guides", "missing"
 ]);
 const PACKING_OPTIONS = Object.freeze(["maxOffset", "padding", "key", "overflow"]);
 
@@ -47,6 +47,7 @@ export const createBeeswarmPlot = /* @__PURE__ */ action(
     const packing = normalizePacking(args.packing, operation);
     let next = this.createStripPlot({
       id,
+      ...(args.missing === undefined ? {} : { missing: args.missing }),
       ...(args.data === undefined ? {} : { data: args.data }),
       ...(args.coordinate === undefined ? {} : { coordinate: args.coordinate }),
       x: ownerScale(args.x, `${id}X`, `${operation} x`),

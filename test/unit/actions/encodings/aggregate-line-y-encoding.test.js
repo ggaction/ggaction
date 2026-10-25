@@ -211,10 +211,15 @@ test("validates aggregate line y requirements", () => {
     "mean"
   );
   assert.deepEqual(aggregateYPartial.graphicSpec.objects.trends.items, []);
+  const beforeInvalidType = JSON.stringify(aggregateYPartial);
   assert.throws(
     () => aggregateYPartial.encodeX({ field: "year" }),
-    /requires a categorical or temporal field, or a compatible quantitative field/
+    /Field "year" must contain a finite number at row 0/
   );
+  assert.equal(JSON.stringify(aggregateYPartial), beforeInvalidType);
+  const temporal = aggregateYPartial.encodeX({ field: "year", fieldType: "temporal" });
+  assert.equal(temporal.semanticSpec.layers[0].encoding.x.fieldType, "temporal");
+  assert.equal(temporal.graphicSpec.objects.trends.items[0].properties.commands.length, 2);
   assert.throws(
     () => createXEncodedLine([{ year: "2020-01-01", value: 1 }]).encodeY({
       field: "value",

@@ -158,7 +158,7 @@ export type CompositionProgramEntry =
   | ChartProgram
   | { id?: string; program: ChartProgram };
 /** Explicit child paths avoid ambiguous IDs in composed charts. An empty path addresses this view. */
-export interface ScopedActionTarget { childPath: readonly string[]; id?: string; }
+export interface ScopedActionTarget { childPath: readonly string[]; id?: string; /** Persist this action in a facet source, then regenerate its cells. */ facetSource?: true; }
 export type ActionTargetList = readonly [string | ScopedActionTarget, ...(string | ScopedActionTarget)[]];
 /** Full authoring can apply one native action atomically to named resources or views. */
 export type TargetedOptions<T> = T | (T extends unknown ? Omit<T, "target"> & { target: ScopedActionTarget | ActionTargetList } : never);
@@ -203,7 +203,7 @@ export interface ReorderCompositionChildrenOptions {
   order: readonly [string, ...string[]];
 }
 type AdjacentConstructorOptions<T> = T extends unknown ? Partial<Omit<T, "id">> : never;
-export type AdjacentPlotSpecification =
+export type AdjacentPlotSpecification = (
   | { action: "createScatterPlot"; options?: AdjacentConstructorOptions<CreateScatterPlotOptions> }
   | { action: "createLinePlot"; options?: Partial<AdjacentConstructorOptions<CreateLinePlotOptions>> }
   | { action: "createBarPlot"; options?: Partial<AdjacentConstructorOptions<CreateBarPlotOptions>> }
@@ -232,11 +232,16 @@ export type AdjacentPlotSpecification =
   | { action: "createPolarLinePlot"; options?: AdjacentConstructorOptions<CreatePolarLinePlotOptions> }
   | { action: "createRadarPlot"; options?: AdjacentConstructorOptions<CreateRadarPlotOptions> }
   | { action: "createParallelCoordinates"; options?: AdjacentConstructorOptions<CreateParallelCoordinatesOptions> }
-  | { action: "createTextPlot"; options?: AdjacentConstructorOptions<CreateTextPlotOptions> };
-/** A native constructor with positional/data decisions inferred from the source. */
+  | { action: "createTextPlot"; options?: AdjacentConstructorOptions<CreateTextPlotOptions> }) & { inherit?: { color?: boolean } };
+/** A native constructor with positional/data decisions inferred from the source.
+ * Omitted color is inherited only when valid at the new plot's grain. Line and
+ * Polar Line require one color value per series; otherwise the default is a
+ * single color. Explicit color/groupBy options remain validated and authoritative.
+ */
 export type LayerPlotSpecification = {
   [Action in AdjacentPlotSpecification["action"]]: {
     action: Action;
+    inherit?: { color?: boolean };
     options?: Partial<NonNullable<Extract<AdjacentPlotSpecification, { action: Action }>["options"]>> & { guides?: false };
   }
 }[AdjacentPlotSpecification["action"]];
@@ -1332,7 +1337,7 @@ export type EditSemanticOptions =
   | { property: string; remove: true; value?: never };
 export type EditGraphicsOptions =
   | { target: string; property: string; value: unknown; remove?: false }
-  | { target: string; remove: true; property?: never; value?: never };
+  | { target: string | readonly string[]; remove: true; property?: never; value?: never };
 
 export interface TraceNode {
   readonly id: string;
@@ -1503,6 +1508,8 @@ export interface CanvasOptions {
 }
 
 export interface FitCanvasOptions {
+  /** Exact inner plot mode: distribute spare outer space around visible content. */
+  align?: "preserve" | "center";
   /** Minimum fitted margin on every Canvas edge. Defaults to 0. */
   padding?: number;
   /** Required final plot width. Defaults to 160. */
@@ -3180,7 +3187,7 @@ type PointFacadePositionChannel =
     ));
 type LineXPositionChannel =
   | string
-  | ({ field: string; bin?: PositionEncodingBase["bin"] } & (
+  | ({ field: string; bin?: PositionEncodingBase["bin"]; aggregate?: never } & (
       | {
           fieldType?: "quantitative";
           scale?: NonPointQuantitativePositionScaleOptions;
@@ -3210,6 +3217,7 @@ type LineYPositionChannel =
           aggregate?: never;
           scale?: NonPointTemporalPositionScaleOptions;
         }
+      | { fieldType: "nominal" | "ordinal"; aggregate?: never; scale?: NonPointCategoricalPositionScaleOptions }
     ));
 type BandPositionChannel = FacadePositionChannel<
   NonPointZeroSupportingPositionScaleOptions,
@@ -3490,6 +3498,7 @@ export type EndpointLabelOptions = Omit<
   | { field?: never; value: unknown }
 );
 type EndpointPlotBaseOptions = {
+  missing?: "error" | "skip";
   id?: string;
   data?: string;
   coordinate?: string;
@@ -3520,7 +3529,7 @@ export interface CreateDumbbellPlotOptions extends EndpointPlotBaseOptions {
 }
 export type EditEndpointPlotOptions = { target?: string } & Partial<Pick<
   CreateDumbbellPlotOptions,
-  "data" | "coordinate" | "category" | "start" | "end" | "orientation" | "summary"
+  "data" | "coordinate" | "category" | "start" | "end" | "orientation" | "summary" | "missing"
 >> & {
   value?: EndpointValueChannel;
   baseline?: number;
@@ -3649,6 +3658,10 @@ export type RadarGuideOptions = Omit<PolarPathGuideOptions, "axes" | "grid" | "l
   legend?: false | (Omit<PathLegendOptions, "order"> & { order?: LegendValueOrder });
 };
 export interface RadarWideOptions {
+  /** Explicit aggregation into one profile per group. False requires unique series rows. */
+  summary?: false | "mean" | "median";
+  /** Explicit min-max normalization of each selected dimension across the resulting profiles. Constant dimensions map to zero. */
+  normalize?: false | "minmax";
   fields: readonly [string, string, string, ...string[]];
   as?: { key?: string; value?: string };
 }
@@ -3676,7 +3689,7 @@ export type CreateRadarPlotOptions = {
 );
 export interface EditRadarPlotOptions {
   target?: string;
-  wide: { fields: readonly [string, string, ...string[]] };
+  wide: { fields: readonly [string, string, ...string[]]; summary?: false | "mean" | "median"; normalize?: false | "minmax" };
 }
 export type RugMeasureChannel = string | (
   | {
@@ -3739,6 +3752,7 @@ export interface StripBandJitterOptions {
 }
 export type StripJitterOptions = StripPixelJitterOptions | StripBandJitterOptions;
 export type CreateStripPlotOptions = {
+  missing?: "error" | "skip";
   id?: string;
   data?: string;
   coordinate?: string;
@@ -3767,6 +3781,7 @@ export interface BeeswarmPackingOptions {
   overflow?: "error" | "overlap";
 }
 export type CreateBeeswarmPlotOptions = {
+  missing?: "error" | "skip";
   id?: string;
   data?: string;
   coordinate?: string;
@@ -3842,6 +3857,7 @@ export type RaincloudValueChannel = string | {
 };
 export type RaincloudColorChannel = LineCategoricalColorChannel | { value: string };
 export interface CreateRaincloudPlotOptions {
+  missing?: "error" | "skip";
   id?: string;
   data?: string;
   coordinate?: string;
@@ -3856,6 +3872,7 @@ export interface CreateRaincloudPlotOptions {
   guides?: false | CartesianCategoricalPointGuideOptions;
 }
 export interface EditRaincloudPlotOptions {
+  missing?: "error" | "skip";
   target?: string;
   data?: string;
   category?: RaincloudCategoryChannel;
@@ -3899,12 +3916,10 @@ export type CreateAreaPlotOptions = {
   | { valueChannel: "x"; x: Extract<AreaPlotMeasureChannel, { lower: unknown }>; y: AreaPlotIndependentChannel; baseline?: never }
 );
 
-export interface CreateLinePlotOptions {
+interface LinePlotCommonOptions {
   id?: string;
   data?: string;
   coordinate?: string;
-  x: LineXPositionChannel;
-  y: LineYPositionChannel;
   color?: LineCategoricalColorChannel<CategoricalColorScaleOptions>;
   groupBy?: string | readonly [string, ...string[]];
   strokeDash?: BasicStrokeDashChannel;
@@ -3918,18 +3933,20 @@ export interface CreateLinePlotOptions {
     opacity?: number;
     closed?: false;
   };
-  guides?: false | (Omit<CPathGuides, "legend" | "grid"> & {
-    grid?: false | (Omit<CartesianGridOptions, "horizontal"> & {
-      horizontal?: boolean | (Omit<GridDirectionOptions, "bandPosition"> & {
-        /** Line y is continuous; band positioning is available only for categorical x grids. */
-        bandPosition?: never;
-      });
-    });
-    legend?: false | (Omit<PathLegendOptions, "order"> & {
-      order?: LegendValueOrder | { channel: "x"; values?: never };
-    });
+ }
+type LinePlotGuides<Continuous extends "horizontal" | "vertical"> = Omit<CPathGuides, "legend" | "grid"> & {
+  grid?: false | (Omit<CartesianGridOptions, Continuous> & {
+    [Direction in Continuous]?: boolean | (Omit<GridDirectionOptions, "bandPosition"> & { bandPosition?: never });
   });
-}
+  legend?: false | (Omit<PathLegendOptions, "order"> & { order?: LegendValueOrder | { channel: Continuous extends "horizontal" ? "x" : "y"; values?: never } });
+};
+export type CreateLinePlotOptions = LinePlotCommonOptions & (
+  | { x: LineXPositionChannel; y: Exclude<LineYPositionChannel, { fieldType: "nominal" | "ordinal" }>; guides?: false | LinePlotGuides<"horizontal"> }
+  | { x: string | { field: string; fieldType?: "quantitative"; aggregate?: AggregateOperation; scale?: NonPointQuantitativePositionScaleOptions };
+      y: Extract<LineYPositionChannel, { fieldType: "nominal" | "ordinal" }>; guides?: false | LinePlotGuides<"vertical"> }
+  | { x: { field: string; fieldType?: "quantitative"; aggregate: AggregateOperation; scale?: NonPointQuantitativePositionScaleOptions };
+      y: string | (Exclude<AreaPlotIndependentChannel, string> & { aggregate?: never }); guides?: false | LinePlotGuides<"vertical"> }
+);
 
 type BasicHistogramEncoding =
   HistogramEncodingOptions extends infer T
@@ -4650,7 +4667,8 @@ export type OpacityScaleOptions = ScaleFields<
   unknown?: number;
 };
 
-/** Constant or quantitative opacity on Point, Rule, Line, Bar, or row-owned Rect marks. */
+/** Constant or quantitative opacity on Point, Rule, Line, Area, Bar, or row-owned Rect marks.
+ * Line and Area fields must be constant within each existing path series. */
 export type OpacityEncodingOptions =
   | { value: number; field?: never; target?: string; fieldType?: never; scale?: never }
   | {

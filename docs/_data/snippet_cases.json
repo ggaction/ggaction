@@ -163,6 +163,20 @@
     "prerequisites": "Import chart from ggaction. This complete example includes all data and adds a full-width line below an existing pair using an explicit source panel."
   },
   {
+    "id": "legend-fine-positioning",
+    "file": "api/legends.md",
+    "contains": "const shifted = program.editLegend({",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program, shifted",
+    "prerequisites": "Import chart from ggaction. This complete example includes two observations, an explicit color legend and sufficient margins. Keep the returned shifted program to render the revised position.",
+    "rendering": "authoring-only",
+    "expect": {
+      "mark": "plot",
+      "items": 2
+    }
+  },
+  {
     "id": "native-layer-composition",
     "file": "api/composition/editing.md",
     "contains": "const data = Array.from",

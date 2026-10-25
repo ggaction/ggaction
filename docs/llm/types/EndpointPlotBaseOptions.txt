@@ -1,4 +1,5 @@
 type EndpointPlotBaseOptions = {
+  missing?: "error" | "skip";
   id?: string;
   data?: string;
   coordinate?: string;

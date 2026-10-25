@@ -49,12 +49,14 @@ export function resolveTarget(program, requested) {
 
 export const sameValues = sameOrderedValues;
 
-function resolveLegendKind(layer, requestedChannels) {
+function resolveLegendKind(program, layer, requestedChannels) {
   if (sameValues(requestedChannels, ["stroke"])) return "stroke";
   if (["bar", "area", "arc", "rect", "text"].includes(layer.mark.type)) return "color";
   if (
-    layer.mark.type === "point" &&
-    sameValues(requestedChannels, ["color"])
+    sameValues(requestedChannels, ["color"]) &&
+    (layer.mark.type === "point" || program.guideConfigs.legend?.color?.target === layer.id ||
+      (program.guideConfigs.legend?.series?.target === layer.id &&
+       program.guideConfigs.legend.series.field !== layer.encoding.color?.field))
   ) {
     return "color";
   }
@@ -84,7 +86,7 @@ function resolveOrdinalScales(program, scaleIds) {
   return { scales, domain: scales[0].domain };
 }
 
-export function resolveDefinition(program, layer, requestedChannels, requestedTitle, order) {
+export function resolveDefinition(program, layer, requestedChannels, requestedTitle, order, preferredKind) {
   const channels = requestedChannels ?? CHANNELS.filter(
     channel => layer.encoding?.[channel]?.scale !== undefined
   );
@@ -92,7 +94,7 @@ export function resolveDefinition(program, layer, requestedChannels, requestedTi
   if (sizeShape && (layer.mark.type !== "point" || !["nominal", "ordinal"].includes(layer.encoding.size?.fieldType))) {
     throw new Error("Combined size-shape requires one categorical point owner.");
   }
-  const kind = resolveLegendKind(layer, channels);
+  const kind = preferredKind ?? resolveLegendKind(program, layer, channels);
   if (
     !Array.isArray(channels) ||
     channels.length === 0 ||

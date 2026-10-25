@@ -1,3 +1,4 @@
+import { isHorizontalLine } from "../../grammar/lineSeries.js";
 import { findDataset } from "../../selectors/datasets.js";
 import { findLayer } from "../../selectors/layers.js";
 import { findCoordinate } from "../../selectors/coordinates.js";
@@ -46,6 +47,8 @@ export function canMaterializeLine(program, layer) {
       parallel.dimensions?.length >= 2 &&
       parallel.dimensions.every(dimension => dimension.scale !== undefined);
   }
+  if (isHorizontalLine(layer)) return canMaterializeLine(program, { ...layer,
+    encoding: { ...layer.encoding, x: layer.encoding.y, y: layer.encoding.x } });
   const dataset = findDataset(program, layer.data);
   const interval = dataset?.transform?.some(item => item.type === "interval");
   if (hasPolarPositionScales(layer)) {

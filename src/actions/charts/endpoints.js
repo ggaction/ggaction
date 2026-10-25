@@ -1,3 +1,4 @@
+import { prepareFacadeMissingData } from './missing.js';
 import { validateUserId } from "../../core/identifiers.js";
 import { action } from "../../core/action.js";
 import { STROKE_STYLE_PROPERTIES } from "../../grammar/strokeStyle.js";
@@ -24,7 +25,7 @@ import {
 } from "./shared.js";
 
 const COMMON_OPTIONS = Object.freeze([
-  "id", "data", "coordinate", "category", "orientation", "summary", "guides", "labels"
+  "id", "data", "coordinate", "category", "orientation", "summary", "guides", "labels", "missing"
 ]);
 const DOT_OPTIONS = Object.freeze([...COMMON_OPTIONS, "value", "point"]);
 const LOLLIPOP_OPTIONS = Object.freeze([...DOT_OPTIONS, "baseline", "stem"]);
@@ -48,7 +49,7 @@ const LABEL_OPTIONS = Object.freeze([
 const SUMMARY_OPERATIONS = Object.freeze(["mean", "median", "sum", "min", "max"]);
 const EDIT_OPTIONS = Object.freeze([
   "target", "data", "coordinate", "category", "value", "start", "end",
-  "orientation", "summary", "baseline"
+  "orientation", "summary", "baseline", "missing"
 ]);
 
 function normalizeCategory(value, operation) {
@@ -124,9 +125,12 @@ function outputField(id, role) {
   return `__${id}_${role}`;
 }
 
-function prepareData(program, { id, data, category, measures, summary, operation }) {
+function prepareData(program, { id, data, category, measures, summary, operation, missing }) {
+  const prepared = prepareFacadeMissingData(program, { id, source: data,
+    fields: [category.field, ...measures.map(item => item.field)], missing });
+  program = prepared.program; data = prepared.data;
   validateRows(program, data, category.field, measures.map(item => item.field), operation);
-  if (summary === false) return { program, data, measures };
+  if (summary === false) return { program, data, measures, ownedData: prepared.ownedData };
   const derived = `${id}SummaryData`;
   const outputs = measures.map((item, index) => ({
     ...item,
@@ -144,6 +148,7 @@ function prepareData(program, { id, data, category, measures, summary, operation
       }))
     }),
     data: derived,
+    ownedData: prepared.ownedData,
     measures: outputs
   };
 }
@@ -249,10 +254,10 @@ function attachLabels(program, id, labels, defaultField) {
   });
 }
 
-function finish(program, { id, source, data, kind, roles, summary, orientation, options }) {
+function finish(program, { id, source, data, kind, roles, summary, orientation, options, ownedData }) {
   return program._withMarkConfig(id, {
     ...program.markConfigs[id],
-    endpointPlot: { kind, source, data, roles, summary, orientation, options }
+    endpointPlot: { kind, source, data, roles, summary, orientation, options, ownedData }
   });
 }
 
@@ -271,7 +276,7 @@ export const createDotPlot = /* @__PURE__ */ action(
     const guides = normalizeGuides(args.guides, operation);
     const labels = normalizeLabels(args.labels, operation, false);
     const prepared = prepareData(this, {
-      id, data: source, category, measures: [{ ...value, role: "value" }], summary, operation
+      id, data: source, category, measures: [{ ...value, role: "value" }], summary, operation, missing: args.missing
     });
     const finalValue = prepared.measures[0];
     const bindings = positionBindings(id, category, finalValue, orientation, args.coordinate);
@@ -280,7 +285,8 @@ export const createDotPlot = /* @__PURE__ */ action(
     next = applyFacadeGuides(next, guides, id, guides);
     return finish(next, {
       id, source, data: prepared.data, kind: "dot", roles: { category, value }, summary, orientation,
-      options: { id, data: source, coordinate: args.coordinate, category, value, orientation,
+      ownedData: prepared.ownedData,
+      options: { id, data: source, missing: args.missing, coordinate: args.coordinate, category, value, orientation,
         summary, point, guides, labels }
     });
   }
@@ -304,7 +310,7 @@ export const createLollipopPlot = /* @__PURE__ */ action(
     const guides = normalizeGuides(args.guides, operation);
     const labels = normalizeLabels(args.labels, operation, false);
     const prepared = prepareData(this, {
-      id, data: source, category, measures: [{ ...value, role: "value" }], summary, operation
+      id, data: source, category, measures: [{ ...value, role: "value" }], summary, operation, missing: args.missing
     });
     const finalValue = prepared.measures[0];
     const bindings = positionBindings(id, category, finalValue, orientation, args.coordinate);
@@ -323,7 +329,8 @@ export const createLollipopPlot = /* @__PURE__ */ action(
     return finish(next, {
       id, source, data: prepared.data, kind: "lollipop",
       roles: { category, value, baseline, stemId }, summary, orientation,
-      options: { id, data: source, coordinate: args.coordinate, category, value, orientation,
+      ownedData: prepared.ownedData,
+      options: { id, data: source, missing: args.missing, coordinate: args.coordinate, category, value, orientation,
         summary, baseline, point, stem, guides, labels }
     });
   }
@@ -358,7 +365,7 @@ export const createDumbbellPlot = /* @__PURE__ */ action(
         { ...start, scale: sharedScale, role: "start" },
         { ...end, scale: sharedScale, role: "end" }
       ],
-      summary, operation
+      summary, operation, missing: args.missing
     });
     const [finalStart, finalEnd] = prepared.measures;
     const startBindings = positionBindings(id, category, finalStart, orientation, args.coordinate);
@@ -396,7 +403,8 @@ export const createDumbbellPlot = /* @__PURE__ */ action(
     return finish(next, {
       id, source, data: prepared.data, kind: "dumbbell",
       roles: { category, start, end, startId, connectorId }, summary, orientation,
-      options: { id, data: source, coordinate: args.coordinate, category, start, end, orientation,
+      ownedData: prepared.ownedData,
+      options: { id, data: source, missing: args.missing, coordinate: args.coordinate, category, start, end, orientation,
         summary, startPoint, endPoint, connector, guides, labels }
     });
   }
@@ -410,12 +418,12 @@ const KIND_METHOD = Object.freeze({
   dumbbell: "createDumbbellPlot"
 });
 const KIND_ROLES = Object.freeze({
-  dot: new Set(["data", "coordinate", "category", "value", "orientation", "summary"]),
+  dot: new Set(["data", "coordinate", "category", "value", "orientation", "summary", "missing"]),
   lollipop: new Set([
-    "data", "coordinate", "category", "value", "orientation", "summary", "baseline"
+    "data", "coordinate", "category", "value", "orientation", "summary", "baseline", "missing"
   ]),
   dumbbell: new Set([
-    "data", "coordinate", "category", "start", "end", "orientation", "summary"
+    "data", "coordinate", "category", "start", "end", "orientation", "summary", "missing"
   ])
 });
 

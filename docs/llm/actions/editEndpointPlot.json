@@ -73,6 +73,11 @@
       "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
+      "name": "missing",
+      "required": false,
+      "type": "\"error\" | \"skip\" | undefined"
+    },
+    {
       "name": "data",
       "required": false,
       "type": "string | undefined"

@@ -15,7 +15,8 @@ import { noOptions, resolveLayout, activeConfig } from "./layout.js";
 import { normalizeOptions } from "./options.js";
 import { normalizeRecipe, resolveLegendSymbol } from "./recipes.js";
 import { validateLegendChannels } from "../target.js";
-import { createCategoricalLegendFromConfig, reconcileCategoricalSymbols } from "../lifecycle.js";
+import { createCategoricalLegendFromConfig, reconcileCategoricalSymbols,
+  resolveCategoricalLegendRevision, removeLegendKinds } from "../lifecycle.js";
 import { findLayer } from "../../../../selectors/layers.js";
 import { findSemanticScale } from "../../../../selectors/scales.js";
 import { isSizeLegendPoint, resolveSizeLegendConfig } from "../size.js";
@@ -239,6 +240,32 @@ export const createCategoricalLegend = /* @__PURE__ */ action(
   withGuideLayoutValidation(function (args = {}) {
     const config = resolveCategoricalLegendConfig(this, args);
     if (this.semanticSpec.guides.legend?.[config.kind] !== undefined) {
+      const previous = this.guideConfigs.legend?.[config.kind];
+      // A color-only line legend historically occupies the series slot. A
+      // later independent dash encoding needs its own series owner; a matching
+      // field instead extends the original categorical symbol. Only newly
+      // requested channels qualify: repeated createLegend calls remain errors.
+      if (config.kind === "series" && previous?.target === config.target &&
+          previous.channels.every(channel => !config.channels.includes(channel))) {
+        if (previous.field === config.field) {
+          const revision = resolveCategoricalLegendRevision(this, "series", previous,
+            [...previous.channels, ...config.channels]);
+          resolveLayout(this, revision.config);
+          return createCategoricalLegendFromConfig(removeLegendKinds(this, ["series"]),
+            revision.config, revision.order);
+        }
+        if (sameValues(previous.channels, ["color"]) &&
+            this.semanticSpec.guides.legend?.color === undefined) {
+          const revision = resolveCategoricalLegendRevision(this, "series", previous, ["color"], { preferredKind: "color" });
+          if (revision.config.kind === "color") {
+            let next = removeLegendKinds(this, ["series"]);
+            next = createCategoricalLegendFromConfig(next, revision.config, revision.order);
+            resolveLayout(next, config);
+            return createCategoricalLegendFromConfig(next, config,
+              args.order === undefined ? undefined : normalizeLegendOrder(args.order));
+          }
+        }
+      }
       throw new Error(
         `createCategoricalLegend requires a missing legend for ${config.kind}.`
       );
@@ -265,7 +292,10 @@ function resolveRawLegendCreationPlan(program, args = {}, layers = program.seman
   const candidates = args.target === undefined ? layers : layers.filter(layer => layer.id === args.target);
   const independentMark = candidates.length === 1 &&
     ["area", "rect", "bar", "arc", "text", "rule", "tick"].includes(candidates[0].mark?.type);
-  const inferredChannels = independentMark
+  const seriesChannels = candidates.length === 1 && ["line", "point"].includes(candidates[0].mark?.type)
+    ? ["color", "stroke", "shape", "strokeDash"].filter(channel => candidates[0].encoding?.[channel]?.scale !== undefined) : [];
+  const independentSeries = new Set(seriesChannels.map(channel => candidates[0].encoding[channel].field)).size > 1;
+  const inferredChannels = independentSeries ? seriesChannels : independentMark
     ? ["color", "stroke"].filter(channel => candidates[0].encoding?.[channel]?.scale !== undefined)
     : [];
   const channels = args.channels !== undefined ? args.channels
@@ -278,9 +308,10 @@ function resolveRawLegendCreationPlan(program, args = {}, layers = program.seman
   // blocks. Mixed sampled channels likewise cannot use a categorical symbol.
   // Resolve each existing owner before any child action changes the program.
   const point = candidates.length === 1 && candidates[0].mark?.type === "point";
+  const seriesMark = candidates.length === 1 && ["point", "line"].includes(candidates[0].mark?.type);
   const continuousChannel = channel => ["color", "stroke"].includes(channel) &&
     !["ordinal", "band", "point"].includes(findSemanticScale(program, candidates[0]?.encoding?.[channel]?.scale)?.type);
-  const independentPoint = point && ((channels ?? []).some(continuousChannel) || new Set((channels ?? []).filter(channel => !["size", "opacity", "strokeWidth"].includes(channel))
+  const independentPoint = seriesMark && ((channels ?? []).some(continuousChannel) || new Set((channels ?? []).filter(channel => !["size", "opacity", "strokeWidth"].includes(channel))
     .map(channel => candidates[0].encoding?.[channel]?.field)).size > 1);
   if (channels?.length > 1 && (independentPoint || channels.some(c => ["opacity", "strokeWidth"].includes(c)) ||
       independentMark)) {
@@ -299,7 +330,7 @@ function resolveRawLegendCreationPlan(program, args = {}, layers = program.seman
       if (categorical) categorical.push("size");
       else grouped.push(["size"]);
     }
-    const blocks = point ? [...grouped, ...sampled.map(channel => [channel])]
+    const blocks = seriesMark ? [...grouped, ...sampled.map(channel => [channel])]
       : channels.map(channel => [channel]);
     const steps = blocks.flatMap(block => resolveRawLegendCreationPlan(program,
       block.includes("color") && (representation !== undefined || gradient !== undefined) ? { ...args, channels: block }

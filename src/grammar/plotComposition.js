@@ -31,7 +31,12 @@ const merge = (base, supplied) => {
   return merged;
 };
 
-export function inferCompositionOptions(source, action, supplied = {}) {
+export function inferCompositionOptions(source, action, supplied = {}, inherit = {}) {
+  if (!inherit || typeof inherit !== 'object' || Array.isArray(inherit) ||
+      Object.keys(inherit).some(key => key !== 'color') ||
+      inherit.color !== undefined && typeof inherit.color !== 'boolean') {
+    throw new TypeError('Plot inheritance accepts color: true or false.');
+  }
   const kind = PLOT_COMPOSITION_ROLES[action];
   if (!kind) throw new Error(`Unknown plot constructor "${action}".`);
   const c = source.channels;
@@ -65,9 +70,10 @@ export function inferCompositionOptions(source, action, supplied = {}) {
     if (kind === 'histogram' && x?.bin) {
       defaults.maxBins=x.bin.maxBins; defaults.binStep=x.bin.step; defaults.binBoundaries=x.bin.boundaries;
     }
-    if (kind === 'density' && c.color?.field && categorical(c.color)) defaults.groupBy=c.color.field;
+    if (inherit.color !== false && kind === 'density' && c.color?.field && categorical(c.color)) defaults.groupBy=c.color.field;
   } else if (kind === 'rug') {
-    const axis = supplied.y !== undefined || supplied.edge === 'left' || supplied.edge === 'right' || categorical(c.x) ? 'y' : 'x';
+    const axis = supplied.x !== undefined ? 'x' : supplied.y !== undefined ? 'y'
+      : supplied.edge === 'left' || supplied.edge === 'right' || categorical(c.x) ? 'y' : 'x';
     defaults[axis] = plain(c[axis]); defaults.edge = axis === 'x' ? 'bottom' : 'left';
   } else if (kind === 'polar') {
     defaults.theta=plain(c.theta); defaults.radius=plain(c.radius);
@@ -81,7 +87,7 @@ export function inferCompositionOptions(source, action, supplied = {}) {
     else {defaults.category=plain(c.theta); defaults.value=plain(c.radius);}
     if (source.groupBy) defaults.groupBy=source.groupBy;
   } else if (kind === 'parallel') defaults.dimensions=source.dimensions?.map(plain);
-  if (c.color?.field && kind !== 'heatmap' && kind !== 'horizon') {
+  if (inherit.color !== false && c.color?.field && !['heatmap', 'horizon', 'rug'].includes(kind)) {
     const summaryCategoryOnly = ['endpoint','categoryValue','summaryXY'].includes(kind) && action !== 'createIntervalPlot';
     const colorSurvives = !summaryCategoryOnly || c.color.field === category?.field ||
       action === 'createViolinPlot' && supplied.split?.field === c.color.field;
@@ -89,11 +95,14 @@ export function inferCompositionOptions(source, action, supplied = {}) {
     if (action === 'createIntervalPlot' && categorical(c.color) && c.color.field !== category?.field) defaults.groupBy=c.color.field;
   }
   if (action === 'createAreaPlot') {
-    const axis = supplied.valueChannel ?? (categoryAxis === 'y' ? 'x' : 'y'); defaults.valueChannel=axis;
+    // Explicit native X/Y roles follow the native default value channel. The
+    // source orientation only applies when the new roles are inferred.
+    const axis = supplied.valueChannel ?? (supplied.x !== undefined && supplied.y !== undefined ? 'y' : categoryAxis === 'y' ? 'x' : 'y'); defaults.valueChannel=axis;
     if(defaults[axis]) defaults[axis]={field:defaults[axis].field};
   }
-  if (kind==='ecdf' && c.color?.field) defaults.groupBy=[c.color.field];
-  if (action==='createAreaPlot' && c.color?.field) defaults.groupBy=[c.color.field];
+  if (['createLinePlot','createAreaPlot'].includes(action) && source.groupBy) defaults.groupBy=source.groupBy;
+  if (inherit.color !== false && c.color?.field &&
+      (kind==='ecdf' || action==='createAreaPlot' && !defaults.groupBy && categorical(c.color))) defaults.groupBy=[c.color.field];
   const result={...defaults,...supplied};
   for(const key of ['x','y','category','value','theta','radius','color','end']) {
     if (supplied[key] !== undefined && defaults[key] !== undefined) result[key]=merge(defaults[key],supplied[key]);

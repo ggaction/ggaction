@@ -104,6 +104,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `align` | Optional / branch-dependent | `"center" \| "preserve" \| undefined` |
 | `padding` | Optional / branch-dependent | `number \| undefined` |
 | `minPlotWidth` | Optional / branch-dependent | `number \| undefined` |
 | `minPlotHeight` | Optional / branch-dependent | `number \| undefined` |
@@ -2678,6 +2679,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `value` | Required | `EndpointValueChannel` |
 | `point` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `labels` | Optional / branch-dependent | `false \| EndpointLabelOptions \| undefined` |
+| `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
@@ -2723,6 +2725,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `point` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `stem` | Optional / branch-dependent | `(RuleStyleOptions & { clip?: boolean \| undefined; }) \| undefined` |
 | `labels` | Optional / branch-dependent | `false \| EndpointLabelOptions \| undefined` |
+| `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
@@ -2769,6 +2772,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `endPoint` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `connector` | Optional / branch-dependent | `(RuleStyleOptions & { clip?: boolean \| undefined; }) \| undefined` |
 | `labels` | Optional / branch-dependent | `false \| (EndpointLabelOptions & { endpoint?: "both" \| "end" \| "start" \| undefined; }) \| undefined` |
+| `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
@@ -2813,6 +2817,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `category` | Optional / branch-dependent | `EndpointCategoryChannel \| undefined` |
@@ -3059,13 +3064,13 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
-| `x` | Required | `LineXPositionChannel` |
-| `y` | Required | `LineYPositionChannel` |
 | `color` | Optional / branch-dependent | `LineCategoricalColorChannel<CategoricalColorScaleOptions> \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| readonly [string, ...string[]] \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `Omit<{ field: string; value?: undefined; target?: string \| undefined; fieldType?: "nominal" \| "ordinal" \| undefined; scale?: DashScaleOptions \| undefined; }, "target"> \| Omit<...> \| undefined` |
 | `line` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; missing?: "break" \| "error" \| undefined; strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; tension?: number \| undefined; stroke?: string \| undefined; opacity?: number \| undefined; closed?: false \| undefined; }) \| undefined` |
-| `guides` | Optional / branch-dependent | `false \| (Omit<CPathGuides, "grid" \| "legend"> & { grid?: false \| (Omit<CartesianGridOptions, "horizontal"> & { horizontal?: boolean \| ... 1 more ... \| undefined; }) \| undefined; legend?: false \| ... 1 more ... \| undefined; }) \| undefined` |
+| `x` | Required | `{ field: string; fieldType?: "quantitative" \| undefined; aggregate?: AggregateOperation \| undefined; scale?: NonPointQuantitativePositionScaleOptions \| undefined; } \| { ...; } \| LineXPositionChannel` |
+| `y` | Required | `string \| (({ field: string; } & ({ fieldType: "nominal" \| "ordinal"; scale?: NonPointCategoricalPositionScaleOptions \| undefined; } \| { ...; } \| { ...; })) & { ...; }) \| ({ ...; } & { ...; }) \| ({ ...; } & { ...; }) \| ({ ...; } & { ...; })` |
+| `guides` | Optional / branch-dependent | `false \| LinePlotGuides<"horizontal"> \| LinePlotGuides<"vertical"> \| undefined` |
 | `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
@@ -3211,7 +3216,7 @@ The following call patterns are abbreviated examples; the declaration above owns
 
 ```javascript
 createRadarPlot({ id?, data?, coordinate?, category, value, groupBy?, order?, color?, strokeDash?, line?, guides? })
-createRadarPlot({ id?, data?, coordinate?, wide: { fields, as? }, groupBy?, order?, color?, strokeDash?, line?, guides? })
+createRadarPlot({ id?, data?, coordinate?, wide: { fields, as?, summary?, normalize? }, groupBy?, order?, color?, strokeDash?, line?, guides? })
 ```
 
 Create closed Radar paths from validated long rows or an explicit wide-to-long
@@ -3239,14 +3244,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
-| `wide` | Required | `{ fields: readonly [string, string, ...string[]]; }` |
+| `wide` | Required | `{ fields: readonly [string, string, ...string[]]; summary?: "mean" \| "median" \| false \| undefined; normalize?: "minmax" \| false \| undefined; }` |
 
 </details>
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```js
-editRadarPlot({ target?, wide: { fields } })
+editRadarPlot({ target?, wide: { fields, summary?, normalize? } })
 ```
 
 Edit the dimensions and their angular order in an existing wide Radar plot. `fields` must contain
@@ -3267,7 +3272,24 @@ const revised = program.editRadarPlot({
 ```
 
 Missing, duplicate or nonnumeric fields and incompatible targets reject without changing the
-previous program. Editing dimensions does not normalize values: compare columns with compatible units.
+previous program. Omitted `summary` and `normalize` preserve the existing settings. Set
+`summary: "mean"` or `"median"` to aggregate repeated rows by the existing series identity.
+Set `normalize: "minmax"` to normalize each dimension across the resulting profiles; constant
+dimensions map to zero. Set either option to `false` to return to individual observations or
+raw units (individual observations require a unique series identity). Switching normalization
+resets the radius domain to `[0, 1]` or the raw automatic extent; dimension-only edits preserve
+an explicit domain. Original source rows and original measurements remain available.
+
+```js
+const profiles = chart().createCanvas().createData({ values: [
+  { kind: "A", speed: 10, quality: 80, cost: 100 },
+  { kind: "A", speed: 20, quality: 90, cost: 200 },
+  { kind: "B", speed: 30, quality: 70, cost: 150 }
+] }).createRadarPlot({
+  wide: { fields: ["speed", "quality", "cost"], summary: "mean", normalize: "minmax" },
+  groupBy: "kind", color: "kind"
+});
+```
 
 
 ## `createRugPlot`
@@ -3334,6 +3356,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
@@ -3380,6 +3403,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
@@ -3425,6 +3449,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
@@ -3474,6 +3499,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `category` | Optional / branch-dependent | `RaincloudCategoryChannel \| undefined` |

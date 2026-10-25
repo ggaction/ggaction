@@ -51,7 +51,8 @@ const MARK_MATERIALIZATION_POLICIES = Object.freeze({
     acceptsResolvedScales: true,
     positionEncoding: Object.freeze({ incomplete: "scale", scaleFirst: true }),
     encoding: Object.freeze({
-      sharedChannels: Object.freeze(["color", "stroke"]),
+      completeOnly: true,
+      sharedChannels: Object.freeze(["color", "stroke", "opacity"]),
       skipRematerialization: isIntentionallyEmptyArea
     }),
     scaleApplication: Object.freeze({ default: "defer" })

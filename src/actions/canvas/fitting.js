@@ -17,7 +17,8 @@ const OPTIONS = Object.freeze([
   "minPlotWidth",
   "minPlotHeight",
   "iterationLimit",
-  "overflow"
+  "overflow",
+  "align"
 ]);
 const SIDES = Object.freeze(["top", "right", "bottom", "left"]);
 const DEFAULTS = Object.freeze({
@@ -25,7 +26,8 @@ const DEFAULTS = Object.freeze({
   minPlotWidth: 160,
   minPlotHeight: 120,
   iterationLimit: 32,
-  overflow: "error"
+  overflow: "error",
+  align: "preserve"
 });
 const UNITS_PER_PIXEL = 4;
 
@@ -44,7 +46,44 @@ function normalizeOptions(args) {
   if (!["error", "report"].includes(policy.overflow)) {
     throw new Error(`Unsupported fitCanvas overflow policy "${policy.overflow}".`);
   }
+  if (!["preserve", "center"].includes(policy.align)) throw new Error('fitCanvas align must be "preserve" or "center".');
   return policy;
+}
+
+// In exact-plot mode only the outer space is fitted. User-authored margins
+// are a minimum; temporary guide reservations may be reclaimed. Their origin
+// survives persistence and repeated centering, unlike the resolved margins.
+function fitExactPlot(program, policy) {
+  const config = program.materializationConfigs.canvas, plot = resolveGraphicBounds(program);
+  const floor = config.requestedMargin ?? config.margin;
+  const bounds = [];
+  const collect = id => {
+    const object = program.graphicSpec.objects[id];
+    if (object.type === "canvas") { for (const child of object.children ?? []) collect(child); return; }
+    const b = resolveConcreteGraphicBounds(program.graphicSpec, id, program.materializationConfigs.textMetrics);
+    if (b) bounds.push(b);
+  };
+  for (const id of program.graphicSpec.order) collect(id);
+  const content = { left: Math.min(...bounds.map(b=>b.left),plot.x), right: Math.max(...bounds.map(b=>b.right),plot.x+plot.width),
+    top: Math.min(...bounds.map(b=>b.top),plot.y), bottom: Math.max(...bounds.map(b=>b.bottom),plot.y+plot.height) };
+  const required = { left: Math.max(0,plot.x-content.left)+policy.padding, right: Math.max(0,content.right-plot.x-plot.width)+policy.padding,
+    top: Math.max(0,plot.y-content.top)+policy.padding, bottom: Math.max(0,content.bottom-plot.y-plot.height)+policy.padding };
+  const margin = Object.fromEntries(SIDES.map(side=>[side,Math.max(floor[side],required[side])]));
+  if (policy.align === "center") for (const [first,second] of [["left","right"],["top","bottom"]]) {
+    const slack = margin[first]+margin[second]-required[first]-required[second];
+    margin[first]=required[first]+slack/2; margin[second]=required[second]+slack/2;
+  }
+  let next = sameMargin(margin, config.margin) ? program : program.editCanvas({ plot: config.plot, margin });
+  next = next._withCanvasConfig({ ...next.materializationConfigs.canvas, requestedMargin: floor });
+  const issues = [];
+  if (plot.width < policy.minPlotWidth) issues.push(`plot width ${plot.width} is smaller than minPlotWidth ${policy.minPlotWidth}`);
+  if (plot.height < policy.minPlotHeight) issues.push(`plot height ${plot.height} is smaller than minPlotHeight ${policy.minPlotHeight}`);
+  if (issues.length && policy.overflow === "error") throw new Error(`fitCanvas overflow: ${issues.join("; ")}.`);
+  return next._withMaterializationConfig(["fitting"], { policy, result: {
+    status: issues.length ? "overflow" : "fit", margin: next.materializationConfigs.canvas.margin,
+    plot: { width: plot.width, height: plot.height }, iterations: 1, issues,
+    signature: layoutSignature(next)
+  } });
 }
 
 function probe(program, margin) {
@@ -167,12 +206,15 @@ function layoutSignature(program) {
     guides: program.materializationConfigs.guides,
     title: program.materializationConfigs.title
   });
-  let hash = 0xcbf29ce484222325n;
+  // Two independent 32-bit lanes avoid a BigInt allocation for every byte of
+  // a large facet/mark scene. This is an invalidation fingerprint, not a digest.
+  let first = 0x811c9dc5, second = 0x9e3779b9;
   for (let index = 0; index < source.length; index += 1) {
-    hash ^= BigInt(source.charCodeAt(index));
-    hash = BigInt.asUintN(64, hash * 0x100000001b3n);
+    const code = source.charCodeAt(index);
+    first = Math.imul(first ^ code, 0x01000193);
+    second = Math.imul(second ^ code, 0x85ebca6b);
   }
-  return hash.toString(16).padStart(16, "0");
+  return [first, second].map(value => (value >>> 0).toString(16).padStart(8, "0")).join("");
 }
 
 export const fitCanvas = /* @__PURE__ */ action(
@@ -187,14 +229,13 @@ export const fitCanvas = /* @__PURE__ */ action(
         this.materializationConfigs.canvas?.margin === undefined) {
       throw new Error("fitCanvas requires an existing Canvas.");
     }
-    if (this.materializationConfigs.canvas.plot !== undefined) {
-      throw new Error("fitCanvas requires fixed outer dimensions; disable Canvas plot sizing first.");
-    }
     const previous = this.materializationConfigs.fitting;
     if (samePolicy(previous?.policy, policy) &&
         previous?.result?.signature === layoutSignature(this)) {
       return this;
     }
+    if (this.materializationConfigs.canvas.plot !== undefined) return fitExactPlot(this, policy);
+    if (policy.align !== "preserve") throw new Error('fitCanvas align:center requires exact inner plot sizing.');
     const sourceMargin = this.materializationConfigs.canvas.margin;
     const fitted = fitMargins(this, policy);
     let next = sameMargin(sourceMargin, fitted.margin)

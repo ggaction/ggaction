@@ -191,10 +191,10 @@ test("verifies independent stroke and legend support for every documented mark",
   }
 });
 
-test("uses point opacity samples for line consumers and rejects rule opacity legends", () => {
+test("uses point opacity samples for Line and Area consumers and rejects Rule opacity legends", () => {
   const rule = strokeConsumer("rule").encodeOpacity({ target: "mark", field: "weight" });
   assert.throws(() => rule.createLegend({ target: "mark", channels: ["opacity"] }), /opacity legend target/);
-  for (const kind of ["line"]) {
+  for (const kind of ["line", "area"]) {
     const program = strokeConsumer(kind).encodeOpacity({ target: "mark", field: "weight" })
       .createLegend({ target: "mark", channels: ["opacity"], position: "bottom", values: [2] });
     assert.ok(Object.values(program.graphicSpec.objects).some(object =>

@@ -13,7 +13,6 @@ import { validateConcreteGraphicValue } from
   "../../grammar/schemas/concreteGraphic.js";
 import {
   collectGraphicSubtreeIds,
-  findGraphicParent,
   requireGraphic,
   resolveGraphicChildOrder
 } from "../../grammar/schemas/graphicTree.js";
@@ -145,28 +144,25 @@ function editItems(owner, property, value, id, program) {
   return changed ? freezeOwned({ ...owner, items: freezeOwned(items) }) : owner;
 }
 
-function removeGraphicTree(graphicSpec, id) {
-  const parent = findGraphicParent(graphicSpec, id);
-  if (
-    graphicSpec.objects[id].type === "canvas" &&
-    parent?.kind !== "parent"
-  ) {
-    throw new Error("The canvas root cannot be removed.");
+function removeGraphicTrees(graphicSpec, targets) {
+  const removedIds = new Set();
+  for (const id of targets) {
+    const found = requireGraphic(graphicSpec, id);
+    if (found.kind === "item") throw new Error("editGraphics cannot remove a generated item independently.");
+    if (found.object.type === "canvas" && graphicSpec.order.includes(id)) throw new Error("The canvas root cannot be removed.");
+    for (const child of collectGraphicSubtreeIds(graphicSpec, id)) removedIds.add(child);
   }
-  const removedIds = new Set(collectGraphicSubtreeIds(graphicSpec, id));
-  const objects = Object.fromEntries(
-    Object.entries(graphicSpec.objects).filter(([objectId]) => !removedIds.has(objectId))
-  );
-  let order = graphicSpec.order;
-  if (parent?.kind === "parent") {
-    objects[parent.id] = freezeOwned({
-      ...objects[parent.id],
-      children: freezeOwned(parent.object.children.filter(childId => childId !== id))
-    });
-  } else {
-    order = freezeOwned(order.filter(objectId => objectId !== id));
+  // One immutable replacement for the complete removal set. Repeated per-root
+  // copying made facet guide cleanup quadratic in the number of panels.
+  const objects = {};
+  for (const id in graphicSpec.objects) {
+    if (removedIds.has(id)) continue;
+    const object = graphicSpec.objects[id];
+    const retained = object.children?.some(child => removedIds.has(child))
+      ? freezeOwned({ ...object, children: freezeOwned(object.children.filter(child => !removedIds.has(child))) }) : object;
+    Object.defineProperty(objects, id, { value: retained, enumerable: true, writable: true, configurable: true });
   }
-  return freezeOwned({ objects: freezeOwned(objects), order });
+  return freezeOwned({ objects: freezeOwned(objects), order: freezeOwned(graphicSpec.order.filter(id => !removedIds.has(id))) });
 }
 
 const editGraphics = /* @__PURE__ */ closedAction(
@@ -177,7 +173,8 @@ const editGraphics = /* @__PURE__ */ closedAction(
   }, ["target", "property", "value", "remove"],
   function (args = {}) {
     const { target, property, value, remove = false } = args;
-    if (typeof target !== "string" || target.length === 0) {
+    const targets = Array.isArray(target) ? target : [target];
+    if (!targets.length || targets.some(id => typeof id !== "string" || id.length === 0) || Array.isArray(target) && !remove) {
       throw new TypeError("editGraphics requires a non-empty target string.");
     }
     if (typeof remove !== "boolean") throw new TypeError("editGraphics remove must be a boolean.");
@@ -186,13 +183,10 @@ const editGraphics = /* @__PURE__ */ closedAction(
     }
     if (!remove && value === undefined) throw new TypeError("editGraphics requires a value.");
 
-    const found = requireGraphic(this.graphicSpec, target);
     if (remove) {
-      if (found.kind === "item") {
-        throw new Error("editGraphics cannot remove a generated item independently.");
-      }
-      return this._clone({ graphicSpec: removeGraphicTree(this.graphicSpec, found.id) });
+      return this._clone({ graphicSpec: removeGraphicTrees(this.graphicSpec, targets) });
     }
+    const found = requireGraphic(this.graphicSpec, target);
 
     if (property === "children") {
       const children = freezeOwned(resolveGraphicChildOrder(this.graphicSpec, target, value));

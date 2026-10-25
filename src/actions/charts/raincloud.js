@@ -1,3 +1,4 @@
+import { prepareFacadeMissingData } from './missing.js';
 import { action } from "../../core/action.js";
 import { isPlainObject } from "../../core/immutable.js";
 import { validateUserId } from "../../core/identifiers.js";
@@ -19,11 +20,11 @@ import {
 
 const CREATE_OPTIONS = Object.freeze([
   "id", "data", "coordinate", "category", "value", "orientation", "side",
-  "density", "summary", "points", "color", "guides"
+  "density", "summary", "points", "color", "guides", "missing"
 ]);
 const EDIT_OPTIONS = Object.freeze([
   "target", "data", "category", "value", "orientation", "side", "density",
-  "summary", "points", "color"
+  "summary", "points", "color", "missing"
 ]);
 const DENSITY_OPTIONS = Object.freeze([
   "bandwidth", "extent", "steps", "kernel", "normalization", "width", "area"
@@ -276,6 +277,12 @@ function addPoints(program, config, positions) {
 }
 
 function buildRaincloud(program, config) {
+  const original = config;
+  const prepared = prepareFacadeMissingData(program, { id: config.id, source: config.source,
+    fields: [config.category.field, config.value.field, config.color?.field,
+      config.points?.size?.field, config.points?.shape?.field], missing: config.missing });
+  program = prepared.program;
+  config = { ...config, source: prepared.data };
   const positions = rolePositions(config.category, config.value, config.orientation);
   let next = program;
   if (config.density !== false) {
@@ -309,7 +316,7 @@ function buildRaincloud(program, config) {
     .filter(id => findLayer(next, id) !== undefined);
   return next._withMarkConfig(ownerId, {
     ...next.markConfigs[ownerId],
-    raincloudPlot: { ...config, ownerId, ownedChildIds, materialized: true }
+    raincloudPlot: { ...original, ownedData: prepared.ownedData, ownerId, ownedChildIds, materialized: true }
   })._withContext({ currentMark: ownerId, currentData: config.source });
 }
 
@@ -363,6 +370,7 @@ function normalizeCreate(program, args, operation) {
   return {
     id,
     source,
+    missing: args.missing ?? "error",
     ...(args.coordinate === undefined ? {} : { coordinate: args.coordinate }),
     category,
     value,
@@ -424,6 +432,7 @@ export const editRaincloudPlot = /* @__PURE__ */ action(
     const candidateArgs = {
       id: current.id,
       data: Object.hasOwn(args, "data") ? args.data : current.source,
+      missing: args.missing ?? current.missing,
       ...(current.coordinate === undefined ? {} : { coordinate: current.coordinate }),
       category,
       value: Object.hasOwn(args, "value") ? args.value : current.value,

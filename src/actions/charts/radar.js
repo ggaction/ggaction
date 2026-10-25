@@ -10,7 +10,6 @@ import { findDataset } from "../../selectors/datasets.js";
 import { resolveEligibleLayer } from "../../selectors/layers.js";
 import { planDerivedDataRevision } from "../../materialization/dataProvenance.js";
 import { applyLayerDataRematerialization } from "../../materialization/dependencies.js";
-import { deriveFoldRows, normalizeFoldTransform } from "../../grammar/fold.js";
 import {
   normalizeAppearance,
   normalizeEncoding,
@@ -33,7 +32,7 @@ const CATEGORY_SCALE_OPTIONS = Object.freeze([
   "id", "type", "domain", "range", "reverse", "paddingInner", "paddingOuter",
   "padding", "align"
 ]);
-const WIDE_OPTIONS = Object.freeze(["fields", "as"]);
+const WIDE_OPTIONS = Object.freeze(["fields", "as", "summary", "normalize"]);
 const WIDE_AS_OPTIONS = Object.freeze(["key", "value"]);
 const LINE_OPTIONS = Object.freeze([
   "strokeWidth", "curve", "stroke", "opacity", "closed",
@@ -105,7 +104,15 @@ function normalizeWide(value, id, operation, minimum = 3) {
   if (key === foldedValue || fields.includes(key) || fields.includes(foldedValue)) {
     throw new Error(`${operation} wide aliases must be distinct from selected fields.`);
   }
-  return { fields, as: { key, value: foldedValue } };
+  const summary = value.summary ?? false;
+  const normalize = value.normalize ?? false;
+  if (![false, "mean", "median"].includes(summary)) {
+    throw new TypeError(`${operation} wide.summary must be false, mean, or median.`);
+  }
+  if (![false, "minmax"].includes(normalize)) {
+    throw new TypeError(`${operation} wide.normalize must be false or minmax.`);
+  }
+  return { fields, as: { key, value: foldedValue }, summary, normalize };
 }
 
 function orderedCategories(rows, field, requested, operation) {
@@ -189,6 +196,33 @@ function scaleWithOrder(category, order, operation) {
   return { ...category, scale: { ...scale, domain: order } };
 }
 
+// Keep summaries and normalization in the public data grammar. Original values
+// remain available, and each derived dataset has ordinary trace/provenance.
+function prepareWideData(program, { source, wide, groupBy, color, strokeDash, data, operation }) {
+  let next = program, input = source;
+  const ownedData = [];
+  if (wide.summary) {
+    input = `${data}Summary`;
+    const groups = [...new Set([...groupBy, color?.field, strokeDash?.field].filter(Boolean))];
+    next = next.createSummaryData({ id: input, source,
+      ...(groups.length ? { groupBy: groups } : {}),
+      aggregates: wide.fields.filter(field => !groups.includes(field)).map(field => ({ op: wide.summary, field, as: field })), missing: "error" });
+    ownedData.push(input);
+  }
+  const folded = wide.normalize ? `${data}Fold` : data;
+  next = next.createFoldData({ id: folded, source: input, fields: wide.fields, as: wide.as });
+  ownedData.push(folded);
+  const value = wide.normalize ? `${wide.as.value}Normalized` : wide.as.value;
+  if (wide.normalize) {
+    next = next.createNormalizedData({ id: data, source: folded, field: wide.as.value,
+      as: value, groupBy: wide.as.key, method: "minmax", zeroDenominator: "zero" });
+    ownedData.push(data);
+  }
+  validateRadarRows(findDataset(next, data).values, { category: wide.as.key,
+    value, groupBy, order: wide.fields }, operation);
+  return { next, data, value, ownedData };
+}
+
 export const createRadarPlot = /* @__PURE__ */ action(
   {
     op: "createRadarPlot",
@@ -240,6 +274,7 @@ export const createRadarPlot = /* @__PURE__ */ action(
     let category;
     let radarValue;
     let order;
+    let radarPlot;
     if (longForm) {
       category = normalizeCategory(args.category, operation);
       radarValue = normalizeValue(args.value, operation);
@@ -252,7 +287,7 @@ export const createRadarPlot = /* @__PURE__ */ action(
       }, operation);
     } else {
       const wide = normalizeWide(args.wide, id, operation);
-      if (sourceRows.length > 1 && groupBy.length === 0) {
+      if (sourceRows.length > 1 && groupBy.length === 0 && !wide.summary) {
         throw new Error(`${operation} wide rows require groupBy as series identity.`);
       }
       for (const field of wide.fields) readQuantitativeField(sourceRows, field);
@@ -271,21 +306,14 @@ export const createRadarPlot = /* @__PURE__ */ action(
         );
       }
       data = `${id}FoldData`;
-      next = next.createFoldData({
-        id: data,
-        source,
-        fields: wide.fields,
-        as: wide.as
-      });
-      const foldedRows = findDataset(next, data).values;
+      const prepared = prepareWideData(next, { source, wide, groupBy: seriesFields,
+        color, strokeDash, data, operation });
+      next = prepared.next;
       category = { field: wide.as.key, fieldType: "nominal" };
-      radarValue = { field: wide.as.value, fieldType: "quantitative" };
-      validateRadarRows(foldedRows, {
-        category: category.field,
-        value: radarValue.field,
-        groupBy: seriesFields,
-        order
-      }, operation);
+      radarValue = { field: prepared.value, fieldType: "quantitative",
+        ...(wide.normalize ? { scale: { domain: [0, 1], nice: false } } : {}) };
+      radarPlot = { source, wide, ownedData: prepared.ownedData };
+
     }
 
     category = scaleWithOrder(category, order, operation);
@@ -303,7 +331,8 @@ export const createRadarPlot = /* @__PURE__ */ action(
     });
     return next._withMarkConfig(id, {
       ...next.markConfigs[id],
-      compositionRole: "radar"
+      compositionRole: "radar",
+      ...(radarPlot ? { radarPlot } : {})
     });
   }
 );
@@ -316,30 +345,34 @@ export const editRadarPlot = /* @__PURE__ */ action(
   function (args = {}) {
     const operation = "editRadarPlot";
     validateFacadeOptions(args, ["target", "wide"], operation);
-    validateOptionObject(args.wide, ["fields"], `${operation} wide`);
+    validateOptionObject(args.wide, ["fields", "summary", "normalize"], `${operation} wide`);
     const owner = resolveEligibleLayer(this, {
       target: args.target,
       label: "wide Radar plot",
       predicate: layer => this.markConfigs[layer.id]?.compositionRole === "radar" &&
-        findDataset(this, layer.data)?.transform?.[0]?.type === "fold"
+        (this.markConfigs[layer.id]?.radarPlot !== undefined ||
+          findDataset(this, layer.data)?.transform?.[0]?.type === "fold")
     });
     const previous = findDataset(this, owner.data);
-    const prior = previous.transform[0];
-    const source = findDataset(this, previous.source);
-    const wide = normalizeWide({ ...args.wide, as: prior.as }, owner.id, operation, 2);
+    const stored = this.markConfigs[owner.id].radarPlot;
+    const prior = stored?.wide ?? previous.transform[0];
+    const source = findDataset(this, stored?.source ?? previous.source);
+    const wide = normalizeWide({ summary: prior.summary, normalize: prior.normalize, ...args.wide, as: prior.as,
+      fields: args.wide.fields }, owner.id, operation, 2);
     for (const field of wide.fields) readQuantitativeField(source.values, field);
-    const transform = normalizeFoldTransform(wide, previous.id);
-    const rows = deriveFoldRows(source.values, transform);
     const group = owner.encoding.group;
     const groupBy = group?.fields ?? (group?.field ? [group.field] : []);
-    validateRadarRows(rows, { category: prior.as.key, value: prior.as.value,
-      groupBy, order: wide.fields }, operation);
     const revision = planDerivedDataRevision(this, {
       owner: owner.id, role: "RadarData", previous: previous.id, consumers: [owner.id]
     });
-    let next = this.createFoldData({
-      id: revision.id, source: source.id, fields: wide.fields, as: prior.as
-    }).rebindLayerData(revision.rebinds[0]);
+    const prepared = prepareWideData(this, { source: source.id, wide, groupBy,
+      color: owner.encoding.color, strokeDash: owner.encoding.strokeDash,
+      data: revision.id, operation });
+    let next = prepared.next.rebindLayerData(revision.rebinds[0]);
+    if (Boolean(prior.normalize) !== Boolean(wide.normalize)) {
+      next = next.encodeR({ target: owner.id, field: prepared.value,
+        fieldType: "quantitative", scale: { domain: wide.normalize ? [0, 1] : "auto", nice: false } });
+    }
     const theta = owner.encoding.theta.scale;
     const revisedValues = config => {
       const full = config.inferredValues || !Array.isArray(config.values) ||
@@ -359,7 +392,11 @@ export const editRadarPlot = /* @__PURE__ */ action(
     next = next.editThetaScale({ target: owner.id, domain: wide.fields });
     next = applyLayerDataRematerialization(next, owner.id);
     if (next.markConfigs[owner.id]?.closed !== true) next = next.editLineMark({ target: owner.id, closed: true });
-    return next.releaseDerivedData(revision.release)
-      ._withContext({ currentMark: owner.id, currentData: source.id });
+    next = next._withMarkConfig(owner.id, { ...next.markConfigs[owner.id],
+      radarPlot: { source: source.id, wide, ownedData: prepared.ownedData } });
+    for (const id of [...(stored?.ownedData ?? [previous.id])].reverse()) {
+      next = next.releaseDerivedData({ id });
+    }
+    return next._withContext({ currentMark: owner.id, currentData: source.id });
   }
 );

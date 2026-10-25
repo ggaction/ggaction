@@ -49,7 +49,8 @@ export function localLegendPlacement(config) {
   if (offsets.length > 1 || offsets.some(value => !Number.isFinite(value))) throw new TypeError("Legend alongOffset requires one finite block value.");
   return { position, ...(offsets.length ? { alongOffset: offsets[0] } : {}),
     align: ["top", "bottom"].includes(position) ? config.align ?? "center" : "center",
-    offset: config.offset ?? (PLOT_LEGEND_POSITIONS.includes(position) ? 8 : config.channels === undefined ? 30 : 8),
+    offset: PLOT_LEGEND_POSITIONS.includes(position) && position !== config.position && config.inferredOffset === true
+      ? 8 : config.offset ?? (PLOT_LEGEND_POSITIONS.includes(position) ? 8 : config.channels === undefined ? 30 : 8),
     inferredOffset: config.inferredOffset ?? true };
 }
 

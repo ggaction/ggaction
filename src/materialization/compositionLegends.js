@@ -97,7 +97,8 @@ export function adjacentLegendPresentation(source, target, child) {
   for (const key of ["labels", "titleStyle", "titlePosition", "border"]) if (config[key] !== undefined) options[key] = config[key];
   if (!config.inferredTitle) options.title = config.titleVisible === false ? false : config.title;
   if (from.block.family === to.block.family) {
-    for (const key of ["direction", "columns", "itemGap", "gradient"]) if (config[key] !== undefined) options[key] = config[key];
+    const presentation = from.block.family === "gradient" ? ["direction", "gradient"] : ["direction", "columns", "itemGap"];
+    for (const key of presentation) if (config[key] !== undefined) options[key] = config[key];
     if (config.symbol && config.inferredSymbol === false) options.symbol = config.symbol;
   }
   return { target: to.config.target, channel: "color", ...options };

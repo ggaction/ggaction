@@ -328,7 +328,7 @@ test("preserves one Parallel field override while theming the other axes", () =>
 
 test("themes Polar guides, chart titles, and multiple legend families", () => {
   const polar = chart()
-    .createCanvas({ width: 300, height: 300, margin: 60 })
+    .createCanvas({ plot: { width: 180, height: 180 }, margin: 60 })
     .createData({ values: [{ a: 0, r: 0 }, { a: 10, r: 20 }] })
     .createPointMark()
     .encodeTheta({ field: "a" })

@@ -340,7 +340,7 @@ type AdjacentConstructorOptions<T> = T extends unknown ? Partial<Omit<T, "id">> 
  Expand AdjacentPlotSpecification
 
 ```typescript
-export type AdjacentPlotSpecification =
+export type AdjacentPlotSpecification = (
   | { action: "createScatterPlot"; options?: AdjacentConstructorOptions<CreateScatterPlotOptions> }
   | { action: "createLinePlot"; options?: Partial<AdjacentConstructorOptions<CreateLinePlotOptions>> }
   | { action: "createBarPlot"; options?: Partial<AdjacentConstructorOptions<CreateBarPlotOptions>> }
@@ -369,8 +369,12 @@ export type AdjacentPlotSpecification =
   | { action: "createPolarLinePlot"; options?: AdjacentConstructorOptions<CreatePolarLinePlotOptions> }
   | { action: "createRadarPlot"; options?: AdjacentConstructorOptions<CreateRadarPlotOptions> }
   | { action: "createParallelCoordinates"; options?: AdjacentConstructorOptions<CreateParallelCoordinatesOptions> }
-  | { action: "createTextPlot"; options?: AdjacentConstructorOptions<CreateTextPlotOptions> };
-/** A native constructor with positional/data decisions inferred from the source. */
+  | { action: "createTextPlot"; options?: AdjacentConstructorOptions<CreateTextPlotOptions> }) & { inherit?: { color?: boolean } };
+/** A native constructor with positional/data decisions inferred from the source.
+ * Omitted color is inherited only when valid at the new plot's grain. Line and
+ * Polar Line require one color value per series; otherwise the default is a
+ * single color. Explicit color/groupBy options remain validated and authoritative.
+ */
 ```
 
 Related types: [`AdjacentConstructorOptions`](../../../reference/types/#type-adjacentconstructoroptions) · [`CreateScatterPlotOptions`](../../../reference/types/#type-createscatterplotoptions) · [`CreateLinePlotOptions`](../../../reference/types/#type-createlineplotoptions) · [`CreateBarPlotOptions`](../../../reference/types/#type-createbarplotoptions) · [`CreateAreaPlotOptions`](../../../reference/types/#type-createareaplotoptions) · [`CreateDotPlotOptions`](../../../reference/types/#type-createdotplotoptions) · [`CreateLollipopPlotOptions`](../../../reference/types/#type-createlollipopplotoptions) · [`CreateDumbbellPlotOptions`](../../../reference/types/#type-createdumbbellplotoptions) · [`CreateECDFPlotOptions`](../../../reference/types/#type-createecdfplotoptions) · [`CreateIntervalPlotOptions`](../../../reference/types/#type-createintervalplotoptions) · [`CreateRegressionPlotOptions`](../../../reference/types/#type-createregressionplotoptions) · [`CreateRugPlotOptions`](../../../reference/types/#type-createrugplotoptions) · [`CreateStripPlotOptions`](../../../reference/types/#type-createstripplotoptions) · [`CreateBeeswarmPlotOptions`](../../../reference/types/#type-createbeeswarmplotoptions) · [`CreateRaincloudPlotOptions`](../../../reference/types/#type-createraincloudplotoptions) · [`BoxPlotOptions`](../../../reference/types/#type-boxplotoptions) · [`GradientPlotOptions`](../../../reference/types/#type-gradientplotoptions) · [`ViolinPlotOptions`](../../../reference/types/#type-violinplotoptions) · [`CreateDensityPlotOptions`](../../../reference/types/#type-createdensityplotoptions) · [`CreateHorizonPlotOptions`](../../../reference/types/#type-createhorizonplotoptions) · [`CreateHistogramOptions`](../../../reference/types/#type-createhistogramoptions) · [`CreateHeatmapOptions`](../../../reference/types/#type-createheatmapoptions) · [`CreatePiePlotOptions`](../../../reference/types/#type-createpieplotoptions) · [`CreateRosePlotOptions`](../../../reference/types/#type-createroseplotoptions) · [`CreateRadialBarPlotOptions`](../../../reference/types/#type-createradialbarplotoptions) · [`CreatePolarScatterPlotOptions`](../../../reference/types/#type-createpolarscatterplotoptions) · [`CreatePolarLinePlotOptions`](../../../reference/types/#type-createpolarlineplotoptions) · [`CreateRadarPlotOptions`](../../../reference/types/#type-createradarplotoptions) · [`CreateParallelCoordinatesOptions`](../../../reference/types/#type-createparallelcoordinatesoptions) · [`CreateTextPlotOptions`](../../../reference/types/#type-createtextplotoptions).
@@ -2218,6 +2222,7 @@ Related types: [`BarColorChannel`](../../../reference/types/#type-barcolorchanne
 
 ```typescript
 export type CreateBeeswarmPlotOptions = {
+  missing?: "error" | "skip";
   id?: string;
   data?: string;
   coordinate?: string;
@@ -2505,40 +2510,16 @@ Related types: [`LayerPlotSpecification`](../../../reference/types/#type-layerpl
  Expand CreateLinePlotOptions
 
 ```typescript
-export interface CreateLinePlotOptions {
-  id?: string;
-  data?: string;
-  coordinate?: string;
-  x: LineXPositionChannel;
-  y: LineYPositionChannel;
-  color?: LineCategoricalColorChannel<CategoricalColorScaleOptions>;
-  groupBy?: string | readonly [string, ...string[]];
-  strokeDash?: BasicStrokeDashChannel;
-  line?: StrokeStyleDetails & {
-    clip?: boolean;
-    missing?: "error" | "break";
-    strokeWidth?: number;
-    curve?: CurveInterpolation;
-    tension?: number;
-    stroke?: string;
-    opacity?: number;
-    closed?: false;
-  };
-  guides?: false | (Omit<CPathGuides, "legend" | "grid"> & {
-    grid?: false | (Omit<CartesianGridOptions, "horizontal"> & {
-      horizontal?: boolean | (Omit<GridDirectionOptions, "bandPosition"> & {
-        /** Line y is continuous; band positioning is available only for categorical x grids. */
-        bandPosition?: never;
-      });
-    });
-    legend?: false | (Omit<PathLegendOptions, "order"> & {
-      order?: LegendValueOrder | { channel: "x"; values?: never };
-    });
-  });
-}
+export type CreateLinePlotOptions = LinePlotCommonOptions & (
+  | { x: LineXPositionChannel; y: Exclude<LineYPositionChannel, { fieldType: "nominal" | "ordinal" }>; guides?: false | LinePlotGuides<"horizontal"> }
+  | { x: string | { field: string; fieldType?: "quantitative"; aggregate?: AggregateOperation; scale?: NonPointQuantitativePositionScaleOptions };
+      y: Extract<LineYPositionChannel, { fieldType: "nominal" | "ordinal" }>; guides?: false | LinePlotGuides<"vertical"> }
+  | { x: { field: string; fieldType?: "quantitative"; aggregate: AggregateOperation; scale?: NonPointQuantitativePositionScaleOptions };
+      y: string | (Exclude<AreaPlotIndependentChannel, string> & { aggregate?: never }); guides?: false | LinePlotGuides<"vertical"> }
+);
 ```
 
-Related types: [`LineXPositionChannel`](../../../reference/types/#type-linexpositionchannel) · [`LineYPositionChannel`](../../../reference/types/#type-lineypositionchannel) · [`LineCategoricalColorChannel`](../../../reference/types/#type-linecategoricalcolorchannel) · [`CategoricalColorScaleOptions`](../../../reference/types/#type-categoricalcolorscaleoptions) · [`BasicStrokeDashChannel`](../../../reference/types/#type-basicstrokedashchannel) · [`StrokeStyleDetails`](../../../reference/types/#type-strokestyledetails) · [`CurveInterpolation`](../../../reference/types/#type-curveinterpolation) · [`CPathGuides`](../../../reference/types/#type-cpathguides) · [`CartesianGridOptions`](../../../reference/types/#type-cartesiangridoptions) · [`GridDirectionOptions`](../../../reference/types/#type-griddirectionoptions) · [`PathLegendOptions`](../../../reference/types/#type-pathlegendoptions) · [`LegendValueOrder`](../../../reference/types/#type-legendvalueorder).
+Related types: [`LinePlotCommonOptions`](../../../reference/types/#type-lineplotcommonoptions) · [`LineXPositionChannel`](../../../reference/types/#type-linexpositionchannel) · [`LineYPositionChannel`](../../../reference/types/#type-lineypositionchannel) · [`LinePlotGuides`](../../../reference/types/#type-lineplotguides) · [`AggregateOperation`](../../../reference/types/#type-aggregateoperation) · [`NonPointQuantitativePositionScaleOptions`](../../../reference/types/#type-nonpointquantitativepositionscaleoptions) · [`AreaPlotIndependentChannel`](../../../reference/types/#type-areaplotindependentchannel).
 
 ### `CreateLollipopPlotOptions` {#type-createlollipopplotoptions}
 
@@ -2784,6 +2765,7 @@ Related types: [`CreateRosePlotOptions`](../../../reference/types/#type-createro
 
 ```typescript
 export interface CreateRaincloudPlotOptions {
+  missing?: "error" | "skip";
   id?: string;
   data?: string;
   coordinate?: string;
@@ -2986,6 +2968,7 @@ Related types: [`DynamicReferenceBinding`](../../../reference/types/#type-dynami
 
 ```typescript
 export type CreateStripPlotOptions = {
+  missing?: "error" | "skip";
   id?: string;
   data?: string;
   coordinate?: string;
@@ -4470,7 +4453,7 @@ Related types: [`CreateECDFPlotOptions`](../../../reference/types/#type-createec
 ```typescript
 export type EditEndpointPlotOptions = { target?: string } & Partial<Pick<
   CreateDumbbellPlotOptions,
-  "data" | "coordinate" | "category" | "start" | "end" | "orientation" | "summary"
+  "data" | "coordinate" | "category" | "start" | "end" | "orientation" | "summary" | "missing"
 >> & {
   value?: EndpointValueChannel;
   baseline?: number;
@@ -4656,7 +4639,7 @@ Related types: [`GradientPlotPositionChannel`](../../../reference/types/#type-gr
 ```typescript
 export type EditGraphicsOptions =
   | { target: string; property: string; value: unknown; remove?: false }
-  | { target: string; remove: true; property?: never; value?: never };
+  | { target: string | readonly string[]; remove: true; property?: never; value?: never };
 ```
 
 ### `EditGridDirectionsOptions` {#type-editgriddirectionsoptions}
@@ -5048,7 +5031,7 @@ Related types: [`FocusedScaleSelection`](../../../reference/types/#type-focuseds
 ```typescript
 export interface EditRadarPlotOptions {
   target?: string;
-  wide: { fields: readonly [string, string, ...string[]] };
+  wide: { fields: readonly [string, string, ...string[]]; summary?: false | "mean" | "median"; normalize?: false | "minmax" };
 }
 ```
 
@@ -5071,6 +5054,7 @@ Related types: [`EditPolarAxisOptions`](../../../reference/types/#type-editpolar
 
 ```typescript
 export interface EditRaincloudPlotOptions {
+  missing?: "error" | "skip";
   target?: string;
   data?: string;
   category?: RaincloudCategoryChannel;
@@ -5498,6 +5482,7 @@ Related types: [`TextMarkOptions`](../../../reference/types/#type-textmarkoption
 
 ```typescript
 type EndpointPlotBaseOptions = {
+  missing?: "error" | "skip";
   id?: string;
   data?: string;
   coordinate?: string;
@@ -6127,6 +6112,8 @@ Related types: [`FilterRangeClosure`](../../../reference/types/#type-filterrange
 
 ```typescript
 export interface FitCanvasOptions {
+  /** Exact inner plot mode: distribute spare outer space around visible content. */
+  align?: "preserve" | "center";
   /** Minimum fitted margin on every Canvas edge. Defaults to 0. */
   padding?: number;
   /** Required final plot width. Defaults to 160. */
@@ -6883,6 +6870,7 @@ export interface LabelLeaderOptions {
 export type LayerPlotSpecification = {
   [Action in AdjacentPlotSpecification["action"]]: {
     action: Action;
+    inherit?: { color?: boolean };
     options?: Partial<NonNullable<Extract<AdjacentPlotSpecification, { action: Action }>["options"]>> & { guides?: false };
   }
 }[AdjacentPlotSpecification["action"]];
@@ -7135,6 +7123,48 @@ type LineCategoricalColorChannel<Scale = NonPointCategoricalColorScaleOptions> =
 
 Related types: [`NonPointCategoricalColorScaleOptions`](../../../reference/types/#type-nonpointcategoricalcolorscaleoptions) · [`Palette`](../../../reference/types/#type-palette).
 
+### `LinePlotCommonOptions` {#type-lineplotcommonoptions}
+
+ Expand LinePlotCommonOptions
+
+```typescript
+interface LinePlotCommonOptions {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  color?: LineCategoricalColorChannel<CategoricalColorScaleOptions>;
+  groupBy?: string | readonly [string, ...string[]];
+  strokeDash?: BasicStrokeDashChannel;
+  line?: StrokeStyleDetails & {
+    clip?: boolean;
+    missing?: "error" | "break";
+    strokeWidth?: number;
+    curve?: CurveInterpolation;
+    tension?: number;
+    stroke?: string;
+    opacity?: number;
+    closed?: false;
+  };
+ }
+```
+
+Related types: [`LineCategoricalColorChannel`](../../../reference/types/#type-linecategoricalcolorchannel) · [`CategoricalColorScaleOptions`](../../../reference/types/#type-categoricalcolorscaleoptions) · [`BasicStrokeDashChannel`](../../../reference/types/#type-basicstrokedashchannel) · [`StrokeStyleDetails`](../../../reference/types/#type-strokestyledetails) · [`CurveInterpolation`](../../../reference/types/#type-curveinterpolation).
+
+### `LinePlotGuides` {#type-lineplotguides}
+
+ Expand LinePlotGuides
+
+```typescript
+type LinePlotGuides<Continuous extends "horizontal" | "vertical"> = Omit<CPathGuides, "legend" | "grid"> & {
+  grid?: false | (Omit<CartesianGridOptions, Continuous> & {
+    [Direction in Continuous]?: boolean | (Omit<GridDirectionOptions, "bandPosition"> & { bandPosition?: never });
+  });
+  legend?: false | (Omit<PathLegendOptions, "order"> & { order?: LegendValueOrder | { channel: Continuous extends "horizontal" ? "x" : "y"; values?: never } });
+};
+```
+
+Related types: [`CPathGuides`](../../../reference/types/#type-cpathguides) · [`CartesianGridOptions`](../../../reference/types/#type-cartesiangridoptions) · [`GridDirectionOptions`](../../../reference/types/#type-griddirectionoptions) · [`PathLegendOptions`](../../../reference/types/#type-pathlegendoptions) · [`LegendValueOrder`](../../../reference/types/#type-legendvalueorder).
+
 ### `LineXPositionChannel` {#type-linexpositionchannel}
 
  Expand LineXPositionChannel
@@ -7142,7 +7172,7 @@ Related types: [`NonPointCategoricalColorScaleOptions`](../../../reference/types
 ```typescript
 type LineXPositionChannel =
   | string
-  | ({ field: string; bin?: PositionEncodingBase["bin"] } & (
+  | ({ field: string; bin?: PositionEncodingBase["bin"]; aggregate?: never } & (
       | {
           fieldType?: "quantitative";
           scale?: NonPointQuantitativePositionScaleOptions;
@@ -7181,10 +7211,11 @@ type LineYPositionChannel =
           aggregate?: never;
           scale?: NonPointTemporalPositionScaleOptions;
         }
+      | { fieldType: "nominal" | "ordinal"; aggregate?: never; scale?: NonPointCategoricalPositionScaleOptions }
     ));
 ```
 
-Related types: [`AggregateOperation`](../../../reference/types/#type-aggregateoperation) · [`NonPointQuantitativePositionScaleOptions`](../../../reference/types/#type-nonpointquantitativepositionscaleoptions) · [`TemporalInputUnit`](../../../reference/types/#type-temporalinputunit) · [`NonPointTemporalPositionScaleOptions`](../../../reference/types/#type-nonpointtemporalpositionscaleoptions).
+Related types: [`AggregateOperation`](../../../reference/types/#type-aggregateoperation) · [`NonPointQuantitativePositionScaleOptions`](../../../reference/types/#type-nonpointquantitativepositionscaleoptions) · [`TemporalInputUnit`](../../../reference/types/#type-temporalinputunit) · [`NonPointTemporalPositionScaleOptions`](../../../reference/types/#type-nonpointtemporalpositionscaleoptions) · [`NonPointCategoricalPositionScaleOptions`](../../../reference/types/#type-nonpointcategoricalpositionscaleoptions).
 
 ### `LinearGradientPaint` {#type-lineargradientpaint}
 
@@ -7766,7 +7797,8 @@ export type OpacityScaleOptions = ScaleFields<
   unknown?: number;
 };
 
-/** Constant or quantitative opacity on Point, Rule, Line, Bar, or row-owned Rect marks. */
+/** Constant or quantitative opacity on Point, Rule, Line, Area, Bar, or row-owned Rect marks.
+ * Line and Area fields must be constant within each existing path series. */
 ```
 
 Related types: [`ScaleFields`](../../../reference/types/#type-scalefields).
@@ -8676,6 +8708,10 @@ Related types: [`PolarPathGuideOptions`](../../../reference/types/#type-polarpat
 
 ```typescript
 export interface RadarWideOptions {
+  /** Explicit aggregation into one profile per group. False requires unique series rows. */
+  summary?: false | "mean" | "median";
+  /** Explicit min-max normalization of each selected dimension across the resulting profiles. Constant dimensions map to zero. */
+  normalize?: false | "minmax";
   fields: readonly [string, string, string, ...string[]];
   as?: { key?: string; value?: string };
 }
@@ -9652,7 +9688,7 @@ export type ScaleType =
  Expand ScopedActionTarget
 
 ```typescript
-export interface ScopedActionTarget { childPath: readonly string[]; id?: string; }
+export interface ScopedActionTarget { childPath: readonly string[]; id?: string; /** Persist this action in a facet source, then regenerate its cells. */ facetSource?: true; }
 ```
 
 ### `SecondaryPositionEncodingOptions` {#type-secondarypositionencodingoptions}

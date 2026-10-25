@@ -1,4 +1,8 @@
 export interface RadarWideOptions {
+  /** Explicit aggregation into one profile per group. False requires unique series rows. */
+  summary?: false | "mean" | "median";
+  /** Explicit min-max normalization of each selected dimension across the resulting profiles. Constant dimensions map to zero. */
+  normalize?: false | "minmax";
   fields: readonly [string, string, string, ...string[]];
   as?: { key?: string; value?: string };
 }

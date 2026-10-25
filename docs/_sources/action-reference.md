@@ -866,7 +866,7 @@ open unless `line.closed: true` is explicit. [Polar positions](../api/position-e
 
 ```javascript
 createRadarPlot({ id?, data?, coordinate?, category, value, groupBy?, order?, color?, strokeDash?, line?, guides? })
-createRadarPlot({ id?, data?, coordinate?, wide: { fields, as? }, groupBy?, order?, color?, strokeDash?, line?, guides? })
+createRadarPlot({ id?, data?, coordinate?, wide: { fields, as?, summary?, normalize? }, groupBy?, order?, color?, strokeDash?, line?, guides? })
 ```
 
 Create closed Radar paths from validated long rows or an explicit wide-to-long
@@ -876,7 +876,7 @@ are used as supplied; the facade does not infer normalization. [Polar positions]
 ### `editRadarPlot`
 
 ```js
-editRadarPlot({ target?, wide: { fields } })
+editRadarPlot({ target?, wide: { fields, summary?, normalize? } })
 ```
 
 Edit the dimensions and their angular order in an existing wide Radar plot. `fields` must contain
@@ -897,7 +897,24 @@ const revised = program.editRadarPlot({
 ```
 
 Missing, duplicate or nonnumeric fields and incompatible targets reject without changing the
-previous program. Editing dimensions does not normalize values: compare columns with compatible units.
+previous program. Omitted `summary` and `normalize` preserve the existing settings. Set
+`summary: "mean"` or `"median"` to aggregate repeated rows by the existing series identity.
+Set `normalize: "minmax"` to normalize each dimension across the resulting profiles; constant
+dimensions map to zero. Set either option to `false` to return to individual observations or
+raw units (individual observations require a unique series identity). Switching normalization
+resets the radius domain to `[0, 1]` or the raw automatic extent; dimension-only edits preserve
+an explicit domain. Original source rows and original measurements remain available.
+
+```js
+const profiles = chart().createCanvas().createData({ values: [
+  { kind: "A", speed: 10, quality: 80, cost: 100 },
+  { kind: "A", speed: 20, quality: 90, cost: 200 },
+  { kind: "B", speed: 30, quality: 70, cost: 150 }
+] }).createRadarPlot({
+  wide: { fields: ["speed", "quality", "cost"], summary: "mean", normalize: "minmax" },
+  groupBy: "kind", color: "kind"
+});
+```
 
 ### `createRugPlot`
 
@@ -2911,6 +2928,10 @@ Compatible point and line categorical channels stay combined when their domains
 contain the same values, even in different orders. The first selected channel
 owns item order; each symbol still looks up its own scale by value. Independent fields,
 continuous color/stroke, opacity, and stroke width use separate native blocks.
+Adding a new dash channel to an existing color-only line legend preserves its
+appearance. A matching field extends the combined series legend; a different
+field creates a separate dash legend and retains the color block. Repeating an
+already-created channel remains an error.
 Area fill and stroke are independently selectable blocks, including stroke-only
 legends for density and horizon areas.
 For outside top/bottom legends, omitting `offset` places the occupied legend after

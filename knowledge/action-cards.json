@@ -310,6 +310,11 @@
       },
       "options": [
         {
+          "name": "align",
+          "required": false,
+          "type": "\"center\" | \"preserve\" | undefined"
+        },
+        {
           "name": "padding",
           "required": false,
           "type": "number | undefined"
@@ -341,9 +346,9 @@
         }
       ],
       "callPatterns": [
-        "fitCanvas({ target?, padding?, minPlotWidth?, minPlotHeight?, iterationLimit?, overflow? })"
+        "fitCanvas({ target?, align?, padding?, minPlotWidth?, minPlotHeight?, iterationLimit?, overflow? })"
       ],
-      "snippet": "program.fitCanvas({ padding: 1 })",
+      "snippet": "program.fitCanvas({ align: \"center\" })",
       "errors": [],
       "route": "/reference/actions/charts-data/#fitcanvas"
     },
@@ -26936,7 +26941,7 @@
         {
           "name": "target",
           "required": true,
-          "type": "string"
+          "type": "string | readonly string[]"
         },
         {
           "name": "property",
@@ -31987,6 +31992,11 @@
           "type": "false | EndpointLabelOptions | undefined"
         },
         {
+          "name": "missing",
+          "required": false,
+          "type": "\"error\" | \"skip\" | undefined"
+        },
+        {
           "name": "id",
           "required": false,
           "type": "string | undefined"
@@ -32137,6 +32147,11 @@
           "name": "labels",
           "required": false,
           "type": "false | EndpointLabelOptions | undefined"
+        },
+        {
+          "name": "missing",
+          "required": false,
+          "type": "\"error\" | \"skip\" | undefined"
         },
         {
           "name": "id",
@@ -32296,6 +32311,11 @@
           "type": "false | (EndpointLabelOptions & { endpoint?: \"both\" | \"end\" | \"start\" | undefined; }) | undefined"
         },
         {
+          "name": "missing",
+          "required": false,
+          "type": "\"error\" | \"skip\" | undefined"
+        },
+        {
           "name": "id",
           "required": false,
           "type": "string | undefined"
@@ -32417,6 +32437,11 @@
           "name": "target",
           "required": false,
           "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+        },
+        {
+          "name": "missing",
+          "required": false,
+          "type": "\"error\" | \"skip\" | undefined"
         },
         {
           "name": "data",
@@ -33195,16 +33220,6 @@
           "type": "string | undefined"
         },
         {
-          "name": "x",
-          "required": true,
-          "type": "LineXPositionChannel"
-        },
-        {
-          "name": "y",
-          "required": true,
-          "type": "LineYPositionChannel"
-        },
-        {
           "name": "color",
           "required": false,
           "type": "LineCategoricalColorChannel<CategoricalColorScaleOptions> | undefined"
@@ -33225,9 +33240,19 @@
           "type": "(StrokeStyleDetails & { clip?: boolean | undefined; missing?: \"break\" | \"error\" | undefined; strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; tension?: number | undefined; stroke?: string | undefined; opacity?: number | undefined; closed?: false | undefined; }) | undefined"
         },
         {
+          "name": "x",
+          "required": true,
+          "type": "{ field: string; fieldType?: \"quantitative\" | undefined; aggregate?: AggregateOperation | undefined; scale?: NonPointQuantitativePositionScaleOptions | undefined; } | { ...; } | LineXPositionChannel"
+        },
+        {
+          "name": "y",
+          "required": true,
+          "type": "string | (({ field: string; } & ({ fieldType: \"nominal\" | \"ordinal\"; scale?: NonPointCategoricalPositionScaleOptions | undefined; } | { ...; } | { ...; })) & { ...; }) | ({ ...; } & { ...; }) | ({ ...; } & { ...; }) | ({ ...; } & { ...; })"
+        },
+        {
           "name": "guides",
           "required": false,
-          "type": "false | (Omit<CPathGuides, \"grid\" | \"legend\"> & { grid?: false | (Omit<CartesianGridOptions, \"horizontal\"> & { horizontal?: boolean | ... 1 more ... | undefined; }) | undefined; legend?: false | ... 1 more ... | undefined; }) | undefined"
+          "type": "false | LinePlotGuides<\"horizontal\"> | LinePlotGuides<\"vertical\"> | undefined"
         },
         {
           "name": "target",
@@ -33731,7 +33756,7 @@
         {
           "name": "wide",
           "required": true,
-          "type": "{ fields: readonly [string, string, ...string[]]; }"
+          "type": "{ fields: readonly [string, string, ...string[]]; summary?: \"mean\" | \"median\" | false | undefined; normalize?: \"minmax\" | false | undefined; }"
         }
       ],
       "callPatterns": [
@@ -33942,6 +33967,11 @@
       },
       "options": [
         {
+          "name": "missing",
+          "required": false,
+          "type": "\"error\" | \"skip\" | undefined"
+        },
+        {
           "name": "id",
           "required": false,
           "type": "string | undefined"
@@ -34081,6 +34111,11 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "missing",
+          "required": false,
+          "type": "\"error\" | \"skip\" | undefined"
+        },
         {
           "name": "id",
           "required": false,
@@ -34226,6 +34261,11 @@
       },
       "options": [
         {
+          "name": "missing",
+          "required": false,
+          "type": "\"error\" | \"skip\" | undefined"
+        },
+        {
           "name": "id",
           "required": false,
           "type": "string | undefined"
@@ -34366,6 +34406,11 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "missing",
+          "required": false,
+          "type": "\"error\" | \"skip\" | undefined"
+        },
         {
           "name": "target",
           "required": false,

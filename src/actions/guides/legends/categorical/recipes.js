@@ -120,6 +120,9 @@ export function resolveLegendSymbol(program, layer, channels, requested, kind) {
       }
     ] };
   }
+  if (layer.mark.type === "line" && channels?.length === 1 && channels[0] === "color") {
+    return { layers: [{ type: "line", length: 32, lineWidth: 2, ...strokeDetails }] };
+  }
   if (Object.keys(rectDetails).length === 0) return undefined;
   return kind === "series"
     ? { layers: [{ type: "line", length: 32, lineWidth: 2, ...strokeDetails }] }

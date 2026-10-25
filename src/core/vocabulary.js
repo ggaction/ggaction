@@ -253,7 +253,7 @@ const marks = (...types) => Object.freeze(types);
 export const APPEARANCE_MARK_TYPES = Object.freeze({
   encodeColor: marks('point', 'line', 'bar', 'area', 'arc', 'rect', 'text'),
   encodeStroke: marks('point', 'line', 'area', 'bar', 'rect', 'arc', 'rule', 'tick'),
-  encodeOpacity: marks('point', 'rule', 'line', 'bar', 'rect'),
+  encodeOpacity: marks('point', 'rule', 'line', 'area', 'bar', 'rect'),
   encodeStrokeWidth: marks('rule', 'line', 'rect'),
   encodeStrokeDash: marks('line', 'rule'),
   encodeSize: marks('point'),

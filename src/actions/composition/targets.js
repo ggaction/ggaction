@@ -1,3 +1,5 @@
+import { getWrappedActionMetadata } from "../../core/action.js";
+import { restoreProgramContextKeys } from "../../core/programState.js";
 import { normalizeActionTargets } from "../../grammar/actionTargets.js";
 import { sharedCompositionColorLegend } from "../../materialization/compositionLegends.js";
 import { legendBlockChannels } from "../../grammar/legendBlocks.js";
@@ -69,7 +71,8 @@ export function dispatchActionTargets(program, wrappedAction, args) {
   const targets = normalizeActionTargets(args.target);
   for (const target of targets) {
     const selected = atPath(program, target.childPath);
-    if (selected.compositionSpec?.type === "facet" && target.id !== undefined) {
+    if (target.facetSource && selected.compositionSpec?.type !== "facet") throw new Error("facetSource requires a facet view.");
+    if (selected.compositionSpec?.type === "facet" && target.id !== undefined && !target.facetSource) {
       throw new Error("Target a facet source through editFacetSource, or identify an explicit childPath.");
     }
   }
@@ -79,11 +82,12 @@ export function dispatchActionTargets(program, wrappedAction, args) {
   for (const target of targets) next = changePath(next, target.childPath, selected => {
     const hidden = collected.get(JSON.stringify(target.childPath));
     const candidate = hidden ? selected._withContext({ compositionCollectedLegends: [...hidden] }) : selected;
-    const result = wrappedAction.call(candidate, { ...options, ...(target.id === undefined ? {} : { target: target.id }) });
+    const nativeOptions = { ...options, ...(target.id === undefined ? {} : { target: target.id }) };
+    const result = target.facetSource
+      ? candidate.editFacetSource({ action: { method: getWrappedActionMetadata(wrappedAction).op, options: nativeOptions } })
+      : wrappedAction.call(candidate, nativeOptions);
     if (!hidden) return result;
-    const { compositionCollectedLegends: _hidden, ...context } = result.context;
-    if (selected.context.compositionCollectedLegends !== undefined) context.compositionCollectedLegends = selected.context.compositionCollectedLegends;
-    return result._clone({ context });
+    return restoreProgramContextKeys(result, selected, ["compositionCollectedLegends"]);
   });
   const revised = refreshAncestors(program, next);
   // The parent layout checks the collected graphic against retained content.

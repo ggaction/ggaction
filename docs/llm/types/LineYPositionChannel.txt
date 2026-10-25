@@ -12,4 +12,5 @@ type LineYPositionChannel =
           aggregate?: never;
           scale?: NonPointTemporalPositionScaleOptions;
         }
+      | { fieldType: "nominal" | "ordinal"; aggregate?: never; scale?: NonPointCategoricalPositionScaleOptions }
     ));

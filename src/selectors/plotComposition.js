@@ -47,6 +47,12 @@ export function compositionChannel(program, encoding, data) {
         if (key === 'key' || key === 'value') { field = undefined; fields = t.fields; operations.unshift(key === 'key' ? 'dimensions' : 'profile'); }
         recognized = true;
       } else if (t.type === 'regression' || t.type === 'complete') recognized = true;
+      else if (t.type === 'filter' && Object.values(program.markConfigs).some(config =>
+        (config.raincloudPlot?.ownedData ?? config.endpointPlot?.ownedData ?? []).includes(current))) {
+        // These filters implement one facade's complete-case population; they
+        // do not introduce a user-selected data source or new field meaning.
+        recognized = true;
+      }
     }
     if (!recognized || !dataset.source) break;
     current = dataset.source;

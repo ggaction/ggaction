@@ -449,7 +449,8 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
   encoding은 호출 순서와 무관하고, 하나만 존재하는 동안에는 semantic assignment를 보존하되 path를 만들지 않는다.
 - Direct Cartesian quantitative x/y line도 호출 순서와 무관하다. 첫 position action은 semantic과 scale을
   보존하되 path를 만들지 않고, 두 번째 action이 compatible pair를 완성하면 같은 final line을 materialize한다.
-  Aggregate y line은 categorical/temporal 또는 binned quantitative x와 결합한다.
+  Aggregate y line은 categorical/temporal 또는 quantitative x와 결합한다. Unbinned quantitative x는
+  실제 관측값별로 집계하고 숫자 순서로 연결하며, bin을 명시하면 interval midpoint별로 집계한다.
   Categorical x는 raw quantitative y도 지원하며 point/band 중심을 공유한다. Category domain 순서가
   vertex 순서를 결정하고 중복 범주는 source 순서를 유지한다. Explicit pathOrder가 있으면 그 순서가 우선한다.
   미관측 범주는 채우지 않고 관측된 이웃을 연결하며 raw missing 값은 오류다.
@@ -469,6 +470,8 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
   mapping을 공유할 수 있지만 bar-only `stack`, bin과 offset은 상속하지 않는다.
 - Coverage: `test/unit/actions/marks/create-line-mark.test.js`가 default/explicit data,
   empty dataset, invalid width와 conflicts를 검증한다.
+
+Horizontal Cartesian lines transpose the same series derivation when X is quantitative and Y nominal/ordinal, or when X has an explicit aggregate and Y is quantitative/temporal. Exact numeric positions retain their observed values and numeric order. Category-domain order, series grouping, appearance, selection and visible endpoint overlays remain native. Path-order overrides reject aggregate lines on either axis. Evidence: `test/unit/actions/composition/audit-composition-regressions.test.js`, `test/unit/actions/encodings/line-series-encodings.test.js`.
 
 ### Formal values — `createLineMark`
 
@@ -644,6 +647,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 ## `editAreaMark`
 
 - Signature: `editAreaMark({ clip?, target?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing?, lineCap?, lineJoin?, miterLimit? })`.
+- Constant opacity edits reject an active field opacity encoding; `encodeOpacity({ value })` explicitly replaces that field assignment. A field opacity is one value per existing Area series, using the same public encoding and legend lifecycle as Line opacity.
 - `target`: existing area mark. Current compatible mark 또는 유일한 area mark를 infer하고 ambiguity는
   explicit target을 요구한다.
 - `fill`, `opacity`: constant graphical appearance다. Field-driven color encoding이 있으면 fill edit는

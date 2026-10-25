@@ -6,7 +6,7 @@
 | --- | --- | --- | --- | --- |
 | `encodeSize` | point | quantitative, nominal, ordinal | linear, log, sqrt, pow, quantize, quantile, threshold; ordinal for categories | row-owned point; range values are areas; remove explicit radius first |
 | `encodeShape` | point | nominal | ordinal | row-owned point; conflicts with explicit constant shape |
-| `encodeOpacity` | point, line, rule, bar | quantitative or constant | linear for field; none for constant | point/rule item, complete line series, or final bar cell; values within one series/cell must agree |
+| `encodeOpacity` | point, line, area, rule, bar, rect | quantitative or constant | linear for field; none for constant | point/rule/rect item, complete Line/Area series, or final bar cell; values within one series/cell must agree |
 | `encodeStrokeWidth` | line, rule | quantitative or constant | linear, log, sqrt, pow, symlog for field; none for constant | complete line series or rule item; width in logical pixels |
 | `encodeStrokeDash` | line, rule | nominal or constant | ordinal for field; none for constant | complete line series or rule item; series values must agree |
 | `encodeAngle` | point, tick | quantitative or constant | none | item; clockwise degrees; circles retain the angle as a visual no-op |
@@ -22,8 +22,8 @@
 | `encodeSize` | `encodeSize({ field: "Acceleration" })` | Current point; linear scale; area range `[24, 196]` | Semantic size and concrete equal-area symbols |
 | `encodeShape` | `encodeShape({ field: "Origin" })` | Current point; 12-value ordinal shape range | Semantic shape and mixed concrete symbols |
 | `encodeAngle` | `encodeAngle({ field: "direction" })` | Current point or Tick; direct clockwise degrees | Rotated concrete paths or line endpoints |
-| `encodeOpacity` | `encodeOpacity({ value: 0.27 })` | Current Point/Rule/Line/Bar/Rect | Constant concrete opacity |
-| `encodeOpacity` | `encodeOpacity({ field: "Acceleration" })` | Current Point/Rule/Line/Bar/Rect; linear scale; range `[0.2, 1]` | Semantic field opacity and concrete values |
+| `encodeOpacity` | `encodeOpacity({ value: 0.27 })` | Current Point/Rule/Line/Area/Bar/Rect | Constant concrete opacity |
+| `encodeOpacity` | `encodeOpacity({ field: "Acceleration" })` | Current Point/Rule/Line/Area/Bar/Rect; linear scale; range `[0.2, 1]` | Semantic field opacity and concrete values |
 | `encodeStroke` | `encodeStroke({ value: "#334155" })` | Current supported mark | Constant concrete outline color |
 | `encodeStroke` | `encodeStroke({ field: "status" })` | Current supported mark; independent ordinal stroke scale | Field-driven item or series outline |
 | `encodeStrokeWidth` | `encodeStrokeWidth({ value: 3 })` | Current Line/Rule/Rect | Constant concrete width |
@@ -54,6 +54,12 @@ focused pages below for selection, point appearance, and mark-specific style.
 
 Radius, constant stroke, constant rule width, constant opacity, and both bar width modes are graphical constants.
 Field stroke, field opacity, and field-driven stroke width are semantic encodings.
+
+Line and Area opacity fields must contain one finite value per existing series;
+they do not create groups or average observations. For an Area, constant
+`encodeOpacity({ value })` matches `editAreaMark({ opacity })` and also explicitly
+replaces a field encoding. Area opacity supports scale edits, sampled legends,
+facets and composition target lists, including a shared edit with Line layers.
 Angle is a scale-free semantic encoding for point and Tick glyphs; circles
 accept it as a visual no-op.
 Size cannot be combined with a constant radius. Remove that assignment with

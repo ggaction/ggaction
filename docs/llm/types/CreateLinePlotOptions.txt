@@ -1,31 +1,7 @@
-export interface CreateLinePlotOptions {
-  id?: string;
-  data?: string;
-  coordinate?: string;
-  x: LineXPositionChannel;
-  y: LineYPositionChannel;
-  color?: LineCategoricalColorChannel<CategoricalColorScaleOptions>;
-  groupBy?: string | readonly [string, ...string[]];
-  strokeDash?: BasicStrokeDashChannel;
-  line?: StrokeStyleDetails & {
-    clip?: boolean;
-    missing?: "error" | "break";
-    strokeWidth?: number;
-    curve?: CurveInterpolation;
-    tension?: number;
-    stroke?: string;
-    opacity?: number;
-    closed?: false;
-  };
-  guides?: false | (Omit<CPathGuides, "legend" | "grid"> & {
-    grid?: false | (Omit<CartesianGridOptions, "horizontal"> & {
-      horizontal?: boolean | (Omit<GridDirectionOptions, "bandPosition"> & {
-        /** Line y is continuous; band positioning is available only for categorical x grids. */
-        bandPosition?: never;
-      });
-    });
-    legend?: false | (Omit<PathLegendOptions, "order"> & {
-      order?: LegendValueOrder | { channel: "x"; values?: never };
-    });
-  });
-}
+export type CreateLinePlotOptions = LinePlotCommonOptions & (
+  | { x: LineXPositionChannel; y: Exclude<LineYPositionChannel, { fieldType: "nominal" | "ordinal" }>; guides?: false | LinePlotGuides<"horizontal"> }
+  | { x: string | { field: string; fieldType?: "quantitative"; aggregate?: AggregateOperation; scale?: NonPointQuantitativePositionScaleOptions };
+      y: Extract<LineYPositionChannel, { fieldType: "nominal" | "ordinal" }>; guides?: false | LinePlotGuides<"vertical"> }
+  | { x: { field: string; fieldType?: "quantitative"; aggregate: AggregateOperation; scale?: NonPointQuantitativePositionScaleOptions };
+      y: string | (Exclude<AreaPlotIndependentChannel, string> & { aggregate?: never }); guides?: false | LinePlotGuides<"vertical"> }
+);

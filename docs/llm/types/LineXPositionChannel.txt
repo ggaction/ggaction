@@ -1,6 +1,6 @@
 type LineXPositionChannel =
   | string
-  | ({ field: string; bin?: PositionEncodingBase["bin"] } & (
+  | ({ field: string; bin?: PositionEncodingBase["bin"]; aggregate?: never } & (
       | {
           fieldType?: "quantitative";
           scale?: NonPointQuantitativePositionScaleOptions;

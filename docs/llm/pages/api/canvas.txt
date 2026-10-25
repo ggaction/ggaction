@@ -6,7 +6,7 @@
 | --- | --- | --- | --- |
 | `createCanvas` | `createCanvas()` | Default size, background, and margin | Concrete Canvas and plot bounds |
 | `editCanvas` | `editCanvas({ width: 800 })` | Unspecified properties remain unchanged | Updated Canvas and affected consumers |
-| `fitCanvas` | `fitCanvas()` | Current Full-unit layout, fixed Canvas | Smallest valid quarter-pixel margins |
+| `fitCanvas` | `fitCanvas()` | Current Full-unit layout | Fit margins or reclaim outer reservations |
 
 ## `createCanvas(options?)`
 
@@ -101,8 +101,12 @@ dimensions to derive plot bounds. It is neither a drawable node in
 ## `fitCanvas(options?)`
 
 After marks, guides, and titles exist, a Full chart can shrink its margins while
-keeping the Canvas size fixed. Disable exact-inner sizing with `plot: false` before
-calling this action:
+keeping a fixed Canvas size unchanged. With exact-inner `plot` sizing, it instead
+keeps the plot dimensions unchanged and reclaims unused automatic guide margins.
+With the default `align: "preserve"`, authored margins remain per-edge minimums.
+Use `align: "center"` in this mode to redistribute that outer-space budget around
+the visible chart and guides. Required ink clearance is preserved, while the
+spare space is divided equally between opposite edges:
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
@@ -126,6 +130,7 @@ Canvas width, and Canvas height. Automatic ranges follow the fitted plot bounds.
 | `minPlotHeight` | positive finite number | `120` |
 | `iterationLimit` | integer from 1 through 64 | `32` |
 | `overflow` | `"error"` or `"report"` | `"error"` |
+| `align` | `"preserve"` or `"center"` (exact-inner only) | `"preserve"` |
 
 The default policy rejects an unsatisfied fit without changing the source
 program. `overflow: "report"` applies the last valid margins and stores the

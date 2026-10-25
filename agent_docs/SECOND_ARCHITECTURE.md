@@ -471,8 +471,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 464,500 bytes |
-| `ggaction/basic` | 239,000 bytes |
+| `ggaction` | 482,000 bytes |
+| `ggaction/basic` | 245,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 
@@ -480,6 +480,17 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 `scripts/browser-bundle-size.js`이고 package consumer와 documentation contract가 같은 값을 검증한다.
 Gzip 크기는 같은 minified bytes라도 Node가 포함한 zlib 버전에 따라 달라질 수 있으므로 지원하는
 Node 20·22·24 matrix의 최댓값을 포함해야 한다.
+
+2026-10-25 옵션 감사 수정의 동일 staged-package/Vite 비교에서 기존 HEAD
+`aa8f1e28`는 Full476,183/Basic241,647gzip bytes로 이전 상한을 이미 초과했다.
+최종 path-layer 색상·Area opacity 수정까지 포함한 Node 23.5.0 실측은
+Full 481,383 / Basic 244,242 bytes이며 기준 commit 대비 순증은 5,200 / 2,595 bytes다.
+추가 module은 Full의 Area 정렬 정책·complete-case 데이터 소유자, Basic의 Area
+정렬 정책이며 Node/MCP/knowledge 경계 유입은 없다. 같은 minified 결과를
+Node 20.20.2·22.23.4·24.22.1의 zlib로 압축한 최댓값 481,548 / 244,737 bytes를
+기준으로 최소 1,000 bytes 단위 상한 482,000 / 245,000을 적용한다.
+SVG는 Node 23에서 7,566 bytes, 지원 Node matrix에서 7,578 bytes로
+25,000 상한을 유지한다. 이전 상한을 통과했다고 보고하지 않는다.
 
 > 과거 checkpoint 수치 포함. 현재 한도는 실행 검사에서 확인한다.
 
@@ -2718,3 +2729,8 @@ scale/domain/Canvas는 보존하고 부모 materializer가 공유 domain과 정�
 source child/spec identity WeakMap은 최적화일 뿐 영속 상태나 전역 자동 compiler가 아니다.
 Full action wrapper의 명시적 target selector dispatcher는 같은 native action을 immutable 후보들에
 적용한 다음 변경된 조상 snapshots를 한 번 갱신한다. 사용자가 요청한 target dispatch에만 동작한다.
+
+
+## Immutable composition snapshot transfer
+
+2026-10-25 전체 감사 개선·필요 API 사전 승인에 따라, composition/facet materializer는 이미 materialize된 child snapshot을 내부 concrete transfer에서 한 번의 immutable map copy로 붙인다. Domain materialization action은 계속 trace에 남으며 semantic compiler를 추가하지 않는다. Named subtree cleanup은 공개 editGraphics의 atomic ID-array removal을 사용한다. 의미·좌표·그리기 순서·snapshot namespace는 그대로이며 renderer는 여전히 graphicSpec만 소비한다. 개별 property의 무의미한 재입력과 facet guide별 전체 map 복사를 제거한다.

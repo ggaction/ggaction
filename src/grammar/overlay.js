@@ -1,6 +1,17 @@
 import { isPlainObject, cloneAndFreeze } from "../core/immutable.js";
 import { validateUserId } from "../core/identifiers.js";
 
+// Inspection and materialization share the same topology capability. A
+// categorical density is an entire silhouette, not one endpoint per category.
+export function overlaySourceReason(layer, coordinateType, density) {
+  if (coordinateType !== 'cartesian' || !['bar', 'point', 'line', 'area'].includes(layer?.mark?.type))
+    return 'Overlay source requires a Cartesian bar, point, line, or area mark.';
+  if (layer.derivedBindings?.overlay) return 'Overlay source must be an independent mark.';
+  if (['x', 'y'].some(channel => !layer.encoding?.[channel]?.scale)) return 'Overlay source requires complete x and y positions.';
+  if (density?.placement?.type === 'category') return 'Categorically placed density areas do not have a single result endpoint per category.';
+  return undefined;
+}
+
 export function normalizeOverlayBinding(input) {
   if (!isPlainObject(input) || Object.keys(input).some(key =>
     !["source", "basis", "mode", "series", "missing", "orderBy", "inheritColor"].includes(key))) {

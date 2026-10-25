@@ -1,5 +1,7 @@
 import { facetUnitTemplate } from "./actions/facets/actions.js";
 import { plotComposition } from "./selectors/plotComposition.js";
+import { overlaySourceReason } from "./grammar/overlay.js";
+import { findUpstreamTransform } from "./materialization/dataProvenance.js";
 import { planLayerPlot } from "./actions/composition/layerPlan.js";
 import { resolveAdjacentSource } from "./materialization/adjacentSource.js";
 import { normalizeActionTargets } from "./grammar/actionTargets.js";
@@ -113,6 +115,10 @@ export function describeAction(program, { action, target, options = {} } = {}) {
         if (view.compositionSpec?.type === "facet") throw new Error("Facet cells follow their source; use editFacetSource for persistent edits.");
         view = atChildPath(view, [id]);
       }
+      if (selection.facetSource) {
+        if (view.compositionSpec?.type !== "facet") throw new Error("facetSource requires a facet view.");
+        view = facetUnitTemplate(view, true);
+      }
       if (view.compositionSpec?.type === "facet" && selection.id !== undefined) throw new Error("Target a facet source through editFacetSource.");
       const reference = selection.id === undefined || action.includes("CompositionChild") ? undefined
         : { kind: "mark", id: selection.id };
@@ -205,10 +211,11 @@ export function describeAction(program, { action, target, options = {} } = {}) {
     const layer = findLayer(scoped, id);
     if (layer === undefined) missing.push(action === "createOverlay" ? "source" : "target");
     else if (action === "editOverlay" ? !layer.derivedBindings?.overlay :
-      layer.derivedBindings?.overlay || !["bar", "line", "point", "area"].includes(layer.mark?.type) ||
-      findCoordinate(scoped, layer.coordinate)?.type !== "cartesian") {
+      overlaySourceReason(layer, findCoordinate(scoped, layer.coordinate)?.type,
+        findUpstreamTransform(scoped, findDataset(scoped, layer.data), 'density'))) {
       fieldFinding.push({ severity: "error", code: "unsupported-combination", reason: "overlay-source",
-        message: action === "createOverlay" ? "Overlay requires an independent Cartesian bar, line, area, or point source."
+        message: action === "createOverlay" ? overlaySourceReason(layer, findCoordinate(scoped, layer.coordinate)?.type,
+          findUpstreamTransform(scoped, findDataset(scoped, layer.data), 'density'))
           : "editOverlay requires a linked overlay target." });
     } else if (action === "createOverlay" && layer.mark.type === "point" && options.type !== "point" && !options.orderBy) missing.push("orderBy");
   }

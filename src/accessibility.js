@@ -34,6 +34,7 @@ function pathRows(program, layer) {
       scales: program.semanticSpec.scales,
       ...(x?.bin === undefined ? {} : { xBinBoundaries: resolveLineBins(rows, layer, requireSemanticScale(program, x.scale)).boundaries }),
       xDomain: program.resolvedScales[x?.scale]?.domain,
+      yDomain: program.resolvedScales[layer.encoding.y?.scale]?.domain,
       thetaDomain: program.resolvedScales[layer.encoding.theta?.scale]?.domain
     });
   } else {

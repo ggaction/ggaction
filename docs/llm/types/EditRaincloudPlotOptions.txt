@@ -1,4 +1,5 @@
 export interface EditRaincloudPlotOptions {
+  missing?: "error" | "skip";
   target?: string;
   data?: string;
   category?: RaincloudCategoryChannel;

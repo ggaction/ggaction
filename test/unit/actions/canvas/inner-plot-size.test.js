@@ -107,7 +107,7 @@ test("Measured text expands outer dimensions and rematerializes existing geometr
   assert.ok(measured.graphicSpec.objects.canvas.properties.width > source.graphicSpec.objects.canvas.properties.width);
   assert.ok(measured.graphicSpec.objects.canvas.properties.height > source.graphicSpec.objects.canvas.properties.height);
   assert.deepEqual(measured.editCanvas({ plot: { width: 30, height: 30 } }).graphicSpec, measured.graphicSpec);
-  assert.throws(() => measured.fitCanvas(), /requires fixed outer dimensions/);
+  assertSize(measured.fitCanvas({ minPlotWidth: 1, minPlotHeight: 1 }));
 });
 
 test("Diagonal label rectangles use their shared rotated frame for overlap checks", () => {

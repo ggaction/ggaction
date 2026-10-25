@@ -23,9 +23,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 641, // Independent layer action, role/provenance planners and inspection metadata.
-  packedBytes: 945_000, // Independent layer composition measured 936,639 bytes.
-  unpackedBytes: 4_470_000 // Independent layer composition measured 4,439,519 bytes.
+  entries: 646, // Includes owned complete-case data and Area alignment policies.
+  packedBytes: 960_000, // Includes complete-case, profile-summary and layout corrections.
+  unpackedBytes: 4_540_000
 });
 
 const REQUIRED_FILES = Object.freeze([

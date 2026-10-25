@@ -635,6 +635,7 @@ new view, including columns absent from the selected summary. This is snapshot r
 not a cross-view data dependency. Completion transforms preserve upstream positional-field
 and aggregation meanings during inference.
 `plot.options.data` may name another materialized dataset in the same source view.
+`plot.inherit?: { color?: boolean }` controls omitted color/group defaults in both adjacent and layer constructors. False suppresses source color inheritance and inferred color grouping; explicit constructor color/group options remain authoritative. Unknown inheritance keys and nonboolean flags reject. Explicit Rug X/Y owns its axis rather than inheriting a second source axis. Explicit Area X/Y uses the native valueChannel default (Y), unless valueChannel is supplied.
 `plot.options.id` is rejected; the top-level `id` owns both the new view and mark. The default is a line,
 right placement and plot alignment. Horizontal placement defaults to shared Y and vertical placement to shared X only when field, measurement operations and Cartesian coordinate meanings are compatible. Caller
 `share` replaces the default. No layer or data dependency is introduced between adjacent views.
@@ -669,7 +670,7 @@ rejects without changing any previous program or child. Facet callers use `editF
 
 ## Explicit action targets
 
-Full authoring adds `target: { childPath: string[], id?: string }` or a nonempty array of string
+Full authoring adds `target: { childPath: string[], id?: string, facetSource?: true }` or a nonempty array of string
 IDs and/or these selectors to ordinary action options. An empty path addresses the current
 view. `id` becomes that native action's ordinary `target`; omission selects the view itself and
 keeps the native action's existing inference. For example a title uses a path without an ID,
@@ -679,7 +680,7 @@ construct an explicit list for All. Basic retains its original single-target opt
 Each target invokes the same public native function. Immutable candidates are edited first;
 all changed ancestors and shared-domain constraints are materialized from the complete final
 state. A failure returns no partially edited program. Duplicate targets, unknown paths and
-ambiguous native targets reject. Facet source edits use `editFacetSource`; paths through generated facet cells are rejected to avoid losing edits on source replay. Parent/source overlapping target lists must be structurally valid.
+ambiguous native targets reject. Facet source edits use `editFacetSource`, or `facetSource: true` on an explicit facet-view selector. That selector routes the same requested native action through the retained facet source and regenerates cells; it can be mixed atomically with ordinary-view selectors. The flag rejects on nonfacet views and accepts only literal true. Inspection resolves the same retained source. Paths through generated facet cells are rejected to avoid losing edits on source replay. Parent/source overlapping target lists must be structurally valid.
 The outer trace records one requested function; retained child traces contain the native edits.
 
 
@@ -712,6 +713,7 @@ The outer trace records one requested function; retained child traces contain th
 - Implicitly re-encoding one positional field on a shared scale rejects if it would change the meaning still used by another independent owner. Explicit scale IDs retain the ordinary native resource semantics; a different scale remains subject to the existing guide-rebinding constraints. Pie layers preserve the exact category partition and weight; Rose and Radial Bar layers must retain the same area or radius-length mapping.
 - `placement` is `front` (default) or `back`. All owned marks move as one block within their existing graphic parent; guides retain their relative order. Independent appearance edits target the new owner; shared scale edits affect all consumers. Constructors consume existing guides (`guides:false`); call `createGuides` once after constructing the view.
 - Color uses the source mapping when its field is available at the new layer's statistical grain. Category-only summaries omit an unrelated inherited color while preserving the source layer's mapping; an explicit unsupported color rejects. Interval summaries infer categorical color as groupBy. An explicit Violin split preserves its split-field color. Endpoint summaries require color to be the category; continuous distribution grouping is rejected. Distinct coordinate families and incompatible units remain available through independent `createAdjacentPlot`.
+- Line, Polar Line and Area inherit color only when the native path-series appearance contract accepts it at the prospective grouping. A varying per-observation continuous point color becomes a single-color path by default; it does not create artificial series or average the color. Compatible categorical color and explicit source grouping remain intact. Line and Polar Line retain a continuous color that is constant within each series; Area constructor color remains categorical. Explicit `plot.options.color` never silently disappears: incompatible fields reject in both inspection and execution. `plot.inherit.color: false` remains an explicit single-color choice, and `plot.options.groupBy` selects another supported series grain. Evidence: `test/unit/actions/composition/path-layer-color.test.js`.
 - Existing `createOverlay` remains the explicit `visibleItems` follower. `createLayerPlot` recomputes its own native statistics from shared source data and is not a second follower implementation or stored chart recipe.
 - `describeAction` uses the same constructor planner to report incompatible roles/units without constructing chart candidates. Successful preflight does not replace the native constructor's data-level validation.
 
@@ -730,3 +732,18 @@ The outer trace records one requested function; retained child traces contain th
 ### Scoped edits of collected guides
 
 A collected color/shape legend is validated in the parent layout where it is painted. Scoped public edits and local planning frames retain that visibility ownership: hidden source copies do not conflict with their former child axes. Uncollected guides still participate in native collision checks, and visible parent collisions reject atomically. The temporary editing context is removed before returning or persisting a program. Native source programs remain immutable. Evidence: `test/unit/actions/composition/shared-legend-offset.test.js`.
+
+### Composition audit regression coverage
+
+- `test/unit/actions/composition/audit-composition-regressions.test.js` verifies horizontal Bar/Dot/Lollipop/Line layers with source aggregation, original-field sharing from Violin to raw points, explicit Area/Rug roles, color inheritance suppression, categorical point guide retention, and mixed facet/ordinary atomic appearance edits including persistence and failure isolation.
+- Shared concat field identity follows statistical transform provenance; category/value distributions retain their original value-field meaning. Explicit sum/raw comparison retains the value unit while automatic sharing still requires equal measurement operations. Normalized probability, density, count and squared units remain distinct.
+- Horizontal categorical Line and compatible group/overlay/stack/diverging layers share a scale in common units; fill/center cannot mix with incompatible layouts. Category-positioned density silhouettes report the same visible-endpoint overlay incompatibility through inspection and execution.
+
+### Binned and raw layer positions
+
+A binned quantitative position may share its scale with an unbinned layer when
+provenance resolves both to the same field, type, and measurement units. All
+binned consumers still require an identical bin definition. An automatic domain
+includes raw observations and binned endpoints without replacing source bin
+assignments; explicit domains remain authoritative. Different fields or units
+remain incompatible.

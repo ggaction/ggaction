@@ -168,6 +168,17 @@ child first, then replace its slot when a concat dashboard needs a changed
 chart.
 
 
+## Path layer color
+
+When adding an independent path layer with `createLayerPlot`, omitted color is
+inherited only when it describes a whole series. A continuous point color that
+varies along a new Line or Polar Line defaults to a single color; it is not
+averaged or used to split the path into artificial series. Categorical colors
+and compatible per-series continuous colors are retained. Set the native
+constructor's `plot.options.color` and `groupBy` to choose another valid mapping,
+or `plot.inherit.color: false` for a single-color layer. Explicit incompatible
+color mappings are rejected. Area constructor color is categorical.
+
 ## Shared color legends
 
 With `share: { color: true }`, compatible color-only legends are collected into
