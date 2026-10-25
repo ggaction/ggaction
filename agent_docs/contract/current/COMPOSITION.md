@@ -630,6 +630,10 @@ the source view. Left/right use the receiver's plot-union height and source widt
 titles and guide settings remain attached to the original group. Existing alignment and sharing
 policies govern final snapshots; no bitmap stretching is involved.
 The new chart receives an independent snapshot of the source's materialized data and theme.
+Materialized input tables (datasets without a derived `source`) also remain available in the
+new view, including columns absent from the selected summary. This is snapshot retention,
+not a cross-view data dependency. Completion transforms preserve upstream positional-field
+and aggregation meanings during inference.
 `plot.options.data` may name another materialized dataset in the same source view.
 `plot.options.id` is rejected; the top-level `id` owns both the new view and mark. The default is a line,
 right placement and plot alignment. Horizontal placement defaults to shared Y and vertical placement to shared X only when field, measurement operations and Cartesian coordinate meanings are compatible. Caller

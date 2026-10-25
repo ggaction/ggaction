@@ -20,6 +20,8 @@ Supply `plot: { action: "createScatterPlot", options: { x: "month", y: "sales" }
 roles, including original fields behind statistical plots. Supply native options
 for any role that cannot be inferred, such as a second Dumbbell measure. The new chart
 has independent data and appearance; use `createOverlay` when it should follow results.
+Input tables remain available in the new view even when its chart uses a summary, so a
+later adjacent chart can select other columns with `plot.options.data` and explicit fields.
 
 The selected source mark's ID names the original view; the new `id` names both the
 adjacent view and its initial mark. Nested concats use explicit child paths when adding

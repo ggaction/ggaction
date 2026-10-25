@@ -47,7 +47,14 @@ const createAdjacentPlot = /* @__PURE__ */ closedAction({
     margin: template.materializationConfigs.canvas.margin, background: canvas.background });
   const theme = resolveEffectiveThemeFrame(template.materializationConfigs.theme);
   if (theme) child = child.applyTheme({ theme: { base: theme.name, tokens: theme.tokens } });
-  child = inheritTextMetrics(template, child).createData({ id: dataset.id, values: dataset.values });
+  child = inheritTextMetrics(template, child);
+  // Keep source tables available for subsequent authoring. A summary used by
+  // this constructor must not erase unused input variables from its new view.
+  // These remain independent immutable snapshots, not cross-view dependencies.
+  for (const input of template.semanticSpec.datasets) {
+    if (input.id !== dataset.id && (input.source || !Array.isArray(input.values))) continue;
+    child = child.createData({ id: input.id, values: input.values });
+  }
   const options = { ...inferCompositionOptions(meaning,action,supplied), id, data:dataset.id };
   const roles=constructorChannels(action,options,meaning);
   if(args.share===undefined) {

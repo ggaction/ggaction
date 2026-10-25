@@ -46,7 +46,7 @@ export function compositionChannel(program, encoding, data) {
       } else if (t.type === 'fold') {
         if (key === 'key' || key === 'value') { field = undefined; fields = t.fields; operations.unshift(key === 'key' ? 'dimensions' : 'profile'); }
         recognized = true;
-      } else if (t.type === 'regression') recognized = true;
+      } else if (t.type === 'regression' || t.type === 'complete') recognized = true;
     }
     if (!recognized || !dataset.source) break;
     current = dataset.source;

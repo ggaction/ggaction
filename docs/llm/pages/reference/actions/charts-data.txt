@@ -3590,7 +3590,9 @@ Add an independent chart next to a unit or facet view. Placement is left, right,
 The default line inherits source fields, binning and aggregation; `plot: { action, options }`
 selects any built-in chart constructor. Original fields and data are inferred through each
 constructor's native positional roles; ambiguous additional fields require explicit options. `plot.options.data` selects a materialized source-view dataset;
-the adjacent view receives its own snapshot. The top-level `id` owns its view and mark.
+the adjacent view receives its own snapshot and retains the source view's materialized input
+tables, so later charts can use variables omitted from a summary. Completed-key tables retain
+their original field and aggregation meanings during inference. The top-level `id` owns its view and mark.
 Horizontal placement shares compatible Y meanings by default; vertical placement shares
 compatible X meanings. Different aggregates or coordinate families stay independent. An
 explicit `share` replaces that default and rejects incompatible meanings. `align: "plot"` matches actual plot frames without stretching text or symbols.

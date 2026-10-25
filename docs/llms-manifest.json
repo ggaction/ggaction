@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:69da831ac5dba260f4a19e308bf71d8eeb12014847342c077a6a0185d7beacdb",
+    "contractId": "sha256:3237654c00eef60ebc8a898df56ad1f34be49babe1759e5827b3ca1bffc64c7c",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -2079,8 +2079,8 @@
         "focused-channel-scale-editors",
         "related"
       ],
-      "bytes": 192787,
-      "sha256": "8683063991d47e88b2aa34a7a418be13dcc7423a0b7d6c8ed03fab85a99e7c08"
+      "bytes": 192993,
+      "sha256": "e43dfe0b83d3e73b631773588c74f5b953c3dbe079133c2f0f7c5f2135e093f7"
     },
     {
       "order": 119,
@@ -3224,8 +3224,8 @@
         "insert-remove-and-reorder-named-concat-children",
         "layer-a-native-chart"
       ],
-      "bytes": 15652,
-      "sha256": "bb71be809c3749143b2df0e836f2af56211d50911eed8d9138c6fa953479daa2"
+      "bytes": 15831,
+      "sha256": "3444f680a4cd18412458bb50b3c20d5f6af1ce6725bc6d2e48ab81d7f2205e74"
     },
     {
       "order": 135,
@@ -3461,7 +3461,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "096f0c931911570483f858915db8fd323da5f8da1687fcbe9a07482ad9aef90a"
+      "sha256": "99b191d7955deb505f783e92f706b9ca21c09196e6e804e8221e7fcbeb053426"
     },
     {
       "order": 150,

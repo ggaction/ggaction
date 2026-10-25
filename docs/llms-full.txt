@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.25.
 
-Contract: sha256:69da831ac5dba260f4a19e308bf71d8eeb12014847342c077a6a0185d7beacdb. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:3237654c00eef60ebc8a898df56ad1f34be49babe1759e5827b3ca1bffc64c7c. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -20891,7 +20891,9 @@ Add an independent chart next to a unit or facet view. Placement is left, right,
 The default line inherits source fields, binning and aggregation; `plot: { action, options }`
 selects any built-in chart constructor. Original fields and data are inferred through each
 constructor's native positional roles; ambiguous additional fields require explicit options. `plot.options.data` selects a materialized source-view dataset;
-the adjacent view receives its own snapshot. The top-level `id` owns its view and mark.
+the adjacent view receives its own snapshot and retains the source view's materialized input
+tables, so later charts can use variables omitted from a summary. Completed-key tables retain
+their original field and aggregation meanings during inference. The top-level `id` owns its view and mark.
 Horizontal placement shares compatible Y meanings by default; vertical placement shares
 compatible X meanings. Different aggregates or coordinate families stay independent. An
 explicit `share` replaces that default and rejects incompatible meanings. `align: "plot"` matches actual plot frames without stretching text or symbols.
@@ -42867,6 +42869,8 @@ Supply `plot: { action: "createScatterPlot", options: { x: "month", y: "sales" }
 roles, including original fields behind statistical plots. Supply native options
 for any role that cannot be inferred, such as a second Dumbbell measure. The new chart
 has independent data and appearance; use `createOverlay` when it should follow results.
+Input tables remain available in the new view even when its chart uses a summary, so a
+later adjacent chart can select other columns with `plot.options.data` and explicit fields.
 
 The selected source mark's ID names the original view; the new `id` names both the
 adjacent view and its initial mark. Nested concats use explicit child paths when adding
@@ -44270,7 +44274,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:69da831ac5dba260f4a19e308bf71d8eeb12014847342c077a6a0185d7beacdb` |
+| Contract fingerprint | `sha256:3237654c00eef60ebc8a898df56ad1f34be49babe1759e5827b3ca1bffc64c7c` |
 | Example and dataset source | `ab206c446ae5010eecfd859427775c4785d8aed4` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

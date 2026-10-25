@@ -4,6 +4,7 @@ import { chart, hconcat, vconcat } from "../../../../src/index.js";
 import { serializeProgram, deserializeProgram } from "../../../../src/persistence.js";
 import { prepareCompositionSnapshots, compositionPlotBounds } from "../../../../src/materialization/composition.js";
 import { resolveGraphicBounds } from "../../../../src/layout/canvas.js";
+import { getPlotComposition } from "../../../../src/inspection.js";
 
 function bars(values = [{ x: "A", y: 10 }, { x: "B", y: 20 }], { height = 200, top = 60, bottom = 60 } = {}) {
   return chart().createCanvas({ plot: { width: 280, height }, margin: { left: 70, right: 40, top, bottom } })
@@ -14,6 +15,33 @@ function domain(p, channel = "y") {
   return p.resolvedScales[p.semanticSpec.layers[0].encoding[channel].scale].domain;
 }
 function sharedDomains(p) { return Object.values(prepareCompositionSnapshots(p).children).map(child => domain(child)); }
+
+test("adjacent summary charts retain unused input columns for subsequent views", () => {
+  const values = [{ x: 1, y: 2, other: 8, group: "A" }, { x: 1, y: 6, other: 12, group: "A" },
+    { x: 2, y: 10, other: 20, group: "A" }, { x: 2, y: 14, other: 30, group: "A" }];
+  const source = chart().createCanvas({ plot: { width: 280, height: 200 }, margin: 80 })
+    .createData({ id: "data", values })
+    .createSummaryData({ id: "summary", source: "data", groupBy: ["x", "group"], aggregates: [{ field: "y", op: "mean", as: "y" }] })
+    .createCompleteData({ id: "aligned", source: "summary", key: "x", groupBy: ["group"] })
+    .createAreaPlot({ id: "area", data: "aligned", x: "x", y: "y", groupBy: ["group"] });
+  const meaning = getPlotComposition(source, { target: "area" });
+  assert.equal(meaning.data, "data");
+  assert.deepEqual(meaning.channels.y.measurement.operations, ["mean"]);
+  const raw = source.createAdjacentPlot({ id: "raw", source: "area", plot: { action: "createScatterPlot" } });
+  assert.equal(raw.compositionSpec.share.y, undefined, "mean and raw observations do not share automatically");
+  const pair = source.createAdjacentPlot({ id: "second", source: "area", share: {},
+    plot: { action: "createAreaPlot", options: { data: "aligned", x: "x", y: "y", groupBy: ["group"] } } });
+  const restored = deserializeProgram(serializeProgram(pair));
+  assert.deepEqual(restored.children.second.semanticSpec.datasets.find(d => d.id === "data").values, values);
+  const next = restored.createAdjacentPlot({ target: { childPath: ["second"] }, id: "third", source: "second", share: {},
+    plot: { action: "createScatterPlot", options: { data: "data", x: "other", y: "y" } } });
+  const third = next.children.second.children.third;
+  assert.equal(third.semanticSpec.layers[0].encoding.x.field, "other");
+  assert.equal(third.graphicSpec.objects.third.items.length, 4);
+  assert.deepEqual(third.semanticSpec.datasets.find(d => d.id === "data").values, values);
+  assert.equal(restored.children.second.compositionSpec, undefined);
+  assert.equal(source.semanticSpec.datasets.length, 3);
+});
 
 test("adjacent line inherits source fields and aggregate while preserving one public root call", () => {
   const source = bars();
