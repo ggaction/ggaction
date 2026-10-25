@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Reduce nested action-trace allocation and freezing overhead while preserving immutable, lazily materialized child arrays and trace serialization.
+
 - Add `removeLegend({ suppress: true })` to preserve channel-specific deletion through automatic guides, facet/source replay and saved programs; explicit `createLegend` restores the selected channels.
 
 - Add `createLayerPlot` and `getPlotComposition` inspection for independent native layers with original-field provenance, shared compatible scales, compound ownership, and front/back placement.
