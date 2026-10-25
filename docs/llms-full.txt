@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.25.
 
-Contract: sha256:04da61ac9a2968381ac8049c11ace04632c7f0de4896b91cdb22ea8383dc1083. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:bf720004d3fd91cdac3915a24172a16e19e93d0d78625062ccf6779deb96b0d4. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -9411,6 +9411,13 @@ Facet and concat parents support the same four edges. Their inferred Canvas rese
 lane for the title and subtitle, outside retained axes, headers and shared legends.
 Alignment follows the union of the child plots; left and right titles rotate with
 their subtitle. Editing the title or composition layout recomputes that lane.
+
+Top titles use the nearest retained chart content, including axis text, facet
+headers, and shared legends, rather than leaving an extra gap for empty child
+Canvas margins. When the reserved lane has spare space, the title/subtitle block
+moves toward that content to leave 16 logical pixels. Already tighter lanes,
+child sizes and margins, and explicit facet `topLane: "shared"` layouts are
+preserved.
 
 On a concat parent, omit `target` to create or edit one overall title. Use
 `target: { childPath: ["main"] }` to title only the named child view. Parent and
@@ -44574,7 +44581,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:04da61ac9a2968381ac8049c11ace04632c7f0de4896b91cdb22ea8383dc1083` |
+| Contract fingerprint | `sha256:bf720004d3fd91cdac3915a24172a16e19e93d0d78625062ccf6779deb96b0d4` |
 | Example and dataset source | `ab206c446ae5010eecfd859427775c4785d8aed4` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

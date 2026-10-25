@@ -695,6 +695,11 @@ config normalization과 rematerialization을 공유한다. Evidence:
   plot bounds의 union을 사용하며 child margin, axis text/title, composition padding과 shared legend를 제외한다.
 - top/bottom align은 plot의 x start/center/end이고 left/right align은 edge 진행 방향의
   top/center/bottom이다.
+- Facet/concat의 top title은 최종 retained graphic bounds(축 텍스트, header, shared legend 포함)를 기준으로
+  예약된 lane의 빈 공간을 사용해 title/subtitle block과 content 사이 간격을 최대 16 logical pixels로 줄인다.
+  이미 더 가까운 lane, child Canvas 크기/margin/placement, explicit `topLane:"shared"`의 배치는 유지한다.
+  제목/부제/style/header/legend/Canvas replay마다 같은 기준을 적용한다.
+  Evidence: `test/unit/actions/composition/title-content-clearance.test.js`.
 - `offset`: finite number, 기본 `0`; top/bottom은 y, left/right는 x Canvas axis에서 block을 이동한다.
 - `alongOffset`: finite signed logical pixel, 기본 `0`. Top/bottom의 title/subtitle 전체 block을 X 방향, left/right는 Y 방향으로 같은 양만큼 옮긴다. 양수는 right/down이며 기존 outward `offset`과 독립이다. 실제 bounds/guide 충돌 검증은 이동 후 적용하고 edit/reset/Canvas replay에서도 유지한다.
 - `gap`: non-negative finite number, 기본 `8`; title/subtitle 사이 거리다.

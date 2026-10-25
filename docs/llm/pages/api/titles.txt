@@ -17,6 +17,13 @@ lane for the title and subtitle, outside retained axes, headers and shared legen
 Alignment follows the union of the child plots; left and right titles rotate with
 their subtitle. Editing the title or composition layout recomputes that lane.
 
+Top titles use the nearest retained chart content, including axis text, facet
+headers, and shared legends, rather than leaving an extra gap for empty child
+Canvas margins. When the reserved lane has spare space, the title/subtitle block
+moves toward that content to leave 16 logical pixels. Already tighter lanes,
+child sizes and margins, and explicit facet `topLane: "shared"` layouts are
+preserved.
+
 On a concat parent, omit `target` to create or edit one overall title. Use
 `target: { childPath: ["main"] }` to title only the named child view. Parent and
 child titles are independent; removing the parent title preserves child titles.

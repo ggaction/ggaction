@@ -1,4 +1,5 @@
 import { textBoundsFitCanvas } from "../core/textMetrics.js";
+import { resolveConcreteGraphicBounds } from "../grammar/schemas/graphicBounds.js";
 import { alignedTextAnchor, alignedTitleAnchor, buildTitleReadingBlock, paintedTitleComponent, resolveTitleComponentBounds, titleTextProperties } from "../layout/title.js";
 const TITLE_IDS = ["chartTitle", "chartSubtitle"];
 export function compositionTitleLayout(program) {
@@ -57,6 +58,20 @@ function materializeTitleComponent(program, id, lines, centers, style, plot, tit
 }
 
 export function materializeCompositionTitle(program, plot, title) {
+  if (title.config.position === "top" && program.compositionSpec.topLane !== "shared") {
+    // Child Canvas margins already reserve space above visible chart content.
+    // Anchor against the retained ink instead of adding that empty space to
+    // the title gap. Keep child placements, authored margins and the explicit
+    // shared top-lane contract intact.
+    let edge = plot.y;
+    for (const [id, object] of Object.entries(program.graphicSpec.objects)) {
+      if (TITLE_IDS.includes(id) || object.type === "canvas" || object.children?.length ||
+          object.properties?.opacity === 0) continue;
+      const bounds = resolveConcreteGraphicBounds(program.graphicSpec, id, program.materializationConfigs.textMetrics);
+      if (bounds) edge = Math.min(edge, bounds.top);
+    }
+    title = { ...title, top: Math.max(title.top, edge - 16 - title.block.height) };
+  }
   let next = materializeTitleComponent(
     program,
     TITLE_IDS[0],
