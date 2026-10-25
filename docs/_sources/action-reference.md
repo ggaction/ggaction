@@ -2895,7 +2895,7 @@ Edit the existing radial grid. [Grids](../api/grids.md#editing-grids)
 
 ```javascript
 createLegend({
-  target?, channels?, position?, layout?, align?, direction?, columns?, offset?,
+  target?, channels?, position?, layout?, align?, direction?, columns?, offset?, alongOffset?,
   titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, rowPadding?, titlePadding?, border?, count?,
   values?, gradient?, order?
 })
@@ -2987,13 +2987,15 @@ Continuous and combined sampled legends retain their existing edge-only contract
 
 ```javascript
 editLegend({
-  target?, channel?, channels?, position?, layout?, align?, direction?, columns?, offset?, titlePosition?,
+  target?, channel?, channels?, position?, layout?, align?, direction?, columns?, offset?, alongOffset?, titlePosition?,
   title?, symbol?, labels?, titleStyle?, itemGap?, rowPadding?, titlePadding?, border?, count?, values?, gradient?, order?, overflow?
 })
 ```
 
 Singular `channel` selects one existing block without changing sibling typography. It cannot
 accompany `channels`, `blockLayout`, or `at`. A channel never disambiguates mark targets.
+
+`alongOffset` is a finite signed distance in logical pixels, defaulting to zero: positive moves right on top/bottom (and in-plot corner) anchors, or down on left/right anchors. `offset` keeps its perpendicular gap meaning. Omitted edits preserve the shift; zero resets it. With `channel`, only that block moves; without it, the target’s grouped blocks move together. `position: "inherit"` clears a selected block’s local anchor and shift. `at` cannot accompany edge placement options, including `alongOffset`. Existing fit and collision checks still apply.
 
 `rowPadding` and `titlePadding` accept numbers or `"auto"` to remove retained intent; omission or undefined preserves it. Explicit row spacing wins over vertical itemGap/block gap while retaining the old fallback and horizontal spacing. Explicit title spacing wins over the old title gap. Reset row padding before a transition to a gradient. Combining conflicting policies requires an explicit choice; incompatible splits require explicit reset. Content and Canvas/data/scale/theme/facet replay retain compatible policies.
 
@@ -3050,7 +3052,7 @@ numeric keys only; unmatched samples keep their normal formatter. `"auto"` remov
 
 ```javascript
 editLegendLayout({
-  target?, channel?, position?, layout?, align?, direction?, columns?, offset?,
+  target?, channel?, position?, layout?, align?, direction?, columns?, offset?, alongOffset?,
   titlePosition?, itemGap?, rowPadding?, titlePadding?
 })
 editLegendLabels({ target?, channel?, offset?, color?, fontSize?, fontFamily?, fontWeight?, format? })

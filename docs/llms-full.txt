@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.25.
 
-Contract: sha256:c74e7d86ad4670f2b82cb45392271444faceb81ba6cbaca21024e81643627caa. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:b6cd03e1c4be41d7782e5e033de3b0574bdd37f5c78d9054dce8dc121829cfc2. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -13766,6 +13766,21 @@ This changes only the selected block. It preserves sibling typography and sample
 when more than one mark owns legends. Singular `channel` cannot accompany plural `channels`, which replaces
 whole-target content, or whole-group `blockLayout`/`at` controls.
 
+## Fine positioning
+
+Keep an edge anchor while adjusting its position with `editLegend` or `editLegendLayout`. `offset` sets the perpendicular gap from the plot; `alongOffset` is a signed pixel shift along that edge. Positive values move right on top/bottom and in-plot corners, and down on left/right. Omission preserves the value; `0` resets the shift.
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "plot"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```js
+// Fragment: program already owns the color legend for "plot".
+program.editLegend({ target: "plot", channel: "color", position: "bottom", offset: 60, alongOffset: -12 });
+```
+
+Fine adjustment on the same edge keeps sibling blocks in their existing slots.
+
+This moves the color block 12 logical pixels left of its normal alignment. Omit `channel` to move the target’s legend group together. Selected blocks rejoin the group with `position: "inherit"`, which clears their local shift. Free `at` placement cannot be combined with `alongOffset`; switch back to an explicit edge first. Canvas fit and guide collision checks remain active. These positions persist through data updates, facets, shared concat legends, and saved programs.
+
 ## Supported legend families
 
 | Legend family | Supported marks | Channels |
@@ -27160,6 +27175,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `direction` | Optional / branch-dependent | `"horizontal" \| "vertical" \| undefined` |
 | `columns` | Optional / branch-dependent | `number \| undefined` |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `titlePosition` | Optional / branch-dependent | `"bottom" \| "left" \| "top" \| undefined` |
 | `title` | Optional / branch-dependent | `string \| false \| undefined` |
@@ -27178,7 +27194,7 @@ The following call patterns are abbreviated examples; the declaration above owns
 
 ```javascript
 createLegend({
-  target?, channels?, position?, layout?, align?, direction?, columns?, offset?,
+  target?, channels?, position?, layout?, align?, direction?, columns?, offset?, alongOffset?,
   titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, rowPadding?, titlePadding?, border?, count?,
   values?, gradient?, order?
 })
@@ -27304,6 +27320,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `at` | Optional / branch-dependent | `{ x: number; y: number; } \| undefined` |
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `columns` | Optional / branch-dependent | `number \| undefined` |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `titlePosition` | Optional / branch-dependent | `"bottom" \| "left" \| "top" \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
@@ -27317,13 +27334,15 @@ The following call patterns are abbreviated examples; the declaration above owns
 
 ```javascript
 editLegend({
-  target?, channel?, channels?, position?, layout?, align?, direction?, columns?, offset?, titlePosition?,
+  target?, channel?, channels?, position?, layout?, align?, direction?, columns?, offset?, alongOffset?, titlePosition?,
   title?, symbol?, labels?, titleStyle?, itemGap?, rowPadding?, titlePadding?, border?, count?, values?, gradient?, order?, overflow?
 })
 ```
 
 Singular `channel` selects one existing block without changing sibling typography. It cannot
 accompany `channels`, `blockLayout`, or `at`. A channel never disambiguates mark targets.
+
+`alongOffset` is a finite signed distance in logical pixels, defaulting to zero: positive moves right on top/bottom (and in-plot corner) anchors, or down on left/right anchors. `offset` keeps its perpendicular gap meaning. Omitted edits preserve the shift; zero resets it. With `channel`, only that block moves; without it, the target’s grouped blocks move together. `position: "inherit"` clears a selected block’s local anchor and shift. `at` cannot accompany edge placement options, including `alongOffset`. Existing fit and collision checks still apply.
 
 `rowPadding` and `titlePadding` accept numbers or `"auto"` to remove retained intent; omission or undefined preserves it. Explicit row spacing wins over vertical itemGap/block gap while retaining the old fallback and horizontal spacing. Explicit title spacing wins over the old title gap. Reset row padding before a transition to a gradient. Combining conflicting policies requires an explicit choice; incompatible splits require explicit reset. Content and Canvas/data/scale/theme/facet replay retain compatible policies.
 
@@ -27434,6 +27453,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `direction` | Optional / branch-dependent | `"auto" \| "horizontal" \| "vertical" \| undefined` |
 | `columns` | Optional / branch-dependent | `number \| undefined` |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `titlePosition` | Optional / branch-dependent | `"bottom" \| "left" \| "top" \| undefined` |
 | `itemGap` | Optional / branch-dependent | `number \| undefined` |
@@ -28799,7 +28819,7 @@ See [Coordinates](./api/coordinates/) and
 
 ```javascript
 editLegendLayout({
-  target?, channel?, position?, layout?, align?, direction?, columns?, offset?,
+  target?, channel?, position?, layout?, align?, direction?, columns?, offset?, alongOffset?,
   titlePosition?, itemGap?, rowPadding?, titlePadding?
 })
 editLegendLabels({ target?, channel?, offset?, color?, fontSize?, fontFamily?, fontWeight?, format? })
@@ -34931,6 +34951,8 @@ export interface EditLegendLayoutOptions {
   direction?: "horizontal" | "vertical" | "auto";
   /** Categorical legends accept a positive column count on every supported position. */
   columns?: number;
+  /** Signed logical pixels along the edge: right for top/bottom and in-plot corners, down for left/right. */
+  alongOffset?: number;
   /** Single top/bottom edge: gap from the plot to the nearest occupied legend edge. */
   offset?: number;
   /** bottom is gradient-only; left retains the existing categorical/opacity rules. */
@@ -37088,7 +37110,7 @@ export interface LegendOptions {
   position?: "right" | "left" | "bottom" | "top" | "top-left" | "top-right" | "bottom-left" | "bottom-right";
   /** Arrange every legend block owned by the selected target. Item direction and columns remain independent. */
   blockLayout?: "row" | "column" | "wrap";
-  /** Occupied group top-left relative to the plot. Cannot be supplied with position, align, or offset in the same call. */
+  /** Occupied group top-left relative to the plot. Cannot be supplied with position, align, offset, or alongOffset in the same call. */
   at?: { x: number; y: number };
   /** Single top/bottom edge: align complete occupied bounds, including border strokes, to the plot. Side positions require center. */
   align?: "left" | "center" | "right";
@@ -37096,6 +37118,8 @@ export interface LegendOptions {
   direction?: "horizontal" | "vertical";
   /** Categorical legends accept a positive column count on every supported position. */
   columns?: number;
+  /** Signed logical pixels along the edge: right for top/bottom and in-plot corners, down for left/right. */
+  alongOffset?: number;
   /** Single top/bottom edge: gap from the plot to the nearest occupied legend edge. */
   offset?: number;
   /** bottom is gradient-only; left retains the existing categorical/opacity rules. */
@@ -44281,7 +44305,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:c74e7d86ad4670f2b82cb45392271444faceb81ba6cbaca21024e81643627caa` |
+| Contract fingerprint | `sha256:b6cd03e1c4be41d7782e5e033de3b0574bdd37f5c78d9054dce8dc121829cfc2` |
 | Example and dataset source | `ab206c446ae5010eecfd859427775c4785d8aed4` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

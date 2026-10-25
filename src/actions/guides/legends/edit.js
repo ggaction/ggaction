@@ -60,7 +60,7 @@ import { LEGEND_POSITIONS } from "../../../core/vocabulary.js";
 import { planLegendBlockTransitions } from "./transition.js";
 
 const OPTIONS = Object.freeze([
-  "target", "channel", "channels", "position", "layout", "align", "direction", "columns", "offset",
+  "target", "channel", "channels", "position", "layout", "align", "direction", "columns", "offset", "alongOffset",
   "titlePosition", "title", "symbol", "labels", "titleStyle", "itemGap", "rowPadding", "titlePadding",
   "border", "count", "values", "gradient", "representation", "order", "overflow", "blockLayout", "at", "combine", "clipHeight"
 ]);
@@ -714,10 +714,25 @@ function editLegendImplementation(args = {}, skipGroup = false, positionIntent =
       }
       let program = this;
       const descriptor = resolveLegendBlock(program, args, "editLegend");
+      if (Object.hasOwn(args, "alongOffset")) {
+        if (!Number.isFinite(args.alongOffset)) throw new TypeError("Legend alongOffset must be finite.");
+        const inherited = program.guideConfigs.legendGroups?.[target]?.placement;
+        if (args.position === undefined && localLegendPlacement(descriptor.config) === undefined && inherited?.at) {
+          throw new Error("Free legend placement requires position before alongOffset.");
+        }
+        program = program._withLegendConfig(descriptor.kind, { ...descriptor.config,
+          blockOverrides: patchLegendBlockOverride(descriptor.config, descriptor.key, { alongOffset: args.alongOffset }) });
+        const { alongOffset: _along, ...rest } = args;
+        args = { ...rest, ...(rest.position === undefined && inherited?.position && !localLegendPlacement(descriptor.config)
+          ? { position: inherited.position, align: rest.align ?? inherited.align, offset: rest.offset ?? inherited.offset } : {}) };
+      }
       const selectedPositionChanged = Object.hasOwn(args, "position");
+      const previousPosition = localLegendPlacement(descriptor.config)?.position
+        ?? program.guideConfigs.legendGroups?.[target]?.placement.position ?? descriptor.config.position;
+      const resetDirection = selectedPositionChanged && args.position !== previousPosition;
       if (selectedPositionChanged) {
         if (args.position !== "inherit" && !LEGEND_POSITIONS.includes(args.position)) throw new Error("Selected legend position requires an anchor or inherit.");
-        const blockOverrides = patchLegendBlockOverride(descriptor.config, descriptor.key,
+        const blockOverrides = patchLegendBlockOverride(program.guideConfigs.legend[descriptor.kind], descriptor.key,
           args.position === "inherit" ? {removePosition: true} : {position: args.position});
         const {blockOverrides: _old, ...config} = descriptor.config;
         program = program._withLegendConfig(descriptor.kind, blockOverrides === undefined ? config : {...config, blockOverrides});
@@ -743,8 +758,9 @@ function editLegendImplementation(args = {}, skipGroup = false, positionIntent =
       // Validate layout leaves in the local frame without adding another stored
       // placement owner. The existing family frame is restored after editing.
       const local = localLegendPlacement(config);
-      const selectedFrame = local === undefined ? config : {...config, ...local};
-      const selected = selectedPositionChanged && !["gradient", "strokeGradient", "opacity"].includes(kind)
+      const { alongOffset: _localShift, ...familyFrame } = local ?? {};
+      const selectedFrame = local === undefined ? config : {...config, ...familyFrame};
+      const selected = resetDirection && !["gradient", "strokeGradient", "opacity"].includes(kind)
         ? {...selectedFrame, direction: undefined} : selectedFrame;
       const finish = result => local === undefined ? result : result._withLegendConfig(kind, {
         ...result.guideConfigs.legend[kind], position: config.position,
@@ -764,7 +780,7 @@ function editLegendImplementation(args = {}, skipGroup = false, positionIntent =
       return finish(editContinuous(program, kind, selected, patch));
     }
     const existingGroup = this.guideConfigs.legendGroups?.[target];
-    const needsGroup = !skipGroup && (existingGroup !== undefined || args.blockLayout !== undefined || args.at !== undefined ||
+    const needsGroup = !skipGroup && (existingGroup !== undefined || args.blockLayout !== undefined || args.at !== undefined || args.alongOffset !== undefined ||
       PLOT_LEGEND_POSITIONS.includes(args.position) && Object.values(this.guideConfigs.legend ?? {}).some(config => config.target === target && config.kind === undefined));
     if (needsGroup) {
       const prepared = prepareLegendGroup(this, args, target, { corner: PLOT_LEGEND_POSITIONS.includes(args.position) });

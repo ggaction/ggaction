@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:c74e7d86ad4670f2b82cb45392271444faceb81ba6cbaca21024e81643627caa",
+    "contractId": "sha256:b6cd03e1c4be41d7782e5e033de3b0574bdd37f5c78d9054dce8dc121829cfc2",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -1634,6 +1634,7 @@
         "legends",
         "at-a-glance",
         "editing-one-block",
+        "fine-positioning",
         "supported-legend-families",
         "focused-legend-families",
         "errors-and-limitations",
@@ -1641,8 +1642,8 @@
         "put-a-compact-categorical-legend-inside-the-plot",
         "related"
       ],
-      "bytes": 10864,
-      "sha256": "47ef1804bbaa4caf28874a5dce6e2046098c82959dc19195b9c4e865c9e5e418"
+      "bytes": 12270,
+      "sha256": "6e0039ab6439699677b69e835fcefd07b73a92a48911ca0a1d5ea046a95a2a27"
     },
     {
       "order": 98,
@@ -2337,8 +2338,8 @@
         "focused-legend-edits",
         "related"
       ],
-      "bytes": 150259,
-      "sha256": "361716786c474655a13cc10be1c575ecbcc879f6c464b223179290ecdaf607e9"
+      "bytes": 151079,
+      "sha256": "9202b0c3d847bee9a2cdb5fe30ef4fe7a737319413a6f01a41c79f1c4c0f2a55"
     },
     {
       "order": 123,
@@ -3092,8 +3093,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 375662,
-      "sha256": "9e04747a8076842861f476dc6c29bc0ea31bc12ae5b4ab6e6676ccbc711f3689"
+      "bytes": 375943,
+      "sha256": "7019bb04bc5fbe10167e0d94368fc6754fd511ea35caeccd313c47e870b95b0a"
     },
     {
       "order": 127,
@@ -3461,7 +3462,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "89b33d1c29f4f46b16255ee0a71c3b7715db0725456e3c39f7cd94ecfddce366"
+      "sha256": "aff7e26e1971877e43214b28a1c941087bd721fbf6c0569d68d61b0cb3a72010"
     },
     {
       "order": 150,

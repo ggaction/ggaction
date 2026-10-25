@@ -2111,6 +2111,22 @@
   {
     "file": "api/legends.md",
     "block": 2,
+    "heading": "Fine positioning",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [
+      "program"
+    ],
+    "resources": [
+      "target: \"plot\""
+    ],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: \"plot\"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "9ac4924e666efd02d405980008db13af273aea560f8fb8ab4ac0cffe0b1e3939",
+    "executable": false
+  },
+  {
+    "file": "api/legends.md",
+    "block": 3,
     "heading": "Space rows by content",
     "mode": "fragment",
     "environment": "esm-context",

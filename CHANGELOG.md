@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Add signed `alongOffset` for precise edge-aligned legend positioning, including selected blocks, facets, shared concat legends, persistence, and focused layout edits.
+
 - Keep shared concat legends next to the actual plot bounds when adding adjacent charts, including faceted and Parallel views; reuse spare child margins and preserve explicit offsets.
 
 - Preserve input tables when adding adjacent summary charts, and resolve completed-key data back to original fields and aggregation before inferring a new chart.

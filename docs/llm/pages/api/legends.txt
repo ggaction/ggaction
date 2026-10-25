@@ -47,6 +47,21 @@ This changes only the selected block. It preserves sibling typography and sample
 when more than one mark owns legends. Singular `channel` cannot accompany plural `channels`, which replaces
 whole-target content, or whole-group `blockLayout`/`at` controls.
 
+## Fine positioning
+
+Keep an edge anchor while adjusting its position with `editLegend` or `editLegendLayout`. `offset` sets the perpendicular gap from the plot; `alongOffset` is a signed pixel shift along that edge. Positive values move right on top/bottom and in-plot corners, and down on left/right. Omission preserves the value; `0` resets the shift.
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "plot"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```js
+// Fragment: program already owns the color legend for "plot".
+program.editLegend({ target: "plot", channel: "color", position: "bottom", offset: 60, alongOffset: -12 });
+```
+
+Fine adjustment on the same edge keeps sibling blocks in their existing slots.
+
+This moves the color block 12 logical pixels left of its normal alignment. Omit `channel` to move the target’s legend group together. Selected blocks rejoin the group with `position: "inherit"`, which clears their local shift. Free `at` placement cannot be combined with `alongOffset`; switch back to an explicit edge first. Canvas fit and guide collision checks remain active. These positions persist through data updates, facets, shared concat legends, and saved programs.
+
 ## Supported legend families
 
 | Legend family | Supported marks | Channels |

@@ -58,7 +58,14 @@ export function resolveLegendGroupPlacement({ blocks, group, plot, canvas, allow
     top = placement.position === "top" ? plot.y - placement.offset - height
       : plot.y + plot.height + placement.offset;
   }
+  if (placement.at === undefined) {
+    if (side) top += placement.alongOffset ?? 0;
+    else left += placement.alongOffset ?? 0;
+  }
   const occupied = { left, top, right: left + width, bottom: top + height };
+  if (corner && (occupied.left < plot.x || occupied.top < plot.y || occupied.right > plot.x + plot.width || occupied.bottom > plot.y + plot.height)) {
+    throw new Error("In-plot legend group does not fit the plot inset.");
+  }
   if (!deferCanvasFit && (occupied.left < 0 || occupied.top < 0 || occupied.right > canvas.width || occupied.bottom > canvas.height)) {
     if (placement.at !== undefined || group.inferredOffset !== true) throw new Error("Legend group requires more Canvas space.");
     throw canvasOverflowError("Legend group requires more Canvas space.", [occupied], canvas);

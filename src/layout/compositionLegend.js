@@ -7,11 +7,11 @@ export function layoutCompositionLegend(base, plot, legend, title = {}, retained
   if (!legend) return { layout: base };
   const { bounds, placement } = legend;
   const width = bounds.right - bounds.left, height = bounds.bottom - bounds.top;
-  const { position = 'right', align = 'center', offset = 8, at } = placement;
+  const { position = 'right', align = 'center', offset = 8, alongOffset = 0, at } = placement;
   const inferred = placement.inferredOffset ?? legend.config.inferredOffset;
   const outside = !at && ['left', 'right', 'top', 'bottom'].includes(position);
   const group = { blockLayout: 'column', inferredOffset: inferred,
-    placement: at ? { at } : { position, align, offset } };
+    placement: at ? { at } : { position, align, offset, alongOffset } };
   const place = group => {
     const [value] = resolveLegendGroupPlacement({ blocks: [{ id: 'shared', bounds }],
       group, plot, canvas: base, allowOverflow: true, deferCanvasFit: true });

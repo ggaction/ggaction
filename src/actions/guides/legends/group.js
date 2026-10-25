@@ -13,10 +13,11 @@ export function validateLegendGroupOptions(args) {
     if (!Number.isFinite(args.at.x) || !Number.isFinite(args.at.y)) {
       throw new TypeError("Legend at requires finite x and y coordinates.");
     }
-    if (["position", "align", "offset"].some(key => Object.hasOwn(args, key))) {
-      throw new Error("Legend at conflicts with position, align and offset in the same call.");
+    if (["position", "align", "offset", "alongOffset"].some(key => Object.hasOwn(args, key))) {
+      throw new Error("Legend at conflicts with position, align, offset and alongOffset in the same call.");
     }
   }
+  if (Object.hasOwn(args, "alongOffset") && !Number.isFinite(args.alongOffset)) throw new TypeError("Legend alongOffset must be finite.");
   if (Object.hasOwn(args, "blockLayout") && !LEGEND_BLOCK_LAYOUTS.includes(args.blockLayout)) {
     throw new Error("Legend blockLayout must be row, column or wrap.");
   }
@@ -25,14 +26,14 @@ export function validateLegendGroupOptions(args) {
 function sameAnchor(a, b) {
   return a.at !== undefined || b.at !== undefined
     ? a.at !== undefined && b.at !== undefined && a.at.x === b.at.x && a.at.y === b.at.y
-    : a.position === b.position && a.align === b.align && a.offset === b.offset;
+    : a.position === b.position && a.align === b.align && a.offset === b.offset && (a.alongOffset ?? 0) === (b.alongOffset ?? 0);
 }
 
 export function prepareLegendGroup(program, args, target, { creation = false, corner = false, nativeOffset = 30 } = {}) {
   validateLegendGroupOptions(args);
   const previous = legendGroup(program, target);
-  const opted = previous !== undefined || args.at !== undefined || args.blockLayout !== undefined || corner;
-  const { at: _at, blockLayout: _layout, ...options } = args;
+  const opted = previous !== undefined || args.at !== undefined || args.blockLayout !== undefined || args.alongOffset !== undefined || corner;
+  const { at: _at, blockLayout: _layout, alongOffset: _along, ...options } = args;
   if (!opted) return { program, options, grouped: false };
   const entries = Object.entries(program.guideConfigs.legend ?? {}).filter(([, config]) => config.target === target);
   const configs = entries.map(([, config]) => config);
@@ -67,14 +68,17 @@ export function prepareLegendGroup(program, args, target, { creation = false, co
     }
     placement = anchors[0] ?? { position: "right", align: "center", offset: nativeDefaultOffset };
   }
+  if (placement.at !== undefined && args.alongOffset !== undefined) throw new Error("Free legend placement requires position before alongOffset.");
   if (placement.position !== undefined) {
+    const alongOffset = args.alongOffset ?? previous?.placement.alongOffset;
+    if (alongOffset !== undefined) placement = { ...placement, alongOffset };
     if (!["left", "center", "right"].includes(placement.align)) throw new Error("Unsupported legend group alignment.");
     if ((PLOT_LEGEND_POSITIONS.includes(placement.position) || ["left", "right"].includes(placement.position)) && placement.align !== "center") {
       throw new Error("Side and in-plot legend groups require center alignment.");
     }
     validateNonNegativeFinite(placement.offset, "Legend group offset");
   }
-  if (creation && previous !== undefined && (args.at !== undefined || args.position !== undefined || args.align !== undefined || args.offset !== undefined) && !sameAnchor(placement, previous.placement)) {
+  if (creation && previous !== undefined && (args.at !== undefined || args.position !== undefined || args.align !== undefined || args.offset !== undefined || args.alongOffset !== undefined) && !sameAnchor(placement, previous.placement)) {
     throw new Error("New legend block anchor conflicts with its target group.");
   }
   if (creation && previous !== undefined && args.blockLayout !== undefined && args.blockLayout !== previous.blockLayout) {

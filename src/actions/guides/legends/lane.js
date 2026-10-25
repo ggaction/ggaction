@@ -2,7 +2,7 @@ import { translateGraphic } from "../../../materialization/graphicTranslation.js
 import { editLegendBorderBounds } from "../../../materialization/legendBorder.js";
 import { resolveLegendAxisOffset, effectiveLegendOffsetConfig } from "../../../materialization/guides/resources.js";
 import { resolveLegendGroupPlacement } from "../../../layout/legendGroup.js";
-import { localLegendPosition, localLegendPlacement, legendGroup } from "../../../materialization/legendGroups.js";
+import { localLegendPosition, localLegendPlacement, retainsLegendSlot, legendGroup } from "../../../materialization/legendGroups.js";
 import { editLegendBackground, resolveLegendBackgroundFromBounds } from "./continuous/common.js";
 import { action } from "../../../core/action.js";
 import { noOptions } from "../../../core/validation.js";
@@ -232,7 +232,7 @@ function edgeKinds(program, edge) {
     (layer, index) => [layer.id, index]
   ));
   return Object.entries(configs)
-    .filter(([kind, config]) => localLegendPosition(config) === undefined && legendGroup(program, config.target) === undefined && legendPosition(program, kind, config) === edge)
+    .filter(([kind, config]) => (localLegendPosition(config) === undefined || retainsLegendSlot(config)) && legendGroup(program, config.target) === undefined && legendPosition(program, kind, config) === edge)
     .sort(([kindA, configA], [kindB, configB]) =>
       (layerOrder.get(configA.target) - layerOrder.get(configB.target)) ||
       (FAMILY_ORDER[kindA] - FAMILY_ORDER[kindB])
@@ -539,7 +539,7 @@ export const rematerializeLegendGroups = /* @__PURE__ */ action(
     const plot = resolveGraphicBounds(next);
     const canvas = findCanvasGraphic(next)?.properties;
     for (const [target, group] of Object.entries(next.guideConfigs.legendGroups ?? {})) {
-      const entries = Object.entries(next.guideConfigs.legend ?? {}).filter(([, config]) => config.target === target && localLegendPosition(config) === undefined)
+      const entries = Object.entries(next.guideConfigs.legend ?? {}).filter(([, config]) => config.target === target && (localLegendPosition(config) === undefined || retainsLegendSlot(config, group.placement.position ?? null)))
         .sort(([a], [b]) => FAMILY_ORDER[a] - FAMILY_ORDER[b]);
       next = alignLegendTextBoxes(next, entries.flatMap(([kind]) => existingIds(next, kind)));
       const blocks = entries.map(([kind]) => ({ id: kind, ids: existingIds(next, kind),

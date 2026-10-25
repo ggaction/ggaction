@@ -959,3 +959,12 @@ or child plots. Unsupported overflowing text/offsets still fail atomically.
 Evidence: `test/unit/actions/composition/facet-title-along-offset.test.js`.
 
 Concat title ownership, shared color snapshot collection, and restoration rules: [COMPOSITION](COMPOSITION.md#concat-parent-titles-shared-color-guide-and-uniform-surfaces).
+
+### Tangential legend placement
+
+- `createLegend`, `editLegend`, and `editLegendLayout` accept optional finite signed `alongOffset` logical pixels, default zero. Top/bottom and in-plot corners translate right for positive values; side anchors translate down. `offset` retains its perpendicular/inset meaning. No mark encoding or sample recipe changes.
+- Fine shifts on the same edge retain the block’s packing slot, so siblings do not reflow when it moves. Changing to a different edge retains the existing repacking behavior.
+- Whole-target intent lives in the existing legend-group placement; singular-channel intent lives in its existing block override and moves only that block. Omitted edits preserve values, zero resets displacement, and selected `position: "inherit"` clears local position plus displacement. Combined channels keep one block identity.
+- `at` and edge placement (including alongOffset) are mutually exclusive. A retained free placement needs an explicit position before accepting alongOffset. Nonfinite values, overflowing corner bounds, Canvas overflow, and collisions reject atomically. Existing omission state remains unchanged.
+- Unit, facet-owned/promoted, and shared concat owners consume the same placement; serialization, Canvas/data replay, and native Canvas/SVG rendering retain concrete translated bounds.
+- Evidence: `test/unit/actions/guides/legend-along-offset.test.js`, `test/contracts/legend-spacing-types.test.js`.

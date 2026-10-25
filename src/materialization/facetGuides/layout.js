@@ -32,16 +32,17 @@ function retainedGuideBounds(program, layout, plots, headers) {
   return bounds;
 }
 
-function placedBounds(bounds, plot, position, align, offset) {
+function placedBounds(bounds, plot, position, align, offset, alongOffset = 0) {
   const width = bounds.right - bounds.left;
   const height = bounds.bottom - bounds.top;
-  const left = position === "right" ? plot.x + plot.width + offset
+  let left = position === "right" ? plot.x + plot.width + offset
     : position === "left" ? plot.x - offset - width
     : align === "left" ? plot.x : align === "right"
       ? plot.x + plot.width - width : plot.x + (plot.width - width) / 2;
-  const top = ["left", "right"].includes(position) ? plot.y
+  let top = ["left", "right"].includes(position) ? plot.y
     : position === "top" ? plot.y - offset - height
     : plot.y + plot.height + offset;
+  if (["left", "right"].includes(position)) top += alongOffset; else left += alongOffset;
   return { left, right: left + width, top, bottom: top + height };
 }
 
@@ -63,7 +64,8 @@ export function resolvePromotedFacetLegendLayout(program, {
   const inferred = group === undefined
     ? configs.every(config => config.inferredOffset === true)
     : group.inferredOffset === true;
-  let occupied = placedBounds(prepared.bounds, plot, position, align, offset);
+  const alongOffset = group?.placement.alongOffset ?? 0;
+  let occupied = placedBounds(prepared.bounds, plot, position, align, offset, alongOffset);
   const guides = retainedGuideBounds(program, layout, plots, preparedHeaders);
   // Omitted offsets clear the actual retained guide lane. Explicit offsets
   // retain their authored position and fail atomically on a real collision.
@@ -73,7 +75,7 @@ export function resolvePromotedFacetLegendLayout(program, {
     : guide.bottom - (plot.y + plot.height));
   if (inferred) {
     occupied = placedBounds(prepared.bounds, plot, position, align,
-      Math.max(offset, ...laneDistances.map(distance => distance + offset)));
+      Math.max(offset, ...laneDistances.map(distance => distance + offset)), alongOffset);
   } else if (guides.some(guide => textBoundsIntersect(occupied, guide))) {
     throw new Error("Facet shared legend overlaps retained axes or headers.");
   }

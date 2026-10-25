@@ -489,7 +489,7 @@ function resolveRawLegendCreationPlan(program, args = {}, layers = program.seman
 
 export function resolveLegendCreationPlan(program, args = {}, layers = program.semanticSpec.layers, internalChannels) {
   validateLegendGroupOptions(args);
-  const { blockLayout: _layout, at: _at, ...raw } = args;
+  const { blockLayout: _layout, at: _at, alongOffset: _along, ...raw } = args;
   const groups = program.guideConfigs.legendGroups ?? {};
   if (Object.keys(groups).length > 0 && raw.position === undefined) {
     const target = creationLegendTarget(program, args);
@@ -507,7 +507,7 @@ export function resolveLegendCreationPlan(program, args = {}, layers = program.s
   const corner = PLOT_LEGEND_POSITIONS.includes(args.position) &&
     (initial.steps.length > 1 || initial.steps[0]?.op !== "createCategoricalLegend" ||
       Object.keys(program.guideConfigs.legend ?? {}).length > 0);
-  if (args.blockLayout === undefined && args.at === undefined && !inherited && !corner) return initial;
+  if (args.blockLayout === undefined && args.at === undefined && args.alongOffset === undefined && !inherited && !corner) return initial;
   const target = creationLegendTarget(program, args);
   const first = initial.steps[0];
   const nativeOffset = program.guideConfigs.legendGroups?.[target] !== undefined ? 30 : first?.op === "createCategoricalLegend"

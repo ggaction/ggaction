@@ -1484,6 +1484,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `direction` | Optional / branch-dependent | `"horizontal" \| "vertical" \| undefined` |
 | `columns` | Optional / branch-dependent | `number \| undefined` |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `titlePosition` | Optional / branch-dependent | `"bottom" \| "left" \| "top" \| undefined` |
 | `title` | Optional / branch-dependent | `string \| false \| undefined` |
@@ -1504,7 +1505,7 @@ The following call patterns are abbreviated examples; the declaration above owns
 
 ```javascript
 createLegend({
-  target?, channels?, position?, layout?, align?, direction?, columns?, offset?,
+  target?, channels?, position?, layout?, align?, direction?, columns?, offset?, alongOffset?,
   titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, rowPadding?, titlePadding?, border?, count?,
   values?, gradient?, order?
 })
@@ -1632,6 +1633,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `at` | Optional / branch-dependent | `{ x: number; y: number; } \| undefined` |
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `columns` | Optional / branch-dependent | `number \| undefined` |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `titlePosition` | Optional / branch-dependent | `"bottom" \| "left" \| "top" \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
@@ -1647,13 +1649,15 @@ The following call patterns are abbreviated examples; the declaration above owns
 
 ```javascript
 editLegend({
-  target?, channel?, channels?, position?, layout?, align?, direction?, columns?, offset?, titlePosition?,
+  target?, channel?, channels?, position?, layout?, align?, direction?, columns?, offset?, alongOffset?, titlePosition?,
   title?, symbol?, labels?, titleStyle?, itemGap?, rowPadding?, titlePadding?, border?, count?, values?, gradient?, order?, overflow?
 })
 ```
 
 Singular `channel` selects one existing block without changing sibling typography. It cannot
 accompany `channels`, `blockLayout`, or `at`. A channel never disambiguates mark targets.
+
+`alongOffset` is a finite signed distance in logical pixels, defaulting to zero: positive moves right on top/bottom (and in-plot corner) anchors, or down on left/right anchors. `offset` keeps its perpendicular gap meaning. Omitted edits preserve the shift; zero resets it. With `channel`, only that block moves; without it, the target’s grouped blocks move together. `position: "inherit"` clears a selected block’s local anchor and shift. `at` cannot accompany edge placement options, including `alongOffset`. Existing fit and collision checks still apply.
 
 `rowPadding` and `titlePadding` accept numbers or `"auto"` to remove retained intent; omission or undefined preserves it. Explicit row spacing wins over vertical itemGap/block gap while retaining the old fallback and horizontal spacing. Explicit title spacing wins over the old title gap. Reset row padding before a transition to a gradient. Combining conflicting policies requires an explicit choice; incompatible splits require explicit reset. Content and Canvas/data/scale/theme/facet replay retain compatible policies.
 
@@ -1770,6 +1774,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `direction` | Optional / branch-dependent | `"auto" \| "horizontal" \| "vertical" \| undefined` |
 | `columns` | Optional / branch-dependent | `number \| undefined` |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `titlePosition` | Optional / branch-dependent | `"bottom" \| "left" \| "top" \| undefined` |
 | `itemGap` | Optional / branch-dependent | `number \| undefined` |
@@ -3283,7 +3288,7 @@ See [Coordinates](../../api/coordinates.md) and
 
 ```javascript
 editLegendLayout({
-  target?, channel?, position?, layout?, align?, direction?, columns?, offset?,
+  target?, channel?, position?, layout?, align?, direction?, columns?, offset?, alongOffset?,
   titlePosition?, itemGap?, rowPadding?, titlePadding?
 })
 editLegendLabels({ target?, channel?, offset?, color?, fontSize?, fontFamily?, fontWeight?, format? })

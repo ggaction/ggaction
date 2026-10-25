@@ -20915,6 +20915,10 @@
           "unit": "count"
         },
         {
+          "path": "alongOffset",
+          "unit": "logical-pixel"
+        },
+        {
           "path": "offset",
           "unit": "logical-pixel"
         },
@@ -21016,6 +21020,11 @@
         },
         {
           "name": "columns",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "alongOffset",
           "required": false,
           "type": "number | undefined"
         },
@@ -21146,6 +21155,10 @@
         {
           "path": "columns",
           "unit": "count"
+        },
+        {
+          "path": "alongOffset",
+          "unit": "logical-pixel"
         },
         {
           "path": "offset",
@@ -21288,6 +21301,11 @@
         },
         {
           "name": "columns",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "alongOffset",
           "required": false,
           "type": "number | undefined"
         },
@@ -21529,6 +21547,10 @@
           "unit": "count"
         },
         {
+          "path": "alongOffset",
+          "unit": "logical-pixel"
+        },
+        {
           "path": "offset",
           "unit": "logical-pixel"
         },
@@ -21610,6 +21632,11 @@
         },
         {
           "name": "columns",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "alongOffset",
           "required": false,
           "type": "number | undefined"
         },

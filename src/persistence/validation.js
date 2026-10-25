@@ -357,7 +357,7 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
     if (localLegendPosition(config) !== undefined) {
       const descriptor = describeLegendBlock(program, kind, config);
       for (const [key, override] of Object.entries(config.blockOverrides)) {
-        if (override.position !== undefined && key !== descriptor.key) throw invalidSnapshot("Local position requires its existing block owner.", path);
+        if ((override.position !== undefined || override.alongOffset !== undefined) && key !== descriptor.key) throw invalidSnapshot("Local position requires its existing block owner.", path);
       }
     }
     for(const layer of config.symbol?.layers??[])validateLegendLayerOpacity(layer.opacity);

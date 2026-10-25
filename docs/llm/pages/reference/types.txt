@@ -4809,6 +4809,8 @@ export interface EditLegendLayoutOptions {
   direction?: "horizontal" | "vertical" | "auto";
   /** Categorical legends accept a positive column count on every supported position. */
   columns?: number;
+  /** Signed logical pixels along the edge: right for top/bottom and in-plot corners, down for left/right. */
+  alongOffset?: number;
   /** Single top/bottom edge: gap from the plot to the nearest occupied legend edge. */
   offset?: number;
   /** bottom is gradient-only; left retains the existing categorical/opacity rules. */
@@ -6966,7 +6968,7 @@ export interface LegendOptions {
   position?: "right" | "left" | "bottom" | "top" | "top-left" | "top-right" | "bottom-left" | "bottom-right";
   /** Arrange every legend block owned by the selected target. Item direction and columns remain independent. */
   blockLayout?: "row" | "column" | "wrap";
-  /** Occupied group top-left relative to the plot. Cannot be supplied with position, align, or offset in the same call. */
+  /** Occupied group top-left relative to the plot. Cannot be supplied with position, align, offset, or alongOffset in the same call. */
   at?: { x: number; y: number };
   /** Single top/bottom edge: align complete occupied bounds, including border strokes, to the plot. Side positions require center. */
   align?: "left" | "center" | "right";
@@ -6974,6 +6976,8 @@ export interface LegendOptions {
   direction?: "horizontal" | "vertical";
   /** Categorical legends accept a positive column count on every supported position. */
   columns?: number;
+  /** Signed logical pixels along the edge: right for top/bottom and in-plot corners, down for left/right. */
+  alongOffset?: number;
   /** Single top/bottom edge: gap from the plot to the nearest occupied legend edge. */
   offset?: number;
   /** bottom is gradient-only; left retains the existing categorical/opacity rules. */

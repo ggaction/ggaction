@@ -142,6 +142,7 @@ function normalizeBlockLabelMap(descriptor, map) {
 }
 
 export function validateLegendBlockOverride(descriptor, override) {
+  if (override.alongOffset !== undefined && !Number.isFinite(override.alongOffset)) throw new TypeError("Legend alongOffset must be finite.");
   if (override.position !== undefined && !LEGEND_POSITIONS.includes(override.position)) throw new Error("Invalid local legend position.");
   if (override.symbol !== undefined) normalizeSymbolPatch(override.symbol, descriptor);
   if (override.labelMap !== undefined) {
@@ -191,7 +192,8 @@ export function patchLegendBlockOverride(config, key, patch) {
   }
   if (Object.hasOwn(patch, "labelMap")) entry.labelMap = patch.labelMap;
   if (Object.hasOwn(patch, "position")) entry.position = patch.position;
-  if (patch.removePosition === true) delete entry.position;
+  if (Object.hasOwn(patch, "alongOffset")) entry.alongOffset = patch.alongOffset;
+  if (patch.removePosition === true) { delete entry.position; delete entry.alongOffset; }
   if (patch.removeLabelMap === true) delete entry.labelMap;
   const blockOverrides = { ...(config.blockOverrides ?? {}) };
   if (Object.keys(entry).length === 0) delete blockOverrides[key];

@@ -54,6 +54,10 @@
       "unit": "count"
     },
     {
+      "path": "alongOffset",
+      "unit": "logical-pixel"
+    },
+    {
       "path": "offset",
       "unit": "logical-pixel"
     },
@@ -194,6 +198,11 @@
     },
     {
       "name": "columns",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "alongOffset",
       "required": false,
       "type": "number | undefined"
     },

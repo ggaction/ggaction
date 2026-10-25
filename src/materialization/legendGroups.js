@@ -1,5 +1,5 @@
-import { localLegendPosition, localLegendPlacement } from "../grammar/legendGroups.js";
-export { localLegendPosition, localLegendPlacement };
+import { localLegendPosition, localLegendPlacement, retainsLegendSlot } from "../grammar/legendGroups.js";
+export { localLegendPosition, localLegendPlacement, retainsLegendSlot };
 import { LEGEND_POSITIONS } from "../core/vocabulary.js";
 import { PLOT_LEGEND_POSITIONS } from "../layout/legend.js";
 
