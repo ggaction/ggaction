@@ -22,7 +22,7 @@ for (const position of ['left', 'right', 'top', 'bottom']) {
       const before = serializeProgram(source);
       const p = source.createAdjacentPlot({ id: 'q', source: 'p', position: 'bottom', share: { color: true },
         plot: { action: 'createScatterPlot' } }).createTitle({ text: 'Shared view', position });
-      const { layout, legendFrame } = prepareCompositionSnapshots(p), plot = compositionPlotBounds(p);
+      const { layout, legendFrames } = prepareCompositionSnapshots(p), legendFrame = legendFrames.get('composition-shared-color-legend'), plot = compositionPlotBounds(p);
       close(gap(plot, legendFrame, position), 90);
       assert.ok(legendFrame.x >= 0 && legendFrame.y >= 0);
       assert.ok(legendFrame.x + legendFrame.width <= layout.width);
@@ -53,7 +53,7 @@ test('adding Parallel Coordinates beneath a faceted area retains the nearby shar
       color: { field: 'region' } } } }).createGuides({ target: [{ childPath: ['p'] }, { childPath: ['q'] }] });
   for (const current of [p, p.editCompositionLayout({ gap: 30 }),
     p.editLegend({ target: { childPath: ['p'] }, channel: 'color', labels: { fontSize: 17 } })]) {
-    const { layout, legendFrame, children } = prepareCompositionSnapshots(current), plot = compositionPlotBounds(current);
+    const { layout, legendFrames, children } = prepareCompositionSnapshots(current), legendFrame = legendFrames.get('composition-shared-color-legend'), plot = compositionPlotBounds(current);
     close(plot.width, beforePlot.width);
     assert.ok(gap(plot, legendFrame, 'right') > 0 && gap(plot, legendFrame, 'right') < 40);
     close(layout.width, source.graphicSpec.objects.canvas.properties.width);
@@ -69,7 +69,7 @@ test('inferred guide clearance measures retained right axis text instead of the 
   const source = unit(240).editYAxis({ position: 'right' });
   const p = source.createAdjacentPlot({ id: 'q', source: 'p', position: 'bottom', share: { color: true },
     plot: { action: 'createScatterPlot' } });
-  const { legendFrame } = prepareCompositionSnapshots(p);
+  const legendFrame = prepareCompositionSnapshots(p).legendFrames.get('composition-shared-color-legend');
   const obstacles = Object.entries(p.graphicSpec.objects).filter(([id]) => /yAxis(?:Labels|Title)$/.test(id))
     .map(([id]) => resolveConcreteGraphicBounds(p.graphicSpec, id, p.materializationConfigs.textMetrics))
     .filter(bounds => bounds && bounds.bottom > legendFrame.y && bounds.top < legendFrame.y + legendFrame.height);
@@ -83,7 +83,7 @@ test('nested shared guide collection does not accumulate empty legend lanes', ()
   for (let index = 1; index <= 3; index++) {
     p = vconcat({ programs: [{ id: 'previous', program: p }, { id: 'next', program: unit(240).editLegend({ offset: 25 }) }],
       share: { color: true }, align: 'plot' });
-    close(gap(compositionPlotBounds(p), prepareCompositionSnapshots(p).legendFrame, 'right'), 25);
+    close(gap(compositionPlotBounds(p), prepareCompositionSnapshots(p).legendFrames.get('composition-shared-color-legend'), 'right'), 25);
     assert.equal(Object.keys(p.graphicSpec.objects).filter(id => id.endsWith('colorLegendLabels')).length, 1);
   }
 });
@@ -91,7 +91,7 @@ test('nested shared guide collection does not accumulate empty legend lanes', ()
 test('explicit in-plot legend coordinates remain relative to the shared plot origin', () => {
   const p = unit(240).editLegend({ at: { x: 20, y: 25 } })
     .createAdjacentPlot({ id: 'q', source: 'p', position: 'bottom', share: { color: true }, plot: { action: 'createScatterPlot' } });
-  const { legendFrame } = prepareCompositionSnapshots(p), plot = compositionPlotBounds(p);
+  const { legendFrames } = prepareCompositionSnapshots(p), legendFrame = legendFrames.get('composition-shared-color-legend'), plot = compositionPlotBounds(p);
   close(legendFrame.x - plot.x, 20);
   close(legendFrame.y - plot.y, 25);
 });

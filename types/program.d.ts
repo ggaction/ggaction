@@ -168,6 +168,8 @@ export interface CompositionShares {
 }
 export interface EditCompositionScalesOptions { share: CompositionShares; }
 export interface CompositionOptions {
+  /** Keep non-shared guides local (default), or collect all displayed blocks around the parent plot union. */
+  legends?: "local" | "collect";
   share?: CompositionShares;
   id?: string;
   programs: readonly CompositionProgramEntry[];
@@ -178,6 +180,8 @@ export interface CompositionOptions {
 /** Facets may set independent axis gaps; concat continues to require a number. */
 export type FacetGap = number | Readonly<{ x: number; y: number }>;
 export interface EditCompositionLayoutOptions {
+  /** Concat only. Change guide collection without changing scale sharing. */
+  legends?: "local" | "collect";
   columns?: number;
   gap?: FacetGap;
   align?: CompositionAlign | "plot";
@@ -253,6 +257,8 @@ export interface CreateLayerPlotOptions {
 }
 
 export interface CreateAdjacentPlotOptions {
+  /** Collect all legends around the combined view by default. Local retains panel-owned placement. */
+  legends?: "local" | "collect";
   id?: string;
   /** Source mark in a unit/facet, or an explicit panel path relative to the receiving concat. */
   source?: string | { childPath: readonly string[]; id: string };
@@ -385,6 +391,7 @@ export type FacetHeaderRole = "all" | "row" | "column";
 export type FacetHeaderSide = "top" | "bottom" | "left" | "right";
 export type FacetHeaderAlign = "start" | "center" | "end";
 export interface ConcatCompositionSpec {
+  readonly legends?: "local" | "collect";
   readonly id: string;
   readonly direction: "horizontal" | "vertical";
   readonly children: readonly string[];

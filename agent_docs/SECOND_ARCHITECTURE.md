@@ -2727,6 +2727,11 @@ source mark materialization 및 dependency planner가 명시적으로 overlay ma
 Concat의 `compositionSpec.share`와 `align: "plot"`은 부모가 소유한다. canonical child의 authored
 scale/domain/Canvas는 보존하고 부모 materializer가 공유 domain과 정렬된 render snapshot을 파생한다.
 source child/spec identity WeakMap은 최적화일 뿐 영속 상태나 전역 자동 compiler가 아니다.
+Concat 범례 수집은 `compositionSpec.legends`가 소유하고 materializer의 단일 collection plan이
+visible block, canonical edit target, 제거할 snapshot root와 parent frame을 함께 결정한다.
+별개 의미의 범례는 합치지 않고 바깥 lane에 배치하며, 공유 color의 호환 설명만 중복 제거한다.
+Scoped dispatcher와 앱 direct editor는 같은 plan을 사용해 숨겨진 child 사본의 공간 검사를 제외한다.
+기본값·옵션·복원 계약은 COMPOSITION.md가 소유한다.
 Full action wrapper의 명시적 target selector dispatcher는 같은 native action을 immutable 후보들에
 적용한 다음 변경된 조상 snapshots를 한 번 갱신한다. 사용자가 요청한 target dispatch에만 동작한다.
 

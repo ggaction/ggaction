@@ -547,7 +547,9 @@ export const rematerializeLegendGroups = /* @__PURE__ */ action(
         bounds: unionLegendBounds(next, existingIds(next, kind)) }));
       const effectiveGroup = group.placement.at !== undefined ? group : { ...group, placement: { ...group.placement,
         offset: resolveLegendAxisOffset(next, { ...group.placement, inferredOffset: group.inferredOffset }, plot) } };
+      const collected = blocks.length > 0 && blocks.every(block => next.context.compositionCollectedLegends?.includes(block.id));
       const placements = resolveLegendGroupPlacement({ blocks, group: effectiveGroup, plot, canvas,
+        deferCanvasFit: collected, deferPlotFit: collected,
         allowOverflow: next.materializationConfigs.canvas?.plot !== undefined });
       for (const placement of placements) {
         const block = blocks.find(item => item.id === placement.id);
@@ -568,7 +570,7 @@ export const rematerializeLegendGroups = /* @__PURE__ */ action(
           const ids = existingIds(next, kind), bounds = unionLegendBounds(next, ids);
           const dx = horizontal ? along : 0, dy = horizontal ? 0 : along;
           const shifted = { left: bounds.left + dx, right: bounds.right + dx, top: bounds.top + dy, bottom: bounds.bottom + dy };
-          if (shifted.left < 0 || shifted.top < 0 || shifted.right > canvas.width || shifted.bottom > canvas.height)
+          if (!next.context.compositionCollectedLegends?.includes(kind) && (shifted.left < 0 || shifted.top < 0 || shifted.right > canvas.width || shifted.bottom > canvas.height))
             throw canvasOverflowError("Legend group requires more Canvas space.", [shifted], canvas);
           for (const id of ids) next = translateGraphic(next, id, dx, dy);
         }
@@ -579,6 +581,8 @@ export const rematerializeLegendGroups = /* @__PURE__ */ action(
       const group = {placement: {...placement, offset: resolveLegendAxisOffset(next, placement, plot)},
         inferredOffset: config.inferredOffset, blockLayout: "column"};
       const [shift] = resolveLegendGroupPlacement({blocks: [{id: kind, bounds: unionLegendBounds(next, ids)}], group, plot, canvas,
+        deferCanvasFit: next.context.compositionCollectedLegends?.includes(kind),
+        deferPlotFit: next.context.compositionCollectedLegends?.includes(kind),
         allowOverflow: next.materializationConfigs.canvas?.plot !== undefined});
       for (const id of ids) next = translateGraphic(next, id, shift.dx, shift.dy);
     }

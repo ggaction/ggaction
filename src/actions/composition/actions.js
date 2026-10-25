@@ -1,3 +1,4 @@
+import { normalizeCompositionLegends } from "../../core/compositionState.js";
 import { normalizeCompositionShares } from "../../core/compositionScales.js";
 import { resolveGraphicBounds } from "../../layout/canvas.js";
 import { inheritTextMetrics } from "../textMetrics/index.js";
@@ -18,10 +19,10 @@ import { materializeFacetGraphics } from "../../materialization/facets.js";
 import { replayInheritedThemeFrames } from "../theme/composition.js";
 
 const CONCAT_OPTIONS = Object.freeze([
-  "id", "programs", "gap", "align", "padding", "share"
+  "id", "programs", "gap", "align", "padding", "share", "legends"
 ]);
 const LAYOUT_EDIT_OPTIONS = Object.freeze([
-  "columns", "gap", "spacing", "topLane", "align", "padding"
+  "columns", "gap", "spacing", "topLane", "align", "padding", "legends"
 ]);
 const REPLACEMENT_OPTIONS = Object.freeze(["target", "program"]);
 const INSERTION_OPTIONS = Object.freeze(["id", "program", "before", "after"]);
@@ -109,6 +110,7 @@ function normalizeCompositionInput(args, direction) {
       gap: layout.gap,
       align: args.align === "plot" ? "plot" : layout.align,
       padding: layout.padding,
+      ...(Object.hasOwn(args, "legends") ? { legends: normalizeCompositionLegends(args.legends) } : {}),
       ...(args.share === undefined ? {} : { share: normalizeCompositionShares(args.share) })
     }
   };
@@ -177,6 +179,7 @@ const editCompositionLayout = /* @__PURE__ */ closedAction(
       throw new TypeError("editCompositionLayout requires at least one layout option.");
     }
     const current = this.compositionSpec;
+    if (Object.hasOwn(args, "legends") && current.type === "facet") throw new Error("Facet uses editFacetGuides for legend placement.");
     if (current.type !== "facet" && Object.hasOwn(args, "columns")) {
       throw new Error(
         "editCompositionLayout columns is available only on a facet composition."
@@ -229,6 +232,7 @@ const editCompositionLayout = /* @__PURE__ */ closedAction(
       children: this.children,
       compositionSpec: {
         ...currentLayoutSpec,
+        ...(Object.hasOwn(args, "legends") ? { legends: normalizeCompositionLegends(args.legends) } : {}),
         ...(current.type === "facet" ? { columns: layout.columns,
           ...(layout.spacing !== undefined ? { spacing: layout.spacing } : current.spacing !== undefined ? { spacing: "canvas" } : {}),
           ...(layout.topLane === undefined ? {} : { topLane: layout.topLane }) } : {}),

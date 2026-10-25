@@ -4,7 +4,7 @@ import { SIDE_LEGEND_BLOCK_GAP, HORIZONTAL_LEGEND_BLOCK_GAP } from "./legendLane
 
 // Pack complete occupied rectangles. Item direction, title layout and sample
 // geometry have already been resolved by each family and are not changed here.
-export function resolveLegendGroupPlacement({ blocks, group, plot, canvas, allowOverflow = false, deferCanvasFit = false }) {
+export function resolveLegendGroupPlacement({ blocks, group, plot, canvas, allowOverflow = false, deferCanvasFit = false, deferPlotFit = false }) {
   if (blocks.length === 0) return [];
   const { placement, blockLayout } = group;
   const corner = PLOT_LEGEND_POSITIONS.includes(placement.position);
@@ -41,7 +41,7 @@ export function resolveLegendGroupPlacement({ blocks, group, plot, canvas, allow
   if (placement.at !== undefined) {
     left = plot.x + placement.at.x; top = plot.y + placement.at.y;
   } else if (corner) {
-    if (width + 2 * placement.offset > plot.width || height + 2 * placement.offset > plot.height) {
+    if (!deferPlotFit && (width + 2 * placement.offset > plot.width || height + 2 * placement.offset > plot.height)) {
       throw new Error("In-plot legend group does not fit the plot inset.");
     }
     left = placement.position.endsWith("left") ? plot.x + placement.offset
@@ -63,7 +63,7 @@ export function resolveLegendGroupPlacement({ blocks, group, plot, canvas, allow
     else left += placement.alongOffset ?? 0;
   }
   const occupied = { left, top, right: left + width, bottom: top + height };
-  if (corner && (occupied.left < plot.x || occupied.top < plot.y || occupied.right > plot.x + plot.width || occupied.bottom > plot.y + plot.height)) {
+  if (corner && !deferPlotFit && (occupied.left < plot.x || occupied.top < plot.y || occupied.right > plot.x + plot.width || occupied.bottom > plot.y + plot.height)) {
     throw new Error("In-plot legend group does not fit the plot inset.");
   }
   if (!deferCanvasFit && (occupied.left < 0 || occupied.top < 0 || occupied.right > canvas.width || occupied.bottom > canvas.height)) {

@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:7d1af3a0f47a6cacce7c2670ed2badfb56ebb801a73d3cb7cd8188de06e9fbf4",
+    "contractId": "sha256:d191d29bbf2722f84e1a4d8e9b098a92388c8752ae0d38e9b027bfbee132536d",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -2081,8 +2081,8 @@
         "focused-channel-scale-editors",
         "related"
       ],
-      "bytes": 195258,
-      "sha256": "e79cf4c420c8b44e2f71012a8e152b5b4c26e9a8f08d4a4ed1c876f122f516a9"
+      "bytes": 195422,
+      "sha256": "7403c76f611eb13e047614a930d43db6049c84c7a72fe3ffd800eb6acba10009"
     },
     {
       "order": 119,
@@ -3096,8 +3096,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 378638,
-      "sha256": "f4082769197b77dfd785845d947e33f17ca9ee52b53a4dd558d39c32b5c75923"
+      "bytes": 378885,
+      "sha256": "0bb4d104771d9b5c1a295c31058742099235d32782dc9539c98a284853792bb3"
     },
     {
       "order": 127,
@@ -3228,8 +3228,8 @@
         "insert-remove-and-reorder-named-concat-children",
         "layer-a-native-chart"
       ],
-      "bytes": 17113,
-      "sha256": "6080a72225710ed7c11de88f65c63d90d3ae7254b6ee51c3c69bade5063ac9d1"
+      "bytes": 17933,
+      "sha256": "5387ad708926f2148edb48a9d6366e689918d8a5033632f9ed4757b8729d0bd0"
     },
     {
       "order": 135,
@@ -3465,7 +3465,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "8cf9b44146e26b0ff6948f75a9a02de028776c9000f4f733801e6b572cc92ec4"
+      "sha256": "23098c0c6920c12f34149521b36a68f98b2bb56295c6f2e6d19a49d2cd09b3a2"
     },
     {
       "order": 150,

@@ -10,6 +10,11 @@ import {
   DEFAULT_FACET_TOP_LANE
 } from "./vocabulary.js";
 
+export function normalizeCompositionLegends(value) {
+  if (!["local", "collect"].includes(value)) throw new TypeError('Composition legends must be "local" or "collect".');
+  return value;
+}
+
 // Primitive graphics/trace edits retain both immutable owners. Validate their
 // relationship once, rather than scanning every facet cell on every primitive.
 const validatedCompositions = new WeakMap();
@@ -285,7 +290,7 @@ export function ownCompositionSpec(compositionSpec, children) {
   }
   const allowed = [
     "id", "type", "direction", "children", "columns", "gap", "align",
-    "padding", "facet", "spacing", "topLane", "share"
+    "padding", "facet", "spacing", "topLane", "share", "legends"
   ];
   const unknown = Object.keys(compositionSpec).find(key => !allowed.includes(key));
   if (unknown !== undefined) {
@@ -317,6 +322,10 @@ export function ownCompositionSpec(compositionSpec, children) {
     compositionSpec.facet !== undefined
   ) {
     throw new Error("Concat compositionSpec does not accept facet properties.");
+  }
+  if (compositionSpec.legends !== undefined) {
+    if (facet) throw new Error("Facet uses guides.legend, not composition legends.");
+    normalizeCompositionLegends(compositionSpec.legends);
   }
   if (compositionSpec.share !== undefined) {
     if (facet) throw new Error("Facet uses scales, not composition share.");

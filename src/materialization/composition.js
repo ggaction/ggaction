@@ -1,6 +1,6 @@
 import { resolveConcreteGraphicBounds, resolveGraphicParentOffset } from "../grammar/schemas/graphicBounds.js";
-import { layoutCompositionLegend } from "../layout/compositionLegend.js";
-import { sharedCompositionColorLegend } from "./compositionLegends.js";
+import { layoutCompositionLegends } from "../layout/compositionLegend.js";
+import { compositionLegends } from "./compositionLegends.js";
 import { translateGraphic } from "./graphicTranslation.js";
 import { compositionTitleLayout, materializeCompositionTitle } from "./compositionTitle.js";
 import { resolveGraphicBounds } from "../layout/canvas.js";
@@ -90,7 +90,7 @@ const snapshotCache = new WeakMap();
 // Measure the visible snapshots that remain after guide collection. Canvas
 // margins and the removed legend's old lane are not occupied chart content.
 function retainedCompositionBounds(program, children, layout, legend) {
-  const removed = new Set(legend.remove), bounds = [];
+  const removed = new Set(legend.flatMap(block => block.remove)), bounds = [];
   for (const cell of layout.children) {
     const child = resizeChildForSnapshot(children[cell.id], cell);
     const placement = resolveSnapshotPlacement(child, cell, layout);
@@ -135,15 +135,17 @@ export function prepareCompositionSnapshots(program) {
     children: spec.children.map(id => ({ ...compositionChildDescriptor(id, children[id]),
       ...(spec.align === "plot" ? { plot: compositionPlotBounds(children[id]) } : {}) })),
     gap: spec.gap, align: spec.align, padding });
-  const sharedLegend = sharedCompositionColorLegend(program, children);
+  const legends = compositionLegends(program, children);
   // Ordinary Canvas compositions also accept low-level graphical programs
   // with no semantic plot margins. Only collected, plot-anchored guides need
   // this data-region measurement; start/center/end layout uses child Canvases.
-  const plot = sharedLegend ? resolvePlacedPlotBounds({ placements: baseLayout.children,
+  const plot = legends.length ? resolvePlacedPlotBounds({ placements: baseLayout.children,
     plots: baseLayout.children.map(({ id }) => ({ id, ...compositionPlotBounds(children[id]) })) }) : undefined;
-  const retained = sharedLegend ? retainedCompositionBounds(program, children, baseLayout, sharedLegend) : [];
-  const { layout, frame: legendFrame } = layoutCompositionLegend(baseLayout, plot, sharedLegend, title, retained);
-  const result = { children, layout, title, sharedLegend, legendFrame, titleConfig: program.titleConfig, semanticTitle: program.semanticSpec.title };
+  const retained = legends.length ? retainedCompositionBounds(program, children, baseLayout, legends) : [];
+  const { layout, frames: legendFrames } = layoutCompositionLegends(baseLayout, plot, legends, title, retained);
+  const dx = layout.children[0].x - baseLayout.children[0].x, dy = layout.children[0].y - baseLayout.children[0].y;
+  const retainedBounds = retained.map(b => ({ left: b.left + dx, right: b.right + dx, top: b.top + dy, bottom: b.bottom + dy }));
+  const result = { children, layout, title, legends, legendFrames, retainedBounds, titleConfig: program.titleConfig, semanticTitle: program.semanticSpec.title };
   if (!bySpec) { bySpec = new WeakMap(); snapshotCache.set(program.children, bySpec); }
   bySpec.set(spec, result);
   return result;
@@ -209,7 +211,7 @@ export function clearCompositionChildren(program) {
 
 export function materializeCompositionGraphics(program) {
   program._assertCompositionProgram("materializeCompositionGraphics");
-  const { layout, children, title, sharedLegend, legendFrame } = prepareCompositionSnapshots(program);
+  const { layout, children, title, legends, legendFrames } = prepareCompositionSnapshots(program);
   // A uniform child surface also covers parent gaps and reserved guide lanes.
   // Mixed local backgrounds retain the composition's existing outer surface.
   const backgrounds = new Set(Object.values(children).map(child => child.graphicSpec.objects.canvas?.properties.background));
@@ -239,12 +241,11 @@ export function materializeCompositionGraphics(program) {
     next = attachSnapshotObject(next, snapshot, snapshot.order[0], "canvas");
   }
 
-  if (sharedLegend) {
-    for (const id of sharedLegend.remove) if (next.graphicSpec.objects[id]) next = next.editGraphics({ target: id, remove: true });
-    const { source, roots, bounds } = sharedLegend;
-    const id = `${program.compositionSpec.id}-shared-color-legend`;
+  for (const legend of legends) {
+    for (const id of legend.remove) if (next.graphicSpec.objects[id]) next = next.editGraphics({ target: id, remove: true });
+    const { source, roots, bounds, id } = legend;
     next = next.createGraphics({ id, type: "canvas", parent: "canvas" });
-    for (const [property, value] of Object.entries({ ...legendFrame, background: "transparent" })) {
+    for (const [property, value] of Object.entries({ ...legendFrames.get(id), background: "transparent" })) {
       next = next.editGraphics({ target: id, property, value });
     }
     const snapshot = namespaceGraphicSnapshot(source.graphicSpec, { namespace: id });

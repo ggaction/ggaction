@@ -19,7 +19,7 @@ export const ADJACENT_PLOT_ACTIONS = COMPOSITION_PLOT_ACTIONS;
 
 const createAdjacentPlot = /* @__PURE__ */ closedAction({
   op: "createAdjacentPlot", description: "Add a chart beside the current view with shared scales and aligned plots.", scope: "any"
-}, ["id", "source", "position", "plot", "share", "gap", "align"], function (args = {}) {
+}, ["id", "source", "position", "plot", "share", "gap", "align", "legends"], function (args = {}) {
   const grouped = this.compositionSpec && this.compositionSpec.type !== "facet";
   const { view: sourceView, layer: source } = resolveAdjacentSource(this, args.source);
   const template = sourceView.compositionSpec ? facetUnitTemplate(sourceView, true) : sourceView;
@@ -81,7 +81,7 @@ const createAdjacentPlot = /* @__PURE__ */ closedAction({
   if (["left", "top"].includes(position)) entries.reverse();
   return (horizontal ? hconcatAction : vconcatAction).call(parent, {
     programs: entries, align: args.align ?? "plot", ...(args.gap === undefined ? {} : { gap: args.gap }),
-    share
+    share, legends: args.legends === undefined ? "collect" : args.legends
   });
 });
 

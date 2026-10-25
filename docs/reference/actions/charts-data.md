@@ -2037,6 +2037,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `legends` | Optional / branch-dependent | `"collect" \| "local" \| undefined` |
 | `columns` | Optional / branch-dependent | `number \| undefined` |
 | `gap` | Optional / branch-dependent | `FacetGap \| undefined` |
 | `align` | Optional / branch-dependent | `"plot" \| CompositionAlign \| undefined` |
@@ -3997,6 +3998,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `legends` | Optional / branch-dependent | `"collect" \| "local" \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `source` | Optional / branch-dependent | `string \| { childPath: readonly string[]; id: string; } \| undefined` |
 | `position` | Optional / branch-dependent | `"bottom" \| "left" \| "right" \| "top" \| undefined` |

@@ -38,16 +38,15 @@ function collect(child) {
           targets: candidate.targets.map(target => ({ ...target, childPath: [id, ...target.childPath] })) });
       }
     }
-    const id = `${child.compositionSpec.id}-shared-color-legend`;
-    if (child.graphicSpec.objects[id]) {
-      const representative = sharedCompositionColorLegend(child, child.children);
-      if (representative) candidates.push({ ...representative, source: child, roots: child.graphicSpec.objects[id].children ?? [id], remove: [id],
+    for (const representative of compositionLegends(child, child.children)) {
+      const id = representative.id;
+      if (child.graphicSpec.objects[id]) candidates.push({ ...representative, source: child,
+        roots: child.graphicSpec.objects[id].children ?? [id], remove: [id],
         bounds: unionConcreteGraphicBounds(child.graphicSpec, [id], child.materializationConfigs.textMetrics) });
     }
   } else {
     for (const [kind, config] of Object.entries(child.guideConfigs.legend ?? {})) {
       const channels = legendBlockChannels(kind, config);
-      if (!channels.includes("color")) continue;
       const roots = allLegendGraphicIds([kind]).filter(id => child.graphicSpec.objects[id]);
       const bounds = unionConcreteGraphicBounds(child.graphicSpec, roots, child.materializationConfigs.textMetrics);
       if (!bounds) continue;
@@ -67,28 +66,36 @@ function collect(child) {
 
 // Scale compatibility is validated before this plan. Canonical child guides
 // remain intact; only the composed graphic snapshots are collected.
-export function sharedCompositionColorLegend(program, children) {
-  if (!program.compositionSpec.share?.color) return undefined;
+export function compositionLegends(program, children = program.children) {
   const candidates = program.compositionSpec.children.flatMap(id => collect(children[id]).map(candidate => ({
     ...candidate, remove: candidate.remove.map(root => namespaceGraphicId(`${program.compositionSpec.id}-${id}`, root)),
     targets: candidate.targets.map(target => ({ ...target, childPath: [id, ...target.childPath] }))
   })));
-  if (!candidates.length) return undefined;
-  const ordered = [...candidates].sort((a, b) => b.channels.length - a.channels.length);
-  // Prefer one complete explanation. Incompatible extra mappings stay local;
-  // a color-only representative can still collect the genuinely shared block.
-  const representative = ordered.find(candidate => candidates.every(other => coversLegend(candidate, other)))
-    ?? candidates.find(candidate => candidate.channels.length === 1);
-  if (!representative) return undefined;
-  const collected = candidates.filter(candidate => coversLegend(representative, candidate));
-  return { ...representative, remove: collected.flatMap(candidate => candidate.remove),
-    targets: collected.flatMap(candidate => candidate.targets) };
+  const plans = [];
+  const removed = new Set();
+  if (program.compositionSpec.share?.color) {
+    const colors = candidates.filter(candidate => candidate.channels.includes("color"));
+    const ordered = [...colors].sort((a, b) => b.channels.length - a.channels.length);
+    const representative = ordered.find(candidate => colors.every(other => coversLegend(candidate, other)))
+      ?? colors.find(candidate => candidate.channels.length === 1);
+    if (representative) {
+      const collected = colors.filter(candidate => coversLegend(representative, candidate));
+      collected.forEach(candidate => removed.add(candidate));
+      plans.push({ ...representative, id: `${program.compositionSpec.id}-shared-color-legend`,
+        remove: collected.flatMap(candidate => candidate.remove),
+        targets: collected.flatMap(candidate => candidate.targets) });
+    }
+  }
+  for (const candidate of candidates) if (program.compositionSpec.legends === "collect" && !removed.has(candidate)) plans.push({ ...candidate,
+    // Derive identity from the canonical owner, never the current stack index.
+    id: namespaceGraphicId(JSON.stringify([program.compositionSpec.id, candidate.targets, candidate.channels]), "legend") });
+  return plans;
 }
 
 // New neighbours keep the existing shared guide's authored presentation. Scale
 // mappings and symbol semantics still belong to each native constructor.
 export function adjacentLegendPresentation(source, target, child) {
-  const from = collect(source).find(candidate => candidate.config.target === target);
+  const from = collect(source).find(candidate => candidate.config.target === target && candidate.channels.includes("color"));
   const to = collect(child).find(candidate => candidate.channels.includes("color"));
   if (!from || !to) return undefined;
   const config = from.config, options = { ...from.placement };

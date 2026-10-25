@@ -1,4 +1,6 @@
 export interface CompositionOptions {
+  /** Keep non-shared guides local (default), or collect all displayed blocks around the parent plot union. */
+  legends?: "local" | "collect";
   share?: CompositionShares;
   id?: string;
   programs: readonly CompositionProgramEntry[];

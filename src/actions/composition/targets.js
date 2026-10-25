@@ -1,19 +1,19 @@
 import { getWrappedActionMetadata } from "../../core/action.js";
 import { restoreProgramContextKeys } from "../../core/programState.js";
 import { normalizeActionTargets } from "../../grammar/actionTargets.js";
-import { sharedCompositionColorLegend } from "../../materialization/compositionLegends.js";
+import { compositionLegends } from "../../materialization/compositionLegends.js";
 import { legendBlockChannels } from "../../grammar/legendBlocks.js";
 import { assertGuideCollisionBlocks } from "../../layout/guideCollisions.js";
 import { resolveGuideCollisionBlocks } from "../../materialization/guides/resources.js";
 
 function collectedLegends(program, path = [], result = new Map()) {
   if (!program.compositionSpec || program.compositionSpec.facet) return result;
-  const shared = sharedCompositionColorLegend(program, program.children);
-  for (const target of shared?.targets ?? []) {
+  const legends = compositionLegends(program, program.children);
+  for (const legend of legends) for (const target of legend.targets) {
     const child = atPath(program, target.childPath), key = JSON.stringify([...path, ...target.childPath]);
     const kinds = result.get(key) ?? new Set();
     for (const [kind, config] of Object.entries(child.guideConfigs.legend ?? {})) {
-      if ((target.id === undefined || config.target === target.id) && legendBlockChannels(kind, config).includes('color')) kinds.add(kind);
+      if ((target.id === undefined || config.target === target.id) && legendBlockChannels(kind, config).some(channel => legend.channels.includes(channel))) kinds.add(kind);
     }
     result.set(key, kinds);
   }

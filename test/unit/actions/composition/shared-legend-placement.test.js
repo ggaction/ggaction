@@ -11,7 +11,7 @@ for(const position of ['top','bottom','left','right'])for(const edge of ['left',
  const source=unit().editLegend({target:'p',channel:'color',position,labels:{fontSize:18}});
  let p=source.createAdjacentPlot({id:'q',source:'p',position:edge,share:{color:true},plot:{action:'createScatterPlot'}})
   .createTitle({text:'Two panels',position,subtitle:'Shared guide'});
- const {layout,legendFrame}=prepareCompositionSnapshots(p),plot=compositionPlotBounds(p);
+ const {layout,legendFrames}=prepareCompositionSnapshots(p),legendFrame=legendFrames.get('composition-shared-color-legend'),plot=compositionPlotBounds(p);
  assert.ok(legendFrame);assert.equal(layout.width,p.graphicSpec.objects.canvas.properties.width);
  assert.equal(layout.height,p.graphicSpec.objects.canvas.properties.height);
  const {x,y,width,height}=legendFrame;
@@ -29,7 +29,7 @@ for(const position of ['top','bottom','left','right'])for(const edge of ['left',
 test('left insertion of a bar retains the existing bottom legend typography',()=>{
  const p=unit().editLegend({target:'p',channel:'color',position:'bottom',labels:{fontSize:20},titleStyle:{fontSize:24}});
  const q=p.createAdjacentPlot({id:'bars',source:'p',position:'left',share:{color:true},plot:{action:'createBarPlot',options:{x:{field:'g',fieldType:'nominal'},y:{field:'y',aggregate:'mean'},color:{field:'g',fieldType:'nominal'}}}});
- const shared=prepareCompositionSnapshots(q).sharedLegend;
+ const shared=prepareCompositionSnapshots(q).legends.find(block => block.id === 'composition-shared-color-legend');
  assert.equal(shared.placement.position,'bottom');assert.equal(shared.config.labels.fontSize,20);
  assert.equal(shared.config.titleStyle.fontSize,24);
  assert.equal(q.children.bars.guideConfigs.legend.color.labels.fontSize,20);

@@ -2479,6 +2479,8 @@ export type CoordinateAspectAlign = "start" | "center" | "end";
 
 ```typescript
 export interface CreateAdjacentPlotOptions {
+  /** Collect all legends around the combined view by default. Local retains panel-owned placement. */
+  legends?: "local" | "collect";
   id?: string;
   /** Source mark in a unit/facet, or an explicit panel path relative to the receiving concat. */
   source?: string | { childPath: readonly string[]; id: string };
@@ -5025,6 +5027,8 @@ Related types: [`FocusedDerivedDataEdit`](#type-focusedderiveddataedit) · [`Com
 
 ```typescript
 export interface EditCompositionLayoutOptions {
+  /** Concat only. Change guide collection without changing scale sharing. */
+  legends?: "local" | "collect";
   columns?: number;
   gap?: FacetGap;
   align?: CompositionAlign | "plot";

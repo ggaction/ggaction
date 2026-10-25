@@ -246,6 +246,17 @@ content bounds independently; keyed grids reject this mode. Reset `topLane` to `
 in the same call when switching from a shared plot lane. Header `anchor: "view"` includes
 retained guides in its outward clearance and is available with plot or content spacing.
 
+`createAdjacentPlot` collects all visible legend blocks around the complete composition by
+default, normally to its right. Independent size, opacity and other legends keep their own
+meaning and typography; overlapping outside blocks are stacked with the native side/horizontal block gaps.
+Scoped legend edits move or resize the visible block in the combined plot frame, including
+when its original owner is a nested or faceted child.
+
+For lower-level `hconcat`/`vconcat`, opt in with `legends: "collect"`. Their default
+`"local"` preserves independent panel placement. Use `editCompositionLayout({ legends: "local" })`
+to restore local placement, or `"collect"` to collect existing blocks. This changes guide
+placement, not scale sharing. Facets continue to use `editFacetGuides`.
+
 When color is shared, compatible same-field color/shape legends and color-only legends
 are collected into one legend, retaining its authored position, alignment and typography.
 A new adjacent chart with shared color retains the existing legend presentation rather than
@@ -257,7 +268,8 @@ retained chart content; an explicit offset is preserved and rejects a collision.
 coordinates remain relative to the combined plot origin.
 The combined symbols retain their shape meaning;
 unrelated size legends and conflicting shape mappings remain separate. Disabling color
-sharing restores the original child legends, including in nested and faceted views.
+sharing restores separate explanations; collect mode keeps them in the outer lane, including
+in nested and faceted views.
 
 ## Layer a native chart
 

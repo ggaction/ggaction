@@ -367,7 +367,7 @@ Evidence: `test/unit/layout/facet-top-lane.test.js`, `test/unit/actions/composit
 
 ## `editCompositionLayout`
 
-- Signature: `editCompositionLayout({ columns?, gap?, spacing?, topLane?, align?, padding? })`.
+- Signature: `editCompositionLayout({ columns?, gap?, spacing?, topLane?, align?, padding?, legends? })`.
 - Requires an existing composition program and at least one layout option.
 - `columns`: positive integer for one-field facet and repeat layouts, no larger than the retained child count.
   A row-column grid keeps the width of its declared column domain; concat compositions reject it.
@@ -646,7 +646,7 @@ inferred values. New chart appearance uses its constructor; inherited theme/text
 
 ### Formal values — `createAdjacentPlot`
 
-- Implemented: `createAdjacentPlot({ id?: UserId, source?: ExistingIndependentMarkId | { childPath: readonly string[], id: ExistingIndependentMarkId }, position?: "left"|"right"|"top"|"bottom", plot?: AdjacentPlotSpecification, share?: CompositionShares, gap?: NonNegativeFinite, align?: "plot"|"start"|"center"|"end" }): ChartProgram`.
+- Implemented: `createAdjacentPlot({ id?: UserId, source?: ExistingIndependentMarkId | { childPath: readonly string[], id: ExistingIndependentMarkId }, position?: "left"|"right"|"top"|"bottom", plot?: AdjacentPlotSpecification, share?: CompositionShares, gap?: NonNegativeFinite, align?: "plot"|"start"|"center"|"end", legends?: "local"|"collect" }): ChartProgram`.
 - Proposed (NOT IMPLEMENTED): None.
 
 ### Value coverage — `createAdjacentPlot`
@@ -686,6 +686,11 @@ The outer trace records one requested function; retained child traces contain th
 
 ## Concat parent titles, shared color guide, and uniform surfaces
 
+- `hconcat`/`vconcat` accept `legends: "local" | "collect"`. Omission preserves local independent guides and the existing shared-color collection. `createAdjacentPlot` defaults to `"collect"`; explicit `"local"` retains the lower-level policy. `editCompositionLayout({legends})` changes this policy on concat only; facets reject it and retain `editFacetGuides`.
+- Collect mode displays every visible native legend block around the complete parent plot union (right by ordinary guide defaults), including independent size/opacity/stroke and faceted/nested owners. Only compatible shared-color explanations are deduplicated; unrelated mappings retain separate blocks. Overlapping outside blocks pack along the same edge with the native side/horizontal block gaps, while explicit non-overlapping offsets remain intact. Corners/free placement retain their parent-plot anchors. Child data, plot dimensions, authored guides and styles are unchanged.
+- Scoped edits, drag offsets and resizing validate collected guides in the parent frame; hidden local copies do not participate in child fit/collision checks. Switching back to local placement restores canonical children. The collection policy is stored once in `compositionSpec.legends`, validated on import and retained across layout/source/guide replay. No renderer-specific behavior is added.
+- Evidence: `test/unit/actions/composition/collected-guide-placement.test.js` covers all four edges, nested/faceted owners, independent mappings, policy changes, invalid values and persistence.
+
 - `createTitle`/`editTitle`/`removeTitle` without a target own one parent title resource.
   Explicit child paths retain per-view title behavior. Four-edge title/subtitle lanes
   align to the translated plot union and rematerialize after layout and child edits.
@@ -693,11 +698,11 @@ The outer trace records one requested function; retained child traces contain th
   Outside offsets are measured from the translated plot union, not child Canvas edges or a removed legend's old lane. Inferred offsets clear retained concrete content on the same edge; explicit offsets remain exact and reject occupied-content collisions. Free `at` coordinates remain plot-relative. Existing child margins are reused, and the parent Canvas grows only when the resolved legend requires more room. Child Canvas dimensions and plot sizes are preserved. Evidence: `test/unit/actions/composition/shared-legend-spacing.test.js`.
   A same-field categorical block that explains color plus shape/stroke/etc. also covers
   color-only blocks when its category mappings agree. Prefer the most informative block,
-  then the first visible child for equal coverage. Conflicting extra mappings remain local;
-  unrelated size/other-field blocks are retained. Nested compositions collect only displayed
+  then the first visible child for equal coverage. Conflicting extra mappings remain separate;
+  unrelated size/other-field blocks are retained (in the outer lane in collect mode). Nested compositions collect only displayed
   blocks, including already-promoted combined legends, without deleting incompatible explanations.
   The native shared scale supplies the color domain. Canonical child guides remain unchanged
-  and reappear when sharing is disabled.
+  and reappear separately when sharing is disabled.
 - Equal child Canvas backgrounds fill parent gaps/padding and title/legend lanes.
   Mixed backgrounds preserve the existing parent surface (initially white).
 - Serialization, nested child edits, and repeated guide creation preserve these rules.
@@ -731,7 +736,7 @@ The outer trace records one requested function; retained child traces contain th
 
 ### Scoped edits of collected guides
 
-A collected color/shape legend is validated in the parent layout where it is painted. Scoped public edits and local planning frames retain that visibility ownership: hidden source copies do not conflict with their former child axes. Uncollected guides still participate in native collision checks, and visible parent collisions reject atomically. The temporary editing context is removed before returning or persisting a program. Native source programs remain immutable. Evidence: `test/unit/actions/composition/shared-legend-offset.test.js`.
+Every collected legend block is validated in the parent layout where it is painted. Scoped public edits and local planning frames retain that visibility ownership: hidden source copies do not conflict with their former child axes. Uncollected guides still participate in native collision checks, and visible parent collisions reject atomically. The temporary editing context is removed before returning or persisting a program. Native source programs remain immutable. Evidence: `test/unit/actions/composition/shared-legend-offset.test.js`.
 
 ### Composition audit regression coverage
 

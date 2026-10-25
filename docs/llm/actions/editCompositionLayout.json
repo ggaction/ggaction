@@ -63,6 +63,11 @@
   },
   "options": [
     {
+      "name": "legends",
+      "required": false,
+      "type": "\"collect\" | \"local\" | undefined"
+    },
+    {
       "name": "columns",
       "required": false,
       "type": "number | undefined"
@@ -99,9 +104,9 @@
     }
   ],
   "callPatterns": [
-    "editCompositionLayout({ target?, columns?, gap?, align?, padding?, spacing?, topLane? })"
+    "editCompositionLayout({ target?, legends?, columns?, gap?, align?, padding?, spacing?, topLane? })"
   ],
-  "snippet": "program.editCompositionLayout({ columns: 2 })",
+  "snippet": "program.editCompositionLayout({ legends: \"collect\" })",
   "errors": [],
   "route": "/reference/actions/charts-data/#editcompositionlayout"
 }

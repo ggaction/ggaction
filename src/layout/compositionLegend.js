@@ -1,5 +1,16 @@
 import { textBoundsIntersect } from "../core/textMetrics.js";
+import { SIDE_LEGEND_BLOCK_GAP, HORIZONTAL_LEGEND_BLOCK_GAP } from "./legendLane.js";
 import { resolveLegendGroupPlacement } from "./legendGroup.js";
+
+export function compositionLegendEdgeClearance(plot, retained, position, occupied) {
+  const side = position === 'left' || position === 'right';
+  const relevant = occupied ? retained.filter(value => side
+    ? value.top < occupied.bottom && value.bottom > occupied.top
+    : value.left < occupied.right && value.right > occupied.left) : retained;
+  return Math.max(0, ...relevant.map(value => position === 'right' ? value.right - plot.x - plot.width
+    : position === 'left' ? plot.x - value.left : position === 'top' ? plot.y - value.top
+    : value.bottom - plot.y - plot.height));
+}
 
 // Collected legends retain the native plot-relative anchor. Reuse available
 // child margins; only occupied graphics can require an additional guide lane.
@@ -20,13 +31,7 @@ export function layoutCompositionLegend(base, plot, legend, title = {}, retained
   };
   let occupied = place(group);
   if (outside && inferred) {
-    const side = position === 'left' || position === 'right';
-    const relevant = retained.filter(value => side
-      ? value.top < occupied.bottom && value.bottom > occupied.top
-      : value.left < occupied.right && value.right > occupied.left);
-    const clearance = Math.max(0, ...relevant.map(value => position === 'right' ? value.right - plot.x - plot.width
-      : position === 'left' ? plot.x - value.left : position === 'top' ? plot.y - value.top
-      : value.bottom - plot.y - plot.height));
+    const clearance = compositionLegendEdgeClearance(plot, retained, position, occupied);
     occupied = place({ ...group, placement: { ...group.placement, offset: offset + clearance } });
   } else if (outside && retained.some(value => textBoundsIntersect(occupied, value))) {
     throw new Error('Shared composition legend overlaps retained chart content. Increase its offset.');
@@ -40,4 +45,46 @@ export function layoutCompositionLegend(base, plot, legend, title = {}, retained
     height: Math.max(base.height + dy, y + height + 8 + titleSpace('bottom')),
     children: base.children.map(child => ({ ...child, x: child.x + dx, y: child.y + dy })) };
   return { layout, frame: { x, y, width, height } };
+}
+
+// Every displayed block uses the same parent frame. Compatible shared color
+// explanations are deduplicated upstream; independent blocks remain distinct.
+// Pack overlapping outside blocks along their edge, preserving authored gaps.
+export function layoutCompositionLegends(base, plot, legends, title = {}, retained = []) {
+  let layout = base, currentPlot = plot, occupiedContent = retained;
+  const frames = new Map(), placed = [];
+  for (const legend of legends) {
+    let candidate = legend;
+    let result = layoutCompositionLegend(layout, currentPlot, candidate, title, occupiedContent);
+    const position = legend.placement.position ?? 'right';
+    const outside = !legend.placement.at && ['left', 'right', 'top', 'bottom'].includes(position);
+    if (outside) {
+      const side = ['left', 'right'].includes(position);
+      for (let attempt = 0; attempt < placed.length; attempt++) {
+        const dx = result.layout.children[0].x - layout.children[0].x;
+        const dy = result.layout.children[0].y - layout.children[0].y;
+        const f = result.frame;
+        const overlaps = placed.filter(previous => previous.position === position).map(previous => frames.get(previous.id))
+          .filter(other => textBoundsIntersect({ left: f.x, right: f.x + f.width, top: f.y, bottom: f.y + f.height },
+            { left: other.x + dx, right: other.x + dx + other.width, top: other.y + dy, bottom: other.y + dy + other.height }));
+        if (!overlaps.length) break;
+        const shift = side ? Math.max(...overlaps.map(other => other.y + dy + other.height)) + SIDE_LEGEND_BLOCK_GAP - f.y
+          : Math.max(...overlaps.map(other => other.x + dx + other.width)) + HORIZONTAL_LEGEND_BLOCK_GAP - f.x;
+        candidate = { ...candidate, placement: { ...candidate.placement,
+          alongOffset: (candidate.placement.alongOffset ?? 0) + shift } };
+        result = layoutCompositionLegend(layout, currentPlot, candidate, title, occupiedContent);
+      }
+    }
+    const dx = result.layout.children[0].x - layout.children[0].x;
+    const dy = result.layout.children[0].y - layout.children[0].y;
+    if (dx || dy) {
+      for (const [id, frame] of frames) frames.set(id, { ...frame, x: frame.x + dx, y: frame.y + dy });
+      occupiedContent = occupiedContent.map(b => ({ left: b.left + dx, right: b.right + dx, top: b.top + dy, bottom: b.bottom + dy }));
+      currentPlot = { ...currentPlot, x: currentPlot.x + dx, y: currentPlot.y + dy };
+    }
+    frames.set(legend.id, result.frame);
+    placed.push({ id: legend.id, position });
+    layout = result.layout;
+  }
+  return { layout, frames };
 }

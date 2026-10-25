@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.25.
 
-Contract: sha256:7d1af3a0f47a6cacce7c2670ed2badfb56ebb801a73d3cb7cd8188de06e9fbf4. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:d191d29bbf2722f84e1a4d8e9b098a92388c8752ae0d38e9b027bfbee132536d. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -19187,6 +19187,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `legends` | Optional / branch-dependent | `"collect" \| "local" \| undefined` |
 | `columns` | Optional / branch-dependent | `number \| undefined` |
 | `gap` | Optional / branch-dependent | `FacetGap \| undefined` |
 | `align` | Optional / branch-dependent | `"plot" \| CompositionAlign \| undefined` |
@@ -20983,6 +20984,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `legends` | Optional / branch-dependent | `"collect" \| "local" \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `source` | Optional / branch-dependent | `string \| { childPath: readonly string[]; id: string; } \| undefined` |
 | `position` | Optional / branch-dependent | `"bottom" \| "left" \| "right" \| "top" \| undefined` |
@@ -32365,6 +32367,8 @@ export type CoordinateAspectAlign = "start" | "center" | "end";
 
 ```typescript
 export interface CreateAdjacentPlotOptions {
+  /** Collect all legends around the combined view by default. Local retains panel-owned placement. */
+  legends?: "local" | "collect";
   id?: string;
   /** Source mark in a unit/facet, or an explicit panel path relative to the receiving concat. */
   source?: string | { childPath: readonly string[]; id: string };
@@ -34551,6 +34555,8 @@ Related types: [`FocusedDerivedDataEdit`](./reference/types/#type-focusedderived
 
 ```typescript
 export interface EditCompositionLayoutOptions {
+  /** Concat only. Change guide collection without changing scale sharing. */
+  legends?: "local" | "collect";
   columns?: number;
   gap?: FacetGap;
   align?: CompositionAlign | "plot";
@@ -43267,6 +43273,17 @@ content bounds independently; keyed grids reject this mode. Reset `topLane` to `
 in the same call when switching from a shared plot lane. Header `anchor: "view"` includes
 retained guides in its outward clearance and is available with plot or content spacing.
 
+`createAdjacentPlot` collects all visible legend blocks around the complete composition by
+default, normally to its right. Independent size, opacity and other legends keep their own
+meaning and typography; overlapping outside blocks are stacked with the native side/horizontal block gaps.
+Scoped legend edits move or resize the visible block in the combined plot frame, including
+when its original owner is a nested or faceted child.
+
+For lower-level `hconcat`/`vconcat`, opt in with `legends: "collect"`. Their default
+`"local"` preserves independent panel placement. Use `editCompositionLayout({ legends: "local" })`
+to restore local placement, or `"collect"` to collect existing blocks. This changes guide
+placement, not scale sharing. Facets continue to use `editFacetGuides`.
+
 When color is shared, compatible same-field color/shape legends and color-only legends
 are collected into one legend, retaining its authored position, alignment and typography.
 A new adjacent chart with shared color retains the existing legend presentation rather than
@@ -43278,7 +43295,8 @@ retained chart content; an explicit offset is preserved and rejects a collision.
 coordinates remain relative to the combined plot origin.
 The combined symbols retain their shape meaning;
 unrelated size legends and conflicting shape mappings remain separate. Disabling color
-sharing restores the original child legends, including in nested and faceted views.
+sharing restores separate explanations; collect mode keeps them in the outer lane, including
+in nested and faceted views.
 
 ## Layer a native chart
 
@@ -44452,7 +44470,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:7d1af3a0f47a6cacce7c2670ed2badfb56ebb801a73d3cb7cd8188de06e9fbf4` |
+| Contract fingerprint | `sha256:d191d29bbf2722f84e1a4d8e9b098a92388c8752ae0d38e9b027bfbee132536d` |
 | Example and dataset source | `ab206c446ae5010eecfd859427775c4785d8aed4` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

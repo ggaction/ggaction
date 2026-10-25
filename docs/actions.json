@@ -30376,6 +30376,11 @@
       },
       "options": [
         {
+          "name": "legends",
+          "required": false,
+          "type": "\"collect\" | \"local\" | undefined"
+        },
+        {
           "name": "columns",
           "required": false,
           "type": "number | undefined"
@@ -30412,9 +30417,9 @@
         }
       ],
       "callPatterns": [
-        "editCompositionLayout({ target?, columns?, gap?, align?, padding?, spacing?, topLane? })"
+        "editCompositionLayout({ target?, legends?, columns?, gap?, align?, padding?, spacing?, topLane? })"
       ],
-      "snippet": "program.editCompositionLayout({ columns: 2 })",
+      "snippet": "program.editCompositionLayout({ legends: \"collect\" })",
       "errors": [],
       "route": "/reference/actions/charts-data/#editcompositionlayout"
     },
@@ -36837,6 +36842,11 @@
       },
       "options": [
         {
+          "name": "legends",
+          "required": false,
+          "type": "\"collect\" | \"local\" | undefined"
+        },
+        {
           "name": "id",
           "required": false,
           "type": "string | undefined"
@@ -36878,7 +36888,7 @@
         }
       ],
       "callPatterns": [
-        "createAdjacentPlot({ id?, source?, target?, position?, plot?, share?, gap?, align? })"
+        "createAdjacentPlot({ id?, source?, target?, legends?, position?, plot?, share?, gap? })"
       ],
       "snippet": "program.createAdjacentPlot({ source: \"bars\", id: \"trend\", position: \"right\", share: { y: true } })",
       "errors": [],
