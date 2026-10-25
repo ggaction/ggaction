@@ -182,3 +182,22 @@ test("plot alignment grows a multirow facet through its source without scaling t
     faceted.children[id].graphicSpec.objects.xAxisLabels.items[0].properties.fontSize);
   assert.equal(resolveGraphicBounds(faceted.children[id]).height, 100);
 });
+
+test("explicit adjacent heatmap grid roles override numeric source bin inference", () => {
+  const source = chart().createCanvas({ plot: { width: 280, height: 200 }, margin: 100 })
+    .createData({ id: "raw", values: [{ x: 1, y: 2 }, { x: 3, y: 4 }, { x: 5, y: 6 }] })
+    .createScatterPlot({ id: "points", data: "raw", x: "x", y: "y" })
+    .createData({ id: "grid", values: [{ a: "A", b: "I", value: 2 }, { a: "B", b: "II", value: 5 }] });
+  const before = serializeProgram(source);
+  const p = source.createAdjacentPlot({ id: "heat", source: "points", share: {}, plot: {
+    action: "createHeatmap", options: { data: "grid", x: { field: "a", fieldType: "ordinal" },
+      y: { field: "b", fieldType: "ordinal" }, color: { field: "value", fieldType: "quantitative" } }
+  } });
+  assert.equal(p.children.heat.graphicSpec.objects.heat.items.length, 2);
+  assert.equal(p.children.heat.semanticSpec.layers[0].encoding.x.field, "a");
+  assert.deepEqual(serializeProgram(source), before);
+  assert.deepEqual(deserializeProgram(serializeProgram(p)).graphicSpec, p.graphicSpec);
+  // Omitted roles still inherit the numeric source and use ordinary binning.
+  const numeric = source.createAdjacentPlot({ id: "heat", source: "points", share: {}, plot: { action: "createHeatmap" } });
+  assert.ok(numeric.children.heat.graphicSpec.objects.heat.items.length);
+});

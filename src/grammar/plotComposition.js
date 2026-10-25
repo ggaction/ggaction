@@ -47,7 +47,11 @@ export function inferCompositionOptions(source, action, supplied = {}) {
       if (!categoryAxis && !(supplied.x !== undefined && supplied.y !== undefined)) throw new Error(`${action} requires one category axis and one quantitative measure.`);
       if (categoryAxis && action === 'createIntervalPlot') defaults[categoryAxis === 'x' ? 'y' : 'x'] = { field:measure.field, center:'mean', extent:'ci', level:0.95 };
     }
-    if (kind === 'heatmap' && !categoryAxis) defaults.bin = { bins:12 };
+    // Binning follows the new chart's roles, including explicitly supplied
+    // categorical/ordinal grids, rather than the source chart's old axes.
+    if (kind === 'heatmap' && !['x', 'y'].some(axis => categorical(
+      supplied[axis] === undefined ? defaults[axis] : merge(defaults[axis], supplied[axis])
+    ))) defaults.bin = { bins:12 };
     if (kind === 'horizon' && c.y?.measurement.parameters) Object.assign(defaults, c.y.measurement.parameters);
     if (action === 'createTextPlot') defaults.text = { field:c.color?.field ?? y?.field ?? x?.field };
   } else if (['endpoint','categoryValue'].includes(kind)) {
