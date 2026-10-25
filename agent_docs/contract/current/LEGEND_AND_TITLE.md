@@ -355,6 +355,7 @@ and absent shared owners reject. Selected member removal follows native fused-bl
   `channels`, `blockLayout`, or `at`; it never creates, removes, or replaces content. Combined member aliases
   select the same block. Missing or ambiguous channels fail atomically, and a channel cannot disambiguate
   multiple mark targets. All five focused editors forward this selector through the same family validation.
+- `channel: "all"`은 해당 target의 현재 모든 block을 한 번에 편집한다. Content 집합을 유지하며 `channels`, `combine`, `representation`과 함께 쓰면 오류다. Explicit position/at는 개별 position·alongOffset을 제거하여 group에 합류시킨다. Channel omission의 기존 local override 보존은 바꾸지 않는다. 새 group은 top/bottom에서 row, 나머지는 column이고 기존 group policy는 생략하면 유지한다. Shared appearance와 visibility patch는 모든 block에 적용하며 omitted style/sample/title은 보존한다. `itemGap`은 discrete entries에만 적용하고 gradient strips에는 적용하지 않는다. 그 밖의 appearance는 모든 선택 block이 지원해야 한다. Unit·facet parent·scoped target에서 하나의 atomic public trace로 기록한다. Evidence: `test/unit/actions/guides/legend-all-selection.test.js`.
 - Selected edits do not propagate categorical typography to a sibling size block. The current effective size
   typography is preserved and detached from legacy shared inheritance before a selected categorical or size
   edit. Omitted selectors retain existing sharing and priority behavior. Selectors remain trace inputs;
@@ -392,7 +393,7 @@ and absent shared owners reject. Selected member removal follows native fused-bl
 
 ### Formal values — `editLegend`
 
-- Implemented: the signature above with `channel?: LegendChannel`, `title?: NonEmptyString | "auto" | false`, `channels?: readonly LegendChannel[]` for whole-target replacement, and `values?: readonly number[] | "auto"` for standalone sampled content.
+- Implemented: the signature above with `channel?: LegendChannel | "all"`, `title?: NonEmptyString | "auto" | false`, `channels?: readonly LegendChannel[]` for whole-target replacement, and `values?: readonly number[] | "auto"` for standalone sampled content.
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 

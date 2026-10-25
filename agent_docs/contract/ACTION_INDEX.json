@@ -3195,7 +3195,7 @@
       "domain": "legend_and_title",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edit whole-target content or select one existing channel block for layout, appearance, samples and gradient ticks; retained visibility preserves styles when hidden",
+      "update": "Edit whole-target content, one channel block, or all existing blocks together; explicit all selection reunites local placement and preserves omitted appearance",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",

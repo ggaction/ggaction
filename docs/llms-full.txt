@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.25.
 
-Contract: sha256:ed84c9caa6e9efb3248d058948f7f6c8ded78e29b918fe930709ffa964f0dc33. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:a48c9f7ae77e6e94bd15aa113df5b1fbb2640c44e1dc45d1cc47e92b3428f424. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -15082,6 +15082,23 @@ the final content. In categorical-size legends, shared label/title-style edits
 merge only the supplied leaves into each block's effective style; changing a
 title or count preserves independent size styles. Other targets remain intact.
 
+## Edit every existing legend together
+
+Use `program.editLegend({ target: "plot", channel: "all", position: "left" })`
+to move every existing legend block for that mark together. This explicit selection
+clears individual position and along-edge overrides before arranging the group.
+Omitting `channel` continues to preserve those overrides. No legend is added,
+removed, or combined; `channels`, `combine`, and `representation` cannot accompany
+`channel: "all"`.
+
+Shared `labels`, `titleStyle`, and visibility edits affect every selected block.
+Omitted appearance leaves, samples, and titles remain unchanged. `itemGap` adjusts
+blocks containing discrete entries and leaves continuous gradient strips intact.
+Other appearance options must be supported by every selected block. Placement
+supports the existing group options; a new group uses a row at the top/bottom or
+a column elsewhere. Existing group layout is retained unless explicitly changed.
+The selection also works on facet parent shared legends and scoped chart targets.
+
 ## Editing one legend block
 
 A block-local `position` accepts the eight named anchors. `"inherit"` removes
@@ -27420,7 +27437,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `clipHeight` | Optional / branch-dependent | `number \| "auto" \| undefined` |
 | `rowPadding` | Optional / branch-dependent | `number \| "auto" \| undefined` |
 | `titlePadding` | Optional / branch-dependent | `number \| "auto" \| undefined` |
-| `channel` | Optional / branch-dependent | `"color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| undefined` |
+| `channel` | Optional / branch-dependent | `"all" \| "color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| undefined` |
 | `position` | Optional / branch-dependent | `"bottom" \| "bottom-left" \| "bottom-right" \| "inherit" \| "left" \| "right" \| "top" \| "top-left" \| "top-right" \| undefined` |
 | `direction` | Optional / branch-dependent | `"auto" \| "horizontal" \| "vertical" \| undefined` |
 | `titleStyle` | Optional / branch-dependent | `LegendTitleEditStyle \| undefined` |
@@ -27457,7 +27474,7 @@ editLegend({
 })
 ```
 
-Singular `channel` selects one existing block without changing sibling typography. It cannot
+Select one legend block or all existing blocks together. `channel: "all"` reunites local placements on a position change and applies shared appearance to every block; omitted appearance is preserved. A singular channel cannot
 accompany `channels`, `blockLayout`, or `at`. A channel never disambiguates mark targets.
 
 `alongOffset` is a finite signed distance in logical pixels, defaulting to zero: positive moves right on top/bottom (and in-plot corner) anchors, or down on left/right anchors. `offset` keeps its perpendicular gap meaning. Omitted edits preserve the shift; zero resets it. With `channel`, only that block moves; without it, the target’s grouped blocks move together. `position: "inherit"` clears a selected block’s local anchor and shift. `at` cannot accompany edge placement options, including `alongOffset`. Existing fit and collision checks still apply.
@@ -35095,8 +35112,8 @@ export interface EditLegendOptions
   rowPadding?: number | "auto";
   /** auto removes the title/body spacing override. */
   titlePadding?: number | "auto";
-  /** Select one existing block; cannot accompany channels. */
-  channel?: LegendChannel;
+  /** Select one block, or all existing blocks. all reunites local placements; cannot accompany channels/combine/representation. */
+  channel?: LegendChannel | "all";
   /** inherit is allowed only with a singular channel selector. */
   position?: "right" | "left" | "bottom" | "top" | "top-left" | "top-right" | "bottom-left" | "bottom-right" | "inherit";
   /** Gradient-only auto resets orientation. */
@@ -44555,7 +44572,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:ed84c9caa6e9efb3248d058948f7f6c8ded78e29b918fe930709ffa964f0dc33` |
+| Contract fingerprint | `sha256:a48c9f7ae77e6e94bd15aa113df5b1fbb2640c44e1dc45d1cc47e92b3428f424` |
 | Example and dataset source | `ab206c446ae5010eecfd859427775c4785d8aed4` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

@@ -898,10 +898,50 @@ function editLegendImplementation(args = {}, skipGroup = false, positionIntent =
     return editContinuous(this, continuousKind, configs[continuousKind], args);
 }
 
+// Explicit all-block selection differs from omitted channel: omitted selectors
+// retain independently positioned blocks, while all reunites them at one anchor.
+function editAllLegendBlocks(program, args) {
+  validateOptionObject(args, [...OPTIONS, "visible"], "editLegend");
+  if (["channels", "combine", "representation"].some(key => Object.hasOwn(args, key))) {
+    throw new Error('editLegend channel "all" edits existing blocks without replacing their content.');
+  }
+  const target = resolveLegendTarget(program, args.target, "editLegend");
+  const blocks = legendBlockDescriptors(program, target);
+  if (!blocks.length) throw new Error('editLegend channel "all" requires an existing legend.');
+  const {channel: _channel, target: _target, ...patch} = args;
+  if (!Object.keys(patch).length) throw new Error("editLegend requires at least one change.");
+  const placementKeys = ["position", "blockLayout", "at", "layout", "align", "offset", "alongOffset"];
+  const placement = Object.fromEntries(Object.entries(patch).filter(([key]) => placementKeys.includes(key)));
+  const appearance = Object.fromEntries(Object.entries(patch).filter(([key]) => !placementKeys.includes(key)));
+  let next = program;
+  if (Object.keys(placement).length) {
+    const reanchor = placement.position !== undefined || placement.at !== undefined;
+    if (reanchor) for (const block of blocks) {
+      const {blockOverrides: _old, ...config} = block.config;
+      const blockOverrides = patchLegendBlockOverride(block.config, block.key, {removePosition: true});
+      next = next._withLegendConfig(block.kind, {...config,
+        ...(blockOverrides === undefined ? {} : {blockOverrides}),
+        // A prior local edge may have normalized a horizontal item flow.
+        direction: undefined});
+    }
+    next = next.editLegend({target, ...placement,
+      blockLayout: placement.blockLayout ?? program.guideConfigs.legendGroups?.[target]?.blockLayout ??
+        (["top", "bottom"].includes(placement.position) ? "row" : "column")});
+  }
+  if (Object.keys(appearance).length) for (const block of blocks) {
+    const perBlock = {...appearance};
+    // Item spacing applies to discrete entries, not continuous gradient strips.
+    if (block.family === "gradient") delete perBlock.itemGap;
+    if (Object.keys(perBlock).length) next = next.editLegend({target, channel: block.channels[0], ...perBlock});
+  }
+  return next;
+}
+
 export const editLegend = /* @__PURE__ */ action(
-  { op: "editLegend", description: "Edit one stable legend content, layout or appearance.", scope: "any" },
+  { op: "editLegend", description: "Edit one or all existing legend blocks.", scope: "any" },
   withGuideLayoutValidation(function (args = {}) {
     if (this.compositionSpec !== undefined) return editFacetParentLegend(this, "editLegend", args);
+    if (args.channel === "all") return editAllLegendBlocks(this, args);
     const split = splitGuideVisibility(args, ["labels", "titleStyle"]);
     if (Object.keys(split.visibility).length) {
       const target = resolveLegendTarget(this, args.target, "editLegend");

@@ -3017,7 +3017,7 @@ editLegend({
 })
 ```
 
-Singular `channel` selects one existing block without changing sibling typography. It cannot
+Select one legend block or all existing blocks together. `channel: "all"` reunites local placements on a position change and applies shared appearance to every block; omitted appearance is preserved. A singular channel cannot
 accompany `channels`, `blockLayout`, or `at`. A channel never disambiguates mark targets.
 
 `alongOffset` is a finite signed distance in logical pixels, defaulting to zero: positive moves right on top/bottom (and in-plot corner) anchors, or down on left/right anchors. `offset` keeps its perpendicular gap meaning. Omitted edits preserve the shift; zero resets it. With `channel`, only that block moves; without it, the target’s grouped blocks move together. `position: "inherit"` clears a selected block’s local anchor and shift. `at` cannot accompany edge placement options, including `alongOffset`. Existing fit and collision checks still apply.

@@ -269,6 +269,23 @@ the final content. In categorical-size legends, shared label/title-style edits
 merge only the supplied leaves into each block's effective style; changing a
 title or count preserves independent size styles. Other targets remain intact.
 
+## Edit every existing legend together
+
+Use `program.editLegend({ target: "plot", channel: "all", position: "left" })`
+to move every existing legend block for that mark together. This explicit selection
+clears individual position and along-edge overrides before arranging the group.
+Omitting `channel` continues to preserve those overrides. No legend is added,
+removed, or combined; `channels`, `combine`, and `representation` cannot accompany
+`channel: "all"`.
+
+Shared `labels`, `titleStyle`, and visibility edits affect every selected block.
+Omitted appearance leaves, samples, and titles remain unchanged. `itemGap` adjusts
+blocks containing discrete entries and leaves continuous gradient strips intact.
+Other appearance options must be supported by every selected block. Placement
+supports the existing group options; a new group uses a row at the top/bottom or
+a column elsewhere. Existing group layout is retained unless explicitly changed.
+The selection also works on facet parent shared legends and scoped chart targets.
+
 ## Editing one legend block
 
 A block-local `position` accepts the eight named anchors. `"inherit"` removes

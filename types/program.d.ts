@@ -5190,8 +5190,8 @@ export interface EditLegendOptions
   rowPadding?: number | "auto";
   /** auto removes the title/body spacing override. */
   titlePadding?: number | "auto";
-  /** Select one existing block; cannot accompany channels. */
-  channel?: LegendChannel;
+  /** Select one block, or all existing blocks. all reunites local placements; cannot accompany channels/combine/representation. */
+  channel?: LegendChannel | "all";
   /** inherit is allowed only with a singular channel selector. */
   position?: "right" | "left" | "bottom" | "top" | "top-left" | "top-right" | "bottom-left" | "bottom-right" | "inherit";
   /** Gradient-only auto resets orientation. */

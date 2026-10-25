@@ -3,7 +3,7 @@
   "name": "editLegend",
   "layer": "user-facing",
   "domain": "legend_and_title",
-  "summary": "Singular channel selects one existing block without changing sibling typography.",
+  "summary": "Select one legend block or all existing blocks together.",
   "signature": "editLegend(options: TargetedOptions<EditLegendOptions>): ChartProgram;",
   "intents": [
     "edit legend",
@@ -129,7 +129,7 @@
     {
       "name": "channel",
       "required": false,
-      "type": "\"color\" | \"opacity\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\" | undefined"
+      "type": "\"all\" | \"color\" | \"opacity\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\" | undefined"
     },
     {
       "name": "position",
