@@ -1347,3 +1347,9 @@ Evidence: `test/unit/actions/guides/plot-underlays.test.js`, `test/unit/layout/p
 - Evidence: `test/unit/actions/guides/edit-axes.test.js`.
 
 - Axis title의 statistical provenance는 row-preserving filter/markFilter를 통과하여 가장 가까운 지원 transform을 읽는다. Box measure revision 뒤 category filtering도 원본 measure title을 유지한다.
+
+## Retained visibility
+
+전체 Cartesian/Polar 축 편집과 `editParallelAxis`는 `visible?: boolean`을 받는다. `line`, `ticks`, `labels`, `title` 및 ticksAndLabels의 ticks/labels에도 같은 옵션을 지원한다. false는 스타일과 상대 anchor geometry를 유지하며 paint만 숨기고, true는 복원한다. 생략은 기존 값을 유지하며 전체 축을 켜도 별도로 숨긴 라벨은 그대로다. `editAxes`는 각 선택 owner에 전달한다. 생성 옵션은 바뀌지 않는다. 비 Boolean은 원자적으로 거부한다. 자동 guide, scale/Canvas replay, editable persistence에서 유지한다.
+
+검증: `test/unit/actions/guides/guide-visibility.test.js`, `test/contracts/guide-visibility-types.test.js`.

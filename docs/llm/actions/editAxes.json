@@ -79,7 +79,7 @@
     {
       "name": "parallel",
       "required": false,
-      "type": "false | readonly [ParallelAxisComponentsOptions, ...ParallelAxisComponentsOptions[]] | ParallelAxisComponentsOptions | undefined"
+      "type": "false | readonly [EditParallelAxisOptions, ...EditParallelAxisOptions[]] | EditParallelAxisOptions | undefined"
     },
     {
       "name": "target",

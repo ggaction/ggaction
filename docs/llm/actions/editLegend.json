@@ -102,6 +102,16 @@
   },
   "options": [
     {
+      "name": "visible",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "labels",
+      "required": false,
+      "type": "LegendLabelEditStyle | undefined"
+    },
+    {
       "name": "clipHeight",
       "required": false,
       "type": "number | \"auto\" | undefined"
@@ -134,7 +144,7 @@
     {
       "name": "titleStyle",
       "required": false,
-      "type": "LegendTitleStyleEditOptions | undefined"
+      "type": "LegendTitleEditStyle | undefined"
     },
     {
       "name": "channels",
@@ -232,11 +242,6 @@
       "type": "LegendSymbolRecipe | undefined"
     },
     {
-      "name": "labels",
-      "required": false,
-      "type": "LegendTextOptions | undefined"
-    },
-    {
       "name": "itemGap",
       "required": false,
       "type": "number | undefined"
@@ -248,7 +253,7 @@
     }
   ],
   "callPatterns": [
-    "editLegend({ target?, clipHeight?, rowPadding?, titlePadding?, channel?, position?, direction?, titleStyle? })"
+    "editLegend({ target?, visible?, labels?, clipHeight?, rowPadding?, titlePadding?, channel?, position? })"
   ],
   "snippet": "program.editLegend({ channels: [\"color\", \"size\"], count: 3 })",
   "errors": [],

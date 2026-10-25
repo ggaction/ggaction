@@ -63,6 +63,11 @@
   },
   "options": [
     {
+      "name": "visible",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
       "name": "count",
       "required": false,
       "type": "number | undefined"
@@ -94,9 +99,9 @@
     }
   ],
   "callPatterns": [
-    "editRadialGrid({ target?, count?, values?, color?, lineWidth?, strokeDash? })"
+    "editRadialGrid({ target?, visible?, count?, values?, color?, lineWidth?, strokeDash? })"
   ],
-  "snippet": "program.editRadialGrid({ count: 5 })",
+  "snippet": "program.editRadialGrid({ visible: true })",
   "errors": [],
   "route": "/reference/actions/guides/#editradialgrid"
 }

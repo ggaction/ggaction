@@ -1,3 +1,4 @@
+import { splitGuideVisibility } from "../../../../materialization/guides/visibility.js";
 import { action, closedAction } from "../../../../core/action.js";
 import { validateNonEmptyString } from "../../../../core/validation.js";
 import { requireParallelAxisLayer, resolveParallelAxisTarget } from "./resolve.js";
@@ -63,13 +64,18 @@ const createParallelAxes = /* @__PURE__ */ closedAction({
 function makeAxisAction(create) {
   const operation = create ? "createParallelAxis" : "editParallelAxis";
   return action({ op: operation, description: `${create ? "Create" : "Edit"} selected components of a Parallel field axis.` }, function (args = {}) {
-    validateParallelAxisOptions(args, operation, create);
+    const split = create ? { args, visibility: {} } : splitGuideVisibility(args);
+    args = split.args;
+    const onlyVisibility = !create && Object.keys(split.visibility).length && !Object.keys(args).some(key => !["target", "field"].includes(key));
+    if (!onlyVisibility) validateParallelAxisOptions(args, operation, create);
+    else validateNonEmptyString(args.field, "Parallel axis field");
     const resolved = owner(this, args, operation, !create);
     const config = resolved.stored === undefined
       ? { mode: "selected", dimensions: resolved.dimensions.map(dimension => ({ field: dimension.field })) }
       : resolveParallelAxisConfigs(this, resolved.dimensions);
     const previous = config.dimensions.find(dimension => dimension.field === args.field);
-    const updated = patchParallelAxis(previous, args, create, operation, this.materializationConfigs.theme);
+    const updated = onlyVisibility ? { ...previous } : patchParallelAxis(previous, args, create, operation, this.materializationConfigs.theme);
+    if (Object.keys(split.visibility).length) updated.visibility = { ...previous?.visibility, ...split.visibility };
     const next = withTitle(withOwner(this, resolved, {
       ...config, dimensions: config.dimensions.map(dimension => dimension.field === args.field ? updated : dimension)
     }), args, create);

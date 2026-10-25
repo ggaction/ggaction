@@ -1,3 +1,4 @@
+import { restoreGuideVisibilityPaint, applyGuideVisibilityPaint } from "./visibility.js";
 import {resetLegendClipGraphics, hasLegendClipGraphics}from"../legendClip.js";
 import { localLegendPosition } from "../legendGroups.js";
 import { needsLegendAxisReflow, needsSideLegendAxisReflow } from "./resources.js";
@@ -29,7 +30,7 @@ export function withGuideLayoutTransaction(program, apply) {
   let result;
   for (let attempt = 0; ; attempt += 1) {
     try {
-      let candidate = resetLegendClipGraphics(program)._withContext({ deferGuideLayoutValidation: true });
+      let candidate = resetLegendClipGraphics(restoreGuideVisibilityPaint(program))._withContext({ deferGuideLayoutValidation: true });
       if (attempt > 0) {
         candidate = candidate
           .editGraphics({ target: "canvas", property: "width", value: plot.width + margin.left + margin.right })
@@ -75,7 +76,7 @@ export function withGuideLayoutTransaction(program, apply) {
   const guides = hidden ? { ...next.guideConfigs, legend: Object.fromEntries(Object.entries(next.guideConfigs.legend ?? {})
     .filter(([kind]) => !hidden.includes(kind))) } : next.guideConfigs;
   assertGuideCollisionBlocks(resolveGuideCollisionBlocks(next.graphicSpec, guides, next.titleConfig, next.materializationConfigs.textMetrics));
-  return next;
+  return applyGuideVisibilityPaint(next);
 }
 
 export function withGuideLayoutValidation(implementation) {

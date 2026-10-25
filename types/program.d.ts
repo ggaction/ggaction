@@ -1708,7 +1708,13 @@ export type ParallelAxisComponentsOptions = {
       ticksAndLabels?: never }
 );
 export type CreateParallelAxisOptions = ParallelAxisComponentsOptions;
-export type EditParallelAxisOptions = ParallelAxisComponentsOptions;
+export type EditParallelAxisOptions = GuideVisibilityOptions & { field: string; target?: string;
+  line?: false | VisibleGuide<AxisLineStyleOptions>;
+  title?: false | VisibleGuide<ParallelAxisTitleOptions>;
+} & (
+  | { ticksAndLabels?: false | VisibleTickGroup<ParallelAxisTickSelection>; ticks?: never; labels?: never }
+  | { ticks?: false | VisibleGuide<ParallelAxisTicksOptions>; labels?: false | VisibleGuide<ParallelAxisLabelsOptions>; ticksAndLabels?: never }
+);
 export interface ParallelAxesOptions { target?: string; coordinate?: string; }
 export interface RemoveParallelAxisOptions { field: string; target?: string; }
 
@@ -1780,21 +1786,22 @@ export interface CompleteRadialAxisOptions
   title?: false | RadialTitleOptions;
 }
 export interface EditPolarAxisOptions {
+  visible?: boolean;
   angle?: number;
-  line?: false | AxisLineStyleOptions;
-  ticks?: false | PolarTickOptions;
-  labels?: false | PolarLabelOptions;
-  ticksAndLabels?: false | PolarTicksAndLabelsOptions;
-  title?: false | PolarTitleOptions;
+  line?: false | VisibleGuide<AxisLineStyleOptions>;
+  ticks?: false | VisibleGuide<PolarTickOptions>;
+  labels?: false | VisibleGuide<PolarLabelOptions>;
+  ticksAndLabels?: false | VisibleTickGroup<PolarTicksAndLabelsOptions>;
+  title?: false | VisibleGuide<PolarTitleOptions>;
 }
 export interface EditThetaAxisOptions
   extends Omit<EditPolarAxisOptions, "angle" | "labels" | "ticksAndLabels"> {
-  labels?: false | ThetaAxisLabelOptions;
-  ticksAndLabels?: false | ThetaTicksAndLabelsOptions;
+  labels?: false | VisibleGuide<ThetaAxisLabelOptions>;
+  ticksAndLabels?: false | VisibleTickGroup<ThetaTicksAndLabelsOptions>;
 }
 export interface EditRadialAxisOptions
   extends Omit<EditPolarAxisOptions, "title"> {
-  title?: false | RadialTitleOptions;
+  title?: false | VisibleGuide<RadialTitleOptions>;
 }
 
 export interface GridDirectionOptions {
@@ -1814,6 +1821,7 @@ export interface GridDirectionOptions {
   strokeDash?: readonly number[];
 }
 export interface EditGridOptions {
+  visible?: boolean;
   strokeDashMap?: CartesianGuideDashMap | "auto";
   /** Absolute signed logical-pixel displacement; omission preserves the current value. */
   alongOffset?: number;
@@ -1849,6 +1857,7 @@ export interface PolarGridOptions {
   strokeDash?: readonly number[];
 }
 export interface EditPolarGridOptions {
+  visible?: boolean;
   count?: number;
   values?: readonly AxisValue[];
   color?: string;
@@ -5167,8 +5176,12 @@ export interface LegendTitleStyleEditOptions extends Omit<LegendTitleStyleOption
   align?: "left" | "center" | "right" | "auto";
 }
 
+export interface LegendLabelEditStyle extends LegendTextOptions { visible?: boolean; }
+export interface LegendTitleEditStyle extends LegendTitleStyleEditOptions { visible?: boolean; }
 export interface EditLegendOptions
-  extends Omit<LegendOptions, "title" | "values" | "titleStyle" | "direction" | "position" | "clipHeight" | "rowPadding" | "titlePadding"> {
+  extends Omit<LegendOptions, "labels" | "title" | "values" | "titleStyle" | "direction" | "position" | "clipHeight" | "rowPadding" | "titlePadding"> {
+  visible?: boolean;
+  labels?: LegendLabelEditStyle;
   clipHeight?: number | "auto";
   /** auto removes the row policy and restores the retained itemGap behavior. */
   rowPadding?: number | "auto";
@@ -5180,7 +5193,7 @@ export interface EditLegendOptions
   position?: "right" | "left" | "bottom" | "top" | "top-left" | "top-right" | "bottom-left" | "bottom-right" | "inherit";
   /** Gradient-only auto resets orientation. */
   direction?: "horizontal" | "vertical" | "auto";
-  titleStyle?: LegendTitleStyleEditOptions;
+  titleStyle?: LegendTitleEditStyle;
   /** Exact final content set for the whole target; omission preserves content. */
   channels?: LegendOptions["channels"];
   title?: string | "auto" | false;
@@ -5258,18 +5271,22 @@ export interface EditAxesOptions {
   parallel?: false | EditParallelAxisOptions | readonly [EditParallelAxisOptions, ...EditParallelAxisOptions[]];
 }
 
+export interface GuideVisibilityOptions { /** Hide/show without deleting retained style or relative geometry. */ visible?: boolean; }
+export type VisibleGuide<T> = T & GuideVisibilityOptions;
+export type VisibleTickGroup<T> = T & { ticks?: VisibleGuide<AxisTickStyleOptions>; labels?: VisibleGuide<AxisLabelStyleOptions>; };
 export interface EditAxisOptions<P extends string> {
+  visible?: boolean;
   /** Omission preserves placement; false restores the ordinary overlay. */
   underlay?: boolean;
   target?: string;
   /** Omitted edits preserve the frame; zero restores the plot-edge frame. */
   offset?: number;
   position?: P;
-  line?: false | AxisLineStyleOptions;
-  ticks?: false | Omit<AxisTickOptions<P>, "scale" | "position" | "target">;
-  labels?: false | Omit<AxisLabelOptions<P>, "scale" | "position" | "target">;
-  ticksAndLabels?: false | Omit<AxisTicksAndLabelsOptions<P>, "scale" | "position" | "target">;
-  title?: false | Omit<AxisTitleOptions<P>, "scale" | "position" | "target">;
+  line?: false | VisibleGuide<AxisLineStyleOptions>;
+  ticks?: false | VisibleGuide<Omit<AxisTickOptions<P>, "scale" | "position" | "target">>;
+  labels?: false | VisibleGuide<Omit<AxisLabelOptions<P>, "scale" | "position" | "target">>;
+  ticksAndLabels?: false | VisibleTickGroup<Omit<AxisTicksAndLabelsOptions<P>, "scale" | "position" | "target">>;
+  title?: false | VisibleGuide<Omit<AxisTitleOptions<P>, "scale" | "position" | "target">>;
 }
 
 export interface TitleTextStyleOptions {

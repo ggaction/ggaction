@@ -15907,6 +15907,11 @@
       },
       "options": [
         {
+          "name": "visible",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
           "name": "field",
           "required": true,
           "type": "string"
@@ -15919,31 +15924,31 @@
         {
           "name": "line",
           "required": false,
-          "type": "false | AxisLineStyleOptions | undefined"
+          "type": "false | VisibleGuide<AxisLineStyleOptions> | undefined"
         },
         {
           "name": "title",
           "required": false,
-          "type": "false | ParallelAxisTitleOptions | undefined"
+          "type": "false | VisibleGuide<ParallelAxisTitleOptions> | undefined"
         },
         {
           "name": "ticksAndLabels",
           "required": false,
-          "type": "false | (ParallelAxisTickSelection & { ticks?: AxisTickStyleOptions | undefined; labels?: AxisLabelStyleOptions | undefined; }) | undefined"
+          "type": "false | VisibleTickGroup<ParallelAxisTickSelection> | undefined"
         },
         {
           "name": "ticks",
           "required": false,
-          "type": "false | ParallelAxisTicksOptions | undefined"
+          "type": "false | VisibleGuide<ParallelAxisTicksOptions> | undefined"
         },
         {
           "name": "labels",
           "required": false,
-          "type": "false | ParallelAxisLabelsOptions | undefined"
+          "type": "false | VisibleGuide<ParallelAxisLabelsOptions> | undefined"
         }
       ],
       "callPatterns": [
-        "editParallelAxis({ field, target?, line?, title?, ticksAndLabels?, ticks?, labels? })"
+        "editParallelAxis({ field, target?, visible?, line?, title?, ticksAndLabels?, ticks?, labels? })"
       ],
       "snippet": "program.editParallelAxis({ field: \"value\" })",
       "errors": [],
@@ -19583,7 +19588,7 @@
         {
           "name": "parallel",
           "required": false,
-          "type": "false | readonly [ParallelAxisComponentsOptions, ...ParallelAxisComponentsOptions[]] | ParallelAxisComponentsOptions | undefined"
+          "type": "false | readonly [EditParallelAxisOptions, ...EditParallelAxisOptions[]] | EditParallelAxisOptions | undefined"
         },
         {
           "name": "target",
@@ -19664,6 +19669,11 @@
       },
       "options": [
         {
+          "name": "visible",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
           "name": "underlay",
           "required": false,
           "type": "boolean | undefined"
@@ -19686,31 +19696,31 @@
         {
           "name": "line",
           "required": false,
-          "type": "false | AxisLineStyleOptions | undefined"
+          "type": "false | VisibleGuide<AxisLineStyleOptions> | undefined"
         },
         {
           "name": "ticks",
           "required": false,
-          "type": "false | Omit<AxisTickOptions<XAxisPosition>, \"position\" | \"scale\" | \"target\"> | undefined"
+          "type": "false | VisibleGuide<Omit<AxisTickOptions<XAxisPosition>, \"position\" | \"scale\" | \"target\">> | undefined"
         },
         {
           "name": "labels",
           "required": false,
-          "type": "false | Omit<AxisLabelOptions<XAxisPosition>, \"position\" | \"scale\" | \"target\"> | undefined"
+          "type": "false | VisibleGuide<Omit<AxisLabelOptions<XAxisPosition>, \"position\" | \"scale\" | \"target\">> | undefined"
         },
         {
           "name": "ticksAndLabels",
           "required": false,
-          "type": "false | Omit<AxisTicksAndLabelsOptions<XAxisPosition>, \"position\" | \"scale\" | \"target\"> | undefined"
+          "type": "false | VisibleTickGroup<Omit<AxisTicksAndLabelsOptions<XAxisPosition>, \"position\" | \"scale\" | \"target\">> | undefined"
         },
         {
           "name": "title",
           "required": false,
-          "type": "false | Omit<AxisTitleOptions<XAxisPosition>, \"position\" | \"scale\" | \"target\"> | undefined"
+          "type": "false | VisibleGuide<Omit<AxisTitleOptions<XAxisPosition>, \"position\" | \"scale\" | \"target\">> | undefined"
         }
       ],
       "callPatterns": [
-        "editXAxis({ target?, underlay?, offset?, position?, line?, ticks?, labels?, ticksAndLabels? })"
+        "editXAxis({ target?, visible?, underlay?, offset?, position?, line?, ticks?, labels? })"
       ],
       "snippet": "program.editXAxis({ position: \"bottom\" })",
       "errors": [],
@@ -19781,6 +19791,11 @@
       },
       "options": [
         {
+          "name": "visible",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
           "name": "underlay",
           "required": false,
           "type": "boolean | undefined"
@@ -19803,31 +19818,31 @@
         {
           "name": "line",
           "required": false,
-          "type": "false | AxisLineStyleOptions | undefined"
+          "type": "false | VisibleGuide<AxisLineStyleOptions> | undefined"
         },
         {
           "name": "ticks",
           "required": false,
-          "type": "false | Omit<AxisTickOptions<YAxisPosition>, \"position\" | \"scale\" | \"target\"> | undefined"
+          "type": "false | VisibleGuide<Omit<AxisTickOptions<YAxisPosition>, \"position\" | \"scale\" | \"target\">> | undefined"
         },
         {
           "name": "labels",
           "required": false,
-          "type": "false | Omit<AxisLabelOptions<YAxisPosition>, \"position\" | \"scale\" | \"target\"> | undefined"
+          "type": "false | VisibleGuide<Omit<AxisLabelOptions<YAxisPosition>, \"position\" | \"scale\" | \"target\">> | undefined"
         },
         {
           "name": "ticksAndLabels",
           "required": false,
-          "type": "false | Omit<AxisTicksAndLabelsOptions<YAxisPosition>, \"position\" | \"scale\" | \"target\"> | undefined"
+          "type": "false | VisibleTickGroup<Omit<AxisTicksAndLabelsOptions<YAxisPosition>, \"position\" | \"scale\" | \"target\">> | undefined"
         },
         {
           "name": "title",
           "required": false,
-          "type": "false | Omit<AxisTitleOptions<YAxisPosition>, \"position\" | \"scale\" | \"target\"> | undefined"
+          "type": "false | VisibleGuide<Omit<AxisTitleOptions<YAxisPosition>, \"position\" | \"scale\" | \"target\">> | undefined"
         }
       ],
       "callPatterns": [
-        "editYAxis({ target?, underlay?, offset?, position?, line?, ticks?, labels?, ticksAndLabels? })"
+        "editYAxis({ target?, visible?, underlay?, offset?, position?, line?, ticks?, labels? })"
       ],
       "snippet": "program.editYAxis({ position: \"left\" })",
       "errors": [],
@@ -20502,6 +20517,11 @@
       },
       "options": [
         {
+          "name": "visible",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
           "name": "strokeDashMap",
           "required": false,
           "type": "\"auto\" | CartesianGuideDashMap | undefined"
@@ -20553,9 +20573,9 @@
         }
       ],
       "callPatterns": [
-        "editHorizontalGrid({ target?, strokeDashMap?, alongOffset?, zIndex?, bandPosition?, count?, values?, color? })"
+        "editHorizontalGrid({ target?, visible?, strokeDashMap?, alongOffset?, zIndex?, bandPosition?, count?, values? })"
       ],
-      "snippet": "program.editHorizontalGrid({ strokeDashMap: \"auto\" })",
+      "snippet": "program.editHorizontalGrid({ visible: true })",
       "errors": [],
       "route": "/reference/actions/guides/#edithorizontalgrid"
     },
@@ -20636,6 +20656,11 @@
       },
       "options": [
         {
+          "name": "visible",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
           "name": "strokeDashMap",
           "required": false,
           "type": "\"auto\" | CartesianGuideDashMap | undefined"
@@ -20687,9 +20712,9 @@
         }
       ],
       "callPatterns": [
-        "editVerticalGrid({ target?, strokeDashMap?, alongOffset?, zIndex?, bandPosition?, count?, values?, color? })"
+        "editVerticalGrid({ target?, visible?, strokeDashMap?, alongOffset?, zIndex?, bandPosition?, count?, values? })"
       ],
-      "snippet": "program.editVerticalGrid({ strokeDashMap: \"auto\" })",
+      "snippet": "program.editVerticalGrid({ visible: true })",
       "errors": [],
       "route": "/reference/actions/guides/#editverticalgrid"
     },
@@ -21210,6 +21235,16 @@
       },
       "options": [
         {
+          "name": "visible",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "labels",
+          "required": false,
+          "type": "LegendLabelEditStyle | undefined"
+        },
+        {
           "name": "clipHeight",
           "required": false,
           "type": "number | \"auto\" | undefined"
@@ -21242,7 +21277,7 @@
         {
           "name": "titleStyle",
           "required": false,
-          "type": "LegendTitleStyleEditOptions | undefined"
+          "type": "LegendTitleEditStyle | undefined"
         },
         {
           "name": "channels",
@@ -21340,11 +21375,6 @@
           "type": "LegendSymbolRecipe | undefined"
         },
         {
-          "name": "labels",
-          "required": false,
-          "type": "LegendTextOptions | undefined"
-        },
-        {
           "name": "itemGap",
           "required": false,
           "type": "number | undefined"
@@ -21356,7 +21386,7 @@
         }
       ],
       "callPatterns": [
-        "editLegend({ target?, clipHeight?, rowPadding?, titlePadding?, channel?, position?, direction?, titleStyle? })"
+        "editLegend({ target?, visible?, labels?, clipHeight?, rowPadding?, titlePadding?, channel?, position? })"
       ],
       "snippet": "program.editLegend({ channels: [\"color\", \"size\"], count: 3 })",
       "errors": [],
@@ -27558,27 +27588,32 @@
         {
           "name": "labels",
           "required": false,
-          "type": "false | ThetaAxisLabelOptions | undefined"
+          "type": "false | VisibleGuide<ThetaAxisLabelOptions> | undefined"
         },
         {
           "name": "ticksAndLabels",
           "required": false,
-          "type": "false | ThetaTicksAndLabelsOptions | undefined"
+          "type": "false | VisibleTickGroup<ThetaTicksAndLabelsOptions> | undefined"
+        },
+        {
+          "name": "visible",
+          "required": false,
+          "type": "boolean | undefined"
         },
         {
           "name": "line",
           "required": false,
-          "type": "false | AxisLineStyleOptions | undefined"
+          "type": "false | VisibleGuide<AxisLineStyleOptions> | undefined"
         },
         {
           "name": "ticks",
           "required": false,
-          "type": "false | PolarTickOptions | undefined"
+          "type": "false | VisibleGuide<PolarTickOptions> | undefined"
         },
         {
           "name": "title",
           "required": false,
-          "type": "false | PolarTitleOptions | undefined"
+          "type": "false | VisibleGuide<PolarTitleOptions> | undefined"
         },
         {
           "name": "target",
@@ -27587,7 +27622,7 @@
         }
       ],
       "callPatterns": [
-        "editThetaAxis({ target?, labels?, ticksAndLabels?, line?, ticks?, title? })"
+        "editThetaAxis({ target?, labels?, ticksAndLabels?, visible?, line?, ticks?, title? })"
       ],
       "snippet": "program.editThetaAxis({ line: { color: \"#222222\" } })",
       "errors": [],
@@ -27661,7 +27696,12 @@
         {
           "name": "title",
           "required": false,
-          "type": "false | RadialTitleOptions | undefined"
+          "type": "false | VisibleGuide<RadialTitleOptions> | undefined"
+        },
+        {
+          "name": "visible",
+          "required": false,
+          "type": "boolean | undefined"
         },
         {
           "name": "angle",
@@ -27671,22 +27711,22 @@
         {
           "name": "line",
           "required": false,
-          "type": "false | AxisLineStyleOptions | undefined"
+          "type": "false | VisibleGuide<AxisLineStyleOptions> | undefined"
         },
         {
           "name": "ticks",
           "required": false,
-          "type": "false | PolarTickOptions | undefined"
+          "type": "false | VisibleGuide<PolarTickOptions> | undefined"
         },
         {
           "name": "labels",
           "required": false,
-          "type": "false | PolarLabelOptions | undefined"
+          "type": "false | VisibleGuide<PolarLabelOptions> | undefined"
         },
         {
           "name": "ticksAndLabels",
           "required": false,
-          "type": "false | PolarTicksAndLabelsOptions | undefined"
+          "type": "false | VisibleTickGroup<PolarTicksAndLabelsOptions> | undefined"
         },
         {
           "name": "target",
@@ -27695,7 +27735,7 @@
         }
       ],
       "callPatterns": [
-        "editRadialAxis({ target?, title?, angle?, line?, ticks?, labels?, ticksAndLabels? })"
+        "editRadialAxis({ target?, title?, visible?, angle?, line?, ticks?, labels?, ticksAndLabels? })"
       ],
       "snippet": "program.editRadialAxis({ title: { text: \"Radius\" } })",
       "errors": [],
@@ -30172,6 +30212,11 @@
       },
       "options": [
         {
+          "name": "visible",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
           "name": "count",
           "required": false,
           "type": "number | undefined"
@@ -30203,9 +30248,9 @@
         }
       ],
       "callPatterns": [
-        "editThetaGrid({ target?, count?, values?, color?, lineWidth?, strokeDash? })"
+        "editThetaGrid({ target?, visible?, count?, values?, color?, lineWidth?, strokeDash? })"
       ],
-      "snippet": "program.editThetaGrid({ count: 5 })",
+      "snippet": "program.editThetaGrid({ visible: true })",
       "errors": [],
       "route": "/reference/actions/guides/#editthetagrid"
     },
@@ -30274,6 +30319,11 @@
       },
       "options": [
         {
+          "name": "visible",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
           "name": "count",
           "required": false,
           "type": "number | undefined"
@@ -30305,9 +30355,9 @@
         }
       ],
       "callPatterns": [
-        "editRadialGrid({ target?, count?, values?, color?, lineWidth?, strokeDash? })"
+        "editRadialGrid({ target?, visible?, count?, values?, color?, lineWidth?, strokeDash? })"
       ],
-      "snippet": "program.editRadialGrid({ count: 5 })",
+      "snippet": "program.editRadialGrid({ visible: true })",
       "errors": [],
       "route": "/reference/actions/guides/#editradialgrid"
     },

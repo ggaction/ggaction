@@ -1,4 +1,5 @@
 export interface EditGridOptions {
+  visible?: boolean;
   strokeDashMap?: CartesianGuideDashMap | "auto";
   /** Absolute signed logical-pixel displacement; omission preserves the current value. */
   alongOffset?: number;

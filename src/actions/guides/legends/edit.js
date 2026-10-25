@@ -1,3 +1,4 @@
+import { splitGuideVisibility, patchGuideVisibility } from "../../../materialization/guides/visibility.js";
 import {resolveColorSizeEdit,createColorSizeLegendFromConfig} from './colorSize.js';
 import {prepareLegendSpacingEdit,patchLegendSpacing,validateLegendSpacing} from "../../../grammar/legendSpacing.js";
 import {patchLegendClipHeight, validateLegendClip} from "../../../grammar/legendClip.js";
@@ -901,6 +902,17 @@ export const editLegend = /* @__PURE__ */ action(
   { op: "editLegend", description: "Edit one stable legend content, layout or appearance.", scope: "any" },
   withGuideLayoutValidation(function (args = {}) {
     if (this.compositionSpec !== undefined) return editFacetParentLegend(this, "editLegend", args);
+    const split = splitGuideVisibility(args, ["labels", "titleStyle"]);
+    if (Object.keys(split.visibility).length) {
+      const target = resolveLegendTarget(this, args.target, "editLegend");
+      const blocks = args.channel === undefined ? legendBlockDescriptors(this, target)
+        : [resolveLegendBlock(this, args, "editLegend")];
+      if (!blocks.length) throw new Error("Visibility requires an existing legend.");
+      const changed = Object.keys(split.args).some(key => !["target", "channel"].includes(key));
+      let next = changed ? editLegend.call(this, split.args) : this;
+      for (const block of blocks) next = patchGuideVisibility(next, "legend", block.kind, split.visibility);
+      return next;
+    }
     validateOptionObject(args, OPTIONS, "editLegend");
     if (!Object.hasOwn(args, "clipHeight")) return recordLegendOffsetIntent(this, editLegendImplementation.call(this, args), args);
     const {clipHeight, ...rest} = args;

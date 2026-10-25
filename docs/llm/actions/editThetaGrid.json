@@ -63,6 +63,11 @@
   },
   "options": [
     {
+      "name": "visible",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
       "name": "count",
       "required": false,
       "type": "number | undefined"
@@ -94,9 +99,9 @@
     }
   ],
   "callPatterns": [
-    "editThetaGrid({ target?, count?, values?, color?, lineWidth?, strokeDash? })"
+    "editThetaGrid({ target?, visible?, count?, values?, color?, lineWidth?, strokeDash? })"
   ],
-  "snippet": "program.editThetaGrid({ count: 5 })",
+  "snippet": "program.editThetaGrid({ visible: true })",
   "errors": [],
   "route": "/reference/actions/guides/#editthetagrid"
 }

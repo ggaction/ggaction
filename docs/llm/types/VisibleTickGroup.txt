@@ -1,0 +1,1 @@
+export type VisibleTickGroup<T> = T & { ticks?: VisibleGuide<AxisTickStyleOptions>; labels?: VisibleGuide<AxisLabelStyleOptions>; };

@@ -75,6 +75,11 @@
   },
   "options": [
     {
+      "name": "visible",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
       "name": "strokeDashMap",
       "required": false,
       "type": "\"auto\" | CartesianGuideDashMap | undefined"
@@ -126,9 +131,9 @@
     }
   ],
   "callPatterns": [
-    "editVerticalGrid({ target?, strokeDashMap?, alongOffset?, zIndex?, bandPosition?, count?, values?, color? })"
+    "editVerticalGrid({ target?, visible?, strokeDashMap?, alongOffset?, zIndex?, bandPosition?, count?, values? })"
   ],
-  "snippet": "program.editVerticalGrid({ strokeDashMap: \"auto\" })",
+  "snippet": "program.editVerticalGrid({ visible: true })",
   "errors": [],
   "route": "/reference/actions/guides/#editverticalgrid"
 }

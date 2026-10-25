@@ -263,3 +263,9 @@ editRadialGrid(options: EditPolarGridOptions): ChartProgram;
 
 - ✅ Covered: all-direction default, one-direction removal, false/false error, recreation and immutability.
 - Evidence: `test/unit/actions/guides/remove-guides.test.js` and Roadmap 3 focused-editing Gate.
+
+## Retained visibility
+
+`editGrid`의 각 direction과 개별 Cartesian/Polar grid 편집은 `visible?: boolean`을 받는다. false는 lineWidth, color, dash, tick policy를 변경하지 않고 paint를 숨긴다. true는 보존된 스타일을 복원하며, 생략은 기존 표시 상태를 유지한다. 자동 guide와 Canvas replay에서도 유지한다.
+
+검증: `test/unit/actions/guides/guide-visibility.test.js`, `test/contracts/guide-visibility-types.test.js`.

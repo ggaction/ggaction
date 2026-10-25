@@ -88,13 +88,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `visible` | Optional / branch-dependent | `boolean \| undefined` |
 | `field` | Required | `string` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
-| `line` | Optional / branch-dependent | `false \| AxisLineStyleOptions \| undefined` |
-| `title` | Optional / branch-dependent | `false \| ParallelAxisTitleOptions \| undefined` |
-| `ticksAndLabels` | Optional / branch-dependent | `false \| (ParallelAxisTickSelection & { ticks?: AxisTickStyleOptions \| undefined; labels?: AxisLabelStyleOptions \| undefined; }) \| undefined` |
-| `ticks` | Optional / branch-dependent | `false \| ParallelAxisTicksOptions \| undefined` |
-| `labels` | Optional / branch-dependent | `false \| ParallelAxisLabelsOptions \| undefined` |
+| `line` | Optional / branch-dependent | `false \| VisibleGuide<AxisLineStyleOptions> \| undefined` |
+| `title` | Optional / branch-dependent | `false \| VisibleGuide<ParallelAxisTitleOptions> \| undefined` |
+| `ticksAndLabels` | Optional / branch-dependent | `false \| VisibleTickGroup<ParallelAxisTickSelection> \| undefined` |
+| `ticks` | Optional / branch-dependent | `false \| VisibleGuide<ParallelAxisTicksOptions> \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| VisibleGuide<ParallelAxisLabelsOptions> \| undefined` |
 
 </details>
 
@@ -1053,12 +1054,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `y` | Optional / branch-dependent | `false \| EditAxisOptions<YAxisPosition> \| readonly [EditAxisOptions<YAxisPosition> & { target: string; }, ...(EditAxisOptions<YAxisPosition> & { ...; })[]] \| undefined` |
 | `theta` | Optional / branch-dependent | `false \| EditThetaAxisOptions \| undefined` |
 | `radius` | Optional / branch-dependent | `false \| EditRadialAxisOptions \| undefined` |
-| `parallel` | Optional / branch-dependent | `false \| readonly [ParallelAxisComponentsOptions, ...ParallelAxisComponentsOptions[]] \| ParallelAxisComponentsOptions \| undefined` |
+| `parallel` | Optional / branch-dependent | `false \| readonly [EditParallelAxisOptions, ...EditParallelAxisOptions[]] \| EditParallelAxisOptions \| undefined` |
 | `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+Complete axis editors accept `visible: false` to hide an axis without removing its style. Use `labels: { visible: false }`, `line: { visible: false }`, `ticks: { visible: false }` or `title: { visible: false }` for individual components. `ticksAndLabels` also accepts visibility on its `ticks` and `labels` children. Set the same flag to `true` to restore it. Flags are independent and retained through automatic guides and resizing; relative-anchor geometry stays stable.
 
 ```js
 editAxes({ x?, y?, theta?, radius?, parallel? })
@@ -1094,15 +1097,16 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `visible` | Optional / branch-dependent | `boolean \| undefined` |
 | `underlay` | Optional / branch-dependent | `boolean \| undefined` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
-| `line` | Optional / branch-dependent | `false \| AxisLineStyleOptions \| undefined` |
-| `ticks` | Optional / branch-dependent | `false \| Omit<AxisTickOptions<XAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
-| `labels` | Optional / branch-dependent | `false \| Omit<AxisLabelOptions<XAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
-| `ticksAndLabels` | Optional / branch-dependent | `false \| Omit<AxisTicksAndLabelsOptions<XAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
-| `title` | Optional / branch-dependent | `false \| Omit<AxisTitleOptions<XAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
+| `line` | Optional / branch-dependent | `false \| VisibleGuide<AxisLineStyleOptions> \| undefined` |
+| `ticks` | Optional / branch-dependent | `false \| VisibleGuide<Omit<AxisTickOptions<XAxisPosition>, "position" \| "scale" \| "target">> \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| VisibleGuide<Omit<AxisLabelOptions<XAxisPosition>, "position" \| "scale" \| "target">> \| undefined` |
+| `ticksAndLabels` | Optional / branch-dependent | `false \| VisibleTickGroup<Omit<AxisTicksAndLabelsOptions<XAxisPosition>, "position" \| "scale" \| "target">> \| undefined` |
+| `title` | Optional / branch-dependent | `false \| VisibleGuide<Omit<AxisTitleOptions<XAxisPosition>, "position" \| "scale" \| "target">> \| undefined` |
 
 </details>
 
@@ -1129,15 +1133,16 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `visible` | Optional / branch-dependent | `boolean \| undefined` |
 | `underlay` | Optional / branch-dependent | `boolean \| undefined` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
-| `line` | Optional / branch-dependent | `false \| AxisLineStyleOptions \| undefined` |
-| `ticks` | Optional / branch-dependent | `false \| Omit<AxisTickOptions<YAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
-| `labels` | Optional / branch-dependent | `false \| Omit<AxisLabelOptions<YAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
-| `ticksAndLabels` | Optional / branch-dependent | `false \| Omit<AxisTicksAndLabelsOptions<YAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
-| `title` | Optional / branch-dependent | `false \| Omit<AxisTitleOptions<YAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
+| `line` | Optional / branch-dependent | `false \| VisibleGuide<AxisLineStyleOptions> \| undefined` |
+| `ticks` | Optional / branch-dependent | `false \| VisibleGuide<Omit<AxisTickOptions<YAxisPosition>, "position" \| "scale" \| "target">> \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| VisibleGuide<Omit<AxisLabelOptions<YAxisPosition>, "position" \| "scale" \| "target">> \| undefined` |
+| `ticksAndLabels` | Optional / branch-dependent | `false \| VisibleTickGroup<Omit<AxisTicksAndLabelsOptions<YAxisPosition>, "position" \| "scale" \| "target">> \| undefined` |
+| `title` | Optional / branch-dependent | `false \| VisibleGuide<Omit<AxisTitleOptions<YAxisPosition>, "position" \| "scale" \| "target">> \| undefined` |
 
 </details>
 
@@ -1336,6 +1341,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `visible` | Optional / branch-dependent | `boolean \| undefined` |
 | `strokeDashMap` | Optional / branch-dependent | `"auto" \| CartesianGuideDashMap \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `zIndex` | Optional / branch-dependent | `number \| undefined` |
@@ -1372,6 +1378,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `visible` | Optional / branch-dependent | `boolean \| undefined` |
 | `strokeDashMap` | Optional / branch-dependent | `"auto" \| CartesianGuideDashMap \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `zIndex` | Optional / branch-dependent | `number \| undefined` |
@@ -1617,13 +1624,15 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `visible` | Optional / branch-dependent | `boolean \| undefined` |
+| `labels` | Optional / branch-dependent | `LegendLabelEditStyle \| undefined` |
 | `clipHeight` | Optional / branch-dependent | `number \| "auto" \| undefined` |
 | `rowPadding` | Optional / branch-dependent | `number \| "auto" \| undefined` |
 | `titlePadding` | Optional / branch-dependent | `number \| "auto" \| undefined` |
 | `channel` | Optional / branch-dependent | `"color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| undefined` |
 | `position` | Optional / branch-dependent | `"bottom" \| "bottom-left" \| "bottom-right" \| "inherit" \| "left" \| "right" \| "top" \| "top-left" \| "top-right" \| undefined` |
 | `direction` | Optional / branch-dependent | `"auto" \| "horizontal" \| "vertical" \| undefined` |
-| `titleStyle` | Optional / branch-dependent | `LegendTitleStyleEditOptions \| undefined` |
+| `titleStyle` | Optional / branch-dependent | `LegendTitleEditStyle \| undefined` |
 | `channels` | Optional / branch-dependent | `readonly ("color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth")[] \| undefined` |
 | `title` | Optional / branch-dependent | `string \| false \| undefined` |
 | `values` | Optional / branch-dependent | `"auto" \| readonly number[] \| undefined` |
@@ -1643,13 +1652,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `gradient` | Optional / branch-dependent | `{ length?: number \| undefined; thickness?: number \| undefined; opacity?: number \| undefined; } \| undefined` |
 | `symbol` | Optional / branch-dependent | `LegendSymbolRecipe \| undefined` |
-| `labels` | Optional / branch-dependent | `LegendTextOptions \| undefined` |
 | `itemGap` | Optional / branch-dependent | `number \| undefined` |
 | `border` | Optional / branch-dependent | `boolean \| LegendBorderOptions \| undefined` |
 
 </details>
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+Use `visible: false` to hide the complete legend, `labels: { visible: false }` to hide entry labels, and `titleStyle: { visible: false }` to hide its title. Set each flag to `true` to restore it. Visibility preserves appearance and layout, remains independent for each component, and survives automatic guide generation, resizing and saved projects.
 
 ```javascript
 editLegend({
@@ -2225,11 +2235,12 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `labels` | Optional / branch-dependent | `false \| ThetaAxisLabelOptions \| undefined` |
-| `ticksAndLabels` | Optional / branch-dependent | `false \| ThetaTicksAndLabelsOptions \| undefined` |
-| `line` | Optional / branch-dependent | `false \| AxisLineStyleOptions \| undefined` |
-| `ticks` | Optional / branch-dependent | `false \| PolarTickOptions \| undefined` |
-| `title` | Optional / branch-dependent | `false \| PolarTitleOptions \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| VisibleGuide<ThetaAxisLabelOptions> \| undefined` |
+| `ticksAndLabels` | Optional / branch-dependent | `false \| VisibleTickGroup<ThetaTicksAndLabelsOptions> \| undefined` |
+| `visible` | Optional / branch-dependent | `boolean \| undefined` |
+| `line` | Optional / branch-dependent | `false \| VisibleGuide<AxisLineStyleOptions> \| undefined` |
+| `ticks` | Optional / branch-dependent | `false \| VisibleGuide<PolarTickOptions> \| undefined` |
+| `title` | Optional / branch-dependent | `false \| VisibleGuide<PolarTitleOptions> \| undefined` |
 | `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
@@ -2262,12 +2273,13 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `title` | Optional / branch-dependent | `false \| RadialTitleOptions \| undefined` |
+| `title` | Optional / branch-dependent | `false \| VisibleGuide<RadialTitleOptions> \| undefined` |
+| `visible` | Optional / branch-dependent | `boolean \| undefined` |
 | `angle` | Optional / branch-dependent | `number \| undefined` |
-| `line` | Optional / branch-dependent | `false \| AxisLineStyleOptions \| undefined` |
-| `ticks` | Optional / branch-dependent | `false \| PolarTickOptions \| undefined` |
-| `labels` | Optional / branch-dependent | `false \| PolarLabelOptions \| undefined` |
-| `ticksAndLabels` | Optional / branch-dependent | `false \| PolarTicksAndLabelsOptions \| undefined` |
+| `line` | Optional / branch-dependent | `false \| VisibleGuide<AxisLineStyleOptions> \| undefined` |
+| `ticks` | Optional / branch-dependent | `false \| VisibleGuide<PolarTickOptions> \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| VisibleGuide<PolarLabelOptions> \| undefined` |
+| `ticksAndLabels` | Optional / branch-dependent | `false \| VisibleTickGroup<PolarTicksAndLabelsOptions> \| undefined` |
 | `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
@@ -3068,6 +3080,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `visible` | Optional / branch-dependent | `boolean \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
@@ -3105,6 +3118,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `visible` | Optional / branch-dependent | `boolean \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
@@ -3262,6 +3276,8 @@ Remove one complete Cartesian axis. Optional selectors must match the existing
 resource. [Axes](../../api/axes.md)
 
 ## Directional grids
+
+Each direction accepts `visible: false` to hide its grid without losing width, dash or color. `visible: true` restores the retained appearance. The focused Cartesian and Polar grid editors accept the same option.
 
 ```javascript
 createHorizontalGrid({ scale?, coordinate?, count?, values?, color?, lineWidth?, strokeDash?, alongOffset? })

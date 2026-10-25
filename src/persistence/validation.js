@@ -227,6 +227,7 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
       throw new TypeError("Facet row field title requires a row-column facet grid.");
     }
   }
+  validateGuideVisibilityState(program);
   if (program.materializationConfigs.textMetrics !== undefined) normalizeTextMetricProfile(program.materializationConfigs.textMetrics);
   for (const config of [
     ...Object.values(program.guideConfigs.axis ?? {}).map(axis => axis.ticks),
@@ -319,7 +320,7 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
     }
     const config = program.guideConfigs.axis?.[id];
     requireObject(config, `${path}.guides.axis.${id}`);
-    validateKeys(config, ["binding", "frame", "line", "ticks", "labels", "title"], "Stored named axis config");
+    validateKeys(config, ["binding", "frame", "line", "ticks", "labels", "title", "visibility"], "Stored named axis config");
     const components = ["line", "ticks", "labels", "title"];
     if (!components.some(component => config[component] !== undefined)) {
       throw invalidSnapshot("Named axes require at least one retained component.", path);
@@ -526,5 +527,30 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
     if (graphic.items !== undefined) validateGraphicItemLimit(graphic.items.length, resolveGraphicItemCapacity(program, {
       id, label: "Graphic collection length"
     }));
+  }
+}
+
+function validateGuideVisibilityState(program) {
+  const check = (visibility, allowed) => {
+    if (visibility === undefined) return;
+    if (!isPlainObject(visibility) || Object.entries(visibility).some(([key, value]) => !allowed.includes(key) || typeof value !== "boolean"))
+      throw new TypeError("Stored guide visibility must contain only supported boolean flags.");
+  };
+  for (const config of Object.values(program.guideConfigs.axis ?? {})) {
+    check(config.visibility, ["all", "line", "ticks", "labels", "title"]);
+    for (const dimension of config.axes?.dimensions ?? []) check(dimension.visibility, ["all", "line", "ticks", "labels", "title"]);
+  }
+  for (const config of Object.values(program.guideConfigs.legend ?? {})) check(config.visibility, ["all", "labels", "titleStyle"]);
+  for (const config of Object.values(program.guideConfigs.grid ?? {})) if (Object.hasOwn(config, "visible") && typeof config.visible !== "boolean")
+    throw new TypeError("Stored grid visible must be a boolean.");
+  const paint = program.materializationConfigs.guideVisibilityPaint;
+  if (paint !== undefined) {
+    if (!isPlainObject(paint)) throw new TypeError("Stored guide visibility paint must be an object.");
+    for (const items of Object.values(paint)) {
+      if (!isPlainObject(items)) throw new TypeError("Stored guide visibility paint entries must be objects.");
+      for (const value of Object.values(items)) if (!isPlainObject(value) || Object.keys(value).length !== 1 ||
+          !Object.hasOwn(value, "opacity") || value.opacity !== null && (!Number.isFinite(value.opacity) || value.opacity < 0 || value.opacity > 1))
+        throw new TypeError("Stored guide visibility paint requires an original opacity or null.");
+    }
   }
 }

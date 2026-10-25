@@ -94,7 +94,7 @@ function planChannelLegendTransition(program, scale, nextType, channel) {
   } catch (error) {
     throw new Error(`${channel} legend transition has incompatible layout or style: ${error.message}`);
   }
-  return { args, channel, titleVisible: stored.titleVisible !== false, inferredOffset: stored.inferredOffset, blockOverride };
+  return { args, channel, visibility: stored.visibility, titleVisible: stored.titleVisible !== false, inferredOffset: stored.inferredOffset, blockOverride };
 }
 
 export function planColorLegendTransitions(program, scale, nextType, { channel: requestedChannel, target } = {}) {
@@ -115,6 +115,13 @@ export function applyColorLegendTransition(program, plan) {
   }
   if (!plan.titleVisible) {
     next = next.editLegend({ target: plan.args.target, title: false });
+  }
+  if (plan.visibility !== undefined) {
+    const { all, labels, titleStyle } = plan.visibility;
+    next = next.editLegend({ target: plan.args.target, channel: plan.channel,
+      ...(all === undefined ? {} : { visible: all }),
+      ...(labels === undefined ? {} : { labels: { visible: labels } }),
+      ...(titleStyle === undefined ? {} : { titleStyle: { visible: titleStyle } }) });
   }
   if (plan.blockOverride === undefined) return next;
   const descriptor = resolveLegendBlock(next, {

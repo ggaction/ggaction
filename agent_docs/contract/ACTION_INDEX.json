@@ -2493,7 +2493,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Self",
+      "update": "Self; retained visibility preserves styles when hidden",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -2961,7 +2961,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Atomically delegates selected existing axes to their channel editors",
+      "update": "Atomically delegates selected existing axes to their channel editors; retained visibility preserves styles when hidden",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -2979,7 +2979,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits or removes selected existing x-axis components, including typed Cartesian display labels",
+      "update": "Edits or removes selected existing x-axis components, including typed Cartesian display labels; retained visibility preserves styles when hidden",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -2997,7 +2997,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits or removes selected existing y-axis components, including typed Cartesian display labels",
+      "update": "Edits or removes selected existing y-axis components, including typed Cartesian display labels; retained visibility preserves styles when hidden",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -3105,7 +3105,7 @@
       "domain": "grid",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits one horizontal grid; signed along-axis displacement is preserved during replay",
+      "update": "Edits one horizontal grid; signed along-axis displacement is preserved during replay; retained visibility preserves styles when hidden",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -3123,7 +3123,7 @@
       "domain": "grid",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits one vertical grid; signed along-axis displacement is preserved during replay",
+      "update": "Edits one vertical grid; signed along-axis displacement is preserved during replay; retained visibility preserves styles when hidden",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -3141,7 +3141,7 @@
       "domain": "grid",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits selected existing grid directions",
+      "update": "Edits selected existing grid directions; retained visibility preserves styles when hidden",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -3195,7 +3195,7 @@
       "domain": "legend_and_title",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edit whole-target content or select one existing channel block for layout, appearance, samples and gradient ticks",
+      "update": "Edit whole-target content or select one existing channel block for layout, appearance, samples and gradient ticks; retained visibility preserves styles when hidden",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -4077,7 +4077,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits selected theta-axis components, including typed Cartesian display labels",
+      "update": "Edits selected theta-axis components, including typed Cartesian display labels; retained visibility preserves styles when hidden",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -4095,7 +4095,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits components and shared angle",
+      "update": "Edits components and shared angle; retained visibility preserves styles when hidden",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -4473,7 +4473,7 @@
       "domain": "grid",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits theta grid",
+      "update": "Edits theta grid; retained visibility preserves styles when hidden",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -4491,7 +4491,7 @@
       "domain": "grid",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits radial grid",
+      "update": "Edits radial grid; retained visibility preserves styles when hidden",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",

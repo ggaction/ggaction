@@ -63,6 +63,11 @@
   },
   "options": [
     {
+      "name": "visible",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
       "name": "underlay",
       "required": false,
       "type": "boolean | undefined"
@@ -85,31 +90,31 @@
     {
       "name": "line",
       "required": false,
-      "type": "false | AxisLineStyleOptions | undefined"
+      "type": "false | VisibleGuide<AxisLineStyleOptions> | undefined"
     },
     {
       "name": "ticks",
       "required": false,
-      "type": "false | Omit<AxisTickOptions<YAxisPosition>, \"position\" | \"scale\" | \"target\"> | undefined"
+      "type": "false | VisibleGuide<Omit<AxisTickOptions<YAxisPosition>, \"position\" | \"scale\" | \"target\">> | undefined"
     },
     {
       "name": "labels",
       "required": false,
-      "type": "false | Omit<AxisLabelOptions<YAxisPosition>, \"position\" | \"scale\" | \"target\"> | undefined"
+      "type": "false | VisibleGuide<Omit<AxisLabelOptions<YAxisPosition>, \"position\" | \"scale\" | \"target\">> | undefined"
     },
     {
       "name": "ticksAndLabels",
       "required": false,
-      "type": "false | Omit<AxisTicksAndLabelsOptions<YAxisPosition>, \"position\" | \"scale\" | \"target\"> | undefined"
+      "type": "false | VisibleTickGroup<Omit<AxisTicksAndLabelsOptions<YAxisPosition>, \"position\" | \"scale\" | \"target\">> | undefined"
     },
     {
       "name": "title",
       "required": false,
-      "type": "false | Omit<AxisTitleOptions<YAxisPosition>, \"position\" | \"scale\" | \"target\"> | undefined"
+      "type": "false | VisibleGuide<Omit<AxisTitleOptions<YAxisPosition>, \"position\" | \"scale\" | \"target\">> | undefined"
     }
   ],
   "callPatterns": [
-    "editYAxis({ target?, underlay?, offset?, position?, line?, ticks?, labels?, ticksAndLabels? })"
+    "editYAxis({ target?, visible?, underlay?, offset?, position?, line?, ticks?, labels? })"
   ],
   "snippet": "program.editYAxis({ position: \"left\" })",
   "errors": [],

@@ -65,6 +65,8 @@ export const rematerializeParallelAxes = /* @__PURE__ */ closedAction({
   const properties = Object.fromEntries(PARALLEL_AXIS_PARTS.map(part => {
     const selected = axes.filter(axis => axis.config[part] !== undefined);
     const value = collectionProperties(part, selected, bounds);
+    if (selected.some(axis => axis.config.visibility !== undefined)) value.opacity = selected.flatMap(axis => Array.from({ length: ["line", "title"].includes(part) ? 1 : axis[part].values.length },
+      () => axis.config.visibility?.all === false || axis.config.visibility?.[part] === false ? 0 : 1));
     validateGeneratedItemLimit(value.length, "Parallel axis item count");
     return [part, { enabled: selected.length > 0, value }];
   }));

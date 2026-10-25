@@ -1,5 +1,7 @@
 export interface EditLegendOptions
-  extends Omit<LegendOptions, "title" | "values" | "titleStyle" | "direction" | "position" | "clipHeight" | "rowPadding" | "titlePadding"> {
+  extends Omit<LegendOptions, "labels" | "title" | "values" | "titleStyle" | "direction" | "position" | "clipHeight" | "rowPadding" | "titlePadding"> {
+  visible?: boolean;
+  labels?: LegendLabelEditStyle;
   clipHeight?: number | "auto";
   /** auto removes the row policy and restores the retained itemGap behavior. */
   rowPadding?: number | "auto";
@@ -11,7 +13,7 @@ export interface EditLegendOptions
   position?: "right" | "left" | "bottom" | "top" | "top-left" | "top-right" | "bottom-left" | "bottom-right" | "inherit";
   /** Gradient-only auto resets orientation. */
   direction?: "horizontal" | "vertical" | "auto";
-  titleStyle?: LegendTitleStyleEditOptions;
+  titleStyle?: LegendTitleEditStyle;
   /** Exact final content set for the whole target; omission preserves content. */
   channels?: LegendOptions["channels"];
   title?: string | "auto" | false;

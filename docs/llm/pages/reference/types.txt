@@ -4197,21 +4197,22 @@ Related types: [`EditAxisOptions`](../../../reference/types/#type-editaxisoption
 
 ```typescript
 export interface EditAxisOptions<P extends string> {
+  visible?: boolean;
   /** Omission preserves placement; false restores the ordinary overlay. */
   underlay?: boolean;
   target?: string;
   /** Omitted edits preserve the frame; zero restores the plot-edge frame. */
   offset?: number;
   position?: P;
-  line?: false | AxisLineStyleOptions;
-  ticks?: false | Omit<AxisTickOptions<P>, "scale" | "position" | "target">;
-  labels?: false | Omit<AxisLabelOptions<P>, "scale" | "position" | "target">;
-  ticksAndLabels?: false | Omit<AxisTicksAndLabelsOptions<P>, "scale" | "position" | "target">;
-  title?: false | Omit<AxisTitleOptions<P>, "scale" | "position" | "target">;
+  line?: false | VisibleGuide<AxisLineStyleOptions>;
+  ticks?: false | VisibleGuide<Omit<AxisTickOptions<P>, "scale" | "position" | "target">>;
+  labels?: false | VisibleGuide<Omit<AxisLabelOptions<P>, "scale" | "position" | "target">>;
+  ticksAndLabels?: false | VisibleTickGroup<Omit<AxisTicksAndLabelsOptions<P>, "scale" | "position" | "target">>;
+  title?: false | VisibleGuide<Omit<AxisTitleOptions<P>, "scale" | "position" | "target">>;
 }
 ```
 
-Related types: [`AxisLineStyleOptions`](../../../reference/types/#type-axislinestyleoptions) · [`AxisTickOptions`](../../../reference/types/#type-axistickoptions) · [`AxisLabelOptions`](../../../reference/types/#type-axislabeloptions) · [`AxisTicksAndLabelsOptions`](../../../reference/types/#type-axisticksandlabelsoptions) · [`AxisTitleOptions`](../../../reference/types/#type-axistitleoptions).
+Related types: [`VisibleGuide`](../../../reference/types/#type-visibleguide) · [`AxisLineStyleOptions`](../../../reference/types/#type-axislinestyleoptions) · [`AxisTickOptions`](../../../reference/types/#type-axistickoptions) · [`AxisLabelOptions`](../../../reference/types/#type-axislabeloptions) · [`VisibleTickGroup`](../../../reference/types/#type-visibletickgroup) · [`AxisTicksAndLabelsOptions`](../../../reference/types/#type-axisticksandlabelsoptions) · [`AxisTitleOptions`](../../../reference/types/#type-axistitleoptions).
 
 ### `EditBin2DDataOptions` {#type-editbin2ddataoptions}
 
@@ -4667,6 +4668,7 @@ Related types: [`EditGridOptions`](../../../reference/types/#type-editgridoption
 
 ```typescript
 export interface EditGridOptions {
+  visible?: boolean;
   strokeDashMap?: CartesianGuideDashMap | "auto";
   /** Absolute signed logical-pixel displacement; omission preserves the current value. */
   alongOffset?: number;
@@ -4819,7 +4821,9 @@ Related types: [`LegendChannel`](../../../reference/types/#type-legendchannel).
 
 ```typescript
 export interface EditLegendOptions
-  extends Omit<LegendOptions, "title" | "values" | "titleStyle" | "direction" | "position" | "clipHeight" | "rowPadding" | "titlePadding"> {
+  extends Omit<LegendOptions, "labels" | "title" | "values" | "titleStyle" | "direction" | "position" | "clipHeight" | "rowPadding" | "titlePadding"> {
+  visible?: boolean;
+  labels?: LegendLabelEditStyle;
   clipHeight?: number | "auto";
   /** auto removes the row policy and restores the retained itemGap behavior. */
   rowPadding?: number | "auto";
@@ -4831,7 +4835,7 @@ export interface EditLegendOptions
   position?: "right" | "left" | "bottom" | "top" | "top-left" | "top-right" | "bottom-left" | "bottom-right" | "inherit";
   /** Gradient-only auto resets orientation. */
   direction?: "horizontal" | "vertical" | "auto";
-  titleStyle?: LegendTitleStyleEditOptions;
+  titleStyle?: LegendTitleEditStyle;
   /** Exact final content set for the whole target; omission preserves content. */
   channels?: LegendOptions["channels"];
   title?: string | "auto" | false;
@@ -4840,7 +4844,7 @@ export interface EditLegendOptions
 }
 ```
 
-Related types: [`LegendOptions`](../../../reference/types/#type-legendoptions) · [`LegendChannel`](../../../reference/types/#type-legendchannel) · [`LegendTitleStyleEditOptions`](../../../reference/types/#type-legendtitlestyleeditoptions).
+Related types: [`LegendOptions`](../../../reference/types/#type-legendoptions) · [`LegendLabelEditStyle`](../../../reference/types/#type-legendlabeleditstyle) · [`LegendChannel`](../../../reference/types/#type-legendchannel) · [`LegendTitleEditStyle`](../../../reference/types/#type-legendtitleeditstyle).
 
 ### `EditLegendSymbolsOptions` {#type-editlegendsymbolsoptions}
 
@@ -4963,10 +4967,16 @@ export type EditOverlayOptions = { target?: string } & ({ follow: false; source?
  Expand EditParallelAxisOptions
 
 ```typescript
-export type EditParallelAxisOptions = ParallelAxisComponentsOptions;
+export type EditParallelAxisOptions = GuideVisibilityOptions & { field: string; target?: string;
+  line?: false | VisibleGuide<AxisLineStyleOptions>;
+  title?: false | VisibleGuide<ParallelAxisTitleOptions>;
+} & (
+  | { ticksAndLabels?: false | VisibleTickGroup<ParallelAxisTickSelection>; ticks?: never; labels?: never }
+  | { ticks?: false | VisibleGuide<ParallelAxisTicksOptions>; labels?: false | VisibleGuide<ParallelAxisLabelsOptions>; ticksAndLabels?: never }
+);
 ```
 
-Related types: [`ParallelAxisComponentsOptions`](../../../reference/types/#type-parallelaxiscomponentsoptions).
+Related types: [`GuideVisibilityOptions`](../../../reference/types/#type-guidevisibilityoptions) · [`VisibleGuide`](../../../reference/types/#type-visibleguide) · [`AxisLineStyleOptions`](../../../reference/types/#type-axislinestyleoptions) · [`ParallelAxisTitleOptions`](../../../reference/types/#type-parallelaxistitleoptions) · [`VisibleTickGroup`](../../../reference/types/#type-visibletickgroup) · [`ParallelAxisTickSelection`](../../../reference/types/#type-parallelaxistickselection) · [`ParallelAxisTicksOptions`](../../../reference/types/#type-parallelaxisticksoptions) · [`ParallelAxisLabelsOptions`](../../../reference/types/#type-parallelaxislabelsoptions).
 
 ### `EditParallelScaleOptions` {#type-editparallelscaleoptions}
 
@@ -4989,16 +4999,17 @@ Related types: [`WithoutScaleId`](../../../reference/types/#type-withoutscaleid)
 
 ```typescript
 export interface EditPolarAxisOptions {
+  visible?: boolean;
   angle?: number;
-  line?: false | AxisLineStyleOptions;
-  ticks?: false | PolarTickOptions;
-  labels?: false | PolarLabelOptions;
-  ticksAndLabels?: false | PolarTicksAndLabelsOptions;
-  title?: false | PolarTitleOptions;
+  line?: false | VisibleGuide<AxisLineStyleOptions>;
+  ticks?: false | VisibleGuide<PolarTickOptions>;
+  labels?: false | VisibleGuide<PolarLabelOptions>;
+  ticksAndLabels?: false | VisibleTickGroup<PolarTicksAndLabelsOptions>;
+  title?: false | VisibleGuide<PolarTitleOptions>;
 }
 ```
 
-Related types: [`AxisLineStyleOptions`](../../../reference/types/#type-axislinestyleoptions) · [`PolarTickOptions`](../../../reference/types/#type-polartickoptions) · [`PolarLabelOptions`](../../../reference/types/#type-polarlabeloptions) · [`PolarTicksAndLabelsOptions`](../../../reference/types/#type-polarticksandlabelsoptions) · [`PolarTitleOptions`](../../../reference/types/#type-polartitleoptions).
+Related types: [`VisibleGuide`](../../../reference/types/#type-visibleguide) · [`AxisLineStyleOptions`](../../../reference/types/#type-axislinestyleoptions) · [`PolarTickOptions`](../../../reference/types/#type-polartickoptions) · [`PolarLabelOptions`](../../../reference/types/#type-polarlabeloptions) · [`VisibleTickGroup`](../../../reference/types/#type-visibletickgroup) · [`PolarTicksAndLabelsOptions`](../../../reference/types/#type-polarticksandlabelsoptions) · [`PolarTitleOptions`](../../../reference/types/#type-polartitleoptions).
 
 ### `EditPolarGridOptions` {#type-editpolargridoptions}
 
@@ -5006,6 +5017,7 @@ Related types: [`AxisLineStyleOptions`](../../../reference/types/#type-axislines
 
 ```typescript
 export interface EditPolarGridOptions {
+  visible?: boolean;
   count?: number;
   values?: readonly AxisValue[];
   color?: string;
@@ -5046,11 +5058,11 @@ export interface EditRadarPlotOptions {
 ```typescript
 export interface EditRadialAxisOptions
   extends Omit<EditPolarAxisOptions, "title"> {
-  title?: false | RadialTitleOptions;
+  title?: false | VisibleGuide<RadialTitleOptions>;
 }
 ```
 
-Related types: [`EditPolarAxisOptions`](../../../reference/types/#type-editpolaraxisoptions) · [`RadialTitleOptions`](../../../reference/types/#type-radialtitleoptions).
+Related types: [`EditPolarAxisOptions`](../../../reference/types/#type-editpolaraxisoptions) · [`VisibleGuide`](../../../reference/types/#type-visibleguide) · [`RadialTitleOptions`](../../../reference/types/#type-radialtitleoptions).
 
 ### `EditRaincloudPlotOptions` {#type-editraincloudplotoptions}
 
@@ -5290,12 +5302,12 @@ Related types: [`TextMarkOptions`](../../../reference/types/#type-textmarkoption
 ```typescript
 export interface EditThetaAxisOptions
   extends Omit<EditPolarAxisOptions, "angle" | "labels" | "ticksAndLabels"> {
-  labels?: false | ThetaAxisLabelOptions;
-  ticksAndLabels?: false | ThetaTicksAndLabelsOptions;
+  labels?: false | VisibleGuide<ThetaAxisLabelOptions>;
+  ticksAndLabels?: false | VisibleTickGroup<ThetaTicksAndLabelsOptions>;
 }
 ```
 
-Related types: [`EditPolarAxisOptions`](../../../reference/types/#type-editpolaraxisoptions) · [`ThetaAxisLabelOptions`](../../../reference/types/#type-thetaaxislabeloptions) · [`ThetaTicksAndLabelsOptions`](../../../reference/types/#type-thetaticksandlabelsoptions).
+Related types: [`EditPolarAxisOptions`](../../../reference/types/#type-editpolaraxisoptions) · [`VisibleGuide`](../../../reference/types/#type-visibleguide) · [`ThetaAxisLabelOptions`](../../../reference/types/#type-thetaaxislabeloptions) · [`VisibleTickGroup`](../../../reference/types/#type-visibletickgroup) · [`ThetaTicksAndLabelsOptions`](../../../reference/types/#type-thetaticksandlabelsoptions).
 
 ### `EditThetaScaleOptions` {#type-editthetascaleoptions}
 
@@ -6366,6 +6378,14 @@ export type GroupEncodingOptions = { target?: string; fieldType?: "nominal" } & 
 );
 ```
 
+### `GuideVisibilityOptions` {#type-guidevisibilityoptions}
+
+ Expand GuideVisibilityOptions
+
+```typescript
+export interface GuideVisibilityOptions { /** Hide/show without deleting retained style or relative geometry. */ visible?: boolean; }
+```
+
 ### `HeatmapBaseOptions` {#type-heatmapbaseoptions}
 
  Expand HeatmapBaseOptions
@@ -6935,6 +6955,16 @@ export type LegendChannel = NonNullable<LegendOptions["channels"]>[number];
 
 Related types: [`LegendOptions`](../../../reference/types/#type-legendoptions).
 
+### `LegendLabelEditStyle` {#type-legendlabeleditstyle}
+
+ Expand LegendLabelEditStyle
+
+```typescript
+export interface LegendLabelEditStyle extends LegendTextOptions { visible?: boolean; }
+```
+
+Related types: [`LegendTextOptions`](../../../reference/types/#type-legendtextoptions).
+
 ### `LegendOptions` {#type-legendoptions}
 
  Expand LegendOptions
@@ -7072,6 +7102,16 @@ export interface LegendTextOptions {
 ```
 
 Related types: [`ValueFormat`](../../../reference/types/#type-valueformat).
+
+### `LegendTitleEditStyle` {#type-legendtitleeditstyle}
+
+ Expand LegendTitleEditStyle
+
+```typescript
+export interface LegendTitleEditStyle extends LegendTitleStyleEditOptions { visible?: boolean; }
+```
+
+Related types: [`LegendTitleStyleEditOptions`](../../../reference/types/#type-legendtitlestyleeditoptions).
 
 ### `LegendTitleStyleEditOptions` {#type-legendtitlestyleeditoptions}
 
@@ -10780,6 +10820,26 @@ export interface ViolinPlotSplitOptions {
   domain?: readonly [unknown, unknown];
 }
 ```
+
+### `VisibleGuide` {#type-visibleguide}
+
+ Expand VisibleGuide
+
+```typescript
+export type VisibleGuide<T> = T & GuideVisibilityOptions;
+```
+
+Related types: [`GuideVisibilityOptions`](../../../reference/types/#type-guidevisibilityoptions).
+
+### `VisibleTickGroup` {#type-visibletickgroup}
+
+ Expand VisibleTickGroup
+
+```typescript
+export type VisibleTickGroup<T> = T & { ticks?: VisibleGuide<AxisTickStyleOptions>; labels?: VisibleGuide<AxisLabelStyleOptions>; };
+```
+
+Related types: [`VisibleGuide`](../../../reference/types/#type-visibleguide) · [`AxisTickStyleOptions`](../../../reference/types/#type-axistickstyleoptions) · [`AxisLabelStyleOptions`](../../../reference/types/#type-axislabelstyleoptions).
 
 ### `WindowDataOptions` {#type-windowdataoptions}
 

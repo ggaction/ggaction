@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.25.
 
-Contract: sha256:d191d29bbf2722f84e1a4d8e9b098a92388c8752ae0d38e9b027bfbee132536d. Status: development. Runtime source: 6a3a22961d30c964dc8291a36cfdd62ec844833c. Release baseline: v0.0.13.
+Contract: sha256:71f0099d92c0e276f57dd3a7c15f7ef624131ca68edc4e819208af5ed8b2eb2e. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/6a3a22961d30c964dc8291a36cfdd62ec844833c/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/6a3a22961d30c964dc8291a36cfdd62ec844833c/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -26064,13 +26064,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `visible` | Optional / branch-dependent | `boolean \| undefined` |
 | `field` | Required | `string` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
-| `line` | Optional / branch-dependent | `false \| AxisLineStyleOptions \| undefined` |
-| `title` | Optional / branch-dependent | `false \| ParallelAxisTitleOptions \| undefined` |
-| `ticksAndLabels` | Optional / branch-dependent | `false \| (ParallelAxisTickSelection & { ticks?: AxisTickStyleOptions \| undefined; labels?: AxisLabelStyleOptions \| undefined; }) \| undefined` |
-| `ticks` | Optional / branch-dependent | `false \| ParallelAxisTicksOptions \| undefined` |
-| `labels` | Optional / branch-dependent | `false \| ParallelAxisLabelsOptions \| undefined` |
+| `line` | Optional / branch-dependent | `false \| VisibleGuide<AxisLineStyleOptions> \| undefined` |
+| `title` | Optional / branch-dependent | `false \| VisibleGuide<ParallelAxisTitleOptions> \| undefined` |
+| `ticksAndLabels` | Optional / branch-dependent | `false \| VisibleTickGroup<ParallelAxisTickSelection> \| undefined` |
+| `ticks` | Optional / branch-dependent | `false \| VisibleGuide<ParallelAxisTicksOptions> \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| VisibleGuide<ParallelAxisLabelsOptions> \| undefined` |
 
 Behavior, inference, resets, and errors: [createParallelAxes, createParallelAxis, editParallelAxis, removeParallelAxis, removeParallelAxes](./reference/actions/guides/#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes).
 
@@ -26900,10 +26901,12 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `y` | Optional / branch-dependent | `false \| EditAxisOptions<YAxisPosition> \| readonly [EditAxisOptions<YAxisPosition> & { target: string; }, ...(EditAxisOptions<YAxisPosition> & { ...; })[]] \| undefined` |
 | `theta` | Optional / branch-dependent | `false \| EditThetaAxisOptions \| undefined` |
 | `radius` | Optional / branch-dependent | `false \| EditRadialAxisOptions \| undefined` |
-| `parallel` | Optional / branch-dependent | `false \| readonly [ParallelAxisComponentsOptions, ...ParallelAxisComponentsOptions[]] \| ParallelAxisComponentsOptions \| undefined` |
+| `parallel` | Optional / branch-dependent | `false \| readonly [EditParallelAxisOptions, ...EditParallelAxisOptions[]] \| EditParallelAxisOptions \| undefined` |
 | `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+Complete axis editors accept `visible: false` to hide an axis without removing its style. Use `labels: { visible: false }`, `line: { visible: false }`, `ticks: { visible: false }` or `title: { visible: false }` for individual components. `ticksAndLabels` also accepts visibility on its `ticks` and `labels` children. Set the same flag to `true` to restore it. Flags are independent and retained through automatic guides and resizing; relative-anchor geometry stays stable.
 
 ```js
 editAxes({ x?, y?, theta?, radius?, parallel? })
@@ -26937,15 +26940,16 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `visible` | Optional / branch-dependent | `boolean \| undefined` |
 | `underlay` | Optional / branch-dependent | `boolean \| undefined` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
-| `line` | Optional / branch-dependent | `false \| AxisLineStyleOptions \| undefined` |
-| `ticks` | Optional / branch-dependent | `false \| Omit<AxisTickOptions<XAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
-| `labels` | Optional / branch-dependent | `false \| Omit<AxisLabelOptions<XAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
-| `ticksAndLabels` | Optional / branch-dependent | `false \| Omit<AxisTicksAndLabelsOptions<XAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
-| `title` | Optional / branch-dependent | `false \| Omit<AxisTitleOptions<XAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
+| `line` | Optional / branch-dependent | `false \| VisibleGuide<AxisLineStyleOptions> \| undefined` |
+| `ticks` | Optional / branch-dependent | `false \| VisibleGuide<Omit<AxisTickOptions<XAxisPosition>, "position" \| "scale" \| "target">> \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| VisibleGuide<Omit<AxisLabelOptions<XAxisPosition>, "position" \| "scale" \| "target">> \| undefined` |
+| `ticksAndLabels` | Optional / branch-dependent | `false \| VisibleTickGroup<Omit<AxisTicksAndLabelsOptions<XAxisPosition>, "position" \| "scale" \| "target">> \| undefined` |
+| `title` | Optional / branch-dependent | `false \| VisibleGuide<Omit<AxisTitleOptions<XAxisPosition>, "position" \| "scale" \| "target">> \| undefined` |
 
 Behavior, inference, resets, and errors: [Complete single-channel axes](./reference/actions/guides/#complete-single-channel-axes).
 
@@ -26967,15 +26971,16 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `visible` | Optional / branch-dependent | `boolean \| undefined` |
 | `underlay` | Optional / branch-dependent | `boolean \| undefined` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
-| `line` | Optional / branch-dependent | `false \| AxisLineStyleOptions \| undefined` |
-| `ticks` | Optional / branch-dependent | `false \| Omit<AxisTickOptions<YAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
-| `labels` | Optional / branch-dependent | `false \| Omit<AxisLabelOptions<YAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
-| `ticksAndLabels` | Optional / branch-dependent | `false \| Omit<AxisTicksAndLabelsOptions<YAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
-| `title` | Optional / branch-dependent | `false \| Omit<AxisTitleOptions<YAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
+| `line` | Optional / branch-dependent | `false \| VisibleGuide<AxisLineStyleOptions> \| undefined` |
+| `ticks` | Optional / branch-dependent | `false \| VisibleGuide<Omit<AxisTickOptions<YAxisPosition>, "position" \| "scale" \| "target">> \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| VisibleGuide<Omit<AxisLabelOptions<YAxisPosition>, "position" \| "scale" \| "target">> \| undefined` |
+| `ticksAndLabels` | Optional / branch-dependent | `false \| VisibleTickGroup<Omit<AxisTicksAndLabelsOptions<YAxisPosition>, "position" \| "scale" \| "target">> \| undefined` |
+| `title` | Optional / branch-dependent | `false \| VisibleGuide<Omit<AxisTitleOptions<YAxisPosition>, "position" \| "scale" \| "target">> \| undefined` |
 
 Behavior, inference, resets, and errors: [Complete single-channel axes](./reference/actions/guides/#complete-single-channel-axes).
 
@@ -27145,6 +27150,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `visible` | Optional / branch-dependent | `boolean \| undefined` |
 | `strokeDashMap` | Optional / branch-dependent | `"auto" \| CartesianGuideDashMap \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `zIndex` | Optional / branch-dependent | `number \| undefined` |
@@ -27176,6 +27182,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `visible` | Optional / branch-dependent | `boolean \| undefined` |
 | `strokeDashMap` | Optional / branch-dependent | `"auto" \| CartesianGuideDashMap \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `zIndex` | Optional / branch-dependent | `number \| undefined` |
@@ -27402,13 +27409,15 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `visible` | Optional / branch-dependent | `boolean \| undefined` |
+| `labels` | Optional / branch-dependent | `LegendLabelEditStyle \| undefined` |
 | `clipHeight` | Optional / branch-dependent | `number \| "auto" \| undefined` |
 | `rowPadding` | Optional / branch-dependent | `number \| "auto" \| undefined` |
 | `titlePadding` | Optional / branch-dependent | `number \| "auto" \| undefined` |
 | `channel` | Optional / branch-dependent | `"color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| undefined` |
 | `position` | Optional / branch-dependent | `"bottom" \| "bottom-left" \| "bottom-right" \| "inherit" \| "left" \| "right" \| "top" \| "top-left" \| "top-right" \| undefined` |
 | `direction` | Optional / branch-dependent | `"auto" \| "horizontal" \| "vertical" \| undefined` |
-| `titleStyle` | Optional / branch-dependent | `LegendTitleStyleEditOptions \| undefined` |
+| `titleStyle` | Optional / branch-dependent | `LegendTitleEditStyle \| undefined` |
 | `channels` | Optional / branch-dependent | `readonly ("color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth")[] \| undefined` |
 | `title` | Optional / branch-dependent | `string \| false \| undefined` |
 | `values` | Optional / branch-dependent | `"auto" \| readonly number[] \| undefined` |
@@ -27428,11 +27437,12 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `gradient` | Optional / branch-dependent | `{ length?: number \| undefined; thickness?: number \| undefined; opacity?: number \| undefined; } \| undefined` |
 | `symbol` | Optional / branch-dependent | `LegendSymbolRecipe \| undefined` |
-| `labels` | Optional / branch-dependent | `LegendTextOptions \| undefined` |
 | `itemGap` | Optional / branch-dependent | `number \| undefined` |
 | `border` | Optional / branch-dependent | `boolean \| LegendBorderOptions \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+Use `visible: false` to hide the complete legend, `labels: { visible: false }` to hide entry labels, and `titleStyle: { visible: false }` to hide its title. Set each flag to `true` to restore it. Visibility preserves appearance and layout, remains independent for each component, and survives automatic guide generation, resizing and saved projects.
 
 ```javascript
 editLegend({
@@ -27949,11 +27959,12 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `labels` | Optional / branch-dependent | `false \| ThetaAxisLabelOptions \| undefined` |
-| `ticksAndLabels` | Optional / branch-dependent | `false \| ThetaTicksAndLabelsOptions \| undefined` |
-| `line` | Optional / branch-dependent | `false \| AxisLineStyleOptions \| undefined` |
-| `ticks` | Optional / branch-dependent | `false \| PolarTickOptions \| undefined` |
-| `title` | Optional / branch-dependent | `false \| PolarTitleOptions \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| VisibleGuide<ThetaAxisLabelOptions> \| undefined` |
+| `ticksAndLabels` | Optional / branch-dependent | `false \| VisibleTickGroup<ThetaTicksAndLabelsOptions> \| undefined` |
+| `visible` | Optional / branch-dependent | `boolean \| undefined` |
+| `line` | Optional / branch-dependent | `false \| VisibleGuide<AxisLineStyleOptions> \| undefined` |
+| `ticks` | Optional / branch-dependent | `false \| VisibleGuide<PolarTickOptions> \| undefined` |
+| `title` | Optional / branch-dependent | `false \| VisibleGuide<PolarTitleOptions> \| undefined` |
 | `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
@@ -27982,12 +27993,13 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `title` | Optional / branch-dependent | `false \| RadialTitleOptions \| undefined` |
+| `title` | Optional / branch-dependent | `false \| VisibleGuide<RadialTitleOptions> \| undefined` |
+| `visible` | Optional / branch-dependent | `boolean \| undefined` |
 | `angle` | Optional / branch-dependent | `number \| undefined` |
-| `line` | Optional / branch-dependent | `false \| AxisLineStyleOptions \| undefined` |
-| `ticks` | Optional / branch-dependent | `false \| PolarTickOptions \| undefined` |
-| `labels` | Optional / branch-dependent | `false \| PolarLabelOptions \| undefined` |
-| `ticksAndLabels` | Optional / branch-dependent | `false \| PolarTicksAndLabelsOptions \| undefined` |
+| `line` | Optional / branch-dependent | `false \| VisibleGuide<AxisLineStyleOptions> \| undefined` |
+| `ticks` | Optional / branch-dependent | `false \| VisibleGuide<PolarTickOptions> \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| VisibleGuide<PolarLabelOptions> \| undefined` |
+| `ticksAndLabels` | Optional / branch-dependent | `false \| VisibleTickGroup<PolarTicksAndLabelsOptions> \| undefined` |
 | `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
@@ -28704,6 +28716,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `visible` | Optional / branch-dependent | `boolean \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
@@ -28737,6 +28750,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `visible` | Optional / branch-dependent | `boolean \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
@@ -28891,6 +28905,8 @@ Remove one complete Cartesian axis. Optional selectors must match the existing
 resource. [Axes](./api/axes/)
 
 ## Directional grids
+
+Each direction accepts `visible: false` to hide its grid without losing width, dash or color. `visible: true` restores the retained appearance. The focused Cartesian and Polar grid editors accept the same option.
 
 ```javascript
 createHorizontalGrid({ scale?, coordinate?, count?, values?, color?, lineWidth?, strokeDash?, alongOffset? })
@@ -34441,21 +34457,22 @@ Related types: [`EditAxisOptions`](./reference/types/#type-editaxisoptions) · [
 
 ```typescript
 export interface EditAxisOptions<P extends string> {
+  visible?: boolean;
   /** Omission preserves placement; false restores the ordinary overlay. */
   underlay?: boolean;
   target?: string;
   /** Omitted edits preserve the frame; zero restores the plot-edge frame. */
   offset?: number;
   position?: P;
-  line?: false | AxisLineStyleOptions;
-  ticks?: false | Omit<AxisTickOptions<P>, "scale" | "position" | "target">;
-  labels?: false | Omit<AxisLabelOptions<P>, "scale" | "position" | "target">;
-  ticksAndLabels?: false | Omit<AxisTicksAndLabelsOptions<P>, "scale" | "position" | "target">;
-  title?: false | Omit<AxisTitleOptions<P>, "scale" | "position" | "target">;
+  line?: false | VisibleGuide<AxisLineStyleOptions>;
+  ticks?: false | VisibleGuide<Omit<AxisTickOptions<P>, "scale" | "position" | "target">>;
+  labels?: false | VisibleGuide<Omit<AxisLabelOptions<P>, "scale" | "position" | "target">>;
+  ticksAndLabels?: false | VisibleTickGroup<Omit<AxisTicksAndLabelsOptions<P>, "scale" | "position" | "target">>;
+  title?: false | VisibleGuide<Omit<AxisTitleOptions<P>, "scale" | "position" | "target">>;
 }
 ```
 
-Related types: [`AxisLineStyleOptions`](./reference/types/#type-axislinestyleoptions) · [`AxisTickOptions`](./reference/types/#type-axistickoptions) · [`AxisLabelOptions`](./reference/types/#type-axislabeloptions) · [`AxisTicksAndLabelsOptions`](./reference/types/#type-axisticksandlabelsoptions) · [`AxisTitleOptions`](./reference/types/#type-axistitleoptions).
+Related types: [`VisibleGuide`](./reference/types/#type-visibleguide) · [`AxisLineStyleOptions`](./reference/types/#type-axislinestyleoptions) · [`AxisTickOptions`](./reference/types/#type-axistickoptions) · [`AxisLabelOptions`](./reference/types/#type-axislabeloptions) · [`VisibleTickGroup`](./reference/types/#type-visibletickgroup) · [`AxisTicksAndLabelsOptions`](./reference/types/#type-axisticksandlabelsoptions) · [`AxisTitleOptions`](./reference/types/#type-axistitleoptions).
 
 ### `EditBin2DDataOptions` {#type-editbin2ddataoptions}
 
@@ -34911,6 +34928,7 @@ Related types: [`EditGridOptions`](./reference/types/#type-editgridoptions) · [
 
 ```typescript
 export interface EditGridOptions {
+  visible?: boolean;
   strokeDashMap?: CartesianGuideDashMap | "auto";
   /** Absolute signed logical-pixel displacement; omission preserves the current value. */
   alongOffset?: number;
@@ -35063,7 +35081,9 @@ Related types: [`LegendChannel`](./reference/types/#type-legendchannel).
 
 ```typescript
 export interface EditLegendOptions
-  extends Omit<LegendOptions, "title" | "values" | "titleStyle" | "direction" | "position" | "clipHeight" | "rowPadding" | "titlePadding"> {
+  extends Omit<LegendOptions, "labels" | "title" | "values" | "titleStyle" | "direction" | "position" | "clipHeight" | "rowPadding" | "titlePadding"> {
+  visible?: boolean;
+  labels?: LegendLabelEditStyle;
   clipHeight?: number | "auto";
   /** auto removes the row policy and restores the retained itemGap behavior. */
   rowPadding?: number | "auto";
@@ -35075,7 +35095,7 @@ export interface EditLegendOptions
   position?: "right" | "left" | "bottom" | "top" | "top-left" | "top-right" | "bottom-left" | "bottom-right" | "inherit";
   /** Gradient-only auto resets orientation. */
   direction?: "horizontal" | "vertical" | "auto";
-  titleStyle?: LegendTitleStyleEditOptions;
+  titleStyle?: LegendTitleEditStyle;
   /** Exact final content set for the whole target; omission preserves content. */
   channels?: LegendOptions["channels"];
   title?: string | "auto" | false;
@@ -35084,7 +35104,7 @@ export interface EditLegendOptions
 }
 ```
 
-Related types: [`LegendOptions`](./reference/types/#type-legendoptions) · [`LegendChannel`](./reference/types/#type-legendchannel) · [`LegendTitleStyleEditOptions`](./reference/types/#type-legendtitlestyleeditoptions).
+Related types: [`LegendOptions`](./reference/types/#type-legendoptions) · [`LegendLabelEditStyle`](./reference/types/#type-legendlabeleditstyle) · [`LegendChannel`](./reference/types/#type-legendchannel) · [`LegendTitleEditStyle`](./reference/types/#type-legendtitleeditstyle).
 
 ### `EditLegendSymbolsOptions` {#type-editlegendsymbolsoptions}
 
@@ -35207,10 +35227,16 @@ export type EditOverlayOptions = { target?: string } & ({ follow: false; source?
  Expand EditParallelAxisOptions
 
 ```typescript
-export type EditParallelAxisOptions = ParallelAxisComponentsOptions;
+export type EditParallelAxisOptions = GuideVisibilityOptions & { field: string; target?: string;
+  line?: false | VisibleGuide<AxisLineStyleOptions>;
+  title?: false | VisibleGuide<ParallelAxisTitleOptions>;
+} & (
+  | { ticksAndLabels?: false | VisibleTickGroup<ParallelAxisTickSelection>; ticks?: never; labels?: never }
+  | { ticks?: false | VisibleGuide<ParallelAxisTicksOptions>; labels?: false | VisibleGuide<ParallelAxisLabelsOptions>; ticksAndLabels?: never }
+);
 ```
 
-Related types: [`ParallelAxisComponentsOptions`](./reference/types/#type-parallelaxiscomponentsoptions).
+Related types: [`GuideVisibilityOptions`](./reference/types/#type-guidevisibilityoptions) · [`VisibleGuide`](./reference/types/#type-visibleguide) · [`AxisLineStyleOptions`](./reference/types/#type-axislinestyleoptions) · [`ParallelAxisTitleOptions`](./reference/types/#type-parallelaxistitleoptions) · [`VisibleTickGroup`](./reference/types/#type-visibletickgroup) · [`ParallelAxisTickSelection`](./reference/types/#type-parallelaxistickselection) · [`ParallelAxisTicksOptions`](./reference/types/#type-parallelaxisticksoptions) · [`ParallelAxisLabelsOptions`](./reference/types/#type-parallelaxislabelsoptions).
 
 ### `EditParallelScaleOptions` {#type-editparallelscaleoptions}
 
@@ -35233,16 +35259,17 @@ Related types: [`WithoutScaleId`](./reference/types/#type-withoutscaleid) · [`Q
 
 ```typescript
 export interface EditPolarAxisOptions {
+  visible?: boolean;
   angle?: number;
-  line?: false | AxisLineStyleOptions;
-  ticks?: false | PolarTickOptions;
-  labels?: false | PolarLabelOptions;
-  ticksAndLabels?: false | PolarTicksAndLabelsOptions;
-  title?: false | PolarTitleOptions;
+  line?: false | VisibleGuide<AxisLineStyleOptions>;
+  ticks?: false | VisibleGuide<PolarTickOptions>;
+  labels?: false | VisibleGuide<PolarLabelOptions>;
+  ticksAndLabels?: false | VisibleTickGroup<PolarTicksAndLabelsOptions>;
+  title?: false | VisibleGuide<PolarTitleOptions>;
 }
 ```
 
-Related types: [`AxisLineStyleOptions`](./reference/types/#type-axislinestyleoptions) · [`PolarTickOptions`](./reference/types/#type-polartickoptions) · [`PolarLabelOptions`](./reference/types/#type-polarlabeloptions) · [`PolarTicksAndLabelsOptions`](./reference/types/#type-polarticksandlabelsoptions) · [`PolarTitleOptions`](./reference/types/#type-polartitleoptions).
+Related types: [`VisibleGuide`](./reference/types/#type-visibleguide) · [`AxisLineStyleOptions`](./reference/types/#type-axislinestyleoptions) · [`PolarTickOptions`](./reference/types/#type-polartickoptions) · [`PolarLabelOptions`](./reference/types/#type-polarlabeloptions) · [`VisibleTickGroup`](./reference/types/#type-visibletickgroup) · [`PolarTicksAndLabelsOptions`](./reference/types/#type-polarticksandlabelsoptions) · [`PolarTitleOptions`](./reference/types/#type-polartitleoptions).
 
 ### `EditPolarGridOptions` {#type-editpolargridoptions}
 
@@ -35250,6 +35277,7 @@ Related types: [`AxisLineStyleOptions`](./reference/types/#type-axislinestyleopt
 
 ```typescript
 export interface EditPolarGridOptions {
+  visible?: boolean;
   count?: number;
   values?: readonly AxisValue[];
   color?: string;
@@ -35290,11 +35318,11 @@ export interface EditRadarPlotOptions {
 ```typescript
 export interface EditRadialAxisOptions
   extends Omit<EditPolarAxisOptions, "title"> {
-  title?: false | RadialTitleOptions;
+  title?: false | VisibleGuide<RadialTitleOptions>;
 }
 ```
 
-Related types: [`EditPolarAxisOptions`](./reference/types/#type-editpolaraxisoptions) · [`RadialTitleOptions`](./reference/types/#type-radialtitleoptions).
+Related types: [`EditPolarAxisOptions`](./reference/types/#type-editpolaraxisoptions) · [`VisibleGuide`](./reference/types/#type-visibleguide) · [`RadialTitleOptions`](./reference/types/#type-radialtitleoptions).
 
 ### `EditRaincloudPlotOptions` {#type-editraincloudplotoptions}
 
@@ -35534,12 +35562,12 @@ Related types: [`TextMarkOptions`](./reference/types/#type-textmarkoptions).
 ```typescript
 export interface EditThetaAxisOptions
   extends Omit<EditPolarAxisOptions, "angle" | "labels" | "ticksAndLabels"> {
-  labels?: false | ThetaAxisLabelOptions;
-  ticksAndLabels?: false | ThetaTicksAndLabelsOptions;
+  labels?: false | VisibleGuide<ThetaAxisLabelOptions>;
+  ticksAndLabels?: false | VisibleTickGroup<ThetaTicksAndLabelsOptions>;
 }
 ```
 
-Related types: [`EditPolarAxisOptions`](./reference/types/#type-editpolaraxisoptions) · [`ThetaAxisLabelOptions`](./reference/types/#type-thetaaxislabeloptions) · [`ThetaTicksAndLabelsOptions`](./reference/types/#type-thetaticksandlabelsoptions).
+Related types: [`EditPolarAxisOptions`](./reference/types/#type-editpolaraxisoptions) · [`VisibleGuide`](./reference/types/#type-visibleguide) · [`ThetaAxisLabelOptions`](./reference/types/#type-thetaaxislabeloptions) · [`VisibleTickGroup`](./reference/types/#type-visibletickgroup) · [`ThetaTicksAndLabelsOptions`](./reference/types/#type-thetaticksandlabelsoptions).
 
 ### `EditThetaScaleOptions` {#type-editthetascaleoptions}
 
@@ -36610,6 +36638,14 @@ export type GroupEncodingOptions = { target?: string; fieldType?: "nominal" } & 
 );
 ```
 
+### `GuideVisibilityOptions` {#type-guidevisibilityoptions}
+
+ Expand GuideVisibilityOptions
+
+```typescript
+export interface GuideVisibilityOptions { /** Hide/show without deleting retained style or relative geometry. */ visible?: boolean; }
+```
+
 ### `HeatmapBaseOptions` {#type-heatmapbaseoptions}
 
  Expand HeatmapBaseOptions
@@ -37179,6 +37215,16 @@ export type LegendChannel = NonNullable<LegendOptions["channels"]>[number];
 
 Related types: [`LegendOptions`](./reference/types/#type-legendoptions).
 
+### `LegendLabelEditStyle` {#type-legendlabeleditstyle}
+
+ Expand LegendLabelEditStyle
+
+```typescript
+export interface LegendLabelEditStyle extends LegendTextOptions { visible?: boolean; }
+```
+
+Related types: [`LegendTextOptions`](./reference/types/#type-legendtextoptions).
+
 ### `LegendOptions` {#type-legendoptions}
 
  Expand LegendOptions
@@ -37316,6 +37362,16 @@ export interface LegendTextOptions {
 ```
 
 Related types: [`ValueFormat`](./reference/types/#type-valueformat).
+
+### `LegendTitleEditStyle` {#type-legendtitleeditstyle}
+
+ Expand LegendTitleEditStyle
+
+```typescript
+export interface LegendTitleEditStyle extends LegendTitleStyleEditOptions { visible?: boolean; }
+```
+
+Related types: [`LegendTitleStyleEditOptions`](./reference/types/#type-legendtitlestyleeditoptions).
 
 ### `LegendTitleStyleEditOptions` {#type-legendtitlestyleeditoptions}
 
@@ -41025,6 +41081,26 @@ export interface ViolinPlotSplitOptions {
 }
 ```
 
+### `VisibleGuide` {#type-visibleguide}
+
+ Expand VisibleGuide
+
+```typescript
+export type VisibleGuide<T> = T & GuideVisibilityOptions;
+```
+
+Related types: [`GuideVisibilityOptions`](./reference/types/#type-guidevisibilityoptions).
+
+### `VisibleTickGroup` {#type-visibletickgroup}
+
+ Expand VisibleTickGroup
+
+```typescript
+export type VisibleTickGroup<T> = T & { ticks?: VisibleGuide<AxisTickStyleOptions>; labels?: VisibleGuide<AxisLabelStyleOptions>; };
+```
+
+Related types: [`VisibleGuide`](./reference/types/#type-visibleguide) · [`AxisTickStyleOptions`](./reference/types/#type-axistickstyleoptions) · [`AxisLabelStyleOptions`](./reference/types/#type-axislabelstyleoptions).
+
 ### `WindowDataOptions` {#type-windowdataoptions}
 
  Expand WindowDataOptions
@@ -41719,12 +41795,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/6a3a22961d30c964dc8291a36cfdd62ec844833c/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/6a3a22961d30c964dc8291a36cfdd62ec844833c/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -44470,9 +44546,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:d191d29bbf2722f84e1a4d8e9b098a92388c8752ae0d38e9b027bfbee132536d` |
+| Contract fingerprint | `sha256:71f0099d92c0e276f57dd3a7c15f7ef624131ca68edc4e819208af5ed8b2eb2e` |
 | Example and dataset source | `ab206c446ae5010eecfd859427775c4785d8aed4` |
-| Runtime source commit | `6a3a22961d30c964dc8291a36cfdd62ec844833c` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 298 |
 | Declared actions in that release | 234 |

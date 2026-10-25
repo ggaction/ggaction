@@ -61,27 +61,32 @@
     {
       "name": "labels",
       "required": false,
-      "type": "false | ThetaAxisLabelOptions | undefined"
+      "type": "false | VisibleGuide<ThetaAxisLabelOptions> | undefined"
     },
     {
       "name": "ticksAndLabels",
       "required": false,
-      "type": "false | ThetaTicksAndLabelsOptions | undefined"
+      "type": "false | VisibleTickGroup<ThetaTicksAndLabelsOptions> | undefined"
+    },
+    {
+      "name": "visible",
+      "required": false,
+      "type": "boolean | undefined"
     },
     {
       "name": "line",
       "required": false,
-      "type": "false | AxisLineStyleOptions | undefined"
+      "type": "false | VisibleGuide<AxisLineStyleOptions> | undefined"
     },
     {
       "name": "ticks",
       "required": false,
-      "type": "false | PolarTickOptions | undefined"
+      "type": "false | VisibleGuide<PolarTickOptions> | undefined"
     },
     {
       "name": "title",
       "required": false,
-      "type": "false | PolarTitleOptions | undefined"
+      "type": "false | VisibleGuide<PolarTitleOptions> | undefined"
     },
     {
       "name": "target",
@@ -90,7 +95,7 @@
     }
   ],
   "callPatterns": [
-    "editThetaAxis({ target?, labels?, ticksAndLabels?, line?, ticks?, title? })"
+    "editThetaAxis({ target?, labels?, ticksAndLabels?, visible?, line?, ticks?, title? })"
   ],
   "snippet": "program.editThetaAxis({ line: { color: \"#222222\" } })",
   "errors": [],

@@ -8,7 +8,7 @@ import { validateLegendGroupState } from "../legendGroups.js";
 import { resolveSharedFacetLegends, sameFacetGuideValue as same } from "./guides.js";
 import { normalizeDisplayLabelMap } from "../displayLabels.js";
 
-const CONFIG_KEYS = Object.freeze([
+const CONFIG_KEYS = Object.freeze(["visibility",
   "kind", "target", "channels", "scales", "scale", "field", "fieldType", "domain", "title", "titleVisible",
   "inferredTitle", "inferredSymbol", "inferredStrokeWidth", "inferredOffset", "position", "align", "offset", "direction", "columns",
   "titlePosition", "symbol", "labels", "titleStyle", "itemGap", "rowPadding", "titlePadding", "layout", "overflow", "border", "gradient",

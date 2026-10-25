@@ -2664,6 +2664,8 @@ and rederives its panels while preserving the parent title and guide policy.
 
 ### `editAxes`
 
+Complete axis editors accept `visible: false` to hide an axis without removing its style. Use `labels: { visible: false }`, `line: { visible: false }`, `ticks: { visible: false }` or `title: { visible: false }` for individual components. `ticksAndLabels` also accepts visibility on its `ticks` and `labels` children. Set the same flag to `true` to restore it. Flags are independent and retained through automatic guides and resizing; relative-anchor geometry stays stable.
+
 ```js
 editAxes({ x?, y?, theta?, radius?, parallel? })
 ```
@@ -3005,6 +3007,8 @@ blocks. Quantitative size sampling is unchanged by a categorical overflow limit.
 Continuous and combined sampled legends retain their existing edge-only contracts. Shared facet promotion requires an edge position.
 
 ### `editLegend`
+
+Use `visible: false` to hide the complete legend, `labels: { visible: false }` to hide entry labels, and `titleStyle: { visible: false }` to hide its title. Set each flag to `true` to restore it. Visibility preserves appearance and layout, remains independent for each component, and survives automatic guide generation, resizing and saved projects.
 
 ```javascript
 editLegend({
@@ -3408,6 +3412,8 @@ requires a valid final layout. The same policy applies when labels are edited
 after the title and through Canvas, scale, data, facet and saved-program replay.
 
 ### Directional grids
+
+Each direction accepts `visible: false` to hide its grid without losing width, dash or color. `visible: true` restores the retained appearance. The focused Cartesian and Polar grid editors accept the same option.
 
 ```javascript
 createHorizontalGrid({ scale?, coordinate?, count?, values?, color?, lineWidth?, strokeDash?, alongOffset? })

@@ -1,3 +1,4 @@
+import { splitGuideVisibility, patchGuideVisibility } from "../../../../materialization/guides/visibility.js";
 import { withGuideLayoutValidation } from "../../../../materialization/guides/layout.js";
 import { action } from "../../../../core/action.js";
 import { resolvePolarGuideResources } from "../resolve.js";
@@ -213,7 +214,8 @@ function makeEditAxis(kind) {
     op: operation,
     description: `Edit selected Polar ${kind}-axis components.`
   }, withGuideLayoutValidation(function (args = {}) {
-    validateAxisEditArgs(kind, args, operation);
+    const split = splitGuideVisibility(args); args = split.args;
+    if (Object.keys(args).length || !Object.keys(split.visibility).length) validateAxisEditArgs(kind, args, operation);
     if (!AXIS_COMPONENTS.some(component => hasAxisComponent(this, kind, component))) {
       throw new Error(`${operation} requires an existing ${kind}-axis component.`);
     }
@@ -225,7 +227,7 @@ function makeEditAxis(kind) {
     }
     // Validate the whole proposal on an immutable branch before returning changes.
     applyAxisEdit(this, kind, args);
-    return applyAxisEdit(this, kind, args);
+    return patchGuideVisibility(applyAxisEdit(this, kind, args), "axis", kind, split.visibility);
   }));
 }
 

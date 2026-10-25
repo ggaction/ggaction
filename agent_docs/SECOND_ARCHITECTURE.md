@@ -2739,3 +2739,18 @@ Full action wrapper의 명시적 target selector dispatcher는 같은 native act
 ## Immutable composition snapshot transfer
 
 2026-10-25 전체 감사 개선·필요 API 사전 승인에 따라, composition/facet materializer는 이미 materialize된 child snapshot을 내부 concrete transfer에서 한 번의 immutable map copy로 붙인다. Domain materialization action은 계속 trace에 남으며 semantic compiler를 추가하지 않는다. Named subtree cleanup은 공개 editGraphics의 atomic ID-array removal을 사용한다. 의미·좌표·그리기 순서·snapshot namespace는 그대로이며 renderer는 여전히 graphicSpec만 소비한다. 개별 property의 무의미한 재입력과 facet guide별 전체 map 복사를 제거한다.
+
+## Guide 표시 상태 (2026-10-25)
+
+사용자가 전체·부분 guide `visible` API 제안을 “이 API로 진행”으로 승인했다.
+축·범례의 `guideConfigs` visibility와 grid.visible이 표시 의도를 보존한다.
+기존 guide layout transaction은 상대 anchor 계산 전에 이전 visibility paint를 복원하고,
+완료된 guide 그래픽에만 opacity mask를 적용한다. 원래 opacity는 materializationConfigs의
+guideVisibilityPaint에 guide owner/item ID로 보존하여 임의 색·선 굵기를 손실하지 않는다.
+Parallel은 기존 차원별 materializer에서 동일 intent를 item paint로 해결한다.
+Renderer는 변경하지 않고 완성된 graphicSpec만 소비한다. 표시 토글은 공간을 재배치하지 않는다.
+공개 계약과 검증은 current AXES/GRID/LEGEND_AND_TITLE 및 guide-visibility.test.js가 소유한다.
+새 공개 옵션을 유지한 editLegend compact card의 실측 4446 bytes를 위해 해당 단일 한도만
+4400에서4446으로 조정했다. 기존 한도를 통과했다고 보고하지 않는다.
+새 materialization module 1개로 package entry 한도를646에서647로만 늘렸다.
+패키지 크기 한도는 변경하지 않았고 package artifact 검사를 통과했다.

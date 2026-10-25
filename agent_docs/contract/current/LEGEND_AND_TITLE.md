@@ -975,3 +975,9 @@ Concat title ownership, shared color snapshot collection, and restoration rules:
 - `at` and edge placement (including alongOffset) are mutually exclusive. A retained free placement needs an explicit position before accepting alongOffset. Nonfinite values, overflowing corner bounds, Canvas overflow, and collisions reject atomically. Existing omission state remains unchanged.
 - Unit, facet-owned/promoted, and shared concat owners consume the same placement; serialization, Canvas/data replay, and native Canvas/SVG rendering retain concrete translated bounds.
 - Evidence: `test/unit/actions/guides/legend-along-offset.test.js`, `test/contracts/legend-spacing-types.test.js`.
+
+## Retained legend visibility
+
+`editLegend`의 전체 옵션, `labels`, `titleStyle`은 각각 `visible?: boolean`을 받는다. 전체와 각 text 표시 상태는 독립적이다. 숨겨도 typography, samples, scale binding, layout, title content를 보존한다. 전체를 켜도 별도로 숨긴 라벨·제목은 그대로다. 자동 guide, Canvas replay, shared facet ownership, editable persistence에서 유지한다. 숨긴 guide의 geometry는 유지하므로 토글로 차트를 이동시키거나 상대 anchor를 끊지 않는다.
+
+검증: `test/unit/actions/guides/guide-visibility.test.js`, `test/contracts/guide-visibility-types.test.js`.

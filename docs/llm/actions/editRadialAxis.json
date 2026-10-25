@@ -66,7 +66,12 @@
     {
       "name": "title",
       "required": false,
-      "type": "false | RadialTitleOptions | undefined"
+      "type": "false | VisibleGuide<RadialTitleOptions> | undefined"
+    },
+    {
+      "name": "visible",
+      "required": false,
+      "type": "boolean | undefined"
     },
     {
       "name": "angle",
@@ -76,22 +81,22 @@
     {
       "name": "line",
       "required": false,
-      "type": "false | AxisLineStyleOptions | undefined"
+      "type": "false | VisibleGuide<AxisLineStyleOptions> | undefined"
     },
     {
       "name": "ticks",
       "required": false,
-      "type": "false | PolarTickOptions | undefined"
+      "type": "false | VisibleGuide<PolarTickOptions> | undefined"
     },
     {
       "name": "labels",
       "required": false,
-      "type": "false | PolarLabelOptions | undefined"
+      "type": "false | VisibleGuide<PolarLabelOptions> | undefined"
     },
     {
       "name": "ticksAndLabels",
       "required": false,
-      "type": "false | PolarTicksAndLabelsOptions | undefined"
+      "type": "false | VisibleTickGroup<PolarTicksAndLabelsOptions> | undefined"
     },
     {
       "name": "target",
@@ -100,7 +105,7 @@
     }
   ],
   "callPatterns": [
-    "editRadialAxis({ target?, title?, angle?, line?, ticks?, labels?, ticksAndLabels? })"
+    "editRadialAxis({ target?, title?, visible?, angle?, line?, ticks?, labels?, ticksAndLabels? })"
   ],
   "snippet": "program.editRadialAxis({ title: { text: \"Radius\" } })",
   "errors": [],

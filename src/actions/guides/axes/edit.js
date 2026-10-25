@@ -1,3 +1,4 @@
+import { splitGuideVisibility, patchGuideVisibility } from "../../../materialization/guides/visibility.js";
 import { resolveAxisTickEditConfig } from "./ticks.js";
 import { resolveAxisLabelEditConfig } from "./labels.js";
 import { validateAxisTickGroupEditConfig } from "./tickGroups.js";
@@ -193,11 +194,17 @@ function makeEditAxis(channel) {
       description: `Edit selected existing ${channel}-axis components.`
     },
     withGuideLayoutValidation(function (args = {}) {
-      validateArgs(args, operation.operation);
+      const split = splitGuideVisibility(args);
+      args = split.args;
+      if (Object.keys(args).some(key => key !== "target")) validateArgs(args, operation.operation);
       const selected = selectCartesianAxis(this, channel, args, { whole: true });
       const axisId = selected.id; args = selected.options;
       validateNestedEditConfig(this, channel, args, axisId);
-      let source = this;
+      let source = patchGuideVisibility(this, "axis", axisId, split.visibility);
+      if (!Object.keys(args).some(key => key !== "target")) {
+        if (!Object.keys(split.visibility).length) validateArgs(args, operation.operation);
+        return source;
+      }
       if (selected.owner?.named && args.position !== undefined) {
         const position = validateAxisPosition(channel, args.position);
         assertCartesianAxisSideAvailable(this, { id: axisId, channel,
