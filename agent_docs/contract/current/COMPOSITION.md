@@ -635,7 +635,7 @@ The new chart receives an independent snapshot of the source's materialized data
 right placement and plot alignment. Horizontal placement defaults to shared Y and vertical placement to shared X only when field, measurement operations and Cartesian coordinate meanings are compatible. Caller
 `share` replaces the default. No layer or data dependency is introduced between adjacent views.
 
-All constructor defaults use the shared positional-role registry to recover original input fields and data. Line/bar retain supported aggregation and bins; point/distribution charts use original observations. Different measurement operations disable automatic sharing; explicit incompatible sharing rejects. Shared channels inherit scale definitions. Ambiguous additional roles require native options. All constructors
+All constructor defaults use the shared positional-role registry to recover original input fields and data. Line/bar retain supported aggregation and bins; point/distribution charts use original observations. Different measurement operations disable automatic sharing; explicit incompatible sharing rejects. Shared channels inherit scale definitions. New adjacent color legends also inherit the source shared legend's position and compatible presentation options; independent color legends retain constructor defaults. Ambiguous additional roles require native options. All constructors
 retain their ordinary validity and data-shape requirements. Explicit native plot options override
 inferred values. New chart appearance uses its constructor; inherited theme/text metrics are retained.
 
@@ -684,7 +684,7 @@ The outer trace records one requested function; retained child traces contain th
 - `createTitle`/`editTitle`/`removeTitle` without a target own one parent title resource.
   Explicit child paths retain per-view title behavior. Four-edge title/subtitle lanes
   align to the translated plot union and rematerialize after layout and child edits.
-- A shared color scale collects compatible guide snapshots into one outer-right legend.
+- A shared color scale collects compatible guide snapshots into one shared legend at the representative block's authored position and alignment. The same resolved frame reserves the Canvas lane, shifts child placements for top/left anchors, and preserves in-plot anchors. Explicit legend presentation is retained when adding a same-color neighbour, including left/top insertion.
   A same-field categorical block that explains color plus shape/stroke/etc. also covers
   color-only blocks when its category mappings agree. Prefer the most informative block,
   then the first visible child for equal coverage. Conflicting extra mappings remain local;

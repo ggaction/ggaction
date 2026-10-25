@@ -1,4 +1,5 @@
 import { resolveGraphicParentOffset } from "../grammar/schemas/graphicBounds.js";
+import { layoutCompositionLegend } from "../layout/compositionLegend.js";
 import { sharedCompositionColorLegend } from "./compositionLegends.js";
 import { translateGraphic } from "./graphicTranslation.js";
 import { compositionTitleLayout, materializeCompositionTitle } from "./compositionTitle.js";
@@ -105,11 +106,15 @@ export function prepareCompositionSnapshots(program) {
   const title = compositionTitleLayout(program);
   const padding = { top: 0, bottom: 0, left: 0, right: 0, ...spec.padding };
   if (title.config) padding[title.config.position] += title.reservation + 8;
-  const layout = resolveCompositionLayout({ direction: spec.direction,
+  const baseLayout = resolveCompositionLayout({ direction: spec.direction,
     children: spec.children.map(id => ({ ...compositionChildDescriptor(id, children[id]),
       ...(spec.align === "plot" ? { plot: compositionPlotBounds(children[id]) } : {}) })),
     gap: spec.gap, align: spec.align, padding });
-  const result = { children, layout, title, titleConfig: program.titleConfig, semanticTitle: program.semanticSpec.title };
+  const sharedLegend = sharedCompositionColorLegend(program, children);
+  const plot = resolvePlacedPlotBounds({ placements: baseLayout.children,
+    plots: baseLayout.children.map(({ id }) => ({ id, ...compositionPlotBounds(children[id]) })) });
+  const { layout, frame: legendFrame } = layoutCompositionLegend(baseLayout, plot, sharedLegend, title);
+  const result = { children, layout, title, sharedLegend, legendFrame, titleConfig: program.titleConfig, semanticTitle: program.semanticSpec.title };
   if (!bySpec) { bySpec = new WeakMap(); snapshotCache.set(program.children, bySpec); }
   bySpec.set(spec, result);
   return result;
@@ -194,7 +199,7 @@ export function clearCompositionChildren(program) {
 
 export function materializeCompositionGraphics(program) {
   program._assertCompositionProgram("materializeCompositionGraphics");
-  const { layout, children, title } = prepareCompositionSnapshots(program);
+  const { layout, children, title, sharedLegend, legendFrame } = prepareCompositionSnapshots(program);
   // A uniform child surface also covers parent gaps and reserved guide lanes.
   // Mixed local backgrounds retain the composition's existing outer surface.
   const backgrounds = new Set(Object.values(children).map(child => child.graphicSpec.objects.canvas?.properties.background));
@@ -224,18 +229,12 @@ export function materializeCompositionGraphics(program) {
     next = attachSnapshotObject(next, snapshot, snapshot.order[0], "canvas");
   }
 
-  const sharedLegend = sharedCompositionColorLegend(program, children);
   if (sharedLegend) {
     for (const id of sharedLegend.remove) if (next.graphicSpec.objects[id]) next = next.editGraphics({ target: id, remove: true });
     const { source, roots, bounds } = sharedLegend;
-    const plot = resolvePlacedPlotBounds({ placements: layout.children,
-      plots: layout.children.map(({ id }) => ({ id, ...compositionPlotBounds(children[id]) })) });
-    const width = bounds.right - bounds.left, height = bounds.bottom - bounds.top;
     const id = `${program.compositionSpec.id}-shared-color-legend`;
-    const rightTitle = title.config?.position === "right" ? title.reservation + 8 : 0;
-    const bottomTitle = title.config?.position === "bottom" ? title.reservation + 8 : 0;
     next = next.createGraphics({ id, type: "canvas", parent: "canvas" });
-    for (const [property, value] of Object.entries({ x: layout.width - rightTitle + 8, y: plot.y, width, height, background: "transparent" })) {
+    for (const [property, value] of Object.entries({ ...legendFrame, background: "transparent" })) {
       next = next.editGraphics({ target: id, property, value });
     }
     const snapshot = namespaceGraphicSnapshot(source.graphicSpec, { namespace: id });
@@ -245,8 +244,6 @@ export function materializeCompositionGraphics(program) {
       const [parentX, parentY] = resolveGraphicParentOffset(source.graphicSpec, root);
       next = translateGraphic(next, key, parentX - bounds.left, parentY - bounds.top);
     }
-    next = next.editGraphics({ target: "canvas", property: "width", value: layout.width + width + 16 })
-      .editGraphics({ target: "canvas", property: "height", value: Math.max(layout.height, plot.y + height + 8 + bottomTitle) });
   }
   if (title.config) {
     const plot = resolvePlacedPlotBounds({ placements: layout.children,

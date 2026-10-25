@@ -2,6 +2,7 @@ import { describeLegendBlock, legendBlockChannels } from "../grammar/legendBlock
 import { allLegendGraphicIds } from "./guides/resources.js";
 import { unionConcreteGraphicBounds } from "../grammar/schemas/graphicBounds.js";
 import { namespaceGraphicId } from "./compositionSnapshot.js";
+import { localLegendPlacement } from "../grammar/legendGroups.js";
 import { mapScaleConsumerValues } from "./scales/map.js";
 
 // A categorical color/shape block can explain a color-only view too. Compare
@@ -52,7 +53,9 @@ function collect(child) {
       if (!bounds) continue;
       candidates.push({ source: child, mappingSource: child, roots, bounds, channels, config,
         targets: [{ childPath: [], ...(child.compositionSpec?.facet ? {} : { id: config.target }) }],
-        block: describeLegendBlock(child, kind, config), remove: roots });
+        block: describeLegendBlock(child, kind, config),
+        placement: localLegendPlacement(config) ?? child.guideConfigs.legendGroups?.[config.target]?.placement ??
+          { position: config.position, align: config.align, offset: config.offset }, remove: roots });
     }
   }
   visibleBlocks.set(child, candidates);
@@ -77,4 +80,22 @@ export function sharedCompositionColorLegend(program, children) {
   const collected = candidates.filter(candidate => coversLegend(representative, candidate));
   return { ...representative, remove: collected.flatMap(candidate => candidate.remove),
     targets: collected.flatMap(candidate => candidate.targets) };
+}
+
+// New neighbours keep the existing shared guide's authored presentation. Scale
+// mappings and symbol semantics still belong to each native constructor.
+export function adjacentLegendPresentation(source, target, child) {
+  const from = collect(source).find(candidate => candidate.config.target === target);
+  const to = collect(child).find(candidate => candidate.channels.includes("color"));
+  if (!from || !to) return undefined;
+  const config = from.config, options = { ...from.placement };
+  if (from.placement.inferredOffset ?? config.inferredOffset) delete options.offset;
+  delete options.inferredOffset;
+  for (const key of ["labels", "titleStyle", "titlePosition", "border"]) if (config[key] !== undefined) options[key] = config[key];
+  if (!config.inferredTitle) options.title = config.titleVisible === false ? false : config.title;
+  if (from.block.family === to.block.family) {
+    for (const key of ["direction", "columns", "itemGap", "gradient"]) if (config[key] !== undefined) options[key] = config[key];
+    if (config.symbol && config.inferredSymbol === false) options.symbol = config.symbol;
+  }
+  return { target: to.config.target, channel: "color", ...options };
 }

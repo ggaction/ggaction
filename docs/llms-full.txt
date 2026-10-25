@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.25.
 
-Contract: sha256:2a89d1b6b0933b868d48c41673bc3a84d98d6716152658d926b35e9ae87b9522. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:69da831ac5dba260f4a19e308bf71d8eeb12014847342c077a6a0185d7beacdb. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -43095,7 +43095,11 @@ in the same call when switching from a shared plot lane. Header `anchor: "view"`
 retained guides in its outward clearance and is available with plot or content spacing.
 
 When color is shared, compatible same-field color/shape legends and color-only legends
-are collected into one outer legend. The combined symbols retain their shape meaning;
+are collected into one legend, retaining its authored position, alignment and typography.
+A new adjacent chart with shared color retains the existing legend presentation rather than
+resetting it to the right. Edit the contributing child legends with explicit targets to change
+the collected block; its occupied bounds participate in the parent Canvas and plot layout.
+The combined symbols retain their shape meaning;
 unrelated size legends and conflicting shape mappings remain separate. Disabling color
 sharing restores the original child legends, including in nested and faceted views.
 
@@ -44266,7 +44270,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:2a89d1b6b0933b868d48c41673bc3a84d98d6716152658d926b35e9ae87b9522` |
+| Contract fingerprint | `sha256:69da831ac5dba260f4a19e308bf71d8eeb12014847342c077a6a0185d7beacdb` |
 | Example and dataset source | `ab206c446ae5010eecfd859427775c4785d8aed4` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

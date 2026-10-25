@@ -1,3 +1,4 @@
+import { adjacentLegendPresentation } from "../../materialization/compositionLegends.js";
 import { facetUnitTemplate } from "../facets/actions.js";
 import { compositionPlotBounds } from "../../materialization/composition.js";
 import { closedAction, getWrappedActionMetadata } from "../../core/action.js";
@@ -63,6 +64,10 @@ const createAdjacentPlot = /* @__PURE__ */ closedAction({
     if(scale) { const {id:_scaleId,...definition}=scale; if(selected.scale?.palette!==undefined) delete definition.range; options[channel]={...selected,scale:{...definition,...selected.scale}}; }
   }
   child = child[action](options);
+  if (share.color) {
+    const presentation = adjacentLegendPresentation(sourceView, source.id, child);
+    if (presentation) child = child.editLegend(presentation);
+  }
   const original = new this.constructor({ ...this, actionStack: [], actionSequence: this._actionSequence });
   const parent = new this.constructor({ trace: this.trace, actionStack: this.actionStack, actionSequence: this._actionSequence });
   const entries = [{ id: sourceId, program: original }, { id, program: child }];
