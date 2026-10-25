@@ -73,6 +73,8 @@ Shared channels must use compatible fields, measurement units and scale mappings
 Conflicting explicit domains reject the whole operation. Automatically inferred domains
 are combined afresh after each edit, so they can grow and shrink. Authored child domains
 are preserved: `editCompositionScales({ share: { y: false } })` restores independent Y.
+Plot-relative annotation anchors keep their local position when data axes are shared.
+Data-coordinate annotations follow their source scale's shared domain.
 A shared palette change must target all affected views in the same atomic call.
 For a faceted child, sharing uses the union of the displayed cell domains after
 partitioning, aggregation and stacking, rather than the unpartitioned source's

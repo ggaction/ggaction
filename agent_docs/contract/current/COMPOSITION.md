@@ -659,6 +659,11 @@ Edits a nonempty subset of the concat parent's `share` policies and rematerializ
 channels are preserved; false restores independent rendering. Incompatible requested sharing
 rejects without changing any previous program or child. Facet callers use `editFacetScales`.
 
+공유 대상은 데이터 필드 또는 count 의미가 있는 채널 바인딩이다. 상수 주석 위치의
+독립적인 plot-fraction 스케일은 공유 domain 계산에서 제외하며 각 plot의 anchor를 유지한다.
+데이터 좌표 주석이 원본 마크의 스케일을 참조하면 그 스케일의 공유 결과를 그대로 따른다.
+Evidence: `test/unit/actions/composition/shared-annotations.test.js` (X/Y, facet, adjacent, scoped edits, persistence).
+
 ### Formal values — `editCompositionScales`
 
 - Implemented: `editCompositionScales({ share: NonEmpty<CompositionShares> }): ChartProgram`.

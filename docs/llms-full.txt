@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.25.
 
-Contract: sha256:a48c9f7ae77e6e94bd15aa113df5b1fbb2640c44e1dc45d1cc47e92b3428f424. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:04da61ac9a2968381ac8049c11ace04632c7f0de4896b91cdb22ea8383dc1083. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -43189,6 +43189,8 @@ Shared channels must use compatible fields, measurement units and scale mappings
 Conflicting explicit domains reject the whole operation. Automatically inferred domains
 are combined afresh after each edit, so they can grow and shrink. Authored child domains
 are preserved: `editCompositionScales({ share: { y: false } })` restores independent Y.
+Plot-relative annotation anchors keep their local position when data axes are shared.
+Data-coordinate annotations follow their source scale's shared domain.
 A shared palette change must target all affected views in the same atomic call.
 For a faceted child, sharing uses the union of the displayed cell domains after
 partitioning, aggregation and stacking, rather than the unpartitioned source's
@@ -44572,7 +44574,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:a48c9f7ae77e6e94bd15aa113df5b1fbb2640c44e1dc45d1cc47e92b3428f424` |
+| Contract fingerprint | `sha256:04da61ac9a2968381ac8049c11ace04632c7f0de4896b91cdb22ea8383dc1083` |
 | Example and dataset source | `ab206c446ae5010eecfd859427775c4785d8aed4` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

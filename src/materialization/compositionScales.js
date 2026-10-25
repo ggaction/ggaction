@@ -32,12 +32,15 @@ function bindings(program, channel, path = []) {
     if (owners.has(layer.id) || layer.derivedBindings?.overlay || program.markConfigs[layer.id]?.statisticalReference) continue;
     const encoding = layer.encoding?.[channel];
     if (!encoding?.scale) continue;
+    // A constant anchor has no data-field meaning. Its private scale (for
+    // example an annotation's 0..1 plot coordinates) is not a shared data axis.
+    const role = compositionChannel(program, encoding, layer.data);
+    if (!role) continue;
     if (["x", "y"].includes(channel) && findCoordinate(program, layer.coordinate)?.type !== "cartesian") {
       throw new Error(`Shared ${channel} requires Cartesian positions.`);
     }
     const scale = findSemanticScale(program, encoding.scale);
     if (!scale || !program.resolvedScales[scale.id]) throw new Error(`Shared ${channel} requires a materialized scale.`);
-    const role = compositionChannel(program, encoding, layer.data);
     const meaning = { field: role.field, fields: role.fields, fieldType: role.fieldType,
       aggregateUnit: role.measurement.unit === "sum" ? "value" : role.measurement.unit, temporalUnit: role.temporalUnit };
     const previous = entries.get(scale.id);
