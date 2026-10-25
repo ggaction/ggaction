@@ -1,4 +1,4 @@
-import { resolveGraphicParentOffset } from "../grammar/schemas/graphicBounds.js";
+import { resolveConcreteGraphicBounds, resolveGraphicParentOffset } from "../grammar/schemas/graphicBounds.js";
 import { layoutCompositionLegend } from "../layout/compositionLegend.js";
 import { sharedCompositionColorLegend } from "./compositionLegends.js";
 import { translateGraphic } from "./graphicTranslation.js";
@@ -86,6 +86,31 @@ function resizeCompositionPlotExtent(program, dimension, size) {
 }
 
 const snapshotCache = new WeakMap();
+
+// Measure the visible snapshots that remain after guide collection. Canvas
+// margins and the removed legend's old lane are not occupied chart content.
+function retainedCompositionBounds(program, children, layout, legend) {
+  const removed = new Set(legend.remove), bounds = [];
+  for (const cell of layout.children) {
+    const child = resizeChildForSnapshot(children[cell.id], cell);
+    const placement = resolveSnapshotPlacement(child, cell, layout);
+    const namespace = `${program.compositionSpec.id}-${cell.id}`;
+    const visit = id => {
+      if (removed.has(namespaceGraphicId(namespace, id))) return;
+      const object = child.graphicSpec.objects[id];
+      if (object.type === "canvas") {
+        for (const nested of object.children ?? []) visit(nested);
+      } else {
+        const value = resolveConcreteGraphicBounds(child.graphicSpec, id, child.materializationConfigs.textMetrics);
+        if (value) bounds.push({ left: value.left + placement.x, right: value.right + placement.x,
+          top: value.top + placement.y, bottom: value.bottom + placement.y });
+      }
+    };
+    for (const id of child.graphicSpec.order) visit(id);
+  }
+  return bounds;
+}
+
 export function prepareCompositionSnapshots(program) {
   program._assertCompositionProgram("prepareCompositionSnapshots");
   const spec = program.compositionSpec;
@@ -113,7 +138,8 @@ export function prepareCompositionSnapshots(program) {
   const sharedLegend = sharedCompositionColorLegend(program, children);
   const plot = resolvePlacedPlotBounds({ placements: baseLayout.children,
     plots: baseLayout.children.map(({ id }) => ({ id, ...compositionPlotBounds(children[id]) })) });
-  const { layout, frame: legendFrame } = layoutCompositionLegend(baseLayout, plot, sharedLegend, title);
+  const retained = sharedLegend ? retainedCompositionBounds(program, children, baseLayout, sharedLegend) : [];
+  const { layout, frame: legendFrame } = layoutCompositionLegend(baseLayout, plot, sharedLegend, title, retained);
   const result = { children, layout, title, sharedLegend, legendFrame, titleConfig: program.titleConfig, semanticTitle: program.semanticSpec.title };
   if (!bySpec) { bySpec = new WeakMap(); snapshotCache.set(program.children, bySpec); }
   bySpec.set(spec, result);

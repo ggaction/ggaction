@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.25.
 
-Contract: sha256:3237654c00eef60ebc8a898df56ad1f34be49babe1759e5827b3ca1bffc64c7c. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:c74e7d86ad4670f2b82cb45392271444faceb81ba6cbaca21024e81643627caa. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -20897,6 +20897,9 @@ their original field and aggregation meanings during inference. The top-level `i
 Horizontal placement shares compatible Y meanings by default; vertical placement shares
 compatible X meanings. Different aggregates or coordinate families stay independent. An
 explicit `share` replaces that default and rejects incompatible meanings. `align: "plot"` matches actual plot frames without stretching text or symbols.
+Shared color legends retain their plot-relative position and offset, reusing child margins
+instead of adding another empty lane outside the child Canvases. Automatic offsets clear
+retained content; explicit offsets remain exact and reject collisions.
 [Shared scales and adjacent charts](./api/composition/editing/)
 
 ## `editCompositionScales`
@@ -43103,6 +43106,10 @@ are collected into one legend, retaining its authored position, alignment and ty
 A new adjacent chart with shared color retains the existing legend presentation rather than
 resetting it to the right. Edit the contributing child legends with explicit targets to change
 the collected block; its occupied bounds participate in the parent Canvas and plot layout.
+Its offset is measured from the combined plot bounds. Existing child margins are reused,
+so adding a neighbour does not insert a second empty legend lane. Automatic offsets clear
+retained chart content; an explicit offset is preserved and rejects a collision. Free `at`
+coordinates remain relative to the combined plot origin.
 The combined symbols retain their shape meaning;
 unrelated size legends and conflicting shape mappings remain separate. Disabling color
 sharing restores the original child legends, including in nested and faceted views.
@@ -44274,7 +44281,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:3237654c00eef60ebc8a898df56ad1f34be49babe1759e5827b3ca1bffc64c7c` |
+| Contract fingerprint | `sha256:c74e7d86ad4670f2b82cb45392271444faceb81ba6cbaca21024e81643627caa` |
 | Example and dataset source | `ab206c446ae5010eecfd859427775c4785d8aed4` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

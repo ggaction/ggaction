@@ -283,6 +283,10 @@ are collected into one legend, retaining its authored position, alignment and ty
 A new adjacent chart with shared color retains the existing legend presentation rather than
 resetting it to the right. Edit the contributing child legends with explicit targets to change
 the collected block; its occupied bounds participate in the parent Canvas and plot layout.
+Its offset is measured from the combined plot bounds. Existing child margins are reused,
+so adding a neighbour does not insert a second empty legend lane. Automatic offsets clear
+retained chart content; an explicit offset is preserved and rejects a collision. Free `at`
+coordinates remain relative to the combined plot origin.
 The combined symbols retain their shape meaning;
 unrelated size legends and conflicting shape mappings remain separate. Disabling color
 sharing restores the original child legends, including in nested and faceted views.

@@ -51,11 +51,14 @@ function collect(child) {
       const roots = allLegendGraphicIds([kind]).filter(id => child.graphicSpec.objects[id]);
       const bounds = unionConcreteGraphicBounds(child.graphicSpec, roots, child.materializationConfigs.textMetrics);
       if (!bounds) continue;
+      const local = localLegendPlacement(config);
+      const group = child.guideConfigs.legendGroups?.[config.target];
       candidates.push({ source: child, mappingSource: child, roots, bounds, channels, config,
         targets: [{ childPath: [], ...(child.compositionSpec?.facet ? {} : { id: config.target }) }],
         block: describeLegendBlock(child, kind, config),
-        placement: localLegendPlacement(config) ?? child.guideConfigs.legendGroups?.[config.target]?.placement ??
-          { position: config.position, align: config.align, offset: config.offset }, remove: roots });
+        placement: { ...(local ?? group?.placement ??
+          { position: config.position, align: config.align, offset: config.offset }),
+          inferredOffset: local?.inferredOffset ?? group?.inferredOffset ?? config.inferredOffset }, remove: roots });
     }
   }
   visibleBlocks.set(child, candidates);

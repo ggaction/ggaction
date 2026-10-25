@@ -689,6 +689,7 @@ The outer trace records one requested function; retained child traces contain th
   Explicit child paths retain per-view title behavior. Four-edge title/subtitle lanes
   align to the translated plot union and rematerialize after layout and child edits.
 - A shared color scale collects compatible guide snapshots into one shared legend at the representative block's authored position and alignment. The same resolved frame reserves the Canvas lane, shifts child placements for top/left anchors, and preserves in-plot anchors. Explicit legend presentation is retained when adding a same-color neighbour, including left/top insertion.
+  Outside offsets are measured from the translated plot union, not child Canvas edges or a removed legend's old lane. Inferred offsets clear retained concrete content on the same edge; explicit offsets remain exact and reject occupied-content collisions. Free `at` coordinates remain plot-relative. Existing child margins are reused, and the parent Canvas grows only when the resolved legend requires more room. Child Canvas dimensions and plot sizes are preserved. Evidence: `test/unit/actions/composition/shared-legend-spacing.test.js`.
   A same-field categorical block that explains color plus shape/stroke/etc. also covers
   color-only blocks when its category mappings agree. Prefer the most informative block,
   then the first visible child for equal coverage. Conflicting extra mappings remain local;

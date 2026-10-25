@@ -3596,6 +3596,9 @@ their original field and aggregation meanings during inference. The top-level `i
 Horizontal placement shares compatible Y meanings by default; vertical placement shares
 compatible X meanings. Different aggregates or coordinate families stay independent. An
 explicit `share` replaces that default and rejects incompatible meanings. `align: "plot"` matches actual plot frames without stretching text or symbols.
+Shared color legends retain their plot-relative position and offset, reusing child margins
+instead of adding another empty lane outside the child Canvases. Automatic offsets clear
+retained content; explicit offsets remain exact and reject collisions.
 [Shared scales and adjacent charts](../../../../api/composition/editing/)
 
 ## `editCompositionScales`

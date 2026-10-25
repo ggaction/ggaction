@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Keep shared concat legends next to the actual plot bounds when adding adjacent charts, including faceted and Parallel views; reuse spare child margins and preserve explicit offsets.
+
 - Preserve input tables when adding adjacent summary charts, and resolve completed-key data back to original fields and aggregation before inferring a new chart.
 
 - Reduce nested action-trace allocation and freezing overhead while preserving immutable, lazily materialized child arrays and trace serialization.
