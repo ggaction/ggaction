@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Reduce immutable-copy allocations and repeated path validation/bounds work; batch Parallel dimension mapping and reuse immutable geometry across appearance edits. Transition row identities and SVG resource names remain exact while avoiding repeated hashing work.
+
 - Add `editLegend({ itemsOffset: { x, y } })` for independent legend-body movement with anchored titles, partial/reset edits, clipping, shared composition, facet, and persistence support.
 
 - Preserve missing-value policies and original-field lineage through chart edits, numeric position aggregation, independent layers and mixed facet/ordinary scoped targets.

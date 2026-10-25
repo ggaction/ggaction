@@ -3,6 +3,7 @@ import {
   resolveTextBounds
 } from "../../core/textMetrics.js";
 import { interpolateNumber } from "../numeric.js";
+import { isOwned } from "../../core/immutable.js";
 import { graphicClipBounds, intersectClipBounds } from "./graphicClip.js";
 import { resolveStrokeDetails } from "../strokeStyle.js";
 import {
@@ -12,6 +13,7 @@ import {
 } from "./graphicTree.js";
 
 const EPSILON = Number.EPSILON * 64;
+const pathBounds = new WeakMap();
 
 function box(left, right, top, bottom, extent = 0) {
   return {
@@ -111,6 +113,10 @@ function cubicExtrema(start, control1, control2, end) {
 }
 
 export function resolvePathCommandBounds(commands) {
+  if (pathBounds.has(commands)) {
+    const cached = pathBounds.get(commands);
+    return cached === undefined ? undefined : { ...cached };
+  }
   let bounds;
   let current;
   for (const command of commands) {
@@ -145,7 +151,8 @@ export function resolvePathCommandBounds(commands) {
     }
     current = { x: command.x, y: command.y };
   }
-  return bounds;
+  if (isOwned(commands)) pathBounds.set(commands, bounds);
+  return bounds === undefined ? undefined : { ...bounds };
 }
 
 function endpointDirection(start, command, end, reverse = false) {

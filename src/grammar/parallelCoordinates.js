@@ -1,5 +1,5 @@
 import { requireStringValue as nonEmptyString } from "../core/validation.js";
-import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
+import { cloneAndFreeze, isOwned, isPlainObject } from "../core/immutable.js";
 import { validateUserId } from "../core/identifiers.js";
 import { validateOptionObject } from "../core/validation.js";
 import {
@@ -13,6 +13,9 @@ const DIMENSION_OPTIONS = Object.freeze([
 ]);
 const FIELD_TYPES = new Set(["quantitative", "ordinal"]);
 const MISSING_POLICIES = new Set(["break", "drop-row", "error"]);
+// Each immutable row set retains only a few recent geometries, never programs
+// or traces. Appearance edits can reuse coordinates without retaining history.
+const parallelGeometry = new WeakMap();
 const DIMENSION_SCALE_OPTIONS = Object.freeze([
   "id",
   "type", "domain", "range", "nice", "zero", "clamp", "reverse",
@@ -182,17 +185,42 @@ export function materializeParallelRows(rows, dimensions, resolvedScales, bounds
   key,
   missing
 }) {
+  const scales = dimensions.map(dimension => resolvedScales[dimension.scale]);
+  const cacheable = isOwned(rows) && isOwned(dimensions) && scales.every(isOwned);
+  const signature = cacheable
+    ? JSON.stringify({ dimensions, scales, bounds, key, missing }) : undefined;
+  let cache = cacheable ? parallelGeometry.get(rows) : undefined;
+  if (cache?.has(signature)) {
+    const cached = cache.get(signature);
+    cache.delete(signature);
+    cache.set(signature, cached);
+    return cached;
+  }
   validateParallelRows(rows, dimensions, { key, missing });
   const step = bounds.width / (dimensions.length - 1);
+  const positions = dimensions.map((dimension, index) => {
+    const values = [], indices = [];
+    rows.forEach((row, rowIndex) => {
+      const value = row[dimension.field];
+      if (validDimensionValue(value, dimension.fieldType)) {
+        values.push(value); indices.push(rowIndex);
+      }
+    });
+    // Keep missing cells out of scale mapping, including logarithmic/ordinal
+    // unknown handling, exactly as the scalar path did.
+    const mapped = values.length === 0 ? [] : dimension.fieldType === "quantitative"
+      ? mapContinuousScaleValues(values, scales[index])
+      : mapOrdinalPositionValues(values, scales[index]);
+    const column = new Array(rows.length);
+    indices.forEach((rowIndex, i) => { column[rowIndex] = mapped[i]; });
+    return column;
+  });
   const items = [];
   rows.forEach((row, sourceRowIndex) => {
     const vertices = dimensions.map((dimension, index) => {
       const value = row[dimension.field];
       if (!validDimensionValue(value, dimension.fieldType)) return undefined;
-      const scale = resolvedScales[dimension.scale];
-      const mapped = dimension.fieldType === "quantitative"
-        ? mapContinuousScaleValues([value], scale)[0]
-        : mapOrdinalPositionValues([value], scale)[0];
+      const mapped = positions[index][sourceRowIndex];
       return Number.isFinite(mapped)
         ? { x: bounds.x + step * index, y: mapped, value, dimension: dimension.field }
         : undefined;
@@ -205,5 +233,11 @@ export function materializeParallelRows(rows, dimensions, resolvedScales, bounds
       commands: commandsFromVertices(vertices)
     });
   });
-  return cloneAndFreeze(items);
+  const result = cloneAndFreeze(items);
+  if (cacheable) {
+    if (!cache) parallelGeometry.set(rows, cache = new Map());
+    cache.set(signature, result);
+    if (cache.size > 4) cache.delete(cache.keys().next().value);
+  }
+  return result;
 }
