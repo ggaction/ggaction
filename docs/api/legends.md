@@ -35,7 +35,8 @@ Multiple blocks share one stack whose top aligns with the plot; blocks retain th
 Shared facet legends align with the top of the translated child plots.
 When `offset` is omitted, the native gap follows the actual occupied axis guides on the same edge, including left and right. An explicit `offset` remains anchored to the plot.
 
-Polar theta and radial labels and titles also reserve space outside the plot.
+Parallel-coordinate dimension labels and titles, and polar theta and radial
+labels and titles, also reserve space outside the plot.
 Their measured bounds update the default legend clearance after font edits,
 Canvas resizing, and snapshot restoration.
 Top, bottom, and in-plot corner positions keep their own alignment rules.

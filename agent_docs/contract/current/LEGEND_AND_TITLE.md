@@ -1,14 +1,14 @@
 # Legend and title action contracts
 
 제목과 범례의 충돌 검사는 단일 text와 줄바꿈 text collection의 실제 occupied bounds를 사용한다.
-같은 edge의 chart title/subtitle, Cartesian axis component와 legend group 사이 실제 겹침은 작성 순서와 무관하게 거절한다. 서로 다른 edge의 block은 이 검사에서 비교하지 않는다.
+같은 edge의 chart title/subtitle, axis component와 legend group 사이 실제 겹침은 작성 순서와 무관하게 거절한다. 서로 다른 edge의 block은 이 검사에서 비교하지 않는다.
 
 ## Shared guide collision contract
 
 - Color/stroke/series/gradient/interval/size/opacity/strokeWidth의 네 edge에 같은 검증을 적용한다. 같은 target의 categorical+size는 하나의 group이며 retained border도 bounds에 포함한다.
 - Axis line/ticks/labels/title는 각자의 position과 실제 stroke·rotation·collection bounds를 사용한다. Axis 내부 component 제약은 axis owner가 별도로 담당한다.
 - 외부 top/bottom/left/right legend의 offset을 생략하면 같은 edge의 실제 axis line/ticks/labels/title occupied bounds 뒤에 해당 family의 기존 기본 간격(categorical 8, continuous 30)을 둔다. 저장한 offset 수치는 바꾸지 않고 최종 배치에서 clearance를 계산한다. 명시한 offset(0·8·30 포함)은 계속 plot 기준이며 free `at`, plot corner와 legacy-bottom은 이 추론을 사용하지 않는다.
-- Polar theta/radius labels와 title의 실제 ink bounds도 네 외부 edge의 clearance에 포함한다. 축 글꼴 편집과 Canvas·persistence replay가 이 간격을 다시 계산한다. Evidence: `test/unit/actions/guides/polar-legend-clearance.test.js`.
+- Parallel dimension과 Polar theta/radius labels·title의 실제 ink bounds도 네 외부 edge의 clearance와 collision 검사에 포함한다. Title과 legend가 동일한 occupied bounds를 사용한다. Exact-inner Canvas의 title은 그 edge의 가장 바깥 guide에서16px + offset을 유지하고, categorical legend는 축에서8px 간격을 유지한다. 축 글꼴·차원 편집, 축 제거·재생성, Canvas·persistence replay가 여백을 누적하지 않고 다시 계산한다. Evidence: `test/unit/actions/guides/noncartesian-guide-clearance.test.js`, `test/unit/actions/guides/polar-legend-clearance.test.js`.
 - 기본 간격의 생략 여부는 private `inferredOffset` boolean으로 보존하며 creation order, axis 편집·제거, Canvas replay, group과 저장·복원에서도 다시 계산한다. 이 marker가 없는 이전 snapshot은 고정 offset으로 보수적으로 읽는다. 잘못된 marker 타입은 저장·복원 시 거부한다.
 - 서로 독립적인 legend group과 title↔axis, title↔legend, axis↔legend의 strict intersection은 오류다. 경계가 닿는 것만으로는 오류가 아니다.
 - Create/edit와 Canvas/scale/dependent replay는 해당 aggregate의 최종 guide geometry를 검증한다. 실패 시 이전 program의 semantic/graphic/config/context/trace는 변하지 않는다.

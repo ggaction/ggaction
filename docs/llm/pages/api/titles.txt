@@ -103,9 +103,17 @@ hides the subtitle. Its value must cover the stored subtitle font size even
 while hidden; increasing that font size requires a compatible spacing in the
 same edit. Removing the complete title removes the setting as well.
 
-The requested margin must contain the actual title block. A title must also
-avoid guides reserved on the same edge. Creation fails instead of expanding
-the Canvas, changing margins, or moving the title automatically.
+With `createCanvas({ plot: { width, height } })`, the title and subtitle sit
+16 pixels beyond the occupied guides on the requested edge, plus `offset`.
+The measured space includes Cartesian axes, parallel-coordinate dimension
+titles and tick labels, polar axis text, and outside legends. Editing those
+guides or resizing the Canvas recalculates the clearance; it does not accumulate
+extra spacing. The plot dimensions stay fixed while insufficient outer margins
+grow to contain the title.
+
+With a fixed outer `width` and `height`, the requested margins must contain the
+title and avoid same-edge guide collisions. Insufficient space is an error;
+increase the margins or change the placement explicitly.
 
 ## `editTitle(options)`
 

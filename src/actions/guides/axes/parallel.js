@@ -4,6 +4,7 @@ import { resolvePlotGraphicPlacement } from "../../../materialization/graphicHie
 import { requireParallelAxisLayer, resolveParallelAxisTarget, resolveStyledParallelAxes } from "./parallel/resolve.js";
 import { PARALLEL_AXIS_GRAPHICS, PARALLEL_AXIS_PARTS, hasParallelAxisParts } from "./parallel/policy.js";
 import { registerParallelAxisLifecycleActions } from "./parallel/lifecycle.js";
+import { withGuideLayoutValidation } from "../../../materialization/guides/layout.js";
 
 function uniform(values) {
   return values.length > 0 && values.every(value => value === values[0]) ? values[0] : values;
@@ -50,7 +51,7 @@ function collectionProperties(part, axes, bounds) {
 export const rematerializeParallelAxes = /* @__PURE__ */ closedAction({
   op: "rematerializeParallelAxes",
   description: "Recompute concrete Parallel dimension axes."
-}, ["target"], function (args = {}) {
+}, ["target"], withGuideLayoutValidation(function (args = {}) {
 
   const stored = this.semanticSpec.guides.axis?.parallel;
   if (stored === undefined) throw new Error("rematerializeParallelAxes requires existing Parallel axes.");
@@ -96,7 +97,7 @@ export const rematerializeParallelAxes = /* @__PURE__ */ closedAction({
     }
   }
   return next._withGuideConfig("parallel", "axes", { target, scales, ...configs });
-});
+}));
 
 export function registerParallelAxisActions(ProgramClass) {
   ProgramClass.prototype.rematerializeParallelAxes = rematerializeParallelAxes;

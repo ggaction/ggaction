@@ -1,6 +1,7 @@
 import { action, closedAction } from "../../../../core/action.js";
 import { validateNonEmptyString } from "../../../../core/validation.js";
 import { requireParallelAxisLayer, resolveParallelAxisTarget } from "./resolve.js";
+import { withGuideLayoutValidation } from "../../../../materialization/guides/layout.js";
 import {
   defaultParallelAxis, hasParallelAxisParts, PARALLEL_AXIS_GRAPHICS,
   PARALLEL_AXIS_PARTS, patchParallelAxis, resolveParallelAxisConfigs, validateParallelAxisOptions
@@ -93,7 +94,7 @@ const removeParallelAxis = /* @__PURE__ */ closedAction({
 
 const removeParallelAxes = /* @__PURE__ */ closedAction({
   op: "removeParallelAxes", description: "Remove all Parallel axis semantics, recipes and graphics."
-}, ["target", "coordinate"], function (args = {}) {
+}, ["target", "coordinate"], withGuideLayoutValidation(function (args = {}) {
 
   const stored = this.semanticSpec.guides.axis?.parallel;
   if (stored === undefined) throw new Error("removeParallelAxes requires existing Parallel axes.");
@@ -106,7 +107,7 @@ const removeParallelAxes = /* @__PURE__ */ closedAction({
     if (next.graphicSpec.objects[id] !== undefined) next = next.editGraphics({ target: id, remove: true });
   }
   return next._withoutMaterializationConfig(["guides", "axis", "parallel"]);
-});
+}));
 
 export function registerParallelAxisLifecycleActions(ProgramClass) {
   ProgramClass.prototype.createParallelAxes = createParallelAxes;
