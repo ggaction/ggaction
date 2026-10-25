@@ -1709,6 +1709,9 @@
       "plot": {
         "action": "createBoxPlot"
       }
+    },
+    "encodeShape": {
+      "value": "circle"
     }
   },
   "callPatternOverrides": {

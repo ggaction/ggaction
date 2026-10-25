@@ -94,12 +94,12 @@ changes fill. Existing selections bound to stroke must be removed before this
 replacement. Legend samples preserve the actual fill, stroke, and stroke width,
 including an explicit width of `0`.
 
-`encodeStrokeWidth({ value, target? })` assigns a
-non-negative finite logical Canvas width to every child of the current Line or Rule.
+`encodeStrokeWidth({ value, target? })` supports point, bar, area, arc, tick, line, rule, and rect marks. It assigns a
+non-negative finite logical Canvas width to the target mark, preserving its stroke color. An absent or disabled outline is enabled in black.
 Constant stroke and width modes create no scale or legend.
 
 `encodeStrokeWidth({ field, target?, fieldType?, scale? })` instead creates an
-independent quantitative width scale for a line or rule. Rules receive one
+independent quantitative width scale for a line, rule, or rect. Rules receive one
 width per source row. Lines receive one width per complete series, so all rows
 in one series must contain the same field value. No implicit mean, sum, or
 representative row is selected. The default concrete width range is `[1, 8]`.

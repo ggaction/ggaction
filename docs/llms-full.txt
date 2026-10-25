@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.25.
 
-Contract: sha256:71f0099d92c0e276f57dd3a7c15f7ef624131ca68edc4e819208af5ed8b2eb2e. Status: development. Runtime source: 3948b679a6d1114e7c7279114c81ae2eb087f530. Release baseline: v0.0.13.
+Contract: sha256:ed84c9caa6e9efb3248d058948f7f6c8ded78e29b918fe930709ffa964f0dc33. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/3948b679a6d1114e7c7279114c81ae2eb087f530/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/3948b679a6d1114e7c7279114c81ae2eb087f530/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -11979,7 +11979,12 @@ nondecreasing area values. Threshold domains are strictly increasing cut points
 and require one more area than cuts. Discrete size legends show every interval
 and therefore reject an explicit sample `count`.
 
-`encodeShape({ field, target?, fieldType?, scale? })` requires a nominal field.
+`encodeShape({ value: "circle", target? })` assigns a fixed shape. Named shapes
+and custom polygons use the same `PointShape` vocabulary as point marks.
+`encodeShape({ field, target?, fieldType?, scale? })` maps a nominal field.
+Supply exactly one of `value` or `field`; fixed shapes do not accept `scale` or
+`fieldType`. Switching to a fixed shape removes the previous shape mapping and
+its legend while preserving position, size, color, and other mark properties.
 Its ordinal scale accepts the fourteen named point shapes and explicit simple
 polygons documented under [Point marks](./api/marks/point/). The automatic range
 uses each named shape once and rejects more than fourteen categories. Explicit
@@ -12108,12 +12113,12 @@ changes fill. Existing selections bound to stroke must be removed before this
 replacement. Legend samples preserve the actual fill, stroke, and stroke width,
 including an explicit width of `0`.
 
-`encodeStrokeWidth({ value, target? })` assigns a
-non-negative finite logical Canvas width to every child of the current Line or Rule.
+`encodeStrokeWidth({ value, target? })` supports point, bar, area, arc, tick, line, rule, and rect marks. It assigns a
+non-negative finite logical Canvas width to the target mark, preserving its stroke color. An absent or disabled outline is enabled in black.
 Constant stroke and width modes create no scale or legend.
 
 `encodeStrokeWidth({ field, target?, fieldType?, scale? })` instead creates an
-independent quantitative width scale for a line or rule. Rules receive one
+independent quantitative width scale for a line, rule, or rect. Rules receive one
 width per source row. Lines receive one width per complete series, so all rows
 in one series must contain the same field value. No implicit mean, sum, or
 representative row is selected. The default concrete width range is `[1, 8]`.
@@ -23088,8 +23093,9 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `field` | Required | `string` |
+| `value` | Optional / branch-dependent | `PointShape \| undefined` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `field` | Optional / branch-dependent | `string \| undefined` |
 | `fieldType` | Optional / branch-dependent | `"nominal" \| undefined` |
 | `scale` | Optional / branch-dependent | `ShapeScaleOptions \| undefined` |
 
@@ -40061,7 +40067,10 @@ Related types: [`ColorLayout`](./reference/types/#type-colorlayout).
  Expand ShapeEncodingOptions
 
 ```typescript
-export type ShapeEncodingOptions = {
+export type ShapeEncodingOptions =
+  | { value: PointShape; target?: string; field?: never; fieldType?: never; scale?: never }
+  | {
+  value?: never;
   field: string;
   target?: string;
   fieldType?: "nominal";
@@ -40069,7 +40078,7 @@ export type ShapeEncodingOptions = {
 };
 ```
 
-Related types: [`ShapeScaleOptions`](./reference/types/#type-shapescaleoptions).
+Related types: [`PointShape`](./reference/types/#type-pointshape) · [`ShapeScaleOptions`](./reference/types/#type-shapescaleoptions).
 
 ### `ShapeScaleOptions` {#type-shapescaleoptions}
 
@@ -41795,12 +41804,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/3948b679a6d1114e7c7279114c81ae2eb087f530/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/3948b679a6d1114e7c7279114c81ae2eb087f530/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -44546,9 +44555,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:71f0099d92c0e276f57dd3a7c15f7ef624131ca68edc4e819208af5ed8b2eb2e` |
+| Contract fingerprint | `sha256:ed84c9caa6e9efb3248d058948f7f6c8ded78e29b918fe930709ffa964f0dc33` |
 | Example and dataset source | `ab206c446ae5010eecfd859427775c4785d8aed4` |
-| Runtime source commit | `3948b679a6d1114e7c7279114c81ae2eb087f530` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 298 |
 | Declared actions in that release | 234 |

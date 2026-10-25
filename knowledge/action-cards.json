@@ -10779,14 +10779,19 @@
       },
       "options": [
         {
-          "name": "field",
-          "required": true,
-          "type": "string"
+          "name": "value",
+          "required": false,
+          "type": "PointShape | undefined"
         },
         {
           "name": "target",
           "required": false,
           "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+        },
+        {
+          "name": "field",
+          "required": false,
+          "type": "string | undefined"
         },
         {
           "name": "fieldType",
@@ -10800,9 +10805,9 @@
         }
       ],
       "callPatterns": [
-        "encodeShape({ field, target?, scale?, fieldType? })"
+        "encodeShape({ target?, scale?, value?, field?, fieldType? })"
       ],
-      "snippet": "program.encodeShape({ field: \"value\" })",
+      "snippet": "program.encodeShape({ value: \"circle\" })",
       "errors": [],
       "route": "/reference/actions/encodings/#encodeshape"
     },

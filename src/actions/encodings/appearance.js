@@ -1,3 +1,4 @@
+import { validatePointShape } from "../../grammar/pointShapes.js";
 import { APPEARANCE_MARK_TYPES } from "../../core/vocabulary.js";
 import { removeEncoding } from "./remove.js";
 import { canMaterializeBar } from "../../materialization/marks/index.js";
@@ -180,9 +181,24 @@ const encodeSize = /* @__PURE__ */ action(
 const encodeShape = /* @__PURE__ */ action(
   {
     op: "encodeShape",
-    description: "Encode a nominal field as point shape."
+    description: "Assign constant or field-driven point shape."
   },
   function (args = {}) {
+    validateOptions(args, [...FIELD_OPTIONS, "value"], "encodeShape");
+    const hasValue = Object.hasOwn(args, "value");
+    if (hasValue === Object.hasOwn(args, "field")) {
+      throw new Error("encodeShape requires exactly one of value or field.");
+    }
+    if (hasValue) {
+      if (args.fieldType !== undefined || args.scale !== undefined) {
+        throw new Error("Constant shape does not accept fieldType or scale.");
+      }
+      const shape = validatePointShape(args.value);
+      const { id: target, layer } = resolveTarget(this, args.target, APPEARANCE_MARK_TYPES.encodeShape, "point mark");
+      const next = layer.encoding?.shape === undefined ? this
+        : removeEncoding.call(this, { target, channel: "shape" });
+      return next.editPointMark({ target, shape });
+    }
     return encodeAppearanceField(this, "shape", args, "encodeShape");
   }
 );

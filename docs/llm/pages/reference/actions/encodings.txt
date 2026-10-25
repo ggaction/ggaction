@@ -392,8 +392,9 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `field` | Required | `string` |
+| `value` | Optional / branch-dependent | `PointShape \| undefined` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `field` | Optional / branch-dependent | `string \| undefined` |
 | `fieldType` | Optional / branch-dependent | `"nominal" \| undefined` |
 | `scale` | Optional / branch-dependent | `ShapeScaleOptions \| undefined` |
 

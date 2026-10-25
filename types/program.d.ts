@@ -4780,7 +4780,10 @@ export type SizeEncodingOptions =
   | { fieldType: "nominal" | "ordinal"; scale?: CategoricalSizeScaleOptions }
 ));
 
-export type ShapeEncodingOptions = {
+export type ShapeEncodingOptions =
+  | { value: PointShape; target?: string; field?: never; fieldType?: never; scale?: never }
+  | {
+  value?: never;
   field: string;
   target?: string;
   fieldType?: "nominal";

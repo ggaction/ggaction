@@ -7,7 +7,7 @@ import { resolveAdjacentSource } from "./materialization/adjacentSource.js";
 import { normalizeActionTargets } from "./grammar/actionTargets.js";
 import { resolveGraphicClipBounds, resolveGraphicParentOffset } from "./grammar/schemas/graphicBounds.js";
 import { resolveFacetDefinition, resolveFacetGridDefinition } from "./grammar/facets/index.js";
-import { APPEARANCE_MARK_TYPES } from "./core/vocabulary.js";
+import { APPEARANCE_MARK_TYPES, FIXED_APPEARANCE_MARK_TYPES } from "./core/vocabulary.js";
 import { ChartProgram } from "./ChartProgram.js";
 import { BasicChartProgram } from "./BasicChartProgram.js";
 import { getWrappedActionMetadata, supportsScopedActionTargets } from "./core/action.js";
@@ -154,7 +154,8 @@ export function describeAction(program, { action, target, options = {} } = {}) {
         findings: [{ severity: "error", code: "incompatible-resource", reason: "target-mismatch", message: `Inspection target "${target.id}" conflicts with options.target "${options.target}".`, resource: resourceRef(target.kind, target.id, target.childPath), optionPath: "target" }]
       });
     }
-    const markTypes = APPEARANCE_MARK_TYPES[action];
+    const markTypes = options.field !== undefined ? APPEARANCE_MARK_TYPES[action]
+      : FIXED_APPEARANCE_MARK_TYPES[action] ?? APPEARANCE_MARK_TYPES[action];
     if (markTypes && (target.kind !== "mark" || !markTypes.includes(targetResource.mark?.type))) {
       return cloneAndFreeze({
         version: 1, action, applicability: "unsupported", parameterDefinitions: [], requirements: [],
@@ -171,7 +172,12 @@ export function describeAction(program, { action, target, options = {} } = {}) {
       parameterDefinitions: [], requirements: [], checks: [], findings: [{ severity: "info", code: "unsupported-format", reason: typeof fn === "function" ? "extension-unverified" : "action-unavailable", message: `Action "${action}" has no built-in inspection descriptor.` }]
     });
   }
-  const descriptor = ACTION_DESCRIPTORS.get(action);
+  let descriptor = ACTION_DESCRIPTORS.get(action);
+  if (targetResource?.mark && FIXED_APPEARANCE_MARK_TYPES[action]?.includes(targetResource.mark.type)
+      && !APPEARANCE_MARK_TYPES[action].includes(targetResource.mark.type)) {
+    descriptor = { ...descriptor, options: descriptor.options.filter(definition =>
+      !["field", "fieldType", "scale"].includes(definition.path)) };
+  }
   const optionNames = metadata.options ?? descriptor?.options.map(option => option.path);
   if (optionNames === undefined) {
     return cloneAndFreeze({

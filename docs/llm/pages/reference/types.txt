@@ -9801,7 +9801,10 @@ Related types: [`ColorLayout`](../../../reference/types/#type-colorlayout).
  Expand ShapeEncodingOptions
 
 ```typescript
-export type ShapeEncodingOptions = {
+export type ShapeEncodingOptions =
+  | { value: PointShape; target?: string; field?: never; fieldType?: never; scale?: never }
+  | {
+  value?: never;
   field: string;
   target?: string;
   fieldType?: "nominal";
@@ -9809,7 +9812,7 @@ export type ShapeEncodingOptions = {
 };
 ```
 
-Related types: [`ShapeScaleOptions`](../../../reference/types/#type-shapescaleoptions).
+Related types: [`PointShape`](../../../reference/types/#type-pointshape) · [`ShapeScaleOptions`](../../../reference/types/#type-shapescaleoptions).
 
 ### `ShapeScaleOptions` {#type-shapescaleoptions}
 

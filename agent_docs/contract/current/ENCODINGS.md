@@ -653,8 +653,9 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 - Signature: `encodeStrokeWidth({ target?, value })` or
   `encodeStrokeWidth({ target?, field, fieldType?, scale? })`.
-- Constant mode targets Line, Rule or Rect: `value` is a non-negative finite logical Canvas
-  width, creates no scale or legend, and rematerializes every rule child.
+- Constant mode targets Point, Bar, Area, Arc, Tick, Line, Rule or Rect: `value` is a non-negative finite logical Canvas
+  width, creates no scale or legend, and rematerializes the target. Existing stroke/color, position and other appearance stay intact. An absent or disabled outline is enabled with black; existing field strokes are preserved.
+- 사용자 승인(2026-10-25): 기존 `encodeStrokeWidth({target,value})`의 고정 두께 지원 대상을 확장한다. Field 지원 범위는 유지하며 inspection도 고정만 가능한 mark에서는 field 옵션을 제공하지 않는다.
 - Field mode targets a line, rule or rect, defaults `fieldType` to `"quantitative"`, creates an independent
   `strokeWidth` scale, and maps to concrete logical Canvas widths. Default range is `[1, 8]`; explicit range
   must be an ascending pair of non-negative finite widths.
@@ -684,7 +685,8 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   ranges; missing/non-finite/negative and unequal-series rejection; field reassignment and constant restore;
   scale edit, standalone sampled legend, Canvas/PNG rendering, immutable earlier state, and primitive/public
   parity.
-- Evidence: `test/unit/actions/encodings/rule-appearance-encodings.test.js`,
+- Evidence: `test/unit/actions/encodings/fixed-stroke-width.test.js` (fixed-width target coverage, absent outline, field preservation, validation, inspection and rematerialization),
+  `test/unit/actions/encodings/rule-appearance-encodings.test.js`,
   `test/unit/actions/encodings/line-series-encodings.test.js`,
   `test/unit/actions/guides/stroke-width-legend.test.js`, and
   `test/charts/cars-error-bar/variants/field-stroke-width/`.
@@ -1413,7 +1415,9 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 ## `encodeShape`
 
-- Signature: `encodeShape({ field, target?, fieldType?, scale? })`
+- Signature: `encodeShape({ value, target? } | { field, target?, fieldType?, scale? })`
+- 사용자 승인(2026-10-25): 고정 모양과 변수 매핑을 같은 action에서 선택한다. `value`와 `field`는 정확히 하나만 허용한다.
+- `value`: `PointShape` 이름 또는 polygon. 고정 모양은 `fieldType`/`scale`을 거부한다. 기존 shape encoding과 해당 범례를 해제하고 point config에 저장하여 재구체화한다. 다른 채널과 공유 scale의 다른 소비자는 유지한다.
 - `field`, `target`, `fieldType`: nominal field, optional point ID, nominal-only type다.
 - `scale`: ordinal shape scale. Shared `PointShape` 14종을 non-repeating automatic range로 사용한다. Explicit range/unknown은 named shape 또는 MARKS.md의 단순 polygon을 받으며 normalization도 보존한다. Explicit range는 category별 shape entry를 제공하며 의도적인 shape 재사용을 허용한다. Domain보다 짧은 range는 오류이고 암묵적 cycling은 하지 않는다.
 - Effect: point graphic을 heterogeneous collection으로 바꾸고 각 datum의 concrete primitive type과
@@ -1422,7 +1426,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 ### Formal values — `encodeShape`
 
-- Implemented: `encodeShape({ field: FieldName; target?: UserId; fieldType?: "nominal"; scale?: { id?: UserId; type?: "ordinal"; domain?: OrdinalDomain; range?: "auto" | readonly PointShape[]; unknown?: PointShape } })`
+- Implemented: `encodeShape({ value: PointShape; target?: UserId } | { field: FieldName; target?: UserId; fieldType?: "nominal"; scale?: { id?: UserId; type?: "ordinal"; domain?: OrdinalDomain; range?: "auto" | readonly PointShape[]; unknown?: PointShape } })`
 - Reassignment: 다시 호출하면 shape field와 compatible scale binding을 교체하고 heterogeneous point
   children 및 existing shape legend를 rematerialize한다.
 - Proposed (NOT IMPLEMENTED): —
@@ -1434,7 +1438,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - `scale.domain/range`
   - ✅ Covered: fourteen-name automatic and explicit named/polygon range, supported-value validation, explicit repeated assignments, capacity error and heterogeneous output.
   - ✅ Covered: named equal-area and explicit polygon area/radius mark/legend recipes, unknown fallback, and concrete closed paths.
-- Evidence: point appearance, mark-schema and regression chart/guide tests.
+- Evidence: point appearance, mark-schema and regression chart/guide tests. `test/unit/actions/encodings/fixed-shape.test.js` covers fixed/field reassignment, validation, immutability, rematerialization, and inspection.
 
 ## `encodeAngle`
 
