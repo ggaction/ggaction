@@ -1888,7 +1888,10 @@ filterMarks({ target?, mode?, grain?, field | channel | property, op, ...operand
 
 Retain matching final mark items through the shared selector grammar. Repeated
 filters are idempotent when equal and use explicit `replace` or `compose` mode
-when different. Empty results preserve the preceding scale domains.
+when different. Automatic histogram position domains fit the surviving bins'
+outer edges without rebinning, preserving interior gaps and other scale consumers'
+ranges. Inferred guides follow that domain; explicit domains and zero inclusion
+remain in effect. Empty results preserve the preceding scale domains.
 An explicit Raincloud parent ID selects raw observations by `field` at item grain
 and recomputes all enabled components. It accepts comparisons, sets, ranges, and
 grouped ranks; rendered channel/property selectors still require a child ID.

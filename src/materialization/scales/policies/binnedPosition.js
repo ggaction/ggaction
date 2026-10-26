@@ -1,6 +1,6 @@
 import { isSourceOwnedText } from "../../../grammar/text.js";
 import { compositionChannel } from "../../../selectors/plotComposition.js";
-import { resolveHistogramBins } from "../../../grammar/histogram.js";
+import { findHistogramBinIndex, resolveHistogramBins } from "../../../grammar/histogram.js";
 
 export function resolveBinnedPositionDomain({
   valuesByConsumer,
@@ -41,15 +41,32 @@ export function resolveBinnedPositionDomain({
   if (binDefinitions.size !== 1) {
     throw new Error(`Binned scale "${id}" requires one shared bin definition.`);
   }
-  const domain = resolveHistogramBins({
+  const bins = resolveHistogramBins({
     values: binnedPositions.flatMap(item => item.values).filter(value => value !== undefined),
     bin: binnedPositions[0].consumer.encoding.bin,
     domain: scale.domain,
     nice: scale.nice ?? true,
     zero: scale.zero ?? false
-  }).domain;
-  if (Array.isArray(scale.domain)) return domain;
-  let [minimum, maximum] = domain;
+  });
+  if (Array.isArray(scale.domain)) return bins.domain;
+  let [minimum, maximum] = bins.domain;
+  // A final-item filter freezes the bin partition so surviving observations
+  // are never rebinned. Those boundaries describe the partition, not a fixed
+  // display domain: auto scales follow the retained bins' complete intervals.
+  // An unfiltered consumer still contributes its full requested bin extent.
+  if (binnedPositions.every(({ consumer }) => program?.markConfigs[consumer.layer.id]?.markFilter)) {
+    let first = Infinity, last = -1;
+    for (const { values } of binnedPositions) for (const value of values) {
+      if (!Number.isFinite(value)) continue;
+      const index = findHistogramBinIndex(value, bins.boundaries);
+      if (index < 0) continue;
+      first = Math.min(first, index); last = Math.max(last, index);
+    }
+    if (last >= 0) {
+      minimum = bins.boundaries[first]; maximum = bins.boundaries[last + 1];
+      if (scale.zero) { minimum = Math.min(0, minimum); maximum = Math.max(0, maximum); }
+    }
+  }
   for (const { values } of independentConsumers) for (const value of values) {
     if (!Number.isFinite(value)) continue;
     minimum = Math.min(minimum, value); maximum = Math.max(maximum, value);

@@ -183,8 +183,12 @@ available and the active mark advances to the next namespaced revision ID.
 The original dataset and earlier program remain unchanged. Apply the filter
 before creating a derived statistical layer when that statistic should use the
 filtered rows; existing independent layers are not silently rebound. Histograms
-retain their pre-filter bin boundaries while active, and line/area filters retain
-complete series. An empty match is a valid empty view: the preceding scale
+retain their pre-filter bin boundaries while active, so filtering never rebins
+the remaining observations. Automatic position domains fit the outer edges of
+the surviving bins, preserving interior gaps and any range required by other
+marks sharing the scale. Inferred ticks and grids follow that fitted domain;
+explicit scale domains and zero inclusion remain in effect. Line/area filters
+retain complete series. An empty match is a valid empty view: the preceding scale
 domains and connected guide meaning stay fixed while mark items, source labels,
 and stale highlight graphics are cleared.
 
