@@ -594,12 +594,16 @@ export function renderToSVG(program, options = {}) {
     rootCanvas,
     { nested: false }
   );
+  let namespace = resolvedOptions.resourceNamespace;
   const state = {
     clipCount: 1,
     definitions: [],
     gradientCount: 1,
-    resourceNamespace:
-      resolvedOptions.resourceNamespace ?? resourceNamespace(graphicSpec)
+    // Solid, unclipped graphics do not emit local resource references. Compute
+    // the exact content-derived namespace only when a clip or gradient needs it.
+    get resourceNamespace() {
+      return namespace ??= resourceNamespace(graphicSpec);
+    }
   };
   walkGraphicTreeEvents(graphicSpec, {
     enter({object}) {
@@ -639,8 +643,9 @@ export function renderToSVG(program, options = {}) {
 // Internal adapter: only concrete graphics and opaque correspondence keys enter here.
 export function renderTransitionGraphics(graphicSpec, identities) {
   const scene = collectTransitionGraphics(graphicSpec, identities);
+  let namespace;
   const state = { definitions: [], gradientCount: 1, clipCount: 1,
-    resourceNamespace: `scene-${resourceNamespace(graphicSpec)}` };
+    get resourceNamespace() { return namespace ??= `scene-${resourceNamespace(graphicSpec)}`; } };
   const nodes = scene.nodes.map(({ properties, clips, ...node }) => ({ ...node,
     svg: serializeConcreteGraphic(state, node.key, { type: node.type, properties }) }));
   return { version: 1, width: scene.width, height: scene.height,

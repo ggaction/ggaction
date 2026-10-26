@@ -11,6 +11,11 @@ export const STROKE_STYLE_PROPERTIES = Object.freeze([
   "lineJoin",
   "miterLimit"
 ]);
+// Bounds and collision checks resolve this small vocabulary for every mark.
+// Share the nine common immutable results rather than allocating per item;
+// nondefault miter limits remain uncached so arbitrary user values stay bounded.
+const commonStrokeDetails = new Map(LINE_CAPS.flatMap(lineCap => LINE_JOINS.map(lineJoin =>
+  [`${lineCap}:${lineJoin}`, freezeOwned({ lineCap, lineJoin, miterLimit: DEFAULT_MITER_LIMIT })])));
 
 function validateEnum(value, values, property, label) {
   if (typeof value !== "string") {
@@ -46,17 +51,18 @@ export function resolveStrokeDetails(request = {}) {
   if (!isPlainObject(request)) {
     throw new TypeError("Stroke style details must be a plain object.");
   }
-  return freezeOwned({
-    lineCap: request.lineCap === undefined
+  const lineCap = request.lineCap === undefined
       ? DEFAULT_LINE_CAP
-      : validateLineCap(request.lineCap),
-    lineJoin: request.lineJoin === undefined
+      : validateLineCap(request.lineCap);
+  const lineJoin = request.lineJoin === undefined
       ? DEFAULT_LINE_JOIN
-      : validateLineJoin(request.lineJoin),
-    miterLimit: request.miterLimit === undefined
+      : validateLineJoin(request.lineJoin);
+  const miterLimit = request.miterLimit === undefined
       ? DEFAULT_MITER_LIMIT
-      : validateMiterLimit(request.miterLimit)
-  });
+      : validateMiterLimit(request.miterLimit);
+  return miterLimit === DEFAULT_MITER_LIMIT
+    ? commonStrokeDetails.get(`${lineCap}:${lineJoin}`)
+    : freezeOwned({ lineCap, lineJoin, miterLimit });
 }
 
 export function requestedStrokeDetails(request = {}, label = "Stroke style") {
