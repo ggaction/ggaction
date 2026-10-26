@@ -20,7 +20,7 @@ import { resolveMarkSelection } from "./selection/state.js";
 import { mapScaleConsumerValues } from "./scales/map.js";
 import { resolveRowEncodingValues } from "./rowEncoding.js";
 
-function sourceValue(item, source, field) {
+export function sourceValue(item, source, field) {
   const measure = source.mark.type === "bar" ? resolveBarChannels(source).measure
     : source.mark.type === "arc" ? "radius" : undefined;
   const encoding = source.encoding?.[measure];

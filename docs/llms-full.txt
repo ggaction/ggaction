@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.25.
 
-Contract: sha256:34a6b8c8372d10e4d7e77c1f9c06c0bcf192b22dcbe1f735dda7d37fcd5c6285. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:43823d85b50ea255c241041efe632497863d6df00dcb33e1858e3f916f68862d. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -17111,6 +17111,8 @@ program.editParallelAxis({ target: "plot", field: "region",
 Use `editTextMark({target, textOverrides})` to replace one annotation or mark label by semantic identity. Each entry contains `match: {fields?, channels?}`, a zero-based `occurrence` among matching items, and literal `text`. Specify the full available identity to preserve its meaning when filtering. Omitted items keep their encoded text; unmatched overrides remain inactive. Arrays replace the override policy, and `"auto"` resets it. Text supports explicit line breaks, including blank lines, in Canvas, SVG and PDF.
 
 Explicit line breaks also work in category labels, polar axis titles, and facet field titles. Native layout measures the complete text block when reserving space; removing the breaks restores single-line geometry.
+
+`createMarkLabels({ layout: {} })` and `layoutLabels()` reduce label collisions without changing their values. Labels keep their stable order, and unresolved overlaps remain visible in layout diagnostics. The work limit applies to actual candidate and nearby-label checks, so a large set of already separated labels does not fail solely because of its size.
 
 ```js
 program.editTextMark({ target: "labels", textOverrides: [{
@@ -44630,7 +44632,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:34a6b8c8372d10e4d7e77c1f9c06c0bcf192b22dcbe1f735dda7d37fcd5c6285` |
+| Contract fingerprint | `sha256:43823d85b50ea255c241041efe632497863d6df00dcb33e1858e3f916f68862d` |
 | Example and dataset source | `ab206c446ae5010eecfd859427775c4785d8aed4` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

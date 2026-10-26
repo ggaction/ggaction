@@ -1,5 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { resolveLabelLayoutOracle } from "../../oracles/label-layout.js";
+import { resolveTextBounds } from "../../../src/core/textMetrics.js";
 
 import {
   DEFAULT_LABEL_LAYOUT_GEOMETRY,
@@ -209,7 +211,7 @@ test("rejects malformed bounds and item identity", () => {
 
 test("rejects label layouts above the shared work budget", () => {
   assert.throws(() => resolveLabelLayout({
-    items: Array.from({ length: 120 }, (_, index) => ({
+    items: Array.from({ length: 1200 }, (_, index) => ({
       id: `label-${index}`,
       x: 10,
       y: 10,
@@ -220,4 +222,34 @@ test("rejects label layouts above the shared work budget", () => {
     })),
     bounds: boundary
   }), /Label layout work must not exceed 10000000/);
+});
+
+test("indexed collision search retains ordered brute-force placement and warning pairs", () => {
+  for (const axis of ["x", "y", "both"]) for (const size of [10, 2000]) {
+    const items = Array.from({ length: 32 }, (_, index) => ({ id: `label-${index}`,
+      x: (index * 31) % 127 - 40, y: (index * 17) % 73 - 30,
+      sourceX: 0, sourceY: 0, text: String(index % 7), fontSize: size,
+      textAlign: "center", textBaseline: "middle" }));
+    const options = { items, axis, padding: 2, maxDisplacement: 6,
+      bounds: { left: -100, right: 150, top: -100, bottom: 150 } };
+    // Hold measured rectangles constant to independently check the collision
+    // solver against the brute-force oracle, rather than its legacy font model.
+    const actual = resolveLabelLayout(options), expected = resolveLabelLayoutOracle(options,
+      (item, offset = { x: 0, y: 0 }) => resolveTextBounds({ ...item, x: item.x + offset.x, y: item.y + offset.y }));
+    assert.deepEqual(actual.items.map(item => [item.id, item.dx, item.dy]), expected.items.map(item => [item.id, item.dx, item.dy]));
+    assert.deepEqual(actual.warnings, expected.warnings);
+    assert.equal(actual.overlapBefore, expected.overlapBefore);
+    assert.equal(actual.overlapAfter, expected.overlapAfter);
+  }
+});
+
+test("separated dense text uses actual nearby work instead of a quadratic estimate", () => {
+  const items = Array.from({ length: 5000 }, (_, index) => ({ id: `label-${index}`,
+    x: index % 100 * 40 + 10, y: Math.floor(index / 100) * 30 + 10,
+    sourceX: 0, sourceY: 0, text: "A", fontSize: 10 }));
+  const result = resolveLabelLayout({ items, bounds: { left: 0, right: 4000, top: 0, bottom: 1500 } });
+  assert.equal(result.items.length, items.length);
+  assert.ok(result.items.every(item => item.dx === 0 && item.dy === 0));
+  assert.equal(result.overlapBefore, 0); assert.equal(result.overlapAfter, 0);
+  assert.deepEqual(result.warnings, []);
 });

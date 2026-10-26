@@ -136,6 +136,8 @@ Use `editTextMark({target, textOverrides})` to replace one annotation or mark la
 
 Explicit line breaks also work in category labels, polar axis titles, and facet field titles. Native layout measures the complete text block when reserving space; removing the breaks restores single-line geometry.
 
+`createMarkLabels({ layout: {} })` and `layoutLabels()` reduce label collisions without changing their values. Labels keep their stable order, and unresolved overlaps remain visible in layout diagnostics. The work limit applies to actual candidate and nearby-label checks, so a large set of already separated labels does not fail solely because of its size.
+
 ```js
 program.editTextMark({ target: "labels", textOverrides: [{
   match: { fields: { region: "North", sales: 12 } }, occurrence: 0,

@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:34a6b8c8372d10e4d7e77c1f9c06c0bcf192b22dcbe1f735dda7d37fcd5c6285",
+    "contractId": "sha256:43823d85b50ea255c241041efe632497863d6df00dcb33e1858e3f916f68862d",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -1963,8 +1963,8 @@
         "coordinates-and-composition",
         "individual-display-text"
       ],
-      "bytes": 9947,
-      "sha256": "c2b49cca131e3983f029c55ff171f8d221d0cc344edc57438b411c6a90b6265e"
+      "bytes": 10306,
+      "sha256": "0d83130a075bfcecd451a278ccaa7b01bc94380f8cce352bab68a34a539365bf"
     },
     {
       "order": 117,
@@ -3473,7 +3473,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "afc605384e3a41f453f578400f97064ec186acfeea4af0348da05029b405a809"
+      "sha256": "a53eb76d0c6b301f02c64ea94aeac4e9ffc903c51c6469c6e4a7dac337a49f0b"
     },
     {
       "order": 150,

@@ -1294,6 +1294,10 @@ Horizontal Cartesian lines transpose the same series derivation when X is quanti
 - The action rematerializes semantic base text, visits concrete items in stable order, and selects the first in-bounds
   zero-overlap candidate. If no candidate satisfies both constraints, it stores deterministic `overlap` or `bounds`
   warnings and the best-effort result rather than silently claiming success.
+- Collision queries index nearby concrete bounds while preserving the original item order and tie breaking.
+  The shared work budget counts actual candidate/nearby-rectangle checks, including warning-pair detection,
+  rather than rejecting separated labels using a quadratic worst-case estimate. Oversized coordinates and
+  bounds use a bounded ordered fallback. Evidence: `test/unit/layout/labels.test.js`.
 - A leader object enables target-owned line graphics from the stored source anchor to a displaced label. Its optional
   `stroke`, `strokeWidth`, `strokeDash`, and `opacity` use ordinary line vocabularies. Repeated assignment replaces the
   complete policy and recomputes from semantic base text.
