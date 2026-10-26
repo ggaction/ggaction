@@ -111,3 +111,9 @@ consumer와 browser/renderer parity를 검증한다. 새 옵션 때문에 기존
 - 추가 profile 때문에 advanced minimum/declared targets는 1,555/1,577로 늘었다. 3,600-chart 총량과 기존 모든 required recipe를 유지하며 단순 tier의 여유 슬롯 하나를 advanced로 이동해 dataset당 simple/intermediate/advanced/composite를 6/27/32/7로 배정했다. Capacity 계약이 통과했다.
 - 전체 source 6,274개 중 기능 검사 6,272개가 통과했으며 source import boundary와 새 lookup 테스트의 capability 등록 2건을 수정했다. 관련 35개 검사가 통과했다. Import boundary는 완화하지 않고 순수 ownership 조회를 selectors로, 저장/실행 공통 row bounds 검증을 grammar로 옮겼다.
 - Coverage는 line 95.78%, branch 93.34%, function 98.72%였다. Critical floor 별도 점검으로 interval center의 source-row 재평가 실행 누락을 찾아 point와 owned error bar가 함께 바뀌고 복원/해제되는 회귀 검사를 추가했다. 수정된 최종 source로 전체 coverage를 다시 실행한다.
+
+## 최종 렌더 검증
+
+- 최종 source `4281e73a`에서 6,275 tests/0 failures/0 skips, line 95.80%, branch 93.36%, function 98.73%, 182 critical floors가 통과했다.
+- CI의 source와 295 browser 검사는 통과했다. Render에서 확인한 PDF literal fixture의 폰트 자원을 native renderer와 같게 맞췄으며, 실패 출력은 bounded byte comparison으로 제한했다. 픽셀 허용 오차를 추가하지 않았다.
+- CI의 Linux Polar PNG 3개를 내려받아 직접 검토했다. 텍스트 잘림 없이 의도한 차트가 그려지며, 각 primitive/public decoded pixels가 byte-exact 일치했다. Native fallback 폰트가 바꾼 잉크 외곽만 Linux baseline에 반영했고 기존 tolerance와 ink-density/region 조건은 유지했다. 관련 PDF/PNG 검사 5개가 통과했다.
