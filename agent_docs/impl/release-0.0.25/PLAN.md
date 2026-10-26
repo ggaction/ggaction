@@ -8,7 +8,7 @@
 - [x] #274 categorical overflow summary symbol
 - [x] #271 interval color/stroke + size + ordinal shape 단일 범례
 - [x] 새 기능과 기존 composition/guide lifecycle 회귀 보강
-- [ ] 정확한 source provenance, 공개 타입/계약/문서 및 LLM 생성물 동기화
+- [x] 정확한 source provenance, 공개 타입/계약/문서 및 LLM 생성물 동기화
 - [ ] 전체 source/coverage/realistic/browser/render/package/docs/platform CI
 - [ ] main 병합, annotated tag, 동일 candidate의 npm/GitHub/Pages 배포 및 공개 해시 검증
 
@@ -123,3 +123,4 @@ consumer와 browser/renderer parity를 검증한다. 새 옵션 때문에 기존
 - CI에서 확인한 극좌표 축/범례 정렬, 범례 alongOffset, Strip/Beeswarm/Raincloud missing 및 Radar wide summary/normalize 실행 누락을 실제 데이터 profile에 추가했다. 평균과 중앙값은 원본 반복 그룹에서 계산하고, 각 wide Radar witness의 기본 theta/radius 자원을 제거해 정규화 유무에 따른 이름 충돌을 막는다.
 - Strip/Beeswarm/Regression에는 stroke encoding 입력이 없으므로 color-size-shape 범례의 mapped fill을 고정 값으로 덮어쓰는 symbol.fill은 실행할 수 없다. 해당 3개 facade 타입에서만 이 잘못된 허용을 제거하고, 유효한 stroke/opacity 및 Scatter의 mapped-stroke fill을 보존하는 컴파일 회귀를 추가했다. 테스트 제외를 추가하지 않았다.
 - 재계산한 public inventory는 24,424 option paths, 16,904 required paths, 30,363 ledger requirements다. 나머지 literal/diversity 및 5회/3개 데이터셋 기준은 유지한다. 최종 전체 CI와 annotated-tag candidate 검증은 여전히 필요하다.
+- 8개 실제 데이터셋의 계층형 facade 전체 path/literal/diversity 검사가 391.3초에 통과했다. 공개 inventory 검사, facade 타입 회귀, 문서 158개 검사가 통과했다. 새 타입 기준 package는 654 entries, packed 974,397/unpacked 4,574,796 bytes로 기존 한도 이내다. `b1b36589` source/type commit을 기준으로 release provenance와 공개/LLM 생성물을 다시 동기화했다.

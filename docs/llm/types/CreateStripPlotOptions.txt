@@ -15,7 +15,7 @@ export type CreateStripPlotOptions = {
     stroke?: FilledMarkStroke;
     strokeWidth?: number;
   };
-  guides?: false | CartesianGuideOptions;
+  guides?: false | ColorMappedPointGuideOptions;
 } & (
   | { x: RugMeasureChannel; y?: never; jitter?: false | StripPixelJitterOptions }
   | { x: RugMeasureChannel; y: StripCategoryChannel; jitter?: false | StripBandJitterOptions }

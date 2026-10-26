@@ -3,3 +3,5 @@ type CartesianGuideOptions = {
   grid?: false | CartesianGridOptions;
   legend?: false | (DistributiveLegendOmit<FilledMarkLegendOptions, "order"> & { order?: CartesianLegendOrder });
 };
+// These constructors map hue through color, so their combined legend cannot
+// override fill. Scatter and direct legend actions also support mapped stroke.

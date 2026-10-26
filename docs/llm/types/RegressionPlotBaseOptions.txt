@@ -8,5 +8,5 @@ type RegressionPlotBaseOptions = {
   size?: BasicSizeChannel;
   shape?: BasicShapeChannel;
   point?: CreateScatterPlotOptions["point"];
-  guides?: false | CartesianGuideOptions;
+  guides?: false | ColorMappedPointGuideOptions;
 };

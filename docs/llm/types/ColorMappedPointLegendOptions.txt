@@ -1,0 +1,5 @@
+type ColorMappedPointLegendOptions =
+  | Exclude<FilledMarkLegendOptions, { combine: "color-size-shape" }>
+  | (Omit<Extract<FilledMarkLegendOptions, { combine: "color-size-shape" }>, "symbol"> & {
+      symbol?: "auto" | { type?: "point"; stroke?: string; strokeWidth?: number; opacity?: number };
+    });

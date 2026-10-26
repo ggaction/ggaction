@@ -114,7 +114,7 @@
     {
       "name": "guides",
       "required": false,
-      "type": "false | CartesianGuideOptions | undefined"
+      "type": "false | ColorMappedPointGuideOptions | undefined"
     },
     {
       "name": "x",

@@ -1738,6 +1738,8 @@ type CartesianGuideOptions = {
   grid?: false | CartesianGridOptions;
   legend?: false | (DistributiveLegendOmit<FilledMarkLegendOptions, "order"> & { order?: CartesianLegendOrder });
 };
+// These constructors map hue through color, so their combined legend cannot
+// override fill. Scatter and direct legend actions also support mapped stroke.
 ```
 
 </details>
@@ -2113,6 +2115,38 @@ export type ColorLayout =
 ```
 
 </details>
+
+### `ColorMappedPointGuideOptions` {#type-colormappedpointguideoptions}
+
+<details markdown="1">
+<summary>Expand ColorMappedPointGuideOptions</summary>
+
+```typescript
+type ColorMappedPointGuideOptions = Omit<CartesianGuideOptions, "legend"> & {
+  legend?: false | (DistributiveLegendOmit<ColorMappedPointLegendOptions, "order"> & { order?: CartesianLegendOrder });
+};
+```
+
+</details>
+
+Related types: [`CartesianGuideOptions`](#type-cartesianguideoptions) · [`DistributiveLegendOmit`](#type-distributivelegendomit) · [`ColorMappedPointLegendOptions`](#type-colormappedpointlegendoptions) · [`CartesianLegendOrder`](#type-cartesianlegendorder).
+
+### `ColorMappedPointLegendOptions` {#type-colormappedpointlegendoptions}
+
+<details markdown="1">
+<summary>Expand ColorMappedPointLegendOptions</summary>
+
+```typescript
+type ColorMappedPointLegendOptions =
+  | Exclude<FilledMarkLegendOptions, { combine: "color-size-shape" }>
+  | (Omit<Extract<FilledMarkLegendOptions, { combine: "color-size-shape" }>, "symbol"> & {
+      symbol?: "auto" | { type?: "point"; stroke?: string; strokeWidth?: number; opacity?: number };
+    });
+```
+
+</details>
+
+Related types: [`FilledMarkLegendOptions`](#type-filledmarklegendoptions).
 
 ### `CompleteAxisOptions` {#type-completeaxisoptions}
 
@@ -2614,7 +2648,7 @@ export type CreateBeeswarmPlotOptions = {
     strokeWidth?: number;
   };
   packing?: false | BeeswarmPackingOptions;
-  guides?: false | CartesianGuideOptions;
+  guides?: false | ColorMappedPointGuideOptions;
 } & (
   | { x: RugMeasureChannel; y: StripCategoryChannel }
   | { x: StripCategoryChannel; y: RugMeasureChannel }
@@ -2623,7 +2657,7 @@ export type CreateBeeswarmPlotOptions = {
 
 </details>
 
-Related types: [`BasicColorChannel`](#type-basiccolorchannel) · [`BasicSizeChannel`](#type-basicsizechannel) · [`BasicShapeChannel`](#type-basicshapechannel) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`PointShape`](#type-pointshape) · [`FilledMarkStroke`](#type-filledmarkstroke) · [`BeeswarmPackingOptions`](#type-beeswarmpackingoptions) · [`CartesianGuideOptions`](#type-cartesianguideoptions) · [`RugMeasureChannel`](#type-rugmeasurechannel) · [`StripCategoryChannel`](#type-stripcategorychannel).
+Related types: [`BasicColorChannel`](#type-basiccolorchannel) · [`BasicSizeChannel`](#type-basicsizechannel) · [`BasicShapeChannel`](#type-basicshapechannel) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`PointShape`](#type-pointshape) · [`FilledMarkStroke`](#type-filledmarkstroke) · [`BeeswarmPackingOptions`](#type-beeswarmpackingoptions) · [`ColorMappedPointGuideOptions`](#type-colormappedpointguideoptions) · [`RugMeasureChannel`](#type-rugmeasurechannel) · [`StripCategoryChannel`](#type-stripcategorychannel).
 
 ### `CreateCoordinateOptions` {#type-createcoordinateoptions}
 
@@ -3482,7 +3516,7 @@ export type CreateStripPlotOptions = {
     stroke?: FilledMarkStroke;
     strokeWidth?: number;
   };
-  guides?: false | CartesianGuideOptions;
+  guides?: false | ColorMappedPointGuideOptions;
 } & (
   | { x: RugMeasureChannel; y?: never; jitter?: false | StripPixelJitterOptions }
   | { x: RugMeasureChannel; y: StripCategoryChannel; jitter?: false | StripBandJitterOptions }
@@ -3492,7 +3526,7 @@ export type CreateStripPlotOptions = {
 
 </details>
 
-Related types: [`BasicColorChannel`](#type-basiccolorchannel) · [`BasicSizeChannel`](#type-basicsizechannel) · [`BasicShapeChannel`](#type-basicshapechannel) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`PointShape`](#type-pointshape) · [`FilledMarkStroke`](#type-filledmarkstroke) · [`CartesianGuideOptions`](#type-cartesianguideoptions) · [`RugMeasureChannel`](#type-rugmeasurechannel) · [`StripPixelJitterOptions`](#type-strippixeljitteroptions) · [`StripCategoryChannel`](#type-stripcategorychannel) · [`StripBandJitterOptions`](#type-stripbandjitteroptions).
+Related types: [`BasicColorChannel`](#type-basiccolorchannel) · [`BasicSizeChannel`](#type-basicsizechannel) · [`BasicShapeChannel`](#type-basicshapechannel) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`PointShape`](#type-pointshape) · [`FilledMarkStroke`](#type-filledmarkstroke) · [`ColorMappedPointGuideOptions`](#type-colormappedpointguideoptions) · [`RugMeasureChannel`](#type-rugmeasurechannel) · [`StripPixelJitterOptions`](#type-strippixeljitteroptions) · [`StripCategoryChannel`](#type-stripcategorychannel) · [`StripBandJitterOptions`](#type-stripbandjitteroptions).
 
 ### `CreateTextPlotOptions` {#type-createtextplotoptions}
 
@@ -10920,13 +10954,13 @@ type RegressionPlotBaseOptions = {
   size?: BasicSizeChannel;
   shape?: BasicShapeChannel;
   point?: CreateScatterPlotOptions["point"];
-  guides?: false | CartesianGuideOptions;
+  guides?: false | ColorMappedPointGuideOptions;
 };
 ```
 
 </details>
 
-Related types: [`RegressionPlotPositionChannel`](#type-regressionplotpositionchannel) · [`BasicColorChannel`](#type-basiccolorchannel) · [`BasicSizeChannel`](#type-basicsizechannel) · [`BasicShapeChannel`](#type-basicshapechannel) · [`CreateScatterPlotOptions`](#type-createscatterplotoptions) · [`CartesianGuideOptions`](#type-cartesianguideoptions).
+Related types: [`RegressionPlotPositionChannel`](#type-regressionplotpositionchannel) · [`BasicColorChannel`](#type-basiccolorchannel) · [`BasicSizeChannel`](#type-basicsizechannel) · [`BasicShapeChannel`](#type-basicshapechannel) · [`CreateScatterPlotOptions`](#type-createscatterplotoptions) · [`ColorMappedPointGuideOptions`](#type-colormappedpointguideoptions).
 
 ### `RegressionPlotPositionChannel` {#type-regressionplotpositionchannel}
 

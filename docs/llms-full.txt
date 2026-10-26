@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.25.
 
-Contract: sha256:66d808315941c9932f33d9286681e4c9bf477476c7ecb0068f57e1c4e5d2e56e. Status: published-release. Runtime source: 45e1d948cd9ccd518d48cb94d7b1e172583654bf. Release baseline: v0.0.13.
+Contract: sha256:6ed50b6d52e7778c82a30d2ce7eb7cb4a1b0db6f18b968d5c1f49702b0992f30. Status: published-release. Runtime source: b1b3658906e2eedda4312f949a6cd627d93f4902. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/45e1d948cd9ccd518d48cb94d7b1e172583654bf/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/b1b3658906e2eedda4312f949a6cd627d93f4902/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/45e1d948cd9ccd518d48cb94d7b1e172583654bf/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/b1b3658906e2eedda4312f949a6cd627d93f4902/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -20238,7 +20238,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `size` | Optional / branch-dependent | `BasicSizeChannel \| undefined` |
 | `shape` | Optional / branch-dependent | `BasicShapeChannel \| undefined` |
 | `point` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
-| `guides` | Optional / branch-dependent | `false \| CartesianGuideOptions \| undefined` |
+| `guides` | Optional / branch-dependent | `false \| ColorMappedPointGuideOptions \| undefined` |
 | `method` | Optional / branch-dependent | `"exp" \| "linear" \| "loess" \| "polynomial" \| undefined` |
 | `interval` | Optional / branch-dependent | `false \| RegressionInterval \| undefined` |
 | `degree` | Optional / branch-dependent | `number \| undefined` |
@@ -20563,7 +20563,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `size` | Optional / branch-dependent | `BasicSizeChannel \| undefined` |
 | `shape` | Optional / branch-dependent | `BasicShapeChannel \| undefined` |
 | `point` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
-| `guides` | Optional / branch-dependent | `false \| CartesianGuideOptions \| undefined` |
+| `guides` | Optional / branch-dependent | `false \| ColorMappedPointGuideOptions \| undefined` |
 | `x` | Required | `string \| { field: string; fieldType?: "quantitative" \| undefined; temporalUnit?: undefined; scale?: NonPointQuantitativePositionScaleOptions \| undefined; } \| { ...; } \| { ...; }` |
 | `y` | Optional / branch-dependent | `string \| { field: string; fieldType?: "quantitative" \| undefined; temporalUnit?: undefined; scale?: NonPointQuantitativePositionScaleOptions \| undefined; } \| { ...; } \| { ...; } \| undefined` |
 | `jitter` | Optional / branch-dependent | `false \| StripBandJitterOptions \| StripPixelJitterOptions \| undefined` |
@@ -20607,7 +20607,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `shape` | Optional / branch-dependent | `BasicShapeChannel \| undefined` |
 | `point` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; radius?: number \| undefined; shape?: PointShape \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: FilledMarkStroke \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `packing` | Optional / branch-dependent | `false \| BeeswarmPackingOptions \| undefined` |
-| `guides` | Optional / branch-dependent | `false \| CartesianGuideOptions \| undefined` |
+| `guides` | Optional / branch-dependent | `false \| ColorMappedPointGuideOptions \| undefined` |
 | `x` | Required | `string \| { field: string; fieldType?: "quantitative" \| undefined; temporalUnit?: undefined; scale?: NonPointQuantitativePositionScaleOptions \| undefined; } \| { ...; } \| { ...; }` |
 | `y` | Required | `string \| { field: string; fieldType?: "quantitative" \| undefined; temporalUnit?: undefined; scale?: NonPointQuantitativePositionScaleOptions \| undefined; } \| { ...; } \| { ...; }` |
 | `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
@@ -31967,6 +31967,8 @@ type CartesianGuideOptions = {
   grid?: false | CartesianGridOptions;
   legend?: false | (DistributiveLegendOmit<FilledMarkLegendOptions, "order"> & { order?: CartesianLegendOrder });
 };
+// These constructors map hue through color, so their combined legend cannot
+// override fill. Scatter and direct legend actions also support mapped stroke.
 ```
 
 Related types: [`CartesianAxesOptions`](./reference/types/#type-cartesianaxesoptions) · [`CartesianGridOptions`](./reference/types/#type-cartesiangridoptions) · [`DistributiveLegendOmit`](./reference/types/#type-distributivelegendomit) · [`FilledMarkLegendOptions`](./reference/types/#type-filledmarklegendoptions) · [`CartesianLegendOrder`](./reference/types/#type-cartesianlegendorder).
@@ -32277,6 +32279,32 @@ export type ColorLayout =
   | "diverging"
   | "center";
 ```
+
+### `ColorMappedPointGuideOptions` {#type-colormappedpointguideoptions}
+
+ Expand ColorMappedPointGuideOptions
+
+```typescript
+type ColorMappedPointGuideOptions = Omit<CartesianGuideOptions, "legend"> & {
+  legend?: false | (DistributiveLegendOmit<ColorMappedPointLegendOptions, "order"> & { order?: CartesianLegendOrder });
+};
+```
+
+Related types: [`CartesianGuideOptions`](./reference/types/#type-cartesianguideoptions) · [`DistributiveLegendOmit`](./reference/types/#type-distributivelegendomit) · [`ColorMappedPointLegendOptions`](./reference/types/#type-colormappedpointlegendoptions) · [`CartesianLegendOrder`](./reference/types/#type-cartesianlegendorder).
+
+### `ColorMappedPointLegendOptions` {#type-colormappedpointlegendoptions}
+
+ Expand ColorMappedPointLegendOptions
+
+```typescript
+type ColorMappedPointLegendOptions =
+  | Exclude<FilledMarkLegendOptions, { combine: "color-size-shape" }>
+  | (Omit<Extract<FilledMarkLegendOptions, { combine: "color-size-shape" }>, "symbol"> & {
+      symbol?: "auto" | { type?: "point"; stroke?: string; strokeWidth?: number; opacity?: number };
+    });
+```
+
+Related types: [`FilledMarkLegendOptions`](./reference/types/#type-filledmarklegendoptions).
 
 ### `CompleteAxisOptions` {#type-completeaxisoptions}
 
@@ -32705,14 +32733,14 @@ export type CreateBeeswarmPlotOptions = {
     strokeWidth?: number;
   };
   packing?: false | BeeswarmPackingOptions;
-  guides?: false | CartesianGuideOptions;
+  guides?: false | ColorMappedPointGuideOptions;
 } & (
   | { x: RugMeasureChannel; y: StripCategoryChannel }
   | { x: StripCategoryChannel; y: RugMeasureChannel }
 );
 ```
 
-Related types: [`BasicColorChannel`](./reference/types/#type-basiccolorchannel) · [`BasicSizeChannel`](./reference/types/#type-basicsizechannel) · [`BasicShapeChannel`](./reference/types/#type-basicshapechannel) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`PointShape`](./reference/types/#type-pointshape) · [`FilledMarkStroke`](./reference/types/#type-filledmarkstroke) · [`BeeswarmPackingOptions`](./reference/types/#type-beeswarmpackingoptions) · [`CartesianGuideOptions`](./reference/types/#type-cartesianguideoptions) · [`RugMeasureChannel`](./reference/types/#type-rugmeasurechannel) · [`StripCategoryChannel`](./reference/types/#type-stripcategorychannel).
+Related types: [`BasicColorChannel`](./reference/types/#type-basiccolorchannel) · [`BasicSizeChannel`](./reference/types/#type-basicsizechannel) · [`BasicShapeChannel`](./reference/types/#type-basicshapechannel) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`PointShape`](./reference/types/#type-pointshape) · [`FilledMarkStroke`](./reference/types/#type-filledmarkstroke) · [`BeeswarmPackingOptions`](./reference/types/#type-beeswarmpackingoptions) · [`ColorMappedPointGuideOptions`](./reference/types/#type-colormappedpointguideoptions) · [`RugMeasureChannel`](./reference/types/#type-rugmeasurechannel) · [`StripCategoryChannel`](./reference/types/#type-stripcategorychannel).
 
 ### `CreateCoordinateOptions` {#type-createcoordinateoptions}
 
@@ -33450,7 +33478,7 @@ export type CreateStripPlotOptions = {
     stroke?: FilledMarkStroke;
     strokeWidth?: number;
   };
-  guides?: false | CartesianGuideOptions;
+  guides?: false | ColorMappedPointGuideOptions;
 } & (
   | { x: RugMeasureChannel; y?: never; jitter?: false | StripPixelJitterOptions }
   | { x: RugMeasureChannel; y: StripCategoryChannel; jitter?: false | StripBandJitterOptions }
@@ -33458,7 +33486,7 @@ export type CreateStripPlotOptions = {
 );
 ```
 
-Related types: [`BasicColorChannel`](./reference/types/#type-basiccolorchannel) · [`BasicSizeChannel`](./reference/types/#type-basicsizechannel) · [`BasicShapeChannel`](./reference/types/#type-basicshapechannel) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`PointShape`](./reference/types/#type-pointshape) · [`FilledMarkStroke`](./reference/types/#type-filledmarkstroke) · [`CartesianGuideOptions`](./reference/types/#type-cartesianguideoptions) · [`RugMeasureChannel`](./reference/types/#type-rugmeasurechannel) · [`StripPixelJitterOptions`](./reference/types/#type-strippixeljitteroptions) · [`StripCategoryChannel`](./reference/types/#type-stripcategorychannel) · [`StripBandJitterOptions`](./reference/types/#type-stripbandjitteroptions).
+Related types: [`BasicColorChannel`](./reference/types/#type-basiccolorchannel) · [`BasicSizeChannel`](./reference/types/#type-basicsizechannel) · [`BasicShapeChannel`](./reference/types/#type-basicshapechannel) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`PointShape`](./reference/types/#type-pointshape) · [`FilledMarkStroke`](./reference/types/#type-filledmarkstroke) · [`ColorMappedPointGuideOptions`](./reference/types/#type-colormappedpointguideoptions) · [`RugMeasureChannel`](./reference/types/#type-rugmeasurechannel) · [`StripPixelJitterOptions`](./reference/types/#type-strippixeljitteroptions) · [`StripCategoryChannel`](./reference/types/#type-stripcategorychannel) · [`StripBandJitterOptions`](./reference/types/#type-stripbandjitteroptions).
 
 ### `CreateTextPlotOptions` {#type-createtextplotoptions}
 
@@ -39706,11 +39734,11 @@ type RegressionPlotBaseOptions = {
   size?: BasicSizeChannel;
   shape?: BasicShapeChannel;
   point?: CreateScatterPlotOptions["point"];
-  guides?: false | CartesianGuideOptions;
+  guides?: false | ColorMappedPointGuideOptions;
 };
 ```
 
-Related types: [`RegressionPlotPositionChannel`](./reference/types/#type-regressionplotpositionchannel) · [`BasicColorChannel`](./reference/types/#type-basiccolorchannel) · [`BasicSizeChannel`](./reference/types/#type-basicsizechannel) · [`BasicShapeChannel`](./reference/types/#type-basicshapechannel) · [`CreateScatterPlotOptions`](./reference/types/#type-createscatterplotoptions) · [`CartesianGuideOptions`](./reference/types/#type-cartesianguideoptions).
+Related types: [`RegressionPlotPositionChannel`](./reference/types/#type-regressionplotpositionchannel) · [`BasicColorChannel`](./reference/types/#type-basiccolorchannel) · [`BasicSizeChannel`](./reference/types/#type-basicsizechannel) · [`BasicShapeChannel`](./reference/types/#type-basicshapechannel) · [`CreateScatterPlotOptions`](./reference/types/#type-createscatterplotoptions) · [`ColorMappedPointGuideOptions`](./reference/types/#type-colormappedpointguideoptions).
 
 ### `RegressionPlotPositionChannel` {#type-regressionplotpositionchannel}
 
@@ -42030,12 +42058,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/45e1d948cd9ccd518d48cb94d7b1e172583654bf/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/b1b3658906e2eedda4312f949a6cd627d93f4902/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/45e1d948cd9ccd518d48cb94d7b1e172583654bf/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/b1b3658906e2eedda4312f949a6cd627d93f4902/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -44783,9 +44811,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:66d808315941c9932f33d9286681e4c9bf477476c7ecb0068f57e1c4e5d2e56e` |
+| Contract fingerprint | `sha256:6ed50b6d52e7778c82a30d2ce7eb7cb4a1b0db6f18b968d5c1f49702b0992f30` |
 | Example and dataset source | `ab206c446ae5010eecfd859427775c4785d8aed4` |
-| Runtime source commit | `45e1d948cd9ccd518d48cb94d7b1e172583654bf` |
+| Runtime source commit | `b1b3658906e2eedda4312f949a6cd627d93f4902` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 298 |
 | Declared actions in that release | 234 |
