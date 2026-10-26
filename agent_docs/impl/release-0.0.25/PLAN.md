@@ -27,6 +27,9 @@ semantic/graphic/renderer 경계를 유지한다. 별도 모델 서비스 호출
 - `codex/overlay-composition-v025`: `23847e1c630bef7f05688d973c267e4cbf8c3188`.
   기존 승인된 overlay, independent layer, adjacent/shared scales, scoped atomic edits,
   guide ownership/visibility/position, text alignment/overrides, immutable computation 재사용을 포함한다.
+- 추가 사용자 요청으로 `913fca08d819584017d370afaeab35e69f5bcbf0`도 통합한다.
+  원본 row provenance, 복합 mark highlight, text highlight 및 `getMarkItems` 확장이며,
+  selection의 저장 복원·재평가·독립 geometry와 전체 CI를 새 source 기준으로 다시 확인한다.
 - PR #275 / fast-uri 3.1.9: `583e8e6a7f3a813d5935c7cfe69057c2b79589a3`.
 - PR #270 및 닫힌 #265–269/#272/#273은 이미 main에 포함되어 있다.
 - #258 native content-flow는 0.0.23에서 출시되었다. 원본 family의 외부 번역 검증은 여전히
@@ -82,3 +85,11 @@ consumer와 browser/renderer parity를 검증한다. 새 옵션 때문에 기존
 - 기존 overlay branch부터 Full/Basic gzip은 488,691/247,648 bytes로 기존 482,000/245,000 제한을 넘었다. 새 범례를 포함한 측정값 490,524/249,238 bytes에 맞춰 492,000/250,000으로 제한을 조정했다. Packed tarball 966,885 bytes에 맞춰 packed cap만 970,000으로 조정했고 unpacked 4,560,000, SVG 25,000 및 coverage floor는 유지했다. 최종 candidate에서 다시 검증한다.
 - Compatible security update: body-parser 2.4.0, zod 4.6.7, qs 6.16.1, content-type 2.1.0. npm audit 0 vulnerabilities.
 - 2026-10-26 원격 branch/PR/issue 재조회에서 추가 입력은 없었다. #258 외부 원본 family의 fidelity 검증은 증거가 없으므로 계속 별도 추적한다.
+
+## 통합 CI 수정 checkpoint
+
+- 독립 layer/adjacent render를 canonical gallery metadata에 연결했다. 209개 gallery variant의 schema 및 review 검사를 통과했다.
+- Direct encoding의 constant shape와 polygon normalization을 실제 5개 데이터셋에서 실행하여 310 paths, 305 path literals, 12 diversity requirements의 5/3 조건을 통과했다. Palette 객체도 independent layer를 포함한 136 paths/145 builds로 검증했다.
+- Parent legend의 alongOffset을 독립 좌표 기대값에 포함했고 268 paths/188 literals/4 diversity requirements 검사를 통과했다. Polar facade fixture는 theta-axis text와 bottom legend 사이의 공간을 명시했다.
+- Linux와 macOS의 설치 폰트 차이로 생긴 PNG 비교 오류를 수정했다. 같은 native font 자원으로 비교하며 byte-exact pixel 조건을 유지한다. 큰 typed-array 실패 출력은 bounded byte comparison으로 바꿨다.
+- Coverage floors와 5회/3개 데이터셋 기준은 낮추지 않았다. 새 branch 통합 후 전체 CI 및 release candidate 검증은 여전히 필수다.
