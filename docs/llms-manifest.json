@@ -3,9 +3,9 @@
   "packageVersion": "0.0.25",
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
-    "status": "development",
-    "contractId": "sha256:bb3f6d7d6bffc45cd3f88c6732a7df25756494702843b751c727a21b84723bd4",
-    "sourceCommit": null,
+    "status": "published-release",
+    "contractId": "sha256:fc6fa21facbe541e83bb9e62c9d8a6483e20e2088920cda08e8ba51e2ebc0abd",
+    "sourceCommit": "9e338db5e5ca8e4a458bd9aec4cdd2dbac4fb67a",
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -65,8 +65,8 @@
         "long-requests-and-execution-recovery",
         "related"
       ],
-      "bytes": 11986,
-      "sha256": "c14c078d0d79db1cb04ee38a587d53a79e71b64caa952352b8ea4e083bc94523"
+      "bytes": 12058,
+      "sha256": "d5063a1d5a9328402e3053dda7ec245400be94a87f05a82f85e0a14fdc03234d"
     },
     {
       "order": 4,
@@ -2084,8 +2084,8 @@
         "focused-channel-scale-editors",
         "related"
       ],
-      "bytes": 195764,
-      "sha256": "3a92c04209c55edab77353e1e4355de90d09e31245ca72c5fc3ae5584d60f146"
+      "bytes": 195356,
+      "sha256": "8dccf7936513aa2a828cfc7cec7e4555a1e368159f091f46574c2619b7f05a8a"
     },
     {
       "order": 119,
@@ -2132,8 +2132,8 @@
         "editoverlay",
         "related"
       ],
-      "bytes": 86034,
-      "sha256": "a552347a7acf3f6a9bfb3ce1af278f8972cc7dfcfbf5f6c546cef8ca357787cd"
+      "bytes": 85962,
+      "sha256": "4ed2ed9aa4efc0db39fe61b009b4e50fabf95d6624c5e8cc2b649fc6c8a0b214"
     },
     {
       "order": 120,
@@ -2184,8 +2184,8 @@
         "encodechannels",
         "related"
       ],
-      "bytes": 71662,
-      "sha256": "fe8cd63a08816895ab6dfcdd39af66a5268602ae4bd9ed32f12add0d2ec4502b"
+      "bytes": 71638,
+      "sha256": "6a50d57aee00e75806e22a245a553f6595df7da38e1e96e567128ce221f9890c"
     },
     {
       "order": 121,
@@ -2244,8 +2244,8 @@
         "semantic-resources-and-regression-layers",
         "related"
       ],
-      "bytes": 91114,
-      "sha256": "90076c089e8abb368dc1604841a69042b3be3c6fc390c40511ba605a7a2cd777"
+      "bytes": 90886,
+      "sha256": "3774969ff7ca5a5e829e188ce23d48931ed00145d61fc4d738ca0f304c52347b"
     },
     {
       "order": 122,
@@ -2342,8 +2342,8 @@
         "focused-legend-edits",
         "related"
       ],
-      "bytes": 156660,
-      "sha256": "9bf51611236228ac171932b9e080d1fecbf43ee386d7e42e8663019a25bd682e"
+      "bytes": 156636,
+      "sha256": "ba0b83ed2f38b361bb0aff860dcf6ec449825b1c0efe61db320265cda7bd5fc5"
     },
     {
       "order": 123,
@@ -2367,8 +2367,8 @@
         "directional-grids",
         "related"
       ],
-      "bytes": 10927,
-      "sha256": "08044c231bf3535a3759dbb8802b5f2736eb082f5ad1c60f85465ab0ae421575"
+      "bytes": 10915,
+      "sha256": "05736e719926ce7936e9c12bcb6ecd202f29675ac13ea256ed12a1b8f01e2bff"
     },
     {
       "order": 124,
@@ -3139,8 +3139,8 @@
         "clip-a-named-graphic-owner",
         "scale-materialization"
       ],
-      "bytes": 19181,
-      "sha256": "faf95699956f4a6492741a80c7f8559099f0d36525d1a2634812c11c61d7fa43"
+      "bytes": 19253,
+      "sha256": "339e2c95308dc835ce954af3f843e85b7ceea3811c46317e9755a93050887a32"
     },
     {
       "order": 129,
@@ -3473,8 +3473,8 @@
         "choose-the-matching-documentation",
         "migration-from-v0013"
       ],
-      "bytes": 3000,
-      "sha256": "c8cfd02e4661cfeb91981095765e3445a59bd4ab66b06887338edd4500737171"
+      "bytes": 3039,
+      "sha256": "d193ac0dd36aaa0b390ab1b3339895a34a254c0dde36e6091ecf517932d7e7a2"
     },
     {
       "order": 150,
