@@ -14,6 +14,7 @@ import { findCoordinate } from "../selectors/coordinates.js";
 import { findLayer } from "../selectors/layers.js";
 import { unionConcreteGraphicBounds } from
   "../grammar/schemas/graphicBounds.js";
+import { findGraphic } from "../grammar/schemas/graphicTree.js";
 import { polarDirection } from "../grammar/polar.js";
 import { normalizeMarkSelector, selectMarkItemKeys } from "../grammar/markSelection.js";
 
@@ -82,12 +83,10 @@ function sourceAnchor(program, source, item) {
   }
   if (source.mark.type === "line") {
     const graphicId = item.graphicIds?.[0];
-    const graphic = program.graphicSpec.objects[source.id]?.items?.find(
-      candidate => candidate.id === graphicId
-    );
+    const graphic = findGraphic(program.graphicSpec, graphicId)?.object;
     const commands = graphic?.properties?.commands;
     const endpoint = Array.isArray(commands)
-      ? [...commands].reverse().find(command => Number.isFinite(command.x) && Number.isFinite(command.y))
+      ? commands.findLast(command => Number.isFinite(command.x) && Number.isFinite(command.y))
       : undefined;
     return { x: endpoint?.x, y: endpoint?.y };
   }
