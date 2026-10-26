@@ -1188,6 +1188,7 @@ Horizontal Cartesian lines transpose the same series derivation when X is quanti
   missing axis, plot bounds, content/style/layout errors fail before child effects. Source-owned Text aliases are excluded
   from data-source inference.
 - Later edits use encodeText, encodeX/Y, editTextMark, layoutLabels/removeLabelLayout, editScale and removeMark.
+- Plot-anchored annotations can accompany Polar and Parallel facets. Their Cartesian plot frame does not change the primary chart family; notes replay within each populated cell.
 
 ### Formal values — `createAnnotation`
 

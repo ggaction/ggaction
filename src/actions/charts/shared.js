@@ -173,6 +173,23 @@ export function applyFacadeGuides(program, guides, target, explicitGuides = guid
   return fulfillFacadeGuides(program, guides, target, explicitGuides);
 }
 
+// Rebuilding a facade must not resurrect an axis removed after construction.
+// This also lets callers fit a changed variable by removing its old axis and
+// recreating it against the new domain through ordinary public guide actions.
+export function retainFacadeAxisPresence(program, owner, guides) {
+  if (guides === false) return false;
+  const axes = { ...guides?.axes };
+  for (const channel of ['x', 'y']) {
+    if (!owner.encoding[channel]?.scale) continue;
+    const present = Object.entries(program.semanticSpec.guides.axis ?? {}).some(([id, axis]) =>
+      (axis.channel ?? id) === channel && axis.scale === owner.encoding[channel].scale &&
+      (axis.coordinate ?? owner.coordinate) === owner.coordinate);
+    if (!present) axes[channel] = false;
+    else axes[channel] ??= {};
+  }
+  return { ...guides, axes };
+}
+
 export function normalizeArcCategory(value, operation) {
   const label = `${operation} category`;
   const category = normalizeFieldEncoding(value, label);

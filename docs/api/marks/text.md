@@ -61,6 +61,8 @@ For a plot anchor, set `space: "plot"` and pass x/y fractions in `[0,1]`. x=0 is
 the plot's left edge and y=0 its bottom edge. Supply or make inferable an existing
 dataset; an empty dataset works. Plot anchors reject `source` and use named
 `<id>-x` and `<id>-y` fraction scales. The default ID is `"annotation"`.
+Plot-anchored notes also work in polar and parallel-coordinate facets. Omit the
+source chart's polar/parallel coordinate so the note uses its Cartesian plot frame.
 
 `text` is required. All ordinary Text appearance options and `format` are accepted.
 Omitting `layout`, or passing `false`, preserves the exact anchor. A layout object

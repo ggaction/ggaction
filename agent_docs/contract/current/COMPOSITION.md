@@ -98,6 +98,7 @@ Evidence: `test/unit/layout/facet-top-lane.test.js`, `test/unit/actions/composit
   regression, density, interval/error-band, and box-plot programs; Polar Point, Line, direct Arc, Pie, Rose and Radar;
   and Parallel-coordinate programs whose visible layers share one valid partition anchor and one coordinate family.
 - Independent Cartesian text requires x/y scale bindings and a text encoding. Its data must share the partition ancestor; filtered label datasets replay per cell. Empty label subsets retain sibling marks without fabricating labels. Attached labels remain source-dependent.
+- Literal annotations with datum x/y/text decorate the primary coordinate family, including Polar and Parallel facets. They retain their own validated coordinate and scale bindings without establishing a competing family or making an otherwise empty facet populated. A text-only program still treats those text layers as primary.
 - Evidence: `test/unit/actions/composition/facet-text.test.js`.
 - Facet values use source first-appearance order. Explicit `values` is a unique observed-value list whose exact order controls
   child, header and layout order. Omitted `columns` creates one row; a positive integer wraps cells row-major.

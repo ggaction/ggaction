@@ -113,3 +113,4 @@ labels, and guides while retaining the stored appearance policy. Use
 counts. Ungrouping removes a coupled group color; `color: false` removes it
 explicitly during another role edit. Line appearance, labels, scales, and guides remain editable through
 their ordinary lower-level actions.
+Axes removed after construction stay removed when the statistical source changes.

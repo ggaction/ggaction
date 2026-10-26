@@ -15,6 +15,7 @@ import { findDataset } from "../../selectors/datasets.js";
 import { findSemanticScale } from "../../selectors/scales.js";
 import {
   applyFacadeGuides,
+  retainFacadeAxisPresence,
   normalizeAppearance,
   normalizeFieldEncoding,
   normalizeGuides,
@@ -502,7 +503,7 @@ export const editEndpointPlot = /* @__PURE__ */ action(
     if (invalid !== undefined) {
       throw new Error(`editEndpointPlot ${invalid} is not available for ${current.kind} plots.`);
     }
-    const revised = { ...current.options };
+    const revised = { ...current.options, guides: retainFacadeAxisPresence(this, owner, current.options.guides) };
     for (const key of changes) revised[key] = args[key];
     const axes = { fromAxis: current.orientation === "vertical" ? "y" : "x",
       toAxis: revised.orientation === "vertical" ? "y" : "x" };

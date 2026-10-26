@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:9bfefb16084edc1d8bb65d320711919bb471d7ce708414785404953733881838",
+    "contractId": "sha256:0607d698cb3d11e98219b125a5b80f86e1980b70966f6afd7a799d3f078d9ad3",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -332,8 +332,8 @@
       "headings": [
         "dot-lollipop-and-dumbbell-plots"
       ],
-      "bytes": 2552,
-      "sha256": "e568358ed39924a1663d23aeb31f01b0c9ffb6e00dd90b8cd67235d34e4a42be"
+      "bytes": 2616,
+      "sha256": "4fef719c72d4aa08944df804316006899577fdb9f235e9a804ca239ebd8a6971"
     },
     {
       "order": 21,
@@ -348,8 +348,8 @@
         "missing-values-and-grouping",
         "revise-the-statistical-source"
       ],
-      "bytes": 3876,
-      "sha256": "dfd8814cbb0ee3ed91079e6a0c27f055c2061d1b5691002930aa34572396181f"
+      "bytes": 3958,
+      "sha256": "1ae72ea2b08ea92fcd524cc28a309580a9438e7425eec9f4eeca76168a7ff979"
     },
     {
       "order": 22,
@@ -999,8 +999,8 @@
         "numeric-pixel-offsets",
         "related"
       ],
-      "bytes": 16311,
-      "sha256": "97e2ec62ab8af7b23778a7cac4245f64b4c1085360d644089e2a66db567d51dc"
+      "bytes": 16475,
+      "sha256": "01a4c4b01177f1641c01ef6b56f246fb9658c3b0ea04cc803aed457b180eb10a"
     },
     {
       "order": 62,
@@ -2131,8 +2131,8 @@
         "editoverlay",
         "related"
       ],
-      "bytes": 85851,
-      "sha256": "08d65c43315b224865846476d7437398dfb803104c9c0625c5c480dabd8ab347"
+      "bytes": 86034,
+      "sha256": "a552347a7acf3f6a9bfb3ce1af278f8972cc7dfcfbf5f6c546cef8ca357787cd"
     },
     {
       "order": 120,
@@ -3473,7 +3473,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "95d72ef667d21ee1ebd912c08629a8f17b66c4d583ec9536b46234e78e4daeba"
+      "sha256": "bfac402d590cc3597f098b4facc7e2a8ed75e815e2eb0d5380e40f797468486c"
     },
     {
       "order": 150,

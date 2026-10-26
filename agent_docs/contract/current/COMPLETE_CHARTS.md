@@ -56,6 +56,8 @@ owner atomically. Omitted target uses current/unique eligible owner inference. `
 coupled color when no replacement is supplied. The action rebuilds the immutable derived dataset under the stable
 owned ID, reuses stored appearance/color/labels/guides, and rejects the entire edit before returning any partial
 state when the revised source or statistical roles are invalid.
+An axis removed after construction remains absent through a role edit; rebuilding
+the facade does not restore that axis from its original constructor options.
 
 ### Formal values — `editECDFPlot`
 
@@ -143,6 +145,7 @@ connector?, labels?, guides? })`는 start/end Point와 connector를 하나의 qu
 `editEndpointPlot({ target?, data?, coordinate?, category?, value?, start?, end?, orientation?, summary?, baseline? })`
 은 target 종류에 맞는 semantic role만 받아 owned Point·Rule·label·summary data를 한 immutable action에서 교체한다.
 생성 때 저장한 appearance와 guide 정책은 유지한다.
+생성 이후 삭제한 축은 role edit에서도 삭제 상태를 유지한다. 원래 constructor 옵션으로 되살리지 않는다.
 역할 또는 원자료 변경으로 축 domain이 달라질 때 이전 domain의 명시적 tick sample은
 새 domain에서 다시 추론한다. 글꼴, 회전, tick/line 스타일은 그대로 유지한다.
 별도로 추가한 statistical reference는 source endpoint 역할, 스타일, label을 보존하며 원자료에서 다시 계산한다.

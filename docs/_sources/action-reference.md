@@ -1815,7 +1815,9 @@ scales with domain `[0,1]`. The default ID is `annotation`.
 `anchor: "plot-center"` supplies plot x/y=0.5, horizontal center alignment, and
 middle baseline together. It rejects `x`, `y`, `space`, `source`, `align`, and
 `baseline`; optional data, coordinate, styles, and offsets follow the plot branch.
-The anchor follows plot bounds on Canvas and margin changes.
+The anchor follows plot bounds on Canvas and margin changes. Plot-anchored notes
+can accompany polar and parallel-coordinate charts, including facets. Keep the
+note in its Cartesian plot frame by omitting the chart's polar/parallel coordinate.
 
 Omit `layout` or pass `false` to retain the exact anchor. A layout object accepts
 `layoutLabels` options except `target`. Later changes use `encodeText`, `encodeX/Y`,

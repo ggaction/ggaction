@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.25.
 
-Contract: sha256:9bfefb16084edc1d8bb65d320711919bb471d7ce708414785404953733881838. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:0607d698cb3d11e98219b125a5b80f86e1980b70966f6afd7a799d3f078d9ad3. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -2718,6 +2718,7 @@ const revised = withReplacement.editEndpointPlot({
 
 The editor replaces every owned point, rule, label, and summary dataset in one
 immutable action while retaining the original appearance and guide policy.
+Axes removed after construction stay removed when roles change.
 Individual point, rule, label, scale, and guide actions remain the lower-level
 style editing path.
 
@@ -2838,6 +2839,7 @@ labels, and guides while retaining the stored appearance policy. Use
 counts. Ungrouping removes a coupled group color; `color: false` removes it
 explicitly during another role edit. Line appearance, labels, scales, and guides remain editable through
 their ordinary lower-level actions.
+Axes removed after construction stay removed when the statistical source changes.
 
 <!-- Source: /recipes/ -->
 
@@ -7082,6 +7084,8 @@ For a plot anchor, set `space: "plot"` and pass x/y fractions in `[0,1]`. x=0 is
 the plot's left edge and y=0 its bottom edge. Supply or make inferable an existing
 dataset; an empty dataset works. Plot anchors reject `source` and use named
 `<id>-x` and `<id>-y` fraction scales. The default ID is `"annotation"`.
+Plot-anchored notes also work in polar and parallel-coordinate facets. Omit the
+source chart's polar/parallel coordinate so the note uses its Cartesian plot frame.
 
 `text` is required. All ordinary Text appearance options and `format` are accepted.
 Omitting `layout`, or passing `false`, preserves the exact anchor. A layout object
@@ -21709,7 +21713,9 @@ scales with domain `[0,1]`. The default ID is `annotation`.
 `anchor: "plot-center"` supplies plot x/y=0.5, horizontal center alignment, and
 middle baseline together. It rejects `x`, `y`, `space`, `source`, `align`, and
 `baseline`; optional data, coordinate, styles, and offsets follow the plot branch.
-The anchor follows plot bounds on Canvas and margin changes.
+The anchor follows plot bounds on Canvas and margin changes. Plot-anchored notes
+can accompany polar and parallel-coordinate charts, including facets. Keep the
+note in its Cartesian plot frame by omitting the chart's polar/parallel coordinate.
 
 Omit `layout` or pass `false` to retain the exact anchor. A layout object accepts
 `layoutLabels` options except `target`. Later changes use `encodeText`, `encodeX/Y`,
@@ -44637,7 +44643,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:9bfefb16084edc1d8bb65d320711919bb471d7ce708414785404953733881838` |
+| Contract fingerprint | `sha256:0607d698cb3d11e98219b125a5b80f86e1980b70966f6afd7a799d3f078d9ad3` |
 | Example and dataset source | `ab206c446ae5010eecfd859427775c4785d8aed4` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
