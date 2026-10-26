@@ -4973,12 +4973,14 @@ export type EditParallelAxisOptions = GuideVisibilityOptions & { field: string; 
   line?: false | VisibleGuide<AxisLineStyleOptions>;
   title?: false | VisibleGuide<ParallelAxisTitleOptions>;
 } & (
-  | { ticksAndLabels?: false | VisibleTickGroup<ParallelAxisTickSelection>; ticks?: never; labels?: never }
+  | { ticksAndLabels?: false | (ParallelAxisTickSelection & {
+      ticks?: VisibleGuide<AxisTickStyleOptions>; labels?: VisibleGuide<AxisLabelStyleOptions & DisplayLabelOptions>;
+    }); ticks?: never; labels?: never }
   | { ticks?: false | VisibleGuide<ParallelAxisTicksOptions>; labels?: false | VisibleGuide<ParallelAxisLabelsOptions>; ticksAndLabels?: never }
 );
 ```
 
-Related types: [`GuideVisibilityOptions`](../../../reference/types/#type-guidevisibilityoptions) · [`VisibleGuide`](../../../reference/types/#type-visibleguide) · [`AxisLineStyleOptions`](../../../reference/types/#type-axislinestyleoptions) · [`ParallelAxisTitleOptions`](../../../reference/types/#type-parallelaxistitleoptions) · [`VisibleTickGroup`](../../../reference/types/#type-visibletickgroup) · [`ParallelAxisTickSelection`](../../../reference/types/#type-parallelaxistickselection) · [`ParallelAxisTicksOptions`](../../../reference/types/#type-parallelaxisticksoptions) · [`ParallelAxisLabelsOptions`](../../../reference/types/#type-parallelaxislabelsoptions).
+Related types: [`GuideVisibilityOptions`](../../../reference/types/#type-guidevisibilityoptions) · [`VisibleGuide`](../../../reference/types/#type-visibleguide) · [`AxisLineStyleOptions`](../../../reference/types/#type-axislinestyleoptions) · [`ParallelAxisTitleOptions`](../../../reference/types/#type-parallelaxistitleoptions) · [`ParallelAxisTickSelection`](../../../reference/types/#type-parallelaxistickselection) · [`AxisTickStyleOptions`](../../../reference/types/#type-axistickstyleoptions) · [`AxisLabelStyleOptions`](../../../reference/types/#type-axislabelstyleoptions) · [`DisplayLabelOptions`](../../../reference/types/#type-displaylabeloptions) · [`ParallelAxisTicksOptions`](../../../reference/types/#type-parallelaxisticksoptions) · [`ParallelAxisLabelsOptions`](../../../reference/types/#type-parallelaxislabelsoptions).
 
 ### `EditParallelScaleOptions` {#type-editparallelscaleoptions}
 

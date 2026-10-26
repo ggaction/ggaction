@@ -5809,14 +5809,16 @@ export type EditParallelAxisOptions = GuideVisibilityOptions & { field: string; 
   line?: false | VisibleGuide<AxisLineStyleOptions>;
   title?: false | VisibleGuide<ParallelAxisTitleOptions>;
 } & (
-  | { ticksAndLabels?: false | VisibleTickGroup<ParallelAxisTickSelection>; ticks?: never; labels?: never }
+  | { ticksAndLabels?: false | (ParallelAxisTickSelection & {
+      ticks?: VisibleGuide<AxisTickStyleOptions>; labels?: VisibleGuide<AxisLabelStyleOptions & DisplayLabelOptions>;
+    }); ticks?: never; labels?: never }
   | { ticks?: false | VisibleGuide<ParallelAxisTicksOptions>; labels?: false | VisibleGuide<ParallelAxisLabelsOptions>; ticksAndLabels?: never }
 );
 ```
 
 </details>
 
-Related types: [`GuideVisibilityOptions`](#type-guidevisibilityoptions) · [`VisibleGuide`](#type-visibleguide) · [`AxisLineStyleOptions`](#type-axislinestyleoptions) · [`ParallelAxisTitleOptions`](#type-parallelaxistitleoptions) · [`VisibleTickGroup`](#type-visibletickgroup) · [`ParallelAxisTickSelection`](#type-parallelaxistickselection) · [`ParallelAxisTicksOptions`](#type-parallelaxisticksoptions) · [`ParallelAxisLabelsOptions`](#type-parallelaxislabelsoptions).
+Related types: [`GuideVisibilityOptions`](#type-guidevisibilityoptions) · [`VisibleGuide`](#type-visibleguide) · [`AxisLineStyleOptions`](#type-axislinestyleoptions) · [`ParallelAxisTitleOptions`](#type-parallelaxistitleoptions) · [`ParallelAxisTickSelection`](#type-parallelaxistickselection) · [`AxisTickStyleOptions`](#type-axistickstyleoptions) · [`AxisLabelStyleOptions`](#type-axislabelstyleoptions) · [`DisplayLabelOptions`](#type-displaylabeloptions) · [`ParallelAxisTicksOptions`](#type-parallelaxisticksoptions) · [`ParallelAxisLabelsOptions`](#type-parallelaxislabelsoptions).
 
 ### `EditParallelScaleOptions` {#type-editparallelscaleoptions}
 

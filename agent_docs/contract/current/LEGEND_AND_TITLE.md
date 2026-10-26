@@ -992,3 +992,7 @@ Concat title ownership, shared color snapshot collection, and restoration rules:
 검증: `test/unit/actions/guides/guide-visibility.test.js`, `test/contracts/guide-visibility-types.test.js`.
 
 Categorical size legend blocks also accept typed `editLegendBlock.labelMap`, including numeric-coded ordinal categories. Hard breaks in categorical legend entries preserve blank lines, measure the full block and reserve row spacing; ticks/symbols and source values remain intact. Continuous opacity/gradient and discretized intervals are not added to labelMap support. Evidence: `categorical-hard-breaks.test.js`, `size-legend-label-map.test.js`.
+
+### Explicit group overflow diagnostics
+
+명시한 group offset/free anchor의 Canvas overflow는 여전히 원자적으로 실패하며 inner plot sizing에서도 자동 margin 확장을 허용하지 않는다. 기존 `canvas-overflow` 진단에 실제 부족한 네 방향 크기와 내부 `requiresExplicitCanvas` 표시를 보존한다. Native layout transaction은 이 표시를 존중하고, host는 별도 공개 `editCanvas` 호출을 기록한 다음 동일 group 편집을 재시도할 수 있다. 잘못된 위치를 묵시적으로 바꾸거나 native 오류를 숨기지 않는다. Evidence: `test/unit/actions/guides/legend-group-state.test.js`.

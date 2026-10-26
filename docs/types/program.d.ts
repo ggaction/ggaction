@@ -1686,7 +1686,7 @@ export type ParallelAxisTickSelection =
   | { count?: number; values?: never }
   | { values: readonly AxisValue[]; count?: never };
 export type ParallelAxisTicksOptions = AxisTickStyleOptions & ParallelAxisTickSelection;
-export type ParallelAxisLabelsOptions = AxisLabelStyleOptions & ParallelAxisTickSelection;
+export type ParallelAxisLabelsOptions = AxisLabelStyleOptions & DisplayLabelOptions & ParallelAxisTickSelection;
 export interface ParallelAxisTitleOptions {
   text?: string;
   offset?: number;
@@ -1702,7 +1702,7 @@ export type ParallelAxisComponentsOptions = {
   title?: false | ParallelAxisTitleOptions;
 } & (
   | { ticksAndLabels?: false | (ParallelAxisTickSelection & {
-      ticks?: AxisTickStyleOptions; labels?: AxisLabelStyleOptions;
+      ticks?: AxisTickStyleOptions; labels?: AxisLabelStyleOptions & DisplayLabelOptions;
     }); ticks?: never; labels?: never }
   | { ticks?: false | ParallelAxisTicksOptions; labels?: false | ParallelAxisLabelsOptions;
       ticksAndLabels?: never }
@@ -1712,7 +1712,9 @@ export type EditParallelAxisOptions = GuideVisibilityOptions & { field: string; 
   line?: false | VisibleGuide<AxisLineStyleOptions>;
   title?: false | VisibleGuide<ParallelAxisTitleOptions>;
 } & (
-  | { ticksAndLabels?: false | VisibleTickGroup<ParallelAxisTickSelection>; ticks?: never; labels?: never }
+  | { ticksAndLabels?: false | (ParallelAxisTickSelection & {
+      ticks?: VisibleGuide<AxisTickStyleOptions>; labels?: VisibleGuide<AxisLabelStyleOptions & DisplayLabelOptions>;
+    }); ticks?: never; labels?: never }
   | { ticks?: false | VisibleGuide<ParallelAxisTicksOptions>; labels?: false | VisibleGuide<ParallelAxisLabelsOptions>; ticksAndLabels?: never }
 );
 export interface ParallelAxesOptions { target?: string; coordinate?: string; }
@@ -4349,8 +4351,16 @@ export interface TextMarkOptions {
   dy?: number;
 }
 
+export interface TextOverride {
+  match: { fields?: Readonly<Record<string, string | number | boolean | null>>; channels?: Readonly<Record<string, string | number | boolean | null>> };
+  occurrence: number;
+  text: string;
+}
+
 export interface EditTextMarkOptions extends Omit<TextMarkOptions, "id" | "data" | "source" | "text"> {
   target?: string;
+  /** Display-only semantic item overrides; auto restores encoded content. */
+  textOverrides?: readonly TextOverride[] | "auto";
 }
 
 export type LabelLayoutAxis = "x" | "y" | "both";

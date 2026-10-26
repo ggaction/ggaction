@@ -1,4 +1,5 @@
 import { canvasOverflowError } from "./canvas.js";
+import { annotateError } from "../core/diagnostics.js";
 import { PLOT_LEGEND_POSITIONS } from "./legend.js";
 import { SIDE_LEGEND_BLOCK_GAP, HORIZONTAL_LEGEND_BLOCK_GAP } from "./legendLane.js";
 
@@ -67,8 +68,11 @@ export function resolveLegendGroupPlacement({ blocks, group, plot, canvas, allow
     throw new Error("In-plot legend group does not fit the plot inset.");
   }
   if (!deferCanvasFit && (occupied.left < 0 || occupied.top < 0 || occupied.right > canvas.width || occupied.bottom > canvas.height)) {
-    if (placement.at !== undefined || group.inferredOffset !== true) throw new Error("Legend group requires more Canvas space.");
-    throw canvasOverflowError("Legend group requires more Canvas space.", [occupied], canvas);
+    const error = canvasOverflowError("Legend group requires more Canvas space.", [occupied], canvas);
+    // Expose the required space without relaxing explicitly authored placement.
+    // Hosts may issue a separate Canvas edit; the native action remains atomic.
+    throw placement.at !== undefined || group.inferredOffset !== true
+      ? annotateError(error, { requiresExplicitCanvas: true }) : error;
   }
   return packed.map((block, index) => ({ id: block.id,
     dx: left + block.x - blocks[index].bounds.left,

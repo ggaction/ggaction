@@ -93,7 +93,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `line` | Optional / branch-dependent | `false \| VisibleGuide<AxisLineStyleOptions> \| undefined` |
 | `title` | Optional / branch-dependent | `false \| VisibleGuide<ParallelAxisTitleOptions> \| undefined` |
-| `ticksAndLabels` | Optional / branch-dependent | `false \| VisibleTickGroup<ParallelAxisTickSelection> \| undefined` |
+| `ticksAndLabels` | Optional / branch-dependent | `false \| (ParallelAxisTickSelection & { ticks?: VisibleGuide<AxisTickStyleOptions> \| undefined; labels?: VisibleGuide<...> \| undefined; }) \| undefined` |
 | `ticks` | Optional / branch-dependent | `false \| VisibleGuide<ParallelAxisTicksOptions> \| undefined` |
 | `labels` | Optional / branch-dependent | `false \| VisibleGuide<ParallelAxisLabelsOptions> \| undefined` |
 

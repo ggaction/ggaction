@@ -39,6 +39,9 @@ wider than the plot if it fits the declared Canvas. It retains every sample,
 font, symbol and block's own item direction. An in-plot group must fit entirely
 inside its plot inset. Insufficient space produces an error; no content is
 hidden, shrunk, wrapped into an unrequested row or moved to another edge.
+An explicitly positioned group also keeps this rule when the Canvas uses inner
+plot sizing. Allocate more space with a separate `editCanvas` call before
+retrying; a failed group edit leaves both the placement and Canvas unchanged.
 
 The new fields opt into whole-target grouping. Omit `target` only when one
 eligible target is inferable. An established group supplies placement to later

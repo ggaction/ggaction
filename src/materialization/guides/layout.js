@@ -64,8 +64,8 @@ export function withGuideLayoutTransaction(program, apply) {
       result = applyLegendItemsOffset(result);
       break;
     } catch (error) {
-      const overflow = getErrorDetails(error)?.canvasOverflow;
-      if (plot === undefined || overflow === undefined || attempt >= 16) throw error;
+      const details = getErrorDetails(error), overflow = details?.canvasOverflow;
+      if (plot === undefined || overflow === undefined || details.requiresExplicitCanvas || attempt >= 16) throw error;
       margin = Object.fromEntries(Object.keys(margin).map(side => [side, overflow[side] > 0 ? Math.ceil((margin[side] + overflow[side]) * 4) / 4 : margin[side]]));
     }
   }
