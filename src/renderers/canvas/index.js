@@ -26,6 +26,9 @@ const DRAWERS = Object.freeze({
   path: drawPathGraphic
 });
 
+// Distinguish a completed empty preflight from a direct draw that still needs one.
+const NO_ISOLATED_GLYPHS = Object.freeze({});
+
 const DRAWING_CONTEXT_METHODS = Object.freeze([
   "save",
   "restore",
@@ -253,7 +256,9 @@ export function renderCanvasProgram(program, context, { pixelRatio = 1 } = {}, c
   try {
     context.scale(pixelRatio, pixelRatio);
     context.clearRect(0, 0, width, height);
-    drawResolvedGraphicSpec(target, context, {...drawingOptions, isolated, pixelRatio, createCanvas});
+    drawResolvedGraphicSpec(target, context, {
+      ...drawingOptions, isolated: isolated ?? NO_ISOLATED_GLYPHS, pixelRatio, createCanvas
+    });
   } finally {
     context.restore();
   }
