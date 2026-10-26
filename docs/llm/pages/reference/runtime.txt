@@ -897,6 +897,16 @@ export interface PlotComposition {
   readonly groupBy?: string | readonly string[];
 }
 export function getPlotComposition(program: ProgramInput, options?: { readonly target?: string | { readonly childPath: readonly string[]; readonly id: string }; readonly childPath?: readonly string[] }): PlotComposition;
+
+export interface MarkItemInspection {
+  readonly key: string; readonly target: string; readonly markType: string; readonly grain: "item" | "stack";
+  readonly fields: Readonly<Record<string, unknown>>; readonly channels: Readonly<Record<string, unknown>>;
+  readonly properties: Readonly<Record<string, unknown>>;
+  readonly geometry: readonly {readonly type: string; readonly properties: Readonly<Record<string, unknown>>}[];
+  readonly rows: readonly { readonly data: string; readonly index: number }[];
+  readonly bounds: Readonly<{left:number;top:number;right:number;bottom:number}> | null;
+}
+export function getMarkItems(program: ProgramInput, options?: {target?: string | {childPath?:readonly string[];id:string};grain?:"item"|"stack"}): readonly MarkItemInspection[];
 ```
 
 #### `ggaction/scene`

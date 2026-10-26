@@ -43,6 +43,7 @@ const COMPARISON_OPERATORS = new Set([
 const ORDERED_COMPARISON_OPERATORS = new Set(["gt", "gte", "lt", "lte"]);
 const RANK_OPERATORS = new Set(["min", "max"]);
 const SELECTOR_KEYS = Object.freeze([
+  "rows",
   "grain",
   "field",
   "channel",
@@ -96,6 +97,16 @@ export function normalizeMarkSelector(selector) {
   const unknown = Object.keys(selector).find(key => !SELECTOR_KEYS.includes(key));
   if (unknown !== undefined) {
     throw new Error(`Unknown mark selector option "${unknown}".`);
+  }
+
+  if (selector.rows !== undefined) {
+    if (Object.keys(selector).some(key => !["rows", "grain"].includes(key)) || !isPlainObject(selector.rows) ||
+        Object.keys(selector.rows).some(key => !["data", "indices"].includes(key)) ||
+        typeof selector.rows.data !== "string" || !selector.rows.data || !Array.isArray(selector.rows.indices) ||
+        !Array.from(selector.rows.indices).every(i => Number.isInteger(i) && i >= 0)) throw new TypeError("Row selection requires data and non-negative integer indices.");
+    const grain = selector.grain ?? "item";
+    if (!MARK_SELECTOR_GRAINS.includes(grain)) throw new Error(`Unknown mark selector grain "${grain}".`);
+    return cloneAndFreeze({ grain, rows: { data: selector.rows.data, indices: [...new Set(selector.rows.indices)] } });
   }
 
   const sources = ["field", "channel", "property"].filter(key =>
@@ -298,6 +309,10 @@ function rankGroup(items, selector) {
 export function selectMarkItemKeys(items, selector) {
   validateItems(items);
   const normalized = normalizeMarkSelector(selector);
+  if (normalized.rows) {
+    const indices = new Set(normalized.rows.indices);
+    return cloneAndFreeze(items.filter(item => item.rows?.some(ref => ref.data === normalized.rows.data && indices.has(ref.index))).map(item => item.key));
+  }
   if (!RANK_OPERATORS.has(normalized.op)) {
     return cloneAndFreeze(
       items

@@ -192,3 +192,11 @@ export function normalizeAreaHighlightStyle(args, mark = "Area") {
     offset: normalizeOffset(args.offset)
   };
 }
+
+export function normalizeTextHighlightStyle(args) {
+  for (const key of ['shape', 'size', 'stroke', 'strokeWidth', 'strokeDash']) if (args[key] !== undefined) throw new Error(`Text highlight does not support ${key}.`);
+  if (args.color !== undefined && args.fill !== undefined) throw new Error('Text highlight accepts color or fill, not both.');
+  return { fill: validateNonEmptyString(args.color ?? args.fill ?? DEFAULT_COLORS.highlight, 'Text highlight color'),
+    ...(args.opacity === undefined ? {} : { opacity: validateUnitInterval(args.opacity, 'Text highlight opacity') }),
+    ...(args.fontSize === undefined ? {} : { fontSize: validatePositiveFinite(args.fontSize, 'Text highlight fontSize') }), offset: normalizeOffset(args.offset) };
+}

@@ -1,3 +1,6 @@
+import { resolveMarkItems } from "./materialization/selection/policies/index.js";
+import { highlightTargets } from "./materialization/selection/targets.js";
+import { resolvePathCommandBounds, unionConcreteGraphicBounds } from "./grammar/schemas/graphicBounds.js";
 import { facetUnitTemplate } from "./actions/facets/actions.js";
 import { plotComposition } from "./selectors/plotComposition.js";
 import { overlaySourceReason } from "./grammar/overlay.js";
@@ -629,4 +632,37 @@ export function inspectProgram(program, { target } = {}) {
     checks: [{ name: "pixel-visibility", status: "not_run", evidencePaths: [], findings: [] }],
     findings: [], coverage: { partial: filtered.some(view => view.checks.some(check => check.status !== "passed")), unsupported }
   });
+}
+
+// Shared native final-item inspection for recommendations and direct selection.
+const markItemInspections = new WeakMap();
+export function getMarkItems(program, { target, grain = 'item' } = {}) {
+  requireProgram(program);
+  const view = typeof target === 'object' ? atChildPath(program, target.childPath) : program;
+  const requested = typeof target === 'object' ? target.id : target;
+  const layer = requested ?? resolveEligibleLayer(view, { label: 'mark items', predicate: l => l.data !== undefined }).id;
+  let stored = markItemInspections.get(view);
+  if (!stored) markItemInspections.set(view, stored = new Map());
+  const key = `${layer}:${grain}`;
+  if (stored.has(key)) return stored.get(key);
+  const graphics = new Map();
+  for (const [id, object] of Object.entries(view.graphicSpec.objects)) {
+    graphics.set(id, object);
+    for (const child of object.items ?? []) graphics.set(child.id, { type: child.type ?? object.type, properties: child.properties });
+  }
+  const result = cloneAndFreeze(highlightTargets(view, layer).flatMap(id => resolveMarkItems(view, id, grain).map(item => {
+    const geometry = item.graphicIds.map(id => graphics.get(id)).filter(Boolean).map(g => ({ type:g.type, properties:g.properties }));
+    const bounds = geometry.map(g => {
+      const p = g.properties;
+      if (p.commands) return resolvePathCommandBounds(p.commands);
+      if (g.type === 'circle') return {left:p.x-p.radius,top:p.y-p.radius,right:p.x+p.radius,bottom:p.y+p.radius};
+      if (g.type === 'line') return {left:Math.min(p.x1,p.x2),top:Math.min(p.y1,p.y2),right:Math.max(p.x1,p.x2),bottom:Math.max(p.y1,p.y2)};
+      if (g.type === 'rect') return {left:p.x,top:p.y,right:p.x+p.width,bottom:p.y+p.height};
+      return unionConcreteGraphicBounds({objects:{item:g},order:['item']}, ['item'], view.materializationConfigs.textMetrics);
+    }).filter(Boolean);
+    return { key:item.key, target:item.layer, markType:item.markType, grain, fields:item.fields,
+      channels:item.channels, properties:item.properties, rows:item.rows, geometry,
+      bounds:bounds.length ? {left:Math.min(...bounds.map(b=>b.left)),top:Math.min(...bounds.map(b=>b.top)),right:Math.max(...bounds.map(b=>b.right)),bottom:Math.max(...bounds.map(b=>b.bottom))}:null };
+  })));
+  stored.set(key,result); return result;
 }

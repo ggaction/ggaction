@@ -1170,7 +1170,7 @@ export type MarkGraphicProperty =
   | "x" | "y" | "width" | "height" | "radius"
   | "x1" | "y1" | "x2" | "y2"
   | "fill" | "stroke" | "strokeWidth" | "opacity";
-export type MarkSelector = {
+export type MarkSelector = { grain?: "item" | "stack"; rows: { data: string; indices: readonly number[] }; } | {
   grain?: "item" | "stack";
 } & (
   | { field: string; channel?: never; property?: never }
@@ -1210,6 +1210,7 @@ export interface RemoveMarkFilterOptions {
   target?: string;
 }
 export interface HighlightMarksOptions {
+  fontSize?: number;
   id?: string;
   target?: string;
   select?: MarkSelector;

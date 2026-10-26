@@ -137,6 +137,31 @@ requires a matching `stroke` for point, bar, area, and arc highlight recipes.
 preserves the preceding domains and clears retained mark, label, and highlight
 graphics until the filter is replaced, composed, or removed.
 
+An explicit highlight `id` can be reused on the same target to replace both its
+selection and appearance atomically. Omitted IDs retain the existing creation
+rules. Reusing an ID owned by another target is an error.
+
+For exact observations, including duplicate rows, use
+`select: { rows: { data: "dataset", indices: [2, 5] } }`. Indices are zero-based
+positions in that named dataset. Final items containing any selected observation
+are emphasized. A series or aggregated item is selected as a whole, not a single
+vertex or fraction of a bar. Invalid indices and unavailable lineage are rejected.
+
+Composite chart targets include their owned components: box, whiskers, caps and
+median; endpoints and connectors; or cloud, summary and observations. Target a
+concrete child mark to highlight only that component. Removing the owning
+highlight restores all of its component appearances. Independent overlays and
+statistical additions retain their own targets.
+
+Text marks support `color`/`fill`, `opacity`, `fontSize`, and `offset`. Other mark
+types reject `fontSize`. Highlighted text survives resizing and rematerialization.
+
+`getMarkItems` from `ggaction/inspection` returns final selectable items with
+their mark target, field/channel values, bounds, geometry and dataset-row
+references. It accepts a mark ID or a `{childPath, id}` target. Geometry is
+backend-neutral and has no raw graphic IDs. This supports direct picking and
+row-selection interfaces without adding hidden columns to the data.
+
 <!-- snippet-context:start -->
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "trends"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.

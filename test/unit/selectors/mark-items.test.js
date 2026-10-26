@@ -46,6 +46,7 @@ test("resolves one stable semantic item per point row and graphic child", () => 
       radius: child.properties.radius
     },
     members: [dataset.values[0]],
+    rows: [{ data: dataset.id, index: 0 }],
     graphicIds: [`${layer.id}:0`]
   });
   assert.equal(Object.isFrozen(items[0].members), true);

@@ -76,24 +76,29 @@
       "type": "\"item\" | \"stack\" | undefined"
     },
     {
+      "name": "rows",
+      "required": false,
+      "type": "{ data: string; indices: readonly number[]; }"
+    },
+    {
       "name": "field",
       "required": false,
-      "type": "string | undefined"
+      "type": "string"
     },
     {
       "name": "channel",
       "required": false,
-      "type": "\"color\" | \"group\" | \"opacity\" | \"radius\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\" | \"theta\" | \"x\" | \"x2\" | \"xOffset\" | \"y\" | \"y2\" | \"yOffset\" | undefined"
+      "type": "\"color\" | \"group\" | \"opacity\" | \"radius\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\" | \"theta\" | \"x\" | \"x2\" | \"xOffset\" | \"y\" | \"y2\" | \"yOffset\""
     },
     {
       "name": "property",
       "required": false,
-      "type": "MarkGraphicProperty | undefined"
+      "type": "MarkGraphicProperty"
     },
     {
       "name": "op",
-      "required": true,
-      "type": "\"eq\" | \"gt\" | \"gte\" | \"lt\" | \"lte\" | \"max\" | \"min\" | \"neq\" | \"oneOf\" | \"range\""
+      "required": false,
+      "type": "\"eq\" | \"gt\" | \"gte\" | \"lt\" | \"lte\" | \"neq\""
     },
     {
       "name": "value",

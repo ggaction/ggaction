@@ -3,8 +3,7 @@ import {
   concreteProperties,
   finalizeItems,
   itemKey,
-  ownFields,
-  reorderHighlightedItems
+  ownFields
 } from "./common.js";
 
 export function resolvePointItems(program, layer, dataset) {
@@ -33,7 +32,7 @@ export function resolvePointItems(program, layer, dataset) {
     program,
     layer,
     "point",
-    reorderHighlightedItems(program, layer, definitions),
+    definitions,
     program.graphicSpec.objects[layer.id]?.type
   );
 }

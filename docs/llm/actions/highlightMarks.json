@@ -44,6 +44,10 @@
   },
   "units": [
     {
+      "path": "fontSize",
+      "unit": "logical-pixel"
+    },
+    {
       "path": "opacity",
       "unit": "probability"
     },
@@ -74,6 +78,11 @@
     "allowsEmpty": false
   },
   "options": [
+    {
+      "name": "fontSize",
+      "required": false,
+      "type": "number | undefined"
+    },
     {
       "name": "id",
       "required": false,
@@ -151,7 +160,7 @@
     }
   ],
   "callPatterns": [
-    "highlightMarks({ id?, target?, selection?, select?, color?, opacity?, fill?, stroke? })"
+    "highlightMarks({ id?, target?, selection?, fontSize?, select?, color?, opacity?, fill? })"
   ],
   "snippet": "program.highlightMarks({ select: { field: \"category\", op: \"eq\", value: \"A\" }, color: \"#f28e2b\" })",
   "errors": [],

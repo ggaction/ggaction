@@ -6453,6 +6453,7 @@ Related types: [`NonPointBandPositionScaleOptions`](../../../reference/types/#ty
 
 ```typescript
 export interface HighlightMarksOptions {
+  fontSize?: number;
   id?: string;
   target?: string;
   select?: MarkSelector;
@@ -7406,7 +7407,7 @@ Related types: [`MarkSelector`](../../../reference/types/#type-markselector).
  Expand MarkSelector
 
 ```typescript
-export type MarkSelector = {
+export type MarkSelector = { grain?: "item" | "stack"; rows: { data: string; indices: readonly number[] }; } | {
   grain?: "item" | "stack";
 } & (
   | { field: string; channel?: never; property?: never }

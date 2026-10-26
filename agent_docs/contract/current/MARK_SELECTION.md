@@ -3,6 +3,29 @@
 Current direct-action contracts for cross-mark selection and highlighting. Shared notation and
 lifecycle rules live in [`../README.md`](../README.md).
 
+## Source-row inspection and highlight revision
+
+- 승인 근거: 2026-10-26 사용자가 `docs/mark-highlighting.md`의 공개 확장 계약에
+  “이 API 확장으로 진행”이라고 명시적으로 승인했다.
+- `MarkSelector`는 기존 조건 대신 `{ rows: { data, indices }, grain? }`를 받는다.
+  indices는 해당 named dataset의 zero-based materialized row 위치다. 중복 값도
+  서로 다른 관측치로 취급한다. 최종 마크의 contributing row 중 하나가 일치하면
+  item 전체를 선택한다. 잘못된 index와 확인할 수 없는 lineage는 거부한다.
+- `highlightMarks`의 explicit `id` 재사용은 같은 target의 selector와 appearance를
+  원자적으로 갱신한다. 다른 target이 소유한 ID는 거부한다. ID 생략 동작은 유지한다.
+- 복합 plot target은 owned component들로 확장된다. root에서 선택한 관측치의
+  provenance를 child에 전달하고, 저장된 `groupSelection`으로 그룹 제거를 추적한다.
+  component selection의 `sourceSelection`은 root의 현재 조건을 참조하여 데이터·역할 변경 후 다시 평가한다.
+  독립 overlay/statistical additions는 확장하지 않는다. concrete child target은
+  해당 component 범위다. 지원하지 않는 component 전용 style은 전파하지 않는다.
+- text item은 color/fill, opacity, fontSize, offset을 지원하고 같은 rematerialization
+  baseline lifecycle을 사용한다. 다른 마크는 fontSize를 거부한다.
+- `ggaction/inspection.getMarkItems(program, { target, grain? })`는 final-item 값,
+  backend-neutral geometry/bounds, dataset-row references를 반환한다. raw graphic ID는
+  노출하지 않는다. immutable snapshot별 weak cache를 사용한다.
+- 검증: `test/unit/actions/selection/row-highlighting.test.js`, 기존 mark selection
+  suite, package-boundary contract tests.
+
 ## Capability: `mark-item-selection-grammar`
 
 `filterMarks`, `selectMarks`, and `highlightMarks` share the following current selector algebra and final-item grain.
@@ -255,10 +278,10 @@ type MarkSelector =
 
 ## `highlightMarks`
 
-- Signature: `highlightMarks({ id?, target?, select?, selection?, color?, opacity?, fill?, stroke?, strokeWidth?, strokeDash?, shape?, size?, offset?, dimOthers?, bringToFront? })`
+- Signature: `highlightMarks({ id?, target?, select?, selection?, color?, opacity?, fill?, stroke?, strokeWidth?, strokeDash?, shape?, size?, fontSize?, offset?, dimOthers?, bringToFront? })`
 - Selection source: inline `select`, explicit `selection`, current unique compatible selection 순으로 resolve한다.
   Inline selection은 real wrapped `selectMarks` child를 호출하며 `select`와 `selection`은 함께 쓸 수 없다.
-- Current mark capability: point, bar, line, area, arc, rule and Tick. Omitted appearance uses accent `#dc2626`. Point default size is area
+- Current mark capability: point, bar, rect, line, area, arc, rule, Tick and text. Omitted appearance uses accent `#dc2626`. Point default size is area
   multiplier `2`; `shape` accepts the shared fourteen named shapes or explicit simple polygons from MARKS.md, and logical offset is available. Point/bar `color` aliases
   fill and conflicts with explicit `fill`. Bar rejects shape, size, offset and strokeDash. Area uses fill with optional
   stroke and rejects shape, size and strokeDash. Arc uses the same fill, optional outline, and path-offset recipe.

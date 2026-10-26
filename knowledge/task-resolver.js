@@ -944,6 +944,7 @@ function linkCreatedDataEditors(entries) {
 
 function requiredOptionNames(card, call) {
   const required = card.options.filter(option => option.required).map(option => option.name);
+  if (["selectMarks", "editMarkSelection", "filterMarks"].includes(card.name) && !/\brows\s*:/.test(call)) required.push("op");
   if (card.name === "createImputedData") {
     const method = call.match(/\bmethod\s*:\s*["'](constant|forward|backward|linear|mean)["']/)?.[1];
     if (method && method !== "mean") required.push("method");
