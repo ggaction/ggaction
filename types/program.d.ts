@@ -1932,6 +1932,16 @@ type CartesianGuideOptions = {
   grid?: false | CartesianGridOptions;
   legend?: false | (DistributiveLegendOmit<FilledMarkLegendOptions, "order"> & { order?: CartesianLegendOrder });
 };
+// These constructors map hue through color, so their combined legend cannot
+// override fill. Scatter and direct legend actions also support mapped stroke.
+type ColorMappedPointLegendOptions =
+  | Exclude<FilledMarkLegendOptions, { combine: "color-size-shape" }>
+  | (Omit<Extract<FilledMarkLegendOptions, { combine: "color-size-shape" }>, "symbol"> & {
+      symbol?: "auto" | { type?: "point"; stroke?: string; strokeWidth?: number; opacity?: number };
+    });
+type ColorMappedPointGuideOptions = Omit<CartesianGuideOptions, "legend"> & {
+  legend?: false | (DistributiveLegendOmit<ColorMappedPointLegendOptions, "order"> & { order?: CartesianLegendOrder });
+};
 type CartesianPathGuideOptions = Omit<CartesianGuideOptions, "legend"> & {
   legend?: false | (Omit<PathLegendOptions, "order"> & { order?: LegendValueOrder });
 };
@@ -3494,7 +3504,7 @@ type RegressionPlotBaseOptions = {
   size?: BasicSizeChannel;
   shape?: BasicShapeChannel;
   point?: CreateScatterPlotOptions["point"];
-  guides?: false | CartesianGuideOptions;
+  guides?: false | ColorMappedPointGuideOptions;
 };
 type RegressionPlotStatisticalOptions<T> = T extends unknown
   ? Omit<T, "target" | "x" | "y">
@@ -3794,7 +3804,7 @@ export type CreateStripPlotOptions = {
     stroke?: FilledMarkStroke;
     strokeWidth?: number;
   };
-  guides?: false | CartesianGuideOptions;
+  guides?: false | ColorMappedPointGuideOptions;
 } & (
   | { x: RugMeasureChannel; y?: never; jitter?: false | StripPixelJitterOptions }
   | { x: RugMeasureChannel; y: StripCategoryChannel; jitter?: false | StripBandJitterOptions }
@@ -3824,7 +3834,7 @@ export type CreateBeeswarmPlotOptions = {
     strokeWidth?: number;
   };
   packing?: false | BeeswarmPackingOptions;
-  guides?: false | CartesianGuideOptions;
+  guides?: false | ColorMappedPointGuideOptions;
 } & (
   | { x: RugMeasureChannel; y: StripCategoryChannel }
   | { x: StripCategoryChannel; y: RugMeasureChannel }

@@ -117,3 +117,9 @@ consumer와 browser/renderer parity를 검증한다. 새 옵션 때문에 기존
 - 최종 source `4281e73a`에서 6,275 tests/0 failures/0 skips, line 95.80%, branch 93.36%, function 98.73%, 182 critical floors가 통과했다.
 - CI의 source와 295 browser 검사는 통과했다. Render에서 확인한 PDF literal fixture의 폰트 자원을 native renderer와 같게 맞췄으며, 실패 출력은 bounded byte comparison으로 제한했다. 픽셀 허용 오차를 추가하지 않았다.
 - CI의 Linux Polar PNG 3개를 내려받아 직접 검토했다. 텍스트 잘림 없이 의도한 차트가 그려지며, 각 primitive/public decoded pixels가 byte-exact 일치했다. Native fallback 폰트가 바꾼 잉크 외곽만 Linux baseline에 반영했고 기존 tolerance와 ink-density/region 조건은 유지했다. 관련 PDF/PNG 검사 5개가 통과했다.
+
+## 계층형 facade의 실제 옵션 실행 보강
+
+- CI에서 확인한 극좌표 축/범례 정렬, 범례 alongOffset, Strip/Beeswarm/Raincloud missing 및 Radar wide summary/normalize 실행 누락을 실제 데이터 profile에 추가했다. 평균과 중앙값은 원본 반복 그룹에서 계산하고, 각 wide Radar witness의 기본 theta/radius 자원을 제거해 정규화 유무에 따른 이름 충돌을 막는다.
+- Strip/Beeswarm/Regression에는 stroke encoding 입력이 없으므로 color-size-shape 범례의 mapped fill을 고정 값으로 덮어쓰는 symbol.fill은 실행할 수 없다. 해당 3개 facade 타입에서만 이 잘못된 허용을 제거하고, 유효한 stroke/opacity 및 Scatter의 mapped-stroke fill을 보존하는 컴파일 회귀를 추가했다. 테스트 제외를 추가하지 않았다.
+- 재계산한 public inventory는 24,424 option paths, 16,904 required paths, 30,363 ledger requirements다. 나머지 literal/diversity 및 5회/3개 데이터셋 기준은 유지한다. 최종 전체 CI와 annotated-tag candidate 검증은 여전히 필요하다.

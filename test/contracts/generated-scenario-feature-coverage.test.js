@@ -216,9 +216,9 @@ test("derives a bounded public option inventory without runtime prototype paths"
 
   assert.equal(inventory.counts.publicActions, 291);
   assert.equal(inventory.counts.topLevelOptionPaths, 2704);
-  assert.equal(inventory.counts.nestedOptionPaths, 21723);
-  assert.equal(inventory.counts.optionPaths, 24427);
-  assert.equal(inventory.counts.requiredOptionPaths, 16907);
+  assert.equal(inventory.counts.nestedOptionPaths, 21720);
+  assert.equal(inventory.counts.optionPaths, 24424);
+  assert.equal(inventory.counts.requiredOptionPaths, 16904);
   assert.equal(inventory.counts.excludedOptionPaths, 7520);
   assert.deepEqual(inventory.optionPaths.filter(option => option.path === "subtitleLineHeight")
     .map(option => option.id).sort(), [
@@ -471,7 +471,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
     "option-path:createData.values[]"), false);
   assert.equal(ledger.requirements.some(requirement => requirement.id ===
     "option-path:createDerivedData.transform[].type"), false);
-  assert.equal(ledger.requirements.length, 30366);
+  assert.equal(ledger.requirements.length, 30363);
   assert.deepEqual(ledger.requirements.filter(requirement =>
     /^(?:option-path:)(?:createTitle|editTitle)\.subtitleLineHeight$/u.test(requirement.id)
   ).map(requirement => requirement.id).sort(), [
