@@ -33,6 +33,10 @@
       {
         "type": "file",
         "path": "unit/graphic-lookup-reuse.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/render-work-reuse.test.js"
       }
     ],
     "area-layout": [
