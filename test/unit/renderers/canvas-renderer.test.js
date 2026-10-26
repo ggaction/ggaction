@@ -105,6 +105,46 @@ test("draws a resolved graphic target without a Canvas backing store", () => {
   assert.equal(findCanvasCalls(context, "scale").length, 0);
 });
 
+test("does not repeat an empty isolation scan after Canvas preflight", () => {
+  const graphicSpec = createGraphicSpec();
+  const originalValues = Object.values;
+  let scans = 0;
+  Object.values = function (value) {
+    if (value === graphicSpec.objects) scans += 1;
+    return originalValues(value);
+  };
+  try {
+    render({ graphicSpec }, createMockCanvasContext());
+    assert.equal(scans, 2, "one clip scan and one isolation scan per render");
+    scans = 0;
+    drawResolvedGraphicSpec(
+      resolveGraphicRenderTarget(graphicSpec), createMockCanvasContext()
+    );
+    assert.equal(scans, 1, "direct drawing still prepares isolation itself");
+  } finally {
+    Object.values = originalValues;
+  }
+});
+
+test("preflights newly added blend before clearing a previously unblended scene", () => {
+  const graphicSpec = createGraphicSpec();
+  const context = createMockCanvasContext();
+  render({ graphicSpec }, context);
+  context.calls.length = 0;
+  graphicSpec.objects.points.items[0].properties.blend = "normal";
+
+  assert.throws(
+    () => render({ graphicSpec }, context),
+    /requires Canvas drawImage and compositing support/
+  );
+  assert.equal(context.calls.length, 0, "invalid surfaces fail before destructive drawing");
+  assert.throws(
+    () => drawResolvedGraphicSpec(resolveGraphicRenderTarget(graphicSpec), context),
+    /requires Canvas drawImage and compositing support/
+  );
+  assert.equal(context.calls.length, 0);
+});
+
 test("renders concrete children from a heterogeneous drawable collection", () => {
   const graphicSpec = createGraphicSpec();
   graphicSpec.objects.symbols = {
