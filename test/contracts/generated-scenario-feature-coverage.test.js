@@ -273,6 +273,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
     "option-path:encodeY.bin"), false);
   const clipHeightPaths = [
     "createAdjacentPlot.plot.options.guides.legend.clipHeight",
+    "createLayerPlot.plot.options.guides.legend.clipHeight",
     ...["createLegend", "editLegend", "editLegendBlock", "editLegendSymbols"].map(action => `${action}.clipHeight`),
     ...["createGuides", "editFacetGuides"].map(action => `${action}.legend.clipHeight`),
     ...["createAreaPlot", "createBarPlot", "createBeeswarmPlot", "createDensityPlot", "createDotPlot",
@@ -287,6 +288,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
   "point-bearing sample windows remain observable in direct, facade and parent inputs");
   const opacityPaths = [
     "createAdjacentPlot.plot.options.guides.legend.symbol.opacity",
+    "createLayerPlot.plot.options.guides.legend.symbol.opacity",
     ...["createLegend", "editLegend", "editLegendBlock", "editLegendSymbols"].map(action => `${action}.symbol.opacity`),
     ...["createGuides", "editFacetGuides"].map(action => `${action}.legend.symbol.opacity`),
     ...["createBeeswarmPlot", "createRegressionPlot", "createScatterPlot", "createStripPlot", "facet", "facetGrid",

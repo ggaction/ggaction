@@ -1686,7 +1686,7 @@ function buildScaleVocabulary(factors) {
       .encodeY({
         target: "positionComparisonPoints",
         field: "center",
-        scale: { nice: true, zero: false }
+        scale: { id: "yComparison", nice: true, zero: false }
       })
       .encodePointRadius({ target: "positionComparisonPoints", value: 3.5 });
   }
@@ -1732,7 +1732,7 @@ function buildScaleVocabulary(factors) {
   program = program
     .createAxes({
       x: { scale: "x", title: { text: `${context.dimensionText} rank` } },
-      y: { title: { text: variant.kind === "category" ? context.dimensionText : context.measureText } }
+      y: { scale: "y", title: { text: variant.kind === "category" ? context.dimensionText : context.measureText } }
     });
   if (variant.kind === "color" && variant.type === "sequential") {
     const gradientLegend = {

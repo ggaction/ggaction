@@ -12,7 +12,9 @@
     "contracts/realistic-arc-legend-layout.test.js": 67117,
     "contracts/realistic-axis-facet-owner-witness.test.js": 60773,
     "contracts/realistic-cartesian-facade-coverage-recipes.test.js": 134704,
+    "contracts/realistic-combined-legend-witness.test.js": 1338,
     "contracts/realistic-complete-chart-facades.test.js": 3510,
+    "contracts/realistic-data-color-contracts.test.js": 50176,
     "contracts/realistic-data-mark-recipes.test.js": 151354,
     "contracts/realistic-direct-lifecycle-coverage-recipes.test.js": 799519,
     "contracts/realistic-encoding-coverage-recipes.test.js": 35752,
@@ -21,16 +23,15 @@
     "contracts/realistic-facet-raster-bounds.test.js": 82744,
     "contracts/realistic-guide-scale-recipes.test.js": 268329,
     "contracts/realistic-hierarchical-facade-matrix.test.js": 367033,
+    "contracts/realistic-layer-plot.test.js": 23253,
+    "contracts/realistic-legend-option-witness.test.js": 5886,
     "contracts/realistic-lifecycle-factor-effects.test.js": 63898,
     "contracts/realistic-lifecycle-provenance.test.js": 106,
     "contracts/realistic-scenario-generation-isolation.test.js": 945678,
     "contracts/realistic-scenario-generator.test.js": 535185,
     "contracts/realistic-scenario-runner.test.js": 99611,
-    "contracts/realistic-statistical-facade-coverage-recipes.test.js": 98393,
-    "contracts/realistic-combined-legend-witness.test.js": 1338,
-    "contracts/realistic-data-color-contracts.test.js": 50176,
-    "contracts/realistic-legend-option-witness.test.js": 5886,
-    "contracts/realistic-scoped-composition.test.js": 843
+    "contracts/realistic-scoped-composition.test.js": 843,
+    "contracts/realistic-statistical-facade-coverage-recipes.test.js": 98393
   },
   "localMeasurementNotes": {
     "contracts/realistic-combined-legend-witness.test.js": {
@@ -79,5 +80,13 @@
       "measurement": "Successful local complete file duration_ms, rounded upward; unchanged159 requirements/100 programs plus restored124 palette paths/135 programs across the same five pinned datasets. Includes truthful redacted-array presence checks; no coverage instrumentation.",
       "durationMs": 50176
     }
-  }
+  },
+  "additionalMeasurements": [
+    {
+      "file": "contracts/realistic-layer-plot.test.js",
+      "durationMs": 23253,
+      "environment": "macOS arm64, Node 23.5.0",
+      "source": "Local 0.0.25 release verification, 2026-10-26; three native-layer real-data tests"
+    }
+  ]
 }

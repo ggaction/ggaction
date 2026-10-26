@@ -164,3 +164,22 @@ test("recomposes outer guides without changing retained facet children", () => {
   );
   assert.equal(program.compositionSpec.gap, 20);
 });
+
+
+test("public and primitive titles retain exact content clearance in all facet variants", async () => {
+  const { createGapminderRegressionFacetPrimitives, createGapminderOuterGuideFacetPrimitives } =
+    await import("./primitive.program.js");
+  const rows = loadGapminder();
+  for (const [make, primitive, options] of [
+    [createGapminderRegressionFacet, createGapminderRegressionFacetPrimitives, {}],
+    [createGapminderRegressionFacet, createGapminderRegressionFacetPrimitives, { xResolution: "independent" }],
+    [createGapminderOuterGuideFacet, createGapminderOuterGuideFacetPrimitives, {}]
+  ]) {
+    const program = make(rows, options), reference = primitive(rows, options);
+    for (const [id, center] of [["chartTitle", 31.75], ["chartSubtitle", 55.75]]) {
+      assert.equal(program.graphicSpec.objects[id].properties.y, center);
+      assert.deepEqual(program.graphicSpec.objects[id].properties, reference.graphicSpec.objects[id].properties);
+    }
+    assert.equal(84 - 12.5 / 2 - (program.graphicSpec.objects.chartSubtitle.properties.y + 12 / 2), 16);
+  }
+});

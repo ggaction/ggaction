@@ -90,6 +90,11 @@ export function parentLegendWitnessOptions(view, profile) {
   if (Object.hasOwn(profile, "legacy")) return profile.legacy;
   const common = realisticLegendOptions({ id: profile.id }, "Source groups", { target: "points", channels: ["color"] });
   const options = { ...common, titlePosition: "top", direction: "vertical", align: "center", columns: 1, ...profile.legend };
+  if (profile.id.startsWith("anchor-")) {
+    const index = anchors.indexOf(options.position);
+    options.labels = { ...options.labels, align: ["left", "center", "right"][index % 3] };
+    options.alongOffset = index % 2 ? -1 : 1;
+  }
   if (options.at !== undefined) for (const key of ["position", "align", "offset"]) delete options[key];
   if (options.layout === "legacy-bottom") delete options.columns;
   if (profile.family === "opacity") for (const key of ["columns", "direction"]) delete options[key];
