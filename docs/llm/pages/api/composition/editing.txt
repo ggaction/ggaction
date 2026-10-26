@@ -2,6 +2,96 @@
 
 [Family overview](../../../../api/composition/) · [Exact action lookup](../../../../reference/actions/)
 
+## Add an adjacent chart and share scales
+
+Call `createAdjacentPlot` on a complete chart to add a new view to its left, right,
+top or bottom. By default it creates a line using the source fields and aggregation.
+Supply `plot: { action: "createScatterPlot", options: { x: "month", y: "sales" } }`
+(or another native constructor) to select a different chart. All native constructor families can infer their source data and unambiguous positional
+roles, including original fields behind statistical plots. `plot.inherit: { color: false }`
+keeps the new chart uncolored when `plot.options.color` is omitted; the same switch
+is available for `createLayerPlot`. Explicit colors still take precedence. Supply native options
+for any role that cannot be inferred, such as a second Dumbbell measure. The new chart
+has independent data and appearance; use `createOverlay` when it should follow results.
+Input tables remain available in the new view even when its chart uses a summary, so a
+later adjacent chart can select other columns with `plot.options.data` and explicit fields.
+
+The selected source mark's ID names the original view; the new `id` names both the
+adjacent view and its initial mark. Nested concats use explicit child paths when adding
+another view. A facet is one editable source view; generated cells remain derived.
+
+To attach one wide chart below an entire row (or a tall chart beside a column),
+select the concat itself as the receiver. Its original composition ID names the
+preserved group inside the new parent. A concat requires an explicit structured
+`source: { childPath, id }`; the source path is **relative to the receiving group**.
+It identifies the unit or facet supplying data and defaults, independently of where
+the new chart is attached. Overlays and generated facet cells cannot be sources.
+
+> **Executable complete.** Import chart from ggaction. This complete example includes all data and adds a full-width line below an existing pair using an explicit source panel.
+
+```javascript
+import { chart } from "ggaction";
+
+const values = [{ month: 1, sales: 20 }, { month: 2, sales: 35 }];
+const bars = chart().createCanvas({ plot: { width: 240, height: 220 }, margin: 80 })
+  .createData({ id: "sales", values })
+  .createBarPlot({ id: "bars", x: "month", y: "sales" });
+const pair = bars.createAdjacentPlot({ id: "line", source: "bars", position: "right" });
+const withWideBottom = pair.createAdjacentPlot({
+  id: "bottom",
+  source: { childPath: ["bars"], id: "bars" },
+  position: "bottom",
+  plot: { action: "createLinePlot", options: { x: "month", y: "sales" } },
+  share: { x: true },
+  align: "plot"
+});
+```
+
+Top/bottom additions span the receiving group's plot-union width; left/right
+additions span its plot-union height. The other dimension comes from the explicit
+source view. This changes plot geometry without stretching text or symbols.
+To attach to an inner group, set `target: { childPath: ["group"] }` and provide a
+source path relative to that group. Existing group titles remain local to it.
+The new chart ID must differ from the preserved group's composition ID.
+
+Horizontal placement defaults to shared Y and vertical placement to shared X.
+Explicit `share` replaces that default. `hconcat` and `vconcat` also accept `share`.
+Shared channels must use compatible fields, measurement units and scale mappings.
+Conflicting explicit domains reject the whole operation. Automatically inferred domains
+are combined afresh after each edit, so they can grow and shrink. Authored child domains
+are preserved: `editCompositionScales({ share: { y: false } })` restores independent Y.
+Plot-relative annotation anchors keep their local position when data axes are shared.
+Data-coordinate annotations follow their source scale's shared domain.
+A shared palette change must target all affected views in the same atomic call.
+For a faceted child, sharing uses the union of the displayed cell domains after
+partitioning, aggregation and stacking, rather than the unpartitioned source's
+domain. The resulting domain applies to every cell and adjacent view, including
+cells whose facet scale policy was independent. Disabling the outer sharing
+restores the facet's original scale policies and inferred domains.
+
+`align: "plot"` aligns both ends of the shared-axis plot frames. It rematerializes
+render snapshots at a common plot extent while preserving child margins and authored
+sizes. This also works with nested concat and facet views. Text and symbols keep their
+sizes. The existing start, center and end Canvas alignment modes are unchanged.
+
+## Target one view, one mark, or several marks
+
+A native action accepts `target: { childPath: ["bars"], id: "trend" }` to edit the
+trend mark in the bars view. Omit `id` for a view-level operation such as `createTitle`.
+An empty child path refers to the current view. A nonempty array of selectors applies
+the same native action atomically to every listed target. In a unit chart, an array of
+mark IDs is sufficient. This is one public action and one root trace entry.
+
+An All control should enumerate the explicit compatible targets. No wildcard silently
+changes unrelated marks. A linked overlay follows source positions; edit its source
+for geometry and target the overlay for independent appearance. Generated facet cells
+are not persistent edit targets. Select the facet view and use `editFacetSource`,
+or include `facetSource: true` in its scoped selector. For example an opacity edit
+can atomically target `[{ childPath: ["facets"], id: "plot", facetSource: true },
+{ childPath: ["detail"], id: "plot" }]`. The facet source is revised and every cell
+is regenerated; the ordinary view receives the same native action directly.
+The Basic entry point and low-level primitives retain their original target contracts.
+
 ## Edit the layout
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `row`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
@@ -157,3 +247,80 @@ Wrapped layouts can switch to `editCompositionLayout({ spacing: "content" })` to
 content bounds independently; keyed grids reject this mode. Reset `topLane` to `"stacked"`
 in the same call when switching from a shared plot lane. Header `anchor: "view"` includes
 retained guides in its outward clearance and is available with plot or content spacing.
+
+`createAdjacentPlot` collects all visible legend blocks around the complete composition by
+default, normally to its right. Independent size, opacity and other legends keep their own
+meaning and typography; overlapping outside blocks are stacked with the native side/horizontal block gaps.
+Scoped legend edits move or resize the visible block in the combined plot frame, including
+when its original owner is a nested or faceted child.
+
+For lower-level `hconcat`/`vconcat`, opt in with `legends: "collect"`. Their default
+`"local"` preserves independent panel placement. Use `editCompositionLayout({ legends: "local" })`
+to restore local placement, or `"collect"` to collect existing blocks. This changes guide
+placement, not scale sharing. Facets continue to use `editFacetGuides`.
+
+When color is shared, compatible same-field color/shape legends and color-only legends
+are collected into one legend, retaining its authored position, alignment and typography.
+A new adjacent chart with shared color retains the existing legend presentation rather than
+resetting it to the right. Edit the contributing child legends with explicit targets to change
+the collected block; its occupied bounds participate in the parent Canvas and plot layout.
+Its offset is measured from the combined plot bounds. Existing child margins are reused,
+so adding a neighbour does not insert a second empty legend lane. Automatic offsets clear
+retained chart content; an explicit offset is preserved and rejects a collision. Free `at`
+coordinates remain relative to the combined plot origin.
+The combined symbols retain their shape meaning;
+unrelated size legends and conflicting shape mappings remain separate. Disabling color
+sharing restores separate explanations; collect mode keeps them in the outer lane, including
+in nested and faceted views.
+
+## Layer a native chart
+
+Use `createLayerPlot` for independently computed plots over the same measurements:
+
+> **Executable complete.** Self-contained deterministic observations with shared measurement scales and independent native layers.
+
+```js
+import { chart } from "ggaction";
+import { getPlotComposition, describeAction } from "ggaction/inspection";
+const data = Array.from({ length: 36 }, (_, i) => ({ group: i % 2 ? "A" : "B", value: 2 + i % 11 }));
+const program = chart()
+  .createCanvas({ plot: { width: 360, height: 300 }, margin: 90 })
+  .createData({ values: data })
+  .createBeeswarmPlot({ id: "observations", x: "group", y: "value" })
+  .createLayerPlot({
+    id: "summary",
+    source: "observations",
+    plot: { action: "createBoxPlot", options: {
+      width: { band: 0.4 }, outliers: false, box: { opacity: 0.25 }
+    } },
+    placement: "back"
+  })
+  .createGuides();
+const source = getPlotComposition(program, { target: "summary" });
+// source.channels.y.field is "value", not the internal Q1 column.
+const check = describeAction(program, { action: "createLayerPlot", options: {
+  id: "samples", source: "summary", plot: { action: "createStripPlot" }
+} });
+```
+
+The new plot shares coordinates and compatible scales, including the original
+fields behind a statistical chart. Its appearance remains independently editable.
+`placement: "back"` puts the entire compound plot behind existing marks.
+Use native encodings and plot editors to adjust each layer. Shared scale edits
+apply to every consumer. Color is inherited when available at the layer's grain.
+
+Use `createOverlay` when a line or point should **follow the existing visible
+results**, such as stacked bar endpoints. Use `createLayerPlot` for independent
+observations/distributions, such as Beeswarm + Box or Violin + Box + Strip.
+Different units or coordinates belong in an adjacent chart. In particular,
+histogram counts, density and cumulative probability cannot share one height
+scale. A Rug can reuse only their measurement axis. Horizontal categorical lines and
+aggregate lines can layer over horizontal bars with matching measurement units.
+Grouped, stacked and overlaid layers may share one value scale; normalized or
+centered policies cannot be mixed. A category-positioned Violin density silhouette
+has no unique endpoint per category, so `createOverlay` rejects that source and
+`describeAction` reports the same incompatibility. Use an independent native layer.
+
+Preflight uses constructor roles without rendering all candidates. Native
+constructors still validate data-dependent conditions when invoked. Layering
+inside a facet uses `editFacetSource`; inside a concat, use a scoped `target`.

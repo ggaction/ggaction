@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "axes",
   "summary": "Create missing theta-axis ticks independently of the other components.",
-  "signature": "createThetaAxisTicks(options?: CreateThetaAxisTicksOptions): ChartProgram;",
+  "signature": "createThetaAxisTicks(options?: TargetedOptions<CreateThetaAxisTicksOptions>): ChartProgram;",
   "intents": [
     "create theta axis ticks",
     "create",
@@ -24,7 +24,8 @@
     ],
     "idOptions": [
       "scale",
-      "coordinate"
+      "coordinate",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -63,6 +64,10 @@
     },
     {
       "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -112,10 +117,15 @@
       "name": "coordinate",
       "required": false,
       "type": "string | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "createThetaAxisTicks({ scale?, coordinate?, color?, lineWidth?, length?, count?, values? })"
+    "createThetaAxisTicks({ scale?, coordinate?, target?, color?, lineWidth?, length?, count?, values? })"
   ],
   "snippet": "program.createThetaAxisTicks({})",
   "errors": [],

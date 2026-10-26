@@ -1,3 +1,4 @@
+import { materializeHardTextLines } from "../../../../materialization/textLines.js";
 import { materializeLegendBorder } from "../../../../materialization/legendBorder.js";
 import { editGraphicProperties } from "../../../primitives/graphicProperties.js";
 import { materializeLegendTitleLines } from "../../../../materialization/legendText.js";
@@ -23,7 +24,7 @@ export const rematerializeLegendLabels = /* @__PURE__ */ action(
     const layout = resolveLayout(this, config);
     const labels = categoricalLegendLabels(config);
     const visible = labels.flatMap((text, index) => text === "" ? [] : [index]);
-    return editGraphicProperties(editGraphicProperties(this, id, {
+    return materializeHardTextLines(editGraphicProperties(editGraphicProperties(this, id, {
       length: visible.length,
       x: visible.map(index => layout.labelX[index]),
       y: visible.map(index => layout.itemY[index])
@@ -37,9 +38,9 @@ export const rematerializeLegendLabels = /* @__PURE__ */ action(
       fontSize: config.labels.fontSize,
       fontFamily: config.labels.fontFamily,
       fontWeight: config.labels.fontWeight,
-      textAlign: "left",
+      textAlign: config.labels.align ?? "left",
       textBaseline: "middle"
-    });
+    }), id);
   }
 );
 

@@ -1,6 +1,6 @@
 import { measureTextWidth, resolveTextBounds } from "../core/textMetrics.js";
 import { alignLegendStart, resolveLegendGrid, isPlotLegend, legendLabelLineHeight } from "./legend.js";
-import { alignLegendTitle, resolveLegendTitleText } from "./legendText.js";
+import { alignLegendLabels, alignLegendTitle, resolveLegendTitleText } from "./legendText.js";
 import {resolveLegendContentSpacing} from "./legendSpacing.js";
 
 // Measure item content before choosing its edge. Family owners supply the
@@ -32,7 +32,7 @@ export function resolveLegendItemLayout(plot, config, labels, symbol, canvas, pr
   let itemRows;
   let title;
   if (config.layout === "legacy-bottom") {
-    const widths = labels.map(text => sampleWidth + config.labels.offset + measureTextWidth(text, config.labels, profile));
+    const widths = labels.map(text => sampleWidth + config.labels.offset + resolveLegendTitleText(text, config.labels, profile).width);
     const width = widths.reduce((sum, value) => sum + value, 0) + config.itemGap * (labels.length - 1);
     const x = config.align === "center" ? (canvas.width - width) / 2 : alignLegendStart(plot, width, config.align);
     let cursor = x;
@@ -52,7 +52,7 @@ export function resolveLegendItemLayout(plot, config, labels, symbol, canvas, pr
     const width = Math.max(grid.gridWidth, titleWidth);
     const x = config.position === "right" ? plot.x + plot.width + config.offset
       : plot.x - config.offset - width;
-    const itemHeight = Math.max(sampleHeight, legendLabelLineHeight(config.labels.fontSize));
+    const itemHeight = Math.max(sampleHeight, legendLabelLineHeight(config.labels.fontSize), ...labels.map(text => resolveLegendTitleText(text, config.labels, profile).height));
     const pitch = Math.max(config.itemGap, itemHeight);
     let cursor = x;
     const columnStarts = grid.columnWidths.map(columnWidth => {
@@ -69,7 +69,7 @@ export function resolveLegendItemLayout(plot, config, labels, symbol, canvas, pr
         text: config.title, ...config.titleStyle, lines: titleText.lines,
         textAlign: "left", textBaseline: "middle" }, profile);
       const labelTops = labels.map(text => resolveTextBounds({
-        x: 0, y: 0, text, ...config.labels,
+        x: 0, y: 0, text, ...config.labels, lines: resolveLegendTitleText(text, config.labels, profile).lines,
         textAlign: "left", textBaseline: "middle"
       }, profile).top);
       const itemTop = Math.min(...sampleBounds.map(bounds => bounds.top), ...labelTops);
@@ -104,9 +104,10 @@ export function resolveLegendItemLayout(plot, config, labels, symbol, canvas, pr
       : { x: x + width / 2, y: y + titleHeight / 2, align: "center" };
   }
   const textBounds = (x, y, text, style, align = "left") => resolveTextBounds({
-    x, y, text, ...style, textAlign: align, textBaseline: "middle"
+    x, y, text, ...style, lines: resolveLegendTitleText(text, style, profile).lines, textAlign: align, textBaseline: "middle"
   }, profile);
-  const labelBounds = labels.map((label,index) => textBounds(labelX[index],itemY[index],label,config.labels));
+  if (config.labels.align !== undefined) labelX = alignLegendLabels(labelX.map((x, index) => ({ x, y: itemY[index], align: "left" })), labels, config.labels, profile).map(position => position.x);
+  const labelBounds = labels.map((label,index) => textBounds(labelX[index],itemY[index],label,config.labels,config.labels.align ?? "left"));
   const symbolItemBounds = symbolX.map((x, index) => {
       const local = sampleBounds[index];
       return { left: x + local.left, right: x + local.right,

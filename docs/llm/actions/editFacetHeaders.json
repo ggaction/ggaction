@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "composition",
   "summary": "Edit the parent-owned repeated facet headers and rebuild the parent snapshot without changing child programs or facet value order.",
-  "signature": "editFacetHeaders(options: EditFacetHeadersOptions): ChartProgram;",
+  "signature": "editFacetHeaders(options: TargetedOptions<EditFacetHeadersOptions>): ChartProgram;",
   "intents": [
     "edit facet headers",
     "edit",
@@ -21,7 +21,9 @@
       "complete child chart program"
     ],
     "owns": [],
-    "idOptions": []
+    "idOptions": [
+      "target"
+    ]
   },
   "authoringRoles": [
     "H3"
@@ -53,6 +55,10 @@
     {
       "input": "labelMap",
       "strategy": "documented-auto"
+    },
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
     }
   ],
   "completionRequirements": {
@@ -123,10 +129,15 @@
       "name": "title",
       "required": false,
       "type": "false | FacetHeaderTitleOptions | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "editFacetHeaders({ fontSize?, fontFamily?, fontWeight?, color?, offset?, anchor?, role?, labelMap? })"
+    "editFacetHeaders({ target?, fontSize?, fontFamily?, fontWeight?, color?, offset?, anchor?, role? })"
   ],
   "snippet": "program.editFacetHeaders({ fontSize: 1 })",
   "errors": [],

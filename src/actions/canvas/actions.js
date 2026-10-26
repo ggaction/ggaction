@@ -52,6 +52,7 @@ function resolveCanvasState(properties, args, config = {}) {
     width: properties.width, height: properties.height, background: properties.background,
     ...args,
     margin: Object.hasOwn(args, "margin") ? normalizeMargin(args.margin, baseMargin) : baseMargin,
+    requestedMargin: Object.hasOwn(args, "margin") ? normalizeMargin(args.margin, config.requestedMargin ?? baseMargin) : config.requestedMargin ?? baseMargin,
     plotBorder: normalizePlotBorder(Object.hasOwn(args, "plotBorder") ? args.plotBorder : (config.plotBorder ?? false)),
     size: {
       width: Object.hasOwn(args, "width") ? "explicit" : baseSize.width,
@@ -78,7 +79,7 @@ function applyCanvasState(program, args, state) {
     }
   }
   return next._withCanvasConfig({ margin: state.margin, size: state.size,
-    ...(state.plot === undefined ? {} : { plot: state.plot }),
+    ...(state.plot === undefined ? {} : { plot: state.plot, requestedMargin: state.requestedMargin }),
     ...(state.plotBorder === false ? {} : { plotBorder: state.plotBorder }) });
 }
 

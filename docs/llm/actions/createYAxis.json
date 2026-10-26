@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "axes",
   "summary": "Creates y axis for vertical scale guide.",
-  "signature": "createYAxis(options?: CompleteAxisOptions<YAxisPosition>): ChartProgram;",
+  "signature": "createYAxis(options?: TargetedOptions<CompleteAxisOptions<YAxisPosition>>): ChartProgram;",
   "intents": [
     "create y axis",
     "create",
@@ -25,7 +25,8 @@
     "idOptions": [
       "id",
       "scale",
-      "coordinate"
+      "coordinate",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -59,6 +60,10 @@
     },
     {
       "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -118,10 +123,15 @@
       "name": "title",
       "required": false,
       "type": "false | Omit<AxisTitleOptions<YAxisPosition>, \"position\" | \"scale\" | \"target\"> | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "createYAxis({ id?, scale?, coordinate?, underlay?, offset?, position?, line?, ticksAndLabels? })"
+    "createYAxis({ id?, scale?, coordinate?, target?, underlay?, offset?, position?, line? })"
   ],
   "snippet": "program.createYAxis({})",
   "errors": [],

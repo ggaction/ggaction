@@ -1,6 +1,10 @@
 import type { ChartProgram, CompositionOptions } from "./program.js";
 
 export type {
+  CreateOverlayOptions,
+  EditOverlayOptions,
+  OverlayLineAppearance,
+  OverlayPointAppearance,
   LinearNiceCountOptions,
   AxisTickRounding,
   ArcInnerRadius,
@@ -73,6 +77,13 @@ export type {
   NamedCompleteAxis,
   ConcatCompositionSpec,
   CompositionAlign,
+  CompositionShares,
+  ScopedActionTarget,
+  ActionTargetList,
+  TargetedOptions,
+  EditCompositionScalesOptions,
+  AdjacentPlotSpecification,
+  CreateAdjacentPlotOptions,
   CompositionOptions,
   EditFacetSourceOptions,
   FacetHeaderRole,

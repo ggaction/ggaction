@@ -133,7 +133,7 @@ Cartesian line/ticks/labels/title의 실제 occupied bounds는 각 component pos
   deterministic `(empty)`로 표시한다. Explicit format은 그대로 유지한다. ticks와 count/values 정책이
   충돌하면 거부한다. 매우 긴 valid temporal domain은 legacy fixed interval이 requested count를 크게
   초과할 때만 nice multi-year step으로 전환한다. Wrapped line과 rotation-aware occupied bounds는
-  mapping이 적용된 최종 문자열을 측정한다. Parallel field-axis label에는 `labelMap`이 노출되지 않는다.
+  mapping이 적용된 최종 문자열을 측정한다. Parallel field-axis categorical labels에도 `labelMap`을 지원한다. Continuous parallel labels는 이를 거부한다.
   materialization에서 확정하므로 renderer는 text를 다시 측정하거나 줄바꿈하지 않는다. Canvas/scale replay는
   stored policy와 원래 tick value text에서 같은 concrete line을 재생성한다. Total concrete label line은
   `10,000`개를 넘을 수 없다.
@@ -153,6 +153,8 @@ Continuous labelMap evidence: `test/unit/actions/guides/continuous-axis-display-
 - Effect: shared count/values를 tick과 label child에 원자적으로 전달한다. nested appearance는 해당 child만 바꾼다.
 
 ## Shared axis-title contract
+
+- 같은 원본 측정값의 통계 레이어들은 provenance로 내부 생성 열을 해석한다. 명시적으로 서로 다른 측정값을 같은 value 축에 겹치면, 하나의 point title로 추론되지 않는 경우 원본 이름을 consumer 순서로 ` / `로 연결한다. 원본 field와 동일한 compound의 기본 title은 이 추론에 참여하며, 별도로 지정한 title과 충돌하면 기존 명시적 제목 규칙을 유지한다. Evidence: `test/unit/actions/composition/layer-plot.test.js`.
 
 - Create: `text?`, `scale?`, `position?`, `at?`, `offset?`, `rotation?`, `color?`, `fontSize?`,
   `fontFamily?`, `fontWeight?`, `overlap?`; edit에서는 scale을 제외한다.
@@ -176,6 +178,9 @@ Continuous labelMap evidence: `test/unit/actions/guides/continuous-axis-display-
   삭제와 같은 whole-axis sibling 편집은 최종 상태로 원자적으로 검증한다. 객체 edit는 전체
   교체, numeric edit는 상대 모드 종료, edit 생략은 기존 intent 유지다. numeric/전체 생략
   defaults와 오류 정책은 그대로다. Polar/Parallel에는 객체형을 허용하지 않는다.
+  `createCanvas({plot:{width,height}})`의 자동 guide margin fitting은 relative title에도 적용한다.
+  네 방향 모두 font/gap을 보존하며 필요한 margin만 늘리고 plot 크기는 유지한다.
+  fixed outer Canvas에서는 margin 초과를 계속 오류로 거부하며 이전 program/trace는 불변이다.
   Evidence: `test/unit/actions/guides/axis-title-label-relative-offset.test.js`,
   `test/browser/axis-title-label-relative-offset.browser.js` (네 independent child의 정확한
   anchors와 같은 실행 numeric public reference 대비 decoded RGBA exact equality).
@@ -747,6 +752,7 @@ Ticks/labels의 count와 values는 배타적이고 같은 existing mode/default 
 ### Formal values — `editThetaAxisTitle`
 
 - Implemented: `editThetaAxisTitle({ text?, offset?, color?, fontSize?, fontFamily?, fontWeight? } = {})`.
+- 명시적 hard break와 빈 줄을 concrete lines로 보존하며 전체 경계로 공간을 검증한다. Radial title도 같다. 근거: `test/unit/actions/guides/categorical-hard-breaks.test.js`.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `editThetaAxisTitle`
@@ -1342,3 +1348,21 @@ Evidence: `test/unit/actions/guides/plot-underlays.test.js`, `test/unit/layout/p
 - Evidence: `test/unit/actions/guides/edit-axes.test.js`.
 
 - Axis title의 statistical provenance는 row-preserving filter/markFilter를 통과하여 가장 가까운 지원 transform을 읽는다. Box measure revision 뒤 category filtering도 원본 measure title을 유지한다.
+
+## Retained visibility
+
+전체 Cartesian/Polar 축 편집과 `editParallelAxis`는 `visible?: boolean`을 받는다. `line`, `ticks`, `labels`, `title` 및 ticksAndLabels의 ticks/labels에도 같은 옵션을 지원한다. false는 스타일과 상대 anchor geometry를 유지하며 paint만 숨기고, true는 복원한다. 생략은 기존 값을 유지하며 전체 축을 켜도 별도로 숨긴 라벨은 그대로다. `editAxes`는 각 선택 owner에 전달한다. 생성 옵션은 바뀌지 않는다. 비 Boolean은 원자적으로 거부한다. 자동 guide, scale/Canvas replay, editable persistence에서 유지한다.
+
+검증: `test/unit/actions/guides/guide-visibility.test.js`, `test/contracts/guide-visibility-types.test.js`.
+
+Categorical Parallel labels accept typed `labelMap` in `labels` or `ticksAndLabels.labels`; auto clears it and omission preserves it. Hard breaks use one semantic tick with concrete line geometry. See `test/unit/actions/guides/categorical-hard-breaks.test.js`.
+
+## Polar·Parallel 텍스트 정렬
+
+Polar labels/title과 Parallel field-axis labels/title은 `align?: "left" | "center" | "right"`
+를 지원한다. 기존 text anchor와 rotation/offset을 유지하며 텍스트만 정렬한다.
+생략은 이전 기본 동작 유지, edit 생략은 기존 값 보존이다. focused/complete/group
+create 및 edit에서 동일하게 검증하며 명시 undefined/null/미지원 값은 atomic 오류다.
+Canvas/data/scale replay와 저장 복원도 intent를 보존한다.
+사용자 승인과 검증 범위는 앱 `docs/inline-text-alignment.md` 및
+`test/unit/actions/guides/text-style-alignment.test.js`에 기록되어 있다.

@@ -24,6 +24,12 @@ p.createRadarPlot({ wide: { fields: ["speed", "quality", "cost"] }, groupBy: "pr
 p.createRadarPlot({ wide: { fields: ["speed", "quality", "cost"], as: { key: "metric", value: "score" } }, order: ["quality", "cost", "speed"] });
 p.editRadarPlot({ target: "radar", wide: { fields: ["quality", "speed", "cost"] } });
 p.editRadarPlot({ wide: { fields: ["quality", "speed"] } });
+p.createRadarPlot({ wide: { fields: ["speed", "quality", "cost"], summary: "mean", normalize: "minmax" }, groupBy: "class", color: "class" });
+p.editRadarPlot({ wide: { fields: ["quality", "speed"], summary: "median", normalize: false } });
+// @ts-expect-error Radar summaries are explicitly mean or median
+p.createRadarPlot({ wide: { fields: ["speed", "quality", "cost"], summary: "sum" } });
+// @ts-expect-error Radar does not silently choose an arbitrary normalization
+p.editRadarPlot({ wide: { fields: ["quality", "speed"], normalize: "zscore" } });
 // @ts-expect-error Wide Radar revision requires at least two fields
 p.editRadarPlot({ wide: { fields: ["speed"] } });
 // @ts-expect-error Aliases remain owned by the existing Radar

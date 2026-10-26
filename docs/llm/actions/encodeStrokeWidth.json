@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "encodings",
   "summary": "Assign a non-negative finite logical Canvas width to a Line, Rule, or Rect.",
-  "signature": "encodeStrokeWidth(options: StrokeWidthEncodingOptions): ChartProgram;",
+  "signature": "encodeStrokeWidth(options: TargetedOptions<StrokeWidthEncodingOptions>): ChartProgram;",
   "intents": [
     "encode stroke width",
     "encode",
@@ -80,7 +80,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "fieldType",

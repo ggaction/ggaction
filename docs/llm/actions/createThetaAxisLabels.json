@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "axes",
   "summary": "Create missing theta-axis labels independently of the other components.",
-  "signature": "createThetaAxisLabels(options?: CreateThetaAxisLabelsOptions): ChartProgram;",
+  "signature": "createThetaAxisLabels(options?: TargetedOptions<CreateThetaAxisLabelsOptions>): ChartProgram;",
   "intents": [
     "create theta axis labels",
     "create",
@@ -24,7 +24,8 @@
     ],
     "idOptions": [
       "scale",
-      "coordinate"
+      "coordinate",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -70,6 +71,10 @@
       "strategy": "documented-auto"
     },
     {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
       "input": "omitted optional options",
       "strategy": "documented-default"
     }
@@ -82,6 +87,11 @@
     "allowsEmpty": false
   },
   "options": [
+    {
+      "name": "align",
+      "required": false,
+      "type": "\"center\" | \"left\" | \"right\" | undefined"
+    },
     {
       "name": "offset",
       "required": false,
@@ -136,10 +146,15 @@
       "name": "labelMap",
       "required": false,
       "type": "\"auto\" | DisplayLabelMap | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "createThetaAxisLabels({ scale?, coordinate?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight? })"
+    "createThetaAxisLabels({ scale?, coordinate?, target?, align?, offset?, format?, color?, fontSize? })"
   ],
   "snippet": "program.createThetaAxisLabels({})",
   "errors": [],

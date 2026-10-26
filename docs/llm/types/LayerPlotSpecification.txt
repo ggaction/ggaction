@@ -1,0 +1,7 @@
+export type LayerPlotSpecification = {
+  [Action in AdjacentPlotSpecification["action"]]: {
+    action: Action;
+    inherit?: { color?: boolean };
+    options?: Partial<NonNullable<Extract<AdjacentPlotSpecification, { action: Action }>["options"]>> & { guides?: false };
+  }
+}[AdjacentPlotSpecification["action"]];

@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "marks",
   "summary": "Edit constant area appearance.",
-  "signature": "editAreaMark(options: StrokeStyleDetails & { clip?: boolean; target?: string; fill?: FillPaint; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: \"error\" | \"break\"; }): ChartProgram;",
+  "signature": "editAreaMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; fill?: FillPaint; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: \"error\" | \"break\"; }>): ChartProgram;",
   "intents": [
     "edit area mark",
     "edit",
@@ -83,7 +83,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "fill",

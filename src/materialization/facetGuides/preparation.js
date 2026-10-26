@@ -1,4 +1,5 @@
 import { localLegendPosition } from "../../grammar/legendGroups.js";
+import { restoreLegendItemsOffset } from "../legendItemsOffset.js";
 import { prepareAuthoredFacetLegend, facetLegendIntent } from "./owner.js";
 import { isPlainObject } from "../../core/immutable.js";
 import { PLOT_LEGEND_POSITIONS } from "../../layout/legend.js";
@@ -31,9 +32,11 @@ export function legendKinds(program) {
 
 function legendCandidates(program) {
   const layers = program.semanticSpec.layers;
+  const eligible = (layer, channel) => layer.encoding?.[channel]?.scale !== undefined &&
+    !program.guideConfigs.suppressedLegends?.[layer.id]?.channels.includes(channel);
   const color = layers.filter(layer => {
     const encoding = layer.encoding?.color;
-    return encoding?.scale !== undefined &&
+    return eligible(layer, "color") &&
       findSemanticScale(program, encoding.scale) !== undefined;
   });
   if (color.length === 1) {
@@ -41,7 +44,7 @@ function legendCandidates(program) {
     return {
       target: layer.id,
       channels: ["color", "stroke", "shape", "strokeDash"].filter(
-        channel => layer.encoding?.[channel]?.scale !== undefined
+        channel => eligible(layer, channel)
       )
     };
   }
@@ -52,7 +55,7 @@ function legendCandidates(program) {
   }
   for (const channel of ["stroke", "shape", "strokeDash", "size", "opacity"]) {
     const candidates = layers.filter(
-      layer => layer.encoding?.[channel]?.scale !== undefined
+      layer => eligible(layer, channel)
     );
     if (candidates.length === 1) {
       return { target: candidates[0].id, channels: [channel] };
@@ -63,6 +66,7 @@ function legendCandidates(program) {
       );
     }
   }
+  if (Object.keys(program.guideConfigs.suppressedLegends ?? {}).length) return undefined;
   throw new Error("Shared facet legend requires one eligible encoded scale.");
 }
 
@@ -85,6 +89,7 @@ function continuousValues(domain, count) {
 
 function legendRequests(program) {
   const request = legendCandidates(program);
+  if (request === undefined) return [];
   const layer = findLayer(program, request.target);
   const separate = request.channels.filter(channel => {
     if (!["color", "stroke"].includes(channel)) return false;
@@ -100,7 +105,12 @@ function legendRequests(program) {
 }
 
 function prepareAutoLegendSource(child) {
+  // Facet inference has already selected explicit eligible owner/channel pairs
+  // in legendCandidates, including suppression. Invoke the public creator with
+  // those requests; importing its action planner here reverses the dependency
+  // direction and repeats the same policy through a circular action graph.
   const requests = legendRequests(child);
+  if (!requests.length) return child;
   const canvas = child.graphicSpec.objects.canvas;
   let source = child
     ._withCanvasConfig({
@@ -207,12 +217,14 @@ export function prepareSharedFacetLegend(program) {
   const firstId = program.compositionSpec.children[0];
   const first = program.children[firstId];
   const inferred = legendKinds(first).length === 0;
-  if (inferred) {
+  if (inferred && !Object.keys(first.guideConfigs.suppressedLegends ?? {}).length) {
     const legacy = resolveLegacyCategoricalLegend(program);
     if (legacy !== undefined) return legacy;
   }
-  const source = inferred ? prepareAutoLegendSource(first) : first;
+  // Shared guides receive the offset once in the parent's final placement.
+  const source = restoreLegendItemsOffset(inferred ? prepareAutoLegendSource(first) : first);
   const kinds = legendKinds(source);
+  if (!kinds.length && Object.keys(first.guideConfigs.suppressedLegends ?? {}).length) return undefined;
   if (kinds.some(kind => localLegendPosition(source.guideConfigs.legend[kind]) !== undefined)) {
     return { ...prepareAuthoredFacetLegend(program, facetLegendIntent(source)), keepShared: true };
   }

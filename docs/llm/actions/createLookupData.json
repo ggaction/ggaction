@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "statistics",
   "summary": "Copy fields from one named table without changing primary row order or count.",
-  "signature": "createLookupData(options: LookupDataOptions): ChartProgram;",
+  "signature": "createLookupData(options: TargetedOptions<LookupDataOptions>): ChartProgram;",
   "intents": [
     "create lookup data",
     "create",
@@ -24,7 +24,8 @@
     ],
     "idOptions": [
       "id",
-      "source"
+      "source",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -46,6 +47,10 @@
   "inference": [
     {
       "input": "source",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     }
   ],
@@ -76,10 +81,15 @@
       "name": "lookup",
       "required": true,
       "type": "{ data: string; key: string; fields: readonly string[]; as?: readonly string[] | undefined; }"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "createLookupData({ id, field, lookup, source? })"
+    "createLookupData({ id, field, lookup, source?, target? })"
   ],
   "snippet": "program.createLookupData({ id: \"ages\", field: \"person\", lookup: { data: \"people\", key: \"name\", fields: [\"age\"] } })",
   "errors": [],

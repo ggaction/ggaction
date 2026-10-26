@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "marks",
   "summary": "Create a semantic rect mark and empty rect collection.",
-  "signature": "createRectMark(options?: RectMarkOptions): ChartProgram;",
+  "signature": "createRectMark(options?: TargetedOptions<RectMarkOptions>): ChartProgram;",
   "intents": [
     "create rect mark",
     "create",
@@ -24,7 +24,8 @@
     ],
     "idOptions": [
       "id",
-      "data"
+      "data",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -57,6 +58,10 @@
   "inference": [
     {
       "input": "data",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -151,10 +156,15 @@
       "name": "cornerRadiusBottomLeft",
       "required": false,
       "type": "number | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "createRectMark({ id?, data?, clip?, missing?, fill?, opacity?, stroke?, strokeWidth? })"
+    "createRectMark({ id?, data?, target?, clip?, missing?, fill?, opacity?, stroke? })"
   ],
   "snippet": "program.createRectMark({})",
   "errors": [],

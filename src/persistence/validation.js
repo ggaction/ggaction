@@ -1,3 +1,5 @@
+import { normalizeTextOverrides } from "../grammar/text.js";
+import { normalizeLegendDisplayLabelMap } from "../grammar/displayLabels.js";
 import { validateFacetAxisPolicy } from "../core/facetAxisPolicy.js";
 import { resolveFacetFamily } from "../grammar/facets/dependencies.js";
 import { validateRegressionPlacement } from "../grammar/regression/parameters.js";
@@ -22,11 +24,9 @@ import {resolveColorSizeMapping,normalizeColorSizeSymbol} from '../grammar/color
 import{validateLegendClip}from"../grammar/legendClip.js";
 import {validateLegendLayerOpacity}from"../grammar/legendOpacity.js";
 import { isSizeShapeChannels, resolveSizeShapeMapping } from "../grammar/legendCombinations.js";
-import { describeLegendBlock } from "../grammar/legendBlocks.js";
+import { describeLegendBlock, validateLegendChannels } from "../grammar/legendBlocks.js";
 import { localLegendPosition } from "../grammar/legendGroups.js";
 import { normalizeLegendBorderDash } from "../grammar/legendBorder.js";
-import { normalizeNumericDisplayLabelMap } from "../grammar/displayLabels.js";
-import { isContinuousSizeScaleType } from "../grammar/scales/size.js";
 import { validateGraphicItemLimit } from "../core/validation.js";
 import { LEGEND_TITLE_STYLE_KEYS, validateLegendTitleAlignment } from "../grammar/legendTitleStyle.js";
 import { validateGuideDash, normalizeGuideDashMap } from "../grammar/guideDash.js";
@@ -227,6 +227,7 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
       throw new TypeError("Facet row field title requires a row-column facet grid.");
     }
   }
+  validateGuideVisibilityState(program);
   if (program.materializationConfigs.textMetrics !== undefined) normalizeTextMetricProfile(program.materializationConfigs.textMetrics);
   for (const config of [
     ...Object.values(program.guideConfigs.axis ?? {}).map(axis => axis.ticks),
@@ -319,7 +320,7 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
     }
     const config = program.guideConfigs.axis?.[id];
     requireObject(config, `${path}.guides.axis.${id}`);
-    validateKeys(config, ["binding", "frame", "line", "ticks", "labels", "title"], "Stored named axis config");
+    validateKeys(config, ["binding", "frame", "line", "ticks", "labels", "title", "visibility"], "Stored named axis config");
     const components = ["line", "ticks", "labels", "title"];
     if (!components.some(component => config[component] !== undefined)) {
       throw invalidSnapshot("Named axes require at least one retained component.", path);
@@ -340,13 +341,31 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
       coordinate: semanticAxis.coordinate, position: semanticAxis.position });
   }
   if (program.guideConfigs.legendGroups !== undefined) validateLegendGroupState(program.guideConfigs.legendGroups);
+  if (program.guideConfigs.suppressedLegends !== undefined) {
+    requireObject(program.guideConfigs.suppressedLegends, `${path}.materializationConfigs.guides.suppressedLegends`);
+    for (const [target, config] of Object.entries(program.guideConfigs.suppressedLegends)) {
+      validateUserId(target, "Suppressed legend target");
+      requireObject(config, `${path}.materializationConfigs.guides.suppressedLegends.${target}`);
+      if (!semantic.layers.some(layer => layer.id === target) || Object.keys(config).some(key => key !== "channels")) {
+        throw invalidSnapshot("Suppressed legend requires an existing mark and channel selection.", path);
+      }
+      validateLegendChannels(config.channels, "Suppressed legend");
+    }
+  }
   for (const [kind, config] of Object.entries(program.guideConfigs.legend ?? {})) {
     validateLegendClip(kind,config);
+    for (const [key, override] of Object.entries(config.blockOverrides ?? {})) {
+      if (override.labelMap !== undefined) {
+        const descriptor = describeLegendBlock(program, kind, config);
+        if (key !== descriptor.key) throw invalidSnapshot("Display labels require their existing legend block owner.", path);
+        normalizeLegendDisplayLabelMap(descriptor, override.labelMap, program.resolvedScales[descriptor.scaleIds[0]]?.type);
+      }
+    }
     validateLegendSpacing(kind,config);
     if (localLegendPosition(config) !== undefined) {
       const descriptor = describeLegendBlock(program, kind, config);
       for (const [key, override] of Object.entries(config.blockOverrides)) {
-        if (override.position !== undefined && key !== descriptor.key) throw invalidSnapshot("Local position requires its existing block owner.", path);
+        if ((override.position !== undefined || override.alongOffset !== undefined) && key !== descriptor.key) throw invalidSnapshot("Local position requires its existing block owner.", path);
       }
     }
     for(const layer of config.symbol?.layers??[])validateLegendLayerOpacity(layer.opacity);
@@ -384,15 +403,6 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
     }
     if (config.border && Object.hasOwn(config.border, "strokeDash")) {
       normalizeLegendBorderDash(config.border.strokeDash, "Stored legend border strokeDash");
-    }
-    if (["size","colorSize"].includes(kind) && config.blockOverrides !== undefined) {
-      for (const [key, override] of Object.entries(config.blockOverrides)) {
-        if (override.labelMap === undefined) continue;
-        if (key !== (kind==='colorSize'?'["color","size"]':'["size"]') || !isContinuousSizeScaleType(program.resolvedScales[kind==='colorSize'?config.sizeScale:config.scale]?.type)) {
-          throw invalidSnapshot("Numeric display labels require a continuous size legend block.", path);
-        }
-        normalizeNumericDisplayLabelMap(override.labelMap, "Stored size legend labelMap");
-      }
     }
     if (config.titleStyle !== undefined) {
       validateOptionObject(config.titleStyle, LEGEND_TITLE_STYLE_KEYS, "Stored legend title style");
@@ -486,6 +496,10 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
     }
   }
   for (const id of Object.keys(program.markConfigs)) {
+    if (program.markConfigs[id].textOverrides !== undefined) {
+      if (resources.get("mark").get(id).mark.type !== "text") throw invalidSnapshot("Text overrides require a text mark.", path);
+      normalizeTextOverrides(program.markConfigs[id].textOverrides);
+    }
     validateRegressionPlacement(program.markConfigs[id].regression?.placement);
     requestedMarkClip(program.markConfigs[id]);
     validateMarkClipCoordinate(program, resources.get("mark").get(id), program.markConfigs[id].clip);
@@ -515,5 +529,30 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
     if (graphic.items !== undefined) validateGraphicItemLimit(graphic.items.length, resolveGraphicItemCapacity(program, {
       id, label: "Graphic collection length"
     }));
+  }
+}
+
+function validateGuideVisibilityState(program) {
+  const check = (visibility, allowed) => {
+    if (visibility === undefined) return;
+    if (!isPlainObject(visibility) || Object.entries(visibility).some(([key, value]) => !allowed.includes(key) || typeof value !== "boolean"))
+      throw new TypeError("Stored guide visibility must contain only supported boolean flags.");
+  };
+  for (const config of Object.values(program.guideConfigs.axis ?? {})) {
+    check(config.visibility, ["all", "line", "ticks", "labels", "title"]);
+    for (const dimension of config.axes?.dimensions ?? []) check(dimension.visibility, ["all", "line", "ticks", "labels", "title"]);
+  }
+  for (const config of Object.values(program.guideConfigs.legend ?? {})) check(config.visibility, ["all", "labels", "titleStyle"]);
+  for (const config of Object.values(program.guideConfigs.grid ?? {})) if (Object.hasOwn(config, "visible") && typeof config.visible !== "boolean")
+    throw new TypeError("Stored grid visible must be a boolean.");
+  const paint = program.materializationConfigs.guideVisibilityPaint;
+  if (paint !== undefined) {
+    if (!isPlainObject(paint)) throw new TypeError("Stored guide visibility paint must be an object.");
+    for (const items of Object.values(paint)) {
+      if (!isPlainObject(items)) throw new TypeError("Stored guide visibility paint entries must be objects.");
+      for (const value of Object.values(items)) if (!isPlainObject(value) || Object.keys(value).length !== 1 ||
+          !Object.hasOwn(value, "opacity") || value.opacity !== null && (!Number.isFinite(value.opacity) || value.opacity < 0 || value.opacity > 1))
+        throw new TypeError("Stored guide visibility paint requires an original opacity or null.");
+    }
   }
 }

@@ -170,14 +170,19 @@ test("creates aggregate temporal lines and preserves child validation", () => {
 
   assert.equal(program.semanticSpec.layers[0].encoding.y.aggregate, "mean");
   assert.equal(program.graphicSpec.objects.linePlot.items[0].properties.commands.length, 2);
-  assert.throws(
-    () => base().createLinePlot({
+  const numeric = base().createLinePlot({
       x: "x",
       y: { field: "y", aggregate: "mean" },
       guides: false
-    }),
-    /Aggregate line y encoding requires a temporal, categorical, or binned quantitative x encoding/
-  );
+    });
+  assert.equal(numeric.semanticSpec.layers[0].encoding.y.aggregate, "mean");
+  assert.equal(numeric.graphicSpec.objects.linePlot.items[0].properties.commands.length, 2);
+  const horizontal = base().createLinePlot({
+    x: { field: "y", aggregate: "mean" },
+    y: { field: "x", fieldType: "quantitative" }, guides: false
+  });
+  assert.equal(horizontal.semanticSpec.layers[0].encoding.x.aggregate, "mean");
+  assert.equal(horizontal.graphicSpec.objects.linePlot.items[0].properties.commands.length, 2);
   assert.equal(source.semanticSpec.layers.length, 0);
 });
 

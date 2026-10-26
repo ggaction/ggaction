@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "core",
   "summary": "Creates derived dataset for stored transform provenance.",
-  "signature": "createDerivedData(options: CreateDerivedDataOptions): ChartProgram;",
+  "signature": "createDerivedData(options: TargetedOptions<CreateDerivedDataOptions>): ChartProgram;",
   "intents": [
     "create derived data",
     "create",
@@ -24,7 +24,8 @@
     ],
     "idOptions": [
       "id",
-      "source"
+      "source",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -46,6 +47,10 @@
     {
       "input": "source",
       "strategy": "explicit"
+    },
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
     }
   ],
   "completionRequirements": {
@@ -70,10 +75,15 @@
       "name": "transform",
       "required": true,
       "type": "readonly [DatasetTransform]"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "createDerivedData({ id, source, transform })"
+    "createDerivedData({ id, source, transform, target? })"
   ],
   "snippet": "program.createDerivedData({ id: \"filtered\", source: \"source\", transform: [{ type: \"filter\", field: \"value\", predicate: { op: \"gt\", value: 0 } }] })",
   "errors": [

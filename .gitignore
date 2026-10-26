@@ -3,3 +3,7 @@ node_modules/
 _site/
 .sass-cache/
 .DS_Store
+
+# Local documentation dependencies and Bundler settings.
+.bundle/
+.cache/

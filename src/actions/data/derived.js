@@ -1,3 +1,4 @@
+import { assertIndependentOverlayGeometry } from "../../grammar/overlay.js";
 import {resolveDatasetTransformInputs} from "./shared.js";
 import { closedAction } from "../../core/action.js";
 import { validateGraphicItemLimit } from "../../core/validation.js";
@@ -136,6 +137,7 @@ export const rebindLayerData = /* @__PURE__ */ closedAction(
 );
 
 function assertIndependentMark(program, layer) {
+  assertIndependentOverlayGeometry(layer, "bindMarkData");
   const config = program.markConfigs[layer.id] ?? {};
   const role = OWNED_MARK_ROLES.find(key => config[key] !== undefined);
   if (role !== undefined) {

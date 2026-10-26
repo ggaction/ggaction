@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "marks",
   "summary": "Edit arc geometry or appearance and rematerialize complete sector paths.",
-  "signature": "editArcMark(options: StrokeStyleDetails & { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;",
+  "signature": "editArcMark(options: TargetedOptions<StrokeStyleDetails & { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }>): ChartProgram;",
   "intents": [
     "edit arc mark",
     "edit",
@@ -90,7 +90,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "innerRadius",

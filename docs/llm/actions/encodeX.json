@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "encodings",
   "summary": "Create or compatibly replace an x encoding for the supported mark/type pairs in the matrix above.",
-  "signature": "encodeX(options: PositionEncodingOptions | DatumPositionEncodingOptions): ChartProgram;",
+  "signature": "encodeX(options: TargetedOptions<PositionEncodingOptions | DatumPositionEncodingOptions>): ChartProgram;",
   "intents": [
     "encode x",
     "encode",
@@ -84,7 +84,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "coordinate",

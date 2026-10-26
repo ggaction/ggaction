@@ -1,7 +1,9 @@
 export interface EditCompositionLayoutOptions {
+  /** Concat only. Change guide collection without changing scale sharing. */
+  legends?: "local" | "collect";
   columns?: number;
   gap?: FacetGap;
-  align?: CompositionAlign;
+  align?: CompositionAlign | "plot";
   padding?: number | CompositionPadding;
   /** Interpret gap between child canvases (default), inner plots, or retained full content (wrapped facets). */
   spacing?: "canvas" | "plot" | "content";

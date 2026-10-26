@@ -4,7 +4,7 @@
   "layer": "advanced",
   "domain": "encodings",
   "summary": "Atomically replaces multiple compatible encoding channels on one explicit mark from one final state.",
-  "signature": "encodeChannels(options: EncodeChannelsOptions): ChartProgram;",
+  "signature": "encodeChannels(options: TargetedOptions<EncodeChannelsOptions>): ChartProgram;",
   "intents": [
     "encode channels",
     "encode",
@@ -60,7 +60,7 @@
     {
       "name": "target",
       "required": true,
-      "type": "string"
+      "type": "string | ActionTargetList | ScopedActionTarget"
     },
     {
       "name": "channels",

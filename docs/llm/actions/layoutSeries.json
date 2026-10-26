@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "encodings",
   "summary": "Assign group, stack, fill, overlay, diverging, or center placement independently of color.",
-  "signature": "layoutSeries(options: SeriesLayoutOptions): ChartProgram;",
+  "signature": "layoutSeries(options: TargetedOptions<SeriesLayoutOptions>): ChartProgram;",
   "intents": [
     "layout series",
     "layout",
@@ -59,7 +59,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "mode",

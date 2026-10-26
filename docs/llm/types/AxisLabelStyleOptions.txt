@@ -1,4 +1,6 @@
 export interface AxisLabelStyleOptions {
+  /** Local text alignment; omission preserves the native owner default. */
+  align?: "left" | "center" | "right";
   offset?: number;
   format?: AxisFormat;
   color?: string;

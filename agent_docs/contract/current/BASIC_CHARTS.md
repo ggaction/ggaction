@@ -46,7 +46,7 @@ Existing Cartesian Scatter/Line/Bar/Histogram/Heatmap/Text, Area/Density/ECDF/Ho
 - 범례는 kind·channels·scale IDs·domain/order·symbol layer 구성이 호환돼야 한다. Point/Line의 다른 symbol
   recipe는 자동 병합하지 않는다. 재사용한 범례는 원래 target을 유지한다. 명시한 layout/style 차이는 conflict다.
 - Histogram의 shared x scale은 각 consumer가 계산한 bin boundaries가 모두 같을 때만 자동 ticks를 재사용한다.
-  Parallel의 별도 facade는 각자 dimension scale IDs를 만들므로 다른 owner의 축을 자동 공유하지 않는다.
+  Parallel facades generate dimension scale IDs by default; explicit dimension scale.id or createLayerPlot can bind compatible shared scales.
   Gradient density legend도 owner별 density scale ID가 달라 다른 owner/family의 color legend를 덮어쓰지 않는다.
 - Explicit axes direction object에서 생략 방향은 요청하지 않는다. `axes:{x:false}`는 축을 만들지 않고 `axes:{x:false,y:{}}`는 y만 요청한다.
 - `guides:false` 또는 nested branch false는 기존 guide를 삭제하지 않는다. 세 branch 모두 false인 facade는
@@ -127,7 +127,8 @@ createLinePlot({
 ```
 
 - Stable default ID is `linePlot`.
-- Line y는 quantitative/temporal이므로 `guides.grid.horizontal.bandPosition`은 허용하지 않는다. Categorical x가 band scale일 때만 `guides.grid.vertical.bandPosition: "center" | "boundary"`를 사용한다. Facade grid는 자기 line의 channel/scale/coordinate만 참조하며 별도 auxiliary band scale로 이 제약을 우회하지 않는다. Evidence: `test/contracts/line-grid-role-contract.test.js`.
+- Explicit aggregation supports exact observed numeric independent positions in either orientation; no implicit binning or date conversion occurs. Aggregate values remain grouped by both position and series. The [Line mark contract](MARKS.md#createlinemark) owns ordering and final-grain semantics.
+- Line supports quantitative X with nominal/ordinal Y, including aggregate X per Y category. The ordinary vertical form keeps quantitative/temporal Y. Band grid positioning is allowed only on the categorical axis: vertical grids for categorical X, horizontal grids for categorical Y. Quantitative/temporal axes reject band positioning. Facade grid는 자기 line의 channel/scale/coordinate만 참조하며 별도 auxiliary band scale로 이 제약을 우회하지 않는다. Evidence: `test/contracts/line-grid-role-contract.test.js`.
 - `line.tension`은 cardinal 곡선의 `[0,1]` 장력을 `createLineMark`에 전달한다. 생략은 기존 0이다.
 - `line.missing`은 `"error" | "break"`이며 생략은 기존 strict 처리다. 직접 Cartesian
   quantitative/temporal 위치에서만 break를 지원하며 세부 규칙은 MARKS.md의 createLineMark가 소유한다.

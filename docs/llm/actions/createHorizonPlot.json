@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "statistics",
   "summary": "Creates horizon chart for horizon plot.",
-  "signature": "createHorizonPlot(options: CreateHorizonPlotOptions): ChartProgram;",
+  "signature": "createHorizonPlot(options: TargetedOptions<CreateHorizonPlotOptions>): ChartProgram;",
   "intents": [
     "create horizon plot",
     "create",
@@ -25,7 +25,8 @@
     "idOptions": [
       "id",
       "data",
-      "coordinate"
+      "coordinate",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -64,6 +65,10 @@
     {
       "input": "extent",
       "strategy": "documented-auto"
+    },
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
     },
     {
       "input": "omitted optional options",
@@ -152,6 +157,11 @@
       "name": "guides",
       "required": false,
       "type": "false | HorizonPlotGuideOptions | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [

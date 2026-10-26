@@ -25,6 +25,10 @@ These blocks are generated from the declaration file owned by each package entry
 
 ```typescript
 export type {
+  CreateOverlayOptions,
+  EditOverlayOptions,
+  OverlayLineAppearance,
+  OverlayPointAppearance,
   LinearNiceCountOptions,
   AxisTickRounding,
   ArcInnerRadius,
@@ -97,6 +101,13 @@ export type {
   NamedCompleteAxis,
   ConcatCompositionSpec,
   CompositionAlign,
+  CompositionShares,
+  ScopedActionTarget,
+  ActionTargetList,
+  TargetedOptions,
+  EditCompositionScalesOptions,
+  AdjacentPlotSpecification,
+  CreateAdjacentPlotOptions,
   CompositionOptions,
   EditFacetSourceOptions,
   FacetHeaderRole,
@@ -615,7 +626,7 @@ type BasicMethodKey =
   | "createGuides";
 
 type RebindMethod<T> = T extends (...args: infer Args) => ChartProgram
-  ? (...args: Args) => BasicChartProgram
+  ? (...args: { [K in keyof Args]: Exclude<Args[K], { target: ScopedActionTarget | readonly unknown[] }> }) => BasicChartProgram
   : never;
 
 export type BasicChartProgram =
@@ -869,6 +880,30 @@ export function getDatasetSchema(program: ProgramInput, options: {readonly data:
 export function describeAction(program: ProgramInput, options: {readonly action:string;readonly target?:InspectionTarget;readonly options?:Readonly<Record<string,unknown>>}): ActionDescription;
 export function comparePrograms(before: ProgramInput, after: ProgramInput, options?: {readonly target?:InspectionTarget}): ProgramComparison;
 export function inspectProgram(program: ProgramInput, options?: {readonly target?:InspectionTarget}): ProgramInspection;
+
+export interface PlotCompositionChannel {
+  readonly field?: string;
+  readonly fields?: readonly string[];
+  readonly fieldType: string;
+  readonly scale: string;
+  readonly data: string;
+  readonly measurement: Readonly<{ unit: string; operations: readonly string[]; parameters?: Readonly<Record<string, unknown>> }>;
+  readonly bin?: Readonly<Record<string, unknown>>;
+  readonly temporalUnit?: string;
+}
+export interface PlotComposition {
+  readonly version: 1;
+  readonly owner: string;
+  readonly ownedMarks: readonly string[];
+  readonly data: string;
+  readonly coordinate?: Readonly<{ id: string; type: string }>;
+  readonly mark: string;
+  readonly channels: Readonly<Record<string, PlotCompositionChannel>>;
+  readonly dimensions?: readonly PlotCompositionChannel[];
+  readonly role?: string;
+  readonly groupBy?: string | readonly string[];
+}
+export function getPlotComposition(program: ProgramInput, options?: { readonly target?: string | { readonly childPath: readonly string[]; readonly id: string }; readonly childPath?: readonly string[] }): PlotComposition;
 ```
 
 #### `ggaction/scene`

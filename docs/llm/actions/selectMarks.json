@@ -4,7 +4,7 @@
   "layer": "advanced",
   "domain": "mark-selection",
   "summary": "Stores a reusable selection of mark items without changing graphics.",
-  "signature": "selectMarks(options: SelectMarksOptions): ChartProgram;",
+  "signature": "selectMarks(options: TargetedOptions<SelectMarksOptions>): ChartProgram;",
   "intents": [
     "select marks",
     "select",
@@ -68,7 +68,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "grain",

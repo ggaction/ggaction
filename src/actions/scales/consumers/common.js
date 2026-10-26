@@ -9,6 +9,8 @@ import { findDataset } from "../../../selectors/datasets.js";
 import { requireSemanticScale } from "../../../selectors/scales.js";
 import { SCALED_ENCODING_CHANNELS } from "../../../core/vocabulary.js";
 import { applyItemMissingPolicy } from "../../../grammar/itemMissing.js";
+import { resolveOverlaySeries } from "../../../materialization/overlayItems.js";
+import { uniqueFields } from "../../../materialization/selection/items/common.js";
 
 export function findScale(program, id) {
   return requireSemanticScale(program, id);
@@ -19,6 +21,8 @@ export function findScaleConsumers(program, id) {
   for (const layer of program.semanticSpec.layers) {
     if (isSourceOwnedText(layer)) continue;
     for (const channel of SCALED_ENCODING_CHANNELS) {
+      if (layer.derivedBindings?.overlay && ["x", "y", "x2", "y2", "xOffset", "yOffset"].includes(channel)) continue;
+      if (layer.derivedBindings?.overlay?.inheritColor && channel === "color") continue;
       const encoding = layer.encoding?.[channel];
       if (encoding?.scale === id) consumers.push({ layer, channel, encoding });
     }
@@ -59,6 +63,12 @@ export function readConsumerFieldValues(
   scale = findScale(program, consumer.encoding.scale)
 ) {
   const { field, fieldType, temporalUnit } = consumer.encoding;
+  if (consumer.layer.derivedBindings?.overlay) {
+    const groups = resolveOverlaySeries(program, consumer.layer.derivedBindings.overlay, { geometry: false });
+    const rows = consumer.layer.mark.type === "point" ? groups.flatMap(group => group.points.map(point => point.fields))
+      : groups.map(group => uniqueFields(group.points.map(point => point.fields)));
+    return readScaleField(rows, field, fieldType, { allowUnknown: Object.hasOwn(scale, "unknown"), temporalUnit });
+  }
   if (consumer.layer.mark.type === "line" && consumer.layer.mark.missing === "break" &&
       ["x", "y"].includes(consumer.channel)) {
     return readLinePosition(dataset.values, consumer.encoding).filter(value => value !== null);

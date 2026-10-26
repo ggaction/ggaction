@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "encodings",
   "summary": "Remove an explicit constant point glyph radius and restore the theme default.",
-  "signature": "removePointRadius(options?: { target?: string }): ChartProgram;",
+  "signature": "removePointRadius(options?: TargetedOptions<{ target?: string }>): ChartProgram;",
   "intents": [
     "remove point radius",
     "remove",
@@ -55,7 +55,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     }
   ],
   "callPatterns": [

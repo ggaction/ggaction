@@ -1,3 +1,4 @@
+import { assertIndependentOverlayGeometry } from "../../../grammar/overlay.js";
 import { requestedMarkClip, validateMarkClipCoordinate } from "../../../selectors/markClip.js";
 import { action } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
@@ -209,6 +210,7 @@ const rematerializeLineMark = /* @__PURE__ */ action(
       "rematerializeLineMark"
     );
     const id = validateUserId(args.id, "Line mark id");
+    if (findLayer(this, id)?.derivedBindings?.overlay) return this.rematerializeOverlay({ id });
     const highlighted = rematerializeHighlightBaseline(this, {
       target: id,
       operation: "rematerializeLineMark",
@@ -301,6 +303,7 @@ const editLineMark = /* @__PURE__ */ action(
       predicate: candidate => candidate.mark?.type === "line",
       label: "line mark"
     });
+    if (Object.hasOwn(args, "missing")) assertIndependentOverlayGeometry(layer, "editLineMark missing");
     if (Object.hasOwn(args, "stroke") && (
       layer.encoding?.color !== undefined ||
       layer.encoding?.stroke !== undefined

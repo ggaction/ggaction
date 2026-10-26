@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "encodings",
   "summary": "Encode a quantitative field as Polar radial distance.",
-  "signature": "encodeR(options: RadialEncodingOptions): ChartProgram;",
+  "signature": "encodeR(options: TargetedOptions<RadialEncodingOptions>): ChartProgram;",
   "intents": [
     "encode radial",
     "encode",
@@ -72,7 +72,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "fieldType",

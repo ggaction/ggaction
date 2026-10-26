@@ -40,11 +40,11 @@ test("publishes facet policy editing as current behavior", () => {
   );
   assert.match(
     declarations,
-    /editFacetScales\(options: FacetScaleResolutions\): ChartProgram;/
+    /editFacetScales\(options: TargetedOptions<FacetScaleResolutions>\): ChartProgram;/
   );
   assert.match(
     declarations,
-    /editFacetGuides\(options: FacetGuideOptions\): ChartProgram;/
+    /editFacetGuides\(options: TargetedOptions<FacetGuideOptions>\): ChartProgram;/
   );
 });
 

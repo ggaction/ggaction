@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "charts",
   "summary": "Create a right-continuous empirical cumulative distribution as an ordinary step-after line.",
-  "signature": "createECDFPlot(options: CreateECDFPlotOptions): ChartProgram;",
+  "signature": "createECDFPlot(options: TargetedOptions<CreateECDFPlotOptions>): ChartProgram;",
   "intents": [
     "create ecdf plot",
     "create",
@@ -25,7 +25,8 @@
     "idOptions": [
       "id",
       "data",
-      "coordinate"
+      "coordinate",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -55,6 +56,10 @@
     },
     {
       "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -129,10 +134,15 @@
       "name": "guides",
       "required": false,
       "type": "false | CartesianPathGuideOptions | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "createECDFPlot({ field, id?, data?, coordinate?, groupBy?, weight?, missing?, as? })"
+    "createECDFPlot({ field, id?, data?, coordinate?, target?, groupBy?, weight?, missing? })"
   ],
   "snippet": "program.createECDFPlot({ field: \"value\" })",
   "errors": [],

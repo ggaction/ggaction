@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "statistics",
   "summary": "Materialize reusable, first-appearance-ordered summary rows from one or more shared aggregate operations.",
-  "signature": "createSummaryData(options: SummaryDataOptions): ChartProgram;",
+  "signature": "createSummaryData(options: TargetedOptions<SummaryDataOptions>): ChartProgram;",
   "intents": [
     "create summary data",
     "create",
@@ -24,7 +24,8 @@
     ],
     "idOptions": [
       "id",
-      "source"
+      "source",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -45,6 +46,10 @@
   "inference": [
     {
       "input": "source",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -99,10 +104,15 @@
       "name": "empty",
       "required": false,
       "type": "\"identity\" | \"null\" | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "createSummaryData({ id, aggregates, source?, groupBy?, members?, weight?, missing?, empty? })"
+    "createSummaryData({ id, aggregates, source?, target?, groupBy?, members?, weight?, missing? })"
   ],
   "snippet": "program.createSummaryData({ id: \"summary-data-1\", aggregates: [] })",
   "errors": [],

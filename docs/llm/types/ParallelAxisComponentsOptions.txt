@@ -5,7 +5,7 @@ export type ParallelAxisComponentsOptions = {
   title?: false | ParallelAxisTitleOptions;
 } & (
   | { ticksAndLabels?: false | (ParallelAxisTickSelection & {
-      ticks?: AxisTickStyleOptions; labels?: AxisLabelStyleOptions;
+      ticks?: AxisTickStyleOptions; labels?: AxisLabelStyleOptions & DisplayLabelOptions;
     }); ticks?: never; labels?: never }
   | { ticks?: false | ParallelAxisTicksOptions; labels?: false | ParallelAxisLabelsOptions;
       ticksAndLabels?: never }

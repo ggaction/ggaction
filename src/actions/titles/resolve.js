@@ -1,3 +1,4 @@
+import { validateTextAlignment } from "../../core/validation.js";
 import { textBoundsFitCanvas } from "../../core/textMetrics.js";
 import { resolveGuideCollisionBlocks } from "../../materialization/guides/resources.js";
 import { canvasOverflowError } from "../../layout/canvas.js";
@@ -27,7 +28,7 @@ const OPTIONS = Object.freeze([
   "subtitleStyle", "maxWidth", "wrap", "lineHeight", "subtitleLineHeight"
 ]);
 const STYLE_OPTIONS = Object.freeze([
-  "color", "fontSize", "fontFamily", "fontWeight", "fontStyle"
+  "color", "fontSize", "fontFamily", "fontWeight", "fontStyle", "align"
 ]);
 const POSITIONS = Object.freeze(["top", "bottom", "left", "right"]);
 const ALIGNS = Object.freeze(["left", "center", "right"]);
@@ -69,6 +70,7 @@ function normalizeStyle(value, defaults, label) {
   }
   const style = { ...defaults, ...(value ?? {}) };
   validateKeys(style, STYLE_OPTIONS, label);
+  validateTextAlignment(style, label);
   validateTitleString(style.color, `${label} color`);
   validateTitleString(style.fontFamily, `${label} fontFamily`);
   validatePositiveFinite(style.fontSize, `${label} fontSize`);
@@ -251,11 +253,12 @@ export function resolveTitleLayout(program, config) {
       : config.position === "top"
       ? 16 + config.offset
       : plot.y + plot.height + config.offset;
-    component = (lines, centers) => ({
+    const left = x - (config.align === "right" ? block.width : config.align === "center" ? block.width / 2 : 0);
+    component = (lines, centers, style) => ({
       lines,
-      x,
+      x: style.align === undefined ? x : alignedTextAnchor(left, block.width, style.align),
       y: centers.map(value => blockTop + value),
-      textAlign: config.align,
+      textAlign: style.align ?? config.align,
       rotation: 0,
       explicitRotation: config.position !== "top" || lines.length > 1
     });
@@ -267,19 +270,19 @@ export function resolveTitleLayout(program, config) {
       ? 16 + config.offset
       : canvas.properties.width - 16 + config.offset;
     const mapX = value => config.position === "left" ? edge + value : edge - value;
-    component = (lines, centers) => ({
+    component = (lines, centers, style) => ({
       lines,
       x: centers.map(mapX),
-      y,
-      textAlign: "center",
+      y: y + Math.sin(rotation) * (style.align === "left" ? -block.width / 2 : style.align === "right" ? block.width / 2 : 0),
+      textAlign: style.align ?? "center",
       rotation,
       explicitRotation: true
     });
   }
-  const title = component(block.titleLines, block.titleCenters);
+  const title = component(block.titleLines, block.titleCenters, config.titleStyle);
   const subtitle = block.subtitleLines.length === 0
     ? undefined
-    : component(block.subtitleLines, block.subtitleCenters);
+    : component(block.subtitleLines, block.subtitleCenters, config.subtitleStyle);
   const titleBounds = unionTitleBounds([
     resolveTitleComponentBounds(title, config.titleStyle, program.materializationConfigs.textMetrics),
     ...(subtitle === undefined

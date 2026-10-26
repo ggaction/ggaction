@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "axes",
   "summary": "Edits y-axis ticks and labels, including settings for coordinated vertical guide.",
-  "signature": "editYAxisTicksAndLabels(options: Omit<AxisTicksAndLabelsOptions<YAxisPosition>, \"scale\">): ChartProgram;",
+  "signature": "editYAxisTicksAndLabels(options: TargetedOptions<Omit<AxisTicksAndLabelsOptions<YAxisPosition>, \"scale\">>): ChartProgram;",
   "intents": [
     "edit y axis ticks and labels",
     "edit",
@@ -64,7 +64,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "position",

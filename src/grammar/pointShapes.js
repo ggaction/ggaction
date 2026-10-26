@@ -20,6 +20,24 @@ export const POINT_SHAPES = cloneAndFreeze([
   "arrow"
 ]);
 
+// Recover the anchor from concrete geometry, including jitter, packing and rotation.
+// Path glyphs can be asymmetric, so their bounding-box center is not their anchor.
+export function pointGraphicAnchor(graphic, shape = "circle", angle) {
+  const p = graphic?.properties ?? {};
+  if (graphic?.type === "circle") return { x: p.x, y: p.y };
+  if (graphic?.type === "rect") return { x: p.x + p.width / 2, y: p.y + p.height / 2 };
+  const template = createPointShapeGraphic({ shape, angle, x: 0, y: 0, area: 1, fill: "black" });
+  const points = p.commands?.filter(command => Number.isFinite(command.x) && Number.isFinite(command.y));
+  const origin = template.properties.commands?.filter(command => Number.isFinite(command.x) && Number.isFinite(command.y));
+  if (!points?.length || points.length !== origin?.length) throw new Error("Point glyph does not match its shape geometry.");
+  const bounds = values => ({ left: Math.min(...values.map(p => p.x)), right: Math.max(...values.map(p => p.x)),
+    top: Math.min(...values.map(p => p.y)), bottom: Math.max(...values.map(p => p.y)) });
+  const actual = bounds(points), unit = bounds(origin);
+  const factor = unit.right !== unit.left ? (actual.right - actual.left) / (unit.right - unit.left)
+    : (actual.bottom - actual.top) / (unit.bottom - unit.top);
+  return { x: actual.left - factor * unit.left, y: actual.top - factor * unit.top };
+}
+
 const SHAPE_SET = new Set(POINT_SHAPES);
 
 export function validatePointShape(shape) {

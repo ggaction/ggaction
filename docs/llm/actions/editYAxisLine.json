@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "axes",
   "summary": "Edits y-axis line, including settings for vertical baseline.",
-  "signature": "editYAxisLine(options?: AxisLineStyleOptions & { target?: string; position?: YAxisPosition }): ChartProgram;",
+  "signature": "editYAxisLine(options?: TargetedOptions<AxisLineStyleOptions & { target?: string; position?: YAxisPosition }>): ChartProgram;",
   "intents": [
     "edit y axis line",
     "edit",
@@ -73,7 +73,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "position",

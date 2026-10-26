@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "composition",
   "summary": "Partially change used facet channels between \"shared\" and \"independent\".",
-  "signature": "editFacetScales(options: FacetScaleResolutions): ChartProgram;",
+  "signature": "editFacetScales(options: TargetedOptions<FacetScaleResolutions>): ChartProgram;",
   "intents": [
     "edit facet scales",
     "edit",
@@ -21,7 +21,9 @@
       "complete child chart program"
     ],
     "owns": [],
-    "idOptions": []
+    "idOptions": [
+      "target"
+    ]
   },
   "authoringRoles": [
     "H3"
@@ -36,7 +38,12 @@
     ]
   },
   "units": [],
-  "inference": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
   "completionRequirements": {
     "state": "contextual",
     "requires": [
@@ -110,10 +117,15 @@
       "name": "parallelDimensions",
       "required": false,
       "type": "FacetScaleResolution | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "editFacetScales({ x?, y?, xOffset?, yOffset?, theta?, r?, color?, stroke? })"
+    "editFacetScales({ target?, x?, y?, xOffset?, yOffset?, theta?, r?, color? })"
   ],
   "snippet": "program.editFacetScales({ x: \"shared\" })",
   "errors": [],

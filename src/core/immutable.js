@@ -46,12 +46,17 @@ export function cloneAndFreeze(value, ancestors = new WeakSet(), path = "state")
   if (Array.isArray(value)) {
     clone = value.map((item, index) => cloneAndFreeze(item, ancestors, `${path}[${index}]`));
   } else if (isPlainObject(value)) {
-    clone = Object.fromEntries(
-      Object.entries(value).map(([key, item]) => [
-        key,
-        cloneAndFreeze(item, ancestors, `${path}.${key}`)
-      ])
-    );
+    clone = {};
+    // Snapshot entries before descending, as with Object.fromEntries, but avoid
+    // allocating a second entries array and a pair for every stored property.
+    for (const [key, item] of Object.entries(value)) {
+      const child = cloneAndFreeze(item, ancestors, `${path}.${key}`);
+      if (key === "__proto__") {
+        Object.defineProperty(clone, key, {
+          value: child, enumerable: true, writable: true, configurable: true
+        });
+      } else clone[key] = child;
+    }
   } else {
     throw new TypeError("ChartProgram state only supports plain objects and arrays.");
   }

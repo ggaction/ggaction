@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "statistics",
   "summary": "Expand parallel array columns into index-aligned rows; shorter arrays pad with null.",
-  "signature": "createFlattenData(options: FlattenDataOptions): ChartProgram;",
+  "signature": "createFlattenData(options: TargetedOptions<FlattenDataOptions>): ChartProgram;",
   "intents": [
     "create flatten data",
     "create",
@@ -24,7 +24,8 @@
     ],
     "idOptions": [
       "id",
-      "source"
+      "source",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -46,6 +47,10 @@
   "inference": [
     {
       "input": "source",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -80,10 +85,15 @@
       "name": "as",
       "required": false,
       "type": "readonly string[] | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "createFlattenData({ id, fields, source?, as? })"
+    "createFlattenData({ id, fields, source?, target?, as? })"
   ],
   "snippet": "program.createFlattenData({ id: \"expanded\", fields: [\"amounts\", \"labels\"], as: [\"amount\", \"label\"] })",
   "errors": [],

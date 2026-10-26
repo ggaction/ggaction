@@ -13,7 +13,7 @@ const DATA_VALUE_KEYS = new Set([
 const DATA_SOURCE_CONFIGS = new Set([
   "boxPlot", "density", "ecdfPlot", "endpointPlot", "errorBand", "errorBar",
   "gradientPlot", "horizon", "intervalPlot", "markFilter", "raincloudPlot",
-  "regression", "violinPlot"
+  "regression", "violinPlot", "radarPlot"
 ]);
 const MARK_ID_KEYS = new Set([
   "bandId", "bodyId", "centerId", "connectorId", "intervalId", "lineId",
@@ -134,6 +134,10 @@ export function collectMarkConfigReferences(program) {
     append(references, reference(
       "mark", layer.source, "layer", layer.id, ["source"]
     ));
+    append(references, reference(
+      "mark", layer.derivedBindings?.overlay?.source, "layer", layer.id,
+      ["derivedBindings", "overlay", "source"]
+    ));
   }
   for (const [ownerId, config] of Object.entries(program.markConfigs)) {
     collectKnownKeys(config, [], (key, value, path, parentPath) => {
@@ -203,6 +207,9 @@ export function collectGuideConfigReferences(program) {
   const references = [];
   for (const target of Object.keys(program.guideConfigs?.legendGroups ?? {})) {
     append(references, reference("mark", target, "legend", target, ["legendGroups", target]));
+  }
+  for (const target of Object.keys(program.guideConfigs?.suppressedLegends ?? {})) {
+    append(references, reference("mark", target, "legend", target, ["suppressedLegends", target]));
   }
   for (const [family, configs] of Object.entries(program.guideConfigs ?? {})) {
     collectKnownKeys(configs, [], (key, value, path, parentPath) => {

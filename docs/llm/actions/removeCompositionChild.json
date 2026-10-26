@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "composition",
   "summary": "Remove one named concat child and rebuild layout.",
-  "signature": "removeCompositionChild(options: RemoveCompositionChildOptions): ChartProgram;",
+  "signature": "removeCompositionChild(options: TargetedOptions<RemoveCompositionChildOptions>): ChartProgram;",
   "intents": [
     "remove composition child",
     "remove",
@@ -54,7 +54,7 @@
     {
       "name": "target",
       "required": true,
-      "type": "string"
+      "type": "string | ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [

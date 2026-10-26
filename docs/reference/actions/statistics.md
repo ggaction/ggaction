@@ -15,10 +15,10 @@ Each declared action has an exact signature and its own stable link. Option tabl
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createSummaryData(options: SummaryDataOptions): ChartProgram;
+createSummaryData(options: TargetedOptions<SummaryDataOptions>): ChartProgram;
 ```
 
-Named option contracts: [`SummaryDataOptions`](./../types.md#type-summarydataoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`SummaryDataOptions`](./../types.md#type-summarydataoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -35,6 +35,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `weight` | Optional / branch-dependent | `StatisticalWeight \| undefined` |
 | `missing` | Optional / branch-dependent | `"drop" \| "error" \| undefined` |
 | `empty` | Optional / branch-dependent | `"identity" \| "null" \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -57,10 +58,10 @@ bootstrap method objects; see [bootstrap mean intervals](../../api/data/summarie
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createBinData(options: BinDataOptions): ChartProgram;
+createBinData(options: TargetedOptions<BinDataOptions>): ChartProgram;
 ```
 
-Named option contracts: [`BinDataOptions`](./../types.md#type-bindataoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`BinDataOptions`](./../types.md#type-bindataoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -83,6 +84,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `maxBins` | Optional / branch-dependent | `number \| undefined` |
 | `step` | Optional / branch-dependent | `number \| undefined` |
 | `boundaries` | Optional / branch-dependent | `readonly [number, number, ...number[]] \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -101,13 +103,13 @@ members using the same edge rules as Histogram.
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
-**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createLookupData(options: LookupDataOptions): ChartProgram;
+createLookupData(options: TargetedOptions<LookupDataOptions>): ChartProgram;
 ```
 
-Named option contracts: [`LookupDataOptions`](./../types.md#type-lookupdataoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`LookupDataOptions`](./../types.md#type-lookupdataoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -120,6 +122,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `source` | Optional / branch-dependent | `string \| undefined` |
 | `field` | Required | `string` |
 | `lookup` | Required | `{ data: string; key: string; fields: readonly string[]; as?: readonly string[] \| undefined; }` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -138,13 +141,13 @@ Full and Basic support creation. [Named table lookup](../../api/data/summaries-a
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
-**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createFlattenData(options: FlattenDataOptions): ChartProgram;
+createFlattenData(options: TargetedOptions<FlattenDataOptions>): ChartProgram;
 ```
 
-Named option contracts: [`FlattenDataOptions`](./../types.md#type-flattendataoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`FlattenDataOptions`](./../types.md#type-flattendataoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -157,6 +160,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `source` | Optional / branch-dependent | `string \| undefined` |
 | `fields` | Required | `readonly string[]` |
 | `as` | Optional / branch-dependent | `readonly string[] \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -178,10 +182,10 @@ Retain raw ancestors and original row/index order. Full and Basic support creati
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createFoldData(options: FoldDataOptions): ChartProgram;
+createFoldData(options: TargetedOptions<FoldDataOptions>): ChartProgram;
 ```
 
-Named option contracts: [`FoldDataOptions`](./../types.md#type-folddataoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`FoldDataOptions`](./../types.md#type-folddataoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -194,6 +198,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `source` | Optional / branch-dependent | `string \| undefined` |
 | `fields` | Required | `readonly string[]` |
 | `as` | Optional / branch-dependent | `FoldDataOutputFields \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -214,10 +219,10 @@ every source cell. [Source and Derived Data](../../api/data/source-and-derived.m
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createComputedData(options: ComputedDataOptions): ChartProgram;
+createComputedData(options: TargetedOptions<ComputedDataOptions>): ChartProgram;
 ```
 
-Named option contracts: [`ComputedDataOptions`](./../types.md#type-computeddataoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`ComputedDataOptions`](./../types.md#type-computeddataoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -230,6 +235,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `source` | Optional / branch-dependent | `string \| undefined` |
 | `as` | Required | `string` |
 | `expression` | Required | `ComputedExpression` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -248,13 +254,13 @@ expression, including explicit nested scalar `getPath` and first-occurrence
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
-**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createNormalizedData(options: NormalizedDataOptions): ChartProgram;
+createNormalizedData(options: TargetedOptions<NormalizedDataOptions>): ChartProgram;
 ```
 
-Named option contracts: [`NormalizedDataOptions`](./../types.md#type-normalizeddataoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`NormalizedDataOptions`](./../types.md#type-normalizeddataoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -273,6 +279,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `variance` | Optional / branch-dependent | `"population" \| "sample" \| undefined` |
 | `baseline` | Optional / branch-dependent | `{ position: "first" \| "last"; } \| undefined` |
 | `sortBy` | Optional / branch-dependent | `readonly [WindowSort, ...WindowSort[]]` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -291,13 +298,13 @@ percent-change values independently within each group.
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
-**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createSortedData(options: SortedDataOptions): ChartProgram;
+createSortedData(options: TargetedOptions<SortedDataOptions>): ChartProgram;
 ```
 
-Named option contracts: [`SortedDataOptions`](./../types.md#type-sorteddataoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`SortedDataOptions`](./../types.md#type-sorteddataoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -309,6 +316,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `id` | Required | `string` |
 | `source` | Optional / branch-dependent | `string \| undefined` |
 | `sortBy` | Required | `readonly [SortKey, ...SortKey[]]` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -327,13 +335,13 @@ null placement, and quantitative, categorical, or temporal comparison.
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
-**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createCompleteData(options: CompleteDataOptions): ChartProgram;
+createCompleteData(options: TargetedOptions<CompleteDataOptions>): ChartProgram;
 ```
 
-Named option contracts: [`CompleteDataOptions`](./../types.md#type-completedataoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`CompleteDataOptions`](./../types.md#type-completedataoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -350,6 +358,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `members` | Optional / branch-dependent | `string \| undefined` |
 | `values` | Optional / branch-dependent | `readonly [DatasetScalar, ...DatasetScalar[]] \| undefined` |
 | `sequence` | Optional / branch-dependent | `{ start: number; end: number; step: number; } \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -368,13 +377,13 @@ explicit fill and source-membership provenance for synthesized rows.
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
-**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createImputedData(options: ImputedDataOptions): ChartProgram;
+createImputedData(options: TargetedOptions<ImputedDataOptions>): ChartProgram;
 ```
 
-Named option contracts: [`ImputedDataOptions`](./../types.md#type-imputeddataoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`ImputedDataOptions`](./../types.md#type-imputeddataoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -392,6 +401,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `method` | Optional / branch-dependent | `"backward" \| "constant" \| "forward" \| "linear" \| "mean" \| undefined` |
 | `value` | Optional / branch-dependent | `DatasetScalar \| undefined` |
 | `sortBy` | Optional / branch-dependent | `readonly WindowSort[] \| readonly [{ field: string; order?: "ascending" \| undefined; }] \| readonly [WindowSort, ...WindowSort[]] \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -413,10 +423,10 @@ imputation while preserving group boundaries and final source order.
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createStackData(options: StackDataOptions): ChartProgram;
+createStackData(options: TargetedOptions<StackDataOptions>): ChartProgram;
 ```
 
-Named option contracts: [`StackDataOptions`](./../types.md#type-stackdataoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`StackDataOptions`](./../types.md#type-stackdataoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -432,6 +442,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `value` | Required | `string` |
 | `mode` | Optional / branch-dependent | `StackDataMode \| undefined` |
 | `as` | Optional / branch-dependent | `StackDataOutputFields \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -449,13 +460,13 @@ by Bar and Area layouts. [Source and Derived Data](../../api/data/source-and-der
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editComputedData(options: EditComputedDataOptions): ChartProgram;
+editComputedData(options: TargetedOptions<EditComputedDataOptions>): ChartProgram;
 ```
 
-Named option contracts: [`EditComputedDataOptions`](./../types.md#type-editcomputeddataoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditComputedDataOptions`](./../types.md#type-editcomputeddataoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -464,7 +475,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Required | `string` |
+| `target` | Required | `string \| ActionTargetList \| ScopedActionTarget` |
 | `dependents` | Optional / branch-dependent | `DerivedDataDependents \| undefined` |
 | `as` | Optional / branch-dependent | `string \| undefined` |
 | `expression` | Optional / branch-dependent | `ComputedExpression \| undefined` |
@@ -479,13 +490,13 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editLookupData(options: EditLookupDataOptions): ChartProgram;
+editLookupData(options: TargetedOptions<EditLookupDataOptions>): ChartProgram;
 ```
 
-Named option contracts: [`EditLookupDataOptions`](./../types.md#type-editlookupdataoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditLookupDataOptions`](./../types.md#type-editlookupdataoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -494,7 +505,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Required | `string` |
+| `target` | Required | `string \| ActionTargetList \| ScopedActionTarget` |
 | `dependents` | Optional / branch-dependent | `DerivedDataDependents \| undefined` |
 | `field` | Optional / branch-dependent | `string \| undefined` |
 | `lookup` | Optional / branch-dependent | `{ data: string; key: string; fields: readonly string[]; as?: readonly string[] \| undefined; } \| undefined` |
@@ -509,13 +520,13 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editFlattenData(options: EditFlattenDataOptions): ChartProgram;
+editFlattenData(options: TargetedOptions<EditFlattenDataOptions>): ChartProgram;
 ```
 
-Named option contracts: [`EditFlattenDataOptions`](./../types.md#type-editflattendataoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditFlattenDataOptions`](./../types.md#type-editflattendataoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -524,7 +535,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Required | `string` |
+| `target` | Required | `string \| ActionTargetList \| ScopedActionTarget` |
 | `dependents` | Optional / branch-dependent | `DerivedDataDependents \| undefined` |
 | `fields` | Optional / branch-dependent | `readonly string[] \| undefined` |
 | `as` | Optional / branch-dependent | `readonly string[] \| undefined` |
@@ -539,13 +550,13 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editFoldData(options: EditFoldDataOptions): ChartProgram;
+editFoldData(options: TargetedOptions<EditFoldDataOptions>): ChartProgram;
 ```
 
-Named option contracts: [`EditFoldDataOptions`](./../types.md#type-editfolddataoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditFoldDataOptions`](./../types.md#type-editfolddataoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -554,7 +565,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Required | `string` |
+| `target` | Required | `string \| ActionTargetList \| ScopedActionTarget` |
 | `dependents` | Optional / branch-dependent | `DerivedDataDependents \| undefined` |
 | `fields` | Optional / branch-dependent | `readonly string[] \| undefined` |
 | `as` | Optional / branch-dependent | `FoldDataOutputFields \| undefined` |
@@ -569,13 +580,13 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editSummaryData(options: EditSummaryDataOptions): ChartProgram;
+editSummaryData(options: TargetedOptions<EditSummaryDataOptions>): ChartProgram;
 ```
 
-Named option contracts: [`EditSummaryDataOptions`](./../types.md#type-editsummarydataoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditSummaryDataOptions`](./../types.md#type-editsummarydataoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -584,7 +595,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Required | `string` |
+| `target` | Required | `string \| ActionTargetList \| ScopedActionTarget` |
 | `dependents` | Optional / branch-dependent | `DerivedDataDependents \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| readonly string[] \| undefined` |
 | `aggregates` | Optional / branch-dependent | `readonly SummaryAggregateOptions[] \| undefined` |
@@ -603,13 +614,13 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editBinData(options: EditBinDataOptions): ChartProgram;
+editBinData(options: TargetedOptions<EditBinDataOptions>): ChartProgram;
 ```
 
-Named option contracts: [`EditBinDataOptions`](./../types.md#type-editbindataoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditBinDataOptions`](./../types.md#type-editbindataoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -618,7 +629,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Required | `string` |
+| `target` | Required | `string \| ActionTargetList \| ScopedActionTarget` |
 | `dependents` | Optional / branch-dependent | `DerivedDataDependents \| undefined` |
 | `maxBins` | Optional / branch-dependent | `number \| undefined` |
 | `step` | Optional / branch-dependent | `number \| undefined` |
@@ -643,13 +654,13 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editStackData(options: EditStackDataOptions): ChartProgram;
+editStackData(options: TargetedOptions<EditStackDataOptions>): ChartProgram;
 ```
 
-Named option contracts: [`EditStackDataOptions`](./../types.md#type-editstackdataoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditStackDataOptions`](./../types.md#type-editstackdataoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -658,7 +669,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Required | `string` |
+| `target` | Required | `string \| ActionTargetList \| ScopedActionTarget` |
 | `dependents` | Optional / branch-dependent | `DerivedDataDependents \| undefined` |
 | `category` | Optional / branch-dependent | `string \| undefined` |
 | `group` | Optional / branch-dependent | `string \| undefined` |
@@ -676,13 +687,13 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editIntervalData(options: EditIntervalDataOptions): ChartProgram;
+editIntervalData(options: TargetedOptions<EditIntervalDataOptions>): ChartProgram;
 ```
 
-Named option contracts: [`EditIntervalDataOptions`](./../types.md#type-editintervaldataoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditIntervalDataOptions`](./../types.md#type-editintervaldataoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -691,7 +702,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Required | `string` |
+| `target` | Required | `string \| ActionTargetList \| ScopedActionTarget` |
 | `dependents` | Optional / branch-dependent | `DerivedDataDependents \| undefined` |
 | `field` | Optional / branch-dependent | `string \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| readonly string[] \| undefined` |
@@ -712,13 +723,13 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editECDFData(options: EditECDFDataOptions): ChartProgram;
+editECDFData(options: TargetedOptions<EditECDFDataOptions>): ChartProgram;
 ```
 
-Named option contracts: [`EditECDFDataOptions`](./../types.md#type-editecdfdataoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditECDFDataOptions`](./../types.md#type-editecdfdataoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -727,7 +738,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Required | `string` |
+| `target` | Required | `string \| ActionTargetList \| ScopedActionTarget` |
 | `dependents` | Optional / branch-dependent | `DerivedDataDependents \| undefined` |
 | `field` | Optional / branch-dependent | `string \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| readonly [string, ...string[]] \| undefined` |
@@ -745,13 +756,13 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editNormalizedData(options: EditNormalizedDataOptions): ChartProgram;
+editNormalizedData(options: TargetedOptions<EditNormalizedDataOptions>): ChartProgram;
 ```
 
-Named option contracts: [`EditNormalizedDataOptions`](./../types.md#type-editnormalizeddataoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditNormalizedDataOptions`](./../types.md#type-editnormalizeddataoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -760,7 +771,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Required | `string` |
+| `target` | Required | `string \| ActionTargetList \| ScopedActionTarget` |
 | `dependents` | Optional / branch-dependent | `DerivedDataDependents \| undefined` |
 | `field` | Optional / branch-dependent | `string \| undefined` |
 | `as` | Optional / branch-dependent | `string \| undefined` |
@@ -781,13 +792,13 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editSortedData(options: EditSortedDataOptions): ChartProgram;
+editSortedData(options: TargetedOptions<EditSortedDataOptions>): ChartProgram;
 ```
 
-Named option contracts: [`EditSortedDataOptions`](./../types.md#type-editsorteddataoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditSortedDataOptions`](./../types.md#type-editsorteddataoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -796,7 +807,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Required | `string` |
+| `target` | Required | `string \| ActionTargetList \| ScopedActionTarget` |
 | `sortBy` | Required | `readonly [SortKey, ...SortKey[]]` |
 | `dependents` | Optional / branch-dependent | `DerivedDataDependents \| undefined` |
 
@@ -810,13 +821,13 @@ Behavior, inference, resets, and errors: [Focused core data editing](./charts-da
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editCompleteData(options: EditCompleteDataOptions): ChartProgram;
+editCompleteData(options: TargetedOptions<EditCompleteDataOptions>): ChartProgram;
 ```
 
-Named option contracts: [`EditCompleteDataOptions`](./../types.md#type-editcompletedataoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditCompleteDataOptions`](./../types.md#type-editcompletedataoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -825,7 +836,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Required | `string` |
+| `target` | Required | `string \| ActionTargetList \| ScopedActionTarget` |
 | `dependents` | Optional / branch-dependent | `DerivedDataDependents \| undefined` |
 | `key` | Optional / branch-dependent | `string \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| readonly string[] \| undefined` |
@@ -844,13 +855,13 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editImputedData(options: EditImputedDataOptions): ChartProgram;
+editImputedData(options: TargetedOptions<EditImputedDataOptions>): ChartProgram;
 ```
 
-Named option contracts: [`EditImputedDataOptions`](./../types.md#type-editimputeddataoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditImputedDataOptions`](./../types.md#type-editimputeddataoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -859,7 +870,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Required | `string` |
+| `target` | Required | `string \| ActionTargetList \| ScopedActionTarget` |
 | `dependents` | Optional / branch-dependent | `DerivedDataDependents \| undefined` |
 | `fields` | Optional / branch-dependent | `string \| readonly [string, ...string[]] \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| readonly string[] \| undefined` |
@@ -882,10 +893,10 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./st
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createIntervalData(options: IntervalDataOptions): ChartProgram;
+createIntervalData(options: TargetedOptions<IntervalDataOptions>): ChartProgram;
 ```
 
-Named option contracts: [`IntervalDataOptions`](./../types.md#type-intervaldataoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`IntervalDataOptions`](./../types.md#type-intervaldataoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -904,6 +915,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `level` | Optional / branch-dependent | `number \| undefined` |
 | `missing` | Optional / branch-dependent | `"drop" \| "error" \| undefined` |
 | `as` | Optional / branch-dependent | `IntervalOutputFields \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -928,10 +940,10 @@ median supports interquartile range. [Data](../../api/data.md)
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createECDFData(options: ECDFDataOptions): ChartProgram;
+createECDFData(options: TargetedOptions<ECDFDataOptions>): ChartProgram;
 ```
 
-Named option contracts: [`ECDFDataOptions`](./../types.md#type-ecdfdataoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`ECDFDataOptions`](./../types.md#type-ecdfdataoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -947,6 +959,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `weight` | Optional / branch-dependent | `string \| undefined` |
 | `missing` | Optional / branch-dependent | `"drop" \| "error" \| undefined` |
 | `as` | Optional / branch-dependent | `ECDFOutputFields \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -968,10 +981,10 @@ resolved provenance stores every positive denominator. [Data](../../api/data.md)
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createRegression(options?: RegressionOptions): ChartProgram;
+createRegression(options?: TargetedOptions<RegressionOptions>): ChartProgram;
 ```
 
-Named option contracts: [`RegressionOptions`](./../types.md#type-regressionoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`RegressionOptions`](./../types.md#type-regressionoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -981,7 +994,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `placement` | Optional / branch-dependent | `"plot-last" \| "source" \| undefined` |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `x` | Optional / branch-dependent | `string \| undefined` |
 | `y` | Optional / branch-dependent | `string \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| false \| undefined` |
@@ -1023,10 +1036,10 @@ polynomial degree to `2`; LOESS span to `0.75` and `robustIterations` to `0`.
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editRegression(options: EditRegressionOptions): ChartProgram;
+editRegression(options: TargetedOptions<EditRegressionOptions>): ChartProgram;
 ```
 
-Named option contracts: [`EditRegressionOptions`](./../types.md#type-editregressionoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditRegressionOptions`](./../types.md#type-editregressionoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1036,7 +1049,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `placement` | Optional / branch-dependent | `"plot-last" \| "source" \| undefined` |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `x` | Optional / branch-dependent | `string \| undefined` |
 | `y` | Optional / branch-dependent | `string \| undefined` |
@@ -1079,10 +1092,10 @@ removes grouping. Component-only changes retain the current fitted rows.
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createErrorBar(options?: ErrorBarOptions): ChartProgram;
+createErrorBar(options?: TargetedOptions<ErrorBarOptions>): ChartProgram;
 ```
 
-Named option contracts: [`ErrorBarOptions`](./../types.md#type-errorbaroptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`ErrorBarOptions`](./../types.md#type-errorbaroptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1092,7 +1105,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `id` | Optional / branch-dependent | `string \| undefined` |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `x` | Optional / branch-dependent | `ErrorBarIntervalChannel \| ErrorBarPositionChannel \| undefined` |
 | `y` | Optional / branch-dependent | `ErrorBarIntervalChannel \| ErrorBarPositionChannel \| undefined` |
@@ -1137,10 +1150,10 @@ the main rule, and both caps on one shared sub-slot scale.
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editErrorBar(options: EditErrorBarOptions): ChartProgram;
+editErrorBar(options: TargetedOptions<EditErrorBarOptions>): ChartProgram;
 ```
 
-Named option contracts: [`EditErrorBarOptions`](./../types.md#type-editerrorbaroptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditErrorBarOptions`](./../types.md#type-editerrorbaroptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1149,7 +1162,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `x` | Optional / branch-dependent | `ErrorBarIntervalChannel \| ErrorBarPositionChannel \| undefined` |
 | `y` | Optional / branch-dependent | `ErrorBarIntervalChannel \| ErrorBarPositionChannel \| undefined` |
@@ -1192,10 +1205,10 @@ convert statistical and explicit intervals while preserving owner/cap IDs.
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createErrorBand(options?: ErrorBandOptions): ChartProgram;
+createErrorBand(options?: TargetedOptions<ErrorBandOptions>): ChartProgram;
 ```
 
-Named option contracts: [`ErrorBandOptions`](./../types.md#type-errorbandoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`ErrorBandOptions`](./../types.md#type-errorbandoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1205,7 +1218,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `id` | Optional / branch-dependent | `string \| undefined` |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `x` | Optional / branch-dependent | `ErrorBandIntervalChannel \| ErrorBandPositionChannel \| undefined` |
 | `y` | Optional / branch-dependent | `ErrorBandIntervalChannel \| ErrorBandPositionChannel \| undefined` |
@@ -1246,10 +1259,10 @@ is overridden.
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editErrorBand(options: EditErrorBandOptions): ChartProgram;
+editErrorBand(options: TargetedOptions<EditErrorBandOptions>): ChartProgram;
 ```
 
-Named option contracts: [`EditErrorBandOptions`](./../types.md#type-editerrorbandoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditErrorBandOptions`](./../types.md#type-editerrorbandoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1258,7 +1271,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `x` | Optional / branch-dependent | `ErrorBandIntervalChannel \| ErrorBandPositionChannel \| undefined` |
 | `y` | Optional / branch-dependent | `ErrorBandIntervalChannel \| ErrorBandPositionChannel \| undefined` |
@@ -1285,10 +1298,10 @@ Behavior, inference, resets, and errors: [editErrorBand and editErrorBandBoundar
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editErrorBandBoundary(options: EditErrorBandBoundaryOptions): ChartProgram;
+editErrorBandBoundary(options: TargetedOptions<EditErrorBandBoundaryOptions>): ChartProgram;
 ```
 
-Named option contracts: [`EditErrorBandBoundaryOptions`](./../types.md#type-editerrorbandboundaryoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditErrorBandBoundaryOptions`](./../types.md#type-editerrorbandboundaryoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1297,7 +1310,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `boundary` | Optional / branch-dependent | `"both" \| "lower" \| "upper" \| undefined` |
 | `stroke` | Optional / branch-dependent | `string \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
@@ -1321,10 +1334,10 @@ Behavior, inference, resets, and errors: [editErrorBand and editErrorBandBoundar
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createBoxPlot(options?: BoxPlotOptions): ChartProgram;
+createBoxPlot(options?: TargetedOptions<BoxPlotOptions>): ChartProgram;
 ```
 
-Named option contracts: [`BoxPlotOptions`](./../types.md#type-boxplotoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`BoxPlotOptions`](./../types.md#type-boxplotoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1335,7 +1348,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `summary` | Optional / branch-dependent | `BoxPlotSummaryFields \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `x` | Optional / branch-dependent | `BoxPlotPositionChannel \| undefined` |
 | `y` | Optional / branch-dependent | `BoxPlotPositionChannel \| undefined` |
@@ -1378,10 +1391,10 @@ position completion and before guides. It cannot be combined with explicit `box.
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editBoxPlot(options: EditBoxPlotOptions): ChartProgram;
+editBoxPlot(options: TargetedOptions<EditBoxPlotOptions>): ChartProgram;
 ```
 
-Named option contracts: [`EditBoxPlotOptions`](./../types.md#type-editboxplotoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditBoxPlotOptions`](./../types.md#type-editboxplotoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1391,7 +1404,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `summary` | Optional / branch-dependent | `false \| BoxPlotSummaryFields \| undefined` |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `x` | Optional / branch-dependent | `BoxPlotPositionChannel \| undefined` |
 | `y` | Optional / branch-dependent | `BoxPlotPositionChannel \| undefined` |
@@ -1422,10 +1435,10 @@ IDs. [Box plots](../../api/box-plots.md#editing-a-box-plot)
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createGradientPlot(options?: GradientPlotOptions): ChartProgram;
+createGradientPlot(options?: TargetedOptions<GradientPlotOptions>): ChartProgram;
 ```
 
-Named option contracts: [`GradientPlotOptions`](./../types.md#type-gradientplotoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`GradientPlotOptions`](./../types.md#type-gradientplotoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1435,7 +1448,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `id` | Optional / branch-dependent | `string \| undefined` |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `x` | Optional / branch-dependent | `BoxPlotPositionChannel \| undefined` |
 | `y` | Optional / branch-dependent | `BoxPlotPositionChannel \| undefined` |
@@ -1476,10 +1489,10 @@ position completion, before guides.
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editGradientPlot(options: EditGradientPlotOptions): ChartProgram;
+editGradientPlot(options: TargetedOptions<EditGradientPlotOptions>): ChartProgram;
 ```
 
-Named option contracts: [`EditGradientPlotOptions`](./../types.md#type-editgradientplotoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditGradientPlotOptions`](./../types.md#type-editgradientplotoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1488,7 +1501,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `x` | Optional / branch-dependent | `BoxPlotPositionChannel \| undefined` |
 | `y` | Optional / branch-dependent | `BoxPlotPositionChannel \| undefined` |
@@ -1518,10 +1531,10 @@ one immutable raw-source profile revision; appearance-only edits retain it.
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createViolinPlot(options: ViolinPlotOptions): ChartProgram;
+createViolinPlot(options: TargetedOptions<ViolinPlotOptions>): ChartProgram;
 ```
 
-Named option contracts: [`ViolinPlotOptions`](./../types.md#type-violinplotoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`ViolinPlotOptions`](./../types.md#type-violinplotoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1540,6 +1553,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `density` | Optional / branch-dependent | `ViolinPlotDensityOptions \| undefined` |
 | `area` | Optional / branch-dependent | `ViolinPlotAreaOptions \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| CartesianCategoricalGuideOptions \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -1568,10 +1582,10 @@ one half to each side of the category center.
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editViolinPlot(options: EditViolinPlotOptions): ChartProgram;
+editViolinPlot(options: TargetedOptions<EditViolinPlotOptions>): ChartProgram;
 ```
 
-Named option contracts: [`EditViolinPlotOptions`](./../types.md#type-editviolinplotoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditViolinPlotOptions`](./../types.md#type-editviolinplotoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1580,7 +1594,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `x` | Optional / branch-dependent | `ViolinPlotPositionChannel \| undefined` |
 | `y` | Optional / branch-dependent | `ViolinPlotPositionChannel \| undefined` |
@@ -1609,10 +1623,10 @@ appearance remains available through `editAreaMark`.
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createRegressionBand(options: CreateRegressionBandOptions): ChartProgram;
+createRegressionBand(options: TargetedOptions<CreateRegressionBandOptions>): ChartProgram;
 ```
 
-Named option contracts: [`CreateRegressionBandOptions`](./../types.md#type-createregressionbandoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`CreateRegressionBandOptions`](./../types.md#type-createregressionbandoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1638,6 +1652,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -1652,10 +1667,10 @@ Behavior, inference, resets, and errors: [Semantic resources and regression laye
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editRegressionBand(options: StrokeStyleDetails & { target?: string; color?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; }): ChartProgram;
+editRegressionBand(options: TargetedOptions<StrokeStyleDetails & { target?: string; color?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; }>): ChartProgram;
 ```
 
-Named option contracts: [`StrokeStyleDetails`](./../types.md#type-strokestyledetails) · [`CurveInterpolation`](./../types.md#type-curveinterpolation).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`StrokeStyleDetails`](./../types.md#type-strokestyledetails) · [`CurveInterpolation`](./../types.md#type-curveinterpolation).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1667,7 +1682,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `stroke` | Optional / branch-dependent | `string \| false \| undefined` |
@@ -1687,10 +1702,10 @@ Behavior, inference, resets, and errors: [Semantic resources and regression laye
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createRegressionLine(options: CreateRegressionLineOptions): ChartProgram;
+createRegressionLine(options: TargetedOptions<CreateRegressionLineOptions>): ChartProgram;
 ```
 
-Named option contracts: [`CreateRegressionLineOptions`](./../types.md#type-createregressionlineoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`CreateRegressionLineOptions`](./../types.md#type-createregressionlineoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1713,6 +1728,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -1727,10 +1743,10 @@ Behavior, inference, resets, and errors: [Semantic resources and regression laye
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editRegressionLine(options: StrokeStyleDetails & { target?: string; strokeWidth?: number; curve?: CurveInterpolation; }): ChartProgram;
+editRegressionLine(options: TargetedOptions<StrokeStyleDetails & { target?: string; strokeWidth?: number; curve?: CurveInterpolation; }>): ChartProgram;
 ```
 
-Named option contracts: [`StrokeStyleDetails`](./../types.md#type-strokestyledetails) · [`CurveInterpolation`](./../types.md#type-curveinterpolation).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`StrokeStyleDetails`](./../types.md#type-strokestyledetails) · [`CurveInterpolation`](./../types.md#type-curveinterpolation).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1742,7 +1758,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
 | `curve` | Optional / branch-dependent | `CurveInterpolation \| undefined` |
 
@@ -1759,10 +1775,10 @@ Behavior, inference, resets, and errors: [Semantic resources and regression laye
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createDensityPlot(options: CreateDensityPlotOptions): ChartProgram;
+createDensityPlot(options: TargetedOptions<CreateDensityPlotOptions>): ChartProgram;
 ```
 
-Named option contracts: [`CreateDensityPlotOptions`](./../types.md#type-createdensityplotoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`CreateDensityPlotOptions`](./../types.md#type-createdensityplotoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1789,6 +1805,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `color` | Optional / branch-dependent | `string \| { field: string; fieldType?: "nominal" \| "ordinal" \| undefined; scale?: NonPointCategoricalColorScaleOptions \| undefined; palette?: Palette \| undefined; layout?: "overlay" \| undefined; } \| undefined` |
 | `area` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; fill?: FillPaint \| undefined; opacity?: number \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| DensityPlotGuideOptions \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -1821,10 +1838,10 @@ Both value and density grid directions follow continuous scales and reject expli
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createHorizonPlot(options: CreateHorizonPlotOptions): ChartProgram;
+createHorizonPlot(options: TargetedOptions<CreateHorizonPlotOptions>): ChartProgram;
 ```
 
-Named option contracts: [`CreateHorizonPlotOptions`](./../types.md#type-createhorizonplotoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`CreateHorizonPlotOptions`](./../types.md#type-createhorizonplotoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1848,6 +1865,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `palette` | Optional / branch-dependent | `HorizonPaletteOptions \| undefined` |
 | `area` | Optional / branch-dependent | `(StrokeStyleDetails & { clip?: boolean \| undefined; opacity?: number \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; curve?: CurveInterpolation \| undefined; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| HorizonPlotGuideOptions \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 

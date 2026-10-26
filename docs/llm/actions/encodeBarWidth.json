@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "encodings",
   "summary": "Set aggregate or ranged bar width before or after its positions are complete.",
-  "signature": "encodeBarWidth(options?: BarWidthOptions): ChartProgram;",
+  "signature": "encodeBarWidth(options?: TargetedOptions<BarWidthOptions>): ChartProgram;",
   "intents": [
     "encode bar width",
     "encode",
@@ -57,7 +57,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "band",

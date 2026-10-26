@@ -60,7 +60,7 @@ export function resolveMarkFamilyConsumerValues(program, consumer, dataset) {
   if (
     layer.mark?.type === "line" &&
     ((["x", "y"].includes(channel) && encoding.x !== undefined &&
-      isAggregate(encoding.y?.aggregate) &&
+      (isAggregate(encoding.y?.aggregate) || isAggregate(encoding.x?.aggregate)) &&
       !(channel === "x" &&
         encoding.x?.bin !== undefined)) ||
       appearance) &&

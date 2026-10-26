@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "axes",
   "summary": "Full-only field-selected Parallel guides.",
-  "signature": "editParallelAxis(options: EditParallelAxisOptions): ChartProgram;",
+  "signature": "editParallelAxis(options: TargetedOptions<EditParallelAxisOptions>): ChartProgram;",
   "intents": [
     "edit parallel axis",
     "edit",
@@ -56,6 +56,11 @@
   },
   "options": [
     {
+      "name": "visible",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
       "name": "field",
       "required": true,
       "type": "string"
@@ -63,36 +68,36 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "line",
       "required": false,
-      "type": "false | AxisLineStyleOptions | undefined"
+      "type": "false | VisibleGuide<AxisLineStyleOptions> | undefined"
     },
     {
       "name": "title",
       "required": false,
-      "type": "false | ParallelAxisTitleOptions | undefined"
+      "type": "false | VisibleGuide<ParallelAxisTitleOptions> | undefined"
     },
     {
       "name": "ticksAndLabels",
       "required": false,
-      "type": "false | (ParallelAxisTickSelection & { ticks?: AxisTickStyleOptions | undefined; labels?: AxisLabelStyleOptions | undefined; }) | undefined"
+      "type": "false | (ParallelAxisTickSelection & { ticks?: VisibleGuide<AxisTickStyleOptions> | undefined; labels?: VisibleGuide<...> | undefined; }) | undefined"
     },
     {
       "name": "ticks",
       "required": false,
-      "type": "false | ParallelAxisTicksOptions | undefined"
+      "type": "false | VisibleGuide<ParallelAxisTicksOptions> | undefined"
     },
     {
       "name": "labels",
       "required": false,
-      "type": "false | ParallelAxisLabelsOptions | undefined"
+      "type": "false | VisibleGuide<ParallelAxisLabelsOptions> | undefined"
     }
   ],
   "callPatterns": [
-    "editParallelAxis({ field, target?, line?, title?, ticksAndLabels?, ticks?, labels? })"
+    "editParallelAxis({ field, target?, visible?, line?, title?, ticksAndLabels?, ticks?, labels? })"
   ],
   "snippet": "program.editParallelAxis({ field: \"value\" })",
   "errors": [],

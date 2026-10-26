@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "composition",
   "summary": "Repeat one supported Cartesian, Polar, or Parallel chart over two ordered categorical fields.",
-  "signature": "facetGrid(options: FacetGridOptions): ChartProgram;",
+  "signature": "facetGrid(options: TargetedOptions<FacetGridOptions>): ChartProgram;",
   "intents": [
     "facet grid",
     "facet",
@@ -24,7 +24,8 @@
     ],
     "idOptions": [
       "id",
-      "data"
+      "data",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -52,6 +53,10 @@
   "inference": [
     {
       "input": "data",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -131,10 +136,15 @@
       "name": "topLane",
       "required": false,
       "type": "FacetTopLaneMode | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "facetGrid({ rows, columns, id?, data?, combinations?, gap?, align?, padding? })"
+    "facetGrid({ rows, columns, id?, data?, target?, combinations?, gap?, align? })"
   ],
   "snippet": "program.facetGrid({ rows: { field: \"region\" }, columns: { field: \"year\" } })",
   "errors": [],

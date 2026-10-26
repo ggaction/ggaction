@@ -34,15 +34,15 @@ test("keeps Parallel declarations and root type exports synchronized", () => {
     /^export type ParallelMissingPolicy = "break" \| "drop-row" \| "error";$/m);
   assert.match(programTypes, /^export type ParallelDimension = string \| \(\{$/m);
   assert.match(programTypes,
-    /fieldType: "quantitative";\n      scale\?: WithoutScaleId<QuantitativePositionScaleOptions>;/);
+    /fieldType: "quantitative";\n      scale\?: QuantitativePositionScaleOptions;/);
   assert.match(programTypes,
-    /fieldType: "ordinal";\n      scale\?: WithoutScaleId<CategoricalPositionScaleOptions>;/);
+    /fieldType: "ordinal";\n      scale\?: CategoricalPositionScaleOptions;/);
   assert.match(programTypes, /^export interface ParallelCoordinatesEncodingOptions/m);
   assert.match(programTypes, /^export interface CreateParallelCoordinatesOptions/m);
   assert.match(programTypes,
-    /^  encodeParallelCoordinates\(options: ParallelCoordinatesEncodingOptions\): ChartProgram;$/m);
+    /^  encodeParallelCoordinates\(options: TargetedOptions<ParallelCoordinatesEncodingOptions>\): ChartProgram;$/m);
   assert.match(programTypes,
-    /^  createParallelCoordinates\(options: CreateParallelCoordinatesOptions\): ChartProgram;$/m);
+    /^  createParallelCoordinates\(options: TargetedOptions<CreateParallelCoordinatesOptions>\): ChartProgram;$/m);
 
   for (const name of [
     "ParallelMissingPolicy",

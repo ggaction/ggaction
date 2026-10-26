@@ -13,14 +13,6 @@ import {
   resolveCanvasGraphicPlacement
 } from "../../materialization/graphicHierarchy.js";
 
-function assertTitleScope(program, operation) {
-  if (
-    program.compositionSpec !== undefined &&
-    program.compositionSpec.type !== "facet"
-  ) {
-    throw new Error(`${operation} is not available on this composition ChartProgram.`);
-  }
-}
 
 function hasRotation(graphic) {
   return (graphic.items ?? [graphic]).some(
@@ -136,7 +128,6 @@ export const createTitle = /* @__PURE__ */ action(
     scope: "any"
   },
   withGuideLayoutValidation(function (args = {}) {
-    assertTitleScope(this, "createTitle");
     const options = normalizeTitleOptions(args);
     if (Object.keys(this.semanticSpec.title).length > 0) {
       throw new Error("createTitle requires missing semantic title state.");
@@ -153,7 +144,7 @@ export const createTitle = /* @__PURE__ */ action(
       next = next.editSemantic({ property: "title.subtitle", value: subtitle });
     }
     next = next._withTitleConfig(config);
-    if (next.compositionSpec?.type === "facet") {
+    if (next.compositionSpec !== undefined) {
       return next.materializeComposition();
     }
     resolveTitleLayout(next, config);
@@ -170,7 +161,6 @@ export const editTitle = /* @__PURE__ */ action(
     scope: "any"
   },
   withGuideLayoutValidation(function (args = {}) {
-    assertTitleScope(this, "editTitle");
     if (this.semanticSpec.title.text === undefined) {
       throw new Error("editTitle requires an existing chart title.");
     }
@@ -193,7 +183,7 @@ export const editTitle = /* @__PURE__ */ action(
       });
     }
     next = next._withTitleConfig(normalized.config);
-    if (next.compositionSpec?.type === "facet") {
+    if (next.compositionSpec !== undefined) {
       return next.materializeComposition();
     }
     resolveTitleLayout(next, normalized.config);
@@ -208,7 +198,6 @@ export const removeTitle = /* @__PURE__ */ action(
     scope: "any"
   },
   withGuideLayoutValidation(function (args = {}) {
-    assertTitleScope(this, "removeTitle");
     noOptions(args, "removeTitle");
     if (
       this.semanticSpec.title.text === undefined &&
@@ -231,7 +220,7 @@ export const removeTitle = /* @__PURE__ */ action(
       }
     }
     next = next._withoutMaterializationConfig(["title"]);
-    return next.compositionSpec?.type === "facet"
+    return next.compositionSpec !== undefined
       ? next.materializeComposition()
       : next;
   })

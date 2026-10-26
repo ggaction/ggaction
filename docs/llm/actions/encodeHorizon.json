@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "encodings",
   "summary": "Create immutable folded-band data, bind it to an area mark, and author the ordinary x, y/y2, group, and color encodings needed for a compact Horizon chart.",
-  "signature": "encodeHorizon(options?: HorizonEncodingOptions): ChartProgram;",
+  "signature": "encodeHorizon(options?: TargetedOptions<HorizonEncodingOptions>): ChartProgram;",
   "intents": [
     "encode horizon",
     "encode",
@@ -79,7 +79,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "source",

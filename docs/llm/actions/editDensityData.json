@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "core",
   "summary": "Edits kernel density data, including settings for KDE.",
-  "signature": "editDensityData(options: EditDensityDataOptions): ChartProgram;",
+  "signature": "editDensityData(options: TargetedOptions<EditDensityDataOptions>): ChartProgram;",
   "intents": [
     "edit density data",
     "edit",
@@ -75,7 +75,7 @@
     {
       "name": "target",
       "required": true,
-      "type": "string"
+      "type": "string | ActionTargetList | ScopedActionTarget"
     },
     {
       "name": "dependents",

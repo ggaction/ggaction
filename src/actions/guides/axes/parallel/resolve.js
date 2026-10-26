@@ -1,3 +1,4 @@
+import { resolveDisplayLabel } from "../../../../grammar/displayLabels.js";
 import { validateUserId } from "../../../../core/identifiers.js";
 import {
   isTransformedScaleType,
@@ -76,12 +77,13 @@ function componentValues(program, dimension, config) {
     : !Number.isFinite(value) || value < Math.min(...scale.domain) || value > Math.max(...scale.domain))) {
     throw new Error(`Parallel axis values must be distinct values inside the scale domain for "${dimension.field}".`);
   }
+  if (config.labelMap !== undefined && !discrete) throw new Error("Parallel labelMap requires a categorical axis.");
   return {
     values,
     y: discrete ? mapOrdinalPositionValues(values, scale) : mapContinuousScaleValues(values, scale),
     text: config.format === undefined ? undefined
       : config.format === "ticks" ? formatNumericAxisTicks(values, scale.type)
-        : values.map(value => formatAxisValue(value, scale.type, config.format, formatValue))
+        : values.map(value => resolveDisplayLabel(value, config.labelMap, () => formatAxisValue(value, scale.type, config.format, formatValue)))
   };
 }
 

@@ -849,13 +849,17 @@ import {
         layout: "overlay"
       }
     };
-    const invalidLineXAggregate: CreateLinePlotOptions = {
+    const horizontalNumericAggregateLine: CreateLinePlotOptions = {
       x: {
         field: "x",
-        // @ts-expect-error Line x positions cannot aggregate.
         aggregate: "mean"
       },
-      y: "y"
+      y: { field: "y", fieldType: "quantitative" }
+    };
+    // @ts-expect-error A Line needs an independent position; both axes cannot aggregate.
+    const invalidBothLineAggregates: CreateLinePlotOptions = {
+      x: { field: "x", aggregate: "mean" },
+      y: { field: "y", aggregate: "sum" }
     };
     const invalidLineYPolicies: CreateLinePlotOptions = {
       x: "x",
@@ -865,7 +869,7 @@ import {
         bin: { maxBins: 10 }
       }
     };
-    void [invalidLineColorLayout, invalidLineXAggregate, invalidLineYPolicies];
+    void [invalidLineColorLayout, horizontalNumericAggregateLine, invalidBothLineAggregates, invalidLineYPolicies];
     chart().createAreaPlot({ x: "time", y: "value", baseline: 0, missing: "break" }).layoutSeries({ mode: "center" });
     chart().createAreaPlot({ x: "time", y: { lower: "lo", upper: "hi" } });
     basicChart().encodeGroup({ fields: ["series", "region"] }).layoutSeries({ mode: "stack" });

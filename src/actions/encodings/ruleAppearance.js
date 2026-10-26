@@ -1,4 +1,4 @@
-import { APPEARANCE_MARK_TYPES } from "../../core/vocabulary.js";
+import { APPEARANCE_MARK_TYPES, FIXED_APPEARANCE_MARK_TYPES } from "../../core/vocabulary.js";
 import { action } from "../../core/action.js";
 import { validateRuleStrokeWidth } from "../../grammar/ruleAppearance.js";
 import { readQuantitativeField } from "../../grammar/scales/index.js";
@@ -39,8 +39,20 @@ const encodeStrokeWidth = /* @__PURE__ */ action(
         throw new Error("Constant stroke width does not accept fieldType or scale.");
       }
       validateRuleStrokeWidth(args.value);
-      const { id, layer } = resolveTarget(this, args.target, APPEARANCE_MARK_TYPES.encodeStrokeWidth, "rule, line or rect mark");
+      const { id, layer } = resolveTarget(this, args.target, FIXED_APPEARANCE_MARK_TYPES.encodeStrokeWidth, "stroked mark");
       assertEncodingSelectionCompatibility(this, id, ["strokeWidth"]);
+      if (!APPEARANCE_MARK_TYPES.encodeStrokeWidth.includes(layer.mark.type)) {
+        const config = { ...this.markConfigs[id] };
+        const appearance = layer.mark.type === "bar" ? { ...config.barAppearance } : config;
+        // Width authoring enables an absent outline; existing constant or
+        // field-driven strokes keep their color and scale ownership.
+        const needsStroke = !layer.encoding?.stroke && (appearance.stroke === false ||
+          (["point", "area"].includes(layer.mark.type) && appearance.stroke === undefined));
+        if (needsStroke) appearance.stroke = "#000000";
+        appearance.strokeWidth = args.value;
+        if (layer.mark.type === "bar") config.barAppearance = appearance;
+        return rematerializeEncoding(this._withMarkConfig(id, config), id, "strokeWidth", undefined, layer);
+      }
       let next = this.guideConfigs.legend?.strokeWidth?.target === id
         ? this.removeLegend({ target: id, channels: ["strokeWidth"] })
         : this;

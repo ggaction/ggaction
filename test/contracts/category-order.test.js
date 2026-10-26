@@ -20,11 +20,11 @@ test("keeps category-order runtime, declarations, current contract, and inventor
   assert.match(programTypes, /^export type CategoryOrder =$/m);
   assert.match(
     programTypes,
-    /^  orderCategories\(options: OrderCategoriesOptions\): ChartProgram;$/m
+    /^  orderCategories\(options: TargetedOptions<OrderCategoriesOptions>\): ChartProgram;$/m
   );
   assert.match(
     programTypes,
-    /^  removeCategoryOrder\(options: RemoveCategoryOrderOptions\): ChartProgram;$/m
+    /^  removeCategoryOrder\(options: TargetedOptions<RemoveCategoryOrderOptions>\): ChartProgram;$/m
   );
   for (const exported of [
     "CategoryOrder",

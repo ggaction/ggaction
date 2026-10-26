@@ -203,7 +203,7 @@ function barStackDefinitions(layer, barGrain, definitions) {
   });
 }
 
-export function resolveBarItems(program, layer, dataset, selectionGrain) {
+export function resolveBarItemDefinitions(program, layer, dataset) {
   const grain = resolveBarGrain(layer);
   const definitions = grain === BAR_GRAINS.histogram
     ? histogramDefinitions(program, layer, dataset)
@@ -215,6 +215,12 @@ export function resolveBarItems(program, layer, dataset, selectionGrain) {
   if (definitions === undefined) {
     throw new Error(`Bar mark "${layer.id}" is incomplete for selection.`);
   }
+  return definitions;
+}
+
+export function resolveBarItems(program, layer, dataset, selectionGrain) {
+  const grain = resolveBarGrain(layer);
+  const definitions = resolveBarItemDefinitions(program, layer, dataset);
   const graphicTypes = hasRectRadius(program.markConfigs[layer.id]?.barAppearance) ? ["rect", "path"] : "rect";
   if (selectionGrain === "stack") {
     return finalizeItems(

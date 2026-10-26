@@ -106,7 +106,7 @@ export function validatePathSeriesAppearance(rows, layer, scales, seriesFields) 
   const colorScale = lineColorScale(layer, scales);
   const channels = layer.mark.type === "line"
     ? ["color", "stroke", "strokeDash", "strokeWidth", "opacity"]
-    : ["color", "stroke"];
+    : ["color", "stroke", "opacity"];
   for (const channel of channels) {
     const encoding = layer.encoding?.[channel];
     if (encoding?.field === undefined) continue;

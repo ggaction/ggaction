@@ -103,7 +103,7 @@ automatic undo stack; the application chooses which to retain or render.
 
 Use `createLinePlot`, `createBarPlot`, `createHistogram`, and `createHeatmap` for
 the other basic Cartesian charts. The `ggaction/basic` entry keeps this common
-creation path at or below the current 233,000-byte gzip regression ceiling while
+creation path at or below the current 245,000-byte gzip regression ceiling while
 each facade still records its mark, encoding, and guide actions as trace
 children. Import from
 `ggaction` when you need editing, selection, composition, alternative
@@ -237,7 +237,7 @@ the extra discussion required before public API or architecture changes.
 
 ## Status and development
 
-> **Status:** `0.0.24` is the current experimental public release. APIs may change before `1.0.0`; changes are recorded in the [changelog](./CHANGELOG.md).
+> **Status:** `0.0.25` is the current experimental public release. APIs may change before `1.0.0`; changes are recorded in the [changelog](./CHANGELOG.md).
 
 ```bash
 npm install

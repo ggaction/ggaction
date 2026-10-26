@@ -3,8 +3,8 @@
   "name": "editLegend",
   "layer": "user-facing",
   "domain": "legend_and_title",
-  "summary": "Singular channel selects one existing block without changing sibling typography.",
-  "signature": "editLegend(options: EditLegendOptions): ChartProgram;",
+  "summary": "Select one legend block or all existing blocks together.",
+  "signature": "editLegend(options: TargetedOptions<EditLegendOptions>): ChartProgram;",
   "intents": [
     "edit legend",
     "edit",
@@ -54,6 +54,10 @@
       "unit": "count"
     },
     {
+      "path": "alongOffset",
+      "unit": "logical-pixel"
+    },
+    {
       "path": "offset",
       "unit": "logical-pixel"
     },
@@ -63,6 +67,10 @@
     }
   ],
   "inference": [
+    {
+      "input": "itemsOffset",
+      "strategy": "documented-auto"
+    },
     {
       "input": "clipHeight",
       "strategy": "documented-auto"
@@ -98,6 +106,21 @@
   },
   "options": [
     {
+      "name": "visible",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "itemsOffset",
+      "required": false,
+      "type": "\"auto\" | { x?: number | undefined; y?: number | undefined; } | undefined"
+    },
+    {
+      "name": "labels",
+      "required": false,
+      "type": "LegendLabelEditStyle | undefined"
+    },
+    {
       "name": "clipHeight",
       "required": false,
       "type": "number | \"auto\" | undefined"
@@ -115,7 +138,7 @@
     {
       "name": "channel",
       "required": false,
-      "type": "\"color\" | \"opacity\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\" | undefined"
+      "type": "\"all\" | \"color\" | \"opacity\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\" | undefined"
     },
     {
       "name": "position",
@@ -130,7 +153,7 @@
     {
       "name": "titleStyle",
       "required": false,
-      "type": "LegendTitleStyleEditOptions | undefined"
+      "type": "LegendTitleEditStyle | undefined"
     },
     {
       "name": "channels",
@@ -175,7 +198,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "blockLayout",
@@ -194,6 +217,11 @@
     },
     {
       "name": "columns",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "alongOffset",
       "required": false,
       "type": "number | undefined"
     },
@@ -223,11 +251,6 @@
       "type": "LegendSymbolRecipe | undefined"
     },
     {
-      "name": "labels",
-      "required": false,
-      "type": "LegendTextOptions | undefined"
-    },
-    {
       "name": "itemGap",
       "required": false,
       "type": "number | undefined"
@@ -239,7 +262,7 @@
     }
   ],
   "callPatterns": [
-    "editLegend({ target?, clipHeight?, rowPadding?, titlePadding?, channel?, position?, direction?, titleStyle? })"
+    "editLegend({ target?, visible?, itemsOffset?, labels?, clipHeight?, rowPadding?, titlePadding?, channel? })"
   ],
   "snippet": "program.editLegend({ channels: [\"color\", \"size\"], count: 3 })",
   "errors": [],

@@ -8,4 +8,5 @@ export type OpacityScaleOptions = ScaleFields<
   unknown?: number;
 };
 
-/** Constant or quantitative opacity on Point, Rule, Line, Bar, or row-owned Rect marks. */
+/** Constant or quantitative opacity on Point, Rule, Line, Area, Bar, or row-owned Rect marks.
+ * Line and Area fields must be constant within each existing path series. */

@@ -4,6 +4,13 @@ Basic chart actions create a complete mark, its encodings, and applicable
 guides in one traceable call. Create a Canvas and dataset first, then provide
 only the fields that define the chart.
 
+For Strip, Beeswarm, Raincloud, Dot, Lollipop, and Dumbbell plots, use
+`missing: "skip"` to exclude rows with missing required roles. The default is
+`"error"`. Raincloud and endpoint plots use the same complete observations for
+all their children, retain the original source for later role edits, and replay
+the policy when data is revised. Other statistical requirements still apply:
+for example, a density estimate needs enough varying observations per group.
+
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
 ```javascript
@@ -163,6 +170,13 @@ accepted because it could mean either a field or a named dash style; use
 explicit Polar mark and encoding actions for closed Polar paths. A field
 materialized by `createWindowData` can be used directly as the quantitative y
 position without applying another aggregate.
+
+An explicit aggregate also works at exact numeric positions: numeric years,
+distances, or other repeated X values produce one vertex per observed value
+and series, sorted numerically. Binning happens only when `x.bin` is supplied.
+For a horizontal aggregate line, put the aggregate on X and the independent
+numeric, temporal, or categorical positions on Y. An Area layer's compatible
+aggregate and positional scales are inherited when adding a Line layer.
 
 Line y positions use quantitative or temporal scales, so
 `guides.grid.horizontal` does not accept `bandPosition`. A categorical x with

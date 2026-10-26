@@ -15,10 +15,10 @@ Each declared action has an exact signature and its own stable link. Option tabl
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createParallelAxes(options?: ParallelAxesOptions): ChartProgram;
+createParallelAxes(options?: TargetedOptions<ParallelAxesOptions>): ChartProgram;
 ```
 
-Named option contracts: [`ParallelAxesOptions`](./../types.md#type-parallelaxesoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`ParallelAxesOptions`](./../types.md#type-parallelaxesoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -27,7 +27,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 
 </details>
@@ -43,10 +43,10 @@ Behavior, inference, resets, and errors: [createParallelAxes, createParallelAxis
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createParallelAxis(options: CreateParallelAxisOptions): ChartProgram;
+createParallelAxis(options: TargetedOptions<CreateParallelAxisOptions>): ChartProgram;
 ```
 
-Named option contracts: [`CreateParallelAxisOptions`](./../types.md#type-createparallelaxisoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`CreateParallelAxisOptions`](./../types.md#type-createparallelaxisoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -56,10 +56,10 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `field` | Required | `string` |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `line` | Optional / branch-dependent | `false \| AxisLineStyleOptions \| undefined` |
 | `title` | Optional / branch-dependent | `false \| ParallelAxisTitleOptions \| undefined` |
-| `ticksAndLabels` | Optional / branch-dependent | `false \| (ParallelAxisTickSelection & { ticks?: AxisTickStyleOptions \| undefined; labels?: AxisLabelStyleOptions \| undefined; }) \| undefined` |
+| `ticksAndLabels` | Optional / branch-dependent | `false \| (ParallelAxisTickSelection & { ticks?: AxisTickStyleOptions \| undefined; labels?: (AxisLabelStyleOptions & DisplayLabelOptions) \| undefined; }) \| undefined` |
 | `ticks` | Optional / branch-dependent | `false \| ParallelAxisTicksOptions \| undefined` |
 | `labels` | Optional / branch-dependent | `false \| ParallelAxisLabelsOptions \| undefined` |
 
@@ -76,10 +76,10 @@ Behavior, inference, resets, and errors: [createParallelAxes, createParallelAxis
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editParallelAxis(options: EditParallelAxisOptions): ChartProgram;
+editParallelAxis(options: TargetedOptions<EditParallelAxisOptions>): ChartProgram;
 ```
 
-Named option contracts: [`EditParallelAxisOptions`](./../types.md#type-editparallelaxisoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditParallelAxisOptions`](./../types.md#type-editparallelaxisoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -88,13 +88,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `visible` | Optional / branch-dependent | `boolean \| undefined` |
 | `field` | Required | `string` |
-| `target` | Optional / branch-dependent | `string \| undefined` |
-| `line` | Optional / branch-dependent | `false \| AxisLineStyleOptions \| undefined` |
-| `title` | Optional / branch-dependent | `false \| ParallelAxisTitleOptions \| undefined` |
-| `ticksAndLabels` | Optional / branch-dependent | `false \| (ParallelAxisTickSelection & { ticks?: AxisTickStyleOptions \| undefined; labels?: AxisLabelStyleOptions \| undefined; }) \| undefined` |
-| `ticks` | Optional / branch-dependent | `false \| ParallelAxisTicksOptions \| undefined` |
-| `labels` | Optional / branch-dependent | `false \| ParallelAxisLabelsOptions \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `line` | Optional / branch-dependent | `false \| VisibleGuide<AxisLineStyleOptions> \| undefined` |
+| `title` | Optional / branch-dependent | `false \| VisibleGuide<ParallelAxisTitleOptions> \| undefined` |
+| `ticksAndLabels` | Optional / branch-dependent | `false \| (ParallelAxisTickSelection & { ticks?: VisibleGuide<AxisTickStyleOptions> \| undefined; labels?: VisibleGuide<...> \| undefined; }) \| undefined` |
+| `ticks` | Optional / branch-dependent | `false \| VisibleGuide<ParallelAxisTicksOptions> \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| VisibleGuide<ParallelAxisLabelsOptions> \| undefined` |
 
 </details>
 
@@ -109,10 +110,10 @@ Behavior, inference, resets, and errors: [createParallelAxes, createParallelAxis
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-removeParallelAxis(options: RemoveParallelAxisOptions): ChartProgram;
+removeParallelAxis(options: TargetedOptions<RemoveParallelAxisOptions>): ChartProgram;
 ```
 
-Named option contracts: [`RemoveParallelAxisOptions`](./../types.md#type-removeparallelaxisoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`RemoveParallelAxisOptions`](./../types.md#type-removeparallelaxisoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -122,7 +123,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `field` | Required | `string` |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 
 </details>
 
@@ -137,10 +138,10 @@ Behavior, inference, resets, and errors: [createParallelAxes, createParallelAxis
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-removeParallelAxes(options?: ParallelAxesOptions): ChartProgram;
+removeParallelAxes(options?: TargetedOptions<ParallelAxesOptions>): ChartProgram;
 ```
 
-Named option contracts: [`ParallelAxesOptions`](./../types.md#type-parallelaxesoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`ParallelAxesOptions`](./../types.md#type-parallelaxesoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -149,7 +150,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 
 </details>
@@ -165,10 +166,10 @@ Behavior, inference, resets, and errors: [createParallelAxes, createParallelAxis
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createAxes(options?: CreateAxesOptions): ChartProgram;
+createAxes(options?: TargetedOptions<CreateAxesOptions>): ChartProgram;
 ```
 
-Named option contracts: [`CreateAxesOptions`](./../types.md#type-createaxesoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`CreateAxesOptions`](./../types.md#type-createaxesoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -182,6 +183,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `y` | Optional / branch-dependent | `false \| CompleteAxisOptions<YAxisPosition> \| readonly [NamedCompleteAxis<YAxisPosition>, ...NamedCompleteAxis<YAxisPosition>[]] \| undefined` |
 | `theta` | Optional / branch-dependent | `false \| CompletePolarAxisOptions \| undefined` |
 | `radius` | Optional / branch-dependent | `false \| CompleteRadialAxisOptions \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -202,10 +204,10 @@ Create Cartesian or Polar axes directly, including inferred titles and ticks.
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createXAxis(options?: CompleteAxisOptions<XAxisPosition>): ChartProgram;
+createXAxis(options?: TargetedOptions<CompleteAxisOptions<XAxisPosition>>): ChartProgram;
 ```
 
-Named option contracts: [`CompleteAxisOptions`](./../types.md#type-completeaxisoptions) · [`XAxisPosition`](./../types.md#type-xaxisposition).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`CompleteAxisOptions`](./../types.md#type-completeaxisoptions) · [`XAxisPosition`](./../types.md#type-xaxisposition).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -223,6 +225,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `line` | Optional / branch-dependent | `false \| AxisLineStyleOptions \| undefined` |
 | `ticksAndLabels` | Optional / branch-dependent | `false \| Omit<AxisTicksAndLabelsOptions<XAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
 | `title` | Optional / branch-dependent | `false \| Omit<AxisTitleOptions<XAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -237,10 +240,10 @@ Behavior, inference, resets, and errors: [Complete single-channel axes](./guides
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createYAxis(options?: CompleteAxisOptions<YAxisPosition>): ChartProgram;
+createYAxis(options?: TargetedOptions<CompleteAxisOptions<YAxisPosition>>): ChartProgram;
 ```
 
-Named option contracts: [`CompleteAxisOptions`](./../types.md#type-completeaxisoptions) · [`YAxisPosition`](./../types.md#type-yaxisposition).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`CompleteAxisOptions`](./../types.md#type-completeaxisoptions) · [`YAxisPosition`](./../types.md#type-yaxisposition).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -258,6 +261,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `line` | Optional / branch-dependent | `false \| AxisLineStyleOptions \| undefined` |
 | `ticksAndLabels` | Optional / branch-dependent | `false \| Omit<AxisTicksAndLabelsOptions<YAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
 | `title` | Optional / branch-dependent | `false \| Omit<AxisTitleOptions<YAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -272,10 +276,10 @@ Behavior, inference, resets, and errors: [Complete single-channel axes](./guides
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createXAxisLine(options?: AxisLineStyleOptions & { target?: string; scale?: string; position?: XAxisPosition }): ChartProgram;
+createXAxisLine(options?: TargetedOptions<AxisLineStyleOptions & { target?: string; scale?: string; position?: XAxisPosition }>): ChartProgram;
 ```
 
-Named option contracts: [`AxisLineStyleOptions`](./../types.md#type-axislinestyleoptions) · [`XAxisPosition`](./../types.md#type-xaxisposition).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`AxisLineStyleOptions`](./../types.md#type-axislinestyleoptions) · [`XAxisPosition`](./../types.md#type-xaxisposition).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -286,7 +290,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `lineWidth` | Optional / branch-dependent | `number \| undefined` |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
 
@@ -303,10 +307,10 @@ Behavior, inference, resets, and errors: [Axis lines, ticks, and labels](./guide
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createYAxisLine(options?: AxisLineStyleOptions & { target?: string; scale?: string; position?: YAxisPosition }): ChartProgram;
+createYAxisLine(options?: TargetedOptions<AxisLineStyleOptions & { target?: string; scale?: string; position?: YAxisPosition }>): ChartProgram;
 ```
 
-Named option contracts: [`AxisLineStyleOptions`](./../types.md#type-axislinestyleoptions) · [`YAxisPosition`](./../types.md#type-yaxisposition).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`AxisLineStyleOptions`](./../types.md#type-axislinestyleoptions) · [`YAxisPosition`](./../types.md#type-yaxisposition).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -317,7 +321,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `lineWidth` | Optional / branch-dependent | `number \| undefined` |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
 
@@ -334,10 +338,10 @@ Behavior, inference, resets, and errors: [Axis lines, ticks, and labels](./guide
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editXAxisLine(options?: AxisLineStyleOptions & { target?: string; position?: XAxisPosition }): ChartProgram;
+editXAxisLine(options?: TargetedOptions<AxisLineStyleOptions & { target?: string; position?: XAxisPosition }>): ChartProgram;
 ```
 
-Named option contracts: [`AxisLineStyleOptions`](./../types.md#type-axislinestyleoptions) · [`XAxisPosition`](./../types.md#type-xaxisposition).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`AxisLineStyleOptions`](./../types.md#type-axislinestyleoptions) · [`XAxisPosition`](./../types.md#type-xaxisposition).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -348,7 +352,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `lineWidth` | Optional / branch-dependent | `number \| undefined` |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
 
 </details>
@@ -364,10 +368,10 @@ Behavior, inference, resets, and errors: [Axis lines, ticks, and labels](./guide
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editYAxisLine(options?: AxisLineStyleOptions & { target?: string; position?: YAxisPosition }): ChartProgram;
+editYAxisLine(options?: TargetedOptions<AxisLineStyleOptions & { target?: string; position?: YAxisPosition }>): ChartProgram;
 ```
 
-Named option contracts: [`AxisLineStyleOptions`](./../types.md#type-axislinestyleoptions) · [`YAxisPosition`](./../types.md#type-yaxisposition).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`AxisLineStyleOptions`](./../types.md#type-axislinestyleoptions) · [`YAxisPosition`](./../types.md#type-yaxisposition).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -378,7 +382,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `lineWidth` | Optional / branch-dependent | `number \| undefined` |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
 
 </details>
@@ -394,10 +398,10 @@ Behavior, inference, resets, and errors: [Axis lines, ticks, and labels](./guide
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createXAxisTicks(options?: AxisTickOptions<XAxisPosition>): ChartProgram;
+createXAxisTicks(options?: TargetedOptions<AxisTickOptions<XAxisPosition>>): ChartProgram;
 ```
 
-Named option contracts: [`AxisTickOptions`](./../types.md#type-axistickoptions) · [`XAxisPosition`](./../types.md#type-xaxisposition).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`AxisTickOptions`](./../types.md#type-axistickoptions) · [`XAxisPosition`](./../types.md#type-xaxisposition).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -406,7 +410,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
@@ -432,10 +436,10 @@ Behavior, inference, resets, and errors: [Axis lines, ticks, and labels](./guide
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createYAxisTicks(options?: AxisTickOptions<YAxisPosition>): ChartProgram;
+createYAxisTicks(options?: TargetedOptions<AxisTickOptions<YAxisPosition>>): ChartProgram;
 ```
 
-Named option contracts: [`AxisTickOptions`](./../types.md#type-axistickoptions) · [`YAxisPosition`](./../types.md#type-yaxisposition).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`AxisTickOptions`](./../types.md#type-axistickoptions) · [`YAxisPosition`](./../types.md#type-yaxisposition).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -444,7 +448,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
@@ -470,10 +474,10 @@ Behavior, inference, resets, and errors: [Axis lines, ticks, and labels](./guide
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editXAxisTicks(options?: Omit<AxisTickOptions<XAxisPosition>, "scale">): ChartProgram;
+editXAxisTicks(options?: TargetedOptions<Omit<AxisTickOptions<XAxisPosition>, "scale">>): ChartProgram;
 ```
 
-Named option contracts: [`AxisTickOptions`](./../types.md#type-axistickoptions) · [`XAxisPosition`](./../types.md#type-xaxisposition).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`AxisTickOptions`](./../types.md#type-axistickoptions) · [`XAxisPosition`](./../types.md#type-xaxisposition).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -488,7 +492,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `strokeDash` | Optional / branch-dependent | `readonly number[] \| undefined` |
 | `strokeDashMap` | Optional / branch-dependent | `"auto" \| CartesianGuideDashMap \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `rounding` | Optional / branch-dependent | `AxisTickRounding \| undefined` |
@@ -507,10 +511,10 @@ Behavior, inference, resets, and errors: [Axis lines, ticks, and labels](./guide
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editYAxisTicks(options?: Omit<AxisTickOptions<YAxisPosition>, "scale">): ChartProgram;
+editYAxisTicks(options?: TargetedOptions<Omit<AxisTickOptions<YAxisPosition>, "scale">>): ChartProgram;
 ```
 
-Named option contracts: [`AxisTickOptions`](./../types.md#type-axistickoptions) · [`YAxisPosition`](./../types.md#type-yaxisposition).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`AxisTickOptions`](./../types.md#type-axistickoptions) · [`YAxisPosition`](./../types.md#type-yaxisposition).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -525,7 +529,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `strokeDash` | Optional / branch-dependent | `readonly number[] \| undefined` |
 | `strokeDashMap` | Optional / branch-dependent | `"auto" \| CartesianGuideDashMap \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `rounding` | Optional / branch-dependent | `AxisTickRounding \| undefined` |
@@ -544,10 +548,10 @@ Behavior, inference, resets, and errors: [Axis lines, ticks, and labels](./guide
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createXAxisLabels(options?: AxisLabelOptions<XAxisPosition>): ChartProgram;
+createXAxisLabels(options?: TargetedOptions<AxisLabelOptions<XAxisPosition>>): ChartProgram;
 ```
 
-Named option contracts: [`AxisLabelOptions`](./../types.md#type-axislabeloptions) · [`XAxisPosition`](./../types.md#type-xaxisposition).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`AxisLabelOptions`](./../types.md#type-axislabeloptions) · [`XAxisPosition`](./../types.md#type-xaxisposition).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -556,7 +560,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
@@ -593,10 +597,10 @@ Behavior, inference, resets, and errors: [Axis lines, ticks, and labels](./guide
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createYAxisLabels(options?: AxisLabelOptions<YAxisPosition>): ChartProgram;
+createYAxisLabels(options?: TargetedOptions<AxisLabelOptions<YAxisPosition>>): ChartProgram;
 ```
 
-Named option contracts: [`AxisLabelOptions`](./../types.md#type-axislabeloptions) · [`YAxisPosition`](./../types.md#type-yaxisposition).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`AxisLabelOptions`](./../types.md#type-axislabeloptions) · [`YAxisPosition`](./../types.md#type-yaxisposition).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -605,7 +609,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
@@ -642,10 +646,10 @@ Behavior, inference, resets, and errors: [Axis lines, ticks, and labels](./guide
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editXAxisLabels(options?: Omit<AxisLabelOptions<XAxisPosition>, "scale">): ChartProgram;
+editXAxisLabels(options?: TargetedOptions<Omit<AxisLabelOptions<XAxisPosition>, "scale">>): ChartProgram;
 ```
 
-Named option contracts: [`AxisLabelOptions`](./../types.md#type-axislabeloptions) · [`XAxisPosition`](./../types.md#type-xaxisposition).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`AxisLabelOptions`](./../types.md#type-axislabeloptions) · [`XAxisPosition`](./../types.md#type-xaxisposition).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -671,7 +675,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `wrap` | Optional / branch-dependent | `"character" \| "word" \| undefined` |
 | `lineHeight` | Optional / branch-dependent | `number \| undefined` |
 | `overlap` | Optional / branch-dependent | `"allow" \| "error" \| undefined` |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `rounding` | Optional / branch-dependent | `AxisTickRounding \| undefined` |
@@ -690,10 +694,10 @@ Behavior, inference, resets, and errors: [Axis lines, ticks, and labels](./guide
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editYAxisLabels(options?: Omit<AxisLabelOptions<YAxisPosition>, "scale">): ChartProgram;
+editYAxisLabels(options?: TargetedOptions<Omit<AxisLabelOptions<YAxisPosition>, "scale">>): ChartProgram;
 ```
 
-Named option contracts: [`AxisLabelOptions`](./../types.md#type-axislabeloptions) · [`YAxisPosition`](./../types.md#type-yaxisposition).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`AxisLabelOptions`](./../types.md#type-axislabeloptions) · [`YAxisPosition`](./../types.md#type-yaxisposition).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -719,7 +723,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `wrap` | Optional / branch-dependent | `"character" \| "word" \| undefined` |
 | `lineHeight` | Optional / branch-dependent | `number \| undefined` |
 | `overlap` | Optional / branch-dependent | `"allow" \| "error" \| undefined` |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `rounding` | Optional / branch-dependent | `AxisTickRounding \| undefined` |
@@ -738,10 +742,10 @@ Behavior, inference, resets, and errors: [Axis lines, ticks, and labels](./guide
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createXAxisTicksAndLabels(options?: AxisTicksAndLabelsOptions<XAxisPosition>): ChartProgram;
+createXAxisTicksAndLabels(options?: TargetedOptions<AxisTicksAndLabelsOptions<XAxisPosition>>): ChartProgram;
 ```
 
-Named option contracts: [`AxisTicksAndLabelsOptions`](./../types.md#type-axisticksandlabelsoptions) · [`XAxisPosition`](./../types.md#type-xaxisposition).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`AxisTicksAndLabelsOptions`](./../types.md#type-axisticksandlabelsoptions) · [`XAxisPosition`](./../types.md#type-xaxisposition).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -750,7 +754,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
@@ -772,10 +776,10 @@ Behavior, inference, resets, and errors: [Tick/label groups and axis titles](./g
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createYAxisTicksAndLabels(options?: AxisTicksAndLabelsOptions<YAxisPosition>): ChartProgram;
+createYAxisTicksAndLabels(options?: TargetedOptions<AxisTicksAndLabelsOptions<YAxisPosition>>): ChartProgram;
 ```
 
-Named option contracts: [`AxisTicksAndLabelsOptions`](./../types.md#type-axisticksandlabelsoptions) · [`YAxisPosition`](./../types.md#type-yaxisposition).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`AxisTicksAndLabelsOptions`](./../types.md#type-axisticksandlabelsoptions) · [`YAxisPosition`](./../types.md#type-yaxisposition).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -784,7 +788,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
@@ -806,10 +810,10 @@ Behavior, inference, resets, and errors: [Tick/label groups and axis titles](./g
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editXAxisTicksAndLabels(options: Omit<AxisTicksAndLabelsOptions<XAxisPosition>, "scale">): ChartProgram;
+editXAxisTicksAndLabels(options: TargetedOptions<Omit<AxisTicksAndLabelsOptions<XAxisPosition>, "scale">>): ChartProgram;
 ```
 
-Named option contracts: [`AxisTicksAndLabelsOptions`](./../types.md#type-axisticksandlabelsoptions) · [`XAxisPosition`](./../types.md#type-xaxisposition).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`AxisTicksAndLabelsOptions`](./../types.md#type-axisticksandlabelsoptions) · [`XAxisPosition`](./../types.md#type-xaxisposition).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -818,7 +822,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `rounding` | Optional / branch-dependent | `AxisTickRounding \| undefined` |
@@ -839,10 +843,10 @@ Behavior, inference, resets, and errors: [Tick/label groups and axis titles](./g
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editYAxisTicksAndLabels(options: Omit<AxisTicksAndLabelsOptions<YAxisPosition>, "scale">): ChartProgram;
+editYAxisTicksAndLabels(options: TargetedOptions<Omit<AxisTicksAndLabelsOptions<YAxisPosition>, "scale">>): ChartProgram;
 ```
 
-Named option contracts: [`AxisTicksAndLabelsOptions`](./../types.md#type-axisticksandlabelsoptions) · [`YAxisPosition`](./../types.md#type-yaxisposition).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`AxisTicksAndLabelsOptions`](./../types.md#type-axisticksandlabelsoptions) · [`YAxisPosition`](./../types.md#type-yaxisposition).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -851,7 +855,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `rounding` | Optional / branch-dependent | `AxisTickRounding \| undefined` |
@@ -872,10 +876,10 @@ Behavior, inference, resets, and errors: [Tick/label groups and axis titles](./g
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createXAxisTitle(options?: AxisTitleOptions<XAxisPosition>): ChartProgram;
+createXAxisTitle(options?: TargetedOptions<AxisTitleOptions<XAxisPosition>>): ChartProgram;
 ```
 
-Named option contracts: [`AxisTitleOptions`](./../types.md#type-axistitleoptions) · [`XAxisPosition`](./../types.md#type-xaxisposition).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`AxisTitleOptions`](./../types.md#type-axistitleoptions) · [`XAxisPosition`](./../types.md#type-xaxisposition).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -884,7 +888,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `overlap` | Optional / branch-dependent | `"allow" \| "error" \| undefined` |
@@ -913,10 +917,10 @@ Behavior, inference, resets, and errors: [Tick/label groups and axis titles](./g
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createYAxisTitle(options?: AxisTitleOptions<YAxisPosition>): ChartProgram;
+createYAxisTitle(options?: TargetedOptions<AxisTitleOptions<YAxisPosition>>): ChartProgram;
 ```
 
-Named option contracts: [`AxisTitleOptions`](./../types.md#type-axistitleoptions) · [`YAxisPosition`](./../types.md#type-yaxisposition).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`AxisTitleOptions`](./../types.md#type-axistitleoptions) · [`YAxisPosition`](./../types.md#type-yaxisposition).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -925,7 +929,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `overlap` | Optional / branch-dependent | `"allow" \| "error" \| undefined` |
@@ -954,10 +958,10 @@ Behavior, inference, resets, and errors: [Tick/label groups and axis titles](./g
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editXAxisTitle(options?: Omit<AxisTitleOptions<XAxisPosition>, "scale">): ChartProgram;
+editXAxisTitle(options?: TargetedOptions<Omit<AxisTitleOptions<XAxisPosition>, "scale">>): ChartProgram;
 ```
 
-Named option contracts: [`AxisTitleOptions`](./../types.md#type-axistitleoptions) · [`XAxisPosition`](./../types.md#type-xaxisposition).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`AxisTitleOptions`](./../types.md#type-axistitleoptions) · [`XAxisPosition`](./../types.md#type-xaxisposition).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -966,7 +970,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `overlap` | Optional / branch-dependent | `"allow" \| "error" \| undefined` |
@@ -994,10 +998,10 @@ Behavior, inference, resets, and errors: [Tick/label groups and axis titles](./g
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editYAxisTitle(options?: Omit<AxisTitleOptions<YAxisPosition>, "scale">): ChartProgram;
+editYAxisTitle(options?: TargetedOptions<Omit<AxisTitleOptions<YAxisPosition>, "scale">>): ChartProgram;
 ```
 
-Named option contracts: [`AxisTitleOptions`](./../types.md#type-axistitleoptions) · [`YAxisPosition`](./../types.md#type-yaxisposition).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`AxisTitleOptions`](./../types.md#type-axistitleoptions) · [`YAxisPosition`](./../types.md#type-yaxisposition).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1006,7 +1010,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `overlap` | Optional / branch-dependent | `"allow" \| "error" \| undefined` |
@@ -1031,13 +1035,13 @@ Behavior, inference, resets, and errors: [Tick/label groups and axis titles](./g
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editAxes(options: EditAxesOptions): ChartProgram;
+editAxes(options: TargetedOptions<EditAxesOptions>): ChartProgram;
 ```
 
-Named option contracts: [`EditAxesOptions`](./../types.md#type-editaxesoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditAxesOptions`](./../types.md#type-editaxesoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1050,11 +1054,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `y` | Optional / branch-dependent | `false \| EditAxisOptions<YAxisPosition> \| readonly [EditAxisOptions<YAxisPosition> & { target: string; }, ...(EditAxisOptions<YAxisPosition> & { ...; })[]] \| undefined` |
 | `theta` | Optional / branch-dependent | `false \| EditThetaAxisOptions \| undefined` |
 | `radius` | Optional / branch-dependent | `false \| EditRadialAxisOptions \| undefined` |
-| `parallel` | Optional / branch-dependent | `false \| readonly [ParallelAxisComponentsOptions, ...ParallelAxisComponentsOptions[]] \| ParallelAxisComponentsOptions \| undefined` |
+| `parallel` | Optional / branch-dependent | `false \| readonly [EditParallelAxisOptions, ...EditParallelAxisOptions[]] \| EditParallelAxisOptions \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+Complete axis editors accept `visible: false` to hide an axis without removing its style. Use `labels: { visible: false }`, `line: { visible: false }`, `ticks: { visible: false }` or `title: { visible: false }` for individual components. `ticksAndLabels` also accepts visibility on its `ticks` and `labels` children. Set the same flag to `true` to restore it. Flags are independent and retained through automatic guides and resizing; relative-anchor geometry stays stable.
 
 ```js
 editAxes({ x?, y?, theta?, radius?, parallel? })
@@ -1078,10 +1085,10 @@ program.editAxes({
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editXAxis(options: EditAxisOptions<XAxisPosition>): ChartProgram;
+editXAxis(options: TargetedOptions<EditAxisOptions<XAxisPosition>>): ChartProgram;
 ```
 
-Named option contracts: [`EditAxisOptions`](./../types.md#type-editaxisoptions) · [`XAxisPosition`](./../types.md#type-xaxisposition).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditAxisOptions`](./../types.md#type-editaxisoptions) · [`XAxisPosition`](./../types.md#type-xaxisposition).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1090,15 +1097,16 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `visible` | Optional / branch-dependent | `boolean \| undefined` |
 | `underlay` | Optional / branch-dependent | `boolean \| undefined` |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `position` | Optional / branch-dependent | `XAxisPosition \| undefined` |
-| `line` | Optional / branch-dependent | `false \| AxisLineStyleOptions \| undefined` |
-| `ticks` | Optional / branch-dependent | `false \| Omit<AxisTickOptions<XAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
-| `labels` | Optional / branch-dependent | `false \| Omit<AxisLabelOptions<XAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
-| `ticksAndLabels` | Optional / branch-dependent | `false \| Omit<AxisTicksAndLabelsOptions<XAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
-| `title` | Optional / branch-dependent | `false \| Omit<AxisTitleOptions<XAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
+| `line` | Optional / branch-dependent | `false \| VisibleGuide<AxisLineStyleOptions> \| undefined` |
+| `ticks` | Optional / branch-dependent | `false \| VisibleGuide<Omit<AxisTickOptions<XAxisPosition>, "position" \| "scale" \| "target">> \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| VisibleGuide<Omit<AxisLabelOptions<XAxisPosition>, "position" \| "scale" \| "target">> \| undefined` |
+| `ticksAndLabels` | Optional / branch-dependent | `false \| VisibleTickGroup<Omit<AxisTicksAndLabelsOptions<XAxisPosition>, "position" \| "scale" \| "target">> \| undefined` |
+| `title` | Optional / branch-dependent | `false \| VisibleGuide<Omit<AxisTitleOptions<XAxisPosition>, "position" \| "scale" \| "target">> \| undefined` |
 
 </details>
 
@@ -1113,10 +1121,10 @@ Behavior, inference, resets, and errors: [Complete single-channel axes](./guides
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editYAxis(options: EditAxisOptions<YAxisPosition>): ChartProgram;
+editYAxis(options: TargetedOptions<EditAxisOptions<YAxisPosition>>): ChartProgram;
 ```
 
-Named option contracts: [`EditAxisOptions`](./../types.md#type-editaxisoptions) · [`YAxisPosition`](./../types.md#type-yaxisposition).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditAxisOptions`](./../types.md#type-editaxisoptions) · [`YAxisPosition`](./../types.md#type-yaxisposition).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1125,15 +1133,16 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `visible` | Optional / branch-dependent | `boolean \| undefined` |
 | `underlay` | Optional / branch-dependent | `boolean \| undefined` |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `position` | Optional / branch-dependent | `YAxisPosition \| undefined` |
-| `line` | Optional / branch-dependent | `false \| AxisLineStyleOptions \| undefined` |
-| `ticks` | Optional / branch-dependent | `false \| Omit<AxisTickOptions<YAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
-| `labels` | Optional / branch-dependent | `false \| Omit<AxisLabelOptions<YAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
-| `ticksAndLabels` | Optional / branch-dependent | `false \| Omit<AxisTicksAndLabelsOptions<YAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
-| `title` | Optional / branch-dependent | `false \| Omit<AxisTitleOptions<YAxisPosition>, "position" \| "scale" \| "target"> \| undefined` |
+| `line` | Optional / branch-dependent | `false \| VisibleGuide<AxisLineStyleOptions> \| undefined` |
+| `ticks` | Optional / branch-dependent | `false \| VisibleGuide<Omit<AxisTickOptions<YAxisPosition>, "position" \| "scale" \| "target">> \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| VisibleGuide<Omit<AxisLabelOptions<YAxisPosition>, "position" \| "scale" \| "target">> \| undefined` |
+| `ticksAndLabels` | Optional / branch-dependent | `false \| VisibleTickGroup<Omit<AxisTicksAndLabelsOptions<YAxisPosition>, "position" \| "scale" \| "target">> \| undefined` |
+| `title` | Optional / branch-dependent | `false \| VisibleGuide<Omit<AxisTitleOptions<YAxisPosition>, "position" \| "scale" \| "target">> \| undefined` |
 
 </details>
 
@@ -1148,10 +1157,10 @@ Behavior, inference, resets, and errors: [Complete single-channel axes](./guides
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-removeXAxis(options?: RemoveAxisOptions): ChartProgram;
+removeXAxis(options?: TargetedOptions<RemoveAxisOptions>): ChartProgram;
 ```
 
-Named option contracts: [`RemoveAxisOptions`](./../types.md#type-removeaxisoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`RemoveAxisOptions`](./../types.md#type-removeaxisoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1160,7 +1169,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 
@@ -1177,10 +1186,10 @@ Behavior, inference, resets, and errors: [Complete axis removal](./guides.md#com
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-removeYAxis(options?: RemoveAxisOptions): ChartProgram;
+removeYAxis(options?: TargetedOptions<RemoveAxisOptions>): ChartProgram;
 ```
 
-Named option contracts: [`RemoveAxisOptions`](./../types.md#type-removeaxisoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`RemoveAxisOptions`](./../types.md#type-removeaxisoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1189,7 +1198,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 
@@ -1206,10 +1215,10 @@ Behavior, inference, resets, and errors: [Complete axis removal](./guides.md#com
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createGrid(options?: CreateGridOptions): ChartProgram;
+createGrid(options?: TargetedOptions<CreateGridOptions>): ChartProgram;
 ```
 
-Named option contracts: [`CreateGridOptions`](./../types.md#type-creategridoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`CreateGridOptions`](./../types.md#type-creategridoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1222,6 +1231,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `vertical` | Optional / branch-dependent | `boolean \| GridDirectionOptions \| undefined` |
 | `theta` | Optional / branch-dependent | `boolean \| PolarGridOptions \| undefined` |
 | `radial` | Optional / branch-dependent | `boolean \| PolarGridOptions \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -1243,10 +1253,10 @@ marks, or infer the Polar grid families backed by stored theta/radius encodings.
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createHorizontalGrid(options?: GridDirectionOptions): ChartProgram;
+createHorizontalGrid(options?: TargetedOptions<GridDirectionOptions>): ChartProgram;
 ```
 
-Named option contracts: [`GridDirectionOptions`](./../types.md#type-griddirectionoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`GridDirectionOptions`](./../types.md#type-griddirectionoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1266,6 +1276,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `lineWidth` | Optional / branch-dependent | `number \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `readonly number[] \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -1280,10 +1291,10 @@ Behavior, inference, resets, and errors: [Directional grids](./guides.md#directi
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createVerticalGrid(options?: GridDirectionOptions): ChartProgram;
+createVerticalGrid(options?: TargetedOptions<GridDirectionOptions>): ChartProgram;
 ```
 
-Named option contracts: [`GridDirectionOptions`](./../types.md#type-griddirectionoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`GridDirectionOptions`](./../types.md#type-griddirectionoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1303,6 +1314,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `lineWidth` | Optional / branch-dependent | `number \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `readonly number[] \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -1317,10 +1329,10 @@ Behavior, inference, resets, and errors: [Directional grids](./guides.md#directi
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editHorizontalGrid(options: EditGridOptions): ChartProgram;
+editHorizontalGrid(options: TargetedOptions<EditGridOptions>): ChartProgram;
 ```
 
-Named option contracts: [`EditGridOptions`](./../types.md#type-editgridoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditGridOptions`](./../types.md#type-editgridoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1329,6 +1341,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `visible` | Optional / branch-dependent | `boolean \| undefined` |
 | `strokeDashMap` | Optional / branch-dependent | `"auto" \| CartesianGuideDashMap \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `zIndex` | Optional / branch-dependent | `number \| undefined` |
@@ -1338,6 +1351,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `lineWidth` | Optional / branch-dependent | `number \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `readonly number[] \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -1352,10 +1366,10 @@ Behavior, inference, resets, and errors: [Directional grids](./guides.md#directi
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editVerticalGrid(options: EditGridOptions): ChartProgram;
+editVerticalGrid(options: TargetedOptions<EditGridOptions>): ChartProgram;
 ```
 
-Named option contracts: [`EditGridOptions`](./../types.md#type-editgridoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditGridOptions`](./../types.md#type-editgridoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1364,6 +1378,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `visible` | Optional / branch-dependent | `boolean \| undefined` |
 | `strokeDashMap` | Optional / branch-dependent | `"auto" \| CartesianGuideDashMap \| undefined` |
 | `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `zIndex` | Optional / branch-dependent | `number \| undefined` |
@@ -1373,6 +1388,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `lineWidth` | Optional / branch-dependent | `number \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `readonly number[] \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -1387,10 +1403,10 @@ Behavior, inference, resets, and errors: [Directional grids](./guides.md#directi
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editGrid(options: EditGridDirectionsOptions): ChartProgram;
+editGrid(options: TargetedOptions<EditGridDirectionsOptions>): ChartProgram;
 ```
 
-Named option contracts: [`EditGridDirectionsOptions`](./../types.md#type-editgriddirectionsoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditGridDirectionsOptions`](./../types.md#type-editgriddirectionsoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1403,6 +1419,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `vertical` | Optional / branch-dependent | `EditGridOptions \| undefined` |
 | `theta` | Optional / branch-dependent | `EditPolarGridOptions \| undefined` |
 | `radial` | Optional / branch-dependent | `EditPolarGridOptions \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -1417,10 +1434,10 @@ Behavior, inference, resets, and errors: [Directional grids](./guides.md#directi
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-removeGrid(options?: RemoveGridOptions): ChartProgram;
+removeGrid(options?: TargetedOptions<RemoveGridOptions>): ChartProgram;
 ```
 
-Named option contracts: [`RemoveGridOptions`](./../types.md#type-removegridoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`RemoveGridOptions`](./../types.md#type-removegridoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1433,6 +1450,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `vertical` | Optional / branch-dependent | `boolean \| undefined` |
 | `theta` | Optional / branch-dependent | `boolean \| undefined` |
 | `radial` | Optional / branch-dependent | `boolean \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -1447,10 +1465,10 @@ Behavior, inference, resets, and errors: [Directional grids](./guides.md#directi
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createLegend(options?: LegendOptions): ChartProgram;
+createLegend(options?: TargetedOptions<LegendOptions>): ChartProgram;
 ```
 
-Named option contracts: [`LegendOptions`](./../types.md#type-legendoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`LegendOptions`](./../types.md#type-legendoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1465,7 +1483,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `layout` | Optional / branch-dependent | `"edge" \| "legacy-bottom" \| undefined` |
 | `overflow` | Optional / branch-dependent | `false \| { maxItems: number; summary?: "ellipsis-count" \| undefined; } \| undefined` |
 | `order` | Optional / branch-dependent | `LegendOrder \| undefined` |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `channels` | Optional / branch-dependent | `readonly ("color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth")[] \| undefined` |
 | `position` | Optional / branch-dependent | `"bottom" \| "bottom-left" \| "bottom-right" \| "left" \| "right" \| "top" \| "top-left" \| "top-right" \| undefined` |
 | `blockLayout` | Optional / branch-dependent | `"column" \| "row" \| "wrap" \| undefined` |
@@ -1473,6 +1491,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `direction` | Optional / branch-dependent | `"horizontal" \| "vertical" \| undefined` |
 | `columns` | Optional / branch-dependent | `number \| undefined` |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `titlePosition` | Optional / branch-dependent | `"bottom" \| "left" \| "top" \| undefined` |
 | `title` | Optional / branch-dependent | `string \| false \| undefined` |
@@ -1493,7 +1512,7 @@ The following call patterns are abbreviated examples; the declaration above owns
 
 ```javascript
 createLegend({
-  target?, channels?, position?, layout?, align?, direction?, columns?, offset?,
+  target?, channels?, position?, layout?, align?, direction?, columns?, offset?, alongOffset?,
   titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, rowPadding?, titlePadding?, border?, count?,
   values?, gradient?, order?
 })
@@ -1509,6 +1528,10 @@ Compatible point and line categorical channels stay combined when their domains
 contain the same values, even in different orders. The first selected channel
 owns item order; each symbol still looks up its own scale by value. Independent fields,
 continuous color/stroke, opacity, and stroke width use separate native blocks.
+Adding a new dash channel to an existing color-only line legend preserves its
+appearance. A matching field extends the combined series legend; a different
+field creates a separate dash legend and retains the color block. Repeating an
+already-created channel remains an error.
 Area fill and stroke are independently selectable blocks, including stroke-only
 legends for density and horizon areas.
 For outside top/bottom legends, omitting `offset` places the occupied legend after
@@ -1518,6 +1541,9 @@ removal recompute that gap. An explicit numeric `offset`, including zero or the
 native value, remains measured from the plot edge. Free coordinates, plot corners,
 and `legacy-bottom` keep their existing anchors. Older saved programs retain
 their fixed offsets.
+Label style accepts `align: "left" | "center" | "right"` within each measured
+label column. Symbols, ticks and titles retain their existing slots. All legend
+families support it on create/edit and replay; omission preserves native defaults.
 Top-title style accepts `align: "left" | "center" | "right"` within the
 measured title/body content block. This applies to every legend family; omission
 preserves each layout's current alignment. It does not move the complete group,
@@ -1589,10 +1615,10 @@ Continuous and combined sampled legends retain their existing edge-only contract
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editLegend(options: EditLegendOptions): ChartProgram;
+editLegend(options: TargetedOptions<EditLegendOptions>): ChartProgram;
 ```
 
-Named option contracts: [`EditLegendOptions`](./../types.md#type-editlegendoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditLegendOptions`](./../types.md#type-editlegendoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1601,13 +1627,16 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `visible` | Optional / branch-dependent | `boolean \| undefined` |
+| `itemsOffset` | Optional / branch-dependent | `"auto" \| { x?: number \| undefined; y?: number \| undefined; } \| undefined` |
+| `labels` | Optional / branch-dependent | `LegendLabelEditStyle \| undefined` |
 | `clipHeight` | Optional / branch-dependent | `number \| "auto" \| undefined` |
 | `rowPadding` | Optional / branch-dependent | `number \| "auto" \| undefined` |
 | `titlePadding` | Optional / branch-dependent | `number \| "auto" \| undefined` |
-| `channel` | Optional / branch-dependent | `"color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| undefined` |
+| `channel` | Optional / branch-dependent | `"all" \| "color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| undefined` |
 | `position` | Optional / branch-dependent | `"bottom" \| "bottom-left" \| "bottom-right" \| "inherit" \| "left" \| "right" \| "top" \| "top-left" \| "top-right" \| undefined` |
 | `direction` | Optional / branch-dependent | `"auto" \| "horizontal" \| "vertical" \| undefined` |
-| `titleStyle` | Optional / branch-dependent | `LegendTitleStyleEditOptions \| undefined` |
+| `titleStyle` | Optional / branch-dependent | `LegendTitleEditStyle \| undefined` |
 | `channels` | Optional / branch-dependent | `readonly ("color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth")[] \| undefined` |
 | `title` | Optional / branch-dependent | `string \| false \| undefined` |
 | `values` | Optional / branch-dependent | `"auto" \| readonly number[] \| undefined` |
@@ -1616,17 +1645,17 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `layout` | Optional / branch-dependent | `"edge" \| "legacy-bottom" \| undefined` |
 | `overflow` | Optional / branch-dependent | `false \| { maxItems: number; summary?: "ellipsis-count" \| undefined; } \| undefined` |
 | `order` | Optional / branch-dependent | `LegendOrder \| undefined` |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `blockLayout` | Optional / branch-dependent | `"column" \| "row" \| "wrap" \| undefined` |
 | `at` | Optional / branch-dependent | `{ x: number; y: number; } \| undefined` |
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `columns` | Optional / branch-dependent | `number \| undefined` |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `titlePosition` | Optional / branch-dependent | `"bottom" \| "left" \| "top" \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `gradient` | Optional / branch-dependent | `{ length?: number \| undefined; thickness?: number \| undefined; opacity?: number \| undefined; } \| undefined` |
 | `symbol` | Optional / branch-dependent | `LegendSymbolRecipe \| undefined` |
-| `labels` | Optional / branch-dependent | `LegendTextOptions \| undefined` |
 | `itemGap` | Optional / branch-dependent | `number \| undefined` |
 | `border` | Optional / branch-dependent | `boolean \| LegendBorderOptions \| undefined` |
 
@@ -1634,15 +1663,19 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
+Use `visible: false` to hide the complete legend, `labels: { visible: false }` to hide entry labels, and `titleStyle: { visible: false }` to hide its title. Set each flag to `true` to restore it. Visibility preserves appearance and layout, remains independent for each component, and survives automatic guide generation, resizing and saved projects.
+
 ```javascript
 editLegend({
-  target?, channel?, channels?, position?, layout?, align?, direction?, columns?, offset?, titlePosition?,
+  target?, channel?, channels?, position?, layout?, align?, direction?, columns?, offset?, alongOffset?, titlePosition?,
   title?, symbol?, labels?, titleStyle?, itemGap?, rowPadding?, titlePadding?, border?, count?, values?, gradient?, order?, overflow?
 })
 ```
 
-Singular `channel` selects one existing block without changing sibling typography. It cannot
+Select one legend block or all existing blocks together. `channel: "all"` reunites local placements on a position change and applies shared appearance to every block; omitted appearance is preserved. A singular channel cannot
 accompany `channels`, `blockLayout`, or `at`. A channel never disambiguates mark targets.
+
+`alongOffset` is a finite signed distance in logical pixels, defaulting to zero: positive moves right on top/bottom (and in-plot corner) anchors, or down on left/right anchors. `offset` keeps its perpendicular gap meaning. Omitted edits preserve the shift; zero resets it. With `channel`, only that block moves; without it, the target’s grouped blocks move together. `position: "inherit"` clears a selected block’s local anchor and shift. `at` cannot accompany edge placement options, including `alongOffset`. Existing fit and collision checks still apply.
 
 `rowPadding` and `titlePadding` accept numbers or `"auto"` to remove retained intent; omission or undefined preserves it. Explicit row spacing wins over vertical itemGap/block gap while retaining the old fallback and horizontal spacing. Explicit title spacing wins over the old title gap. Reset row padding before a transition to a gradient. Combining conflicting policies requires an explicit choice; incompatible splits require explicit reset. Content and Canvas/data/scale/theme/facet replay retain compatible policies.
 
@@ -1675,13 +1708,13 @@ dependent replay that would invalidate a stored exact sample fails atomically.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.24. See [release compatibility](../../version.md).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editLegendBlock(options: EditLegendBlockOptions): ChartProgram;
+editLegendBlock(options: TargetedOptions<EditLegendBlockOptions>): ChartProgram;
 ```
 
-Named option contracts: [`EditLegendBlockOptions`](./../types.md#type-editlegendblockoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditLegendBlockOptions`](./../types.md#type-editlegendblockoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1691,7 +1724,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `clipHeight` | Optional / branch-dependent | `number \| "auto" \| undefined` |
-| `target` | Required | `string` |
+| `target` | Required | `string \| ActionTargetList \| ScopedActionTarget` |
 | `channel` | Required | `"color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth"` |
 | `position` | Optional / branch-dependent | `"bottom" \| "bottom-left" \| "bottom-right" \| "inherit" \| "left" \| "right" \| "top" \| "top-left" \| "top-right" \| undefined` |
 | `title` | Optional / branch-dependent | `string \| undefined` |
@@ -1738,10 +1771,10 @@ numeric keys only; unmatched samples keep their normal formatter. `"auto"` remov
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editLegendLayout(options: EditLegendLayoutOptions): ChartProgram;
+editLegendLayout(options: TargetedOptions<EditLegendLayoutOptions>): ChartProgram;
 ```
 
-Named option contracts: [`EditLegendLayoutOptions`](./../types.md#type-editlegendlayoutoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditLegendLayoutOptions`](./../types.md#type-editlegendlayoutoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1750,7 +1783,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `channel` | Optional / branch-dependent | `"color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| undefined` |
 | `layout` | Optional / branch-dependent | `"edge" \| "legacy-bottom" \| undefined` |
 | `position` | Optional / branch-dependent | `"bottom" \| "bottom-left" \| "bottom-right" \| "inherit" \| "left" \| "right" \| "top" \| "top-left" \| "top-right" \| undefined` |
@@ -1759,6 +1792,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `direction` | Optional / branch-dependent | `"auto" \| "horizontal" \| "vertical" \| undefined` |
 | `columns` | Optional / branch-dependent | `number \| undefined` |
+| `alongOffset` | Optional / branch-dependent | `number \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `titlePosition` | Optional / branch-dependent | `"bottom" \| "left" \| "top" \| undefined` |
 | `itemGap` | Optional / branch-dependent | `number \| undefined` |
@@ -1778,10 +1812,10 @@ Behavior, inference, resets, and errors: [Focused legend edits](./guides.md#focu
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editLegendLabels(options: EditLegendLabelsOptions): ChartProgram;
+editLegendLabels(options: TargetedOptions<EditLegendLabelsOptions>): ChartProgram;
 ```
 
-Named option contracts: [`EditLegendLabelsOptions`](./../types.md#type-editlegendlabelsoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditLegendLabelsOptions`](./../types.md#type-editlegendlabelsoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1790,8 +1824,9 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `channel` | Optional / branch-dependent | `"color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| undefined` |
+| `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
@@ -1812,10 +1847,10 @@ Behavior, inference, resets, and errors: [Focused legend edits](./guides.md#focu
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editLegendTitle(options: EditLegendTitleOptions): ChartProgram;
+editLegendTitle(options: TargetedOptions<EditLegendTitleOptions>): ChartProgram;
 ```
 
-Named option contracts: [`EditLegendTitleOptions`](./../types.md#type-editlegendtitleoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditLegendTitleOptions`](./../types.md#type-editlegendtitleoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1824,7 +1859,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `channel` | Optional / branch-dependent | `"color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| undefined` |
 | `title` | Optional / branch-dependent | `string \| false \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
@@ -1846,10 +1881,10 @@ Behavior, inference, resets, and errors: [Focused legend edits](./guides.md#focu
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editLegendSymbols(options: EditLegendSymbolsOptions): ChartProgram;
+editLegendSymbols(options: TargetedOptions<EditLegendSymbolsOptions>): ChartProgram;
 ```
 
-Named option contracts: [`EditLegendSymbolsOptions`](./../types.md#type-editlegendsymbolsoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditLegendSymbolsOptions`](./../types.md#type-editlegendsymbolsoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1859,7 +1894,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `clipHeight` | Optional / branch-dependent | `number \| "auto" \| undefined` |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `channel` | Optional / branch-dependent | `"color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| undefined` |
 | `symbol` | Optional / branch-dependent | `LegendSymbolRecipe \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
@@ -1878,10 +1913,10 @@ Behavior, inference, resets, and errors: [Focused legend edits](./guides.md#focu
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editLegendBorder(options: EditLegendBorderOptions): ChartProgram;
+editLegendBorder(options: TargetedOptions<EditLegendBorderOptions>): ChartProgram;
 ```
 
-Named option contracts: [`EditLegendBorderOptions`](./../types.md#type-editlegendborderoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditLegendBorderOptions`](./../types.md#type-editlegendborderoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1890,7 +1925,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `channel` | Optional / branch-dependent | `"color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| undefined` |
 | `border` | Required | `boolean \| LegendBorderOptions` |
 
@@ -1907,10 +1942,10 @@ Behavior, inference, resets, and errors: [Focused legend edits](./guides.md#focu
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createGuides(options?: CreateGuidesOptions): ChartProgram;
+createGuides(options?: TargetedOptions<CreateGuidesOptions>): ChartProgram;
 ```
 
-Named option contracts: [`CreateGuidesOptions`](./../types.md#type-createguidesoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`CreateGuidesOptions`](./../types.md#type-createguidesoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1922,6 +1957,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `axes` | Optional / branch-dependent | `false \| CreateAxesOptions \| undefined` |
 | `grid` | Optional / branch-dependent | `false \| CreateGridOptions \| undefined` |
 | `legend` | Optional / branch-dependent | `false \| LegendOptions \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -1948,10 +1984,10 @@ and rederives its panels while preserving the parent title and guide policy.
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-removeLegend(options?: RemoveLegendOptions): ChartProgram;
+removeLegend(options?: TargetedOptions<RemoveLegendOptions>): ChartProgram;
 ```
 
-Named option contracts: [`RemoveLegendOptions`](./../types.md#type-removelegendoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`RemoveLegendOptions`](./../types.md#type-removelegendoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1960,15 +1996,16 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `channels` | Optional / branch-dependent | `readonly ("color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth")[] \| undefined` |
+| `suppress` | Optional / branch-dependent | `boolean \| undefined` |
 
 </details>
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-removeLegend({ target?, channels? })
+removeLegend({ target?, channels?, suppress? })
 ```
 
 Remove every legend block owned by one mark when `channels` is omitted, or
@@ -1984,10 +2021,10 @@ visibility, layout and item order; automatic symbols are inferred again. [Legend
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createTitle(options: TitleOptions): ChartProgram;
+createTitle(options: TargetedOptions<TitleOptions>): ChartProgram;
 ```
 
-Named option contracts: [`TitleOptions`](./../types.md#type-titleoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`TitleOptions`](./../types.md#type-titleoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -2009,6 +2046,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `subtitleLineHeight` | Optional / branch-dependent | `number \| undefined` |
 | `titleStyle` | Optional / branch-dependent | `TitleTextStyleOptions \| undefined` |
 | `subtitleStyle` | Optional / branch-dependent | `TitleTextStyleOptions \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -2021,6 +2059,11 @@ createTitle({
   titleStyle?, subtitleStyle?
 })
 ```
+
+`titleStyle.align` and `subtitleStyle.align` accept `"left" | "center" | "right"`
+independently inside the measured title block, including rotated edge titles.
+The top-level `align` still positions the complete block relative to the plot.
+Omission preserves native defaults.
 
 Create a chart title and optional subtitle. Explicit newlines retain their line
 spacing; blank lines reserve space without painted text. Each string requires
@@ -2036,10 +2079,10 @@ Text outside the composed Canvas is rejected. [Titles](../../api/titles.md)
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editTitle(options: EditTitleOptions): ChartProgram;
+editTitle(options: TargetedOptions<EditTitleOptions>): ChartProgram;
 ```
 
-Named option contracts: [`EditTitleOptions`](./../types.md#type-edittitleoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditTitleOptions`](./../types.md#type-edittitleoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -2061,6 +2104,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `subtitleLineHeight` | Optional / branch-dependent | `number \| undefined` |
 | `titleStyle` | Optional / branch-dependent | `TitleTextStyleOptions \| undefined` |
 | `subtitleStyle` | Optional / branch-dependent | `TitleTextStyleOptions \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -2113,10 +2157,10 @@ Remove the complete chart title and subtitle resource. [Titles](../../api/titles
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createThetaAxis(options?: CompleteThetaAxisOptions): ChartProgram;
+createThetaAxis(options?: TargetedOptions<CompleteThetaAxisOptions>): ChartProgram;
 ```
 
-Named option contracts: [`CompleteThetaAxisOptions`](./../types.md#type-completethetaaxisoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`CompleteThetaAxisOptions`](./../types.md#type-completethetaaxisoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -2130,6 +2174,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `line` | Optional / branch-dependent | `false \| AxisLineStyleOptions \| undefined` |
 | `title` | Optional / branch-dependent | `false \| PolarTitleOptions \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -2149,10 +2194,10 @@ Create the complete outer circular theta axis. [Axes](../../api/axes.md)
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createRadialAxis(options?: CompleteRadialAxisOptions): ChartProgram;
+createRadialAxis(options?: TargetedOptions<CompleteRadialAxisOptions>): ChartProgram;
 ```
 
-Named option contracts: [`CompleteRadialAxisOptions`](./../types.md#type-completeradialaxisoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`CompleteRadialAxisOptions`](./../types.md#type-completeradialaxisoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -2167,6 +2212,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `line` | Optional / branch-dependent | `false \| AxisLineStyleOptions \| undefined` |
 | `ticksAndLabels` | Optional / branch-dependent | `false \| PolarTicksAndLabelsOptions \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -2187,10 +2233,10 @@ Create the complete center-to-edge radial axis; `angle` defaults to `90`.
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editThetaAxis(options: EditThetaAxisOptions): ChartProgram;
+editThetaAxis(options: TargetedOptions<EditThetaAxisOptions>): ChartProgram;
 ```
 
-Named option contracts: [`EditThetaAxisOptions`](./../types.md#type-editthetaaxisoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditThetaAxisOptions`](./../types.md#type-editthetaaxisoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -2199,11 +2245,13 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `labels` | Optional / branch-dependent | `false \| ThetaAxisLabelOptions \| undefined` |
-| `ticksAndLabels` | Optional / branch-dependent | `false \| ThetaTicksAndLabelsOptions \| undefined` |
-| `line` | Optional / branch-dependent | `false \| AxisLineStyleOptions \| undefined` |
-| `ticks` | Optional / branch-dependent | `false \| PolarTickOptions \| undefined` |
-| `title` | Optional / branch-dependent | `false \| PolarTitleOptions \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| VisibleGuide<ThetaAxisLabelOptions> \| undefined` |
+| `ticksAndLabels` | Optional / branch-dependent | `false \| VisibleTickGroup<ThetaTicksAndLabelsOptions> \| undefined` |
+| `visible` | Optional / branch-dependent | `boolean \| undefined` |
+| `line` | Optional / branch-dependent | `false \| VisibleGuide<AxisLineStyleOptions> \| undefined` |
+| `ticks` | Optional / branch-dependent | `false \| VisibleGuide<PolarTickOptions> \| undefined` |
+| `title` | Optional / branch-dependent | `false \| VisibleGuide<PolarTitleOptions> \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -2223,10 +2271,10 @@ Edit selected theta-axis components. [Axes](../../api/axes.md#editing-a-complete
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editRadialAxis(options: EditRadialAxisOptions): ChartProgram;
+editRadialAxis(options: TargetedOptions<EditRadialAxisOptions>): ChartProgram;
 ```
 
-Named option contracts: [`EditRadialAxisOptions`](./../types.md#type-editradialaxisoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditRadialAxisOptions`](./../types.md#type-editradialaxisoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -2235,12 +2283,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `title` | Optional / branch-dependent | `false \| RadialTitleOptions \| undefined` |
+| `title` | Optional / branch-dependent | `false \| VisibleGuide<RadialTitleOptions> \| undefined` |
+| `visible` | Optional / branch-dependent | `boolean \| undefined` |
 | `angle` | Optional / branch-dependent | `number \| undefined` |
-| `line` | Optional / branch-dependent | `false \| AxisLineStyleOptions \| undefined` |
-| `ticks` | Optional / branch-dependent | `false \| PolarTickOptions \| undefined` |
-| `labels` | Optional / branch-dependent | `false \| PolarLabelOptions \| undefined` |
-| `ticksAndLabels` | Optional / branch-dependent | `false \| PolarTicksAndLabelsOptions \| undefined` |
+| `line` | Optional / branch-dependent | `false \| VisibleGuide<AxisLineStyleOptions> \| undefined` |
+| `ticks` | Optional / branch-dependent | `false \| VisibleGuide<PolarTickOptions> \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| VisibleGuide<PolarLabelOptions> \| undefined` |
+| `ticksAndLabels` | Optional / branch-dependent | `false \| VisibleTickGroup<PolarTicksAndLabelsOptions> \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -2261,10 +2311,10 @@ Edit selected radial components; `angle` moves the whole axis.
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-removeThetaAxis(options?: Omit<RemoveAxisOptions, "target">): ChartProgram;
+removeThetaAxis(options?: TargetedOptions<Omit<RemoveAxisOptions, "target">>): ChartProgram;
 ```
 
-Named option contracts: [`RemoveAxisOptions`](./../types.md#type-removeaxisoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`RemoveAxisOptions`](./../types.md#type-removeaxisoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -2275,6 +2325,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -2294,10 +2345,10 @@ Remove the complete theta-axis resource. [Axes](../../api/axes.md#removing-an-ax
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-removeRadialAxis(options?: Omit<RemoveAxisOptions, "target">): ChartProgram;
+removeRadialAxis(options?: TargetedOptions<Omit<RemoveAxisOptions, "target">>): ChartProgram;
 ```
 
-Named option contracts: [`RemoveAxisOptions`](./../types.md#type-removeaxisoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`RemoveAxisOptions`](./../types.md#type-removeaxisoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -2308,6 +2359,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -2327,10 +2379,10 @@ Remove the complete radial-axis resource. [Axes](../../api/axes.md#removing-an-a
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createThetaAxisLine(options?: CreateThetaAxisLineOptions): ChartProgram;
+createThetaAxisLine(options?: TargetedOptions<CreateThetaAxisLineOptions>): ChartProgram;
 ```
 
-Named option contracts: [`CreateThetaAxisLineOptions`](./../types.md#type-createthetaaxislineoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`CreateThetaAxisLineOptions`](./../types.md#type-createthetaaxislineoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -2343,6 +2395,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineWidth` | Optional / branch-dependent | `number \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -2362,10 +2415,10 @@ Create missing theta-axis line independently of the other components. Reuse stor
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editThetaAxisLine(options?: AxisLineStyleOptions): ChartProgram;
+editThetaAxisLine(options?: TargetedOptions<AxisLineStyleOptions>): ChartProgram;
 ```
 
-Named option contracts: [`AxisLineStyleOptions`](./../types.md#type-axislinestyleoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`AxisLineStyleOptions`](./../types.md#type-axislinestyleoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -2376,6 +2429,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `lineWidth` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -2395,10 +2449,10 @@ Edit the outer baseline style. [Axes](../../api/axes.md)
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createRadialAxisLine(options?: CreateRadialAxisLineOptions): ChartProgram;
+createRadialAxisLine(options?: TargetedOptions<CreateRadialAxisLineOptions>): ChartProgram;
 ```
 
-Named option contracts: [`CreateRadialAxisLineOptions`](./../types.md#type-createradialaxislineoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`CreateRadialAxisLineOptions`](./../types.md#type-createradialaxislineoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -2412,6 +2466,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `angle` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -2431,10 +2486,10 @@ Create missing radial-axis line independently of the other components. Reuse sto
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editRadialAxisLine(options?: AxisLineStyleOptions): ChartProgram;
+editRadialAxisLine(options?: TargetedOptions<AxisLineStyleOptions>): ChartProgram;
 ```
 
-Named option contracts: [`AxisLineStyleOptions`](./../types.md#type-axislinestyleoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`AxisLineStyleOptions`](./../types.md#type-axislinestyleoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -2445,6 +2500,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `lineWidth` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -2464,10 +2520,10 @@ Edit the radial baseline style. [Axes](../../api/axes.md)
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createThetaAxisTicks(options?: CreateThetaAxisTicksOptions): ChartProgram;
+createThetaAxisTicks(options?: TargetedOptions<CreateThetaAxisTicksOptions>): ChartProgram;
 ```
 
-Named option contracts: [`CreateThetaAxisTicksOptions`](./../types.md#type-createthetaaxisticksoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`CreateThetaAxisTicksOptions`](./../types.md#type-createthetaaxisticksoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -2483,6 +2539,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -2502,10 +2559,10 @@ Create missing theta-axis ticks independently of the other components. Use count
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editThetaAxisTicks(options?: PolarTickOptions): ChartProgram;
+editThetaAxisTicks(options?: TargetedOptions<PolarTickOptions>): ChartProgram;
 ```
 
-Named option contracts: [`PolarTickOptions`](./../types.md#type-polartickoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`PolarTickOptions`](./../types.md#type-polartickoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -2519,6 +2576,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `lineWidth` | Optional / branch-dependent | `number \| undefined` |
 | `length` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -2538,10 +2596,10 @@ Edit theta tick geometry and style. [Axes](../../api/axes.md)
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createRadialAxisTicks(options?: CreateRadialAxisTicksOptions): ChartProgram;
+createRadialAxisTicks(options?: TargetedOptions<CreateRadialAxisTicksOptions>): ChartProgram;
 ```
 
-Named option contracts: [`CreateRadialAxisTicksOptions`](./../types.md#type-createradialaxisticksoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`CreateRadialAxisTicksOptions`](./../types.md#type-createradialaxisticksoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -2558,6 +2616,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `angle` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -2577,10 +2636,10 @@ Create missing radial-axis ticks independently of the other components. Use coun
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editRadialAxisTicks(options?: PolarTickOptions): ChartProgram;
+editRadialAxisTicks(options?: TargetedOptions<PolarTickOptions>): ChartProgram;
 ```
 
-Named option contracts: [`PolarTickOptions`](./../types.md#type-polartickoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`PolarTickOptions`](./../types.md#type-polartickoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -2594,6 +2653,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `lineWidth` | Optional / branch-dependent | `number \| undefined` |
 | `length` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -2613,10 +2673,10 @@ Edit radial tick geometry and style. [Axes](../../api/axes.md)
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createThetaAxisLabels(options?: CreateThetaAxisLabelsOptions): ChartProgram;
+createThetaAxisLabels(options?: TargetedOptions<CreateThetaAxisLabelsOptions>): ChartProgram;
 ```
 
-Named option contracts: [`CreateThetaAxisLabelsOptions`](./../types.md#type-createthetaaxislabelsoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`CreateThetaAxisLabelsOptions`](./../types.md#type-createthetaaxislabelsoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -2625,6 +2685,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `format` | Optional / branch-dependent | `AxisFormat \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
@@ -2636,6 +2697,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `labelMap` | Optional / branch-dependent | `"auto" \| DisplayLabelMap \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -2655,10 +2717,10 @@ Create missing theta-axis labels independently of the other components. Use coun
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editThetaAxisLabels(options?: ThetaAxisLabelOptions): ChartProgram;
+editThetaAxisLabels(options?: TargetedOptions<ThetaAxisLabelOptions>): ChartProgram;
 ```
 
-Named option contracts: [`ThetaAxisLabelOptions`](./../types.md#type-thetaaxislabeloptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`ThetaAxisLabelOptions`](./../types.md#type-thetaaxislabeloptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -2669,6 +2731,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
+| `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `format` | Optional / branch-dependent | `AxisFormat \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
@@ -2676,6 +2739,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `fontFamily` | Optional / branch-dependent | `string \| undefined` |
 | `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
 | `labelMap` | Optional / branch-dependent | `"auto" \| DisplayLabelMap \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -2695,10 +2759,10 @@ Edit perimeter theta labels. [Axes](../../api/axes.md)
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createRadialAxisLabels(options?: CreateRadialAxisLabelsOptions): ChartProgram;
+createRadialAxisLabels(options?: TargetedOptions<CreateRadialAxisLabelsOptions>): ChartProgram;
 ```
 
-Named option contracts: [`CreateRadialAxisLabelsOptions`](./../types.md#type-createradialaxislabelsoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`CreateRadialAxisLabelsOptions`](./../types.md#type-createradialaxislabelsoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -2707,6 +2771,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `format` | Optional / branch-dependent | `AxisFormat \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
@@ -2718,6 +2783,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `angle` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -2737,10 +2803,10 @@ Create missing radial-axis labels independently of the other components. Use cou
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editRadialAxisLabels(options?: PolarLabelOptions): ChartProgram;
+editRadialAxisLabels(options?: TargetedOptions<PolarLabelOptions>): ChartProgram;
 ```
 
-Named option contracts: [`PolarLabelOptions`](./../types.md#type-polarlabeloptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`PolarLabelOptions`](./../types.md#type-polarlabeloptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -2751,12 +2817,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
+| `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `format` | Optional / branch-dependent | `AxisFormat \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
 | `fontFamily` | Optional / branch-dependent | `string \| undefined` |
 | `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -2776,10 +2844,10 @@ Edit radial value labels. [Axes](../../api/axes.md)
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createThetaAxisTitle(options?: CreateThetaAxisTitleOptions): ChartProgram;
+createThetaAxisTitle(options?: TargetedOptions<CreateThetaAxisTitleOptions>): ChartProgram;
 ```
 
-Named option contracts: [`CreateThetaAxisTitleOptions`](./../types.md#type-createthetaaxistitleoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`CreateThetaAxisTitleOptions`](./../types.md#type-createthetaaxistitleoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -2788,6 +2856,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `text` | Optional / branch-dependent | `string \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
@@ -2796,6 +2865,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -2815,10 +2885,10 @@ Create missing theta-axis title independently of the other components. Reuse sto
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editThetaAxisTitle(options?: PolarTitleOptions): ChartProgram;
+editThetaAxisTitle(options?: TargetedOptions<PolarTitleOptions>): ChartProgram;
 ```
 
-Named option contracts: [`PolarTitleOptions`](./../types.md#type-polartitleoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`PolarTitleOptions`](./../types.md#type-polartitleoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -2827,12 +2897,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `text` | Optional / branch-dependent | `string \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
 | `fontFamily` | Optional / branch-dependent | `string \| undefined` |
 | `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -2852,10 +2924,10 @@ Edit the theta title. [Axes](../../api/axes.md)
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createRadialAxisTitle(options?: CreateRadialAxisTitleOptions): ChartProgram;
+createRadialAxisTitle(options?: TargetedOptions<CreateRadialAxisTitleOptions>): ChartProgram;
 ```
 
-Named option contracts: [`CreateRadialAxisTitleOptions`](./../types.md#type-createradialaxistitleoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`CreateRadialAxisTitleOptions`](./../types.md#type-createradialaxistitleoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -2865,6 +2937,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `position` | Optional / branch-dependent | `"inside" \| "outside" \| undefined` |
+| `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `text` | Optional / branch-dependent | `string \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
@@ -2874,6 +2947,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `scale` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `angle` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -2893,10 +2967,10 @@ Create missing radial-axis title independently of the other components. Reuse st
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editRadialAxisTitle(options?: RadialTitleOptions): ChartProgram;
+editRadialAxisTitle(options?: TargetedOptions<RadialTitleOptions>): ChartProgram;
 ```
 
-Named option contracts: [`RadialTitleOptions`](./../types.md#type-radialtitleoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`RadialTitleOptions`](./../types.md#type-radialtitleoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -2906,12 +2980,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `position` | Optional / branch-dependent | `"inside" \| "outside" \| undefined` |
+| `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `text` | Optional / branch-dependent | `string \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
 | `fontFamily` | Optional / branch-dependent | `string \| undefined` |
 | `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -2932,10 +3008,10 @@ to the baseline midpoint inside the plot. [Axes](../../api/axes.md)
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createThetaGrid(options?: PolarGridOptions): ChartProgram;
+createThetaGrid(options?: TargetedOptions<PolarGridOptions>): ChartProgram;
 ```
 
-Named option contracts: [`PolarGridOptions`](./../types.md#type-polargridoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`PolarGridOptions`](./../types.md#type-polargridoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -2951,6 +3027,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `lineWidth` | Optional / branch-dependent | `number \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `readonly number[] \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -2970,10 +3047,10 @@ Create theta spokes behind related marks. [Grids](../../api/grids.md)
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createRadialGrid(options?: PolarGridOptions): ChartProgram;
+createRadialGrid(options?: TargetedOptions<PolarGridOptions>): ChartProgram;
 ```
 
-Named option contracts: [`PolarGridOptions`](./../types.md#type-polargridoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`PolarGridOptions`](./../types.md#type-polargridoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -2989,6 +3066,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `lineWidth` | Optional / branch-dependent | `number \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `readonly number[] \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -3008,10 +3086,10 @@ Create concentric radial paths behind related marks. [Grids](../../api/grids.md)
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editThetaGrid(options: EditPolarGridOptions): ChartProgram;
+editThetaGrid(options: TargetedOptions<EditPolarGridOptions>): ChartProgram;
 ```
 
-Named option contracts: [`EditPolarGridOptions`](./../types.md#type-editpolargridoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditPolarGridOptions`](./../types.md#type-editpolargridoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -3020,11 +3098,13 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `visible` | Optional / branch-dependent | `boolean \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `lineWidth` | Optional / branch-dependent | `number \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `readonly number[] \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -3044,10 +3124,10 @@ Edit the existing theta grid. [Grids](../../api/grids.md#editing-grids)
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editRadialGrid(options: EditPolarGridOptions): ChartProgram;
+editRadialGrid(options: TargetedOptions<EditPolarGridOptions>): ChartProgram;
 ```
 
-Named option contracts: [`EditPolarGridOptions`](./../types.md#type-editpolargridoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditPolarGridOptions`](./../types.md#type-editpolargridoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -3056,11 +3136,13 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `visible` | Optional / branch-dependent | `boolean \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `lineWidth` | Optional / branch-dependent | `number \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `readonly number[] \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
 
@@ -3213,6 +3295,8 @@ resource. [Axes](../../api/axes.md)
 
 ## Directional grids
 
+Each direction accepts `visible: false` to hide its grid without losing width, dash or color. `visible: true` restores the retained appearance. The focused Cartesian and Polar grid editors accept the same option.
+
 ```javascript
 createHorizontalGrid({ scale?, coordinate?, count?, values?, color?, lineWidth?, strokeDash?, alongOffset? })
 createVerticalGrid({ scale?, coordinate?, count?, values?, color?, lineWidth?, strokeDash?, alongOffset? })
@@ -3242,7 +3326,7 @@ See [Coordinates](../../api/coordinates.md) and
 
 ```javascript
 editLegendLayout({
-  target?, channel?, position?, layout?, align?, direction?, columns?, offset?,
+  target?, channel?, position?, layout?, align?, direction?, columns?, offset?, alongOffset?,
   titlePosition?, itemGap?, rowPadding?, titlePadding?
 })
 editLegendLabels({ target?, channel?, offset?, color?, fontSize?, fontFamily?, fontWeight?, format? })

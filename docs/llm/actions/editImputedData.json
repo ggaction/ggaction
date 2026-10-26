@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "statistics",
   "summary": "Edits imputed data, including settings for filled missing values.",
-  "signature": "editImputedData(options: EditImputedDataOptions): ChartProgram;",
+  "signature": "editImputedData(options: TargetedOptions<EditImputedDataOptions>): ChartProgram;",
   "intents": [
     "edit imputed data",
     "edit",
@@ -59,7 +59,7 @@
     {
       "name": "target",
       "required": true,
-      "type": "string"
+      "type": "string | ActionTargetList | ScopedActionTarget"
     },
     {
       "name": "dependents",

@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "statistics",
   "summary": "Revise source, category, quantitative value, split, orientation, and density parameters through one stable violin owner.",
-  "signature": "editViolinPlot(options: EditViolinPlotOptions): ChartProgram;",
+  "signature": "editViolinPlot(options: TargetedOptions<EditViolinPlotOptions>): ChartProgram;",
   "intents": [
     "edit violin plot",
     "edit",
@@ -64,7 +64,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "data",

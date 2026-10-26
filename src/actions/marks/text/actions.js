@@ -46,7 +46,7 @@ import { validateItemMissing } from "../../../grammar/itemMissing.js";
 
 const STYLE_OPTIONS = Object.freeze(["clip", ...TEXT_MARK_STYLE_OPTIONS]);
 const CREATE_OPTIONS = Object.freeze(["id", "data", "source", "text", "missing", ...STYLE_OPTIONS]);
-const EDIT_OPTIONS = Object.freeze(["target", "missing", ...STYLE_OPTIONS]);
+const EDIT_OPTIONS = Object.freeze(["target", "missing", "textOverrides", ...STYLE_OPTIONS]);
 const REMATERIALIZE_OPTIONS = Object.freeze(["id", "replayLayout"]);
 
 function sourceMatchesData(program, layer, requestedData) {
@@ -486,7 +486,7 @@ const editTextMark = /* @__PURE__ */ action(
   function (args = {}) {
     validateMarkOptions(args, EDIT_OPTIONS, "editTextMark");
     requestedMarkClip(args);
-    if (!["missing", ...STYLE_OPTIONS].some(option => Object.hasOwn(args, option))) {
+    if (!["missing", "textOverrides", ...STYLE_OPTIONS].some(option => Object.hasOwn(args, option))) {
       throw new Error("editTextMark requires at least one editable property.");
     }
     const layer = requireTextLayer(this, args.target, "editTextMark");

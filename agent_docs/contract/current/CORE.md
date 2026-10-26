@@ -114,7 +114,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ## `fitCanvas`
 
-- Signature: `fitCanvas({ padding?, minPlotWidth?, minPlotHeight?, iterationLimit?, overflow? } = {})`
+- Signature: `fitCanvas({ padding?, minPlotWidth?, minPlotHeight?, iterationLimit?, overflow?, align? } = {})`
 - 목적과 필수 state: Full unit program의 기존 Canvas와 현재 layout resource를 기준으로 네 margin을
   줄여 plot 영역을 확장한다. Canvas `width`/`height`, semantic state와 explicit resource option은
   유지한다. Basic에는 노출하지 않으며 composition 호출은 명시적 scope 오류로 거부한다.
@@ -129,18 +129,19 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - 결정성과 lifecycle: 같은 layout과 policy의 반복 호출은 graphic/config가 정확히 같은 상태로 수렴한다.
   이후 resource가 바뀌면 다음 명시적 `fitCanvas` 호출이 새 signature로 다시 계산한다. 저장된 결과는
   마지막 호출의 기록이며 자동 resize observer나 지속 compiler가 아니다.
-- Exact-inner `plot` 모드에서는 거부한다. 먼저 `editCanvas({ plot: false })`로 해제해야 한다.
+- Exact-inner `plot` 모드는 plot 크기를 유지하고 실제 graphic bounds를 기준으로 자동 확장 margin을 회수한다. `createCanvas`/`editCanvas`에서 사용자가 지정한 margin은 `requestedMargin`으로 보존한다. `align: "center"`는 필요한 ink clearance 바깥의 여유 공간을 두 방향으로 균등 분배한다. 기본 `align: "preserve"`는 각 edge의 명시적 최소 margin을 유지한다. Fixed-outer에서 `align: "center"`는 거부한다.
 - 오류: Canvas 부재, unknown/invalid option, minimum plot 또는 iteration bound 미충족을 정책에 따라
-  거부하거나 보고한다. 어떤 경우에도 Canvas를 확대하거나 guide를 임의 이동하지 않는다.
+  거부하거나 보고한다. Fixed-outer에서는 Canvas를 확대하지 않는다. Exact-inner에서는 plot 크기를 보존하며 필요한 외부 크기를 재계산한다.
 
 ### Formal values — `fitCanvas`
 
-- Implemented: `fitCanvas({ padding?: NonNegativeFinite; minPlotWidth?: PositiveFinite; minPlotHeight?: PositiveFinite; iterationLimit?: Integer<1,64>; overflow?: "error" | "report" } = {}): ChartProgram`
-- Proposed (NOT IMPLEMENTED): composition-wide fitting. Exact inner sizing with outer expansion belongs to createCanvas/editCanvas plot policy, not fitCanvas.
+- Implemented: `fitCanvas({ padding?: NonNegativeFinite; minPlotWidth?: PositiveFinite; minPlotHeight?: PositiveFinite; iterationLimit?: Integer<1,64>; overflow?: "error" | "report"; align?: "preserve" | "center" } = {}): ChartProgram`
+- Proposed (NOT IMPLEMENTED): composition-wide fitting.
 
 ### Value coverage — `fitCanvas`
 
 - ✅ Covered: fixed Canvas, margin-only child edit, 0.25px output, bounded probes, exact repeated convergence.
+- ✅ Covered: exact-plot automatic reservation reclamation, preserved authored margins, centered outer clearance, persistence and repeat fitting.
 - ✅ Covered: invalid policy, Canvas absence, Full/Basic boundary, minimum plot error/report와 input immutability.
 - ✅ Covered: semantic/scale-domain/order invariance, explicit-range preservation, Current catalog,
   package와 browser consumer. Auto range는 fitted plot bounds로 재계산한다.

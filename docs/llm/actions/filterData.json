@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "core",
   "summary": "Create an immutable named derived dataset using exactly one membership, comparison, or range filter.",
-  "signature": "filterData(options: FilterDataOptions): ChartProgram;",
+  "signature": "filterData(options: TargetedOptions<FilterDataOptions>): ChartProgram;",
   "intents": [
     "filter data",
     "filter",
@@ -24,7 +24,8 @@
     ],
     "idOptions": [
       "id",
-      "source"
+      "source",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -45,6 +46,10 @@
   "inference": [
     {
       "input": "source",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     }
   ],
@@ -95,6 +100,11 @@
       "name": "range",
       "required": false,
       "type": "FilterRange | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [

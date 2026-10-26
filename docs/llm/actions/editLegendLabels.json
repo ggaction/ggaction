@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "legend_and_title",
   "summary": "Edits the text style of one legend's item labels.",
-  "signature": "editLegendLabels(options: EditLegendLabelsOptions): ChartProgram;",
+  "signature": "editLegendLabels(options: TargetedOptions<EditLegendLabelsOptions>): ChartProgram;",
   "intents": [
     "edit legend labels",
     "edit",
@@ -67,12 +67,17 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "channel",
       "required": false,
       "type": "\"color\" | \"opacity\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\" | undefined"
+    },
+    {
+      "name": "align",
+      "required": false,
+      "type": "\"center\" | \"left\" | \"right\" | undefined"
     },
     {
       "name": "offset",
@@ -106,7 +111,7 @@
     }
   ],
   "callPatterns": [
-    "editLegendLabels({ target?, channel?, offset?, color?, fontSize?, fontFamily?, fontWeight?, format? })"
+    "editLegendLabels({ target?, channel?, align?, offset?, color?, fontSize?, fontFamily?, fontWeight? })"
   ],
   "snippet": "program.editLegendLabels({ channel: \"color\" })",
   "errors": [],

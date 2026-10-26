@@ -47,11 +47,11 @@ test("exports the complete strict point jitter option surface", () => {
   }
   assert.match(
     programTypes,
-    /jitterPoints\(options: JitterPointsOptions\): ChartProgram/
+    /jitterPoints\(options: TargetedOptions<JitterPointsOptions>\): ChartProgram/
   );
   assert.match(
     programTypes,
-    /removeJitter\(options\?: RemoveJitterOptions\): ChartProgram/
+    /removeJitter\(options\?: TargetedOptions<RemoveJitterOptions>\): ChartProgram/
   );
 });
 

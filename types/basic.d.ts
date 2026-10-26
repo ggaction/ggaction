@@ -1,4 +1,4 @@
-import type { ChartProgram, BasicSeriesLayoutOptions, CreateDataOptions } from "./program.js";
+import type { ChartProgram, BasicSeriesLayoutOptions, CreateDataOptions, ScopedActionTarget } from "./program.js";
 
 export type {
   LinearNiceCountOptions,
@@ -119,7 +119,7 @@ type BasicMethodKey =
   | "createGuides";
 
 type RebindMethod<T> = T extends (...args: infer Args) => ChartProgram
-  ? (...args: Args) => BasicChartProgram
+  ? (...args: { [K in keyof Args]: Exclude<Args[K], { target: ScopedActionTarget | readonly unknown[] }> }) => BasicChartProgram
   : never;
 
 export type BasicChartProgram =

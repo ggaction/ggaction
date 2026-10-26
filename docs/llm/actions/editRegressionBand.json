@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "statistics",
   "summary": "Edits regression band, including settings for uncertainty interval.",
-  "signature": "editRegressionBand(options: StrokeStyleDetails & { target?: string; color?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; }): ChartProgram;",
+  "signature": "editRegressionBand(options: TargetedOptions<StrokeStyleDetails & { target?: string; color?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; }>): ChartProgram;",
   "intents": [
     "edit regression band",
     "edit",
@@ -83,7 +83,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "color",

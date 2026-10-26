@@ -1,4 +1,6 @@
 export interface TitleTextStyleOptions {
+  /** Local text alignment; omission preserves the native owner default. */
+  align?: "left" | "center" | "right";
   fontStyle?: "normal" | "italic";
   color?: string;
   fontSize?: number;

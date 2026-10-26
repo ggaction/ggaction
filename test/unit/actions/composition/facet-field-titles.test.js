@@ -70,7 +70,7 @@ test("title supports structured rotation, style inheritance, override and zero",
 
 test("invalid title shapes, roles, values and empty edits reject atomically", () => {
   const p = createFacetFieldTitles(), before = serializeProgram(p);
-  for (const title of [null, undefined, true, "Region", {}, { text: "" }, { text: "A\nB" },
+  for (const title of [null, undefined, true, "Region", {}, { text: "" },
     { text: "A\u2028B" }, { text: undefined }, { fontSize: 0 }, { fontSize: Infinity },
     { fontFamily: "" }, { fontWeight: NaN }, { fontWeight: {} }, { color: "" },
     { offset: -1 }, { align: "left" }, { alongOffset: Infinity }, { rotation: NaN },

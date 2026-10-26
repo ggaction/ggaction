@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "statistics",
   "summary": "Materialize reusable start/end/value/share rows with the same stack math used by Bar and Area layouts.",
-  "signature": "createStackData(options: StackDataOptions): ChartProgram;",
+  "signature": "createStackData(options: TargetedOptions<StackDataOptions>): ChartProgram;",
   "intents": [
     "create stack data",
     "create",
@@ -24,7 +24,8 @@
     ],
     "idOptions": [
       "id",
-      "source"
+      "source",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -45,6 +46,10 @@
   "inference": [
     {
       "input": "source",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -94,10 +99,15 @@
       "name": "as",
       "required": false,
       "type": "StackDataOutputFields | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "createStackData({ category, group, value, id?, source?, mode?, as? })"
+    "createStackData({ category, group, value, id?, source?, target?, mode?, as? })"
   ],
   "snippet": "program.createStackData({ id: \"stacked\", category: \"category\", group: \"series\", value: \"amount\" })",
   "errors": [],

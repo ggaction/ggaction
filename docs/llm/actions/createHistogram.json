@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "charts",
   "summary": "Create a bar layer with atomic bin and count encodings.",
-  "signature": "createHistogram(options: CreateHistogramOptions): ChartProgram;",
+  "signature": "createHistogram(options: TargetedOptions<CreateHistogramOptions>): ChartProgram;",
   "intents": [
     "create histogram",
     "create",
@@ -27,7 +27,8 @@
       "yScale",
       "id",
       "data",
-      "coordinate"
+      "coordinate",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -68,6 +69,10 @@
     },
     {
       "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -152,6 +157,11 @@
       "name": "guides",
       "required": false,
       "type": "false | (Omit<CartesianCategoricalGuideOptions, \"grid\"> & { grid?: false | ContinuousCartesianGridOptions | undefined; }) | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [

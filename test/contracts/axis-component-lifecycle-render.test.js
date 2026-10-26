@@ -38,7 +38,7 @@ test("publishes Cartesian axis component removal as current behavior", () => {
   );
   assert.match(
     declarations,
-    /export interface EditAxisOptions[\s\S]*?line\?: false \| AxisLineStyleOptions;[\s\S]*?ticksAndLabels\?: false \|/
+    /export interface EditAxisOptions[\s\S]*?line\?: false \| VisibleGuide<AxisLineStyleOptions>;[\s\S]*?ticksAndLabels\?: false \|/
   );
 });
 

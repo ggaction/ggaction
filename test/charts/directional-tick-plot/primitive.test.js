@@ -31,7 +31,7 @@ test("authors the three-panel directional target without future actions", () => 
   }
   assert.deepEqual(
     program.graphicSpec.objects.canvas.properties,
-    { width: 1072, height: 372, background: "white" }
+    { width: 1072, height: 372, background: "#ffffff" }
   );
   assert.equal(DIRECTION_LAYOUT.tickLength, 26);
 });

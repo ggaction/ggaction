@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "marks",
   "summary": "Remove one attached label layer by ID, or every attached label owned by a source mark.",
-  "signature": "removeMarkLabels(options: RemoveMarkLabelsOptions): ChartProgram;",
+  "signature": "removeMarkLabels(options: TargetedOptions<RemoveMarkLabelsOptions>): ChartProgram;",
   "intents": [
     "remove mark labels",
     "remove",
@@ -60,7 +60,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "source",

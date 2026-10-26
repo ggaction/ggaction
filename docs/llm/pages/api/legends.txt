@@ -26,7 +26,8 @@ Multiple blocks share one stack whose top aligns with the plot; blocks retain th
 Shared facet legends align with the top of the translated child plots.
 When `offset` is omitted, the native gap follows the actual occupied axis guides on the same edge, including left and right. An explicit `offset` remains anchored to the plot.
 
-Polar theta and radial labels and titles also reserve space outside the plot.
+Parallel-coordinate dimension labels and titles, and polar theta and radial
+labels and titles, also reserve space outside the plot.
 Their measured bounds update the default legend clearance after font edits,
 Canvas resizing, and snapshot restoration.
 Top, bottom, and in-plot corner positions keep their own alignment rules.
@@ -46,6 +47,44 @@ This changes only the selected block. It preserves sibling typography and sample
 when more than one mark owns legends. Singular `channel` cannot accompany plural `channels`, which replaces
 whole-target content, or whole-group `blockLayout`/`at` controls.
 
+## Fine positioning
+
+Keep an edge anchor while adjusting its position with `editLegend` or `editLegendLayout`. `offset` sets the perpendicular gap from the plot; `alongOffset` is a signed pixel shift along that edge. Positive values move right on top/bottom and in-plot corners, and down on left/right. Omission preserves the value; `0` resets the shift.
+
+> **Executable complete.** Import chart from ggaction. This complete example includes two observations, an explicit color legend and sufficient margins. Keep the returned shifted program to render the revised position.
+
+```js
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas({ plot: { width: 240, height: 180 }, margin: 130 })
+  .createData({ values: [
+    { x: 1, y: 2, group: "A" },
+    { x: 3, y: 4, group: "B" }
+  ] })
+  .createScatterPlot({ id: "plot", x: "x", y: "y", color: "group", guides: false })
+  .createLegend({ target: "plot", channels: ["color"] });
+
+const shifted = program.editLegend({
+  target: "plot", channel: "color", position: "bottom", offset: 60, alongOffset: -12
+});
+```
+
+Fine adjustment on the same edge keeps sibling blocks in their existing slots.
+
+This moves the color block 12 logical pixels left of its normal alignment. Omit `channel` to move the target’s legend group together. Selected blocks rejoin the group with `position: "inherit"`, which clears their local shift. Free `at` placement cannot be combined with `alongOffset`; switch back to an explicit edge first. Canvas fit and guide collision checks remain active. These positions persist through data updates, facets, shared concat legends, and saved programs. Shared concat edits validate the visible parent legend against retained content; hidden child copies do not block fine positioning.
+
+To move only the entries while keeping the legend title anchored, use
+`program.editLegend({ target: "plot", channel: "color", itemsOffset: { x: 12, y: 6 } })`.
+
+Both coordinates are signed logical Canvas pixels: positive `x` moves right and positive `y` moves down.
+Symbols and labels move together; continuous legends move the gradient and its ticks/labels.
+A partial `{ x }` or `{ y }` preserves the other coordinate. Omission retains the offset;
+`itemsOffset: "auto"` restores automatic body placement. Empty objects, unknown keys, and
+non-finite coordinates are rejected. Use `channel: "all"` to apply the edit to all blocks.
+Whole-legend moves retain this relative offset. Styles, data/scale edits, facets, scoped
+compositions and saved programs preserve it, and fitting uses the shifted concrete bounds.
+
 ## Supported legend families
 
 | Legend family | Supported marks | Channels |
@@ -57,7 +96,7 @@ whole-target content, or whole-group `blockLayout`/`at` controls.
 | Discretized color interval | point, aggregate bar, rect, tick | quantize/quantile/threshold color; rectangle swatches |
 | Discretized stroke interval | point, line, area, bar, rect, arc, rule, tick | quantize/quantile/threshold stroke; outline-colored interval symbols |
 | Size | point | size; continuous numeric samples or every discrete interval; point glyph symbol |
-| Opacity | point, line, bar | quantitative opacity samples; representative point symbol even for line consumers; Rule opacity has no legend |
+| Opacity | point, line, area, bar, rect | quantitative opacity samples; representative point symbol even for Line and Area consumers; Rule opacity has no legend |
 | Stroke width | line, rule | quantitative strokeWidth samples; line symbol |
 
 ## Focused legend families
@@ -89,6 +128,11 @@ remembered automatic sample count. Automatic samples retain exact domain endpoin
 `editLegend({ channel: "color", values: [40, 60, 80] })` on an existing matching
 scale. Use `editLegendBlock()` for sampled blocks, order, title, labels, spacing,
 and supported symbol appearance when a target has multiple blocks.
+Automatic symlog gradient ticks spread across the transformed scale and include
+zero when it replaces an interior sample. Automatic log, power, square-root and
+symlog gradient labels are reduced when they would overlap; the stored `count`
+remains the requested sampling count. A longer gradient or smaller label font can
+show more ticks. Explicit `values` always remain exact, including close labels.
 Right-side layout requires sufficient right margin; bottom layout requires
 sufficient bottom margin; top layout requires enough top margin for its title,
 item grid, offset, and optional border. A fixed outer Canvas reports a layout error when there is insufficient space. Use
@@ -156,3 +200,9 @@ positions and spacing retain their existing rules.
 [Canvas](../../../api/canvas/) · [Troubleshooting](../../../troubleshooting/)
 
 When creating a separate size legend, an explicit `position` is honored even if a color or shape legend for the same mark uses another edge. Omit size `position` to inherit the categorical legend edge. Resizing retains that choice.
+
+**Label alignment.** `editLegend({target: "plot", labels: {align: "right"}})`
+aligns label text within each measured label column. `left`, `center`, and
+`right` are supported for every legend family, including multiline labels.
+Symbols, ticks, titles, and the legend's placement stay in their existing slots.
+The option is also accepted at creation; omission preserves native defaults.

@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "core",
   "summary": "Create the program's Canvas and plot bounds.",
-  "signature": "createCanvas(options?: CanvasOptions): ChartProgram;",
+  "signature": "createCanvas(options?: TargetedOptions<CanvasOptions>): ChartProgram;",
   "intents": [
     "create canvas",
     "create",
@@ -20,7 +20,9 @@
     "owns": [
       "canvas"
     ],
-    "idOptions": []
+    "idOptions": [
+      "target"
+    ]
   },
   "authoringRoles": [
     "H3"
@@ -53,6 +55,10 @@
     }
   ],
   "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
     {
       "input": "omitted optional options",
       "strategy": "documented-default"
@@ -93,10 +99,15 @@
       "name": "plotBorder",
       "required": false,
       "type": "false | { color?: string | undefined; lineWidth?: number | undefined; underlay?: boolean | undefined; } | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "createCanvas({ width?, height?, background?, margin?, plot?, plotBorder? })"
+    "createCanvas({ target?, width?, height?, background?, margin?, plot?, plotBorder? })"
   ],
   "snippet": "program.createCanvas({})",
   "errors": [],

@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "statistics",
   "summary": "Edits aligned array data, including settings for parallel array expansion.",
-  "signature": "editFlattenData(options: EditFlattenDataOptions): ChartProgram;",
+  "signature": "editFlattenData(options: TargetedOptions<EditFlattenDataOptions>): ChartProgram;",
   "intents": [
     "edit flatten data",
     "edit",
@@ -59,7 +59,7 @@
     {
       "name": "target",
       "required": true,
-      "type": "string"
+      "type": "string | ActionTargetList | ScopedActionTarget"
     },
     {
       "name": "dependents",

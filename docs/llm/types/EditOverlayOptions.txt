@@ -1,0 +1,3 @@
+export type EditOverlayOptions = { target?: string } & ({ follow: false; source?: never;
+  series?: never; missing?: never; orderBy?: never } | { follow?: true; source?: string;
+  series?: "source" | "total"; missing?: "break" | "connect"; orderBy?: "x" | "y" });

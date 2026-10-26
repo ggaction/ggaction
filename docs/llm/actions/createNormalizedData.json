@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "statistics",
   "summary": "Materialize row-preserving share, z-score, min-max, index, change, or fractional percent-change values independently within each group.",
-  "signature": "createNormalizedData(options: NormalizedDataOptions): ChartProgram;",
+  "signature": "createNormalizedData(options: TargetedOptions<NormalizedDataOptions>): ChartProgram;",
   "intents": [
     "create normalized data",
     "create",
@@ -24,7 +24,8 @@
     ],
     "idOptions": [
       "id",
-      "source"
+      "source",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -45,6 +46,10 @@
   "inference": [
     {
       "input": "source",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -109,10 +114,15 @@
       "name": "sortBy",
       "required": false,
       "type": "readonly [WindowSort, ...WindowSort[]]"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "createNormalizedData({ id, field, as, method, source?, groupBy?, zeroDenominator?, variance? })"
+    "createNormalizedData({ id, field, as, method, source?, target?, groupBy?, zeroDenominator? })"
   ],
   "snippet": "program.createNormalizedData({ id: \"normalized\", field: \"amount\", as: \"share\", method: \"share\" })",
   "errors": [],

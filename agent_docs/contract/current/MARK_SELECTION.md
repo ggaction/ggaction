@@ -77,6 +77,10 @@ type MarkSelector =
 - Native grain: aggregate/ranged bar는 selected cell members, stacked bar는 complete selected stack members,
   line/area는 selected series members, arc는 selected sector members, rule/Tick은 selected line members를 보존한다. Histogram은 filtering 전 resolved
   boundaries를 explicit semantic boundaries로 고정해서 selected bins가 subset domain에서 다시 나뉘지 않게 한다.
+  이 boundaries는 bin partition이며 display domain을 고정하지 않는다. 자동 position domain은 남은 bin의
+  양끝 경계로 줄어들고 내부 빈 구간은 유지한다. 같은 scale을 사용하는 다른 mark의 범위는 합집합에
+  포함하며 explicit scale domain과 zero 포함 정책은 유지한다. 자동 tick/grid는 새 display domain 안의
+  bin 경계를 사용하고 사용자가 지정한 tick 값은 기존 검증 정책을 유지한다.
   직접 line의 `missing: "break"`는 선택된 logical series의 보이지 않는 null/absent 좌표 행도 보존해
   filtering 후 구간이 연결되지 않게 한다. Selection item의 실제 sourceIndices는 유효한 vertex만 소유한다.
   결측 판정과 구간 순서는 [MARKS.md](./MARKS.md)의 line 계약을 따른다.
@@ -111,7 +115,10 @@ type MarkSelector =
 - ✅ Covered: empty domain preservation and stale graphic cleanup, removal/source restoration, histogram bin restoration,
   dependent filtered snapshot preservation and invalid mode/missing owner failure.
 - ✅ Covered: regression scatterplot primitive/public equivalence when filtering before statistical layers.
+- ✅ Covered: histogram/집계 bar의 자동 domain과 guide 축소, endpoint threshold, 내부 빈 구간,
+  explicit domain/zero 보존, overlay/facet/병치 공유 범위, resize/replace/compose/remove 이후 유지.
 - Evidence: `test/unit/actions/data/filter-marks.test.js`,
+  `test/unit/actions/data/filter-domains.test.js`,
   `test/charts/cars-regression-scatterplot/variants/primitive.test.js`.
 
 ## `removeMarkFilter`

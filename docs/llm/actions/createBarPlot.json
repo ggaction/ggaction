@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "charts",
   "summary": "Create categorical, temporal or binned bars with quantitative measures; bin rectangles fill their complete intervals, while category bars default to 0.72 of the slot.",
-  "signature": "createBarPlot(options: CreateBarPlotOptions): ChartProgram;",
+  "signature": "createBarPlot(options: TargetedOptions<CreateBarPlotOptions>): ChartProgram;",
   "intents": [
     "create bar plot",
     "create",
@@ -25,7 +25,8 @@
     "idOptions": [
       "id",
       "data",
-      "coordinate"
+      "coordinate",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -65,6 +66,10 @@
     },
     {
       "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -134,6 +139,11 @@
       "name": "y",
       "required": true,
       "type": "BarRangePositionChannel | BarRangeOppositePositionChannel | ({ field: string; bin?: undefined; fieldType: \"temporal\"; temporalUnit?: TemporalInputUnit | undefined; aggregate?: undefined; stack?: undefined; scale?: NonPointTemporalPositionScaleOptions | undefined; } & { ...; }) | ({ ...; } & ... 1 more ... & { ...; }..."
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [

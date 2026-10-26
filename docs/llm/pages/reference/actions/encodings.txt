@@ -9,10 +9,10 @@ Each declared action has an exact signature and its own stable link. Option tabl
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-encodeX(options: PositionEncodingOptions | DatumPositionEncodingOptions): ChartProgram;
+encodeX(options: TargetedOptions<PositionEncodingOptions | DatumPositionEncodingOptions>): ChartProgram;
 ```
 
-Named option contracts: [`PositionEncodingOptions`](../../../../reference/types/#type-positionencodingoptions) · [`DatumPositionEncodingOptions`](../../../../reference/types/#type-datumpositionencodingoptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`PositionEncodingOptions`](../../../../reference/types/#type-positionencodingoptions) · [`DatumPositionEncodingOptions`](../../../../reference/types/#type-datumpositionencodingoptions).
 
  Declared options
 
@@ -21,7 +21,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `field` | Optional / branch-dependent | `string \| undefined` |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `fieldType` | Optional / branch-dependent | `FieldType \| undefined` |
 | `scale` | Optional / branch-dependent | `CategoricalPositionScaleOptions \| NonPointCategoricalPositionScaleOptions \| NonPointQuantitativePositionScaleOptions \| QuantitativePositionScaleOptions \| NonPointTemporalPositionScaleOptions \| TemporalPositionScaleOptions \| undefined` |
@@ -54,10 +54,10 @@ once; any field-bound x, y, or text encoding selects row grain.
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-encodeY(options: YPositionEncodingOptions | DatumPositionEncodingOptions): ChartProgram;
+encodeY(options: TargetedOptions<YPositionEncodingOptions | DatumPositionEncodingOptions>): ChartProgram;
 ```
 
-Named option contracts: [`YPositionEncodingOptions`](../../../../reference/types/#type-ypositionencodingoptions) · [`DatumPositionEncodingOptions`](../../../../reference/types/#type-datumpositionencodingoptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`YPositionEncodingOptions`](../../../../reference/types/#type-ypositionencodingoptions) · [`DatumPositionEncodingOptions`](../../../../reference/types/#type-datumpositionencodingoptions).
 
  Declared options
 
@@ -66,7 +66,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `field` | Optional / branch-dependent | `string \| undefined` |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `fieldType` | Optional / branch-dependent | `FieldType \| undefined` |
 | `scale` | Optional / branch-dependent | `CategoricalPositionScaleOptions \| NonPointCategoricalPositionScaleOptions \| NonPointQuantitativePositionScaleOptions \| QuantitativePositionScaleOptions \| NonPointTemporalPositionScaleOptions \| TemporalPositionScaleOptions \| undefined` |
@@ -101,10 +101,10 @@ source-owned Text continues to reject direct position replacement.
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-encodeX2(options: SecondaryPositionEncodingOptions): ChartProgram;
+encodeX2(options: TargetedOptions<SecondaryPositionEncodingOptions>): ChartProgram;
 ```
 
-Named option contracts: [`SecondaryPositionEncodingOptions`](../../../../reference/types/#type-secondarypositionencodingoptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`SecondaryPositionEncodingOptions`](../../../../reference/types/#type-secondarypositionencodingoptions).
 
  Declared options
 
@@ -115,7 +115,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `datum` | Optional / branch-dependent | `unknown` |
 | `field` | Optional / branch-dependent | `string \| undefined` |
 | `fieldType` | Optional / branch-dependent | `"nominal" \| "ordinal" \| "quantitative" \| "temporal" \| undefined` |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `scale` | Optional / branch-dependent | `{ id?: string \| undefined; } \| { id?: string \| undefined; } \| { id?: string \| undefined; } \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `temporalUnit` | Optional / branch-dependent | `TemporalInputUnit \| undefined` |
@@ -140,10 +140,10 @@ Rule field endpoints and nonnumeric datum endpoints require an explicit matching
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-encodeColor(options: ColorEncodingOptions): ChartProgram;
+encodeColor(options: TargetedOptions<ColorEncodingOptions>): ChartProgram;
 ```
 
-Named option contracts: [`ColorEncodingOptions`](../../../../reference/types/#type-colorencodingoptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`ColorEncodingOptions`](../../../../reference/types/#type-colorencodingoptions).
 
  Declared options
 
@@ -152,7 +152,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `value` | Optional / branch-dependent | `string \| undefined` |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `field` | Optional / branch-dependent | `string \| undefined` |
 | `fieldType` | Optional / branch-dependent | `"nominal" \| "ordinal" \| "quantitative" \| "temporal" \| undefined` |
 | `scale` | Optional / branch-dependent | `ContinuousColorScaleOptions \| DiscretizedColorScaleOptions \| CategoricalColorScaleOptions \| (Omit<...> & { ...; }) \| undefined` |
@@ -230,10 +230,10 @@ Full or a new scale ID in Basic. [Encoding reassignment](../../../../api/encodin
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-encodeStrokeDash(options: StrokeDashEncodingOptions): ChartProgram;
+encodeStrokeDash(options: TargetedOptions<StrokeDashEncodingOptions>): ChartProgram;
 ```
 
-Named option contracts: [`StrokeDashEncodingOptions`](../../../../reference/types/#type-strokedashencodingoptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`StrokeDashEncodingOptions`](../../../../reference/types/#type-strokedashencodingoptions).
 
  Declared options
 
@@ -243,7 +243,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `field` | Optional / branch-dependent | `string \| undefined` |
 | `value` | Optional / branch-dependent | `DashPattern \| DashStyle \| undefined` |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `fieldType` | Optional / branch-dependent | `"nominal" \| "ordinal" \| undefined` |
 | `scale` | Optional / branch-dependent | `DashScaleOptions \| undefined` |
 
@@ -270,10 +270,10 @@ and domain, legend and raw series identities stay unchanged.
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-encodeStroke(options: StrokeEncodingOptions): ChartProgram;
+encodeStroke(options: TargetedOptions<StrokeEncodingOptions>): ChartProgram;
 ```
 
-Named option contracts: [`StrokeEncodingOptions`](../../../../reference/types/#type-strokeencodingoptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`StrokeEncodingOptions`](../../../../reference/types/#type-strokeencodingoptions).
 
  Declared options
 
@@ -281,7 +281,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `value` | Optional / branch-dependent | `string \| undefined` |
 | `field` | Optional / branch-dependent | `string \| undefined` |
 | `fieldType` | Optional / branch-dependent | `"nominal" \| "ordinal" \| "quantitative" \| "temporal" \| undefined` |
@@ -309,10 +309,10 @@ override. Text outlines are outside this action.
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-encodeStrokeWidth(options: StrokeWidthEncodingOptions): ChartProgram;
+encodeStrokeWidth(options: TargetedOptions<StrokeWidthEncodingOptions>): ChartProgram;
 ```
 
-Named option contracts: [`StrokeWidthEncodingOptions`](../../../../reference/types/#type-strokewidthencodingoptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`StrokeWidthEncodingOptions`](../../../../reference/types/#type-strokewidthencodingoptions).
 
  Declared options
 
@@ -322,7 +322,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `value` | Optional / branch-dependent | `number \| undefined` |
 | `field` | Optional / branch-dependent | `string \| undefined` |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `fieldType` | Optional / branch-dependent | `"quantitative" \| undefined` |
 | `scale` | Optional / branch-dependent | `(Omit<ScaleFields<"base" \| "clamp" \| "constant" \| "exponent" \| "id" \| "reverse" \| "zero"> & { domain?: "auto" \| readonly [number, number] \| undefined; range?: "auto" \| readonly [...] \| undefined; } & { ...; }, "nice"> & { ...; }) \| (Omit<...> & { ...; }) \| undefined` |
 
@@ -346,10 +346,10 @@ constant mode. Active channel selections must be removed before replacement.
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-encodeSize(options: SizeEncodingOptions): ChartProgram;
+encodeSize(options: TargetedOptions<SizeEncodingOptions>): ChartProgram;
 ```
 
-Named option contracts: [`SizeEncodingOptions`](../../../../reference/types/#type-sizeencodingoptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`SizeEncodingOptions`](../../../../reference/types/#type-sizeencodingoptions).
 
  Declared options
 
@@ -358,7 +358,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `value` | Optional / branch-dependent | `number \| undefined` |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `field` | Optional / branch-dependent | `string \| undefined` |
 | `fieldType` | Optional / branch-dependent | `"nominal" \| "ordinal" \| "quantitative" \| undefined` |
 | `scale` | Optional / branch-dependent | `SizeScaleOptions \| CategoricalSizeScaleOptions \| undefined` |
@@ -381,10 +381,10 @@ is `[24, 196]`. Size scales support continuous `linear`, `log`, `sqrt`, and
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-encodeShape(options: ShapeEncodingOptions): ChartProgram;
+encodeShape(options: TargetedOptions<ShapeEncodingOptions>): ChartProgram;
 ```
 
-Named option contracts: [`ShapeEncodingOptions`](../../../../reference/types/#type-shapeencodingoptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`ShapeEncodingOptions`](../../../../reference/types/#type-shapeencodingoptions).
 
  Declared options
 
@@ -392,8 +392,9 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `field` | Required | `string` |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `value` | Optional / branch-dependent | `PointShape \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `field` | Optional / branch-dependent | `string \| undefined` |
 | `fieldType` | Optional / branch-dependent | `"nominal" \| undefined` |
 | `scale` | Optional / branch-dependent | `ShapeScaleOptions \| undefined` |
 
@@ -414,10 +415,10 @@ Explicit ranges may repeat shapes; provide one entry per domain value. Automatic
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-encodeAngle(options: AngleEncodingOptions): ChartProgram;
+encodeAngle(options: TargetedOptions<AngleEncodingOptions>): ChartProgram;
 ```
 
-Named option contracts: [`AngleEncodingOptions`](../../../../reference/types/#type-angleencodingoptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`AngleEncodingOptions`](../../../../reference/types/#type-angleencodingoptions).
 
  Declared options
 
@@ -425,7 +426,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `value` | Optional / branch-dependent | `number \| undefined` |
 | `field` | Optional / branch-dependent | `string \| undefined` |
 | `fieldType` | Optional / branch-dependent | `"quantitative" \| undefined` |
@@ -449,10 +450,10 @@ branch; remove it with `removeEncoding({ channel: "angle" })`.
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-encodeOpacity(options: OpacityEncodingOptions): ChartProgram;
+encodeOpacity(options: TargetedOptions<OpacityEncodingOptions>): ChartProgram;
 ```
 
-Named option contracts: [`OpacityEncodingOptions`](../../../../reference/types/#type-opacityencodingoptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`OpacityEncodingOptions`](../../../../reference/types/#type-opacityencodingoptions).
 
  Declared options
 
@@ -462,7 +463,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `value` | Optional / branch-dependent | `number \| undefined` |
 | `field` | Optional / branch-dependent | `string \| undefined` |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `fieldType` | Optional / branch-dependent | `"quantitative" \| undefined` |
 | `scale` | Optional / branch-dependent | `OpacityScaleOptions \| undefined` |
 
@@ -487,8 +488,10 @@ owned opacity legend and rejects fieldType/scale or selections using that channe
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-encodeRadius(options: { value: number; target?: string }): ChartProgram;
+encodeRadius(options: TargetedOptions<{ value: number; target?: string }>): ChartProgram;
 ```
+
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions).
 
  Declared options
 
@@ -497,7 +500,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `value` | Required | `number` |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
@@ -514,10 +517,10 @@ Apply a constant point radius. [Constant appearance](../../../../api/appearance/
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-encodeTheta(options: ThetaEncodingOptions): ChartProgram;
+encodeTheta(options: TargetedOptions<ThetaEncodingOptions>): ChartProgram;
 ```
 
-Named option contracts: [`ThetaEncodingOptions`](../../../../reference/types/#type-thetaencodingoptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`ThetaEncodingOptions`](../../../../reference/types/#type-thetaencodingoptions).
 
  Declared options
 
@@ -526,7 +529,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `field` | Required | `string` |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `scale` | Optional / branch-dependent | `ThetaScaleOptions \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `aggregate` | Optional / branch-dependent | `"count" \| "sum" \| undefined` |
@@ -556,10 +559,10 @@ range is `[0, 360]`.
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-encodeR(options: RadialEncodingOptions): ChartProgram;
+encodeR(options: TargetedOptions<RadialEncodingOptions>): ChartProgram;
 ```
 
-Named option contracts: [`RadialEncodingOptions`](../../../../reference/types/#type-radialencodingoptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`RadialEncodingOptions`](../../../../reference/types/#type-radialencodingoptions).
 
  Declared options
 
@@ -567,7 +570,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `fieldType` | Optional / branch-dependent | `"quantitative" \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `field` | Optional / branch-dependent | `string \| undefined` |
@@ -600,8 +603,10 @@ replace a measured category aggregate with ordinary row-level radial length.
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-encodePointRadius(options: { value: number; target?: string }): ChartProgram;
+encodePointRadius(options: TargetedOptions<{ value: number; target?: string }>): ChartProgram;
 ```
+
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions).
 
  Declared options
 
@@ -610,7 +615,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `value` | Required | `number` |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
@@ -629,8 +634,10 @@ does not assign semantic Polar radial position.
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-removePointRadius(options?: { target?: string }): ChartProgram;
+removePointRadius(options?: TargetedOptions<{ target?: string }>): ChartProgram;
 ```
+
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions).
 
  Declared options
 
@@ -638,7 +645,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
@@ -657,10 +664,10 @@ Semantic Polar radial position is unchanged.
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-encodeXOffset(options: XOffsetEncodingOptions): ChartProgram;
+encodeXOffset(options: TargetedOptions<XOffsetEncodingOptions>): ChartProgram;
 ```
 
-Named option contracts: [`XOffsetEncodingOptions`](../../../../reference/types/#type-xoffsetencodingoptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`XOffsetEncodingOptions`](../../../../reference/types/#type-xoffsetencodingoptions).
 
  Declared options
 
@@ -669,7 +676,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `field` | Required | `string` |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `fieldType` | Optional / branch-dependent | `"nominal" \| "ordinal" \| undefined` |
 | `scale` | Optional / branch-dependent | `OffsetScaleOptions \| undefined` |
 | `paddingInner` | Optional / branch-dependent | `number \| undefined` |
@@ -696,10 +703,10 @@ bar color layout normally invokes this action automatically.
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-encodeYOffset(options: YOffsetEncodingOptions): ChartProgram;
+encodeYOffset(options: TargetedOptions<YOffsetEncodingOptions>): ChartProgram;
 ```
 
-Named option contracts: [`YOffsetEncodingOptions`](../../../../reference/types/#type-yoffsetencodingoptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`YOffsetEncodingOptions`](../../../../reference/types/#type-yoffsetencodingoptions).
 
  Declared options
 
@@ -708,7 +715,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `field` | Required | `string` |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `fieldType` | Optional / branch-dependent | `"nominal" \| "ordinal" \| undefined` |
 | `scale` | Optional / branch-dependent | `OffsetScaleOptions \| undefined` |
 | `paddingInner` | Optional / branch-dependent | `number \| undefined` |
@@ -735,10 +742,10 @@ follow the same contract as `encodeXOffset`.
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-encodeY2(options: SecondaryPositionEncodingOptions): ChartProgram;
+encodeY2(options: TargetedOptions<SecondaryPositionEncodingOptions>): ChartProgram;
 ```
 
-Named option contracts: [`SecondaryPositionEncodingOptions`](../../../../reference/types/#type-secondarypositionencodingoptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`SecondaryPositionEncodingOptions`](../../../../reference/types/#type-secondarypositionencodingoptions).
 
  Declared options
 
@@ -749,7 +756,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `datum` | Optional / branch-dependent | `unknown` |
 | `field` | Optional / branch-dependent | `string \| undefined` |
 | `fieldType` | Optional / branch-dependent | `"nominal" \| "ordinal" \| "quantitative" \| "temporal" \| undefined` |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `scale` | Optional / branch-dependent | `{ id?: string \| undefined; } \| { id?: string \| undefined; } \| { id?: string \| undefined; } \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `temporalUnit` | Optional / branch-dependent | `TemporalInputUnit \| undefined` |
@@ -774,10 +781,10 @@ Rule field endpoints and nonnumeric datum endpoints require an explicit matching
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-encodeYRange(options: RangePositionEncodingOptions): ChartProgram;
+encodeYRange(options: TargetedOptions<RangePositionEncodingOptions>): ChartProgram;
 ```
 
-Named option contracts: [`RangePositionEncodingOptions`](../../../../reference/types/#type-rangepositionencodingoptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`RangePositionEncodingOptions`](../../../../reference/types/#type-rangepositionencodingoptions).
 
  Declared options
 
@@ -787,7 +794,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `lower` | Required | `string \| { datum: number; }` |
 | `upper` | Required | `string \| { datum: number; }` |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `fieldType` | Optional / branch-dependent | `"quantitative" \| "temporal" \| undefined` |
 | `temporalUnit` | Optional / branch-dependent | `TemporalInputUnit \| undefined` |
@@ -809,10 +816,10 @@ Atomically compose area or ranged-bar `encodeY` and `encodeY2`. Area bounds acce
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-encodeXRange(options: RangePositionEncodingOptions): ChartProgram;
+encodeXRange(options: TargetedOptions<RangePositionEncodingOptions>): ChartProgram;
 ```
 
-Named option contracts: [`RangePositionEncodingOptions`](../../../../reference/types/#type-rangepositionencodingoptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`RangePositionEncodingOptions`](../../../../reference/types/#type-rangepositionencodingoptions).
 
  Declared options
 
@@ -822,7 +829,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `lower` | Required | `string \| { datum: number; }` |
 | `upper` | Required | `string \| { datum: number; }` |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `fieldType` | Optional / branch-dependent | `"quantitative" \| "temporal" \| undefined` |
 | `temporalUnit` | Optional / branch-dependent | `TemporalInputUnit \| undefined` |
@@ -844,10 +851,10 @@ Atomically compose area or ranged-bar `encodeX` and `encodeX2`. Area bounds acce
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-encodeGroup(options: GroupEncodingOptions): ChartProgram;
+encodeGroup(options: TargetedOptions<GroupEncodingOptions>): ChartProgram;
 ```
 
-Named option contracts: [`GroupEncodingOptions`](../../../../reference/types/#type-groupencodingoptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`GroupEncodingOptions`](../../../../reference/types/#type-groupencodingoptions).
 
  Declared options
 
@@ -855,7 +862,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `fieldType` | Optional / branch-dependent | `"nominal" \| undefined` |
 | `field` | Optional / branch-dependent | `string \| undefined` |
 | `fields` | Optional / branch-dependent | `readonly [string, ...string[]] \| undefined` |
@@ -881,10 +888,10 @@ Statistical and stacked-layout groups remain owned by their existing actions.
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-encodePathOrder(options: PathOrderEncodingOptions): ChartProgram;
+encodePathOrder(options: TargetedOptions<PathOrderEncodingOptions>): ChartProgram;
 ```
 
-Named option contracts: [`PathOrderEncodingOptions`](../../../../reference/types/#type-pathorderencodingoptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`PathOrderEncodingOptions`](../../../../reference/types/#type-pathorderencodingoptions).
 
  Declared options
 
@@ -892,7 +899,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `field` | Required | `string` |
 | `fieldType` | Optional / branch-dependent | `"quantitative" \| undefined` |
 | `order` | Optional / branch-dependent | `"ascending" \| "descending" \| undefined` |
@@ -915,10 +922,10 @@ Ties preserve source-row order, and no scale or guide is created.
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-encodeParallelCoordinates(options: ParallelCoordinatesEncodingOptions): ChartProgram;
+encodeParallelCoordinates(options: TargetedOptions<ParallelCoordinatesEncodingOptions>): ChartProgram;
 ```
 
-Named option contracts: [`ParallelCoordinatesEncodingOptions`](../../../../reference/types/#type-parallelcoordinatesencodingoptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`ParallelCoordinatesEncodingOptions`](../../../../reference/types/#type-parallelcoordinatesencodingoptions).
 
  Declared options
 
@@ -926,7 +933,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `dimensions` | Required | `readonly [ParallelDimension, ParallelDimension, ...ParallelDimension[]]` |
 | `key` | Optional / branch-dependent | `string \| undefined` |
@@ -949,10 +956,10 @@ The default missing policy is `"break"`.
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-removePathOrder(options?: RemovePathOrderOptions): ChartProgram;
+removePathOrder(options?: TargetedOptions<RemovePathOrderOptions>): ChartProgram;
 ```
 
-Named option contracts: [`RemovePathOrderOptions`](../../../../reference/types/#type-removepathorderoptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`RemovePathOrderOptions`](../../../../reference/types/#type-removepathorderoptions).
 
  Declared options
 
@@ -960,7 +967,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
@@ -978,10 +985,10 @@ position ordering. [Series encodings](../../../../api/series-encodings/)
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-orderCategories(options: OrderCategoriesOptions): ChartProgram;
+orderCategories(options: TargetedOptions<OrderCategoriesOptions>): ChartProgram;
 ```
 
-Named option contracts: [`OrderCategoriesOptions`](../../../../reference/types/#type-ordercategoriesoptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`OrderCategoriesOptions`](../../../../reference/types/#type-ordercategoriesoptions).
 
  Declared options
 
@@ -989,7 +996,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `channel` | Required | `"theta" \| "x" \| "y"` |
 | `values` | Optional / branch-dependent | `readonly CategoryValue[] \| undefined` |
 | `by` | Optional / branch-dependent | `"category" \| "count" \| CategoryOrderSummary \| undefined` |
@@ -1014,10 +1021,10 @@ order are updated together. [Category ordering](../../../../api/position/categor
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-removeCategoryOrder(options: RemoveCategoryOrderOptions): ChartProgram;
+removeCategoryOrder(options: TargetedOptions<RemoveCategoryOrderOptions>): ChartProgram;
 ```
 
-Named option contracts: [`RemoveCategoryOrderOptions`](../../../../reference/types/#type-removecategoryorderoptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`RemoveCategoryOrderOptions`](../../../../reference/types/#type-removecategoryorderoptions).
 
  Declared options
 
@@ -1025,7 +1032,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `channel` | Required | `"theta" \| "x" \| "y"` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
@@ -1044,8 +1051,10 @@ first-appearance order. [Category ordering](../../../../api/position/category-or
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-removeEncoding(options: { target?: string; channel: | "x" | "y" | "x2" | "y2" | "xOffset" | "yOffset" | "theta" | "radius" | "color" | "stroke" | "strokeDash" | "strokeWidth" | "size" | "shape" | "angle" | "group" | "opacity" | "text" | "dx" | "dy"; }): ChartProgram;
+removeEncoding(options: TargetedOptions<{ target?: string; channel: | "x" | "y" | "x2" | "y2" | "xOffset" | "yOffset" | "theta" | "radius" | "color" | "stroke" | "strokeDash" | "strokeWidth" | "size" | "shape" | "angle" | "group" | "opacity" | "text" | "dx" | "dy"; }>): ChartProgram;
 ```
+
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions).
 
  Declared options
 
@@ -1053,7 +1062,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `channel` | Required | `"angle" \| "color" \| "dx" \| "dy" \| "group" \| "opacity" \| "radius" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| "text" \| "theta" \| "x" \| "x2" \| "xOffset" \| "y" \| "y2" \| "yOffset"` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
@@ -1074,10 +1083,10 @@ retained; incomplete marks remain empty until later encoding completion.
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-encodeText(options: TextEncodingOptions): ChartProgram;
+encodeText(options: TargetedOptions<TextEncodingOptions>): ChartProgram;
 ```
 
-Named option contracts: [`TextEncodingOptions`](../../../../reference/types/#type-textencodingoptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`TextEncodingOptions`](../../../../reference/types/#type-textencodingoptions).
 
  Declared options
 
@@ -1085,7 +1094,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `format` | Optional / branch-dependent | `ValueFormat \| undefined` |
 | `field` | Optional / branch-dependent | `string \| undefined` |
 | `value` | Optional / branch-dependent | `unknown` |
@@ -1107,13 +1116,13 @@ replaces the previous content branch. [Text marks](../../../../api/marks/text/)
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.24. See [release compatibility](../../../../version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-encodeDx(options: TextOffsetEncodingOptions): ChartProgram;
+encodeDx(options: TargetedOptions<TextOffsetEncodingOptions>): ChartProgram;
 ```
 
-Named option contracts: [`TextOffsetEncodingOptions`](../../../../reference/types/#type-textoffsetencodingoptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`TextOffsetEncodingOptions`](../../../../reference/types/#type-textoffsetencodingoptions).
 
  Declared options
 
@@ -1121,7 +1130,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `value` | Optional / branch-dependent | `number \| undefined` |
 | `field` | Optional / branch-dependent | `string \| undefined` |
 
@@ -1143,13 +1152,13 @@ source-owned labels and other marks are rejected.
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.24. See [release compatibility](../../../../version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-encodeDy(options: TextOffsetEncodingOptions): ChartProgram;
+encodeDy(options: TargetedOptions<TextOffsetEncodingOptions>): ChartProgram;
 ```
 
-Named option contracts: [`TextOffsetEncodingOptions`](../../../../reference/types/#type-textoffsetencodingoptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`TextOffsetEncodingOptions`](../../../../reference/types/#type-textoffsetencodingoptions).
 
  Declared options
 
@@ -1157,7 +1166,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `value` | Optional / branch-dependent | `number \| undefined` |
 | `field` | Optional / branch-dependent | `string \| undefined` |
 
@@ -1180,10 +1189,10 @@ validation rules. Set both through existing `encodeChannels({target,channels})`.
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-encodeHistogram(options: HistogramEncodingOptions): ChartProgram;
+encodeHistogram(options: TargetedOptions<HistogramEncodingOptions>): ChartProgram;
 ```
 
-Named option contracts: [`HistogramEncodingOptions`](../../../../reference/types/#type-histogramencodingoptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`HistogramEncodingOptions`](../../../../reference/types/#type-histogramencodingoptions).
 
  Declared options
 
@@ -1192,7 +1201,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `field` | Required | `string` |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `stack` | Optional / branch-dependent | `StackMode \| undefined` |
 | `xScale` | Optional / branch-dependent | `NonPointQuantitativePositionScaleOptions \| undefined` |
@@ -1229,10 +1238,10 @@ remain unchanged.
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-encodeDensity(options: DensityEncodingOptions): ChartProgram;
+encodeDensity(options: TargetedOptions<DensityEncodingOptions>): ChartProgram;
 ```
 
-Named option contracts: [`DensityEncodingOptions`](../../../../reference/types/#type-densityencodingoptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`DensityEncodingOptions`](../../../../reference/types/#type-densityencodingoptions).
 
  Declared options
 
@@ -1251,7 +1260,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `missing` | Optional / branch-dependent | `"drop" \| "error" \| undefined` |
 | `as` | Optional / branch-dependent | `readonly [string, string] \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| false \| undefined` |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `densityChannel` | Optional / branch-dependent | `"x" \| "y" \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `valueScale` | Optional / branch-dependent | `NonPointQuantitativePositionScaleOptions \| undefined` |
@@ -1280,10 +1289,10 @@ Pass `densityChannel: "x"` for a horizontal orientation.
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-editDensity(options: EditDensityOptions): ChartProgram;
+editDensity(options: TargetedOptions<EditDensityOptions>): ChartProgram;
 ```
 
-Named option contracts: [`EditDensityOptions`](../../../../reference/types/#type-editdensityoptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`EditDensityOptions`](../../../../reference/types/#type-editdensityoptions).
 
  Declared options
 
@@ -1291,7 +1300,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `source` | Optional / branch-dependent | `string \| undefined` |
 | `field` | Optional / branch-dependent | `string \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| false \| undefined` |
@@ -1327,10 +1336,10 @@ fields, density channel, coordinate, and position scale IDs are preserved.
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-encodeHorizon(options?: HorizonEncodingOptions): ChartProgram;
+encodeHorizon(options?: TargetedOptions<HorizonEncodingOptions>): ChartProgram;
 ```
 
-Named option contracts: [`HorizonEncodingOptions`](../../../../reference/types/#type-horizonencodingoptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`HorizonEncodingOptions`](../../../../reference/types/#type-horizonencodingoptions).
 
  Declared options
 
@@ -1338,7 +1347,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `source` | Optional / branch-dependent | `string \| undefined` |
 | `x` | Optional / branch-dependent | `string \| HorizonXEncoding \| undefined` |
 | `y` | Optional / branch-dependent | `string \| HorizonYEncoding \| undefined` |
@@ -1372,10 +1381,10 @@ chart. Compatible target, source, and fields are inferred when unambiguous.
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-editHorizon(options: EditHorizonOptions): ChartProgram;
+editHorizon(options: TargetedOptions<EditHorizonOptions>): ChartProgram;
 ```
 
-Named option contracts: [`EditHorizonOptions`](../../../../reference/types/#type-edithorizonoptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`EditHorizonOptions`](../../../../reference/types/#type-edithorizonoptions).
 
  Declared options
 
@@ -1384,7 +1393,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `groupBy` | Optional / branch-dependent | `string \| false \| undefined` |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `source` | Optional / branch-dependent | `string \| undefined` |
 | `x` | Optional / branch-dependent | `string \| HorizonXEncoding \| undefined` |
 | `y` | Optional / branch-dependent | `string \| HorizonYEncoding \| undefined` |
@@ -1417,10 +1426,10 @@ removes grouping.
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-encodeBarWidth(options?: BarWidthOptions): ChartProgram;
+encodeBarWidth(options?: TargetedOptions<BarWidthOptions>): ChartProgram;
 ```
 
-Named option contracts: [`BarWidthOptions`](../../../../reference/types/#type-barwidthoptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`BarWidthOptions`](../../../../reference/types/#type-barwidthoptions).
 
  Declared options
 
@@ -1428,7 +1437,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `band` | Optional / branch-dependent | `number \| undefined` |
 | `pixels` | Optional / branch-dependent | `number \| undefined` |
 | `interval` | Optional / branch-dependent | `{ unit: "day" \| "hour" \| "minute" \| "month" \| "quarter" \| "second" \| "year"; insetStart?: number \| undefined; insetEnd?: number \| undefined; } \| undefined` |
@@ -1456,10 +1465,10 @@ both cases. Switching width modes also refreshes shared marks and axis guides.
 **Availability:** Available by v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
-layoutSeries(options: SeriesLayoutOptions): ChartProgram;
+layoutSeries(options: TargetedOptions<SeriesLayoutOptions>): ChartProgram;
 ```
 
-Named option contracts: [`SeriesLayoutOptions`](../../../../reference/types/#type-serieslayoutoptions).
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`SeriesLayoutOptions`](../../../../reference/types/#type-serieslayoutoptions).
 
  Declared options
 
@@ -1467,7 +1476,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `mode` | Required | `ColorLayout` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.

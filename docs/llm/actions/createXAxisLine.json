@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "axes",
   "summary": "Creates x-axis line for horizontal baseline.",
-  "signature": "createXAxisLine(options?: AxisLineStyleOptions & { target?: string; scale?: string; position?: XAxisPosition }): ChartProgram;",
+  "signature": "createXAxisLine(options?: TargetedOptions<AxisLineStyleOptions & { target?: string; scale?: string; position?: XAxisPosition }>): ChartProgram;",
   "intents": [
     "create x axis line",
     "create",
@@ -85,7 +85,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "scale",

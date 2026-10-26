@@ -20,11 +20,11 @@ export const TICK_EDIT_OPTIONS = Object.freeze([
 ]);
 export const LABEL_CREATE_OPTIONS = Object.freeze([
   "scale", "coordinate", "angle", "count", "values", "offset", "format",
-  "color", "fontSize", "fontFamily", "fontWeight"
+  "color", "fontSize", "fontFamily", "fontWeight", "align"
 ]);
 export const LABEL_EDIT_OPTIONS = Object.freeze([
   "count", "values", "offset", "format", "color", "fontSize",
-  "fontFamily", "fontWeight"
+  "fontFamily", "fontWeight", "align"
 ]);
 const THETA_LABEL_CREATE_OPTIONS = Object.freeze([
   ...LABEL_CREATE_OPTIONS,
@@ -44,10 +44,10 @@ export function labelEditOptions(kind) {
 }
 export const TITLE_CREATE_OPTIONS = Object.freeze([
   "scale", "coordinate", "angle", "text", "offset", "color", "fontSize",
-  "fontFamily", "fontWeight", "position"
+  "fontFamily", "fontWeight", "align", "position"
 ]);
 export const TITLE_EDIT_OPTIONS = Object.freeze([
-  "text", "offset", "color", "fontSize", "fontFamily", "fontWeight",
+  "text", "offset", "color", "fontSize", "fontFamily", "fontWeight", "align",
   "position"
 ]);
 

@@ -4,7 +4,7 @@
   "layer": "advanced",
   "domain": "mark-selection",
   "summary": "Replace the complete selector while preserving the stored selection ID and mark target.",
-  "signature": "editMarkSelection(options: EditMarkSelectionOptions): ChartProgram;",
+  "signature": "editMarkSelection(options: TargetedOptions<EditMarkSelectionOptions>): ChartProgram;",
   "intents": [
     "edit mark selection",
     "edit",
@@ -22,7 +22,8 @@
     ],
     "owns": [],
     "idOptions": [
-      "selection"
+      "selection",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -49,6 +50,10 @@
   "inference": [
     {
       "input": "selection",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     }
   ],
@@ -130,6 +135,11 @@
       "name": "ties",
       "required": false,
       "type": "\"all\" | \"first\" | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [

@@ -1,0 +1,9 @@
+export type CreateOverlayOptions = {
+  id?: string;
+  source?: string;
+  basis?: "visibleItems";
+  series?: "source" | "total";
+  missing?: "break" | "connect";
+  orderBy?: "x" | "y";
+} & ({ type?: "line"; line?: OverlayLineAppearance; point?: never } |
+  { type: "point"; point?: OverlayPointAppearance; line?: never });

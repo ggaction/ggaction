@@ -325,6 +325,7 @@ export function resolveScaleMaterialization(options) {
   const binnedDomain = isDiscretizedColor
     ? undefined
     : resolveBinnedPositionDomain({
+        program: options.program,
         valuesByConsumer,
         channel,
         scale,
@@ -334,6 +335,7 @@ export function resolveScaleMaterialization(options) {
   const seriesDomain = isDiscretizedColor || binnedDomain !== undefined
     ? undefined
     : resolveSeriesLayoutDomain({
+        program: options.program,
         id,
         scale,
         valuesByConsumer,

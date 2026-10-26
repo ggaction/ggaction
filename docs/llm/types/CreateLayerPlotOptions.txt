@@ -1,0 +1,6 @@
+export interface CreateLayerPlotOptions {
+  id?: string;
+  source?: string;
+  plot: LayerPlotSpecification;
+  placement?: "front" | "back";
+}

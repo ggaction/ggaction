@@ -91,3 +91,13 @@ export function resolveDisplayLabelColor(value, map, fallback) {
   const entry = map?.find(entry => sameDisplayLabelValue(entry.value, value));
   return entry?.color ?? fallback;
 }
+
+export function normalizeLegendDisplayLabelMap(descriptor, map, scaleType) {
+  if (["size", "colorSize"].includes(descriptor.kind) && descriptor.family === "sampled") {
+    return normalizeNumericDisplayLabelMap(map, "editLegendBlock labelMap");
+  }
+  if (descriptor.family !== "categorical" && !(descriptor.family === "discrete-size" && scaleType === "ordinal")) {
+    throw new Error("editLegendBlock labelMap requires a categorical or continuous size block.");
+  }
+  return normalizeDisplayLabelMap(map, "editLegendBlock labelMap");
+}

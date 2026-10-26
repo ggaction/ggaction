@@ -57,13 +57,15 @@ can defer roles, so merely calling them does not necessarily produce a complete 
 | Pre-gridded cells or two raw quantitative fields for rectangular bins | [`createHeatmap`](../../../reference/actions/charts-data/#createheatmap) | default, basic | Refine the owned marks, encodings, or guides |
 | Ordered quantitative/temporal x and foldable quantitative y | [`createHorizonPlot`](../../../reference/actions/statistics/#createhorizonplot) | default | [`editHorizon`](../../../reference/actions/encodings/#edithorizon) · [`editAreaMark`](../../../reference/actions/marks/#editareamark) |
 
-## Repeated chart structure
+## Multiple views
 
 | Task / input | Chart action | Package entry | Direct editor |
 | --- | --- | --- | --- |
 | One complete chart and an eligible shared ancestor field | [`facet`](../../../reference/actions/charts-data/#facet) | default | [`editFacetSource`](../../../reference/actions/charts-data/#editfacetsource) · [`editFacetHeaders`](../../../reference/actions/charts-data/#editfacetheaders) · [`editFacetScales`](../../../reference/actions/charts-data/#editfacetscales) · [`editFacetGuides`](../../../reference/actions/charts-data/#editfacetguides) · [`editCompositionLayout`](../../../reference/actions/charts-data/#editcompositionlayout) |
 | One complete chart plus row and column fields | [`facetGrid`](../../../reference/actions/charts-data/#facetgrid) | default | [`editFacetSource`](../../../reference/actions/charts-data/#editfacetsource) · [`editFacetHeaders`](../../../reference/actions/charts-data/#editfacetheaders) · [`editFacetScales`](../../../reference/actions/charts-data/#editfacetscales) · [`editFacetGuides`](../../../reference/actions/charts-data/#editfacetguides) · [`editCompositionLayout`](../../../reference/actions/charts-data/#editcompositionlayout) |
 | One eligible mark role and an ordered field list | [`repeatCharts`](../../../reference/actions/charts-data/#repeatcharts) | default | [`editFacetSource`](../../../reference/actions/charts-data/#editfacetsource) · [`editFacetHeaders`](../../../reference/actions/charts-data/#editfacetheaders) · [`editFacetScales`](../../../reference/actions/charts-data/#editfacetscales) · [`editFacetGuides`](../../../reference/actions/charts-data/#editfacetguides) · [`editCompositionLayout`](../../../reference/actions/charts-data/#editcompositionlayout) |
+| One complete chart plus a new independent chart; explicit shared scales and aligned plot frames | [`createAdjacentPlot`](../../../reference/actions/charts-data/#createadjacentplot) | default | [`editCompositionLayout`](../../../reference/actions/charts-data/#editcompositionlayout) · [`editCompositionScales`](../../../reference/actions/charts-data/#editcompositionscales) · [`replaceCompositionChild`](../../../reference/actions/charts-data/#replacecompositionchild) |
+| Independent native plot on compatible existing coordinates and measurement units | [`createLayerPlot`](../../../reference/actions/charts-data/#createlayerplot) | default | [`encodeColor`](../../../reference/actions/encodings/#encodecolor) · [`encodeOpacity`](../../../reference/actions/encodings/#encodeopacity) · [`removeMark`](../../../reference/actions/marks/#removemark) |
 
 ## Compose or refine
 

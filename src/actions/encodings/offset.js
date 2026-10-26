@@ -1,3 +1,4 @@
+import { assertIndependentOverlayGeometry } from "../../grammar/overlay.js";
 import { inferSeriesGroup } from "./shared.js";
 import { findSemanticScale } from "../../selectors/scales.js";
 import { action } from "../../core/action.js";
@@ -41,6 +42,7 @@ function createOffsetEncoding(channel) {
         ["bar", "point", "rule"],
         "offset-compatible mark"
       );
+      assertIndependentOverlayGeometry(layer, operation);
       const dataset = applyRequestedItemMissingPolicy(layer, sourceDataset, args.field);
 
       if (layer.mark.type === "bar") {

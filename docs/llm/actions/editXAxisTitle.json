@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "axes",
   "summary": "Edits x-axis title, including settings for horizontal field title.",
-  "signature": "editXAxisTitle(options?: Omit<AxisTitleOptions<XAxisPosition>, \"scale\">): ChartProgram;",
+  "signature": "editXAxisTitle(options?: TargetedOptions<Omit<AxisTitleOptions<XAxisPosition>, \"scale\">>): ChartProgram;",
   "intents": [
     "edit x axis title",
     "edit",
@@ -80,7 +80,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "alongOffset",

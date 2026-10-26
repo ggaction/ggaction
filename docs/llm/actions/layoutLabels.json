@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "marks",
   "summary": "Assign deterministic collision-aware placement to one complete text mark.",
-  "signature": "layoutLabels(options?: LabelLayoutOptions): ChartProgram;",
+  "signature": "layoutLabels(options?: TargetedOptions<LabelLayoutOptions>): ChartProgram;",
   "intents": [
     "layout labels",
     "layout",
@@ -62,7 +62,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "axis",

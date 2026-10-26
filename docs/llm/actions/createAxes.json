@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "axes",
   "summary": "Create Cartesian or Polar axes directly, including inferred titles and ticks.",
-  "signature": "createAxes(options?: CreateAxesOptions): ChartProgram;",
+  "signature": "createAxes(options?: TargetedOptions<CreateAxesOptions>): ChartProgram;",
   "intents": [
     "create axes",
     "create",
@@ -23,7 +23,8 @@
       "x and y axes"
     ],
     "idOptions": [
-      "coordinate"
+      "coordinate",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -54,6 +55,10 @@
     {
       "input": "coordinate",
       "strategy": "documented-auto"
+    },
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
     },
     {
       "input": "omitted optional options",
@@ -92,10 +97,15 @@
       "name": "radius",
       "required": false,
       "type": "false | CompleteRadialAxisOptions | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "createAxes({ coordinate?, x?, y?, theta?, radius? })"
+    "createAxes({ coordinate?, target?, x?, y?, theta?, radius? })"
   ],
   "snippet": "program.createAxes({})",
   "errors": [],

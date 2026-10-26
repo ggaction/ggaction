@@ -1,3 +1,6 @@
+import { alignLegendLabels } from "../../../../layout/legendText.js";
+import { inferBin2DFieldTitle } from '../../../../grammar/bin2d.js';
+import { findDataset } from '../../../../selectors/datasets.js';
 import{validateLegendClip}from"../../../../grammar/legendClip.js";
 import{hasLegendClipGraphics}from"../../../../materialization/legendClip.js";
 import { normalizeColorSymbols, resolveColorSymbolsLayout, materializeColorSymbols } from "./colorSymbols.js";
@@ -5,7 +8,7 @@ import { alignLegendTitle, resolveLegendTitleText } from "../../../../layout/leg
 import {resolveLegendContentSpacing} from "../../../../layout/legendSpacing.js";
 import {validateLegendSpacing} from "../../../../grammar/legendSpacing.js";
 import { intrinsicLegendConfig } from "../../../../materialization/legendGroups.js";
-import { mapContinuousScaleValues, transformedTicks } from "../../../../grammar/scales/index.js";
+import { mapContinuousScaleValues, sampleSymlogValues, transformedTicks } from "../../../../grammar/scales/index.js";
 import { action, closedAction } from "../../../../core/action.js";
 import { isPlainObject } from "../../../../core/immutable.js";
 import { normalizeLegendGradient, DEFAULT_LEGEND_GRADIENT } from "../../../../grammar/legendGradient.js";
@@ -32,6 +35,22 @@ import { resolveEffectiveLegendBlockConfig } from "../blocks.js";
 import { readLegendSampling, validateSamplingAgainstScale } from "../sampling.js";
 
 export const DEFAULT_GRADIENT_SIZE = DEFAULT_LEGEND_GRADIENT;
+
+function automaticTickIndices(bounds, values, vertical) {
+  const start = vertical ? "top" : "left";
+  const end = vertical ? "bottom" : "right";
+  const selected = [];
+  // Keep the extent and zero before optional intermediate ticks. Authored
+  // exact values bypass this selection, including intentional close labels.
+  const priority = new Set([0, values.length - 1, values.indexOf(0),
+    ...values.map((_, index) => index)]);
+  for (const index of priority) {
+    if (index < 0) continue;
+    if (selected.every(other => bounds[index][end] + 4 <= bounds[other][start] ||
+      bounds[other][end] + 4 <= bounds[index][start])) selected.push(index);
+  }
+  return selected.sort((a, b) => a - b);
+}
 
 export function resolveGradientLayout(program, config, scale, label = "Gradient legend", stripStrokeWidth = 0) {
   validateLegendClip("gradient",config);
@@ -77,7 +96,8 @@ export function resolveGradientLayout(program, config, scale, label = "Gradient 
   const transformed = ["log", "pow", "sqrt", "symlog"].includes(scale.type);
   const sampling = validateSamplingAgainstScale(readLegendSampling(config), scale, label);
   const exact = sampling.mode === "values";
-  const values = exact ? [...sampling.values] : transformed
+  let values = exact ? [...sampling.values] : scale.type === "symlog"
+    ? sampleSymlogValues(scale.domain, config.count, { constant: scale.constant }) : transformed
     ? transformedTicks(scale.type, scale.domain, config.count,
         scale.type === "log" ? {base: scale.base}
           : scale.type === "pow" ? {exponent: scale.exponent}
@@ -87,7 +107,7 @@ export function resolveGradientLayout(program, config, scale, label = "Gradient 
     values.push(scale.midpoint);
     values.sort((a, b) => scale.domain[1] > scale.domain[0] ? a - b : b - a);
   }
-  const texts = formatContinuousValues(
+  let texts = formatContinuousValues(
     values,
     scale.domain,
     config.fieldType,
@@ -110,6 +130,14 @@ export function resolveGradientLayout(program, config, scale, label = "Gradient 
         y: y + thickness + labelOffset + config.labels.fontSize / 2,
         align: "center"
       }));
+  if (!exact && transformed) {
+    const bounds = labels.map((label, index) => resolveLegendTextBounds(
+      label, texts[index], config.labels, program.materializationConfigs.textMetrics));
+    const indices = automaticTickIndices(bounds, values, vertical);
+    values = indices.map(index => values[index]);
+    texts = indices.map(index => texts[index]);
+    labels = indices.map(index => labels[index]);
+  }
   let ticks = vertical
     ? labels.map(label => ({
         x1: config.position === "left" ? x : x + thickness,
@@ -135,6 +163,7 @@ export function resolveGradientLayout(program, config, scale, label = "Gradient 
     top: Math.min(tick.y1, tick.y2) - 0.5,
     bottom: Math.max(tick.y1, tick.y2) + 0.5
   }));
+  labels = alignLegendLabels(labels, texts, config.labels, program.materializationConfigs.textMetrics);
   const labelBounds = labels.map((label, index) =>
     resolveLegendTextBounds(label, texts[index], config.labels, program.materializationConfigs.textMetrics)
   );
@@ -195,6 +224,10 @@ export function resolveGradientConfig(program, config, channel = "color") {
     encoding.scale,
     "sequential"
   );
+  const binOwner = Object.entries(program.materializationConfigs.data?.bin2d ?? {})
+    .find(([, config]) => config.current === layer.data)?.[0] ?? layer.data;
+  const binTransform = findDataset(program, layer.data)?.transform?.find(transform => transform.type === 'bin2d');
+  const inferredTitle = inferBin2DFieldTitle(binTransform, binOwner, encoding.field);
   return {
     layer,
     encoding,
@@ -204,7 +237,7 @@ export function resolveGradientConfig(program, config, channel = "color") {
       target: layer.id,
       scale: encoding.scale,
       fieldType: encoding.fieldType,
-      title: config.inferredTitle ? encoding.field : config.title,
+      title: config.inferredTitle ? inferredTitle : config.title,
       domain: scale.domain
     }
   };

@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "core",
   "summary": "Revise a standalone statistics owner's linear fit source and replay its consumers atomically.",
-  "signature": "editRegressionStatisticsData(options?: EditRegressionStatisticsDataOptions): ChartProgram;",
+  "signature": "editRegressionStatisticsData(options?: TargetedOptions<EditRegressionStatisticsDataOptions>): ChartProgram;",
   "intents": [
     "edit regression statistics data",
     "edit",
@@ -65,7 +65,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "source",

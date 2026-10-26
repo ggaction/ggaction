@@ -57,6 +57,30 @@ assert.equal(
       "Z"
     );
   } },
+  { id: "authoring/radar-profile-summary", async run() {
+const rows = [
+  { group: "A", x: 1, y: 100, z: 2 },
+  { group: "A", x: 2, y: 200, z: 2 },
+  { group: "A", x: 9, y: 300, z: 2 },
+  { group: "B", x: 7, y: 500, z: 2 }
+];
+const mean = chart().createCanvas({ plot: { width: 240, height: 240 }, margin: 60 })
+  .createData({ id: "source", values: rows })
+  .createRadarPlot({ id: "profile", data: "source", groupBy: "group", color: "group",
+    wide: { fields: ["x", "y", "z"], summary: "mean", normalize: "minmax" }, guides: false });
+const folded = program => program.semanticSpec.datasets.find(dataset => dataset.id === program.semanticSpec.layers[0].data).values;
+assert.deepEqual(folded(mean).map(row => row.profileValue), [4, 200, 2, 7, 500, 2]);
+assert.deepEqual(folded(mean).map(row => row.profileValueNormalized), [0, 0, 0, 1, 1, 0]);
+assert.equal(mean.graphicSpec.objects.profile.items.length, 2);
+const median = mean.editRadarPlot({ target: "profile", wide: {
+  fields: ["z", "x", "y"], summary: "median", normalize: false
+} });
+assert.deepEqual(folded(median).map(row => row.profileValue), [2, 2, 200, 2, 7, 500]);
+assert.deepEqual(mean.semanticSpec.datasets.find(dataset => dataset.id === "source").values, rows);
+assert.deepEqual(deserializeProgram(serializeProgram(median)).graphicSpec, median.graphicSpec);
+assert.match(renderToSVG(median), /<svg/);
+assert.equal(createTransitionScene(median, { format: "canvas" }).version, 2);
+  } },
   { id: "authoring/entry-surface-9", async run() {
 assert.equal(basicChart().createPolarScatterPlot, undefined);
   } },

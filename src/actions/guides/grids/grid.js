@@ -1,3 +1,4 @@
+import { withGuideVisibilityPaint } from "../../../materialization/guides/visibility.js";
 import { editGraphicProperties } from "../../primitives/graphicProperties.js";
 import { action, closedAction } from "../../../core/action.js";
 import { isPlainObject } from "../../../core/immutable.js";
@@ -45,7 +46,7 @@ function makeRematerialize(direction) {
       op: operation.rematerialize,
       description: `Recompute concrete ${direction} grid lines.`
     },
-    function (args = {}) {
+    withGuideVisibilityPaint(function (args = {}) {
       noOptions(args, operation.rematerialize);
       const storedConfig = this.guideConfigs.grid?.[direction];
       const semantic = this.semanticSpec.guides.grid?.[direction];
@@ -89,7 +90,7 @@ function makeRematerialize(direction) {
           value: geometry.strokeDash
         });
       return hasPlotUnderlays(next) ? next.rematerializePlotDrawOrder() : next;
-    }
+    })
   );
 }
 

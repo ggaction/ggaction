@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "charts",
   "summary": "Create one open line path per source row across an ordered list of dimension- local scales and axes.",
-  "signature": "createParallelCoordinates(options: CreateParallelCoordinatesOptions): ChartProgram;",
+  "signature": "createParallelCoordinates(options: TargetedOptions<CreateParallelCoordinatesOptions>): ChartProgram;",
   "intents": [
     "create parallel coordinates",
     "create",
@@ -25,7 +25,8 @@
     "idOptions": [
       "id",
       "data",
-      "coordinate"
+      "coordinate",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -53,6 +54,10 @@
     },
     {
       "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -117,10 +122,15 @@
       "name": "guides",
       "required": false,
       "type": "false | ParallelGuideOptions | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "createParallelCoordinates({ dimensions, id?, data?, coordinate?, key?, missing?, color?, strokeDash? })"
+    "createParallelCoordinates({ dimensions, id?, data?, coordinate?, target?, key?, missing?, color? })"
   ],
   "snippet": "program.createParallelCoordinates({ dimensions: [\"a\", \"b\"] })",
   "errors": [],

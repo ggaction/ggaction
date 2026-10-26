@@ -27,7 +27,7 @@ import {
   resolveLegendBlock
 } from "./target.js";
 import { validateFontWeight } from "./categorical/validation.js";
-import { normalizeDisplayLabelMap, normalizeNumericDisplayLabelMap } from "../../../grammar/displayLabels.js";
+import { normalizeLegendDisplayLabelMap } from "../../../grammar/displayLabels.js";
 
 const OPTIONS = Object.freeze([
   "target", "channel", "title", "values", "count", "order", "gap", "text", "symbol",
@@ -131,21 +131,12 @@ function normalizeSymbolPatch(value, descriptor) {
   return { ...value };
 }
 
-function normalizeBlockLabelMap(descriptor, map) {
-  if (["size","colorSize"].includes(descriptor.kind) && descriptor.family === "sampled") {
-    return normalizeNumericDisplayLabelMap(map, "editLegendBlock labelMap");
-  }
-  if (descriptor.family !== "categorical") {
-    throw new Error("editLegendBlock labelMap requires a categorical or continuous size block.");
-  }
-  return normalizeDisplayLabelMap(map, "editLegendBlock labelMap");
-}
-
-export function validateLegendBlockOverride(descriptor, override) {
+export function validateLegendBlockOverride(descriptor, override, scaleType) {
+  if (override.alongOffset !== undefined && !Number.isFinite(override.alongOffset)) throw new TypeError("Legend alongOffset must be finite.");
   if (override.position !== undefined && !LEGEND_POSITIONS.includes(override.position)) throw new Error("Invalid local legend position.");
   if (override.symbol !== undefined) normalizeSymbolPatch(override.symbol, descriptor);
   if (override.labelMap !== undefined) {
-    normalizeBlockLabelMap(descriptor, override.labelMap);
+    normalizeLegendDisplayLabelMap(descriptor, override.labelMap, scaleType);
   }
   return override;
 }
@@ -191,7 +182,8 @@ export function patchLegendBlockOverride(config, key, patch) {
   }
   if (Object.hasOwn(patch, "labelMap")) entry.labelMap = patch.labelMap;
   if (Object.hasOwn(patch, "position")) entry.position = patch.position;
-  if (patch.removePosition === true) delete entry.position;
+  if (Object.hasOwn(patch, "alongOffset")) entry.alongOffset = patch.alongOffset;
+  if (patch.removePosition === true) { delete entry.position; delete entry.alongOffset; }
   if (patch.removeLabelMap === true) delete entry.labelMap;
   const blockOverrides = { ...(config.blockOverrides ?? {}) };
   if (Object.keys(entry).length === 0) delete blockOverrides[key];
@@ -342,7 +334,7 @@ function recreateSymbolGraphics(program, descriptor) {
     .createGraphics({ id: symbol.id, type: symbol.type, length: 0, ...placement });
 }
 
-function normalizeBlockPatch(args, descriptor) {
+function normalizeBlockPatch(args, descriptor, scaleType) {
   const patch = {};
   if (Object.hasOwn(args, "position")) {
     if (args.position === "inherit") patch.removePosition = true;
@@ -367,7 +359,7 @@ function normalizeBlockPatch(args, descriptor) {
   }
   if (Object.hasOwn(args, "labelMap")) {
     // Validate eligibility even for a reset, without introducing an empty map owner.
-    const map = normalizeBlockLabelMap(descriptor, args.labelMap === "auto" ? [] : args.labelMap);
+    const map = normalizeLegendDisplayLabelMap(descriptor, args.labelMap === "auto" ? [] : args.labelMap, scaleType);
     if (args.labelMap === "auto") patch.removeLabelMap = true;
     else patch.labelMap = map;
   }
@@ -396,7 +388,7 @@ export const editLegendBlock = /* @__PURE__ */ action(
       descriptor.family !== "sampled") {
       throw new Error("editLegendBlock values and count require a sampled legend block.");
     }
-    const patch = normalizeBlockPatch(args, descriptor);
+    const patch = normalizeBlockPatch(args, descriptor, this.resolvedScales[descriptor.scaleIds[0]]?.type);
     let config = Object.hasOwn(args, "clipHeight")
       ? patchLegendClipHeight(descriptor.config, args.clipHeight) : descriptor.config;
     validateLegendClip(descriptor.kind, config);

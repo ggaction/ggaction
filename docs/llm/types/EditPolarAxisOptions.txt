@@ -1,8 +1,9 @@
 export interface EditPolarAxisOptions {
+  visible?: boolean;
   angle?: number;
-  line?: false | AxisLineStyleOptions;
-  ticks?: false | PolarTickOptions;
-  labels?: false | PolarLabelOptions;
-  ticksAndLabels?: false | PolarTicksAndLabelsOptions;
-  title?: false | PolarTitleOptions;
+  line?: false | VisibleGuide<AxisLineStyleOptions>;
+  ticks?: false | VisibleGuide<PolarTickOptions>;
+  labels?: false | VisibleGuide<PolarLabelOptions>;
+  ticksAndLabels?: false | VisibleTickGroup<PolarTicksAndLabelsOptions>;
+  title?: false | VisibleGuide<PolarTitleOptions>;
 }

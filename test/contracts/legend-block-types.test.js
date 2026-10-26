@@ -27,6 +27,10 @@ declare const program: ChartProgram;
 declare const basic: BasicChartProgram;
 program.createLegend({ target: "points", at: { x: -20, y: 10 }, blockLayout: "row" });
 program.editLegend({ target: "points", position: "bottom-right", blockLayout: "column" });
+program.editLegend({ target: "points", channel: "all", position: "left" });
+program.editLegend({ target: { childPath: ["left"], id: "points" }, channel: "all", labels: { fontSize: 15 } });
+// @ts-expect-error the selector vocabulary is closed
+program.editLegend({ channel: "both", position: "left" });
 program.editLegendLayout({ target: "points", at: { x: 201, y: 79 }, blockLayout: "wrap" });
 basic.createLegend({ position: "top-left", blockLayout: "row" });
 // @ts-expect-error block layout values are closed.

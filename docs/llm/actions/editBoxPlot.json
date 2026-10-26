@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "statistics",
   "summary": "Revise box statistics, optional outlier topology, width, and component appearance through the stable box owner without addressing generated child IDs.",
-  "signature": "editBoxPlot(options: EditBoxPlotOptions): ChartProgram;",
+  "signature": "editBoxPlot(options: TargetedOptions<EditBoxPlotOptions>): ChartProgram;",
   "intents": [
     "edit box plot",
     "edit",
@@ -81,7 +81,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "data",

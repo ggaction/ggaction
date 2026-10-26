@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "statistics",
   "summary": "Create a vertical or horizontal categorical density plot from exactly one categorical and one quantitative x/y role.",
-  "signature": "createViolinPlot(options: ViolinPlotOptions): ChartProgram;",
+  "signature": "createViolinPlot(options: TargetedOptions<ViolinPlotOptions>): ChartProgram;",
   "intents": [
     "create violin plot",
     "create",
@@ -25,7 +25,8 @@
     "idOptions": [
       "id",
       "data",
-      "coordinate"
+      "coordinate",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -54,6 +55,10 @@
     },
     {
       "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -118,6 +123,11 @@
       "name": "guides",
       "required": false,
       "type": "false | CartesianCategoricalGuideOptions | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [

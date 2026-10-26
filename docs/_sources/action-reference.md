@@ -329,6 +329,52 @@ Remove the most recently applied theme scope on that receiver. Composition
 removal deletes only that composition's frame, so a previously hidden child or
 ancestor theme becomes active again. Explicit local styles remain unchanged.
 
+### `createLayerPlot`
+
+```javascript
+createLayerPlot({ id?, source?, plot: { action, options? }, placement?: "front" | "back" })
+```
+
+Add an independent native chart to the source chart's coordinates. Data and positional
+roles are inferred from the original fields, including distribution summaries. Compatible
+measurement units and named scales are shared; appearance remains independently editable.
+The entire owned mark group moves together in front of or behind the source.
+`getPlotComposition(program, { target })` from `ggaction/inspection` describes the source
+roles. Use `createOverlay` to follow already computed visible results instead.
+[Independent layers and adjacent charts](../api/composition/editing.md)
+
+### `createAdjacentPlot`
+
+```javascript
+createAdjacentPlot({ id?, source?, position?, plot?, share?, gap?, align? } = {})
+```
+
+Add an independent chart next to a unit or facet view. Placement is left, right, top or bottom.
+The default line inherits source fields, binning and aggregation; `plot: { action, options }`
+selects any built-in chart constructor. Original fields and data are inferred through each
+constructor's native positional roles; ambiguous additional fields require explicit options. `plot.options.data` selects a materialized source-view dataset;
+the adjacent view receives its own snapshot and retains the source view's materialized input
+tables, so later charts can use variables omitted from a summary. Completed-key tables retain
+their original field and aggregation meanings during inference. The top-level `id` owns its view and mark.
+Horizontal placement shares compatible Y meanings by default; vertical placement shares
+compatible X meanings. Different aggregates or coordinate families stay independent. An
+explicit `share` replaces that default and rejects incompatible meanings. `align: "plot"` matches actual plot frames without stretching text or symbols.
+Shared color legends retain their plot-relative position and offset, reusing child margins
+instead of adding another empty lane outside the child Canvases. Automatic offsets clear
+retained content; explicit offsets remain exact and reject collisions.
+[Shared scales and adjacent charts](../api/composition/editing.md)
+
+### `editCompositionScales`
+
+```javascript
+editCompositionScales({ share })
+```
+
+Update a nonempty subset of concat shared-channel policies. Boolean keys include x, y,
+color, stroke, size, shape, opacity, strokeWidth and strokeDash. Shared channels require
+compatible meaning and scale mapping. Canonical child settings remain intact; setting a
+channel false restores independent domain inference. This edit is atomic.
+
 ### `editCompositionLayout`
 
 ```javascript
@@ -820,7 +866,7 @@ open unless `line.closed: true` is explicit. [Polar positions](../api/position-e
 
 ```javascript
 createRadarPlot({ id?, data?, coordinate?, category, value, groupBy?, order?, color?, strokeDash?, line?, guides? })
-createRadarPlot({ id?, data?, coordinate?, wide: { fields, as? }, groupBy?, order?, color?, strokeDash?, line?, guides? })
+createRadarPlot({ id?, data?, coordinate?, wide: { fields, as?, summary?, normalize? }, groupBy?, order?, color?, strokeDash?, line?, guides? })
 ```
 
 Create closed Radar paths from validated long rows or an explicit wide-to-long
@@ -830,7 +876,7 @@ are used as supplied; the facade does not infer normalization. [Polar positions]
 ### `editRadarPlot`
 
 ```js
-editRadarPlot({ target?, wide: { fields } })
+editRadarPlot({ target?, wide: { fields, summary?, normalize? } })
 ```
 
 Edit the dimensions and their angular order in an existing wide Radar plot. `fields` must contain
@@ -851,7 +897,24 @@ const revised = program.editRadarPlot({
 ```
 
 Missing, duplicate or nonnumeric fields and incompatible targets reject without changing the
-previous program. Editing dimensions does not normalize values: compare columns with compatible units.
+previous program. Omitted `summary` and `normalize` preserve the existing settings. Set
+`summary: "mean"` or `"median"` to aggregate repeated rows by the existing series identity.
+Set `normalize: "minmax"` to normalize each dimension across the resulting profiles; constant
+dimensions map to zero. Set either option to `false` to return to individual observations or
+raw units (individual observations require a unique series identity). Switching normalization
+resets the radius domain to `[0, 1]` or the raw automatic extent; dimension-only edits preserve
+an explicit domain. Original source rows and original measurements remain available.
+
+```js
+const profiles = chart().createCanvas().createData({ values: [
+  { kind: "A", speed: 10, quality: 80, cost: 100 },
+  { kind: "A", speed: 20, quality: 90, cost: 200 },
+  { kind: "B", speed: 30, quality: 70, cost: 150 }
+] }).createRadarPlot({
+  wide: { fields: ["speed", "quality", "cost"], summary: "mean", normalize: "minmax" },
+  groupBy: "kind", color: "kind"
+});
+```
 
 ### `createRugPlot`
 
@@ -1128,7 +1191,10 @@ filterMarks({ target?, mode?, grain?, field | channel | property, op, ...operand
 
 Retain matching final mark items through the shared selector grammar. Repeated
 filters are idempotent when equal and use explicit `replace` or `compose` mode
-when different. Empty results preserve the preceding scale domains.
+when different. Automatic histogram position domains fit the surviving bins'
+outer edges without rebinning, preserving interior gaps and other scale consumers'
+ranges. Inferred guides follow that domain; explicit domains and zero inclusion
+remain in effect. Empty results preserve the preceding scale domains.
 An explicit Raincloud parent ID selects raw observations by `field` at item grain
 and recomputes all enabled components. It accepts comparisons, sets, ranges, and
 grouped ranks; rendered channel/property selectors still require a child ID.
@@ -1581,6 +1647,22 @@ Global `cornerRadius` and per-corner `cornerRadiusTopLeft`, `cornerRadiusTopRigh
 Each corner override wins over the global fallback and clamps to half the smaller item side.
 Omitted corners fall back to the global radius or zero; edits retain unspecified overrides.
 
+### `createOverlay`
+
+```javascript
+createOverlay({ id?, source?, type?, basis?, series?, missing?, orderBy?, line?, point? } = {})
+```
+
+Add a line or point layer that follows a source mark's visible results. Bar overlays connect actual bar endpoints after aggregation, binning, grouping or stacking. `type` defaults to `line`; `series` defaults to `source`. Use `series: "total"` for the outer endpoints of stacked bars. Connecting a scatterplot requires `orderBy: "x"` or `"y"`. Appearance remains independently editable through ordinary encoding and mark actions. Inherited source colors stop following when the overlay receives an explicit color assignment.
+
+### `editOverlay`
+
+```javascript
+editOverlay({ target?, source?, series?, missing?, orderBy?, follow? })
+```
+
+Change an overlay's dependency or gap policy. `follow: false` freezes current result geometry as an independent, normalized plot snapshot; it cannot be combined with other edits. Edit the source to change a following overlay's positions. Ordinary mark and encoding actions change its appearance.
+
 ### `createStatisticalReference`
 
 ```javascript
@@ -1736,7 +1818,9 @@ scales with domain `[0,1]`. The default ID is `annotation`.
 `anchor: "plot-center"` supplies plot x/y=0.5, horizontal center alignment, and
 middle baseline together. It rejects `x`, `y`, `space`, `source`, `align`, and
 `baseline`; optional data, coordinate, styles, and offsets follow the plot branch.
-The anchor follows plot bounds on Canvas and margin changes.
+The anchor follows plot bounds on Canvas and margin changes. Plot-anchored notes
+can accompany polar and parallel-coordinate charts, including facets. Keep the
+note in its Cartesian plot frame by omitting the chart's polar/parallel coordinate.
 
 Omit `layout` or pass `false` to retain the exact anchor. A layout object accepts
 `layoutLabels` options except `target`. Later changes use `encodeText`, `encodeX/Y`,
@@ -2585,6 +2669,8 @@ and rederives its panels while preserving the parent title and guide policy.
 
 ### `editAxes`
 
+Complete axis editors accept `visible: false` to hide an axis without removing its style. Use `labels: { visible: false }`, `line: { visible: false }`, `ticks: { visible: false }` or `title: { visible: false }` for individual components. `ticksAndLabels` also accepts visibility on its `ticks` and `labels` children. Set the same flag to `true` to restore it. Flags are independent and retained through automatic guides and resizing; relative-anchor geometry stays stable.
+
 ```js
 editAxes({ x?, y?, theta?, radius?, parallel? })
 ```
@@ -2833,7 +2919,7 @@ Edit the existing radial grid. [Grids](../api/grids.md#editing-grids)
 
 ```javascript
 createLegend({
-  target?, channels?, position?, layout?, align?, direction?, columns?, offset?,
+  target?, channels?, position?, layout?, align?, direction?, columns?, offset?, alongOffset?,
   titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, rowPadding?, titlePadding?, border?, count?,
   values?, gradient?, order?
 })
@@ -2849,6 +2935,10 @@ Compatible point and line categorical channels stay combined when their domains
 contain the same values, even in different orders. The first selected channel
 owns item order; each symbol still looks up its own scale by value. Independent fields,
 continuous color/stroke, opacity, and stroke width use separate native blocks.
+Adding a new dash channel to an existing color-only line legend preserves its
+appearance. A matching field extends the combined series legend; a different
+field creates a separate dash legend and retains the color block. Repeating an
+already-created channel remains an error.
 Area fill and stroke are independently selectable blocks, including stroke-only
 legends for density and horizon areas.
 For outside top/bottom legends, omitting `offset` places the occupied legend after
@@ -2858,6 +2948,9 @@ removal recompute that gap. An explicit numeric `offset`, including zero or the
 native value, remains measured from the plot edge. Free coordinates, plot corners,
 and `legacy-bottom` keep their existing anchors. Older saved programs retain
 their fixed offsets.
+Label style accepts `align: "left" | "center" | "right"` within each measured
+label column. Symbols, ticks and titles retain their existing slots. All legend
+families support it on create/edit and replay; omission preserves native defaults.
 Top-title style accepts `align: "left" | "center" | "right"` within the
 measured title/body content block. This applies to every legend family; omission
 preserves each layout's current alignment. It does not move the complete group,
@@ -2923,15 +3016,19 @@ Continuous and combined sampled legends retain their existing edge-only contract
 
 ### `editLegend`
 
+Use `visible: false` to hide the complete legend, `labels: { visible: false }` to hide entry labels, and `titleStyle: { visible: false }` to hide its title. Set each flag to `true` to restore it. Visibility preserves appearance and layout, remains independent for each component, and survives automatic guide generation, resizing and saved projects.
+
 ```javascript
 editLegend({
-  target?, channel?, channels?, position?, layout?, align?, direction?, columns?, offset?, titlePosition?,
+  target?, channel?, channels?, position?, layout?, align?, direction?, columns?, offset?, alongOffset?, titlePosition?,
   title?, symbol?, labels?, titleStyle?, itemGap?, rowPadding?, titlePadding?, border?, count?, values?, gradient?, order?, overflow?
 })
 ```
 
-Singular `channel` selects one existing block without changing sibling typography. It cannot
+Select one legend block or all existing blocks together. `channel: "all"` reunites local placements on a position change and applies shared appearance to every block; omitted appearance is preserved. A singular channel cannot
 accompany `channels`, `blockLayout`, or `at`. A channel never disambiguates mark targets.
+
+`alongOffset` is a finite signed distance in logical pixels, defaulting to zero: positive moves right on top/bottom (and in-plot corner) anchors, or down on left/right anchors. `offset` keeps its perpendicular gap meaning. Omitted edits preserve the shift; zero resets it. With `channel`, only that block moves; without it, the target’s grouped blocks move together. `position: "inherit"` clears a selected block’s local anchor and shift. `at` cannot accompany edge placement options, including `alongOffset`. Existing fit and collision checks still apply.
 
 `rowPadding` and `titlePadding` accept numbers or `"auto"` to remove retained intent; omission or undefined preserves it. Explicit row spacing wins over vertical itemGap/block gap while retaining the old fallback and horizontal spacing. Explicit title spacing wins over the old title gap. Reset row padding before a transition to a gradient. Combining conflicting policies requires an explicit choice; incompatible splits require explicit reset. Content and Canvas/data/scale/theme/facet replay retain compatible policies.
 
@@ -2988,7 +3085,7 @@ numeric keys only; unmatched samples keep their normal formatter. `"auto"` remov
 
 ```javascript
 editLegendLayout({
-  target?, channel?, position?, layout?, align?, direction?, columns?, offset?,
+  target?, channel?, position?, layout?, align?, direction?, columns?, offset?, alongOffset?,
   titlePosition?, itemGap?, rowPadding?, titlePadding?
 })
 editLegendLabels({ target?, channel?, offset?, color?, fontSize?, fontFamily?, fontWeight?, format? })
@@ -3009,7 +3106,7 @@ rematerialization as `editLegend`. At least one component change is required.
 ### `removeLegend`
 
 ```javascript
-removeLegend({ target?, channels? })
+removeLegend({ target?, channels?, suppress? })
 ```
 
 Remove every legend block owned by one mark when `channels` is omitted, or
@@ -3026,6 +3123,11 @@ createTitle({
   titleStyle?, subtitleStyle?
 })
 ```
+
+`titleStyle.align` and `subtitleStyle.align` accept `"left" | "center" | "right"`
+independently inside the measured title block, including rotated edge titles.
+The top-level `align` still positions the complete block relative to the plot.
+Omission preserves native defaults.
 
 Create a chart title and optional subtitle. Explicit newlines retain their line
 spacing; blank lines reserve space without painted text. Each string requires
@@ -3323,6 +3425,8 @@ requires a valid final layout. The same policy applies when labels are edited
 after the title and through Canvas, scale, data, facet and saved-program replay.
 
 ### Directional grids
+
+Each direction accepts `visible: false` to hide its grid without losing width, dash or color. `visible: true` restores the retained appearance. The focused Cartesian and Polar grid editors accept the same option.
 
 ```javascript
 createHorizontalGrid({ scale?, coordinate?, count?, values?, color?, lineWidth?, strokeDash?, alongOffset? })

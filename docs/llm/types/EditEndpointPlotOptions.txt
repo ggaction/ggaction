@@ -1,6 +1,6 @@
 export type EditEndpointPlotOptions = { target?: string } & Partial<Pick<
   CreateDumbbellPlotOptions,
-  "data" | "coordinate" | "category" | "start" | "end" | "orientation" | "summary"
+  "data" | "coordinate" | "category" | "start" | "end" | "orientation" | "summary" | "missing"
 >> & {
   value?: EndpointValueChannel;
   baseline?: number;

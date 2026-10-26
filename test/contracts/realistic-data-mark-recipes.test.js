@@ -158,6 +158,7 @@ function runDensitySweepInDisposableProcess() {
   const child = spawnSync(process.execPath, [
     "--expose-gc",
     "--max-old-space-size=288",
+    "--max-semi-space-size=8",
     "--test",
     `--test-name-pattern=^${DENSITY_SWEEP_TEST_NAME}$`,
     fileURLToPath(import.meta.url)
@@ -704,7 +705,7 @@ test(DENSITY_SWEEP_TEST_NAME, () => {
   assert.ok(maximumWidth <= 5_000, { maximumWidth });
   assert.ok(maximumSvgBytes < 200_000, { maximumSvgBytes });
   const maxRssKiB = process.resourceUsage().maxRSS;
-  assert.ok(maxRssKiB < MAX_DISPOSABLE_SWEEP_RSS_KIB, { maxRssKiB });
+  assert.ok(maxRssKiB < MAX_DISPOSABLE_SWEEP_RSS_KIB, JSON.stringify({ maxRssKiB }));
   console.log(`${DENSITY_SWEEP_RESOURCE_PREFIX}${JSON.stringify({
     eligibleDatasets,
     fieldPairs,
@@ -890,7 +891,9 @@ test("directly covers every newly targeted action option and broad maximal paths
   );
 
   const newActionOptions = inventory.optionPaths.filter(option =>
-    option.required && NEW_DIRECT_ACTIONS.includes(option.action)
+    option.required && NEW_DIRECT_ACTIONS.includes(option.action) &&
+    // Nested routing is covered by realistic-scoped-composition.test.js.
+    !option.path.startsWith("target.")
   );
   assert.equal(newActionOptions.length, 65);
   assert.deepEqual(

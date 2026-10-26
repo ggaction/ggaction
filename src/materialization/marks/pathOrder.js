@@ -56,7 +56,7 @@ export function pathOrderCompatibility(program, layer) {
       reason: "does not support generated error or regression paths"
     };
   }
-  if (layer.mark.type === "line" && isAggregate(layer.encoding?.y?.aggregate)) {
+  if (layer.mark.type === "line" && (isAggregate(layer.encoding?.y?.aggregate) || isAggregate(layer.encoding?.x?.aggregate))) {
     return { compatible: false, reason: "does not support aggregate lines" };
   }
   return { compatible: true, dataset };

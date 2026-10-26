@@ -41,7 +41,13 @@ export function inferHistogramBoundaries(program, channel, scaleId) {
     values.some((value, index) => value !== unique[index]))) {
     throw new Error(`Guide values cannot infer shared histogram bins for scale "${scaleId}".`);
   }
-  return unique;
+  const domain = program.resolvedScales[scaleId]?.domain;
+  // Retained histogram bins can extend beyond an auto domain after filtering.
+  // Inferred guides follow the displayed interval; user-specified tick values
+  // still use the normal strict validation path.
+  if (domain === undefined) return unique;
+  const minimum = Math.min(...domain), maximum = Math.max(...domain);
+  return unique.filter(value => value >= minimum && value <= maximum);
 }
 
 export function valuesFromTickConfig(program, config) {

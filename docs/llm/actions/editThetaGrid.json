@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "grid",
   "summary": "Edit the existing theta grid.",
-  "signature": "editThetaGrid(options: EditPolarGridOptions): ChartProgram;",
+  "signature": "editThetaGrid(options: TargetedOptions<EditPolarGridOptions>): ChartProgram;",
   "intents": [
     "edit theta grid",
     "edit",
@@ -21,7 +21,9 @@
       "compatible scale or encoding context"
     ],
     "owns": [],
-    "idOptions": []
+    "idOptions": [
+      "target"
+    ]
   },
   "authoringRoles": [
     "H3"
@@ -45,7 +47,12 @@
       "unit": "logical-pixel"
     }
   ],
-  "inference": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
   "completionRequirements": {
     "state": "contextual",
     "requires": [
@@ -55,6 +62,11 @@
     "allowsEmpty": false
   },
   "options": [
+    {
+      "name": "visible",
+      "required": false,
+      "type": "boolean | undefined"
+    },
     {
       "name": "count",
       "required": false,
@@ -79,12 +91,17 @@
       "name": "strokeDash",
       "required": false,
       "type": "readonly number[] | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "editThetaGrid({ count?, values?, color?, lineWidth?, strokeDash? })"
+    "editThetaGrid({ target?, visible?, count?, values?, color?, lineWidth?, strokeDash? })"
   ],
-  "snippet": "program.editThetaGrid({ count: 5 })",
+  "snippet": "program.editThetaGrid({ visible: true })",
   "errors": [],
   "route": "/reference/actions/guides/#editthetagrid"
 }

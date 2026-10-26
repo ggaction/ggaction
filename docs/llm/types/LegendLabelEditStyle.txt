@@ -1,0 +1,1 @@
+export interface LegendLabelEditStyle extends LegendTextOptions { visible?: boolean; }

@@ -1,0 +1,4 @@
+export interface CompositionShares {
+  x?: boolean; y?: boolean; color?: boolean; stroke?: boolean; size?: boolean; shape?: boolean;
+  opacity?: boolean; strokeWidth?: boolean; strokeDash?: boolean;
+}

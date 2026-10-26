@@ -2819,5 +2819,19 @@
     "mode": "contextual-fragment",
     "owner": "docs/tutorials/scatterplot.md",
     "reason": "Not a standalone executable contract. Requires the imports, resource state, and branch in \"Continuous appearance variants\" on docs/tutorials/scatterplot.md. Review this context when editing; register a fixture in snippet_cases.json to claim execution coverage."
+  },
+  {
+    "id": "docs/supported-features.md#individual-display-text:1",
+    "sha256": "2e63f1268c8ae5ac99066216941b7530df934bdddd273074b8e00bc39cc29843",
+    "mode": "contextual-fragment",
+    "owner": "docs/supported-features.md",
+    "reason": "Requires an existing parallel-coordinate program with a categorical region axis and target plot. This display-text API fragment does not supply chart construction or input data."
+  },
+  {
+    "id": "docs/supported-features.md#individual-display-text:2",
+    "sha256": "bf307af64367c1fa97941c370fa1189c75a6caace72f3551454d6e2030394a62",
+    "mode": "contextual-fragment",
+    "owner": "docs/supported-features.md",
+    "reason": "Requires an existing labels text mark whose items retain region and sales fields. This edit fragment illustrates semantic item identity without supplying the source chart or label creation."
   }
 ]

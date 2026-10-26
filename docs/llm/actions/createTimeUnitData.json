@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "core",
   "summary": "Create an immutable row-preserving dataset with one UTC or IANA-zone calendar bucket timestamp, including week, or a nominal local weekday field.",
-  "signature": "createTimeUnitData(options: TimeUnitDataOptions): ChartProgram;",
+  "signature": "createTimeUnitData(options: TargetedOptions<TimeUnitDataOptions>): ChartProgram;",
   "intents": [
     "create time unit data",
     "create",
@@ -24,7 +24,8 @@
     ],
     "idOptions": [
       "id",
-      "source"
+      "source",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -54,6 +55,10 @@
   "inference": [
     {
       "input": "source",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -118,10 +123,15 @@
       "name": "weekRule",
       "required": false,
       "type": "\"calendar\" | \"iso\" | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "createTimeUnitData({ id, field, unit, source?, missing?, temporalUnit?, as?, timeZone? })"
+    "createTimeUnitData({ id, field, unit, source?, target?, missing?, temporalUnit?, as? })"
   ],
   "snippet": "program.createTimeUnitData({ id: \"time-unit-data-1\", field: \"value\", unit: \"month\" })",
   "errors": [],

@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "legend_and_title",
   "summary": "Partially edit the existing title.",
-  "signature": "editTitle(options: EditTitleOptions): ChartProgram;",
+  "signature": "editTitle(options: TargetedOptions<EditTitleOptions>): ChartProgram;",
   "intents": [
     "edit title",
     "edit",
@@ -20,7 +20,9 @@
       "existing chart title"
     ],
     "owns": [],
-    "idOptions": []
+    "idOptions": [
+      "target"
+    ]
   },
   "authoringRoles": [
     "H3"
@@ -54,7 +56,12 @@
       "unit": "logical-pixel"
     }
   ],
-  "inference": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
   "completionRequirements": {
     "state": "contextual",
     "requires": [
@@ -127,10 +134,15 @@
       "name": "subtitleStyle",
       "required": false,
       "type": "TitleTextStyleOptions | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "editTitle({ text?, subtitle?, position?, align?, offset?, alongOffset?, gap?, maxWidth? })"
+    "editTitle({ target?, text?, subtitle?, position?, align?, offset?, alongOffset?, gap? })"
   ],
   "snippet": "program.editTitle({ text: \"Chart title\" })",
   "errors": [],

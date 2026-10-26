@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "axes",
   "summary": "Edits y-axis ticks, including settings for vertical tick marks.",
-  "signature": "editYAxisTicks(options?: Omit<AxisTickOptions<YAxisPosition>, \"scale\">): ChartProgram;",
+  "signature": "editYAxisTicks(options?: TargetedOptions<Omit<AxisTickOptions<YAxisPosition>, \"scale\">>): ChartProgram;",
   "intents": [
     "edit y axis ticks",
     "edit",
@@ -109,7 +109,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "position",

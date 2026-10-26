@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "encodings",
   "summary": "Create or replace nominal/ordinal line-series or rule dash patterns, or apply one constant named/direct pattern.",
-  "signature": "encodeStrokeDash(options: StrokeDashEncodingOptions): ChartProgram;",
+  "signature": "encodeStrokeDash(options: TargetedOptions<StrokeDashEncodingOptions>): ChartProgram;",
   "intents": [
     "encode stroke dash",
     "encode",
@@ -77,7 +77,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "fieldType",

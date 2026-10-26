@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "charts",
   "summary": "Draws a complete Polar scatter plot that maps observations to angular and radial position while keeping glyph size independent.",
-  "signature": "createPolarScatterPlot(options: CreatePolarScatterPlotOptions): ChartProgram;",
+  "signature": "createPolarScatterPlot(options: TargetedOptions<CreatePolarScatterPlotOptions>): ChartProgram;",
   "intents": [
     "create polar scatter plot",
     "create",
@@ -25,7 +25,8 @@
     "idOptions": [
       "id",
       "data",
-      "coordinate"
+      "coordinate",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -51,6 +52,10 @@
     },
     {
       "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -115,6 +120,11 @@
       "name": "guides",
       "required": false,
       "type": "false | PolarPointGuideOptions | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [

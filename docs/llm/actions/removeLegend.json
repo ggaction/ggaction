@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "legend_and_title",
   "summary": "Remove every legend block owned by one mark when channels is omitted, or remove selected channels while preserving mark encodings, scales, and unrelated blocks.",
-  "signature": "removeLegend(options?: RemoveLegendOptions): ChartProgram;",
+  "signature": "removeLegend(options?: TargetedOptions<RemoveLegendOptions>): ChartProgram;",
   "intents": [
     "remove legend",
     "remove",
@@ -57,16 +57,21 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "channels",
       "required": false,
       "type": "readonly (\"color\" | \"opacity\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\")[] | undefined"
+    },
+    {
+      "name": "suppress",
+      "required": false,
+      "type": "boolean | undefined"
     }
   ],
   "callPatterns": [
-    "removeLegend({ target?, channels? })"
+    "removeLegend({ target?, channels?, suppress? })"
   ],
   "snippet": "program.removeLegend({})",
   "errors": [],

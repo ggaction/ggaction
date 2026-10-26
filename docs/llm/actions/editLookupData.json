@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "statistics",
   "summary": "Edits named table lookup, including settings for copy reference fields.",
-  "signature": "editLookupData(options: EditLookupDataOptions): ChartProgram;",
+  "signature": "editLookupData(options: TargetedOptions<EditLookupDataOptions>): ChartProgram;",
   "intents": [
     "edit lookup data",
     "edit",
@@ -59,7 +59,7 @@
     {
       "name": "target",
       "required": true,
-      "type": "string"
+      "type": "string | ActionTargetList | ScopedActionTarget"
     },
     {
       "name": "dependents",

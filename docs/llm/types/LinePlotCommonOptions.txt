@@ -1,0 +1,18 @@
+interface LinePlotCommonOptions {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  color?: LineCategoricalColorChannel<CategoricalColorScaleOptions>;
+  groupBy?: string | readonly [string, ...string[]];
+  strokeDash?: BasicStrokeDashChannel;
+  line?: StrokeStyleDetails & {
+    clip?: boolean;
+    missing?: "error" | "break";
+    strokeWidth?: number;
+    curve?: CurveInterpolation;
+    tension?: number;
+    stroke?: string;
+    opacity?: number;
+    closed?: false;
+  };
+ }

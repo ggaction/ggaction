@@ -34,7 +34,7 @@ render(program, document.querySelector("#chart").getContext("2d"));
 ```
 
 The runnable repository version is in
-[`examples/ecdf-plot`](https://github.com/ggaction/ggaction/tree/6422776b0a379c8c89809f41b434f366fbc1f143/examples/ecdf-plot).
+[`examples/ecdf-plot`](https://github.com/ggaction/ggaction/tree/ab206c446ae5010eecfd859427775c4785d8aed4/examples/ecdf-plot).
 
 This example uses colored paths and endpoint labels without axes or a legend,
 matching the repository program and image. To add a legend, reserve space on
@@ -113,3 +113,4 @@ labels, and guides while retaining the stored appearance policy. Use
 counts. Ungrouping removes a coupled group color; `color: false` removes it
 explicitly during another role edit. Line appearance, labels, scales, and guides remain editable through
 their ordinary lower-level actions.
+Axes removed after construction stay removed when the statistical source changes.

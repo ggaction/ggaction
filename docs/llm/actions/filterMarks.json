@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "mark-selection",
   "summary": "Retain matching final mark items through the shared selector grammar.",
-  "signature": "filterMarks(options: FilterMarksOptions): ChartProgram;",
+  "signature": "filterMarks(options: TargetedOptions<FilterMarksOptions>): ChartProgram;",
   "intents": [
     "filter marks",
     "filter",
@@ -63,7 +63,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "mode",

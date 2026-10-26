@@ -82,7 +82,7 @@ export function normalizeCompositionChildren(children) {
       throw new TypeError(`Composition child ${index} must be a plain object.`);
     }
     const unknown = Object.keys(child).find(
-      key => !["id", "width", "height", "widthMode", "heightMode"].includes(key)
+      key => !["id", "width", "height", "widthMode", "heightMode", "plot"].includes(key)
     );
     if (unknown !== undefined) {
       throw new Error(`Unknown composition child property "${unknown}".`);
@@ -112,7 +112,8 @@ export function normalizeCompositionChildren(children) {
       width: child.width,
       height: child.height,
       widthMode: child.widthMode ?? "explicit",
-      heightMode: child.heightMode ?? "explicit"
+      heightMode: child.heightMode ?? "explicit",
+      ...(child.plot === undefined ? {} : { plot: validatePlacedBounds(child.plot, `Composition plot ${child.id}`) })
     });
   });
 }
@@ -146,10 +147,11 @@ export function resolveCompositionLayout({
   const resolvedDirection = normalizeDirection(direction);
   const resolvedChildren = normalizeCompositionChildren(children);
   const resolvedGap = validateCompositionSpacing(gap, "Composition gap");
-  const resolvedAlign = normalizeCompositionAlign(align);
+  const resolvedAlign = align === "plot" ? "plot" : normalizeCompositionAlign(align);
   const resolvedPadding = normalizeCompositionPadding(padding);
   const horizontal = resolvedDirection === "horizontal";
-  const sizedChildren = normalizeAutoCrossSize(resolvedChildren, horizontal);
+  const sizedChildren = resolvedAlign === "plot" ? resolvedChildren : normalizeAutoCrossSize(resolvedChildren, horizontal);
+  if (resolvedAlign === "plot") return resolvePlotAlignedComposition({ direction: resolvedDirection, children: sizedChildren, gap: resolvedGap, padding: resolvedPadding });
   const contentWidth = horizontal
     ? sizedChildren.reduce((sum, child) => sum + child.width, 0) +
       resolvedGap * (sizedChildren.length - 1)
@@ -302,4 +304,28 @@ export function resolvePlacedPlotBounds({ placements, plots } = {}) {
     width: right - left,
     height: bottom - top
   });
+}
+
+
+function resolvePlotAlignedComposition({ direction, children, gap, padding }) {
+  const horizontal = direction === "horizontal";
+  const axis = horizontal ? "y" : "x", dimension = horizontal ? "height" : "width";
+  if (children.some(child => !child.plot)) throw new Error("Plot alignment requires a plot in every child.");
+  const crossSize = children[0].plot[dimension];
+  if (children.some(child => Math.abs(child.plot[dimension] - crossSize) > 1e-6)) {
+    throw new Error("Plot alignment requires equal cross-axis plot sizes after normalization.");
+  }
+  const leading = Math.max(...children.map(child => child.plot[axis]));
+  const trailing = Math.max(...children.map(child => child[dimension] - child.plot[axis] - crossSize));
+  let cursor = horizontal ? padding.left : padding.top;
+  const placements = children.map(child => {
+    const result = { id: child.id, width: child.width, height: child.height,
+      x: horizontal ? cursor : padding.left + leading - child.plot.x,
+      y: horizontal ? padding.top + leading - child.plot.y : cursor };
+    cursor += (horizontal ? child.width : child.height) + gap;
+    return result;
+  });
+  return cloneAndFreeze({ direction, gap, align: "plot", padding, children: placements,
+    width: horizontal ? cursor - gap + padding.right : padding.left + leading + crossSize + trailing + padding.right,
+    height: horizontal ? padding.top + leading + crossSize + trailing + padding.bottom : cursor - gap + padding.bottom });
 }

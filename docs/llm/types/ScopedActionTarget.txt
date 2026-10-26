@@ -1,0 +1,1 @@
+export interface ScopedActionTarget { childPath: readonly string[]; id?: string; /** Persist this action in a facet source, then regenerate its cells. */ facetSource?: true; }

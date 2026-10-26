@@ -301,6 +301,11 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`createHorizonPlot`](current/COMPLETE_CHARTS.md#createhorizonplot) | statistics | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createAreaPlot`](current/COMPLETE_CHARTS.md#createareaplot) | charts | Aggregate create-only | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`layoutSeries`](current/ENCODINGS.md#layoutseries) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
+| user-facing | [`createOverlay`](current/OVERLAYS.md#createoverlay) | marks | Stable create-only | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editOverlay`](current/OVERLAYS.md#editoverlay) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createLayerPlot`](current/COMPOSITION.md#createlayerplot) | composition | Structural create-only | Intentional | ✅ / ✅ / ✅ |
+| user-facing | [`createAdjacentPlot`](current/COMPOSITION.md#createadjacentplot) | composition | Structural create-only | Intentional | ✅ / ✅ / ✅ |
+| user-facing | [`editCompositionScales`](current/COMPOSITION.md#editcompositionscales) | composition | Mutable resource | Complete | ✅ / ✅ / ✅ |
 
 ## Planned direct actions
 

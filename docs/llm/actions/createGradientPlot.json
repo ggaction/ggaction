@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "statistics",
   "summary": "Creates a Gradient plot owner that defers geometry and guides until compatible x/y roles are available.",
-  "signature": "createGradientPlot(options?: GradientPlotOptions): ChartProgram;",
+  "signature": "createGradientPlot(options?: TargetedOptions<GradientPlotOptions>): ChartProgram;",
   "intents": [
     "create gradient plot",
     "create",
@@ -88,7 +88,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "data",

@@ -4,7 +4,7 @@ import { validateConcreteGraphicProperties, validateConcreteGraphicValue } from
   "../../grammar/schemas/concreteGraphic.js";
 import { normalizeRendererFontWeight } from "../text.js";
 
-function drawText(context, child, collectionId) {
+function drawText(context, child, collectionId, { resolveFontFamily } = {}) {
   const properties = child.properties ?? {};
   const graphicId = child.id ?? collectionId;
   validateConcreteGraphicProperties("text", properties);
@@ -77,7 +77,7 @@ function drawText(context, child, collectionId) {
     context.fillStyle = resolveCanvasSolidPaint(fill);
     context.globalAlpha = opacity;
     const rendererFontWeight = normalizeRendererFontWeight(fontWeight);
-    context.font = `${properties.fontStyle === "italic" ? "italic " : ""}${rendererFontWeight} ${fontSize}px ${fontFamily}`;
+    context.font = `${properties.fontStyle === "italic" ? "italic " : ""}${rendererFontWeight} ${fontSize}px ${resolveFontFamily?.(fontFamily) ?? fontFamily}`;
     context.textAlign = textAlign;
     context.textBaseline = textBaseline;
     context.translate(x, y);
@@ -89,13 +89,13 @@ function drawText(context, child, collectionId) {
   }
 }
 
-export function drawTextGraphic(context, id, graphic) {
+export function drawTextGraphic(context, id, graphic, options) {
   if (graphic.items) {
     for (const item of graphic.items) {
-      drawText(context, item, id);
+      drawText(context, item, id, options);
     }
     return;
   }
 
-  drawText(context, { id, properties: graphic.properties }, id);
+  drawText(context, { id, properties: graphic.properties }, id, options);
 }

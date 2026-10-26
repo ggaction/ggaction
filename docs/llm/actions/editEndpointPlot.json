@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "charts",
   "summary": "Atomically revise the semantic roles of a Dot, Lollipop, or Dumbbell facade.",
-  "signature": "editEndpointPlot(options: EditEndpointPlotOptions): ChartProgram;",
+  "signature": "editEndpointPlot(options: TargetedOptions<EditEndpointPlotOptions>): ChartProgram;",
   "intents": [
     "edit endpoint plot",
     "edit",
@@ -70,7 +70,12 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+    },
+    {
+      "name": "missing",
+      "required": false,
+      "type": "\"error\" | \"skip\" | undefined"
     },
     {
       "name": "data",

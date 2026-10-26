@@ -1,3 +1,4 @@
+import { normalizeDisplayLabelMap } from "../../../../grammar/displayLabels.js";
 import { axisThemeTypography } from "../../../theme/state.js";
 import {
   validateGeneratedItemLimit,
@@ -15,8 +16,8 @@ export { PARALLEL_AXIS_PARTS, PARALLEL_AXIS_GRAPHICS };
 const STYLE_OPTIONS = Object.freeze({
   line: ["color", "lineWidth"],
   ticks: ["count", "values", "length", "color", "lineWidth"],
-  labels: ["count", "values", "offset", "format", "color", "fontSize", "fontFamily", "fontWeight"],
-  title: ["text", "offset", "color", "fontSize", "fontFamily", "fontWeight"]
+  labels: ["labelMap", "count", "values", "offset", "format", "color", "fontSize", "fontFamily", "fontWeight", "align"],
+  title: ["text", "offset", "color", "fontSize", "fontFamily", "fontWeight", "align"]
 });
 
 export function defaultParallelAxis(field, theme) {
@@ -74,6 +75,8 @@ function patchComponent(previous, defaults, options, part, create, operation) {
   if (options === false) return undefined;
   const next = { ...(create ? defaults : previous), ...options };
   delete next.text;
+  if (options.labelMap === "auto") delete next.labelMap;
+  else if (Object.hasOwn(options, "labelMap")) next.labelMap = normalizeDisplayLabelMap(options.labelMap);
   if (Object.hasOwn(options, "count")) { next.mode = "count"; delete next.values; }
   if (Object.hasOwn(options, "values")) { next.mode = "values"; delete next.count; }
   validateNonEmptyString(next.color, "Parallel axis color");

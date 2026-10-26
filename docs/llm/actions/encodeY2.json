@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "encodings",
   "summary": "Assign an area, ranged-bar, or rect upper edge, or a rule secondary y endpoint.",
-  "signature": "encodeY2(options: SecondaryPositionEncodingOptions): ChartProgram;",
+  "signature": "encodeY2(options: TargetedOptions<SecondaryPositionEncodingOptions>): ChartProgram;",
   "intents": [
     "encode y2",
     "encode",
@@ -91,7 +91,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "scale",

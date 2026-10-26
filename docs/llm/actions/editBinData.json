@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "statistics",
   "summary": "Edits one-dimensional bins, including settings for reusable histogram bounds and counts.",
-  "signature": "editBinData(options: EditBinDataOptions): ChartProgram;",
+  "signature": "editBinData(options: TargetedOptions<EditBinDataOptions>): ChartProgram;",
   "intents": [
     "edit bin data",
     "edit",
@@ -68,7 +68,7 @@
     {
       "name": "target",
       "required": true,
-      "type": "string"
+      "type": "string | ActionTargetList | ScopedActionTarget"
     },
     {
       "name": "dependents",

@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "encodings",
   "summary": "Order vertices within each compatible Cartesian line or ranged-area series.",
-  "signature": "encodePathOrder(options: PathOrderEncodingOptions): ChartProgram;",
+  "signature": "encodePathOrder(options: TargetedOptions<PathOrderEncodingOptions>): ChartProgram;",
   "intents": [
     "encode path order",
     "encode",
@@ -60,7 +60,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "field",

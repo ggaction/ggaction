@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "statistics",
   "summary": "Creates a Box plot owner that defers geometry and guides until compatible x/y roles are available.",
-  "signature": "createBoxPlot(options?: BoxPlotOptions): ChartProgram;",
+  "signature": "createBoxPlot(options?: TargetedOptions<BoxPlotOptions>): ChartProgram;",
   "intents": [
     "create box plot",
     "create",
@@ -97,7 +97,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "data",

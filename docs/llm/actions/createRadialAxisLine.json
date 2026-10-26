@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "axes",
   "summary": "Create missing radial-axis line independently of the other components.",
-  "signature": "createRadialAxisLine(options?: CreateRadialAxisLineOptions): ChartProgram;",
+  "signature": "createRadialAxisLine(options?: TargetedOptions<CreateRadialAxisLineOptions>): ChartProgram;",
   "intents": [
     "create radial axis line",
     "create",
@@ -24,7 +24,8 @@
     ],
     "idOptions": [
       "scale",
-      "coordinate"
+      "coordinate",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -60,6 +61,10 @@
     },
     {
       "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -99,10 +104,15 @@
       "name": "angle",
       "required": false,
       "type": "number | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "createRadialAxisLine({ scale?, coordinate?, color?, lineWidth?, angle? })"
+    "createRadialAxisLine({ scale?, coordinate?, target?, color?, lineWidth?, angle? })"
   ],
   "snippet": "program.createRadialAxisLine({})",
   "errors": [],

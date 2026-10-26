@@ -56,6 +56,8 @@ owner atomically. Omitted target uses current/unique eligible owner inference. `
 coupled color when no replacement is supplied. The action rebuilds the immutable derived dataset under the stable
 owned ID, reuses stored appearance/color/labels/guides, and rejects the entire edit before returning any partial
 state when the revised source or statistical roles are invalid.
+An axis removed after construction remains absent through a role edit; rebuilding
+the facade does not restore that axis from its original constructor options.
 
 ### Formal values — `editECDFPlot`
 
@@ -68,6 +70,20 @@ state when the revised source or statistical roles are invalid.
 - ✅ Covered: source/field/group/weight/missing/output revision, label and denominator convergence, derived-data
   release, target inference, nested trace and atomic invalid failure.
 - Evidence: `test/unit/actions/charts/ecdf-facade.test.js`.
+
+## Complete-case policy for statistical facades
+
+`createStripPlot`, `createBeeswarmPlot`, `createRaincloudPlot`, `createDotPlot`,
+`createLollipopPlot`, and `createDumbbellPlot` accept `missing: "error" | "skip"`.
+The default remains `"error"`. Strip/Beeswarm use the point owner's row policy,
+including later appearance encodings. Raincloud and endpoint facades materialize
+one complete-case source using their category, measure, and mapped appearance
+roles; their statistical children share that population. The facade retains its
+original source, so `editRaincloudPlot` and `editEndpointPlot` can change roles
+without permanently discarding rows. Source revisions replay the owned filters;
+removing the owner releases the filters after its dependent statistical data.
+The policy does not waive KDE sample-size, packing, type, or finite-value rules.
+Evidence: `test/unit/actions/charts/missing-facades.test.js`.
 
 ## `createDotPlot`
 
@@ -129,6 +145,7 @@ connector?, labels?, guides? })`는 start/end Point와 connector를 하나의 qu
 `editEndpointPlot({ target?, data?, coordinate?, category?, value?, start?, end?, orientation?, summary?, baseline? })`
 은 target 종류에 맞는 semantic role만 받아 owned Point·Rule·label·summary data를 한 immutable action에서 교체한다.
 생성 때 저장한 appearance와 guide 정책은 유지한다.
+생성 이후 삭제한 축은 role edit에서도 삭제 상태를 유지한다. 원래 constructor 옵션으로 되살리지 않는다.
 역할 또는 원자료 변경으로 축 domain이 달라질 때 이전 domain의 명시적 tick sample은
 새 domain에서 다시 추론한다. 글꼴, 회전, tick/line 스타일은 그대로 유지한다.
 별도로 추가한 statistical reference는 source endpoint 역할, 스타일, label을 보존하며 원자료에서 다시 계산한다.
@@ -267,15 +284,21 @@ line?, guides? })`. Default id는 `radarPlot`, lifecycle은 Aggregate create-onl
 
 - Long form은 nominal/ordinal category와 quantitative value를 요구한다. Wide form은 최소 세 개의 명시적
   field를 `createFoldData`로 펼치며 기본 output은 `${id}Dimension`/`${id}Value`, dataset id는
-  `${id}FoldData`다. 원본 wide row가 둘 이상이면 `groupBy`를 반드시 지정한다.
+  `${id}FoldData`다. 기본 `wide.summary:false`에서는 원본 wide row가 둘 이상이면 `groupBy`를
+  반드시 지정하고 각 그룹에 한 원본 행만 허용한다. 명시적인 `wide.summary:"mean"|"median"`은
+  `createSummaryData`로 그룹당 한 프로필을 만든다. `groupBy` 생략 시 전체를 한 프로필로 집계한다.
+  Color/strokeDash는 독립된 표시 역할이며 summary에 보존된다. 같은 series 안에서 표시 값이 달라
+  중복 profile이 생기는 경우 거부한다.
 - 모든 series는 같은 최소 세 category를 정확히 한 번씩 가져야 한다. `order`는 전체 category 또는 wide
   field를 빠짐·중복 없이 한 번씩 포함하며 theta scale domain이 된다. Missing dimension, duplicate
   series/category와 nonfinite value는 전체 facade를 거부한다.
-- Value는 caller가 같은 단위로 준비하거나 명시적으로 정규화한 결과다. Facade는 dimension별 min-max,
-  z-score 또는 identifier field를 추론하지 않는다.
+- Value는 기본적으로 원래 단위를 유지한다. `wide.normalize:"minmax"`를 명시하면 summary 후
+  `createNormalizedData`로 각 차원을 결과 프로필들에 걸쳐 [0,1]로 정규화한다. 상수 차원은 0,
+  radius domain은 [0,1]이며 원래 값과 원본 데이터도 보존한다. 기본값 false이며 normalization,
+  identifier, grouping, color를 자동 추론하지 않는다.
 - Path는 항상 closed다. `line.closed:false`는 Radar 의미와 충돌하므로 거부하며 다른 line appearance는
   기존 owner가 처리한다.
-- Effects: `createFoldData? → createPolarLinePlot(closed:true)`. Polar child는 다시 line mark, categorical
+- Effects: `createSummaryData? → createFoldData? → createNormalizedData? → createPolarLinePlot(closed:true)`. Polar child는 다시 line mark, categorical
   theta, quantitative radius, group/appearance와 scoped guides를 소유한다.
 
 ### Formal values — `createRadarPlot`
@@ -294,7 +317,7 @@ line?, guides? })`. Default id는 `radarPlot`, lifecycle은 Aggregate create-onl
 
 ## `editRadarPlot`
 
-`editRadarPlot({ target?, wide: { fields } })`는 기존 wide Radar의 차원 목록과 순서를 원자적으로
+`editRadarPlot({ target?, wide: { fields, summary?, normalize? } })`는 기존 wide Radar의 차원 목록과 순서를 원자적으로
 갱신한다. Target 생략은 current eligible mark, unique eligible mark 순서이며 ambiguity는 거부한다.
 `wide.fields`는 서로 다른 수치형 원자료 필드 2개 이상이다. Long-form Radar와 non-Radar 대상,
 누락/중복/비수치 필드, aliases 변경은 거부하며 이전 program/입력/trace는 변경되지 않는다.
@@ -312,15 +335,19 @@ line?, guides? })`. Default id는 `radarPlot`, lifecycle은 Aggregate create-onl
 
 - Implemented: `editRadarPlot(options: EditRadarPlotOptions): ChartProgram` (default entry point only).
 - Required: `wide.fields: readonly [string, string, ...string[]]`.
-- Optional: `target?: string`.
-- Proposed (NOT IMPLEMENTED): long-form role changes and per-dimension normalization are outside this editor's approved scope.
+- Optional: `target?: string`, `wide.summary:false|"mean"|"median"`, `wide.normalize:false|"minmax"`.
+  Omitted summary/normalization preserve existing intent. Explicit normalization toggles reset the radius
+  domain to [0,1] or automatic raw values; ordinary dimension edits preserve explicit domains.
+- Owned source, aliases, summaries, fold and normalization revisions remain traceable. Obsolete unreferenced
+  revisions are released leaf-first, keeping repeated edits bounded; consumers borrowing a dataset preserve it.
+- Proposed (NOT IMPLEMENTED): long-form role changes.
 
 ### Value coverage — `editRadarPlot`
 
 - ✅ Covered: dimension reorder/addition/two-axis reduction, direct final geometry parity, auto radius update,
   grouped closed paths, preserved color/opacity/line width/guide styling, immutable invalid inputs,
   trace and persistence replay, strict full-only declarations.
-- Evidence: `test/unit/actions/charts/radar-edit.test.js`, `test/contracts/radar-facade-types.test.js`.
+- Evidence: `test/unit/actions/charts/radar-edit.test.js`, `test/unit/actions/charts/radar-summary.test.js`, `test/contracts/radar-facade-types.test.js`.
 
 ## `createRugPlot`
 
@@ -474,6 +501,7 @@ Default id는 `raincloudPlot`; lifecycle은 stable mutable composite다.
 
 - ✅ Covered: source/role/orientation/side와 component type/enablement atomic revision, stable IDs, stale derived-data
   release, lower style retention boundary와 invalid target/options rollback.
+- ✅ Covered: categorical palette replacement reuses the owner scale across enabled component variants, preserves explicit shared legends, supports fixed-to-field restoration, and rejects invalid palettes atomically.
 - Evidence: `test/unit/actions/charts/raincloud-facade.test.js`, `test/unit/actions/charts/raincloud-owner-operations.test.js`, `test/contracts/raincloud-types.test.js`.
 
 ## `createRosePlot`

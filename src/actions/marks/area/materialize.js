@@ -185,5 +185,10 @@ export function resolveAreaMaterialization({
         resolvedScales[strokeEncoding.scale],
         "stroke"
       );
-  return { paths, fills, strokes };
+  const opacityEncoding = layer.encoding?.opacity;
+  const opacities = opacityEncoding?.scale === undefined ? undefined : mapScaleConsumerValues(
+    derivePathSeriesFieldValues(rows, derived.series, opacityEncoding.field, "opacity", opacityEncoding),
+    resolvedScales[opacityEncoding.scale], "opacity"
+  );
+  return { paths, fills, strokes, opacities };
 }

@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "axes",
   "summary": "Remove the complete radial-axis resource.",
-  "signature": "removeRadialAxis(options?: Omit<RemoveAxisOptions, \"target\">): ChartProgram;",
+  "signature": "removeRadialAxis(options?: TargetedOptions<Omit<RemoveAxisOptions, \"target\">>): ChartProgram;",
   "intents": [
     "remove radial axis",
     "remove",
@@ -23,7 +23,8 @@
     "owns": [],
     "idOptions": [
       "coordinate",
-      "scale"
+      "scale",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -48,6 +49,10 @@
     {
       "input": "scale",
       "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
     }
   ],
   "completionRequirements": {
@@ -68,10 +73,15 @@
       "name": "scale",
       "required": false,
       "type": "string | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "removeRadialAxis({ coordinate?, scale? })"
+    "removeRadialAxis({ coordinate?, scale?, target? })"
   ],
   "snippet": "program.removeRadialAxis({})",
   "errors": [],

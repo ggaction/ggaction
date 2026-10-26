@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "axes",
   "summary": "Edit selected radial components; angle moves the whole axis.",
-  "signature": "editRadialAxis(options: EditRadialAxisOptions): ChartProgram;",
+  "signature": "editRadialAxis(options: TargetedOptions<EditRadialAxisOptions>): ChartProgram;",
   "intents": [
     "edit radial axis",
     "edit",
@@ -21,7 +21,9 @@
       "compatible scale or encoding context"
     ],
     "owns": [],
-    "idOptions": []
+    "idOptions": [
+      "target"
+    ]
   },
   "authoringRoles": [
     "H3"
@@ -46,7 +48,12 @@
       "unit": "degree"
     }
   ],
-  "inference": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
   "completionRequirements": {
     "state": "contextual",
     "requires": [
@@ -59,7 +66,12 @@
     {
       "name": "title",
       "required": false,
-      "type": "false | RadialTitleOptions | undefined"
+      "type": "false | VisibleGuide<RadialTitleOptions> | undefined"
+    },
+    {
+      "name": "visible",
+      "required": false,
+      "type": "boolean | undefined"
     },
     {
       "name": "angle",
@@ -69,26 +81,31 @@
     {
       "name": "line",
       "required": false,
-      "type": "false | AxisLineStyleOptions | undefined"
+      "type": "false | VisibleGuide<AxisLineStyleOptions> | undefined"
     },
     {
       "name": "ticks",
       "required": false,
-      "type": "false | PolarTickOptions | undefined"
+      "type": "false | VisibleGuide<PolarTickOptions> | undefined"
     },
     {
       "name": "labels",
       "required": false,
-      "type": "false | PolarLabelOptions | undefined"
+      "type": "false | VisibleGuide<PolarLabelOptions> | undefined"
     },
     {
       "name": "ticksAndLabels",
       "required": false,
-      "type": "false | PolarTicksAndLabelsOptions | undefined"
+      "type": "false | VisibleTickGroup<PolarTicksAndLabelsOptions> | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "editRadialAxis({ title?, angle?, line?, ticks?, labels?, ticksAndLabels? })"
+    "editRadialAxis({ target?, title?, visible?, angle?, line?, ticks?, labels?, ticksAndLabels? })"
   ],
   "snippet": "program.editRadialAxis({ title: { text: \"Radius\" } })",
   "errors": [],

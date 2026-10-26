@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "statistics",
   "summary": "Creates regression band for uncertainty interval.",
-  "signature": "createRegressionBand(options: CreateRegressionBandOptions): ChartProgram;",
+  "signature": "createRegressionBand(options: TargetedOptions<CreateRegressionBandOptions>): ChartProgram;",
   "intents": [
     "create regression band",
     "create",
@@ -27,7 +27,8 @@
       "data",
       "coordinate",
       "xScale",
-      "yScale"
+      "yScale",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -72,6 +73,10 @@
     {
       "input": "yScale",
       "strategy": "explicit"
+    },
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
     },
     {
       "input": "omitted optional options",
@@ -170,6 +175,11 @@
       "name": "miterLimit",
       "required": false,
       "type": "number | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [

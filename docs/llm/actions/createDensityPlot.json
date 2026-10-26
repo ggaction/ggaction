@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "statistics",
   "summary": "Creates density plot for kernel density estimate.",
-  "signature": "createDensityPlot(options: CreateDensityPlotOptions): ChartProgram;",
+  "signature": "createDensityPlot(options: TargetedOptions<CreateDensityPlotOptions>): ChartProgram;",
   "intents": [
     "create density plot",
     "create",
@@ -25,7 +25,8 @@
     "idOptions": [
       "id",
       "data",
-      "coordinate"
+      "coordinate",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -73,6 +74,10 @@
     {
       "input": "extent",
       "strategy": "documented-auto"
+    },
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
     },
     {
       "input": "omitted optional options",
@@ -176,6 +181,11 @@
       "name": "guides",
       "required": false,
       "type": "false | DensityPlotGuideOptions | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [

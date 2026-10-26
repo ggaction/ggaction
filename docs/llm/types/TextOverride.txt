@@ -1,0 +1,5 @@
+export interface TextOverride {
+  match: { fields?: Readonly<Record<string, string | number | boolean | null>>; channels?: Readonly<Record<string, string | number | boolean | null>> };
+  occurrence: number;
+  text: string;
+}

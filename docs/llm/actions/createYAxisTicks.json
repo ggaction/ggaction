@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "axes",
   "summary": "Creates y-axis ticks for vertical tick marks.",
-  "signature": "createYAxisTicks(options?: AxisTickOptions<YAxisPosition>): ChartProgram;",
+  "signature": "createYAxisTicks(options?: TargetedOptions<AxisTickOptions<YAxisPosition>>): ChartProgram;",
   "intents": [
     "create y axis ticks",
     "create",
@@ -91,7 +91,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "scale",

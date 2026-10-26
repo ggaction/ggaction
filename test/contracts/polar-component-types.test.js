@@ -38,6 +38,20 @@ p.editRadialAxis({ angle: 45, ticksAndLabels: false, title: false });
 basic.createXAxis({ title: false });
 basic.createYAxis({ line: false });
 p.createAxes({ x: { title: false }, y: { ticksAndLabels: false } });
+p.createTitle({text:"Title",titleStyle:{align:"left"},subtitleStyle:{align:"right"}});
+p.editTitle({titleStyle:{align:"center"}});
+p.editLegend({target:"plot",labels:{align:"right"}});
+p.editThetaAxisLabels({align:"right"});
+p.editThetaAxisTitle({align:"center"});
+p.createRadialAxisLabels({align:"center"});
+p.createRadialAxisTitle({align:"left"});
+p.editParallelAxis({field:"A",labels:{align:"center"},title:{align:"right"}});
+// @ts-expect-error Alignment is a closed vocabulary
+p.editTitle({titleStyle:{align:"justify"}});
+// @ts-expect-error Alignment is a closed vocabulary
+p.editLegend({labels:{align:"start"}});
+// @ts-expect-error Alignment is a closed vocabulary
+p.editParallelAxis({field:"A",labels:{align:"bottom"}});
 // @ts-expect-error Theta complete creation has no radial-axis angle
 p.createThetaAxis({ angle: 45 });
 // @ts-expect-error Nested Theta also rejects radial-axis angle

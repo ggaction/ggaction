@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "statistics",
   "summary": "Edits sorted dataset, including settings for stable multi-key row order.",
-  "signature": "editSortedData(options: EditSortedDataOptions): ChartProgram;",
+  "signature": "editSortedData(options: TargetedOptions<EditSortedDataOptions>): ChartProgram;",
   "intents": [
     "edit sorted data",
     "edit",
@@ -59,7 +59,7 @@
     {
       "name": "target",
       "required": true,
-      "type": "string"
+      "type": "string | ActionTargetList | ScopedActionTarget"
     },
     {
       "name": "sortBy",

@@ -156,7 +156,7 @@ function resolvePolarAxisArgs(program, layers, channel, option, descriptor) {
 }
 
 function hasChannel(layers, channel) {
-  return layers.some(layer => layer.encoding?.[channel] !== undefined);
+  return layers.some(layer => layer.encoding?.[channel] !== undefined && !(layer.mark?.type === "tick" && Object.hasOwn(layer.encoding[channel], "datum")));
 }
 
 function resolveAxisArgs(layers, channel, option) {
@@ -170,6 +170,7 @@ function resolveAxisArgs(layers, channel, option) {
   const encodedScaleIds = [
     ...new Set(
       layers
+        .filter(layer => !(layer.mark?.type === "tick" && Object.hasOwn(layer.encoding?.[channel] ?? {}, "datum")))
         .map(layer => layer.encoding?.[channel]?.scale)
         .filter(id => id !== undefined)
     )

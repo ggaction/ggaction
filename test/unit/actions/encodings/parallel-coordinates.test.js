@@ -128,11 +128,11 @@ test("rejects invalid Parallel assignments without changing the prior program", 
     () => before.encodeParallelCoordinates({
       target: "parallelLines",
       dimensions: [
-        { field: "amount", scale: { id: "custom" } },
+        { field: "amount", scale: { unsupported: true } },
         "score"
       ]
     }),
-    /Unknown .* option "id"/
+    /Unknown .* option "unsupported"/
   );
   assert.throws(
     () => base([{ id: "a", amount: 1, score: 2 }, { id: "a", amount: 2, score: 3 }])

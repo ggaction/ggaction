@@ -2,7 +2,7 @@ import { findLayer } from "../selectors/layers.js";
 import { LEGEND_CONFIG_KINDS } from "../core/vocabulary.js";
 
 export function isOpacityLegendLayer(layer) {
-  return ["point", "line", "bar", "rect"].includes(layer.mark?.type) &&
+  return ["point", "line", "area", "bar", "rect"].includes(layer.mark?.type) &&
     layer.encoding?.opacity?.scale !== undefined;
 }
 

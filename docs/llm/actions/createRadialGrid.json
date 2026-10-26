@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "grid",
   "summary": "Create concentric radial paths behind related marks.",
-  "signature": "createRadialGrid(options?: PolarGridOptions): ChartProgram;",
+  "signature": "createRadialGrid(options?: TargetedOptions<PolarGridOptions>): ChartProgram;",
   "intents": [
     "create radial grid",
     "create",
@@ -24,7 +24,8 @@
     ],
     "idOptions": [
       "scale",
-      "coordinate"
+      "coordinate",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -59,6 +60,10 @@
     },
     {
       "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -108,10 +113,15 @@
       "name": "strokeDash",
       "required": false,
       "type": "readonly number[] | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "createRadialGrid({ scale?, coordinate?, count?, values?, color?, lineWidth?, strokeDash? })"
+    "createRadialGrid({ scale?, coordinate?, target?, count?, values?, color?, lineWidth?, strokeDash? })"
   ],
   "snippet": "program.createRadialGrid({})",
   "errors": [],

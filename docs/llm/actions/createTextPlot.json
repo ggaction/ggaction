@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "charts",
   "summary": "Create a Cartesian data-text chart from required positions and content.",
-  "signature": "createTextPlot(options: CreateTextPlotOptions): ChartProgram;",
+  "signature": "createTextPlot(options: TargetedOptions<CreateTextPlotOptions>): ChartProgram;",
   "intents": [
     "create text plot",
     "create",
@@ -25,7 +25,8 @@
     "idOptions": [
       "id",
       "data",
-      "coordinate"
+      "coordinate",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -53,6 +54,10 @@
     },
     {
       "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -112,6 +117,11 @@
       "name": "guides",
       "required": false,
       "type": "false | ColorGuides | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [

@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "composition",
   "summary": "Insert a complete chart or nested composition under a new stable child name.",
-  "signature": "insertCompositionChild(options: InsertCompositionChildOptions): ChartProgram;",
+  "signature": "insertCompositionChild(options: TargetedOptions<InsertCompositionChildOptions>): ChartProgram;",
   "intents": [
     "insert composition child",
     "edit",
@@ -24,7 +24,8 @@
     "idOptions": [
       "id",
       "before",
-      "after"
+      "after",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -46,6 +47,10 @@
     {
       "input": "after",
       "strategy": "explicit"
+    },
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
     }
   ],
   "completionRequirements": {
@@ -76,10 +81,15 @@
       "name": "after",
       "required": false,
       "type": "string | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "insertCompositionChild({ id, program, before?, after? })"
+    "insertCompositionChild({ id, program, before?, after?, target? })"
   ],
   "snippet": "program.insertCompositionChild({ id: \"detail\", program: chart().createCanvas({}).createData({ values: [] }), after: \"overview\" })",
   "errors": [],

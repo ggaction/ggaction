@@ -43,7 +43,7 @@ test("publishes program theme lifecycle in runtime, types, and the Current catal
   assert.match(program, /^export interface ThemeTokens \{$/m);
   assert.match(program, /^export type ThemeDefinition =$/m);
   assert.match(program, /^export interface ApplyThemeOptions \{$/m);
-  assert.match(program, /^  applyTheme\(options: ApplyThemeOptions\): ChartProgram;$/m);
+  assert.match(program, /^  applyTheme\(options: TargetedOptions<ApplyThemeOptions>\): ChartProgram;$/m);
   assert.match(program, /^  removeTheme\(\): ChartProgram;$/m);
   for (const source of [basic, rootTypes]) {
     assert.match(source, /^  ThemeName,?$/m);

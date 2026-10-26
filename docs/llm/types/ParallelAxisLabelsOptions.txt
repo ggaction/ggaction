@@ -1,1 +1,1 @@
-export type ParallelAxisLabelsOptions = AxisLabelStyleOptions & ParallelAxisTickSelection;
+export type ParallelAxisLabelsOptions = AxisLabelStyleOptions & DisplayLabelOptions & ParallelAxisTickSelection;

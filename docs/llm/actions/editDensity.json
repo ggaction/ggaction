@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "encodings",
   "summary": "Create an immutable density-data revision, rebind the selected density area, and rematerialize its graphical consumers.",
-  "signature": "editDensity(options: EditDensityOptions): ChartProgram;",
+  "signature": "editDensity(options: TargetedOptions<EditDensityOptions>): ChartProgram;",
   "intents": [
     "edit density",
     "edit",
@@ -79,7 +79,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "source",

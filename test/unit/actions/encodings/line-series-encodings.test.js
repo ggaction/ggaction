@@ -300,3 +300,21 @@ test("records line series encodings through wrapped materialization actions", ()
     ["x", "y", "color", "strokeDash"]
   );
 });
+
+test("exact numeric aggregate positions converge in either encoding order and orientation", () => {
+  const values=[{position:20,value:6},{position:10,value:1},{position:10,value:3}];
+  const original=chart().createCanvas({plot:{width:300,height:200},margin:60}).createData({values}).createLineMark({id:'trend'});
+  for(const horizontal of [false,true]) {
+    const position={field:'position',fieldType:'quantitative',scale:{zero:false}};
+    const measure={field:'value',fieldType:'quantitative',aggregate:'mean',scale:{zero:false}};
+    const x=horizontal?measure:position,y=horizontal?position:measure;
+    const first=original.encodeX(x).encodeY(y),second=original.encodeY(y).encodeX(x);
+    assert.deepEqual(first.graphicSpec,second.graphicSpec);
+    assert.equal(first.graphicSpec.objects.trend.items[0].properties.commands.length,2);
+    const measureScale=first.semanticSpec.layers[0].encoding[horizontal?'x':'y'].scale;
+    assert.deepEqual(first.resolvedScales[measureScale].domain,[2,6]);
+    assert.throws(()=>first[horizontal?'encodeY':'encodeX']({...position,aggregate:'mean'}),/both axes cannot aggregate/);
+    assert.equal(original.semanticSpec.layers[0].encoding?.x,undefined);
+    assert.equal(original.semanticSpec.layers[0].encoding?.y,undefined);
+  }
+});

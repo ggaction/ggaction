@@ -1,3 +1,4 @@
+import { assertIndependentOverlayGeometry } from "../../../grammar/overlay.js";
 import { closedAction } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
 
@@ -36,6 +37,7 @@ export const jitterPoints = /* @__PURE__ */ closedAction(
   function (args = {}) {
     const policy = normalizePointJitterPolicy(args);
     const layer = resolveJitterTarget(this, args.target);
+    assertIndependentOverlayGeometry(layer, "jitterPoints");
     if (this.materializationConfigs.pointPacking?.[layer.id] !== undefined) {
       throw new Error(`Point jitter on "${layer.id}" conflicts with point packing.`);
     }

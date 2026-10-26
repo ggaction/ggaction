@@ -71,5 +71,6 @@ const revised = withReplacement.editEndpointPlot({
 
 The editor replaces every owned point, rule, label, and summary dataset in one
 immutable action while retaining the original appearance and guide policy.
+Axes removed after construction stay removed when roles change.
 Individual point, rule, label, scale, and guide actions remain the lower-level
 style editing path.

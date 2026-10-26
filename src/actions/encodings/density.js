@@ -156,7 +156,7 @@ const encodeDensity = /* @__PURE__ */ action(
     const valueScale = resolveDensityScaleOptions(
       args.valueScale,
       { nice: false, zero: false },
-      "Density valueScale"
+      "Density valueScale", this
     );
     const placement = args.placement === undefined
       ? undefined
@@ -174,7 +174,7 @@ const encodeDensity = /* @__PURE__ */ action(
       ? resolveDensityScaleOptions(
           args.densityScale,
           { nice: true, zero: true },
-          "Density densityScale"
+          "Density densityScale", this
         )
       : undefined;
     const placementScale = placement === undefined

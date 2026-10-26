@@ -281,11 +281,10 @@ export function createSemanticPrimitiveAction(validateSemanticValue, planNamedRe
       const removesNamedResource = remove && parsed.path.length === 0 &&
         ["dataset", "scale", "coordinate"].includes(parsed.kind);
       if (this.compositionSpec !== undefined && !(
-        this.compositionSpec.type === "facet" &&
-        (parsed.kind === "title" || removesNamedResource)
+        parsed.kind === "title" || (this.compositionSpec.type === "facet" && removesNamedResource)
       )) {
         throw new Error(
-          "editSemantic on a composition parent supports only facet title state and unreferenced named resource removal."
+          "editSemantic on a composition parent supports only title state and unreferenced named resource removal."
         );
       }
       if (remove) {

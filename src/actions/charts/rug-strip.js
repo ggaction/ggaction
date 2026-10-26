@@ -24,7 +24,7 @@ const TICK_OPTIONS = Object.freeze([
   "clip", "length", "stroke", "strokeWidth", "opacity", ...STROKE_STYLE_PROPERTIES
 ]);
 const STRIP_OPTIONS = Object.freeze([
-  "id", "data", "coordinate", "x", "y", "color", "size", "shape", "point", "jitter", "guides"
+  "id", "data", "coordinate", "x", "y", "color", "size", "shape", "point", "jitter", "guides", "missing"
 ]);
 const POINT_OPTIONS = Object.freeze([
   "clip",   "radius", "shape", "fill", "opacity", "stroke", "strokeWidth",
@@ -260,7 +260,7 @@ export const createStripPlot = /* @__PURE__ */ action(
       operation
     );
 
-    let next = this.createPointMark({ id, data, ...point });
+    let next = this.createPointMark({ id, data, ...point, ...(args.missing === undefined ? {} : { missing: args.missing }) });
     if (args.coordinate !== undefined) {
       next = next.createCoordinate({ id: args.coordinate, type: "cartesian", layers: [id] });
     }

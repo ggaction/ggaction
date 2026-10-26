@@ -1,3 +1,4 @@
+import { compositionChannel } from "../../../selectors/plotComposition.js";
 import { selectCartesianAxis, axisTargetArgs } from "../../../selectors/axes.js";
 import { axisGraphicIds } from "../../../materialization/guides/resources.js";
 import { materializeTextLines } from "../../../materialization/textLines.js";
@@ -182,6 +183,8 @@ export function inferAxisTitleText(program, channel, scaleId) {
   const primaryTitles = new Set();
   for (const layer of program.semanticSpec.layers) {
     if (isSourceOwnedText(layer)) continue;
+    // Linked overlays consume the source's resolved positions, not a second axis meaning.
+    if (layer.derivedBindings?.overlay) continue;
     // Reference statistics reuse the source axis title.
     if (program.markConfigs[layer.id]?.statisticalReference !== undefined) continue;
     const primary = layer.encoding?.[channel];
@@ -234,6 +237,20 @@ export function inferAxisTitleText(program, channel, scaleId) {
   }
   if (primaryTitles.size === 1) return [...primaryTitles][0];
   if (titles.size === 0 && axisScaleBindings(program, scaleId).some(binding => binding.channel === channel)) return scaleId;
+  if (titles.size > 1) {
+    const meanings = program.semanticSpec.layers.filter(l => l.encoding?.[channel]?.scale === scaleId)
+      .map(l => compositionChannel(program, l.encoding[channel], l.data)).filter(Boolean);
+    const names = new Set(meanings.map(m => JSON.stringify([m.field ?? m.fields, m.measurement.unit])));
+    if (meanings.length && names.size === 1) return meanings[0].field ?? (meanings[0].measurement.unit === 'dimensions' ? 'Dimension' : 'Value');
+    // Explicit multi-measure compositions (e.g. a second endpoint) share one
+    // axis. Name every original measure instead of choosing a consumer or
+    // exposing generated summary aliases while its compound is being built.
+    if (meanings.length && meanings.every(meaning=>meaning.field && meaning.measurement.unit==='value') &&
+        !program.semanticSpec.layers.some(layer=>layer.encoding?.[channel]?.scale===scaleId &&
+          layer.encoding[channel].title!==undefined &&
+          layer.encoding[channel].title!==compositionChannel(program,layer.encoding[channel],layer.data)?.field))
+      return [...new Set(meanings.map(meaning=>meaning.field))].join(' / ');
+  }
   if (titles.size !== 1) throw new Error(`Axis title text cannot be inferred for scale "${scaleId}".`);
   return [...titles][0];
 }
@@ -263,7 +280,7 @@ function resolveGeometry(program, channel, config, axisId = channel) {
   const canvas = findCanvasGraphic(program)?.properties;
   if (!canvas || !textBoundsFitCanvas(resolvedBounds, canvas)) {
     if (isLabelRelativeTitleOffset(config.offset)) {
-      throw new RangeError(`The ${channel}-axis label-relative title does not fit the Canvas margin.`);
+      throw canvasOverflowError(`The ${channel}-axis label-relative title does not fit the Canvas margin.`, [resolvedBounds], canvas);
     }
     throw canvasOverflowError(`The ${channel}-axis title does not fit the Canvas margin.`, [resolvedBounds], canvas);
   }

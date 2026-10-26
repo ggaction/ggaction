@@ -1,4 +1,6 @@
 export interface FitCanvasOptions {
+  /** Exact inner plot mode: distribute spare outer space around visible content. */
+  align?: "preserve" | "center";
   /** Minimum fitted margin on every Canvas edge. Defaults to 0. */
   padding?: number;
   /** Required final plot width. Defaults to 160. */

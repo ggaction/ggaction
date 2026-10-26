@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "statistics",
   "summary": "Create immutable grouped center/lower/upper summary rows.",
-  "signature": "createIntervalData(options: IntervalDataOptions): ChartProgram;",
+  "signature": "createIntervalData(options: TargetedOptions<IntervalDataOptions>): ChartProgram;",
   "intents": [
     "create interval data",
     "create",
@@ -24,7 +24,8 @@
     ],
     "idOptions": [
       "id",
-      "source"
+      "source",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -45,6 +46,10 @@
   "inference": [
     {
       "input": "source",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -109,10 +114,15 @@
       "name": "as",
       "required": false,
       "type": "IntervalOutputFields | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "createIntervalData({ id, field, source?, groupBy?, center?, extent?, method?, level? })"
+    "createIntervalData({ id, field, source?, target?, groupBy?, center?, extent?, method? })"
   ],
   "snippet": "program.createIntervalData({ id: \"interval-data-1\", field: \"value\" })",
   "errors": [],

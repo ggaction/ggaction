@@ -174,14 +174,14 @@ export function drawResolvedGraphicSpec(target, context, options = {}) {
         return;
       }
       if (!Array.isArray(object.items)) {
-        drawConcreteGraphic(context, id, object, isolated);
+        drawConcreteGraphic(context, id, object, isolated, options);
       }
     },
     item({ id, object, owner }) {
       drawConcreteGraphic(context, id, {
         ...object,
         type: object.type ?? owner.type
-      }, isolated);
+      }, isolated, options);
     },
     exit({ id, object }) {
       if (
@@ -195,7 +195,7 @@ export function drawResolvedGraphicSpec(target, context, options = {}) {
   });
 }
 
-export function renderCanvasProgram(program, context, { pixelRatio = 1 } = {}, createCanvas) {
+export function renderCanvasProgram(program, context, { pixelRatio = 1 } = {}, createCanvas, drawingOptions = {}) {
   const graphicSpec = requireProgramGraphicSpec(program);
 
   requireCanvasContext(context);
@@ -253,7 +253,7 @@ export function renderCanvasProgram(program, context, { pixelRatio = 1 } = {}, c
   try {
     context.scale(pixelRatio, pixelRatio);
     context.clearRect(0, 0, width, height);
-    drawResolvedGraphicSpec(target, context, {isolated, pixelRatio, createCanvas});
+    drawResolvedGraphicSpec(target, context, {...drawingOptions, isolated, pixelRatio, createCanvas});
   } finally {
     context.restore();
   }
@@ -263,10 +263,10 @@ export function render(program, context, options) {
   return renderCanvasProgram(program, context, options);
 }
 
-function drawConcreteGraphic(context, id, graphic, isolated) {
+function drawConcreteGraphic(context, id, graphic, isolated, options) {
   if (graphic.type === "collection") {
     for (const item of graphic.items ?? []) {
-      drawConcreteGraphic(context, item.id ?? id, item, isolated);
+      drawConcreteGraphic(context, item.id ?? id, item, isolated, options);
     }
     return;
   }
@@ -277,6 +277,6 @@ function drawConcreteGraphic(context, id, graphic, isolated) {
   if (["normal","difference"].includes(graphic.properties?.blend)) {
     drawIsolatedGlyph(context, id, graphic, draw, isolated);
   } else {
-    draw(context, id, graphic);
+    draw(context, id, graphic, options);
   }
 }

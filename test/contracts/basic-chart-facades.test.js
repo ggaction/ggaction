@@ -89,7 +89,7 @@ test("keeps every facade declaration and current root type export exact", () => 
       ? "\\?"
       : "";
     assert.match(programTypes, new RegExp(
-      `^  ${name}\\(options${optional}: ${optionType}\\)`,
+      `^  ${name}\\(options${optional}: TargetedOptions<${optionType}>\\)`,
       "m"
     ));
     if (contract.rootTypeExport !== false) {

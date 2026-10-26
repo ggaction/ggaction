@@ -1,8 +1,10 @@
 export interface ConcatCompositionSpec {
+  readonly legends?: "local" | "collect";
   readonly id: string;
   readonly direction: "horizontal" | "vertical";
   readonly children: readonly string[];
   readonly gap: number;
-  readonly align: CompositionAlign;
+  readonly align: CompositionAlign | "plot";
+  readonly share?: Readonly<CompositionShares>;
   readonly padding: Readonly<Required<CompositionPadding>>;
 }

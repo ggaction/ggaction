@@ -4,16 +4,14 @@ export type ParallelDimension = string | ({
 } & (
   | {
       fieldType: "quantitative";
-      scale?: WithoutScaleId<QuantitativePositionScaleOptions>;
+      scale?: QuantitativePositionScaleOptions;
     }
   | {
       fieldType: "ordinal";
-      scale?: WithoutScaleId<CategoricalPositionScaleOptions>;
+      scale?: CategoricalPositionScaleOptions;
     }
   | {
       fieldType?: undefined;
-      scale?: WithoutScaleId<
-        QuantitativePositionScaleOptions | CategoricalPositionScaleOptions
-      >;
+      scale?: QuantitativePositionScaleOptions | CategoricalPositionScaleOptions;
     }
 ));

@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "encodings",
   "summary": "Encode point size as area; radius-normalized polygons use reference-circle area.",
-  "signature": "encodeSize(options: SizeEncodingOptions): ChartProgram;",
+  "signature": "encodeSize(options: TargetedOptions<SizeEncodingOptions>): ChartProgram;",
   "intents": [
     "encode size",
     "encode",
@@ -72,7 +72,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "field",

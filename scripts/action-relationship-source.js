@@ -457,6 +457,22 @@ export function buildActionRelationshipPrograms() {
   });
   return [
     ...descriptors.map(buildScenario),
+    chart().createCanvas({plot:{width:300,height:220},margin:60})
+      .createData({values:[{group:"A",value:2},{group:"A",value:3},{group:"B",value:4}]})
+      .createBeeswarmPlot({id:"points",x:"group",y:"value",guides:false})
+      .createLayerPlot({id:"summary",source:"points",plot:{action:"createBoxPlot"}}),
+    chart()
+    .createCanvas({ plot: { width: 200, height: 200 }, margin: 70 })
+    .createData({ values: [{ x: "A", y: 2 }, { x: "B", y: 3 }] })
+    .createBarPlot({ id: "bars", x: "x", y: { field: "y", aggregate: "sum" } })
+    .createAdjacentPlot({ id: "line" })
+    .editCompositionScales({ share: { y: false } }),
+
+    chart().createCanvas({ width: 400, height: 300, margin: 40 })
+      .createData({ values: [{ x: "A", y: 2 }, { x: "B", y: 4 }] })
+      .createBarPlot({ id: "bars", x: "x", y: "y", guides: false })
+      .createOverlay({ id: "trend", source: "bars" })
+      .editOverlay({ target: "trend", missing: "connect" }),
     ...[false, true].map(band => chart()
       .createCanvas({ width: 400, height: 300, margin: 40 })
       .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 4 }] })
