@@ -3,7 +3,7 @@
   "name": "createTitle",
   "layer": "user-facing",
   "domain": "legend_and_title",
-  "summary": "Create a chart title and optional subtitle.",
+  "summary": "titleStyle.align and subtitleStyle.align accept \"left\" | \"center\" | \"right\" independently inside the measured title block, including rotated edge titles.",
   "signature": "createTitle(options: TargetedOptions<TitleOptions>): ChartProgram;",
   "intents": [
     "create title",

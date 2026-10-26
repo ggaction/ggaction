@@ -17,9 +17,9 @@ export function transformPathHighlightProperties(properties, style) {
     ...(offset.x === 0 && offset.y === 0
       ? {}
       : {
-          commands: properties.commands.map(command =>
+          ...(properties.commands ? { commands: properties.commands.map(command =>
             translateCommand(command, offset)
-          )
+          ) } : { x: properties.x + offset.x, y: properties.y + offset.y })
         })
   };
 }

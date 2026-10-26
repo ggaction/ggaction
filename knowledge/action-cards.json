@@ -22322,7 +22322,7 @@
       "name": "createTitle",
       "layer": "user-facing",
       "domain": "legend_and_title",
-      "summary": "Create a chart title and optional subtitle.",
+      "summary": "titleStyle.align and subtitleStyle.align accept \"left\" | \"center\" | \"right\" independently inside the measured title block, including rotated edge titles.",
       "signature": "createTitle(options: TargetedOptions<TitleOptions>): ChartProgram;",
       "intents": [
         "create title",
@@ -26011,24 +26011,29 @@
           "type": "\"item\" | \"stack\" | undefined"
         },
         {
+          "name": "rows",
+          "required": false,
+          "type": "{ data: string; indices: readonly number[]; }"
+        },
+        {
           "name": "field",
           "required": false,
-          "type": "string | undefined"
+          "type": "string"
         },
         {
           "name": "channel",
           "required": false,
-          "type": "\"color\" | \"group\" | \"opacity\" | \"radius\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\" | \"theta\" | \"x\" | \"x2\" | \"xOffset\" | \"y\" | \"y2\" | \"yOffset\" | undefined"
+          "type": "\"color\" | \"group\" | \"opacity\" | \"radius\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\" | \"theta\" | \"x\" | \"x2\" | \"xOffset\" | \"y\" | \"y2\" | \"yOffset\""
         },
         {
           "name": "property",
           "required": false,
-          "type": "MarkGraphicProperty | undefined"
+          "type": "MarkGraphicProperty"
         },
         {
           "name": "op",
-          "required": true,
-          "type": "\"eq\" | \"gt\" | \"gte\" | \"lt\" | \"lte\" | \"max\" | \"min\" | \"neq\" | \"oneOf\" | \"range\""
+          "required": false,
+          "type": "\"eq\" | \"gt\" | \"gte\" | \"lt\" | \"lte\" | \"neq\""
         },
         {
           "name": "value",
@@ -26225,24 +26230,29 @@
           "type": "\"item\" | \"stack\" | undefined"
         },
         {
+          "name": "rows",
+          "required": false,
+          "type": "{ data: string; indices: readonly number[]; }"
+        },
+        {
           "name": "field",
           "required": false,
-          "type": "string | undefined"
+          "type": "string"
         },
         {
           "name": "channel",
           "required": false,
-          "type": "\"color\" | \"group\" | \"opacity\" | \"radius\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\" | \"theta\" | \"x\" | \"x2\" | \"xOffset\" | \"y\" | \"y2\" | \"yOffset\" | undefined"
+          "type": "\"color\" | \"group\" | \"opacity\" | \"radius\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\" | \"theta\" | \"x\" | \"x2\" | \"xOffset\" | \"y\" | \"y2\" | \"yOffset\""
         },
         {
           "name": "property",
           "required": false,
-          "type": "MarkGraphicProperty | undefined"
+          "type": "MarkGraphicProperty"
         },
         {
           "name": "op",
-          "required": true,
-          "type": "\"eq\" | \"gt\" | \"gte\" | \"lt\" | \"lte\" | \"max\" | \"min\" | \"neq\" | \"oneOf\" | \"range\""
+          "required": false,
+          "type": "\"eq\" | \"gt\" | \"gte\" | \"lt\" | \"lte\" | \"neq\""
         },
         {
           "name": "value",
@@ -26372,24 +26382,29 @@
           "type": "\"item\" | \"stack\" | undefined"
         },
         {
+          "name": "rows",
+          "required": false,
+          "type": "{ data: string; indices: readonly number[]; }"
+        },
+        {
           "name": "field",
           "required": false,
-          "type": "string | undefined"
+          "type": "string"
         },
         {
           "name": "channel",
           "required": false,
-          "type": "\"color\" | \"group\" | \"opacity\" | \"radius\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\" | \"theta\" | \"x\" | \"x2\" | \"xOffset\" | \"y\" | \"y2\" | \"yOffset\" | undefined"
+          "type": "\"color\" | \"group\" | \"opacity\" | \"radius\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\" | \"theta\" | \"x\" | \"x2\" | \"xOffset\" | \"y\" | \"y2\" | \"yOffset\""
         },
         {
           "name": "property",
           "required": false,
-          "type": "MarkGraphicProperty | undefined"
+          "type": "MarkGraphicProperty"
         },
         {
           "name": "op",
-          "required": true,
-          "type": "\"eq\" | \"gt\" | \"gte\" | \"lt\" | \"lte\" | \"max\" | \"min\" | \"neq\" | \"oneOf\" | \"range\""
+          "required": false,
+          "type": "\"eq\" | \"gt\" | \"gte\" | \"lt\" | \"lte\" | \"neq\""
         },
         {
           "name": "value",
@@ -26646,6 +26661,10 @@
       },
       "units": [
         {
+          "path": "fontSize",
+          "unit": "logical-pixel"
+        },
+        {
           "path": "opacity",
           "unit": "probability"
         },
@@ -26676,6 +26695,11 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "fontSize",
+          "required": false,
+          "type": "number | undefined"
+        },
         {
           "name": "id",
           "required": false,
@@ -26753,7 +26777,7 @@
         }
       ],
       "callPatterns": [
-        "highlightMarks({ id?, target?, selection?, select?, color?, opacity?, fill?, stroke? })"
+        "highlightMarks({ id?, target?, selection?, fontSize?, select?, color?, opacity?, fill? })"
       ],
       "snippet": "program.highlightMarks({ select: { field: \"category\", op: \"eq\", value: \"A\" }, color: \"#f28e2b\" })",
       "errors": [],

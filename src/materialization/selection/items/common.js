@@ -1,3 +1,4 @@
+import { memberRowReferences } from "../rows.js";
 import { normalizeTemporalValue } from "../../../grammar/scales/fields.js";
 import { cloneAndFreeze, isPlainObject } from "../../../core/immutable.js";
 import {
@@ -108,7 +109,7 @@ function collectionBounds(program, items) {
   return { x: left, y: top, width: right - left, height: bottom - top };
 }
 
-export function finalizeItems(program, layer, grain, definitions, graphicType) {
+export function finalizeItems(program, layer, grain, definitions, graphicType, { reorder = true } = {}) {
   const graphic = requireResolvedGraphic(program, layer, graphicType);
   const referenced = definitions.flatMap((definition, index) =>
     definition.graphicIndices ?? [index]
@@ -122,10 +123,14 @@ export function finalizeItems(program, layer, grain, definitions, graphicType) {
       `Mark "${layer.id}" item count does not match its materialized graphics.`
     );
   }
+  definitions = definitions.map((definition, index) => ({ ...definition, key: definition.key ?? itemKey(layer, grain, index) }));
+  if (reorder && definitions.every(definition => definition.graphicIndices === undefined)) {
+    definitions = reorderHighlightedItems(program, layer, definitions);
+  }
   return Object.freeze(definitions.map((definition, index) => {
     const indices = definition.graphicIndices ?? [index];
     const items = indices.map(childIndex => graphic.items[childIndex]);
-    const properties = definition.properties ?? (
+    const properties = definition.properties === undefined ? (
       items.length === 1
         ? selectableGraphicProperties({
             type: items[0].type ?? graphic.type,
@@ -135,7 +140,7 @@ export function finalizeItems(program, layer, grain, definitions, graphicType) {
             ...sharedConcreteProperties(items),
             ...collectionBounds(program, items)
           }
-    );
+    ) : { ...definition.properties, ...concreteProperties(items[0]?.properties) };
     return Object.freeze({
       key: definition.key ?? itemKey(layer, grain, index),
       layer: layer.id,
@@ -147,6 +152,7 @@ export function finalizeItems(program, layer, grain, definitions, graphicType) {
         ? {}
         : { geometry: cloneAndFreeze(definition.geometry) }),
       members: Object.freeze([...definition.members]),
+      rows: Object.freeze(memberRowReferences(program, definition.members)),
       graphicIds: Object.freeze(items.map((child, childOffset) =>
         child.id ?? graphicId(layer, indices[childOffset])
       ))
@@ -154,7 +160,7 @@ export function finalizeItems(program, layer, grain, definitions, graphicType) {
   }));
 }
 
-export function reorderHighlightedItems(program, layer, definitions) {
+export function reorderHighlightedItems(program, layer, definitions, groups = {}) {
   let ordered = definitions;
   for (const config of Object.values(
     program.materializationConfigs.highlights ?? {}
@@ -162,7 +168,14 @@ export function reorderHighlightedItems(program, layer, definitions) {
     if (config.target !== layer.id || config.bringToFront !== true) continue;
     const selection = program.materializationConfigs.selections?.[config.selection];
     if (selection?.target !== layer.id) continue;
-    const selected = new Set(selectMarkItemKeys(ordered, selection.selector));
+    const predicate = selection.selector;
+    const grouped = groups[predicate.grain];
+    const candidates = (grouped ?? ordered).map(item => ({ ...item, properties: item.properties ?? {}, ...(predicate.rows ? { rows: memberRowReferences(program, item.members) } : {}) }));
+    let selected = new Set(selectMarkItemKeys(candidates, predicate));
+    if (grouped) {
+      const members = new Set(grouped.filter(item => selected.has(item.key)).flatMap(item => item.members));
+      selected = new Set(ordered.filter(item => item.members.some(row => members.has(row))).map(item => item.key));
+    }
     ordered = [
       ...ordered.filter(definition => !selected.has(definition.key)),
       ...ordered.filter(definition => selected.has(definition.key))

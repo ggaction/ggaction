@@ -1,3 +1,4 @@
+import { rematerializeHighlightBaseline } from "../lifecycle.js";
 import { materializeMarkClip } from "../../../materialization/markClip.js";
 import { requestedMarkClip, validateMarkClipCoordinate } from "../../../selectors/markClip.js";
 import { TEXT_LABEL_LAYOUT_OPTIONS } from "./layout.js";
@@ -460,6 +461,8 @@ const rematerializeTextMark = /* @__PURE__ */ action(
           ? next
           : next.materializeMarkLabelPlacement({ id });
     }
+    const highlighted = rematerializeHighlightBaseline(this, { target: id, operation: 'rematerializeTextMark', resetProperty: 'items', resetValue: [] });
+    if (highlighted) return highlighted;
     let next = materializeMarkClip(this.editGraphics({
       target: id,
       property: "items",

@@ -1,3 +1,4 @@
+import { highlightTargets } from "../../materialization/selection/targets.js";
 import { action, closedAction } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { isPlainObject } from "../../core/immutable.js";
@@ -30,7 +31,7 @@ import {
 } from "../theme/state.js";
 
 const SELECTOR_KEYS = Object.freeze([
-  "grain", "field", "channel", "property", "op", "value", "values", "min", "max",
+  "rows", "grain", "field", "channel", "property", "op", "value", "values", "min", "max",
   "inclusive", "count", "groupBy", "ties"
 ]);
 const SELECT_OPTIONS = Object.freeze(["id", "target", ...SELECTOR_KEYS]);
@@ -39,7 +40,7 @@ const REMOVE_SELECTION_OPTIONS = Object.freeze(["selection"]);
 const HIGHLIGHT_OPTIONS = Object.freeze([
   "id", "target", "select", "selection", "color", "opacity", "fill",
   "stroke", "strokeWidth", "strokeDash", "shape", "size", "offset",
-  "dimOthers", "bringToFront"
+  "dimOthers", "bringToFront", "fontSize"
 ]);
 const INTERNAL_SELECTION_OPTIONS = Object.freeze(["selection", "style", "keys"]);
 const INTERNAL_DIM_OPTIONS = Object.freeze(["selection", "opacity", "keys"]);
@@ -59,7 +60,7 @@ function resolveTarget(program, target, label = "mark selection") {
   return resolveEligibleLayer(program, {
     target: requested,
     label,
-    predicate: layer => findSelectionPolicy(layer.mark?.type) !== undefined
+    predicate: layer => findSelectionPolicy(layer.mark?.type) !== undefined && (requested !== undefined || !isSourceOwnedText(layer))
   });
 }
 
@@ -321,7 +322,7 @@ export const removeMarkHighlight = /* @__PURE__ */ closedAction(
     const current = resolveStoredSelection(this, args.selection);
     const dependent = Object.entries(
       this.materializationConfigs.highlights ?? {}
-    ).filter(([, config]) => config.selection === current.id);
+    ).filter(([, config]) => config.selection === current.id || config.groupSelection === current.id);
     if (dependent.length === 0) {
       throw new Error(
         `Selection "${current.id}" has no highlight assignment.`
@@ -331,7 +332,8 @@ export const removeMarkHighlight = /* @__PURE__ */ closedAction(
     for (const [id] of dependent) {
       next = next._withoutMaterializationConfig(["highlights", id]);
     }
-    return rebuildTargetHighlights(next, current.definition.target);
+    for (const target of new Set(dependent.map(([, config]) => config.target))) next = rebuildTargetHighlights(next, target);
+    return next;
   }
 );
 
@@ -343,6 +345,7 @@ export const removeMarkSelection = /* @__PURE__ */ closedAction(
   function (args = {}) {
     const current = resolveStoredSelection(this, args.selection);
     const labelDependents = namedLabelDependents(this, current.id);
+    const componentDependents = Object.entries(this.materializationConfigs.selections ?? {}).filter(([, definition]) => definition.sourceSelection === current.id);
     if (labelDependents.length > 0) {
       throw new Error(
         `Selection "${current.id}" is referenced by attached labels: ${labelDependents.join(", ")}.`
@@ -354,6 +357,7 @@ export const removeMarkSelection = /* @__PURE__ */ closedAction(
     let next = hasDependentHighlight
       ? this.removeMarkHighlight({ selection: current.id })
       : this;
+    for (const [id] of componentDependents) next = next._withoutMaterializationConfig(["selections", id]);
     next = next._withoutMaterializationConfig(["selections", current.id]);
     return this.context.currentSelection === current.id
       ? next._withContext({ currentSelection: undefined })
@@ -540,9 +544,7 @@ export const rematerializeMarkHighlights = /* @__PURE__ */ closedAction(
   }
 );
 
-export const highlightMarks = /* @__PURE__ */ closedAction(
-  { op: "highlightMarks", description: "Select and emphasize final visual mark items." }, HIGHLIGHT_OPTIONS,
-  function (args = {}) {
+function highlightSingle(args = {}) {
     if (args.select !== undefined && args.selection !== undefined) {
       throw new Error("highlightMarks accepts select or selection, not both.");
     }
@@ -564,15 +566,20 @@ export const highlightMarks = /* @__PURE__ */ closedAction(
     if (args.select !== undefined) {
       layer = resolveTarget(this, args.target, "highlight mark");
       resolveMarkSelection(this, layer.id, args.select);
+      if (args.fontSize !== undefined && layer.mark.type !== "text") throw new Error("fontSize highlight requires a text mark.");
       const style = requireSelectionPolicy(
         layer.mark.type
       ).normalizeHighlightStyle(args);
-      next = next.selectMarks({
+      if (args.id !== undefined && next.materializationConfigs.selections?.[args.id]) {
+        if (next.materializationConfigs.selections[args.id].target !== layer.id) throw new Error("Highlight ID belongs to a different target.");
+        if (next.materializationConfigs.highlights?.[args.id]) next = next.removeMarkHighlight({ selection: args.id });
+        next = next.editMarkSelection({ selection: args.id, ...args.select });
+      } else next = next.selectMarks({
         ...(args.id === undefined ? {} : { id: args.id }),
         target: layer.id,
         ...args.select
       });
-      resolved = resolveStoredSelection(next);
+      resolved = resolveStoredSelection(next, args.id);
       resolved = { ...resolved, style };
     } else {
       resolved = resolveStoredSelection(next, args.selection);
@@ -580,6 +587,7 @@ export const highlightMarks = /* @__PURE__ */ closedAction(
         throw new Error("highlightMarks target must match its selection target.");
       }
       layer = resolveTarget(next, resolved.definition.target, "highlight mark");
+      if (args.fontSize !== undefined && layer.mark.type !== "text") throw new Error("fontSize highlight requires a text mark.");
       resolved = {
         ...resolved,
         style: requireSelectionPolicy(
@@ -610,5 +618,48 @@ export const highlightMarks = /* @__PURE__ */ closedAction(
     return hasLegendSelection(next, resolved.definition.target, selection)
       ? next.rematerializeLegendHighlights()
       : next;
+  }
+
+export const highlightMarks = /* @__PURE__ */ closedAction(
+  { op: "highlightMarks", description: "Select and emphasize final visual mark items." }, HIGHLIGHT_OPTIONS,
+  function (args = {}) {
+    if (args.select === undefined && args.id === undefined) {
+      const named = resolveStoredSelection(this, args.selection);
+      if (highlightTargets(this, named.definition.target).length > 1) {
+        if (args.target !== undefined && args.target !== named.definition.target) throw new Error("highlightMarks target must match its selection target.");
+        args = { ...args, id: named.id, target: named.definition.target, select: named.selector };
+        delete args.selection;
+      }
+    }
+    const targets = args.target === undefined ? [] : highlightTargets(this, args.target);
+    if (targets.length <= 1 || args.select === undefined) return highlightSingle.call(this, { ...args, ...(targets[0] ? { target: targets[0] } : {}) });
+    const primary = resolveMarkSelection(this, targets[0], args.select);
+    const selected = new Set(primary.keys);
+    const rows = primary.items.filter(item => selected.has(item.key)).flatMap(item => item.rows);
+    // The oldest explicitly recorded dataset is common to all dependent marks.
+    const datasets = this.semanticSpec.datasets;
+    const source = datasets.find(dataset => primary.items.some(item => item.rows.some(ref => ref.data === dataset.id)));
+    const select = source ? { rows: { data: source.id, indices: [...new Set(rows.filter(ref => ref.data === source.id).map(ref => ref.index))] } } : args.select;
+    const baseId = args.id ?? resolveSelectionCreationId(this, undefined, targets[0]);
+    let next = this;
+    for (const target of targets) {
+      const local = { ...args, id: target === targets[0] ? baseId : `${baseId}-${target}`, target,
+        select: target === targets[0] ? args.select : select };
+      if (target !== targets[0] && args.select.field && !['min', 'max'].includes(args.select.op)) {
+        try { resolveMarkSelection(this, target, args.select); local.select = args.select; } catch { /* Keep the owner's source-row selection for mixed-grain components. */ }
+      }
+      // Common color/opacity propagate; shape and area are component-specific.
+      const type = findLayer(this, target).mark.type;
+      if (type !== 'point') { delete local.size; delete local.shape; }
+      if (!['line', 'rule', 'tick'].includes(type)) delete local.strokeDash;
+      if (type === 'bar') delete local.offset;
+      if (target !== targets[0] && ['line', 'rule', 'tick'].includes(type) && local.fill) { local.color = local.fill; delete local.fill; }
+      next = highlightSingle.call(next, local);
+      if (target !== targets[0] && source) {
+        next = next._withSelectionConfig(local.id, { ...next.materializationConfigs.selections[local.id], sourceSelection: baseId });
+      }
+      next = next._withHighlightConfig(local.id, { ...next.materializationConfigs.highlights[local.id], groupSelection: baseId });
+    }
+    return next._withContext({ currentSelection: baseId });
   }
 );

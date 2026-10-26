@@ -1,3 +1,4 @@
+import { isSourceOwnedText } from "../../grammar/text.js";
 import { assertIndependentOverlayGeometry } from "../../grammar/overlay.js";
 import { findRaincloudParent } from "../../selectors/raincloud.js";
 import { filterRaincloud, materializeRaincloudFilter, removeRaincloudFilter } from "./raincloudFilter.js";
@@ -41,7 +42,7 @@ const OPTIONS = Object.freeze([
   "id", "source", "field", "oneOf", "noneOf", "predicate", "range", "nulls"
 ]);
 const MARK_SELECTOR_KEYS = Object.freeze([
-  "grain", "field", "channel", "property", "op", "value", "values",
+  "rows", "grain", "field", "channel", "property", "op", "value", "values",
   "min", "max", "inclusive", "count", "groupBy", "ties"
 ]);
 const MARK_OPTIONS = Object.freeze(["target", "mode", ...MARK_SELECTOR_KEYS]);
@@ -318,7 +319,7 @@ export const filterMarks = /* @__PURE__ */ closedAction(
       target,
       label: "filter mark",
       predicate: candidate =>
-        candidate.data !== undefined &&
+        candidate.data !== undefined && (target !== undefined || !isSourceOwnedText(candidate)) &&
         findSelectionPolicy(candidate.mark?.type) !== undefined
     });
     assertIndependentOverlayGeometry(layer, "filterMarks");

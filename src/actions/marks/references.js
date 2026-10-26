@@ -460,7 +460,7 @@ function statisticalRows(program, referenceId) {
   );
   const { dataset } = resolveBoundPopulation(program, source, { ...config, population }, referenceId);
   const groupBy = normalizeReferenceGroupBy(config.groupBy);
-  if (population === "visibleItems" && findSelectionPolicy(source.mark?.type) === undefined) {
+  if (population === "visibleItems" && (source.mark?.type === "text" || findSelectionPolicy(source.mark?.type) === undefined)) {
     throw new Error(
       `Statistical reference "${referenceId}" visibleItems population is unavailable for ${source.mark?.type} marks. Use boundData.`
     );
