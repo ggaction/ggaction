@@ -1,3 +1,4 @@
+import { resolveTextLines } from "../core/textMetrics.js";
 import { freezeOwned } from "../core/immutable.js";
 
 // Reconcile optional derived line geometry without recreating its text graphic.
@@ -12,4 +13,23 @@ export function materializeTextLines(program, id, lines) {
       [id]: freezeOwned({ ...graphic, properties: freezeOwned(properties) })
     })
   }) });
+}
+
+// Labels retain one semantic item even when their text contains several lines.
+export function materializeHardTextLines(program, id) {
+  const graphic = program.graphicSpec.objects[id];
+  if (!(graphic.items ?? [graphic]).some(item => /[\r\n]/u.test(item.properties.text) || item.properties.lines !== undefined)) return program;
+  const update = object => {
+    const p = object.properties;
+    if (!/[\r\n]/u.test(p.text) && p.lines === undefined) return object;
+    const { lines: ignored, ...properties } = p;
+    const lines = resolveTextLines(p.text, { fontSize: p.fontSize,
+      align: p.textAlign, baseline: p.textBaseline, blockAlign: "middle" });
+    if (lines.length > 1) properties.lines = lines;
+    return freezeOwned({ ...object, properties: freezeOwned(properties) });
+  };
+  const updated = graphic.items ? freezeOwned({ ...graphic, items: freezeOwned(graphic.items.map(update)) }) : update(graphic);
+  if (updated === graphic) return program;
+  return program._clone({ graphicSpec: freezeOwned({ ...program.graphicSpec,
+    objects: freezeOwned({ ...program.graphicSpec.objects, [id]: updated }) }) });
 }

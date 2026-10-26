@@ -6194,12 +6194,14 @@ Related types: [`FocusedWeightedDerivedDataEdit`](#type-focusedweightedderivedda
 ```typescript
 export interface EditTextMarkOptions extends Omit<TextMarkOptions, "id" | "data" | "source" | "text"> {
   target?: string;
+  /** Display-only semantic item overrides; auto restores encoded content. */
+  textOverrides?: readonly TextOverride[] | "auto";
 }
 ```
 
 </details>
 
-Related types: [`TextMarkOptions`](#type-textmarkoptions).
+Related types: [`TextMarkOptions`](#type-textmarkoptions) · [`TextOverride`](#type-textoverride).
 
 ### `EditThetaAxisOptions` {#type-editthetaaxisoptions}
 
@@ -9406,7 +9408,7 @@ export type ParallelAxisComponentsOptions = {
   title?: false | ParallelAxisTitleOptions;
 } & (
   | { ticksAndLabels?: false | (ParallelAxisTickSelection & {
-      ticks?: AxisTickStyleOptions; labels?: AxisLabelStyleOptions;
+      ticks?: AxisTickStyleOptions; labels?: AxisLabelStyleOptions & DisplayLabelOptions;
     }); ticks?: never; labels?: never }
   | { ticks?: false | ParallelAxisTicksOptions; labels?: false | ParallelAxisLabelsOptions;
       ticksAndLabels?: never }
@@ -9415,7 +9417,7 @@ export type ParallelAxisComponentsOptions = {
 
 </details>
 
-Related types: [`AxisLineStyleOptions`](#type-axislinestyleoptions) · [`ParallelAxisTitleOptions`](#type-parallelaxistitleoptions) · [`ParallelAxisTickSelection`](#type-parallelaxistickselection) · [`AxisTickStyleOptions`](#type-axistickstyleoptions) · [`AxisLabelStyleOptions`](#type-axislabelstyleoptions) · [`ParallelAxisTicksOptions`](#type-parallelaxisticksoptions) · [`ParallelAxisLabelsOptions`](#type-parallelaxislabelsoptions).
+Related types: [`AxisLineStyleOptions`](#type-axislinestyleoptions) · [`ParallelAxisTitleOptions`](#type-parallelaxistitleoptions) · [`ParallelAxisTickSelection`](#type-parallelaxistickselection) · [`AxisTickStyleOptions`](#type-axistickstyleoptions) · [`AxisLabelStyleOptions`](#type-axislabelstyleoptions) · [`DisplayLabelOptions`](#type-displaylabeloptions) · [`ParallelAxisTicksOptions`](#type-parallelaxisticksoptions) · [`ParallelAxisLabelsOptions`](#type-parallelaxislabelsoptions).
 
 ### `ParallelAxisLabelsOptions` {#type-parallelaxislabelsoptions}
 
@@ -9423,12 +9425,12 @@ Related types: [`AxisLineStyleOptions`](#type-axislinestyleoptions) · [`Paralle
 <summary>Expand ParallelAxisLabelsOptions</summary>
 
 ```typescript
-export type ParallelAxisLabelsOptions = AxisLabelStyleOptions & ParallelAxisTickSelection;
+export type ParallelAxisLabelsOptions = AxisLabelStyleOptions & DisplayLabelOptions & ParallelAxisTickSelection;
 ```
 
 </details>
 
-Related types: [`AxisLabelStyleOptions`](#type-axislabelstyleoptions) · [`ParallelAxisTickSelection`](#type-parallelaxistickselection).
+Related types: [`AxisLabelStyleOptions`](#type-axislabelstyleoptions) · [`DisplayLabelOptions`](#type-displaylabeloptions) · [`ParallelAxisTickSelection`](#type-parallelaxistickselection).
 
 ### `ParallelAxisTickSelection` {#type-parallelaxistickselection}
 
@@ -12339,6 +12341,21 @@ Related types: [`TextMeasurement`](#type-textmeasurement).
 export type TextOffsetEncodingOptions =
   | { target?: string; value: number; field?: never }
   | { target?: string; field: string; value?: never };
+```
+
+</details>
+
+### `TextOverride` {#type-textoverride}
+
+<details markdown="1">
+<summary>Expand TextOverride</summary>
+
+```typescript
+export interface TextOverride {
+  match: { fields?: Readonly<Record<string, string | number | boolean | null>>; channels?: Readonly<Record<string, string | number | boolean | null>> };
+  occurrence: number;
+  text: string;
+}
 ```
 
 </details>

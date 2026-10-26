@@ -327,7 +327,8 @@ Evidence: `test/unit/layout/facet-top-lane.test.js`, `test/unit/actions/composit
 
 - 역할별 `title`은 전체 점유 plot 합집합에 한 번 정렬하는 필드 제목이다. 생성
   `headers.column.title` 및 grid `headers.row.title`도 같은 옵션을 받는다. common/all은
-  거부한다. 최초 객체는 비어 있지 않은 한 줄 text가 필수이고 이후는 부분 병합한다.
+  거부한다. 최초 객체는 비어 있지 않은 text가 필수이고 이후는 부분 병합한다.
+  명시적 hard break와 빈 줄은 concrete lines로 보존하며 전체 두께를 예약한다.
   생략은 보존, false는 제거다. text/fontSize/fontFamily/fontWeight/color/offset/align/
   rotation/alongOffset만 받는다. 글꼴·색상은 역할 헤더를 상속하며 align 기본 center,
   회전 기본 top/bottom 0,left -π/2,right +π/2다. 회전은 유한 정규 radians로 저장한다.

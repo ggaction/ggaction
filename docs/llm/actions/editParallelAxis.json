@@ -83,7 +83,7 @@
     {
       "name": "ticksAndLabels",
       "required": false,
-      "type": "false | VisibleTickGroup<ParallelAxisTickSelection> | undefined"
+      "type": "false | (ParallelAxisTickSelection & { ticks?: VisibleGuide<AxisTickStyleOptions> | undefined; labels?: VisibleGuide<...> | undefined; }) | undefined"
     },
     {
       "name": "ticks",

@@ -7660,6 +7660,10 @@
         {
           "input": "target",
           "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "textOverrides",
+          "strategy": "documented-auto"
         }
       ],
       "completionRequirements": {
@@ -7674,6 +7678,11 @@
           "name": "target",
           "required": false,
           "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+        },
+        {
+          "name": "textOverrides",
+          "required": false,
+          "type": "\"auto\" | readonly TextOverride[] | undefined"
         },
         {
           "name": "clip",
@@ -7752,9 +7761,9 @@
         }
       ],
       "callPatterns": [
-        "editTextMark({ target?, clip?, lineHeight?, blockAlign?, inheritColor?, missing?, fill?, opacity? })"
+        "editTextMark({ target?, textOverrides?, clip?, lineHeight?, blockAlign?, inheritColor?, missing?, fill? })"
       ],
-      "snippet": "program.editTextMark({ clip: true })",
+      "snippet": "program.editTextMark({ textOverrides: \"auto\" })",
       "errors": [],
       "route": "/reference/actions/marks/#edittextmark"
     },
@@ -15834,7 +15843,7 @@
         {
           "name": "ticksAndLabels",
           "required": false,
-          "type": "false | (ParallelAxisTickSelection & { ticks?: AxisTickStyleOptions | undefined; labels?: AxisLabelStyleOptions | undefined; }) | undefined"
+          "type": "false | (ParallelAxisTickSelection & { ticks?: AxisTickStyleOptions | undefined; labels?: (AxisLabelStyleOptions & DisplayLabelOptions) | undefined; }) | undefined"
         },
         {
           "name": "ticks",
@@ -15939,7 +15948,7 @@
         {
           "name": "ticksAndLabels",
           "required": false,
-          "type": "false | VisibleTickGroup<ParallelAxisTickSelection> | undefined"
+          "type": "false | (ParallelAxisTickSelection & { ticks?: VisibleGuide<AxisTickStyleOptions> | undefined; labels?: VisibleGuide<...> | undefined; }) | undefined"
         },
         {
           "name": "ticks",

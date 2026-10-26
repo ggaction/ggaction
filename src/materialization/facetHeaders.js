@@ -1,3 +1,4 @@
+import { resolveLegendTitleText } from "../layout/legendText.js";
 import { measureFacetContentChildren } from "./facetContentBounds.js";
 import { facetAxisMode, hasOuterFacetAxes } from "../core/facetAxisPolicy.js";
 import { isPlainObject } from "../core/immutable.js";
@@ -93,7 +94,7 @@ function legacyDescriptors(program, headers) {
     const text = cell === undefined
       ? mappedText(spec.facet.values[index], config)
       : `${mappedText(cell.rowValue, config)} · ${mappedText(cell.columnValue, config)}`;
-    return { topology: "legacy", role: "column", id, text, config };
+    return { topology: "legacy", role: "column", id, text, config, value: cell === undefined ? spec.facet.values[index] : undefined };
   });
 }
 
@@ -132,6 +133,7 @@ function roleDescriptors(program, headers) {
       ids: [id],
       row: Math.floor(index / spec.columns),
       column: index % spec.columns,
+      value: spec.facet.values[index],
       text: mappedText(spec.facet.values[index], column),
       config: column
     }));
@@ -142,6 +144,7 @@ function roleDescriptors(program, headers) {
     role: "column",
     ids: group.ids,
     coordinate: group.coordinate,
+    value: group.value,
     text: mappedText(group.value, column),
     config: column
   }));
@@ -150,6 +153,7 @@ function roleDescriptors(program, headers) {
     role: "row",
     ids: group.ids,
     coordinate: group.coordinate,
+    value: group.value,
     text: mappedText(group.value, row),
     config: row
   }));
@@ -163,6 +167,7 @@ function hasRotation(config) {
 function rotatedBounds(descriptor, profile) {
   return resolveTextBounds({
     x: 0, y: 0, text: descriptor.text,
+    lines: resolveLegendTitleText(descriptor.text, descriptor.config, profile).lines,
     ...descriptor.config, textAlign: "center", textBaseline: "middle"
   }, profile);
 }
@@ -174,8 +179,8 @@ function headerThickness(descriptor, side, profile) {
       ? bounds.right - bounds.left : bounds.bottom - bounds.top;
   }
   return ["left", "right"].includes(side)
-    ? measureTextWidth(descriptor.text, descriptor.config, profile)
-    : descriptor.config.fontSize;
+    ? resolveLegendTitleText(descriptor.text, descriptor.config, profile).width
+    : descriptor.text.includes("\n") ? resolveLegendTitleText(descriptor.text, descriptor.config, profile).height : descriptor.config.fontSize;
 }
 
 function plotMarginSpace(program) {
@@ -455,8 +460,8 @@ function roleItem(descriptor, cells, plots, spacing, profile, contentById) {
     anchor = horizontalAnchor(plot, config.align);
     const top = config.side === "top";
     anchor.y = top
-      ? snapshots.top - clearance - config.offset - config.fontSize / 2
-      : snapshots.bottom + clearance + config.offset + config.fontSize / 2;
+      ? snapshots.top - clearance - config.offset - (descriptor.text.includes("\n") ? resolveLegendTitleText(descriptor.text, config, profile).height : config.fontSize) / 2
+      : snapshots.bottom + clearance + config.offset + (descriptor.text.includes("\n") ? resolveLegendTitleText(descriptor.text, config, profile).height : config.fontSize) / 2;
     anchor.textBaseline = "middle";
   } else {
     anchor = verticalAnchor(plot, config.align);
@@ -488,7 +493,7 @@ function legacyItem(descriptor, cell, plot, spacing, profile, contentById) {
     snapshots: placedCell(cell),
     properties: {
       ...horizontalAnchor(placedPlot(cell, plot), descriptor.config.align),
-      y: ["plot", "content"].includes(spacing) ? cell.y + plot.y - (descriptor.clearance?.top ?? 0) - descriptor.config.offset - descriptor.config.fontSize / 2 : cell.y + descriptor.config.offset,
+      y: ["plot", "content"].includes(spacing) ? cell.y + plot.y - (descriptor.clearance?.top ?? 0) - descriptor.config.offset - (descriptor.text.includes("\n") ? resolveLegendTitleText(descriptor.text, descriptor.config, profile).height : descriptor.config.fontSize) / 2 : cell.y + descriptor.config.offset,
       textBaseline: "middle",
       ...(hasRotation(descriptor.config) ? { rotation: descriptor.config.rotation } : {})
     }
@@ -502,6 +507,7 @@ function styledItem(item) {
     properties: {
       ...item.properties,
       text: item.descriptor.text,
+      ...(resolveLegendTitleText(item.descriptor.text, config).lines ? { lines: resolveLegendTitleText(item.descriptor.text, config).lines } : {}),
       fill: config.color,
       fontSize: config.fontSize,
       fontFamily: config.fontFamily,
@@ -575,4 +581,13 @@ export function materializeFacetHeaders(program, layout, plots, prepared) {
   return program
     .createGraphics({ id, type: "collection", parent: "canvas" })
     .editGraphics({ target: id, property: "items", value: items });
+}
+
+// Semantic entries follow the same ordering as materialized header items.
+export function facetHeaderTextEntries(program) {
+  const headers = normalizeFacetHeadersConfig(program.materializationConfigs.facets[program.compositionSpec.id].headers);
+  const descriptors = headers.mode === "legacy" ? legacyDescriptors(program, headers) : roleDescriptors(program, headers);
+  const titles = headers.mode === "legacy" ? [] : ["column", ...(program.compositionSpec.facet.grid ? ["row"] : [])]
+    .flatMap(role => { const config = resolveFacetHeaderConfig(headers, role); return config.title ? [{role, title:true, text:config.title.text,config}] : []; });
+  return [...descriptors.map(entry => ({...entry,role:headers.mode === "legacy" ? "all" : entry.role})),...titles];
 }

@@ -133,7 +133,7 @@ Cartesian line/ticks/labels/title의 실제 occupied bounds는 각 component pos
   deterministic `(empty)`로 표시한다. Explicit format은 그대로 유지한다. ticks와 count/values 정책이
   충돌하면 거부한다. 매우 긴 valid temporal domain은 legacy fixed interval이 requested count를 크게
   초과할 때만 nice multi-year step으로 전환한다. Wrapped line과 rotation-aware occupied bounds는
-  mapping이 적용된 최종 문자열을 측정한다. Parallel field-axis label에는 `labelMap`이 노출되지 않는다.
+  mapping이 적용된 최종 문자열을 측정한다. Parallel field-axis categorical labels에도 `labelMap`을 지원한다. Continuous parallel labels는 이를 거부한다.
   materialization에서 확정하므로 renderer는 text를 다시 측정하거나 줄바꿈하지 않는다. Canvas/scale replay는
   stored policy와 원래 tick value text에서 같은 concrete line을 재생성한다. Total concrete label line은
   `10,000`개를 넘을 수 없다.
@@ -752,6 +752,7 @@ Ticks/labels의 count와 values는 배타적이고 같은 existing mode/default 
 ### Formal values — `editThetaAxisTitle`
 
 - Implemented: `editThetaAxisTitle({ text?, offset?, color?, fontSize?, fontFamily?, fontWeight? } = {})`.
+- 명시적 hard break와 빈 줄을 concrete lines로 보존하며 전체 경계로 공간을 검증한다. Radial title도 같다. 근거: `test/unit/actions/guides/categorical-hard-breaks.test.js`.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `editThetaAxisTitle`
@@ -1353,3 +1354,5 @@ Evidence: `test/unit/actions/guides/plot-underlays.test.js`, `test/unit/layout/p
 전체 Cartesian/Polar 축 편집과 `editParallelAxis`는 `visible?: boolean`을 받는다. `line`, `ticks`, `labels`, `title` 및 ticksAndLabels의 ticks/labels에도 같은 옵션을 지원한다. false는 스타일과 상대 anchor geometry를 유지하며 paint만 숨기고, true는 복원한다. 생략은 기존 값을 유지하며 전체 축을 켜도 별도로 숨긴 라벨은 그대로다. `editAxes`는 각 선택 owner에 전달한다. 생성 옵션은 바뀌지 않는다. 비 Boolean은 원자적으로 거부한다. 자동 guide, scale/Canvas replay, editable persistence에서 유지한다.
 
 검증: `test/unit/actions/guides/guide-visibility.test.js`, `test/contracts/guide-visibility-types.test.js`.
+
+Categorical Parallel labels accept typed `labelMap` in `labels` or `ticksAndLabels.labels`; auto clears it and omission preserves it. Hard breaks use one semantic tick with concrete line geometry. See `test/unit/actions/guides/categorical-hard-breaks.test.js`.

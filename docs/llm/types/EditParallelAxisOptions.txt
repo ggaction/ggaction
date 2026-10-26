@@ -2,6 +2,8 @@ export type EditParallelAxisOptions = GuideVisibilityOptions & { field: string; 
   line?: false | VisibleGuide<AxisLineStyleOptions>;
   title?: false | VisibleGuide<ParallelAxisTitleOptions>;
 } & (
-  | { ticksAndLabels?: false | VisibleTickGroup<ParallelAxisTickSelection>; ticks?: never; labels?: never }
+  | { ticksAndLabels?: false | (ParallelAxisTickSelection & {
+      ticks?: VisibleGuide<AxisTickStyleOptions>; labels?: VisibleGuide<AxisLabelStyleOptions & DisplayLabelOptions>;
+    }); ticks?: never; labels?: never }
   | { ticks?: false | VisibleGuide<ParallelAxisTicksOptions>; labels?: false | VisibleGuide<ParallelAxisLabelsOptions>; ticksAndLabels?: never }
 );

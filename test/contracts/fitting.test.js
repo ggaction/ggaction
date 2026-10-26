@@ -62,7 +62,7 @@ test("keeps fitting inside one authoring trace and preserves semantic state", ()
   assert.equal(JSON.stringify(fitted.graphicSpec.order), order);
 });
 
-test("publishes Cartesian label layout without leaking it to Parallel labels", () => {
+test("publishes Cartesian layout separately from categorical Parallel display mappings", () => {
   const program = read("types/program.d.ts");
   assert.match(program, /^export interface AxisLabelLayoutOptions \{$/m);
   assert.match(
@@ -73,9 +73,9 @@ test("publishes Cartesian label layout without leaking it to Parallel labels", (
     program,
     /labels\?: CartesianAxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions;/u
   );
-  assert.match(program, /ParallelAxisLabelsOptions = AxisLabelStyleOptions & ParallelAxisTickSelection;/u);
+  assert.match(program, /ParallelAxisLabelsOptions = AxisLabelStyleOptions & DisplayLabelOptions & ParallelAxisTickSelection;/u);
   assert.doesNotMatch(
     program,
-    /ParallelAxisLabelsOptions = [^;]*DisplayLabelOptions/u
+    /ParallelAxisLabelsOptions = [^;]*AxisLabelLayoutOptions/u
   );
 });

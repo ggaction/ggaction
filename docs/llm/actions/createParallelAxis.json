@@ -81,7 +81,7 @@
     {
       "name": "ticksAndLabels",
       "required": false,
-      "type": "false | (ParallelAxisTickSelection & { ticks?: AxisTickStyleOptions | undefined; labels?: AxisLabelStyleOptions | undefined; }) | undefined"
+      "type": "false | (ParallelAxisTickSelection & { ticks?: AxisTickStyleOptions | undefined; labels?: (AxisLabelStyleOptions & DisplayLabelOptions) | undefined; }) | undefined"
     },
     {
       "name": "ticks",

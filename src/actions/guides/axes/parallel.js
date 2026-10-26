@@ -1,3 +1,4 @@
+import { materializeHardTextLines } from "../../../materialization/textLines.js";
 import { closedAction } from "../../../core/action.js";
 import { validateGeneratedItemLimit } from "../../../core/validation.js";
 import { resolvePlotGraphicPlacement } from "../../../materialization/graphicHierarchy.js";
@@ -97,6 +98,7 @@ export const rematerializeParallelAxes = /* @__PURE__ */ closedAction({
     for (const [property, item] of Object.entries(value)) {
       next = next.editGraphics({ target: id, property, value: item });
     }
+    if (["title", "labels"].includes(part)) next = materializeHardTextLines(next, id);
   }
   return next._withGuideConfig("parallel", "axes", { target, scales, ...configs });
 }));

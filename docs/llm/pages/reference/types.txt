@@ -5292,10 +5292,12 @@ Related types: [`FocusedWeightedDerivedDataEdit`](../../../reference/types/#type
 ```typescript
 export interface EditTextMarkOptions extends Omit<TextMarkOptions, "id" | "data" | "source" | "text"> {
   target?: string;
+  /** Display-only semantic item overrides; auto restores encoded content. */
+  textOverrides?: readonly TextOverride[] | "auto";
 }
 ```
 
-Related types: [`TextMarkOptions`](../../../reference/types/#type-textmarkoptions).
+Related types: [`TextMarkOptions`](../../../reference/types/#type-textmarkoptions) · [`TextOverride`](../../../reference/types/#type-textoverride).
 
 ### `EditThetaAxisOptions` {#type-editthetaaxisoptions}
 
@@ -7976,24 +7978,24 @@ export type ParallelAxisComponentsOptions = {
   title?: false | ParallelAxisTitleOptions;
 } & (
   | { ticksAndLabels?: false | (ParallelAxisTickSelection & {
-      ticks?: AxisTickStyleOptions; labels?: AxisLabelStyleOptions;
+      ticks?: AxisTickStyleOptions; labels?: AxisLabelStyleOptions & DisplayLabelOptions;
     }); ticks?: never; labels?: never }
   | { ticks?: false | ParallelAxisTicksOptions; labels?: false | ParallelAxisLabelsOptions;
       ticksAndLabels?: never }
 );
 ```
 
-Related types: [`AxisLineStyleOptions`](../../../reference/types/#type-axislinestyleoptions) · [`ParallelAxisTitleOptions`](../../../reference/types/#type-parallelaxistitleoptions) · [`ParallelAxisTickSelection`](../../../reference/types/#type-parallelaxistickselection) · [`AxisTickStyleOptions`](../../../reference/types/#type-axistickstyleoptions) · [`AxisLabelStyleOptions`](../../../reference/types/#type-axislabelstyleoptions) · [`ParallelAxisTicksOptions`](../../../reference/types/#type-parallelaxisticksoptions) · [`ParallelAxisLabelsOptions`](../../../reference/types/#type-parallelaxislabelsoptions).
+Related types: [`AxisLineStyleOptions`](../../../reference/types/#type-axislinestyleoptions) · [`ParallelAxisTitleOptions`](../../../reference/types/#type-parallelaxistitleoptions) · [`ParallelAxisTickSelection`](../../../reference/types/#type-parallelaxistickselection) · [`AxisTickStyleOptions`](../../../reference/types/#type-axistickstyleoptions) · [`AxisLabelStyleOptions`](../../../reference/types/#type-axislabelstyleoptions) · [`DisplayLabelOptions`](../../../reference/types/#type-displaylabeloptions) · [`ParallelAxisTicksOptions`](../../../reference/types/#type-parallelaxisticksoptions) · [`ParallelAxisLabelsOptions`](../../../reference/types/#type-parallelaxislabelsoptions).
 
 ### `ParallelAxisLabelsOptions` {#type-parallelaxislabelsoptions}
 
  Expand ParallelAxisLabelsOptions
 
 ```typescript
-export type ParallelAxisLabelsOptions = AxisLabelStyleOptions & ParallelAxisTickSelection;
+export type ParallelAxisLabelsOptions = AxisLabelStyleOptions & DisplayLabelOptions & ParallelAxisTickSelection;
 ```
 
-Related types: [`AxisLabelStyleOptions`](../../../reference/types/#type-axislabelstyleoptions) · [`ParallelAxisTickSelection`](../../../reference/types/#type-parallelaxistickselection).
+Related types: [`AxisLabelStyleOptions`](../../../reference/types/#type-axislabelstyleoptions) · [`DisplayLabelOptions`](../../../reference/types/#type-displaylabeloptions) · [`ParallelAxisTickSelection`](../../../reference/types/#type-parallelaxistickselection).
 
 ### `ParallelAxisTickSelection` {#type-parallelaxistickselection}
 
@@ -10417,6 +10419,18 @@ Related types: [`TextMeasurement`](../../../reference/types/#type-textmeasuremen
 export type TextOffsetEncodingOptions =
   | { target?: string; value: number; field?: never }
   | { target?: string; field: string; value?: never };
+```
+
+### `TextOverride` {#type-textoverride}
+
+ Expand TextOverride
+
+```typescript
+export interface TextOverride {
+  match: { fields?: Readonly<Record<string, string | number | boolean | null>>; channels?: Readonly<Record<string, string | number | boolean | null>> };
+  occurrence: number;
+  text: string;
+}
 ```
 
 ### `TextPlotPositionChannel` {#type-textplotpositionchannel}

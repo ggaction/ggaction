@@ -1,3 +1,5 @@
+import { materializeHardTextLines } from "../../../../materialization/textLines.js";
+import { resolveTextLines } from "../../../../core/textMetrics.js";
 import { withGuideLayoutValidation } from "../../../../materialization/guides/layout.js";
 import { axisThemeTypography } from "../../../theme/state.js";
 import { action } from "../../../../core/action.js";
@@ -62,6 +64,7 @@ function labelGeometry(program, kind, config, angle = resolveAngle(program, kind
       x: geometry.x[index],
       y: geometry.y[index],
       text: value,
+      lines: resolveTextLines(value, {fontSize: config.fontSize, blockAlign: "middle", baseline: geometry.textBaseline[index]}),
       fontSize: config.fontSize,
       fontFamily: config.fontFamily,
       fontWeight: config.fontWeight,
@@ -184,7 +187,7 @@ function makeEditLabels(kind) {
     for (const [property, value] of Object.entries(properties)) {
       next = next.editGraphics({ target: names.labels, property, value });
     }
-    return next;
+    return materializeHardTextLines(next, names.labels);
   }));
 }
 

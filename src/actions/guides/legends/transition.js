@@ -128,7 +128,7 @@ export function applyColorLegendTransition(program, plan) {
     target: plan.args.target,
     channel: plan.channel
   }, `${plan.channel} legend transition`);
-  validateLegendBlockOverride(descriptor, plan.blockOverride);
+  validateLegendBlockOverride(descriptor, plan.blockOverride, next.resolvedScales[descriptor.scaleIds[0]]?.type);
   next = next._withLegendConfig(descriptor.kind, {
     ...descriptor.config,
     blockOverrides: { [descriptor.key]: plan.blockOverride }
@@ -227,7 +227,7 @@ export function planLegendBlockTransitions(program, target, plans, position, spa
       }
       override = overrides[0];
     }
-    if (override !== undefined) validateLegendBlockOverride(descriptor, override);
+    if (override !== undefined) validateLegendBlockOverride(descriptor, override, program.resolvedScales[descriptor.scaleIds[0]]?.type);
     const config = withoutBlockOverrides(plan.config);
     for (const key of LEGEND_SPACING_KEYS) {
       let value=config[key];

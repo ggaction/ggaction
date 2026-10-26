@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.25.
 
-Contract: sha256:097ac491ebf83b6b1359ac0d35f5b4c445652efaf08a6e21359e3c52ecdc6e14. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:34a6b8c8372d10e4d7e77c1f9c06c0bcf192b22dcbe1f735dda7d37fcd5c6285. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -17099,6 +17099,26 @@ faceting, and exact one-dimension field repetition. Temporal dimensions, curved
 paths, axis drag reordering, brushing, bundling, outer shared Parallel axes,
 and automatic cross-composition scale sharing are not implemented.
 
+### Individual display text
+
+Change category display names without replacing data values using `labelMap` on Cartesian and categorical theta axis labels, categorical parallel axis labels, or categorical legend blocks (including ordinal size). For example:
+
+```js
+program.editParallelAxis({ target: "plot", field: "region",
+  labels: { labelMap: [{ value: "North", label: "Northern\nregion" }] } });
+```
+
+Use `editTextMark({target, textOverrides})` to replace one annotation or mark label by semantic identity. Each entry contains `match: {fields?, channels?}`, a zero-based `occurrence` among matching items, and literal `text`. Specify the full available identity to preserve its meaning when filtering. Omitted items keep their encoded text; unmatched overrides remain inactive. Arrays replace the override policy, and `"auto"` resets it. Text supports explicit line breaks, including blank lines, in Canvas, SVG and PDF.
+
+Explicit line breaks also work in category labels, polar axis titles, and facet field titles. Native layout measures the complete text block when reserving space; removing the breaks restores single-line geometry.
+
+```js
+program.editTextMark({ target: "labels", textOverrides: [{
+  match: { fields: { region: "North", sales: 12 } }, occurrence: 0,
+  text: "Northern region\n12 sales"
+}] });
+```
+
 <!-- Source: /reference/actions/ -->
 
 # Action Reference
@@ -21774,6 +21794,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `textOverrides` | Optional / branch-dependent | `"auto" \| readonly TextOverride[] \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `lineHeight` | Optional / branch-dependent | `number \| undefined` |
 | `blockAlign` | Optional / branch-dependent | `"first" \| "middle" \| undefined` |
@@ -26081,7 +26102,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `line` | Optional / branch-dependent | `false \| AxisLineStyleOptions \| undefined` |
 | `title` | Optional / branch-dependent | `false \| ParallelAxisTitleOptions \| undefined` |
-| `ticksAndLabels` | Optional / branch-dependent | `false \| (ParallelAxisTickSelection & { ticks?: AxisTickStyleOptions \| undefined; labels?: AxisLabelStyleOptions \| undefined; }) \| undefined` |
+| `ticksAndLabels` | Optional / branch-dependent | `false \| (ParallelAxisTickSelection & { ticks?: AxisTickStyleOptions \| undefined; labels?: (AxisLabelStyleOptions & DisplayLabelOptions) \| undefined; }) \| undefined` |
 | `ticks` | Optional / branch-dependent | `false \| ParallelAxisTicksOptions \| undefined` |
 | `labels` | Optional / branch-dependent | `false \| ParallelAxisLabelsOptions \| undefined` |
 
@@ -35594,10 +35615,12 @@ Related types: [`FocusedWeightedDerivedDataEdit`](./reference/types/#type-focuse
 ```typescript
 export interface EditTextMarkOptions extends Omit<TextMarkOptions, "id" | "data" | "source" | "text"> {
   target?: string;
+  /** Display-only semantic item overrides; auto restores encoded content. */
+  textOverrides?: readonly TextOverride[] | "auto";
 }
 ```
 
-Related types: [`TextMarkOptions`](./reference/types/#type-textmarkoptions).
+Related types: [`TextMarkOptions`](./reference/types/#type-textmarkoptions) · [`TextOverride`](./reference/types/#type-textoverride).
 
 ### `EditThetaAxisOptions` {#type-editthetaaxisoptions}
 
@@ -38278,24 +38301,24 @@ export type ParallelAxisComponentsOptions = {
   title?: false | ParallelAxisTitleOptions;
 } & (
   | { ticksAndLabels?: false | (ParallelAxisTickSelection & {
-      ticks?: AxisTickStyleOptions; labels?: AxisLabelStyleOptions;
+      ticks?: AxisTickStyleOptions; labels?: AxisLabelStyleOptions & DisplayLabelOptions;
     }); ticks?: never; labels?: never }
   | { ticks?: false | ParallelAxisTicksOptions; labels?: false | ParallelAxisLabelsOptions;
       ticksAndLabels?: never }
 );
 ```
 
-Related types: [`AxisLineStyleOptions`](./reference/types/#type-axislinestyleoptions) · [`ParallelAxisTitleOptions`](./reference/types/#type-parallelaxistitleoptions) · [`ParallelAxisTickSelection`](./reference/types/#type-parallelaxistickselection) · [`AxisTickStyleOptions`](./reference/types/#type-axistickstyleoptions) · [`AxisLabelStyleOptions`](./reference/types/#type-axislabelstyleoptions) · [`ParallelAxisTicksOptions`](./reference/types/#type-parallelaxisticksoptions) · [`ParallelAxisLabelsOptions`](./reference/types/#type-parallelaxislabelsoptions).
+Related types: [`AxisLineStyleOptions`](./reference/types/#type-axislinestyleoptions) · [`ParallelAxisTitleOptions`](./reference/types/#type-parallelaxistitleoptions) · [`ParallelAxisTickSelection`](./reference/types/#type-parallelaxistickselection) · [`AxisTickStyleOptions`](./reference/types/#type-axistickstyleoptions) · [`AxisLabelStyleOptions`](./reference/types/#type-axislabelstyleoptions) · [`DisplayLabelOptions`](./reference/types/#type-displaylabeloptions) · [`ParallelAxisTicksOptions`](./reference/types/#type-parallelaxisticksoptions) · [`ParallelAxisLabelsOptions`](./reference/types/#type-parallelaxislabelsoptions).
 
 ### `ParallelAxisLabelsOptions` {#type-parallelaxislabelsoptions}
 
  Expand ParallelAxisLabelsOptions
 
 ```typescript
-export type ParallelAxisLabelsOptions = AxisLabelStyleOptions & ParallelAxisTickSelection;
+export type ParallelAxisLabelsOptions = AxisLabelStyleOptions & DisplayLabelOptions & ParallelAxisTickSelection;
 ```
 
-Related types: [`AxisLabelStyleOptions`](./reference/types/#type-axislabelstyleoptions) · [`ParallelAxisTickSelection`](./reference/types/#type-parallelaxistickselection).
+Related types: [`AxisLabelStyleOptions`](./reference/types/#type-axislabelstyleoptions) · [`DisplayLabelOptions`](./reference/types/#type-displaylabeloptions) · [`ParallelAxisTickSelection`](./reference/types/#type-parallelaxistickselection).
 
 ### `ParallelAxisTickSelection` {#type-parallelaxistickselection}
 
@@ -40719,6 +40742,18 @@ Related types: [`TextMeasurement`](./reference/types/#type-textmeasurement).
 export type TextOffsetEncodingOptions =
   | { target?: string; value: number; field?: never }
   | { target?: string; field: string; value?: never };
+```
+
+### `TextOverride` {#type-textoverride}
+
+ Expand TextOverride
+
+```typescript
+export interface TextOverride {
+  match: { fields?: Readonly<Record<string, string | number | boolean | null>>; channels?: Readonly<Record<string, string | number | boolean | null>> };
+  occurrence: number;
+  text: string;
+}
 ```
 
 ### `TextPlotPositionChannel` {#type-textplotpositionchannel}
@@ -44595,7 +44630,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:097ac491ebf83b6b1359ac0d35f5b4c445652efaf08a6e21359e3c52ecdc6e14` |
+| Contract fingerprint | `sha256:34a6b8c8372d10e4d7e77c1f9c06c0bcf192b22dcbe1f735dda7d37fcd5c6285` |
 | Example and dataset source | `ab206c446ae5010eecfd859427775c4785d8aed4` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

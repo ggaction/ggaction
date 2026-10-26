@@ -138,7 +138,7 @@ export function resolveSizeLegendLayout(program, config) {
         "quantitative",
         config.labels.format
       );
-  const mappedText = !discrete && !ordinalSize && effective.labelMap !== undefined
+  const mappedText = !discrete && effective.labelMap !== undefined
     ? itemText.map((label, index) => resolveDisplayLabel(values[index], effective.labelMap, () => label))
     : itemText;
   const text = hiddenCount > 0 ? [...mappedText, `…${hiddenCount} entries`] : mappedText;

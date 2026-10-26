@@ -51,7 +51,7 @@ test('maps reject invalid numeric keys, duplicates, payload and unsupported fami
  const opacity=p.removeLegend().encodeOpacity({field:'v'}).createLegend({channels:['opacity']});
  assert.throws(()=>opacity.editLegendBlock({target:'points',channel:'opacity',labelMap:[]}),/categorical or continuous size/);
  const discrete=p.removeLegend().encodeSize({field:'v',fieldType:'ordinal',scale:{id:'ordinalSize',type:'ordinal',domain:[0,10],range:[10,20]}}).createLegend({channels:['size']});
- assert.throws(()=>discrete.editLegendBlock({target:'points',channel:'size',labelMap:[]}),/categorical or continuous size/);
+ assert.deepEqual(labels(discrete.editLegendBlock({target:'points',channel:'size',labelMap:[{value:0,label:'zero category'}]})), ['zero category','10']);
  const invalid=structuredClone(p.materializationConfigs);invalid.guides.legend.size.blockOverrides={'["size"]':{labelMap:[{value:'5',label:'bad'}]}};
  assert.throws(()=>serializeProgram(p._clone({materializationConfigs:invalid})),/finite numbers/);
 });

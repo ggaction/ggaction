@@ -1,3 +1,4 @@
+import { materializeHardTextLines } from "../../../../materialization/textLines.js";
 import{normalizeLegendClipHeight}from"../../../../grammar/legendClip.js";
 import {normalizeLegendSpacing} from "../../../../grammar/legendSpacing.js";
 import{applyLegendClipGraphics}from"../../../../materialization/legendClip.js";
@@ -359,10 +360,10 @@ export function styleContinuousText(
   });
   return id.endsWith("Title")
     ? materializeLegendTitleLines(next, id, next.graphicSpec.objects[id].properties.text, style)
-    : next;
+    : materializeHardTextLines(next, id);
 }
 
-export function resolveLegendTextBounds(position, text, style, profile, { hardBreaks = false } = {}) {
+export function resolveLegendTextBounds(position, text, style, profile, { hardBreaks = true } = {}) {
   return resolveTextBounds({
     x: position.x,
     y: position.y,

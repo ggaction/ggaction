@@ -122,3 +122,23 @@ paths, dimension-local axes, color/stroke-dash legends, selection, filtering,
 faceting, and exact one-dimension field repetition. Temporal dimensions, curved
 paths, axis drag reordering, brushing, bundling, outer shared Parallel axes,
 and automatic cross-composition scale sharing are not implemented.
+
+### Individual display text
+
+Change category display names without replacing data values using `labelMap` on Cartesian and categorical theta axis labels, categorical parallel axis labels, or categorical legend blocks (including ordinal size). For example:
+
+```js
+program.editParallelAxis({ target: "plot", field: "region",
+  labels: { labelMap: [{ value: "North", label: "Northern\nregion" }] } });
+```
+
+Use `editTextMark({target, textOverrides})` to replace one annotation or mark label by semantic identity. Each entry contains `match: {fields?, channels?}`, a zero-based `occurrence` among matching items, and literal `text`. Specify the full available identity to preserve its meaning when filtering. Omitted items keep their encoded text; unmatched overrides remain inactive. Arrays replace the override policy, and `"auto"` resets it. Text supports explicit line breaks, including blank lines, in Canvas, SVG and PDF.
+
+Explicit line breaks also work in category labels, polar axis titles, and facet field titles. Native layout measures the complete text block when reserving space; removing the breaks restores single-line geometry.
+
+```js
+program.editTextMark({ target: "labels", textOverrides: [{
+  match: { fields: { region: "North", sales: 12 } }, occurrence: 0,
+  text: "Northern region\n12 sales"
+}] });
+```

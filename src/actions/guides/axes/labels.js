@@ -189,7 +189,7 @@ function assertTickCompatibility(ticks, config, operation) {
 }
 
 function expandWrappedLabels(resolved, text, config, channel, profile) {
-  if (config.maxWidth === undefined) {
+  if (config.maxWidth === undefined && !text.some(value => value.includes("\n"))) {
     return {
       ...resolved,
       text,
@@ -204,7 +204,7 @@ function expandWrappedLabels(resolved, text, config, channel, profile) {
   const lineHeight = config.lineHeight ?? config.fontSize * 1.2;
   const expanded = { text: [], x: [], y: [], groups: [] };
   for (let index = 0; index < text.length; index += 1) {
-    const lines = wrapText(text[index], {
+    const lines = config.maxWidth === undefined ? text[index].split(/\r?\n/u) : wrapText(text[index], {
       maxWidth: config.maxWidth,
       mode: config.wrap,
       style, profile
@@ -241,7 +241,7 @@ function unionLabelBounds(records) {
   return [...byGroup.values()];
 }
 
-function resolve(program, channel, config, axisId = channel) {
+export function resolveAxisLabels(program, channel, config, axisId = channel) {
   const scale = program.resolvedScales[config.scale];
   const bounds = resolveCartesianAxisFrameBounds(program, channel, config.position, config.scale, axisId);
   const discrete = ["ordinal", "band", "point"].includes(scale?.type);
@@ -444,7 +444,7 @@ function makeEdit(channel) {
     if (this.graphicSpec.objects[id]?.type !== "text") throw new Error(`${op} requires existing axis labels.`);
     const config = resolveAxisLabelEditConfig(this, channel, args, axisId);
     assertTickCompatibility(this.guideConfigs.axis?.[axisId]?.ticks, config, op);
-    const resolved = resolve(this, channel, config, axisId);
+    const resolved = resolveAxisLabels(this, channel, config, axisId);
     let next = this._withGuideConfig(axisId, "labels", config);
     const properties = {
       length: resolved.text.length,
@@ -528,7 +528,7 @@ function makeCreate(channel) {
     }
     validateConfig(channel, config);
     assertTickCompatibility(ticks, config, op);
-    resolve(this, channel, config, axisId);
+    resolveAxisLabels(this, channel, config, axisId);
     return this.editSemantic({ property: `guide.axis.${axisId}.scale`, value: scale })
       .createGraphics({
         id,

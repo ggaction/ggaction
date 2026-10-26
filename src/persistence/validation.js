@@ -1,3 +1,5 @@
+import { normalizeTextOverrides } from "../grammar/text.js";
+import { normalizeLegendDisplayLabelMap } from "../grammar/displayLabels.js";
 import { validateFacetAxisPolicy } from "../core/facetAxisPolicy.js";
 import { resolveFacetFamily } from "../grammar/facets/dependencies.js";
 import { validateRegressionPlacement } from "../grammar/regression/parameters.js";
@@ -25,8 +27,6 @@ import { isSizeShapeChannels, resolveSizeShapeMapping } from "../grammar/legendC
 import { describeLegendBlock, validateLegendChannels } from "../grammar/legendBlocks.js";
 import { localLegendPosition } from "../grammar/legendGroups.js";
 import { normalizeLegendBorderDash } from "../grammar/legendBorder.js";
-import { normalizeNumericDisplayLabelMap } from "../grammar/displayLabels.js";
-import { isContinuousSizeScaleType } from "../grammar/scales/size.js";
 import { validateGraphicItemLimit } from "../core/validation.js";
 import { LEGEND_TITLE_STYLE_KEYS, validateLegendTitleAlignment } from "../grammar/legendTitleStyle.js";
 import { validateGuideDash, normalizeGuideDashMap } from "../grammar/guideDash.js";
@@ -354,6 +354,13 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
   }
   for (const [kind, config] of Object.entries(program.guideConfigs.legend ?? {})) {
     validateLegendClip(kind,config);
+    for (const [key, override] of Object.entries(config.blockOverrides ?? {})) {
+      if (override.labelMap !== undefined) {
+        const descriptor = describeLegendBlock(program, kind, config);
+        if (key !== descriptor.key) throw invalidSnapshot("Display labels require their existing legend block owner.", path);
+        normalizeLegendDisplayLabelMap(descriptor, override.labelMap, program.resolvedScales[descriptor.scaleIds[0]]?.type);
+      }
+    }
     validateLegendSpacing(kind,config);
     if (localLegendPosition(config) !== undefined) {
       const descriptor = describeLegendBlock(program, kind, config);
@@ -396,15 +403,6 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
     }
     if (config.border && Object.hasOwn(config.border, "strokeDash")) {
       normalizeLegendBorderDash(config.border.strokeDash, "Stored legend border strokeDash");
-    }
-    if (["size","colorSize"].includes(kind) && config.blockOverrides !== undefined) {
-      for (const [key, override] of Object.entries(config.blockOverrides)) {
-        if (override.labelMap === undefined) continue;
-        if (key !== (kind==='colorSize'?'["color","size"]':'["size"]') || !isContinuousSizeScaleType(program.resolvedScales[kind==='colorSize'?config.sizeScale:config.scale]?.type)) {
-          throw invalidSnapshot("Numeric display labels require a continuous size legend block.", path);
-        }
-        normalizeNumericDisplayLabelMap(override.labelMap, "Stored size legend labelMap");
-      }
     }
     if (config.titleStyle !== undefined) {
       validateOptionObject(config.titleStyle, LEGEND_TITLE_STYLE_KEYS, "Stored legend title style");
@@ -498,6 +496,10 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
     }
   }
   for (const id of Object.keys(program.markConfigs)) {
+    if (program.markConfigs[id].textOverrides !== undefined) {
+      if (resources.get("mark").get(id).mark.type !== "text") throw invalidSnapshot("Text overrides require a text mark.", path);
+      normalizeTextOverrides(program.markConfigs[id].textOverrides);
+    }
     validateRegressionPlacement(program.markConfigs[id].regression?.placement);
     requestedMarkClip(program.markConfigs[id]);
     validateMarkClipCoordinate(program, resources.get("mark").get(id), program.markConfigs[id].clip);

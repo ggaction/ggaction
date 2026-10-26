@@ -1259,7 +1259,11 @@ Horizontal Cartesian lines transpose the same series derivation when X is quanti
 
 ## `editTextMark`
 
-- Signature: `editTextMark({ clip?, target?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? })`.
+- `textOverrides?: readonly {match:{fields?:Record<string,DatasetScalar>,channels?:Record<string,DatasetScalar>},occurrence:number,text:string}[] | "auto"`는 표시 문자열만 교체한다. 필드/채널 조건은 AND이며 적어도 하나의 nonempty dictionary가 필요하다. occurrence는 일치하는 semantic items 중 0부터 세고 graphic index를 쓰지 않는다. 미일치 항목은 dormant로 보존한다. 배열은 전체 교체, 생략은 보존, auto는 제거다. 중복 selector, nonfinite scalar, 음수/비정수 occurrence는 거부한다. Literal multiline text이며 원본 값, encoding과 위치를 바꾸지 않는다.
+- 승인: VisAuto 사용자가 2026-10-26 `docs/direct-text-editing.md` 제안(4cf2a84)에 “이 API 확장으로 진행” 답변. 후속 지시로 continuous 축/범례 숫자 편집은 제외하되 categorical 및 mark text 편집은 유지.
+- Evidence: `test/unit/actions/marks/text-overrides.test.js` (semantic identity, filtering, literal hard breaks, persistence, reset, immutability).
+
+- Signature: `editTextMark({ textOverrides?, clip?, target?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? })`.
 - At least one property is required. Omitted properties preserve current immutable materialization config.
 - Complete text rematerializes immediately; incomplete text retains the edit until position and content complete.
 - `dx` and `dy` are final graphical offsets and never alter inherited semantic position or source geometry.

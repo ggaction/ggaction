@@ -990,3 +990,5 @@ Concat title ownership, shared color snapshot collection, and restoration rules:
 `editLegend`의 전체 옵션, `labels`, `titleStyle`은 각각 `visible?: boolean`을 받는다. 전체와 각 text 표시 상태는 독립적이다. 숨겨도 typography, samples, scale binding, layout, title content를 보존한다. 전체를 켜도 별도로 숨긴 라벨·제목은 그대로다. 자동 guide, Canvas replay, shared facet ownership, editable persistence에서 유지한다. 숨긴 guide의 geometry는 유지하므로 토글로 차트를 이동시키거나 상대 anchor를 끊지 않는다.
 
 검증: `test/unit/actions/guides/guide-visibility.test.js`, `test/contracts/guide-visibility-types.test.js`.
+
+Categorical size legend blocks also accept typed `editLegendBlock.labelMap`, including numeric-coded ordinal categories. Hard breaks in categorical legend entries preserve blank lines, measure the full block and reserve row spacing; ticks/symbols and source values remain intact. Continuous opacity/gradient and discretized intervals are not added to labelMap support. Evidence: `categorical-hard-breaks.test.js`, `size-legend-label-map.test.js`.

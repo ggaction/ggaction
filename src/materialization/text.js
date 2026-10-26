@@ -1,3 +1,4 @@
+import { resolveTextOverrides, textIdentity, textIdentityOccurrences } from "../grammar/text.js";
 import { resolveBarChannels } from "../grammar/bars/policy.js";
 import {
   assertMarkLabelPlacementSupport,
@@ -293,10 +294,6 @@ function concreteTextItem(config, position, text, { offsets = true } = {}) {
   };
 }
 
-function concreteItem(config, position, value, format) {
-  return concreteTextItem(config, position, formatTextValue(value, format));
-}
-
 function relativeLuminance(color) {
   if (typeof color !== "string" || !/^#[0-9a-f]{6}$/i.test(color)) {
     return undefined;
@@ -328,7 +325,7 @@ function sourceTextConfig(config, source, item) {
   };
 }
 
-function resolveSourceTextItems(program, layer, config) {
+function resolveSourceTextItems(program, layer, config, identities) {
   const source = findLayer(program, layer.source);
   if (source === undefined) {
     throw new Error(`Text mark "${layer.id}" requires source layer "${layer.source}".`);
@@ -368,9 +365,13 @@ function resolveSourceTextItems(program, layer, config) {
   const values = resolvedValues === undefined ? undefined : new Map(
     allItems.map((item, index) => [item.key, resolvedValues[index]])
   );
+  const identityValues = identities ? textIdentityOccurrences(allItems) : undefined;
+  const identityRecords = identities ? new Map(allItems.map((item, index) => [item, identityValues[index]])) : undefined;
+  const overrides = resolveTextOverrides(allItems, config.textOverrides);
   return items.flatMap(item => {
+    const identity = identityRecords?.get(item);
     let resolvedConfig = sourceTextConfig(config, source, item);
-    const text = formatTextValue(
+    const text = overrides.has(item) ? overrides.get(item) : formatTextValue(
       values === undefined
         ? contentValue(layer.encoding.text, item, source)
         : values.get(item.key),
@@ -381,7 +382,7 @@ function resolveSourceTextItems(program, layer, config) {
     if (placement === undefined) {
       const anchor = sourceAnchor(program, source, item);
       const concrete = concreteTextItem(resolvedConfig, anchor, text);
-      return concrete === undefined ? [] : [{ graphic: concrete, anchor }];
+      return concrete === undefined ? [] : [{ graphic: concrete, anchor, ...identity }];
     }
     assertMarkLabelPlacementSupport(sourcePlacementContext(program, source), placement);
     const resolved = resolveMarkLabelPlacement({
@@ -416,12 +417,13 @@ function resolveSourceTextItems(program, layer, config) {
         { offsets: false }
       ),
       anchor,
+      ...identity,
       placement: resolved
     }];
   });
 }
 
-function resolveRowTextItems(program, layer, config) {
+function resolveRowTextItems(program, layer, config, includeIdentities) {
   const sourceDataset = findDataset(program, layer.data);
   if (sourceDataset === undefined) {
     throw new Error(`Text mark "${layer.id}" requires an existing dataset.`);
@@ -463,8 +465,16 @@ function resolveRowTextItems(program, layer, config) {
     ? [undefined]
     : dataset.values.slice(0, length);
   const fills = resolveRowEncodingValues(program, layer, dataset, "color");
+  const identities = !includeIdentities && !config.textOverrides?.length ? [] : rows.map(row => textIdentity(row ?? {}, Object.fromEntries(
+    Object.entries(layer.encoding).map(([channel, encoding]) => [channel,
+      encoding.field === undefined ? encoding.datum : row?.[encoding.field]]))));
+  const occurrences = includeIdentities ? textIdentityOccurrences(identities) : undefined;
+  const overrides = resolveTextOverrides(identities, config.textOverrides);
   return rows.flatMap((row, index) => {
-    const concrete = concreteItem(
+    const identity = identities[index];
+    const text = overrides.has(identity) ? overrides.get(identity)
+      : formatTextValue(contentValue(layer.encoding.text, row), layer.encoding.text.format);
+    const concrete = concreteTextItem(
       {
         ...config,
         ...(fills === undefined ? {} : { fill: fills[index] }),
@@ -472,19 +482,18 @@ function resolveRowTextItems(program, layer, config) {
         dy: textOffsetValue(layer.encoding?.dy, row, config.dy)
       },
       { x: x[index], y: y[index] },
-      contentValue(layer.encoding.text, row),
-      layer.encoding.text.format
+      text
     );
     return concrete === undefined
       ? []
-      : [{ graphic: concrete, anchor: { x: x[index], y: y[index] } }];
+      : [{ graphic: concrete, ...occurrences?.[index], anchor: { x: x[index], y: y[index] } }];
   });
 }
 
-export function resolveTextGraphicEntries(program, layer, config) {
+export function resolveTextGraphicEntries(program, layer, config, { identities = false } = {}) {
   return layer.source === undefined
-    ? resolveRowTextItems(program, layer, config)
-    : resolveSourceTextItems(program, layer, config);
+    ? resolveRowTextItems(program, layer, config, identities)
+    : resolveSourceTextItems(program, layer, config, identities);
 }
 
 export function resolveTextGraphicItems(program, layer, config) {
