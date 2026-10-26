@@ -23,9 +23,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 624, // Previous623 files plus the shared facet axis-gap owner.
-  packedBytes: 904_000, // Node22 measured901255 after complete-axis compaction; 624 files.
-  unpackedBytes: 4_272_000 // Measured 4,262,868 bytes after complete-axis compaction.
+  entries: 654, // Includes legend overflow, row provenance, composite targets and shared text geometry.
+  packedBytes: 978_000, // Includes native row/composite/text selection and public item inspection.
+  unpackedBytes: 4_580_000 // Includes provenance-aware selection and item inspection.
 });
 
 const REQUIRED_FILES = Object.freeze([
@@ -73,6 +73,8 @@ const COMPACT_JSON_FILES = Object.freeze([
   "knowledge/task-packet.schema.json"
 ]);
 const COMPACT_JAVASCRIPT_FILES = Object.freeze([
+  "src/grammar/parallelCoordinates.js",
+  "src/renderers/svgSerialization.js",
   "src/grammar/lineSeries.js",
   "src/grammar/pathSeries.js",
   "src/grammar/scales/colorConsumers.js",

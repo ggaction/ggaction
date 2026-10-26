@@ -36,6 +36,7 @@ export function getScaleConsumerMarkSteps(program, scaleIds) {
 }
 
 export function getMarkRematerializationStep(program, layer) {
+  if (layer.derivedBindings?.overlay) return { op: "rematerializeOverlay", args: { id: layer.id } };
   if (program.markConfigs?.[layer.id]?.statisticalReference !== undefined) {
     return { op: "rematerializeStatisticalReference", args: { id: layer.id } };
   }
@@ -63,7 +64,8 @@ export function getSourceDependentMarkSteps(program, sourceId) {
     const statistical = program.markConfigs?.[layer.id]
       ?.statisticalReference?.source === sourceId;
     const filteredCompanion = program.markConfigs?.[layer.id]?.markFilter?.owner === sourceId;
-    return sourceOwned || statistical || filteredCompanion
+    const overlay = layer.derivedBindings?.overlay?.source === sourceId;
+    return sourceOwned || statistical || filteredCompanion || overlay
       ? [getMarkMaterializationStep(program, layer) ??
           getExistingMarkRematerializationStep(program, layer)].filter(
           step => step !== undefined
@@ -104,6 +106,7 @@ export function getPositionEncodingMaterializationSteps(program, layer, scaleId)
 }
 
 export function getScaleConsumerMaterializationMode(layer, channel) {
+  if (layer.derivedBindings?.overlay) return "defer";
   const policy = getMarkMaterializationPolicy(layer);
   if (policy === undefined) return "direct";
   if (POSITION_ENCODING_CHANNELS.includes(channel)) {
@@ -118,6 +121,7 @@ export function getScaleConsumerMaterializationMode(layer, channel) {
 }
 
 export function canDeferScaleConsumerApplication(layer) {
+  if (layer.derivedBindings?.overlay) return true;
   return getMarkMaterializationPolicy(layer)?.scaleApplication.deferWithMark === true;
 }
 

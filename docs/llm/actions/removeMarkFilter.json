@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "mark-selection",
   "summary": "Restore a filtered mark to its canonical source, recover its prior Histogram bin policy, and retain any filtered dataset snapshot that still has downstream users.",
-  "signature": "removeMarkFilter(options?: RemoveMarkFilterOptions): ChartProgram;",
+  "signature": "removeMarkFilter(options?: TargetedOptions<RemoveMarkFilterOptions>): ChartProgram;",
   "intents": [
     "remove mark filter",
     "remove",
@@ -56,7 +56,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     }
   ],
   "callPatterns": [

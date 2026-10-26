@@ -83,7 +83,12 @@ nondecreasing area values. Threshold domains are strictly increasing cut points
 and require one more area than cuts. Discrete size legends show every interval
 and therefore reject an explicit sample `count`.
 
-`encodeShape({ field, target?, fieldType?, scale? })` requires a nominal field.
+`encodeShape({ value: "circle", target? })` assigns a fixed shape. Named shapes
+and custom polygons use the same `PointShape` vocabulary as point marks.
+`encodeShape({ field, target?, fieldType?, scale? })` maps a nominal field.
+Supply exactly one of `value` or `field`; fixed shapes do not accept `scale` or
+`fieldType`. Switching to a fixed shape removes the previous shape mapping and
+its legend while preserving position, size, color, and other mark properties.
 Its ordinal scale accepts the fourteen named point shapes and explicit simple
 polygons documented under [Point marks](../marks/point.md). The automatic range
 uses each named shape once and rejects more than fourteen categories. Explicit

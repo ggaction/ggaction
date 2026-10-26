@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "core",
   "summary": "Edits date bucket, including settings for UTC time unit.",
-  "signature": "editTimeUnitData(options: EditTimeUnitDataOptions): ChartProgram;",
+  "signature": "editTimeUnitData(options: TargetedOptions<EditTimeUnitDataOptions>): ChartProgram;",
   "intents": [
     "edit time unit data",
     "edit",
@@ -63,7 +63,7 @@
     {
       "name": "target",
       "required": true,
-      "type": "string"
+      "type": "string | ActionTargetList | ScopedActionTarget"
     },
     {
       "name": "dependents",

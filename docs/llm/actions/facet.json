@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "composition",
   "summary": "Repeat one complete Cartesian, Polar, or Parallel chart by a field on its common row-preserving dataset ancestor.",
-  "signature": "facet(options: FacetOptions): ChartProgram;",
+  "signature": "facet(options: TargetedOptions<FacetOptions>): ChartProgram;",
   "intents": [
     "facet",
     "repeat chart",
@@ -22,7 +22,8 @@
     ],
     "idOptions": [
       "id",
-      "data"
+      "data",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -54,6 +55,10 @@
   "inference": [
     {
       "input": "data",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -133,10 +138,15 @@
       "name": "topLane",
       "required": false,
       "type": "FacetTopLaneMode | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "facet({ field, id?, data?, values?, columns?, gap?, align?, padding? })"
+    "facet({ field, id?, data?, target?, values?, columns?, gap?, align? })"
   ],
   "snippet": "program.facet({ field: \"value\" })",
   "errors": [],

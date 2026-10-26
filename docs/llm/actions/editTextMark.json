@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "marks",
   "summary": "Edit text typography and graphical offsets without changing its semantic source or position.",
-  "signature": "editTextMark(options: EditTextMarkOptions): ChartProgram;",
+  "signature": "editTextMark(options: TargetedOptions<EditTextMarkOptions>): ChartProgram;",
   "intents": [
     "edit text mark",
     "edit",
@@ -58,6 +58,10 @@
     {
       "input": "target",
       "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "textOverrides",
+      "strategy": "documented-auto"
     }
   ],
   "completionRequirements": {
@@ -71,7 +75,12 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+    },
+    {
+      "name": "textOverrides",
+      "required": false,
+      "type": "\"auto\" | readonly TextOverride[] | undefined"
     },
     {
       "name": "clip",
@@ -150,9 +159,9 @@
     }
   ],
   "callPatterns": [
-    "editTextMark({ target?, clip?, lineHeight?, blockAlign?, inheritColor?, missing?, fill?, opacity? })"
+    "editTextMark({ target?, textOverrides?, clip?, lineHeight?, blockAlign?, inheritColor?, missing?, fill? })"
   ],
-  "snippet": "program.editTextMark({ clip: true })",
+  "snippet": "program.editTextMark({ textOverrides: \"auto\" })",
   "errors": [],
   "route": "/reference/actions/marks/#edittextmark"
 }

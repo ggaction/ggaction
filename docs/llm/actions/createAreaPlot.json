@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "charts",
   "summary": "Create a simple area, crossing ribbon, or accumulated series chart in the full entry.",
-  "signature": "createAreaPlot(options: CreateAreaPlotOptions): ChartProgram;",
+  "signature": "createAreaPlot(options: TargetedOptions<CreateAreaPlotOptions>): ChartProgram;",
   "intents": [
     "create area plot",
     "create",
@@ -25,7 +25,8 @@
     "idOptions": [
       "id",
       "data",
-      "coordinate"
+      "coordinate",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -54,6 +55,10 @@
     },
     {
       "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -133,6 +138,11 @@
       "name": "baseline",
       "required": false,
       "type": "number | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [

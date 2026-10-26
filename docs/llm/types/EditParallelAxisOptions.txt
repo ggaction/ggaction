@@ -1,1 +1,9 @@
-export type EditParallelAxisOptions = ParallelAxisComponentsOptions;
+export type EditParallelAxisOptions = GuideVisibilityOptions & { field: string; target?: string;
+  line?: false | VisibleGuide<AxisLineStyleOptions>;
+  title?: false | VisibleGuide<ParallelAxisTitleOptions>;
+} & (
+  | { ticksAndLabels?: false | (ParallelAxisTickSelection & {
+      ticks?: VisibleGuide<AxisTickStyleOptions>; labels?: VisibleGuide<AxisLabelStyleOptions & DisplayLabelOptions>;
+    }); ticks?: never; labels?: never }
+  | { ticks?: false | VisibleGuide<ParallelAxisTicksOptions>; labels?: false | VisibleGuide<ParallelAxisLabelsOptions>; ticksAndLabels?: never }
+);

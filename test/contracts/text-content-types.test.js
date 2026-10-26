@@ -20,6 +20,14 @@ test("text content and precision types match their runtime vocabularies", async 
 import type { ChartProgram, TextEncodingOptions, DatumPositionEncodingOptions, CreateMarkLabelsOptions, EditMarkLabelPlacementOptions, EditMarkLabelSelectionOptions, MarkLabelPlacement, RemoveMarkLabelsOptions, CreateAnnotationOptions, ReferenceStatistic, CreateReferenceLineOptions, CreateReferenceBandOptions, RotationInput } from ${JSON.stringify(path.join(root, "types/index.js"))};
 import type { BasicChartProgram } from ${JSON.stringify(path.join(root, "types/basic.js"))};
 declare const p: ChartProgram;
+p.editTextMark({target: "labels", textOverrides: [{match: {fields: {region: "North"}, channels: {x: 12}}, occurrence: 0, text: "North"}]});
+p.editTextMark({target: "labels", textOverrides: "auto"});
+// @ts-expect-error text replacement is literal string
+p.editTextMark({textOverrides: [{match: {fields: {a: 1}}, occurrence: 0, text: 12}]});
+// @ts-expect-error semantic matches use scalar data values
+p.editTextMark({textOverrides: [{match: {fields: {a: {nested: true}}}, occurrence: 0, text: "A"}]});
+// @ts-expect-error occurrence is required
+p.editTextMark({textOverrides: [{match: {fields: {a: 1}}, text: "A"}]});
 declare const basic: BasicChartProgram;
 const shared: TextEncodingOptions = { content: "share", normalizeBy: "category", format: ".1%" };
 p.encodeText(shared);

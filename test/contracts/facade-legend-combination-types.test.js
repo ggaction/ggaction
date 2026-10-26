@@ -17,10 +17,15 @@ test('facade declarations retain only combinations supported by their own mark a
   type Args<A extends keyof ChartProgram> = ChartProgram[A] extends (options: infer O) => unknown ? O : never;
   type Guides<A extends keyof ChartProgram> = Args<A> extends {guides?: infer G} ? Exclude<G,false|undefined> : never;
   type Legend<A extends keyof ChartProgram> = Guides<A> extends {legend?: infer L} ? Exclude<L,false|undefined> : never;`];
-  for(const action of [...separateOnly,'createLinePlot']) for(const combine of ['size-shape','color-size']) snippets.push(`// @ts-expect-error ${action} cannot encode this pair on its own target.\nconst ${action}${combine.replace('-','')}: Legend<'${action}'> = {combine:'${combine}'};`);
+  for(const action of [...separateOnly,'createLinePlot']) for(const combine of ['size-shape','color-size','color-size-shape']) snippets.push(`// @ts-expect-error ${action} cannot encode this pair on its own target.\nconst ${action}${combine.replaceAll('-','')}: Legend<'${action}'> = {combine:'${combine}'};`);
   for(const action of separateOnly) snippets.push(`const ${action}Valid: Legend<'${action}'> = {combine:'separate',border:{strokeDash:[4,2]},clipHeight:8};`);
   for(const action of categoricalOnly) snippets.push(`// @ts-expect-error ${action} cannot create a gradient legend.\nconst ${action}Bottom: Legend<'${action}'> = {titlePosition:'bottom'};`);
-  for(const action of ['createScatterPlot','createRegressionPlot','createStripPlot','createBeeswarmPlot']) for(const combine of ['size-shape','color-size']) snippets.push(`const ${action}${combine.replace('-','')}: Legend<'${action}'> = {combine:'${combine}'};`);
+  for(const action of ['createScatterPlot','createRegressionPlot','createStripPlot','createBeeswarmPlot']) for(const combine of ['size-shape','color-size','color-size-shape']) snippets.push(`const ${action}${combine.replaceAll('-','')}: Legend<'${action}'> = {combine:'${combine}'};`);
+  for(const action of ['createRegressionPlot','createStripPlot','createBeeswarmPlot']) snippets.push(`
+  const ${action}Stroke: Legend<'${action}'> = {combine:'color-size-shape',symbol:{stroke:'navy',strokeWidth:2,opacity:0.7}};
+  // @ts-expect-error These facades map fill and cannot replace it with a fixed symbol fill.
+  const ${action}Fill: Legend<'${action}'> = {combine:'color-size-shape',symbol:{fill:'red'}};`);
+  snippets.push(`const scatterStrokeFill: Legend<'createScatterPlot'> = {combine:'color-size-shape',channels:['stroke','size','shape'],symbol:{fill:'white'}};`);
   snippets.push(`const polar: Legend<'createPolarScatterPlot'>={combine:'size-shape'};
   // @ts-expect-error Only color-size requires a Cartesian point owner.
   const polarColor: Legend<'createPolarScatterPlot'>={combine:'color-size'};

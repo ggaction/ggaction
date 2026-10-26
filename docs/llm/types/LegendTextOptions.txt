@@ -1,4 +1,6 @@
 export interface LegendTextOptions {
+  /** Local text alignment; omission preserves the native owner default. */
+  align?: "left" | "center" | "right";
   /** Gap after the occupied sample slot: categorical color/interval default 8; series 10; size/width 12.
    * Categorical slots include all recipe strokes and mapped shape extents.
    * Size retains a minimum 32px slot. Width includes the widest line stroke.

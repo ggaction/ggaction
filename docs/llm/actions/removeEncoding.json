@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "encodings",
   "summary": "Remove one active semantic encoding, its generated companions, matching guide blocks, and stale concrete values.",
-  "signature": "removeEncoding(options: { target?: string; channel: | \"x\" | \"y\" | \"x2\" | \"y2\" | \"xOffset\" | \"yOffset\" | \"theta\" | \"radius\" | \"color\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\" | \"size\" | \"shape\" | \"angle\" | \"group\" | \"opacity\" | \"text\" | \"dx\" | \"dy\"; }): ChartProgram;",
+  "signature": "removeEncoding(options: TargetedOptions<{ target?: string; channel: | \"x\" | \"y\" | \"x2\" | \"y2\" | \"xOffset\" | \"yOffset\" | \"theta\" | \"radius\" | \"color\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\" | \"size\" | \"shape\" | \"angle\" | \"group\" | \"opacity\" | \"text\" | \"dx\" | \"dy\"; }>): ChartProgram;",
   "intents": [
     "remove encoding",
     "remove",
@@ -55,7 +55,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "channel",

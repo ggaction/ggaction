@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "axes",
   "summary": "Edits x-axis labels, including settings for horizontal text.",
-  "signature": "editXAxisLabels(options?: Omit<AxisLabelOptions<XAxisPosition>, \"scale\">): ChartProgram;",
+  "signature": "editXAxisLabels(options?: TargetedOptions<Omit<AxisLabelOptions<XAxisPosition>, \"scale\">>): ChartProgram;",
   "intents": [
     "edit x axis labels",
     "edit",
@@ -185,7 +185,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "position",

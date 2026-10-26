@@ -1,3 +1,4 @@
+import { withGuideVisibilityPaint } from "../../../materialization/guides/visibility.js";
 import { editGraphicProperties } from "../../primitives/graphicProperties.js";
 import { action } from "../../../core/action.js";
 import {
@@ -25,7 +26,7 @@ const CREATE_OPTIONS = Object.freeze([
   "scale", "coordinate", "count", "values", "color", "lineWidth",
   "strokeDash"
 ]);
-const EDIT_OPTIONS = Object.freeze([
+const EDIT_OPTIONS = Object.freeze(["visible",
   "count", "values", "color", "lineWidth", "strokeDash"
 ]);
 
@@ -48,6 +49,7 @@ function validateStrokeDash(value) {
 }
 
 export function validatePolarGridOptions(args, operation, create) {
+  if (Object.hasOwn(args, "visible") && typeof args.visible !== "boolean") throw new TypeError("Grid visible must be a boolean.");
   validateOptionObject(
     args,
     create ? CREATE_OPTIONS : EDIT_OPTIONS,
@@ -86,6 +88,7 @@ function resolveConfig(program, kind, args, resources, previous) {
           : { mode: "count", count: previous.count, inferredValues: false };
   const config = {
     ...(previous ?? {}),
+    ...(Object.hasOwn(args, "visible") ? { visible: args.visible } : {}),
     kind,
     scale: resources.scale,
     coordinate: resources.coordinate,
@@ -156,7 +159,7 @@ function makeRematerialize(kind) {
   return action({
     op: operations.rematerialize,
     description: `Recompute concrete Polar ${kind} grid geometry.`
-  }, function (args = {}) {
+  }, withGuideVisibilityPaint(function (args = {}) {
     noOptions(args, operations.rematerialize);
     const config = this.guideConfigs.grid?.[kind];
     const semantic = this.semanticSpec.guides.grid?.[kind];
@@ -175,7 +178,7 @@ function makeRematerialize(kind) {
       refreshed,
       geometry
     );
-  });
+  }));
 }
 
 function makeCreate(kind) {

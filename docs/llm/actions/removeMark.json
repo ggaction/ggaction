@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "marks",
   "summary": "Remove one stable mark owner and its owned state while preserving source data and independently shared resources.",
-  "signature": "removeMark(options?: RemoveMarkOptions): ChartProgram;",
+  "signature": "removeMark(options?: TargetedOptions<RemoveMarkOptions>): ChartProgram;",
   "intents": [
     "remove mark",
     "remove",
@@ -55,7 +55,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     }
   ],
   "callPatterns": [

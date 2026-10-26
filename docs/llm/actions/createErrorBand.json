@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "statistics",
   "summary": "Create a vertical or horizontal statistical or explicit interval ribbon.",
-  "signature": "createErrorBand(options?: ErrorBandOptions): ChartProgram;",
+  "signature": "createErrorBand(options?: TargetedOptions<ErrorBandOptions>): ChartProgram;",
   "intents": [
     "create error band",
     "create",
@@ -90,7 +90,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "data",

@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "statistics",
   "summary": "Materialize a typed primitive or null field from a serializable, closed expression, including explicit nested scalar getPath and first-occurrence replaceLiteral operations.",
-  "signature": "createComputedData(options: ComputedDataOptions): ChartProgram;",
+  "signature": "createComputedData(options: TargetedOptions<ComputedDataOptions>): ChartProgram;",
   "intents": [
     "create computed data",
     "create",
@@ -24,7 +24,8 @@
     ],
     "idOptions": [
       "id",
-      "source"
+      "source",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -45,6 +46,10 @@
   "inference": [
     {
       "input": "source",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     }
   ],
@@ -75,10 +80,15 @@
       "name": "expression",
       "required": true,
       "type": "ComputedExpression"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "createComputedData({ id, as, expression, source? })"
+    "createComputedData({ id, as, expression, source?, target? })"
   ],
   "snippet": "program.createComputedData({ id: \"ratios\", as: \"ratio\", expression: { op: \"divide\", left: { field: \"part\" }, right: { field: \"whole\" } } })",
   "errors": [],

@@ -1,3 +1,4 @@
+import { assertIndependentOverlayGeometry } from "../../grammar/overlay.js";
 import {resolveDatasetTransformInputs} from "./shared.js";
 import { closedAction } from "../../core/action.js";
 import { validateGraphicItemLimit } from "../../core/validation.js";
@@ -96,6 +97,7 @@ export const releaseDerivedData = /* @__PURE__ */ closedAction(
       "calculations", "datasets", validatedId
     ]);
     next = next._withoutMaterializationConfig(["regressionFits", validatedId]);
+    next = next._withoutMaterializationConfig(["rowProvenance", validatedId]);
     for (const owner of selfOwners) {
       const [, family, ownerId] = owner.path;
       next = next._withoutMaterializationConfig(["data", family, ownerId]);
@@ -136,6 +138,7 @@ export const rebindLayerData = /* @__PURE__ */ closedAction(
 );
 
 function assertIndependentMark(program, layer) {
+  assertIndependentOverlayGeometry(layer, "bindMarkData");
   const config = program.markConfigs[layer.id] ?? {};
   const role = OWNED_MARK_ROLES.find(key => config[key] !== undefined);
   if (role !== undefined) {

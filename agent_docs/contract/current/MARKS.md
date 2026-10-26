@@ -449,7 +449,8 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
   encoding은 호출 순서와 무관하고, 하나만 존재하는 동안에는 semantic assignment를 보존하되 path를 만들지 않는다.
 - Direct Cartesian quantitative x/y line도 호출 순서와 무관하다. 첫 position action은 semantic과 scale을
   보존하되 path를 만들지 않고, 두 번째 action이 compatible pair를 완성하면 같은 final line을 materialize한다.
-  Aggregate y line은 categorical/temporal 또는 binned quantitative x와 결합한다.
+  Aggregate y line은 categorical/temporal 또는 quantitative x와 결합한다. Unbinned quantitative x는
+  실제 관측값별로 집계하고 숫자 순서로 연결하며, bin을 명시하면 interval midpoint별로 집계한다.
   Categorical x는 raw quantitative y도 지원하며 point/band 중심을 공유한다. Category domain 순서가
   vertex 순서를 결정하고 중복 범주는 source 순서를 유지한다. Explicit pathOrder가 있으면 그 순서가 우선한다.
   미관측 범주는 채우지 않고 관측된 이웃을 연결하며 raw missing 값은 오류다.
@@ -469,6 +470,8 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
   mapping을 공유할 수 있지만 bar-only `stack`, bin과 offset은 상속하지 않는다.
 - Coverage: `test/unit/actions/marks/create-line-mark.test.js`가 default/explicit data,
   empty dataset, invalid width와 conflicts를 검증한다.
+
+Horizontal Cartesian lines transpose the same series derivation when X is quantitative and Y nominal/ordinal, or when X has an explicit aggregate and Y is quantitative/temporal. Exact numeric positions retain their observed values and numeric order. Category-domain order, series grouping, appearance, selection and visible endpoint overlays remain native. Path-order overrides reject aggregate lines on either axis. Evidence: `test/unit/actions/composition/audit-composition-regressions.test.js`, `test/unit/actions/encodings/line-series-encodings.test.js`.
 
 ### Formal values — `createLineMark`
 
@@ -644,6 +647,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 ## `editAreaMark`
 
 - Signature: `editAreaMark({ clip?, target?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing?, lineCap?, lineJoin?, miterLimit? })`.
+- Constant opacity edits reject an active field opacity encoding; `encodeOpacity({ value })` explicitly replaces that field assignment. A field opacity is one value per existing Area series, using the same public encoding and legend lifecycle as Line opacity.
 - `target`: existing area mark. Current compatible mark 또는 유일한 area mark를 infer하고 ambiguity는
   explicit target을 요구한다.
 - `fill`, `opacity`: constant graphical appearance다. Field-driven color encoding이 있으면 fill edit는
@@ -1184,6 +1188,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
   missing axis, plot bounds, content/style/layout errors fail before child effects. Source-owned Text aliases are excluded
   from data-source inference.
 - Later edits use encodeText, encodeX/Y, editTextMark, layoutLabels/removeLabelLayout, editScale and removeMark.
+- Plot-anchored annotations can accompany Polar and Parallel facets. Their Cartesian plot frame does not change the primary chart family; notes replay within each populated cell.
 
 ### Formal values — `createAnnotation`
 
@@ -1255,7 +1260,11 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ## `editTextMark`
 
-- Signature: `editTextMark({ clip?, target?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? })`.
+- `textOverrides?: readonly {match:{fields?:Record<string,DatasetScalar>,channels?:Record<string,DatasetScalar>},occurrence:number,text:string}[] | "auto"`는 표시 문자열만 교체한다. 필드/채널 조건은 AND이며 적어도 하나의 nonempty dictionary가 필요하다. occurrence는 일치하는 semantic items 중 0부터 세고 graphic index를 쓰지 않는다. 미일치 항목은 dormant로 보존한다. 배열은 전체 교체, 생략은 보존, auto는 제거다. 중복 selector, nonfinite scalar, 음수/비정수 occurrence는 거부한다. Literal multiline text이며 원본 값, encoding과 위치를 바꾸지 않는다.
+- 승인: VisAuto 사용자가 2026-10-26 `docs/direct-text-editing.md` 제안(4cf2a84)에 “이 API 확장으로 진행” 답변. 후속 지시로 continuous 축/범례 숫자 편집은 제외하되 categorical 및 mark text 편집은 유지.
+- Evidence: `test/unit/actions/marks/text-overrides.test.js` (semantic identity, filtering, literal hard breaks, persistence, reset, immutability).
+
+- Signature: `editTextMark({ textOverrides?, clip?, target?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? })`.
 - At least one property is required. Omitted properties preserve current immutable materialization config.
 - Complete text rematerializes immediately; incomplete text retains the edit until position and content complete.
 - `dx` and `dy` are final graphical offsets and never alter inherited semantic position or source geometry.
@@ -1286,6 +1295,10 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 - The action rematerializes semantic base text, visits concrete items in stable order, and selects the first in-bounds
   zero-overlap candidate. If no candidate satisfies both constraints, it stores deterministic `overlap` or `bounds`
   warnings and the best-effort result rather than silently claiming success.
+- Collision queries index nearby concrete bounds while preserving the original item order and tie breaking.
+  The shared work budget counts actual candidate/nearby-rectangle checks, including warning-pair detection,
+  rather than rejecting separated labels using a quadratic worst-case estimate. Oversized coordinates and
+  bounds use a bounded ordered fallback. Evidence: `test/unit/layout/labels.test.js`.
 - A leader object enables target-owned line graphics from the stored source anchor to a displaced label. Its optional
   `stroke`, `strokeWidth`, `strokeDash`, and `opacity` use ordinary line vocabularies. Repeated assignment replaces the
   complete policy and recomputes from semantic base text.

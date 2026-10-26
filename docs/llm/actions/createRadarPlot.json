@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "charts",
   "summary": "Draws a complete Radar plot from long category-value rows or explicitly selected wide fields as closed Polar profiles.",
-  "signature": "createRadarPlot(options: CreateRadarPlotOptions): ChartProgram;",
+  "signature": "createRadarPlot(options: TargetedOptions<CreateRadarPlotOptions>): ChartProgram;",
   "intents": [
     "create radar plot",
     "create",
@@ -25,7 +25,8 @@
     "idOptions": [
       "id",
       "data",
-      "coordinate"
+      "coordinate",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -51,6 +52,10 @@
     },
     {
       "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -125,6 +130,11 @@
       "name": "wide",
       "required": false,
       "type": "RadarWideOptions | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [

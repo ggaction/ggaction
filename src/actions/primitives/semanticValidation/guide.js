@@ -29,6 +29,7 @@ export function validateGuideSemanticValue(_program, parsed, value) {
   const property = parsed.path.at(-1);
   if (parsed.id === "legend.colorSize") {
     if(property === "title") validateNonEmptySemanticString(value,"Legend title");
+    else if(property === "colorChannel") { if(!["color","stroke"].includes(value))throw new Error("Combined legend colorChannel requires color or stroke."); }
     else validateUserId(value,"Legend scale id");
     return;
   }

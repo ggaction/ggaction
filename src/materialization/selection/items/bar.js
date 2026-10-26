@@ -19,6 +19,7 @@ import { deriveHistogramSegments } from "../../bars/histogram.js";
 import {
   channelMapFromRow,
   finalizeItems,
+  reorderHighlightedItems,
   itemKey,
   ownFields,
   uniqueFields
@@ -203,7 +204,7 @@ function barStackDefinitions(layer, barGrain, definitions) {
   });
 }
 
-export function resolveBarItems(program, layer, dataset, selectionGrain) {
+export function resolveBarItemDefinitions(program, layer, dataset) {
   const grain = resolveBarGrain(layer);
   const definitions = grain === BAR_GRAINS.histogram
     ? histogramDefinitions(program, layer, dataset)
@@ -215,15 +216,32 @@ export function resolveBarItems(program, layer, dataset, selectionGrain) {
   if (definitions === undefined) {
     throw new Error(`Bar mark "${layer.id}" is incomplete for selection.`);
   }
+  return definitions;
+}
+
+export function resolveBarItems(program, layer, dataset, selectionGrain) {
+  const grain = resolveBarGrain(layer);
+  const definitions = resolveBarItemDefinitions(program, layer, dataset).map((definition, index) => ({
+    ...definition, key: definition.key ?? itemKey(layer, grain, index)
+  }));
+  const needsStacks = selectionGrain === 'stack' || Object.values(program.materializationConfigs.highlights ?? {}).some(config =>
+    config.target === layer.id && program.materializationConfigs.selections?.[config.selection]?.selector.grain === 'stack');
+  const stacks = needsStacks ? barStackDefinitions(layer, grain, definitions) : undefined;
+  const ordered = reorderHighlightedItems(program, layer, definitions, { stack: stacks });
   const graphicTypes = hasRectRadius(program.markConfigs[layer.id]?.barAppearance) ? ["rect", "path"] : "rect";
   if (selectionGrain === "stack") {
     return finalizeItems(
       program,
       layer,
       "stack",
-      barStackDefinitions(layer, grain, definitions),
+      stacks.map(stack => ({ ...stack, graphicIndices: stack.graphicIndices.map(index => ordered.indexOf(definitions[index])) })),
       graphicTypes
     );
   }
-  return finalizeItems(program, layer, grain, definitions, graphicTypes);
+  return finalizeItems(program, layer, grain, ordered, graphicTypes, { reorder: false });
+}
+
+export function resolveBarSourceItems(program, layer, dataset, selectionGrain) {
+  const definitions = resolveBarItemDefinitions(program, layer, dataset);
+  return selectionGrain === 'stack' ? barStackDefinitions(layer, resolveBarGrain(layer), definitions) : definitions;
 }

@@ -368,6 +368,7 @@ function polarTitle(text, index, radial = false) {
   return {
     text,
     offset: 54,
+    align: ["left", "center", "right"][index % 3],
     color: "#0f172a",
     fontSize: 13,
     fontFamily: "sans-serif",
@@ -385,6 +386,7 @@ function ticksAndLabels(index, { polar = false } = {}) {
     labels: polar
       ? {
           offset: 10, format: "auto", color: "#334155",
+          align: ["left", "center", "right"][index % 3],
           fontSize: 11, fontFamily: "sans-serif", fontWeight: 500
         }
       : labelStyle(index)
@@ -498,9 +500,9 @@ function baseLegend(target, index, {
       target,
       channels: ["color"],
       position: ["top-left", "top-right", "bottom-left", "bottom-right"][index - 24],
-      overflow: { maxItems: 3, summary: "ellipsis-count" },
+      overflow: { maxItems: 3, summary: "ellipsis-count", ...(index === 24 ? {summarySymbol:"first-hidden"} : {}) },
       title: "Source group",
-      symbol: legendSymbol(index, kind),
+      symbol: index === 24 ? {layers:[{type:"line",length:24,lineWidth:2}]} : legendSymbol(index, kind),
       labels: { format: "auto" }
     };
   }
@@ -649,6 +651,8 @@ function baseLegend(target, index, {
 function legend(target, index, options = {}) {
   const result = baseLegend(target, index, options);
   result.combine = "separate";
+  if (result.layout !== "legacy-bottom" && index !== 28) result.alongOffset = index % 2 ? -3 : 3;
+  if (result.labels && options.continuous !== "gradient") result.labels.align = ["left", "center", "right"][index % 3];
   if (result.border && typeof result.border === "object") result.border.strokeDash = [4,2,6,1];
   if (index !== 14) {
     result.blockLayout = ["row", "column", "wrap"][index % 3];
@@ -774,7 +778,7 @@ function polarGuides({
   if (index === 1) return { axes: false, grid: false, legend: false };
   const discreteTheta = requestedDiscreteTheta ??
     ["band", "point"].includes(THETA_TYPES[index % THETA_TYPES.length]);
-  return {
+  const guides = {
     axes: index % 5 === 0 ? false : {
       coordinate: { id: coordinate, type: index % 2 === 0 ? "polar" : "auto" },
       theta: index % 7 === 0 ? false : polarAxis(thetaScale, coordinate, index, false, discreteTheta),
@@ -807,6 +811,9 @@ function polarGuides({
           sampledValues: legendSampleValues
         })
   };
+  // Keep bottom legends below the theta-axis text on every Polar facade.
+  if (guides.legend?.position === "bottom" && guides.legend.layout === "edge") guides.legend.offset = 80;
+  return guides;
 }
 
 function rugGuides({ coordinate, scale, horizontal, index, edge, values, format }) {
@@ -1076,10 +1083,15 @@ function appendRadar(program, index) {
       : {
           wide: {
             fields: ["positiveX", "positiveY", "size"],
+            summary: index === 11 ? false : index === 7 ? "median" : "mean",
+            normalize: index === 7 || index === 19 ? "minmax" : false,
             as: { key: "radarMeasure", value: "radarValue" }
           }
         })
   };
+  // Summary witnesses operate on the original repeated groups, not an already
+  // aggregated mean table. The explicit false case retains one row per group.
+  if (options.wide?.summary) options.data = "analysisRows";
   options.guides = long ? polarGuides({
     id: suffix, coordinate: `${suffix}-coordinate`,
     thetaScale: `${suffix}-theta`, radiusScale: `${suffix}-radius`, index, hasColor,
@@ -1088,7 +1100,15 @@ function appendRadar(program, index) {
     legendOrderValues: categoryValues(next, source, "group"),
     radiusValues: [numericFieldValue(next, source, "positiveY")]
   }) : false;
-  return removeWitness(next.createRadarPlot(currentFacadeOptionWitnesses(options,{action:"createRadarPlot",index,program:next})), suffix);
+  let removed = removeWitness(next.createRadarPlot(currentFacadeOptionWitnesses(options,{action:"createRadarPlot",index,program:next})), suffix);
+  if (!long) {
+    // Wide Radar owns default position scales; release these between profiles
+    // so raw and normalized domains cannot borrow an earlier witness's scale.
+    for (const id of ["theta", "radius"]) {
+      if (!next.semanticSpec.scales.some(scale => scale.id === id)) removed = removed.removeScale({ id });
+    }
+  }
+  return removed;
 }
 
 function appendRug(program, index) {
@@ -1974,8 +1994,9 @@ export function appendHierarchicalFacadeCoverage(program) {
   next = appendPaletteRangeProfiles(next, [34, 35]);
   for (const action of ["createPolarScatterPlot", "createStripPlot", "createBeeswarmPlot", "createRaincloudPlot"]) {
     next = appendFacadeLegendCombinations(next, {action,xField:"positiveX",yField:"positiveY",categoryField:"group",numberField:"rowOrdinal",
-      modes: action === "createPolarScatterPlot" || action === "createRaincloudPlot" ? ["size-shape"] : ["size-shape","color-size"]});
+      modes: action === "createPolarScatterPlot" || action === "createRaincloudPlot" ? ["size-shape"] : ["size-shape","color-size","color-size-shape"]});
   }
+  next=appendFacadeLegendCombinations(next,{action:"createRegressionPlot",xField:"positiveX",yField:"positiveY",numberField:"rowOrdinal",categoryField:"group",modes:["color-size-shape"]});
   return next;
 }
 

@@ -34,7 +34,7 @@ import {
 const GRID_OPTIONS = Object.freeze([
   "scale", "coordinate", "count", "values", "color", "lineWidth", "strokeDash", "strokeDashMap", "zIndex", "bandPosition", "alongOffset"
 ]);
-const GRID_EDIT_OPTIONS = Object.freeze([
+const GRID_EDIT_OPTIONS = Object.freeze(["visible",
   "count", "values", "color", "lineWidth", "strokeDash", "strokeDashMap", "zIndex", "bandPosition", "alongOffset"
 ]);
 const DEFAULT_STYLE = Object.freeze({
@@ -82,6 +82,7 @@ export function validateGridCreateArgs(args, operation) {
 }
 
 export function validateGridEditArgs(args, operation) {
+  if (Object.hasOwn(args, "visible") && typeof args.visible !== "boolean") throw new TypeError("Grid visible must be a boolean.");
   if (Object.hasOwn(args, "strokeDashMap")) normalizeGuideDashMap(args.strokeDashMap);
   validateOptionObject(args, GRID_EDIT_OPTIONS, operation, {
     allowEmpty: false

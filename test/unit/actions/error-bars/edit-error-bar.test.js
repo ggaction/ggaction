@@ -319,7 +319,7 @@ test("rebinds attached labels and replays highlights after a role revision", () 
   assert.deepEqual(
     after.graphicSpec.objects["errorBar-labels"].items.map(
       item => item.properties.text
-    ),
+    ).sort(),
     ["A", "B"]
   );
   assert.equal(after.graphicSpec.objects.errorBar.items.some(

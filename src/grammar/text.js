@@ -118,6 +118,8 @@ export function formatTextValue(value, format = "auto") {
 
 export function normalizeTextMarkConfig(options, base = DEFAULT_TEXT_MARK) {
   const config = { ...base };
+  if (options.textOverrides === "auto") delete config.textOverrides;
+  else if (Object.hasOwn(options, "textOverrides")) config.textOverrides = normalizeTextOverrides(options.textOverrides);
   if (Object.hasOwn(options, "lineHeight")) {
     if (!Number.isFinite(options.lineHeight) || options.lineHeight <= 0) throw new RangeError("Text lineHeight must be positive and finite.");
     config.lineHeight = options.lineHeight;
@@ -158,3 +160,73 @@ export function normalizeTextMarkConfig(options, base = DEFAULT_TEXT_MARK) {
 }
 
 export { resolveTextLines } from "../core/textMetrics.js";
+
+
+export const isTextIdentityValue = value => value === null || typeof value === "string" ||
+  typeof value === "boolean" || typeof value === "number" && Number.isFinite(value);
+export const textIdentity = (fields = {}, channels = {}) => Object.fromEntries(
+  Object.entries({ fields, channels }).map(([part, values]) => [part,
+    Object.fromEntries(Object.entries(values).filter(([, value]) => isTextIdentityValue(value)))]));
+export const textIdentityKey = match => JSON.stringify(["fields", "channels"].map(part =>
+  Object.entries(match[part] ?? {}).sort(([a], [b]) => a < b ? -1 : a > b ? 1 : 0)));
+
+export function normalizeTextOverrides(value) {
+  if (!Array.isArray(value)) throw new TypeError("textOverrides must be an array or auto.");
+  const seen = new Set();
+  for (const entry of value) {
+    if (!isPlainObject(entry) || Object.keys(entry).length !== 3 ||
+        !isPlainObject(entry.match) || typeof entry.text !== "string" ||
+        !Number.isInteger(entry.occurrence) || entry.occurrence < 0) {
+      throw new TypeError("Each text override requires match, occurrence and text.");
+    }
+    if (!Object.keys(entry.match).length || Object.keys(entry.match).some(part =>
+      !["fields", "channels"].includes(part) || !isPlainObject(entry.match[part]) ||
+      !Object.keys(entry.match[part]).length || !Object.values(entry.match[part]).every(isTextIdentityValue))) {
+      throw new TypeError("Text match requires nonempty fields or channels containing scalar values.");
+    }
+    const key = `${textIdentityKey(entry.match)}/${entry.occurrence}`;
+    if (seen.has(key)) throw new Error("Duplicate text override selector.");
+    seen.add(key);
+  }
+  return cloneAndFreeze(value);
+}
+
+// Count semantic matches before visibility/placement filtering. Never address a graphic index.
+export function resolveTextOverrides(items, overrides) {
+  const result = new Map();
+  if (!overrides?.length) return result;
+  const groups = new Map(), priorities = new Map();
+  for (const [priority, { match, occurrence, text }] of overrides.entries()) {
+    const keys = ["fields", "channels"].flatMap(part => Object.keys(match[part] ?? {}).sort().map(key => [part, key]));
+    const shape = JSON.stringify(keys);
+    if (!groups.has(shape)) groups.set(shape, { keys, values: new Map() });
+    const values = groups.get(shape).values, key = JSON.stringify(keys.map(([part, field]) => match[part][field]));
+    if (!values.has(key)) values.set(key, new Map());
+    values.get(key).set(occurrence, { text, priority });
+  }
+  // Complete identities from the editor share one shape: O(items + overrides),
+  // rather than scanning all items once for every previously edited label.
+  for (const { keys, values } of groups.values()) {
+    const counts = new Map();
+    for (const item of items) {
+      if (!keys.every(([part, field]) => Object.hasOwn(item[part] ?? {}, field) && isTextIdentityValue(item[part][field]))) continue;
+      const key = JSON.stringify(keys.map(([part, field]) => item[part][field]));
+      const candidates = values.get(key); if (!candidates) continue;
+      const occurrence = counts.get(key) ?? 0; counts.set(key, occurrence + 1);
+      const chosen = candidates.get(occurrence);
+      if (chosen && chosen.priority > (priorities.get(item) ?? -1)) {
+        result.set(item, chosen.text); priorities.set(item, chosen.priority);
+      }
+    }
+  }
+  return result;
+}
+
+export function textIdentityOccurrences(items) {
+  const counts = new Map();
+  return items.map(item => {
+    const identity = textIdentity(item.fields, item.channels), key = textIdentityKey(identity);
+    const occurrence = counts.get(key) ?? 0; counts.set(key, occurrence + 1);
+    return { identity, occurrence };
+  });
+}

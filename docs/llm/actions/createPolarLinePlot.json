@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "charts",
   "summary": "Draws a complete Polar line plot that connects angular and radial observations as open or explicitly closed paths.",
-  "signature": "createPolarLinePlot(options: CreatePolarLinePlotOptions): ChartProgram;",
+  "signature": "createPolarLinePlot(options: TargetedOptions<CreatePolarLinePlotOptions>): ChartProgram;",
   "intents": [
     "create polar line plot",
     "create",
@@ -25,7 +25,8 @@
     "idOptions": [
       "id",
       "data",
-      "coordinate"
+      "coordinate",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -52,6 +53,10 @@
     },
     {
       "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -116,6 +121,11 @@
       "name": "guides",
       "required": false,
       "type": "false | PolarPathGuideOptions | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [

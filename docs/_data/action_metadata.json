@@ -2392,5 +2392,46 @@
     ],
     "layer": "user-facing",
     "domain": "encodings"
+  },
+  "createOverlay": {
+    "operation": "create",
+    "authoringRoles": [
+      "H1",
+      "H2"
+    ],
+    "layer": "user-facing",
+    "domain": "marks"
+  },
+  "editOverlay": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "marks"
+  },
+  "createLayerPlot": {
+    "operation": "create",
+    "authoringRoles": [
+      "H0"
+    ],
+    "layer": "user-facing",
+    "domain": "composition"
+  },
+  "createAdjacentPlot": {
+    "operation": "create",
+    "authoringRoles": [
+      "H0"
+    ],
+    "layer": "user-facing",
+    "domain": "composition"
+  },
+  "editCompositionScales": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "composition"
   }
 }

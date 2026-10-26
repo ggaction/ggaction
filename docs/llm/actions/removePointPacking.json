@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "marks",
   "summary": "Remove stored point packing and rematerialize the current semantic scale positions.",
-  "signature": "removePointPacking(options?: RemovePointPackingOptions): ChartProgram;",
+  "signature": "removePointPacking(options?: TargetedOptions<RemovePointPackingOptions>): ChartProgram;",
   "intents": [
     "remove point packing",
     "remove",
@@ -52,7 +52,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     }
   ],
   "callPatterns": [

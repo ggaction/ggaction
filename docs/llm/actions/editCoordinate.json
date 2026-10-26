@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "core",
   "summary": "Edits coordinate system, including settings for Cartesian or polar space.",
-  "signature": "editCoordinate(options: EditCoordinateOptions): ChartProgram;",
+  "signature": "editCoordinate(options: TargetedOptions<EditCoordinateOptions>): ChartProgram;",
   "intents": [
     "edit coordinate",
     "edit",
@@ -56,7 +56,7 @@
     {
       "name": "target",
       "required": true,
-      "type": "string"
+      "type": "string | ActionTargetList | ScopedActionTarget"
     },
     {
       "name": "aspect",

@@ -162,7 +162,7 @@ export function resolveLabelLayoutOracle({
   padding = 3,
   maxDisplacement = 48,
   bounds
-}) {
+}, measure = oracleTextBounds) {
   if (!Array.isArray(items) || items.length === 0) {
     throw new TypeError("Label oracle requires a non-empty item array.");
   }
@@ -181,14 +181,14 @@ export function resolveLabelLayoutOracle({
   const candidates = enumerateLabelOffsets({ axis, padding, maxDisplacement });
   const base = items.map(item => ({
     id: item.id,
-    collisionBounds: expanded(oracleTextBounds(item), padding)
+    collisionBounds: expanded(measure(item), padding)
   }));
   const placed = [];
   const resolved = [];
   for (const item of items) {
     let best;
     for (const [order, candidate] of candidates.entries()) {
-      const textBounds = oracleTextBounds(item, candidate);
+      const textBounds = measure(item, candidate);
       const collisionBounds = expanded(textBounds, padding);
       const score = {
         ...scoreCandidate(collisionBounds, bounds, placed, order),

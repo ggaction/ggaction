@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "core",
   "summary": "Edit Canvas properties and rematerialize connected consumers.",
-  "signature": "editCanvas(options: CanvasOptions): ChartProgram;",
+  "signature": "editCanvas(options: TargetedOptions<CanvasOptions>): ChartProgram;",
   "intents": [
     "edit canvas",
     "edit",
@@ -20,7 +20,9 @@
       "existing canvas"
     ],
     "owns": [],
-    "idOptions": []
+    "idOptions": [
+      "target"
+    ]
   },
   "authoringRoles": [
     "H3"
@@ -58,7 +60,12 @@
       "unit": "logical-pixel"
     }
   ],
-  "inference": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
   "completionRequirements": {
     "state": "contextual",
     "requires": [
@@ -96,10 +103,15 @@
       "name": "plotBorder",
       "required": false,
       "type": "false | { color?: string | undefined; lineWidth?: number | undefined; underlay?: boolean | undefined; } | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "editCanvas({ width?, height?, background?, margin?, plot?, plotBorder? })"
+    "editCanvas({ target?, width?, height?, background?, margin?, plot?, plotBorder? })"
   ],
   "snippet": "program.editCanvas({ width: 640 })",
   "errors": [],

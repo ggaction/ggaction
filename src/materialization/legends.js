@@ -1,8 +1,9 @@
+import {colorSizeScaleIds} from "../grammar/colorSizeLegend.js";
 import { findLayer } from "../selectors/layers.js";
 import { LEGEND_CONFIG_KINDS } from "../core/vocabulary.js";
 
 export function isOpacityLegendLayer(layer) {
-  return ["point", "line", "bar", "rect"].includes(layer.mark?.type) &&
+  return ["point", "line", "area", "bar", "rect"].includes(layer.mark?.type) &&
     layer.encoding?.opacity?.scale !== undefined;
 }
 
@@ -24,6 +25,6 @@ export function materializedLegendUsesScale(program, id) {
     const order = program.semanticSpec.guides.legend?.[kind]?.order;
     const linkedScale = order?.channel === undefined ? undefined
       : findLayer(program, config.target)?.encoding?.[order.channel]?.scale;
-    return config.colorScale === id || config.sizeScale === id || config.scale === id || config.scales?.includes(id) || linkedScale === id;
+    return (kind === "colorSize" ? colorSizeScaleIds(config).includes(id) : config.scale === id || config.scales?.includes(id)) || linkedScale === id;
   });
 }

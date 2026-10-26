@@ -1,3 +1,4 @@
+import { alignLegendLabels } from "../../../../layout/legendText.js";
 import{validateLegendClip}from"../../../../grammar/legendClip.js";
 import{hasLegendClipGraphics,applyLegendClipGraphics}from"../../../../materialization/legendClip.js";
 import { intrinsicLegendConfig } from "../../../../materialization/legendGroups.js";
@@ -197,6 +198,7 @@ function resolveOpacityLayout(program, config, scale) {
       align: "center"
     };
   }
+  labels = alignLegendLabels(labels, texts, config.labels, program.materializationConfigs.textMetrics);
   const labelBounds = labels.map((label, index) =>
     resolveLegendTextBounds(label, texts[index], config.labels, program.materializationConfigs.textMetrics)
   );

@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "marks",
   "summary": "Remove one text mark's layout policy and leader collection, then restore its semantic base positions.",
-  "signature": "removeLabelLayout(options?: RemoveLabelLayoutOptions): ChartProgram;",
+  "signature": "removeLabelLayout(options?: TargetedOptions<RemoveLabelLayoutOptions>): ChartProgram;",
   "intents": [
     "remove label layout",
     "remove",
@@ -54,7 +54,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     }
   ],
   "callPatterns": [

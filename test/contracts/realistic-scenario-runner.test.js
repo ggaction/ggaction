@@ -1572,7 +1572,7 @@ test("preserves compact generator diagnostics in a failed audit report", async t
     dataset: "tt-penguins",
     datasetIndex: 0,
     tier: "simple",
-    quota: 7,
+    quota: 6,
     produced: 1,
     schedulingIterations: 3,
     eligibleRecipeCount: 1

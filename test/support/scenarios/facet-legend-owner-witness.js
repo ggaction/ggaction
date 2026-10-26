@@ -31,6 +31,10 @@ export const PARENT_LEGEND_WITNESS_PROFILES = Object.freeze([
   { id: "shape-size", family: "size-shape", legend: { position: "top-left", channels: ["shape", "size"], combine: "size-shape", symbol: "auto", clipHeight: 12 } },
   { id: "color-size", family: "color-size", legend: { position: "top-left", channels: ["color", "size"], combine: "color-size", count: 3,
     clipHeight: 12, symbol: { type: "point", stroke: "#fff", strokeWidth: 1, opacity: 0.65 } } },
+  { id: "color-size-shape", family: "color-size-shape", legend: { position: "top-left", channels: ["color", "size", "shape"],
+    combine: "color-size-shape", clipHeight: 12, symbol: { type: "point", stroke: "#fff", strokeWidth: 1, opacity: 0.65 } } },
+  { id: "summary-line", family: "series", legend: { position: "bottom", channels: ["color"],
+    overflow: { maxItems: 2, summarySymbol: "first-hidden" }, symbol: { layers: [{ type: "line", length: 24, lineWidth: 2 }] } } },
   { id: "color-gradient", family: "continuous", legend: { position: "bottom", align: "center", direction: "horizontal", titlePosition: "bottom",
     channels: ["color"], representation: "gradient", count: 3, gradient: { length: 180, thickness: 14, opacity: 0.7 }, labels: { format: ".2f" } } },
   { id: "color-symbol-count", family: "continuous", legend: { position: "top-left", channels: ["color"], representation: "symbols", count: 3,
@@ -64,6 +68,12 @@ export function parentLegendWitnessSource(view, profile) {
       .encodeY(profile.family === "order-y"
         ? { field: "category", fieldType: "nominal", scale: { type: "band" } } : { field: "value" });
   }
+  if(profile.family==='color-size-shape') {
+    const cut=(domain[0]+domain[1])/2;
+    return program.encodeColor({field:'value',fieldType:'quantitative',scale:{type:'threshold',domain:[cut],range:['#17365d','#8fbbe8']}})
+      .encodeSize({field:'value',scale:{type:'threshold',domain:[cut],range:[100,400]}})
+      .encodeShape({field:'value',scale:{domain:[domain[0],cut],range:['circle','diamond'],unknown:'circle'}});
+  }
   program = program.encodeColor(["continuous", "color-size"].includes(profile.family)
     ? { field: "value", fieldType: "quantitative", scale: { id: "color", type: "sequential", domain } }
     : { field: "category" });
@@ -80,6 +90,11 @@ export function parentLegendWitnessOptions(view, profile) {
   if (Object.hasOwn(profile, "legacy")) return profile.legacy;
   const common = realisticLegendOptions({ id: profile.id }, "Source groups", { target: "points", channels: ["color"] });
   const options = { ...common, titlePosition: "top", direction: "vertical", align: "center", columns: 1, ...profile.legend };
+  if (profile.id.startsWith("anchor-")) {
+    const index = anchors.indexOf(options.position);
+    options.labels = { ...options.labels, align: ["left", "center", "right"][index % 3] };
+    options.alongOffset = index % 2 ? -1 : 1;
+  }
   if (options.at !== undefined) for (const key of ["position", "align", "offset"]) delete options[key];
   if (options.layout === "legacy-bottom") delete options.columns;
   if (profile.family === "opacity") for (const key of ["columns", "direction"]) delete options[key];
@@ -89,6 +104,9 @@ export function parentLegendWitnessOptions(view, profile) {
     if (profile.id !== "color-gradient") options.rowPadding = 2;
   }
   if (profile.explicitOrder) options.order = { values: [...new Set(view.rows.map(row => row.category))].reverse() };
+  if(profile.family==='color-size-shape') {
+    const [lower,upper]=parentLegendWitnessDomain(view);options.values=[lower,(lower+upper)/2];
+  }
   if (profile.sampledValues) {
     const [lower, upper] = parentLegendWitnessDomain(view); options.values = [lower, lower + (upper - lower) / 2, upper];
   }

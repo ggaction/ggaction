@@ -48,12 +48,17 @@ function resourceNamespace(graphicSpec) {
   const cached = namespaceByGraphic.get(graphicSpec);
   if (cached !== undefined) return cached;
   const serialized = JSON.stringify(graphicSpec);
-  let hash = 0xcbf29ce484222325n;
+  // FNV-1a 64, represented as two uint32 lanes. Products stay below 2^53;
+  // retain the exact namespace without allocating BigInts per code unit.
+  let high = 0xcbf29ce4, low = 0x84222325;
   for (let index = 0; index < serialized.length; index += 1) {
-    hash ^= BigInt(serialized.charCodeAt(index));
-    hash = BigInt.asUintN(64, hash * 0x100000001b3n);
+    low = (low ^ serialized.charCodeAt(index)) >>> 0;
+    const product = low * 0x1b3;
+    high = (Math.imul(high, 0x1b3) + Math.imul(low, 0x100) +
+      Math.floor(product / 0x100000000)) >>> 0;
+    low = product >>> 0;
   }
-  const namespace = hash.toString(36);
+  const namespace = ((BigInt(high) << 32n) | BigInt(low)).toString(36);
   if (isOwned(graphicSpec)) namespaceByGraphic.set(graphicSpec, namespace);
   return namespace;
 }

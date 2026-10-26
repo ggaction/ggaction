@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "axes",
   "summary": "Edit the radial title.",
-  "signature": "editRadialAxisTitle(options?: RadialTitleOptions): ChartProgram;",
+  "signature": "editRadialAxisTitle(options?: TargetedOptions<RadialTitleOptions>): ChartProgram;",
   "intents": [
     "edit radial axis title",
     "edit",
@@ -21,7 +21,9 @@
       "compatible scale or encoding context"
     ],
     "owns": [],
-    "idOptions": []
+    "idOptions": [
+      "target"
+    ]
   },
   "authoringRoles": [
     "H3"
@@ -48,7 +50,12 @@
       "unit": "logical-pixel"
     }
   ],
-  "inference": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
   "completionRequirements": {
     "state": "contextual",
     "requires": [
@@ -62,6 +69,11 @@
       "name": "position",
       "required": false,
       "type": "\"inside\" | \"outside\" | undefined"
+    },
+    {
+      "name": "align",
+      "required": false,
+      "type": "\"center\" | \"left\" | \"right\" | undefined"
     },
     {
       "name": "text",
@@ -92,10 +104,15 @@
       "name": "fontWeight",
       "required": false,
       "type": "string | number | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "editRadialAxisTitle({ position?, text?, offset?, color?, fontSize?, fontFamily?, fontWeight? })"
+    "editRadialAxisTitle({ target?, position?, align?, text?, offset?, color?, fontSize?, fontFamily? })"
   ],
   "snippet": "program.editRadialAxisTitle({ position: \"inside\" })",
   "errors": [],

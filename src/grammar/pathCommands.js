@@ -1,4 +1,4 @@
-import { freezeOwned, isPlainObject } from "../core/immutable.js";
+import { freezeOwned, isOwned, isPlainObject } from "../core/immutable.js";
 import { validateGeneratedItemLimit } from "../core/validation.js";
 
 export const MAX_PATH_COMMANDS = 30_000;
@@ -13,6 +13,7 @@ const COMMAND_KEYS = Object.freeze({
   C: Object.freeze(["op", "x1", "y1", "x2", "y2", "x", "y"]),
   Z: Object.freeze(["op"])
 });
+const validatedCommands = new WeakSet();
 
 function validateCommand(command, index) {
   if (!isPlainObject(command) || !Object.hasOwn(COMMAND_KEYS, command.op)) {
@@ -41,6 +42,7 @@ function validateCommand(command, index) {
 }
 
 export function validatePathCommands(commands) {
+  if (validatedCommands.has(commands)) return commands;
   if (!Array.isArray(commands) || commands.length < 1) {
     throw new TypeError("path.commands must contain at least one command.");
   }
@@ -49,7 +51,10 @@ export function validatePathCommands(commands) {
   if (commands[0].op !== "M") {
     throw new Error("path.commands must start with M.");
   }
-  if (commands.length === 1) return commands;
+  if (commands.length === 1) {
+    if (isOwned(commands)) validatedCommands.add(commands);
+    return commands;
+  }
   if (commands.slice(1).some(command => command.op === "M")) {
     throw new Error("path.commands supports one subpath and only one initial M.");
   }
@@ -60,6 +65,7 @@ export function validatePathCommands(commands) {
   if (closeIndex !== -1 && closeIndex !== commands.length - 1) {
     throw new Error("path.commands Z must be the final command.");
   }
+  if (isOwned(commands)) validatedCommands.add(commands);
   return commands;
 }
 

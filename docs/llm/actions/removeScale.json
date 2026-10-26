@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "core",
   "summary": "Remove one explicitly named unused semantic scale and its resolved cache entry.",
-  "signature": "removeScale(options: RemoveResourceOptions): ChartProgram;",
+  "signature": "removeScale(options: TargetedOptions<RemoveResourceOptions>): ChartProgram;",
   "intents": [
     "remove scale",
     "remove",
@@ -21,7 +21,8 @@
     ],
     "owns": [],
     "idOptions": [
-      "id"
+      "id",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -37,7 +38,12 @@
     ]
   },
   "units": [],
-  "inference": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
   "completionRequirements": {
     "state": "contextual",
     "requires": [
@@ -50,10 +56,15 @@
       "name": "id",
       "required": true,
       "type": "string"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "removeScale({ id })"
+    "removeScale({ id, target? })"
   ],
   "snippet": "program.removeScale({ id: \"unusedScale\" })",
   "errors": [],

@@ -26,7 +26,7 @@ const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
 const authoringPrerequisites = [
   {
     id: "action.createCanvas",
-    signature: "createCanvas(options?: CanvasOptions): ChartProgram;",
+    signature: "createCanvas(options?: TargetedOptions<CanvasOptions>): ChartProgram;",
     call: "program = program.createCanvas({ width: 800, height: 600, margin: { top: 140, right: 220, bottom: 120, left: 260 } })",
     bindings: []
   },

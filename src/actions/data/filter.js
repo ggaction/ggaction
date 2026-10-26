@@ -1,3 +1,6 @@
+import { isSourceOwnedText } from "../../grammar/text.js";
+import { markFilterSourceIndices } from "../../materialization/selection/rows.js";
+import { assertIndependentOverlayGeometry } from "../../grammar/overlay.js";
 import { findRaincloudParent } from "../../selectors/raincloud.js";
 import { filterRaincloud, materializeRaincloudFilter, removeRaincloudFilter } from "./raincloudFilter.js";
 import { closedAction } from "../../core/action.js";
@@ -40,7 +43,7 @@ const OPTIONS = Object.freeze([
   "id", "source", "field", "oneOf", "noneOf", "predicate", "range", "nulls"
 ]);
 const MARK_SELECTOR_KEYS = Object.freeze([
-  "grain", "field", "channel", "property", "op", "value", "values",
+  "rows", "grain", "field", "channel", "property", "op", "value", "values",
   "min", "max", "inclusive", "count", "groupBy", "ties"
 ]);
 const MARK_OPTIONS = Object.freeze(["target", "mode", ...MARK_SELECTOR_KEYS]);
@@ -165,7 +168,7 @@ export const materializeMarkFilteredData = /* @__PURE__ */ closedAction(
     let next = preview.editSemantic({
       property: `dataset[${id}].values`,
       value: currentRows
-    });
+    })._withMaterializationConfig(["rowProvenance", id], { indices: markFilterSourceIndices(source.values, currentRows) });
     if (requireLayer(next, transform.target).data !== id) {
       next = next.editSemantic({
         property: `layer[${transform.target}].data`,
@@ -317,9 +320,10 @@ export const filterMarks = /* @__PURE__ */ closedAction(
       target,
       label: "filter mark",
       predicate: candidate =>
-        candidate.data !== undefined &&
+        candidate.data !== undefined && (target !== undefined || !isSourceOwnedText(candidate)) &&
         findSelectionPolicy(candidate.mark?.type) !== undefined
     });
+    assertIndependentOverlayGeometry(layer, "filterMarks");
     if (this.markConfigs[layer.id]?.itemFilterable === false) {
       throw new Error(
         `filterMarks does not support composite mark "${layer.id}"; filter its source dataset first.`

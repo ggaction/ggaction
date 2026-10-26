@@ -1,6 +1,6 @@
 import { validateGeneratedItemLimit } from "../../core/validation.js";
 import { validateFontStyle } from "../../core/font.js";
-import { isPlainObject } from "../../core/immutable.js";
+import { isOwned, isPlainObject } from "../../core/immutable.js";
 import { validatePathCommands } from "../pathCommands.js";
 import { validateFillPaint } from "../paint.js";
 import {
@@ -25,6 +25,7 @@ const TEXT_ALIGNS = new Set(["left", "right", "center", "start", "end"]);
 const TEXT_BASELINES = new Set([
   "top", "hanging", "middle", "alphabetic", "ideographic", "bottom"
 ]);
+const validatedProperties = new WeakMap();
 
 export function validateConcreteGraphicValue(type, property, value) {
   if (property === "lines") {
@@ -98,12 +99,18 @@ export function validateConcreteGraphicValue(type, property, value) {
 }
 
 export function validateConcreteGraphicProperties(type, properties) {
+  const validatedTypes = validatedProperties.get(properties);
+  if (validatedTypes?.has(type)) return properties;
   if (!isPlainObject(properties)) {
     throw new TypeError(`${type}.properties must be a plain object.`);
   }
   for (const [property, value] of Object.entries(properties)) {
     validateGraphicProperty(type, property);
     validateConcreteGraphicValue(type, property, value);
+  }
+  if (isOwned(properties)) {
+    if (validatedTypes) validatedTypes.add(type);
+    else validatedProperties.set(properties, new Set([type]));
   }
   return properties;
 }

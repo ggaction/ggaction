@@ -1,6 +1,8 @@
 import { withGuideLayoutValidation } from "../../../../materialization/guides/layout.js";
 import { axisThemeTypography } from "../../../theme/state.js";
 import { action } from "../../../../core/action.js";
+import { resolveTextLines } from "../../../../core/textMetrics.js";
+import { materializeTextLines } from "../../../../materialization/textLines.js";
 import {
   validateNonEmptyString,
   validateNonNegativeFinite
@@ -33,7 +35,7 @@ import {
 
 function titleGeometry(program, kind, config, angle = resolveAngle(program, kind, {})) {
   const frame = resolvePolarFrameForProgram(program, config.coordinate);
-  return kind === "theta"
+  const geometry = kind === "theta"
     ? resolveThetaAxisTitle({ frame, offset: config.offset })
     : resolveRadialAxisTitle({
         frame,
@@ -41,6 +43,7 @@ function titleGeometry(program, kind, config, angle = resolveAngle(program, kind
         offset: config.offset,
         position: config.position
       });
+  return config.align === undefined ? geometry : { ...geometry, textAlign: config.align };
 }
 
 function validateTitleGeometry(program, kind, config, geometry, text) {
@@ -50,6 +53,7 @@ function validateTitleGeometry(program, kind, config, geometry, text) {
     items: [{
       ...geometry,
       text,
+      lines: titleLines(text, config, geometry),
       fontSize: config.fontSize,
       fontFamily: config.fontFamily,
       fontWeight: config.fontWeight
@@ -57,10 +61,17 @@ function validateTitleGeometry(program, kind, config, geometry, text) {
   }, program.materializationConfigs.textMetrics);
 }
 
+function titleLines(text, config, geometry) {
+  const lines = resolveTextLines(text, { fontSize: config.fontSize,
+    align: geometry.textAlign, baseline: geometry.textBaseline, blockAlign: "middle" });
+  return lines.length > 1 ? lines : undefined;
+}
+
 function resolveTitleConfig(program, kind, args, resources, previous) {
   const typography = axisThemeTypography(program.materializationConfigs.theme, "title");
   const config = {
     ...(previous ?? {}),
+    ...(Object.hasOwn(args, "align") ? { align: args.align } : {}),
     scale: resources.scale,
     coordinate: resources.coordinate,
     inferredText: previous?.inferredText ?? !Object.hasOwn(args, "text"),
@@ -136,7 +147,7 @@ function makeEditTitle(kind) {
     for (const [property, value] of Object.entries(properties)) {
       next = next.editGraphics({ target: names.title, property, value });
     }
-    return next;
+    return materializeTextLines(next, names.title, titleLines(text, config, geometry));
   }));
 }
 

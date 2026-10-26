@@ -1,4 +1,4 @@
-import {resolveColorSizeConfig,createColorSizeLegendFromConfig,materializeColorSizeLegend} from "../colorSize.js";
+import {resolveColorSizeConfig,createColorSizeLegendFromConfig,materializeColorSizeLegend,resolveColorSizeLayout} from "../colorSize.js";
 import {resetLegendClipGraphics,applyLegendClipGraphics,restoreLegendClipContext}from"../../../../materialization/legendClip.js";
 import {validateLegendCombine,resolveSizeShapeCreation} from "../combine.js";
 import { recordLegendOffsetIntent } from "../group.js";
@@ -15,7 +15,8 @@ import { noOptions, resolveLayout, activeConfig } from "./layout.js";
 import { normalizeOptions } from "./options.js";
 import { normalizeRecipe, resolveLegendSymbol } from "./recipes.js";
 import { validateLegendChannels } from "../target.js";
-import { createCategoricalLegendFromConfig, reconcileCategoricalSymbols } from "../lifecycle.js";
+import { createCategoricalLegendFromConfig, reconcileCategoricalSymbols,
+  resolveCategoricalLegendRevision, removeLegendKinds } from "../lifecycle.js";
 import { findLayer } from "../../../../selectors/layers.js";
 import { findSemanticScale } from "../../../../selectors/scales.js";
 import { isSizeLegendPoint, resolveSizeLegendConfig } from "../size.js";
@@ -34,6 +35,7 @@ import {
   sameValues
 } from "./resolve.js";
 import { readLegendSampling } from "../sampling.js";
+import { restoreCreatedLegendChannels } from "../../../../materialization/legendSuppression.js";
 import {
   reconcileLegendBlockTitleGraphic,
   resolveEffectiveLegendBlockConfig
@@ -179,6 +181,7 @@ export const rematerializeLegend = /* @__PURE__ */ action(
     }
     const clipAnchors = Object.fromEntries(categoricalKinds.filter(kind => next.guideConfigs.legend[kind].clipHeight !== undefined)
       .map(kind => [kind, resolveLayout(next, resolveEffectiveLegendBlockConfig(next, kind, next.guideConfigs.legend[kind])).itemY]));
+    if(next.guideConfigs.legend?.colorSize?.clipHeight!==undefined)clipAnchors.colorSize=resolveColorSizeLayout(next,next.guideConfigs.legend.colorSize).itemY;
     next=applyLegendClipGraphics(next,{force:true,anchors:clipAnchors});
     next=restoreLegendClipContext(next,oldClipContext);
     if (hasHorizontalLegendLane(next)) {
@@ -238,6 +241,32 @@ export const createCategoricalLegend = /* @__PURE__ */ action(
   withGuideLayoutValidation(function (args = {}) {
     const config = resolveCategoricalLegendConfig(this, args);
     if (this.semanticSpec.guides.legend?.[config.kind] !== undefined) {
+      const previous = this.guideConfigs.legend?.[config.kind];
+      // A color-only line legend historically occupies the series slot. A
+      // later independent dash encoding needs its own series owner; a matching
+      // field instead extends the original categorical symbol. Only newly
+      // requested channels qualify: repeated createLegend calls remain errors.
+      if (config.kind === "series" && previous?.target === config.target &&
+          previous.channels.every(channel => !config.channels.includes(channel))) {
+        if (previous.field === config.field) {
+          const revision = resolveCategoricalLegendRevision(this, "series", previous,
+            [...previous.channels, ...config.channels]);
+          resolveLayout(this, revision.config);
+          return createCategoricalLegendFromConfig(removeLegendKinds(this, ["series"]),
+            revision.config, revision.order);
+        }
+        if (sameValues(previous.channels, ["color"]) &&
+            this.semanticSpec.guides.legend?.color === undefined) {
+          const revision = resolveCategoricalLegendRevision(this, "series", previous, ["color"], { preferredKind: "color" });
+          if (revision.config.kind === "color") {
+            let next = removeLegendKinds(this, ["series"]);
+            next = createCategoricalLegendFromConfig(next, revision.config, revision.order);
+            resolveLayout(next, config);
+            return createCategoricalLegendFromConfig(next, config,
+              args.order === undefined ? undefined : normalizeLegendOrder(args.order));
+          }
+        }
+      }
       throw new Error(
         `createCategoricalLegend requires a missing legend for ${config.kind}.`
       );
@@ -251,7 +280,7 @@ export const createCategoricalLegend = /* @__PURE__ */ action(
 function resolveRawLegendCreationPlan(program, args = {}, layers = program.semanticSpec.layers, internalChannels) {
   if (Object.hasOwn(args, "combine")) {
     validateLegendCombine(args.combine);
-    if (args.combine === "color-size") {
+    if (["color-size","color-size-shape"].includes(args.combine)) {
       const config=resolveColorSizeConfig(program,args);
       const prepared=prepareLegendGroup(program,{...args,blockLayout:args.blockLayout??(["left","right"].includes(args.position??"right")?"column":"row")},config.target,{creation:true,nativeOffset:30});
       return {steps:[{op:"createColorSizeLegend",args}],finish:"always",legendGroup:{target:config.target,config:prepared.program.guideConfigs.legendGroups[config.target]}};
@@ -264,7 +293,10 @@ function resolveRawLegendCreationPlan(program, args = {}, layers = program.seman
   const candidates = args.target === undefined ? layers : layers.filter(layer => layer.id === args.target);
   const independentMark = candidates.length === 1 &&
     ["area", "rect", "bar", "arc", "text", "rule", "tick"].includes(candidates[0].mark?.type);
-  const inferredChannels = independentMark
+  const seriesChannels = candidates.length === 1 && ["line", "point"].includes(candidates[0].mark?.type)
+    ? ["color", "stroke", "shape", "strokeDash"].filter(channel => candidates[0].encoding?.[channel]?.scale !== undefined) : [];
+  const independentSeries = new Set(seriesChannels.map(channel => candidates[0].encoding[channel].field)).size > 1;
+  const inferredChannels = independentSeries ? seriesChannels : independentMark
     ? ["color", "stroke"].filter(channel => candidates[0].encoding?.[channel]?.scale !== undefined)
     : [];
   const channels = args.channels !== undefined ? args.channels
@@ -277,9 +309,10 @@ function resolveRawLegendCreationPlan(program, args = {}, layers = program.seman
   // blocks. Mixed sampled channels likewise cannot use a categorical symbol.
   // Resolve each existing owner before any child action changes the program.
   const point = candidates.length === 1 && candidates[0].mark?.type === "point";
+  const seriesMark = candidates.length === 1 && ["point", "line"].includes(candidates[0].mark?.type);
   const continuousChannel = channel => ["color", "stroke"].includes(channel) &&
     !["ordinal", "band", "point"].includes(findSemanticScale(program, candidates[0]?.encoding?.[channel]?.scale)?.type);
-  const independentPoint = point && ((channels ?? []).some(continuousChannel) || new Set((channels ?? []).filter(channel => !["size", "opacity", "strokeWidth"].includes(channel))
+  const independentPoint = seriesMark && ((channels ?? []).some(continuousChannel) || new Set((channels ?? []).filter(channel => !["size", "opacity", "strokeWidth"].includes(channel))
     .map(channel => candidates[0].encoding?.[channel]?.field)).size > 1);
   if (channels?.length > 1 && (independentPoint || channels.some(c => ["opacity", "strokeWidth"].includes(c)) ||
       independentMark)) {
@@ -298,7 +331,7 @@ function resolveRawLegendCreationPlan(program, args = {}, layers = program.seman
       if (categorical) categorical.push("size");
       else grouped.push(["size"]);
     }
-    const blocks = point ? [...grouped, ...sampled.map(channel => [channel])]
+    const blocks = seriesMark ? [...grouped, ...sampled.map(channel => [channel])]
       : channels.map(channel => [channel]);
     const steps = blocks.flatMap(block => resolveRawLegendCreationPlan(program,
       block.includes("color") && (representation !== undefined || gradient !== undefined) ? { ...args, channels: block }
@@ -488,7 +521,7 @@ function resolveRawLegendCreationPlan(program, args = {}, layers = program.seman
 
 export function resolveLegendCreationPlan(program, args = {}, layers = program.semanticSpec.layers, internalChannels) {
   validateLegendGroupOptions(args);
-  const { blockLayout: _layout, at: _at, ...raw } = args;
+  const { blockLayout: _layout, at: _at, alongOffset: _along, ...raw } = args;
   const groups = program.guideConfigs.legendGroups ?? {};
   if (Object.keys(groups).length > 0 && raw.position === undefined) {
     const target = creationLegendTarget(program, args);
@@ -502,11 +535,14 @@ export function resolveLegendCreationPlan(program, args = {}, layers = program.s
   if (raw.position === undefined && args.direction === "horizontal" &&
       (args.at !== undefined || Object.keys(groups).length > 0)) raw.position = "top";
   const initial = resolveRawLegendCreationPlan(program, raw, layers, internalChannels);
+  if (args.overflow?.summarySymbol !== undefined && !initial.steps.some(step => step.op === "createCategoricalLegend")) {
+    throw new Error("Legend overflow.summarySymbol requires a categorical line-only sample recipe.");
+  }
   const inherited = Object.keys(program.guideConfigs.legendGroups ?? {}).length > 0;
   const corner = PLOT_LEGEND_POSITIONS.includes(args.position) &&
     (initial.steps.length > 1 || initial.steps[0]?.op !== "createCategoricalLegend" ||
       Object.keys(program.guideConfigs.legend ?? {}).length > 0);
-  if (args.blockLayout === undefined && args.at === undefined && !inherited && !corner) return initial;
+  if (args.blockLayout === undefined && args.at === undefined && args.alongOffset === undefined && !inherited && !corner) return initial;
   const target = creationLegendTarget(program, args);
   const first = initial.steps[0];
   const nativeOffset = program.guideConfigs.legendGroups?.[target] !== undefined ? 30 : first?.op === "createCategoricalLegend"
@@ -542,7 +578,7 @@ export function applyLegendCreationPlan(program, plan) {
 export const createLegend = /* @__PURE__ */ action(
   { op: "createLegend", description: "Create an inferred legend for selected channels." },
   withGuideLayoutValidation(function (args = {}) {
-    return recordLegendOffsetIntent(this, applyLegendCreationPlan(this, resolveLegendCreationPlan(this, args)), args, { creation: true });
+    return restoreCreatedLegendChannels(recordLegendOffsetIntent(this, applyLegendCreationPlan(this, resolveLegendCreationPlan(this, args)), args, { creation: true }));
   })
 );
 

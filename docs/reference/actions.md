@@ -35,6 +35,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`applyTextMetrics`](./actions/charts-data.md#applytextmetrics) | H3 | user-facing | core |
 | [`applyTheme`](./actions/charts-data.md#applytheme) | H3 | user-facing | core |
 | [`bindMarkData`](./actions/charts-data.md#bindmarkdata) | H2 | user-facing | core |
+| [`createAdjacentPlot`](./actions/charts-data.md#createadjacentplot) | H0 | user-facing | composition |
 | [`createAnnotation`](./actions/marks.md#createannotation) | H1, H2 | user-facing | marks |
 | [`createArcMark`](./actions/marks.md#createarcmark) | H2 | user-facing | marks |
 | [`createAreaMark`](./actions/marks.md#createareamark) | H2 | user-facing | marks |
@@ -73,6 +74,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createImputedData`](./actions/statistics.md#createimputeddata) | H1 | user-facing | statistics |
 | [`createIntervalData`](./actions/statistics.md#createintervaldata) | H1 | user-facing | statistics |
 | [`createIntervalPlot`](./actions/charts-data.md#createintervalplot) | H0, H1 | user-facing | charts |
+| [`createLayerPlot`](./actions/charts-data.md#createlayerplot) | H0 | user-facing | composition |
 | [`createLegend`](./actions/guides.md#createlegend) | H3 | user-facing | legend_and_title |
 | [`createLineMark`](./actions/marks.md#createlinemark) | H2 | user-facing | marks |
 | [`createLinePlot`](./actions/charts-data.md#createlineplot) | H0 | user-facing | charts |
@@ -80,6 +82,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createLookupData`](./actions/statistics.md#createlookupdata) | H1 | user-facing | statistics |
 | [`createMarkLabels`](./actions/marks.md#createmarklabels) | H1, H2 | user-facing | marks |
 | [`createNormalizedData`](./actions/statistics.md#createnormalizeddata) | H1 | user-facing | statistics |
+| [`createOverlay`](./actions/marks.md#createoverlay) | H1, H2 | user-facing | marks |
 | [`createParallelAxes`](./actions/guides.md#createparallelaxes) | H3 | user-facing | axes |
 | [`createParallelAxis`](./actions/guides.md#createparallelaxis) | H3 | user-facing | axes |
 | [`createParallelCoordinates`](./actions/charts-data.md#createparallelcoordinates) | H0 | user-facing | charts |
@@ -152,6 +155,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editColorScale`](./actions/charts-data.md#editcolorscale) | H2 | user-facing | core |
 | [`editCompleteData`](./actions/statistics.md#editcompletedata) | H1, H3 | user-facing | statistics |
 | [`editCompositionLayout`](./actions/charts-data.md#editcompositionlayout) | H3 | user-facing | composition |
+| [`editCompositionScales`](./actions/charts-data.md#editcompositionscales) | H3 | user-facing | composition |
 | [`editComputedData`](./actions/statistics.md#editcomputeddata) | H1, H3 | user-facing | statistics |
 | [`editCoordinate`](./actions/charts-data.md#editcoordinate) | H2 | user-facing | core |
 | [`editDensity`](./actions/encodings.md#editdensity) | H2, H3 | user-facing | encodings |
@@ -191,6 +195,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editMarkSelection`](./actions/advanced.md#editmarkselection) | H3 | advanced | mark-selection |
 | [`editNormalizedData`](./actions/statistics.md#editnormalizeddata) | H1, H3 | user-facing | statistics |
 | [`editOpacityScale`](./actions/charts-data.md#editopacityscale) | H2 | user-facing | core |
+| [`editOverlay`](./actions/marks.md#editoverlay) | H3 | user-facing | marks |
 | [`editParallelAxis`](./actions/guides.md#editparallelaxis) | H3 | user-facing | axes |
 | [`editParallelScale`](./actions/charts-data.md#editparallelscale) | H2 | user-facing | core |
 | [`editPointMark`](./actions/marks.md#editpointmark) | H3 | user-facing | marks |

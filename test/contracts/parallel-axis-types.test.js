@@ -19,6 +19,8 @@ import type { ChartProgram, CreateParallelAxisOptions, EditParallelAxisOptions,
   ParallelAxisComponentsOptions } from ${JSON.stringify(path.join(root, "types/index.js"))};
 import type { BasicChartProgram } from ${JSON.stringify(path.join(root, "types/basic.js"))};
 declare const p: ChartProgram;
+p.editParallelAxis({field: "category", labels: {labelMap: [{value: 1, label: "First"}]}});
+p.editParallelAxis({field: "category", ticksAndLabels: {labels: {labelMap: "auto"}}});
 declare const basic: BasicChartProgram;
 const options: CreateParallelAxisOptions = { field: "a", ticksAndLabels: { values: [0, 10] as const } };
 p.createParallelAxes().removeParallelAxes({ coordinate: "parallel" }).createParallelAxis(options);

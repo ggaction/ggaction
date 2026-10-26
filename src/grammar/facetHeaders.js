@@ -10,8 +10,8 @@ const TITLE_OPTIONS = Object.freeze([
 export function validateFacetHeaderTitle(value) {
   validateOptionObject(value, TITLE_OPTIONS, "Facet header title", { allowEmpty: false });
   validateNonEmptyString(value.text, "Facet header title text");
-  if (/[\r\n\u2028\u2029]/u.test(value.text)) {
-    throw new TypeError("Facet header title text must be one line.");
+  if (/[\u2028\u2029]/u.test(value.text)) {
+    throw new TypeError("Facet header title line breaks must use LF, CR or CRLF.");
   }
   if (value.fontSize !== undefined) validatePositiveFinite(value.fontSize, "Facet header title fontSize");
   for (const key of ["fontFamily", "color"]) {

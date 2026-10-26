@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "marks",
   "summary": "Creates short tick glyphs for compact one-dimensional distributions or aligned value marks.",
-  "signature": "createTickMark(options?: StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: \"error\" | \"skip\"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;",
+  "signature": "createTickMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: \"error\" | \"skip\"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }>): ChartProgram;",
   "intents": [
     "create tick mark",
     "create",
@@ -24,7 +24,8 @@
     ],
     "idOptions": [
       "id",
-      "data"
+      "data",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -61,6 +62,10 @@
   "inference": [
     {
       "input": "data",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -130,10 +135,15 @@
       "name": "opacity",
       "required": false,
       "type": "number | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "createTickMark({ id?, data?, lineCap?, lineJoin?, miterLimit?, clip?, missing?, length? })"
+    "createTickMark({ id?, data?, target?, lineCap?, lineJoin?, miterLimit?, clip?, missing? })"
   ],
   "snippet": "program.createTickMark({})",
   "errors": [],

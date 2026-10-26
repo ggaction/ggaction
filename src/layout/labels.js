@@ -517,11 +517,45 @@ function textBounds(item, offset = { x: 0, y: 0 }, profile) {
   }, profile);
 }
 
-function candidateScore(bounds, boundary, placed, candidate, order) {
+// Query only nearby rectangles. Oversized bounds use the ordered fallback so
+// extreme dimensions cannot allocate an unbounded number of grid cells.
+function labelBoundsIndex() {
+  const cells = new Map(), rectangles = [], wide = [];
+  const keys = bounds => {
+    const x0 = Math.floor(bounds.left / 32), x1 = Math.floor(bounds.right / 32);
+    const y0 = Math.floor(bounds.top / 32), y1 = Math.floor(bounds.bottom / 32);
+    if (![x0, x1, y0, y1].every(Number.isSafeInteger) || (x1 - x0 + 1) * (y1 - y0 + 1) > 256) return undefined;
+    const result = [];
+    for (let x = x0; x <= x1; x++) for (let y = y0; y <= y1; y++) result.push(`${x},${y}`);
+    return result;
+  };
+  return {
+    add(bounds) {
+      const id = rectangles.push(bounds) - 1, slots = keys(bounds);
+      if (!slots) { wide.push(id); return; }
+      for (const key of slots) {
+        if (!cells.has(key)) cells.set(key, []);
+        cells.get(key).push(id);
+      }
+    },
+    near(bounds) {
+      const slots = keys(bounds);
+      if (!slots) return rectangles.map((bounds, id) => ({ bounds, id }));
+      const ids = new Set(wide);
+      for (const key of slots) for (const id of cells.get(key) ?? []) ids.add(id);
+      // Preserve stable summation and tie breaking from the ordered scan.
+      return [...ids].sort((a, b) => a - b).map(id => ({ bounds: rectangles[id], id }));
+    }
+  };
+}
+
+function candidateScore(bounds, boundary, placed, candidate, order, account) {
+  const nearby = placed.near(bounds);
+  account(nearby.length + 1);
   return {
     outside: overflow(bounds, boundary),
-    overlap: placed.reduce(
-      (area, prior) => area + intersectionArea(bounds, prior),
+    overlap: nearby.reduce(
+      (area, prior) => area + intersectionArea(bounds, prior.bounds),
       0
     ),
     distanceSquared: candidate.distanceSquared,
@@ -537,21 +571,15 @@ function compareScore(first, second) {
     first.order - second.order;
 }
 
-function overlapPairs(items) {
-  const pairs = [];
-  for (let first = 0; first < items.length; first += 1) {
-    for (let second = first + 1; second < items.length; second += 1) {
-      if (
-        intersectionArea(
-          items[first].collisionBounds,
-          items[second].collisionBounds
-        ) > 0
-      ) {
-        pairs.push([items[first].id, items[second].id]);
-      }
-    }
-  }
-  return pairs;
+function overlapPairs(items, account) {
+  const pairs = [], index = labelBoundsIndex();
+  items.forEach((item, second) => {
+    const nearby = index.near(item.collisionBounds);
+    account(nearby.length + 1);
+    for (const first of nearby) if (intersectionArea(first.bounds, item.collisionBounds) > 0) pairs.push([first.id, second]);
+    index.add(item.collisionBounds);
+  });
+  return pairs.sort((a, b) => a[0] - b[0] || a[1] - b[1]).map(pair => pair.map(id => items[id].id));
 }
 
 export function resolveLabelLayout({ items, bounds, ...options } = {}, profile) {
@@ -563,15 +591,14 @@ export function resolveLabelLayout({ items, bounds, ...options } = {}, profile) 
   const ids = new Set();
   for (const item of items) validateItem(item, ids);
   const candidates = enumerateLabelOffsets(policy);
-  validateWorkLimit(
-    items.length ** 2 * candidates.length,
-    "Label layout work"
-  );
+  let work = 0;
+  const account = amount => validateWorkLimit(work += amount, "Label layout work");
+  account(items.length);
   const base = items.map(item => ({
     id: item.id,
     collisionBounds: expanded(textBounds(item, undefined, profile), policy.padding)
   }));
-  const placed = [];
+  const placed = labelBoundsIndex();
   const resolved = [];
   for (const item of items) {
     let best;
@@ -583,7 +610,8 @@ export function resolveLabelLayout({ items, bounds, ...options } = {}, profile) 
         bounds,
         placed,
         candidate,
-        order
+        order,
+        account
       );
       if (best === undefined || compareScore(score, best.score) < 0) {
         best = { candidate, bounds: boundsAtCandidate, collisionBounds, score };
@@ -602,11 +630,11 @@ export function resolveLabelLayout({ items, bounds, ...options } = {}, profile) 
       bounds: best.bounds,
       collisionBounds: best.collisionBounds
     };
-    placed.push(resolvedItem.collisionBounds);
+    placed.add(resolvedItem.collisionBounds);
     resolved.push(resolvedItem);
   }
-  const beforePairs = overlapPairs(base);
-  const afterPairs = overlapPairs(resolved);
+  const beforePairs = overlapPairs(base, account);
+  const afterPairs = overlapPairs(resolved, account);
   const outside = resolved
     .filter(item => overflow(item.collisionBounds, bounds) > 0)
     .map(item => item.id);

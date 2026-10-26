@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "legend_and_title",
   "summary": "Edits one legend's title text and title style.",
-  "signature": "editLegendTitle(options: EditLegendTitleOptions): ChartProgram;",
+  "signature": "editLegendTitle(options: TargetedOptions<EditLegendTitleOptions>): ChartProgram;",
   "intents": [
     "edit legend title",
     "edit",
@@ -67,7 +67,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "channel",

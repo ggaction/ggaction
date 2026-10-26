@@ -94,11 +94,13 @@ function planChannelLegendTransition(program, scale, nextType, channel) {
   } catch (error) {
     throw new Error(`${channel} legend transition has incompatible layout or style: ${error.message}`);
   }
-  return { args, channel, titleVisible: stored.titleVisible !== false, inferredOffset: stored.inferredOffset, blockOverride };
+  return { args, channel, visibility: stored.visibility, titleVisible: stored.titleVisible !== false, inferredOffset: stored.inferredOffset, blockOverride };
 }
 
-export function planColorLegendTransitions(program, scale, nextType) {
+export function planColorLegendTransitions(program, scale, nextType, { channel: requestedChannel, target } = {}) {
   return ["color", "stroke"].flatMap(channel => {
+    if (requestedChannel !== undefined && channel !== requestedChannel) return [];
+    if (target !== undefined && program.guideConfigs.legend?.[family(channel, scale.type)]?.target !== target) return [];
     const plan = planChannelLegendTransition(program, scale, nextType, channel);
     return plan === undefined ? [] : [plan];
   });
@@ -114,12 +116,19 @@ export function applyColorLegendTransition(program, plan) {
   if (!plan.titleVisible) {
     next = next.editLegend({ target: plan.args.target, title: false });
   }
+  if (plan.visibility !== undefined) {
+    const { all, labels, titleStyle } = plan.visibility;
+    next = next.editLegend({ target: plan.args.target, channel: plan.channel,
+      ...(all === undefined ? {} : { visible: all }),
+      ...(labels === undefined ? {} : { labels: { visible: labels } }),
+      ...(titleStyle === undefined ? {} : { titleStyle: { visible: titleStyle } }) });
+  }
   if (plan.blockOverride === undefined) return next;
   const descriptor = resolveLegendBlock(next, {
     target: plan.args.target,
     channel: plan.channel
   }, `${plan.channel} legend transition`);
-  validateLegendBlockOverride(descriptor, plan.blockOverride);
+  validateLegendBlockOverride(descriptor, plan.blockOverride, next.resolvedScales[descriptor.scaleIds[0]]?.type);
   next = next._withLegendConfig(descriptor.kind, {
     ...descriptor.config,
     blockOverrides: { [descriptor.key]: plan.blockOverride }
@@ -174,7 +183,7 @@ export function planLegendBlockTransitions(program, target, plans, position, spa
     const descriptor = nextDescriptors[index];
     const incoming = oldDescriptors.filter(old => intersects(old, descriptor));
     let override;
-    if (["size-shape","color-size"].includes(descriptor.config.combine) && incoming.length > 1) {
+    if (["size-shape","color-size","color-size-shape"].includes(descriptor.config.combine) && incoming.length > 1) {
       const positions = incoming.map(old=>old.config.blockOverrides?.[old.key]?.position);
       if (position === undefined && !positions.every(value=>value===positions[0])) transitionError(target, incoming, descriptor, "position");
       override = position === undefined && positions[0] !== undefined ? {position: positions[0]} : undefined;
@@ -186,7 +195,7 @@ export function planLegendBlockTransitions(program, target, plans, position, spa
     } else if (incoming.length === 1) {
       const old = incoming[0];
       override = old.config.blockOverrides?.[old.key];
-      if (["size-shape","color-size"].includes(incoming[0].config.combine) && override !== undefined) {
+      if (["size-shape","color-size","color-size-shape"].includes(incoming[0].config.combine) && override !== undefined) {
         const {title: _title, ...rest} = override; override = Object.keys(rest).length ? rest : undefined;
       }
       if(old.config.combine==='color-size'&&descriptor.kind==='gradient'&&override!==undefined){
@@ -218,7 +227,7 @@ export function planLegendBlockTransitions(program, target, plans, position, spa
       }
       override = overrides[0];
     }
-    if (override !== undefined) validateLegendBlockOverride(descriptor, override);
+    if (override !== undefined) validateLegendBlockOverride(descriptor, override, program.resolvedScales[descriptor.scaleIds[0]]?.type);
     const config = withoutBlockOverrides(plan.config);
     for (const key of LEGEND_SPACING_KEYS) {
       let value=config[key];

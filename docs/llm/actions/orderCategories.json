@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "encodings",
   "summary": "Assign explicit or computed semantic order to a nominal/ordinal Cartesian x/y or Polar theta position.",
-  "signature": "orderCategories(options: OrderCategoriesOptions): ChartProgram;",
+  "signature": "orderCategories(options: TargetedOptions<OrderCategoriesOptions>): ChartProgram;",
   "intents": [
     "order categories",
     "order",
@@ -58,7 +58,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "channel",

@@ -1,3 +1,6 @@
+import { normalizeLegendOverflow, validateLegendOverflow } from "../../../../grammar/legendOverflow.js";
+export { normalizeLegendOverflow } from "../../../../grammar/legendOverflow.js";
+import { validateTextAlignment } from "../../../../core/validation.js";
 import{normalizeLegendClipHeight}from"../../../../grammar/legendClip.js";
 import {normalizeLegendSpacing,validateLegendSpacing} from "../../../../grammar/legendSpacing.js";
 import { normalizeLegendBorderDash } from "../../../../grammar/legendBorder.js";
@@ -44,21 +47,10 @@ const TEXT_OPTIONS = Object.freeze([
   "color",
   "fontSize",
   "fontFamily",
-  "fontWeight",
+  "fontWeight", "align",
   "format"
 ]);
 
-export function normalizeLegendOverflow(value) {
-  if (value === undefined || value === false) return value;
-  validateObject(value, ["maxItems", "summary"], "Legend overflow");
-  if (!Number.isInteger(value.maxItems) || value.maxItems < 1) {
-    throw new RangeError("Legend overflow.maxItems must be a positive integer.");
-  }
-  if (value.summary !== undefined && value.summary !== "ellipsis-count") {
-    throw new Error("Legend overflow.summary must be ellipsis-count.");
-  }
-  return { maxItems: value.maxItems, summary: "ellipsis-count" };
-}
 
 const BORDER_OPTIONS = Object.freeze([
   "color",
@@ -187,6 +179,7 @@ export function normalizeOptions(args, kind, { internalSymbol = false } = {}) {
   if (!["top", "left"].includes(titlePosition)) {
     throw new Error(`Unsupported legend titlePosition "${titlePosition}".`);
   }
+  validateTextAlignment(labels, "Legend labels");
   nonNegative(labels.offset, "Legend label offset");
   nonEmptyString(labels.color, "Legend label color");
   positive(labels.fontSize, "Legend label fontSize");
@@ -198,7 +191,9 @@ export function normalizeOptions(args, kind, { internalSymbol = false } = {}) {
   validateFontWeight(titleStyle.fontWeight, "Legend title fontWeight");
   positive(itemGap, "Legend itemGap");
 
-  const overflow = normalizeLegendOverflow(args.overflow);
+  const overflow = normalizeLegendOverflow(args.overflow, { summarySymbol: true });
+  const symbol = normalizeRecipe(args.symbol, kind, { internal: internalSymbol });
+  validateLegendOverflow(kind, { overflow, symbol });
   return {
     ...(args.clipHeight===undefined?{}:{clipHeight:normalizeLegendClipHeight(args.clipHeight)}),
     ...normalizeLegendSpacing(args),
@@ -212,7 +207,7 @@ export function normalizeOptions(args, kind, { internalSymbol = false } = {}) {
     offset,
     titlePosition,
     title: args.title,
-    symbol: normalizeRecipe(args.symbol, kind, { internal: internalSymbol }),
+    symbol,
     labels,
     titleStyle,
     itemGap,

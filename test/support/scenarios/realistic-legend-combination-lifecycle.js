@@ -6,7 +6,7 @@ export function appendLegendCombinationLifecycle(program) {
  const rows=program.semanticSpec.datasets.find(data=>data.id==='analysisRows').values;
  if(rows.length<2) return program;
  let next=program;
- for(const combine of ['size-shape','color-size']) {
+ for(const combine of ['size-shape','color-size','color-size-shape']) {
   const id=`direct-legend-${combine}`;
   next=next.createPointMark({id,data:'analysisRows'})
    .encodeX({target:id,field:'rank',scale:{id:`${id}-x`}})
@@ -20,11 +20,19 @@ export function appendLegendCombinationLifecycle(program) {
    next=next.encodeColor({target:id,field:'rank',fieldType:'quantitative',scale:{id:`${id}-color`,domain,range:['#17365d','#8fbbe8']}})
     .encodeSize({target:id,field:'rank',scale:{id:`${id}-size`,domain,range:[25,100]}});
   }
+  let values;
+  if(combine==='color-size-shape') {
+   const low=Math.min(...rows.map(row=>row.rank)),high=Math.max(...rows.map(row=>row.rank)),cut=(low+high)/2;
+   next=next.editColorScale({target:id,type:'threshold',domain:[cut],range:['#17365d','#8fbbe8']})
+    .editSizeScale({target:id,type:'threshold',domain:[cut],range:[25,100]})
+    .encodeShape({target:id,field:'rank',scale:{id:`${id}-shape`,domain:[low,cut],range:['circle','diamond'],unknown:'circle'}});
+   values=[low,cut];
+  }
   const symbol=combine==='size-shape'?{layers:[{type:'line',opacity:0},{type:'point',opacity:0.7},{type:'swatch',opacity:1}]}:{opacity:0.7};
-  const options={target:id,combine,clipHeight:8,symbol,border:{strokeDash:[4,2,6,1]}};
+  const options={target:id,combine,...(values?{values}:{}),clipHeight:8,symbol,border:{strokeDash:[4,2,6,1]}};
   next=next.createGuides({axes:false,grid:false,legend:options})
    .editLegend({target:id,combine:'separate'})
-   .editLegend({target:id,combine})
+   .editLegend({target:id,combine,...(values?{values}:{})})
    .removeLegend({target:id})
    .createLegend(options)
    .editLegend({target:id,symbol})
@@ -67,6 +75,9 @@ function appendSelectedLegendChannels(program) {
   .encodeStroke({target:rule,field:'category',scale:{id:`${rule}-stroke`}})
   .encodeStrokeDash({target:rule,field:'category',scale:{id:`${rule}-dash`}})
   .encodeStrokeWidth({target:rule,field:'rank',fieldType:'quantitative',scale:{id:`${rule}-width`}});
+ const summary={target:id,channels:['color'],overflow:{maxItems:2,summarySymbol:'first-hidden'},symbol:{layers:[{type:'line',length:12,lineWidth:1}]}};
+ next=next.createGuides({axes:false,grid:false,legend:summary}).removeLegend({target:id})
+  .createLegend(summary).editLegend({target:id,overflow:summary.overflow}).removeLegend({target:id});
  for(const channel of ['color','stroke','strokeDash','strokeWidth','shape','size','opacity']) {
   const target=channel==='strokeDash'||channel==='strokeWidth'?rule:id;
   next=next.createGuides({axes:false,grid:false,legend:{target,channels:[channel],combine:'separate',border:{strokeDash:[4,2,6,1]}}})

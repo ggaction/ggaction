@@ -30,6 +30,25 @@ semantic 상태 → 명시적 materialization → concrete graphicSpec 순서다
 현재 한도는 package/consumer/search 검사의 상수와 현재 실행 결과가 기준이다.
 아래 설명에 남은 과거 checkpoint 수치를 현재 제한으로 해석하지 않는다.
 
+## 범례 항목 이동 소유권
+
+범례 항목의 독립 이동 의도는 기존 `guideConfigs.legend`가 소유하고,
+`grammar/legendItemsOffset.js`가 검증한다. `materialization/legendItemsOffset.js`는
+guide 배치 전에 이동 전 concrete 상태를 복구하고, 최종 배치 뒤 항목 paint에만 이동을
+적용한다. 복구용 `materializationConfigs.legendItemsPaint`는 파생 상태이며,
+공유 범례의 배치 기준과 최종 occupied bounds를 분리하여 제목 위치를 보존한다.
+Renderer는 기존 concrete graphics만 소비한다. 정확한 공개 계약은
+[Legend and title](contract/current/LEGEND_AND_TITLE.md)이 소유한다.
+독립 grammar/materialization module 2개에 맞춰 package entry 한도만 647에서 649로
+변경하고 byte 한도는 유지한다.
+
+## 범례 요약 행 정책
+
+`grammar/legendOverflow.js`가 categorical/size authoring과 저장 복원의 overflow 검증을
+공유한다. 기존 categorical materializer가 표시 domain view에만 선택적 summary sample을
+포함하며 원래 scale/data/domain을 유지한다. Renderer와 저장 상태 소유권은 바뀌지 않는다.
+정확한 공개 계약은 [Legend and title](contract/current/LEGEND_AND_TITLE.md)이 소유한다.
+
 ## Content facet 배치 소유권
 
 `core/facetAxisPolicy.js`가 생성·편집·저장 복원에서 공유하는 channel 정책을 검증한다.
@@ -471,8 +490,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 454,000 bytes |
-| `ggaction/basic` | 233,000 bytes |
+| `ggaction` | 495,000 bytes |
+| `ggaction/basic` | 255,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 
@@ -480,6 +499,17 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 `scripts/browser-bundle-size.js`이고 package consumer와 documentation contract가 같은 값을 검증한다.
 Gzip 크기는 같은 minified bytes라도 Node가 포함한 zlib 버전에 따라 달라질 수 있으므로 지원하는
 Node 20·22·24 matrix의 최댓값을 포함해야 한다.
+
+2026-10-25 옵션 감사 수정의 동일 staged-package/Vite 비교에서 기존 HEAD
+`aa8f1e28`는 Full476,183/Basic241,647gzip bytes로 이전 상한을 이미 초과했다.
+최종 path-layer 색상·Area opacity 수정까지 포함한 Node 23.5.0 실측은
+Full 481,383 / Basic 244,242 bytes이며 기준 commit 대비 순증은 5,200 / 2,595 bytes다.
+추가 module은 Full의 Area 정렬 정책·complete-case 데이터 소유자, Basic의 Area
+정렬 정책이며 Node/MCP/knowledge 경계 유입은 없다. 같은 minified 결과를
+Node 20.20.2·22.23.4·24.22.1의 zlib로 압축한 최댓값 481,548 / 244,737 bytes를
+기준으로 최소 1,000 bytes 단위 상한 495,000 / 255,000을 적용한다.
+SVG는 Node 23에서 7,566 bytes, 지원 Node matrix에서 7,578 bytes로
+25,000 상한을 유지한다. 이전 상한을 통과했다고 보고하지 않는다.
 
 > 과거 checkpoint 수치 포함. 현재 한도는 실행 검사에서 확인한다.
 
@@ -638,6 +668,7 @@ Automatic statistical parameter의 요청과 계산값은 서로 다른 provenan
 action은 기존 instance를 바꾸지 않고 새로운 instance를 반환한다.
 
 Named dataset, layer, scale, coordinate의 exact ID lookup은 `selectors/`만 소유한다.
+Independent layer/adjacent creation plans live in `actions/composition/layerPlan.js` and `materialization/adjacentSource.js`; pure role inference lives in `grammar/plotComposition.js`, and read-only original field/measurement lookup lives in `selectors/plotComposition.js`.
 `selectors/graphicCapacity.js`는 semantic point owner와 retained child namespace identity를
 추적한다. namespace encoding도 이 순수 selector owner가 소유하며 composition materializer는
 이를 재사용한다. 수치 한도 검증은 core validation에 남고 persistence는 materializer를 호출하지 않는다.
@@ -2705,3 +2736,48 @@ Whole-axis edit도 기존 prospective planner를 연속된 wrapped leaf edit 구
 한도는 모두 유지한다. 설치한 package의 whole-axis 이동·복원·persistence·실제 충돌 거절을
 기존 공개 API consumer case에서 함께 검증한다. 이 로컬 측정은 새 registry 배포나 Node24
 전체 검증을 대신하지 않는다.
+
+### Linked layers and explicitly targeted composition edits
+
+결과 추종 overlay는 `layer.derivedBindings.overlay`에 독립 source mark 참조와 정책을 보유한다.
+source mark materialization 및 dependency planner가 명시적으로 overlay materializer를 실행한다.
+`layer.source`의 소유 자식 관계와 혼용하지 않는다. Renderer는 기존 line/point graphic만 소비한다.
+
+Concat의 `compositionSpec.share`와 `align: "plot"`은 부모가 소유한다. canonical child의 authored
+scale/domain/Canvas는 보존하고 부모 materializer가 공유 domain과 정렬된 render snapshot을 파생한다.
+source child/spec identity WeakMap은 최적화일 뿐 영속 상태나 전역 자동 compiler가 아니다.
+Concat 범례 수집은 `compositionSpec.legends`가 소유하고 materializer의 단일 collection plan이
+visible block, canonical edit target, 제거할 snapshot root와 parent frame을 함께 결정한다.
+별개 의미의 범례는 합치지 않고 바깥 lane에 배치하며, 공유 color의 호환 설명만 중복 제거한다.
+Scoped dispatcher와 앱 direct editor는 같은 plan을 사용해 숨겨진 child 사본의 공간 검사를 제외한다.
+기본값·옵션·복원 계약은 COMPOSITION.md가 소유한다.
+Full action wrapper의 명시적 target selector dispatcher는 같은 native action을 immutable 후보들에
+적용한 다음 변경된 조상 snapshots를 한 번 갱신한다. 사용자가 요청한 target dispatch에만 동작한다.
+
+
+## Immutable composition snapshot transfer
+
+2026-10-25 전체 감사 개선·필요 API 사전 승인에 따라, composition/facet materializer는 이미 materialize된 child snapshot을 내부 concrete transfer에서 한 번의 immutable map copy로 붙인다. Domain materialization action은 계속 trace에 남으며 semantic compiler를 추가하지 않는다. Named subtree cleanup은 공개 editGraphics의 atomic ID-array removal을 사용한다. 의미·좌표·그리기 순서·snapshot namespace는 그대로이며 renderer는 여전히 graphicSpec만 소비한다. 개별 property의 무의미한 재입력과 facet guide별 전체 map 복사를 제거한다.
+
+## Guide 표시 상태 (2026-10-25)
+
+사용자가 전체·부분 guide `visible` API 제안을 “이 API로 진행”으로 승인했다.
+축·범례의 `guideConfigs` visibility와 grid.visible이 표시 의도를 보존한다.
+기존 guide layout transaction은 상대 anchor 계산 전에 이전 visibility paint를 복원하고,
+완료된 guide 그래픽에만 opacity mask를 적용한다. 원래 opacity는 materializationConfigs의
+guideVisibilityPaint에 guide owner/item ID로 보존하여 임의 색·선 굵기를 손실하지 않는다.
+Parallel은 기존 차원별 materializer에서 동일 intent를 item paint로 해결한다.
+Renderer는 변경하지 않고 완성된 graphicSpec만 소비한다. 표시 토글은 공간을 재배치하지 않는다.
+공개 계약과 검증은 current AXES/GRID/LEGEND_AND_TITLE 및 guide-visibility.test.js가 소유한다.
+새 공개 옵션을 유지한 editLegend compact card의 실측 4446 bytes를 위해 해당 단일 한도만
+4400에서4446으로 조정했다. 기존 한도를 통과했다고 보고하지 않는다.
+새 materialization module 1개로 package entry 한도를646에서647로만 늘렸다.
+패키지 크기 한도는 변경하지 않았고 package artifact 검사를 통과했다.
+
+
+### 복합 sample 범례의 기존 owner 확장
+
+`grammar/colorSizeLegend.js`가 continuous 두 채널과 interval hue/size + ordinal shape의
+binding/대표값 validation을 소유한다. 기존 `legend.colorSize` owner에 선택적 shape binding과
+hue channel을 기록하고, `legendBlocks`/facet/encoding removal은 같은 channel/scale descriptor를
+사용한다. Glyph는 기존 Point materializer와 concrete bounds를 공유하며 renderer 경계는 변하지 않는다.

@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "encodings",
   "summary": "Assign exactly one field, constant value, or semantic content to a text mark.",
-  "signature": "encodeText(options: TextEncodingOptions): ChartProgram;",
+  "signature": "encodeText(options: TargetedOptions<TextEncodingOptions>): ChartProgram;",
   "intents": [
     "encode text",
     "encode",
@@ -60,7 +60,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "format",

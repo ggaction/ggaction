@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "grid",
   "summary": "Create inferred horizontal and/or vertical Cartesian grid lines behind related marks, or infer the Polar grid families backed by stored theta/radius encodings.",
-  "signature": "createGrid(options?: CreateGridOptions): ChartProgram;",
+  "signature": "createGrid(options?: TargetedOptions<CreateGridOptions>): ChartProgram;",
   "intents": [
     "create grid",
     "create",
@@ -22,7 +22,9 @@
     "owns": [
       "grid"
     ],
-    "idOptions": []
+    "idOptions": [
+      "target"
+    ]
   },
   "authoringRoles": [
     "H3"
@@ -44,6 +46,10 @@
   },
   "units": [],
   "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
     {
       "input": "omitted optional options",
       "strategy": "documented-default"
@@ -76,10 +82,15 @@
       "name": "radial",
       "required": false,
       "type": "boolean | PolarGridOptions | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "createGrid({ horizontal?, vertical?, theta?, radial? })"
+    "createGrid({ target?, horizontal?, vertical?, theta?, radial? })"
   ],
   "snippet": "program.createGrid({})",
   "errors": [],

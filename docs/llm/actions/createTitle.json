@@ -3,8 +3,8 @@
   "name": "createTitle",
   "layer": "user-facing",
   "domain": "legend_and_title",
-  "summary": "Create a chart title and optional subtitle.",
-  "signature": "createTitle(options: TitleOptions): ChartProgram;",
+  "summary": "titleStyle.align and subtitleStyle.align accept \"left\" | \"center\" | \"right\" independently inside the measured title block, including rotated edge titles.",
+  "signature": "createTitle(options: TargetedOptions<TitleOptions>): ChartProgram;",
   "intents": [
     "create title",
     "create",
@@ -20,7 +20,9 @@
     "owns": [
       "chart title"
     ],
-    "idOptions": []
+    "idOptions": [
+      "target"
+    ]
   },
   "authoringRoles": [
     "H3"
@@ -55,6 +57,10 @@
     }
   ],
   "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
     {
       "input": "omitted optional options",
       "strategy": "documented-default"
@@ -130,10 +136,15 @@
       "name": "subtitleStyle",
       "required": false,
       "type": "TitleTextStyleOptions | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "createTitle({ text, subtitle?, position?, align?, offset?, alongOffset?, gap?, maxWidth? })"
+    "createTitle({ text, target?, subtitle?, position?, align?, offset?, alongOffset?, gap? })"
   ],
   "snippet": "program.createTitle({ text: \"Chart title\" })",
   "errors": [],

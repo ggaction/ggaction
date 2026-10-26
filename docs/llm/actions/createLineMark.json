@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "marks",
   "summary": "Create a semantic line mark and empty path collection.",
-  "signature": "createLineMark(options?: StrokeStyleDetails & { clip?: boolean; missing?: \"error\" | \"break\"; id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;",
+  "signature": "createLineMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; missing?: \"error\" | \"break\"; id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }>): ChartProgram;",
   "intents": [
     "create line mark",
     "create",
@@ -24,7 +24,8 @@
     ],
     "idOptions": [
       "id",
-      "data"
+      "data",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -57,6 +58,10 @@
   "inference": [
     {
       "input": "data",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -136,10 +141,15 @@
       "name": "closed",
       "required": false,
       "type": "boolean | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "createLineMark({ id?, data?, lineCap?, lineJoin?, miterLimit?, clip?, missing?, strokeWidth? })"
+    "createLineMark({ id?, data?, target?, lineCap?, lineJoin?, miterLimit?, clip?, missing? })"
   ],
   "snippet": "program.createLineMark({})",
   "errors": [],

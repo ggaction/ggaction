@@ -39,6 +39,9 @@ wider than the plot if it fits the declared Canvas. It retains every sample,
 font, symbol and block's own item direction. An in-plot group must fit entirely
 inside its plot inset. Insufficient space produces an error; no content is
 hidden, shrunk, wrapped into an unrequested row or moved to another edge.
+An explicitly positioned group also keeps this rule when the Canvas uses inner
+plot sizing. Allocate more space with a separate `editCanvas` call before
+retrying; a failed group edit leaves both the placement and Canvas unchanged.
 
 The new fields opt into whole-target grouping. Omit `target` only when one
 eligible target is inferable. An established group supplies placement to later
@@ -242,6 +245,23 @@ the final content. In categorical-size legends, shared label/title-style edits
 merge only the supplied leaves into each block's effective style; changing a
 title or count preserves independent size styles. Other targets remain intact.
 
+## Edit every existing legend together
+
+Use `program.editLegend({ target: "plot", channel: "all", position: "left" })`
+to move every existing legend block for that mark together. This explicit selection
+clears individual position and along-edge overrides before arranging the group.
+Omitting `channel` continues to preserve those overrides. No legend is added,
+removed, or combined; `channels`, `combine`, and `representation` cannot accompany
+`channel: "all"`.
+
+Shared `labels`, `titleStyle`, and visibility edits affect every selected block.
+Omitted appearance leaves, samples, and titles remain unchanged. `itemGap` adjusts
+blocks containing discrete entries and leaves continuous gradient strips intact.
+Other appearance options must be supported by every selected block. Placement
+supports the existing group options; a new group uses a row at the top/bottom or
+a column elsewhere. Existing group layout is retained unless explicitly changed.
+The selection also works on facet parent shared legends and scoped chart targets.
+
 ## Editing one legend block
 
 A block-local `position` accepts the eight named anchors. `"inherit"` removes
@@ -413,6 +433,16 @@ uses the same revision rules and also preserves a hidden legend title.
 Retained blocks are rematerialized when their layout depended on the removed
 content. `removeLegend` preserves mark encodings, scales, and unrelated blocks.
 A missing channel or an empty, duplicate, or unknown channel list is an error.
+
+Use `removeLegend({ target: "points", channels: ["color"], suppress: true })`
+to keep deleted channels out of subsequent `createGuides()` calls, including
+explicit automatic channel requests. The default `suppress: false` preserves
+ordinary removal and automatic regeneration. Other channels can still gain guides.
+Explicit `createLegend({ target: "points", channels: ["color"] })` restores the
+removed channel and clears its suppression. Suppression survives serialization,
+Canvas and encoding edits, facet source replay, and explicit composition child edits.
+For an existing facet, restore through `editFacetSource` with a `createLegend`
+action; ordinary post-facet `createLegend` remains unit-only.
 
 Canvas changes and relevant encoding actions explicitly rematerialize the
 legend from the latest ordinal domains and ranges. The renderer still reads

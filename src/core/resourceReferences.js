@@ -13,7 +13,7 @@ const DATA_VALUE_KEYS = new Set([
 const DATA_SOURCE_CONFIGS = new Set([
   "boxPlot", "density", "ecdfPlot", "endpointPlot", "errorBand", "errorBar",
   "gradientPlot", "horizon", "intervalPlot", "markFilter", "raincloudPlot",
-  "regression", "violinPlot"
+  "regression", "violinPlot", "radarPlot"
 ]);
 const MARK_ID_KEYS = new Set([
   "bandId", "bodyId", "centerId", "connectorId", "intervalId", "lineId",
@@ -98,7 +98,7 @@ export function collectSemanticScaleReferences(program) {
     }
   }
   collectKnownKeys(program.semanticSpec.guides, [], (key, value, path) => {
-    if (["scale", "colorScale", "sizeScale"].includes(key)) {
+    if (["scale", "colorScale", "sizeScale", "shapeScale"].includes(key)) {
       append(references, reference(
         "scale", value, "semanticGuide", "guides", path
       ));
@@ -133,6 +133,10 @@ export function collectMarkConfigReferences(program) {
   for (const layer of program.semanticSpec.layers) {
     append(references, reference(
       "mark", layer.source, "layer", layer.id, ["source"]
+    ));
+    append(references, reference(
+      "mark", layer.derivedBindings?.overlay?.source, "layer", layer.id,
+      ["derivedBindings", "overlay", "source"]
     ));
   }
   for (const [ownerId, config] of Object.entries(program.markConfigs)) {
@@ -204,13 +208,16 @@ export function collectGuideConfigReferences(program) {
   for (const target of Object.keys(program.guideConfigs?.legendGroups ?? {})) {
     append(references, reference("mark", target, "legend", target, ["legendGroups", target]));
   }
+  for (const target of Object.keys(program.guideConfigs?.suppressedLegends ?? {})) {
+    append(references, reference("mark", target, "legend", target, ["suppressedLegends", target]));
+  }
   for (const [family, configs] of Object.entries(program.guideConfigs ?? {})) {
     collectKnownKeys(configs, [], (key, value, path, parentPath) => {
       const ownerId = parentPath.length === 0 ? family : parentPath.join(".");
       const relativePath = parentPath.length === 0
         ? path
         : path.slice(parentPath.length);
-      if (["scale", "colorScale", "sizeScale"].includes(key)) {
+      if (["scale", "colorScale", "sizeScale", "shapeScale"].includes(key)) {
         append(references, reference(
           "scale", value, family, ownerId, relativePath
         ));
@@ -240,6 +247,12 @@ export function collectSelectionReferences(program) {
     append(references, reference(
       "mark", config.target, "selection", id, ["target"]
     ));
+    append(references, reference(
+      "selection", config.sourceSelection, "selection", id, ["sourceSelection"]
+    ));
+    append(references, reference(
+      "data", config.selector?.rows?.data, "selection", id, ["selector", "rows", "data"]
+    ));
   }
   for (const [id, config] of Object.entries(
     program.materializationConfigs.highlights ?? {}
@@ -249,6 +262,9 @@ export function collectSelectionReferences(program) {
     ));
     append(references, reference(
       "selection", config.selection, "highlight", id, ["selection"]
+    ));
+    append(references, reference(
+      "selection", config.groupSelection, "highlight", id, ["groupSelection"]
     ));
   }
   return freezeOwned(references);

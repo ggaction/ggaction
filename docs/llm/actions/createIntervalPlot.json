@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "charts",
   "summary": "Create center points and matching statistical or explicit intervals from one shared dataset, coordinate, and pair of scales.",
-  "signature": "createIntervalPlot(options: CreateIntervalPlotOptions): ChartProgram;",
+  "signature": "createIntervalPlot(options: TargetedOptions<CreateIntervalPlotOptions>): ChartProgram;",
   "intents": [
     "create interval plot",
     "create",
@@ -25,7 +25,8 @@
     "idOptions": [
       "id",
       "data",
-      "coordinate"
+      "coordinate",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -52,6 +53,10 @@
     },
     {
       "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -126,6 +131,11 @@
       "name": "y",
       "required": true,
       "type": "string | ErrorBarIntervalChannel | ErrorBarPositionChannel"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [

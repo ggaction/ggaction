@@ -178,7 +178,10 @@ function buildCoverageProjection(inventory) {
     }))
   );
   const relevantOptions = inventory.optionPaths.filter(option =>
-    option.required && REALISTIC_GUIDE_SCALE_EXPECTED_ACTIONS.includes(option.action)
+    option.required && REALISTIC_GUIDE_SCALE_EXPECTED_ACTIONS.includes(option.action) &&
+    // Resource targets remain covered here; generic child routing has a separate real-data matrix.
+    !option.path.startsWith("target.") && (option.path !== "target" ||
+      /Legend|[XY]Axis/u.test(option.action) && !["createXAxis", "createYAxis"].includes(option.action))
   );
   const facadeScaleTypeOptions = inventory.optionPaths.filter(option =>
     option.required && /(?:^|\.)scale\.type$|Scale\.type$/u.test(option.path)

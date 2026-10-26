@@ -4,6 +4,7 @@ import { isSourceOwnedText } from "../../grammar/text.js";
 import { closedAction } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
 
+import { findSemanticScale } from "../../selectors/scales.js";
 import { findDataset } from "../../selectors/datasets.js";
 import { findLayer } from "../../selectors/layers.js";
 import { applyDetachedScaleRematerialization } from "../../materialization/dependencies.js";
@@ -113,6 +114,13 @@ function ownedDerivedData(program, ids) {
       candidates.add(dataset.id);
     }
   }
+  // Release leaf transforms before their complete-case input chain.
+  for (const id of ids) {
+    const config = program.markConfigs[id] ?? {};
+    for (const data of config.alignedPositionData ?? []) candidates.add(data);
+    for (const data of config.raincloudPlot?.ownedData ?? config.endpointPlot?.ownedData ?? []) candidates.add(data);
+    for (const data of [...(config.radarPlot?.ownedData ?? [])].reverse()) candidates.add(data);
+  }
   return candidates;
 }
 
@@ -165,6 +173,7 @@ export function removeOwnedMark(program, id, partial = false) {
   }
   return next
     ._withoutMaterializationConfig(["guides", "legendGroups", id])
+    ._withoutMaterializationConfig(["guides", "suppressedLegends", id])
     ._withoutMaterializationConfig(["marks", id])
     ._withContext({
       ...(program.context.currentMark === id ? { currentMark: undefined } : {}),
@@ -222,6 +231,7 @@ export const removeMark = /* @__PURE__ */ closedAction(
     }
     const previousLayers = ids.map(id => findLayer(this, id));
     const derived = ownedDerivedData(this, ids);
+    const ownedScales = new Set(ids.map(id => this.markConfigs[id]?.seriesOffsetScale).filter(Boolean));
     const positionScales = usedPositionScales(this, ids);
     let next = this;
 
@@ -264,6 +274,7 @@ export const removeMark = /* @__PURE__ */ closedAction(
         next = next.editGraphics({ target: id, remove: true });
       }
       next = next._withoutMaterializationConfig(["guides", "legendGroups", id]);
+      next = next._withoutMaterializationConfig(["guides", "suppressedLegends", id]);
       next = next._withoutMaterializationConfig(["marks", id]);
       next = next._withoutMaterializationConfig(["jitters", id]);
       next = next._withoutMaterializationConfig(["pointPacking", id]);
@@ -277,6 +288,11 @@ export const removeMark = /* @__PURE__ */ closedAction(
       }
     }
     next = applyDetachedScaleRematerialization(next, previousLayers);
+    for (const id of ownedScales) {
+      const references = collectResourceReferences(next, { kind: "scale", id })
+        .filter(reference => reference.strength !== "context");
+      if (references.length === 0 && findSemanticScale(next, id) !== undefined) next = next.removeScale({ id });
+    }
     return next._withContext({
       ...(ids.includes(this.context.currentMark) ? { currentMark: undefined } : {}),
       ...(selectionCleanup.selectionIds.includes(this.context.currentSelection)

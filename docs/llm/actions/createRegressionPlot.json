@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "charts",
   "summary": "Create a scatter plot with fitted regression data, a line, and optional interval bands.",
-  "signature": "createRegressionPlot(options: CreateRegressionPlotOptions): ChartProgram;",
+  "signature": "createRegressionPlot(options: TargetedOptions<CreateRegressionPlotOptions>): ChartProgram;",
   "intents": [
     "create regression plot",
     "create",
@@ -25,7 +25,8 @@
     "idOptions": [
       "id",
       "data",
-      "coordinate"
+      "coordinate",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -50,6 +51,10 @@
     },
     {
       "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -113,7 +118,7 @@
     {
       "name": "guides",
       "required": false,
-      "type": "false | CartesianGuideOptions | undefined"
+      "type": "false | ColorMappedPointGuideOptions | undefined"
     },
     {
       "name": "method",
@@ -189,6 +194,11 @@
       "name": "band",
       "required": false,
       "type": "false | RegressionBandOptions | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [

@@ -115,3 +115,24 @@ test("rejects incomplete encodings, invalid values, and one-point series", () =>
     /at least two aggregate points/
   );
 });
+
+test("aggregates exact numeric positions per series without implicit bins in either orientation", () => {
+  const values = [
+    {year: 2010, value: 6, origin: 'A'}, {year: 2000, value: 1, origin: 'A'},
+    {year: 2000, value: 3, origin: 'A'}, {year: 2010, value: 10, origin: 'B'},
+    {year: 2000, value: 4, origin: 'B'}, {year: 2000, value: 6, origin: 'B'}
+  ];
+  const expected = [
+    {key:{origin:'A'},values:[{x:2000,y:2},{x:2010,y:6}]},
+    {key:{origin:'B'},values:[{x:2000,y:5},{x:2010,y:10}]}
+  ];
+  for (const horizontal of [false,true]) {
+    const position={field:'year',fieldType:'quantitative',scale:'position'};
+    const measure={field:'value',fieldType:'quantitative',aggregate:'mean',scale:'value'};
+    const layer=lineLayer({x:horizontal?measure:position,y:horizontal?position:measure,
+      color:{field:'origin',fieldType:'nominal',scale:'color'}});
+    const result=deriveLineSeries(values,layer);
+    assert.deepEqual(result.series,horizontal?expected.map(s=>({...s,values:s.values.map(v=>({x:v.y,y:v.x}))})):expected);
+    assert.equal(Object.isFrozen(result.series[0].values),true);
+  }
+});

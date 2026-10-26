@@ -1,3 +1,6 @@
+import {colorSizeChannels} from "../../../grammar/colorSizeLegend.js";
+import { splitGuideVisibility, patchGuideVisibility } from "../../../materialization/guides/visibility.js";
+import { patchLegendItemsOffset } from "../../../grammar/legendItemsOffset.js";
 import {resolveColorSizeEdit,createColorSizeLegendFromConfig} from './colorSize.js';
 import {prepareLegendSpacingEdit,patchLegendSpacing,validateLegendSpacing} from "../../../grammar/legendSpacing.js";
 import {patchLegendClipHeight, validateLegendClip} from "../../../grammar/legendClip.js";
@@ -60,9 +63,9 @@ import { LEGEND_POSITIONS } from "../../../core/vocabulary.js";
 import { planLegendBlockTransitions } from "./transition.js";
 
 const OPTIONS = Object.freeze([
-  "target", "channel", "channels", "position", "layout", "align", "direction", "columns", "offset",
+  "target", "channel", "channels", "position", "layout", "align", "direction", "columns", "offset", "alongOffset",
   "titlePosition", "title", "symbol", "labels", "titleStyle", "itemGap", "rowPadding", "titlePadding",
-  "border", "count", "values", "gradient", "representation", "order", "overflow", "blockLayout", "at", "combine", "clipHeight"
+  "border", "count", "values", "gradient", "representation", "order", "overflow", "blockLayout", "at", "combine", "clipHeight", "itemsOffset"
 ]);
 
 function mergeObject(previous, patch) {
@@ -581,8 +584,8 @@ function editLegendContent(program, target, args, positionIntent = {position: ar
   let view = removed.reduce((next, kind) => next._withoutMaterializationConfig(["guides", "legend", kind]), program);
   const colorRepresentation = requestedCombine === "color-size" && patch.representation === undefined ? undefined : patch.representation ?? (channels.includes("color") && previous.gradient?.target === target ? previous.gradient.representation : undefined);
   if (patch.representation !== undefined && !channels.includes("color")) throw new Error("Legend representation requires selected continuous color.");
-  const oldCombined = Object.values(previous).find(config=>config.target===target&&["size-shape","color-size"].includes(config.combine));
-  const pairChannels=oldCombined?.combine==='color-size'?['color','size']:['shape','size'];
+  const oldCombined = Object.values(previous).find(config=>config.target===target&&["size-shape","color-size","color-size-shape"].includes(config.combine));
+  const pairChannels=oldCombined?.combine?.startsWith('color-size')?colorSizeChannels(oldCombined):['shape','size'];
   const hasPair = pairChannels.every(channel=>channels.includes(channel));
   if (oldCombined && requestedCombine === undefined && !hasPair && channels.some(channel=>pairChannels.includes(channel))) {
     throw new Error("An edited combined legend keeps its combination; explicitly choose separate to split it.");
@@ -591,12 +594,13 @@ function editLegendContent(program, target, args, positionIntent = {position: ar
   let creation;
   if (requestedCombine === "separate" && oldCombined) {
     const pair = channels.filter(channel=>pairChannels.includes(channel));
-    const plans = [...(oldCombined.combine==='color-size'?pair.map(channel=>[channel]):[pair]), ...channels.filter(channel=>!pairChannels.includes(channel)).map(channel=>[channel])]
+    const plans = [...(oldCombined.combine.startsWith('color-size')?pair.map(channel=>[channel]):[pair]), ...channels.filter(channel=>!pairChannels.includes(channel)).map(channel=>[channel])]
       .filter(channels=>channels.length).map(channels=>resolveLegendCreationPlan(view,{target,channels}));
     creation = {steps: plans.flatMap(plan=>plan.steps),
       ...(program.guideConfigs.legendGroups?.[target] === undefined ? {} : {legendGroup:{target,config:program.guideConfigs.legendGroups[target]}})};
   } else creation = resolveLegendCreationPlan(view, { target, channels,
     ...(combine === undefined ? {} : {combine}),
+    ...(combine === "color-size-shape" ? {values: patch.values ?? oldCombined?.sampling?.values} : {}),
     ...(colorRepresentation === undefined ? {} : { representation: colorRepresentation }) }, program.semanticSpec.layers, channels);
   if (creation.legendGroup !== undefined) view = view._withMaterializationConfig(
     ["guides", "legendGroups", target], creation.legendGroup.config);
@@ -633,7 +637,17 @@ function editLegendContent(program, target, args, positionIntent = {position: ar
     ["series", "color", "stroke"].includes(plan.kind)
   );
   const size = plans.find(plan => plan.kind === "size");
-  if (patch.representation !== undefined || plans.some(plan => plan.kind === "gradient" && plan.config.representation === "symbols")) {
+  if(oldCombined?.combine==='color-size-shape'&&requestedCombine==='separate') {
+    for(const plan of plans) {
+      const shared=Object.fromEntries(['title','labels','titleStyle','position','align','direction','offset','border','itemGap','titlePosition'].map(key=>[key,oldCombined[key]]));
+      const edits={...shared,...patch};
+      if(['series','color','stroke'].includes(plan.kind)) {
+        const result=resolveCategoricalEdit(view,plan.kind,plan.config,undefined,edits,plan.order);
+        plan.config=result.config;plan.order=result.order;
+      } else if(plan.kind==='size')plan.config=resolveSampledLegendEdit(view,'size',plan.config,edits).config;
+      else plan.config=resolveIntervalEdit(view,plan.config,edits,plan.kind==='strokeInterval'?'stroke':'color').config;
+    }
+  } else if (patch.representation !== undefined || plans.some(plan => plan.kind === "gradient" && plan.config.representation === "symbols")) {
     const color = plans.find(plan => plan.kind === "gradient");
     if (color === undefined) throw new Error("Legend representation requires continuous color.");
     color.config = resolveContinuousEdit(view, "gradient", color.config, patch).config;
@@ -714,10 +728,25 @@ function editLegendImplementation(args = {}, skipGroup = false, positionIntent =
       }
       let program = this;
       const descriptor = resolveLegendBlock(program, args, "editLegend");
+      if (Object.hasOwn(args, "alongOffset")) {
+        if (!Number.isFinite(args.alongOffset)) throw new TypeError("Legend alongOffset must be finite.");
+        const inherited = program.guideConfigs.legendGroups?.[target]?.placement;
+        if (args.position === undefined && localLegendPlacement(descriptor.config) === undefined && inherited?.at) {
+          throw new Error("Free legend placement requires position before alongOffset.");
+        }
+        program = program._withLegendConfig(descriptor.kind, { ...descriptor.config,
+          blockOverrides: patchLegendBlockOverride(descriptor.config, descriptor.key, { alongOffset: args.alongOffset }) });
+        const { alongOffset: _along, ...rest } = args;
+        args = { ...rest, ...(rest.position === undefined && inherited?.position && !localLegendPlacement(descriptor.config)
+          ? { position: inherited.position, align: rest.align ?? inherited.align, offset: rest.offset ?? inherited.offset } : {}) };
+      }
       const selectedPositionChanged = Object.hasOwn(args, "position");
+      const previousPosition = localLegendPlacement(descriptor.config)?.position
+        ?? program.guideConfigs.legendGroups?.[target]?.placement.position ?? descriptor.config.position;
+      const resetDirection = selectedPositionChanged && args.position !== previousPosition;
       if (selectedPositionChanged) {
         if (args.position !== "inherit" && !LEGEND_POSITIONS.includes(args.position)) throw new Error("Selected legend position requires an anchor or inherit.");
-        const blockOverrides = patchLegendBlockOverride(descriptor.config, descriptor.key,
+        const blockOverrides = patchLegendBlockOverride(program.guideConfigs.legend[descriptor.kind], descriptor.key,
           args.position === "inherit" ? {removePosition: true} : {position: args.position});
         const {blockOverrides: _old, ...config} = descriptor.config;
         program = program._withLegendConfig(descriptor.kind, blockOverrides === undefined ? config : {...config, blockOverrides});
@@ -743,8 +772,9 @@ function editLegendImplementation(args = {}, skipGroup = false, positionIntent =
       // Validate layout leaves in the local frame without adding another stored
       // placement owner. The existing family frame is restored after editing.
       const local = localLegendPlacement(config);
-      const selectedFrame = local === undefined ? config : {...config, ...local};
-      const selected = selectedPositionChanged && !["gradient", "strokeGradient", "opacity"].includes(kind)
+      const { alongOffset: _localShift, ...familyFrame } = local ?? {};
+      const selectedFrame = local === undefined ? config : {...config, ...familyFrame};
+      const selected = resetDirection && !["gradient", "strokeGradient", "opacity"].includes(kind)
         ? {...selectedFrame, direction: undefined} : selectedFrame;
       const finish = result => local === undefined ? result : result._withLegendConfig(kind, {
         ...result.guideConfigs.legend[kind], position: config.position,
@@ -764,7 +794,7 @@ function editLegendImplementation(args = {}, skipGroup = false, positionIntent =
       return finish(editContinuous(program, kind, selected, patch));
     }
     const existingGroup = this.guideConfigs.legendGroups?.[target];
-    const needsGroup = !skipGroup && (existingGroup !== undefined || args.blockLayout !== undefined || args.at !== undefined ||
+    const needsGroup = !skipGroup && (existingGroup !== undefined || args.blockLayout !== undefined || args.at !== undefined || args.alongOffset !== undefined ||
       PLOT_LEGEND_POSITIONS.includes(args.position) && Object.values(this.guideConfigs.legend ?? {}).some(config => config.target === target && config.kind === undefined));
     if (needsGroup) {
       const prepared = prepareLegendGroup(this, args, target, { corner: PLOT_LEGEND_POSITIONS.includes(args.position) });
@@ -796,7 +826,7 @@ function editLegendImplementation(args = {}, skipGroup = false, positionIntent =
         }
         return next.rematerializeLegend();
       }
-      if (args.combine === undefined && Object.values(this.guideConfigs.legend ?? {}).some(config=>config.target===target&&["size-shape","color-size"].includes(config.combine))) {
+      if (args.combine === undefined && Object.values(this.guideConfigs.legend ?? {}).some(config=>config.target===target&&["size-shape","color-size","color-size-shape"].includes(config.combine))) {
         if(args.values!==undefined&&legendBlockDescriptors(prepared.program,target).length>1)throw new Error('A target with multiple legend blocks requires a channel block selector for exact values.');
         let edited = prepared.program;
         const shared = {...args};
@@ -881,11 +911,76 @@ function editLegendImplementation(args = {}, skipGroup = false, positionIntent =
     return editContinuous(this, continuousKind, configs[continuousKind], args);
 }
 
+// Explicit all-block selection differs from omitted channel: omitted selectors
+// retain independently positioned blocks, while all reunites them at one anchor.
+function editAllLegendBlocks(program, args) {
+  validateOptionObject(args, [...OPTIONS, "visible"], "editLegend");
+  if (["channels", "combine", "representation"].some(key => Object.hasOwn(args, key))) {
+    throw new Error('editLegend channel "all" edits existing blocks without replacing their content.');
+  }
+  const target = resolveLegendTarget(program, args.target, "editLegend");
+  const blocks = legendBlockDescriptors(program, target);
+  if (!blocks.length) throw new Error('editLegend channel "all" requires an existing legend.');
+  const {channel: _channel, target: _target, ...patch} = args;
+  if (!Object.keys(patch).length) throw new Error("editLegend requires at least one change.");
+  const placementKeys = ["position", "blockLayout", "at", "layout", "align", "offset", "alongOffset"];
+  const placement = Object.fromEntries(Object.entries(patch).filter(([key]) => placementKeys.includes(key)));
+  const appearance = Object.fromEntries(Object.entries(patch).filter(([key]) => !placementKeys.includes(key)));
+  let next = program;
+  if (Object.keys(placement).length) {
+    const reanchor = placement.position !== undefined || placement.at !== undefined;
+    if (reanchor) for (const block of blocks) {
+      const {blockOverrides: _old, ...config} = block.config;
+      const blockOverrides = patchLegendBlockOverride(block.config, block.key, {removePosition: true});
+      next = next._withLegendConfig(block.kind, {...config,
+        ...(blockOverrides === undefined ? {} : {blockOverrides}),
+        // A prior local edge may have normalized a horizontal item flow.
+        direction: undefined});
+    }
+    next = next.editLegend({target, ...placement,
+      blockLayout: placement.blockLayout ?? program.guideConfigs.legendGroups?.[target]?.blockLayout ??
+        (["top", "bottom"].includes(placement.position) ? "row" : "column")});
+  }
+  if (Object.keys(appearance).length) for (const block of blocks) {
+    const perBlock = {...appearance};
+    // Item spacing applies to discrete entries, not continuous gradient strips.
+    if (block.family === "gradient") delete perBlock.itemGap;
+    if (Object.keys(perBlock).length) next = next.editLegend({target, channel: block.channels[0], ...perBlock});
+  }
+  return next;
+}
+
 export const editLegend = /* @__PURE__ */ action(
-  { op: "editLegend", description: "Edit one stable legend content, layout or appearance.", scope: "any" },
+  { op: "editLegend", description: "Edit one or all existing legend blocks.", scope: "any" },
   withGuideLayoutValidation(function (args = {}) {
     if (this.compositionSpec !== undefined) return editFacetParentLegend(this, "editLegend", args);
+    if (args.channel === "all") return editAllLegendBlocks(this, args);
+    const split = splitGuideVisibility(args, ["labels", "titleStyle"]);
+    if (Object.keys(split.visibility).length) {
+      const target = resolveLegendTarget(this, args.target, "editLegend");
+      const blocks = args.channel === undefined ? legendBlockDescriptors(this, target)
+        : [resolveLegendBlock(this, args, "editLegend")];
+      if (!blocks.length) throw new Error("Visibility requires an existing legend.");
+      const changed = Object.keys(split.args).some(key => !["target", "channel"].includes(key));
+      let next = changed ? editLegend.call(this, split.args) : this;
+      for (const block of blocks) next = patchGuideVisibility(next, "legend", block.kind, split.visibility);
+      return next;
+    }
     validateOptionObject(args, OPTIONS, "editLegend");
+    if (Object.hasOwn(args, "itemsOffset")) {
+      const { itemsOffset, ...rest } = args;
+      // Validate before executing any companion edit; all failures are atomic.
+      patchLegendItemsOffset({}, itemsOffset);
+      const changed = Object.keys(rest).some(key => !["target", "channel"].includes(key));
+      let next = changed ? editLegend.call(this, rest) : this;
+      const target = resolveLegendTarget(next, args.target, "editLegend");
+      const blocks = args.channel === undefined ? legendBlockDescriptors(next, target)
+        : [resolveLegendBlock(next, args, "editLegend")];
+      if (!blocks.length) throw new Error("Legend itemsOffset requires an existing legend block.");
+      for (const block of blocks) next = next._withLegendConfig(block.kind,
+        patchLegendItemsOffset(next.guideConfigs.legend[block.kind], itemsOffset));
+      return next.rematerializeLegend();
+    }
     if (!Object.hasOwn(args, "clipHeight")) return recordLegendOffsetIntent(this, editLegendImplementation.call(this, args), args);
     const {clipHeight, ...rest} = args;
     const changed = Object.keys(rest).some(key => !["target", "channel"].includes(key));

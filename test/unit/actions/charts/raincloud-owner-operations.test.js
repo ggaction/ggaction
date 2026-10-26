@@ -165,3 +165,31 @@ test("Raincloud reference roles follow orientation and survive disabling their o
   assert.equal(p.graphicSpec.objects.mean.items.length, 2);
   assert.deepEqual(deserializeProgram(serializeProgram(p)).graphicSpec, p.graphicSpec);
 });
+
+for (const options of [{}, { density: false }, { summary: false }, { points: false },
+  { summary: { type: "interval", extent: "stdev" }, points: { type: "strip" } }]) {
+  test(`categorical palettes survive Raincloud owner rebuilds ${JSON.stringify(options)}`, () => {
+    const before = base({ ...options, guides: { axes: false, grid: false, legend: {} } });
+    const snapshot = serializeProgram(before);
+    let previous = before;
+    for (const palette of ["tableau10", "set1", "dark2"]) {
+      const p = previous.encodeColor({ target: "plot", field: "category", scale: { palette } });
+      const colorId = owner(p).color.scale.id;
+      assert.equal(colorId, "plotColor");
+      assert.deepEqual(p.semanticSpec.scales.find(scale => scale.id === colorId).range, { palette });
+      const expected = p.resolvedScales[colorId].range;
+      for (const id of owner(p).ownedChildIds) {
+        assert.equal(p.semanticSpec.layers.find(layer => layer.id === id).encoding.color.scale, colorId);
+        assert.deepEqual([...new Set(p.graphicSpec.objects[id].items.map(item => item.properties.fill))], expected.slice(0, 2));
+      }
+      assert.equal(Object.keys(p.guideConfigs.legend).length, 1);
+      assert.deepEqual(deserializeProgram(serializeProgram(p)).graphicSpec, p.graphicSpec);
+      previous = p;
+    }
+    const fixed = base(options).encodeColor({ target: "plot", value: "red" });
+    const mapped = fixed.encodeColor({ target: "plot", field: "category", scale: { palette: "set1" } });
+    assert.deepEqual(mapped.resolvedScales.plotColor.range, previous.encodeColor({ target: "plot", field: "category", scale: { palette: "set1" } }).resolvedScales.plotColor.range);
+    assert.throws(() => before.encodeColor({ target: "plot", field: "category", scale: { palette: "missing-palette" } }), /palette/i);
+    assert.equal(serializeProgram(before), snapshot);
+  });
+}

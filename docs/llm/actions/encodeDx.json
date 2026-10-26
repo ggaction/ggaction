@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "encodings",
   "summary": "Move each independent Text glyph horizontally by finite signed logical pixels.",
-  "signature": "encodeDx(options: TextOffsetEncodingOptions): ChartProgram;",
+  "signature": "encodeDx(options: TargetedOptions<TextOffsetEncodingOptions>): ChartProgram;",
   "intents": [
     "encode dx",
     "encode",
@@ -65,7 +65,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "value",

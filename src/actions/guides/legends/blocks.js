@@ -1,3 +1,4 @@
+import {colorSizeChannels,validateColorSizeShapeSamples} from "../../../grammar/colorSizeLegend.js";
 import { editFacetParentLegend } from "../../../materialization/facetGuides/edit.js";
 
 import {patchLegendClipHeight, validateLegendClip} from "../../../grammar/legendClip.js";
@@ -27,7 +28,7 @@ import {
   resolveLegendBlock
 } from "./target.js";
 import { validateFontWeight } from "./categorical/validation.js";
-import { normalizeDisplayLabelMap, normalizeNumericDisplayLabelMap } from "../../../grammar/displayLabels.js";
+import { normalizeLegendDisplayLabelMap } from "../../../grammar/displayLabels.js";
 
 const OPTIONS = Object.freeze([
   "target", "channel", "title", "values", "count", "order", "gap", "text", "symbol",
@@ -67,7 +68,7 @@ function categoricalSupports(config, property) {
 
 function validateSymbolSupport(descriptor, property) {
   const { channels, family, kind, config } = descriptor;
-  if(kind === "colorSize" && ["fill","size"].includes(property)) throw new Error("Color-size symbols cannot override mapped fill or size.");
+  if(kind === "colorSize" && ['size',config.colorChannel==='stroke'?'stroke':'fill'].includes(property)) throw new Error("Color-size symbols cannot override mapped hue or size.");
   if (family === "gradient") {
     throw new Error(`editLegendBlock symbol.${property} is unsupported for gradient blocks.`);
   }
@@ -131,21 +132,12 @@ function normalizeSymbolPatch(value, descriptor) {
   return { ...value };
 }
 
-function normalizeBlockLabelMap(descriptor, map) {
-  if (["size","colorSize"].includes(descriptor.kind) && descriptor.family === "sampled") {
-    return normalizeNumericDisplayLabelMap(map, "editLegendBlock labelMap");
-  }
-  if (descriptor.family !== "categorical") {
-    throw new Error("editLegendBlock labelMap requires a categorical or continuous size block.");
-  }
-  return normalizeDisplayLabelMap(map, "editLegendBlock labelMap");
-}
-
-export function validateLegendBlockOverride(descriptor, override) {
+export function validateLegendBlockOverride(descriptor, override, scaleType) {
+  if (override.alongOffset !== undefined && !Number.isFinite(override.alongOffset)) throw new TypeError("Legend alongOffset must be finite.");
   if (override.position !== undefined && !LEGEND_POSITIONS.includes(override.position)) throw new Error("Invalid local legend position.");
   if (override.symbol !== undefined) normalizeSymbolPatch(override.symbol, descriptor);
   if (override.labelMap !== undefined) {
-    normalizeBlockLabelMap(descriptor, override.labelMap);
+    normalizeLegendDisplayLabelMap(descriptor, override.labelMap, scaleType);
   }
   return override;
 }
@@ -191,7 +183,8 @@ export function patchLegendBlockOverride(config, key, patch) {
   }
   if (Object.hasOwn(patch, "labelMap")) entry.labelMap = patch.labelMap;
   if (Object.hasOwn(patch, "position")) entry.position = patch.position;
-  if (patch.removePosition === true) delete entry.position;
+  if (Object.hasOwn(patch, "alongOffset")) entry.alongOffset = patch.alongOffset;
+  if (patch.removePosition === true) { delete entry.position; delete entry.alongOffset; }
   if (patch.removeLabelMap === true) delete entry.labelMap;
   const blockOverrides = { ...(config.blockOverrides ?? {}) };
   if (Object.keys(entry).length === 0) delete blockOverrides[key];
@@ -224,7 +217,7 @@ function applyCategoricalSymbol(symbol, patch) {
 }
 
 export function resolveEffectiveLegendBlockConfig(program, kind, config) {
-  const channels = kind === "colorSize" ? ["color","size"] : kind === "series" || kind === "color" || kind === "stroke"
+  const channels = kind === "colorSize" ? colorSizeChannels(config) : kind === "series" || kind === "color" || kind === "stroke"
     ? config.channels
     : [{ size: "size", opacity: "opacity", strokeWidth: "strokeWidth",
       gradient: "color", interval: "color", strokeGradient: "stroke",
@@ -339,10 +332,10 @@ function recreateSymbolGraphics(program, descriptor) {
   const placement = preserveGraphicPlacement(program, symbol.id);
   return program
     .editGraphics({ target: symbol.id, remove: true })
-    .createGraphics({ id: symbol.id, type: symbol.type, length: 0, ...placement });
+    .createGraphics({ id: symbol.id, ...(descriptor.config.shapeScale===undefined?{type:symbol.type,length:0}:{type:'collection'}), ...placement });
 }
 
-function normalizeBlockPatch(args, descriptor) {
+function normalizeBlockPatch(args, descriptor, scaleType) {
   const patch = {};
   if (Object.hasOwn(args, "position")) {
     if (args.position === "inherit") patch.removePosition = true;
@@ -367,7 +360,7 @@ function normalizeBlockPatch(args, descriptor) {
   }
   if (Object.hasOwn(args, "labelMap")) {
     // Validate eligibility even for a reset, without introducing an empty map owner.
-    const map = normalizeBlockLabelMap(descriptor, args.labelMap === "auto" ? [] : args.labelMap);
+    const map = normalizeLegendDisplayLabelMap(descriptor, args.labelMap === "auto" ? [] : args.labelMap, scaleType);
     if (args.labelMap === "auto") patch.removeLabelMap = true;
     else patch.labelMap = map;
   }
@@ -396,7 +389,7 @@ export const editLegendBlock = /* @__PURE__ */ action(
       descriptor.family !== "sampled") {
       throw new Error("editLegendBlock values and count require a sampled legend block.");
     }
-    const patch = normalizeBlockPatch(args, descriptor);
+    const patch = normalizeBlockPatch(args, descriptor, this.resolvedScales[descriptor.scaleIds[0]]?.type);
     let config = Object.hasOwn(args, "clipHeight")
       ? patchLegendClipHeight(descriptor.config, args.clipHeight) : descriptor.config;
     validateLegendClip(descriptor.kind, config);
@@ -413,7 +406,8 @@ export const editLegendBlock = /* @__PURE__ */ action(
         operation: "edit",
         label: `editLegendBlock ${descriptor.channel ?? args.channel} legend`
       });
-      validateSamplingAgainstScale(sampling, this.resolvedScales[descriptor.scaleIds[0]],
+      if(config.combine==='color-size-shape')validateColorSizeShapeSamples(sampling,this.resolvedScales[config.colorScale]);
+      else validateSamplingAgainstScale(sampling, this.resolvedScales[descriptor.scaleIds[0]],
         "editLegendBlock values");
       const { count: _legacyCount, ...withoutCount } = config;
       config = { ...withoutCount, sampling };

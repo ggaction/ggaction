@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "axes",
   "summary": "Edits x and y axes, including settings for Cartesian guides.",
-  "signature": "editAxes(options: EditAxesOptions): ChartProgram;",
+  "signature": "editAxes(options: TargetedOptions<EditAxesOptions>): ChartProgram;",
   "intents": [
     "edit axes",
     "edit",
@@ -21,7 +21,9 @@
       "compatible scale or encoding context"
     ],
     "owns": [],
-    "idOptions": []
+    "idOptions": [
+      "target"
+    ]
   },
   "authoringRoles": [
     "H3"
@@ -39,7 +41,12 @@
     ]
   },
   "units": [],
-  "inference": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
   "completionRequirements": {
     "state": "contextual",
     "requires": [
@@ -72,11 +79,16 @@
     {
       "name": "parallel",
       "required": false,
-      "type": "false | readonly [ParallelAxisComponentsOptions, ...ParallelAxisComponentsOptions[]] | ParallelAxisComponentsOptions | undefined"
+      "type": "false | readonly [EditParallelAxisOptions, ...EditParallelAxisOptions[]] | EditParallelAxisOptions | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "editAxes({ x?, y?, theta?, radius?, parallel? })"
+    "editAxes({ target?, x?, y?, theta?, radius?, parallel? })"
   ],
   "snippet": "program.editAxes({ x: { labels: { fontSize: 11 } }, y: { labels: { fontSize: 11 } } })",
   "errors": [],

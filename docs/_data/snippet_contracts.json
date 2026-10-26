@@ -721,6 +721,20 @@
   {
     "file": "api/composition/editing.md",
     "block": 1,
+    "heading": "Add an adjacent chart and share scales",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [
+      "source: \"bars\""
+    ],
+    "prerequisites": "Import chart from ggaction. This complete example includes all data and adds a full-width line below an existing pair using an explicit source panel.",
+    "sha256": "df9c376239fce696ce86921bba3f4b3196feb9e6cb87ac129fd7feb6360492d6",
+    "executable": true
+  },
+  {
+    "file": "api/composition/editing.md",
+    "block": 2,
     "heading": "Edit the layout",
     "mode": "fragment",
     "environment": "esm-context",
@@ -734,7 +748,7 @@
   },
   {
     "file": "api/composition/editing.md",
-    "block": 2,
+    "block": 3,
     "heading": "Edit the layout",
     "mode": "fragment",
     "environment": "esm-context",
@@ -748,7 +762,7 @@
   },
   {
     "file": "api/composition/editing.md",
-    "block": 3,
+    "block": 4,
     "heading": "Edit facet scale and guide policies",
     "mode": "fragment",
     "environment": "esm-context",
@@ -762,7 +776,7 @@
   },
   {
     "file": "api/composition/editing.md",
-    "block": 4,
+    "block": 5,
     "heading": "Replace the repeated source recipe",
     "mode": "fragment",
     "environment": "esm-context",
@@ -778,7 +792,7 @@
   },
   {
     "file": "api/composition/editing.md",
-    "block": 5,
+    "block": 6,
     "heading": "Replace one stable slot",
     "mode": "fragment",
     "environment": "esm-context",
@@ -794,7 +808,7 @@
   },
   {
     "file": "api/composition/editing.md",
-    "block": 6,
+    "block": 7,
     "heading": "Insert, remove, and reorder named concat children",
     "mode": "fragment",
     "environment": "esm-context",
@@ -807,6 +821,22 @@
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `row`. Resource selectors used here: `target: \"detail\"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
     "sha256": "c5e9721f3116741dee620ee7bdaca96bd4ea2d54d3d79f9c75ad579b67e5d817",
     "executable": false
+  },
+  {
+    "file": "api/composition/editing.md",
+    "block": 8,
+    "heading": "Layer a native chart",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [
+      "source: \"observations\"",
+      "target: \"summary\"",
+      "source: \"summary\""
+    ],
+    "prerequisites": "Self-contained deterministic observations with shared measurement scales and independent native layers.",
+    "sha256": "0851aad4af09f444c2f6d3391ea9d71edb0815af46092e53d2ecc49a11208ec2",
+    "executable": true
   },
   {
     "file": "api/composition/facets.md",
@@ -2081,6 +2111,20 @@
   {
     "file": "api/legends.md",
     "block": 2,
+    "heading": "Fine positioning",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [
+      "target: \"plot\""
+    ],
+    "prerequisites": "Import chart from ggaction. This complete example includes two observations, an explicit color legend and sufficient margins. Keep the returned shifted program to render the revised position.",
+    "sha256": "483ff2f6d0cb2f6102cfbed80406092197760ed6f2f271094494a76e89f4265a",
+    "executable": true
+  },
+  {
+    "file": "api/legends.md",
+    "block": 3,
     "heading": "Space rows by content",
     "mode": "fragment",
     "environment": "esm-context",
@@ -2091,6 +2135,18 @@
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
     "sha256": "1e38f6ab48084bf36b9152f285cd3c25b92a7eab60f9941800f1c82d52ba7ed2",
     "executable": false
+  },
+  {
+    "file": "api/legends.md",
+    "block": 4,
+    "heading": "Combine interval color, size, and shape",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Standalone ES module with ggaction installed.",
+    "sha256": "5e45cd018374e43c9d916ad445e746f17f87c5ca724542192c46ad2c31229e2d",
+    "executable": true
   },
   {
     "file": "api/legends/categorical.md",

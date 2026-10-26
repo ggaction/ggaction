@@ -2,7 +2,7 @@ import { translateGraphic } from "../../../materialization/graphicTranslation.js
 import { editLegendBorderBounds } from "../../../materialization/legendBorder.js";
 import { resolveLegendAxisOffset, effectiveLegendOffsetConfig } from "../../../materialization/guides/resources.js";
 import { resolveLegendGroupPlacement } from "../../../layout/legendGroup.js";
-import { localLegendPosition, localLegendPlacement, legendGroup } from "../../../materialization/legendGroups.js";
+import { localLegendPosition, localLegendPlacement, retainsLegendSlot, legendGroup } from "../../../materialization/legendGroups.js";
 import { editLegendBackground, resolveLegendBackgroundFromBounds } from "./continuous/common.js";
 import { action } from "../../../core/action.js";
 import { noOptions } from "../../../core/validation.js";
@@ -11,7 +11,7 @@ import {
   unionConcreteGraphicBounds
 } from "../../../grammar/schemas/graphicBounds.js";
 import { finiteMidpoint } from "../../../grammar/numeric.js";
-import { resolveGraphicBounds } from "../../../layout/canvas.js";
+import { resolveGraphicBounds, canvasOverflowError } from "../../../layout/canvas.js";
 import {
   resolveHorizontalLegendLane,
   resolveHorizontalLegendGroup,
@@ -162,6 +162,7 @@ function blockDescriptor(program, kind, config) {
     id: kind,
     kind,
     preserveAlignment: preserveGradientLayout,
+    preserveLabelAlignment: config.labels.align !== undefined,
     preserveGrid: preserveGradientLayout || (["series", "color", "stroke"].includes(kind) || config.representation === "symbols") && (config.columns ?? 1) > 1,
     target: config.target,
     border: borderFor(kind, config),
@@ -175,7 +176,7 @@ function blockDescriptor(program, kind, config) {
       bounds: symbolAnchor
     },
     labels: {
-      x: emptyLabels ? symbolBounds.right + config.labels.offset : textAnchor(program, components.labelId),
+      x: emptyLabels ? symbolBounds.right + config.labels.offset : (config.labels.align === undefined ? textAnchor(program, components.labelId) : labels.left),
       width: emptyLabels ? 0 : labels.right - labels.left
     },
     occupiedBounds: unionLegendBounds(program, [
@@ -232,7 +233,8 @@ function edgeKinds(program, edge) {
     (layer, index) => [layer.id, index]
   ));
   return Object.entries(configs)
-    .filter(([kind, config]) => localLegendPosition(config) === undefined && legendGroup(program, config.target) === undefined && legendPosition(program, kind, config) === edge)
+    .filter(([kind, config]) => (localLegendPosition(config) === undefined || retainsLegendSlot(config) ||
+      localLegendPosition(config) === edge) && legendGroup(program, config.target) === undefined && legendPosition(program, kind, config) === edge)
     .sort(([kindA, configA], [kindB, configB]) =>
       (layerOrder.get(configA.target) - layerOrder.get(configB.target)) ||
       (FAMILY_ORDER[kindA] - FAMILY_ORDER[kindB])
@@ -345,7 +347,7 @@ export const rematerializeSideLegendLane = /* @__PURE__ */ action(
   },
   function (args = {}) {
     noOptions(args, "rematerializeSideLegendLane");
-    if (this.context.facetLegendIntrinsic === true) return this;
+    const intrinsic = this.context.facetLegendIntrinsic === true;
     const plot = resolveGraphicBounds(this);
     const canvas = findCanvasGraphic(this)?.properties;
     if (plot === undefined || canvas === undefined) {
@@ -368,7 +370,8 @@ export const rematerializeSideLegendLane = /* @__PURE__ */ action(
         side,
         plot,
         canvas,
-        groups: groupBlocks(blocks, configs)
+        groups: groupBlocks(blocks, configs),
+        allowOverflow: intrinsic
       });
       return [{ plan, blocks, side, entries }];
     });
@@ -403,10 +406,11 @@ export const rematerializeSideLegendLane = /* @__PURE__ */ action(
           placement.labelDx,
           placement.dy
         );
-        if (!block.preserveAlignment) next = next.editGraphics({
+        if (!block.preserveAlignment && !block.preserveLabelAlignment) next = next.editGraphics({
           target: block.labelId, property: "textAlign", value: "left"
         });
       }
+      if (intrinsic) continue;
       for (const block of blocks) {
         if (block.backgroundId === undefined || plan.backgrounds.some(item => item.id === block.backgroundId)) continue;
         const bounds = unionLegendBounds(next, block.foregroundIds);
@@ -417,6 +421,10 @@ export const rematerializeSideLegendLane = /* @__PURE__ */ action(
         next = editLegendBorderBounds(next, background.id, background);
       }
     }
+    // Facet parents own block placement and fitting, but the native alignment
+    // of symbols and labels within each block must survive promotion/editing.
+    if (intrinsic) return plans.filter(({ entries }) => entries.length > 1).reduce((p, { entries }) =>
+      alignLegendTextBoxes(p, entries.flatMap(([kind]) => existingIds(p, kind))), next);
     for (const { side, entries } of plans) {
       const ids = entries.flatMap(([kind]) => existingIds(next, kind));
       next = alignLegendTextBoxes(next, ids);
@@ -539,14 +547,16 @@ export const rematerializeLegendGroups = /* @__PURE__ */ action(
     const plot = resolveGraphicBounds(next);
     const canvas = findCanvasGraphic(next)?.properties;
     for (const [target, group] of Object.entries(next.guideConfigs.legendGroups ?? {})) {
-      const entries = Object.entries(next.guideConfigs.legend ?? {}).filter(([, config]) => config.target === target && localLegendPosition(config) === undefined)
+      const entries = Object.entries(next.guideConfigs.legend ?? {}).filter(([, config]) => config.target === target && (localLegendPosition(config) === undefined || retainsLegendSlot(config, group.placement.position ?? null)))
         .sort(([a], [b]) => FAMILY_ORDER[a] - FAMILY_ORDER[b]);
       next = alignLegendTextBoxes(next, entries.flatMap(([kind]) => existingIds(next, kind)));
       const blocks = entries.map(([kind]) => ({ id: kind, ids: existingIds(next, kind),
         bounds: unionLegendBounds(next, existingIds(next, kind)) }));
       const effectiveGroup = group.placement.at !== undefined ? group : { ...group, placement: { ...group.placement,
         offset: resolveLegendAxisOffset(next, { ...group.placement, inferredOffset: group.inferredOffset }, plot) } };
+      const collected = blocks.length > 0 && blocks.every(block => next.context.compositionCollectedLegends?.includes(block.id));
       const placements = resolveLegendGroupPlacement({ blocks, group: effectiveGroup, plot, canvas,
+        deferCanvasFit: collected, deferPlotFit: collected,
         allowOverflow: next.materializationConfigs.canvas?.plot !== undefined });
       for (const placement of placements) {
         const block = blocks.find(item => item.id === placement.id);
@@ -556,11 +566,30 @@ export const rematerializeLegendGroups = /* @__PURE__ */ action(
     for (const [kind, config] of Object.entries(next.guideConfigs.legend ?? {})) {
       const placement = localLegendPlacement(config);
       if (placement === undefined) continue;
+      // Choosing the current outside edge is still a lane placement. Only an
+      // explicit fine offset overrides its packed position; otherwise this
+      // final pass would move an edited block back over its new siblings.
+      if (placement.position === config.position && config.inferredOffset !== false &&
+          ["top", "bottom", "left", "right"].includes(config.position) && !legendGroup(next, config.target)) {
+        const along = placement.alongOffset ?? 0;
+        if (along) {
+          const horizontal = ["top", "bottom"].includes(config.position);
+          const ids = existingIds(next, kind), bounds = unionLegendBounds(next, ids);
+          const dx = horizontal ? along : 0, dy = horizontal ? 0 : along;
+          const shifted = { left: bounds.left + dx, right: bounds.right + dx, top: bounds.top + dy, bottom: bounds.bottom + dy };
+          if (!next.context.compositionCollectedLegends?.includes(kind) && (shifted.left < 0 || shifted.top < 0 || shifted.right > canvas.width || shifted.bottom > canvas.height))
+            throw canvasOverflowError("Legend group requires more Canvas space.", [shifted], canvas);
+          for (const id of ids) next = translateGraphic(next, id, dx, dy);
+        }
+        continue;
+      }
       const ids = existingIds(next, kind);
       next = alignLegendTextBoxes(next, ids);
       const group = {placement: {...placement, offset: resolveLegendAxisOffset(next, placement, plot)},
         inferredOffset: config.inferredOffset, blockLayout: "column"};
       const [shift] = resolveLegendGroupPlacement({blocks: [{id: kind, bounds: unionLegendBounds(next, ids)}], group, plot, canvas,
+        deferCanvasFit: next.context.compositionCollectedLegends?.includes(kind),
+        deferPlotFit: next.context.compositionCollectedLegends?.includes(kind),
         allowOverflow: next.materializationConfigs.canvas?.plot !== undefined});
       for (const id of ids) next = translateGraphic(next, id, shift.dx, shift.dy);
     }

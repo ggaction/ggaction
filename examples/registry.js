@@ -1,3 +1,5 @@
+import { createSharedAdjacent } from "./shared-adjacent/program.js";
+import { createLinkedOverlay } from "./linked-overlay/program.js";
 import { createBootstrapMeanCI } from "./bootstrap-mean-ci/program.js";
 import { createContinuousAreaColor } from "./continuous-area-color/program.js";
 import { createNamedShapes } from "./named-shapes/program.js";
@@ -174,6 +176,10 @@ export const PUBLIC_CHARTS = Object.freeze([
     browser: { path: "bootstrap-mean-ci/", canvas: "#chart", state: { global: "__ggactionExample", expected: { id: "bootstrap-mean-ci", width: 320, height: 220 } } } }),
   example({ id: "continuous-area-color", data: {}, width: 320, height: 220, docsGroup: "tutorials", createProgram: createContinuousAreaColor,
     browser: { path: "continuous-area-color/", canvas: "#chart", state: { global: "__ggactionExample", expected: { id: "continuous-area-color", width: 320, height: 220 } } } }),
+  example({ id: "shared-adjacent", testDirectory: "linked-composition", data: {}, width: 840, height: 350, docsGroup: "tutorials", createProgram: createSharedAdjacent,
+    browser: { path: "shared-adjacent/", canvas: "#chart", state: { global: "__ggactionExample", expected: { id: "shared-adjacent", width: 840, height: 350 } } } }),
+  example({ id: "linked-overlay", testDirectory: "linked-composition", data: {}, width: 410, height: 350, docsGroup: "tutorials", createProgram: createLinkedOverlay,
+    browser: { path: "linked-overlay/", canvas: "#chart", state: { global: "__ggactionExample", expected: { id: "linked-overlay", width: 410, height: 350 } } } }),
   example({ id: "named-shapes", data: {}, width: 480, height: 270, docsGroup: "tutorials", createProgram: createNamedShapes,
     browser: { path: "named-shapes/", canvas: "#chart", state: { global: "__ggactionExample", expected: { id: "named-shapes", width: 480, height: 270 } } } }),
   example({ id: "axis-owners", data: {}, width: 470, height: 270, docsGroup: "tutorials", createProgram: () => createAxisOwners(),

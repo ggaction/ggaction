@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "statistics",
   "summary": "Materialize reusable one-dimensional bounds, counts, and optional source members using the same edge rules as Histogram.",
-  "signature": "createBinData(options: BinDataOptions): ChartProgram;",
+  "signature": "createBinData(options: TargetedOptions<BinDataOptions>): ChartProgram;",
   "intents": [
     "create bin data",
     "create",
@@ -24,7 +24,8 @@
     ],
     "idOptions": [
       "id",
-      "source"
+      "source",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -55,6 +56,10 @@
     {
       "input": "extent",
       "strategy": "documented-auto"
+    },
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
     },
     {
       "input": "omitted optional options",
@@ -138,10 +143,15 @@
       "name": "boundaries",
       "required": false,
       "type": "readonly [number, number, ...number[]] | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "createBinData({ id, field, source?, extent?, nice?, zero?, includeEmpty?, members? })"
+    "createBinData({ id, field, source?, target?, extent?, nice?, zero?, includeEmpty? })"
   ],
   "snippet": "program.createBinData({ id: \"bin-data-1\", field: \"value\" })",
   "errors": [],

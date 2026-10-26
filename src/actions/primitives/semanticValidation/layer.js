@@ -23,6 +23,7 @@ import { ITEM_MISSING_MARK_TYPES, validateItemMissing } from
   "../../../grammar/itemMissing.js";
 import { isIndependentText, validateTextOffsetEncoding } from "../../../grammar/text.js";
 import { validateLineMissing, validateLineMissingScope } from "../../../grammar/lineMissing.js";
+import { normalizeOverlayBinding } from "../../../grammar/overlay.js";
 
 function validateLayerSource(program, parsed, value, sourceMarkTypes) {
   validateUserId(value, "Layer source id");
@@ -53,6 +54,12 @@ export function validateLayerSemanticValue(
   } = {}
 ) {
   const property = parsed.path.join(".");
+  if (property === "derivedBindings.overlay") {
+    const binding = normalizeOverlayBinding(value);
+    validateLayerSource(program, parsed, binding.source, ["bar", "line", "area", "point"]);
+    if (findLayer(program, binding.source)?.derivedBindings?.overlay) throw new Error("Overlay source must be independent.");
+    return;
+  }
   if (/^encoding\.(dx|dy)(\.|$)/.test(property)) {
     if (!isIndependentText(findLayer(program, parsed.id))) {
       throw new Error("Numeric text offsets require independent Text marks.");

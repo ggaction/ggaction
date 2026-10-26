@@ -41,6 +41,16 @@ export function resolveGuideCollisionBlocks(graphicSpec, guideConfigs, titleConf
       }
     }
   }
+  // Non-Cartesian axes do not own a single outside edge. Their concrete
+  // label/title ink still occupies margin space on every edge. Share these
+  // blocks between title placement, legend clearance, and collision checks;
+  // the axis path itself stays inside the plot and is not an outside obstacle.
+  for (const channel of ["parallel", "theta", "radius"]) {
+    if (guideConfigs.axis?.[channel] === undefined) continue;
+    for (const position of ["left", "right", "top", "bottom"]) {
+      append(`${channel}-axis text`, "axis", position, axisGraphicIds(channel).slice(2));
+    }
+  }
   const policies = legendResourcePolicies();
   const configs = guideConfigs.legend ?? {};
   const categorical = policies.find(policy => policy.family === "categorical" && configs[policy.kind] !== undefined);
@@ -193,19 +203,8 @@ export function allLegendGraphicIds(kinds) {
 // Explicit offsets, plot corners, free coordinates and legacy layouts retain
 // their authored anchor. This returns a derived offset, never stored geometry.
 function axisLaneBlocks(program) {
-  const blocks = resolveGuideCollisionBlocks(program.graphicSpec, program.guideConfigs, undefined,
+  return resolveGuideCollisionBlocks(program.graphicSpec, program.guideConfigs, undefined,
     program.materializationConfigs.textMetrics).filter(block => block.kind === "axis");
-  // Polar labels have no single Cartesian side. Reserve their concrete ink on
-  // each outside edge without treating the circle itself as an axis obstacle.
-  for (const channel of ["theta", "radius"]) {
-    if (program.guideConfigs.axis?.[channel] === undefined) continue;
-    const ids = axisGraphicIds(channel).slice(2).filter(id => program.graphicSpec.objects[id] !== undefined);
-    const bounds = unionConcreteGraphicBounds(program.graphicSpec, ids, program.materializationConfigs.textMetrics);
-    if (bounds !== undefined) for (const position of ["left", "right", "top", "bottom"]) {
-      blocks.push({ id: `${channel}-axis text`, kind: "axis", position, bounds });
-    }
-  }
-  return blocks;
 }
 
 export function resolveLegendAxisOffset(program, config, plot) {
@@ -228,11 +227,19 @@ export function effectiveLegendOffsetConfig(program, kind, config) {
 }
 
 export function needsLegendAxisReflow(before, after) {
+  // Legend editors record explicit-vs-inferred intent after constructing their
+  // intrinsic graphics. Re-anchor a newly explicit horizontal offset as well,
+  // so the former inferred clearance cannot survive in concrete placement.
+  const madeExplicit = Object.entries(after.guideConfigs.legend ?? {}).some(([kind, config]) => {
+    const effective = effectiveLegendOffsetConfig(after, kind, config);
+    return effective.inferredOffset === false && before.guideConfigs.legend?.[kind]?.inferredOffset === true &&
+      ["top", "bottom"].includes(effective.position) && effective.layout !== "legacy-bottom";
+  });
   const inferred = [before, after].some(program => Object.entries(program.guideConfigs.legend ?? {}).some(([kind, config]) => {
     const effective = effectiveLegendOffsetConfig(program, kind, config);
     return effective.inferredOffset === true && ["top", "bottom"].includes(effective.position) && effective.layout !== "legacy-bottom";
   }) || Object.values(program.guideConfigs.legendGroups ?? {}).some(group=>group.inferredOffset === true && ["top","bottom"].includes(group.placement.position)));
-  return inferred && [before, after].some(program => axisLaneBlocks(program).some(block => ["top", "bottom"].includes(block.position)));
+  return (inferred || madeExplicit) && [before, after].some(program => axisLaneBlocks(program).some(block => ["top", "bottom"].includes(block.position)));
 }
 
 

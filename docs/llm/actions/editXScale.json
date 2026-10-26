@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "core",
   "summary": "Edits x scale, including settings for horizontal position mapping.",
-  "signature": "editXScale(options: EditXScaleOptions): ChartProgram;",
+  "signature": "editXScale(options: TargetedOptions<EditXScaleOptions>): ChartProgram;",
   "intents": [
     "edit x scale",
     "edit",
@@ -88,7 +88,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "reverse",

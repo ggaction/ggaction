@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "mark-selection",
   "summary": "Remove one highlight assignment, restore the target mark and categorical legend baseline, and retain the reusable selection.",
-  "signature": "removeMarkHighlight(options?: RemoveMarkSelectionOptions): ChartProgram;",
+  "signature": "removeMarkHighlight(options?: TargetedOptions<RemoveMarkSelectionOptions>): ChartProgram;",
   "intents": [
     "remove mark highlight",
     "remove",
@@ -21,7 +21,8 @@
     ],
     "owns": [],
     "idOptions": [
-      "selection"
+      "selection",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -41,6 +42,10 @@
     {
       "input": "selection",
       "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
     }
   ],
   "completionRequirements": {
@@ -56,10 +61,15 @@
       "name": "selection",
       "required": false,
       "type": "string | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "removeMarkHighlight({ selection? })"
+    "removeMarkHighlight({ selection?, target? })"
   ],
   "snippet": "program.removeMarkHighlight({})",
   "errors": [],

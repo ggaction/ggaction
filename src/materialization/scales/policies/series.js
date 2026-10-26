@@ -5,8 +5,10 @@ import {
   resolveTransformedDomain
 } from "../../../grammar/scales/index.js";
 import { numericExtent } from "../../../grammar/numeric.js";
+import { compositionChannel } from "../../../selectors/plotComposition.js";
 
 export function resolveSeriesLayoutDomain({
+  program,
   id,
   scale,
   valuesByConsumer,
@@ -15,7 +17,9 @@ export function resolveSeriesLayoutDomain({
   if (!seriesLayouts.some(Boolean)) return undefined;
   const activeLayouts = seriesLayouts.filter(Boolean);
   const layouts = new Set(activeLayouts.map(item => item.layout));
-  if (layouts.size !== 1) {
+  // Independent native layers may use different layouts in the same value
+  // units. Only normalized/centered policies change the axis interpretation.
+  if (layouts.size !== 1 && [...layouts].some(layout => !["group", "overlay", "stack", "diverging"].includes(layout))) {
     throw new Error(`Series layout scale "${id}" requires one layout policy.`);
   }
   const layoutConsumers = valuesByConsumer.filter(
@@ -36,8 +40,12 @@ export function resolveSeriesLayoutDomain({
         layout === "overlay" ||
         Object.hasOwn(directEncoding, "datum") ||
         (
-          aggregate !== "count" &&
-          directEncoding.field === layoutConsumer.encoding.field
+            (directEncoding.field === layoutConsumer.encoding.field || program &&
+              compositionChannel(program, directEncoding, consumer.layer.data)?.field ===
+                compositionChannel(program, layoutConsumer.encoding, layoutConsumer.layer.data)?.field) && (
+            aggregate !== "count" || (directEncoding.aggregate === "count" &&
+              JSON.stringify(consumer.layer.encoding.x?.bin) === JSON.stringify(layoutConsumer.layer.encoding.x?.bin))
+          )
         )
       );
     })
@@ -61,7 +69,7 @@ export function resolveSeriesLayoutDomain({
     }
   }
   if (
-    ["group", "overlay"].includes(layout) &&
+    [...layouts].some(item => ["group", "overlay"].includes(item)) &&
     scale.domain !== "auto" &&
     (numericExtent(scale.domain)[0] > 0 || numericExtent(scale.domain)[1] < 0)
   ) {

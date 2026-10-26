@@ -232,7 +232,7 @@ export function withoutPreviewLayerEncodings(program, { id, channels }) {
   return program._clone({ semanticSpec });
 }
 
-// Composition materialization may retain this native two-scale guide meaning.
+// Composition materialization may retain this native combined guide meaning.
 // Use the existing semantic primitives on a private unit adapter; this does not
 // relax the public composition guard or accept arbitrary semantic paths.
 export function synchronizeFacetColorSizeMeaning(program, meaning) {
@@ -240,7 +240,7 @@ export function synchronizeFacetColorSizeMeaning(program, meaning) {
     throw new Error("Color-size parent meaning requires a facet composition.");
   }
   if (meaning !== undefined && (!isPlainObject(meaning) ||
-      Object.keys(meaning).some(key => !["colorScale", "sizeScale", "title"].includes(key)))) {
+      Object.keys(meaning).some(key => !["colorScale", "sizeScale", "shapeScale", "colorChannel", "title"].includes(key)))) {
     throw new Error("Color-size parent meaning requires its native scale bindings and title.");
   }
   let unit = new program.constructor({ semanticSpec: program.semanticSpec, graphicSpec: program.graphicSpec,
@@ -281,11 +281,10 @@ export function createSemanticPrimitiveAction(validateSemanticValue, planNamedRe
       const removesNamedResource = remove && parsed.path.length === 0 &&
         ["dataset", "scale", "coordinate"].includes(parsed.kind);
       if (this.compositionSpec !== undefined && !(
-        this.compositionSpec.type === "facet" &&
-        (parsed.kind === "title" || removesNamedResource)
+        parsed.kind === "title" || (this.compositionSpec.type === "facet" && removesNamedResource)
       )) {
         throw new Error(
-          "editSemantic on a composition parent supports only facet title state and unreferenced named resource removal."
+          "editSemantic on a composition parent supports only title state and unreferenced named resource removal."
         );
       }
       if (remove) {

@@ -1,3 +1,4 @@
+import {colorSizeScaleIds} from "../colorSizeLegend.js";
 import { cloneAndFreeze, isPlainObject } from "../../core/immutable.js";
 
 
@@ -167,7 +168,7 @@ function requireLegendChildren(children) {
 }
 
 function scaleIds(config, kind) {
-  const ids = kind === "colorSize" ? [config.colorScale, config.sizeScale]
+  const ids = kind === "colorSize" ? colorSizeScaleIds(config)
     : config.scales ?? (config.scale === undefined ? [] : [config.scale]);
   if (!Array.isArray(ids) || ids.length === 0 || !ids.every(id =>
     typeof id === "string" && id.length > 0

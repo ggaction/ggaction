@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "statistics",
   "summary": "Edits normalized data, including settings for group shares and baseline comparisons.",
-  "signature": "editNormalizedData(options: EditNormalizedDataOptions): ChartProgram;",
+  "signature": "editNormalizedData(options: TargetedOptions<EditNormalizedDataOptions>): ChartProgram;",
   "intents": [
     "edit normalized data",
     "edit",
@@ -59,7 +59,7 @@
     {
       "name": "target",
       "required": true,
-      "type": "string"
+      "type": "string | ActionTargetList | ScopedActionTarget"
     },
     {
       "name": "dependents",

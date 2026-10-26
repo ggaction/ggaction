@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "statistics",
   "summary": "Create vertical or horizontal statistical or explicit intervals.",
-  "signature": "createErrorBar(options?: ErrorBarOptions): ChartProgram;",
+  "signature": "createErrorBar(options?: TargetedOptions<ErrorBarOptions>): ChartProgram;",
   "intents": [
     "create error bar",
     "create",
@@ -101,7 +101,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "data",

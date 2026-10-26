@@ -358,7 +358,7 @@ grouped line paths, and two concrete legends.
 
 ## `editGraphics({ target, property, value | remove })`
 
-Sets one validated concrete property or removes one named graphic subtree.
+Sets one validated concrete property or atomically removes named graphic subtrees. For removal only, `target` can be a non-empty array of IDs. Duplicate and overlapping subtrees are removed once; every target is validated before changing the program. Root Canvas and generated item removal remain invalid.
 
 <!-- snippet-context:start -->
 

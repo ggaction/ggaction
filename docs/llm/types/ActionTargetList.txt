@@ -1,0 +1,2 @@
+export type ActionTargetList = readonly [string | ScopedActionTarget, ...(string | ScopedActionTarget)[]];
+/** Full authoring can apply one native action atomically to named resources or views. */

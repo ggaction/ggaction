@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "charts",
   "summary": "Create equal-angle sectors whose radial length measured from the inner edge is proportional to category count or sum.",
-  "signature": "createRadialBarPlot(options: CreateRadialBarPlotOptions): ChartProgram;",
+  "signature": "createRadialBarPlot(options: TargetedOptions<CreateRadialBarPlotOptions>): ChartProgram;",
   "intents": [
     "create radial bar plot",
     "create",
@@ -25,7 +25,8 @@
     "idOptions": [
       "id",
       "data",
-      "coordinate"
+      "coordinate",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -61,6 +62,10 @@
     },
     {
       "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -125,10 +130,15 @@
       "name": "aggregate",
       "required": false,
       "type": "\"count\" | \"sum\" | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "createRadialBarPlot({ category, id?, data?, coordinate?, color?, radiusScale?, arc?, guides? })"
+    "createRadialBarPlot({ category, id?, data?, coordinate?, target?, color?, radiusScale?, arc? })"
   ],
   "snippet": "program.createRadialBarPlot({ category: \"category\" })",
   "errors": [],

@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "encodings",
   "summary": "Maps a constant or quantitative field to point or tick rotation angle.",
-  "signature": "encodeAngle(options: AngleEncodingOptions): ChartProgram;",
+  "signature": "encodeAngle(options: TargetedOptions<AngleEncodingOptions>): ChartProgram;",
   "intents": [
     "encode angle",
     "encode",
@@ -60,7 +60,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "value",

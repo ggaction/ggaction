@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "encodings",
   "summary": "Create or compatibly replace a y encoding.",
-  "signature": "encodeY(options: YPositionEncodingOptions | DatumPositionEncodingOptions): ChartProgram;",
+  "signature": "encodeY(options: TargetedOptions<YPositionEncodingOptions | DatumPositionEncodingOptions>): ChartProgram;",
   "intents": [
     "encode y",
     "encode",
@@ -85,7 +85,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "coordinate",

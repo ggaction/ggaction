@@ -27,6 +27,24 @@ const dashboard = hconcat({
 `pointRows` and `barRows` are arrays of plain row objects containing the named
 fields. Every child must already have one complete materialized Canvas.
 
+## Follow a chart's results with an overlay
+
+`createOverlay` adds a separately editable layer that follows another mark's final results.
+For example, its line follows each bar's center and value endpoint after aggregation, binning,
+grouping or stacking. Source edits update the overlay automatically through that explicit dependency.
+
+Use `type: "point"` for points at those same result positions. The default `series: "source"`
+keeps each source group; `series: "total"` follows the outer endpoints of stacked bars.
+To connect scatterplot results, supply an explicit `orderBy: "x"` or `"y"`.
+Style the new layer with the usual `encodeColor`, `encodeSize`, `encodeStroke` and mark editors.
+Field mappings use the current result items, including after source filters and within each facet.
+Edit the source to change linked positions. `editOverlay({ target: "trend", follow: false })`
+freezes the current geometry as an independent normalized plot snapshot; further source edits
+no longer move it. Independent axis scales require explicit axis selection when creating guides.
+
+The [runnable overlay example](https://ggaction.github.io/ggaction/examples/linked-overlay/) uses the same public program as
+the primitive-equivalence and rendering tests.
+
 ## You must decide
 
 - Horizontal `hconcat` or vertical `vconcat`

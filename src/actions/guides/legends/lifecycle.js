@@ -41,11 +41,11 @@ export function removeLegendKinds(program, kinds) {
 }
 
 export function resolveCategoricalLegendRevision(program, kind, previous, channels, {
-  order = program.semanticSpec.guides.legend?.[kind]?.order, validateLayout = true
+  order = program.semanticSpec.guides.legend?.[kind]?.order, validateLayout = true, preferredKind
 } = {}) {
   const layer = findLayer(program, previous.target);
   const definition = resolveDefinition(program, layer, channels,
-    previous.inferredTitle ? undefined : previous.title, order);
+    previous.inferredTitle ? undefined : previous.title, order, preferredKind);
   const {combine: _combine, sizeAreas: _areas, ...shared} = previous;
   const config = {
     ...shared,

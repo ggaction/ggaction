@@ -1,3 +1,4 @@
+import { resolveLegendTitleText } from "./legendText.js";
 import { PLOT_LEGEND_POSITIONS } from "../core/vocabulary.js";
 import {
   formatVisibleText,
@@ -5,7 +6,7 @@ import {
 } from "../core/textMetrics.js";
 
 export function measureLegendTextWidth(value, style = { fontSize: 12 }, profile) {
-  return measureTextWidth(formatVisibleText(value), style, profile);
+  return resolveLegendTitleText(String(value), style, profile).width;
 }
 
 // A conservative line-height reserve, not a font-specific glyph measurement.
@@ -37,7 +38,7 @@ export function resolveLegendGrid(config, width, count, symbolHeight, profile) {
     config.itemGap * Math.max(0, actualColumns - 1);
   const rowHeight = Math.max(
     config.labels.fontSize,
-    symbolHeight
+    symbolHeight, ...labels.map(label => resolveLegendTitleText(label, config.labels, profile).height)
   );
   const gridHeight = rowHeight * rowCount +
     config.itemGap * Math.max(0, rowCount - 1);

@@ -12,7 +12,7 @@ import {
   BAR_GRAINS,
   resolveBarOffsetChannel
 } from "../../../grammar/bars/policy.js";
-import { rematerializeHighlightBaseline } from "../lifecycle.js";
+import { rematerializeHighlightBaseline, materializeFollowingOverlays } from "../lifecycle.js";
 import { offsetCategoryRectangles } from
   "../../../materialization/categorySlotOffset.js";
 import { materializeRectItem, RECT_STYLE_PROPERTIES } from "../../../grammar/roundedRect.js";
@@ -30,12 +30,12 @@ function editRectangles(program, id, rectangles) {
     item.properties?.blend !== undefined);
   if (hasShapeStyle || blend !== undefined || previousBlend) {
     const radius = appearance;
-    return materializeMarkClip(replaceGraphicItems(
+    return materializeFollowingOverlays(materializeMarkClip(replaceGraphicItems(
       program,
       id,
       "rect",
       rectangles.map(rectangle => materializeRectItem(rectangle, radius))
-    ), id);
+    ), id), id);
   }
   let next = editGraphicProperties(program, id, {
     length: rectangles.length,
@@ -54,7 +54,7 @@ function editRectangles(program, id, rectangles) {
       value: rectangles.map(rect => rect.opacity ?? 1)
     });
   }
-  return materializeMarkClip(next, id);
+  return materializeFollowingOverlays(materializeMarkClip(next, id), id);
 }
 
 export const rematerializeBarMark = /* @__PURE__ */ action(

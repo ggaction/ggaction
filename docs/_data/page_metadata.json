@@ -889,7 +889,7 @@
     "title": "Editing Compositions",
     "source": "docs/api/composition/editing.md",
     "editSource": "docs/api/composition/editing.md",
-    "description": "Contextual fragment. Use an ES module with the imports, data, and prepared resource state described in this section. Caller provided receivers: row.",
+    "description": "Call createAdjacentPlot on a complete chart to add a new view to its left, right, top or bottom. By default it creates a line using the source fields and aggregation.",
     "image": "/assets/images/program-composition.png"
   },
   "/api/marks/labels/": {

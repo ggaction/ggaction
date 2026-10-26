@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "legend_and_title",
   "summary": "Edits one legend's discrete symbols or continuous gradient.",
-  "signature": "editLegendSymbols(options: EditLegendSymbolsOptions): ChartProgram;",
+  "signature": "editLegendSymbols(options: TargetedOptions<EditLegendSymbolsOptions>): ChartProgram;",
   "intents": [
     "edit legend symbols",
     "edit",
@@ -72,7 +72,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "channel",

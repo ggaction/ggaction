@@ -6,6 +6,7 @@ import { normalizeGroupFields } from "../../grammar/pathSeries.js";
 import { STROKE_STYLE_PROPERTIES } from "../../grammar/strokeStyle.js";
 import {
   applyFacadeGuides,
+  retainFacadeAxisPresence,
   normalizeAppearance,
   normalizeCategoricalColor,
   normalizeGuides,
@@ -157,7 +158,7 @@ export const editECDFPlot = /* @__PURE__ */ action(
     }
     const owner = resolveConfiguredOwner(this, args.target, { config: "ecdfPlot", operation: "editECDFPlot", kind: "ECDF", article: "an" }, validateUserId);
     const current = this.markConfigs[owner.id].ecdfPlot;
-    const revised = { ...current.options };
+    const revised = { ...current.options, guides: retainFacadeAxisPresence(this, owner, current.options.guides) };
     for (const key of changes) {
       if (key === "groupBy" && args[key] === false) {
         delete revised.groupBy;

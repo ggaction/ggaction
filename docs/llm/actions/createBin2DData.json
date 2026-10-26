@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "core",
   "summary": "Aggregate finite x/y pairs into deterministic rectangular cell bounds and counts.",
-  "signature": "createBin2DData(options: Bin2DDataOptions): ChartProgram;",
+  "signature": "createBin2DData(options: TargetedOptions<Bin2DDataOptions>): ChartProgram;",
   "intents": [
     "create bin2 d data",
     "create",
@@ -24,7 +24,8 @@
     ],
     "idOptions": [
       "id",
-      "source"
+      "source",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -45,6 +46,10 @@
   "inference": [
     {
       "input": "source",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -109,10 +114,15 @@
       "name": "as",
       "required": false,
       "type": "Bin2DOutputFields | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "createBin2DData({ id, x, y, source?, bins?, extent?, assignment?, includeEmpty? })"
+    "createBin2DData({ id, x, y, source?, target?, bins?, extent?, assignment? })"
   ],
   "snippet": "program.createBin2DData({ id: \"bin2-d-data-1\", x: \"x\", y: \"y\" })",
   "errors": [],

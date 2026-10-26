@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "axes",
   "summary": "Creates y-axis line for vertical baseline.",
-  "signature": "createYAxisLine(options?: AxisLineStyleOptions & { target?: string; scale?: string; position?: YAxisPosition }): ChartProgram;",
+  "signature": "createYAxisLine(options?: TargetedOptions<AxisLineStyleOptions & { target?: string; scale?: string; position?: YAxisPosition }>): ChartProgram;",
   "intents": [
     "create y axis line",
     "create",
@@ -85,7 +85,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "scale",

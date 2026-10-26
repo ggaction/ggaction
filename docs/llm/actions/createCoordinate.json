@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "core",
   "summary": "Creates coordinate system for Cartesian or polar space.",
-  "signature": "createCoordinate(options?: CreateCoordinateOptions): ChartProgram;",
+  "signature": "createCoordinate(options?: TargetedOptions<CreateCoordinateOptions>): ChartProgram;",
   "intents": [
     "create coordinate",
     "create",
@@ -21,7 +21,8 @@
       "coordinate system"
     ],
     "idOptions": [
-      "id"
+      "id",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -42,6 +43,10 @@
   },
   "units": [],
   "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
     {
       "input": "omitted optional options",
       "strategy": "documented-default"
@@ -67,10 +72,15 @@
       "name": "layers",
       "required": false,
       "type": "readonly string[] | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "createCoordinate({ id?, type?, layers? })"
+    "createCoordinate({ id?, target?, type?, layers? })"
   ],
   "snippet": "program.createCoordinate({})",
   "errors": [],

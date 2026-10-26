@@ -1,3 +1,4 @@
+import { normalizeCompositionShares } from "./compositionScales.js";
 import { normalizeFacetGap } from "./facetGap.js";
 import { normalizeFacetAxes } from "./facetAxisPolicy.js";
 import { isOwned, isPlainObject } from "./immutable.js";
@@ -8,6 +9,11 @@ import {
   FACET_TOP_LANE_MODES,
   DEFAULT_FACET_TOP_LANE
 } from "./vocabulary.js";
+
+export function normalizeCompositionLegends(value) {
+  if (!["local", "collect"].includes(value)) throw new TypeError('Composition legends must be "local" or "collect".');
+  return value;
+}
 
 // Primitive graphics/trace edits retain both immutable owners. Validate their
 // relationship once, rather than scanning every facet cell on every primitive.
@@ -248,7 +254,7 @@ function validateLayout(compositionSpec) {
   } else if (!Number.isFinite(compositionSpec.gap) || compositionSpec.gap < 0) {
     throw new RangeError("compositionSpec.gap must be a non-negative finite number.");
   }
-  if (!["start", "center", "end"].includes(compositionSpec.align)) {
+  if (!(compositionSpec.type === "facet" ? ["start", "center", "end"] : ["start", "center", "end", "plot"]).includes(compositionSpec.align)) {
     throw new Error("compositionSpec.align must be start, center, or end.");
   }
   if (!isPlainObject(compositionSpec.padding)) {
@@ -284,7 +290,7 @@ export function ownCompositionSpec(compositionSpec, children) {
   }
   const allowed = [
     "id", "type", "direction", "children", "columns", "gap", "align",
-    "padding", "facet", "spacing", "topLane"
+    "padding", "facet", "spacing", "topLane", "share", "legends"
   ];
   const unknown = Object.keys(compositionSpec).find(key => !allowed.includes(key));
   if (unknown !== undefined) {
@@ -316,6 +322,14 @@ export function ownCompositionSpec(compositionSpec, children) {
     compositionSpec.facet !== undefined
   ) {
     throw new Error("Concat compositionSpec does not accept facet properties.");
+  }
+  if (compositionSpec.legends !== undefined) {
+    if (facet) throw new Error("Facet uses guides.legend, not composition legends.");
+    normalizeCompositionLegends(compositionSpec.legends);
+  }
+  if (compositionSpec.share !== undefined) {
+    if (facet) throw new Error("Facet uses scales, not composition share.");
+    normalizeCompositionShares(compositionSpec.share);
   }
   validateLayout(compositionSpec);
   const owned = ownProgramState(compositionSpec);

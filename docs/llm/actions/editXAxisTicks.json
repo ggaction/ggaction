@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "axes",
   "summary": "Edits x-axis ticks, including settings for horizontal tick marks.",
-  "signature": "editXAxisTicks(options?: Omit<AxisTickOptions<XAxisPosition>, \"scale\">): ChartProgram;",
+  "signature": "editXAxisTicks(options?: TargetedOptions<Omit<AxisTickOptions<XAxisPosition>, \"scale\">>): ChartProgram;",
   "intents": [
     "edit x axis ticks",
     "edit",
@@ -109,7 +109,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "position",

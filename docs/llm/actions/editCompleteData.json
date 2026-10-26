@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "statistics",
   "summary": "Edits completed data, including settings for explicit key-domain rows.",
-  "signature": "editCompleteData(options: EditCompleteDataOptions): ChartProgram;",
+  "signature": "editCompleteData(options: TargetedOptions<EditCompleteDataOptions>): ChartProgram;",
   "intents": [
     "edit complete data",
     "edit",
@@ -59,7 +59,7 @@
     {
       "name": "target",
       "required": true,
-      "type": "string"
+      "type": "string | ActionTargetList | ScopedActionTarget"
     },
     {
       "name": "dependents",

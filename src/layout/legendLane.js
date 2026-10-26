@@ -95,7 +95,8 @@ export function resolveSideLegendLane({
   plot,
   canvas,
   groups,
-  axisBounds
+  axisBounds,
+  allowOverflow = false
 }) {
   if (!["right", "left"].includes(side)) {
     throw new Error(`Unsupported side legend lane "${side}".`);
@@ -170,8 +171,8 @@ export function resolveSideLegendLane({
   const dy = plot.y - intrinsic.top;
   const occupied = translateBounds(intrinsic, 0, dy);
   if (
-    occupied.left < 0 || occupied.right > canvas.width ||
-    occupied.top < 0 || occupied.bottom > canvas.height
+    !allowOverflow && (occupied.left < 0 || occupied.right > canvas.width ||
+    occupied.top < 0 || occupied.bottom > canvas.height)
   ) {
     throw canvasOverflowError(`Legend lane requires more ${side}-margin or vertical Canvas space.`, [occupied], canvas);
   }

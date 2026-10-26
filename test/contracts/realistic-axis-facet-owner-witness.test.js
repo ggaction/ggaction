@@ -107,8 +107,8 @@ test("parent legend options and literals have actual public 5/3 witnesses", { ti
   const optionIds = new Set(options.map(option => option.id));
   const literals = inventory.pathLiteralRequirements.filter(requirement => optionIds.has(requirement.optionPath));
   const diversity = inventory.pathDiversityRequirements.filter(requirement => optionIds.has(requirement.optionPath));
-  assert.equal(options.length, 256);
-  assert.equal(literals.length, 168);
+  assert.equal(options.length, 268);
+  assert.equal(literals.length, 188);
   assert.equal(diversity.length, 4);
   const optionById = new Map(options.map(option => [option.id, option]));
   const stats = new Map([...options, ...literals].map(requirement => [requirement.id, { occurrences: 0, datasets: new Set() }]));
@@ -160,22 +160,22 @@ test("parent legend options and literals have actual public 5/3 witnesses", { ti
           assert.equal(program.compositionSpec.facet.guides.legend.type, "authored-legend");
           if (legend.at !== undefined) { near(bounds.left, plot.x + legend.at.x); near(bounds.top, plot.y + legend.at.y); }
           if (profile.id.startsWith("anchor-")) {
-            const { position, offset } = legend;
+            const { position, offset, alongOffset = 0 } = legend;
             if (position.includes("-")) {
               near(position.endsWith("left") ? bounds.left : bounds.right,
-                position.endsWith("left") ? plot.x + offset : plot.x + plot.width - offset);
+                (position.endsWith("left") ? plot.x + offset : plot.x + plot.width - offset) + alongOffset);
               near(position.startsWith("top") ? bounds.top : bounds.bottom,
                 position.startsWith("top") ? plot.y + offset : plot.y + plot.height - offset);
             } else if (["left", "right"].includes(position)) {
-              near(bounds.top, plot.y);
+              near(bounds.top, plot.y + alongOffset);
               near(position === "left" ? bounds.right : bounds.left,
                 position === "left" ? plot.x - offset : plot.x + plot.width + offset);
             } else {
               near(position === "top" ? bounds.bottom : bounds.top,
                 position === "top" ? plot.y - offset : plot.y + plot.height + offset);
-              if (legend.align === "left") near(bounds.left, plot.x);
-              else if (legend.align === "right") near(bounds.right, plot.x + plot.width);
-              else near((bounds.left + bounds.right) / 2, plot.x + plot.width / 2);
+              if (legend.align === "left") near(bounds.left, plot.x + alongOffset);
+              else if (legend.align === "right") near(bounds.right, plot.x + plot.width + alongOffset);
+              else near((bounds.left + bounds.right) / 2, plot.x + plot.width / 2 + alongOffset);
             }
           }
           const configs = Object.values(program.guideConfigs.legend);

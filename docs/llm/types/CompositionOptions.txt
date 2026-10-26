@@ -1,8 +1,11 @@
 export interface CompositionOptions {
+  /** Keep non-shared guides local (default), or collect all displayed blocks around the parent plot union. */
+  legends?: "local" | "collect";
+  share?: CompositionShares;
   id?: string;
   programs: readonly CompositionProgramEntry[];
   gap?: number;
-  align?: CompositionAlign;
+  align?: CompositionAlign | "plot";
   padding?: number | CompositionPadding;
 }
 /** Facets may set independent axis gaps; concat continues to require a number. */

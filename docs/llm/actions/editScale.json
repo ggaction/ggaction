@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "core",
   "summary": "Partially edits a named or uniquely resolvable scale and rematerializes its consumers.",
-  "signature": "editScale(options: EditScaleOptions): ChartProgram;",
+  "signature": "editScale(options: TargetedOptions<EditScaleOptions>): ChartProgram;",
   "intents": [
     "edit scale",
     "edit",
@@ -21,7 +21,8 @@
     ],
     "owns": [],
     "idOptions": [
-      "id"
+      "id",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -72,6 +73,10 @@
     {
       "input": "midpoint",
       "strategy": "documented-auto"
+    },
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
     }
   ],
   "completionRequirements": {
@@ -196,10 +201,15 @@
       "name": "unknown",
       "required": false,
       "type": "unknown"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "editScale({ id?, radialMapping?, type?, domain?, emptyDomain?, range?, nice?, zero? })"
+    "editScale({ id?, target?, radialMapping?, type?, domain?, emptyDomain?, range?, nice? })"
   ],
   "snippet": "program.editScale({ type: \"linear\" })",
   "errors": [],

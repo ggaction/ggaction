@@ -74,8 +74,13 @@ complete snapshot inside the larger cross-axis slot; the outer composition does
 not stretch inner facet cells, gaps, or guide geometry. An explicitly authored
 child width or height is never overwritten.
 
-The parent background is white. Child Canvas backgrounds are preserved, and
-nested compositions keep independent clipping and coordinate scopes.
+When all child Canvas backgrounds match, that color also fills the parent gaps,
+padding, and reserved guide lanes. Mixed child backgrounds retain the existing
+parent surface (initially white). Child backgrounds remain independently editable,
+and nested compositions keep independent clipping and coordinate scopes.
+
+Use `createTitle` without a target on the composed program to add one overall
+title. See [Titles](./titles.md) for parent and individual-view title editing.
 
 ## Compose Cartesian, Polar, and Parallel charts
 
@@ -161,3 +166,25 @@ actions apply only to unit programs and reject a composition parent. Facet
 titles, facet-header edits and existing shared-legend editors/removal are explicit parent-owned exceptions. Edit a
 child first, then replace its slot when a concat dashboard needs a changed
 chart.
+
+
+## Path layer color
+
+When adding an independent path layer with `createLayerPlot`, omitted color is
+inherited only when it describes a whole series. A continuous point color that
+varies along a new Line or Polar Line defaults to a single color; it is not
+averaged or used to split the path into artificial series. Categorical colors
+and compatible per-series continuous colors are retained. Set the native
+constructor's `plot.options.color` and `groupBy` to choose another valid mapping,
+or `plot.inherit.color: false` for a single-color layer. Explicit incompatible
+color mappings are rejected. Area constructor color is categorical.
+
+## Shared color legends
+
+With `share: { color: true }`, compatible color-only legends are collected into
+one legend at the right of the entire composition. The first visible color guide
+in composition order supplies its presentation; all use the shared scale domain.
+Child guide definitions remain intact, so disabling color sharing restores their
+local legends. Combined legends that also explain unshared channels (such as
+shape or size) remain local. Nested shared color guides are collected once.
+Legend reservation and parent titles are included in the final Canvas bounds.

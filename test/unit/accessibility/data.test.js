@@ -99,3 +99,28 @@ test("accessibility entry bundles for browsers without Full action registration 
   assert.ok(result.outputFiles[0].text.includes("exportAccessibleData"));
   assert.equal(Object.keys(result.metafile.inputs).some(file=>/node_modules|src\/actions\/|src\/ChartProgram.js|src\/mcp\//.test(file)),false);
 });
+
+
+test("exports linked overlay aggregate vertices and independent style instead of source rows", () => {
+  for (const type of ["line", "point"]) {
+    const p = base().createBarPlot({id:"bars",x:"g",y:{field:"y",aggregate:"sum"},guides:false})
+      .createOverlay({id:"following",source:"bars",type});
+    const result = out(p,{target:"following"}).views[0];
+    assert.deepEqual(values(result,"x","following"),["A","B"]);
+    assert.deepEqual(values(result,"y","following"),[6,16]);
+    const revised = p.encodeY({target:"bars",field:"y",aggregate:"mean"});
+    assert.deepEqual(values(out(revised,{target:"following"}).views[0],"y","following"),[3,8]);
+    assert.deepEqual(values(out(p,{target:"following"}).views[0],"y","following"),[6,16]);
+  }
+  const grouped = base().createBarPlot({id:"bars",x:{field:"x",fieldType:"nominal"},y:{field:"y",aggregate:"sum"},
+    color:{field:"g",layout:"stack"},guides:false}).createOverlay({id:"following",source:"bars"});
+  assert.deepEqual(out(grouped,{target:"following"}).views[0].rows.filter(r=>r.component==="following").map(r=>r.series),[{g:"A"},{g:"B"}]);
+});
+
+test("exports facet grid and repeated field identities at the actual child path", () => {
+  const p = base().createScatterPlot({id:"points",x:"x",y:"y",guides:false});
+  const grid = p.facetGrid({rows:{field:"g"},columns:{field:"x"}});
+  assert.deepEqual(out(grid).views.map(view=>view.facet),[{g:"A",x:1},{g:"B",x:2}]);
+  const repeated = p.repeatCharts({target:"points",channel:"x",fields:["x","y"],columns:2});
+  assert.deepEqual(out(repeated).views.map(view=>view.facet),[{repeatField:"x",channel:"x"},{repeatField:"y",channel:"x"}]);
+});

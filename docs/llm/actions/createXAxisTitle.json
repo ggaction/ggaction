@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "axes",
   "summary": "Creates x-axis title for horizontal field title.",
-  "signature": "createXAxisTitle(options?: AxisTitleOptions<XAxisPosition>): ChartProgram;",
+  "signature": "createXAxisTitle(options?: TargetedOptions<AxisTitleOptions<XAxisPosition>>): ChartProgram;",
   "intents": [
     "create x axis title",
     "create",
@@ -91,7 +91,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "alongOffset",

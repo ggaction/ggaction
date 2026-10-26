@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "core",
   "summary": "Edits y scale, including settings for vertical position mapping.",
-  "signature": "editYScale(options: EditYScaleOptions): ChartProgram;",
+  "signature": "editYScale(options: TargetedOptions<EditYScaleOptions>): ChartProgram;",
   "intents": [
     "edit y scale",
     "edit",
@@ -88,7 +88,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "reverse",

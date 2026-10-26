@@ -66,7 +66,7 @@ test("publishes the logical Bin2D edit facade as current behavior", () => {
     false
   );
   assert.match(declarations, /export interface EditBin2DDataOptions/);
-  assert.match(declarations, /^  editBin2DData\(options: EditBin2DDataOptions\)/m);
+  assert.match(declarations, /^  editBin2DData\(options: TargetedOptions<EditBin2DDataOptions>\)/m);
 });
 
 test("renders the rebound Bin2D revision in Canvas and Node PNG", async () => {

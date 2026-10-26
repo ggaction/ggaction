@@ -1,11 +1,12 @@
+import {colorSizeScaleIds} from "../../grammar/colorSizeLegend.js";
 import { resolveLegendCreationPlan } from "./legends/categorical/actions.js";
 import { resolveLegendStepConfig } from "./legends/creation.js";
 import { legendResourcePolicy } from "../../materialization/guides/resources.js";
 import { assertGuideOptions, guideConflict, sameGuideValue } from "./reuse.js";
 
 function compatibleLegend(program, kind, requested, existing, explicit) {
-  const expectedScales = kind === "colorSize" ? [requested.colorScale,requested.sizeScale] : requested.scales ?? [requested.scale];
-  const actualScales = kind === "colorSize" ? [existing.colorScale,existing.sizeScale] : existing.scales ?? [existing.scale];
+  const expectedScales = kind === "colorSize" ? colorSizeScaleIds(requested) : requested.scales ?? [requested.scale];
+  const actualScales = kind === "colorSize" ? colorSizeScaleIds(existing) : existing.scales ?? [existing.scale];
   if (!sameGuideValue(expectedScales, actualScales) ||
     !sameGuideValue(requested.channels, existing.channels)) {
     guideConflict(`${kind} legend uses different channels or scales`);

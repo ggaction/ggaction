@@ -5,9 +5,10 @@ import { resolveMarkItems, findSelectionPolicy } from "./materialization/selecti
 import { namespaceGraphicId } from "./selectors/graphicCapacity.js";
 import { findLayer } from "./selectors/layers.js";
 import { findDataset } from "./selectors/datasets.js";
-import { cloneAndFreeze } from "./core/immutable.js";
+import { cloneAndFreeze, isOwned } from "./core/immutable.js";
 
 const scenes = new WeakMap(), canvasScenes = new WeakMap();
+const ownedRowTokens = new WeakMap();
 function canonical(value) {
   if (value instanceof Date) return `date:${value.toISOString()}`;
   if (typeof value === "number" && !Number.isFinite(value)) return `number:${value}`;
@@ -37,8 +38,9 @@ function identities(program, project = id => id, scope = "", result = new Map())
     // derived array indexes. Unresolvable derived provenance deliberately fades.
     const rowTokens = new WeakMap();
     const rowToken = row => {
-      if (!rowTokens.has(row)) rowTokens.set(row, token(row));
-      return rowTokens.get(row);
+      const cache = isOwned(row) ? ownedRowTokens : rowTokens;
+      if (!cache.has(row)) cache.set(row, token(row));
+      return cache.get(row);
     };
     let items;
     try { items = resolveMarkItems(program, layer.id); }

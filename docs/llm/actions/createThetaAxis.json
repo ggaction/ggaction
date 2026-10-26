@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "axes",
   "summary": "Create the complete outer circular theta axis.",
-  "signature": "createThetaAxis(options?: CompleteThetaAxisOptions): ChartProgram;",
+  "signature": "createThetaAxis(options?: TargetedOptions<CompleteThetaAxisOptions>): ChartProgram;",
   "intents": [
     "create theta axis",
     "create",
@@ -24,7 +24,8 @@
     ],
     "idOptions": [
       "scale",
-      "coordinate"
+      "coordinate",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -52,6 +53,10 @@
     },
     {
       "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -91,10 +96,15 @@
       "name": "title",
       "required": false,
       "type": "false | PolarTitleOptions | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "createThetaAxis({ scale?, coordinate?, ticksAndLabels?, line?, title? })"
+    "createThetaAxis({ scale?, coordinate?, target?, ticksAndLabels?, line?, title? })"
   ],
   "snippet": "program.createThetaAxis({})",
   "errors": [],

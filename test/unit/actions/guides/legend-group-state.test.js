@@ -5,6 +5,7 @@ import { chart } from "../../../../src/index.js";
 import { serializeProgram, deserializeProgram } from "../../../../src/persistence.js";
 import { validateLegendGroupState } from "../../../../src/grammar/legendGroups.js";
 import { collectGuideConfigReferences } from "../../../../src/core/resourceReferences.js";
+import { getErrorDetails } from "../../../../src/core/diagnostics.js";
 
 const values = [{ x: 1, y: 2, g: "A", n: 1 }, { x: 2, y: 3, g: "B", n: 2 }];
 function base() {
@@ -243,4 +244,17 @@ test("explicit shared facet and repeat promotion use every canonical group ancho
     assertSharedAnchor(q, placement);
     assertSharedAnchor(q.editCompositionLayout({ gap: 20 }), placement);
   }
+});
+
+test('explicit group placement reports exact Canvas overflow without changing the chart', () => {
+  const p = base().createLegend({ channels: ['color', 'size'], position: 'right' });
+  const before = serializeProgram(p);
+  assert.throws(() => p.editLegend({ channel: 'all', position: 'bottom', offset: 900, blockLayout: 'wrap' }), error => {
+    assert.match(error.message, /Legend group requires more Canvas space/);
+    assert.equal(getErrorDetails(error).reason, 'canvas-overflow');
+    assert.ok(getErrorDetails(error).canvasOverflow.bottom > 0);
+    assert.equal(getErrorDetails(error).requiresExplicitCanvas, true);
+    return true;
+  });
+  assert.deepEqual(serializeProgram(p), before);
 });

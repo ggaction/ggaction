@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "core",
   "summary": "Edits derived dataset, including settings for stored transform provenance.",
-  "signature": "editDerivedData(options: EditDerivedDataOptions): ChartProgram;",
+  "signature": "editDerivedData(options: TargetedOptions<EditDerivedDataOptions>): ChartProgram;",
   "intents": [
     "edit derived data",
     "edit",
@@ -58,7 +58,7 @@
     {
       "name": "target",
       "required": true,
-      "type": "string"
+      "type": "string | ActionTargetList | ScopedActionTarget"
     },
     {
       "name": "definition",

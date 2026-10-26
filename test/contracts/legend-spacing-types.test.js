@@ -15,12 +15,14 @@ test('legend spacing declarations preserve Full/Basic creation and edit-only res
 import type {ChartProgram,LegendOptions,EditLegendOptions,EditLegendLayoutOptions} from ${JSON.stringify(path.join(root,'types/index.js'))};
 import type {BasicChartProgram} from ${JSON.stringify(path.join(root,'types/basic.js'))};
 declare const p:ChartProgram;declare const basic:BasicChartProgram;
-const creation:LegendOptions={rowPadding:0,titlePadding:20};
-const edit:EditLegendOptions={rowPadding:'auto',titlePadding:0};
-const layout:EditLegendLayoutOptions={channel:'size',rowPadding:7,titlePadding:'auto'};
+const creation:LegendOptions={rowPadding:0,titlePadding:20,alongOffset:-12.5};
+const edit:EditLegendOptions={rowPadding:'auto',titlePadding:0,alongOffset:0};
+const layout:EditLegendLayoutOptions={channel:'size',rowPadding:7,titlePadding:'auto',alongOffset:15};
 p.createLegend(creation);basic.createLegend(creation);p.createGuides({legend:creation});
 p.editLegend(edit);p.editLegendLayout(layout);
 p.createScatterPlot({x:'x',y:'y',guides:{legend:{rowPadding:0,titlePadding:20}}});
+// @ts-expect-error tangential distance is numeric
+p.editLegend({alongOffset:'12'});
 // @ts-expect-error creation does not accept reset strings
 p.createLegend({rowPadding:'auto'});
 // @ts-expect-error creation does not accept reset strings

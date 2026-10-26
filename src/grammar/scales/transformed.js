@@ -368,6 +368,42 @@ export function transformedTicks(type, domain, count, options = {}) {
   return cloneAndFreeze(values.length === 0 ? [...validated] : values);
 }
 
+// Gradient samples need comparable visual spacing, whereas positional axes
+// retain their value-space nice ticks. Reuse the symlog transform above.
+export function sampleSymlogValues(domain, count, options = {}) {
+  const validated = validateTransformedDomain("symlog", domain, options);
+  if (!Number.isInteger(count) || count < 2 || count > MAX_GENERATED_ITEMS) {
+    throw new RangeError(`Sample count must be an integer from 2 to ${MAX_GENERATED_ITEMS}.`);
+  }
+  const { constant } = normalizeTransformParameters("symlog", options);
+  const transformed = validated.map(value => logOnePlusRatio(value, constant));
+  const minimum = Math.min(...validated);
+  const maximum = Math.max(...validated);
+  const values = Array.from({ length: count }, (_, index) => {
+    if (index === 0) return validated[0];
+    if (index === count - 1) return validated[1];
+    const fraction = index / (count - 1);
+    if (transformed[0] === transformed[1]) {
+      return interpolateNumber(...validated, fraction);
+    }
+    const value = interpolateNumber(...transformed, fraction);
+    const magnitude = Math.abs(value);
+    const direct = constant * Math.expm1(magnitude);
+    // expm1 can overflow even when multiplication by a small constant would
+    // produce a finite value. Combine them in log space in that case.
+    const restored = Math.sign(value) * (Number.isFinite(direct) ? direct
+      : Math.exp(Math.log(constant) + magnitude + Math.log1p(-Math.exp(-magnitude))));
+    return Math.max(minimum, Math.min(maximum, restored));
+  });
+  // Keep zero readable in signed domains when it is an interior sample rather
+  // than squeezing an extra label beside an endpoint.
+  if (minimum < 0 && maximum > 0 && count > 2) {
+    const zeroIndex = Math.round(inverseLerp(0, ...transformed) * (count - 1));
+    if (zeroIndex > 0 && zeroIndex < count - 1) values[zeroIndex] = 0;
+  }
+  return cloneAndFreeze(values.filter((value, index) => index === 0 || value !== values[index - 1]));
+}
+
 export function formatTransformedTick(type, value) {
   if (type !== "log") return String(value);
   const magnitude = Math.abs(value);

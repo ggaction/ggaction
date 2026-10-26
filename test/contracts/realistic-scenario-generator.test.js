@@ -60,9 +60,9 @@ import { REALISTIC_STATISTICAL_FACADE_COVERAGE_RECIPES } from
   "../support/scenarios/realistic-statistical-facade-coverage-recipes.js";
 
 const EXPECTED_TIERS = Object.freeze({
-  simple: 7,
+  simple: 6,
   intermediate: 27,
-  advanced: 31,
+  advanced: 32,
   composite: 7
 });
 const strictDescriptorCache = new Map();
@@ -184,19 +184,19 @@ test("integrates every coverage recipe once with bounded tier capacity", () => {
   assert.deepEqual(report.minimumSelections, {
     simple: 90,
     intermediate: 1_154,
-    advanced: 1_505,
+    advanced: 1_555,
     composite: 100
   });
   assert.deepEqual(report.declaredFactorSelectionTargets, {
     simple: 179,
     intermediate: 1_338,
-    advanced: 1_527,
+    advanced: 1_577,
     composite: 113
   });
   assert.deepEqual(report.capacity, {
-    simple: 350,
+    simple: 300,
     intermediate: 1_350,
-    advanced: 1_550,
+    advanced: 1_600,
     composite: 350
   });
   // One fewer whole-source slot would fail each of the two growing tiers.

@@ -42,7 +42,7 @@ export function restoreFacetLegendIntent(source, intent) {
     const descriptor = describeLegendBlock(source, kind, config);
     const entry = { target: config.target, channels: [...descriptor.channels] };
     if (descriptor.channels.includes("shape") && descriptor.channels.includes("size")) entry.combine = "size-shape";
-    if (kind === "colorSize") entry.combine = "color-size";
+    if (kind === "colorSize") { entry.combine = config.combine; if(config.shapeScale!==undefined)entry.values=config.sampling.values; }
     if (descriptor.family === "categorical" && config.inferredSymbol === false && entry.combine === undefined) entry.symbol = config.symbol;
     if (kind === "gradient" && config.representation === "symbols") entry.representation = "symbols";
     scaffolds.push(entry);
@@ -67,12 +67,13 @@ export function restoreFacetLegendIntent(source, intent) {
     }
   }
   source = source._withMaterializationConfig(["guides", "legendGroups"], intent.groups);
-  return source.rematerializeLegend();
+  return source.rematerializeLegend().rematerializeSideLegendLane();
 }
 
 export function prepareAuthoredFacetLegend(program, intent = program.compositionSpec.facet.guides.legend) {
   let source = intrinsicFacetLegendSource(program);
-  source = isAuthoredFacetLegend(intent) ? restoreFacetLegendIntent(source, intent) : source.createLegend(intent);
+  source = isAuthoredFacetLegend(intent) ? restoreFacetLegendIntent(source, intent)
+    : source.createLegend(intent).rematerializeSideLegendLane();
   const kinds = Object.keys(source.guideConfigs.legend ?? {});
   for (const [kind, config] of Object.entries(source.guideConfigs.legend)) {
     const descriptor = describeLegendBlock(source, kind, config);

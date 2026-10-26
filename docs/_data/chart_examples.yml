@@ -1643,3 +1643,35 @@
   url: /api/axes/#choose-nearest-step-linear-ticks
   home_group: essentials
   home_order: 159
+
+- id: linked-overlay
+  example: /examples/linked-overlay/
+  title: Linked overlay
+  image: /assets/images/linked-overlay.png
+  alt: A line follows the final endpoints of aggregated bars and retains independent appearance.
+  width: 820
+  height: 700
+  thumbnail: /assets/images/linked-overlay-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 546
+  caption: A line follows the final endpoints of aggregated bars and retains independent appearance.
+  summary: A line follows the final endpoints of aggregated bars and retains independent appearance.
+  actions: createOverlay editOverlay encodeColor
+  tasks: composition comparison
+  url: /recipes/composition/
+
+- id: shared-adjacent
+  example: /examples/shared-adjacent/
+  title: Shared-scale adjacent charts
+  image: /assets/images/shared-adjacent.png
+  alt: Two independent charts share a Y domain and align their actual plot frames.
+  width: 1680
+  height: 700
+  thumbnail: /assets/images/shared-adjacent-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 267
+  caption: Two independent charts share a Y domain and align their actual plot frames.
+  summary: Two independent charts share a Y domain and align their actual plot frames.
+  actions: createAdjacentPlot editCompositionScales createTitle
+  tasks: composition comparison
+  url: /api/composition/editing/

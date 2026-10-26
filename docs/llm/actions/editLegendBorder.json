@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "legend_and_title",
   "summary": "Adds, removes, or styles the border around one legend.",
-  "signature": "editLegendBorder(options: EditLegendBorderOptions): ChartProgram;",
+  "signature": "editLegendBorder(options: TargetedOptions<EditLegendBorderOptions>): ChartProgram;",
   "intents": [
     "edit legend border",
     "edit",
@@ -58,7 +58,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "channel",

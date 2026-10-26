@@ -27,6 +27,10 @@ declare const program: ChartProgram;
 declare const basic: BasicChartProgram;
 program.createLegend({ target: "points", at: { x: -20, y: 10 }, blockLayout: "row" });
 program.editLegend({ target: "points", position: "bottom-right", blockLayout: "column" });
+program.editLegend({ target: "points", channel: "all", position: "left" });
+program.editLegend({ target: { childPath: ["left"], id: "points" }, channel: "all", labels: { fontSize: 15 } });
+// @ts-expect-error the selector vocabulary is closed
+program.editLegend({ channel: "both", position: "left" });
 program.editLegendLayout({ target: "points", at: { x: 201, y: 79 }, blockLayout: "wrap" });
 basic.createLegend({ position: "top-left", blockLayout: "row" });
 // @ts-expect-error block layout values are closed.
@@ -42,11 +46,21 @@ const options: EditLegendBlockOptions = { target: "points", channel: "size", val
 const labels: DisplayLabelMap = [{ value: 1, label: "one" }, { value: "1", label: "string one" }];
 program.editLegendBlock(options);
 program.createLegend({combine:"size-shape",channels:["shape","size"]});
+program.createLegend({combine:"color-size-shape",channels:["stroke","size","shape"],values:[0,5]});
+basic.createLegend({combine:"color-size-shape",values:[0,5]});
+program.editLegend({combine:"color-size-shape",values:[0,5]});
 program.createLegend({symbol:{layers:[{type:"point",opacity:0},{type:"line",opacity:0.7},{type:"swatch",opacity:1}]}});
 basic.createLegend({symbol:{layers:[{type:"point",opacity:0.7}]}});
 // @ts-expect-error recipe opacity is numeric
 program.createLegend({symbol:{layers:[{type:"point",opacity:"0.7"}]}});
 basic.createLegend({combine:"size-shape"});
+program.createLegend({ channels: ["stroke"], overflow: { maxItems: 29, summarySymbol: "first-hidden" } });
+basic.createLegend({ overflow: { maxItems: 2, summarySymbol: "first-hidden" } });
+program.editLegend({ overflow: { maxItems: 3, summarySymbol: "first-hidden" } });
+// @ts-expect-error summary symbols use a closed explicit policy
+program.createLegend({ overflow: { maxItems: 3, summarySymbol: true } });
+// @ts-expect-error arbitrary summary symbol policies are not supported
+program.editLegend({ overflow: { maxItems: 3, summarySymbol: "last" } });
 program.editLegend({combine:"separate"});
 // @ts-expect-error combination values are closed
 program.createLegend({combine:"shape-color"});

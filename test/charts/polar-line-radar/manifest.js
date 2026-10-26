@@ -108,10 +108,10 @@ export const visualVariants = Object.freeze([
     visualSignature: {
       inkRatio: { min: 0.0388, max: 0.0475 },
       inkBounds: {
-        // Side legends clear outward guide ink; Linux extent is independently measured.
+        // Reviewed Linux fallback-font ink extents; side legends clear outward guide ink.
         // Primitive/public geometry and pixels stay exact; raster tolerances stay fixed.
         ...(process.platform === "linux"
-          ? { x: 40, y: 45, width: 659.5, height: 552 }
+          ? { x: 36.5, y: 41.5, width: 670, height: 555 }
           : { x: 39.5, y: 41.25, width: 649, height: 555 }),
         tolerance: { x: 3.5, y: 1.5, width: 11, height: 1.5 }
       }
@@ -141,10 +141,10 @@ export const visualVariants = Object.freeze([
     visualSignature: {
       inkRatio: { min: 0.0264, max: 0.0324 },
       inkBounds: {
-        // Inferred legend placement now clears the rightmost theta label;
-        // translate the prior platform bounds by its 25.1215px overhang.
+        // Reviewed native fallback-font extents retain the same raster tolerances.
+        // The legend clears the rightmost theta label on both platforms.
         ...(process.platform === "linux"
-          ? { x: 75.5, y: 83.5, width: 670.1215, height: 526.5 }
+          ? { x: 67.5, y: 80.5, width: 682.5, height: 529 }
           : { x: 71.5, y: 80, width: 673.6215, height: 528.5 }),
         tolerance: { x: 7, y: 1.5, width: 10.5, height: 1 }
       }

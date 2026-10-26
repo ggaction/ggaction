@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "charts",
   "summary": "Create a shared-source distribution composite from an optional half Violin, Box or Interval summary, and Strip or Beeswarm raw points.",
-  "signature": "createRaincloudPlot(options: CreateRaincloudPlotOptions): ChartProgram;",
+  "signature": "createRaincloudPlot(options: TargetedOptions<CreateRaincloudPlotOptions>): ChartProgram;",
   "intents": [
     "create raincloud plot",
     "create",
@@ -25,7 +25,8 @@
     "idOptions": [
       "id",
       "data",
-      "coordinate"
+      "coordinate",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -56,6 +57,10 @@
       "strategy": "explicit-current-unique-or-error"
     },
     {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
       "input": "omitted optional options",
       "strategy": "documented-default"
     }
@@ -68,6 +73,11 @@
     "allowsEmpty": false
   },
   "options": [
+    {
+      "name": "missing",
+      "required": false,
+      "type": "\"error\" | \"skip\" | undefined"
+    },
     {
       "name": "id",
       "required": false,
@@ -127,6 +137,11 @@
       "name": "guides",
       "required": false,
       "type": "false | CartesianCategoricalPointGuideOptions | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [

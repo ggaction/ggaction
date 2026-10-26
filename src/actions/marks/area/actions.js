@@ -194,6 +194,7 @@ const rematerializeAreaMark = /* @__PURE__ */ action(
     }
     const colorEncoding = layer.encoding?.color;
     const strokeEncoding = layer.encoding?.stroke;
+    const opacityEncoding = layer.encoding?.opacity;
     let resolved = args.scales === false
       ? this
       : this
@@ -205,8 +206,11 @@ const rematerializeAreaMark = /* @__PURE__ */ action(
     if (args.scales !== false && strokeEncoding?.scale !== undefined) {
       resolved = resolved.rematerializeScale({ id: strokeEncoding.scale });
     }
+    if (args.scales !== false && opacityEncoding?.scale !== undefined) {
+      resolved = resolved.rematerializeScale({ id: opacityEncoding.scale });
+    }
     const config = validateAreaPaintConfig(this.markConfigs[id]);
-    const { paths, fills, strokes } = resolveAreaMaterialization({
+    const { paths, fills, strokes, opacities } = resolveAreaMaterialization({
       rows: dataset.values,
       layer,
       densityTransform,
@@ -227,7 +231,7 @@ const rematerializeAreaMark = /* @__PURE__ */ action(
       length: paths.length,
       commands: paths,
       fill: fills,
-      opacity: config.opacity,
+      opacity: opacities ?? config.opacity ?? 0.2,
       ...(hasOutline ? {
         stroke: strokes ?? (config.strokeFromFill === true ? fills : config.stroke),
         strokeWidth: config.strokeWidth ?? (strokes === undefined ? undefined : 1)
@@ -272,6 +276,9 @@ const editAreaMark = /* @__PURE__ */ action(
       throw new Error(
         "editAreaMark stroke conflicts with a field encoding; use encodeStroke with value to replace it."
       );
+    }
+    if (Object.hasOwn(args, "opacity") && layer.encoding?.opacity !== undefined) {
+      throw new Error("editAreaMark opacity conflicts with a field encoding; use encodeOpacity with value to replace it.");
     }
     if (args.stroke === false && Object.hasOwn(args, "strokeWidth")) {
       throw new Error("editAreaMark cannot set strokeWidth while removing stroke.");

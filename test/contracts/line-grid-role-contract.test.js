@@ -92,7 +92,7 @@ test("an auxiliary band scale cannot replace the line facade's horizontal grid o
   }
 });
 
-test("line grid declarations prohibit only the impossible horizontal band role", async () => {
+test("line grid declarations allow bands only on the categorical axis", async () => {
   const directory = await mkdtemp(path.join(tmpdir(), "ggaction-line-grid-role-types-"));
   try {
     const file = path.join(directory, "line-grid.mts");
@@ -107,6 +107,7 @@ p.createLinePlot({x:{field:"category",fieldType:"nominal",scale:{type:"band"}},y
 basic().createLinePlot({x:"x",y:"y",guides:{grid:{horizontal:{count:4}}}});
 p.createScatterPlot({x:"x",y:{field:"category",fieldType:"nominal",scale:{type:"band"}},guides:{grid:{horizontal:{bandPosition:"boundary"}}}});
 p.createGrid({horizontal:{bandPosition:"center"}});
+p.createLinePlot({x:{field:"y",aggregate:"sum"},y:{field:"category",fieldType:"nominal"},guides:{grid:{horizontal:{bandPosition:"boundary"}}}});
 // @ts-expect-error Quantitative line y cannot provide a horizontal band grid.
 p.createLinePlot({x:"x",y:"y",guides:{grid:{horizontal:{bandPosition:"center"}}}});
 // @ts-expect-error Quantitative line y cannot provide band boundaries.
@@ -134,13 +135,10 @@ test("the option inventory follows the corrected line role without excluding val
   const cards = JSON.parse(await readFile(path.join(root, "knowledge/action-cards.json"), "utf8"));
   const inventory = await buildPublicOptionInventory(cards);
   const paths = new Map(inventory.optionPaths.map(option => [option.id, option]));
-  const impossible = "option-path:createLinePlot.guides.grid.horizontal.bandPosition";
-  assert.equal(paths.has(impossible), false);
-  assert.equal(inventory.pathLiteralRequirements.some(requirement =>
-    requirement.optionPath === impossible
-  ), false);
+
   for (const id of [
     "option-path:createLinePlot.guides.grid.vertical.bandPosition",
+    "option-path:createLinePlot.guides.grid.horizontal.bandPosition",
     "option-path:createScatterPlot.guides.grid.horizontal.bandPosition",
     "option-path:createScatterPlot.guides.grid.vertical.bandPosition",
     "option-path:createGrid.horizontal.bandPosition",
@@ -149,4 +147,10 @@ test("the option inventory follows the corrected line role without excluding val
     assert.equal(paths.get(id)?.required, true, id);
     assert.deepEqual(paths.get(id)?.values, ["string:boundary", "string:center"], id);
   }
+});
+
+ test("horizontal lines expose categorical Y band grids without allowing a band on quantitative X", () => {
+ const p=source().createLinePlot({x:{field:"y",aggregate:"sum"},y:{field:"category",fieldType:"nominal",scale:{type:"band"}},guides:{grid:{horizontal:{bandPosition:"boundary"},vertical:false}}});
+ assert.equal(p.guideConfigs.grid.horizontal.bandPosition,"boundary");
+ assert.throws(()=>source().createLinePlot({x:{field:"y",aggregate:"sum"},y:{field:"category",fieldType:"nominal"},guides:{grid:{vertical:{bandPosition:"boundary"}}}}),/band scale/);
 });

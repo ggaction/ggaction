@@ -50,11 +50,11 @@ test("exports the complete strict field-driven option surface", () => {
   }
   assert.match(
     programTypes,
-    /encodeTheta\(options: ThetaEncodingOptions\): ChartProgram/
+    /encodeTheta\(options: TargetedOptions<ThetaEncodingOptions>\): ChartProgram/
   );
   assert.match(
     programTypes,
-    /encodeStrokeWidth\(options: StrokeWidthEncodingOptions\): ChartProgram/
+    /encodeStrokeWidth\(options: TargetedOptions<StrokeWidthEncodingOptions>\): ChartProgram/
   );
 });
 

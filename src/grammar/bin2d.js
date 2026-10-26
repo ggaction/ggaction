@@ -370,3 +370,10 @@ export function requestedBin2DTransform(transform) {
   const { resolved: _resolved, ...requested } = transform;
   return cloneAndFreeze(requested);
 }
+
+// Preserve caller-authored aliases; only the canonical generated count field
+// receives a human-readable title when guide creation is deferred.
+export function inferBin2DFieldTitle(transform, id, field) {
+  return transform?.type === 'bin2d' && transform.as.count === field &&
+    normalizeOutputFields(id, undefined, false).count === field ? 'Count' : field;
+}

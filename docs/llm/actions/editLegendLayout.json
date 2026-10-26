@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "legend_and_title",
   "summary": "Edits one legend's position, alignment, direction, columns, title placement, and item spacing.",
-  "signature": "editLegendLayout(options: EditLegendLayoutOptions): ChartProgram;",
+  "signature": "editLegendLayout(options: TargetedOptions<EditLegendLayoutOptions>): ChartProgram;",
   "intents": [
     "edit legend layout",
     "edit",
@@ -43,6 +43,10 @@
     {
       "path": "columns",
       "unit": "count"
+    },
+    {
+      "path": "alongOffset",
+      "unit": "logical-pixel"
     },
     {
       "path": "offset",
@@ -87,7 +91,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "channel",
@@ -126,6 +130,11 @@
     },
     {
       "name": "columns",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "alongOffset",
       "required": false,
       "type": "number | undefined"
     },

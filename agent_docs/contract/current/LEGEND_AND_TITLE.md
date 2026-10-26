@@ -1,14 +1,14 @@
 # Legend and title action contracts
 
 제목과 범례의 충돌 검사는 단일 text와 줄바꿈 text collection의 실제 occupied bounds를 사용한다.
-같은 edge의 chart title/subtitle, Cartesian axis component와 legend group 사이 실제 겹침은 작성 순서와 무관하게 거절한다. 서로 다른 edge의 block은 이 검사에서 비교하지 않는다.
+같은 edge의 chart title/subtitle, axis component와 legend group 사이 실제 겹침은 작성 순서와 무관하게 거절한다. 서로 다른 edge의 block은 이 검사에서 비교하지 않는다.
 
 ## Shared guide collision contract
 
 - Color/stroke/series/gradient/interval/size/opacity/strokeWidth의 네 edge에 같은 검증을 적용한다. 같은 target의 categorical+size는 하나의 group이며 retained border도 bounds에 포함한다.
 - Axis line/ticks/labels/title는 각자의 position과 실제 stroke·rotation·collection bounds를 사용한다. Axis 내부 component 제약은 axis owner가 별도로 담당한다.
 - 외부 top/bottom/left/right legend의 offset을 생략하면 같은 edge의 실제 axis line/ticks/labels/title occupied bounds 뒤에 해당 family의 기존 기본 간격(categorical 8, continuous 30)을 둔다. 저장한 offset 수치는 바꾸지 않고 최종 배치에서 clearance를 계산한다. 명시한 offset(0·8·30 포함)은 계속 plot 기준이며 free `at`, plot corner와 legacy-bottom은 이 추론을 사용하지 않는다.
-- Polar theta/radius labels와 title의 실제 ink bounds도 네 외부 edge의 clearance에 포함한다. 축 글꼴 편집과 Canvas·persistence replay가 이 간격을 다시 계산한다. Evidence: `test/unit/actions/guides/polar-legend-clearance.test.js`.
+- Parallel dimension과 Polar theta/radius labels·title의 실제 ink bounds도 네 외부 edge의 clearance와 collision 검사에 포함한다. Title과 legend가 동일한 occupied bounds를 사용한다. Exact-inner Canvas의 title은 그 edge의 가장 바깥 guide에서16px + offset을 유지하고, categorical legend는 축에서8px 간격을 유지한다. 축 글꼴·차원 편집, 축 제거·재생성, Canvas·persistence replay가 여백을 누적하지 않고 다시 계산한다. Evidence: `test/unit/actions/guides/noncartesian-guide-clearance.test.js`, `test/unit/actions/guides/polar-legend-clearance.test.js`.
 - 기본 간격의 생략 여부는 private `inferredOffset` boolean으로 보존하며 creation order, axis 편집·제거, Canvas replay, group과 저장·복원에서도 다시 계산한다. 이 marker가 없는 이전 snapshot은 고정 offset으로 보수적으로 읽는다. 잘못된 marker 타입은 저장·복원 시 거부한다.
 - 서로 독립적인 legend group과 title↔axis, title↔legend, axis↔legend의 strict intersection은 오류다. 경계가 닿는 것만으로는 오류가 아니다.
 - Create/edit와 Canvas/scale/dependent replay는 해당 aggregate의 최종 guide geometry를 검증한다. 실패 시 이전 program의 semantic/graphic/config/context/trace는 변하지 않는다.
@@ -53,6 +53,13 @@ type TitleWrap = "word" | "character";
 
 ## `createLegend`
 
+- Adding a new categorical channel to the same line target retains existing legend
+  appearance. A matching field extends the combined series symbol; a different
+  color/dash field uses separate color and series owners, migrating a prior
+  color-only series block when necessary. Repeating an already-created channel
+  still rejects. Owner identity and symbol appearance survive scale, Canvas and
+  persistence replay. Evidence: `test/unit/actions/guides/independent-series-legend.test.js`.
+
 - Combined categorical channels require the same category value set, not identical ordering.
   The first selected channel owns legend order; each channel maps category values through its
   own scale. Different sets still reject. The specialized size-shape recipe retains its own
@@ -71,6 +78,14 @@ type TitleWrap = "word" | "character";
 - 모든 legend family의 `position`은 plot 내부 네 corner도 지원한다. Corner gradient는 vertical이며 sampled opacity는 vertical items를 사용한다. Offset은 painted border/content의
   plot 안쪽 간격이며 border padding을 추가 예약한다. 기본 vertical/1-column/top-title,
   align center다. 전체 내용이 plot에 맞지 않으면 atomic 오류이며 outer lane은 예약하지 않는다.
+
+- `overflow.summarySymbol?: "first-hidden"`는 categorical line-only recipe에서만 허용한다.
+  최종 정렬 domain의 첫 hidden value를 기존 symbol mapping으로 평가하여 summary row에
+  한 개의 sample을 추가한다. 실제 domain/data/visible category label은 바꾸지 않는다.
+  생략은 text-only, overflow:false와 hidden count 0은 추가 sample 없음이다.
+  다른 family/point/swatch recipe 및 malformed stored policy는 원자적으로 거부한다.
+  생성·편집·정렬·scale/data replay·resize·저장 복원과 실제 44-path/906-vertex 및
+  29-visible/30-painted-sample 회귀는 `test/unit/actions/guides/legend-summary-symbol.test.js`가 소유한다.
 - `overflow?: false | { maxItems: PositiveInteger; summary?: "ellipsis-count" }`는 categorical
   표시만 제한한다. 기본 전체 표시. 제한된 prefix 뒤 text-only `…N entries` 한 항목을 추가하며
   symbol에는 summary를 넣지 않는다. Domain/scale/data는 원본 전체를 보존하고 hidden count는
@@ -175,6 +190,7 @@ type TitleWrap = "word" | "character";
 - Opacity sample의 occupied radius는 radius+strokeWidth/2다. Labels.offset은 sample 외곽선과 label 사이 실제 거리이며 side의 -2px 보정은 없다. Side minimum pitch는 max(itemGap,occupied diameter,label font height), 첫 sample은 visible title 아래 gap12를 확보하고 최종 전체 occupied top은 plot.y다. Horizontal top-title sample center pitch는 max(56,itemGap*2,occupied diameter+itemGap,max label width+itemGap)이며 label은 sample bottom 뒤 offset, title은 sample top 앞12에 배치한다. Inline은 sample occupied diameter와 label width를 포함한 item 사이 itemGap을 둔다. Hidden title은 이 간격에서 제외한다. Shared side lane은 mirrored label의 center 거리를 절대값으로 보존해 큰 left opacity가 label column을 침범하지 않는다. Evidence: `test/unit/actions/guides/opacity-legend-spacing.test.js`, `test/contracts/opacity-legend-spacing.test.js`.
 - Gradient/opacity/interval의 hidden title은 occupied bounds와 background에 포함하지 않는다. 이 규칙은 color와 stroke gradient/interval에 동일하다. Inline opacity는 숨긴 title의 width/gap도 제거한다. Long hidden title을 저장한 채 작은 Canvas로 resize할 수 있지만 보이는 content 또는 title 복원이 넘치면 실패한다.
 - Sequential midpoint가 있으면 gradient strip은 mark와 같은 mapper로 value를 색에 대응한다. 자동 tick 위치는 value-linear이며 midpoint를 base count samples에 추가·deduplicate한다. 명시 values는 실제 수치 척도로 위치를 계산하고 midpoint/끝값을 삽입하지 않는다. Sample을 palette의 균등 위치로 오해하지 않는다. Evidence: `test/charts/color-midpoint/`, `test/unit/actions/scales/midpoint.test.js`.
+- Symlog color/stroke gradient의 자동 tick은 변환 공간을 균등 샘플링하며 실제 domain 끝값을 유지한다. Signed domain의 zero가 내부 sample에 가장 가까우면 그 sample을 zero로 대체한다. Log/pow/sqrt는 기존 nice tick 후보를 유지한다. 자동 transformed gradient tick은 최종 label bounds 사이 최소4px를 확보하도록 겹치는 후보를 줄인다. 후보의 끝값과 zero를 우선하며 매우 짧은 strip은 한 label만 남을 수 있다. `count`와 sampling intent는 보존하고 gradient length/font/direction/scale/Canvas 변경 시 다시 계산한다. 명시 `values`는 가까워도 절대 생략·추가·변경하지 않는다. Sequential midpoint, positional axis 및 color-symbol sampling 정책은 변경하지 않는다. Evidence: `test/unit/actions/guides/transformed-gradient-spacing.test.js`, `test/unit/grammar/scales/transformed.test.js`.
 - Full의 scale family 전환은 compatible 네 edge gradient↔interval을 같은 transaction으로 재생성한다. 보존·오류·default 정책은 CORE editScale이 소유한다. Explicit hidden/auto title와 이후 focused editor도 정상 적용된다. Evidence: `test/unit/actions/scales/color-transitions.test.js`.
 - `gradient`: sequential color 또는 stroke 전용 `{ length?, thickness? }`, defaults `120`과 `12`.
 - Discretized quantitative Point/aggregate Bar/Rect color와 지원 stroke mark는 기본 right/vertical interval swatches를 추론하고 `offset`, `itemGap`,
@@ -219,6 +235,8 @@ type TitleWrap = "word" | "character";
 - Focused editor는 기존 적용 범위/모호성 계약을 유지한다. 다중 블록에서 한 color 블록만의 text/symbol/sample 편집은 `editLegendBlock({target,channel:"color",...})`로 지정한다. Scale family 전환·remove/recreate·Canvas·facet/repeat/shared guide replay는 같은 owner를 사용한다. 렌더러는 symbols/strip을 추론하지 않고 concrete graphicSpec만 읽는다.
 - 선언 검증: `test/contracts/sampled-color-legend-types.test.js`는 Full/Basic 생성, Full 편집, scatter/heatmap nested guides, closed representation vocabulary와 categorical/Pie/Basic 경계를 검증한다.
 - Basic은 기존 생성 경로를 제공하고 Full은 편집 lifecycle을 제공한다. Point/aggregate Bar/Rect/Text의 기존 continuous-color 소비 경로를 그대로 사용한다. 동작의 검증 증거는 이 기능의 unit/contracts/package consumer tests와 구현 완료 기록에 연결한다. 아직 실행되지 않은 조합은 coverage complete라고 표시하지 않는다.
+
+Canonical automatically named two-dimensional count fields infer the legend title `Count` using the Bin2D owner and its output-field contract, including when guide creation is deferred until after layering. Authored output aliases and explicit titles remain unchanged.
 
 ### Formal values — `createLegend`
 
@@ -337,6 +355,10 @@ and absent shared owners reject. Selected member removal follows native fused-bl
 
 ## `editLegend`
 
+- `itemsOffset?: {x?: Finite, y?: Finite} | "auto"`는 제목의 native anchor를 유지하면서 symbol·label 또는 gradient strip·tick·label을 함께 이동한다. 양수 x/y는 오른쪽/아래쪽 Canvas px이며 기본 0이다. Partial edit는 반대 좌표를 보존하고 omission은 intent를 보존, auto는 intent를 제거한다. Empty/unknown key·null·boolean·non-finite·다른 문자열은 atomic error다. 기존 target/channel/all selector 계약을 따른다.
+- Body offset은 해당 legend config가 단독 소유한다. Native lane/group 정렬은 offset 적용 전 geometry를 기준으로 하며 최종 concrete bounds는 이동한 body와 고정 title을 모두 포함한다. Border·clip window도 이 bounds/이동을 반영한다. Whole legend 이동은 상대 offset을 유지하고, style·Canvas·scale·filter·facet/shared/nested composition·serialization replay에서 누적하지 않는다. Facet promotion은 block 내부 symbol/label 정렬을 유지한다.
+- Evidence: `test/unit/actions/guides/legend-items-offset.test.js`, `test/contracts/guide-visibility-types.test.js`.
+
 - Signature: `editLegend({ target?, channel?, channels?, representation?, position?, blockLayout?, at?, layout?, align?, direction?, columns?, offset?, titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, rowPadding?, titlePadding?, border?, count?, values?, gradient?, order?, overflow? })`.
 - `target` selects an existing logical legend by mark ID. It may be omitted only when exactly one target owns all
   active blocks; independent targets are ambiguous.
@@ -345,14 +367,14 @@ and absent shared owners reject. Selected member removal follows native fused-bl
   `channels`, `blockLayout`, or `at`; it never creates, removes, or replaces content. Combined member aliases
   select the same block. Missing or ambiguous channels fail atomically, and a channel cannot disambiguate
   multiple mark targets. All five focused editors forward this selector through the same family validation.
+- `channel: "all"`은 해당 target의 현재 모든 block을 한 번에 편집한다. Content 집합을 유지하며 `channels`, `combine`, `representation`과 함께 쓰면 오류다. Explicit position/at는 개별 position·alongOffset을 제거하여 group에 합류시킨다. Channel omission의 기존 local override 보존은 바꾸지 않는다. 새 group은 top/bottom에서 row, 나머지는 column이고 기존 group policy는 생략하면 유지한다. Shared appearance와 visibility patch는 모든 block에 적용하며 omitted style/sample/title은 보존한다. `itemGap`은 discrete entries에만 적용하고 gradient strips에는 적용하지 않는다. 그 밖의 appearance는 모든 선택 block이 지원해야 한다. Unit·facet parent·scoped target에서 하나의 atomic public trace로 기록한다. Evidence: `test/unit/actions/guides/legend-all-selection.test.js`.
 - Selected edits do not propagate categorical typography to a sibling size block. The current effective size
   typography is preserved and detached from legacy shared inheritance before a selected categorical or size
   edit. Omitted selectors retain existing sharing and priority behavior. Selectors remain trace inputs;
   the changed family configuration is the only stored owner.
 - Evidence: `test/unit/actions/guides/legend-focused-channel.test.js` covers focused/whole equivalence,
   sibling typography, absent/ambiguous selectors, persistence and data/scale/Canvas replay.
-- The complete generated `editLegend` card retains all selector literals under a 3,600-byte budget;
-  other action cards retain the existing 3,360-byte budget.
+- Generated action-card size budgets are owned by `compactActionCardByteLimit` in `scripts/action-card-source.js`; the full `editLegend` card includes the independent body-offset type.
 - Explicit `channels`는 target 전체의 최종 non-empty content 집합이다. 기존 createLegend의 compatible subset만 허용하며 child selector가 아니다. Omission은 기존 content를 유지한다. 같은 kind의 config/count/title visibility를 보존하고 categorical color↔series revision은 styles/order/compatible explicit recipe를 보존한다. 새 block은 생성 기본값을 사용하고 제외된 block과 그 설정은 제거한다. 같은 호출의 style/layout patch는 최종 content에 적용한다. 다른 target의 occupied resource나 unsupported combination은 오류다.
 - 새 categorical+size의 size block은 위치와 무관하게 categorical labels/titleStyle을 상속한다. Default title color는 두 block 모두#334155다. 기존 standalone size를 결합하면 저장된 자체 style을 보존하며 standalone default title#0f172a는 유지한다. Size label offset default12 및 명시 shared offset도 유지한다. Evidence: `test/unit/actions/guides/combined-legend-appearance.test.js`, `test/contracts/combined-legend-appearance.test.js`, `test/unit/actions/guides/legend-family-lifecycle.test.js`.
   Group placement에 opt-in하거나 edge/corner/free anchor를 바꿔도 기존 typography 상속은 유지하며, placement 상속과 독립적이다. Label/title의 color/fontSize/fontFamily/fontWeight 및 symbol paint는 Canvas/scale/data/persistence replay에도 보존한다. Evidence: `test/unit/actions/guides/grouped-legend-appearance.test.js`.
@@ -382,7 +404,7 @@ and absent shared owners reject. Selected member removal follows native fused-bl
 
 ### Formal values — `editLegend`
 
-- Implemented: the signature above with `channel?: LegendChannel`, `title?: NonEmptyString | "auto" | false`, `channels?: readonly LegendChannel[]` for whole-target replacement, and `values?: readonly number[] | "auto"` for standalone sampled content.
+- Implemented: the signature above with `channel?: LegendChannel | "all"`, `title?: NonEmptyString | "auto" | false`, `channels?: readonly LegendChannel[]` for whole-target replacement, and `values?: readonly number[] | "auto"` for standalone sampled content.
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -582,7 +604,7 @@ config normalization과 rematerialization을 공유한다. Evidence:
 
 ## `removeLegend`
 
-- Signature: `removeLegend({ target?, channels? } = {})`.
+- Signature: `removeLegend({ target?, channels?, suppress? } = {})`.
 - `target`은 explicit mark ID 또는 unique existing legend owner로 resolve한다. Multiple owners는 `channels`가 한
   target에만 존재하더라도 explicit target을 요구해서 기존 target inference를 유지한다.
 - Omitted `channels`는 one stable mark target에 속한 모든 categorical, size, continuous color, interval, opacity와
@@ -602,9 +624,21 @@ config normalization과 rematerialization을 공유한다. Evidence:
 - Mark encodings, resolved/semantic scales와 source data는 제거하지 않는다. Shared semantic-kind state는 another
   retained block이 소유할 때 삭제하지 않는다. 모든 selector validation은 첫 state change 전에 끝난다.
 
+- `suppress`는 boolean이며 기본 false다. true이면 실제 제거된 owner/channel만
+  `materializationConfigs.guides.suppressedLegends[target].channels`에 저장한다. Fused block 제거는
+  함께 제거된 모든 채널을 기록하며 partial categorical revision의 잔여 채널은 제외한다.
+- `createGuides`의 inferred 및 explicit legend channel 선택은 이 제외 의도를 존중한다.
+  새로운 미삭제 채널은 계속 생성할 수 있다. Explicit `createLegend`는 실제 복원한 채널만 제외 목록에서 지운다.
+  다른 mark의 범례·데이터·스케일은 변하지 않는다. Mark 제거는 해당 제외 intent도 정리한다.
+- Facet parent 삭제는 같은 제외 intent를 source snapshot에 반영하여 source 편집·공유 범례 재생성에서도 유지한다.
+  Facet의 명시적 복원은 기존 `editFacetSource({action:{method:"createLegend",options:{...}}})`를 사용한다.
+  Concat은 기존 explicit child target dispatch를 사용하며 다른 child는 유지한다.
+- Evidence: `test/unit/actions/guides/legend-suppression.test.js` (불변성, 선택 채널, fused ownership,
+  facet 전후 삭제, source/Canvas/encoding replay, concat, persistence, 명시적 복원).
+
 ### Formal values — `removeLegend`
 
-- Implemented: `removeLegend(options?: { target?: UserId; channels?: readonly LegendChannel[] })`.
+- Implemented: `removeLegend(options?: { target?: UserId; channels?: readonly LegendChannel[]; suppress?: boolean })`.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `removeLegend`
@@ -672,6 +706,11 @@ config normalization과 rematerialization을 공유한다. Evidence:
   plot bounds의 union을 사용하며 child margin, axis text/title, composition padding과 shared legend를 제외한다.
 - top/bottom align은 plot의 x start/center/end이고 left/right align은 edge 진행 방향의
   top/center/bottom이다.
+- Facet/concat의 top title은 최종 retained graphic bounds(축 텍스트, header, shared legend 포함)를 기준으로
+  예약된 lane의 빈 공간을 사용해 title/subtitle block과 content 사이 간격을 최대 16 logical pixels로 줄인다.
+  이미 더 가까운 lane, child Canvas 크기/margin/placement, explicit `topLane:"shared"`의 배치는 유지한다.
+  제목/부제/style/header/legend/Canvas replay마다 같은 기준을 적용한다.
+  Evidence: `test/unit/actions/composition/title-content-clearance.test.js`.
 - `offset`: finite number, 기본 `0`; top/bottom은 y, left/right는 x Canvas axis에서 block을 이동한다.
 - `alongOffset`: finite signed logical pixel, 기본 `0`. Top/bottom의 title/subtitle 전체 block을 X 방향, left/right는 Y 방향으로 같은 양만큼 옮긴다. 양수는 right/down이며 기존 outward `offset`과 독립이다. 실제 bounds/guide 충돌 검증은 이동 후 적용하고 edit/reset/Canvas replay에서도 유지한다.
 - `gap`: non-negative finite number, 기본 `8`; title/subtitle 사이 거리다.
@@ -685,7 +724,7 @@ config normalization과 rematerialization을 공유한다. Evidence:
   Hard line에 `maxWidth` 없이 적용할 수 있으며 제목 간격과 기존 공통 간격 검증은 바꾸지 않는다.
   생성 시 생략하면 저장 키가 없고 편집 시 생략하면 유지한다. `subtitle:false`에서 보존하고 전체 title 제거 시 삭제한다.
   별도 reset 어휘는 없으며 null, 비수치, 무한대, 부제 fontSize 미만은 원자적으로 거부한다.
-- `titleStyle`, `subtitleStyle`: `{ color?, fontSize?, fontFamily?, fontWeight?, fontStyle? }`; positive fontSize,
+- `titleStyle`, `subtitleStyle`: `{ color?, fontSize?, fontFamily?, fontWeight?, fontStyle?, align? }`; positive fontSize,
   non-empty strings와 string/finite weight를 사용한다. `fontStyle`은 `"normal" | "italic"`이며 생략 시 normal이다.
   제목과 부제에 독립 적용되고 text measurement key, wrapping, 편집, 저장/복원과 모든 renderer에 유지된다.
 - Effect: text만 semanticSpec에 저장하고 geometry/style은 concrete text graphics와 title config에 저장한다.
@@ -933,12 +972,57 @@ and facet-parent-symbol-window unit tests.
 - `createGuides`는 facet/grid/repeat parent에서도 retained source의 native guide action을 실행하고 모든 child를 재도출한다. 기존 guide collections와 parent title/header/layout은 보존한다.
 - Evidence: `test/unit/actions/facet-source-action.test.js`, `test/unit/actions/encodings/rect-appearance.test.js`, `test/unit/actions/guides/mixed-appearance-guides.test.js`.
 
-### Facet parent title placement
+### Composition parent title placement
 
-`createTitle` and `editTitle` support all four positions on facet parents. Top/bottom
+`createTitle` and `editTitle` support all four positions on facet and concat parents. Top/bottom
 read horizontally; left/right rotate the complete title/subtitle reading block.
 The inferred Canvas reserves a lane outside child guides and shared legends, with
 alignment against the child plot union and the same signed `alongOffset` semantics.
-Facet layout edits rematerialize that reservation without changing authored padding
+Composition layout edits rematerialize that reservation without changing authored padding
 or child plots. Unsupported overflowing text/offsets still fail atomically.
 Evidence: `test/unit/actions/composition/facet-title-along-offset.test.js`.
+
+Concat title ownership, shared color snapshot collection, and restoration rules: [COMPOSITION](COMPOSITION.md#concat-parent-titles-shared-color-guide-and-uniform-surfaces).
+
+### Tangential legend placement
+
+- `createLegend`, `editLegend`, and `editLegendLayout` accept optional finite signed `alongOffset` logical pixels, default zero. Top/bottom and in-plot corners translate right for positive values; side anchors translate down. `offset` retains its perpendicular/inset meaning. No mark encoding or sample recipe changes.
+- Fine shifts on the same edge retain the block’s packing slot, so siblings do not reflow when it moves. Changing to a different edge retains the existing repacking behavior.
+- Whole-target intent lives in the existing legend-group placement; singular-channel intent lives in its existing block override and moves only that block. Omitted edits preserve values, zero resets displacement, and selected `position: "inherit"` clears local position plus displacement. Combined channels keep one block identity.
+- `at` and edge placement (including alongOffset) are mutually exclusive. A retained free placement needs an explicit position before accepting alongOffset. Nonfinite values, overflowing corner bounds, Canvas overflow, and collisions reject atomically. Existing omission state remains unchanged.
+- Unit, facet-owned/promoted, and shared concat owners consume the same placement; serialization, Canvas/data replay, and native Canvas/SVG rendering retain concrete translated bounds.
+- Evidence: `test/unit/actions/guides/legend-along-offset.test.js`, `test/contracts/legend-spacing-types.test.js`.
+
+## Retained legend visibility
+
+`editLegend`의 전체 옵션, `labels`, `titleStyle`은 각각 `visible?: boolean`을 받는다. 전체와 각 text 표시 상태는 독립적이다. 숨겨도 typography, samples, scale binding, layout, title content를 보존한다. 전체를 켜도 별도로 숨긴 라벨·제목은 그대로다. 자동 guide, Canvas replay, shared facet ownership, editable persistence에서 유지한다. 숨긴 guide의 geometry는 유지하므로 토글로 차트를 이동시키거나 상대 anchor를 끊지 않는다.
+
+검증: `test/unit/actions/guides/guide-visibility.test.js`, `test/contracts/guide-visibility-types.test.js`.
+
+Categorical size legend blocks also accept typed `editLegendBlock.labelMap`, including numeric-coded ordinal categories. Hard breaks in categorical legend entries preserve blank lines, measure the full block and reserve row spacing; ticks/symbols and source values remain intact. Continuous opacity/gradient and discretized intervals are not added to labelMap support. Evidence: `categorical-hard-breaks.test.js`, `size-legend-label-map.test.js`.
+
+### Explicit group overflow diagnostics
+
+명시한 group offset/free anchor의 Canvas overflow는 여전히 원자적으로 실패하며 inner plot sizing에서도 자동 margin 확장을 허용하지 않는다. 기존 `canvas-overflow` 진단에 실제 부족한 네 방향 크기와 내부 `requiresExplicitCanvas` 표시를 보존한다. Native layout transaction은 이 표시를 존중하고, host는 별도 공개 `editCanvas` 호출을 기록한 다음 동일 group 편집을 재시도할 수 있다. 잘못된 위치를 묵시적으로 바꾸거나 native 오류를 숨기지 않는다. Evidence: `test/unit/actions/guides/legend-group-state.test.js`.
+
+## 텍스트 컴포넌트 정렬
+
+사용자 승인: 앱 `docs/inline-text-alignment.md`의 계약과 “이 API 확장으로 진행” 응답.
+`titleStyle.align`/`subtitleStyle.align`은 left/center/right이며 측정된 title block
+내부에서 각 컴포넌트를 독립 정렬한다. top-level align은 전체 block의 plot anchor를
+유지한다. left/right position에서는 기존 회전의 읽기 방향으로 정렬한다.
+`labels.align`은 모든 legend family의 기존 label column 안에서 적용하며 기호,
+tick, title의 slot은 유지한다. 여러 column은 각각 계산한다. 생략은 기존 native
+기하를 그대로 유지하고 명시 undefined, null, 미지원 문자열은 거부한다.
+create/edit, Canvas·scale·data replay, 저장 복원과 composition에 같은 계약을 적용한다.
+검증: `test/unit/actions/guides/text-style-alignment.test.js`.
+
+
+### Interval color/stroke-size-shape combination
+
+- `combine: "color-size-shape"`는 하나의 Cartesian Point에서 동일 field/data/aggregate grain의 interval color 또는 stroke, interval size, ordinal shape를 묶는다. `channels`는 color/size/shape 또는 stroke/size/shape이며 생략 시 하나의 hue owner만 추론한다. 둘 다 있으면 명시 선택한다. Hue와 size의 실제 threshold 경계가 같아야 한다.
+- `values`는 각 interval에 하나씩 대응하는 finite 오름차순 대표값을 필수로 받는다. 자동 sample/count/reset은 지원하지 않는다. 첫/끝 열린 구간도 finite 대표값을 쓰며, 내부 구간은 왼쪽 포함/오른쪽 제외다. 각 값에 원래 ordinal shape scale의 exact/fallback mapping을 적용하며 shape를 interval로 재분류하지 않는다. Labels는 기존 interval formatter를 쓰고 numeric `labelMap`으로 각 대표값의 문구를 바꿀 수 있다.
+- 기존 `guideConfigs.legend.colorSize` owner를 재사용하며 `combine`, `colorChannel`, `shapeScale`로 명시한다. Semantic `guide.legend.colorSize`에도 두 새 binding을 기록한다. 세 channel selector는 한 block에 alias되고 removal은 전체 block을 제거한다. Bound encoding 제거도 전체 combined block을 제거한다.
+- Glyph는 기존 Point shape materializer의 area 계약을 사용한다. Hue/size/shape는 실제 scale mapping을 보존하고, unmapped fill/stroke, strokeWidth, opacity는 원래 Point의 fixed appearance를 사용한다. `symbol`은 point type과 unmapped fill/stroke, strokeWidth, opacity만 받는다. 생략/auto는 원래 mark 상속, 명시값은 override다. Mapped hue/size/shape override는 거부한다.
+- Create/edit, 개별 channel alias, resize, scale/mark edits, clip, layout, facet/shared composition, persistence는 같은 binding과 geometry를 유지한다. 일부 channel만 남기려면 `combine: "separate"`를 명시한다. Field/grain/threshold mismatch, 잘못된 대표값과 snapshot tampering은 원자적으로 거부한다. 기존 두 채널 조합과 기본 분리 동작은 그대로 유지한다.
+- 검증: `test/unit/actions/guides/color-size-shape-legend.test.js`는 30개 원본 point와 6개 실제 sample의 독립 면적/shape/paint, 원본 보존, lifecycle/negative/restore를 검사한다.

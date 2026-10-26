@@ -21,6 +21,7 @@ import { registerResourceActions } from "./resources/index.js";
 import { registerTextMetricActions } from "./textMetrics/index.js";
 import { registerCompositionActions } from "./composition/index.js";
 import { registerFacetActions } from "./facets/index.js";
+import { registerOverlayActions } from "./overlays/index.js";
 import { registerThemeActions } from "./theme/index.js";
 import {
   applyCompositionTheme,
@@ -38,6 +39,7 @@ export function registerActions(ProgramClass) {
   registerCanvasActions(ProgramClass);
   registerDataActions(ProgramClass);
   registerMarkActions(ProgramClass);
+  registerOverlayActions(ProgramClass);
   registerScaleActions(ProgramClass);
   registerEncodingActions(ProgramClass);
   registerBasicCoordinateActions(ProgramClass);

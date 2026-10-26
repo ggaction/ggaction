@@ -1,3 +1,4 @@
+import { assertIndependentOverlayGeometry } from "../../grammar/overlay.js";
 import { readAreaEndpoint, validateAreaEndpointPair, normalizeAreaBound } from "../../grammar/areaEndpoints.js";
 import { action } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
@@ -306,6 +307,7 @@ const encodeGroup = /* @__PURE__ */ action(
       ["line", "area", "bar"],
       "series mark"
     );
+    assertIndependentOverlayGeometry(layer, "encodeGroup");
     if ((args.fieldType ?? "nominal") !== "nominal") {
       throw new Error("encodeGroup requires a nominal field.");
     }

@@ -1,3 +1,6 @@
+import { validateLegendOverflow } from "../grammar/legendOverflow.js";
+import { normalizeTextOverrides } from "../grammar/text.js";
+import { normalizeLegendDisplayLabelMap } from "../grammar/displayLabels.js";
 import { validateFacetAxisPolicy } from "../core/facetAxisPolicy.js";
 import { resolveFacetFamily } from "../grammar/facets/dependencies.js";
 import { validateRegressionPlacement } from "../grammar/regression/parameters.js";
@@ -18,15 +21,13 @@ import { axisGraphicIds } from "../selectors/axes.js";
 
 import {findLayer} from '../selectors/layers.js';
 import {findCoordinate} from '../selectors/coordinates.js';
-import {resolveColorSizeMapping,normalizeColorSizeSymbol} from '../grammar/colorSizeLegend.js';
+import {resolveColorSizeMapping,normalizeColorSizeSymbol,colorSizeChannels,validateColorSizeShapeSamples} from '../grammar/colorSizeLegend.js';
 import{validateLegendClip}from"../grammar/legendClip.js";
 import {validateLegendLayerOpacity}from"../grammar/legendOpacity.js";
 import { isSizeShapeChannels, resolveSizeShapeMapping } from "../grammar/legendCombinations.js";
-import { describeLegendBlock } from "../grammar/legendBlocks.js";
+import { describeLegendBlock, validateLegendChannels } from "../grammar/legendBlocks.js";
 import { localLegendPosition } from "../grammar/legendGroups.js";
 import { normalizeLegendBorderDash } from "../grammar/legendBorder.js";
-import { normalizeNumericDisplayLabelMap } from "../grammar/displayLabels.js";
-import { isContinuousSizeScaleType } from "../grammar/scales/size.js";
 import { validateGraphicItemLimit } from "../core/validation.js";
 import { LEGEND_TITLE_STYLE_KEYS, validateLegendTitleAlignment } from "../grammar/legendTitleStyle.js";
 import { validateGuideDash, normalizeGuideDashMap } from "../grammar/guideDash.js";
@@ -50,7 +51,8 @@ import { validateUserId } from "../core/identifiers.js";
 import { collectAllResourceReferences } from "../core/resourceReferences.js";
 import { requiredTraceExtension } from "../core/extensionRegistry.js";
 import { resolveDatasetReference } from "../selectors/datasets.js";
-import { normalizeMarkSelector } from "../grammar/markSelection.js";
+import { normalizeMarkSelector, validateRowSelectionDataset } from "../grammar/markSelection.js";
+import { highlightTargets } from "../selectors/selectionTargets.js";
 import { parseSemanticPath } from "../grammar/schemas/semanticPath.js";
 import { validateStoredSemanticValue } from "../actions/primitives/semantic.js";
 import { validateGraphicType, isGraphicContainerType } from "../grammar/schemas/graphic.js";
@@ -227,6 +229,7 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
       throw new TypeError("Facet row field title requires a row-column facet grid.");
     }
   }
+  validateGuideVisibilityState(program);
   if (program.materializationConfigs.textMetrics !== undefined) normalizeTextMetricProfile(program.materializationConfigs.textMetrics);
   for (const config of [
     ...Object.values(program.guideConfigs.axis ?? {}).map(axis => axis.ticks),
@@ -319,7 +322,7 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
     }
     const config = program.guideConfigs.axis?.[id];
     requireObject(config, `${path}.guides.axis.${id}`);
-    validateKeys(config, ["binding", "frame", "line", "ticks", "labels", "title"], "Stored named axis config");
+    validateKeys(config, ["binding", "frame", "line", "ticks", "labels", "title", "visibility"], "Stored named axis config");
     const components = ["line", "ticks", "labels", "title"];
     if (!components.some(component => config[component] !== undefined)) {
       throw invalidSnapshot("Named axes require at least one retained component.", path);
@@ -340,30 +343,50 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
       coordinate: semanticAxis.coordinate, position: semanticAxis.position });
   }
   if (program.guideConfigs.legendGroups !== undefined) validateLegendGroupState(program.guideConfigs.legendGroups);
+  if (program.guideConfigs.suppressedLegends !== undefined) {
+    requireObject(program.guideConfigs.suppressedLegends, `${path}.materializationConfigs.guides.suppressedLegends`);
+    for (const [target, config] of Object.entries(program.guideConfigs.suppressedLegends)) {
+      validateUserId(target, "Suppressed legend target");
+      requireObject(config, `${path}.materializationConfigs.guides.suppressedLegends.${target}`);
+      if (!semantic.layers.some(layer => layer.id === target) || Object.keys(config).some(key => key !== "channels")) {
+        throw invalidSnapshot("Suppressed legend requires an existing mark and channel selection.", path);
+      }
+      validateLegendChannels(config.channels, "Suppressed legend");
+    }
+  }
   for (const [kind, config] of Object.entries(program.guideConfigs.legend ?? {})) {
+    validateLegendOverflow(kind, config);
     validateLegendClip(kind,config);
+    for (const [key, override] of Object.entries(config.blockOverrides ?? {})) {
+      if (override.labelMap !== undefined) {
+        const descriptor = describeLegendBlock(program, kind, config);
+        if (key !== descriptor.key) throw invalidSnapshot("Display labels require their existing legend block owner.", path);
+        normalizeLegendDisplayLabelMap(descriptor, override.labelMap, program.resolvedScales[descriptor.scaleIds[0]]?.type);
+      }
+    }
     validateLegendSpacing(kind,config);
     if (localLegendPosition(config) !== undefined) {
       const descriptor = describeLegendBlock(program, kind, config);
       for (const [key, override] of Object.entries(config.blockOverrides)) {
-        if (override.position !== undefined && key !== descriptor.key) throw invalidSnapshot("Local position requires its existing block owner.", path);
+        if ((override.position !== undefined || override.alongOffset !== undefined) && key !== descriptor.key) throw invalidSnapshot("Local position requires its existing block owner.", path);
       }
     }
     for(const layer of config.symbol?.layers??[])validateLegendLayerOpacity(layer.opacity);
     if(kind==='colorSize') {
-      if(config.combine!=='color-size')throw invalidSnapshot('Color-size legend requires its combined owner.',path);
+      if(!['color-size','color-size-shape'].includes(config.combine))throw invalidSnapshot('Color-size legend requires its combined owner.',path);
       const layer=findLayer(program,config.target);
-      const mapping=resolveColorSizeMapping({layer,scales:program.resolvedScales,pointConfig:program.markConfigs[layer?.id],coordinate:findCoordinate(program,layer?.coordinate)});
-      for(const key of ['target','field','fieldType','colorScale','sizeScale','domain'])if(JSON.stringify(config[key])!==JSON.stringify(mapping[key]))throw invalidSnapshot('Stale color-size mapping.',path);
+      const mapping=resolveColorSizeMapping({layer,scales:program.resolvedScales,pointConfig:program.markConfigs[layer?.id],coordinate:findCoordinate(program,layer?.coordinate),combine:config.combine,channels:colorSizeChannels(config)});
+      for(const key of ['target','field','fieldType','colorScale','sizeScale','shapeScale','colorChannel','domain'])if(JSON.stringify(config[key])!==JSON.stringify(mapping[key]))throw invalidSnapshot('Stale color-size mapping.',path);
       const guide=semantic.guides.legend?.colorSize;
-      if(guide?.colorScale!==mapping.colorScale||guide?.sizeScale!==mapping.sizeScale||guide.title!==config.title)throw invalidSnapshot('Stale color-size semantic owner.',path);
-      requireObject(config.symbol,path);normalizeColorSizeSymbol(config.symbol);
-      if(config.symbol.type!=='point'||!Object.hasOwn(config.symbol,'strokeWidth')||!Object.hasOwn(config.symbol,'opacity'))throw invalidSnapshot('Color-size symbol requires point type.',path);
+      if(guide?.colorScale!==mapping.colorScale||guide?.sizeScale!==mapping.sizeScale||guide.title!==config.title||guide.shapeScale!==mapping.shapeScale||guide.colorChannel!==mapping.colorChannel)throw invalidSnapshot('Stale color-size semantic owner.',path);
+      requireObject(config.symbol,path);normalizeColorSizeSymbol(config.symbol,undefined,config);
+      if(config.symbol.type!=='point'||config.combine==='color-size'&&(!Object.hasOwn(config.symbol,'strokeWidth')||!Object.hasOwn(config.symbol,'opacity')))throw invalidSnapshot('Color-size symbol requires point type.',path);
       const sample=config.sampling;requireObject(sample,path);
       exactKeys(sample,sample.mode==='values'?['mode','count','values']:['mode','count'],path);
       if(!['auto','values'].includes(sample.mode)||!Number.isInteger(sample.count)||sample.count<2)throw invalidSnapshot('Invalid color-size samples.',path);
       validateGeneratedItemLimit(sample.count,'Color-size samples');
-      if(sample.mode==='values'){
+      if(config.combine==='color-size-shape')validateColorSizeShapeSamples(sample,program.resolvedScales[mapping.colorScale]);
+      else if(sample.mode==='values'){
         requireArray(sample.values,path);
         if(!sample.values.length||sample.values.length>100||sample.values.some((v,i)=>!Number.isFinite(v)||i>0&&v<=sample.values[i-1]||v<Math.min(...mapping.domain)||v>Math.max(...mapping.domain)||[mapping.colorScale,mapping.sizeScale].some(id=>program.resolvedScales[id].type==='log'&&v<=0)))throw invalidSnapshot('Invalid exact color-size samples.',path);
       }
@@ -384,15 +407,6 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
     }
     if (config.border && Object.hasOwn(config.border, "strokeDash")) {
       normalizeLegendBorderDash(config.border.strokeDash, "Stored legend border strokeDash");
-    }
-    if (["size","colorSize"].includes(kind) && config.blockOverrides !== undefined) {
-      for (const [key, override] of Object.entries(config.blockOverrides)) {
-        if (override.labelMap === undefined) continue;
-        if (key !== (kind==='colorSize'?'["color","size"]':'["size"]') || !isContinuousSizeScaleType(program.resolvedScales[kind==='colorSize'?config.sizeScale:config.scale]?.type)) {
-          throw invalidSnapshot("Numeric display labels require a continuous size legend block.", path);
-        }
-        normalizeNumericDisplayLabelMap(override.labelMap, "Stored size legend labelMap");
-      }
     }
     if (config.titleStyle !== undefined) {
       validateOptionObject(config.titleStyle, LEGEND_TITLE_STYLE_KEYS, "Stored legend title style");
@@ -458,19 +472,49 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
     }
   }
 
+  for (const [id, config] of Object.entries(program.materializationConfigs.rowProvenance ?? {})) {
+    exactKeys(config, ["indices"], `${path}.materializationConfigs.rowProvenance.${id}`);
+    const { indices } = config;
+    const dataset = resources.get("data").get(id), source = resources.get("data").get(dataset?.source);
+    if (dataset?.transform?.[0]?.type !== "markFilter" || !source || !Array.isArray(indices) ||
+        indices.length !== dataset.values?.length || Array.from(indices).some((index, offset) =>
+          !Number.isInteger(index) || index < 0 || index >= source.values.length ||
+          (offset > 0 && index <= indices[offset - 1]) || !sameLookupValue(dataset.values[offset], source.values[index]))) {
+      throw invalidSnapshot("Invalid filtered row provenance.", path);
+    }
+  }
   const selections = program.materializationConfigs.selections ?? {};
   requireObject(selections, `${path}.materializationConfigs.selections`);
   for (const [id, selection] of Object.entries(selections)) {
     validateUserId(id, "Selection id");
-    exactKeys(selection, ["target", "selector"], `${path}.materializationConfigs.selections.${id}`);
+    exactKeys(selection, ["target", "selector", ...(Object.hasOwn(selection, "sourceSelection") ? ["sourceSelection"] : [])], `${path}.materializationConfigs.selections.${id}`);
     validateUserId(selection.target, "Selection target");
     normalizeMarkSelector(selection.selector);
+    if (Object.hasOwn(selection, "sourceSelection")) validateUserId(selection.sourceSelection, "Composite selection owner");
   }
   resources.set("selection", new Map(Object.entries(selections)));
   for (const reference of collectAllResourceReferences(program)) {
     if (reference.kind === "data") resolveDatasetReference(program, reference.id);
     else if (!resources.get(reference.kind)?.has(reference.id)) {
       throw invalidSnapshot(`Unknown ${reference.kind} "${reference.id}" referenced by ${reference.ownerKind} "${reference.ownerId}".`, path);
+    }
+  }
+  for (const selection of Object.values(selections)) {
+    if (selection.sourceSelection !== undefined) {
+      const owner = selections[selection.sourceSelection];
+      if (owner.sourceSelection !== undefined || owner.target === selection.target ||
+          !highlightTargets(program, owner.target).includes(selection.target)) {
+        throw invalidSnapshot("Invalid composite selection owner.", path);
+      }
+    }
+    if (selection.selector.rows !== undefined) validateRowSelectionDataset(selection.selector.rows, resources.get("data").get(selection.selector.rows.data));
+  }
+  for (const config of Object.values(program.materializationConfigs.highlights ?? {})) {
+    if (config.groupSelection === undefined) continue;
+    const owner = selections[config.groupSelection], selection = selections[config.selection];
+    if (owner.sourceSelection !== undefined || selection.target !== config.target ||
+        (config.selection !== config.groupSelection && selection.sourceSelection !== config.groupSelection)) {
+      throw invalidSnapshot("Invalid composite highlight selection group.", path);
     }
   }
   for (const [id, scale] of Object.entries(program.resolvedScales)) {
@@ -486,6 +530,10 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
     }
   }
   for (const id of Object.keys(program.markConfigs)) {
+    if (program.markConfigs[id].textOverrides !== undefined) {
+      if (resources.get("mark").get(id).mark.type !== "text") throw invalidSnapshot("Text overrides require a text mark.", path);
+      normalizeTextOverrides(program.markConfigs[id].textOverrides);
+    }
     validateRegressionPlacement(program.markConfigs[id].regression?.placement);
     requestedMarkClip(program.markConfigs[id]);
     validateMarkClipCoordinate(program, resources.get("mark").get(id), program.markConfigs[id].clip);
@@ -515,5 +563,30 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
     if (graphic.items !== undefined) validateGraphicItemLimit(graphic.items.length, resolveGraphicItemCapacity(program, {
       id, label: "Graphic collection length"
     }));
+  }
+}
+
+function validateGuideVisibilityState(program) {
+  const check = (visibility, allowed) => {
+    if (visibility === undefined) return;
+    if (!isPlainObject(visibility) || Object.entries(visibility).some(([key, value]) => !allowed.includes(key) || typeof value !== "boolean"))
+      throw new TypeError("Stored guide visibility must contain only supported boolean flags.");
+  };
+  for (const config of Object.values(program.guideConfigs.axis ?? {})) {
+    check(config.visibility, ["all", "line", "ticks", "labels", "title"]);
+    for (const dimension of config.axes?.dimensions ?? []) check(dimension.visibility, ["all", "line", "ticks", "labels", "title"]);
+  }
+  for (const config of Object.values(program.guideConfigs.legend ?? {})) check(config.visibility, ["all", "labels", "titleStyle"]);
+  for (const config of Object.values(program.guideConfigs.grid ?? {})) if (Object.hasOwn(config, "visible") && typeof config.visible !== "boolean")
+    throw new TypeError("Stored grid visible must be a boolean.");
+  const paint = program.materializationConfigs.guideVisibilityPaint;
+  if (paint !== undefined) {
+    if (!isPlainObject(paint)) throw new TypeError("Stored guide visibility paint must be an object.");
+    for (const items of Object.values(paint)) {
+      if (!isPlainObject(items)) throw new TypeError("Stored guide visibility paint entries must be objects.");
+      for (const value of Object.values(items)) if (!isPlainObject(value) || Object.keys(value).length !== 1 ||
+          !Object.hasOwn(value, "opacity") || value.opacity !== null && (!Number.isFinite(value.opacity) || value.opacity < 0 || value.opacity > 1))
+        throw new TypeError("Stored guide visibility paint requires an original opacity or null.");
+    }
   }
 }

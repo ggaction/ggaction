@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "marks",
   "summary": "Remove the target point mark's jitter assignment and restore positions derived directly from its semantic encodings.",
-  "signature": "removeJitter(options?: RemoveJitterOptions): ChartProgram;",
+  "signature": "removeJitter(options?: TargetedOptions<RemoveJitterOptions>): ChartProgram;",
   "intents": [
     "remove jitter",
     "remove",
@@ -52,7 +52,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     }
   ],
   "callPatterns": [

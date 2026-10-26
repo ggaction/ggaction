@@ -101,7 +101,7 @@ export function resolvePositionedLineMaterialization({
   const radiusScaleId = layer.encoding?.radius?.scale;
   const lineOptions = polar
     ? { thetaDomain: resolvedScales[thetaScaleId].domain }
-    : { xBinBoundaries, xDomain: resolvedScales[xScaleId].domain };
+    : { xBinBoundaries, xDomain: resolvedScales[xScaleId].domain, yDomain: resolvedScales[yScaleId].domain };
   const derived = deriveLineSeries(rows, layer, { ...lineOptions, scales: resolvedScales });
   const commands = polar
     ? derived.series.map(series => buildPolarLinePathCommands({
@@ -119,7 +119,9 @@ export function resolvePositionedLineMaterialization({
           series.values.map(value => value.x),
           resolvedScales[xScaleId]
         );
-        const y = mapContinuousScaleValues(
+        const mapY = ["nominal", "ordinal"].includes(layer.encoding.y.fieldType)
+          ? mapOrdinalPositionValues : mapContinuousScaleValues;
+        const y = mapY(
           series.values.map(value => value.y),
           resolvedScales[yScaleId]
         );

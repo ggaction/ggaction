@@ -10,6 +10,7 @@ import { resolveMarkItems } from "./materialization/selection/policies/index.js"
 import { channelMapFromRow } from "./materialization/selection/items/common.js";
 import { deriveLineSeries, resolveLineBins } from "./grammar/lineSeries.js";
 import { deriveAreaSeries, deriveCenteredAreaSeries, deriveDensityAreaSeries, layoutDensityAreaSeries } from "./grammar/areaSeries.js";
+import { resolveOverlaySeries } from "./materialization/overlayItems.js";
 import { findUpstreamTransform } from "./materialization/dataProvenance.js";
 
 function unsupported(id, message) {
@@ -33,6 +34,7 @@ function pathRows(program, layer) {
       scales: program.semanticSpec.scales,
       ...(x?.bin === undefined ? {} : { xBinBoundaries: resolveLineBins(rows, layer, requireSemanticScale(program, x.scale)).boundaries }),
       xDomain: program.resolvedScales[x?.scale]?.domain,
+      yDomain: program.resolvedScales[layer.encoding.y?.scale]?.domain,
       thetaDomain: program.resolvedScales[layer.encoding.theta?.scale]?.domain
     });
   } else {
@@ -64,6 +66,17 @@ function pathRows(program, layer) {
 function finalRows(program, layer) {
   if (program.graphicSpec.objects[layer.id] === undefined) {
     unsupported(layer.id, "the owner is not materialized");
+  }
+  if (layer.derivedBindings?.overlay) {
+    return resolveOverlaySeries(program, layer.derivedBindings.overlay).flatMap(group =>
+      group.points.map(point => ({
+        series: Object.fromEntries(["group", "color", "stroke"].flatMap(channel => {
+          const encoding = layer.encoding[channel];
+          return encoding?.field !== undefined && ["nominal", "ordinal"].includes(encoding.fieldType)
+            ? [[encoding.field, point.fields[encoding.field]]] : [];
+        })),
+        values: { ...channelMapFromRow(point.fields, layer), x: point.channels.x, y: point.channels.y }
+      })));
   }
   if (["line", "area"].includes(layer.mark.type)) return pathRows(program, layer);
   if (!["point", "bar", "arc", "rule", "tick", "rect"].includes(layer.mark.type)) {

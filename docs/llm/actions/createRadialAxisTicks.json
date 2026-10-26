@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "axes",
   "summary": "Create missing radial-axis ticks independently of the other components.",
-  "signature": "createRadialAxisTicks(options?: CreateRadialAxisTicksOptions): ChartProgram;",
+  "signature": "createRadialAxisTicks(options?: TargetedOptions<CreateRadialAxisTicksOptions>): ChartProgram;",
   "intents": [
     "create radial axis ticks",
     "create",
@@ -24,7 +24,8 @@
     ],
     "idOptions": [
       "scale",
-      "coordinate"
+      "coordinate",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -67,6 +68,10 @@
     },
     {
       "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -121,10 +126,15 @@
       "name": "angle",
       "required": false,
       "type": "number | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "createRadialAxisTicks({ scale?, coordinate?, color?, lineWidth?, length?, count?, values?, angle? })"
+    "createRadialAxisTicks({ scale?, coordinate?, target?, color?, lineWidth?, length?, count?, values? })"
   ],
   "snippet": "program.createRadialAxisTicks({})",
   "errors": [],

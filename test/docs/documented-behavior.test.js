@@ -18,6 +18,16 @@ async function module(name, source) {
   return import(pathToFileURL(file));
 }
 
+test("the documented adjacent group example adds a full-width row and retains both original panels", async () => {
+  const snippet = (await blocks("api/composition/editing.md")).find(block => block.code.includes("const withWideBottom"));
+  assert.ok(snippet);
+  const { pair, withWideBottom } = await module("adjacent-group", `${snippet.code}\nexport { pair, withWideBottom };`);
+  const { compositionPlotBounds } = await import("../../src/materialization/composition.js");
+  assert.deepEqual(withWideBottom.compositionSpec.children, [pair.compositionSpec.id, "bottom"]);
+  assert.deepEqual(withWideBottom.children[pair.compositionSpec.id].compositionSpec.children, ["bars", "line"]);
+  assert.equal(compositionPlotBounds(withWideBottom.children.bottom).width, compositionPlotBounds(pair).width);
+});
+
 test("the README authoring sequence completes with the repository cars data and its legend", async () => {
   const readme = await readFile(new URL("../../README.md", import.meta.url), "utf8");
   const snippet = documentationCodeBlocks(readme).find(block =>

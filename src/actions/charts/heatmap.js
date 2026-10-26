@@ -1,3 +1,4 @@
+import { findSemanticScale } from "../../selectors/scales.js";
 import { action } from "../../core/action.js";
 import { isPlainObject } from "../../core/immutable.js";
 import {
@@ -71,7 +72,8 @@ function normalizeBinnedColor(value) {
   return { ...value };
 }
 
-function resolvedPosition(encoding, field, extent) {
+function resolvedPosition(encoding, field, extent, program) {
+  if (encoding.scale?.id && findSemanticScale(program, encoding.scale.id)) return {field,fieldType:"quantitative",scale:encoding.scale};
   const scale = encoding.scale ?? {};
   return {
     field,
@@ -178,8 +180,8 @@ export const createHeatmap = /* @__PURE__ */ action(
     });
     const transform = requireDataset(binned, generatedData).transform[0];
     const resolved = transform.resolved;
-    const xEncoding = resolvedPosition(x, transform.as.x0, resolved.extent.x);
-    const yEncoding = resolvedPosition(y, transform.as.y0, resolved.extent.y);
+    const xEncoding = resolvedPosition(x, transform.as.x0, resolved.extent.x, this);
+    const yEncoding = resolvedPosition(y, transform.as.y0, resolved.extent.y, this);
     const next = binned
       .createRectMark({ id, data: generatedData, ...rect })
       .encodeX(positionArgs(xEncoding, { target: id, coordinate: args.coordinate }))

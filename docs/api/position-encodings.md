@@ -11,6 +11,21 @@ Choose the position family from the semantic mark and field relationship. All
 position actions infer the current mark, use or create a compatible coordinate,
 resolve a channel scale, and explicitly materialize the affected graphics.
 
+Line aggregation groups exact observed independent-axis values and series.
+Quantitative positions remain continuous and sorted numerically; they do not
+require bins. With an explicit bin, vertices use interval midpoints instead.
+The same rule applies to aggregate Y over X or aggregate X over Y.
+
+Changing an Area's independent position also updates completed-key alignment.
+Overlay areas use observed rows; stacked areas realign unique rows at the new
+key using the existing fill policy. A stacked position cannot also be its
+measurement or series field, and duplicate group/key rows require explicit
+reaggregation of the original observations. No implicit mean of means is used.
+
+For measured polar sectors, changing the category also updates a color role
+that followed the old category. Polar guide samples follow the new domain;
+custom guide styles are preserved.
+
 ## Supported marks and modes
 
 <!-- action-capabilities:position:start -->

@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "axes",
   "summary": "Create missing radial-axis title independently of the other components.",
-  "signature": "createRadialAxisTitle(options?: CreateRadialAxisTitleOptions): ChartProgram;",
+  "signature": "createRadialAxisTitle(options?: TargetedOptions<CreateRadialAxisTitleOptions>): ChartProgram;",
   "intents": [
     "create radial axis title",
     "create",
@@ -24,7 +24,8 @@
     ],
     "idOptions": [
       "scale",
-      "coordinate"
+      "coordinate",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -67,6 +68,10 @@
       "strategy": "explicit-current-unique-or-error"
     },
     {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
       "input": "omitted optional options",
       "strategy": "documented-default"
     }
@@ -83,6 +88,11 @@
       "name": "position",
       "required": false,
       "type": "\"inside\" | \"outside\" | undefined"
+    },
+    {
+      "name": "align",
+      "required": false,
+      "type": "\"center\" | \"left\" | \"right\" | undefined"
     },
     {
       "name": "text",
@@ -128,10 +138,15 @@
       "name": "angle",
       "required": false,
       "type": "number | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "createRadialAxisTitle({ scale?, coordinate?, position?, text?, offset?, color?, fontSize?, fontFamily? })"
+    "createRadialAxisTitle({ scale?, coordinate?, target?, position?, align?, text?, offset?, color? })"
   ],
   "snippet": "program.createRadialAxisTitle({})",
   "errors": [],

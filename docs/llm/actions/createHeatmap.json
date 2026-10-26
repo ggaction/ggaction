@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "charts",
   "summary": "Create one rect cell per valid pre-gridded row, or bin raw quantitative x/y rows into ranged cells colored by count.",
-  "signature": "createHeatmap(options: CreateHeatmapOptions): ChartProgram;",
+  "signature": "createHeatmap(options: TargetedOptions<CreateHeatmapOptions>): ChartProgram;",
   "intents": [
     "create heatmap",
     "create",
@@ -25,7 +25,8 @@
     "idOptions": [
       "id",
       "data",
-      "coordinate"
+      "coordinate",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -56,6 +57,10 @@
     },
     {
       "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -115,6 +120,11 @@
       "name": "guides",
       "required": false,
       "type": "false | CartesianSeparateGuideOptions | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [

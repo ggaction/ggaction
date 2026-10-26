@@ -1,7 +1,7 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 
-import { loadNativeBackend } from "./nativeBackend.js";
+import { loadNativeBackend, nativeFontResolver } from "./nativeBackend.js";
 
 import {
   drawResolvedGraphicSpec,
@@ -73,10 +73,10 @@ export async function renderToPDFBuffer(program, options = {}) {
   const target = resolveGraphicRenderTarget(graphicSpec);
   requirePDFPageDimensions(target);
   preflightCanvasGraphicSpec(target);
-  const { PDFDocument, createCanvas } = await loadNativeBackend();
+  const { PDFDocument, createCanvas, GlobalFonts } = await loadNativeBackend();
   const document = new PDFDocument(metadata);
   const context = document.beginPage(target.width, target.height);
-  drawResolvedGraphicSpec(target, context, {createCanvas});
+  drawResolvedGraphicSpec(target, context, {createCanvas, resolveFontFamily: nativeFontResolver(GlobalFonts)});
   document.endPage();
   const buffer = document.close();
   return Object.freeze({

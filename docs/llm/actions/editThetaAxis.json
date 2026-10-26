@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "axes",
   "summary": "Edit selected theta-axis components.",
-  "signature": "editThetaAxis(options: EditThetaAxisOptions): ChartProgram;",
+  "signature": "editThetaAxis(options: TargetedOptions<EditThetaAxisOptions>): ChartProgram;",
   "intents": [
     "edit theta axis",
     "edit",
@@ -21,7 +21,9 @@
       "compatible scale or encoding context"
     ],
     "owns": [],
-    "idOptions": []
+    "idOptions": [
+      "target"
+    ]
   },
   "authoringRoles": [
     "H3"
@@ -41,7 +43,12 @@
     ]
   },
   "units": [],
-  "inference": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
   "completionRequirements": {
     "state": "contextual",
     "requires": [
@@ -54,31 +61,41 @@
     {
       "name": "labels",
       "required": false,
-      "type": "false | ThetaAxisLabelOptions | undefined"
+      "type": "false | VisibleGuide<ThetaAxisLabelOptions> | undefined"
     },
     {
       "name": "ticksAndLabels",
       "required": false,
-      "type": "false | ThetaTicksAndLabelsOptions | undefined"
+      "type": "false | VisibleTickGroup<ThetaTicksAndLabelsOptions> | undefined"
+    },
+    {
+      "name": "visible",
+      "required": false,
+      "type": "boolean | undefined"
     },
     {
       "name": "line",
       "required": false,
-      "type": "false | AxisLineStyleOptions | undefined"
+      "type": "false | VisibleGuide<AxisLineStyleOptions> | undefined"
     },
     {
       "name": "ticks",
       "required": false,
-      "type": "false | PolarTickOptions | undefined"
+      "type": "false | VisibleGuide<PolarTickOptions> | undefined"
     },
     {
       "name": "title",
       "required": false,
-      "type": "false | PolarTitleOptions | undefined"
+      "type": "false | VisibleGuide<PolarTitleOptions> | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "editThetaAxis({ labels?, ticksAndLabels?, line?, ticks?, title? })"
+    "editThetaAxis({ target?, labels?, ticksAndLabels?, visible?, line?, ticks?, title? })"
   ],
   "snippet": "program.editThetaAxis({ line: { color: \"#222222\" } })",
   "errors": [],

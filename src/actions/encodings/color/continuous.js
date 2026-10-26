@@ -26,7 +26,8 @@ import {
   assertNoConstantColor,
   withoutConstantColor,
   resolveColorScaleOptions,
-  resolveColorReassignmentScaleOptions
+  resolveColorReassignmentScaleOptions,
+  withColorLegendReassignment
 } from "./policy.js";
 
 import { applyTemporalUnit } from "../temporal.js";
@@ -85,38 +86,40 @@ export function encodeContinuousColor(program, args) {
   } else {
     readQuantitativeField(dataset.values, args.field);
   }
-  const prepared = baseline === program ? baseline : releaseDetachedEncodingScale(baseline, scale.id);
-  let next = applyTemporalUnit(prepared, target, "color", temporalUnit, layer.encoding?.color)
-    .editSemantic({
-      property: `layer[${target}].encoding.color.field`,
-      value: args.field
-    })
-    .editSemantic({
-      property: `layer[${target}].encoding.color.fieldType`,
-      value: args.fieldType
-    })
-    .editSemantic({
-      property: `layer[${target}].encoding.color.scale`,
-      value: scale.id
-    });
-  if (layer.mark.type === "tick") {
-    const config = { ...next.markConfigs[target] };
-    delete config.stroke;
-    next = next._withMarkConfig(target, config);
-  }
-  const encoded = aggregate === undefined
-    ? next
-    : next.editSemantic({
-        property: `layer[${target}].encoding.color.aggregate`,
-        value: aggregate
+  return withColorLegendReassignment(baseline, layer, scale, candidate => {
+    const prepared = baseline === program ? candidate : releaseDetachedEncodingScale(candidate, scale.id);
+    let next = applyTemporalUnit(prepared, target, "color", temporalUnit, layer.encoding?.color)
+      .editSemantic({
+        property: `layer[${target}].encoding.color.field`,
+        value: args.field
+      })
+      .editSemantic({
+        property: `layer[${target}].encoding.color.fieldType`,
+        value: args.fieldType
+      })
+      .editSemantic({
+        property: `layer[${target}].encoding.color.scale`,
+        value: scale.id
       });
-  const scaled = encoded.setQuantitativeColorScale(scale);
-  return applyDetachedScaleRematerialization(applyMaterializationPlan(
-    scaled,
-    planEncodingRematerialization(scaled, {
-      target,
-      channel: "color",
-      scale: scale.id
-    })
-  ), [layer]);
+    if (layer.mark.type === "tick") {
+      const config = { ...next.markConfigs[target] };
+      delete config.stroke;
+      next = next._withMarkConfig(target, config);
+    }
+    const encoded = aggregate === undefined
+      ? next
+      : next.editSemantic({
+          property: `layer[${target}].encoding.color.aggregate`,
+          value: aggregate
+        });
+    const scaled = encoded.setQuantitativeColorScale(scale);
+    return applyDetachedScaleRematerialization(applyMaterializationPlan(
+      scaled,
+      planEncodingRematerialization(scaled, {
+        target,
+        channel: "color",
+        scale: scale.id
+      })
+    ), [layer]);
+  });
 }

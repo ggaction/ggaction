@@ -1,14 +1,14 @@
 export interface LegendOptions {
   /** Positive sample window height. Clips point-bearing glyphs without changing mapped area. */
   clipHeight?: number;
-  /** Explicitly combine ordinal size/shape or same-field quantitative color/size circle samples. Omission retains separate blocks. */
-  combine?: "separate" | "size-shape" | "color-size";
+  /** Combine size/shape, continuous color/size, or interval color/stroke + size + ordinal shape samples. Omission retains separate blocks. */
+  combine?: "separate" | "size-shape" | "color-size" | "color-size-shape";
   /** Continuous color only. Omission creates the existing gradient; symbols samples the same scale without changing marks. */
   representation?: "gradient" | "symbols";
   /** Categorical, interval, size, or stroke-width layout. Defaults to edge; legacy-bottom is categorical and requires bottom position. */
   layout?: "edge" | "legacy-bottom";
   /** Categorical and ordinal-size display limit; omitted or false shows every item. */
-  overflow?: false | { maxItems: number; summary?: "ellipsis-count" };
+  overflow?: false | { maxItems: number; summary?: "ellipsis-count"; summarySymbol?: "first-hidden" };
   /** Categorical item order; preserves the appearance scale's assignments. */
   order?: LegendOrder;
   target?: string;
@@ -18,7 +18,7 @@ export interface LegendOptions {
   position?: "right" | "left" | "bottom" | "top" | "top-left" | "top-right" | "bottom-left" | "bottom-right";
   /** Arrange every legend block owned by the selected target. Item direction and columns remain independent. */
   blockLayout?: "row" | "column" | "wrap";
-  /** Occupied group top-left relative to the plot. Cannot be supplied with position, align, or offset in the same call. */
+  /** Occupied group top-left relative to the plot. Cannot be supplied with position, align, offset, or alongOffset in the same call. */
   at?: { x: number; y: number };
   /** Single top/bottom edge: align complete occupied bounds, including border strokes, to the plot. Side positions require center. */
   align?: "left" | "center" | "right";
@@ -26,6 +26,8 @@ export interface LegendOptions {
   direction?: "horizontal" | "vertical";
   /** Categorical legends accept a positive column count on every supported position. */
   columns?: number;
+  /** Signed logical pixels along the edge: right for top/bottom and in-plot corners, down for left/right. */
+  alongOffset?: number;
   /** Single top/bottom edge: gap from the plot to the nearest occupied legend edge. */
   offset?: number;
   /** bottom is gradient-only; left retains the existing categorical/opacity rules. */
@@ -33,7 +35,7 @@ export interface LegendOptions {
   /** false hides the title while retaining its inferred field text. */
   /** LF, CRLF and CR preserve explicit title lines, including blank lines. */
   title?: string | false;
-  /** Exact ascending samples for continuous size, opacity, stroke-width, color symbols, or color/stroke gradient ticks. Cannot be combined with count. */
+  /** Exact ascending samples for continuous guides, or one representative per interval for color-size-shape. Cannot be combined with count. */
   values?: readonly number[];
   count?: number;
   /** Body-only opacity defaults to 1; edits preserve omitted fields. */

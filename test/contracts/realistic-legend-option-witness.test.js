@@ -12,7 +12,7 @@ test('new legend option and selector witnesses retain five calls and three authe
  for(const action of ['editLegend','editLegendLayout','editLegendLabels','editLegendTitle','editLegendSymbols','editLegendBorder','editLegendBlock']) {
   for(const channel of channels) requirements.push({id:`${action}.channel=${channel}`,action,test:args=>args.channel===channel});
  }
- for(const action of ['createLegend','editLegend','createGuides']) for(const combine of ['separate','size-shape','color-size']) requirements.push({id:`${action}.combine=${combine}`,action,test:args=>at(args,action==='createGuides'?'legend.combine':'combine')===combine});
+ for(const action of ['createLegend','editLegend','createGuides']) for(const combine of ['separate','size-shape','color-size','color-size-shape']) requirements.push({id:`${action}.combine=${combine}`,action,test:args=>at(args,action==='createGuides'?'legend.combine':'combine')===combine});
  for(const action of ['createLegend','createGuides','editLegend','editLegendSymbols','editLegendBlock']) {
   const path=action==='createGuides'?'legend.clipHeight':'clipHeight';
   requirements.push({id:`${action}.${path}`,action,test:args=>typeof at(args,path)==='number'});
@@ -26,6 +26,7 @@ test('new legend option and selector witnesses retain five calls and three authe
  }
  for(const action of ['createLegend','createGuides','editLegendBorder']) requirements.push({id:`${action}.border.strokeDash`,action,test:args=>Array.isArray(at(args,action==='createGuides'?'legend.border.strokeDash':'border.strokeDash'))});
  for(const path of ['symbol.opacity','labelMap']) requirements.push({id:`editLegendBlock.${path}`,action:'editLegendBlock',test:args=>at(args,path)!==undefined});
+ for(const action of ['createLegend','editLegend','createGuides']) requirements.push({id:`${action}.summarySymbol`,action,test:args=>at(args,action==='createGuides'?'legend.overflow.summarySymbol':'overflow.summarySymbol')==='first-hidden'});
  const stats=new Map(requirements.map(r=>[r.id,{calls:0,datasets:new Set()}]));
 
  for(const dataset of ['tt-tour-de-france-winners','tt-london-marathon-winners','tt-penguins']) for(let repetition=0;repetition<5;repetition++) {
@@ -54,7 +55,7 @@ for(const dataset of ['tt-tour-de-france-winners','tt-london-marathon-winners','
  const view=realisticRecordView(dataset,{rowLimit:24});
  const p=chart().createCanvas({width:3000,height:2200,margin:700}).createData({id:'analysisRows',values:view.rows});
  for(let repetition=0;repetition<5;repetition++) for(const action of ['createScatterPlot','createPolarScatterPlot','createStripPlot','createBeeswarmPlot','createRaincloudPlot']) {
-  const result=appendFacadeLegendCombinations(p,{action,xField:'orderNumeric',yField:'value',numberField:'value',categoryField:'category',modes:action==='createPolarScatterPlot'||action==='createRaincloudPlot'?['size-shape']:['size-shape','color-size']});
+  const result=appendFacadeLegendCombinations(p,{action,xField:'orderNumeric',yField:'value',numberField:'value',categoryField:'category',modes:action==='createPolarScatterPlot'||action==='createRaincloudPlot'?['size-shape']:['size-shape','color-size','color-size-shape']});
   assert.deepEqual(result.semanticSpec.datasets.find(d=>d.id==='analysisRows').values,view.rows);
  }
 });

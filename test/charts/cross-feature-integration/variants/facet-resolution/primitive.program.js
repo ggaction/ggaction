@@ -11,6 +11,7 @@ import { linearPathCommands } from "../../../../support/path.js";
 
 import {
   CELL_SIZE,
+  FACET_TITLE_CENTERS,
   createGapminderRegressionFacetValues,
   OUTER_GUIDE_CLUSTERS,
   OUTER_GUIDE_LAYOUT
@@ -335,7 +336,7 @@ export function createGapminderRegressionFacetPrimitives(rows, options = {}) {
   });
   program = graphic(program, "chartTitle", "text", {
     x: values.plot.x + values.plot.width / 2,
-    y: 19,
+    y: FACET_TITLE_CENTERS.title,
     text: "Fertility and Life Expectancy",
     fill: "#0f172a",
     fontSize: 19,
@@ -346,7 +347,7 @@ export function createGapminderRegressionFacetPrimitives(rows, options = {}) {
   });
   return graphic(program, "chartSubtitle", "text", {
     x: values.plot.x + values.plot.width / 2,
-    y: 43,
+    y: FACET_TITLE_CENTERS.subtitle,
     text: options.xResolution === "independent"
       ? "Regression recomputed by cluster · independent fertility scales"
       : "Regression recomputed by cluster · shared scales",
@@ -388,7 +389,7 @@ export function createGapminderOuterGuideFacetPrimitives(rows) {
   program = addPopulationLegend(program, values);
   program = graphic(program, "chartTitle", "text", {
     x: values.plot.x + values.plot.width / 2,
-    y: 19,
+    y: FACET_TITLE_CENTERS.title,
     text: "Fertility and Life Expectancy",
     fill: "#0f172a",
     fontSize: 19,
@@ -399,7 +400,7 @@ export function createGapminderOuterGuideFacetPrimitives(rows) {
   });
   return graphic(program, "chartSubtitle", "text", {
     x: values.plot.x + values.plot.width / 2,
-    y: 43,
+    y: FACET_TITLE_CENTERS.subtitle,
     text: "Regression by cluster · outer axes · shared population legend",
     fill: "#64748b",
     fontSize: 12,

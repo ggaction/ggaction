@@ -132,14 +132,16 @@ test("keeps grouped quantitative lines independent of position action order", ()
   assert.equal(xThenY.graphicSpec.objects.line.items.length, 2);
 });
 
-test("does not reinterpret a quantitative x partial as an aggregate line", () => {
-  const partial = base().encodeX({ field: "x", target: "line" });
+test("explicit aggregate Y groups a quantitative X partial by exact positions", () => {
+  const partial = base().encodeX({ field: "x", target: "line", scale: { domain: [1, 2] } });
   const before = JSON.stringify(partial);
-
-  assert.throws(
-    () => partial.encodeY({ field: "y", aggregate: "mean", target: "line" }),
-    /requires a temporal, categorical, or binned quantitative x encoding/
-  );
+  const next = partial.encodeY({ field: "y", aggregate: "mean", target: "line", scale: { nice: false, zero: false } });
+  assert.equal(next.semanticSpec.layers[0].encoding.x.bin, undefined);
+  assert.equal(next.semanticSpec.layers[0].encoding.y.aggregate, "mean");
+  assert.deepEqual(next.resolvedScales.y.domain, [3, 4.5]);
+  assert.deepEqual(next.graphicSpec.objects.line.items[0].properties.commands, [
+    { op: "M", x: 20, y: 160 }, { op: "L", x: 220, y: 20 }
+  ]);
   assert.equal(JSON.stringify(partial), before);
 });
 

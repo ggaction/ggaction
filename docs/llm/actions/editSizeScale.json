@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "core",
   "summary": "Edits size scale, including settings for area mapping.",
-  "signature": "editSizeScale(options: EditSizeScaleOptions): ChartProgram;",
+  "signature": "editSizeScale(options: TargetedOptions<EditSizeScaleOptions>): ChartProgram;",
   "intents": [
     "edit size scale",
     "edit",
@@ -71,7 +71,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "type",

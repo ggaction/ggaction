@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "encodings",
   "summary": "Compose binned bar encodeX and count encodeY as one atomic histogram action.",
-  "signature": "encodeHistogram(options: HistogramEncodingOptions): ChartProgram;",
+  "signature": "encodeHistogram(options: TargetedOptions<HistogramEncodingOptions>): ChartProgram;",
   "intents": [
     "encode histogram",
     "encode",
@@ -87,7 +87,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "coordinate",

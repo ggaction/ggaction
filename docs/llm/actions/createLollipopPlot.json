@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "charts",
   "summary": "Create a value point and a stem to a finite baseline, which defaults to zero.",
-  "signature": "createLollipopPlot(options: CreateLollipopPlotOptions): ChartProgram;",
+  "signature": "createLollipopPlot(options: TargetedOptions<CreateLollipopPlotOptions>): ChartProgram;",
   "intents": [
     "create lollipop plot",
     "create",
@@ -25,7 +25,8 @@
     "idOptions": [
       "id",
       "data",
-      "coordinate"
+      "coordinate",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -56,6 +57,10 @@
     },
     {
       "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -97,6 +102,11 @@
       "type": "false | EndpointLabelOptions | undefined"
     },
     {
+      "name": "missing",
+      "required": false,
+      "type": "\"error\" | \"skip\" | undefined"
+    },
+    {
       "name": "id",
       "required": false,
       "type": "string | undefined"
@@ -130,6 +140,11 @@
       "name": "guides",
       "required": false,
       "type": "false | CartesianSeparateGuideOptions | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [

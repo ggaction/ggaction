@@ -3,11 +3,12 @@ import { isPlainObject } from "../../../core/immutable.js";
 import { findSemanticScale } from "../../../selectors/scales.js";
 
 
-export function resolveDensityScaleOptions(value, defaults, label) {
+export function resolveDensityScaleOptions(value, defaults, label, program) {
   if (value !== undefined && !isPlainObject(value)) {
     throw new TypeError(`${label} must be a plain object.`);
   }
-  const scale = { ...defaults, ...(value ?? {}) };
+  const existing = program && value?.id ? findSemanticScale(program, value.id) : undefined;
+  const scale = { ...(existing ?? defaults), ...(value ?? {}) };
   if (value?.type === "log" && value.zero === undefined) delete scale.zero;
   return scale;
 }

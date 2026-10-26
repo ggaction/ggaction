@@ -48,9 +48,25 @@ export function releaseNamedResourceOwnership(program, { kind, id, dataOwner }) 
     materializationConfigs,
     ["regressionFits", dataOwner?.current ?? id]
   ).value;
+  materializationConfigs = removeMaterializationConfig(
+    materializationConfigs,
+    ["rowProvenance", dataOwner?.current ?? id]
+  ).value;
   const context = program.context.currentData === id
     ? freezeOwned({ ...program.context, currentData: undefined })
     : program.context;
   if (context === program.context && materializationConfigs === program.materializationConfigs) return program;
   return program._clone({ context, materializationConfigs });
+}
+
+// Scoped planners temporarily annotate context. Restore only those keys after
+// the action so genuine target/data context changes survive, and absent keys
+// remain absent in persistence rather than becoming serialized undefined tags.
+export function restoreProgramContextKeys(program, reference, keys) {
+  const context = { ...program.context };
+  for (const key of keys) {
+    if (Object.hasOwn(reference.context, key)) context[key] = reference.context[key];
+    else delete context[key];
+  }
+  return program._clone({ context: freezeOwned(context) });
 }

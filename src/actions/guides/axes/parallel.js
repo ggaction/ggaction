@@ -1,9 +1,11 @@
+import { materializeHardTextLines } from "../../../materialization/textLines.js";
 import { closedAction } from "../../../core/action.js";
 import { validateGeneratedItemLimit } from "../../../core/validation.js";
 import { resolvePlotGraphicPlacement } from "../../../materialization/graphicHierarchy.js";
 import { requireParallelAxisLayer, resolveParallelAxisTarget, resolveStyledParallelAxes } from "./parallel/resolve.js";
 import { PARALLEL_AXIS_GRAPHICS, PARALLEL_AXIS_PARTS, hasParallelAxisParts } from "./parallel/policy.js";
 import { registerParallelAxisLifecycleActions } from "./parallel/lifecycle.js";
+import { withGuideLayoutValidation } from "../../../materialization/guides/layout.js";
 
 function uniform(values) {
   return values.length > 0 && values.every(value => value === values[0]) ? values[0] : values;
@@ -25,7 +27,7 @@ function collectionProperties(part, axes, bounds) {
     fontSize: uniform(axes.map(axis => axis.config.title.fontSize)),
     fontFamily: uniform(axes.map(axis => axis.config.title.fontFamily)),
     fontWeight: uniform(axes.map(axis => axis.config.title.fontWeight)),
-    textAlign: "center", textBaseline: "middle"
+    textAlign: uniform(axes.map(axis => axis.config.title.align ?? "center")), textBaseline: "middle"
   };
   const rows = axes.flatMap(axis => axis[part].values.map((value, index) => ({
     x: axis.x, y: axis[part].y[index], text: axis[part].text?.[index], config: axis.config[part]
@@ -43,14 +45,14 @@ function collectionProperties(part, axes, bounds) {
     fontSize: uniform(rows.map(row => row.config.fontSize)),
     fontFamily: uniform(rows.map(row => row.config.fontFamily)),
     fontWeight: uniform(rows.map(row => row.config.fontWeight)),
-    textAlign: "right", textBaseline: "middle"
+    textAlign: uniform(rows.map(row => row.config.align ?? "right")), textBaseline: "middle"
   };
 }
 
 export const rematerializeParallelAxes = /* @__PURE__ */ closedAction({
   op: "rematerializeParallelAxes",
   description: "Recompute concrete Parallel dimension axes."
-}, ["target"], function (args = {}) {
+}, ["target"], withGuideLayoutValidation(function (args = {}) {
 
   const stored = this.semanticSpec.guides.axis?.parallel;
   if (stored === undefined) throw new Error("rematerializeParallelAxes requires existing Parallel axes.");
@@ -64,6 +66,8 @@ export const rematerializeParallelAxes = /* @__PURE__ */ closedAction({
   const properties = Object.fromEntries(PARALLEL_AXIS_PARTS.map(part => {
     const selected = axes.filter(axis => axis.config[part] !== undefined);
     const value = collectionProperties(part, selected, bounds);
+    if (selected.some(axis => axis.config.visibility !== undefined)) value.opacity = selected.flatMap(axis => Array.from({ length: ["line", "title"].includes(part) ? 1 : axis[part].values.length },
+      () => axis.config.visibility?.all === false || axis.config.visibility?.[part] === false ? 0 : 1));
     validateGeneratedItemLimit(value.length, "Parallel axis item count");
     return [part, { enabled: selected.length > 0, value }];
   }));
@@ -94,9 +98,10 @@ export const rematerializeParallelAxes = /* @__PURE__ */ closedAction({
     for (const [property, item] of Object.entries(value)) {
       next = next.editGraphics({ target: id, property, value: item });
     }
+    if (["title", "labels"].includes(part)) next = materializeHardTextLines(next, id);
   }
   return next._withGuideConfig("parallel", "axes", { target, scales, ...configs });
-});
+}));
 
 export function registerParallelAxisActions(ProgramClass) {
   ProgramClass.prototype.rematerializeParallelAxes = rematerializeParallelAxes;

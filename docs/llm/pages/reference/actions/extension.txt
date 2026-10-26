@@ -71,7 +71,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Required | `string` |
+| `target` | Required | `string \| readonly string[]` |
 | `property` | Optional / branch-dependent | `string \| undefined` |
 | `value` | Optional / branch-dependent | `unknown` |
 | `remove` | Optional / branch-dependent | `boolean \| undefined` |

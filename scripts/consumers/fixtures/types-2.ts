@@ -115,11 +115,21 @@ import {
       comparePrograms,
       describeAction,
       getDatasetSchema,
+      getMarkItems,
       inspectProgram,
       type ActionDescription,
       type ProgramComparison,
       type ProgramInspection
     } from "ggaction/inspection";
+
+    const pickedRows = getMarkItems(chart(), { target: { childPath: ["left"], id: "points" } });
+    const sourceRow: number | undefined = pickedRows[0]?.rows[0]?.index;
+    chart().highlightMarks({ target: "labels", select: { rows: { data: "rows", indices: [0, 2] } }, fontSize: 24 });
+    chart().selectMarks({ rows: { data: "rows", indices: [0] } }).editMarkSelection({ rows: { data: "rows", indices: [] } });
+    // @ts-expect-error row positions are numeric
+    chart().highlightMarks({ select: { rows: { data: "rows", indices: ["0"] } } });
+    // @ts-expect-error inspection grain is closed
+    getMarkItems(chart(), { grain: "series" });
 
     chart().editBarMark({blend:"difference"}).editBarMark({blend:"normal"});
     // @ts-expect-error only the bar editor owns blend
@@ -849,13 +859,17 @@ import {
         layout: "overlay"
       }
     };
-    const invalidLineXAggregate: CreateLinePlotOptions = {
+    const horizontalNumericAggregateLine: CreateLinePlotOptions = {
       x: {
         field: "x",
-        // @ts-expect-error Line x positions cannot aggregate.
         aggregate: "mean"
       },
-      y: "y"
+      y: { field: "y", fieldType: "quantitative" }
+    };
+    // @ts-expect-error A Line needs an independent position; both axes cannot aggregate.
+    const invalidBothLineAggregates: CreateLinePlotOptions = {
+      x: { field: "x", aggregate: "mean" },
+      y: { field: "y", aggregate: "sum" }
     };
     const invalidLineYPolicies: CreateLinePlotOptions = {
       x: "x",
@@ -865,7 +879,7 @@ import {
         bin: { maxBins: 10 }
       }
     };
-    void [invalidLineColorLayout, invalidLineXAggregate, invalidLineYPolicies];
+    void [invalidLineColorLayout, horizontalNumericAggregateLine, invalidBothLineAggregates, invalidLineYPolicies];
     chart().createAreaPlot({ x: "time", y: "value", baseline: 0, missing: "break" }).layoutSeries({ mode: "center" });
     chart().createAreaPlot({ x: "time", y: { lower: "lo", upper: "hi" } });
     basicChart().encodeGroup({ fields: ["series", "region"] }).layoutSeries({ mode: "stack" });

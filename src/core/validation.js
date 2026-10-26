@@ -127,7 +127,14 @@ export function validateFontWeight(value, label, numberType = "number") {
   return value;
 }
 
+export function validateTextAlignment(style, label) {
+  if (Object.hasOwn(style, "align") && !["left", "center", "right"].includes(style.align)) {
+    throw new TypeError(`${label} align requires left, center or right.`);
+  }
+}
+
 export function validateTextStyle(config, label) {
+  validateTextAlignment(config, label);
   validateNonEmptyString(config.color, `${label} color`);
   validatePositiveFinite(config.fontSize, `${label} fontSize`);
   validateNonEmptyString(config.fontFamily, `${label} fontFamily`);

@@ -14,6 +14,42 @@ import {createFacetSharedTopLaneProgram} from "./facet-lane-public.js";
 import {createPlotUnderlayProgram} from "./plot-underlay-public.js";
 
 export const cases = [
+  { id: "guides/three-channel-interval-legend", async run() {
+    for(const factory of [chart,basicChart]) for(const channel of ["color","stroke"]) {
+      const cuts=[5,10,15,20,25],colors=["red","orange","gold","green","blue","purple"];
+      const rows=Array.from({length:30},(_,v)=>({x:v,y:0,v}));
+      const p=factory().createCanvas({width:1000,height:800,margin:250}).createData({values:rows})
+        .createScatterPlot({id:"points",x:"x",y:"y",point:{...(channel==="color"?{stroke:"black"}:{fill:"none"}),strokeWidth:2,opacity:0.7},
+          [channel]:{field:"v",fieldType:"quantitative",scale:{type:"threshold",domain:cuts,range:colors}},
+          size:{field:"v",scale:{type:"threshold",domain:cuts,range:[50,100,150,200,250,300]}},
+          shape:{field:"v",scale:{domain:cuts,range:["circle","square","triangle-up","cross","diamond"],unknown:"circle"}},
+          guides:{axes:false,grid:false,legend:{combine:"color-size-shape",channels:[channel,"size","shape"],values:[0,5,10,15,20,25]}}});
+      const items=p.graphicSpec.objects.colorSizeLegendSymbols.items;
+      assert.deepEqual(items.map(i=>i.type),["circle","circle","rect","path","path","path"]);
+      assert.deepEqual(items.map(i=>i.properties[channel==="color"?"fill":"stroke"]),colors);
+      assert.ok(items.every(i=>i.properties.opacity===0.7));
+      assert.deepEqual(p.semanticSpec.datasets[0].values,rows);
+      assert.deepEqual(deserializeProgram(serializeProgram(p)).graphicSpec,p.graphicSpec);
+      const svg=renderToSVG(p);assert.equal((svg.match(/<circle\b/g)??[]).length,28);
+      assert.equal((svg.match(/<path\b/g)??[]).length,6);
+      assert.equal((await renderToPNGBuffer(p)).width,1000);
+      assert.ok((await renderToPDFBuffer(p)).buffer.length>100);
+    }
+  } },
+  { id: "guides/overflow-summary-line", async run() {
+    const categories=Array.from({length:44},(_,i)=>`Group ${i}`);
+    const p=basicChart().createCanvas({width:700,height:700,margin:{right:300}})
+      .createData({values:categories.map((g,i)=>({x:i,y:i,g}))})
+      .createLinePlot({x:"x",y:"y",color:"g",guides:false})
+      .createLegend({channels:["color"],overflow:{maxItems:29,summarySymbol:"first-hidden"},itemGap:12,
+        labels:{fontSize:10},symbol:{layers:[{type:"line",length:5,lineWidth:1.5}]}});
+    assert.equal(p.graphicSpec.objects.seriesLegendSymbols.items.length,30);
+    assert.equal(p.graphicSpec.objects.seriesLegendLabels.items[29].properties.text,"…15 entries");
+    assert.deepEqual(deserializeProgram(serializeProgram(p)).graphicSpec,p.graphicSpec);
+    assert.ok(renderToSVG(p).includes("…15 entries"));
+    assert.ok((await renderToPNGBuffer(p)).buffer.length>100);
+  } },
+
   { id: "guides/axis-label-edge-threshold", async run() {
     for (const factory of [chart, basicChart]) {
       const base = factory().createCanvas({width:420,height:300,margin:60})

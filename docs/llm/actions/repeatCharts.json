@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "composition",
   "summary": "Repeat one direct mark by replacing Cartesian x/y, eligible Polar theta/public r, or one { parallelDimension: field }.",
-  "signature": "repeatCharts(options: RepeatChartsOptions): ChartProgram;",
+  "signature": "repeatCharts(options: TargetedOptions<RepeatChartsOptions>): ChartProgram;",
   "intents": [
     "repeat charts",
     "facet",
@@ -79,7 +79,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "channel",

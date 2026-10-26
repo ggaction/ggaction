@@ -1,3 +1,5 @@
+import { restoreGuideVisibilityPaint, applyGuideVisibilityPaint } from "./visibility.js";
+import { restoreLegendItemsOffset, applyLegendItemsOffset } from "../legendItemsOffset.js";
 import {resetLegendClipGraphics, hasLegendClipGraphics}from"../legendClip.js";
 import { localLegendPosition } from "../legendGroups.js";
 import { needsLegendAxisReflow, needsSideLegendAxisReflow } from "./resources.js";
@@ -29,7 +31,7 @@ export function withGuideLayoutTransaction(program, apply) {
   let result;
   for (let attempt = 0; ; attempt += 1) {
     try {
-      let candidate = resetLegendClipGraphics(program)._withContext({ deferGuideLayoutValidation: true });
+      let candidate = resetLegendClipGraphics(restoreLegendItemsOffset(restoreGuideVisibilityPaint(program)))._withContext({ deferGuideLayoutValidation: true });
       if (attempt > 0) {
         candidate = candidate
           .editGraphics({ target: "canvas", property: "width", value: plot.width + margin.left + margin.right })
@@ -59,10 +61,11 @@ export function withGuideLayoutTransaction(program, apply) {
       }
       if (plot !== undefined && result.titleConfig !== undefined) result = result.rematerializeTitle();
       if (hasPlotUnderlays(program) || hasPlotUnderlays(result)) result = result.rematerializePlotDrawOrder();
+      result = applyLegendItemsOffset(result);
       break;
     } catch (error) {
-      const overflow = getErrorDetails(error)?.canvasOverflow;
-      if (plot === undefined || overflow === undefined || attempt >= 16) throw error;
+      const details = getErrorDetails(error), overflow = details?.canvasOverflow;
+      if (plot === undefined || overflow === undefined || details.requiresExplicitCanvas || attempt >= 16) throw error;
       margin = Object.fromEntries(Object.keys(margin).map(side => [side, overflow[side] > 0 ? Math.ceil((margin[side] + overflow[side]) * 4) / 4 : margin[side]]));
     }
   }
@@ -71,8 +74,11 @@ export function withGuideLayoutTransaction(program, apply) {
     context.deferGuideLayoutValidation = program.context.deferGuideLayoutValidation;
   }
   const next = result._clone({ context });
-  assertGuideCollisionBlocks(resolveGuideCollisionBlocks(next.graphicSpec, next.guideConfigs, next.titleConfig, next.materializationConfigs.textMetrics));
-  return next;
+  const hidden = next.context.compositionCollectedLegends;
+  const guides = hidden ? { ...next.guideConfigs, legend: Object.fromEntries(Object.entries(next.guideConfigs.legend ?? {})
+    .filter(([kind]) => !hidden.includes(kind))) } : next.guideConfigs;
+  assertGuideCollisionBlocks(resolveGuideCollisionBlocks(next.graphicSpec, guides, next.titleConfig, next.materializationConfigs.textMetrics));
+  return applyGuideVisibilityPaint(next);
 }
 
 export function withGuideLayoutValidation(implementation) {

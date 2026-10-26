@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "encodings",
   "summary": "Create immutable KDE data, bind it to an area mark, encode its value and density fields, and materialize baseline-closed paths.",
-  "signature": "encodeDensity(options: DensityEncodingOptions): ChartProgram;",
+  "signature": "encodeDensity(options: TargetedOptions<DensityEncodingOptions>): ChartProgram;",
   "intents": [
     "encode density",
     "encode",
@@ -147,7 +147,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "densityChannel",

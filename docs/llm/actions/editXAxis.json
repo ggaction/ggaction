@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "axes",
   "summary": "Edits x axis, including settings for horizontal scale guide.",
-  "signature": "editXAxis(options: EditAxisOptions<XAxisPosition>): ChartProgram;",
+  "signature": "editXAxis(options: TargetedOptions<EditAxisOptions<XAxisPosition>>): ChartProgram;",
   "intents": [
     "edit x axis",
     "edit",
@@ -64,6 +64,11 @@
   },
   "options": [
     {
+      "name": "visible",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
       "name": "underlay",
       "required": false,
       "type": "boolean | undefined"
@@ -71,7 +76,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "offset",
@@ -86,31 +91,31 @@
     {
       "name": "line",
       "required": false,
-      "type": "false | AxisLineStyleOptions | undefined"
+      "type": "false | VisibleGuide<AxisLineStyleOptions> | undefined"
     },
     {
       "name": "ticks",
       "required": false,
-      "type": "false | Omit<AxisTickOptions<XAxisPosition>, \"position\" | \"scale\" | \"target\"> | undefined"
+      "type": "false | VisibleGuide<Omit<AxisTickOptions<XAxisPosition>, \"position\" | \"scale\" | \"target\">> | undefined"
     },
     {
       "name": "labels",
       "required": false,
-      "type": "false | Omit<AxisLabelOptions<XAxisPosition>, \"position\" | \"scale\" | \"target\"> | undefined"
+      "type": "false | VisibleGuide<Omit<AxisLabelOptions<XAxisPosition>, \"position\" | \"scale\" | \"target\">> | undefined"
     },
     {
       "name": "ticksAndLabels",
       "required": false,
-      "type": "false | Omit<AxisTicksAndLabelsOptions<XAxisPosition>, \"position\" | \"scale\" | \"target\"> | undefined"
+      "type": "false | VisibleTickGroup<Omit<AxisTicksAndLabelsOptions<XAxisPosition>, \"position\" | \"scale\" | \"target\">> | undefined"
     },
     {
       "name": "title",
       "required": false,
-      "type": "false | Omit<AxisTitleOptions<XAxisPosition>, \"position\" | \"scale\" | \"target\"> | undefined"
+      "type": "false | VisibleGuide<Omit<AxisTitleOptions<XAxisPosition>, \"position\" | \"scale\" | \"target\">> | undefined"
     }
   ],
   "callPatterns": [
-    "editXAxis({ target?, underlay?, offset?, position?, line?, ticks?, labels?, ticksAndLabels? })"
+    "editXAxis({ target?, visible?, underlay?, offset?, position?, line?, ticks?, labels? })"
   ],
   "snippet": "program.editXAxis({ position: \"bottom\" })",
   "errors": [],

@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "statistics",
   "summary": "Edits stacked data, including settings for reusable stack endpoints and shares.",
-  "signature": "editStackData(options: EditStackDataOptions): ChartProgram;",
+  "signature": "editStackData(options: TargetedOptions<EditStackDataOptions>): ChartProgram;",
   "intents": [
     "edit stack data",
     "edit",
@@ -59,7 +59,7 @@
     {
       "name": "target",
       "required": true,
-      "type": "string"
+      "type": "string | ActionTargetList | ScopedActionTarget"
     },
     {
       "name": "dependents",

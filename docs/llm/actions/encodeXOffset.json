@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "encodings",
   "summary": "Create or compatibly update a categorical sub-slot scale within a bar, point, or rule x category.",
-  "signature": "encodeXOffset(options: XOffsetEncodingOptions): ChartProgram;",
+  "signature": "encodeXOffset(options: TargetedOptions<XOffsetEncodingOptions>): ChartProgram;",
   "intents": [
     "encode x offset",
     "encode",
@@ -83,7 +83,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "fieldType",

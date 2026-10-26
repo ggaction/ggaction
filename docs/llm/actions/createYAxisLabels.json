@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "axes",
   "summary": "Creates y-axis labels for vertical text.",
-  "signature": "createYAxisLabels(options?: AxisLabelOptions<YAxisPosition>): ChartProgram;",
+  "signature": "createYAxisLabels(options?: TargetedOptions<AxisLabelOptions<YAxisPosition>>): ChartProgram;",
   "intents": [
     "create y axis labels",
     "create",
@@ -111,7 +111,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "scale",

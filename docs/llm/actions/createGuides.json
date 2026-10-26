@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "legend_and_title",
   "summary": "Create applicable axes, grids, and legends; omitted branches infer applicability, false skips a branch, and explicit direction objects enable only named directions: axes:{x:false} requests neither axis while axes:{x:false,y:{}} requests y.",
-  "signature": "createGuides(options?: CreateGuidesOptions): ChartProgram;",
+  "signature": "createGuides(options?: TargetedOptions<CreateGuidesOptions>): ChartProgram;",
   "intents": [
     "create guides",
     "create",
@@ -22,7 +22,9 @@
     "owns": [
       "axes and legends"
     ],
-    "idOptions": []
+    "idOptions": [
+      "target"
+    ]
   },
   "authoringRoles": [
     "H3"
@@ -41,6 +43,10 @@
   },
   "units": [],
   "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
     {
       "input": "omitted optional options",
       "strategy": "documented-default"
@@ -68,10 +74,15 @@
       "name": "legend",
       "required": false,
       "type": "false | LegendOptions | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "createGuides({ axes?, grid?, legend? })"
+    "createGuides({ target?, axes?, grid?, legend? })"
   ],
   "snippet": "program.createGuides({})",
   "errors": [],

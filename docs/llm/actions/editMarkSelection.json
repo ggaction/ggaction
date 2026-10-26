@@ -4,7 +4,7 @@
   "layer": "advanced",
   "domain": "mark-selection",
   "summary": "Replace the complete selector while preserving the stored selection ID and mark target.",
-  "signature": "editMarkSelection(options: EditMarkSelectionOptions): ChartProgram;",
+  "signature": "editMarkSelection(options: TargetedOptions<EditMarkSelectionOptions>): ChartProgram;",
   "intents": [
     "edit mark selection",
     "edit",
@@ -22,7 +22,8 @@
     ],
     "owns": [],
     "idOptions": [
-      "selection"
+      "selection",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -50,6 +51,10 @@
     {
       "input": "selection",
       "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
     }
   ],
   "completionRequirements": {
@@ -72,24 +77,29 @@
       "type": "\"item\" | \"stack\" | undefined"
     },
     {
+      "name": "rows",
+      "required": false,
+      "type": "{ data: string; indices: readonly number[]; }"
+    },
+    {
       "name": "field",
       "required": false,
-      "type": "string | undefined"
+      "type": "string"
     },
     {
       "name": "channel",
       "required": false,
-      "type": "\"color\" | \"group\" | \"opacity\" | \"radius\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\" | \"theta\" | \"x\" | \"x2\" | \"xOffset\" | \"y\" | \"y2\" | \"yOffset\" | undefined"
+      "type": "\"color\" | \"group\" | \"opacity\" | \"radius\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\" | \"theta\" | \"x\" | \"x2\" | \"xOffset\" | \"y\" | \"y2\" | \"yOffset\""
     },
     {
       "name": "property",
       "required": false,
-      "type": "MarkGraphicProperty | undefined"
+      "type": "MarkGraphicProperty"
     },
     {
       "name": "op",
-      "required": true,
-      "type": "\"eq\" | \"gt\" | \"gte\" | \"lt\" | \"lte\" | \"max\" | \"min\" | \"neq\" | \"oneOf\" | \"range\""
+      "required": false,
+      "type": "\"eq\" | \"gt\" | \"gte\" | \"lt\" | \"lte\" | \"neq\""
     },
     {
       "name": "value",
@@ -130,6 +140,11 @@
       "name": "ties",
       "required": false,
       "type": "\"all\" | \"first\" | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [

@@ -20,6 +20,9 @@ export const FACET_LAYOUT = Object.freeze({
   padding: 14,
   titleHeight: 60
 });
+// The first 12.5px header is centered at y=84. Its top is 77.75;
+// retain 16px of clear space below the 39.5px title/subtitle block.
+export const FACET_TITLE_CENTERS = Object.freeze({ title: 31.75, subtitle: 55.75 });
 export const OUTER_GUIDE_CLUSTERS = Object.freeze([0, 3, 4, 1, 5]);
 export const OUTER_GUIDE_LAYOUT = Object.freeze({
   legendGap: 24,

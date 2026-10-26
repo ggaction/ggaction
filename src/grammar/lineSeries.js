@@ -23,6 +23,12 @@ import {
   pathSeriesKey as groupKey
 } from "./pathSeries.js";
 
+// An aggregate line groups exact observed positions unless binning is explicit.
+// Numeric positions keep their numeric order; they are not converted to bands.
+export function isAggregateLinePosition(encoding) {
+  return ["quantitative", "temporal", "nominal", "ordinal"].includes(encoding?.fieldType);
+}
+
 function requireLineEncoding(layer) {
   if (layer?.mark?.type !== "line") {
     throw new Error("Line series derivation requires a semantic line mark.");
@@ -34,14 +40,15 @@ function requireLineEncoding(layer) {
   if (x === undefined) {
     throw new Error(`Line mark "${layer.id}" requires an x encoding.`);
   }
+  if (x.aggregate !== undefined) {
+    throw new Error("A Line requires one independent position; both axes cannot aggregate.");
+  }
 
   const binnedAggregate =
     x?.fieldType === "quantitative" &&
     x.bin !== undefined &&
     isAggregate(y?.aggregate);
-  const aggregateMode =
-    (["temporal", "nominal", "ordinal"].includes(x?.fieldType) && isAggregate(y?.aggregate)) ||
-    binnedAggregate;
+  const aggregateMode = isAggregateLinePosition(x) && isAggregate(y?.aggregate);
   const directNumericY =
     ["quantitative", "nominal", "ordinal"].includes(x?.fieldType) &&
     x.bin === undefined &&
@@ -58,7 +65,7 @@ function requireLineEncoding(layer) {
       );
     }
     throw new Error(
-      `Line mark "${layer.id}" requires categorical/temporal aggregate or compatible direct x/y encodings.`
+      `Line mark "${layer.id}" requires an aggregate value at compatible x positions or compatible direct x/y encodings.`
     );
   }
   if (aggregateMode) {
@@ -389,11 +396,24 @@ export function derivePolarLineSeries(rows, layer, { thetaDomain } = {}) {
   });
 }
 
-export function deriveLineSeries(rows, layer, options) {
+export function isHorizontalLine(layer) {
+  return layer?.encoding?.x?.aggregate !== undefined ||
+    layer?.encoding?.x?.fieldType === 'quantitative' &&
+      ['nominal', 'ordinal'].includes(layer?.encoding?.y?.fieldType);
+}
+
+export function deriveLineSeries(rows, layer, options = {}) {
   validateLineMissingScope(layer);
   const polar = layer?.encoding?.theta !== undefined ||
     layer?.encoding?.radius !== undefined;
-  return polar
-    ? derivePolarLineSeries(rows, layer, options)
-    : deriveCartesianLineSeries(rows, layer, options);
+  if (polar) return derivePolarLineSeries(rows, layer, options);
+  if (!isHorizontalLine(layer)) return deriveCartesianLineSeries(rows, layer, options);
+  // One derivation owns category ordering, grouping, aggregation and topology
+  // for both orientations. Return physical X/Y coordinates to every consumer.
+  const swapped = { ...layer, encoding: { ...layer.encoding, x: layer.encoding.y, y: layer.encoding.x } };
+  const result = deriveCartesianLineSeries(rows, swapped, { ...options,
+    xDomain: options.yDomain, xBinBoundaries: options.yBinBoundaries });
+  return cloneAndFreeze({ ...result, xValues: result.yValues, yValues: result.xValues,
+    series: result.series.map(series => ({ ...series,
+      values: series.values.map(value => ({ ...value, x: value.y, y: value.x })) })) });
 }

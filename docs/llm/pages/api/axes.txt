@@ -53,6 +53,9 @@ with a fixed number. Empty display labels do not contribute; at least one
 nonempty label on the same side is required. Remove the title together with its
 last labels, or switch its offset to a number. The existing collision and Canvas
 checks still apply, including when `overlap: "allow"` is set.
+With `createCanvas({ plot: { width, height } })`, automatic guide margins also
+fit relative titles: the requested font, gap, and plot dimensions stay exact.
+A fixed outer Canvas still rejects a title that exceeds its authored margins.
 
 Numeric offsets keep their signed distance from the axis frame; omitted offsets
 keep their existing automatic defaults. An omitted edit preserves either mode.

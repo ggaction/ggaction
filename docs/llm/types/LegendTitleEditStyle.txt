@@ -1,0 +1,1 @@
+export interface LegendTitleEditStyle extends LegendTitleStyleEditOptions { visible?: boolean; }

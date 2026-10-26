@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "statistics",
   "summary": "Complete one typed key domain independently inside every observed group, with explicit fill and source-membership provenance for synthesized rows.",
-  "signature": "createCompleteData(options: CompleteDataOptions): ChartProgram;",
+  "signature": "createCompleteData(options: TargetedOptions<CompleteDataOptions>): ChartProgram;",
   "intents": [
     "create complete data",
     "create",
@@ -24,7 +24,8 @@
     ],
     "idOptions": [
       "id",
-      "source"
+      "source",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -45,6 +46,10 @@
   "inference": [
     {
       "input": "source",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -99,10 +104,15 @@
       "name": "sequence",
       "required": false,
       "type": "{ start: number; end: number; step: number; } | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "createCompleteData({ id, key, source?, groupBy?, fill?, members?, values?, sequence? })"
+    "createCompleteData({ id, key, source?, target?, groupBy?, fill?, members?, values? })"
   ],
   "snippet": "program.createCompleteData({ id: \"completed\", key: \"period\", groupBy: \"series\", values: [1, 2, 3], members: \"sourceRows\" })",
   "errors": [],

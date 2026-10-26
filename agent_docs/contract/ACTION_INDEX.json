@@ -2493,7 +2493,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Self",
+      "update": "Self; retained visibility preserves styles when hidden",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -2961,7 +2961,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Atomically delegates selected existing axes to their channel editors",
+      "update": "Atomically delegates selected existing axes to their channel editors; retained visibility preserves styles when hidden",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -2979,7 +2979,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits or removes selected existing x-axis components, including typed Cartesian display labels",
+      "update": "Edits or removes selected existing x-axis components, including typed Cartesian display labels; retained visibility preserves styles when hidden",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -2997,7 +2997,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits or removes selected existing y-axis components, including typed Cartesian display labels",
+      "update": "Edits or removes selected existing y-axis components, including typed Cartesian display labels; retained visibility preserves styles when hidden",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -3105,7 +3105,7 @@
       "domain": "grid",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits one horizontal grid; signed along-axis displacement is preserved during replay",
+      "update": "Edits one horizontal grid; signed along-axis displacement is preserved during replay; retained visibility preserves styles when hidden",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -3123,7 +3123,7 @@
       "domain": "grid",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits one vertical grid; signed along-axis displacement is preserved during replay",
+      "update": "Edits one vertical grid; signed along-axis displacement is preserved during replay; retained visibility preserves styles when hidden",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -3141,7 +3141,7 @@
       "domain": "grid",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits selected existing grid directions",
+      "update": "Edits selected existing grid directions; retained visibility preserves styles when hidden",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -3177,7 +3177,7 @@
       "domain": "legend_and_title",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editLegend` edits content, layout, appearance, exact samples and gradient ticks",
+      "update": "`editLegend` edits separate or combined content, layout, symbols, samples and overflow",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -3195,7 +3195,7 @@
       "domain": "legend_and_title",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edit whole-target content or select one existing channel block for layout, appearance, samples and gradient ticks",
+      "update": "Edit whole-target content, one channel block, or all blocks; retain independent body offsets, title anchors and omitted appearance",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -3339,7 +3339,7 @@
       "domain": "legend_and_title",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Removes every owned block or selected complete channel blocks",
+      "update": "Removes owned or selected channel blocks; optional suppression excludes them from automatic guides until createLegend restores them",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -4077,7 +4077,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits selected theta-axis components, including typed Cartesian display labels",
+      "update": "Edits selected theta-axis components, including typed Cartesian display labels; retained visibility preserves styles when hidden",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -4095,7 +4095,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits components and shared angle",
+      "update": "Edits components and shared angle; retained visibility preserves styles when hidden",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -4473,7 +4473,7 @@
       "domain": "grid",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits theta grid",
+      "update": "Edits theta grid; retained visibility preserves styles when hidden",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -4491,7 +4491,7 @@
       "domain": "grid",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits radial grid",
+      "update": "Edits radial grid; retained visibility preserves styles when hidden",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -4965,7 +4965,7 @@
         "effects": "complete",
         "tests": "complete"
       },
-      "update": "editRadarPlot revises wide dimensions atomically; existing Polar appearance, scale and guide actions remain available",
+      "update": "editRadarPlot revises wide dimensions, explicit grouped profiles and normalization atomically; existing Polar appearance, scale and guide actions remain available",
       "contract": {
         "file": "agent_docs/contract/current/COMPLETE_CHARTS.md",
         "anchor": "createradarplot"
@@ -4983,7 +4983,7 @@
         "effects": "complete",
         "tests": "complete"
       },
-      "update": "Revises owned wide-fold dimensions, theta order and radius geometry while preserving group, appearance and guide intent",
+      "update": "Revises owned wide dimensions, grouped mean/median and explicit minmax normalization with bounded data revisions, preserving group, appearance and guide intent",
       "contract": {
         "file": "agent_docs/contract/current/COMPLETE_CHARTS.md",
         "anchor": "editradarplot"
@@ -5312,6 +5312,96 @@
         "effects": "complete",
         "tests": "complete"
       }
+    },
+    {
+      "name": "createOverlay",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Stable create-only",
+      "update": "editOverlay edits dependency; native mark and encoding editors own appearance; removeMark owns deletion",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/OVERLAYS.md",
+        "anchor": "createoverlay"
+      }
+    },
+    {
+      "name": "editOverlay",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "editOverlay edits dependency; native mark and encoding editors own appearance; removeMark owns deletion",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/OVERLAYS.md",
+        "anchor": "editoverlay"
+      }
+    },
+    {
+      "name": "createLayerPlot",
+      "layer": "user-facing",
+      "domain": "composition",
+      "status": "implemented",
+      "lifecycle": "Structural create-only",
+      "update": "Native constructor editors, encoding actions and removeMark own independent layer edits",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/COMPOSITION.md",
+        "anchor": "createlayerplot"
+      }
+    },
+    {
+      "name": "createAdjacentPlot",
+      "layer": "user-facing",
+      "domain": "composition",
+      "status": "implemented",
+      "lifecycle": "Structural create-only",
+      "update": "Add beside a unit, facet, or explicit concat group; edit the result through native scoped actions and composition editors",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/COMPOSITION.md",
+        "anchor": "createadjacentplot"
+      }
+    },
+    {
+      "name": "editCompositionScales",
+      "layer": "user-facing",
+      "domain": "composition",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edit shared channel policies without changing authored child domains",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/COMPOSITION.md",
+        "anchor": "editcompositionscales"
+      }
     }
   ],
   "plannedActions": [],
@@ -5394,7 +5484,8 @@
       "rematerializeTickMark",
       "rematerializeTitle",
       "rematerializeVerticalGrid",
-      "materializeSortedData"
+      "materializeSortedData",
+      "rematerializeOverlay"
     ],
     "guideComponents": [
       "createLegendBackground",

@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "core",
   "summary": "Create a fresh original-data revision and atomically update its dependent chart.",
-  "signature": "reviseData<Row extends object>(options: ReviseDataOptions<Row>): ChartProgram;",
+  "signature": "reviseData<Row extends object>(options: TargetedOptions<ReviseDataOptions<Row>>): ChartProgram;",
   "intents": [
     "revise data",
     "revise source data",
@@ -24,7 +24,8 @@
     ],
     "idOptions": [
       "source",
-      "id"
+      "id",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -44,6 +45,10 @@
     {
       "input": "source",
       "strategy": "explicit"
+    },
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
     }
   ],
   "completionRequirements": {
@@ -73,10 +78,15 @@
       "name": "schema",
       "required": false,
       "type": "SourceSchemaInput | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "reviseData({ source, id, values, schema? })"
+    "reviseData({ source, id, values, target?, schema? })"
   ],
   "snippet": "program.reviseData({ source: \"data-1\", id: \"data-1\", values: [{ category: \"A\", value: 1 }] })",
   "errors": [],

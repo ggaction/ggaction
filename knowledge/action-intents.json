@@ -923,6 +923,27 @@
     "StatisticalReference": [
       "statistical reference",
       "interval"
+    ],
+    "Overlay": [
+      "overlay",
+      "linked result layer",
+      "layered chart"
+    ],
+    "AdjacentPlot": [
+      "adjacent chart",
+      "juxtaposition",
+      "side by side",
+      "shared axis"
+    ],
+    "CompositionScales": [
+      "shared scales",
+      "shared domains",
+      "independent scales"
+    ],
+    "LayerPlot": [
+      "layered chart",
+      "independent plot layer",
+      "shared coordinates"
     ]
   },
   "summaryOverrides": {
@@ -1662,6 +1683,35 @@
     "createStatisticalReference": {
       "source": "points",
       "axis": "y"
+    },
+    "createOverlay": {
+      "source": "bars"
+    },
+    "editOverlay": {
+      "target": "overlay",
+      "missing": "connect"
+    },
+    "createAdjacentPlot": {
+      "source": "bars",
+      "id": "trend",
+      "position": "right",
+      "share": {
+        "y": true
+      }
+    },
+    "editCompositionScales": {
+      "share": {
+        "y": true
+      }
+    },
+    "createLayerPlot": {
+      "source": "points",
+      "plot": {
+        "action": "createBoxPlot"
+      }
+    },
+    "encodeShape": {
+      "value": "circle"
     }
   },
   "callPatternOverrides": {

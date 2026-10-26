@@ -115,9 +115,16 @@ export function resolveFacetFamily(semanticSpec) {
       semanticSpec.layers.length === 0) {
     throw new Error("facet requires at least one materializable layer.");
   }
-  const primary = semanticSpec.layers.filter(layer =>
-    !(layer.mark?.type === "text" && layer.source !== undefined)
-  );
+  // Literal positioned notes decorate a chart rather than define its data
+  // coordinate family. Keep validating/materializing them, but do not confuse
+  // a plot-space Cartesian annotation with a second Cartesian chart in a polar
+  // or parallel facet. A text-only chart still supplies its own primary layer.
+  const annotations = semanticSpec.layers.filter(layer => layer.mark?.type === 'text' &&
+    ['x', 'y', 'text'].every(channel => Object.hasOwn(layer.encoding?.[channel] ?? {}, 'datum')));
+  const dataLayers = semanticSpec.layers.filter(layer =>
+    !(layer.mark?.type === 'text' && layer.source !== undefined) && !annotations.includes(layer));
+  const primary = dataLayers.length ? dataLayers : annotations;
+  for (const note of annotations) classifyPrimaryLayer(semanticSpec, note);
   if (primary.length === 0) {
     throw new Error("facet requires at least one primary materializable layer.");
   }

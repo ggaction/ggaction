@@ -1,10 +1,13 @@
-import { resolveTextBounds } from "../core/textMetrics.js";
+import { resolveTextBounds, resolveTextLines } from "../core/textMetrics.js";
 
 const STYLE_KEYS = Object.freeze(["fontSize", "fontFamily", "fontWeight", "color"]);
 const ROTATIONS = Object.freeze({ left: -Math.PI / 2, right: Math.PI / 2, top: 0, bottom: 0 });
 
 function thickness(text, config, side, profile) {
+  const lines = resolveTextLines(text, { fontSize: config.fontSize,
+    align: "center", baseline: "middle", blockAlign: "middle" });
   const bounds = resolveTextBounds({ ...config, text, x: 0, y: 0,
+    ...(lines.length > 1 ? { lines } : {}),
     textAlign: "center", textBaseline: "middle" }, profile);
   return ["left", "right"].includes(side) ? bounds.right - bounds.left : bounds.bottom - bounds.top;
 }

@@ -98,6 +98,7 @@ Evidence: `test/unit/layout/facet-top-lane.test.js`, `test/unit/actions/composit
   regression, density, interval/error-band, and box-plot programs; Polar Point, Line, direct Arc, Pie, Rose and Radar;
   and Parallel-coordinate programs whose visible layers share one valid partition anchor and one coordinate family.
 - Independent Cartesian text requires x/y scale bindings and a text encoding. Its data must share the partition ancestor; filtered label datasets replay per cell. Empty label subsets retain sibling marks without fabricating labels. Attached labels remain source-dependent.
+- Literal annotations with datum x/y/text decorate the primary coordinate family, including Polar and Parallel facets. They retain their own validated coordinate and scale bindings without establishing a competing family or making an otherwise empty facet populated. A text-only program still treats those text layers as primary.
 - Evidence: `test/unit/actions/composition/facet-text.test.js`.
 - Facet values use source first-appearance order. Explicit `values` is a unique observed-value list whose exact order controls
   child, header and layout order. Omitted `columns` creates one row; a positive integer wraps cells row-major.
@@ -327,7 +328,8 @@ Evidence: `test/unit/layout/facet-top-lane.test.js`, `test/unit/actions/composit
 
 - 역할별 `title`은 전체 점유 plot 합집합에 한 번 정렬하는 필드 제목이다. 생성
   `headers.column.title` 및 grid `headers.row.title`도 같은 옵션을 받는다. common/all은
-  거부한다. 최초 객체는 비어 있지 않은 한 줄 text가 필수이고 이후는 부분 병합한다.
+  거부한다. 최초 객체는 비어 있지 않은 text가 필수이고 이후는 부분 병합한다.
+  명시적 hard break와 빈 줄은 concrete lines로 보존하며 전체 두께를 예약한다.
   생략은 보존, false는 제거다. text/fontSize/fontFamily/fontWeight/color/offset/align/
   rotation/alongOffset만 받는다. 글꼴·색상은 역할 헤더를 상속하며 align 기본 center,
   회전 기본 top/bottom 0,left -π/2,right +π/2다. 회전은 유한 정규 radians로 저장한다.
@@ -367,7 +369,7 @@ Evidence: `test/unit/layout/facet-top-lane.test.js`, `test/unit/actions/composit
 
 ## `editCompositionLayout`
 
-- Signature: `editCompositionLayout({ columns?, gap?, spacing?, topLane?, align?, padding? })`.
+- Signature: `editCompositionLayout({ columns?, gap?, spacing?, topLane?, align?, padding?, legends? })`.
 - Requires an existing composition program and at least one layout option.
 - `columns`: positive integer for one-field facet and repeat layouts, no larger than the retained child count.
   A row-column grid keeps the width of its declared column domain; concat compositions reject it.
@@ -586,3 +588,174 @@ Evidence: `test/unit/layout/facet-top-lane.test.js`, `test/unit/actions/composit
 ### Retained header recipe during source edits
 
 `editFacetSource` carries the existing canonical header configuration into the first native facet rebuild. It never validates an intermediate default header layout before restoring authored rotation, field titles or content anchors. The public header options and final atomicity contract are unchanged.
+
+## Shared concat scales and plot alignment
+
+Concat accepts `share: CompositionShares` (`x`, `y`, `color`, `stroke`, `size`, `shape`,
+`opacity`, `strokeWidth`, `strokeDash`, each boolean). Omission leaves channels independent.
+Each enabled channel must exist in every affected unit view. Shared position scales require
+Cartesian positions. Field, field type, temporal interpretation, measurement units (count,
+squared measurement, ordinary measurement), and mapping definitions must agree. Explicit
+conflicting domains reject. One common explicit domain is authoritative; otherwise resolved
+child domains are unioned, ordinal categories in stable first-seen order. Shared appearance
+requires compatible palette/range. Source-dependent overlays do not introduce another scale owner.
+
+A facet contributes its displayed cell domains after partition-local aggregation and stacking,
+not the retained unpartitioned source template's resolved domain. Outer sharing applies the
+union to every rendered cell, even when the facet originally used independent scales or its
+source template already happened to equal the union. Authored explicit domains remain
+authoritative. Disabling outer sharing restores the original facet policies and cell inference.
+
+Canonical children retain authored domains and dimensions. The composition materializer derives
+shared render snapshots on every child edit. Disabling sharing restores independent inference;
+it does not retain the previous union as an authored fixed domain. Immutable-owner WeakMaps
+cache these derived snapshots without adding persisted state or a global semantic observer.
+
+Concat `align: "plot"` aligns both ends of the cross-axis plot. Unit render snapshots adopt the
+largest cross-axis plot extent while keeping their own margins; canonical explicit child sizes
+remain unchanged. Nested compositions distribute the required plot-extent increase across their tracks;
+facets resize their source plot through editFacetSource. Text and symbols are rematerialized, not stretched. Existing `start`/`center`/`end` behavior is unchanged. Facets keep their own
+`scales` and alignment policy.
+
+## `createAdjacentPlot`
+
+Creates a concat parent around the receiving complete unit, facet, or concat view and one new chart. On units/facets, `source` is an
+explicit/current/unique independent mark; `id` names the new view and mark (default `adjacent`,
+which must differ from the source view ID). Original view ID is the selected source mark ID.
+A concat receiver requires `source: { childPath: readonly string[], id: ExistingIndependentMarkId }`.
+The path is relative to the receiving view selected by `target.childPath` (root when omitted),
+and must resolve to a unit or facet base mark. Missing paths/IDs, a concat source, an overlay
+source, or a generated facet cell reject atomically. There is no implicit first-child source.
+The existing concat is retained under its composition ID; a colliding new ID rejects.
+For top/bottom, the new plot width is the receiver's plot-union width and its height comes from
+the source view. Left/right use the receiver's plot-union height and source width. Group-local
+titles and guide settings remain attached to the original group. Existing alignment and sharing
+policies govern final snapshots; no bitmap stretching is involved.
+The new chart receives an independent snapshot of the source's materialized data and theme.
+Materialized input tables (datasets without a derived `source`) also remain available in the
+new view, including columns absent from the selected summary. This is snapshot retention,
+not a cross-view data dependency. Completion transforms preserve upstream positional-field
+and aggregation meanings during inference.
+`plot.options.data` may name another materialized dataset in the same source view.
+`plot.inherit?: { color?: boolean }` controls omitted color/group defaults in both adjacent and layer constructors. False suppresses source color inheritance and inferred color grouping; explicit constructor color/group options remain authoritative. Unknown inheritance keys and nonboolean flags reject. Explicit Rug X/Y owns its axis rather than inheriting a second source axis. Explicit Area X/Y uses the native valueChannel default (Y), unless valueChannel is supplied.
+`plot.options.id` is rejected; the top-level `id` owns both the new view and mark. The default is a line,
+right placement and plot alignment. Horizontal placement defaults to shared Y and vertical placement to shared X only when field, measurement operations and Cartesian coordinate meanings are compatible. Caller
+`share` replaces the default. No layer or data dependency is introduced between adjacent views.
+
+All constructor defaults use the shared positional-role registry to recover original input fields and data. Line/bar retain supported aggregation and bins; point/distribution charts use original observations. Different measurement operations disable automatic sharing; explicit incompatible sharing rejects. Shared channels inherit scale definitions. New adjacent color legends also inherit the source shared legend's position and compatible presentation options; independent color legends retain constructor defaults. Ambiguous additional roles require native options. All constructors
+retain their ordinary validity and data-shape requirements. Explicit native plot options override
+inferred values. New chart appearance uses its constructor; inherited theme/text metrics are retained.
+
+### Formal values — `createAdjacentPlot`
+
+- Implemented: `createAdjacentPlot({ id?: UserId, source?: ExistingIndependentMarkId | { childPath: readonly string[], id: ExistingIndependentMarkId }, position?: "left"|"right"|"top"|"bottom", plot?: AdjacentPlotSpecification, share?: CompositionShares, gap?: NonNegativeFinite, align?: "plot"|"start"|"center"|"end", legends?: "local"|"collect" }): ChartProgram`.
+- Proposed (NOT IMPLEMENTED): None.
+
+### Value coverage — `createAdjacentPlot`
+
+- ✅ Covered. Evidence: `test/unit/actions/composition/shared-adjacent.test.js`, `test/unit/actions/composition/adjacent-groups.test.js` (group extent, explicit relative sources, scoped edits, titles, legends, and rejection), `test/charts/linked-composition/`, and `examples/shared-adjacent/` cover four edges, shared domains, primitive/pixel equivalence, nesting, persistence, and atomic target edits.
+
+## `editCompositionScales`
+
+Edits a nonempty subset of the concat parent's `share` policies and rematerializes once. Omitted
+channels are preserved; false restores independent rendering. Incompatible requested sharing
+rejects without changing any previous program or child. Facet callers use `editFacetScales`.
+
+공유 대상은 데이터 필드 또는 count 의미가 있는 채널 바인딩이다. 상수 주석 위치의
+독립적인 plot-fraction 스케일은 공유 domain 계산에서 제외하며 각 plot의 anchor를 유지한다.
+데이터 좌표 주석이 원본 마크의 스케일을 참조하면 그 스케일의 공유 결과를 그대로 따른다.
+Evidence: `test/unit/actions/composition/shared-annotations.test.js` (X/Y, facet, adjacent, scoped edits, persistence).
+
+### Formal values — `editCompositionScales`
+
+- Implemented: `editCompositionScales({ share: NonEmpty<CompositionShares> }): ChartProgram`.
+- Proposed (NOT IMPLEMENTED): None.
+
+### Value coverage — `editCompositionScales`
+
+- ✅ Covered. Evidence: `test/unit/actions/composition/shared-adjacent.test.js`: domain growth/shrink, reset to independent, compatibility, and mutation isolation.
+
+## Explicit action targets
+
+Full authoring adds `target: { childPath: string[], id?: string, facetSource?: true }` or a nonempty array of string
+IDs and/or these selectors to ordinary action options. An empty path addresses the current
+view. `id` becomes that native action's ordinary `target`; omission selects the view itself and
+keeps the native action's existing inference. For example a title uses a path without an ID,
+while `encodeColor` identifies a mark. No wildcard silently chooses eligible marks. The UI can
+construct an explicit list for All. Basic retains its original single-target option types.
+
+Each target invokes the same public native function. Immutable candidates are edited first;
+all changed ancestors and shared-domain constraints are materialized from the complete final
+state. A failure returns no partially edited program. Duplicate targets, unknown paths and
+ambiguous native targets reject. Facet source edits use `editFacetSource`, or `facetSource: true` on an explicit facet-view selector. That selector routes the same requested native action through the retained facet source and regenerates cells; it can be mixed atomically with ordinary-view selectors. The flag rejects on nonfacet views and accepts only literal true. Inspection resolves the same retained source. Paths through generated facet cells are rejected to avoid losing edits on source replay. Parent/source overlapping target lists must be structurally valid.
+The outer trace records one requested function; retained child traces contain the native edits.
+
+
+## Concat parent titles, shared color guide, and uniform surfaces
+
+- `hconcat`/`vconcat` accept `legends: "local" | "collect"`. Omission preserves local independent guides and the existing shared-color collection. `createAdjacentPlot` defaults to `"collect"`; explicit `"local"` retains the lower-level policy. `editCompositionLayout({legends})` changes this policy on concat only; facets reject it and retain `editFacetGuides`.
+- Collect mode displays every visible native legend block around the complete parent plot union (right by ordinary guide defaults), including independent size/opacity/stroke and faceted/nested owners. Only compatible shared-color explanations are deduplicated; unrelated mappings retain separate blocks. Overlapping outside blocks pack along the same edge with the native side/horizontal block gaps, while explicit non-overlapping offsets remain intact. Corners/free placement retain their parent-plot anchors. Child data, plot dimensions, authored guides and styles are unchanged.
+- Scoped edits, drag offsets and resizing validate collected guides in the parent frame; hidden local copies do not participate in child fit/collision checks. Switching back to local placement restores canonical children. The collection policy is stored once in `compositionSpec.legends`, validated on import and retained across layout/source/guide replay. No renderer-specific behavior is added.
+- Evidence: `test/unit/actions/composition/collected-guide-placement.test.js` covers all four edges, nested/faceted owners, independent mappings, policy changes, invalid values and persistence.
+
+- `createTitle`/`editTitle`/`removeTitle` without a target own one parent title resource.
+  Explicit child paths retain per-view title behavior. Four-edge title/subtitle lanes
+  align to the translated plot union and rematerialize after layout and child edits.
+- A shared color scale collects compatible guide snapshots into one shared legend at the representative block's authored position and alignment. The same resolved frame reserves the Canvas lane, shifts child placements for top/left anchors, and preserves in-plot anchors. Explicit legend presentation is retained when adding a same-color neighbour, including left/top insertion.
+  Outside offsets are measured from the translated plot union, not child Canvas edges or a removed legend's old lane. Inferred offsets clear retained concrete content on the same edge; explicit offsets remain exact and reject occupied-content collisions. Free `at` coordinates remain plot-relative. Existing child margins are reused, and the parent Canvas grows only when the resolved legend requires more room. Child Canvas dimensions and plot sizes are preserved. Evidence: `test/unit/actions/composition/shared-legend-spacing.test.js`.
+  A same-field categorical block that explains color plus shape/stroke/etc. also covers
+  color-only blocks when its category mappings agree. Prefer the most informative block,
+  then the first visible child for equal coverage. Conflicting extra mappings remain separate;
+  unrelated size/other-field blocks are retained (in the outer lane in collect mode). Nested compositions collect only displayed
+  blocks, including already-promoted combined legends, without deleting incompatible explanations.
+  The native shared scale supplies the color domain. Canonical child guides remain unchanged
+  and reappear separately when sharing is disabled.
+- Equal child Canvas backgrounds fill parent gaps/padding and title/legend lanes.
+  Mixed backgrounds preserve the existing parent surface (initially white).
+- Serialization, nested child edits, and repeated guide creation preserve these rules.
+- Evidence: `test/unit/actions/composition/concat-guides.test.js` and `shared-combined-legends.test.js`.
+
+## `createLayerPlot`
+
+- Signature: `createLayerPlot({ id?, source?, plot, placement? })`.
+- Adds an independent native plot in an existing unit view. `plot.action` uses the same constructor registry as `createAdjacentPlot`; `plot.options` contains that constructor's options with source data and positional fields safely inferred. The top-level `id` owns the new plot; nested `options.id` is rejected. The default `layer` ID is available once. Scoped targets and `editFacetSource` reuse ordinary composition dispatch.
+- `source` selects an independent plot owner. Compound Box/Violin/Gradient/Interval/Endpoint/Raincloud and derived dataset provenance resolve to the original input fields rather than internal statistical aliases. Read-only `getPlotComposition(program, { target?, childPath? })` from `ggaction/inspection` exposes version 1, owner, recursive ownedMarks, source data, coordinate, channels, dimensions and measurement provenance. It does not render or mutate a program.
+- Layering requires compatible coordinate families, source fields, field types, temporal units and measurement units. Raw values, mean/median/quantile summaries share the original value unit. Count, sum, density, cumulative probability, normalized and folded values do not silently become raw observations. A count histogram can share its measure axis with a Rug; density/ECDF cannot be laid on count heights. Radar and Parallel layers require identical dimensions/order. Horizon layers require identical folding parameters. Ambiguous roles (e.g. Dumbbell's second measure) need explicit options.
+- Shared named scales are reused, never reset by constructor defaults. Explicit conflicting scale definitions are rejected; edit the shared resource first. When a distribution requires band geometry, an existing categorical point scale is promoted with a native `editScale` child action so all consumers align. Parallel dimension `scale.id` can name an existing compatible scale.
+- Implicitly re-encoding one positional field on a shared scale rejects if it would change the meaning still used by another independent owner. Explicit scale IDs retain the ordinary native resource semantics; a different scale remains subject to the existing guide-rebinding constraints. Pie layers preserve the exact category partition and weight; Rose and Radial Bar layers must retain the same area or radius-length mapping.
+- `placement` is `front` (default) or `back`. All owned marks move as one block within their existing graphic parent; guides retain their relative order. Independent appearance edits target the new owner; shared scale edits affect all consumers. Constructors consume existing guides (`guides:false`); call `createGuides` once after constructing the view.
+- Color uses the source mapping when its field is available at the new layer's statistical grain. Category-only summaries omit an unrelated inherited color while preserving the source layer's mapping; an explicit unsupported color rejects. Interval summaries infer categorical color as groupBy. An explicit Violin split preserves its split-field color. Endpoint summaries require color to be the category; continuous distribution grouping is rejected. Distinct coordinate families and incompatible units remain available through independent `createAdjacentPlot`.
+- Line, Polar Line and Area inherit color only when the native path-series appearance contract accepts it at the prospective grouping. A varying per-observation continuous point color becomes a single-color path by default; it does not create artificial series or average the color. Compatible categorical color and explicit source grouping remain intact. Line and Polar Line retain a continuous color that is constant within each series; Area constructor color remains categorical. Explicit `plot.options.color` never silently disappears: incompatible fields reject in both inspection and execution. `plot.inherit.color: false` remains an explicit single-color choice, and `plot.options.groupBy` selects another supported series grain. Evidence: `test/unit/actions/composition/path-layer-color.test.js`.
+- Existing `createOverlay` remains the explicit `visibleItems` follower. `createLayerPlot` recomputes its own native statistics from shared source data and is not a second follower implementation or stored chart recipe.
+- `describeAction` uses the same constructor planner to report incompatible roles/units without constructing chart candidates. Successful preflight does not replace the native constructor's data-level validation.
+
+### Formal values — `createLayerPlot`
+
+- Implemented: `createLayerPlot({ id?: UserId, source?: ExistingIndependentMarkId, plot: LayerPlotSpecification, placement?: "front"|"back" }): ChartProgram`.
+- `LayerPlotSpecification` is the native adjacent constructor union with optional inferable options. No app-only action or prototype patch is used. Default guide creation is suppressed; explicit non-false nested guides are rejected because guides belong to the shared view.
+- Proposed (NOT IMPLEMENTED): None.
+- Lifecycle: structural create-only; native constructor-specific editors, encoding actions, shared scale editors and `removeMark` own subsequent changes.
+
+### Value coverage — `createLayerPlot`
+
+- ✅ Covered. Evidence: `test/charts/linked-composition/variants/independent-layers/`: approved visual targets, 148 directional constructor combinations, shared resource/ownership, independent appearance, persistence and resize.
+- `test/unit/actions/composition/layer-plot.test.js`: incompatible units/coordinates, immutable failures, facet/nested concat and source updates.
+
+### Scoped edits of collected guides
+
+Every collected legend block is validated in the parent layout where it is painted. Scoped public edits and local planning frames retain that visibility ownership: hidden source copies do not conflict with their former child axes. Uncollected guides still participate in native collision checks, and visible parent collisions reject atomically. The temporary editing context is removed before returning or persisting a program. Native source programs remain immutable. Evidence: `test/unit/actions/composition/shared-legend-offset.test.js`.
+
+### Composition audit regression coverage
+
+- `test/unit/actions/composition/audit-composition-regressions.test.js` verifies horizontal Bar/Dot/Lollipop/Line layers with source aggregation, original-field sharing from Violin to raw points, explicit Area/Rug roles, color inheritance suppression, categorical point guide retention, and mixed facet/ordinary atomic appearance edits including persistence and failure isolation.
+- Shared concat field identity follows statistical transform provenance; category/value distributions retain their original value-field meaning. Explicit sum/raw comparison retains the value unit while automatic sharing still requires equal measurement operations. Normalized probability, density, count and squared units remain distinct.
+- Horizontal categorical Line and compatible group/overlay/stack/diverging layers share a scale in common units; fill/center cannot mix with incompatible layouts. Category-positioned density silhouettes report the same visible-endpoint overlay incompatibility through inspection and execution.
+
+### Binned and raw layer positions
+
+A binned quantitative position may share its scale with an unbinned layer when
+provenance resolves both to the same field, type, and measurement units. All
+binned consumers still require an identical bin definition. An automatic domain
+includes raw observations and binned endpoints without replacing source bin
+assignments; explicit domains remain authoritative. Different fields or units
+remain incompatible.

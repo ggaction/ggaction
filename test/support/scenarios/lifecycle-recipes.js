@@ -898,6 +898,14 @@ function buildCompositionLifecycle(factors) {
     gap: 8,
     padding: 4
   })
+    .createLayerPlot({ target: { childPath: ["left"] }, source: "point", id: "independentPoints", placement: "back",
+      plot: { action: "createScatterPlot", inherit: { color: false }, options: { guides: false } } })
+    .removeMark({ target: { childPath: ["left"], id: "independentPoints" } })
+    .createOverlay({ target: { childPath: ["left"] }, id: "followingLine", source: "point", type: "line", orderBy: "x" })
+    .editOverlay({ target: { childPath: ["left"], id: "followingLine" }, orderBy: "y" })
+    .createAdjacentPlot({ target: { childPath: ["left"] }, id: "followingPanel", source: "point", position: "bottom",
+      share: { x: true }, plot: { action: "createLinePlot", options: { x: "x", y: "positive", guides: false } } })
+    .editCompositionScales({ share: { y: true } })
     .editCompositionLayout({
       gap: factors.gap,
       padding: factors.padding,
@@ -2025,7 +2033,7 @@ function realisticLifecycleMetadata(base, factors) {
     "action-cartesian-guides": ["create", "edit", "remove"],
     "action-polar-guides": ["create", "edit"],
     "action-selection-lifecycle": ["create", "remove", "filter", "select", "highlight"],
-    "action-composition-lifecycle": ["edit", "remove", "compose", "reassign"],
+    "action-composition-lifecycle": ["create", "edit", "remove", "compose", "reassign"],
     "action-facet-scale-lifecycle": ["create", "edit", "compose"],
     "action-facet-grid-lifecycle": ["create", "edit", "compose"],
     "action-repeat-charts-lifecycle": ["create", "compose"],
@@ -2102,7 +2110,7 @@ function lifecycleSignature(base, factors) {
       "filterMarks", "highlightMarks", "removeMarkHighlight"
     ],
     "action-composition-lifecycle": [
-      "hconcat", "editCompositionLayout", "insertCompositionChild",
+      "hconcat", "createOverlay", "editOverlay", "createLayerPlot", "createAdjacentPlot", "editCompositionScales", "editCompositionLayout", "insertCompositionChild",
       "reorderCompositionChildren", "removeCompositionChild", "replaceCompositionChild"
     ],
     "action-facet-scale-lifecycle": ["facet", "editFacetScales", "editFacetGuides"],
@@ -2225,7 +2233,6 @@ const TRACE_ONLY_LIFECYCLE_FACTORS = Object.freeze({
   "action-horizon-lifecycle": Object.freeze(["baseline"]),
   "action-cartesian-guides": Object.freeze(["align", "subtitle"]),
   "action-selection-lifecycle": Object.freeze(["count"]),
-  "action-composition-lifecycle": Object.freeze(["align"])
 });
 
 function directTraceNode(program, operation) {
@@ -2268,11 +2275,6 @@ function traceOnlyFactorEvidence(base, program, factors, factor) {
   if (base.id === "action-selection-lifecycle" && factor === "count") {
     return directTraceNode(program, "highlightMarks")?.select?.count === factors.count
       ? "trace-only:highlightMarks.select.count-before-removeMarkHighlight"
-      : undefined;
-  }
-  if (base.id === "action-composition-lifecycle" && factor === "align") {
-    return directTraceNode(program, "editCompositionLayout")?.align === factors.align
-      ? "trace-only:editCompositionLayout.align-before-child-replacement"
       : undefined;
   }
   return undefined;
@@ -2364,6 +2366,7 @@ export const REALISTIC_LIFECYCLE_REQUIRED_FEATURES = Object.freeze([
 ]);
 
 export const LIFECYCLE_EXPECTED_ACTIONS = Object.freeze([
+  "createOverlay", "editOverlay", "createLayerPlot", "createAdjacentPlot", "editCompositionScales",
   "reviseData", "applyTextMetrics", "removeTextMetrics",
   "filterData", "createRegressionData", "createWindowData", "createTimeUnitData",
   "createSortedData", "editSortedData",

@@ -25,6 +25,7 @@ export function currentFacadeOptionWitnesses(args,{action,index,program}={}) {
     result.missing=index%2?'skip':'error';
     if(index===0){result.size={value:25};if(result.point)delete result.point.radius;}
   }
+  if(['createStripPlot','createBeeswarmPlot','createRaincloudPlot'].includes(action)) result.missing=index%2?'skip':'error';
   if(action==='createBarPlot') {result.missing=index%2?'skip':'error';result.bar={...result.bar,clip:index%2===0};}
   if(action==='createLinePlot') {
     const direct=['x','y'].every(channel=>['quantitative','temporal'].includes(result[channel]?.fieldType)&&result[channel].aggregate===undefined&&result[channel].bin===undefined);

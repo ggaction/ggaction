@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "axes",
   "summary": "Removes y axis while preserving unrelated chart resources.",
-  "signature": "removeYAxis(options?: RemoveAxisOptions): ChartProgram;",
+  "signature": "removeYAxis(options?: TargetedOptions<RemoveAxisOptions>): ChartProgram;",
   "intents": [
     "remove y axis",
     "remove",
@@ -67,7 +67,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "coordinate",

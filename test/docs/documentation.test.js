@@ -914,7 +914,7 @@ test("classifies every declared ChartProgram action in the reference", async () 
   );
   const signatures = await declaredActionSignatures();
   assert.equal(signatures.length, methods.length);
-  assert.equal(signatures[0], "createCanvas(options?: CanvasOptions): ChartProgram;");
+  assert.equal(signatures[0], "createCanvas(options?: TargetedOptions<CanvasOptions>): ChartProgram;");
   assert.equal(signatures.some(signature => /^(?:constructor|readonly\b)/.test(signature)), false);
 
   assert.equal(new Set(methods).size, methods.length);

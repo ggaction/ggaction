@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "charts",
   "summary": "Draws one point per observation, without statistical aggregation. Supports color, size, and shape fields; defaults to applicable axes, grid, and legends. Aggregate create-only describes composed actions, not aggregated rows.",
-  "signature": "createScatterPlot(options: CreateScatterPlotOptions): ChartProgram;",
+  "signature": "createScatterPlot(options: TargetedOptions<CreateScatterPlotOptions>): ChartProgram;",
   "intents": [
     "create scatter plot",
     "create",
@@ -25,7 +25,8 @@
     "idOptions": [
       "id",
       "data",
-      "coordinate"
+      "coordinate",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -58,6 +59,10 @@
     },
     {
       "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -132,10 +137,15 @@
       "name": "guides",
       "required": false,
       "type": "false | CartesianGuideOptions | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "createScatterPlot({ x, y, id?, data?, coordinate?, missing?, color?, stroke? })"
+    "createScatterPlot({ x, y, id?, data?, coordinate?, target?, missing?, color? })"
   ],
   "snippet": "program.createScatterPlot({ x: \"x\", y: \"y\" })",
   "errors": [],

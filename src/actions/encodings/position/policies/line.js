@@ -6,6 +6,7 @@ import { emptyPositionPolicy, resolveBin } from "./common.js";
 import { findSemanticScale } from "../../../../selectors/scales.js";
 import { validateCategoricalColorConsumer } from "../../../../grammar/scales/colorConsumers.js";
 import { validateLineMissingScope } from "../../../../grammar/lineMissing.js";
+import { isAggregateLinePosition, isHorizontalLine } from "../../../../grammar/lineSeries.js";
 
 function rejectStack(args, channel) {
   if (args.stack !== undefined) {
@@ -25,7 +26,8 @@ export function resolveLinePositionPolicy({
   dataset,
   channel,
   args,
-  fieldType
+  fieldType,
+  orientationNormalized = false
 }) {
   validateLineMissingScope({ ...layer, encoding: { ...layer.encoding,
     [channel]: { ...args, fieldType } } });
@@ -54,6 +56,15 @@ export function resolveLinePositionPolicy({
   }
   if (config.closed === true) {
     throw new Error("Line closed requires theta/radius Polar position encodings.");
+  }
+  const prospective = { ...layer, encoding: { ...layer.encoding, [channel]: { ...args, fieldType } } };
+  if (prospective.encoding.x?.aggregate !== undefined && prospective.encoding.y?.aggregate !== undefined) {
+    throw new Error("A Line requires one independent position; both axes cannot aggregate.");
+  }
+  if (!orientationNormalized && isHorizontalLine(prospective)) {
+    return resolveLinePositionPolicy({ program, dataset,
+      layer: { ...layer, encoding: { ...layer.encoding, x: layer.encoding?.y, y: layer.encoding?.x } },
+      channel: channel === 'x' ? 'y' : 'x', args, fieldType, orientationNormalized: true });
   }
   const regression = dataset.transform?.some(item => item.type === "regression");
   const interval = dataset.transform?.some(item => item.type === "interval");
@@ -96,10 +107,12 @@ export function resolveLinePositionPolicy({
       fieldType === "quantitative";
     const pendingQuantitativePair =
       layer.encoding?.y === undefined && fieldType === "quantitative";
+    const aggregatePair = layer.encoding?.y?.aggregate !== undefined &&
+      isAggregateLinePosition({ fieldType });
     if (
       fieldType !== "temporal" &&
       !(
-        (regression || interval || directPair || pendingQuantitativePair) &&
+        (regression || interval || directPair || pendingQuantitativePair || aggregatePair) &&
         fieldType === "quantitative"
       )
     ) {
@@ -150,13 +163,10 @@ export function resolveLinePositionPolicy({
   }
 
   if (layer.encoding?.x !== undefined) {
-    const compatibleAggregateX =
-      ["temporal", "nominal", "ordinal"].includes(layer.encoding.x.fieldType) ||
-      (layer.encoding.x.fieldType === "quantitative" &&
-        layer.encoding.x.bin !== undefined);
+    const compatibleAggregateX = isAggregateLinePosition(layer.encoding.x);
     if (!compatibleAggregateX) {
       throw new Error(
-        "Aggregate line y encoding requires a temporal, categorical, or binned quantitative x encoding."
+        "Aggregate line y encoding requires a quantitative, temporal, or categorical x encoding."
       );
     }
   }

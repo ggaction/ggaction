@@ -1,3 +1,4 @@
+import {legendBlockChannels} from "../../grammar/legendBlocks.js";
 import { cartesianAxisOwners, axisTargetArgs } from "../../selectors/axes.js";
 import { closedAction } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
@@ -41,13 +42,7 @@ const REMOVE_AXIS = Object.freeze({
   theta: "removeThetaAxis",
   radius: "removeRadialAxis"
 });
-const SPECIALIZED_LEGEND_KIND = Object.freeze({
-  color: Object.freeze(["gradient", "interval", "colorSize"]),
-  stroke: Object.freeze(["strokeGradient", "strokeInterval"]),
-  size: Object.freeze(["size", "colorSize"]),
-  opacity: Object.freeze(["opacity"]),
-  strokeWidth: Object.freeze(["strokeWidth"])
-});
+
 
 function resolveTarget(program, requested, channel) {
   const candidates = program.semanticSpec.layers.filter(
@@ -190,9 +185,10 @@ function reconcileCategoricalLegend(program, target, channels) {
 
 function cleanupLegends(program, target, channels) {
   let next = reconcileCategoricalLegend(program, target, channels);
-  const kinds = [...new Set(channels.flatMap(
-    channel => SPECIALIZED_LEGEND_KIND[channel] ?? []
-  ))].filter(kind => next.guideConfigs.legend?.[kind]?.target === target);
+  const kinds = Object.entries(next.guideConfigs.legend ?? {})
+    .filter(([kind, config]) => !["series", "color", "stroke"].includes(kind) &&
+      config.target === target && legendBlockChannels(kind, config).some(channel => channels.includes(channel)))
+    .map(([kind]) => kind);
   return kinds.length === 0 ? next : removeLegendKinds(next, kinds);
 }
 
@@ -221,6 +217,9 @@ export const removeEncoding = /* @__PURE__ */ closedAction(
       );
     }
     const layer = resolveTarget(this, args.target, args.channel);
+    if (layer.derivedBindings?.overlay && ["x", "y", "x2", "y2", "xOffset", "yOffset", "group", "pathOrder"].includes(args.channel)) {
+      throw new Error("Overlay geometry follows its source; edit the source or detach the overlay first.");
+    }
     if (args.channel === "group" && layer.layout?.mode !== undefined && layer.layout.mode !== "overlay") throw new Error("Remove active series layout before removing its group.");
     if (args.channel === "theta" && layer.mark.type === "arc" &&
       ["count", "sum"].includes(layer.encoding?.radius?.aggregate)) {
@@ -254,6 +253,10 @@ export const removeEncoding = /* @__PURE__ */ closedAction(
       .filter(item => item.scale !== undefined);
 
     let next = this;
+    if (args.channel === "color" && layer.derivedBindings?.overlay?.inheritColor) {
+      next = next.editSemantic({ property: `layer[${layer.id}].derivedBindings.overlay`,
+        value: { ...layer.derivedBindings.overlay, inheritColor: false } });
+    }
     for (const channel of channels) {
       next = next.editSemantic({
         property: `layer[${layer.id}].encoding.${channel}`,

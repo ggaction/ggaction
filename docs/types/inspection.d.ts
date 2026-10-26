@@ -15,3 +15,37 @@ export function getDatasetSchema(program: ProgramInput, options: {readonly data:
 export function describeAction(program: ProgramInput, options: {readonly action:string;readonly target?:InspectionTarget;readonly options?:Readonly<Record<string,unknown>>}): ActionDescription;
 export function comparePrograms(before: ProgramInput, after: ProgramInput, options?: {readonly target?:InspectionTarget}): ProgramComparison;
 export function inspectProgram(program: ProgramInput, options?: {readonly target?:InspectionTarget}): ProgramInspection;
+
+export interface PlotCompositionChannel {
+  readonly field?: string;
+  readonly fields?: readonly string[];
+  readonly fieldType: string;
+  readonly scale: string;
+  readonly data: string;
+  readonly measurement: Readonly<{ unit: string; operations: readonly string[]; parameters?: Readonly<Record<string, unknown>> }>;
+  readonly bin?: Readonly<Record<string, unknown>>;
+  readonly temporalUnit?: string;
+}
+export interface PlotComposition {
+  readonly version: 1;
+  readonly owner: string;
+  readonly ownedMarks: readonly string[];
+  readonly data: string;
+  readonly coordinate?: Readonly<{ id: string; type: string }>;
+  readonly mark: string;
+  readonly channels: Readonly<Record<string, PlotCompositionChannel>>;
+  readonly dimensions?: readonly PlotCompositionChannel[];
+  readonly role?: string;
+  readonly groupBy?: string | readonly string[];
+}
+export function getPlotComposition(program: ProgramInput, options?: { readonly target?: string | { readonly childPath: readonly string[]; readonly id: string }; readonly childPath?: readonly string[] }): PlotComposition;
+
+export interface MarkItemInspection {
+  readonly key: string; readonly target: string; readonly markType: string; readonly grain: "item" | "stack";
+  readonly fields: Readonly<Record<string, unknown>>; readonly channels: Readonly<Record<string, unknown>>;
+  readonly properties: Readonly<Record<string, unknown>>;
+  readonly geometry: readonly {readonly type: string; readonly properties: Readonly<Record<string, unknown>>}[];
+  readonly rows: readonly { readonly data: string; readonly index: number }[];
+  readonly bounds: Readonly<{left:number;top:number;right:number;bottom:number}> | null;
+}
+export function getMarkItems(program: ProgramInput, options?: {target?: string | {childPath?:readonly string[];id:string};grain?:"item"|"stack"}): readonly MarkItemInspection[];

@@ -1,9 +1,19 @@
+import { resolveMarkItems } from "./materialization/selection/policies/index.js";
+import { highlightTargets } from "./selectors/selectionTargets.js";
+import { resolvePathCommandBounds, unionConcreteGraphicBounds } from "./grammar/schemas/graphicBounds.js";
+import { facetUnitTemplate } from "./actions/facets/actions.js";
+import { plotComposition } from "./selectors/plotComposition.js";
+import { overlaySourceReason } from "./grammar/overlay.js";
+import { findUpstreamTransform } from "./materialization/dataProvenance.js";
+import { planLayerPlot } from "./actions/composition/layerPlan.js";
+import { resolveAdjacentSource } from "./materialization/adjacentSource.js";
+import { normalizeActionTargets } from "./grammar/actionTargets.js";
 import { resolveGraphicClipBounds, resolveGraphicParentOffset } from "./grammar/schemas/graphicBounds.js";
 import { resolveFacetDefinition, resolveFacetGridDefinition } from "./grammar/facets/index.js";
-import { APPEARANCE_MARK_TYPES } from "./core/vocabulary.js";
+import { APPEARANCE_MARK_TYPES, FIXED_APPEARANCE_MARK_TYPES } from "./core/vocabulary.js";
 import { ChartProgram } from "./ChartProgram.js";
 import { BasicChartProgram } from "./BasicChartProgram.js";
-import { getWrappedActionMetadata } from "./core/action.js";
+import { getWrappedActionMetadata, supportsScopedActionTargets } from "./core/action.js";
 import { cloneAndFreeze, isOwned, isPlainObject } from "./core/immutable.js";
 import { encodeValue } from "./persistence/codec.js";
 import {
@@ -11,7 +21,9 @@ import {
   hasDatasetOwner,
   resolveDatasetReference
 } from "./selectors/datasets.js";
-import { findLayer } from "./selectors/layers.js";
+import { findLayer, resolveEligibleLayer } from "./selectors/layers.js";
+import { ownership } from "./selectors/markOwners.js";
+import { normalizeCompositionShares } from "./core/compositionScales.js";
 import { findSemanticScale } from "./selectors/scales.js";
 import { findCoordinate } from "./selectors/coordinates.js";
 import { inferDatasetSchema } from "./grammar/datasetSchema.js";
@@ -75,6 +87,12 @@ function resourceRef(kind, id, childPath) {
   return { kind, id, ...(childPath?.length ? { childPath: [...childPath] } : {}) };
 }
 
+export function getPlotComposition(program, { target, childPath } = {}) {
+  requireProgram(program);
+  if (isPlainObject(target)) { childPath = target.childPath; target = target.id; }
+  return cloneAndFreeze(plotComposition(atChildPath(program, childPath), target));
+}
+
 export function getDatasetSchema(program, { data, childPath } = {}) {
   requireProgram(program);
   const current = atChildPath(program, childPath);
@@ -85,6 +103,39 @@ export function getDatasetSchema(program, { data, childPath } = {}) {
 }
 
 export function describeAction(program, { action, target, options = {} } = {}) {
+  requireProgram(program);
+  if (!isPlainObject(options)) throw new TypeError("describeAction options must be a plain object.");
+  if (isPlainObject(options.target) || Array.isArray(options.target)) {
+    requireProgram(program);
+    if (target !== undefined) throw new Error("Use one inspection target or explicit action target selectors, not both.");
+    if (!supportsScopedActionTargets(program.constructor, action)) return cloneAndFreeze({ version: 1, action, applicability: "unsupported",
+      parameterDefinitions: [], requirements: [], checks: [], findings: [{ severity: "info", code: "unsupported-combination", reason: "entry-point", message: "Scoped action targets require a Full domain action." }] });
+    const { target: selected, ...rest } = options;
+    const selections = normalizeActionTargets(selected);
+    const results = selections.map(selection => {
+      let view = program;
+      for (const id of selection.childPath) {
+        if (view.compositionSpec?.type === "facet") throw new Error("Facet cells follow their source; use editFacetSource for persistent edits.");
+        view = atChildPath(view, [id]);
+      }
+      if (selection.facetSource) {
+        if (view.compositionSpec?.type !== "facet") throw new Error("facetSource requires a facet view.");
+        view = facetUnitTemplate(view, true);
+      }
+      if (view.compositionSpec?.type === "facet" && selection.id !== undefined) throw new Error("Target a facet source through editFacetSource.");
+      const reference = selection.id === undefined || action.includes("CompositionChild") ? undefined
+        : { kind: "mark", id: selection.id };
+      return describeAction(view, { action, target: reference,
+        options: { ...rest, ...(selection.id === undefined ? {} : { target: selection.id }) } });
+    });
+    const priority = ["incompatible", "unsupported", "needs-input", "unverified", "supported"];
+    const applicability = priority.find(value => results.some(result => result.applicability === value));
+    return cloneAndFreeze({ ...results[0], applicability,
+      requirements: results.flatMap(result => result.requirements),
+      findings: results.flatMap(result => result.findings),
+      checks: results.flatMap(result => result.checks) });
+  }
+
   requireProgram(program);
   if (typeof action !== "string" || action.length === 0) throw new TypeError("describeAction requires action.");
   if (!isPlainObject(options)) throw new TypeError("describeAction options must be a plain object.");
@@ -106,7 +157,8 @@ export function describeAction(program, { action, target, options = {} } = {}) {
         findings: [{ severity: "error", code: "incompatible-resource", reason: "target-mismatch", message: `Inspection target "${target.id}" conflicts with options.target "${options.target}".`, resource: resourceRef(target.kind, target.id, target.childPath), optionPath: "target" }]
       });
     }
-    const markTypes = APPEARANCE_MARK_TYPES[action];
+    const markTypes = options.field !== undefined ? APPEARANCE_MARK_TYPES[action]
+      : FIXED_APPEARANCE_MARK_TYPES[action] ?? APPEARANCE_MARK_TYPES[action];
     if (markTypes && (target.kind !== "mark" || !markTypes.includes(targetResource.mark?.type))) {
       return cloneAndFreeze({
         version: 1, action, applicability: "unsupported", parameterDefinitions: [], requirements: [],
@@ -123,7 +175,12 @@ export function describeAction(program, { action, target, options = {} } = {}) {
       parameterDefinitions: [], requirements: [], checks: [], findings: [{ severity: "info", code: "unsupported-format", reason: typeof fn === "function" ? "extension-unverified" : "action-unavailable", message: `Action "${action}" has no built-in inspection descriptor.` }]
     });
   }
-  const descriptor = ACTION_DESCRIPTORS.get(action);
+  let descriptor = ACTION_DESCRIPTORS.get(action);
+  if (targetResource?.mark && FIXED_APPEARANCE_MARK_TYPES[action]?.includes(targetResource.mark.type)
+      && !APPEARANCE_MARK_TYPES[action].includes(targetResource.mark.type)) {
+    descriptor = { ...descriptor, options: descriptor.options.filter(definition =>
+      !["field", "fieldType", "scale"].includes(definition.path)) };
+  }
   const optionNames = metadata.options ?? descriptor?.options.map(option => option.path);
   if (optionNames === undefined) {
     return cloneAndFreeze({
@@ -136,6 +193,41 @@ export function describeAction(program, { action, target, options = {} } = {}) {
   const required = descriptor?.options.filter(option => option.required).map(option => option.path) ?? [];
   const missing = required.filter(key => options[key] === undefined);
   let fieldFinding = [];
+  if (action === "createLayerPlot") {
+    try { const local=atChildPath(program, target?.childPath); planLayerPlot(local.compositionSpec?.type === "facet" ? facetUnitTemplate(local,true) : local, { ...options, source: options.source ?? target?.id }); }
+    catch (error) { fieldFinding.push({ severity: "error", code: "unsupported-combination", reason: "layer-compatibility", message: error.message }); }
+  }
+  if (action === "createAdjacentPlot") {
+    const scoped = atChildPath(program, target?.childPath);
+    try { resolveAdjacentSource(scoped, options.source ?? target?.id); }
+    catch (error) {
+      if (options.source || target?.id || (scoped.compositionSpec && scoped.compositionSpec.type !== "facet"))
+        fieldFinding.push({ severity: "error", code: "missing-resource", reason: "adjacent-source", message: error.message });
+      else missing.push("source");
+    }
+  }
+
+  if (action === "editCompositionScales") {
+    if (!program.compositionSpec || program.compositionSpec.type === "facet") fieldFinding.push({ severity: "error", code: "unsupported-combination", reason: "composition-scope", message: "editCompositionScales requires a concat parent." });
+    if (options.share !== undefined) try {
+      if (!Object.keys(normalizeCompositionShares(options.share)).length) throw new Error("At least one shared-channel policy is required.");
+    } catch (error) { fieldFinding.push({ severity: "error", code: "invalid-option", reason: "share-policy", message: error.message, optionPath: "share" }); }
+  }
+  if (["createOverlay", "editOverlay"].includes(action)) {
+    const scoped = atChildPath(program, target?.childPath);
+    const id = action === "createOverlay" ? options.source ?? target?.id ?? scoped.context.currentMark
+      : options.target ?? target?.id ?? scoped.context.currentMark;
+    const layer = findLayer(scoped, id);
+    if (layer === undefined) missing.push(action === "createOverlay" ? "source" : "target");
+    else if (action === "editOverlay" ? !layer.derivedBindings?.overlay :
+      overlaySourceReason(layer, findCoordinate(scoped, layer.coordinate)?.type,
+        findUpstreamTransform(scoped, findDataset(scoped, layer.data), 'density'))) {
+      fieldFinding.push({ severity: "error", code: "unsupported-combination", reason: "overlay-source",
+        message: action === "createOverlay" ? overlaySourceReason(layer, findCoordinate(scoped, layer.coordinate)?.type,
+          findUpstreamTransform(scoped, findDataset(scoped, layer.data), 'density'))
+          : "editOverlay requires a linked overlay target." });
+    } else if (action === "createOverlay" && layer.mark.type === "point" && options.type !== "point" && !options.orderBy) missing.push("orderBy");
+  }
   if (targetResource !== undefined && target.kind === "mark") {
     const scoped = atChildPath(program, target.childPath);
     // Plot editors address source roles, whereas encoding actions address the
@@ -152,7 +244,7 @@ export function describeAction(program, { action, target, options = {} } = {}) {
     }).schema;
     if (schema.completeness === "known") {
       const fields = new Set(schema.fields.map(field => field.name));
-      fieldFinding = (descriptor?.options ?? [])
+      fieldFinding.push(...(descriptor?.options ?? [])
         .filter(definition => definition.kind === "field" &&
           typeof options[definition.path] === "string" &&
           !fields.has(options[definition.path]))
@@ -163,7 +255,7 @@ export function describeAction(program, { action, target, options = {} } = {}) {
           message: `Dataset does not contain field "${options[definition.path]}".`,
           resource: resourceRef("data", sourceData, target.childPath),
           optionPath: definition.path
-        }));
+        })));
     }
   }
   if (unknown === undefined && missing.length === 0 &&
@@ -413,7 +505,10 @@ function inspectMark(program, layer, childPath) {
         ? Math.max(0, dataset.values.length - items.length) : null }
     ],
     bounds: union,
-    sourceRefs: dataset === undefined ? [] : [resourceRef("data", dataset.id, childPath)],
+    sourceRefs: [
+      ...(dataset === undefined ? [] : [resourceRef("data", dataset.id, childPath)]),
+      ...(layer.derivedBindings?.overlay ? [resourceRef("mark", layer.derivedBindings.overlay.source, childPath)] : [])
+    ],
     checks: [
       { name: "concrete-structure", status: graphic === undefined && !program.compositionSpec?.facet ? "failed" : logicalSupported ? "passed" : "not_applicable", evidencePaths: [layer.id], findings: [] },
       { name: "pixel-visibility", status: "not_run", evidencePaths: [], findings: [] }
@@ -537,4 +632,37 @@ export function inspectProgram(program, { target } = {}) {
     checks: [{ name: "pixel-visibility", status: "not_run", evidencePaths: [], findings: [] }],
     findings: [], coverage: { partial: filtered.some(view => view.checks.some(check => check.status !== "passed")), unsupported }
   });
+}
+
+// Shared native final-item inspection for recommendations and direct selection.
+const markItemInspections = new WeakMap();
+export function getMarkItems(program, { target, grain = 'item' } = {}) {
+  requireProgram(program);
+  const view = typeof target === 'object' ? atChildPath(program, target.childPath) : program;
+  const requested = typeof target === 'object' ? target.id : target;
+  const layer = requested ?? resolveEligibleLayer(view, { label: 'mark items', predicate: l => l.data !== undefined }).id;
+  let stored = markItemInspections.get(view);
+  if (!stored) markItemInspections.set(view, stored = new Map());
+  const key = `${layer}:${grain}`;
+  if (stored.has(key)) return stored.get(key);
+  const graphics = new Map();
+  for (const [id, object] of Object.entries(view.graphicSpec.objects)) {
+    graphics.set(id, object);
+    for (const child of object.items ?? []) graphics.set(child.id, { type: child.type ?? object.type, properties: child.properties });
+  }
+  const result = cloneAndFreeze(highlightTargets(view, layer).flatMap(id => resolveMarkItems(view, id, grain).map(item => {
+    const geometry = item.graphicIds.map(id => graphics.get(id)).filter(Boolean).map(g => ({ type:g.type, properties:g.properties }));
+    const bounds = geometry.map(g => {
+      const p = g.properties;
+      if (p.commands) return resolvePathCommandBounds(p.commands);
+      if (g.type === 'circle') return {left:p.x-p.radius,top:p.y-p.radius,right:p.x+p.radius,bottom:p.y+p.radius};
+      if (g.type === 'line') return {left:Math.min(p.x1,p.x2),top:Math.min(p.y1,p.y2),right:Math.max(p.x1,p.x2),bottom:Math.max(p.y1,p.y2)};
+      if (g.type === 'rect') return {left:p.x,top:p.y,right:p.x+p.width,bottom:p.y+p.height};
+      return unionConcreteGraphicBounds({objects:{item:g},order:['item']}, ['item'], view.materializationConfigs.textMetrics);
+    }).filter(Boolean);
+    return { key:item.key, target:item.layer, markType:item.markType, grain, fields:item.fields,
+      channels:item.channels, properties:item.properties, rows:item.rows, geometry,
+      bounds:bounds.length ? {left:Math.min(...bounds.map(b=>b.left)),top:Math.min(...bounds.map(b=>b.top)),right:Math.max(...bounds.map(b=>b.right)),bottom:Math.max(...bounds.map(b=>b.bottom))}:null };
+  })));
+  stored.set(key,result); return result;
 }

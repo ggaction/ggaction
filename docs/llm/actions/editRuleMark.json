@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "marks",
   "summary": "Edit constant Rule appearance through the four existing encoding owners.",
-  "signature": "editRuleMark(options: { clip?: boolean; target?: string; missing?: \"error\" | \"skip\" } & RuleStyleOptions): ChartProgram;",
+  "signature": "editRuleMark(options: TargetedOptions<{ clip?: boolean; target?: string; missing?: \"error\" | \"skip\" } & RuleStyleOptions>): ChartProgram;",
   "intents": [
     "edit rule mark",
     "edit",
@@ -71,7 +71,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "missing",

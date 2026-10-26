@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "marks",
   "summary": "Create a constant reference band.",
-  "signature": "createReferenceBand(options: CreateReferenceBandOptions): ChartProgram;",
+  "signature": "createReferenceBand(options: TargetedOptions<CreateReferenceBandOptions>): ChartProgram;",
   "intents": [
     "create reference band",
     "create",
@@ -26,7 +26,8 @@
       "id",
       "source",
       "data",
-      "coordinate"
+      "coordinate",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -75,6 +76,10 @@
     },
     {
       "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -219,6 +224,11 @@
       "name": "statistics",
       "required": false,
       "type": "readonly [ReferenceStatistic, ReferenceStatistic]"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [

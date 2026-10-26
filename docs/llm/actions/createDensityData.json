@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "core",
   "summary": "Create immutable KDE rows on one shared inclusive sample grid.",
-  "signature": "createDensityData(options: DensityDataOptions): ChartProgram;",
+  "signature": "createDensityData(options: TargetedOptions<DensityDataOptions>): ChartProgram;",
   "intents": [
     "create density data",
     "create",
@@ -24,7 +24,8 @@
     ],
     "idOptions": [
       "id",
-      "source"
+      "source",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -63,6 +64,10 @@
     {
       "input": "extent",
       "strategy": "documented-auto"
+    },
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
     },
     {
       "input": "omitted optional options",
@@ -136,10 +141,15 @@
       "name": "as",
       "required": false,
       "type": "readonly [string, string] | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "createDensityData({ id, field, source?, groupBy?, bandwidth?, extent?, steps?, kernel? })"
+    "createDensityData({ id, field, source?, target?, groupBy?, bandwidth?, extent?, steps? })"
   ],
   "snippet": "program.createDensityData({ id: \"density-data-1\", field: \"value\" })",
   "errors": [],

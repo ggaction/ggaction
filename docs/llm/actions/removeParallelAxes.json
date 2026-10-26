@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "axes",
   "summary": "Full-only field-selected Parallel guides.",
-  "signature": "removeParallelAxes(options?: ParallelAxesOptions): ChartProgram;",
+  "signature": "removeParallelAxes(options?: TargetedOptions<ParallelAxesOptions>): ChartProgram;",
   "intents": [
     "remove parallel axes",
     "remove",
@@ -64,7 +64,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "coordinate",

@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "statistics",
   "summary": "Materialize selected wide fields as stable key/value rows while preserving every source cell.",
-  "signature": "createFoldData(options: FoldDataOptions): ChartProgram;",
+  "signature": "createFoldData(options: TargetedOptions<FoldDataOptions>): ChartProgram;",
   "intents": [
     "create fold data",
     "create",
@@ -24,7 +24,8 @@
     ],
     "idOptions": [
       "id",
-      "source"
+      "source",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -45,6 +46,10 @@
   "inference": [
     {
       "input": "source",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -79,10 +84,15 @@
       "name": "as",
       "required": false,
       "type": "FoldDataOutputFields | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "createFoldData({ id, fields, source?, as? })"
+    "createFoldData({ id, fields, source?, target?, as? })"
   ],
   "snippet": "program.createFoldData({ id: \"long\", fields: [\"apples\", \"pears\"] })",
   "errors": [],

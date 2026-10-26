@@ -117,6 +117,14 @@
     "file": "guides.mjs",
     "cases": [
       {
+        "id": "guides/three-channel-interval-legend",
+        "statements": 1
+      },
+      {
+        "id": "guides/overflow-summary-line",
+        "statements": 1
+      },
+      {
         "id": "guides/axis-label-edge-threshold",
         "statements": 1
       },
@@ -567,6 +575,10 @@
         "statements": 3
       },
       {
+        "id": "authoring/radar-profile-summary",
+        "statements": 12
+      },
+      {
         "id": "authoring/entry-surface-9",
         "statements": 1
       },
@@ -740,6 +752,10 @@
   {
     "file": "selection.mjs",
     "cases": [
+      {
+        "id": "selection/row-provenance",
+        "statements": 10
+      },
       {
         "id": "selection/temporal-rect",
         "statements": 2

@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "axes",
   "summary": "Edits y-axis labels, including settings for vertical text.",
-  "signature": "editYAxisLabels(options?: Omit<AxisLabelOptions<YAxisPosition>, \"scale\">): ChartProgram;",
+  "signature": "editYAxisLabels(options?: TargetedOptions<Omit<AxisLabelOptions<YAxisPosition>, \"scale\">>): ChartProgram;",
   "intents": [
     "edit y axis labels",
     "edit",
@@ -185,7 +185,7 @@
     {
       "name": "target",
       "required": false,
-      "type": "string | undefined"
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
       "name": "position",

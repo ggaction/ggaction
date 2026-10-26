@@ -1,3 +1,5 @@
+import { validateTextAlignment } from "../../../../core/validation.js";
+import { materializeHardTextLines } from "../../../../materialization/textLines.js";
 import{normalizeLegendClipHeight}from"../../../../grammar/legendClip.js";
 import {normalizeLegendSpacing} from "../../../../grammar/legendSpacing.js";
 import{applyLegendClipGraphics}from"../../../../materialization/legendClip.js";
@@ -53,7 +55,7 @@ export const ITEM_LEGEND_OPTIONS = Object.freeze([
   "columns", "titlePosition", "offset", "itemGap", "rowPadding", "titlePadding", "title", "labels", "titleStyle", "border", "overflow"
 ]);
 const TEXT_OPTIONS = [
-  "offset", "color", "fontSize", "fontFamily", "fontWeight", "format"
+  "offset", "color", "fontSize", "fontFamily", "fontWeight", "align", "format"
 ];
 const BORDER_OPTIONS = [
   "color", "lineWidth", "padding", "background", "strokeDash"
@@ -119,6 +121,7 @@ export function normalizeLegendTextOptions(value, label, defaults) {
   }
   validateKeys(value, TEXT_OPTIONS, label);
   const result = { ...defaults, ...value };
+  validateTextAlignment(result, label);
   if (Object.hasOwn(result, "offset")) {
     validateNonNegative(result.offset, `${label} offset`);
   }
@@ -354,15 +357,15 @@ export function styleContinuousText(
     fontSize: style.fontSize,
     fontFamily: style.fontFamily,
     fontWeight: style.fontWeight,
-    textAlign: align,
+    textAlign: id.endsWith("Labels") ? style.align ?? align : align,
     textBaseline: "middle"
   });
   return id.endsWith("Title")
     ? materializeLegendTitleLines(next, id, next.graphicSpec.objects[id].properties.text, style)
-    : next;
+    : materializeHardTextLines(next, id);
 }
 
-export function resolveLegendTextBounds(position, text, style, profile, { hardBreaks = false } = {}) {
+export function resolveLegendTextBounds(position, text, style, profile, { hardBreaks = true } = {}) {
   return resolveTextBounds({
     x: position.x,
     y: position.y,

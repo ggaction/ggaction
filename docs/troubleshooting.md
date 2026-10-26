@@ -79,8 +79,11 @@ program.encodeY({
 });
 ```
 
-Do not share one ID across x and y, binned and unbinned consumers, or different
-aggregate/stack policies.
+Do not share one ID across x and y, different measured fields or units, or incompatible
+aggregate/stack policies. Binned and raw quantitative positions may share a scale
+when they measure the same field and units; binned consumers must agree on one
+bin definition. The common domain includes raw observations while each binned
+mark retains its own bin assignments.
 
 ## An explicit domain omits data
 

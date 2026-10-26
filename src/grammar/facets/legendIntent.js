@@ -1,4 +1,5 @@
 import { isPlainObject } from "../../core/immutable.js";
+import { patchLegendItemsOffset } from "../legendItemsOffset.js";
 import {validateLegendSpacing} from "../legendSpacing.js";
 import { validateOptionObject, validateNonEmptyString } from "../../core/validation.js";
 import { validateUserId } from "../../core/identifiers.js";
@@ -8,12 +9,12 @@ import { validateLegendGroupState } from "../legendGroups.js";
 import { resolveSharedFacetLegends, sameFacetGuideValue as same } from "./guides.js";
 import { normalizeDisplayLabelMap } from "../displayLabels.js";
 
-const CONFIG_KEYS = Object.freeze([
+const CONFIG_KEYS = Object.freeze(["visibility",
   "kind", "target", "channels", "scales", "scale", "field", "fieldType", "domain", "title", "titleVisible",
   "inferredTitle", "inferredSymbol", "inferredStrokeWidth", "inferredOffset", "position", "align", "offset", "direction", "columns",
   "titlePosition", "symbol", "labels", "titleStyle", "itemGap", "rowPadding", "titlePadding", "layout", "overflow", "border", "gradient",
   "count", "sampling", "representation", "gradientDirection", "inheritAppearance", "inheritPosition", "blockOverrides",
-  "combine", "sizeAreas", "clipHeight", "defaultLabelMap"
+  "combine", "sizeAreas", "clipHeight", "defaultLabelMap", "itemsOffset"
 ]);
 
 export function isAuthoredFacetLegend(value) {
@@ -31,9 +32,10 @@ export function validateAuthoredFacetLegend(program, intent) {
   for (const [kind, block] of Object.entries(intent.blocks)) {
     if (!LEGEND_CONFIG_KINDS.includes(kind)) throw new Error("Stored parent legend has an unknown block kind.");
     validateOptionObject(block, ["config", "guide"], "Stored parent legend block");
-    validateOptionObject(block.config, kind === "colorSize" ? [...CONFIG_KEYS, "colorScale", "sizeScale"] : CONFIG_KEYS, "Stored parent legend config");
+    validateOptionObject(block.config, kind === "colorSize" ? [...CONFIG_KEYS, "colorScale", "sizeScale", "shapeScale", "colorChannel"] : CONFIG_KEYS, "Stored parent legend config");
     const config = block.config;
     validateLegendSpacing(kind,config);
+    if (config.itemsOffset !== undefined) patchLegendItemsOffset({}, config.itemsOffset);
     if (config.defaultLabelMap !== undefined) normalizeDisplayLabelMap(config.defaultLabelMap, "Stored inferred legend labels");
     validateUserId(config.target, "Parent legend target");
     if (!LEGEND_POSITIONS.includes(config.position)) throw new Error("Stored parent legend requires a native position.");
@@ -42,9 +44,9 @@ export function validateAuthoredFacetLegend(program, intent) {
     }
     const descriptor = describeLegendBlock(program, kind, config);
     if (block.guide !== undefined) {
-      validateOptionObject(block.guide, kind === "colorSize" ? ["colorScale", "sizeScale", "title"]
+      validateOptionObject(block.guide, kind === "colorSize" ? ["colorScale", "sizeScale", "shapeScale", "colorChannel", "title"]
         : ["scale", "scales", "channels", "title", "order"], "Stored parent legend meaning");
-      if (kind === "colorSize" && (block.guide.colorScale !== config.colorScale || block.guide.sizeScale !== config.sizeScale)) {
+      if (kind === "colorSize" && (block.guide.colorScale !== config.colorScale || block.guide.sizeScale !== config.sizeScale || block.guide.shapeScale !== config.shapeScale || block.guide.colorChannel !== config.colorChannel)) {
         throw new Error("Stored parent color-size meaning must match both block scale bindings.");
       }
       if (block.guide.title !== undefined) validateNonEmptyString(block.guide.title, "Parent legend title");

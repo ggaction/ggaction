@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "marks",
   "summary": "Create anchored text.",
-  "signature": "createAnnotation(options: CreateAnnotationOptions): ChartProgram;",
+  "signature": "createAnnotation(options: TargetedOptions<CreateAnnotationOptions>): ChartProgram;",
   "intents": [
     "create annotation",
     "create",
@@ -26,7 +26,8 @@
       "id",
       "source",
       "data",
-      "coordinate"
+      "coordinate",
+      "target"
     ]
   },
   "authoringRoles": [
@@ -82,6 +83,10 @@
     },
     {
       "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
       "strategy": "explicit-current-unique-or-error"
     },
     {
@@ -226,6 +231,11 @@
       "name": "coordinate",
       "required": false,
       "type": "string | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [

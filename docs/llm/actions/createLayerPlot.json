@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 3,
+  "name": "createLayerPlot",
+  "layer": "user-facing",
+  "domain": "composition",
+  "summary": "Add an independent native chart to the source chart's coordinates.",
+  "signature": "createLayerPlot(options: TargetedOptions<CreateLayerPlotOptions>): ChartProgram;",
+  "intents": [
+    "create layer plot",
+    "create",
+    "add",
+    "chart composition",
+    "small multiples",
+    "layered chart",
+    "independent plot layer"
+  ],
+  "lifecycle": "Structural create-only",
+  "resources": {
+    "prerequisites": [
+      "complete child chart program"
+    ],
+    "owns": [
+      "layered chart"
+    ],
+    "idOptions": [
+      "id",
+      "source",
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H0"
+  ],
+  "wraps": [
+    "editScale",
+    "createBoxPlot"
+  ],
+  "editableVia": [
+    "encodeColor",
+    "encodeOpacity",
+    "removeMark"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "source",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "complete",
+    "requires": [
+      "complete child chart program"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "source",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "plot",
+      "required": true,
+      "type": "LayerPlotSpecification"
+    },
+    {
+      "name": "placement",
+      "required": false,
+      "type": "\"back\" | \"front\" | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
+    }
+  ],
+  "callPatterns": [
+    "createLayerPlot({ plot, id?, source?, target?, placement? })"
+  ],
+  "snippet": "program.createLayerPlot({ source: \"points\", plot: { action: \"createBoxPlot\" } })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#createlayerplot"
+}
