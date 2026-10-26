@@ -20,12 +20,15 @@ test('native font fallback keeps authored families first and includes only insta
 });
 
 test('native fallback preserves Latin pixels and never changes the graphical scene', async () => {
-  const p=scene('Electricity 2001–2017'), before=JSON.stringify(p);
+  const installed=new Set(GlobalFonts.families.map(f=>f.family));
+  const family=['Arial','DejaVu Sans','Liberation Sans','Noto Sans'].find(f=>installed.has(f));
+  assert.ok(family, 'An installed Latin font is required for same-font pixel equality');
+  const p=scene('Electricity 2001–2017',family), before=JSON.stringify(p);
   const expected=createCanvas(1,1); renderCanvasProgram(p,expected.getContext('2d'),{},createCanvas);
   const result=await renderToPNGBuffer(p), actual=createCanvas(340,80);
   actual.getContext('2d').drawImage(await loadImage(result.buffer),0,0);
-  assert.deepEqual(actual.getContext('2d').getImageData(0,0,340,80).data,
-    expected.getContext('2d').getImageData(0,0,340,80).data);
+  assert.equal(Buffer.compare(Buffer.from(actual.getContext('2d').getImageData(0,0,340,80).data),
+    Buffer.from(expected.getContext('2d').getImageData(0,0,340,80).data)),0,'Exact native font pixels');
   assert.equal(JSON.stringify(p),before);
 });
 
@@ -38,8 +41,8 @@ test('native PNG resolves Hangul through an installed fallback and PDF remains v
   renderCanvasProgram(explicit,expected.getContext('2d'),{},createCanvas);
   const actual=createCanvas(340,80),png=await renderToPNGBuffer(p);
   actual.getContext('2d').drawImage(await loadImage(png.buffer),0,0);
-  assert.deepEqual(actual.getContext('2d').getImageData(0,0,340,80).data,
-    expected.getContext('2d').getImageData(0,0,340,80).data);
+  assert.equal(Buffer.compare(Buffer.from(actual.getContext('2d').getImageData(0,0,340,80).data),
+    Buffer.from(expected.getContext('2d').getImageData(0,0,340,80).data)),0,'Exact native font pixels');
   const pdf=await renderToPDFBuffer(p);
   assert.match(pdf.buffer.toString('latin1'),/\/ToUnicode/);
   assert.doesNotMatch(pdf.buffer.toString('latin1'),/\/Subtype\s*\/Image/);

@@ -1,4 +1,5 @@
 import test from 'node:test';
+import { createVariantMetadata } from '../../../../support/artifact-paths.js';
 import assert from 'node:assert/strict';
 import { createCanvas, loadImage } from '@napi-rs/canvas';
 import { mkdir, writeFile } from 'node:fs/promises';
@@ -25,8 +26,11 @@ for (const variant of variants) test(`${variant.id}: reproducible rendered chart
  assert.deepEqual(program.semanticSpec.datasets.find(dataset=>dataset.id==='observations').values,variant.calls.find(call=>call.method==='createData').args.values);
  const dir=new URL(`../../../../../.artifacts/test/png/charts/linked-composition/independent-layers/${variant.id}/`,import.meta.url);
  await mkdir(dir,{recursive:true});
- await writeFile(new URL('target.png',dir),result.buffer);
+ await writeFile(new URL('user-facing.png',dir),result.buffer);
  await writeFile(new URL('primitive.png',dir),primitive.buffer);
- await writeFile(new URL('variant.json',dir),JSON.stringify({capability:'linked-composition',chart:'independent-layers',variant:variant.id,title:variant.title,
-  publicCalls:publicCallChain(variant),executableCalls:variant.calls,width:result.width,height:result.height,plotInkPixels:ink},null,2));
+ await writeFile(new URL('variant.json',dir),JSON.stringify(createVariantMetadata({scope:'charts',kind:'primitive',
+  capability:'linked-composition',chart:'independent-layers',variant:variant.id,title:variant.title,
+  userFacingCallChain:publicCallChain(variant)}),null,2)+'\n');
+ await writeFile(new URL('render-evidence.json',dir),JSON.stringify({executableCalls:variant.calls,
+  width:result.width,height:result.height,plotInkPixels:ink},null,2)+'\n');
 });

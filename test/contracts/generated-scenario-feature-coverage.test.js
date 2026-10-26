@@ -388,7 +388,6 @@ test("derives a bounded public option inventory without runtime prototype paths"
     "option-path:createScatterPlot.color.aggregate",
     "option-path:createScatterPlot.color.layout",
     "option-path:createBarPlot.y.bin",
-    "option-path:createLinePlot.x.aggregate",
     "option-path:createLinePlot.x.stack",
     "option-path:createLinePlot.y.bin",
     "option-path:createLinePlot.y.stack",
@@ -400,6 +399,8 @@ test("derives a bounded public option inventory without runtime prototype paths"
   ]) {
     assert.equal(optionById.has(id), false, id);
   }
+  assert.equal(optionById.has("option-path:createLinePlot.x.aggregate"), true,
+    "numeric line positions preserve explicit aggregation");
   assert.equal(inventory.optionPaths.some(option =>
     option.path.split(".").includes("resolved")
   ), false);
@@ -426,7 +427,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
       ...counts,
       [value.reason]: (counts[value.reason] ?? 0) + 1
     }), {}),
-    { "redacted-array": 7030 }
+    { "redacted-array": 7516 }
   );
   const values = id => optionById.get(id)?.values ?? [];
   assert.equal(optionById.has("option-path:createScatterPlot.x.scale.palette"), false);

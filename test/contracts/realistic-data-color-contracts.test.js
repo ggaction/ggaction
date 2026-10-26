@@ -170,8 +170,8 @@ test("palette range objects have actual public 5/3 witnesses at every restored c
   const {REALISTIC_STATISTICAL_FACADE_COVERAGE_RECIPES:statisticalRecipes}=await import("../support/scenarios/realistic-statistical-facade-coverage-recipes.js");
   const inventory=await buildPublicOptionInventory(JSON.parse(readFileSync(new URL("../../knowledge/action-cards.json",import.meta.url))));
   const options=inventory.optionPaths.filter(option=>option.required&&/(?:^|\.)range\.palette(?:\.|$)/u.test(option.path));
-  assert.equal(options.length,134);
-  assert.equal(digest(options.map(value=>value.id)),"ad2df428eca57646208b456bface9a462b66bce23dd6ad4db62276d07250d021");
+  assert.equal(options.length,136);
+  assert.equal(digest(options.map(value=>value.id)),"4e1c7c39e4de54cd80c29a988271a3aa891e1a684876b8d78484e30a4eec4d09");
   const stats=new Map(options.map(option=>[option.id,{occurrences:0,datasets:new Set(),values:new Set()}]));
   let builds=0;
   function record(program,dataset,metadata){
@@ -217,6 +217,12 @@ test("palette range objects have actual public 5/3 witnesses at every restored c
           color:{field:"positiveY",fieldType:"quantitative",scale:{type:"sequential",range:{palette:{name:"blues",extent:[.1,.9]}}}},
           stroke:{field:"positiveY",fieldType:"quantitative",scale:{type:"sequential",range:{palette:{name:"reds",extent:[.1,.9]}}}}}}});
       record(adjacent,dataset,{provenance:direct.provenance});
+      const layer = direct.program.createLayerPlot({id:"paletteLayer",source:"paletteObservations",
+        plot:{action:"createScatterPlot",options:{guides:false,
+          color:{field:"positiveY",fieldType:"quantitative",scale:{id:"layerPaletteColor",type:"sequential",range:{palette:{name:"blues",extent:[.1,.9]}}}},
+          stroke:{field:"positiveY",fieldType:"quantitative",scale:{id:"layerPaletteStroke",type:"sequential",range:{palette:{name:"reds",extent:[.1,.9]}}}}}}});
+      record(layer,dataset,{provenance:direct.provenance});
+
 
       const guide=guideRecipes.find(recipe=>recipe.factors.variant?.some(variant=>variant.id==="color-pow"));
       build(guide,dataset,guide.factors.variant.find(variant=>variant.id==="color-pow"));
@@ -243,7 +249,7 @@ test("palette range objects have actual public 5/3 witnesses at every restored c
   }
   const missing=[...stats].filter(([id,value])=>value.occurrences<5||value.datasets.size<3||id.endsWith(".name")&&value.values.size<3).map(([id,value])=>({id,occurrences:value.occurrences,datasets:[...value.datasets],values:[...value.values]}));
   assert.deepEqual(missing,[]);
-  assert.equal(builds,140);
+  assert.equal(builds,145);
   console.log(JSON.stringify({paletteRequirementCount:options.length,paletteRequirementSha256:digest(options.map(value=>value.id)),actualBuilds:builds,minimumOccurrences:5,minimumDatasets:3}));
 });
 

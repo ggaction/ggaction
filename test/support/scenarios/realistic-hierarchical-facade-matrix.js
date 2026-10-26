@@ -774,7 +774,7 @@ function polarGuides({
   if (index === 1) return { axes: false, grid: false, legend: false };
   const discreteTheta = requestedDiscreteTheta ??
     ["band", "point"].includes(THETA_TYPES[index % THETA_TYPES.length]);
-  return {
+  const guides = {
     axes: index % 5 === 0 ? false : {
       coordinate: { id: coordinate, type: index % 2 === 0 ? "polar" : "auto" },
       theta: index % 7 === 0 ? false : polarAxis(thetaScale, coordinate, index, false, discreteTheta),
@@ -807,6 +807,9 @@ function polarGuides({
           sampledValues: legendSampleValues
         })
   };
+  // Keep bottom legends below the theta-axis text on every Polar facade.
+  if (guides.legend?.position === "bottom" && guides.legend.layout === "edge") guides.legend.offset = 80;
+  return guides;
 }
 
 function rugGuides({ coordinate, scale, horizontal, index, edge, values, format }) {

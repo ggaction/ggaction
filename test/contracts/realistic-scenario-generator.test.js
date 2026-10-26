@@ -184,13 +184,13 @@ test("integrates every coverage recipe once with bounded tier capacity", () => {
   assert.deepEqual(report.minimumSelections, {
     simple: 90,
     intermediate: 1_154,
-    advanced: 1_505,
+    advanced: 1_510,
     composite: 100
   });
   assert.deepEqual(report.declaredFactorSelectionTargets, {
     simple: 179,
     intermediate: 1_338,
-    advanced: 1_527,
+    advanced: 1_532,
     composite: 113
   });
   assert.deepEqual(report.capacity, {

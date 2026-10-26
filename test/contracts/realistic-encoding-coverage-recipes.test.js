@@ -24,12 +24,12 @@ const actionCards = JSON.parse(readFileSync(
 ));
 const inventoryPromise = buildPublicOptionInventory(actionCards);
 const EXPECTED = Object.freeze({
-  "paths": 307,
-  "pathSha256": "07a6b2f55d87653d7903a1458213522a018c297637c092d56f1407854f34cf22",
-  "literals": 303,
-  "literalSha256": "b451cb6ef0ed6bfb353d9a4e74bf2a5824ec4ac3cd383030c91f300fabc9bf9d",
-  "diversity": 11,
-  "diversitySha256": "aab418064dda7b38adfbae46c342685808d65af63ce05ce9caab855e86d0072f"
+  "paths": 310,
+  "pathSha256": "2b51d84100f8f9ab20a1388c6ef63d922ec4ad7b41a8baabdeb034308514c984",
+  "literals": 305,
+  "literalSha256": "305a74d986f06a1d2dc91c79468753151e20635c5a3e1cfaa11e11a36f7ef54f",
+  "diversity": 12,
+  "diversitySha256": "842dd3215cb8191bd53940e33c4faf91cf1f2f71bda241ce4876565d8fd9df55"
 });
 
 function digest(values) {

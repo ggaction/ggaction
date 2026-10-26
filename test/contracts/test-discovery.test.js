@@ -56,13 +56,14 @@ test("separates network-backed corpus sweeps from source coverage", () => {
   const normal = collectTestFiles("all", testRoot);
   const realistic = collectTestFiles("realistic", testRoot);
 
-  assert.equal(realistic.length, 27);
+  assert.equal(realistic.length, 28);
   assert.equal(realistic.every(file => file.endsWith(".test.js")), true);
   assert.equal(realistic.some(file => file.endsWith(
     `${path.sep}dataset-fixtures.test.js`
   )), true);
   for (const name of [
     "realistic-axis-facet-owner-witness.test.js",
+    "realistic-layer-plot.test.js",
     "realistic-combined-legend-witness.test.js",
     "realistic-legend-option-witness.test.js",
     "realistic-data-color-contracts.test.js"

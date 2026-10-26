@@ -31,7 +31,7 @@ export function appendFacadeLegendCombinations(program, {
       points:{type:'strip',jitter:false,size:pair.size,shape:pair.shape}}
    : {x:{field:xField,fieldType:'quantitative',scale:{id:`${id}-x`,type:'linear',domain:'auto'}},y:['createScatterPlot','createRegressionPlot'].includes(action)?{field:yField,fieldType:'quantitative',scale:{id:`${id}-y`,type:'linear',domain:'auto'}}:{field:categoryField,fieldType:'ordinal',scale:{id:`${id}-y`,type:'band',domain:'auto'}}};
   const channels=mode==='size-shape'?['size','shape']:mode==='color-size-shape'?['color','size','shape']:['color','size'];
-  const options={id,data,...(action==='createRegressionPlot'?{band:false}:{}),...(action==='createBeeswarmPlot'?{packing:{overflow:'overlap'}}:{}),coordinate:`${id}-coordinate`,...position,
+  const options={id,data,...(action==='createRegressionPlot'?{band:false,groupBy:false}:{}),...(action==='createBeeswarmPlot'?{packing:{overflow:'overlap'}}:{}),coordinate:`${id}-coordinate`,...position,
    ...(action==='createRaincloudPlot'?{}:pair),
    guides:{axes:false,grid:false,legend:{combine:mode,channels,
     border:{strokeDash:[4,2,6,1]},...(mode==='color-size-shape'?{values:[domain[0],midpoint],symbol:{opacity:0.7}}:{}),...(mode==='color-size'?{symbol:{opacity:0.7},values:[domain[0],(domain[0]+domain[1])/2,domain[1]]}:{})}}};

@@ -1003,7 +1003,18 @@ function buildAppearanceCoverage(factors) {
   program = positionedPoint(program, "constant-color-size")
     .encodeColor({ target: "constant-color-size", value: "#2563eb" })
     .encodeSize({ target: "constant-color-size", value: 25 });
+  for (const value of ["circle", "diamond"]) {
+    const id = `constant-shape-${value}`;
+    program = positionedPoint(program, id).encodeShape({ target: id, value });
+  }
   for (const normalization of ["area", "radius"]) {
+    const constantId = `constant-polygon-${normalization}`;
+    program = positionedPoint(program, constantId).encodeShape({
+      target: constantId,
+      value: {
+        polygon: [{x: 0, y: -1}, {x: 1, y: 1}, {x: -1, y: 1}], normalization
+      }
+    });
     const id = `polygon-unknown-${normalization}`;
     program = positionedPoint(program, id).encodeShape({
       target: id, field: "group", fieldType: "nominal",
