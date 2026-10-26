@@ -3013,6 +3013,12 @@ categorical legends and ordinal size legends. When a categorical block and an
 ordinal size block are created or edited together, the same limit applies to both
 blocks. Quantitative size sampling is unchanged by a categorical overflow limit.
 Continuous and combined sampled legends retain their existing edge-only contracts. Shared facet promotion requires an edge position.
+For categorical line-only recipes, `overflow.summarySymbol: "first-hidden"`
+adds one sample beside that summary, mapped from the first hidden value in the
+final legend order. The original domain, raw rows and visible category labels
+are unchanged. Color/stroke/dash, width and opacity follow the normal sample
+recipe. Omission stays text-only; `overflow: false` or no hidden values produces
+no summary sample. Other families and point/swatch recipes reject the opt-in.
 
 ### `editLegend`
 

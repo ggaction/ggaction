@@ -94,4 +94,3 @@ export function materializeCompositionTitle(program, plot, title) {
   }
   return next;
 }
-

@@ -1,3 +1,4 @@
+import { validateLegendOverflow } from "../grammar/legendOverflow.js";
 import { normalizeTextOverrides } from "../grammar/text.js";
 import { normalizeLegendDisplayLabelMap } from "../grammar/displayLabels.js";
 import { validateFacetAxisPolicy } from "../core/facetAxisPolicy.js";
@@ -353,6 +354,7 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
     }
   }
   for (const [kind, config] of Object.entries(program.guideConfigs.legend ?? {})) {
+    validateLegendOverflow(kind, config);
     validateLegendClip(kind,config);
     for (const [key, override] of Object.entries(config.blockOverrides ?? {})) {
       if (override.labelMap !== undefined) {

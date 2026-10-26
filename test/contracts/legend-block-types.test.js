@@ -51,6 +51,13 @@ basic.createLegend({symbol:{layers:[{type:"point",opacity:0.7}]}});
 // @ts-expect-error recipe opacity is numeric
 program.createLegend({symbol:{layers:[{type:"point",opacity:"0.7"}]}});
 basic.createLegend({combine:"size-shape"});
+program.createLegend({ channels: ["stroke"], overflow: { maxItems: 29, summarySymbol: "first-hidden" } });
+basic.createLegend({ overflow: { maxItems: 2, summarySymbol: "first-hidden" } });
+program.editLegend({ overflow: { maxItems: 3, summarySymbol: "first-hidden" } });
+// @ts-expect-error summary symbols use a closed explicit policy
+program.createLegend({ overflow: { maxItems: 3, summarySymbol: true } });
+// @ts-expect-error arbitrary summary symbol policies are not supported
+program.editLegend({ overflow: { maxItems: 3, summarySymbol: "last" } });
 program.editLegend({combine:"separate"});
 // @ts-expect-error combination values are closed
 program.createLegend({combine:"shape-color"});

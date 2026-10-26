@@ -106,7 +106,7 @@
     {
       "name": "overflow",
       "required": false,
-      "type": "false | { maxItems: number; summary?: \"ellipsis-count\" | undefined; } | undefined"
+      "type": "false | { maxItems: number; summary?: \"ellipsis-count\" | undefined; summarySymbol?: \"first-hidden\" | undefined; } | undefined"
     },
     {
       "name": "order",

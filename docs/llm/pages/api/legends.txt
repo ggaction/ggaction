@@ -179,6 +179,14 @@ legend. The limit changes the displayed guide only, preserving every data row
 and color assignment. See the [exact legend contract](../../../reference/actions/guides/#createlegend)
 for supported anchors and layout restrictions.
 
+For a categorical line-only sample recipe, add
+`summarySymbol: "first-hidden"` inside `overflow` to paint one sample beside the
+summary. It uses the first hidden category in the final legend order and retains
+its mapped stroke, dash pattern, width and opacity. This does not add a category
+or reveal another label. Omission keeps the text-only summary; when all entries
+fit, no summary or extra sample appears. Other sample recipes and legend families
+reject this option.
+
 **Title alignment.**
 
 Use `titleStyle: {align: "left"}` to align a top title inside the measured

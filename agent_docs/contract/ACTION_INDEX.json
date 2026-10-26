@@ -3177,7 +3177,7 @@
       "domain": "legend_and_title",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editLegend` edits content, layout, appearance, exact samples and gradient ticks",
+      "update": "`editLegend` edits content, layout, symbols, samples, overflow and gradient ticks",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",

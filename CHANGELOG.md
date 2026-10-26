@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Add opt-in first-hidden line samples for categorical overflow summaries, preserving source data, scale domains and the default text-only summary.
+
 - Reduce immutable-copy allocations and repeated path validation/bounds work; batch Parallel dimension mapping and reuse immutable geometry across appearance edits. Transition row identities and SVG resource names remain exact while avoiding repeated hashing work.
 
 - Add `editLegend({ itemsOffset: { x, y } })` for independent legend-body movement with anchored titles, partial/reset edits, clipping, shared composition, facet, and persistence support.

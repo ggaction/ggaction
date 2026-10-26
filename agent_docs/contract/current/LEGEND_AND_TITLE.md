@@ -78,6 +78,14 @@ type TitleWrap = "word" | "character";
 - 모든 legend family의 `position`은 plot 내부 네 corner도 지원한다. Corner gradient는 vertical이며 sampled opacity는 vertical items를 사용한다. Offset은 painted border/content의
   plot 안쪽 간격이며 border padding을 추가 예약한다. 기본 vertical/1-column/top-title,
   align center다. 전체 내용이 plot에 맞지 않으면 atomic 오류이며 outer lane은 예약하지 않는다.
+
+- `overflow.summarySymbol?: "first-hidden"`는 categorical line-only recipe에서만 허용한다.
+  최종 정렬 domain의 첫 hidden value를 기존 symbol mapping으로 평가하여 summary row에
+  한 개의 sample을 추가한다. 실제 domain/data/visible category label은 바꾸지 않는다.
+  생략은 text-only, overflow:false와 hidden count 0은 추가 sample 없음이다.
+  다른 family/point/swatch recipe 및 malformed stored policy는 원자적으로 거부한다.
+  생성·편집·정렬·scale/data replay·resize·저장 복원과 실제 44-path/906-vertex 및
+  29-visible/30-painted-sample 회귀는 `test/unit/actions/guides/legend-summary-symbol.test.js`가 소유한다.
 - `overflow?: false | { maxItems: PositiveInteger; summary?: "ellipsis-count" }`는 categorical
   표시만 제한한다. 기본 전체 표시. 제한된 prefix 뒤 text-only `…N entries` 한 항목을 추가하며
   symbol에는 summary를 넣지 않는다. Domain/scale/data는 원본 전체를 보존하고 hidden count는

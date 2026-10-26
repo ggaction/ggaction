@@ -42,6 +42,13 @@ Renderer는 기존 concrete graphics만 소비한다. 정확한 공개 계약은
 독립 grammar/materialization module 2개에 맞춰 package entry 한도만 647에서 649로
 변경하고 byte 한도는 유지한다.
 
+## 범례 요약 행 정책
+
+`grammar/legendOverflow.js`가 categorical/size authoring과 저장 복원의 overflow 검증을
+공유한다. 기존 categorical materializer가 표시 domain view에만 선택적 summary sample을
+포함하며 원래 scale/data/domain을 유지한다. Renderer와 저장 상태 소유권은 바뀌지 않는다.
+정확한 공개 계약은 [Legend and title](contract/current/LEGEND_AND_TITLE.md)이 소유한다.
+
 ## Content facet 배치 소유권
 
 `core/facetAxisPolicy.js`가 생성·편집·저장 복원에서 공유하는 channel 정책을 검증한다.

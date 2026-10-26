@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.25.
 
-Contract: sha256:778c748516d0703391ea18f0fa5b610cdb5d3e6cace1de863ed15abf64add595. Status: development. Runtime source: bad24245673d68062f497765611b8402e1776e91. Release baseline: v0.0.13.
+Contract: sha256:9ab7e9568571bd87f2470f30c115605719e6bb830a2070c813fd29430b15b48c. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/bad24245673d68062f497765611b8402e1776e91/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/bad24245673d68062f497765611b8402e1776e91/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -13982,6 +13982,14 @@ legend. The limit changes the displayed guide only, preserving every data row
 and color assignment. See the [exact legend contract](./reference/actions/guides/#createlegend)
 for supported anchors and layout restrictions.
 
+For a categorical line-only sample recipe, add
+`summarySymbol: "first-hidden"` inside `overflow` to paint one sample beside the
+summary. It uses the first hidden category in the final legend order and retains
+its mapped stroke, dash pattern, width and opacity. This does not add a category
+or reveal another label. Omission keeps the text-only summary; when all entries
+fit, no summary or extra sample appears. Other sample recipes and legend families
+reject this option.
+
 **Title alignment.**
 
 Use `titleStyle: {align: "left"}` to align a top title inside the measured
@@ -27362,7 +27370,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `combine` | Optional / branch-dependent | `"color-size" \| "separate" \| "size-shape" \| undefined` |
 | `representation` | Optional / branch-dependent | `"gradient" \| "symbols" \| undefined` |
 | `layout` | Optional / branch-dependent | `"edge" \| "legacy-bottom" \| undefined` |
-| `overflow` | Optional / branch-dependent | `false \| { maxItems: number; summary?: "ellipsis-count" \| undefined; } \| undefined` |
+| `overflow` | Optional / branch-dependent | `false \| { maxItems: number; summary?: "ellipsis-count" \| undefined; summarySymbol?: "first-hidden" \| undefined; } \| undefined` |
 | `order` | Optional / branch-dependent | `LegendOrder \| undefined` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `channels` | Optional / branch-dependent | `readonly ("color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth")[] \| undefined` |
@@ -27485,6 +27493,12 @@ categorical legends and ordinal size legends. When a categorical block and an
 ordinal size block are created or edited together, the same limit applies to both
 blocks. Quantitative size sampling is unchanged by a categorical overflow limit.
 Continuous and combined sampled legends retain their existing edge-only contracts. Shared facet promotion requires an edge position.
+For categorical line-only recipes, `overflow.summarySymbol: "first-hidden"`
+adds one sample beside that summary, mapped from the first hidden value in the
+final legend order. The original domain, raw rows and visible category labels
+are unchanged. Color/stroke/dash, width and opacity follow the normal sample
+recipe. Omission stays text-only; `overflow: false` or no hidden values produces
+no summary sample. Other families and point/swatch recipes reject the opt-in.
 
 ## `editLegend`
 
@@ -27520,7 +27534,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `combine` | Optional / branch-dependent | `"color-size" \| "separate" \| "size-shape" \| undefined` |
 | `representation` | Optional / branch-dependent | `"gradient" \| "symbols" \| undefined` |
 | `layout` | Optional / branch-dependent | `"edge" \| "legacy-bottom" \| undefined` |
-| `overflow` | Optional / branch-dependent | `false \| { maxItems: number; summary?: "ellipsis-count" \| undefined; } \| undefined` |
+| `overflow` | Optional / branch-dependent | `false \| { maxItems: number; summary?: "ellipsis-count" \| undefined; summarySymbol?: "first-hidden" \| undefined; } \| undefined` |
 | `order` | Optional / branch-dependent | `LegendOrder \| undefined` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `blockLayout` | Optional / branch-dependent | `"column" \| "row" \| "wrap" \| undefined` |
@@ -37358,7 +37372,7 @@ export interface LegendOptions {
   /** Categorical, interval, size, or stroke-width layout. Defaults to edge; legacy-bottom is categorical and requires bottom position. */
   layout?: "edge" | "legacy-bottom";
   /** Categorical and ordinal-size display limit; omitted or false shows every item. */
-  overflow?: false | { maxItems: number; summary?: "ellipsis-count" };
+  overflow?: false | { maxItems: number; summary?: "ellipsis-count"; summarySymbol?: "first-hidden" };
   /** Categorical item order; preserves the appearance scale's assignments. */
   order?: LegendOrder;
   target?: string;
@@ -41936,12 +41950,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/bad24245673d68062f497765611b8402e1776e91/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/bad24245673d68062f497765611b8402e1776e91/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -44689,9 +44703,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:778c748516d0703391ea18f0fa5b610cdb5d3e6cace1de863ed15abf64add595` |
+| Contract fingerprint | `sha256:9ab7e9568571bd87f2470f30c115605719e6bb830a2070c813fd29430b15b48c` |
 | Example and dataset source | `ab206c446ae5010eecfd859427775c4785d8aed4` |
-| Runtime source commit | `bad24245673d68062f497765611b8402e1776e91` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 298 |
 | Declared actions in that release | 234 |

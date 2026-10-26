@@ -607,8 +607,8 @@ export function validateActionCards({ cards, actions, declarations, routes }) {
 
 export function compactActionCardByteLimit(name) {
   // Full action cards now include the common explicit-target selector and typed wrapper.
-  // editLegend also retains the typed independent body-offset option.
-  return 180 + ({editLegend: 4432, createLegend: 3810, createMarkLabels: 3420,
+  // Legend cards also retain the closed overflow summary-symbol policy.
+  return 180 + ({editLegend: 4482, createLegend: 3850, createMarkLabels: 3420,
     createAnnotation: 3420, createRegressionPlot: 3460, createReferenceBand: 3450}[name] ?? 3360);
 }
 
