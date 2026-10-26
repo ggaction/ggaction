@@ -1242,7 +1242,7 @@ replaces the previous content branch. [Text marks](../../api/marks/text.md)
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.26. See [release compatibility](../../version.md).
 
 ```typescript
 encodeDx(options: TargetedOptions<TextOffsetEncodingOptions>): ChartProgram;
@@ -1282,7 +1282,7 @@ source-owned labels and other marks are rejected.
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+**Availability:** Available by v0.0.26. See [release compatibility](../../version.md).
 
 ```typescript
 encodeDy(options: TargetedOptions<TextOffsetEncodingOptions>): ChartProgram;

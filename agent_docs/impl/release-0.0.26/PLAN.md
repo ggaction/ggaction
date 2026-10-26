@@ -4,8 +4,8 @@
 
 - [x] 사용자의 새 push 포함 통합 및 릴리스 요청을 승인 근거로 기록했다.
 - [x] `4b3722767b9ad6a706d118a76b88665342e42a96`까지 병합했다.
-- [x] 추가 렌더링/캐시 집중 테스트 27개가 통과했고 새 파일의 capability 등록을 보완했다.
-- [ ] 최종 source와 공개 문서/LLM provenance를 동기화한다.
+- [x] 추가 렌더링/캐시 집중 테스트 27개와 SVG/stroke/discovery까지 확장한 58개 검사가 통과했고 새 파일의 capability 등록을 보완했다.
+- [x] 최종 source와 공개 문서/LLM provenance를 동기화했다.
 - [ ] 전체 PR 및 main CI와 exact-tag candidate 검증을 통과한다.
 - [ ] 검증한 동일 candidate를 npm/GitHub/Pages로 게시하고 공개 해시를 확인한다.
 - [ ] 병합이 확인된 원격/로컬 브랜치를 정리한다.
