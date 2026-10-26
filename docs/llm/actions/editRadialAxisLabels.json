@@ -79,6 +79,11 @@
       "type": "readonly AxisValue[] | undefined"
     },
     {
+      "name": "align",
+      "required": false,
+      "type": "\"center\" | \"left\" | \"right\" | undefined"
+    },
+    {
       "name": "offset",
       "required": false,
       "type": "number | undefined"
@@ -115,7 +120,7 @@
     }
   ],
   "callPatterns": [
-    "editRadialAxisLabels({ target?, count?, values?, offset?, format?, color?, fontSize?, fontFamily? })"
+    "editRadialAxisLabels({ target?, count?, values?, align?, offset?, format?, color?, fontSize? })"
   ],
   "snippet": "program.editRadialAxisLabels({ count: 5 })",
   "errors": [],

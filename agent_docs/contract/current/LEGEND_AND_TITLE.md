@@ -716,7 +716,7 @@ config normalization과 rematerialization을 공유한다. Evidence:
   Hard line에 `maxWidth` 없이 적용할 수 있으며 제목 간격과 기존 공통 간격 검증은 바꾸지 않는다.
   생성 시 생략하면 저장 키가 없고 편집 시 생략하면 유지한다. `subtitle:false`에서 보존하고 전체 title 제거 시 삭제한다.
   별도 reset 어휘는 없으며 null, 비수치, 무한대, 부제 fontSize 미만은 원자적으로 거부한다.
-- `titleStyle`, `subtitleStyle`: `{ color?, fontSize?, fontFamily?, fontWeight?, fontStyle? }`; positive fontSize,
+- `titleStyle`, `subtitleStyle`: `{ color?, fontSize?, fontFamily?, fontWeight?, fontStyle?, align? }`; positive fontSize,
   non-empty strings와 string/finite weight를 사용한다. `fontStyle`은 `"normal" | "italic"`이며 생략 시 normal이다.
   제목과 부제에 독립 적용되고 text measurement key, wrapping, 편집, 저장/복원과 모든 renderer에 유지된다.
 - Effect: text만 semanticSpec에 저장하고 geometry/style은 concrete text graphics와 title config에 저장한다.
@@ -996,3 +996,15 @@ Categorical size legend blocks also accept typed `editLegendBlock.labelMap`, inc
 ### Explicit group overflow diagnostics
 
 명시한 group offset/free anchor의 Canvas overflow는 여전히 원자적으로 실패하며 inner plot sizing에서도 자동 margin 확장을 허용하지 않는다. 기존 `canvas-overflow` 진단에 실제 부족한 네 방향 크기와 내부 `requiresExplicitCanvas` 표시를 보존한다. Native layout transaction은 이 표시를 존중하고, host는 별도 공개 `editCanvas` 호출을 기록한 다음 동일 group 편집을 재시도할 수 있다. 잘못된 위치를 묵시적으로 바꾸거나 native 오류를 숨기지 않는다. Evidence: `test/unit/actions/guides/legend-group-state.test.js`.
+
+## 텍스트 컴포넌트 정렬
+
+사용자 승인: 앱 `docs/inline-text-alignment.md`의 계약과 “이 API 확장으로 진행” 응답.
+`titleStyle.align`/`subtitleStyle.align`은 left/center/right이며 측정된 title block
+내부에서 각 컴포넌트를 독립 정렬한다. top-level align은 전체 block의 plot anchor를
+유지한다. left/right position에서는 기존 회전의 읽기 방향으로 정렬한다.
+`labels.align`은 모든 legend family의 기존 label column 안에서 적용하며 기호,
+tick, title의 slot은 유지한다. 여러 column은 각각 계산한다. 생략은 기존 native
+기하를 그대로 유지하고 명시 undefined, null, 미지원 문자열은 거부한다.
+create/edit, Canvas·scale·data replay, 저장 복원과 composition에 같은 계약을 적용한다.
+검증: `test/unit/actions/guides/text-style-alignment.test.js`.

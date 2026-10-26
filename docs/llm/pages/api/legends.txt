@@ -200,3 +200,9 @@ positions and spacing retain their existing rules.
 [Canvas](../../../api/canvas/) · [Troubleshooting](../../../troubleshooting/)
 
 When creating a separate size legend, an explicit `position` is honored even if a color or shape legend for the same mark uses another edge. Omit size `position` to inherit the categorical legend edge. Resizing retains that choice.
+
+**Label alignment.** `editLegend({target: "plot", labels: {align: "right"}})`
+aligns label text within each measured label column. `left`, `center`, and
+`right` are supported for every legend family, including multiline labels.
+Symbols, ticks, titles, and the legend's placement stay in their existing slots.
+The option is also accepted at creation; omission preserves native defaults.

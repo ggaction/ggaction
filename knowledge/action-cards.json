@@ -21808,6 +21808,11 @@
           "type": "\"color\" | \"opacity\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\" | undefined"
         },
         {
+          "name": "align",
+          "required": false,
+          "type": "\"center\" | \"left\" | \"right\" | undefined"
+        },
+        {
           "name": "offset",
           "required": false,
           "type": "number | undefined"
@@ -21839,7 +21844,7 @@
         }
       ],
       "callPatterns": [
-        "editLegendLabels({ target?, channel?, offset?, color?, fontSize?, fontFamily?, fontWeight?, format? })"
+        "editLegendLabels({ target?, channel?, align?, offset?, color?, fontSize?, fontFamily?, fontWeight? })"
       ],
       "snippet": "program.editLegendLabels({ channel: \"color\" })",
       "errors": [],
@@ -28924,6 +28929,11 @@
       },
       "options": [
         {
+          "name": "align",
+          "required": false,
+          "type": "\"center\" | \"left\" | \"right\" | undefined"
+        },
+        {
           "name": "offset",
           "required": false,
           "type": "number | undefined"
@@ -28985,7 +28995,7 @@
         }
       ],
       "callPatterns": [
-        "createThetaAxisLabels({ scale?, coordinate?, target?, offset?, format?, color?, fontSize?, fontFamily? })"
+        "createThetaAxisLabels({ scale?, coordinate?, target?, align?, offset?, format?, color?, fontSize? })"
       ],
       "snippet": "program.createThetaAxisLabels({})",
       "errors": [],
@@ -29076,6 +29086,11 @@
           "type": "readonly AxisValue[] | undefined"
         },
         {
+          "name": "align",
+          "required": false,
+          "type": "\"center\" | \"left\" | \"right\" | undefined"
+        },
+        {
           "name": "offset",
           "required": false,
           "type": "number | undefined"
@@ -29117,7 +29132,7 @@
         }
       ],
       "callPatterns": [
-        "editThetaAxisLabels({ target?, count?, values?, offset?, format?, color?, fontSize?, fontFamily? })"
+        "editThetaAxisLabels({ target?, count?, values?, align?, offset?, format?, color?, fontSize? })"
       ],
       "snippet": "program.editThetaAxisLabels({ count: 5 })",
       "errors": [],
@@ -29213,6 +29228,11 @@
       },
       "options": [
         {
+          "name": "align",
+          "required": false,
+          "type": "\"center\" | \"left\" | \"right\" | undefined"
+        },
+        {
           "name": "offset",
           "required": false,
           "type": "number | undefined"
@@ -29274,7 +29294,7 @@
         }
       ],
       "callPatterns": [
-        "createRadialAxisLabels({ scale?, coordinate?, target?, offset?, format?, color?, fontSize?, fontFamily? })"
+        "createRadialAxisLabels({ scale?, coordinate?, target?, align?, offset?, format?, color?, fontSize? })"
       ],
       "snippet": "program.createRadialAxisLabels({})",
       "errors": [],
@@ -29361,6 +29381,11 @@
           "type": "readonly AxisValue[] | undefined"
         },
         {
+          "name": "align",
+          "required": false,
+          "type": "\"center\" | \"left\" | \"right\" | undefined"
+        },
+        {
           "name": "offset",
           "required": false,
           "type": "number | undefined"
@@ -29397,7 +29422,7 @@
         }
       ],
       "callPatterns": [
-        "editRadialAxisLabels({ target?, count?, values?, offset?, format?, color?, fontSize?, fontFamily? })"
+        "editRadialAxisLabels({ target?, count?, values?, align?, offset?, format?, color?, fontSize? })"
       ],
       "snippet": "program.editRadialAxisLabels({ count: 5 })",
       "errors": [],
@@ -29486,6 +29511,11 @@
       },
       "options": [
         {
+          "name": "align",
+          "required": false,
+          "type": "\"center\" | \"left\" | \"right\" | undefined"
+        },
+        {
           "name": "text",
           "required": false,
           "type": "string | undefined"
@@ -29532,7 +29562,7 @@
         }
       ],
       "callPatterns": [
-        "createThetaAxisTitle({ scale?, coordinate?, target?, text?, offset?, color?, fontSize?, fontFamily? })"
+        "createThetaAxisTitle({ scale?, coordinate?, target?, align?, text?, offset?, color?, fontSize? })"
       ],
       "snippet": "program.createThetaAxisTitle({})",
       "errors": [],
@@ -29606,6 +29636,11 @@
       },
       "options": [
         {
+          "name": "align",
+          "required": false,
+          "type": "\"center\" | \"left\" | \"right\" | undefined"
+        },
+        {
           "name": "text",
           "required": false,
           "type": "string | undefined"
@@ -29642,9 +29677,9 @@
         }
       ],
       "callPatterns": [
-        "editThetaAxisTitle({ target?, text?, offset?, color?, fontSize?, fontFamily?, fontWeight? })"
+        "editThetaAxisTitle({ target?, align?, text?, offset?, color?, fontSize?, fontFamily?, fontWeight? })"
       ],
-      "snippet": "program.editThetaAxisTitle({ text: \"Chart title\" })",
+      "snippet": "program.editThetaAxisTitle({ align: \"center\" })",
       "errors": [],
       "route": "/reference/actions/guides/#editthetaaxistitle"
     },
@@ -29740,6 +29775,11 @@
           "type": "\"inside\" | \"outside\" | undefined"
         },
         {
+          "name": "align",
+          "required": false,
+          "type": "\"center\" | \"left\" | \"right\" | undefined"
+        },
+        {
           "name": "text",
           "required": false,
           "type": "string | undefined"
@@ -29791,7 +29831,7 @@
         }
       ],
       "callPatterns": [
-        "createRadialAxisTitle({ scale?, coordinate?, target?, position?, text?, offset?, color?, fontSize? })"
+        "createRadialAxisTitle({ scale?, coordinate?, target?, position?, align?, text?, offset?, color? })"
       ],
       "snippet": "program.createRadialAxisTitle({})",
       "errors": [],
@@ -29870,6 +29910,11 @@
           "type": "\"inside\" | \"outside\" | undefined"
         },
         {
+          "name": "align",
+          "required": false,
+          "type": "\"center\" | \"left\" | \"right\" | undefined"
+        },
+        {
           "name": "text",
           "required": false,
           "type": "string | undefined"
@@ -29906,7 +29951,7 @@
         }
       ],
       "callPatterns": [
-        "editRadialAxisTitle({ target?, position?, text?, offset?, color?, fontSize?, fontFamily?, fontWeight? })"
+        "editRadialAxisTitle({ target?, position?, align?, text?, offset?, color?, fontSize?, fontFamily? })"
       ],
       "snippet": "program.editRadialAxisTitle({ position: \"inside\" })",
       "errors": [],

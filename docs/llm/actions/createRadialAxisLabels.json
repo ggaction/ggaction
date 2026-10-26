@@ -88,6 +88,11 @@
   },
   "options": [
     {
+      "name": "align",
+      "required": false,
+      "type": "\"center\" | \"left\" | \"right\" | undefined"
+    },
+    {
       "name": "offset",
       "required": false,
       "type": "number | undefined"
@@ -149,7 +154,7 @@
     }
   ],
   "callPatterns": [
-    "createRadialAxisLabels({ scale?, coordinate?, target?, offset?, format?, color?, fontSize?, fontFamily? })"
+    "createRadialAxisLabels({ scale?, coordinate?, target?, align?, offset?, format?, color?, fontSize? })"
   ],
   "snippet": "program.createRadialAxisLabels({})",
   "errors": [],

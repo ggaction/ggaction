@@ -1541,6 +1541,9 @@ removal recompute that gap. An explicit numeric `offset`, including zero or the
 native value, remains measured from the plot edge. Free coordinates, plot corners,
 and `legacy-bottom` keep their existing anchors. Older saved programs retain
 their fixed offsets.
+Label style accepts `align: "left" | "center" | "right"` within each measured
+label column. Symbols, ticks and titles retain their existing slots. All legend
+families support it on create/edit and replay; omission preserves native defaults.
 Top-title style accepts `align: "left" | "center" | "right"` within the
 measured title/body content block. This applies to every legend family; omission
 preserves each layout's current alignment. It does not move the complete group,
@@ -1823,6 +1826,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `channel` | Optional / branch-dependent | `"color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| undefined` |
+| `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
@@ -2055,6 +2059,11 @@ createTitle({
   titleStyle?, subtitleStyle?
 })
 ```
+
+`titleStyle.align` and `subtitleStyle.align` accept `"left" | "center" | "right"`
+independently inside the measured title block, including rotated edge titles.
+The top-level `align` still positions the complete block relative to the plot.
+Omission preserves native defaults.
 
 Create a chart title and optional subtitle. Explicit newlines retain their line
 spacing; blank lines reserve space without painted text. Each string requires
@@ -2676,6 +2685,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `format` | Optional / branch-dependent | `AxisFormat \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
@@ -2721,6 +2731,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
+| `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `format` | Optional / branch-dependent | `AxisFormat \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
@@ -2760,6 +2771,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `format` | Optional / branch-dependent | `AxisFormat \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
@@ -2805,6 +2817,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
+| `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `format` | Optional / branch-dependent | `AxisFormat \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
@@ -2843,6 +2856,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `text` | Optional / branch-dependent | `string \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
@@ -2883,6 +2897,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `text` | Optional / branch-dependent | `string \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
@@ -2922,6 +2937,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `position` | Optional / branch-dependent | `"inside" \| "outside" \| undefined` |
+| `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `text` | Optional / branch-dependent | `string \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
@@ -2964,6 +2980,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `position` | Optional / branch-dependent | `"inside" \| "outside" \| undefined` |
+| `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `text` | Optional / branch-dependent | `string \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |

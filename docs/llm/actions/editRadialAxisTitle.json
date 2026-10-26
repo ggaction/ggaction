@@ -71,6 +71,11 @@
       "type": "\"inside\" | \"outside\" | undefined"
     },
     {
+      "name": "align",
+      "required": false,
+      "type": "\"center\" | \"left\" | \"right\" | undefined"
+    },
+    {
       "name": "text",
       "required": false,
       "type": "string | undefined"
@@ -107,7 +112,7 @@
     }
   ],
   "callPatterns": [
-    "editRadialAxisTitle({ target?, position?, text?, offset?, color?, fontSize?, fontFamily?, fontWeight? })"
+    "editRadialAxisTitle({ target?, position?, align?, text?, offset?, color?, fontSize?, fontFamily? })"
   ],
   "snippet": "program.editRadialAxisTitle({ position: \"inside\" })",
   "errors": [],

@@ -1,6 +1,6 @@
 import { measureTextWidth, resolveTextBounds } from "../core/textMetrics.js";
 import { alignLegendStart, resolveLegendGrid, isPlotLegend, legendLabelLineHeight } from "./legend.js";
-import { alignLegendTitle, resolveLegendTitleText } from "./legendText.js";
+import { alignLegendLabels, alignLegendTitle, resolveLegendTitleText } from "./legendText.js";
 import {resolveLegendContentSpacing} from "./legendSpacing.js";
 
 // Measure item content before choosing its edge. Family owners supply the
@@ -106,7 +106,8 @@ export function resolveLegendItemLayout(plot, config, labels, symbol, canvas, pr
   const textBounds = (x, y, text, style, align = "left") => resolveTextBounds({
     x, y, text, ...style, lines: resolveLegendTitleText(text, style, profile).lines, textAlign: align, textBaseline: "middle"
   }, profile);
-  const labelBounds = labels.map((label,index) => textBounds(labelX[index],itemY[index],label,config.labels));
+  if (config.labels.align !== undefined) labelX = alignLegendLabels(labelX.map((x, index) => ({ x, y: itemY[index], align: "left" })), labels, config.labels, profile).map(position => position.x);
+  const labelBounds = labels.map((label,index) => textBounds(labelX[index],itemY[index],label,config.labels,config.labels.align ?? "left"));
   const symbolItemBounds = symbolX.map((x, index) => {
       const local = sampleBounds[index];
       return { left: x + local.left, right: x + local.right,

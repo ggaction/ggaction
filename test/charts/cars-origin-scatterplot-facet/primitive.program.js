@@ -122,7 +122,7 @@ function setTextGraphic(program, id, properties) {
   return next;
 }
 
-function addTitle(program, x, text) {
+function addTitle(program, x, text, y = 19) {
   const common = {
     x,
     fontFamily: FONT_FAMILY,
@@ -131,7 +131,7 @@ function addTitle(program, x, text) {
   };
   return setTextGraphic(program, "chartTitle", {
     ...common,
-    y: 19,
+    y,
     text,
     fill: STRONG_TEXT,
     fontSize: 22,
@@ -139,10 +139,10 @@ function addTitle(program, x, text) {
   });
 }
 
-function addSubtitle(program, x) {
+function addSubtitle(program, x, y = 45) {
   return setTextGraphic(program, "chartSubtitle", {
     x,
-    y: 45,
+    y,
     text: "Faceted by Origin",
     fill: SUBTLE_TEXT,
     fontSize: 14,
@@ -264,10 +264,12 @@ export function createCarsOriginHistogramFacetPrimitives(cars) {
   program = addTitle(
     program,
     values.histogram.plot.x + values.histogram.plot.width / 2,
-    "Displacement Distribution"
+    "Displacement Distribution",
+    21
   );
   return addSubtitle(
     program,
-    values.histogram.plot.x + values.histogram.plot.width / 2
+    values.histogram.plot.x + values.histogram.plot.width / 2,
+    47
   );
 }

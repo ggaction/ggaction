@@ -1,3 +1,4 @@
+import { validateTextAlignment } from "../../../../core/validation.js";
 import{normalizeLegendClipHeight}from"../../../../grammar/legendClip.js";
 import {normalizeLegendSpacing,validateLegendSpacing} from "../../../../grammar/legendSpacing.js";
 import { normalizeLegendBorderDash } from "../../../../grammar/legendBorder.js";
@@ -44,7 +45,7 @@ const TEXT_OPTIONS = Object.freeze([
   "color",
   "fontSize",
   "fontFamily",
-  "fontWeight",
+  "fontWeight", "align",
   "format"
 ]);
 
@@ -187,6 +188,7 @@ export function normalizeOptions(args, kind, { internalSymbol = false } = {}) {
   if (!["top", "left"].includes(titlePosition)) {
     throw new Error(`Unsupported legend titlePosition "${titlePosition}".`);
   }
+  validateTextAlignment(labels, "Legend labels");
   nonNegative(labels.offset, "Legend label offset");
   nonEmptyString(labels.color, "Legend label color");
   positive(labels.fontSize, "Legend label fontSize");

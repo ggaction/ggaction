@@ -38,7 +38,7 @@ export const rematerializeLegendLabels = /* @__PURE__ */ action(
       fontSize: config.labels.fontSize,
       fontFamily: config.labels.fontFamily,
       fontWeight: config.labels.fontWeight,
-      textAlign: "left",
+      textAlign: config.labels.align ?? "left",
       textBaseline: "middle"
     }), id);
   }

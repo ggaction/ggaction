@@ -1356,3 +1356,13 @@ Evidence: `test/unit/actions/guides/plot-underlays.test.js`, `test/unit/layout/p
 검증: `test/unit/actions/guides/guide-visibility.test.js`, `test/contracts/guide-visibility-types.test.js`.
 
 Categorical Parallel labels accept typed `labelMap` in `labels` or `ticksAndLabels.labels`; auto clears it and omission preserves it. Hard breaks use one semantic tick with concrete line geometry. See `test/unit/actions/guides/categorical-hard-breaks.test.js`.
+
+## Polar·Parallel 텍스트 정렬
+
+Polar labels/title과 Parallel field-axis labels/title은 `align?: "left" | "center" | "right"`
+를 지원한다. 기존 text anchor와 rotation/offset을 유지하며 텍스트만 정렬한다.
+생략은 이전 기본 동작 유지, edit 생략은 기존 값 보존이다. focused/complete/group
+create 및 edit에서 동일하게 검증하며 명시 undefined/null/미지원 값은 atomic 오류다.
+Canvas/data/scale replay와 저장 복원도 intent를 보존한다.
+사용자 승인과 검증 범위는 앱 `docs/inline-text-alignment.md` 및
+`test/unit/actions/guides/text-style-alignment.test.js`에 기록되어 있다.

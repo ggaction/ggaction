@@ -57,6 +57,7 @@ function labelGeometry(program, kind, config, angle = resolveAngle(program, kind
           offset: config.offset
         }))
   };
+  if (config.align !== undefined) geometry.textAlign = geometry.textAlign.map(() => config.align);
   assertPolarTextLayout({
     canvas: program.graphicSpec.objects.canvas,
     label: `${prefix(kind)} axis labels`,
@@ -107,6 +108,7 @@ function resolveLabelConfig(program, kind, args, resources, previous) {
   const typography = axisThemeTypography(program.materializationConfigs.theme, "labels");
   const config = {
     ...(previous ?? {}),
+    ...(Object.hasOwn(args, "align") ? { align: args.align } : {}),
     scale: resources.scale,
     coordinate: resources.coordinate,
     ...mode,

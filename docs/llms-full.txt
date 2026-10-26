@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.25.
 
-Contract: sha256:0607d698cb3d11e98219b125a5b80f86e1980b70966f6afd7a799d3f078d9ad3. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:1407ef9504c41dbdc3115c25facbe98fbd45fab17f033b11bf81fd06846015c5. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -9581,6 +9581,12 @@ Use `alongOffset` in `createTitle` or `editTitle` to move the complete title/sub
 [Canvas](./api/canvas/) · [Guides](./api/guides/) ·
 [Semantic and graphical state](./concepts/semantic-and-graphics/)
 
+Component styles also accept `align: "left" | "center" | "right"`. For example,
+`editTitle({titleStyle: {align: "center"}, subtitleStyle: {align: "right"}})`
+aligns each component inside the measured block while the top-level `align`
+continues positioning that block relative to the plot. Omission keeps the
+existing component alignment, including on rotated left/right titles.
+
 <!-- Source: /api/rendering/ -->
 
 # Rendering
@@ -13993,6 +13999,12 @@ positions and spacing retain their existing rules.
 [Canvas](./api/canvas/) · [Troubleshooting](./troubleshooting/)
 
 When creating a separate size legend, an explicit `position` is honored even if a color or shape legend for the same mark uses another edge. Omit size `position` to inherit the categorical legend edge. Resizing retains that choice.
+
+**Label alignment.** `editLegend({target: "plot", labels: {align: "right"}})`
+aligns label text within each measured label column. `left`, `center`, and
+`right` are supported for every legend family, including multiline labels.
+Symbols, ticks, titles, and the legend's placement stay in their existing slots.
+The option is also accepted at creation; omission preserves native defaults.
 
 <!-- Source: /api/legends/categorical/ -->
 
@@ -27401,6 +27413,9 @@ removal recompute that gap. An explicit numeric `offset`, including zero or the
 native value, remains measured from the plot edge. Free coordinates, plot corners,
 and `legacy-bottom` keep their existing anchors. Older saved programs retain
 their fixed offsets.
+Label style accepts `align: "left" | "center" | "right"` within each measured
+label column. Symbols, ticks and titles retain their existing slots. All legend
+families support it on create/edit and replay; omission preserves native defaults.
 Top-title style accepts `align: "left" | "center" | "right"` within the
 measured title/body content block. This applies to every legend family; omission
 preserves each layout's current alignment. It does not move the complete group,
@@ -27668,6 +27683,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `channel` | Optional / branch-dependent | `"color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| undefined` |
+| `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
@@ -27870,6 +27886,11 @@ createTitle({
   titleStyle?, subtitleStyle?
 })
 ```
+
+`titleStyle.align` and `subtitleStyle.align` accept `"left" | "center" | "right"`
+independently inside the measured title block, including rotated edge titles.
+The top-level `align` still positions the complete block relative to the plot.
+Omission preserves native defaults.
 
 Create a chart title and optional subtitle. Explicit newlines retain their line
 spacing; blank lines reserve space without painted text. Each string requires
@@ -28425,6 +28446,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `format` | Optional / branch-dependent | `AxisFormat \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
@@ -28466,6 +28488,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
+| `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `format` | Optional / branch-dependent | `AxisFormat \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
@@ -28501,6 +28524,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `format` | Optional / branch-dependent | `AxisFormat \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
@@ -28542,6 +28566,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `values` | Optional / branch-dependent | `readonly AxisValue[] \| undefined` |
+| `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `format` | Optional / branch-dependent | `AxisFormat \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
@@ -28576,6 +28601,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `text` | Optional / branch-dependent | `string \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
@@ -28612,6 +28638,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `text` | Optional / branch-dependent | `string \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
@@ -28647,6 +28674,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `position` | Optional / branch-dependent | `"inside" \| "outside" \| undefined` |
+| `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `text` | Optional / branch-dependent | `string \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
@@ -28685,6 +28713,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `position` | Optional / branch-dependent | `"inside" \| "outside" \| undefined` |
+| `align` | Optional / branch-dependent | `"center" \| "left" \| "right" \| undefined` |
 | `text` | Optional / branch-dependent | `string \| undefined` |
 | `offset` | Optional / branch-dependent | `number \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
@@ -30925,6 +30954,8 @@ Related types: [`CartesianAxisLabelStyleOptions`](./reference/types/#type-cartes
 
 ```typescript
 export interface AxisLabelStyleOptions {
+  /** Local text alignment; omission preserves the native owner default. */
+  align?: "left" | "center" | "right";
   offset?: number;
   format?: AxisFormat;
   color?: string;
@@ -37427,6 +37458,8 @@ Related types: [`LegendSymbolLayer`](./reference/types/#type-legendsymbollayer).
 
 ```typescript
 export interface LegendTextOptions {
+  /** Local text alignment; omission preserves the native owner default. */
+  align?: "left" | "center" | "right";
   /** Gap after the occupied sample slot: categorical color/interval default 8; series 10; size/width 12.
    * Categorical slots include all recipe strokes and mapped shape extents.
    * Size retains a minimum 32px slot. Width includes the widest line stroke.
@@ -38361,6 +38394,8 @@ Related types: [`AxisTickStyleOptions`](./reference/types/#type-axistickstyleopt
 
 ```typescript
 export interface ParallelAxisTitleOptions {
+  /** Local text alignment; omission preserves the native owner default. */
+  align?: "left" | "center" | "right";
   text?: string;
   offset?: number;
   color?: string;
@@ -38865,6 +38900,8 @@ Related types: [`AxisValue`](./reference/types/#type-axisvalue) · [`AxisTickSty
 
 ```typescript
 export interface PolarTitleOptions {
+  /** Local text alignment; omission preserves the native owner default. */
+  align?: "left" | "center" | "right";
   text?: string;
   offset?: number;
   color?: string;
@@ -41021,6 +41058,8 @@ Related types: [`TitleTextStyleOptions`](./reference/types/#type-titletextstyleo
 
 ```typescript
 export interface TitleTextStyleOptions {
+  /** Local text alignment; omission preserves the native owner default. */
+  align?: "left" | "center" | "right";
   fontStyle?: "normal" | "italic";
   color?: string;
   fontSize?: number;
@@ -44643,7 +44682,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:0607d698cb3d11e98219b125a5b80f86e1980b70966f6afd7a799d3f078d9ad3` |
+| Contract fingerprint | `sha256:1407ef9504c41dbdc3115c25facbe98fbd45fab17f033b11bf81fd06846015c5` |
 | Example and dataset source | `ab206c446ae5010eecfd859427775c4785d8aed4` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

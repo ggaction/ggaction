@@ -16,8 +16,8 @@ export { PARALLEL_AXIS_PARTS, PARALLEL_AXIS_GRAPHICS };
 const STYLE_OPTIONS = Object.freeze({
   line: ["color", "lineWidth"],
   ticks: ["count", "values", "length", "color", "lineWidth"],
-  labels: ["labelMap", "count", "values", "offset", "format", "color", "fontSize", "fontFamily", "fontWeight"],
-  title: ["text", "offset", "color", "fontSize", "fontFamily", "fontWeight"]
+  labels: ["labelMap", "count", "values", "offset", "format", "color", "fontSize", "fontFamily", "fontWeight", "align"],
+  title: ["text", "offset", "color", "fontSize", "fontFamily", "fontWeight", "align"]
 });
 
 export function defaultParallelAxis(field, theme) {

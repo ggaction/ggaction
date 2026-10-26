@@ -205,3 +205,9 @@ Use `alongOffset` in `createTitle` or `editTitle` to move the complete title/sub
 
 [Canvas](./canvas.md) · [Guides](./guides.md) ·
 [Semantic and graphical state](../concepts/semantic-and-graphics.md)
+
+Component styles also accept `align: "left" | "center" | "right"`. For example,
+`editTitle({titleStyle: {align: "center"}, subtitleStyle: {align: "right"}})`
+aligns each component inside the measured block while the top-level `align`
+continues positioning that block relative to the plot. Omission keeps the
+existing component alignment, including on rotated left/right titles.

@@ -27,7 +27,7 @@ function collectionProperties(part, axes, bounds) {
     fontSize: uniform(axes.map(axis => axis.config.title.fontSize)),
     fontFamily: uniform(axes.map(axis => axis.config.title.fontFamily)),
     fontWeight: uniform(axes.map(axis => axis.config.title.fontWeight)),
-    textAlign: "center", textBaseline: "middle"
+    textAlign: uniform(axes.map(axis => axis.config.title.align ?? "center")), textBaseline: "middle"
   };
   const rows = axes.flatMap(axis => axis[part].values.map((value, index) => ({
     x: axis.x, y: axis[part].y[index], text: axis[part].text?.[index], config: axis.config[part]
@@ -45,7 +45,7 @@ function collectionProperties(part, axes, bounds) {
     fontSize: uniform(rows.map(row => row.config.fontSize)),
     fontFamily: uniform(rows.map(row => row.config.fontFamily)),
     fontWeight: uniform(rows.map(row => row.config.fontWeight)),
-    textAlign: "right", textBaseline: "middle"
+    textAlign: uniform(rows.map(row => row.config.align ?? "right")), textBaseline: "middle"
   };
 }
 

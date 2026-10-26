@@ -2945,6 +2945,9 @@ removal recompute that gap. An explicit numeric `offset`, including zero or the
 native value, remains measured from the plot edge. Free coordinates, plot corners,
 and `legacy-bottom` keep their existing anchors. Older saved programs retain
 their fixed offsets.
+Label style accepts `align: "left" | "center" | "right"` within each measured
+label column. Symbols, ticks and titles retain their existing slots. All legend
+families support it on create/edit and replay; omission preserves native defaults.
 Top-title style accepts `align: "left" | "center" | "right"` within the
 measured title/body content block. This applies to every legend family; omission
 preserves each layout's current alignment. It does not move the complete group,
@@ -3117,6 +3120,11 @@ createTitle({
   titleStyle?, subtitleStyle?
 })
 ```
+
+`titleStyle.align` and `subtitleStyle.align` accept `"left" | "center" | "right"`
+independently inside the measured title block, including rotated edge titles.
+The top-level `align` still positions the complete block relative to the plot.
+Omission preserves native defaults.
 
 Create a chart title and optional subtitle. Explicit newlines retain their line
 spacing; blank lines reserve space without painted text. Each string requires

@@ -35,7 +35,7 @@ import {
 
 function titleGeometry(program, kind, config, angle = resolveAngle(program, kind, {})) {
   const frame = resolvePolarFrameForProgram(program, config.coordinate);
-  return kind === "theta"
+  const geometry = kind === "theta"
     ? resolveThetaAxisTitle({ frame, offset: config.offset })
     : resolveRadialAxisTitle({
         frame,
@@ -43,6 +43,7 @@ function titleGeometry(program, kind, config, angle = resolveAngle(program, kind
         offset: config.offset,
         position: config.position
       });
+  return config.align === undefined ? geometry : { ...geometry, textAlign: config.align };
 }
 
 function validateTitleGeometry(program, kind, config, geometry, text) {
@@ -70,6 +71,7 @@ function resolveTitleConfig(program, kind, args, resources, previous) {
   const typography = axisThemeTypography(program.materializationConfigs.theme, "title");
   const config = {
     ...(previous ?? {}),
+    ...(Object.hasOwn(args, "align") ? { align: args.align } : {}),
     scale: resources.scale,
     coordinate: resources.coordinate,
     inferredText: previous?.inferredText ?? !Object.hasOwn(args, "text"),

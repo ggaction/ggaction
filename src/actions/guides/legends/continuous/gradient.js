@@ -1,3 +1,4 @@
+import { alignLegendLabels } from "../../../../layout/legendText.js";
 import { inferBin2DFieldTitle } from '../../../../grammar/bin2d.js';
 import { findDataset } from '../../../../selectors/datasets.js';
 import{validateLegendClip}from"../../../../grammar/legendClip.js";
@@ -162,6 +163,7 @@ export function resolveGradientLayout(program, config, scale, label = "Gradient 
     top: Math.min(tick.y1, tick.y2) - 0.5,
     bottom: Math.max(tick.y1, tick.y2) + 0.5
   }));
+  labels = alignLegendLabels(labels, texts, config.labels, program.materializationConfigs.textMetrics);
   const labelBounds = labels.map((label, index) =>
     resolveLegendTextBounds(label, texts[index], config.labels, program.materializationConfigs.textMetrics)
   );

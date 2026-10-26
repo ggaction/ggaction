@@ -647,6 +647,8 @@ Related types: [`CartesianAxisLabelStyleOptions`](#type-cartesianaxislabelstyleo
 
 ```typescript
 export interface AxisLabelStyleOptions {
+  /** Local text alignment; omission preserves the native owner default. */
+  align?: "left" | "center" | "right";
   offset?: number;
   format?: AxisFormat;
   color?: string;
@@ -8355,6 +8357,8 @@ Related types: [`LegendSymbolLayer`](#type-legendsymbollayer).
 
 ```typescript
 export interface LegendTextOptions {
+  /** Local text alignment; omission preserves the native owner default. */
+  align?: "left" | "center" | "right";
   /** Gap after the occupied sample slot: categorical color/interval default 8; series 10; size/width 12.
    * Categorical slots include all recipe strokes and mapped shape extents.
    * Size retains a minimum 32px slot. Width includes the widest line stroke.
@@ -9469,6 +9473,8 @@ Related types: [`AxisTickStyleOptions`](#type-axistickstyleoptions) · [`Paralle
 
 ```typescript
 export interface ParallelAxisTitleOptions {
+  /** Local text alignment; omission preserves the native owner default. */
+  align?: "left" | "center" | "right";
   text?: string;
   offset?: number;
   color?: string;
@@ -10078,6 +10084,8 @@ Related types: [`AxisValue`](#type-axisvalue) · [`AxisTickStyleOptions`](#type-
 
 ```typescript
 export interface PolarTitleOptions {
+  /** Local text alignment; omission preserves the native owner default. */
+  align?: "left" | "center" | "right";
   text?: string;
   offset?: number;
   color?: string;
@@ -12657,6 +12665,8 @@ Related types: [`TitleTextStyleOptions`](#type-titletextstyleoptions).
 
 ```typescript
 export interface TitleTextStyleOptions {
+  /** Local text alignment; omission preserves the native owner default. */
+  align?: "left" | "center" | "right";
   fontStyle?: "normal" | "italic";
   color?: string;
   fontSize?: number;

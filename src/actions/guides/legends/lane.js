@@ -162,6 +162,7 @@ function blockDescriptor(program, kind, config) {
     id: kind,
     kind,
     preserveAlignment: preserveGradientLayout,
+    preserveLabelAlignment: config.labels.align !== undefined,
     preserveGrid: preserveGradientLayout || (["series", "color", "stroke"].includes(kind) || config.representation === "symbols") && (config.columns ?? 1) > 1,
     target: config.target,
     border: borderFor(kind, config),
@@ -175,7 +176,7 @@ function blockDescriptor(program, kind, config) {
       bounds: symbolAnchor
     },
     labels: {
-      x: emptyLabels ? symbolBounds.right + config.labels.offset : textAnchor(program, components.labelId),
+      x: emptyLabels ? symbolBounds.right + config.labels.offset : (config.labels.align === undefined ? textAnchor(program, components.labelId) : labels.left),
       width: emptyLabels ? 0 : labels.right - labels.left
     },
     occupiedBounds: unionLegendBounds(program, [
@@ -405,7 +406,7 @@ export const rematerializeSideLegendLane = /* @__PURE__ */ action(
           placement.labelDx,
           placement.dy
         );
-        if (!block.preserveAlignment) next = next.editGraphics({
+        if (!block.preserveAlignment && !block.preserveLabelAlignment) next = next.editGraphics({
           target: block.labelId, property: "textAlign", value: "left"
         });
       }

@@ -81,6 +81,11 @@
   },
   "options": [
     {
+      "name": "align",
+      "required": false,
+      "type": "\"center\" | \"left\" | \"right\" | undefined"
+    },
+    {
       "name": "text",
       "required": false,
       "type": "string | undefined"
@@ -127,7 +132,7 @@
     }
   ],
   "callPatterns": [
-    "createThetaAxisTitle({ scale?, coordinate?, target?, text?, offset?, color?, fontSize?, fontFamily? })"
+    "createThetaAxisTitle({ scale?, coordinate?, target?, align?, text?, offset?, color?, fontSize? })"
   ],
   "snippet": "program.createThetaAxisTitle({})",
   "errors": [],

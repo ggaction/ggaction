@@ -90,6 +90,11 @@
       "type": "\"inside\" | \"outside\" | undefined"
     },
     {
+      "name": "align",
+      "required": false,
+      "type": "\"center\" | \"left\" | \"right\" | undefined"
+    },
+    {
       "name": "text",
       "required": false,
       "type": "string | undefined"
@@ -141,7 +146,7 @@
     }
   ],
   "callPatterns": [
-    "createRadialAxisTitle({ scale?, coordinate?, target?, position?, text?, offset?, color?, fontSize? })"
+    "createRadialAxisTitle({ scale?, coordinate?, target?, position?, align?, text?, offset?, color? })"
   ],
   "snippet": "program.createRadialAxisTitle({})",
   "errors": [],

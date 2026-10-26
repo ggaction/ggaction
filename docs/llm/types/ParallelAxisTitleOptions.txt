@@ -1,4 +1,6 @@
 export interface ParallelAxisTitleOptions {
+  /** Local text alignment; omission preserves the native owner default. */
+  align?: "left" | "center" | "right";
   text?: string;
   offset?: number;
   color?: string;

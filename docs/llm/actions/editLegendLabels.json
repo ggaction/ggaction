@@ -75,6 +75,11 @@
       "type": "\"color\" | \"opacity\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\" | undefined"
     },
     {
+      "name": "align",
+      "required": false,
+      "type": "\"center\" | \"left\" | \"right\" | undefined"
+    },
+    {
       "name": "offset",
       "required": false,
       "type": "number | undefined"
@@ -106,7 +111,7 @@
     }
   ],
   "callPatterns": [
-    "editLegendLabels({ target?, channel?, offset?, color?, fontSize?, fontFamily?, fontWeight?, format? })"
+    "editLegendLabels({ target?, channel?, align?, offset?, color?, fontSize?, fontFamily?, fontWeight? })"
   ],
   "snippet": "program.editLegendLabels({ channel: \"color\" })",
   "errors": [],

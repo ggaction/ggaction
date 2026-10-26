@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:0607d698cb3d11e98219b125a5b80f86e1980b70966f6afd7a799d3f078d9ad3",
+    "contractId": "sha256:1407ef9504c41dbdc3115c25facbe98fbd45fab17f033b11bf81fd06846015c5",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -1188,8 +1188,8 @@
         "shift-a-title-along-its-edge",
         "related"
       ],
-      "bytes": 9407,
-      "sha256": "ff5b7a7ed93aaa88aa6e57b56758a03811ef57a17936dbcdd20f0c466fdfbd21"
+      "bytes": 9786,
+      "sha256": "d01dd2941d924fa475b70ff11f8f2cef13153413b8956fb3e417e206922d044a"
     },
     {
       "order": 72,
@@ -1643,8 +1643,8 @@
         "put-a-compact-categorical-legend-inside-the-plot",
         "related"
       ],
-      "bytes": 13465,
-      "sha256": "5118e9f7ac6824110935c2fac5597354b47743b8349ecfa8243bf6972774749d"
+      "bytes": 13852,
+      "sha256": "4b6f5265cce8f34a7c80d6417a4900f42b352299f8aa296e62e9a395edd6716d"
     },
     {
       "order": 98,
@@ -2341,8 +2341,8 @@
         "focused-legend-edits",
         "related"
       ],
-      "bytes": 153719,
-      "sha256": "2a1432543af19dc86557ffaf5f1a729641ac5a80c1ecdec3b3359b1213f3ea4c"
+      "bytes": 155037,
+      "sha256": "376b8f2298b3bc4296033ea1a5fcb6e685e241e35b7cd8b0747a37934cec7dd8"
     },
     {
       "order": 123,
@@ -3104,8 +3104,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 383374,
-      "sha256": "f05a627634ebc74890475273b8d06f4980642916ee11161b5f7188b803e3383e"
+      "bytes": 383949,
+      "sha256": "b4d1d8eb422b897620d4c0507328f3d2b6cffb00d67049fbd778ad40b233156b"
     },
     {
       "order": 127,
@@ -3473,7 +3473,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "bfac402d590cc3597f098b4facc7e2a8ed75e815e2eb0d5380e40f797468486c"
+      "sha256": "20d4aed9087cc2fb98e5ce35e8bbd2fb3fe77d4cc2a2c41642fe3d2439a29985"
     },
     {
       "order": 150,

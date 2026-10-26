@@ -1567,6 +1567,8 @@ export type CartesianGuideDashMap = ReadonlyArray<Readonly<{
   strokeDash: readonly number[];
 }>>;
 export interface AxisLabelStyleOptions {
+  /** Local text alignment; omission preserves the native owner default. */
+  align?: "left" | "center" | "right";
   offset?: number;
   format?: AxisFormat;
   color?: string;
@@ -1688,6 +1690,8 @@ export type ParallelAxisTickSelection =
 export type ParallelAxisTicksOptions = AxisTickStyleOptions & ParallelAxisTickSelection;
 export type ParallelAxisLabelsOptions = AxisLabelStyleOptions & DisplayLabelOptions & ParallelAxisTickSelection;
 export interface ParallelAxisTitleOptions {
+  /** Local text alignment; omission preserves the native owner default. */
+  align?: "left" | "center" | "right";
   text?: string;
   offset?: number;
   color?: string;
@@ -1745,6 +1749,8 @@ export interface ThetaTicksAndLabelsOptions
   labels?: AxisLabelStyleOptions & DisplayLabelOptions;
 }
 export interface PolarTitleOptions {
+  /** Local text alignment; omission preserves the native owner default. */
+  align?: "left" | "center" | "right";
   text?: string;
   offset?: number;
   color?: string;
@@ -5030,6 +5036,8 @@ export interface RemoveMarkOptions {
 }
 
 export interface LegendTextOptions {
+  /** Local text alignment; omission preserves the native owner default. */
+  align?: "left" | "center" | "right";
   /** Gap after the occupied sample slot: categorical color/interval default 8; series 10; size/width 12.
    * Categorical slots include all recipe strokes and mapped shape extents.
    * Size retains a minimum 32px slot. Width includes the widest line stroke.
@@ -5305,6 +5313,8 @@ export interface EditAxisOptions<P extends string> {
 }
 
 export interface TitleTextStyleOptions {
+  /** Local text alignment; omission preserves the native owner default. */
+  align?: "left" | "center" | "right";
   fontStyle?: "normal" | "italic";
   color?: string;
   fontSize?: number;

@@ -66,6 +66,11 @@
   },
   "options": [
     {
+      "name": "align",
+      "required": false,
+      "type": "\"center\" | \"left\" | \"right\" | undefined"
+    },
+    {
       "name": "text",
       "required": false,
       "type": "string | undefined"
@@ -102,9 +107,9 @@
     }
   ],
   "callPatterns": [
-    "editThetaAxisTitle({ target?, text?, offset?, color?, fontSize?, fontFamily?, fontWeight? })"
+    "editThetaAxisTitle({ target?, align?, text?, offset?, color?, fontSize?, fontFamily?, fontWeight? })"
   ],
-  "snippet": "program.editThetaAxisTitle({ text: \"Chart title\" })",
+  "snippet": "program.editThetaAxisTitle({ align: \"center\" })",
   "errors": [],
   "route": "/reference/actions/guides/#editthetaaxistitle"
 }
