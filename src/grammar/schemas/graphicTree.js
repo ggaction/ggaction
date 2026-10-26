@@ -1,4 +1,4 @@
-import { isPlainObject } from "../../core/immutable.js";
+import { isOwned, isPlainObject } from "../../core/immutable.js";
 import { isGraphicContainerType } from "./graphic.js";
 
 export function resolveGraphicChildOrder(graphicSpec, target, value) {
@@ -34,7 +34,7 @@ export function findGraphic(graphicSpec, target) {
     return { id: target, object, kind: "object" };
   }
   for (const [ownerId, owner] of Object.entries(graphicSpec.objects)) {
-    const itemIndex = owner.items?.findIndex(item => item.id === target);
+    const itemIndex = findItemIndex(owner.items, target);
     if (itemIndex !== undefined && itemIndex !== -1) {
       return {
         id: target,
@@ -47,6 +47,22 @@ export function findGraphic(graphicSpec, target) {
     }
   }
   return undefined;
+}
+
+// Collections are immutable across unrelated edits. Index their items once,
+// instead of scanning every point/path again for each label or inspection.
+// Caller-owned arrays remain uncached, including shallow-frozen inputs.
+const itemIndexes = new WeakMap();
+function findItemIndex(items, target) {
+  if (!items) return undefined;
+  if (!isOwned(items)) return items.findIndex(item => item.id === target);
+  let index = itemIndexes.get(items);
+  if (!index) {
+    index = new Map();
+    items.forEach((item, i) => { if (!index.has(item.id)) index.set(item.id, i); });
+    itemIndexes.set(items, index);
+  }
+  return index.get(target) ?? -1;
 }
 
 export function requireGraphic(graphicSpec, target) {
