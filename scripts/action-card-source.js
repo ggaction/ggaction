@@ -607,8 +607,8 @@ export function validateActionCards({ cards, actions, declarations, routes }) {
 
 export function compactActionCardByteLimit(name) {
   // Full action cards now include the common explicit-target selector and typed wrapper.
-  // Legend cards also retain the closed overflow summary-symbol policy.
-  return 180 + ({editLegend: 4482, createLegend: 3850, createMarkLabels: 3420,
+  // Legend cards also retain the closed overflow summary-symbol policy and three-channel combination literal.
+  return 180 + ({editLegend: 4505, createLegend: 3873, createMarkLabels: 3420,
     createAnnotation: 3420, createRegressionPlot: 3460, createReferenceBand: 3450}[name] ?? 3360);
 }
 

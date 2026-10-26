@@ -42,7 +42,7 @@ export function restoreFacetLegendIntent(source, intent) {
     const descriptor = describeLegendBlock(source, kind, config);
     const entry = { target: config.target, channels: [...descriptor.channels] };
     if (descriptor.channels.includes("shape") && descriptor.channels.includes("size")) entry.combine = "size-shape";
-    if (kind === "colorSize") entry.combine = "color-size";
+    if (kind === "colorSize") { entry.combine = config.combine; if(config.shapeScale!==undefined)entry.values=config.sampling.values; }
     if (descriptor.family === "categorical" && config.inferredSymbol === false && entry.combine === undefined) entry.symbol = config.symbol;
     if (kind === "gradient" && config.representation === "symbols") entry.representation = "symbols";
     scaffolds.push(entry);

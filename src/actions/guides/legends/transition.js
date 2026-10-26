@@ -183,7 +183,7 @@ export function planLegendBlockTransitions(program, target, plans, position, spa
     const descriptor = nextDescriptors[index];
     const incoming = oldDescriptors.filter(old => intersects(old, descriptor));
     let override;
-    if (["size-shape","color-size"].includes(descriptor.config.combine) && incoming.length > 1) {
+    if (["size-shape","color-size","color-size-shape"].includes(descriptor.config.combine) && incoming.length > 1) {
       const positions = incoming.map(old=>old.config.blockOverrides?.[old.key]?.position);
       if (position === undefined && !positions.every(value=>value===positions[0])) transitionError(target, incoming, descriptor, "position");
       override = position === undefined && positions[0] !== undefined ? {position: positions[0]} : undefined;
@@ -195,7 +195,7 @@ export function planLegendBlockTransitions(program, target, plans, position, spa
     } else if (incoming.length === 1) {
       const old = incoming[0];
       override = old.config.blockOverrides?.[old.key];
-      if (["size-shape","color-size"].includes(incoming[0].config.combine) && override !== undefined) {
+      if (["size-shape","color-size","color-size-shape"].includes(incoming[0].config.combine) && override !== undefined) {
         const {title: _title, ...rest} = override; override = Object.keys(rest).length ? rest : undefined;
       }
       if(old.config.combine==='color-size'&&descriptor.kind==='gradient'&&override!==undefined){

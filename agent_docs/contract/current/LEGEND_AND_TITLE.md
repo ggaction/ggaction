@@ -1016,3 +1016,13 @@ tick, title의 slot은 유지한다. 여러 column은 각각 계산한다. 생�
 기하를 그대로 유지하고 명시 undefined, null, 미지원 문자열은 거부한다.
 create/edit, Canvas·scale·data replay, 저장 복원과 composition에 같은 계약을 적용한다.
 검증: `test/unit/actions/guides/text-style-alignment.test.js`.
+
+
+### Interval color/stroke-size-shape combination
+
+- `combine: "color-size-shape"`는 하나의 Cartesian Point에서 동일 field/data/aggregate grain의 interval color 또는 stroke, interval size, ordinal shape를 묶는다. `channels`는 color/size/shape 또는 stroke/size/shape이며 생략 시 하나의 hue owner만 추론한다. 둘 다 있으면 명시 선택한다. Hue와 size의 실제 threshold 경계가 같아야 한다.
+- `values`는 각 interval에 하나씩 대응하는 finite 오름차순 대표값을 필수로 받는다. 자동 sample/count/reset은 지원하지 않는다. 첫/끝 열린 구간도 finite 대표값을 쓰며, 내부 구간은 왼쪽 포함/오른쪽 제외다. 각 값에 원래 ordinal shape scale의 exact/fallback mapping을 적용하며 shape를 interval로 재분류하지 않는다. Labels는 기존 interval formatter를 쓰고 numeric `labelMap`으로 각 대표값의 문구를 바꿀 수 있다.
+- 기존 `guideConfigs.legend.colorSize` owner를 재사용하며 `combine`, `colorChannel`, `shapeScale`로 명시한다. Semantic `guide.legend.colorSize`에도 두 새 binding을 기록한다. 세 channel selector는 한 block에 alias되고 removal은 전체 block을 제거한다. Bound encoding 제거도 전체 combined block을 제거한다.
+- Glyph는 기존 Point shape materializer의 area 계약을 사용한다. Hue/size/shape는 실제 scale mapping을 보존하고, unmapped fill/stroke, strokeWidth, opacity는 원래 Point의 fixed appearance를 사용한다. `symbol`은 point type과 unmapped fill/stroke, strokeWidth, opacity만 받는다. 생략/auto는 원래 mark 상속, 명시값은 override다. Mapped hue/size/shape override는 거부한다.
+- Create/edit, 개별 channel alias, resize, scale/mark edits, clip, layout, facet/shared composition, persistence는 같은 binding과 geometry를 유지한다. 일부 channel만 남기려면 `combine: "separate"`를 명시한다. Field/grain/threshold mismatch, 잘못된 대표값과 snapshot tampering은 원자적으로 거부한다. 기존 두 채널 조합과 기본 분리 동작은 그대로 유지한다.
+- 검증: `test/unit/actions/guides/color-size-shape-legend.test.js`는 30개 원본 point와 6개 실제 sample의 독립 면적/shape/paint, 원본 보존, lifecycle/negative/restore를 검사한다.

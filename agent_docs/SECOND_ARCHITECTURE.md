@@ -2773,3 +2773,11 @@ Renderer는 변경하지 않고 완성된 graphicSpec만 소비한다. 표시 �
 4400에서4446으로 조정했다. 기존 한도를 통과했다고 보고하지 않는다.
 새 materialization module 1개로 package entry 한도를646에서647로만 늘렸다.
 패키지 크기 한도는 변경하지 않았고 package artifact 검사를 통과했다.
+
+
+### 복합 sample 범례의 기존 owner 확장
+
+`grammar/colorSizeLegend.js`가 continuous 두 채널과 interval hue/size + ordinal shape의
+binding/대표값 validation을 소유한다. 기존 `legend.colorSize` owner에 선택적 shape binding과
+hue channel을 기록하고, `legendBlocks`/facet/encoding removal은 같은 channel/scale descriptor를
+사용한다. Glyph는 기존 Point materializer와 concrete bounds를 공유하며 renderer 경계는 변하지 않는다.

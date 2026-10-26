@@ -9,7 +9,7 @@ export function isSizeShapeChannels(channels) {
 }
 export function validateLegendCombine(value) {
   if(value===undefined)return;
-  if (!['separate','size-shape','color-size'].includes(value)) throw new Error('Legend combine must be separate, size-shape, or color-size.');
+  if (!['separate','size-shape','color-size','color-size-shape'].includes(value)) throw new Error('Legend combine must be separate, size-shape, color-size, or color-size-shape.');
 }
 export function validateMappedSizeShapeSymbol(symbol) {
   if(symbol===undefined||symbol==='auto')return;

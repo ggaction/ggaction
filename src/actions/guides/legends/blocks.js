@@ -1,3 +1,4 @@
+import {colorSizeChannels,validateColorSizeShapeSamples} from "../../../grammar/colorSizeLegend.js";
 import { editFacetParentLegend } from "../../../materialization/facetGuides/edit.js";
 
 import {patchLegendClipHeight, validateLegendClip} from "../../../grammar/legendClip.js";
@@ -67,7 +68,7 @@ function categoricalSupports(config, property) {
 
 function validateSymbolSupport(descriptor, property) {
   const { channels, family, kind, config } = descriptor;
-  if(kind === "colorSize" && ["fill","size"].includes(property)) throw new Error("Color-size symbols cannot override mapped fill or size.");
+  if(kind === "colorSize" && ['size',config.colorChannel==='stroke'?'stroke':'fill'].includes(property)) throw new Error("Color-size symbols cannot override mapped hue or size.");
   if (family === "gradient") {
     throw new Error(`editLegendBlock symbol.${property} is unsupported for gradient blocks.`);
   }
@@ -216,7 +217,7 @@ function applyCategoricalSymbol(symbol, patch) {
 }
 
 export function resolveEffectiveLegendBlockConfig(program, kind, config) {
-  const channels = kind === "colorSize" ? ["color","size"] : kind === "series" || kind === "color" || kind === "stroke"
+  const channels = kind === "colorSize" ? colorSizeChannels(config) : kind === "series" || kind === "color" || kind === "stroke"
     ? config.channels
     : [{ size: "size", opacity: "opacity", strokeWidth: "strokeWidth",
       gradient: "color", interval: "color", strokeGradient: "stroke",
@@ -331,7 +332,7 @@ function recreateSymbolGraphics(program, descriptor) {
   const placement = preserveGraphicPlacement(program, symbol.id);
   return program
     .editGraphics({ target: symbol.id, remove: true })
-    .createGraphics({ id: symbol.id, type: symbol.type, length: 0, ...placement });
+    .createGraphics({ id: symbol.id, ...(descriptor.config.shapeScale===undefined?{type:symbol.type,length:0}:{type:'collection'}), ...placement });
 }
 
 function normalizeBlockPatch(args, descriptor, scaleType) {
@@ -405,7 +406,8 @@ export const editLegendBlock = /* @__PURE__ */ action(
         operation: "edit",
         label: `editLegendBlock ${descriptor.channel ?? args.channel} legend`
       });
-      validateSamplingAgainstScale(sampling, this.resolvedScales[descriptor.scaleIds[0]],
+      if(config.combine==='color-size-shape')validateColorSizeShapeSamples(sampling,this.resolvedScales[config.colorScale]);
+      else validateSamplingAgainstScale(sampling, this.resolvedScales[descriptor.scaleIds[0]],
         "editLegendBlock values");
       const { count: _legacyCount, ...withoutCount } = config;
       config = { ...withoutCount, sampling };

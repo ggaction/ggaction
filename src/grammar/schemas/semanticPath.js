@@ -107,6 +107,8 @@ const GUIDE_PATHS = new Set([
   "legend.colorSize.colorScale",
   "legend.colorSize.sizeScale",
   "legend.colorSize.title",
+  "legend.colorSize.shapeScale",
+  "legend.colorSize.colorChannel",
   "legend.color.scale",
   "legend.color.title",
   "legend.color.order",

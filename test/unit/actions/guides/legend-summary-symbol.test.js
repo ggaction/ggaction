@@ -115,3 +115,27 @@ test("invalid summary policies, nonline recipes and persisted tampering fail ato
   assert.throws(() => serializeProgram(p._clone({ materializationConfigs: config })), /summarySymbol/);
   assert.equal(serializeProgram(seed), before);
 });
+
+test("mixed continuous blocks cannot silently discard an explicit summary-symbol policy", () => {
+  const seed = chart().createCanvas({ width: 1000, height: 800, margin: 250 })
+    .createData({ values: [{ x: 0, y: 0, v: 0 }, { x: 10, y: 10, v: 10 }] })
+    .createScatterPlot({ x: "x", y: "y", guides: false,
+      color: { field: "v", fieldType: "quantitative" }, size: "v" });
+  const before = serializeProgram(seed);
+  assert.throws(() => seed.createLegend({ channels: ["color", "size"], overflow: legend.overflow }), /summarySymbol/);
+  assert.equal(serializeProgram(seed), before);
+});
+
+test("source revisions shrink and restore inferred domains without stale summary glyphs", () => {
+  const seed = source().editStrokeScale({ target: "paths", domain: "auto" });
+  const p = seed.createLegend(legend), before = serializeProgram(p);
+  const fewer = p.reviseData({ source: "data", id: "subset", values: rows.filter(row => domain.indexOf(row.group) < 2) });
+  assert.deepEqual(fewer.resolvedScales.stroke.domain, domain.slice(0, 2));
+  assert.equal(symbols(fewer).length, 2);
+  assert.deepEqual(labels(fewer), domain.slice(0, 2));
+  const restored = fewer.reviseData({ source: "subset", id: "expanded", values: rows });
+  assert.equal(symbols(restored).length, 30);
+  assert.equal(labels(restored).at(-1), "…15 entries");
+  assert.equal(symbols(restored)[29].properties.stroke, colors[29]);
+  assert.equal(serializeProgram(p), before);
+});

@@ -14,7 +14,7 @@ function roles(kind,config){
   type:layer.type==='line'?'line':layer.type==='point'?config.channels.includes('shape')?'collection':'circle':hasRectRadius(layer)?'collection':'rect'
  }));
  const prefix=kind==='gradient'?'colorGradient':`${kind}Legend`;
- return [{id:`${prefix}Symbols`,type:'circle',point:true}];
+ return [{id:`${prefix}Symbols`,type:config.shapeScale===undefined?'circle':'collection',point:true}];
 }
 function wrapped(owner){return owner?.children?.some(id=>id.startsWith(clipPrefix));}
 export function hasLegendClipGraphics(program){

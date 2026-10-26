@@ -4,10 +4,10 @@
 
 - [x] 최신 GitHub branch/PR/issue 및 공개 0.0.24 확인
 - [x] overlay/composition branch와 보안 PR #275를 별도 통합 branch에 병합
-- [ ] 통합 baseline 검증과 테스트 감사
+- [x] 통합 baseline 검증과 테스트 감사
 - [x] #274 categorical overflow summary symbol
-- [ ] #271 interval color/stroke + size + ordinal shape 단일 범례
-- [ ] 새 기능과 기존 composition/guide lifecycle 회귀 보강
+- [x] #271 interval color/stroke + size + ordinal shape 단일 범례
+- [x] 새 기능과 기존 composition/guide lifecycle 회귀 보강
 - [ ] 정확한 source provenance, 공개 타입/계약/문서 및 LLM 생성물 동기화
 - [ ] 전체 source/coverage/realistic/browser/render/package/docs/platform CI
 - [ ] main 병합, annotated tag, 동일 candidate의 npm/GitHub/Pages 배포 및 공개 해시 검증
@@ -71,3 +71,14 @@ consumer와 browser/renderer parity를 검증한다. 새 옵션 때문에 기존
 - Full stroke와 Basic color line sample, 44개 series/906개 numeric row 보존, 29 labels + summary와 30 painted samples, final order/scale/resize/restore/reset/atomic rejection을 확인했다. 독립 추가 line primitive와 PNG bytes도 일치한다.
 - 관련 22개 검사가 통과했다. 전체 baseline은 6,237개 중 runtime 6,236개 성공, stale action-card 1개 실패였으며 재생성 후 해당 검사가 통과했다.
 - 새 grammar module 1개에 맞춰 package entry cap만 649→650으로 조정했다. 두 legend action-card budget은 새 typed policy를 담는 실제 크기에 맞춰 각각 40/50 bytes만 확장했고 전체 package bytes/coverage floor는 유지했다.
+
+## #271 및 테스트 감사 checkpoint
+
+- Native Full/Basic color·stroke + size + shape, threshold/quantize/quantile, ordinal fallback, 실제 symbol 면적, 상속 paint, shape scale 편집, shared facet/grid/repeat, clip/reflow, 저장 복원 및 잘못된 입력의 원자적 거부를 검증했다. Browser Canvas/SVG와 packed PNG/PDF consumer도 추가했다.
+- Shape scale 편집이 결합 범례를 갱신하지 않던 dependency 누락과 resource reference의 shapeScale 누락을 고쳤다.
+- 기존 2-channel 범례를 포함하는 guide 검사 1,118개가 통과했다. 새 lifecycle/부정 입력을 추가했고, 독립 geometry/PNG oracle을 유지했다.
+- 생성 action 카드에서 누락된 createLayerPlot을 복구하여 public actions 291개, 옵션 경로 24,410개를 inventory에 반영했다. 실제 원본 데이터 3개에서 native constructor 28개의 독립 layer를 반복 생성하고 owner, 원본 행, 불변성, persistence를 확인했다. 경로 수 자체를 모든 옵션 실행 증거로 주장하지 않는다.
+- 새 문서 예제는 완전한 실행 가능한 프로그램으로 등록했다. Related navigation을 마지막으로 옮겼고 search excerpt를 10자 줄여 기존 857 KB 제한을 유지했다.
+- 기존 overlay branch부터 Full/Basic gzip은 488,691/247,648 bytes로 기존 482,000/245,000 제한을 넘었다. 새 범례를 포함한 측정값 490,524/249,238 bytes에 맞춰 492,000/250,000으로 제한을 조정했다. Packed tarball 966,885 bytes에 맞춰 packed cap만 970,000으로 조정했고 unpacked 4,560,000, SVG 25,000 및 coverage floor는 유지했다. 최종 candidate에서 다시 검증한다.
+- Compatible security update: body-parser 2.4.0, zod 4.6.7, qs 6.16.1, content-type 2.1.0. npm audit 0 vulnerabilities.
+- 2026-10-26 원격 branch/PR/issue 재조회에서 추가 입력은 없었다. #258 외부 원본 family의 fidelity 검증은 증거가 없으므로 계속 별도 추적한다.

@@ -21,7 +21,7 @@ import { axisGraphicIds } from "../selectors/axes.js";
 
 import {findLayer} from '../selectors/layers.js';
 import {findCoordinate} from '../selectors/coordinates.js';
-import {resolveColorSizeMapping,normalizeColorSizeSymbol} from '../grammar/colorSizeLegend.js';
+import {resolveColorSizeMapping,normalizeColorSizeSymbol,colorSizeChannels,validateColorSizeShapeSamples} from '../grammar/colorSizeLegend.js';
 import{validateLegendClip}from"../grammar/legendClip.js";
 import {validateLegendLayerOpacity}from"../grammar/legendOpacity.js";
 import { isSizeShapeChannels, resolveSizeShapeMapping } from "../grammar/legendCombinations.js";
@@ -372,19 +372,20 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
     }
     for(const layer of config.symbol?.layers??[])validateLegendLayerOpacity(layer.opacity);
     if(kind==='colorSize') {
-      if(config.combine!=='color-size')throw invalidSnapshot('Color-size legend requires its combined owner.',path);
+      if(!['color-size','color-size-shape'].includes(config.combine))throw invalidSnapshot('Color-size legend requires its combined owner.',path);
       const layer=findLayer(program,config.target);
-      const mapping=resolveColorSizeMapping({layer,scales:program.resolvedScales,pointConfig:program.markConfigs[layer?.id],coordinate:findCoordinate(program,layer?.coordinate)});
-      for(const key of ['target','field','fieldType','colorScale','sizeScale','domain'])if(JSON.stringify(config[key])!==JSON.stringify(mapping[key]))throw invalidSnapshot('Stale color-size mapping.',path);
+      const mapping=resolveColorSizeMapping({layer,scales:program.resolvedScales,pointConfig:program.markConfigs[layer?.id],coordinate:findCoordinate(program,layer?.coordinate),combine:config.combine,channels:colorSizeChannels(config)});
+      for(const key of ['target','field','fieldType','colorScale','sizeScale','shapeScale','colorChannel','domain'])if(JSON.stringify(config[key])!==JSON.stringify(mapping[key]))throw invalidSnapshot('Stale color-size mapping.',path);
       const guide=semantic.guides.legend?.colorSize;
-      if(guide?.colorScale!==mapping.colorScale||guide?.sizeScale!==mapping.sizeScale||guide.title!==config.title)throw invalidSnapshot('Stale color-size semantic owner.',path);
-      requireObject(config.symbol,path);normalizeColorSizeSymbol(config.symbol);
-      if(config.symbol.type!=='point'||!Object.hasOwn(config.symbol,'strokeWidth')||!Object.hasOwn(config.symbol,'opacity'))throw invalidSnapshot('Color-size symbol requires point type.',path);
+      if(guide?.colorScale!==mapping.colorScale||guide?.sizeScale!==mapping.sizeScale||guide.title!==config.title||guide.shapeScale!==mapping.shapeScale||guide.colorChannel!==mapping.colorChannel)throw invalidSnapshot('Stale color-size semantic owner.',path);
+      requireObject(config.symbol,path);normalizeColorSizeSymbol(config.symbol,undefined,config);
+      if(config.symbol.type!=='point'||config.combine==='color-size'&&(!Object.hasOwn(config.symbol,'strokeWidth')||!Object.hasOwn(config.symbol,'opacity')))throw invalidSnapshot('Color-size symbol requires point type.',path);
       const sample=config.sampling;requireObject(sample,path);
       exactKeys(sample,sample.mode==='values'?['mode','count','values']:['mode','count'],path);
       if(!['auto','values'].includes(sample.mode)||!Number.isInteger(sample.count)||sample.count<2)throw invalidSnapshot('Invalid color-size samples.',path);
       validateGeneratedItemLimit(sample.count,'Color-size samples');
-      if(sample.mode==='values'){
+      if(config.combine==='color-size-shape')validateColorSizeShapeSamples(sample,program.resolvedScales[mapping.colorScale]);
+      else if(sample.mode==='values'){
         requireArray(sample.values,path);
         if(!sample.values.length||sample.values.length>100||sample.values.some((v,i)=>!Number.isFinite(v)||i>0&&v<=sample.values[i-1]||v<Math.min(...mapping.domain)||v>Math.max(...mapping.domain)||[mapping.colorScale,mapping.sizeScale].some(id=>program.resolvedScales[id].type==='log'&&v<=0)))throw invalidSnapshot('Invalid exact color-size samples.',path);
       }

@@ -98,7 +98,7 @@ export function collectSemanticScaleReferences(program) {
     }
   }
   collectKnownKeys(program.semanticSpec.guides, [], (key, value, path) => {
-    if (["scale", "colorScale", "sizeScale"].includes(key)) {
+    if (["scale", "colorScale", "sizeScale", "shapeScale"].includes(key)) {
       append(references, reference(
         "scale", value, "semanticGuide", "guides", path
       ));
@@ -217,7 +217,7 @@ export function collectGuideConfigReferences(program) {
       const relativePath = parentPath.length === 0
         ? path
         : path.slice(parentPath.length);
-      if (["scale", "colorScale", "sizeScale"].includes(key)) {
+      if (["scale", "colorScale", "sizeScale", "shapeScale"].includes(key)) {
         append(references, reference(
           "scale", value, family, ownerId, relativePath
         ));

@@ -898,6 +898,9 @@ function buildCompositionLifecycle(factors) {
     gap: 8,
     padding: 4
   })
+    .createLayerPlot({ target: { childPath: ["left"] }, source: "point", id: "independentPoints", placement: "back",
+      plot: { action: "createScatterPlot", inherit: { color: false }, options: { guides: false } } })
+    .removeMark({ target: { childPath: ["left"], id: "independentPoints" } })
     .createOverlay({ target: { childPath: ["left"] }, id: "followingLine", source: "point", type: "line", orderBy: "x" })
     .editOverlay({ target: { childPath: ["left"], id: "followingLine" }, orderBy: "y" })
     .createAdjacentPlot({ target: { childPath: ["left"] }, id: "followingPanel", source: "point", position: "bottom",
@@ -2107,7 +2110,7 @@ function lifecycleSignature(base, factors) {
       "filterMarks", "highlightMarks", "removeMarkHighlight"
     ],
     "action-composition-lifecycle": [
-      "hconcat", "createOverlay", "editOverlay", "createAdjacentPlot", "editCompositionScales", "editCompositionLayout", "insertCompositionChild",
+      "hconcat", "createOverlay", "editOverlay", "createLayerPlot", "createAdjacentPlot", "editCompositionScales", "editCompositionLayout", "insertCompositionChild",
       "reorderCompositionChildren", "removeCompositionChild", "replaceCompositionChild"
     ],
     "action-facet-scale-lifecycle": ["facet", "editFacetScales", "editFacetGuides"],
@@ -2363,7 +2366,7 @@ export const REALISTIC_LIFECYCLE_REQUIRED_FEATURES = Object.freeze([
 ]);
 
 export const LIFECYCLE_EXPECTED_ACTIONS = Object.freeze([
-  "createOverlay", "editOverlay", "createAdjacentPlot", "editCompositionScales",
+  "createOverlay", "editOverlay", "createLayerPlot", "createAdjacentPlot", "editCompositionScales",
   "reviseData", "applyTextMetrics", "removeTextMetrics",
   "filterData", "createRegressionData", "createWindowData", "createTimeUnitData",
   "createSortedData", "editSortedData",

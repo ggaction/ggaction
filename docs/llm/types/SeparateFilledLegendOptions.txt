@@ -1,1 +1,1 @@
-type SeparateFilledLegendOptions = DistributiveLegendOmit<Exclude<FilledMarkLegendOptions, { combine: "color-size" }>, "combine"> & { combine?: "separate" };
+type SeparateFilledLegendOptions = DistributiveLegendOmit<Exclude<FilledMarkLegendOptions, { combine: "color-size" | "color-size-shape" }>, "combine"> & { combine?: "separate" };

@@ -498,9 +498,9 @@ function baseLegend(target, index, {
       target,
       channels: ["color"],
       position: ["top-left", "top-right", "bottom-left", "bottom-right"][index - 24],
-      overflow: { maxItems: 3, summary: "ellipsis-count" },
+      overflow: { maxItems: 3, summary: "ellipsis-count", ...(index === 24 ? {summarySymbol:"first-hidden"} : {}) },
       title: "Source group",
-      symbol: legendSymbol(index, kind),
+      symbol: index === 24 ? {layers:[{type:"line",length:24,lineWidth:2}]} : legendSymbol(index, kind),
       labels: { format: "auto" }
     };
   }
@@ -1974,8 +1974,9 @@ export function appendHierarchicalFacadeCoverage(program) {
   next = appendPaletteRangeProfiles(next, [34, 35]);
   for (const action of ["createPolarScatterPlot", "createStripPlot", "createBeeswarmPlot", "createRaincloudPlot"]) {
     next = appendFacadeLegendCombinations(next, {action,xField:"positiveX",yField:"positiveY",categoryField:"group",numberField:"rowOrdinal",
-      modes: action === "createPolarScatterPlot" || action === "createRaincloudPlot" ? ["size-shape"] : ["size-shape","color-size"]});
+      modes: action === "createPolarScatterPlot" || action === "createRaincloudPlot" ? ["size-shape"] : ["size-shape","color-size","color-size-shape"]});
   }
+  next=appendFacadeLegendCombinations(next,{action:"createRegressionPlot",xField:"positiveX",yField:"positiveY",numberField:"rowOrdinal",categoryField:"group",modes:["color-size-shape"]});
   return next;
 }
 

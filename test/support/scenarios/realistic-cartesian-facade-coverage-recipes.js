@@ -205,7 +205,7 @@ function guideModes() {
 const GUIDE_MODES = guideModes();
 
 function variantsFor(action) {
-  return freeze(Array.from({ length: action === "createScatterPlot" ? PROFILE_COUNT + 2 : PROFILE_COUNT }, (_, index) => ({
+  return freeze(Array.from({ length: action === "createScatterPlot" ? PROFILE_COUNT + 3 : PROFILE_COUNT }, (_, index) => ({
     id: `${slug(action)}-orthogonal-${String(index + 1).padStart(2, "0")}`,
     ordinal: index,
     guide: GUIDE_MODES[index % GUIDE_MODES.length]
@@ -839,9 +839,9 @@ function categoricalLegend(index, symbol, target = "guideColorPoints") {
       target,
       channels: ["color"],
       position: ["top-left", "top-right", "bottom-left", "bottom-right"][index - 28],
-      overflow: { maxItems: 3, summary: "ellipsis-count" },
+      overflow: { maxItems: 3, summary: "ellipsis-count", ...(index === 28 ? {summarySymbol:"first-hidden"} : {}) },
       title: "Authentic source category",
-      symbol,
+      symbol: index === 28 ? {layers:[{type:"line",length:24,lineWidth:2}]} : symbol,
       labels: { format: "auto" }
     };
   }
@@ -913,6 +913,7 @@ function categoricalLegendSymbol(index) {
 }
 
 function guideOptions(variant, program, options, action) {
+  if(action === "createScatterPlot" && variant.ordinal === PROFILE_COUNT+2) return {axes:false,grid:false,legend:{combine:"color-size-shape",values:options.shape.scale.domain,clipHeight:8}};
   if (action === "createScatterPlot" && variant.ordinal >= PROFILE_COUNT) return {axes:false,grid:false,legend:{combine:variant.ordinal === PROFILE_COUNT ? "size-shape" : "color-size",border:{strokeDash:[4,2,6,1]},clipHeight:8,...(variant.ordinal === PROFILE_COUNT + 1 ? {symbol:{opacity:0.7}}:{})}};
   const guide = variant.guide;
   if (guide.kind === "off") return false;
@@ -1105,6 +1106,13 @@ function scatterOptions(factors, view) {
   if (factors.variant.ordinal >= PROFILE_COUNT) {
     const domain = extent(view.rows,"positiveValue");
     const categorical = factors.variant.ordinal === PROFILE_COUNT;
+    if(factors.variant.ordinal===PROFILE_COUNT+2){
+      const cut=(domain[0]+domain[1])/2;
+      return {id:"mainScatter",data:"analysisRows",coordinate:"main",x:"sourcePosition",y:"positiveSecondary",
+        color:{field:"positiveValue",fieldType:"quantitative",scale:{id:"mainColor",type:"threshold",domain:[cut],range:["black","white"]}},
+        size:{field:"positiveValue",scale:{id:"mainSize",type:"threshold",domain:[cut],range:[25,100]}},
+        shape:{field:"positiveValue",scale:{id:"mainShape",domain:[domain[0],cut],range:["circle","diamond"],unknown:"circle"}}};
+    }
     return {id:"mainScatter",data:"analysisRows",coordinate:"main",x:"sourcePosition",y:"positiveSecondary",point:{shape:"circle"},
       ...(categorical ? {shape:{field:"subgroup",fieldType:"nominal",scale:{id:"mainShape",type:"ordinal",domain:"auto",range:"auto"}},
         size:{field:"subgroup",fieldType:"ordinal",scale:{id:"mainSize",type:"ordinal",domain:"auto",range:[25,100,225]}}}

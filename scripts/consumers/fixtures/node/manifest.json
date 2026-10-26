@@ -117,6 +117,14 @@
     "file": "guides.mjs",
     "cases": [
       {
+        "id": "guides/three-channel-interval-legend",
+        "statements": 1
+      },
+      {
+        "id": "guides/overflow-summary-line",
+        "statements": 1
+      },
+      {
         "id": "guides/axis-label-edge-threshold",
         "statements": 1
       },

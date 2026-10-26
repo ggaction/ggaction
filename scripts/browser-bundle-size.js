@@ -5,8 +5,8 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 482_000, // Summary, guide and path-layer fixes: measured 481548 on Node 20/22/24.
-  "ggaction/basic": 245_000, // Shared Area/position and guide fixes: measured 244737 on Node 20/22/24.
+  ggaction: 492_000, // Integrated layer/composition and combined legends: measured 490524.
+  "ggaction/basic": 250_000, // Shared legend grammar and geometry: measured 249238.
   "ggaction/svg": 25_000
 });
 

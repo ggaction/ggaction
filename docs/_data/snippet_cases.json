@@ -185,5 +185,15 @@
     "result": "program",
     "prerequisites": "Self-contained deterministic observations with shared measurement scales and independent native layers.",
     "rendering": "authoring-only"
+  },
+  {
+    "id": "three-channel-interval-legend",
+    "file": "api/legends.md",
+    "contains": "const program = points.createLegend({",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "Standalone ES module with ggaction installed.",
+    "rendering": "authoring-only"
   }
 ]

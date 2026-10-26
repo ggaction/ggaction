@@ -1,4 +1,4 @@
-import {resolveColorSizeConfig,createColorSizeLegendFromConfig,materializeColorSizeLegend} from "../colorSize.js";
+import {resolveColorSizeConfig,createColorSizeLegendFromConfig,materializeColorSizeLegend,resolveColorSizeLayout} from "../colorSize.js";
 import {resetLegendClipGraphics,applyLegendClipGraphics,restoreLegendClipContext}from"../../../../materialization/legendClip.js";
 import {validateLegendCombine,resolveSizeShapeCreation} from "../combine.js";
 import { recordLegendOffsetIntent } from "../group.js";
@@ -181,6 +181,7 @@ export const rematerializeLegend = /* @__PURE__ */ action(
     }
     const clipAnchors = Object.fromEntries(categoricalKinds.filter(kind => next.guideConfigs.legend[kind].clipHeight !== undefined)
       .map(kind => [kind, resolveLayout(next, resolveEffectiveLegendBlockConfig(next, kind, next.guideConfigs.legend[kind])).itemY]));
+    if(next.guideConfigs.legend?.colorSize?.clipHeight!==undefined)clipAnchors.colorSize=resolveColorSizeLayout(next,next.guideConfigs.legend.colorSize).itemY;
     next=applyLegendClipGraphics(next,{force:true,anchors:clipAnchors});
     next=restoreLegendClipContext(next,oldClipContext);
     if (hasHorizontalLegendLane(next)) {
@@ -279,7 +280,7 @@ export const createCategoricalLegend = /* @__PURE__ */ action(
 function resolveRawLegendCreationPlan(program, args = {}, layers = program.semanticSpec.layers, internalChannels) {
   if (Object.hasOwn(args, "combine")) {
     validateLegendCombine(args.combine);
-    if (args.combine === "color-size") {
+    if (["color-size","color-size-shape"].includes(args.combine)) {
       const config=resolveColorSizeConfig(program,args);
       const prepared=prepareLegendGroup(program,{...args,blockLayout:args.blockLayout??(["left","right"].includes(args.position??"right")?"column":"row")},config.target,{creation:true,nativeOffset:30});
       return {steps:[{op:"createColorSizeLegend",args}],finish:"always",legendGroup:{target:config.target,config:prepared.program.guideConfigs.legendGroups[config.target]}};
@@ -534,6 +535,9 @@ export function resolveLegendCreationPlan(program, args = {}, layers = program.s
   if (raw.position === undefined && args.direction === "horizontal" &&
       (args.at !== undefined || Object.keys(groups).length > 0)) raw.position = "top";
   const initial = resolveRawLegendCreationPlan(program, raw, layers, internalChannels);
+  if (args.overflow?.summarySymbol !== undefined && !initial.steps.some(step => step.op === "createCategoricalLegend")) {
+    throw new Error("Legend overflow.summarySymbol requires a categorical line-only sample recipe.");
+  }
   const inherited = Object.keys(program.guideConfigs.legendGroups ?? {}).length > 0;
   const corner = PLOT_LEGEND_POSITIONS.includes(args.position) &&
     (initial.steps.length > 1 || initial.steps[0]?.op !== "createCategoricalLegend" ||

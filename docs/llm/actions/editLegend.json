@@ -173,7 +173,7 @@
     {
       "name": "combine",
       "required": false,
-      "type": "\"color-size\" | \"separate\" | \"size-shape\" | undefined"
+      "type": "\"color-size\" | \"color-size-shape\" | \"separate\" | \"size-shape\" | undefined"
     },
     {
       "name": "representation",

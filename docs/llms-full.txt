@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.25.
 
-Contract: sha256:9ab7e9568571bd87f2470f30c115605719e6bb830a2070c813fd29430b15b48c. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:4a1518726a0116a711ba645c2cd608b00a506359661714cc77d644a5801fe92d. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -14006,10 +14006,6 @@ can reset the choice in the same whole edit; inline `titlePosition: "left"`
 rejects an explicit title alignment. Border padding, group anchors, item
 positions and spacing retain their existing rules.
 
-## Related
-[Guides](./api/guides/) · [Series encodings](./api/series-encodings/) ·
-[Canvas](./api/canvas/) · [Troubleshooting](./troubleshooting/)
-
 When creating a separate size legend, an explicit `position` is honored even if a color or shape legend for the same mark uses another edge. Omit size `position` to inherit the categorical legend edge. Resizing retains that choice.
 
 **Label alignment.** `editLegend({target: "plot", labels: {align: "right"}})`
@@ -14017,6 +14013,47 @@ aligns label text within each measured label column. `left`, `center`, and
 `right` are supported for every legend family, including multiline labels.
 Symbols, ticks, titles, and the legend's placement stay in their existing slots.
 The option is also accepted at creation; omission preserves native defaults.
+
+## Combine interval color, size, and shape
+
+For one Cartesian point layer, `combine: "color-size-shape"` combines interval color (or stroke), interval size, and ordinal shape for the same field. Hue and size must have identical threshold boundaries. Provide one ascending finite representative per interval; the shape scale evaluates that exact value, including its configured fallback. This preserves ordinal shapes without converting them into interval bins.
+
+> **Executable complete.** Standalone ES module with ggaction installed.
+
+```js
+import { chart } from "ggaction";
+
+const cuts = [5, 10, 15, 20, 25];
+const points = chart()
+  .createCanvas({ width: 1000, height: 800, margin: 250 })
+  .createData({ values: Array.from({ length: 30 }, (_, value) => ({ value })) })
+  .createScatterPlot({
+    x: "value", y: "value", point: { fill: "none", strokeWidth: 2 },
+    stroke: { field: "value", fieldType: "quantitative", scale: {
+      type: "threshold", domain: cuts,
+      range: ["red", "orange", "gold", "green", "blue", "purple"]
+    } },
+    size: { field: "value", scale: {
+      type: "threshold", domain: cuts, range: [50, 100, 150, 200, 250, 300]
+    } },
+    shape: { field: "value", scale: {
+      domain: cuts, range: ["circle", "square", "triangle-up", "cross", "diamond"],
+      unknown: "circle"
+    } },
+    guides: false
+  });
+const program = points.createLegend({
+  combine: "color-size-shape",
+  channels: ["stroke", "size", "shape"],
+  values: [0, 5, 10, 15, 20, 25]
+});
+```
+
+Any of the three channels selects the same block for editing or removal. Use `editLegend({ combine: "separate" })` to split it. The samples inherit fixed point appearance; optional `symbol` overrides may change opacity, stroke width, or an unmapped fill/stroke, but cannot replace mapped color, size, or shape. Use `editLegendBlock` with a numeric `labelMap` for exact interval wording. Existing two-channel combinations keep their current behavior.
+
+## Related
+[Guides](./api/guides/) · [Series encodings](./api/series-encodings/) ·
+[Canvas](./api/canvas/) · [Troubleshooting](./troubleshooting/)
 
 <!-- Source: /api/legends/categorical/ -->
 
@@ -27367,7 +27404,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `clipHeight` | Optional / branch-dependent | `number \| undefined` |
-| `combine` | Optional / branch-dependent | `"color-size" \| "separate" \| "size-shape" \| undefined` |
+| `combine` | Optional / branch-dependent | `"color-size" \| "color-size-shape" \| "separate" \| "size-shape" \| undefined` |
 | `representation` | Optional / branch-dependent | `"gradient" \| "symbols" \| undefined` |
 | `layout` | Optional / branch-dependent | `"edge" \| "legacy-bottom" \| undefined` |
 | `overflow` | Optional / branch-dependent | `false \| { maxItems: number; summary?: "ellipsis-count" \| undefined; summarySymbol?: "first-hidden" \| undefined; } \| undefined` |
@@ -27493,6 +27530,8 @@ categorical legends and ordinal size legends. When a categorical block and an
 ordinal size block are created or edited together, the same limit applies to both
 blocks. Quantitative size sampling is unchanged by a categorical overflow limit.
 Continuous and combined sampled legends retain their existing edge-only contracts. Shared facet promotion requires an edge position.
+`combine: "color-size-shape"` creates one block for a Cartesian point owner with same-field/grain interval color or stroke, interval size, and ordinal shape. Select exactly color/size/shape or stroke/size/shape; omission infers a unique hue channel. Hue and size threshold boundaries must match. Explicit ascending finite `values` must provide one representative in each interval (left inclusive, right exclusive); no automatic values/count are accepted. Each sample uses the original hue/size/ordinal-shape mapping and native point area, including shape fallback. Numeric `labelMap` entries customize interval labels. Fixed point appearance is inherited; `symbol` supports point type, unmapped fill/stroke, strokeWidth and opacity, and rejects mapped overrides. All three selectors edit/remove the same block; explicitly use `combine: "separate"` to split it. Bindings, sample values and glyphs survive scale/style edits, composition replay and persistence. Incompatible field/grain/threshold edits reject atomically.
+
 For categorical line-only recipes, `overflow.summarySymbol: "first-hidden"`
 adds one sample beside that summary, mapped from the first hidden value in the
 final legend order. The original domain, raw rows and visible category labels
@@ -27531,7 +27570,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `channels` | Optional / branch-dependent | `readonly ("color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth")[] \| undefined` |
 | `title` | Optional / branch-dependent | `string \| false \| undefined` |
 | `values` | Optional / branch-dependent | `"auto" \| readonly number[] \| undefined` |
-| `combine` | Optional / branch-dependent | `"color-size" \| "separate" \| "size-shape" \| undefined` |
+| `combine` | Optional / branch-dependent | `"color-size" \| "color-size-shape" \| "separate" \| "size-shape" \| undefined` |
 | `representation` | Optional / branch-dependent | `"gradient" \| "symbols" \| undefined` |
 | `layout` | Optional / branch-dependent | `"edge" \| "legacy-bottom" \| undefined` |
 | `overflow` | Optional / branch-dependent | `false \| { maxItems: number; summary?: "ellipsis-count" \| undefined; summarySymbol?: "first-hidden" \| undefined; } \| undefined` |
@@ -31977,7 +32016,7 @@ type CategoricalLegendTextOptions = {
  Expand CategoricalPointLegendOptions
 
 ```typescript
-type CategoricalPointLegendOptions = DistributiveLegendOmit<Exclude<FilledMarkLegendOptions, { combine: "color-size" }>, "representation">;
+type CategoricalPointLegendOptions = DistributiveLegendOmit<Exclude<FilledMarkLegendOptions, { combine: "color-size" | "color-size-shape" }>, "representation">;
 ```
 
 Related types: [`DistributiveLegendOmit`](./reference/types/#type-distributivelegendomit) · [`FilledMarkLegendOptions`](./reference/types/#type-filledmarklegendoptions).
@@ -36380,6 +36419,7 @@ Related types: [`LegendSymbolLayer`](./reference/types/#type-legendsymbollayer).
 type FilledMarkLegendOptions = Omit<LegendOptions, "symbol" | "representation" | "combine"> & (
   | { combine?: "separate" | "size-shape"; representation?: "gradient"; symbol?: FilledLegendSymbolRecipe }
   | { combine?: "separate" | "size-shape"; representation: "symbols"; symbol?: "auto" | { type?: "point"; radius?: number; stroke?: string; strokeWidth?: number } }
+  | { combine: "color-size-shape"; representation?: never; symbol?: "auto" | { type?: "point"; fill?: string; stroke?: string; strokeWidth?: number; opacity?: number } }
   | { combine: "color-size"; representation?: never; symbol?: "auto" | { type?: "point"; stroke?: string; strokeWidth?: number; opacity?: number } }
 );
 ```
@@ -37365,8 +37405,8 @@ Related types: [`LegendTextOptions`](./reference/types/#type-legendtextoptions).
 export interface LegendOptions {
   /** Positive sample window height. Clips point-bearing glyphs without changing mapped area. */
   clipHeight?: number;
-  /** Explicitly combine ordinal size/shape or same-field quantitative color/size circle samples. Omission retains separate blocks. */
-  combine?: "separate" | "size-shape" | "color-size";
+  /** Combine size/shape, continuous color/size, or interval color/stroke + size + ordinal shape samples. Omission retains separate blocks. */
+  combine?: "separate" | "size-shape" | "color-size" | "color-size-shape";
   /** Continuous color only. Omission creates the existing gradient; symbols samples the same scale without changing marks. */
   representation?: "gradient" | "symbols";
   /** Categorical, interval, size, or stroke-width layout. Defaults to edge; legacy-bottom is categorical and requires bottom position. */
@@ -37399,7 +37439,7 @@ export interface LegendOptions {
   /** false hides the title while retaining its inferred field text. */
   /** LF, CRLF and CR preserve explicit title lines, including blank lines. */
   title?: string | false;
-  /** Exact ascending samples for continuous size, opacity, stroke-width, color symbols, or color/stroke gradient ticks. Cannot be combined with count. */
+  /** Exact ascending samples for continuous guides, or one representative per interval for color-size-shape. Cannot be combined with count. */
   values?: readonly number[];
   count?: number;
   /** Body-only opacity defaults to 1; edits preserve omitted fields. */
@@ -38853,7 +38893,7 @@ Related types: [`PolarChartGuideOptions`](./reference/types/#type-polarchartguid
  Expand PolarPointLegendOptions
 
 ```typescript
-type PolarPointLegendOptions = DistributiveLegendOmit<Exclude<FilledMarkLegendOptions, { combine: "color-size" }>, "order"> & {
+type PolarPointLegendOptions = DistributiveLegendOmit<Exclude<FilledMarkLegendOptions, { combine: "color-size" | "color-size-shape" }>, "order"> & {
   order?: PolarLegendOrder;
 };
 ```
@@ -40179,7 +40219,7 @@ Related types: [`MarkSelector`](./reference/types/#type-markselector).
  Expand SeparateFilledLegendOptions
 
 ```typescript
-type SeparateFilledLegendOptions = DistributiveLegendOmit<Exclude<FilledMarkLegendOptions, { combine: "color-size" }>, "combine"> & { combine?: "separate" };
+type SeparateFilledLegendOptions = DistributiveLegendOmit<Exclude<FilledMarkLegendOptions, { combine: "color-size" | "color-size-shape" }>, "combine"> & { combine?: "separate" };
 ```
 
 Related types: [`DistributiveLegendOmit`](./reference/types/#type-distributivelegendomit) · [`FilledMarkLegendOptions`](./reference/types/#type-filledmarklegendoptions).
@@ -44703,7 +44743,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:9ab7e9568571bd87f2470f30c115605719e6bb830a2070c813fd29430b15b48c` |
+| Contract fingerprint | `sha256:4a1518726a0116a711ba645c2cd608b00a506359661714cc77d644a5801fe92d` |
 | Example and dataset source | `ab206c446ae5010eecfd859427775c4785d8aed4` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

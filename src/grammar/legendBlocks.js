@@ -1,3 +1,4 @@
+import {colorSizeChannels,colorSizeScaleIds} from "./colorSizeLegend.js";
 import { LEGEND_CHANNELS, LEGEND_CONFIG_KINDS } from "../core/vocabulary.js";
 import { isEnumeratedSizeScaleType } from "./scales/size.js";
 
@@ -26,7 +27,7 @@ const SINGLE_CHANNELS = Object.freeze({
 const asciiCompare = (left, right) => left < right ? -1 : left > right ? 1 : 0;
 
 export function legendBlockChannels(kind, config) {
-  const channels = kind === "colorSize" ? ["color", "size"] : CATEGORICAL_KINDS.includes(kind)
+  const channels = kind === "colorSize" ? colorSizeChannels(config) : CATEGORICAL_KINDS.includes(kind)
     ? config?.channels
     : SINGLE_CHANNELS[kind] === undefined
       ? undefined
@@ -50,7 +51,7 @@ export function describeLegendBlock(program, kind, config) {
     throw new Error(`Unknown legend block kind "${kind}".`);
   }
   const channels = legendBlockChannels(kind, config);
-  const scaleIds = kind === "colorSize" ? [config.colorScale, config.sizeScale] : CATEGORICAL_KINDS.includes(kind)
+  const scaleIds = kind === "colorSize" ? colorSizeScaleIds(config) : CATEGORICAL_KINDS.includes(kind)
     ? config?.scales
     : [config?.scale];
   if (!Array.isArray(scaleIds) || scaleIds.length === 0 ||

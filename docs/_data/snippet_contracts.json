@@ -2137,6 +2137,18 @@
     "executable": false
   },
   {
+    "file": "api/legends.md",
+    "block": 4,
+    "heading": "Combine interval color, size, and shape",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Standalone ES module with ggaction installed.",
+    "sha256": "5e45cd018374e43c9d916ad445e746f17f87c5ca724542192c46ad2c31229e2d",
+    "executable": true
+  },
+  {
     "file": "api/legends/categorical.md",
     "block": 1,
     "heading": "`createLegend(options?)`",

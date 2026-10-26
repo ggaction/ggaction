@@ -3013,6 +3013,8 @@ categorical legends and ordinal size legends. When a categorical block and an
 ordinal size block are created or edited together, the same limit applies to both
 blocks. Quantitative size sampling is unchanged by a categorical overflow limit.
 Continuous and combined sampled legends retain their existing edge-only contracts. Shared facet promotion requires an edge position.
+`combine: "color-size-shape"` creates one block for a Cartesian point owner with same-field/grain interval color or stroke, interval size, and ordinal shape. Select exactly color/size/shape or stroke/size/shape; omission infers a unique hue channel. Hue and size threshold boundaries must match. Explicit ascending finite `values` must provide one representative in each interval (left inclusive, right exclusive); no automatic values/count are accepted. Each sample uses the original hue/size/ordinal-shape mapping and native point area, including shape fallback. Numeric `labelMap` entries customize interval labels. Fixed point appearance is inherited; `symbol` supports point type, unmapped fill/stroke, strokeWidth and opacity, and rejects mapped overrides. All three selectors edit/remove the same block; explicitly use `combine: "separate"` to split it. Bindings, sample values and glyphs survive scale/style edits, composition replay and persistence. Incompatible field/grain/threshold edits reject atomically.
+
 For categorical line-only recipes, `overflow.summarySymbol: "first-hidden"`
 adds one sample beside that summary, mapped from the first hidden value in the
 final legend order. The original domain, raw rows and visible category labels

@@ -4,6 +4,13 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+## [0.0.25] - 2026-10-26
+
+- Refresh generated API and option inventories, add real-data native-layer and legend lifecycle witnesses, and execute the new public legend example in source and installed-package consumers.
+- Update fast-uri, body-parser, zod and their compatible transitive dependencies; the release lockfile audit reports no known vulnerabilities.
+
+- Combine interval color or stroke, interval size, and ordinal shape in one point legend with explicit representatives, original shape fallback, inherited appearance and shared channel editing.
+
 - Add opt-in first-hidden line samples for categorical overflow summaries, preserving source data, scale domains and the default text-only summary.
 
 - Reduce immutable-copy allocations and repeated path validation/bounds work; batch Parallel dimension mapping and reuse immutable geometry across appearance edits. Transition row identities and SVG resource names remain exact while avoiding repeated hashing work.
@@ -30,8 +37,6 @@ All notable changes to `ggaction` are recorded in this file.
 - Add `createLayerPlot` and `getPlotComposition` inspection for independent native layers with original-field provenance, shared compatible scales, compound ownership, and front/back placement.
 - Infer adjacent chart inputs through native positional roles across Cartesian, Polar, and Parallel families; keep different statistical measurements on independent axes by default.
 - Collect compatible nested shared color/shape legends once, preserve unrelated size guides, and infer deferred binned-count legend titles from their statistical meaning.
-
-## [0.0.25] - 2026-10-24
 
 - Add `createOverlay` and `editOverlay` for independent line/point layers that follow a source's materialized endpoints, including bins, stacks, groups and facets; support explicit detachment.
 - Add `createAdjacentPlot` and `editCompositionScales`, shared concat domains and actual plot-frame alignment across unit, nested and facet views.

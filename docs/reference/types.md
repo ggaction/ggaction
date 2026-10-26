@@ -1847,7 +1847,7 @@ type CategoricalLegendTextOptions = {
 <summary>Expand CategoricalPointLegendOptions</summary>
 
 ```typescript
-type CategoricalPointLegendOptions = DistributiveLegendOmit<Exclude<FilledMarkLegendOptions, { combine: "color-size" }>, "representation">;
+type CategoricalPointLegendOptions = DistributiveLegendOmit<Exclude<FilledMarkLegendOptions, { combine: "color-size" | "color-size-shape" }>, "representation">;
 ```
 
 </details>
@@ -7039,6 +7039,7 @@ Related types: [`LegendSymbolLayer`](#type-legendsymbollayer).
 type FilledMarkLegendOptions = Omit<LegendOptions, "symbol" | "representation" | "combine"> & (
   | { combine?: "separate" | "size-shape"; representation?: "gradient"; symbol?: FilledLegendSymbolRecipe }
   | { combine?: "separate" | "size-shape"; representation: "symbols"; symbol?: "auto" | { type?: "point"; radius?: number; stroke?: string; strokeWidth?: number } }
+  | { combine: "color-size-shape"; representation?: never; symbol?: "auto" | { type?: "point"; fill?: string; stroke?: string; strokeWidth?: number; opacity?: number } }
   | { combine: "color-size"; representation?: never; symbol?: "auto" | { type?: "point"; stroke?: string; strokeWidth?: number; opacity?: number } }
 );
 ```
@@ -8231,8 +8232,8 @@ Related types: [`LegendTextOptions`](#type-legendtextoptions).
 export interface LegendOptions {
   /** Positive sample window height. Clips point-bearing glyphs without changing mapped area. */
   clipHeight?: number;
-  /** Explicitly combine ordinal size/shape or same-field quantitative color/size circle samples. Omission retains separate blocks. */
-  combine?: "separate" | "size-shape" | "color-size";
+  /** Combine size/shape, continuous color/size, or interval color/stroke + size + ordinal shape samples. Omission retains separate blocks. */
+  combine?: "separate" | "size-shape" | "color-size" | "color-size-shape";
   /** Continuous color only. Omission creates the existing gradient; symbols samples the same scale without changing marks. */
   representation?: "gradient" | "symbols";
   /** Categorical, interval, size, or stroke-width layout. Defaults to edge; legacy-bottom is categorical and requires bottom position. */
@@ -8265,7 +8266,7 @@ export interface LegendOptions {
   /** false hides the title while retaining its inferred field text. */
   /** LF, CRLF and CR preserve explicit title lines, including blank lines. */
   title?: string | false;
-  /** Exact ascending samples for continuous size, opacity, stroke-width, color symbols, or color/stroke gradient ticks. Cannot be combined with count. */
+  /** Exact ascending samples for continuous guides, or one representative per interval for color-size-shape. Cannot be combined with count. */
   values?: readonly number[];
   count?: number;
   /** Body-only opacity defaults to 1; edits preserve omitted fields. */
@@ -10001,7 +10002,7 @@ Related types: [`PolarChartGuideOptions`](#type-polarchartguideoptions) · [`Pol
 <summary>Expand PolarPointLegendOptions</summary>
 
 ```typescript
-type PolarPointLegendOptions = DistributiveLegendOmit<Exclude<FilledMarkLegendOptions, { combine: "color-size" }>, "order"> & {
+type PolarPointLegendOptions = DistributiveLegendOmit<Exclude<FilledMarkLegendOptions, { combine: "color-size" | "color-size-shape" }>, "order"> & {
   order?: PolarLegendOrder;
 };
 ```
@@ -11603,7 +11604,7 @@ Related types: [`MarkSelector`](#type-markselector).
 <summary>Expand SeparateFilledLegendOptions</summary>
 
 ```typescript
-type SeparateFilledLegendOptions = DistributiveLegendOmit<Exclude<FilledMarkLegendOptions, { combine: "color-size" }>, "combine"> & { combine?: "separate" };
+type SeparateFilledLegendOptions = DistributiveLegendOmit<Exclude<FilledMarkLegendOptions, { combine: "color-size" | "color-size-shape" }>, "combine"> & { combine?: "separate" };
 ```
 
 </details>

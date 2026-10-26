@@ -232,9 +232,6 @@ can reset the choice in the same whole edit; inline `titlePosition: "left"`
 rejects an explicit title alignment. Border padding, group anchors, item
 positions and spacing retain their existing rules.
 
-## Related
-[Guides](./guides.md) · [Series encodings](./series-encodings.md) ·
-[Canvas](./canvas.md) · [Troubleshooting](../troubleshooting.md)
 
 When creating a separate size legend, an explicit `position` is honored even if a color or shape legend for the same mark uses another edge. Omit size `position` to inherit the categorical legend edge. Resizing retains that choice.
 
@@ -243,3 +240,49 @@ aligns label text within each measured label column. `left`, `center`, and
 `right` are supported for every legend family, including multiline labels.
 Symbols, ticks, titles, and the legend's placement stay in their existing slots.
 The option is also accepted at creation; omission preserves native defaults.
+
+
+## Combine interval color, size, and shape
+
+For one Cartesian point layer, `combine: "color-size-shape"` combines interval color (or stroke), interval size, and ordinal shape for the same field. Hue and size must have identical threshold boundaries. Provide one ascending finite representative per interval; the shape scale evaluates that exact value, including its configured fallback. This preserves ordinal shapes without converting them into interval bins.
+
+<!-- snippet-context:start -->
+
+> **Executable complete.** Standalone ES module with ggaction installed.
+
+<!-- snippet-context:end -->
+
+```js
+import { chart } from "ggaction";
+
+const cuts = [5, 10, 15, 20, 25];
+const points = chart()
+  .createCanvas({ width: 1000, height: 800, margin: 250 })
+  .createData({ values: Array.from({ length: 30 }, (_, value) => ({ value })) })
+  .createScatterPlot({
+    x: "value", y: "value", point: { fill: "none", strokeWidth: 2 },
+    stroke: { field: "value", fieldType: "quantitative", scale: {
+      type: "threshold", domain: cuts,
+      range: ["red", "orange", "gold", "green", "blue", "purple"]
+    } },
+    size: { field: "value", scale: {
+      type: "threshold", domain: cuts, range: [50, 100, 150, 200, 250, 300]
+    } },
+    shape: { field: "value", scale: {
+      domain: cuts, range: ["circle", "square", "triangle-up", "cross", "diamond"],
+      unknown: "circle"
+    } },
+    guides: false
+  });
+const program = points.createLegend({
+  combine: "color-size-shape",
+  channels: ["stroke", "size", "shape"],
+  values: [0, 5, 10, 15, 20, 25]
+});
+```
+
+Any of the three channels selects the same block for editing or removal. Use `editLegend({ combine: "separate" })` to split it. The samples inherit fixed point appearance; optional `symbol` overrides may change opacity, stroke width, or an unmapped fill/stroke, but cannot replace mapped color, size, or shape. Use `editLegendBlock` with a numeric `labelMap` for exact interval wording. Existing two-channel combinations keep their current behavior.
+
+## Related
+[Guides](./guides.md) · [Series encodings](./series-encodings.md) ·
+[Canvas](./canvas.md) · [Troubleshooting](../troubleshooting.md)
