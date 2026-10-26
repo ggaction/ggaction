@@ -52,6 +52,8 @@ import { collectAllResourceReferences } from "../core/resourceReferences.js";
 import { requiredTraceExtension } from "../core/extensionRegistry.js";
 import { resolveDatasetReference } from "../selectors/datasets.js";
 import { normalizeMarkSelector } from "../grammar/markSelection.js";
+import { resolveMarkSelection } from "../materialization/selection/state.js";
+import { highlightTargets } from "../materialization/selection/targets.js";
 import { parseSemanticPath } from "../grammar/schemas/semanticPath.js";
 import { validateStoredSemanticValue } from "../actions/primitives/semantic.js";
 import { validateGraphicType, isGraphicContainerType } from "../grammar/schemas/graphic.js";
@@ -471,19 +473,49 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
     }
   }
 
+  for (const [id, config] of Object.entries(program.materializationConfigs.rowProvenance ?? {})) {
+    exactKeys(config, ["indices"], `${path}.materializationConfigs.rowProvenance.${id}`);
+    const { indices } = config;
+    const dataset = resources.get("data").get(id), source = resources.get("data").get(dataset?.source);
+    if (dataset?.transform?.[0]?.type !== "markFilter" || !source || !Array.isArray(indices) ||
+        indices.length !== dataset.values?.length || Array.from(indices).some((index, offset) =>
+          !Number.isInteger(index) || index < 0 || index >= source.values.length ||
+          (offset > 0 && index <= indices[offset - 1]) || !sameLookupValue(dataset.values[offset], source.values[index]))) {
+      throw invalidSnapshot("Invalid filtered row provenance.", path);
+    }
+  }
   const selections = program.materializationConfigs.selections ?? {};
   requireObject(selections, `${path}.materializationConfigs.selections`);
   for (const [id, selection] of Object.entries(selections)) {
     validateUserId(id, "Selection id");
-    exactKeys(selection, ["target", "selector"], `${path}.materializationConfigs.selections.${id}`);
+    exactKeys(selection, ["target", "selector", ...(Object.hasOwn(selection, "sourceSelection") ? ["sourceSelection"] : [])], `${path}.materializationConfigs.selections.${id}`);
     validateUserId(selection.target, "Selection target");
     normalizeMarkSelector(selection.selector);
+    if (Object.hasOwn(selection, "sourceSelection")) validateUserId(selection.sourceSelection, "Composite selection owner");
   }
   resources.set("selection", new Map(Object.entries(selections)));
   for (const reference of collectAllResourceReferences(program)) {
     if (reference.kind === "data") resolveDatasetReference(program, reference.id);
     else if (!resources.get(reference.kind)?.has(reference.id)) {
       throw invalidSnapshot(`Unknown ${reference.kind} "${reference.id}" referenced by ${reference.ownerKind} "${reference.ownerId}".`, path);
+    }
+  }
+  for (const selection of Object.values(selections)) {
+    if (selection.sourceSelection !== undefined) {
+      const owner = selections[selection.sourceSelection];
+      if (owner.sourceSelection !== undefined || owner.target === selection.target ||
+          !highlightTargets(program, owner.target).includes(selection.target)) {
+        throw invalidSnapshot("Invalid composite selection owner.", path);
+      }
+    }
+    if (selection.selector.rows !== undefined) resolveMarkSelection(program, selection.target, selection.selector);
+  }
+  for (const config of Object.values(program.materializationConfigs.highlights ?? {})) {
+    if (config.groupSelection === undefined) continue;
+    const owner = selections[config.groupSelection], selection = selections[config.selection];
+    if (owner.sourceSelection !== undefined || selection.target !== config.target ||
+        (config.selection !== config.groupSelection && selection.sourceSelection !== config.groupSelection)) {
+      throw invalidSnapshot("Invalid composite highlight selection group.", path);
     }
   }
   for (const [id, scale] of Object.entries(program.resolvedScales)) {

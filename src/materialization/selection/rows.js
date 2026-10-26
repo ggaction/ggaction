@@ -10,7 +10,9 @@ const cache = new WeakMap();
 // observations retain distinct indices. Only explicit transform semantics are
 // used to traverse a derived dataset; unknown lineage is not guessed by value.
 function indexRows(program) {
-  if (cache.has(program.semanticSpec.datasets)) return cache.get(program.semanticSpec.datasets);
+  const provenance = program.materializationConfigs.rowProvenance;
+  const cached = cache.get(program.semanticSpec.datasets);
+  if (cached && cached.provenance === provenance) return cached.byRow;
   const datasets = new Map(program.semanticSpec.datasets.filter(d => Array.isArray(d.values)).map(d => [d.id, d]));
   const references = new Map(), building = new Set();
   function visit(id) {
@@ -24,7 +26,9 @@ function indexRows(program) {
     if (d.source && datasets.has(d.source)) {
       const source = datasets.get(d.source), parents = visit(d.source), t = d.transform?.length === 1 ? d.transform[0] : null;
       let mapping;
-      if (t && ['filter', 'sort'].includes(t.type)) {
+      if (t?.type === 'markFilter' && program.materializationConfigs.rowProvenance?.[id]) {
+        mapping = program.materializationConfigs.rowProvenance[id].indices.map(index => [index]);
+      } else if (t && ['filter', 'sort'].includes(t.type)) {
         const derived = (t.type === 'filter' ? deriveFilteredRows : deriveSortedRows)(source.values, t);
         const positions = new Map(source.values.map((row, i) => [row, i]));
         mapping = derived.map(row => [positions.get(row)]);
@@ -57,14 +61,26 @@ function indexRows(program) {
     const refs = visit(d.id);
     d.values.forEach((row, i) => byRow.set(row, [...(byRow.get(row) ?? []), ...refs[i]]));
   }
-  cache.set(program.semanticSpec.datasets, byRow);
+  cache.set(program.semanticSpec.datasets, { provenance, byRow });
   return byRow;
+}
+
+// Record identity while the retained rows still share their source objects.
+// Persisting these positions avoids guessing between equal-valued rows on restore.
+export function markFilterSourceIndices(sourceRows, rows) {
+  const positions = new Map(sourceRows.map((row, index) => [row, index]));
+  return rows.map(row => {
+    const index = positions.get(row);
+    if (index === undefined) throw new Error('Filtered row has no source identity.');
+    return index;
+  });
 }
 
 export function memberRowReferences(program, members) {
   const index = indexRows(program), refs = new Map();
   for (const row of members) for (const ref of index.get(row) ?? []) refs.set(`${ref.data}:${ref.index}`, ref);
-  return [...refs.values()];
+  const order = new Map(program.semanticSpec.datasets.map((dataset, index) => [dataset.id, index]));
+  return [...refs.values()].sort((a, b) => order.get(a.data) - order.get(b.data) || a.index - b.index);
 }
 
 export function validateRowSelection(program, rows, items) {

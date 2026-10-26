@@ -1116,7 +1116,7 @@ replaces the previous content branch. [Text marks](../../../../api/marks/text/)
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.25. See [release compatibility](../../../../version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
 encodeDx(options: TargetedOptions<TextOffsetEncodingOptions>): ChartProgram;
@@ -1152,7 +1152,7 @@ source-owned labels and other marks are rejected.
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.25. See [release compatibility](../../../../version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../../../version/).
 
 ```typescript
 encodeDy(options: TargetedOptions<TextOffsetEncodingOptions>): ChartProgram;

@@ -1,4 +1,5 @@
 import { isSourceOwnedText } from "../../grammar/text.js";
+import { markFilterSourceIndices } from "../../materialization/selection/rows.js";
 import { assertIndependentOverlayGeometry } from "../../grammar/overlay.js";
 import { findRaincloudParent } from "../../selectors/raincloud.js";
 import { filterRaincloud, materializeRaincloudFilter, removeRaincloudFilter } from "./raincloudFilter.js";
@@ -167,7 +168,7 @@ export const materializeMarkFilteredData = /* @__PURE__ */ closedAction(
     let next = preview.editSemantic({
       property: `dataset[${id}].values`,
       value: currentRows
-    });
+    })._withMaterializationConfig(["rowProvenance", id], { indices: markFilterSourceIndices(source.values, currentRows) });
     if (requireLayer(next, transform.target).data !== id) {
       next = next.editSemantic({
         property: `layer[${transform.target}].data`,

@@ -115,11 +115,21 @@ import {
       comparePrograms,
       describeAction,
       getDatasetSchema,
+      getMarkItems,
       inspectProgram,
       type ActionDescription,
       type ProgramComparison,
       type ProgramInspection
     } from "ggaction/inspection";
+
+    const pickedRows = getMarkItems(chart(), { target: { childPath: ["left"], id: "points" } });
+    const sourceRow: number | undefined = pickedRows[0]?.rows[0]?.index;
+    chart().highlightMarks({ target: "labels", select: { rows: { data: "rows", indices: [0, 2] } }, fontSize: 24 });
+    chart().selectMarks({ rows: { data: "rows", indices: [0] } }).editMarkSelection({ rows: { data: "rows", indices: [] } });
+    // @ts-expect-error row positions are numeric
+    chart().highlightMarks({ select: { rows: { data: "rows", indices: ["0"] } } });
+    // @ts-expect-error inspection grain is closed
+    getMarkItems(chart(), { grain: "series" });
 
     chart().editBarMark({blend:"difference"}).editBarMark({blend:"normal"});
     // @ts-expect-error only the bar editor owns blend

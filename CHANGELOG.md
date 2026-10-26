@@ -6,6 +6,9 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## [0.0.25] - 2026-10-26
 
+- Add original-row selectors, compound and text highlighting, and immutable `getMarkItems` inspection with exact row provenance across derived data, filtering, and saved programs. Validate compound selection ownership and prevent removal of selections still used by labels.
+- Reuse immutable graphic-item lookups without caching caller-owned arrays; preserve label anchors through geometry edits.
+
 - Refresh generated API and option inventories, add real-data native-layer and legend lifecycle witnesses, and execute the new public legend example in source and installed-package consumers.
 - Update fast-uri, body-parser, zod and their compatible transitive dependencies; the release lockfile audit reports no known vulnerabilities.
 

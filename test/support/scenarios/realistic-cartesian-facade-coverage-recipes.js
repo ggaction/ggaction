@@ -205,10 +205,10 @@ function guideModes() {
 const GUIDE_MODES = guideModes();
 
 function variantsFor(action) {
-  return freeze(Array.from({ length: action === "createScatterPlot" ? PROFILE_COUNT + 3 : PROFILE_COUNT }, (_, index) => ({
+  return freeze(Array.from({ length: action === "createScatterPlot" ? PROFILE_COUNT + 3 : action === "createLinePlot" ? PROFILE_COUNT + 6 : PROFILE_COUNT }, (_, index) => ({
     id: `${slug(action)}-orthogonal-${String(index + 1).padStart(2, "0")}`,
     ordinal: index,
-    guide: GUIDE_MODES[index % GUIDE_MODES.length]
+    guide: action === "createLinePlot" && index >= PROFILE_COUNT ? { kind: "cartesian-count" } : GUIDE_MODES[index % GUIDE_MODES.length]
   })));
 }
 
@@ -635,6 +635,18 @@ function barColor(index, rows) {
 
 function linePosition(variant, rows) {
   const index = variant.ordinal;
+  if (index >= PROFILE_COUNT) {
+    const ordinal = index - PROFILE_COUNT;
+    const op = ["ciLower", "ciUpper", "first", "last", "quantile"][ordinal];
+    const aggregate = { op,
+      ...(["ciLower", "ciUpper"].includes(op) ? { level: .9, method: ordinal % 2 ? "normal" : "student-t" } : {}),
+      ...(["first", "last"].includes(op) ? { orderBy: "sourcePosition", order: ordinal % 2 ? "descending" : "ascending" } : {}),
+      ...(op === "quantile" ? { probability: .65 } : {}) };
+    return {
+      x: { field: "positiveValue", fieldType: "quantitative", ...(ordinal < 5 ? { aggregate } : {}), scale: quantitativeScale("mainX", "linear", { index }) },
+      y: { field: "category", fieldType: ordinal % 2 ? "nominal" : "ordinal", scale: categoricalScale("mainY", ordinal === 1 ? "point" : "band", index) }
+    };
+  }
   if (index === 20) return {
     x: { field: "category", fieldType: "ordinal", scale: categoricalScale("mainX", "band", index) },
     y: { field: "positiveValue", fieldType: "quantitative", scale: quantitativeScale("mainY", "linear", { index }) }
@@ -913,7 +925,7 @@ function categoricalLegendSymbol(index) {
 }
 
 function guideOptions(variant, program, options, action) {
-  if(action === "createScatterPlot" && variant.ordinal === PROFILE_COUNT+2) return {axes:false,grid:false,legend:{combine:"color-size-shape",values:options.shape.scale.domain,clipHeight:8}};
+  if(action === "createScatterPlot" && variant.ordinal === PROFILE_COUNT+2) return {axes:false,grid:false,legend:{combine:"color-size-shape",values:options.shape.scale.domain,clipHeight:8,symbol:{fill:"#2563eb"}}};
   if (action === "createScatterPlot" && variant.ordinal >= PROFILE_COUNT) return {axes:false,grid:false,legend:{combine:variant.ordinal === PROFILE_COUNT ? "size-shape" : "color-size",border:{strokeDash:[4,2,6,1]},clipHeight:8,...(variant.ordinal === PROFILE_COUNT + 1 ? {symbol:{opacity:0.7}}:{})}};
   const guide = variant.guide;
   if (guide.kind === "off") return false;
@@ -989,7 +1001,7 @@ function guideOptions(variant, program, options, action) {
           JSON.stringify(program.resolvedScales[color.scale]?.domain);
     });
     legend.order = linked !== undefined && (
-      index % 3 === 2 || index === 18 || index === 30 || index === 31 ||
+      index >= PROFILE_COUNT || index % 3 === 2 || index === 18 || index === 30 || index === 31 ||
         layer.mark.type === "point"
     )
       ? { channel: linked }
@@ -1054,6 +1066,8 @@ function guideOptions(variant, program, options, action) {
     axes.y.position = legend.position === "right" ? "left" : "right";
   }
   if (legend !== false) {
+    if (legend.layout !== "legacy-bottom" && legend.at === undefined) legend.alongOffset = 3;
+    if (legend.labels && legend.representation !== "gradient") legend.labels.align = ["left", "center", "right"][index % 3];
     legend.combine = "separate";
     if (legend.symbol?.layers?.some(layer => layer.type === "point")) {
       legend.clipHeight=8;
@@ -1067,7 +1081,7 @@ function guideOptions(variant, program, options, action) {
     if (legend.layout !== "legacy-bottom") {
       legend.blockLayout = ["row", "column", "wrap"][index % 3];
       if (index % 4 === 0 && index !== 28) {
-        const { position: _position, align: _align, offset: _offset, ...anchored } = legend;
+        const { position: _position, align: _align, offset: _offset, alongOffset: _alongOffset, ...anchored } = legend;
         legend = { ...anchored, at: { x: 8, y: 8 } };
       }
     }
@@ -1109,7 +1123,7 @@ function scatterOptions(factors, view) {
     if(factors.variant.ordinal===PROFILE_COUNT+2){
       const cut=(domain[0]+domain[1])/2;
       return {id:"mainScatter",data:"analysisRows",coordinate:"main",x:"sourcePosition",y:"positiveSecondary",
-        color:{field:"positiveValue",fieldType:"quantitative",scale:{id:"mainColor",type:"threshold",domain:[cut],range:["black","white"]}},
+        stroke:{field:"positiveValue",fieldType:"quantitative",scale:{id:"mainColor",type:"threshold",domain:[cut],range:["black","white"]}},
         size:{field:"positiveValue",scale:{id:"mainSize",type:"threshold",domain:[cut],range:[25,100]}},
         shape:{field:"positiveValue",scale:{id:"mainShape",domain:[domain[0],cut],range:["circle","diamond"],unknown:"circle"}}};
     }
@@ -1191,13 +1205,13 @@ function buildBar(factors) {
 
 function lineOptions(factors, view) {
   const index = factors.variant.ordinal;
-  const aggregateLine = index === 5 || (index >= 6 && index <= 14) ||
+  const aggregateLine = (index >= PROFILE_COUNT && index < PROFILE_COUNT + 5) || index === 5 || (index >= 6 && index <= 14) ||
     index === 16 || index === 17;
-  const color = categoricalFacadeColor(index);
+  const color = categoricalFacadeColor(index >= PROFILE_COUNT ? 18 : index);
   // Retain the established categorical/temporal profile assignments. The
   // ordered square-root profile supplies the additional Steffen witness.
   const curve = index === 3 ? "monotone-steffen"
-    : index >= 18 && index <= 21 ? "linear" : CURVES[index % CURVES.length];
+    : (index >= 18 && index <= 21 || index >= PROFILE_COUNT) ? "linear" : CURVES[index % CURVES.length];
   return {
     id: "mainLines",
     data: "analysisRows",
@@ -1248,7 +1262,7 @@ function parallelDimensions(index) {
 
 function parallelOptions(factors, view) {
   const index = factors.variant.ordinal;
-  const color = categoricalFacadeColor(index);
+  const color = categoricalFacadeColor(index >= PROFILE_COUNT ? 18 : index);
   return {
     id: "mainParallel",
     data: "analysisRows",

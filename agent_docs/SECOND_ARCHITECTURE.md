@@ -490,8 +490,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 492,000 bytes |
-| `ggaction/basic` | 250,000 bytes |
+| `ggaction` | 495,000 bytes |
+| `ggaction/basic` | 255,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 
@@ -507,7 +507,7 @@ Full 481,383 / Basic 244,242 bytes이며 기준 commit 대비 순증은 5,200 / 
 추가 module은 Full의 Area 정렬 정책·complete-case 데이터 소유자, Basic의 Area
 정렬 정책이며 Node/MCP/knowledge 경계 유입은 없다. 같은 minified 결과를
 Node 20.20.2·22.23.4·24.22.1의 zlib로 압축한 최댓값 481,548 / 244,737 bytes를
-기준으로 최소 1,000 bytes 단위 상한 492,000 / 250,000을 적용한다.
+기준으로 최소 1,000 bytes 단위 상한 495,000 / 255,000을 적용한다.
 SVG는 Node 23에서 7,566 bytes, 지원 Node matrix에서 7,578 bytes로
 25,000 상한을 유지한다. 이전 상한을 통과했다고 보고하지 않는다.
 

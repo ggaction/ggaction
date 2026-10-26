@@ -16,6 +16,8 @@ lifecycle rules live in [`../README.md`](../README.md).
 - 복합 plot target은 owned component들로 확장된다. root에서 선택한 관측치의
   provenance를 child에 전달하고, 저장된 `groupSelection`으로 그룹 제거를 추적한다.
   component selection의 `sourceSelection`은 root의 현재 조건을 참조하여 데이터·역할 변경 후 다시 평가한다.
+  저장 복원은 owner/child 관계와 row dataset/index를 검증한다. Root 또는 component
+  selection을 참조하는 label이 있으면 전체 selection 삭제를 거부한다.
   독립 overlay/statistical additions는 확장하지 않는다. concrete child target은
   해당 component 범위다. 지원하지 않는 component 전용 style은 전파하지 않는다.
 - text item은 color/fill, opacity, fontSize, offset을 지원하고 같은 rematerialization
@@ -23,6 +25,9 @@ lifecycle rules live in [`../README.md`](../README.md).
 - `ggaction/inspection.getMarkItems(program, { target, grain? })`는 final-item 값,
   backend-neutral geometry/bounds, dataset-row references를 반환한다. raw graphic ID는
   노출하지 않는다. immutable snapshot별 weak cache를 사용한다.
+- Mark filter materialization은 선택된 source row index를 `materializationConfigs.rowProvenance`
+  에 저장하여 snapshot 복원 후 동일 값의 서로 다른 행을 혼동하지 않는다. Derived dataset을
+  해제할 때 이 cache도 해제하며, 복원 시 source index 범위·순서·행 값을 검증한다.
 - 검증: `test/unit/actions/selection/row-highlighting.test.js`, 기존 mark selection
   suite, package-boundary contract tests.
 

@@ -247,6 +247,12 @@ export function collectSelectionReferences(program) {
     append(references, reference(
       "mark", config.target, "selection", id, ["target"]
     ));
+    append(references, reference(
+      "selection", config.sourceSelection, "selection", id, ["sourceSelection"]
+    ));
+    append(references, reference(
+      "data", config.selector?.rows?.data, "selection", id, ["selector", "rows", "data"]
+    ));
   }
   for (const [id, config] of Object.entries(
     program.materializationConfigs.highlights ?? {}
@@ -256,6 +262,9 @@ export function collectSelectionReferences(program) {
     ));
     append(references, reference(
       "selection", config.selection, "highlight", id, ["selection"]
+    ));
+    append(references, reference(
+      "selection", config.groupSelection, "highlight", id, ["groupSelection"]
     ));
   }
   return freezeOwned(references);

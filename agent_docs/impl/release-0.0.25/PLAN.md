@@ -93,3 +93,12 @@ consumer와 browser/renderer parity를 검증한다. 새 옵션 때문에 기존
 - Parent legend의 alongOffset을 독립 좌표 기대값에 포함했고 268 paths/188 literals/4 diversity requirements 검사를 통과했다. Polar facade fixture는 theta-axis text와 bottom legend 사이의 공간을 명시했다.
 - Linux와 macOS의 설치 폰트 차이로 생긴 PNG 비교 오류를 수정했다. 같은 native font 자원으로 비교하며 byte-exact pixel 조건을 유지한다. 큰 typed-array 실패 출력은 bounded byte comparison으로 바꿨다.
 - Coverage floors와 5회/3개 데이터셋 기준은 낮추지 않았다. 새 branch 통합 후 전체 CI 및 release candidate 검증은 여전히 필수다.
+
+## 추가 push 및 row provenance 검증
+
+- `7cbdaea2f3362970cd8e1289c5877d6b6a526892`의 immutable graphic-item lookup 재사용도 추가로 병합했다. Caller-owned array를 캐시하지 않는 회귀 검사가 통과했다.
+- 복합 selection owner의 저장/복원 검증, component selection을 참조하는 label 삭제 보호, filtered duplicate-row의 정확한 원본 위치 복원을 고쳤다. Materialization cache에 원본 행 index를 기록하며 입력 table에는 숨겨진 필드를 추가하지 않는다. 기존 source/dataset reference와 같은 수명으로 정리한다.
+- 행 선택·저장 복원·discovery/sharding 관련 27개 검사가 통과했다. 실제 5개 pinned dataset에서 13개 새 required option paths를 실행하고, 원본 보존·선택된 Text paint/font·editable persistence를 검증했다. Packed consumer에도 동일한 공개 동작을 추가했다.
+- Cartesian exhaustive matrix에 가로 선 집계/분류축과 범례 정렬·위치 witness를 추가한다. Composition routing의 `facetSource:true`는 5개 실제 dataset에서 4개 facade의 persistent facet source와 저장 복원을 검사하는 scoped matrix로 분리한다.
+- 최종 source 기준 Full/Basic gzip은 494,095/254,104 bytes, package는 654 entries, packed 974,141/unpacked 4,573,680 bytes다. 행 provenance/inspection 및 lookup 기능에 맞춰 각각 495,000/255,000, 975,000/4,580,000 caps로 제한한다. SVG와 coverage floor는 유지한다.
+- 전체 source/coverage/realistic/browser/render/package/docs/platform 및 tag candidate 검증은 진행 중이다. 앞선 source의 성공 결과를 최종 source의 전체 성공으로 간주하지 않는다.

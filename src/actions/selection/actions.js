@@ -344,8 +344,9 @@ export const removeMarkSelection = /* @__PURE__ */ closedAction(
   }, REMOVE_SELECTION_OPTIONS,
   function (args = {}) {
     const current = resolveStoredSelection(this, args.selection);
-    const labelDependents = namedLabelDependents(this, current.id);
     const componentDependents = Object.entries(this.materializationConfigs.selections ?? {}).filter(([, definition]) => definition.sourceSelection === current.id);
+    const labelDependents = [current.id, ...componentDependents.map(([id]) => id)]
+      .flatMap(id => namedLabelDependents(this, id));
     if (labelDependents.length > 0) {
       throw new Error(
         `Selection "${current.id}" is referenced by attached labels: ${labelDependents.join(", ")}.`

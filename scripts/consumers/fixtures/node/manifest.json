@@ -753,6 +753,10 @@
     "file": "selection.mjs",
     "cases": [
       {
+        "id": "selection/row-provenance",
+        "statements": 10
+      },
+      {
         "id": "selection/temporal-rect",
         "statements": 2
       }

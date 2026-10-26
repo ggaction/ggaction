@@ -27,6 +27,7 @@
     "contracts/realistic-legend-option-witness.test.js": 5886,
     "contracts/realistic-lifecycle-factor-effects.test.js": 63898,
     "contracts/realistic-lifecycle-provenance.test.js": 106,
+    "contracts/realistic-row-selection.test.js": 19760,
     "contracts/realistic-scenario-generation-isolation.test.js": 945678,
     "contracts/realistic-scenario-generator.test.js": 535185,
     "contracts/realistic-scenario-runner.test.js": 99611,
@@ -87,6 +88,12 @@
       "durationMs": 23253,
       "environment": "macOS arm64, Node 23.5.0",
       "source": "Local 0.0.25 release verification, 2026-10-26; three native-layer real-data tests"
+    },
+    {
+      "file": "contracts/realistic-row-selection.test.js",
+      "durationMs": 19760,
+      "environment": "macOS arm64, Node 23.5.0",
+      "source": "Local canonical realistic runner, 2026-10-26; five pinned datasets with row selection and editable persistence"
     }
   ]
 }

@@ -1,4 +1,5 @@
 import { findDataset, hasDataset } from "../../selectors/datasets.js";
+import { markFilterSourceIndices } from "../../materialization/selection/rows.js";
 import { findRaincloudParent } from "../../selectors/raincloud.js";
 import { normalizeMarkSelector, selectMarkItemKeys } from "../../grammar/markSelection.js";
 import { deriveMarkFilteredRows, normalizeMarkFilterTransform } from "../../grammar/markFilter.js";
@@ -18,7 +19,8 @@ export function deriveRaincloudFilteredRows(values, selectors) {
 
 export function materializeRaincloudFilter(program, { id, source, transform }, owner) {
   const values = deriveRaincloudFilteredRows(source.values, transform.selectors);
-  let next = program.editSemantic({ property: `dataset[${id}].values`, value: values });
+  let next = program.editSemantic({ property: `dataset[${id}].values`, value: values })
+    ._withMaterializationConfig(["rowProvenance", id], { indices: markFilterSourceIndices(source.values, values) });
   next = next.editRaincloudPlot({ target: owner.id, data: id });
   const revised = findRaincloudParent(next, owner.id);
   return next._withMarkConfig(revised.ownerId, {

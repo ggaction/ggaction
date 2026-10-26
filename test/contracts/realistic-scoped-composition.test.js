@@ -33,6 +33,15 @@ for (const dataset of datasets) test(`scopes constructors, individual resources 
       const paint = ["createBarPlot", "createScatterPlot"].includes(action) ? "fill" : "stroke";
       assert.ok(left.children.left.graphicSpec.objects.marks.items.every(item=>item.properties[paint] === "red"));
       assert.equal(left.children.right, both.children.right);
+      const faceted = base[action]({ id: "seed", data: "data", ...options, guides: false })
+        .facet({ field: "category", guides: { legend: false } });
+      const parent = hconcat({ programs: [{ id: "faceted", program: faceted }, { id: "plain", program: base }] });
+      const sourceTarget = { childPath: ["faceted"], facetSource: true };
+      const authored = parent[action]({ target: sourceTarget, id: "marks", data: "data", ...options, guides: false });
+      assert.equal(authored.children.plain, parent.children.plain);
+      assert.ok(Object.values(authored.children.faceted.children).every(child =>
+        child.semanticSpec.layers.some(layer => layer.id === "marks")));
+      assert.deepEqual(deserializeProgram(serializeProgram(authored)).graphicSpec, authored.graphicSpec);
       const before = serializeProgram(left);
       assert.throws(()=>left.encodeOpacity({target:[targets[0],{childPath:["missing"],id:"marks"}],value:.9}),/Unknown target child/);
       assert.equal(serializeProgram(left),before);
