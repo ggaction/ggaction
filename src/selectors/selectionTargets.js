@@ -1,5 +1,5 @@
-import { ownedChildren } from '../../selectors/markOwners.js';
-import { findLayer } from '../../selectors/layers.js';
+import { ownedChildren } from './markOwners.js';
+import { findLayer } from './layers.js';
 
 export function highlightTargets(program, target) {
   const owners = Object.entries(program.markConfigs).filter(([, config]) => config.raincloudPlot?.id === target);

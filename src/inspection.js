@@ -1,5 +1,5 @@
 import { resolveMarkItems } from "./materialization/selection/policies/index.js";
-import { highlightTargets } from "./materialization/selection/targets.js";
+import { highlightTargets } from "./selectors/selectionTargets.js";
 import { resolvePathCommandBounds, unionConcreteGraphicBounds } from "./grammar/schemas/graphicBounds.js";
 import { facetUnitTemplate } from "./actions/facets/actions.js";
 import { plotComposition } from "./selectors/plotComposition.js";

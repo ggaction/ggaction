@@ -1,3 +1,4 @@
+import { validateRowSelectionDataset } from "../../grammar/markSelection.js";
 import { findDataset } from "../../selectors/datasets.js";
 import { deriveBin2DRows } from "../../grammar/bin2d.js";
 import { deriveBoxData } from "../../grammar/boxPlot.js";
@@ -85,8 +86,7 @@ export function memberRowReferences(program, members) {
 
 export function validateRowSelection(program, rows, items) {
   const dataset = findDataset(program, rows.data);
-  if (!dataset) throw new Error(`Unknown row dataset "${rows.data}".`);
-  if (rows.indices.some(index => index >= dataset.values.length)) throw new RangeError('Selected row index exceeds the dataset length.');
+  validateRowSelectionDataset(rows, dataset);
   if (items.length && !items.some(item => item.rows.some(ref => ref.data === rows.data))) {
     throw new Error(`Row lineage from "${rows.data}" is unavailable for this mark; select its materialized dataset instead.`);
   }

@@ -1,4 +1,4 @@
-import { highlightTargets } from "../../materialization/selection/targets.js";
+import { highlightTargets } from "../../selectors/selectionTargets.js";
 import { action, closedAction } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { isPlainObject } from "../../core/immutable.js";

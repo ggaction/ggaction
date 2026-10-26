@@ -51,9 +51,8 @@ import { validateUserId } from "../core/identifiers.js";
 import { collectAllResourceReferences } from "../core/resourceReferences.js";
 import { requiredTraceExtension } from "../core/extensionRegistry.js";
 import { resolveDatasetReference } from "../selectors/datasets.js";
-import { normalizeMarkSelector } from "../grammar/markSelection.js";
-import { resolveMarkSelection } from "../materialization/selection/state.js";
-import { highlightTargets } from "../materialization/selection/targets.js";
+import { normalizeMarkSelector, validateRowSelectionDataset } from "../grammar/markSelection.js";
+import { highlightTargets } from "../selectors/selectionTargets.js";
 import { parseSemanticPath } from "../grammar/schemas/semanticPath.js";
 import { validateStoredSemanticValue } from "../actions/primitives/semantic.js";
 import { validateGraphicType, isGraphicContainerType } from "../grammar/schemas/graphic.js";
@@ -508,7 +507,7 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
         throw invalidSnapshot("Invalid composite selection owner.", path);
       }
     }
-    if (selection.selector.rows !== undefined) resolveMarkSelection(program, selection.target, selection.selector);
+    if (selection.selector.rows !== undefined) validateRowSelectionDataset(selection.selector.rows, resources.get("data").get(selection.selector.rows.data));
   }
   for (const config of Object.values(program.materializationConfigs.highlights ?? {})) {
     if (config.groupSelection === undefined) continue;

@@ -205,7 +205,7 @@ function guideModes() {
 const GUIDE_MODES = guideModes();
 
 function variantsFor(action) {
-  return freeze(Array.from({ length: action === "createScatterPlot" ? PROFILE_COUNT + 3 : action === "createLinePlot" ? PROFILE_COUNT + 6 : PROFILE_COUNT }, (_, index) => ({
+  return freeze(Array.from({ length: action === "createScatterPlot" ? PROFILE_COUNT + 3 : action === "createLinePlot" ? PROFILE_COUNT + 9 : PROFILE_COUNT }, (_, index) => ({
     id: `${slug(action)}-orthogonal-${String(index + 1).padStart(2, "0")}`,
     ordinal: index,
     guide: action === "createLinePlot" && index >= PROFILE_COUNT ? { kind: "cartesian-count" } : GUIDE_MODES[index % GUIDE_MODES.length]
@@ -643,8 +643,8 @@ function linePosition(variant, rows) {
       ...(["first", "last"].includes(op) ? { orderBy: "sourcePosition", order: ordinal % 2 ? "descending" : "ascending" } : {}),
       ...(op === "quantile" ? { probability: .65 } : {}) };
     return {
-      x: { field: "positiveValue", fieldType: "quantitative", ...(ordinal < 5 ? { aggregate } : {}), scale: quantitativeScale("mainX", "linear", { index }) },
-      y: { field: "category", fieldType: ordinal % 2 ? "nominal" : "ordinal", scale: categoricalScale("mainY", ordinal === 1 ? "point" : "band", index) }
+      x: { field: "positiveValue", fieldType: "quantitative", ...(ordinal < 5 ? { aggregate } : ordinal > 5 ? { aggregate: ["sum", "mean", "median"][ordinal - 6] } : {}), scale: quantitativeScale("mainX", "linear", { index }) },
+      y: { field: ordinal === 5 || new Set(rows.map(row => row.category)).size > 1 ? "category" : "sourcePosition", fieldType: ordinal % 2 ? "nominal" : "ordinal", scale: categoricalScale("mainY", ordinal === 1 ? "point" : "band", index) }
     };
   }
   if (index === 20) return {
@@ -1205,7 +1205,7 @@ function buildBar(factors) {
 
 function lineOptions(factors, view) {
   const index = factors.variant.ordinal;
-  const aggregateLine = (index >= PROFILE_COUNT && index < PROFILE_COUNT + 5) || index === 5 || (index >= 6 && index <= 14) ||
+  const aggregateLine = (index >= PROFILE_COUNT && index !== PROFILE_COUNT + 5) || index === 5 || (index >= 6 && index <= 14) ||
     index === 16 || index === 17;
   const color = categoricalFacadeColor(index >= PROFILE_COUNT ? 18 : index);
   // Retain the established categorical/temporal profile assignments. The

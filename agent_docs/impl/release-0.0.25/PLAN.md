@@ -102,3 +102,12 @@ consumer와 browser/renderer parity를 검증한다. 새 옵션 때문에 기존
 - Cartesian exhaustive matrix에 가로 선 집계/분류축과 범례 정렬·위치 witness를 추가한다. Composition routing의 `facetSource:true`는 5개 실제 dataset에서 4개 facade의 persistent facet source와 저장 복원을 검사하는 scoped matrix로 분리한다.
 - 최종 source 기준 Full/Basic gzip은 494,095/254,104 bytes, package는 654 entries, packed 974,141/unpacked 4,573,680 bytes다. 행 provenance/inspection 및 lookup 기능에 맞춰 각각 495,000/255,000, 975,000/4,580,000 caps로 제한한다. SVG와 coverage floor는 유지한다.
 - 전체 source/coverage/realistic/browser/render/package/docs/platform 및 tag candidate 검증은 진행 중이다. 앞선 source의 성공 결과를 최종 source의 전체 성공으로 간주하지 않는다.
+
+- CI의 Node 22/24에서 같은 source를 pack한 압축 크기는 976,241 bytes였다. 로컬 Node 23의 974,141 bytes와 압축 구현 차이가 있어 packed cap을 978,000 bytes로 조정한다. 실제 source/unpacked 한도는 그대로 유지한다.
+
+## 최종 source 및 실제 실행 보강
+
+- 880 Cartesian facade charts에서 모든 배정 path/literal/diversity의 5회/3개 dataset 조건이 통과했다. 합법적인 가로 집계와 단일 범주 데이터의 원본 행 순서 사례를 포함한다.
+- 추가 profile 때문에 advanced minimum/declared targets는 1,555/1,577로 늘었다. 3,600-chart 총량과 기존 모든 required recipe를 유지하며 단순 tier의 여유 슬롯 하나를 advanced로 이동해 dataset당 simple/intermediate/advanced/composite를 6/27/32/7로 배정했다. Capacity 계약이 통과했다.
+- 전체 source 6,274개 중 기능 검사 6,272개가 통과했으며 source import boundary와 새 lookup 테스트의 capability 등록 2건을 수정했다. 관련 35개 검사가 통과했다. Import boundary는 완화하지 않고 순수 ownership 조회를 selectors로, 저장/실행 공통 row bounds 검증을 grammar로 옮겼다.
+- Coverage는 line 95.78%, branch 93.34%, function 98.72%였다. Critical floor 별도 점검으로 interval center의 source-row 재평가 실행 누락을 찾아 point와 owned error bar가 함께 바뀌고 복원/해제되는 회귀 검사를 추가했다. 수정된 최종 source로 전체 coverage를 다시 실행한다.

@@ -29,6 +29,10 @@
       {
         "type": "file",
         "path": "unit/immutable-calculation-reuse.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/graphic-lookup-reuse.test.js"
       }
     ],
     "area-layout": [

@@ -339,3 +339,11 @@ export function selectMarkItemKeys(items, selector) {
     )
   );
 }
+
+// Stored selectors and live materialization share dataset identity and bounds checks.
+export function validateRowSelectionDataset(rows, dataset) {
+  if (!dataset) throw new Error(`Unknown row dataset "${rows.data}".`);
+  if (rows.indices.some(index => index >= dataset.values.length)) {
+    throw new RangeError("Selected row index exceeds the dataset length.");
+  }
+}

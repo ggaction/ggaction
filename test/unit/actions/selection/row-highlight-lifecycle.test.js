@@ -156,3 +156,16 @@ test("item inspection caches frozen snapshots and resolves scoped targets", () =
   assert.throws(() => getMarkItems(p, { target: "missing" }), /Unknown mark/);
   assert.throws(() => getMarkItems(p, { target: "plot", grain: "stack" }), /grain/);
 });
+
+test("interval center selections reevaluate owned error bars from source rows", () => {
+  const p = chart().createCanvas({ margin: 120 }).createData({ id: "data", values: [
+    { g: "A", y: 1 }, { g: "A", y: 3 }, { g: "B", y: 4 }, { g: "B", y: 8 }
+  ] }).createIntervalPlot({ id: "plot", x: "g", y: { field: "y", center: "mean", extent: "stdev" }, guides: false });
+  const h = p.highlightMarks({ id: "h", target: "plot", select: { rows: { data: "data", indices: [0] } }, color: "red" });
+  assert.equal(redItems(h).length, 4);
+  assert.ok(redItems(h).every(item => item.fields.g === "A"));
+  const changed = deserializeProgram(serializeProgram(h)).editMarkSelection({ selection: "h", rows: { data: "data", indices: [3] } });
+  assert.equal(redItems(changed).length, 4);
+  assert.ok(redItems(changed).every(item => item.fields.g === "B"));
+  assert.equal(renderToSVG(changed.removeMarkSelection({ selection: "h" })), renderToSVG(p));
+});
