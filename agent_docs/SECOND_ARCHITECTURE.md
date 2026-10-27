@@ -662,6 +662,13 @@ Standalone derived-data lifecycle도 requested transform과 materialized revisio
 
 Automatic statistical parameter의 요청과 계산값은 서로 다른 provenance다. Replay는 이전 계산값을 자동 정책으로 오인하지 않고 새 rows에서 다시 계산한다. Field output 이름을 바꾸는 revision은 semantic role에 따라 encoding과 selection/jitter binding도 함께 옮긴다. 제거되는 output을 참조하는 consumer는 전환 전체를 거부한다. Exact lifecycle은 [CORE](contract/current/CORE.md), 통계별 provenance는 [STATISTICS](contract/current/STATISTICS.md)가 소유한다.
 
+## 행 identity 계산 경계
+
+`core/itemIdentity.js`는 typed scalar/tuple의 동등성·순서, 명시적인 행 대응에 따른 token 배정,
+source identity 검증의 순수 owner다. Namespace를 인자로 받고 UUID·program·trace·renderer에 접근하지 않는다.
+현재 이 kernel의 독립 검증을 완료했으며 action과 persistence 연결은 진행 중이다.
+공개 옵션과 저장 형식의 현재 지원 범위는 [CORE](contract/current/CORE.md)가 소유한다.
+
 ## Immutability와 ownership
 
 `ChartProgram`은 생성이 끝나면 freeze된다. 모든 public action과 internal wrapped

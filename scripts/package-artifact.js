@@ -23,9 +23,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 654, // Includes legend overflow, row provenance, composite targets and shared text geometry.
-  packedBytes: 978_000, // Includes native row/composite/text selection and public item inspection.
-  unpackedBytes: 4_580_000 // Includes provenance-aware selection and item inspection.
+  entries: 655, // Includes the private typed row identity kernel.
+  packedBytes: 980_000, // Typed row identity: measured 979,932 bytes.
+  unpackedBytes: 4_588_000 // Typed row identity: measured 4,587,103 bytes.
 });
 
 const REQUIRED_FILES = Object.freeze([

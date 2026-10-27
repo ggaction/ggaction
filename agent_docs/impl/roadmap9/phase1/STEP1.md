@@ -8,7 +8,8 @@
 - [x] API·저장 schema·소비자·호환성 검토안 작성
 - [x] 누적 검증 및 원격 evidence checkpoint
 - [x] G-CORE 명시 승인 (2026-10-27, 사용자 “승인한다”)
-- [ ] production kernel과 createData/reviseData 연결
+- [x] production 순수 key kernel과 independent oracle 비교
+- [ ] createData/reviseData 및 persistence 연결
 - [ ] current contracts·types·generated docs 및 모든 적용 소비자 연결
 - [ ] 실제 제품 actual과 oracle 비교, atomicity·renderer·package 검증 후 complete
 
@@ -35,3 +36,16 @@
 
 후속 [consumer matrix](consumers.json)의 pending 항목과 AT-06–10 closure를 넘긴다.
 원안 작업 카드나 Phase 0 완료 기록을 수정하여 승인을 소급 생성하지 않는다.
+
+## 순수 kernel checkpoint
+
+`src/core/itemIdentity.js`에 typed equality/order, source key mode, explicit row mapping, 분기 namespace,
+삭제 token 미재사용과 safe-integer 한도 검증을 구현했다. `test/unit/core/item-identity.test.js`는
+독립 oracle과 실제 구현을 비교한다. 공개 create/revise와 저장 형식은 아직 연결 전이며 STEP-004는 계속 in-progress다.
+
+필수 검사는 identity unit, oracle 독립성·discovery·package boundary contract, package artifact 검사다.
+공개 실행 경로에 아직 연결되지 않은 순수 계산 단위이므로 전체 renderer/browser 검사는 연결 checkpoint에서 실행한다.
+
+검증 결과: identity unit 8 passed, contract 36 passed (독립성·discovery·package boundary/artifact·문서 경로).
+Package artifact는 655 entries / 979,932 packed bytes / 4,587,103 unpacked bytes였다.
+기존 상한 654 / 978,000 / 4,580,000 초과를 확인하고 655 / 980,000 / 4,588,000으로 조정했다.

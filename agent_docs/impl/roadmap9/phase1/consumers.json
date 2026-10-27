@@ -3,9 +3,9 @@
   "cells": [
     {
       "consumer": "identity-kernel",
-      "owner": "test/oracles/identity.js",
-      "status": "reference-tested",
-      "remaining": "Production codec/allocation and actual-vs-oracle comparison"
+      "owner": "src/core/itemIdentity.js",
+      "status": "kernel-tested",
+      "remaining": "Public action and persistence integration; phase consumer closure remains open"
     },
     {
       "consumer": "create-revise",
