@@ -1,0 +1,499 @@
+{
+  "commit": "a913c0461709c609da6bb71ab8075d07bf6bfeef",
+  "package": "0.0.26",
+  "actions": 298,
+  "environment": {
+    "node": "v22.23.2",
+    "nodeExecutableSha256": "18e387c90ab8a8400183e8bdd396376e1e875b91b4c874b894dcade7b35bf572",
+    "npm": "10.9.8",
+    "platform": "darwin",
+    "arch": "arm64",
+    "osRelease": "27.0.0",
+    "cpus": 10,
+    "memoryBytes": 17179869184,
+    "browser": {
+      "status": "available",
+      "engine": "chromium",
+      "version": "Google Chrome for Testing 153.0.8010.12"
+    }
+  },
+  "sourceMapSummary": {
+    "matched": 91,
+    "changed": 1,
+    "missing": 0
+  },
+  "relevantFiles": [
+    {
+      "path": "src/actions/data/revise.js",
+      "expectedSha256": "87b6e623b423a7af28017998b4dda14cdbc73f32ccbe37f937b85e0e0775badb",
+      "actualSha256": "87b6e623b423a7af28017998b4dda14cdbc73f32ccbe37f937b85e0e0775badb",
+      "status": "matched",
+      "symbols": [
+        {
+          "declaration": "export function registerFacetDataRevision(handler) {",
+          "previousLine": 31,
+          "currentLines": [
+            31
+          ]
+        },
+        {
+          "declaration": "export function reviseUnitData(program, { source, id, values, schema }) {",
+          "previousLine": 35,
+          "currentLines": [
+            35
+          ]
+        },
+        {
+          "declaration": "export const reviseData = /* @__PURE__ */ closedAction(",
+          "previousLine": 61,
+          "currentLines": [
+            61
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/actions/data/revisionBindings.js",
+      "expectedSha256": "63a284a95e4b433f6aa885b34a7f1f0dd3a3252ecd43407213f436bc8fa0ba1d",
+      "actualSha256": "63a284a95e4b433f6aa885b34a7f1f0dd3a3252ecd43407213f436bc8fa0ba1d",
+      "status": "matched",
+      "symbols": [
+        {
+          "declaration": "export function outputFieldChanges(previous, next) {",
+          "previousLine": 6,
+          "currentLines": [
+            6
+          ]
+        },
+        {
+          "declaration": "export function rebindLayerOutputFields(program, id, changes) {",
+          "previousLine": 37,
+          "currentLines": [
+            37
+          ]
+        },
+        {
+          "declaration": "export function rebindMaterializationDataReferences(program, replacements) {",
+          "previousLine": 114,
+          "currentLines": [
+            114
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/core/ChartProgram.js",
+      "expectedSha256": "37ac348127ebef217a8c4d3215a40a10ccc8e7e9a9f2d68aea2241ee9add5608",
+      "actualSha256": "37ac348127ebef217a8c4d3215a40a10ccc8e7e9a9f2d68aea2241ee9add5608",
+      "status": "matched",
+      "symbols": [
+        {
+          "declaration": "export class ChartProgram {",
+          "previousLine": 27,
+          "currentLines": [
+            27
+          ]
+        },
+        {
+          "declaration": "export function chart() {",
+          "previousLine": 305,
+          "currentLines": [
+            305
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/core/materializationState.js",
+      "expectedSha256": "83c161d426ab3ae14a036b62c77f8fd524d8d7fc55a249fc3b5054282d574b71",
+      "actualSha256": "83c161d426ab3ae14a036b62c77f8fd524d8d7fc55a249fc3b5054282d574b71",
+      "status": "matched",
+      "symbols": [
+        {
+          "declaration": "export function createMaterializationConfigs(",
+          "previousLine": 33,
+          "currentLines": [
+            33
+          ]
+        },
+        {
+          "declaration": "export function setMaterializationConfig(configs, path, config) {",
+          "previousLine": 47,
+          "currentLines": [
+            47
+          ]
+        },
+        {
+          "declaration": "export function removeMaterializationConfig(configs, path) {",
+          "previousLine": 53,
+          "currentLines": [
+            53
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/core/resourceReferences.js",
+      "expectedSha256": "d945c7af8a95115a347a1516b0ae5df4753514ff7ce92a926cc04df9547325ab",
+      "actualSha256": "d945c7af8a95115a347a1516b0ae5df4753514ff7ce92a926cc04df9547325ab",
+      "status": "matched",
+      "symbols": [
+        {
+          "declaration": "export const RESOURCE_KINDS = Object.freeze([",
+          "previousLine": 5,
+          "currentLines": [
+            5
+          ]
+        },
+        {
+          "declaration": "export function canonicalResourcePath(path) {",
+          "previousLine": 56,
+          "currentLines": [
+            56
+          ]
+        },
+        {
+          "declaration": "export function collectSemanticDataReferences(program) {",
+          "previousLine": 69,
+          "currentLines": [
+            69
+          ]
+        },
+        {
+          "declaration": "export function collectSemanticScaleReferences(program) {",
+          "previousLine": 82,
+          "currentLines": [
+            82
+          ]
+        },
+        {
+          "declaration": "export function collectSemanticCoordinateReferences(program) {",
+          "previousLine": 114,
+          "currentLines": [
+            114
+          ]
+        },
+        {
+          "declaration": "export function collectMarkConfigReferences(program) {",
+          "previousLine": 131,
+          "currentLines": [
+            131
+          ]
+        },
+        {
+          "declaration": "export function collectGuideConfigReferences(program) {",
+          "previousLine": 206,
+          "currentLines": [
+            206
+          ]
+        },
+        {
+          "declaration": "export function collectSelectionReferences(program) {",
+          "previousLine": 242,
+          "currentLines": [
+            242
+          ]
+        },
+        {
+          "declaration": "export function collectDataOwnerReferences(program) {",
+          "previousLine": 273,
+          "currentLines": [
+            273
+          ]
+        },
+        {
+          "declaration": "export function collectCompositionReferences(program) {",
+          "previousLine": 290,
+          "currentLines": [
+            290
+          ]
+        },
+        {
+          "declaration": "export function collectContextReferences(program) {",
+          "previousLine": 305,
+          "currentLines": [
+            305
+          ]
+        },
+        {
+          "declaration": "export function collectResourceReferences(program, { kind, id }) {",
+          "previousLine": 340,
+          "currentLines": [
+            340
+          ]
+        },
+        {
+          "declaration": "export function collectAllResourceReferences(program) {",
+          "previousLine": 350,
+          "currentLines": [
+            350
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/core/specs.js",
+      "expectedSha256": "d825580ba6635d83d324658b9389d3da1d33bbcdab87caed411a5bb65a92e2a4",
+      "actualSha256": "d825580ba6635d83d324658b9389d3da1d33bbcdab87caed411a5bb65a92e2a4",
+      "status": "matched",
+      "symbols": [
+        {
+          "declaration": "export function createEmptySemanticSpec() {",
+          "previousLine": 3,
+          "currentLines": [
+            3
+          ]
+        },
+        {
+          "declaration": "export function createEmptyGraphicSpec() {",
+          "previousLine": 14,
+          "currentLines": [
+            14
+          ]
+        },
+        {
+          "declaration": "export function createTraceRoot() {",
+          "previousLine": 21,
+          "currentLines": [
+            21
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/inspection.js",
+      "expectedSha256": "e3f88000443b9b73d755ffb03781e1e2893102a6149f4025f22a21f8b00cf4f5",
+      "actualSha256": "e3f88000443b9b73d755ffb03781e1e2893102a6149f4025f22a21f8b00cf4f5",
+      "status": "matched",
+      "symbols": [
+        {
+          "declaration": "export function getPlotComposition(program, { target, childPath } = {}) {",
+          "previousLine": 90,
+          "currentLines": [
+            90
+          ]
+        },
+        {
+          "declaration": "export function getDatasetSchema(program, { data, childPath } = {}) {",
+          "previousLine": 96,
+          "currentLines": [
+            96
+          ]
+        },
+        {
+          "declaration": "export function describeAction(program, { action, target, options = {} } = {}) {",
+          "previousLine": 105,
+          "currentLines": [
+            105
+          ]
+        },
+        {
+          "declaration": "export function comparePrograms(before, after, { target } = {}) {",
+          "previousLine": 355,
+          "currentLines": [
+            355
+          ]
+        },
+        {
+          "declaration": "export function inspectProgram(program, { target } = {}) {",
+          "previousLine": 568,
+          "currentLines": [
+            568
+          ]
+        },
+        {
+          "declaration": "export function getMarkItems(program, { target, grain = 'item' } = {}) {",
+          "previousLine": 639,
+          "currentLines": [
+            639
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/materialization/planner.js",
+      "expectedSha256": "aef0bf9382bb6daddfac0a0db126c6c225efea670ec2e9e732eba196ef03dcb0",
+      "actualSha256": "aef0bf9382bb6daddfac0a0db126c6c225efea670ec2e9e732eba196ef03dcb0",
+      "status": "matched",
+      "symbols": [
+        {
+          "declaration": "export function buildMaterializationPlan(stages = {}) {",
+          "previousLine": 105,
+          "currentLines": [
+            105
+          ]
+        },
+        {
+          "declaration": "export function applyMaterializationPlan(program, plan) {",
+          "previousLine": 119,
+          "currentLines": [
+            119
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/materialization/revisionIdentity.js",
+      "expectedSha256": "d0e23090117b9e2866cece4fe1d38ec1e27b847f710192c36d0022556f462276",
+      "actualSha256": "d0e23090117b9e2866cece4fe1d38ec1e27b847f710192c36d0022556f462276",
+      "status": "matched",
+      "symbols": [
+        {
+          "declaration": "export function withLogicalDataReplacements(replacements, operation) {",
+          "previousLine": 3,
+          "currentLines": [
+            3
+          ]
+        },
+        {
+          "declaration": "export function comparableDataIdentity(id) {",
+          "previousLine": 13,
+          "currentLines": [
+            13
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/persistence.js",
+      "expectedSha256": "be9b8080dd778ab590f8cce00ffac0c20c67a8eed0c211e4df84ae5af8be1573",
+      "actualSha256": "be9b8080dd778ab590f8cce00ffac0c20c67a8eed0c211e4df84ae5af8be1573",
+      "status": "matched",
+      "symbols": [
+        {
+          "declaration": "export function serializeProgram(program) {",
+          "previousLine": 121,
+          "currentLines": [
+            121
+          ]
+        },
+        {
+          "declaration": "export function deserializeProgram(text) {",
+          "previousLine": 135,
+          "currentLines": [
+            135
+          ]
+        },
+        {
+          "declaration": "export function serializeGraphic(program) {",
+          "previousLine": 153,
+          "currentLines": [
+            153
+          ]
+        },
+        {
+          "declaration": "export function deserializeGraphic(text) {",
+          "previousLine": 158,
+          "currentLines": [
+            158
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/persistence/codec.js",
+      "expectedSha256": "4e1ce23a6201d1f822111b90789936e19d68fb0bfc7b50b8061ef979de23bccd",
+      "actualSha256": "4e1ce23a6201d1f822111b90789936e19d68fb0bfc7b50b8061ef979de23bccd",
+      "status": "matched",
+      "symbols": [
+        {
+          "declaration": "export function invalidSnapshot(message, optionPath) {",
+          "previousLine": 4,
+          "currentLines": [
+            4
+          ]
+        },
+        {
+          "declaration": "export function encodeValue(value, path = \"payload\", ancestors = new WeakSet(), shared) {",
+          "previousLine": 8,
+          "currentLines": [
+            8
+          ]
+        },
+        {
+          "declaration": "export function encodeSharedValue(value) {",
+          "previousLine": 47,
+          "currentLines": [
+            47
+          ]
+        },
+        {
+          "declaration": "export function decodeValue(value, path = \"payload\", references) {",
+          "previousLine": 53,
+          "currentLines": [
+            53
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/persistence/validation.js",
+      "expectedSha256": "c090eb076cde577a56588cab2b453948bec266050dfec8ea380c4994399963ac",
+      "actualSha256": "c090eb076cde577a56588cab2b453948bec266050dfec8ea380c4994399963ac",
+      "status": "matched",
+      "symbols": [
+        {
+          "declaration": "export const STATE_KEYS = Object.freeze([",
+          "previousLine": 63,
+          "currentLines": [
+            63
+          ]
+        },
+        {
+          "declaration": "export function requireObject(value, path) {",
+          "previousLine": 83,
+          "currentLines": [
+            83
+          ]
+        },
+        {
+          "declaration": "export function exactKeys(value, keys, path) {",
+          "previousLine": 87,
+          "currentLines": [
+            87
+          ]
+        },
+        {
+          "declaration": "export function validateGraphic(graphic, path = \"payload.graphicSpec\") {",
+          "previousLine": 100,
+          "currentLines": [
+            100
+          ]
+        },
+        {
+          "declaration": "export function validateTrace(trace, ProgramClass, extensions, path = \"payload.trace\") {",
+          "previousLine": 144,
+          "currentLines": [
+            144
+          ]
+        },
+        {
+          "declaration": "export function validateProgramState(program, path, { allowMissingLookupSchemas = false } = {}) {",
+          "previousLine": 179,
+          "currentLines": [
+            179
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/scene.js",
+      "expectedSha256": "83ecb814b660d2f21b5e4b1b302b9204f6012e4f1c0755b794301a6a3f7f4acf",
+      "actualSha256": "83ecb814b660d2f21b5e4b1b302b9204f6012e4f1c0755b794301a6a3f7f4acf",
+      "status": "matched",
+      "symbols": [
+        {
+          "declaration": "export function createTransitionScene(program, { format = \"svg\" } = {}) {",
+          "previousLine": 83,
+          "currentLines": [
+            83
+          ]
+        }
+      ]
+    }
+  ],
+  "notice": "Committed source inventory; not product implementation or test completion.",
+  "changedMappedFiles": [
+    "scripts/run-tests.js"
+  ]
+}

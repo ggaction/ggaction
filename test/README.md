@@ -74,6 +74,14 @@ render entry, browser entry, or an HTML module script. An active `test/gates/`
 directory must include an executable contract test, a PNG render entry, and a
 manifest or primitive program; approval graduates the complete slice together.
 
+`test/oracles/identity.js` provides independent typed-key and explicit row-correspondence
+reference calculations. Its labels are not production or persisted key encodings.
+`test/fixtures/persistence/legacy-selection/` fixes schema 1/2/3 input snapshots with
+producer provenance and byte hashes. The normal persistence suite verifies literal
+selection membership, tagged cells, shared arrays, unchanged concrete output and
+fresh-process edit/remove. Preserve these historical inputs when implementing a new
+reader; do not regenerate them with the reader under test.
+
 `test/support/program-state.js` owns assertions for named program resources and
 atomic rejection. The atomic helper snapshots every own program state field,
 including private non-enumerable state, and can also verify caller-owned option

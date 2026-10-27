@@ -1,0 +1,41 @@
+{
+  "id": "G-CORE",
+  "state": "planned",
+  "scope": [
+    "STEP-004",
+    "STEP-005",
+    "STEP-006",
+    "STEP-007",
+    "STEP-008",
+    "STEP-009"
+  ],
+  "proposal": "agent_docs/impl/roadmap9/phase1/DESIGN.md",
+  "decisions": [
+    "D1",
+    "D2",
+    "D3",
+    "D4",
+    "D5",
+    "D6",
+    "D7",
+    "D8"
+  ],
+  "authorization": {
+    "preparation": "User: 진행해, following the proposal to prepare the G-CORE review package.",
+    "designApproval": null
+  },
+  "codeRevision": null,
+  "evidenceRevision": null,
+  "evidenceManifest": null,
+  "requiredChecks": [
+    "focused-identity",
+    "focused-contracts",
+    "suite-all",
+    "machine-docs"
+  ],
+  "remaining": [
+    "Explicit approval of D1-D8",
+    "Production STEP-004 through STEP-009 and their consumer checks"
+  ],
+  "notice": "Review preparation is not public API or persisted-schema approval."
+}

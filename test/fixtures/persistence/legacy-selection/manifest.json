@@ -1,0 +1,23 @@
+{
+  "role": "historical-inputs",
+  "producerCommit": "a913c0461709c609da6bb71ab8075d07bf6bfeef",
+  "producerPackage": "0.0.26",
+  "construction": "v3 is the captured writer output; v1/v2 are historical-format fixtures derived with the pre-identity tagged codec, not archives from old npm releases.",
+  "files": [
+    {
+      "path": "selection-v1.json",
+      "schemaVersion": 1,
+      "sha256": "acd1fefddc0d485c6840f1ef79b409c8de27f1c2839714e7f7a7c781f4bbc24d"
+    },
+    {
+      "path": "selection-v2.json",
+      "schemaVersion": 2,
+      "sha256": "307bf2aaa9a5d4f41c5fbf756b3c2b132d7f04d8d4c67a7f0429d0981bf8fc23"
+    },
+    {
+      "path": "selection-v3.json",
+      "schemaVersion": 3,
+      "sha256": "96a655a83ee1b88cd39ce64db2d673d92a0c296d3a9c541d7d8005586ca7ecdd"
+    }
+  ]
+}

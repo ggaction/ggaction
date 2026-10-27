@@ -1,0 +1,95 @@
+{
+  "status": "open",
+  "cells": [
+    {
+      "consumer": "identity-kernel",
+      "owner": "test/oracles/identity.js",
+      "status": "reference-tested",
+      "remaining": "Production codec/allocation and actual-vs-oracle comparison"
+    },
+    {
+      "consumer": "create-revise",
+      "owner": "src/actions/data/revise.js",
+      "status": "pending-approval",
+      "remaining": "Key options, namespace preflight and immutable source revision"
+    },
+    {
+      "consumer": "derived-lineage",
+      "owner": "src/grammar/transforms.js",
+      "status": "pending-approval",
+      "remaining": "Every registered transform; grouping, flatten replacement, lookup roles"
+    },
+    {
+      "consumer": "selectors-references",
+      "owner": "src/core/resourceReferences.js",
+      "status": "pending-approval",
+      "remaining": "Typed resource/input refs, exact revision, cycle and shared-owner preflight"
+    },
+    {
+      "consumer": "materialization",
+      "owner": "src/materialization/planner.js",
+      "status": "pending-approval",
+      "remaining": "Explicit closure, metadata reconciliation, no implicit compiler"
+    },
+    {
+      "consumer": "scene",
+      "owner": "src/scene.js",
+      "status": "pending-approval",
+      "remaining": "Stable keys and ordered topology; SVG v1 and Canvas v2 return shapes"
+    },
+    {
+      "consumer": "selection-highlight",
+      "owner": "src/materialization/selection/state.js",
+      "status": "pending-approval",
+      "remaining": "Move logical predicate/key ownership; keep domain API and style intent"
+    },
+    {
+      "consumer": "inspection-accessibility",
+      "owner": "src/inspection.js",
+      "status": "pending-approval",
+      "remaining": "Stable key and contributing row visibility at final grain"
+    },
+    {
+      "consumer": "composition",
+      "owner": "src/actions/data/revise.js",
+      "status": "pending-approval",
+      "remaining": "Retained facet/repeat source, child namespaces, ancestor closure"
+    },
+    {
+      "consumer": "persistence",
+      "owner": "src/persistence.js",
+      "status": "historical-inputs-tested",
+      "remaining": "Real 1/2/3-to-4 migration and new resource edit/remove in fresh process"
+    },
+    {
+      "consumer": "svg-canvas-png-pdf",
+      "owner": "src/renderers",
+      "status": "unchanged-in-review",
+      "remaining": "Phase closeout must run all backends with new concrete metadata"
+    },
+    {
+      "consumer": "types-exports",
+      "owner": "types/program.d.ts",
+      "status": "unchanged-in-review",
+      "remaining": "Full/Basic options and additive ErrorDetails/semantic declarations"
+    },
+    {
+      "consumer": "contracts-docs",
+      "owner": "agent_docs/contract/current",
+      "status": "unchanged-in-review",
+      "remaining": "Current CORE/SELECTION and generated metadata with implementation"
+    },
+    {
+      "consumer": "package",
+      "owner": "package.json",
+      "status": "unchanged-in-review",
+      "remaining": "Installed consumer, artifact/bundle budget once runtime changes"
+    },
+    {
+      "consumer": "hit-animation",
+      "owner": "study/coverage-expansion-2026-10-27/roadmap/acceptance-cases.json",
+      "status": "deferred-integration",
+      "remaining": "STEP-047 onward; AT-06..10 retain their original closure tasks"
+    }
+  ]
+}

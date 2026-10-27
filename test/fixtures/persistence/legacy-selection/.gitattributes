@@ -1,0 +1,2 @@
+# Historical input hashes must survive cross-platform checkout conversion.
+*.json text eol=lf
