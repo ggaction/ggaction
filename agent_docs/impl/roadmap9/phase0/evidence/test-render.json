@@ -1,0 +1,33 @@
+{
+  "label": "test-render",
+  "command": "npm",
+  "args": [
+    "run",
+    "test:render"
+  ],
+  "code": 0,
+  "signal": null,
+  "timeoutMs": 5400000,
+  "durationMs": 51532,
+  "node": "v22.23.1",
+  "platform": "darwin",
+  "arch": "arm64",
+  "startedAt": "2026-10-27T07:41:24.642Z",
+  "finishedAt": "2026-10-27T07:42:16.175Z",
+  "source": {
+    "available": true,
+    "commit": "2e36f4ea168426add1444fdcf28f317ab75a72f9",
+    "clean": true,
+    "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "sourceAfter": {
+    "available": true,
+    "commit": "2e36f4ea168426add1444fdcf28f317ab75a72f9",
+    "clean": true,
+    "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "logSha256": "08e54b24ccb4bf5d5f7e96f4979ecf0cdfecf31b2a876bf7b8688e9efc8d1d0b",
+  "bytes": 45506,
+  "retainedBytes": 45506,
+  "truncated": false
+}

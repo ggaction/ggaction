@@ -1,0 +1,1600 @@
+TAP version 13
+# Subtest: renders airline-passenger-moving-windows/trailing-centered-and-sum
+ok 1 - renders airline-passenger-moving-windows/trailing-centered-and-sum
+  ---
+  duration_ms: 815.031542
+  type: 'test'
+  ...
+# Subtest: matches primitive and public output in Canvas, SVG, PNG, and PDF
+ok 2 - matches primitive and public output in Canvas, SVG, PNG, and PDF
+  ---
+  duration_ms: 531.564958
+  type: 'test'
+  ...
+# Subtest: renders annotated-imdb-scatterplot/default
+ok 3 - renders annotated-imdb-scatterplot/default
+  ---
+  duration_ms: 450.169417
+  type: 'test'
+  ...
+# Subtest: renders area-layout/area-simple
+ok 4 - renders area-layout/area-simple
+  ---
+  duration_ms: 1015.990167
+  type: 'test'
+  ...
+# Subtest: renders area-layout/area-signed-baseline
+ok 5 - renders area-layout/area-signed-baseline
+  ---
+  duration_ms: 685.273167
+  type: 'test'
+  ...
+# Subtest: renders area-layout/area-horizontal-log
+ok 6 - renders area-layout/area-horizontal-log
+  ---
+  duration_ms: 1079.016875
+  type: 'test'
+  ...
+# Subtest: renders area-layout/ribbon-crossing
+ok 7 - renders area-layout/ribbon-crossing
+  ---
+  duration_ms: 800.239708
+  type: 'test'
+  ...
+# Subtest: renders area-layout/area-missing-break
+ok 8 - renders area-layout/area-missing-break
+  ---
+  duration_ms: 762.4115
+  type: 'test'
+  ...
+# Subtest: renders area-layout/area-stack
+ok 9 - renders area-layout/area-stack
+  ---
+  duration_ms: 1183.762167
+  type: 'test'
+  ...
+# Subtest: renders area-layout/area-fill
+ok 10 - renders area-layout/area-fill
+  ---
+  duration_ms: 1262.380875
+  type: 'test'
+  ...
+# Subtest: renders area-layout/area-diverging
+ok 11 - renders area-layout/area-diverging
+  ---
+  duration_ms: 999.899583
+  type: 'test'
+  ...
+# Subtest: renders area-layout/area-center
+ok 12 - renders area-layout/area-center
+  ---
+  duration_ms: 1199.602333
+  type: 'test'
+  ...
+# Subtest: renders area-layout/bar-independent-stack
+ok 13 - renders area-layout/bar-independent-stack
+  ---
+  duration_ms: 882.178166
+  type: 'test'
+  ...
+# Subtest: renders area-layout/bar-layout-roundtrip
+ok 14 - renders area-layout/bar-layout-roundtrip
+  ---
+  duration_ms: 863.416125
+  type: 'test'
+  ...
+# Subtest: preserves Area: zero baseline in vector SVG and PDF
+ok 15 - preserves Area: zero baseline in vector SVG and PDF
+  ---
+  duration_ms: 58.217583
+  type: 'test'
+  ...
+# Subtest: preserves Area: signed values around baseline 1 in vector SVG and PDF
+ok 16 - preserves Area: signed values around baseline 1 in vector SVG and PDF
+  ---
+  duration_ms: 22.560375
+  type: 'test'
+  ...
+# Subtest: preserves Area: horizontal log scale with baseline 1 in vector SVG and PDF
+ok 17 - preserves Area: horizontal log scale with baseline 1 in vector SVG and PDF
+  ---
+  duration_ms: 25.198417
+  type: 'test'
+  ...
+# Subtest: preserves Ribbon: preserve crossing boundaries in vector SVG and PDF
+ok 18 - preserves Ribbon: preserve crossing boundaries in vector SVG and PDF
+  ---
+  duration_ms: 27.523
+  type: 'test'
+  ...
+# Subtest: preserves Area: two segments with a missing middle sample in vector SVG and PDF
+ok 19 - preserves Area: two segments with a missing middle sample in vector SVG and PDF
+  ---
+  duration_ms: 23.438792
+  type: 'test'
+  ...
+# Subtest: preserves Area: stack identity separate from color in vector SVG and PDF
+ok 20 - preserves Area: stack identity separate from color in vector SVG and PDF
+  ---
+  duration_ms: 38.386208
+  type: 'test'
+  ...
+# Subtest: preserves Area: normalized series thickness in vector SVG and PDF
+ok 21 - preserves Area: normalized series thickness in vector SVG and PDF
+  ---
+  duration_ms: 33.980458
+  type: 'test'
+  ...
+# Subtest: preserves Area: independent positive and negative accumulation in vector SVG and PDF
+ok 22 - preserves Area: independent positive and negative accumulation in vector SVG and PDF
+  ---
+  duration_ms: 32.338666
+  type: 'test'
+  ...
+# Subtest: preserves Area: centered total thickness in vector SVG and PDF
+ok 23 - preserves Area: centered total thickness in vector SVG and PDF
+  ---
+  duration_ms: 28.151417
+  type: 'test'
+  ...
+# Subtest: preserves Bars: stack series without color in vector SVG and PDF
+ok 24 - preserves Bars: stack series without color in vector SVG and PDF
+  ---
+  duration_ms: 31.227334
+  type: 'test'
+  ...
+# Subtest: preserves Bars: final group state after group, stack, group in vector SVG and PDF
+ok 25 - preserves Bars: final group state after group, stack, group in vector SVG and PDF
+  ---
+  duration_ms: 39.695709
+  type: 'test'
+  ...
+# Subtest: renders axis-owners/independent-scales
+ok 26 - renders axis-owners/independent-scales
+  ---
+  duration_ms: 158.315708
+  type: 'test'
+  ...
+# Subtest: PDF difference glyphs retain opaque RGB and bounded alpha quantization
+ok 27 - PDF difference glyphs retain opaque RGB and bounded alpha quantization
+  ---
+  duration_ms: 395.113834
+  type: 'test'
+  ...
+# Subtest: approved difference source has stable literal/public PNG pairs
+ok 28 - approved difference source has stable literal/public PNG pairs
+  ---
+  duration_ms: 75.398042
+  type: 'test'
+  ...
+# Subtest: renders beeswarm-plot/vertical-packed
+ok 29 - renders beeswarm-plot/vertical-packed
+  ---
+  duration_ms: 257.788041
+  type: 'test'
+  ...
+# Subtest: renders bootstrap-mean-ci/skewed-five-groups
+ok 30 - renders bootstrap-mean-ci/skewed-five-groups
+  ---
+  duration_ms: 179.276959
+  type: 'test'
+  ...
+# Subtest: renders cars-acceleration-violins/full
+ok 31 - renders cars-acceleration-violins/full
+  ---
+  duration_ms: 469.173667
+  type: 'test'
+  ...
+# Subtest: renders cars-acceleration-violins/split-era
+ok 32 - renders cars-acceleration-violins/split-era
+  ---
+  duration_ms: 543.776292
+  type: 'test'
+  ...
+# Subtest: renders cars-binned-heatmap/weight-mpg-counts
+ok 33 - renders cars-binned-heatmap/weight-mpg-counts
+  ---
+  duration_ms: 842.564959
+  type: 'test'
+  ...
+# Subtest: renders cars-box-plot/cars-vertical-tukey
+ok 34 - renders cars-box-plot/cars-vertical-tukey
+  ---
+  duration_ms: 354.312125
+  type: 'test'
+  ...
+# Subtest: renders cars-box-plot/cars-horizontal-minmax
+ok 35 - renders cars-box-plot/cars-horizontal-minmax
+  ---
+  duration_ms: 279.287209
+  type: 'test'
+  ...
+# Subtest: renders cars-box-plot/cars-styled-factor
+ok 36 - renders cars-box-plot/cars-styled-factor
+  ---
+  duration_ms: 207.490709
+  type: 'test'
+  ...
+# Subtest: renders cars-box-plot/cars-outliers-off
+ok 37 - renders cars-box-plot/cars-outliers-off
+  ---
+  duration_ms: 250.959083
+  type: 'test'
+  ...
+# Subtest: renders cars-density-area/baseline
+ok 38 - renders cars-density-area/baseline
+  ---
+  duration_ms: 551.029667
+  type: 'test'
+  ...
+# Subtest: renders cars-density-area/area-outline-edit
+ok 39 - renders cars-density-area/area-outline-edit
+  ---
+  duration_ms: 512.957834
+  type: 'test'
+  ...
+# Subtest: renders cars-density-area/epanechnikov-kernel
+ok 40 - renders cars-density-area/epanechnikov-kernel
+  ---
+  duration_ms: 517.993875
+  type: 'test'
+  ...
+# Subtest: renders cars-density-area/count-normalization
+ok 41 - renders cars-density-area/count-normalization
+  ---
+  duration_ms: 511.707208
+  type: 'test'
+  ...
+# Subtest: renders cars-density-area/density-revision
+ok 42 - renders cars-density-area/density-revision
+  ---
+  duration_ms: 532.953458
+  type: 'test'
+  ...
+# Subtest: renders cars-density-area/wrapped-title-bottom
+ok 43 - renders cars-density-area/wrapped-title-bottom
+  ---
+  duration_ms: 578.173667
+  type: 'test'
+  ...
+# Subtest: renders cars-error-bar/rule-geometry
+ok 44 - renders cars-error-bar/rule-geometry
+  ---
+  duration_ms: 498.625208
+  type: 'test'
+  ...
+# Subtest: renders cars-error-bar/baseline
+ok 45 - renders cars-error-bar/baseline
+  ---
+  duration_ms: 336.725208
+  type: 'test'
+  ...
+# Subtest: renders cars-error-bar/encoded-layer-inference
+ok 46 - renders cars-error-bar/encoded-layer-inference
+  ---
+  duration_ms: 398.509
+  type: 'test'
+  ...
+# Subtest: renders cars-error-bar/horizontal
+ok 47 - renders cars-error-bar/horizontal
+  ---
+  duration_ms: 361.652916
+  type: 'test'
+  ...
+# Subtest: renders cars-error-bar/explicit-interval
+ok 48 - renders cars-error-bar/explicit-interval
+  ---
+  duration_ms: 323.069416
+  type: 'test'
+  ...
+# Subtest: renders cars-error-bar/styled-caps
+ok 49 - renders cars-error-bar/styled-caps
+  ---
+  duration_ms: 368.010125
+  type: 'test'
+  ...
+# Subtest: renders cars-weighted-rules/field-stroke-width
+ok 50 - renders cars-weighted-rules/field-stroke-width
+  ---
+  duration_ms: 235.36525
+  type: 'test'
+  ...
+# Subtest: renders cars-gradient-plot/acceleration-by-origin
+ok 51 - renders cars-gradient-plot/acceleration-by-origin
+  ---
+  duration_ms: 206.668375
+  type: 'test'
+  ...
+# Subtest: renders cars-gradient-plot/action-parity
+ok 52 - renders cars-gradient-plot/action-parity
+  ---
+  duration_ms: 429.528333
+  type: 'test'
+  ...
+# Subtest: renders cars-histogram/baseline
+ok 53 - renders cars-histogram/baseline
+  ---
+  duration_ms: 313.357042
+  type: 'test'
+  ...
+# Subtest: renders cars-histogram/bin-step
+ok 54 - renders cars-histogram/bin-step
+  ---
+  duration_ms: 274.074416
+  type: 'test'
+  ...
+# Subtest: renders cars-histogram/bin-boundaries
+ok 55 - renders cars-histogram/bin-boundaries
+  ---
+  duration_ms: 276.407416
+  type: 'test'
+  ...
+# Subtest: renders cars-histogram/field-reassignment
+ok 56 - renders cars-histogram/field-reassignment
+  ---
+  duration_ms: 276.549542
+  type: 'test'
+  ...
+# Subtest: renders cars-histogram/normalized-stack
+ok 57 - renders cars-histogram/normalized-stack
+  ---
+  duration_ms: 367.083791
+  type: 'test'
+  ...
+# Subtest: renders cars-line-chart/baseline
+ok 58 - renders cars-line-chart/baseline
+  ---
+  duration_ms: 423.704542
+  type: 'test'
+  ...
+# Subtest: renders cars-line-chart/curve-step
+ok 59 - renders cars-line-chart/curve-step
+  ---
+  duration_ms: 351.109166
+  type: 'test'
+  ...
+# Subtest: renders cars-line-chart/curve-monotone-edit
+ok 60 - renders cars-line-chart/curve-monotone-edit
+  ---
+  duration_ms: 401.583959
+  type: 'test'
+  ...
+# Subtest: renders cars-line-chart/named-dash-vocabulary
+ok 61 - renders cars-line-chart/named-dash-vocabulary
+  ---
+  duration_ms: 287.661833
+  type: 'test'
+  ...
+# Subtest: renders cars-line-chart/constant-dash
+ok 62 - renders cars-line-chart/constant-dash
+  ---
+  duration_ms: 276.580667
+  type: 'test'
+  ...
+# Subtest: renders cars-line-chart/group-reassignment
+ok 63 - renders cars-line-chart/group-reassignment
+  ---
+  duration_ms: 310.78725
+  type: 'test'
+  ...
+# Subtest: renders cars-line-chart/dash-reassignment
+ok 64 - renders cars-line-chart/dash-reassignment
+  ---
+  duration_ms: 285.755666
+  type: 'test'
+  ...
+# Subtest: renders cars-line-chart/aggregate-median
+ok 65 - renders cars-line-chart/aggregate-median
+  ---
+  duration_ms: 377.743417
+  type: 'test'
+  ...
+# Subtest: renders cars-line-chart/aggregate-dispersion
+ok 66 - renders cars-line-chart/aggregate-dispersion
+  ---
+  duration_ms: 394.034334
+  type: 'test'
+  ...
+# Subtest: renders cars-line-chart/aggregate-quantile
+ok 67 - renders cars-line-chart/aggregate-quantile
+  ---
+  duration_ms: 375.5205
+  type: 'test'
+  ...
+# Subtest: renders cars-line-chart/aggregate-ordered
+ok 68 - renders cars-line-chart/aggregate-ordered
+  ---
+  duration_ms: 402.859042
+  type: 'test'
+  ...
+# Subtest: renders cars-line-chart/composite-legend-top
+ok 69 - renders cars-line-chart/composite-legend-top
+  ---
+  duration_ms: 463.951292
+  type: 'test'
+  ...
+# Subtest: renders cars-line-chart/composite-legend-bottom
+ok 70 - renders cars-line-chart/composite-legend-bottom
+  ---
+  duration_ms: 528.626666
+  type: 'test'
+  ...
+# Subtest: renders cars-multi-legend-layout/top-inline-lane
+ok 71 - renders cars-multi-legend-layout/top-inline-lane
+  ---
+  duration_ms: 688.852875
+  type: 'test'
+  ...
+# Subtest: renders cars-multi-legend-layout/bottom-inline-lane
+ok 72 - renders cars-multi-legend-layout/bottom-inline-lane
+  ---
+  duration_ms: 616.985417
+  type: 'test'
+  ...
+# Subtest: matches stable multi-legend output in Canvas, SVG, PNG, and PDF
+ok 73 - matches stable multi-legend output in Canvas, SVG, PNG, and PDF
+  ---
+  duration_ms: 334.333041
+  type: 'test'
+  ...
+# Subtest: renders cars-origin-scatterplot-facet/default-one-row
+ok 74 - renders cars-origin-scatterplot-facet/default-one-row
+  ---
+  duration_ms: 511.1515
+  type: 'test'
+  ...
+# Subtest: renders cars-origin-histogram-facet/two-column-wrap
+ok 75 - renders cars-origin-histogram-facet/two-column-wrap
+  ---
+  duration_ms: 708.68375
+  type: 'test'
+  ...
+# Subtest: renders cars-parallel-coordinates/axis-style
+ok 76 - renders cars-parallel-coordinates/axis-style
+  ---
+  duration_ms: 619.087625
+  type: 'test'
+  ...
+# Subtest: renders cars-parallel-coordinates/cars-1970
+ok 77 - renders cars-parallel-coordinates/cars-1970
+  ---
+  duration_ms: 514.903042
+  type: 'test'
+  ...
+# Subtest: renders cars-regression-scatterplot/baseline
+ok 78 - renders cars-regression-scatterplot/baseline
+  ---
+  duration_ms: 553.248583
+  type: 'test'
+  ...
+# Subtest: renders cars-regression-scatterplot/component-edit
+ok 79 - renders cars-regression-scatterplot/component-edit
+  ---
+  duration_ms: 521.435042
+  type: 'test'
+  ...
+# Subtest: renders cars-regression-scatterplot/comparison-filter
+ok 80 - renders cars-regression-scatterplot/comparison-filter
+  ---
+  duration_ms: 387.823333
+  type: 'test'
+  ...
+# Subtest: renders cars-regression-scatterplot/range-filter
+ok 81 - renders cars-regression-scatterplot/range-filter
+  ---
+  duration_ms: 528.594458
+  type: 'test'
+  ...
+# Subtest: renders cars-regression-scatterplot/polynomial-degree-2
+ok 82 - renders cars-regression-scatterplot/polynomial-degree-2
+  ---
+  duration_ms: 463.269708
+  type: 'test'
+  ...
+# Subtest: renders cars-regression-scatterplot/loess-span
+ok 83 - renders cars-regression-scatterplot/loess-span
+  ---
+  duration_ms: 440.102417
+  type: 'test'
+  ...
+# Subtest: renders cars-regression-scatterplot/prediction-interval
+ok 84 - renders cars-regression-scatterplot/prediction-interval
+  ---
+  duration_ms: 531.6305
+  type: 'test'
+  ...
+# Subtest: renders cars-regression-scatterplot/left-legend
+ok 85 - renders cars-regression-scatterplot/left-legend
+  ---
+  duration_ms: 568.337
+  type: 'test'
+  ...
+# Subtest: renders cars-regression-scatterplot/graphic-hierarchy
+ok 86 - renders cars-regression-scatterplot/graphic-hierarchy
+  ---
+  duration_ms: 503.167708
+  type: 'test'
+  ...
+# Subtest: renders cars-scatterplot/baseline
+ok 87 - renders cars-scatterplot/baseline
+  ---
+  duration_ms: 401.939416
+  type: 'test'
+  ...
+# Subtest: renders cars-scatterplot/mirrored-axes-format
+ok 88 - renders cars-scatterplot/mirrored-axes-format
+  ---
+  duration_ms: 419.80375
+  type: 'test'
+  ...
+# Subtest: renders cars-scatterplot/scale-reverse
+ok 89 - renders cars-scatterplot/scale-reverse
+  ---
+  duration_ms: 351.664875
+  type: 'test'
+  ...
+# Subtest: renders cars-scatterplot/point-shape-diamond
+ok 90 - renders cars-scatterplot/point-shape-diamond
+  ---
+  duration_ms: 390.820291
+  type: 'test'
+  ...
+# Subtest: renders cars-scatterplot/shape-vocabulary
+ok 91 - renders cars-scatterplot/shape-vocabulary
+  ---
+  duration_ms: 323.618209
+  type: 'test'
+  ...
+# Subtest: renders cars-scatterplot/categorical-palette
+ok 92 - renders cars-scatterplot/categorical-palette
+  ---
+  duration_ms: 402.569792
+  type: 'test'
+  ...
+# Subtest: renders cars-scatterplot/encoding-reassignment
+ok 93 - renders cars-scatterplot/encoding-reassignment
+  ---
+  duration_ms: 459.263917
+  type: 'test'
+  ...
+# Subtest: renders cars-scatterplot/continuous-color-gradient
+ok 94 - renders cars-scatterplot/continuous-color-gradient
+  ---
+  duration_ms: 370.485167
+  type: 'test'
+  ...
+# Subtest: renders cars-scatterplot/field-opacity-legend
+ok 95 - renders cars-scatterplot/field-opacity-legend
+  ---
+  duration_ms: 339.295834
+  type: 'test'
+  ...
+# Subtest: renders cars-temporal-bar-line/shared-position
+ok 96 - renders cars-temporal-bar-line/shared-position
+  ---
+  duration_ms: 660.086584
+  type: 'test'
+  ...
+# Subtest: renders cars-window-rank-scatterplot/top-horsepower-by-origin
+ok 97 - renders cars-window-rank-scatterplot/top-horsepower-by-origin
+  ---
+  duration_ms: 537.743792
+  type: 'test'
+  ...
+# Subtest: renders centered-area-stream/jobs-center-stack
+ok 98 - renders centered-area-stream/jobs-center-stack
+  ---
+  duration_ms: 509.308667
+  type: 'test'
+  ...
+# Subtest: matches primitive and public center output in Canvas, SVG, PNG, and PDF
+ok 99 - matches primitive and public center output in Canvas, SVG, PNG, and PDF
+  ---
+  duration_ms: 270.007625
+  type: 'test'
+  ...
+# Subtest: renders color-white-point/lab-white-point
+ok 100 - renders color-white-point/lab-white-point
+  ---
+  duration_ms: 386.390458
+  type: 'test'
+  ...
+# Subtest: renders color-controls/color-math
+ok 101 - renders color-controls/color-math
+  ---
+  duration_ms: 446.396375
+  type: 'test'
+  ...
+# Subtest: renders color-controls/zero-gamma
+ok 102 - renders color-controls/zero-gamma
+  ---
+  duration_ms: 477.352833
+  type: 'test'
+  ...
+# Subtest: renders color-controls/negative-gamma
+ok 103 - renders color-controls/negative-gamma
+  ---
+  duration_ms: 484.955167
+  type: 'test'
+  ...
+# Subtest: lab-white-point preserves exact primitive SVG and PDF colors and rectangles
+ok 104 - lab-white-point preserves exact primitive SVG and PDF colors and rectangles
+  ---
+  duration_ms: 47.449791
+  type: 'test'
+  ...
+# Subtest: color-math preserves exact primitive SVG and PDF colors and rectangles
+ok 105 - color-math preserves exact primitive SVG and PDF colors and rectangles
+  ---
+  duration_ms: 24.938792
+  type: 'test'
+  ...
+# Subtest: zero-gamma preserves exact primitive SVG and PDF colors and rectangles
+ok 106 - zero-gamma preserves exact primitive SVG and PDF colors and rectangles
+  ---
+  duration_ms: 22.003791
+  type: 'test'
+  ...
+# Subtest: negative-gamma preserves exact primitive SVG and PDF colors and rectangles
+ok 107 - negative-gamma preserves exact primitive SVG and PDF colors and rectangles
+  ---
+  duration_ms: 30.84875
+  type: 'test'
+  ...
+# Subtest: renders color-midpoint/asymmetric
+ok 108 - renders color-midpoint/asymmetric
+  ---
+  duration_ms: 726.60725
+  type: 'test'
+  ...
+# Subtest: renders color-midpoint/clear
+ok 109 - renders color-midpoint/clear
+  ---
+  duration_ms: 723.139959
+  type: 'test'
+  ...
+# Subtest: preserves asymmetric color semantics in SVG and PDF
+ok 110 - preserves asymmetric color semantics in SVG and PDF
+  ---
+  duration_ms: 70.980959
+  type: 'test'
+  ...
+# Subtest: preserves clear color semantics in SVG and PDF
+ok 111 - preserves clear color semantics in SVG and PDF
+  ---
+  duration_ms: 52.657375
+  type: 'test'
+  ...
+# Subtest: renders color-transitions/point
+ok 112 - renders color-transitions/point
+  ---
+  duration_ms: 783.528291
+  type: 'test'
+  ...
+# Subtest: renders color-transitions/bar
+ok 113 - renders color-transitions/bar
+  ---
+  duration_ms: 894.088708
+  type: 'test'
+  ...
+# Subtest: preserves point interval colors in SVG and PDF
+ok 114 - preserves point interval colors in SVG and PDF
+  ---
+  duration_ms: 110.966667
+  type: 'test'
+  ...
+# Subtest: preserves bar interval colors in SVG and PDF
+ok 115 - preserves bar interval colors in SVG and PDF
+  ---
+  duration_ms: 81.296167
+  type: 'test'
+  ...
+# Subtest: combined numeric legend PDF matches independently drawn literal circles and labels
+ok 116 - combined numeric legend PDF matches independently drawn literal circles and labels
+  ---
+  duration_ms: 122.37575
+  type: 'test'
+  ...
+# Subtest: combined numeric samples has a stable literal/public PNG pair
+ok 117 - combined numeric samples has a stable literal/public PNG pair
+  ---
+  duration_ms: 196.661125
+  type: 'test'
+  ...
+# Subtest: renders continuous-area-color/nine-series-hcl
+ok 118 - renders continuous-area-color/nine-series-hcl
+  ---
+  duration_ms: 171.246291
+  type: 'test'
+  ...
+# Subtest: renders cross-feature-dashboard/nested-polar-replacement
+ok 119 - renders cross-feature-dashboard/nested-polar-replacement
+  ---
+  duration_ms: 1947.432042
+  type: 'test'
+  ...
+# Subtest: renders gapminder-cluster-regression-facet/outer-guides
+ok 120 - renders gapminder-cluster-regression-facet/outer-guides
+  ---
+  duration_ms: 1090.710583
+  type: 'test'
+  ...
+# Subtest: renders gapminder-cluster-regression-facet/shared-scales
+ok 121 - renders gapminder-cluster-regression-facet/shared-scales
+  ---
+  duration_ms: 656.582667
+  type: 'test'
+  ...
+# Subtest: renders gapminder-cluster-regression-facet/independent-x
+ok 122 - renders gapminder-cluster-regression-facet/independent-x
+  ---
+  duration_ms: 602.472208
+  type: 'test'
+  ...
+# Subtest: renders gapminder-cluster-regression-facet/outer-guides
+ok 123 - renders gapminder-cluster-regression-facet/outer-guides
+  ---
+  duration_ms: 793.33625
+  type: 'test'
+  ...
+# Subtest: renders cars-scatterplot/point-create-and-palette-edit
+ok 124 - renders cars-scatterplot/point-create-and-palette-edit
+  ---
+  duration_ms: 358.23225
+  type: 'test'
+  ...
+# Subtest: renders jobs-grouped-bar/bar-create-appearance
+ok 125 - renders jobs-grouped-bar/bar-create-appearance
+  ---
+  duration_ms: 607.000625
+  type: 'test'
+  ...
+# Subtest: renders cars-line-chart/line-create-edit-appearance
+ok 126 - renders cars-line-chart/line-create-edit-appearance
+  ---
+  duration_ms: 317.669625
+  type: 'test'
+  ...
+# Subtest: renders cars-regression-scatterplot/focused-legend-components
+ok 127 - renders cars-regression-scatterplot/focused-legend-components
+  ---
+  duration_ms: 601.602791
+  type: 'test'
+  ...
+# Subtest: renders cars-scatterplot/cartesian-guide-facades
+ok 128 - renders cars-scatterplot/cartesian-guide-facades
+  ---
+  duration_ms: 259.3775
+  type: 'test'
+  ...
+# Subtest: renders cars-error-bar/owner-edit
+ok 129 - renders cars-error-bar/owner-edit
+  ---
+  duration_ms: 366.923958
+  type: 'test'
+  ...
+# Subtest: renders gapminder-error-band/owner-and-boundary-edit
+ok 130 - renders gapminder-error-band/owner-and-boundary-edit
+  ---
+  duration_ms: 565.343709
+  type: 'test'
+  ...
+# Subtest: renders cars-regression-scatterplot/owner-edit
+ok 131 - renders cars-regression-scatterplot/owner-edit
+  ---
+  duration_ms: 458.00375
+  type: 'test'
+  ...
+# Subtest: renders cars-box-plot/owner-edit
+ok 132 - renders cars-box-plot/owner-edit
+  ---
+  duration_ms: 249.179375
+  type: 'test'
+  ...
+# Subtest: renders cars-histogram/remove-guides-and-title
+ok 133 - renders cars-histogram/remove-guides-and-title
+  ---
+  duration_ms: 214.481291
+  type: 'test'
+  ...
+# Subtest: renders gapminder-layered-bar-point/remove-point-mark
+ok 134 - renders gapminder-layered-bar-point/remove-point-mark
+  ---
+  duration_ms: 156.994625
+  type: 'test'
+  ...
+# Subtest: renders dark-theme-scatterplot/default
+ok 135 - renders dark-theme-scatterplot/default
+  ---
+  duration_ms: 553.920291
+  type: 'test'
+  ...
+# Subtest: renders density-plot/vertical
+ok 136 - renders density-plot/vertical
+  ---
+  duration_ms: 942.404291
+  type: 'test'
+  ...
+# Subtest: renders density-plot/grouped
+ok 137 - renders density-plot/grouped
+  ---
+  duration_ms: 1016.084542
+  type: 'test'
+  ...
+# Subtest: renders density-plot/horizontal
+ok 138 - renders density-plot/horizontal
+  ---
+  duration_ms: 973.372333
+  type: 'test'
+  ...
+# Subtest: preserves Density: one quantitative variable in vector SVG and PDF
+ok 139 - preserves Density: one quantitative variable in vector SVG and PDF
+  ---
+  duration_ms: 53.819583
+  type: 'test'
+  ...
+# Subtest: preserves Density: explicit groups and color in vector SVG and PDF
+ok 140 - preserves Density: explicit groups and color in vector SVG and PDF
+  ---
+  duration_ms: 51.949375
+  type: 'test'
+  ...
+# Subtest: preserves Density: horizontal orientation in vector SVG and PDF
+ok 141 - preserves Density: horizontal orientation in vector SVG and PDF
+  ---
+  duration_ms: 37.061834
+  type: 'test'
+  ...
+# Subtest: renders directional-tick-plot/baseline-tick-point-directions
+ok 142 - renders directional-tick-plot/baseline-tick-point-directions
+  ---
+  duration_ms: 615.082917
+  type: 'test'
+  ...
+# Subtest: renders directional-tick-plot/cars-horsepower-rug
+ok 143 - renders directional-tick-plot/cars-horsepower-rug
+  ---
+  duration_ms: 162.671375
+  type: 'test'
+  ...
+# Subtest: renders every Tick visual target in Canvas, SVG, PNG, and PDF
+ok 144 - renders every Tick visual target in Canvas, SVG, PNG, and PDF
+  ---
+  duration_ms: 216.718917
+  type: 'test'
+  ...
+# Subtest: renders ecdf-plot/grouped-weighted
+ok 145 - renders ecdf-plot/grouped-weighted
+  ---
+  duration_ms: 236.310875
+  type: 'test'
+  ...
+# Subtest: renders dot-plot/raw-horizontal
+ok 146 - renders dot-plot/raw-horizontal
+  ---
+  duration_ms: 178.111584
+  type: 'test'
+  ...
+# Subtest: renders lollipop-plot/zero-baseline
+ok 147 - renders lollipop-plot/zero-baseline
+  ---
+  duration_ms: 181.282333
+  type: 'test'
+  ...
+# Subtest: renders dumbbell-plot/role-preserving
+ok 148 - renders dumbbell-plot/role-preserving
+  ---
+  duration_ms: 159.655875
+  type: 'test'
+  ...
+# Subtest: renders facet-field-titles/left-vertical
+ok 149 - renders facet-field-titles/left-vertical
+  ---
+  duration_ms: 142.174459
+  type: 'test'
+  ...
+# Subtest: renders facet-grid/two-by-three-full
+ok 150 - renders facet-grid/two-by-three-full
+  ---
+  duration_ms: 208.362459
+  type: 'test'
+  ...
+# Subtest: renders facet-header-rotation/left-vertical
+ok 151 - renders facet-header-rotation/left-vertical
+  ---
+  duration_ms: 126.490708
+  type: 'test'
+  ...
+# Subtest: renders facet-shared-top-lane/seven-panels
+ok 152 - renders facet-shared-top-lane/seven-panels
+  ---
+  duration_ms: 308.682083
+  type: 'test'
+  ...
+# Subtest: shared facet top lane remains exact at physical double density
+ok 153 - shared facet top lane remains exact at physical double density
+  ---
+  duration_ms: 118.974083
+  type: 'test'
+  ...
+# Subtest: PDF shared facet top lane matches the independent literal scene without tolerance
+ok 154 - PDF shared facet top lane matches the independent literal scene without tolerance
+  ---
+  duration_ms: 227.075375
+  type: 'test'
+  ...
+# Subtest: renders fitted-long-labels/default
+ok 155 - renders fitted-long-labels/default
+  ---
+  duration_ms: 629.7485
+  type: 'test'
+  ...
+# Subtest: renders gapminder-continuous-color-bars/matching-population
+ok 156 - renders gapminder-continuous-color-bars/matching-population
+  ---
+  duration_ms: 404.652708
+  type: 'test'
+  ...
+# Subtest: renders gapminder-continuous-color-bars/mean-life-expectancy
+ok 157 - renders gapminder-continuous-color-bars/mean-life-expectancy
+  ---
+  duration_ms: 358.161
+  type: 'test'
+  ...
+# Subtest: renders gapminder-continuous-color-bars/reversed-life-expectancy
+ok 158 - renders gapminder-continuous-color-bars/reversed-life-expectancy
+  ---
+  duration_ms: 361.499834
+  type: 'test'
+  ...
+# Subtest: renders gapminder-country-labels/collision-aware
+ok 159 - renders gapminder-country-labels/collision-aware
+  ---
+  duration_ms: 478.255291
+  type: 'test'
+  ...
+# Subtest: renders gapminder-development-trajectories/year-ordered
+ok 160 - renders gapminder-development-trajectories/year-ordered
+  ---
+  duration_ms: 522.293708
+  type: 'test'
+  ...
+# Subtest: renders gapminder-discretized-color-scales/quantize-life-expectancy
+ok 161 - renders gapminder-discretized-color-scales/quantize-life-expectancy
+  ---
+  duration_ms: 291.928959
+  type: 'test'
+  ...
+# Subtest: renders gapminder-discretized-color-scales/quantile-life-expectancy
+ok 162 - renders gapminder-discretized-color-scales/quantile-life-expectancy
+  ---
+  duration_ms: 258.686584
+  type: 'test'
+  ...
+# Subtest: renders gapminder-discretized-color-scales/threshold-life-expectancy
+ok 163 - renders gapminder-discretized-color-scales/threshold-life-expectancy
+  ---
+  duration_ms: 243.818167
+  type: 'test'
+  ...
+# Subtest: renders gapminder-error-band/gapminder-vertical
+ok 164 - renders gapminder-error-band/gapminder-vertical
+  ---
+  duration_ms: 700.052875
+  type: 'test'
+  ...
+# Subtest: renders gapminder-error-band/cars-horizontal
+ok 165 - renders gapminder-error-band/cars-horizontal
+  ---
+  duration_ms: 439.304625
+  type: 'test'
+  ...
+# Subtest: renders gapminder-error-band/gapminder-curved-boundaries
+ok 166 - renders gapminder-error-band/gapminder-curved-boundaries
+  ---
+  duration_ms: 551.081459
+  type: 'test'
+  ...
+# Subtest: renders gapminder-error-band/gapminder-boundary-override
+ok 167 - renders gapminder-error-band/gapminder-boundary-override
+  ---
+  duration_ms: 555.396125
+  type: 'test'
+  ...
+# Subtest: renders gapminder-horizon/kenya-life-expectancy
+ok 168 - renders gapminder-horizon/kenya-life-expectancy
+  ---
+  duration_ms: 476.270709
+  type: 'test'
+  ...
+# Subtest: renders gapminder-life-expectancy-heatmap/discrete-cells
+ok 169 - renders gapminder-life-expectancy-heatmap/discrete-cells
+  ---
+  duration_ms: 798.128667
+  type: 'test'
+  ...
+# Subtest: renders gapminder-temporal-discrete-scales/band-point-centers
+ok 170 - renders gapminder-temporal-discrete-scales/band-point-centers
+  ---
+  duration_ms: 265.554958
+  type: 'test'
+  ...
+# Subtest: renders gapminder-temporal-discrete-scales/utc-time-lines
+ok 171 - renders gapminder-temporal-discrete-scales/utc-time-lines
+  ---
+  duration_ms: 216.774625
+  type: 'test'
+  ...
+# Subtest: renders gapminder-transformed-scales/gapminder-2005-log-sqrt
+ok 172 - renders gapminder-transformed-scales/gapminder-2005-log-sqrt
+  ---
+  duration_ms: 268.660667
+  type: 'test'
+  ...
+# Subtest: renders horizon-plot/signed
+ok 173 - renders horizon-plot/signed
+  ---
+  duration_ms: 1278.006209
+  type: 'test'
+  ...
+# Subtest: renders horizon-plot/temporal
+ok 174 - renders horizon-plot/temporal
+  ---
+  duration_ms: 1155.109042
+  type: 'test'
+  ...
+# Subtest: renders horizon-plot/baseline-style
+ok 175 - renders horizon-plot/baseline-style
+  ---
+  duration_ms: 1362.245375
+  type: 'test'
+  ...
+# Subtest: preserves Horizon: signed amplitude in vector SVG and PDF
+ok 176 - preserves Horizon: signed amplitude in vector SVG and PDF
+  ---
+  duration_ms: 74.22525
+  type: 'test'
+  ...
+# Subtest: preserves Horizon: explicit timestamps in vector SVG and PDF
+ok 177 - preserves Horizon: explicit timestamps in vector SVG and PDF
+  ---
+  duration_ms: 31.718292
+  type: 'test'
+  ...
+# Subtest: preserves Horizon: baseline, bands and opacity revision in vector SVG and PDF
+ok 178 - preserves Horizon: baseline, bands and opacity revision in vector SVG and PDF
+  ---
+  duration_ms: 44.819083
+  type: 'test'
+  ...
+# Subtest: renders jobs-grouped-bar/baseline
+ok 179 - renders jobs-grouped-bar/baseline
+  ---
+  duration_ms: 704.565875
+  type: 'test'
+  ...
+# Subtest: renders jobs-grouped-bar/overlay-layout
+ok 180 - renders jobs-grouped-bar/overlay-layout
+  ---
+  duration_ms: 636.513375
+  type: 'test'
+  ...
+# Subtest: renders jobs-grouped-bar/diverging-layout
+ok 181 - renders jobs-grouped-bar/diverging-layout
+  ---
+  duration_ms: 639.018209
+  type: 'test'
+  ...
+# Subtest: renders jobs-grouped-bar/width-pixels
+ok 182 - renders jobs-grouped-bar/width-pixels
+  ---
+  duration_ms: 654.904541
+  type: 'test'
+  ...
+# Subtest: renders jobs-grouped-bar/offset-padding
+ok 183 - renders jobs-grouped-bar/offset-padding
+  ---
+  duration_ms: 753.920416
+  type: 'test'
+  ...
+# Subtest: renders jobs-grouped-bar/group-reassignment
+ok 184 - renders jobs-grouped-bar/group-reassignment
+  ---
+  duration_ms: 543.391458
+  type: 'test'
+  ...
+# Subtest: renders jobs-grouped-bar/temporal-x
+ok 185 - renders jobs-grouped-bar/temporal-x
+  ---
+  duration_ms: 838.863084
+  type: 'test'
+  ...
+# Subtest: renders jobs-grouped-bar/horizontal-bar
+ok 186 - renders jobs-grouped-bar/horizontal-bar
+  ---
+  duration_ms: 861.992792
+  type: 'test'
+  ...
+# Subtest: renders jobs-horizontal-grouped-bar/default
+ok 187 - renders jobs-horizontal-grouped-bar/default
+  ---
+  duration_ms: 958.260458
+  type: 'test'
+  ...
+# Subtest: gradient-and-local-size preserves exact primitive SVG and PDF
+ok 188 - gradient-and-local-size preserves exact primitive SVG and PDF
+  ---
+  duration_ms: 60.306542
+  type: 'test'
+  ...
+# Subtest: recipe-opacity-0 preserves exact primitive SVG and PDF
+ok 189 - recipe-opacity-0 preserves exact primitive SVG and PDF
+  ---
+  duration_ms: 24.793458
+  type: 'test'
+  ...
+# Subtest: recipe-opacity-0-7 preserves exact primitive SVG and PDF
+ok 190 - recipe-opacity-0-7 preserves exact primitive SVG and PDF
+  ---
+  duration_ms: 12.155333
+  type: 'test'
+  ...
+# Subtest: recipe-opacity-1 preserves exact primitive SVG and PDF
+ok 191 - recipe-opacity-1 preserves exact primitive SVG and PDF
+  ---
+  duration_ms: 12.482542
+  type: 'test'
+  ...
+# Subtest: PDF normal glyph sources equal independent native PDF embedding without a color tolerance
+ok 192 - PDF normal glyph sources equal independent native PDF embedding without a color tolerance
+  ---
+  duration_ms: 1048.686417
+  type: 'test'
+  ...
+# Subtest: whole-symbol opacity has a stable literal/public PNG pair
+ok 193 - whole-symbol opacity has a stable literal/public PNG pair
+  ---
+  duration_ms: 36.264125
+  type: 'test'
+  ...
+# Subtest: renders legend-layout/gradient-and-local-size
+ok 194 - renders legend-layout/gradient-and-local-size
+  ---
+  duration_ms: 106.805625
+  type: 'test'
+  ...
+# Subtest: renders legend-recipe-opacity/recipe-opacity-0
+ok 195 - renders legend-recipe-opacity/recipe-opacity-0
+  ---
+  duration_ms: 57.013042
+  type: 'test'
+  ...
+# Subtest: renders legend-recipe-opacity/recipe-opacity-0-7
+ok 196 - renders legend-recipe-opacity/recipe-opacity-0-7
+  ---
+  duration_ms: 54.482125
+  type: 'test'
+  ...
+# Subtest: renders legend-recipe-opacity/recipe-opacity-1
+ok 197 - renders legend-recipe-opacity/recipe-opacity-1
+  ---
+  duration_ms: 62.378417
+  type: 'test'
+  ...
+# Subtest: public sample window has exact native PNG and PDF cropped-circle geometry
+ok 198 - public sample window has exact native PNG and PDF cropped-circle geometry
+  ---
+  duration_ms: 175.38625
+  type: 'test'
+  ...
+# Subtest: renders legend-content-spacing/variable-rows
+ok 199 - renders legend-content-spacing/variable-rows
+  ---
+  duration_ms: 104.964458
+  type: 'test'
+  ...
+# Subtest: content spacing remains exact at physical double density
+ok 200 - content spacing remains exact at physical double density
+  ---
+  duration_ms: 28.086125
+  type: 'test'
+  ...
+# Subtest: PDF content spacing matches the independent literal scene without tolerance
+ok 201 - PDF content spacing matches the independent literal scene without tolerance
+  ---
+  duration_ms: 103.520375
+  type: 'test'
+  ...
+# Subtest: renders linear-nearest-ticks/default
+ok 202 - renders linear-nearest-ticks/default
+  ---
+  duration_ms: 112.744292
+  type: 'test'
+  ...
+# Subtest: renders linear-nice-count/default
+ok 203 - renders linear-nice-count/default
+  ---
+  duration_ms: 88.438542
+  type: 'test'
+  ...
+# Subtest: renders linked-overlay/bar-line
+ok 204 - renders linked-overlay/bar-line
+  ---
+  duration_ms: 310.738459
+  type: 'test'
+  ...
+# Subtest: renders shared-adjacent/shared-y
+ok 205 - renders shared-adjacent/shared-y
+  ---
+  duration_ms: 470.478041
+  type: 'test'
+  ...
+# Subtest: beeswarm-box: reproducible rendered chart
+ok 206 - beeswarm-box: reproducible rendered chart
+  ---
+  duration_ms: 330.523625
+  type: 'test'
+  ...
+# Subtest: violin-box-points: reproducible rendered chart
+ok 207 - violin-box-points: reproducible rendered chart
+  ---
+  duration_ms: 240.819125
+  type: 'test'
+  ...
+# Subtest: renders lookup-data/group-means
+ok 208 - renders lookup-data/group-means
+  ---
+  duration_ms: 263.26625
+  type: 'test'
+  ...
+# Subtest: renders mark-selection-bars/bars-tallest-stack
+ok 209 - renders mark-selection-bars/bars-tallest-stack
+  ---
+  duration_ms: 393.486917
+  type: 'test'
+  ...
+# Subtest: renders mark-selection-bars/bars-topmost-segment
+ok 210 - renders mark-selection-bars/bars-topmost-segment
+  ---
+  duration_ms: 310.593542
+  type: 'test'
+  ...
+# Subtest: renders mark-selection-lines/line-series-japan
+ok 211 - renders mark-selection-lines/line-series-japan
+  ---
+  duration_ms: 541.679792
+  type: 'test'
+  ...
+# Subtest: renders mark-selection-points/points-grouped-max
+ok 212 - renders mark-selection-points/points-grouped-max
+  ---
+  duration_ms: 499.650375
+  type: 'test'
+  ...
+# Subtest: renders named-shapes/area-and-rotation
+ok 213 - renders named-shapes/area-and-rotation
+  ---
+  duration_ms: 141.462166
+  type: 'test'
+  ...
+# Subtest: named-shape SVG and PDF match the independent primitive exactly
+ok 214 - named-shape SVG and PDF match the independent primitive exactly
+  ---
+  duration_ms: 31.949292
+  type: 'test'
+  ...
+# Subtest: renders ordered-category-bar/automatic-ordered-reset
+ok 215 - renders ordered-category-bar/automatic-ordered-reset
+  ---
+  duration_ms: 729.106875
+  type: 'test'
+  ...
+# Subtest: renders pie-plot/count
+ok 216 - renders pie-plot/count
+  ---
+  duration_ms: 864.124875
+  type: 'test'
+  ...
+# Subtest: renders pie-plot/weighted
+ok 217 - renders pie-plot/weighted
+  ---
+  duration_ms: 807.425208
+  type: 'test'
+  ...
+# Subtest: renders pie-plot/donut
+ok 218 - renders pie-plot/donut
+  ---
+  duration_ms: 758.95625
+  type: 'test'
+  ...
+# Subtest: preserves Pie: category count in vector SVG and PDF
+ok 219 - preserves Pie: category count in vector SVG and PDF
+  ---
+  duration_ms: 55.186416
+  type: 'test'
+  ...
+# Subtest: preserves Pie: explicit weighted sum in vector SVG and PDF
+ok 220 - preserves Pie: explicit weighted sum in vector SVG and PDF
+  ---
+  duration_ms: 19.986
+  type: 'test'
+  ...
+# Subtest: preserves Donut: ratio and padding in vector SVG and PDF
+ok 221 - preserves Donut: ratio and padding in vector SVG and PDF
+  ---
+  duration_ms: 22.688958
+  type: 'test'
+  ...
+# Subtest: renders plot-guide-underlays/difference-bars
+ok 222 - renders plot-guide-underlays/difference-bars
+  ---
+  duration_ms: 113.3705
+  type: 'test'
+  ...
+# Subtest: opaque difference backdrop is exact and matches literal pixels at density 1
+ok 223 - opaque difference backdrop is exact and matches literal pixels at density 1
+  ---
+  duration_ms: 29.162333
+  type: 'test'
+  ...
+# Subtest: opaque difference backdrop is exact and matches literal pixels at density 2
+ok 224 - opaque difference backdrop is exact and matches literal pixels at density 2
+  ---
+  duration_ms: 48.376125
+  type: 'test'
+  ...
+# Subtest: PDF guide underlays matches the independent literal scene without tolerance
+ok 225 - PDF guide underlays matches the independent literal scene without tolerance
+  ---
+  duration_ms: 84.622792
+  type: 'test'
+  ...
+# Subtest: renders cars-origin-jitter/vertical-band
+ok 226 - renders cars-origin-jitter/vertical-band
+  ---
+  duration_ms: 416.797041
+  type: 'test'
+  ...
+# Subtest: renders gapminder-cluster-jitter/horizontal-band
+ok 227 - renders gapminder-cluster-jitter/horizontal-band
+  ---
+  duration_ms: 407.848833
+  type: 'test'
+  ...
+# Subtest: renders gapminder-population-donut/weighted-theta
+ok 228 - renders gapminder-population-donut/weighted-theta
+  ---
+  duration_ms: 735.000792
+  type: 'test'
+  ...
+# Subtest: renders cars-origin-donut/count
+ok 229 - renders cars-origin-donut/count
+  ---
+  duration_ms: 550.491833
+  type: 'test'
+  ...
+# Subtest: renders nightingale-rose-chart/overlay
+ok 230 - renders nightingale-rose-chart/overlay
+  ---
+  duration_ms: 849.779667
+  type: 'test'
+  ...
+# Subtest: renders gapminder-radial-bars/life-expectancy
+ok 231 - renders gapminder-radial-bars/life-expectancy
+  ---
+  duration_ms: 1037.021667
+  type: 'test'
+  ...
+# Subtest: renders cars-polar-guides/default
+ok 232 - renders cars-polar-guides/default
+  ---
+  duration_ms: 620.802083
+  type: 'test'
+  ...
+# Subtest: renders gapminder-polar-trends/open
+ok 233 - renders gapminder-polar-trends/open
+  ---
+  duration_ms: 820.064792
+  type: 'test'
+  ...
+# Subtest: renders jobs-radar-chart/closed
+ok 234 - renders jobs-radar-chart/closed
+  ---
+  duration_ms: 727.708333
+  type: 'test'
+  ...
+# Subtest: renders cars-polar-scatterplot/baseline
+ok 235 - renders cars-polar-scatterplot/baseline
+  ---
+  duration_ms: 429.3185
+  type: 'test'
+  ...
+# Subtest: renders fashion-tsne-polar-points/dense-negative-domain
+ok 236 - renders fashion-tsne-polar-points/dense-negative-domain
+  ---
+  duration_ms: 434.468125
+  type: 'test'
+  ...
+# Subtest: renders program-composition/example
+ok 237 - renders program-composition/example
+  ---
+  duration_ms: 515.144208
+  type: 'test'
+  ...
+# Subtest: renders program-composition/unequal-horizontal
+ok 238 - renders program-composition/unequal-horizontal
+  ---
+  duration_ms: 465.1935
+  type: 'test'
+  ...
+# Subtest: renders program-composition/nested-dashboard
+ok 239 - renders program-composition/nested-dashboard
+  ---
+  duration_ms: 927.469791
+  type: 'test'
+  ...
+# Subtest: renders program-composition/replacement
+ok 240 - renders program-composition/replacement
+  ---
+  duration_ms: 446.008125
+  type: 'test'
+  ...
+# Subtest: renders radial-sectors/rose-disk
+ok 241 - renders radial-sectors/rose-disk
+  ---
+  duration_ms: 743.798041
+  type: 'test'
+  ...
+# Subtest: renders radial-sectors/rose-hole
+ok 242 - renders radial-sectors/rose-hole
+  ---
+  duration_ms: 668.332042
+  type: 'test'
+  ...
+# Subtest: renders radial-sectors/radial-disk
+ok 243 - renders radial-sectors/radial-disk
+  ---
+  duration_ms: 678.468208
+  type: 'test'
+  ...
+# Subtest: renders radial-sectors/radial-hole
+ok 244 - renders radial-sectors/radial-hole
+  ---
+  duration_ms: 834.735833
+  type: 'test'
+  ...
+# Subtest: renders radial-sectors/radial-theta-legend-order
+ok 245 - renders radial-sectors/radial-theta-legend-order
+  ---
+  duration_ms: 707.710167
+  type: 'test'
+  ...
+# Subtest: preserves rose-disk measured geometry in SVG and PDF
+ok 246 - preserves rose-disk measured geometry in SVG and PDF
+  ---
+  duration_ms: 90.666
+  type: 'test'
+  ...
+# Subtest: preserves rose-hole measured geometry in SVG and PDF
+ok 247 - preserves rose-hole measured geometry in SVG and PDF
+  ---
+  duration_ms: 44.335625
+  type: 'test'
+  ...
+# Subtest: preserves radial-disk measured geometry in SVG and PDF
+ok 248 - preserves radial-disk measured geometry in SVG and PDF
+  ---
+  duration_ms: 42.43175
+  type: 'test'
+  ...
+# Subtest: preserves radial-hole measured geometry in SVG and PDF
+ok 249 - preserves radial-hole measured geometry in SVG and PDF
+  ---
+  duration_ms: 35.963125
+  type: 'test'
+  ...
+# Subtest: preserves radial-theta-legend-order measured geometry in SVG and PDF
+ok 250 - preserves radial-theta-legend-order measured geometry in SVG and PDF
+  ---
+  duration_ms: 57.091958
+  type: 'test'
+  ...
+# Subtest: renders raincloud-plot/vertical-box-beeswarm
+ok 251 - renders raincloud-plot/vertical-box-beeswarm
+  ---
+  duration_ms: 776.106
+  type: 'test'
+  ...
+# Subtest: renders repeat-charts/three-independent-metrics
+ok 252 - renders repeat-charts/three-independent-metrics
+  ---
+  duration_ms: 228.224
+  type: 'test'
+  ...
+# Subtest: renders series-identity/country-color
+ok 253 - renders series-identity/country-color
+  ---
+  duration_ms: 491.655875
+  type: 'test'
+  ...
+# Subtest: renders series-identity/tuple-color-dash
+ok 254 - renders series-identity/tuple-color-dash
+  ---
+  duration_ms: 528.665375
+  type: 'test'
+  ...
+# Subtest: renders series-identity/series-appearance
+ok 255 - renders series-identity/series-appearance
+  ---
+  duration_ms: 486.644625
+  type: 'test'
+  ...
+# Subtest: renders shared-facet-owner/parent-horizontal
+ok 256 - renders shared-facet-owner/parent-horizontal
+  ---
+  duration_ms: 255.06975
+  type: 'test'
+  ...
+# Subtest: encoded area window has a stable literal/public PNG pair
+ok 257 - encoded area window has a stable literal/public PNG pair
+  ---
+  duration_ms: 37.494
+  type: 'test'
+  ...
+# Subtest: renders temporal-input/timestamp
+ok 258 - renders temporal-input/timestamp
+  ---
+  duration_ms: 408.429167
+  type: 'test'
+  ...
+# Subtest: renders temporal-input/year
+ok 259 - renders temporal-input/year
+  ---
+  duration_ms: 356.421208
+  type: 'test'
+  ...
+# Subtest: renders temporal-input/auto
+ok 260 - renders temporal-input/auto
+  ---
+  duration_ms: 333.536375
+  type: 'test'
+  ...
+# Subtest: renders theta-legend-order/linked
+ok 261 - renders theta-legend-order/linked
+  ---
+  duration_ms: 1023.744833
+  type: 'test'
+  ...
+# Subtest: renders theta-legend-order/independent
+ok 262 - renders theta-legend-order/independent
+  ---
+  duration_ms: 752.299416
+  type: 'test'
+  ...
+# Subtest: preserves linked category ordering in SVG and PDF
+ok 263 - preserves linked category ordering in SVG and PDF
+  ---
+  duration_ms: 62.72
+  type: 'test'
+  ...
+# Subtest: preserves independent category ordering in SVG and PDF
+ok 264 - preserves independent category ordering in SVG and PDF
+  ---
+  duration_ms: 32.711125
+  type: 'test'
+  ...
+# Subtest: renders time-unit-data/month-bucketing
+ok 265 - renders time-unit-data/month-bucketing
+  ---
+  duration_ms: 517.534083
+  type: 'test'
+  ...
+1..265
+# tests 265
+# suites 0
+# pass 265
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 38966.477875

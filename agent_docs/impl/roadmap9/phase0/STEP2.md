@@ -4,10 +4,10 @@
 
 - [x] 계약과 기존 소유자 확인
 - [x] 구현 및 focused 검증
-- [ ] 누적 검증 및 실제 증거 저장
-- [ ] 커밋·push와 인계 기록
+- [x] 누적 검증 및 실제 증거 저장
+- [x] 구현 커밋·push 및 완료 인계 기록 작성
 
-상태: implemented. 원안 STEP-002에 대응한다. Phase 누적 검증과 증거 인계는 STEP3에서 종료한다.
+상태: complete. 원안 STEP-002에 대응한다. Phase 누적 검증 및 증거 검사를 통과했다.
 
 ## 구현
 
@@ -18,3 +18,8 @@
 - focused: `node scripts/run-tests.js all unit/oracles contracts/oracle-independence.test.js contracts/test-discovery.test.js`.
 
 공개 action·타입·저장·renderer 변경은 없다. `test/README.md`에 실행 계약과 적용 범위를 문서화했다.
+
+## 완료 증거
+
+구현 checkpoint: `e15dfbb929533fb24a613dc3f9fe5f79f2a1869d`. 누적 검증 commit: `2e36f4ea168426add1444fdcf28f317ab75a72f9`.
+[완료 manifest](progress/STEP-002.json), [검증 결과](results.json), [재현 절차](GOAL.md)를 확인한다.

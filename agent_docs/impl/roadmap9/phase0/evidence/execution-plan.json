@@ -1,0 +1,623 @@
+{
+  "schemaVersion": 1,
+  "source": "study/coverage-expansion-2026-10-27/roadmap/plan.json",
+  "finalTask": "STEP-077",
+  "tasks": [
+    {
+      "id": "STEP-001",
+      "dependsOn": [],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-001-baseline.ko.md",
+      "requiredChecks": [
+        "suite-all",
+        "suite-browser",
+        "suite-render",
+        "test-render",
+        "test-package",
+        "package-check",
+        "metadata-check"
+      ],
+      "requiredGates": []
+    },
+    {
+      "id": "STEP-002",
+      "dependsOn": [
+        "STEP-001"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-002-oracle-harness.ko.md",
+      "requiredChecks": [
+        "suite-all",
+        "suite-browser",
+        "suite-render",
+        "test-render",
+        "test-package",
+        "package-check",
+        "metadata-check"
+      ],
+      "requiredGates": []
+    },
+    {
+      "id": "STEP-003",
+      "dependsOn": [
+        "STEP-002"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-003-test-discovery.ko.md",
+      "requiredChecks": [
+        "suite-all",
+        "suite-browser",
+        "suite-render",
+        "test-render",
+        "test-package",
+        "package-check",
+        "metadata-check"
+      ],
+      "requiredGates": []
+    },
+    {
+      "id": "STEP-004",
+      "dependsOn": [
+        "STEP-003"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-004-row-identity.ko.md"
+    },
+    {
+      "id": "STEP-005",
+      "dependsOn": [
+        "STEP-004"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-005-derived-lineage.ko.md"
+    },
+    {
+      "id": "STEP-006",
+      "dependsOn": [
+        "STEP-005"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-006-scene-identity.ko.md"
+    },
+    {
+      "id": "STEP-007",
+      "dependsOn": [
+        "STEP-006"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-007-resource-registry.ko.md"
+    },
+    {
+      "id": "STEP-008",
+      "dependsOn": [
+        "STEP-007"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-008-resource-lifecycle.ko.md"
+    },
+    {
+      "id": "STEP-009",
+      "dependsOn": [
+        "STEP-008"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-009-schema-migration.ko.md"
+    },
+    {
+      "id": "STEP-010",
+      "dependsOn": [
+        "STEP-009"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-010-compound-path.ko.md"
+    },
+    {
+      "id": "STEP-011",
+      "dependsOn": [
+        "STEP-010"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-011-geometry-math.ko.md"
+    },
+    {
+      "id": "STEP-012",
+      "dependsOn": [
+        "STEP-011"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-012-compound-render.ko.md"
+    },
+    {
+      "id": "STEP-013",
+      "dependsOn": [
+        "STEP-009"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-013-expression-ast.ko.md"
+    },
+    {
+      "id": "STEP-014",
+      "dependsOn": [
+        "STEP-013"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-014-statistics-oracles.ko.md"
+    },
+    {
+      "id": "STEP-015",
+      "dependsOn": [
+        "STEP-014"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-015-time-transform.ko.md"
+    },
+    {
+      "id": "STEP-016",
+      "dependsOn": [
+        "STEP-015"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-016-conditional-dataflow.ko.md"
+    },
+    {
+      "id": "STEP-017",
+      "dependsOn": [
+        "STEP-009",
+        "STEP-012"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-017-paint-resources.ko.md"
+    },
+    {
+      "id": "STEP-018",
+      "dependsOn": [
+        "STEP-017"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-018-image-resolver.ko.md"
+    },
+    {
+      "id": "STEP-019",
+      "dependsOn": [
+        "STEP-018"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-019-font-metrics.ko.md"
+    },
+    {
+      "id": "STEP-020",
+      "dependsOn": [
+        "STEP-006",
+        "STEP-012",
+        "STEP-016"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-020-hierarchy-layouts.ko.md"
+    },
+    {
+      "id": "STEP-021",
+      "dependsOn": [
+        "STEP-020"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-021-graph-layouts.ko.md"
+    },
+    {
+      "id": "STEP-022",
+      "dependsOn": [
+        "STEP-021"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-022-flow-layouts.ko.md"
+    },
+    {
+      "id": "STEP-023",
+      "dependsOn": [
+        "STEP-022"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-023-contour-layouts.ko.md"
+    },
+    {
+      "id": "STEP-024",
+      "dependsOn": [
+        "STEP-023"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-024-calendar-layout.ko.md"
+    },
+    {
+      "id": "STEP-025",
+      "dependsOn": [
+        "STEP-006",
+        "STEP-009",
+        "STEP-012",
+        "STEP-016"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-025-partition-values.ko.md"
+    },
+    {
+      "id": "STEP-026",
+      "dependsOn": [
+        "STEP-025"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-026-partition-intervals.ko.md"
+    },
+    {
+      "id": "STEP-027",
+      "dependsOn": [
+        "STEP-026"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-027-partition-marks.ko.md"
+    },
+    {
+      "id": "STEP-028",
+      "dependsOn": [
+        "STEP-027"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-028-partition-navigation.ko.md"
+    },
+    {
+      "id": "STEP-029",
+      "dependsOn": [
+        "STEP-006",
+        "STEP-009",
+        "STEP-016"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-029-graph-metrics.ko.md"
+    },
+    {
+      "id": "STEP-030",
+      "dependsOn": [
+        "STEP-029"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-030-graph-neighbors.ko.md"
+    },
+    {
+      "id": "STEP-031",
+      "dependsOn": [
+        "STEP-030"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-031-graph-rules.ko.md"
+    },
+    {
+      "id": "STEP-032",
+      "dependsOn": [
+        "STEP-031"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-032-graph-search-revision.ko.md"
+    },
+    {
+      "id": "STEP-033",
+      "dependsOn": [
+        "STEP-009",
+        "STEP-019"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-033-theme-precedence.ko.md"
+    },
+    {
+      "id": "STEP-034",
+      "dependsOn": [
+        "STEP-033"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-034-layout-solver.ko.md"
+    },
+    {
+      "id": "STEP-035",
+      "dependsOn": [
+        "STEP-034"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-035-nested-composition.ko.md"
+    },
+    {
+      "id": "STEP-036",
+      "dependsOn": [
+        "STEP-012",
+        "STEP-024",
+        "STEP-028",
+        "STEP-032"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-036-route-resource.ko.md"
+    },
+    {
+      "id": "STEP-037",
+      "dependsOn": [
+        "STEP-036"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-037-hierarchical-bundling.ko.md"
+    },
+    {
+      "id": "STEP-038",
+      "dependsOn": [
+        "STEP-037"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-038-force-edge-bundling.ko.md"
+    },
+    {
+      "id": "STEP-039",
+      "dependsOn": [
+        "STEP-038"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-039-density-bundling.ko.md"
+    },
+    {
+      "id": "STEP-040",
+      "dependsOn": [
+        "STEP-039"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-040-edge-path-bundling.ko.md"
+    },
+    {
+      "id": "STEP-041",
+      "dependsOn": [
+        "STEP-040"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-041-bundling-consumers.ko.md"
+    },
+    {
+      "id": "STEP-042",
+      "dependsOn": [
+        "STEP-006",
+        "STEP-012",
+        "STEP-019",
+        "STEP-035"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-042-geometry-data.ko.md"
+    },
+    {
+      "id": "STEP-043",
+      "dependsOn": [
+        "STEP-042"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-043-projection-kernels.ko.md"
+    },
+    {
+      "id": "STEP-044",
+      "dependsOn": [
+        "STEP-043"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-044-geo-stream.ko.md"
+    },
+    {
+      "id": "STEP-045",
+      "dependsOn": [
+        "STEP-044"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-045-geo-join-lod.ko.md"
+    },
+    {
+      "id": "STEP-046",
+      "dependsOn": [
+        "STEP-045"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-046-geo-camera.ko.md"
+    },
+    {
+      "id": "STEP-047",
+      "dependsOn": [
+        "STEP-006",
+        "STEP-012",
+        "STEP-035"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-047-hit-shapes.ko.md"
+    },
+    {
+      "id": "STEP-048",
+      "dependsOn": [
+        "STEP-047"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-048-hit-index.ko.md"
+    },
+    {
+      "id": "STEP-049",
+      "dependsOn": [
+        "STEP-048"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-049-hit-frame.ko.md"
+    },
+    {
+      "id": "STEP-050",
+      "dependsOn": [
+        "STEP-009",
+        "STEP-035"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-050-single-y-policy.ko.md"
+    },
+    {
+      "id": "STEP-051",
+      "dependsOn": [
+        "STEP-050"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-051-native-api-policy.ko.md"
+    },
+    {
+      "id": "STEP-052",
+      "dependsOn": [
+        "STEP-051"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-052-native-boundaries.ko.md"
+    },
+    {
+      "id": "STEP-053",
+      "dependsOn": [
+        "STEP-016",
+        "STEP-035",
+        "STEP-024",
+        "STEP-028",
+        "STEP-041",
+        "STEP-052"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-053-pyramid-ohlc-waterfall.ko.md"
+    },
+    {
+      "id": "STEP-054",
+      "dependsOn": [
+        "STEP-053"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-054-trail-native-variants.ko.md"
+    },
+    {
+      "id": "STEP-055",
+      "dependsOn": [
+        "STEP-054"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-055-table-sparkline.ko.md"
+    },
+    {
+      "id": "STEP-056",
+      "dependsOn": [
+        "STEP-055"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-056-composition-recipes.ko.md"
+    },
+    {
+      "id": "STEP-057",
+      "dependsOn": [
+        "STEP-009",
+        "STEP-016",
+        "STEP-049",
+        "STEP-028",
+        "STEP-032",
+        "STEP-041",
+        "STEP-052"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-057-selection-state.ko.md"
+    },
+    {
+      "id": "STEP-058",
+      "dependsOn": [
+        "STEP-057"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-058-gesture-controller.ko.md"
+    },
+    {
+      "id": "STEP-059",
+      "dependsOn": [
+        "STEP-058"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-059-brush-lasso.ko.md"
+    },
+    {
+      "id": "STEP-060",
+      "dependsOn": [
+        "STEP-059"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-060-linked-direct-controls.ko.md"
+    },
+    {
+      "id": "STEP-061",
+      "dependsOn": [
+        "STEP-006",
+        "STEP-012",
+        "STEP-035",
+        "STEP-046",
+        "STEP-049",
+        "STEP-028",
+        "STEP-032",
+        "STEP-041",
+        "STEP-052"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-061-transition-plan.ko.md"
+    },
+    {
+      "id": "STEP-062",
+      "dependsOn": [
+        "STEP-061"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-062-transition-sampler.ko.md"
+    },
+    {
+      "id": "STEP-063",
+      "dependsOn": [
+        "STEP-062"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-063-animation-player.ko.md"
+    },
+    {
+      "id": "STEP-064",
+      "dependsOn": [
+        "STEP-063"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-064-animation-envelope.ko.md"
+    },
+    {
+      "id": "STEP-065",
+      "dependsOn": [
+        "STEP-035",
+        "STEP-046",
+        "STEP-060"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-065-session-transactions.ko.md"
+    },
+    {
+      "id": "STEP-066",
+      "dependsOn": [
+        "STEP-065"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-066-session-events.ko.md"
+    },
+    {
+      "id": "STEP-067",
+      "dependsOn": [
+        "STEP-066"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-067-session-lifecycle.ko.md"
+    },
+    {
+      "id": "STEP-068",
+      "dependsOn": [
+        "STEP-019",
+        "STEP-060",
+        "STEP-067",
+        "STEP-064"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-068-accessible-interactions.ko.md"
+    },
+    {
+      "id": "STEP-069",
+      "dependsOn": [
+        "STEP-068"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-069-export-restore.ko.md"
+    },
+    {
+      "id": "STEP-070",
+      "dependsOn": [
+        "STEP-069",
+        "STEP-056"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-070-cross-feature-integration.ko.md"
+    },
+    {
+      "id": "STEP-071",
+      "dependsOn": [
+        "STEP-070"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-071-performance-qualification.ko.md"
+    },
+    {
+      "id": "STEP-072",
+      "dependsOn": [
+        "STEP-071"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-072-package-consumers.ko.md"
+    },
+    {
+      "id": "STEP-073",
+      "dependsOn": [
+        "STEP-072"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-073-human-agent-docs.ko.md"
+    },
+    {
+      "id": "STEP-074",
+      "dependsOn": [
+        "STEP-003",
+        "STEP-070",
+        "STEP-073",
+        "STEP-028",
+        "STEP-032",
+        "STEP-041",
+        "STEP-052"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-074-native-qualification.ko.md"
+    },
+    {
+      "id": "STEP-075",
+      "dependsOn": [
+        "STEP-074"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-075-independent-review.ko.md"
+    },
+    {
+      "id": "STEP-076",
+      "dependsOn": [
+        "STEP-075"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-076-release-candidate.ko.md"
+    },
+    {
+      "id": "STEP-077",
+      "dependsOn": [
+        "STEP-076"
+      ],
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-077-published-release.ko.md"
+    }
+  ]
+}

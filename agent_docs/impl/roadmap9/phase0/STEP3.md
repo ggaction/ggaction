@@ -4,10 +4,10 @@
 
 - [x] 계약과 기존 소유자 확인
 - [x] 구현 및 focused 검증
-- [ ] 누적 검증 및 실제 증거 저장
-- [ ] 커밋·push와 인계 기록
+- [x] 누적 검증 및 실제 증거 저장
+- [x] 구현 커밋·push 및 완료 인계 기록 작성
 
-상태: implemented. 원안 STEP-003에 대응한다. Phase 누적 검증은 구현 commit 이후 실행한다.
+상태: complete. 원안 STEP-003에 대응한다. 구현 commit 이후 Phase 누적 검증을 실행하여 통과했다.
 
 ## 구현
 
@@ -22,3 +22,8 @@
 `execution-plan.json`의 첫 세 task에 requiredChecks를 고정했다. 일반·브라우저·render·설치 패키지·package budget·해당 metadata/type 검사를 실행하여 실제 증거로 완료 기록을 만든다. 작업 로그는 `.artifacts/verification/` 및 `.artifacts/checks/`에 저장한다.
 
 새 API·저장 schema·시각 결과가 없어 별도 Gate가 필요하지 않다. 후속 G-CORE는 이 Phase의 승인으로 간주하지 않는다.
+
+## 완료 증거
+
+구현 checkpoint: `2e36f4ea168426add1444fdcf28f317ab75a72f9`. 누적 검증 commit: `2e36f4ea168426add1444fdcf28f317ab75a72f9`.
+[완료 manifest](progress/STEP-003.json), [검증 결과](results.json), [재현 절차](GOAL.md)를 확인한다.

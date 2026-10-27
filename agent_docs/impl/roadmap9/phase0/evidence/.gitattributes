@@ -1,0 +1,2 @@
+# Preserve hashed execution output exactly, including diagnostic whitespace.
+*.log -text -whitespace

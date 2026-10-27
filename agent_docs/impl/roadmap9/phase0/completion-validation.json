@@ -1,0 +1,10 @@
+{
+  "complete": [
+    "STEP-001",
+    "STEP-002",
+    "STEP-003"
+  ],
+  "ready": [
+    "STEP-004"
+  ]
+}

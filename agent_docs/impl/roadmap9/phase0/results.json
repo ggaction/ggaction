@@ -1,0 +1,104 @@
+{
+  "implementationCommit": "2e36f4ea168426add1444fdcf28f317ab75a72f9",
+  "checks": {
+    "suite-all": {
+      "exitCode": 0,
+      "durationMs": 250595,
+      "node": "v22.23.1",
+      "platform": "darwin",
+      "arch": "arm64",
+      "counts": {
+        "tests": 6298,
+        "pass": 6298,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "discoveredFiles": 1036,
+      "truncated": false
+    },
+    "suite-browser": {
+      "exitCode": 0,
+      "durationMs": 111505,
+      "node": "v22.23.1",
+      "platform": "darwin",
+      "arch": "arm64",
+      "counts": {
+        "tests": 295,
+        "pass": 295,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "discoveredFiles": 35,
+      "truncated": false
+    },
+    "suite-render": {
+      "exitCode": 0,
+      "durationMs": 39066,
+      "node": "v22.23.1",
+      "platform": "darwin",
+      "arch": "arm64",
+      "counts": {
+        "tests": 265,
+        "pass": 265,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "discoveredFiles": 106,
+      "truncated": false
+    },
+    "test-render": {
+      "exitCode": 0,
+      "durationMs": 51532,
+      "node": "v22.23.1",
+      "platform": "darwin",
+      "arch": "arm64",
+      "counts": {
+        "tests": 265,
+        "pass": 265,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "discoveredFiles": 0,
+      "truncated": false
+    },
+    "test-package": {
+      "exitCode": 0,
+      "durationMs": 60986,
+      "node": "v22.23.1",
+      "platform": "darwin",
+      "arch": "arm64",
+      "counts": {},
+      "discoveredFiles": 0,
+      "truncated": false
+    },
+    "package-check": {
+      "exitCode": 0,
+      "durationMs": 1792,
+      "node": "v22.23.1",
+      "platform": "darwin",
+      "arch": "arm64",
+      "counts": {},
+      "discoveredFiles": 0,
+      "truncated": false
+    },
+    "metadata-check": {
+      "exitCode": 0,
+      "durationMs": 521,
+      "node": "v22.23.2",
+      "platform": "darwin",
+      "arch": "arm64",
+      "counts": {},
+      "discoveredFiles": 0,
+      "truncated": false
+    }
+  },
+  "runtimeChanged": false
+}

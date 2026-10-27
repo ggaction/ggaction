@@ -4,10 +4,10 @@
 
 - [x] 계약과 기존 소유자 확인
 - [x] 구현 및 focused 검증
-- [ ] 누적 검증 및 실제 증거 저장
-- [ ] 커밋·push와 인계 기록
+- [x] 누적 검증 및 실제 증거 저장
+- [x] 구현 커밋·push 및 완료 인계 기록 작성
 
-상태: implemented. 원안 STEP-001에 대응한다. Phase 누적 검증과 증거 인계는 STEP3에서 종료한다.
+상태: complete. 원안 STEP-001에 대응한다. Phase 누적 검증 및 증거 검사를 통과했다.
 
 ## 구현
 
@@ -19,3 +19,8 @@
 ## 적용 경계
 
 공개 action·타입·저장 형식·renderer 변경 없음. 관련 current contract 및 generated docs 변경은 불필요하다. 기존 source-map 기준은 보존하고 drift를 기록한다. 기존 동작의 누적 regression은 Phase 종료 검사로 확인한다.
+
+## 완료 증거
+
+구현 checkpoint: `e3c6fa0ff890dab37d7c4ccc409a2762c0dd079a`. 누적 검증 commit: `2e36f4ea168426add1444fdcf28f317ab75a72f9`.
+[완료 manifest](progress/STEP-001.json), [검증 결과](results.json), [재현 절차](GOAL.md)를 확인한다.
