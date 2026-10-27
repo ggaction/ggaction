@@ -7,13 +7,13 @@
 - [x] 저장 형식 1/2/3의 고정 입력과 fresh-process 호환성 시험
 - [x] API·저장 schema·소비자·호환성 검토안 작성
 - [x] 누적 검증 및 원격 evidence checkpoint
-- [ ] G-CORE 명시 승인
+- [x] G-CORE 명시 승인 (2026-10-27, 사용자 “승인한다”)
 - [ ] production kernel과 createData/reviseData 연결
 - [ ] current contracts·types·generated docs 및 모든 적용 소비자 연결
 - [ ] 실제 제품 actual과 oracle 비교, atomicity·renderer·package 검증 후 complete
 
 상태 in-progress. independent oracle의 통과를 STEP-004 complete로 기록하지 않는다.
-[DESIGN](DESIGN.md)의 D1–D8이 G-CORE 승인 대상이며 현재 product call은 변경되지 않았다.
+[DESIGN](DESIGN.md)의 D1–D8이 승인되었으며 현재 product call은 아직 변경되지 않았다.
 [기계 판독 진행 기록](progress/STEP-004.json)과 [실행 집계](evidence/summary.json)를 함께 읽는다.
 
 ## 검토 준비에서 구현한 것
@@ -25,7 +25,7 @@
 - `test/unit/persistence/legacy-selection.test.js`: literal b 선택, tagged scalar, shared array,
   원본 concrete output 보존, current edit/remove, fresh process, malformed input 거부.
 
-## 승인 후 첫 구현
+## 승인된 첫 구현
 
 새 core/itemIdentity owner를 만들기 전에 기존 typed lookup/ordering과 중복 가능성을 확인한다.
 순수 codec·allocation actual을 독립 reference와 비교한 뒤 wrapped createData/reviseData에 연결한다.

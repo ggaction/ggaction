@@ -1,10 +1,10 @@
 # G-CORE — ID·lineage·resource·schema 4 검토안
 
-상태: **제안, 미승인, 제품 미구현**. [Gate 기록](G-CORE.json)이 승인과 검증 revision을 소유한다.
+상태: **D1–D8 승인, 제품 구현 진행 중**. [Gate 기록](G-CORE.json)이 승인과 검증 revision을 소유한다.
 기존 [core 원안](../../../../study/coverage-expansion-2026-10-27/roadmap/contracts/core.ko.md)을 현재 코드와 대조하여
 빠져 있던 옵션·분기·이전 형식 처리를 구체화했다. 이 문서는 Current 계약을 변경하지 않는다.
 
-## 승인할 결정
+## 승인된 결정
 
 | 결정 | 권고안 | 현재와의 차이 |
 |---|---|---|
@@ -21,7 +21,7 @@
 
 ## 정확한 호출과 옵션
 
-다음은 **승인 후 구현할 호출**이다. 현재 런타임에서는 신규 옵션이 거부된다.
+다음은 **승인된 구현 대상 호출**이다. 현재 런타임에서는 신규 옵션이 거부된다.
 
 ```js
 const before = chart().createData({

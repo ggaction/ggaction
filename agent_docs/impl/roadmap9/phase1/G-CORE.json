@@ -1,6 +1,6 @@
 {
   "id": "G-CORE",
-  "state": "ready-for-review",
+  "state": "approved",
   "scope": [
     "STEP-004",
     "STEP-005",
@@ -22,7 +22,13 @@
   ],
   "authorization": {
     "preparation": "User: 진행해, following the proposal to prepare the G-CORE review package.",
-    "designApproval": null
+    "designApproval": {
+      "date": "2026-10-27",
+      "userMessage": "승인한다",
+      "approvedQuestion": "검토안 D1–D8대로 STEP-004–009 제품 구현을 이어가도 될까요?",
+      "reviewCommit": "96971d21ce5c4d4baf2072cb22f5a991dd2e9b02",
+      "scope": "DESIGN.md D1-D8; STEP-004 through STEP-009 product implementation"
+    }
   },
   "codeRevision": "129a506dfd2fc2455b7de949d73fdd6cf34e27a5",
   "evidenceRevision": "sha256:d3ac78b242b3792c40a3a5535171f2f8447ddb83f9c98cce98e6db804d470e52",
@@ -34,10 +40,9 @@
     "machine-docs"
   ],
   "remaining": [
-    "Explicit approval of D1-D8",
     "Production STEP-004 through STEP-009 and their consumer checks"
   ],
-  "notice": "Evidence revision is the immutable manifest digest. Design approval is still absent; no product STEP is complete.",
+  "notice": "D1-D8 explicitly approved; product implementation and consumer verification remain open.",
   "reviewPreparation": {
     "complete": [
       "CORE-REVIEW-PREPARATION"

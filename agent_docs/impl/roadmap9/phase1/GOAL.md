@@ -1,7 +1,7 @@
 # Phase 1 — 안정적인 ID와 공통 리소스 기반
 
-상태: **진행 중**. 사용자 “진행해”는 이전 응답의 G-CORE 검토 자료 준비와 독립 작업을 승인한다.
-아직 보지 않은 옵션·저장 schema의 상세 승인으로 기록하지 않는다.
+상태: **진행 중**. 사용자 “승인한다” (2026-10-27)는 원격 검토 revision `96971d21`의
+D1–D8과 STEP-004–009 제품 구현을 명시 승인한다. 정확한 승인 증거는 [G-CORE](G-CORE.json)에 기록한다.
 
 ## 범위와 Gate
 
@@ -12,18 +12,18 @@ API/소유권/복원 검토 패키지를 준비했다. **제품 row identity 및
 - [G-CORE 설계](DESIGN.md): 승인 대상 옵션·상태·오류·호환성·분기 규칙
 - [G-CORE 기록](G-CORE.json): 승인 상태와 code/evidence revision
 - [consumer matrix](consumers.json): 모든 적용 경로와 아직 남은 연결
-- [STEP-004 진행 기록](progress/STEP-004.json): 제품 작업은 in-progress, 구현·승인 의무 미종료
+- [STEP-004 진행 기록](progress/STEP-004.json): 제품 작업은 in-progress, 구현·검증 의무 미종료
 
 요구 근거는 [root AGENTS](../../../../AGENTS.md)의
 “Before implementing an unresolved material decision about public APIs, persisted schemas, or core architecture, present the concrete proposal and obtain explicit user approval.”이다.
-[impl AGENTS](../../AGENTS.md)에 따라 검토 source와 evidence를 commit/push한 뒤 승인 요청한다.
-독립 작업은 계속하고, 미승인 결정에 의존하는 제품 state/API 수정만 대기한다.
+[impl AGENTS](../../AGENTS.md)에 따라 검토 source와 evidence를 commit/push한 뒤 승인을 받았다.
+승인된 state/API 구현과 적용 소비자 검증을 계속한다.
 
 ## 단계와 실행 조건
 
 | 작업 | 현재 상태 | 완료에 필요한 것 |
 |---|---|---|
-| STEP-004 | in-progress | G-CORE 승인, product key owner, create/revise·소비자·타입·문서 |
+| STEP-004 | in-progress | product key owner, create/revise·소비자·타입·문서 |
 | STEP-005 | planned | 모든 transform의 final-grain lineage |
 | STEP-006 | planned | scene/selection/inspection identity와 revision 연결 |
 | STEP-007 | planned | resource schema, typed selectors, reference DAG |
@@ -61,7 +61,8 @@ fixture 재현은 검토 code revision을 checkout한 뒤 `node agent_docs/impl/
 [실행 집계](evidence/summary.json), [완료 증거](preparation.json), [검증 결과](preparation-validation.json)를 보존한다.
 Focused와 문서 검사는 Node 22.23.2, 전체 일반 검사는 storage wrapper의 Node 22.23.1/darwin/arm64에서 실행했다.
 원본 로그는 각 2MiB 이내이고 모두 truncated=false다. 저장 공간 감시기는 near-limit 경고 후 exit 0으로 완료했다.
-G-CORE는 ready-for-review이며 승인되지 않았다. 완료된 범위는 CORE-REVIEW-PREPARATION뿐이다.
+위 검증은 승인 전 검토 준비의 증거이며 제품 구현 완료 증거가 아니다.
+G-CORE는 이후 명시 승인되었고, 완료된 구현 범위는 여전히 CORE-REVIEW-PREPARATION뿐이다.
 
 저장한 증거는 다음 명령으로 다시 검증한다. 이 명령은 test를 다시 실행하거나 Gate를 승인하지 않는다.
 
