@@ -1,0 +1,96 @@
+{
+  "passed": true,
+  "checks": [
+    "caller input ownership",
+    "immutable branch",
+    "unchanged dataset sharing",
+    "editable SVG round trip",
+    "graphic-only SVG round trip",
+    "primitive semantic edit does not materialize",
+    "domain encoding materializes",
+    "atomic rejection",
+    "derived regression data revision",
+    "facet and concat rendering",
+    "scene cache and structured clone"
+  ],
+  "descriptorBoundary": {
+    "applicability": "supported",
+    "execution": {
+      "name": "execution",
+      "status": "not_run",
+      "evidencePaths": [],
+      "findings": []
+    },
+    "actualRejection": "Point opacity must be between 0 and 1 (values from 0 to 1)."
+  },
+  "scene": {
+    "version": 2,
+    "nodes": 33
+  },
+  "outputs": {
+    "base": {
+      "width": 600,
+      "height": 360,
+      "pngBytes": 5477,
+      "traceTopLevel": [
+        "createCanvas",
+        "createData",
+        "createScatterPlot"
+      ]
+    },
+    "branch": {
+      "width": 600,
+      "height": 360,
+      "pngBytes": 5825,
+      "traceTopLevel": [
+        "createCanvas",
+        "createData",
+        "createScatterPlot",
+        "editPointMark",
+        "editXScale"
+      ]
+    },
+    "regression": {
+      "width": 600,
+      "height": 360,
+      "pngBytes": 13361,
+      "traceTopLevel": [
+        "createCanvas",
+        "createData",
+        "createScatterPlot",
+        "createRegression"
+      ]
+    },
+    "revised": {
+      "width": 600,
+      "height": 360,
+      "pngBytes": 13493,
+      "traceTopLevel": [
+        "createCanvas",
+        "createData",
+        "createScatterPlot",
+        "createRegression",
+        "reviseData"
+      ]
+    },
+    "facet": {
+      "width": 1250,
+      "height": 360,
+      "pngBytes": 7337,
+      "traceTopLevel": [
+        "createCanvas",
+        "createData",
+        "createScatterPlot",
+        "facet"
+      ]
+    },
+    "composition": {
+      "width": 1230,
+      "height": 360,
+      "pngBytes": 8776,
+      "traceTopLevel": [
+        "hconcat"
+      ]
+    }
+  }
+}

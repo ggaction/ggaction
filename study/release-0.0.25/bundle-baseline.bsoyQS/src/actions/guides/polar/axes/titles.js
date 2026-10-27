@@ -1,0 +1,197 @@
+import { withGuideLayoutValidation } from "../../../../materialization/guides/layout.js";
+import { axisThemeTypography } from "../../../theme/state.js";
+import { action } from "../../../../core/action.js";
+import { resolveTextLines } from "../../../../core/textMetrics.js";
+import { materializeTextLines } from "../../../../materialization/textLines.js";
+import {
+  validateNonEmptyString,
+  validateNonNegativeFinite
+} from "../../../../core/validation.js";
+import {
+  resolveRadialAxisTitle,
+  resolveThetaAxisTitle
+} from "../../../../grammar/polarGuides.js";
+import { resolvePlotGraphicPlacement } from
+  "../../../../materialization/graphicHierarchy.js";
+import { assertPolarTextLayout } from "../../../../layout/labels.js";
+import { inferAxisTitleText } from "../../axes/titles.js";
+import {
+  POLAR_AXIS_DEFAULTS,
+  polarGuideNames,
+  resolvePolarFrameForProgram,
+  validatePolarTextStyle
+} from "../resolve.js";
+import {
+  componentResources,
+  operations,
+  prefix,
+  resolveAngle,
+  TITLE_CREATE_OPTIONS,
+  TITLE_EDIT_OPTIONS,
+  validateComponentCreateArgs,
+  validateObject,
+  withAxisSemantics
+} from "./shared.js";
+
+function titleGeometry(program, kind, config, angle = resolveAngle(program, kind, {})) {
+  const frame = resolvePolarFrameForProgram(program, config.coordinate);
+  const geometry = kind === "theta"
+    ? resolveThetaAxisTitle({ frame, offset: config.offset })
+    : resolveRadialAxisTitle({
+        frame,
+        angle,
+        offset: config.offset,
+        position: config.position
+      });
+  return config.align === undefined ? geometry : { ...geometry, textAlign: config.align };
+}
+
+function validateTitleGeometry(program, kind, config, geometry, text) {
+  assertPolarTextLayout({
+    canvas: program.graphicSpec.objects.canvas,
+    label: `${prefix(kind)} axis title`,
+    items: [{
+      ...geometry,
+      text,
+      lines: titleLines(text, config, geometry),
+      fontSize: config.fontSize,
+      fontFamily: config.fontFamily,
+      fontWeight: config.fontWeight
+    }]
+  }, program.materializationConfigs.textMetrics);
+}
+
+function titleLines(text, config, geometry) {
+  const lines = resolveTextLines(text, { fontSize: config.fontSize,
+    align: geometry.textAlign, baseline: geometry.textBaseline, blockAlign: "middle" });
+  return lines.length > 1 ? lines : undefined;
+}
+
+function resolveTitleConfig(program, kind, args, resources, previous) {
+  const typography = axisThemeTypography(program.materializationConfigs.theme, "title");
+  const config = {
+    ...(previous ?? {}),
+    ...(Object.hasOwn(args, "align") ? { align: args.align } : {}),
+    scale: resources.scale,
+    coordinate: resources.coordinate,
+    inferredText: previous?.inferredText ?? !Object.hasOwn(args, "text"),
+    offset: args.offset ?? previous?.offset ?? (kind === "theta"
+      ? POLAR_AXIS_DEFAULTS.title.thetaOffset
+      : POLAR_AXIS_DEFAULTS.title.radiusOffset),
+    color: args.color ?? previous?.color ?? POLAR_AXIS_DEFAULTS.title.color,
+    fontSize: args.fontSize ?? previous?.fontSize ?? typography.fontSize ??
+      POLAR_AXIS_DEFAULTS.title.fontSize,
+    fontFamily: args.fontFamily ?? previous?.fontFamily ?? typography.fontFamily ??
+      POLAR_AXIS_DEFAULTS.title.fontFamily,
+    fontWeight: args.fontWeight ?? previous?.fontWeight ??
+      POLAR_AXIS_DEFAULTS.title.fontWeight
+  };
+  if (kind === "theta" && Object.hasOwn(args, "position")) {
+    throw new Error("Theta axis title does not support position.");
+  }
+  if (kind === "radius") {
+    config.position = args.position ?? previous?.position ?? "inside";
+    if (!["inside", "outside"].includes(config.position)) {
+      throw new Error(
+        `Unknown radial-axis title position "${config.position}".`
+      );
+    }
+  }
+  if (Object.hasOwn(args, "text")) config.inferredText = false;
+  validateNonNegativeFinite(config.offset, "Polar axis title offset");
+  validatePolarTextStyle(config, `${prefix(kind)} axis title`);
+  return config;
+}
+
+function makeEditTitle(kind) {
+  const operation = operations(kind, "Title");
+  return action({
+    op: operation.edit,
+    description: `Edit the Polar ${kind}-axis title.`
+  }, withGuideLayoutValidation(function (args = {}) {
+    validateObject(args, TITLE_EDIT_OPTIONS, operation.edit);
+    const names = polarGuideNames(kind);
+    const previous = this.guideConfigs.axis?.[kind]?.title;
+    if (this.graphicSpec.objects[names.title]?.type !== "text" ||
+        previous === undefined) {
+      throw new Error(`${operation.edit} requires an existing axis title.`);
+    }
+    const resources = {
+      scale: previous.scale,
+      coordinate: previous.coordinate
+    };
+    const config = resolveTitleConfig(this, kind, args, resources, previous);
+    const text = Object.hasOwn(args, "text")
+      ? validateNonEmptyString(args.text, "Polar axis title text")
+      : config.inferredText
+        ? inferAxisTitleText(this, polarGuideNames(kind).channel, config.scale)
+        : this.semanticSpec.guides.axis?.[kind]?.title;
+    const geometry = titleGeometry(this, kind, config);
+    validateTitleGeometry(this, kind, config, geometry, text);
+    let next = this;
+    if (text !== this.semanticSpec.guides.axis?.[kind]?.title) {
+      next = next.editSemantic({
+        property: `guide.axis.${kind}.title`,
+        value: text
+      });
+    }
+    next = next._withGuideConfig(kind, "title", config);
+    const properties = {
+      ...geometry,
+      text,
+      fill: config.color,
+      fontSize: config.fontSize,
+      fontFamily: config.fontFamily,
+      fontWeight: config.fontWeight
+    };
+    for (const [property, value] of Object.entries(properties)) {
+      next = next.editGraphics({ target: names.title, property, value });
+    }
+    return materializeTextLines(next, names.title, titleLines(text, config, geometry));
+  }));
+}
+
+function makeCreateTitle(kind) {
+  const operation = operations(kind, "Title");
+  return action({
+    op: operation.create,
+    description: `Create the Polar ${kind}-axis title.`
+  }, withGuideLayoutValidation(function (args = {}) {
+    validateComponentCreateArgs(kind, args, TITLE_CREATE_OPTIONS, operation.create);
+    const names = polarGuideNames(kind);
+    if (this.graphicSpec.objects[names.title] !== undefined) {
+      throw new Error(`${operation.create} requires a missing axis title.`);
+    }
+    const resources = componentResources(this, kind, args, operation.create);
+    const angle = resolveAngle(this, kind, args);
+    const config = resolveTitleConfig(this, kind, args, resources);
+    const text = validateNonEmptyString(
+      args.text ?? inferAxisTitleText(this, names.channel, resources.scale),
+      "Polar axis title text"
+    );
+    const geometry = titleGeometry(this, kind, config, angle);
+    validateTitleGeometry(this, kind, config, geometry, text);
+    let next = withAxisSemantics(this, kind, resources);
+    if (kind === "radius" &&
+        next.guideConfigs.axis?.radius?.layout === undefined) {
+      next = next._withGuideConfig("radius", "layout", { angle });
+    }
+    next = next.editSemantic({
+      property: `guide.axis.${kind}.title`,
+      value: text
+    });
+    return next
+      .createGraphics({
+        id: names.title,
+        type: "text",
+        ...resolvePlotGraphicPlacement(next)
+      })
+      ._withGuideConfig(kind, "title", config)
+      [operation.edit]();
+  }));
+}
+
+export const createThetaAxisTitle = /* @__PURE__ */ makeCreateTitle("theta");
+export const createRadialAxisTitle = /* @__PURE__ */ makeCreateTitle("radius");
+export const editThetaAxisTitle = /* @__PURE__ */ makeEditTitle("theta");
+export const editRadialAxisTitle = /* @__PURE__ */ makeEditTitle("radius");

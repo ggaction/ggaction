@@ -1,0 +1,958 @@
+{
+  "files": [
+    {
+      "file": "docs/reference/actions/charts-data.md",
+      "total": 70,
+      "executed": 0,
+      "generated": 70
+    },
+    {
+      "file": "docs/reference/actions/guides.md",
+      "total": 46,
+      "executed": 0,
+      "generated": 46
+    },
+    {
+      "file": "docs/reference/actions/encodings.md",
+      "total": 38,
+      "executed": 0,
+      "generated": 38
+    },
+    {
+      "file": "docs/reference/actions/marks.md",
+      "total": 33,
+      "executed": 0,
+      "generated": 33
+    },
+    {
+      "file": "docs/reference/actions/statistics.md",
+      "total": 29,
+      "executed": 0,
+      "generated": 29
+    },
+    {
+      "file": "docs/troubleshooting.md",
+      "total": 13,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/composition/facets.md",
+      "total": 12,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/legends/editing.md",
+      "total": 12,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/marks/line-area.md",
+      "total": 12,
+      "executed": 5,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/rendering.md",
+      "total": 12,
+      "executed": 1,
+      "generated": 0
+    },
+    {
+      "file": "docs/extension/primitives.md",
+      "total": 12,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/axes/complete.md",
+      "total": 11,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/series/color.md",
+      "total": 11,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/basic-charts.md",
+      "total": 10,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/error-bars.md",
+      "total": 9,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/guides.md",
+      "total": 8,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/legends/categorical.md",
+      "total": 8,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/legends/continuous.md",
+      "total": 8,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/marks/text.md",
+      "total": 8,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/scales.md",
+      "total": 8,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/tutorials/polar-arcs.md",
+      "total": 8,
+      "executed": 1,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/box-plots.md",
+      "total": 7,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/data/filtering.md",
+      "total": 7,
+      "executed": 1,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/violin-plots.md",
+      "total": 7,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/advanced/axis-components.md",
+      "total": 6,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/appearance/selection-and-highlighting.md",
+      "total": 6,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/axes.md",
+      "total": 6,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/composition/editing.md",
+      "total": 6,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/coordinates.md",
+      "total": 6,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/data/summaries-and-shaping.md",
+      "total": 6,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/error-bands.md",
+      "total": 6,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/regression.md",
+      "total": 6,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/inspection.md",
+      "total": 6,
+      "executed": 1,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/gradient-plots.md",
+      "total": 5,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/grids.md",
+      "total": 5,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/legends/composite.md",
+      "total": 5,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/marks/labels.md",
+      "total": 5,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/marks/point.md",
+      "total": 5,
+      "executed": 1,
+      "generated": 0
+    },
+    {
+      "file": "docs/tutorials/line-chart.md",
+      "total": 5,
+      "executed": 1,
+      "generated": 0
+    },
+    {
+      "file": "docs/tutorials/mark-selection.md",
+      "total": 5,
+      "executed": 1,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/appearance/mark-style.md",
+      "total": 4,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/canvas.md",
+      "total": 4,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/data/revisions-and-removal.md",
+      "total": 4,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/data/source-and-derived.md",
+      "total": 4,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/data/statistical-transforms.md",
+      "total": 4,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/marks/rect.md",
+      "total": 4,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/marks/rule.md",
+      "total": 4,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/position/ordinal-bars.md",
+      "total": 4,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/position/temporal.md",
+      "total": 4,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/titles.md",
+      "total": 4,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/llm-authoring.md",
+      "total": 4,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/reference/actions/advanced.md",
+      "total": 4,
+      "executed": 0,
+      "generated": 4
+    },
+    {
+      "file": "docs/tutorials/grouped-bar.md",
+      "total": 4,
+      "executed": 1,
+      "generated": 0
+    },
+    {
+      "file": "docs/tutorials/polar-points.md",
+      "total": 4,
+      "executed": 1,
+      "generated": 0
+    },
+    {
+      "file": "docs/tutorials/scatterplot.md",
+      "total": 4,
+      "executed": 1,
+      "generated": 0
+    },
+    {
+      "file": "README.md",
+      "total": 3,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/appearance/point.md",
+      "total": 3,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/data/window.md",
+      "total": 3,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/encodings.md",
+      "total": 3,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/marks/bar.md",
+      "total": 3,
+      "executed": 1,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/marks.md",
+      "total": 3,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/parallel-coordinates.md",
+      "total": 3,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/position/category-ordering.md",
+      "total": 3,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/position/histogram.md",
+      "total": 3,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/position-encodings.md",
+      "total": 3,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/scales/continuous-color.md",
+      "total": 3,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/data-updates.md",
+      "total": 3,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/extension/action-authoring.md",
+      "total": 3,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/recipes/heatmap.md",
+      "total": 3,
+      "executed": 1,
+      "generated": 0
+    },
+    {
+      "file": "docs/recipes/line-chart.md",
+      "total": 3,
+      "executed": 2,
+      "generated": 0
+    },
+    {
+      "file": "docs/tutorials/area-layout.md",
+      "total": 3,
+      "executed": 1,
+      "generated": 0
+    },
+    {
+      "file": "docs/tutorials/density-area.md",
+      "total": 3,
+      "executed": 1,
+      "generated": 0
+    },
+    {
+      "file": "docs/tutorials/ecdf.md",
+      "total": 3,
+      "executed": 1,
+      "generated": 0
+    },
+    {
+      "file": "docs/tutorials/horizon.md",
+      "total": 3,
+      "executed": 1,
+      "generated": 0
+    },
+    {
+      "file": "docs/accessibility.md",
+      "total": 2,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/composition.md",
+      "total": 2,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/data/bin2d.md",
+      "total": 2,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/data/expressions-and-normalization.md",
+      "total": 2,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/data/missing-data.md",
+      "total": 2,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/legends.md",
+      "total": 2,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/marks/label-layout.md",
+      "total": 2,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/position/offsets.md",
+      "total": 2,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/scales/discretized-color.md",
+      "total": 2,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/scales/ordinal-and-dash.md",
+      "total": 2,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/series/stroke-dash.md",
+      "total": 2,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/series-encodings.md",
+      "total": 2,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/concepts/chart-program.md",
+      "total": 2,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/fonts.md",
+      "total": 2,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/tutorials/endpoint-plots.md",
+      "total": 2,
+      "executed": 1,
+      "generated": 0
+    },
+    {
+      "file": "docs/tutorials/error-band.md",
+      "total": 2,
+      "executed": 1,
+      "generated": 0
+    },
+    {
+      "file": "docs/tutorials/error-bar.md",
+      "total": 2,
+      "executed": 1,
+      "generated": 0
+    },
+    {
+      "file": "docs/tutorials/histogram.md",
+      "total": 2,
+      "executed": 1,
+      "generated": 0
+    },
+    {
+      "file": "docs/tutorials/polar-lines.md",
+      "total": 2,
+      "executed": 1,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/data/time-units.md",
+      "total": 1,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/position/quantitative.md",
+      "total": 1,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/api/scales/missing-values.md",
+      "total": 1,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/compatibility.md",
+      "total": 1,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/concepts/actions-and-trace.md",
+      "total": 1,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/errors-and-recovery.md",
+      "total": 1,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/getting-started.md",
+      "total": 1,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/mcp.md",
+      "total": 1,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/performance.md",
+      "total": 1,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/recipes/annotations.md",
+      "total": 1,
+      "executed": 1,
+      "generated": 0
+    },
+    {
+      "file": "docs/recipes/apply-custom-theme.md",
+      "total": 1,
+      "executed": 1,
+      "generated": 0
+    },
+    {
+      "file": "docs/recipes/bar-chart.md",
+      "total": 1,
+      "executed": 1,
+      "generated": 0
+    },
+    {
+      "file": "docs/recipes/box-plot.md",
+      "total": 1,
+      "executed": 1,
+      "generated": 0
+    },
+    {
+      "file": "docs/recipes/compare-weighted-distributions.md",
+      "total": 1,
+      "executed": 1,
+      "generated": 0
+    },
+    {
+      "file": "docs/recipes/composition.md",
+      "total": 1,
+      "executed": 1,
+      "generated": 0
+    },
+    {
+      "file": "docs/recipes/density-area.md",
+      "total": 1,
+      "executed": 1,
+      "generated": 0
+    },
+    {
+      "file": "docs/recipes/edit-facet-source.md",
+      "total": 1,
+      "executed": 1,
+      "generated": 0
+    },
+    {
+      "file": "docs/recipes/edit-scales-and-guides.md",
+      "total": 1,
+      "executed": 1,
+      "generated": 0
+    },
+    {
+      "file": "docs/recipes/edit-selected-labels.md",
+      "total": 1,
+      "executed": 1,
+      "generated": 0
+    },
+    {
+      "file": "docs/recipes/error-band.md",
+      "total": 1,
+      "executed": 1,
+      "generated": 0
+    },
+    {
+      "file": "docs/recipes/error-bar.md",
+      "total": 1,
+      "executed": 1,
+      "generated": 0
+    },
+    {
+      "file": "docs/recipes/facet.md",
+      "total": 1,
+      "executed": 1,
+      "generated": 0
+    },
+    {
+      "file": "docs/recipes/gradient-plot.md",
+      "total": 1,
+      "executed": 1,
+      "generated": 0
+    },
+    {
+      "file": "docs/recipes/histogram.md",
+      "total": 1,
+      "executed": 1,
+      "generated": 0
+    },
+    {
+      "file": "docs/recipes/horizon.md",
+      "total": 1,
+      "executed": 1,
+      "generated": 0
+    },
+    {
+      "file": "docs/recipes/parallel-coordinates.md",
+      "total": 1,
+      "executed": 1,
+      "generated": 0
+    },
+    {
+      "file": "docs/recipes/path-ordering.md",
+      "total": 1,
+      "executed": 1,
+      "generated": 0
+    },
+    {
+      "file": "docs/recipes/regression-scatterplot.md",
+      "total": 1,
+      "executed": 1,
+      "generated": 0
+    },
+    {
+      "file": "docs/recipes/remove-dependent-resources.md",
+      "total": 1,
+      "executed": 1,
+      "generated": 0
+    },
+    {
+      "file": "docs/recipes/repair-missing-observations.md",
+      "total": 1,
+      "executed": 1,
+      "generated": 0
+    },
+    {
+      "file": "docs/recipes/rose-chart.md",
+      "total": 1,
+      "executed": 1,
+      "generated": 0
+    },
+    {
+      "file": "docs/recipes/scatterplot.md",
+      "total": 1,
+      "executed": 1,
+      "generated": 0
+    },
+    {
+      "file": "docs/recipes/switch-encoding-modes.md",
+      "total": 1,
+      "executed": 1,
+      "generated": 0
+    },
+    {
+      "file": "docs/recipes/violin-plot.md",
+      "total": 1,
+      "executed": 1,
+      "generated": 0
+    },
+    {
+      "file": "docs/responsive-charts.md",
+      "total": 1,
+      "executed": 0,
+      "generated": 0
+    },
+    {
+      "file": "docs/tutorials/hierarchical-authoring.md",
+      "total": 1,
+      "executed": 1,
+      "generated": 0
+    },
+    {
+      "file": "docs/tutorials/regression-scatterplot.md",
+      "total": 1,
+      "executed": 1,
+      "generated": 0
+    }
+  ],
+  "environments": {
+    "node-esm": 29,
+    "browser-module": 26
+  },
+  "programsWithoutCanonical": [
+    {
+      "file": "recipes/annotations.md",
+      "id": "primary"
+    },
+    {
+      "file": "recipes/bar-chart.md",
+      "id": "primary"
+    },
+    {
+      "file": "recipes/box-plot.md",
+      "id": "primary"
+    },
+    {
+      "file": "recipes/composition.md",
+      "id": "primary"
+    },
+    {
+      "file": "recipes/density-area.md",
+      "id": "primary"
+    },
+    {
+      "file": "recipes/error-band.md",
+      "id": "primary"
+    },
+    {
+      "file": "recipes/error-bar.md",
+      "id": "primary"
+    },
+    {
+      "file": "recipes/facet.md",
+      "id": "primary"
+    },
+    {
+      "file": "recipes/gradient-plot.md",
+      "id": "primary"
+    },
+    {
+      "file": "recipes/heatmap.md",
+      "id": "primary"
+    },
+    {
+      "file": "recipes/histogram.md",
+      "id": "primary"
+    },
+    {
+      "file": "recipes/horizon.md",
+      "id": "primary"
+    },
+    {
+      "file": "recipes/line-chart.md",
+      "id": "primary"
+    },
+    {
+      "file": "recipes/parallel-coordinates.md",
+      "id": "primary"
+    },
+    {
+      "file": "recipes/path-ordering.md",
+      "id": "primary"
+    },
+    {
+      "file": "recipes/regression-scatterplot.md",
+      "id": "primary"
+    },
+    {
+      "file": "recipes/rose-chart.md",
+      "id": "primary"
+    },
+    {
+      "file": "recipes/scatterplot.md",
+      "id": "primary"
+    },
+    {
+      "file": "recipes/violin-plot.md",
+      "id": "primary"
+    },
+    {
+      "file": "tutorials/density-area.md",
+      "id": "primary"
+    },
+    {
+      "file": "tutorials/error-band.md",
+      "id": "primary"
+    },
+    {
+      "file": "tutorials/error-bar.md",
+      "id": "primary"
+    },
+    {
+      "file": "tutorials/grouped-bar.md",
+      "id": "primary"
+    },
+    {
+      "file": "tutorials/histogram.md",
+      "id": "primary"
+    },
+    {
+      "file": "tutorials/horizon.md",
+      "id": "primary"
+    },
+    {
+      "file": "tutorials/line-chart.md",
+      "id": "primary"
+    },
+    {
+      "file": "tutorials/polar-arcs.md",
+      "id": "primary"
+    },
+    {
+      "file": "tutorials/polar-lines.md",
+      "id": "primary"
+    },
+    {
+      "file": "tutorials/polar-points.md",
+      "id": "primary"
+    },
+    {
+      "file": "tutorials/regression-scatterplot.md",
+      "id": "primary"
+    },
+    {
+      "file": "tutorials/scatterplot.md",
+      "id": "primary"
+    },
+    {
+      "file": "api/data/filtering.md",
+      "id": "primary"
+    },
+    {
+      "file": "api/marks/line-area.md",
+      "id": "primary"
+    },
+    {
+      "file": "api/marks/bar.md",
+      "id": "canvas-layout-1"
+    },
+    {
+      "file": "api/marks/line-area.md",
+      "id": "canvas-layout-2"
+    },
+    {
+      "file": "api/marks/line-area.md",
+      "id": "canvas-layout-3"
+    },
+    {
+      "file": "api/marks/line-area.md",
+      "id": "canvas-layout-4"
+    },
+    {
+      "file": "api/marks/line-area.md",
+      "id": "canvas-layout-5"
+    },
+    {
+      "file": "api/marks/point.md",
+      "id": "canvas-layout-6"
+    },
+    {
+      "file": "recipes/line-chart.md",
+      "id": "canvas-layout-7"
+    },
+    {
+      "file": "inspection.md",
+      "id": "inspection-roundtrip"
+    },
+    {
+      "file": "api/rendering.md",
+      "id": "render-first"
+    }
+  ]
+}

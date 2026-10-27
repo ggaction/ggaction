@@ -1,0 +1,2 @@
+unexpected accepted unknown capability; matching files: 957
+single unknown capability correctly rejected: Unknown test capability "does-not-exist". Expected one of: accessibility, actions, archite

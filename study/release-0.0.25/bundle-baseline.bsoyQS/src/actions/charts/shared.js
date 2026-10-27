@@ -1,0 +1,217 @@
+import { resolveOptionalUserId, validateUserId } from "../../core/identifiers.js";
+import { isPlainObject } from "../../core/immutable.js";
+import { validateNonEmptyString, validateOptionObject } from "../../core/validation.js";
+import { findDataset, requireMaterializedDataset } from "../../selectors/datasets.js";
+import { isNominalValue } from "../../grammar/scales/fields.js";
+import { hasLayer } from "../../selectors/layers.js";
+import { fulfillFacadeGuides } from "../guides/facade.js";
+
+export function validateFacadeOptions(args, supported, operation) {
+  return validateOptionObject(args, supported, operation);
+}
+
+export function resolveFacadeData(program, requested, operation) {
+  if (requested !== undefined) {
+    const id = validateUserId(requested, `${operation} dataset id`);
+    return requireMaterializedDataset(program, id).id;
+  }
+
+  const current = program.context.currentData;
+  if (current !== undefined && findDataset(program, current) !== undefined) {
+    return requireMaterializedDataset(program, current).id;
+  }
+  const datasets = program.semanticSpec.datasets;
+  if (datasets.length === 1) {
+    return requireMaterializedDataset(program, datasets[0].id).id;
+  }
+  if (datasets.length > 1) {
+    throw new Error(
+      `${operation} requires data when multiple datasets are available.`
+    );
+  }
+  throw new Error(`${operation} requires data or one inferable dataset.`);
+}
+
+export function resolveFacadeId(program, requested, {
+  defaultId,
+  operation
+}) {
+  return resolveOptionalUserId(requested, {
+    defaultId,
+    label: `${operation} id`,
+    operation,
+    ambiguous: hasLayer(program, defaultId) ||
+      program.graphicSpec.objects[defaultId] !== undefined
+  });
+}
+
+export function normalizeFieldEncoding(value, label) {
+  if (typeof value === "string") return { field: value };
+  if (!isPlainObject(value)) {
+    throw new TypeError(`${label} must be a field string or a plain object.`);
+  }
+  if (Object.hasOwn(value, "target") || Object.hasOwn(value, "coordinate")) {
+    throw new Error(
+      `${label} target and coordinate are owned by the chart facade.`
+    );
+  }
+  return { ...value };
+}
+
+export function normalizeEncoding(value, label) {
+  if (value === undefined) return undefined;
+  return normalizeFieldEncoding(value, label);
+}
+
+export function inferFacadeFieldType(program, data, encoding, label) {
+  if (encoding.fieldType !== undefined) return encoding.fieldType;
+  if (typeof encoding.field !== "string" || encoding.field.length === 0) {
+    throw new TypeError(`${label} field must be a non-empty string.`);
+  }
+  const dataset = findDataset(program, data);
+  const values = dataset.values
+    .map(row => row?.[encoding.field])
+    .filter(value => value !== undefined && value !== null && value !== "");
+  if (values.length === 0) {
+    throw new Error(`${label} field "${encoding.field}" has no values.`);
+  }
+  if (values.every(Number.isFinite)) return "quantitative";
+  if (values.every(isNominalValue)) return "nominal";
+  throw new Error(
+    `${label} field "${encoding.field}" requires an explicit fieldType.`
+  );
+}
+
+export function normalizeStrokeDashEncoding(
+  value,
+  label = "createLinePlot strokeDash"
+) {
+  if (value === undefined) return undefined;
+  if (!isPlainObject(value)) {
+    throw new TypeError(
+      `${label} must be an encodeStrokeDash option object.`
+    );
+  }
+  if (Object.hasOwn(value, "target")) {
+    throw new Error(`${label} target is owned by the chart facade.`);
+  }
+  return { ...value };
+}
+
+export function normalizeAppearance(value, supported, label) {
+  if (value === undefined) return {};
+  validateOptionObject(value, supported, label);
+  return { ...value };
+}
+
+export function omitUndefinedOptions(value) {
+  return Object.fromEntries(Object.entries(value).filter(([, option]) => option !== undefined));
+}
+
+export function normalizeCategoricalColor(value, label, supported = ["field", "fieldType", "scale", "palette"]) {
+  const color = normalizeFieldEncoding(value, label);
+  validateOptionObject(color, supported, label);
+  validateNonEmptyString(color.field, `${label} field`);
+  if (color.fieldType !== undefined && !["nominal", "ordinal"].includes(color.fieldType)) {
+    throw new TypeError(`${label} must be nominal or ordinal.`);
+  }
+  if (color.scale !== undefined) validateOptionObject(color.scale, undefined, `${label}.scale`);
+  return { ...omitUndefinedOptions(color),
+    ...(color.scale === undefined ? {} : { scale: omitUndefinedOptions(color.scale) }) };
+}
+
+export function normalizeCategoricalGuides(value, operation, color) {
+  const guides = normalizeGuides(value, operation);
+  if (guides === false) return false;
+  validateOptionObject(guides, ["axes", "grid", "legend"], `${operation} guides`);
+  const legend = guides.legend;
+  if (legend !== undefined && legend !== false) {
+    validateOptionObject(legend, undefined, `${operation} guides.legend`);
+    if (color === undefined) throw new Error(`${operation} legend requires color.`);
+    if (Object.hasOwn(legend, "gradient") || Object.hasOwn(legend, "count") ||
+      legend.channels !== undefined && (!Array.isArray(legend.channels) ||
+        legend.channels.length !== 1 || legend.channels[0] !== "color")) {
+      throw new Error(`${operation} only supports a categorical color legend.`);
+    }
+  }
+  return guides;
+}
+
+export function normalizeTargetOptions(value, label) {
+  if (value === undefined) return undefined;
+  if (!isPlainObject(value)) {
+    throw new TypeError(`${label} must be a plain object.`);
+  }
+  if (Object.hasOwn(value, "target")) {
+    throw new Error(`${label} target is owned by the chart facade.`);
+  }
+  return { ...value };
+}
+
+export function normalizeGuides(value, operation) {
+  if (value === false) return false;
+  if (value === undefined) return {};
+  if (!isPlainObject(value)) {
+    throw new TypeError(`${operation} guides must be false or a plain object.`);
+  }
+  return { ...value };
+}
+
+export function positionArgs(encoding, { target, coordinate }) {
+  return {
+    ...encoding,
+    target,
+    ...(coordinate === undefined ? {} : { coordinate })
+  };
+}
+
+export function targetArgs(encoding, target) {
+  return { ...encoding, target };
+}
+
+export function applyFacadeGuides(program, guides, target, explicitGuides = guides) {
+  return fulfillFacadeGuides(program, guides, target, explicitGuides);
+}
+
+// Rebuilding a facade must not resurrect an axis removed after construction.
+// This also lets callers fit a changed variable by removing its old axis and
+// recreating it against the new domain through ordinary public guide actions.
+export function retainFacadeAxisPresence(program, owner, guides) {
+  if (guides === false) return false;
+  const axes = { ...guides?.axes };
+  for (const channel of ['x', 'y']) {
+    if (!owner.encoding[channel]?.scale) continue;
+    const present = Object.entries(program.semanticSpec.guides.axis ?? {}).some(([id, axis]) =>
+      (axis.channel ?? id) === channel && axis.scale === owner.encoding[channel].scale &&
+      (axis.coordinate ?? owner.coordinate) === owner.coordinate);
+    if (!present) axes[channel] = false;
+    else axes[channel] ??= {};
+  }
+  return { ...guides, axes };
+}
+
+export function normalizeArcCategory(value, operation) {
+  const label = `${operation} category`;
+  const category = normalizeFieldEncoding(value, label);
+  validateOptionObject(category, ["field", "fieldType", "scale"], label);
+  validateNonEmptyString(category.field, `${label} field`);
+  const fieldType = category.fieldType === undefined ? "nominal" : category.fieldType;
+  if (!["nominal", "ordinal"].includes(fieldType)) throw new TypeError(`${label} must be nominal or ordinal.`);
+  if (category.scale !== undefined) {
+    validateOptionObject(category.scale, ["id", "type", "domain", "range", "reverse"], `${label}.scale`);
+    if (category.scale.type !== undefined && category.scale.type !== "band") {
+      throw new TypeError(`${label}.scale.type must be band.`);
+    }
+  }
+  return { ...omitUndefinedOptions(category), fieldType,
+    ...(category.scale === undefined ? {} : { scale: omitUndefinedOptions(category.scale) }) };
+}
+
+export function normalizeCategoryAggregate(args, operation) {
+  const aggregate = args.aggregate === undefined ? args.value === undefined ? "count" : "sum" : args.aggregate;
+  if (!["count", "sum"].includes(aggregate) || (aggregate === "sum") !== (args.value !== undefined)) {
+    throw new Error(`${operation} requires count without value or sum with value.`);
+  }
+  if (args.value !== undefined) validateNonEmptyString(args.value, `${operation} value`);
+  return aggregate;
+}

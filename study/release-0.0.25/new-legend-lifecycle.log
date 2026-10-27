@@ -1,0 +1,23 @@
+✔ three-channel interval samples preserve ordinal shape, source points and exact scale ownership (82.008667ms)
+✔ three-channel sampling rejects missing representatives, incompatible mappings and mapped overrides atomically (12.985833ms)
+✔ each channel alias edits one shared block and changing a bound scale rematerializes it (46.692958ms)
+✔ explicit combination edits preserve the block and splitting requires an explicit request (38.150916ms)
+✔ clipped shared three-channel legends survive facet, grid and repeat restoration and reflow (369.0275ms)
+✔ inherited fixed paint stays live and explicit overrides reset without changing mapped area (31.148667ms)
+✔ representative edits, shape-scale edits and data revisions keep exact ordinal evaluation (19.846708ms)
+✔ explicit summary sample paints the first hidden category while preserving every source row and path (88.65275ms)
+✔ summary sample renders the same pixels as an independent added line primitive (430.154209ms)
+✔ Basic line authoring supports the same summary policy through categorical color (28.349458ms)
+✔ summary samples follow final legend order, scale edits, resize and persistence (92.322166ms)
+✔ overflow reset and zero hidden entries remove the summary sample and converge with direct creation (85.592791ms)
+✔ invalid summary policies, nonline recipes and persisted tampering fail atomically (32.755791ms)
+✔ mixed continuous blocks cannot silently discard an explicit summary-symbol policy (6.697083ms)
+✔ source revisions shrink and restore inferred domains without stale summary glyphs (63.845458ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 15
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1175.169417

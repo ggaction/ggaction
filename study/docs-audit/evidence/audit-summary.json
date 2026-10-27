@@ -1,0 +1,27 @@
+{
+  "sourceCommit": "202b7afd4146a691c136964c4cc53f9c37444513",
+  "sourceTests": {
+    "pass": 125,
+    "fail": 0
+  },
+  "executableTests": {
+    "pass": 47,
+    "fail": 0
+  },
+  "freshnessChecks": {
+    "pass": 17,
+    "fail": 0
+  },
+  "agentContractTests": {
+    "pass": 26,
+    "fail": 0
+  },
+  "consolidatedFindings": 24,
+  "designOpportunities": 8,
+  "publicPages": 150,
+  "trackedDocsFiles": 417,
+  "sourceFencedBlocks": 1680,
+  "localReportLinks": 263,
+  "sourceModified": false,
+  "implementationPerformed": false
+}

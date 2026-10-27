@@ -1,0 +1,586 @@
+{
+  "scopeProfile": "ggaction-native-2026-10-27",
+  "activeRequirements": [
+    {
+      "id": "USR-01",
+      "requirement": "Icicle and Sunburst unified partition",
+      "workPackages": [
+        "WP-22"
+      ],
+      "acceptanceTests": [
+        "AT-62",
+        "AT-63",
+        "AT-64"
+      ],
+      "tasks": [
+        "STEP-025",
+        "STEP-026",
+        "STEP-027"
+      ],
+      "status": "requires-implementation-and-qualification"
+    },
+    {
+      "id": "USR-02",
+      "requirement": "Partition focus, interaction and coordinate animation",
+      "workPackages": [
+        "WP-22",
+        "WP-12",
+        "WP-14"
+      ],
+      "acceptanceTests": [
+        "AT-65"
+      ],
+      "tasks": [
+        "STEP-028",
+        "STEP-060",
+        "STEP-062",
+        "STEP-070"
+      ],
+      "status": "requires-implementation-and-qualification"
+    },
+    {
+      "id": "USR-05",
+      "requirement": "kNN inference and symmetrization",
+      "workPackages": [
+        "WP-24"
+      ],
+      "acceptanceTests": [
+        "AT-70"
+      ],
+      "tasks": [
+        "STEP-030"
+      ],
+      "status": "requires-implementation-and-qualification"
+    },
+    {
+      "id": "USR-06",
+      "requirement": "Radius and similarity inference with metrics",
+      "workPackages": [
+        "WP-24"
+      ],
+      "acceptanceTests": [
+        "AT-71"
+      ],
+      "tasks": [
+        "STEP-029",
+        "STEP-030"
+      ],
+      "status": "requires-implementation-and-qualification"
+    },
+    {
+      "id": "USR-07",
+      "requirement": "MST, forest, group and sequence rules",
+      "workPackages": [
+        "WP-24"
+      ],
+      "acceptanceTests": [
+        "AT-72"
+      ],
+      "tasks": [
+        "STEP-031"
+      ],
+      "status": "requires-implementation-and-qualification"
+    },
+    {
+      "id": "USR-08",
+      "requirement": "Inference determinism, exactness, provenance and lifecycle",
+      "workPackages": [
+        "WP-24",
+        "WP-12",
+        "WP-14"
+      ],
+      "acceptanceTests": [
+        "AT-73",
+        "AT-74"
+      ],
+      "tasks": [
+        "STEP-029",
+        "STEP-032"
+      ],
+      "status": "requires-implementation-and-qualification"
+    },
+    {
+      "id": "USR-09",
+      "requirement": "Hierarchical edge bundling",
+      "workPackages": [
+        "WP-25"
+      ],
+      "acceptanceTests": [
+        "AT-75",
+        "AT-76"
+      ],
+      "tasks": [
+        "STEP-036",
+        "STEP-037"
+      ],
+      "status": "requires-implementation-and-qualification"
+    },
+    {
+      "id": "USR-10",
+      "requirement": "Force-directed edge bundling",
+      "workPackages": [
+        "WP-25"
+      ],
+      "acceptanceTests": [
+        "AT-75",
+        "AT-77"
+      ],
+      "tasks": [
+        "STEP-036",
+        "STEP-038"
+      ],
+      "status": "requires-implementation-and-qualification"
+    },
+    {
+      "id": "USR-11",
+      "requirement": "Density/KDE bundling",
+      "workPackages": [
+        "WP-25"
+      ],
+      "acceptanceTests": [
+        "AT-75",
+        "AT-78"
+      ],
+      "tasks": [
+        "STEP-036",
+        "STEP-039"
+      ],
+      "status": "requires-implementation-and-qualification"
+    },
+    {
+      "id": "USR-12",
+      "requirement": "Edge-path bundling",
+      "workPackages": [
+        "WP-25"
+      ],
+      "acceptanceTests": [
+        "AT-75",
+        "AT-79"
+      ],
+      "tasks": [
+        "STEP-036",
+        "STEP-040"
+      ],
+      "status": "requires-implementation-and-qualification"
+    },
+    {
+      "id": "USR-13",
+      "requirement": "Bundled edge hit/interaction/animation/geo/export/performance",
+      "workPackages": [
+        "WP-25",
+        "WP-10",
+        "WP-11",
+        "WP-12",
+        "WP-14",
+        "WP-18",
+        "WP-19"
+      ],
+      "acceptanceTests": [
+        "AT-80",
+        "AT-81",
+        "AT-82"
+      ],
+      "tasks": [
+        "STEP-036",
+        "STEP-041",
+        "STEP-060",
+        "STEP-062",
+        "STEP-070"
+      ],
+      "status": "requires-implementation-and-qualification"
+    },
+    {
+      "id": "USR-14",
+      "requirement": "Pyramid naming and preserved stage geometry; external aliases reference-only",
+      "workPackages": [
+        "WP-26",
+        "WP-09"
+      ],
+      "acceptanceTests": [
+        "AT-83"
+      ],
+      "tasks": [
+        "STEP-051",
+        "STEP-053"
+      ],
+      "status": "requires-implementation-and-qualification"
+    },
+    {
+      "id": "USR-15",
+      "requirement": "Marginal/Bullet/Combo composition without dedicated public API",
+      "workPackages": [
+        "WP-26",
+        "WP-09"
+      ],
+      "acceptanceTests": [
+        "AT-84"
+      ],
+      "tasks": [
+        "STEP-051",
+        "STEP-056"
+      ],
+      "status": "requires-implementation-and-qualification"
+    },
+    {
+      "id": "USR-16",
+      "requirement": "No multiple Y scales or guides in one frame",
+      "workPackages": [
+        "WP-26"
+      ],
+      "acceptanceTests": [
+        "AT-85",
+        "AT-86"
+      ],
+      "tasks": [
+        "STEP-050"
+      ],
+      "status": "requires-implementation-and-qualification"
+    },
+    {
+      "id": "USR-17",
+      "requirement": "KPI/Gauge dedicated support excluded; native docs/catalog reflect scope",
+      "workPackages": [
+        "WP-26",
+        "WP-19"
+      ],
+      "acceptanceTests": [
+        "AT-87"
+      ],
+      "tasks": [
+        "STEP-051"
+      ],
+      "status": "requires-implementation-and-qualification"
+    },
+    {
+      "id": "USR-18",
+      "requirement": "Native scope policy and reference-only external audit rows",
+      "workPackages": [
+        "WP-26",
+        "WP-20"
+      ],
+      "acceptanceTests": [
+        "AT-88",
+        "AT-91"
+      ],
+      "tasks": [
+        "STEP-052",
+        "STEP-074"
+      ],
+      "status": "requires-implementation-and-qualification"
+    },
+    {
+      "id": "USR-19",
+      "requirement": "New domain resource persistence and installed package",
+      "workPackages": [
+        "WP-18",
+        "WP-19"
+      ],
+      "acceptanceTests": [
+        "AT-89"
+      ],
+      "tasks": [
+        "STEP-069"
+      ],
+      "status": "requires-implementation-and-qualification"
+    },
+    {
+      "id": "USR-20",
+      "requirement": "Human and agent docs and full revised release gate",
+      "workPackages": [
+        "WP-19",
+        "WP-20",
+        "WP-21"
+      ],
+      "acceptanceTests": [
+        "AT-90",
+        "AT-91"
+      ],
+      "tasks": [
+        "STEP-073",
+        "STEP-074"
+      ],
+      "status": "requires-implementation-and-qualification"
+    },
+    {
+      "id": "USR-21",
+      "requirement": "ggaction design takes precedence; no Flint conformance or backend integration obligation",
+      "workPackages": [
+        "WP-26",
+        "WP-20"
+      ],
+      "acceptanceTests": [
+        "AT-92"
+      ],
+      "tasks": [
+        "STEP-052",
+        "STEP-074"
+      ],
+      "status": "requires-implementation-and-qualification"
+    },
+    {
+      "id": "USR-22",
+      "requirement": "Translation is a separate project; no corpus translator, source parity or source fixture closure required here",
+      "workPackages": [
+        "WP-26",
+        "WP-20"
+      ],
+      "acceptanceTests": [
+        "AT-92"
+      ],
+      "tasks": [
+        "STEP-052",
+        "STEP-074"
+      ],
+      "status": "requires-implementation-and-qualification"
+    },
+    {
+      "id": "GGA-01",
+      "requirement": "Native semantic data and chart composition",
+      "workPackages": [
+        "WP-06",
+        "WP-07",
+        "WP-09"
+      ],
+      "acceptanceTests": [
+        "AT-17",
+        "AT-20",
+        "AT-26",
+        "AT-27",
+        "AT-28"
+      ],
+      "tasks": [
+        "STEP-014",
+        "STEP-015",
+        "STEP-034",
+        "STEP-035",
+        "STEP-053",
+        "STEP-054",
+        "STEP-055",
+        "STEP-056"
+      ],
+      "status": "requires-implementation-and-qualification"
+    },
+    {
+      "id": "GGA-02",
+      "requirement": "Native design and theme system",
+      "workPackages": [
+        "WP-05",
+        "WP-07"
+      ],
+      "acceptanceTests": [
+        "AT-13",
+        "AT-15",
+        "AT-19",
+        "AT-20"
+      ],
+      "tasks": [
+        "STEP-017",
+        "STEP-019",
+        "STEP-033",
+        "STEP-034",
+        "STEP-035"
+      ],
+      "status": "requires-implementation-and-qualification"
+    },
+    {
+      "id": "GGA-03",
+      "requirement": "Structure and geometric layouts",
+      "workPackages": [
+        "WP-08",
+        "WP-09"
+      ],
+      "acceptanceTests": [
+        "AT-22",
+        "AT-23",
+        "AT-24",
+        "AT-25",
+        "AT-27"
+      ],
+      "tasks": [
+        "STEP-020",
+        "STEP-021",
+        "STEP-022",
+        "STEP-023",
+        "STEP-024",
+        "STEP-053",
+        "STEP-055"
+      ],
+      "status": "requires-implementation-and-qualification"
+    },
+    {
+      "id": "GGA-04",
+      "requirement": "Selection and direct inspection",
+      "workPackages": [
+        "WP-11",
+        "WP-12"
+      ],
+      "acceptanceTests": [
+        "AT-33",
+        "AT-34",
+        "AT-35",
+        "AT-36"
+      ],
+      "tasks": [
+        "STEP-047",
+        "STEP-048",
+        "STEP-049",
+        "STEP-058",
+        "STEP-059",
+        "STEP-060",
+        "STEP-070"
+      ],
+      "status": "requires-implementation-and-qualification"
+    },
+    {
+      "id": "GGA-05",
+      "requirement": "Coordinated interactive views",
+      "workPackages": [
+        "WP-12",
+        "WP-13"
+      ],
+      "acceptanceTests": [
+        "AT-37",
+        "AT-38",
+        "AT-39",
+        "AT-40",
+        "AT-41"
+      ],
+      "tasks": [
+        "STEP-057",
+        "STEP-060",
+        "STEP-065",
+        "STEP-066",
+        "STEP-067"
+      ],
+      "status": "requires-implementation-and-qualification"
+    },
+    {
+      "id": "GGA-06",
+      "requirement": "Native state and lifecycle",
+      "workPackages": [
+        "WP-02",
+        "WP-03",
+        "WP-13"
+      ],
+      "acceptanceTests": [
+        "AT-06",
+        "AT-09",
+        "AT-10",
+        "AT-39",
+        "AT-40",
+        "AT-41"
+      ],
+      "tasks": [
+        "STEP-004",
+        "STEP-006",
+        "STEP-007",
+        "STEP-008",
+        "STEP-009",
+        "STEP-065",
+        "STEP-066",
+        "STEP-067"
+      ],
+      "status": "requires-implementation-and-qualification"
+    },
+    {
+      "id": "GGA-07",
+      "requirement": "Animation and timeline",
+      "workPackages": [
+        "WP-14",
+        "WP-18"
+      ],
+      "acceptanceTests": [
+        "AT-42",
+        "AT-43",
+        "AT-44",
+        "AT-45",
+        "AT-54"
+      ],
+      "tasks": [
+        "STEP-061",
+        "STEP-062",
+        "STEP-063",
+        "STEP-064",
+        "STEP-069"
+      ],
+      "status": "requires-implementation-and-qualification"
+    },
+    {
+      "id": "GGA-08",
+      "requirement": "Geo resources and navigation",
+      "workPackages": [
+        "WP-10",
+        "WP-12",
+        "WP-14"
+      ],
+      "acceptanceTests": [
+        "AT-29",
+        "AT-30",
+        "AT-31",
+        "AT-32",
+        "AT-44"
+      ],
+      "tasks": [
+        "STEP-042",
+        "STEP-043",
+        "STEP-044",
+        "STEP-045",
+        "STEP-046",
+        "STEP-062"
+      ],
+      "status": "requires-implementation-and-qualification"
+    },
+    {
+      "id": "GGA-09",
+      "requirement": "Readable and reproducible public APIs",
+      "workPackages": [
+        "WP-03",
+        "WP-18",
+        "WP-19"
+      ],
+      "acceptanceTests": [
+        "AT-10",
+        "AT-55",
+        "AT-57",
+        "AT-58",
+        "AT-89",
+        "AT-90"
+      ],
+      "tasks": [
+        "STEP-007",
+        "STEP-008",
+        "STEP-009",
+        "STEP-069",
+        "STEP-072",
+        "STEP-073"
+      ],
+      "status": "requires-implementation-and-qualification"
+    },
+    {
+      "id": "GGA-10",
+      "requirement": "Native correctness and design independence",
+      "workPackages": [
+        "WP-19",
+        "WP-20",
+        "WP-21"
+      ],
+      "acceptanceTests": [
+        "AT-56",
+        "AT-59",
+        "AT-60",
+        "AT-61",
+        "AT-91",
+        "AT-92"
+      ],
+      "tasks": [
+        "STEP-052",
+        "STEP-071",
+        "STEP-074",
+        "STEP-075",
+        "STEP-076",
+        "STEP-077"
+      ],
+      "status": "requires-implementation-and-qualification"
+    }
+  ]
+}

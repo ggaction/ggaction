@@ -1,0 +1,244 @@
+{
+  "passed": true,
+  "scope": "Independent arithmetic of roadmap fixtures only",
+  "checks": [
+    {
+      "name": "partition A fraction",
+      "passed": true,
+      "actual": 0.6,
+      "expected": 0.6
+    },
+    {
+      "name": "partition A2 end",
+      "passed": true,
+      "actual": 0.6,
+      "expected": 0.6
+    },
+    {
+      "name": "partition angle",
+      "passed": true,
+      "actual": 3.7699111843077517,
+      "expected": 3.7699111843077517
+    },
+    {
+      "name": "focus child",
+      "passed": true,
+      "actual": 0.33333333333333337,
+      "expected": 0.3333333333333333
+    },
+    {
+      "name": "equal depth area boundary",
+      "passed": true,
+      "actual": 70.71067811865476,
+      "expected": 70.71067811865476
+    },
+    {
+      "name": "brute force knn",
+      "passed": true,
+      "actual": [
+        [
+          "a",
+          "b"
+        ],
+        [
+          "b",
+          "a"
+        ],
+        [
+          "c",
+          "b"
+        ],
+        [
+          "d",
+          "c"
+        ]
+      ],
+      "expected": [
+        [
+          "a",
+          "b"
+        ],
+        [
+          "b",
+          "a"
+        ],
+        [
+          "c",
+          "b"
+        ],
+        [
+          "d",
+          "c"
+        ]
+      ]
+    },
+    {
+      "name": "inclusive radius",
+      "passed": true,
+      "actual": [
+        [
+          "a",
+          "b"
+        ],
+        [
+          "b",
+          "c"
+        ]
+      ],
+      "expected": [
+        [
+          "a",
+          "b"
+        ],
+        [
+          "b",
+          "c"
+        ]
+      ]
+    },
+    {
+      "name": "metric norm",
+      "passed": true,
+      "actual": 5.0,
+      "expected": 5
+    },
+    {
+      "name": "mst cost",
+      "passed": true,
+      "actual": 10,
+      "expected": 10
+    },
+    {
+      "name": "polygon area",
+      "passed": true,
+      "actual": 88.0,
+      "expected": 88
+    },
+    {
+      "name": "cubic half y",
+      "passed": true,
+      "actual": 7.5,
+      "expected": 7.5
+    },
+    {
+      "name": "FDEB compatibility",
+      "passed": true,
+      "actual": 0.9090909090909091,
+      "expected": 0.9090909090909091
+    },
+    {
+      "name": "FDEB midpoint",
+      "passed": true,
+      "actual": 0.00909090909090909,
+      "expected": 0.00909090909090909
+    },
+    {
+      "name": "density half",
+      "passed": true,
+      "actual": 0.5625,
+      "expected": 0.5625
+    },
+    {
+      "name": "density gradient",
+      "passed": true,
+      "actual": -1.5,
+      "expected": -1.5
+    },
+    {
+      "name": "edge path length",
+      "passed": true,
+      "actual": 2.8284271247461903,
+      "expected": 2.8284271247461903
+    },
+    {
+      "name": "image contain offset",
+      "passed": true,
+      "actual": 25.0,
+      "expected": 25
+    },
+    {
+      "name": "sample variance",
+      "passed": true,
+      "actual": 1.0,
+      "expected": 1
+    },
+    {
+      "name": "linear quantile",
+      "passed": true,
+      "actual": 1.75,
+      "expected": 1.75
+    },
+    {
+      "name": "Gaussian center",
+      "passed": true,
+      "actual": 0.3989422804014327,
+      "expected": 0.3989422804014327
+    },
+    {
+      "name": "mercator45",
+      "passed": true,
+      "actual": 0.8813735870195428,
+      "expected": 0.881373587019543
+    },
+    {
+      "name": "linear time samples",
+      "passed": true,
+      "actual": [
+        10.0,
+        15.0,
+        20.0,
+        25.0,
+        30.0
+      ],
+      "expected": [
+        10,
+        15,
+        20,
+        25,
+        30
+      ]
+    },
+    {
+      "name": "log midpoint",
+      "passed": true,
+      "actual": 10.000000000000002,
+      "expected": 10
+    },
+    {
+      "name": "bend center 1e-06",
+      "passed": true,
+      "actual": 0.5,
+      "expected": 0.5
+    },
+    {
+      "name": "bend center 0.25",
+      "passed": true,
+      "actual": 0.5,
+      "expected": 0.5
+    },
+    {
+      "name": "bend center 0.5",
+      "passed": true,
+      "actual": 0.5,
+      "expected": 0.5
+    },
+    {
+      "name": "bend center 0.75",
+      "passed": true,
+      "actual": 0.49999999999999994,
+      "expected": 0.5
+    },
+    {
+      "name": "bend center 1",
+      "passed": true,
+      "actual": 0.5,
+      "expected": 0.5
+    },
+    {
+      "name": "Pyramid area ratio",
+      "passed": true,
+      "actual": 0.6,
+      "expected": 0.6
+    }
+  ]
+}

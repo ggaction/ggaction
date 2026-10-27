@@ -1,0 +1,309 @@
+{
+  "base": "31ce29f31e5ae87c57759a5b3e002db1f29a4808",
+  "head": "7fab0f1b7271fc5bf5bdab9e60870e4a16e0386e",
+  "branch": "fix/documentation-and-rose-demo",
+  "items": [
+    {
+      "id": "T01",
+      "status": "수정·음성 대조군 확인",
+      "change": "alpha=0을 foreground로 세지 않도록 공유 PNG 판정을 수정. continuous-area-color·bootstrap-mean-ci에 투명 renderer를 재주입해 두 검사 모두 실패하는 것을 확인.",
+      "owner": "test/support/png.js"
+    },
+    {
+      "id": "T02",
+      "status": "수정·검증",
+      "change": "문서 파일과 snippet ID로 고유 build input 생성. 등록·준비·Node 실행·packed browser 실행의 ID와 코드 해시를 연결. 현재 57개가 서로 다른 입력으로 실행됨.",
+      "owner": "scripts/tutorial-consumer.js"
+    },
+    {
+      "id": "T03",
+      "status": "수정·검증",
+      "change": "tick 반복의 상한과 진행 조건을 추가하고 표현 불가능한 정밀도를 명시적으로 거부. 반대 부호의 극단값 interpolation·quantile 계산을 안전하게 수정.",
+      "owner": "test/oracles/numeric.js"
+    },
+    {
+      "id": "T04",
+      "status": "수정·변이 검출",
+      "change": "극소 회귀 계수를 1e-300으로 정규화해 검사. 기존 slope-zero loader는 이제 해당 assertion에서 실패하고 나머지 11개는 통과.",
+      "owner": "test/unit/actions/data/regression-statistics.test.js"
+    },
+    {
+      "id": "T05",
+      "status": "수정·검증",
+      "change": "필수 geometry와 optional numeric style의 타입까지 검사. null/string/boolean/array/object와 잘못된 children/items를 거부.",
+      "owner": "test/oracles/graphic-integrity.js"
+    },
+    {
+      "id": "T06",
+      "status": "수정·검증",
+      "change": "실제 XML 파싱, scalar 수치, path command, transform, viewBox, points, dash 문법 및 resource 참조 검사. 공개 차트 SVG 전체에도 적용.",
+      "owner": "test/oracles/svg-integrity.js"
+    },
+    {
+      "id": "T07",
+      "status": "수정·검증 범위 명시",
+      "change": "공개 browser Canvas의 실제 픽셀 검사. offline recipe 55개 각각에 mark 제거 전후의 differential raster 검사 추가. 투명·화면 밖 mark는 축이 보여도 실패. 모든 realistic 조합을 raster화했다는 주장은 하지 않음.",
+      "owner": "test/support/analytic-pixels.js"
+    },
+    {
+      "id": "T08",
+      "status": "수정·검증",
+      "change": "page/context/browser teardown 전에 원래 오류와 screenshot을 저장. 중복 캡처를 억제하고 packed browser subtest의 assertion도 보존. 실제 실패→context.close 순서로 확인.",
+      "owner": "test/support/browser.js"
+    },
+    {
+      "id": "T09",
+      "status": "수정·검증",
+      "change": "compat 명령에 facet-content-headers를 포함. Firefox·WebKit에서 DPR 1·2 검사 포함 각 9개 통과.",
+      "owner": "package.json"
+    },
+    {
+      "id": "T10",
+      "status": "수정·검증",
+      "change": "coverage 표와 source 파일 목록을 대조해 로드되지 않은 파일의 누락도 실패 처리. MCP CLI는 설치된 stdio consumer가 소유한다는 이유와 함께 명시적 예외.",
+      "owner": "scripts/coverage-policy.js"
+    },
+    {
+      "id": "T11",
+      "status": "수정·검증",
+      "change": "core, selectors, 전체 renderer, MCP, inspection, scene의 자동 floor를 확대. 최종 171개 floor 통과. 기존보다 강한 파일별 기준은 유지.",
+      "owner": "scripts/coverage-policy.js"
+    },
+    {
+      "id": "T12",
+      "status": "수정·검증",
+      "change": "YAML 구조에서 주요 qualification job과 실제 run 명령을 검사. source/coverage/package/docs/realistic/platform/browser 명령별 echo·if:false·continue-on-error 변이를 거부.",
+      "owner": "test/contracts/release-workflow.test.js"
+    },
+    {
+      "id": "T13",
+      "status": "수정",
+      "change": "기본 suite의 npm ci와 Chromium 설치 전제를 명시. realistic corpus 사전 다운로드와 실행 자원 조건도 분리해 안내.",
+      "owner": "test/README.md"
+    },
+    {
+      "id": "T14",
+      "status": "수정·원격 환경 검증 대기",
+      "change": "경로 비교를 slash 정규화하고 compiler를 Node로 실행. macOS/Windows CI에 compiler·sharding 집중 검사 추가. 실제 Windows 실행 결과는 이번 로컬 증거에 포함하지 않음.",
+      "owner": "test/support/typescript.js"
+    },
+    {
+      "id": "T15",
+      "status": "수정·기준 실행 확인",
+      "change": "qualification peer를 lockfile의 정확한 버전으로 고정하고 실제 해결 버전을 기록. latest 호환 peer 검증을 별도 CI job으로 추가. 로컬 locked native 및 packed consumer 통과.",
+      "owner": "scripts/consumers/optional-peers.js"
+    },
+    {
+      "id": "T16",
+      "status": "수정·검증",
+      "change": "원본 coverage, 파일별 metrics JSON, commit/dirty diff/untracked hash 영수증 보존. 성공·실패 모두 CI artifact 업로드.",
+      "owner": "scripts/run-tests.js"
+    },
+    {
+      "id": "T17",
+      "status": "수정·종료 제어 확인",
+      "change": "canonical suite와 render/gallery 단계에 deadline 적용. Unix process group/Windows taskkill tree 종료, SIGINT·SIGTERM 전달, timeout 영수증 추가. 로컬 timeout·손자 프로세스·두 취소 신호 검증.",
+      "owner": "scripts/run-check.js"
+    },
+    {
+      "id": "T18",
+      "status": "수정·실패 주입 확인",
+      "change": "consumer 준비 도중 실패해도 임시 디렉터리 제거. 존재하지 않는 로컬 tarball 설치 실패를 주입해 임시 root가 빈 상태로 회수됨을 확인.",
+      "owner": "scripts/package-consumer.js"
+    },
+    {
+      "id": "T19",
+      "status": "수정·실행 범위 수치화",
+      "change": "등록과 실제 실행을 분리하고 최신 코드 해시가 일치하는 passing receipt만 실행 증거로 인정. README 2개 예외를 실제 실행으로 승격. 403개 contextual fragment를 실행했다고 계산하지 않음.",
+      "owner": "scripts/doc-snippet-coverage.js"
+    },
+    {
+      "id": "T20",
+      "status": "수정·검증",
+      "change": "긴 fence, 최대 3칸 indentation, info-string 속성, tilde 및 closing 길이를 처리. 공개 JS fenced block과 선언 파일 typecheck의 범위를 구분.",
+      "owner": "scripts/doc-snippets.js"
+    },
+    {
+      "id": "T21",
+      "status": "수정·검증",
+      "change": "environment/mode/rendering/result 바인딩 계약을 검증. 잘못된 selector·URL·render 누락 거부. renders-canvas에서는 harness가 대신 그리지 않으며 README에는 3개 mark 기대값도 추가.",
+      "owner": "test/support/docs-runtime.js"
+    },
+    {
+      "id": "T22",
+      "status": "수정·검증",
+      "change": "정확한 한국어·과거 계획 문구에 대한 assertion 제거. current action 상태와 실제 runtime 메서드, current literal vocabulary와 배포 선언을 비교. anchor/navigation 검사 유지.",
+      "owner": "test/contracts/action-value-vocabulary.test.js"
+    },
+    {
+      "id": "T23",
+      "status": "수정·검사 범위 명시",
+      "change": "Acorn AST로 직접 semantic lookup과 clone 호출 검사. 주석·문자열은 무시하고 optional chaining·bracket property를 인식. 동적 별칭을 추적하는 범용 정적 분석기로 확대하지 않음.",
+      "owner": "test/contracts/source-boundaries.test.js"
+    },
+    {
+      "id": "T24",
+      "status": "수정·독립 실패 확인",
+      "change": "packed Node 코드를 8개 계약 모듈·177개 case로 분리하고 MCP/types/optional peers를 별도 runner로 이동. 7개 qualification phase가 독립 결과를 보존. browser HTML와 literal 기대값 분리, 결과별 subtest 120개 통과.",
+      "owner": "scripts/consumers/fixtures/node/manifest.json"
+    },
+    {
+      "id": "T25",
+      "status": "수정·검증",
+      "change": "62개 타입 compiler 호출을 공통 실행기로 이관. 기존 positive/negative fixture와 flags 유지, timeout·version·diagnostics 기록. phase2/phase5 파일을 data-completion/focused-scale-editor로 개명하고 참조 갱신.",
+      "owner": "test/support/typescript.js"
+    },
+    {
+      "id": "T26",
+      "status": "수정·음성 대조군 확인",
+      "change": "서로 다른 두 fillStyle sentinel로 invalid CSS가 무시되는 경우를 검출. 검은색·투명색 등 정상 색은 허용. not-a-css-color를 다시 주입해 거부 확인.",
+      "owner": "test/support/png.js"
+    },
+    {
+      "id": "T27",
+      "status": "수정·검증",
+      "change": "고정 seed 자동차 데이터에서 rename/scale/missing 관계와 입력 불변성 검사. rename collision·overflow를 명시적으로 거부. seed와 원본·변이 입력을 artifact에 보존.",
+      "owner": "test/contracts/corpus-mutation-relations.test.js"
+    },
+    {
+      "id": "T28",
+      "status": "수정·검증",
+      "change": "실제 sample과 synthetic overlay를 구분. 32/512/4096행, 4/32/256 category의 point consumer와 missing/duplicate/signed-zero/constant/large-magnitude aggregate postcondition 기록.",
+      "owner": "test/support/datasets/profile.js"
+    },
+    {
+      "id": "T29",
+      "status": "수정·검증",
+      "change": "87개 primitive baseline의 transitive production import와 독립 oracle import를 생성·검증. API 동등성 및 같은 실행의 pixels를 독립적인 기하 정답으로 과장하지 않도록 설명.",
+      "owner": "test/charts/baseline-evidence.json"
+    },
+    {
+      "id": "T30",
+      "status": "수정·검증",
+      "change": "비어 있거나 NaN/범위 밖인 coverage metric, 중복 파일 row를 거부. malformed 표가 threshold를 통과하지 못함.",
+      "owner": "scripts/coverage-policy.js"
+    },
+    {
+      "id": "T31",
+      "status": "수정·검증",
+      "change": "selector 단락 평가 전에 모든 capability 이름을 검증. 앞선 selector가 전 파일에 일치해도 뒤의 잘못된 이름을 거부.",
+      "owner": "scripts/run-tests.js"
+    },
+    {
+      "id": "T32",
+      "status": "수정·CI 표본 축적 대기",
+      "change": "파일별 elapsed time/max RSS/status/environment를 수집하고 환경별 median/p95/failure rate 계산. 과거 round-robin 우월성 대신 완전 분할·결정성·부하 상한을 검사. 기존 Ubuntu weight를 로컬 측정으로 덮어쓰지 않음.",
+      "owner": "scripts/test-file-metrics.js"
+    }
+  ],
+  "evidence": {
+    "coverage.log": {
+      "sha256": "ad74776b89c51a90749630db659e320b53c0ea9c454a3ec0c725d6802b953353",
+      "bytes": 158
+    },
+    "render.log": {
+      "sha256": "5264d12694a2e7b5c3f0d85f6f88cfc6485a8d7ec4da636358e59e7aa3ed64ba",
+      "bytes": 18162
+    },
+    "browser-full.log": {
+      "sha256": "503d3e5707b55622e1771157b5c26e22d18f7296c27d8ee6012d9d92d3309bc6",
+      "bytes": 14959
+    },
+    "browser-consumer.log": {
+      "sha256": "3b57f924beb7d0103e4ae305f3678009c58d40920ea23c3496f509e77c47beee",
+      "bytes": 6352
+    },
+    "firefox.log": {
+      "sha256": "d4eede8b1e54de3bbf7a9af209bac16f760b6f357a28c18ac43c13e929ea5121",
+      "bytes": 1607
+    },
+    "webkit.log": {
+      "sha256": "ccd386fc618449b7f5967030d238b9d7f4599408163b645c0c51fc3a7e741af9",
+      "bytes": 1601
+    },
+    "package.log": {
+      "sha256": "e9dbeeb572c105f1a2719ceaabe0ad6573e8a6519aedcba95c503624636eb8cb",
+      "bytes": 3148
+    },
+    "native-platform.log": {
+      "sha256": "73661b5e4608a5eba1cc24f1e44f029869fd26f46ae56284df3ee0ad10ef4af1",
+      "bytes": 663
+    },
+    "portable-contracts.log": {
+      "sha256": "267f3f8a7d33c82a550feb0a4732e7e99f163c82bfc869b0717f01490e2cb7b6",
+      "bytes": 2952
+    },
+    "snippet-contracts.log": {
+      "sha256": "2ee6f789f36e207c6369befc795395ea476b8703d2e0dd51ca14c4b9a66aa491",
+      "bytes": 8972
+    },
+    "corpus-profiles.log": {
+      "sha256": "4d9ad8f4e36dd6b6120a1cd5a561429dd17598d4c24585a3c0ee5e007a3530a4",
+      "bytes": 1472
+    },
+    "realistic-fixtures.log": {
+      "sha256": "ceb9e3fdd74dc576197082bbf4f503299e64d1a165822de4dcaed2ae110fccc9",
+      "bytes": 1327
+    },
+    "realistic-recipes.log": {
+      "sha256": "be7591333b703b81a04c8979e575d4f0d301bdd735992605fcf17327cb62bbc9",
+      "bytes": 462
+    },
+    "analytic-pixels.log": {
+      "sha256": "873122e5e90832411de24685a263c2a6471a7e199306525df68aad458e31d38c",
+      "bytes": 214
+    },
+    "cancellation.log": {
+      "sha256": "2f68414536e32f4e020e324699cbf4754817954d8f5f35c9519373ae8f17d57c",
+      "bytes": 1380
+    },
+    "svg-grammar.log": {
+      "sha256": "6905f1d0a4657a2ad6021487a7c7ad43cc33e0295740945c5b72cf985dc19875",
+      "bytes": 805
+    },
+    "tiny-slope-negative-control.log": {
+      "sha256": "156fc166539e73ab39e19468ae30ce298f8f15c07b7ca2a4c1b3cc7baa5ca1f4",
+      "bytes": 3714
+    },
+    "blank-negative-control.log": {
+      "sha256": "a91c121995026ad1bbe74ea101c54dbcd38e2899191053997d252bda68532d63",
+      "bytes": 413
+    },
+    "snippet-coverage.json": {
+      "sha256": "b724729dc5ac854867d34d1b7159f3b711f7bce81e9d261903ad84599c809a1e",
+      "bytes": 12182
+    },
+    "coverage-full.log": {
+      "sha256": "b24d9dff13f49b7d46e6718c2b04e089bf5109ad732a4d2a37eff649dabb0b87",
+      "bytes": 538883
+    },
+    "coverage-metrics.json": {
+      "sha256": "ecb3d1bc68f293c47cf09b87229a2d5ac0178fc54ac5b4b9fd38ca01bdaa0527",
+      "bytes": 61198
+    },
+    "coverage-receipt.json": {
+      "sha256": "3d3e1a2ebfbc30262b2fdf899f82312dc6f2716a8d1f5b3cc7cc3c7069feeab5",
+      "bytes": 55320
+    },
+    "node-consumers.json": {
+      "sha256": "8ebe7cfac6af297b824d970befe7f6b2f6cc55e6241270504e6118ddaa8ca6ec",
+      "bytes": 19061
+    },
+    "package-qualification.json": {
+      "sha256": "73bc6af812124c8859d676b67a6fc2c542a5083b5231495eb6964653db84a421",
+      "bytes": 763
+    },
+    "browser-snippets.json": {
+      "sha256": "8e438846c896a1f2f3001b8168afeb5904d24dffcb7d105698252ee905cc743b",
+      "bytes": 17993
+    },
+    "corpus-mutations.json": {
+      "sha256": "8b258e783942354a407593845f089c2b20412be1b880d080f9df5512c3a28f46",
+      "bytes": 13883
+    },
+    "corpus-size-pathologies.json": {
+      "sha256": "1fc6c76a4df70d26fd82452f9fec8c0c5e937d25cd35d8a018b03a6272471c06",
+      "bytes": 5327
+    }
+  }
+}

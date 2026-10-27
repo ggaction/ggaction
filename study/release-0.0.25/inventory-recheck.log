@@ -1,0 +1,331 @@
+✖ derives a bounded public option inventory without runtime prototype paths (176841.85625ms)
+  AssertionError [ERR_ASSERTION]: point-bearing sample windows remain observable in direct, facade and parent inputs
+  + actual - expected
+  ... Skipped lines
+  
+    [
+      'option-path:createAdjacentPlot.plot.options.guides.legend.clipHeight',
+      'option-path:createAreaPlot.guides.legend.clipHeight',
+      'option-path:createBarPlot.guides.legend.clipHeight',
+      'option-path:createBeeswarmPlot.guides.legend.clipHeight',
+  ...
+      'option-path:createIntervalPlot.guides.legend.clipHeight',
+  +   'option-path:createLayerPlot.plot.options.guides.legend.clipHeight',
+      'option-path:createLegend.clipHeight',
+      'option-path:createLinePlot.guides.legend.clipHeight',
+      'option-path:createLollipopPlot.guides.legend.clipHeight',
+      'option-path:createParallelCoordinates.guides.legend.clipHeight',
+      'option-path:createPiePlot.guides.legend.clipHeight',
+  
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/contracts/generated-scenario-feature-coverage.test.js:285:10)
+      at async Test.run (node:internal/test_runner/test:932:9)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:297:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [ 'option-path:createAdjacentPlot.plot.options.guides.legend.clipHeight', 'option-path:createAreaPlot.guides.legend.clipHeight', 'option-path:createBarPlot.guides.legend.clipHeight', 'option-path:createBeeswarmPlot.guides.legend.clipHeight', 'option-path:createDensityPlot.guides.legend.clipHeight', 'option-path:createDotPlot.guides.legend.clipHeight', 'option-path:createDumbbellPlot.guides.legend.clipHeight', 'option-path:createECDFPlot.guides.legend.clipHeight', 'option-path:createGuides.legend.clipHeight', 'option-path:createHeatmap.guides.legend.clipHeight', 'option-path:createHistogram.guides.legend.clipHeight', 'option-path:createIntervalPlot.guides.legend.clipHeight', 'option-path:createLayerPlot.plot.options.guides.legend.clipHeight', 'option-path:createLegend.clipHeight', 'option-path:createLinePlot.guides.legend.clipHeight', 'option-path:createLollipopPlot.guides.legend.clipHeight', 'option-path:createParallelCoordinates.guides.legend.clipHeight', 'option-path:createPiePlot.guides.legend.clipHeight', 'option-path:createPolarLinePlot.guides.legend.clipHeight', 'option-path:createPolarScatterPlot.guides.legend.clipHeight', 'option-path:createRadarPlot.guides.legend.clipHeight', 'option-path:createRadialBarPlot.guides.legend.clipHeight', 'option-path:createRaincloudPlot.guides.legend.clipHeight', 'option-path:createRegressionPlot.guides.legend.clipHeight', 'option-path:createRosePlot.guides.legend.clipHeight', 'option-path:createScatterPlot.guides.legend.clipHeight', 'option-path:createStripPlot.guides.legend.clipHeight', 'option-path:createTextPlot.guides.legend.clipHeight', 'option-path:createViolinPlot.guides.legend.clipHeight', 'option-path:editFacetGuides.legend.clipHeight', 'option-path:editLegend.clipHeight', 'option-path:editLegendBlock.clipHeight', 'option-path:editLegendSymbols.clipHeight', 'option-path:facet.guides.legend.clipHeight', 'option-path:facetGrid.guides.legend.clipHeight', 'option-path:repeatCharts.guides.legend.clipHeight' ],
+    expected: [ 'option-path:createAdjacentPlot.plot.options.guides.legend.clipHeight', 'option-path:createAreaPlot.guides.legend.clipHeight', 'option-path:createBarPlot.guides.legend.clipHeight', 'option-path:createBeeswarmPlot.guides.legend.clipHeight', 'option-path:createDensityPlot.guides.legend.clipHeight', 'option-path:createDotPlot.guides.legend.clipHeight', 'option-path:createDumbbellPlot.guides.legend.clipHeight', 'option-path:createECDFPlot.guides.legend.clipHeight', 'option-path:createGuides.legend.clipHeight', 'option-path:createHeatmap.guides.legend.clipHeight', 'option-path:createHistogram.guides.legend.clipHeight', 'option-path:createIntervalPlot.guides.legend.clipHeight', 'option-path:createLegend.clipHeight', 'option-path:createLinePlot.guides.legend.clipHeight', 'option-path:createLollipopPlot.guides.legend.clipHeight', 'option-path:createParallelCoordinates.guides.legend.clipHeight', 'option-path:createPiePlot.guides.legend.clipHeight', 'option-path:createPolarLinePlot.guides.legend.clipHeight', 'option-path:createPolarScatterPlot.guides.legend.clipHeight', 'option-path:createRadarPlot.guides.legend.clipHeight', 'option-path:createRadialBarPlot.guides.legend.clipHeight', 'option-path:createRaincloudPlot.guides.legend.clipHeight', 'option-path:createRegressionPlot.guides.legend.clipHeight', 'option-path:createRosePlot.guides.legend.clipHeight', 'option-path:createScatterPlot.guides.legend.clipHeight', 'option-path:createStripPlot.guides.legend.clipHeight', 'option-path:createTextPlot.guides.legend.clipHeight', 'option-path:createViolinPlot.guides.legend.clipHeight', 'option-path:editFacetGuides.legend.clipHeight', 'option-path:editLegend.clipHeight', 'option-path:editLegendBlock.clipHeight', 'option-path:editLegendSymbols.clipHeight', 'option-path:facet.guides.legend.clipHeight', 'option-path:facetGrid.guides.legend.clipHeight', 'option-path:repeatCharts.guides.legend.clipHeight' ],
+    operator: 'deepStrictEqual'
+  }
+
+✔ passes only trace-backed action and recursive option evidence plus observed extras (4.590833ms)
+✔ observes collection and named-axis array parents through recursive trace count aliases (340565.143292ms)
+✔ hard-gates explicit distribution minima and reports exact scoped waivers (2.489916ms)
+✔ does not let descriptors, transitive calls, duplicates, or option claims inflate coverage (0.7815ms)
+✔ validates explicit and compact source lineage without reporting raw indexes (1.1665ms)
+✔ reports dataset, tier, recipe, and chart-family concentration failures (0.581167ms)
+✔ isolates npm pack from the caller's global cache (0.829375ms)
+npm notice
+npm notice New minor version of npm available! 11.18.0 -> 11.21.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.21.1
+npm notice To update run: npm install -g npm@11.21.1
+npm notice
+✔ publishes only the bounded public package artifact (3705.292709ms)
+✔ rejects missing, forbidden, and oversized package manifests (0.7045ms)
+✔ packed scale compaction preserves exports and numeric color results (97.911125ms)
+✔ consumer setup removes its temporary directory when installation fails (380.987125ms)
+✔ independent installed cases continue after a failure and retain case identities (2.429958ms)
+✔ installed fixture modules and their case manifest are exhaustive (96.89725ms)
+✔ named axis and parent legend lifecycle preserve actual rows from tt-tour-de-france-winners (6367.434166ms)
+✔ named axis and parent legend lifecycle preserve actual rows from tt-london-marathon-winners (4565.839125ms)
+✔ named axis and parent legend lifecycle preserve actual rows from tt-penguins (4719.38975ms)
+✖ parent legend options and literals have actual public 5/3 witnesses (270679.277917ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + [
+  +   {
+  +     datasetCount: 0,
+  +     id: 'option-path:editFacetGuides.legend.alongOffset',
+  +     occurrences: 0
+  +   },
+  +   {
+  +     datasetCount: 0,
+  +     id: 'option-path:editFacetGuides.legend.labels.align',
+  +     occurrences: 0
+  +   },
+  +   {
+  +     datasetCount: 0,
+  +     id: 'option-path:facet.guides.legend.alongOffset',
+  +     occurrences: 0
+  +   },
+  +   {
+  +     datasetCount: 0,
+  +     id: 'option-path:facet.guides.legend.labels.align',
+  +     occurrences: 0
+  +   },
+  +   {
+  +     datasetCount: 0,
+  +     id: 'option-path:facetGrid.guides.legend.alongOffset',
+  +     occurrences: 0
+  +   },
+  +   {
+  +     datasetCount: 0,
+  +     id: 'option-path:facetGrid.guides.legend.labels.align',
+  +     occurrences: 0
+  +   },
+  +   {
+  +     datasetCount: 0,
+  +     id: 'option-path:repeatCharts.guides.legend.alongOffset',
+  +     occurrences: 0
+  +   },
+  +   {
+  +     datasetCount: 0,
+  +     id: 'option-path:repeatCharts.guides.legend.labels.align',
+  +     occurrences: 0
+  +   },
+  +   {
+  +     datasetCount: 0,
+  +     id: 'option-value:editFacetGuides.legend.labels.align=string:center',
+  +     occurrences: 0
+  +   },
+  +   {
+  +     datasetCount: 0,
+  +     id: 'option-value:editFacetGuides.legend.labels.align=string:left',
+  +     occurrences: 0
+  +   },
+  +   {
+  +     datasetCount: 0,
+  +     id: 'option-value:editFacetGuides.legend.labels.align=string:right',
+  +     occurrences: 0
+  +   },
+  +   {
+  +     datasetCount: 0,
+  +     id: 'option-value:facet.guides.legend.labels.align=string:center',
+  +     occurrences: 0
+  +   },
+  +   {
+  +     datasetCount: 0,
+  +     id: 'option-value:facet.guides.legend.labels.align=string:left',
+  +     occurrences: 0
+  +   },
+  +   {
+  +     datasetCount: 0,
+  +     id: 'option-value:facet.guides.legend.labels.align=string:right',
+  +     occurrences: 0
+  +   },
+  +   {
+  +     datasetCount: 0,
+  +     id: 'option-value:facetGrid.guides.legend.labels.align=string:center',
+  +     occurrences: 0
+  +   },
+  +   {
+  +     datasetCount: 0,
+  +     id: 'option-value:facetGrid.guides.legend.labels.align=string:left',
+  +     occurrences: 0
+  +   },
+  +   {
+  +     datasetCount: 0,
+  +     id: 'option-value:facetGrid.guides.legend.labels.align=string:right',
+  +     occurrences: 0
+  +   },
+  +   {
+  +     datasetCount: 0,
+  +     id: 'option-value:repeatCharts.guides.legend.labels.align=string:center',
+  +     occurrences: 0
+  +   },
+  +   {
+  +     datasetCount: 0,
+  +     id: 'option-value:repeatCharts.guides.legend.labels.align=string:left',
+  +     occurrences: 0
+  +   },
+  +   {
+  +     datasetCount: 0,
+  +     id: 'option-value:repeatCharts.guides.legend.labels.align=string:right',
+  +     occurrences: 0
+  +   }
+  + ]
+  - []
+  
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/contracts/realistic-axis-facet-owner-witness.test.js:256:10)
+      at async Test.run (node:internal/test_runner/test:932:9)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:629:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ { id: 'option-path:editFacetGuides.legend.alongOffset', occurrences: 0, datasetCount: 0 }, { id: 'option-path:editFacetGuides.legend.labels.align', occurrences: 0, datasetCount: 0 }, { id: 'option-path:facet.guides.legend.alongOffset', occurrences: 0, datasetCount: 0 }, { id: 'option-path:facet.guides.legend.labels.align', occurrences: 0, datasetCount: 0 }, { id: 'option-path:facetGrid.guides.legend.alongOffset', occurrences: 0, datasetCount: 0 }, { id: 'option-path:facetGrid.guides.legend.labels.align', occurrences: 0, datasetCount: 0 }, { id: 'option-path:repeatCharts.guides.legend.alongOffset', occurrences: 0, datasetCount: 0 }, { id: 'option-path:repeatCharts.guides.legend.labels.align', occurrences: 0, datasetCount: 0 }, { id: 'option-value:editFacetGuides.legend.labels.align=string:center', occurrences: 0, datasetCount: 0 }, { id: 'option-value:editFacetGuides.legend.labels.align=string:left', occurrences: 0, datasetCount: 0 }, { id: 'option-value:editFacetGuides.legend.labels.align=string:right', occurrences: 0, datasetCount: 0 }, { id: 'option-value:facet.guides.legend.labels.align=string:center', occurrences: 0, datasetCount: 0 }, { id: 'option-value:facet.guides.legend.labels.align=string:left', occurrences: 0, datasetCount: 0 }, { id: 'option-value:facet.guides.legend.labels.align=string:right', occurrences: 0, datasetCount: 0 }, { id: 'option-value:facetGrid.guides.legend.labels.align=string:center', occurrences: 0, datasetCount: 0 }, { id: 'option-value:facetGrid.guides.legend.labels.align=string:left', occurrences: 0, datasetCount: 0 }, { id: 'option-value:facetGrid.guides.legend.labels.align=string:right', occurrences: 0, datasetCount: 0 }, { id: 'option-value:repeatCharts.guides.legend.labels.align=string:center', occurrences: 0, datasetCount: 0 }, { id: 'option-value:repeatCharts.guides.legend.labels.align=string:left', occurrences: 0, datasetCount: 0 }, { id: 'option-value:repeatCharts.guides.legend.labels.align=string:right', occurrences: 0, datasetCount: 0 } ],
+    expected: [],
+    operator: 'deepStrictEqual'
+  }
+
+✔ new legend option and selector witnesses retain five calls and three authentic datasets (13599.131791ms)
+✔ point-owned facade combinations execute five times on tt-tour-de-france-winners (601.759625ms)
+✔ point-owned facade combinations execute five times on tt-london-marathon-winners (402.137917ms)
+✔ point-owned facade combinations execute five times on tt-penguins (703.086292ms)
+ℹ tests 22
+ℹ suites 0
+ℹ pass 20
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 517624.944459
+
+✖ failing tests:
+
+test at test/contracts/generated-scenario-feature-coverage.test.js:214:1
+✖ derives a bounded public option inventory without runtime prototype paths (176841.85625ms)
+  AssertionError [ERR_ASSERTION]: point-bearing sample windows remain observable in direct, facade and parent inputs
+  + actual - expected
+  ... Skipped lines
+  
+    [
+      'option-path:createAdjacentPlot.plot.options.guides.legend.clipHeight',
+      'option-path:createAreaPlot.guides.legend.clipHeight',
+      'option-path:createBarPlot.guides.legend.clipHeight',
+      'option-path:createBeeswarmPlot.guides.legend.clipHeight',
+  ...
+      'option-path:createIntervalPlot.guides.legend.clipHeight',
+  +   'option-path:createLayerPlot.plot.options.guides.legend.clipHeight',
+      'option-path:createLegend.clipHeight',
+      'option-path:createLinePlot.guides.legend.clipHeight',
+      'option-path:createLollipopPlot.guides.legend.clipHeight',
+      'option-path:createParallelCoordinates.guides.legend.clipHeight',
+      'option-path:createPiePlot.guides.legend.clipHeight',
+  
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/contracts/generated-scenario-feature-coverage.test.js:285:10)
+      at async Test.run (node:internal/test_runner/test:932:9)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:297:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [ 'option-path:createAdjacentPlot.plot.options.guides.legend.clipHeight', 'option-path:createAreaPlot.guides.legend.clipHeight', 'option-path:createBarPlot.guides.legend.clipHeight', 'option-path:createBeeswarmPlot.guides.legend.clipHeight', 'option-path:createDensityPlot.guides.legend.clipHeight', 'option-path:createDotPlot.guides.legend.clipHeight', 'option-path:createDumbbellPlot.guides.legend.clipHeight', 'option-path:createECDFPlot.guides.legend.clipHeight', 'option-path:createGuides.legend.clipHeight', 'option-path:createHeatmap.guides.legend.clipHeight', 'option-path:createHistogram.guides.legend.clipHeight', 'option-path:createIntervalPlot.guides.legend.clipHeight', 'option-path:createLayerPlot.plot.options.guides.legend.clipHeight', 'option-path:createLegend.clipHeight', 'option-path:createLinePlot.guides.legend.clipHeight', 'option-path:createLollipopPlot.guides.legend.clipHeight', 'option-path:createParallelCoordinates.guides.legend.clipHeight', 'option-path:createPiePlot.guides.legend.clipHeight', 'option-path:createPolarLinePlot.guides.legend.clipHeight', 'option-path:createPolarScatterPlot.guides.legend.clipHeight', 'option-path:createRadarPlot.guides.legend.clipHeight', 'option-path:createRadialBarPlot.guides.legend.clipHeight', 'option-path:createRaincloudPlot.guides.legend.clipHeight', 'option-path:createRegressionPlot.guides.legend.clipHeight', 'option-path:createRosePlot.guides.legend.clipHeight', 'option-path:createScatterPlot.guides.legend.clipHeight', 'option-path:createStripPlot.guides.legend.clipHeight', 'option-path:createTextPlot.guides.legend.clipHeight', 'option-path:createViolinPlot.guides.legend.clipHeight', 'option-path:editFacetGuides.legend.clipHeight', 'option-path:editLegend.clipHeight', 'option-path:editLegendBlock.clipHeight', 'option-path:editLegendSymbols.clipHeight', 'option-path:facet.guides.legend.clipHeight', 'option-path:facetGrid.guides.legend.clipHeight', 'option-path:repeatCharts.guides.legend.clipHeight' ],
+    expected: [ 'option-path:createAdjacentPlot.plot.options.guides.legend.clipHeight', 'option-path:createAreaPlot.guides.legend.clipHeight', 'option-path:createBarPlot.guides.legend.clipHeight', 'option-path:createBeeswarmPlot.guides.legend.clipHeight', 'option-path:createDensityPlot.guides.legend.clipHeight', 'option-path:createDotPlot.guides.legend.clipHeight', 'option-path:createDumbbellPlot.guides.legend.clipHeight', 'option-path:createECDFPlot.guides.legend.clipHeight', 'option-path:createGuides.legend.clipHeight', 'option-path:createHeatmap.guides.legend.clipHeight', 'option-path:createHistogram.guides.legend.clipHeight', 'option-path:createIntervalPlot.guides.legend.clipHeight', 'option-path:createLegend.clipHeight', 'option-path:createLinePlot.guides.legend.clipHeight', 'option-path:createLollipopPlot.guides.legend.clipHeight', 'option-path:createParallelCoordinates.guides.legend.clipHeight', 'option-path:createPiePlot.guides.legend.clipHeight', 'option-path:createPolarLinePlot.guides.legend.clipHeight', 'option-path:createPolarScatterPlot.guides.legend.clipHeight', 'option-path:createRadarPlot.guides.legend.clipHeight', 'option-path:createRadialBarPlot.guides.legend.clipHeight', 'option-path:createRaincloudPlot.guides.legend.clipHeight', 'option-path:createRegressionPlot.guides.legend.clipHeight', 'option-path:createRosePlot.guides.legend.clipHeight', 'option-path:createScatterPlot.guides.legend.clipHeight', 'option-path:createStripPlot.guides.legend.clipHeight', 'option-path:createTextPlot.guides.legend.clipHeight', 'option-path:createViolinPlot.guides.legend.clipHeight', 'option-path:editFacetGuides.legend.clipHeight', 'option-path:editLegend.clipHeight', 'option-path:editLegendBlock.clipHeight', 'option-path:editLegendSymbols.clipHeight', 'option-path:facet.guides.legend.clipHeight', 'option-path:facetGrid.guides.legend.clipHeight', 'option-path:repeatCharts.guides.legend.clipHeight' ],
+    operator: 'deepStrictEqual'
+  }
+
+test at test/contracts/realistic-axis-facet-owner-witness.test.js:96:1
+✖ parent legend options and literals have actual public 5/3 witnesses (270679.277917ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + [
+  +   {
+  +     datasetCount: 0,
+  +     id: 'option-path:editFacetGuides.legend.alongOffset',
+  +     occurrences: 0
+  +   },
+  +   {
+  +     datasetCount: 0,
+  +     id: 'option-path:editFacetGuides.legend.labels.align',
+  +     occurrences: 0
+  +   },
+  +   {
+  +     datasetCount: 0,
+  +     id: 'option-path:facet.guides.legend.alongOffset',
+  +     occurrences: 0
+  +   },
+  +   {
+  +     datasetCount: 0,
+  +     id: 'option-path:facet.guides.legend.labels.align',
+  +     occurrences: 0
+  +   },
+  +   {
+  +     datasetCount: 0,
+  +     id: 'option-path:facetGrid.guides.legend.alongOffset',
+  +     occurrences: 0
+  +   },
+  +   {
+  +     datasetCount: 0,
+  +     id: 'option-path:facetGrid.guides.legend.labels.align',
+  +     occurrences: 0
+  +   },
+  +   {
+  +     datasetCount: 0,
+  +     id: 'option-path:repeatCharts.guides.legend.alongOffset',
+  +     occurrences: 0
+  +   },
+  +   {
+  +     datasetCount: 0,
+  +     id: 'option-path:repeatCharts.guides.legend.labels.align',
+  +     occurrences: 0
+  +   },
+  +   {
+  +     datasetCount: 0,
+  +     id: 'option-value:editFacetGuides.legend.labels.align=string:center',
+  +     occurrences: 0
+  +   },
+  +   {
+  +     datasetCount: 0,
+  +     id: 'option-value:editFacetGuides.legend.labels.align=string:left',
+  +     occurrences: 0
+  +   },
+  +   {
+  +     datasetCount: 0,
+  +     id: 'option-value:editFacetGuides.legend.labels.align=string:right',
+  +     occurrences: 0
+  +   },
+  +   {
+  +     datasetCount: 0,
+  +     id: 'option-value:facet.guides.legend.labels.align=string:center',
+  +     occurrences: 0
+  +   },
+  +   {
+  +     datasetCount: 0,
+  +     id: 'option-value:facet.guides.legend.labels.align=string:left',
+  +     occurrences: 0
+  +   },
+  +   {
+  +     datasetCount: 0,
+  +     id: 'option-value:facet.guides.legend.labels.align=string:right',
+  +     occurrences: 0
+  +   },
+  +   {
+  +     datasetCount: 0,
+  +     id: 'option-value:facetGrid.guides.legend.labels.align=string:center',
+  +     occurrences: 0
+  +   },
+  +   {
+  +     datasetCount: 0,
+  +     id: 'option-value:facetGrid.guides.legend.labels.align=string:left',
+  +     occurrences: 0
+  +   },
+  +   {
+  +     datasetCount: 0,
+  +     id: 'option-value:facetGrid.guides.legend.labels.align=string:right',
+  +     occurrences: 0
+  +   },
+  +   {
+  +     datasetCount: 0,
+  +     id: 'option-value:repeatCharts.guides.legend.labels.align=string:center',
+  +     occurrences: 0
+  +   },
+  +   {
+  +     datasetCount: 0,
+  +     id: 'option-value:repeatCharts.guides.legend.labels.align=string:left',
+  +     occurrences: 0
+  +   },
+  +   {
+  +     datasetCount: 0,
+  +     id: 'option-value:repeatCharts.guides.legend.labels.align=string:right',
+  +     occurrences: 0
+  +   }
+  + ]
+  - []
+  
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/contracts/realistic-axis-facet-owner-witness.test.js:256:10)
+      at async Test.run (node:internal/test_runner/test:932:9)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:629:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ { id: 'option-path:editFacetGuides.legend.alongOffset', occurrences: 0, datasetCount: 0 }, { id: 'option-path:editFacetGuides.legend.labels.align', occurrences: 0, datasetCount: 0 }, { id: 'option-path:facet.guides.legend.alongOffset', occurrences: 0, datasetCount: 0 }, { id: 'option-path:facet.guides.legend.labels.align', occurrences: 0, datasetCount: 0 }, { id: 'option-path:facetGrid.guides.legend.alongOffset', occurrences: 0, datasetCount: 0 }, { id: 'option-path:facetGrid.guides.legend.labels.align', occurrences: 0, datasetCount: 0 }, { id: 'option-path:repeatCharts.guides.legend.alongOffset', occurrences: 0, datasetCount: 0 }, { id: 'option-path:repeatCharts.guides.legend.labels.align', occurrences: 0, datasetCount: 0 }, { id: 'option-value:editFacetGuides.legend.labels.align=string:center', occurrences: 0, datasetCount: 0 }, { id: 'option-value:editFacetGuides.legend.labels.align=string:left', occurrences: 0, datasetCount: 0 }, { id: 'option-value:editFacetGuides.legend.labels.align=string:right', occurrences: 0, datasetCount: 0 }, { id: 'option-value:facet.guides.legend.labels.align=string:center', occurrences: 0, datasetCount: 0 }, { id: 'option-value:facet.guides.legend.labels.align=string:left', occurrences: 0, datasetCount: 0 }, { id: 'option-value:facet.guides.legend.labels.align=string:right', occurrences: 0, datasetCount: 0 }, { id: 'option-value:facetGrid.guides.legend.labels.align=string:center', occurrences: 0, datasetCount: 0 }, { id: 'option-value:facetGrid.guides.legend.labels.align=string:left', occurrences: 0, datasetCount: 0 }, { id: 'option-value:facetGrid.guides.legend.labels.align=string:right', occurrences: 0, datasetCount: 0 }, { id: 'option-value:repeatCharts.guides.legend.labels.align=string:center', occurrences: 0, datasetCount: 0 }, { id: 'option-value:repeatCharts.guides.legend.labels.align=string:left', occurrences: 0, datasetCount: 0 }, { id: 'option-value:repeatCharts.guides.legend.labels.align=string:right', occurrences: 0, datasetCount: 0 } ],
+    expected: [],
+    operator: 'deepStrictEqual'
+  }

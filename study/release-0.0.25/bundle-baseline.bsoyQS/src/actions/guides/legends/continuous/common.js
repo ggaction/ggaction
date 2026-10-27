@@ -1,0 +1,504 @@
+import { validateTextAlignment } from "../../../../core/validation.js";
+import { materializeHardTextLines } from "../../../../materialization/textLines.js";
+import{normalizeLegendClipHeight}from"../../../../grammar/legendClip.js";
+import {normalizeLegendSpacing} from "../../../../grammar/legendSpacing.js";
+import{applyLegendClipGraphics}from"../../../../materialization/legendClip.js";
+import { normalizeGradientDirection } from "../../../../grammar/legendGradient.js";
+import { normalizeLegendBorderDash } from "../../../../grammar/legendBorder.js";
+import { materializeLegendBorder } from "../../../../materialization/legendBorder.js";
+import { LEGEND_TITLE_STYLE_KEYS, mergeLegendTitleStyle, validateLegendTitleAlignment } from "../../../../grammar/legendTitleStyle.js";
+import { PLOT_LEGEND_POSITIONS, isPlotLegend } from "../../../../layout/legend.js";
+import { isContinuousColorScaleType } from "../../../../grammar/scales/types.js";
+import { isPlainObject } from "../../../../core/immutable.js";
+import { resolveTextBounds } from "../../../../core/textMetrics.js";
+import { resolveLegendTitleText } from "../../../../layout/legendText.js";
+import { materializeLegendTitleLines } from "../../../../materialization/legendText.js";
+import {
+  validateKeys,
+  validateFontWeight,
+  validateOptionObject,
+  validateNonEmptyString,
+  validateNonNegativeFinite,
+  validatePositiveFinite,
+  validateGeneratedItemLimit
+} from "../../../../core/validation.js";
+import { formatTimeTick } from "../../../../grammar/ticks.js";
+import {
+  formatValue,
+  validateValueFormat
+} from "../../../../grammar/valueFormat.js";
+import {
+  formatDistinctNumericSamples,
+  sampleNumericRange
+} from "../../../../grammar/numeric.js";
+import { resolveGraphicBounds, canvasOverflowError } from "../../../../layout/canvas.js";
+import { isHorizontalEdgeLegend } from "../../../../layout/legendLane.js";
+import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY, DEFAULT_VERTICAL_LEGEND_ITEM_GAP } from
+  "../../../../theme/defaults.js";
+import { findLayer } from "../../../../selectors/layers.js";
+import { isOpacityLegendLayer } from "../../../../materialization/legends.js";
+import { findCanvasGraphic } from
+  "../../../../materialization/graphicHierarchy.js";
+import { normalizeLegendSampling } from "../sampling.js";
+import { editGraphicProperties } from "../../../primitives/graphicProperties.js";
+
+const OPTIONS = [
+  "clipHeight",
+  "target", "channels", "position", "align", "offset", "title", "count",
+  "values",
+  "gradient", "symbol", "labels", "titleStyle", "itemGap", "rowPadding", "titlePadding", "border",
+  "direction", "columns", "titlePosition"
+];
+export const ITEM_LEGEND_OPTIONS = Object.freeze([
+  "clipHeight",
+  "target", "count", "values", "position", "layout", "align", "direction",
+  "columns", "titlePosition", "offset", "itemGap", "rowPadding", "titlePadding", "title", "labels", "titleStyle", "border", "overflow"
+]);
+const TEXT_OPTIONS = [
+  "offset", "color", "fontSize", "fontFamily", "fontWeight", "align", "format"
+];
+const BORDER_OPTIONS = [
+  "color", "lineWidth", "padding", "background", "strokeDash"
+];
+const POSITIONS = ["right", "left", "top", "bottom", ...PLOT_LEGEND_POSITIONS];
+const DEFAULT_LABELS = {
+  offset: 12,
+  color: DEFAULT_COLORS.text,
+  fontSize: 12,
+  fontFamily: DEFAULT_FONT_FAMILY,
+  fontWeight: "normal"
+};
+const DEFAULT_TITLE = {
+  color: DEFAULT_COLORS.text,
+  fontSize: 13,
+  fontFamily: DEFAULT_FONT_FAMILY,
+  fontWeight: 600
+};
+export const ITEM_LEGEND_LABELS = Object.freeze(DEFAULT_LABELS);
+export const ITEM_LEGEND_TITLE_STYLE = Object.freeze({
+  ...DEFAULT_TITLE, color: DEFAULT_COLORS.strongText
+});
+
+export function normalizeInitialLegendTitle(title, fallback) {
+  if (title !== undefined && title !== false) validateNonEmptyString(title, "Legend title");
+  return {
+    title: title === false || title === undefined ? fallback : title,
+    inferredTitle: title === false || title === undefined,
+    titleVisible: title !== false
+  };
+}
+
+export function normalizeItemLegendConfig(args, encoding, itemGap) {
+  const side = ["right", "left"].includes(args.position ?? "right") || isPlotLegend(args);
+  const direction = args.direction ?? (side ? "vertical" : "horizontal");
+  const defaultGap = direction === "vertical" ? DEFAULT_VERTICAL_LEGEND_ITEM_GAP : itemGap;
+  return {
+    ...(args.clipHeight===undefined?{}:{clipHeight:normalizeLegendClipHeight(args.clipHeight)}),
+    ...normalizeItemLegendLayout({ ...args, itemGap: args.itemGap ?? defaultGap }),
+    ...normalizeInitialLegendTitle(args.title, encoding.field),
+    labels: normalizeLegendTextOptions(args.labels, "createLegend.labels", ITEM_LEGEND_LABELS),
+    titleStyle: normalizeLegendTitleOptions(args.titleStyle, "createLegend.titleStyle", ITEM_LEGEND_TITLE_STYLE),
+    border: normalizeLegendBorder(args.border)
+  };
+}
+
+const DEFAULT_BORDER = {
+  color: DEFAULT_COLORS.border,
+  lineWidth: 1,
+  padding: 12,
+  background: "transparent"
+};
+
+export const validatePositive = validatePositiveFinite;
+export const validateNonNegative = validateNonNegativeFinite;
+
+export { editGraphicProperties };
+
+export function normalizeLegendTextOptions(value, label, defaults) {
+  if (value === undefined) return { ...defaults };
+  if (!isPlainObject(value)) {
+    throw new TypeError(`${label} must be a plain object.`);
+  }
+  validateKeys(value, TEXT_OPTIONS, label);
+  const result = { ...defaults, ...value };
+  validateTextAlignment(result, label);
+  if (Object.hasOwn(result, "offset")) {
+    validateNonNegative(result.offset, `${label} offset`);
+  }
+  validatePositive(result.fontSize, `${label} fontSize`);
+  for (const key of ["color", "fontFamily"]) {
+    validateNonEmptyString(result[key], `${label} ${key}`);
+  }
+  validateFontWeight(result.fontWeight, `${label} fontWeight`, "finite number");
+  if (Object.hasOwn(result, "format")) {
+    result.format = validateValueFormat(result.format, `${label} format`);
+  }
+  return result;
+}
+
+export function normalizeLegendTitleOptions(value, label, defaults, edit = false) {
+  if (value !== undefined) validateOptionObject(value, LEGEND_TITLE_STYLE_KEYS, label);
+  const merged = mergeLegendTitleStyle(defaults, value, { edit });
+  const { align, ...text } = merged;
+  return { ...normalizeLegendTextOptions(text, label, {}), ...(align === undefined ? {} : { align }) };
+}
+
+export function normalizeLegendBorder(value) {
+  if (value === undefined || value === false) return false;
+  if (value !== true && !isPlainObject(value)) {
+    throw new TypeError("createLegend.border must be a boolean or plain object.");
+  }
+  if (value !== true) validateKeys(value, BORDER_OPTIONS, "createLegend.border");
+  const border = { ...DEFAULT_BORDER, ...(value === true ? {} : value) };
+  for (const key of ["color", "background"]) {
+    validateNonEmptyString(border[key], `Legend border ${key}`);
+  }
+  validateNonNegative(border.lineWidth, "Legend border lineWidth");
+  validateNonNegative(border.padding, "Legend border padding");
+  const dash = normalizeLegendBorderDash(border.strokeDash);
+  return { ...border, ...(dash === undefined ? {} : { strokeDash: dash }) };
+}
+
+export function normalizeContinuousLegend(args, kind) {
+  validateOptionObject(args, OPTIONS, "createLegend");
+  const position = args.position ?? "right";
+  if (!POSITIONS.includes(position)) {
+    throw new Error(`Unsupported legend position "${position}".`);
+  }
+  const align = args.align ?? "center";
+  if (!["left", "center", "right"].includes(align)) {
+    throw new Error(`Unsupported legend alignment "${align}".`);
+  }
+  if (["left", "right"].includes(position) && align !== "center") {
+    throw new Error("Side continuous legends require center alignment.");
+  }
+  const sampling = kind === "opacity" || Object.hasOwn(args, "values")
+    ? normalizeLegendSampling(args, {
+        operation: "create",
+        label: kind === "gradient" ? "Gradient legend" : "Opacity legend"
+      })
+    : undefined;
+  const count = kind === "gradient" ? sampling?.count ?? args.count ?? 5 : undefined;
+  if (kind === "gradient") {
+    if (!Number.isInteger(count) || count < 2) {
+      throw new RangeError(
+        "Continuous legend count must be an integer of at least 2."
+      );
+    }
+    validateGeneratedItemLimit(count, "Continuous legend count");
+  }
+  const offset = args.offset ?? (isPlotLegend({ position }) ? 8 : 30);
+  validateNonNegative(offset, "Legend offset");
+  const titlePosition = args.titlePosition ?? "top";
+  validateLegendTitleAlignment(args.titleStyle, titlePosition);
+  if (!(kind === "gradient" ? ["top", "left", "bottom"] : ["top", "left"]).includes(titlePosition)) {
+    throw new Error(`Unsupported legend titlePosition "${titlePosition}".`);
+  }
+  if (
+    titlePosition === "left" &&
+    (!["top", "bottom"].includes(position) || kind !== "opacity")
+  ) {
+    throw new Error(
+      "Only horizontal opacity legends support left titlePosition."
+    );
+  }
+  const itemGap = args.itemGap ?? (kind === "opacity" && (["right", "left"].includes(position) || isPlotLegend({ position }))
+    ? DEFAULT_VERTICAL_LEGEND_ITEM_GAP : titlePosition === "left" ? 20 : 28);
+  validatePositive(itemGap, "Legend itemGap");
+  if (kind === "gradient") {
+    for (const key of ["symbol", "columns", "itemGap"]) {
+      if (Object.hasOwn(args, key)) {
+        throw new Error(`Gradient legend does not accept ${key}.`);
+      }
+    }
+  } else {
+    for (const key of ["columns", "direction", "gradient"]) {
+      if (Object.hasOwn(args, key)) {
+        throw new Error(`Opacity legend does not accept ${key}.`);
+      }
+    }
+  }
+  return {
+    ...(args.clipHeight===undefined?{}:{clipHeight:normalizeLegendClipHeight(args.clipHeight)}),
+    target: args.target,
+    ...normalizeLegendSpacing(args),
+    position,
+    align,
+    offset,
+    ...(kind === "gradient" ? { count,
+      ...(sampling?.mode === "values" ? { sampling } : {}),
+      ...(args.direction === undefined ? {} : { gradientDirection: normalizeGradientDirection(args.direction) })
+    } : { sampling }),
+    ...normalizeInitialLegendTitle(args.title),
+    labels: normalizeLegendTextOptions(
+      args.labels,
+      "createLegend.labels",
+      titlePosition === "left"
+        ? { ...DEFAULT_LABELS, offset: 8 }
+        : DEFAULT_LABELS
+    ),
+    titleStyle: normalizeLegendTitleOptions(
+      args.titleStyle,
+      "createLegend.titleStyle",
+      DEFAULT_TITLE
+    ),
+    itemGap,
+    titlePosition,
+    border: normalizeLegendBorder(args.border)
+  };
+}
+
+export function selectLegendLayer(program, requested, predicate) {
+  const candidates = program.semanticSpec.layers.filter(predicate);
+  if (requested === undefined) return candidates.length === 1
+    ? candidates[0]
+    : undefined;
+  const candidate = findLayer(program, requested);
+  return candidates.includes(candidate) ? candidate : undefined;
+}
+
+export function resolveContinuousLegendLayer(program, requested, channel) {
+  const layer = selectLegendLayer(
+    program,
+    requested,
+    channel === "opacity" ? isOpacityLegendLayer : candidate =>
+      candidate.mark?.type === "point" && candidate.encoding?.[channel]?.scale !== undefined
+  );
+  if (layer === undefined) {
+    throw new Error(
+      requested === undefined
+        ? `${channel} legend requires one eligible ${channel === "opacity" ? "point, line or bar" : "point"} mark.`
+        : `Unknown ${channel} legend target "${requested}".`
+    );
+  }
+  return layer;
+}
+
+export function resolveContinuousColorLayer(program, requested, channel = "color") {
+  const layer = selectLegendLayer(
+    program,
+    requested,
+    candidate => (channel === "stroke"
+      ? ["point", "line", "area", "bar", "rect", "arc", "rule", "tick"]
+      : ["point", "line", "bar", "rect", "text", "area", "arc", "tick"]
+    ).includes(candidate.mark?.type) &&
+      candidate.encoding?.[channel]?.scale !== undefined &&
+      (channel !== "color" || ["quantitative", "temporal"].includes(candidate.encoding[channel].fieldType))
+  );
+  if (layer === undefined) {
+    throw new Error(
+      requested === undefined
+        ? channel === "color"
+          ? "color legend requires one eligible point, line, bar, rect, text, area, arc, or tick mark."
+          : "stroke legend requires one eligible mark."
+        : `Unknown ${channel} legend target "${requested}".`
+    );
+  }
+  return layer;
+}
+
+export function requireResolvedLegendScale(program, id, type) {
+  const scale = program.resolvedScales[id];
+  if (type === "sequential" ? !isContinuousColorScaleType(scale?.type) : scale?.type !== type) {
+    throw new Error(`Legend requires resolved ${type} scale "${id}".`);
+  }
+  return scale;
+}
+
+export function resolveContinuousBounds(
+  program,
+  message = "Continuous legend layout requires Canvas bounds."
+) {
+  const plot = resolveGraphicBounds(program);
+  const canvas = findCanvasGraphic(program);
+  if (
+    plot === undefined ||
+    ![plot.x, plot.y, plot.width, plot.height].every(Number.isFinite) ||
+    canvas?.type !== "canvas" ||
+    !Number.isFinite(canvas.properties.width) ||
+    !Number.isFinite(canvas.properties.height)
+  ) {
+    throw new Error(message);
+  }
+  return { plot, canvas: canvas.properties };
+}
+
+export function sampleContinuousValues(domain, count) {
+  return sampleNumericRange(
+    domain[0],
+    domain[1],
+    count,
+    "Continuous legend domain"
+  );
+}
+
+export function formatContinuousValues(values, domain, fieldType, format = "auto") {
+  const resolved = validateValueFormat(format, "Legend label format");
+  if (resolved === "auto") {
+    return fieldType === "temporal"
+      ? values.map(value => formatTimeTick(value, domain))
+      : formatDistinctNumericSamples(values);
+  }
+  return values.map(value => formatValue(value, {
+    format: resolved,
+    valueType: fieldType === "temporal" ? "temporal" : "quantitative",
+    label: "Legend label format"
+  }));
+}
+
+export function styleContinuousText(
+  program,
+  id,
+  style,
+  { align = "left" } = {}
+) {
+  const next = editGraphicProperties(program, id, {
+    fill: style.color,
+    fontSize: style.fontSize,
+    fontFamily: style.fontFamily,
+    fontWeight: style.fontWeight,
+    textAlign: id.endsWith("Labels") ? style.align ?? align : align,
+    textBaseline: "middle"
+  });
+  return id.endsWith("Title")
+    ? materializeLegendTitleLines(next, id, next.graphicSpec.objects[id].properties.text, style)
+    : materializeHardTextLines(next, id);
+}
+
+export function resolveLegendTextBounds(position, text, style, profile, { hardBreaks = true } = {}) {
+  return resolveTextBounds({
+    x: position.x,
+    y: position.y,
+    text: String(text),
+    ...style,
+    ...(hardBreaks ? { lines: resolveLegendTitleText(text, style, profile).lines } : {}),
+    textAlign: position.align ?? "left",
+    textBaseline: "middle"
+  }, profile);
+}
+
+export function assertLegendBoundsInsideCanvas(bounds, canvas, label, config) {
+  // Outside content is intrinsic until its shared edge lane places the final
+  // concrete bounds. In-plot and legacy layouts validate their own anchors.
+  if (config?.groupIntrinsic || isHorizontalEdgeLegend(config) || ["left", "right"].includes(config?.position)) return;
+  if (bounds.some(item =>
+    item.left < 0 || item.right > canvas.width ||
+    item.top < 0 || item.bottom > canvas.height
+  )) {
+    throw canvasOverflowError(`${label} requires more Canvas margin space.`, bounds, canvas);
+  }
+}
+
+export function resolveLegendBackgroundFromBounds(
+  bounds,
+  border,
+  canvas,
+  label,
+  config
+) {
+  if (border === false) return undefined;
+  const strokeExtent = border.lineWidth / 2;
+  let x = Infinity;
+  let y = Infinity;
+  let right = -Infinity;
+  let bottom = -Infinity;
+  for (const item of bounds) {
+    x = Math.min(x, item.left);
+    y = Math.min(y, item.top);
+    right = Math.max(right, item.right);
+    bottom = Math.max(bottom, item.bottom);
+  }
+  x -= border.padding;
+  y -= border.padding;
+  right += border.padding;
+  bottom += border.padding;
+  if (!config?.groupIntrinsic && !isHorizontalEdgeLegend(config) && !["left", "right"].includes(config?.position) && (
+    x - strokeExtent < 0 || y - strokeExtent < 0 ||
+    right + strokeExtent > canvas.width ||
+    bottom + strokeExtent > canvas.height
+  )) {
+    throw canvasOverflowError(`${label} background requires more Canvas margin space.`, [{
+      left: x - strokeExtent, right: right + strokeExtent,
+      top: y - strokeExtent, bottom: bottom + strokeExtent
+    }], canvas);
+  }
+  return { x, y, width: right - x, height: bottom - y };
+}
+
+export function editLegendBackground(program, id, bounds, border) {
+  if (bounds === undefined) return program;
+  return materializeLegendBorder(program, id, bounds, border);
+}
+
+export function normalizeItemLegendLayout(args, { multiColumnSide = false } = {}) {
+  const position = args.position ?? "right";
+  if (!POSITIONS.includes(position)) throw new Error(`Unsupported legend position "${position}".`);
+  const side = ["left", "right"].includes(position) || isPlotLegend({ position });
+  const layout = args.layout === undefined ? "edge" : args.layout;
+  if (layout !== "edge") throw new Error('This legend requires layout "edge".');
+  const align = args.align ?? "center";
+  if (!["left", "center", "right"].includes(align)) throw new Error(`Unsupported legend alignment "${align}".`);
+  const direction = args.direction ?? (side ? "vertical" : "horizontal");
+  if (!["horizontal", "vertical"].includes(direction)) throw new Error(`Unsupported legend direction "${direction}".`);
+  const columns = args.columns;
+  if (columns !== undefined && (!Number.isInteger(columns) || columns < 1)) throw new RangeError("Legend columns must be a positive integer.");
+  const titlePosition = args.titlePosition ?? "top";
+  validateLegendTitleAlignment(args.titleStyle, titlePosition);
+  if (!["top", "left"].includes(titlePosition)) throw new Error(`Unsupported legend titlePosition "${titlePosition}".`);
+  if (side && (align !== "center" || titlePosition !== "top" || !multiColumnSide && (direction !== "vertical" || (columns !== undefined && columns !== 1)))) {
+    throw new Error("Side item legends require vertical direction, center alignment, top title and one column.");
+  }
+  const offset = args.offset ?? (isPlotLegend({ position }) ? 8 : 30);
+  const itemGap = args.itemGap ?? (direction === "vertical" ? DEFAULT_VERTICAL_LEGEND_ITEM_GAP : 28);
+  validateNonNegative(offset, "Legend offset");
+  validatePositive(itemGap, "Legend itemGap");
+  return { position, layout, align, direction, columns, titlePosition, offset, itemGap,
+    ...normalizeLegendSpacing(args) };
+}
+
+export function materializeItemLegend(program, kind, config, layout, {
+  symbols, optional = {}, text = layout.labels,
+  labels = layout.config.labels, titleStyle = layout.config.titleStyle
+}) {
+  const prefix = `${kind}Legend`;
+  const symbolLength = Object.values(symbols).find(Array.isArray)?.length ?? text.length;
+  let next = program
+    .editSemantic({ property: `guide.legend.${kind}.scale`, value: config.scale })
+    .editSemantic({ property: `guide.legend.${kind}.title`, value: config.title })
+    ._withLegendConfig(kind, config);
+  next = editGraphicProperties(next, `${prefix}Symbols`, {
+    length: symbolLength,
+    ...symbols
+  });
+  const labelIndices = layout.labelItemIndices;
+  const selectLabels = values => labelIndices === undefined || !Array.isArray(values)
+    ? values : labelIndices.map(index => values[index]);
+  next = editGraphicProperties(next, `${prefix}Labels`, {
+    length: labelIndices?.length ?? text.length,
+    x: selectLabels(layout.labelX), y: selectLabels(layout.itemY), text: selectLabels(text)
+  });
+  next = editLegendBackground(next, `${prefix}Background`, layout.background, config.border);
+  next = editGraphicProperties(next, `${prefix}Symbols`, Object.fromEntries(
+    Object.entries(optional).filter(([, value]) => value !== undefined)
+  ));
+  next = styleContinuousText(next, `${prefix}Labels`, labels);
+  const effective = layout.config;
+  if (effective.titleVisible === false) return applyLegendClipGraphics(next);
+  next = editGraphicProperties(next, `${prefix}Title`, {
+    x: layout.title.x, y: layout.title.y, text: effective.title
+  });
+  return applyLegendClipGraphics(styleContinuousText(next, `${prefix}Title`, titleStyle, { align: layout.title.align }));
+}
+
+export function createItemLegendGraphics(program, kind, config, count, type, placement) {
+  const prefix = `${kind}Legend`;
+  let next = program
+    .editSemantic({ property: `guide.legend.${kind}.scale`, value: config.scale })
+    .editSemantic({ property: `guide.legend.${kind}.title`, value: config.title })
+    ._withLegendConfig(kind, config);
+  if (config.border !== false) next = next.createGraphics({ id: `${prefix}Background`, type: "rect", ...placement });
+  next = next.createGraphics({ id: `${prefix}Symbols`, type, length: count, ...placement })
+    .createGraphics({ id: `${prefix}Labels`, type: "text", length: count, ...placement });
+  if (config.titleVisible !== false) next = next.createGraphics({ id: `${prefix}Title`, type: "text", ...placement });
+  return next;
+}

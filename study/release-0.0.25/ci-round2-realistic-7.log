@@ -1,0 +1,1278 @@
+﻿2026-10-26T20:25:20.9646217Z Current runner version: '2.338.0'
+2026-10-26T20:25:20.9675010Z ##[group]Runner Image Provisioner
+2026-10-26T20:25:20.9675929Z Hosted Compute Agent
+2026-10-26T20:25:20.9676699Z Version: 20261021.618
+2026-10-26T20:25:20.9677410Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-10-26T20:25:20.9678370Z Build Date: 2026-10-21T00:45:21Z
+2026-10-26T20:25:20.9679121Z Worker ID: {fdbed982-7bee-49db-9b7a-20e5d27875d6}
+2026-10-26T20:25:20.9679875Z Region: westus2
+2026-10-26T20:25:20.9680510Z Cloud: Azure
+2026-10-26T20:25:20.9681160Z ##[endgroup]
+2026-10-26T20:25:20.9682626Z ##[group]Operating System
+2026-10-26T20:25:20.9683310Z Ubuntu
+2026-10-26T20:25:20.9683897Z 24.04.5
+2026-10-26T20:25:20.9684524Z LTS
+2026-10-26T20:25:20.9685119Z ##[endgroup]
+2026-10-26T20:25:20.9685686Z ##[group]Runner Image
+2026-10-26T20:25:20.9686418Z Image: ubuntu-24.04
+2026-10-26T20:25:20.9687027Z Version: 20261012.334.1
+2026-10-26T20:25:20.9688943Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261012.334/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-26T20:25:20.9690524Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261012.334
+2026-10-26T20:25:20.9691611Z ##[endgroup]
+2026-10-26T20:25:20.9692781Z ##[group]GITHUB_TOKEN Permissions
+2026-10-26T20:25:20.9694921Z Contents: read
+2026-10-26T20:25:20.9695593Z Metadata: read
+2026-10-26T20:25:20.9696292Z ##[endgroup]
+2026-10-26T20:25:20.9698755Z Secret source: Actions
+2026-10-26T20:25:20.9699801Z Cache mode: write
+2026-10-26T20:25:20.9700599Z Prepare workflow directory
+2026-10-26T20:25:21.0064152Z Prepare all required actions
+2026-10-26T20:25:21.0115455Z Getting action download info
+2026-10-26T20:25:21.3989317Z Download action repository 'actions/checkout@v6' (SHA:d23441a48e516b6c34aea4fa41551a30e30af803)
+2026-10-26T20:25:21.4919852Z Download action repository 'actions/setup-node@v6' (SHA:249970729cb0ef3589644e2896645e5dc5ba9c38)
+2026-10-26T20:25:21.5756155Z Download action repository 'actions/cache@v5' (SHA:caa296126883cff596d87d8935842f9db880ef25)
+2026-10-26T20:25:21.7284100Z Download action repository 'actions/upload-artifact@v7' (SHA:cf430e030ddbb5b0abf93d22962f4752f3646cd9)
+2026-10-26T20:25:22.1339764Z Complete job name: realistic (7)
+2026-10-26T20:25:22.2265564Z ##[group]Run actions/checkout@v6
+2026-10-26T20:25:22.2266505Z with:
+2026-10-26T20:25:22.2267006Z   repository: ggaction/ggaction
+2026-10-26T20:25:22.2272235Z   token: ***
+2026-10-26T20:25:22.2272737Z   ssh-strict: true
+2026-10-26T20:25:22.2273248Z   ssh-user: git
+2026-10-26T20:25:22.2273763Z   persist-credentials: true
+2026-10-26T20:25:22.2274349Z   clean: true
+2026-10-26T20:25:22.2274858Z   sparse-checkout-cone-mode: true
+2026-10-26T20:25:22.2275476Z   fetch-depth: 1
+2026-10-26T20:25:22.2275981Z   fetch-tags: false
+2026-10-26T20:25:22.2276485Z   show-progress: true
+2026-10-26T20:25:22.2277000Z   lfs: false
+2026-10-26T20:25:22.2277493Z   submodules: false
+2026-10-26T20:25:22.2278125Z   set-safe-directory: true
+2026-10-26T20:25:22.2278737Z   allow-unsafe-pr-checkout: false
+2026-10-26T20:25:22.2279613Z ##[endgroup]
+2026-10-26T20:25:22.3317287Z Syncing repository: ggaction/ggaction
+2026-10-26T20:25:22.3321887Z ##[group]Getting Git version info
+2026-10-26T20:25:22.3323478Z Working directory is '/home/runner/work/ggaction/ggaction'
+2026-10-26T20:25:22.3325486Z [command]/usr/bin/git version
+2026-10-26T20:25:22.3429884Z git version 2.55.0
+2026-10-26T20:25:22.3536670Z ##[endgroup]
+2026-10-26T20:25:22.3548385Z Temporarily overriding HOME='/home/runner/work/_temp/1dbbf248-dbf0-4e64-af4b-00e0ae3b6dd2' before making global git config changes
+2026-10-26T20:25:22.3551688Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-26T20:25:22.3554490Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/ggaction/ggaction
+2026-10-26T20:25:22.3558861Z Deleting the contents of '/home/runner/work/ggaction/ggaction'
+2026-10-26T20:25:22.3560535Z ##[group]Determining repository object format
+2026-10-26T20:25:22.3561893Z ##[endgroup]
+2026-10-26T20:25:22.3563442Z ##[group]Initializing the repository
+2026-10-26T20:25:22.3564442Z [command]/usr/bin/git init /home/runner/work/ggaction/ggaction
+2026-10-26T20:25:22.3623252Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-26T20:25:22.3625281Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-26T20:25:22.3627131Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-26T20:25:22.3628810Z hint: call:
+2026-10-26T20:25:22.3629565Z hint:
+2026-10-26T20:25:22.3630543Z hint: 	git config --global init.defaultBranch <name>
+2026-10-26T20:25:22.3631771Z hint:
+2026-10-26T20:25:22.3632902Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-26T20:25:22.3634807Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-26T20:25:22.3636316Z hint:
+2026-10-26T20:25:22.3637103Z hint: 	git branch -m <name>
+2026-10-26T20:25:22.3638196Z hint:
+2026-10-26T20:25:22.3639397Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-26T20:25:22.3641489Z Initialized empty Git repository in /home/runner/work/ggaction/ggaction/.git/
+2026-10-26T20:25:22.3645383Z [command]/usr/bin/git remote add origin https://github.com/ggaction/ggaction
+2026-10-26T20:25:22.3693068Z ##[endgroup]
+2026-10-26T20:25:22.3694528Z ##[group]Disabling automatic garbage collection
+2026-10-26T20:25:22.3697826Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-26T20:25:22.3738284Z ##[endgroup]
+2026-10-26T20:25:22.3740234Z ##[group]Setting up auth
+2026-10-26T20:25:22.3741704Z Removing SSH command configuration
+2026-10-26T20:25:22.3747894Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-26T20:25:22.3788000Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-26T20:25:22.4157511Z Removing HTTP extra header
+2026-10-26T20:25:22.4165629Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-26T20:25:22.4206088Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-26T20:25:22.4441639Z Removing includeIf entries pointing to credentials config files
+2026-10-26T20:25:22.4448138Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-26T20:25:22.4486220Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-26T20:25:22.4729633Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-1861ad25-2e8b-462a-8d73-44d8d70d9345.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-26T20:25:22.4776695Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/ggaction/ggaction/.git.path /home/runner/work/_temp/git-credentials-1861ad25-2e8b-462a-8d73-44d8d70d9345.config
+2026-10-26T20:25:22.4815539Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/ggaction/ggaction/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-1861ad25-2e8b-462a-8d73-44d8d70d9345.config
+2026-10-26T20:25:22.4856953Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-1861ad25-2e8b-462a-8d73-44d8d70d9345.config
+2026-10-26T20:25:22.4896252Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-1861ad25-2e8b-462a-8d73-44d8d70d9345.config
+2026-10-26T20:25:22.4935496Z ##[endgroup]
+2026-10-26T20:25:22.4936923Z ##[group]Fetching the repository
+2026-10-26T20:25:22.4982862Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +541444e5bb9eb552321262c764f28c5b4e6346b7:refs/remotes/pull/276/merge
+2026-10-26T20:25:23.7187499Z From https://github.com/ggaction/ggaction
+2026-10-26T20:25:23.7190027Z  * [new ref]         541444e5bb9eb552321262c764f28c5b4e6346b7 -> pull/276/merge
+2026-10-26T20:25:23.7194181Z ##[endgroup]
+2026-10-26T20:25:23.7196099Z ##[group]Determining the checkout info
+2026-10-26T20:25:23.7198734Z ##[endgroup]
+2026-10-26T20:25:23.7202187Z [command]/usr/bin/git sparse-checkout disable
+2026-10-26T20:25:23.7263458Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-26T20:25:23.7323838Z ##[group]Checking out the ref
+2026-10-26T20:25:23.7329945Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/276/merge
+2026-10-26T20:25:24.1362858Z Note: switching to 'refs/remotes/pull/276/merge'.
+2026-10-26T20:25:24.1365192Z 
+2026-10-26T20:25:24.1366943Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-10-26T20:25:24.1370243Z changes and commit them, and you can discard any commits you make in this
+2026-10-26T20:25:24.1373355Z state without impacting any branches by switching back to a branch.
+2026-10-26T20:25:24.1375022Z 
+2026-10-26T20:25:24.1375906Z If you want to create a new branch to retain commits you create, you may
+2026-10-26T20:25:24.1378158Z do so (now or later) by using -c with the switch command. Example:
+2026-10-26T20:25:24.1379659Z 
+2026-10-26T20:25:24.1380289Z   git switch -c <new-branch-name>
+2026-10-26T20:25:24.1381112Z 
+2026-10-26T20:25:24.1381573Z Or undo this operation with:
+2026-10-26T20:25:24.1382349Z 
+2026-10-26T20:25:24.1382776Z   git switch -
+2026-10-26T20:25:24.1383363Z 
+2026-10-26T20:25:24.1384331Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-10-26T20:25:24.1385741Z 
+2026-10-26T20:25:24.1387807Z HEAD is now at 541444e Merge 0b0160eb4216ef03183807fbf32c00dff06e6ddc into fd5c4073fc80295c513bd099ac0ff0aa83059371
+2026-10-26T20:25:24.1392846Z ##[endgroup]
+2026-10-26T20:25:24.1438283Z [command]/usr/bin/git log -1 --format=%H
+2026-10-26T20:25:24.1474607Z 541444e5bb9eb552321262c764f28c5b4e6346b7
+2026-10-26T20:25:24.1884529Z ##[group]Run actions/setup-node@v6
+2026-10-26T20:25:24.1885603Z with:
+2026-10-26T20:25:24.1886402Z   node-version: 22
+2026-10-26T20:25:24.1887234Z   cache: npm
+2026-10-26T20:25:24.1888313Z   check-latest: false
+2026-10-26T20:25:24.1897666Z   token: ***
+2026-10-26T20:25:24.1898555Z   package-manager-cache: true
+2026-10-26T20:25:24.1899561Z ##[endgroup]
+2026-10-26T20:25:24.3304025Z Found in cache @ /opt/hostedtoolcache/node/22.23.3/x64
+2026-10-26T20:25:24.3306416Z ##[group]Environment details
+2026-10-26T20:25:24.9001118Z node: v22.23.3
+2026-10-26T20:25:24.9001548Z npm: 10.9.9
+2026-10-26T20:25:24.9026713Z yarn: 1.22.22
+2026-10-26T20:25:24.9027480Z ##[endgroup]
+2026-10-26T20:25:24.9028552Z [command]/opt/hostedtoolcache/node/22.23.3/x64/bin/npm config get cache
+2026-10-26T20:25:25.0227132Z /home/runner/.npm
+2026-10-26T20:25:25.3190699Z Cache hit for: node-cache-Linux-x64-npm-dca19831ff25602461c6fdf3cf05547fbb1007d87c049f5a7e59dff9a271e074
+2026-10-26T20:25:26.6054795Z Received 0 of 61010643 (0.0%), 0.0 MBs/sec
+2026-10-26T20:25:27.1532544Z Received 61010643 of 61010643 (100.0%), 37.6 MBs/sec
+2026-10-26T20:25:27.1533613Z Cache Size: ~58 MB (61010643 B)
+2026-10-26T20:25:27.1567445Z [command]/usr/bin/tar -xf /home/runner/work/_temp/6ba1f0db-a536-4fe8-bc64-ced9b54342f8/cache.tzst -P -C /home/runner/work/ggaction/ggaction --use-compress-program unzstd
+2026-10-26T20:25:27.2668063Z Cache restored successfully
+2026-10-26T20:25:27.2707347Z Cache restored from key: node-cache-Linux-x64-npm-dca19831ff25602461c6fdf3cf05547fbb1007d87c049f5a7e59dff9a271e074
+2026-10-26T20:25:27.2901231Z ##[group]Run npm ci
+2026-10-26T20:25:27.2901567Z [36;1mnpm ci[0m
+2026-10-26T20:25:27.3134628Z shell: /usr/bin/bash -e {0}
+2026-10-26T20:25:27.3134976Z ##[endgroup]
+2026-10-26T20:25:29.7957969Z 
+2026-10-26T20:25:29.7967417Z added 122 packages, and audited 123 packages in 2s
+2026-10-26T20:25:29.7968257Z 
+2026-10-26T20:25:29.7968595Z 42 packages are looking for funding
+2026-10-26T20:25:29.7969603Z   run `npm fund` for details
+2026-10-26T20:25:29.7969879Z 
+2026-10-26T20:25:29.7970089Z found 0 vulnerabilities
+2026-10-26T20:25:29.9196284Z ##[group]Run actions/cache@v5
+2026-10-26T20:25:29.9196593Z with:
+2026-10-26T20:25:29.9196826Z   path: .artifacts/datasets/tidytuesday
+2026-10-26T20:25:29.9197370Z   key: ggaction-tidytuesday-Linux-fef874e3d5ce26efe00241d2cae6394d5797fd63351c56db52bb578ce30d2290
+2026-10-26T20:25:29.9198146Z   enableCrossOsArchive: false
+2026-10-26T20:25:29.9198453Z   fail-on-cache-miss: false
+2026-10-26T20:25:29.9198715Z   lookup-only: false
+2026-10-26T20:25:29.9198954Z   save-always: false
+2026-10-26T20:25:29.9199177Z ##[endgroup]
+2026-10-26T20:25:30.3142957Z Cache hit for: ggaction-tidytuesday-Linux-fef874e3d5ce26efe00241d2cae6394d5797fd63351c56db52bb578ce30d2290
+2026-10-26T20:25:31.6219679Z Received 851126 of 13434038 (6.3%), 0.8 MBs/sec
+2026-10-26T20:25:32.0028142Z Received 13434038 of 13434038 (100.0%), 9.3 MBs/sec
+2026-10-26T20:25:32.0028876Z Cache Size: ~13 MB (13434038 B)
+2026-10-26T20:25:32.0054423Z [command]/usr/bin/tar -xf /home/runner/work/_temp/dd74ef61-6d42-48a8-89b8-4648f6a4add8/cache.tzst -P -C /home/runner/work/ggaction/ggaction --use-compress-program unzstd
+2026-10-26T20:25:32.0983318Z Cache restored successfully
+2026-10-26T20:25:32.1070139Z Cache restored from key: ggaction-tidytuesday-Linux-fef874e3d5ce26efe00241d2cae6394d5797fd63351c56db52bb578ce30d2290
+2026-10-26T20:25:32.1206254Z ##[group]Run node scripts/run-check.js test-realistic -- npm run test:realistic -- --shard=7/7
+2026-10-26T20:25:32.1206988Z [36;1mnode scripts/run-check.js test-realistic -- npm run test:realistic -- --shard=7/7[0m
+2026-10-26T20:25:32.1276532Z shell: /usr/bin/bash -e {0}
+2026-10-26T20:25:32.1276832Z ##[endgroup]
+2026-10-26T20:25:32.2750430Z 
+2026-10-26T20:25:32.2751480Z > ggaction@0.0.25 test:realistic
+2026-10-26T20:25:32.2752373Z > node scripts/run-tests.js realistic --shard=7/7
+2026-10-26T20:25:32.2752882Z 
+2026-10-26T20:25:32.3482382Z {"shard":{"index":7,"total":7},"files":["contracts/realistic-combined-legend-witness.test.js","contracts/realistic-complete-chart-facades.test.js","contracts/realistic-data-mark-recipes.test.js","contracts/realistic-encoding-coverage-recipes.test.js","contracts/realistic-facet-column-factors.test.js","contracts/realistic-legend-option-witness.test.js","contracts/realistic-lifecycle-factor-effects.test.js","contracts/realistic-scenario-runner.test.js"],"estimatedMs":526638}
+2026-10-26T20:25:32.4269253Z TAP version 13
+2026-10-26T20:25:40.2235240Z # Subtest: combined legend lifecycle calls preserve actual rows from tt-tour-de-france-winners
+2026-10-26T20:25:40.2262801Z ok 1 - combined legend lifecycle calls preserve actual rows from tt-tour-de-france-winners
+2026-10-26T20:25:40.2288695Z   ---
+2026-10-26T20:25:40.2318526Z   duration_ms: 2341.556152
+2026-10-26T20:25:40.2348300Z   type: 'test'
+2026-10-26T20:25:40.2348882Z   ...
+2026-10-26T20:25:40.2378867Z # Subtest: combined legend lifecycle calls preserve actual rows from tt-london-marathon-winners
+2026-10-26T20:25:40.2408671Z ok 2 - combined legend lifecycle calls preserve actual rows from tt-london-marathon-winners
+2026-10-26T20:25:40.2440998Z   ---
+2026-10-26T20:25:40.2468671Z   duration_ms: 1503.913411
+2026-10-26T20:25:40.2498700Z   type: 'test'
+2026-10-26T20:25:40.2534812Z   ...
+2026-10-26T20:25:40.2558662Z # Subtest: combined legend lifecycle calls preserve actual rows from tt-penguins
+2026-10-26T20:25:40.2559808Z ok 3 - combined legend lifecycle calls preserve actual rows from tt-penguins
+2026-10-26T20:25:40.2560577Z   ---
+2026-10-26T20:25:40.2560923Z   duration_ms: 1854.158467
+2026-10-26T20:25:40.2561375Z   type: 'test'
+2026-10-26T20:25:40.2561731Z   ...
+2026-10-26T20:25:40.2562769Z # Subtest: quantitative combined legend lifecycle preserves actual rows from tt-tour-de-france-winners
+2026-10-26T20:25:40.2564271Z ok 4 - quantitative combined legend lifecycle preserves actual rows from tt-tour-de-france-winners
+2026-10-26T20:25:40.2564997Z   ---
+2026-10-26T20:25:40.2565824Z   duration_ms: 493.750297
+2026-10-26T20:25:40.2566187Z   type: 'test'
+2026-10-26T20:25:40.2566494Z   ...
+2026-10-26T20:25:40.2567206Z # Subtest: quantitative combined legend lifecycle preserves actual rows from tt-london-marathon-winners
+2026-10-26T20:25:40.2589011Z ok 5 - quantitative combined legend lifecycle preserves actual rows from tt-london-marathon-winners
+2026-10-26T20:25:40.2589847Z   ---
+2026-10-26T20:25:40.2590239Z   duration_ms: 552.377841
+2026-10-26T20:25:40.2590637Z   type: 'test'
+2026-10-26T20:25:40.2590981Z   ...
+2026-10-26T20:25:40.2591754Z # Subtest: quantitative combined legend lifecycle preserves actual rows from tt-penguins
+2026-10-26T20:25:40.2592959Z ok 6 - quantitative combined legend lifecycle preserves actual rows from tt-penguins
+2026-10-26T20:25:40.2593657Z   ---
+2026-10-26T20:25:40.2593985Z   duration_ms: 555.389604
+2026-10-26T20:25:40.2594364Z   type: 'test'
+2026-10-26T20:25:40.2594686Z   ...
+2026-10-26T20:25:40.2963555Z # Subtest: authors createRosePlot variant 1 from cars with proportional measured sectors
+2026-10-26T20:25:40.2995159Z ok 7 - authors createRosePlot variant 1 from cars with proportional measured sectors
+2026-10-26T20:25:40.3021908Z   ---
+2026-10-26T20:25:40.3058931Z   duration_ms: 60.558288
+2026-10-26T20:25:40.3059786Z   type: 'test'
+2026-10-26T20:25:40.3060371Z   ...
+2026-10-26T20:25:40.3062034Z # Subtest: authors createRadialBarPlot variant 1 from cars with proportional measured sectors
+2026-10-26T20:25:40.3080869Z ok 8 - authors createRadialBarPlot variant 1 from cars with proportional measured sectors
+2026-10-26T20:25:40.3081996Z   ---
+2026-10-26T20:25:40.3086896Z   duration_ms: 25.310241
+2026-10-26T20:25:40.3087804Z   type: 'test'
+2026-10-26T20:25:40.3088375Z   ...
+2026-10-26T20:25:40.3089335Z # Subtest: authors pie variant 1 from cars with complete sectors and immutable source
+2026-10-26T20:25:40.3090663Z ok 9 - authors pie variant 1 from cars with complete sectors and immutable source
+2026-10-26T20:25:40.3091527Z   ---
+2026-10-26T20:25:40.3092056Z   duration_ms: 33.725315
+2026-10-26T20:25:40.3092672Z   type: 'test'
+2026-10-26T20:25:40.3093187Z   ...
+2026-10-26T20:25:40.3094112Z # Subtest: authors density variant 1 from cars with complete profiles and revisions
+2026-10-26T20:25:40.3095378Z ok 10 - authors density variant 1 from cars with complete profiles and revisions
+2026-10-26T20:25:40.3096338Z   ---
+2026-10-26T20:25:40.3096847Z   duration_ms: 55.106359
+2026-10-26T20:25:40.3097449Z   type: 'test'
+2026-10-26T20:25:40.3098242Z   ...
+2026-10-26T20:25:40.3099118Z # Subtest: authors Horizon variant 1 from cars against independent signed folds
+2026-10-26T20:25:40.3100322Z ok 11 - authors Horizon variant 1 from cars against independent signed folds
+2026-10-26T20:25:40.3101158Z   ---
+2026-10-26T20:25:40.3101665Z   duration_ms: 196.907628
+2026-10-26T20:25:40.3102244Z   type: 'test'
+2026-10-26T20:25:40.3103086Z   ...
+2026-10-26T20:25:40.3126816Z # Subtest: authors createRosePlot variant 2 from cars with proportional measured sectors
+2026-10-26T20:25:40.3128603Z ok 12 - authors createRosePlot variant 2 from cars with proportional measured sectors
+2026-10-26T20:25:40.3129567Z   ---
+2026-10-26T20:25:40.3130116Z   duration_ms: 25.18991
+2026-10-26T20:25:40.3130726Z   type: 'test'
+2026-10-26T20:25:40.3131268Z   ...
+2026-10-26T20:25:40.3132292Z # Subtest: authors createRadialBarPlot variant 2 from cars with proportional measured sectors
+2026-10-26T20:25:40.3133754Z ok 13 - authors createRadialBarPlot variant 2 from cars with proportional measured sectors
+2026-10-26T20:25:40.3134752Z   ---
+2026-10-26T20:25:40.3135280Z   duration_ms: 18.499139
+2026-10-26T20:25:40.3135893Z   type: 'test'
+2026-10-26T20:25:40.3136427Z   ...
+2026-10-26T20:25:40.3137336Z # Subtest: authors pie variant 2 from cars with complete sectors and immutable source
+2026-10-26T20:25:40.3138718Z ok 14 - authors pie variant 2 from cars with complete sectors and immutable source
+2026-10-26T20:25:40.3139685Z   ---
+2026-10-26T20:25:40.3142916Z   duration_ms: 28.346026
+2026-10-26T20:25:40.3143586Z   type: 'test'
+2026-10-26T20:25:40.3144557Z   ...
+2026-10-26T20:25:40.3145483Z # Subtest: authors density variant 2 from cars with complete profiles and revisions
+2026-10-26T20:25:40.3146748Z ok 15 - authors density variant 2 from cars with complete profiles and revisions
+2026-10-26T20:25:40.3147960Z   ---
+2026-10-26T20:25:40.3148541Z   duration_ms: 78.853699
+2026-10-26T20:25:40.3149124Z   type: 'test'
+2026-10-26T20:25:40.3149635Z   ...
+2026-10-26T20:25:40.3150536Z # Subtest: authors Horizon variant 2 from cars against independent signed folds
+2026-10-26T20:25:40.3151741Z ok 16 - authors Horizon variant 2 from cars against independent signed folds
+2026-10-26T20:25:40.3152568Z   ---
+2026-10-26T20:25:40.3153077Z   duration_ms: 154.969141
+2026-10-26T20:25:40.3153662Z   type: 'test'
+2026-10-26T20:25:40.3154204Z   ...
+2026-10-26T20:25:40.3155157Z # Subtest: authors createRosePlot variant 3 from cars with proportional measured sectors
+2026-10-26T20:25:40.3156513Z ok 17 - authors createRosePlot variant 3 from cars with proportional measured sectors
+2026-10-26T20:25:40.3157413Z   ---
+2026-10-26T20:25:40.3161992Z   duration_ms: 22.938595
+2026-10-26T20:25:40.3162603Z   type: 'test'
+2026-10-26T20:25:40.3163164Z   ...
+2026-10-26T20:25:40.3164178Z # Subtest: authors createRadialBarPlot variant 3 from cars with proportional measured sectors
+2026-10-26T20:25:40.3165606Z ok 18 - authors createRadialBarPlot variant 3 from cars with proportional measured sectors
+2026-10-26T20:25:40.3166868Z   ---
+2026-10-26T20:25:40.3168027Z   duration_ms: 12.639678
+2026-10-26T20:25:40.3168658Z   type: 'test'
+2026-10-26T20:25:40.3169192Z   ...
+2026-10-26T20:25:40.3170107Z # Subtest: authors pie variant 3 from cars with complete sectors and immutable source
+2026-10-26T20:25:40.3171359Z ok 19 - authors pie variant 3 from cars with complete sectors and immutable source
+2026-10-26T20:25:40.3172236Z   ---
+2026-10-26T20:25:40.3172752Z   duration_ms: 19.157949
+2026-10-26T20:25:40.3173344Z   type: 'test'
+2026-10-26T20:25:40.3173881Z   ...
+2026-10-26T20:25:40.3174797Z # Subtest: authors density variant 3 from cars with complete profiles and revisions
+2026-10-26T20:25:40.3176043Z ok 20 - authors density variant 3 from cars with complete profiles and revisions
+2026-10-26T20:25:40.3176906Z   ---
+2026-10-26T20:25:40.3177434Z   duration_ms: 33.360928
+2026-10-26T20:25:40.3178231Z   type: 'test'
+2026-10-26T20:25:40.3178763Z   ...
+2026-10-26T20:25:40.3179650Z # Subtest: authors Horizon variant 3 from cars against independent signed folds
+2026-10-26T20:25:40.3180826Z ok 21 - authors Horizon variant 3 from cars against independent signed folds
+2026-10-26T20:25:40.3181663Z   ---
+2026-10-26T20:25:40.3182193Z   duration_ms: 287.20677
+2026-10-26T20:25:40.3182754Z   type: 'test'
+2026-10-26T20:25:40.3183284Z   ...
+2026-10-26T20:25:40.3184240Z # Subtest: authors createRosePlot variant 4 from cars with proportional measured sectors
+2026-10-26T20:25:40.3185563Z ok 22 - authors createRosePlot variant 4 from cars with proportional measured sectors
+2026-10-26T20:25:40.3186440Z   ---
+2026-10-26T20:25:40.3186981Z   duration_ms: 13.893403
+2026-10-26T20:25:40.3187730Z   type: 'test'
+2026-10-26T20:25:40.3188255Z   ...
+2026-10-26T20:25:40.3189254Z # Subtest: authors createRadialBarPlot variant 4 from cars with proportional measured sectors
+2026-10-26T20:25:40.3190668Z ok 23 - authors createRadialBarPlot variant 4 from cars with proportional measured sectors
+2026-10-26T20:25:40.3191588Z   ---
+2026-10-26T20:25:40.3192115Z   duration_ms: 13.879222
+2026-10-26T20:25:40.3192679Z   type: 'test'
+2026-10-26T20:25:40.3193194Z   ...
+2026-10-26T20:25:40.3194086Z # Subtest: authors pie variant 4 from cars with complete sectors and immutable source
+2026-10-26T20:25:40.3195347Z ok 24 - authors pie variant 4 from cars with complete sectors and immutable source
+2026-10-26T20:25:40.3196193Z   ---
+2026-10-26T20:25:40.3196707Z   duration_ms: 6.972665
+2026-10-26T20:25:40.3197266Z   type: 'test'
+2026-10-26T20:25:40.3197933Z   ...
+2026-10-26T20:25:40.3198811Z # Subtest: authors density variant 4 from cars with complete profiles and revisions
+2026-10-26T20:25:40.3200374Z ok 25 - authors density variant 4 from cars with complete profiles and revisions
+2026-10-26T20:25:40.3201142Z   ---
+2026-10-26T20:25:40.3201624Z   duration_ms: 36.420278
+2026-10-26T20:25:40.3202174Z   type: 'test'
+2026-10-26T20:25:40.3202682Z   ...
+2026-10-26T20:25:40.3203556Z # Subtest: authors Horizon variant 4 from cars against independent signed folds
+2026-10-26T20:25:40.3204762Z ok 26 - authors Horizon variant 4 from cars against independent signed folds
+2026-10-26T20:25:40.3205585Z   ---
+2026-10-26T20:25:40.3206084Z   duration_ms: 206.529571
+2026-10-26T20:25:40.3206661Z   type: 'test'
+2026-10-26T20:25:40.3207170Z   ...
+2026-10-26T20:25:40.3208420Z # Subtest: authors createRosePlot variant 5 from cars with proportional measured sectors
+2026-10-26T20:25:40.3209757Z ok 27 - authors createRosePlot variant 5 from cars with proportional measured sectors
+2026-10-26T20:25:40.3220288Z   ---
+2026-10-26T20:25:40.3221025Z   duration_ms: 21.842477
+2026-10-26T20:25:40.3221638Z   type: 'test'
+2026-10-26T20:25:40.3222189Z   ...
+2026-10-26T20:25:40.3223220Z # Subtest: authors createRadialBarPlot variant 5 from cars with proportional measured sectors
+2026-10-26T20:25:40.3224506Z ok 28 - authors createRadialBarPlot variant 5 from cars with proportional measured sectors
+2026-10-26T20:25:40.3225355Z   ---
+2026-10-26T20:25:40.3225837Z   duration_ms: 14.206453
+2026-10-26T20:25:40.3226387Z   type: 'test'
+2026-10-26T20:25:40.3227222Z   ...
+2026-10-26T20:25:40.3228322Z # Subtest: authors pie variant 5 from cars with complete sectors and immutable source
+2026-10-26T20:25:40.3229605Z ok 29 - authors pie variant 5 from cars with complete sectors and immutable source
+2026-10-26T20:25:40.3230636Z   ---
+2026-10-26T20:25:40.3241158Z   duration_ms: 15.696193
+2026-10-26T20:25:40.3268467Z   type: 'test'
+2026-10-26T20:25:40.3285737Z   ...
+2026-10-26T20:25:40.3329114Z # Subtest: authors density variant 5 from cars with complete profiles and revisions
+2026-10-26T20:25:40.3419103Z ok 30 - authors density variant 5 from cars with complete profiles and revisions
+2026-10-26T20:25:40.3444390Z   ---
+2026-10-26T20:25:40.3478608Z   duration_ms: 65.176268
+2026-10-26T20:25:40.3508636Z   type: 'test'
+2026-10-26T20:25:40.3518740Z   ...
+2026-10-26T20:25:40.3519717Z # Subtest: authors Horizon variant 5 from cars against independent signed folds
+2026-10-26T20:25:40.3520911Z ok 31 - authors Horizon variant 5 from cars against independent signed folds
+2026-10-26T20:25:40.3521712Z   ---
+2026-10-26T20:25:40.3548565Z   duration_ms: 268.644455
+2026-10-26T20:25:40.3578464Z   type: 'test'
+2026-10-26T20:25:40.3608392Z   ...
+2026-10-26T20:25:40.3614285Z # Subtest: authors createRosePlot variant 1 from countries with proportional measured sectors
+2026-10-26T20:25:40.3647024Z ok 32 - authors createRosePlot variant 1 from countries with proportional measured sectors
+2026-10-26T20:25:40.3678409Z   ---
+2026-10-26T20:25:40.3708388Z   duration_ms: 15.206567
+2026-10-26T20:25:40.3738351Z   type: 'test'
+2026-10-26T20:25:40.3739044Z   ...
+2026-10-26T20:25:40.3768932Z # Subtest: authors createRadialBarPlot variant 1 from countries with proportional measured sectors
+2026-10-26T20:25:40.3795380Z ok 33 - authors createRadialBarPlot variant 1 from countries with proportional measured sectors
+2026-10-26T20:25:40.3796348Z   ---
+2026-10-26T20:25:40.3818329Z   duration_ms: 11.2646
+2026-10-26T20:25:40.3828715Z   type: 'test'
+2026-10-26T20:25:40.3829317Z   ...
+2026-10-26T20:25:40.3830289Z # Subtest: authors pie variant 1 from countries with complete sectors and immutable source
+2026-10-26T20:25:40.3831589Z ok 34 - authors pie variant 1 from countries with complete sectors and immutable source
+2026-10-26T20:25:40.3832439Z   ---
+2026-10-26T20:25:40.3832935Z   duration_ms: 20.471785
+2026-10-26T20:25:40.3833471Z   type: 'test'
+2026-10-26T20:25:40.3833957Z   ...
+2026-10-26T20:25:40.3834881Z # Subtest: authors density variant 1 from countries with complete profiles and revisions
+2026-10-26T20:25:40.3836180Z ok 35 - authors density variant 1 from countries with complete profiles and revisions
+2026-10-26T20:25:40.3837500Z   ---
+2026-10-26T20:25:40.3838164Z   duration_ms: 20.661761
+2026-10-26T20:25:40.3838694Z   type: 'test'
+2026-10-26T20:25:40.3839174Z   ...
+2026-10-26T20:25:40.3840052Z # Subtest: authors Horizon variant 1 from countries against independent signed folds
+2026-10-26T20:25:40.3841296Z ok 36 - authors Horizon variant 1 from countries against independent signed folds
+2026-10-26T20:25:40.3842123Z   ---
+2026-10-26T20:25:40.3842603Z   duration_ms: 139.585527
+2026-10-26T20:25:40.3843136Z   type: 'test'
+2026-10-26T20:25:40.3843619Z   ...
+2026-10-26T20:25:40.3844582Z # Subtest: authors createRosePlot variant 2 from countries with proportional measured sectors
+2026-10-26T20:25:40.3845964Z ok 37 - authors createRosePlot variant 2 from countries with proportional measured sectors
+2026-10-26T20:25:40.3846838Z   ---
+2026-10-26T20:25:40.3847318Z   duration_ms: 10.867473
+2026-10-26T20:25:40.3848136Z   type: 'test'
+2026-10-26T20:25:40.3848581Z   ...
+2026-10-26T20:25:40.3849436Z # Subtest: authors createRadialBarPlot variant 2 from countries with proportional measured sectors
+2026-10-26T20:25:40.3850770Z ok 38 - authors createRadialBarPlot variant 2 from countries with proportional measured sectors
+2026-10-26T20:25:40.3851543Z   ---
+2026-10-26T20:25:40.3851890Z   duration_ms: 11.699334
+2026-10-26T20:25:40.3852277Z   type: 'test'
+2026-10-26T20:25:40.3852609Z   ...
+2026-10-26T20:25:40.3853712Z # Subtest: authors pie variant 2 from countries with complete sectors and immutable source
+2026-10-26T20:25:40.3854871Z ok 39 - authors pie variant 2 from countries with complete sectors and immutable source
+2026-10-26T20:25:40.3855565Z   ---
+2026-10-26T20:25:40.3855914Z   duration_ms: 18.172658
+2026-10-26T20:25:40.3856302Z   type: 'test'
+2026-10-26T20:25:40.3856632Z   ...
+2026-10-26T20:25:40.3857411Z # Subtest: authors density variant 2 from countries with complete profiles and revisions
+2026-10-26T20:25:40.3858660Z ok 40 - authors density variant 2 from countries with complete profiles and revisions
+2026-10-26T20:25:40.3859356Z   ---
+2026-10-26T20:25:40.3859693Z   duration_ms: 135.479823
+2026-10-26T20:25:40.3860073Z   type: 'test'
+2026-10-26T20:25:40.3860413Z   ...
+2026-10-26T20:25:40.3861141Z # Subtest: authors Horizon variant 2 from countries against independent signed folds
+2026-10-26T20:25:40.3862176Z ok 41 - authors Horizon variant 2 from countries against independent signed folds
+2026-10-26T20:25:40.3862817Z   ---
+2026-10-26T20:25:40.3863141Z   duration_ms: 139.123397
+2026-10-26T20:25:40.3863527Z   type: 'test'
+2026-10-26T20:25:40.3863832Z   ...
+2026-10-26T20:25:40.3864600Z # Subtest: authors createRosePlot variant 3 from countries with proportional measured sectors
+2026-10-26T20:25:40.3865739Z ok 42 - authors createRosePlot variant 3 from countries with proportional measured sectors
+2026-10-26T20:25:40.3866444Z   ---
+2026-10-26T20:25:40.3866760Z   duration_ms: 9.871315
+2026-10-26T20:25:40.3867135Z   type: 'test'
+2026-10-26T20:25:40.3867456Z   ...
+2026-10-26T20:25:40.3868471Z # Subtest: authors createRadialBarPlot variant 3 from countries with proportional measured sectors
+2026-10-26T20:25:40.3869734Z ok 43 - authors createRadialBarPlot variant 3 from countries with proportional measured sectors
+2026-10-26T20:25:40.3870483Z   ---
+2026-10-26T20:25:40.3870826Z   duration_ms: 10.741553
+2026-10-26T20:25:40.3871213Z   type: 'test'
+2026-10-26T20:25:40.3871551Z   ...
+2026-10-26T20:25:40.3872226Z # Subtest: authors pie variant 3 from countries with complete sectors and immutable source
+2026-10-26T20:25:40.3873281Z ok 44 - authors pie variant 3 from countries with complete sectors and immutable source
+2026-10-26T20:25:40.3873942Z   ---
+2026-10-26T20:25:40.3874265Z   duration_ms: 14.526996
+2026-10-26T20:25:40.3874651Z   type: 'test'
+2026-10-26T20:25:40.3874963Z   ...
+2026-10-26T20:25:40.3875681Z # Subtest: authors density variant 3 from countries with complete profiles and revisions
+2026-10-26T20:25:40.3876753Z ok 45 - authors density variant 3 from countries with complete profiles and revisions
+2026-10-26T20:25:40.3908069Z   ---
+2026-10-26T20:25:40.3908406Z   duration_ms: 37.642676
+2026-10-26T20:25:40.3908779Z   type: 'test'
+2026-10-26T20:25:40.3909075Z   ...
+2026-10-26T20:25:40.3909755Z # Subtest: authors Horizon variant 3 from countries against independent signed folds
+2026-10-26T20:25:40.3910745Z ok 46 - authors Horizon variant 3 from countries against independent signed folds
+2026-10-26T20:25:40.3911392Z   ---
+2026-10-26T20:25:40.3911747Z   duration_ms: 307.792716
+2026-10-26T20:25:40.3912135Z   type: 'test'
+2026-10-26T20:25:40.3912469Z   ...
+2026-10-26T20:25:40.3913253Z # Subtest: authors createRosePlot variant 4 from countries with proportional measured sectors
+2026-10-26T20:25:40.3914536Z ok 47 - authors createRosePlot variant 4 from countries with proportional measured sectors
+2026-10-26T20:25:40.3915269Z   ---
+2026-10-26T20:25:40.3915616Z   duration_ms: 13.614834
+2026-10-26T20:25:40.3915990Z   type: 'test'
+2026-10-26T20:25:40.3916318Z   ...
+2026-10-26T20:25:40.3917150Z # Subtest: authors createRadialBarPlot variant 4 from countries with proportional measured sectors
+2026-10-26T20:25:40.3918689Z ok 48 - authors createRadialBarPlot variant 4 from countries with proportional measured sectors
+2026-10-26T20:25:40.3919471Z   ---
+2026-10-26T20:25:40.3919788Z   duration_ms: 14.98199
+2026-10-26T20:25:40.3920166Z   type: 'test'
+2026-10-26T20:25:40.3920581Z   ...
+2026-10-26T20:25:40.3921613Z # Subtest: authors pie variant 4 from countries with complete sectors and immutable source
+2026-10-26T20:25:40.3922753Z ok 49 - authors pie variant 4 from countries with complete sectors and immutable source
+2026-10-26T20:25:40.3923426Z   ---
+2026-10-26T20:25:40.3923754Z   duration_ms: 9.134496
+2026-10-26T20:25:40.3924116Z   type: 'test'
+2026-10-26T20:25:40.3924445Z   ...
+2026-10-26T20:25:40.3925171Z # Subtest: authors density variant 4 from countries with complete profiles and revisions
+2026-10-26T20:25:40.3926268Z ok 50 - authors density variant 4 from countries with complete profiles and revisions
+2026-10-26T20:25:40.3926963Z   ---
+2026-10-26T20:25:40.3927296Z   duration_ms: 27.778503
+2026-10-26T20:25:40.3927872Z   type: 'test'
+2026-10-26T20:25:40.3928192Z   ...
+2026-10-26T20:25:40.3928931Z # Subtest: authors Horizon variant 4 from countries against independent signed folds
+2026-10-26T20:25:40.3929967Z ok 51 - authors Horizon variant 4 from countries against independent signed folds
+2026-10-26T20:25:40.3930604Z   ---
+2026-10-26T20:25:40.3930941Z   duration_ms: 188.301947
+2026-10-26T20:25:40.3931338Z   type: 'test'
+2026-10-26T20:25:40.3931662Z   ...
+2026-10-26T20:25:40.3932440Z # Subtest: authors createRosePlot variant 5 from countries with proportional measured sectors
+2026-10-26T20:25:40.3933590Z ok 52 - authors createRosePlot variant 5 from countries with proportional measured sectors
+2026-10-26T20:25:40.3934285Z   ---
+2026-10-26T20:25:40.3934609Z   duration_ms: 22.952846
+2026-10-26T20:25:40.3934995Z   type: 'test'
+2026-10-26T20:25:40.3935317Z   ...
+2026-10-26T20:25:40.3936151Z # Subtest: authors createRadialBarPlot variant 5 from countries with proportional measured sectors
+2026-10-26T20:25:40.3937438Z ok 53 - authors createRadialBarPlot variant 5 from countries with proportional measured sectors
+2026-10-26T20:25:40.3938411Z   ---
+2026-10-26T20:25:40.3938748Z   duration_ms: 18.14757
+2026-10-26T20:25:40.3939119Z   type: 'test'
+2026-10-26T20:25:40.3939458Z   ...
+2026-10-26T20:25:40.3940229Z # Subtest: authors pie variant 5 from countries with complete sectors and immutable source
+2026-10-26T20:25:40.3941358Z ok 54 - authors pie variant 5 from countries with complete sectors and immutable source
+2026-10-26T20:25:40.3941963Z   ---
+2026-10-26T20:25:40.3942291Z   duration_ms: 18.126248
+2026-10-26T20:25:40.3942687Z   type: 'test'
+2026-10-26T20:25:40.3943025Z   ...
+2026-10-26T20:25:40.3943747Z # Subtest: authors density variant 5 from countries with complete profiles and revisions
+2026-10-26T20:25:40.3944818Z ok 55 - authors density variant 5 from countries with complete profiles and revisions
+2026-10-26T20:25:40.3945497Z   ---
+2026-10-26T20:25:40.3946107Z   duration_ms: 60.11485
+2026-10-26T20:25:40.3946497Z   type: 'test'
+2026-10-26T20:25:40.3946820Z   ...
+2026-10-26T20:25:40.3947752Z # Subtest: authors Horizon variant 5 from countries against independent signed folds
+2026-10-26T20:25:40.3948848Z ok 56 - authors Horizon variant 5 from countries against independent signed folds
+2026-10-26T20:25:40.3949506Z   ---
+2026-10-26T20:25:40.3949850Z   duration_ms: 307.526221
+2026-10-26T20:25:40.3950236Z   type: 'test'
+2026-10-26T20:25:40.3950573Z   ...
+2026-10-26T20:25:40.3951351Z # Subtest: authors createRosePlot variant 1 from movies with proportional measured sectors
+2026-10-26T20:25:40.3952524Z ok 57 - authors createRosePlot variant 1 from movies with proportional measured sectors
+2026-10-26T20:25:40.3953229Z   ---
+2026-10-26T20:25:40.3953562Z   duration_ms: 6.249368
+2026-10-26T20:25:40.3953938Z   type: 'test'
+2026-10-26T20:25:40.3954256Z   ...
+2026-10-26T20:25:40.3955020Z # Subtest: authors createRadialBarPlot variant 1 from movies with proportional measured sectors
+2026-10-26T20:25:40.3956227Z ok 58 - authors createRadialBarPlot variant 1 from movies with proportional measured sectors
+2026-10-26T20:25:40.3956941Z   ---
+2026-10-26T20:25:40.3957259Z   duration_ms: 4.472857
+2026-10-26T20:25:40.3957844Z   type: 'test'
+2026-10-26T20:25:40.3958175Z   ...
+2026-10-26T20:25:40.3958914Z # Subtest: authors pie variant 1 from movies with complete sectors and immutable source
+2026-10-26T20:25:40.3960250Z ok 59 - authors pie variant 1 from movies with complete sectors and immutable source
+2026-10-26T20:25:40.3960947Z   ---
+2026-10-26T20:25:40.3961273Z   duration_ms: 11.572597
+2026-10-26T20:25:40.3961658Z   type: 'test'
+2026-10-26T20:25:40.3961999Z   ...
+2026-10-26T20:25:40.3962858Z # Subtest: authors density variant 1 from movies with complete profiles and revisions
+2026-10-26T20:25:40.3963966Z ok 60 - authors density variant 1 from movies with complete profiles and revisions
+2026-10-26T20:25:40.3964632Z   ---
+2026-10-26T20:25:40.3964969Z   duration_ms: 13.392049
+2026-10-26T20:25:40.3965362Z   type: 'test'
+2026-10-26T20:25:40.3965683Z   ...
+2026-10-26T20:25:40.3966321Z # Subtest: authors Horizon variant 1 from movies against independent signed folds
+2026-10-26T20:25:40.3967290Z ok 61 - authors Horizon variant 1 from movies against independent signed folds
+2026-10-26T20:25:40.3968075Z   ---
+2026-10-26T20:25:40.3968379Z   duration_ms: 19.366804
+2026-10-26T20:25:40.3968738Z   type: 'test'
+2026-10-26T20:25:40.3969053Z   ...
+2026-10-26T20:25:40.3969780Z # Subtest: authors createRosePlot variant 2 from movies with proportional measured sectors
+2026-10-26T20:25:40.3970867Z ok 62 - authors createRosePlot variant 2 from movies with proportional measured sectors
+2026-10-26T20:25:40.3971557Z   ---
+2026-10-26T20:25:40.3971878Z   duration_ms: 5.070505
+2026-10-26T20:25:40.3972236Z   type: 'test'
+2026-10-26T20:25:40.3972548Z   ...
+2026-10-26T20:25:40.3973269Z # Subtest: authors createRadialBarPlot variant 2 from movies with proportional measured sectors
+2026-10-26T20:25:40.3974485Z ok 63 - authors createRadialBarPlot variant 2 from movies with proportional measured sectors
+2026-10-26T20:25:40.3975179Z   ---
+2026-10-26T20:25:40.3975512Z   duration_ms: 4.670363
+2026-10-26T20:25:40.3975856Z   type: 'test'
+2026-10-26T20:25:40.3976182Z   ...
+2026-10-26T20:25:40.3976880Z # Subtest: authors pie variant 2 from movies with complete sectors and immutable source
+2026-10-26T20:25:40.3978123Z ok 64 - authors pie variant 2 from movies with complete sectors and immutable source
+2026-10-26T20:25:40.3978726Z   ---
+2026-10-26T20:25:40.3979028Z   duration_ms: 9.622501
+2026-10-26T20:25:40.3979387Z   type: 'test'
+2026-10-26T20:25:40.3979681Z   ...
+2026-10-26T20:25:40.3980370Z # Subtest: authors density variant 2 from movies with complete profiles and revisions
+2026-10-26T20:25:40.3981385Z ok 65 - authors density variant 2 from movies with complete profiles and revisions
+2026-10-26T20:25:40.3982035Z   ---
+2026-10-26T20:25:40.3982363Z   duration_ms: 178.730329
+2026-10-26T20:25:40.3982752Z   type: 'test'
+2026-10-26T20:25:40.3983366Z   ...
+2026-10-26T20:25:40.3984017Z # Subtest: authors Horizon variant 2 from movies against independent signed folds
+2026-10-26T20:25:40.3984977Z ok 66 - authors Horizon variant 2 from movies against independent signed folds
+2026-10-26T20:25:40.3985586Z   ---
+2026-10-26T20:25:40.3985910Z   duration_ms: 22.913306
+2026-10-26T20:25:40.3986282Z   type: 'test'
+2026-10-26T20:25:40.3986595Z   ...
+2026-10-26T20:25:40.3987322Z # Subtest: authors createRosePlot variant 3 from movies with proportional measured sectors
+2026-10-26T20:25:40.3988617Z ok 67 - authors createRosePlot variant 3 from movies with proportional measured sectors
+2026-10-26T20:25:40.3989289Z   ---
+2026-10-26T20:25:40.3989597Z   duration_ms: 11.947216
+2026-10-26T20:25:40.3989975Z   type: 'test'
+2026-10-26T20:25:40.3990368Z   ...
+2026-10-26T20:25:40.3991167Z # Subtest: authors createRadialBarPlot variant 3 from movies with proportional measured sectors
+2026-10-26T20:25:40.3992385Z ok 68 - authors createRadialBarPlot variant 3 from movies with proportional measured sectors
+2026-10-26T20:25:40.3993113Z   ---
+2026-10-26T20:25:40.3993420Z   duration_ms: 8.081343
+2026-10-26T20:25:40.3993797Z   type: 'test'
+2026-10-26T20:25:40.3994108Z   ...
+2026-10-26T20:25:40.3994808Z # Subtest: authors pie variant 3 from movies with complete sectors and immutable source
+2026-10-26T20:25:40.3996115Z ok 69 - authors pie variant 3 from movies with complete sectors and immutable source
+2026-10-26T20:25:40.3996756Z   ---
+2026-10-26T20:25:40.3997079Z   duration_ms: 14.743662
+2026-10-26T20:25:40.3997454Z   type: 'test'
+2026-10-26T20:25:40.3997957Z   ...
+2026-10-26T20:25:40.3998668Z # Subtest: authors density variant 3 from movies with complete profiles and revisions
+2026-10-26T20:25:40.3999704Z ok 70 - authors density variant 3 from movies with complete profiles and revisions
+2026-10-26T20:25:40.4000340Z   ---
+2026-10-26T20:25:40.4000646Z   duration_ms: 51.401146
+2026-10-26T20:25:40.4001011Z   type: 'test'
+2026-10-26T20:25:40.4001322Z   ...
+2026-10-26T20:25:40.4002014Z # Subtest: authors Horizon variant 3 from movies against independent signed folds
+2026-10-26T20:25:40.4003024Z ok 71 - authors Horizon variant 3 from movies against independent signed folds
+2026-10-26T20:25:40.4003667Z   ---
+2026-10-26T20:25:40.4003980Z   duration_ms: 30.082107
+2026-10-26T20:25:40.4004348Z   type: 'test'
+2026-10-26T20:25:40.4004654Z   ...
+2026-10-26T20:25:40.4005382Z # Subtest: authors createRosePlot variant 4 from movies with proportional measured sectors
+2026-10-26T20:25:40.4006490Z ok 72 - authors createRosePlot variant 4 from movies with proportional measured sectors
+2026-10-26T20:25:40.4007160Z   ---
+2026-10-26T20:25:40.4007472Z   duration_ms: 7.835533
+2026-10-26T20:25:40.4008027Z   type: 'test'
+2026-10-26T20:25:40.4008353Z   ...
+2026-10-26T20:25:40.4009120Z # Subtest: authors createRadialBarPlot variant 4 from movies with proportional measured sectors
+2026-10-26T20:25:40.4010314Z ok 73 - authors createRadialBarPlot variant 4 from movies with proportional measured sectors
+2026-10-26T20:25:40.4011056Z   ---
+2026-10-26T20:25:40.4011386Z   duration_ms: 6.774868
+2026-10-26T20:25:40.4011748Z   type: 'test'
+2026-10-26T20:25:40.4012061Z   ...
+2026-10-26T20:25:40.4012779Z # Subtest: authors pie variant 4 from movies with complete sectors and immutable source
+2026-10-26T20:25:40.4013807Z ok 74 - authors pie variant 4 from movies with complete sectors and immutable source
+2026-10-26T20:25:40.4014445Z   ---
+2026-10-26T20:25:40.4014772Z   duration_ms: 7.496623
+2026-10-26T20:25:40.4015135Z   type: 'test'
+2026-10-26T20:25:40.4015452Z   ...
+2026-10-26T20:25:40.4016151Z # Subtest: authors density variant 4 from movies with complete profiles and revisions
+2026-10-26T20:25:40.4017210Z ok 75 - authors density variant 4 from movies with complete profiles and revisions
+2026-10-26T20:25:40.4018094Z   ---
+2026-10-26T20:25:40.4018414Z   duration_ms: 18.691718
+2026-10-26T20:25:40.4018763Z   type: 'test'
+2026-10-26T20:25:40.4019084Z   ...
+2026-10-26T20:25:40.4019745Z # Subtest: authors Horizon variant 4 from movies against independent signed folds
+2026-10-26T20:25:40.4021430Z ok 76 - authors Horizon variant 4 from movies against independent signed folds
+2026-10-26T20:25:40.4022039Z   ---
+2026-10-26T20:25:40.4022370Z   duration_ms: 21.779511
+2026-10-26T20:25:40.4022737Z   type: 'test'
+2026-10-26T20:25:40.4023059Z   ...
+2026-10-26T20:25:40.4023834Z # Subtest: authors createRosePlot variant 5 from movies with proportional measured sectors
+2026-10-26T20:25:40.4024961Z ok 77 - authors createRosePlot variant 5 from movies with proportional measured sectors
+2026-10-26T20:25:40.4025657Z   ---
+2026-10-26T20:25:40.4025981Z   duration_ms: 16.841305
+2026-10-26T20:25:40.4026371Z   type: 'test'
+2026-10-26T20:25:40.4026696Z   ...
+2026-10-26T20:25:40.4027701Z # Subtest: authors createRadialBarPlot variant 5 from movies with proportional measured sectors
+2026-10-26T20:25:40.4028938Z ok 78 - authors createRadialBarPlot variant 5 from movies with proportional measured sectors
+2026-10-26T20:25:40.4029582Z   ---
+2026-10-26T20:25:40.4029878Z   duration_ms: 11.917111
+2026-10-26T20:25:40.4030242Z   type: 'test'
+2026-10-26T20:25:40.4030572Z   ...
+2026-10-26T20:25:40.4031240Z # Subtest: authors pie variant 5 from movies with complete sectors and immutable source
+2026-10-26T20:25:40.4032254Z ok 79 - authors pie variant 5 from movies with complete sectors and immutable source
+2026-10-26T20:25:40.4032882Z   ---
+2026-10-26T20:25:40.4033202Z   duration_ms: 13.896943
+2026-10-26T20:25:40.4033753Z   type: 'test'
+2026-10-26T20:25:40.4034069Z   ...
+2026-10-26T20:25:40.4034753Z # Subtest: authors density variant 5 from movies with complete profiles and revisions
+2026-10-26T20:25:40.4035787Z ok 80 - authors density variant 5 from movies with complete profiles and revisions
+2026-10-26T20:25:40.4036413Z   ---
+2026-10-26T20:25:40.4036718Z   duration_ms: 55.634142
+2026-10-26T20:25:40.4037082Z   type: 'test'
+2026-10-26T20:25:40.4037383Z   ...
+2026-10-26T20:25:40.4038222Z # Subtest: authors Horizon variant 5 from movies against independent signed folds
+2026-10-26T20:25:40.4039213Z ok 81 - authors Horizon variant 5 from movies against independent signed folds
+2026-10-26T20:25:40.4039823Z   ---
+2026-10-26T20:25:40.4040141Z   duration_ms: 31.615904
+2026-10-26T20:25:40.4040522Z   type: 'test'
+2026-10-26T20:25:40.4040841Z   ...
+2026-10-26T20:28:17.7782040Z # Subtest: defines focused realistic recipes over at least three actual TidyTuesday datasets
+2026-10-26T20:28:17.7787290Z ok 82 - defines focused realistic recipes over at least three actual TidyTuesday datasets
+2026-10-26T20:28:17.7790352Z   ---
+2026-10-26T20:28:17.7792177Z   duration_ms: 2.438567
+2026-10-26T20:28:17.7794196Z   type: 'test'
+2026-10-26T20:28:17.7795000Z   ...
+2026-10-26T20:28:17.7796225Z # Subtest: every advertised data-mark factor changes the final chart one factor at a time
+2026-10-26T20:28:17.7800158Z ok 83 - every advertised data-mark factor changes the final chart one factor at a time
+2026-10-26T20:28:17.7801238Z   ---
+2026-10-26T20:28:17.7803184Z   duration_ms: 47440.030474
+2026-10-26T20:28:17.7805043Z   type: 'test'
+2026-10-26T20:28:17.7826061Z   ...
+2026-10-26T20:28:17.7827170Z # Subtest: recognizes renderer-specific removed strokes on non-circular points
+2026-10-26T20:28:17.7828563Z ok 84 - recognizes renderer-specific removed strokes on non-circular points
+2026-10-26T20:28:17.7829311Z   ---
+2026-10-26T20:28:17.7829776Z   duration_ms: 612.681416
+2026-10-26T20:28:17.7830359Z   type: 'test'
+2026-10-26T20:28:17.7830831Z   ...
+2026-10-26T20:28:17.7831629Z # Subtest: only advertises arc bindings with positive weights for every aggregate
+2026-10-26T20:28:17.7832729Z ok 85 - only advertises arc bindings with positive weights for every aggregate
+2026-10-26T20:28:17.7833472Z   ---
+2026-10-26T20:28:17.7833915Z   duration_ms: 13284.813915
+2026-10-26T20:28:17.7834423Z   type: 'test'
+2026-10-26T20:28:17.7834872Z   ...
+2026-10-26T20:28:17.7835613Z # Subtest: keeps every advertised arc padding ratio materially distinct
+2026-10-26T20:28:17.7836616Z ok 86 - keeps every advertised arc padding ratio materially distinct
+2026-10-26T20:28:17.7840089Z   ---
+2026-10-26T20:28:17.7840550Z   duration_ms: 7524.734204
+2026-10-26T20:28:17.7841083Z   type: 'test'
+2026-10-26T20:28:17.7841572Z   ...
+2026-10-26T20:28:17.7842465Z # Subtest: only advertises monotone error bands on a strictly ordered position axis
+2026-10-26T20:28:17.7843738Z ok 87 - only advertises monotone error bands on a strictly ordered position axis
+2026-10-26T20:28:17.7844563Z   ---
+2026-10-26T20:28:17.7845047Z   duration_ms: 182.650218
+2026-10-26T20:28:17.7845586Z   type: 'test'
+2026-10-26T20:28:17.7846075Z   ...
+2026-10-26T20:28:17.7846998Z # Subtest: paired-measure sampling filters the full source before selecting displayed rows
+2026-10-26T20:28:17.7848634Z ok 88 - paired-measure sampling filters the full source before selecting displayed rows
+2026-10-26T20:28:17.7849489Z   ---
+2026-10-26T20:28:17.7849953Z   duration_ms: 2120.812977
+2026-10-26T20:28:17.7850469Z   type: 'test'
+2026-10-26T20:28:17.7850937Z   ...
+2026-10-26T20:28:17.7860727Z # Subtest: split-density eligibility is filtered before deterministic sampling
+2026-10-26T20:28:17.7862135Z ok 89 - split-density eligibility is filtered before deterministic sampling
+2026-10-26T20:28:17.7863047Z   ---
+2026-10-26T20:28:17.7863598Z   duration_ms: 2299.389156
+2026-10-26T20:28:17.7864162Z   type: 'test'
+2026-10-26T20:28:17.7865877Z   ...
+2026-10-26T20:28:17.7867179Z # Subtest: preserves every authentic volcano density category on the expanded x-axis
+2026-10-26T20:28:17.7870466Z ok 90 - preserves every authentic volcano density category on the expanded x-axis
+2026-10-26T20:28:17.7872539Z   ---
+2026-10-26T20:28:17.7873097Z   duration_ms: 234.128636
+2026-10-26T20:28:17.7874651Z   type: 'test'
+2026-10-26T20:28:17.7875882Z   ...
+2026-10-26T20:28:17.7876793Z # Subtest: preflights every eligible density field pair on a label-preserving axis
+2026-10-26T20:28:17.7879163Z ok 91 - preflights every eligible density field pair on a label-preserving axis
+2026-10-26T20:28:17.7881280Z   ---
+2026-10-26T20:28:17.7882869Z   duration_ms: 62180.343491
+2026-10-26T20:28:17.7883497Z   type: 'test'
+2026-10-26T20:28:17.7884023Z   ...
+2026-10-26T20:28:17.7884952Z # Subtest: known corpus-wide density and axis witnesses remain nondegenerate
+2026-10-26T20:28:17.7886143Z ok 92 - known corpus-wide density and axis witnesses remain nondegenerate
+2026-10-26T20:28:17.7886973Z   ---
+2026-10-26T20:28:17.7887475Z   duration_ms: 8744.619624
+2026-10-26T20:28:17.7888247Z   type: 'test'
+2026-10-26T20:28:17.7888724Z   ...
+2026-10-26T20:28:17.7889526Z # Subtest: sizes step histograms from the full sampled extent for extreme outliers
+2026-10-26T20:28:17.7890618Z ok 93 - sizes step histograms from the full sampled extent for extreme outliers
+2026-10-26T20:28:17.7891342Z   ---
+2026-10-26T20:28:17.7891826Z   duration_ms: 241.368273
+2026-10-26T20:28:17.7892369Z   type: 'test'
+2026-10-26T20:28:17.7892843Z   ...
+2026-10-26T20:28:17.7893690Z # Subtest: materializes analytic and SVG output with compact truthful lineage
+2026-10-26T20:28:17.7894689Z ok 94 - materializes analytic and SVG output with compact truthful lineage
+2026-10-26T20:28:17.7895445Z   ---
+2026-10-26T20:28:17.7895920Z   duration_ms: 15284.853652
+2026-10-26T20:28:17.7896469Z   type: 'test'
+2026-10-26T20:28:17.7896950Z   ...
+2026-10-26T20:32:12.2006997Z # Subtest: directly covers every newly targeted action option and broad maximal paths
+2026-10-26T20:32:12.2014832Z ok 95 - directly covers every newly targeted action option and broad maximal paths
+2026-10-26T20:32:12.2015947Z   ---
+2026-10-26T20:32:12.2038384Z   duration_ms: 234431.691614
+2026-10-26T20:32:12.2098453Z   type: 'test'
+2026-10-26T20:32:12.2099110Z   ...
+2026-10-26T20:32:12.3039606Z # Subtest: defines three direct-encoding recipes with five authentic TT witnesses each
+2026-10-26T20:32:12.3048520Z ok 96 - defines three direct-encoding recipes with five authentic TT witnesses each
+2026-10-26T20:32:12.3049210Z   ---
+2026-10-26T20:32:12.3049543Z   duration_ms: 2.514041
+2026-10-26T20:32:12.3049924Z   type: 'test'
+2026-10-26T20:32:12.3050245Z   ...
+2026-10-26T20:32:12.3051409Z # Subtest: covers every valid direct encoding option path and path literal at 5/3
+2026-10-26T20:32:12.3052393Z not ok 97 - covers every valid direct encoding option path and path literal at 5/3
+2026-10-26T20:32:12.3052999Z   ---
+2026-10-26T20:32:12.3053302Z   duration_ms: 246624.348768
+2026-10-26T20:32:12.3053682Z   type: 'test'
+2026-10-26T20:32:12.3054599Z   location: '/home/runner/work/ggaction/ggaction/test/contracts/realistic-encoding-coverage-recipes.test.js:273:1'
+2026-10-26T20:32:12.3055558Z   failureType: 'testCodeFailure'
+2026-10-26T20:32:12.3055991Z   error: |-
+2026-10-26T20:32:12.3056404Z     Expected values to be strictly deep-equal:
+2026-10-26T20:32:12.3056887Z     + actual - expected
+2026-10-26T20:32:12.3057206Z     
+2026-10-26T20:32:12.3057503Z       {
+2026-10-26T20:32:12.3057996Z     +   diversity: 12,
+2026-10-26T20:32:12.3058751Z     +   diversitySha256: '842dd3215cb8191bd53940e33c4faf91cf1f2f71bda241ce4876565d8fd9df55',
+2026-10-26T20:32:12.3059773Z     +   literalSha256: '305a74d986f06a1d2dc91c79468753151e20635c5a3e1cfaa11e11a36f7ef54f',
+2026-10-26T20:32:12.3060435Z     +   literals: 305,
+2026-10-26T20:32:12.3061177Z     +   pathSha256: '2b51d84100f8f9ab20a1388c6ef63d922ec4ad7b41a8baabdeb034308514c984',
+2026-10-26T20:32:12.3069048Z     +   paths: 310
+2026-10-26T20:32:12.3069719Z     -   diversity: 11,
+2026-10-26T20:32:12.3070767Z     -   diversitySha256: 'aab418064dda7b38adfbae46c342685808d65af63ce05ce9caab855e86d0072f',
+2026-10-26T20:32:12.3071803Z     -   literalSha256: 'b451cb6ef0ed6bfb353d9a4e74bf2a5824ec4ac3cd383030c91f300fabc9bf9d',
+2026-10-26T20:32:12.3072490Z     -   literals: 303,
+2026-10-26T20:32:12.3073151Z     -   pathSha256: '07a6b2f55d87653d7903a1458213522a018c297637c092d56f1407854f34cf22',
+2026-10-26T20:32:12.3073796Z     -   paths: 307
+2026-10-26T20:32:12.3074133Z       }
+2026-10-26T20:32:12.3074411Z     
+2026-10-26T20:32:12.3074728Z   code: 'ERR_ASSERTION'
+2026-10-26T20:32:12.3075105Z   name: 'AssertionError'
+2026-10-26T20:32:12.3075474Z   expected:
+2026-10-26T20:32:12.3075857Z     paths: 307
+2026-10-26T20:32:12.3076448Z     pathSha256: '07a6b2f55d87653d7903a1458213522a018c297637c092d56f1407854f34cf22'
+2026-10-26T20:32:12.3077104Z     literals: 303
+2026-10-26T20:32:12.3077960Z     literalSha256: 'b451cb6ef0ed6bfb353d9a4e74bf2a5824ec4ac3cd383030c91f300fabc9bf9d'
+2026-10-26T20:32:12.3078668Z     diversity: 11
+2026-10-26T20:32:12.3079325Z     diversitySha256: 'aab418064dda7b38adfbae46c342685808d65af63ce05ce9caab855e86d0072f'
+2026-10-26T20:32:12.3080002Z   actual:
+2026-10-26T20:32:12.3080287Z     paths: 310
+2026-10-26T20:32:12.3080875Z     pathSha256: '2b51d84100f8f9ab20a1388c6ef63d922ec4ad7b41a8baabdeb034308514c984'
+2026-10-26T20:32:12.3081463Z     literals: 305
+2026-10-26T20:32:12.3082060Z     literalSha256: '305a74d986f06a1d2dc91c79468753151e20635c5a3e1cfaa11e11a36f7ef54f'
+2026-10-26T20:32:12.3082706Z     diversity: 12
+2026-10-26T20:32:12.3083373Z     diversitySha256: '842dd3215cb8191bd53940e33c4faf91cf1f2f71bda241ce4876565d8fd9df55'
+2026-10-26T20:32:12.3084084Z   operator: 'deepStrictEqual'
+2026-10-26T20:32:12.3084468Z   stack: |-
+2026-10-26T20:32:12.3085488Z     TestContext.<anonymous> (file:///home/runner/work/ggaction/ggaction/test/contracts/realistic-encoding-coverage-recipes.test.js:277:10)
+2026-10-26T20:32:12.3086616Z     async Test.run (node:internal/test_runner/test:1054:7)
+2026-10-26T20:32:12.3087391Z     async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+2026-10-26T20:32:12.3088163Z   ...
+2026-10-26T20:32:12.3088845Z # Subtest: executes both restored range palette spellings with authentic 5/3 witnesses
+2026-10-26T20:32:12.3089895Z ok 98 - executes both restored range palette spellings with authentic 5/3 witnesses
+2026-10-26T20:32:12.3090570Z   ---
+2026-10-26T20:32:12.3090889Z   duration_ms: 1.631734
+2026-10-26T20:32:12.3091265Z   type: 'test'
+2026-10-26T20:32:12.3091575Z   ...
+2026-10-26T20:32:12.3092210Z # Subtest: schedules each facet axis policy five times across real datasets
+2026-10-26T20:32:12.3093123Z ok 99 - schedules each facet axis policy five times across real datasets
+2026-10-26T20:32:12.3093969Z   ---
+2026-10-26T20:32:12.3094281Z   duration_ms: 1884.806594
+2026-10-26T20:32:12.3094652Z   type: 'test'
+2026-10-26T20:32:12.3094963Z   ...
+2026-10-26T20:32:12.3095641Z # Subtest: reserves data-aware facet guide space for the exact Christmas-song case
+2026-10-26T20:32:12.3096666Z ok 100 - reserves data-aware facet guide space for the exact Christmas-song case
+2026-10-26T20:32:12.3097287Z   ---
+2026-10-26T20:32:12.3097968Z   duration_ms: 142.499393
+2026-10-26T20:32:12.3098340Z   type: 'test'
+2026-10-26T20:32:12.3098744Z   ...
+2026-10-26T20:32:12.3099409Z # Subtest: wraps complete long facet titles and questions inside the final Canvas
+2026-10-26T20:32:12.3100394Z ok 101 - wraps complete long facet titles and questions inside the final Canvas
+2026-10-26T20:32:12.3101007Z   ---
+2026-10-26T20:32:12.3101311Z   duration_ms: 485.782544
+2026-10-26T20:32:12.3101676Z   type: 'test'
+2026-10-26T20:32:12.3101979Z   ...
+2026-10-26T20:32:12.3102673Z # Subtest: turns known clamped TT column requests into distinct final visual policies
+2026-10-26T20:32:12.3103700Z ok 102 - turns known clamped TT column requests into distinct final visual policies
+2026-10-26T20:32:12.3104333Z   ---
+2026-10-26T20:32:12.3104636Z   duration_ms: 906.864369
+2026-10-26T20:32:12.3104995Z   type: 'test'
+2026-10-26T20:32:12.3105306Z   ...
+2026-10-26T20:32:12.3106113Z # Subtest: every lifecycle facet column produces a distinct final TT chart
+2026-10-26T20:32:12.3107039Z ok 103 - every lifecycle facet column produces a distinct final TT chart
+2026-10-26T20:32:12.3107775Z   ---
+2026-10-26T20:32:12.3108089Z   duration_ms: 28184.897847
+2026-10-26T20:32:12.3108462Z   type: 'test'
+2026-10-26T20:32:12.3108773Z   ...
+2026-10-26T20:32:12.3109375Z # Subtest: every analysis facet column produces a distinct final TT chart
+2026-10-26T20:32:12.3110267Z ok 104 - every analysis facet column produces a distinct final TT chart
+2026-10-26T20:32:12.3110839Z   ---
+2026-10-26T20:32:12.3111145Z   duration_ms: 34692.923866
+2026-10-26T20:32:12.3111527Z   type: 'test'
+2026-10-26T20:32:12.3111829Z   ...
+2026-10-26T20:32:12.3112543Z # Subtest: covers every eligible facet binding plus every column-scale-axis interaction
+2026-10-26T20:32:12.3113614Z ok 105 - covers every eligible facet binding plus every column-scale-axis interaction
+2026-10-26T20:32:12.3114268Z   ---
+2026-10-26T20:32:12.3114572Z   duration_ms: 77449.751985
+2026-10-26T20:32:12.3114950Z   type: 'test'
+2026-10-26T20:32:12.3115253Z   ...
+2026-10-26T20:32:33.0101375Z # Subtest: new legend option and selector witnesses retain five calls and three authentic datasets
+2026-10-26T20:32:33.0112918Z ok 106 - new legend option and selector witnesses retain five calls and three authentic datasets
+2026-10-26T20:32:33.0119485Z   ---
+2026-10-26T20:32:33.0120204Z   duration_ms: 18316.413042
+2026-10-26T20:32:33.0120655Z   type: 'test'
+2026-10-26T20:32:33.0120991Z   ...
+2026-10-26T20:32:33.0121808Z # Subtest: point-owned facade combinations execute five times on tt-tour-de-france-winners
+2026-10-26T20:32:33.0122997Z ok 107 - point-owned facade combinations execute five times on tt-tour-de-france-winners
+2026-10-26T20:32:33.0123689Z   ---
+2026-10-26T20:32:33.0124017Z   duration_ms: 911.975098
+2026-10-26T20:32:33.0124406Z   type: 'test'
+2026-10-26T20:32:33.0124723Z   ...
+2026-10-26T20:32:33.0125518Z # Subtest: point-owned facade combinations execute five times on tt-london-marathon-winners
+2026-10-26T20:32:33.0126720Z ok 108 - point-owned facade combinations execute five times on tt-london-marathon-winners
+2026-10-26T20:32:33.0127430Z   ---
+2026-10-26T20:32:33.0127985Z   duration_ms: 653.684998
+2026-10-26T20:32:33.0128353Z   type: 'test'
+2026-10-26T20:32:33.0128668Z   ...
+2026-10-26T20:32:33.0129671Z # Subtest: point-owned facade combinations execute five times on tt-penguins
+2026-10-26T20:32:33.0141270Z ok 109 - point-owned facade combinations execute five times on tt-penguins
+2026-10-26T20:32:33.0141930Z   ---
+2026-10-26T20:32:33.0142270Z   duration_ms: 591.001645
+2026-10-26T20:32:33.0143217Z   type: 'test'
+2026-10-26T20:32:33.0143549Z   ...
+2026-10-26T20:33:06.6423894Z # Subtest: schedules every two-way chart-family lifecycle at five TT witnesses per family
+2026-10-26T20:33:06.6433984Z ok 110 - schedules every two-way chart-family lifecycle at five TT witnesses per family
+2026-10-26T20:33:06.6435617Z   ---
+2026-10-26T20:33:06.6436177Z   duration_ms: 3.122127
+2026-10-26T20:33:06.6436633Z   type: 'test'
+2026-10-26T20:33:06.6436945Z   ...
+2026-10-26T20:33:06.6438027Z # Subtest: every realistic lifecycle factor has a final or explicit transient effect
+2026-10-26T20:33:06.6439113Z ok 111 - every realistic lifecycle factor has a final or explicit transient effect
+2026-10-26T20:33:06.6439792Z   ---
+2026-10-26T20:33:06.6440134Z   duration_ms: 52930.921204
+2026-10-26T20:33:06.6440520Z   type: 'test'
+2026-10-26T20:33:06.6440871Z   ...
+2026-10-26T20:33:06.6441581Z # Subtest: scales explicit intervals to the authentic New Zealand name time span
+2026-10-26T20:33:06.6442623Z ok 112 - scales explicit intervals to the authentic New Zealand name time span
+2026-10-26T20:33:06.6443282Z   ---
+2026-10-26T20:33:06.6443608Z   duration_ms: 824.063837
+2026-10-26T20:33:06.6443986Z   type: 'test'
+2026-10-26T20:33:06.6444310Z   ...
+2026-10-26T20:34:00.8888410Z # Subtest: keeps diagnostic scenarios out of the human gallery and enforces compact canvases
+2026-10-26T20:34:00.8896185Z ok 113 - keeps diagnostic scenarios out of the human gallery and enforces compact canvases
+2026-10-26T20:34:00.8897851Z   ---
+2026-10-26T20:34:00.8898467Z   duration_ms: 2.34426
+2026-10-26T20:34:00.8899040Z   type: 'test'
+2026-10-26T20:34:00.8899554Z   ...
+2026-10-26T20:34:00.8900448Z # Subtest: labels every gallery chart with a short ordinal and stable descriptor id
+2026-10-26T20:34:00.8901708Z ok 114 - labels every gallery chart with a short ordinal and stable descriptor id
+2026-10-26T20:34:00.8902567Z   ---
+2026-10-26T20:34:00.8903071Z   duration_ms: 24.689278
+2026-10-26T20:34:00.8903618Z   type: 'test'
+2026-10-26T20:34:00.8904134Z   ...
+2026-10-26T20:34:00.8904948Z # Subtest: fails closed when strict artifact execution exceeds 512 MiB per child
+2026-10-26T20:34:00.8906090Z ok 115 - fails closed when strict artifact execution exceeds 512 MiB per child
+2026-10-26T20:34:00.8906870Z   ---
+2026-10-26T20:34:00.8907344Z   duration_ms: 0.966342
+2026-10-26T20:34:00.8908083Z   type: 'test'
+2026-10-26T20:34:00.8908585Z   ...
+2026-10-26T20:34:00.8909398Z # Subtest: parses strict realistic scenario renderer and resource options
+2026-10-26T20:34:00.8910534Z ok 116 - parses strict realistic scenario renderer and resource options
+2026-10-26T20:34:00.8911317Z   ---
+2026-10-26T20:34:00.8911824Z   duration_ms: 0.380019
+2026-10-26T20:34:00.8912368Z   type: 'test'
+2026-10-26T20:34:00.8912855Z   ...
+2026-10-26T20:34:00.8930990Z # Subtest: rejects ambiguous or coverage-defeating realistic runner options
+2026-10-26T20:34:00.8953380Z ok 117 - rejects ambiguous or coverage-defeating realistic runner options
+2026-10-26T20:34:00.8964043Z   ---
+2026-10-26T20:34:00.8966624Z   duration_ms: 0.389703
+2026-10-26T20:34:00.8966986Z   type: 'test'
+2026-10-26T20:34:00.8967319Z   ...
+2026-10-26T20:34:00.8968070Z # Subtest: isolates realistic descriptor generation in a disposable worker
+2026-10-26T20:34:00.8969009Z ok 118 - isolates realistic descriptor generation in a disposable worker
+2026-10-26T20:34:00.8969601Z   ---
+2026-10-26T20:34:00.8969919Z   duration_ms: 86994.585804
+2026-10-26T20:34:00.8970317Z   type: 'test'
+2026-10-26T20:34:00.8970629Z   ...
+2026-10-26T20:34:01.7656381Z # Subtest: isolates serial dataset execution in a bounded child process
+2026-10-26T20:34:01.7657360Z ok 119 - isolates serial dataset execution in a bounded child process
+2026-10-26T20:34:01.7658305Z   ---
+2026-10-26T20:34:01.7658722Z   duration_ms: 872.037303
+2026-10-26T20:34:01.7659042Z   type: 'test'
+2026-10-26T20:34:01.7659279Z   ...
+2026-10-26T20:34:01.7659748Z # Subtest: runs one dataset in ordered serial batches of at most 24 scenarios
+2026-10-26T20:34:01.7660386Z ok 120 - runs one dataset in ordered serial batches of at most 24 scenarios
+2026-10-26T20:34:01.7661291Z   ---
+2026-10-26T20:34:01.7661507Z   duration_ms: 4.497009
+2026-10-26T20:34:01.7661798Z   type: 'test'
+2026-10-26T20:34:01.7662008Z   ...
+2026-10-26T20:34:01.7662447Z # Subtest: fails closed at a completed batch boundary without blaming the next task
+2026-10-26T20:34:01.7663127Z ok 121 - fails closed at a completed batch boundary without blaming the next task
+2026-10-26T20:34:01.7663568Z   ---
+2026-10-26T20:34:01.7663775Z   duration_ms: 2.562392
+2026-10-26T20:34:01.7664053Z   type: 'test'
+2026-10-26T20:34:01.7664260Z   ...
+2026-10-26T20:34:01.7897217Z # Subtest: bounds execution child protocol, timeout, and crash failures
+2026-10-26T20:34:01.7898402Z ok 122 - bounds execution child protocol, timeout, and crash failures
+2026-10-26T20:34:01.7898947Z   ---
+2026-10-26T20:34:01.7899252Z   duration_ms: 23.491624
+2026-10-26T20:34:01.7899611Z   type: 'test'
+2026-10-26T20:34:01.7899912Z   ...
+2026-10-26T20:34:01.7946672Z # Subtest: rejects forged execution results before committing child evidence
+2026-10-26T20:34:01.7948164Z ok 123 - rejects forged execution results before committing child evidence
+2026-10-26T20:34:01.7948735Z   ---
+2026-10-26T20:34:01.7948957Z   duration_ms: 6.599333
+2026-10-26T20:34:01.7949200Z   type: 'test'
+2026-10-26T20:34:01.7949412Z   ...
+2026-10-26T20:34:01.8255105Z # Subtest: fails closed without spawning a replacement for an unconfirmed child
+2026-10-26T20:34:01.8256013Z ok 124 - fails closed without spawning a replacement for an unconfirmed child
+2026-10-26T20:34:01.8256498Z   ---
+2026-10-26T20:34:01.8256747Z   duration_ms: 26.719494
+2026-10-26T20:34:01.8257063Z   type: 'test'
+2026-10-26T20:34:01.8257291Z   ...
+2026-10-26T20:34:01.8258013Z # Subtest: commits serialized outcomes and resumes after an execution child crash
+2026-10-26T20:34:01.8258706Z ok 125 - commits serialized outcomes and resumes after an execution child crash
+2026-10-26T20:34:01.8259155Z   ---
+2026-10-26T20:34:01.8259381Z   duration_ms: 1.249629
+2026-10-26T20:34:01.8259687Z   type: 'test'
+2026-10-26T20:34:01.8259898Z   ...
+2026-10-26T20:34:01.8260289Z # Subtest: round-trips canonical outcome chunks and rejects corruption
+2026-10-26T20:34:01.8260879Z ok 126 - round-trips canonical outcome chunks and rejects corruption
+2026-10-26T20:34:01.8261291Z   ---
+2026-10-26T20:34:01.8261505Z   duration_ms: 1.518305
+2026-10-26T20:34:01.8261792Z   type: 'test'
+2026-10-26T20:34:01.8262020Z   ...
+2026-10-26T20:34:02.0132482Z # Subtest: terminates timed-out generation children and reports process crashes
+2026-10-26T20:34:02.0133627Z ok 127 - terminates timed-out generation children and reports process crashes
+2026-10-26T20:34:02.0158406Z   ---
+2026-10-26T20:34:02.0158800Z   duration_ms: 173.503306
+2026-10-26T20:34:02.0159210Z   type: 'test'
+2026-10-26T20:34:02.0159545Z   ...
+2026-10-26T20:34:02.0160343Z # Subtest: keeps the last complete dataset state atomic after ScenarioGenerationCrashError
+2026-10-26T20:34:02.0161491Z ok 128 - keeps the last complete dataset state atomic after ScenarioGenerationCrashError
+2026-10-26T20:34:02.0162240Z   ---
+2026-10-26T20:34:02.0162569Z   duration_ms: 2.773933
+2026-10-26T20:34:02.0162946Z   type: 'test'
+2026-10-26T20:34:02.0163267Z   ...
+2026-10-26T20:34:02.0164037Z # Subtest: keeps the last complete dataset state atomic after ScenarioGenerationTimeoutError
+2026-10-26T20:34:02.0168426Z ok 129 - keeps the last complete dataset state atomic after ScenarioGenerationTimeoutError
+2026-10-26T20:34:02.0169178Z   ---
+2026-10-26T20:34:02.0169497Z   duration_ms: 1.4406
+2026-10-26T20:34:02.0169864Z   type: 'test'
+2026-10-26T20:34:02.0170177Z   ...
+2026-10-26T20:34:02.0170833Z # Subtest: rejects a malformed successful dataset state before committing it
+2026-10-26T20:34:02.0171817Z ok 130 - rejects a malformed successful dataset state before committing it
+2026-10-26T20:34:02.0172448Z   ---
+2026-10-26T20:34:02.0172771Z   duration_ms: 1.473378
+2026-10-26T20:34:02.0173140Z   type: 'test'
+2026-10-26T20:34:02.0173464Z   ...
+2026-10-26T20:34:02.0174607Z # Subtest: rejects a validly sealed dataset state that resets checkpoint history
+2026-10-26T20:34:02.0175655Z ok 131 - rejects a validly sealed dataset state that resets checkpoint history
+2026-10-26T20:34:02.0176282Z   ---
+2026-10-26T20:34:02.0176607Z   duration_ms: 1.344459
+2026-10-26T20:34:02.0176976Z   type: 'test'
+2026-10-26T20:34:02.0177300Z   ...
+2026-10-26T20:34:02.0178098Z # Subtest: rejects forged factor usages and unknown schedule eligibility
+2026-10-26T20:34:02.0179022Z ok 132 - rejects forged factor usages and unknown schedule eligibility
+2026-10-26T20:34:02.0179583Z   ---
+2026-10-26T20:34:02.0179897Z   duration_ms: 2.617623
+2026-10-26T20:34:02.0180263Z   type: 'test'
+2026-10-26T20:34:02.0180580Z   ...
+2026-10-26T20:34:02.0184979Z # Subtest: rejects a successful finalizer with an incomplete descriptor payload
+2026-10-26T20:34:02.0185643Z ok 133 - rejects a successful finalizer with an incomplete descriptor payload
+2026-10-26T20:34:02.0186044Z   ---
+2026-10-26T20:34:02.0186256Z   duration_ms: 1.414973
+2026-10-26T20:34:02.0186511Z   type: 'test'
+2026-10-26T20:34:02.0186715Z   ...
+2026-10-26T20:34:02.0432012Z # Subtest: rejects weakened final requirements and post-validation deadline overruns
+2026-10-26T20:34:02.0432882Z ok 134 - rejects weakened final requirements and post-validation deadline overruns
+2026-10-26T20:34:02.0433468Z   ---
+2026-10-26T20:34:02.0433817Z   duration_ms: 33.888372
+2026-10-26T20:34:02.0434495Z   type: 'test'
+2026-10-26T20:34:02.0434839Z   ...
+2026-10-26T20:34:04.6474133Z # Subtest: preserves compact generator diagnostics in a failed audit report
+2026-10-26T20:34:04.6475218Z ok 135 - preserves compact generator diagnostics in a failed audit report
+2026-10-26T20:34:04.6475838Z   ---
+2026-10-26T20:34:04.6476162Z   duration_ms: 2574.779938
+2026-10-26T20:34:04.6476533Z   type: 'test'
+2026-10-26T20:34:04.6476855Z   ...
+2026-10-26T20:34:04.7167827Z # Subtest: keeps thin PNG content visible to native-resolution audit evidence
+2026-10-26T20:34:04.7168896Z ok 136 - keeps thin PNG content visible to native-resolution audit evidence
+2026-10-26T20:34:04.7169560Z   ---
+2026-10-26T20:34:04.7169891Z   duration_ms: 95.068685
+2026-10-26T20:34:04.7170258Z   type: 'test'
+2026-10-26T20:34:04.7170587Z   ...
+2026-10-26T20:34:04.7171247Z # Subtest: reads length-bounded compressed PDF text and rejects drawing-only streams
+2026-10-26T20:34:04.7171933Z ok 137 - reads length-bounded compressed PDF text and rejects drawing-only streams
+2026-10-26T20:34:04.7172346Z   ---
+2026-10-26T20:34:04.7172555Z   duration_ms: 3.093863
+2026-10-26T20:34:04.7172798Z   type: 'test'
+2026-10-26T20:34:04.7173002Z   ...
+2026-10-26T20:34:06.9050732Z # Subtest: accepts deterministic readable PNG and compressed PDF artifact regressions
+2026-10-26T20:34:06.9052271Z ok 138 - accepts deterministic readable PNG and compressed PDF artifact regressions
+2026-10-26T20:34:06.9053344Z   ---
+2026-10-26T20:34:06.9053917Z   duration_ms: 2188.41864
+2026-10-26T20:34:06.9054499Z   type: 'test'
+2026-10-26T20:34:06.9055017Z   ...
+2026-10-26T20:34:07.2429807Z # Subtest: renders every artifact from the exact program credited by scenario evidence
+2026-10-26T20:34:07.2431372Z ok 139 - renders every artifact from the exact program credited by scenario evidence
+2026-10-26T20:34:07.2432341Z   ---
+2026-10-26T20:34:07.2432805Z   duration_ms: 337.890142
+2026-10-26T20:34:07.2433362Z   type: 'test'
+2026-10-26T20:34:07.2433850Z   ...
+2026-10-26T20:34:07.2490462Z # Subtest: keeps partial and audit runs immutable while promoting only strict artifacts
+2026-10-26T20:34:07.2491832Z ok 140 - keeps partial and audit runs immutable while promoting only strict artifacts
+2026-10-26T20:34:07.2492599Z   ---
+2026-10-26T20:34:07.2492973Z   duration_ms: 6.458795
+2026-10-26T20:34:07.2493494Z   type: 'test'
+2026-10-26T20:34:07.2493870Z   ...
+2026-10-26T20:34:08.1006332Z # [1/1] ok realistic-category-boxes-adf8d750c469
+2026-10-26T20:37:34.7278799Z # {
+2026-10-26T20:37:34.7280371Z #   "output": "../../../../../tmp/ggaction-realistic-partial-QG6Cxq/partial/bounded-audit",
+2026-10-26T20:37:34.7281492Z #   "descriptors": 1,
+2026-10-26T20:37:34.7282013Z #   "rejectedCandidates": 2,
+2026-10-26T20:37:34.7282637Z #   "duplicateCandidates": 0,
+2026-10-26T20:37:34.7283263Z #   "skippedRecipeDatasets": 1,
+2026-10-26T20:37:34.7284024Z #   "generationWallTimeMs": 86993.67967,
+2026-10-26T20:37:34.7284510Z #   "generationMaximumChildRssBytes": 255868928,
+2026-10-26T20:37:34.7284978Z #   "generationMaximumCombinedRssBytes": 417636352,
+2026-10-26T20:37:34.7285376Z #   "executionWallTimeMs": 851.9438320000045,
+2026-10-26T20:37:34.7285750Z #   "executionMaximumChildRssBytes": 130662400,
+2026-10-26T20:37:34.7286214Z #   "executionMaximumCoordinatorLifetimeRssBytes": 218542080,
+2026-10-26T20:37:34.7286734Z #   "executionMaximumCoordinatorSampledRssBytes": 195100672,
+2026-10-26T20:37:34.7287241Z #   "executionMaximumIpcSampledCombinedRssBytes": 323776512,
+2026-10-26T20:37:34.7288113Z #   "executionMaximumPhaseConservativeCombinedRssBytes": 325763072,
+2026-10-26T20:37:34.7288669Z #   "executionMaximumConservativeCombinedRssBytes": 349204480,
+2026-10-26T20:37:34.7289293Z #   "executionResourceGatePassed": true,
+2026-10-26T20:37:34.7289711Z #   "passed": 1,
+2026-10-26T20:37:34.7289971Z #   "failed": 0,
+2026-10-26T20:37:34.7290409Z #   "coveragePassed": false,
+2026-10-26T20:37:34.7290863Z #   "publicActions": 6,
+2026-10-26T20:37:34.7291180Z #   "strictOptionPaths": 16894,
+2026-10-26T20:37:34.7291495Z #   "requirementDeficits": 30431,
+2026-10-26T20:37:34.7292079Z #   "interactionDeficits": 25,
+2026-10-26T20:37:34.7292382Z #   "diversityDeficits": 454,
+2026-10-26T20:37:34.7292729Z #   "minimumFeatureOccurrences": {
+2026-10-26T20:37:34.7293016Z #     "byKind": {
+2026-10-26T20:37:34.7293252Z #       "action": {
+2026-10-26T20:37:34.7293497Z #         "occurrences": 0,
+2026-10-26T20:37:34.7293768Z #         "datasets": 0,
+2026-10-26T20:37:34.7294024Z #         "recipes": 0,
+2026-10-26T20:37:34.7294266Z #         "tiers": 0
+2026-10-26T20:37:34.7294483Z #       },
+2026-10-26T20:37:34.7294768Z #       "action-lifecycle": {
+2026-10-26T20:37:34.7295236Z #         "occurrences": 0,
+2026-10-26T20:37:34.7295635Z #         "datasets": 0,
+2026-10-26T20:37:34.7295959Z #         "recipes": 0,
+2026-10-26T20:37:34.7296206Z #         "tiers": 0
+2026-10-26T20:37:34.7296427Z #       },
+2026-10-26T20:37:34.7296805Z #       "chart-family": {
+2026-10-26T20:37:34.7310142Z #         "occurrences": 1,
+2026-10-26T20:37:34.7310470Z #         "datasets": 1,
+2026-10-26T20:37:34.7310757Z #         "recipes": 1,
+2026-10-26T20:37:34.7311013Z #         "tiers": 1
+2026-10-26T20:37:34.7311229Z #       },
+2026-10-26T20:37:34.7311459Z #       "data-operation": {
+2026-10-26T20:37:34.7311729Z #         "occurrences": 1,
+2026-10-26T20:37:34.7311975Z #         "datasets": 1,
+2026-10-26T20:37:34.7312221Z #         "recipes": 1,
+2026-10-26T20:37:34.7312449Z #         "tiers": 1
+2026-10-26T20:37:34.7312668Z #       },
+2026-10-26T20:37:34.7312887Z #       "family-literal": {
+2026-10-26T20:37:34.7313155Z #         "occurrences": 0,
+2026-10-26T20:37:34.7313403Z #         "datasets": 0,
+2026-10-26T20:37:34.7313659Z #         "recipes": 0,
+2026-10-26T20:37:34.7313892Z #         "tiers": 0
+2026-10-26T20:37:34.7314108Z #       },
+2026-10-26T20:37:34.7314324Z #       "feature": {
+2026-10-26T20:37:34.7314735Z #         "occurrences": 0,
+2026-10-26T20:37:34.7315121Z #         "datasets": 0,
+2026-10-26T20:37:34.7315454Z #         "recipes": 0,
+2026-10-26T20:37:34.7315700Z #         "tiers": 0
+2026-10-26T20:37:34.7315910Z #       },
+2026-10-26T20:37:34.7316142Z #       "lifecycle": {
+2026-10-26T20:37:34.7316413Z #         "occurrences": 0,
+2026-10-26T20:37:34.7316687Z #         "datasets": 0,
+2026-10-26T20:37:34.7316959Z #         "recipes": 0,
+2026-10-26T20:37:34.7317198Z #         "tiers": 0
+2026-10-26T20:37:34.7317427Z #       },
+2026-10-26T20:37:34.7317807Z #       "nested-option": {
+2026-10-26T20:37:34.7318098Z #         "occurrences": 0,
+2026-10-26T20:37:34.7318350Z #         "datasets": 0,
+2026-10-26T20:37:34.7318588Z #         "recipes": 0,
+2026-10-26T20:37:34.7318820Z #         "tiers": 0
+2026-10-26T20:37:34.7321047Z #       },
+2026-10-26T20:37:34.7321356Z #       "path-literal": {
+2026-10-26T20:37:34.7321714Z #         "occurrences": 0,
+2026-10-26T20:37:34.7322082Z #         "datasets": 0,
+2026-10-26T20:37:34.7322430Z #         "recipes": 0,
+2026-10-26T20:37:34.7322757Z #         "tiers": 0
+2026-10-26T20:37:34.7323075Z #       },
+2026-10-26T20:37:34.7323368Z #       "renderer": {
+2026-10-26T20:37:34.7323721Z #         "occurrences": 1,
+2026-10-26T20:37:34.7324082Z #         "datasets": 1,
+2026-10-26T20:37:34.7324426Z #         "recipes": 1,
+2026-10-26T20:37:34.7324764Z #         "tiers": 1
+2026-10-26T20:37:34.7325065Z #       },
+2026-10-26T20:37:34.7325402Z #       "top-level-option": {
+2026-10-26T20:37:34.7325782Z #         "occurrences": 0,
+2026-10-26T20:37:34.7326149Z #         "datasets": 0,
+2026-10-26T20:37:34.7326477Z #         "recipes": 0,
+2026-10-26T20:37:34.7326790Z #         "tiers": 0
+2026-10-26T20:37:34.7327094Z #       }
+2026-10-26T20:37:34.7327411Z #     },
+2026-10-26T20:37:34.7327977Z #     "interactions": {
+2026-10-26T20:37:34.7328329Z #       "occurrences": 0,
+2026-10-26T20:37:34.7328584Z #       "datasets": 0,
+2026-10-26T20:37:34.7328823Z #       "recipes": 0,
+2026-10-26T20:37:34.7329057Z #       "tiers": 0
+2026-10-26T20:37:34.7329263Z #     }
+2026-10-26T20:37:34.7329460Z #   }
+2026-10-26T20:37:34.7329650Z # }
+2026-10-26T20:37:34.8733245Z # Subtest: writes bounded diagnostics separately and narrows only renderer audit evidence
+2026-10-26T20:37:34.8734460Z ok 141 - writes bounded diagnostics separately and narrows only renderer audit evidence
+2026-10-26T20:37:34.8734959Z   ---
+2026-10-26T20:37:34.8735187Z   duration_ms: 207624.026522
+2026-10-26T20:37:34.8735444Z   type: 'test'
+2026-10-26T20:37:34.8735772Z   ...
+2026-10-26T20:37:34.9038715Z 1..141
+2026-10-26T20:37:34.9039460Z # tests 141
+2026-10-26T20:37:34.9040067Z # suites 0
+2026-10-26T20:37:34.9040384Z # pass 140
+2026-10-26T20:37:34.9040674Z # fail 1
+2026-10-26T20:37:34.9040973Z # cancelled 0
+2026-10-26T20:37:34.9041269Z # skipped 0
+2026-10-26T20:37:34.9041480Z # todo 0
+2026-10-26T20:37:34.9041727Z # duration_ms 722502.620956
+2026-10-26T20:37:34.9316223Z ##[error]Process completed with exit code 1.
+2026-10-26T20:37:34.9392899Z ##[group]Run actions/upload-artifact@v7
+2026-10-26T20:37:34.9393217Z with:
+2026-10-26T20:37:34.9393455Z   name: timings-realistic-7-1
+2026-10-26T20:37:34.9393726Z   path: .artifacts/timings
+2026-10-26T20:37:34.9393986Z   if-no-files-found: warn
+2026-10-26T20:37:34.9394252Z   retention-days: 30
+2026-10-26T20:37:34.9394491Z   compression-level: 6
+2026-10-26T20:37:34.9394730Z   overwrite: false
+2026-10-26T20:37:34.9394974Z   include-hidden-files: false
+2026-10-26T20:37:34.9395233Z   archive: true
+2026-10-26T20:37:34.9395461Z ##[endgroup]
+2026-10-26T20:37:35.0979873Z With the provided path, there will be 8 files uploaded
+2026-10-26T20:37:35.0980493Z Artifact name is valid!
+2026-10-26T20:37:35.0980809Z Root directory input is valid!
+2026-10-26T20:37:35.4402124Z Uploading artifact: timings-realistic-7-1.zip
+2026-10-26T20:37:35.4442115Z Beginning upload of artifact content to blob storage
+2026-10-26T20:37:35.7626218Z Uploaded bytes 2887
+2026-10-26T20:37:35.8344462Z Finished uploading artifact content to blob storage!
+2026-10-26T20:37:35.8345510Z SHA256 digest of uploaded artifact is 785a0f11ae2e6974f6500f85851e25984896202b141a7624483de9f1f9a3f1e2
+2026-10-26T20:37:35.8346049Z Finalizing artifact upload
+2026-10-26T20:37:36.4255104Z Artifact timings-realistic-7-1 successfully finalized. Artifact ID 12686922634
+2026-10-26T20:37:36.4255985Z Artifact timings-realistic-7-1 has been successfully uploaded! Final size is 2887 bytes. Artifact ID is 12686922634
+2026-10-26T20:37:36.4259541Z Artifact download URL: https://github.com/ggaction/ggaction/actions/runs/40395239468/artifacts/12686922634
+2026-10-26T20:37:36.4399211Z ##[group]Run node scripts/collect-failure-artifacts.js
+2026-10-26T20:37:36.4399654Z [36;1mnode scripts/collect-failure-artifacts.js[0m
+2026-10-26T20:37:36.4468486Z shell: /usr/bin/bash -e {0}
+2026-10-26T20:37:36.4468968Z ##[endgroup]
+2026-10-26T20:37:36.4962963Z {"schemaVersion":1,"maxBytes":52428800,"maxFiles":300,"bytes":74450,"omitted":0,"files":[{"file":"checks/suite-realistic.json","bytes":1246},{"file":"checks/suite-realistic.log","bytes":36161},{"file":"checks/test-realistic.json","bytes":319},{"file":"checks/test-realistic.log","bytes":36724}]}
+2026-10-26T20:37:36.5065222Z ##[group]Run actions/upload-artifact@v7
+2026-10-26T20:37:36.5065537Z with:
+2026-10-26T20:37:36.5065770Z   name: failure-realistic-6-1
+2026-10-26T20:37:36.5066049Z   path: .artifacts/ci-evidence
+2026-10-26T20:37:36.5066327Z   if-no-files-found: ignore
+2026-10-26T20:37:36.5066584Z   retention-days: 7
+2026-10-26T20:37:36.5066821Z   compression-level: 6
+2026-10-26T20:37:36.5067059Z   overwrite: false
+2026-10-26T20:37:36.5067302Z   include-hidden-files: false
+2026-10-26T20:37:36.5068201Z   archive: true
+2026-10-26T20:37:36.5068447Z ##[endgroup]
+2026-10-26T20:37:36.6599199Z With the provided path, there will be 5 files uploaded
+2026-10-26T20:37:36.6600153Z Artifact name is valid!
+2026-10-26T20:37:36.6600628Z Root directory input is valid!
+2026-10-26T20:37:37.0498161Z Uploading artifact: failure-realistic-6-1.zip
+2026-10-26T20:37:37.0536110Z Beginning upload of artifact content to blob storage
+2026-10-26T20:37:37.4157951Z Uploaded bytes 13857
+2026-10-26T20:37:37.4865834Z Finished uploading artifact content to blob storage!
+2026-10-26T20:37:37.4866693Z SHA256 digest of uploaded artifact is dc20a37ed129bb440b885405f6593542cb54c684eeb7accbf5078dc16bc7c15a
+2026-10-26T20:37:37.4867423Z Finalizing artifact upload
+2026-10-26T20:37:38.2860769Z Artifact failure-realistic-6-1 successfully finalized. Artifact ID 12686942577
+2026-10-26T20:37:38.2862245Z Artifact failure-realistic-6-1 has been successfully uploaded! Final size is 13857 bytes. Artifact ID is 12686942577
+2026-10-26T20:37:38.2865644Z Artifact download URL: https://github.com/ggaction/ggaction/actions/runs/40395239468/artifacts/12686942577
+2026-10-26T20:37:38.3081616Z Post job cleanup.
+2026-10-26T20:37:38.4015969Z [command]/usr/bin/git version
+2026-10-26T20:37:38.4083030Z git version 2.55.0
+2026-10-26T20:37:38.4126540Z Temporarily overriding HOME='/home/runner/work/_temp/03a86f3b-e9a1-47a0-971b-48d73092761d' before making global git config changes
+2026-10-26T20:37:38.4128606Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-26T20:37:38.4132774Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/ggaction/ggaction
+2026-10-26T20:37:38.4170364Z Removing SSH command configuration
+2026-10-26T20:37:38.4178402Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-26T20:37:38.4218718Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-26T20:37:38.4492331Z Removing HTTP extra header
+2026-10-26T20:37:38.4499401Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-26T20:37:38.4544200Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-26T20:37:38.4821761Z Removing includeIf entries pointing to credentials config files
+2026-10-26T20:37:38.4832460Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-26T20:37:38.4870198Z includeif.gitdir:/home/runner/work/ggaction/ggaction/.git.path
+2026-10-26T20:37:38.4871374Z includeif.gitdir:/home/runner/work/ggaction/ggaction/.git/worktrees/*.path
+2026-10-26T20:37:38.4872541Z includeif.gitdir:/github/workspace/.git.path
+2026-10-26T20:37:38.4873401Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-26T20:37:38.4882590Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/ggaction/ggaction/.git.path
+2026-10-26T20:37:38.4914391Z /home/runner/work/_temp/git-credentials-1861ad25-2e8b-462a-8d73-44d8d70d9345.config
+2026-10-26T20:37:38.4928480Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/ggaction/ggaction/.git.path /home/runner/work/_temp/git-credentials-1861ad25-2e8b-462a-8d73-44d8d70d9345.config
+2026-10-26T20:37:38.4975553Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/ggaction/ggaction/.git/worktrees/*.path
+2026-10-26T20:37:38.5004809Z /home/runner/work/_temp/git-credentials-1861ad25-2e8b-462a-8d73-44d8d70d9345.config
+2026-10-26T20:37:38.5015842Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/ggaction/ggaction/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-1861ad25-2e8b-462a-8d73-44d8d70d9345.config
+2026-10-26T20:37:38.5055628Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-10-26T20:37:38.5083923Z /github/runner_temp/git-credentials-1861ad25-2e8b-462a-8d73-44d8d70d9345.config
+2026-10-26T20:37:38.5093433Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-1861ad25-2e8b-462a-8d73-44d8d70d9345.config
+2026-10-26T20:37:38.5131811Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-26T20:37:38.5160070Z /github/runner_temp/git-credentials-1861ad25-2e8b-462a-8d73-44d8d70d9345.config
+2026-10-26T20:37:38.5168607Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-1861ad25-2e8b-462a-8d73-44d8d70d9345.config
+2026-10-26T20:37:38.5209079Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-26T20:37:38.5473341Z Removing credentials config '/home/runner/work/_temp/git-credentials-1861ad25-2e8b-462a-8d73-44d8d70d9345.config'
+2026-10-26T20:37:38.5635018Z Cleaning up orphan processes

@@ -1,0 +1,31 @@
+
+> ggaction@0.0.22 test:browser:compat
+> node scripts/run-tests.js browser browser/backend-compatibility.browser.js browser/facet-content-headers.browser.js
+
+npm notice
+npm notice New minor version of npm available! 11.18.0 -> 11.21.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.21.1
+npm notice To update run: npm install -g npm@11.21.1
+npm notice
+✔ firefox preserves occupied legend spacing in installed Canvas and SVG at both densities (9903.201834ms)
+✔ firefox preserves Canvas/SVG clipping, gradient, text, resize, density, and downloads at DPR 1 (1232.609708ms)
+✔ firefox preserves Canvas/SVG clipping, gradient, text, resize, density, and downloads at DPR 2 (1298.203ms)
+✔ firefox keeps vertical and slanted axis labels outside fixed plots in Canvas and SVG (1122.827541ms)
+✔ firefox renders hard title breaks as concrete Canvas and SVG text lines (1129.013125ms)
+✔ firefox composites each bar fill and outline once in Canvas and SVG (1964.581375ms)
+✔ firefox clips one Cartesian mark without moving its items or outside guides (1190.633833ms)
+npm notice
+npm notice New minor version of npm available! 11.18.0 -> 11.21.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.21.1
+npm notice To update run: npm install -g npm@11.21.1
+npm notice
+✔ firefox matches explicit content-header geometry in Canvas and SVG at DPR 1 (9108.676125ms)
+✔ firefox matches explicit content-header geometry in Canvas and SVG at DPR 2 (1194.017375ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 19028.765042

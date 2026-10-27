@@ -1,0 +1,268 @@
+import { localLegendPosition } from "../../grammar/legendGroups.js";
+import { restoreLegendItemsOffset } from "../legendItemsOffset.js";
+import { prepareAuthoredFacetLegend, facetLegendIntent } from "./owner.js";
+import { isPlainObject } from "../../core/immutable.js";
+import { PLOT_LEGEND_POSITIONS } from "../../layout/legend.js";
+import { isContinuousColorScaleType, isDiscretizedColorScaleType } from "../../grammar/scales/types.js";
+import {
+  unionConcreteGraphicBounds
+} from "../../grammar/schemas/graphicBounds.js";
+import {
+  resolveSharedFacetLegends
+} from "../../grammar/facets/guides.js";
+import { findLayer } from "../../selectors/layers.js";
+import { findSemanticScale } from "../../selectors/scales.js";
+import { allLegendGraphicIds } from "../guides/resources.js";
+import { DEFAULT_COLORS } from "../../theme/defaults.js";
+import { resolveLegacyCategoricalLegend } from "./legacyCategorical.js";
+import {
+  formatDistinctNumericSamples,
+  sampleNumericRange
+} from "../../grammar/numeric.js";
+
+const LEGEND_SOURCE_CANVAS = Object.freeze({
+  width: 640,
+  height: 400,
+  margin: Object.freeze({ top: 40, right: 170, bottom: 60, left: 70 })
+});
+
+export function legendKinds(program) {
+  return Object.keys(program.guideConfigs.legend ?? {});
+}
+
+function legendCandidates(program) {
+  const layers = program.semanticSpec.layers;
+  const eligible = (layer, channel) => layer.encoding?.[channel]?.scale !== undefined &&
+    !program.guideConfigs.suppressedLegends?.[layer.id]?.channels.includes(channel);
+  const color = layers.filter(layer => {
+    const encoding = layer.encoding?.color;
+    return eligible(layer, "color") &&
+      findSemanticScale(program, encoding.scale) !== undefined;
+  });
+  if (color.length === 1) {
+    const layer = color[0];
+    return {
+      target: layer.id,
+      channels: ["color", "stroke", "shape", "strokeDash"].filter(
+        channel => eligible(layer, channel)
+      )
+    };
+  }
+  if (color.length > 1) {
+    throw new Error(
+      "Shared facet legend requires one unambiguous color legend target."
+    );
+  }
+  for (const channel of ["stroke", "shape", "strokeDash", "size", "opacity"]) {
+    const candidates = layers.filter(
+      layer => eligible(layer, channel)
+    );
+    if (candidates.length === 1) {
+      return { target: candidates[0].id, channels: [channel] };
+    }
+    if (candidates.length > 1) {
+      throw new Error(
+        `Shared facet legend requires one unambiguous ${channel} legend target.`
+      );
+    }
+  }
+  if (Object.keys(program.guideConfigs.suppressedLegends ?? {}).length) return undefined;
+  throw new Error("Shared facet legend requires one eligible encoded scale.");
+}
+
+function compactNumber(value) {
+  if (Math.abs(value) >= 1_000_000_000) {
+    return `${+(value / 1_000_000_000).toFixed(1)}B`;
+  }
+  if (Math.abs(value) >= 1_000_000) {
+    return `${Math.round(value / 1_000_000)}M`;
+  }
+  if (Math.abs(value) >= 1_000) {
+    return `${Math.round(value / 1_000)}K`;
+  }
+  return String(+value.toPrecision(3));
+}
+
+function continuousValues(domain, count) {
+  return sampleNumericRange(domain[0], domain[1], count, "Facet legend domain");
+}
+
+function legendRequests(program) {
+  const request = legendCandidates(program);
+  if (request === undefined) return [];
+  const layer = findLayer(program, request.target);
+  const separate = request.channels.filter(channel => {
+    if (!["color", "stroke"].includes(channel)) return false;
+    const type = findSemanticScale(program, layer.encoding[channel].scale)?.type;
+    return isContinuousColorScaleType(type) || isDiscretizedColorScaleType(type);
+  });
+  if (separate.length === 0) return [request];
+  const categorical = request.channels.filter(channel => !separate.includes(channel));
+  return [
+    ...(categorical.length === 0 ? [] : [{ ...request, channels: categorical }]),
+    ...separate.map(channel => ({ ...request, channels: [channel] }))
+  ];
+}
+
+function prepareAutoLegendSource(child) {
+  // Facet inference has already selected explicit eligible owner/channel pairs
+  // in legendCandidates, including suppression. Invoke the public creator with
+  // those requests; importing its action planner here reverses the dependency
+  // direction and repeats the same policy through a circular action graph.
+  const requests = legendRequests(child);
+  if (!requests.length) return child;
+  const canvas = child.graphicSpec.objects.canvas;
+  let source = child
+    ._withCanvasConfig({
+      margin: LEGEND_SOURCE_CANVAS.margin,
+      size: { width: "explicit", height: "explicit" }
+    })
+    .editGraphics({
+      target: "canvas",
+      property: "width",
+      value: LEGEND_SOURCE_CANVAS.width
+    })
+    .editGraphics({
+      target: "canvas",
+      property: "height",
+      value: LEGEND_SOURCE_CANVAS.height * requests.length
+    });
+  if (canvas?.properties.background !== undefined) {
+    source = source.editGraphics({
+      target: "canvas",
+      property: "background",
+      value: canvas.properties.background
+    });
+  }
+  const gradients = [];
+  for (const request of requests) {
+    const colorChannel = request.channels.find(channel => ["color", "stroke"].includes(channel));
+    const scale = findSemanticScale(
+      source,
+      findLayer(source, request.target)?.encoding?.[colorChannel]?.scale
+    );
+    const gradient = isContinuousColorScaleType(scale?.type);
+    const gradientPrefix = colorChannel === "color"
+      ? "colorGradient"
+      : "strokeGradient";
+    source = source.createLegend({
+      target: request.target,
+      channels: request.channels,
+      ...(gradient ? {
+        count: 5,
+        gradient: { length: 180, thickness: 12 },
+        labels: { offset: 9, fontSize: 10 },
+        titleStyle: { color: DEFAULT_COLORS.strongText, fontSize: 11 }
+      } : {})
+    });
+    if (gradient && scale.type === "sequential") gradients.push({ scale, gradientPrefix });
+  }
+  for (const { scale, gradientPrefix } of gradients) {
+    const resolved = source.resolvedScales[scale.id];
+    source = source
+      .editGraphics({
+        target: `${gradientPrefix}Labels`,
+        property: "text",
+        value: formatDistinctNumericSamples(
+          continuousValues(resolved.domain, 5),
+          compactNumber
+        )
+      })
+      .editGraphics({
+        target: `${gradientPrefix}Title`,
+        property: "y",
+        value: source.graphicSpec.objects[`${gradientPrefix}Title`].properties.y + 8
+      });
+  }
+  return source;
+}
+
+function compatibleLegendChildren(program, source, inferred) {
+  return program.compositionSpec.children.map(id => {
+    const child = program.children[id];
+    return {
+      id,
+      guideConfigs: inferred ? source.guideConfigs : child.guideConfigs,
+      resolvedScales: child.resolvedScales
+    };
+  });
+}
+
+function promotedLegendPlacement(source, kinds) {
+  const positioned = kinds.map(kind => source.guideConfigs.legend[kind])
+    .filter(config => config.position !== undefined);
+  const positions = new Set(positioned.map(config => config.position));
+  if (positions.size > 1) {
+    throw new Error(
+      "Shared facet legends must use one common edge position."
+    );
+  }
+  const aligns = new Set(positioned.map(config => config.align ?? "center"));
+  if (aligns.size > 1) {
+    throw new Error(
+      "Shared facet legends must use one common alignment."
+    );
+  }
+  return {
+    position: positioned[0]?.position ?? "right",
+    align: positioned[0]?.align ?? "center"
+  };
+}
+
+export function prepareSharedFacetLegend(program) {
+  if (isPlainObject(program.compositionSpec.facet.guides.legend)) return prepareAuthoredFacetLegend(program);
+  if (program.compositionSpec.facet.guides.legend !== "shared") {
+    return undefined;
+  }
+  const firstId = program.compositionSpec.children[0];
+  const first = program.children[firstId];
+  const inferred = legendKinds(first).length === 0;
+  if (inferred && !Object.keys(first.guideConfigs.suppressedLegends ?? {}).length) {
+    const legacy = resolveLegacyCategoricalLegend(program);
+    if (legacy !== undefined) return legacy;
+  }
+  // Shared guides receive the offset once in the parent's final placement.
+  const source = restoreLegendItemsOffset(inferred ? prepareAutoLegendSource(first) : first);
+  const kinds = legendKinds(source);
+  if (!kinds.length && Object.keys(first.guideConfigs.suppressedLegends ?? {}).length) return undefined;
+  if (kinds.some(kind => localLegendPosition(source.guideConfigs.legend[kind]) !== undefined)) {
+    return { ...prepareAuthoredFacetLegend(program, facetLegendIntent(source)), keepShared: true };
+  }
+  const compatibility = resolveSharedFacetLegends(
+    compatibleLegendChildren(program, source, inferred)
+  );
+  const roots = allLegendGraphicIds(kinds).filter(
+    id => source.graphicSpec.objects[id] !== undefined
+  );
+  if (roots.length === 0) {
+    throw new Error("Shared facet legend has no concrete guide graphics.");
+  }
+  const bounds = unionConcreteGraphicBounds(source.graphicSpec, roots, source.materializationConfigs.textMetrics);
+  if (bounds === undefined) {
+    throw new Error("Shared facet legend has no measurable concrete bounds.");
+  }
+  const targets = new Set(kinds.map(kind => source.guideConfigs.legend[kind].target));
+  const group = targets.size === 1 ? source.guideConfigs.legendGroups?.[[...targets][0]] : undefined;
+  const insideGroup = group !== undefined && (group.placement.at !== undefined || PLOT_LEGEND_POSITIONS.includes(group.placement.position));
+  const placement = group === undefined ? promotedLegendPlacement(source, kinds)
+    : { position: insideGroup ? "right" : group.placement.position,
+        align: group.placement.align ?? "left" };
+
+  const width = Math.ceil(bounds.right - bounds.left);
+  return {
+    mode: "promoted",
+    source,
+    inferred,
+    kinds,
+    roots,
+    bounds,
+    compatibility,
+    ...(group === undefined ? {} : { occupiedGroup: group }),
+    reservation: {
+      ...placement,
+      gap: insideGroup ? 0 : group?.placement.offset ?? Math.max(...kinds.map(kind => source.guideConfigs.legend[kind].offset)),
+      width: insideGroup ? 0 : width,
+      height: insideGroup ? 0 : Math.ceil(bounds.bottom - bounds.top)
+    }
+  };
+}

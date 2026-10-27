@@ -1,0 +1,14 @@
+✔ three-channel interval samples preserve ordinal shape, source points and exact scale ownership (84.14125ms)
+✔ three-channel sampling rejects missing representatives, incompatible mappings and mapped overrides atomically (13.871334ms)
+✔ each channel alias edits one shared block and changing a bound scale rematerializes it (49.100834ms)
+✔ explicit combination edits preserve the block and splitting requires an explicit request (43.900375ms)
+✔ clipped shared three-channel legends survive facet, grid and repeat restoration and reflow (411.904334ms)
+✔ inherited fixed paint stays live and explicit overrides reset without changing mapped area (16.236083ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 963.411416

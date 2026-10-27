@@ -1,0 +1,242 @@
+{
+  "release": {
+    "conclusion": "",
+    "jobs": [
+      {
+        "conclusion": "success",
+        "databaseId": 121902627690,
+        "name": "candidate",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121902808753,
+        "name": "verify-package",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121902808813,
+        "name": "verify-documentation",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121902808848,
+        "name": "verify-coverage",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121902808865,
+        "name": "verify-platform (macos-latest)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121902808935,
+        "name": "verify-platform (windows-latest)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121902808948,
+        "name": "verify-browsers (webkit)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121902808973,
+        "name": "realistic-data",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121902809072,
+        "name": "verify-browsers (firefox)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121902809254,
+        "name": "verify-source",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121903360841,
+        "name": "verify-realistic (1)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121903360850,
+        "name": "verify-realistic (2)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121903360863,
+        "name": "verify-realistic (7)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121903360869,
+        "name": "verify-realistic (3)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121903360958,
+        "name": "verify-realistic (5)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121903360988,
+        "name": "verify-realistic (6)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121903361123,
+        "name": "verify-realistic (4)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121914400384,
+        "name": "verify",
+        "status": "completed"
+      },
+      {
+        "conclusion": "",
+        "databaseId": 121914494200,
+        "name": "publish",
+        "status": "waiting"
+      }
+    ],
+    "status": "waiting"
+  },
+  "main": {
+    "conclusion": "",
+    "jobs": [
+      {
+        "conclusion": "success",
+        "databaseId": 121902454599,
+        "name": "realistic-data",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121902454800,
+        "name": "peer-compatibility",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121902454815,
+        "name": "platform (macos-latest)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121902454839,
+        "name": "platform (windows-latest)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121902454877,
+        "name": "package (24)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121902454885,
+        "name": "documentation",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121902454891,
+        "name": "browsers (webkit)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121902454907,
+        "name": "package (22)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121902454917,
+        "name": "coverage",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121902454929,
+        "name": "package (20)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121902454931,
+        "name": "browsers (firefox)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121902454936,
+        "name": "test",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121902553138,
+        "name": "realistic (1)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121902553185,
+        "name": "realistic (5)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "",
+        "databaseId": 121902553186,
+        "name": "realistic (2)",
+        "status": "in_progress"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121902553195,
+        "name": "realistic (4)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121902553231,
+        "name": "realistic (3)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121902553336,
+        "name": "realistic (6)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121902553364,
+        "name": "realistic (7)",
+        "status": "completed"
+      }
+    ],
+    "status": "in_progress"
+  }
+}

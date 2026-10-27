@@ -1,0 +1,270 @@
+﻿2026-10-23T10:11:29.2458852Z Current runner version: '2.338.0'
+2026-10-23T10:11:29.2486835Z ##[group]Runner Image Provisioner
+2026-10-23T10:11:29.2487701Z Hosted Compute Agent
+2026-10-23T10:11:29.2488309Z Version: 20261021.618
+2026-10-23T10:11:29.2488912Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-10-23T10:11:29.2489594Z Build Date: 2026-10-21T00:45:21Z
+2026-10-23T10:11:29.2490288Z Worker ID: {a5a302d0-e72a-49d6-8157-b790c5d53601}
+2026-10-23T10:11:29.2490963Z Region: northcentralus
+2026-10-23T10:11:29.2491539Z Cloud: Azure
+2026-10-23T10:11:29.2492044Z ##[endgroup]
+2026-10-23T10:11:29.2493471Z ##[group]Operating System
+2026-10-23T10:11:29.2494137Z Microsoft Windows Server 2025
+2026-10-23T10:11:29.2494723Z 10.0.26100
+2026-10-23T10:11:29.2495220Z Datacenter
+2026-10-23T10:11:29.2495712Z ##[endgroup]
+2026-10-23T10:11:29.2496212Z ##[group]Runner Image
+2026-10-23T10:11:29.2496937Z Image: windows-2025-vs2026
+2026-10-23T10:11:29.2497511Z Version: 20261021.278.1
+2026-10-23T10:11:29.2499116Z Included Software: https://github.com/actions/runner-images/blob/win25-vs2026/20261021.278/images/windows/Windows2025-VS2026-Readme.md
+2026-10-23T10:11:29.2500831Z Image Release: https://github.com/actions/runner-images/releases/tag/win25-vs2026%2F20261021.278
+2026-10-23T10:11:29.2501804Z ##[endgroup]
+2026-10-23T10:11:29.2502855Z ##[group]GITHUB_TOKEN Permissions
+2026-10-23T10:11:29.2505053Z Contents: read
+2026-10-23T10:11:29.2505862Z Metadata: read
+2026-10-23T10:11:29.2506427Z ##[endgroup]
+2026-10-23T10:11:29.2508827Z Secret source: Actions
+2026-10-23T10:11:29.2509783Z Cache mode: write
+2026-10-23T10:11:29.2510463Z Prepare workflow directory
+2026-10-23T10:11:29.2972233Z Prepare all required actions
+2026-10-23T10:11:29.3022726Z Getting action download info
+2026-10-23T10:11:29.5097753Z Download action repository 'actions/checkout@v6' (SHA:d23441a48e516b6c34aea4fa41551a30e30af803)
+2026-10-23T10:11:29.6714650Z Download action repository 'actions/setup-node@v6' (SHA:249970729cb0ef3589644e2896645e5dc5ba9c38)
+2026-10-23T10:11:29.8529850Z Download action repository 'actions/upload-artifact@v7' (SHA:cf430e030ddbb5b0abf93d22962f4752f3646cd9)
+2026-10-23T10:11:30.1009987Z Complete job name: platform (windows-latest)
+2026-10-23T10:11:30.3036885Z ##[group]Run actions/checkout@v6
+2026-10-23T10:11:30.3038031Z with:
+2026-10-23T10:11:30.3038465Z   repository: ggaction/ggaction
+2026-10-23T10:11:30.3042549Z   token: ***
+2026-10-23T10:11:30.3042954Z   ssh-strict: true
+2026-10-23T10:11:30.3043356Z   ssh-user: git
+2026-10-23T10:11:30.3043762Z   persist-credentials: true
+2026-10-23T10:11:30.3044210Z   clean: true
+2026-10-23T10:11:30.3044621Z   sparse-checkout-cone-mode: true
+2026-10-23T10:11:30.3045102Z   fetch-depth: 1
+2026-10-23T10:11:30.3045490Z   fetch-tags: false
+2026-10-23T10:11:30.3045892Z   show-progress: true
+2026-10-23T10:11:30.3046296Z   lfs: false
+2026-10-23T10:11:30.3046656Z   submodules: false
+2026-10-23T10:11:30.3047059Z   set-safe-directory: true
+2026-10-23T10:11:30.3047528Z   allow-unsafe-pr-checkout: false
+2026-10-23T10:11:30.3048277Z ##[endgroup]
+2026-10-23T10:11:30.4597986Z Syncing repository: ggaction/ggaction
+2026-10-23T10:11:30.4599942Z ##[group]Getting Git version info
+2026-10-23T10:11:30.4600641Z Working directory is 'D:\a\ggaction\ggaction'
+2026-10-23T10:11:30.5679962Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-10-23T10:11:31.1405713Z git version 2.56.0.windows.2
+2026-10-23T10:11:31.1475881Z ##[endgroup]
+2026-10-23T10:11:31.1503357Z Temporarily overriding HOME='D:\a\_temp\5a28b0d8-a4fd-4717-800b-0f9ccfbf5844' before making global git config changes
+2026-10-23T10:11:31.1506212Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-23T10:11:31.1515353Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\ggaction\ggaction
+2026-10-23T10:11:31.2409953Z Deleting the contents of 'D:\a\ggaction\ggaction'
+2026-10-23T10:11:31.2418544Z ##[group]Determining repository object format
+2026-10-23T10:11:31.2421140Z ##[endgroup]
+2026-10-23T10:11:31.2424842Z ##[group]Initializing the repository
+2026-10-23T10:11:31.2430638Z [command]"C:\Program Files\Git\bin\git.exe" init D:\a\ggaction\ggaction
+2026-10-23T10:11:31.3804497Z Initialized empty Git repository in D:/a/ggaction/ggaction/.git/
+2026-10-23T10:11:31.3855070Z [command]"C:\Program Files\Git\bin\git.exe" remote add origin https://github.com/ggaction/ggaction
+2026-10-23T10:11:31.4772004Z ##[endgroup]
+2026-10-23T10:11:31.4773291Z ##[group]Disabling automatic garbage collection
+2026-10-23T10:11:31.4781444Z [command]"C:\Program Files\Git\bin\git.exe" config --local gc.auto 0
+2026-10-23T10:11:31.5182648Z ##[endgroup]
+2026-10-23T10:11:31.5184723Z ##[group]Setting up auth
+2026-10-23T10:11:31.5186288Z Removing SSH command configuration
+2026-10-23T10:11:31.5197133Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-10-23T10:11:31.5601383Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-10-23T10:11:33.6560374Z Removing HTTP extra header
+2026-10-23T10:11:33.6570419Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-23T10:11:33.6968114Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-10-23T10:11:34.2784059Z Removing includeIf entries pointing to credentials config files
+2026-10-23T10:11:34.2796082Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-23T10:11:34.3204437Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-10-23T10:11:34.9061057Z [command]"C:\Program Files\Git\bin\git.exe" config --file D:\a\_temp\git-credentials-3afb1417-f217-440e-a767-58ad8b353c9e.config http.https://github.com/.extraheader "AUTHORIZATION: basic ***"
+2026-10-23T10:11:34.9464595Z [command]"C:\Program Files\Git\bin\git.exe" config --local includeIf.gitdir:D:/a/ggaction/ggaction/.git.path D:\a\_temp\git-credentials-3afb1417-f217-440e-a767-58ad8b353c9e.config
+2026-10-23T10:11:34.9878457Z [command]"C:\Program Files\Git\bin\git.exe" config --local includeIf.gitdir:D:/a/ggaction/ggaction/.git/worktrees/*.path D:\a\_temp\git-credentials-3afb1417-f217-440e-a767-58ad8b353c9e.config
+2026-10-23T10:11:35.0394540Z [command]"C:\Program Files\Git\bin\git.exe" config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-3afb1417-f217-440e-a767-58ad8b353c9e.config
+2026-10-23T10:11:35.0811348Z [command]"C:\Program Files\Git\bin\git.exe" config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-3afb1417-f217-440e-a767-58ad8b353c9e.config
+2026-10-23T10:11:35.1226900Z ##[endgroup]
+2026-10-23T10:11:35.1227575Z ##[group]Fetching the repository
+2026-10-23T10:11:35.1243782Z [command]"C:\Program Files\Git\bin\git.exe" -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +3fe86b2c5076b3ca8871676c6b8bac52f1b96a04:refs/remotes/pull/264/merge
+2026-10-23T10:11:38.5709919Z From https://github.com/ggaction/ggaction
+2026-10-23T10:11:38.5710796Z  * [new ref]         3fe86b2c5076b3ca8871676c6b8bac52f1b96a04 -> pull/264/merge
+2026-10-23T10:11:38.5764248Z ##[endgroup]
+2026-10-23T10:11:38.5765029Z ##[group]Determining the checkout info
+2026-10-23T10:11:38.5766428Z ##[endgroup]
+2026-10-23T10:11:38.5777290Z [command]"C:\Program Files\Git\bin\git.exe" sparse-checkout disable
+2026-10-23T10:11:38.6427860Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all extensions.worktreeConfig
+2026-10-23T10:11:38.6846165Z ##[group]Checking out the ref
+2026-10-23T10:11:38.6858419Z [command]"C:\Program Files\Git\bin\git.exe" checkout --progress --force refs/remotes/pull/264/merge
+2026-10-23T10:11:39.7661079Z Updating files:  60% (3396/5573)
+2026-10-23T10:11:39.7823105Z Updating files:  61% (3400/5573)
+2026-10-23T10:11:39.7969813Z Updating files:  62% (3456/5573)
+2026-10-23T10:11:39.8111225Z Updating files:  63% (3511/5573)
+2026-10-23T10:11:39.8267557Z Updating files:  64% (3567/5573)
+2026-10-23T10:11:39.8447839Z Updating files:  65% (3623/5573)
+2026-10-23T10:11:39.8618307Z Updating files:  66% (3679/5573)
+2026-10-23T10:11:39.8764909Z Updating files:  67% (3734/5573)
+2026-10-23T10:11:39.8906001Z Updating files:  68% (3790/5573)
+2026-10-23T10:11:39.9051196Z Updating files:  69% (3846/5573)
+2026-10-23T10:11:39.9210446Z Updating files:  70% (3902/5573)
+2026-10-23T10:11:39.9352567Z Updating files:  71% (3957/5573)
+2026-10-23T10:11:39.9497900Z Updating files:  72% (4013/5573)
+2026-10-23T10:11:39.9638609Z Updating files:  73% (4069/5573)
+2026-10-23T10:11:39.9791454Z Updating files:  74% (4125/5573)
+2026-10-23T10:11:39.9943864Z Updating files:  75% (4180/5573)
+2026-10-23T10:11:40.0094074Z Updating files:  76% (4236/5573)
+2026-10-23T10:11:40.0237661Z Updating files:  77% (4292/5573)
+2026-10-23T10:11:40.0370160Z Updating files:  78% (4347/5573)
+2026-10-23T10:11:40.0522194Z Updating files:  79% (4403/5573)
+2026-10-23T10:11:40.0673532Z Updating files:  80% (4459/5573)
+2026-10-23T10:11:40.0812994Z Updating files:  81% (4515/5573)
+2026-10-23T10:11:40.0964868Z Updating files:  82% (4570/5573)
+2026-10-23T10:11:40.1125469Z Updating files:  83% (4626/5573)
+2026-10-23T10:11:40.1269539Z Updating files:  84% (4682/5573)
+2026-10-23T10:11:40.1423145Z Updating files:  85% (4738/5573)
+2026-10-23T10:11:40.1586090Z Updating files:  86% (4793/5573)
+2026-10-23T10:11:40.1734689Z Updating files:  87% (4849/5573)
+2026-10-23T10:11:40.1864396Z Updating files:  88% (4905/5573)
+2026-10-23T10:11:40.2048538Z Updating files:  89% (4960/5573)
+2026-10-23T10:11:40.2196705Z Updating files:  90% (5016/5573)
+2026-10-23T10:11:40.2346557Z Updating files:  91% (5072/5573)
+2026-10-23T10:11:40.2496858Z Updating files:  92% (5128/5573)
+2026-10-23T10:11:40.2645765Z Updating files:  93% (5183/5573)
+2026-10-23T10:11:40.2794301Z Updating files:  94% (5239/5573)
+2026-10-23T10:11:40.2937166Z Updating files:  95% (5295/5573)
+2026-10-23T10:11:40.3081198Z Updating files:  96% (5351/5573)
+2026-10-23T10:11:40.3224950Z Updating files:  97% (5406/5573)
+2026-10-23T10:11:40.3369143Z Updating files:  98% (5462/5573)
+2026-10-23T10:11:40.3526388Z Updating files:  99% (5518/5573)
+2026-10-23T10:11:40.3526886Z Updating files: 100% (5573/5573)
+2026-10-23T10:11:40.3527303Z Updating files: 100% (5573/5573), done.
+2026-10-23T10:11:40.3693717Z Note: switching to 'refs/remotes/pull/264/merge'.
+2026-10-23T10:11:40.3694311Z 
+2026-10-23T10:11:40.3694667Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-10-23T10:11:40.3695544Z changes and commit them, and you can discard any commits you make in this
+2026-10-23T10:11:40.3696325Z state without impacting any branches by switching back to a branch.
+2026-10-23T10:11:40.3696768Z 
+2026-10-23T10:11:40.3696975Z If you want to create a new branch to retain commits you create, you may
+2026-10-23T10:11:40.3697399Z do so (now or later) by using -c with the switch command. Example:
+2026-10-23T10:11:40.3697644Z 
+2026-10-23T10:11:40.3697793Z   git switch -c <new-branch-name>
+2026-10-23T10:11:40.3697972Z 
+2026-10-23T10:11:40.3698059Z Or undo this operation with:
+2026-10-23T10:11:40.3698210Z 
+2026-10-23T10:11:40.3698280Z   git switch -
+2026-10-23T10:11:40.3698399Z 
+2026-10-23T10:11:40.3698601Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-10-23T10:11:40.3698895Z 
+2026-10-23T10:11:40.3699235Z HEAD is now at 3fe86b2 Merge 108cd1084e306f22f4390a72702468f2c2a667c6 into 202b7afd4146a691c136964c4cc53f9c37444513
+2026-10-23T10:11:40.3793096Z ##[endgroup]
+2026-10-23T10:11:40.4332651Z [command]"C:\Program Files\Git\bin\git.exe" log -1 --format=%H
+2026-10-23T10:11:40.4705481Z 3fe86b2c5076b3ca8871676c6b8bac52f1b96a04
+2026-10-23T10:11:40.5490607Z ##[group]Run actions/setup-node@v6
+2026-10-23T10:11:40.5491059Z with:
+2026-10-23T10:11:40.5491403Z   node-version: 22
+2026-10-23T10:11:40.5494297Z   cache: npm
+2026-10-23T10:11:40.5496146Z   check-latest: false
+2026-10-23T10:11:40.5502915Z   token: ***
+2026-10-23T10:11:40.5503302Z   package-manager-cache: true
+2026-10-23T10:11:40.5504748Z ##[endgroup]
+2026-10-23T10:11:40.8099027Z Found in cache @ C:\hostedtoolcache\windows\node\22.23.4\x64
+2026-10-23T10:11:40.8106111Z ##[group]Environment details
+2026-10-23T10:11:48.8504747Z node: v22.23.4
+2026-10-23T10:11:48.8505073Z npm: 10.9.9
+2026-10-23T10:11:48.8505239Z yarn: 1.22.22
+2026-10-23T10:11:48.8505980Z ##[endgroup]
+2026-10-23T10:11:48.9279746Z [command]C:\Windows\system32\cmd.exe /D /S /C "C:\hostedtoolcache\windows\node\22.23.4\x64\npm.cmd config get cache"
+2026-10-23T10:11:49.6923846Z C:\npm\cache
+2026-10-23T10:11:50.0255719Z npm cache is not found
+2026-10-23T10:11:50.0611148Z ##[group]Run npm ci
+2026-10-23T10:11:50.0611556Z [36;1mnpm ci[0m
+2026-10-23T10:11:50.0636921Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+2026-10-23T10:11:50.0637341Z ##[endgroup]
+2026-10-23T10:11:59.1391700Z 
+2026-10-23T10:11:59.1398005Z added 122 packages, and audited 123 packages in 8s
+2026-10-23T10:11:59.1398387Z 
+2026-10-23T10:11:59.1398597Z 41 packages are looking for funding
+2026-10-23T10:11:59.1398957Z   run `npm fund` for details
+2026-10-23T10:11:59.1404245Z 
+2026-10-23T10:11:59.1404736Z found 0 vulnerabilities
+2026-10-23T10:12:03.3364402Z ##[group]Run node scripts/run-check.js test-platform -- npm run test:platform
+2026-10-23T10:12:03.3365051Z [36;1mnode scripts/run-check.js test-platform -- npm run test:platform[0m
+2026-10-23T10:12:03.3384114Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+2026-10-23T10:12:03.3384515Z ##[endgroup]
+2026-10-23T10:12:03.7288786Z 
+2026-10-23T10:12:03.7289733Z > ggaction@0.0.23 test:platform
+2026-10-23T10:12:03.7290597Z > node scripts/test-platform-package.js
+2026-10-23T10:12:03.7291141Z 
+2026-10-23T10:12:13.9191420Z file:///D:/a/ggaction/ggaction/scripts/package-artifact.js:258
+2026-10-23T10:12:13.9193467Z     throw new Error(`Packed size ${manifest.size} exceeds ${PACKAGE_LIMITS.packedBytes} bytes.`);
+2026-10-23T10:12:13.9194468Z           ^
+2026-10-23T10:12:13.9194646Z 
+2026-10-23T10:12:13.9194932Z Error: Packed size 901579 exceeds 900000 bytes.
+2026-10-23T10:12:13.9195930Z     at validatePackageManifest (file:///D:/a/ggaction/ggaction/scripts/package-artifact.js:258:11)
+2026-10-23T10:12:13.9197091Z     at createPackageArtifact (file:///D:/a/ggaction/ggaction/scripts/package-artifact.js:277:20)
+2026-10-23T10:12:13.9198270Z     at async preparePackageConsumer (file:///D:/a/ggaction/ggaction/scripts/package-consumer.js:26:50)
+2026-10-23T10:12:13.9199324Z     at async file:///D:/a/ggaction/ggaction/scripts/test-platform-package.js:8:18
+2026-10-23T10:12:13.9199874Z 
+2026-10-23T10:12:13.9200002Z Node.js v22.23.4
+2026-10-23T10:12:13.9677134Z ##[error]Process completed with exit code 1.
+2026-10-23T10:12:13.9856813Z ##[group]Run node scripts/collect-failure-artifacts.js
+2026-10-23T10:12:13.9857272Z [36;1mnode scripts/collect-failure-artifacts.js[0m
+2026-10-23T10:12:13.9873628Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+2026-10-23T10:12:13.9874037Z ##[endgroup]
+2026-10-23T10:12:14.1065196Z {"schemaVersion":1,"maxBytes":52428800,"maxFiles":300,"bytes":989,"omitted":0,"files":[{"file":"checks/test-platform.json","bytes":283},{"file":"checks/test-platform.log","bytes":706}]}
+2026-10-23T10:12:14.1433181Z ##[group]Run actions/upload-artifact@v7
+2026-10-23T10:12:14.1433535Z with:
+2026-10-23T10:12:14.1433734Z   name: failure-platform-1-1
+2026-10-23T10:12:14.1433982Z   path: .artifacts/ci-evidence
+2026-10-23T10:12:14.1434218Z   if-no-files-found: ignore
+2026-10-23T10:12:14.1434670Z   retention-days: 7
+2026-10-23T10:12:14.1434859Z   compression-level: 6
+2026-10-23T10:12:14.1435056Z   overwrite: false
+2026-10-23T10:12:14.1435246Z   include-hidden-files: false
+2026-10-23T10:12:14.1435461Z   archive: true
+2026-10-23T10:12:14.1435632Z ##[endgroup]
+2026-10-23T10:12:14.3372313Z With the provided path, there will be 3 files uploaded
+2026-10-23T10:12:14.3377583Z Artifact name is valid!
+2026-10-23T10:12:14.3378966Z Root directory input is valid!
+2026-10-23T10:12:14.5804558Z Uploading artifact: failure-platform-1-1.zip
+2026-10-23T10:12:14.5847324Z Beginning upload of artifact content to blob storage
+2026-10-23T10:12:14.7180111Z Uploaded bytes 1050
+2026-10-23T10:12:14.7472835Z Finished uploading artifact content to blob storage!
+2026-10-23T10:12:14.7474077Z SHA256 digest of uploaded artifact is 6bfde90e1493247714ca12f3400cb9c8ea5365e2f563f8bc9dce056e7c9d87ba
+2026-10-23T10:12:14.7475064Z Finalizing artifact upload
+2026-10-23T10:12:15.2337324Z Artifact failure-platform-1-1 successfully finalized. Artifact ID 12494232831
+2026-10-23T10:12:15.2339016Z Artifact failure-platform-1-1 has been successfully uploaded! Final size is 1050 bytes. Artifact ID is 12494232831
+2026-10-23T10:12:15.2348873Z Artifact download URL: https://github.com/ggaction/ggaction/actions/runs/39937316945/artifacts/12494232831
+2026-10-23T10:12:15.2720212Z Post job cleanup.
+2026-10-23T10:12:15.4688491Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-10-23T10:12:15.5043309Z git version 2.56.0.windows.2
+2026-10-23T10:12:15.5120140Z Temporarily overriding HOME='D:\a\_temp\54abd303-818b-4f33-9714-4a1889c933d6' before making global git config changes
+2026-10-23T10:12:15.5121219Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-23T10:12:15.5132434Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\ggaction\ggaction
+2026-10-23T10:12:15.5526826Z Removing SSH command configuration
+2026-10-23T10:12:15.5539058Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-10-23T10:12:15.6011323Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-10-23T10:12:16.2125896Z Removing HTTP extra header
+2026-10-23T10:12:16.2136348Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-23T10:12:16.2557686Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-10-23T10:12:16.8338063Z Removing includeIf entries pointing to credentials config files
+2026-10-23T10:12:16.8350488Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-23T10:12:16.8761542Z includeif.gitdir:D:/a/ggaction/ggaction/.git.path
+2026-10-23T10:12:16.8762402Z includeif.gitdir:D:/a/ggaction/ggaction/.git/worktrees/*.path
+2026-10-23T10:12:16.8763798Z includeif.gitdir:/github/workspace/.git.path
+2026-10-23T10:12:16.8764579Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-23T10:12:16.8809951Z [command]"C:\Program Files\Git\bin\git.exe" config --local --get-all includeif.gitdir:D:/a/ggaction/ggaction/.git.path
+2026-10-23T10:12:16.9157941Z D:\a\_temp\git-credentials-3afb1417-f217-440e-a767-58ad8b353c9e.config
+2026-10-23T10:12:16.9205858Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset includeif.gitdir:D:/a/ggaction/ggaction/.git.path D:\a\_temp\git-credentials-3afb1417-f217-440e-a767-58ad8b353c9e.config
+2026-10-23T10:12:16.9591417Z [command]"C:\Program Files\Git\bin\git.exe" config --local --get-all includeif.gitdir:D:/a/ggaction/ggaction/.git/worktrees/*.path
+2026-10-23T10:12:16.9932712Z D:\a\_temp\git-credentials-3afb1417-f217-440e-a767-58ad8b353c9e.config
+2026-10-23T10:12:16.9977976Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset includeif.gitdir:D:/a/ggaction/ggaction/.git/worktrees/*.path D:\a\_temp\git-credentials-3afb1417-f217-440e-a767-58ad8b353c9e.config
+2026-10-23T10:12:17.0367335Z [command]"C:\Program Files\Git\bin\git.exe" config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-10-23T10:12:17.0716960Z /github/runner_temp/git-credentials-3afb1417-f217-440e-a767-58ad8b353c9e.config
+2026-10-23T10:12:17.0761961Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset includeif.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-3afb1417-f217-440e-a767-58ad8b353c9e.config
+2026-10-23T10:12:17.1153299Z [command]"C:\Program Files\Git\bin\git.exe" config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-23T10:12:17.1505235Z /github/runner_temp/git-credentials-3afb1417-f217-440e-a767-58ad8b353c9e.config
+2026-10-23T10:12:17.1551619Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-3afb1417-f217-440e-a767-58ad8b353c9e.config
+2026-10-23T10:12:17.1949138Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-10-23T10:12:17.7521919Z Removing credentials config 'D:\a\_temp\git-credentials-3afb1417-f217-440e-a767-58ad8b353c9e.config'
+2026-10-23T10:12:17.7722237Z Cleaning up orphan processes

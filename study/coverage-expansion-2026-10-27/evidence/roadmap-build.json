@@ -1,0 +1,4441 @@
+{
+  "status": "planning-artifacts-only",
+  "baselineCommit": "40ec7edead7fc84de05aad31888dd0f7d264a512",
+  "counts": {
+    "tasks": 77,
+    "workPackages": 22,
+    "acceptanceGroups": 79,
+    "activeRequirements": 30,
+    "consumerRows": 30,
+    "consumerColumns": 19
+  },
+  "markdownBytes": 526729,
+  "markdownSha256": "b87dfb76e689a9a80c4575c5cdf93915f005e1b1829438d31144e8db178c99be",
+  "htmlBytes": 687556,
+  "htmlSha256": "ffa0f3854795394203d1dc5fea5310279b6e447fdbb0ea681198b6ae856105aa",
+  "chapters": 16,
+  "headings": 884,
+  "tables": 13,
+  "toc": [
+    {
+      "depth": 1,
+      "text": "ggaction 상세 구현 로드맵",
+      "id": "r-0"
+    },
+    {
+      "depth": 2,
+      "text": "ggaction 구현 로드맵 사용법",
+      "id": "r-1"
+    },
+    {
+      "depth": 3,
+      "text": "범위와 우선순위",
+      "id": "r-2"
+    },
+    {
+      "depth": 3,
+      "text": "구현자가 한 번에 읽을 패킷",
+      "id": "r-3"
+    },
+    {
+      "depth": 3,
+      "text": "완료의 의미",
+      "id": "r-4"
+    },
+    {
+      "depth": 3,
+      "text": "작업을 실패시키는 구현",
+      "id": "r-5"
+    },
+    {
+      "depth": 3,
+      "text": "문서 위치와 미래 구현 기록",
+      "id": "r-6"
+    },
+    {
+      "depth": 3,
+      "text": "읽는 순서",
+      "id": "r-7"
+    },
+    {
+      "depth": 3,
+      "text": "한 카드만 꺼내는 명령",
+      "id": "r-8"
+    },
+    {
+      "depth": 2,
+      "text": "구현 결정과 검토 경계",
+      "id": "r-9"
+    },
+    {
+      "depth": 3,
+      "text": "확정된 사용자 범위",
+      "id": "r-10"
+    },
+    {
+      "depth": 3,
+      "text": "일관된 제안 결정",
+      "id": "r-11"
+    },
+    {
+      "depth": 3,
+      "text": "구현 시 필요한 Gate",
+      "id": "r-12"
+    },
+    {
+      "depth": 3,
+      "text": "변경이 필요할 때",
+      "id": "r-13"
+    },
+    {
+      "depth": 2,
+      "text": "실행 순서와 작업 인계",
+      "id": "r-14"
+    },
+    {
+      "depth": 3,
+      "text": "단계 종료 표",
+      "id": "r-15"
+    },
+    {
+      "depth": 3,
+      "text": "교차 기능 의무",
+      "id": "r-16"
+    },
+    {
+      "depth": 2,
+      "text": "기존 코드에 새 기능을 연결하는 절차",
+      "id": "r-17"
+    },
+    {
+      "depth": 3,
+      "text": "작업 전 상태 확인",
+      "id": "r-18"
+    },
+    {
+      "depth": 3,
+      "text": "Domain action 하나를 추가하는 순서",
+      "id": "r-19"
+    },
+    {
+      "depth": 3,
+      "text": "Kernel 호출과 action 반환을 섞지 않기",
+      "id": "r-20"
+    },
+    {
+      "depth": 3,
+      "text": "Proposed resource action 표",
+      "id": "r-21"
+    },
+    {
+      "depth": 3,
+      "text": "소비자 누락을 찾는 방법",
+      "id": "r-22"
+    },
+    {
+      "depth": 3,
+      "text": "Primitive 시각 검토 패킷",
+      "id": "r-23"
+    },
+    {
+      "depth": 3,
+      "text": "다음 모델에게 전달할 메시지",
+      "id": "r-24"
+    },
+    {
+      "depth": 2,
+      "text": "Transition planner sampler player 계약",
+      "id": "r-25"
+    },
+    {
+      "depth": 3,
+      "text": "모듈 경계",
+      "id": "r-26"
+    },
+    {
+      "depth": 3,
+      "text": "Matching과 enter update exit",
+      "id": "r-27"
+    },
+    {
+      "depth": 3,
+      "text": "수치 interpolation",
+      "id": "r-28"
+    },
+    {
+      "depth": 3,
+      "text": "Typed kernel 표",
+      "id": "r-29"
+    },
+    {
+      "depth": 3,
+      "text": "Timeline과 player",
+      "id": "r-30"
+    },
+    {
+      "depth": 3,
+      "text": "Frame export",
+      "id": "r-31"
+    },
+    {
+      "depth": 3,
+      "text": "시험 순서",
+      "id": "r-32"
+    },
+    {
+      "depth": 2,
+      "text": "Identity 리소스와 재계산 계약",
+      "id": "r-33"
+    },
+    {
+      "depth": 3,
+      "text": "현행 코드에서 이어받는 경계",
+      "id": "r-34"
+    },
+    {
+      "depth": 3,
+      "text": "ID와 row key",
+      "id": "r-35"
+    },
+    {
+      "depth": 3,
+      "text": "Lineage",
+      "id": "r-36"
+    },
+    {
+      "depth": 3,
+      "text": "신규 resource schema 제안",
+      "id": "r-37"
+    },
+    {
+      "depth": 3,
+      "text": "Create edit remove",
+      "id": "r-38"
+    },
+    {
+      "depth": 3,
+      "text": "재계산 표",
+      "id": "r-39"
+    },
+    {
+      "depth": 3,
+      "text": "저장 복원과 오류",
+      "id": "r-40"
+    },
+    {
+      "depth": 3,
+      "text": "독립 기대값",
+      "id": "r-41"
+    },
+    {
+      "depth": 2,
+      "text": "데이터 AST 통계와 조건부 인코딩 계약",
+      "id": "r-42"
+    },
+    {
+      "depth": 3,
+      "text": "기존 구현을 먼저 재사용",
+      "id": "r-43"
+    },
+    {
+      "depth": 3,
+      "text": "Expression AST",
+      "id": "r-44"
+    },
+    {
+      "depth": 3,
+      "text": "조건부 encoding",
+      "id": "r-45"
+    },
+    {
+      "depth": 3,
+      "text": "통계별 구현 체크리스트",
+      "id": "r-46"
+    },
+    {
+      "depth": 3,
+      "text": "데이터 의존성 실행",
+      "id": "r-47"
+    },
+    {
+      "depth": 3,
+      "text": "시간과 달력",
+      "id": "r-48"
+    },
+    {
+      "depth": 3,
+      "text": "데이터 source resolver와 field 접근",
+      "id": "r-49"
+    },
+    {
+      "depth": 2,
+      "text": "네 가지 edge bundling 구현 계약",
+      "id": "r-50"
+    },
+    {
+      "depth": 3,
+      "text": "공통 입력과 출력",
+      "id": "r-51"
+    },
+    {
+      "depth": 3,
+      "text": "Hierarchical edge bundling",
+      "id": "r-52"
+    },
+    {
+      "depth": 3,
+      "text": "Force directed edge bundling",
+      "id": "r-53"
+    },
+    {
+      "depth": 3,
+      "text": "Density KDE bundling",
+      "id": "r-54"
+    },
+    {
+      "depth": 3,
+      "text": "Edge path bundling",
+      "id": "r-55"
+    },
+    {
+      "depth": 3,
+      "text": "통합 종료 조건",
+      "id": "r-56"
+    },
+    {
+      "depth": 2,
+      "text": "Geo 자원 projection과 camera 계약",
+      "id": "r-57"
+    },
+    {
+      "depth": 3,
+      "text": "입력 정규화",
+      "id": "r-58"
+    },
+    {
+      "depth": 3,
+      "text": "Projection registry",
+      "id": "r-59"
+    },
+    {
+      "depth": 3,
+      "text": "Clipping과 geometry pipeline",
+      "id": "r-60"
+    },
+    {
+      "depth": 3,
+      "text": "Fit과 독립 수치값",
+      "id": "r-61"
+    },
+    {
+      "depth": 3,
+      "text": "Join과 LOD",
+      "id": "r-62"
+    },
+    {
+      "depth": 3,
+      "text": "Native marks와 navigation",
+      "id": "r-63"
+    },
+    {
+      "depth": 2,
+      "text": "복합 geometry paint와 디자인 계약",
+      "id": "r-64"
+    },
+    {
+      "depth": 3,
+      "text": "복수 subpath",
+      "id": "r-65"
+    },
+    {
+      "depth": 3,
+      "text": "공통 primitive 소비자 목록",
+      "id": "r-66"
+    },
+    {
+      "depth": 3,
+      "text": "Paint 자원",
+      "id": "r-67"
+    },
+    {
+      "depth": 3,
+      "text": "Image와 font",
+      "id": "r-68"
+    },
+    {
+      "depth": 3,
+      "text": "디자인 우선순위와 null",
+      "id": "r-69"
+    },
+    {
+      "depth": 3,
+      "text": "Layout solve",
+      "id": "r-70"
+    },
+    {
+      "depth": 3,
+      "text": "추가 paint와 furniture 의무",
+      "id": "r-71"
+    },
+    {
+      "depth": 2,
+      "text": "그래프 데이터 추론과 노드 배치 계약",
+      "id": "r-72"
+    },
+    {
+      "depth": 3,
+      "text": "Public flow와 stored result",
+      "id": "r-73"
+    },
+    {
+      "depth": 3,
+      "text": "Feature preparation",
+      "id": "r-74"
+    },
+    {
+      "depth": 3,
+      "text": "여섯 rule",
+      "id": "r-75"
+    },
+    {
+      "depth": 3,
+      "text": "Exact acceleration과 approximate",
+      "id": "r-76"
+    },
+    {
+      "depth": 3,
+      "text": "Node layout",
+      "id": "r-77"
+    },
+    {
+      "depth": 3,
+      "text": "변경과 selection",
+      "id": "r-78"
+    },
+    {
+      "depth": 2,
+      "text": "계층 구조와 Icicle Sunburst 공통 계약",
+      "id": "r-79"
+    },
+    {
+      "depth": 3,
+      "text": "공개 액션 초안",
+      "id": "r-80"
+    },
+    {
+      "depth": 3,
+      "text": "HierarchyResource",
+      "id": "r-81"
+    },
+    {
+      "depth": 3,
+      "text": "Partition kernel",
+      "id": "r-82"
+    },
+    {
+      "depth": 3,
+      "text": "Cartesian과 polar mapping",
+      "id": "r-83"
+    },
+    {
+      "depth": 3,
+      "text": "Focus와 selection",
+      "id": "r-84"
+    },
+    {
+      "depth": 3,
+      "text": "Icicle에서 Sunburst로 연속 변형",
+      "id": "r-85"
+    },
+    {
+      "depth": 3,
+      "text": "Tree와 treemap",
+      "id": "r-86"
+    },
+    {
+      "depth": 2,
+      "text": "Semantic hit gesture와 session 계약",
+      "id": "r-87"
+    },
+    {
+      "depth": 3,
+      "text": "상태 소유권",
+      "id": "r-88"
+    },
+    {
+      "depth": 3,
+      "text": "Hit의 좌표와 결과",
+      "id": "r-89"
+    },
+    {
+      "depth": 3,
+      "text": "Selection resource",
+      "id": "r-90"
+    },
+    {
+      "depth": 3,
+      "text": "Gesture arbitration",
+      "id": "r-91"
+    },
+    {
+      "depth": 3,
+      "text": "명령과 이벤트",
+      "id": "r-92"
+    },
+    {
+      "depth": 3,
+      "text": "Async와 history",
+      "id": "r-93"
+    },
+    {
+      "depth": 3,
+      "text": "필수 직접 조작",
+      "id": "r-94"
+    },
+    {
+      "depth": 3,
+      "text": "명시 시나리오",
+      "id": "r-95"
+    },
+    {
+      "depth": 2,
+      "text": "단일 Y 정책 통합 검증과 릴리스 계약",
+      "id": "r-96"
+    },
+    {
+      "depth": 3,
+      "text": "Frame 단위 single Y",
+      "id": "r-97"
+    },
+    {
+      "depth": 3,
+      "text": "Consumer completion matrix",
+      "id": "r-98"
+    },
+    {
+      "depth": 3,
+      "text": "필수 종단 시나리오",
+      "id": "r-99"
+    },
+    {
+      "depth": 3,
+      "text": "시험 계층과 명령",
+      "id": "r-100"
+    },
+    {
+      "depth": 3,
+      "text": "성능 기준 제안",
+      "id": "r-101"
+    },
+    {
+      "depth": 3,
+      "text": "패키지와 agent 문서",
+      "id": "r-102"
+    },
+    {
+      "depth": 3,
+      "text": "Release 순서",
+      "id": "r-103"
+    },
+    {
+      "depth": 2,
+      "text": "구조형 레이아웃과 차트 조합 계약",
+      "id": "r-104"
+    },
+    {
+      "depth": 3,
+      "text": "Sankey와 cyclic flow",
+      "id": "r-105"
+    },
+    {
+      "depth": 3,
+      "text": "Contour와 density",
+      "id": "r-106"
+    },
+    {
+      "depth": 3,
+      "text": "Calendar와 table",
+      "id": "r-107"
+    },
+    {
+      "depth": 3,
+      "text": "Pyramid의 stage 의미",
+      "id": "r-108"
+    },
+    {
+      "depth": 3,
+      "text": "OHLC waterfall trail",
+      "id": "r-109"
+    },
+    {
+      "depth": 3,
+      "text": "기존 표현의 보강",
+      "id": "r-110"
+    },
+    {
+      "depth": 3,
+      "text": "조합 recipe의 정확한 역할",
+      "id": "r-111"
+    },
+    {
+      "depth": 3,
+      "text": "Table 내부 bar와 sparkline",
+      "id": "r-112"
+    },
+    {
+      "depth": 2,
+      "text": "전체 작업 카드",
+      "id": "r-113"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-001 기준 버전과 실행 경로 고정",
+      "id": "step-001"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-115"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-116"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-117"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-118"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-119"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-120"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-121"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-122"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-123"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-002 독립 oracle와 fixture harness",
+      "id": "step-002"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-125"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-126"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-127"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-128"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-129"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-130"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-131"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-132"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-133"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-003 시험 발견과 evidence 기록",
+      "id": "step-003"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-135"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-136"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-137"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-138"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-139"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-140"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-141"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-142"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-143"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-004 명시 key와 생성 row identity",
+      "id": "step-004"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-145"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-146"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-147"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-148"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-149"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-150"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-151"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-152"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-153"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-005 모든 transform의 final grain lineage",
+      "id": "step-005"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-155"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-156"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-157"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-158"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-159"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-160"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-161"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-162"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-163"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-006 Scene selection과 revision 연결",
+      "id": "step-006"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-165"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-166"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-167"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-168"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-169"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-170"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-171"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-172"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-173"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-007 Typed resource schema와 ownership",
+      "id": "step-007"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-175"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-176"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-177"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-178"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-179"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-180"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-181"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-182"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-183"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-008 리소스 edit remove와 재계산",
+      "id": "step-008"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-185"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-186"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-187"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-188"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-189"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-190"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-191"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-192"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-193"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-009 Schema 4와 역사적 program 복원",
+      "id": "step-009"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-195"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-196"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-197"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-198"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-199"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-200"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-201"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-202"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-203"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-010 복수 subpath validator와 path builder",
+      "id": "step-010"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-205"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-206"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-207"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-208"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-209"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-210"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-211"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-212"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-213"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-011 Bounds flatten stroke와 clip kernel",
+      "id": "step-011"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-215"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-216"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-217"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-218"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-219"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-220"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-221"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-222"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-223"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-012 모든 renderer와 scene의 복합 path",
+      "id": "step-012"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-225"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-226"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-227"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-228"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-229"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-230"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-231"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-232"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-233"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-013 안전한 AST와 typed function registry",
+      "id": "step-013"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-235"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-236"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-237"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-238"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-239"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-240"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-241"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-242"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-243"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-014 통계와 pivot LOESS 경계 보강",
+      "id": "step-014"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-245"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-246"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-247"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-248"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-249"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-250"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-251"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-252"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-253"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-015 Timezone과 calendar용 날짜 grain",
+      "id": "step-015"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-255"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-256"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-257"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-258"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-259"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-260"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-261"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-262"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-263"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-016 Parameter와 조건부 encoding invalidation",
+      "id": "step-016"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-265"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-266"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-267"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-268"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-269"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-270"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-271"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-272"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-273"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-017 7가지 pattern과 gradient",
+      "id": "step-017"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-275"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-276"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-277"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-278"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-279"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-280"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-281"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-282"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-283"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-018 이미지 resolver와 offline 자원",
+      "id": "step-018"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-285"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-286"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-287"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-288"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-289"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-290"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-291"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-292"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-293"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-019 Font identity와 text rematerialization",
+      "id": "step-019"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-295"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-296"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-297"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-298"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-299"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-300"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-301"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-302"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-303"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-020 Hierarchy tree와 treemap",
+      "id": "step-020"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-305"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-306"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-307"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-308"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-309"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-310"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-311"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-312"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-313"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-021 Observed graph와 fixed circular force 배치",
+      "id": "step-021"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-315"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-316"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-317"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-318"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-319"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-320"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-321"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-322"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-323"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-022 Sankey DAG와 cyclic routing",
+      "id": "step-022"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-325"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-326"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-327"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-328"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-329"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-330"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-331"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-332"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-333"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-023 Grid contour와 density contour",
+      "id": "step-023"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-335"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-336"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-337"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-338"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-339"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-340"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-341"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-342"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-343"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-024 Calendar cell과 month boundary",
+      "id": "step-024"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-345"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-346"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-347"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-348"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-349"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-350"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-351"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-352"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-353"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-025 공통 hierarchy value mode",
+      "id": "step-025"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-355"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-356"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-357"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-358"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-359"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-360"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-361"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-362"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-363"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-026 Normalized partition 구간",
+      "id": "step-026"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-365"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-366"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-367"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-368"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-369"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-370"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-371"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-372"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-373"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-027 Icicle와 Sunburst materializer",
+      "id": "step-027"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-375"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-376"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-377"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-378"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-379"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-380"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-381"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-382"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-383"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-028 Focus breadcrumb와 bend 준비",
+      "id": "step-028"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-385"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-386"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-387"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-388"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-389"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-390"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-391"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-392"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-393"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-029 Metric preprocessing과 stable edge key",
+      "id": "step-029"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-395"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-396"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-397"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-398"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-399"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-400"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-401"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-402"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-403"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-030 kNN radius similarity exact rules",
+      "id": "step-030"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-405"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-406"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-407"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-408"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-409"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-410"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-411"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-412"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-413"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-031 MST forest group sequence",
+      "id": "step-031"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-415"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-416"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-417"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-418"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-419"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-420"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-421"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-422"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-423"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-032 Exact accelerator approximate와 수정 연결",
+      "id": "step-032"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-425"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-426"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-427"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-428"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-429"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-430"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-431"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-432"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-433"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-033 Native theme과 property provenance",
+      "id": "step-033"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-435"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-436"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-437"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-438"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-439"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-440"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-441"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-442"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-443"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-034 Guide와 responsive layout solve",
+      "id": "step-034"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-445"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-446"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-447"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-448"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-449"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-450"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-451"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-452"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-453"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-035 Nested facet와 shared guide 정렬",
+      "id": "step-035"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-455"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-456"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-457"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-458"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-459"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-460"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-461"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-462"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-463"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-036 Edge route 공통 kernel과 budget",
+      "id": "step-036"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-465"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-466"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-467"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-468"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-469"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-470"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-471"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-472"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-473"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-037 Hierarchy path와 B-spline bundling",
+      "id": "step-037"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-475"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-476"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-477"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-478"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-479"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-480"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-481"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-482"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-483"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-038 FDEB compatibility와 iterative solver",
+      "id": "step-038"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-485"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-486"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-487"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-488"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-489"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-490"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-491"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-492"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-493"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-039 KDE field gradient와 vector advection",
+      "id": "step-039"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-495"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-496"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-497"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-498"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-499"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-500"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-501"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-502"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-503"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-040 Weighted path lock와 stretch",
+      "id": "step-040"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-505"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-506"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-507"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-508"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-509"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-510"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-511"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-512"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-513"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-041 Bundling 선택 worker cache export 연결",
+      "id": "step-041"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-515"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-516"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-517"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-518"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-519"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-520"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-521"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-522"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-523"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-042 GeoJSON TopoJSON 정규화",
+      "id": "step-042"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-525"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-526"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-527"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-528"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-529"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-530"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-531"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-532"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-533"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-043 Projection registry와 forward inverse",
+      "id": "step-043"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-535"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-536"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-537"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-538"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-539"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-540"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-541"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-542"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-543"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-044 Date line clip fit와 geo marks",
+      "id": "step-044"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-545"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-546"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-547"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-548"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-549"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-550"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-551"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-552"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-553"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-045 Geometry join과 hierarchy LOD",
+      "id": "step-045"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-555"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-556"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-557"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-558"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-559"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-560"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-561"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-562"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-563"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-046 Camera navigation과 viewport contract",
+      "id": "step-046"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-565"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-566"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-567"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-568"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-569"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-570"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-571"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-572"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-573"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-047 Geometry별 exact hit와 CSS 좌표",
+      "id": "step-047"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-575"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-576"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-577"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-578"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-579"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-580"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-581"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-582"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-583"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-048 공간 인덱스와 guide semantic roles",
+      "id": "step-048"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-585"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-586"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-587"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-588"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-589"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-590"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-591"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-592"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-593"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-049 Frame hit와 transition bridge",
+      "id": "step-049"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-595"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-596"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-597"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-598"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-599"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-600"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-601"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-602"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-603"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-050 다섯 경계의 단일 Y 검증",
+      "id": "step-050"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-605"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-606"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-607"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-608"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-609"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-610"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-611"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-612"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-613"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-051 명칭과 조합 및 제외 정책",
+      "id": "step-051"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-615"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-616"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-617"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-618"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-619"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-620"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-621"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-622"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-623"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-052 외부 정합성 없는 core 경계",
+      "id": "step-052"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-625"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-626"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-627"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-628"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-629"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-630"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-631"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-632"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-633"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-053 Pyramid OHLC waterfall 역할 구현",
+      "id": "step-053"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-635"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-636"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-637"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-638"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-639"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-640"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-641"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-642"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-643"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-054 Trail과 polar 통계 variant",
+      "id": "step-054"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-645"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-646"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-647"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-648"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-649"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-650"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-651"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-652"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-653"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-055 Cell table과 compact chart recipe",
+      "id": "step-055"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-655"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-656"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-657"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-658"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-659"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-660"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-661"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-662"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-663"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-056 Marginal Bullet Combo 종단 recipe",
+      "id": "step-056"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-665"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-666"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-667"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-668"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-669"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-670"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-671"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-672"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-673"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-057 Persistent selection과 parameter bindings",
+      "id": "step-057"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-675"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-676"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-677"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-678"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-679"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-680"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-681"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-682"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-683"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-058 Pointer capture와 gesture state machine",
+      "id": "step-058"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-685"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-686"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-687"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-688"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-689"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-690"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-691"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-692"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-693"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-059 Brush lasso angular와 scale inversion",
+      "id": "step-059"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-695"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-696"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-697"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-698"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-699"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-700"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-701"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-702"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-703"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-060 Linked filter legend reorder annotation",
+      "id": "step-060"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-705"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-706"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-707"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-708"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-709"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-710"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-711"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-712"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-713"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-061 Stable matching과 transition 계획",
+      "id": "step-061"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-715"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-716"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-717"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-718"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-719"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-720"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-721"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-722"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-723"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-062 Deterministic sampler와typed kernels",
+      "id": "step-062"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-725"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-726"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-727"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-728"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-729"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-730"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-731"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-732"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-733"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-063 Virtual clock과 timeline playback",
+      "id": "step-063"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-735"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-736"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-737"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-738"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-739"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-740"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-741"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-742"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-743"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-064 Animation 저장과 frame export",
+      "id": "step-064"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-745"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-746"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-747"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-748"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-749"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-750"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-751"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-752"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-753"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-065 Committed baseline과 preview transaction",
+      "id": "step-065"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-755"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-756"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-757"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-758"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-759"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-760"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-761"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-762"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-763"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-066 Native events와 async settlement",
+      "id": "step-066"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-765"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-766"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-767"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-768"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-769"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-770"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-771"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-772"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-773"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-067 Update resize asset worker destroy 경쟁",
+      "id": "step-067"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-775"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-776"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-777"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-778"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-779"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-780"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-781"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-782"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-783"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-068 Keyboard focus와 accessible data",
+      "id": "step-068"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-785"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-786"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-787"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-788"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-789"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-790"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-791"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-792"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-793"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-069 네 포맷과 offline fresh-process 복원",
+      "id": "step-069"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-795"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-796"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-797"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-798"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-799"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-800"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-801"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-802"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-803"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-070 현재 frame와 모든 deferred 통합 의무 종료",
+      "id": "step-070"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-805"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-806"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-807"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-808"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-809"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-810"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-811"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-812"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-813"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-071 Size class SLO와 memory",
+      "id": "step-071"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-815"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-816"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-817"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-818"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-819"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-820"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-821"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-822"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-823"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-072 새 exports와 source-free package",
+      "id": "step-072"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-825"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-826"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-827"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-828"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-829"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-830"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-831"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-832"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-833"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-073 Current contracts와 agent packets",
+      "id": "step-073"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-835"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-836"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-837"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-838"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-839"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-840"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-841"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-842"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-843"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-074 Native 요구와 consumer matrix 종료",
+      "id": "step-074"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-845"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-846"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-847"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-848"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-849"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-850"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-851"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-852"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-853"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-075 실패와 성공 표본 독립 검토",
+      "id": "step-075"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-855"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-856"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-857"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-858"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-859"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-860"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-861"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-862"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-863"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-076 동일 candidate와 tag 기반 검증",
+      "id": "step-076"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-865"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-866"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-867"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-868"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-869"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-870"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-871"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-872"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-873"
+    },
+    {
+      "depth": 3,
+      "text": "STEP-077 Registry docs와 공개 결과 대조",
+      "id": "step-077"
+    },
+    {
+      "depth": 4,
+      "text": "진행 상태",
+      "id": "r-875"
+    },
+    {
+      "depth": 4,
+      "text": "먼저 읽을 것",
+      "id": "r-876"
+    },
+    {
+      "depth": 4,
+      "text": "수정 위치와 경계",
+      "id": "r-877"
+    },
+    {
+      "depth": 4,
+      "text": "구현 순서",
+      "id": "r-878"
+    },
+    {
+      "depth": 4,
+      "text": "통과해야 하는 결과",
+      "id": "r-879"
+    },
+    {
+      "depth": 4,
+      "text": "실패와 금지",
+      "id": "r-880"
+    },
+    {
+      "depth": 4,
+      "text": "인수 시험 연결",
+      "id": "r-881"
+    },
+    {
+      "depth": 4,
+      "text": "시험 파일과 명령",
+      "id": "r-882"
+    },
+    {
+      "depth": 4,
+      "text": "완료 인계",
+      "id": "r-883"
+    }
+  ]
+}

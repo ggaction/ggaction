@@ -1,0 +1,11 @@
+
+> ggaction@0.0.22 test:platform
+> node scripts/test-platform-package.js
+
+npm notice
+npm notice New minor version of npm available! 11.18.0 -> 11.21.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.21.1
+npm notice To update run: npm install -g npm@11.21.1
+npm notice
+Verified installed Full/Basic, SVG, PNG/PDF memory/files, and persistence.
+{"platform":"darwin","arch":"arm64","node":"v23.5.0","package":"ggaction@0.0.22","source":"/Users/hj/Desktop/ggaction_chongjeonglee/ggaction/.artifacts/release/ggaction-0.0.22.tgz","sha256":"c7fa44d06c43ae406ed9fde840039f0dc0f7380b03f16d199cab10a3bd7f6b8b","peerMode":"locked","nativeBackend":"1.0.9"}

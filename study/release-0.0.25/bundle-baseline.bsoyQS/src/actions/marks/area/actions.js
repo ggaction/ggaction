@@ -1,0 +1,355 @@
+import { requestedMarkClip, validateMarkClipCoordinate } from "../../../selectors/markClip.js";
+import { validateFillPaint } from "../../../grammar/paint.js";
+import { validateAreaPaintConfig } from "../../../grammar/areaPaint.js";
+import { validateAreaMissing } from "../../../grammar/areaEndpoints.js";
+import { action } from "../../../core/action.js";
+import { validateUserId } from "../../../core/identifiers.js";
+import {
+  validateNonEmptyString,
+  validateNonNegativeFinite,
+  validateUnitInterval
+} from "../../../core/validation.js";
+import {
+  assertMarkAvailable,
+  applyLayeredMarkInheritance,
+  editMarkGraphic,
+  materializeInheritedMark,
+  resolveLayeredMarkInheritance,
+  resolveMarkId,
+  resolveMarkData,
+  validateMarkOptions
+} from "../shared.js";
+import { DEFAULT_COLORS } from "../../../theme/defaults.js";
+import { findDataset } from "../../../selectors/datasets.js";
+import { findLayer } from "../../../selectors/layers.js";
+import { validateCurveInterpolation } from "../../../grammar/curveCommands.js";
+import { resolveEligibleLayer } from "../../../selectors/layers.js";
+import { canMaterializeArea } from "../../../materialization/marks/index.js";
+import { rematerializeExistingLegend } from "../../encodings/shared.js";
+import { findUpstreamTransform } from "../../../materialization/dataProvenance.js";
+import { resolveMarkGraphicPlacement } from
+  "../../../materialization/graphicHierarchy.js";
+import { rematerializeHighlightBaseline } from "../lifecycle.js";
+import { resolveAreaMaterialization } from "./materialize.js";
+import {
+  requestedStrokeDetails,
+  STROKE_STYLE_PROPERTIES
+} from "../../../grammar/strokeStyle.js";
+
+const AREA_OPTIONS = Object.freeze([
+  "clip", "fill", "opacity", "stroke", "strokeWidth", "curve",
+  ...STROKE_STYLE_PROPERTIES
+]);
+const CREATE_OPTIONS = Object.freeze(["id", "data", "missing", ...AREA_OPTIONS]);
+const EDIT_OPTIONS = Object.freeze(["target", "missing", ...AREA_OPTIONS]);
+const REMATERIALIZE_OPTIONS = Object.freeze(["id", "scales"]);
+const STROKE_FROM_FILL_OPTIONS = Object.freeze(["id", "strokeWidth"]);
+
+export function validateAreaCreateOutline(args, operation = "createAreaMark") {
+  if (Object.hasOwn(args, "strokeWidth") && !Object.hasOwn(args, "stroke")) {
+    throw new Error(`${operation} strokeWidth requires stroke.`);
+  }
+  const stroke = Object.hasOwn(args, "stroke")
+    ? validateNonEmptyString(args.stroke, "Area stroke")
+    : undefined;
+  return {
+    stroke,
+    strokeWidth: stroke === undefined
+      ? undefined
+      : validateNonNegativeFinite(args.strokeWidth ?? 1, "Area strokeWidth")
+  };
+}
+
+const createAreaMark = /* @__PURE__ */ action(
+  {
+    op: "createAreaMark",
+    description: "Create a semantic area mark and empty path collection."
+  },
+  function (args = {}) {
+    validateMarkOptions(args, CREATE_OPTIONS, "createAreaMark");
+    requestedMarkClip(args);
+    const strokeDetails = requestedStrokeDetails(args, "createAreaMark");
+    const id = resolveMarkId(this, args.id, {
+      defaultId: "area",
+      label: "Area mark id",
+      markType: "area",
+      operation: "createAreaMark"
+    });
+    const inherited = resolveLayeredMarkInheritance(this, args, "area");
+    const { data } = resolveMarkData(this, {
+      ...args,
+      ...(args.data === undefined && this.context.currentData === undefined &&
+        inherited?.data !== undefined ? { data: inherited.data } : {})
+    });
+    const missing = validateAreaMissing(args.missing);
+    if (missing === "break" && ["density", "horizon"].some(type => findUpstreamTransform(this, findDataset(this, data), type))) {
+      throw new Error("Area missing:break does not reinterpret density or horizon data.");
+    }
+    const fill = validateFillPaint(args.fill ?? DEFAULT_COLORS.mark, "Area fill");
+    const opacity = validateUnitInterval(args.opacity ?? 0.2, "Area opacity");
+    const curve = validateCurveInterpolation(args.curve ?? "linear");
+    const { stroke, strokeWidth } = validateAreaCreateOutline(args);
+    assertMarkAvailable(this, id);
+    let created = this
+      .editSemantic({ property: `layer[${id}].mark.type`, value: "area" })
+      .editSemantic({ property: `layer[${id}].data`, value: data });
+    if (Object.hasOwn(args, "missing")) created = created.editSemantic({ property: `layer[${id}].mark.missing`, value: missing });
+    created = applyLayeredMarkInheritance(created, id, inherited);
+    created = created
+      .createGraphics({
+        id,
+        type: "path",
+        length: 0,
+        ...resolveMarkGraphicPlacement(created, { data, markType: "area" })
+      })
+      ._withMarkConfig(id, {
+        ...requestedMarkClip(args),
+        fill,
+        opacity,
+        ...(Object.hasOwn(args, "curve") ? { curve } : {}),
+        ...(stroke === undefined ? {} : { stroke, strokeWidth }),
+        ...strokeDetails
+      });
+    return materializeInheritedMark(created, id);
+  }
+);
+
+const configureAreaStrokeFromFill = /* @__PURE__ */ action(
+  {
+    op: "configureAreaStrokeFromFill",
+    description: "Use each area path fill as its outline color."
+  },
+  function (args = {}) {
+    validateMarkOptions(
+      args,
+      STROKE_FROM_FILL_OPTIONS,
+      "configureAreaStrokeFromFill"
+    );
+    const id = validateUserId(args.id, "Area mark id");
+    const layer = findLayer(this, id);
+    if (layer?.mark?.type !== "area") {
+      throw new Error(`Unknown area mark "${id}".`);
+    }
+    const { stroke: _stroke, ...config } = this.markConfigs[id] ?? {};
+    void _stroke;
+    return this._withMarkConfig(id, validateAreaPaintConfig({
+      ...config,
+      strokeFromFill: true,
+      strokeWidth: validateNonNegativeFinite(
+        args.strokeWidth ?? 1,
+        "Area strokeWidth"
+      )
+    }));
+  }
+);
+
+const rematerializeAreaMark = /* @__PURE__ */ action(
+  {
+    op: "rematerializeAreaMark",
+    description: "Recompute grouped closed area paths."
+  },
+  function (args = {}) {
+    validateMarkOptions(args, REMATERIALIZE_OPTIONS, "rematerializeAreaMark");
+    if (args.scales !== undefined && typeof args.scales !== "boolean") {
+      throw new TypeError("rematerializeAreaMark scales must be a boolean.");
+    }
+    const id = validateUserId(args.id, "Area mark id");
+    const highlighted = rematerializeHighlightBaseline(this, {
+      target: id,
+      operation: "rematerializeAreaMark",
+      scales: args.scales,
+      resetProperty: "length",
+      resetValue: 0
+    });
+    if (highlighted !== undefined) return highlighted;
+    const layer = findLayer(this, id);
+    const dataset = findDataset(this, layer?.data);
+    if (layer?.mark?.type !== "area" || this.graphicSpec.objects[id]?.type !== "path") {
+      throw new Error(`Unknown area mark "${id}".`);
+    }
+    if (dataset === undefined) {
+      throw new Error(`Area mark "${id}" requires an existing dataset.`);
+    }
+    const densityTransform = findUpstreamTransform(
+      this,
+      dataset,
+      "density"
+    );
+    const xScaleId = layer.encoding?.x?.scale;
+    const yScaleId = layer.encoding?.y?.scale;
+    const verticalRange = layer.encoding?.y2?.scale === yScaleId;
+    const horizontalRange = layer.encoding?.x2?.scale === xScaleId;
+    const centered = densityTransform === undefined &&
+      layer.encoding?.y?.stack === "center";
+    if (
+      xScaleId === undefined ||
+      yScaleId === undefined ||
+      (densityTransform === undefined && !centered && verticalRange === horizontalRange)
+    ) {
+      throw new Error(
+        densityTransform === undefined
+          ? `Area mark "${id}" requires exactly one shared x/x2 or y/y2 range.`
+          : `Density area mark "${id}" requires x and y scales.`
+      );
+    }
+    const colorEncoding = layer.encoding?.color;
+    const strokeEncoding = layer.encoding?.stroke;
+    const opacityEncoding = layer.encoding?.opacity;
+    let resolved = args.scales === false
+      ? this
+      : this
+          .rematerializeScale({ id: xScaleId })
+          .rematerializeScale({ id: yScaleId });
+    if (args.scales !== false && colorEncoding?.scale !== undefined) {
+      resolved = resolved.rematerializeScale({ id: colorEncoding.scale });
+    }
+    if (args.scales !== false && strokeEncoding?.scale !== undefined) {
+      resolved = resolved.rematerializeScale({ id: strokeEncoding.scale });
+    }
+    if (args.scales !== false && opacityEncoding?.scale !== undefined) {
+      resolved = resolved.rematerializeScale({ id: opacityEncoding.scale });
+    }
+    const config = validateAreaPaintConfig(this.markConfigs[id]);
+    const { paths, fills, strokes, opacities } = resolveAreaMaterialization({
+      rows: dataset.values,
+      layer,
+      densityTransform,
+      resolvedScales: resolved.resolvedScales,
+      config
+    });
+    const existingChildren = resolved.graphicSpec.objects[id].items ?? [];
+    const hasOutline = strokes !== undefined || config.stroke !== undefined ||
+      config.strokeFromFill === true;
+    const removesOutline = !hasOutline && existingChildren.some(
+      child => child.properties.stroke !== undefined
+    );
+    const next = removesOutline
+      ? resolved
+          .editGraphics({ target: id, property: "length", value: 0 })
+      : resolved;
+    return editMarkGraphic(next, id, {
+      length: paths.length,
+      commands: paths,
+      fill: fills,
+      opacity: opacities ?? config.opacity ?? 0.2,
+      ...(hasOutline ? {
+        stroke: strokes ?? (config.strokeFromFill === true ? fills : config.stroke),
+        strokeWidth: config.strokeWidth ?? (strokes === undefined ? undefined : 1)
+      } : {}),
+      ...requestedStrokeDetails(config, "Area mark")
+    });
+  }
+);
+
+const editAreaMark = /* @__PURE__ */ action(
+  {
+    op: "editAreaMark",
+    description: "Edit area curve and constant appearance."
+  },
+  function (args = {}) {
+    validateMarkOptions(args, EDIT_OPTIONS, "editAreaMark");
+    requestedMarkClip(args);
+    const strokeDetails = requestedStrokeDetails(args, "editAreaMark");
+    const changes = [
+      "clip", "fill", "opacity", "stroke", "strokeWidth", "curve", "missing",
+      ...STROKE_STYLE_PROPERTIES
+    ];
+    if (!changes.some(key => Object.hasOwn(args, key))) {
+      throw new Error(
+        "editAreaMark requires fill, opacity, stroke, strokeWidth, or curve."
+      );
+    }
+    const target = Object.hasOwn(args, "target")
+      ? validateUserId(args.target, "Area mark id")
+      : undefined;
+    const layer = resolveEligibleLayer(this, {
+      target,
+      predicate: candidate => candidate.mark?.type === "area",
+      label: "area mark"
+    });
+    if (Object.hasOwn(args, "fill") && layer.encoding?.color !== undefined) {
+      throw new Error(
+        "editAreaMark fill cannot be combined with a color encoding."
+      );
+    }
+    if (Object.hasOwn(args, "stroke") && layer.encoding?.stroke !== undefined) {
+      throw new Error(
+        "editAreaMark stroke conflicts with a field encoding; use encodeStroke with value to replace it."
+      );
+    }
+    if (Object.hasOwn(args, "opacity") && layer.encoding?.opacity !== undefined) {
+      throw new Error("editAreaMark opacity conflicts with a field encoding; use encodeOpacity with value to replace it.");
+    }
+    if (args.stroke === false && Object.hasOwn(args, "strokeWidth")) {
+      throw new Error("editAreaMark cannot set strokeWidth while removing stroke.");
+    }
+
+    validateMarkClipCoordinate(this, layer, args.clip ?? this.markConfigs[layer.id]?.clip);
+    let config = { ...this.markConfigs[layer.id], ...requestedMarkClip(args) };
+    Object.assign(config, strokeDetails);
+    if (Object.hasOwn(args, "fill")) {
+      config.fill = validateFillPaint(args.fill, "Area fill");
+      if (config.errorBand !== undefined) config.errorBand = { ...config.errorBand, fill: config.fill };
+    }
+    if (Object.hasOwn(args, "opacity")) {
+      config.opacity = validateUnitInterval(args.opacity, "Area opacity");
+    }
+    if (Object.hasOwn(args, "curve")) {
+      config.curve = validateCurveInterpolation(args.curve);
+    }
+    if (Object.hasOwn(args, "stroke")) {
+      if (args.stroke === false) {
+        const {
+          stroke: removedStroke,
+          strokeFromFill: removedStrokeFromFill,
+          strokeWidth: removedWidth,
+          ...rest
+        } = config;
+        void removedStroke;
+        void removedStrokeFromFill;
+        void removedWidth;
+        config = rest;
+      } else {
+        const hadStroke = config.stroke !== undefined || config.strokeFromFill === true;
+        const { strokeFromFill: _strokeFromFill, ...withoutFillStroke } = config;
+        void _strokeFromFill;
+        config = withoutFillStroke;
+        config.stroke = validateNonEmptyString(args.stroke, "Area stroke");
+        config.strokeWidth = Object.hasOwn(args, "strokeWidth")
+          ? validateNonNegativeFinite(args.strokeWidth, "Area strokeWidth")
+          : hadStroke ? config.strokeWidth : 1;
+      }
+    } else if (Object.hasOwn(args, "strokeWidth")) {
+      if (config.stroke === undefined) {
+        throw new Error("editAreaMark strokeWidth requires an active stroke.");
+      }
+      config.strokeWidth = validateNonNegativeFinite(
+        args.strokeWidth,
+        "Area strokeWidth"
+      );
+    }
+
+    validateAreaPaintConfig(config);
+    let next = this._withMarkConfig(layer.id, config);
+    if (Object.hasOwn(args, "missing")) {
+      const missing = validateAreaMissing(args.missing);
+      if (missing === "break" && ["density", "horizon"].some(type => findUpstreamTransform(this, findDataset(this, layer.data), type))) {
+        throw new Error("Area missing:break does not reinterpret density or horizon data.");
+      }
+      next = next.editSemantic({ property: `layer[${layer.id}].mark.missing`, value: missing });
+    }
+    const materialized = canMaterializeArea(next, layer)
+      ? next.rematerializeAreaMark({ id: layer.id })
+      : next;
+    return rematerializeExistingLegend(materialized);
+  }
+);
+
+export function registerAreaMarkActions(ProgramClass) {
+  Object.assign(ProgramClass.prototype, {
+    createAreaMark,
+    configureAreaStrokeFromFill,
+    editAreaMark,
+    rematerializeAreaMark
+  });
+}

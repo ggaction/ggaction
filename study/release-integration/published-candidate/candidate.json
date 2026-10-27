@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "name": "ggaction",
+  "version": "0.0.23",
+  "tag": "v0.0.23",
+  "commit": "9820e3665cfbca546924ef1f4a17a8c8f9c17760",
+  "filename": "ggaction-0.0.23.tgz",
+  "sha1": "ec0d23a798c7fe50251f0be97933c8db6e427a6a",
+  "sha256": "71fe32f7bde992c1ffe781e6ecdca5dcfba34148a1173f8288204f13c772f881",
+  "entryCount": 623,
+  "packedBytes": 901583,
+  "unpackedBytes": 4271705,
+  "releaseNotes": "ggaction-0.0.23-release-notes.md"
+}

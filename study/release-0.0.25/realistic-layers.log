@@ -1,0 +1,11 @@
+✔ independent native layer constructors preserve original rows and owners on tt-tour-de-france-winners (7388.534875ms)
+✔ independent native layer constructors preserve original rows and owners on tt-london-marathon-winners (8853.117292ms)
+✔ independent native layer constructors preserve original rows and owners on tt-penguins (6648.428875ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 23253.327708

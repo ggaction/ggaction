@@ -1,0 +1,150 @@
+✖ explicit summary sample paints the first hidden category while preserving every source row and path (71.351458ms)
+  Error: Unknown Legend overflow option "summarySymbol".
+      at validateKeys (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/core/validation.js:45:27)
+      at validateObject (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/validation.js:15:3)
+      at normalizeLegendOverflow (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/options.js:54:3)
+      at normalizeOptions (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/options.js:203:20)
+      at resolveCategoricalLegendConfig (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/actions.js:203:19)
+      at ChartProgram.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/actions.js:241:20)
+      at file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/materialization/guides/layout.js:86:71
+      at withGuideLayoutTransaction (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/materialization/guides/layout.js:28:67)
+      at ChartProgram.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/materialization/guides/layout.js:86:12)
+      at ChartProgram.wrappedAction [as createCategoricalLegend] (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/core/action.js:229:87)
+
+✖ summary samples follow final legend order, scale edits, resize and persistence (17.654834ms)
+  Error: Unknown Legend overflow option "summarySymbol".
+      at validateKeys (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/core/validation.js:45:27)
+      at validateObject (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/validation.js:15:3)
+      at normalizeLegendOverflow (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/options.js:54:3)
+      at normalizeOptions (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/options.js:203:20)
+      at resolveCategoricalLegendConfig (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/actions.js:203:19)
+      at ChartProgram.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/actions.js:241:20)
+      at file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/materialization/guides/layout.js:86:71
+      at withGuideLayoutTransaction (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/materialization/guides/layout.js:28:67)
+      at ChartProgram.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/materialization/guides/layout.js:86:12)
+      at ChartProgram.wrappedAction [as createCategoricalLegend] (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/core/action.js:229:87)
+
+✖ overflow reset and zero hidden entries remove the summary sample and converge with direct creation (16.379334ms)
+  Error: Unknown Legend overflow option "summarySymbol".
+      at validateKeys (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/core/validation.js:45:27)
+      at validateObject (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/validation.js:15:3)
+      at normalizeLegendOverflow (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/options.js:54:3)
+      at normalizeOptions (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/options.js:203:20)
+      at resolveCategoricalLegendConfig (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/actions.js:203:19)
+      at ChartProgram.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/actions.js:241:20)
+      at file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/materialization/guides/layout.js:86:71
+      at withGuideLayoutTransaction (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/materialization/guides/layout.js:28:67)
+      at ChartProgram.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/materialization/guides/layout.js:86:12)
+      at ChartProgram.wrappedAction [as createCategoricalLegend] (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/core/action.js:229:87)
+
+✖ invalid summary policies, nonline recipes and persisted tampering fail atomically (27.256042ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /line/. Input:
+  
+  'Error: Unknown Legend overflow option "summarySymbol".'
+  
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/unit/actions/guides/legend-summary-symbol.test.js:78:10)
+      at Test.runInAsyncScope (node:async_hooks:211:14)
+      at Test.run (node:internal/test_runner/test:931:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+      at Test.postRun (node:internal/test_runner/test:1042:19)
+      at Test.run (node:internal/test_runner/test:970:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:629:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: Unknown Legend overflow option "summarySymbol".
+        at validateKeys (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/core/validation.js:45:27)
+        at validateObject (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/validation.js:15:3)
+        at normalizeLegendOverflow (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/options.js:54:3)
+        at normalizeOptions (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/options.js:203:20)
+        at resolveCategoricalLegendConfig (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/actions.js:203:19)
+        at ChartProgram.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/actions.js:241:20)
+        at file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/materialization/guides/layout.js:86:71
+        at withGuideLayoutTransaction (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/materialization/guides/layout.js:28:67)
+        at ChartProgram.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/materialization/guides/layout.js:86:12)
+        at ChartProgram.wrappedAction [as createCategoricalLegend] (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/core/action.js:229:87),
+    expected: /line/,
+    operator: 'throws'
+  }
+
+ℹ tests 4
+ℹ suites 0
+ℹ pass 0
+ℹ fail 4
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 541.411
+
+✖ failing tests:
+
+test at test/unit/actions/guides/legend-summary-symbol.test.js:25:1
+✖ explicit summary sample paints the first hidden category while preserving every source row and path (71.351458ms)
+  Error: Unknown Legend overflow option "summarySymbol".
+      at validateKeys (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/core/validation.js:45:27)
+      at validateObject (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/validation.js:15:3)
+      at normalizeLegendOverflow (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/options.js:54:3)
+      at normalizeOptions (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/options.js:203:20)
+      at resolveCategoricalLegendConfig (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/actions.js:203:19)
+      at ChartProgram.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/actions.js:241:20)
+      at file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/materialization/guides/layout.js:86:71
+      at withGuideLayoutTransaction (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/materialization/guides/layout.js:28:67)
+      at ChartProgram.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/materialization/guides/layout.js:86:12)
+      at ChartProgram.wrappedAction [as createCategoricalLegend] (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/core/action.js:229:87)
+
+test at test/unit/actions/guides/legend-summary-symbol.test.js:49:1
+✖ summary samples follow final legend order, scale edits, resize and persistence (17.654834ms)
+  Error: Unknown Legend overflow option "summarySymbol".
+      at validateKeys (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/core/validation.js:45:27)
+      at validateObject (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/validation.js:15:3)
+      at normalizeLegendOverflow (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/options.js:54:3)
+      at normalizeOptions (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/options.js:203:20)
+      at resolveCategoricalLegendConfig (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/actions.js:203:19)
+      at ChartProgram.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/actions.js:241:20)
+      at file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/materialization/guides/layout.js:86:71
+      at withGuideLayoutTransaction (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/materialization/guides/layout.js:28:67)
+      at ChartProgram.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/materialization/guides/layout.js:86:12)
+      at ChartProgram.wrappedAction [as createCategoricalLegend] (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/core/action.js:229:87)
+
+test at test/unit/actions/guides/legend-summary-symbol.test.js:63:1
+✖ overflow reset and zero hidden entries remove the summary sample and converge with direct creation (16.379334ms)
+  Error: Unknown Legend overflow option "summarySymbol".
+      at validateKeys (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/core/validation.js:45:27)
+      at validateObject (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/validation.js:15:3)
+      at normalizeLegendOverflow (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/options.js:54:3)
+      at normalizeOptions (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/options.js:203:20)
+      at resolveCategoricalLegendConfig (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/actions.js:203:19)
+      at ChartProgram.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/actions.js:241:20)
+      at file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/materialization/guides/layout.js:86:71
+      at withGuideLayoutTransaction (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/materialization/guides/layout.js:28:67)
+      at ChartProgram.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/materialization/guides/layout.js:86:12)
+      at ChartProgram.wrappedAction [as createCategoricalLegend] (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/core/action.js:229:87)
+
+test at test/unit/actions/guides/legend-summary-symbol.test.js:73:1
+✖ invalid summary policies, nonline recipes and persisted tampering fail atomically (27.256042ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /line/. Input:
+  
+  'Error: Unknown Legend overflow option "summarySymbol".'
+  
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/unit/actions/guides/legend-summary-symbol.test.js:78:10)
+      at Test.runInAsyncScope (node:async_hooks:211:14)
+      at Test.run (node:internal/test_runner/test:931:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+      at Test.postRun (node:internal/test_runner/test:1042:19)
+      at Test.run (node:internal/test_runner/test:970:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:629:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: Unknown Legend overflow option "summarySymbol".
+        at validateKeys (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/core/validation.js:45:27)
+        at validateObject (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/validation.js:15:3)
+        at normalizeLegendOverflow (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/options.js:54:3)
+        at normalizeOptions (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/options.js:203:20)
+        at resolveCategoricalLegendConfig (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/actions.js:203:19)
+        at ChartProgram.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/actions.js:241:20)
+        at file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/materialization/guides/layout.js:86:71
+        at withGuideLayoutTransaction (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/materialization/guides/layout.js:28:67)
+        at ChartProgram.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/materialization/guides/layout.js:86:12)
+        at ChartProgram.wrappedAction [as createCategoricalLegend] (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/core/action.js:229:87),
+    expected: /line/,
+    operator: 'throws'
+  }

@@ -1,0 +1,13 @@
+✔ scopes constructors, individual resources and atomic batches on tt-penguins (286.691333ms)
+✔ scopes constructors, individual resources and atomic batches on tt-london-marathon-winners (211.621083ms)
+✔ scopes constructors, individual resources and atomic batches on tt-astronauts (257.398292ms)
+✔ scopes constructors, individual resources and atomic batches on tt-us-births (256.28325ms)
+✔ scopes constructors, individual resources and atomic batches on tt-chocolate-ratings (255.113541ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1648.47225

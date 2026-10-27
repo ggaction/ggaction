@@ -1,0 +1,23 @@
+[
+  {
+    "chart": "cars-polar-guides",
+    "width": 1240,
+    "height": 1240,
+    "exactPrimitivePublicPixels": true,
+    "sha256": "ffe5246296d1aae0b1019be65c527f8ce5aaab9ad29c80a45a11763a3fbc9da5"
+  },
+  {
+    "chart": "jobs-radar-chart",
+    "width": 1640,
+    "height": 1300,
+    "exactPrimitivePublicPixels": true,
+    "sha256": "e6660aba3e209d3bd1be23b97804be0db05169642d8d3b6edd2ce6d46586fe54"
+  },
+  {
+    "chart": "gapminder-polar-trends",
+    "width": 1520,
+    "height": 1240,
+    "exactPrimitivePublicPixels": true,
+    "sha256": "8c57002f9feaca86807b1fbcdb7b7eb989edcc0709d968b1efaac43b0bc78117"
+  }
+]

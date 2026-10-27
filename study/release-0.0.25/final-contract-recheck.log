@@ -1,0 +1,26 @@
+✔ keeps current package surfaces visible in public and architecture documentation (2.36575ms)
+✔ documents each shipped renderer entry at the package boundary (1.837125ms)
+✔ keeps documented browser bundle ceilings synchronized with package checks (18.253042ms)
+✔ discovers every normal, render, and browser test recursively exactly once (81.884417ms)
+✔ separates network-backed corpus sweeps from source coverage (31.904041ms)
+✔ shards realistic CI after preparing its dataset cache once (0.418084ms)
+✔ does not discover programs or support modules as tests (7.715ms)
+✔ keeps every test module reachable from a suite or module-script entry (304.8615ms)
+✔ requires every active gate to expose a complete reviewable slice (0.186041ms)
+✔ keeps stable tests independent from active gate implementations (100.6875ms)
+✔ keeps stable tests independent from implementation roadmap records (53.043916ms)
+✔ selects tests by chart, capability, or relative path (56.925458ms)
+✔ caps file concurrency without changing file order or coverage policy (0.766042ms)
+✔ validates realistic shard coordinates before invoking Node (0.566667ms)
+✔ maps every named capability entry to an exact file or prefix (599.672958ms)
+✔ assigns every normal test file to at least one named capability (13.117542ms)
+✔ validates every selector before short-circuit matching (0.14625ms)
+✔ coverage capture preserves UTF-8 markers across every byte boundary (0.789375ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 18
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1374.34725

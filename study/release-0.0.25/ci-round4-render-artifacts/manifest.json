@@ -1,0 +1,417 @@
+{
+  "schemaVersion": 1,
+  "maxBytes": 52428800,
+  "maxFiles": 300,
+  "bytes": 10393260,
+  "omitted": 0,
+  "files": [
+    {
+      "file": "checks/render-stage-0.json",
+      "bytes": 345
+    },
+    {
+      "file": "checks/render-stage-0.log",
+      "bytes": 2097152
+    },
+    {
+      "file": "checks/suite-all.json",
+      "bytes": 95810
+    },
+    {
+      "file": "checks/suite-all.log",
+      "bytes": 1227661
+    },
+    {
+      "file": "checks/suite-browser.json",
+      "bytes": 3322
+    },
+    {
+      "file": "checks/suite-browser.log",
+      "bytes": 49825
+    },
+    {
+      "file": "checks/suite-render.json",
+      "bytes": 9926
+    },
+    {
+      "file": "checks/suite-render.log",
+      "bytes": 2097152
+    },
+    {
+      "file": "checks/test-browser.json",
+      "bytes": 286
+    },
+    {
+      "file": "checks/test-browser.log",
+      "bytes": 49894
+    },
+    {
+      "file": "checks/test-render.json",
+      "bytes": 287
+    },
+    {
+      "file": "checks/test-render.log",
+      "bytes": 2097152
+    },
+    {
+      "file": "checks/test.json",
+      "bytes": 263
+    },
+    {
+      "file": "checks/test.log",
+      "bytes": 1227718
+    },
+    {
+      "file": "corpus/mutation-relations.json",
+      "bytes": 13883
+    },
+    {
+      "file": "corpus/size-and-pathologies.json",
+      "bytes": 5327
+    },
+    {
+      "file": "failures/19004-72bb116d2dea6ee2/failure.json",
+      "bytes": 209
+    },
+    {
+      "file": "failures/25362-5dbc0b6f9ed354ff/failure.json",
+      "bytes": 3120
+    },
+    {
+      "file": "failures/25362-fd45a73242369f07/failure.json",
+      "bytes": 3373
+    },
+    {
+      "file": "failures/25385-5718cd2e28ca07e3/failure.json",
+      "bytes": 5239
+    },
+    {
+      "file": "failures/25385-a2dcbf361b4c5497/failure.json",
+      "bytes": 4986
+    },
+    {
+      "file": "failures/25385-db41e52139fc0ad7/failure.json",
+      "bytes": 4963
+    },
+    {
+      "file": "failures/25385-dc0f7bbd395ffb16/failure.json",
+      "bytes": 4710
+    },
+    {
+      "file": "types/5654-1.json",
+      "bytes": 401
+    },
+    {
+      "file": "types/5707-1.json",
+      "bytes": 411
+    },
+    {
+      "file": "types/5768-1.json",
+      "bytes": 407
+    },
+    {
+      "file": "types/5785-1.json",
+      "bytes": 437
+    },
+    {
+      "file": "types/5879-1.json",
+      "bytes": 425
+    },
+    {
+      "file": "types/5958-1.json",
+      "bytes": 423
+    },
+    {
+      "file": "types/5992-1.json",
+      "bytes": 413
+    },
+    {
+      "file": "types/6035-1.json",
+      "bytes": 461
+    },
+    {
+      "file": "types/6066-1.json",
+      "bytes": 415
+    },
+    {
+      "file": "types/6111-1.json",
+      "bytes": 415
+    },
+    {
+      "file": "types/6157-1.json",
+      "bytes": 420
+    },
+    {
+      "file": "types/6198-1.json",
+      "bytes": 426
+    },
+    {
+      "file": "types/6342-1.json",
+      "bytes": 343
+    },
+    {
+      "file": "types/6342-2.json",
+      "bytes": 466
+    },
+    {
+      "file": "types/6391-1.json",
+      "bytes": 421
+    },
+    {
+      "file": "types/6468-1.json",
+      "bytes": 420
+    },
+    {
+      "file": "types/6479-1.json",
+      "bytes": 429
+    },
+    {
+      "file": "types/6509-1.json",
+      "bytes": 415
+    },
+    {
+      "file": "types/6570-1.json",
+      "bytes": 419
+    },
+    {
+      "file": "types/6581-1.json",
+      "bytes": 433
+    },
+    {
+      "file": "types/6612-1.json",
+      "bytes": 433
+    },
+    {
+      "file": "types/6694-1.json",
+      "bytes": 429
+    },
+    {
+      "file": "types/6725-1.json",
+      "bytes": 434
+    },
+    {
+      "file": "types/6803-1.json",
+      "bytes": 425
+    },
+    {
+      "file": "types/6834-1.json",
+      "bytes": 421
+    },
+    {
+      "file": "types/6891-1.json",
+      "bytes": 407
+    },
+    {
+      "file": "types/6937-1.json",
+      "bytes": 422
+    },
+    {
+      "file": "types/6979-1.json",
+      "bytes": 418
+    },
+    {
+      "file": "types/7024-1.json",
+      "bytes": 425
+    },
+    {
+      "file": "types/7054-1.json",
+      "bytes": 422
+    },
+    {
+      "file": "types/7085-1.json",
+      "bytes": 418
+    },
+    {
+      "file": "types/7126-1.json",
+      "bytes": 411
+    },
+    {
+      "file": "types/7189-1.json",
+      "bytes": 448
+    },
+    {
+      "file": "types/7232-1.json",
+      "bytes": 439
+    },
+    {
+      "file": "types/7309-1.json",
+      "bytes": 427
+    },
+    {
+      "file": "types/7425-1.json",
+      "bytes": 433
+    },
+    {
+      "file": "types/7497-1.json",
+      "bytes": 406
+    },
+    {
+      "file": "types/7528-1.json",
+      "bytes": 423
+    },
+    {
+      "file": "types/7603-1.json",
+      "bytes": 419
+    },
+    {
+      "file": "types/7633-1.json",
+      "bytes": 427
+    },
+    {
+      "file": "types/7678-1.json",
+      "bytes": 430
+    },
+    {
+      "file": "types/7708-1.json",
+      "bytes": 455
+    },
+    {
+      "file": "types/7783-1.json",
+      "bytes": 420
+    },
+    {
+      "file": "types/7847-1.json",
+      "bytes": 421
+    },
+    {
+      "file": "types/7915-1.json",
+      "bytes": 411
+    },
+    {
+      "file": "types/7946-1.json",
+      "bytes": 421
+    },
+    {
+      "file": "types/7977-1.json",
+      "bytes": 413
+    },
+    {
+      "file": "types/8047-1.json",
+      "bytes": 418
+    },
+    {
+      "file": "types/8110-1.json",
+      "bytes": 427
+    },
+    {
+      "file": "types/8160-1.json",
+      "bytes": 463
+    },
+    {
+      "file": "types/8261-1.json",
+      "bytes": 422
+    },
+    {
+      "file": "types/8303-1.json",
+      "bytes": 422
+    },
+    {
+      "file": "types/8361-1.json",
+      "bytes": 415
+    },
+    {
+      "file": "types/8393-1.json",
+      "bytes": 409
+    },
+    {
+      "file": "types/8454-1.json",
+      "bytes": 424
+    },
+    {
+      "file": "types/8485-1.json",
+      "bytes": 424
+    },
+    {
+      "file": "types/8545-1.json",
+      "bytes": 413
+    },
+    {
+      "file": "types/8591-1.json",
+      "bytes": 416
+    },
+    {
+      "file": "types/8622-1.json",
+      "bytes": 419
+    },
+    {
+      "file": "types/8652-1.json",
+      "bytes": 417
+    },
+    {
+      "file": "types/8685-1.json",
+      "bytes": 419
+    },
+    {
+      "file": "types/8816-1.json",
+      "bytes": 438
+    },
+    {
+      "file": "types/8888-1.json",
+      "bytes": 420
+    },
+    {
+      "file": "types/8933-1.json",
+      "bytes": 417
+    },
+    {
+      "file": "types/9059-1.json",
+      "bytes": 429
+    },
+    {
+      "file": "types/9153-1.json",
+      "bytes": 417
+    },
+    {
+      "file": "types/9215-1.json",
+      "bytes": 428
+    },
+    {
+      "file": "types/9260-1.json",
+      "bytes": 424
+    },
+    {
+      "file": "types/9346-1.json",
+      "bytes": 415
+    },
+    {
+      "file": "types/9392-1.json",
+      "bytes": 407
+    },
+    {
+      "file": "types/9423-1.json",
+      "bytes": 462
+    },
+    {
+      "file": "types/9500-1.json",
+      "bytes": 418
+    },
+    {
+      "file": "failures/19004-72bb116d2dea6ee2/actual.png",
+      "bytes": 23680
+    },
+    {
+      "file": "failures/25362-5dbc0b6f9ed354ff/0-user-facing.png",
+      "bytes": 218802
+    },
+    {
+      "file": "failures/25362-fd45a73242369f07/0-primitive.png",
+      "bytes": 218802
+    },
+    {
+      "file": "failures/25385-5718cd2e28ca07e3/0-primitive.png",
+      "bytes": 202053
+    },
+    {
+      "file": "failures/25385-a2dcbf361b4c5497/0-user-facing.png",
+      "bytes": 202053
+    },
+    {
+      "file": "failures/25385-db41e52139fc0ad7/0-primitive.png",
+      "bytes": 247413
+    },
+    {
+      "file": "failures/25385-dc0f7bbd395ffb16/0-user-facing.png",
+      "bytes": 247413
+    }
+  ]
+}

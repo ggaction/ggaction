@@ -1,0 +1,15 @@
+
+> ggaction@0.0.22 docs:metadata
+> node scripts/generate-doc-page-metadata.js
+
+generated documentation page metadata
+
+> ggaction@0.0.22 docs:search
+> node scripts/generate-doc-search-index.js
+
+generated compact documentation search index
+
+> ggaction@0.0.22 docs:llms
+> node scripts/generate-llm-docs.js
+
+generated docs/llms.txt, docs/llms-full.txt, and docs/llms-manifest.json

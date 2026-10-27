@@ -1,0 +1,6 @@
+{
+  "unreachableByStaticNormalGraph": [
+    "src/mcp/cli.js"
+  ],
+  "note": "Static graph excludes computed subprocess imports, so this is not a coverage metric."
+}

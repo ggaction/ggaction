@@ -1,0 +1,273 @@
+# ggaction
+
+[![npm version](https://img.shields.io/npm/v/ggaction.svg)](https://www.npmjs.com/package/ggaction) [![CI](https://github.com/ggaction/ggaction/actions/workflows/ci.yml/badge.svg)](https://github.com/ggaction/ggaction/actions/workflows/ci.yml) [![license](https://img.shields.io/npm/l/ggaction.svg)](./LICENSE) [![documentation](https://img.shields.io/badge/docs-ggaction.github.io-2563eb)](https://ggaction.github.io/ggaction/)
+
+### A grammar for how charts are made.
+
+Most visualization grammars describe a finished chart. **ggaction** represents chart authoring itself as an immutable, traceable sequence of graphical actions.
+
+Build, inspect, select, and revise charts one meaningful action at a time.
+
+<p align="left">
+  <img src="./docs/assets/images/readme-authoring-sequence.gif" width="960" height="540" loading="eager" alt="The paper Nightingale rose plot is built progressively, then its radial mapping, cause colors, sector spacing, title, and palette are revised.">
+</p>
+
+Every frame is rendered from an immutable `ChartProgram`. This is the paper’s Nightingale rose-plot authoring sequence: create the chart, encode mortality and cause, adjust sector spacing, add the title, and change the palette.
+
+## Quick start
+
+Install the current public release:
+
+```bash
+npm install ggaction
+```
+
+For Node PNG/PDF output, also install `@napi-rs/canvas`. For the MCP server,
+also install `@modelcontextprotocol/sdk`. These are optional peer dependencies;
+browser Canvas/SVG users do not need either package.
+
+Add the Canvas element that the rendering code targets. Its accessible name and
+fallback text summarize the chart for contexts where Canvas pixels are not
+available:
+
+```html
+<canvas id="chart" aria-label="Scatterplot of displacement versus acceleration by origin">
+  Scatterplot of displacement versus acceleration by origin.
+</canvas>
+```
+
+```javascript
+import { chart, render } from "ggaction/basic";
+
+const observations = [
+  { displacement: 97, acceleration: 14.5, origin: "Japan" },
+  { displacement: 140, acceleration: 15.5, origin: "USA" },
+  { displacement: 86, acceleration: 16.4, origin: "Japan" }
+];
+
+const program = chart()
+  .createCanvas({
+    width: 640,
+    height: 400,
+    margin: { top: 30, right: 130, bottom: 60, left: 70 }
+  })
+  .createData({ values: observations })
+  .createScatterPlot({
+    x: "displacement",
+    y: "acceleration",
+    color: "origin",
+    shape: "origin"
+  });
+
+const context = document.querySelector("#chart").getContext("2d");
+render(program, context);
+```
+
+Matching color and shape encodings give each origin a redundant visual cue and
+create a labeled categorical legend automatically.
+
+The Quick Start uses the smaller `ggaction/basic` entry for the common creation
+path. Import from `ggaction` when you need editing, selection, composition,
+alternative coordinates, or statistical layers.
+
+### Branch revisions without mutation
+
+Start a separate program without a shape encoding, then derive alternatives
+without changing the checkpoint:
+
+```javascript
+import { chart as editableChart } from "ggaction";
+
+const checkpoint = editableChart()
+  .createCanvas({ width: 640, height: 400 })
+  .createData({ values: observations })
+  .createScatterPlot({
+    x: "displacement",
+    y: "acceleration",
+    color: "origin"
+  });
+
+const outlined = checkpoint.editPointMark({
+  stroke: "#0f172a",
+  strokeWidth: 2
+});
+const muted = checkpoint.editPointMark({ opacity: 0.35 });
+
+console.log(checkpoint === outlined); // false
+console.log(checkpoint.trace.children.at(-1).op); // "createScatterPlot"
+console.log(outlined.trace.children.at(-1).op);   // "editPointMark"
+```
+
+All three remain renderable and inspectable. They are immutable values, not an
+automatic undo stack; the application chooses which to retain or render.
+
+Use `createLinePlot`, `createBarPlot`, `createHistogram`, and `createHeatmap` for
+the other basic Cartesian charts. The `ggaction/basic` entry keeps this common
+creation path at or below the current 245,000-byte gzip regression ceiling while
+each facade still records its mark, encoding, and guide actions as trace
+children. Import from
+`ggaction` when you need editing, selection, composition, alternative
+coordinates, or statistical layers. See the
+[Basic Charts API](https://ggaction.github.io/ggaction/api/basic-charts/).
+
+Explore [parallel coordinates](https://ggaction.github.io/ggaction/api/parallel-coordinates/),
+[gradient plots](https://ggaction.github.io/ggaction/api/gradient-plots/),
+[violin plots](https://ggaction.github.io/ggaction/api/violin-plots/), and
+[Horizon charts](./examples/gapminder-horizon/) in the [runnable examples](./examples/README.md).
+
+## A grammar of graphical action
+
+An action expresses a design operation on a chart element. In
+`editLineMark({ strokeWidth: 4 })`, `edit` is the operation, `LineMark` names
+the target concept, and the option supplies the design choice.
+
+The grammar has two units: **graphical actions** and **chart programs**.
+A program composes action calls in authoring order and retains their resulting
+immutable state. Authors read a linear sequence of decisions; an action may
+delegate to smaller actions recorded in its nested execution trace.
+
+The following fragment assumes `cars` is an array of row objects:
+
+```javascript
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas({
+    width: 760,
+    height: 480,
+    margin: { top: 40, right: 190, bottom: 70, left: 80 }
+  })
+  .createData({ values: cars })
+  .createScatterPlot({
+    id: "points",
+    x: "Displacement",
+    y: "Acceleration",
+    color: "Origin",
+    guides: false
+  })
+  .createRegression()
+  .createGuides();
+```
+
+Here `createRegression()` infers groups from the point layer, uses a linear
+model, and includes a 95% mean-response interval band. The right margin reserves
+space for the resulting legend. The [regression recipe](https://ggaction.github.io/ggaction/recipes/regression-scatterplot/)
+provides data and rendering setup ([source](./examples/cars-regression-scatterplot/)); [regression options](https://ggaction.github.io/ggaction/api/regression/)
+control grouping, model, interval, and whether a band is drawn.
+
+## Why actions?
+
+- **Progressive** — build and revise a chart one meaningful operation at a time.
+- **Traceable** — retain high-level actions and the wrapped actions they invoke.
+- **Materialized** — actions create concrete backend-neutral graphics; rendering does not perform hidden semantic compilation.
+
+## MCP server for LLM
+
+ggaction includes a local, read-only MCP server that gives coding assistants
+current action names, syntax-valid call templates, explicit placeholders, and
+task-specific authoring steps
+without loading the complete documentation.
+
+<p align="left">
+  <img src="./docs/assets/images/readme-mcp-benefits.svg" width="960" loading="lazy" alt="Across 576 fixed task runs, MCP with bounded fallback improved strict success and reduced tokens and model calls compared with public-documentation browsing for Terra, Luna, and Nano.">
+</p>
+
+In the fixed 576-run evaluation completed on 2026-08-10 (24 tasks × 2 repetitions ×
+`gpt-5.6-terra`, `gpt-5.6-luna`, and `gpt-5.4-nano` × 4 conditions;
+product candidate `4e211ba418cd437d7c66c4fb986fcc714cf579ea`), MCP-first authoring with bounded fallback
+improved strict task success while using fewer tokens and model calls for all
+three model sizes. The server runs locally over stdio and does not execute chart
+code, access arbitrary files, make network requests, require an account, or
+collect telemetry.
+
+[Set up the local MCP server](https://ggaction.github.io/ggaction/mcp/) ·
+[Inspect the benchmark record](./benchmarks/llm-authoring-v1/) ·
+[Read the complete evaluation report](./agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+
+## What it supports
+
+- Cartesian, Polar, and Parallel-coordinate charts
+- Statistical layers and intervals
+- Faceting and program composition
+- Mark selection and coordinated highlighting
+- Browser Canvas, SVG, Node PNG, and vector PDF output
+- TypeScript declarations and traceable extension actions
+
+See the current [supported features](https://ggaction.github.io/ggaction/supported-features/), [tutorials and examples](https://ggaction.github.io/ggaction/tutorials/), and [action reference](https://ggaction.github.io/ggaction/reference/actions/) for exact coverage. Runnable programs are collected in [`examples/`](./examples/README.md).
+
+## Package entries
+
+The package is ESM-only and requires Node.js 20 or later.
+
+| Entry | Purpose |
+| --- | --- |
+| `ggaction` | Create chart programs and render them to Browser Canvas |
+| `ggaction/basic` | Create and render scatter, line, bar, histogram, and heatmap charts with a smaller browser bundle |
+| `ggaction/extension` | Author and register wrapped actions with public low-level primitives |
+| `ggaction/png` | Render a completed program to a PNG file in Node.js |
+| `ggaction/pdf` | Render a completed program to a single-page vector PDF file in Node.js |
+| `ggaction/persistence` | Save and restore editable programs or graphic snapshots in Browser or Node |
+| `ggaction/accessibility` | Export final visual data for host-provided accessible tables and descriptions |
+| `ggaction/inspection` | Inspect dataset schemas, action applicability, program changes, and concrete results without mutation |
+| `ggaction/diagnostics` | Read structured error codes and resource details in Browser or Node |
+| `ggaction/svg` | Serialize a completed program to browser-safe SVG |
+| `ggaction/scene` | Read-only structured transition scenes and native Canvas scene drawing |
+| `ggaction-mcp` | Run the local read-only MCP authoring server over stdio in Node.js |
+
+All module entries include TypeScript declarations. The default, basic,
+extension, diagnostics, accessibility, and SVG entries are browser-safe; the PNG and PDF adapters are
+Node-only.
+
+
+## Documentation
+
+- [Getting Started](https://ggaction.github.io/ggaction/getting-started/)
+- [Tutorials and Examples](https://ggaction.github.io/ggaction/tutorials/)
+- [Action Reference](https://ggaction.github.io/ggaction/reference/actions/)
+- [Local MCP for LLM Chart Authoring](https://ggaction.github.io/ggaction/mcp/)
+- [Context7 library](https://context7.com/ggaction/ggaction) — use the library ID `/ggaction/ggaction`
+- [Concepts](https://ggaction.github.io/ggaction/concepts/chart-program/)
+- [Supported Features](https://ggaction.github.io/ggaction/supported-features/)
+
+## Contributing
+
+Bug reports, documentation improvements, examples, and focused code changes are
+welcome. Read [CONTRIBUTING.md](./CONTRIBUTING.md) for setup, scope, tests, and
+the extra discussion required before public API or architecture changes.
+
+## Status and development
+
+> **Status:** `0.0.25` is the current experimental public release. APIs may change before `1.0.0`; changes are recorded in the [changelog](./CHANGELOG.md).
+
+```bash
+npm install
+npm run assets:readme
+npm test
+npm run test:render
+npm run test:docs
+```
+
+The renderer development suite also needs Poppler's `pdftoppm` on `PATH` for
+independent PDF pixel checks. The CI and protected release jobs install
+`poppler-utils` explicitly; this is not a runtime package dependency.
+
+
+For extension authors, the installed package includes `node_modules/ggaction/knowledge/extension-authoring.md`. Read that file alongside the installed declarations; it is a guide file, not an importable package entry.
+
+## Related Links
+
+- Action-trace demo: [Link](https://ggactionbot.github.io/action-trace-demo/)
+
+### Prepare a release
+
+Record changes under `Unreleased` in `CHANGELOG.md` and commit the reviewed work.
+Set `NEXT_VERSION` to the agreed next release version (at least the current package version).
+Run `npm run release:prepare -- "$NEXT_VERSION" --dry-run` to preview version updates.
+Omit `--dry-run` to update versions, promote notes, and generate the release
+contract, documentation, and local notes. Review the Git diff. After committing
+runtime changes, rerun the command to refresh source provenance; existing notes
+and their date are preserved.
+
+Preparation does not commit, push, tag, publish, or deploy. Integration and required
+PR checks precede an annotated tag. The protected workflow verifies and publishes
+one candidate from that tag. Generation failures leave an unfinished diff to review.

@@ -1,0 +1,14 @@
+
+> ggaction@0.0.23 test:coverage
+> node scripts/run-tests.js coverage
+
+file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/coverage-policy.js:331
+  if (missing.length) throw new Error(`Source files missing from coverage: ${missing.join(", ")}`);
+                            ^
+
+Error: Source files missing from coverage: actions/charts/radar.js
+    at assertSourceCoverage (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/coverage-policy.js:331:29)
+    at run (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/run-tests.js:221:7)
+    at async file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/run-tests.js:258:3
+
+Node.js v23.5.0

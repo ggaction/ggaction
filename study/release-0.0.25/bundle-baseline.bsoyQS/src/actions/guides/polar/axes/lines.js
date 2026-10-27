@@ -1,0 +1,114 @@
+import { editGraphicProperties } from "../../../primitives/graphicProperties.js";
+import { action } from "../../../../core/action.js";
+import {
+  buildPolarCircleCommands,
+  resolveRadialAxisLine
+} from "../../../../grammar/polarGuides.js";
+import { resolvePlotGraphicPlacement } from
+  "../../../../materialization/graphicHierarchy.js";
+import {
+  POLAR_AXIS_DEFAULTS,
+  polarGuideNames,
+  resolvePolarFrameForProgram,
+  validatePolarLineStyle
+} from "../resolve.js";
+import {
+  componentResources,
+  LINE_CREATE_OPTIONS,
+  LINE_EDIT_OPTIONS,
+  operations,
+  prefix,
+  resolveAngle,
+  validateComponentCreateArgs,
+  validateObject,
+  withAxisSemantics
+} from "./shared.js";
+
+function lineGeometry(program, kind, angle, scale, coordinate) {
+  const frame = resolvePolarFrameForProgram(program, coordinate);
+  if (kind === "theta") {
+    return { commands: buildPolarCircleCommands(frame, frame.availableRadius) };
+  }
+  const range = program.resolvedScales[scale]?.range;
+  const startRadius = Array.isArray(range) && range.length > 0
+    ? Math.min(...range)
+    : 0;
+  return resolveRadialAxisLine({ frame, angle, startRadius });
+}
+
+function makeEditLine(kind) {
+  const operation = operations(kind, "Line");
+  return action({
+    op: operation.edit,
+    description: `Edit the Polar ${kind}-axis baseline.`
+  }, function (args = {}) {
+    validateObject(args, LINE_EDIT_OPTIONS, operation.edit);
+    const names = polarGuideNames(kind);
+    const expected = kind === "theta" ? "path" : "line";
+    const graphic = this.graphicSpec.objects[names.line];
+    const previous = this.guideConfigs.axis?.[kind]?.line;
+    if (graphic?.type !== expected || previous === undefined) {
+      throw new Error(`${operation.edit} requires an existing axis line.`);
+    }
+    const config = { ...previous, ...args };
+    validatePolarLineStyle(config, `${prefix(kind)} axis line`);
+    const angle = resolveAngle(this, kind, {});
+    const geometry = lineGeometry(
+      this,
+      kind,
+      angle,
+      previous.scale,
+      previous.coordinate
+    );
+    let next = this._withGuideConfig(kind, "line", config);
+    for (const [property, value] of Object.entries(geometry)) {
+      next = next.editGraphics({ target: names.line, property, value });
+    }
+    return editGraphicProperties(next, names.line, {
+      stroke: config.color,
+      strokeWidth: config.lineWidth
+    });
+  });
+}
+
+function makeCreateLine(kind) {
+  const operation = operations(kind, "Line");
+  return action({
+    op: operation.create,
+    description: `Create the Polar ${kind}-axis baseline.`
+  }, function (args = {}) {
+    validateComponentCreateArgs(kind, args, LINE_CREATE_OPTIONS, operation.create);
+    const names = polarGuideNames(kind);
+    if (this.graphicSpec.objects[names.line] !== undefined) {
+      throw new Error(`${operation.create} requires a missing axis line.`);
+    }
+    const resources = componentResources(this, kind, args, operation.create);
+    const angle = resolveAngle(this, kind, args);
+    const config = {
+      scale: resources.scale,
+      coordinate: resources.coordinate,
+      color: args.color ?? POLAR_AXIS_DEFAULTS.line.color,
+      lineWidth: args.lineWidth ?? POLAR_AXIS_DEFAULTS.line.lineWidth
+    };
+    validatePolarLineStyle(config, `${prefix(kind)} axis line`);
+    lineGeometry(this, kind, angle, resources.scale, resources.coordinate);
+    let next = withAxisSemantics(this, kind, resources);
+    if (kind === "radius" &&
+        next.guideConfigs.axis?.radius?.layout === undefined) {
+      next = next._withGuideConfig("radius", "layout", { angle });
+    }
+    return next
+      .createGraphics({
+        id: names.line,
+        type: kind === "theta" ? "path" : "line",
+        ...resolvePlotGraphicPlacement(next)
+      })
+      ._withGuideConfig(kind, "line", config)
+      [operation.edit]();
+  });
+}
+
+export const createThetaAxisLine = /* @__PURE__ */ makeCreateLine("theta");
+export const createRadialAxisLine = /* @__PURE__ */ makeCreateLine("radius");
+export const editThetaAxisLine = /* @__PURE__ */ makeEditLine("theta");
+export const editRadialAxisLine = /* @__PURE__ */ makeEditLine("radius");

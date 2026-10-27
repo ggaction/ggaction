@@ -1,0 +1,111 @@
+{
+  "version": 1,
+  "sourceSnapshot": "2026-10-27",
+  "notice": "All authored study records copied. Third-party clones, installed dependencies and disposable caches are recreated, not vendored. Large evidence is losslessly compressed.",
+  "originalFiles": 1550,
+  "originalBytes": 481285788,
+  "compressedFiles": [
+    {
+      "path": "coverage-expansion-2026-10-27/evidence/corpus-all-files.csv",
+      "archive": ".study-archives/coverage-expansion-2026-10-27/evidence/corpus-all-files.csv.gz",
+      "bytes": 13438867,
+      "sha256": "a12f9fbb9f35fa2225c1e2bb5c2a3d3dac83463c6aff60ed8cbda217b86c7091",
+      "archiveSha256": "741a98119cbe67741e279377bd0d37ae8b8d7d9b1bd14d30f764c05b1e5e0adb",
+      "archiveBytes": 2369230
+    },
+    {
+      "path": "coverage-expansion-2026-10-27/evidence/corpus-features.json",
+      "archive": ".study-archives/coverage-expansion-2026-10-27/evidence/corpus-features.json.gz",
+      "bytes": 28482141,
+      "sha256": "18e0f92b0800ecfe80e74da38b2ee65ecc8f49ab5a2850f1964c61066b9389e8",
+      "archiveSha256": "b89147b00f794e78e9f59c82326f5e9d2333552f40dddadc82435de983e938c1",
+      "archiveBytes": 1309997
+    },
+    {
+      "path": "coverage-expansion-2026-10-27/evidence/corpus-files.json",
+      "archive": ".study-archives/coverage-expansion-2026-10-27/evidence/corpus-files.json.gz",
+      "bytes": 24251253,
+      "sha256": "7f92998cd7b5fd480106a070e26ab5500efdb4942d5ae44ed0e3742bbc1e68ab",
+      "archiveSha256": "415037e1ee19f2c673400837104e486f7811b353cc000d2fd61803e24934c1c2",
+      "archiveBytes": 2525934
+    },
+    {
+      "path": "coverage-expansion-2026-10-27/evidence/corpus-originals.json",
+      "archive": ".study-archives/coverage-expansion-2026-10-27/evidence/corpus-originals.json.gz",
+      "bytes": 23962706,
+      "sha256": "30577825a78f6c8c863451e4fbe107d35a7024f830aec600e7382b9370507f58",
+      "archiveSha256": "f43b29f34dade410ebe4e79f980501ef77cbcd273a1b091e79b2e2ea7992e444",
+      "archiveBytes": 1905783
+    },
+    {
+      "path": "coverage-expansion-2026-10-27/evidence/corpus-schema-validation.json",
+      "archive": ".study-archives/coverage-expansion-2026-10-27/evidence/corpus-schema-validation.json.gz",
+      "bytes": 6664100,
+      "sha256": "d576d0f1128063d5be837dde4f4c0aa4ce12297678d5f1b2306912bf20c81bd2",
+      "archiveSha256": "632f80d925b0d41f49121ae565e2b7f377c93560fc3a090e4ebf0522194332d4",
+      "archiveBytes": 123336
+    },
+    {
+      "path": "coverage-expansion-2026-10-27/evidence/translations-programs.json",
+      "archive": ".study-archives/coverage-expansion-2026-10-27/evidence/translations-programs.json.gz",
+      "bytes": 18741139,
+      "sha256": "fc603a8fb40c575c713e84146d67ca748d74b5f162c52219198f3a64203d46a2",
+      "archiveSha256": "bd6eff0ea8f4fc857e791ea1ae3d9d46b4d5930167b1e70897f41b0a6523f203",
+      "archiveBytes": 388160
+    },
+    {
+      "path": "release-0.0.25/ci-round2-coverage.log",
+      "archive": ".study-archives/release-0.0.25/ci-round2-coverage.log.gz",
+      "bytes": 67528153,
+      "sha256": "ea1c71dc381518bee8b0b37c0969d057f70f507799d8ea9e71c9abbefbd1e9c0",
+      "archiveSha256": "cd6712fbf80eca2f709b671c9d65f0c8249b645b75837be14c56b1e6378fdab4",
+      "archiveBytes": 8853625
+    },
+    {
+      "path": "release-0.0.25/ci-round2-test.log",
+      "archive": ".study-archives/release-0.0.25/ci-round2-test.log.gz",
+      "bytes": 66192336,
+      "sha256": "894ab8b71e4fdf29565cf85d9f0630b1a020b7fda13239b1d85c1cf025ac0012",
+      "archiveSha256": "6707c924e73cbd6e5dc2b17918a1ec147de2b395284a49604662414ac33e69b6",
+      "archiveBytes": 8991226
+    },
+    {
+      "path": "release-0.0.25/ci-round4-test.log",
+      "archive": ".study-archives/release-0.0.25/ci-round4-test.log.gz",
+      "bytes": 66961273,
+      "sha256": "447a366bb3134f61ab47ab2d9ead860035ed47aa6d3552da16bc1c8e523044c0",
+      "archiveSha256": "db6c4fd0d82c71044c64a0285ccb314f9122c9b2584e011fc721dd4ca649ddef",
+      "archiveBytes": 9092529
+    },
+    {
+      "path": "release-0.0.25/final-option-inventory.json",
+      "archive": ".study-archives/release-0.0.25/final-option-inventory.json.gz",
+      "bytes": 17171719,
+      "sha256": "5d67a81938d52aa341292fc7fc213265a68d76d7a584a34a25e73d425126ff70",
+      "archiveSha256": "615ee8cd657a4c9a9e6f0236822c4099dcc6a30306dff924b45dead6863605ae",
+      "archiveBytes": 687036
+    },
+    {
+      "path": "release-0.0.25/highlighting-option-inventory.json",
+      "archive": ".study-archives/release-0.0.25/highlighting-option-inventory.json.gz",
+      "bytes": 17172535,
+      "sha256": "82321e20a294e0383c345577718b7bff7590a5d833f89f6642d0992112b2f24e",
+      "archiveSha256": "e603e67eaf0f5bd954b98e0931c651b6d941bf28dbf6cf59e7a3c6f3703ab887",
+      "archiveBytes": 687045
+    },
+    {
+      "path": "release-0.0.25/public-option-inventory.json",
+      "archive": ".study-archives/release-0.0.25/public-option-inventory.json.gz",
+      "bytes": 13272305,
+      "sha256": "63f39df16b61af367b9b177ed487b3b74a6868b2dca146aca30fcb66c82f6993",
+      "archiveSha256": "83715ee73438301c3510af1b97a22b59ae5922b02755d290e416ae4524c93cfd",
+      "archiveBytes": 635776
+    }
+  ],
+  "excludedRecreatable": [
+    "coverage-expansion-2026-10-27/sources/",
+    "node_modules/",
+    "__pycache__/",
+    ".DS_Store"
+  ]
+}

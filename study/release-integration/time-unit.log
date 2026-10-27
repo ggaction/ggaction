@@ -1,0 +1,25 @@
+✔ rejects an unrepresentable bucket without changing source data or trace (12.108375ms)
+✔ creates immutable UTC time-unit provenance and materialized values (6.985334ms)
+✔ uses explicit or current source and feeds an ordinary temporal encoding (24.877917ms)
+✔ replays the canonical materializer and rederives after facet partitioning (26.31475ms)
+✔ rejects invalid calls atomically and owns caller options (0.949459ms)
+✔ creates UTC and regional calendar weeks and nominal weekdays (18.442ms)
+✔ resolves DST gaps, folds, non-hour offsets, and skipped dates (4.712666ms)
+✔ keeps explicit zones in provenance and rejects week-policy conflicts (1.046875ms)
+✔ infers a collision-checked time-unit output with three options (1.16025ms)
+✔ nullable calendar buckets retain raw rows, optional fields and numeric lineage (21.338917ms)
+✔ all-null numeric schemas and weekday policies survive editable restoration (16.427792ms)
+✔ null handling does not swallow malformed inputs, invalid options or collisions (18.812583ms)
+✔ editing null policy recomputes derived consumers and retains strict default shape (4.599709ms)
+✔ rejects unrepresentable bucket starts for valid dates near the lower limit (1.324084ms)
+✔ floors every accepted unit at an exact UTC calendar boundary (0.186417ms)
+✔ derives frozen source-ordered rows from every accepted temporal input form (1.666791ms)
+✔ validates the closed transform and source-field contracts (0.320167ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 17
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 486.547125

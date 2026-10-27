@@ -1,0 +1,116 @@
+✔ executes documented recipes/annotations.md against its stated inputs (461.233125ms)
+✔ executes documented recipes/bar-chart.md against its stated inputs (44.616583ms)
+✔ executes documented recipes/box-plot.md against its stated inputs (68.777583ms)
+✔ executes documented recipes/composition.md against its stated inputs (36.063375ms)
+✔ executes documented recipes/density-area.md against its stated inputs (34.825958ms)
+✔ executes documented recipes/error-band.md against its stated inputs (60.619208ms)
+✔ executes documented recipes/error-bar.md against its stated inputs (21.614458ms)
+✔ executes documented recipes/facet.md against its stated inputs (66.207666ms)
+✔ executes documented recipes/gradient-plot.md against its stated inputs (37.973833ms)
+✔ executes documented recipes/heatmap.md against its stated inputs (29.503125ms)
+✔ executes documented recipes/histogram.md against its stated inputs (15.357959ms)
+✔ executes documented recipes/horizon.md against its stated inputs (18.886542ms)
+✔ executes documented recipes/line-chart.md against its stated inputs (16.666666ms)
+✔ executes documented recipes/parallel-coordinates.md against its stated inputs (37.795583ms)
+✔ executes documented recipes/path-ordering.md against its stated inputs (20.915792ms)
+✔ executes documented recipes/regression-scatterplot.md against its stated inputs (145.807625ms)
+✔ executes documented recipes/rose-chart.md against its stated inputs (64.117416ms)
+✔ executes documented recipes/scatterplot.md against its stated inputs (14.298166ms)
+✔ executes documented recipes/violin-plot.md against its stated inputs (19.7145ms)
+✔ executes documented tutorials/area-layout.md against its stated inputs (35.263792ms)
+✔ executes documented tutorials/density-area.md against its stated inputs (40.46025ms)
+✔ executes documented tutorials/ecdf.md against its stated inputs (23.471292ms)
+✔ executes documented tutorials/endpoint-plots.md against its stated inputs (52.942042ms)
+✔ executes documented tutorials/error-band.md against its stated inputs (62.733833ms)
+✔ executes documented tutorials/error-bar.md against its stated inputs (77.884166ms)
+✔ executes documented tutorials/grouped-bar.md against its stated inputs (290.985334ms)
+✔ executes documented tutorials/histogram.md against its stated inputs (30.838166ms)
+✔ executes documented tutorials/horizon.md against its stated inputs (22.11475ms)
+✔ executes documented tutorials/line-chart.md against its stated inputs (44.496125ms)
+✔ executes documented tutorials/mark-selection.md against its stated inputs (167.5135ms)
+✔ executes documented tutorials/polar-arcs.md against its stated inputs (16.511709ms)
+✔ executes documented tutorials/polar-lines.md against its stated inputs (23.617875ms)
+✔ executes documented tutorials/polar-points.md against its stated inputs (24.353292ms)
+✔ executes documented tutorials/regression-scatterplot.md against its stated inputs (142.676292ms)
+✔ executes documented tutorials/scatterplot.md against its stated inputs (23.794125ms)
+✔ executes documented api/data/filtering.md against its stated inputs (13.729ms)
+✔ executes documented recipes/repair-missing-observations.md against its stated inputs (57.246208ms)
+✔ executes documented recipes/compare-weighted-distributions.md against its stated inputs (137.314ms)
+✔ executes documented recipes/switch-encoding-modes.md against its stated inputs (29.595209ms)
+✔ executes documented recipes/edit-scales-and-guides.md against its stated inputs (48.06925ms)
+✔ executes documented recipes/edit-selected-labels.md against its stated inputs (48.55125ms)
+✔ executes documented recipes/apply-custom-theme.md against its stated inputs (48.77925ms)
+✔ executes documented recipes/edit-facet-source.md against its stated inputs (140.649625ms)
+✔ executes documented recipes/remove-dependent-resources.md against its stated inputs (39.545416ms)
+✔ executes documented tutorials/hierarchical-authoring.md against its stated inputs (40.816959ms)
+✔ executes documented api/marks/line-area.md against its stated inputs (12.47625ms)
+✔ executes documented api/marks/bar.md against its stated inputs (14.503416ms)
+✔ executes documented api/marks/line-area.md against its stated inputs (13.614625ms)
+✔ executes documented api/marks/line-area.md against its stated inputs (20.610167ms)
+✔ executes documented api/marks/line-area.md against its stated inputs (7.667292ms)
+✔ executes documented api/marks/line-area.md against its stated inputs (7.575208ms)
+✔ executes documented api/marks/point.md against its stated inputs (32.462333ms)
+✔ executes documented recipes/line-chart.md against its stated inputs (8.694167ms)
+{
+  data: 'sales',
+  schema: {
+    version: 1,
+    completeness: 'known',
+    origin: 'inferred',
+    fields: [ [Object], [Object] ]
+  }
+} {
+  version: 1,
+  equivalence: 'different',
+  completeProgramComparison: true,
+  changes: [
+    {
+      resource: [Object],
+      operation: 'modify',
+      effect: 'style',
+      roles: []
+    }
+  ],
+  affected: [ { kind: 'mark', id: 'points' } ],
+  findings: []
+} {
+  version: 1,
+  views: [
+    {
+      owner: [Object],
+      grain: 'item',
+      rawRows: 2,
+      logicalDataItems: 2,
+      drawablePrimitives: 2,
+      visibleCandidates: 2,
+      flags: [Array],
+      bounds: [Object],
+      sourceRefs: [Array],
+      checks: [Array]
+    }
+  ],
+  calculations: [],
+  checks: [
+    {
+      name: 'pixel-visibility',
+      status: 'not_run',
+      evidencePaths: [],
+      findings: []
+    }
+  ],
+  findings: [],
+  coverage: { partial: true, unsupported: [] }
+}
+false
+true
+✔ executes documented inspection.md against its stated inputs (26.160125ms)
+✔ executes documented api/rendering.md against its stated inputs (10.766292ms)
+✔ marks tutorial and recipe snippets with explicit execution contracts (0.671917ms)
+ℹ tests 56
+ℹ suites 0
+ℹ pass 56
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3160.147667

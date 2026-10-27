@@ -1,0 +1,444 @@
+✔ leaves termination grace around the shared generation deadline (0.544375ms)
+✔ matches the isolated strict 216 descriptor and state boundary (145732.293292ms)
+ℹ {"limit":216,"isolatedResources":{"complete":true,"children":[{"operation":"plan","rssBytes":98205696,"maximumRssBytes":98205696,"wallTimeMs":430.59412500000326},{"operation":"requirements","dataset":"tt-penguins","rssBytes":108150784,"maximumRssBytes":108150784,"wallTimeMs":2044.6322909999944},{"operation":"requirements","dataset":"tt-global-temperatures","rssBytes":103841792,"maximumRssBytes":103841792,"wallTimeMs":2333.896292000005},{"operation":"requirements","dataset":"tt-london-marathon-winners","rssBytes":105267200,"maximumRssBytes":105267200,"wallTimeMs":2717.8638750000027},{"operation":"merge","rssBytes":101416960,"maximumRssBytes":103530496,"wallTimeMs":804.7414169999975},{"operation":"dataset","dataset":"tt-penguins","rssBytes":156057600,"maximumRssBytes":161185792,"wallTimeMs":13179.240291000002},{"operation":"dataset","dataset":"tt-global-temperatures","rssBytes":180797440,"maximumRssBytes":183025664,"wallTimeMs":23623.910208},{"operation":"dataset","dataset":"tt-london-marathon-winners","rssBytes":185663488,"maximumRssBytes":189546496,"wallTimeMs":44094.68229200001},{"operation":"finalize","rssBytes":109461504,"maximumRssBytes":109461504,"wallTimeMs":574.669332999998}],"maximumChildRssBytes":189546496,"maximumCoordinatorRssBytes":82903040,"maximumCombinedRssBytes":272449536,"wallTimeMs":{"total":89889.39850000001,"children":89804.23012400002,"plan":430.59412500000326,"factorRequirements":7096.392458000002,"merge":804.7414169999975,"datasetGeneration":80897.83279100002,"finalize":574.669332999998}},"referenceResources":{"rssBytes":186073088,"maximumRssBytes":190398464,"wallTimeMs":55719.476082999994}}
+✖ matches the isolated strict 360 descriptor and state boundary (127411.859667ms)
+  AssertionError [ERR_ASSERTION]: node:internal/modules/run_main:104
+      triggerUncaughtException(
+      ^
+  
+  Error [ScenarioGenerationError]: Realistic candidate preflight failed: tt-global-temperatures/realistic-direct-lifecycle-miscellaneous-coverage factors={"dataset":"tt-global-temperatures","profile":{"id":"maximal"}}#cb96f55b47a6: Hierarchical facade profile 23 createPolarScatterPlot: The bottom theta-axis text and matrix-polar-scatter-23 legend group overlap; guides require more margin space or different offsets.
+      at scenarioGenerationFailureError (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/support/scenarios/engine.js:1200:17)
+      at realisticTierDescriptors (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/support/scenarios/engine.js:2080:15)
+      at file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/support/scenarios/engine.js:2600:9
+      at Array.map (<anonymous>)
+      at generateRealisticDescriptors (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/support/scenarios/engine.js:2598:64)
+      at generateScenarioDescriptors (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/support/scenarios/engine.js:2677:12)
+      at execute (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/run-realistic-scenario-generation-child.js:46:27)
+      at process.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/run-realistic-scenario-generation-child.js:110:14)
+      at Object.onceWrapper (node:events:628:26)
+      at process.emit (node:events:513:28) {
+    diagnostics: {
+      schemaVersion: 1,
+      kind: 'preflight',
+      dataset: 'tt-global-temperatures',
+      datasetIndex: 1,
+      tier: 'intermediate',
+      quota: 27,
+      produced: 19,
+      schedulingIterations: 20,
+      eligibleRecipeCount: 21,
+      recipeCounts: {
+        entries: [
+          {
+            recipe: 'realistic-direct-lifecycle-miscellaneous-coverage',
+            selections: 0,
+            duplicates: 0
+          },
+          {
+            recipe: 'realistic-statistical-facade-coverage-heatmap',
+            selections: 18,
+            duplicates: 0
+          },
+          {
+            recipe: 'realistic-direct-lifecycle-data-mark-coverage',
+            selections: 1,
+            duplicates: 0
+          },
+          {
+            recipe: 'realistic-bubble-summary',
+            selections: 0,
+            duplicates: 0
+          },
+          {
+            recipe: 'realistic-cardinal-area',
+            selections: 0,
+            duplicates: 0
+          },
+          {
+            recipe: 'realistic-encoded-strip',
+            selections: 0,
+            duplicates: 0
+          },
+          {
+            recipe: 'realistic-fine-histogram',
+            selections: 0,
+            duplicates: 0
+          },
+          {
+            recipe: 'realistic-guide-scale-vocabulary-primary',
+            selections: 0,
+            duplicates: 0
+          },
+          {
+            recipe: 'realistic-guide-scale-vocabulary-secondary',
+            selections: 0,
+            duplicates: 0
+          },
+          {
+            recipe: 'realistic-laid-out-labels',
+            selections: 0,
+            duplicates: 0
+          },
+          {
+            recipe: 'realistic-large-jittered-strip',
+            selections: 0,
+            duplicates: 0
+          },
+          {
+            recipe: 'realistic-maximal-arc',
+            selections: 0,
+            duplicates: 0
+          },
+          {
+            recipe: 'realistic-maximal-histogram',
+            selections: 0,
+            duplicates: 0
+          },
+          {
+            recipe: 'realistic-maximal-ordered-bars',
+            selections: 0,
+            duplicates: 0
+          },
+          {
+            recipe: 'realistic-monotone-ranking',
+            selections: 0,
+            duplicates: 0
+          },
+          {
+            recipe: 'realistic-narrow-vertical-bars',
+            selections: 0,
+            duplicates: 0
+          },
+          {
+            recipe: 'realistic-ordered-horizontal-bars',
+            selections: 0,
+            duplicates: 0
+          },
+          {
+            recipe: 'realistic-padded-donut',
+            selections: 0,
+            duplicates: 0
+          },
+          {
+            recipe: 'realistic-reversed-summary-points',
+            selections: 0,
+            duplicates: 0
+          },
+          { recipe: 'realistic-solid-pie', selections: 0, duplicates: 0 },
+          {
+            recipe: 'realistic-step-ranking',
+            selections: 0,
+            duplicates: 0
+          }
+        ],
+        omitted: 0
+      },
+      acceptedSamples: [
+        {
+          recipe: 'realistic-statistical-facade-coverage-heatmap',
+          factorDigest: 'f90b150133bf',
+          fingerprintPrefix: '9be63e3ac527'
+        },
+        {
+          recipe: 'realistic-statistical-facade-coverage-heatmap',
+          factorDigest: '5d7d42f40a23',
+          fingerprintPrefix: 'a122e43a5c76'
+        },
+        {
+          recipe: 'realistic-statistical-facade-coverage-heatmap',
+          factorDigest: '3668d6f2da53',
+          fingerprintPrefix: '23a6751ded08'
+        },
+        {
+          recipe: 'realistic-statistical-facade-coverage-heatmap',
+          factorDigest: '82001ebe8f7b',
+          fingerprintPrefix: 'a7897d347be9'
+        },
+        {
+          recipe: 'realistic-statistical-facade-coverage-heatmap',
+          factorDigest: '30124c49eef4',
+          fingerprintPrefix: '6e5813e44adb'
+        },
+        {
+          recipe: 'realistic-statistical-facade-coverage-heatmap',
+          factorDigest: '6d93cb1cf777',
+          fingerprintPrefix: 'ab0277989cfc'
+        },
+        {
+          recipe: 'realistic-statistical-facade-coverage-heatmap',
+          factorDigest: '088a73d38b7f',
+          fingerprintPrefix: 'a60be61feb49'
+        },
+        {
+          recipe: 'realistic-direct-lifecycle-data-mark-coverage',
+          factorDigest: 'cb96f55b47a6',
+          fingerprintPrefix: 'cee7abea15ad'
+        }
+      ],
+      acceptedSampleOmitted: 11,
+      duplicateCount: 0,
+      rejectionCount: 1,
+      recentRejections: [
+        {
+          dataset: 'tt-global-temperatures',
+          tier: 'intermediate',
+          recipe: 'realistic-direct-lifecycle-miscellaneous-coverage',
+          factorDigest: 'cb96f55b47a6',
+          message: 'Hierarchical facade profile 23 createPolarScatterPlot: The bottom theta-axis text and matrix-polar-scatter-23 legend group overlap; guides require more margin space or different offsets.'
+        }
+      ],
+      exhaustionSkipCount: 0,
+      exhaustionSkips: []
+    },
+    [Symbol(realisticGenerationChildFailureResources)]: {
+      rssBytes: 275922944,
+      maximumRssBytes: 300646400,
+      wallTimeMs: 127313.62775
+    }
+  }
+  
+  Node.js v23.5.0
+  
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/contracts/realistic-scenario-generation-isolation.test.js:47:12)
+      at Test.runInAsyncScope (node:async_hooks:211:14)
+      at Test.run (node:internal/test_runner/test:931:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+      at Test.postRun (node:internal/test_runner/test:1042:19)
+      at Test.run (node:internal/test_runner/test:970:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:629:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual'
+  }
+
+ℹ tests 3
+ℹ suites 0
+ℹ pass 2
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 273259.513459
+
+✖ failing tests:
+
+test at test/contracts/realistic-scenario-generation-isolation.test.js:32:3
+✖ matches the isolated strict 360 descriptor and state boundary (127411.859667ms)
+  AssertionError [ERR_ASSERTION]: node:internal/modules/run_main:104
+      triggerUncaughtException(
+      ^
+  
+  Error [ScenarioGenerationError]: Realistic candidate preflight failed: tt-global-temperatures/realistic-direct-lifecycle-miscellaneous-coverage factors={"dataset":"tt-global-temperatures","profile":{"id":"maximal"}}#cb96f55b47a6: Hierarchical facade profile 23 createPolarScatterPlot: The bottom theta-axis text and matrix-polar-scatter-23 legend group overlap; guides require more margin space or different offsets.
+      at scenarioGenerationFailureError (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/support/scenarios/engine.js:1200:17)
+      at realisticTierDescriptors (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/support/scenarios/engine.js:2080:15)
+      at file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/support/scenarios/engine.js:2600:9
+      at Array.map (<anonymous>)
+      at generateRealisticDescriptors (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/support/scenarios/engine.js:2598:64)
+      at generateScenarioDescriptors (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/support/scenarios/engine.js:2677:12)
+      at execute (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/run-realistic-scenario-generation-child.js:46:27)
+      at process.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/run-realistic-scenario-generation-child.js:110:14)
+      at Object.onceWrapper (node:events:628:26)
+      at process.emit (node:events:513:28) {
+    diagnostics: {
+      schemaVersion: 1,
+      kind: 'preflight',
+      dataset: 'tt-global-temperatures',
+      datasetIndex: 1,
+      tier: 'intermediate',
+      quota: 27,
+      produced: 19,
+      schedulingIterations: 20,
+      eligibleRecipeCount: 21,
+      recipeCounts: {
+        entries: [
+          {
+            recipe: 'realistic-direct-lifecycle-miscellaneous-coverage',
+            selections: 0,
+            duplicates: 0
+          },
+          {
+            recipe: 'realistic-statistical-facade-coverage-heatmap',
+            selections: 18,
+            duplicates: 0
+          },
+          {
+            recipe: 'realistic-direct-lifecycle-data-mark-coverage',
+            selections: 1,
+            duplicates: 0
+          },
+          {
+            recipe: 'realistic-bubble-summary',
+            selections: 0,
+            duplicates: 0
+          },
+          {
+            recipe: 'realistic-cardinal-area',
+            selections: 0,
+            duplicates: 0
+          },
+          {
+            recipe: 'realistic-encoded-strip',
+            selections: 0,
+            duplicates: 0
+          },
+          {
+            recipe: 'realistic-fine-histogram',
+            selections: 0,
+            duplicates: 0
+          },
+          {
+            recipe: 'realistic-guide-scale-vocabulary-primary',
+            selections: 0,
+            duplicates: 0
+          },
+          {
+            recipe: 'realistic-guide-scale-vocabulary-secondary',
+            selections: 0,
+            duplicates: 0
+          },
+          {
+            recipe: 'realistic-laid-out-labels',
+            selections: 0,
+            duplicates: 0
+          },
+          {
+            recipe: 'realistic-large-jittered-strip',
+            selections: 0,
+            duplicates: 0
+          },
+          {
+            recipe: 'realistic-maximal-arc',
+            selections: 0,
+            duplicates: 0
+          },
+          {
+            recipe: 'realistic-maximal-histogram',
+            selections: 0,
+            duplicates: 0
+          },
+          {
+            recipe: 'realistic-maximal-ordered-bars',
+            selections: 0,
+            duplicates: 0
+          },
+          {
+            recipe: 'realistic-monotone-ranking',
+            selections: 0,
+            duplicates: 0
+          },
+          {
+            recipe: 'realistic-narrow-vertical-bars',
+            selections: 0,
+            duplicates: 0
+          },
+          {
+            recipe: 'realistic-ordered-horizontal-bars',
+            selections: 0,
+            duplicates: 0
+          },
+          {
+            recipe: 'realistic-padded-donut',
+            selections: 0,
+            duplicates: 0
+          },
+          {
+            recipe: 'realistic-reversed-summary-points',
+            selections: 0,
+            duplicates: 0
+          },
+          { recipe: 'realistic-solid-pie', selections: 0, duplicates: 0 },
+          {
+            recipe: 'realistic-step-ranking',
+            selections: 0,
+            duplicates: 0
+          }
+        ],
+        omitted: 0
+      },
+      acceptedSamples: [
+        {
+          recipe: 'realistic-statistical-facade-coverage-heatmap',
+          factorDigest: 'f90b150133bf',
+          fingerprintPrefix: '9be63e3ac527'
+        },
+        {
+          recipe: 'realistic-statistical-facade-coverage-heatmap',
+          factorDigest: '5d7d42f40a23',
+          fingerprintPrefix: 'a122e43a5c76'
+        },
+        {
+          recipe: 'realistic-statistical-facade-coverage-heatmap',
+          factorDigest: '3668d6f2da53',
+          fingerprintPrefix: '23a6751ded08'
+        },
+        {
+          recipe: 'realistic-statistical-facade-coverage-heatmap',
+          factorDigest: '82001ebe8f7b',
+          fingerprintPrefix: 'a7897d347be9'
+        },
+        {
+          recipe: 'realistic-statistical-facade-coverage-heatmap',
+          factorDigest: '30124c49eef4',
+          fingerprintPrefix: '6e5813e44adb'
+        },
+        {
+          recipe: 'realistic-statistical-facade-coverage-heatmap',
+          factorDigest: '6d93cb1cf777',
+          fingerprintPrefix: 'ab0277989cfc'
+        },
+        {
+          recipe: 'realistic-statistical-facade-coverage-heatmap',
+          factorDigest: '088a73d38b7f',
+          fingerprintPrefix: 'a60be61feb49'
+        },
+        {
+          recipe: 'realistic-direct-lifecycle-data-mark-coverage',
+          factorDigest: 'cb96f55b47a6',
+          fingerprintPrefix: 'cee7abea15ad'
+        }
+      ],
+      acceptedSampleOmitted: 11,
+      duplicateCount: 0,
+      rejectionCount: 1,
+      recentRejections: [
+        {
+          dataset: 'tt-global-temperatures',
+          tier: 'intermediate',
+          recipe: 'realistic-direct-lifecycle-miscellaneous-coverage',
+          factorDigest: 'cb96f55b47a6',
+          message: 'Hierarchical facade profile 23 createPolarScatterPlot: The bottom theta-axis text and matrix-polar-scatter-23 legend group overlap; guides require more margin space or different offsets.'
+        }
+      ],
+      exhaustionSkipCount: 0,
+      exhaustionSkips: []
+    },
+    [Symbol(realisticGenerationChildFailureResources)]: {
+      rssBytes: 275922944,
+      maximumRssBytes: 300646400,
+      wallTimeMs: 127313.62775
+    }
+  }
+  
+  Node.js v23.5.0
+  
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/contracts/realistic-scenario-generation-isolation.test.js:47:12)
+      at Test.runInAsyncScope (node:async_hooks:211:14)
+      at Test.run (node:internal/test_runner/test:931:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+      at Test.postRun (node:internal/test_runner/test:1042:19)
+      at Test.run (node:internal/test_runner/test:970:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:629:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual'
+  }

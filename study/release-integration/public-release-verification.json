@@ -1,0 +1,32 @@
+{
+  "verifiedAt": "2026-10-23T11:37:52.671Z",
+  "version": "0.0.23",
+  "tag": "v0.0.23",
+  "commit": "9820e3665cfbca546924ef1f4a17a8c8f9c17760",
+  "registryTarball": "https://registry.npmjs.org/ggaction/-/ggaction-0.0.23.tgz",
+  "sha256": "71fe32f7bde992c1ffe781e6ecdca5dcfba34148a1173f8288204f13c772f881",
+  "integrity": "sha512-euboRGzwwq+wWWZ1eQ0l6YN7JksquBBESkp/l8sOjf+6U34UxuYHHasEWv+SHflR9MTIdzGpHuWUKUe3Pnchlw==",
+  "contractId": "sha256:d4a3b46c05b696b43389ec3e4bc2aaa89584ef20e01d5e64b8c61a316fe2c004",
+  "documents": [
+    {
+      "file": "doc-provenance.json",
+      "bytes": 23301,
+      "sha256": "c8740f1cca640b9420531036dc962636c968142f4bf9e56f05d29ac13aa4b3da"
+    },
+    {
+      "file": "llms-manifest.json",
+      "bytes": 110282,
+      "sha256": "123cbe5af5e090f94764c62d5de11ffc2c72f14437735b21e938c878aff8914b"
+    },
+    {
+      "file": "llms-full.txt",
+      "bytes": 1940995,
+      "sha256": "1fde043f355f97138b33416ee5524051b8ec501234fa2d57c4de24af66c43a9d"
+    },
+    {
+      "file": "llms.txt",
+      "bytes": 10792,
+      "sha256": "e209cc144989818916a4a98eb55fba6146d13e26f8b1ef49c6ff074676b18069"
+    }
+  ]
+}

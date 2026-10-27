@@ -1,0 +1,345 @@
+import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
+import { normalizeFacetGap, facetGapAxis, assertFacetGapFinite } from "../core/facetGap.js";
+import { normalizeFacetTopLane } from "./facetTopLane.js";
+import { annotateError } from "../core/diagnostics.js";
+import {
+  DEFAULT_COMPOSITION_LAYOUT,
+  normalizeCompositionAlign,
+  normalizeCompositionChildren,
+  normalizeCompositionPadding,
+  validateCompositionSpacing
+} from "./composition.js";
+
+export const DEFAULT_FACET_LEGEND_GAP = 18;
+export const DEFAULT_FACET_LEGEND_WIDTH = 132;
+export const DEFAULT_FACET_LEGEND_HEIGHT = 0;
+
+const FACET_LEGEND_POSITIONS = Object.freeze([
+  "right", "left", "top", "bottom"
+]);
+
+function resolveColumns(columns, count) {
+  const value = columns ?? count;
+  if (!Number.isInteger(value) || value <= 0) {
+    throw new RangeError("Facet columns must be a positive integer.");
+  }
+  return Math.min(value, count);
+}
+
+function resolveGridCoordinates(children, columns) {
+  const requested = children.some(child => child.row !== undefined || child.column !== undefined);
+  if (!requested) return undefined;
+  if (children.some(child => !(
+    Number.isInteger(child.row) && child.row >= 0 &&
+    Number.isInteger(child.column) && child.column >= 0
+  ))) {
+    throw new RangeError("Facet grid children require non-negative integer row and column coordinates.");
+  }
+  const keys = children.map(child => `${child.row}:${child.column}`);
+  if (new Set(keys).size !== keys.length) {
+    throw new Error("Facet grid children must occupy unique row and column coordinates.");
+  }
+  const requiredColumns = Math.max(...children.map(child => child.column)) + 1;
+  if (columns !== undefined && columns !== requiredColumns) {
+    throw new RangeError("Facet grid columns must match the declared column domain.");
+  }
+  return {
+    columns: requiredColumns,
+    rows: Math.max(...children.map(child => child.row)) + 1
+  };
+}
+
+function alignedOffset(remaining, align) {
+  if (align === "start") return 0;
+  if (align === "end") return remaining;
+  return remaining / 2;
+}
+
+const ZERO_SIDES = Object.freeze({ top: 0, right: 0, bottom: 0, left: 0 });
+
+function normalizeHeaderLayout(value, rows, columns) {
+  if (value === undefined) {
+    return {
+      outer: ZERO_SIDES,
+      cellRows: { top: Array(rows).fill(0), bottom: Array(rows).fill(0) }
+    };
+  }
+  if (!isPlainObject(value) || Object.keys(value).some(
+    key => !["outer", "cellRows", "cellColumns"].includes(key)
+  )) {
+    throw new TypeError("Facet headerLayout must contain outer and cellRows.");
+  }
+  const outer = { ...ZERO_SIDES, ...(value.outer ?? {}) };
+  if (!isPlainObject(value.outer ?? {}) || Object.keys(outer).some(
+    key => !Object.hasOwn(ZERO_SIDES, key)
+  )) {
+    throw new TypeError("Facet headerLayout.outer must contain side reservations.");
+  }
+  for (const [side, amount] of Object.entries(outer)) {
+    validateCompositionSpacing(amount, `Facet headerLayout.outer.${side}`);
+  }
+  const result = { outer };
+  for (const [key, sides, count, countLabel] of [
+    ["cellRows", ["top", "bottom"], rows, "row"],
+    ["cellColumns", ["left", "right"], columns, "column"]
+  ]) {
+    if (key === "cellColumns" && value[key] === undefined) continue;
+    const source = key === "cellRows" ? value[key] ?? {} : value[key];
+    if (!isPlainObject(source) || Object.keys(source).some(side => !sides.includes(side))) {
+      throw new TypeError(`Facet headerLayout.${key} must contain ${sides[0]} and ${sides[1]} arrays.`);
+    }
+    result[key] = Object.fromEntries(sides.map(side => {
+      const amounts = source[side] ?? Array(count).fill(0);
+      if (!Array.isArray(amounts) || amounts.length !== count) {
+        throw new RangeError(`Facet headerLayout.${key}.${side} must match ${countLabel} count.`);
+      }
+      amounts.forEach((amount, index) => validateCompositionSpacing(amount,
+        `Facet headerLayout.${key}.${side}[${index}]`));
+      return [side, [...amounts]];
+    }));
+  }
+  return result;
+}
+
+export function resolveFacetLayout({
+  children,
+  columns,
+  gap = DEFAULT_COMPOSITION_LAYOUT.gap,
+  align = DEFAULT_COMPOSITION_LAYOUT.align,
+  padding = DEFAULT_COMPOSITION_LAYOUT.padding,
+  titleHeight = 0,
+  sharedLegend = false,
+  sharedLegendGap = DEFAULT_FACET_LEGEND_GAP,
+  sharedLegendWidth = DEFAULT_FACET_LEGEND_WIDTH,
+  sharedLegendHeight = DEFAULT_FACET_LEGEND_HEIGHT,
+  sharedLegendPosition = "right",
+  headerLayout,
+  spacing = "canvas",
+  topLane,
+  plots
+} = {}) {
+  if (!["canvas", "plot", "content"].includes(spacing)) throw new Error(`Unknown facet spacing "${spacing}".`);
+  const resolvedTopLane = normalizeFacetTopLane(topLane, spacing);
+  const byId = new Map((plots ?? []).map(plot => [plot.id, plot]));
+  const originalChildren = children;
+  let outerMargins = ZERO_SIDES;
+  if (spacing === "plot") {
+    if (!Array.isArray(plots) || plots.length !== children?.length || byId.size !== plots.length) {
+      throw new Error("Plot spacing requires one plot bounds record per child.");
+    }
+    outerMargins = { ...ZERO_SIDES };
+    children = children.map(child => {
+      const plot = byId.get(child.id);
+      if (!plot || ![plot.x, plot.y, plot.width, plot.height].every(Number.isFinite) ||
+        plot.x < 0 || plot.y < 0 || plot.width <= 0 || plot.height <= 0 ||
+        plot.x + plot.width > child.width + 1e-9 || plot.y + plot.height > child.height + 1e-9) {
+        throw new Error("Plot spacing requires valid contained child plot bounds.");
+      }
+      outerMargins.left = Math.max(outerMargins.left, plot.x);
+      outerMargins.top = Math.max(outerMargins.top, plot.y);
+      outerMargins.right = Math.max(outerMargins.right, child.width - plot.x - plot.width);
+      outerMargins.bottom = Math.max(outerMargins.bottom, child.height - plot.y - plot.height);
+      return { ...child, width: plot.width, height: plot.height };
+    });
+  }
+  const values = children?.map(child => child?.value);
+  const coordinates = resolveGridCoordinates(children ?? [], columns);
+  if (spacing === "content" && coordinates !== undefined) throw new Error("Content flow requires a wrapped facet, not a keyed facet grid.");
+  const resolvedChildren = normalizeCompositionChildren(children?.map(
+    ({ value: _value, row: _row, column: _column, ...child }) => child
+  ));
+  const resolvedColumns = coordinates?.columns ??
+    resolveColumns(columns, resolvedChildren.length);
+  const resolvedGap = normalizeFacetGap(gap, "Facet gap");
+  const gapX = facetGapAxis(resolvedGap, "x"), gapY = facetGapAxis(resolvedGap, "y");
+  const resolvedAlign = normalizeCompositionAlign(align);
+  const requestedPadding = normalizeCompositionPadding(padding);
+  const resolvedPadding = Object.fromEntries(Object.keys(requestedPadding).map(side =>
+    [side, requestedPadding[side] + outerMargins[side]]));
+  const resolvedTitleHeight = validateCompositionSpacing(
+    titleHeight,
+    "Facet title height"
+  );
+  const titleReservation = resolvedTopLane === undefined ? resolvedTitleHeight : 0;
+  if (typeof sharedLegend !== "boolean") {
+    throw new TypeError("Facet sharedLegend must be a boolean.");
+  }
+  const legendGap = validateCompositionSpacing(
+    sharedLegendGap,
+    "Facet shared legend gap"
+  );
+  const legendWidth = validateCompositionSpacing(
+    sharedLegendWidth,
+    "Facet shared legend width"
+  );
+  const legendHeight = validateCompositionSpacing(
+    sharedLegendHeight,
+    "Facet shared legend height"
+  );
+  if (!FACET_LEGEND_POSITIONS.includes(sharedLegendPosition)) {
+    throw new Error(
+      `Unknown facet shared legend position "${sharedLegendPosition}".`
+    );
+  }
+  const sideLegend = ["right", "left"].includes(sharedLegendPosition);
+  const beforeGrid = ["left", "top"].includes(sharedLegendPosition);
+  const legendLane = sharedLegend
+    ? legendGap + (sideLegend ? legendWidth : legendHeight)
+    : 0;
+  const rowCount = coordinates?.rows ??
+    Math.ceil(resolvedChildren.length / resolvedColumns);
+  let headers = normalizeHeaderLayout(headerLayout, rowCount, resolvedColumns);
+  if (spacing === "plot") {
+    const minimum = { x: 0, y: 0 };
+    for (const [axis, before, after] of [
+      ["y", headers.cellRows.bottom, headers.cellRows.top],
+      ["x", headers.cellColumns?.right ?? [], headers.cellColumns?.left ?? []]
+    ]) {
+      for (let index = 1; index < before.length; index += 1) {
+        minimum[axis] = Math.max(minimum[axis], before[index - 1] + after[index]);
+      }
+    }
+    if (typeof resolvedGap === "number") {
+      const minimumGap = Math.max(minimum.y, minimum.x);
+      if (minimumGap > resolvedGap) {
+        throw annotateError(new Error("Plot spacing gap is too small for the facet headers."), {
+          code: "invalid-value", optionPath: "gap", actual: resolvedGap, limit: minimumGap
+        });
+      }
+    } else {
+      for (const axis of ["x", "y"]) {
+        if (minimum[axis] > resolvedGap[axis]) {
+          throw annotateError(new Error("Plot spacing gap is too small for the facet headers."), {
+            code: "invalid-value", optionPath: `gap.${axis}`,
+            actual: resolvedGap[axis], limit: minimum[axis]
+          });
+        }
+      }
+    }
+    headers = { outer: {
+      top: headers.outer.top + headers.cellRows.top[0],
+      bottom: headers.outer.bottom + headers.cellRows.bottom.at(-1),
+      left: headers.outer.left + (headers.cellColumns?.left[0] ?? 0),
+      right: headers.outer.right + (headers.cellColumns?.right.at(-1) ?? 0)
+    }, cellRows: { top: Array(rowCount).fill(0), bottom: Array(rowCount).fill(0) } };
+    if (resolvedTopLane !== undefined) headers.outer.top = 0;
+  }
+  const columnHeaders = headers.cellColumns ?? {
+    left: Array(resolvedColumns).fill(0), right: Array(resolvedColumns).fill(0)
+  };
+  const columnWidths = Array(resolvedColumns).fill(-Infinity);
+  const rowHeights = Array(rowCount).fill(-Infinity);
+  resolvedChildren.forEach((child, index) => {
+    const column = coordinates === undefined
+      ? index % resolvedColumns
+      : children[index].column;
+    const row = coordinates === undefined
+      ? Math.floor(index / resolvedColumns)
+      : children[index].row;
+    columnWidths[column] = Math.max(columnWidths[column], child.width);
+    rowHeights[row] = Math.max(rowHeights[row], child.height);
+  });
+  const columnStarts = columnWidths.map((_, column) =>
+    resolvedPadding.left + headers.outer.left + columnWidths.slice(0, column)
+      .reduce((sum, width, index) =>
+        sum + columnHeaders.left[index] + width + columnHeaders.right[index], 0) +
+      gapX * column + columnHeaders.left[column]
+  );
+  const rowStarts = rowHeights.map((_, row) =>
+    titleReservation + resolvedPadding.top + headers.outer.top +
+    rowHeights.slice(0, row).reduce((sum, height, index) =>
+      sum + headers.cellRows.top[index] + height + headers.cellRows.bottom[index], 0) +
+    gapY * row + headers.cellRows.top[row]
+  );
+  const placements = resolvedChildren.map((child, index) => {
+    const column = coordinates === undefined
+      ? index % resolvedColumns
+      : children[index].column;
+    const row = coordinates === undefined
+      ? Math.floor(index / resolvedColumns)
+      : children[index].row;
+    return {
+      id: child.id,
+      value: values[index],
+      column,
+      row,
+      x: columnStarts[column] + (beforeGrid && sideLegend ? legendLane : 0) +
+        alignedOffset(
+          columnWidths[column] - child.width,
+          resolvedAlign
+        ),
+      y: rowStarts[row] + (beforeGrid && !sideLegend ? legendLane : 0) +
+        alignedOffset(
+          rowHeights[row] - child.height,
+          resolvedAlign
+        ),
+      width: child.width,
+      height: child.height
+    };
+  });
+  const gridWidth = resolvedPadding.left +
+    headers.outer.left +
+    columnWidths.reduce((sum, width) => sum + width, 0) +
+    columnHeaders.left.reduce((sum, amount) => sum + amount, 0) +
+    columnHeaders.right.reduce((sum, amount) => sum + amount, 0) +
+    gapX * Math.max(0, resolvedColumns - 1) +
+    headers.outer.right +
+    resolvedPadding.right;
+  const gridHeight = titleReservation + resolvedPadding.top +
+    headers.outer.top +
+    rowHeights.reduce((sum, height) => sum + height, 0) +
+    headers.cellRows.top.reduce((sum, amount) => sum + amount, 0) +
+    headers.cellRows.bottom.reduce((sum, amount) => sum + amount, 0) +
+    gapY * Math.max(0, rowCount - 1) +
+    headers.outer.bottom +
+    resolvedPadding.bottom;
+  if (spacing === "plot") {
+    for (let index = 0; index < placements.length; index += 1) {
+      const plot = byId.get(placements[index].id);
+      placements[index].x -= plot.x;
+      placements[index].y -= plot.y;
+      placements[index].width = originalChildren[index].width;
+      placements[index].height = originalChildren[index].height;
+    }
+  }
+  if (typeof resolvedGap !== "number") {
+    for (const [axis, total, dimension] of [
+      ["x", gridWidth + (sideLegend ? legendLane : 0), "width"],
+      ["y", gridHeight + (sideLegend ? 0 : legendLane), "height"]
+    ]) {
+      assertFacetGapFinite(resolvedGap, axis,
+        [total, ...placements.flatMap(cell => [cell[axis], cell[dimension],
+          cell[axis] + cell[dimension]])], "Facet layout exceeds finite bounds.");
+    }
+  }
+  return cloneAndFreeze({
+    ...(spacing !== "canvas" ? { spacing } : {}),
+    ...(resolvedTopLane === undefined ? {} : { topLane: resolvedTopLane }),
+    columns: resolvedColumns,
+    rows: rowCount,
+    gap: resolvedGap,
+    align: resolvedAlign,
+    padding: requestedPadding,
+    titleHeight: resolvedTitleHeight,
+    headerLayout: headers,
+    gridWidth,
+    width: gridWidth + (sideLegend ? legendLane : 0),
+    height: gridHeight + (sideLegend ? 0 : legendLane),
+    children: placements,
+    ...(sharedLegend ? {
+      legend: {
+        position: sharedLegendPosition,
+        x: sharedLegendPosition === "right"
+          ? gridWidth + legendGap
+          : 0,
+        y: sharedLegendPosition === "bottom"
+          ? gridHeight + legendGap
+          : sharedLegendPosition === "top"
+            ? resolvedTitleHeight
+            : resolvedTitleHeight + resolvedPadding.top + 30,
+        width: legendWidth,
+        height: legendHeight
+      }
+    } : {})
+  });
+}

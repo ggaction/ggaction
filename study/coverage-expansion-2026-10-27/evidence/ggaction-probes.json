@@ -1,0 +1,734 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-10-27T01:28:28.809Z",
+  "commit": "40ec7edead7fc84de05aad31888dd0f7d264a512",
+  "scope": "Focused native API/negative capability probes; not a full unit, render, browser, compatibility, or performance suite.",
+  "results": [
+    {
+      "id": "cartesian-native-scatter-and-inspection",
+      "expected": "accept",
+      "result": "accepted",
+      "matchedExpectation": true,
+      "evidence": {
+        "items": [
+          {
+            "key": "p/point/0",
+            "target": "p",
+            "markType": "point",
+            "grain": "item",
+            "fields": {
+              "id": "a",
+              "x": 1,
+              "y": 2,
+              "group": "A"
+            },
+            "channels": {
+              "x": 1,
+              "y": 2,
+              "color": "A"
+            },
+            "properties": {
+              "x": 80,
+              "fill": "#4c78a8",
+              "y": 253.33333333333334,
+              "radius": 3
+            },
+            "rows": [
+              {
+                "data": "d",
+                "index": 0
+              }
+            ],
+            "geometry": [
+              {
+                "type": "circle",
+                "properties": {
+                  "x": 80,
+                  "fill": "#4c78a8",
+                  "y": 253.33333333333334,
+                  "radius": 3
+                }
+              }
+            ],
+            "bounds": {
+              "left": 77,
+              "top": 250.33333333333334,
+              "right": 83,
+              "bottom": 256.33333333333337
+            }
+          },
+          {
+            "key": "p/point/1",
+            "target": "p",
+            "markType": "point",
+            "grain": "item",
+            "fields": {
+              "id": "b",
+              "x": 2,
+              "y": 1,
+              "group": "B"
+            },
+            "channels": {
+              "x": 2,
+              "y": 1,
+              "color": "B"
+            },
+            "properties": {
+              "x": 300,
+              "fill": "#f58518",
+              "y": 340,
+              "radius": 3
+            },
+            "rows": [
+              {
+                "data": "d",
+                "index": 1
+              }
+            ],
+            "geometry": [
+              {
+                "type": "circle",
+                "properties": {
+                  "x": 300,
+                  "fill": "#f58518",
+                  "y": 340,
+                  "radius": 3
+                }
+              }
+            ],
+            "bounds": {
+              "left": 297,
+              "top": 337,
+              "right": 303,
+              "bottom": 343
+            }
+          },
+          {
+            "key": "p/point/2",
+            "target": "p",
+            "markType": "point",
+            "grain": "item",
+            "fields": {
+              "id": "c",
+              "x": 3,
+              "y": 4,
+              "group": "A"
+            },
+            "channels": {
+              "x": 3,
+              "y": 4,
+              "color": "A"
+            },
+            "properties": {
+              "x": 520,
+              "fill": "#4c78a8",
+              "y": 80,
+              "radius": 3
+            },
+            "rows": [
+              {
+                "data": "d",
+                "index": 2
+              }
+            ],
+            "geometry": [
+              {
+                "type": "circle",
+                "properties": {
+                  "x": 520,
+                  "fill": "#4c78a8",
+                  "y": 80,
+                  "radius": 3
+                }
+              }
+            ],
+            "bounds": {
+              "left": 517,
+              "top": 77,
+              "right": 523,
+              "bottom": 83
+            }
+          }
+        ],
+        "inspection": {
+          "version": 1,
+          "views": [
+            {
+              "owner": {
+                "kind": "mark",
+                "id": "p"
+              },
+              "grain": "item",
+              "rawRows": 3,
+              "logicalDataItems": 3,
+              "drawablePrimitives": 3,
+              "visibleCandidates": 3,
+              "flags": [
+                {
+                  "reason": "opacity-zero",
+                  "count": 0
+                },
+                {
+                  "reason": "zero-size",
+                  "count": 0
+                },
+                {
+                  "reason": "outside-clip",
+                  "count": 0
+                },
+                {
+                  "reason": "missing-skipped",
+                  "count": null
+                }
+              ],
+              "bounds": {
+                "x": 77,
+                "y": 77,
+                "width": 446,
+                "height": 266
+              },
+              "sourceRefs": [
+                {
+                  "kind": "data",
+                  "id": "d"
+                }
+              ],
+              "checks": [
+                {
+                  "name": "concrete-structure",
+                  "status": "passed",
+                  "evidencePaths": [
+                    "p"
+                  ],
+                  "findings": []
+                },
+                {
+                  "name": "pixel-visibility",
+                  "status": "not_run",
+                  "evidencePaths": [],
+                  "findings": []
+                }
+              ]
+            },
+            {
+              "owner": {
+                "kind": "guide",
+                "id": "axis"
+              },
+              "grain": "unknown",
+              "rawRows": null,
+              "logicalDataItems": 22,
+              "drawablePrimitives": 22,
+              "visibleCandidates": null,
+              "flags": [
+                {
+                  "reason": "opacity-zero",
+                  "count": null
+                },
+                {
+                  "reason": "zero-size",
+                  "count": null
+                },
+                {
+                  "reason": "outside-clip",
+                  "count": null
+                },
+                {
+                  "reason": "missing-skipped",
+                  "count": null
+                }
+              ],
+              "bounds": null,
+              "sourceRefs": [
+                {
+                  "kind": "scale",
+                  "id": "x"
+                },
+                {
+                  "kind": "coordinate",
+                  "id": "main"
+                },
+                {
+                  "kind": "scale",
+                  "id": "y"
+                }
+              ],
+              "checks": [
+                {
+                  "name": "concrete-structure",
+                  "status": "passed",
+                  "evidencePaths": [
+                    "xAxisLine",
+                    "xAxisTicks",
+                    "xAxisLabels",
+                    "xAxisTitle",
+                    "yAxisLine",
+                    "yAxisTicks",
+                    "yAxisLabels",
+                    "yAxisTitle"
+                  ],
+                  "findings": []
+                },
+                {
+                  "name": "pixel-visibility",
+                  "status": "not_run",
+                  "evidencePaths": [],
+                  "findings": []
+                }
+              ]
+            },
+            {
+              "owner": {
+                "kind": "guide",
+                "id": "grid"
+              },
+              "grain": "unknown",
+              "rawRows": null,
+              "logicalDataItems": 4,
+              "drawablePrimitives": 4,
+              "visibleCandidates": null,
+              "flags": [
+                {
+                  "reason": "opacity-zero",
+                  "count": null
+                },
+                {
+                  "reason": "zero-size",
+                  "count": null
+                },
+                {
+                  "reason": "outside-clip",
+                  "count": null
+                },
+                {
+                  "reason": "missing-skipped",
+                  "count": null
+                }
+              ],
+              "bounds": null,
+              "sourceRefs": [
+                {
+                  "kind": "scale",
+                  "id": "y"
+                },
+                {
+                  "kind": "coordinate",
+                  "id": "main"
+                }
+              ],
+              "checks": [
+                {
+                  "name": "concrete-structure",
+                  "status": "passed",
+                  "evidencePaths": [
+                    "horizontalGridLines"
+                  ],
+                  "findings": []
+                },
+                {
+                  "name": "pixel-visibility",
+                  "status": "not_run",
+                  "evidencePaths": [],
+                  "findings": []
+                }
+              ]
+            }
+          ],
+          "calculations": [],
+          "checks": [
+            {
+              "name": "pixel-visibility",
+              "status": "not_run",
+              "evidencePaths": [],
+              "findings": []
+            }
+          ],
+          "findings": [],
+          "coverage": {
+            "partial": true,
+            "unsupported": []
+          }
+        },
+        "accessible": {
+          "schemaVersion": 1,
+          "title": null,
+          "views": [
+            {
+              "ownerId": "p",
+              "markType": "point",
+              "columns": [
+                {
+                  "key": "p:x",
+                  "role": "x",
+                  "field": "x",
+                  "component": "p"
+                },
+                {
+                  "key": "p:y",
+                  "role": "y",
+                  "field": "y",
+                  "component": "p"
+                },
+                {
+                  "key": "p:color",
+                  "role": "color",
+                  "field": "group",
+                  "component": "p"
+                }
+              ],
+              "rows": [
+                {
+                  "component": "p",
+                  "series": {
+                    "group": "A"
+                  },
+                  "values": {
+                    "p:x": 1,
+                    "p:y": 2,
+                    "p:color": "A"
+                  }
+                },
+                {
+                  "component": "p",
+                  "series": {
+                    "group": "B"
+                  },
+                  "values": {
+                    "p:x": 2,
+                    "p:y": 1,
+                    "p:color": "B"
+                  }
+                },
+                {
+                  "component": "p",
+                  "series": {
+                    "group": "A"
+                  },
+                  "values": {
+                    "p:x": 3,
+                    "p:y": 4,
+                    "p:color": "A"
+                  }
+                }
+              ],
+              "units": {}
+            }
+          ]
+        },
+        "programFrozen": true,
+        "svgCharacters": 3879
+      }
+    },
+    {
+      "id": "named-row-selection-highlight-and-persistence",
+      "expected": "accept",
+      "result": "accepted",
+      "matchedExpectation": true,
+      "evidence": {
+        "sourceUnchanged": true,
+        "selection": {
+          "target": "p",
+          "selector": {
+            "grain": "item",
+            "rows": {
+              "data": "d",
+              "indices": [
+                0,
+                2
+              ]
+            }
+          }
+        },
+        "highlight": {
+          "target": "p",
+          "selection": "sel",
+          "markType": "point",
+          "style": {
+            "fill": "#e64343",
+            "size": 2,
+            "offset": {
+              "x": 0,
+              "y": 0
+            }
+          },
+          "paintSource": "explicit",
+          "dimOthers": {
+            "opacity": 0.2
+          },
+          "bringToFront": true
+        },
+        "comparison": {
+          "version": 1,
+          "equivalence": "equal",
+          "completeProgramComparison": true,
+          "changes": [],
+          "affected": [],
+          "findings": []
+        },
+        "bytes": 53259,
+        "renderIdentical": true
+      }
+    },
+    {
+      "id": "transition-scene-producer-stable-style-keys",
+      "expected": "accept",
+      "result": "accepted",
+      "matchedExpectation": true,
+      "evidence": {
+        "svgVersion": 1,
+        "canvasVersion": 2,
+        "nodeTypes": [
+          "rect",
+          "line",
+          "circle",
+          "text"
+        ],
+        "nodeCount": 30,
+        "allKeysEqual": true,
+        "programAndScenesFrozen": true,
+        "sceneHasClockOrPlayer": false
+      }
+    },
+    {
+      "id": "native-rose-from-semantic-fields",
+      "expected": "accept",
+      "result": "accepted",
+      "matchedExpectation": true,
+      "evidence": {
+        "coordinate": [
+          {
+            "id": "polar",
+            "type": "polar"
+          }
+        ],
+        "markTypes": [
+          "arc"
+        ],
+        "itemCount": 2,
+        "svgCharacters": 651
+      }
+    },
+    {
+      "id": "native-scatter-facet-shared-scales",
+      "expected": "accept",
+      "result": "accepted",
+      "matchedExpectation": true,
+      "evidence": {
+        "compositionType": "facet",
+        "children": [
+          "facet-cell-1",
+          "facet-cell-2"
+        ],
+        "svgCharacters": 8242,
+        "sceneNodes": 60
+      }
+    },
+    {
+      "id": "immutable-data-revision-and-scene-row-identity",
+      "expected": "accept",
+      "result": "accepted",
+      "matchedExpectation": true,
+      "evidence": {
+        "sourceRows": [
+          {
+            "id": "a",
+            "x": 1,
+            "y": 2,
+            "group": "A"
+          },
+          {
+            "id": "b",
+            "x": 2,
+            "y": 1,
+            "group": "B"
+          },
+          {
+            "id": "c",
+            "x": 3,
+            "y": 4,
+            "group": "A"
+          }
+        ],
+        "revisedDatasets": [
+          "d",
+          "d-v2"
+        ],
+        "beforePointKeys": [
+          "1ra2mz7-151yxpb/0#0",
+          "9gg5x3-1d7w2d5/0#0",
+          "susd8j-1a711wb/0#0"
+        ],
+        "afterPointKeys": [
+          "1rt183j-14rydwr/0#0",
+          "8269os-1f00uhc/0#0",
+          "dyjueo-fn4i5u/0#0"
+        ],
+        "sharedPointKeys": [],
+        "note": "Source id/revision and value membership participate in scene correspondence. Equal user id field alone is not an explicit keyed-update contract."
+      }
+    },
+    {
+      "id": "coordinate-geographic",
+      "expected": "reject",
+      "result": "rejected",
+      "matchedExpectation": true,
+      "error": {
+        "name": "Error",
+        "message": "Unknown coordinate type \"geographic\"."
+      }
+    },
+    {
+      "id": "automatic-scatter-guides-small-margin-layout",
+      "expected": "reject",
+      "result": "rejected",
+      "matchedExpectation": true,
+      "error": {
+        "name": "Error",
+        "message": "The x-axis title overlaps the axis labels."
+      }
+    },
+    {
+      "id": "coordinate-mercator",
+      "expected": "reject",
+      "result": "rejected",
+      "matchedExpectation": true,
+      "error": {
+        "name": "Error",
+        "message": "Unknown coordinate type \"mercator\"."
+      }
+    },
+    {
+      "id": "graphic-image",
+      "expected": "reject",
+      "result": "rejected",
+      "matchedExpectation": true,
+      "error": {
+        "name": "Error",
+        "message": "Unknown graphic type \"image\"."
+      }
+    },
+    {
+      "id": "data-url-source",
+      "expected": "reject",
+      "result": "rejected",
+      "matchedExpectation": true,
+      "error": {
+        "name": "Error",
+        "message": "Unknown createData option \"url\"."
+      }
+    },
+    {
+      "id": "computed-trigonometry-sin",
+      "expected": "reject",
+      "result": "rejected",
+      "matchedExpectation": true,
+      "error": {
+        "name": "Error",
+        "message": "Unsupported computed operation \"sin\"."
+      }
+    },
+    {
+      "id": "computed-calendar-month",
+      "expected": "reject",
+      "result": "rejected",
+      "matchedExpectation": true,
+      "error": {
+        "name": "Error",
+        "message": "Computed datePart supports part year only."
+      }
+    },
+    {
+      "id": "point-shadow-option",
+      "expected": "reject",
+      "result": "rejected",
+      "matchedExpectation": true,
+      "error": {
+        "name": "Error",
+        "message": "Unknown editPointMark option \"shadowBlur\"."
+      }
+    },
+    {
+      "id": "path-single-subpath",
+      "expected": "accept",
+      "result": "accepted",
+      "matchedExpectation": true,
+      "evidence": {
+        "commands": [
+          {
+            "op": "M",
+            "x": 1,
+            "y": 1
+          },
+          {
+            "op": "L",
+            "x": 80,
+            "y": 1
+          },
+          {
+            "op": "L",
+            "x": 80,
+            "y": 80
+          },
+          {
+            "op": "Z"
+          }
+        ]
+      }
+    },
+    {
+      "id": "path-multiple-subpaths-polygon-hole",
+      "expected": "reject",
+      "result": "rejected",
+      "matchedExpectation": true,
+      "error": {
+        "name": "Error",
+        "message": "path.commands supports one subpath and only one initial M."
+      }
+    },
+    {
+      "id": "path-fill-rule",
+      "expected": "reject",
+      "result": "rejected",
+      "matchedExpectation": true,
+      "error": {
+        "name": "Error",
+        "message": "Unknown path graphic property \"fillRule\"."
+      }
+    },
+    {
+      "id": "svg-arc-command",
+      "expected": "reject",
+      "result": "rejected",
+      "matchedExpectation": true,
+      "error": {
+        "name": "TypeError",
+        "message": "path.commands[1] must be an M, L, C, or Z command."
+      }
+    },
+    {
+      "id": "proposed-runtime-method-absence",
+      "expected": "not-present",
+      "result": "observed",
+      "matchedExpectation": true,
+      "evidence": {
+        "hitTest": false,
+        "bindInteraction": false,
+        "createInteraction": false,
+        "createSelectionParameter": false,
+        "createProjection": false,
+        "createGeoData": false,
+        "createGeoShapeMark": false,
+        "createImageMark": false,
+        "createAnimation": false,
+        "play": false,
+        "pause": false,
+        "seek": false,
+        "appendData": false,
+        "subscribe": false,
+        "dispose": false
+      },
+      "caution": "Checks these exact method names only. Stronger absence evidence is the exhaustive runtime exports/action inventory plus concrete validators, not this name search alone."
+    }
+  ],
+  "allMatched": true
+}

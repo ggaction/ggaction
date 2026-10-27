@@ -1,0 +1,136 @@
+import { APPEARANCE_MARK_TYPES } from "../../core/vocabulary.js";
+import { action } from "../../core/action.js";
+import {
+  normalizeStrokeDashPattern,
+  readNominalField,
+  validateCategoricalFieldType
+} from "../../grammar/scales/index.js";
+import { resolveStrokeDashScaleDefinition } from "../scales/definitions.js";
+import {
+  applyEncodingScale,
+  rematerializeEncoding,
+  resolveReassignmentScaleOptions,
+  resolveTarget,
+  setEncodingProperties,
+  validateOptions
+} from "./shared.js";
+import { findLayer } from "../../selectors/layers.js";
+import { validateCategoricalColorConsumer } from "../../grammar/scales/colorConsumers.js";
+import { validatePathSeriesAppearance } from "../../grammar/pathSeries.js";
+import { applyRequestedItemMissingPolicy } from
+  "../../grammar/itemMissing.js";
+
+const STROKE_DASH_ENCODING_OPTIONS = Object.freeze([
+  "field", "value", "target", "fieldType", "scale"
+]);
+
+const clearStrokeDashEncoding = /* @__PURE__ */ action(
+  {
+    op: "clearStrokeDashEncoding",
+    description: "Remove the current semantic stroke-dash assignment."
+  },
+  function ({ target } = {}) {
+    const layer = findLayer(this, target);
+    if (layer?.encoding?.strokeDash === undefined) return this;
+    return this.editSemantic({
+      property: `layer[${target}].encoding.strokeDash`,
+      remove: true
+    });
+  }
+);
+
+function reconcileLegendAfterDashRemoval(program, target) {
+  const config = program.guideConfigs.legend?.series;
+  if (
+    config?.target !== target ||
+    !config.channels.includes("strokeDash")
+  ) {
+    return program;
+  }
+  const layer = findLayer(program, target);
+  const channels = config.channels.filter(
+    channel =>
+      channel !== "strokeDash" &&
+      layer.encoding?.[channel]?.scale !== undefined
+  );
+  if (channels.length === 0) return program.removeCategoricalLegend();
+  return program
+    .editSemantic({
+      property: "guide.legend.series.channels",
+      value: channels
+    })
+    .rematerializeLegend();
+}
+
+const encodeStrokeDash = /* @__PURE__ */ action(
+  {
+    op: "encodeStrokeDash",
+    description: "Encode a categorical field as line stroke dash."
+  },
+  function (args = {}) {
+    validateOptions(args, STROKE_DASH_ENCODING_OPTIONS, "encodeStrokeDash");
+    const hasField = Object.hasOwn(args, "field");
+    const hasValue = Object.hasOwn(args, "value");
+    if (hasField === hasValue) {
+      throw new Error("encodeStrokeDash requires exactly one of field or value.");
+    }
+    if (hasValue && (args.fieldType !== undefined || args.scale !== undefined)) {
+      throw new Error("Constant stroke dash does not accept fieldType or scale.");
+    }
+    const { id: target, dataset: sourceDataset, layer } = resolveTarget(
+      this,
+      args.target,
+      APPEARANCE_MARK_TYPES.encodeStrokeDash,
+      "line or rule mark"
+    );
+    const dataset = hasField
+      ? applyRequestedItemMissingPolicy(layer, sourceDataset, args.field)
+      : sourceDataset;
+    if (hasValue) {
+      normalizeStrokeDashPattern(args.value);
+      validatePathSeriesAppearance(dataset.values, {
+        ...layer, encoding: { ...layer.encoding, strokeDash: { datum: args.value } }
+      }, this.semanticSpec.scales);
+      let next = layer.encoding?.strokeDash === undefined
+        ? this
+        : this.clearStrokeDashEncoding({ target });
+      next = next.editSemantic({
+        property: `layer[${target}].encoding.strokeDash.datum`,
+        value: args.value
+      });
+      next = reconcileLegendAfterDashRemoval(next, target);
+      return rematerializeEncoding(next, target, "strokeDash", undefined, layer);
+    }
+
+    const fieldType = validateCategoricalFieldType(args.fieldType ?? "nominal");
+    validatePathSeriesAppearance(dataset.values, {
+      ...layer, encoding: { ...layer.encoding, strokeDash: { field: args.field, fieldType } }
+    }, this.semanticSpec.scales);
+    const previous = layer.encoding?.strokeDash;
+    const requestedScale = previous?.field === args.field
+      ? resolveReassignmentScaleOptions(previous, args.scale ?? {})
+      : args.scale ?? {};
+    const scale = resolveStrokeDashScaleDefinition(this, requestedScale);
+    validateCategoricalColorConsumer(layer, { field: args.field, fieldType }, scale, "strokeDash");
+    readNominalField(dataset.values, args.field);
+
+    let next = previous === undefined
+      ? this
+      : this.clearStrokeDashEncoding({ target });
+    next = setEncodingProperties(next, target, "strokeDash", {
+      field: args.field,
+      fieldType,
+      scale: scale.id
+    });
+    next = applyEncodingScale(next, scale, requestedScale, {
+      reassignment: previous?.scale === scale.id
+    });
+
+    return rematerializeEncoding(next, target, "strokeDash", scale.id, layer);
+  }
+);
+
+export function registerStrokeDashEncodingActions(ProgramClass) {
+  ProgramClass.prototype.encodeStrokeDash = encodeStrokeDash;
+  ProgramClass.prototype.clearStrokeDashEncoding = clearStrokeDashEncoding;
+}

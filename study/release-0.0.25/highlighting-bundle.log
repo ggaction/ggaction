@@ -1,0 +1,23 @@
+npm notice
+npm notice New minor version of npm available! 11.18.0 -> 11.21.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.21.1
+npm notice To update run: npm install -g npm@11.21.1
+npm notice
+{
+  "package": "ggaction@0.0.25",
+  "source": "ggaction-0.0.25.tgz",
+  "full": {
+    "specifier": "ggaction",
+    "chunks": 1,
+    "modules": 582,
+    "minifiedBytes": 1786680,
+    "gzipBytes": 493778
+  },
+  "basic": {
+    "specifier": "ggaction/basic",
+    "chunks": 1,
+    "modules": 354,
+    "minifiedBytes": 890038,
+    "gzipBytes": 253832
+  }
+}

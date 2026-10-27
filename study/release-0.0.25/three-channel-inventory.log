@@ -1,0 +1,59 @@
+✔ deferred chart owner cards distinguish creation from completed geometry (6.520542ms)
+✔ compact action cards are generated from the current action contract (2632.884792ms)
+✔ compact action cards satisfy the bounded typed public schema projection (59.230667ms)
+✔ action-card hierarchy is generated from the executable direct-child trace (5773.077334ms)
+✔ scale spacing units agree across every generic and focused editor (3.717458ms)
+✔ Cartesian title cards retain numeric and relative gap logical-pixel units (3.246458ms)
+✔ action cards separate entry support, units, inference, and completion (3.382041ms)
+✔ every compact snippet type-checks against the exact ChartProgram declaration (160.731ms)
+✔ imputation call patterns preserve method-specific requirements (3.751917ms)
+✔ call pattern validation rejects unsupported top-level keys without confusing nested keys (0.773916ms)
+✔ advertised bar calls execute and direction-only guide branches retain their exact meaning (28.819333ms)
+✖ derives a bounded public option inventory without runtime prototype paths (91577.303542ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  291 !== 290
+  
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/contracts/generated-scenario-feature-coverage.test.js:217:10)
+      at async Test.run (node:internal/test_runner/test:932:9)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:297:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 291,
+    expected: 290,
+    operator: 'strictEqual'
+  }
+
+✔ passes only trace-backed action and recursive option evidence plus observed extras (5.036584ms)
+✔ observes collection and named-axis array parents through recursive trace count aliases (182361.326541ms)
+✔ hard-gates explicit distribution minima and reports exact scoped waivers (2.744666ms)
+✔ does not let descriptors, transitive calls, duplicates, or option claims inflate coverage (0.848458ms)
+✔ validates explicit and compact source lineage without reporting raw indexes (1.564083ms)
+✔ reports dataset, tier, recipe, and chart-family concentration failures (0.46175ms)
+✔ legend block declarations expose the closed Full-only contract (138.511125ms)
+ℹ tests 19
+ℹ suites 0
+ℹ pass 18
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 274083.239
+
+✖ failing tests:
+
+test at test/contracts/generated-scenario-feature-coverage.test.js:214:1
+✖ derives a bounded public option inventory without runtime prototype paths (91577.303542ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  291 !== 290
+  
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/contracts/generated-scenario-feature-coverage.test.js:217:10)
+      at async Test.run (node:internal/test_runner/test:932:9)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:297:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 291,
+    expected: 290,
+    operator: 'strictEqual'
+  }

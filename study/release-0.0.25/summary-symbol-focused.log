@@ -1,0 +1,19 @@
+✔ legend block declarations expose the closed Full-only contract (194.520375ms)
+✔ combined creation forwards the same bounded prefix to categorical and ordinal size blocks (89.561459ms)
+✔ bounded ordinal size creation survives persistence, resize and edit convergence (51.193166ms)
+✔ omission and false retain all ordinal categories while quantitative size sampling is unchanged (55.987416ms)
+✔ invalid bounded prefix options reject the combined action atomically (15.012542ms)
+✔ explicit summary sample paints the first hidden category while preserving every source row and path (89.694583ms)
+✔ summary sample renders the same pixels as an independent added line primitive (740.860875ms)
+✔ Basic line authoring supports the same summary policy through categorical color (37.709833ms)
+✔ summary samples follow final legend order, scale edits, resize and persistence (111.728708ms)
+✔ overflow reset and zero hidden entries remove the summary sample and converge with direct creation (97.20275ms)
+✔ invalid summary policies, nonline recipes and persisted tampering fail atomically (41.033875ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1467.827375

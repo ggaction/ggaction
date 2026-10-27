@@ -1,0 +1,24 @@
+{
+  "recordedAt": "2026-10-23T06:21:40.554Z",
+  "node": "v23.5.0",
+  "platform": "darwin",
+  "arch": "arm64",
+  "osRelease": "25.6.0",
+  "dependencies": {
+    "playwright": "1.63.0",
+    "@napi-rs/canvas": "1.0.9",
+    "typescript": "7.0.2"
+  },
+  "head": "31ce29f31e5ae87c57759a5b3e002db1f29a4808",
+  "suites": {
+    "all": 957,
+    "unit": 548,
+    "contracts": 179,
+    "charts": 216,
+    "gates": 0,
+    "docs": 14,
+    "realistic": 26,
+    "render": 104,
+    "browser": 30
+  }
+}

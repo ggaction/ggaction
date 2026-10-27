@@ -1,0 +1,7 @@
+
+> ggaction@0.0.25 docs:preflight
+> node scripts/check-docs-environment.js
+
+Documentation environment is not ready:
+- Ruby 3.2+ is required by the locked GitHub Pages bundle; found 2.6.10.
+- Bundler cannot resolve Gemfile.lock. Run bundle install with Ruby 3.2+.

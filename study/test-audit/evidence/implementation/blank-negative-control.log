@@ -1,0 +1,16 @@
+[
+  {
+    "chart": "continuous-area-color",
+    "blankRejected": true,
+    "error": "audit-continuous-area-color is unexpectedly blank\n\nfalse !== true\n"
+  },
+  {
+    "chart": "bootstrap-mean-ci",
+    "blankRejected": true,
+    "error": "audit-bootstrap-mean-ci is unexpectedly blank\n\nfalse !== true\n"
+  },
+  {
+    "invalidCSSRejected": true,
+    "error": "Invalid expected CSS color: not-a-css-color"
+  }
+]

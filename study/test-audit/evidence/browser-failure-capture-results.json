@@ -1,0 +1,6 @@
+{
+  "caught": "Intentional post-readiness assertion failure\n+ actual - expected\n\n+ 'actual'\n- 'expected'\n",
+  "remainingPagesBeforeEvidenceCapture": 0,
+  "newFailureDirectories": [],
+  "pattern": "named-shapes.browser.js:44-45"
+}

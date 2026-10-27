@@ -1,0 +1,34 @@
+✔ complete-chart discovery reaches semantic and primitive authoring layers (8.484667ms)
+✔ discovery separates completion from resource validity (4.825083ms)
+✔ entry-point discovery matches declarations and runtime methods (5.049917ms)
+✔ deferred chart owner cards distinguish creation from completed geometry (8.361292ms)
+✔ compact action cards are generated from the current action contract (1130.450667ms)
+✔ compact action cards satisfy the bounded typed public schema projection (74.261667ms)
+✔ action-card hierarchy is generated from the executable direct-child trace (7585.259416ms)
+✔ scale spacing units agree across every generic and focused editor (3.529416ms)
+✔ action cards separate entry support, units, inference, and completion (3.116042ms)
+✔ every compact snippet type-checks against the exact ChartProgram declaration (149.266125ms)
+✔ imputation call patterns preserve method-specific requirements (3.44375ms)
+✔ call pattern validation rejects unsupported top-level keys without confusing nested keys (0.851625ms)
+✔ advertised bar calls execute and direction-only guide branches retain their exact meaning (32.387833ms)
+✔ exposes exactly one read-only search tool with a byte-equal direct payload (52.030291ms)
+✔ keeps resource discovery bounded and reads exact cards and recipes (49.338083ms)
+✔ permits documentation only for the latest unresolved result (10.361208ms)
+✔ does not require or authorize documentation for a terminal unsupported result (6.760583ms)
+✔ routes attached-label removal to its explicit source selector (1.185333ms)
+✔ routes selected-label reset to the exact attached-label editor (0.941833ms)
+✔ routes semantic label placement to the exact attached-label editor (1.443959ms)
+✔ rejects legacy unresolved entries that omit their explicit resource (0.717625ms)
+✔ rejects non-knowledge resources and invalid tool arguments without execution (3.4745ms)
+✔ keeps the MCP implementation out of chart execution and network surfaces (1.275125ms)
+✔ Context7 configuration matches the supported repository schema (2.293833ms)
+✔ Context7 indexes canonical public documentation without duplicate bundles (0.842292ms)
+✔ Context7 refresh is wired to releases and explicit manual dispatch (2.054667ms)
+ℹ tests 26
+ℹ suites 0
+ℹ pass 26
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 9485.999084

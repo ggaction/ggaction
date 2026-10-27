@@ -1,0 +1,12 @@
+✔ new legend option and selector witnesses retain five calls and three authentic datasets (10100.048792ms)
+✔ point-owned facade combinations execute five times on tt-tour-de-france-winners (423.726833ms)
+✔ point-owned facade combinations execute five times on tt-london-marathon-winners (331.589125ms)
+✔ point-owned facade combinations execute five times on tt-penguins (391.769416ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 11629.939625

@@ -1,0 +1,59 @@
+{
+  "method": "Ajv against fetched declared official schemas only, with validateFormats:false: format keyword semantic validation is excluded. Unknown schema-free specs are not assumed v5. Valid means structural/type JSON Schema validity only, not compilability, data availability, behavior, visual fidelity, or source-correctness. A schema failure may reflect legitimate old grammar under an upgraded $schema or annotations; retain source and classify repair explicitly.",
+  "schemaSourceFile": "corpus-schema-sources.json",
+  "validationDate": "2026-10-27",
+  "schemaCompileErrors": [
+    {
+      "url": "https://vega.github.io/schema/vega-lite/v4.2.1.json",
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "candidates": 24957,
+  "counts": {
+    "valid-against-declared-schema": 2870,
+    "unknown-no-declared-schema": 21476,
+    "invalid-against-declared-schema": 610,
+    "unknown-unavailable-schema": 1
+  },
+  "groups": {
+    "app": {
+      "valid-against-declared-schema": 11
+    },
+    "benchmark/VisQA-release": {
+      "valid-against-declared-schema": 52
+    },
+    "benchmark/chartseer": {
+      "unknown-no-declared-schema": 9917
+    },
+    "benchmark/data2vis": {
+      "unknown-no-declared-schema": 4318
+    },
+    "benchmark/nvBench": {
+      "unknown-no-declared-schema": 7241
+    },
+    "benchmark/vega-lite-v4": {
+      "valid-against-declared-schema": 616,
+      "invalid-against-declared-schema": 5,
+      "unknown-unavailable-schema": 1
+    },
+    "benchmark/vega-lite": {
+      "valid-against-declared-schema": 715,
+      "invalid-against-declared-schema": 3
+    },
+    "canonical-1981": {
+      "invalid-against-declared-schema": 564,
+      "valid-against-declared-schema": 1417
+    },
+    "chart-48-subset": {
+      "valid-against-declared-schema": 29,
+      "invalid-against-declared-schema": 19
+    },
+    "chart-48-in-subset": {
+      "valid-against-declared-schema": 29,
+      "invalid-against-declared-schema": 19
+    },
+    "framework_sample": {
+      "valid-against-declared-schema": 1
+    }
+  }
+}

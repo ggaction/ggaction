@@ -1,0 +1,102 @@
+{
+  "immutableState": {
+    "file": "src/core/ChartProgram.js",
+    "line": 27,
+    "url": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/core/ChartProgram.js#L27"
+  },
+  "actionWrapper": {
+    "file": "src/core/action.js",
+    "line": 181,
+    "url": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/core/action.js#L181"
+  },
+  "materializationPlan": {
+    "file": "src/materialization/planner.js",
+    "line": 3,
+    "url": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/materialization/planner.js#L3"
+  },
+  "coordinateTypes": {
+    "file": "src/grammar/coordinates.js",
+    "line": 5,
+    "url": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/grammar/coordinates.js#L5"
+  },
+  "markTypes": {
+    "file": "src/core/vocabulary.js",
+    "line": 1,
+    "url": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/core/vocabulary.js#L1"
+  },
+  "scaleTypes": {
+    "file": "src/grammar/scales/types.js",
+    "line": 1,
+    "url": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/grammar/scales/types.js#L1"
+  },
+  "graphicSchema": {
+    "file": "src/grammar/schemas/graphic.js",
+    "line": 118,
+    "url": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/grammar/schemas/graphic.js#L118"
+  },
+  "concreteValidation": {
+    "file": "src/grammar/schemas/concreteGraphic.js",
+    "line": 30,
+    "url": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/grammar/schemas/concreteGraphic.js#L30"
+  },
+  "computedGrammar": {
+    "file": "src/grammar/computed.js",
+    "line": 8,
+    "url": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/grammar/computed.js#L8"
+  },
+  "selectors": {
+    "file": "src/grammar/markSelection.js",
+    "line": 4,
+    "url": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/grammar/markSelection.js#L4"
+  },
+  "scene": {
+    "file": "src/scene.js",
+    "line": 83,
+    "url": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/scene.js#L83"
+  },
+  "sceneRenderer": {
+    "file": "src/renderers/canvas/scene.js",
+    "line": 57,
+    "url": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/renderers/canvas/scene.js#L57"
+  },
+  "persistenceState": {
+    "file": "src/persistence/validation.js",
+    "line": 63,
+    "url": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/persistence/validation.js#L63"
+  },
+  "persistence": {
+    "file": "src/persistence.js",
+    "line": 121,
+    "url": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/persistence.js#L121"
+  },
+  "resourceLimits": {
+    "file": "src/core/validation.js",
+    "line": 5,
+    "url": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/core/validation.js#L5"
+  },
+  "pathLimits": {
+    "file": "src/grammar/pathCommands.js",
+    "line": 4,
+    "url": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/grammar/pathCommands.js#L4"
+  },
+  "themes": {
+    "file": "src/theme/defaults.js",
+    "line": 2,
+    "url": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/theme/defaults.js#L2"
+  },
+  "inspection": {
+    "file": "types/inspection.d.ts",
+    "line": 51,
+    "url": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/types/inspection.d.ts#L51"
+  },
+  "accessibility": {
+    "file": "types/accessibility.d.ts",
+    "line": 37,
+    "url": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/types/accessibility.d.ts#L37"
+  },
+  "rasterLimits": {
+    "file": "src/renderers/canvas/limits.js",
+    "line": 2,
+    "url": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/renderers/canvas/limits.js#L2"
+  }
+}

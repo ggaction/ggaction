@@ -1,0 +1,62 @@
+{
+  "programs": 55,
+  "uniqueFiles": 50,
+  "collisions": [
+    {
+      "file": "recipes/line-chart.md",
+      "cases": [
+        {
+          "id": "primary",
+          "environment": "node-esm",
+          "result": "program"
+        },
+        {
+          "id": "canvas-layout-7",
+          "contains": "const layered = chart()",
+          "environment": "node-esm",
+          "result": "layered"
+        }
+      ]
+    },
+    {
+      "file": "api/marks/line-area.md",
+      "cases": [
+        {
+          "id": "primary",
+          "contains": "const gaps =",
+          "environment": "node-esm",
+          "result": "gaps"
+        },
+        {
+          "id": "canvas-layout-2",
+          "contains": "const program = chart().createCanvas()\n",
+          "environment": "node-esm",
+          "result": "program"
+        },
+        {
+          "id": "canvas-layout-3",
+          "contains": "const layered = chart()",
+          "environment": "node-esm",
+          "result": "layered"
+        },
+        {
+          "id": "canvas-layout-4",
+          "contains": "const radar = chart()",
+          "environment": "node-esm",
+          "result": "radar"
+        },
+        {
+          "id": "canvas-layout-5",
+          "contains": "const area = chart()",
+          "environment": "node-esm",
+          "result": "area"
+        }
+      ]
+    }
+  ],
+  "coverage": {
+    "exception": 405,
+    "executable": 55,
+    "generated": 220
+  }
+}

@@ -1,0 +1,674 @@
+[
+  {
+    "path": "benchmark/vega-lite-v4/facet_cross_independent_scale.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "panel-independent-y-declaration",
+    "finalDisposition": "allowed-panel-candidate-needs-resolved-frame-check"
+  },
+  {
+    "path": "benchmark/vega-lite-v4/layer_dual_axis.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "layer-independent-y-candidate",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "benchmark/vega-lite-v4/layer_dual_axis_normalized.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "layer-independent-y-candidate",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "benchmark/vega-lite/facet_cross_independent_scale.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "panel-independent-y-declaration",
+    "finalDisposition": "allowed-panel-candidate-needs-resolved-frame-check"
+  },
+  {
+    "path": "benchmark/vega-lite/layer_dual_axis.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "layer-independent-y-candidate",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "benchmark/vega-lite/layer_dual_axis_normalized.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "layer-independent-y-candidate",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_0027.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "panel-independent-y-declaration",
+    "finalDisposition": "allowed-panel-candidate-needs-resolved-frame-check"
+  },
+  {
+    "path": "docs/data/chart/vl_0027.vl.json",
+    "rootPointer": "",
+    "pointer": "/vconcat/1/resolve/scale/y",
+    "kind": "panel-independent-y-declaration",
+    "finalDisposition": "allowed-panel-candidate-needs-resolved-frame-check"
+  },
+  {
+    "path": "docs/data/chart/vl_0041.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "layer-independent-y-candidate",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_0070.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "layer-independent-y-candidate",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_0078.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "unresolved-independent-y-declaration",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_0079.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "unresolved-independent-y-declaration",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_0100.vl.json",
+    "rootPointer": "",
+    "pointer": "/hconcat/0/resolve/scale/y",
+    "kind": "unresolved-independent-y-declaration",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_0121.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "unresolved-independent-y-declaration",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_0127.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "layer-independent-y-candidate",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_0128.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "layer-independent-y-candidate",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_0129.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "layer-independent-y-candidate",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_0130.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "layer-independent-y-candidate",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_0131.vl.json",
+    "rootPointer": "",
+    "pointer": "/hconcat/0/resolve/scale/y",
+    "kind": "unresolved-independent-y-declaration",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_0134.vl.json",
+    "rootPointer": "",
+    "pointer": "/hconcat/0/resolve/scale/y",
+    "kind": "unresolved-independent-y-declaration",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_0161.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "layer-independent-y-candidate",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_0167.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "layer-independent-y-candidate",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_0180.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "unresolved-independent-y-declaration",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_0187.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "layer-independent-y-candidate",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_0222.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "layer-independent-y-candidate",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_0224.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "layer-independent-y-candidate",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_0288.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "unresolved-independent-y-declaration",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_0431.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "unresolved-independent-y-declaration",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_0432.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "unresolved-independent-y-declaration",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_0433.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "unresolved-independent-y-declaration",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_0434.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "unresolved-independent-y-declaration",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_0448.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "unresolved-independent-y-declaration",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_0457.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "layer-independent-y-candidate",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_0462.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "unresolved-independent-y-declaration",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_0518.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "layer-independent-y-candidate",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_0522.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "unresolved-independent-y-declaration",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_0525.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "layer-independent-y-candidate",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_0557.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "unresolved-independent-y-declaration",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_0579.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "layer-independent-y-candidate",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_0581.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "unresolved-independent-y-declaration",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_0604.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "unresolved-independent-y-declaration",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_0610.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "unresolved-independent-y-declaration",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_0628.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "unresolved-independent-y-declaration",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_0629.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "unresolved-independent-y-declaration",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_0632.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "unresolved-independent-y-declaration",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_0650.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "layer-independent-y-candidate",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_0679.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "layer-independent-y-candidate",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_0686.vl.json",
+    "rootPointer": "",
+    "pointer": "/vconcat/0/resolve/scale/y",
+    "kind": "panel-independent-y-declaration",
+    "finalDisposition": "allowed-panel-candidate-needs-resolved-frame-check"
+  },
+  {
+    "path": "docs/data/chart/vl_0817.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "layer-independent-y-candidate",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_0851.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "panel-independent-y-declaration",
+    "finalDisposition": "allowed-panel-candidate-needs-resolved-frame-check"
+  },
+  {
+    "path": "docs/data/chart/vl_0891.vl.json",
+    "rootPointer": "",
+    "pointer": "/hconcat/0/resolve/scale/y",
+    "kind": "layer-independent-y-candidate",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_0900.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "layer-independent-y-candidate",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_0916.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "unresolved-independent-y-declaration",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_0944.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "unresolved-independent-y-declaration",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_0945.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "unresolved-independent-y-declaration",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_0997.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "unresolved-independent-y-declaration",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_0998.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "unresolved-independent-y-declaration",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_0999.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "unresolved-independent-y-declaration",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_1029.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "layer-independent-y-candidate",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_1124.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "layer-independent-y-candidate",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_1355.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "layer-independent-y-candidate",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_1422.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "unresolved-independent-y-declaration",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_1423.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "unresolved-independent-y-declaration",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_1424.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "unresolved-independent-y-declaration",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_1425.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "unresolved-independent-y-declaration",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_1432.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "unresolved-independent-y-declaration",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_1433.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "unresolved-independent-y-declaration",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_1440.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "unresolved-independent-y-declaration",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_1441.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "unresolved-independent-y-declaration",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_1442.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "unresolved-independent-y-declaration",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_1443.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "unresolved-independent-y-declaration",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_1534.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "layer-independent-y-candidate",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_1536.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "layer-independent-y-candidate",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_1544.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "unresolved-independent-y-declaration",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_1547.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "panel-independent-y-declaration",
+    "finalDisposition": "allowed-panel-candidate-needs-resolved-frame-check"
+  },
+  {
+    "path": "docs/data/chart/vl_1549.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "panel-independent-y-declaration",
+    "finalDisposition": "allowed-panel-candidate-needs-resolved-frame-check"
+  },
+  {
+    "path": "docs/data/chart/vl_1551.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "panel-independent-y-declaration",
+    "finalDisposition": "allowed-panel-candidate-needs-resolved-frame-check"
+  },
+  {
+    "path": "docs/data/chart/vl_1700.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "layer-independent-y-candidate",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_1888.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "unresolved-independent-y-declaration",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_1893.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "unresolved-independent-y-declaration",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_1930.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "unresolved-independent-y-declaration",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_1931.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "unresolved-independent-y-declaration",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_1936.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "unresolved-independent-y-declaration",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_1937.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "unresolved-independent-y-declaration",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_1938.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "unresolved-independent-y-declaration",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_1947.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "unresolved-independent-y-declaration",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_1948.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "unresolved-independent-y-declaration",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_1953.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "layer-independent-y-candidate",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_1954.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "layer-independent-y-candidate",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart/vl_1955.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "unresolved-independent-y-declaration",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart_48/vl_09.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "layer-independent-y-candidate",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart_48/vl_18.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "layer-independent-y-candidate",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart_48/vl_46.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "layer-independent-y-candidate",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart_48_in/vl_09.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "layer-independent-y-candidate",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart_48_in/vl_18.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "layer-independent-y-candidate",
+    "finalDisposition": "scope-review-required"
+  },
+  {
+    "path": "docs/data/chart_48_in/vl_46.vl.json",
+    "rootPointer": "",
+    "pointer": "/resolve/scale/y",
+    "kind": "layer-independent-y-candidate",
+    "finalDisposition": "scope-review-required"
+  }
+]

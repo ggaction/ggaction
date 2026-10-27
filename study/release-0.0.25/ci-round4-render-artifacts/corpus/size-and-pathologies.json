@@ -1,0 +1,265 @@
+[
+  {
+    "id": "size-small",
+    "origin": "synthetic",
+    "consumer": "createScatterPlot",
+    "postcondition": "row cardinality and finite in-bounds positions",
+    "profile": {
+      "rows": 32,
+      "sourceRows": 32,
+      "selection": "full-source",
+      "sizeTier": "small",
+      "duplicateRows": 0,
+      "categories": {
+        "group": 4
+      },
+      "numeric": {
+        "x": {
+          "missing": 0,
+          "nonFinite": 0,
+          "negative": 0,
+          "zero": 1,
+          "distinct": 32,
+          "min": 0,
+          "max": 31
+        },
+        "y": {
+          "missing": 0,
+          "nonFinite": 0,
+          "negative": 0,
+          "zero": 1,
+          "distinct": 32,
+          "min": 0,
+          "max": 31
+        }
+      }
+    }
+  },
+  {
+    "id": "size-medium",
+    "origin": "synthetic",
+    "consumer": "createScatterPlot",
+    "postcondition": "row cardinality and finite in-bounds positions",
+    "profile": {
+      "rows": 512,
+      "sourceRows": 512,
+      "selection": "full-source",
+      "sizeTier": "medium",
+      "duplicateRows": 0,
+      "categories": {
+        "group": 32
+      },
+      "numeric": {
+        "x": {
+          "missing": 0,
+          "nonFinite": 0,
+          "negative": 0,
+          "zero": 2,
+          "distinct": 300,
+          "min": 0,
+          "max": 299
+        },
+        "y": {
+          "missing": 0,
+          "nonFinite": 0,
+          "negative": 0,
+          "zero": 9,
+          "distinct": 60,
+          "min": 0,
+          "max": 59
+        }
+      }
+    }
+  },
+  {
+    "id": "size-large",
+    "origin": "synthetic",
+    "consumer": "createScatterPlot",
+    "postcondition": "row cardinality and finite in-bounds positions",
+    "profile": {
+      "rows": 4096,
+      "sourceRows": 4096,
+      "selection": "full-source",
+      "sizeTier": "large",
+      "duplicateRows": 0,
+      "categories": {
+        "group": 256
+      },
+      "numeric": {
+        "x": {
+          "missing": 0,
+          "nonFinite": 0,
+          "negative": 0,
+          "zero": 14,
+          "distinct": 300,
+          "min": 0,
+          "max": 299
+        },
+        "y": {
+          "missing": 0,
+          "nonFinite": 0,
+          "negative": 0,
+          "zero": 69,
+          "distinct": 60,
+          "min": 0,
+          "max": 59
+        }
+      }
+    }
+  },
+  {
+    "id": "missing",
+    "origin": "synthetic-overlay",
+    "consumer": "createSummaryData",
+    "expected": {
+      "mean": 4,
+      "sum": 4,
+      "missing": 1
+    },
+    "profile": {
+      "rows": 2,
+      "sourceRows": 2,
+      "selection": "full-source",
+      "sizeTier": "small",
+      "duplicateRows": 0,
+      "categories": {
+        "group": 1
+      },
+      "numeric": {
+        "y": {
+          "missing": 1,
+          "nonFinite": 0,
+          "negative": 0,
+          "zero": 0,
+          "distinct": 1,
+          "min": 4,
+          "max": 4
+        }
+      }
+    }
+  },
+  {
+    "id": "duplicates",
+    "origin": "synthetic-overlay",
+    "consumer": "createSummaryData",
+    "expected": {
+      "mean": 4,
+      "sum": 8,
+      "missing": 0
+    },
+    "profile": {
+      "rows": 2,
+      "sourceRows": 2,
+      "selection": "full-source",
+      "sizeTier": "small",
+      "duplicateRows": 1,
+      "categories": {
+        "group": 1
+      },
+      "numeric": {
+        "y": {
+          "missing": 0,
+          "nonFinite": 0,
+          "negative": 0,
+          "zero": 0,
+          "distinct": 1,
+          "min": 4,
+          "max": 4
+        }
+      }
+    }
+  },
+  {
+    "id": "signed-zero",
+    "origin": "synthetic-overlay",
+    "consumer": "createSummaryData",
+    "expected": {
+      "mean": 0,
+      "sum": 0,
+      "missing": 0
+    },
+    "profile": {
+      "rows": 3,
+      "sourceRows": 3,
+      "selection": "full-source",
+      "sizeTier": "small",
+      "duplicateRows": 0,
+      "categories": {
+        "group": 1
+      },
+      "numeric": {
+        "y": {
+          "missing": 0,
+          "nonFinite": 0,
+          "negative": 1,
+          "zero": 1,
+          "distinct": 3,
+          "min": -4,
+          "max": 4
+        }
+      }
+    }
+  },
+  {
+    "id": "constant",
+    "origin": "synthetic-overlay",
+    "consumer": "createSummaryData",
+    "expected": {
+      "mean": 2,
+      "sum": 6,
+      "missing": 0
+    },
+    "profile": {
+      "rows": 3,
+      "sourceRows": 3,
+      "selection": "full-source",
+      "sizeTier": "small",
+      "duplicateRows": 2,
+      "categories": {
+        "group": 1
+      },
+      "numeric": {
+        "y": {
+          "missing": 0,
+          "nonFinite": 0,
+          "negative": 0,
+          "zero": 0,
+          "distinct": 1,
+          "min": 2,
+          "max": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "large-magnitude",
+    "origin": "synthetic-overlay",
+    "consumer": "createSummaryData",
+    "expected": {
+      "mean": 1e+100,
+      "sum": 2e+100,
+      "missing": 0
+    },
+    "profile": {
+      "rows": 2,
+      "sourceRows": 2,
+      "selection": "full-source",
+      "sizeTier": "small",
+      "duplicateRows": 1,
+      "categories": {
+        "group": 1
+      },
+      "numeric": {
+        "y": {
+          "missing": 0,
+          "nonFinite": 0,
+          "negative": 0,
+          "zero": 0,
+          "distinct": 1,
+          "min": 1e+100,
+          "max": 1e+100
+        }
+      }
+    }
+  }
+]

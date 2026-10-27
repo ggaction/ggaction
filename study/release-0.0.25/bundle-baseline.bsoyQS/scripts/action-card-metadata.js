@@ -1,0 +1,297 @@
+import { SCALE_OPTION_UNITS } from "../src/grammar/scales/types.js";
+
+const ROLE_ORDER = Object.freeze(["H0", "H1", "H2", "H3", "H4"]);
+
+const analysisChartNames = new Set([
+  "createDotPlot",
+  "createLollipopPlot",
+  "createDumbbellPlot",
+  "createECDFPlot",
+  "createIntervalPlot",
+  "createRegressionPlot",
+  "createRaincloudPlot",
+  "createHistogram",
+  "createDensityPlot",
+  "createHorizonPlot"
+]);
+const analysisChartEditorNames = new Set([
+  "editEndpointPlot",
+  "editECDFPlot",
+  "editRadarPlot",
+  "editRaincloudPlot"
+]);
+
+const h0CompositionNames = new Set(["facet", "facetGrid", "repeatCharts", "createAdjacentPlot", "createLayerPlot"]);
+const coreH3Names = new Set([
+  "applyTextMetrics",
+  "removeTextMetrics",
+  "reviseData",
+  "createCanvas",
+  "editCanvas",
+  "fitCanvas",
+  "applyTheme",
+  "removeTheme"
+]);
+const analyticMarkNames = new Set([
+  "createOverlay",
+  "createStatisticalReference",
+  "createReferenceLine",
+  "createReferenceBand",
+  "createMarkLabels",
+  "createAnnotation"
+]);
+
+const explicitFacadeEditors = Object.freeze({
+  createLayerPlot: ["encodeColor", "encodeOpacity", "removeMark"],
+  createAdjacentPlot: ["editCompositionLayout", "editCompositionScales", "replaceCompositionChild"],
+  createOverlay: ["editOverlay", "editLineMark", "editPointMark"],
+  createDotPlot: ["editEndpointPlot"],
+  createLollipopPlot: ["editEndpointPlot"],
+  createDumbbellPlot: ["editEndpointPlot"],
+  createECDFPlot: ["editECDFPlot"],
+  createRaincloudPlot: ["editRaincloudPlot"],
+  createRadarPlot: ["editRadarPlot"],
+  facet: ["editFacetSource", "editFacetHeaders", "editFacetScales", "editFacetGuides", "editCompositionLayout"],
+  facetGrid: ["editFacetSource", "editFacetHeaders", "editFacetScales", "editFacetGuides", "editCompositionLayout"],
+  repeatCharts: ["editFacetSource", "editFacetHeaders", "editFacetScales", "editFacetGuides", "editCompositionLayout"]
+});
+
+const explicitLifecycleEditors = Object.freeze({
+  applyTheme: ["applyTheme", "removeTheme"],
+  removeTheme: ["applyTheme"],
+  bindMarkData: ["bindMarkData"],
+  filterData: ["editFilteredData"],
+  layoutLabels: ["layoutLabels", "removeLabelLayout"],
+  jitterPoints: ["jitterPoints", "removeJitter"],
+  packPoints: ["packPoints", "removePointPacking"],
+  filterMarks: ["removeMarkFilter"],
+  createMarkLabels: ["editMarkLabelSelection", "editMarkLabelPlacement", "removeMarkLabels"],
+  editMarkLabelSelection: ["editMarkLabelSelection", "editMarkLabelPlacement", "removeMarkLabels"],
+  editMarkLabelPlacement: ["editMarkLabelPlacement", "removeMarkLabels"],
+  selectMarks: ["editMarkSelection", "removeMarkSelection"],
+  editMarkSelection: ["editMarkSelection", "removeMarkSelection"],
+  highlightMarks: ["removeMarkHighlight"],
+  encodePointRadius: ["removePointRadius"],
+  encodePathOrder: ["removePathOrder"],
+  orderCategories: ["removeCategoryOrder"],
+  editEndpointPlot: ["editEndpointPlot"],
+  editECDFPlot: ["editECDFPlot"],
+  editRadarPlot: ["editRadarPlot"],
+  editRaincloudPlot: ["editRaincloudPlot"]
+});
+
+const selectorInputs = new Set([
+  "target",
+  "data",
+  "source",
+  "coordinate",
+  "scale",
+  "xScale",
+  "yScale",
+  "selection",
+  "parent",
+  "before",
+  "after"
+]);
+const explicitSelectorActions = new Set([
+  "editMarkLabelSelection",
+  "editMarkLabelPlacement",
+  "removeMarkLabels"
+]);
+
+const logicalPixelNames = new Set([
+  "width",
+  "height",
+  "margin",
+  "padding",
+  "minPlotWidth",
+  "minPlotHeight",
+  "strokeWidth",
+  "lineWidth",
+  "fontSize",
+  "offset",
+  "rowPadding",
+  "titlePadding",
+  "alongOffset",
+  "maxWidth",
+  "lineHeight",
+  "capSize",
+  "length",
+  "radius"
+]);
+
+const countNames = new Set(["count", "columns", "bands", "steps", "maxBins", "precision"]);
+const emptyResultActions = new Set([
+  "filterData",
+  "filterMarks",
+  "createLookupData",
+  "createFlattenData",
+  "createData",
+  "createPointMark",
+  "createTickMark",
+  "createLineMark",
+  "createBarMark",
+  "createAreaMark",
+  "createArcMark",
+  "createRectMark",
+  "createRuleMark",
+  "createTextMark",
+  "encodeDx",
+  "encodeDy"
+]);
+
+function unique(values) {
+  return [...new Set(values)];
+}
+
+function operation(name) {
+  return name === "facet" || name === "facetGrid" || name === "repeatCharts"
+    ? "compose"
+    : name.match(/^[a-z]+/)?.[0] ?? "";
+}
+
+export function authoringRoles(action) {
+  if (action.layer === "primitive") return ["H4"];
+  const roles = [];
+  if (action.domain === "charts") {
+    if (action.name.startsWith("create")) roles.push("H0");
+    if (analysisChartNames.has(action.name) || analysisChartEditorNames.has(action.name)) roles.push("H1");
+    if (action.name.startsWith("edit")) roles.push("H3");
+  } else if (action.domain === "composition") {
+    roles.push(h0CompositionNames.has(action.name) ? "H0" : "H3");
+  } else if (action.domain === "statistics") {
+    roles.push("H1");
+    if (action.name.startsWith("create") && action.name.endsWith("Plot")) roles.unshift("H0");
+    if (action.name.startsWith("edit") || action.name.startsWith("remove")) roles.push("H3");
+  } else if (action.domain === "marks") {
+    if (analyticMarkNames.has(action.name)) roles.push("H1");
+    roles.push(action.name.startsWith("create") ? "H2" : "H3");
+  } else if (action.domain === "encodings") {
+    roles.push("H2");
+    if (action.name.startsWith("edit") || action.name.startsWith("remove")) roles.push("H3");
+  } else if (action.domain === "core") {
+    roles.push(coreH3Names.has(action.name) ? "H3" : "H2");
+  } else if (["axes", "grid", "legend_and_title", "mark-selection"].includes(action.domain)) {
+    roles.push("H3");
+  } else {
+    throw new Error(`Authoring role classification is missing for ${action.name}.`);
+  }
+  return ROLE_ORDER.filter(role => roles.includes(role));
+}
+
+function referencedUpdateActions(action, actionNames) {
+  return [...action.update.matchAll(/`([A-Za-z][A-Za-z0-9]*)`/g)]
+    .map(match => match[1])
+    .filter(name => actionNames.has(name));
+}
+
+export function editableVia(action, actionNames) {
+  if (explicitFacadeEditors[action.name]) return explicitFacadeEditors[action.name];
+  if (explicitLifecycleEditors[action.name]) return explicitLifecycleEditors[action.name];
+  if (action.domain === "charts") return [];
+  const candidates = [];
+  if (action.name.startsWith("edit")) candidates.push(action.name);
+  if (action.name.startsWith("create")) {
+    const conventional = `edit${action.name.slice("create".length)}`;
+    if (actionNames.has(conventional)) candidates.push(conventional);
+  }
+  candidates.push(...referencedUpdateActions(action, actionNames));
+  if (action.domain === "encodings" && action.name.startsWith("encode") && actionNames.has("removeEncoding")) {
+    candidates.push("removeEncoding");
+  }
+  return unique(candidates);
+}
+
+export function supportedEntryPoints(action, basicActionNames) {
+  return basicActionNames.has(action.name) ? ["default", "basic"] : ["default"];
+}
+
+function includesNumber(type) {
+  return /(?:^|[^A-Za-z])number(?:$|[^A-Za-z])/.test(type);
+}
+
+export function optionUnits(action, options) {
+  const units = [];
+  if (["createMarkLabels", "editMarkLabelPlacement"].includes(action.name)) {
+    units.push(
+      { path: "placement.gap", unit: "logical-pixel" },
+      { path: "placement.leader.strokeWidth", unit: "logical-pixel" }
+    );
+  }
+  for (const option of options) {
+    let unit;
+    if (/^(create|edit).*Scale$/.test(action.name) &&
+        Object.hasOwn(SCALE_OPTION_UNITS, option.name) && includesNumber(option.type)) {
+      unit = SCALE_OPTION_UNITS[option.name];
+    } else if (["encodeDx", "encodeDy"].includes(action.name) && option.name === "value") unit = "logical-pixel";
+    else if (option.name === "temporalUnit") unit = "temporal-input";
+    else if (action.name === "createTimeUnitData" && option.name === "unit") unit = "calendar-unit";
+    else if (option.name === "rotation" && option.type.includes("RotationInput")) unit = "angle";
+    else if (option.name === "offset" && option.type.includes("AxisTitleOffset")) {
+      unit = "logical-pixel";
+      units.push({ path: "offset.gap", unit: "logical-pixel" });
+    }
+    else if ((option.name === "angle" || option.name === "padAngle") && includesNumber(option.type)) unit = "degree";
+    else if (option.name === "innerRadius" && (includesNumber(option.type) || option.type.includes("ArcInnerRadius"))) {
+      unit = "ratio";
+      if (option.type.includes("ArcInnerRadius")) units.push({ path: "innerRadius.value", unit: "logical-pixel" });
+    } else if (option.name === "arc" && option.type.includes("ArcInnerRadius")) {
+      units.push({ path: "arc.innerRadius", unit: "ratio" },
+        { path: "arc.innerRadius.value", unit: "logical-pixel" });
+    }
+    else if (["createBoxPlot", "editBoxPlot", "createGradientPlot", "editGradientPlot"].includes(action.name) && option.name === "width") {
+      unit = "band-fraction";
+    } else if (action.name === "createBarPlot" && option.name === "width") {
+      units.push({ path: option.name, unit: "logical-pixel" });
+      unit = "band-fraction";
+    } else if (["paddingInner", "paddingOuter"].includes(option.name) && includesNumber(option.type)) unit = "band-fraction";
+    else if (option.name === "opacity" && includesNumber(option.type)) unit = "probability";
+    else if (option.name === "bandwidth" && includesNumber(option.type)) unit = "data-value";
+    else if ((countNames.has(option.name) || (action.name === "createGraphics" && option.name === "length")) && includesNumber(option.type)) unit = "count";
+    else if (logicalPixelNames.has(option.name) && includesNumber(option.type)) {
+      unit = "logical-pixel";
+    }
+    if (unit) units.push({ path: option.name, unit });
+  }
+  return action.name === "createTimeUnitData"
+    ? units.sort((left, right) => left.path === "unit" ? -1 : right.path === "unit" ? 1 : 0)
+    : units;
+}
+
+export function optionInference(action, options) {
+  const inference = [];
+  for (const option of options) {
+    if (["parent", "before", "after"].includes(option.name)) {
+      inference.push({ input: option.name, strategy: "explicit" });
+    } else if (selectorInputs.has(option.name)) {
+      inference.push({
+        input: option.name,
+        strategy: option.required || explicitSelectorActions.has(action.name)
+          ? "explicit"
+          : "explicit-current-unique-or-error"
+      });
+    }
+    if (option.type.includes('"auto"')) {
+      inference.push({ input: option.name, strategy: "documented-auto" });
+    }
+  }
+  if (
+    ["create", "compose"].includes(operation(action.name)) &&
+    options.some(option => !option.required && !selectorInputs.has(option.name))
+  ) {
+    inference.push({ input: "omitted optional options", strategy: "documented-default" });
+  }
+  return unique(inference.map(entry => JSON.stringify(entry))).map(JSON.parse);
+}
+
+export function completionRequirements(action, prerequisites) {
+  let state = "contextual";
+  if (action.layer === "primitive") state = "not-applicable";
+  else if (["createBoxPlot", "createGradientPlot"].includes(action.name)) state = "deferred";
+  else if (authoringRoles(action).includes("H0")) state = "complete";
+  return {
+    state,
+    requires: state === "not-applicable" ? [] : prerequisites,
+    allowsEmpty: emptyResultActions.has(action.name)
+  };
+}

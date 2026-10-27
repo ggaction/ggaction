@@ -1,0 +1,17 @@
+{
+  "compilerVersion": "7.0.2",
+  "node": "v20.20.2",
+  "args": [
+    "--noEmit",
+    "--strict",
+    "--skipLibCheck",
+    "--target",
+    "ES2022",
+    "/tmp/ggaction-compiler-control-6KkMlH/negative.mts"
+  ],
+  "cwd": "/home/runner/work/ggaction/ggaction/",
+  "status": 1,
+  "signal": null,
+  "durationMs": 132.932534,
+  "diagnostics": "../../../../../tmp/ggaction-compiler-control-6KkMlH/negative.mts(1,1): error TS2578: Unused '@ts-expect-error' directive.\n"
+}

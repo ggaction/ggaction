@@ -1,0 +1,5 @@
+
+> ggaction@0.0.25 contracts:cards
+> node scripts/generate-action-cards.js
+
+298 compact action cards; max 4681 bytes; median 1980 bytes

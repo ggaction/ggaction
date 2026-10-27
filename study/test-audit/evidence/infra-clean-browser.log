@@ -1,0 +1,41 @@
+✖ browser failure evidence contains the failed page screenshot and error (11.909917ms)
+  browserType.launch: Executable doesn't exist at /Users/hj/Desktop/ggaction_chongjeonglee/study/test-audit/evidence/infra-empty-browsers/chromium_headless_shell-1243/chrome-headless-shell-mac-arm64/chrome-headless-shell
+  ╔════════════════════════════════════════════════════════════╗
+  ║ Looks like Playwright was just installed or updated.       ║
+  ║ Please run the following command to download new browsers: ║
+  ║                                                            ║
+  ║     npx playwright install                                 ║
+  ║                                                            ║
+  ║ <3 Playwright Team                                         ║
+  ╚════════════════════════════════════════════════════════════╝
+      at TestContext.<anonymous> (/Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/unit/support/failure-artifacts.test.js:105:34) {
+    name: 'Error',
+    log: []
+  }
+
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 555.6355
+
+✖ failing tests:
+
+test at test/unit/support/failure-artifacts.test.js:104:1
+✖ browser failure evidence contains the failed page screenshot and error (11.909917ms)
+  browserType.launch: Executable doesn't exist at /Users/hj/Desktop/ggaction_chongjeonglee/study/test-audit/evidence/infra-empty-browsers/chromium_headless_shell-1243/chrome-headless-shell-mac-arm64/chrome-headless-shell
+  ╔════════════════════════════════════════════════════════════╗
+  ║ Looks like Playwright was just installed or updated.       ║
+  ║ Please run the following command to download new browsers: ║
+  ║                                                            ║
+  ║     npx playwright install                                 ║
+  ║                                                            ║
+  ║ <3 Playwright Team                                         ║
+  ╚════════════════════════════════════════════════════════════╝
+      at TestContext.<anonymous> (/Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/unit/support/failure-artifacts.test.js:105:34) {
+    name: 'Error',
+    log: []
+  }

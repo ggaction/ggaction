@@ -1,0 +1,12 @@
+
+> ggaction@0.0.25 docs:build
+> bundle exec jekyll build --source docs --destination _site --baseurl /ggaction
+
+Configuration file: docs/_config.yml
+            Source: docs
+       Destination: _site
+ Incremental build: disabled. Enable with --incremental
+      Generating... 
+       Jekyll Feed: Generating feed for posts
+                    done in 50.539 seconds.
+ Auto-regeneration: disabled. Use --watch to enable.

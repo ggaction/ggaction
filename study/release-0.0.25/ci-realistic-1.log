@@ -1,0 +1,693 @@
+﻿2026-10-26T20:18:10.6809974Z Current runner version: '2.338.0'
+2026-10-26T20:18:10.6827205Z ##[group]Runner Image Provisioner
+2026-10-26T20:18:10.6827721Z Hosted Compute Agent
+2026-10-26T20:18:10.6828172Z Version: 20261021.618
+2026-10-26T20:18:10.6828549Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-10-26T20:18:10.6829056Z Build Date: 2026-10-21T00:45:21Z
+2026-10-26T20:18:10.6829473Z Worker ID: {4ca38376-d723-477b-b3c7-28429e7fcff5}
+2026-10-26T20:18:10.6829895Z Region: centralus
+2026-10-26T20:18:10.6830284Z Cloud: Azure
+2026-10-26T20:18:10.6830607Z ##[endgroup]
+2026-10-26T20:18:10.6831390Z ##[group]Operating System
+2026-10-26T20:18:10.6831761Z Ubuntu
+2026-10-26T20:18:10.6832074Z 24.04.5
+2026-10-26T20:18:10.6832428Z LTS
+2026-10-26T20:18:10.6832739Z ##[endgroup]
+2026-10-26T20:18:10.6833086Z ##[group]Runner Image
+2026-10-26T20:18:10.6833495Z Image: ubuntu-24.04
+2026-10-26T20:18:10.6833836Z Version: 20261012.334.1
+2026-10-26T20:18:10.6834822Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261012.334/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-26T20:18:10.6835681Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261012.334
+2026-10-26T20:18:10.6836283Z ##[endgroup]
+2026-10-26T20:18:10.6836938Z ##[group]GITHUB_TOKEN Permissions
+2026-10-26T20:18:10.6838119Z Contents: read
+2026-10-26T20:18:10.6838494Z Metadata: read
+2026-10-26T20:18:10.6838876Z ##[endgroup]
+2026-10-26T20:18:10.6840110Z Secret source: Actions
+2026-10-26T20:18:10.6840687Z Cache mode: write
+2026-10-26T20:18:10.6841137Z Prepare workflow directory
+2026-10-26T20:18:10.7038678Z Prepare all required actions
+2026-10-26T20:18:10.7078259Z Getting action download info
+2026-10-26T20:18:10.9618588Z Download action repository 'actions/checkout@v6' (SHA:d23441a48e516b6c34aea4fa41551a30e30af803)
+2026-10-26T20:18:11.0502660Z Download action repository 'actions/setup-node@v6' (SHA:249970729cb0ef3589644e2896645e5dc5ba9c38)
+2026-10-26T20:18:11.1439978Z Download action repository 'actions/cache@v5' (SHA:caa296126883cff596d87d8935842f9db880ef25)
+2026-10-26T20:18:11.2682930Z Download action repository 'actions/upload-artifact@v7' (SHA:cf430e030ddbb5b0abf93d22962f4752f3646cd9)
+2026-10-26T20:18:11.8120462Z Complete job name: realistic (1)
+2026-10-26T20:18:11.8668603Z ##[group]Run actions/checkout@v6
+2026-10-26T20:18:11.8669041Z with:
+2026-10-26T20:18:11.8669300Z   repository: ggaction/ggaction
+2026-10-26T20:18:11.8671443Z   token: ***
+2026-10-26T20:18:11.8671692Z   ssh-strict: true
+2026-10-26T20:18:11.8671947Z   ssh-user: git
+2026-10-26T20:18:11.8672204Z   persist-credentials: true
+2026-10-26T20:18:11.8672486Z   clean: true
+2026-10-26T20:18:11.8672748Z   sparse-checkout-cone-mode: true
+2026-10-26T20:18:11.8673045Z   fetch-depth: 1
+2026-10-26T20:18:11.8673295Z   fetch-tags: false
+2026-10-26T20:18:11.8673549Z   show-progress: true
+2026-10-26T20:18:11.8673809Z   lfs: false
+2026-10-26T20:18:11.8674059Z   submodules: false
+2026-10-26T20:18:11.8674324Z   set-safe-directory: true
+2026-10-26T20:18:11.8674771Z   allow-unsafe-pr-checkout: false
+2026-10-26T20:18:11.8675167Z ##[endgroup]
+2026-10-26T20:18:11.9315644Z Syncing repository: ggaction/ggaction
+2026-10-26T20:18:11.9316880Z ##[group]Getting Git version info
+2026-10-26T20:18:11.9317376Z Working directory is '/home/runner/work/ggaction/ggaction'
+2026-10-26T20:18:11.9318138Z [command]/usr/bin/git version
+2026-10-26T20:18:11.9385969Z git version 2.55.0
+2026-10-26T20:18:11.9479767Z ##[endgroup]
+2026-10-26T20:18:11.9485966Z Temporarily overriding HOME='/home/runner/work/_temp/ae330782-0c34-488a-9000-0fecaac3c184' before making global git config changes
+2026-10-26T20:18:11.9487246Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-26T20:18:11.9488304Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/ggaction/ggaction
+2026-10-26T20:18:11.9489615Z Deleting the contents of '/home/runner/work/ggaction/ggaction'
+2026-10-26T20:18:11.9490234Z ##[group]Determining repository object format
+2026-10-26T20:18:11.9490734Z ##[endgroup]
+2026-10-26T20:18:11.9491384Z ##[group]Initializing the repository
+2026-10-26T20:18:11.9491765Z [command]/usr/bin/git init /home/runner/work/ggaction/ggaction
+2026-10-26T20:18:11.9552793Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-26T20:18:11.9553702Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-26T20:18:11.9554684Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-26T20:18:11.9555349Z hint: call:
+2026-10-26T20:18:11.9555713Z hint:
+2026-10-26T20:18:11.9556183Z hint: 	git config --global init.defaultBranch <name>
+2026-10-26T20:18:11.9556720Z hint:
+2026-10-26T20:18:11.9557140Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-26T20:18:11.9558017Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-26T20:18:11.9558575Z hint:
+2026-10-26T20:18:11.9558821Z hint: 	git branch -m <name>
+2026-10-26T20:18:11.9559196Z hint:
+2026-10-26T20:18:11.9559555Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-26T20:18:11.9560144Z Initialized empty Git repository in /home/runner/work/ggaction/ggaction/.git/
+2026-10-26T20:18:11.9564770Z [command]/usr/bin/git remote add origin https://github.com/ggaction/ggaction
+2026-10-26T20:18:11.9615127Z ##[endgroup]
+2026-10-26T20:18:11.9615698Z ##[group]Disabling automatic garbage collection
+2026-10-26T20:18:11.9616164Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-26T20:18:11.9647067Z ##[endgroup]
+2026-10-26T20:18:11.9647861Z ##[group]Setting up auth
+2026-10-26T20:18:11.9651105Z Removing SSH command configuration
+2026-10-26T20:18:11.9657135Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-26T20:18:11.9696150Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-26T20:18:11.9955489Z Removing HTTP extra header
+2026-10-26T20:18:11.9961238Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-26T20:18:11.9989484Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-26T20:18:12.0154041Z Removing includeIf entries pointing to credentials config files
+2026-10-26T20:18:12.0158408Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-26T20:18:12.0186398Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-26T20:18:12.0359238Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-6e5aca6d-4dad-4206-8336-3ad5f1816655.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-26T20:18:12.0393175Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/ggaction/ggaction/.git.path /home/runner/work/_temp/git-credentials-6e5aca6d-4dad-4206-8336-3ad5f1816655.config
+2026-10-26T20:18:12.0421971Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/ggaction/ggaction/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-6e5aca6d-4dad-4206-8336-3ad5f1816655.config
+2026-10-26T20:18:12.0450845Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-6e5aca6d-4dad-4206-8336-3ad5f1816655.config
+2026-10-26T20:18:12.0476890Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-6e5aca6d-4dad-4206-8336-3ad5f1816655.config
+2026-10-26T20:18:12.0501251Z ##[endgroup]
+2026-10-26T20:18:12.0501713Z ##[group]Fetching the repository
+2026-10-26T20:18:12.0506452Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +c708f5e8bdf8fc92a9998a52a1d53604f7f48625:refs/remotes/pull/276/merge
+2026-10-26T20:18:12.9796985Z From https://github.com/ggaction/ggaction
+2026-10-26T20:18:12.9798535Z  * [new ref]         c708f5e8bdf8fc92a9998a52a1d53604f7f48625 -> pull/276/merge
+2026-10-26T20:18:12.9803761Z ##[endgroup]
+2026-10-26T20:18:12.9805209Z ##[group]Determining the checkout info
+2026-10-26T20:18:12.9806646Z ##[endgroup]
+2026-10-26T20:18:12.9809417Z [command]/usr/bin/git sparse-checkout disable
+2026-10-26T20:18:12.9853649Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-26T20:18:12.9881168Z ##[group]Checking out the ref
+2026-10-26T20:18:12.9882932Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/276/merge
+2026-10-26T20:18:13.2663140Z Note: switching to 'refs/remotes/pull/276/merge'.
+2026-10-26T20:18:13.2664636Z 
+2026-10-26T20:18:13.2665663Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-10-26T20:18:13.2667826Z changes and commit them, and you can discard any commits you make in this
+2026-10-26T20:18:13.2670007Z state without impacting any branches by switching back to a branch.
+2026-10-26T20:18:13.2671286Z 
+2026-10-26T20:18:13.2672061Z If you want to create a new branch to retain commits you create, you may
+2026-10-26T20:18:13.2673538Z do so (now or later) by using -c with the switch command. Example:
+2026-10-26T20:18:13.2674390Z 
+2026-10-26T20:18:13.2675220Z   git switch -c <new-branch-name>
+2026-10-26T20:18:13.2675777Z 
+2026-10-26T20:18:13.2676116Z Or undo this operation with:
+2026-10-26T20:18:13.2676615Z 
+2026-10-26T20:18:13.2676935Z   git switch -
+2026-10-26T20:18:13.2677355Z 
+2026-10-26T20:18:13.2678199Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-10-26T20:18:13.2679168Z 
+2026-10-26T20:18:13.2680346Z HEAD is now at c708f5e Merge e3ffe98bb86605010171b3d48a05558c296e0d1b into fd5c4073fc80295c513bd099ac0ff0aa83059371
+2026-10-26T20:18:13.2683781Z ##[endgroup]
+2026-10-26T20:18:13.2716228Z [command]/usr/bin/git log -1 --format=%H
+2026-10-26T20:18:13.2739003Z c708f5e8bdf8fc92a9998a52a1d53604f7f48625
+2026-10-26T20:18:13.3005368Z ##[group]Run actions/setup-node@v6
+2026-10-26T20:18:13.3006077Z with:
+2026-10-26T20:18:13.3006586Z   node-version: 22
+2026-10-26T20:18:13.3007132Z   cache: npm
+2026-10-26T20:18:13.3007666Z   check-latest: false
+2026-10-26T20:18:13.3013439Z   token: ***
+2026-10-26T20:18:13.3014010Z   package-manager-cache: true
+2026-10-26T20:18:13.3014748Z ##[endgroup]
+2026-10-26T20:18:13.3954944Z Found in cache @ /opt/hostedtoolcache/node/22.23.3/x64
+2026-10-26T20:18:13.3957559Z ##[group]Environment details
+2026-10-26T20:18:13.6673748Z node: v22.23.3
+2026-10-26T20:18:13.6674019Z npm: 10.9.9
+2026-10-26T20:18:13.6674172Z yarn: 1.22.22
+2026-10-26T20:18:13.6674992Z ##[endgroup]
+2026-10-26T20:18:13.6690119Z [command]/opt/hostedtoolcache/node/22.23.3/x64/bin/npm config get cache
+2026-10-26T20:18:13.7406530Z /home/runner/.npm
+2026-10-26T20:18:13.8687120Z Cache hit for: node-cache-Linux-x64-npm-dca19831ff25602461c6fdf3cf05547fbb1007d87c049f5a7e59dff9a271e074
+2026-10-26T20:18:15.0296564Z Received 56816339 of 61010643 (93.1%), 54.2 MBs/sec
+2026-10-26T20:18:15.0790168Z Received 61010643 of 61010643 (100.0%), 55.5 MBs/sec
+2026-10-26T20:18:15.0790536Z Cache Size: ~58 MB (61010643 B)
+2026-10-26T20:18:15.0828796Z [command]/usr/bin/tar -xf /home/runner/work/_temp/5141716e-15a2-4293-ab9d-c2df398729ef/cache.tzst -P -C /home/runner/work/ggaction/ggaction --use-compress-program unzstd
+2026-10-26T20:18:15.2020084Z Cache restored successfully
+2026-10-26T20:18:15.2053510Z Cache restored from key: node-cache-Linux-x64-npm-dca19831ff25602461c6fdf3cf05547fbb1007d87c049f5a7e59dff9a271e074
+2026-10-26T20:18:15.2206182Z ##[group]Run npm ci
+2026-10-26T20:18:15.2206413Z [36;1mnpm ci[0m
+2026-10-26T20:18:15.2419905Z shell: /usr/bin/bash -e {0}
+2026-10-26T20:18:15.2420120Z ##[endgroup]
+2026-10-26T20:18:16.8498229Z 
+2026-10-26T20:18:16.8504170Z added 122 packages, and audited 123 packages in 2s
+2026-10-26T20:18:16.8504389Z 
+2026-10-26T20:18:16.8504656Z 42 packages are looking for funding
+2026-10-26T20:18:16.8505116Z   run `npm fund` for details
+2026-10-26T20:18:16.8505208Z 
+2026-10-26T20:18:16.8505277Z found 0 vulnerabilities
+2026-10-26T20:18:16.9348256Z ##[group]Run actions/cache@v5
+2026-10-26T20:18:16.9348428Z with:
+2026-10-26T20:18:16.9348548Z   path: .artifacts/datasets/tidytuesday
+2026-10-26T20:18:16.9348834Z   key: ggaction-tidytuesday-Linux-fef874e3d5ce26efe00241d2cae6394d5797fd63351c56db52bb578ce30d2290
+2026-10-26T20:18:16.9349120Z   enableCrossOsArchive: false
+2026-10-26T20:18:16.9349278Z   fail-on-cache-miss: false
+2026-10-26T20:18:16.9349415Z   lookup-only: false
+2026-10-26T20:18:16.9349535Z   save-always: false
+2026-10-26T20:18:16.9349652Z ##[endgroup]
+2026-10-26T20:18:17.1501496Z Cache hit for: ggaction-tidytuesday-Linux-fef874e3d5ce26efe00241d2cae6394d5797fd63351c56db52bb578ce30d2290
+2026-10-26T20:18:17.8995846Z Received 13434038 of 13434038 (100.0%), 21.9 MBs/sec
+2026-10-26T20:18:17.8996238Z Cache Size: ~13 MB (13434038 B)
+2026-10-26T20:18:17.9011438Z [command]/usr/bin/tar -xf /home/runner/work/_temp/fbb10e84-d0d2-4fb5-802e-c8c3fdcc6981/cache.tzst -P -C /home/runner/work/ggaction/ggaction --use-compress-program unzstd
+2026-10-26T20:18:17.9521052Z Cache restored successfully
+2026-10-26T20:18:17.9579498Z Cache restored from key: ggaction-tidytuesday-Linux-fef874e3d5ce26efe00241d2cae6394d5797fd63351c56db52bb578ce30d2290
+2026-10-26T20:18:17.9672620Z ##[group]Run node scripts/run-check.js test-realistic -- npm run test:realistic -- --shard=1/7
+2026-10-26T20:18:17.9672996Z [36;1mnode scripts/run-check.js test-realistic -- npm run test:realistic -- --shard=1/7[0m
+2026-10-26T20:18:17.9723462Z shell: /usr/bin/bash -e {0}
+2026-10-26T20:18:17.9723616Z ##[endgroup]
+2026-10-26T20:18:18.0672522Z 
+2026-10-26T20:18:18.0673242Z > ggaction@0.0.25 test:realistic
+2026-10-26T20:18:18.0674047Z > node scripts/run-tests.js realistic --shard=1/7
+2026-10-26T20:18:18.0674655Z 
+2026-10-26T20:18:18.1101086Z {"shard":{"index":1,"total":7},"files":["contracts/realistic-scenario-generation-isolation.test.js"],"estimatedMs":945678}
+2026-10-26T20:18:18.1516029Z TAP version 13
+2026-10-26T20:19:42.6440130Z # Subtest: leaves termination grace around the shared generation deadline
+2026-10-26T20:19:42.6459672Z ok 1 - leaves termination grace around the shared generation deadline
+2026-10-26T20:19:42.6460081Z   ---
+2026-10-26T20:19:42.6460853Z   duration_ms: 0.401545
+2026-10-26T20:19:42.6461083Z   type: 'test'
+2026-10-26T20:19:42.6461268Z   ...
+2026-10-26T20:19:42.6461677Z # Subtest: matches the isolated strict 216 descriptor and state boundary
+2026-10-26T20:19:42.6462188Z not ok 2 - matches the isolated strict 216 descriptor and state boundary
+2026-10-26T20:19:42.6462504Z   ---
+2026-10-26T20:19:42.6462689Z   duration_ms: 9158.840736
+2026-10-26T20:19:42.6462901Z   type: 'test'
+2026-10-26T20:19:42.6463416Z   location: '/home/runner/work/ggaction/ggaction/test/contracts/realistic-scenario-generation-isolation.test.js:32:3'
+2026-10-26T20:19:42.6464227Z   failureType: 'testCodeFailure'
+2026-10-26T20:19:42.6464641Z   error: |-
+2026-10-26T20:19:42.6464859Z     node:internal/modules/run_main:123
+2026-10-26T20:19:42.6465155Z         triggerUncaughtException(
+2026-10-26T20:19:42.6465390Z         ^
+2026-10-26T20:19:42.6465553Z     
+2026-10-26T20:19:42.6467324Z     Error [ScenarioGenerationError]: Realistic candidate preflight failed: tt-global-temperatures/realistic-guide-scale-vocabulary-primary factors={"dataset":"tt-global-temperatures","fieldPair":{"measureIndex":15,"dimensionIndex":0,"bindingId":"eligible:MAM-by-Year"},"variant":{"profile":"position-linear","kind":"position","type":"linear","id":"position-linear"}}#892578631281: Scale "y" is shared with plot "points". Keep the same positional meaning or supply a different scale.id.
+2026-10-26T20:19:42.6469460Z         at scenarioGenerationFailureError (file:///home/runner/work/ggaction/ggaction/test/support/scenarios/engine.js:1200:17)
+2026-10-26T20:19:42.6470430Z         at realisticTierDescriptors (file:///home/runner/work/ggaction/ggaction/test/support/scenarios/engine.js:2080:15)
+2026-10-26T20:19:42.6471477Z         at file:///home/runner/work/ggaction/ggaction/test/support/scenarios/engine.js:2600:9
+2026-10-26T20:19:42.6471921Z         at Array.map (<anonymous>)
+2026-10-26T20:19:42.6472521Z         at generateRealisticDescriptors (file:///home/runner/work/ggaction/ggaction/test/support/scenarios/engine.js:2598:64)
+2026-10-26T20:19:42.6473083Z         at generateScenarioDescriptors (file:///home/runner/work/ggaction/ggaction/test/support/scenarios/engine.js:2677:12)
+2026-10-26T20:19:42.6473594Z         at execute (file:///home/runner/work/ggaction/ggaction/scripts/run-realistic-scenario-generation-child.js:46:27)
+2026-10-26T20:19:42.6474126Z         at process.<anonymous> (file:///home/runner/work/ggaction/ggaction/scripts/run-realistic-scenario-generation-child.js:110:14)
+2026-10-26T20:19:42.6474728Z         at Object.onceWrapper (node:events:634:26)
+2026-10-26T20:19:42.6475068Z         at process.emit (node:events:519:28) {
+2026-10-26T20:19:42.6475359Z       diagnostics: {
+2026-10-26T20:19:42.6475585Z         schemaVersion: 1,
+2026-10-26T20:19:42.6475802Z         kind: 'preflight',
+2026-10-26T20:19:42.6476099Z         dataset: 'tt-global-temperatures',
+2026-10-26T20:19:42.6476364Z         datasetIndex: 1,
+2026-10-26T20:19:42.6476581Z         tier: 'intermediate',
+2026-10-26T20:19:42.6476824Z         quota: 27,
+2026-10-26T20:19:42.6477336Z         produced: 0,
+2026-10-26T20:19:42.6477578Z         schedulingIterations: 1,
+2026-10-26T20:19:42.6477866Z         eligibleRecipeCount: 21,
+2026-10-26T20:19:42.6478126Z         recipeCounts: {
+2026-10-26T20:19:42.6478346Z           entries: [
+2026-10-26T20:19:42.6478537Z             {
+2026-10-26T20:19:42.6478830Z               recipe: 'realistic-guide-scale-vocabulary-primary',
+2026-10-26T20:19:42.6479146Z               selections: 0,
+2026-10-26T20:19:42.6479365Z               duplicates: 0
+2026-10-26T20:19:42.6479574Z             },
+2026-10-26T20:19:42.6479752Z             {
+2026-10-26T20:19:42.6479984Z               recipe: 'realistic-bubble-summary',
+2026-10-26T20:19:42.6480266Z               selections: 0,
+2026-10-26T20:19:42.6480489Z               duplicates: 0
+2026-10-26T20:19:42.6480701Z             },
+2026-10-26T20:19:42.6480878Z             {
+2026-10-26T20:19:42.6481113Z               recipe: 'realistic-cardinal-area',
+2026-10-26T20:19:42.6481382Z               selections: 0,
+2026-10-26T20:19:42.6481608Z               duplicates: 0
+2026-10-26T20:19:42.6481817Z             },
+2026-10-26T20:19:42.6481995Z             {
+2026-10-26T20:19:42.6482311Z               recipe: 'realistic-direct-lifecycle-data-mark-coverage',
+2026-10-26T20:19:42.6482647Z               selections: 0,
+2026-10-26T20:19:42.6482873Z               duplicates: 0
+2026-10-26T20:19:42.6483082Z             },
+2026-10-26T20:19:42.6483258Z             {
+2026-10-26T20:19:42.6483585Z               recipe: 'realistic-direct-lifecycle-miscellaneous-coverage',
+2026-10-26T20:19:42.6483927Z               selections: 0,
+2026-10-26T20:19:42.6484149Z               duplicates: 0
+2026-10-26T20:19:42.6486146Z             },
+2026-10-26T20:19:42.6486473Z             {
+2026-10-26T20:19:42.6486746Z               recipe: 'realistic-encoded-strip',
+2026-10-26T20:19:42.6487020Z               selections: 0,
+2026-10-26T20:19:42.6487240Z               duplicates: 0
+2026-10-26T20:19:42.6487452Z             },
+2026-10-26T20:19:42.6487658Z             {
+2026-10-26T20:19:42.6487898Z               recipe: 'realistic-fine-histogram',
+2026-10-26T20:19:42.6488174Z               selections: 0,
+2026-10-26T20:19:42.6488395Z               duplicates: 0
+2026-10-26T20:19:42.6488599Z             },
+2026-10-26T20:19:42.6488771Z             {
+2026-10-26T20:19:42.6489059Z               recipe: 'realistic-guide-scale-vocabulary-secondary',
+2026-10-26T20:19:42.6489377Z               selections: 0,
+2026-10-26T20:19:42.6489597Z               duplicates: 0
+2026-10-26T20:19:42.6489812Z             },
+2026-10-26T20:19:42.6489989Z             {
+2026-10-26T20:19:42.6490225Z               recipe: 'realistic-laid-out-labels',
+2026-10-26T20:19:42.6490719Z               selections: 0,
+2026-10-26T20:19:42.6490930Z               duplicates: 0
+2026-10-26T20:19:42.6491135Z             },
+2026-10-26T20:19:42.6491311Z             {
+2026-10-26T20:19:42.6491562Z               recipe: 'realistic-large-jittered-strip',
+2026-10-26T20:19:42.6491848Z               selections: 0,
+2026-10-26T20:19:42.6492071Z               duplicates: 0
+2026-10-26T20:19:42.6492276Z             },
+2026-10-26T20:19:42.6492447Z             {
+2026-10-26T20:19:42.6492673Z               recipe: 'realistic-maximal-arc',
+2026-10-26T20:19:42.6492936Z               selections: 0,
+2026-10-26T20:19:42.6493159Z               duplicates: 0
+2026-10-26T20:19:42.6493363Z             },
+2026-10-26T20:19:42.6493542Z             {
+2026-10-26T20:19:42.6493793Z               recipe: 'realistic-maximal-histogram',
+2026-10-26T20:19:42.6494071Z               selections: 0,
+2026-10-26T20:19:42.6494291Z               duplicates: 0
+2026-10-26T20:19:42.6494724Z             },
+2026-10-26T20:19:42.6494905Z             {
+2026-10-26T20:19:42.6495157Z               recipe: 'realistic-maximal-ordered-bars',
+2026-10-26T20:19:42.6495440Z               selections: 0,
+2026-10-26T20:19:42.6495654Z               duplicates: 0
+2026-10-26T20:19:42.6495852Z             },
+2026-10-26T20:19:42.6496027Z             {
+2026-10-26T20:19:42.6496484Z               recipe: 'realistic-monotone-ranking',
+2026-10-26T20:19:42.6496769Z               selections: 0,
+2026-10-26T20:19:42.6496996Z               duplicates: 0
+2026-10-26T20:19:42.6497208Z             },
+2026-10-26T20:19:42.6497385Z             {
+2026-10-26T20:19:42.6497646Z               recipe: 'realistic-narrow-vertical-bars',
+2026-10-26T20:19:42.6497933Z               selections: 0,
+2026-10-26T20:19:42.6498154Z               duplicates: 0
+2026-10-26T20:19:42.6498361Z             },
+2026-10-26T20:19:42.6498542Z             {
+2026-10-26T20:19:42.6498820Z               recipe: 'realistic-ordered-horizontal-bars',
+2026-10-26T20:19:42.6499104Z               selections: 0,
+2026-10-26T20:19:42.6499323Z               duplicates: 0
+2026-10-26T20:19:42.6499525Z             },
+2026-10-26T20:19:42.6499699Z             {
+2026-10-26T20:19:42.6499944Z               recipe: 'realistic-padded-donut',
+2026-10-26T20:19:42.6500210Z               selections: 0,
+2026-10-26T20:19:42.6500430Z               duplicates: 0
+2026-10-26T20:19:42.6500637Z             },
+2026-10-26T20:19:42.6500814Z             {
+2026-10-26T20:19:42.6501077Z               recipe: 'realistic-reversed-summary-points',
+2026-10-26T20:19:42.6501371Z               selections: 0,
+2026-10-26T20:19:42.6501588Z               duplicates: 0
+2026-10-26T20:19:42.6501794Z             },
+2026-10-26T20:19:42.6502099Z             { recipe: 'realistic-solid-pie', selections: 0, duplicates: 0 },
+2026-10-26T20:19:42.6502422Z             {
+2026-10-26T20:19:42.6502734Z               recipe: 'realistic-statistical-facade-coverage-heatmap',
+2026-10-26T20:19:42.6503069Z               selections: 0,
+2026-10-26T20:19:42.6503299Z               duplicates: 0
+2026-10-26T20:19:42.6503507Z             },
+2026-10-26T20:19:42.6503685Z             {
+2026-10-26T20:19:42.6503914Z               recipe: 'realistic-step-ranking',
+2026-10-26T20:19:42.6504189Z               selections: 0,
+2026-10-26T20:19:42.6504404Z               duplicates: 0
+2026-10-26T20:19:42.6504772Z             }
+2026-10-26T20:19:42.6504957Z           ],
+2026-10-26T20:19:42.6505176Z           omitted: 0
+2026-10-26T20:19:42.6505403Z         },
+2026-10-26T20:19:42.6505598Z         acceptedSamples: [],
+2026-10-26T20:19:42.6505866Z         acceptedSampleOmitted: 0,
+2026-10-26T20:19:42.6506117Z         duplicateCount: 0,
+2026-10-26T20:19:42.6506339Z         rejectionCount: 1,
+2026-10-26T20:19:42.6506557Z         recentRejections: [
+2026-10-26T20:19:42.6506766Z           {
+2026-10-26T20:19:42.6506999Z             dataset: 'tt-global-temperatures',
+2026-10-26T20:19:42.6507292Z             tier: 'intermediate',
+2026-10-26T20:19:42.6507628Z             recipe: 'realistic-guide-scale-vocabulary-primary',
+2026-10-26T20:19:42.6508170Z             factorDigest: '892578631281',
+2026-10-26T20:19:42.6508716Z             message: 'Scale "y" is shared with plot "points". Keep the same positional meaning or supply a different scale.id.'
+2026-10-26T20:19:42.6509177Z           }
+2026-10-26T20:19:42.6509352Z         ],
+2026-10-26T20:19:42.6509564Z         exhaustionSkipCount: 0,
+2026-10-26T20:19:42.6509806Z         exhaustionSkips: []
+2026-10-26T20:19:42.6510015Z       },
+2026-10-26T20:19:42.6510291Z       [Symbol(realisticGenerationChildFailureResources)]: {
+2026-10-26T20:19:42.6510607Z         rssBytes: 159244288,
+2026-10-26T20:19:42.6510849Z         maximumRssBytes: 161558528,
+2026-10-26T20:19:42.6511112Z         wallTimeMs: 9121.617948
+2026-10-26T20:19:42.6511319Z       }
+2026-10-26T20:19:42.6511517Z     }
+2026-10-26T20:19:42.6511675Z     
+2026-10-26T20:19:42.6511865Z     Node.js v22.23.3
+2026-10-26T20:19:42.6512058Z     
+2026-10-26T20:19:42.6512212Z     
+2026-10-26T20:19:42.6512375Z     1 !== 0
+2026-10-26T20:19:42.6512549Z     
+2026-10-26T20:19:42.6512721Z   code: 'ERR_ASSERTION'
+2026-10-26T20:19:42.6512937Z   name: 'AssertionError'
+2026-10-26T20:19:42.6513147Z   expected: 0
+2026-10-26T20:19:42.6513328Z   actual: 1
+2026-10-26T20:19:42.6513513Z   operator: 'strictEqual'
+2026-10-26T20:19:42.6513726Z   stack: |-
+2026-10-26T20:19:42.6514574Z     scenarioGenerationFailureError (file:///home/runner/work/ggaction/ggaction/test/support/scenarios/engine.js:1200:17)
+2026-10-26T20:19:42.6515403Z     realisticTierDescriptors (file:///home/runner/work/ggaction/ggaction/test/support/scenarios/engine.js:2080:15)
+2026-10-26T20:19:42.6516065Z     file:///home/runner/work/ggaction/ggaction/test/support/scenarios/engine.js:2600:9
+2026-10-26T20:19:42.6516485Z     Array.map (<anonymous>)
+2026-10-26T20:19:42.6517039Z     generateRealisticDescriptors (file:///home/runner/work/ggaction/ggaction/test/support/scenarios/engine.js:2598:64)
+2026-10-26T20:19:42.6517864Z     generateScenarioDescriptors (file:///home/runner/work/ggaction/ggaction/test/support/scenarios/engine.js:2677:12)
+2026-10-26T20:19:42.6518652Z     execute (file:///home/runner/work/ggaction/ggaction/scripts/run-realistic-scenario-generation-child.js:46:27)
+2026-10-26T20:19:42.6519510Z     process.<anonymous> (file:///home/runner/work/ggaction/ggaction/scripts/run-realistic-scenario-generation-child.js:110:14)
+2026-10-26T20:19:42.6520081Z     Object.onceWrapper (node:events:634:26)
+2026-10-26T20:19:42.6520397Z     process.emit (node:events:519:28) {
+2026-10-26T20:19:42.6521075Z     TestContext.<anonymous> (file:///home/runner/work/ggaction/ggaction/test/contracts/realistic-scenario-generation-isolation.test.js:47:12)
+2026-10-26T20:19:42.6521718Z     Test.runInAsyncScope (node:async_hooks:214:14)
+2026-10-26T20:19:42.6522094Z     Test.run (node:internal/test_runner/test:1047:25)
+2026-10-26T20:19:42.6522513Z     Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+2026-10-26T20:19:42.6522972Z     Test.postRun (node:internal/test_runner/test:1173:19)
+2026-10-26T20:19:42.6523336Z     Test.run (node:internal/test_runner/test:1101:12)
+2026-10-26T20:19:42.6523774Z     async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+2026-10-26T20:19:42.6524133Z   ...
+2026-10-26T20:19:42.6524684Z # Subtest: matches the isolated strict 360 descriptor and state boundary
+2026-10-26T20:19:42.6525195Z not ok 3 - matches the isolated strict 360 descriptor and state boundary
+2026-10-26T20:19:42.6525520Z   ---
+2026-10-26T20:19:42.6525705Z   duration_ms: 75292.714442
+2026-10-26T20:19:42.6525922Z   type: 'test'
+2026-10-26T20:19:42.6526419Z   location: '/home/runner/work/ggaction/ggaction/test/contracts/realistic-scenario-generation-isolation.test.js:32:3'
+2026-10-26T20:19:42.6526989Z   failureType: 'testCodeFailure'
+2026-10-26T20:19:42.6527220Z   error: |-
+2026-10-26T20:19:42.6527367Z     node:internal/modules/run_main:123
+2026-10-26T20:19:42.6527543Z         triggerUncaughtException(
+2026-10-26T20:19:42.6527693Z         ^
+2026-10-26T20:19:42.6527796Z     
+2026-10-26T20:19:42.6528948Z     Error [ScenarioGenerationError]: Realistic candidate preflight failed: tt-penguins/realistic-guide-scale-vocabulary-primary factors={"dataset":"tt-penguins","fieldPair":{"measureIndex":1,"dimensionIndex":2,"bindingId":"eligible:bill_length_mm-by-sex"},"variant":{"profile":"position-linear","kind":"position","type":"linear","id":"position-linear"}}#b8cf3eeb3020: Scale "y" is shared with plot "points". Keep the same positional meaning or supply a different scale.id.
+2026-10-26T20:19:42.6530035Z         at scenarioGenerationFailureError (file:///home/runner/work/ggaction/ggaction/test/support/scenarios/engine.js:1200:17)
+2026-10-26T20:19:42.6530511Z         at realisticTierDescriptors (file:///home/runner/work/ggaction/ggaction/test/support/scenarios/engine.js:2080:15)
+2026-10-26T20:19:42.6530912Z         at file:///home/runner/work/ggaction/ggaction/test/support/scenarios/engine.js:2600:9
+2026-10-26T20:19:42.6531164Z         at Array.map (<anonymous>)
+2026-10-26T20:19:42.6531489Z         at generateRealisticDescriptors (file:///home/runner/work/ggaction/ggaction/test/support/scenarios/engine.js:2598:64)
+2026-10-26T20:19:42.6531950Z         at generateScenarioDescriptors (file:///home/runner/work/ggaction/ggaction/test/support/scenarios/engine.js:2677:12)
+2026-10-26T20:19:42.6532494Z         at execute (file:///home/runner/work/ggaction/ggaction/scripts/run-realistic-scenario-generation-child.js:46:27)
+2026-10-26T20:19:42.6532976Z         at process.<anonymous> (file:///home/runner/work/ggaction/ggaction/scripts/run-realistic-scenario-generation-child.js:110:14)
+2026-10-26T20:19:42.6533336Z         at Object.onceWrapper (node:events:634:26)
+2026-10-26T20:19:42.6533529Z         at process.emit (node:events:519:28) {
+2026-10-26T20:19:42.6533696Z       diagnostics: {
+2026-10-26T20:19:42.6533827Z         schemaVersion: 1,
+2026-10-26T20:19:42.6533965Z         kind: 'preflight',
+2026-10-26T20:19:42.6534118Z         dataset: 'tt-penguins',
+2026-10-26T20:19:42.6534263Z         datasetIndex: 0,
+2026-10-26T20:19:42.6534403Z         tier: 'intermediate',
+2026-10-26T20:19:42.6534781Z         quota: 27,
+2026-10-26T20:19:42.6534903Z         produced: 0,
+2026-10-26T20:19:42.6535046Z         schedulingIterations: 1,
+2026-10-26T20:19:42.6535209Z         eligibleRecipeCount: 38,
+2026-10-26T20:19:42.6535353Z         recipeCounts: {
+2026-10-26T20:19:42.6535482Z           entries: [
+2026-10-26T20:19:42.6535605Z             {
+2026-10-26T20:19:42.6535787Z               recipe: 'realistic-guide-scale-vocabulary-primary',
+2026-10-26T20:19:42.6535985Z               selections: 0,
+2026-10-26T20:19:42.6536122Z               duplicates: 0
+2026-10-26T20:19:42.6536255Z             },
+2026-10-26T20:19:42.6536365Z             {
+2026-10-26T20:19:42.6536517Z               recipe: 'realistic-bubble-summary',
+2026-10-26T20:19:42.6536683Z               selections: 0,
+2026-10-26T20:19:42.6536817Z               duplicates: 0
+2026-10-26T20:19:42.6536948Z             },
+2026-10-26T20:19:42.6537057Z             {
+2026-10-26T20:19:42.6537224Z               recipe: 'realistic-capped-quartile-intervals',
+2026-10-26T20:19:42.6537405Z               selections: 0,
+2026-10-26T20:19:42.6537540Z               duplicates: 0
+2026-10-26T20:19:42.6537666Z             },
+2026-10-26T20:19:42.6537777Z             {
+2026-10-26T20:19:42.6537921Z               recipe: 'realistic-cardinal-area',
+2026-10-26T20:19:42.6538087Z               selections: 0,
+2026-10-26T20:19:42.6538224Z               duplicates: 0
+2026-10-26T20:19:42.6538351Z             },
+2026-10-26T20:19:42.6538462Z             {
+2026-10-26T20:19:42.6538607Z               recipe: 'realistic-count-density',
+2026-10-26T20:19:42.6538769Z               selections: 0,
+2026-10-26T20:19:42.6538903Z               duplicates: 0
+2026-10-26T20:19:42.6539032Z             },
+2026-10-26T20:19:42.6539139Z             {
+2026-10-26T20:19:42.6539323Z               recipe: 'realistic-direct-lifecycle-data-mark-coverage',
+2026-10-26T20:19:42.6539525Z               selections: 0,
+2026-10-26T20:19:42.6539687Z               duplicates: 0
+2026-10-26T20:19:42.6539921Z             },
+2026-10-26T20:19:42.6540031Z             {
+2026-10-26T20:19:42.6540233Z               recipe: 'realistic-direct-lifecycle-miscellaneous-coverage',
+2026-10-26T20:19:42.6540454Z               selections: 0,
+2026-10-26T20:19:42.6540590Z               duplicates: 0
+2026-10-26T20:19:42.6540718Z             },
+2026-10-26T20:19:42.6540825Z             {
+2026-10-26T20:19:42.6540971Z               recipe: 'realistic-edited-density',
+2026-10-26T20:19:42.6541133Z               selections: 0,
+2026-10-26T20:19:42.6541268Z               duplicates: 0
+2026-10-26T20:19:42.6541396Z             },
+2026-10-26T20:19:42.6541507Z             {
+2026-10-26T20:19:42.6541649Z               recipe: 'realistic-encoded-strip',
+2026-10-26T20:19:42.6541811Z               selections: 0,
+2026-10-26T20:19:42.6541943Z               duplicates: 0
+2026-10-26T20:19:42.6542068Z             },
+2026-10-26T20:19:42.6542177Z             {
+2026-10-26T20:19:42.6542318Z               recipe: 'realistic-fine-histogram',
+2026-10-26T20:19:42.6542483Z               selections: 0,
+2026-10-26T20:19:42.6542617Z               duplicates: 0
+2026-10-26T20:19:42.6542746Z             },
+2026-10-26T20:19:42.6542853Z             {
+2026-10-26T20:19:42.6542994Z               recipe: 'realistic-grouped-bars',
+2026-10-26T20:19:42.6543158Z               selections: 0,
+2026-10-26T20:19:42.6543380Z               duplicates: 0
+2026-10-26T20:19:42.6543513Z             },
+2026-10-26T20:19:42.6543621Z             {
+2026-10-26T20:19:42.6543801Z               recipe: 'realistic-guide-scale-vocabulary-secondary',
+2026-10-26T20:19:42.6543993Z               selections: 0,
+2026-10-26T20:19:42.6544129Z               duplicates: 0
+2026-10-26T20:19:42.6544255Z             },
+2026-10-26T20:19:42.6544364Z             {
+2026-10-26T20:19:42.6544737Z               recipe: 'realistic-horizontal-boxes',
+2026-10-26T20:19:42.6544985Z               selections: 0,
+2026-10-26T20:19:42.6545189Z               duplicates: 0
+2026-10-26T20:19:42.6545389Z             },
+2026-10-26T20:19:42.6545561Z             {
+2026-10-26T20:19:42.6545823Z               recipe: 'realistic-horizontal-quartile-intervals',
+2026-10-26T20:19:42.6546121Z               selections: 0,
+2026-10-26T20:19:42.6546333Z               duplicates: 0
+2026-10-26T20:19:42.6546538Z             },
+2026-10-26T20:19:42.6546712Z             {
+2026-10-26T20:19:42.6546952Z               recipe: 'realistic-labeled-matrix',
+2026-10-26T20:19:42.6547225Z               selections: 0,
+2026-10-26T20:19:42.6547444Z               duplicates: 0
+2026-10-26T20:19:42.6547651Z             },
+2026-10-26T20:19:42.6547833Z             {
+2026-10-26T20:19:42.6548072Z               recipe: 'realistic-laid-out-labels',
+2026-10-26T20:19:42.6548344Z               selections: 0,
+2026-10-26T20:19:42.6548559Z               duplicates: 0
+2026-10-26T20:19:42.6548762Z             },
+2026-10-26T20:19:42.6548939Z             {
+2026-10-26T20:19:42.6549194Z               recipe: 'realistic-large-jittered-strip',
+2026-10-26T20:19:42.6549469Z               selections: 0,
+2026-10-26T20:19:42.6549687Z               duplicates: 0
+2026-10-26T20:19:42.6549889Z             },
+2026-10-26T20:19:42.6550064Z             {
+2026-10-26T20:19:42.6550291Z               recipe: 'realistic-maximal-arc',
+2026-10-26T20:19:42.6550539Z               selections: 0,
+2026-10-26T20:19:42.6550684Z               duplicates: 0
+2026-10-26T20:19:42.6550810Z             },
+2026-10-26T20:19:42.6550922Z             {
+2026-10-26T20:19:42.6551073Z               recipe: 'realistic-maximal-histogram',
+2026-10-26T20:19:42.6551243Z               selections: 0,
+2026-10-26T20:19:42.6551376Z               duplicates: 0
+2026-10-26T20:19:42.6551504Z             },
+2026-10-26T20:19:42.6551613Z             {
+2026-10-26T20:19:42.6551769Z               recipe: 'realistic-maximal-ordered-bars',
+2026-10-26T20:19:42.6551941Z               selections: 0,
+2026-10-26T20:19:42.6552073Z               duplicates: 0
+2026-10-26T20:19:42.6552201Z             },
+2026-10-26T20:19:42.6552457Z             {
+2026-10-26T20:19:42.6552602Z               recipe: 'realistic-minmax-boxes',
+2026-10-26T20:19:42.6552763Z               selections: 0,
+2026-10-26T20:19:42.6552897Z               duplicates: 0
+2026-10-26T20:19:42.6553024Z             },
+2026-10-26T20:19:42.6553131Z             {
+2026-10-26T20:19:42.6553281Z               recipe: 'realistic-monotone-ranking',
+2026-10-26T20:19:42.6553449Z               selections: 0,
+2026-10-26T20:19:42.6553583Z               duplicates: 0
+2026-10-26T20:19:42.6553708Z             },
+2026-10-26T20:19:42.6553820Z             {
+2026-10-26T20:19:42.6553972Z               recipe: 'realistic-narrow-vertical-bars',
+2026-10-26T20:19:42.6554144Z               selections: 0,
+2026-10-26T20:19:42.6554276Z               duplicates: 0
+2026-10-26T20:19:42.6554403Z             },
+2026-10-26T20:19:42.6554731Z             {
+2026-10-26T20:19:42.6554907Z               recipe: 'realistic-normalized-bars',
+2026-10-26T20:19:42.6555073Z               selections: 0,
+2026-10-26T20:19:42.6555209Z               duplicates: 0
+2026-10-26T20:19:42.6555334Z             }
+2026-10-26T20:19:42.6555443Z           ],
+2026-10-26T20:19:42.6555577Z           omitted: 14
+2026-10-26T20:19:42.6555702Z         },
+2026-10-26T20:19:42.6555834Z         acceptedSamples: [],
+2026-10-26T20:19:42.6555997Z         acceptedSampleOmitted: 0,
+2026-10-26T20:19:42.6556265Z         duplicateCount: 0,
+2026-10-26T20:19:42.6556406Z         rejectionCount: 1,
+2026-10-26T20:19:42.6556558Z         recentRejections: [
+2026-10-26T20:19:42.6556705Z           {
+2026-10-26T20:19:42.6556839Z             dataset: 'tt-penguins',
+2026-10-26T20:19:42.6557022Z             tier: 'intermediate',
+2026-10-26T20:19:42.6557238Z             recipe: 'realistic-guide-scale-vocabulary-primary',
+2026-10-26T20:19:42.6557454Z             factorDigest: 'b8cf3eeb3020',
+2026-10-26T20:19:42.6557810Z             message: 'Scale "y" is shared with plot "points". Keep the same positional meaning or supply a different scale.id.'
+2026-10-26T20:19:42.6558115Z           }
+2026-10-26T20:19:42.6558228Z         ],
+2026-10-26T20:19:42.6558369Z         exhaustionSkipCount: 0,
+2026-10-26T20:19:42.6558518Z         exhaustionSkips: []
+2026-10-26T20:19:42.6558663Z       },
+2026-10-26T20:19:42.6558833Z       [Symbol(realisticGenerationChildFailureResources)]: {
+2026-10-26T20:19:42.6559042Z         rssBytes: 283848704,
+2026-10-26T20:19:42.6559196Z         maximumRssBytes: 315277312,
+2026-10-26T20:19:42.6559371Z         wallTimeMs: 75257.805733
+2026-10-26T20:19:42.6559518Z       }
+2026-10-26T20:19:42.6559627Z     }
+2026-10-26T20:19:42.6559743Z     
+2026-10-26T20:19:42.6559856Z     Node.js v22.23.3
+2026-10-26T20:19:42.6559975Z     
+2026-10-26T20:19:42.6560104Z     
+2026-10-26T20:19:42.6560210Z     1 !== 0
+2026-10-26T20:19:42.6560315Z     
+2026-10-26T20:19:42.6560450Z   code: 'ERR_ASSERTION'
+2026-10-26T20:19:42.6560601Z   name: 'AssertionError'
+2026-10-26T20:19:42.6560736Z   expected: 0
+2026-10-26T20:19:42.6560863Z   actual: 1
+2026-10-26T20:19:42.6560980Z   operator: 'strictEqual'
+2026-10-26T20:19:42.6561129Z   stack: |-
+2026-10-26T20:19:42.6561451Z     scenarioGenerationFailureError (file:///home/runner/work/ggaction/ggaction/test/support/scenarios/engine.js:1200:17)
+2026-10-26T20:19:42.6561937Z     realisticTierDescriptors (file:///home/runner/work/ggaction/ggaction/test/support/scenarios/engine.js:2080:15)
+2026-10-26T20:19:42.6562330Z     file:///home/runner/work/ggaction/ggaction/test/support/scenarios/engine.js:2600:9
+2026-10-26T20:19:42.6562580Z     Array.map (<anonymous>)
+2026-10-26T20:19:42.6562911Z     generateRealisticDescriptors (file:///home/runner/work/ggaction/ggaction/test/support/scenarios/engine.js:2598:64)
+2026-10-26T20:19:42.6563375Z     generateScenarioDescriptors (file:///home/runner/work/ggaction/ggaction/test/support/scenarios/engine.js:2677:12)
+2026-10-26T20:19:42.6563836Z     execute (file:///home/runner/work/ggaction/ggaction/scripts/run-realistic-scenario-generation-child.js:46:27)
+2026-10-26T20:19:42.6565183Z     process.<anonymous> (file:///home/runner/work/ggaction/ggaction/scripts/run-realistic-scenario-generation-child.js:110:14)
+2026-10-26T20:19:42.6565921Z     Object.onceWrapper (node:events:634:26)
+2026-10-26T20:19:42.6566252Z     process.emit (node:events:519:28) {
+2026-10-26T20:19:42.6566872Z     TestContext.<anonymous> (file:///home/runner/work/ggaction/ggaction/test/contracts/realistic-scenario-generation-isolation.test.js:47:12)
+2026-10-26T20:19:42.6567496Z     Test.runInAsyncScope (node:async_hooks:214:14)
+2026-10-26T20:19:42.6567831Z     Test.run (node:internal/test_runner/test:1047:25)
+2026-10-26T20:19:42.6568226Z     Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+2026-10-26T20:19:42.6568654Z     Test.postRun (node:internal/test_runner/test:1173:19)
+2026-10-26T20:19:42.6569000Z     Test.run (node:internal/test_runner/test:1101:12)
+2026-10-26T20:19:42.6569396Z     async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+2026-10-26T20:19:42.6569734Z   ...
+2026-10-26T20:19:42.6569911Z 1..3
+2026-10-26T20:19:42.6570069Z # tests 3
+2026-10-26T20:19:42.6570228Z # suites 0
+2026-10-26T20:19:42.6570389Z # pass 1
+2026-10-26T20:19:42.6570548Z # fail 2
+2026-10-26T20:19:42.6570710Z # cancelled 0
+2026-10-26T20:19:42.6570882Z # skipped 0
+2026-10-26T20:19:42.6571043Z # todo 0
+2026-10-26T20:19:42.6571226Z # duration_ms 84512.24558
+2026-10-26T20:19:42.6754911Z ##[error]Process completed with exit code 1.
+2026-10-26T20:19:42.6805276Z ##[group]Run actions/upload-artifact@v7
+2026-10-26T20:19:42.6805449Z with:
+2026-10-26T20:19:42.6805572Z   name: timings-realistic-1-1
+2026-10-26T20:19:42.6805720Z   path: .artifacts/timings
+2026-10-26T20:19:42.6805856Z   if-no-files-found: warn
+2026-10-26T20:19:42.6806000Z   retention-days: 30
+2026-10-26T20:19:42.6806125Z   compression-level: 6
+2026-10-26T20:19:42.6806253Z   overwrite: false
+2026-10-26T20:19:42.6806378Z   include-hidden-files: false
+2026-10-26T20:19:42.6806514Z   archive: true
+2026-10-26T20:19:42.6806628Z ##[endgroup]
+2026-10-26T20:19:42.7793928Z With the provided path, there will be 1 file uploaded
+2026-10-26T20:19:42.7797948Z Artifact name is valid!
+2026-10-26T20:19:42.7798395Z Root directory input is valid!
+2026-10-26T20:19:43.0767182Z Uploading artifact: timings-realistic-1-1.zip
+2026-10-26T20:19:43.0801235Z Beginning upload of artifact content to blob storage
+2026-10-26T20:19:43.2790321Z Uploaded bytes 382
+2026-10-26T20:19:43.3210129Z Finished uploading artifact content to blob storage!
+2026-10-26T20:19:43.3211016Z SHA256 digest of uploaded artifact is 42e7c101964ac1ed90df8088f146c2dd8eccf74989be1166920ea55f65cc08fa
+2026-10-26T20:19:43.3211513Z Finalizing artifact upload
+2026-10-26T20:19:43.9571795Z Artifact timings-realistic-1-1 successfully finalized. Artifact ID 12685702486
+2026-10-26T20:19:43.9572555Z Artifact timings-realistic-1-1 has been successfully uploaded! Final size is 382 bytes. Artifact ID is 12685702486
+2026-10-26T20:19:43.9575207Z Artifact download URL: https://github.com/ggaction/ggaction/actions/runs/40394370238/artifacts/12685702486
+2026-10-26T20:19:43.9682761Z ##[group]Run node scripts/collect-failure-artifacts.js
+2026-10-26T20:19:43.9683022Z [36;1mnode scripts/collect-failure-artifacts.js[0m
+2026-10-26T20:19:43.9734233Z shell: /usr/bin/bash -e {0}
+2026-10-26T20:19:43.9734387Z ##[endgroup]
+2026-10-26T20:19:44.0073223Z {"schemaVersion":1,"maxBytes":52428800,"maxFiles":300,"bytes":32736,"omitted":0,"files":[{"file":"checks/suite-realistic.json","bytes":568},{"file":"checks/suite-realistic.log","bytes":15821},{"file":"checks/test-realistic.json","bytes":318},{"file":"checks/test-realistic.log","bytes":16029}]}
+2026-10-26T20:19:44.0158039Z ##[group]Run actions/upload-artifact@v7
+2026-10-26T20:19:44.0158326Z with:
+2026-10-26T20:19:44.0158549Z   name: failure-realistic-0-1
+2026-10-26T20:19:44.0158853Z   path: .artifacts/ci-evidence
+2026-10-26T20:19:44.0159078Z   if-no-files-found: ignore
+2026-10-26T20:19:44.0159353Z   retention-days: 7
+2026-10-26T20:19:44.0159552Z   compression-level: 6
+2026-10-26T20:19:44.0159842Z   overwrite: false
+2026-10-26T20:19:44.0160046Z   include-hidden-files: false
+2026-10-26T20:19:44.0160473Z   archive: true
+2026-10-26T20:19:44.0160682Z ##[endgroup]
+2026-10-26T20:19:44.1103359Z With the provided path, there will be 5 files uploaded
+2026-10-26T20:19:44.1107136Z Artifact name is valid!
+2026-10-26T20:19:44.1107723Z Root directory input is valid!
+2026-10-26T20:19:44.3951099Z Uploading artifact: failure-realistic-0-1.zip
+2026-10-26T20:19:44.3974722Z Beginning upload of artifact content to blob storage
+2026-10-26T20:19:44.6279924Z Uploaded bytes 5602
+2026-10-26T20:19:44.6773649Z Finished uploading artifact content to blob storage!
+2026-10-26T20:19:44.6774353Z SHA256 digest of uploaded artifact is 95936aa65cd77ca051d3267b80e0d8df240943c20009b3137b49f0504c7e1f8d
+2026-10-26T20:19:44.6774924Z Finalizing artifact upload
+2026-10-26T20:19:45.1945963Z Artifact failure-realistic-0-1 successfully finalized. Artifact ID 12685072679
+2026-10-26T20:19:45.1946702Z Artifact failure-realistic-0-1 has been successfully uploaded! Final size is 5602 bytes. Artifact ID is 12685072679
+2026-10-26T20:19:45.1949488Z Artifact download URL: https://github.com/ggaction/ggaction/actions/runs/40394370238/artifacts/12685072679
+2026-10-26T20:19:45.2100637Z Post job cleanup.
+2026-10-26T20:19:45.2668092Z [command]/usr/bin/git version
+2026-10-26T20:19:45.2699746Z git version 2.55.0
+2026-10-26T20:19:45.2724034Z Temporarily overriding HOME='/home/runner/work/_temp/fd8a2040-cd59-4a4e-a304-e432d299498e' before making global git config changes
+2026-10-26T20:19:45.2725006Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-26T20:19:45.2727664Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/ggaction/ggaction
+2026-10-26T20:19:45.2755961Z Removing SSH command configuration
+2026-10-26T20:19:45.2760465Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-26T20:19:45.2790578Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-26T20:19:45.3006485Z Removing HTTP extra header
+2026-10-26T20:19:45.3007274Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-26T20:19:45.3032656Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-26T20:19:45.3230967Z Removing includeIf entries pointing to credentials config files
+2026-10-26T20:19:45.3239751Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-26T20:19:45.3266177Z includeif.gitdir:/home/runner/work/ggaction/ggaction/.git.path
+2026-10-26T20:19:45.3266646Z includeif.gitdir:/home/runner/work/ggaction/ggaction/.git/worktrees/*.path
+2026-10-26T20:19:45.3267062Z includeif.gitdir:/github/workspace/.git.path
+2026-10-26T20:19:45.3267470Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-26T20:19:45.3275028Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/ggaction/ggaction/.git.path
+2026-10-26T20:19:45.3296074Z /home/runner/work/_temp/git-credentials-6e5aca6d-4dad-4206-8336-3ad5f1816655.config
+2026-10-26T20:19:45.3304157Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/ggaction/ggaction/.git.path /home/runner/work/_temp/git-credentials-6e5aca6d-4dad-4206-8336-3ad5f1816655.config
+2026-10-26T20:19:45.3336175Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/ggaction/ggaction/.git/worktrees/*.path
+2026-10-26T20:19:45.3356857Z /home/runner/work/_temp/git-credentials-6e5aca6d-4dad-4206-8336-3ad5f1816655.config
+2026-10-26T20:19:45.3363883Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/ggaction/ggaction/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-6e5aca6d-4dad-4206-8336-3ad5f1816655.config
+2026-10-26T20:19:45.3394014Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-10-26T20:19:45.3413839Z /github/runner_temp/git-credentials-6e5aca6d-4dad-4206-8336-3ad5f1816655.config
+2026-10-26T20:19:45.3420588Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-6e5aca6d-4dad-4206-8336-3ad5f1816655.config
+2026-10-26T20:19:45.3450160Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-26T20:19:45.3470658Z /github/runner_temp/git-credentials-6e5aca6d-4dad-4206-8336-3ad5f1816655.config
+2026-10-26T20:19:45.3476439Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-6e5aca6d-4dad-4206-8336-3ad5f1816655.config
+2026-10-26T20:19:45.3507682Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-26T20:19:45.3687600Z Removing credentials config '/home/runner/work/_temp/git-credentials-6e5aca6d-4dad-4206-8336-3ad5f1816655.config'
+2026-10-26T20:19:45.3814308Z Cleaning up orphan processes

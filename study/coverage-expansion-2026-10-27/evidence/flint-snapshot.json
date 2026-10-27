@@ -1,0 +1,397 @@
+{
+  "repo": "https://github.com/microsoft/flint-chart",
+  "commit": "a794557384adcc3293a77043f6b9aff1c33d152c",
+  "date": "2026-10-21T16:39:01-07:00",
+  "package": {
+    "name": "flint-chart",
+    "version": "1.0.1",
+    "description": "Semantic-level visualization library that compiles data + semantic types for Vega-Lite, ECharts, Chart.js, Plotly, and Excel.",
+    "keywords": [
+      "visualization",
+      "charts",
+      "vega-lite",
+      "echarts",
+      "chart.js",
+      "semantic-types",
+      "llm",
+      "agent",
+      "data-visualization"
+    ],
+    "license": "MIT",
+    "author": "Microsoft Corporation",
+    "homepage": "https://microsoft.github.io/flint-chart/",
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/microsoft/flint-chart.git",
+      "directory": "packages/flint-js"
+    },
+    "bugs": {
+      "url": "https://github.com/microsoft/flint-chart/issues"
+    },
+    "type": "module",
+    "sideEffects": false,
+    "main": "./dist/index.cjs",
+    "module": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js",
+        "require": "./dist/index.cjs"
+      },
+      "./core": {
+        "types": "./dist/core/index.d.ts",
+        "import": "./dist/core/index.js",
+        "require": "./dist/core/index.cjs"
+      },
+      "./vegalite": {
+        "types": "./dist/vegalite/index.d.ts",
+        "import": "./dist/vegalite/index.js",
+        "require": "./dist/vegalite/index.cjs"
+      },
+      "./echarts": {
+        "types": "./dist/echarts/index.d.ts",
+        "import": "./dist/echarts/index.js",
+        "require": "./dist/echarts/index.cjs"
+      },
+      "./plotly": {
+        "types": "./dist/plotly/index.d.ts",
+        "import": "./dist/plotly/index.js",
+        "require": "./dist/plotly/index.cjs"
+      },
+      "./chartjs": {
+        "types": "./dist/chartjs/index.d.ts",
+        "import": "./dist/chartjs/index.js",
+        "require": "./dist/chartjs/index.cjs"
+      },
+      "./excel": {
+        "types": "./dist/excel/index.d.ts",
+        "import": "./dist/excel/index.js",
+        "require": "./dist/excel/index.cjs"
+      },
+      "./image-charts": {
+        "types": "./dist/image-charts/index.d.ts",
+        "import": "./dist/image-charts/index.js",
+        "require": "./dist/image-charts/index.cjs"
+      },
+      "./validate": {
+        "types": "./dist/validate/index.d.ts",
+        "import": "./dist/validate/index.js",
+        "require": "./dist/validate/index.cjs"
+      },
+      "./interactive": {
+        "types": "./dist/interactive/index.d.ts",
+        "import": "./dist/interactive/index.js",
+        "require": "./dist/interactive/index.cjs"
+      },
+      "./render": {
+        "types": "./dist/render/index.d.ts",
+        "import": "./dist/render/index.js",
+        "require": "./dist/render/index.cjs"
+      },
+      "./react": {
+        "types": "./dist/react/index.d.ts",
+        "import": "./dist/react/index.js",
+        "require": "./dist/react/index.cjs"
+      },
+      "./vegalite/interactive": {
+        "types": "./dist/vegalite/interactive.d.ts",
+        "import": "./dist/vegalite/interactive.js",
+        "require": "./dist/vegalite/interactive.cjs"
+      },
+      "./echarts/interactive": {
+        "types": "./dist/echarts/interactive.d.ts",
+        "import": "./dist/echarts/interactive.js",
+        "require": "./dist/echarts/interactive.cjs"
+      },
+      "./chartjs/interactive": {
+        "types": "./dist/chartjs/interactive.d.ts",
+        "import": "./dist/chartjs/interactive.js",
+        "require": "./dist/chartjs/interactive.cjs"
+      },
+      "./plotly/interactive": {
+        "types": "./dist/plotly/interactive.d.ts",
+        "import": "./dist/plotly/interactive.js",
+        "require": "./dist/plotly/interactive.cjs"
+      },
+      "./test-data": {
+        "types": "./dist/test-data/index.d.ts",
+        "import": "./dist/test-data/index.js",
+        "require": "./dist/test-data/index.cjs"
+      },
+      "./gallery": {
+        "types": "./dist/gallery/index.d.ts",
+        "import": "./dist/gallery/index.js",
+        "require": "./dist/gallery/index.cjs"
+      }
+    },
+    "files": [
+      "dist",
+      "src",
+      "README.md",
+      "LICENSE"
+    ],
+    "scripts": {
+      "build": "tsup",
+      "dev": "tsup --watch",
+      "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.test.json",
+      "test": "vitest run",
+      "test:watch": "vitest",
+      "lint": "eslint \"src/**/*.{ts,tsx}\"",
+      "lint:fix": "eslint \"src/**/*.{ts,tsx}\" --fix",
+      "format": "prettier --write \"src/**/*.{ts,tsx,json,md}\"",
+      "clean": "rimraf dist",
+      "prepublishOnly": "npm run clean && npm run typecheck && npm run test && npm run build",
+      "release": "npm publish --access public"
+    },
+    "peerDependencies": {
+      "chart.js": "^4.0.0",
+      "echarts": "^5.0.0 || ^6.0.0",
+      "plotly.js": "^2.0.0 || ^3.0.0",
+      "plotly.js-dist-min": "^2.0.0 || ^3.0.0",
+      "react": ">=18",
+      "vega": "^5.0.0 || ^6.0.0",
+      "vega-lite": "^5.0.0 || ^6.0.0",
+      "vega-tooltip": "^1.0.0"
+    },
+    "peerDependenciesMeta": {
+      "vega": {
+        "optional": true
+      },
+      "vega-lite": {
+        "optional": true
+      },
+      "vega-tooltip": {
+        "optional": true
+      },
+      "echarts": {
+        "optional": true
+      },
+      "chart.js": {
+        "optional": true
+      },
+      "plotly.js": {
+        "optional": true
+      },
+      "plotly.js-dist-min": {
+        "optional": true
+      },
+      "react": {
+        "optional": true
+      }
+    },
+    "devDependencies": {
+      "@types/d3-time": "^3.0.4",
+      "@types/d3-time-format": "^4.0.3",
+      "@types/node": "^20.14.10",
+      "@typescript-eslint/eslint-plugin": "^8.16.0",
+      "@typescript-eslint/parser": "^8.16.0",
+      "eslint": "^9.15.0",
+      "eslint-plugin-unused-imports": "^4.4.1",
+      "prettier": "^3.3.0",
+      "rimraf": "^6.0.1",
+      "tsup": "^8.3.0",
+      "typescript": "^5.6.0",
+      "typescript-eslint": "^8.16.0",
+      "vitest": "^4.1.11"
+    },
+    "engines": {
+      "node": ">=18"
+    },
+    "publishConfig": {
+      "access": "public",
+      "registry": "https://registry.npmjs.org/"
+    },
+    "overrides": {
+      "esbuild": "^0.28.1",
+      "js-yaml": "^4.2.0"
+    },
+    "dependencies": {
+      "@floating-ui/dom": "^1.7.4",
+      "d3-time": "^3.1.0",
+      "d3-time-format": "^4.1.0"
+    }
+  },
+  "trackedFileCount": 3997,
+  "sourceFileCount": 423,
+  "testFiles": [
+    "packages/flint-js/src/chartjs/instantiate-spec.ts",
+    "packages/flint-js/src/core/interaction-spec.ts",
+    "packages/flint-js/src/echarts/instantiate-spec.ts",
+    "packages/flint-js/src/plotly/instantiate-spec.ts",
+    "packages/flint-js/src/vegalite/instantiate-spec.ts",
+    "packages/flint-js/tests/accessible-navigation.test.ts",
+    "packages/flint-js/tests/area-sparse.test.ts",
+    "packages/flint-js/tests/axis-detection.test.ts",
+    "packages/flint-js/tests/axis-title-fit.test.ts",
+    "packages/flint-js/tests/band-balance.test.ts",
+    "packages/flint-js/tests/band-dodge.test.ts",
+    "packages/flint-js/tests/bar-table-labels.test.ts",
+    "packages/flint-js/tests/bar-table-rank.test.ts",
+    "packages/flint-js/tests/boxplot-grouped-dodge.test.ts",
+    "packages/flint-js/tests/boxplot-label-fit.test.ts",
+    "packages/flint-js/tests/bump-chartjs.test.ts",
+    "packages/flint-js/tests/calendar-vegalite.test.ts",
+    "packages/flint-js/tests/canvas-fit.test.ts",
+    "packages/flint-js/tests/categorical-temporal.test.ts",
+    "packages/flint-js/tests/chart-chrome.test.ts",
+    "packages/flint-js/tests/chart-properties-validation.test.ts",
+    "packages/flint-js/tests/chart-structure.test.ts",
+    "packages/flint-js/tests/chart-table.test.ts",
+    "packages/flint-js/tests/chart-type-recommendation.test.ts",
+    "packages/flint-js/tests/color-controls.test.ts",
+    "packages/flint-js/tests/connected-scatter.test.ts",
+    "packages/flint-js/tests/currency-axis-format.test.ts",
+    "packages/flint-js/tests/data-overlay.test.ts",
+    "packages/flint-js/tests/dense-marks.test.ts",
+    "packages/flint-js/tests/density-facet-groupby.test.ts",
+    "packages/flint-js/tests/domain-values.test.ts",
+    "packages/flint-js/tests/drawn-layout.test.ts",
+    "packages/flint-js/tests/ecdf.test.ts",
+    "packages/flint-js/tests/echarts-line-stroke-dash.test.ts",
+    "packages/flint-js/tests/encoding-shorthand.test.ts",
+    "packages/flint-js/tests/excel-codegen.test.ts",
+    "packages/flint-js/tests/excel-runtime.test.ts",
+    "packages/flint-js/tests/facet-columns.test.ts",
+    "packages/flint-js/tests/filter-controls.test.ts",
+    "packages/flint-js/tests/filter-overflow.test.ts",
+    "packages/flint-js/tests/frame-furniture.test.ts",
+    "packages/flint-js/tests/furniture-reserve.test.ts",
+    "packages/flint-js/tests/gantt-bullet-backends.test.ts",
+    "packages/flint-js/tests/gantt-bullet.test.ts",
+    "packages/flint-js/tests/grid-cells.test.ts",
+    "packages/flint-js/tests/header-gaps.test.ts",
+    "packages/flint-js/tests/heatmap-colors.test.ts",
+    "packages/flint-js/tests/heatmap-paper-data.test.ts",
+    "packages/flint-js/tests/hover-hysteresis.test.ts",
+    "packages/flint-js/tests/interaction-admission.test.ts",
+    "packages/flint-js/tests/interaction-compose.test.ts",
+    "packages/flint-js/tests/interaction-reset.test.ts",
+    "packages/flint-js/tests/interaction-spec.test.ts",
+    "packages/flint-js/tests/interaction-support.test.ts",
+    "packages/flint-js/tests/interactions.test.ts",
+    "packages/flint-js/tests/interactive-focus.test.ts",
+    "packages/flint-js/tests/key-preferences.test.ts",
+    "packages/flint-js/tests/key-title-seat.test.ts",
+    "packages/flint-js/tests/kpi-card.test.ts",
+    "packages/flint-js/tests/lane-tooltips.test.ts",
+    "packages/flint-js/tests/legend-key-titles.test.ts",
+    "packages/flint-js/tests/legend-series-end.test.ts",
+    "packages/flint-js/tests/line-continuous-color.test.ts",
+    "packages/flint-js/tests/link.test.ts",
+    "packages/flint-js/tests/live-layout.test.ts",
+    "packages/flint-js/tests/live-values.test.ts",
+    "packages/flint-js/tests/lollipop-chartjs.test.ts",
+    "packages/flint-js/tests/map-levels.test.ts",
+    "packages/flint-js/tests/map-navigation.test.ts",
+    "packages/flint-js/tests/maps.test.ts",
+    "packages/flint-js/tests/measure-ruler.test.ts",
+    "packages/flint-js/tests/optional-peers.test.ts",
+    "packages/flint-js/tests/pie-outside-labels.test.ts",
+    "packages/flint-js/tests/pie-overflow.test.ts",
+    "packages/flint-js/tests/pivot.test.ts",
+    "packages/flint-js/tests/plan-honour.test.ts",
+    "packages/flint-js/tests/plan-pins.test.ts",
+    "packages/flint-js/tests/plan-views.test.ts",
+    "packages/flint-js/tests/plotly-backend.test.ts",
+    "packages/flint-js/tests/plotly-expressive.test.ts",
+    "packages/flint-js/tests/plotly-gap-charts.test.ts",
+    "packages/flint-js/tests/plotly-widgets.test.ts",
+    "packages/flint-js/tests/point-size.test.ts",
+    "packages/flint-js/tests/radar-keys.test.ts",
+    "packages/flint-js/tests/range-area.test.ts",
+    "packages/flint-js/tests/react-chart.test.ts",
+    "packages/flint-js/tests/react-table.test.ts",
+    "packages/flint-js/tests/redos-guards.test.ts",
+    "packages/flint-js/tests/ridgeline-perspective.test.ts",
+    "packages/flint-js/tests/rose-area-truth.test.ts",
+    "packages/flint-js/tests/row-name-cap.test.ts",
+    "packages/flint-js/tests/row-names-above.test.ts",
+    "packages/flint-js/tests/scatter-zero.test.ts",
+    "packages/flint-js/tests/selector-row-test.test.ts",
+    "packages/flint-js/tests/self-naming-values.test.ts",
+    "packages/flint-js/tests/semantic-interactions.test.ts",
+    "packages/flint-js/tests/series-end-collision.test.ts",
+    "packages/flint-js/tests/side-ramp.test.ts",
+    "packages/flint-js/tests/size-key-samples.test.ts",
+    "packages/flint-js/tests/sizing-ceiling.test.ts",
+    "packages/flint-js/tests/slope.test.ts",
+    "packages/flint-js/tests/smoke.test.ts",
+    "packages/flint-js/tests/sort-curve-widgets.test.ts",
+    "packages/flint-js/tests/sparkline.test.ts",
+    "packages/flint-js/tests/stacked-bar-tooltip.test.ts",
+    "packages/flint-js/tests/static-series-gallery.test.ts",
+    "packages/flint-js/tests/static-series.test.ts",
+    "packages/flint-js/tests/table-chart.test.ts",
+    "packages/flint-js/tests/target-where.test.ts",
+    "packages/flint-js/tests/template-interactions.test.ts",
+    "packages/flint-js/tests/temporal-parse.test.ts",
+    "packages/flint-js/tests/text-width.test.ts",
+    "packages/flint-js/tests/theme-axis-labels.test.ts",
+    "packages/flint-js/tests/theme-axis-rules.test.ts",
+    "packages/flint-js/tests/theme-axis-structure.test.ts",
+    "packages/flint-js/tests/theme-baseline.test.ts",
+    "packages/flint-js/tests/theme-colour-rules.test.ts",
+    "packages/flint-js/tests/theme-diverging-direction.test.ts",
+    "packages/flint-js/tests/theme-diverging-orientation.test.ts",
+    "packages/flint-js/tests/theme-geometry.test.ts",
+    "packages/flint-js/tests/theme-grid-rules.test.ts",
+    "packages/flint-js/tests/theme-group-rules.test.ts",
+    "packages/flint-js/tests/theme-header.test.ts",
+    "packages/flint-js/tests/theme-legend-inside.test.ts",
+    "packages/flint-js/tests/theme-legend-rows.test.ts",
+    "packages/flint-js/tests/theme-mark-rules.test.ts",
+    "packages/flint-js/tests/theme-number-compact.test.ts",
+    "packages/flint-js/tests/theme-plotly.test.ts",
+    "packages/flint-js/tests/theme-presets.test.ts",
+    "packages/flint-js/tests/theme-source-rules.test.ts",
+    "packages/flint-js/tests/theme-titles.test.ts",
+    "packages/flint-js/tests/theme-type-rules.test.ts",
+    "packages/flint-js/tests/title-plan.test.ts",
+    "packages/flint-js/tests/tooltip-working-columns.test.ts",
+    "packages/flint-js/tests/unit-display.test.ts",
+    "packages/flint-js/tests/validate-updates.test.ts",
+    "packages/flint-js/tests/validate.test.ts",
+    "packages/flint-js/tests/value-label-format.test.ts",
+    "packages/flint-js/tests/value-label-rules.test.ts",
+    "packages/flint-js/tests/value-labels.test.ts",
+    "packages/flint-js/tests/vegalite-format.test.ts",
+    "packages/flint-js/tests/violin-widths.test.ts",
+    "packages/flint-js/tests/violin.test.ts",
+    "packages/flint-js/tests/waterfall-extent.test.ts",
+    "packages/flint-js/tests/waterfall-titles.test.ts",
+    "packages/flint-js/tests/year-band-dodge.test.ts",
+    "packages/flint-js/tests/year-legend.test.ts",
+    "packages/flint-js/tests/zero-and-floor.test.ts",
+    "packages/flint-mcp/tests/board.test.ts",
+    "packages/flint-mcp/tests/chart-context.test.ts",
+    "packages/flint-mcp/tests/compile.test.ts",
+    "packages/flint-mcp/tests/file-reference.test.ts",
+    "packages/flint-mcp/tests/http.test.ts",
+    "packages/flint-mcp/tests/options.test.ts",
+    "packages/flint-mcp/tests/preview-size.test.ts",
+    "packages/flint-mcp/tests/render.test.ts",
+    "packages/flint-mcp/tests/selection-chips.test.ts",
+    "packages/flint-mcp/tests/server.test.ts",
+    "packages/flint-mcp/tests/skills.test.ts",
+    "site/tests/interactive-data-report-model.test.ts",
+    "test-harness/excel/office-runner/backend-snapshot.test.mjs",
+    "test-harness/excel/office-runner/worksheet-cleanup.test.mjs"
+  ],
+  "counts": {
+    "uniqueLiteralChartNames": 51,
+    "semanticTypes": 44,
+    "themes": 14,
+    "interactionPresets": 23,
+    "backendTemplates": {
+      "vegalite": 39,
+      "echarts": 37,
+      "chartjs": 22,
+      "plotly": 38,
+      "excel": 18
+    },
+    "imageCharts": 10
+  },
+  "method": "TypeScript AST inventory + bundled registry execution. No browser render or complete upstream test run. Function-valued checks/pivots/layout hooks are recorded, not exhausted.",
+  "scopeNote": "README claims 52; five backend registries expose 51 literal chart names, with Donut/Doughnut alias counted separately."
+}

@@ -1,0 +1,60 @@
+{
+  "reason": "Latest user instruction defers UpSet and set visualization to later; no current release obligation.",
+  "status": "deferred-by-user",
+  "workPackages": [
+    {
+      "id": "WP-23",
+      "title": "집합 데이터·교집합·UpSet",
+      "required": false,
+      "status": "deferred-by-user",
+      "previousDependsOn": [
+        "WP-02",
+        "WP-03",
+        "WP-06",
+        "WP-07",
+        "WP-26"
+      ],
+      "previousAcceptance": [
+        "AT-66",
+        "AT-67",
+        "AT-68",
+        "AT-69"
+      ]
+    }
+  ],
+  "acceptanceTests": [
+    {
+      "id": "AT-66",
+      "input": "UpSet long/wide/array 입력과 duplicate/null/explicit universe",
+      "expected": "distinct membership 일치; none/unobserved와 unknown 구분",
+      "required": false,
+      "status": "deferred-not-run"
+    },
+    {
+      "id": "AT-67",
+      "input": "UpSet A/B/C exact·inclusive·project 수치 fixture",
+      "expected": "AB exact1/inclusive2, set size3/3/2, project none2; weight 별도",
+      "required": false,
+      "status": "deferred-not-run"
+    },
+    {
+      "id": "AT-68",
+      "input": "UpSet 64/128/1000 sets·topK·empty combination",
+      "expected": "signature 충돌0, 2^S 무조건 열거0, 누락 count·query 의미 유지",
+      "required": false,
+      "status": "deferred-not-run"
+    },
+    {
+      "id": "AT-69",
+      "input": "UpSet matrix/bar alignment·sort·filter·linked attributes",
+      "expected": "shared band 정렬, element lineage·키보드·query save/load·resize 유지",
+      "required": false,
+      "status": "deferred-not-run"
+    }
+  ],
+  "deferredAPIs": [
+    "createSetData",
+    "createIntersectionData",
+    "createUpSetPlot"
+  ]
+}

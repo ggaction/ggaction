@@ -1,0 +1,83 @@
+npm notice
+npm notice New minor version of npm available! 11.18.0 -> 11.21.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.21.1
+npm notice To update run: npm install -g npm@11.21.1
+npm notice
+✖ chromium matches explicit content-header geometry in Canvas and SVG at DPR 1 (2410.450916ms)
+  Error: Package entry count 622 exceeds 621.
+      at validatePackageManifest (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/package-artifact.js:255:11)
+      at createPackageArtifact (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/package-artifact.js:277:20)
+      at async preparePackageConsumer (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/package-consumer.js:26:50)
+      at async TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/browser/facet-content-headers.browser.js:15:14)
+      at async TestHook.run (node:internal/test_runner/test:932:9)
+
+✖ chromium matches explicit content-header geometry in Canvas and SVG at DPR 2 (0.589042ms)
+  Error: Package entry count 622 exceeds 621.
+      at validatePackageManifest (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/package-artifact.js:255:11)
+      at createPackageArtifact (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/package-artifact.js:277:20)
+      at async preparePackageConsumer (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/package-consumer.js:26:50)
+      at async TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/browser/facet-content-headers.browser.js:15:14)
+      at async TestHook.run (node:internal/test_runner/test:932:9)
+
+✖ chromium independently packed content matches literal plot origins at DPR 1 (0.047458ms)
+  Error: Package entry count 622 exceeds 621.
+      at validatePackageManifest (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/package-artifact.js:255:11)
+      at createPackageArtifact (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/package-artifact.js:277:20)
+      at async preparePackageConsumer (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/package-consumer.js:26:50)
+      at async TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/browser/facet-content-headers.browser.js:15:14)
+      at async TestHook.run (node:internal/test_runner/test:932:9)
+
+✖ chromium independently packed content matches literal plot origins at DPR 2 (0.027625ms)
+  Error: Package entry count 622 exceeds 621.
+      at validatePackageManifest (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/package-artifact.js:255:11)
+      at createPackageArtifact (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/package-artifact.js:277:20)
+      at async preparePackageConsumer (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/package-consumer.js:26:50)
+      at async TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/browser/facet-content-headers.browser.js:15:14)
+      at async TestHook.run (node:internal/test_runner/test:932:9)
+
+ℹ tests 4
+ℹ suites 0
+ℹ pass 0
+ℹ fail 4
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3236.639292
+
+✖ failing tests:
+
+test at test/browser/facet-content-headers.browser.js:23:29
+✖ chromium matches explicit content-header geometry in Canvas and SVG at DPR 1 (2410.450916ms)
+  Error: Package entry count 622 exceeds 621.
+      at validatePackageManifest (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/package-artifact.js:255:11)
+      at createPackageArtifact (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/package-artifact.js:277:20)
+      at async preparePackageConsumer (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/package-consumer.js:26:50)
+      at async TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/browser/facet-content-headers.browser.js:15:14)
+      at async TestHook.run (node:internal/test_runner/test:932:9)
+
+test at test/browser/facet-content-headers.browser.js:23:29
+✖ chromium matches explicit content-header geometry in Canvas and SVG at DPR 2 (0.589042ms)
+  Error: Package entry count 622 exceeds 621.
+      at validatePackageManifest (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/package-artifact.js:255:11)
+      at createPackageArtifact (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/package-artifact.js:277:20)
+      at async preparePackageConsumer (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/package-consumer.js:26:50)
+      at async TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/browser/facet-content-headers.browser.js:15:14)
+      at async TestHook.run (node:internal/test_runner/test:932:9)
+
+test at test/browser/facet-content-headers.browser.js:63:29
+✖ chromium independently packed content matches literal plot origins at DPR 1 (0.047458ms)
+  Error: Package entry count 622 exceeds 621.
+      at validatePackageManifest (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/package-artifact.js:255:11)
+      at createPackageArtifact (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/package-artifact.js:277:20)
+      at async preparePackageConsumer (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/package-consumer.js:26:50)
+      at async TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/browser/facet-content-headers.browser.js:15:14)
+      at async TestHook.run (node:internal/test_runner/test:932:9)
+
+test at test/browser/facet-content-headers.browser.js:63:29
+✖ chromium independently packed content matches literal plot origins at DPR 2 (0.027625ms)
+  Error: Package entry count 622 exceeds 621.
+      at validatePackageManifest (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/package-artifact.js:255:11)
+      at createPackageArtifact (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/package-artifact.js:277:20)
+      at async preparePackageConsumer (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/package-consumer.js:26:50)
+      at async TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/browser/facet-content-headers.browser.js:15:14)
+      at async TestHook.run (node:internal/test_runner/test:932:9)

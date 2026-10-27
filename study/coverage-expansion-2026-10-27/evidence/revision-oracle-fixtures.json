@@ -1,0 +1,82 @@
+{
+  "notice": "Hand-derived expected values for planned tests, not ggaction execution.",
+  "partition": {
+    "input": {
+      "root": 10,
+      "A": 6,
+      "A1": 2,
+      "A2": 4,
+      "B": 4
+    },
+    "intervals": {
+      "root": [
+        0,
+        1
+      ],
+      "A": [
+        0,
+        0.6
+      ],
+      "B": [
+        0.6,
+        1
+      ],
+      "A1": [
+        0,
+        0.2
+      ],
+      "A2": [
+        0.2,
+        0.6
+      ]
+    },
+    "cartesianWidth1000": {
+      "A": 600
+    },
+    "polarFullTurnAnglePiUnits": {
+      "A": 1.2
+    }
+  },
+  "graph": {
+    "positions": {
+      "a": 0,
+      "b": 1,
+      "c": 3,
+      "d": 10
+    },
+    "k": 1,
+    "directed": [
+      "a>b",
+      "b>a",
+      "c>b",
+      "d>c"
+    ],
+    "union": [
+      "a-b",
+      "b-c",
+      "c-d"
+    ],
+    "mutual": [
+      "a-b"
+    ],
+    "radius2Inclusive": [
+      "a-b",
+      "b-c"
+    ],
+    "mst": [
+      {
+        "edge": "a-b",
+        "distance": 1
+      },
+      {
+        "edge": "b-c",
+        "distance": 2
+      },
+      {
+        "edge": "c-d",
+        "distance": 7
+      }
+    ],
+    "mstTotal": 10
+  }
+}

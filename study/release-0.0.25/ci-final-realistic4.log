@@ -1,0 +1,1142 @@
+﻿2026-10-26T21:41:14.9048305Z Current runner version: '2.338.0'
+2026-10-26T21:41:14.9072297Z ##[group]Runner Image Provisioner
+2026-10-26T21:41:14.9073228Z Hosted Compute Agent
+2026-10-26T21:41:14.9073835Z Version: 20261021.618
+2026-10-26T21:41:14.9074501Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-10-26T21:41:14.9075278Z Build Date: 2026-10-21T00:45:21Z
+2026-10-26T21:41:14.9075961Z Worker ID: {45ea3b04-59fb-4215-9159-726824463649}
+2026-10-26T21:41:14.9076733Z Region: westus
+2026-10-26T21:41:14.9077291Z Cloud: Azure
+2026-10-26T21:41:14.9077856Z ##[endgroup]
+2026-10-26T21:41:14.9079315Z ##[group]Operating System
+2026-10-26T21:41:14.9079949Z Ubuntu
+2026-10-26T21:41:14.9080469Z 24.04.5
+2026-10-26T21:41:14.9081040Z LTS
+2026-10-26T21:41:14.9081812Z ##[endgroup]
+2026-10-26T21:41:14.9082403Z ##[group]Runner Image
+2026-10-26T21:41:14.9083019Z Image: ubuntu-24.04
+2026-10-26T21:41:14.9083600Z Version: 20261012.334.1
+2026-10-26T21:41:14.9084903Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261012.334/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-26T21:41:14.9086472Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261012.334
+2026-10-26T21:41:14.9087496Z ##[endgroup]
+2026-10-26T21:41:14.9088585Z ##[group]GITHUB_TOKEN Permissions
+2026-10-26T21:41:14.9090553Z Contents: read
+2026-10-26T21:41:14.9091362Z Metadata: read
+2026-10-26T21:41:14.9092043Z ##[endgroup]
+2026-10-26T21:41:14.9094081Z Secret source: Actions
+2026-10-26T21:41:14.9095153Z Cache mode: write
+2026-10-26T21:41:14.9095898Z Prepare workflow directory
+2026-10-26T21:41:14.9460551Z Prepare all required actions
+2026-10-26T21:41:14.9526333Z Getting action download info
+2026-10-26T21:41:15.3041375Z Download action repository 'actions/checkout@v6' (SHA:d23441a48e516b6c34aea4fa41551a30e30af803)
+2026-10-26T21:41:15.4008745Z Download action repository 'actions/setup-node@v6' (SHA:249970729cb0ef3589644e2896645e5dc5ba9c38)
+2026-10-26T21:41:15.4883586Z Download action repository 'actions/cache@v5' (SHA:caa296126883cff596d87d8935842f9db880ef25)
+2026-10-26T21:41:15.5841746Z Download action repository 'actions/upload-artifact@v7' (SHA:cf430e030ddbb5b0abf93d22962f4752f3646cd9)
+2026-10-26T21:41:16.1237036Z Complete job name: realistic (4)
+2026-10-26T21:41:16.2165539Z ##[group]Run actions/checkout@v6
+2026-10-26T21:41:16.2166834Z with:
+2026-10-26T21:41:16.2167361Z   repository: ggaction/ggaction
+2026-10-26T21:41:16.2173114Z   token: ***
+2026-10-26T21:41:16.2173795Z   ssh-strict: true
+2026-10-26T21:41:16.2174282Z   ssh-user: git
+2026-10-26T21:41:16.2174772Z   persist-credentials: true
+2026-10-26T21:41:16.2175304Z   clean: true
+2026-10-26T21:41:16.2175800Z   sparse-checkout-cone-mode: true
+2026-10-26T21:41:16.2176359Z   fetch-depth: 1
+2026-10-26T21:41:16.2176835Z   fetch-tags: false
+2026-10-26T21:41:16.2177323Z   show-progress: true
+2026-10-26T21:41:16.2177808Z   lfs: false
+2026-10-26T21:41:16.2178271Z   submodules: false
+2026-10-26T21:41:16.2178781Z   set-safe-directory: true
+2026-10-26T21:41:16.2179338Z   allow-unsafe-pr-checkout: false
+2026-10-26T21:41:16.2180605Z ##[endgroup]
+2026-10-26T21:41:16.3207674Z Syncing repository: ggaction/ggaction
+2026-10-26T21:41:16.3210801Z ##[group]Getting Git version info
+2026-10-26T21:41:16.3212678Z Working directory is '/home/runner/work/ggaction/ggaction'
+2026-10-26T21:41:16.3214623Z [command]/usr/bin/git version
+2026-10-26T21:41:16.3272305Z git version 2.55.0
+2026-10-26T21:41:16.3389882Z ##[endgroup]
+2026-10-26T21:41:16.3400473Z Temporarily overriding HOME='/home/runner/work/_temp/b8ef24c5-a80a-4e99-89f8-4dc51db8072c' before making global git config changes
+2026-10-26T21:41:16.3404263Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-26T21:41:16.3407114Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/ggaction/ggaction
+2026-10-26T21:41:16.3412222Z Deleting the contents of '/home/runner/work/ggaction/ggaction'
+2026-10-26T21:41:16.3414228Z ##[group]Determining repository object format
+2026-10-26T21:41:16.3415805Z ##[endgroup]
+2026-10-26T21:41:16.3416991Z ##[group]Initializing the repository
+2026-10-26T21:41:16.3417738Z [command]/usr/bin/git init /home/runner/work/ggaction/ggaction
+2026-10-26T21:41:16.3517293Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-26T21:41:16.3519689Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-26T21:41:16.3522168Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-26T21:41:16.3523844Z hint: call:
+2026-10-26T21:41:16.3525296Z hint:
+2026-10-26T21:41:16.3526485Z hint: 	git config --global init.defaultBranch <name>
+2026-10-26T21:41:16.3527916Z hint:
+2026-10-26T21:41:16.3529096Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-26T21:41:16.3530953Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-26T21:41:16.3532907Z hint:
+2026-10-26T21:41:16.3533808Z hint: 	git branch -m <name>
+2026-10-26T21:41:16.3534904Z hint:
+2026-10-26T21:41:16.3535988Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-26T21:41:16.3538107Z Initialized empty Git repository in /home/runner/work/ggaction/ggaction/.git/
+2026-10-26T21:41:16.3541613Z [command]/usr/bin/git remote add origin https://github.com/ggaction/ggaction
+2026-10-26T21:41:16.3593931Z ##[endgroup]
+2026-10-26T21:41:16.3595681Z ##[group]Disabling automatic garbage collection
+2026-10-26T21:41:16.3598973Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-26T21:41:16.3632235Z ##[endgroup]
+2026-10-26T21:41:16.3634035Z ##[group]Setting up auth
+2026-10-26T21:41:16.3635044Z Removing SSH command configuration
+2026-10-26T21:41:16.3641078Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-26T21:41:16.3682354Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-26T21:41:16.4118424Z Removing HTTP extra header
+2026-10-26T21:41:16.4125324Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-26T21:41:16.4164477Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-26T21:41:16.4382187Z Removing includeIf entries pointing to credentials config files
+2026-10-26T21:41:16.4389185Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-26T21:41:16.4426132Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-26T21:41:16.4651955Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-b7d858f2-d8e6-4784-96a3-3b000c0af8b1.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-26T21:41:16.4695569Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/ggaction/ggaction/.git.path /home/runner/work/_temp/git-credentials-b7d858f2-d8e6-4784-96a3-3b000c0af8b1.config
+2026-10-26T21:41:16.4731999Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/ggaction/ggaction/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-b7d858f2-d8e6-4784-96a3-3b000c0af8b1.config
+2026-10-26T21:41:16.4773132Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-b7d858f2-d8e6-4784-96a3-3b000c0af8b1.config
+2026-10-26T21:41:16.4808062Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-b7d858f2-d8e6-4784-96a3-3b000c0af8b1.config
+2026-10-26T21:41:16.4838313Z ##[endgroup]
+2026-10-26T21:41:16.4839513Z ##[group]Fetching the repository
+2026-10-26T21:41:16.4847941Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +794a3481ba2f8a5359ed3b71435abfed34854e51:refs/remotes/pull/276/merge
+2026-10-26T21:41:18.6700286Z From https://github.com/ggaction/ggaction
+2026-10-26T21:41:18.6701679Z  * [new ref]         794a3481ba2f8a5359ed3b71435abfed34854e51 -> pull/276/merge
+2026-10-26T21:41:18.6707642Z ##[endgroup]
+2026-10-26T21:41:18.6708532Z ##[group]Determining the checkout info
+2026-10-26T21:41:18.6709840Z ##[endgroup]
+2026-10-26T21:41:18.6716542Z [command]/usr/bin/git sparse-checkout disable
+2026-10-26T21:41:18.6771943Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-26T21:41:18.6808979Z ##[group]Checking out the ref
+2026-10-26T21:41:18.6809534Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/276/merge
+2026-10-26T21:41:19.0849270Z Note: switching to 'refs/remotes/pull/276/merge'.
+2026-10-26T21:41:19.0849816Z 
+2026-10-26T21:41:19.0850055Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-10-26T21:41:19.0850605Z changes and commit them, and you can discard any commits you make in this
+2026-10-26T21:41:19.0851476Z state without impacting any branches by switching back to a branch.
+2026-10-26T21:41:19.0851823Z 
+2026-10-26T21:41:19.0852081Z If you want to create a new branch to retain commits you create, you may
+2026-10-26T21:41:19.0852584Z do so (now or later) by using -c with the switch command. Example:
+2026-10-26T21:41:19.0852879Z 
+2026-10-26T21:41:19.0852996Z   git switch -c <new-branch-name>
+2026-10-26T21:41:19.0853232Z 
+2026-10-26T21:41:19.0853354Z Or undo this operation with:
+2026-10-26T21:41:19.0853537Z 
+2026-10-26T21:41:19.0853630Z   git switch -
+2026-10-26T21:41:19.0853791Z 
+2026-10-26T21:41:19.0854045Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-10-26T21:41:19.0854380Z 
+2026-10-26T21:41:19.0854778Z HEAD is now at 794a348 Merge b3247bfcd0fbc777ef3e8d2ff40b13e105cdcc14 into fd5c4073fc80295c513bd099ac0ff0aa83059371
+2026-10-26T21:41:19.0868869Z ##[endgroup]
+2026-10-26T21:41:19.0920148Z [command]/usr/bin/git log -1 --format=%H
+2026-10-26T21:41:19.0949380Z 794a3481ba2f8a5359ed3b71435abfed34854e51
+2026-10-26T21:41:19.1230851Z ##[group]Run actions/setup-node@v6
+2026-10-26T21:41:19.1231358Z with:
+2026-10-26T21:41:19.1231580Z   node-version: 22
+2026-10-26T21:41:19.1231789Z   cache: npm
+2026-10-26T21:41:19.1231998Z   check-latest: false
+2026-10-26T21:41:19.1234327Z   token: ***
+2026-10-26T21:41:19.1234555Z   package-manager-cache: true
+2026-10-26T21:41:19.1234831Z ##[endgroup]
+2026-10-26T21:41:19.2608738Z Found in cache @ /opt/hostedtoolcache/node/22.23.3/x64
+2026-10-26T21:41:19.2613156Z ##[group]Environment details
+2026-10-26T21:41:19.6493527Z node: v22.23.3
+2026-10-26T21:41:19.6494029Z npm: 10.9.9
+2026-10-26T21:41:19.6494352Z yarn: 1.22.22
+2026-10-26T21:41:19.6517006Z ##[endgroup]
+2026-10-26T21:41:19.6517686Z [command]/opt/hostedtoolcache/node/22.23.3/x64/bin/npm config get cache
+2026-10-26T21:41:19.7627912Z /home/runner/.npm
+2026-10-26T21:41:20.1253752Z Cache hit for: node-cache-Linux-x64-npm-dca19831ff25602461c6fdf3cf05547fbb1007d87c049f5a7e59dff9a271e074
+2026-10-26T21:41:21.4205069Z Received 0 of 61010643 (0.0%), 0.0 MBs/sec
+2026-10-26T21:41:22.0598512Z Received 61010643 of 61010643 (100.0%), 35.5 MBs/sec
+2026-10-26T21:41:22.0599808Z Cache Size: ~58 MB (61010643 B)
+2026-10-26T21:41:22.0640537Z [command]/usr/bin/tar -xf /home/runner/work/_temp/13967537-fa14-4ec6-b6d8-206ae7b03472/cache.tzst -P -C /home/runner/work/ggaction/ggaction --use-compress-program unzstd
+2026-10-26T21:41:22.1700486Z Cache restored successfully
+2026-10-26T21:41:22.1735926Z Cache restored from key: node-cache-Linux-x64-npm-dca19831ff25602461c6fdf3cf05547fbb1007d87c049f5a7e59dff9a271e074
+2026-10-26T21:41:22.1905785Z ##[group]Run npm ci
+2026-10-26T21:41:22.1906085Z [36;1mnpm ci[0m
+2026-10-26T21:41:22.2164975Z shell: /usr/bin/bash -e {0}
+2026-10-26T21:41:22.2165282Z ##[endgroup]
+2026-10-26T21:41:25.5720825Z 
+2026-10-26T21:41:25.5729917Z added 122 packages, and audited 123 packages in 3s
+2026-10-26T21:41:25.5730246Z 
+2026-10-26T21:41:25.5730459Z 42 packages are looking for funding
+2026-10-26T21:41:25.5731376Z   run `npm fund` for details
+2026-10-26T21:41:25.5733511Z 
+2026-10-26T21:41:25.5733781Z found 0 vulnerabilities
+2026-10-26T21:41:25.6892046Z ##[group]Run actions/cache@v5
+2026-10-26T21:41:25.6892353Z with:
+2026-10-26T21:41:25.6892601Z   path: .artifacts/datasets/tidytuesday
+2026-10-26T21:41:25.6893201Z   key: ggaction-tidytuesday-Linux-fef874e3d5ce26efe00241d2cae6394d5797fd63351c56db52bb578ce30d2290
+2026-10-26T21:41:25.6893817Z   enableCrossOsArchive: false
+2026-10-26T21:41:25.6894102Z   fail-on-cache-miss: false
+2026-10-26T21:41:25.6894369Z   lookup-only: false
+2026-10-26T21:41:25.6894606Z   save-always: false
+2026-10-26T21:41:25.6894835Z ##[endgroup]
+2026-10-26T21:41:26.1295656Z Cache hit for: ggaction-tidytuesday-Linux-fef874e3d5ce26efe00241d2cae6394d5797fd63351c56db52bb578ce30d2290
+2026-10-26T21:41:27.4025369Z Received 851126 of 13434038 (6.3%), 0.8 MBs/sec
+2026-10-26T21:41:27.6080843Z Received 13434038 of 13434038 (100.0%), 10.6 MBs/sec
+2026-10-26T21:41:27.6081729Z Cache Size: ~13 MB (13434038 B)
+2026-10-26T21:41:27.6109814Z [command]/usr/bin/tar -xf /home/runner/work/_temp/efb5247a-15fe-4955-be7e-478660244e14/cache.tzst -P -C /home/runner/work/ggaction/ggaction --use-compress-program unzstd
+2026-10-26T21:41:27.6992448Z Cache restored successfully
+2026-10-26T21:41:27.7077817Z Cache restored from key: ggaction-tidytuesday-Linux-fef874e3d5ce26efe00241d2cae6394d5797fd63351c56db52bb578ce30d2290
+2026-10-26T21:41:27.7195279Z ##[group]Run node scripts/run-check.js test-realistic -- npm run test:realistic -- --shard=4/7
+2026-10-26T21:41:27.7196010Z [36;1mnode scripts/run-check.js test-realistic -- npm run test:realistic -- --shard=4/7[0m
+2026-10-26T21:41:27.7258202Z shell: /usr/bin/bash -e {0}
+2026-10-26T21:41:27.7258469Z ##[endgroup]
+2026-10-26T21:41:27.8612226Z 
+2026-10-26T21:41:27.8612947Z > ggaction@0.0.25 test:realistic
+2026-10-26T21:41:27.8613744Z > node scripts/run-tests.js realistic --shard=4/7
+2026-10-26T21:41:27.8614177Z 
+2026-10-26T21:41:27.9333339Z {"shard":{"index":4,"total":7},"files":["contracts/generated-scenario-effective-factors.test.js","contracts/realistic-combined-legend-witness.test.js","contracts/realistic-complete-chart-facades.test.js","contracts/realistic-data-color-contracts.test.js","contracts/realistic-facet-raster-bounds.test.js","contracts/realistic-hierarchical-facade-matrix.test.js","contracts/realistic-layer-plot.test.js","contracts/realistic-legend-option-witness.test.js"],"estimatedMs":536469}
+2026-10-26T21:41:28.0092339Z TAP version 13
+2026-10-26T21:41:31.3919198Z # Subtest: preserves every Unicode label and all 257 long legend categories
+2026-10-26T21:41:31.3951944Z ok 1 - preserves every Unicode label and all 257 long legend categories
+2026-10-26T21:41:31.3952814Z   ---
+2026-10-26T21:41:31.3953287Z   duration_ms: 437.72399
+2026-10-26T21:41:31.3953782Z   type: 'test'
+2026-10-26T21:41:31.3954187Z   ...
+2026-10-26T21:41:31.3955051Z # Subtest: executes monotone temporal lines for every direction and path-order mode
+2026-10-26T21:41:31.3956335Z ok 2 - executes monotone temporal lines for every direction and path-order mode
+2026-10-26T21:41:31.3957119Z   ---
+2026-10-26T21:41:31.3957506Z   duration_ms: 1462.719088
+2026-10-26T21:41:31.3957991Z   type: 'test'
+2026-10-26T21:41:31.3958511Z   ...
+2026-10-26T21:41:31.3959335Z # Subtest: materializes every requested histogram binning policy without substitution
+2026-10-26T21:41:31.3972949Z ok 3 - materializes every requested histogram binning policy without substitution
+2026-10-26T21:41:31.3974030Z   ---
+2026-10-26T21:41:31.3974775Z   duration_ms: 255.845633
+2026-10-26T21:41:31.3975440Z   type: 'test'
+2026-10-26T21:41:31.3976033Z   ...
+2026-10-26T21:41:31.3977129Z # Subtest: keeps error-bar and error-band factors active in separate recipes
+2026-10-26T21:41:31.3978545Z ok 4 - keeps error-bar and error-band factors active in separate recipes
+2026-10-26T21:41:31.3979482Z   ---
+2026-10-26T21:41:31.3980073Z   duration_ms: 581.178326
+2026-10-26T21:41:31.3980721Z   type: 'test'
+2026-10-26T21:41:31.3981494Z   ...
+2026-10-26T21:41:36.1012886Z # Subtest: combined legend lifecycle calls preserve actual rows from tt-tour-de-france-winners
+2026-10-26T21:41:36.1014615Z ok 5 - combined legend lifecycle calls preserve actual rows from tt-tour-de-france-winners
+2026-10-26T21:41:36.1041601Z   ---
+2026-10-26T21:41:36.1071628Z   duration_ms: 2415.617024
+2026-10-26T21:41:36.1072254Z   type: 'test'
+2026-10-26T21:41:36.1101679Z   ...
+2026-10-26T21:41:36.1123280Z # Subtest: combined legend lifecycle calls preserve actual rows from tt-london-marathon-winners
+2026-10-26T21:41:36.1124928Z ok 6 - combined legend lifecycle calls preserve actual rows from tt-london-marathon-winners
+2026-10-26T21:41:36.1125936Z   ---
+2026-10-26T21:41:36.1126510Z   duration_ms: 1823.761413
+2026-10-26T21:41:36.1127140Z   type: 'test'
+2026-10-26T21:41:36.1127707Z   ...
+2026-10-26T21:41:36.1128627Z # Subtest: combined legend lifecycle calls preserve actual rows from tt-penguins
+2026-10-26T21:41:36.1129870Z ok 7 - combined legend lifecycle calls preserve actual rows from tt-penguins
+2026-10-26T21:41:36.1130746Z   ---
+2026-10-26T21:41:36.1131497Z   duration_ms: 1845.200624
+2026-10-26T21:41:36.1132130Z   type: 'test'
+2026-10-26T21:41:36.1132630Z   ...
+2026-10-26T21:41:36.1133912Z # Subtest: quantitative combined legend lifecycle preserves actual rows from tt-tour-de-france-winners
+2026-10-26T21:41:36.1136029Z ok 8 - quantitative combined legend lifecycle preserves actual rows from tt-tour-de-france-winners
+2026-10-26T21:41:36.1137086Z   ---
+2026-10-26T21:41:36.1137611Z   duration_ms: 575.548431
+2026-10-26T21:41:36.1138183Z   type: 'test'
+2026-10-26T21:41:36.1138712Z   ...
+2026-10-26T21:41:36.1139869Z # Subtest: quantitative combined legend lifecycle preserves actual rows from tt-london-marathon-winners
+2026-10-26T21:41:36.1141747Z ok 9 - quantitative combined legend lifecycle preserves actual rows from tt-london-marathon-winners
+2026-10-26T21:41:36.1142789Z   ---
+2026-10-26T21:41:36.1143311Z   duration_ms: 404.649529
+2026-10-26T21:41:36.1143910Z   type: 'test'
+2026-10-26T21:41:36.1144528Z   ...
+2026-10-26T21:41:36.1145529Z # Subtest: quantitative combined legend lifecycle preserves actual rows from tt-penguins
+2026-10-26T21:41:36.1146928Z ok 10 - quantitative combined legend lifecycle preserves actual rows from tt-penguins
+2026-10-26T21:41:36.1147833Z   ---
+2026-10-26T21:41:36.1148377Z   duration_ms: 451.543124
+2026-10-26T21:41:36.1148950Z   type: 'test'
+2026-10-26T21:41:36.1149454Z   ...
+2026-10-26T21:41:36.7481675Z # Subtest: authors createRosePlot variant 1 from cars with proportional measured sectors
+2026-10-26T21:41:36.7542688Z ok 11 - authors createRosePlot variant 1 from cars with proportional measured sectors
+2026-10-26T21:41:36.7594155Z   ---
+2026-10-26T21:41:36.7602011Z   duration_ms: 63.597185
+2026-10-26T21:41:36.7662907Z   type: 'test'
+2026-10-26T21:41:36.7704891Z   ...
+2026-10-26T21:41:36.7722458Z # Subtest: authors createRadialBarPlot variant 1 from cars with proportional measured sectors
+2026-10-26T21:41:36.7762226Z ok 12 - authors createRadialBarPlot variant 1 from cars with proportional measured sectors
+2026-10-26T21:41:36.7763193Z   ---
+2026-10-26T21:41:36.7768317Z   duration_ms: 34.594307
+2026-10-26T21:41:36.7768951Z   type: 'test'
+2026-10-26T21:41:36.7769468Z   ...
+2026-10-26T21:41:36.7770414Z # Subtest: authors pie variant 1 from cars with complete sectors and immutable source
+2026-10-26T21:41:36.7772064Z ok 13 - authors pie variant 1 from cars with complete sectors and immutable source
+2026-10-26T21:41:36.7773021Z   ---
+2026-10-26T21:41:36.7773598Z   duration_ms: 40.418019
+2026-10-26T21:41:36.7774237Z   type: 'test'
+2026-10-26T21:41:36.7774805Z   ...
+2026-10-26T21:41:36.7775823Z # Subtest: authors density variant 1 from cars with complete profiles and revisions
+2026-10-26T21:41:36.7777248Z ok 14 - authors density variant 1 from cars with complete profiles and revisions
+2026-10-26T21:41:36.7778231Z   ---
+2026-10-26T21:41:36.7778816Z   duration_ms: 55.615554
+2026-10-26T21:41:36.7779441Z   type: 'test'
+2026-10-26T21:41:36.7779998Z   ...
+2026-10-26T21:41:36.7782348Z # Subtest: authors Horizon variant 1 from cars against independent signed folds
+2026-10-26T21:41:36.7783849Z ok 15 - authors Horizon variant 1 from cars against independent signed folds
+2026-10-26T21:41:36.7784991Z   ---
+2026-10-26T21:41:36.7785614Z   duration_ms: 204.913161
+2026-10-26T21:41:36.7786253Z   type: 'test'
+2026-10-26T21:41:36.7786842Z   ...
+2026-10-26T21:41:36.7787964Z # Subtest: authors createRosePlot variant 2 from cars with proportional measured sectors
+2026-10-26T21:41:36.7790650Z ok 16 - authors createRosePlot variant 2 from cars with proportional measured sectors
+2026-10-26T21:41:36.7851895Z   ---
+2026-10-26T21:41:36.7871792Z   duration_ms: 21.982722
+2026-10-26T21:41:36.7881356Z   type: 'test'
+2026-10-26T21:41:36.7898473Z   ...
+2026-10-26T21:41:36.7899619Z # Subtest: authors createRadialBarPlot variant 2 from cars with proportional measured sectors
+2026-10-26T21:41:36.7901372Z ok 17 - authors createRadialBarPlot variant 2 from cars with proportional measured sectors
+2026-10-26T21:41:36.7902391Z   ---
+2026-10-26T21:41:36.7902886Z   duration_ms: 15.461137
+2026-10-26T21:41:36.7903441Z   type: 'test'
+2026-10-26T21:41:36.7903930Z   ...
+2026-10-26T21:41:36.7904848Z # Subtest: authors pie variant 2 from cars with complete sectors and immutable source
+2026-10-26T21:41:36.7906136Z ok 18 - authors pie variant 2 from cars with complete sectors and immutable source
+2026-10-26T21:41:36.7906992Z   ---
+2026-10-26T21:41:36.7907912Z   duration_ms: 21.559479
+2026-10-26T21:41:36.7908484Z   type: 'test'
+2026-10-26T21:41:36.7908964Z   ...
+2026-10-26T21:41:36.7909869Z # Subtest: authors density variant 2 from cars with complete profiles and revisions
+2026-10-26T21:41:36.7911361Z ok 19 - authors density variant 2 from cars with complete profiles and revisions
+2026-10-26T21:41:36.7912270Z   ---
+2026-10-26T21:41:36.7912755Z   duration_ms: 74.972069
+2026-10-26T21:41:36.7913312Z   type: 'test'
+2026-10-26T21:41:36.7913819Z   ...
+2026-10-26T21:41:36.7914696Z # Subtest: authors Horizon variant 2 from cars against independent signed folds
+2026-10-26T21:41:36.7915942Z ok 20 - authors Horizon variant 2 from cars against independent signed folds
+2026-10-26T21:41:36.7916757Z   ---
+2026-10-26T21:41:36.7917246Z   duration_ms: 261.246448
+2026-10-26T21:41:36.7917789Z   type: 'test'
+2026-10-26T21:41:36.7918280Z   ...
+2026-10-26T21:41:36.7919239Z # Subtest: authors createRosePlot variant 3 from cars with proportional measured sectors
+2026-10-26T21:41:36.7920655Z ok 21 - authors createRosePlot variant 3 from cars with proportional measured sectors
+2026-10-26T21:41:36.7921715Z   ---
+2026-10-26T21:41:36.7922209Z   duration_ms: 16.305099
+2026-10-26T21:41:36.7922747Z   type: 'test'
+2026-10-26T21:41:36.7923238Z   ...
+2026-10-26T21:41:36.7924281Z # Subtest: authors createRadialBarPlot variant 3 from cars with proportional measured sectors
+2026-10-26T21:41:36.7925752Z ok 22 - authors createRadialBarPlot variant 3 from cars with proportional measured sectors
+2026-10-26T21:41:36.7926673Z   ---
+2026-10-26T21:41:36.7927281Z   duration_ms: 19.056796
+2026-10-26T21:41:36.7927872Z   type: 'test'
+2026-10-26T21:41:36.7928360Z   ...
+2026-10-26T21:41:36.7929275Z # Subtest: authors pie variant 3 from cars with complete sectors and immutable source
+2026-10-26T21:41:36.7930582Z ok 23 - authors pie variant 3 from cars with complete sectors and immutable source
+2026-10-26T21:41:36.7933414Z   ---
+2026-10-26T21:41:36.7933957Z   duration_ms: 14.051287
+2026-10-26T21:41:36.7934546Z   type: 'test'
+2026-10-26T21:41:36.7935063Z   ...
+2026-10-26T21:41:36.7935980Z # Subtest: authors density variant 3 from cars with complete profiles and revisions
+2026-10-26T21:41:36.7937280Z ok 24 - authors density variant 3 from cars with complete profiles and revisions
+2026-10-26T21:41:36.7938121Z   ---
+2026-10-26T21:41:36.7938812Z   duration_ms: 37.186291
+2026-10-26T21:41:36.7939353Z   type: 'test'
+2026-10-26T21:41:36.7939846Z   ...
+2026-10-26T21:41:36.7940743Z # Subtest: authors Horizon variant 3 from cars against independent signed folds
+2026-10-26T21:41:36.7942223Z ok 25 - authors Horizon variant 3 from cars against independent signed folds
+2026-10-26T21:41:36.7943316Z   ---
+2026-10-26T21:41:36.7943803Z   duration_ms: 336.171568
+2026-10-26T21:41:36.7944351Z   type: 'test'
+2026-10-26T21:41:36.7944837Z   ...
+2026-10-26T21:41:36.7945793Z # Subtest: authors createRosePlot variant 4 from cars with proportional measured sectors
+2026-10-26T21:41:36.7947281Z ok 26 - authors createRosePlot variant 4 from cars with proportional measured sectors
+2026-10-26T21:41:36.7948177Z   ---
+2026-10-26T21:41:36.7948663Z   duration_ms: 16.865791
+2026-10-26T21:41:36.7949204Z   type: 'test'
+2026-10-26T21:41:36.7949687Z   ...
+2026-10-26T21:41:36.7950690Z # Subtest: authors createRadialBarPlot variant 4 from cars with proportional measured sectors
+2026-10-26T21:41:36.7952518Z ok 27 - authors createRadialBarPlot variant 4 from cars with proportional measured sectors
+2026-10-26T21:41:36.7953448Z   ---
+2026-10-26T21:41:36.7953938Z   duration_ms: 17.67296
+2026-10-26T21:41:36.7954474Z   type: 'test'
+2026-10-26T21:41:36.7954975Z   ...
+2026-10-26T21:41:36.7955881Z # Subtest: authors pie variant 4 from cars with complete sectors and immutable source
+2026-10-26T21:41:36.7957243Z ok 28 - authors pie variant 4 from cars with complete sectors and immutable source
+2026-10-26T21:41:36.7958086Z   ---
+2026-10-26T21:41:36.7958572Z   duration_ms: 7.282088
+2026-10-26T21:41:36.7959130Z   type: 'test'
+2026-10-26T21:41:36.8012768Z   ...
+2026-10-26T21:41:36.8072211Z # Subtest: authors density variant 4 from cars with complete profiles and revisions
+2026-10-26T21:41:36.8097818Z ok 29 - authors density variant 4 from cars with complete profiles and revisions
+2026-10-26T21:41:36.8122604Z   ---
+2026-10-26T21:41:36.8151726Z   duration_ms: 23.36545
+2026-10-26T21:41:36.8173328Z   type: 'test'
+2026-10-26T21:41:36.8181699Z   ...
+2026-10-26T21:41:36.8212188Z # Subtest: authors Horizon variant 4 from cars against independent signed folds
+2026-10-26T21:41:36.8290635Z ok 30 - authors Horizon variant 4 from cars against independent signed folds
+2026-10-26T21:41:36.8373018Z   ---
+2026-10-26T21:41:36.8396748Z   duration_ms: 180.732278
+2026-10-26T21:41:36.8431832Z   type: 'test'
+2026-10-26T21:41:36.8461812Z   ...
+2026-10-26T21:41:36.8512656Z # Subtest: authors createRosePlot variant 5 from cars with proportional measured sectors
+2026-10-26T21:41:36.8514064Z ok 31 - authors createRosePlot variant 5 from cars with proportional measured sectors
+2026-10-26T21:41:36.8514819Z   ---
+2026-10-26T21:41:36.8515199Z   duration_ms: 16.48088
+2026-10-26T21:41:36.8515599Z   type: 'test'
+2026-10-26T21:41:36.8515947Z   ...
+2026-10-26T21:41:36.8516814Z # Subtest: authors createRadialBarPlot variant 5 from cars with proportional measured sectors
+2026-10-26T21:41:36.8518146Z ok 32 - authors createRadialBarPlot variant 5 from cars with proportional measured sectors
+2026-10-26T21:41:36.8518931Z   ---
+2026-10-26T21:41:36.8519277Z   duration_ms: 27.676951
+2026-10-26T21:41:36.8519678Z   type: 'test'
+2026-10-26T21:41:36.8520011Z   ...
+2026-10-26T21:41:36.8520783Z # Subtest: authors pie variant 5 from cars with complete sectors and immutable source
+2026-10-26T21:41:36.8522155Z ok 33 - authors pie variant 5 from cars with complete sectors and immutable source
+2026-10-26T21:41:36.8522867Z   ---
+2026-10-26T21:41:36.8523203Z   duration_ms: 18.176861
+2026-10-26T21:41:36.8523605Z   type: 'test'
+2026-10-26T21:41:36.8523949Z   ...
+2026-10-26T21:41:36.8524732Z # Subtest: authors density variant 5 from cars with complete profiles and revisions
+2026-10-26T21:41:36.8525877Z ok 34 - authors density variant 5 from cars with complete profiles and revisions
+2026-10-26T21:41:36.8526576Z   ---
+2026-10-26T21:41:36.8526912Z   duration_ms: 65.590841
+2026-10-26T21:41:36.8527305Z   type: 'test'
+2026-10-26T21:41:36.8527646Z   ...
+2026-10-26T21:41:36.8528364Z # Subtest: authors Horizon variant 5 from cars against independent signed folds
+2026-10-26T21:41:36.8529438Z ok 35 - authors Horizon variant 5 from cars against independent signed folds
+2026-10-26T21:41:36.8530096Z   ---
+2026-10-26T21:41:36.8530439Z   duration_ms: 310.654605
+2026-10-26T21:41:36.8531420Z   type: 'test'
+2026-10-26T21:41:36.8531759Z   ...
+2026-10-26T21:41:36.8532616Z # Subtest: authors createRosePlot variant 1 from countries with proportional measured sectors
+2026-10-26T21:41:36.8533930Z ok 36 - authors createRosePlot variant 1 from countries with proportional measured sectors
+2026-10-26T21:41:36.8534700Z   ---
+2026-10-26T21:41:36.8535030Z   duration_ms: 14.605491
+2026-10-26T21:41:36.8535440Z   type: 'test'
+2026-10-26T21:41:36.8535776Z   ...
+2026-10-26T21:41:36.8536680Z # Subtest: authors createRadialBarPlot variant 1 from countries with proportional measured sectors
+2026-10-26T21:41:36.8538073Z ok 37 - authors createRadialBarPlot variant 1 from countries with proportional measured sectors
+2026-10-26T21:41:36.8538892Z   ---
+2026-10-26T21:41:36.8539219Z   duration_ms: 14.979401
+2026-10-26T21:41:36.8539612Z   type: 'test'
+2026-10-26T21:41:36.8539956Z   ...
+2026-10-26T21:41:36.8540748Z # Subtest: authors pie variant 1 from countries with complete sectors and immutable source
+2026-10-26T21:41:36.8542062Z ok 38 - authors pie variant 1 from countries with complete sectors and immutable source
+2026-10-26T21:41:36.8542748Z   ---
+2026-10-26T21:41:36.8543077Z   duration_ms: 17.778989
+2026-10-26T21:41:36.8543449Z   type: 'test'
+2026-10-26T21:41:36.8543779Z   ...
+2026-10-26T21:41:36.8544554Z # Subtest: authors density variant 1 from countries with complete profiles and revisions
+2026-10-26T21:41:36.8545995Z ok 39 - authors density variant 1 from countries with complete profiles and revisions
+2026-10-26T21:41:36.8546835Z   ---
+2026-10-26T21:41:36.8547174Z   duration_ms: 23.78185
+2026-10-26T21:41:36.8547570Z   type: 'test'
+2026-10-26T21:41:36.8547911Z   ...
+2026-10-26T21:41:36.8548679Z # Subtest: authors Horizon variant 1 from countries against independent signed folds
+2026-10-26T21:41:36.8549828Z ok 40 - authors Horizon variant 1 from countries against independent signed folds
+2026-10-26T21:41:36.8550534Z   ---
+2026-10-26T21:41:36.8550868Z   duration_ms: 140.497942
+2026-10-26T21:41:36.8581648Z   type: 'test'
+2026-10-26T21:41:36.8582038Z   ...
+2026-10-26T21:41:36.8582922Z # Subtest: authors createRosePlot variant 2 from countries with proportional measured sectors
+2026-10-26T21:41:36.8584266Z ok 41 - authors createRosePlot variant 2 from countries with proportional measured sectors
+2026-10-26T21:41:36.8585054Z   ---
+2026-10-26T21:41:36.8585402Z   duration_ms: 11.908329
+2026-10-26T21:41:36.8585815Z   type: 'test'
+2026-10-26T21:41:36.8586162Z   ...
+2026-10-26T21:41:36.8587075Z # Subtest: authors createRadialBarPlot variant 2 from countries with proportional measured sectors
+2026-10-26T21:41:36.8588489Z ok 42 - authors createRadialBarPlot variant 2 from countries with proportional measured sectors
+2026-10-26T21:41:36.8589299Z   ---
+2026-10-26T21:41:36.8589633Z   duration_ms: 11.075091
+2026-10-26T21:41:36.8590038Z   type: 'test'
+2026-10-26T21:41:36.8590374Z   ...
+2026-10-26T21:41:36.8591375Z # Subtest: authors pie variant 2 from countries with complete sectors and immutable source
+2026-10-26T21:41:36.8592618Z ok 43 - authors pie variant 2 from countries with complete sectors and immutable source
+2026-10-26T21:41:36.8593404Z   ---
+2026-10-26T21:41:36.8593789Z   duration_ms: 16.702355
+2026-10-26T21:41:36.8594224Z   type: 'test'
+2026-10-26T21:41:36.8594632Z   ...
+2026-10-26T21:41:36.8595498Z # Subtest: authors density variant 2 from countries with complete profiles and revisions
+2026-10-26T21:41:36.8596808Z ok 44 - authors density variant 2 from countries with complete profiles and revisions
+2026-10-26T21:41:36.8597604Z   ---
+2026-10-26T21:41:36.8597971Z   duration_ms: 50.890359
+2026-10-26T21:41:36.8598416Z   type: 'test'
+2026-10-26T21:41:36.8598785Z   ...
+2026-10-26T21:41:36.8599617Z # Subtest: authors Horizon variant 2 from countries against independent signed folds
+2026-10-26T21:41:36.8600885Z ok 45 - authors Horizon variant 2 from countries against independent signed folds
+2026-10-26T21:41:36.8601822Z   ---
+2026-10-26T21:41:36.8602204Z   duration_ms: 217.379396
+2026-10-26T21:41:36.8602924Z   type: 'test'
+2026-10-26T21:41:36.8603311Z   ...
+2026-10-26T21:41:36.8604250Z # Subtest: authors createRosePlot variant 3 from countries with proportional measured sectors
+2026-10-26T21:41:36.8605645Z ok 46 - authors createRosePlot variant 3 from countries with proportional measured sectors
+2026-10-26T21:41:36.8606473Z   ---
+2026-10-26T21:41:36.8606843Z   duration_ms: 154.155193
+2026-10-26T21:41:36.8607308Z   type: 'test'
+2026-10-26T21:41:36.8607682Z   ...
+2026-10-26T21:41:36.8608637Z # Subtest: authors createRadialBarPlot variant 3 from countries with proportional measured sectors
+2026-10-26T21:41:36.8610148Z ok 47 - authors createRadialBarPlot variant 3 from countries with proportional measured sectors
+2026-10-26T21:41:36.8611038Z   ---
+2026-10-26T21:41:36.8639745Z   duration_ms: 15.672496
+2026-10-26T21:41:36.8640254Z   type: 'test'
+2026-10-26T21:41:36.8640640Z   ...
+2026-10-26T21:41:36.8641757Z # Subtest: authors pie variant 3 from countries with complete sectors and immutable source
+2026-10-26T21:41:36.8643118Z ok 48 - authors pie variant 3 from countries with complete sectors and immutable source
+2026-10-26T21:41:36.8643926Z   ---
+2026-10-26T21:41:36.8644272Z   duration_ms: 25.168234
+2026-10-26T21:41:36.8644703Z   type: 'test'
+2026-10-26T21:41:36.8645094Z   ...
+2026-10-26T21:41:36.8645976Z # Subtest: authors density variant 3 from countries with complete profiles and revisions
+2026-10-26T21:41:36.8647610Z ok 49 - authors density variant 3 from countries with complete profiles and revisions
+2026-10-26T21:41:36.8648416Z   ---
+2026-10-26T21:41:36.8648789Z   duration_ms: 59.354665
+2026-10-26T21:41:36.8649215Z   type: 'test'
+2026-10-26T21:41:36.8649588Z   ...
+2026-10-26T21:41:36.8650413Z # Subtest: authors Horizon variant 3 from countries against independent signed folds
+2026-10-26T21:41:36.8651827Z ok 50 - authors Horizon variant 3 from countries against independent signed folds
+2026-10-26T21:41:36.8652565Z   ---
+2026-10-26T21:41:36.8652940Z   duration_ms: 342.924529
+2026-10-26T21:41:36.8653376Z   type: 'test'
+2026-10-26T21:41:36.8653751Z   ...
+2026-10-26T21:41:36.8654745Z # Subtest: authors createRosePlot variant 4 from countries with proportional measured sectors
+2026-10-26T21:41:36.8656134Z ok 51 - authors createRosePlot variant 4 from countries with proportional measured sectors
+2026-10-26T21:41:36.8656963Z   ---
+2026-10-26T21:41:36.8657326Z   duration_ms: 48.892721
+2026-10-26T21:41:36.8657758Z   type: 'test'
+2026-10-26T21:41:36.8658124Z   ...
+2026-10-26T21:41:36.8659082Z # Subtest: authors createRadialBarPlot variant 4 from countries with proportional measured sectors
+2026-10-26T21:41:36.8660553Z ok 52 - authors createRadialBarPlot variant 4 from countries with proportional measured sectors
+2026-10-26T21:41:36.8673610Z   ---
+2026-10-26T21:41:36.8674027Z   duration_ms: 18.451738
+2026-10-26T21:41:36.8674489Z   type: 'test'
+2026-10-26T21:41:36.8674873Z   ...
+2026-10-26T21:41:36.8675760Z # Subtest: authors pie variant 4 from countries with complete sectors and immutable source
+2026-10-26T21:41:36.8677105Z ok 53 - authors pie variant 4 from countries with complete sectors and immutable source
+2026-10-26T21:41:36.8677903Z   ---
+2026-10-26T21:41:36.8678278Z   duration_ms: 11.278954
+2026-10-26T21:41:36.8678704Z   type: 'test'
+2026-10-26T21:41:36.8679044Z   ...
+2026-10-26T21:41:36.8679925Z # Subtest: authors density variant 4 from countries with complete profiles and revisions
+2026-10-26T21:41:36.8681431Z ok 54 - authors density variant 4 from countries with complete profiles and revisions
+2026-10-26T21:41:36.8682253Z   ---
+2026-10-26T21:41:36.8682624Z   duration_ms: 33.987988
+2026-10-26T21:41:36.8683085Z   type: 'test'
+2026-10-26T21:41:36.8683452Z   ...
+2026-10-26T21:41:36.8684286Z # Subtest: authors Horizon variant 4 from countries against independent signed folds
+2026-10-26T21:41:36.8685538Z ok 55 - authors Horizon variant 4 from countries against independent signed folds
+2026-10-26T21:41:36.8686315Z   ---
+2026-10-26T21:41:36.8686684Z   duration_ms: 238.856837
+2026-10-26T21:41:36.8687118Z   type: 'test'
+2026-10-26T21:41:36.8687747Z   ...
+2026-10-26T21:41:36.8688695Z # Subtest: authors createRosePlot variant 5 from countries with proportional measured sectors
+2026-10-26T21:41:36.8690107Z ok 56 - authors createRosePlot variant 5 from countries with proportional measured sectors
+2026-10-26T21:41:36.8690937Z   ---
+2026-10-26T21:41:36.8691538Z   duration_ms: 73.08226
+2026-10-26T21:41:36.8691969Z   type: 'test'
+2026-10-26T21:41:36.8692360Z   ...
+2026-10-26T21:41:36.8693350Z # Subtest: authors createRadialBarPlot variant 5 from countries with proportional measured sectors
+2026-10-26T21:41:36.8694830Z ok 57 - authors createRadialBarPlot variant 5 from countries with proportional measured sectors
+2026-10-26T21:41:36.8695706Z   ---
+2026-10-26T21:41:36.8696065Z   duration_ms: 26.715486
+2026-10-26T21:41:36.8696501Z   type: 'test'
+2026-10-26T21:41:36.8696862Z   ...
+2026-10-26T21:41:36.8697735Z # Subtest: authors pie variant 5 from countries with complete sectors and immutable source
+2026-10-26T21:41:36.8699034Z ok 58 - authors pie variant 5 from countries with complete sectors and immutable source
+2026-10-26T21:41:36.8699839Z   ---
+2026-10-26T21:41:36.8700199Z   duration_ms: 23.626271
+2026-10-26T21:41:36.8700631Z   type: 'test'
+2026-10-26T21:41:36.8700995Z   ...
+2026-10-26T21:41:36.8702021Z # Subtest: authors density variant 5 from countries with complete profiles and revisions
+2026-10-26T21:41:36.8703536Z ok 59 - authors density variant 5 from countries with complete profiles and revisions
+2026-10-26T21:41:36.8704337Z   ---
+2026-10-26T21:41:36.8704711Z   duration_ms: 88.512088
+2026-10-26T21:41:36.8705136Z   type: 'test'
+2026-10-26T21:41:36.8705528Z   ...
+2026-10-26T21:41:36.8706347Z # Subtest: authors Horizon variant 5 from countries against independent signed folds
+2026-10-26T21:41:36.8707592Z ok 60 - authors Horizon variant 5 from countries against independent signed folds
+2026-10-26T21:41:36.8708328Z   ---
+2026-10-26T21:41:36.8708691Z   duration_ms: 391.344864
+2026-10-26T21:41:36.8709123Z   type: 'test'
+2026-10-26T21:41:36.8709493Z   ...
+2026-10-26T21:41:36.8710379Z # Subtest: authors createRosePlot variant 1 from movies with proportional measured sectors
+2026-10-26T21:41:36.8711894Z ok 61 - authors createRosePlot variant 1 from movies with proportional measured sectors
+2026-10-26T21:41:36.8712713Z   ---
+2026-10-26T21:41:36.8713078Z   duration_ms: 262.376531
+2026-10-26T21:41:36.8713536Z   type: 'test'
+2026-10-26T21:41:36.8713899Z   ...
+2026-10-26T21:41:36.8714846Z # Subtest: authors createRadialBarPlot variant 1 from movies with proportional measured sectors
+2026-10-26T21:41:36.8716319Z ok 62 - authors createRadialBarPlot variant 1 from movies with proportional measured sectors
+2026-10-26T21:41:36.8717176Z   ---
+2026-10-26T21:41:36.8717540Z   duration_ms: 6.554961
+2026-10-26T21:41:36.8717955Z   type: 'test'
+2026-10-26T21:41:36.8718326Z   ...
+2026-10-26T21:41:36.8719154Z # Subtest: authors pie variant 1 from movies with complete sectors and immutable source
+2026-10-26T21:41:36.8720437Z ok 63 - authors pie variant 1 from movies with complete sectors and immutable source
+2026-10-26T21:41:36.8721380Z   ---
+2026-10-26T21:41:36.8721770Z   duration_ms: 12.373185
+2026-10-26T21:41:36.8722201Z   type: 'test'
+2026-10-26T21:41:36.8722540Z   ...
+2026-10-26T21:41:36.8723404Z # Subtest: authors density variant 1 from movies with complete profiles and revisions
+2026-10-26T21:41:36.8724648Z ok 64 - authors density variant 1 from movies with complete profiles and revisions
+2026-10-26T21:41:36.8725428Z   ---
+2026-10-26T21:41:36.8725794Z   duration_ms: 16.42879
+2026-10-26T21:41:36.8726217Z   type: 'test'
+2026-10-26T21:41:36.8726578Z   ...
+2026-10-26T21:41:36.8727353Z # Subtest: authors Horizon variant 1 from movies against independent signed folds
+2026-10-26T21:41:36.8728535Z ok 65 - authors Horizon variant 1 from movies against independent signed folds
+2026-10-26T21:41:36.8729274Z   ---
+2026-10-26T21:41:36.8729642Z   duration_ms: 13.786956
+2026-10-26T21:41:36.8730067Z   type: 'test'
+2026-10-26T21:41:36.8730440Z   ...
+2026-10-26T21:41:36.8731502Z # Subtest: authors createRosePlot variant 2 from movies with proportional measured sectors
+2026-10-26T21:41:36.8733102Z ok 66 - authors createRosePlot variant 2 from movies with proportional measured sectors
+2026-10-26T21:41:36.8733932Z   ---
+2026-10-26T21:41:36.8734301Z   duration_ms: 4.749832
+2026-10-26T21:41:36.8734717Z   type: 'test'
+2026-10-26T21:41:36.8735056Z   ...
+2026-10-26T21:41:36.8736036Z # Subtest: authors createRadialBarPlot variant 2 from movies with proportional measured sectors
+2026-10-26T21:41:36.8737467Z ok 67 - authors createRadialBarPlot variant 2 from movies with proportional measured sectors
+2026-10-26T21:41:36.8738348Z   ---
+2026-10-26T21:41:36.8738689Z   duration_ms: 4.813061
+2026-10-26T21:41:36.8739136Z   type: 'test'
+2026-10-26T21:41:36.8739502Z   ...
+2026-10-26T21:41:36.8740337Z # Subtest: authors pie variant 2 from movies with complete sectors and immutable source
+2026-10-26T21:41:36.8741718Z ok 68 - authors pie variant 2 from movies with complete sectors and immutable source
+2026-10-26T21:41:36.8742453Z   ---
+2026-10-26T21:41:36.8742786Z   duration_ms: 14.790566
+2026-10-26T21:41:36.8743177Z   type: 'test'
+2026-10-26T21:41:36.8743554Z   ...
+2026-10-26T21:41:36.8744350Z # Subtest: authors density variant 2 from movies with complete profiles and revisions
+2026-10-26T21:41:36.8745690Z ok 69 - authors density variant 2 from movies with complete profiles and revisions
+2026-10-26T21:41:36.8749755Z   ---
+2026-10-26T21:41:36.8750385Z   duration_ms: 66.978257
+2026-10-26T21:41:36.8750809Z   type: 'test'
+2026-10-26T21:41:36.8751369Z   ...
+2026-10-26T21:41:36.8752146Z # Subtest: authors Horizon variant 2 from movies against independent signed folds
+2026-10-26T21:41:36.8753279Z ok 70 - authors Horizon variant 2 from movies against independent signed folds
+2026-10-26T21:41:36.8753983Z   ---
+2026-10-26T21:41:36.8754319Z   duration_ms: 32.110223
+2026-10-26T21:41:36.8754727Z   type: 'test'
+2026-10-26T21:41:36.8755065Z   ...
+2026-10-26T21:41:36.8755907Z # Subtest: authors createRosePlot variant 3 from movies with proportional measured sectors
+2026-10-26T21:41:36.8757182Z ok 71 - authors createRosePlot variant 3 from movies with proportional measured sectors
+2026-10-26T21:41:36.8757943Z   ---
+2026-10-26T21:41:36.8758275Z   duration_ms: 9.232071
+2026-10-26T21:41:36.8758660Z   type: 'test'
+2026-10-26T21:41:36.8758999Z   ...
+2026-10-26T21:41:36.8759885Z # Subtest: authors createRadialBarPlot variant 3 from movies with proportional measured sectors
+2026-10-26T21:41:36.8761431Z ok 72 - authors createRadialBarPlot variant 3 from movies with proportional measured sectors
+2026-10-26T21:41:36.8762239Z   ---
+2026-10-26T21:41:36.8762598Z   duration_ms: 8.41901
+2026-10-26T21:41:36.8762984Z   type: 'test'
+2026-10-26T21:41:36.8763325Z   ...
+2026-10-26T21:41:36.8764103Z # Subtest: authors pie variant 3 from movies with complete sectors and immutable source
+2026-10-26T21:41:36.8765283Z ok 73 - authors pie variant 3 from movies with complete sectors and immutable source
+2026-10-26T21:41:36.8765988Z   ---
+2026-10-26T21:41:36.8766326Z   duration_ms: 20.918352
+2026-10-26T21:41:36.8766723Z   type: 'test'
+2026-10-26T21:41:36.8767053Z   ...
+2026-10-26T21:41:36.8767826Z # Subtest: authors density variant 3 from movies with complete profiles and revisions
+2026-10-26T21:41:36.8768999Z ok 74 - authors density variant 3 from movies with complete profiles and revisions
+2026-10-26T21:41:36.8769718Z   ---
+2026-10-26T21:41:36.8770046Z   duration_ms: 60.89774
+2026-10-26T21:41:36.8770440Z   type: 'test'
+2026-10-26T21:41:36.8770772Z   ...
+2026-10-26T21:41:36.8812611Z # Subtest: authors Horizon variant 3 from movies against independent signed folds
+2026-10-26T21:41:36.8813809Z ok 75 - authors Horizon variant 3 from movies against independent signed folds
+2026-10-26T21:41:36.8814516Z   ---
+2026-10-26T21:41:36.8814871Z   duration_ms: 38.316337
+2026-10-26T21:41:36.8815276Z   type: 'test'
+2026-10-26T21:41:36.8815623Z   ...
+2026-10-26T21:41:36.8816467Z # Subtest: authors createRosePlot variant 4 from movies with proportional measured sectors
+2026-10-26T21:41:36.8818190Z ok 76 - authors createRosePlot variant 4 from movies with proportional measured sectors
+2026-10-26T21:41:36.8818959Z   ---
+2026-10-26T21:41:36.8819300Z   duration_ms: 10.19335
+2026-10-26T21:41:36.8819698Z   type: 'test'
+2026-10-26T21:41:36.8820036Z   ...
+2026-10-26T21:41:36.8820920Z # Subtest: authors createRadialBarPlot variant 4 from movies with proportional measured sectors
+2026-10-26T21:41:36.8822487Z ok 77 - authors createRadialBarPlot variant 4 from movies with proportional measured sectors
+2026-10-26T21:41:36.8823288Z   ---
+2026-10-26T21:41:36.8823628Z   duration_ms: 8.962713
+2026-10-26T21:41:36.8824019Z   type: 'test'
+2026-10-26T21:41:36.8824363Z   ...
+2026-10-26T21:41:36.8825139Z # Subtest: authors pie variant 4 from movies with complete sectors and immutable source
+2026-10-26T21:41:36.8826316Z ok 78 - authors pie variant 4 from movies with complete sectors and immutable source
+2026-10-26T21:41:36.8827022Z   ---
+2026-10-26T21:41:36.8827355Z   duration_ms: 4.566647
+2026-10-26T21:41:36.8827749Z   type: 'test'
+2026-10-26T21:41:36.8828086Z   ...
+2026-10-26T21:41:36.8828853Z # Subtest: authors density variant 4 from movies with complete profiles and revisions
+2026-10-26T21:41:36.8830022Z ok 79 - authors density variant 4 from movies with complete profiles and revisions
+2026-10-26T21:41:36.8830732Z   ---
+2026-10-26T21:41:36.8831073Z   duration_ms: 28.777929
+2026-10-26T21:41:36.8831647Z   type: 'test'
+2026-10-26T21:41:36.8832242Z   ...
+2026-10-26T21:41:36.8832999Z # Subtest: authors Horizon variant 4 from movies against independent signed folds
+2026-10-26T21:41:36.8834105Z ok 80 - authors Horizon variant 4 from movies against independent signed folds
+2026-10-26T21:41:36.8834797Z   ---
+2026-10-26T21:41:36.8835129Z   duration_ms: 24.174692
+2026-10-26T21:41:36.8835525Z   type: 'test'
+2026-10-26T21:41:36.8835854Z   ...
+2026-10-26T21:41:36.8836677Z # Subtest: authors createRosePlot variant 5 from movies with proportional measured sectors
+2026-10-26T21:41:36.8837942Z ok 81 - authors createRosePlot variant 5 from movies with proportional measured sectors
+2026-10-26T21:41:36.8838738Z   ---
+2026-10-26T21:41:36.8839085Z   duration_ms: 15.061273
+2026-10-26T21:41:36.8839479Z   type: 'test'
+2026-10-26T21:41:36.8839817Z   ...
+2026-10-26T21:41:36.8840697Z # Subtest: authors createRadialBarPlot variant 5 from movies with proportional measured sectors
+2026-10-26T21:41:36.8872532Z ok 82 - authors createRadialBarPlot variant 5 from movies with proportional measured sectors
+2026-10-26T21:41:36.8873414Z   ---
+2026-10-26T21:41:36.8873878Z   duration_ms: 11.374274
+2026-10-26T21:41:36.8874401Z   type: 'test'
+2026-10-26T21:41:36.8874742Z   ...
+2026-10-26T21:41:36.8875550Z # Subtest: authors pie variant 5 from movies with complete sectors and immutable source
+2026-10-26T21:41:36.8876747Z ok 83 - authors pie variant 5 from movies with complete sectors and immutable source
+2026-10-26T21:41:36.8877473Z   ---
+2026-10-26T21:41:36.8877809Z   duration_ms: 45.229672
+2026-10-26T21:41:36.8878211Z   type: 'test'
+2026-10-26T21:41:36.8878557Z   ...
+2026-10-26T21:41:36.8879334Z # Subtest: authors density variant 5 from movies with complete profiles and revisions
+2026-10-26T21:41:36.8880496Z ok 84 - authors density variant 5 from movies with complete profiles and revisions
+2026-10-26T21:41:36.8881401Z   ---
+2026-10-26T21:41:36.8881744Z   duration_ms: 66.965692
+2026-10-26T21:41:36.8882134Z   type: 'test'
+2026-10-26T21:41:36.8882473Z   ...
+2026-10-26T21:41:36.8883218Z # Subtest: authors Horizon variant 5 from movies against independent signed folds
+2026-10-26T21:41:36.8884336Z ok 85 - authors Horizon variant 5 from movies against independent signed folds
+2026-10-26T21:41:36.8885015Z   ---
+2026-10-26T21:41:36.8885352Z   duration_ms: 28.189611
+2026-10-26T21:41:36.8885745Z   type: 'test'
+2026-10-26T21:41:36.8886094Z   ...
+2026-10-26T21:47:23.3819346Z # {"completedDataset":"tt-penguins","actualBuilds":20}
+2026-10-26T21:47:27.8180955Z # {"completedDataset":"tt-london-marathon-winners","actualBuilds":40}
+2026-10-26T21:47:32.9108776Z # {"completedDataset":"tt-astronauts","actualBuilds":60}
+2026-10-26T21:47:38.1748009Z # {"completedDataset":"tt-us-births","actualBuilds":80}
+2026-10-26T21:47:42.8268940Z # {"completedDataset":"tt-chocolate-ratings","actualBuilds":100}
+2026-10-26T21:47:42.8276824Z # {"requirementCount":159,"requirementSha256":"945f57c2d544486480599f6730c944b55f3f25eb74ba4e06a249f4f92950c071","actualBuilds":100,"minimumOccurrences":5,"minimumDatasets":3}
+2026-10-26T21:47:42.9005376Z # Subtest: computed, fit, statistics and color additions have actual public 5/3 witnesses
+2026-10-26T21:47:42.9007233Z ok 86 - computed, fit, statistics and color additions have actual public 5/3 witnesses
+2026-10-26T21:47:42.9008458Z   ---
+2026-10-26T21:47:42.9014969Z   duration_ms: 365816.588847
+2026-10-26T21:47:42.9015565Z   type: 'test'
+2026-10-26T21:47:42.9016078Z   ...
+2026-10-26T21:53:12.8739966Z # {"paletteDataset":"tt-penguins","actualBuilds":29}
+2026-10-26T21:53:21.1738866Z # {"paletteDataset":"tt-london-marathon-winners","actualBuilds":58}
+2026-10-26T21:53:28.8573887Z # {"paletteDataset":"tt-astronauts","actualBuilds":87}
+2026-10-26T21:53:37.7323581Z # {"paletteDataset":"tt-us-births","actualBuilds":116}
+2026-10-26T21:53:46.7708146Z # {"paletteDataset":"tt-chocolate-ratings","actualBuilds":145}
+2026-10-26T21:53:46.7710754Z # {"paletteRequirementCount":136,"paletteRequirementSha256":"4e1c7c39e4de54cd80c29a988271a3aa891e1a684876b8d78484e30a4eec4d09","actualBuilds":145,"minimumOccurrences":5,"minimumDatasets":3}
+2026-10-26T21:53:46.7739615Z # Subtest: palette range objects have actual public 5/3 witnesses at every restored consumer
+2026-10-26T21:53:46.7740980Z ok 87 - palette range objects have actual public 5/3 witnesses at every restored consumer
+2026-10-26T21:53:46.7742051Z   ---
+2026-10-26T21:53:46.7742393Z   duration_ms: 363941.662978
+2026-10-26T21:53:46.7742793Z   type: 'test'
+2026-10-26T21:53:46.7743111Z   ...
+2026-10-26T21:53:46.7749214Z # Subtest: direct trace array summaries witness presence without inventing extent values
+2026-10-26T21:53:46.7750546Z ok 88 - direct trace array summaries witness presence without inventing extent values
+2026-10-26T21:53:46.7751966Z   ---
+2026-10-26T21:53:46.7752329Z   duration_ms: 0.831012
+2026-10-26T21:53:46.7752703Z   type: 'test'
+2026-10-26T21:53:46.7753020Z   ...
+2026-10-26T21:53:46.8109230Z # Subtest: renders every formerly oversized realistic facet through SVG, Canvas, PNG, and PDF
+2026-10-26T21:53:46.8115814Z ok 89 - renders every formerly oversized realistic facet through SVG, Canvas, PNG, and PDF
+2026-10-26T21:53:46.8116905Z   ---
+2026-10-26T21:53:46.8117511Z   duration_ms: 99976.700575
+2026-10-26T21:53:46.8118120Z   type: 'test'
+2026-10-26T21:53:46.8118659Z   ...
+2026-10-26T21:57:50.2258556Z # Subtest: covers every hierarchical facade option, literal and diversity requirement
+2026-10-26T21:57:50.2265222Z not ok 90 - covers every hierarchical facade option, literal and diversity requirement
+2026-10-26T21:57:50.2269989Z   ---
+2026-10-26T21:57:50.2270797Z   duration_ms: 871822.162465
+2026-10-26T21:57:50.2271544Z   type: 'test'
+2026-10-26T21:57:50.2272596Z   location: '/home/runner/work/ggaction/ggaction/test/contracts/realistic-hierarchical-facade-matrix.test.js:74:1'
+2026-10-26T21:57:50.2273660Z   failureType: 'testCodeFailure'
+2026-10-26T21:57:50.2274123Z   error: |-
+2026-10-26T21:57:50.2274583Z     Expected values to be strictly deep-equal:
+2026-10-26T21:57:50.2275120Z     + actual - expected
+2026-10-26T21:57:50.2275498Z     
+2026-10-26T21:57:50.2275842Z     + [
+2026-10-26T21:57:50.2276439Z     +   'option-path:createAreaPlot.guides.legend.alongOffset (0/0)',
+2026-10-26T21:57:50.2277392Z     +   'option-path:createBeeswarmPlot.guides.legend.alongOffset (0/0)',
+2026-10-26T21:57:50.2278401Z     +   'option-path:createBeeswarmPlot.guides.legend.labels.align (0/0)',
+2026-10-26T21:57:50.2279432Z     +   'option-path:createBeeswarmPlot.guides.legend.symbol.fill (0/0)',
+2026-10-26T21:57:50.2280307Z     +   'option-path:createBeeswarmPlot.missing (0/0)',
+2026-10-26T21:57:50.2281380Z     +   'option-path:createDensityPlot.guides.legend.alongOffset (0/0)',
+2026-10-26T21:57:50.2282854Z     +   'option-path:createPiePlot.guides.legend.alongOffset (0/0)',
+2026-10-26T21:57:50.2284070Z     +   'option-path:createPolarLinePlot.guides.axes.radius.ticksAndLabels.labels.align (0/0)',
+2026-10-26T21:57:50.2285356Z     +   'option-path:createPolarLinePlot.guides.axes.radius.title.align (0/0)',
+2026-10-26T21:57:50.2286659Z     +   'option-path:createPolarLinePlot.guides.axes.theta.ticksAndLabels.labels.align (0/0)',
+2026-10-26T21:57:50.2287881Z     +   'option-path:createPolarLinePlot.guides.axes.theta.title.align (0/0)',
+2026-10-26T21:57:50.2288924Z     +   'option-path:createPolarLinePlot.guides.legend.alongOffset (0/0)',
+2026-10-26T21:57:50.2290187Z     +   'option-path:createPolarScatterPlot.guides.axes.radius.ticksAndLabels.labels.align (0/0)',
+2026-10-26T21:57:50.2291853Z     +   'option-path:createPolarScatterPlot.guides.axes.radius.title.align (0/0)',
+2026-10-26T21:57:50.2293188Z     +   'option-path:createPolarScatterPlot.guides.axes.theta.ticksAndLabels.labels.align (0/0)',
+2026-10-26T21:57:50.2294507Z     +   'option-path:createPolarScatterPlot.guides.axes.theta.title.align (0/0)',
+2026-10-26T21:57:50.2295608Z     +   'option-path:createPolarScatterPlot.guides.legend.alongOffset (0/0)',
+2026-10-26T21:57:50.2296677Z     +   'option-path:createPolarScatterPlot.guides.legend.labels.align (0/0)',
+2026-10-26T21:57:50.2298156Z     +   'option-path:createRadarPlot.guides.axes.radius.ticksAndLabels.labels.align (0/0)',
+2026-10-26T21:57:50.2299340Z     +   'option-path:createRadarPlot.guides.axes.radius.title.align (0/0)',
+2026-10-26T21:57:50.2300580Z     +   'option-path:createRadarPlot.guides.axes.theta.ticksAndLabels.labels.align (0/0)',
+2026-10-26T21:57:50.2301955Z     +   'option-path:createRadarPlot.guides.axes.theta.title.align (0/0)',
+2026-10-26T21:57:50.2302953Z     +   'option-path:createRadarPlot.guides.legend.alongOffset (0/0)',
+2026-10-26T21:57:50.2303815Z     +   'option-path:createRadarPlot.wide.normalize (0/0)',
+2026-10-26T21:57:50.2304598Z     +   'option-path:createRadarPlot.wide.summary (0/0)',
+2026-10-26T21:57:50.2305694Z     +   'option-path:createRadialBarPlot.guides.axes.radius.ticksAndLabels.labels.align (0/0)',
+2026-10-26T21:57:50.2306960Z     +   'option-path:createRadialBarPlot.guides.axes.radius.title.align (0/0)',
+2026-10-26T21:57:50.2308215Z     +   'option-path:createRadialBarPlot.guides.axes.theta.ticksAndLabels.labels.align (0/0)',
+2026-10-26T21:57:50.2309473Z     +   'option-path:createRadialBarPlot.guides.axes.theta.title.align (0/0)',
+2026-10-26T21:57:50.2310519Z     +   'option-path:createRadialBarPlot.guides.legend.alongOffset (0/0)',
+2026-10-26T21:57:50.2311710Z     +   'option-path:createRaincloudPlot.guides.legend.alongOffset (0/0)',
+2026-10-26T21:57:50.2312584Z     +   'option-path:createRaincloudPlot.missing (0/0)',
+2026-10-26T21:57:50.2313631Z     +   'option-path:createRosePlot.guides.axes.radius.ticksAndLabels.labels.align (0/0)',
+2026-10-26T21:57:50.2314770Z     +   'option-path:createRosePlot.guides.axes.radius.title.align (0/0)',
+2026-10-26T21:57:50.2315906Z     +   'option-path:createRosePlot.guides.axes.theta.ticksAndLabels.labels.align (0/0)',
+2026-10-26T21:57:50.2316996Z     +   'option-path:createRosePlot.guides.axes.theta.title.align (0/0)',
+2026-10-26T21:57:50.2317943Z     +   'option-path:createRosePlot.guides.legend.alongOffset (0/0)',
+2026-10-26T21:57:50.2318885Z     +   'option-path:createStripPlot.guides.legend.alongOffset (0/0)',
+2026-10-26T21:57:50.2319840Z     +   'option-path:createStripPlot.guides.legend.labels.align (0/0)',
+2026-10-26T21:57:50.2320781Z     +   'option-path:createStripPlot.guides.legend.symbol.fill (0/0)',
+2026-10-26T21:57:50.2321801Z     +   'option-path:createStripPlot.missing (0/0)',
+2026-10-26T21:57:50.2322777Z     +   'option-value:createBeeswarmPlot.guides.legend.labels.align=string:center (0/0)',
+2026-10-26T21:57:50.2324011Z     +   'option-value:createBeeswarmPlot.guides.legend.labels.align=string:left (0/0)',
+2026-10-26T21:57:50.2325263Z     +   'option-value:createBeeswarmPlot.guides.legend.labels.align=string:right (0/0)',
+2026-10-26T21:57:50.2326644Z     +   'option-value:createBeeswarmPlot.missing=string:error (0/0)',
+2026-10-26T21:57:50.2327564Z     +   'option-value:createBeeswarmPlot.missing=string:skip (0/0)',
+2026-10-26T21:57:50.2328847Z     +   'option-value:createPolarLinePlot.guides.axes.radius.ticksAndLabels.labels.align=string:center (0/0)',
+2026-10-26T21:57:50.2330450Z     +   'option-value:createPolarLinePlot.guides.axes.radius.ticksAndLabels.labels.align=string:left (0/0)',
+2026-10-26T21:57:50.2332383Z     +   'option-value:createPolarLinePlot.guides.axes.radius.ticksAndLabels.labels.align=string:right (0/0)',
+2026-10-26T21:57:50.2333895Z     +   'option-value:createPolarLinePlot.guides.axes.radius.title.align=string:center (0/0)',
+2026-10-26T21:57:50.2335255Z     +   'option-value:createPolarLinePlot.guides.axes.radius.title.align=string:left (0/0)',
+2026-10-26T21:57:50.2336583Z     +   'option-value:createPolarLinePlot.guides.axes.radius.title.align=string:right (0/0)',
+2026-10-26T21:57:50.2338054Z     +   'option-value:createPolarLinePlot.guides.axes.theta.ticksAndLabels.labels.align=string:center (0/0)',
+2026-10-26T21:57:50.2339714Z     +   'option-value:createPolarLinePlot.guides.axes.theta.ticksAndLabels.labels.align=string:left (0/0)',
+2026-10-26T21:57:50.2341650Z     +   'option-value:createPolarLinePlot.guides.axes.theta.ticksAndLabels.labels.align=string:right (0/0)',
+2026-10-26T21:57:50.2343385Z     +   'option-value:createPolarLinePlot.guides.axes.theta.title.align=string:center (0/0)',
+2026-10-26T21:57:50.2344715Z     +   'option-value:createPolarLinePlot.guides.axes.theta.title.align=string:left (0/0)',
+2026-10-26T21:57:50.2346051Z     +   'option-value:createPolarLinePlot.guides.axes.theta.title.align=string:right (0/0)',
+2026-10-26T21:57:50.2347589Z     +   'option-value:createPolarScatterPlot.guides.axes.radius.ticksAndLabels.labels.align=string:center (0/0)',
+2026-10-26T21:57:50.2349288Z     +   'option-value:createPolarScatterPlot.guides.axes.radius.ticksAndLabels.labels.align=string:left (0/0)',
+2026-10-26T21:57:50.2350985Z     +   'option-value:createPolarScatterPlot.guides.axes.radius.ticksAndLabels.labels.align=string:right (0/0)',
+2026-10-26T21:57:50.2352868Z     +   'option-value:createPolarScatterPlot.guides.axes.radius.title.align=string:center (0/0)',
+2026-10-26T21:57:50.2354299Z     +   'option-value:createPolarScatterPlot.guides.axes.radius.title.align=string:left (0/0)',
+2026-10-26T21:57:50.2355697Z     +   'option-value:createPolarScatterPlot.guides.axes.radius.title.align=string:right (0/0)',
+2026-10-26T21:57:50.2357245Z     +   'option-value:createPolarScatterPlot.guides.axes.theta.ticksAndLabels.labels.align=string:center (0/0)',
+2026-10-26T21:57:50.2358926Z     +   'option-value:createPolarScatterPlot.guides.axes.theta.ticksAndLabels.labels.align=string:left (0/0)',
+2026-10-26T21:57:50.2360547Z     +   'option-value:createPolarScatterPlot.guides.axes.theta.ticksAndLabels.labels.align=string:right (0/0)',
+2026-10-26T21:57:50.2362246Z     +   'option-value:createPolarScatterPlot.guides.axes.theta.title.align=string:center (0/0)',
+2026-10-26T21:57:50.2363621Z     +   'option-value:createPolarScatterPlot.guides.axes.theta.title.align=string:left (0/0)',
+2026-10-26T21:57:50.2364990Z     +   'option-value:createPolarScatterPlot.guides.axes.theta.title.align=string:right (0/0)',
+2026-10-26T21:57:50.2366340Z     +   'option-value:createPolarScatterPlot.guides.legend.labels.align=string:center (0/0)',
+2026-10-26T21:57:50.2367646Z     +   'option-value:createPolarScatterPlot.guides.legend.labels.align=string:left (0/0)',
+2026-10-26T21:57:50.2368946Z     +   'option-value:createPolarScatterPlot.guides.legend.labels.align=string:right (0/0)',
+2026-10-26T21:57:50.2370360Z     +   'option-value:createRadarPlot.guides.axes.radius.ticksAndLabels.labels.align=string:center (0/0)',
+2026-10-26T21:57:50.2372084Z     +   'option-value:createRadarPlot.guides.axes.radius.ticksAndLabels.labels.align=string:left (0/0)',
+2026-10-26T21:57:50.2373617Z     +   'option-value:createRadarPlot.guides.axes.radius.ticksAndLabels.labels.align=string:right (0/0)',
+2026-10-26T21:57:50.2375224Z     +   'option-value:createRadarPlot.guides.axes.radius.title.align=string:center (0/0)',
+2026-10-26T21:57:50.2376480Z     +   'option-value:createRadarPlot.guides.axes.radius.title.align=string:left (0/0)',
+2026-10-26T21:57:50.2377713Z     +   'option-value:createRadarPlot.guides.axes.radius.title.align=string:right (0/0)',
+2026-10-26T21:57:50.2379117Z     +   'option-value:createRadarPlot.guides.axes.theta.ticksAndLabels.labels.align=string:center (0/0)',
+2026-10-26T21:57:50.2380638Z     +   'option-value:createRadarPlot.guides.axes.theta.ticksAndLabels.labels.align=string:left (0/0)',
+2026-10-26T21:57:50.2382353Z     +   'option-value:createRadarPlot.guides.axes.theta.ticksAndLabels.labels.align=string:right (0/0)',
+2026-10-26T21:57:50.2383724Z     +   'option-value:createRadarPlot.guides.axes.theta.title.align=string:center (0/0)',
+2026-10-26T21:57:50.2384953Z     +   'option-value:createRadarPlot.guides.axes.theta.title.align=string:left (0/0)',
+2026-10-26T21:57:50.2386179Z     +   'option-value:createRadarPlot.guides.axes.theta.title.align=string:right (0/0)',
+2026-10-26T21:57:50.2387287Z     +   'option-value:createRadarPlot.wide.normalize=boolean:false (0/0)',
+2026-10-26T21:57:50.2388268Z     +   'option-value:createRadarPlot.wide.normalize=string:minmax (0/0)',
+2026-10-26T21:57:50.2389420Z     +   'option-value:createRadarPlot.wide.summary=boolean:false (0/0)',
+2026-10-26T21:57:50.2390358Z     +   'option-value:createRadarPlot.wide.summary=string:mean (0/0)',
+2026-10-26T21:57:50.2391492Z     +   'option-value:createRadarPlot.wide.summary=string:median (0/0)',
+2026-10-26T21:57:50.2392800Z     +   'option-value:createRadialBarPlot.guides.axes.radius.ticksAndLabels.labels.align=string:center (0/0)',
+2026-10-26T21:57:50.2394419Z     +   'option-value:createRadialBarPlot.guides.axes.radius.ticksAndLabels.labels.align=string:left (0/0)',
+2026-10-26T21:57:50.2396025Z     +   'option-value:createRadialBarPlot.guides.axes.radius.ticksAndLabels.labels.align=string:right (0/0)',
+2026-10-26T21:57:50.2397502Z     +   'option-value:createRadialBarPlot.guides.axes.radius.title.align=string:center (0/0)',
+2026-10-26T21:57:50.2398840Z     +   'option-value:createRadialBarPlot.guides.axes.radius.title.align=string:left (0/0)',
+2026-10-26T21:57:50.2400214Z     +   'option-value:createRadialBarPlot.guides.axes.radius.title.align=string:right (0/0)',
+2026-10-26T21:57:50.2401842Z     +   'option-value:createRadialBarPlot.guides.axes.theta.ticksAndLabels.labels.align=string:center (0/0)',
+2026-10-26T21:57:50.2403414Z     +   'option-value:createRadialBarPlot.guides.axes.theta.ticksAndLabels.labels.align=string:left (0/0)',
+2026-10-26T21:57:50.2405000Z     +   'option-value:createRadialBarPlot.guides.axes.theta.ticksAndLabels.labels.align=string:right (0/0)',
+2026-10-26T21:57:50.2406445Z     +   'option-value:createRadialBarPlot.guides.axes.theta.title.align=string:center (0/0)',
+2026-10-26T21:57:50.2407771Z     +   'option-value:createRadialBarPlot.guides.axes.theta.title.align=string:left (0/0)',
+2026-10-26T21:57:50.2409081Z     +   'option-value:createRadialBarPlot.guides.axes.theta.title.align=string:right (0/0)',
+2026-10-26T21:57:50.2410194Z     +   'option-value:createRaincloudPlot.missing=string:error (0/0)',
+2026-10-26T21:57:50.2411064Z     +   'option-value:createRaincloudPlot.missing=string:skip (0/0)',
+2026-10-26T21:57:50.2412504Z     +   'option-value:createRosePlot.guides.axes.radius.ticksAndLabels.labels.align=string:center (0/0)',
+2026-10-26T21:57:50.2413985Z     +   'option-value:createRosePlot.guides.axes.radius.ticksAndLabels.labels.align=string:left (0/0)',
+2026-10-26T21:57:50.2415457Z     +   'option-value:createRosePlot.guides.axes.radius.ticksAndLabels.labels.align=string:right (0/0)',
+2026-10-26T21:57:50.2416803Z     +   'option-value:createRosePlot.guides.axes.radius.title.align=string:center (0/0)',
+2026-10-26T21:57:50.2418014Z     +   'option-value:createRosePlot.guides.axes.radius.title.align=string:left (0/0)',
+2026-10-26T21:57:50.2419448Z     +   'option-value:createRosePlot.guides.axes.radius.title.align=string:right (0/0)',
+2026-10-26T21:57:50.2420806Z     +   'option-value:createRosePlot.guides.axes.theta.ticksAndLabels.labels.align=string:center (0/0)',
+2026-10-26T21:57:50.2422023Z     +   'option-value:createRosePlot.guides.axes.theta.ticksAndLabels.labels.align=string:left (0/0)',
+2026-10-26T21:57:50.2422869Z     +   'option-value:createRosePlot.guides.axes.theta.ticksAndLabels.labels.align=string:right (0/0)',
+2026-10-26T21:57:50.2423611Z     +   'option-value:createRosePlot.guides.axes.theta.title.align=string:center (0/0)',
+2026-10-26T21:57:50.2424267Z     +   'option-value:createRosePlot.guides.axes.theta.title.align=string:left (0/0)',
+2026-10-26T21:57:50.2424916Z     +   'option-value:createRosePlot.guides.axes.theta.title.align=string:right (0/0)',
+2026-10-26T21:57:50.2425560Z     +   'option-value:createStripPlot.guides.legend.labels.align=string:center (0/0)',
+2026-10-26T21:57:50.2426193Z     +   'option-value:createStripPlot.guides.legend.labels.align=string:left (0/0)',
+2026-10-26T21:57:50.2426818Z     +   'option-value:createStripPlot.guides.legend.labels.align=string:right (0/0)',
+2026-10-26T21:57:50.2427367Z     +   'option-value:createStripPlot.missing=string:error (0/0)',
+2026-10-26T21:57:50.2427832Z     +   'option-value:createStripPlot.missing=string:skip (0/0)'
+2026-10-26T21:57:50.2428339Z     + ]
+2026-10-26T21:57:50.2428549Z     - []
+2026-10-26T21:57:50.2428733Z     
+2026-10-26T21:57:50.2428936Z   code: 'ERR_ASSERTION'
+2026-10-26T21:57:50.2429189Z   name: 'AssertionError'
+2026-10-26T21:57:50.2429432Z   expected:
+2026-10-26T21:57:50.2429628Z   actual:
+2026-10-26T21:57:50.2429980Z     0: 'option-path:createAreaPlot.guides.legend.alongOffset (0/0)'
+2026-10-26T21:57:50.2430537Z     1: 'option-path:createBeeswarmPlot.guides.legend.alongOffset (0/0)'
+2026-10-26T21:57:50.2431318Z     2: 'option-path:createBeeswarmPlot.guides.legend.labels.align (0/0)'
+2026-10-26T21:57:50.2432236Z     3: 'option-path:createBeeswarmPlot.guides.legend.symbol.fill (0/0)'
+2026-10-26T21:57:50.2433086Z     4: 'option-path:createBeeswarmPlot.missing (0/0)'
+2026-10-26T21:57:50.2433876Z     5: 'option-path:createDensityPlot.guides.legend.alongOffset (0/0)'
+2026-10-26T21:57:50.2434405Z     6: 'option-path:createPiePlot.guides.legend.alongOffset (0/0)'
+2026-10-26T21:57:50.2435054Z     7: 'option-path:createPolarLinePlot.guides.axes.radius.ticksAndLabels.labels.align (0/0)'
+2026-10-26T21:57:50.2436076Z     8: 'option-path:createPolarLinePlot.guides.axes.radius.title.align (0/0)'
+2026-10-26T21:57:50.2437030Z     9: 'option-path:createPolarLinePlot.guides.axes.theta.ticksAndLabels.labels.align (0/0)'
+2026-10-26T21:57:50.2438231Z     10: 'option-path:createPolarLinePlot.guides.axes.theta.title.align (0/0)'
+2026-10-26T21:57:50.2438841Z     11: 'option-path:createPolarLinePlot.guides.legend.alongOffset (0/0)'
+2026-10-26T21:57:50.2439962Z     12: 'option-path:createPolarScatterPlot.guides.axes.radius.ticksAndLabels.labels.align (0/0)'
+2026-10-26T21:57:50.2441342Z     13: 'option-path:createPolarScatterPlot.guides.axes.radius.title.align (0/0)'
+2026-10-26T21:57:50.2442128Z     14: 'option-path:createPolarScatterPlot.guides.axes.theta.ticksAndLabels.labels.align (0/0)'
+2026-10-26T21:57:50.2443244Z     15: 'option-path:createPolarScatterPlot.guides.axes.theta.title.align (0/0)'
+2026-10-26T21:57:50.2444003Z     16: 'option-path:createPolarScatterPlot.guides.legend.alongOffset (0/0)'
+2026-10-26T21:57:50.2444669Z     17: 'option-path:createPolarScatterPlot.guides.legend.labels.align (0/0)'
+2026-10-26T21:57:50.2445799Z     18: 'option-path:createRadarPlot.guides.axes.radius.ticksAndLabels.labels.align (0/0)'
+2026-10-26T21:57:50.2446470Z     19: 'option-path:createRadarPlot.guides.axes.radius.title.align (0/0)'
+2026-10-26T21:57:50.2447644Z     20: 'option-path:createRadarPlot.guides.axes.theta.ticksAndLabels.labels.align (0/0)'
+2026-10-26T21:57:50.2448741Z     21: 'option-path:createRadarPlot.guides.axes.theta.title.align (0/0)'
+2026-10-26T21:57:50.2449506Z     22: 'option-path:createRadarPlot.guides.legend.alongOffset (0/0)'
+2026-10-26T21:57:50.2449993Z     23: 'option-path:createRadarPlot.wide.normalize (0/0)'
+2026-10-26T21:57:50.2450422Z     24: 'option-path:createRadarPlot.wide.summary (0/0)'
+2026-10-26T21:57:50.2451026Z     25: 'option-path:createRadialBarPlot.guides.axes.radius.ticksAndLabels.labels.align (0/0)'
+2026-10-26T21:57:50.2451988Z     26: 'option-path:createRadialBarPlot.guides.axes.radius.title.align (0/0)'
+2026-10-26T21:57:50.2452711Z     27: 'option-path:createRadialBarPlot.guides.axes.theta.ticksAndLabels.labels.align (0/0)'
+2026-10-26T21:57:50.2453381Z     28: 'option-path:createRadialBarPlot.guides.axes.theta.title.align (0/0)'
+2026-10-26T21:57:50.2453954Z     29: 'option-path:createRadialBarPlot.guides.legend.alongOffset (0/0)'
+2026-10-26T21:57:50.2454502Z     30: 'option-path:createRaincloudPlot.guides.legend.alongOffset (0/0)'
+2026-10-26T21:57:50.2454979Z     31: 'option-path:createRaincloudPlot.missing (0/0)'
+2026-10-26T21:57:50.2455550Z     32: 'option-path:createRosePlot.guides.axes.radius.ticksAndLabels.labels.align (0/0)'
+2026-10-26T21:57:50.2456170Z     33: 'option-path:createRosePlot.guides.axes.radius.title.align (0/0)'
+2026-10-26T21:57:50.2456793Z     34: 'option-path:createRosePlot.guides.axes.theta.ticksAndLabels.labels.align (0/0)'
+2026-10-26T21:57:50.2457543Z     35: 'option-path:createRosePlot.guides.axes.theta.title.align (0/0)'
+2026-10-26T21:57:50.2458081Z     36: 'option-path:createRosePlot.guides.legend.alongOffset (0/0)'
+2026-10-26T21:57:50.2458590Z     37: 'option-path:createStripPlot.guides.legend.alongOffset (0/0)'
+2026-10-26T21:57:50.2459502Z     38: 'option-path:createStripPlot.guides.legend.labels.align (0/0)'
+2026-10-26T21:57:50.2460505Z     39: 'option-path:createStripPlot.guides.legend.symbol.fill (0/0)'
+2026-10-26T21:57:50.2461286Z     40: 'option-path:createStripPlot.missing (0/0)'
+2026-10-26T21:57:50.2461845Z     41: 'option-value:createBeeswarmPlot.guides.legend.labels.align=string:center (0/0)'
+2026-10-26T21:57:50.2462523Z     42: 'option-value:createBeeswarmPlot.guides.legend.labels.align=string:left (0/0)'
+2026-10-26T21:57:50.2463180Z     43: 'option-value:createBeeswarmPlot.guides.legend.labels.align=string:right (0/0)'
+2026-10-26T21:57:50.2463763Z     44: 'option-value:createBeeswarmPlot.missing=string:error (0/0)'
+2026-10-26T21:57:50.2464259Z     45: 'option-value:createBeeswarmPlot.missing=string:skip (0/0)'
+2026-10-26T21:57:50.2464953Z     46: 'option-value:createPolarLinePlot.guides.axes.radius.ticksAndLabels.labels.align=string:center (0/0)'
+2026-10-26T21:57:50.2465818Z     47: 'option-value:createPolarLinePlot.guides.axes.radius.ticksAndLabels.labels.align=string:left (0/0)'
+2026-10-26T21:57:50.2466681Z     48: 'option-value:createPolarLinePlot.guides.axes.radius.ticksAndLabels.labels.align=string:right (0/0)'
+2026-10-26T21:57:50.2467463Z     49: 'option-value:createPolarLinePlot.guides.axes.radius.title.align=string:center (0/0)'
+2026-10-26T21:57:50.2468194Z     50: 'option-value:createPolarLinePlot.guides.axes.radius.title.align=string:left (0/0)'
+2026-10-26T21:57:50.2468906Z     51: 'option-value:createPolarLinePlot.guides.axes.radius.title.align=string:right (0/0)'
+2026-10-26T21:57:50.2469700Z     52: 'option-value:createPolarLinePlot.guides.axes.theta.ticksAndLabels.labels.align=string:center (0/0)'
+2026-10-26T21:57:50.2470560Z     53: 'option-value:createPolarLinePlot.guides.axes.theta.ticksAndLabels.labels.align=string:left (0/0)'
+2026-10-26T21:57:50.2471694Z     54: 'option-value:createPolarLinePlot.guides.axes.theta.ticksAndLabels.labels.align=string:right (0/0)'
+2026-10-26T21:57:50.2472483Z     55: 'option-value:createPolarLinePlot.guides.axes.theta.title.align=string:center (0/0)'
+2026-10-26T21:57:50.2473178Z     56: 'option-value:createPolarLinePlot.guides.axes.theta.title.align=string:left (0/0)'
+2026-10-26T21:57:50.2473876Z     57: 'option-value:createPolarLinePlot.guides.axes.theta.title.align=string:right (0/0)'
+2026-10-26T21:57:50.2474685Z     58: 'option-value:createPolarScatterPlot.guides.axes.radius.ticksAndLabels.labels.align=string:center (0/0)'
+2026-10-26T21:57:50.2475773Z     59: 'option-value:createPolarScatterPlot.guides.axes.radius.ticksAndLabels.labels.align=string:left (0/0)'
+2026-10-26T21:57:50.2476665Z     60: 'option-value:createPolarScatterPlot.guides.axes.radius.ticksAndLabels.labels.align=string:right (0/0)'
+2026-10-26T21:57:50.2477485Z     61: 'option-value:createPolarScatterPlot.guides.axes.radius.title.align=string:center (0/0)'
+2026-10-26T21:57:50.2478267Z     62: 'option-value:createPolarScatterPlot.guides.axes.radius.title.align=string:left (0/0)'
+2026-10-26T21:57:50.2479185Z     63: 'option-value:createPolarScatterPlot.guides.axes.radius.title.align=string:right (0/0)'
+2026-10-26T21:57:50.2480274Z     64: 'option-value:createPolarScatterPlot.guides.axes.theta.ticksAndLabels.labels.align=string:center (0/0)'
+2026-10-26T21:57:50.2495722Z     65: 'option-value:createPolarScatterPlot.guides.axes.theta.ticksAndLabels.labels.align=string:left (0/0)'
+2026-10-26T21:57:50.2497481Z     66: 'option-value:createPolarScatterPlot.guides.axes.theta.ticksAndLabels.labels.align=string:right (0/0)'
+2026-10-26T21:57:50.2499039Z     67: 'option-value:createPolarScatterPlot.guides.axes.theta.title.align=string:center (0/0)'
+2026-10-26T21:57:50.2500449Z     68: 'option-value:createPolarScatterPlot.guides.axes.theta.title.align=string:left (0/0)'
+2026-10-26T21:57:50.2502085Z     69: 'option-value:createPolarScatterPlot.guides.axes.theta.title.align=string:right (0/0)'
+2026-10-26T21:57:50.2502914Z     70: 'option-value:createPolarScatterPlot.guides.legend.labels.align=string:center (0/0)'
+2026-10-26T21:57:50.2503699Z     71: 'option-value:createPolarScatterPlot.guides.legend.labels.align=string:left (0/0)'
+2026-10-26T21:57:50.2504448Z     72: 'option-value:createPolarScatterPlot.guides.legend.labels.align=string:right (0/0)'
+2026-10-26T21:57:50.2505293Z     73: 'option-value:createRadarPlot.guides.axes.radius.ticksAndLabels.labels.align=string:center (0/0)'
+2026-10-26T21:57:50.2506166Z     74: 'option-value:createRadarPlot.guides.axes.radius.ticksAndLabels.labels.align=string:left (0/0)'
+2026-10-26T21:57:50.2507043Z     75: 'option-value:createRadarPlot.guides.axes.radius.ticksAndLabels.labels.align=string:right (0/0)'
+2026-10-26T21:57:50.2507841Z     76: 'option-value:createRadarPlot.guides.axes.radius.title.align=string:center (0/0)'
+2026-10-26T21:57:50.2508563Z     77: 'option-value:createRadarPlot.guides.axes.radius.title.align=string:left (0/0)'
+2026-10-26T21:57:50.2509265Z     78: 'option-value:createRadarPlot.guides.axes.radius.title.align=string:right (0/0)'
+2026-10-26T21:57:50.2510052Z     79: 'option-value:createRadarPlot.guides.axes.theta.ticksAndLabels.labels.align=string:center (0/0)'
+2026-10-26T21:57:50.2510922Z     80: 'option-value:createRadarPlot.guides.axes.theta.ticksAndLabels.labels.align=string:left (0/0)'
+2026-10-26T21:57:50.2512089Z     81: 'option-value:createRadarPlot.guides.axes.theta.ticksAndLabels.labels.align=string:right (0/0)'
+2026-10-26T21:57:50.2512897Z     82: 'option-value:createRadarPlot.guides.axes.theta.title.align=string:center (0/0)'
+2026-10-26T21:57:50.2513608Z     83: 'option-value:createRadarPlot.guides.axes.theta.title.align=string:left (0/0)'
+2026-10-26T21:57:50.2514349Z     84: 'option-value:createRadarPlot.guides.axes.theta.title.align=string:right (0/0)'
+2026-10-26T21:57:50.2515002Z     85: 'option-value:createRadarPlot.wide.normalize=boolean:false (0/0)'
+2026-10-26T21:57:50.2515576Z     86: 'option-value:createRadarPlot.wide.normalize=string:minmax (0/0)'
+2026-10-26T21:57:50.2516124Z     87: 'option-value:createRadarPlot.wide.summary=boolean:false (0/0)'
+2026-10-26T21:57:50.2516667Z     88: 'option-value:createRadarPlot.wide.summary=string:mean (0/0)'
+2026-10-26T21:57:50.2517211Z     89: 'option-value:createRadarPlot.wide.summary=string:median (0/0)'
+2026-10-26T21:57:50.2517948Z     90: 'option-value:createRadialBarPlot.guides.axes.radius.ticksAndLabels.labels.align=string:center (0/0)'
+2026-10-26T21:57:50.2518890Z     91: 'option-value:createRadialBarPlot.guides.axes.radius.ticksAndLabels.labels.align=string:left (0/0)'
+2026-10-26T21:57:50.2520005Z     92: 'option-value:createRadialBarPlot.guides.axes.radius.ticksAndLabels.labels.align=string:right (0/0)'
+2026-10-26T21:57:50.2520854Z     93: 'option-value:createRadialBarPlot.guides.axes.radius.title.align=string:center (0/0)'
+2026-10-26T21:57:50.2521855Z     94: 'option-value:createRadialBarPlot.guides.axes.radius.title.align=string:left (0/0)'
+2026-10-26T21:57:50.2522625Z     95: 'option-value:createRadialBarPlot.guides.axes.radius.title.align=string:right (0/0)'
+2026-10-26T21:57:50.2523459Z     96: 'option-value:createRadialBarPlot.guides.axes.theta.ticksAndLabels.labels.align=string:center (0/0)'
+2026-10-26T21:57:50.2524377Z     97: 'option-value:createRadialBarPlot.guides.axes.theta.ticksAndLabels.labels.align=string:left (0/0)'
+2026-10-26T21:57:50.2525285Z     98: 'option-value:createRadialBarPlot.guides.axes.theta.ticksAndLabels.labels.align=string:right (0/0)'
+2026-10-26T21:57:50.2526114Z     99: 'option-value:createRadialBarPlot.guides.axes.theta.title.align=string:center (0/0)'
+2026-10-26T21:57:50.2526860Z     100: 'option-value:createRadialBarPlot.guides.axes.theta.title.align=string:left (0/0)'
+2026-10-26T21:57:50.2527613Z     101: 'option-value:createRadialBarPlot.guides.axes.theta.title.align=string:right (0/0)'
+2026-10-26T21:57:50.2528430Z     102: 'option-value:createRaincloudPlot.missing=string:error (0/0)'
+2026-10-26T21:57:50.2528996Z     103: 'option-value:createRaincloudPlot.missing=string:skip (0/0)'
+2026-10-26T21:57:50.2529720Z     104: 'option-value:createRosePlot.guides.axes.radius.ticksAndLabels.labels.align=string:center (0/0)'
+2026-10-26T21:57:50.2530583Z     105: 'option-value:createRosePlot.guides.axes.radius.ticksAndLabels.labels.align=string:left (0/0)'
+2026-10-26T21:57:50.2531687Z     106: 'option-value:createRosePlot.guides.axes.radius.ticksAndLabels.labels.align=string:right (0/0)'
+2026-10-26T21:57:50.2532486Z     107: 'option-value:createRosePlot.guides.axes.radius.title.align=string:center (0/0)'
+2026-10-26T21:57:50.2533219Z     108: 'option-value:createRosePlot.guides.axes.radius.title.align=string:left (0/0)'
+2026-10-26T21:57:50.2533917Z     109: 'option-value:createRosePlot.guides.axes.radius.title.align=string:right (0/0)'
+2026-10-26T21:57:50.2534720Z     110: 'option-value:createRosePlot.guides.axes.theta.ticksAndLabels.labels.align=string:center (0/0)'
+2026-10-26T21:57:50.2535567Z     111: 'option-value:createRosePlot.guides.axes.theta.ticksAndLabels.labels.align=string:left (0/0)'
+2026-10-26T21:57:50.2536448Z     112: 'option-value:createRosePlot.guides.axes.theta.ticksAndLabels.labels.align=string:right (0/0)'
+2026-10-26T21:57:50.2537214Z     113: 'option-value:createRosePlot.guides.axes.theta.title.align=string:center (0/0)'
+2026-10-26T21:57:50.2537941Z     114: 'option-value:createRosePlot.guides.axes.theta.title.align=string:left (0/0)'
+2026-10-26T21:57:50.2538628Z     115: 'option-value:createRosePlot.guides.axes.theta.title.align=string:right (0/0)'
+2026-10-26T21:57:50.2539316Z     116: 'option-value:createStripPlot.guides.legend.labels.align=string:center (0/0)'
+2026-10-26T21:57:50.2540047Z     117: 'option-value:createStripPlot.guides.legend.labels.align=string:left (0/0)'
+2026-10-26T21:57:50.2540723Z     118: 'option-value:createStripPlot.guides.legend.labels.align=string:right (0/0)'
+2026-10-26T21:57:50.2541573Z     119: 'option-value:createStripPlot.missing=string:error (0/0)'
+2026-10-26T21:57:50.2542089Z     120: 'option-value:createStripPlot.missing=string:skip (0/0)'
+2026-10-26T21:57:50.2542498Z   operator: 'deepStrictEqual'
+2026-10-26T21:57:50.2542788Z   stack: |-
+2026-10-26T21:57:50.2543498Z     TestContext.<anonymous> (file:///home/runner/work/ggaction/ggaction/test/contracts/realistic-hierarchical-facade-matrix.test.js:157:10)
+2026-10-26T21:57:50.2544304Z     async Test.run (node:internal/test_runner/test:1054:7)
+2026-10-26T21:57:50.2544858Z     async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+2026-10-26T21:57:50.2545463Z   ...
+2026-10-26T21:57:50.2993608Z # Subtest: independent native layer constructors preserve original rows and owners on tt-tour-de-france-winners
+2026-10-26T21:57:50.2995842Z ok 91 - independent native layer constructors preserve original rows and owners on tt-tour-de-france-winners
+2026-10-26T21:57:50.2997021Z   ---
+2026-10-26T21:57:50.2997615Z   duration_ms: 11891.371397
+2026-10-26T21:57:50.2998276Z   type: 'test'
+2026-10-26T21:57:50.2998845Z   ...
+2026-10-26T21:57:50.3000063Z # Subtest: independent native layer constructors preserve original rows and owners on tt-london-marathon-winners
+2026-10-26T21:57:50.3002402Z ok 92 - independent native layer constructors preserve original rows and owners on tt-london-marathon-winners
+2026-10-26T21:57:50.3010103Z   ---
+2026-10-26T21:57:50.3010798Z   duration_ms: 7907.912302
+2026-10-26T21:57:50.3011758Z   type: 'test'
+2026-10-26T21:57:50.3012368Z   ...
+2026-10-26T21:57:50.3013566Z # Subtest: independent native layer constructors preserve original rows and owners on tt-penguins
+2026-10-26T21:57:50.3015311Z ok 93 - independent native layer constructors preserve original rows and owners on tt-penguins
+2026-10-26T21:57:50.3016346Z   ---
+2026-10-26T21:57:50.3016737Z   duration_ms: 9171.291699
+2026-10-26T21:57:50.3017160Z   type: 'test'
+2026-10-26T21:57:50.3017507Z   ...
+2026-10-26T21:57:50.3018772Z # Subtest: new legend option and selector witnesses retain five calls and three authentic datasets
+2026-10-26T21:57:50.3020141Z ok 94 - new legend option and selector witnesses retain five calls and three authentic datasets
+2026-10-26T21:57:50.3020651Z   ---
+2026-10-26T21:57:50.3020862Z   duration_ms: 17299.892362
+2026-10-26T21:57:50.3021365Z   type: 'test'
+2026-10-26T21:57:50.3021676Z   ...
+2026-10-26T21:57:50.3022178Z # Subtest: point-owned facade combinations execute five times on tt-tour-de-france-winners
+2026-10-26T21:57:50.3022896Z ok 95 - point-owned facade combinations execute five times on tt-tour-de-france-winners
+2026-10-26T21:57:50.3023337Z   ---
+2026-10-26T21:57:50.3023551Z   duration_ms: 745.929139
+2026-10-26T21:57:50.3023794Z   type: 'test'
+2026-10-26T21:57:50.3023991Z   ...
+2026-10-26T21:57:50.3024470Z # Subtest: point-owned facade combinations execute five times on tt-london-marathon-winners
+2026-10-26T21:57:50.3025184Z ok 96 - point-owned facade combinations execute five times on tt-london-marathon-winners
+2026-10-26T21:57:50.3025607Z   ---
+2026-10-26T21:57:50.3025814Z   duration_ms: 696.879142
+2026-10-26T21:57:50.3026044Z   type: 'test'
+2026-10-26T21:57:50.3026246Z   ...
+2026-10-26T21:57:50.3026921Z # Subtest: point-owned facade combinations execute five times on tt-penguins
+2026-10-26T21:57:50.3027990Z ok 97 - point-owned facade combinations execute five times on tt-penguins
+2026-10-26T21:57:50.3028496Z   ---
+2026-10-26T21:57:50.3028818Z   duration_ms: 568.93172
+2026-10-26T21:57:50.3029062Z   type: 'test'
+2026-10-26T21:57:50.3029261Z   ...
+2026-10-26T21:57:50.3029444Z 1..97
+2026-10-26T21:57:50.3029622Z # tests 97
+2026-10-26T21:57:50.3029834Z # suites 0
+2026-10-26T21:57:50.3030021Z # pass 96
+2026-10-26T21:57:50.3030212Z # fail 1
+2026-10-26T21:57:50.3030407Z # cancelled 0
+2026-10-26T21:57:50.3030607Z # skipped 0
+2026-10-26T21:57:50.3030798Z # todo 0
+2026-10-26T21:57:50.3031016Z # duration_ms 982314.13356
+2026-10-26T21:57:50.3268372Z ##[error]Process completed with exit code 1.
+2026-10-26T21:57:50.3341343Z ##[group]Run actions/upload-artifact@v7
+2026-10-26T21:57:50.3341736Z with:
+2026-10-26T21:57:50.3341958Z   name: timings-realistic-4-1
+2026-10-26T21:57:50.3342235Z   path: .artifacts/timings
+2026-10-26T21:57:50.3342484Z   if-no-files-found: warn
+2026-10-26T21:57:50.3342724Z   retention-days: 30
+2026-10-26T21:57:50.3342957Z   compression-level: 6
+2026-10-26T21:57:50.3343187Z   overwrite: false
+2026-10-26T21:57:50.3343417Z   include-hidden-files: false
+2026-10-26T21:57:50.3343661Z   archive: true
+2026-10-26T21:57:50.3343863Z ##[endgroup]
+2026-10-26T21:57:50.4834869Z With the provided path, there will be 8 files uploaded
+2026-10-26T21:57:50.4835881Z Artifact name is valid!
+2026-10-26T21:57:50.4836829Z Root directory input is valid!
+2026-10-26T21:57:50.8888744Z Uploading artifact: timings-realistic-4-1.zip
+2026-10-26T21:57:50.8928428Z Beginning upload of artifact content to blob storage
+2026-10-26T21:57:51.2110467Z Uploaded bytes 2876
+2026-10-26T21:57:51.2858619Z Finished uploading artifact content to blob storage!
+2026-10-26T21:57:51.2860009Z SHA256 digest of uploaded artifact is 5a04695c7d837efcb1d9f36d89ec4625c47aa7b09616b6ec6dc6aba9d04b0088
+2026-10-26T21:57:51.2860710Z Finalizing artifact upload
+2026-10-26T21:57:51.8863574Z Artifact timings-realistic-4-1 successfully finalized. Artifact ID 12690528988
+2026-10-26T21:57:51.8864658Z Artifact timings-realistic-4-1 has been successfully uploaded! Final size is 2876 bytes. Artifact ID is 12690528988
+2026-10-26T21:57:51.8867716Z Artifact download URL: https://github.com/ggaction/ggaction/actions/runs/40406284286/artifacts/12690528988
+2026-10-26T21:57:51.8990234Z ##[group]Run node scripts/collect-failure-artifacts.js
+2026-10-26T21:57:51.8990692Z [36;1mnode scripts/collect-failure-artifacts.js[0m
+2026-10-26T21:57:51.9052264Z shell: /usr/bin/bash -e {0}
+2026-10-26T21:57:51.9052533Z ##[endgroup]
+2026-10-26T21:57:51.9516853Z {"schemaVersion":1,"maxBytes":52428800,"maxFiles":300,"bytes":92874,"omitted":0,"files":[{"file":"checks/suite-realistic.json","bytes":1246},{"file":"checks/suite-realistic.log","bytes":45373},{"file":"checks/test-realistic.json","bytes":319},{"file":"checks/test-realistic.log","bytes":45936}]}
+2026-10-26T21:57:51.9615390Z ##[group]Run actions/upload-artifact@v7
+2026-10-26T21:57:51.9615702Z with:
+2026-10-26T21:57:51.9615924Z   name: failure-realistic-3-1
+2026-10-26T21:57:51.9616197Z   path: .artifacts/ci-evidence
+2026-10-26T21:57:51.9616465Z   if-no-files-found: ignore
+2026-10-26T21:57:51.9616708Z   retention-days: 7
+2026-10-26T21:57:51.9616933Z   compression-level: 6
+2026-10-26T21:57:51.9617157Z   overwrite: false
+2026-10-26T21:57:51.9617384Z   include-hidden-files: false
+2026-10-26T21:57:51.9617638Z   archive: true
+2026-10-26T21:57:51.9617849Z ##[endgroup]
+2026-10-26T21:57:52.1147956Z With the provided path, there will be 5 files uploaded
+2026-10-26T21:57:52.1148930Z Artifact name is valid!
+2026-10-26T21:57:52.1149457Z Root directory input is valid!
+2026-10-26T21:57:52.4967614Z Uploading artifact: failure-realistic-3-1.zip
+2026-10-26T21:57:52.5007352Z Beginning upload of artifact content to blob storage
+2026-10-26T21:57:52.8358650Z Uploaded bytes 11519
+2026-10-26T21:57:52.9167325Z Finished uploading artifact content to blob storage!
+2026-10-26T21:57:52.9169030Z SHA256 digest of uploaded artifact is 88bba2cd571e096c416cd52d607d2a1dce62f362869cff3223a54a537a4f89ea
+2026-10-26T21:57:52.9170421Z Finalizing artifact upload
+2026-10-26T21:57:53.5342314Z Artifact failure-realistic-3-1 successfully finalized. Artifact ID 12692391499
+2026-10-26T21:57:53.5343961Z Artifact failure-realistic-3-1 has been successfully uploaded! Final size is 11519 bytes. Artifact ID is 12692391499
+2026-10-26T21:57:53.5348092Z Artifact download URL: https://github.com/ggaction/ggaction/actions/runs/40406284286/artifacts/12692391499
+2026-10-26T21:57:53.5529856Z Post job cleanup.
+2026-10-26T21:57:53.6434356Z [command]/usr/bin/git version
+2026-10-26T21:57:53.6480442Z git version 2.55.0
+2026-10-26T21:57:53.6524522Z Temporarily overriding HOME='/home/runner/work/_temp/dd1e9348-2a67-43e9-ad2f-485d1ddf8dcc' before making global git config changes
+2026-10-26T21:57:53.6526344Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-26T21:57:53.6530528Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/ggaction/ggaction
+2026-10-26T21:57:53.6566573Z Removing SSH command configuration
+2026-10-26T21:57:53.6575568Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-26T21:57:53.6615683Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-26T21:57:53.6872142Z Removing HTTP extra header
+2026-10-26T21:57:53.6876255Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-26T21:57:53.6907733Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-26T21:57:53.7162778Z Removing includeIf entries pointing to credentials config files
+2026-10-26T21:57:53.7171776Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-26T21:57:53.7208360Z includeif.gitdir:/home/runner/work/ggaction/ggaction/.git.path
+2026-10-26T21:57:53.7209260Z includeif.gitdir:/home/runner/work/ggaction/ggaction/.git/worktrees/*.path
+2026-10-26T21:57:53.7210233Z includeif.gitdir:/github/workspace/.git.path
+2026-10-26T21:57:53.7211542Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-26T21:57:53.7222383Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/ggaction/ggaction/.git.path
+2026-10-26T21:57:53.7267289Z /home/runner/work/_temp/git-credentials-b7d858f2-d8e6-4784-96a3-3b000c0af8b1.config
+2026-10-26T21:57:53.7278952Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/ggaction/ggaction/.git.path /home/runner/work/_temp/git-credentials-b7d858f2-d8e6-4784-96a3-3b000c0af8b1.config
+2026-10-26T21:57:53.7322835Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/ggaction/ggaction/.git/worktrees/*.path
+2026-10-26T21:57:53.7350588Z /home/runner/work/_temp/git-credentials-b7d858f2-d8e6-4784-96a3-3b000c0af8b1.config
+2026-10-26T21:57:53.7362325Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/ggaction/ggaction/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-b7d858f2-d8e6-4784-96a3-3b000c0af8b1.config
+2026-10-26T21:57:53.7401505Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-10-26T21:57:53.7427164Z /github/runner_temp/git-credentials-b7d858f2-d8e6-4784-96a3-3b000c0af8b1.config
+2026-10-26T21:57:53.7437039Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-b7d858f2-d8e6-4784-96a3-3b000c0af8b1.config
+2026-10-26T21:57:53.7476027Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-26T21:57:53.7504345Z /github/runner_temp/git-credentials-b7d858f2-d8e6-4784-96a3-3b000c0af8b1.config
+2026-10-26T21:57:53.7515938Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-b7d858f2-d8e6-4784-96a3-3b000c0af8b1.config
+2026-10-26T21:57:53.7560125Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-26T21:57:53.7821649Z Removing credentials config '/home/runner/work/_temp/git-credentials-b7d858f2-d8e6-4784-96a3-3b000c0af8b1.config'
+2026-10-26T21:57:53.8005893Z Cleaning up orphan processes

@@ -1,0 +1,269 @@
+import { validateGraphicClip } from "../../grammar/schemas/graphicClip.js";
+import { validateGraphicItemLimit } from "../../core/validation.js";
+import { closedAction } from "../../core/action.js";
+import { cloneAndFreeze, freezeOwned, isPlainObject } from "../../core/immutable.js";
+import { resolveGraphicItemCapacity } from "../../selectors/graphicCapacity.js";
+import {
+  isPrimitiveDrawableGraphicType,
+  isStructuralGraphicType,
+  validateGraphicProperty,
+  validateGraphicType
+} from "../../grammar/schemas/graphic.js";
+import { validateConcreteGraphicValue } from
+  "../../grammar/schemas/concreteGraphic.js";
+import {
+  collectGraphicSubtreeIds,
+  requireGraphic,
+  resolveGraphicChildOrder
+} from "../../grammar/schemas/graphicTree.js";
+
+function setGraphicProperty(properties, property, value) {
+  return freezeOwned({ ...properties, [property]: cloneAndFreeze(value) });
+}
+
+function validateCollectionItem(item, ownerId, index) {
+  if (!isPlainObject(item)) {
+    throw new TypeError(`collection.items[${index}] must be a plain object.`);
+  }
+  const unknown = Object.keys(item).find(key => !["type", "properties"].includes(key));
+  if (unknown !== undefined) throw new Error(`Unknown collection item property "${unknown}".`);
+  const type = validateGraphicType(item.type);
+  if (!isPrimitiveDrawableGraphicType(type)) {
+    throw new Error(`Collection item "${ownerId}:${index}" requires a primitive drawable type.`);
+  }
+  if (!isPlainObject(item.properties)) {
+    throw new TypeError(`Collection item "${ownerId}:${index}" requires plain properties.`);
+  }
+  for (const [property, value] of Object.entries(item.properties)) {
+    validateGraphicProperty(type, property);
+    validateConcreteGraphicValue(type, property, value);
+  }
+  return freezeOwned({
+    id: `${ownerId}:${index}`,
+    type,
+    properties: cloneAndFreeze(item.properties)
+  });
+}
+
+function replaceCollectionItems(value, id, program) {
+  if (!Array.isArray(value)) throw new TypeError("collection.items must be an array.");
+  validateGraphicItemLimit(value.length, resolveGraphicItemCapacity(program, { id, label: "collection.items length" }));
+  return freezeOwned(value.map((item, index) => validateCollectionItem(item, id, index)));
+}
+
+function replaceDrawableItems(value, id, type, program) {
+  const items = replaceCollectionItems(value, id, program);
+  if (!items.every(item => item.type === type)) {
+    return freezeOwned({ type: "collection", items });
+  }
+  return freezeOwned({
+    type,
+    items: freezeOwned(items.map(item => freezeOwned({
+      id: item.id,
+      properties: item.properties
+    })))
+  });
+}
+
+export function replaceGraphicItems(program, target, baseType, items) {
+  let next = program.editGraphics({ target, property: "items", value: items });
+  const graphic = next.graphicSpec.objects[target];
+  if (
+    graphic.type !== "collection" ||
+    !graphic.items.every(item => item.type === baseType)
+  ) return next;
+  const normalized = freezeOwned({
+    ...graphic,
+    type: baseType,
+    items: freezeOwned(graphic.items.map(item => freezeOwned({
+      id: item.id,
+      properties: item.properties
+    })))
+  });
+  return next._clone({
+    graphicSpec: freezeOwned({
+      ...next.graphicSpec,
+      objects: freezeOwned({
+        ...next.graphicSpec.objects,
+        [target]: normalized
+      })
+    })
+  });
+}
+
+function editGeneratedItem(owner, itemIndex, property, value) {
+  const items = [...owner.items];
+  const item = items[itemIndex];
+  const type = item.type ?? owner.type;
+  validateGraphicProperty(type, property);
+  validateConcreteGraphicValue(type, property, value);
+  if (Object.is(item.properties[property], value)) return owner;
+  items[itemIndex] = freezeOwned({
+    ...item,
+    properties: setGraphicProperty(item.properties, property, value)
+  });
+  return freezeOwned({ ...owner, items: freezeOwned(items) });
+}
+
+function editItems(owner, property, value, id, program) {
+  if (owner.type === "collection" && property === "items") {
+    return freezeOwned({ ...owner, items: replaceCollectionItems(value, id, program) });
+  }
+  if (property === "length") {
+    if (!Number.isInteger(value) || value < 0) {
+      throw new TypeError("Graphic collection length must be a non-negative integer.");
+    }
+    validateGraphicItemLimit(value, resolveGraphicItemCapacity(program, { id, label: "Graphic collection length" }));
+    const items = owner.items.slice(0, value);
+    for (let index = items.length; index < value; index += 1) {
+      if (owner.type === "collection") {
+        throw new Error("A heterogeneous collection can only grow by replacing its items.");
+      }
+      items.push(freezeOwned({ id: `${id}:${index}`, properties: freezeOwned({}) }));
+    }
+    return freezeOwned({ ...owner, items: freezeOwned(items) });
+  }
+  if (Array.isArray(value) && value.length !== owner.items.length) {
+    throw new Error(
+      `${owner.type}.${property} requires ${owner.items.length} values, received ${value.length}.`
+    );
+  }
+  let changed = false;
+  const items = owner.items.map((item, index) => {
+    const itemValue = Array.isArray(value) ? value[index] : value;
+    const type = item.type ?? owner.type;
+    validateGraphicProperty(type, property);
+    validateConcreteGraphicValue(type, property, itemValue);
+    if (Object.is(item.properties[property], itemValue)) return item;
+    changed = true;
+    return freezeOwned({
+      ...item,
+      properties: setGraphicProperty(item.properties, property, itemValue)
+    });
+  });
+  return changed ? freezeOwned({ ...owner, items: freezeOwned(items) }) : owner;
+}
+
+function removeGraphicTrees(graphicSpec, targets) {
+  const removedIds = new Set();
+  for (const id of targets) {
+    const found = requireGraphic(graphicSpec, id);
+    if (found.kind === "item") throw new Error("editGraphics cannot remove a generated item independently.");
+    if (found.object.type === "canvas" && graphicSpec.order.includes(id)) throw new Error("The canvas root cannot be removed.");
+    for (const child of collectGraphicSubtreeIds(graphicSpec, id)) removedIds.add(child);
+  }
+  // One immutable replacement for the complete removal set. Repeated per-root
+  // copying made facet guide cleanup quadratic in the number of panels.
+  const objects = {};
+  for (const id in graphicSpec.objects) {
+    if (removedIds.has(id)) continue;
+    const object = graphicSpec.objects[id];
+    const retained = object.children?.some(child => removedIds.has(child))
+      ? freezeOwned({ ...object, children: freezeOwned(object.children.filter(child => !removedIds.has(child))) }) : object;
+    Object.defineProperty(objects, id, { value: retained, enumerable: true, writable: true, configurable: true });
+  }
+  return freezeOwned({ objects: freezeOwned(objects), order: freezeOwned(graphicSpec.order.filter(id => !removedIds.has(id))) });
+}
+
+const editGraphics = /* @__PURE__ */ closedAction(
+  {
+    op: "editGraphics",
+    description: "Replace or remove concrete graphic state.",
+    scope: "any"
+  }, ["target", "property", "value", "remove"],
+  function (args = {}) {
+    const { target, property, value, remove = false } = args;
+    const targets = Array.isArray(target) ? target : [target];
+    if (!targets.length || targets.some(id => typeof id !== "string" || id.length === 0) || Array.isArray(target) && !remove) {
+      throw new TypeError("editGraphics requires a non-empty target string.");
+    }
+    if (typeof remove !== "boolean") throw new TypeError("editGraphics remove must be a boolean.");
+    if (remove && (property !== undefined || value !== undefined)) {
+      throw new Error("editGraphics target removal cannot include property or value.");
+    }
+    if (!remove && value === undefined) throw new TypeError("editGraphics requires a value.");
+
+    if (remove) {
+      return this._clone({ graphicSpec: removeGraphicTrees(this.graphicSpec, targets) });
+    }
+    const found = requireGraphic(this.graphicSpec, target);
+
+    if (property === "children") {
+      const children = freezeOwned(resolveGraphicChildOrder(this.graphicSpec, target, value));
+      const updated = freezeOwned({ ...found.object, children });
+      return this._clone({ graphicSpec: freezeOwned({ ...this.graphicSpec,
+        objects: freezeOwned({ ...this.graphicSpec.objects, [target]: updated }) }) });
+    }
+
+    const ownerId = found.kind === "item" ? found.ownerId : found.id;
+    const owner = found.kind === "item" ? found.owner : found.object;
+    if (owner.items !== undefined) validateGraphicItemLimit(owner.items.length, resolveGraphicItemCapacity(this, {
+      id: ownerId, label: "Graphic collection length"
+    }));
+    if (property === "clip") {
+      if (found.kind !== "object") throw new Error("Graphic clip requires a named owner, not a generated item.");
+      if (owner.type === "canvas") validateGraphicClip(value, owner.type);
+      if (value !== false) validateGraphicClip(value, owner.type);
+      const {clip: previous, ...rest} = owner;
+      const updated = value === false ? freezeOwned(rest) : freezeOwned({...rest, clip: cloneAndFreeze(value)});
+      return this._clone({graphicSpec: freezeOwned({...this.graphicSpec,
+        objects: freezeOwned({...this.graphicSpec.objects, [ownerId]: updated})})});
+    }
+    const replacesDrawableItems =
+      found.kind === "object" && property === "items" &&
+      owner.items !== undefined && owner.type !== "collection";
+    const validatedProperty = replacesDrawableItems
+      ? "items"
+      : validateGraphicProperty(found.kind === "item"
+          ? (found.object.type ?? owner.type)
+          : owner.type, property);
+    let updated;
+    if (replacesDrawableItems) {
+      updated = freezeOwned({...replaceDrawableItems(value, ownerId, owner.type, this),
+        ...(owner.clip === undefined ? {} : {clip: owner.clip})});
+    } else if (found.kind === "item") {
+      if (validatedProperty === "length" || validatedProperty === "items") {
+        throw new Error(`${validatedProperty} can only target an owning graphic.`);
+      }
+      updated = editGeneratedItem(owner, found.itemIndex, validatedProperty, value);
+    } else if (isStructuralGraphicType(owner.type)) {
+      validateConcreteGraphicValue(owner.type, validatedProperty, value);
+      updated = freezeOwned({
+        ...owner,
+        properties: setGraphicProperty(owner.properties, validatedProperty, value)
+      });
+    } else if (owner.items !== undefined) {
+      updated = editItems(owner, validatedProperty, value, ownerId, this);
+    } else if (validatedProperty === "length") {
+      if (!Number.isInteger(value) || value < 0) {
+        throw new TypeError("Graphic collection length must be a non-negative integer.");
+      }
+      validateGraphicItemLimit(value, resolveGraphicItemCapacity(this, { id: ownerId, label: "Graphic collection length" }));
+      updated = freezeOwned({
+        type: owner.type,
+        ...(owner.clip === undefined ? {} : {clip: owner.clip}),
+        items: freezeOwned(Array.from({ length: value }, (_, index) => freezeOwned({
+          id: `${ownerId}:${index}`,
+          properties: index === 0 ? owner.properties : freezeOwned({})
+        })))
+      });
+    } else {
+      validateConcreteGraphicValue(owner.type, validatedProperty, value);
+      updated = freezeOwned({
+        ...owner,
+        properties: setGraphicProperty(owner.properties, validatedProperty, value)
+      });
+    }
+    if (updated === owner) return this;
+    return this._clone({
+      graphicSpec: freezeOwned({
+        ...this.graphicSpec,
+        objects: freezeOwned({ ...this.graphicSpec.objects, [ownerId]: updated })
+      })
+    });
+  }
+);
+
+export function registerEditGraphicsAction(ProgramClass) {
+  ProgramClass.prototype.editGraphics = editGraphics;
+}

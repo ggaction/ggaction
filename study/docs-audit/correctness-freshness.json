@@ -1,0 +1,104 @@
+[
+  {
+    "script": "generate-action-catalog.js",
+    "exitCode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "script": "generate-action-relationships.js",
+    "exitCode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "script": "generate-action-cards.js",
+    "exitCode": 0,
+    "stdout": "293 compact action cards; max 4220 bytes; median 1888 bytes\n",
+    "stderr": ""
+  },
+  {
+    "script": "generate-inspection-descriptors.js",
+    "exitCode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "script": "doc-provenance.js",
+    "exitCode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "script": "generate-doc-workflows.js",
+    "exitCode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "script": "generate-examples-readme.js",
+    "exitCode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "script": "generate-doc-capabilities.js",
+    "exitCode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "script": "generate-doc-action-reference.js",
+    "exitCode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "script": "generate-doc-chart-picker.js",
+    "exitCode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "script": "generate-doc-scale-editors.js",
+    "exitCode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "script": "generate-doc-action-metadata.js",
+    "exitCode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "script": "generate-doc-signatures.js",
+    "exitCode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "script": "generate-doc-snippet-contracts.js",
+    "exitCode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "script": "generate-doc-page-metadata.js",
+    "exitCode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "script": "generate-doc-search-index.js",
+    "exitCode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "script": "generate-doc-machine-artifacts.js",
+    "exitCode": 0,
+    "stdout": "",
+    "stderr": ""
+  }
+]

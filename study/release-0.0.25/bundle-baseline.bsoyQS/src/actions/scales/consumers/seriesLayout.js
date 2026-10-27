@@ -1,0 +1,253 @@
+import { applyItemMissingPolicy } from "../../../grammar/itemMissing.js";
+import { readSeriesIdentity } from "../../../grammar/pathSeries.js";
+import { deriveAreaSeries } from "../../../grammar/areaSeries.js";
+import { deriveBarAggregates } from "../../../grammar/bars/aggregate.js";
+import { validateGeneratedItemLimit } from "../../../core/validation.js";
+import {
+  BAR_GRAINS,
+  resolveBarChannels,
+  resolveBarColorLayout,
+  resolveBarGrain
+} from "../../../grammar/bars/policy.js";
+import {
+  findHistogramBinIndex,
+  resolveHistogramBins
+} from "../../../grammar/histogram.js";
+import {
+  deriveCenteredAreaSeries,
+  deriveDensityAreaSeries
+} from "../../../grammar/areaSeries.js";
+import {
+  resolveSeriesLayoutDomainValues
+} from "../../../grammar/seriesLayout.js";
+import {
+  readNominalField,
+  resolveOrdinalDomain
+} from "../../../grammar/scales/index.js";
+import { findDataset } from "../../../selectors/datasets.js";
+import { findScale } from "./common.js";
+import { resolveHistogramInput } from
+  "../../../materialization/bars/histogram.js";
+
+export function resolveHistogramCountValues(program, consumer) {
+  const xEncoding = consumer.layer.encoding?.x;
+  const xScale = xEncoding?.scale === undefined
+    ? undefined
+    : findScale(program, xEncoding.scale);
+  const dataset = findDataset(program, consumer.layer.data);
+  if (xEncoding?.bin === undefined || xScale === undefined) {
+    throw new Error(
+      `Histogram mark "${consumer.layer.id}" requires a binned x scale.`
+    );
+  }
+  if (dataset === undefined) {
+    throw new Error(
+      `Histogram mark "${consumer.layer.id}" requires an existing dataset.`
+    );
+  }
+  const input = resolveHistogramInput(dataset, xEncoding, consumer.layer.encoding.y);
+  const xValues = input.values;
+  const bins = resolveHistogramBins({
+    values: xValues,
+    bin: xEncoding.bin,
+    domain: xScale.domain,
+    nice: xScale.nice ?? true,
+    zero: xScale.zero ?? false
+  });
+  const cells = bins.boundaries.slice(0, -1).map(() => []);
+  xValues.forEach((value, index) => {
+    const bin = findHistogramBinIndex(value, bins.boundaries);
+    if (bin !== -1) cells[bin].push(input.entries[index]);
+  });
+  return cells.map(input.mass);
+}
+
+function resolveHistogramPartitions(program, consumer) {
+  const layer = consumer.layer;
+  const dataset = applyItemMissingPolicy(layer, findDataset(program, layer.data));
+  const xEncoding = layer.encoding.x;
+  const xScale = findScale(program, xEncoding.scale);
+  const input = resolveHistogramInput(dataset, xEncoding, consumer.layer.encoding.y);
+  const xValues = input.values;
+  const bins = resolveHistogramBins({
+    values: xValues,
+    bin: xEncoding.bin,
+    domain: xScale.domain,
+    nice: xScale.nice ?? true,
+    zero: xScale.zero ?? false
+  });
+  const colorEncoding = layer.encoding?.color;
+  if (layer.encoding?.group !== undefined) {
+    const identity = readSeriesIdentity(input.rows, layer);
+    validateGeneratedItemLimit((bins.boundaries.length - 1) * identity.domain.length, "Histogram layout cell count");
+    const cells = bins.boundaries.slice(0, -1).map(() => identity.domain.map(() => []));
+    const groups = new Map(identity.domain.map((value, index) => [value, index]));
+    xValues.forEach((value, index) => { const bin = findHistogramBinIndex(value, bins.boundaries);
+      if (bin !== -1) cells[bin][groups.get(identity.values[index])].push(input.entries[index]); });
+    return cells.map(partition => partition.map(input.mass));
+  }
+  if (colorEncoding?.scale === undefined) {
+    const cells = bins.boundaries.slice(0, -1).map(() => []);
+    xValues.forEach((value, index) => {
+      const bin = findHistogramBinIndex(value, bins.boundaries);
+      if (bin !== -1) cells[bin].push(input.entries[index]);
+    });
+    return cells.map(entries => [input.mass(entries)]);
+  }
+  const colorScale = findScale(program, colorEncoding.scale);
+  const colorValues = readNominalField(input.rows, colorEncoding.field);
+  const colorDomain = resolveOrdinalDomain(colorScale.domain, colorValues);
+  validateGeneratedItemLimit(
+    (bins.boundaries.length - 1) * colorDomain.length,
+    "Histogram layout cell count"
+  );
+  const colorIndex = new Map(colorDomain.map((value, index) => [value, index]));
+  const partitions = bins.boundaries.slice(0, -1).map(() =>
+    colorDomain.map(() => [])
+  );
+  for (let index = 0; index < xValues.length; index += 1) {
+    const bin = findHistogramBinIndex(xValues[index], bins.boundaries);
+    const color = colorIndex.get(colorValues[index]);
+    if (bin !== -1 && color !== undefined) {
+      partitions[bin][color].push(input.entries[index]);
+    }
+  }
+  return partitions.map(partition => partition.map(input.mass));
+}
+
+function resolveAggregatePartitions(program, consumer) {
+  const layer = consumer.layer;
+  const dataset = findDataset(program, layer.data);
+  const derived = deriveBarAggregates(dataset.values, layer);
+  const channels = resolveBarChannels(layer);
+  const categoryEncoding = layer.encoding[channels.category];
+  const categoryScale = findScale(program, categoryEncoding.scale);
+  const categoryValues = channels.category === "x"
+    ? derived.xValues
+    : derived.yValues;
+  const categoryDomain = resolveOrdinalDomain(categoryScale.domain, categoryValues);
+  const colorEncoding = layer.encoding?.color;
+  if (layer.encoding?.group !== undefined) {
+    const series = readSeriesIdentity(dataset.values, layer).domain;
+    validateGeneratedItemLimit(categoryDomain.length * series.length, "Aggregate layout cell count");
+    const cells = new Map(derived.values.map(value => [JSON.stringify([value[channels.category], value.series]), value[channels.measure]]));
+    return categoryDomain.map(category => series.map(key => cells.get(JSON.stringify([category, key])) ?? 0));
+  }
+  if (
+    colorEncoding?.scale === undefined ||
+    colorEncoding.fieldType === "quantitative"
+  ) {
+    const byCategory = new Map(derived.values.map(value => [
+      value[channels.category],
+      value[channels.measure]
+    ]));
+    return categoryDomain.map(value => [byCategory.get(value) ?? 0]);
+  }
+  const colorScale = findScale(program, colorEncoding.scale);
+  const colorValues = readNominalField(dataset.values, colorEncoding.field);
+  const colorDomain = resolveOrdinalDomain(colorScale.domain, colorValues);
+  validateGeneratedItemLimit(
+    categoryDomain.length * colorDomain.length,
+    "Aggregate layout cell count"
+  );
+  const cells = new Map(derived.values.map(value => [
+    JSON.stringify([value[channels.category], value.color]),
+    value[channels.measure]
+  ]));
+  return categoryDomain.map(category => colorDomain.map(color =>
+    cells.get(JSON.stringify([category, color])) ?? 0
+  ));
+}
+
+function resolveAreaPartitions(program, consumer) {
+  const layer = consumer.layer;
+  const dataset = findDataset(program, layer.data);
+  const transform = dataset?.transform?.length === 1 &&
+    dataset.transform[0].type === "density"
+    ? dataset.transform[0]
+    : undefined;
+  if (
+    transform === undefined &&
+    layer.encoding?.y?.stack === "center" &&
+    layer.encoding?.x !== undefined
+  ) {
+    const derived = deriveCenteredAreaSeries(dataset.values, layer);
+    validateGeneratedItemLimit(
+      derived.series[0].values.length * derived.series.length,
+      "Area layout cell count"
+    );
+    return Array.from({ length: derived.series[0].values.length }, (_, index) =>
+      derived.series.map(series => series.values[index].y)
+    );
+  }
+  if (transform === undefined) return undefined;
+  const derived = deriveDensityAreaSeries(dataset.values, layer, transform);
+  if (derived.mode !== "y-density") return undefined;
+  const sampleCount = derived.series[0].values.length;
+  if (derived.series.some(series => series.values.length !== sampleCount)) {
+    throw new Error(`Area mark "${layer.id}" requires aligned layout samples.`);
+  }
+  validateGeneratedItemLimit(
+    sampleCount * derived.series.length,
+    "Area layout cell count"
+  );
+  return Array.from({ length: sampleCount }, (_, index) =>
+    derived.series.map(series => series.values[index].y)
+  );
+}
+
+export function resolveSeriesLayoutScaleValues(program, consumer) {
+  if (consumer.layer.mark?.type === "bar") {
+    const grain = resolveBarGrain(consumer.layer);
+    const channels = resolveBarChannels(consumer.layer);
+    if (consumer.channel !== channels?.measure) return undefined;
+    const partitions = grain === BAR_GRAINS.histogram
+      ? resolveHistogramPartitions(program, consumer)
+      : grain === BAR_GRAINS.aggregate
+        ? resolveAggregatePartitions(program, consumer)
+        : undefined;
+    if (partitions === undefined) return undefined;
+    const layout = resolveBarColorLayout(consumer.layer);
+    return {
+      layout,
+      values: resolveSeriesLayoutDomainValues(partitions, layout)
+    };
+  }
+  if (consumer.layer.mark?.type === "area" && consumer.layer.layout?.mode !== undefined) {
+    const layer = consumer.layer;
+    const dataset = findDataset(program, layer.data);
+    const density = dataset.transform?.some(transform => transform.type === "density");
+    if (!density && (layer.encoding?.x === undefined || layer.encoding?.y === undefined || (layer.encoding?.x2 === undefined && layer.encoding?.y2 === undefined))) return undefined;
+    if (!density && layer.encoding?.x !== undefined && layer.encoding?.y !== undefined && (layer.encoding?.x2 !== undefined || layer.encoding?.y2 !== undefined)) {
+      const derived = deriveAreaSeries(dataset.values, layer);
+      const measure = derived.orientation === "vertical" ? "y" : "x";
+      if (![measure, `${measure}2`].includes(consumer.channel)) return undefined;
+      const layout = layer.layout.mode;
+      if (layout === "overlay") return undefined;
+      return { layout, values: layout === "fill" ? [0, 1] : derived[`${measure}Values`] };
+    }
+  }
+  if (consumer.channel !== "y") return undefined;
+  if (consumer.layer.mark?.type === "area") {
+    const layout = consumer.layer.layout?.mode ?? (consumer.layer.encoding?.y?.stack === "center"
+      ? "center"
+      : consumer.layer.encoding?.color?.layout);
+    if (layout === undefined || layout === "overlay") return undefined;
+    const partitions = resolveAreaPartitions(program, consumer);
+    if (partitions === undefined) {
+      if (
+        layout === "center" &&
+        consumer.layer.encoding?.y?.stack === "center" &&
+        consumer.layer.encoding?.x === undefined
+      ) return undefined;
+      throw new Error(
+        `Area layout "${layout}" currently requires vertical density series.`
+      );
+    }
+    return {
+      layout,
+      values: resolveSeriesLayoutDomainValues(partitions, layout)
+    };
+  }
+  return undefined;
+}

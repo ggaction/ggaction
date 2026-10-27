@@ -1,0 +1,52 @@
+{
+  "status": "deferred-reference-only",
+  "notice": "Future work only; not an active test or release gate.",
+  "upset": {
+    "sets": {
+      "A": [
+        "e1",
+        "e2",
+        "e3"
+      ],
+      "B": [
+        "e2",
+        "e3",
+        "e4"
+      ],
+      "C": [
+        "e3",
+        "e5"
+      ]
+    },
+    "universe": [
+      "e1",
+      "e2",
+      "e3",
+      "e4",
+      "e5",
+      "e6"
+    ],
+    "exact": {
+      "A": 1,
+      "B": 1,
+      "C": 1,
+      "A,B": 1,
+      "A,C": 0,
+      "B,C": 0,
+      "A,B,C": 1,
+      "": 1
+    },
+    "inclusiveAB": 2,
+    "setSizes": {
+      "A": 3,
+      "B": 3,
+      "C": 2
+    },
+    "projectAB": {
+      "A": 1,
+      "B": 1,
+      "A,B": 2,
+      "": 2
+    }
+  }
+}

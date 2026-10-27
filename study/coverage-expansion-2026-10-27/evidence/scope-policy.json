@@ -1,0 +1,489 @@
+{
+  "profile": "ggaction-native-2026-10-27",
+  "authority": "Latest user instruction in this conversation",
+  "status": "approved-scope-proposed-implementation",
+  "policies": [
+    {
+      "id": "POL-01",
+      "decision": "Unified partition: Icicle and Sunburst",
+      "disposition": "required"
+    },
+    {
+      "id": "POL-02",
+      "decision": "UpSet and set visualization deferred to a future project, including membership/intersection resources and dedicated API/interaction tests.",
+      "disposition": "deferred-by-user"
+    },
+    {
+      "id": "POL-03",
+      "decision": "Hierarchical, force-directed, density, edge-path bundling",
+      "disposition": "required"
+    },
+    {
+      "id": "POL-04",
+      "decision": "Rule-based graph inference",
+      "disposition": "required"
+    },
+    {
+      "id": "POL-05",
+      "decision": "Funnel renamed Pyramid without geometry or meaning change",
+      "disposition": "renamed"
+    },
+    {
+      "id": "POL-06",
+      "decision": "KPI Card and Gauge Chart",
+      "disposition": "excluded-by-user"
+    },
+    {
+      "id": "POL-07",
+      "decision": "Marginal, Bullet, Combo through existing actions",
+      "disposition": "required-via-composition"
+    },
+    {
+      "id": "POL-08",
+      "decision": "One Y scale and at most one Y guide per Cartesian plot frame",
+      "disposition": "prohibited-by-user"
+    },
+    {
+      "id": "POL-09",
+      "decision": "Native ggaction design is authoritative. Flint audit is reference only; no conformance/backend/upstream dependency. Retain prior native feature scope.",
+      "disposition": "required"
+    },
+    {
+      "id": "POL-10",
+      "decision": "External chart translation is a separate project and outside this implementation plan. Preserve references without corpus qualification obligations.",
+      "disposition": "required"
+    }
+  ],
+  "singleY": {
+    "unit": "Cartesian plot frame",
+    "maxYScales": 1,
+    "maxVisibleYGuides": 1,
+    "independentPanelsAllowed": true,
+    "hiddenIndependentScaleAllowed": false,
+    "rangeEndpointY2Allowed": true
+  },
+  "mandatoryBundlingMethods": [
+    "hierarchical",
+    "force-directed",
+    "density",
+    "edge-path"
+  ],
+  "mandatoryInferenceRules": [
+    "knn",
+    "radius",
+    "similarity-threshold",
+    "mst",
+    "group-rule",
+    "sequence-rule"
+  ],
+  "completionClaim": "Native ggaction capability correctness only; no external compatibility or translation claim",
+  "counts": {
+    "sourceChartNames": 51,
+    "sourceBackendEntries": 154,
+    "excludedChartNames": 2,
+    "excludedBackendEntries": 4,
+    "namesBeforeOptionPolicy": 49,
+    "backendEntriesBeforeOptionPolicy": 150,
+    "notice": "Historical external census, not a mandatory capability denominator."
+  },
+  "userRequirements": [
+    {
+      "id": "USR-01",
+      "requirement": "Icicle and Sunburst unified partition",
+      "policyIds": [
+        "POL-01"
+      ],
+      "workPackages": [
+        "WP-22"
+      ],
+      "acceptance": [
+        "AT-62",
+        "AT-63",
+        "AT-64"
+      ],
+      "required": true,
+      "scopeDisposition": "required"
+    },
+    {
+      "id": "USR-02",
+      "requirement": "Partition focus, interaction and coordinate animation",
+      "policyIds": [
+        "POL-01"
+      ],
+      "workPackages": [
+        "WP-22",
+        "WP-12",
+        "WP-14"
+      ],
+      "acceptance": [
+        "AT-65"
+      ],
+      "required": true,
+      "scopeDisposition": "required"
+    },
+    {
+      "id": "USR-03",
+      "requirement": "UpSet membership and intersection semantics",
+      "policyIds": [
+        "POL-02"
+      ],
+      "workPackages": [],
+      "acceptance": [],
+      "required": false,
+      "scopeDisposition": "deferred-by-user"
+    },
+    {
+      "id": "USR-04",
+      "requirement": "UpSet sparse scaling and aligned interactive composition",
+      "policyIds": [
+        "POL-02"
+      ],
+      "workPackages": [],
+      "acceptance": [],
+      "required": false,
+      "scopeDisposition": "deferred-by-user"
+    },
+    {
+      "id": "USR-05",
+      "requirement": "kNN inference and symmetrization",
+      "policyIds": [
+        "POL-04"
+      ],
+      "workPackages": [
+        "WP-24"
+      ],
+      "acceptance": [
+        "AT-70"
+      ],
+      "required": true,
+      "scopeDisposition": "required"
+    },
+    {
+      "id": "USR-06",
+      "requirement": "Radius and similarity inference with metrics",
+      "policyIds": [
+        "POL-04"
+      ],
+      "workPackages": [
+        "WP-24"
+      ],
+      "acceptance": [
+        "AT-71"
+      ],
+      "required": true,
+      "scopeDisposition": "required"
+    },
+    {
+      "id": "USR-07",
+      "requirement": "MST, forest, group and sequence rules",
+      "policyIds": [
+        "POL-04"
+      ],
+      "workPackages": [
+        "WP-24"
+      ],
+      "acceptance": [
+        "AT-72"
+      ],
+      "required": true,
+      "scopeDisposition": "required"
+    },
+    {
+      "id": "USR-08",
+      "requirement": "Inference determinism, exactness, provenance and lifecycle",
+      "policyIds": [
+        "POL-04"
+      ],
+      "workPackages": [
+        "WP-24",
+        "WP-12",
+        "WP-14"
+      ],
+      "acceptance": [
+        "AT-73",
+        "AT-74"
+      ],
+      "required": true,
+      "scopeDisposition": "required"
+    },
+    {
+      "id": "USR-09",
+      "requirement": "Hierarchical edge bundling",
+      "policyIds": [
+        "POL-03"
+      ],
+      "workPackages": [
+        "WP-25"
+      ],
+      "acceptance": [
+        "AT-75",
+        "AT-76"
+      ],
+      "required": true,
+      "scopeDisposition": "required"
+    },
+    {
+      "id": "USR-10",
+      "requirement": "Force-directed edge bundling",
+      "policyIds": [
+        "POL-03"
+      ],
+      "workPackages": [
+        "WP-25"
+      ],
+      "acceptance": [
+        "AT-75",
+        "AT-77"
+      ],
+      "required": true,
+      "scopeDisposition": "required"
+    },
+    {
+      "id": "USR-11",
+      "requirement": "Density/KDE bundling",
+      "policyIds": [
+        "POL-03"
+      ],
+      "workPackages": [
+        "WP-25"
+      ],
+      "acceptance": [
+        "AT-75",
+        "AT-78"
+      ],
+      "required": true,
+      "scopeDisposition": "required"
+    },
+    {
+      "id": "USR-12",
+      "requirement": "Edge-path bundling",
+      "policyIds": [
+        "POL-03"
+      ],
+      "workPackages": [
+        "WP-25"
+      ],
+      "acceptance": [
+        "AT-75",
+        "AT-79"
+      ],
+      "required": true,
+      "scopeDisposition": "required"
+    },
+    {
+      "id": "USR-13",
+      "requirement": "Bundled edge hit/interaction/animation/geo/export/performance",
+      "policyIds": [
+        "POL-03"
+      ],
+      "workPackages": [
+        "WP-25",
+        "WP-10",
+        "WP-11",
+        "WP-12",
+        "WP-14",
+        "WP-18",
+        "WP-19"
+      ],
+      "acceptance": [
+        "AT-80",
+        "AT-81",
+        "AT-82"
+      ],
+      "required": true,
+      "scopeDisposition": "required"
+    },
+    {
+      "id": "USR-14",
+      "requirement": "Pyramid naming and preserved stage geometry; external aliases reference-only",
+      "policyIds": [
+        "POL-05"
+      ],
+      "workPackages": [
+        "WP-26",
+        "WP-09"
+      ],
+      "acceptance": [
+        "AT-83"
+      ],
+      "required": true,
+      "scopeDisposition": "required"
+    },
+    {
+      "id": "USR-15",
+      "requirement": "Marginal/Bullet/Combo composition without dedicated public API",
+      "policyIds": [
+        "POL-07"
+      ],
+      "workPackages": [
+        "WP-26",
+        "WP-09"
+      ],
+      "acceptance": [
+        "AT-84"
+      ],
+      "required": true,
+      "scopeDisposition": "required"
+    },
+    {
+      "id": "USR-16",
+      "requirement": "No multiple Y scales or guides in one frame",
+      "policyIds": [
+        "POL-08"
+      ],
+      "workPackages": [
+        "WP-26"
+      ],
+      "acceptance": [
+        "AT-85",
+        "AT-86"
+      ],
+      "required": true,
+      "scopeDisposition": "required"
+    },
+    {
+      "id": "USR-17",
+      "requirement": "KPI/Gauge dedicated support excluded; native docs/catalog reflect scope",
+      "policyIds": [
+        "POL-06"
+      ],
+      "workPackages": [
+        "WP-26",
+        "WP-19"
+      ],
+      "acceptance": [
+        "AT-87"
+      ],
+      "required": true,
+      "scopeDisposition": "required"
+    },
+    {
+      "id": "USR-18",
+      "requirement": "Native scope policy and reference-only external audit rows",
+      "policyIds": [
+        "POL-06",
+        "POL-08"
+      ],
+      "workPackages": [
+        "WP-26",
+        "WP-20"
+      ],
+      "acceptance": [
+        "AT-88",
+        "AT-91"
+      ],
+      "required": true,
+      "scopeDisposition": "required"
+    },
+    {
+      "id": "USR-19",
+      "requirement": "New domain resource persistence and installed package",
+      "policyIds": [
+        "POL-01",
+        "POL-02",
+        "POL-03",
+        "POL-04"
+      ],
+      "workPackages": [
+        "WP-18",
+        "WP-19"
+      ],
+      "acceptance": [
+        "AT-89"
+      ],
+      "required": true,
+      "scopeDisposition": "required"
+    },
+    {
+      "id": "USR-20",
+      "requirement": "Human and agent docs and full revised release gate",
+      "policyIds": [
+        "POL-01",
+        "POL-02",
+        "POL-03",
+        "POL-04",
+        "POL-05",
+        "POL-06",
+        "POL-07",
+        "POL-08"
+      ],
+      "workPackages": [
+        "WP-19",
+        "WP-20",
+        "WP-21"
+      ],
+      "acceptance": [
+        "AT-90",
+        "AT-91"
+      ],
+      "required": true,
+      "scopeDisposition": "required"
+    },
+    {
+      "id": "USR-21",
+      "requirement": "ggaction design takes precedence; no Flint conformance or backend integration obligation",
+      "policyIds": [
+        "POL-09"
+      ],
+      "workPackages": [
+        "WP-26",
+        "WP-20"
+      ],
+      "acceptance": [
+        "AT-92"
+      ],
+      "required": true,
+      "scopeDisposition": "required"
+    },
+    {
+      "id": "USR-22",
+      "requirement": "Translation is a separate project; no corpus translator, source parity or source fixture closure required here",
+      "policyIds": [
+        "POL-10"
+      ],
+      "workPackages": [
+        "WP-26",
+        "WP-20"
+      ],
+      "acceptance": [
+        "AT-92"
+      ],
+      "required": true,
+      "scopeDisposition": "required"
+    }
+  ],
+  "supersedes": "user-scope-2026-10-27",
+  "deferredFeatures": {
+    "setVisualization": {
+      "status": "deferred-by-user",
+      "required": false,
+      "releaseGate": false,
+      "workPackages": [
+        "WP-23"
+      ],
+      "userRequirements": [
+        "USR-03",
+        "USR-04"
+      ],
+      "acceptanceTests": [
+        "AT-66",
+        "AT-67",
+        "AT-68",
+        "AT-69"
+      ]
+    }
+  },
+  "externalReferences": {
+    "Flint": {
+      "role": "reference-only",
+      "conformanceRequired": false,
+      "backendIntegrationRequired": false,
+      "releaseGate": false
+    },
+    "chart-llm": {
+      "role": "reference-only",
+      "translationRequired": false,
+      "releaseGate": false
+    }
+  }
+}

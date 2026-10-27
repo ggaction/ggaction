@@ -1,0 +1,446 @@
+{
+  "Area Chart": {
+    "status": "compose",
+    "candidateActions": [
+      "createAreaPlot",
+      "createStackData",
+      "encodeGroup"
+    ],
+    "gap": "baseline/stack/curve 결측 및 semantic path provenance"
+  },
+  "Bar Chart": {
+    "status": "compose",
+    "candidateActions": [
+      "createBarPlot",
+      "createSummaryData",
+      "encodeColor"
+    ],
+    "gap": "aggregation/zero/transpose/dodge/label/rounded corner fidelity"
+  },
+  "Bar Table": {
+    "status": "partial",
+    "candidateActions": [
+      "createAdjacentPlot",
+      "createBarPlot",
+      "createTextPlot"
+    ],
+    "gap": "공유 행높이/열정렬/셀포맷/헤더/스크롤 및 table layout"
+  },
+  "Boxplot": {
+    "status": "compose",
+    "candidateActions": [
+      "createBoxPlot",
+      "createPointMark"
+    ],
+    "gap": "quartile/whisker 규약, outliers/points/dodge 및 원본 row lineage"
+  },
+  "Bubble Chart": {
+    "status": "compose",
+    "candidateActions": [
+      "createScatterPlot",
+      "encodeSize"
+    ],
+    "gap": "radius와area 입력단위 명시 및 size legend"
+  },
+  "Bullet Chart": {
+    "status": "partial",
+    "candidateActions": [
+      "createBarMark",
+      "createRuleMark",
+      "createReferenceBand",
+      "createOverlay"
+    ],
+    "gap": "actual/target/bands의 공동 scale과 의미별 hit role"
+  },
+  "Bump Chart": {
+    "status": "compose",
+    "candidateActions": [
+      "createWindowData",
+      "createLinePlot",
+      "orderCategories"
+    ],
+    "gap": "시점별 rank/tie/dense-rank와 반전 y/rank label"
+  },
+  "Calendar Heatmap": {
+    "status": "partial",
+    "candidateActions": [
+      "createTimeUnitData",
+      "createHeatmap",
+      "facetGrid"
+    ],
+    "gap": "timezone/weekStart/ISO week/leap day/월경계 및 calendar 좌표"
+  },
+  "Candlestick Chart": {
+    "status": "partial",
+    "candidateActions": [
+      "createBarMark",
+      "createRuleMark",
+      "createOverlay",
+      "createWindowData"
+    ],
+    "gap": "OHLC 검증, open/close body, high/low wick, up/down color, MA overlay"
+  },
+  "Choropleth": {
+    "status": "missing",
+    "candidateActions": [
+      "createLookupData",
+      "encodeColor"
+    ],
+    "gap": "GeoJSON/TopoJSON, geo coordinate/projection, polygon mark, missing-join/LOD/geo hits"
+  },
+  "Combo Chart": {
+    "status": "partial",
+    "candidateActions": [
+      "createOverlay",
+      "createLinePlot",
+      "createBarPlot",
+      "editCompositionScales"
+    ],
+    "gap": "공통 x+독립 y, line/bar z-order, 통합legend/tooltip"
+  },
+  "Connected Scatter Plot": {
+    "status": "compose",
+    "candidateActions": [
+      "createLinePlot",
+      "createPointMark",
+      "encodePathOrder"
+    ],
+    "gap": "시간/순서채널이 x정렬과 독립; path segment provenance"
+  },
+  "Density Contour": {
+    "status": "missing",
+    "candidateActions": [
+      "createBin2DData",
+      "createPointMark"
+    ],
+    "gap": "2D bin-density contour polygon 추출/threshold topology; KDE로 대체금지"
+  },
+  "Density Plot": {
+    "status": "compose",
+    "candidateActions": [
+      "createDensityData",
+      "createDensityPlot"
+    ],
+    "gap": "kernel/bandwidth/norm/extent grid수치일치 및 tail policy"
+  },
+  "Donut Chart": {
+    "status": "compose",
+    "candidateActions": [
+      "createPiePlot",
+      "editArcMark"
+    ],
+    "gap": "inner radius 단위/정렬/pad angle/outside labels/legend"
+  },
+  "Doughnut Chart": {
+    "status": "compose",
+    "candidateActions": [
+      "createPiePlot",
+      "editArcMark"
+    ],
+    "gap": "Donut alias를 adapter에서정규화, percentage innerRadius 일치"
+  },
+  "ECDF Plot": {
+    "status": "compose",
+    "candidateActions": [
+      "createECDFData",
+      "createECDFPlot"
+    ],
+    "gap": "ties/step side/normalization/points/empty handling"
+  },
+  "Funnel Chart": {
+    "status": "missing",
+    "candidateActions": [
+      "createSummaryData",
+      "createTextMark"
+    ],
+    "gap": "가변너비 trapezoid/ordering/gap/orientation/percentage label geometry"
+  },
+  "Gantt Chart": {
+    "status": "compose",
+    "candidateActions": [
+      "createBarMark",
+      "encodeX",
+      "encodeX2",
+      "encodeY",
+      "createMarkLabels"
+    ],
+    "gap": "start/end temporal interval, task height, invalid/reversed interval, overlap"
+  },
+  "Gauge Chart": {
+    "status": "partial",
+    "candidateActions": [
+      "createArcMark",
+      "createRuleMark",
+      "createTextMark"
+    ],
+    "gap": "min/max clamp, progress ring, needle/value/end labels, tile composition"
+  },
+  "Grouped Bar Chart": {
+    "status": "compose",
+    "candidateActions": [
+      "createBarPlot",
+      "encodeXOffset",
+      "encodeYOffset",
+      "encodeGroup"
+    ],
+    "gap": "nested grouping/dodge mode, missinggroups/inner-outer padding"
+  },
+  "Heatmap": {
+    "status": "compose",
+    "candidateActions": [
+      "createHeatmap",
+      "encodeColor",
+      "createMarkLabels"
+    ],
+    "gap": "continuous/quantized/diverging colors, missing cell, cell labels+contrast"
+  },
+  "Histogram": {
+    "status": "compose",
+    "candidateActions": [
+      "createBinData",
+      "createHistogram"
+    ],
+    "gap": "bin boundary inclusive rule, binCount vs actual bins, emptybins/provenance"
+  },
+  "KPI Card": {
+    "status": "partial",
+    "candidateActions": [
+      "createTextPlot",
+      "createAdjacentPlot",
+      "createAnnotation"
+    ],
+    "gap": "metric/value/goal/delta+format, fixedtile/auto columns/rich text role"
+  },
+  "Line Chart": {
+    "status": "compose",
+    "candidateActions": [
+      "createLinePlot",
+      "encodeGroup",
+      "encodePathOrder"
+    ],
+    "gap": "interpolate variants/gaps/points/shared indexhit/series end labels"
+  },
+  "Lollipop Chart": {
+    "status": "compose",
+    "candidateActions": [
+      "createLollipopPlot"
+    ],
+    "gap": "orientation/negativevalue/pointsize and line role"
+  },
+  "Map": {
+    "status": "missing",
+    "candidateActions": [
+      "createPointMark",
+      "encodeSize",
+      "encodeColor"
+    ],
+    "gap": "projection+basemap+lonlat coordinate/globe clip/camera/geo inverse"
+  },
+  "Marginal Plot": {
+    "status": "partial",
+    "candidateActions": [
+      "createScatterPlot",
+      "createHistogram",
+      "createDensityPlot",
+      "createAdjacentPlot"
+    ],
+    "gap": "marginal axis sharing/tight bounds/top-right alignment/legend ownership"
+  },
+  "Network Graph": {
+    "status": "missing",
+    "candidateActions": [
+      "createPointMark",
+      "createLineMark"
+    ],
+    "gap": "graph node/edge layout circular/seeded force, graph identity/selflinks/multiedges"
+  },
+  "Parallel Coordinates": {
+    "status": "compose",
+    "candidateActions": [
+      "createParallelCoordinates",
+      "createParallelAxes",
+      "editParallelScale"
+    ],
+    "gap": "numeric-column selection, independently scaledaxes, detail/color/provenance"
+  },
+  "Pie Chart": {
+    "status": "compose",
+    "candidateActions": [
+      "createPiePlot"
+    ],
+    "gap": "slice ordering/percent formatting/negative-zero policy/labels"
+  },
+  "Pyramid Chart": {
+    "status": "compose",
+    "candidateActions": [
+      "createBarPlot",
+      "createComputedData",
+      "createOverlay"
+    ],
+    "gap": "signed mirrored scales/absolute ticks/two cohort alignment"
+  },
+  "Radar Chart": {
+    "status": "compose",
+    "candidateActions": [
+      "createRadarPlot",
+      "createRadialGrid",
+      "createThetaAxis"
+    ],
+    "gap": "shared vs each dimension normalization/closed path/angular order"
+  },
+  "Range Area Chart": {
+    "status": "compose",
+    "candidateActions": [
+      "createAreaMark",
+      "encodeY",
+      "encodeY2",
+      "encodeGroup"
+    ],
+    "gap": "range endpoints crossing/missing values/curve pairing and band selection"
+  },
+  "Ranged Dot Plot": {
+    "status": "compose",
+    "candidateActions": [
+      "createDumbbellPlot",
+      "createIntervalPlot"
+    ],
+    "gap": "center optional/range ends/role-specific hits/caps/orientation"
+  },
+  "Regression": {
+    "status": "compose",
+    "candidateActions": [
+      "createRegressionData",
+      "createRegressionPlot",
+      "createRegressionBand"
+    ],
+    "gap": "linear/log/exp/power/poly degree/loess differences and independentstats"
+  },
+  "Ridgeline Plot": {
+    "status": "partial",
+    "candidateActions": [
+      "createDensityData",
+      "createAreaPlot",
+      "createAdjacentPlot"
+    ],
+    "gap": "overlap/offset baseline/sharedamplitude/category labels and clipping"
+  },
+  "Rose Chart": {
+    "status": "compose",
+    "candidateActions": [
+      "createRosePlot",
+      "createRadialAxis"
+    ],
+    "gap": "equal angle radius encodesarea orlength asdeclared; sort/group/alignment"
+  },
+  "Sankey Diagram": {
+    "status": "missing",
+    "candidateActions": [
+      "createSummaryData"
+    ],
+    "gap": "weighted directedgraph layout/link ribbons/nodewidth/gap/orientation/conservation"
+  },
+  "Scatter Plot": {
+    "status": "compose",
+    "candidateActions": [
+      "createScatterPlot",
+      "encodeChannels"
+    ],
+    "gap": "shape/area/opacity/log zero/category/axis label invariants"
+  },
+  "Slope Chart": {
+    "status": "compose",
+    "candidateActions": [
+      "createLinePlot",
+      "encodePathOrder",
+      "createMarkLabels"
+    ],
+    "gap": "exactlytwo endpoints orfilteredsubset, endpointlabels collision"
+  },
+  "Sparkline": {
+    "status": "partial",
+    "candidateActions": [
+      "createLinePlot",
+      "createTextPlot",
+      "createAdjacentPlot"
+    ],
+    "gap": "row label+inline mini chart+value columns aligned; independent/shared y"
+  },
+  "Stacked Bar Chart": {
+    "status": "compose",
+    "candidateActions": [
+      "createStackData",
+      "createBarPlot"
+    ],
+    "gap": "stack order/normalize/diverging+negative stacks/provenance"
+  },
+  "Streamgraph": {
+    "status": "compose",
+    "candidateActions": [
+      "createStackData",
+      "createAreaPlot"
+    ],
+    "gap": "wiggle/silhouette/diverging baseline algorithm and irregular x-spacing"
+  },
+  "Strip Plot": {
+    "status": "compose",
+    "candidateActions": [
+      "createStripPlot",
+      "jitterPoints",
+      "packPoints"
+    ],
+    "gap": "seeded jitter/spread/dodge/orient vs strip/lattice ambiguity"
+  },
+  "Sunburst Chart": {
+    "status": "missing",
+    "candidateActions": [
+      "createArcMark",
+      "createSummaryData"
+    ],
+    "gap": "hierarchy partition/rings/parent-childangles/label rotation/drill state"
+  },
+  "Table": {
+    "status": "partial",
+    "candidateActions": [
+      "createTextPlot",
+      "createRectMark",
+      "createAdjacentPlot"
+    ],
+    "gap": "cell semantic table, percolumnformat/alignment/header/rowlimit/accessibility"
+  },
+  "Tree": {
+    "status": "missing",
+    "candidateActions": [
+      "createPointMark",
+      "createLineMark",
+      "createTextMark"
+    ],
+    "gap": "hierarchy extraction/rootLabel/tidy tree LR/TB/links; native expand disabled"
+  },
+  "Treemap": {
+    "status": "missing",
+    "candidateActions": [
+      "createRectMark",
+      "createSummaryData",
+      "createMarkLabels"
+    ],
+    "gap": "hierarchy squarify areas/padding/nodeids/labels/breadcrumb/drill state"
+  },
+  "Violin Plot": {
+    "status": "compose",
+    "candidateActions": [
+      "createViolinPlot",
+      "createDensityData"
+    ],
+    "gap": "bandwidth/tailCut/box/median/half/full/dodge/countwidth/invalidgroups"
+  },
+  "Waterfall Chart": {
+    "status": "compose",
+    "candidateActions": [
+      "createWindowData",
+      "createComputedData",
+      "createBarMark",
+      "createRuleMark"
+    ],
+    "gap": "delta/subtotal/total mode and connector; avoid blindlysumtotalrows"
+  }
+}

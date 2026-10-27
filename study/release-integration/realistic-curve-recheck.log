@@ -1,0 +1,118 @@
+✖ derives a bounded public option inventory without runtime prototype paths (22393.933333ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  23816 !== 23737
+  
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/contracts/generated-scenario-feature-coverage.test.js:464:10)
+      at async Test.run (node:internal/test_runner/test:932:9)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:297:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 23816,
+    expected: 23737,
+    operator: 'strictEqual'
+  }
+
+✔ passes only trace-backed action and recursive option evidence plus observed extras (3.853791ms)
+✔ observes collection and named-axis array parents through recursive trace count aliases (20526.112542ms)
+✔ hard-gates explicit distribution minima and reports exact scoped waivers (2.416541ms)
+✔ does not let descriptors, transitive calls, duplicates, or option claims inflate coverage (0.740625ms)
+✔ validates explicit and compact source lineage without reporting raw indexes (1.08075ms)
+✔ reports dataset, tier, recipe, and chart-family concentration failures (0.640042ms)
+✔ defines four bounded facade recipes and a 830-chart schedule (22.509875ms)
+✔ normalizes exact continuous-color facade bars before native rendering (1003.353542ms)
+✔ locks the exact assigned option, literal, aggregate, and diversity target set (23126.222167ms)
+✖ keeps every orthogonal profile materially distinct under one authentic witness (4656.538166ms)
+  Error: Monotone curve requires strictly monotonic x values.
+      at file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/grammar/curveCommands.js:173:13
+      at Array.map (<anonymous>)
+      at monotoneTangents (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/grammar/curveCommands.js:169:37)
+      at buildMonotoneCommands (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/grammar/curveCommands.js:232:51)
+      at buildValidatedCurvePathCommands (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/grammar/curveCommands.js:324:12)
+      at buildCurvePathCommands (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/grammar/curveCommands.js:353:18)
+      at file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/marks/line/materialize.js:129:16
+      at Array.map (<anonymous>)
+      at resolvePositionedLineMaterialization (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/marks/line/materialize.js:115:22)
+      at ChartProgram.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/marks/line/actions.js:260:29)
+
+✔ factor observers require the direct evidence claimed for data and facade profiles (161.811584ms)
+✖ direct authentic witnesses satisfy every assigned hard minimum and diversity rule (77057.372ms)
+  Error: realistic-cartesian-facade-coverage-line-tt-bechdel-movies-createlineplot-orthogonal-31: Monotone curve requires strictly monotonic x values.
+      at file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/contracts/realistic-cartesian-facade-coverage-recipes.test.js:461:33 {
+    [cause]: Error: Monotone curve requires strictly monotonic x values.
+        at file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/grammar/curveCommands.js:173:13
+        at Array.map (<anonymous>)
+        at monotoneTangents (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/grammar/curveCommands.js:169:37)
+        at buildMonotoneCommands (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/grammar/curveCommands.js:232:51)
+        at buildValidatedCurvePathCommands (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/grammar/curveCommands.js:324:12)
+        at buildCurvePathCommands (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/grammar/curveCommands.js:353:18)
+        at file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/marks/line/materialize.js:129:16
+        at Array.map (<anonymous>)
+        at resolvePositionedLineMaterialization (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/marks/line/materialize.js:115:22)
+        at ChartProgram.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/marks/line/actions.js:260:29)
+  }
+
+✔ defines five bounded statistical facade schedules totaling 540 real charts (1.455458ms)
+✔ distributes every orthogonal variant exactly five times across at least three datasets (60.749333ms)
+✔ locks the corrected audit target counts and exact requirement-set digests (0.309458ms)
+✔ 540 actual direct-root witnesses close every corrected action target and diversity (120161.508708ms)
+✔ the exact 540-chart tail counterfactual fails before and passes after real root evidence (417.2565ms)
+✔ the 540-chart projection losslessly subsumes the retired facade scale surface (5.778542ms)
+✔ every same-binding facade variant materially changes the final program (8307.063292ms)
+ℹ tests 20
+ℹ suites 0
+ℹ pass 17
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 172561.426375
+
+✖ failing tests:
+
+test at test/contracts/generated-scenario-feature-coverage.test.js:214:1
+✖ derives a bounded public option inventory without runtime prototype paths (22393.933333ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  23816 !== 23737
+  
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/contracts/generated-scenario-feature-coverage.test.js:464:10)
+      at async Test.run (node:internal/test_runner/test:932:9)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:297:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 23816,
+    expected: 23737,
+    operator: 'strictEqual'
+  }
+
+test at test/contracts/realistic-cartesian-facade-coverage-recipes.test.js:729:1
+✖ keeps every orthogonal profile materially distinct under one authentic witness (4656.538166ms)
+  Error: Monotone curve requires strictly monotonic x values.
+      at file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/grammar/curveCommands.js:173:13
+      at Array.map (<anonymous>)
+      at monotoneTangents (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/grammar/curveCommands.js:169:37)
+      at buildMonotoneCommands (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/grammar/curveCommands.js:232:51)
+      at buildValidatedCurvePathCommands (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/grammar/curveCommands.js:324:12)
+      at buildCurvePathCommands (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/grammar/curveCommands.js:353:18)
+      at file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/marks/line/materialize.js:129:16
+      at Array.map (<anonymous>)
+      at resolvePositionedLineMaterialization (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/marks/line/materialize.js:115:22)
+      at ChartProgram.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/marks/line/actions.js:260:29)
+
+test at test/contracts/realistic-cartesian-facade-coverage-recipes.test.js:796:1
+✖ direct authentic witnesses satisfy every assigned hard minimum and diversity rule (77057.372ms)
+  Error: realistic-cartesian-facade-coverage-line-tt-bechdel-movies-createlineplot-orthogonal-31: Monotone curve requires strictly monotonic x values.
+      at file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/contracts/realistic-cartesian-facade-coverage-recipes.test.js:461:33 {
+    [cause]: Error: Monotone curve requires strictly monotonic x values.
+        at file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/grammar/curveCommands.js:173:13
+        at Array.map (<anonymous>)
+        at monotoneTangents (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/grammar/curveCommands.js:169:37)
+        at buildMonotoneCommands (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/grammar/curveCommands.js:232:51)
+        at buildValidatedCurvePathCommands (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/grammar/curveCommands.js:324:12)
+        at buildCurvePathCommands (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/grammar/curveCommands.js:353:18)
+        at file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/marks/line/materialize.js:129:16
+        at Array.map (<anonymous>)
+        at resolvePositionedLineMaterialization (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/marks/line/materialize.js:115:22)
+        at ChartProgram.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/marks/line/actions.js:260:29)
+  }

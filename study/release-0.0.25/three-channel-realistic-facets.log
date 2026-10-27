@@ -1,0 +1,44 @@
+✔ named axis and parent legend lifecycle preserve actual rows from tt-tour-de-france-winners (6436.021459ms)
+✔ named axis and parent legend lifecycle preserve actual rows from tt-london-marathon-winners (5816.251042ms)
+✔ named axis and parent legend lifecycle preserve actual rows from tt-penguins (4824.990708ms)
+✖ parent legend options and literals have actual public 5/3 witnesses (106130.131458ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  268 !== 256
+  
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/contracts/realistic-axis-facet-owner-witness.test.js:110:10)
+      at async Test.run (node:internal/test_runner/test:932:9)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:629:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 268,
+    expected: 256,
+    operator: 'strictEqual'
+  }
+
+ℹ tests 4
+ℹ suites 0
+ℹ pass 3
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 124088.729083
+
+✖ failing tests:
+
+test at test/contracts/realistic-axis-facet-owner-witness.test.js:96:1
+✖ parent legend options and literals have actual public 5/3 witnesses (106130.131458ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  268 !== 256
+  
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/contracts/realistic-axis-facet-owner-witness.test.js:110:10)
+      at async Test.run (node:internal/test_runner/test:932:9)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:629:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 268,
+    expected: 256,
+    operator: 'strictEqual'
+  }

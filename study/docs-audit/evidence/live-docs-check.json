@@ -1,0 +1,25 @@
+{
+  "checkedAt": "2026-10-23T03:32:17.764856+00:00",
+  "commit": "202b7afd4146a691c136964c4cc53f9c37444513",
+  "resources": [
+    {
+      "url": "https://ggaction.github.io/ggaction/llms.txt",
+      "httpStatus": 200,
+      "bytes": 9484,
+      "sha256": "816cc833c4dbc50a15b364fa780a69de6bc7888356d5d86961eef25bbb8bcb55",
+      "matchesClone": true
+    },
+    {
+      "url": "https://ggaction.github.io/ggaction/doc-provenance.json",
+      "httpStatus": 200,
+      "bytes": 23301,
+      "sha256": "f6b8e73e7204b9a2a3eabbd0f692b9f0800741043b62ab0239d00b9ef288c688",
+      "matchesClone": true
+    }
+  ],
+  "context7": {
+    "library": "/ggaction/ggaction/v0.0.22",
+    "query": "Create a first scatter plot in a browser: complete installation, environment setup, imports, data, canvas, and render invocation.",
+    "result": "Returned current version getting-started.md, README.md and scatterplot tutorial with matching browser setup examples. This was one retrieval smoke test, not full retrieval coverage."
+  }
+}

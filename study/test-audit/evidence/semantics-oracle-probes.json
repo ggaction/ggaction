@@ -1,0 +1,63 @@
+{
+  "graphicWrongTypes": [
+    {
+      "value": null,
+      "issues": []
+    },
+    {
+      "value": "broken",
+      "issues": []
+    },
+    {
+      "value": false,
+      "issues": []
+    },
+    {
+      "value": {},
+      "issues": []
+    },
+    {
+      "value": [],
+      "issues": []
+    }
+  ],
+  "svgMalformed": [
+    {
+      "svg": "<svg><circle cx=\"broken\" cy=\"0\" r=\"1\" /></svg>",
+      "accepted": true
+    },
+    {
+      "svg": "<svg><circle cx=\"null\" cy=\"0\" r=\"1\" /></svg>",
+      "accepted": true
+    },
+    {
+      "svg": "<svg><g></svg>",
+      "accepted": true
+    },
+    {
+      "svg": "<svg><circle cx='NaN' cy='0' r='1' /></svg>",
+      "accepted": true
+    }
+  ],
+  "visibility": [
+    {
+      "name": "opacity-zero",
+      "graphic": [],
+      "analytic": []
+    },
+    {
+      "name": "off-canvas",
+      "graphic": [],
+      "analytic": []
+    },
+    {
+      "name": "no-paint",
+      "graphic": [],
+      "analytic": []
+    }
+  ],
+  "blankCanvas": {
+    "existingInkPredicate": true,
+    "visibleAlpha": false
+  }
+}

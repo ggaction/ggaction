@@ -1,0 +1,144 @@
+{
+  "counts": {
+    "publicActions": 286,
+    "topLevelOptionPaths": 2500,
+    "nestedOptionPaths": 16127,
+    "optionPaths": 18627,
+    "requiredOptionPaths": 13310,
+    "excludedOptionPaths": 5317,
+    "topLevelCategoricalPaths": 878,
+    "topLevelLiteralValues": 3618,
+    "literalFamilies": 190,
+    "pathLiteralRequirements": 9774,
+    "familyLiteralRequirements": 442,
+    "pathDiversityRequirements": 391
+  },
+  "targets": {
+    "createScatterPlot": {
+      "count": 598,
+      "sha256": "2734d2ee850cb5ad02242f1b5eabf3331f49dadd40f940f49703277132df098c"
+    },
+    "createBarPlot": {
+      "count": 541,
+      "sha256": "c6c3a2043d0309482adda2a60d34a955c564a247876eb2f12271ad1149a7c8a5"
+    },
+    "createLinePlot": {
+      "count": 461,
+      "sha256": "f825d3e1caeac39f2574a61e1df244e7008f0dde6b3e58a1ef5839cfd2468a2a"
+    },
+    "createParallelCoordinates": {
+      "count": 145,
+      "sha256": "dd687aadf208a582f00997f78518ebb4b38e5ecaf13b8e05f4764169788c4b15"
+    }
+  },
+  "curveFamily": {
+    "id": "literal-48da1f8b1297",
+    "aliases": [],
+    "values": [
+      {
+        "type": "string",
+        "value": "basis",
+        "key": "string:basis"
+      },
+      {
+        "type": "string",
+        "value": "cardinal",
+        "key": "string:cardinal"
+      },
+      {
+        "type": "string",
+        "value": "linear",
+        "key": "string:linear"
+      },
+      {
+        "type": "string",
+        "value": "monotone",
+        "key": "string:monotone"
+      },
+      {
+        "type": "string",
+        "value": "monotone-steffen",
+        "key": "string:monotone-steffen"
+      },
+      {
+        "type": "string",
+        "value": "natural",
+        "key": "string:natural"
+      },
+      {
+        "type": "string",
+        "value": "step",
+        "key": "string:step"
+      },
+      {
+        "type": "string",
+        "value": "step-after",
+        "key": "string:step-after"
+      },
+      {
+        "type": "string",
+        "value": "step-before",
+        "key": "string:step-before"
+      }
+    ],
+    "size": 9,
+    "open": false,
+    "policy": "path-values",
+    "paths": [
+      "option-path:createAreaMark.curve",
+      "option-path:createAreaPlot.area.curve",
+      "option-path:createDensityPlot.area.curve",
+      "option-path:createErrorBand.boundaries.curve",
+      "option-path:createErrorBand.curve",
+      "option-path:createHorizonPlot.area.curve",
+      "option-path:createLineMark.curve",
+      "option-path:createLinePlot.line.curve",
+      "option-path:createRaincloudPlot.density.area.curve",
+      "option-path:createRegression.band.curve",
+      "option-path:createRegression.line.curve",
+      "option-path:createRegressionBand.curve",
+      "option-path:createRegressionLine.curve",
+      "option-path:createRegressionPlot.band.curve",
+      "option-path:createRegressionPlot.line.curve",
+      "option-path:createViolinPlot.area.curve",
+      "option-path:editAreaMark.curve",
+      "option-path:editErrorBand.boundaries.curve",
+      "option-path:editErrorBand.curve",
+      "option-path:editErrorBandBoundary.curve",
+      "option-path:editLineMark.curve",
+      "option-path:editRaincloudPlot.density.area.curve",
+      "option-path:editRegression.band.curve",
+      "option-path:editRegression.line.curve",
+      "option-path:editRegressionBand.curve",
+      "option-path:editRegressionLine.curve"
+    ],
+    "requiredPaths": [
+      "option-path:createAreaMark.curve",
+      "option-path:createAreaPlot.area.curve",
+      "option-path:createDensityPlot.area.curve",
+      "option-path:createErrorBand.boundaries.curve",
+      "option-path:createErrorBand.curve",
+      "option-path:createHorizonPlot.area.curve",
+      "option-path:createLineMark.curve",
+      "option-path:createLinePlot.line.curve",
+      "option-path:createRaincloudPlot.density.area.curve",
+      "option-path:createRegression.band.curve",
+      "option-path:createRegression.line.curve",
+      "option-path:createRegressionBand.curve",
+      "option-path:createRegressionLine.curve",
+      "option-path:createRegressionPlot.band.curve",
+      "option-path:createRegressionPlot.line.curve",
+      "option-path:createViolinPlot.area.curve",
+      "option-path:editAreaMark.curve",
+      "option-path:editErrorBand.boundaries.curve",
+      "option-path:editErrorBand.curve",
+      "option-path:editErrorBandBoundary.curve",
+      "option-path:editLineMark.curve",
+      "option-path:editRaincloudPlot.density.area.curve",
+      "option-path:editRegression.band.curve",
+      "option-path:editRegression.line.curve",
+      "option-path:editRegressionBand.curve",
+      "option-path:editRegressionLine.curve"
+    ]
+  }
+}

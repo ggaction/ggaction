@@ -1,0 +1,14 @@
+✔ native content flow matches independent circle-bound arithmetic without aligned row tracks (77.904208ms)
+✔ per-channel outer policy keeps every Y owner and one common bottom footer per occupied column (317.438042ms)
+✔ content layout retains headers, four-edge titles, legends, edits and backend output (1058.694459ms)
+✔ axis policy objects work in keyed grids while unsupported content grids fail atomically (145.106166ms)
+✔ content flow recomputes source, scale, theme and text edits and survives nesting (791.061541ms)
+✔ channel policies use named axis channels and component sides on ragged content flows (68.581792ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2937.081

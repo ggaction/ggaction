@@ -1,0 +1,70 @@
+✔ facet content anchors use one closed vocabulary for creation and editing (225.104375ms)
+✔ isolates npm pack from the caller's global cache (1.011875ms)
+npm notice
+npm notice New minor version of npm available! 11.18.0 -> 11.21.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.21.1
+npm notice To update run: npm install -g npm@11.21.1
+npm notice
+✔ publishes only the bounded public package artifact (3876.110125ms)
+✔ rejects missing, forbidden, and oversized package manifests (1.523875ms)
+✔ packed scale compaction preserves exports and numeric color results (105.5815ms)
+✔ consumer setup removes its temporary directory when installation fails (462.86325ms)
+✔ independent installed cases continue after a failure and retain case identities (8.798166ms)
+✔ installed fixture modules and their case manifest are exhaustive (75.033042ms)
+✖ keeps source imports inside their architectural boundaries (173.170916ms)
+  AssertionError [ERR_ASSERTION]: persistence/validation.js must not import materialization/graphicHierarchy.js
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/contracts/source-boundaries.test.js:93:14)
+      at Test.runInAsyncScope (node:async_hooks:211:14)
+      at Test.run (node:internal/test_runner/test:931:25)
+      at Test.start (node:internal/test_runner/test:829:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:297:17) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual'
+  }
+
+✔ the compact source-action vocabulary matches public default action metadata (0.705ms)
+✔ parses static, re-exported, and dynamic module references (0.126333ms)
+✔ resolves extensionless files and directory entry points (0.126458ms)
+✔ keeps the local source import graph acyclic (72.460334ms)
+✔ keeps semantic and graphic cloning inside primitive actions (473.234ms)
+✔ routes exact named semantic resource lookup through selectors (596.208375ms)
+✔ keeps cross-cutting planners independent from concrete mark names (0.284875ms)
+✔ keeps every ordinary mark family behind a stable directory entry (4.12675ms)
+✔ architectural syntax checks ignore comments and recognize direct bracket and optional access (0.672375ms)
+✔ keeps the implemented visual actions Current, callable, and typed (4.985625ms)
+✔ keeps approved visual evidence owned by current capabilities (0.149416ms)
+✔ keeps closed polar lines and advanced facets in the strict public types (0.703958ms)
+ℹ tests 21
+ℹ suites 0
+ℹ pass 20
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5805.327958
+
+✖ failing tests:
+
+test at test/contracts/source-boundaries.test.js:88:1
+✖ keeps source imports inside their architectural boundaries (173.170916ms)
+  AssertionError [ERR_ASSERTION]: persistence/validation.js must not import materialization/graphicHierarchy.js
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/contracts/source-boundaries.test.js:93:14)
+      at Test.runInAsyncScope (node:async_hooks:211:14)
+      at Test.run (node:internal/test_runner/test:931:25)
+      at Test.start (node:internal/test_runner/test:829:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:297:17) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual'
+  }

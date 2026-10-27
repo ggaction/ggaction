@@ -1,0 +1,247 @@
+﻿2026-10-23T10:11:29.1866803Z Current runner version: '2.338.0'
+2026-10-23T10:11:29.1891439Z ##[group]Runner Image Provisioner
+2026-10-23T10:11:29.1892335Z Hosted Compute Agent
+2026-10-23T10:11:29.1893203Z Version: 20261012.601
+2026-10-23T10:11:29.1893945Z Commit: f3dc54e1fb89da6852db922499a0233137369e1d
+2026-10-23T10:11:29.1894700Z Build Date: 2026-10-12T17:48:21Z
+2026-10-23T10:11:29.1895498Z Worker ID: {61d6e2a4-85bb-428b-bf9d-7a89c01ccba9}
+2026-10-23T10:11:29.1896237Z Region: eastus
+2026-10-23T10:11:29.1896775Z Cloud: Azure
+2026-10-23T10:11:29.1897386Z ##[endgroup]
+2026-10-23T10:11:29.1899295Z ##[group]Operating System
+2026-10-23T10:11:29.1900055Z Ubuntu
+2026-10-23T10:11:29.1900611Z 24.04.5
+2026-10-23T10:11:29.1901158Z LTS
+2026-10-23T10:11:29.1901751Z ##[endgroup]
+2026-10-23T10:11:29.1902313Z ##[group]Runner Image
+2026-10-23T10:11:29.1903462Z Image: ubuntu-24.04
+2026-10-23T10:11:29.1904143Z Version: 20261012.334.1
+2026-10-23T10:11:29.1905555Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261012.334/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-23T10:11:29.1907228Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261012.334
+2026-10-23T10:11:29.1908269Z ##[endgroup]
+2026-10-23T10:11:29.1909426Z ##[group]GITHUB_TOKEN Permissions
+2026-10-23T10:11:29.1912016Z Contents: read
+2026-10-23T10:11:29.1913248Z Metadata: read
+2026-10-23T10:11:29.1914201Z ##[endgroup]
+2026-10-23T10:11:29.1916987Z Secret source: Actions
+2026-10-23T10:11:29.1917990Z Cache mode: write
+2026-10-23T10:11:29.1919038Z Prepare workflow directory
+2026-10-23T10:11:29.2246068Z Prepare all required actions
+2026-10-23T10:11:29.2294695Z Getting action download info
+2026-10-23T10:11:29.4906259Z Download action repository 'actions/checkout@v6' (SHA:d23441a48e516b6c34aea4fa41551a30e30af803)
+2026-10-23T10:11:29.6002210Z Download action repository 'actions/setup-node@v6' (SHA:249970729cb0ef3589644e2896645e5dc5ba9c38)
+2026-10-23T10:11:29.7409242Z Download action repository 'actions/upload-artifact@v7' (SHA:cf430e030ddbb5b0abf93d22962f4752f3646cd9)
+2026-10-23T10:11:30.0345966Z Complete job name: package (20)
+2026-10-23T10:11:30.1219885Z ##[group]Run actions/checkout@v6
+2026-10-23T10:11:30.1220782Z with:
+2026-10-23T10:11:30.1221235Z   repository: ggaction/ggaction
+2026-10-23T10:11:30.1225477Z   token: ***
+2026-10-23T10:11:30.1225919Z   ssh-strict: true
+2026-10-23T10:11:30.1226365Z   ssh-user: git
+2026-10-23T10:11:30.1226817Z   persist-credentials: true
+2026-10-23T10:11:30.1227328Z   clean: true
+2026-10-23T10:11:30.1227787Z   sparse-checkout-cone-mode: true
+2026-10-23T10:11:30.1228309Z   fetch-depth: 1
+2026-10-23T10:11:30.1228739Z   fetch-tags: false
+2026-10-23T10:11:30.1229217Z   show-progress: true
+2026-10-23T10:11:30.1229663Z   lfs: false
+2026-10-23T10:11:30.1230077Z   submodules: false
+2026-10-23T10:11:30.1230526Z   set-safe-directory: true
+2026-10-23T10:11:30.1231036Z   allow-unsafe-pr-checkout: false
+2026-10-23T10:11:30.1231817Z ##[endgroup]
+2026-10-23T10:11:30.2254206Z Syncing repository: ggaction/ggaction
+2026-10-23T10:11:30.2257003Z ##[group]Getting Git version info
+2026-10-23T10:11:30.2258379Z Working directory is '/home/runner/work/ggaction/ggaction'
+2026-10-23T10:11:30.2260236Z [command]/usr/bin/git version
+2026-10-23T10:11:30.2363941Z git version 2.55.0
+2026-10-23T10:11:30.2394549Z ##[endgroup]
+2026-10-23T10:11:30.2407067Z Temporarily overriding HOME='/home/runner/work/_temp/53de61d7-ec23-484b-9b6b-78fe195643e9' before making global git config changes
+2026-10-23T10:11:30.2409468Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-23T10:11:30.2423938Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/ggaction/ggaction
+2026-10-23T10:11:30.2491112Z Deleting the contents of '/home/runner/work/ggaction/ggaction'
+2026-10-23T10:11:30.2510117Z ##[group]Determining repository object format
+2026-10-23T10:11:30.2525266Z ##[endgroup]
+2026-10-23T10:11:30.2527045Z ##[group]Initializing the repository
+2026-10-23T10:11:30.2528263Z [command]/usr/bin/git init /home/runner/work/ggaction/ggaction
+2026-10-23T10:11:30.2605938Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-23T10:11:30.2609588Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-23T10:11:30.2611584Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-23T10:11:30.2613377Z hint: call:
+2026-10-23T10:11:30.2614307Z hint:
+2026-10-23T10:11:30.2615507Z hint: 	git config --global init.defaultBranch <name>
+2026-10-23T10:11:30.2616899Z hint:
+2026-10-23T10:11:30.2618249Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-23T10:11:30.2621657Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-23T10:11:30.2623649Z hint:
+2026-10-23T10:11:30.2624561Z hint: 	git branch -m <name>
+2026-10-23T10:11:30.2625711Z hint:
+2026-10-23T10:11:30.2627139Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-23T10:11:30.2629316Z Initialized empty Git repository in /home/runner/work/ggaction/ggaction/.git/
+2026-10-23T10:11:30.2632737Z [command]/usr/bin/git remote add origin https://github.com/ggaction/ggaction
+2026-10-23T10:11:30.2706285Z ##[endgroup]
+2026-10-23T10:11:30.2709608Z ##[group]Disabling automatic garbage collection
+2026-10-23T10:11:30.2731271Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-23T10:11:30.2746678Z ##[endgroup]
+2026-10-23T10:11:30.2748350Z ##[group]Setting up auth
+2026-10-23T10:11:30.2749409Z Removing SSH command configuration
+2026-10-23T10:11:30.2750791Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-23T10:11:30.2790661Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-23T10:11:30.3213305Z Removing HTTP extra header
+2026-10-23T10:11:30.3215873Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-23T10:11:30.3260012Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-23T10:11:30.3497323Z Removing includeIf entries pointing to credentials config files
+2026-10-23T10:11:30.3505048Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-23T10:11:30.3542473Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-23T10:11:30.3767884Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-e6970d86-e74f-4488-ae50-c1f8041f5a6e.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-23T10:11:30.3810131Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/ggaction/ggaction/.git.path /home/runner/work/_temp/git-credentials-e6970d86-e74f-4488-ae50-c1f8041f5a6e.config
+2026-10-23T10:11:30.3844882Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/ggaction/ggaction/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-e6970d86-e74f-4488-ae50-c1f8041f5a6e.config
+2026-10-23T10:11:30.3883474Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-e6970d86-e74f-4488-ae50-c1f8041f5a6e.config
+2026-10-23T10:11:30.3919068Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-e6970d86-e74f-4488-ae50-c1f8041f5a6e.config
+2026-10-23T10:11:30.3950156Z ##[endgroup]
+2026-10-23T10:11:30.3950965Z ##[group]Fetching the repository
+2026-10-23T10:11:30.3958857Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +3fe86b2c5076b3ca8871676c6b8bac52f1b96a04:refs/remotes/pull/264/merge
+2026-10-23T10:11:32.5925171Z From https://github.com/ggaction/ggaction
+2026-10-23T10:11:32.5927488Z  * [new ref]         3fe86b2c5076b3ca8871676c6b8bac52f1b96a04 -> pull/264/merge
+2026-10-23T10:11:32.5931639Z ##[endgroup]
+2026-10-23T10:11:32.5933498Z ##[group]Determining the checkout info
+2026-10-23T10:11:32.5935145Z ##[endgroup]
+2026-10-23T10:11:32.5944180Z [command]/usr/bin/git sparse-checkout disable
+2026-10-23T10:11:32.5994880Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-23T10:11:32.6031091Z ##[group]Checking out the ref
+2026-10-23T10:11:32.6034661Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/264/merge
+2026-10-23T10:11:32.9926480Z Note: switching to 'refs/remotes/pull/264/merge'.
+2026-10-23T10:11:32.9927276Z 
+2026-10-23T10:11:32.9927843Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-10-23T10:11:32.9928769Z changes and commit them, and you can discard any commits you make in this
+2026-10-23T10:11:32.9929430Z state without impacting any branches by switching back to a branch.
+2026-10-23T10:11:32.9929856Z 
+2026-10-23T10:11:32.9930146Z If you want to create a new branch to retain commits you create, you may
+2026-10-23T10:11:32.9930759Z do so (now or later) by using -c with the switch command. Example:
+2026-10-23T10:11:32.9931088Z 
+2026-10-23T10:11:32.9931251Z   git switch -c <new-branch-name>
+2026-10-23T10:11:32.9931498Z 
+2026-10-23T10:11:32.9931659Z Or undo this operation with:
+2026-10-23T10:11:32.9931873Z 
+2026-10-23T10:11:32.9932010Z   git switch -
+2026-10-23T10:11:32.9932213Z 
+2026-10-23T10:11:32.9932557Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-10-23T10:11:32.9933207Z 
+2026-10-23T10:11:32.9933643Z HEAD is now at 3fe86b2 Merge 108cd1084e306f22f4390a72702468f2c2a667c6 into 202b7afd4146a691c136964c4cc53f9c37444513
+2026-10-23T10:11:32.9941895Z ##[endgroup]
+2026-10-23T10:11:32.9989304Z [command]/usr/bin/git log -1 --format=%H
+2026-10-23T10:11:33.0017157Z 3fe86b2c5076b3ca8871676c6b8bac52f1b96a04
+2026-10-23T10:11:33.0306721Z ##[group]Run actions/setup-node@v6
+2026-10-23T10:11:33.0307174Z with:
+2026-10-23T10:11:33.0307474Z   node-version: 20
+2026-10-23T10:11:33.0307771Z   cache: npm
+2026-10-23T10:11:33.0308065Z   check-latest: false
+2026-10-23T10:11:33.0311112Z   token: ***
+2026-10-23T10:11:33.0311430Z   package-manager-cache: true
+2026-10-23T10:11:33.0311802Z ##[endgroup]
+2026-10-23T10:11:33.1657975Z Attempting to download 20...
+2026-10-23T10:11:33.6911459Z Acquiring 20.20.2 - x64 from https://github.com/actions/node-versions/releases/download/20.20.2-23521894959/node-20.20.2-linux-x64.tar.gz
+2026-10-23T10:11:34.0500738Z Extracting ...
+2026-10-23T10:11:34.0620531Z [command]/usr/bin/tar xz --strip 1 --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/7ad4a36f-add6-4253-a136-5e14334029dd -f /home/runner/work/_temp/db1bcce3-4aed-44d6-96d0-25a4c4599dcd
+2026-10-23T10:11:35.1465516Z Adding to the cache ...
+2026-10-23T10:11:36.9236387Z ##[group]Environment details
+2026-10-23T10:11:37.1475293Z node: v20.20.2
+2026-10-23T10:11:37.1476030Z npm: 10.8.2
+2026-10-23T10:11:37.1490506Z yarn: 1.22.22
+2026-10-23T10:11:37.1491469Z ##[endgroup]
+2026-10-23T10:11:37.1499533Z [command]/opt/hostedtoolcache/node/20.20.2/x64/bin/npm config get cache
+2026-10-23T10:11:37.2657665Z /home/runner/.npm
+2026-10-23T10:11:37.3339534Z npm cache is not found
+2026-10-23T10:11:37.3544085Z ##[group]Run npm ci
+2026-10-23T10:11:37.3544412Z [36;1mnpm ci[0m
+2026-10-23T10:11:37.3812156Z shell: /usr/bin/bash -e {0}
+2026-10-23T10:11:37.3812551Z ##[endgroup]
+2026-10-23T10:11:40.8403711Z 
+2026-10-23T10:11:40.8415331Z added 122 packages, and audited 123 packages in 3s
+2026-10-23T10:11:40.8416029Z 
+2026-10-23T10:11:40.8416248Z 41 packages are looking for funding
+2026-10-23T10:11:40.8416593Z   run `npm fund` for details
+2026-10-23T10:11:40.8416766Z 
+2026-10-23T10:11:40.8416890Z found 0 vulnerabilities
+2026-10-23T10:11:41.0914903Z ##[group]Run npm run package:check
+2026-10-23T10:11:41.0915255Z [36;1mnpm run package:check[0m
+2026-10-23T10:11:41.0980415Z shell: /usr/bin/bash -e {0}
+2026-10-23T10:11:41.0980908Z ##[endgroup]
+2026-10-23T10:11:41.2096294Z 
+2026-10-23T10:11:41.2097007Z > ggaction@0.0.23 package:check
+2026-10-23T10:11:41.2097891Z > node scripts/package-artifact.js --check
+2026-10-23T10:11:41.2098204Z 
+2026-10-23T10:11:43.7344185Z file:///home/runner/work/ggaction/ggaction/scripts/package-artifact.js:258
+2026-10-23T10:11:43.7345405Z     throw new Error(`Packed size ${manifest.size} exceeds ${PACKAGE_LIMITS.packedBytes} bytes.`);
+2026-10-23T10:11:43.7354497Z           ^
+2026-10-23T10:11:43.7354809Z 
+2026-10-23T10:11:43.7357276Z Error: Packed size 901585 exceeds 900000 bytes.
+2026-10-23T10:11:43.7364483Z     at validatePackageManifest (file:///home/runner/work/ggaction/ggaction/scripts/package-artifact.js:258:11)
+2026-10-23T10:11:43.7366309Z     at inspectPackageArtifact (file:///home/runner/work/ggaction/ggaction/scripts/package-artifact.js:269:10)
+2026-10-23T10:11:43.7367980Z     at file:///home/runner/work/ggaction/ggaction/scripts/package-artifact.js:294:7
+2026-10-23T10:11:43.7369170Z     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+2026-10-23T10:11:43.7370310Z     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+2026-10-23T10:11:43.7371613Z     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+2026-10-23T10:11:43.7372506Z 
+2026-10-23T10:11:43.7373156Z Node.js v20.20.2
+2026-10-23T10:11:43.7482385Z ##[error]Process completed with exit code 1.
+2026-10-23T10:11:43.7545196Z ##[group]Run node scripts/collect-failure-artifacts.js
+2026-10-23T10:11:43.7545622Z [36;1mnode scripts/collect-failure-artifacts.js[0m
+2026-10-23T10:11:43.7608587Z shell: /usr/bin/bash -e {0}
+2026-10-23T10:11:43.7608839Z ##[endgroup]
+2026-10-23T10:11:43.7989082Z {"schemaVersion":1,"maxBytes":52428800,"maxFiles":300,"bytes":0,"omitted":0,"files":[]}
+2026-10-23T10:11:43.8123799Z ##[group]Run actions/upload-artifact@v7
+2026-10-23T10:11:43.8124103Z with:
+2026-10-23T10:11:43.8124307Z   name: failure-package-0-1
+2026-10-23T10:11:43.8124554Z   path: .artifacts/ci-evidence
+2026-10-23T10:11:43.8124809Z   if-no-files-found: ignore
+2026-10-23T10:11:43.8125044Z   retention-days: 7
+2026-10-23T10:11:43.8125251Z   compression-level: 6
+2026-10-23T10:11:43.8125460Z   overwrite: false
+2026-10-23T10:11:43.8125668Z   include-hidden-files: false
+2026-10-23T10:11:43.8125897Z   archive: true
+2026-10-23T10:11:43.8126090Z ##[endgroup]
+2026-10-23T10:11:43.9604645Z With the provided path, there will be 1 file uploaded
+2026-10-23T10:11:43.9624031Z Artifact name is valid!
+2026-10-23T10:11:43.9644133Z Root directory input is valid!
+2026-10-23T10:11:44.1532307Z Uploading artifact: failure-package-0-1.zip
+2026-10-23T10:11:44.1576603Z Beginning upload of artifact content to blob storage
+2026-10-23T10:11:44.2238909Z Uploaded bytes 216
+2026-10-23T10:11:44.2384674Z Finished uploading artifact content to blob storage!
+2026-10-23T10:11:44.2386204Z SHA256 digest of uploaded artifact is 261146b2b8210bf24e907e4fc392ff8d9c09c80fa1a613d0b869569677166a3c
+2026-10-23T10:11:44.2387383Z Finalizing artifact upload
+2026-10-23T10:11:44.6785617Z Artifact failure-package-0-1 successfully finalized. Artifact ID 12494626735
+2026-10-23T10:11:44.6787063Z Artifact failure-package-0-1 has been successfully uploaded! Final size is 216 bytes. Artifact ID is 12494626735
+2026-10-23T10:11:44.6790268Z Artifact download URL: https://github.com/ggaction/ggaction/actions/runs/39937316945/artifacts/12494626735
+2026-10-23T10:11:44.6978073Z Post job cleanup.
+2026-10-23T10:11:44.7815093Z [command]/usr/bin/git version
+2026-10-23T10:11:44.7857014Z git version 2.55.0
+2026-10-23T10:11:44.7900859Z Temporarily overriding HOME='/home/runner/work/_temp/948d91d6-213a-4022-ad6d-b7c93aed0f1d' before making global git config changes
+2026-10-23T10:11:44.7902776Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-23T10:11:44.7907392Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/ggaction/ggaction
+2026-10-23T10:11:44.7943179Z Removing SSH command configuration
+2026-10-23T10:11:44.7950866Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-23T10:11:44.7987195Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-23T10:11:44.8246626Z Removing HTTP extra header
+2026-10-23T10:11:44.8252778Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-23T10:11:44.8288907Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-23T10:11:44.8552708Z Removing includeIf entries pointing to credentials config files
+2026-10-23T10:11:44.8561927Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-23T10:11:44.8591660Z includeif.gitdir:/home/runner/work/ggaction/ggaction/.git.path
+2026-10-23T10:11:44.8593067Z includeif.gitdir:/home/runner/work/ggaction/ggaction/.git/worktrees/*.path
+2026-10-23T10:11:44.8594290Z includeif.gitdir:/github/workspace/.git.path
+2026-10-23T10:11:44.8595289Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-23T10:11:44.8602304Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/ggaction/ggaction/.git.path
+2026-10-23T10:11:44.8628471Z /home/runner/work/_temp/git-credentials-e6970d86-e74f-4488-ae50-c1f8041f5a6e.config
+2026-10-23T10:11:44.8640995Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/ggaction/ggaction/.git.path /home/runner/work/_temp/git-credentials-e6970d86-e74f-4488-ae50-c1f8041f5a6e.config
+2026-10-23T10:11:44.8685892Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/ggaction/ggaction/.git/worktrees/*.path
+2026-10-23T10:11:44.8713317Z /home/runner/work/_temp/git-credentials-e6970d86-e74f-4488-ae50-c1f8041f5a6e.config
+2026-10-23T10:11:44.8726443Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/ggaction/ggaction/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-e6970d86-e74f-4488-ae50-c1f8041f5a6e.config
+2026-10-23T10:11:44.8763993Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-10-23T10:11:44.8791231Z /github/runner_temp/git-credentials-e6970d86-e74f-4488-ae50-c1f8041f5a6e.config
+2026-10-23T10:11:44.8803466Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-e6970d86-e74f-4488-ae50-c1f8041f5a6e.config
+2026-10-23T10:11:44.8843303Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-23T10:11:44.8869041Z /github/runner_temp/git-credentials-e6970d86-e74f-4488-ae50-c1f8041f5a6e.config
+2026-10-23T10:11:44.8879526Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-e6970d86-e74f-4488-ae50-c1f8041f5a6e.config
+2026-10-23T10:11:44.8958579Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-23T10:11:44.9204325Z Removing credentials config '/home/runner/work/_temp/git-credentials-e6970d86-e74f-4488-ae50-c1f8041f5a6e.config'
+2026-10-23T10:11:44.9354629Z Cleaning up orphan processes

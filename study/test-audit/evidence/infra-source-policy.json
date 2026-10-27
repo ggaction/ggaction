@@ -1,0 +1,30 @@
+{
+  "sourceFiles": 595,
+  "flooredFiles": 137,
+  "unflooredBoundaryFiles": [
+    "core/ChartProgram.js",
+    "core/action.js",
+    "core/datasetReferences.js",
+    "core/diagnostics.js",
+    "core/extensionRegistry.js",
+    "core/identifiers.js",
+    "core/materializationState.js",
+    "core/optionRequirements.js",
+    "core/programState.js",
+    "core/resourceReferences.js",
+    "core/specs.js",
+    "core/validation.js",
+    "core/vocabulary.js",
+    "mcp/adapter.js",
+    "mcp/cli.js",
+    "mcp/server.js",
+    "renderers/nativeBackend.js",
+    "renderers/options.js",
+    "renderers/pdf.js",
+    "renderers/svg.js",
+    "renderers/svgSerialization.js",
+    "renderers/text.js",
+    "renderers/transitionScene.js"
+  ],
+  "futureRules": {}
+}

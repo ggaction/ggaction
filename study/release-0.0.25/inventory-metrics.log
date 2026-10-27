@@ -1,0 +1,6993 @@
+{
+  "counts": {
+    "publicActions": 291,
+    "topLevelOptionPaths": 2702,
+    "nestedOptionPaths": 21708,
+    "optionPaths": 24410,
+    "requiredOptionPaths": 16894,
+    "excludedOptionPaths": 7516,
+    "topLevelCategoricalPaths": 930,
+    "topLevelLiteralValues": 3744,
+    "literalFamilies": 206,
+    "pathLiteralRequirements": 12691,
+    "familyLiteralRequirements": 471,
+    "pathDiversityRequirements": 454
+  },
+  "parent": {
+    "options": 268,
+    "literals": 188,
+    "diversity": 4
+  },
+  "scales": {
+    "paths": 192,
+    "literals": 897
+  },
+  "requirements": 30353,
+  "layer": [
+    {
+      "path": "id",
+      "values": []
+    },
+    {
+      "path": "placement",
+      "values": [
+        "string:back",
+        "string:front"
+      ]
+    },
+    {
+      "path": "plot",
+      "values": []
+    },
+    {
+      "path": "plot.action",
+      "values": [
+        "string:createAreaPlot",
+        "string:createBarPlot",
+        "string:createBeeswarmPlot",
+        "string:createBoxPlot",
+        "string:createDensityPlot",
+        "string:createDotPlot",
+        "string:createDumbbellPlot",
+        "string:createECDFPlot",
+        "string:createGradientPlot",
+        "string:createHeatmap",
+        "string:createHistogram",
+        "string:createHorizonPlot",
+        "string:createIntervalPlot",
+        "string:createLinePlot",
+        "string:createLollipopPlot",
+        "string:createParallelCoordinates",
+        "string:createPiePlot",
+        "string:createPolarLinePlot",
+        "string:createPolarScatterPlot",
+        "string:createRadarPlot",
+        "string:createRadialBarPlot",
+        "string:createRaincloudPlot",
+        "string:createRegressionPlot",
+        "string:createRosePlot",
+        "string:createRugPlot",
+        "string:createScatterPlot",
+        "string:createStripPlot",
+        "string:createTextPlot",
+        "string:createViolinPlot"
+      ]
+    },
+    {
+      "path": "plot.inherit",
+      "values": []
+    },
+    {
+      "path": "plot.inherit.color",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options",
+      "values": []
+    },
+    {
+      "path": "plot.options.aggregate",
+      "values": [
+        "string:count",
+        "string:sum"
+      ]
+    },
+    {
+      "path": "plot.options.arc",
+      "values": []
+    },
+    {
+      "path": "plot.options.arc.fill",
+      "values": []
+    },
+    {
+      "path": "plot.options.arc.innerRadius",
+      "values": []
+    },
+    {
+      "path": "plot.options.arc.innerRadius.unit",
+      "values": [
+        "string:px"
+      ]
+    },
+    {
+      "path": "plot.options.arc.innerRadius.value",
+      "values": []
+    },
+    {
+      "path": "plot.options.arc.lineCap",
+      "values": [
+        "string:butt",
+        "string:round",
+        "string:square"
+      ]
+    },
+    {
+      "path": "plot.options.arc.lineJoin",
+      "values": [
+        "string:bevel",
+        "string:miter",
+        "string:round"
+      ]
+    },
+    {
+      "path": "plot.options.arc.miterLimit",
+      "values": []
+    },
+    {
+      "path": "plot.options.arc.opacity",
+      "values": []
+    },
+    {
+      "path": "plot.options.arc.padAngle",
+      "values": []
+    },
+    {
+      "path": "plot.options.arc.stroke",
+      "values": []
+    },
+    {
+      "path": "plot.options.arc.strokeWidth",
+      "values": []
+    },
+    {
+      "path": "plot.options.area",
+      "values": []
+    },
+    {
+      "path": "plot.options.area.clip",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.area.curve",
+      "values": [
+        "string:basis",
+        "string:cardinal",
+        "string:linear",
+        "string:monotone",
+        "string:monotone-steffen",
+        "string:natural",
+        "string:step",
+        "string:step-after",
+        "string:step-before"
+      ]
+    },
+    {
+      "path": "plot.options.area.fill",
+      "values": []
+    },
+    {
+      "path": "plot.options.area.fill.from",
+      "values": []
+    },
+    {
+      "path": "plot.options.area.fill.from.x",
+      "values": []
+    },
+    {
+      "path": "plot.options.area.fill.from.y",
+      "values": []
+    },
+    {
+      "path": "plot.options.area.fill.stops",
+      "values": []
+    },
+    {
+      "path": "plot.options.area.fill.to",
+      "values": []
+    },
+    {
+      "path": "plot.options.area.fill.to.x",
+      "values": []
+    },
+    {
+      "path": "plot.options.area.fill.to.y",
+      "values": []
+    },
+    {
+      "path": "plot.options.area.fill.type",
+      "values": [
+        "string:linear-gradient"
+      ]
+    },
+    {
+      "path": "plot.options.area.lineCap",
+      "values": [
+        "string:butt",
+        "string:round",
+        "string:square"
+      ]
+    },
+    {
+      "path": "plot.options.area.lineJoin",
+      "values": [
+        "string:bevel",
+        "string:miter",
+        "string:round"
+      ]
+    },
+    {
+      "path": "plot.options.area.miterLimit",
+      "values": []
+    },
+    {
+      "path": "plot.options.area.opacity",
+      "values": []
+    },
+    {
+      "path": "plot.options.area.stroke",
+      "values": []
+    },
+    {
+      "path": "plot.options.area.strokeWidth",
+      "values": []
+    },
+    {
+      "path": "plot.options.as",
+      "values": []
+    },
+    {
+      "path": "plot.options.as.cumulative",
+      "values": []
+    },
+    {
+      "path": "plot.options.as.probability",
+      "values": []
+    },
+    {
+      "path": "plot.options.as.value",
+      "values": []
+    },
+    {
+      "path": "plot.options.band",
+      "values": [
+        "boolean:false"
+      ]
+    },
+    {
+      "path": "plot.options.band.color",
+      "values": []
+    },
+    {
+      "path": "plot.options.band.curve",
+      "values": [
+        "string:basis",
+        "string:cardinal",
+        "string:linear",
+        "string:monotone",
+        "string:monotone-steffen",
+        "string:natural",
+        "string:step",
+        "string:step-after",
+        "string:step-before"
+      ]
+    },
+    {
+      "path": "plot.options.band.lineCap",
+      "values": [
+        "string:butt",
+        "string:round",
+        "string:square"
+      ]
+    },
+    {
+      "path": "plot.options.band.lineJoin",
+      "values": [
+        "string:bevel",
+        "string:miter",
+        "string:round"
+      ]
+    },
+    {
+      "path": "plot.options.band.miterLimit",
+      "values": []
+    },
+    {
+      "path": "plot.options.band.opacity",
+      "values": []
+    },
+    {
+      "path": "plot.options.band.stroke",
+      "values": []
+    },
+    {
+      "path": "plot.options.band.strokeWidth",
+      "values": []
+    },
+    {
+      "path": "plot.options.bands",
+      "values": []
+    },
+    {
+      "path": "plot.options.bandwidth",
+      "values": [
+        "string:auto"
+      ]
+    },
+    {
+      "path": "plot.options.bar",
+      "values": []
+    },
+    {
+      "path": "plot.options.bar.clip",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.bar.cornerRadius",
+      "values": []
+    },
+    {
+      "path": "plot.options.bar.cornerRadiusBottomLeft",
+      "values": []
+    },
+    {
+      "path": "plot.options.bar.cornerRadiusBottomRight",
+      "values": []
+    },
+    {
+      "path": "plot.options.bar.cornerRadiusTopLeft",
+      "values": []
+    },
+    {
+      "path": "plot.options.bar.cornerRadiusTopRight",
+      "values": []
+    },
+    {
+      "path": "plot.options.bar.fill",
+      "values": []
+    },
+    {
+      "path": "plot.options.bar.fill.from",
+      "values": []
+    },
+    {
+      "path": "plot.options.bar.fill.from.x",
+      "values": []
+    },
+    {
+      "path": "plot.options.bar.fill.from.y",
+      "values": []
+    },
+    {
+      "path": "plot.options.bar.fill.stops",
+      "values": []
+    },
+    {
+      "path": "plot.options.bar.fill.to",
+      "values": []
+    },
+    {
+      "path": "plot.options.bar.fill.to.x",
+      "values": []
+    },
+    {
+      "path": "plot.options.bar.fill.to.y",
+      "values": []
+    },
+    {
+      "path": "plot.options.bar.fill.type",
+      "values": [
+        "string:linear-gradient"
+      ]
+    },
+    {
+      "path": "plot.options.bar.lineCap",
+      "values": [
+        "string:butt",
+        "string:round",
+        "string:square"
+      ]
+    },
+    {
+      "path": "plot.options.bar.lineJoin",
+      "values": [
+        "string:bevel",
+        "string:miter",
+        "string:round"
+      ]
+    },
+    {
+      "path": "plot.options.bar.miterLimit",
+      "values": []
+    },
+    {
+      "path": "plot.options.bar.opacity",
+      "values": []
+    },
+    {
+      "path": "plot.options.bar.stroke",
+      "values": [
+        "boolean:false"
+      ]
+    },
+    {
+      "path": "plot.options.bar.strokeWidth",
+      "values": []
+    },
+    {
+      "path": "plot.options.baseline",
+      "values": []
+    },
+    {
+      "path": "plot.options.bin",
+      "values": []
+    },
+    {
+      "path": "plot.options.bin.assignment",
+      "values": [
+        "string:edges",
+        "string:step"
+      ]
+    },
+    {
+      "path": "plot.options.bin.bins",
+      "values": []
+    },
+    {
+      "path": "plot.options.bin.bins.x",
+      "values": []
+    },
+    {
+      "path": "plot.options.bin.bins.y",
+      "values": []
+    },
+    {
+      "path": "plot.options.bin.extent",
+      "values": []
+    },
+    {
+      "path": "plot.options.bin.extent.x",
+      "values": []
+    },
+    {
+      "path": "plot.options.bin.extent.y",
+      "values": []
+    },
+    {
+      "path": "plot.options.bin.includeEmpty",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.binBoundaries",
+      "values": []
+    },
+    {
+      "path": "plot.options.binStep",
+      "values": []
+    },
+    {
+      "path": "plot.options.box",
+      "values": []
+    },
+    {
+      "path": "plot.options.box.cornerRadius",
+      "values": []
+    },
+    {
+      "path": "plot.options.box.cornerRadiusBottomLeft",
+      "values": []
+    },
+    {
+      "path": "plot.options.box.cornerRadiusBottomRight",
+      "values": []
+    },
+    {
+      "path": "plot.options.box.cornerRadiusTopLeft",
+      "values": []
+    },
+    {
+      "path": "plot.options.box.cornerRadiusTopRight",
+      "values": []
+    },
+    {
+      "path": "plot.options.box.fill",
+      "values": []
+    },
+    {
+      "path": "plot.options.box.lineCap",
+      "values": [
+        "string:butt",
+        "string:round",
+        "string:square"
+      ]
+    },
+    {
+      "path": "plot.options.box.lineJoin",
+      "values": [
+        "string:bevel",
+        "string:miter",
+        "string:round"
+      ]
+    },
+    {
+      "path": "plot.options.box.miterLimit",
+      "values": []
+    },
+    {
+      "path": "plot.options.box.opacity",
+      "values": []
+    },
+    {
+      "path": "plot.options.box.stroke",
+      "values": []
+    },
+    {
+      "path": "plot.options.box.strokeWidth",
+      "values": []
+    },
+    {
+      "path": "plot.options.category",
+      "values": []
+    },
+    {
+      "path": "plot.options.category.field",
+      "values": []
+    },
+    {
+      "path": "plot.options.category.fieldType",
+      "values": [
+        "string:nominal",
+        "string:ordinal"
+      ]
+    },
+    {
+      "path": "plot.options.category.scale",
+      "values": []
+    },
+    {
+      "path": "plot.options.category.scale.align",
+      "values": []
+    },
+    {
+      "path": "plot.options.category.scale.domain",
+      "values": [
+        "string:auto"
+      ]
+    },
+    {
+      "path": "plot.options.category.scale.id",
+      "values": []
+    },
+    {
+      "path": "plot.options.category.scale.padding",
+      "values": []
+    },
+    {
+      "path": "plot.options.category.scale.paddingInner",
+      "values": []
+    },
+    {
+      "path": "plot.options.category.scale.paddingOuter",
+      "values": []
+    },
+    {
+      "path": "plot.options.category.scale.range",
+      "values": [
+        "string:auto"
+      ]
+    },
+    {
+      "path": "plot.options.category.scale.reverse",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.category.scale.type",
+      "values": [
+        "string:band",
+        "string:point"
+      ]
+    },
+    {
+      "path": "plot.options.center",
+      "values": [
+        "boolean:false"
+      ]
+    },
+    {
+      "path": "plot.options.center.lineCap",
+      "values": [
+        "string:butt",
+        "string:round",
+        "string:square"
+      ]
+    },
+    {
+      "path": "plot.options.center.lineJoin",
+      "values": [
+        "string:bevel",
+        "string:miter",
+        "string:round"
+      ]
+    },
+    {
+      "path": "plot.options.center.miterLimit",
+      "values": []
+    },
+    {
+      "path": "plot.options.center.stroke",
+      "values": []
+    },
+    {
+      "path": "plot.options.center.strokeWidth",
+      "values": []
+    },
+    {
+      "path": "plot.options.center.type",
+      "values": [
+        "string:mean",
+        "string:median"
+      ]
+    },
+    {
+      "path": "plot.options.color",
+      "values": [
+        "boolean:false"
+      ]
+    },
+    {
+      "path": "plot.options.color.aggregate",
+      "values": [
+        "string:ciLower",
+        "string:ciUpper",
+        "string:count",
+        "string:distinct",
+        "string:max",
+        "string:mean",
+        "string:median",
+        "string:min",
+        "string:missing",
+        "string:q1",
+        "string:q3",
+        "string:stderr",
+        "string:stdev",
+        "string:stdevP",
+        "string:sum",
+        "string:valid",
+        "string:variance",
+        "string:varianceP"
+      ]
+    },
+    {
+      "path": "plot.options.color.aggregate.level",
+      "values": []
+    },
+    {
+      "path": "plot.options.color.aggregate.method",
+      "values": [
+        "string:normal",
+        "string:student-t"
+      ]
+    },
+    {
+      "path": "plot.options.color.aggregate.op",
+      "values": [
+        "string:ciLower",
+        "string:ciUpper",
+        "string:first",
+        "string:last",
+        "string:quantile"
+      ]
+    },
+    {
+      "path": "plot.options.color.aggregate.order",
+      "values": [
+        "string:ascending",
+        "string:descending"
+      ]
+    },
+    {
+      "path": "plot.options.color.aggregate.orderBy",
+      "values": []
+    },
+    {
+      "path": "plot.options.color.aggregate.probability",
+      "values": []
+    },
+    {
+      "path": "plot.options.color.field",
+      "values": []
+    },
+    {
+      "path": "plot.options.color.fieldType",
+      "values": [
+        "string:nominal",
+        "string:ordinal",
+        "string:quantitative",
+        "string:temporal"
+      ]
+    },
+    {
+      "path": "plot.options.color.layout",
+      "values": [
+        "string:diverging",
+        "string:fill",
+        "string:group",
+        "string:overlay",
+        "string:stack"
+      ]
+    },
+    {
+      "path": "plot.options.color.palette",
+      "values": [
+        "string:accent",
+        "string:bluegreen",
+        "string:blueorange",
+        "string:bluepurple",
+        "string:blues",
+        "string:brownbluegreen",
+        "string:browns",
+        "string:category10",
+        "string:category20",
+        "string:category20b",
+        "string:category20c",
+        "string:cividis",
+        "string:dark2",
+        "string:darkblue",
+        "string:darkgold",
+        "string:darkgreen",
+        "string:darkmulti",
+        "string:darkred",
+        "string:goldgreen",
+        "string:goldorange",
+        "string:goldred",
+        "string:greenblue",
+        "string:greens",
+        "string:greys",
+        "string:inferno",
+        "string:lightgreyred",
+        "string:lightgreyteal",
+        "string:lightmulti",
+        "string:lightorange",
+        "string:lighttealblue",
+        "string:magma",
+        "string:observable10",
+        "string:orangered",
+        "string:oranges",
+        "string:paired",
+        "string:pastel1",
+        "string:pastel2",
+        "string:pinkyellowgreen",
+        "string:plasma",
+        "string:purpleblue",
+        "string:purplebluegreen",
+        "string:purplegreen",
+        "string:purpleorange",
+        "string:purplered",
+        "string:purples",
+        "string:rainbow",
+        "string:redblue",
+        "string:redgrey",
+        "string:redpurple",
+        "string:reds",
+        "string:redyellowblue",
+        "string:redyellowgreen",
+        "string:set1",
+        "string:set2",
+        "string:set3",
+        "string:sinebow",
+        "string:spectral",
+        "string:tableau10",
+        "string:tableau20",
+        "string:tealblues",
+        "string:teals",
+        "string:turbo",
+        "string:viridis",
+        "string:warmgreys",
+        "string:yellowgreen",
+        "string:yellowgreenblue",
+        "string:yelloworangebrown",
+        "string:yelloworangered"
+      ]
+    },
+    {
+      "path": "plot.options.color.palette.count",
+      "values": []
+    },
+    {
+      "path": "plot.options.color.palette.extent",
+      "values": []
+    },
+    {
+      "path": "plot.options.color.palette.name",
+      "values": [
+        "string:accent",
+        "string:bluegreen",
+        "string:blueorange",
+        "string:bluepurple",
+        "string:blues",
+        "string:brownbluegreen",
+        "string:browns",
+        "string:category10",
+        "string:category20",
+        "string:category20b",
+        "string:category20c",
+        "string:cividis",
+        "string:dark2",
+        "string:darkblue",
+        "string:darkgold",
+        "string:darkgreen",
+        "string:darkmulti",
+        "string:darkred",
+        "string:goldgreen",
+        "string:goldorange",
+        "string:goldred",
+        "string:greenblue",
+        "string:greens",
+        "string:greys",
+        "string:inferno",
+        "string:lightgreyred",
+        "string:lightgreyteal",
+        "string:lightmulti",
+        "string:lightorange",
+        "string:lighttealblue",
+        "string:magma",
+        "string:observable10",
+        "string:orangered",
+        "string:oranges",
+        "string:paired",
+        "string:pastel1",
+        "string:pastel2",
+        "string:pinkyellowgreen",
+        "string:plasma",
+        "string:purpleblue",
+        "string:purplebluegreen",
+        "string:purplegreen",
+        "string:purpleorange",
+        "string:purplered",
+        "string:purples",
+        "string:rainbow",
+        "string:redblue",
+        "string:redgrey",
+        "string:redpurple",
+        "string:reds",
+        "string:redyellowblue",
+        "string:redyellowgreen",
+        "string:set1",
+        "string:set2",
+        "string:set3",
+        "string:sinebow",
+        "string:spectral",
+        "string:tableau10",
+        "string:tableau20",
+        "string:tealblues",
+        "string:teals",
+        "string:turbo",
+        "string:viridis",
+        "string:warmgreys",
+        "string:yellowgreen",
+        "string:yellowgreenblue",
+        "string:yelloworangebrown",
+        "string:yelloworangered"
+      ]
+    },
+    {
+      "path": "plot.options.color.scale",
+      "values": []
+    },
+    {
+      "path": "plot.options.color.scale.base",
+      "values": []
+    },
+    {
+      "path": "plot.options.color.scale.clamp",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.color.scale.constant",
+      "values": []
+    },
+    {
+      "path": "plot.options.color.scale.domain",
+      "values": [
+        "string:auto"
+      ]
+    },
+    {
+      "path": "plot.options.color.scale.exponent",
+      "values": []
+    },
+    {
+      "path": "plot.options.color.scale.gamma",
+      "values": []
+    },
+    {
+      "path": "plot.options.color.scale.id",
+      "values": []
+    },
+    {
+      "path": "plot.options.color.scale.interpolate",
+      "values": [
+        "string:cubehelix",
+        "string:cubehelix-long",
+        "string:hcl",
+        "string:hcl-long",
+        "string:hsl",
+        "string:hsl-long",
+        "string:lab",
+        "string:rgb"
+      ]
+    },
+    {
+      "path": "plot.options.color.scale.midpoint",
+      "values": [
+        "string:auto"
+      ]
+    },
+    {
+      "path": "plot.options.color.scale.palette",
+      "values": [
+        "string:accent",
+        "string:bluegreen",
+        "string:blueorange",
+        "string:bluepurple",
+        "string:blues",
+        "string:brownbluegreen",
+        "string:browns",
+        "string:category10",
+        "string:category20",
+        "string:category20b",
+        "string:category20c",
+        "string:cividis",
+        "string:dark2",
+        "string:darkblue",
+        "string:darkgold",
+        "string:darkgreen",
+        "string:darkmulti",
+        "string:darkred",
+        "string:goldgreen",
+        "string:goldorange",
+        "string:goldred",
+        "string:greenblue",
+        "string:greens",
+        "string:greys",
+        "string:inferno",
+        "string:lightgreyred",
+        "string:lightgreyteal",
+        "string:lightmulti",
+        "string:lightorange",
+        "string:lighttealblue",
+        "string:magma",
+        "string:observable10",
+        "string:orangered",
+        "string:oranges",
+        "string:paired",
+        "string:pastel1",
+        "string:pastel2",
+        "string:pinkyellowgreen",
+        "string:plasma",
+        "string:purpleblue",
+        "string:purplebluegreen",
+        "string:purplegreen",
+        "string:purpleorange",
+        "string:purplered",
+        "string:purples",
+        "string:rainbow",
+        "string:redblue",
+        "string:redgrey",
+        "string:redpurple",
+        "string:reds",
+        "string:redyellowblue",
+        "string:redyellowgreen",
+        "string:set1",
+        "string:set2",
+        "string:set3",
+        "string:sinebow",
+        "string:spectral",
+        "string:tableau10",
+        "string:tableau20",
+        "string:tealblues",
+        "string:teals",
+        "string:turbo",
+        "string:viridis",
+        "string:warmgreys",
+        "string:yellowgreen",
+        "string:yellowgreenblue",
+        "string:yelloworangebrown",
+        "string:yelloworangered"
+      ]
+    },
+    {
+      "path": "plot.options.color.scale.palette.count",
+      "values": []
+    },
+    {
+      "path": "plot.options.color.scale.palette.extent",
+      "values": []
+    },
+    {
+      "path": "plot.options.color.scale.palette.name",
+      "values": [
+        "string:accent",
+        "string:bluegreen",
+        "string:blueorange",
+        "string:bluepurple",
+        "string:blues",
+        "string:brownbluegreen",
+        "string:browns",
+        "string:category10",
+        "string:category20",
+        "string:category20b",
+        "string:category20c",
+        "string:cividis",
+        "string:dark2",
+        "string:darkblue",
+        "string:darkgold",
+        "string:darkgreen",
+        "string:darkmulti",
+        "string:darkred",
+        "string:goldgreen",
+        "string:goldorange",
+        "string:goldred",
+        "string:greenblue",
+        "string:greens",
+        "string:greys",
+        "string:inferno",
+        "string:lightgreyred",
+        "string:lightgreyteal",
+        "string:lightmulti",
+        "string:lightorange",
+        "string:lighttealblue",
+        "string:magma",
+        "string:observable10",
+        "string:orangered",
+        "string:oranges",
+        "string:paired",
+        "string:pastel1",
+        "string:pastel2",
+        "string:pinkyellowgreen",
+        "string:plasma",
+        "string:purpleblue",
+        "string:purplebluegreen",
+        "string:purplegreen",
+        "string:purpleorange",
+        "string:purplered",
+        "string:purples",
+        "string:rainbow",
+        "string:redblue",
+        "string:redgrey",
+        "string:redpurple",
+        "string:reds",
+        "string:redyellowblue",
+        "string:redyellowgreen",
+        "string:set1",
+        "string:set2",
+        "string:set3",
+        "string:sinebow",
+        "string:spectral",
+        "string:tableau10",
+        "string:tableau20",
+        "string:tealblues",
+        "string:teals",
+        "string:turbo",
+        "string:viridis",
+        "string:warmgreys",
+        "string:yellowgreen",
+        "string:yellowgreenblue",
+        "string:yelloworangebrown",
+        "string:yelloworangered"
+      ]
+    },
+    {
+      "path": "plot.options.color.scale.range",
+      "values": [
+        "string:auto"
+      ]
+    },
+    {
+      "path": "plot.options.color.scale.range.palette",
+      "values": [
+        "string:accent",
+        "string:bluegreen",
+        "string:blueorange",
+        "string:bluepurple",
+        "string:blues",
+        "string:brownbluegreen",
+        "string:browns",
+        "string:category10",
+        "string:category20",
+        "string:category20b",
+        "string:category20c",
+        "string:cividis",
+        "string:dark2",
+        "string:darkblue",
+        "string:darkgold",
+        "string:darkgreen",
+        "string:darkmulti",
+        "string:darkred",
+        "string:goldgreen",
+        "string:goldorange",
+        "string:goldred",
+        "string:greenblue",
+        "string:greens",
+        "string:greys",
+        "string:inferno",
+        "string:lightgreyred",
+        "string:lightgreyteal",
+        "string:lightmulti",
+        "string:lightorange",
+        "string:lighttealblue",
+        "string:magma",
+        "string:observable10",
+        "string:orangered",
+        "string:oranges",
+        "string:paired",
+        "string:pastel1",
+        "string:pastel2",
+        "string:pinkyellowgreen",
+        "string:plasma",
+        "string:purpleblue",
+        "string:purplebluegreen",
+        "string:purplegreen",
+        "string:purpleorange",
+        "string:purplered",
+        "string:purples",
+        "string:rainbow",
+        "string:redblue",
+        "string:redgrey",
+        "string:redpurple",
+        "string:reds",
+        "string:redyellowblue",
+        "string:redyellowgreen",
+        "string:set1",
+        "string:set2",
+        "string:set3",
+        "string:sinebow",
+        "string:spectral",
+        "string:tableau10",
+        "string:tableau20",
+        "string:tealblues",
+        "string:teals",
+        "string:turbo",
+        "string:viridis",
+        "string:warmgreys",
+        "string:yellowgreen",
+        "string:yellowgreenblue",
+        "string:yelloworangebrown",
+        "string:yelloworangered"
+      ]
+    },
+    {
+      "path": "plot.options.color.scale.reverse",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.color.scale.type",
+      "values": [
+        "string:log",
+        "string:ordinal",
+        "string:pow",
+        "string:quantile",
+        "string:quantize",
+        "string:sequential",
+        "string:sqrt",
+        "string:symlog",
+        "string:threshold"
+      ]
+    },
+    {
+      "path": "plot.options.color.scale.unknown",
+      "values": []
+    },
+    {
+      "path": "plot.options.color.scale.whitePoint",
+      "values": [
+        "string:d50",
+        "string:d65"
+      ]
+    },
+    {
+      "path": "plot.options.color.temporalUnit",
+      "values": [
+        "string:auto",
+        "string:timestamp",
+        "string:year"
+      ]
+    },
+    {
+      "path": "plot.options.color.value",
+      "values": []
+    },
+    {
+      "path": "plot.options.confidence",
+      "values": []
+    },
+    {
+      "path": "plot.options.confidenceMethod",
+      "values": [
+        "string:normal",
+        "string:student-t"
+      ]
+    },
+    {
+      "path": "plot.options.connector",
+      "values": []
+    },
+    {
+      "path": "plot.options.connector.clip",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.connector.lineCap",
+      "values": [
+        "string:butt",
+        "string:round",
+        "string:square"
+      ]
+    },
+    {
+      "path": "plot.options.connector.lineJoin",
+      "values": [
+        "string:bevel",
+        "string:miter",
+        "string:round"
+      ]
+    },
+    {
+      "path": "plot.options.connector.miterLimit",
+      "values": []
+    },
+    {
+      "path": "plot.options.connector.opacity",
+      "values": []
+    },
+    {
+      "path": "plot.options.connector.stroke",
+      "values": []
+    },
+    {
+      "path": "plot.options.connector.strokeDash",
+      "values": [
+        "string:dashdot",
+        "string:dashed",
+        "string:dotted",
+        "string:solid"
+      ]
+    },
+    {
+      "path": "plot.options.connector.strokeWidth",
+      "values": []
+    },
+    {
+      "path": "plot.options.coordinate",
+      "values": []
+    },
+    {
+      "path": "plot.options.data",
+      "values": []
+    },
+    {
+      "path": "plot.options.degree",
+      "values": []
+    },
+    {
+      "path": "plot.options.density",
+      "values": [
+        "boolean:false"
+      ]
+    },
+    {
+      "path": "plot.options.density.area",
+      "values": []
+    },
+    {
+      "path": "plot.options.density.area.curve",
+      "values": [
+        "string:basis",
+        "string:cardinal",
+        "string:linear",
+        "string:monotone",
+        "string:monotone-steffen",
+        "string:natural",
+        "string:step",
+        "string:step-after",
+        "string:step-before"
+      ]
+    },
+    {
+      "path": "plot.options.density.area.fill",
+      "values": []
+    },
+    {
+      "path": "plot.options.density.area.fill.from",
+      "values": []
+    },
+    {
+      "path": "plot.options.density.area.fill.stops",
+      "values": []
+    },
+    {
+      "path": "plot.options.density.area.fill.to",
+      "values": []
+    },
+    {
+      "path": "plot.options.density.area.fill.type",
+      "values": [
+        "string:linear-gradient"
+      ]
+    },
+    {
+      "path": "plot.options.density.area.lineCap",
+      "values": [
+        "string:butt",
+        "string:round",
+        "string:square"
+      ]
+    },
+    {
+      "path": "plot.options.density.area.lineJoin",
+      "values": [
+        "string:bevel",
+        "string:miter",
+        "string:round"
+      ]
+    },
+    {
+      "path": "plot.options.density.area.miterLimit",
+      "values": []
+    },
+    {
+      "path": "plot.options.density.area.opacity",
+      "values": []
+    },
+    {
+      "path": "plot.options.density.area.stroke",
+      "values": []
+    },
+    {
+      "path": "plot.options.density.area.strokeWidth",
+      "values": []
+    },
+    {
+      "path": "plot.options.density.bandwidth",
+      "values": [
+        "string:auto"
+      ]
+    },
+    {
+      "path": "plot.options.density.extent",
+      "values": [
+        "string:auto"
+      ]
+    },
+    {
+      "path": "plot.options.density.kernel",
+      "values": [
+        "string:epanechnikov",
+        "string:gaussian",
+        "string:triangular",
+        "string:uniform"
+      ]
+    },
+    {
+      "path": "plot.options.density.normalization",
+      "values": [
+        "string:count",
+        "string:unit"
+      ]
+    },
+    {
+      "path": "plot.options.density.side",
+      "values": [
+        "string:both",
+        "string:bottom",
+        "string:left",
+        "string:right",
+        "string:top"
+      ]
+    },
+    {
+      "path": "plot.options.density.steps",
+      "values": []
+    },
+    {
+      "path": "plot.options.density.weight",
+      "values": []
+    },
+    {
+      "path": "plot.options.density.weight.field",
+      "values": []
+    },
+    {
+      "path": "plot.options.density.weight.kind",
+      "values": [
+        "string:frequency",
+        "string:reliability"
+      ]
+    },
+    {
+      "path": "plot.options.density.width",
+      "values": []
+    },
+    {
+      "path": "plot.options.density.width.band",
+      "values": []
+    },
+    {
+      "path": "plot.options.density.width.resolve",
+      "values": [
+        "string:independent",
+        "string:shared"
+      ]
+    },
+    {
+      "path": "plot.options.densityChannel",
+      "values": [
+        "string:x",
+        "string:y"
+      ]
+    },
+    {
+      "path": "plot.options.densityScale",
+      "values": []
+    },
+    {
+      "path": "plot.options.densityScale.clamp",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.densityScale.constant",
+      "values": []
+    },
+    {
+      "path": "plot.options.densityScale.domain",
+      "values": [
+        "string:auto"
+      ]
+    },
+    {
+      "path": "plot.options.densityScale.exponent",
+      "values": []
+    },
+    {
+      "path": "plot.options.densityScale.id",
+      "values": []
+    },
+    {
+      "path": "plot.options.densityScale.nice",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.densityScale.nice.count",
+      "values": []
+    },
+    {
+      "path": "plot.options.densityScale.range",
+      "values": [
+        "string:auto"
+      ]
+    },
+    {
+      "path": "plot.options.densityScale.reverse",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.densityScale.type",
+      "values": [
+        "string:linear",
+        "string:pow",
+        "string:sqrt",
+        "string:symlog"
+      ]
+    },
+    {
+      "path": "plot.options.densityScale.zero",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.dimensions",
+      "values": []
+    },
+    {
+      "path": "plot.options.edge",
+      "values": [
+        "string:bottom",
+        "string:left",
+        "string:right",
+        "string:top"
+      ]
+    },
+    {
+      "path": "plot.options.end",
+      "values": []
+    },
+    {
+      "path": "plot.options.end.field",
+      "values": []
+    },
+    {
+      "path": "plot.options.end.fieldType",
+      "values": [
+        "string:quantitative"
+      ]
+    },
+    {
+      "path": "plot.options.end.scale",
+      "values": []
+    },
+    {
+      "path": "plot.options.end.scale.base",
+      "values": []
+    },
+    {
+      "path": "plot.options.end.scale.clamp",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.end.scale.constant",
+      "values": []
+    },
+    {
+      "path": "plot.options.end.scale.domain",
+      "values": [
+        "string:auto"
+      ]
+    },
+    {
+      "path": "plot.options.end.scale.exponent",
+      "values": []
+    },
+    {
+      "path": "plot.options.end.scale.id",
+      "values": []
+    },
+    {
+      "path": "plot.options.end.scale.nice",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.end.scale.nice.count",
+      "values": []
+    },
+    {
+      "path": "plot.options.end.scale.range",
+      "values": [
+        "string:auto"
+      ]
+    },
+    {
+      "path": "plot.options.end.scale.reverse",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.end.scale.type",
+      "values": [
+        "string:linear",
+        "string:log",
+        "string:pow",
+        "string:sqrt",
+        "string:symlog"
+      ]
+    },
+    {
+      "path": "plot.options.end.scale.zero",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.endPoint",
+      "values": []
+    },
+    {
+      "path": "plot.options.endPoint.clip",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.endPoint.fill",
+      "values": []
+    },
+    {
+      "path": "plot.options.endPoint.lineCap",
+      "values": [
+        "string:butt",
+        "string:round",
+        "string:square"
+      ]
+    },
+    {
+      "path": "plot.options.endPoint.lineJoin",
+      "values": [
+        "string:bevel",
+        "string:miter",
+        "string:round"
+      ]
+    },
+    {
+      "path": "plot.options.endPoint.miterLimit",
+      "values": []
+    },
+    {
+      "path": "plot.options.endPoint.opacity",
+      "values": []
+    },
+    {
+      "path": "plot.options.endPoint.radius",
+      "values": []
+    },
+    {
+      "path": "plot.options.endPoint.shape",
+      "values": [
+        "string:arrow",
+        "string:circle",
+        "string:cross",
+        "string:diamond",
+        "string:hexagon",
+        "string:plus",
+        "string:square",
+        "string:star",
+        "string:triangle-down",
+        "string:triangle-left",
+        "string:triangle-right",
+        "string:triangle-up",
+        "string:wedge",
+        "string:wye"
+      ]
+    },
+    {
+      "path": "plot.options.endPoint.shape.normalization",
+      "values": [
+        "string:area",
+        "string:radius"
+      ]
+    },
+    {
+      "path": "plot.options.endPoint.shape.polygon",
+      "values": []
+    },
+    {
+      "path": "plot.options.endPoint.stroke",
+      "values": [
+        "boolean:false"
+      ]
+    },
+    {
+      "path": "plot.options.endPoint.strokeWidth",
+      "values": []
+    },
+    {
+      "path": "plot.options.errorBar",
+      "values": []
+    },
+    {
+      "path": "plot.options.errorBar.caps",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.errorBar.capSize",
+      "values": []
+    },
+    {
+      "path": "plot.options.errorBar.lineCap",
+      "values": [
+        "string:butt",
+        "string:round",
+        "string:square"
+      ]
+    },
+    {
+      "path": "plot.options.errorBar.lineJoin",
+      "values": [
+        "string:bevel",
+        "string:miter",
+        "string:round"
+      ]
+    },
+    {
+      "path": "plot.options.errorBar.miterLimit",
+      "values": []
+    },
+    {
+      "path": "plot.options.errorBar.opacity",
+      "values": []
+    },
+    {
+      "path": "plot.options.errorBar.stroke",
+      "values": []
+    },
+    {
+      "path": "plot.options.errorBar.strokeDash",
+      "values": [
+        "string:dashdot",
+        "string:dashed",
+        "string:dotted",
+        "string:solid"
+      ]
+    },
+    {
+      "path": "plot.options.errorBar.strokeWidth",
+      "values": []
+    },
+    {
+      "path": "plot.options.extent",
+      "values": [
+        "string:auto"
+      ]
+    },
+    {
+      "path": "plot.options.field",
+      "values": []
+    },
+    {
+      "path": "plot.options.gradient",
+      "values": []
+    },
+    {
+      "path": "plot.options.gradient.opacity",
+      "values": []
+    },
+    {
+      "path": "plot.options.gradient.palette",
+      "values": [
+        "string:accent",
+        "string:bluegreen",
+        "string:blueorange",
+        "string:bluepurple",
+        "string:blues",
+        "string:brownbluegreen",
+        "string:browns",
+        "string:category10",
+        "string:category20",
+        "string:category20b",
+        "string:category20c",
+        "string:cividis",
+        "string:dark2",
+        "string:darkblue",
+        "string:darkgold",
+        "string:darkgreen",
+        "string:darkmulti",
+        "string:darkred",
+        "string:goldgreen",
+        "string:goldorange",
+        "string:goldred",
+        "string:greenblue",
+        "string:greens",
+        "string:greys",
+        "string:inferno",
+        "string:lightgreyred",
+        "string:lightgreyteal",
+        "string:lightmulti",
+        "string:lightorange",
+        "string:lighttealblue",
+        "string:magma",
+        "string:observable10",
+        "string:orangered",
+        "string:oranges",
+        "string:paired",
+        "string:pastel1",
+        "string:pastel2",
+        "string:pinkyellowgreen",
+        "string:plasma",
+        "string:purpleblue",
+        "string:purplebluegreen",
+        "string:purplegreen",
+        "string:purpleorange",
+        "string:purplered",
+        "string:purples",
+        "string:rainbow",
+        "string:redblue",
+        "string:redgrey",
+        "string:redpurple",
+        "string:reds",
+        "string:redyellowblue",
+        "string:redyellowgreen",
+        "string:set1",
+        "string:set2",
+        "string:set3",
+        "string:sinebow",
+        "string:spectral",
+        "string:tableau10",
+        "string:tableau20",
+        "string:tealblues",
+        "string:teals",
+        "string:turbo",
+        "string:viridis",
+        "string:warmgreys",
+        "string:yellowgreen",
+        "string:yellowgreenblue",
+        "string:yelloworangebrown",
+        "string:yelloworangered"
+      ]
+    },
+    {
+      "path": "plot.options.gradient.palette.count",
+      "values": []
+    },
+    {
+      "path": "plot.options.gradient.palette.extent",
+      "values": []
+    },
+    {
+      "path": "plot.options.gradient.palette.name",
+      "values": [
+        "string:accent",
+        "string:bluegreen",
+        "string:blueorange",
+        "string:bluepurple",
+        "string:blues",
+        "string:brownbluegreen",
+        "string:browns",
+        "string:category10",
+        "string:category20",
+        "string:category20b",
+        "string:category20c",
+        "string:cividis",
+        "string:dark2",
+        "string:darkblue",
+        "string:darkgold",
+        "string:darkgreen",
+        "string:darkmulti",
+        "string:darkred",
+        "string:goldgreen",
+        "string:goldorange",
+        "string:goldred",
+        "string:greenblue",
+        "string:greens",
+        "string:greys",
+        "string:inferno",
+        "string:lightgreyred",
+        "string:lightgreyteal",
+        "string:lightmulti",
+        "string:lightorange",
+        "string:lighttealblue",
+        "string:magma",
+        "string:observable10",
+        "string:orangered",
+        "string:oranges",
+        "string:paired",
+        "string:pastel1",
+        "string:pastel2",
+        "string:pinkyellowgreen",
+        "string:plasma",
+        "string:purpleblue",
+        "string:purplebluegreen",
+        "string:purplegreen",
+        "string:purpleorange",
+        "string:purplered",
+        "string:purples",
+        "string:rainbow",
+        "string:redblue",
+        "string:redgrey",
+        "string:redpurple",
+        "string:reds",
+        "string:redyellowblue",
+        "string:redyellowgreen",
+        "string:set1",
+        "string:set2",
+        "string:set3",
+        "string:sinebow",
+        "string:spectral",
+        "string:tableau10",
+        "string:tableau20",
+        "string:tealblues",
+        "string:teals",
+        "string:turbo",
+        "string:viridis",
+        "string:warmgreys",
+        "string:yellowgreen",
+        "string:yellowgreenblue",
+        "string:yelloworangebrown",
+        "string:yelloworangered"
+      ]
+    },
+    {
+      "path": "plot.options.groupBy",
+      "values": [
+        "boolean:false"
+      ]
+    },
+    {
+      "path": "plot.options.guides",
+      "values": [
+        "boolean:false"
+      ]
+    },
+    {
+      "path": "plot.options.guides.axes",
+      "values": [
+        "boolean:false"
+      ]
+    },
+    {
+      "path": "plot.options.guides.axes.coordinate",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.axes.coordinate.id",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.axes.coordinate.type",
+      "values": [
+        "string:auto",
+        "string:cartesian",
+        "string:parallel",
+        "string:polar"
+      ]
+    },
+    {
+      "path": "plot.options.guides.axes.radius",
+      "values": [
+        "boolean:false"
+      ]
+    },
+    {
+      "path": "plot.options.guides.axes.radius.angle",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.axes.radius.coordinate",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.axes.radius.line",
+      "values": [
+        "boolean:false"
+      ]
+    },
+    {
+      "path": "plot.options.guides.axes.radius.scale",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.axes.radius.ticksAndLabels",
+      "values": [
+        "boolean:false"
+      ]
+    },
+    {
+      "path": "plot.options.guides.axes.radius.title",
+      "values": [
+        "boolean:false"
+      ]
+    },
+    {
+      "path": "plot.options.guides.axes.theta",
+      "values": [
+        "boolean:false"
+      ]
+    },
+    {
+      "path": "plot.options.guides.axes.theta.coordinate",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.axes.theta.line",
+      "values": [
+        "boolean:false"
+      ]
+    },
+    {
+      "path": "plot.options.guides.axes.theta.scale",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.axes.theta.ticksAndLabels",
+      "values": [
+        "boolean:false"
+      ]
+    },
+    {
+      "path": "plot.options.guides.axes.theta.title",
+      "values": [
+        "boolean:false"
+      ]
+    },
+    {
+      "path": "plot.options.guides.axes.x",
+      "values": [
+        "boolean:false"
+      ]
+    },
+    {
+      "path": "plot.options.guides.axes.x.coordinate",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.axes.x.id",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.axes.x.line",
+      "values": [
+        "boolean:false"
+      ]
+    },
+    {
+      "path": "plot.options.guides.axes.x.offset",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.axes.x.position",
+      "values": [
+        "string:bottom",
+        "string:top"
+      ]
+    },
+    {
+      "path": "plot.options.guides.axes.x.scale",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.axes.x.ticksAndLabels",
+      "values": [
+        "boolean:false"
+      ]
+    },
+    {
+      "path": "plot.options.guides.axes.x.title",
+      "values": [
+        "boolean:false"
+      ]
+    },
+    {
+      "path": "plot.options.guides.axes.x.underlay",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.guides.axes.y",
+      "values": [
+        "boolean:false"
+      ]
+    },
+    {
+      "path": "plot.options.guides.axes.y.coordinate",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.axes.y.id",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.axes.y.line",
+      "values": [
+        "boolean:false"
+      ]
+    },
+    {
+      "path": "plot.options.guides.axes.y.offset",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.axes.y.position",
+      "values": [
+        "string:left",
+        "string:right"
+      ]
+    },
+    {
+      "path": "plot.options.guides.axes.y.scale",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.axes.y.ticksAndLabels",
+      "values": [
+        "boolean:false"
+      ]
+    },
+    {
+      "path": "plot.options.guides.axes.y.title",
+      "values": [
+        "boolean:false"
+      ]
+    },
+    {
+      "path": "plot.options.guides.axes.y.underlay",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.guides.grid",
+      "values": [
+        "boolean:false"
+      ]
+    },
+    {
+      "path": "plot.options.guides.grid.horizontal",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.guides.grid.horizontal.alongOffset",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.grid.horizontal.bandPosition",
+      "values": [
+        "string:boundary",
+        "string:center"
+      ]
+    },
+    {
+      "path": "plot.options.guides.grid.horizontal.color",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.grid.horizontal.coordinate",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.grid.horizontal.count",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.grid.horizontal.lineWidth",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.grid.horizontal.scale",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.grid.horizontal.strokeDash",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.grid.horizontal.strokeDashMap",
+      "values": [
+        "string:auto"
+      ]
+    },
+    {
+      "path": "plot.options.guides.grid.horizontal.values",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.grid.horizontal.zIndex",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.grid.radial",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.guides.grid.radial.color",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.grid.radial.coordinate",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.grid.radial.count",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.grid.radial.lineWidth",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.grid.radial.scale",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.grid.radial.strokeDash",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.grid.radial.values",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.grid.theta",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.guides.grid.theta.color",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.grid.theta.coordinate",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.grid.theta.count",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.grid.theta.lineWidth",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.grid.theta.scale",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.grid.theta.strokeDash",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.grid.theta.values",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.grid.vertical",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.guides.grid.vertical.alongOffset",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.grid.vertical.bandPosition",
+      "values": [
+        "string:boundary",
+        "string:center"
+      ]
+    },
+    {
+      "path": "plot.options.guides.grid.vertical.color",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.grid.vertical.coordinate",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.grid.vertical.count",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.grid.vertical.lineWidth",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.grid.vertical.scale",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.grid.vertical.strokeDash",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.grid.vertical.strokeDashMap",
+      "values": [
+        "string:auto"
+      ]
+    },
+    {
+      "path": "plot.options.guides.grid.vertical.values",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.grid.vertical.zIndex",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.legend",
+      "values": [
+        "boolean:false"
+      ]
+    },
+    {
+      "path": "plot.options.guides.legend.align",
+      "values": [
+        "string:center",
+        "string:left",
+        "string:right"
+      ]
+    },
+    {
+      "path": "plot.options.guides.legend.alongOffset",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.legend.at",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.legend.at.x",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.legend.at.y",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.legend.blockLayout",
+      "values": [
+        "string:column",
+        "string:row",
+        "string:wrap"
+      ]
+    },
+    {
+      "path": "plot.options.guides.legend.border",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.guides.legend.border.background",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.legend.border.color",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.legend.border.lineWidth",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.legend.border.padding",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.legend.border.strokeDash",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.legend.channels",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.legend.clipHeight",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.legend.columns",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.legend.combine",
+      "values": [
+        "string:color-size",
+        "string:color-size-shape",
+        "string:separate",
+        "string:size-shape"
+      ]
+    },
+    {
+      "path": "plot.options.guides.legend.count",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.legend.direction",
+      "values": [
+        "string:horizontal",
+        "string:vertical"
+      ]
+    },
+    {
+      "path": "plot.options.guides.legend.gradient",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.legend.gradient.length",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.legend.gradient.opacity",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.legend.gradient.thickness",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.legend.itemGap",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.legend.labels",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.legend.labels.align",
+      "values": [
+        "string:center",
+        "string:left",
+        "string:right"
+      ]
+    },
+    {
+      "path": "plot.options.guides.legend.labels.color",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.legend.labels.fontFamily",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.legend.labels.fontSize",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.legend.labels.fontWeight",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.legend.labels.format",
+      "values": [
+        "string:.0%25",
+        "string:.00%25",
+        "string:.00e",
+        "string:.00f",
+        "string:.01%25",
+        "string:.01e",
+        "string:.01f",
+        "string:.02%25",
+        "string:.02e",
+        "string:.02f",
+        "string:.03%25",
+        "string:.03e",
+        "string:.03f",
+        "string:.04%25",
+        "string:.04e",
+        "string:.04f",
+        "string:.05%25",
+        "string:.05e",
+        "string:.05f",
+        "string:.06%25",
+        "string:.06e",
+        "string:.06f",
+        "string:.07%25",
+        "string:.07e",
+        "string:.07f",
+        "string:.08%25",
+        "string:.08e",
+        "string:.08f",
+        "string:.09%25",
+        "string:.09e",
+        "string:.09f",
+        "string:.0e",
+        "string:.0f",
+        "string:.1%25",
+        "string:.10%25",
+        "string:.10e",
+        "string:.10f",
+        "string:.11%25",
+        "string:.11e",
+        "string:.11f",
+        "string:.12%25",
+        "string:.12e",
+        "string:.12f",
+        "string:.1e",
+        "string:.1f",
+        "string:.2%25",
+        "string:.2e",
+        "string:.2f",
+        "string:.3%25",
+        "string:.3e",
+        "string:.3f",
+        "string:.4%25",
+        "string:.4e",
+        "string:.4f",
+        "string:.5%25",
+        "string:.5e",
+        "string:.5f",
+        "string:.6%25",
+        "string:.6e",
+        "string:.6f",
+        "string:.7%25",
+        "string:.7e",
+        "string:.7f",
+        "string:.8%25",
+        "string:.8e",
+        "string:.8f",
+        "string:.9%25",
+        "string:.9e",
+        "string:.9f",
+        "string:%2C",
+        "string:%2C.00f",
+        "string:%2C.01f",
+        "string:%2C.02f",
+        "string:%2C.03f",
+        "string:%2C.04f",
+        "string:%2C.05f",
+        "string:%2C.06f",
+        "string:%2C.07f",
+        "string:%2C.08f",
+        "string:%2C.09f",
+        "string:%2C.0f",
+        "string:%2C.10f",
+        "string:%2C.11f",
+        "string:%2C.12f",
+        "string:%2C.1f",
+        "string:%2C.2f",
+        "string:%2C.3f",
+        "string:%2C.4f",
+        "string:%2C.5f",
+        "string:%2C.6f",
+        "string:%2C.7f",
+        "string:%2C.8f",
+        "string:%2C.9f",
+        "string:auto"
+      ]
+    },
+    {
+      "path": "plot.options.guides.legend.labels.offset",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.legend.layout",
+      "values": [
+        "string:edge",
+        "string:legacy-bottom"
+      ]
+    },
+    {
+      "path": "plot.options.guides.legend.offset",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.legend.order",
+      "values": [
+        "string:scale"
+      ]
+    },
+    {
+      "path": "plot.options.guides.legend.order.channel",
+      "values": [
+        "string:theta",
+        "string:x",
+        "string:y"
+      ]
+    },
+    {
+      "path": "plot.options.guides.legend.order.values",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.legend.overflow",
+      "values": [
+        "boolean:false"
+      ]
+    },
+    {
+      "path": "plot.options.guides.legend.overflow.maxItems",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.legend.overflow.summary",
+      "values": [
+        "string:ellipsis-count"
+      ]
+    },
+    {
+      "path": "plot.options.guides.legend.overflow.summarySymbol",
+      "values": [
+        "string:first-hidden"
+      ]
+    },
+    {
+      "path": "plot.options.guides.legend.position",
+      "values": [
+        "string:bottom",
+        "string:bottom-left",
+        "string:bottom-right",
+        "string:left",
+        "string:right",
+        "string:top",
+        "string:top-left",
+        "string:top-right"
+      ]
+    },
+    {
+      "path": "plot.options.guides.legend.representation",
+      "values": [
+        "string:gradient",
+        "string:symbols"
+      ]
+    },
+    {
+      "path": "plot.options.guides.legend.rowPadding",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.legend.symbol",
+      "values": [
+        "string:auto"
+      ]
+    },
+    {
+      "path": "plot.options.guides.legend.symbol.fill",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.legend.symbol.height",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.legend.symbol.layers",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.legend.symbol.length",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.legend.symbol.lineWidth",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.legend.symbol.opacity",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.legend.symbol.radius",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.legend.symbol.stroke",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.legend.symbol.strokeWidth",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.legend.symbol.type",
+      "values": [
+        "string:point"
+      ]
+    },
+    {
+      "path": "plot.options.guides.legend.symbol.width",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.legend.target",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.legend.title",
+      "values": [
+        "boolean:false"
+      ]
+    },
+    {
+      "path": "plot.options.guides.legend.titlePadding",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.legend.titlePosition",
+      "values": [
+        "string:bottom",
+        "string:left",
+        "string:top"
+      ]
+    },
+    {
+      "path": "plot.options.guides.legend.titleStyle",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.legend.titleStyle.align",
+      "values": [
+        "string:center",
+        "string:left",
+        "string:right"
+      ]
+    },
+    {
+      "path": "plot.options.guides.legend.titleStyle.color",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.legend.titleStyle.fontFamily",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.legend.titleStyle.fontSize",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.legend.titleStyle.fontWeight",
+      "values": []
+    },
+    {
+      "path": "plot.options.guides.legend.values",
+      "values": []
+    },
+    {
+      "path": "plot.options.interval",
+      "values": [
+        "boolean:false",
+        "string:mean",
+        "string:prediction"
+      ]
+    },
+    {
+      "path": "plot.options.jitter",
+      "values": [
+        "boolean:false"
+      ]
+    },
+    {
+      "path": "plot.options.jitter.key",
+      "values": []
+    },
+    {
+      "path": "plot.options.jitter.maxOffset",
+      "values": []
+    },
+    {
+      "path": "plot.options.jitter.maxOffset.band",
+      "values": []
+    },
+    {
+      "path": "plot.options.jitter.maxOffset.pixels",
+      "values": []
+    },
+    {
+      "path": "plot.options.jitter.seed",
+      "values": []
+    },
+    {
+      "path": "plot.options.kernel",
+      "values": [
+        "string:epanechnikov",
+        "string:gaussian",
+        "string:triangular",
+        "string:uniform"
+      ]
+    },
+    {
+      "path": "plot.options.key",
+      "values": []
+    },
+    {
+      "path": "plot.options.labels",
+      "values": [
+        "boolean:false"
+      ]
+    },
+    {
+      "path": "plot.options.labels.align",
+      "values": [
+        "string:center",
+        "string:end",
+        "string:left",
+        "string:right",
+        "string:start"
+      ]
+    },
+    {
+      "path": "plot.options.labels.baseline",
+      "values": [
+        "string:alphabetic",
+        "string:bottom",
+        "string:hanging",
+        "string:ideographic",
+        "string:middle",
+        "string:top"
+      ]
+    },
+    {
+      "path": "plot.options.labels.blockAlign",
+      "values": [
+        "string:first",
+        "string:middle"
+      ]
+    },
+    {
+      "path": "plot.options.labels.clip",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.labels.dx",
+      "values": []
+    },
+    {
+      "path": "plot.options.labels.dy",
+      "values": []
+    },
+    {
+      "path": "plot.options.labels.endpoint",
+      "values": [
+        "string:both",
+        "string:end",
+        "string:start"
+      ]
+    },
+    {
+      "path": "plot.options.labels.field",
+      "values": []
+    },
+    {
+      "path": "plot.options.labels.fill",
+      "values": []
+    },
+    {
+      "path": "plot.options.labels.fontFamily",
+      "values": []
+    },
+    {
+      "path": "plot.options.labels.fontSize",
+      "values": []
+    },
+    {
+      "path": "plot.options.labels.fontWeight",
+      "values": []
+    },
+    {
+      "path": "plot.options.labels.format",
+      "values": [
+        "string:.0%25",
+        "string:.00%25",
+        "string:.00e",
+        "string:.00f",
+        "string:.01%25",
+        "string:.01e",
+        "string:.01f",
+        "string:.02%25",
+        "string:.02e",
+        "string:.02f",
+        "string:.03%25",
+        "string:.03e",
+        "string:.03f",
+        "string:.04%25",
+        "string:.04e",
+        "string:.04f",
+        "string:.05%25",
+        "string:.05e",
+        "string:.05f",
+        "string:.06%25",
+        "string:.06e",
+        "string:.06f",
+        "string:.07%25",
+        "string:.07e",
+        "string:.07f",
+        "string:.08%25",
+        "string:.08e",
+        "string:.08f",
+        "string:.09%25",
+        "string:.09e",
+        "string:.09f",
+        "string:.0e",
+        "string:.0f",
+        "string:.1%25",
+        "string:.10%25",
+        "string:.10e",
+        "string:.10f",
+        "string:.11%25",
+        "string:.11e",
+        "string:.11f",
+        "string:.12%25",
+        "string:.12e",
+        "string:.12f",
+        "string:.1e",
+        "string:.1f",
+        "string:.2%25",
+        "string:.2e",
+        "string:.2f",
+        "string:.3%25",
+        "string:.3e",
+        "string:.3f",
+        "string:.4%25",
+        "string:.4e",
+        "string:.4f",
+        "string:.5%25",
+        "string:.5e",
+        "string:.5f",
+        "string:.6%25",
+        "string:.6e",
+        "string:.6f",
+        "string:.7%25",
+        "string:.7e",
+        "string:.7f",
+        "string:.8%25",
+        "string:.8e",
+        "string:.8f",
+        "string:.9%25",
+        "string:.9e",
+        "string:.9f",
+        "string:%2C",
+        "string:%2C.00f",
+        "string:%2C.01f",
+        "string:%2C.02f",
+        "string:%2C.03f",
+        "string:%2C.04f",
+        "string:%2C.05f",
+        "string:%2C.06f",
+        "string:%2C.07f",
+        "string:%2C.08f",
+        "string:%2C.09f",
+        "string:%2C.0f",
+        "string:%2C.10f",
+        "string:%2C.11f",
+        "string:%2C.12f",
+        "string:%2C.1f",
+        "string:%2C.2f",
+        "string:%2C.3f",
+        "string:%2C.4f",
+        "string:%2C.5f",
+        "string:%2C.6f",
+        "string:%2C.7f",
+        "string:%2C.8f",
+        "string:%2C.9f",
+        "string:auto"
+      ]
+    },
+    {
+      "path": "plot.options.labels.inheritColor",
+      "values": [
+        "boolean:false",
+        "string:fill",
+        "string:stroke"
+      ]
+    },
+    {
+      "path": "plot.options.labels.layout",
+      "values": [
+        "boolean:false"
+      ]
+    },
+    {
+      "path": "plot.options.labels.layout.axis",
+      "values": [
+        "string:both",
+        "string:x",
+        "string:y"
+      ]
+    },
+    {
+      "path": "plot.options.labels.layout.bounds",
+      "values": [
+        "string:canvas",
+        "string:plot"
+      ]
+    },
+    {
+      "path": "plot.options.labels.layout.leader",
+      "values": [
+        "boolean:false"
+      ]
+    },
+    {
+      "path": "plot.options.labels.layout.leader.opacity",
+      "values": []
+    },
+    {
+      "path": "plot.options.labels.layout.leader.stroke",
+      "values": []
+    },
+    {
+      "path": "plot.options.labels.layout.leader.strokeDash",
+      "values": []
+    },
+    {
+      "path": "plot.options.labels.layout.leader.strokeWidth",
+      "values": []
+    },
+    {
+      "path": "plot.options.labels.layout.maxDisplacement",
+      "values": []
+    },
+    {
+      "path": "plot.options.labels.layout.padding",
+      "values": []
+    },
+    {
+      "path": "plot.options.labels.lineHeight",
+      "values": []
+    },
+    {
+      "path": "plot.options.labels.missing",
+      "values": [
+        "string:error",
+        "string:skip"
+      ]
+    },
+    {
+      "path": "plot.options.labels.opacity",
+      "values": []
+    },
+    {
+      "path": "plot.options.labels.rotation",
+      "values": []
+    },
+    {
+      "path": "plot.options.labels.rotation.unit",
+      "values": [
+        "string:degrees",
+        "string:radians"
+      ]
+    },
+    {
+      "path": "plot.options.labels.rotation.value",
+      "values": []
+    },
+    {
+      "path": "plot.options.labels.value",
+      "values": []
+    },
+    {
+      "path": "plot.options.layout",
+      "values": [
+        "string:center",
+        "string:diverging",
+        "string:fill",
+        "string:overlay",
+        "string:stack"
+      ]
+    },
+    {
+      "path": "plot.options.level",
+      "values": []
+    },
+    {
+      "path": "plot.options.line",
+      "values": []
+    },
+    {
+      "path": "plot.options.line.clip",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.line.closed",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.line.curve",
+      "values": [
+        "string:basis",
+        "string:cardinal",
+        "string:linear",
+        "string:monotone",
+        "string:monotone-steffen",
+        "string:natural",
+        "string:step",
+        "string:step-after",
+        "string:step-before"
+      ]
+    },
+    {
+      "path": "plot.options.line.lineCap",
+      "values": [
+        "string:butt",
+        "string:round",
+        "string:square"
+      ]
+    },
+    {
+      "path": "plot.options.line.lineJoin",
+      "values": [
+        "string:bevel",
+        "string:miter",
+        "string:round"
+      ]
+    },
+    {
+      "path": "plot.options.line.missing",
+      "values": [
+        "string:break",
+        "string:error"
+      ]
+    },
+    {
+      "path": "plot.options.line.miterLimit",
+      "values": []
+    },
+    {
+      "path": "plot.options.line.opacity",
+      "values": []
+    },
+    {
+      "path": "plot.options.line.stroke",
+      "values": []
+    },
+    {
+      "path": "plot.options.line.strokeWidth",
+      "values": []
+    },
+    {
+      "path": "plot.options.line.tension",
+      "values": []
+    },
+    {
+      "path": "plot.options.maxBins",
+      "values": []
+    },
+    {
+      "path": "plot.options.median",
+      "values": []
+    },
+    {
+      "path": "plot.options.median.lineCap",
+      "values": [
+        "string:butt",
+        "string:round",
+        "string:square"
+      ]
+    },
+    {
+      "path": "plot.options.median.lineJoin",
+      "values": [
+        "string:bevel",
+        "string:miter",
+        "string:round"
+      ]
+    },
+    {
+      "path": "plot.options.median.miterLimit",
+      "values": []
+    },
+    {
+      "path": "plot.options.median.stroke",
+      "values": []
+    },
+    {
+      "path": "plot.options.median.strokeWidth",
+      "values": []
+    },
+    {
+      "path": "plot.options.median.width",
+      "values": [
+        "string:auto"
+      ]
+    },
+    {
+      "path": "plot.options.median.width.pixels",
+      "values": []
+    },
+    {
+      "path": "plot.options.method",
+      "values": [
+        "string:exp",
+        "string:linear",
+        "string:loess",
+        "string:polynomial"
+      ]
+    },
+    {
+      "path": "plot.options.missing",
+      "values": [
+        "string:break",
+        "string:drop",
+        "string:drop-row",
+        "string:error",
+        "string:skip"
+      ]
+    },
+    {
+      "path": "plot.options.normalization",
+      "values": [
+        "string:count",
+        "string:unit"
+      ]
+    },
+    {
+      "path": "plot.options.order",
+      "values": []
+    },
+    {
+      "path": "plot.options.orientation",
+      "values": [
+        "string:horizontal",
+        "string:vertical"
+      ]
+    },
+    {
+      "path": "plot.options.outlier",
+      "values": []
+    },
+    {
+      "path": "plot.options.outlier.lineCap",
+      "values": [
+        "string:butt",
+        "string:round",
+        "string:square"
+      ]
+    },
+    {
+      "path": "plot.options.outlier.lineJoin",
+      "values": [
+        "string:bevel",
+        "string:miter",
+        "string:round"
+      ]
+    },
+    {
+      "path": "plot.options.outlier.miterLimit",
+      "values": []
+    },
+    {
+      "path": "plot.options.outlier.opacity",
+      "values": []
+    },
+    {
+      "path": "plot.options.outlier.radius",
+      "values": []
+    },
+    {
+      "path": "plot.options.outlier.shape",
+      "values": [
+        "string:arrow",
+        "string:circle",
+        "string:cross",
+        "string:diamond",
+        "string:hexagon",
+        "string:plus",
+        "string:square",
+        "string:star",
+        "string:triangle-down",
+        "string:triangle-left",
+        "string:triangle-right",
+        "string:triangle-up",
+        "string:wedge",
+        "string:wye"
+      ]
+    },
+    {
+      "path": "plot.options.outlier.shape.normalization",
+      "values": [
+        "string:area",
+        "string:radius"
+      ]
+    },
+    {
+      "path": "plot.options.outlier.shape.polygon",
+      "values": []
+    },
+    {
+      "path": "plot.options.outliers",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.overflow",
+      "values": [
+        "string:clip",
+        "string:error"
+      ]
+    },
+    {
+      "path": "plot.options.packing",
+      "values": [
+        "boolean:false"
+      ]
+    },
+    {
+      "path": "plot.options.packing.key",
+      "values": []
+    },
+    {
+      "path": "plot.options.packing.maxOffset",
+      "values": []
+    },
+    {
+      "path": "plot.options.packing.maxOffset.band",
+      "values": []
+    },
+    {
+      "path": "plot.options.packing.maxOffset.pixels",
+      "values": []
+    },
+    {
+      "path": "plot.options.packing.overflow",
+      "values": [
+        "string:error",
+        "string:overlap"
+      ]
+    },
+    {
+      "path": "plot.options.packing.padding",
+      "values": []
+    },
+    {
+      "path": "plot.options.palette",
+      "values": []
+    },
+    {
+      "path": "plot.options.palette.negative",
+      "values": [
+        "string:accent",
+        "string:bluegreen",
+        "string:blueorange",
+        "string:bluepurple",
+        "string:blues",
+        "string:brownbluegreen",
+        "string:browns",
+        "string:category10",
+        "string:category20",
+        "string:category20b",
+        "string:category20c",
+        "string:cividis",
+        "string:dark2",
+        "string:darkblue",
+        "string:darkgold",
+        "string:darkgreen",
+        "string:darkmulti",
+        "string:darkred",
+        "string:goldgreen",
+        "string:goldorange",
+        "string:goldred",
+        "string:greenblue",
+        "string:greens",
+        "string:greys",
+        "string:inferno",
+        "string:lightgreyred",
+        "string:lightgreyteal",
+        "string:lightmulti",
+        "string:lightorange",
+        "string:lighttealblue",
+        "string:magma",
+        "string:observable10",
+        "string:orangered",
+        "string:oranges",
+        "string:paired",
+        "string:pastel1",
+        "string:pastel2",
+        "string:pinkyellowgreen",
+        "string:plasma",
+        "string:purpleblue",
+        "string:purplebluegreen",
+        "string:purplegreen",
+        "string:purpleorange",
+        "string:purplered",
+        "string:purples",
+        "string:rainbow",
+        "string:redblue",
+        "string:redgrey",
+        "string:redpurple",
+        "string:reds",
+        "string:redyellowblue",
+        "string:redyellowgreen",
+        "string:set1",
+        "string:set2",
+        "string:set3",
+        "string:sinebow",
+        "string:spectral",
+        "string:tableau10",
+        "string:tableau20",
+        "string:tealblues",
+        "string:teals",
+        "string:turbo",
+        "string:viridis",
+        "string:warmgreys",
+        "string:yellowgreen",
+        "string:yellowgreenblue",
+        "string:yelloworangebrown",
+        "string:yelloworangered"
+      ]
+    },
+    {
+      "path": "plot.options.palette.negative.count",
+      "values": []
+    },
+    {
+      "path": "plot.options.palette.negative.extent",
+      "values": []
+    },
+    {
+      "path": "plot.options.palette.negative.name",
+      "values": [
+        "string:accent",
+        "string:bluegreen",
+        "string:blueorange",
+        "string:bluepurple",
+        "string:blues",
+        "string:brownbluegreen",
+        "string:browns",
+        "string:category10",
+        "string:category20",
+        "string:category20b",
+        "string:category20c",
+        "string:cividis",
+        "string:dark2",
+        "string:darkblue",
+        "string:darkgold",
+        "string:darkgreen",
+        "string:darkmulti",
+        "string:darkred",
+        "string:goldgreen",
+        "string:goldorange",
+        "string:goldred",
+        "string:greenblue",
+        "string:greens",
+        "string:greys",
+        "string:inferno",
+        "string:lightgreyred",
+        "string:lightgreyteal",
+        "string:lightmulti",
+        "string:lightorange",
+        "string:lighttealblue",
+        "string:magma",
+        "string:observable10",
+        "string:orangered",
+        "string:oranges",
+        "string:paired",
+        "string:pastel1",
+        "string:pastel2",
+        "string:pinkyellowgreen",
+        "string:plasma",
+        "string:purpleblue",
+        "string:purplebluegreen",
+        "string:purplegreen",
+        "string:purpleorange",
+        "string:purplered",
+        "string:purples",
+        "string:rainbow",
+        "string:redblue",
+        "string:redgrey",
+        "string:redpurple",
+        "string:reds",
+        "string:redyellowblue",
+        "string:redyellowgreen",
+        "string:set1",
+        "string:set2",
+        "string:set3",
+        "string:sinebow",
+        "string:spectral",
+        "string:tableau10",
+        "string:tableau20",
+        "string:tealblues",
+        "string:teals",
+        "string:turbo",
+        "string:viridis",
+        "string:warmgreys",
+        "string:yellowgreen",
+        "string:yellowgreenblue",
+        "string:yelloworangebrown",
+        "string:yelloworangered"
+      ]
+    },
+    {
+      "path": "plot.options.palette.positive",
+      "values": [
+        "string:accent",
+        "string:bluegreen",
+        "string:blueorange",
+        "string:bluepurple",
+        "string:blues",
+        "string:brownbluegreen",
+        "string:browns",
+        "string:category10",
+        "string:category20",
+        "string:category20b",
+        "string:category20c",
+        "string:cividis",
+        "string:dark2",
+        "string:darkblue",
+        "string:darkgold",
+        "string:darkgreen",
+        "string:darkmulti",
+        "string:darkred",
+        "string:goldgreen",
+        "string:goldorange",
+        "string:goldred",
+        "string:greenblue",
+        "string:greens",
+        "string:greys",
+        "string:inferno",
+        "string:lightgreyred",
+        "string:lightgreyteal",
+        "string:lightmulti",
+        "string:lightorange",
+        "string:lighttealblue",
+        "string:magma",
+        "string:observable10",
+        "string:orangered",
+        "string:oranges",
+        "string:paired",
+        "string:pastel1",
+        "string:pastel2",
+        "string:pinkyellowgreen",
+        "string:plasma",
+        "string:purpleblue",
+        "string:purplebluegreen",
+        "string:purplegreen",
+        "string:purpleorange",
+        "string:purplered",
+        "string:purples",
+        "string:rainbow",
+        "string:redblue",
+        "string:redgrey",
+        "string:redpurple",
+        "string:reds",
+        "string:redyellowblue",
+        "string:redyellowgreen",
+        "string:set1",
+        "string:set2",
+        "string:set3",
+        "string:sinebow",
+        "string:spectral",
+        "string:tableau10",
+        "string:tableau20",
+        "string:tealblues",
+        "string:teals",
+        "string:turbo",
+        "string:viridis",
+        "string:warmgreys",
+        "string:yellowgreen",
+        "string:yellowgreenblue",
+        "string:yelloworangebrown",
+        "string:yelloworangered"
+      ]
+    },
+    {
+      "path": "plot.options.palette.positive.count",
+      "values": []
+    },
+    {
+      "path": "plot.options.palette.positive.extent",
+      "values": []
+    },
+    {
+      "path": "plot.options.palette.positive.name",
+      "values": [
+        "string:accent",
+        "string:bluegreen",
+        "string:blueorange",
+        "string:bluepurple",
+        "string:blues",
+        "string:brownbluegreen",
+        "string:browns",
+        "string:category10",
+        "string:category20",
+        "string:category20b",
+        "string:category20c",
+        "string:cividis",
+        "string:dark2",
+        "string:darkblue",
+        "string:darkgold",
+        "string:darkgreen",
+        "string:darkmulti",
+        "string:darkred",
+        "string:goldgreen",
+        "string:goldorange",
+        "string:goldred",
+        "string:greenblue",
+        "string:greens",
+        "string:greys",
+        "string:inferno",
+        "string:lightgreyred",
+        "string:lightgreyteal",
+        "string:lightmulti",
+        "string:lightorange",
+        "string:lighttealblue",
+        "string:magma",
+        "string:observable10",
+        "string:orangered",
+        "string:oranges",
+        "string:paired",
+        "string:pastel1",
+        "string:pastel2",
+        "string:pinkyellowgreen",
+        "string:plasma",
+        "string:purpleblue",
+        "string:purplebluegreen",
+        "string:purplegreen",
+        "string:purpleorange",
+        "string:purplered",
+        "string:purples",
+        "string:rainbow",
+        "string:redblue",
+        "string:redgrey",
+        "string:redpurple",
+        "string:reds",
+        "string:redyellowblue",
+        "string:redyellowgreen",
+        "string:set1",
+        "string:set2",
+        "string:set3",
+        "string:sinebow",
+        "string:spectral",
+        "string:tableau10",
+        "string:tableau20",
+        "string:tealblues",
+        "string:teals",
+        "string:turbo",
+        "string:viridis",
+        "string:warmgreys",
+        "string:yellowgreen",
+        "string:yellowgreenblue",
+        "string:yelloworangebrown",
+        "string:yelloworangered"
+      ]
+    },
+    {
+      "path": "plot.options.placement",
+      "values": [
+        "string:plot-last",
+        "string:source"
+      ]
+    },
+    {
+      "path": "plot.options.point",
+      "values": []
+    },
+    {
+      "path": "plot.options.point.clip",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.point.fill",
+      "values": []
+    },
+    {
+      "path": "plot.options.point.lineCap",
+      "values": [
+        "string:butt",
+        "string:round",
+        "string:square"
+      ]
+    },
+    {
+      "path": "plot.options.point.lineJoin",
+      "values": [
+        "string:bevel",
+        "string:miter",
+        "string:round"
+      ]
+    },
+    {
+      "path": "plot.options.point.miterLimit",
+      "values": []
+    },
+    {
+      "path": "plot.options.point.opacity",
+      "values": []
+    },
+    {
+      "path": "plot.options.point.radius",
+      "values": []
+    },
+    {
+      "path": "plot.options.point.shape",
+      "values": [
+        "string:arrow",
+        "string:circle",
+        "string:cross",
+        "string:diamond",
+        "string:hexagon",
+        "string:plus",
+        "string:square",
+        "string:star",
+        "string:triangle-down",
+        "string:triangle-left",
+        "string:triangle-right",
+        "string:triangle-up",
+        "string:wedge",
+        "string:wye"
+      ]
+    },
+    {
+      "path": "plot.options.point.shape.normalization",
+      "values": [
+        "string:area",
+        "string:radius"
+      ]
+    },
+    {
+      "path": "plot.options.point.shape.polygon",
+      "values": []
+    },
+    {
+      "path": "plot.options.point.stroke",
+      "values": [
+        "boolean:false"
+      ]
+    },
+    {
+      "path": "plot.options.point.strokeWidth",
+      "values": []
+    },
+    {
+      "path": "plot.options.points",
+      "values": [
+        "boolean:false"
+      ]
+    },
+    {
+      "path": "plot.options.points.jitter",
+      "values": [
+        "boolean:false"
+      ]
+    },
+    {
+      "path": "plot.options.points.jitter.key",
+      "values": []
+    },
+    {
+      "path": "plot.options.points.jitter.maxOffset",
+      "values": []
+    },
+    {
+      "path": "plot.options.points.jitter.maxOffset.band",
+      "values": []
+    },
+    {
+      "path": "plot.options.points.jitter.seed",
+      "values": []
+    },
+    {
+      "path": "plot.options.points.packing",
+      "values": [
+        "boolean:false"
+      ]
+    },
+    {
+      "path": "plot.options.points.packing.key",
+      "values": []
+    },
+    {
+      "path": "plot.options.points.packing.maxOffset",
+      "values": []
+    },
+    {
+      "path": "plot.options.points.packing.maxOffset.band",
+      "values": []
+    },
+    {
+      "path": "plot.options.points.packing.maxOffset.pixels",
+      "values": []
+    },
+    {
+      "path": "plot.options.points.packing.overflow",
+      "values": [
+        "string:error",
+        "string:overlap"
+      ]
+    },
+    {
+      "path": "plot.options.points.packing.padding",
+      "values": []
+    },
+    {
+      "path": "plot.options.points.point",
+      "values": []
+    },
+    {
+      "path": "plot.options.points.point.clip",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.points.point.fill",
+      "values": []
+    },
+    {
+      "path": "plot.options.points.point.lineCap",
+      "values": [
+        "string:butt",
+        "string:round",
+        "string:square"
+      ]
+    },
+    {
+      "path": "plot.options.points.point.lineJoin",
+      "values": [
+        "string:bevel",
+        "string:miter",
+        "string:round"
+      ]
+    },
+    {
+      "path": "plot.options.points.point.miterLimit",
+      "values": []
+    },
+    {
+      "path": "plot.options.points.point.opacity",
+      "values": []
+    },
+    {
+      "path": "plot.options.points.point.radius",
+      "values": []
+    },
+    {
+      "path": "plot.options.points.point.shape",
+      "values": [
+        "string:arrow",
+        "string:circle",
+        "string:cross",
+        "string:diamond",
+        "string:hexagon",
+        "string:plus",
+        "string:square",
+        "string:star",
+        "string:triangle-down",
+        "string:triangle-left",
+        "string:triangle-right",
+        "string:triangle-up",
+        "string:wedge",
+        "string:wye"
+      ]
+    },
+    {
+      "path": "plot.options.points.point.shape.normalization",
+      "values": [
+        "string:area",
+        "string:radius"
+      ]
+    },
+    {
+      "path": "plot.options.points.point.shape.polygon",
+      "values": []
+    },
+    {
+      "path": "plot.options.points.point.stroke",
+      "values": [
+        "boolean:false"
+      ]
+    },
+    {
+      "path": "plot.options.points.point.strokeWidth",
+      "values": []
+    },
+    {
+      "path": "plot.options.points.shape",
+      "values": []
+    },
+    {
+      "path": "plot.options.points.shape.field",
+      "values": []
+    },
+    {
+      "path": "plot.options.points.shape.fieldType",
+      "values": [
+        "string:nominal"
+      ]
+    },
+    {
+      "path": "plot.options.points.shape.scale",
+      "values": []
+    },
+    {
+      "path": "plot.options.points.shape.scale.domain",
+      "values": [
+        "string:auto"
+      ]
+    },
+    {
+      "path": "plot.options.points.shape.scale.id",
+      "values": []
+    },
+    {
+      "path": "plot.options.points.shape.scale.range",
+      "values": [
+        "string:auto"
+      ]
+    },
+    {
+      "path": "plot.options.points.shape.scale.type",
+      "values": [
+        "string:ordinal"
+      ]
+    },
+    {
+      "path": "plot.options.points.shape.scale.unknown",
+      "values": [
+        "string:arrow",
+        "string:circle",
+        "string:cross",
+        "string:diamond",
+        "string:hexagon",
+        "string:plus",
+        "string:square",
+        "string:star",
+        "string:triangle-down",
+        "string:triangle-left",
+        "string:triangle-right",
+        "string:triangle-up",
+        "string:wedge",
+        "string:wye"
+      ]
+    },
+    {
+      "path": "plot.options.points.size",
+      "values": []
+    },
+    {
+      "path": "plot.options.points.size.field",
+      "values": []
+    },
+    {
+      "path": "plot.options.points.size.fieldType",
+      "values": [
+        "string:nominal",
+        "string:ordinal",
+        "string:quantitative"
+      ]
+    },
+    {
+      "path": "plot.options.points.size.scale",
+      "values": []
+    },
+    {
+      "path": "plot.options.points.size.scale.base",
+      "values": []
+    },
+    {
+      "path": "plot.options.points.size.scale.clamp",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.points.size.scale.domain",
+      "values": [
+        "string:auto"
+      ]
+    },
+    {
+      "path": "plot.options.points.size.scale.exponent",
+      "values": []
+    },
+    {
+      "path": "plot.options.points.size.scale.id",
+      "values": []
+    },
+    {
+      "path": "plot.options.points.size.scale.range",
+      "values": [
+        "string:auto"
+      ]
+    },
+    {
+      "path": "plot.options.points.size.scale.reverse",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.points.size.scale.type",
+      "values": [
+        "string:linear",
+        "string:log",
+        "string:ordinal",
+        "string:pow",
+        "string:quantile",
+        "string:quantize",
+        "string:sqrt",
+        "string:threshold"
+      ]
+    },
+    {
+      "path": "plot.options.points.size.scale.unknown",
+      "values": []
+    },
+    {
+      "path": "plot.options.points.size.value",
+      "values": []
+    },
+    {
+      "path": "plot.options.points.type",
+      "values": [
+        "string:beeswarm",
+        "string:strip"
+      ]
+    },
+    {
+      "path": "plot.options.predict",
+      "values": []
+    },
+    {
+      "path": "plot.options.predict.domain",
+      "values": []
+    },
+    {
+      "path": "plot.options.predict.steps",
+      "values": []
+    },
+    {
+      "path": "plot.options.predict.values",
+      "values": []
+    },
+    {
+      "path": "plot.options.radius",
+      "values": []
+    },
+    {
+      "path": "plot.options.radius.aggregate",
+      "values": [
+        "string:count",
+        "string:sum"
+      ]
+    },
+    {
+      "path": "plot.options.radius.field",
+      "values": []
+    },
+    {
+      "path": "plot.options.radius.fieldType",
+      "values": [
+        "string:quantitative"
+      ]
+    },
+    {
+      "path": "plot.options.radius.scale",
+      "values": []
+    },
+    {
+      "path": "plot.options.radius.scale.base",
+      "values": []
+    },
+    {
+      "path": "plot.options.radius.scale.clamp",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.radius.scale.constant",
+      "values": []
+    },
+    {
+      "path": "plot.options.radius.scale.domain",
+      "values": [
+        "string:auto"
+      ]
+    },
+    {
+      "path": "plot.options.radius.scale.exponent",
+      "values": []
+    },
+    {
+      "path": "plot.options.radius.scale.id",
+      "values": []
+    },
+    {
+      "path": "plot.options.radius.scale.nice",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.radius.scale.range",
+      "values": [
+        "string:auto"
+      ]
+    },
+    {
+      "path": "plot.options.radius.scale.reverse",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.radius.scale.type",
+      "values": [
+        "string:linear",
+        "string:log",
+        "string:pow",
+        "string:sqrt",
+        "string:symlog"
+      ]
+    },
+    {
+      "path": "plot.options.radius.scale.zero",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.radiusScale",
+      "values": []
+    },
+    {
+      "path": "plot.options.radiusScale.clamp",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.radiusScale.domain",
+      "values": [
+        "string:auto"
+      ]
+    },
+    {
+      "path": "plot.options.radiusScale.id",
+      "values": []
+    },
+    {
+      "path": "plot.options.radiusScale.nice",
+      "values": [
+        "boolean:false"
+      ]
+    },
+    {
+      "path": "plot.options.radiusScale.range",
+      "values": [
+        "string:auto"
+      ]
+    },
+    {
+      "path": "plot.options.radiusScale.reverse",
+      "values": [
+        "boolean:false"
+      ]
+    },
+    {
+      "path": "plot.options.radiusScale.type",
+      "values": [
+        "string:linear"
+      ]
+    },
+    {
+      "path": "plot.options.radiusScale.zero",
+      "values": [
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.rect",
+      "values": []
+    },
+    {
+      "path": "plot.options.rect.clip",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.rect.cornerRadius",
+      "values": []
+    },
+    {
+      "path": "plot.options.rect.cornerRadiusBottomLeft",
+      "values": []
+    },
+    {
+      "path": "plot.options.rect.cornerRadiusBottomRight",
+      "values": []
+    },
+    {
+      "path": "plot.options.rect.cornerRadiusTopLeft",
+      "values": []
+    },
+    {
+      "path": "plot.options.rect.cornerRadiusTopRight",
+      "values": []
+    },
+    {
+      "path": "plot.options.rect.lineCap",
+      "values": [
+        "string:butt",
+        "string:round",
+        "string:square"
+      ]
+    },
+    {
+      "path": "plot.options.rect.lineJoin",
+      "values": [
+        "string:bevel",
+        "string:miter",
+        "string:round"
+      ]
+    },
+    {
+      "path": "plot.options.rect.miterLimit",
+      "values": []
+    },
+    {
+      "path": "plot.options.rect.opacity",
+      "values": []
+    },
+    {
+      "path": "plot.options.rect.stroke",
+      "values": [
+        "boolean:false"
+      ]
+    },
+    {
+      "path": "plot.options.rect.strokeWidth",
+      "values": []
+    },
+    {
+      "path": "plot.options.resolve",
+      "values": [
+        "string:independent",
+        "string:shared"
+      ]
+    },
+    {
+      "path": "plot.options.robustIterations",
+      "values": []
+    },
+    {
+      "path": "plot.options.shape",
+      "values": []
+    },
+    {
+      "path": "plot.options.shape.field",
+      "values": []
+    },
+    {
+      "path": "plot.options.shape.fieldType",
+      "values": [
+        "string:nominal"
+      ]
+    },
+    {
+      "path": "plot.options.shape.scale",
+      "values": []
+    },
+    {
+      "path": "plot.options.shape.scale.domain",
+      "values": [
+        "string:auto"
+      ]
+    },
+    {
+      "path": "plot.options.shape.scale.id",
+      "values": []
+    },
+    {
+      "path": "plot.options.shape.scale.range",
+      "values": [
+        "string:auto"
+      ]
+    },
+    {
+      "path": "plot.options.shape.scale.type",
+      "values": [
+        "string:ordinal"
+      ]
+    },
+    {
+      "path": "plot.options.shape.scale.unknown",
+      "values": [
+        "string:arrow",
+        "string:circle",
+        "string:cross",
+        "string:diamond",
+        "string:hexagon",
+        "string:plus",
+        "string:square",
+        "string:star",
+        "string:triangle-down",
+        "string:triangle-left",
+        "string:triangle-right",
+        "string:triangle-up",
+        "string:wedge",
+        "string:wye"
+      ]
+    },
+    {
+      "path": "plot.options.shape.scale.unknown.normalization",
+      "values": [
+        "string:area",
+        "string:radius"
+      ]
+    },
+    {
+      "path": "plot.options.shape.scale.unknown.polygon",
+      "values": []
+    },
+    {
+      "path": "plot.options.side",
+      "values": [
+        "string:after",
+        "string:before"
+      ]
+    },
+    {
+      "path": "plot.options.size",
+      "values": []
+    },
+    {
+      "path": "plot.options.size.field",
+      "values": []
+    },
+    {
+      "path": "plot.options.size.fieldType",
+      "values": [
+        "string:nominal",
+        "string:ordinal",
+        "string:quantitative"
+      ]
+    },
+    {
+      "path": "plot.options.size.scale",
+      "values": []
+    },
+    {
+      "path": "plot.options.size.scale.base",
+      "values": []
+    },
+    {
+      "path": "plot.options.size.scale.clamp",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.size.scale.domain",
+      "values": [
+        "string:auto"
+      ]
+    },
+    {
+      "path": "plot.options.size.scale.exponent",
+      "values": []
+    },
+    {
+      "path": "plot.options.size.scale.id",
+      "values": []
+    },
+    {
+      "path": "plot.options.size.scale.range",
+      "values": [
+        "string:auto"
+      ]
+    },
+    {
+      "path": "plot.options.size.scale.reverse",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.size.scale.type",
+      "values": [
+        "string:linear",
+        "string:log",
+        "string:ordinal",
+        "string:pow",
+        "string:quantile",
+        "string:quantize",
+        "string:sqrt",
+        "string:threshold"
+      ]
+    },
+    {
+      "path": "plot.options.size.scale.unknown",
+      "values": []
+    },
+    {
+      "path": "plot.options.size.value",
+      "values": []
+    },
+    {
+      "path": "plot.options.sourceBinding",
+      "values": [
+        "string:fixed",
+        "string:follow"
+      ]
+    },
+    {
+      "path": "plot.options.span",
+      "values": []
+    },
+    {
+      "path": "plot.options.split",
+      "values": []
+    },
+    {
+      "path": "plot.options.split.domain",
+      "values": []
+    },
+    {
+      "path": "plot.options.split.field",
+      "values": []
+    },
+    {
+      "path": "plot.options.stack",
+      "values": [
+        "string:normalize",
+        "string:zero"
+      ]
+    },
+    {
+      "path": "plot.options.start",
+      "values": []
+    },
+    {
+      "path": "plot.options.start.field",
+      "values": []
+    },
+    {
+      "path": "plot.options.start.fieldType",
+      "values": [
+        "string:quantitative"
+      ]
+    },
+    {
+      "path": "plot.options.start.scale",
+      "values": []
+    },
+    {
+      "path": "plot.options.start.scale.base",
+      "values": []
+    },
+    {
+      "path": "plot.options.start.scale.clamp",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.start.scale.constant",
+      "values": []
+    },
+    {
+      "path": "plot.options.start.scale.domain",
+      "values": [
+        "string:auto"
+      ]
+    },
+    {
+      "path": "plot.options.start.scale.exponent",
+      "values": []
+    },
+    {
+      "path": "plot.options.start.scale.id",
+      "values": []
+    },
+    {
+      "path": "plot.options.start.scale.nice",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.start.scale.nice.count",
+      "values": []
+    },
+    {
+      "path": "plot.options.start.scale.range",
+      "values": [
+        "string:auto"
+      ]
+    },
+    {
+      "path": "plot.options.start.scale.reverse",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.start.scale.type",
+      "values": [
+        "string:linear",
+        "string:log",
+        "string:pow",
+        "string:sqrt",
+        "string:symlog"
+      ]
+    },
+    {
+      "path": "plot.options.start.scale.zero",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.startPoint",
+      "values": []
+    },
+    {
+      "path": "plot.options.startPoint.clip",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.startPoint.fill",
+      "values": []
+    },
+    {
+      "path": "plot.options.startPoint.lineCap",
+      "values": [
+        "string:butt",
+        "string:round",
+        "string:square"
+      ]
+    },
+    {
+      "path": "plot.options.startPoint.lineJoin",
+      "values": [
+        "string:bevel",
+        "string:miter",
+        "string:round"
+      ]
+    },
+    {
+      "path": "plot.options.startPoint.miterLimit",
+      "values": []
+    },
+    {
+      "path": "plot.options.startPoint.opacity",
+      "values": []
+    },
+    {
+      "path": "plot.options.startPoint.radius",
+      "values": []
+    },
+    {
+      "path": "plot.options.startPoint.shape",
+      "values": [
+        "string:arrow",
+        "string:circle",
+        "string:cross",
+        "string:diamond",
+        "string:hexagon",
+        "string:plus",
+        "string:square",
+        "string:star",
+        "string:triangle-down",
+        "string:triangle-left",
+        "string:triangle-right",
+        "string:triangle-up",
+        "string:wedge",
+        "string:wye"
+      ]
+    },
+    {
+      "path": "plot.options.startPoint.shape.normalization",
+      "values": [
+        "string:area",
+        "string:radius"
+      ]
+    },
+    {
+      "path": "plot.options.startPoint.shape.polygon",
+      "values": []
+    },
+    {
+      "path": "plot.options.startPoint.stroke",
+      "values": [
+        "boolean:false"
+      ]
+    },
+    {
+      "path": "plot.options.startPoint.strokeWidth",
+      "values": []
+    },
+    {
+      "path": "plot.options.stem",
+      "values": []
+    },
+    {
+      "path": "plot.options.stem.clip",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.stem.lineCap",
+      "values": [
+        "string:butt",
+        "string:round",
+        "string:square"
+      ]
+    },
+    {
+      "path": "plot.options.stem.lineJoin",
+      "values": [
+        "string:bevel",
+        "string:miter",
+        "string:round"
+      ]
+    },
+    {
+      "path": "plot.options.stem.miterLimit",
+      "values": []
+    },
+    {
+      "path": "plot.options.stem.opacity",
+      "values": []
+    },
+    {
+      "path": "plot.options.stem.stroke",
+      "values": []
+    },
+    {
+      "path": "plot.options.stem.strokeDash",
+      "values": [
+        "string:dashdot",
+        "string:dashed",
+        "string:dotted",
+        "string:solid"
+      ]
+    },
+    {
+      "path": "plot.options.stem.strokeWidth",
+      "values": []
+    },
+    {
+      "path": "plot.options.steps",
+      "values": []
+    },
+    {
+      "path": "plot.options.stroke",
+      "values": []
+    },
+    {
+      "path": "plot.options.stroke.field",
+      "values": []
+    },
+    {
+      "path": "plot.options.stroke.fieldType",
+      "values": [
+        "string:nominal",
+        "string:ordinal",
+        "string:quantitative",
+        "string:temporal"
+      ]
+    },
+    {
+      "path": "plot.options.stroke.scale",
+      "values": []
+    },
+    {
+      "path": "plot.options.stroke.scale.base",
+      "values": []
+    },
+    {
+      "path": "plot.options.stroke.scale.clamp",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.stroke.scale.constant",
+      "values": []
+    },
+    {
+      "path": "plot.options.stroke.scale.domain",
+      "values": [
+        "string:auto"
+      ]
+    },
+    {
+      "path": "plot.options.stroke.scale.exponent",
+      "values": []
+    },
+    {
+      "path": "plot.options.stroke.scale.gamma",
+      "values": []
+    },
+    {
+      "path": "plot.options.stroke.scale.id",
+      "values": []
+    },
+    {
+      "path": "plot.options.stroke.scale.interpolate",
+      "values": [
+        "string:cubehelix",
+        "string:cubehelix-long",
+        "string:hcl",
+        "string:hcl-long",
+        "string:hsl",
+        "string:hsl-long",
+        "string:lab",
+        "string:rgb"
+      ]
+    },
+    {
+      "path": "plot.options.stroke.scale.midpoint",
+      "values": [
+        "string:auto"
+      ]
+    },
+    {
+      "path": "plot.options.stroke.scale.palette",
+      "values": [
+        "string:accent",
+        "string:bluegreen",
+        "string:blueorange",
+        "string:bluepurple",
+        "string:blues",
+        "string:brownbluegreen",
+        "string:browns",
+        "string:category10",
+        "string:category20",
+        "string:category20b",
+        "string:category20c",
+        "string:cividis",
+        "string:dark2",
+        "string:darkblue",
+        "string:darkgold",
+        "string:darkgreen",
+        "string:darkmulti",
+        "string:darkred",
+        "string:goldgreen",
+        "string:goldorange",
+        "string:goldred",
+        "string:greenblue",
+        "string:greens",
+        "string:greys",
+        "string:inferno",
+        "string:lightgreyred",
+        "string:lightgreyteal",
+        "string:lightmulti",
+        "string:lightorange",
+        "string:lighttealblue",
+        "string:magma",
+        "string:observable10",
+        "string:orangered",
+        "string:oranges",
+        "string:paired",
+        "string:pastel1",
+        "string:pastel2",
+        "string:pinkyellowgreen",
+        "string:plasma",
+        "string:purpleblue",
+        "string:purplebluegreen",
+        "string:purplegreen",
+        "string:purpleorange",
+        "string:purplered",
+        "string:purples",
+        "string:rainbow",
+        "string:redblue",
+        "string:redgrey",
+        "string:redpurple",
+        "string:reds",
+        "string:redyellowblue",
+        "string:redyellowgreen",
+        "string:set1",
+        "string:set2",
+        "string:set3",
+        "string:sinebow",
+        "string:spectral",
+        "string:tableau10",
+        "string:tableau20",
+        "string:tealblues",
+        "string:teals",
+        "string:turbo",
+        "string:viridis",
+        "string:warmgreys",
+        "string:yellowgreen",
+        "string:yellowgreenblue",
+        "string:yelloworangebrown",
+        "string:yelloworangered"
+      ]
+    },
+    {
+      "path": "plot.options.stroke.scale.palette.count",
+      "values": []
+    },
+    {
+      "path": "plot.options.stroke.scale.palette.extent",
+      "values": []
+    },
+    {
+      "path": "plot.options.stroke.scale.palette.name",
+      "values": [
+        "string:accent",
+        "string:bluegreen",
+        "string:blueorange",
+        "string:bluepurple",
+        "string:blues",
+        "string:brownbluegreen",
+        "string:browns",
+        "string:category10",
+        "string:category20",
+        "string:category20b",
+        "string:category20c",
+        "string:cividis",
+        "string:dark2",
+        "string:darkblue",
+        "string:darkgold",
+        "string:darkgreen",
+        "string:darkmulti",
+        "string:darkred",
+        "string:goldgreen",
+        "string:goldorange",
+        "string:goldred",
+        "string:greenblue",
+        "string:greens",
+        "string:greys",
+        "string:inferno",
+        "string:lightgreyred",
+        "string:lightgreyteal",
+        "string:lightmulti",
+        "string:lightorange",
+        "string:lighttealblue",
+        "string:magma",
+        "string:observable10",
+        "string:orangered",
+        "string:oranges",
+        "string:paired",
+        "string:pastel1",
+        "string:pastel2",
+        "string:pinkyellowgreen",
+        "string:plasma",
+        "string:purpleblue",
+        "string:purplebluegreen",
+        "string:purplegreen",
+        "string:purpleorange",
+        "string:purplered",
+        "string:purples",
+        "string:rainbow",
+        "string:redblue",
+        "string:redgrey",
+        "string:redpurple",
+        "string:reds",
+        "string:redyellowblue",
+        "string:redyellowgreen",
+        "string:set1",
+        "string:set2",
+        "string:set3",
+        "string:sinebow",
+        "string:spectral",
+        "string:tableau10",
+        "string:tableau20",
+        "string:tealblues",
+        "string:teals",
+        "string:turbo",
+        "string:viridis",
+        "string:warmgreys",
+        "string:yellowgreen",
+        "string:yellowgreenblue",
+        "string:yelloworangebrown",
+        "string:yelloworangered"
+      ]
+    },
+    {
+      "path": "plot.options.stroke.scale.range",
+      "values": [
+        "string:auto"
+      ]
+    },
+    {
+      "path": "plot.options.stroke.scale.range.palette",
+      "values": [
+        "string:accent",
+        "string:bluegreen",
+        "string:blueorange",
+        "string:bluepurple",
+        "string:blues",
+        "string:brownbluegreen",
+        "string:browns",
+        "string:category10",
+        "string:category20",
+        "string:category20b",
+        "string:category20c",
+        "string:cividis",
+        "string:dark2",
+        "string:darkblue",
+        "string:darkgold",
+        "string:darkgreen",
+        "string:darkmulti",
+        "string:darkred",
+        "string:goldgreen",
+        "string:goldorange",
+        "string:goldred",
+        "string:greenblue",
+        "string:greens",
+        "string:greys",
+        "string:inferno",
+        "string:lightgreyred",
+        "string:lightgreyteal",
+        "string:lightmulti",
+        "string:lightorange",
+        "string:lighttealblue",
+        "string:magma",
+        "string:observable10",
+        "string:orangered",
+        "string:oranges",
+        "string:paired",
+        "string:pastel1",
+        "string:pastel2",
+        "string:pinkyellowgreen",
+        "string:plasma",
+        "string:purpleblue",
+        "string:purplebluegreen",
+        "string:purplegreen",
+        "string:purpleorange",
+        "string:purplered",
+        "string:purples",
+        "string:rainbow",
+        "string:redblue",
+        "string:redgrey",
+        "string:redpurple",
+        "string:reds",
+        "string:redyellowblue",
+        "string:redyellowgreen",
+        "string:set1",
+        "string:set2",
+        "string:set3",
+        "string:sinebow",
+        "string:spectral",
+        "string:tableau10",
+        "string:tableau20",
+        "string:tealblues",
+        "string:teals",
+        "string:turbo",
+        "string:viridis",
+        "string:warmgreys",
+        "string:yellowgreen",
+        "string:yellowgreenblue",
+        "string:yelloworangebrown",
+        "string:yelloworangered"
+      ]
+    },
+    {
+      "path": "plot.options.stroke.scale.reverse",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.stroke.scale.type",
+      "values": [
+        "string:log",
+        "string:ordinal",
+        "string:pow",
+        "string:quantile",
+        "string:quantize",
+        "string:sequential",
+        "string:sqrt",
+        "string:symlog",
+        "string:threshold"
+      ]
+    },
+    {
+      "path": "plot.options.stroke.scale.unknown",
+      "values": []
+    },
+    {
+      "path": "plot.options.stroke.scale.whitePoint",
+      "values": [
+        "string:d50",
+        "string:d65"
+      ]
+    },
+    {
+      "path": "plot.options.stroke.temporalUnit",
+      "values": [
+        "string:auto",
+        "string:timestamp",
+        "string:year"
+      ]
+    },
+    {
+      "path": "plot.options.strokeDash",
+      "values": []
+    },
+    {
+      "path": "plot.options.strokeDash.field",
+      "values": []
+    },
+    {
+      "path": "plot.options.strokeDash.fieldType",
+      "values": [
+        "string:nominal",
+        "string:ordinal"
+      ]
+    },
+    {
+      "path": "plot.options.strokeDash.scale",
+      "values": []
+    },
+    {
+      "path": "plot.options.strokeDash.scale.domain",
+      "values": [
+        "string:auto"
+      ]
+    },
+    {
+      "path": "plot.options.strokeDash.scale.id",
+      "values": []
+    },
+    {
+      "path": "plot.options.strokeDash.scale.range",
+      "values": [
+        "string:auto"
+      ]
+    },
+    {
+      "path": "plot.options.strokeDash.scale.type",
+      "values": [
+        "string:ordinal"
+      ]
+    },
+    {
+      "path": "plot.options.strokeDash.scale.unknown",
+      "values": [
+        "string:dashdot",
+        "string:dashed",
+        "string:dotted",
+        "string:solid"
+      ]
+    },
+    {
+      "path": "plot.options.strokeDash.value",
+      "values": [
+        "string:dashdot",
+        "string:dashed",
+        "string:dotted",
+        "string:solid"
+      ]
+    },
+    {
+      "path": "plot.options.style",
+      "values": []
+    },
+    {
+      "path": "plot.options.style.align",
+      "values": [
+        "string:center",
+        "string:end",
+        "string:left",
+        "string:right",
+        "string:start"
+      ]
+    },
+    {
+      "path": "plot.options.style.baseline",
+      "values": [
+        "string:alphabetic",
+        "string:bottom",
+        "string:hanging",
+        "string:ideographic",
+        "string:middle",
+        "string:top"
+      ]
+    },
+    {
+      "path": "plot.options.style.blockAlign",
+      "values": [
+        "string:first",
+        "string:middle"
+      ]
+    },
+    {
+      "path": "plot.options.style.clip",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.style.dx",
+      "values": []
+    },
+    {
+      "path": "plot.options.style.dy",
+      "values": []
+    },
+    {
+      "path": "plot.options.style.fill",
+      "values": []
+    },
+    {
+      "path": "plot.options.style.fontFamily",
+      "values": []
+    },
+    {
+      "path": "plot.options.style.fontSize",
+      "values": []
+    },
+    {
+      "path": "plot.options.style.fontWeight",
+      "values": []
+    },
+    {
+      "path": "plot.options.style.lineHeight",
+      "values": []
+    },
+    {
+      "path": "plot.options.style.missing",
+      "values": [
+        "string:error",
+        "string:skip"
+      ]
+    },
+    {
+      "path": "plot.options.style.opacity",
+      "values": []
+    },
+    {
+      "path": "plot.options.style.rotation",
+      "values": []
+    },
+    {
+      "path": "plot.options.style.rotation.unit",
+      "values": [
+        "string:degrees",
+        "string:radians"
+      ]
+    },
+    {
+      "path": "plot.options.style.rotation.value",
+      "values": []
+    },
+    {
+      "path": "plot.options.summary",
+      "values": [
+        "boolean:false",
+        "string:max",
+        "string:mean",
+        "string:median",
+        "string:min",
+        "string:sum"
+      ]
+    },
+    {
+      "path": "plot.options.summary.box",
+      "values": []
+    },
+    {
+      "path": "plot.options.summary.box.cornerRadius",
+      "values": []
+    },
+    {
+      "path": "plot.options.summary.box.cornerRadiusBottomLeft",
+      "values": []
+    },
+    {
+      "path": "plot.options.summary.box.cornerRadiusBottomRight",
+      "values": []
+    },
+    {
+      "path": "plot.options.summary.box.cornerRadiusTopLeft",
+      "values": []
+    },
+    {
+      "path": "plot.options.summary.box.cornerRadiusTopRight",
+      "values": []
+    },
+    {
+      "path": "plot.options.summary.box.fill",
+      "values": []
+    },
+    {
+      "path": "plot.options.summary.box.lineCap",
+      "values": [
+        "string:butt",
+        "string:round",
+        "string:square"
+      ]
+    },
+    {
+      "path": "plot.options.summary.box.lineJoin",
+      "values": [
+        "string:bevel",
+        "string:miter",
+        "string:round"
+      ]
+    },
+    {
+      "path": "plot.options.summary.box.miterLimit",
+      "values": []
+    },
+    {
+      "path": "plot.options.summary.box.opacity",
+      "values": []
+    },
+    {
+      "path": "plot.options.summary.box.stroke",
+      "values": []
+    },
+    {
+      "path": "plot.options.summary.box.strokeWidth",
+      "values": []
+    },
+    {
+      "path": "plot.options.summary.center",
+      "values": [
+        "string:mean",
+        "string:median"
+      ]
+    },
+    {
+      "path": "plot.options.summary.errorBar",
+      "values": []
+    },
+    {
+      "path": "plot.options.summary.errorBar.caps",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.summary.errorBar.capSize",
+      "values": []
+    },
+    {
+      "path": "plot.options.summary.errorBar.lineCap",
+      "values": [
+        "string:butt",
+        "string:round",
+        "string:square"
+      ]
+    },
+    {
+      "path": "plot.options.summary.errorBar.lineJoin",
+      "values": [
+        "string:bevel",
+        "string:miter",
+        "string:round"
+      ]
+    },
+    {
+      "path": "plot.options.summary.errorBar.miterLimit",
+      "values": []
+    },
+    {
+      "path": "plot.options.summary.errorBar.opacity",
+      "values": []
+    },
+    {
+      "path": "plot.options.summary.errorBar.stroke",
+      "values": []
+    },
+    {
+      "path": "plot.options.summary.errorBar.strokeDash",
+      "values": [
+        "string:dashdot",
+        "string:dashed",
+        "string:dotted",
+        "string:solid"
+      ]
+    },
+    {
+      "path": "plot.options.summary.errorBar.strokeWidth",
+      "values": []
+    },
+    {
+      "path": "plot.options.summary.extent",
+      "values": [
+        "string:ci",
+        "string:iqr",
+        "string:stderr",
+        "string:stdev"
+      ]
+    },
+    {
+      "path": "plot.options.summary.level",
+      "values": []
+    },
+    {
+      "path": "plot.options.summary.max",
+      "values": []
+    },
+    {
+      "path": "plot.options.summary.median",
+      "values": []
+    },
+    {
+      "path": "plot.options.summary.median.lineCap",
+      "values": [
+        "string:butt",
+        "string:round",
+        "string:square"
+      ]
+    },
+    {
+      "path": "plot.options.summary.median.lineJoin",
+      "values": [
+        "string:bevel",
+        "string:miter",
+        "string:round"
+      ]
+    },
+    {
+      "path": "plot.options.summary.median.miterLimit",
+      "values": []
+    },
+    {
+      "path": "plot.options.summary.median.stroke",
+      "values": []
+    },
+    {
+      "path": "plot.options.summary.median.strokeWidth",
+      "values": []
+    },
+    {
+      "path": "plot.options.summary.median.width",
+      "values": [
+        "string:auto"
+      ]
+    },
+    {
+      "path": "plot.options.summary.median.width.pixels",
+      "values": []
+    },
+    {
+      "path": "plot.options.summary.method",
+      "values": [
+        "string:normal",
+        "string:student-t"
+      ]
+    },
+    {
+      "path": "plot.options.summary.min",
+      "values": []
+    },
+    {
+      "path": "plot.options.summary.outlier",
+      "values": []
+    },
+    {
+      "path": "plot.options.summary.outlier.lineCap",
+      "values": [
+        "string:butt",
+        "string:round",
+        "string:square"
+      ]
+    },
+    {
+      "path": "plot.options.summary.outlier.lineJoin",
+      "values": [
+        "string:bevel",
+        "string:miter",
+        "string:round"
+      ]
+    },
+    {
+      "path": "plot.options.summary.outlier.miterLimit",
+      "values": []
+    },
+    {
+      "path": "plot.options.summary.outlier.opacity",
+      "values": []
+    },
+    {
+      "path": "plot.options.summary.outlier.radius",
+      "values": []
+    },
+    {
+      "path": "plot.options.summary.outlier.shape",
+      "values": [
+        "string:arrow",
+        "string:circle",
+        "string:cross",
+        "string:diamond",
+        "string:hexagon",
+        "string:plus",
+        "string:square",
+        "string:star",
+        "string:triangle-down",
+        "string:triangle-left",
+        "string:triangle-right",
+        "string:triangle-up",
+        "string:wedge",
+        "string:wye"
+      ]
+    },
+    {
+      "path": "plot.options.summary.outlier.shape.normalization",
+      "values": [
+        "string:area",
+        "string:radius"
+      ]
+    },
+    {
+      "path": "plot.options.summary.outlier.shape.polygon",
+      "values": []
+    },
+    {
+      "path": "plot.options.summary.outliers",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.summary.point",
+      "values": []
+    },
+    {
+      "path": "plot.options.summary.point.clip",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.summary.point.fill",
+      "values": []
+    },
+    {
+      "path": "plot.options.summary.point.lineCap",
+      "values": [
+        "string:butt",
+        "string:round",
+        "string:square"
+      ]
+    },
+    {
+      "path": "plot.options.summary.point.lineJoin",
+      "values": [
+        "string:bevel",
+        "string:miter",
+        "string:round"
+      ]
+    },
+    {
+      "path": "plot.options.summary.point.miterLimit",
+      "values": []
+    },
+    {
+      "path": "plot.options.summary.point.opacity",
+      "values": []
+    },
+    {
+      "path": "plot.options.summary.point.radius",
+      "values": []
+    },
+    {
+      "path": "plot.options.summary.point.shape",
+      "values": [
+        "string:arrow",
+        "string:circle",
+        "string:cross",
+        "string:diamond",
+        "string:hexagon",
+        "string:plus",
+        "string:square",
+        "string:star",
+        "string:triangle-down",
+        "string:triangle-left",
+        "string:triangle-right",
+        "string:triangle-up",
+        "string:wedge",
+        "string:wye"
+      ]
+    },
+    {
+      "path": "plot.options.summary.point.shape.normalization",
+      "values": [
+        "string:area",
+        "string:radius"
+      ]
+    },
+    {
+      "path": "plot.options.summary.point.shape.polygon",
+      "values": []
+    },
+    {
+      "path": "plot.options.summary.point.stroke",
+      "values": [
+        "boolean:false"
+      ]
+    },
+    {
+      "path": "plot.options.summary.point.strokeWidth",
+      "values": []
+    },
+    {
+      "path": "plot.options.summary.q1",
+      "values": []
+    },
+    {
+      "path": "plot.options.summary.q3",
+      "values": []
+    },
+    {
+      "path": "plot.options.summary.type",
+      "values": [
+        "string:box",
+        "string:interval"
+      ]
+    },
+    {
+      "path": "plot.options.summary.whisker",
+      "values": []
+    },
+    {
+      "path": "plot.options.summary.whisker.caps",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.summary.whisker.capSize",
+      "values": []
+    },
+    {
+      "path": "plot.options.summary.whisker.factor",
+      "values": []
+    },
+    {
+      "path": "plot.options.summary.whisker.lineCap",
+      "values": [
+        "string:butt",
+        "string:round",
+        "string:square"
+      ]
+    },
+    {
+      "path": "plot.options.summary.whisker.lineJoin",
+      "values": [
+        "string:bevel",
+        "string:miter",
+        "string:round"
+      ]
+    },
+    {
+      "path": "plot.options.summary.whisker.miterLimit",
+      "values": []
+    },
+    {
+      "path": "plot.options.summary.whisker.opacity",
+      "values": []
+    },
+    {
+      "path": "plot.options.summary.whisker.stroke",
+      "values": []
+    },
+    {
+      "path": "plot.options.summary.whisker.strokeDash",
+      "values": [
+        "string:dashdot",
+        "string:dashed",
+        "string:dotted",
+        "string:solid"
+      ]
+    },
+    {
+      "path": "plot.options.summary.whisker.strokeWidth",
+      "values": []
+    },
+    {
+      "path": "plot.options.summary.whisker.type",
+      "values": [
+        "string:minmax",
+        "string:tukey"
+      ]
+    },
+    {
+      "path": "plot.options.summary.width",
+      "values": []
+    },
+    {
+      "path": "plot.options.summary.width.band",
+      "values": []
+    },
+    {
+      "path": "plot.options.target",
+      "values": []
+    },
+    {
+      "path": "plot.options.text",
+      "values": []
+    },
+    {
+      "path": "plot.options.text.field",
+      "values": []
+    },
+    {
+      "path": "plot.options.text.format",
+      "values": [
+        "string:.0%25",
+        "string:.00%25",
+        "string:.00e",
+        "string:.00f",
+        "string:.01%25",
+        "string:.01e",
+        "string:.01f",
+        "string:.02%25",
+        "string:.02e",
+        "string:.02f",
+        "string:.03%25",
+        "string:.03e",
+        "string:.03f",
+        "string:.04%25",
+        "string:.04e",
+        "string:.04f",
+        "string:.05%25",
+        "string:.05e",
+        "string:.05f",
+        "string:.06%25",
+        "string:.06e",
+        "string:.06f",
+        "string:.07%25",
+        "string:.07e",
+        "string:.07f",
+        "string:.08%25",
+        "string:.08e",
+        "string:.08f",
+        "string:.09%25",
+        "string:.09e",
+        "string:.09f",
+        "string:.0e",
+        "string:.0f",
+        "string:.1%25",
+        "string:.10%25",
+        "string:.10e",
+        "string:.10f",
+        "string:.11%25",
+        "string:.11e",
+        "string:.11f",
+        "string:.12%25",
+        "string:.12e",
+        "string:.12f",
+        "string:.1e",
+        "string:.1f",
+        "string:.2%25",
+        "string:.2e",
+        "string:.2f",
+        "string:.3%25",
+        "string:.3e",
+        "string:.3f",
+        "string:.4%25",
+        "string:.4e",
+        "string:.4f",
+        "string:.5%25",
+        "string:.5e",
+        "string:.5f",
+        "string:.6%25",
+        "string:.6e",
+        "string:.6f",
+        "string:.7%25",
+        "string:.7e",
+        "string:.7f",
+        "string:.8%25",
+        "string:.8e",
+        "string:.8f",
+        "string:.9%25",
+        "string:.9e",
+        "string:.9f",
+        "string:%2C",
+        "string:%2C.00f",
+        "string:%2C.01f",
+        "string:%2C.02f",
+        "string:%2C.03f",
+        "string:%2C.04f",
+        "string:%2C.05f",
+        "string:%2C.06f",
+        "string:%2C.07f",
+        "string:%2C.08f",
+        "string:%2C.09f",
+        "string:%2C.0f",
+        "string:%2C.10f",
+        "string:%2C.11f",
+        "string:%2C.12f",
+        "string:%2C.1f",
+        "string:%2C.2f",
+        "string:%2C.3f",
+        "string:%2C.4f",
+        "string:%2C.5f",
+        "string:%2C.6f",
+        "string:%2C.7f",
+        "string:%2C.8f",
+        "string:%2C.9f",
+        "string:auto"
+      ]
+    },
+    {
+      "path": "plot.options.text.value",
+      "values": []
+    },
+    {
+      "path": "plot.options.theta",
+      "values": []
+    },
+    {
+      "path": "plot.options.theta.field",
+      "values": []
+    },
+    {
+      "path": "plot.options.theta.fieldType",
+      "values": [
+        "string:nominal",
+        "string:ordinal",
+        "string:quantitative",
+        "string:temporal"
+      ]
+    },
+    {
+      "path": "plot.options.theta.scale",
+      "values": []
+    },
+    {
+      "path": "plot.options.theta.scale.align",
+      "values": []
+    },
+    {
+      "path": "plot.options.theta.scale.clamp",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.theta.scale.domain",
+      "values": [
+        "string:auto"
+      ]
+    },
+    {
+      "path": "plot.options.theta.scale.id",
+      "values": []
+    },
+    {
+      "path": "plot.options.theta.scale.nice",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.theta.scale.padding",
+      "values": []
+    },
+    {
+      "path": "plot.options.theta.scale.paddingInner",
+      "values": []
+    },
+    {
+      "path": "plot.options.theta.scale.paddingOuter",
+      "values": []
+    },
+    {
+      "path": "plot.options.theta.scale.range",
+      "values": [
+        "string:auto"
+      ]
+    },
+    {
+      "path": "plot.options.theta.scale.reverse",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.theta.scale.type",
+      "values": [
+        "string:band",
+        "string:linear",
+        "string:point",
+        "string:time"
+      ]
+    },
+    {
+      "path": "plot.options.theta.scale.zero",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.theta.temporalUnit",
+      "values": [
+        "string:auto",
+        "string:timestamp",
+        "string:year"
+      ]
+    },
+    {
+      "path": "plot.options.tick",
+      "values": []
+    },
+    {
+      "path": "plot.options.tick.clip",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.tick.length",
+      "values": []
+    },
+    {
+      "path": "plot.options.tick.lineCap",
+      "values": [
+        "string:butt",
+        "string:round",
+        "string:square"
+      ]
+    },
+    {
+      "path": "plot.options.tick.lineJoin",
+      "values": [
+        "string:bevel",
+        "string:miter",
+        "string:round"
+      ]
+    },
+    {
+      "path": "plot.options.tick.miterLimit",
+      "values": []
+    },
+    {
+      "path": "plot.options.tick.opacity",
+      "values": []
+    },
+    {
+      "path": "plot.options.tick.stroke",
+      "values": []
+    },
+    {
+      "path": "plot.options.tick.strokeWidth",
+      "values": []
+    },
+    {
+      "path": "plot.options.value",
+      "values": []
+    },
+    {
+      "path": "plot.options.value.field",
+      "values": []
+    },
+    {
+      "path": "plot.options.value.fieldType",
+      "values": [
+        "string:quantitative"
+      ]
+    },
+    {
+      "path": "plot.options.value.scale",
+      "values": []
+    },
+    {
+      "path": "plot.options.value.scale.base",
+      "values": []
+    },
+    {
+      "path": "plot.options.value.scale.clamp",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.value.scale.constant",
+      "values": []
+    },
+    {
+      "path": "plot.options.value.scale.domain",
+      "values": [
+        "string:auto"
+      ]
+    },
+    {
+      "path": "plot.options.value.scale.exponent",
+      "values": []
+    },
+    {
+      "path": "plot.options.value.scale.id",
+      "values": []
+    },
+    {
+      "path": "plot.options.value.scale.nice",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.value.scale.nice.count",
+      "values": []
+    },
+    {
+      "path": "plot.options.value.scale.range",
+      "values": [
+        "string:auto"
+      ]
+    },
+    {
+      "path": "plot.options.value.scale.reverse",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.value.scale.type",
+      "values": [
+        "string:linear",
+        "string:log",
+        "string:pow",
+        "string:sqrt",
+        "string:symlog"
+      ]
+    },
+    {
+      "path": "plot.options.value.scale.zero",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.valueChannel",
+      "values": [
+        "string:x",
+        "string:y"
+      ]
+    },
+    {
+      "path": "plot.options.valueScale",
+      "values": []
+    },
+    {
+      "path": "plot.options.valueScale.base",
+      "values": []
+    },
+    {
+      "path": "plot.options.valueScale.clamp",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.valueScale.constant",
+      "values": []
+    },
+    {
+      "path": "plot.options.valueScale.domain",
+      "values": [
+        "string:auto"
+      ]
+    },
+    {
+      "path": "plot.options.valueScale.exponent",
+      "values": []
+    },
+    {
+      "path": "plot.options.valueScale.id",
+      "values": []
+    },
+    {
+      "path": "plot.options.valueScale.nice",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.valueScale.nice.count",
+      "values": []
+    },
+    {
+      "path": "plot.options.valueScale.range",
+      "values": [
+        "string:auto"
+      ]
+    },
+    {
+      "path": "plot.options.valueScale.reverse",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.valueScale.type",
+      "values": [
+        "string:linear",
+        "string:log",
+        "string:pow",
+        "string:sqrt",
+        "string:symlog"
+      ]
+    },
+    {
+      "path": "plot.options.valueScale.zero",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.weight",
+      "values": []
+    },
+    {
+      "path": "plot.options.weight.field",
+      "values": []
+    },
+    {
+      "path": "plot.options.weight.kind",
+      "values": [
+        "string:frequency",
+        "string:reliability"
+      ]
+    },
+    {
+      "path": "plot.options.whisker",
+      "values": []
+    },
+    {
+      "path": "plot.options.whisker.caps",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.whisker.capSize",
+      "values": []
+    },
+    {
+      "path": "plot.options.whisker.factor",
+      "values": []
+    },
+    {
+      "path": "plot.options.whisker.lineCap",
+      "values": [
+        "string:butt",
+        "string:round",
+        "string:square"
+      ]
+    },
+    {
+      "path": "plot.options.whisker.lineJoin",
+      "values": [
+        "string:bevel",
+        "string:miter",
+        "string:round"
+      ]
+    },
+    {
+      "path": "plot.options.whisker.miterLimit",
+      "values": []
+    },
+    {
+      "path": "plot.options.whisker.opacity",
+      "values": []
+    },
+    {
+      "path": "plot.options.whisker.stroke",
+      "values": []
+    },
+    {
+      "path": "plot.options.whisker.strokeDash",
+      "values": [
+        "string:dashdot",
+        "string:dashed",
+        "string:dotted",
+        "string:solid"
+      ]
+    },
+    {
+      "path": "plot.options.whisker.strokeWidth",
+      "values": []
+    },
+    {
+      "path": "plot.options.whisker.type",
+      "values": [
+        "string:minmax",
+        "string:tukey"
+      ]
+    },
+    {
+      "path": "plot.options.wide",
+      "values": []
+    },
+    {
+      "path": "plot.options.wide.as",
+      "values": []
+    },
+    {
+      "path": "plot.options.wide.as.key",
+      "values": []
+    },
+    {
+      "path": "plot.options.wide.as.value",
+      "values": []
+    },
+    {
+      "path": "plot.options.wide.fields",
+      "values": []
+    },
+    {
+      "path": "plot.options.wide.normalize",
+      "values": [
+        "boolean:false",
+        "string:minmax"
+      ]
+    },
+    {
+      "path": "plot.options.wide.summary",
+      "values": [
+        "boolean:false",
+        "string:mean",
+        "string:median"
+      ]
+    },
+    {
+      "path": "plot.options.width",
+      "values": []
+    },
+    {
+      "path": "plot.options.width.band",
+      "values": []
+    },
+    {
+      "path": "plot.options.width.pixels",
+      "values": []
+    },
+    {
+      "path": "plot.options.x",
+      "values": []
+    },
+    {
+      "path": "plot.options.x.aggregate",
+      "values": [
+        "string:ciLower",
+        "string:ciUpper",
+        "string:count",
+        "string:distinct",
+        "string:max",
+        "string:mean",
+        "string:median",
+        "string:min",
+        "string:missing",
+        "string:q1",
+        "string:q3",
+        "string:stderr",
+        "string:stdev",
+        "string:stdevP",
+        "string:sum",
+        "string:valid",
+        "string:variance",
+        "string:varianceP"
+      ]
+    },
+    {
+      "path": "plot.options.x.aggregate.level",
+      "values": []
+    },
+    {
+      "path": "plot.options.x.aggregate.method",
+      "values": [
+        "string:normal",
+        "string:student-t"
+      ]
+    },
+    {
+      "path": "plot.options.x.aggregate.op",
+      "values": [
+        "string:ciLower",
+        "string:ciUpper",
+        "string:first",
+        "string:last",
+        "string:quantile"
+      ]
+    },
+    {
+      "path": "plot.options.x.aggregate.order",
+      "values": [
+        "string:ascending",
+        "string:descending"
+      ]
+    },
+    {
+      "path": "plot.options.x.aggregate.orderBy",
+      "values": []
+    },
+    {
+      "path": "plot.options.x.aggregate.probability",
+      "values": []
+    },
+    {
+      "path": "plot.options.x.bin",
+      "values": []
+    },
+    {
+      "path": "plot.options.x.bin.boundaries",
+      "values": []
+    },
+    {
+      "path": "plot.options.x.bin.maxBins",
+      "values": []
+    },
+    {
+      "path": "plot.options.x.bin.step",
+      "values": []
+    },
+    {
+      "path": "plot.options.x.center",
+      "values": [
+        "string:mean",
+        "string:median"
+      ]
+    },
+    {
+      "path": "plot.options.x.datum",
+      "values": []
+    },
+    {
+      "path": "plot.options.x.extent",
+      "values": [
+        "string:ci",
+        "string:iqr",
+        "string:stderr",
+        "string:stdev"
+      ]
+    },
+    {
+      "path": "plot.options.x.field",
+      "values": []
+    },
+    {
+      "path": "plot.options.x.fieldType",
+      "values": [
+        "string:nominal",
+        "string:ordinal",
+        "string:quantitative",
+        "string:temporal"
+      ]
+    },
+    {
+      "path": "plot.options.x.level",
+      "values": []
+    },
+    {
+      "path": "plot.options.x.lower",
+      "values": []
+    },
+    {
+      "path": "plot.options.x.lower.datum",
+      "values": []
+    },
+    {
+      "path": "plot.options.x.method",
+      "values": [
+        "string:normal",
+        "string:student-t"
+      ]
+    },
+    {
+      "path": "plot.options.x.scale",
+      "values": []
+    },
+    {
+      "path": "plot.options.x.scale.align",
+      "values": []
+    },
+    {
+      "path": "plot.options.x.scale.base",
+      "values": []
+    },
+    {
+      "path": "plot.options.x.scale.clamp",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.x.scale.constant",
+      "values": []
+    },
+    {
+      "path": "plot.options.x.scale.domain",
+      "values": [
+        "string:auto"
+      ]
+    },
+    {
+      "path": "plot.options.x.scale.exponent",
+      "values": []
+    },
+    {
+      "path": "plot.options.x.scale.id",
+      "values": []
+    },
+    {
+      "path": "plot.options.x.scale.nice",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.x.scale.nice.count",
+      "values": []
+    },
+    {
+      "path": "plot.options.x.scale.padding",
+      "values": []
+    },
+    {
+      "path": "plot.options.x.scale.paddingInner",
+      "values": []
+    },
+    {
+      "path": "plot.options.x.scale.paddingOuter",
+      "values": []
+    },
+    {
+      "path": "plot.options.x.scale.range",
+      "values": [
+        "string:auto"
+      ]
+    },
+    {
+      "path": "plot.options.x.scale.reverse",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.x.scale.type",
+      "values": [
+        "string:band",
+        "string:linear",
+        "string:log",
+        "string:point",
+        "string:pow",
+        "string:sqrt",
+        "string:symlog",
+        "string:time"
+      ]
+    },
+    {
+      "path": "plot.options.x.scale.unknown",
+      "values": []
+    },
+    {
+      "path": "plot.options.x.scale.zero",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.x.stack",
+      "values": [
+        "string:normalize",
+        "string:zero"
+      ]
+    },
+    {
+      "path": "plot.options.x.temporalUnit",
+      "values": [
+        "string:auto",
+        "string:timestamp",
+        "string:year"
+      ]
+    },
+    {
+      "path": "plot.options.x.upper",
+      "values": []
+    },
+    {
+      "path": "plot.options.x.upper.datum",
+      "values": []
+    },
+    {
+      "path": "plot.options.xOffset",
+      "values": []
+    },
+    {
+      "path": "plot.options.xOffset.field",
+      "values": []
+    },
+    {
+      "path": "plot.options.xOffset.fieldType",
+      "values": [
+        "string:nominal",
+        "string:ordinal"
+      ]
+    },
+    {
+      "path": "plot.options.xOffset.paddingInner",
+      "values": []
+    },
+    {
+      "path": "plot.options.xOffset.paddingOuter",
+      "values": []
+    },
+    {
+      "path": "plot.options.xOffset.scale",
+      "values": []
+    },
+    {
+      "path": "plot.options.xOffset.scale.align",
+      "values": []
+    },
+    {
+      "path": "plot.options.xOffset.scale.domain",
+      "values": [
+        "string:auto"
+      ]
+    },
+    {
+      "path": "plot.options.xOffset.scale.id",
+      "values": []
+    },
+    {
+      "path": "plot.options.xOffset.scale.padding",
+      "values": []
+    },
+    {
+      "path": "plot.options.xOffset.scale.paddingInner",
+      "values": []
+    },
+    {
+      "path": "plot.options.xOffset.scale.paddingOuter",
+      "values": []
+    },
+    {
+      "path": "plot.options.xOffset.scale.reverse",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.xOffset.scale.type",
+      "values": [
+        "string:ordinal"
+      ]
+    },
+    {
+      "path": "plot.options.xScale",
+      "values": []
+    },
+    {
+      "path": "plot.options.xScale.base",
+      "values": []
+    },
+    {
+      "path": "plot.options.xScale.clamp",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.xScale.constant",
+      "values": []
+    },
+    {
+      "path": "plot.options.xScale.domain",
+      "values": [
+        "string:auto"
+      ]
+    },
+    {
+      "path": "plot.options.xScale.exponent",
+      "values": []
+    },
+    {
+      "path": "plot.options.xScale.id",
+      "values": []
+    },
+    {
+      "path": "plot.options.xScale.nice",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.xScale.nice.count",
+      "values": []
+    },
+    {
+      "path": "plot.options.xScale.range",
+      "values": [
+        "string:auto"
+      ]
+    },
+    {
+      "path": "plot.options.xScale.reverse",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.xScale.type",
+      "values": [
+        "string:linear",
+        "string:log",
+        "string:pow",
+        "string:sqrt",
+        "string:symlog"
+      ]
+    },
+    {
+      "path": "plot.options.xScale.zero",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.y",
+      "values": []
+    },
+    {
+      "path": "plot.options.y.aggregate",
+      "values": [
+        "string:ciLower",
+        "string:ciUpper",
+        "string:count",
+        "string:distinct",
+        "string:max",
+        "string:mean",
+        "string:median",
+        "string:min",
+        "string:missing",
+        "string:q1",
+        "string:q3",
+        "string:stderr",
+        "string:stdev",
+        "string:stdevP",
+        "string:sum",
+        "string:valid",
+        "string:variance",
+        "string:varianceP"
+      ]
+    },
+    {
+      "path": "plot.options.y.aggregate.level",
+      "values": []
+    },
+    {
+      "path": "plot.options.y.aggregate.method",
+      "values": [
+        "string:normal",
+        "string:student-t"
+      ]
+    },
+    {
+      "path": "plot.options.y.aggregate.op",
+      "values": [
+        "string:ciLower",
+        "string:ciUpper",
+        "string:first",
+        "string:last",
+        "string:quantile"
+      ]
+    },
+    {
+      "path": "plot.options.y.aggregate.order",
+      "values": [
+        "string:ascending",
+        "string:descending"
+      ]
+    },
+    {
+      "path": "plot.options.y.aggregate.orderBy",
+      "values": []
+    },
+    {
+      "path": "plot.options.y.aggregate.probability",
+      "values": []
+    },
+    {
+      "path": "plot.options.y.center",
+      "values": [
+        "string:mean",
+        "string:median"
+      ]
+    },
+    {
+      "path": "plot.options.y.datum",
+      "values": []
+    },
+    {
+      "path": "plot.options.y.extent",
+      "values": [
+        "string:ci",
+        "string:iqr",
+        "string:stderr",
+        "string:stdev"
+      ]
+    },
+    {
+      "path": "plot.options.y.field",
+      "values": []
+    },
+    {
+      "path": "plot.options.y.fieldType",
+      "values": [
+        "string:nominal",
+        "string:ordinal",
+        "string:quantitative",
+        "string:temporal"
+      ]
+    },
+    {
+      "path": "plot.options.y.level",
+      "values": []
+    },
+    {
+      "path": "plot.options.y.lower",
+      "values": []
+    },
+    {
+      "path": "plot.options.y.lower.datum",
+      "values": []
+    },
+    {
+      "path": "plot.options.y.method",
+      "values": [
+        "string:normal",
+        "string:student-t"
+      ]
+    },
+    {
+      "path": "plot.options.y.scale",
+      "values": []
+    },
+    {
+      "path": "plot.options.y.scale.align",
+      "values": []
+    },
+    {
+      "path": "plot.options.y.scale.base",
+      "values": []
+    },
+    {
+      "path": "plot.options.y.scale.clamp",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.y.scale.constant",
+      "values": []
+    },
+    {
+      "path": "plot.options.y.scale.domain",
+      "values": [
+        "string:auto"
+      ]
+    },
+    {
+      "path": "plot.options.y.scale.exponent",
+      "values": []
+    },
+    {
+      "path": "plot.options.y.scale.id",
+      "values": []
+    },
+    {
+      "path": "plot.options.y.scale.nice",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.y.scale.nice.count",
+      "values": []
+    },
+    {
+      "path": "plot.options.y.scale.padding",
+      "values": []
+    },
+    {
+      "path": "plot.options.y.scale.paddingInner",
+      "values": []
+    },
+    {
+      "path": "plot.options.y.scale.paddingOuter",
+      "values": []
+    },
+    {
+      "path": "plot.options.y.scale.range",
+      "values": [
+        "string:auto"
+      ]
+    },
+    {
+      "path": "plot.options.y.scale.reverse",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.y.scale.type",
+      "values": [
+        "string:band",
+        "string:linear",
+        "string:log",
+        "string:point",
+        "string:pow",
+        "string:sqrt",
+        "string:symlog",
+        "string:time"
+      ]
+    },
+    {
+      "path": "plot.options.y.scale.unknown",
+      "values": []
+    },
+    {
+      "path": "plot.options.y.scale.zero",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.y.stack",
+      "values": [
+        "string:normalize",
+        "string:zero"
+      ]
+    },
+    {
+      "path": "plot.options.y.temporalUnit",
+      "values": [
+        "string:auto",
+        "string:timestamp",
+        "string:year"
+      ]
+    },
+    {
+      "path": "plot.options.y.upper",
+      "values": []
+    },
+    {
+      "path": "plot.options.y.upper.datum",
+      "values": []
+    },
+    {
+      "path": "plot.options.yOffset",
+      "values": []
+    },
+    {
+      "path": "plot.options.yOffset.field",
+      "values": []
+    },
+    {
+      "path": "plot.options.yOffset.fieldType",
+      "values": [
+        "string:nominal",
+        "string:ordinal"
+      ]
+    },
+    {
+      "path": "plot.options.yOffset.paddingInner",
+      "values": []
+    },
+    {
+      "path": "plot.options.yOffset.paddingOuter",
+      "values": []
+    },
+    {
+      "path": "plot.options.yOffset.scale",
+      "values": []
+    },
+    {
+      "path": "plot.options.yOffset.scale.align",
+      "values": []
+    },
+    {
+      "path": "plot.options.yOffset.scale.domain",
+      "values": [
+        "string:auto"
+      ]
+    },
+    {
+      "path": "plot.options.yOffset.scale.id",
+      "values": []
+    },
+    {
+      "path": "plot.options.yOffset.scale.padding",
+      "values": []
+    },
+    {
+      "path": "plot.options.yOffset.scale.paddingInner",
+      "values": []
+    },
+    {
+      "path": "plot.options.yOffset.scale.paddingOuter",
+      "values": []
+    },
+    {
+      "path": "plot.options.yOffset.scale.reverse",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.yOffset.scale.type",
+      "values": [
+        "string:ordinal"
+      ]
+    },
+    {
+      "path": "plot.options.yScale",
+      "values": []
+    },
+    {
+      "path": "plot.options.yScale.clamp",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.yScale.constant",
+      "values": []
+    },
+    {
+      "path": "plot.options.yScale.domain",
+      "values": [
+        "string:auto"
+      ]
+    },
+    {
+      "path": "plot.options.yScale.exponent",
+      "values": []
+    },
+    {
+      "path": "plot.options.yScale.id",
+      "values": []
+    },
+    {
+      "path": "plot.options.yScale.nice",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.yScale.nice.count",
+      "values": []
+    },
+    {
+      "path": "plot.options.yScale.range",
+      "values": [
+        "string:auto"
+      ]
+    },
+    {
+      "path": "plot.options.yScale.reverse",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "plot.options.yScale.type",
+      "values": [
+        "string:linear",
+        "string:pow",
+        "string:sqrt",
+        "string:symlog"
+      ]
+    },
+    {
+      "path": "plot.options.yScale.zero",
+      "values": [
+        "boolean:false",
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "source",
+      "values": []
+    },
+    {
+      "path": "target",
+      "values": []
+    },
+    {
+      "path": "target.childPath",
+      "values": []
+    },
+    {
+      "path": "target.facetSource",
+      "values": [
+        "boolean:true"
+      ]
+    },
+    {
+      "path": "target.id",
+      "values": []
+    }
+  ]
+}

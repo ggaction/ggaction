@@ -1,0 +1,15 @@
+{
+  "method": "Recursively inspect all 67 non-root-candidate JSON files, including JSON-encoded strings; maximal chart candidate nodes are counted once, composition children are not independent originals. Structure screening can identify data-shaped false positives; source interpretation remains necessary.",
+  "embeddedCandidates": 30,
+  "uniqueEmbeddedJson": 30,
+  "byFile": {
+    "exp/d2_utterance/data/vlSpecs.json": 30
+  },
+  "schemaStatus": {
+    "valid-against-declared-schema": 28,
+    "invalid-against-declared-schema": 2
+  },
+  "rootCandidateAliasCount": 0,
+  "allCandidateOccurrences": 24987,
+  "allCandidateUniqueJson": 24306
+}

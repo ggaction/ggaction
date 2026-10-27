@@ -1,0 +1,249 @@
+import { USER_ID_SOURCE } from "../../core/identifiers.js";
+import {
+  AXIS_RESOURCE_CHANNELS,
+  CARTESIAN_POSITION_CHANNELS,
+  ENCODING_CHANNELS,
+  SCALED_ENCODING_CHANNELS
+} from "../../core/vocabulary.js";
+
+const ENCODING_PATHS = Object.freeze([
+  ...ENCODING_CHANNELS.filter(channel => channel !== "pathOrder").flatMap(channel => [
+    `encoding.${channel}.field`,
+    `encoding.${channel}.datum`,
+    `encoding.${channel}.fieldType`,
+    `encoding.${channel}.title`
+  ]),
+  ...SCALED_ENCODING_CHANNELS.map(channel =>
+    `encoding.${channel}.scale`
+  ),
+  "encoding.x.bin.maxBins",
+  "encoding.x.bin.step",
+  "encoding.x.bin.boundaries",
+  "encoding.x.weight",
+  "encoding.color.layout",
+  "encoding.color.aggregate",
+  "encoding.group.fields",
+  "encoding.group.inferredFrom",
+  ...["x", "y", "x2", "y2", "theta", "color", "stroke"].map(channel =>
+    `encoding.${channel}.temporalUnit`
+  ),
+  "encoding.pathOrder.field",
+  "encoding.pathOrder.fieldType",
+  "encoding.pathOrder.order",
+  "encoding.theta.aggregate",
+  "encoding.theta.weight",
+  "encoding.radius.aggregate",
+  "encoding.theta.categoryOrder",
+  "encoding.text.format",
+  "encoding.text.content",
+  "encoding.text.normalizeBy",
+  "encoding.parallel.dimensions",
+  "encoding.parallel.key",
+  "encoding.parallel.missing",
+  ...CARTESIAN_POSITION_CHANNELS.flatMap(channel => [
+    `encoding.${channel}.aggregate`,
+    `encoding.${channel}.stack`,
+    `encoding.${channel}.categoryOrder`
+  ])
+]);
+
+const ENTITY_PATHS = Object.freeze({
+  dataset: {
+    collection: "datasets",
+    properties: new Set(["source", "transform", "schema", "values"])
+  },
+  layer: {
+    collection: "layers",
+    removableContainers: new Set(
+      [...ENCODING_CHANNELS.map(channel => `encoding.${channel}`),
+        "encoding.parallel", "layout"]
+    ),
+    properties: new Set([
+      "data",
+      "source",
+      "coordinate",
+      "transform",
+      "mark.type",
+      "mark.missing",
+      "mark.orientation",
+      "mark.blend",
+      "derivedBindings.regression",
+      "derivedBindings.overlay",
+      "layout.mode",
+      ...ENCODING_PATHS
+    ])
+  },
+  scale: {
+    collection: "scales",
+    properties: new Set([
+      "type", "domain", "range", "emptyDomain", "nice", "zero", "clamp", "reverse",
+      "unknown", "base", "exponent", "constant", "interpolate", "whitePoint", "gamma", "radialMapping", "midpoint",
+      "paddingInner", "paddingOuter", "padding", "align"
+    ])
+  },
+  coordinate: {
+    collection: "coordinates",
+    properties: new Set(["type", "aspect", "polarFrame"])
+  }
+});
+
+const GUIDE_PATHS = new Set([
+  "axis.x.scale",
+  "axis.x.coordinate",
+  "axis.x.title",
+  "axis.y.scale",
+  "axis.y.coordinate",
+  "axis.y.title",
+  "axis.theta.scale",
+  "axis.theta.coordinate",
+  "axis.theta.title",
+  "axis.radius.scale",
+  "axis.radius.coordinate",
+  "axis.radius.title",
+  "axis.parallel.target",
+  "axis.parallel.coordinate",
+  "axis.parallel.scales",
+  "axis.parallel.titles",
+  "legend.colorSize.colorScale",
+  "legend.colorSize.sizeScale",
+  "legend.colorSize.title",
+  "legend.color.scale",
+  "legend.color.title",
+  "legend.color.order",
+  "legend.stroke.scale",
+  "legend.stroke.title",
+  "legend.stroke.order",
+  "legend.size.scale",
+  "legend.size.title",
+  "legend.strokeWidth.scale",
+  "legend.strokeWidth.title",
+  "legend.opacity.scale",
+  "legend.opacity.title",
+  "legend.series.channels",
+  "legend.series.scales",
+  "legend.series.title",
+  "legend.series.order",
+  "grid.horizontal.scale",
+  "grid.horizontal.coordinate",
+  "grid.vertical.scale",
+  "grid.vertical.coordinate",
+  "grid.theta.scale",
+  "grid.theta.coordinate",
+  "grid.radial.scale",
+  "grid.radial.coordinate"
+]);
+
+const GUIDE_REMOVABLE_CONTAINERS = new Set([
+  "axis.x",
+  "axis.y",
+  "axis.theta",
+  "axis.radius",
+  "axis.parallel",
+  "grid.horizontal",
+  "grid.vertical",
+  "grid.theta",
+  "grid.radial",
+  "legend.colorSize",
+  "legend.color",
+  "legend.stroke",
+  "legend.size",
+  "legend.strokeWidth",
+  "legend.opacity",
+  "legend.series"
+]);
+
+const TITLE_PATHS = new Set(["text", "subtitle"]);
+
+function isNamedAxisPath(path, container = false) {
+  const match = path.match(new RegExp(container
+    ? `^axis\\.(${USER_ID_SOURCE})$`
+    : `^axis\\.(${USER_ID_SOURCE})\\.(scale|coordinate|title|channel|position)$`));
+  return match !== null && !AXIS_RESOURCE_CHANNELS.includes(match[1]);
+}
+
+function splitPropertyPath(property) {
+  return property.split(".");
+}
+
+export function parseSemanticPath(property, { allowContainer = false } = {}) {
+  if (typeof property !== "string" || property.length === 0) {
+    throw new TypeError("editSemantic requires a non-empty property string.");
+  }
+
+  if (allowContainer) {
+    const entityMatch = property.match(
+      new RegExp(`^(dataset|layer|scale|coordinate)\\[(${USER_ID_SOURCE})\\]$`)
+    );
+    if (entityMatch) {
+      const [, kind, id] = entityMatch;
+      return Object.freeze({
+        kind,
+        id,
+        collection: ENTITY_PATHS[kind].collection,
+        path: Object.freeze([])
+      });
+    }
+  }
+
+  const entityMatch = property.match(
+    new RegExp(
+      `^(${Object.keys(ENTITY_PATHS).join("|")})\\[(${USER_ID_SOURCE})\\]\\.(.+)$`
+    )
+  );
+
+  if (entityMatch) {
+    const [, kind, id, propertyPath] = entityMatch;
+    const definition = ENTITY_PATHS[kind];
+
+    if (
+      !definition.properties.has(propertyPath) &&
+      !(allowContainer && definition.removableContainers?.has(propertyPath))
+    ) {
+      throw new Error(`Unknown semantic property "${property}".`);
+    }
+
+    return Object.freeze({
+      kind,
+      id,
+      collection: definition.collection,
+      path: Object.freeze(splitPropertyPath(propertyPath))
+    });
+  }
+
+  if (property.startsWith("guide.")) {
+    const propertyPath = property.slice("guide.".length);
+
+    if (
+      !GUIDE_PATHS.has(propertyPath) &&
+      !isNamedAxisPath(propertyPath) &&
+      !(allowContainer && (GUIDE_REMOVABLE_CONTAINERS.has(propertyPath) ||
+        isNamedAxisPath(propertyPath, true)))
+    ) {
+      throw new Error(`Unknown semantic property "${property}".`);
+    }
+
+    return Object.freeze({
+      kind: "guide",
+      id: propertyPath.split(".").slice(0, 2).join("."),
+      collection: "guides",
+      path: Object.freeze(splitPropertyPath(propertyPath))
+    });
+  }
+
+  if (property.startsWith("title.")) {
+    const propertyPath = property.slice("title.".length);
+
+    if (!TITLE_PATHS.has(propertyPath)) {
+      throw new Error(`Unknown semantic property "${property}".`);
+    }
+
+    return Object.freeze({
+      kind: "title",
+      id: "title",
+      collection: "title",
+      path: Object.freeze(splitPropertyPath(propertyPath))
+    });
+  }
+
+  throw new Error(`Unknown semantic property "${property}".`);
+}

@@ -1,0 +1,17 @@
+{
+  "label": "test-render",
+  "command": "npm",
+  "args": [
+    "run",
+    "test:render"
+  ],
+  "code": 1,
+  "signal": null,
+  "timeoutMs": 5400000,
+  "durationMs": 83733,
+  "node": "v20.20.2",
+  "platform": "linux",
+  "bytes": 22862752,
+  "retainedBytes": 2097152,
+  "truncated": true
+}

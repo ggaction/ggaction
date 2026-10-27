@@ -1,0 +1,13 @@
+✔ replays regression data independently in every shared-scale facet cell (549.557958ms)
+✔ keeps independent x domains while sharing y and color (294.133375ms)
+✔ keeps axes on occupied outer cells and promotes one shared gradient (392.66075ms)
+✔ recomposes outer guides without changing retained facet children (366.881708ms)
+✔ public and primitive titles retain exact content clearance in all facet variants (884.938083ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3245.23625

@@ -1,0 +1,23 @@
+(node:9937) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+--import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("/Users/hj/Desktop/ggaction_chongjeonglee/study/test-audit/evidence/semantics-tiny-slope-loader.mjs", pathToFileURL("./"));'
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ statistics expose independent observed linear coefficients and R-squared rather than prediction-row counts (20.760542ms)
+✔ statistics preserve typed first-seen groups, eligible missing-pair counts and constant-response null (3.413458ms)
+✔ statistics reject missing, unsupported and colliding fit sources without mutating the parent (18.145708ms)
+✔ cached fits are reused and old snapshots materialize the missing cache exactly once on explicit request (4.072417ms)
+✔ statistics source edits and source revisions replay dependent annotation data and clean old caches (30.901709ms)
+✔ fit method changes and resource removal enforce the statistics dependency before mutating state (3.720834ms)
+✔ fit cache snapshots reject orphaned, missing, stale, malformed and misordered statistics (13.196541ms)
+✔ linear statistics stay finite at previously supported extreme ranges without altering predictions (3.851834ms)
+✔ chart-owned regression edits rematerialize dependent statistics and reject unsupported model transitions (35.828167ms)
+✔ statistics editors require unique ownership and preserve omitted sources (2.328375ms)
+✔ statistics source edits reject cycles and lazy transform schemas remain source-specific (4.834958ms)
+✔ following chart roles and retained facets rebuild statistics from their fit owners (52.160625ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 718.784

@@ -1,0 +1,49 @@
+[
+  {
+    "url": "https://api.github.com/repos/ggaction/ggaction/issues/comments/6355065434",
+    "html_url": "https://github.com/ggaction/ggaction/issues/238#issuecomment-6355065434",
+    "issue_url": "https://api.github.com/repos/ggaction/ggaction/issues/238",
+    "id": 6355065434,
+    "node_id": "IC_kwDOTVRtts8AAAABesqaWg",
+    "user": {
+      "login": "hj-n",
+      "id": 38465539,
+      "node_id": "MDQ6VXNlcjM4NDY1NTM5",
+      "avatar_url": "https://avatars.githubusercontent.com/u/38465539?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/hj-n",
+      "html_url": "https://github.com/hj-n",
+      "followers_url": "https://api.github.com/users/hj-n/followers",
+      "following_url": "https://api.github.com/users/hj-n/following{/other_user}",
+      "gists_url": "https://api.github.com/users/hj-n/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/hj-n/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/hj-n/subscriptions",
+      "organizations_url": "https://api.github.com/users/hj-n/orgs",
+      "repos_url": "https://api.github.com/users/hj-n/repos",
+      "events_url": "https://api.github.com/users/hj-n/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/hj-n/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "created_at": "2026-10-23T01:19:21Z",
+    "updated_at": "2026-10-23T01:19:21Z",
+    "body": "Closeout review after [ggaction 0.0.22](https://github.com/ggaction/ggaction/releases/tag/v0.0.22):\n\nThe high-level regression facade still has no explicit plot-last placement option. Existing regression-data plus a positioned/bound Line remains available. Creation/editing/rebinding and saved-program placement still need a concrete public implementation.\n\nKeeping this issue open. The release/branch cleanup does not mark preparation or a workaround as a finished public capability.\n",
+    "author_association": "MEMBER",
+    "pin": null,
+    "reactions": {
+      "url": "https://api.github.com/repos/ggaction/ggaction/issues/comments/6355065434/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "performed_via_github_app": null,
+    "minimized": null
+  }
+]

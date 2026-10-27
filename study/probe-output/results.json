@@ -1,0 +1,463 @@
+{
+  "passed": true,
+  "checks": [
+    "caller input ownership",
+    "immutable branch",
+    "unchanged dataset sharing",
+    "editable SVG round trip",
+    "graphic-only SVG round trip",
+    "primitive semantic edit does not materialize",
+    "domain encoding materializes",
+    "atomic rejection",
+    "derived regression data revision",
+    "facet and concat rendering",
+    "scene cache and structured clone"
+  ],
+  "descriptorBoundary": {
+    "applicability": "supported",
+    "execution": {
+      "name": "execution",
+      "status": "not_run",
+      "evidencePaths": [],
+      "findings": []
+    },
+    "actualRejection": "Point opacity must be between 0 and 1 (values from 0 to 1)."
+  },
+  "comparison": {
+    "version": 1,
+    "equivalence": "different",
+    "completeProgramComparison": true,
+    "changes": [
+      {
+        "resource": {
+          "kind": "mark",
+          "id": "points"
+        },
+        "operation": "modify",
+        "effect": "style",
+        "roles": []
+      },
+      {
+        "resource": {
+          "kind": "scale",
+          "id": "x"
+        },
+        "operation": "modify",
+        "effect": "scale",
+        "roles": []
+      }
+    ],
+    "affected": [
+      {
+        "kind": "mark",
+        "id": "points"
+      },
+      {
+        "kind": "scale",
+        "id": "x"
+      }
+    ],
+    "findings": []
+  },
+  "inspection": {
+    "version": 1,
+    "views": [
+      {
+        "owner": {
+          "kind": "mark",
+          "id": "points"
+        },
+        "grain": "item",
+        "rawRows": 8,
+        "logicalDataItems": 8,
+        "drawablePrimitives": 8,
+        "visibleCandidates": 8,
+        "flags": [
+          {
+            "reason": "opacity-zero",
+            "count": 0
+          },
+          {
+            "reason": "zero-size",
+            "count": 0
+          },
+          {
+            "reason": "outside-clip",
+            "count": 0
+          },
+          {
+            "reason": "missing-skipped",
+            "count": null
+          }
+        ],
+        "bounds": {
+          "x": 62,
+          "y": 32,
+          "width": 421,
+          "height": 266
+        },
+        "sourceRefs": [
+          {
+            "kind": "data",
+            "id": "study"
+          }
+        ],
+        "checks": [
+          {
+            "name": "concrete-structure",
+            "status": "passed",
+            "evidencePaths": [
+              "points"
+            ],
+            "findings": []
+          },
+          {
+            "name": "pixel-visibility",
+            "status": "not_run",
+            "evidencePaths": [],
+            "findings": []
+          }
+        ]
+      },
+      {
+        "owner": {
+          "kind": "guide",
+          "id": "axis"
+        },
+        "grain": "unknown",
+        "rawRows": null,
+        "logicalDataItems": 20,
+        "drawablePrimitives": 20,
+        "visibleCandidates": null,
+        "flags": [
+          {
+            "reason": "opacity-zero",
+            "count": null
+          },
+          {
+            "reason": "zero-size",
+            "count": null
+          },
+          {
+            "reason": "outside-clip",
+            "count": null
+          },
+          {
+            "reason": "missing-skipped",
+            "count": null
+          }
+        ],
+        "bounds": null,
+        "sourceRefs": [
+          {
+            "kind": "scale",
+            "id": "x"
+          },
+          {
+            "kind": "coordinate",
+            "id": "main"
+          },
+          {
+            "kind": "scale",
+            "id": "y"
+          }
+        ],
+        "checks": [
+          {
+            "name": "concrete-structure",
+            "status": "passed",
+            "evidencePaths": [
+              "xAxisLine",
+              "xAxisTicks",
+              "xAxisLabels",
+              "xAxisTitle",
+              "yAxisLine",
+              "yAxisTicks",
+              "yAxisLabels",
+              "yAxisTitle"
+            ],
+            "findings": []
+          },
+          {
+            "name": "pixel-visibility",
+            "status": "not_run",
+            "evidencePaths": [],
+            "findings": []
+          }
+        ]
+      },
+      {
+        "owner": {
+          "kind": "guide",
+          "id": "grid"
+        },
+        "grain": "unknown",
+        "rawRows": null,
+        "logicalDataItems": 4,
+        "drawablePrimitives": 4,
+        "visibleCandidates": null,
+        "flags": [
+          {
+            "reason": "opacity-zero",
+            "count": null
+          },
+          {
+            "reason": "zero-size",
+            "count": null
+          },
+          {
+            "reason": "outside-clip",
+            "count": null
+          },
+          {
+            "reason": "missing-skipped",
+            "count": null
+          }
+        ],
+        "bounds": null,
+        "sourceRefs": [
+          {
+            "kind": "scale",
+            "id": "y"
+          },
+          {
+            "kind": "coordinate",
+            "id": "main"
+          }
+        ],
+        "checks": [
+          {
+            "name": "concrete-structure",
+            "status": "passed",
+            "evidencePaths": [
+              "horizontalGridLines"
+            ],
+            "findings": []
+          },
+          {
+            "name": "pixel-visibility",
+            "status": "not_run",
+            "evidencePaths": [],
+            "findings": []
+          }
+        ]
+      }
+    ],
+    "calculations": [],
+    "checks": [
+      {
+        "name": "pixel-visibility",
+        "status": "not_run",
+        "evidencePaths": [],
+        "findings": []
+      }
+    ],
+    "findings": [],
+    "coverage": {
+      "partial": true,
+      "unsupported": []
+    }
+  },
+  "scene": {
+    "version": 2,
+    "nodes": 33
+  },
+  "outputs": {
+    "base": {
+      "width": 600,
+      "height": 360,
+      "pngBytes": 5477,
+      "traceTopLevel": [
+        "createCanvas",
+        "createData",
+        "createScatterPlot"
+      ]
+    },
+    "branch": {
+      "width": 600,
+      "height": 360,
+      "pngBytes": 5825,
+      "traceTopLevel": [
+        "createCanvas",
+        "createData",
+        "createScatterPlot",
+        "editPointMark",
+        "editXScale"
+      ]
+    },
+    "regression": {
+      "width": 600,
+      "height": 360,
+      "pngBytes": 13361,
+      "traceTopLevel": [
+        "createCanvas",
+        "createData",
+        "createScatterPlot",
+        "createRegression"
+      ]
+    },
+    "revised": {
+      "width": 600,
+      "height": 360,
+      "pngBytes": 13493,
+      "traceTopLevel": [
+        "createCanvas",
+        "createData",
+        "createScatterPlot",
+        "createRegression",
+        "reviseData"
+      ]
+    },
+    "facet": {
+      "width": 1250,
+      "height": 360,
+      "pngBytes": 7337,
+      "traceTopLevel": [
+        "createCanvas",
+        "createData",
+        "createScatterPlot",
+        "facet"
+      ]
+    },
+    "composition": {
+      "width": 1230,
+      "height": 360,
+      "pngBytes": 8776,
+      "traceTopLevel": [
+        "hconcat"
+      ]
+    }
+  },
+  "authoringPacket": {
+    "schemaVersion": 5,
+    "packageVersion": "0.0.22",
+    "query": "Create a scatter plot of x versus y colored by group",
+    "matchedConstraints": [
+      "chart.scatter"
+    ],
+    "actionPlan": [
+      {
+        "step": 1,
+        "id": "action.createScatterPlot",
+        "kind": "action",
+        "name": "createScatterPlot",
+        "constraints": [
+          "chart.scatter"
+        ],
+        "requiredOptions": [
+          "x",
+          "y"
+        ],
+        "signature": "createScatterPlot(options: CreateScatterPlotOptions): ChartProgram;",
+        "route": "/reference/actions/charts-data/#createscatterplot"
+      }
+    ],
+    "exactCalls": [
+      "program.createScatterPlot({ x: \"versus\", y: \"colored\", color: \"ed\" })"
+    ],
+    "appliedOptions": [
+      {
+        "owner": "createScatterPlot",
+        "option": "x",
+        "value": "\"versus\"",
+        "source": "x versus"
+      },
+      {
+        "owner": "createScatterPlot",
+        "option": "y",
+        "value": "\"colored\"",
+        "source": "y colored"
+      },
+      {
+        "owner": "createScatterPlot",
+        "option": "color",
+        "value": "\"ed\"",
+        "source": "colored"
+      }
+    ],
+    "placeholderBindings": [
+      {
+        "name": "values",
+        "kind": "binding",
+        "required": true,
+        "usedBy": [
+          "createData"
+        ],
+        "reason": "Supply the caller-owned dataset rows before running the authoring block."
+      },
+      {
+        "name": "versus",
+        "kind": "field",
+        "required": true,
+        "usedBy": [
+          "createScatterPlot"
+        ],
+        "reason": "Confirm that this request-supplied field exists in the caller-owned dataset."
+      },
+      {
+        "name": "colored",
+        "kind": "field",
+        "required": true,
+        "usedBy": [
+          "createScatterPlot"
+        ],
+        "reason": "Confirm that this request-supplied field exists in the caller-owned dataset."
+      },
+      {
+        "name": "ed",
+        "kind": "field",
+        "required": true,
+        "usedBy": [
+          "createScatterPlot"
+        ],
+        "reason": "Confirm that this request-supplied field exists in the caller-owned dataset."
+      }
+    ],
+    "unmatchedRequirements": [
+      "Create a scatter plot of x versus y colored by group"
+    ],
+    "authoring": {
+      "imports": [
+        "import { chart } from \"ggaction\";"
+      ],
+      "initialize": "let program = chart()",
+      "prerequisites": [
+        {
+          "id": "action.createCanvas",
+          "signature": "createCanvas(options?: CanvasOptions): ChartProgram;",
+          "call": "program = program.createCanvas({ width: 800, height: 600, margin: { top: 140, right: 220, bottom: 120, left: 260 } })",
+          "bindings": []
+        },
+        {
+          "id": "action.createData",
+          "signature": "createData<Row extends object>(options: CreateDataOptions<Row>): ChartProgram;",
+          "call": "program = program.createData({ values })",
+          "bindings": [
+            "values"
+          ]
+        }
+      ],
+      "steps": [
+        "program = program.createScatterPlot({ x: \"versus\", y: \"colored\", color: \"ed\" })"
+      ]
+    },
+    "unsupported": [],
+    "unresolved": [
+      {
+        "constraint": "request.unconsumed",
+        "reason": "Part of the original request was not interpreted. Review unmatchedRequirements before claiming the requested chart is complete.",
+        "resources": [
+          "ggaction://docs/action-reference"
+        ]
+      }
+    ],
+    "candidates": [
+      {
+        "id": "action.createScatterPlot",
+        "kind": "action",
+        "name": "createScatterPlot",
+        "route": "/reference/actions/charts-data/#createscatterplot"
+      }
+    ]
+  }
+}

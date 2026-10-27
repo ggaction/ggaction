@@ -1,0 +1,269 @@
+import { readFileSync, readdirSync, mkdirSync, writeFileSync } from "node:fs";
+import path from "node:path";
+import { createHash } from "node:crypto";
+import { runCheck } from "./run-check.js";
+import { partitionTestFiles } from "./test-sharding.js";
+import { spawnSync } from "node:child_process";
+import { fileURLToPath } from "node:url";
+
+import {
+  assertCriticalCoverage,
+  assertSourceCoverage,
+  CRITICAL_COVERAGE_FLOORS,
+  parseCoverageTable
+} from "./coverage-policy.js";
+
+const repositoryRoot = fileURLToPath(new URL("../", import.meta.url));
+const testRoot = path.join(repositoryRoot, "test");
+const capabilityRegistry = JSON.parse(readFileSync(
+  path.join(testRoot, "capabilities.json"),
+  "utf8"
+));
+
+if (capabilityRegistry.version !== 2) {
+  throw new Error("test/capabilities.json must use contract version 2.");
+}
+
+function normalizeCapabilityEntry(name, entry) {
+  if (
+    entry === null ||
+    typeof entry !== "object" ||
+    !["file", "prefix"].includes(entry.type) ||
+    typeof entry.path !== "string" ||
+    entry.path.length === 0 ||
+    entry.path.startsWith("/") ||
+    entry.path.includes("\\") ||
+    entry.path.split("/").includes("..")
+  ) {
+    throw new Error(`Invalid test capability entry for "${name}".`);
+  }
+  return Object.freeze({ type: entry.type, path: entry.path });
+}
+
+export const TEST_CAPABILITIES = Object.freeze(Object.fromEntries(
+  Object.entries(capabilityRegistry.capabilities).map(([name, entries]) => [
+    name,
+    Object.freeze(entries.map(entry => normalizeCapabilityEntry(name, entry)))
+  ])
+));
+const REALISTIC_TEST_ENTRIES = TEST_CAPABILITIES.realistic ?? Object.freeze([]);
+
+const NORMAL_SUITES = Object.freeze([
+  "unit",
+  "contracts",
+  "charts",
+  "gates",
+  "docs"
+]);
+const SPECIAL_SUITES = Object.freeze(["browser", "realistic", "render"]);
+
+function walk(directory) {
+  return readdirSync(directory, { withFileTypes: true }).flatMap(entry => {
+    const target = path.join(directory, entry.name);
+    return entry.isDirectory() ? walk(target) : [target];
+  });
+}
+
+export function classifyTestFile(file, root = testRoot) {
+  const relative = path.relative(root, file);
+  const normalized = relative.split(path.sep).join("/");
+  const [owner] = relative.split(path.sep);
+  if (
+    file.endsWith(".render.js") &&
+    (owner === "charts" || owner === "gates")
+  ) {
+    return "render";
+  }
+  if (file.endsWith(".browser.js") && owner === "browser") return "browser";
+  if (
+    file.endsWith(".test.js") &&
+    REALISTIC_TEST_ENTRIES.some(entry => matchesCapabilityEntry(normalized, entry))
+  ) return "realistic";
+  if (file.endsWith(".test.js") && NORMAL_SUITES.includes(owner)) return owner;
+  return undefined;
+}
+
+export function matchesCapabilityEntry(relative, entry) {
+  return entry.type === "file"
+    ? relative === entry.path
+    : relative.startsWith(entry.path);
+}
+
+function matchesSelector(file, root, selector) {
+  const relative = path.relative(root, file).split(path.sep).join("/");
+  if (selector.startsWith("chart:")) {
+    return relative.startsWith(`charts/${selector.slice("chart:".length)}/`);
+  }
+  if (selector.startsWith("capability:")) {
+    const name = selector.slice("capability:".length);
+    const paths = TEST_CAPABILITIES[name];
+    if (!paths) {
+      throw new Error(
+        `Unknown test capability "${name}". Expected one of: ` +
+        `${Object.keys(TEST_CAPABILITIES).join(", ")}.`
+      );
+    }
+    return paths.some(entry => matchesCapabilityEntry(relative, entry));
+  }
+  const value = selector.replace(/^test\//, "").replace(/\\/g, "/");
+  if (value.endsWith(".js")) return relative === value;
+  const prefix = value.endsWith("/") ? value : `${value}/`;
+  return relative.startsWith(prefix);
+}
+
+export function collectTestFiles(suite = "all", root = testRoot, selectors = []) {
+  for (const selector of selectors) {
+    if (selector.startsWith("capability:") && !Object.hasOwn(TEST_CAPABILITIES, selector.slice(11))) {
+      throw new Error(`Unknown test capability "${selector.slice(11)}".`);
+    }
+  }
+  const requested = suite === "all" || suite === "coverage"
+    ? new Set(NORMAL_SUITES)
+    : new Set([suite]);
+  return walk(root)
+    .filter(file => requested.has(classifyTestFile(file, root)))
+    .filter(file => selectors.length === 0 || selectors.some(
+      selector => matchesSelector(file, root, selector)
+    ))
+    .sort();
+}
+
+function coverageSummary(output) {
+  const coverage = parseCoverageTable(output).get("all files");
+  if (coverage === undefined) return "Coverage thresholds passed.\n";
+  return `Coverage: ${coverage.lines}% lines, ${coverage.branches}% branches, ` +
+    `${coverage.functions}% functions; ` +
+    `${Object.keys(CRITICAL_COVERAGE_FLOORS).length} critical floors passed.\n`;
+}
+
+export function parseTestShard(argument) {
+  const match = /^--shard=(\d+)\/(\d+)$/.exec(argument);
+  if (match === null) {
+    throw new Error(
+      `Invalid test shard "${argument}". Expected --shard=<index>/<total>.`
+    );
+  }
+  const index = Number(match[1]);
+  const total = Number(match[2]);
+  if (!Number.isSafeInteger(index) || !Number.isSafeInteger(total) || index < 1 || total < 1 || index > total) {
+    throw new Error(
+      `Invalid test shard "${argument}". Expected 1 <= index <= total.`
+    );
+  }
+  return Object.freeze({ index, total });
+}
+
+export function testRunnerArguments(suite, files, shard) {
+  const concurrency = suite === "realistic" ? 2 : 4;
+  // Keep long synchronous corpus sweeps under regular GC pressure. Private
+  // generation/execution children retain their separately explicit heap limits.
+  const args = [
+    ...(suite === "realistic" ? ["--max-old-space-size=512"] : []),
+    "--test", `--test-concurrency=${concurrency}`
+  ];
+  const selected = shard === undefined ? files : partitionTestFiles(files, shard.total)[shard.index - 1].files;
+  if (suite === "coverage") {
+    args.push(
+      "--experimental-test-coverage",
+      "--test-coverage-include=src/**/*.js",
+      "--test-coverage-lines=94",
+      "--test-coverage-branches=89",
+      "--test-coverage-functions=98"
+    );
+  }
+  args.push(...selected);
+  return args;
+}
+
+// Decode only after joining a stream's bytes: a data event can split the
+// multi-byte info marker used by Node's coverage table at any byte boundary.
+export function createTestOutputCapture() {
+  const chunks = [];
+  return {
+    write(chunk) { chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk)); },
+    toString() { return Buffer.concat(chunks).toString("utf8"); }
+  };
+}
+
+async function run(suite, selectors, shard) {
+  const files = collectTestFiles(suite, testRoot, selectors);
+  if (files.length === 0) {
+    if (suite === "gates" && selectors.length === 0) {
+      process.stdout.write("No active gate tests.\n");
+      return;
+    }
+    const suffix = selectors.length === 0 ? "" : ` matching ${selectors.join(", ")}`;
+    throw new Error(`No test files found for suite "${suite}"${suffix}.`);
+  }
+  const coverage = suite === "coverage";
+  if (shard !== undefined) {
+    const partition = partitionTestFiles(files, shard.total)[shard.index - 1];
+    process.stdout.write(`${JSON.stringify({ shard, files: partition.files.map(file => path.relative(testRoot, file)), estimatedMs: partition.estimatedMs })}\n`);
+    if (partition.files.length === 0) {
+      process.stdout.write("No files assigned to this shard.\n");
+      return;
+    }
+  }
+  const args = testRunnerArguments(suite, files, shard);
+  if (suite === "realistic") args.unshift("--import", path.join(repositoryRoot, "scripts/test-file-metrics.js"));
+  const stdout = createTestOutputCapture(), stderr = createTestOutputCapture();
+  const code = await runCheck(`suite-${suite}`, process.execPath, args, {
+    cwd: repositoryRoot,
+    ...(coverage ? { stdout, stderr } : {})
+  });
+  if (coverage) {
+    const output = stdout.toString() + stderr.toString();
+    const directory = path.join(repositoryRoot, ".artifacts/coverage");
+    mkdirSync(directory, { recursive: true });
+    writeFileSync(path.join(directory, "report.log"), output);
+    const git = args => spawnSync("git", args, { cwd: repositoryRoot, encoding: "utf8", maxBuffer: 20 * 1024 * 1024 }).stdout?.trim();
+    writeFileSync(path.join(directory, "receipt.json"), JSON.stringify({
+      node: process.version, platform: process.platform, arch: process.arch,
+      status: code, files: files.map(file => path.relative(repositoryRoot, file)),
+      sourceCommit: git(["rev-parse", "HEAD"]),
+      workingTree: git(["status", "--porcelain"]),
+      untrackedSha256: Object.fromEntries((git(["ls-files", "--others", "--exclude-standard", "-z"]) ?? "").split("\0").filter(Boolean).map(file => [file, createHash("sha256").update(readFileSync(path.join(repositoryRoot, file))).digest("hex")])),
+      trackedDiffSha256: createHash("sha256").update(git(["diff", "HEAD", "--binary"]) ?? "").digest("hex")
+    }, null, 2));
+    // Preserve machine-readable metrics even when a threshold later rejects them.
+    writeFileSync(path.join(directory, "metrics.json"), JSON.stringify(Object.fromEntries(parseCoverageTable(output)), null, 2));
+    if (code === 0) {
+      assertSourceCoverage(output);
+      assertCriticalCoverage(output);
+      process.stdout.write(coverageSummary(output));
+    } else process.stdout.write(output);
+  }
+  process.exitCode = code;
+}
+
+if (
+  process.argv[1] &&
+  fileURLToPath(import.meta.url) === path.resolve(process.argv[1])
+) {
+  const requested = process.argv[2] ?? "all";
+  const accepted = new Set([
+    ...NORMAL_SUITES,
+    ...SPECIAL_SUITES,
+    "all",
+    "coverage"
+  ]);
+  const suite = accepted.has(requested) ? requested : "all";
+  const arguments_ = accepted.has(requested)
+    ? process.argv.slice(3)
+    : process.argv.slice(2);
+  const shardArguments = arguments_.filter(argument => argument.startsWith("--shard"));
+  if (shardArguments.length > 1) {
+    throw new Error("Only one --shard=<index>/<total> option is allowed.");
+  }
+  const shard = shardArguments.length === 0
+    ? undefined
+    : parseTestShard(shardArguments[0]);
+  const selectors = arguments_.filter(argument => !argument.startsWith("--shard"));
+  if (shard !== undefined && suite !== "realistic") {
+    throw new Error("Test sharding is supported only for the realistic suite.");
+  }
+  if (suite === "coverage" && selectors.length > 0) {
+    throw new Error("Coverage requires the complete normal test suite.");
+  }
+  await run(suite, selectors, shard);
+}

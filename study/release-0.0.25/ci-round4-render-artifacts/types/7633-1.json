@@ -1,0 +1,21 @@
+{
+  "compilerVersion": "7.0.2",
+  "node": "v20.20.2",
+  "args": [
+    "--noEmit",
+    "--strict",
+    "--skipLibCheck",
+    "--target",
+    "ES2022",
+    "--module",
+    "NodeNext",
+    "--moduleResolution",
+    "NodeNext",
+    "/tmp/legend-suppression-types-SMbqgQ/suppression.mts"
+  ],
+  "cwd": "/home/runner/work/ggaction/ggaction/",
+  "status": 0,
+  "signal": null,
+  "durationMs": 124.35004500000002,
+  "diagnostics": ""
+}

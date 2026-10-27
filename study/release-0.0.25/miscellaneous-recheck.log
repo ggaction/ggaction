@@ -1,0 +1,19 @@
+tt-global-temperatures 1311
+tt-penguins 1311
+file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/layout/guideCollisions.js:22
+        throw new Error(`The ${a.position} ${a.id} and ${b.id} overlap; guides require more margin space or different offsets.`);
+              ^
+
+Error: Hierarchical facade profile 23 createPolarLinePlot: The bottom theta-axis text and matrix-polar-line-23 legend group overlap; guides require more margin space or different offsets.
+    at assertGuideCollisionBlocks (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/layout/guideCollisions.js:22:15)
+    at withGuideLayoutTransaction (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/materialization/guides/layout.js:80:3)
+    at ChartProgram.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/materialization/guides/layout.js:86:12)
+    at ChartProgram.wrappedAction [as createLegend] (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/core/action.js:229:87)
+    at ChartProgram.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/guides.js:170:19)
+    at ChartProgram.wrappedAction [as createGuides] (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/core/action.js:229:87)
+    at fulfillFacadeGuides (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/facade.js:100:20)
+    at applyFacadeGuides (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/charts/shared.js:173:10)
+    at ChartProgram.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/charts/polar.js:128:12)
+    at ChartProgram.wrappedAction [as createPolarLinePlot] (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/core/action.js:229:87)
+
+Node.js v23.5.0

@@ -1,0 +1,35 @@
+[
+  {
+    "url": "https://vega.github.io/schema/vega-lite/v5.json",
+    "file": "corpus-vega-lite-v5.json",
+    "sha256": "1aeeda8aa44dcce60f6b6fb7d8b650487e3e389a8284a2040e590be9a4c7610e",
+    "bytes": 1873290,
+    "status": "fetched"
+  },
+  {
+    "url": "https://vega.github.io/schema/vega-lite/v4.json",
+    "file": "corpus-vega-lite-v4.json",
+    "sha256": "21f0a6a0283874474541d6f1f8871286c7e6bf26d8ee2ea984c73f31dcd1c23e",
+    "bytes": 1813485,
+    "status": "fetched"
+  },
+  {
+    "url": "https://vega.github.io/schema/vega-lite/v4.2.1.json",
+    "status": "unavailable",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "url": "https://vega.github.io/schema/vega-lite/v3.json",
+    "file": "corpus-vega-lite-v3.json",
+    "sha256": "6b4aff91d150fbc2f60498f66c468dbc520343d903426e3cf36a1e2b7ff27c44",
+    "bytes": 678330,
+    "status": "fetched"
+  },
+  {
+    "url": "https://vega.github.io/schema/vega-lite/v3.0.0-rc4.json",
+    "file": "corpus-vega-lite-v3.0.0-rc4.json",
+    "sha256": "3104f0dc1523260420c92d6dfdc2ad49b1d097e39476a3e787d6b86187ce7cc1",
+    "bytes": 489064,
+    "status": "fetched"
+  }
+]

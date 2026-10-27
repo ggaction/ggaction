@@ -1,0 +1,12 @@
+✔ realistic shards are exhaustive, disjoint, deterministic, and weighted by measured durations (22.601041ms)
+✔ weighted scheduling spreads long tests and rejects invalid input (0.343917ms)
+✔ the aggregate accepts only complete successful prerequisites (0.311792ms)
+✔ timing summaries separate environments and exclude failures from scheduling quantiles (14.18825ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 144.049292

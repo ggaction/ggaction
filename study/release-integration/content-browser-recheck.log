@@ -1,0 +1,17 @@
+npm notice
+npm notice New minor version of npm available! 11.18.0 -> 11.21.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.21.1
+npm notice To update run: npm install -g npm@11.21.1
+npm notice
+✔ chromium matches explicit content-header geometry in Canvas and SVG at DPR 1 (8430.715667ms)
+✔ chromium matches explicit content-header geometry in Canvas and SVG at DPR 2 (1182.943167ms)
+✔ chromium independently packed content matches literal plot origins at DPR 1 (1134.552083ms)
+✔ chromium independently packed content matches literal plot origins at DPR 2 (1195.485209ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 13316.438958

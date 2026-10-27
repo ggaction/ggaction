@@ -1,0 +1,11 @@
+✔ defines three direct-encoding recipes with five authentic TT witnesses each (0.994875ms)
+✔ covers every valid direct encoding option path and path literal at 5/3 (128108.107542ms)
+✔ executes both restored range palette spellings with authentic 5/3 witnesses (0.561417ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 128510.3665

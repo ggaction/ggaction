@@ -1,0 +1,20 @@
+{
+  "compilerVersion": "7.0.2",
+  "node": "v20.20.2",
+  "args": [
+    "--noEmit",
+    "--strict",
+    "--target",
+    "ES2022",
+    "--module",
+    "NodeNext",
+    "--moduleResolution",
+    "NodeNext",
+    "/tmp/ggaction-adjacent-types-2hQCaJ/adjacent.mts"
+  ],
+  "cwd": "/home/runner/work/ggaction/ggaction/",
+  "status": 0,
+  "signal": null,
+  "durationMs": 471.39188500000006,
+  "diagnostics": ""
+}

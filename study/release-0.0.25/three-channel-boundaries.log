@@ -1,0 +1,17 @@
+✔ three-channel interval samples preserve ordinal shape, source points and exact scale ownership (95.521375ms)
+✔ three-channel sampling rejects missing representatives, incompatible mappings and mapped overrides atomically (13.09475ms)
+✔ each channel alias edits one shared block and changing a bound scale rematerializes it (54.771417ms)
+✔ explicit combination edits preserve the block and splitting requires an explicit request (43.812791ms)
+✔ clipped shared three-channel legends survive facet, grid and repeat restoration and reflow (430.808584ms)
+✔ inherited fixed paint stays live and explicit overrides reset without changing mapped area (19.012958ms)
+✔ representative edits, shape-scale edits and data revisions keep exact ordinal evaluation (41.694375ms)
+✔ quantize and quantile use their actual shared boundaries and preserve fallback shapes (28.694917ms)
+✔ ambiguous hue ownership and invalid point paint require explicit compatible choices (22.662625ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1139.674125

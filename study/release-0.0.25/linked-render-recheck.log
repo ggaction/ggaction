@@ -1,0 +1,12 @@
+✔ renders linked-overlay/bar-line (669.284209ms)
+✔ renders shared-adjacent/shared-y (784.98225ms)
+✔ beeswarm-box: reproducible rendered chart (640.104541ms)
+✔ violin-box-points: reproducible rendered chart (555.161292ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2317.627291

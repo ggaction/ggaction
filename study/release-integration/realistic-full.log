@@ -1,0 +1,489 @@
+✔ loads only the dataset requested by a test (3.634042ms)
+✔ locks every reference dataset by row count, bytes, and sha256 (18.017ms)
+✔ registers a frozen, uniquely identified real-data and edge-case corpus (0.360042ms)
+✔ describes every real source with typed fields, roles, mappings, and provenance (1.09025ms)
+✔ loads zoo datasets through immutable fixtures and isolated clones (13.082375ms)
+✔ coerces pinned CSV fields only through explicit schemas (0.762916ms)
+✔ normalizes only explicitly declared upstream CSV quirks (0.350375ms)
+✔ selects deterministic samples with endpoint and numeric extrema witnesses (12.640875ms)
+✔ matches the independent full-sort stable-sample oracle (25.942708ms)
+✔ preserves the pinned large-source stable-sample index digest (1614.766458ms)
+✔ keeps TidyTuesday URLs commit-pinned and reports optional local caches (15074.837375ms)
+✔ exposes every verified source row with immutable original lineage (4355.661042ms)
+✔ keeps optional raw caches outside git and the published package (0.637333ms)
+✔ rejects unknown or ambiguous dataset sync arguments before downloading (175.047166ms)
+✔ applies deterministic, non-mutating corpus mutations (0.826791ms)
+✔ executes deterministic lifecycle recipes through integrity and SVG oracles (8809.17125ms)
+✔ calls every user-facing action directly from a generated scenario root (8528.847333ms)
+✔ retains direct action effects in final semantic and graphic state (679.01025ms)
+✔ preserves every Unicode label and all 257 long legend categories (236.508333ms)
+✔ executes monotone temporal lines for every direction and path-order mode (952.902166ms)
+✔ materializes every requested histogram binning policy without substitution (174.397208ms)
+✔ keeps error-bar and error-band factors active in separate recipes (481.53825ms)
+✖ derives a bounded public option inventory without runtime prototype paths (27391.604209ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  2500 !== 2495
+  
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/contracts/generated-scenario-feature-coverage.test.js:218:10)
+      at async Test.run (node:internal/test_runner/test:932:9)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:297:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 2500,
+    expected: 2495,
+    operator: 'strictEqual'
+  }
+
+✔ passes only trace-backed action and recursive option evidence plus observed extras (5.042292ms)
+✔ observes collection and named-axis array parents through recursive trace count aliases (36474.611083ms)
+✔ hard-gates explicit distribution minima and reports exact scoped waivers (2.451958ms)
+✔ does not let descriptors, transitive calls, duplicates, or option claims inflate coverage (0.776916ms)
+✔ validates explicit and compact source lineage without reporting raw indexes (22.560417ms)
+✔ reports dataset, tier, recipe, and chart-family concentration failures (2.751917ms)
+✔ generates deterministic pairwise cases without a Cartesian explosion (1.948625ms)
+✔ covers every recipe factor pair in the deterministic deep descriptor set (37.72075ms)
+✔ builds and independently validates every offline smoke scenario (14310.588916ms)
+✔ each offline recipe has a differential analytic raster witness (4044.43675ms)
+✔ lays out the exact volcano padded-donut top legend without changing source labels (383.107ms)
+✔ builds both arc recipes at every legend position across all fifty TT sources (70693.339208ms)
+✔ named axis and parent legend lifecycle preserve actual rows from tt-tour-de-france-winners (9990.200875ms)
+✔ named axis and parent legend lifecycle preserve actual rows from tt-london-marathon-winners (8142.603125ms)
+✔ named axis and parent legend lifecycle preserve actual rows from tt-penguins (7610.25925ms)
+✔ parent legend options and literals have actual public 5/3 witnesses (77026.408167ms)
+✔ defines four bounded facade recipes and a 830-chart schedule (61.2085ms)
+✔ normalizes exact continuous-color facade bars before native rendering (1520.235917ms)
+✖ locks the exact assigned option, literal, aggregate, and diversity target set (35943.694209ms)
+  AssertionError [ERR_ASSERTION]: createLinePlot requirement count
+  
+  454 !== 460
+  
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/contracts/realistic-cartesian-facade-coverage-recipes.test.js:700:12)
+      at async Test.run (node:internal/test_runner/test:932:9)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:629:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 454,
+    expected: 460,
+    operator: 'strictEqual'
+  }
+
+✔ keeps every orthogonal profile materially distinct under one authentic witness (7728.532334ms)
+✔ factor observers require the direct evidence claimed for data and facade profiles (161.027417ms)
+✔ direct authentic witnesses satisfy every assigned hard minimum and diversity rule (81396.421875ms)
+✔ combined legend lifecycle calls preserve actual rows from tt-tour-de-france-winners (1328.944042ms)
+✔ combined legend lifecycle calls preserve actual rows from tt-london-marathon-winners (943.58025ms)
+✔ combined legend lifecycle calls preserve actual rows from tt-penguins (905.76175ms)
+✔ quantitative combined legend lifecycle preserves actual rows from tt-tour-de-france-winners (274.144334ms)
+✔ quantitative combined legend lifecycle preserves actual rows from tt-london-marathon-winners (261.932667ms)
+✔ quantitative combined legend lifecycle preserves actual rows from tt-penguins (262.494583ms)
+✔ authors createRosePlot variant 1 from cars with proportional measured sectors (38.674709ms)
+✔ authors createRadialBarPlot variant 1 from cars with proportional measured sectors (13.978458ms)
+✔ authors pie variant 1 from cars with complete sectors and immutable source (22.672334ms)
+✔ authors density variant 1 from cars with complete profiles and revisions (32.336541ms)
+✔ authors Horizon variant 1 from cars against independent signed folds (110.874917ms)
+✔ authors createRosePlot variant 2 from cars with proportional measured sectors (14.015542ms)
+✔ authors createRadialBarPlot variant 2 from cars with proportional measured sectors (8.007375ms)
+✔ authors pie variant 2 from cars with complete sectors and immutable source (11.453ms)
+✔ authors density variant 2 from cars with complete profiles and revisions (36.3675ms)
+✔ authors Horizon variant 2 from cars against independent signed folds (89.400541ms)
+✔ authors createRosePlot variant 3 from cars with proportional measured sectors (7.816208ms)
+✔ authors createRadialBarPlot variant 3 from cars with proportional measured sectors (7.115834ms)
+✔ authors pie variant 3 from cars with complete sectors and immutable source (9.388458ms)
+✔ authors density variant 3 from cars with complete profiles and revisions (25.405417ms)
+✔ authors Horizon variant 3 from cars against independent signed folds (119.271333ms)
+✔ authors createRosePlot variant 4 from cars with proportional measured sectors (14.3115ms)
+✔ authors createRadialBarPlot variant 4 from cars with proportional measured sectors (6.715625ms)
+✔ authors pie variant 4 from cars with complete sectors and immutable source (4.73275ms)
+✔ authors density variant 4 from cars with complete profiles and revisions (15.480959ms)
+✔ authors Horizon variant 4 from cars against independent signed folds (87.290458ms)
+✔ authors createRosePlot variant 5 from cars with proportional measured sectors (31.204375ms)
+✔ authors createRadialBarPlot variant 5 from cars with proportional measured sectors (9.854916ms)
+✔ authors pie variant 5 from cars with complete sectors and immutable source (9.754334ms)
+✔ authors density variant 5 from cars with complete profiles and revisions (34.55825ms)
+✔ authors Horizon variant 5 from cars against independent signed folds (194.241875ms)
+✔ authors createRosePlot variant 1 from countries with proportional measured sectors (8.275459ms)
+✔ authors createRadialBarPlot variant 1 from countries with proportional measured sectors (7.729084ms)
+✔ authors pie variant 1 from countries with complete sectors and immutable source (9.952ms)
+✔ authors density variant 1 from countries with complete profiles and revisions (13.903583ms)
+✔ authors Horizon variant 1 from countries against independent signed folds (124.580291ms)
+✔ authors createRosePlot variant 2 from countries with proportional measured sectors (8.763875ms)
+✔ authors createRadialBarPlot variant 2 from countries with proportional measured sectors (8.227666ms)
+✔ authors pie variant 2 from countries with complete sectors and immutable source (10.6485ms)
+✔ authors density variant 2 from countries with complete profiles and revisions (38.407125ms)
+✔ authors Horizon variant 2 from countries against independent signed folds (102.419917ms)
+✔ authors createRosePlot variant 3 from countries with proportional measured sectors (38.618125ms)
+✔ authors createRadialBarPlot variant 3 from countries with proportional measured sectors (7.737041ms)
+✔ authors pie variant 3 from countries with complete sectors and immutable source (10.219958ms)
+✔ authors density variant 3 from countries with complete profiles and revisions (25.382125ms)
+✔ authors Horizon variant 3 from countries against independent signed folds (154.333042ms)
+✔ authors createRosePlot variant 4 from countries with proportional measured sectors (8.510667ms)
+✔ authors createRadialBarPlot variant 4 from countries with proportional measured sectors (8.899875ms)
+✔ authors pie variant 4 from countries with complete sectors and immutable source (4.909917ms)
+✔ authors density variant 4 from countries with complete profiles and revisions (15.232375ms)
+✔ authors Horizon variant 4 from countries against independent signed folds (214.062833ms)
+✔ authors createRosePlot variant 5 from countries with proportional measured sectors (13.543875ms)
+✔ authors createRadialBarPlot variant 5 from countries with proportional measured sectors (13.339125ms)
+✔ authors pie variant 5 from countries with complete sectors and immutable source (10.638375ms)
+✔ authors density variant 5 from countries with complete profiles and revisions (40.288ms)
+✔ authors Horizon variant 5 from countries against independent signed folds (193.291167ms)
+✔ authors createRosePlot variant 1 from movies with proportional measured sectors (3.589166ms)
+✔ authors createRadialBarPlot variant 1 from movies with proportional measured sectors (3.594208ms)
+✔ authors pie variant 1 from movies with complete sectors and immutable source (6.079583ms)
+✔ authors density variant 1 from movies with complete profiles and revisions (8.2775ms)
+✔ authors Horizon variant 1 from movies against independent signed folds (30.763333ms)
+✔ authors createRosePlot variant 2 from movies with proportional measured sectors (2.967958ms)
+✔ authors createRadialBarPlot variant 2 from movies with proportional measured sectors (3.07325ms)
+✔ authors pie variant 2 from movies with complete sectors and immutable source (4.984666ms)
+✔ authors density variant 2 from movies with complete profiles and revisions (28.658375ms)
+✔ authors Horizon variant 2 from movies against independent signed folds (14.446416ms)
+✔ authors createRosePlot variant 3 from movies with proportional measured sectors (3.624417ms)
+✔ authors createRadialBarPlot variant 3 from movies with proportional measured sectors (3.237542ms)
+✔ authors pie variant 3 from movies with complete sectors and immutable source (8.022208ms)
+✔ authors density variant 3 from movies with complete profiles and revisions (53.849792ms)
+✔ authors Horizon variant 3 from movies against independent signed folds (15.324959ms)
+✔ authors createRosePlot variant 4 from movies with proportional measured sectors (3.101208ms)
+✔ authors createRadialBarPlot variant 4 from movies with proportional measured sectors (2.932459ms)
+✔ authors pie variant 4 from movies with complete sectors and immutable source (1.509ms)
+✔ authors density variant 4 from movies with complete profiles and revisions (10.493541ms)
+✔ authors Horizon variant 4 from movies against independent signed folds (9.303916ms)
+✔ authors createRosePlot variant 5 from movies with proportional measured sectors (6.910292ms)
+✔ authors createRadialBarPlot variant 5 from movies with proportional measured sectors (4.731417ms)
+✔ authors pie variant 5 from movies with complete sectors and immutable source (6.18275ms)
+✔ authors density variant 5 from movies with complete profiles and revisions (36.914208ms)
+✔ authors Horizon variant 5 from movies against independent signed folds (62.678833ms)
+{"completedDataset":"tt-penguins","actualBuilds":20}
+{"completedDataset":"tt-london-marathon-winners","actualBuilds":40}
+{"completedDataset":"tt-astronauts","actualBuilds":60}
+{"completedDataset":"tt-us-births","actualBuilds":80}
+{"completedDataset":"tt-chocolate-ratings","actualBuilds":100}
+{"requirementCount":159,"requirementSha256":"945f57c2d544486480599f6730c944b55f3f25eb74ba4e06a249f4f92950c071","actualBuilds":100,"minimumOccurrences":5,"minimumDatasets":3}
+✔ computed, fit, statistics and color additions have actual public 5/3 witnesses (30421.969375ms)
+{"paletteDataset":"tt-penguins","actualBuilds":27}
+{"paletteDataset":"tt-london-marathon-winners","actualBuilds":54}
+{"paletteDataset":"tt-astronauts","actualBuilds":81}
+{"paletteDataset":"tt-us-births","actualBuilds":108}
+{"paletteDataset":"tt-chocolate-ratings","actualBuilds":135}
+{"paletteRequirementCount":132,"paletteRequirementSha256":"c738d65c67f93b1f419d0c2dd89a80003cf41c0d3a1e0a3831a2675b2d660daf","actualBuilds":135,"minimumOccurrences":5,"minimumDatasets":3}
+✔ palette range objects have actual public 5/3 witnesses at every restored consumer (47149.822625ms)
+✔ direct trace array summaries witness presence without inventing extent values (1.000875ms)
+✔ defines focused realistic recipes over at least three actual TidyTuesday datasets (1.435542ms)
+✔ every advertised data-mark factor changes the final chart one factor at a time (26093.813709ms)
+✔ recognizes renderer-specific removed strokes on non-circular points (152.791125ms)
+✔ only advertises arc bindings with positive weights for every aggregate (7618.663583ms)
+✔ keeps every advertised arc padding ratio materially distinct (4003.731542ms)
+✔ only advertises monotone error bands on a strictly ordered position axis (95.520083ms)
+✔ paired-measure sampling filters the full source before selecting displayed rows (1179.217042ms)
+✔ split-density eligibility is filtered before deterministic sampling (1231.959708ms)
+✔ preserves every authentic volcano density category on the expanded x-axis (135.524167ms)
+✔ preflights every eligible density field pair on a label-preserving axis (33519.045041ms)
+✔ known corpus-wide density and axis witnesses remain nondegenerate (4663.214833ms)
+✔ sizes step histograms from the full sampled extent for extreme outliers (150.360709ms)
+✔ materializes analytic and SVG output with compact truthful lineage (8468.673292ms)
+✔ directly covers every newly targeted action option and broad maximal paths (14852.963791ms)
+✔ defines ten bounded schedules totaling fifty authentic TT charts (2724.342834ms)
+✔ keeps direct Cartesian guide presentation readable on all fifty eligible TT datasets (38434.017708ms)
+✔ materializes every alternate direct coverage-tail witness (4849.233875ms)
+✔ keeps authentic Christmas Song selection lines materially continuous (898.817ms)
+✔ falls back to authentic source order for one-measure Spiders selection (1728.809834ms)
+✔ locks the disjoint corrected hard-requirement partition at 918 (0.29ms)
+✔ keeps every authentic TV-ratings series label inside the shared facet legend (193.888792ms)
+✔ preflights the maximal facet profile on all fifty eligible TT datasets (31745.130209ms)
+✔ selects polynomial-safe Space Launch groups before sampling (8598.133084ms)
+✔ keeps the assigned single-series operation truthful and removal-only (1284.597416ms)
+✔ uses stable selected source order for the one-measure Spiders removal view (1397.289083ms)
+✔ preflights the maximal removal profile on all fifty eligible TT datasets (44035.585417ms)
+✔ uses one truthful horizon cohort for sparse Nuclear Explosion purposes (726.4115ms)
+✔ preflights the maximal derived-encoding profile on all temporal-eligible TT datasets (49529.74625ms)
+✔ uses one truthful statistical cohort for sparse Nuclear Explosion bands (1940.077375ms)
+✔ preserves a bounded root cause in statistical band diagnostics (0.328708ms)
+✔ preflights the maximal statistical profile on all temporal-eligible TT datasets (91602.174125ms)
+✔ preflights the maximal regression profile on all fifty eligible TT datasets (260876.012375ms)
+✔ fifty direct-root builds close every assigned gap with material graphics (0.096584ms)
+✔ defines three direct-encoding recipes with five authentic TT witnesses each (1.532792ms)
+✔ covers every valid direct encoding option path and path literal at 5/3 (32529.076375ms)
+✔ executes both restored range palette spellings with authentic 5/3 witnesses (0.63575ms)
+✔ defines five integration-ready facade recipes and a 315-chart selection schedule (1.397708ms)
+✔ bounds facade data caches while preserving deterministic recomputation (9878.848833ms)
+✔ keeps the authentic volcano population violin title visible with exact provenance (132.539708ms)
+✔ uses truthful empty and occupied bins for the cats-and-dogs quantize heatmap (56.334292ms)
+✔ keeps every TT heatmap field pair valid for each discretized color variant (144385.713042ms)
+✔ fits baseline and longest authentic titles across every eligible TT facade pairing (53266.30675ms)
+✔ locks the role-valid facade scale inventory at 201 paths and 189 literals (39260.528625ms)
+✔ 315 actual TT charts cover every target path and literal at least five times across three datasets (22427.903625ms)
+✔ every facade variant changes the final program on an identical TT field binding (2050.215542ms)
+✔ executes restored palette range strings and named objects through all three color facades (0.467917ms)
+✔ schedules each facet axis policy five times across real datasets (1610.10675ms)
+✔ reserves data-aware facet guide space for the exact Christmas-song case (173.208375ms)
+✔ wraps complete long facet titles and questions inside the final Canvas (546.099917ms)
+✔ turns known clamped TT column requests into distinct final visual policies (682.295667ms)
+✔ every lifecycle facet column produces a distinct final TT chart (22646.261916ms)
+✔ every analysis facet column produces a distinct final TT chart (23411.327625ms)
+✔ covers every eligible facet binding plus every column-scale-axis interaction (79895.121042ms)
+✔ renders every formerly oversized realistic facet through SVG, Canvas, PNG, and PDF (62158.283042ms)
+✔ defines a feasible 739-selection guide/scale coverage schedule (62.71675ms)
+✔ observes field-pair and variant factors with independent direct and final evidence (3971.523792ms)
+✔ keeps known video-game facets and complete-case parallel profiles nonempty (20801.823459ms)
+✔ reserves a complete side-legend lane for long Christmas-song labels (442.399584ms)
+✔ filters transit parallel dimensions before its deterministic sample (30.421917ms)
+✔ preflights every temporal display policy on every eligible TT dataset (41399.392208ms)
+✔ keeps the meteorites long day labels sparse and non-overlapping (716.643459ms)
+✔ runs every non-sequential scale profile with branch-exact direct actions (828.622333ms)
+✔ uses truthful record counts when a quantize share field has zero span (59.878084ms)
+✔ preflights every quantitative non-sequential scale on every eligible field pair (117446.214833ms)
+✔ replays the automatic cartesian guide identically after cloning, reordering, and a process boundary (9573.391875ms)
+✔ keeps every cartesian guide variant stable after structured-clone replay across all 50 datasets (142230.590084ms)
+✔ preserves whitespace through a realistic long wrapped title block (173.79175ms)
+✔ builds every reserved witness and directly satisfies guide/scale coverage (48500.691ms)
+✔ covers every hierarchical facade option, literal and diversity requirement (370579.312833ms)
+✔ new legend option and selector witnesses retain five calls and three authentic datasets (9706.063291ms)
+✔ point-owned facade combinations execute five times on tt-tour-de-france-winners (339.486125ms)
+✔ point-owned facade combinations execute five times on tt-london-marathon-winners (358.966167ms)
+✔ point-owned facade combinations execute five times on tt-penguins (314.365ms)
+✔ schedules every two-way chart-family lifecycle at five TT witnesses per family (1.378875ms)
+✔ every realistic lifecycle factor has a final or explicit transient effect (35555.270958ms)
+✔ scales explicit intervals to the authentic New Zealand name time span (502.223458ms)
+✔ single-series temporal provenance follows the actual full-source operations (89.428083ms)
+✔ leaves termination grace around the shared generation deadline (0.493625ms)
+✔ matches the isolated strict 216 descriptor and state boundary (87653.286792ms)
+ℹ {"limit":216,"isolatedResources":{"complete":true,"children":[{"operation":"plan","rssBytes":103120896,"maximumRssBytes":103120896,"wallTimeMs":385.26933299999655},{"operation":"requirements","dataset":"tt-penguins","rssBytes":102825984,"maximumRssBytes":102825984,"wallTimeMs":1361.6929999999993},{"operation":"requirements","dataset":"tt-global-temperatures","rssBytes":104267776,"maximumRssBytes":104431616,"wallTimeMs":1135.1486249999944},{"operation":"requirements","dataset":"tt-london-marathon-winners","rssBytes":103579648,"maximumRssBytes":103579648,"wallTimeMs":1224.6217499999984},{"operation":"merge","rssBytes":101990400,"maximumRssBytes":104071168,"wallTimeMs":439.58316699999705},{"operation":"dataset","dataset":"tt-penguins","rssBytes":155992064,"maximumRssBytes":164184064,"wallTimeMs":7841.907082999998},{"operation":"dataset","dataset":"tt-global-temperatures","rssBytes":173686784,"maximumRssBytes":173965312,"wallTimeMs":11720.999249999993},{"operation":"dataset","dataset":"tt-london-marathon-winners","rssBytes":192872448,"maximumRssBytes":196624384,"wallTimeMs":21153.77541700001},{"operation":"finalize","rssBytes":111050752,"maximumRssBytes":111312896,"wallTimeMs":454.929999999993}],"maximumChildRssBytes":196624384,"maximumCoordinatorRssBytes":85213184,"maximumCombinedRssBytes":281837568,"wallTimeMs":{"total":45794.924666000006,"children":45717.92762499998,"plan":385.26933299999655,"factorRequirements":3721.463374999992,"merge":439.58316699999705,"datasetGeneration":40716.68175,"finalize":454.929999999993}},"referenceResources":{"rssBytes":223117312,"maximumRssBytes":230146048,"wallTimeMs":41744.115792}}
+✔ matches the isolated strict 360 descriptor and state boundary (658873.289292ms)
+ℹ {"limit":360,"isolatedResources":{"complete":true,"children":[{"operation":"plan","rssBytes":98779136,"maximumRssBytes":98779136,"wallTimeMs":399.34712499997113},{"operation":"requirements","dataset":"tt-penguins","rssBytes":105070592,"maximumRssBytes":105070592,"wallTimeMs":1513.7372919999762},{"operation":"requirements","dataset":"tt-global-temperatures","rssBytes":110739456,"maximumRssBytes":110739456,"wallTimeMs":1291.9957080000313},{"operation":"requirements","dataset":"tt-london-marathon-winners","rssBytes":103563264,"maximumRssBytes":103563264,"wallTimeMs":1497.3474170000409},{"operation":"requirements","dataset":"tt-himalayan-peaks","rssBytes":103923712,"maximumRssBytes":104103936,"wallTimeMs":1222.3662499999627},{"operation":"requirements","dataset":"tt-us-tornadoes","rssBytes":239173632,"maximumRssBytes":304463872,"wallTimeMs":75238.35195799998},{"operation":"merge","rssBytes":107757568,"maximumRssBytes":109723648,"wallTimeMs":438.5148749999935},{"operation":"dataset","dataset":"tt-penguins","rssBytes":176652288,"maximumRssBytes":182337536,"wallTimeMs":10586.63162499998},{"operation":"dataset","dataset":"tt-global-temperatures","rssBytes":291602432,"maximumRssBytes":299417600,"wallTimeMs":53676.29858299997},{"operation":"dataset","dataset":"tt-london-marathon-winners","rssBytes":186810368,"maximumRssBytes":188350464,"wallTimeMs":11592.562416},{"operation":"dataset","dataset":"tt-himalayan-peaks","rssBytes":327827456,"maximumRssBytes":344834048,"wallTimeMs":66347.221792},{"operation":"dataset","dataset":"tt-us-tornadoes","rssBytes":312098816,"maximumRssBytes":348422144,"wallTimeMs":81299.43683300004},{"operation":"finalize","rssBytes":111558656,"maximumRssBytes":112394240,"wallTimeMs":469.8328329999931}],"maximumChildRssBytes":348422144,"maximumCoordinatorRssBytes":101548032,"maximumCombinedRssBytes":449970176,"wallTimeMs":{"total":305707.452375,"children":305573.64470699994,"plan":399.34712499997113,"factorRequirements":80763.798625,"merge":438.5148749999935,"datasetGeneration":223502.151249,"finalize":469.8328329999931}},"referenceResources":{"rssBytes":327467008,"maximumRssBytes":387694592,"wallTimeMs":353043.706875}}
+✔ owns exactly fifty real TidyTuesday sources and the integrated realistic recipe set (2.189459ms)
+✔ integrates every coverage recipe once with bounded tier capacity (248.124917ms)
+✔ does not advertise impossible outliers for min-max whiskers (0.147ms)
+✔ distributes the full palette vocabulary across bounded recipe domains (0.278709ms)
+✔ composition alignment moves deliberately unequal child canvases (252.165375ms)
+✔ composition children reserve room for long authentic titles (56.319541ms)
+✔ only advertises positive-weight field bindings for base arc recipes (2933.746375ms)
+✔ only advertises materially varying bindings for summary comparisons (7989.335ms)
+✔ preflights one balanced dataset quota with truthful metadata and replay (113704.914041ms)
+✔ validates serialized scheduler identity, counts, and complete descriptor shards (154665.529291ms)
+✔ aligns default secondary bindings and actual record eligibility across all fifty sources (13954.888083ms)
+✔ records unsupported dataset recipes as skips without preflight rejection loops (89686.683333ms)
+✔ advances past exhausted factor domains under strict scheduling (41364.105542ms)
+✔ prioritizes a scheduled variant on its last eligible dataset (0.40125ms)
+✔ keeps no-slack encoding schedules urgent through their full-plan deadline (0.491583ms)
+✔ plans every heatmap schedule variant across eligible real datasets (65.455042ms)
+✔ plans both facet axis policies five times across real datasets (18263.870375ms)
+✔ observes lifecycle features from recipe-specific direct trace signatures (3066.14725ms)
+✔ keeps derived-data regression viable after realistic subgroup filtering (40.719375ms)
+✔ uses full-source grouped aggregates, truthful samples, and median IQR intervals (1635.473041ms)
+✔ preserves exact lifecycle contributor lineage and sampling disclosures (1229.593458ms)
+✔ keeps diagnostic scenarios out of the human gallery and enforces compact canvases (1.453834ms)
+✔ labels every gallery chart with a short ordinal and stable descriptor id (12.011041ms)
+✔ fails closed when strict artifact execution exceeds 512 MiB per child (0.691041ms)
+✔ parses strict realistic scenario renderer and resource options (0.332291ms)
+✔ rejects ambiguous or coverage-defeating realistic runner options (0.25025ms)
+✔ isolates realistic descriptor generation in a disposable worker (62036.024959ms)
+✔ isolates serial dataset execution in a bounded child process (593.320166ms)
+✔ runs one dataset in ordered serial batches of at most 24 scenarios (2.382ms)
+✔ fails closed at a completed batch boundary without blaming the next task (1.509958ms)
+✔ bounds execution child protocol, timeout, and crash failures (25.265667ms)
+✔ rejects forged execution results before committing child evidence (6.5375ms)
+✔ fails closed without spawning a replacement for an unconfirmed child (26.274667ms)
+✔ commits serialized outcomes and resumes after an execution child crash (0.642875ms)
+✔ round-trips canonical outcome chunks and rejects corruption (0.910625ms)
+✔ terminates timed-out generation children and reports process crashes (179.7745ms)
+✔ keeps the last complete dataset state atomic after ScenarioGenerationCrashError (1.948625ms)
+✔ keeps the last complete dataset state atomic after ScenarioGenerationTimeoutError (0.921125ms)
+✔ rejects a malformed successful dataset state before committing it (1.158667ms)
+✔ rejects a validly sealed dataset state that resets checkpoint history (1.040541ms)
+✔ rejects forged factor usages and unknown schedule eligibility (1.735709ms)
+✔ rejects a successful finalizer with an incomplete descriptor payload (0.836459ms)
+✔ rejects weakened final requirements and post-validation deadline overruns (34.125375ms)
+✔ preserves compact generator diagnostics in a failed audit report (1845.406166ms)
+✔ keeps thin PNG content visible to native-resolution audit evidence (63.813375ms)
+✔ reads length-bounded compressed PDF text and rejects drawing-only streams (2.111ms)
+✔ accepts deterministic readable PNG and compressed PDF artifact regressions (1452.105375ms)
+✔ renders every artifact from the exact program credited by scenario evidence (233.430042ms)
+✔ keeps partial and audit runs immutable while promoting only strict artifacts (4.155625ms)
+[1/1] ok realistic-category-boxes-adf8d750c469
+{
+  "output": "../../../../../var/folders/lp/kxmzrnl552dghf196f1hmxqm0000gn/T/ggaction-realistic-partial-vvCmOS/partial/bounded-audit",
+  "descriptors": 1,
+  "rejectedCandidates": 0,
+  "duplicateCandidates": 0,
+  "skippedRecipeDatasets": 0,
+  "generationWallTimeMs": 62035.289583,
+  "generationMaximumChildRssBytes": 322699264,
+  "generationMaximumCombinedRssBytes": 494731264,
+  "executionWallTimeMs": 612.3268749999988,
+  "executionMaximumChildRssBytes": 132120576,
+  "executionMaximumCoordinatorLifetimeRssBytes": 266010624,
+  "executionMaximumCoordinatorSampledRssBytes": 266010624,
+  "executionMaximumIpcSampledCombinedRssBytes": 397737984,
+  "executionMaximumPhaseConservativeCombinedRssBytes": 398131200,
+  "executionMaximumConservativeCombinedRssBytes": 398131200,
+  "executionResourceGatePassed": true,
+  "passed": 1,
+  "failed": 0,
+  "coveragePassed": false,
+  "publicActions": 6,
+  "strictOptionPaths": 13310,
+  "requirementDeficits": 23669,
+  "interactionDeficits": 25,
+  "diversityDeficits": 417,
+  "minimumFeatureOccurrences": {
+    "byKind": {
+      "action": {
+        "occurrences": 0,
+        "datasets": 0,
+        "recipes": 0,
+        "tiers": 0
+      },
+      "action-lifecycle": {
+        "occurrences": 0,
+        "datasets": 0,
+        "recipes": 0,
+        "tiers": 0
+      },
+      "chart-family": {
+        "occurrences": 1,
+        "datasets": 1,
+        "recipes": 1,
+        "tiers": 1
+      },
+      "data-operation": {
+        "occurrences": 1,
+        "datasets": 1,
+        "recipes": 1,
+        "tiers": 1
+      },
+      "family-literal": {
+        "occurrences": 0,
+        "datasets": 0,
+        "recipes": 0,
+        "tiers": 0
+      },
+      "feature": {
+        "occurrences": 0,
+        "datasets": 0,
+        "recipes": 0,
+        "tiers": 0
+      },
+      "lifecycle": {
+        "occurrences": 0,
+        "datasets": 0,
+        "recipes": 0,
+        "tiers": 0
+      },
+      "nested-option": {
+        "occurrences": 0,
+        "datasets": 0,
+        "recipes": 0,
+        "tiers": 0
+      },
+      "path-literal": {
+        "occurrences": 0,
+        "datasets": 0,
+        "recipes": 0,
+        "tiers": 0
+      },
+      "renderer": {
+        "occurrences": 1,
+        "datasets": 1,
+        "recipes": 1,
+        "tiers": 1
+      },
+      "top-level-option": {
+        "occurrences": 0,
+        "datasets": 0,
+        "recipes": 0,
+        "tiers": 0
+      }
+    },
+    "interactions": {
+      "occurrences": 0,
+      "datasets": 0,
+      "recipes": 0,
+      "tiers": 0
+    }
+  }
+}
+✔ writes bounded diagnostics separately and narrows only renderer audit evidence (14943.510209ms)
+✔ defines five bounded statistical facade schedules totaling 540 real charts (1.314917ms)
+✔ distributes every orthogonal variant exactly five times across at least three datasets (59.08ms)
+✔ locks the corrected audit target counts and exact requirement-set digests (0.275375ms)
+✔ 540 actual direct-root witnesses close every corrected action target and diversity (95344.597083ms)
+✖ the exact 540-chart tail counterfactual fails before and passes after real root evidence (421.776958ms)
+  AssertionError [ERR_ASSERTION]: option-value:createViolinPlot.area.curve=string:basis
+  + actual - expected
+  
+  + undefined
+  - true
+  
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/contracts/realistic-statistical-facade-coverage-recipes.test.js:628:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+      at async Test.run (node:internal/test_runner/test:932:9)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:629:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: 'strictEqual'
+  }
+
+✔ the 540-chart projection losslessly subsumes the retired facade scale surface (5.579792ms)
+✔ every same-binding facade variant materially changes the final program (8560.33175ms)
+ℹ tests 266
+ℹ suites 0
+ℹ pass 263
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1969612.259833
+
+✖ failing tests:
+
+test at test/contracts/generated-scenario-feature-coverage.test.js:214:1
+✖ derives a bounded public option inventory without runtime prototype paths (27391.604209ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  2500 !== 2495
+  
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/contracts/generated-scenario-feature-coverage.test.js:218:10)
+      at async Test.run (node:internal/test_runner/test:932:9)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:297:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 2500,
+    expected: 2495,
+    operator: 'strictEqual'
+  }
+
+test at test/contracts/realistic-cartesian-facade-coverage-recipes.test.js:686:1
+✖ locks the exact assigned option, literal, aggregate, and diversity target set (35943.694209ms)
+  AssertionError [ERR_ASSERTION]: createLinePlot requirement count
+  
+  454 !== 460
+  
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/contracts/realistic-cartesian-facade-coverage-recipes.test.js:700:12)
+      at async Test.run (node:internal/test_runner/test:932:9)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:629:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 454,
+    expected: 460,
+    operator: 'strictEqual'
+  }
+
+test at test/contracts/realistic-statistical-facade-coverage-recipes.test.js:592:1
+✖ the exact 540-chart tail counterfactual fails before and passes after real root evidence (421.776958ms)
+  AssertionError [ERR_ASSERTION]: option-value:createViolinPlot.area.curve=string:basis
+  + actual - expected
+  
+  + undefined
+  - true
+  
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/contracts/realistic-statistical-facade-coverage-recipes.test.js:628:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+      at async Test.run (node:internal/test_runner/test:932:9)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:629:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: 'strictEqual'
+  }

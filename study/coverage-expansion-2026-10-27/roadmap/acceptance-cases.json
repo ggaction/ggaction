@@ -1,0 +1,1865 @@
+{
+  "status": "proposed-not-run",
+  "tests": [
+    {
+      "id": "AT-01",
+      "input": "ggaction baseline·공개 action/schema·환경 hash",
+      "expected": "기준 버전과 계약 추적, native fixture hash 재현; 외부 저장소 실행 불필요",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-001",
+        "STEP-003"
+      ],
+      "closureTask": "STEP-003",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-02",
+      "input": "독립 numeric/geometry/state/time reference 생성",
+      "expected": "동일 native 입력에서 결정적 출력과 반복 가능한 oracle; 외부 엔진 필수 아님",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-002",
+        "STEP-003"
+      ],
+      "closureTask": "STEP-003",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-04",
+      "input": "native data/font/map/image resource offline replay",
+      "expected": "자원 hash·binding·오류·abort 정확; source dialect/번역 의무 없음",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-018",
+        "STEP-019"
+      ],
+      "closureTask": "STEP-019",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-06",
+      "input": "3rows 중1row값변경, 정렬, append/delete, reload",
+      "expected": "명시 key가 같은 항목 identity 유지; old program 불변; generated key 할당 보존",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-004",
+        "STEP-006"
+      ],
+      "closureTask": "STEP-006",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-07",
+      "input": "duplicate/null key 및 key없는 전체 set-data 교체",
+      "expected": "명시 error/occurrence/mapping/new-identity 정책; 자동 잘못 매칭 없음",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-004",
+        "STEP-006"
+      ],
+      "closureTask": "STEP-006",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-08",
+      "input": "aggregate/bin/stack/fold/lookup/facet 후 hit·filter·revise",
+      "expected": "contributing row lineage와 grain 정확; series/owner/facet key 충돌 없음",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-005",
+        "STEP-006"
+      ],
+      "closureTask": "STEP-006",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-09",
+      "input": "schema3 selection/highlight 프로그램을 새 버전에서 load/edit/save",
+      "expected": "기존 상태 동등, indices→rowkey 변환 근거 보존, ambiguous 참조 명시 오류",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-009"
+      ],
+      "closureTask": "STEP-009",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-10",
+      "input": "새 모든 resource/action을 serialize→새프로세스 load→edit",
+      "expected": "등록/스키마 검증·trace·inspection 일치, DOM/function/cache 유입 없음",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-007",
+        "STEP-008",
+        "STEP-009"
+      ],
+      "closureTask": "STEP-009",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-11",
+      "input": "outer ring+hole+islands와 nonzero/evenodd를 모든 renderer로 출력",
+      "expected": "구멍이 실제 비어 있음; transparency/overlay에서도 topology 동일",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-010",
+        "STEP-012"
+      ],
+      "closureTask": "STEP-012",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-12",
+      "input": "open/closed curved path, clipping, bounds, invalid commands",
+      "expected": "정확한 stroke/fill/bounds, finite geometry, canonical 변환 오차 한계 검증",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-010",
+        "STEP-011",
+        "STEP-012"
+      ],
+      "closureTask": "STEP-012",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-13",
+      "input": "7texture와 요구 gradient/alpha를 SVG/Canvas/PNG/PDF에 출력",
+      "expected": "pitch/phase/색/투명도/clip 일치, 지원 안 하는 paint 무음 대체 0",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-017"
+      ],
+      "closureTask": "STEP-017",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-14",
+      "input": "native image asset와 load failure/CORS/abort/export",
+      "expected": "fit/aspect/clip·사전 진단·dispose 뒤 callback 없음",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-018"
+      ],
+      "closureTask": "STEP-018",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-15",
+      "input": "고정font+fallback+한글+긴label+font load delay",
+      "expected": "실제 font hash 측정과 render 일치, stale layout 없음, line break/origin 검증",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-019"
+      ],
+      "closureTask": "STEP-019",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-16",
+      "input": "ggaction expression AST/function과 null/date/string 경계",
+      "expected": "자체 타입·오류·수치 계약 일치, eval/global access 없음; 외부 DSL 번역 제외",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-013"
+      ],
+      "closureTask": "STEP-013",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-17",
+      "input": "모든 transform과 stats의 numeric fixtures",
+      "expected": "독립 수식·불변식 일치; pivot/loess/bin/window/timezone/DST 포함",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-014",
+        "STEP-015"
+      ],
+      "closureTask": "STEP-015",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-18",
+      "input": "parameter→filter→aggregate→scale→조건부 encoding 연쇄",
+      "expected": "정확한 dependency invalidation; cycle 오류; 모든 condition branch 실행",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-016"
+      ],
+      "closureTask": "STEP-016",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-19",
+      "input": "ggaction theme token schema·override/null/false/0",
+      "expected": "자체 precedence와 provenance·typography·paint·guide 일치; 외부14theme 복제 불필요",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-033"
+      ],
+      "closureTask": "STEP-033",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-20",
+      "input": "unit/layer/facet/concat/repeat와 허용 scale/guide scope",
+      "expected": "frame별 Y 하나; 분리된 facet 독립 scale 허용, bounds와 responsive 정렬",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-034",
+        "STEP-035"
+      ],
+      "closureTask": "STEP-035",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-21",
+      "input": "nested facet·3행 full-bounds·긴label·resize 합성 fixture",
+      "expected": "공통 header/plot/footer 정렬과 text metrics 정확; corpus source ID 재현 의무 없음",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-035"
+      ],
+      "closureTask": "STEP-035",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-22",
+      "input": "hierarchy/tree/treemap의 단일/다층/빈/잘못된 구조",
+      "expected": "cycle/orphan·containment·stable ID; 통합 partition은 AT-62~65",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-020"
+      ],
+      "closureTask": "STEP-020",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-23",
+      "input": "graph/circular/force와 Sankey DAG/cyclic/edge 경계",
+      "expected": "deterministic seed, node/link lineage·유량/폭·cycle routing·tooltip/adjacency",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-021",
+        "STEP-022"
+      ],
+      "closureTask": "STEP-022",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-24",
+      "input": "native histogram/KDE contour의 saddle/hole/disconnected/empty",
+      "expected": "선택한 estimator/bin/threshold 계약과 독립 수치·topology oracle 일치",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-023"
+      ],
+      "closureTask": "STEP-023",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-25",
+      "input": "calendar 윤년/연말/DST/weekStart/누락날짜",
+      "expected": "날짜→cell mapping과 month boundary, timezone/aggregation 정확",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-024"
+      ],
+      "closureTask": "STEP-024",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-26",
+      "input": "native chart capability와 조합 recipe 전수",
+      "expected": "GGA/USR별 의미·geometry·guides·behavior 검증; 외부51/154 분모 사용 금지",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-053",
+        "STEP-054",
+        "STEP-055",
+        "STEP-056"
+      ],
+      "closureTask": "STEP-056",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-27",
+      "input": "Pyramid/OHLC/waterfall/table/sparkline와 reference-band 조합",
+      "expected": "role별 의미·hit·정렬, KPI/Gauge 전용 개발 제외, 별도 Bullet facade0",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-053",
+        "STEP-055"
+      ],
+      "closureTask": "STEP-055",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-28",
+      "input": "trail/polar/radar/rose/streamgraph/violin native variants",
+      "expected": "width/area/angle/baseline/bandwidth의 자체 의미·수식·missing/negative/zero 계약",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-054"
+      ],
+      "closureTask": "STEP-054",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-29",
+      "input": "자체 projection API와 native-supported projection/planar/inset",
+      "expected": "수학 reference 및 forward/inverse/fit/clip 검증; Flint preset parity 아님",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-043",
+        "STEP-044"
+      ],
+      "closureTask": "STEP-044",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-30",
+      "input": "GeoJSON/TopoJSON hole/dateline/pole/geometrycollection/null",
+      "expected": "ring/feature identity·clipping·join 정확; NaN path와 hidden-backside hit 없음",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-042",
+        "STEP-044"
+      ],
+      "closureTask": "STEP-044",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-31",
+      "input": "custom geography levels와 region join, county/stateLOD",
+      "expected": "중복/미매칭 정책, LOD hysteresis, 선택·annotation rebase, asset hash 보존",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-045"
+      ],
+      "closureTask": "STEP-045",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-32",
+      "input": "geo pan/zoom/rotate/region fit/reset/resize/tween",
+      "expected": "native camera/viewport 왕복·anchor·dateline·clipped inverse 정확",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-046"
+      ],
+      "closureTask": "STEP-046",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-33",
+      "input": "모든 geometry와 legend/axis/header/title hit at DPR1/2/3",
+      "expected": "CSS좌표 기준 same semantic target, clip/occlusion/stroke tolerance와 provenance 정확",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-047",
+        "STEP-048"
+      ],
+      "closureTask": "STEP-048",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-34",
+      "input": "animation frame hit와 overlapping enter/exit/crossfade",
+      "expected": "현재 보이는 geometry 선택, semantic key 중복 이벤트 없음",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-049",
+        "STEP-070"
+      ],
+      "closureTask": "STEP-070",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-35",
+      "input": "native interaction command와 gesture/options/reset 충돌",
+      "expected": "자체 상태·event·화면 계약 일치, 실제 pointer/touch/keyboard; Flint preset 이름 불필요",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-058",
+        "STEP-060"
+      ],
+      "closureTask": "STEP-060",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-36",
+      "input": "brushx/y/angular/lasso/log/time/category의 down→move→cancel/up",
+      "expected": "domain invert/0-2π crossing/빈선택·capture정리; commit1회 또는 cancel1회",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-058",
+        "STEP-059"
+      ],
+      "closureTask": "STEP-059",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-37",
+      "input": "native parameter/selection bind/empty/toggle/nearest/resolve",
+      "expected": "자체 의미와 선언된 option 계약 정확; legacy/new 외부 selection 번역 제외",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-057"
+      ],
+      "closureTask": "STEP-057",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-38",
+      "input": "linked brush/filter/legend/reorder/controls/contextmenu",
+      "expected": "scope·order·focus 보존, origin loop 없음, 삭제된 data/child 선택 reconciliation",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-060"
+      ],
+      "closureTask": "STEP-060",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-39",
+      "input": "native update commands와 preview/commit/cancel/reset",
+      "expected": "불변 baseline·결정적 overlay·도메인 갱신; 외부7ops 특례 복제 없음",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-065"
+      ],
+      "closureTask": "STEP-065",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-40",
+      "input": "programmatic/user 입력의 native event 순서",
+      "expected": "origin/phase/revision 명확, 중복 commit0, preview취소와 async settlement 정확",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-066"
+      ],
+      "closureTask": "STEP-066",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-41",
+      "input": "mount/update/asset/resize 중 cancel/destroy/reentry",
+      "expected": "stale 결과 덮어쓰기0, 중복destroy안전, listener/timer/DOM leak0",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-067"
+      ],
+      "closureTask": "STEP-067",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-42",
+      "input": "t=0,.25,.5,.75,1와 duration0의 deterministic transition",
+      "expected": "endpoint 동일, 색/형상/guide/kernel sample 수치와 topology 올바름",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-061",
+        "STEP-062"
+      ],
+      "closureTask": "STEP-062",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-43",
+      "input": "play/pause/seek/reverse/rate/repeat/interrupt",
+      "expected": "현재 frame에서 이어짐, finished상태정확, virtualclock 재현",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-063"
+      ],
+      "closureTask": "STEP-063",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-44",
+      "input": "logscale/polar/geo/layout/data 동시변경",
+      "expected": "transformed-space·camera kernel 정확, 잘못된 topology morph와 flicker 없음",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-062"
+      ],
+      "closureTask": "STEP-062",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-45",
+      "input": "animation envelope 저장→offline 새프로세스 replay",
+      "expected": "endpoint/asset/font/kernel 버전고정, same time same frame, reduced motion 보존",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-064"
+      ],
+      "closureTask": "STEP-064",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-53",
+      "input": "keyboard focus·screenreader표·tooltip·reducedmotion",
+      "expected": "차트 정보와 actionable targets 접근 가능, hidden/filter 상태 일치, focus 복구",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-068"
+      ],
+      "closureTask": "STEP-068",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-54",
+      "input": "SVG/Canvas/PNG/PDF·frame export 비교",
+      "expected": "같은 semantic/geometry, asset embedding/font/clip 정확, vector/raster역할명시",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-069"
+      ],
+      "closureTask": "STEP-069",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-55",
+      "input": "저장된 interacted chart/geo/animation offline 재개",
+      "expected": "필수자원 동봉, 상태/선택/viewport 복원, functions/network숨은의존없음",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-069"
+      ],
+      "closureTask": "STEP-069",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-56",
+      "input": "sizeclass별 startup/update/hit/frame/memory benchmark",
+      "expected": "사전에고정한SLO통과, 장비·size·P50/P95 기록, 반복mount/dispose 안정",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-071"
+      ],
+      "closureTask": "STEP-071",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-57",
+      "input": "npm pack clean consumer, SSR/browser/Node/types",
+      "expected": "소스checkout없는환경에서실행, optionaldeps 격리, schema/types/runtime일치",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-072"
+      ],
+      "closureTask": "STEP-072",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-58",
+      "input": "catalog/contracts/types/examples/docs/LLM/MCP 산출물 검사",
+      "expected": "new API계약누락0, executableexamples통과, planned와current지원구분",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-073"
+      ],
+      "closureTask": "STEP-073",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-59",
+      "input": "active GGA/USR requirement→work→test→evidence",
+      "expected": "active orphan0·미완료0; reference-only 외부2,279행은 gate 분모 제외",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-074"
+      ],
+      "closureTask": "STEP-074",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-60",
+      "input": "모든 실패 diff 독립검토와 성공 stratified sample review",
+      "expected": "통계/폰트/레이아웃/입력원인별판정, baseline대량재생성으로실패덮음없음",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-075"
+      ],
+      "closureTask": "STEP-075",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-61",
+      "input": "동일 candidate tarball을CI·설치·출판·docs에서hash대조",
+      "expected": "필수CI통과+공개artifact동일; native capability evidence 버전 동봉",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-076",
+        "STEP-077"
+      ],
+      "closureTask": "STEP-077",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-62",
+      "input": "동일 hierarchy에서 Icicle/Sunburst 생성",
+      "expected": "같은 normalized partition/node ID, value·순서·선택 동등",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-026",
+        "STEP-027"
+      ],
+      "closureTask": "STEP-027",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-63",
+      "input": "partition 수치 fixture와 zero/internal value/forest/cycle",
+      "expected": "독립 기대 interval·합·containment; 잘못된 구조 명시 오류",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-025",
+        "STEP-026"
+      ],
+      "closureTask": "STEP-026",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-64",
+      "input": "partition orientation/padding/rootVisible/deep tree/작은 wedge",
+      "expected": "finite geometry·clip·label·hit 일치; radial area 의미 명시",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-027"
+      ],
+      "closureTask": "STEP-027",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-65",
+      "input": "partition focus/filter/breadcrumb/keyboard/coordinate morph",
+      "expected": "같은 node 선택 유지, 각 frame hit 정확, bend endpoint와 reduced motion",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-028",
+        "STEP-060",
+        "STEP-062",
+        "STEP-070"
+      ],
+      "closureTask": "STEP-070",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-70",
+      "input": "kNN directed/union/mutual와 ties·duplicate points",
+      "expected": "수작업 fixture edge 일치, stable ID tie, 0거리 edge 유지",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-030"
+      ],
+      "closureTask": "STEP-030",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-71",
+      "input": "radius/similarity/metric/preprocessing 경계",
+      "expected": "inclusive radius, cosine zero/Jaccard empty/geo units/null 정책과 provenance",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-029",
+        "STEP-030"
+      ],
+      "closureTask": "STEP-030",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-72",
+      "input": "MST/forest/group/sequence rule",
+      "expected": "독립 Kruskal 결과, component 수·비용, group 경계·lag·edge budget",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-031"
+      ],
+      "closureTask": "STEP-031",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-73",
+      "input": "exact accelerator와 opt-in approximate search",
+      "expected": "brute-force exact 일치, approximate seed/recall 기록, 무음 sampling0",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-032"
+      ],
+      "closureTask": "STEP-032",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-74",
+      "input": "data revise/k change/layout drag/resize와 graph selection",
+      "expected": "topology invalidation 이유 정확, node/edge ID 및 observed/inferred 보존",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-029",
+        "STEP-032"
+      ],
+      "closureTask": "STEP-032",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-75",
+      "input": "네 bundling 방법 공통 입력 불변성",
+      "expected": "graph/adjacency/node position 불변, edge ID/count/direction/weight·endpoint 보존",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-036"
+      ],
+      "closureTask": "STEP-036",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-76",
+      "input": "HEB hierarchy mapping/LCA/strength0·1/누락 endpoint",
+      "expected": "independent hierarchy path oracle, 직선 endpoint, missing mapping 진단",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-037"
+      ],
+      "closureTask": "STEP-037",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-77",
+      "input": "FDEB compatibility/subdivision/schedule/zero·opposite edges",
+      "expected": "paper reference numeric oracle, deterministic double buffer, finite 고정 endpoint",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-038"
+      ],
+      "closureTask": "STEP-038",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-78",
+      "input": "KDE grid/gradient/endpoint pin/direction/resample",
+      "expected": "density reference와 tolerance, vector route 보존, grid 밖 NaN0",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-039"
+      ],
+      "closureTask": "STEP-039",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-79",
+      "input": "Edge-path connected/disconnected/directed/stretch",
+      "expected": "route provenance 실제 graph path, maxStretch 준수, fallback·locking 결정적",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-040"
+      ],
+      "closureTask": "STEP-040",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-80",
+      "input": "bundle 겹침/선택/unbundle/tooltip/keyboard",
+      "expected": "candidate edge 목록 정확, 가짜 junction node0, current frame hit와 accessibility",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-041",
+        "STEP-060",
+        "STEP-070"
+      ],
+      "closureTask": "STEP-070",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-81",
+      "input": "bundle animate/interrupt/seek/revise/geo date line",
+      "expected": "endpoint attachment·ID 지속, clip/backside 정확, hidden route hit0",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-041",
+        "STEP-062",
+        "STEP-070"
+      ],
+      "closureTask": "STEP-070",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-82",
+      "input": "bundling sizeclass/abort/worker/cache/export",
+      "expected": "stage별 SLO·메모리, incomplete 진단, SVG/Canvas/PNG/PDF route 동등",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-036",
+        "STEP-041",
+        "STEP-070"
+      ],
+      "closureTask": "STEP-070",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-83",
+      "input": "Pyramid 공개 명칭과 단계형 geometry",
+      "expected": "이전 Funnel 의미·order·gap·value 보존; 외부 alias 구현은 의무 아님",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-051",
+        "STEP-053"
+      ],
+      "closureTask": "STEP-053",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-84",
+      "input": "Marginal/Bullet/Combo action AST와 composition fixtures",
+      "expected": "전용 constructor0, 공통 layout/scale/role 사용, 같은 frame Y 공유",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-051",
+        "STEP-056"
+      ],
+      "closureTask": "STEP-056",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-85",
+      "input": "같은 frame에 두 Y scale/guide·숨긴축·mirror axis",
+      "expected": "모두 정책 오류, 독립 scale 숨김·overlaid frame 우회 금지",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-050"
+      ],
+      "closureTask": "STEP-050",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-86",
+      "input": "독립 facet/concat panels·y2 range·polar/geo",
+      "expected": "합법적 별도 frame/범위 endpoint 오탐0; native frame 의미로 단일 Y 검증",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-050"
+      ],
+      "closureTask": "STEP-050",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-87",
+      "input": "KPI/Gauge 전용 API 제외와 docs/LLM scope",
+      "expected": "필수개발·새 facade로 재유입0; 외부 입력 adapter admission은 의무 아님",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-051"
+      ],
+      "closureTask": "STEP-051",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-88",
+      "input": "native 정책과 외부 참고 원장의 분리",
+      "expected": "native fixture에 단일Y·조합·제외 정책 적용; 외부 reference-only를 pass/필수로 집계하지 않음",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-052",
+        "STEP-074"
+      ],
+      "closureTask": "STEP-074",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-89",
+      "input": "새 resource/action save/load/type/schema/clean consumer",
+      "expected": "JSON codec·refs·version·lineage 왕복, source checkout/DOM 숨은 의존0",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-069"
+      ],
+      "closureTask": "STEP-069",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-90",
+      "input": "신규 domain docs/agent packet/recipes/option presets",
+      "expected": "planned/current 구분, parameter defaults/version 고정, 실행 예제와 negative cases",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-073"
+      ],
+      "closureTask": "STEP-073",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-91",
+      "input": "native completion manifest와 기존 CI",
+      "expected": "필수 GGA/USR qualification과 공개artifact 일치; 외부 호환성·번역 미요구",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-074"
+      ],
+      "closureTask": "STEP-074",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    },
+    {
+      "id": "AT-92",
+      "input": "core/API/event/defaults/dependency/release gate 독립성",
+      "expected": "Flint·번역기 import, upstream 변경·adapter·corpus parity의 필수 의존0; native 기능 축소0",
+      "status": "proposed-not-run",
+      "required": true,
+      "implementationTasks": [
+        "STEP-052",
+        "STEP-074"
+      ],
+      "closureTask": "STEP-074",
+      "qualificationTask": "STEP-074",
+      "evidenceRequired": [
+        "input hash",
+        "exact public call or pure kernel call",
+        "independent expected",
+        "actual and diff",
+        "command and exit code",
+        "implementation commit",
+        "applicable consumer matrix"
+      ],
+      "result": "not-run",
+      "evidence": []
+    }
+  ]
+}

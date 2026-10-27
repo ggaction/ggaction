@@ -1,0 +1,75 @@
+{
+  "totalRecordedMs": 4382449,
+  "largestFileMs": 945678,
+  "shards": [
+    {
+      "index": 1,
+      "files": [
+        "test/contracts/realistic-scenario-generation-isolation.test.js"
+      ],
+      "estimatedMs": 945678
+    },
+    {
+      "index": 2,
+      "files": [
+        "test/contracts/realistic-direct-lifecycle-coverage-recipes.test.js"
+      ],
+      "estimatedMs": 799519
+    },
+    {
+      "index": 3,
+      "files": [
+        "test/contracts/realistic-scenario-generator.test.js"
+      ],
+      "estimatedMs": 535185
+    },
+    {
+      "index": 4,
+      "files": [
+        "test/contracts/dataset-fixtures.test.js",
+        "test/contracts/realistic-data-color-contracts.test.js",
+        "test/contracts/realistic-facet-raster-bounds.test.js",
+        "test/contracts/realistic-hierarchical-facade-matrix.test.js"
+      ],
+      "estimatedMs": 522205
+    },
+    {
+      "index": 5,
+      "files": [
+        "test/contracts/generated-lifecycle-scenarios.test.js",
+        "test/contracts/generated-scenarios.test.js",
+        "test/contracts/realistic-axis-facet-owner-witness.test.js",
+        "test/contracts/realistic-facade-option-recipes.test.js",
+        "test/contracts/realistic-statistical-facade-coverage-recipes.test.js"
+      ],
+      "estimatedMs": 535669
+    },
+    {
+      "index": 6,
+      "files": [
+        "test/contracts/generated-scenario-feature-coverage.test.js",
+        "test/contracts/realistic-arc-legend-layout.test.js",
+        "test/contracts/realistic-cartesian-facade-coverage-recipes.test.js",
+        "test/contracts/realistic-combined-legend-witness.test.js",
+        "test/contracts/realistic-guide-scale-recipes.test.js",
+        "test/contracts/realistic-legend-option-witness.test.js"
+      ],
+      "estimatedMs": 522144
+    },
+    {
+      "index": 7,
+      "files": [
+        "test/contracts/generated-scenario-effective-factors.test.js",
+        "test/contracts/realistic-complete-chart-facades.test.js",
+        "test/contracts/realistic-data-mark-recipes.test.js",
+        "test/contracts/realistic-encoding-coverage-recipes.test.js",
+        "test/contracts/realistic-facet-column-factors.test.js",
+        "test/contracts/realistic-lifecycle-factor-effects.test.js",
+        "test/contracts/realistic-lifecycle-provenance.test.js",
+        "test/contracts/realistic-scenario-runner.test.js"
+      ],
+      "estimatedMs": 522049
+    }
+  ],
+  "note": "Recorded duration weights, not fresh timings. Each shard runs at concurrency2; indivisible files cap balancing."
+}

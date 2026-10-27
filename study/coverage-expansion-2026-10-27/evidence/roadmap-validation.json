@@ -1,0 +1,695 @@
+{
+  "scope": "Roadmap document consistency and independent arithmetic; not ggaction feature verification",
+  "passed": true,
+  "counts": {
+    "tasks": 77,
+    "workPackages": 22,
+    "acceptanceGroups": 79,
+    "activeRequirements": 30
+  },
+  "checks": [
+    {
+      "name": "unique task IDs and slugs",
+      "passed": true,
+      "detail": 77
+    },
+    {
+      "name": "active WP parity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "no withdrawn or deferred task WP",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all proposed statuses",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "dependency DAG topological and references exist",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "WP prerequisite closure WP-00",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "WP prerequisite closure WP-02",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "WP prerequisite closure WP-03",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "WP prerequisite closure WP-04",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "WP prerequisite closure WP-06",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "WP prerequisite closure WP-05",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "WP prerequisite closure WP-08",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "WP prerequisite closure WP-22",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "WP prerequisite closure WP-24",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "WP prerequisite closure WP-07",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "WP prerequisite closure WP-25",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "WP prerequisite closure WP-10",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "WP prerequisite closure WP-11",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "WP prerequisite closure WP-26",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "WP prerequisite closure WP-09",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "WP prerequisite closure WP-12",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "WP prerequisite closure WP-14",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "WP prerequisite closure WP-13",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "WP prerequisite closure WP-18",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "WP prerequisite closure WP-19",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "WP prerequisite closure WP-20",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "WP prerequisite closure WP-21",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all 79 active acceptance groups",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "no orphan acceptance",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "acceptance ownership two-way",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "no claimed implementation test passes",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "30 active requirements mapped",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "deferred requirements excluded",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all task contracts exist",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all cards emitted",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "26 independent fixtures",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "fixture task references valid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "task fixture IDs valid",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "independent arithmetic passes",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "oracles do not import production",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "92 baseline source hashes unchanged",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "baseline revision is in current history",
+      "passed": true,
+      "detail": {
+        "baseline": "40ec7edead7fc84de05aad31888dd0f7d264a512",
+        "current": "40ec7edead7fc84de05aad31888dd0f7d264a512"
+      }
+    },
+    {
+      "name": "ggaction runtime checkout remains clean outside study",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "commands match current script and selector syntax",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "roadmap local links resolve",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "consumer matrix 30 by 19",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "consumer cells remain unverified",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "roadmap concept schema 4",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "roadmap concept createPartitionPlot",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "roadmap concept maxStretch",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "roadmap concept pointercancel",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "roadmap concept duration0",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "roadmap concept UpSet",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "roadmap concept Flint",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "roadmap concept same-frame",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "roadmap concept G-CORE",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "roadmap concept proposed",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-001",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-002",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-003",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-004",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-005",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-006",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-007",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-008",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-009",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-010",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-011",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-012",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-013",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-014",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-015",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-016",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-017",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-018",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-019",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-020",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-021",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-022",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-023",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-024",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-025",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-026",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-027",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-028",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-029",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-030",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-031",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-032",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-033",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-034",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-035",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-036",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-037",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-038",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-039",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-040",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-041",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-042",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-043",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-044",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-045",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-046",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-047",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-048",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-049",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-050",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-051",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-052",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-053",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-054",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-055",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-056",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-057",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-058",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-059",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-060",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-061",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-062",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-063",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-064",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-065",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-066",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-067",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-068",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-069",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-070",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-071",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-072",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-073",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-074",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-075",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-076",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "complete task packet STEP-077",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "markdown build hash matches",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "HTML build hash matches",
+      "passed": true,
+      "detail": null
+    }
+  ]
+}

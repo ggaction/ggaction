@@ -1,0 +1,45 @@
+{
+  "phase": "published and independently verified",
+  "version": "0.0.26",
+  "commit": "40ec7edead7fc84de05aad31888dd0f7d264a512",
+  "sourceCommit": "1e38e7bef30aeedb561c1ae09bbdcdd152bd46b2",
+  "contractId": "sha256:8ec25828c662bcb6b0bf6801a6b6add6f2b653f218476ea7fc758f21e1418174",
+  "pr": 277,
+  "prRun": 40422433392,
+  "mainRun": 40427353507,
+  "releaseRun": 40427371005,
+  "localTests": {
+    "total": 6281,
+    "passed": 6281,
+    "failed": 0,
+    "skipped": 0
+  },
+  "ciSourceTests": {
+    "total": 6281,
+    "passed": 6280,
+    "failed": 0,
+    "skipped": 1,
+    "reason": "No Hangul fallback font installed on Linux"
+  },
+  "browserTests": 295,
+  "renderTests": 265,
+  "localCoverage": {
+    "lines": 95.81,
+    "branches": 93.37,
+    "functions": 98.72,
+    "criticalFloors": 182
+  },
+  "releaseCoverage": {
+    "lines": 95.79,
+    "branches": 93.35,
+    "functions": 98.72,
+    "criticalFloors": 182
+  },
+  "oldLocalBranchesDeleted": [
+    "fix/documentation-and-rose-demo",
+    "release/0.0.23-integration",
+    "release/0.0.25-integration"
+  ],
+  "openIssue": 258,
+  "completedAt": "2026-10-27T01:14:26.824Z"
+}

@@ -1,0 +1,15 @@
+{"paletteDataset":"tt-penguins","actualBuilds":29}
+{"paletteDataset":"tt-london-marathon-winners","actualBuilds":58}
+{"paletteDataset":"tt-astronauts","actualBuilds":87}
+{"paletteDataset":"tt-us-births","actualBuilds":116}
+{"paletteDataset":"tt-chocolate-ratings","actualBuilds":145}
+{"paletteRequirementCount":136,"paletteRequirementSha256":"4e1c7c39e4de54cd80c29a988271a3aa891e1a684876b8d78484e30a4eec4d09","actualBuilds":145,"minimumOccurrences":5,"minimumDatasets":3}
+✔ palette range objects have actual public 5/3 witnesses at every restored consumer (148816.728375ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 149250.335292

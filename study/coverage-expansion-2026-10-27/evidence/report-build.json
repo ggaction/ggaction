@@ -1,0 +1,837 @@
+{
+  "generatedAt": "2026-10-27T06:02:30.995Z",
+  "markdownBytes": 468939,
+  "htmlBytes": 568113,
+  "markdownLines": 2840,
+  "characters": 376147,
+  "headings": 155,
+  "chapters": 24,
+  "tables": 53,
+  "sha256": {
+    "markdown": "ebbeaf05a3270b0250758b5fdeb8ec8a52d91beecccc230e4ee535cd496c1fa2",
+    "html": "87df4050b3a7e6a7bd615ce29a8dc884ba9f656cb885b78f533c64090ef0ec3c"
+  },
+  "parts": [
+    {
+      "file": "00-scope.ko.md",
+      "sha256": "9a7c9d232277557efe99fb11d68b7288c8bcd9c3fd7fd9a3217b8144fa5eccbd"
+    },
+    {
+      "file": "40-architecture.ko.md",
+      "sha256": "a05f71d8439a8d7c82716bad2d981cf04c5ad7fa43ce4e28c737d8034c0ea4a6"
+    },
+    {
+      "file": "45-design-and-adapters.ko.md",
+      "sha256": "0141abcc92f8d93f12b872ddc6c13b8c59cbc19be4f429dba6a1a5216b7f782b"
+    },
+    {
+      "file": "50-verification.ko.md",
+      "sha256": "956e6fc5763b26bbb01a8e4f6dba71c0802c1eda8dc75f92ff8fba756e2d4b1d"
+    },
+    {
+      "file": "55-generated-plan.ko.md",
+      "sha256": "b35e099fb75e4fdea1816f951128f955c4f22c785f7aa4fca25f8a115ba2a5ff"
+    },
+    {
+      "file": "60-closure.ko.md",
+      "sha256": "a3d8b9a6e20cc7fea2e29d22b440d0dee2f21dff4037b639296a88bff7f81b6a"
+    },
+    {
+      "file": "65-api-contracts.ko.md",
+      "sha256": "3f8306a616754e217eaf00b65f2dd4720abc58a210b01868df6e3775745406b5"
+    },
+    {
+      "file": "70-scope-revision.ko.md",
+      "sha256": "1fb905fdc9bed163b688eb35abc8fa96f8946e1aeee261af8075f3c5358c7f2a"
+    },
+    {
+      "file": "corpus-audit.ko.md",
+      "sha256": "c3e22eb50011090cc18fbded76ee16e357ece8a601f98e56bed8c0330591ca63"
+    },
+    {
+      "file": "flint-audit.ko.md",
+      "sha256": "9fd0fbb0c8b2e545273b471704c1256c669ecae62ffb641ff000e3b4ba016020"
+    },
+    {
+      "file": "ggaction-audit.ko.md",
+      "sha256": "f508bc97b7c1bfeeb3e2732f34f4b1d06c2329731287af47cc213e22312383b5"
+    }
+  ],
+  "toc": [
+    {
+      "depth": 1,
+      "id": "section-001",
+      "text": "ggaction 자체 설계를 위한 기능 확장·구현 명세"
+    },
+    {
+      "depth": 2,
+      "id": "chapter-0",
+      "text": "0. 결론과 이 보고서를 읽는 방법"
+    },
+    {
+      "depth": 2,
+      "id": "chapter-1",
+      "text": "1. 조사 범위, 고정된 소스, 증거의 강도"
+    },
+    {
+      "depth": 3,
+      "id": "section-004",
+      "text": "1.1 소스 스냅샷"
+    },
+    {
+      "depth": 3,
+      "id": "section-005",
+      "text": "1.2 무엇을 전수 조사했고 무엇을 실행했는가"
+    },
+    {
+      "depth": 3,
+      "id": "section-006",
+      "text": "1.3 결과 상태의 공통 어휘"
+    },
+    {
+      "depth": 3,
+      "id": "section-007",
+      "text": "1.4 '모두'와 '간단한 액션의 조합'의 정의"
+    },
+    {
+      "depth": 3,
+      "id": "section-008",
+      "text": "1.5 개정 범위와 상태를 읽는 방법"
+    },
+    {
+      "depth": 2,
+      "id": "chapter-2",
+      "text": "2. 현재 ggaction: 전체 기능과 구현 경계"
+    },
+    {
+      "depth": 3,
+      "id": "section-010",
+      "text": "2.1 조사 범위와 증거의 의미"
+    },
+    {
+      "depth": 3,
+      "id": "section-011",
+      "text": "2.2 현재 architecture: 무엇을 확장해야 하고 무엇을 보존해야 하는가"
+    },
+    {
+      "depth": 3,
+      "id": "section-012",
+      "text": "2.3 공개 surface의 실제 크기"
+    },
+    {
+      "depth": 3,
+      "id": "section-013",
+      "text": "2.4 현재 차트 표현력과 구체적인 제약"
+    },
+    {
+      "depth": 4,
+      "id": "section-014",
+      "text": "2.4.1 Mark와 coordinate는 별도 축이다"
+    },
+    {
+      "depth": 4,
+      "id": "section-015",
+      "text": "2.4.2 이미 갖춘 mark·chart family"
+    },
+    {
+      "depth": 4,
+      "id": "section-016",
+      "text": "2.4.3 Scale: 넓지만 모든 channel의 모든 조합은 아니다"
+    },
+    {
+      "depth": 4,
+      "id": "section-017",
+      "text": "2.4.4 데이터와 통계: 원본 입력, 파생 의미, row provenance"
+    },
+    {
+      "depth": 4,
+      "id": "section-018",
+      "text": "2.4.5 수정은 가능하지만 streaming runtime은 아니다"
+    },
+    {
+      "depth": 4,
+      "id": "section-019",
+      "text": "2.4.6 Guide, typography, design"
+    },
+    {
+      "depth": 4,
+      "id": "section-020",
+      "text": "2.4.7 Composition과 ownership"
+    },
+    {
+      "depth": 3,
+      "id": "section-021",
+      "text": "2.5 concrete graphics가 보장하는 것과 아직 표현하지 못하는 것"
+    },
+    {
+      "depth": 4,
+      "id": "section-022",
+      "text": "2.5.1 Geo를 막는 더 낮은 수준의 path 제약"
+    },
+    {
+      "depth": 3,
+      "id": "section-023",
+      "text": "2.6 interaction: 현재 authoring selection은 좋은 기초지만 event engine은 아니다"
+    },
+    {
+      "depth": 3,
+      "id": "section-024",
+      "text": "2.7 animation: scene extraction과 player를 구분해야 한다"
+    },
+    {
+      "depth": 3,
+      "id": "section-025",
+      "text": "2.8 geo: core가 가져야 할 의미와 host가 가져야 할 자원"
+    },
+    {
+      "depth": 3,
+      "id": "section-026",
+      "text": "2.9 persistence, inspection, accessibility와 backend 제품 계약"
+    },
+    {
+      "depth": 3,
+      "id": "section-027",
+      "text": "2.10 성능·자원·패키지 제약"
+    },
+    {
+      "depth": 3,
+      "id": "section-028",
+      "text": "2.11 실제 실행한 현재 API recipe"
+    },
+    {
+      "depth": 3,
+      "id": "section-029",
+      "text": "2.12 구현 작업으로 바로 전환할 수 있는 gap 목록"
+    },
+    {
+      "depth": 3,
+      "id": "section-030",
+      "text": "2.13 현재 테스트 증거를 어떻게 해석해야 하는가"
+    },
+    {
+      "depth": 3,
+      "id": "section-031",
+      "text": "2.14 증거 링크"
+    },
+    {
+      "depth": 2,
+      "id": "chapter-3",
+      "text": "3. Flint 조사 기록 — 참고 전용"
+    },
+    {
+      "depth": 3,
+      "id": "section-033",
+      "text": "3.1 조사 결과와 증거 수준"
+    },
+    {
+      "depth": 3,
+      "id": "section-034",
+      "text": "3.2 Flint의 실제 역할과 전체 흐름"
+    },
+    {
+      "depth": 3,
+      "id": "section-035",
+      "text": "3.3 차트별 ggaction 조합과 남은 계약"
+    },
+    {
+      "depth": 4,
+      "id": "section-036",
+      "text": "재사용할 부분과 새로 만들 부분의 경계"
+    },
+    {
+      "depth": 3,
+      "id": "section-037",
+      "text": "3.4 데이터·scale·encoding의 완전성"
+    },
+    {
+      "depth": 3,
+      "id": "section-038",
+      "text": "3.5 디자인은 팔레트 14개를 추가하는 일이 아니다"
+    },
+    {
+      "depth": 3,
+      "id": "section-039",
+      "text": "3.6 layout·composition·responsive의 구체적인 합격 조건"
+    },
+    {
+      "depth": 3,
+      "id": "section-040",
+      "text": "3.7 interaction 23개: 호스트·gesture·의미·표현을 분리한다"
+    },
+    {
+      "depth": 3,
+      "id": "section-041",
+      "text": "3.8 7가지 semantic update를 ggaction 액션으로 연결하는 계약"
+    },
+    {
+      "depth": 3,
+      "id": "section-042",
+      "text": "3.9 애니메이션: 현재 범위와 완전한 목표를 구분한다"
+    },
+    {
+      "depth": 3,
+      "id": "section-043",
+      "text": "3.10 Geo: projection 하나로 끝나지 않는 필수 범위"
+    },
+    {
+      "depth": 3,
+      "id": "section-044",
+      "text": "3.11 host adapter 구현 순서와 API 경계"
+    },
+    {
+      "depth": 3,
+      "id": "section-045",
+      "text": "3.12 test와 합격 기준: 숫자·그림·상호작용을 함께 검증한다"
+    },
+    {
+      "depth": 3,
+      "id": "section-046",
+      "text": "3.13 구현 단계와 의존성"
+    },
+    {
+      "depth": 3,
+      "id": "section-047",
+      "text": "3.14 라이선스·폰트·asset 및 외부 의존성"
+    },
+    {
+      "depth": 2,
+      "id": "chapter-4",
+      "text": "4. 코퍼스·기존 번역 조사 기록 — 참고 전용"
+    },
+    {
+      "depth": 3,
+      "id": "section-049",
+      "text": "4.1 조사 기준과 재현 가능한 분모"
+    },
+    {
+      "depth": 3,
+      "id": "section-050",
+      "text": "4.2 공개 번역본의 의미와 원본 식별 문제"
+    },
+    {
+      "depth": 3,
+      "id": "section-051",
+      "text": "4.3 원본과 다른 340개 source artifact의 분류"
+    },
+    {
+      "depth": 4,
+      "id": "section-052",
+      "text": "4.3.1 vl_0011: 화면 replay가 팬/줌을 증명하지 못하는 최소 사례"
+    },
+    {
+      "depth": 4,
+      "id": "section-053",
+      "text": "4.3.2 vl_0009: nearest hover, 조건부 mark, 필터, input의 동시 제거"
+    },
+    {
+      "depth": 4,
+      "id": "section-054",
+      "text": "4.3.3 vl_0002: 고정 크기 replay가 responsive 계약을 증명하지 못함"
+    },
+    {
+      "depth": 3,
+      "id": "section-055",
+      "text": "4.4 현재 실행으로 확인한 범위"
+    },
+    {
+      "depth": 3,
+      "id": "section-056",
+      "text": "4.5 원본 선언의 전수 기능 프로필"
+    },
+    {
+      "depth": 3,
+      "id": "section-057",
+      "text": "4.6 C-IR: 원본에서 native 액션까지의 번역 계약"
+    },
+    {
+      "depth": 3,
+      "id": "section-058",
+      "text": "4.7 C-EXP / C-DATA: 안전한 표현식과 데이터 보존"
+    },
+    {
+      "depth": 3,
+      "id": "section-059",
+      "text": "4.8 C-GEO / C-ASSET: 지리와 비정형 마크"
+    },
+    {
+      "depth": 3,
+      "id": "section-060",
+      "text": "4.9 C-INT: 반응형 상태와 이벤트의 실행 의미"
+    },
+    {
+      "depth": 3,
+      "id": "section-061",
+      "text": "4.10 C-ANIM: 코퍼스에 없는 요구를 숨기지 않는 애니메이션 계획"
+    },
+    {
+      "depth": 3,
+      "id": "section-062",
+      "text": "4.11 C-LAYOUT / C-TEXT: 정확한 디자인을 완료 조건으로 만들기"
+    },
+    {
+      "depth": 3,
+      "id": "section-063",
+      "text": "4.12 완료 판정, regression, 구현 순서"
+    },
+    {
+      "depth": 3,
+      "id": "section-064",
+      "text": "4.13 산출물과 직접 활용 방법"
+    },
+    {
+      "depth": 2,
+      "id": "chapter-5",
+      "text": "5. 목표 아키텍처: 현재의 장점을 유지하면서 부족한 기반 추가"
+    },
+    {
+      "depth": 3,
+      "id": "section-066",
+      "text": "5.1 세 경계와 한 방향의 계산"
+    },
+    {
+      "depth": 3,
+      "id": "section-067",
+      "text": "5.2 상태 소유권과 저장 계약"
+    },
+    {
+      "depth": 3,
+      "id": "section-068",
+      "text": "5.3 안정적인 identity와 provenance가 첫 번째 기반이다"
+    },
+    {
+      "depth": 3,
+      "id": "section-069",
+      "text": "5.4 기능 등록과 실행 계획"
+    },
+    {
+      "depth": 2,
+      "id": "chapter-6",
+      "text": "6. 인터랙션: 선택 액션에서 사용자 입력 시스템으로"
+    },
+    {
+      "depth": 3,
+      "id": "section-071",
+      "text": "6.1 현재 selection/highlight를 활용하되 입력 런타임을 분리한다"
+    },
+    {
+      "depth": 3,
+      "id": "section-072",
+      "text": "6.2 hit testing과 의미 target"
+    },
+    {
+      "depth": 3,
+      "id": "section-073",
+      "text": "6.3 이벤트, gesture, cancellation"
+    },
+    {
+      "depth": 3,
+      "id": "section-074",
+      "text": "6.4 selection, parameter, predicate의 표현력"
+    },
+    {
+      "depth": 3,
+      "id": "section-075",
+      "text": "6.5 native 인터랙션 기능과 검증 범위"
+    },
+    {
+      "depth": 3,
+      "id": "section-076",
+      "text": "6.6 native 상태·명령·이벤트의 정합성"
+    },
+    {
+      "depth": 2,
+      "id": "chapter-7",
+      "text": "7. 애니메이션: scene 추출과 재생을 분리한 완전한 시간축"
+    },
+    {
+      "depth": 3,
+      "id": "section-078",
+      "text": "7.1 필요한 범위"
+    },
+    {
+      "depth": 3,
+      "id": "section-079",
+      "text": "7.2 제안 API와 시간 모델"
+    },
+    {
+      "depth": 3,
+      "id": "section-080",
+      "text": "7.3 속성별 보간 정책"
+    },
+    {
+      "depth": 3,
+      "id": "section-081",
+      "text": "7.4 중단·동시 갱신·성능"
+    },
+    {
+      "depth": 2,
+      "id": "chapter-8",
+      "text": "8. Geo: 투영 함수보다 넓은 범위의 기능"
+    },
+    {
+      "depth": 3,
+      "id": "section-083",
+      "text": "8.1 지리 데이터와 그래픽 계약부터 확장한다"
+    },
+    {
+      "depth": 3,
+      "id": "section-084",
+      "text": "8.2 projection과 geographic coordinate"
+    },
+    {
+      "depth": 3,
+      "id": "section-085",
+      "text": "8.3 geometry pipeline과 수치 조건"
+    },
+    {
+      "depth": 3,
+      "id": "section-086",
+      "text": "8.4 interaction, LOD, asset, export"
+    },
+    {
+      "depth": 2,
+      "id": "chapter-9",
+      "text": "9. 차트·디자인·데이터의 나머지 결손을 공통 기능으로 해결하기"
+    },
+    {
+      "depth": 3,
+      "id": "section-088",
+      "text": "9.1 구조 데이터와 레이아웃 알고리즘"
+    },
+    {
+      "depth": 3,
+      "id": "section-089",
+      "text": "9.2 범용 기하와 차트 facade"
+    },
+    {
+      "depth": 3,
+      "id": "section-090",
+      "text": "9.3 아직 없는 image·trail·paint 계약"
+    },
+    {
+      "depth": 3,
+      "id": "section-091",
+      "text": "9.4 데이터·통계·표현식의 정확성"
+    },
+    {
+      "depth": 3,
+      "id": "section-092",
+      "text": "9.5 디자인 우선순위·폰트·레이아웃"
+    },
+    {
+      "depth": 2,
+      "id": "chapter-10",
+      "text": "10. ggaction 자체 설계의 결정 원칙과 공개 계약"
+    },
+    {
+      "depth": 3,
+      "id": "section-094",
+      "text": "10.1 외부 정합성·통합·번역은 이번 목표에서 제외"
+    },
+    {
+      "depth": 3,
+      "id": "section-095",
+      "text": "10.2 설계 판단의 우선순위"
+    },
+    {
+      "depth": 3,
+      "id": "section-096",
+      "text": "10.3 공개 API와 resource의 책임"
+    },
+    {
+      "depth": 3,
+      "id": "section-097",
+      "text": "10.4 기본값·변경·오류의 관리"
+    },
+    {
+      "depth": 2,
+      "id": "chapter-11",
+      "text": "11. 자체 fixture와 검증 파이프라인"
+    },
+    {
+      "depth": 3,
+      "id": "section-099",
+      "text": "11.1 입력의 의미를 통제할 수 있는 fixture"
+    },
+    {
+      "depth": 3,
+      "id": "section-100",
+      "text": "11.2 기능별 수직 검증"
+    },
+    {
+      "depth": 3,
+      "id": "section-101",
+      "text": "11.3 조합과 표현력"
+    },
+    {
+      "depth": 3,
+      "id": "section-102",
+      "text": "11.4 외부 자료의 위치"
+    },
+    {
+      "depth": 2,
+      "id": "chapter-12",
+      "text": "12. 사람과 agent가 같은 지원 상태를 읽게 만들기"
+    },
+    {
+      "depth": 3,
+      "id": "section-104",
+      "text": "12.1 개정 범위를 문서와 agent 출력에 유지"
+    },
+    {
+      "depth": 2,
+      "id": "chapter-13",
+      "text": "13. '완전 지원'을 실제로 판정하는 검증 시스템"
+    },
+    {
+      "depth": 3,
+      "id": "section-106",
+      "text": "13.1 서로 다른 종류의 coverage를 분리한다"
+    },
+    {
+      "depth": 3,
+      "id": "section-107",
+      "text": "13.2 native 계약과 독립 reference"
+    },
+    {
+      "depth": 3,
+      "id": "section-108",
+      "text": "13.3 oracle을 여러 층으로 만든다"
+    },
+    {
+      "depth": 3,
+      "id": "section-109",
+      "text": "13.4 tolerance와 baseline 변경 규칙"
+    },
+    {
+      "depth": 3,
+      "id": "section-110",
+      "text": "13.5 test matrix의 분모와 조합 전략"
+    },
+    {
+      "depth": 3,
+      "id": "section-111",
+      "text": "13.6 실제 입력을 검증하는 방식"
+    },
+    {
+      "depth": 3,
+      "id": "section-112",
+      "text": "13.7 성능과 자원 관리"
+    },
+    {
+      "depth": 3,
+      "id": "section-113",
+      "text": "13.8 증거 레코드와 CI gate"
+    },
+    {
+      "depth": 3,
+      "id": "section-114",
+      "text": "13.9 개정 범위의 독립 oracle와 정책 gate"
+    },
+    {
+      "depth": 2,
+      "id": "chapter-14",
+      "text": "14. 구현 작업 패키지와 의존 관계"
+    },
+    {
+      "depth": 3,
+      "id": "section-116",
+      "text": "14.1 코드 소유 위치와 병렬 작업"
+    },
+    {
+      "depth": 3,
+      "id": "section-117",
+      "text": "14.2 요구사항 추적 원장"
+    },
+    {
+      "depth": 2,
+      "id": "chapter-15",
+      "text": "15. 인수 시험 명세"
+    },
+    {
+      "depth": 2,
+      "id": "chapter-16",
+      "text": "16. 최종 완료 조건과 실제 구현 착수 순서"
+    },
+    {
+      "depth": 2,
+      "id": "chapter-17",
+      "text": "17. 산출물, 재현, 보고서의 사용 범위"
+    },
+    {
+      "depth": 2,
+      "id": "appendix-a",
+      "text": "부록 A. 공개 action 298개 전수 목록"
+    },
+    {
+      "depth": 3,
+      "id": "section-122",
+      "text": "core (47)"
+    },
+    {
+      "depth": 3,
+      "id": "section-123",
+      "text": "statistics (45)"
+    },
+    {
+      "depth": 3,
+      "id": "section-124",
+      "text": "marks (35)"
+    },
+    {
+      "depth": 3,
+      "id": "section-125",
+      "text": "encodings (39)"
+    },
+    {
+      "depth": 3,
+      "id": "section-126",
+      "text": "axes (55)"
+    },
+    {
+      "depth": 3,
+      "id": "section-127",
+      "text": "grid (11)"
+    },
+    {
+      "depth": 3,
+      "id": "section-128",
+      "text": "legend_and_title (13)"
+    },
+    {
+      "depth": 3,
+      "id": "section-129",
+      "text": "mark-selection (7)"
+    },
+    {
+      "depth": 3,
+      "id": "section-130",
+      "text": "primitives (3)"
+    },
+    {
+      "depth": 3,
+      "id": "section-131",
+      "text": "composition (15)"
+    },
+    {
+      "depth": 3,
+      "id": "section-132",
+      "text": "charts (28)"
+    },
+    {
+      "depth": 2,
+      "id": "appendix-b",
+      "text": "부록 B. 모든 backend-template의 channels와 registry property"
+    },
+    {
+      "depth": 2,
+      "id": "appendix-c",
+      "text": "부록 C. 중요한 타입의 모든 직접 선언 필드"
+    },
+    {
+      "depth": 2,
+      "id": "appendix-d",
+      "text": "부록 D. 재현 명령과 범위"
+    },
+    {
+      "depth": 2,
+      "id": "appendix-e",
+      "text": "부록 E. 신규 API 계약 초안과 이름 정리"
+    },
+    {
+      "depth": 3,
+      "id": "section-137",
+      "text": "E.1 공통 규칙"
+    },
+    {
+      "depth": 3,
+      "id": "section-138",
+      "text": "E.2 데이터·geometry·paint·layout 액션"
+    },
+    {
+      "depth": 3,
+      "id": "section-139",
+      "text": "E.3 interaction 의미 액션과 browser controller"
+    },
+    {
+      "depth": 3,
+      "id": "section-140",
+      "text": "E.4 animation 순수 API와 player"
+    },
+    {
+      "depth": 3,
+      "id": "section-141",
+      "text": "E.6 추가 domain API 계약 — 부록 F의 필수 구현"
+    },
+    {
+      "depth": 3,
+      "id": "section-142",
+      "text": "E.7 계약의 독립성"
+    },
+    {
+      "depth": 2,
+      "id": "appendix-f",
+      "text": "부록 F. 확정 범위: partition·graph inference·edge bundling 상세 설계"
+    },
+    {
+      "depth": 3,
+      "id": "section-144",
+      "text": "F.1 범위 정책과 호환성 주장의 변경"
+    },
+    {
+      "depth": 3,
+      "id": "section-145",
+      "text": "F.2 통합 partition: 데이터와 normalized layout"
+    },
+    {
+      "depth": 3,
+      "id": "section-146",
+      "text": "F.3 통합 partition: 좌표·상호작용·애니메이션"
+    },
+    {
+      "depth": 3,
+      "id": "section-147",
+      "text": "F.4–F.5 집합 시각화 — 후속 과제"
+    },
+    {
+      "depth": 3,
+      "id": "section-148",
+      "text": "F.6 Graph inference: topology·layout·routing의 분리"
+    },
+    {
+      "depth": 3,
+      "id": "section-149",
+      "text": "F.7 Graph inference: 거리·재현성·갱신"
+    },
+    {
+      "depth": 3,
+      "id": "section-150",
+      "text": "F.8 Edge bundling 공통 resource와 네 필수 방법"
+    },
+    {
+      "depth": 3,
+      "id": "section-151",
+      "text": "F.9 Edge bundling: interaction·animation·geo·성능"
+    },
+    {
+      "depth": 3,
+      "id": "section-152",
+      "text": "F.10 Pyramid와 조합 recipe: 이름을 늘리지 않는 구현"
+    },
+    {
+      "depth": 3,
+      "id": "section-153",
+      "text": "F.11 단일 Y축 정책의 실제 enforcement"
+    },
+    {
+      "depth": 3,
+      "id": "section-154",
+      "text": "F.12 구현자가 따라갈 순서와 release gate"
+    },
+    {
+      "depth": 3,
+      "id": "section-155",
+      "text": "F.13 명시 옵션·진단·캐시 계약"
+    }
+  ]
+}

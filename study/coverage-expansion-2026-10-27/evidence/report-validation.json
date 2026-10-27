@@ -1,0 +1,341 @@
+{
+  "generatedAt": "2026-10-27T06:02:36.010564+00:00",
+  "scope": "Report evidence consistency, references and proposals; not external chart conformance",
+  "passed": true,
+  "checks": [
+    {
+      "name": "ggaction action census",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Flint chart names",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Flint preset count",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Flint update count",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "canonical originals",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all JSON classification",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "root schema denominator",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "embedded charts",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "source deltas",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "translation integrity",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "core probes",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Flint compile scope",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "translation current replay scope",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "plan size",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "every active test has a work owner",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "plan dependencies",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "proposal remains unimplemented",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "traceability denominator",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "traceability has owners",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "reference rows have no implementation obligations",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "native active rows only",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "withdrawn work not active",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "withdrawn tests not active",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "unique HTML ids",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "external goals removed",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "scope profile",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "source target census",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "required bundling methods",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "required inference rules",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all source rows preserved",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all trace tests linked",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all user requirements covered",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "disposition present and no false qualifications",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "KPI Gauge excluded",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Pyramid naming collision resolved",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "composition-only sources",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "single Y policy",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "original evidence unchanged",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all corpus occurrences screened",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "corpus scope csv denominator",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "work order topological",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "set visualization work deferred",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "set visualization tests deferred",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "set visualization requirements deferred",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "set visualization no release gate",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "set fixture preserved only for future",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "set constructors absent from active API table",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "appendix F rendered",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "pinned ggaction/ggaction",
+      "passed": true,
+      "detail": "40ec7edead7fc84de05aad31888dd0f7d264a512"
+    },
+    {
+      "name": "source unchanged ggaction/ggaction",
+      "passed": true,
+      "detail": {
+        "status": "",
+        "permittedGeneratedDirectory": null
+      }
+    },
+    {
+      "name": "pinned microsoft/flint-chart",
+      "passed": true,
+      "detail": "a794557384adcc3293a77043f6b9aff1c33d152c"
+    },
+    {
+      "name": "source unchanged microsoft/flint-chart",
+      "passed": true,
+      "detail": {
+        "status": "?? .audit-runtime/",
+        "permittedGeneratedDirectory": "?? .audit-runtime/"
+      }
+    },
+    {
+      "name": "pinned hyungkwonko/chart-llm",
+      "passed": true,
+      "detail": "6e3d3e2bf1c30aa6df7b916289f42a6ed7721a24"
+    },
+    {
+      "name": "source unchanged hyungkwonko/chart-llm",
+      "passed": true,
+      "detail": {
+        "status": "",
+        "permittedGeneratedDirectory": null
+      }
+    },
+    {
+      "name": "pinned ggaction/chart-datasets",
+      "passed": true,
+      "detail": "58791ace7212cacb98c2b64e3f92280722ab638e"
+    },
+    {
+      "name": "source unchanged ggaction/chart-datasets",
+      "passed": true,
+      "detail": {
+        "status": "",
+        "permittedGeneratedDirectory": null
+      }
+    },
+    {
+      "name": "local/source/anchor links",
+      "passed": true,
+      "detail": {
+        "local": 29,
+        "sourcePermalinks": 790,
+        "errors": []
+      }
+    },
+    {
+      "name": "report build hash",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all source actions represented",
+      "passed": true,
+      "detail": null
+    }
+  ],
+  "repoState": [
+    {
+      "repo": "ggaction/ggaction",
+      "commit": "40ec7edead7fc84de05aad31888dd0f7d264a512",
+      "status": ""
+    },
+    {
+      "repo": "microsoft/flint-chart",
+      "commit": "a794557384adcc3293a77043f6b9aff1c33d152c",
+      "status": "?? .audit-runtime/"
+    },
+    {
+      "repo": "hyungkwonko/chart-llm",
+      "commit": "6e3d3e2bf1c30aa6df7b916289f42a6ed7721a24",
+      "status": ""
+    },
+    {
+      "repo": "ggaction/chart-datasets",
+      "commit": "58791ace7212cacb98c2b64e3f92280722ab638e",
+      "status": ""
+    }
+  ],
+  "errors": []
+}

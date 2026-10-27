@@ -1,0 +1,31 @@
+✔ content follows per-panel mark overflow while keeping the plot alignment (137.952666ms)
+✔ omitted anchor retains the old graphics and has no new persisted default (19.440792ms)
+✔ content top anchor preserves rotated edge clearance at 0 (14.156041ms)
+✔ content top anchor preserves rotated edge clearance at 0.7853981633974483 (6.891291ms)
+✔ content bottom anchor preserves rotated edge clearance at 0 (19.994833ms)
+✔ content bottom anchor preserves rotated edge clearance at 0.7853981633974483 (6.400708ms)
+✔ content left anchor preserves rotated edge clearance at 0 (19.346625ms)
+✔ content left anchor preserves rotated edge clearance at 0.7853981633974483 (5.97725ms)
+✔ content right anchor preserves rotated edge clearance at 0 (4.967375ms)
+✔ content right anchor preserves rotated edge clearance at 0.7853981633974483 (4.94975ms)
+✔ clipping is honored and opacity retains geometric layout stability (57.862125ms)
+✔ extension graphics and guides do not change the content anchor (10.675958ms)
+✔ nested child Canvas clips discard fully offscreen geometry (37.125375ms)
+✔ lower and left plot-edge marks preserve the same outward clearance (7.20525ms)
+✔ field repeats and blank header labels retain content intent (27.245583ms)
+✔ layout, source, metrics, theme and persistence replay retain the owner (97.416333ms)
+✔ role override, field titles and grids use their existing ownership (23.405583ms)
+✔ shared top space keeps fixed canvas and exposes only actual outward motion (8.62425ms)
+✔ invalid anchors, canvas spacing and overflow reject without mutating the source (71.046125ms)
+✔ reusing an immutable composition still validates changed child identities and mutable inputs (2.242834ms)
+✔ owns valid concat and facet composition state deeply (0.288833ms)
+✔ rejects invalid composition identity, children, layout, and concat shape (0.366292ms)
+✔ rejects invalid facet partition, scale, and guide contracts (0.230292ms)
+ℹ tests 23
+ℹ suites 0
+ℹ pass 23
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1121.918417

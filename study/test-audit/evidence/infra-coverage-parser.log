@@ -1,0 +1,1 @@
+Malformed blank metric row accepted: [ [ 'fake.js', { lines: 100, branches: NaN, functions: NaN } ] ]

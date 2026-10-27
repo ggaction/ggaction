@@ -1,0 +1,34 @@
+✔ facet content anchors use one closed vocabulary for creation and editing (162.543458ms)
+✔ isolates npm pack from the caller's global cache (2.495333ms)
+npm notice
+npm notice New minor version of npm available! 11.18.0 -> 11.21.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.21.1
+npm notice To update run: npm install -g npm@11.21.1
+npm notice
+✔ publishes only the bounded public package artifact (2951.967ms)
+✔ rejects missing, forbidden, and oversized package manifests (0.714875ms)
+✔ packed scale compaction preserves exports and numeric color results (94.211042ms)
+✔ consumer setup removes its temporary directory when installation fails (380.549334ms)
+✔ independent installed cases continue after a failure and retain case identities (2.726959ms)
+✔ installed fixture modules and their case manifest are exhaustive (77.911459ms)
+✔ keeps source imports inside their architectural boundaries (155.28425ms)
+✔ the compact source-action vocabulary matches public default action metadata (0.73375ms)
+✔ parses static, re-exported, and dynamic module references (0.143ms)
+✔ resolves extensionless files and directory entry points (0.134625ms)
+✔ keeps the local source import graph acyclic (84.50375ms)
+✔ keeps semantic and graphic cloning inside primitive actions (266.559333ms)
+✔ routes exact named semantic resource lookup through selectors (447.831125ms)
+✔ keeps cross-cutting planners independent from concrete mark names (0.25625ms)
+✔ keeps every ordinary mark family behind a stable directory entry (0.503458ms)
+✔ architectural syntax checks ignore comments and recognize direct bracket and optional access (0.557375ms)
+✔ keeps the implemented visual actions Current, callable, and typed (5.00575ms)
+✔ keeps approved visual evidence owned by current capabilities (0.156583ms)
+✔ keeps closed polar lines and advanced facets in the strict public types (0.752708ms)
+ℹ tests 21
+ℹ suites 0
+ℹ pass 21
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4579.517

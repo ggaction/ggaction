@@ -1,0 +1,104 @@
+{
+  "observedAt": "2026-10-23T03:28:03.475Z",
+  "packageVersion": "0.0.22",
+  "emptyFilter": {
+    "card": {
+      "state": "contextual",
+      "requires": [
+        "source dataset"
+      ],
+      "allowsEmpty": false
+    },
+    "resultRows": 0
+  },
+  "titleWithoutScale": {
+    "card": [
+      "existing chart title",
+      "compatible scale or encoding context"
+    ],
+    "datasetCount": 0,
+    "scaleCount": 0,
+    "lastAction": "editTitle"
+  },
+  "constantColorWithoutFields": {
+    "card": [
+      "target mark",
+      "field in the target dataset"
+    ],
+    "fields": [],
+    "lastAction": "encodeColor"
+  },
+  "publishedDeclarationCompilation": {
+    "status": 2,
+    "output": "docs/types/program.d.ts(1,49): error TS2307: Cannot find module './extension.js' or its corresponding type declarations.\n"
+  },
+  "machineCopies": [
+    {
+      "source": "knowledge/action-card.schema.json",
+      "destination": "docs/schemas/action-card.schema.json",
+      "matches": true
+    },
+    {
+      "source": "knowledge/action-cards.schema.json",
+      "destination": "docs/schemas/action-cards.schema.json",
+      "matches": true
+    },
+    {
+      "source": "knowledge/task-packet.schema.json",
+      "destination": "docs/schemas/task-packet.schema.json",
+      "matches": true
+    },
+    {
+      "source": "knowledge/llms-manifest.schema.json",
+      "destination": "docs/schemas/llms-manifest.schema.json",
+      "matches": true
+    },
+    {
+      "source": "knowledge/intent-taxonomy.schema.json",
+      "destination": "docs/schemas/intent-taxonomy.schema.json",
+      "matches": true
+    },
+    {
+      "source": "knowledge/mcp-resources.schema.json",
+      "destination": "docs/schemas/mcp-resources.schema.json",
+      "matches": true
+    },
+    {
+      "source": "knowledge/action-cards.json",
+      "destination": "docs/actions.json",
+      "matches": true
+    },
+    {
+      "source": "knowledge/intent-taxonomy.json",
+      "destination": "docs/intent-taxonomy.json",
+      "matches": true
+    },
+    {
+      "source": "knowledge/mcp-resources.json",
+      "destination": "docs/mcp-resources.json",
+      "matches": true
+    },
+    {
+      "source": "types/program.d.ts",
+      "destination": "docs/types/program.d.ts",
+      "matches": true
+    }
+  ],
+  "llmFreshness": {
+    "concise": true,
+    "full": true,
+    "manifest": true
+  },
+  "sizesBytes": {
+    "docs/llms.txt": 9484,
+    "docs/llms-full.txt": 1914002,
+    "docs/actions.json": 901353,
+    "docs/llms-manifest.json": 109920,
+    "agent_docs/SECOND_ARCHITECTURE.md": 214217
+  },
+  "cardCounts": {
+    "total": 293,
+    "emptyErrors": 284,
+    "namedTypeSignatures": 283
+  }
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "name": "standard",
+    "blocks": [
+      "js"
+    ]
+  },
+  {
+    "name": "fourBackticks",
+    "blocks": []
+  },
+  {
+    "name": "indent",
+    "blocks": []
+  },
+  {
+    "name": "infoString",
+    "error": "Unclosed documentation code fence."
+  },
+  {
+    "name": "ts",
+    "blocks": [
+      "ts"
+    ]
+  }
+]

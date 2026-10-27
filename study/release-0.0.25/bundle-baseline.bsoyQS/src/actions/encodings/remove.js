@@ -1,0 +1,280 @@
+import { cartesianAxisOwners, axisTargetArgs } from "../../selectors/axes.js";
+import { closedAction } from "../../core/action.js";
+import { validateUserId } from "../../core/identifiers.js";
+
+import {
+  getPositionChannelDefinition,
+  POSITION_ENCODING_CHANNELS
+} from "../../core/vocabulary.js";
+import {
+  resolveBarChannels,
+  resolveBarColorLayout,
+  resolveBarOffsetChannel
+} from "../../grammar/bars/policy.js";
+import {
+  getMarkMaterializationStep,
+  getSourceDependentMarkSteps
+} from "../../materialization/marks/index.js";
+import { findLayer } from "../../selectors/layers.js";
+import {
+  removeLegendKinds,
+  resolveCategoricalLegendRevision,
+  createCategoricalLegendFromConfig
+} from "../guides/legends/lifecycle.js";
+import { clearMarkGraphic } from "./shared.js";
+import { applyDetachedScaleRematerialization } from "../../materialization/dependencies.js";
+import { findDataset } from "../../selectors/datasets.js";
+import { assertPathGroupCompatible, validatePathGroupAppearance } from "../../materialization/marks/grouping.js";
+import { assertEncodingSelectionCompatibility } from "../../materialization/selection/compatibility.js";
+import { planLegendBlockTransitions } from "../guides/legends/transition.js";
+import { withGuideLayoutValidation } from "../../materialization/guides/layout.js";
+
+const OPTIONS = Object.freeze(["target", "channel"]);
+const REMOVABLE_CHANNELS = Object.freeze([
+  "x", "y", "x2", "y2", "xOffset", "yOffset", "theta", "radius",
+  "color", "stroke", "strokeDash", "strokeWidth", "size", "shape", "group",
+  "angle", "opacity", "text", "dx", "dy"
+]);
+const REMOVE_AXIS = Object.freeze({
+  x: "removeXAxis",
+  y: "removeYAxis",
+  theta: "removeThetaAxis",
+  radius: "removeRadialAxis"
+});
+const SPECIALIZED_LEGEND_KIND = Object.freeze({
+  color: Object.freeze(["gradient", "interval", "colorSize"]),
+  stroke: Object.freeze(["strokeGradient", "strokeInterval"]),
+  size: Object.freeze(["size", "colorSize"]),
+  opacity: Object.freeze(["opacity"]),
+  strokeWidth: Object.freeze(["strokeWidth"])
+});
+
+function resolveTarget(program, requested, channel) {
+  const candidates = program.semanticSpec.layers.filter(
+    layer => layer.encoding?.[channel] !== undefined
+  );
+  if (requested !== undefined) {
+    const id = validateUserId(requested, "Encoding target id");
+    const layer = findLayer(program, id);
+    if (layer === undefined) {
+      throw new Error(`Unknown encoding target "${id}".`);
+    }
+    if (layer.encoding?.[channel] === undefined) {
+      throw new Error(`Mark "${id}" has no ${channel} encoding.`);
+    }
+    return layer;
+  }
+  const current = candidates.find(
+    layer => layer.id === program.context.currentMark
+  );
+  if (current !== undefined) return current;
+  if (candidates.length === 1) return candidates[0];
+  if (candidates.length === 0) {
+    throw new Error(`removeEncoding requires an active ${channel} encoding.`);
+  }
+  throw new Error(`removeEncoding ${channel} target is ambiguous; provide target.`);
+}
+
+function activeCascade(layer, channel) {
+  const channels = new Set([channel]);
+  if (channel === "x") {
+    channels.add("x2");
+    channels.add("xOffset");
+  }
+  if (channel === "y") {
+    channels.add("y2");
+    channels.add("yOffset");
+  }
+  if (channel === "color" && layer.mark?.type === "bar" && layer.layout === undefined) {
+    if (resolveBarColorLayout(layer) === "group") {
+      channels.add(resolveBarOffsetChannel(layer));
+    }
+  }
+  if (
+    channel === "group" &&
+    layer.mark?.type === "area" &&
+    layer.layout === undefined &&
+    layer.encoding?.color?.field !== undefined &&
+    layer.encoding.color.field === layer.encoding.group?.field
+  ) {
+    channels.add("color");
+  }
+  return [...channels].filter(active => layer.encoding?.[active] !== undefined);
+}
+
+function removeChannelConfigs(program, target, channels) {
+  let next = program;
+  for (const channel of channels) {
+    if (["xOffset", "yOffset"].includes(channel)) {
+      next = next._withoutMaterializationConfig(["marks", target, channel]);
+    }
+  }
+  return next;
+}
+
+function restoreBarBaseline(program, layer, channels) {
+  if (layer.mark?.type !== "bar" || !channels.includes("color")) {
+    return program;
+  }
+  const measureChannel = resolveBarChannels(layer)?.measure;
+  if (
+    measureChannel === undefined ||
+    layer.encoding?.[measureChannel]?.stack !== "normalize"
+  ) {
+    return program;
+  }
+  return program.editSemantic({
+    property: `layer[${layer.id}].encoding.${measureChannel}.stack`,
+    value: "zero"
+  });
+}
+
+function hasPrimaryScaleConsumer(program, channel, scale) {
+  return program.semanticSpec.layers.some(
+    layer => layer.encoding?.[channel]?.scale === scale
+  );
+}
+
+function cleanupPositionGuides(program, removed) {
+  let next = program;
+  for (const { channel, scale } of removed) {
+    const definition = getPositionChannelDefinition(channel);
+    if (
+      definition?.guideChannel === undefined ||
+      hasPrimaryScaleConsumer(next, channel, scale)
+    ) {
+      continue;
+    }
+    const owners = ["x", "y"].includes(definition.guideChannel)
+      ? cartesianAxisOwners(next).filter(owner => owner.channel === definition.guideChannel)
+      : [{ id: definition.guideChannel, channel: definition.guideChannel,
+          semantic: next.semanticSpec.guides.axis?.[definition.guideChannel] }];
+    for (const owner of owners) {
+      const axis = owner.semantic;
+      if (axis?.scale === scale) next = next[REMOVE_AXIS[definition.guideChannel]]({
+        ...axisTargetArgs(owner.id, owner.channel), scale,
+        ...(axis.coordinate === undefined ? {} : { coordinate: axis.coordinate })
+      });
+    }
+    const grid = next.semanticSpec.guides.grid?.[definition.gridDirection];
+    if (grid?.scale === scale) {
+      next = next.removeGrid({ [definition.gridDirection]: true });
+    }
+  }
+  return next;
+}
+
+function reconcileCategoricalLegend(program, target, channels) {
+  const entry = ["series", "color", "stroke"]
+    .map(kind => [kind, program.guideConfigs.legend?.[kind]])
+    .find(([, config]) =>
+      config?.target === target &&
+      config.channels.some(channel => channels.includes(channel))
+    );
+  if (entry === undefined) return program;
+  const [kind, config] = entry;
+  const layer = findLayer(program, target);
+  const remaining = config.channels.filter(
+    channel => layer.encoding?.[channel]?.scale !== undefined
+  );
+  if (remaining.length === 0) {
+    return removeLegendKinds(program, [kind]);
+  }
+  const resolved = resolveCategoricalLegendRevision(program, kind, config, remaining);
+  const revision = planLegendBlockTransitions(program, target, [
+    { ...resolved, kind: resolved.config.kind }
+  ])[0];
+  const next = removeLegendKinds(program, [kind]);
+  return createCategoricalLegendFromConfig(next, revision.config, revision.order);
+}
+
+function cleanupLegends(program, target, channels) {
+  let next = reconcileCategoricalLegend(program, target, channels);
+  const kinds = [...new Set(channels.flatMap(
+    channel => SPECIALIZED_LEGEND_KIND[channel] ?? []
+  ))].filter(kind => next.guideConfigs.legend?.[kind]?.target === target);
+  return kinds.length === 0 ? next : removeLegendKinds(next, kinds);
+}
+
+function rematerializeTarget(program, target) {
+  const layer = findLayer(program, target);
+  const step = getMarkMaterializationStep(program, layer);
+  const baseline = clearMarkGraphic(program, target);
+  let next = step === undefined
+    ? baseline
+    : baseline[step.op](step.args);
+  for (const dependent of getSourceDependentMarkSteps(next, target)) {
+    next = next[dependent.op](dependent.args);
+  }
+  return next;
+}
+
+export const removeEncoding = /* @__PURE__ */ closedAction(
+  {
+    op: "removeEncoding",
+    description: "Remove one semantic encoding and its owned materialized state."
+  }, OPTIONS,
+  withGuideLayoutValidation(function (args = {}) {
+    if (!REMOVABLE_CHANNELS.includes(args.channel)) {
+      throw new Error(
+        `Unsupported removable encoding channel "${args.channel}".`
+      );
+    }
+    const layer = resolveTarget(this, args.target, args.channel);
+    if (layer.derivedBindings?.overlay && ["x", "y", "x2", "y2", "xOffset", "yOffset", "group", "pathOrder"].includes(args.channel)) {
+      throw new Error("Overlay geometry follows its source; edit the source or detach the overlay first.");
+    }
+    if (args.channel === "group" && layer.layout?.mode !== undefined && layer.layout.mode !== "overlay") throw new Error("Remove active series layout before removing its group.");
+    if (args.channel === "theta" && layer.mark.type === "arc" &&
+      ["count", "sum"].includes(layer.encoding?.radius?.aggregate)) {
+      throw new Error("Remove measured radius before removing its category theta encoding.");
+    }
+    const channels = activeCascade(layer, args.channel);
+    assertEncodingSelectionCompatibility(this, layer.id, channels);
+    for (const kind of ["series", "color", "stroke"]) {
+      const config = this.guideConfigs.legend?.[kind];
+      const order = this.semanticSpec.guides.legend?.[kind]?.order;
+      if (config?.target === layer.id && channels.includes(order?.channel) &&
+        config.channels.some(channel => !channels.includes(channel))) {
+        throw new Error('Reset linked legend order to "scale" before removing its position encoding.');
+      }
+    }
+    if (["line", "area"].includes(layer.mark?.type)) {
+      const dataset = findDataset(this, layer.data);
+      if (args.channel === "group") {
+        assertPathGroupCompatible(this, layer, dataset, undefined);
+      }
+      const encoding = { ...layer.encoding };
+      for (const channel of channels) delete encoding[channel];
+      validatePathGroupAppearance(this, { ...layer, encoding }, dataset);
+    }
+    const removedPositions = channels
+      .filter(channel => POSITION_ENCODING_CHANNELS.includes(channel))
+      .map(channel => ({
+        channel,
+        scale: layer.encoding[channel].scale
+      }))
+      .filter(item => item.scale !== undefined);
+
+    let next = this;
+    if (args.channel === "color" && layer.derivedBindings?.overlay?.inheritColor) {
+      next = next.editSemantic({ property: `layer[${layer.id}].derivedBindings.overlay`,
+        value: { ...layer.derivedBindings.overlay, inheritColor: false } });
+    }
+    for (const channel of channels) {
+      next = next.editSemantic({
+        property: `layer[${layer.id}].encoding.${channel}`,
+        remove: true
+      });
+    }
+    next = removeChannelConfigs(next, layer.id, channels);
+    next = restoreBarBaseline(next, layer, channels);
+    next = cleanupLegends(next, layer.id, channels);
+    next = cleanupPositionGuides(next, removedPositions);
+    return applyDetachedScaleRematerialization(rematerializeTarget(next, layer.id), [layer]);
+  })
+);
+
+export function registerEncodingRemovalAction(ProgramClass) {
+  ProgramClass.prototype.removeEncoding = removeEncoding;
+}

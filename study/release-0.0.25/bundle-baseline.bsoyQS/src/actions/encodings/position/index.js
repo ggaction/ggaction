@@ -1,0 +1,227 @@
+import { rebindAlignedAreaPosition } from './areaAlignment.js';
+import { assertSharedPositionMeaning } from '../../../selectors/plotComposition.js';
+import { stackLayoutMode } from "../seriesLayout.js";
+import { resolveBarGrain } from "../../../grammar/bars/policy.js";
+import { action } from "../../../core/action.js";
+import {
+  getPositionEncodingMaterializationSteps
+} from "../../../materialization/marks/index.js";
+import { resolvePositionEncoding } from "./resolve.js";
+import { findLayer } from "../../../selectors/layers.js";
+import { findSemanticScale } from "../../../selectors/scales.js";
+import { applyPositionSemantics } from "./apply.js";
+import {
+  resolveTarget,
+  applyEncodingScale,
+  applyDetachedScaleRematerialization,
+  rebindPositionGuides
+} from "../shared.js";
+
+function encodePosition(program, channel, args, operation) {
+  program = rebindAlignedAreaPosition(program, channel, args);
+  if (channel === 'theta' && typeof program.encodeChannels === 'function') {
+    const { layer } = resolveTarget(program, args.target, ['arc', 'line', 'point']);
+    const old = layer.encoding?.theta, color = layer.encoding?.color;
+    const scale = findSemanticScale(program, layer.encoding?.radius?.scale);
+    if (layer.mark.type === 'arc' && scale?.radialMapping && old?.field &&
+        args.field !== old.field && color?.field === old.field &&
+        ['nominal', 'ordinal'].includes(args.fieldType ?? old.fieldType)) {
+      const { target: _target, coordinate, ...theta } = args;
+      if (coordinate !== undefined && coordinate !== layer.coordinate) {
+        throw new Error('encodeTheta cannot move a measured polar mark to a different coordinate.');
+      }
+      return program.editSemantic({ property: `layer[${layer.id}].encoding.color.field`, value: args.field })
+        .encodeChannels({ target: layer.id, channels: {
+        theta, color: { field: args.field, fieldType: args.fieldType ?? old.fieldType }
+      } });
+    }
+  }
+  const {
+    target,
+    layer,
+    previous,
+    requestedScale,
+    field,
+    datum,
+    hasField,
+    fieldType,
+    temporalUnit,
+    scale,
+    coordinate,
+    bin,
+    aggregate,
+    stack,
+    weight,
+    companion,
+    clearRadialMapping
+  } = resolvePositionEncoding(program, channel, args, operation);
+  if (layer.derivedBindings?.overlay) throw new Error("Overlay position follows its source; edit the source or detach the overlay first.");
+
+  if (args.scale?.id === undefined) assertSharedPositionMeaning(program, layer, channel, {
+    ...(hasField ? { field } : { datum }), fieldType, temporalUnit,
+    scale: scale.id, aggregate, bin, stack
+  });
+  let next = program;
+  if (previous?.field !== undefined && previous.field !== field && ['theta', 'radius'].includes(channel)) {
+    for (const [id, config] of Object.entries(next.guideConfigs.axis ?? {})) {
+      for (const part of ['ticks', 'labels']) {
+        if (config[part]?.scale !== previous.scale || config[part].mode !== 'values') continue;
+        next = next._withGuideConfig(id, part, { ...config[part], inferredValues: true });
+      }
+    }
+  }
+  next = next.createCoordinate({
+      id: coordinate.id,
+      type: coordinate.type,
+      layers: [target]
+    });
+  next = applyPositionSemantics(next, {
+    target,
+    channel,
+    layer,
+    previous,
+    field,
+    datum,
+    hasField,
+    fieldType,
+    temporalUnit,
+    bin,
+    aggregate,
+    stack,
+    weight,
+    clearRadialMapping
+  });
+
+  next = next.editSemantic({
+      property: `layer[${target}].encoding.${channel}.scale`,
+      value: scale.id
+    });
+  if (
+    clearRadialMapping &&
+    findSemanticScale(next, scale.id)?.radialMapping !== undefined
+  ) {
+    next = next.editScale({ id: scale.id, radialMapping: undefined });
+  }
+  next = applyEncodingScale(next, scale, requestedScale, {
+    reassignment: previous?.scale === scale.id,
+    allowTypeChange: layer.mark.type === "area" || previous?.field === field && previous?.fieldType === fieldType
+  });
+  if (["bar", "area"].includes(layer.mark.type) && Object.hasOwn(args, "stack") && args.stack !== undefined) {
+    next = next.editSemantic({ property: `layer[${target}].layout.mode`, value: stackLayoutMode(args.stack) });
+  }
+  next = rebindPositionGuides(
+    next,
+    channel,
+    previous?.scale,
+    scale.id,
+    target
+  );
+
+  if (companion !== undefined) {
+    const encoding = companion.encoding;
+    const storedScale = findSemanticScale(next, encoding.scale);
+    next = next[companion.channel === "x" ? "encodeX" : "encodeY"]({
+      target,
+      field: encoding.field,
+      fieldType: encoding.fieldType,
+      aggregate: encoding.aggregate,
+      ...(layer.layout?.mode === undefined ? {} : { stack: encoding.stack }),
+      scale: {
+        id: encoding.scale,
+        ...(storedScale?.zero === undefined ? { zero: encoding.stack !== null } : {})
+      }
+    });
+  }
+
+  if (layer.mark.type === "bar") {
+    const updated = findLayer(next, target);
+    const pendingBox = next.markConfigs[target]?.boxPlot;
+    if (pendingBox !== undefined && !pendingBox.materialized) {
+      const materialized = updated.encoding?.x !== undefined && updated.encoding?.y !== undefined
+        ? next.materializeBoxPlot({ id: target })
+        : next;
+      return applyDetachedScaleRematerialization(materialized, [layer]);
+    }
+  }
+
+  if (layer.mark.type === "rect") {
+    const updated = findLayer(next, target);
+    const pendingGradient = next.markConfigs[target]?.gradientPlot;
+    if (pendingGradient !== undefined && !pendingGradient.materialized) {
+      const materialized = updated.encoding?.x !== undefined && updated.encoding?.y !== undefined
+        ? next.materializeGradientPlot({ id: target })
+        : next;
+      return applyDetachedScaleRematerialization(materialized, [layer]);
+    }
+  }
+
+  const updated = findLayer(next, target);
+  if (["bar", "area"].includes(layer.mark.type) && next.markConfigs[target]?.boxPlot === undefined &&
+      updated.encoding?.x?.scale !== undefined && updated.encoding?.y?.scale !== undefined) {
+    const requested = Object.hasOwn(args, "stack") ? args.stack : undefined;
+    const mode = requested !== undefined ? stackLayoutMode(requested) : updated.layout?.mode ??
+      (layer.mark.type === "bar" && resolveBarGrain(updated) === "histogram" ? stackLayoutMode(updated.encoding.y.stack) : undefined);
+    if (mode !== undefined && (layer.mark.type === "area" || resolveBarGrain(updated) !== undefined)) {
+      return applyDetachedScaleRematerialization(next.layoutSeries({ target, mode }), [layer]);
+    }
+  }
+  for (const step of getPositionEncodingMaterializationSteps(
+    next,
+    updated,
+    scale.id
+  )) {
+    next = next[step.op](step.args);
+  }
+  return applyDetachedScaleRematerialization(next, [layer]);
+}
+
+const encodeX = /* @__PURE__ */ action(
+  {
+    op: "encodeX",
+    description: "Encode a field as horizontal position."
+  },
+  function (args = {}) {
+    return encodePosition(this, "x", args, "encodeX");
+  }
+);
+
+const encodeY = /* @__PURE__ */ action(
+  {
+    op: "encodeY",
+    description: "Encode a field as vertical position."
+  },
+  function (args = {}) {
+    return encodePosition(this, "y", args, "encodeY");
+  }
+);
+
+const encodeTheta = /* @__PURE__ */ action(
+  {
+    op: "encodeTheta",
+    description: "Encode a field as Polar angle in clockwise degrees."
+  },
+  function (args = {}) {
+    return encodePosition(this, "theta", args, "encodeTheta");
+  }
+);
+
+const encodeR = /* @__PURE__ */ action(
+  {
+    op: "encodeR",
+    description: "Encode a quantitative field as Polar radius."
+  },
+  function (args = {}) {
+    return encodePosition(this, "radius", args, "encodeR");
+  }
+);
+
+export function registerCartesianPositionEncodingActions(ProgramClass) {
+  ProgramClass.prototype.encodeX = encodeX;
+  ProgramClass.prototype.encodeY = encodeY;
+}
+
+export function registerPositionEncodingActions(ProgramClass) {
+  registerCartesianPositionEncodingActions(ProgramClass);
+  ProgramClass.prototype.encodeTheta = encodeTheta;
+  ProgramClass.prototype.encodeR = encodeR;
+}

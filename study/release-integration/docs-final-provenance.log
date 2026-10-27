@@ -1,0 +1,218 @@
+
+> ggaction@0.0.23 test:docs
+> node scripts/run-tests.js docs
+
+✔ keeps the generated capability pages synchronized (10.110667ms)
+✔ matches primary position capability rows to runtime compatibility (1.228458ms)
+✔ matches documented highlight marks to runtime policies (0.115333ms)
+✔ smokes rect and arc position-color capabilities (54.3555ms)
+✔ smokes bar highlight and continuous legend capabilities (33.781958ms)
+✔ smokes complete Cartesian axis editing (25.966959ms)
+✔ verifies independent stroke and legend support for every documented mark (163.462375ms)
+✔ uses point opacity samples for line consumers and rejects rule opacity legends (10.034709ms)
+✔ gives every declared action one exact anchor, classification, and complete option table (1333.261792ms)
+✔ indexes each exact action at its canonical destination within the bounded search payload (14.587042ms)
+✔ current architecture source module references resolve in this repository (4.358375ms)
+✔ escaped code examples do not become real fragment targets or duplicate ids (1.627917ms)
+✔ actual duplicate element ids remain observable by the built checker (0.155834ms)
+✔ comments, raw text and quoted attribute examples cannot supply fragment targets (0.163708ms)
+✔ element ids support quoted and unquoted attributes without mistaking data-id (0.091834ms)
+✔ covers every maintained chart program or an explicit documentation-only exclusion (31.28325ms)
+✔ matches the public derived-transform union to its one normative tag table (2.268416ms)
+✔ keeps the chart picker, workflow programs, snippet contracts, and provenance fresh (383.851625ms)
+✔ release provenance requires the matching version and exact runtime fingerprint (709.865208ms)
+✔ keeps the hierarchical lesson geometrically equivalent before intentional styling (51.5175ms)
+✔ anchors completion, imputation, and window prose to literal expected values (43.726083ms)
+✔ distinguishes required runtime failures from CI-version recommendations (1.809125ms)
+✔ the resource cleanup recipe demonstrates rejection before dependency-safe removal (25.926708ms)
+✔ Related navigation remains the final section of public documentation (32.176667ms)
+✔ every authoring workflow has exact-code execution metadata and a browser entry (0.991291ms)
+✔ example source links resolve to the exact checked-in canonical programs (1381.010583ms)
+✔ weighted distribution recipes preserve mass and separate density from cumulative probability (69.323917ms)
+✔ every public JavaScript block is executable, generated, or a reviewed hash-pinned contextual exception (62.140292ms)
+✔ selective LLM artifacts retain current content, dependency routes, and shared identity (871.368792ms)
+✔ all published declarations compile in isolation without skipLibCheck (391.920125ms)
+✔ each manifest module has an exact runtime reference and architecture owner (2.31525ms)
+✔ compatibility guidance follows the CI Node and browser matrix (1.784833ms)
+✔ page editing links resolve to maintained sources including generated workflow owners (66.822041ms)
+✔ keeps every local Markdown link and anchor valid (579.357083ms)
+✔ keeps navigation and page order complete (9.217583ms)
+✔ keeps public facade and stabilization guidance cumulative (2.279542ms)
+✔ keeps the chart-example catalog strict and routable (24.593875ms)
+✔ generates the public example index from the chart catalog (15.910042ms)
+✔ keeps every Markdown page structurally readable (13.12525ms)
+✔ keeps documentation styles split by stable UI responsibility (1.669167ms)
+✔ generates unique page metadata and canonical social tags (125.47375ms)
+✔ reports documentation environment prerequisites before building (0.703375ms)
+✔ keeps repository source links and raw images verifiable (11.635958ms)
+✔ keeps the published documentation version aligned with the package (0.669542ms)
+✔ documents sequential palette count consistently across scale surfaces (0.30675ms)
+✔ keeps the strict TypeScript extension example executable by package CI (0.463459ms)
+✔ keeps task pages visual and chart figures canonical (15.536416ms)
+✔ keeps tutorial action flows aligned with public examples (1.356125ms)
+✔ routes entry documentation to the canonical example indexes (3.097625ms)
+✔ keeps the README and documentation home positioning aligned (0.318584ms)
+✔ keeps complete tutorial programs portable to package consumers (0.77575ms)
+✔ keeps every primary recipe snippet labeled and syntactically runnable (1973.712583ms)
+✔ documents one shared numeric font-weight rendering policy (1.25675ms)
+✔ indexes documentation headings for section search (4.8515ms)
+✔ keeps the compact search index generated and action-aware (295.032375ms)
+✔ keeps every public action available to documentation interactions (6.875458ms)
+✔ publishes schemas, typed action cards, and declarations from canonical sources (18.844292ms)
+✔ keeps point legend support consistent across public guidance (0.330583ms)
+✔ classifies every declared ChartProgram action in the reference (2297.774042ms)
+✔ keeps rendering guidance executable and aligned with the Canvas contract (489.6725ms)
+✔ does not repeat identical includes in one documentation position (42.091125ms)
+✔ keeps concise and full LLM documentation synchronized (2331.795459ms)
+✔ the README authoring sequence completes with the repository cars data and its legend (138.349083ms)
+✔ the documented empty filter preserves its source and stores the named empty result (3.048167ms)
+✔ the LLM task fragments independently build histogram and regression programs (51.21675ms)
+✔ the extension JavaScript example creates its target before editing it (16.838042ms)
+✔ numeric lines, points with default radius, and bars with default width materialize (7.51275ms)
+✔ card preconditions distinguish constant encodings, title-only charts, and empty filtered results (8.464083ms)
+✔ documented defaults agree with point strokes, time-unit aliases, and quartile interpolation (60.259625ms)
+✔ executes documented recipes/annotations.md [primary] against its stated inputs (435.182125ms)
+✔ executes documented recipes/bar-chart.md [primary] against its stated inputs (60.817833ms)
+✔ executes documented recipes/box-plot.md [primary] against its stated inputs (68.988583ms)
+✔ executes documented recipes/composition.md [primary] against its stated inputs (44.0755ms)
+✔ executes documented recipes/density-area.md [primary] against its stated inputs (46.687875ms)
+✔ executes documented recipes/error-band.md [primary] against its stated inputs (40.304833ms)
+✔ executes documented recipes/error-bar.md [primary] against its stated inputs (31.440417ms)
+✔ executes documented recipes/facet.md [primary] against its stated inputs (94.443417ms)
+✔ executes documented recipes/gradient-plot.md [primary] against its stated inputs (68.765792ms)
+✔ executes documented recipes/heatmap.md [primary] against its stated inputs (67.466625ms)
+✔ executes documented recipes/histogram.md [primary] against its stated inputs (39.713ms)
+✔ executes documented recipes/horizon.md [primary] against its stated inputs (25.953875ms)
+✔ executes documented recipes/line-chart.md [primary] against its stated inputs (34.82075ms)
+✔ executes documented recipes/parallel-coordinates.md [primary] against its stated inputs (37.159292ms)
+✔ executes documented recipes/path-ordering.md [primary] against its stated inputs (67.446208ms)
+✔ executes documented recipes/regression-scatterplot.md [primary] against its stated inputs (180.36125ms)
+✔ executes documented recipes/rose-chart.md [primary] against its stated inputs (22.291709ms)
+✔ executes documented recipes/scatterplot.md [primary] against its stated inputs (17.414792ms)
+✔ executes documented recipes/violin-plot.md [primary] against its stated inputs (18.128458ms)
+✔ executes documented tutorials/area-layout.md [primary] against its stated inputs (74.595833ms)
+✔ executes documented tutorials/density-area.md [primary] against its stated inputs (54.181125ms)
+✔ executes documented tutorials/ecdf.md [primary] against its stated inputs (49.568291ms)
+✔ executes documented tutorials/endpoint-plots.md [primary] against its stated inputs (70.616625ms)
+✔ executes documented tutorials/error-band.md [primary] against its stated inputs (95.290583ms)
+✔ executes documented tutorials/error-bar.md [primary] against its stated inputs (128.392333ms)
+✔ executes documented tutorials/grouped-bar.md [primary] against its stated inputs (306.469792ms)
+✔ executes documented tutorials/histogram.md [primary] against its stated inputs (40.749792ms)
+✔ executes documented tutorials/horizon.md [primary] against its stated inputs (35.836334ms)
+✔ executes documented tutorials/line-chart.md [primary] against its stated inputs (68.185666ms)
+✔ executes documented tutorials/mark-selection.md [primary] against its stated inputs (225.923333ms)
+✔ executes documented tutorials/polar-arcs.md [primary] against its stated inputs (24.248709ms)
+✔ executes documented tutorials/polar-lines.md [primary] against its stated inputs (34.985375ms)
+✔ executes documented tutorials/polar-points.md [primary] against its stated inputs (29.950084ms)
+✔ executes documented tutorials/regression-scatterplot.md [primary] against its stated inputs (224.466834ms)
+✔ executes documented tutorials/scatterplot.md [primary] against its stated inputs (30.969875ms)
+✔ executes documented api/data/filtering.md [primary] against its stated inputs (22.121334ms)
+✔ executes documented recipes/repair-missing-observations.md [primary] against its stated inputs (99.921541ms)
+✔ executes documented recipes/compare-weighted-distributions.md [primary] against its stated inputs (219.490917ms)
+✔ executes documented recipes/switch-encoding-modes.md [primary] against its stated inputs (36.003375ms)
+✔ executes documented recipes/edit-scales-and-guides.md [primary] against its stated inputs (104.431667ms)
+✔ executes documented recipes/edit-selected-labels.md [primary] against its stated inputs (74.114916ms)
+✔ executes documented recipes/apply-custom-theme.md [primary] against its stated inputs (90.695167ms)
+✔ executes documented recipes/edit-facet-source.md [primary] against its stated inputs (277.0145ms)
+✔ executes documented recipes/remove-dependent-resources.md [primary] against its stated inputs (56.55125ms)
+✔ executes documented tutorials/hierarchical-authoring.md [primary] against its stated inputs (56.523583ms)
+✔ executes documented api/marks/line-area.md [primary] against its stated inputs (45.510708ms)
+✔ executes documented api/marks/bar.md [canvas-layout-1] against its stated inputs (20.596792ms)
+✔ executes documented api/marks/line-area.md [canvas-layout-2] against its stated inputs (27.525417ms)
+✔ executes documented api/marks/line-area.md [canvas-layout-3] against its stated inputs (26.961208ms)
+✔ executes documented api/marks/line-area.md [canvas-layout-4] against its stated inputs (14.919958ms)
+✔ executes documented api/marks/line-area.md [canvas-layout-5] against its stated inputs (52.337334ms)
+✔ executes documented api/marks/point.md [canvas-layout-6] against its stated inputs (33.383625ms)
+✔ executes documented recipes/line-chart.md [canvas-layout-7] against its stated inputs (61.429334ms)
+{
+  data: 'sales',
+  schema: {
+    version: 1,
+    completeness: 'known',
+    origin: 'inferred',
+    fields: [ [Object], [Object] ]
+  }
+} {
+  version: 1,
+  equivalence: 'different',
+  completeProgramComparison: true,
+  changes: [
+    {
+      resource: [Object],
+      operation: 'modify',
+      effect: 'style',
+      roles: []
+    }
+  ],
+  affected: [ { kind: 'mark', id: 'points' } ],
+  findings: []
+} {
+  version: 1,
+  views: [
+    {
+      owner: [Object],
+      grain: 'item',
+      rawRows: 2,
+      logicalDataItems: 2,
+      drawablePrimitives: 2,
+      visibleCandidates: 2,
+      flags: [Array],
+      bounds: [Object],
+      sourceRefs: [Array],
+      checks: [Array]
+    }
+  ],
+  calculations: [],
+  checks: [
+    {
+      name: 'pixel-visibility',
+      status: 'not_run',
+      evidencePaths: [],
+      findings: []
+    }
+  ],
+  findings: [],
+  coverage: { partial: true, unsupported: [] }
+}
+false
+true
+✔ executes documented inspection.md [inspection-roundtrip] against its stated inputs (86.748959ms)
+✔ executes documented api/rendering.md [render-first] against its stated inputs (28.497583ms)
+✔ executes documented ../README.md [readme-quick-start] against its stated inputs (26.752458ms)
+false
+createScatterPlot
+editPointMark
+✔ executes documented ../README.md [readme-immutable-branches] against its stated inputs (13.636292ms)
+✔ marks tutorial and recipe snippets with explicit execution contracts (0.683375ms)
+✔ prepares a distinct packed consumer source for every registered snippet (655.116042ms)
+✔ extracts long and indented fences without closing on shorter embedded fences (0.452042ms)
+✔ documentation mocks reject incorrect URLs/selectors and missing rendering (2.021584ms)
+✔ snippet execution evidence must match the current code hash and pass status (1.615208ms)
+✔ keeps one generated gallery image for every public chart (20.046958ms)
+✔ keeps the generated Getting Started image aligned with its exact program (0.881208ms)
+✔ keeps generated mark-selection tutorial images canonical and fresh (1.520916ms)
+✔ keeps the composition asset legible as two distinct child panels (48.521042ms)
+✔ keeps the first chart identifiable without color alone (77.374167ms)
+✔ search recovers from a failed request and routes every exact action with correct keyboard boundaries (10423.214542ms)
+✔ action filtering updates TOC visibility and counts and a hidden hash target can be revealed (243.911667ms)
+✔ search handles zero, one, two, and eight results without stale active options (322.293334ms)
+✔ typing after a completed failed prefetch waits for an explicit retry (275.349583ms)
+✔ each retry makes one request after consecutive failures and pending searches respect cancellation (903.722084ms)
+✔ natural task queries reach their canonical guide among the first three results (420.645291ms)
+✔ keeps the Quarto example pinned, responsive, and accessible (3.617458ms)
+✔ executes the example program against the package source (557.568375ms)
+✔ builds the ordered immutable README authoring sequence (624.299833ms)
+✔ handles zero-variance R-squared input explicitly (0.155291ms)
+✔ keeps generated README GIF and PNG valid and referenced (2.501375ms)
+✔ the paper rose sequence retains each revision and materializes its final palette (88.244458ms)
+✔ the README leads with the paper GIF, then installation and a complete first chart (0.298875ms)
+✔ keeps the README revision branches immutable and independently traced (65.444458ms)
+✔ keeps the executable revision example immediately after Quick Start (0.524416ms)
+ℹ tests 151
+ℹ suites 0
+ℹ pass 151
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 15510.448

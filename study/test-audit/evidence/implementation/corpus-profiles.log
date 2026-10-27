@@ -1,0 +1,23 @@
+✔ keeps chart variants under one capability-oriented variants tree (24.886417ms)
+✔ uses capability names instead of completed gate or phase names (12.209917ms)
+✔ baseline evidence declares shared production dependencies without claiming independent geometry (53.697ms)
+✔ renaming fields preserves summary values and point geometry (cars-metamorphic-v1) (27.4215ms)
+✔ rescaling data and its domain preserves geometry while changing aggregates (cars-metamorphic-v1) (9.474333ms)
+✔ missing-value injection agrees with an independent grouped reduction (cars-metamorphic-v1) (2.346125ms)
+✔ mutation helpers reject collisions and numeric overflow without changing input (0.38875ms)
+✔ bounded small point consumer preserves 32 rows and 4 categories (4.422958ms)
+✔ bounded medium point consumer preserves 512 rows and 32 categories (6.555166ms)
+✔ bounded large point consumer preserves 4096 rows and 256 categories (67.70825ms)
+✔ pathology missing retains its explicit aggregate postcondition (1.048667ms)
+✔ pathology duplicates retains its explicit aggregate postcondition (0.756125ms)
+✔ pathology signed-zero retains its explicit aggregate postcondition (0.856167ms)
+✔ pathology constant retains its explicit aggregate postcondition (0.88725ms)
+✔ pathology large-magnitude retains its explicit aggregate postcondition (0.603959ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 15
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 672.908333

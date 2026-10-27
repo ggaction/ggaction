@@ -1,0 +1,11 @@
+✔ executes deterministic lifecycle recipes through integrity and SVG oracles (7526.504667ms)
+✔ calls every user-facing action directly from a generated scenario root (7467.313083ms)
+✔ retains direct action effects in final semantic and graphic state (847.804417ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 16530.243459

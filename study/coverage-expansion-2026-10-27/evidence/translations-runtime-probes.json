@@ -1,0 +1,992 @@
+{
+  "runtimeCommit": "40ec7edead7fc84de05aad31888dd0f7d264a512",
+  "runtimeVersion": "0.0.26",
+  "browser": "153.0.8010.12",
+  "environment": {
+    "locale": "en-US",
+    "timezone": "UTC",
+    "viewport": [
+      1280,
+      960
+    ],
+    "dpr": 2,
+    "network": "blocked",
+    "fonts": "host installed; no independent font-file hash qualification"
+  },
+  "results": [
+    {
+      "id": "vl_0002",
+      "status": "executed",
+      "stages": [
+        {
+          "level": "G1",
+          "svgSha256": "a6aa8dcb98499157e9451e08d34f7857d1bfd92f071ae7c1429609894ad2df8f",
+          "sameFamily": true,
+          "sameFrozenArtifact": true,
+          "canvas": {
+            "width": 441,
+            "height": 347,
+            "background": "white"
+          },
+          "objectCount": 14,
+          "semanticKeys": [
+            "datasets",
+            "layers",
+            "scales",
+            "coordinates",
+            "guides",
+            "title"
+          ]
+        },
+        {
+          "level": "G2",
+          "svgSha256": "a6aa8dcb98499157e9451e08d34f7857d1bfd92f071ae7c1429609894ad2df8f",
+          "sameFamily": true,
+          "sameFrozenArtifact": true,
+          "canvas": {
+            "width": 441,
+            "height": 347,
+            "background": "white"
+          },
+          "objectCount": 14,
+          "semanticKeys": [
+            "datasets",
+            "layers",
+            "scales",
+            "coordinates",
+            "guides",
+            "title"
+          ]
+        },
+        {
+          "level": "G3",
+          "svgSha256": "a6aa8dcb98499157e9451e08d34f7857d1bfd92f071ae7c1429609894ad2df8f",
+          "sameFamily": true,
+          "sameFrozenArtifact": true,
+          "canvas": {
+            "width": 441,
+            "height": 347,
+            "background": "white"
+          },
+          "objectCount": 14,
+          "semanticKeys": [
+            "datasets",
+            "layers",
+            "scales",
+            "coordinates",
+            "guides",
+            "title"
+          ]
+        },
+        {
+          "level": "G4",
+          "svgSha256": "a6aa8dcb98499157e9451e08d34f7857d1bfd92f071ae7c1429609894ad2df8f",
+          "sameFamily": true,
+          "sameFrozenArtifact": true,
+          "canvas": {
+            "width": 441,
+            "height": 347,
+            "background": "white"
+          },
+          "objectCount": 14,
+          "semanticKeys": [
+            "datasets",
+            "layers",
+            "scales",
+            "coordinates",
+            "guides",
+            "title"
+          ]
+        },
+        {
+          "level": "G5",
+          "svgSha256": "a6aa8dcb98499157e9451e08d34f7857d1bfd92f071ae7c1429609894ad2df8f",
+          "sameFamily": true,
+          "sameFrozenArtifact": true,
+          "canvas": {
+            "width": 441,
+            "height": 347,
+            "background": "white"
+          },
+          "objectCount": 14,
+          "semanticKeys": [
+            "datasets",
+            "layers",
+            "scales",
+            "coordinates",
+            "guides",
+            "title"
+          ]
+        },
+        {
+          "level": "G6",
+          "svgSha256": "a6aa8dcb98499157e9451e08d34f7857d1bfd92f071ae7c1429609894ad2df8f",
+          "sameFamily": true,
+          "sameFrozenArtifact": true,
+          "canvas": {
+            "width": 441,
+            "height": 347,
+            "background": "white"
+          },
+          "objectCount": 14,
+          "semanticKeys": [
+            "datasets",
+            "layers",
+            "scales",
+            "coordinates",
+            "guides",
+            "title"
+          ]
+        },
+        {
+          "level": "G7",
+          "svgSha256": "a6aa8dcb98499157e9451e08d34f7857d1bfd92f071ae7c1429609894ad2df8f",
+          "sameFamily": true,
+          "sameFrozenArtifact": true,
+          "canvas": {
+            "width": 441,
+            "height": 347,
+            "background": "white"
+          },
+          "objectCount": 14,
+          "semanticKeys": [
+            "datasets",
+            "layers",
+            "scales",
+            "coordinates",
+            "guides",
+            "title"
+          ]
+        }
+      ],
+      "allStagesSame": true,
+      "allFrozenSame": true,
+      "sourceFidelity": "not tested: comparison is to frozen ggaction SVG, not canonical original Vega-Lite or event states"
+    },
+    {
+      "id": "vl_0009",
+      "status": "executed",
+      "stages": [
+        {
+          "level": "G1",
+          "svgSha256": "0fd22b85e85cb08d7639d6705547d9d85b35156adacab830b0560970cd800f52",
+          "sameFamily": true,
+          "sameFrozenArtifact": true,
+          "canvas": {
+            "width": 254,
+            "height": 352,
+            "background": "white"
+          },
+          "objectCount": 23,
+          "semanticKeys": [
+            "datasets",
+            "layers",
+            "scales",
+            "coordinates",
+            "guides",
+            "title"
+          ]
+        },
+        {
+          "level": "G2",
+          "svgSha256": "0fd22b85e85cb08d7639d6705547d9d85b35156adacab830b0560970cd800f52",
+          "sameFamily": true,
+          "sameFrozenArtifact": true,
+          "canvas": {
+            "width": 254,
+            "height": 352,
+            "background": "white"
+          },
+          "objectCount": 23,
+          "semanticKeys": [
+            "datasets",
+            "layers",
+            "scales",
+            "coordinates",
+            "guides",
+            "title"
+          ]
+        },
+        {
+          "level": "G3",
+          "svgSha256": "0fd22b85e85cb08d7639d6705547d9d85b35156adacab830b0560970cd800f52",
+          "sameFamily": true,
+          "sameFrozenArtifact": true,
+          "canvas": {
+            "width": 254,
+            "height": 352,
+            "background": "white"
+          },
+          "objectCount": 23,
+          "semanticKeys": [
+            "datasets",
+            "layers",
+            "scales",
+            "coordinates",
+            "guides",
+            "title"
+          ]
+        },
+        {
+          "level": "G4",
+          "svgSha256": "0fd22b85e85cb08d7639d6705547d9d85b35156adacab830b0560970cd800f52",
+          "sameFamily": true,
+          "sameFrozenArtifact": true,
+          "canvas": {
+            "width": 254,
+            "height": 352,
+            "background": "white"
+          },
+          "objectCount": 23,
+          "semanticKeys": [
+            "datasets",
+            "layers",
+            "scales",
+            "coordinates",
+            "guides",
+            "title"
+          ]
+        },
+        {
+          "level": "G5",
+          "svgSha256": "0fd22b85e85cb08d7639d6705547d9d85b35156adacab830b0560970cd800f52",
+          "sameFamily": true,
+          "sameFrozenArtifact": true,
+          "canvas": {
+            "width": 254,
+            "height": 352,
+            "background": "white"
+          },
+          "objectCount": 23,
+          "semanticKeys": [
+            "datasets",
+            "layers",
+            "scales",
+            "coordinates",
+            "guides",
+            "title"
+          ]
+        },
+        {
+          "level": "G6",
+          "svgSha256": "0fd22b85e85cb08d7639d6705547d9d85b35156adacab830b0560970cd800f52",
+          "sameFamily": true,
+          "sameFrozenArtifact": true,
+          "canvas": {
+            "width": 254,
+            "height": 352,
+            "background": "white"
+          },
+          "objectCount": 23,
+          "semanticKeys": [
+            "datasets",
+            "layers",
+            "scales",
+            "coordinates",
+            "guides",
+            "title"
+          ]
+        },
+        {
+          "level": "G7",
+          "svgSha256": "0fd22b85e85cb08d7639d6705547d9d85b35156adacab830b0560970cd800f52",
+          "sameFamily": true,
+          "sameFrozenArtifact": true,
+          "canvas": {
+            "width": 254,
+            "height": 352,
+            "background": "white"
+          },
+          "objectCount": 23,
+          "semanticKeys": [
+            "datasets",
+            "layers",
+            "scales",
+            "coordinates",
+            "guides",
+            "title"
+          ]
+        },
+        {
+          "level": "G8",
+          "svgSha256": "0fd22b85e85cb08d7639d6705547d9d85b35156adacab830b0560970cd800f52",
+          "sameFamily": true,
+          "sameFrozenArtifact": true,
+          "canvas": {
+            "width": 254,
+            "height": 352,
+            "background": "white"
+          },
+          "objectCount": 23,
+          "semanticKeys": [
+            "datasets",
+            "layers",
+            "scales",
+            "coordinates",
+            "guides",
+            "title"
+          ]
+        }
+      ],
+      "allStagesSame": true,
+      "allFrozenSame": true,
+      "sourceFidelity": "not tested: comparison is to frozen ggaction SVG, not canonical original Vega-Lite or event states"
+    },
+    {
+      "id": "vl_0011",
+      "status": "executed",
+      "stages": [
+        {
+          "level": "G1",
+          "svgSha256": "f2a2b1adb6bd923b08e28633bb752297a4f0b8f05cc26ea38efcdfd6fdb6266a",
+          "sameFamily": true,
+          "sameFrozenArtifact": true,
+          "canvas": {
+            "width": 448,
+            "height": 347,
+            "background": "white"
+          },
+          "objectCount": 13,
+          "semanticKeys": [
+            "datasets",
+            "layers",
+            "scales",
+            "coordinates",
+            "guides",
+            "title"
+          ]
+        },
+        {
+          "level": "G2",
+          "svgSha256": "f2a2b1adb6bd923b08e28633bb752297a4f0b8f05cc26ea38efcdfd6fdb6266a",
+          "sameFamily": true,
+          "sameFrozenArtifact": true,
+          "canvas": {
+            "width": 448,
+            "height": 347,
+            "background": "white"
+          },
+          "objectCount": 13,
+          "semanticKeys": [
+            "datasets",
+            "layers",
+            "scales",
+            "coordinates",
+            "guides",
+            "title"
+          ]
+        },
+        {
+          "level": "G3",
+          "svgSha256": "f2a2b1adb6bd923b08e28633bb752297a4f0b8f05cc26ea38efcdfd6fdb6266a",
+          "sameFamily": true,
+          "sameFrozenArtifact": true,
+          "canvas": {
+            "width": 448,
+            "height": 347,
+            "background": "white"
+          },
+          "objectCount": 13,
+          "semanticKeys": [
+            "datasets",
+            "layers",
+            "scales",
+            "coordinates",
+            "guides",
+            "title"
+          ]
+        },
+        {
+          "level": "G4",
+          "svgSha256": "f2a2b1adb6bd923b08e28633bb752297a4f0b8f05cc26ea38efcdfd6fdb6266a",
+          "sameFamily": true,
+          "sameFrozenArtifact": true,
+          "canvas": {
+            "width": 448,
+            "height": 347,
+            "background": "white"
+          },
+          "objectCount": 13,
+          "semanticKeys": [
+            "datasets",
+            "layers",
+            "scales",
+            "coordinates",
+            "guides",
+            "title"
+          ]
+        },
+        {
+          "level": "G5",
+          "svgSha256": "f2a2b1adb6bd923b08e28633bb752297a4f0b8f05cc26ea38efcdfd6fdb6266a",
+          "sameFamily": true,
+          "sameFrozenArtifact": true,
+          "canvas": {
+            "width": 448,
+            "height": 347,
+            "background": "white"
+          },
+          "objectCount": 13,
+          "semanticKeys": [
+            "datasets",
+            "layers",
+            "scales",
+            "coordinates",
+            "guides",
+            "title"
+          ]
+        },
+        {
+          "level": "G6",
+          "svgSha256": "f2a2b1adb6bd923b08e28633bb752297a4f0b8f05cc26ea38efcdfd6fdb6266a",
+          "sameFamily": true,
+          "sameFrozenArtifact": true,
+          "canvas": {
+            "width": 448,
+            "height": 347,
+            "background": "white"
+          },
+          "objectCount": 13,
+          "semanticKeys": [
+            "datasets",
+            "layers",
+            "scales",
+            "coordinates",
+            "guides",
+            "title"
+          ]
+        },
+        {
+          "level": "G7",
+          "svgSha256": "f2a2b1adb6bd923b08e28633bb752297a4f0b8f05cc26ea38efcdfd6fdb6266a",
+          "sameFamily": true,
+          "sameFrozenArtifact": true,
+          "canvas": {
+            "width": 448,
+            "height": 347,
+            "background": "white"
+          },
+          "objectCount": 13,
+          "semanticKeys": [
+            "datasets",
+            "layers",
+            "scales",
+            "coordinates",
+            "guides",
+            "title"
+          ]
+        }
+      ],
+      "allStagesSame": true,
+      "allFrozenSame": true,
+      "sourceFidelity": "not tested: comparison is to frozen ggaction SVG, not canonical original Vega-Lite or event states"
+    },
+    {
+      "id": "vl_0237",
+      "status": "executed",
+      "stages": [
+        {
+          "level": "G1",
+          "svgSha256": "de7776fde25c0f1ea7b2b97a96f52a7c9ae8bf7f85c8c636531df1798f582345",
+          "sameFamily": true,
+          "sameFrozenArtifact": false,
+          "canvas": {
+            "width": 498,
+            "height": 439,
+            "background": "white"
+          },
+          "objectCount": 17,
+          "semanticKeys": [
+            "datasets",
+            "layers",
+            "scales",
+            "coordinates",
+            "guides",
+            "title"
+          ]
+        },
+        {
+          "level": "G2",
+          "svgSha256": "de7776fde25c0f1ea7b2b97a96f52a7c9ae8bf7f85c8c636531df1798f582345",
+          "sameFamily": true,
+          "sameFrozenArtifact": false,
+          "canvas": {
+            "width": 498,
+            "height": 439,
+            "background": "white"
+          },
+          "objectCount": 17,
+          "semanticKeys": [
+            "datasets",
+            "layers",
+            "scales",
+            "coordinates",
+            "guides",
+            "title"
+          ]
+        },
+        {
+          "level": "G3",
+          "svgSha256": "de7776fde25c0f1ea7b2b97a96f52a7c9ae8bf7f85c8c636531df1798f582345",
+          "sameFamily": true,
+          "sameFrozenArtifact": false,
+          "canvas": {
+            "width": 498,
+            "height": 439,
+            "background": "white"
+          },
+          "objectCount": 17,
+          "semanticKeys": [
+            "datasets",
+            "layers",
+            "scales",
+            "coordinates",
+            "guides",
+            "title"
+          ]
+        },
+        {
+          "level": "G4",
+          "svgSha256": "de7776fde25c0f1ea7b2b97a96f52a7c9ae8bf7f85c8c636531df1798f582345",
+          "sameFamily": true,
+          "sameFrozenArtifact": false,
+          "canvas": {
+            "width": 498,
+            "height": 439,
+            "background": "white"
+          },
+          "objectCount": 17,
+          "semanticKeys": [
+            "datasets",
+            "layers",
+            "scales",
+            "coordinates",
+            "guides",
+            "title"
+          ]
+        },
+        {
+          "level": "G5",
+          "svgSha256": "de7776fde25c0f1ea7b2b97a96f52a7c9ae8bf7f85c8c636531df1798f582345",
+          "sameFamily": true,
+          "sameFrozenArtifact": false,
+          "canvas": {
+            "width": 498,
+            "height": 439,
+            "background": "white"
+          },
+          "objectCount": 17,
+          "semanticKeys": [
+            "datasets",
+            "layers",
+            "scales",
+            "coordinates",
+            "guides",
+            "title"
+          ]
+        },
+        {
+          "level": "G6",
+          "svgSha256": "de7776fde25c0f1ea7b2b97a96f52a7c9ae8bf7f85c8c636531df1798f582345",
+          "sameFamily": true,
+          "sameFrozenArtifact": false,
+          "canvas": {
+            "width": 498,
+            "height": 439,
+            "background": "white"
+          },
+          "objectCount": 17,
+          "semanticKeys": [
+            "datasets",
+            "layers",
+            "scales",
+            "coordinates",
+            "guides",
+            "title"
+          ]
+        },
+        {
+          "level": "G7",
+          "svgSha256": "de7776fde25c0f1ea7b2b97a96f52a7c9ae8bf7f85c8c636531df1798f582345",
+          "sameFamily": true,
+          "sameFrozenArtifact": false,
+          "canvas": {
+            "width": 498,
+            "height": 439,
+            "background": "white"
+          },
+          "objectCount": 17,
+          "semanticKeys": [
+            "datasets",
+            "layers",
+            "scales",
+            "coordinates",
+            "guides",
+            "title"
+          ]
+        },
+        {
+          "level": "G8",
+          "svgSha256": "de7776fde25c0f1ea7b2b97a96f52a7c9ae8bf7f85c8c636531df1798f582345",
+          "sameFamily": true,
+          "sameFrozenArtifact": false,
+          "canvas": {
+            "width": 498,
+            "height": 439,
+            "background": "white"
+          },
+          "objectCount": 17,
+          "semanticKeys": [
+            "datasets",
+            "layers",
+            "scales",
+            "coordinates",
+            "guides",
+            "title"
+          ]
+        }
+      ],
+      "allStagesSame": true,
+      "allFrozenSame": false,
+      "sourceFidelity": "not tested: comparison is to frozen ggaction SVG, not canonical original Vega-Lite or event states"
+    },
+    {
+      "id": "vl_1180",
+      "status": "executed",
+      "stages": [
+        {
+          "level": "G1",
+          "svgSha256": "ffe7978e1068d312fbce9a6ce09a52fcaf0c96bbfd5d3b3638a7cf0a7e413afb",
+          "sameFamily": true,
+          "sameFrozenArtifact": true,
+          "canvas": {
+            "width": 491,
+            "height": 451,
+            "background": "white"
+          },
+          "objectCount": 19,
+          "semanticKeys": [
+            "datasets",
+            "layers",
+            "scales",
+            "coordinates",
+            "guides",
+            "title"
+          ]
+        },
+        {
+          "level": "G2",
+          "svgSha256": "ffe7978e1068d312fbce9a6ce09a52fcaf0c96bbfd5d3b3638a7cf0a7e413afb",
+          "sameFamily": true,
+          "sameFrozenArtifact": true,
+          "canvas": {
+            "width": 491,
+            "height": 451,
+            "background": "white"
+          },
+          "objectCount": 19,
+          "semanticKeys": [
+            "datasets",
+            "layers",
+            "scales",
+            "coordinates",
+            "guides",
+            "title"
+          ]
+        },
+        {
+          "level": "G3",
+          "svgSha256": "ffe7978e1068d312fbce9a6ce09a52fcaf0c96bbfd5d3b3638a7cf0a7e413afb",
+          "sameFamily": true,
+          "sameFrozenArtifact": true,
+          "canvas": {
+            "width": 491,
+            "height": 451,
+            "background": "white"
+          },
+          "objectCount": 19,
+          "semanticKeys": [
+            "datasets",
+            "layers",
+            "scales",
+            "coordinates",
+            "guides",
+            "title"
+          ]
+        },
+        {
+          "level": "G4",
+          "svgSha256": "ffe7978e1068d312fbce9a6ce09a52fcaf0c96bbfd5d3b3638a7cf0a7e413afb",
+          "sameFamily": true,
+          "sameFrozenArtifact": true,
+          "canvas": {
+            "width": 491,
+            "height": 451,
+            "background": "white"
+          },
+          "objectCount": 19,
+          "semanticKeys": [
+            "datasets",
+            "layers",
+            "scales",
+            "coordinates",
+            "guides",
+            "title"
+          ]
+        },
+        {
+          "level": "G5",
+          "svgSha256": "ffe7978e1068d312fbce9a6ce09a52fcaf0c96bbfd5d3b3638a7cf0a7e413afb",
+          "sameFamily": true,
+          "sameFrozenArtifact": true,
+          "canvas": {
+            "width": 491,
+            "height": 451,
+            "background": "white"
+          },
+          "objectCount": 19,
+          "semanticKeys": [
+            "datasets",
+            "layers",
+            "scales",
+            "coordinates",
+            "guides",
+            "title"
+          ]
+        },
+        {
+          "level": "G6",
+          "svgSha256": "ffe7978e1068d312fbce9a6ce09a52fcaf0c96bbfd5d3b3638a7cf0a7e413afb",
+          "sameFamily": true,
+          "sameFrozenArtifact": true,
+          "canvas": {
+            "width": 491,
+            "height": 451,
+            "background": "white"
+          },
+          "objectCount": 19,
+          "semanticKeys": [
+            "datasets",
+            "layers",
+            "scales",
+            "coordinates",
+            "guides",
+            "title"
+          ]
+        },
+        {
+          "level": "G7",
+          "svgSha256": "ffe7978e1068d312fbce9a6ce09a52fcaf0c96bbfd5d3b3638a7cf0a7e413afb",
+          "sameFamily": true,
+          "sameFrozenArtifact": true,
+          "canvas": {
+            "width": 491,
+            "height": 451,
+            "background": "white"
+          },
+          "objectCount": 19,
+          "semanticKeys": [
+            "datasets",
+            "layers",
+            "scales",
+            "coordinates",
+            "guides",
+            "title"
+          ]
+        },
+        {
+          "level": "G8",
+          "svgSha256": "ffe7978e1068d312fbce9a6ce09a52fcaf0c96bbfd5d3b3638a7cf0a7e413afb",
+          "sameFamily": true,
+          "sameFrozenArtifact": true,
+          "canvas": {
+            "width": 491,
+            "height": 451,
+            "background": "white"
+          },
+          "objectCount": 19,
+          "semanticKeys": [
+            "datasets",
+            "layers",
+            "scales",
+            "coordinates",
+            "guides",
+            "title"
+          ]
+        }
+      ],
+      "allStagesSame": true,
+      "allFrozenSame": true,
+      "sourceFidelity": "not tested: comparison is to frozen ggaction SVG, not canonical original Vega-Lite or event states"
+    },
+    {
+      "id": "vl_1417",
+      "status": "executed",
+      "stages": [
+        {
+          "level": "G1",
+          "svgSha256": "0fd88fb96e4a6924adbd36f2af071d96cdfd854be3a5073707a039d2cc4aaae8",
+          "sameFamily": true,
+          "sameFrozenArtifact": false,
+          "canvas": {
+            "width": 555,
+            "height": 347,
+            "background": "white"
+          },
+          "objectCount": 16,
+          "semanticKeys": [
+            "datasets",
+            "layers",
+            "scales",
+            "coordinates",
+            "guides",
+            "title"
+          ]
+        },
+        {
+          "level": "G2",
+          "svgSha256": "0fd88fb96e4a6924adbd36f2af071d96cdfd854be3a5073707a039d2cc4aaae8",
+          "sameFamily": true,
+          "sameFrozenArtifact": false,
+          "canvas": {
+            "width": 555,
+            "height": 347,
+            "background": "white"
+          },
+          "objectCount": 16,
+          "semanticKeys": [
+            "datasets",
+            "layers",
+            "scales",
+            "coordinates",
+            "guides",
+            "title"
+          ]
+        },
+        {
+          "level": "G3",
+          "svgSha256": "0fd88fb96e4a6924adbd36f2af071d96cdfd854be3a5073707a039d2cc4aaae8",
+          "sameFamily": true,
+          "sameFrozenArtifact": false,
+          "canvas": {
+            "width": 555,
+            "height": 347,
+            "background": "white"
+          },
+          "objectCount": 16,
+          "semanticKeys": [
+            "datasets",
+            "layers",
+            "scales",
+            "coordinates",
+            "guides",
+            "title"
+          ]
+        },
+        {
+          "level": "G4",
+          "svgSha256": "0fd88fb96e4a6924adbd36f2af071d96cdfd854be3a5073707a039d2cc4aaae8",
+          "sameFamily": true,
+          "sameFrozenArtifact": false,
+          "canvas": {
+            "width": 555,
+            "height": 347,
+            "background": "white"
+          },
+          "objectCount": 16,
+          "semanticKeys": [
+            "datasets",
+            "layers",
+            "scales",
+            "coordinates",
+            "guides",
+            "title"
+          ]
+        },
+        {
+          "level": "G5",
+          "svgSha256": "0fd88fb96e4a6924adbd36f2af071d96cdfd854be3a5073707a039d2cc4aaae8",
+          "sameFamily": true,
+          "sameFrozenArtifact": false,
+          "canvas": {
+            "width": 555,
+            "height": 347,
+            "background": "white"
+          },
+          "objectCount": 16,
+          "semanticKeys": [
+            "datasets",
+            "layers",
+            "scales",
+            "coordinates",
+            "guides",
+            "title"
+          ]
+        },
+        {
+          "level": "G6",
+          "svgSha256": "0fd88fb96e4a6924adbd36f2af071d96cdfd854be3a5073707a039d2cc4aaae8",
+          "sameFamily": true,
+          "sameFrozenArtifact": false,
+          "canvas": {
+            "width": 555,
+            "height": 347,
+            "background": "white"
+          },
+          "objectCount": 16,
+          "semanticKeys": [
+            "datasets",
+            "layers",
+            "scales",
+            "coordinates",
+            "guides",
+            "title"
+          ]
+        },
+        {
+          "level": "G7",
+          "svgSha256": "0fd88fb96e4a6924adbd36f2af071d96cdfd854be3a5073707a039d2cc4aaae8",
+          "sameFamily": true,
+          "sameFrozenArtifact": false,
+          "canvas": {
+            "width": 555,
+            "height": 347,
+            "background": "white"
+          },
+          "objectCount": 16,
+          "semanticKeys": [
+            "datasets",
+            "layers",
+            "scales",
+            "coordinates",
+            "guides",
+            "title"
+          ]
+        },
+        {
+          "level": "G8",
+          "svgSha256": "0fd88fb96e4a6924adbd36f2af071d96cdfd854be3a5073707a039d2cc4aaae8",
+          "sameFamily": true,
+          "sameFrozenArtifact": false,
+          "canvas": {
+            "width": 555,
+            "height": 347,
+            "background": "white"
+          },
+          "objectCount": 16,
+          "semanticKeys": [
+            "datasets",
+            "layers",
+            "scales",
+            "coordinates",
+            "guides",
+            "title"
+          ]
+        }
+      ],
+      "allStagesSame": true,
+      "allFrozenSame": false,
+      "sourceFidelity": "not tested: comparison is to frozen ggaction SVG, not canonical original Vega-Lite or event states"
+    }
+  ]
+}

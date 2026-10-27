@@ -1,0 +1,8 @@
+{
+  "ok": false,
+  "error": "render physical Canvas dimensions must not exceed 32767.",
+  "currentChanged": true,
+  "canvasWidth": 1,
+  "canvasHeight": 1,
+  "validNativeContext": true
+}

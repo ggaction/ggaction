@@ -1,0 +1,29 @@
+import { confidenceCriticalValue } from
+  "../statistics/confidenceInterval.js";
+
+export {
+  REGRESSION_LOWER_FIELD,
+  REGRESSION_UPPER_FIELD,
+  deriveLinearRegression,
+  deriveRegression
+} from "./derive.js";
+export {
+  normalizeRegressionParameters,
+  normalizeRegressionPredict,
+  normalizeRegressionTransform,
+  validateRegressionTransform
+} from "./parameters.js";
+
+export function studentTCritical(confidence, degreesOfFreedom) {
+  if (!Number.isFinite(confidence) || confidence <= 0 || confidence >= 1) {
+    throw new RangeError("Regression confidence must be between 0 and 1.");
+  }
+  if (!Number.isInteger(degreesOfFreedom) || degreesOfFreedom <= 0) {
+    throw new RangeError("Student-t degrees of freedom must be positive.");
+  }
+  return confidenceCriticalValue({
+    method: "student-t",
+    level: confidence,
+    degreesOfFreedom
+  });
+}

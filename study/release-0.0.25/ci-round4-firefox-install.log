@@ -1,0 +1,353 @@
+﻿2026-10-26T21:22:39.9383129Z Current runner version: '2.338.0'
+2026-10-26T21:22:39.9408845Z ##[group]Runner Image Provisioner
+2026-10-26T21:22:39.9409710Z Hosted Compute Agent
+2026-10-26T21:22:39.9410373Z Version: 20261021.618
+2026-10-26T21:22:39.9410964Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-10-26T21:22:39.9411692Z Build Date: 2026-10-21T00:45:21Z
+2026-10-26T21:22:39.9412317Z Worker ID: {57940762-870d-48dc-aea7-29805e74574b}
+2026-10-26T21:22:39.9412952Z Region: westus3
+2026-10-26T21:22:39.9413492Z Cloud: Azure
+2026-10-26T21:22:39.9413990Z ##[endgroup]
+2026-10-26T21:22:39.9415581Z ##[group]Operating System
+2026-10-26T21:22:39.9416176Z Ubuntu
+2026-10-26T21:22:39.9416645Z 24.04.5
+2026-10-26T21:22:39.9417133Z LTS
+2026-10-26T21:22:39.9417702Z ##[endgroup]
+2026-10-26T21:22:39.9418260Z ##[group]Runner Image
+2026-10-26T21:22:39.9418840Z Image: ubuntu-24.04
+2026-10-26T21:22:39.9419353Z Version: 20261012.334.1
+2026-10-26T21:22:39.9420589Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261012.334/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-26T21:22:39.9422024Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261012.334
+2026-10-26T21:22:39.9422918Z ##[endgroup]
+2026-10-26T21:22:39.9423995Z ##[group]GITHUB_TOKEN Permissions
+2026-10-26T21:22:39.9426316Z Contents: read
+2026-10-26T21:22:39.9426899Z Metadata: read
+2026-10-26T21:22:39.9427471Z ##[endgroup]
+2026-10-26T21:22:39.9429610Z Secret source: Actions
+2026-10-26T21:22:39.9430566Z Cache mode: write
+2026-10-26T21:22:39.9431228Z Prepare workflow directory
+2026-10-26T21:22:39.9862806Z Prepare all required actions
+2026-10-26T21:22:39.9911750Z Getting action download info
+2026-10-26T21:22:40.3023107Z Download action repository 'actions/checkout@v6' (SHA:d23441a48e516b6c34aea4fa41551a30e30af803)
+2026-10-26T21:22:41.3452475Z Download action repository 'actions/setup-node@v6' (SHA:249970729cb0ef3589644e2896645e5dc5ba9c38)
+2026-10-26T21:22:41.9854246Z Download action repository 'actions/upload-artifact@v7' (SHA:cf430e030ddbb5b0abf93d22962f4752f3646cd9)
+2026-10-26T21:22:43.0086249Z Complete job name: browsers (firefox)
+2026-10-26T21:22:43.1027575Z ##[group]Run actions/checkout@v6
+2026-10-26T21:22:43.1028286Z with:
+2026-10-26T21:22:43.1028571Z   repository: ggaction/ggaction
+2026-10-26T21:22:43.1031215Z   token: ***
+2026-10-26T21:22:43.1031488Z   ssh-strict: true
+2026-10-26T21:22:43.1031756Z   ssh-user: git
+2026-10-26T21:22:43.1032030Z   persist-credentials: true
+2026-10-26T21:22:43.1032331Z   clean: true
+2026-10-26T21:22:43.1032608Z   sparse-checkout-cone-mode: true
+2026-10-26T21:22:43.1032924Z   fetch-depth: 1
+2026-10-26T21:22:43.1033182Z   fetch-tags: false
+2026-10-26T21:22:43.1033451Z   show-progress: true
+2026-10-26T21:22:43.1033735Z   lfs: false
+2026-10-26T21:22:43.1033977Z   submodules: false
+2026-10-26T21:22:43.1034241Z   set-safe-directory: true
+2026-10-26T21:22:43.1034545Z   allow-unsafe-pr-checkout: false
+2026-10-26T21:22:43.1035056Z ##[endgroup]
+2026-10-26T21:22:43.2132152Z Syncing repository: ggaction/ggaction
+2026-10-26T21:22:43.2134598Z ##[group]Getting Git version info
+2026-10-26T21:22:43.2135602Z Working directory is '/home/runner/work/ggaction/ggaction'
+2026-10-26T21:22:43.2136815Z [command]/usr/bin/git version
+2026-10-26T21:22:43.2137338Z git version 2.55.0
+2026-10-26T21:22:43.2167299Z ##[endgroup]
+2026-10-26T21:22:43.2175451Z Temporarily overriding HOME='/home/runner/work/_temp/388b6e4b-d4f7-4493-9660-dd79ea64c4a7' before making global git config changes
+2026-10-26T21:22:43.2177274Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-26T21:22:43.2178856Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/ggaction/ggaction
+2026-10-26T21:22:43.2228909Z Deleting the contents of '/home/runner/work/ggaction/ggaction'
+2026-10-26T21:22:43.2241240Z ##[group]Determining repository object format
+2026-10-26T21:22:43.2252357Z ##[endgroup]
+2026-10-26T21:22:43.2253548Z ##[group]Initializing the repository
+2026-10-26T21:22:43.2254582Z [command]/usr/bin/git init /home/runner/work/ggaction/ggaction
+2026-10-26T21:22:43.2344852Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-26T21:22:43.2346380Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-26T21:22:43.2347409Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-26T21:22:43.2348175Z hint: call:
+2026-10-26T21:22:43.2348622Z hint:
+2026-10-26T21:22:43.2349251Z hint: 	git config --global init.defaultBranch <name>
+2026-10-26T21:22:43.2349919Z hint:
+2026-10-26T21:22:43.2350566Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-26T21:22:43.2351600Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-26T21:22:43.2352316Z hint:
+2026-10-26T21:22:43.2352747Z hint: 	git branch -m <name>
+2026-10-26T21:22:43.2353197Z hint:
+2026-10-26T21:22:43.2353812Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-26T21:22:43.2354724Z Initialized empty Git repository in /home/runner/work/ggaction/ggaction/.git/
+2026-10-26T21:22:43.2357225Z [command]/usr/bin/git remote add origin https://github.com/ggaction/ggaction
+2026-10-26T21:22:43.2400884Z ##[endgroup]
+2026-10-26T21:22:43.2401791Z ##[group]Disabling automatic garbage collection
+2026-10-26T21:22:43.2405578Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-26T21:22:43.2452266Z ##[endgroup]
+2026-10-26T21:22:43.2453432Z ##[group]Setting up auth
+2026-10-26T21:22:43.2454049Z Removing SSH command configuration
+2026-10-26T21:22:43.2454882Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-26T21:22:43.2479716Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-26T21:22:43.2812456Z Removing HTTP extra header
+2026-10-26T21:22:43.2820090Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-26T21:22:43.2856056Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-26T21:22:43.3049467Z Removing includeIf entries pointing to credentials config files
+2026-10-26T21:22:43.3058420Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-26T21:22:43.3092098Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-26T21:22:43.3299290Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-aa783794-a75b-4f02-9a92-db622d79ceed.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-26T21:22:43.3340726Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/ggaction/ggaction/.git.path /home/runner/work/_temp/git-credentials-aa783794-a75b-4f02-9a92-db622d79ceed.config
+2026-10-26T21:22:43.3376263Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/ggaction/ggaction/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-aa783794-a75b-4f02-9a92-db622d79ceed.config
+2026-10-26T21:22:43.3413601Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-aa783794-a75b-4f02-9a92-db622d79ceed.config
+2026-10-26T21:22:43.3455074Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-aa783794-a75b-4f02-9a92-db622d79ceed.config
+2026-10-26T21:22:43.3484941Z ##[endgroup]
+2026-10-26T21:22:43.3485743Z ##[group]Fetching the repository
+2026-10-26T21:22:43.3493963Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +eeb66bca95dc6d25a466531a6fddf646dde94c89:refs/remotes/pull/276/merge
+2026-10-26T21:22:44.8093602Z From https://github.com/ggaction/ggaction
+2026-10-26T21:22:44.8095396Z  * [new ref]         eeb66bca95dc6d25a466531a6fddf646dde94c89 -> pull/276/merge
+2026-10-26T21:22:44.8107304Z ##[endgroup]
+2026-10-26T21:22:44.8108839Z ##[group]Determining the checkout info
+2026-10-26T21:22:44.8109292Z ##[endgroup]
+2026-10-26T21:22:44.8110006Z [command]/usr/bin/git sparse-checkout disable
+2026-10-26T21:22:44.8161783Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-26T21:22:44.8193446Z ##[group]Checking out the ref
+2026-10-26T21:22:44.8207451Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/276/merge
+2026-10-26T21:22:45.1223558Z Note: switching to 'refs/remotes/pull/276/merge'.
+2026-10-26T21:22:45.1224068Z 
+2026-10-26T21:22:45.1224443Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-10-26T21:22:45.1225385Z changes and commit them, and you can discard any commits you make in this
+2026-10-26T21:22:45.1226273Z state without impacting any branches by switching back to a branch.
+2026-10-26T21:22:45.1226875Z 
+2026-10-26T21:22:45.1227322Z If you want to create a new branch to retain commits you create, you may
+2026-10-26T21:22:45.1228242Z do so (now or later) by using -c with the switch command. Example:
+2026-10-26T21:22:45.1228771Z 
+2026-10-26T21:22:45.1228998Z   git switch -c <new-branch-name>
+2026-10-26T21:22:45.1229355Z 
+2026-10-26T21:22:45.1229556Z Or undo this operation with:
+2026-10-26T21:22:45.1229794Z 
+2026-10-26T21:22:45.1229913Z   git switch -
+2026-10-26T21:22:45.1230086Z 
+2026-10-26T21:22:45.1230348Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-10-26T21:22:45.1230709Z 
+2026-10-26T21:22:45.1231107Z HEAD is now at eeb66bc Merge 4281e73a74618a7c376e03e0802dbb5eebc7a2ee into fd5c4073fc80295c513bd099ac0ff0aa83059371
+2026-10-26T21:22:45.1241486Z ##[endgroup]
+2026-10-26T21:22:45.1288255Z [command]/usr/bin/git log -1 --format=%H
+2026-10-26T21:22:45.1314414Z eeb66bca95dc6d25a466531a6fddf646dde94c89
+2026-10-26T21:22:45.1575328Z ##[group]Run actions/setup-node@v6
+2026-10-26T21:22:45.1575684Z with:
+2026-10-26T21:22:45.1575903Z   node-version: 22
+2026-10-26T21:22:45.1576133Z   cache: npm
+2026-10-26T21:22:45.1576341Z   check-latest: false
+2026-10-26T21:22:45.1578776Z   token: ***
+2026-10-26T21:22:45.1579019Z   package-manager-cache: true
+2026-10-26T21:22:45.1579331Z ##[endgroup]
+2026-10-26T21:22:45.3009355Z Found in cache @ /opt/hostedtoolcache/node/22.23.3/x64
+2026-10-26T21:22:45.3011774Z ##[group]Environment details
+2026-10-26T21:22:45.6877275Z node: v22.23.3
+2026-10-26T21:22:45.6877686Z npm: 10.9.9
+2026-10-26T21:22:45.6878017Z yarn: 1.22.22
+2026-10-26T21:22:45.6878801Z ##[endgroup]
+2026-10-26T21:22:45.6903937Z [command]/opt/hostedtoolcache/node/22.23.3/x64/bin/npm config get cache
+2026-10-26T21:22:45.8422994Z /home/runner/.npm
+2026-10-26T21:22:46.0838099Z Cache hit for: node-cache-Linux-x64-npm-dca19831ff25602461c6fdf3cf05547fbb1007d87c049f5a7e59dff9a271e074
+2026-10-26T21:22:47.3263024Z Received 4194304 of 61010643 (6.9%), 4.0 MBs/sec
+2026-10-26T21:22:47.9608896Z Received 61010643 of 61010643 (100.0%), 35.6 MBs/sec
+2026-10-26T21:22:47.9609547Z Cache Size: ~58 MB (61010643 B)
+2026-10-26T21:22:47.9643574Z [command]/usr/bin/tar -xf /home/runner/work/_temp/3eaa279d-520b-41e9-8da7-6ebc45e21349/cache.tzst -P -C /home/runner/work/ggaction/ggaction --use-compress-program unzstd
+2026-10-26T21:22:48.0450765Z Cache restored successfully
+2026-10-26T21:22:48.0481824Z Cache restored from key: node-cache-Linux-x64-npm-dca19831ff25602461c6fdf3cf05547fbb1007d87c049f5a7e59dff9a271e074
+2026-10-26T21:22:48.0647963Z ##[group]Run npm ci
+2026-10-26T21:22:48.0648281Z [36;1mnpm ci[0m
+2026-10-26T21:22:48.0834719Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-26T21:22:48.0835112Z ##[endgroup]
+2026-10-26T21:22:51.5442371Z 
+2026-10-26T21:22:51.5450756Z added 122 packages, and audited 123 packages in 3s
+2026-10-26T21:22:51.5451146Z 
+2026-10-26T21:22:51.5451383Z 42 packages are looking for funding
+2026-10-26T21:22:51.5451765Z   run `npm fund` for details
+2026-10-26T21:22:51.5455758Z 
+2026-10-26T21:22:51.5456129Z found 0 vulnerabilities
+2026-10-26T21:22:51.5817800Z ##[group]Run npx playwright install --with-deps firefox
+2026-10-26T21:22:51.5818836Z [36;1mnpx playwright install --with-deps firefox[0m
+2026-10-26T21:22:51.5857157Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-26T21:22:51.5857523Z ##[endgroup]
+2026-10-26T21:22:52.3883500Z Installing dependencies...
+2026-10-26T21:22:52.3947264Z Switching to root user to install dependencies...
+2026-10-26T21:22:52.4759795Z Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]
+2026-10-26T21:22:52.5145587Z Hit:2 http://azure.archive.ubuntu.com/ubuntu noble InRelease
+2026-10-26T21:22:52.5192340Z Get:3 http://azure.archive.ubuntu.com/ubuntu noble-updates InRelease [126 kB]
+2026-10-26T21:22:52.5222093Z Get:4 http://azure.archive.ubuntu.com/ubuntu noble-backports InRelease [126 kB]
+2026-10-26T21:22:52.5297073Z Get:5 http://azure.archive.ubuntu.com/ubuntu noble-security InRelease [126 kB]
+2026-10-26T21:22:52.6396283Z Get:6 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 Packages [1401 kB]
+2026-10-26T21:22:52.6547701Z Get:7 http://azure.archive.ubuntu.com/ubuntu noble-updates/main Translation-en [310 kB]
+2026-10-26T21:22:52.6569827Z Get:8 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe amd64 Packages [1706 kB]
+2026-10-26T21:22:52.6662283Z Get:9 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe Translation-en [343 kB]
+2026-10-26T21:22:52.6686791Z Get:10 http://azure.archive.ubuntu.com/ubuntu noble-updates/restricted amd64 Packages [1805 kB]
+2026-10-26T21:22:52.6785615Z Get:11 http://azure.archive.ubuntu.com/ubuntu noble-updates/restricted Translation-en [411 kB]
+2026-10-26T21:22:52.7416475Z Get:12 https://packages.microsoft.com/ubuntu/24.04/prod noble InRelease [3600 B]
+2026-10-26T21:22:52.7446293Z Get:13 http://azure.archive.ubuntu.com/ubuntu noble-security/main amd64 Packages [1146 kB]
+2026-10-26T21:22:52.7560984Z Get:14 http://azure.archive.ubuntu.com/ubuntu noble-security/main Translation-en [231 kB]
+2026-10-26T21:22:52.7582420Z Get:15 http://azure.archive.ubuntu.com/ubuntu noble-security/universe amd64 Packages [1223 kB]
+2026-10-26T21:22:52.7648694Z Get:16 http://azure.archive.ubuntu.com/ubuntu noble-security/universe Translation-en [246 kB]
+2026-10-26T21:22:52.7924778Z Get:19 https://packages.microsoft.com/ubuntu/24.04/prod noble/main amd64 Packages [661 kB]
+2026-10-26T21:22:52.8062730Z Get:20 https://packages.microsoft.com/ubuntu/24.04/prod noble/main armhf Packages [12.4 kB]
+2026-10-26T21:22:52.8077779Z Get:17 http://azure.archive.ubuntu.com/ubuntu noble-security/restricted amd64 Packages [1713 kB]
+2026-10-26T21:22:52.8114932Z Get:21 https://packages.microsoft.com/ubuntu/24.04/prod noble/main arm64 Packages [598 kB]
+2026-10-26T21:22:52.8166544Z Get:18 http://azure.archive.ubuntu.com/ubuntu noble-security/restricted Translation-en [392 kB]
+2026-10-26T21:22:56.3502342Z Fetched 12.6 MB in 1s (9666 kB/s)
+2026-10-26T21:22:57.4362530Z Reading package lists...
+2026-10-26T21:22:57.4631303Z Reading package lists...
+2026-10-26T21:22:57.7132166Z Building dependency tree...
+2026-10-26T21:22:57.7139697Z Reading state information...
+2026-10-26T21:22:57.9333414Z libasound2t64 is already the newest version (1.2.11-1ubuntu0.3).
+2026-10-26T21:22:57.9334331Z libasound2t64 set to manually installed.
+2026-10-26T21:22:57.9334916Z libatk1.0-0t64 is already the newest version (2.52.0-1build1).
+2026-10-26T21:22:57.9337047Z libatk1.0-0t64 set to manually installed.
+2026-10-26T21:22:57.9337900Z libcairo-gobject2 is already the newest version (1.18.0-3build1).
+2026-10-26T21:22:57.9338588Z libcairo-gobject2 set to manually installed.
+2026-10-26T21:22:57.9339239Z libcairo2 is already the newest version (1.18.0-3build1).
+2026-10-26T21:22:57.9339808Z libcairo2 set to manually installed.
+2026-10-26T21:22:57.9340407Z libdbus-1-3 is already the newest version (1.14.10-4ubuntu4.1).
+2026-10-26T21:22:57.9340963Z libdbus-1-3 set to manually installed.
+2026-10-26T21:22:57.9341581Z libfontconfig1 is already the newest version (2.15.0-1.1ubuntu2).
+2026-10-26T21:22:57.9342993Z libfontconfig1 set to manually installed.
+2026-10-26T21:22:57.9343627Z libfreetype6 is already the newest version (2.13.2+dfsg-1ubuntu0.2).
+2026-10-26T21:22:57.9344204Z libfreetype6 set to manually installed.
+2026-10-26T21:22:57.9344840Z libgdk-pixbuf-2.0-0 is already the newest version (2.42.10+dfsg-3ubuntu3.3).
+2026-10-26T21:22:57.9345673Z libgdk-pixbuf-2.0-0 set to manually installed.
+2026-10-26T21:22:57.9346274Z libgtk-3-0t64 is already the newest version (3.24.41-4ubuntu1.3).
+2026-10-26T21:22:57.9346827Z libgtk-3-0t64 set to manually installed.
+2026-10-26T21:22:57.9347416Z libpango-1.0-0 is already the newest version (1.52.1+ds-1build1).
+2026-10-26T21:22:57.9347978Z libpango-1.0-0 set to manually installed.
+2026-10-26T21:22:57.9348608Z libpangocairo-1.0-0 is already the newest version (1.52.1+ds-1build1).
+2026-10-26T21:22:57.9349249Z libpangocairo-1.0-0 set to manually installed.
+2026-10-26T21:22:57.9349860Z libx11-6 is already the newest version (2:1.8.7-1ubuntu0.1).
+2026-10-26T21:22:57.9350448Z libx11-6 set to manually installed.
+2026-10-26T21:22:57.9351189Z libx11-xcb1 is already the newest version (2:1.8.7-1ubuntu0.1).
+2026-10-26T21:22:57.9351774Z libx11-xcb1 set to manually installed.
+2026-10-26T21:22:57.9352308Z libxcb-shm0 is already the newest version (1.15-1ubuntu2).
+2026-10-26T21:22:57.9352850Z libxcb-shm0 set to manually installed.
+2026-10-26T21:22:57.9353390Z libxcb1 is already the newest version (1.15-1ubuntu2).
+2026-10-26T21:22:57.9353924Z libxcb1 set to manually installed.
+2026-10-26T21:22:57.9354550Z libxcomposite1 is already the newest version (1:0.4.5-1build3).
+2026-10-26T21:22:57.9355334Z libxcomposite1 set to manually installed.
+2026-10-26T21:22:57.9355976Z libxcursor1 is already the newest version (1:1.2.1-1build1).
+2026-10-26T21:22:57.9356579Z libxcursor1 set to manually installed.
+2026-10-26T21:22:57.9357188Z libxdamage1 is already the newest version (1:1.1.6-1build1).
+2026-10-26T21:22:57.9357748Z libxdamage1 set to manually installed.
+2026-10-26T21:22:57.9358348Z libxext6 is already the newest version (2:1.3.4-1build2).
+2026-10-26T21:22:57.9358899Z libxext6 set to manually installed.
+2026-10-26T21:22:57.9359473Z libxfixes3 is already the newest version (1:6.0.0-2build1).
+2026-10-26T21:22:57.9360041Z libxfixes3 set to manually installed.
+2026-10-26T21:22:57.9360547Z libxi6 is already the newest version (2:1.8.1-1build1).
+2026-10-26T21:22:57.9361192Z libxi6 set to manually installed.
+2026-10-26T21:22:57.9361719Z libxrandr2 is already the newest version (2:1.5.2-2build1).
+2026-10-26T21:22:57.9362243Z libxrandr2 set to manually installed.
+2026-10-26T21:22:57.9362797Z libxrender1 is already the newest version (1:0.9.10-1.1build1).
+2026-10-26T21:22:57.9363340Z libxrender1 set to manually installed.
+2026-10-26T21:22:57.9364054Z fonts-noto-color-emoji is already the newest version (2.047-0ubuntu0.24.04.1).
+2026-10-26T21:22:57.9364959Z fonts-liberation is already the newest version (1:2.1.5-3).
+2026-10-26T21:22:57.9365788Z fonts-liberation set to manually installed.
+2026-10-26T21:22:57.9366609Z The following additional packages will be installed:
+2026-10-26T21:22:57.9367183Z   gir1.2-glib-2.0 libavutil58 libcodec2-1.2 libdav1d7 libglib2.0-bin
+2026-10-26T21:22:57.9367802Z   libglib2.0-data libgsm1 libhwy1t64 libjxl0.7 libmp3lame0 libopus0 librav1e0
+2026-10-26T21:22:57.9368489Z   librsvg2-2 libshine3 libsoxr0 libspeex1 libsvtav1enc1d1 libswresample4
+2026-10-26T21:22:57.9369121Z   libtheora0 libtwolame0 libva-drm2 libva-x11-2 libva2 libvdpau1 libvorbisenc2
+2026-10-26T21:22:57.9369802Z   libvpl2 libvpx9 libx264-164 libx265-199 libxvidcore4 libzvbi-common
+2026-10-26T21:22:57.9370489Z   libzvbi0t64 ocl-icd-libopencl1 xfonts-encodings xfonts-utils xserver-common
+2026-10-26T21:22:57.9371060Z Suggested packages:
+2026-10-26T21:22:57.9371507Z   libcuda1 libnvcuvid1 libnvidia-encode1 low-memory-monitor opus-tools
+2026-10-26T21:22:57.9371992Z   librsvg2-bin speex opencl-icd
+2026-10-26T21:22:57.9372396Z Recommended packages:
+2026-10-26T21:22:57.9373181Z   fonts-ipafont-mincho fonts-tlwg-loma librsvg2-common va-driver-all
+2026-10-26T21:22:57.9373830Z   | va-driver vdpau-driver-all | vdpau-driver xfonts-base
+2026-10-26T21:22:57.9707075Z The following NEW packages will be installed:
+2026-10-26T21:22:57.9707899Z   fonts-freefont-ttf fonts-ipafont-gothic fonts-tlwg-loma-otf fonts-unifont
+2026-10-26T21:22:57.9710841Z   fonts-wqy-zenhei libavcodec60 libavutil58 libcodec2-1.2 libdav1d7 libgsm1
+2026-10-26T21:22:57.9716712Z   libhwy1t64 libjxl0.7 libmp3lame0 libopus0 librav1e0 librsvg2-2 libshine3
+2026-10-26T21:22:57.9717886Z   libsoxr0 libspeex1 libsvtav1enc1d1 libswresample4 libtheora0 libtwolame0
+2026-10-26T21:22:57.9718731Z   libva-drm2 libva-x11-2 libva2 libvdpau1 libvorbisenc2 libvpl2 libvpx9
+2026-10-26T21:22:57.9720976Z   libx264-164 libx265-199 libxvidcore4 libzvbi-common libzvbi0t64
+2026-10-26T21:22:57.9724735Z   ocl-icd-libopencl1 xfonts-cyrillic xfonts-encodings xfonts-scalable
+2026-10-26T21:22:57.9725625Z   xfonts-utils
+2026-10-26T21:22:57.9733789Z The following packages will be upgraded:
+2026-10-26T21:22:57.9746133Z   gir1.2-glib-2.0 libglib2.0-0t64 libglib2.0-bin libglib2.0-data
+2026-10-26T21:22:57.9747023Z   xserver-common xvfb
+2026-10-26T21:22:57.9934612Z 6 upgraded, 40 newly installed, 0 to remove and 98 not upgraded.
+2026-10-26T21:22:57.9935690Z Need to get 51.6 MB of archives.
+2026-10-26T21:22:57.9936349Z After this operation, 168 MB of additional disk space will be used.
+2026-10-26T21:22:57.9936912Z Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]
+2026-10-26T21:22:58.7141315Z Get:2 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 fonts-ipafont-gothic all 00303-21ubuntu1 [3513 kB]
+2026-10-26T21:24:21.6962177Z Get:3 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libglib2.0-data all 2.80.0-6ubuntu3.10 [50.2 kB]
+2026-10-26T21:24:23.4660192Z Get:4 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libglib2.0-bin amd64 2.80.0-6ubuntu3.10 [97.9 kB]
+2026-10-26T21:24:26.5631578Z Get:5 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 gir1.2-glib-2.0 amd64 2.80.0-6ubuntu3.10 [183 kB]
+2026-10-26T21:24:32.0166168Z Get:6 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libglib2.0-0t64 amd64 2.80.0-6ubuntu3.10 [1548 kB]
+2026-10-26T21:25:08.1520277Z Get:7 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 fonts-freefont-ttf all 20211204+svn4273-2 [5641 kB]
+2026-10-26T21:27:14.8345968Z Get:8 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 fonts-tlwg-loma-otf all 1:0.7.3-1 [107 kB]
+2026-10-26T21:27:17.8541515Z Get:9 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 fonts-unifont all 1:15.1.01-1build1 [2993 kB]
+2026-10-26T21:28:24.9923831Z Get:10 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 fonts-wqy-zenhei all 0.9.45-8 [7472 kB]
+2026-10-26T21:31:06.8373170Z Get:11 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe amd64 libva2 amd64 2.20.0-2ubuntu0.2 [66.4 kB]
+2026-10-26T21:31:08.8832574Z Get:12 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe amd64 libva-drm2 amd64 2.20.0-2ubuntu0.2 [7124 B]
+2026-10-26T21:31:09.4721668Z Get:13 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe amd64 libva-x11-2 amd64 2.20.0-2ubuntu0.2 [12.0 kB]
+2026-10-26T21:31:10.3409664Z Get:14 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libvdpau1 amd64 1.5-2build1 [27.8 kB]
+2026-10-26T21:31:11.5926845Z Get:15 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libvpl2 amd64 2023.3.0-1build1 [99.8 kB]
+2026-10-26T21:31:14.3814448Z Get:16 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 ocl-icd-libopencl1 amd64 2.3.2-1build1 [38.5 kB]
+2026-10-26T21:31:15.8786540Z Get:17 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libavutil58 amd64 7:6.1.1-3ubuntu5 [401 kB]
+2026-10-26T21:31:25.4822372Z Get:18 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libcodec2-1.2 amd64 1.2.0-2build1 [8998 kB]
+2026-10-26T21:34:44.6939116Z Get:19 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libdav1d7 amd64 1.4.1-1build1 [604 kB]
+2026-10-26T21:34:58.4133475Z Get:20 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libgsm1 amd64 1.0.22-1build1 [27.8 kB]
+2026-10-26T21:34:59.4575778Z Get:21 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libhwy1t64 amd64 1.0.7-8.1build1 [584 kB]
+2026-10-26T21:35:12.6322065Z Get:22 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe amd64 libjxl0.7 amd64 0.7.0-10.2ubuntu6.1 [1001 kB]
+2026-10-26T21:35:34.6703119Z Get:23 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libmp3lame0 amd64 3.100-6build1 [142 kB]
+2026-10-26T21:35:38.3865637Z Get:24 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libopus0 amd64 1.4-1build1 [208 kB]
+2026-10-26T21:35:43.6912057Z Get:25 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 librav1e0 amd64 0.7.1-2 [1022 kB]
+2026-10-26T21:36:06.1607026Z Get:26 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 librsvg2-2 amd64 2.58.0+dfsg-1ubuntu0.1 [2141 kB]
+2026-10-26T21:36:54.4346011Z Get:27 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libshine3 amd64 3.1.1-2build1 [23.2 kB]
+2026-10-26T21:36:55.5886134Z Get:28 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libspeex1 amd64 1.2.1-2ubuntu2.24.04.1 [59.6 kB]
+2026-10-26T21:36:57.3531872Z Get:29 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libsvtav1enc1d1 amd64 1.7.0+dfsg-2build1 [2425 kB]
+2026-10-26T21:37:52.0013920Z Get:30 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libsoxr0 amd64 0.1.3-4build3 [80.0 kB]
+2026-10-26T21:37:54.1720417Z Get:31 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libswresample4 amd64 7:6.1.1-3ubuntu5 [63.8 kB]
+2026-10-26T21:37:56.0025021Z Get:32 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libtheora0 amd64 1.1.1+dfsg.1-16.1build3 [211 kB]
+2026-10-26T21:38:00.9789386Z Get:33 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libtwolame0 amd64 0.4.0-2build3 [52.3 kB]
+2026-10-26T21:38:02.5752469Z Get:34 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 libvorbisenc2 amd64 1.3.7-1build3 [80.8 kB]
+2026-10-26T21:38:05.3759301Z Get:35 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 libvpx9 amd64 1.14.0-1ubuntu2.3 [1143 kB]
+2026-10-26T21:38:31.1366228Z Get:36 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libx264-164 amd64 2:0.164.3108+git31e19f9-1 [604 kB]
+2026-10-26T21:38:46.0424899Z Get:37 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libx265-199 amd64 3.5-2build1 [1226 kB]
+2026-10-26T21:39:14.0682334Z Get:38 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libxvidcore4 amd64 2:1.3.7-1build1 [219 kB]
+2026-10-26T21:39:19.4219370Z Get:39 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libzvbi-common all 0.2.42-2 [42.4 kB]
+2026-10-26T21:39:21.4711043Z Get:40 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libzvbi0t64 amd64 0.2.42-2 [261 kB]
+2026-10-26T21:39:27.5524869Z Get:41 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libavcodec60 amd64 7:6.1.1-3ubuntu5 [5851 kB]
+2026-10-26T21:40:24.6473386Z ##[error]The operation was canceled.
+2026-10-26T21:40:24.6622353Z Post job cleanup.
+2026-10-26T21:40:24.7497321Z [command]/usr/bin/git version
+2026-10-26T21:40:24.7542766Z git version 2.55.0
+2026-10-26T21:40:24.7597311Z Temporarily overriding HOME='/home/runner/work/_temp/84f8b078-82b9-417c-b054-c3930c79270c' before making global git config changes
+2026-10-26T21:40:24.7598646Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-26T21:40:24.7605677Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/ggaction/ggaction
+2026-10-26T21:40:24.7640412Z Removing SSH command configuration
+2026-10-26T21:40:24.7648317Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-26T21:40:24.7687376Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-26T21:40:24.7903805Z Removing HTTP extra header
+2026-10-26T21:40:24.7911951Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-26T21:40:24.7945816Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-26T21:40:24.8184207Z Removing includeIf entries pointing to credentials config files
+2026-10-26T21:40:24.8192396Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-26T21:40:24.8220462Z includeif.gitdir:/home/runner/work/ggaction/ggaction/.git.path
+2026-10-26T21:40:24.8222028Z includeif.gitdir:/home/runner/work/ggaction/ggaction/.git/worktrees/*.path
+2026-10-26T21:40:24.8223338Z includeif.gitdir:/github/workspace/.git.path
+2026-10-26T21:40:24.8224562Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-26T21:40:24.8232581Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/ggaction/ggaction/.git.path
+2026-10-26T21:40:24.8255509Z /home/runner/work/_temp/git-credentials-aa783794-a75b-4f02-9a92-db622d79ceed.config
+2026-10-26T21:40:24.8269071Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/ggaction/ggaction/.git.path /home/runner/work/_temp/git-credentials-aa783794-a75b-4f02-9a92-db622d79ceed.config
+2026-10-26T21:40:24.8306908Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/ggaction/ggaction/.git/worktrees/*.path
+2026-10-26T21:40:24.8329336Z /home/runner/work/_temp/git-credentials-aa783794-a75b-4f02-9a92-db622d79ceed.config
+2026-10-26T21:40:24.8340870Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/ggaction/ggaction/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-aa783794-a75b-4f02-9a92-db622d79ceed.config
+2026-10-26T21:40:24.8371909Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-10-26T21:40:24.8404375Z /github/runner_temp/git-credentials-aa783794-a75b-4f02-9a92-db622d79ceed.config
+2026-10-26T21:40:24.8416802Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-aa783794-a75b-4f02-9a92-db622d79ceed.config
+2026-10-26T21:40:24.8455737Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-26T21:40:24.8480506Z /github/runner_temp/git-credentials-aa783794-a75b-4f02-9a92-db622d79ceed.config
+2026-10-26T21:40:24.8491770Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-aa783794-a75b-4f02-9a92-db622d79ceed.config
+2026-10-26T21:40:24.8531086Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-26T21:40:24.8744518Z Removing credentials config '/home/runner/work/_temp/git-credentials-aa783794-a75b-4f02-9a92-db622d79ceed.config'
+2026-10-26T21:40:24.8890420Z Cleaning up orphan processes
+2026-10-26T21:40:24.9055946Z Terminate orphan process: pid (2285) (npm exec playwright install --with-deps firefox)
+2026-10-26T21:40:24.9085693Z Terminate orphan process: pid (2297) (sh)
+2026-10-26T21:40:24.9120112Z Terminate orphan process: pid (2298) (node)

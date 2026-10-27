@@ -1,0 +1,122 @@
+import { cartesianAxisOwners, axisTargetArgs } from "../selectors/axes.js";
+import { axisGraphicIds } from "./guides/resources.js";
+import { isSourceOwnedText } from "../grammar/text.js";
+import { POSITION_ENCODING_CHANNELS } from "../core/vocabulary.js";
+import { materializedLegendUsesScale } from "./legends.js";
+import { buildMaterializationPlan } from "./planner.js";
+
+const POLAR_AXES = Object.freeze([
+  Object.freeze({ channel: "theta", prefix: "Theta" }),
+  Object.freeze({ channel: "radius", prefix: "Radial" })
+]);
+const GRIDS = Object.freeze([
+  Object.freeze({ role: "horizontal", op: "rematerializeHorizontalGrid" }),
+  Object.freeze({ role: "vertical", op: "rematerializeVerticalGrid" }),
+  Object.freeze({ role: "theta", op: "rematerializeThetaGrid" }),
+  Object.freeze({ role: "radial", op: "rematerializeRadialGrid" })
+]);
+
+export function planAxisTickGridRematerialization(program, channel, axisId = channel, { syncLabels = false } = {}) {
+  const ticks = program.guideConfigs.axis?.[axisId]?.ticks;
+  const role = channel === "x" ? "vertical" : "horizontal";
+  const config = program.guideConfigs.grid?.[role];
+  const labels = syncLabels && program.guideConfigs.axis?.[axisId]?.labels
+    ? [{ op: `edit${channel.toUpperCase()}AxisLabels`, args: {
+      ...axisTargetArgs(axisId, channel),
+      ...(ticks.mode === "values" ? { values: ticks.values } : {
+        count: ticks.count,
+        ...(ticks.rounding === undefined ? {} : { rounding: ticks.rounding })
+      })
+    } }] : [];
+  return buildMaterializationPlan({ guides: [...labels,
+    ...(config?.inferredValues === true && config.scale === ticks?.scale
+      ? GRIDS.filter(grid => grid.role === role).map(grid => ({ op: grid.op })) : [])
+  ] });
+}
+
+function usesPositionalScale(program, id) {
+  return program.semanticSpec.layers.some(layer =>
+    !isSourceOwnedText(layer) && (
+      POSITION_ENCODING_CHANNELS.some(
+        channel => layer.encoding?.[channel]?.scale === id
+      ) || (layer.encoding?.parallel?.dimensions ?? []).some(
+        dimension => dimension.scale === id
+      )
+    )
+  );
+}
+
+function usesRadialScale(program, id) {
+  return program.semanticSpec.layers.some(layer =>
+    layer.encoding?.radius?.scale === id
+  );
+}
+
+function semanticGuideUsesScale(program, id) {
+  return [
+    ...cartesianAxisOwners(program).map(owner => owner.semantic),
+    ...POLAR_AXES.map(({ channel }) =>
+      program.semanticSpec.guides.axis?.[channel]
+    ),
+    ...GRIDS.map(({ role }) => program.semanticSpec.guides.grid?.[role])
+  ].some(guide => guide?.scale === id);
+}
+
+export function needsCanvasScaleRematerialization(program, scale) {
+  return (
+    (scale.range === "auto" ||
+      usesRadialScale(program, scale.id) ||
+      semanticGuideUsesScale(program, scale.id)) &&
+    (program.resolvedScales[scale.id] !== undefined || scale.radialMapping !== undefined) &&
+    (usesPositionalScale(program, scale.id) || semanticGuideUsesScale(program, scale.id))
+  );
+}
+
+function componentEditOperation(prefix, component) {
+  const suffix = component[0].toUpperCase() + component.slice(1);
+  return `edit${prefix}Axis${suffix}`;
+}
+
+export function planScaleGuideRematerialization(program, id) {
+  const guides = [];
+  const objects = program.graphicSpec?.objects ?? {};
+  const guideConfigs = program.guideConfigs ?? {};
+  if (guideConfigs.axis?.parallel?.axes?.scales?.includes(id)) {
+    guides.push({
+      op: "rematerializeParallelAxes",
+      args: { target: guideConfigs.axis.parallel.axes.target }
+    });
+  }
+  for (const owner of cartesianAxisOwners(program)) {
+    const axis = { channel: owner.channel, prefix: owner.channel.toUpperCase(),
+      lineObject: axisGraphicIds(owner.channel, owner.id)[0] };
+    const target = owner.named ? { args: axisTargetArgs(owner.id, owner.channel) } : {};
+    if (
+      objects[axis.lineObject] &&
+      owner.scale === id
+    ) {
+      guides.push({ op: componentEditOperation(axis.prefix, "line"), ...target });
+    }
+    for (const component of ["ticks", "labels", "title"]) {
+      if (guideConfigs.axis?.[owner.id]?.[component]?.scale === id) {
+        guides.push({ op: componentEditOperation(axis.prefix, component), ...target });
+      }
+    }
+  }
+  for (const axis of POLAR_AXES) {
+    for (const component of ["line", "ticks", "labels", "title"]) {
+      if (guideConfigs.axis?.[axis.channel]?.[component]?.scale === id) {
+        guides.push({ op: componentEditOperation(axis.prefix, component) });
+      }
+    }
+  }
+  for (const grid of GRIDS) {
+    if (guideConfigs.grid?.[grid.role]?.scale === id) {
+      guides.push({ op: grid.op });
+    }
+  }
+  if (materializedLegendUsesScale(program, id)) {
+    guides.push({ op: "rematerializeLegend" });
+  }
+  return buildMaterializationPlan({ guides });
+}

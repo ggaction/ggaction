@@ -1,0 +1,95 @@
+{
+  "line_recipe_secondary_without_canvas": {
+    "ok": false,
+    "error": "Graphical layout requires Canvas dimensions and margin."
+  },
+  "heatmap_recipe_label_on_binned_branch": {
+    "ok": false,
+    "error": "Unknown text field \"value\"."
+  },
+  "box_recipe_actual_quartiles": {
+    "ok": true,
+    "result": [
+      {
+        "category": "A",
+        "__boxPlot_q1": 1.75,
+        "__boxPlot_median": 2.5,
+        "__boxPlot_q3": 3.25,
+        "__boxPlot_lowerWhisker": 1,
+        "__boxPlot_upperWhisker": 4,
+        "__boxPlot_lowerFence": -0.5,
+        "__boxPlot_upperFence": 5.5,
+        "__boxPlot_count": 4
+      }
+    ]
+  },
+  "revise_data_replays_missing_observation_pipeline": {
+    "ok": true,
+    "result": {
+      "before": [
+        2,
+        3,
+        5
+      ],
+      "after": [
+        4,
+        5,
+        7
+      ],
+      "beforeSourcePreserved": [
+        {
+          "t": 1,
+          "value": 2
+        },
+        {
+          "t": 3,
+          "value": 6
+        }
+      ]
+    }
+  },
+  "error_recovery_sample_render_failure": {
+    "ok": true,
+    "result": {
+      "returned": {
+        "ok": false,
+        "message": "Simulated renderer failure"
+      },
+      "current": {
+        "revision": 2
+      },
+      "retainedPrevious": false
+    }
+  },
+  "readme_release_command_dry_run": {
+    "ok": true,
+    "result": {
+      "status": 1,
+      "stderr": "file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/prepare-release.js:30\n  if (difference !== -1 && a[difference] < b[difference]) throw new Error(\"Release preparation cannot downgrade the package.\");\n                                                                ^\n\nError: Release preparation cannot downgrade the package.\n    at planRelease (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/prepare-release.js:30:65)\n    at prepareRelease (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/prepare-release.js:71:16)\n    at async file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/prepare-release.js:91:30\n\nNode.js v23.5.0\n"
+    }
+  },
+  "runtime_reference_entries": {
+    "packageExports": [
+      "ggaction",
+      "ggaction/basic",
+      "ggaction/extension",
+      "ggaction/png",
+      "ggaction/pdf",
+      "ggaction/svg",
+      "ggaction/diagnostics",
+      "ggaction/persistence",
+      "ggaction/accessibility",
+      "ggaction/inspection",
+      "ggaction/scene"
+    ],
+    "renderedReferenceHeadings": [
+      "ggaction",
+      "ggaction/basic",
+      "ggaction/svg",
+      "ggaction/png",
+      "ggaction/pdf",
+      "ggaction/diagnostics",
+      "ggaction/persistence"
+    ]
+  }
+}

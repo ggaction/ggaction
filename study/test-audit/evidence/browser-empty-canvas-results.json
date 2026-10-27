@@ -1,0 +1,38 @@
+[
+  {
+    "mode": "baseline",
+    "id": "cars-scatterplot",
+    "existingPublicExampleAssertions": "PASS",
+    "nontransparentPixels": 256000
+  },
+  {
+    "mode": "baseline",
+    "id": "legend-layout",
+    "existingPublicExampleAssertions": "PASS",
+    "nontransparentPixels": 129600
+  },
+  {
+    "mode": "baseline",
+    "id": "cars-binned-heatmap",
+    "existingPublicExampleAssertions": "PASS",
+    "nontransparentPixels": 350000
+  },
+  {
+    "mode": "disable-paint",
+    "id": "cars-scatterplot",
+    "existingPublicExampleAssertions": "PASS",
+    "nontransparentPixels": 0
+  },
+  {
+    "mode": "disable-paint",
+    "id": "legend-layout",
+    "existingPublicExampleAssertions": "PASS",
+    "nontransparentPixels": 0
+  },
+  {
+    "mode": "disable-paint",
+    "id": "cars-binned-heatmap",
+    "existingPublicExampleAssertions": "PASS",
+    "nontransparentPixels": 0
+  }
+]

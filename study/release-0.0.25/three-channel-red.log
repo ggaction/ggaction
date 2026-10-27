@@ -1,0 +1,123 @@
+✖ three-channel interval samples preserve ordinal shape, source points and exact scale ownership (32.072666ms)
+  Error: Legend combine must be separate, size-shape, or color-size.
+      at validateLegendCombine (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/grammar/legendCombinations.js:12:70)
+      at resolveRawLegendCreationPlan (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/actions.js:281:5)
+      at resolveLegendCreationPlan (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/actions.js:536:19)
+      at ChartProgram.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/actions.js:577:102)
+      at file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/materialization/guides/layout.js:86:71
+      at withGuideLayoutTransaction (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/materialization/guides/layout.js:42:16)
+      at ChartProgram.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/materialization/guides/layout.js:86:12)
+      at ChartProgram.wrappedAction [as createLegend] (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/core/action.js:229:87)
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/unit/actions/guides/color-size-shape-legend.test.js:39:20)
+      at Test.runInAsyncScope (node:async_hooks:211:14)
+
+✖ three-channel sampling rejects missing representatives, incompatible mappings and mapped overrides atomically (10.855375ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /same.*field|grain/. Input:
+  
+  'Error: Legend combine must be separate, size-shape, or color-size.'
+  
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/unit/actions/guides/color-size-shape-legend.test.js:76:10)
+      at Test.runInAsyncScope (node:async_hooks:211:14)
+      at Test.run (node:internal/test_runner/test:931:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+      at Test.postRun (node:internal/test_runner/test:1042:19)
+      at Test.run (node:internal/test_runner/test:970:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:297:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: Legend combine must be separate, size-shape, or color-size.
+        at validateLegendCombine (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/grammar/legendCombinations.js:12:70)
+        at resolveRawLegendCreationPlan (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/actions.js:281:5)
+        at resolveLegendCreationPlan (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/actions.js:536:19)
+        at ChartProgram.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/actions.js:577:102)
+        at file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/materialization/guides/layout.js:86:71
+        at withGuideLayoutTransaction (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/materialization/guides/layout.js:42:16)
+        at ChartProgram.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/materialization/guides/layout.js:86:12)
+        at ChartProgram.wrappedAction [as createLegend] (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/core/action.js:229:87)
+        at file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/unit/actions/guides/color-size-shape-legend.test.js:76:60
+        at getActual (node:assert:805:5),
+    expected: /same.*field|grain/,
+    operator: 'throws'
+  }
+
+✖ each channel alias edits one shared block and changing a bound scale rematerializes it (5.594541ms)
+  Error: Legend combine must be separate, size-shape, or color-size.
+      at validateLegendCombine (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/grammar/legendCombinations.js:12:70)
+      at resolveRawLegendCreationPlan (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/actions.js:281:5)
+      at resolveLegendCreationPlan (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/actions.js:536:19)
+      at ChartProgram.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/actions.js:577:102)
+      at file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/materialization/guides/layout.js:86:71
+      at withGuideLayoutTransaction (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/materialization/guides/layout.js:42:16)
+      at ChartProgram.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/materialization/guides/layout.js:86:12)
+      at ChartProgram.wrappedAction [as createLegend] (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/core/action.js:229:87)
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/unit/actions/guides/color-size-shape-legend.test.js:82:22)
+      at Test.runInAsyncScope (node:async_hooks:211:14)
+
+ℹ tests 3
+ℹ suites 0
+ℹ pass 0
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 388.932458
+
+✖ failing tests:
+
+test at test/unit/actions/guides/color-size-shape-legend.test.js:36:1
+✖ three-channel interval samples preserve ordinal shape, source points and exact scale ownership (32.072666ms)
+  Error: Legend combine must be separate, size-shape, or color-size.
+      at validateLegendCombine (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/grammar/legendCombinations.js:12:70)
+      at resolveRawLegendCreationPlan (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/actions.js:281:5)
+      at resolveLegendCreationPlan (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/actions.js:536:19)
+      at ChartProgram.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/actions.js:577:102)
+      at file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/materialization/guides/layout.js:86:71
+      at withGuideLayoutTransaction (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/materialization/guides/layout.js:42:16)
+      at ChartProgram.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/materialization/guides/layout.js:86:12)
+      at ChartProgram.wrappedAction [as createLegend] (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/core/action.js:229:87)
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/unit/actions/guides/color-size-shape-legend.test.js:39:20)
+      at Test.runInAsyncScope (node:async_hooks:211:14)
+
+test at test/unit/actions/guides/color-size-shape-legend.test.js:68:1
+✖ three-channel sampling rejects missing representatives, incompatible mappings and mapped overrides atomically (10.855375ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /same.*field|grain/. Input:
+  
+  'Error: Legend combine must be separate, size-shape, or color-size.'
+  
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/unit/actions/guides/color-size-shape-legend.test.js:76:10)
+      at Test.runInAsyncScope (node:async_hooks:211:14)
+      at Test.run (node:internal/test_runner/test:931:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+      at Test.postRun (node:internal/test_runner/test:1042:19)
+      at Test.run (node:internal/test_runner/test:970:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:297:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: Legend combine must be separate, size-shape, or color-size.
+        at validateLegendCombine (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/grammar/legendCombinations.js:12:70)
+        at resolveRawLegendCreationPlan (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/actions.js:281:5)
+        at resolveLegendCreationPlan (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/actions.js:536:19)
+        at ChartProgram.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/actions.js:577:102)
+        at file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/materialization/guides/layout.js:86:71
+        at withGuideLayoutTransaction (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/materialization/guides/layout.js:42:16)
+        at ChartProgram.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/materialization/guides/layout.js:86:12)
+        at ChartProgram.wrappedAction [as createLegend] (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/core/action.js:229:87)
+        at file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/unit/actions/guides/color-size-shape-legend.test.js:76:60
+        at getActual (node:assert:805:5),
+    expected: /same.*field|grain/,
+    operator: 'throws'
+  }
+
+test at test/unit/actions/guides/color-size-shape-legend.test.js:81:1
+✖ each channel alias edits one shared block and changing a bound scale rematerializes it (5.594541ms)
+  Error: Legend combine must be separate, size-shape, or color-size.
+      at validateLegendCombine (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/grammar/legendCombinations.js:12:70)
+      at resolveRawLegendCreationPlan (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/actions.js:281:5)
+      at resolveLegendCreationPlan (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/actions.js:536:19)
+      at ChartProgram.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/guides/legends/categorical/actions.js:577:102)
+      at file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/materialization/guides/layout.js:86:71
+      at withGuideLayoutTransaction (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/materialization/guides/layout.js:42:16)
+      at ChartProgram.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/materialization/guides/layout.js:86:12)
+      at ChartProgram.wrappedAction [as createLegend] (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/core/action.js:229:87)
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/unit/actions/guides/color-size-shape-legend.test.js:82:22)
+      at Test.runInAsyncScope (node:async_hooks:211:14)

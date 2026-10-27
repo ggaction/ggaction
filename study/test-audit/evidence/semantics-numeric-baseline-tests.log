@@ -1,0 +1,29 @@
+✔ statistics expose independent observed linear coefficients and R-squared rather than prediction-row counts (19.43725ms)
+✔ statistics preserve typed first-seen groups, eligible missing-pair counts and constant-response null (3.629708ms)
+✔ statistics reject missing, unsupported and colliding fit sources without mutating the parent (15.530041ms)
+✔ cached fits are reused and old snapshots materialize the missing cache exactly once on explicit request (3.695625ms)
+✔ statistics source edits and source revisions replay dependent annotation data and clean old caches (30.889083ms)
+✔ fit method changes and resource removal enforce the statistics dependency before mutating state (3.697292ms)
+✔ fit cache snapshots reject orphaned, missing, stale, malformed and misordered statistics (12.100208ms)
+✔ linear statistics stay finite at previously supported extreme ranges without altering predictions (5.921791ms)
+✔ chart-owned regression edits rematerialize dependent statistics and reject unsupported model transitions (32.73175ms)
+✔ statistics editors require unique ownership and preserve omitted sources (2.531584ms)
+✔ statistics source edits reject cycles and lazy transform schemas remain source-specific (7.5415ms)
+✔ following chart roles and retained facets rebuild statistics from their fit owners (48.480459ms)
+✔ keeps representable aggregate results finite at numeric extremes (2.021667ms)
+✔ stabilizes moving means and rejects unrepresentable window outputs (1.520209ms)
+✔ partitions extreme arc weights by normalized finite ratios (0.758375ms)
+✔ builds finite density grids across the complete finite range (0.885333ms)
+✔ keeps every regression method finite for representable extreme fits (7.302042ms)
+✔ normalizes finite fills and centers while rejecting impossible endpoints (1.016375ms)
+✔ locks the independent linear scale oracle (1.163375ms)
+✔ locks inclusive linear quantiles independently (0.199791ms)
+✔ rejects invalid oracle inputs (0.417042ms)
+ℹ tests 21
+ℹ suites 0
+ℹ pass 21
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 528.264625

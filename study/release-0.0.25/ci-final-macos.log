@@ -1,0 +1,263 @@
+﻿2026-10-26T21:40:59.5922220Z Current runner version: '2.338.0'
+2026-10-26T21:40:59.5934770Z ##[group]Runner Image Provisioner
+2026-10-26T21:40:59.5935250Z Hosted Compute Agent
+2026-10-26T21:40:59.5935590Z Version: 20261012.601
+2026-10-26T21:40:59.5935960Z Commit: f3dc54e1fb89da6852db922499a0233137369e1d
+2026-10-26T21:40:59.5936380Z Build Date: 2026-10-12T17:48:21Z
+2026-10-26T21:40:59.5936870Z Worker ID: {0e02ab9c-c449-4d43-8b14-c31fd4ef4a28}
+2026-10-26T21:40:59.5937350Z Region: westus
+2026-10-26T21:40:59.5937760Z Cloud: MacCloud
+2026-10-26T21:40:59.5938170Z ##[endgroup]
+2026-10-26T21:40:59.5939000Z ##[group]Operating System
+2026-10-26T21:40:59.5939360Z macOS
+2026-10-26T21:40:59.5939660Z 26.6.2
+2026-10-26T21:40:59.5950770Z 25G83
+2026-10-26T21:40:59.5951160Z ##[endgroup]
+2026-10-26T21:40:59.5951560Z ##[group]Runner Image
+2026-10-26T21:40:59.5951990Z Image: macos-26-arm64
+2026-10-26T21:40:59.5952400Z Version: 20261013.0424.1
+2026-10-26T21:40:59.5953230Z Included Software: https://github.com/actions/runner-images/blob/macos-26-arm64/20261013.0424/images/macos/macos-26-arm64-Readme.md
+2026-10-26T21:40:59.5954250Z Image Release: https://github.com/actions/runner-images/releases/tag/macos-26-arm64%2F20261013.0424
+2026-10-26T21:40:59.5954920Z ##[endgroup]
+2026-10-26T21:40:59.5955590Z ##[group]GITHUB_TOKEN Permissions
+2026-10-26T21:40:59.5956680Z Contents: read
+2026-10-26T21:40:59.5957090Z Metadata: read
+2026-10-26T21:40:59.5957540Z ##[endgroup]
+2026-10-26T21:40:59.5958740Z Secret source: Actions
+2026-10-26T21:40:59.5959260Z Cache mode: write
+2026-10-26T21:40:59.5959670Z Prepare workflow directory
+2026-10-26T21:40:59.6286900Z Prepare all required actions
+2026-10-26T21:40:59.6319500Z Getting action download info
+2026-10-26T21:40:59.8742770Z Download action repository 'actions/checkout@v6' (SHA:d23441a48e516b6c34aea4fa41551a30e30af803)
+2026-10-26T21:41:00.0151660Z Download action repository 'actions/setup-node@v6' (SHA:249970729cb0ef3589644e2896645e5dc5ba9c38)
+2026-10-26T21:41:00.0963200Z Download action repository 'actions/upload-artifact@v7' (SHA:cf430e030ddbb5b0abf93d22962f4752f3646cd9)
+2026-10-26T21:41:00.8749300Z Complete job name: platform (macos-latest)
+2026-10-26T21:41:00.9257860Z ##[group]Run actions/checkout@v6
+2026-10-26T21:41:00.9258390Z with:
+2026-10-26T21:41:00.9258720Z   repository: ggaction/ggaction
+2026-10-26T21:41:00.9261480Z   token: ***
+2026-10-26T21:41:00.9261790Z   ssh-strict: true
+2026-10-26T21:41:00.9262110Z   ssh-user: git
+2026-10-26T21:41:00.9262430Z   persist-credentials: true
+2026-10-26T21:41:00.9262790Z   clean: true
+2026-10-26T21:41:00.9263110Z   sparse-checkout-cone-mode: true
+2026-10-26T21:41:00.9263490Z   fetch-depth: 1
+2026-10-26T21:41:00.9263810Z   fetch-tags: false
+2026-10-26T21:41:00.9264140Z   show-progress: true
+2026-10-26T21:41:00.9264490Z   lfs: false
+2026-10-26T21:41:00.9264800Z   submodules: false
+2026-10-26T21:41:00.9265140Z   set-safe-directory: true
+2026-10-26T21:41:00.9265510Z   allow-unsafe-pr-checkout: false
+2026-10-26T21:41:00.9265980Z ##[endgroup]
+2026-10-26T21:41:01.0620960Z Syncing repository: ggaction/ggaction
+2026-10-26T21:41:01.0622230Z ##[group]Getting Git version info
+2026-10-26T21:41:01.0622840Z Working directory is '/Users/runner/work/ggaction/ggaction'
+2026-10-26T21:41:01.0623740Z [command]/opt/homebrew/bin/git version
+2026-10-26T21:41:01.0807620Z git version 2.56.0
+2026-10-26T21:41:01.0819000Z ##[endgroup]
+2026-10-26T21:41:01.0825180Z Copying '/Users/runner/.gitconfig' to '/Users/runner/work/_temp/220ddeb7-e99f-473e-b082-bfffa775e941/.gitconfig'
+2026-10-26T21:41:01.0832410Z Temporarily overriding HOME='/Users/runner/work/_temp/220ddeb7-e99f-473e-b082-bfffa775e941' before making global git config changes
+2026-10-26T21:41:01.0833480Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-26T21:41:01.0835950Z [command]/opt/homebrew/bin/git config --global --add safe.directory /Users/runner/work/ggaction/ggaction
+2026-10-26T21:41:01.0913700Z Deleting the contents of '/Users/runner/work/ggaction/ggaction'
+2026-10-26T21:41:01.0916740Z ##[group]Determining repository object format
+2026-10-26T21:41:01.0918260Z ##[endgroup]
+2026-10-26T21:41:01.0918910Z ##[group]Initializing the repository
+2026-10-26T21:41:01.0921310Z [command]/opt/homebrew/bin/git init /Users/runner/work/ggaction/ggaction
+2026-10-26T21:41:01.1087230Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-26T21:41:01.1088150Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-26T21:41:01.1089060Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-26T21:41:01.1089840Z hint: call:
+2026-10-26T21:41:01.1090240Z hint:
+2026-10-26T21:41:01.1090640Z hint: 	git config --global init.defaultBranch <name>
+2026-10-26T21:41:01.1091190Z hint:
+2026-10-26T21:41:01.1091760Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-26T21:41:01.1092510Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-26T21:41:01.1093170Z hint:
+2026-10-26T21:41:01.1093530Z hint: 	git branch -m <name>
+2026-10-26T21:41:01.1093980Z hint:
+2026-10-26T21:41:01.1094600Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-26T21:41:01.1095510Z Initialized empty Git repository in /Users/runner/work/ggaction/ggaction/.git/
+2026-10-26T21:41:01.1100800Z [command]/opt/homebrew/bin/git remote add origin https://github.com/ggaction/ggaction
+2026-10-26T21:41:01.1162420Z ##[endgroup]
+2026-10-26T21:41:01.1163040Z ##[group]Disabling automatic garbage collection
+2026-10-26T21:41:01.1165100Z [command]/opt/homebrew/bin/git config --local gc.auto 0
+2026-10-26T21:41:01.1217760Z ##[endgroup]
+2026-10-26T21:41:01.1218390Z ##[group]Setting up auth
+2026-10-26T21:41:01.1218840Z Removing SSH command configuration
+2026-10-26T21:41:01.1222040Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-26T21:41:01.1274170Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-26T21:41:01.1984490Z Removing HTTP extra header
+2026-10-26T21:41:01.1985670Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-26T21:41:01.2034270Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-26T21:41:01.2710070Z Removing includeIf entries pointing to credentials config files
+2026-10-26T21:41:01.2710890Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-26T21:41:01.2754210Z [command]/opt/homebrew/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-26T21:41:01.3442540Z [command]/opt/homebrew/bin/git config --file /Users/runner/work/_temp/git-credentials-7b1af2e9-4712-42e2-b222-e5c8c7290088.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-26T21:41:01.3499090Z [command]/opt/homebrew/bin/git config --local includeIf.gitdir:/Users/runner/work/ggaction/ggaction/.git.path /Users/runner/work/_temp/git-credentials-7b1af2e9-4712-42e2-b222-e5c8c7290088.config
+2026-10-26T21:41:01.3555770Z [command]/opt/homebrew/bin/git config --local includeIf.gitdir:/Users/runner/work/ggaction/ggaction/.git/worktrees/*.path /Users/runner/work/_temp/git-credentials-7b1af2e9-4712-42e2-b222-e5c8c7290088.config
+2026-10-26T21:41:01.3609910Z [command]/opt/homebrew/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-7b1af2e9-4712-42e2-b222-e5c8c7290088.config
+2026-10-26T21:41:01.3658740Z [command]/opt/homebrew/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-7b1af2e9-4712-42e2-b222-e5c8c7290088.config
+2026-10-26T21:41:01.3709270Z ##[endgroup]
+2026-10-26T21:41:01.3710210Z ##[group]Fetching the repository
+2026-10-26T21:41:01.3713980Z [command]/opt/homebrew/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +794a3481ba2f8a5359ed3b71435abfed34854e51:refs/remotes/pull/276/merge
+2026-10-26T21:41:03.6388470Z From https://github.com/ggaction/ggaction
+2026-10-26T21:41:03.6389650Z  * [new ref]         794a3481ba2f8a5359ed3b71435abfed34854e51 -> pull/276/merge
+2026-10-26T21:41:03.6392160Z ##[endgroup]
+2026-10-26T21:41:03.6392970Z ##[group]Determining the checkout info
+2026-10-26T21:41:03.6393730Z ##[endgroup]
+2026-10-26T21:41:03.6396950Z [command]/opt/homebrew/bin/git sparse-checkout disable
+2026-10-26T21:41:03.6655010Z [command]/opt/homebrew/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-26T21:41:03.6762350Z ##[group]Checking out the ref
+2026-10-26T21:41:03.6764280Z [command]/opt/homebrew/bin/git checkout --progress --force refs/remotes/pull/276/merge
+2026-10-26T21:41:04.2050570Z HEAD is now at 794a348 Merge b3247bfcd0fbc777ef3e8d2ff40b13e105cdcc14 into fd5c4073fc80295c513bd099ac0ff0aa83059371
+2026-10-26T21:41:04.2056720Z ##[endgroup]
+2026-10-26T21:41:04.2128800Z [command]/opt/homebrew/bin/git log -1 --format=%H
+2026-10-26T21:41:04.2186630Z 794a3481ba2f8a5359ed3b71435abfed34854e51
+2026-10-26T21:41:04.2372140Z ##[group]Run actions/setup-node@v6
+2026-10-26T21:41:04.2372330Z with:
+2026-10-26T21:41:04.2372450Z   node-version: 22
+2026-10-26T21:41:04.2372570Z   cache: npm
+2026-10-26T21:41:04.2372690Z   check-latest: false
+2026-10-26T21:41:04.2374670Z   token: ***
+2026-10-26T21:41:04.2374820Z   package-manager-cache: true
+2026-10-26T21:41:04.2374980Z ##[endgroup]
+2026-10-26T21:41:04.3429220Z Found in cache @ /Users/runner/hostedtoolcache/node/22.23.3/arm64
+2026-10-26T21:41:04.3431980Z ##[group]Environment details
+2026-10-26T21:41:04.6725720Z node: v22.23.3
+2026-10-26T21:41:04.6725940Z npm: 10.9.9
+2026-10-26T21:41:04.6726110Z yarn: 1.22.22
+2026-10-26T21:41:04.6726630Z ##[endgroup]
+2026-10-26T21:41:04.6742820Z [command]/Users/runner/hostedtoolcache/node/22.23.3/arm64/bin/npm config get cache
+2026-10-26T21:41:04.7945730Z /Users/runner/.npm
+2026-10-26T21:41:04.9555040Z Cache hit for: node-cache-macOS-arm64-npm-dca19831ff25602461c6fdf3cf05547fbb1007d87c049f5a7e59dff9a271e074
+2026-10-26T21:41:05.8412250Z Received 42532704 of 42532704 (100.0%), 53.2 MBs/sec
+2026-10-26T21:41:05.8414030Z Cache Size: ~41 MB (42532704 B)
+2026-10-26T21:41:05.8448870Z [command]/opt/homebrew/bin/gtar -xf /Users/runner/work/_temp/5a8298a4-44ab-47e2-a49c-db2e4fa904ef/cache.tzst -P -C /Users/runner/work/ggaction/ggaction --delay-directory-restore --use-compress-program unzstd
+2026-10-26T21:41:05.9559180Z Cache restored successfully
+2026-10-26T21:41:05.9571430Z Cache restored from key: node-cache-macOS-arm64-npm-dca19831ff25602461c6fdf3cf05547fbb1007d87c049f5a7e59dff9a271e074
+2026-10-26T21:41:05.9648400Z ##[group]Run npm ci
+2026-10-26T21:41:05.9648670Z [36;1mnpm ci[0m
+2026-10-26T21:41:05.9692530Z shell: /bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-26T21:41:05.9692770Z ##[endgroup]
+2026-10-26T21:41:07.3635910Z 
+2026-10-26T21:41:07.3641210Z added 123 packages, and audited 124 packages in 1s
+2026-10-26T21:41:07.3641450Z 
+2026-10-26T21:41:07.3641600Z 42 packages are looking for funding
+2026-10-26T21:41:07.3641820Z   run `npm fund` for details
+2026-10-26T21:41:07.3641950Z 
+2026-10-26T21:41:07.3642050Z found 0 vulnerabilities
+2026-10-26T21:41:07.4231510Z ##[group]Run node scripts/run-check.js test-platform -- npm run test:platform
+2026-10-26T21:41:07.4232010Z [36;1mnode scripts/run-check.js test-platform -- npm run test:platform[0m
+2026-10-26T21:41:07.4261730Z shell: /bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-26T21:41:07.4261960Z ##[endgroup]
+2026-10-26T21:41:07.5711660Z 
+2026-10-26T21:41:07.5712480Z > ggaction@0.0.25 test:platform
+2026-10-26T21:41:07.5712870Z > node scripts/test-platform-package.js
+2026-10-26T21:41:07.5713030Z 
+2026-10-26T21:41:12.0822160Z Verified installed Full/Basic, SVG, PNG/PDF memory/files, and persistence.
+2026-10-26T21:41:12.0900660Z {"platform":"darwin","arch":"arm64","node":"v22.23.3","package":"ggaction@0.0.25","source":"/Users/runner/work/ggaction/ggaction/.artifacts/release/ggaction-0.0.25.tgz","sha256":"d4d72b0b8c4b3d73c7e40a66bda0ebea052f8f8f353dda8f0a404ed79cb68120","peerMode":"locked","nativeBackend":"1.0.9"}
+2026-10-26T21:41:12.1508570Z ##[group]Run node scripts/run-check.js test-platform-contracts -- node scripts/run-tests.js all contracts/compiler-harness.test.js contracts/data-completion-types.test.js contracts/focused-scale-editor-types.test.js unit/support/test-sharding.test.js
+2026-10-26T21:41:12.1510260Z [36;1mnode scripts/run-check.js test-platform-contracts -- node scripts/run-tests.js all contracts/compiler-harness.test.js contracts/data-completion-types.test.js contracts/focused-scale-editor-types.test.js unit/support/test-sharding.test.js[0m
+2026-10-26T21:41:12.1544180Z shell: /bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-26T21:41:12.1544410Z ##[endgroup]
+2026-10-26T21:41:12.3258610Z TAP version 13
+2026-10-26T21:41:12.5437650Z # Subtest: the compiler harness accepts a used negative assertion and rejects a stale one
+2026-10-26T21:41:12.5445480Z ok 1 - the compiler harness accepts a used negative assertion and rejects a stale one
+2026-10-26T21:41:12.5446330Z   ---
+2026-10-26T21:41:12.5447250Z   duration_ms: 184.720541
+2026-10-26T21:41:12.5447680Z   type: 'test'
+2026-10-26T21:41:12.5447890Z   ...
+2026-10-26T21:41:12.5483970Z # Subtest: declares Full-only completion, imputation, calendar, and duration windows
+2026-10-26T21:41:12.5485950Z ok 2 - declares Full-only completion, imputation, calendar, and duration windows
+2026-10-26T21:41:12.5486600Z   ---
+2026-10-26T21:41:12.5486830Z   duration_ms: 110.15625
+2026-10-26T21:41:12.5487080Z   type: 'test'
+2026-10-26T21:41:12.5487230Z   ...
+2026-10-26T21:41:12.5487670Z # Subtest: declares the Full-only field-selected Parallel scale editor
+2026-10-26T21:41:12.5497810Z ok 3 - declares the Full-only field-selected Parallel scale editor
+2026-10-26T21:41:12.5498210Z   ---
+2026-10-26T21:41:12.5498420Z   duration_ms: 104.185375
+2026-10-26T21:41:12.5498670Z   type: 'test'
+2026-10-26T21:41:12.5498980Z   ...
+2026-10-26T21:41:12.5499380Z # Subtest: publishes editParallelScale as one Current direct action
+2026-10-26T21:41:12.5499880Z ok 4 - publishes editParallelScale as one Current direct action
+2026-10-26T21:41:12.5500240Z   ---
+2026-10-26T21:41:12.5500400Z   duration_ms: 0.160542
+2026-10-26T21:41:12.5500620Z   type: 'test'
+2026-10-26T21:41:12.5500810Z   ...
+2026-10-26T21:41:12.5501250Z # Subtest: publishes both focused offset scale editors as Current direct actions
+2026-10-26T21:41:12.5501860Z ok 5 - publishes both focused offset scale editors as Current direct actions
+2026-10-26T21:41:12.5502230Z   ---
+2026-10-26T21:41:12.5502370Z   duration_ms: 0.104792
+2026-10-26T21:41:12.5502530Z   type: 'test'
+2026-10-26T21:41:12.5502690Z   ...
+2026-10-26T21:41:12.5503190Z # Subtest: realistic shards are exhaustive, disjoint, deterministic, and weighted by measured durations
+2026-10-26T21:41:12.5504040Z ok 6 - realistic shards are exhaustive, disjoint, deterministic, and weighted by measured durations
+2026-10-26T21:41:12.5504440Z   ---
+2026-10-26T21:41:12.5504600Z   duration_ms: 16.760625
+2026-10-26T21:41:12.5504840Z   type: 'test'
+2026-10-26T21:41:12.5505020Z   ...
+2026-10-26T21:41:12.5505440Z # Subtest: weighted scheduling spreads long tests and rejects invalid input
+2026-10-26T21:41:12.5506040Z ok 7 - weighted scheduling spreads long tests and rejects invalid input
+2026-10-26T21:41:12.5506370Z   ---
+2026-10-26T21:41:12.5506590Z   duration_ms: 0.314916
+2026-10-26T21:41:12.5506810Z   type: 'test'
+2026-10-26T21:41:12.5506990Z   ...
+2026-10-26T21:41:12.5507310Z # Subtest: the aggregate accepts only complete successful prerequisites
+2026-10-26T21:41:12.5507820Z ok 8 - the aggregate accepts only complete successful prerequisites
+2026-10-26T21:41:12.5508120Z   ---
+2026-10-26T21:41:12.5508260Z   duration_ms: 0.300291
+2026-10-26T21:41:12.5508450Z   type: 'test'
+2026-10-26T21:41:12.5509110Z   ...
+2026-10-26T21:41:12.5509490Z # Subtest: timing summaries separate environments and exclude failures from scheduling quantiles
+2026-10-26T21:41:12.5510330Z ok 9 - timing summaries separate environments and exclude failures from scheduling quantiles
+2026-10-26T21:41:12.5510740Z   ---
+2026-10-26T21:41:12.5511220Z   duration_ms: 8.976042
+2026-10-26T21:41:12.5511460Z   type: 'test'
+2026-10-26T21:41:12.5511610Z   ...
+2026-10-26T21:41:12.5511750Z 1..9
+2026-10-26T21:41:12.5511900Z # tests 9
+2026-10-26T21:41:12.5512050Z # suites 0
+2026-10-26T21:41:12.5512190Z # pass 9
+2026-10-26T21:41:12.5512370Z # fail 0
+2026-10-26T21:41:12.5512560Z # cancelled 0
+2026-10-26T21:41:12.5512740Z # skipped 0
+2026-10-26T21:41:12.5512890Z # todo 0
+2026-10-26T21:41:12.5513040Z # duration_ms 236.464666
+2026-10-26T21:41:12.5702210Z Post job cleanup.
+2026-10-26T21:41:12.6690560Z Cache hit occurred on the primary key node-cache-macOS-arm64-npm-dca19831ff25602461c6fdf3cf05547fbb1007d87c049f5a7e59dff9a271e074, not saving cache.
+2026-10-26T21:41:12.6787320Z Post job cleanup.
+2026-10-26T21:41:12.7519430Z [command]/opt/homebrew/bin/git version
+2026-10-26T21:41:12.7580340Z git version 2.56.0
+2026-10-26T21:41:12.7603770Z Copying '/Users/runner/.gitconfig' to '/Users/runner/work/_temp/02816a9a-9e11-42f8-8e73-6068bf685244/.gitconfig'
+2026-10-26T21:41:12.7613030Z Temporarily overriding HOME='/Users/runner/work/_temp/02816a9a-9e11-42f8-8e73-6068bf685244' before making global git config changes
+2026-10-26T21:41:12.7613880Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-26T21:41:12.7616690Z [command]/opt/homebrew/bin/git config --global --add safe.directory /Users/runner/work/ggaction/ggaction
+2026-10-26T21:41:12.7684300Z Removing SSH command configuration
+2026-10-26T21:41:12.7689120Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-26T21:41:12.7751830Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-26T21:41:12.8533400Z Removing HTTP extra header
+2026-10-26T21:41:12.8538830Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-26T21:41:12.8596550Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-26T21:41:12.9305890Z Removing includeIf entries pointing to credentials config files
+2026-10-26T21:41:12.9311170Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-26T21:41:12.9357950Z includeif.gitdir:/Users/runner/work/ggaction/ggaction/.git.path
+2026-10-26T21:41:12.9358550Z includeif.gitdir:/Users/runner/work/ggaction/ggaction/.git/worktrees/*.path
+2026-10-26T21:41:12.9359170Z includeif.gitdir:/github/workspace/.git.path
+2026-10-26T21:41:12.9359590Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-26T21:41:12.9367590Z [command]/opt/homebrew/bin/git config --local --get-all includeif.gitdir:/Users/runner/work/ggaction/ggaction/.git.path
+2026-10-26T21:41:12.9413390Z /Users/runner/work/_temp/git-credentials-7b1af2e9-4712-42e2-b222-e5c8c7290088.config
+2026-10-26T21:41:12.9424530Z [command]/opt/homebrew/bin/git config --local --unset includeif.gitdir:/Users/runner/work/ggaction/ggaction/.git.path /Users/runner/work/_temp/git-credentials-7b1af2e9-4712-42e2-b222-e5c8c7290088.config
+2026-10-26T21:41:12.9496130Z [command]/opt/homebrew/bin/git config --local --get-all includeif.gitdir:/Users/runner/work/ggaction/ggaction/.git/worktrees/*.path
+2026-10-26T21:41:12.9555250Z /Users/runner/work/_temp/git-credentials-7b1af2e9-4712-42e2-b222-e5c8c7290088.config
+2026-10-26T21:41:12.9563420Z [command]/opt/homebrew/bin/git config --local --unset includeif.gitdir:/Users/runner/work/ggaction/ggaction/.git/worktrees/*.path /Users/runner/work/_temp/git-credentials-7b1af2e9-4712-42e2-b222-e5c8c7290088.config
+2026-10-26T21:41:12.9629350Z [command]/opt/homebrew/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-10-26T21:41:12.9681750Z /github/runner_temp/git-credentials-7b1af2e9-4712-42e2-b222-e5c8c7290088.config
+2026-10-26T21:41:12.9688630Z [command]/opt/homebrew/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-7b1af2e9-4712-42e2-b222-e5c8c7290088.config
+2026-10-26T21:41:12.9746370Z [command]/opt/homebrew/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-26T21:41:12.9799540Z /github/runner_temp/git-credentials-7b1af2e9-4712-42e2-b222-e5c8c7290088.config
+2026-10-26T21:41:12.9805740Z [command]/opt/homebrew/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-7b1af2e9-4712-42e2-b222-e5c8c7290088.config
+2026-10-26T21:41:12.9868450Z [command]/opt/homebrew/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-26T21:41:13.0629130Z Removing credentials config '/Users/runner/work/_temp/git-credentials-7b1af2e9-4712-42e2-b222-e5c8c7290088.config'
+2026-10-26T21:41:13.0709950Z Cleaning up orphan processes

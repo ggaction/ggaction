@@ -1,0 +1,36 @@
+import { hasMaterializedLegend } from "./legends.js";
+import { requireLayer } from "../selectors/layers.js";
+import {
+  getEncodingMaterializationStages
+} from "./marks/index.js";
+import { buildMaterializationPlan } from "./planner.js";
+import { getSourceDependentMarkSteps } from "./marks/index.js";
+
+export function planEncodingRematerialization(program, {
+  target,
+  channel,
+  scale
+}) {
+  const layer = requireLayer(
+    program,
+    target,
+    `Unknown encoding materialization target "${target}"`
+  );
+
+  const { scales, marks: directMarks } = getEncodingMaterializationStages(
+    program,
+    layer,
+    channel,
+    scale
+  );
+  const marks = [
+    ...directMarks,
+    ...directMarks.flatMap(step => getSourceDependentMarkSteps(program, step.args.id))
+  ];
+
+  const guides = [];
+  if (hasMaterializedLegend(program)) {
+    guides.push({ op: "rematerializeLegend" });
+  }
+  return buildMaterializationPlan({ scales, marks, guides });
+}

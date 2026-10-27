@@ -1,0 +1,7 @@
+Integrates the documentation/test-hardening and axis/title branches into the 0.0.23 release candidate. Updates human and LLM documentation, replaces the README demo with the paper's rose sequence, and adds null-preserving calendar buckets, explicit Steffen curves, regression painter placement, and independently packed facet content with per-channel axes and parent-owned footer guides.
+
+Fixes #238. Fixes #244. Fixes #253. Implements the public library capability requested by #258; its external source-family translation/fidelity qualification remains open and is not claimed by this release.
+
+Historical unmerged PRs were reconciled: #39–43 were superseded by #44, #25 by #27, and #5 was intentionally rejected as a separate demo repository concern. Both current feature branches are ancestors of this candidate.
+
+Validation: all 5,588 source/coverage tests and 172 critical coverage floors pass (95.64% lines, 93.18% branches, 98.76% functions). All 284 browser tests, 261 renderer tests with 205 variants, installed package consumers, and focused docs/type/architecture tests pass. Realistic curve coverage retains every existing per-path requirement and adds the ninth curve; the changed inventory, Cartesian, statistical, direct lifecycle and hierarchical suites pass against authentic datasets. The full CI matrix, source coverage, realistic corpus, installed package consumers, browser compatibility, renderer regressions and built documentation must pass before merge. Publication will use one exact annotated-tag candidate through the protected release workflow.

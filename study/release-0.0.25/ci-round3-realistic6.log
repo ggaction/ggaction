@@ -1,0 +1,518 @@
+﻿2026-10-26T21:07:03.2685279Z Current runner version: '2.338.0'
+2026-10-26T21:07:03.2713279Z ##[group]Runner Image Provisioner
+2026-10-26T21:07:03.2714115Z Hosted Compute Agent
+2026-10-26T21:07:03.2714967Z Version: 20261021.618
+2026-10-26T21:07:03.2715541Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-10-26T21:07:03.2716184Z Build Date: 2026-10-21T00:45:21Z
+2026-10-26T21:07:03.2716930Z Worker ID: {dbfa99f3-9764-4779-80e3-dcf7b35e6488}
+2026-10-26T21:07:03.2717578Z Region: centralus
+2026-10-26T21:07:03.2718308Z Cloud: Azure
+2026-10-26T21:07:03.2718837Z ##[endgroup]
+2026-10-26T21:07:03.2720249Z ##[group]Operating System
+2026-10-26T21:07:03.2720925Z Ubuntu
+2026-10-26T21:07:03.2721429Z 24.04.5
+2026-10-26T21:07:03.2721949Z LTS
+2026-10-26T21:07:03.2722453Z ##[endgroup]
+2026-10-26T21:07:03.2722954Z ##[group]Runner Image
+2026-10-26T21:07:03.2723603Z Image: ubuntu-24.04
+2026-10-26T21:07:03.2724113Z Version: 20261012.334.1
+2026-10-26T21:07:03.2725548Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261012.334/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-26T21:07:03.2727010Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261012.334
+2026-10-26T21:07:03.2728039Z ##[endgroup]
+2026-10-26T21:07:03.2729072Z ##[group]GITHUB_TOKEN Permissions
+2026-10-26T21:07:03.2731353Z Contents: read
+2026-10-26T21:07:03.2731978Z Metadata: read
+2026-10-26T21:07:03.2732561Z ##[endgroup]
+2026-10-26T21:07:03.2735004Z Secret source: Actions
+2026-10-26T21:07:03.2735923Z Cache mode: write
+2026-10-26T21:07:03.2736762Z Prepare workflow directory
+2026-10-26T21:07:03.4024537Z Prepare all required actions
+2026-10-26T21:07:03.4058848Z Getting action download info
+2026-10-26T21:07:03.6536387Z Download action repository 'actions/checkout@v6' (SHA:d23441a48e516b6c34aea4fa41551a30e30af803)
+2026-10-26T21:07:03.7833410Z Download action repository 'actions/setup-node@v6' (SHA:249970729cb0ef3589644e2896645e5dc5ba9c38)
+2026-10-26T21:07:04.1429234Z Download action repository 'actions/cache@v5' (SHA:caa296126883cff596d87d8935842f9db880ef25)
+2026-10-26T21:07:04.3935991Z Download action repository 'actions/upload-artifact@v7' (SHA:cf430e030ddbb5b0abf93d22962f4752f3646cd9)
+2026-10-26T21:07:05.3211452Z Complete job name: realistic (6)
+2026-10-26T21:07:05.3950058Z ##[group]Run actions/checkout@v6
+2026-10-26T21:07:05.3950463Z with:
+2026-10-26T21:07:05.3950662Z   repository: ggaction/ggaction
+2026-10-26T21:07:05.3952512Z   token: ***
+2026-10-26T21:07:05.3952716Z   ssh-strict: true
+2026-10-26T21:07:05.3952915Z   ssh-user: git
+2026-10-26T21:07:05.3953107Z   persist-credentials: true
+2026-10-26T21:07:05.3953314Z   clean: true
+2026-10-26T21:07:05.3953530Z   sparse-checkout-cone-mode: true
+2026-10-26T21:07:05.3953804Z   fetch-depth: 1
+2026-10-26T21:07:05.3954029Z   fetch-tags: false
+2026-10-26T21:07:05.3954222Z   show-progress: true
+2026-10-26T21:07:05.3954542Z   lfs: false
+2026-10-26T21:07:05.3954727Z   submodules: false
+2026-10-26T21:07:05.3954926Z   set-safe-directory: true
+2026-10-26T21:07:05.3955159Z   allow-unsafe-pr-checkout: false
+2026-10-26T21:07:05.3955510Z ##[endgroup]
+2026-10-26T21:07:05.4732389Z Syncing repository: ggaction/ggaction
+2026-10-26T21:07:05.4734204Z ##[group]Getting Git version info
+2026-10-26T21:07:05.4734955Z Working directory is '/home/runner/work/ggaction/ggaction'
+2026-10-26T21:07:05.4735603Z [command]/usr/bin/git version
+2026-10-26T21:07:05.4836434Z git version 2.55.0
+2026-10-26T21:07:05.4841305Z ##[endgroup]
+2026-10-26T21:07:05.4856272Z Temporarily overriding HOME='/home/runner/work/_temp/59380bce-d8b7-4804-89c7-16b64980be6d' before making global git config changes
+2026-10-26T21:07:05.4952469Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-26T21:07:05.4953577Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/ggaction/ggaction
+2026-10-26T21:07:05.5459011Z Deleting the contents of '/home/runner/work/ggaction/ggaction'
+2026-10-26T21:07:05.5463671Z ##[group]Determining repository object format
+2026-10-26T21:07:05.5465976Z ##[endgroup]
+2026-10-26T21:07:05.5466975Z ##[group]Initializing the repository
+2026-10-26T21:07:05.5470636Z [command]/usr/bin/git init /home/runner/work/ggaction/ggaction
+2026-10-26T21:07:05.6245432Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-26T21:07:05.6246360Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-26T21:07:05.6246998Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-26T21:07:05.6247510Z hint: call:
+2026-10-26T21:07:05.6247863Z hint:
+2026-10-26T21:07:05.6248279Z hint: 	git config --global init.defaultBranch <name>
+2026-10-26T21:07:05.6248636Z hint:
+2026-10-26T21:07:05.6248912Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-26T21:07:05.6249314Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-26T21:07:05.6249690Z hint:
+2026-10-26T21:07:05.6249968Z hint: 	git branch -m <name>
+2026-10-26T21:07:05.6250286Z hint:
+2026-10-26T21:07:05.6250694Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-26T21:07:05.6251344Z Initialized empty Git repository in /home/runner/work/ggaction/ggaction/.git/
+2026-10-26T21:07:05.6256178Z [command]/usr/bin/git remote add origin https://github.com/ggaction/ggaction
+2026-10-26T21:07:05.6580145Z ##[endgroup]
+2026-10-26T21:07:05.6580763Z ##[group]Disabling automatic garbage collection
+2026-10-26T21:07:05.6583204Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-26T21:07:05.7168622Z ##[endgroup]
+2026-10-26T21:07:05.7169089Z ##[group]Setting up auth
+2026-10-26T21:07:05.7169395Z Removing SSH command configuration
+2026-10-26T21:07:05.7173556Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-26T21:07:05.7208935Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-26T21:07:05.7505968Z Removing HTTP extra header
+2026-10-26T21:07:05.7510975Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-26T21:07:05.7546937Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-26T21:07:05.7731838Z Removing includeIf entries pointing to credentials config files
+2026-10-26T21:07:05.7737213Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-26T21:07:05.7773480Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-26T21:07:05.8017281Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-462f0adb-a1a6-468e-b99c-eca915afb30f.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-26T21:07:05.8142916Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/ggaction/ggaction/.git.path /home/runner/work/_temp/git-credentials-462f0adb-a1a6-468e-b99c-eca915afb30f.config
+2026-10-26T21:07:05.8189402Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/ggaction/ggaction/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-462f0adb-a1a6-468e-b99c-eca915afb30f.config
+2026-10-26T21:07:05.8297047Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-462f0adb-a1a6-468e-b99c-eca915afb30f.config
+2026-10-26T21:07:05.8446125Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-462f0adb-a1a6-468e-b99c-eca915afb30f.config
+2026-10-26T21:07:05.8568385Z ##[endgroup]
+2026-10-26T21:07:05.8568942Z ##[group]Fetching the repository
+2026-10-26T21:07:05.8578351Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +23648d950ac7eb4e9042547b78e05d1a9798f8c0:refs/remotes/pull/276/merge
+2026-10-26T21:07:06.8470042Z From https://github.com/ggaction/ggaction
+2026-10-26T21:07:06.8470699Z  * [new ref]         23648d950ac7eb4e9042547b78e05d1a9798f8c0 -> pull/276/merge
+2026-10-26T21:07:06.8477486Z ##[endgroup]
+2026-10-26T21:07:06.8478054Z ##[group]Determining the checkout info
+2026-10-26T21:07:06.8478423Z ##[endgroup]
+2026-10-26T21:07:06.8483668Z [command]/usr/bin/git sparse-checkout disable
+2026-10-26T21:07:06.8543452Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-26T21:07:06.8571186Z ##[group]Checking out the ref
+2026-10-26T21:07:06.8572347Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/276/merge
+2026-10-26T21:07:07.1509109Z Note: switching to 'refs/remotes/pull/276/merge'.
+2026-10-26T21:07:07.1509443Z 
+2026-10-26T21:07:07.1509597Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-10-26T21:07:07.1510043Z changes and commit them, and you can discard any commits you make in this
+2026-10-26T21:07:07.1510449Z state without impacting any branches by switching back to a branch.
+2026-10-26T21:07:07.1510706Z 
+2026-10-26T21:07:07.1510912Z If you want to create a new branch to retain commits you create, you may
+2026-10-26T21:07:07.1511341Z do so (now or later) by using -c with the switch command. Example:
+2026-10-26T21:07:07.1511564Z 
+2026-10-26T21:07:07.1511681Z   git switch -c <new-branch-name>
+2026-10-26T21:07:07.1511835Z 
+2026-10-26T21:07:07.1511939Z Or undo this operation with:
+2026-10-26T21:07:07.1512076Z 
+2026-10-26T21:07:07.1512163Z   git switch -
+2026-10-26T21:07:07.1512282Z 
+2026-10-26T21:07:07.1512459Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-10-26T21:07:07.1512734Z 
+2026-10-26T21:07:07.1513074Z HEAD is now at 23648d9 Merge 283a1abac2625645b11c34c9d28c7edffa9a7a32 into fd5c4073fc80295c513bd099ac0ff0aa83059371
+2026-10-26T21:07:07.1522353Z ##[endgroup]
+2026-10-26T21:07:07.1561893Z [command]/usr/bin/git log -1 --format=%H
+2026-10-26T21:07:07.1585920Z 23648d950ac7eb4e9042547b78e05d1a9798f8c0
+2026-10-26T21:07:07.1778201Z ##[group]Run actions/setup-node@v6
+2026-10-26T21:07:07.1778365Z with:
+2026-10-26T21:07:07.1778480Z   node-version: 22
+2026-10-26T21:07:07.1778597Z   cache: npm
+2026-10-26T21:07:07.1778706Z   check-latest: false
+2026-10-26T21:07:07.1780028Z   token: ***
+2026-10-26T21:07:07.1780158Z   package-manager-cache: true
+2026-10-26T21:07:07.1780296Z ##[endgroup]
+2026-10-26T21:07:07.2740260Z Found in cache @ /opt/hostedtoolcache/node/22.23.3/x64
+2026-10-26T21:07:07.2742621Z ##[group]Environment details
+2026-10-26T21:07:07.5396898Z node: v22.23.3
+2026-10-26T21:07:07.5397126Z npm: 10.9.9
+2026-10-26T21:07:07.5397240Z yarn: 1.22.22
+2026-10-26T21:07:07.5398219Z ##[endgroup]
+2026-10-26T21:07:07.5410473Z [command]/opt/hostedtoolcache/node/22.23.3/x64/bin/npm config get cache
+2026-10-26T21:07:07.6169336Z /home/runner/.npm
+2026-10-26T21:07:07.7803443Z Cache hit for: node-cache-Linux-x64-npm-dca19831ff25602461c6fdf3cf05547fbb1007d87c049f5a7e59dff9a271e074
+2026-10-26T21:07:08.9388244Z Received 56816339 of 61010643 (93.1%), 54.1 MBs/sec
+2026-10-26T21:07:09.4156348Z Received 61010643 of 61010643 (100.0%), 39.4 MBs/sec
+2026-10-26T21:07:09.4156609Z Cache Size: ~58 MB (61010643 B)
+2026-10-26T21:07:09.4190083Z [command]/usr/bin/tar -xf /home/runner/work/_temp/fc40b2e4-095f-4bf3-9fc9-6422ab315d6b/cache.tzst -P -C /home/runner/work/ggaction/ggaction --use-compress-program unzstd
+2026-10-26T21:07:09.5141211Z Cache restored successfully
+2026-10-26T21:07:09.5181500Z Cache restored from key: node-cache-Linux-x64-npm-dca19831ff25602461c6fdf3cf05547fbb1007d87c049f5a7e59dff9a271e074
+2026-10-26T21:07:09.5334299Z ##[group]Run npm ci
+2026-10-26T21:07:09.5334755Z [36;1mnpm ci[0m
+2026-10-26T21:07:09.5537317Z shell: /usr/bin/bash -e {0}
+2026-10-26T21:07:09.5537507Z ##[endgroup]
+2026-10-26T21:07:11.3272199Z 
+2026-10-26T21:07:11.3279164Z added 122 packages, and audited 123 packages in 2s
+2026-10-26T21:07:11.3279604Z 
+2026-10-26T21:07:11.3280009Z 42 packages are looking for funding
+2026-10-26T21:07:11.3280630Z   run `npm fund` for details
+2026-10-26T21:07:11.3280847Z 
+2026-10-26T21:07:11.3281105Z found 0 vulnerabilities
+2026-10-26T21:07:11.4259403Z ##[group]Run actions/cache@v5
+2026-10-26T21:07:11.4259578Z with:
+2026-10-26T21:07:11.4259709Z   path: .artifacts/datasets/tidytuesday
+2026-10-26T21:07:11.4260023Z   key: ggaction-tidytuesday-Linux-fef874e3d5ce26efe00241d2cae6394d5797fd63351c56db52bb578ce30d2290
+2026-10-26T21:07:11.4260336Z   enableCrossOsArchive: false
+2026-10-26T21:07:11.4260489Z   fail-on-cache-miss: false
+2026-10-26T21:07:11.4260630Z   lookup-only: false
+2026-10-26T21:07:11.4260758Z   save-always: false
+2026-10-26T21:07:11.4260887Z ##[endgroup]
+2026-10-26T21:07:11.6582071Z Cache hit for: ggaction-tidytuesday-Linux-fef874e3d5ce26efe00241d2cae6394d5797fd63351c56db52bb578ce30d2290
+2026-10-26T21:07:12.8286302Z Received 9239734 of 13434038 (68.8%), 8.8 MBs/sec
+2026-10-26T21:07:13.5866050Z Received 13434038 of 13434038 (100.0%), 7.3 MBs/sec
+2026-10-26T21:07:13.5866549Z Cache Size: ~13 MB (13434038 B)
+2026-10-26T21:07:13.5886602Z [command]/usr/bin/tar -xf /home/runner/work/_temp/2f3eb072-1def-4ebb-a712-6717672d089e/cache.tzst -P -C /home/runner/work/ggaction/ggaction --use-compress-program unzstd
+2026-10-26T21:07:13.6514987Z Cache restored successfully
+2026-10-26T21:07:13.6573317Z Cache restored from key: ggaction-tidytuesday-Linux-fef874e3d5ce26efe00241d2cae6394d5797fd63351c56db52bb578ce30d2290
+2026-10-26T21:07:13.6673744Z ##[group]Run node scripts/run-check.js test-realistic -- npm run test:realistic -- --shard=6/7
+2026-10-26T21:07:13.6674154Z [36;1mnode scripts/run-check.js test-realistic -- npm run test:realistic -- --shard=6/7[0m
+2026-10-26T21:07:13.6730327Z shell: /usr/bin/bash -e {0}
+2026-10-26T21:07:13.6730512Z ##[endgroup]
+2026-10-26T21:07:13.7697842Z 
+2026-10-26T21:07:13.7698749Z > ggaction@0.0.25 test:realistic
+2026-10-26T21:07:13.7699505Z > node scripts/run-tests.js realistic --shard=6/7
+2026-10-26T21:07:13.7699749Z 
+2026-10-26T21:07:13.8187314Z {"shard":{"index":6,"total":7},"files":["contracts/generated-lifecycle-scenarios.test.js","contracts/generated-scenario-feature-coverage.test.js","contracts/realistic-arc-legend-layout.test.js","contracts/realistic-cartesian-facade-coverage-recipes.test.js","contracts/realistic-guide-scale-recipes.test.js"],"estimatedMs":535802}
+2026-10-26T21:07:13.8708236Z TAP version 13
+2026-10-26T21:07:30.2856725Z # Subtest: executes deterministic lifecycle recipes through integrity and SVG oracles
+2026-10-26T21:07:30.2861658Z ok 1 - executes deterministic lifecycle recipes through integrity and SVG oracles
+2026-10-26T21:07:30.2862255Z   ---
+2026-10-26T21:07:30.2862623Z   duration_ms: 7402.261738
+2026-10-26T21:07:30.2862978Z   type: 'test'
+2026-10-26T21:07:30.2863295Z   ...
+2026-10-26T21:07:30.2863816Z # Subtest: calls every user-facing action directly from a generated scenario root
+2026-10-26T21:07:30.2864668Z ok 2 - calls every user-facing action directly from a generated scenario root
+2026-10-26T21:07:30.2865158Z   ---
+2026-10-26T21:07:30.2865489Z   duration_ms: 7862.793908
+2026-10-26T21:07:30.2865833Z   type: 'test'
+2026-10-26T21:07:30.2866328Z   ...
+2026-10-26T21:07:30.2866823Z # Subtest: retains direct action effects in final semantic and graphic state
+2026-10-26T21:07:30.2867523Z ok 3 - retains direct action effects in final semantic and graphic state
+2026-10-26T21:07:30.2868006Z   ---
+2026-10-26T21:07:30.2868308Z   duration_ms: 753.472593
+2026-10-26T21:07:30.2868653Z   type: 'test'
+2026-10-26T21:07:30.2868954Z   ...
+2026-10-26T21:09:49.9211441Z # Subtest: derives a bounded public option inventory without runtime prototype paths
+2026-10-26T21:09:49.9214188Z ok 4 - derives a bounded public option inventory without runtime prototype paths
+2026-10-26T21:09:49.9214994Z   ---
+2026-10-26T21:09:49.9215618Z   duration_ms: 155961.414667
+2026-10-26T21:09:49.9215978Z   type: 'test'
+2026-10-26T21:09:49.9227700Z   ...
+2026-10-26T21:09:49.9228435Z # Subtest: passes only trace-backed action and recursive option evidence plus observed extras
+2026-10-26T21:09:49.9229842Z ok 5 - passes only trace-backed action and recursive option evidence plus observed extras
+2026-10-26T21:09:49.9230356Z   ---
+2026-10-26T21:09:49.9230666Z   duration_ms: 4.223912
+2026-10-26T21:09:49.9231082Z   type: 'test'
+2026-10-26T21:09:49.9231396Z   ...
+2026-10-26T21:12:24.7757487Z # Subtest: observes collection and named-axis array parents through recursive trace count aliases
+2026-10-26T21:12:24.7758502Z ok 6 - observes collection and named-axis array parents through recursive trace count aliases
+2026-10-26T21:12:24.7759157Z   ---
+2026-10-26T21:12:24.7759775Z   duration_ms: 154853.385064
+2026-10-26T21:12:24.7760057Z   type: 'test'
+2026-10-26T21:12:24.7760255Z   ...
+2026-10-26T21:12:24.7760692Z # Subtest: hard-gates explicit distribution minima and reports exact scoped waivers
+2026-10-26T21:12:24.7761303Z ok 7 - hard-gates explicit distribution minima and reports exact scoped waivers
+2026-10-26T21:12:24.7761673Z   ---
+2026-10-26T21:12:24.7761863Z   duration_ms: 3.300989
+2026-10-26T21:12:24.7762102Z   type: 'test'
+2026-10-26T21:12:24.7762288Z   ...
+2026-10-26T21:12:24.7762761Z # Subtest: does not let descriptors, transitive calls, duplicates, or option claims inflate coverage
+2026-10-26T21:12:24.7763449Z ok 8 - does not let descriptors, transitive calls, duplicates, or option claims inflate coverage
+2026-10-26T21:12:24.7763862Z   ---
+2026-10-26T21:12:24.7764046Z   duration_ms: 1.301006
+2026-10-26T21:12:24.7764966Z   type: 'test'
+2026-10-26T21:12:24.7765213Z   ...
+2026-10-26T21:12:24.7765615Z # Subtest: validates explicit and compact source lineage without reporting raw indexes
+2026-10-26T21:12:24.7766232Z ok 9 - validates explicit and compact source lineage without reporting raw indexes
+2026-10-26T21:12:24.7766600Z   ---
+2026-10-26T21:12:24.7766785Z   duration_ms: 1.756555
+2026-10-26T21:12:24.7767077Z   type: 'test'
+2026-10-26T21:12:24.7767266Z   ...
+2026-10-26T21:12:24.7767654Z # Subtest: reports dataset, tier, recipe, and chart-family concentration failures
+2026-10-26T21:12:24.7768238Z ok 10 - reports dataset, tier, recipe, and chart-family concentration failures
+2026-10-26T21:12:24.7768596Z   ---
+2026-10-26T21:12:24.7768777Z   duration_ms: 0.612496
+2026-10-26T21:12:24.7768992Z   type: 'test'
+2026-10-26T21:12:24.7769174Z   ...
+2026-10-26T21:12:24.8462287Z # Subtest: lays out the exact volcano padded-donut top legend without changing source labels
+2026-10-26T21:12:24.8463824Z ok 11 - lays out the exact volcano padded-donut top legend without changing source labels
+2026-10-26T21:12:24.8464831Z   ---
+2026-10-26T21:12:24.8465911Z   duration_ms: 251.816732
+2026-10-26T21:12:24.8466202Z   type: 'test'
+2026-10-26T21:12:24.8466411Z   ...
+2026-10-26T21:12:24.8466897Z # Subtest: builds both arc recipes at every legend position across all fifty TT sources
+2026-10-26T21:12:24.8467645Z ok 12 - builds both arc recipes at every legend position across all fifty TT sources
+2026-10-26T21:12:24.8468766Z   ---
+2026-10-26T21:12:24.8469102Z   duration_ms: 61779.062945
+2026-10-26T21:12:24.8469339Z   type: 'test'
+2026-10-26T21:12:24.8469565Z   ...
+2026-10-26T21:13:04.2645367Z # Subtest: defines four bounded facade recipes and a 865-chart schedule
+2026-10-26T21:13:04.2730653Z ok 13 - defines four bounded facade recipes and a 865-chart schedule
+2026-10-26T21:13:04.2765459Z   ---
+2026-10-26T21:13:04.2795166Z   duration_ms: 26.963207
+2026-10-26T21:13:04.2835199Z   type: 'test'
+2026-10-26T21:13:04.2854917Z   ...
+2026-10-26T21:13:04.2865057Z # Subtest: normalizes exact continuous-color facade bars before native rendering
+2026-10-26T21:13:04.2894960Z ok 14 - normalizes exact continuous-color facade bars before native rendering
+2026-10-26T21:13:04.2914770Z   ---
+2026-10-26T21:13:04.2944824Z   duration_ms: 1288.708586
+2026-10-26T21:13:04.2984998Z   type: 'test'
+2026-10-26T21:13:04.2985248Z   ...
+2026-10-26T21:13:04.2985732Z # Subtest: locks the exact assigned option, literal, aggregate, and diversity target set
+2026-10-26T21:13:04.2986396Z not ok 15 - locks the exact assigned option, literal, aggregate, and diversity target set
+2026-10-26T21:13:04.2987327Z   ---
+2026-10-26T21:13:04.2987524Z   duration_ms: 155682.997279
+2026-10-26T21:13:04.2987760Z   type: 'test'
+2026-10-26T21:13:04.2988333Z   location: '/home/runner/work/ggaction/ggaction/test/contracts/realistic-cartesian-facade-coverage-recipes.test.js:688:1'
+2026-10-26T21:13:04.2988920Z   failureType: 'testCodeFailure'
+2026-10-26T21:13:04.2989190Z   error: |-
+2026-10-26T21:13:04.2989470Z     createParallelCoordinates exact diversity set
+2026-10-26T21:13:04.2989765Z     + actual - expected
+2026-10-26T21:13:04.2989968Z     
+2026-10-26T21:13:04.2990284Z     + '56c438b90ba5111eed5c713df17ef930765c486de0e68301e9ca72bc1152767c'
+2026-10-26T21:13:04.2990771Z     - '56c438b90ba5111eed5c713df17ef930765c486de0e68651e9ca72bc1152767c'
+2026-10-26T21:13:04.2991108Z     
+2026-10-26T21:13:04.2991285Z   code: 'ERR_ASSERTION'
+2026-10-26T21:13:04.2991501Z   name: 'AssertionError'
+2026-10-26T21:13:04.2991877Z   expected: '56c438b90ba5111eed5c713df17ef930765c486de0e68651e9ca72bc1152767c'
+2026-10-26T21:13:04.2992412Z   actual: '56c438b90ba5111eed5c713df17ef930765c486de0e68301e9ca72bc1152767c'
+2026-10-26T21:13:04.2992783Z   operator: 'strictEqual'
+2026-10-26T21:13:04.2992996Z   stack: |-
+2026-10-26T21:13:04.2993651Z     TestContext.<anonymous> (file:///home/runner/work/ggaction/ggaction/test/contracts/realistic-cartesian-facade-coverage-recipes.test.js:717:12)
+2026-10-26T21:13:04.2994663Z     async Test.run (node:internal/test_runner/test:1054:7)
+2026-10-26T21:13:04.2995109Z     async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+2026-10-26T21:13:04.2995449Z   ...
+2026-10-26T21:13:04.2995860Z # Subtest: keeps every orthogonal profile materially distinct under one authentic witness
+2026-10-26T21:13:04.2996458Z ok 16 - keeps every orthogonal profile materially distinct under one authentic witness
+2026-10-26T21:13:04.2996826Z   ---
+2026-10-26T21:13:04.2997002Z   duration_ms: 8642.614452
+2026-10-26T21:13:04.2997216Z   type: 'test'
+2026-10-26T21:13:04.2997393Z   ...
+2026-10-26T21:13:04.2997824Z # Subtest: factor observers require the direct evidence claimed for data and facade profiles
+2026-10-26T21:13:04.2998449Z ok 17 - factor observers require the direct evidence claimed for data and facade profiles
+2026-10-26T21:13:04.2998836Z   ---
+2026-10-26T21:13:04.2999029Z   duration_ms: 196.451876
+2026-10-26T21:13:04.2999242Z   type: 'test'
+2026-10-26T21:13:04.2999425Z   ...
+2026-10-26T21:13:04.2999854Z # Subtest: direct authentic witnesses satisfy every assigned hard minimum and diversity rule
+2026-10-26T21:13:04.3000566Z not ok 18 - direct authentic witnesses satisfy every assigned hard minimum and diversity rule
+2026-10-26T21:13:04.3000963Z   ---
+2026-10-26T21:13:04.3001149Z   duration_ms: 105115.841103
+2026-10-26T21:13:04.3001374Z   type: 'test'
+2026-10-26T21:13:04.3001924Z   location: '/home/runner/work/ggaction/ggaction/test/contracts/realistic-cartesian-facade-coverage-recipes.test.js:798:1'
+2026-10-26T21:13:04.3002500Z   failureType: 'testCodeFailure'
+2026-10-26T21:13:04.3002743Z   error: |-
+2026-10-26T21:13:04.3002983Z     Expected values to be strictly deep-equal:
+2026-10-26T21:13:04.3003268Z     + actual - expected
+2026-10-26T21:13:04.3003474Z     
+2026-10-26T21:13:04.3003654Z     + [
+2026-10-26T21:13:04.3003932Z     +   'literal-diversity:createLinePlot.x.aggregate: '
+2026-10-26T21:13:04.3004232Z     + ]
+2026-10-26T21:13:04.3034841Z     - []
+2026-10-26T21:13:04.3035032Z     
+2026-10-26T21:13:04.3035231Z   code: 'ERR_ASSERTION'
+2026-10-26T21:13:04.3035534Z   name: 'AssertionError'
+2026-10-26T21:13:04.3035772Z   expected:
+2026-10-26T21:13:04.3035950Z   actual:
+2026-10-26T21:13:04.3036228Z     0: 'literal-diversity:createLinePlot.x.aggregate: '
+2026-10-26T21:13:04.3036547Z   operator: 'deepStrictEqual'
+2026-10-26T21:13:04.3036772Z   stack: |-
+2026-10-26T21:13:04.3039739Z     TestContext.<anonymous> (file:///home/runner/work/ggaction/ggaction/test/contracts/realistic-cartesian-facade-coverage-recipes.test.js:817:10)
+2026-10-26T21:13:04.3040449Z     async Test.run (node:internal/test_runner/test:1054:7)
+2026-10-26T21:13:04.3041191Z     async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+2026-10-26T21:13:04.3041543Z   ...
+2026-10-26T21:17:45.3750051Z # Subtest: defines a feasible 739-selection guide/scale coverage schedule
+2026-10-26T21:17:45.3755121Z ok 19 - defines a feasible 739-selection guide/scale coverage schedule
+2026-10-26T21:17:45.3755732Z   ---
+2026-10-26T21:17:45.3756277Z   duration_ms: 51.731185
+2026-10-26T21:17:45.3756637Z   type: 'test'
+2026-10-26T21:17:45.3756950Z   ...
+2026-10-26T21:17:45.3757591Z # Subtest: observes field-pair and variant factors with independent direct and final evidence
+2026-10-26T21:17:45.3758371Z ok 20 - observes field-pair and variant factors with independent direct and final evidence
+2026-10-26T21:17:45.3758914Z   ---
+2026-10-26T21:17:45.3759231Z   duration_ms: 4721.76961
+2026-10-26T21:17:45.3759566Z   type: 'test'
+2026-10-26T21:17:45.3759888Z   ...
+2026-10-26T21:17:45.3760446Z # Subtest: keeps known video-game facets and complete-case parallel profiles nonempty
+2026-10-26T21:17:45.3761189Z ok 21 - keeps known video-game facets and complete-case parallel profiles nonempty
+2026-10-26T21:17:45.3761698Z   ---
+2026-10-26T21:17:45.3762023Z   duration_ms: 20119.57595
+2026-10-26T21:17:45.3762381Z   type: 'test'
+2026-10-26T21:17:45.3762709Z   ...
+2026-10-26T21:17:45.3763283Z # Subtest: reserves a complete side-legend lane for long Christmas-song labels
+2026-10-26T21:17:45.3764711Z ok 22 - reserves a complete side-legend lane for long Christmas-song labels
+2026-10-26T21:17:45.3765294Z   ---
+2026-10-26T21:17:45.3765649Z   duration_ms: 308.081779
+2026-10-26T21:17:45.3766039Z   type: 'test'
+2026-10-26T21:17:45.3766379Z   ...
+2026-10-26T21:17:45.3766941Z # Subtest: filters transit parallel dimensions before its deterministic sample
+2026-10-26T21:17:45.3767702Z ok 23 - filters transit parallel dimensions before its deterministic sample
+2026-10-26T21:17:45.3768252Z   ---
+2026-10-26T21:17:45.3768603Z   duration_ms: 22.486811
+2026-10-26T21:17:45.3768992Z   type: 'test'
+2026-10-26T21:17:45.3769346Z   ...
+2026-10-26T21:17:45.3769912Z # Subtest: preflights every temporal display policy on every eligible TT dataset
+2026-10-26T21:17:45.3770668Z ok 24 - preflights every temporal display policy on every eligible TT dataset
+2026-10-26T21:17:45.3771199Z   ---
+2026-10-26T21:17:45.3771528Z   duration_ms: 38940.21261
+2026-10-26T21:17:45.3771890Z   type: 'test'
+2026-10-26T21:17:45.3772224Z   ...
+2026-10-26T21:17:45.3776129Z # Subtest: keeps the meteorites long day labels sparse and non-overlapping
+2026-10-26T21:17:45.3776825Z ok 25 - keeps the meteorites long day labels sparse and non-overlapping
+2026-10-26T21:17:45.3777316Z   ---
+2026-10-26T21:17:45.3777622Z   duration_ms: 724.90639
+2026-10-26T21:17:45.3777959Z   type: 'test'
+2026-10-26T21:17:45.3778268Z   ...
+2026-10-26T21:17:45.3778787Z # Subtest: runs every non-sequential scale profile with branch-exact direct actions
+2026-10-26T21:17:45.3779501Z ok 26 - runs every non-sequential scale profile with branch-exact direct actions
+2026-10-26T21:17:45.3781376Z   ---
+2026-10-26T21:17:45.3781710Z   duration_ms: 753.59458
+2026-10-26T21:17:45.3782235Z   type: 'test'
+2026-10-26T21:17:45.3782530Z   ...
+2026-10-26T21:17:45.3782981Z # Subtest: uses truthful record counts when a quantize share field has zero span
+2026-10-26T21:17:45.3783574Z ok 27 - uses truthful record counts when a quantize share field has zero span
+2026-10-26T21:17:45.3783991Z   ---
+2026-10-26T21:17:45.3784271Z   duration_ms: 49.100941
+2026-10-26T21:17:45.3784746Z   type: 'test'
+2026-10-26T21:17:45.3785041Z   ...
+2026-10-26T21:17:45.3785578Z # Subtest: preflights every quantitative non-sequential scale on every eligible field pair
+2026-10-26T21:17:45.3786412Z ok 28 - preflights every quantitative non-sequential scale on every eligible field pair
+2026-10-26T21:17:45.3786910Z   ---
+2026-10-26T21:17:45.3787229Z   duration_ms: 100184.989075
+2026-10-26T21:17:45.3787575Z   type: 'test'
+2026-10-26T21:17:45.3787892Z   ...
+2026-10-26T21:17:45.3788570Z # Subtest: replays the automatic cartesian guide identically after cloning, reordering, and a process boundary
+2026-10-26T21:17:45.3791749Z ok 29 - replays the automatic cartesian guide identically after cloning, reordering, and a process boundary
+2026-10-26T21:17:45.3792205Z   ---
+2026-10-26T21:17:45.3792383Z   duration_ms: 9094.039703
+2026-10-26T21:17:45.3792597Z   type: 'test'
+2026-10-26T21:17:45.3792775Z   ...
+2026-10-26T21:17:45.3793245Z # Subtest: keeps every cartesian guide variant stable after structured-clone replay across all 50 datasets
+2026-10-26T21:17:45.3793914Z ok 30 - keeps every cartesian guide variant stable after structured-clone replay across all 50 datasets
+2026-10-26T21:17:45.3794477Z   ---
+2026-10-26T21:17:45.3794653Z   duration_ms: 144713.872337
+2026-10-26T21:17:45.3794862Z   type: 'test'
+2026-10-26T21:17:45.3795044Z   ...
+2026-10-26T21:17:45.3795396Z # Subtest: preserves whitespace through a realistic long wrapped title block
+2026-10-26T21:17:45.3795909Z ok 31 - preserves whitespace through a realistic long wrapped title block
+2026-10-26T21:17:45.3796283Z   ---
+2026-10-26T21:17:45.3796463Z   duration_ms: 373.382767
+2026-10-26T21:17:45.3796677Z   type: 'test'
+2026-10-26T21:17:45.3796864Z   ...
+2026-10-26T21:20:41.9994618Z # Subtest: builds every reserved witness and directly satisfies guide/scale coverage
+2026-10-26T21:20:41.9996505Z ok 32 - builds every reserved witness and directly satisfies guide/scale coverage
+2026-10-26T21:20:41.9997481Z   ---
+2026-10-26T21:20:41.9997629Z   duration_ms: 176626.633767
+2026-10-26T21:20:41.9997792Z   type: 'test'
+2026-10-26T21:20:41.9997916Z   ...
+2026-10-26T21:20:42.0431960Z 1..32
+2026-10-26T21:20:42.0432371Z # tests 32
+2026-10-26T21:20:42.0432582Z # suites 0
+2026-10-26T21:20:42.0432807Z # pass 30
+2026-10-26T21:20:42.0433035Z # fail 2
+2026-10-26T21:20:42.0433281Z # cancelled 0
+2026-10-26T21:20:42.0433588Z # skipped 0
+2026-10-26T21:20:42.0433795Z # todo 0
+2026-10-26T21:20:42.0434087Z # duration_ms 808189.167245
+2026-10-26T21:20:42.0678225Z ##[error]Process completed with exit code 1.
+2026-10-26T21:20:42.0733979Z ##[group]Run actions/upload-artifact@v7
+2026-10-26T21:20:42.0734167Z with:
+2026-10-26T21:20:42.0734301Z   name: timings-realistic-6-1
+2026-10-26T21:20:42.0734648Z   path: .artifacts/timings
+2026-10-26T21:20:42.0734795Z   if-no-files-found: warn
+2026-10-26T21:20:42.0734938Z   retention-days: 30
+2026-10-26T21:20:42.0735072Z   compression-level: 6
+2026-10-26T21:20:42.0735206Z   overwrite: false
+2026-10-26T21:20:42.0735340Z   include-hidden-files: false
+2026-10-26T21:20:42.0735488Z   archive: true
+2026-10-26T21:20:42.0735750Z ##[endgroup]
+2026-10-26T21:20:42.1901219Z With the provided path, there will be 5 files uploaded
+2026-10-26T21:20:42.1901703Z Artifact name is valid!
+2026-10-26T21:20:42.1902056Z Root directory input is valid!
+2026-10-26T21:20:42.4418459Z Uploading artifact: timings-realistic-6-1.zip
+2026-10-26T21:20:42.4443442Z Beginning upload of artifact content to blob storage
+2026-10-26T21:20:42.6251597Z Uploaded bytes 1825
+2026-10-26T21:20:42.6673455Z Finished uploading artifact content to blob storage!
+2026-10-26T21:20:42.6674172Z SHA256 digest of uploaded artifact is ce4afe79d905a3ca2965039ac37d087d2d00c50fd6bcece575f9431bacdbc6ee
+2026-10-26T21:20:42.6674904Z Finalizing artifact upload
+2026-10-26T21:20:43.2236895Z Artifact timings-realistic-6-1 successfully finalized. Artifact ID 12690250825
+2026-10-26T21:20:43.2237409Z Artifact timings-realistic-6-1 has been successfully uploaded! Final size is 1825 bytes. Artifact ID is 12690250825
+2026-10-26T21:20:43.2240523Z Artifact download URL: https://github.com/ggaction/ggaction/actions/runs/40401555742/artifacts/12690250825
+2026-10-26T21:20:43.2346129Z ##[group]Run node scripts/collect-failure-artifacts.js
+2026-10-26T21:20:43.2346387Z [36;1mnode scripts/collect-failure-artifacts.js[0m
+2026-10-26T21:20:43.2398481Z shell: /usr/bin/bash -e {0}
+2026-10-26T21:20:43.2398643Z ##[endgroup]
+2026-10-26T21:20:43.2729712Z {"schemaVersion":1,"maxBytes":52428800,"maxFiles":300,"bytes":19698,"omitted":0,"files":[{"file":"checks/suite-realistic.json","bytes":959},{"file":"checks/suite-realistic.log","bytes":9003},{"file":"checks/test-realistic.json","bytes":317},{"file":"checks/test-realistic.log","bytes":9419}]}
+2026-10-26T21:20:43.2807469Z ##[group]Run actions/upload-artifact@v7
+2026-10-26T21:20:43.2807655Z with:
+2026-10-26T21:20:43.2807787Z   name: failure-realistic-5-1
+2026-10-26T21:20:43.2807948Z   path: .artifacts/ci-evidence
+2026-10-26T21:20:43.2808103Z   if-no-files-found: ignore
+2026-10-26T21:20:43.2808245Z   retention-days: 7
+2026-10-26T21:20:43.2808376Z   compression-level: 6
+2026-10-26T21:20:43.2808509Z   overwrite: false
+2026-10-26T21:20:43.2808640Z   include-hidden-files: false
+2026-10-26T21:20:43.2808785Z   archive: true
+2026-10-26T21:20:43.2808907Z ##[endgroup]
+2026-10-26T21:20:43.3825489Z With the provided path, there will be 5 files uploaded
+2026-10-26T21:20:43.3826039Z Artifact name is valid!
+2026-10-26T21:20:43.3826319Z Root directory input is valid!
+2026-10-26T21:20:43.6327052Z Uploading artifact: failure-realistic-5-1.zip
+2026-10-26T21:20:43.6379634Z Beginning upload of artifact content to blob storage
+2026-10-26T21:20:43.8244005Z Uploaded bytes 6335
+2026-10-26T21:20:43.8685958Z Finished uploading artifact content to blob storage!
+2026-10-26T21:20:43.8686653Z SHA256 digest of uploaded artifact is 23ce7adc4268afeb1608fb5eeed23884111a8f2194e66f1cb2f015df37703ffb
+2026-10-26T21:20:43.8687131Z Finalizing artifact upload
+2026-10-26T21:20:44.4587713Z Artifact failure-realistic-5-1 successfully finalized. Artifact ID 12690121011
+2026-10-26T21:20:44.4588417Z Artifact failure-realistic-5-1 has been successfully uploaded! Final size is 6335 bytes. Artifact ID is 12690121011
+2026-10-26T21:20:44.4591168Z Artifact download URL: https://github.com/ggaction/ggaction/actions/runs/40401555742/artifacts/12690121011
+2026-10-26T21:20:44.4747785Z Post job cleanup.
+2026-10-26T21:20:44.5327062Z [command]/usr/bin/git version
+2026-10-26T21:20:44.5360704Z git version 2.55.0
+2026-10-26T21:20:44.5389866Z Temporarily overriding HOME='/home/runner/work/_temp/ac59f2ba-15a6-42eb-835e-be4266d55743' before making global git config changes
+2026-10-26T21:20:44.5390506Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-26T21:20:44.5394112Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/ggaction/ggaction
+2026-10-26T21:20:44.5430833Z Removing SSH command configuration
+2026-10-26T21:20:44.5436672Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-26T21:20:44.5477408Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-26T21:20:44.5683313Z Removing HTTP extra header
+2026-10-26T21:20:44.5697149Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-26T21:20:44.5731912Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-26T21:20:44.5944290Z Removing includeIf entries pointing to credentials config files
+2026-10-26T21:20:44.5950939Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-26T21:20:44.5979337Z includeif.gitdir:/home/runner/work/ggaction/ggaction/.git.path
+2026-10-26T21:20:44.5979758Z includeif.gitdir:/home/runner/work/ggaction/ggaction/.git/worktrees/*.path
+2026-10-26T21:20:44.5980214Z includeif.gitdir:/github/workspace/.git.path
+2026-10-26T21:20:44.5980643Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-26T21:20:44.5987459Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/ggaction/ggaction/.git.path
+2026-10-26T21:20:44.6010112Z /home/runner/work/_temp/git-credentials-462f0adb-a1a6-468e-b99c-eca915afb30f.config
+2026-10-26T21:20:44.6018859Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/ggaction/ggaction/.git.path /home/runner/work/_temp/git-credentials-462f0adb-a1a6-468e-b99c-eca915afb30f.config
+2026-10-26T21:20:44.6052247Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/ggaction/ggaction/.git/worktrees/*.path
+2026-10-26T21:20:44.6074173Z /home/runner/work/_temp/git-credentials-462f0adb-a1a6-468e-b99c-eca915afb30f.config
+2026-10-26T21:20:44.6081936Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/ggaction/ggaction/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-462f0adb-a1a6-468e-b99c-eca915afb30f.config
+2026-10-26T21:20:44.6111817Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-10-26T21:20:44.6132707Z /github/runner_temp/git-credentials-462f0adb-a1a6-468e-b99c-eca915afb30f.config
+2026-10-26T21:20:44.6139962Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-462f0adb-a1a6-468e-b99c-eca915afb30f.config
+2026-10-26T21:20:44.6169974Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-26T21:20:44.6190436Z /github/runner_temp/git-credentials-462f0adb-a1a6-468e-b99c-eca915afb30f.config
+2026-10-26T21:20:44.6197895Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-462f0adb-a1a6-468e-b99c-eca915afb30f.config
+2026-10-26T21:20:44.6230237Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-26T21:20:44.6413493Z Removing credentials config '/home/runner/work/_temp/git-credentials-462f0adb-a1a6-468e-b99c-eca915afb30f.config'
+2026-10-26T21:20:44.6554571Z Cleaning up orphan processes

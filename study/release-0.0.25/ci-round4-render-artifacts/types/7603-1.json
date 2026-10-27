@@ -1,0 +1,21 @@
+{
+  "compilerVersion": "7.0.2",
+  "node": "v20.20.2",
+  "args": [
+    "--noEmit",
+    "--strict",
+    "--skipLibCheck",
+    "--target",
+    "ES2022",
+    "--module",
+    "NodeNext",
+    "--moduleResolution",
+    "NodeNext",
+    "/tmp/legend-spacing-types-SkDt4l/spacing.mts"
+  ],
+  "cwd": "/home/runner/work/ggaction/ggaction/",
+  "status": 0,
+  "signal": null,
+  "durationMs": 155.11700299999998,
+  "diagnostics": ""
+}

@@ -1,0 +1,23 @@
+✔ discovers every normal, render, and browser test recursively exactly once (59.237083ms)
+✔ separates network-backed corpus sweeps from source coverage (30.612792ms)
+✔ shards realistic CI after preparing its dataset cache once (0.575042ms)
+✔ does not discover programs or support modules as tests (6.272834ms)
+✔ keeps every test module reachable from a suite or module-script entry (160.628708ms)
+✔ requires every active gate to expose a complete reviewable slice (0.172167ms)
+✔ keeps stable tests independent from active gate implementations (95.095541ms)
+✔ keeps stable tests independent from implementation roadmap records (48.353ms)
+✔ selects tests by chart, capability, or relative path (58.61975ms)
+✔ caps file concurrency without changing file order or coverage policy (0.817ms)
+✔ validates realistic shard coordinates before invoking Node (0.5735ms)
+✔ maps every named capability entry to an exact file or prefix (559.038708ms)
+✔ assigns every normal test file to at least one named capability (11.926833ms)
+✔ validates every selector before short-circuit matching (0.188625ms)
+✔ coverage capture preserves UTF-8 markers across every byte boundary (0.790875ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 15
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1145.785208

@@ -1,0 +1,309 @@
+
+> ggaction@0.0.26 release:prepare
+> node scripts/prepare-release.js 0.0.26 --date=2026-10-27
+
+
+> ggaction@0.0.26 docs:generate
+> npm run contracts:relations && npm run contracts:cards && npm run inspection:descriptors && npm run docs:provenance && npm run docs:workflows && npm run examples:index && npm run docs:capabilities && npm run docs:reference && npm run docs:picker && npm run docs:scale-editors && npm run docs:actions && npm run docs:signatures && npm run docs:snippets && npm run docs:metadata && npm run docs:search && npm run docs:images && npm run docs:machine && npm run docs:llms
+
+
+> ggaction@0.0.26 contracts:relations
+> node scripts/generate-action-relationships.js
+
+
+> ggaction@0.0.26 contracts:cards
+> node scripts/generate-action-cards.js
+
+298 compact action cards; max 4681 bytes; median 1980 bytes
+
+> ggaction@0.0.26 inspection:descriptors
+> node scripts/generate-inspection-descriptors.js
+
+
+> ggaction@0.0.26 docs:provenance
+> node scripts/doc-provenance.js
+
+
+> ggaction@0.0.26 docs:workflows
+> node scripts/generate-doc-workflows.js
+
+
+> ggaction@0.0.26 examples:index
+> node scripts/generate-examples-readme.js
+
+generated examples/README.md
+
+> ggaction@0.0.26 docs:capabilities
+> node scripts/generate-doc-capabilities.js
+
+generated action capability documentation
+
+> ggaction@0.0.26 docs:reference
+> node scripts/generate-doc-action-reference.js
+
+generated split action reference
+
+> ggaction@0.0.26 docs:picker
+> node scripts/generate-doc-chart-picker.js
+
+
+> ggaction@0.0.26 docs:scale-editors
+> node scripts/generate-doc-scale-editors.js
+
+
+> ggaction@0.0.26 docs:actions
+> node scripts/generate-doc-action-metadata.js
+
+generated documentation action metadata
+
+> ggaction@0.0.26 docs:signatures
+> node scripts/generate-doc-signatures.js
+
+generated action and runtime reference TypeScript signatures
+
+> ggaction@0.0.26 docs:snippets
+> node scripts/generate-doc-snippet-contracts.js
+
+
+> ggaction@0.0.26 docs:metadata
+> node scripts/generate-doc-page-metadata.js
+
+generated documentation page metadata
+
+> ggaction@0.0.26 docs:search
+> node scripts/generate-doc-search-index.js
+
+generated compact documentation search index
+
+> ggaction@0.0.26 docs:images
+> node scripts/generate-doc-images.js
+
+generated centered-area-stream.png
+generated centered-area-stream-thumb.png
+generated ordered-category-bar.png
+generated ordered-category-bar-thumb.png
+generated program-composition.png
+generated program-composition-thumb.png
+generated facet-grid.png
+generated facet-grid-thumb.png
+generated lookup-data.png
+generated lookup-data-thumb.png
+generated linear-nice-count.png
+generated linear-nice-count-thumb.png
+generated linear-nearest-ticks.png
+generated linear-nearest-ticks-thumb.png
+generated facet-field-titles.png
+generated facet-field-titles-thumb.png
+generated facet-header-rotation.png
+generated facet-header-rotation-thumb.png
+generated repeat-charts.png
+generated repeat-charts-thumb.png
+generated cars-origin-scatterplot-facet.png
+generated cars-origin-scatterplot-facet-thumb.png
+generated cars-scatterplot.png
+generated cars-scatterplot-thumb.png
+generated cars-parallel-coordinates.png
+generated cars-parallel-coordinates-thumb.png
+generated annotated-imdb-scatterplot.png
+generated annotated-imdb-scatterplot-thumb.png
+generated fitted-long-labels.png
+generated fitted-long-labels-thumb.png
+generated gapminder-life-expectancy-heatmap.png
+generated gapminder-life-expectancy-heatmap-thumb.png
+generated gapminder-development-trajectories.png
+generated gapminder-development-trajectories-thumb.png
+generated cars-polar-scatterplot.png
+generated cars-polar-scatterplot-thumb.png
+generated cars-polar-guides.png
+generated cars-polar-guides-thumb.png
+generated gapminder-polar-trends.png
+generated gapminder-polar-trends-thumb.png
+generated jobs-radar-chart.png
+generated jobs-radar-chart-thumb.png
+generated cars-origin-donut.png
+generated cars-origin-donut-thumb.png
+generated gapminder-population-donut.png
+generated gapminder-population-donut-thumb.png
+generated nightingale-rose-chart.png
+generated nightingale-rose-chart-thumb.png
+generated gapminder-radial-bars.png
+generated gapminder-radial-bars-thumb.png
+generated cars-line-chart.png
+generated cars-line-chart-thumb.png
+generated cars-temporal-bar-line.png
+generated cars-temporal-bar-line-thumb.png
+generated cars-histogram.png
+generated cars-histogram-thumb.png
+generated jobs-grouped-bar.png
+generated jobs-grouped-bar-thumb.png
+generated jobs-horizontal-grouped-bar.png
+generated jobs-horizontal-grouped-bar-thumb.png
+generated cars-regression-scatterplot.png
+generated cars-regression-scatterplot-thumb.png
+generated cars-multi-legend-layout.png
+generated cars-multi-legend-layout-thumb.png
+generated cars-density-area.png
+generated cars-density-area-thumb.png
+generated gapminder-horizon.png
+generated gapminder-horizon-thumb.png
+generated cars-acceleration-violins.png
+generated cars-acceleration-violins-thumb.png
+generated cars-error-bar.png
+generated cars-error-bar-thumb.png
+generated cars-gradient-plot.png
+generated cars-gradient-plot-thumb.png
+generated cars-box-plot.png
+generated cars-box-plot-thumb.png
+generated gapminder-error-band.png
+generated gapminder-error-band-thumb.png
+generated bootstrap-mean-ci.png
+generated bootstrap-mean-ci-thumb.png
+generated continuous-area-color.png
+generated continuous-area-color-thumb.png
+generated shared-adjacent.png
+generated shared-adjacent-thumb.png
+generated linked-overlay.png
+generated linked-overlay-thumb.png
+generated named-shapes.png
+generated named-shapes-thumb.png
+generated axis-owners.png
+generated axis-owners-thumb.png
+generated shared-facet-owner.png
+generated shared-facet-owner-thumb.png
+generated color-controls.png
+generated color-controls-thumb.png
+generated color-white-point.png
+generated color-white-point-thumb.png
+generated bar-compositing.png
+generated bar-compositing-thumb.png
+generated cars-origin-histogram-facet.png
+generated cars-origin-histogram-facet-thumb.png
+generated cars-weighted-rules.png
+generated cars-weighted-rules-thumb.png
+generated raincloud-plot.png
+generated raincloud-plot-thumb.png
+generated beeswarm-plot.png
+generated beeswarm-plot-thumb.png
+generated dot-plot.png
+generated dot-plot-thumb.png
+generated lollipop-plot.png
+generated lollipop-plot-thumb.png
+generated dumbbell-plot.png
+generated dumbbell-plot-thumb.png
+generated ecdf-plot.png
+generated ecdf-plot-thumb.png
+generated color-transitions.png
+generated color-transitions-thumb.png
+generated color-midpoint.png
+generated color-midpoint-thumb.png
+generated radial-sectors.png
+generated radial-sectors-thumb.png
+generated theta-legend-order.png
+generated theta-legend-order-thumb.png
+generated combined-legends.png
+generated combined-legends-thumb.png
+generated legend-layout.png
+generated legend-layout-thumb.png
+generated legend-recipe-opacity.png
+generated legend-recipe-opacity-thumb.png
+generated legend-appearance.png
+generated legend-appearance-thumb.png
+generated legend-content-spacing.png
+generated legend-content-spacing-thumb.png
+generated plot-guide-underlays.png
+generated plot-guide-underlays-thumb.png
+generated facet-shared-top-lane.png
+generated facet-shared-top-lane-thumb.png
+generated symbol-window.png
+generated symbol-window-thumb.png
+generated area-layout.png
+generated area-layout-thumb.png
+generated horizon-plot.png
+generated horizon-plot-thumb.png
+generated density-plot.png
+generated density-plot-thumb.png
+generated pie-plot.png
+generated pie-plot-thumb.png
+generated temporal-input.png
+generated temporal-input-thumb.png
+generated series-identity.png
+generated series-identity-thumb.png
+generated directional-tick-plot.png
+generated directional-tick-plot-thumb.png
+generated cars-binned-heatmap.png
+generated cars-binned-heatmap-thumb.png
+generated time-unit-data.png
+generated time-unit-data-thumb.png
+generated airline-passenger-moving-windows.png
+generated airline-passenger-moving-windows-thumb.png
+generated cars-window-rank-scatterplot.png
+generated cars-window-rank-scatterplot-thumb.png
+generated cross-feature-dashboard.png
+generated cross-feature-dashboard-thumb.png
+generated cars-origin-jitter.png
+generated cars-origin-jitter-thumb.png
+generated gapminder-cluster-jitter.png
+generated gapminder-cluster-jitter-thumb.png
+generated dark-theme-scatterplot.png
+generated dark-theme-scatterplot-thumb.png
+generated gapminder-country-labels.png
+generated gapminder-country-labels-thumb.png
+generated gapminder-continuous-color-bars.png
+generated gapminder-continuous-color-bars-thumb.png
+generated gapminder-discretized-color-scales.png
+generated gapminder-discretized-color-scales-thumb.png
+generated gapminder-temporal-discrete-scales.png
+generated gapminder-temporal-discrete-scales-thumb.png
+generated gapminder-transformed-scales.png
+generated gapminder-transformed-scales-thumb.png
+generated mark-selection-points.png
+generated mark-selection-points-thumb.png
+generated mark-selection-bars.png
+generated mark-selection-bars-thumb.png
+generated mark-selection-lines.png
+generated mark-selection-lines-thumb.png
+generated hierarchical-authoring.png
+generated hierarchical-authoring-thumb.png
+generated remove-dependent-resources.png
+generated remove-dependent-resources-thumb.png
+generated edit-facet-source.png
+generated edit-facet-source-thumb.png
+generated apply-custom-theme.png
+generated apply-custom-theme-thumb.png
+generated edit-selected-labels.png
+generated edit-selected-labels-thumb.png
+generated edit-scales-and-guides.png
+generated edit-scales-and-guides-thumb.png
+generated switch-encoding-modes.png
+generated switch-encoding-modes-thumb.png
+generated compare-weighted-distributions.png
+generated compare-weighted-distributions-thumb.png
+generated repair-missing-observations.png
+generated repair-missing-observations-thumb.png
+generated getting-started.png
+generated getting-started-thumb.png
+generated docs image manifest
+
+> ggaction@0.0.26 docs:machine
+> node scripts/generate-doc-machine-artifacts.js
+
+generated 21 documentation machine artifacts
+
+> ggaction@0.0.26 docs:llms
+> node scripts/generate-llm-docs.js
+
+generated docs/llms.txt, docs/llms-full.txt, and docs/llms-manifest.json
+{
+  "schemaVersion": 1,
+  "version": "0.0.26",
+  "tag": "v0.0.26",
+  "contractId": "sha256:8ec25828c662bcb6b0bf6801a6b6add6f2b653f218476ea7fc758f21e1418174",
+  "releaseNotes": ".artifacts/release/ggaction-0.0.26-release-notes.md",
+  "publishes": false,
+  "nextSteps": [
+    "Review and commit the diff.",
+    "Rerun preparation after the runtime commit to refresh exact source provenance.",
+    "Run integration checks and merge through required PR checks.",
+    "Create the annotated tag and dispatch the protected release workflow from that exact tag."
+  ]
+}

@@ -1,0 +1,37 @@
+✔ infers a complete grouped regression from the current point mark (144.054542ms)
+✔ matches primitive band and line graphics exactly (85.275291ms)
+✔ records the regression aggregate and component hierarchy (74.906334ms)
+✔ orchestrates polynomial, LOESS, prediction, and band opt-out (270.539792ms)
+✔ rematerializes every regression layer after Canvas edits (73.97425ms)
+✔ rematerializes method-specific regression consumers after Canvas edits (223.230375ms)
+✔ supports explicit ungrouped regression without series encodings (50.717666ms)
+✔ namespaces regression resources by point mark (211.708625ms)
+✔ requires explicit choices for ambiguous targets and groups (169.338667ms)
+✔ rejects regression-band delegation when provenance does not match (15.213541ms)
+✔ reuses existing point scales without applying error-band defaults (8.425291ms)
+✔ edits regression components through nested generic mark actions (255.786042ms)
+✔ forwards create-time regression component appearance (674.761958ms)
+✔ rejects non-regression targets and invalid component edits (89.929666ms)
+✔ revises regression statistics once and rebinds every owned consumer (181.318875ms)
+✔ keeps data for appearance-only edits and reconciles optional bands (86.22825ms)
+✔ lets the legacy confidence alias replace the stored normalized level (46.82675ms)
+✔ resolves owners and rejects invalid composite edits atomically (66.355334ms)
+✔ revises regression data roles while preserving component and position identities (46.943958ms)
+✔ adds a revised regression group with a dedicated stable component scale (50.601417ms)
+✔ rejects invalid regression data revisions before exposing a branch (57.847208ms)
+✔ replays regression-line selection and highlight after a data-role revision (52.421875ms)
+✔ plot-last regression preserves source defaults and immutable source/band/fit painter order (116.454791ms)
+✔ regression placement survives geometry, model, interval and restored edits (79.8975ms)
+✔ plot-last fits stay below owned axis and frame overlays and above grid underlays (249.427125ms)
+✔ following regression and facade retain explicit plot-last ownership (70.584375ms)
+✔ follow regression refits when the source y binding changes (51.141625ms)
+✔ fixed regression retains its fitted source roles (18.120334ms)
+✔ source binding mode edits and editable snapshots preserve the relationship (26.928667ms)
+ℹ tests 29
+ℹ suites 0
+ℹ pass 29
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1741.689959

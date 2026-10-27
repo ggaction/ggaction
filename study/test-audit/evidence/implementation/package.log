@@ -1,0 +1,116 @@
+
+> ggaction@0.0.22 test:package
+> node scripts/package-consumer.js
+
+npm notice
+npm notice New minor version of npm available! 11.18.0 -> 11.21.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.21.1
+npm notice To update run: npm install -g npm@11.21.1
+npm notice
+{
+  "package": "ggaction@0.0.22",
+  "source": "ggaction-0.0.22.tgz",
+  "sha256": "d299c72c111312aa1f69a015672291498dee763842fc933d831f43ddcc1f099f",
+  "peerMode": "locked",
+  "resolvedPeers": {
+    "@modelcontextprotocol/sdk": "1.32.1",
+    "@napi-rs/canvas": "1.0.9"
+  },
+  "browserBundles": {
+    "full": {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 547,
+      "minifiedBytes": 1635440,
+      "gzipBytes": 446830
+    },
+    "basic": {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 333,
+      "minifiedBytes": 810544,
+      "gzipBytes": 229814
+    },
+    "svg": {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 19,
+      "minifiedBytes": 23548,
+      "gzipBytes": 7566
+    }
+  },
+  "mcp": {
+    "coldStartMilliseconds": 826
+  },
+  "checks": [
+    "node",
+    "linear-regression-statistics-cache-and-source-revision",
+    "extension",
+    "pdf",
+    "png",
+    "svg",
+    "inspection",
+    "numeric-font-weight",
+    "point-jitter",
+    "point-packing",
+    "mark-label-removal",
+    "selected-mark-labels",
+    "semantic-label-placement",
+    "beeswarm-plot",
+    "raincloud-plot",
+    "path-order",
+    "time-unit-data",
+    "summary-data",
+    "bin-data",
+    "fold-data",
+    "named-dataset-lookup",
+    "computed-data",
+    "derived-data-editing",
+    "safe-resource-removal",
+    "advanced-authoring-integration",
+    "normalized-data",
+    "complete-data",
+    "imputed-data",
+    "stack-data",
+    "window-data",
+    "bin2d-data",
+    "binned-heatmap",
+    "parallel-coordinates",
+    "parallel-dimension-scale-editing",
+    "offset-scale-editing",
+    "stroke-color-encoding-and-legends",
+    "atomic-channel-encoding",
+    "axis-title-label-overlap-policy",
+    "numeric-independent-text-offsets",
+    "statistical-references",
+    "coordinate-aspect-and-polar-frame-editing",
+    "facet-grid-repeat-and-named-composition-editing",
+    "non-cartesian-facet-grid-and-repeat",
+    "horizon",
+    "violin-plot",
+    "polar-radar-rug-strip-ecdf-facades",
+    "right-categorical-legend-offset",
+    "grouped-corner-and-free-legend-placement",
+    "sequential-palette-count",
+    "ranged-numeric-datum-wrapper-parity",
+    "neutral-hcl-hue-borrowing",
+    "facet-numeric-legend-inference",
+    "explicit-fold-facet-partition",
+    "shared-facet-top-lane",
+    "rotated-facet-headers",
+    "count-based-linear-position-domains",
+    "nearest-step-linear-axis-ticks",
+    "per-axis-numeric-tick-precision",
+    "explicit-axis-and-border-underlays",
+    "typescript",
+    "basic-entry-runtime-and-types",
+    "tutorial-consumers",
+    "minimal-browser-bundle-measurement",
+    "private-export-rejection",
+    "installed-local-mcp",
+    "direct-mcp-byte-equality",
+    "task-packet-v5-authoring-execution",
+    "explicit-unresolved-docs-fallback",
+    "terminal-unsupported-no-fallback"
+  ]
+}

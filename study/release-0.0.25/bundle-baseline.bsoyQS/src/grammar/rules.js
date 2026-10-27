@@ -1,0 +1,80 @@
+import { normalizePositionDatum } from "./positionDatum.js";
+import { cloneAndFreeze } from "../core/immutable.js";
+import {
+  readNominalField,
+  readQuantitativeField,
+  readTemporalField
+} from "./scales/index.js";
+
+const ENDPOINT_CHANNELS = Object.freeze(["x", "y", "x2", "y2"]);
+const VALUE_CHANNELS = Object.freeze([
+  ...ENDPOINT_CHANNELS,
+  "xOffset",
+  "yOffset",
+  "stroke",
+  "strokeDash",
+  "strokeWidth",
+  "opacity"
+]);
+
+const RULE_MODES = Object.freeze({
+  x: "vertical-span",
+  y: "horizontal-span",
+  "x,y,y2": "vertical-interval",
+  "x,y,x2": "horizontal-interval",
+  "x,y,x2,y2": "diagonal-interval"
+});
+
+export function resolveRuleMode(layer) {
+  if (layer?.mark?.type !== "rule") return undefined;
+  const signature = ENDPOINT_CHANNELS
+    .filter(channel => layer.encoding?.[channel] !== undefined)
+    .join(",");
+  return RULE_MODES[signature];
+}
+
+function readField(rows, encoding) {
+  if (["nominal", "ordinal"].includes(encoding.fieldType)) {
+    return readNominalField(rows, encoding.field);
+  }
+  if (encoding.fieldType === "temporal") {
+    return readTemporalField(rows, encoding.field, encoding.temporalUnit);
+  }
+  return readQuantitativeField(rows, encoding.field);
+}
+
+export function normalizeRuleDatum(value, fieldType, channel, temporalUnit) {
+  return normalizePositionDatum(value, fieldType, channel, temporalUnit, "Rule");
+}
+
+export function deriveRuleValues(rows, layer) {
+  const encodings = Object.fromEntries(
+    VALUE_CHANNELS
+      .map(channel => [channel, layer.encoding?.[channel]])
+      .filter(([channel, encoding]) =>
+        encoding !== undefined &&
+        (ENDPOINT_CHANNELS.includes(channel) || Object.hasOwn(encoding, "field"))
+      )
+  );
+  const hasField = Object.values(encodings).some(encoding =>
+    Object.hasOwn(encoding, "field")
+  );
+  const length = hasField ? rows.length : 1;
+  const values = {};
+
+  for (const [channel, encoding] of Object.entries(encodings)) {
+    if (Object.hasOwn(encoding, "field")) {
+      values[channel] = readField(rows, encoding);
+    } else {
+      const datum = normalizeRuleDatum(
+        encoding.datum,
+        encoding.fieldType,
+        channel,
+        encoding.temporalUnit
+      );
+      values[channel] = Array.from({ length }, () => datum);
+    }
+  }
+
+  return cloneAndFreeze({ length, values });
+}

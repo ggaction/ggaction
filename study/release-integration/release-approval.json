@@ -1,0 +1,1 @@
+{"environment_ids": [18269048715], "state": "approved", "comment": "User-requested ggaction 0.0.23 release. PR CI and merged main CI passed all 20 jobs; all tag verification jobs passed. Candidate commit 9820e3665cfbca546924ef1f4a17a8c8f9c17760, SHA-256 71fe32f7bde992c1ffe781e6ecdca5dcfba34148a1173f8288204f13c772f881 verified locally against the canonical artifact."}

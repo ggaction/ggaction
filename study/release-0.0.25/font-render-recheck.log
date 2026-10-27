@@ -1,0 +1,18 @@
+
+> ggaction@0.0.25 test:render
+> node scripts/run-render-tests.js chart:combined-legends chart:polar-guides chart:polar-line-radar
+
+✔ combined numeric legend PDF matches independently drawn literal circles and labels (319.329333ms)
+✔ combined numeric samples has a stable literal/public PNG pair (262.923708ms)
+✔ renders cars-polar-guides/default (999.159083ms)
+✔ renders gapminder-polar-trends/open (1207.106458ms)
+✔ renders jobs-radar-chart/closed (1327.448208ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3235.978584
+Focused render completed; full artifact galleries were not regenerated.

@@ -1,0 +1,17 @@
+{
+  "label": "test-browser",
+  "command": "npm",
+  "args": [
+    "run",
+    "test:browser"
+  ],
+  "code": 0,
+  "signal": null,
+  "timeoutMs": 5400000,
+  "durationMs": 159550,
+  "node": "v20.20.2",
+  "platform": "linux",
+  "bytes": 49894,
+  "retainedBytes": 49894,
+  "truncated": false
+}

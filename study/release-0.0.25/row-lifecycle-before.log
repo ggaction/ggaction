@@ -1,0 +1,66 @@
+✖ compound row highlights round trip, revise and remove every owned component (83.958334ms)
+  TypeError [Error]: payload.materializationConfigs.selections.h-plotWhisker must contain exactly: target, selector.
+      at invalidSnapshot (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/persistence/codec.js:5:24)
+      at exactKeys (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/persistence/validation.js:89:11)
+      at validateProgramState (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/persistence/validation.js:478:5)
+      at canonicalState (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/persistence.js:24:3)
+      at serializeProgram (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/persistence.js:123:31)
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/unit/actions/selection/row-highlight-lifecycle.test.js:18:18)
+      at Test.runInAsyncScope (node:async_hooks:211:14)
+      at Test.run (node:internal/test_runner/test:931:25)
+      at Test.start (node:internal/test_runner/test:829:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:297:17)
+
+✖ restoration rejects corrupt composite owners and row references (41.159625ms)
+  TypeError [Error]: payload.materializationConfigs.selections.h-plotWhisker must contain exactly: target, selector.
+      at invalidSnapshot (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/persistence/codec.js:5:24)
+      at exactKeys (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/persistence/validation.js:89:11)
+      at validateProgramState (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/persistence/validation.js:478:5)
+      at canonicalState (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/persistence.js:24:3)
+      at serializeProgram (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/persistence.js:123:31)
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/unit/actions/selection/row-highlight-lifecycle.test.js:36:18)
+      at Test.runInAsyncScope (node:async_hooks:211:14)
+      at Test.run (node:internal/test_runner/test:931:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+      at Test.postRun (node:internal/test_runner/test:1042:19)
+
+✔ row selectors reject malformed input atomically and accept an empty selection (35.882417ms)
+✔ item inspection caches frozen snapshots and resolves scoped targets (13.907042ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 2
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 532.703375
+
+✖ failing tests:
+
+test at test/unit/actions/selection/row-highlight-lifecycle.test.js:15:1
+✖ compound row highlights round trip, revise and remove every owned component (83.958334ms)
+  TypeError [Error]: payload.materializationConfigs.selections.h-plotWhisker must contain exactly: target, selector.
+      at invalidSnapshot (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/persistence/codec.js:5:24)
+      at exactKeys (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/persistence/validation.js:89:11)
+      at validateProgramState (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/persistence/validation.js:478:5)
+      at canonicalState (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/persistence.js:24:3)
+      at serializeProgram (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/persistence.js:123:31)
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/unit/actions/selection/row-highlight-lifecycle.test.js:18:18)
+      at Test.runInAsyncScope (node:async_hooks:211:14)
+      at Test.run (node:internal/test_runner/test:931:25)
+      at Test.start (node:internal/test_runner/test:829:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:297:17)
+
+test at test/unit/actions/selection/row-highlight-lifecycle.test.js:34:1
+✖ restoration rejects corrupt composite owners and row references (41.159625ms)
+  TypeError [Error]: payload.materializationConfigs.selections.h-plotWhisker must contain exactly: target, selector.
+      at invalidSnapshot (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/persistence/codec.js:5:24)
+      at exactKeys (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/persistence/validation.js:89:11)
+      at validateProgramState (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/persistence/validation.js:478:5)
+      at canonicalState (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/persistence.js:24:3)
+      at serializeProgram (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/persistence.js:123:31)
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/unit/actions/selection/row-highlight-lifecycle.test.js:36:18)
+      at Test.runInAsyncScope (node:async_hooks:211:14)
+      at Test.run (node:internal/test_runner/test:931:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+      at Test.postRun (node:internal/test_runner/test:1042:19)

@@ -1,0 +1,54 @@
+✔ native content flow matches independent circle-bound arithmetic without aligned row tracks (77.130167ms)
+✔ per-channel outer policy keeps every Y owner and one common bottom footer per occupied column (312.503834ms)
+✖ content layout retains headers, four-edge titles, legends, edits and backend output (651.133083ms)
+  Error: The left chart title and color legend overlap; guides require more margin space or different offsets.
+      at assertGuideCollisionBlocks (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/layout/guideCollisions.js:16:15)
+      at withGuideLayoutTransaction (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/materialization/guides/layout.js:63:3)
+      at ChartProgram.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/materialization/guides/layout.js:69:12)
+      at ChartProgram.wrappedAction [as createTitle] (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/core/action.js:213:35)
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/unit/actions/composition/facet-content-flow.test.js:59:8)
+      at async Test.run (node:internal/test_runner/test:932:9)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:629:7)
+
+✖ axis policy objects work in keyed grids while unsupported content grids fail atomically (196.137375ms)
+  TypeError [Error]: Cannot read properties of undefined (reading 'facet')
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/unit/actions/composition/facet-content-flow.test.js:81:36)
+      at Test.runInAsyncScope (node:async_hooks:211:14)
+      at Test.run (node:internal/test_runner/test:931:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+      at Test.postRun (node:internal/test_runner/test:1042:19)
+      at Test.run (node:internal/test_runner/test:970:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:629:7)
+
+ℹ tests 4
+ℹ suites 0
+ℹ pass 2
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1781.638417
+
+✖ failing tests:
+
+test at test/unit/actions/composition/facet-content-flow.test.js:55:1
+✖ content layout retains headers, four-edge titles, legends, edits and backend output (651.133083ms)
+  Error: The left chart title and color legend overlap; guides require more margin space or different offsets.
+      at assertGuideCollisionBlocks (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/layout/guideCollisions.js:16:15)
+      at withGuideLayoutTransaction (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/materialization/guides/layout.js:63:3)
+      at ChartProgram.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/materialization/guides/layout.js:69:12)
+      at ChartProgram.wrappedAction [as createTitle] (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/core/action.js:213:35)
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/unit/actions/composition/facet-content-flow.test.js:59:8)
+      at async Test.run (node:internal/test_runner/test:932:9)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:629:7)
+
+test at test/unit/actions/composition/facet-content-flow.test.js:71:1
+✖ axis policy objects work in keyed grids while unsupported content grids fail atomically (196.137375ms)
+  TypeError [Error]: Cannot read properties of undefined (reading 'facet')
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/unit/actions/composition/facet-content-flow.test.js:81:36)
+      at Test.runInAsyncScope (node:async_hooks:211:14)
+      at Test.run (node:internal/test_runner/test:931:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+      at Test.postRun (node:internal/test_runner/test:1042:19)
+      at Test.run (node:internal/test_runner/test:970:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:629:7)

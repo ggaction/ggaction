@@ -1,0 +1,558 @@
+import { materializeMarkClip } from "../../../materialization/markClip.js";
+import { validateGraphicItemLimit, validateWorkLimit } from "../../../core/validation.js";
+import { editGraphicProperties } from "../../primitives/graphicProperties.js";
+import { action } from "../../../core/action.js";
+import { validateUserId } from "../../../core/identifiers.js";
+import { getPointGraphicType } from "../../../grammar/schemas/mark.js";
+import {
+  createPointShapeGraphic,
+  resolvePointShapeExtent,
+  validatePointShape
+} from "../../../grammar/pointShapes.js";
+import {
+  canonicalJitterScalar,
+  normalizePointJitterPolicy,
+  resolvePointJitter
+} from "../../../grammar/jitter.js";
+import {
+  normalizePointPackingPolicy,
+  resolvePointPacking
+} from "../../../grammar/pointPacking.js";
+import { polarToCartesian } from "../../../grammar/polar.js";
+import { resolveDirectionValues } from "../../../grammar/direction.js";
+import {
+  resolveCoordinateBounds,
+  resolveCoordinatePolarFrame
+} from "../../../materialization/coordinateBounds.js";
+import { validateMarkOptions } from "../shared.js";
+import {
+  DEFAULT_COLORS,
+  DEFAULT_POINT_RADIUS
+} from "../../../theme/defaults.js";
+import { findDataset } from "../../../selectors/datasets.js";
+import { findLayer } from "../../../selectors/layers.js";
+import { resolveGraphicItemCapacity } from "../../../selectors/graphicCapacity.js";
+import { getMarkGraphicTypes } from "../../../core/vocabulary.js";
+import { canMaterializePoint } from "../../../materialization/marks/capabilities.js";
+import { rematerializeHighlightBaseline, materializeFollowingOverlays } from "../lifecycle.js";
+import {
+  resolveRowEncodingValues,
+  resolveRowPositionValues
+} from
+  "../../../materialization/rowEncoding.js";
+import { offsetCategoryPositions } from
+  "../../../materialization/categorySlotOffset.js";
+import { requestedStrokeDetails } from
+  "../../../grammar/strokeStyle.js";
+import { applyItemMissingPolicy } from "../../../grammar/itemMissing.js";
+
+const REMATERIALIZE_OPTIONS = Object.freeze(["id"]);
+const DEFAULT_POINT_FILL = DEFAULT_COLORS.mark;
+
+function resolvePointPositions(program, layer, dataset) {
+  const hasPolar = layer.encoding?.theta !== undefined ||
+    layer.encoding?.radius !== undefined;
+  if (!hasPolar) {
+    return {
+      x: resolveRowPositionValues(program, layer, dataset, "x"),
+      y: resolveRowPositionValues(program, layer, dataset, "y")
+    };
+  }
+  const theta = resolveRowEncodingValues(program, layer, dataset, "theta");
+  const radius = resolveRowEncodingValues(program, layer, dataset, "radius");
+  if (theta === undefined || radius === undefined) {
+    return { x: undefined, y: undefined };
+  }
+  const frame = resolveCoordinatePolarFrame(program, layer.coordinate);
+  const positions = theta.map((angle, index) => {
+    const distance = radius[index];
+    return Number.isFinite(angle) && Number.isFinite(distance)
+      ? polarToCartesian({ theta: angle, radius: distance, frame })
+      : { x: undefined, y: undefined };
+  });
+  return {
+    x: positions.map(position => position.x),
+    y: positions.map(position => position.y)
+  };
+}
+
+function compactProperties(properties) {
+  return Object.fromEntries(
+    Object.entries(properties).filter(([, value]) => value !== undefined)
+  );
+}
+
+function incompleteShapeGraphic(shape, properties, angle) {
+  const type = angle !== undefined && shape === "square"
+    ? "path"
+    : getPointGraphicType(shape);
+  const incomplete = type === "path"
+    ? {
+        fill: properties.fill,
+        opacity: properties.opacity,
+        ...requestedStrokeDetails(properties, "Point mark")
+      }
+    : properties;
+  return { type, properties: compactProperties(incomplete) };
+}
+
+function existingArea(child, parentType) {
+  const type = child?.type ?? parentType;
+  if (type === "circle" && Number.isFinite(child?.properties?.radius)) {
+    return Math.PI * child.properties.radius ** 2;
+  }
+  if (
+    type === "rect" &&
+    Number.isFinite(child?.properties?.width) &&
+    Number.isFinite(child?.properties?.height)
+  ) {
+    return child.properties.width * child.properties.height;
+  }
+  return undefined;
+}
+
+function resolvedPointArea(area, index, config, existingChildren, graphicType) {
+  return area?.[index] ?? (
+    config.radius === undefined
+      ? existingArea(existingChildren[index], graphicType) ??
+        Math.PI * DEFAULT_POINT_RADIUS ** 2
+      : Math.PI * config.radius ** 2
+  );
+}
+
+function resolveJitterEntries({
+  policy,
+  dataset,
+  x,
+  y,
+  area,
+  shapes,
+  angles,
+  config,
+  graphic,
+  existingChildren
+}) {
+  const seen = new Set();
+  return dataset.values.flatMap((row, index) => {
+    if (!Number.isFinite(x?.[index]) || !Number.isFinite(y?.[index])) return [];
+    const identity = policy.key === undefined ? index : row[policy.key];
+    const canonical = canonicalJitterScalar(
+      identity,
+      policy.key === undefined
+        ? "Point jitter source index"
+        : `Point jitter key field "${policy.key}"`
+    );
+    if (seen.has(canonical)) {
+      throw new Error(
+        `Point jitter key field "${policy.key}" must be unique for materialized items.`
+      );
+    }
+    seen.add(canonical);
+    const resolvedArea = resolvedPointArea(
+      area,
+      index,
+      config,
+      existingChildren,
+      graphic.type
+    );
+    const extent = resolvePointShapeExtent({
+      shape: shapes[index],
+      area: resolvedArea,
+      strokeWidth: typeof config.stroke === "string"
+        ? config.strokeWidth ?? 1
+        : 0,
+      angle: angles?.[index]
+    });
+    return [{
+      index,
+      identity,
+      base: policy.channel === "x" ? x[index] : y[index],
+      halfExtent: extent[policy.channel]
+    }];
+  });
+}
+
+function applyPointJitter(program, {
+  id,
+  layer,
+  dataset,
+  x,
+  y,
+  area,
+  shapes,
+  angles,
+  config,
+  graphic,
+  existingChildren
+}) {
+  const stored = program.materializationConfigs.jitters?.[id];
+  if (stored === undefined) return { program, x, y };
+  const policy = normalizePointJitterPolicy(stored);
+  const bounds = resolveCoordinateBounds(program, layer.coordinate);
+  const channels = policy.channel === "both" ? ["x", "y"] : [policy.channel];
+  const resolutions = {}, positions = { x, y };
+  for (const channel of channels) {
+    const scale = program.resolvedScales[layer.encoding?.[channel]?.scale];
+    if (scale === undefined) {
+      throw new Error(`Point jitter on "${id}" requires a resolved ${channel} scale.`);
+    }
+    // Resolve from the same unjittered positions, using each axis in the stable
+    // hash. Both is exactly the independent X and Y assignments together.
+    const axisPolicy = { ...policy, channel };
+    const entries = resolveJitterEntries({
+      policy: axisPolicy, dataset, x, y, area, shapes, angles,
+      config, graphic, existingChildren
+    });
+    const resolution = resolvePointJitter({
+      target: id, policy: axisPolicy, scale, entries,
+      plotMinimum: channel === "x" ? bounds.x : bounds.y,
+      plotMaximum: channel === "x" ? bounds.x + bounds.width : bounds.y + bounds.height
+    });
+    resolutions[channel] = resolution;
+    positions[channel] = [...positions[channel]];
+    for (const item of resolution.items) positions[channel][item.index] += item.finalOffset;
+  }
+  const resolved = policy.channel === "both"
+    ? { algorithm: policy.algorithm, itemCount: resolutions.x.itemCount, axes: resolutions }
+    : resolutions[policy.channel];
+  return {
+    program: program._withMaterializationConfig(["jitters", id], {
+      ...policy,
+      resolved
+    }),
+    x: positions.x,
+    y: positions.y
+  };
+}
+
+function applyPointPacking(program, {
+  id,
+  layer,
+  dataset,
+  x,
+  y,
+  area,
+  shapes,
+  angles,
+  config,
+  graphic,
+  existingChildren
+}) {
+  const stored = program.materializationConfigs.pointPacking?.[id];
+  if (stored === undefined) return { program, x, y };
+  const policy = normalizePointPackingPolicy(stored);
+  const encoding = layer.encoding?.[policy.channel];
+  const scale = program.resolvedScales[encoding?.scale];
+  if (scale === undefined) {
+    throw new Error(`Point packing on "${id}" requires a resolved ${policy.channel} scale.`);
+  }
+  const seen = new Set();
+  const entries = dataset.values.flatMap((row, index) => {
+    if (!Number.isFinite(x?.[index]) || !Number.isFinite(y?.[index])) return [];
+    const rawIdentity = policy.key === undefined ? index : row[policy.key];
+    const identity = canonicalJitterScalar(
+      rawIdentity,
+      policy.key === undefined
+        ? "Point packing source index"
+        : `Point packing key field "${policy.key}"`
+    );
+    if (seen.has(identity)) {
+      throw new Error(`Point packing key field "${policy.key}" must be unique for materialized items.`);
+    }
+    seen.add(identity);
+    const resolvedArea = resolvedPointArea(
+      area, index, config, existingChildren, graphic.type
+    );
+    const extent = resolvePointShapeExtent({
+      shape: shapes[index],
+      area: resolvedArea,
+      strokeWidth: typeof config.stroke === "string" ? config.strokeWidth ?? 1 : 0,
+      angle: angles?.[index]
+    });
+    return [{
+      index,
+      identity,
+      base: policy.channel === "x" ? x[index] : y[index],
+      fixed: policy.channel === "x" ? y[index] : x[index],
+      halfExtent: extent[policy.channel],
+      fixedHalfExtent: extent[policy.channel === "x" ? "y" : "x"]
+    }];
+  });
+  const bounds = resolveCoordinateBounds(program, layer.coordinate);
+  const resolution = resolvePointPacking({
+    target: id,
+    policy,
+    scale,
+    entries,
+    plotMinimum: policy.channel === "x" ? bounds.x : bounds.y,
+    plotMaximum: policy.channel === "x" ? bounds.x + bounds.width : bounds.y + bounds.height
+  });
+  const values = [...(policy.channel === "x" ? x : y)];
+  for (const item of resolution.items) values[item.index] = item.final;
+  return {
+    program: program._withMaterializationConfig(["pointPacking", id], {
+      ...policy,
+      resolved: resolution
+    }),
+    x: policy.channel === "x" ? values : x,
+    y: policy.channel === "y" ? values : y
+  };
+}
+
+export const rematerializePointMark = /* @__PURE__ */ action(
+  {
+    op: "rematerializePointMark",
+    description: "Recompute concrete point geometry and appearance."
+  },
+  function (args = {}) {
+    validateMarkOptions(args, REMATERIALIZE_OPTIONS, "rematerializePointMark");
+    const id = validateUserId(args.id, "Point mark id");
+    if (findLayer(this, id)?.derivedBindings?.overlay) return this.rematerializeOverlay({ id });
+    const highlighted = rematerializeHighlightBaseline(this, {
+      target: id,
+      operation: "rematerializePointMark",
+      resetProperty: "items",
+      resetValue: []
+    });
+    if (highlighted !== undefined) return highlighted;
+    let resolved = this;
+    const initialLayer = findLayer(resolved, id);
+    for (const channel of ["xOffset", "yOffset"]) {
+      const scaleId = initialLayer?.encoding?.[channel]?.scale;
+      if (scaleId !== undefined) {
+        resolved = resolved.rematerializeScale({
+          id: scaleId,
+          guides: false,
+          marks: false
+        });
+      }
+    }
+    const layer = findLayer(resolved, id);
+    const graphic = resolved.graphicSpec.objects[id];
+
+    if (layer?.mark?.type !== "point") {
+      throw new Error(`Unknown point mark "${id}".`);
+    }
+    if (!getMarkGraphicTypes("point").includes(graphic?.type)) {
+      throw new Error(`Point mark "${id}" requires point graphics.`);
+    }
+    const sourceDataset = findDataset(resolved, layer.data);
+    if (sourceDataset === undefined) {
+      throw new Error(`Point mark "${id}" requires an existing dataset.`);
+    }
+    validateGraphicItemLimit(sourceDataset.values.length, resolveGraphicItemCapacity(resolved, { id, label: "Point mark item count" }));
+    const dataset = applyItemMissingPolicy(layer, sourceDataset);
+
+    if (graphic.items.length === 0 && !canMaterializePoint(resolved, layer)) {
+      return resolved;
+    }
+
+    const positions = resolvePointPositions(resolved, layer, dataset);
+    const mappedFill = resolveRowEncodingValues(resolved, layer, dataset, "color");
+    const mappedStroke = resolveRowEncodingValues(resolved, layer, dataset, "stroke");
+    const area = resolveRowEncodingValues(resolved, layer, dataset, "size");
+    const encodedShape = resolveRowEncodingValues(resolved, layer, dataset, "shape");
+    const encodedOpacity = resolveRowEncodingValues(
+      resolved,
+      layer,
+      dataset,
+      "opacity"
+    );
+    const angles = resolveDirectionValues(dataset.values, layer.encoding?.angle);
+    const config = resolved.markConfigs[id] ?? {};
+    const strokeDetails = requestedStrokeDetails(config, "Point mark");
+    const fill = mappedFill ?? config.fill ?? DEFAULT_POINT_FILL;
+    const shapes = encodedShape ?? dataset.values.map(() => config.shape ?? "circle");
+    validateWorkLimit(shapes.reduce((sum, shape) => sum +
+      (typeof shape === "object" ? validatePointShape(shape).polygon.length + 1 : 0), 0),
+    "Point polygon materialization");
+    const existingChildren = graphic.items ?? [];
+    const constantShape = validatePointShape(config.shape ?? "circle");
+    const requiresMixedCollection =
+      encodedShape !== undefined ||
+      angles !== undefined ||
+      graphic.type === "collection" ||
+      getPointGraphicType(constantShape) !== graphic.type;
+    if (
+      resolved.materializationConfigs.jitters?.[id] !== undefined &&
+      resolved.materializationConfigs.pointPacking?.[id] !== undefined
+    ) {
+      throw new Error(`Point mark "${id}" cannot combine jitter and packing.`);
+    }
+    const packed = applyPointPacking(resolved, {
+      id,
+      layer,
+      dataset,
+      x: positions.x,
+      y: positions.y,
+      area,
+      shapes,
+      angles,
+      config,
+      graphic,
+      existingChildren
+    });
+    const jittered = applyPointJitter(packed.program, {
+      id,
+      layer,
+      dataset,
+      x: packed.x,
+      y: packed.y,
+      area,
+      shapes,
+      angles,
+      config,
+      graphic,
+      existingChildren
+    });
+    const { x, y } = offsetCategoryPositions(jittered.program, layer, jittered);
+
+    if (requiresMixedCollection) {
+      const items = dataset.values.map((_, index) => {
+        const shape = shapes[index];
+        const existing = existingChildren[index]?.properties ?? {};
+        const color = mappedFill?.[index] ?? config.fill ??
+          existing.fill ?? DEFAULT_POINT_FILL;
+        const opacity = encodedOpacity?.[index] ?? config.opacity ?? existing.opacity;
+        const resolvedArea = resolvedPointArea(
+          area,
+          index,
+          config,
+          existingChildren,
+          graphic.type
+        );
+        const centerX = x?.[index] ?? existing.x;
+        const centerY = y?.[index] ?? existing.y;
+        const angle = angles?.[index];
+        if (
+          resolvedArea === undefined ||
+          !Number.isFinite(centerX) ||
+          !Number.isFinite(centerY)
+        ) {
+          return incompleteShapeGraphic(shape, {
+            x: centerX,
+            y: centerY,
+            fill: color,
+            opacity,
+            ...strokeDetails
+          }, angle);
+        }
+        return createPointShapeGraphic({
+          shape,
+          x: centerX,
+          y: centerY,
+          area: resolvedArea,
+          fill: color,
+          ...(typeof (mappedStroke?.[index] ?? config.stroke) === "string"
+            ? { stroke: mappedStroke?.[index] ?? config.stroke }
+            : {}),
+          ...((mappedStroke !== undefined || config.strokeWidth !== undefined)
+            ? { strokeWidth: config.strokeWidth ?? 1 }
+            : {}),
+          opacity,
+          angle,
+          ...strokeDetails
+        });
+      });
+      return materializeFollowingOverlays(materializeMarkClip(jittered.program.editGraphics({
+        target: id,
+        property: "items",
+        value: items
+      }), id), id);
+    }
+
+    let next = graphic.items.length === dataset.values.length
+      ? jittered.program
+      : jittered.program.editGraphics({
+          target: id,
+          property: "length",
+          value: dataset.values.length
+        });
+    if (x !== undefined) next = next.editGraphics({ target: id, property: "x", value: x });
+    if (y !== undefined) next = next.editGraphics({ target: id, property: "y", value: y });
+    if (fill !== undefined) {
+      next = next.editGraphics({ target: id, property: "fill", value: fill });
+    }
+    if (graphic.type === "circle") {
+      const radii = area === undefined
+        ? config.radius ?? (
+          x !== undefined && y !== undefined
+            ? dataset.values.map((_, index) => {
+                const existing = existingChildren[index]?.properties?.radius;
+                return Number.isFinite(existing)
+                  ? existing
+                  : DEFAULT_POINT_RADIUS;
+              })
+            : undefined
+        )
+        : area.map(value => Math.sqrt(value / Math.PI));
+      if (radii !== undefined) {
+        next = next.editGraphics({ target: id, property: "radius", value: radii });
+      }
+    } else if (
+      area !== undefined ||
+      config.radius !== undefined ||
+      (x !== undefined && y !== undefined)
+    ) {
+      const sides = area === undefined
+        ? dataset.values.map((_, index) => {
+          const existing = existingArea(existingChildren[index], graphic.type);
+          return Math.sqrt(
+            config.radius === undefined
+              ? existing ?? Math.PI * DEFAULT_POINT_RADIUS ** 2
+              : Math.PI * config.radius ** 2
+          );
+        })
+        : area.map(value => Math.sqrt(value));
+      const centersX = x ?? existingChildren.map(child => child.properties.x);
+      const centersY = y ?? existingChildren.map(child => child.properties.y);
+      if (centersX.every(Number.isFinite)) {
+        next = next.editGraphics({
+          target: id,
+          property: "x",
+          value: centersX.map((value, index) => value - (Array.isArray(sides) ? sides[index] : sides) / 2)
+        });
+      }
+      if (centersY.every(Number.isFinite)) {
+        next = next.editGraphics({
+          target: id,
+          property: "y",
+          value: centersY.map((value, index) => value - (Array.isArray(sides) ? sides[index] : sides) / 2)
+        });
+      }
+      next = editGraphicProperties(next, id, {
+        width: sides,
+        height: sides,
+        stroke: mappedStroke ?? fill ?? DEFAULT_POINT_FILL,
+        strokeWidth: mappedStroke === undefined ? 0 : config.strokeWidth ?? 1
+      });
+    }
+    if (config.opacity !== undefined) {
+      next = next.editGraphics({ target: id, property: "opacity", value: config.opacity });
+    } else if (encodedOpacity !== undefined) {
+      next = next.editGraphics({ target: id, property: "opacity", value: encodedOpacity });
+    }
+    if (mappedStroke !== undefined) {
+      next = editGraphicProperties(next, id, {
+        stroke: mappedStroke,
+        strokeWidth: config.strokeWidth ?? 1
+      });
+    } else if (config.stroke === false) {
+      next = editGraphicProperties(next, id, {
+        stroke: "transparent",
+        strokeWidth: 0
+      });
+    } else if (config.stroke !== undefined) {
+      next = next.editGraphics({ target: id, property: "stroke", value: config.stroke });
+      next = next.editGraphics({
+        target: id,
+        property: "strokeWidth",
+        value: config.strokeWidth
+      });
+    }
+    for (const [property, value] of Object.entries(strokeDetails)) {
+      next = next.editGraphics({ target: id, property, value });
+    }
+    return materializeFollowingOverlays(materializeMarkClip(next, id), id);
+  }
+);

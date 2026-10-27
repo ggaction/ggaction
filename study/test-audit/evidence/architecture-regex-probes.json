@@ -1,0 +1,22 @@
+[
+  {
+    "code": "program.semanticSpec.layers.find(x=>x.id===id)",
+    "rejected": true
+  },
+  {
+    "code": "program.semanticSpec.layers?.find(x=>x.id===id)",
+    "rejected": false
+  },
+  {
+    "code": "const layers=program.semanticSpec.layers; layers.find(x=>x.id===id)",
+    "rejected": false
+  },
+  {
+    "code": "program.semanticSpec[\"layers\"].find(x=>x.id===id)",
+    "rejected": false
+  },
+  {
+    "code": "// program.semanticSpec.layers.find(x=>x.id===id)",
+    "rejected": true
+  }
+]

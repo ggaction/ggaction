@@ -1,0 +1,52 @@
+import { findDataset } from "../../../selectors/datasets.js";
+import { requireLayer } from "../../../selectors/layers.js";
+import { areaSelectionPolicy } from "./area.js";
+import { arcSelectionPolicy } from "./arc.js";
+import { barSelectionPolicy } from "./bar.js";
+import { lineSelectionPolicy } from "./line.js";
+import { pointSelectionPolicy } from "./point.js";
+import { ruleSelectionPolicy } from "./rule.js";
+import { tickSelectionPolicy } from "./tick.js";
+import { rectSelectionPolicy } from "./rect.js";
+import { applyItemMissingPolicy } from "../../../grammar/itemMissing.js";
+import { resolveOverlayItems } from "../items/overlay.js";
+
+const POLICIES = Object.freeze({
+  arc: arcSelectionPolicy,
+  area: areaSelectionPolicy,
+  bar: barSelectionPolicy,
+  line: lineSelectionPolicy,
+  point: pointSelectionPolicy,
+  rule: ruleSelectionPolicy,
+  tick: tickSelectionPolicy,
+  rect: rectSelectionPolicy
+});
+
+export function findSelectionPolicy(markType) {
+  return POLICIES[markType];
+}
+
+export function requireSelectionPolicy(markType) {
+  const policy = findSelectionPolicy(markType);
+  if (policy === undefined) {
+    throw new Error(`Mark type "${markType}" has no selection policy.`);
+  }
+  return policy;
+}
+
+export function resolveMarkItems(program, target, grain = "item") {
+  const layer = requireLayer(program, target, `Unknown mark target "${target}"`);
+  if (layer.derivedBindings?.overlay) {
+    if (grain !== "item") throw new Error(`Overlay "${target}" supports item selection grain.`);
+    return resolveOverlayItems(program, layer);
+  }
+  const dataset = findDataset(program, layer.data);
+  if (dataset === undefined) {
+    throw new Error(`Mark "${target}" requires an existing dataset for selection.`);
+  }
+  const policy = requireSelectionPolicy(layer.mark?.type);
+  if (!policy.supportedGrains.includes(grain)) {
+    throw new Error(`Mark "${target}" does not support ${grain} selection grain.`);
+  }
+  return policy.resolveItems(program, layer, applyItemMissingPolicy(layer, dataset), grain);
+}

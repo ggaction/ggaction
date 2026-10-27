@@ -1,0 +1,71 @@
+import {findRepository} from './environment.mjs';
+import fs from 'node:fs';
+import path from 'node:path';
+import {fileURLToPath,pathToFileURL} from 'node:url';
+import {createRequire} from 'node:module';
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
+const gg=findRepository();
+const require=createRequire(path.join(gg,'package.json'));
+const {chromium}=require('playwright');
+const browser=await chromium.launch({headless:true});
+const build=JSON.parse(fs.readFileSync(path.join(root,'evidence/report-build.json'),'utf8'));
+const checks=[],errors=[],network=[];
+const check=(name,passed,detail)=>{checks.push({name,passed:!!passed,detail});if(!passed)errors.push(name);};
+fs.mkdirSync(path.join(root,'evidence/report-preview'),{recursive:true});
+const page=await browser.newPage({viewport:{width:1440,height:1000},deviceScaleFactor:1,locale:'ko-KR'});
+page.on('pageerror',e=>errors.push(e.message));
+page.on('request',r=>{if(/^https?:/.test(r.url()))network.push(r.url());});
+try{
+  await page.goto(pathToFileURL(path.join(root,'REPORT.ko.html')).href);
+  await page.waitForLoadState('networkidle');
+  await page.screenshot({path:path.join(root,'evidence/report-preview/desktop.png')});
+  const structure=await page.evaluate(()=>({h2:document.querySelectorAll('article h2').length,tables:document.querySelectorAll('table').length,overflow:document.documentElement.scrollWidth>innerWidth,externalImages:[...document.images].filter(x=>/^https?:/.test(x.src)).length}));
+  check('desktop document structure',structure.h2===build.chapters&&structure.tables===build.tables&&!structure.overflow,structure);
+  check('offline viewer',network.length===0&&structure.externalImages===0,{network});
+  await page.locator('.toc a[href="#chapter-14"]').click();
+  check('chapter navigation',await page.locator('#chapter-14').evaluate(el=>Math.abs(el.getBoundingClientRect().top-24)<10));
+  await page.screenshot({path:path.join(root,'evidence/report-preview/implementation-plan.png')});
+  await page.locator('#search').fill('GeoJSON');
+  const count=await page.locator('.search-results button').count();
+  check('search matches',count>10,{displayed:count,status:await page.locator('#search-status').innerText()});
+  await page.locator('.search-results button').first().click();
+  check('search target visible',await page.locator('.highlight').count()===1);
+  await page.locator('#search').fill('phrase-that-cannot-exist-927562');
+  check('empty search',await page.locator('.search-results button').count()===0);
+  await page.locator('#search').press('Escape');
+  check('escape resets search',await page.locator('.toc').isVisible());
+  await page.locator('.toc a[href="#appendix-f"]').click();
+  check('set visualization deferred notice',await page.locator('article').innerText().then(t=>t.includes('UpSet과 집합 시각화는 이번 범위에서 제외한다.')));
+  check('scope revision chapter navigation',await page.locator('#appendix-f').isVisible());
+  await page.screenshot({path:path.join(root,'evidence/report-preview/scope-revision.png')});
+  for(const term of ['UpSet','force-directed','POL-08','WP-26']){
+    await page.locator('#search').fill(term);
+    check('revision search '+term,await page.locator('.search-results button').count()>0);
+    await page.locator('#search').press('Escape');
+  }
+  await page.locator('.toc a[href="#chapter-7"]').click();
+  await page.screenshot({path:path.join(root,'evidence/report-preview/animation.png')});
+  await page.setViewportSize({width:390,height:844});
+  await page.evaluate(()=>scrollTo(0,0));
+  await page.screenshot({path:path.join(root,'evidence/report-preview/mobile.png')});
+  check('mobile no document overflow',await page.evaluate(()=>document.documentElement.scrollWidth===innerWidth));
+  await page.locator('.mobile-menu').click();
+  check('mobile menu open',await page.locator('aside').isVisible());
+  await page.locator('.toc a[href="#chapter-8"]').click();
+  check('mobile nav closes',!(await page.locator('aside').isVisible()));
+  const table=page.locator('#chapter-8 + h3').first();
+  await page.screenshot({path:path.join(root,'evidence/report-preview/mobile-geo.png')});
+  const overflowingTables=await page.locator('.table-scroll').evaluateAll(els=>els.filter(e=>e.scrollWidth>e.clientWidth).length);
+  check('mobile tables independently scroll',overflowingTables>0,{scrollableTables:overflowingTables});
+  await page.setViewportSize({width:1440,height:1000});
+  await page.emulateMedia({media:'print'});
+  check('print hides navigation',!(await page.locator('aside').isVisible()));
+  check('no script errors',errors.length===0,errors.slice());
+}catch(error){errors.push(error.stack);}
+finally{
+  const result={generatedAt:new Date().toISOString(),scope:'Local report UI only; not ggaction feature conformance',reportSha256:build.sha256,browser:browser.version(),passed:errors.length===0,checks,errors};
+  fs.writeFileSync(path.join(root,'evidence/report-ui-qa.json'),JSON.stringify(result,null,2)+'\n');
+  console.log(JSON.stringify(result));
+  await browser.close();
+}
+if(errors.length)process.exitCode=1;

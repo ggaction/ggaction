@@ -1,0 +1,2102 @@
+{
+  "commit": "40ec7edead7fc84de05aad31888dd0f7d264a512",
+  "version": "0.0.26",
+  "files": [
+    {
+      "path": ".github/workflows/ci.yml",
+      "status": "existing-at-baseline",
+      "sha256": "6545e77f65a0aacfbf12621df247d5f4cf1f0462f68fa2f881389a93011c8c66",
+      "lines": 397,
+      "symbols": [],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/.github/workflows/ci.yml"
+    },
+    {
+      "path": ".github/workflows/release.yml",
+      "status": "existing-at-baseline",
+      "sha256": "2994879bafce3b939a2be8cb0825a8395f1852d0a3dc733b62eedddbb700cec0",
+      "lines": 732,
+      "symbols": [],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/.github/workflows/release.yml"
+    },
+    {
+      "path": "AGENTS.md",
+      "status": "existing-at-baseline",
+      "sha256": "a1fb8660a994fdd2fb7a783bc947a9925a1382845e13d41e7315e81f3430b76c",
+      "lines": 46,
+      "symbols": [
+        {
+          "line": 3,
+          "declaration": "## Instruction Hierarchy"
+        },
+        {
+          "line": 11,
+          "declaration": "## Architecture References"
+        },
+        {
+          "line": 19,
+          "declaration": "## Core Invariants"
+        },
+        {
+          "line": 29,
+          "declaration": "## Development Workflow"
+        },
+        {
+          "line": 40,
+          "declaration": "## Decisions and Simplicity"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/AGENTS.md"
+    },
+    {
+      "path": "agent_docs/SECOND_ARCHITECTURE.md",
+      "status": "existing-at-baseline",
+      "sha256": "8f98c0ad905885f734ffa6722091b9f0a07411db306b4aa7d96666533161c8b5",
+      "lines": 2783,
+      "symbols": [
+        {
+          "line": 7,
+          "declaration": "## 현재 구조 빠른 지도"
+        },
+        {
+          "line": 33,
+          "declaration": "## 범례 항목 이동 소유권"
+        },
+        {
+          "line": 45,
+          "declaration": "## 범례 요약 행 정책"
+        },
+        {
+          "line": 52,
+          "declaration": "## Content facet 배치 소유권"
+        },
+        {
+          "line": 65,
+          "declaration": "## 문서의 위치"
+        },
+        {
+          "line": 114,
+          "declaration": "## 핵심 결론"
+        },
+        {
+          "line": 216,
+          "declaration": "## 전체 계층"
+        },
+        {
+          "line": 278,
+          "declaration": "## Public package boundary"
+        },
+        {
+          "line": 541,
+          "declaration": "## 실행 계약의 위치"
+        },
+        {
+          "line": 565,
+          "declaration": "## `ChartProgram`의 canonical state"
+        },
+        {
+          "line": 665,
+          "declaration": "## Immutability와 ownership"
+        },
+        {
+          "line": 713,
+          "declaration": "## 저작용 text metrics"
+        },
+        {
+          "line": 719,
+          "declaration": "## 구조화된 진단 경계"
+        },
+        {
+          "line": 723,
+          "declaration": "## `semanticSpec`"
+        },
+        {
+          "line": 768,
+          "declaration": "## `graphicSpec`"
+        },
+        {
+          "line": 901,
+          "declaration": "## `resolvedScales`"
+        },
+        {
+          "line": 956,
+          "declaration": "## `materializationConfigs`"
+        },
+        {
+          "line": 1006,
+          "declaration": "## Context"
+        },
+        {
+          "line": 1048,
+          "declaration": "## Action과 trace"
+        },
+        {
+          "line": 1104,
+          "declaration": "## API의 세 층"
+        },
+        {
+          "line": 1168,
+          "declaration": "## Primitive action"
+        },
+        {
+          "line": 1174,
+          "declaration": "## Selector와 resource identity"
+        },
+        {
+          "line": 1194,
+          "declaration": "## Generated internal identity"
+        },
+        {
+          "line": 1223,
+          "declaration": "## Pure grammar와 action의 분리"
+        },
+        {
+          "line": 1248,
+          "declaration": "## Scale resolution과 materialization"
+        },
+        {
+          "line": 1327,
+          "declaration": "## Mark materialization policy"
+        },
+        {
+          "line": 1349,
+          "declaration": "## Cross-cutting rematerialization plan"
+        },
+        {
+          "line": 1464,
+          "declaration": "## Canvas와 layout"
+        },
+        {
+          "line": 1488,
+          "declaration": "## Axis, grid, legend, title"
+        },
+        {
+          "line": 1547,
+          "declaration": "## Aggregate action hierarchy"
+        },
+        {
+          "line": 1560,
+          "declaration": "## Built-in visual default"
+        },
+        {
+          "line": 1590,
+          "declaration": "## Canvas renderer"
+        },
+        {
+          "line": 1629,
+          "declaration": "## SVG renderer"
+        },
+        {
+          "line": 1651,
+          "declaration": "## PDF adapter"
+        },
+        {
+          "line": 1671,
+          "declaration": "## 선택 의존성과 메모리 출력"
+        },
+        {
+          "line": 1677,
+          "declaration": "## PNG adapter"
+        },
+        {
+          "line": 1701,
+          "declaration": "## Source ownership"
+        },
+        {
+          "line": 1865,
+          "declaration": "## Test architecture"
+        },
+        {
+          "line": 2100,
+          "declaration": "## 현재 완성된 vertical slice"
+        },
+        {
+          "line": 2104,
+          "declaration": "## 새 기능을 추가하는 기준"
+        },
+        {
+          "line": 2140,
+          "declaration": "## 현재 범위 밖 또는 제한된 부분"
+        },
+        {
+          "line": 2156,
+          "declaration": "## 초기 아키텍처에서 확립되거나 달라진 점"
+        },
+        {
+          "line": 2665,
+          "declaration": "## 읽기 전용 전환 장면과 외부 재생기"
+        },
+        {
+          "line": 2758,
+          "declaration": "## Immutable composition snapshot transfer"
+        },
+        {
+          "line": 2762,
+          "declaration": "## Guide 표시 상태 (2026-10-25)"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/agent_docs/SECOND_ARCHITECTURE.md"
+    },
+    {
+      "path": "agent_docs/impl/AGENTS.md",
+      "status": "existing-at-baseline",
+      "sha256": "ac856f13f61335c0f8200795adbef2a638a920bec1c84414405ba5d9b64359d3",
+      "lines": 37,
+      "symbols": [
+        {
+          "line": 5,
+          "declaration": "## Planning Records"
+        },
+        {
+          "line": 11,
+          "declaration": "## Approval Gates"
+        },
+        {
+          "line": 20,
+          "declaration": "## Visual Review Evidence"
+        },
+        {
+          "line": 29,
+          "declaration": "## Closeout and Release"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/agent_docs/impl/AGENTS.md"
+    },
+    {
+      "path": "knowledge/action-cards.json",
+      "status": "existing-at-baseline",
+      "sha256": "690b73a26b69df0b24d2d61e0b3412cfa55f856d7d5693aa660caa8c8df8b944",
+      "lines": 37113,
+      "symbols": [],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/knowledge/action-cards.json"
+    },
+    {
+      "path": "knowledge/task-resolver.js",
+      "status": "existing-at-baseline",
+      "sha256": "996965a043d0dec52afdaec85ba46d6e7c451df7634a800bb480e250a4420108",
+      "lines": 2166,
+      "symbols": [
+        {
+          "line": 62,
+          "declaration": "export class TaskPacketBudgetError extends Error {"
+        },
+        {
+          "line": 1969,
+          "declaration": "export function validateResolverKnowledge() {"
+        },
+        {
+          "line": 2058,
+          "declaration": "export function searchGgaction(query) {"
+        },
+        {
+          "line": 2162,
+          "declaration": "export function taskPacketBytes(packet) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/knowledge/task-resolver.js"
+    },
+    {
+      "path": "package-lock.json",
+      "status": "existing-at-baseline",
+      "sha256": "6caf1f3a554c34ee127967c03581971176086ef90db0166d4c71948933a22f1e",
+      "lines": 3650,
+      "symbols": [],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/package-lock.json"
+    },
+    {
+      "path": "package.json",
+      "status": "existing-at-baseline",
+      "sha256": "2eeb8eaba9a66516c1f2184d000afb7ec6083d60c5f492dbf4208c192f9cb95a",
+      "lines": 196,
+      "symbols": [],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/package.json"
+    },
+    {
+      "path": "scripts/coverage-policy.js",
+      "status": "existing-at-baseline",
+      "sha256": "480cbd8a4a29449473239581bafc4637be3dc8386f5f44a2d335da95eb3c8284",
+      "lines": 337,
+      "symbols": [
+        {
+          "line": 7,
+          "declaration": "export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({"
+        },
+        {
+          "line": 66,
+          "declaration": "export const CRITICAL_COVERAGE_OVERRIDES = Object.freeze({"
+        },
+        {
+          "line": 249,
+          "declaration": "export function coverageFloorsForFiles("
+        },
+        {
+          "line": 266,
+          "declaration": "export const CRITICAL_COVERAGE_FLOORS = coverageFloorsForFiles(sourceFiles(sourceRoot));"
+        },
+        {
+          "line": 268,
+          "declaration": "export function parseCoverageTable(output) {"
+        },
+        {
+          "line": 298,
+          "declaration": "export function assertCriticalCoverage("
+        },
+        {
+          "line": 325,
+          "declaration": "export const SOURCE_COVERAGE_EXCLUSIONS = Object.freeze({"
+        },
+        {
+          "line": 328,
+          "declaration": "export function assertSourceCoverage(output, files = sourceFiles(sourceRoot), exclusions = SOURCE_COVERAGE_EXCLUSIONS) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/scripts/coverage-policy.js"
+    },
+    {
+      "path": "scripts/generate-action-catalog.js",
+      "status": "existing-at-baseline",
+      "sha256": "3600c66cdaf33381590771e9fe0257eafef9f46d2c4534c92a7d93dfdc2036c8",
+      "lines": 103,
+      "symbols": [
+        {
+          "line": 25,
+          "declaration": "export function renderActionCatalog(index) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/scripts/generate-action-catalog.js"
+    },
+    {
+      "path": "scripts/package-consumer.js",
+      "status": "existing-at-baseline",
+      "sha256": "a04b7ac806d60a3c9c9fd608e74dbcd9554eaf7ebce7ab42aea786de21ca0b2d",
+      "lines": 181,
+      "symbols": [
+        {
+          "line": 20,
+          "declaration": "export async function preparePackageConsumer({"
+        },
+        {
+          "line": 63,
+          "declaration": "export async function testPackageConsumer(options) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/scripts/package-consumer.js"
+    },
+    {
+      "path": "scripts/release-candidate.js",
+      "status": "existing-at-baseline",
+      "sha256": "a5e5a55cacb69b4a36f1dfbff8e61197ad38172166a7ba9815e41a1b41b150ac",
+      "lines": 119,
+      "symbols": [
+        {
+          "line": 16,
+          "declaration": "export function validateReleaseIdentity({ tag, ref, packageVersion, lockVersion }) {"
+        },
+        {
+          "line": 53,
+          "declaration": "export async function createReleaseCandidate({ tag, ref }) {"
+        },
+        {
+          "line": 81,
+          "declaration": "export async function verifyReleaseCandidate({ manifestFile, tag, ref }) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/scripts/release-candidate.js"
+    },
+    {
+      "path": "scripts/run-tests.js",
+      "status": "existing-at-baseline",
+      "sha256": "5b77183637640c7e87657f3048827e7073ba25e08bdfe898e5637c101bff368d",
+      "lines": 269,
+      "symbols": [
+        {
+          "line": 43,
+          "declaration": "export const TEST_CAPABILITIES = Object.freeze(Object.fromEntries("
+        },
+        {
+          "line": 67,
+          "declaration": "export function classifyTestFile(file, root = testRoot) {"
+        },
+        {
+          "line": 86,
+          "declaration": "export function matchesCapabilityEntry(relative, entry) {"
+        },
+        {
+          "line": 114,
+          "declaration": "export function collectTestFiles(suite = \"all\", root = testRoot, selectors = []) {"
+        },
+        {
+          "line": 139,
+          "declaration": "export function parseTestShard(argument) {"
+        },
+        {
+          "line": 156,
+          "declaration": "export function testRunnerArguments(suite, files, shard) {"
+        },
+        {
+          "line": 180,
+          "declaration": "export function createTestOutputCapture() {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/scripts/run-tests.js"
+    },
+    {
+      "path": "src/AGENTS.md",
+      "status": "existing-at-baseline",
+      "sha256": "517a3a2223b4cd3676e6f4dd60e93975a2ba5efc09df4a86a53b52bfbfbec37e",
+      "lines": 34,
+      "symbols": [
+        {
+          "line": 5,
+          "declaration": "## Scoped Source Instructions"
+        },
+        {
+          "line": 14,
+          "declaration": "## Source-Wide Boundaries"
+        },
+        {
+          "line": 29,
+          "declaration": "## Canonical Behavioral Records"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/AGENTS.md"
+    },
+    {
+      "path": "src/ChartProgram.js",
+      "status": "existing-at-baseline",
+      "sha256": "82dea44d5fd7c545e774f4fdd1a8394d5637964f0fd053397a55ff3c3f504c56",
+      "lines": 12,
+      "symbols": [
+        {
+          "line": 5,
+          "declaration": "export class ChartProgram extends CoreChartProgram {}"
+        },
+        {
+          "line": 10,
+          "declaration": "export function chart() {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/ChartProgram.js"
+    },
+    {
+      "path": "src/accessibility.js",
+      "status": "existing-at-baseline",
+      "sha256": "b850f330ba23ef1e48c38ace60bf0ce8490f9657c41f7d3a009ab77499101637",
+      "lines": 172,
+      "symbols": [
+        {
+          "line": 166,
+          "declaration": "export function exportAccessibleData(program, options = {}) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/accessibility.js"
+    },
+    {
+      "path": "src/actions/AGENTS.md",
+      "status": "existing-at-baseline",
+      "sha256": "04e6b79b598b7881194455e51d61ad88048a0582c8fdb60d3d5be9c86f25d489",
+      "lines": 47,
+      "symbols": [
+        {
+          "line": 5,
+          "declaration": "## Public API Shape"
+        },
+        {
+          "line": 24,
+          "declaration": "## Lifecycle and Atomicity"
+        },
+        {
+          "line": 34,
+          "declaration": "## Action and Trace Semantics"
+        },
+        {
+          "line": 45,
+          "declaration": "## Domain Contracts"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/actions/AGENTS.md"
+    },
+    {
+      "path": "src/actions/charts/index.js",
+      "status": "existing-at-baseline",
+      "sha256": "eebb70180ffd4b244e9bc44f4e5225cb010f808393171d61679b39ce426ec62b",
+      "lines": 55,
+      "symbols": [
+        {
+          "line": 24,
+          "declaration": "export function registerChartActions(ProgramClass) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/actions/charts/index.js"
+    },
+    {
+      "path": "src/actions/composition/index.js",
+      "status": "existing-at-baseline",
+      "sha256": "031f1a3c1905896b0f5d2e9069da14e3dcf0abe43c63b53557cf8a6e957410ac",
+      "lines": 11,
+      "symbols": [
+        {
+          "line": 6,
+          "declaration": "export function registerCompositionActions(ProgramClass) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/actions/composition/index.js"
+    },
+    {
+      "path": "src/actions/coordinates/actions.js",
+      "status": "existing-at-baseline",
+      "sha256": "9d6596fcbf719d2743cc2ee54eaeec529b4a641aa25ebabec43e2a0219b566b9",
+      "lines": 88,
+      "symbols": [
+        {
+          "line": 35,
+          "declaration": "export const createCoordinate = /* @__PURE__ */ action("
+        },
+        {
+          "line": 86,
+          "declaration": "export function registerBasicCoordinateActions(ProgramClass) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/actions/coordinates/actions.js"
+    },
+    {
+      "path": "src/actions/coordinates/edit.js",
+      "status": "existing-at-baseline",
+      "sha256": "887e9b30c30677f98871b6e147b04f11a0e1a54fe1cb0708c312d6aee4e6caa5",
+      "lines": 76,
+      "symbols": [
+        {
+          "line": 30,
+          "declaration": "export const editCoordinate = /* @__PURE__ */ action("
+        },
+        {
+          "line": 74,
+          "declaration": "export function registerCoordinateEditActions(ProgramClass) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/actions/coordinates/edit.js"
+    },
+    {
+      "path": "src/actions/data/index.js",
+      "status": "existing-at-baseline",
+      "sha256": "30caff90444b1a795f992c87a850bdcfcf6f6c690ee38c6a5c1671da121859a0",
+      "lines": 122,
+      "symbols": [
+        {
+          "line": 58,
+          "declaration": "export function registerDataActions(ProgramClass) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/actions/data/index.js"
+    },
+    {
+      "path": "src/actions/data/revise.js",
+      "status": "existing-at-baseline",
+      "sha256": "87b6e623b423a7af28017998b4dda14cdbc73f32ccbe37f937b85e0e0775badb",
+      "lines": 80,
+      "symbols": [
+        {
+          "line": 31,
+          "declaration": "export function registerFacetDataRevision(handler) {"
+        },
+        {
+          "line": 35,
+          "declaration": "export function reviseUnitData(program, { source, id, values, schema }) {"
+        },
+        {
+          "line": 61,
+          "declaration": "export const reviseData = /* @__PURE__ */ closedAction("
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/actions/data/revise.js"
+    },
+    {
+      "path": "src/actions/data/revisionBindings.js",
+      "status": "existing-at-baseline",
+      "sha256": "63a284a95e4b433f6aa885b34a7f1f0dd3a3252ecd43407213f436bc8fa0ba1d",
+      "lines": 125,
+      "symbols": [
+        {
+          "line": 6,
+          "declaration": "export function outputFieldChanges(previous, next) {"
+        },
+        {
+          "line": 37,
+          "declaration": "export function rebindLayerOutputFields(program, id, changes) {"
+        },
+        {
+          "line": 114,
+          "declaration": "export function rebindMaterializationDataReferences(program, replacements) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/actions/data/revisionBindings.js"
+    },
+    {
+      "path": "src/actions/encodings/index.js",
+      "status": "existing-at-baseline",
+      "sha256": "e6e955059e55a03f26854e5da65e80184eb45ccd80231cfa0ab09edde7c6a7d9",
+      "lines": 41,
+      "symbols": [
+        {
+          "line": 21,
+          "declaration": "export function registerEncodingActions(ProgramClass) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/actions/encodings/index.js"
+    },
+    {
+      "path": "src/actions/guides/axes/index.js",
+      "status": "existing-at-baseline",
+      "sha256": "1132ad739beae1755f1e2b15a41736e59c8ddee30ebe45808f5db7ec07b1c72a",
+      "lines": 39,
+      "symbols": [
+        {
+          "line": 17,
+          "declaration": "export function registerBasicCartesianAxisActions(ProgramClass) {"
+        },
+        {
+          "line": 27,
+          "declaration": "export function registerCartesianAxisActions(ProgramClass) {"
+        },
+        {
+          "line": 34,
+          "declaration": "export function registerGuideAxisActions(ProgramClass) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/actions/guides/axes/index.js"
+    },
+    {
+      "path": "src/actions/index.js",
+      "status": "existing-at-baseline",
+      "sha256": "37d02fc33e971a867ac2d2fb44aab1b69026a6549e6c85a93f56aaa9a6fa8338",
+      "lines": 60,
+      "symbols": [
+        {
+          "line": 31,
+          "declaration": "export function registerActions(ProgramClass) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/actions/index.js"
+    },
+    {
+      "path": "src/actions/marks/arc/index.js",
+      "status": "existing-at-baseline",
+      "sha256": "785f4e0563088412e6099097ba98452c4a5679906e42cdf8fe3c257c0cbadc7a",
+      "lines": 1,
+      "symbols": [],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/actions/marks/arc/index.js"
+    },
+    {
+      "path": "src/actions/marks/index.js",
+      "status": "existing-at-baseline",
+      "sha256": "29cca176424e6a725c991200c69cefda5ad0046ed88d48654176c7d953af654b",
+      "lines": 43,
+      "symbols": [
+        {
+          "line": 23,
+          "declaration": "export function registerMarkActions(ProgramClass) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/actions/marks/index.js"
+    },
+    {
+      "path": "src/actions/marks/line/materialize.js",
+      "status": "existing-at-baseline",
+      "sha256": "b90b577e1f9dc3f2a6efb281e092247597749d20b5d7345dd5878b746749099e",
+      "lines": 159,
+      "symbols": [
+        {
+          "line": 40,
+          "declaration": "export function resolveParallelLineMaterialization({"
+        },
+        {
+          "line": 86,
+          "declaration": "export function resolvePositionedLineMaterialization({"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/actions/marks/line/materialize.js"
+    },
+    {
+      "path": "src/actions/marks/rect/index.js",
+      "status": "existing-at-baseline",
+      "sha256": "f9d5ec1ad3ad045aede20e2e7fdbb60aae79534c3b98be213a1776c8e8fa5e7b",
+      "lines": 4,
+      "symbols": [],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/actions/marks/rect/index.js"
+    },
+    {
+      "path": "src/actions/overlays/index.js",
+      "status": "existing-at-baseline",
+      "sha256": "37ce84cd05f5d556ba2efd56cccfcb68f2ad4be3240829d0b1d2814bb69b0c23",
+      "lines": 168,
+      "symbols": [
+        {
+          "line": 62,
+          "declaration": "export const rematerializeOverlay = /* @__PURE__ */ closedAction({"
+        },
+        {
+          "line": 164,
+          "declaration": "export function registerOverlayActions(ProgramClass) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/actions/overlays/index.js"
+    },
+    {
+      "path": "src/actions/selection/actions.js",
+      "status": "existing-at-baseline",
+      "sha256": "f4de8a494e08f095a2d8ffc07b2f2d841b25c0c878270d51980c6af6d614d5d2",
+      "lines": 666,
+      "symbols": [
+        {
+          "line": 142,
+          "declaration": "export function rematerializeLabelsBeforeHighlights("
+        },
+        {
+          "line": 262,
+          "declaration": "export function rematerializeThemeHighlights(program) {"
+        },
+        {
+          "line": 271,
+          "declaration": "export const selectMarks = /* @__PURE__ */ closedAction("
+        },
+        {
+          "line": 283,
+          "declaration": "export const editMarkSelection = /* @__PURE__ */ closedAction("
+        },
+        {
+          "line": 316,
+          "declaration": "export const removeMarkHighlight = /* @__PURE__ */ closedAction("
+        },
+        {
+          "line": 340,
+          "declaration": "export const removeMarkSelection = /* @__PURE__ */ closedAction("
+        },
+        {
+          "line": 369,
+          "declaration": "export const applyPointHighlight = /* @__PURE__ */ closedAction("
+        },
+        {
+          "line": 432,
+          "declaration": "export const applyBarHighlight = /* @__PURE__ */ action("
+        },
+        {
+          "line": 439,
+          "declaration": "export const applyRectHighlight = /* @__PURE__ */ action("
+        },
+        {
+          "line": 452,
+          "declaration": "export const applyPathHighlight = /* @__PURE__ */ closedAction("
+        },
+        {
+          "line": 472,
+          "declaration": "export const applyRuleHighlight = /* @__PURE__ */ closedAction("
+        },
+        {
+          "line": 491,
+          "declaration": "export const dimUnselectedMarkItems = /* @__PURE__ */ closedAction("
+        },
+        {
+          "line": 504,
+          "declaration": "export const placeSelectedMarkItemsLast = /* @__PURE__ */ closedAction("
+        },
+        {
+          "line": 524,
+          "declaration": "export const rematerializeMarkHighlights = /* @__PURE__ */ closedAction("
+        },
+        {
+          "line": 624,
+          "declaration": "export const highlightMarks = /* @__PURE__ */ closedAction("
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/actions/selection/actions.js"
+    },
+    {
+      "path": "src/actions/textMetrics/index.js",
+      "status": "existing-at-baseline",
+      "sha256": "5fe316c051c6bc89d4d0a9f18815e2b32142a4a1eae11c120d95e30e6541bba3",
+      "lines": 56,
+      "symbols": [
+        {
+          "line": 12,
+          "declaration": "export function inheritTextMetrics(parent, child) {"
+        },
+        {
+          "line": 35,
+          "declaration": "export const applyTextMetrics = /* @__PURE__ */ closedAction("
+        },
+        {
+          "line": 44,
+          "declaration": "export const removeTextMetrics = /* @__PURE__ */ action("
+        },
+        {
+          "line": 54,
+          "declaration": "export function registerTextMetricActions(ProgramClass) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/actions/textMetrics/index.js"
+    },
+    {
+      "path": "src/actions/theme/index.js",
+      "status": "existing-at-baseline",
+      "sha256": "e9078a7a975daec3a7b411299b7f06c02dcb9e05a3efd5f0e7361c0cc8772bc9",
+      "lines": 16,
+      "symbols": [
+        {
+          "line": 9,
+          "declaration": "export function registerThemeActions(ProgramClass, compositionHandlers) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/actions/theme/index.js"
+    },
+    {
+      "path": "src/core/ChartProgram.js",
+      "status": "existing-at-baseline",
+      "sha256": "37ac348127ebef217a8c4d3215a40a10ccc8e7e9a9f2d68aea2241ee9add5608",
+      "lines": 307,
+      "symbols": [
+        {
+          "line": 27,
+          "declaration": "export class ChartProgram {"
+        },
+        {
+          "line": 305,
+          "declaration": "export function chart() {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/core/ChartProgram.js"
+    },
+    {
+      "path": "src/core/action.js",
+      "status": "existing-at-baseline",
+      "sha256": "06ee9bca7d8cba0ec3e1bf5899ddfbd415d59e39f3bf137827afbd09422c4f92",
+      "lines": 264,
+      "symbols": [
+        {
+          "line": 10,
+          "declaration": "export function registerActionTargetDispatcher(ProgramClass, dispatcher) {"
+        },
+        {
+          "line": 20,
+          "declaration": "export function supportsScopedActionTargets(ProgramClass, operation) {"
+        },
+        {
+          "line": 24,
+          "declaration": "export function setActionCompletionHook(hook) {"
+        },
+        {
+          "line": 31,
+          "declaration": "export function getWrappedActionMetadata(value) {"
+        },
+        {
+          "line": 35,
+          "declaration": "export function invokeWrappedActionImplementation(value, program, args = {}) {"
+        },
+        {
+          "line": 68,
+          "declaration": "export function summarizeArgs(args) {"
+        },
+        {
+          "line": 76,
+          "declaration": "export function countActionNodes(node) {"
+        },
+        {
+          "line": 83,
+          "declaration": "export function createActionNode({ id, op, description, args }) {"
+        },
+        {
+          "line": 149,
+          "declaration": "export function appendActionNodeAtPath(root, parentPath, actionNode) {"
+        },
+        {
+          "line": 181,
+          "declaration": "export function action(metadata, implementation) {"
+        },
+        {
+          "line": 259,
+          "declaration": "export function closedAction(metadata, options, implementation) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/core/action.js"
+    },
+    {
+      "path": "src/core/compositionScales.js",
+      "status": "existing-at-baseline",
+      "sha256": "1583cdc2c6097ded41321249fcade51341165a01f1dfa530c42bc3c6bf9ef81f",
+      "lines": 12,
+      "symbols": [
+        {
+          "line": 3,
+          "declaration": "export const COMPOSITION_SCALE_CHANNELS = Object.freeze([\"x\", \"y\", \"color\", \"stroke\", \"size\", \"shape\", \"opacity\", \"strokeWidth\", \"strokeDash\"]);"
+        },
+        {
+          "line": 5,
+          "declaration": "export function normalizeCompositionShares(value = {}) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/core/compositionScales.js"
+    },
+    {
+      "path": "src/core/datasetReferences.js",
+      "status": "existing-at-baseline",
+      "sha256": "f2dfbfd570b99105ea896b7b6567e16a65720ec4b71160467b848d7835da0f11",
+      "lines": 17,
+      "symbols": [
+        {
+          "line": 2,
+          "declaration": "export function datasetInputReferences(dataset) {"
+        },
+        {
+          "line": 10,
+          "declaration": "export function datasetInputIds(dataset) {"
+        },
+        {
+          "line": 14,
+          "declaration": "export function rebindTransformDatasetInputs(transform, replacements) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/core/datasetReferences.js"
+    },
+    {
+      "path": "src/core/diagnostics.js",
+      "status": "existing-at-baseline",
+      "sha256": "93e2bd00540d88f3e93768f5e43e9b4c98379f43cc9c7a8a61fa93cbfeb255b5",
+      "lines": 16,
+      "symbols": [
+        {
+          "line": 3,
+          "declaration": "export function getErrorDetails(error) {"
+        },
+        {
+          "line": 9,
+          "declaration": "export function annotateError(error, details) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/core/diagnostics.js"
+    },
+    {
+      "path": "src/core/materializationState.js",
+      "status": "existing-at-baseline",
+      "sha256": "83c161d426ab3ae14a036b62c77f8fd524d8d7fc55a249fc3b5054282d574b71",
+      "lines": 65,
+      "symbols": [
+        {
+          "line": 33,
+          "declaration": "export function createMaterializationConfigs("
+        },
+        {
+          "line": 47,
+          "declaration": "export function setMaterializationConfig(configs, path, config) {"
+        },
+        {
+          "line": 53,
+          "declaration": "export function removeMaterializationConfig(configs, path) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/core/materializationState.js"
+    },
+    {
+      "path": "src/core/resourceReferences.js",
+      "status": "existing-at-baseline",
+      "sha256": "d945c7af8a95115a347a1516b0ae5df4753514ff7ce92a926cc04df9547325ab",
+      "lines": 362,
+      "symbols": [
+        {
+          "line": 5,
+          "declaration": "export const RESOURCE_KINDS = Object.freeze(["
+        },
+        {
+          "line": 56,
+          "declaration": "export function canonicalResourcePath(path) {"
+        },
+        {
+          "line": 69,
+          "declaration": "export function collectSemanticDataReferences(program) {"
+        },
+        {
+          "line": 82,
+          "declaration": "export function collectSemanticScaleReferences(program) {"
+        },
+        {
+          "line": 114,
+          "declaration": "export function collectSemanticCoordinateReferences(program) {"
+        },
+        {
+          "line": 131,
+          "declaration": "export function collectMarkConfigReferences(program) {"
+        },
+        {
+          "line": 206,
+          "declaration": "export function collectGuideConfigReferences(program) {"
+        },
+        {
+          "line": 242,
+          "declaration": "export function collectSelectionReferences(program) {"
+        },
+        {
+          "line": 273,
+          "declaration": "export function collectDataOwnerReferences(program) {"
+        },
+        {
+          "line": 290,
+          "declaration": "export function collectCompositionReferences(program) {"
+        },
+        {
+          "line": 305,
+          "declaration": "export function collectContextReferences(program) {"
+        },
+        {
+          "line": 340,
+          "declaration": "export function collectResourceReferences(program, { kind, id }) {"
+        },
+        {
+          "line": 350,
+          "declaration": "export function collectAllResourceReferences(program) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/core/resourceReferences.js"
+    },
+    {
+      "path": "src/core/specs.js",
+      "status": "existing-at-baseline",
+      "sha256": "d825580ba6635d83d324658b9389d3da1d33bbcdab87caed411a5bb65a92e2a4",
+      "lines": 29,
+      "symbols": [
+        {
+          "line": 3,
+          "declaration": "export function createEmptySemanticSpec() {"
+        },
+        {
+          "line": 14,
+          "declaration": "export function createEmptyGraphicSpec() {"
+        },
+        {
+          "line": 21,
+          "declaration": "export function createTraceRoot() {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/core/specs.js"
+    },
+    {
+      "path": "src/core/textMetricProfile.js",
+      "status": "existing-at-baseline",
+      "sha256": "b89d5a02128674a30037faca84fdc1d6970f6d70f67c6c93dbbe57aa3befeb54",
+      "lines": 29,
+      "symbols": [
+        {
+          "line": 7,
+          "declaration": "export function normalizeTextMetricProfile(profile) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/core/textMetricProfile.js"
+    },
+    {
+      "path": "src/core/textMetrics.js",
+      "status": "existing-at-baseline",
+      "sha256": "3f1105c05cef2b3ad686a7e5454da25ade4bf90144d3569b2be3b088bc91a826",
+      "lines": 165,
+      "symbols": [
+        {
+          "line": 30,
+          "declaration": "export function formatVisibleText(value) {"
+        },
+        {
+          "line": 34,
+          "declaration": "export function textBoundsIntersect(first, second) {"
+        },
+        {
+          "line": 39,
+          "declaration": "export function textBoundsFitCanvas(bounds, canvas) {"
+        },
+        {
+          "line": 45,
+          "declaration": "export function measureTextWidth("
+        },
+        {
+          "line": 84,
+          "declaration": "export function requireFiniteBounds(bounds, label = \"Graphic\") {"
+        },
+        {
+          "line": 91,
+          "declaration": "export function resolveTextBounds({"
+        },
+        {
+          "line": 145,
+          "declaration": "export function unionBounds(bounds) {"
+        },
+        {
+          "line": 155,
+          "declaration": "export function resolveTextLines(text, config) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/core/textMetrics.js"
+    },
+    {
+      "path": "src/grammar/AGENTS.md",
+      "status": "existing-at-baseline",
+      "sha256": "92dd3f3c88a8c9cd4da5f7c57adfd923a2ccad2fb696e718dced786dde0d5a8f",
+      "lines": 17,
+      "symbols": [],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/grammar/AGENTS.md"
+    },
+    {
+      "path": "src/grammar/computed.js",
+      "status": "existing-at-baseline",
+      "sha256": "c6289890cda6b51cfe2e6600f0133f2ff36efd304edf71476e6857a4663296b3",
+      "lines": 440,
+      "symbols": [
+        {
+          "line": 200,
+          "declaration": "export function normalizeComputedTransform({ as, expression } = {}) {"
+        },
+        {
+          "line": 209,
+          "declaration": "export function validateComputedTransform(transform) {"
+        },
+        {
+          "line": 410,
+          "declaration": "export function deriveComputedRows(rows, transform) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/grammar/computed.js"
+    },
+    {
+      "path": "src/grammar/datasetSchema.js",
+      "status": "existing-at-baseline",
+      "sha256": "99019554fbcafc76006e1446cd2791a1c32cfc8a48e62045aa11c826daf23a21",
+      "lines": 420,
+      "symbols": [
+        {
+          "line": 82,
+          "declaration": "export function normalizeSourceSchema(value) {"
+        },
+        {
+          "line": 98,
+          "declaration": "export function validateDatasetSchema(value) {"
+        },
+        {
+          "line": 124,
+          "declaration": "export function inferDatasetSchema(values, { origin = \"inferred\" } = {}) {"
+        },
+        {
+          "line": 151,
+          "declaration": "export function validateRowsAgainstSchema(values, schema, label = \"Dataset\") {"
+        },
+        {
+          "line": 180,
+          "declaration": "export function schemaField(schema, name) {"
+        },
+        {
+          "line": 184,
+          "declaration": "export function assertFieldsAvailable(schema, fields, { data, operation } = {}) {"
+        },
+        {
+          "line": 212,
+          "declaration": "export function transformInputFields(transform) {"
+        },
+        {
+          "line": 271,
+          "declaration": "export function datasetSchemaContext(source,transform,ownerId,resolveInput) {"
+        },
+        {
+          "line": 283,
+          "declaration": "export function deriveTransformSchema(inputSchema, transform, values, { sourceId, ownerId, sourceTransform,lookupSchema,lookupSourceId } = {}) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/grammar/datasetSchema.js"
+    },
+    {
+      "path": "src/grammar/paint.js",
+      "status": "existing-at-baseline",
+      "sha256": "e46e0b4f655a0292eb5ffe030ec03a7ac20b5f54e581f2d765d67c00f444d8fd",
+      "lines": 87,
+      "symbols": [
+        {
+          "line": 37,
+          "declaration": "export function isLinearGradientPaint(value) {"
+        },
+        {
+          "line": 41,
+          "declaration": "export function validateFillPaint(value, label = \"fill\") {"
+        },
+        {
+          "line": 69,
+          "declaration": "export function resolveLinearGradientCoordinates(paint, bounds) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/grammar/paint.js"
+    },
+    {
+      "path": "src/grammar/pathCommands.js",
+      "status": "existing-at-baseline",
+      "sha256": "54346d546646e3ee65d7a47594d83aa29014818c84348f8e1030a3ea045caf70",
+      "lines": 105,
+      "symbols": [
+        {
+          "line": 4,
+          "declaration": "export const MAX_PATH_COMMANDS = 30_000;"
+        },
+        {
+          "line": 6,
+          "declaration": "export function validatePathCommandCount(count, label) {"
+        },
+        {
+          "line": 44,
+          "declaration": "export function validatePathCommands(commands) {"
+        },
+        {
+          "line": 90,
+          "declaration": "export function buildLinearPathCommands(points, { close = false } = {}) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/grammar/pathCommands.js"
+    },
+    {
+      "path": "src/grammar/schemas/concreteGraphic.js",
+      "status": "existing-at-baseline",
+      "sha256": "5229246fbafbb6630733d89c47132740564af7bd6992f59e4c8053ada16878f5",
+      "lines": 116,
+      "symbols": [
+        {
+          "line": 30,
+          "declaration": "export function validateConcreteGraphicValue(type, property, value) {"
+        },
+        {
+          "line": 101,
+          "declaration": "export function validateConcreteGraphicProperties(type, properties) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/grammar/schemas/concreteGraphic.js"
+    },
+    {
+      "path": "src/grammar/schemas/graphicBounds.js",
+      "status": "existing-at-baseline",
+      "sha256": "333bad79951b9a460b85f810c7b9f0e18cd4a26af88e18892daaaec92f43164e",
+      "lines": 582,
+      "symbols": [
+        {
+          "line": 115,
+          "declaration": "export function resolvePathCommandBounds(commands) {"
+        },
+        {
+          "line": 387,
+          "declaration": "export function resolvePrimitiveGraphicBounds(type, properties = {}, profile) {"
+        },
+        {
+          "line": 463,
+          "declaration": "export function resolveGraphicParentOffset(graphicSpec, target) {"
+        },
+        {
+          "line": 505,
+          "declaration": "export function resolveGraphicClipBounds(graphicSpec, target, {rootViewport = false} = {}) {"
+        },
+        {
+          "line": 560,
+          "declaration": "export function resolveConcreteGraphicBounds(graphicSpec, target, profile, {includeOwnerClips = true} = {}) {"
+        },
+        {
+          "line": 575,
+          "declaration": "export function unionConcreteGraphicBounds(graphicSpec, targets, profile, options) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/grammar/schemas/graphicBounds.js"
+    },
+    {
+      "path": "src/grammar/schemas/graphicClip.js",
+      "status": "existing-at-baseline",
+      "sha256": "579b5cf4fbed88cf5cf9f5a031c4c92c628dbf428145423948620dbb039e0cd3",
+      "lines": 23,
+      "symbols": [
+        {
+          "line": 4,
+          "declaration": "export function validateGraphicClip(value, type) {"
+        },
+        {
+          "line": 15,
+          "declaration": "export function graphicClipBounds(rect, x = 0, y = 0) {"
+        },
+        {
+          "line": 20,
+          "declaration": "export function intersectClipBounds(a, b) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/grammar/schemas/graphicClip.js"
+    },
+    {
+      "path": "src/grammar/transforms.js",
+      "status": "existing-at-baseline",
+      "sha256": "1e9351a664459e72d798a43384dce2e96d2811f344290d06ecc7b18e0910bc49",
+      "lines": 585,
+      "symbols": [
+        {
+          "line": 539,
+          "declaration": "export function findTransformPolicy(type) {"
+        },
+        {
+          "line": 543,
+          "declaration": "export function findTransformValidator(type) {"
+        },
+        {
+          "line": 547,
+          "declaration": "export function requestedDatasetTransform(transform) {"
+        },
+        {
+          "line": 558,
+          "declaration": "export function normalizeDatasetTransformEdit(transform, patch, owner) {"
+        },
+        {
+          "line": 566,
+          "declaration": "export function datasetTransformOutputRoles(transform) {"
+        },
+        {
+          "line": 571,
+          "declaration": "export function validateDatasetTransforms(value) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/grammar/transforms.js"
+    },
+    {
+      "path": "src/inspection.js",
+      "status": "existing-at-baseline",
+      "sha256": "e3f88000443b9b73d755ffb03781e1e2893102a6149f4025f22a21f8b00cf4f5",
+      "lines": 668,
+      "symbols": [
+        {
+          "line": 90,
+          "declaration": "export function getPlotComposition(program, { target, childPath } = {}) {"
+        },
+        {
+          "line": 96,
+          "declaration": "export function getDatasetSchema(program, { data, childPath } = {}) {"
+        },
+        {
+          "line": 105,
+          "declaration": "export function describeAction(program, { action, target, options = {} } = {}) {"
+        },
+        {
+          "line": 355,
+          "declaration": "export function comparePrograms(before, after, { target } = {}) {"
+        },
+        {
+          "line": 568,
+          "declaration": "export function inspectProgram(program, { target } = {}) {"
+        },
+        {
+          "line": 639,
+          "declaration": "export function getMarkItems(program, { target, grain = 'item' } = {}) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/inspection.js"
+    },
+    {
+      "path": "src/inspectionDescriptors.js",
+      "status": "existing-at-baseline",
+      "sha256": "3af23791ef03a723fbf396a89041b6b2d781088b0aa6dcdd679818e80e278923",
+      "lines": 3,
+      "symbols": [
+        {
+          "line": 3,
+          "declaration": "export const BUILTIN_ACTION_DESCRIPTOR_RECORDS = [[\"createCanvas\",[[\"width\",false,\"number\",null,\"logical-pixel\"],[\"height\",false,\"number\",null,\"logical-pixel\"],[\"background\",false,"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/inspectionDescriptors.js"
+    },
+    {
+      "path": "src/layout/AGENTS.md",
+      "status": "existing-at-baseline",
+      "sha256": "8963d5248516cf8637e80e7940ce08d1a57aca920847b2801d05a46aa3e26e5e",
+      "lines": 18,
+      "symbols": [],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/layout/AGENTS.md"
+    },
+    {
+      "path": "src/materialization/AGENTS.md",
+      "status": "existing-at-baseline",
+      "sha256": "36fde68643ffdb269390372b21555ffeeaadb379fae4962b870aef1df94cc9ef",
+      "lines": 20,
+      "symbols": [],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/materialization/AGENTS.md"
+    },
+    {
+      "path": "src/materialization/composition.js",
+      "status": "existing-at-baseline",
+      "sha256": "aac44aa2a7266683da3bd67eabd43646cd785959f57d9cf7a482d34abe0cefe7",
+      "lines": 268,
+      "symbols": [
+        {
+          "line": 21,
+          "declaration": "export function requireChildCanvas(program, id) {"
+        },
+        {
+          "line": 30,
+          "declaration": "export function compositionChildDescriptor(id, program) {"
+        },
+        {
+          "line": 45,
+          "declaration": "export function compositionPlotBounds(program) {"
+        },
+        {
+          "line": 114,
+          "declaration": "export function prepareCompositionSnapshots(program) {"
+        },
+        {
+          "line": 154,
+          "declaration": "export function resolveCompositionProgramLayout(program) {"
+        },
+        {
+          "line": 188,
+          "declaration": "export function attachSnapshotObject(program, snapshot, id, parent) {"
+        },
+        {
+          "line": 207,
+          "declaration": "export function clearCompositionChildren(program) {"
+        },
+        {
+          "line": 212,
+          "declaration": "export function materializeCompositionGraphics(program) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/materialization/composition.js"
+    },
+    {
+      "path": "src/materialization/compositionSnapshot.js",
+      "status": "existing-at-baseline",
+      "sha256": "f76aa0ebc1554e6bc47149cdb2729f980c74eb2f825fd0e18debe200693be8f7",
+      "lines": 129,
+      "symbols": [
+        {
+          "line": 82,
+          "declaration": "export function namespaceGraphicSnapshot("
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/materialization/compositionSnapshot.js"
+    },
+    {
+      "path": "src/materialization/facets.js",
+      "status": "existing-at-baseline",
+      "sha256": "6622fdad2015dd9cf09ca6b7f19d8bf951554acef8dd60ff2f7cc7882fc24f4b",
+      "lines": 251,
+      "symbols": [
+        {
+          "line": 90,
+          "declaration": "export function resolveFacetProgramLayout(program, preparedLegend) {"
+        },
+        {
+          "line": 200,
+          "declaration": "export function materializeFacetGraphics(program) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/materialization/facets.js"
+    },
+    {
+      "path": "src/materialization/layout.js",
+      "status": "existing-at-baseline",
+      "sha256": "ac2d90c9f204df0dd56f72ede63ac5a88a0809fb5bb2c12ab5588bcce849c4fb",
+      "lines": 68,
+      "symbols": [
+        {
+          "line": 6,
+          "declaration": "export function planCanvasRematerialization(program) {"
+        },
+        {
+          "line": 64,
+          "declaration": "export function planLayoutRematerialization(program) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/materialization/layout.js"
+    },
+    {
+      "path": "src/materialization/marks/capabilities.js",
+      "status": "existing-at-baseline",
+      "sha256": "0bc5de4341b91c8f15e3a49a723a62f2cdc1c8294fc373d3672b9c490138460a",
+      "lines": 200,
+      "symbols": [
+        {
+          "line": 30,
+          "declaration": "export function canMaterializePoint(_program, layer) {"
+        },
+        {
+          "line": 36,
+          "declaration": "export function canMaterializeTick(_program, layer) {"
+        },
+        {
+          "line": 40,
+          "declaration": "export function canMaterializeLine(program, layer) {"
+        },
+        {
+          "line": 79,
+          "declaration": "export function canMaterializeArea(program, layer) {"
+        },
+        {
+          "line": 102,
+          "declaration": "export function isIntentionallyEmptyArea(program, layer) {"
+        },
+        {
+          "line": 112,
+          "declaration": "export function canMaterializeArc(_program, layer) {"
+        },
+        {
+          "line": 137,
+          "declaration": "export function canMaterializeBar(program, layer) {"
+        },
+        {
+          "line": 159,
+          "declaration": "export function canMaterializeRule(program, layer) {"
+        },
+        {
+          "line": 179,
+          "declaration": "export function isTextSource(layer) {"
+        },
+        {
+          "line": 184,
+          "declaration": "export function canMaterializeText(program, layer) {"
+        },
+        {
+          "line": 197,
+          "declaration": "export function canMaterializeRect(program, layer) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/materialization/marks/capabilities.js"
+    },
+    {
+      "path": "src/materialization/planner.js",
+      "status": "existing-at-baseline",
+      "sha256": "aef0bf9382bb6daddfac0a0db126c6c225efea670ec2e9e732eba196ef03dcb0",
+      "lines": 146,
+      "symbols": [
+        {
+          "line": 105,
+          "declaration": "export function buildMaterializationPlan(stages = {}) {"
+        },
+        {
+          "line": 119,
+          "declaration": "export function applyMaterializationPlan(program, plan) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/materialization/planner.js"
+    },
+    {
+      "path": "src/materialization/revisionIdentity.js",
+      "status": "existing-at-baseline",
+      "sha256": "d0e23090117b9e2866cece4fe1d38ec1e27b847f710192c36d0022556f462276",
+      "lines": 19,
+      "symbols": [
+        {
+          "line": 3,
+          "declaration": "export function withLogicalDataReplacements(replacements, operation) {"
+        },
+        {
+          "line": 13,
+          "declaration": "export function comparableDataIdentity(id) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/materialization/revisionIdentity.js"
+    },
+    {
+      "path": "src/materialization/selection/items/index.js",
+      "status": "existing-at-baseline",
+      "sha256": "1136d390468657628000fb1aaa9d2d5ab11ea4218e181af88511dea2205ed36c",
+      "lines": 7,
+      "symbols": [],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/materialization/selection/items/index.js"
+    },
+    {
+      "path": "src/materialization/selection/items/path.js",
+      "status": "existing-at-baseline",
+      "sha256": "2d24fa400cbbee78081d6a347f1c89b259e7341a3e7ef804f52a8e19c982bea2",
+      "lines": 98,
+      "symbols": [
+        {
+          "line": 36,
+          "declaration": "export function resolveLineItems(program, layer, dataset) {"
+        },
+        {
+          "line": 84,
+          "declaration": "export function resolveAreaItems(program, layer, dataset) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/materialization/selection/items/path.js"
+    },
+    {
+      "path": "src/materialization/selection/policies/index.js",
+      "status": "existing-at-baseline",
+      "sha256": "8861196f01747b52197caa709d1489c030881df50c3aee41f2d52a4f2f020963",
+      "lines": 81,
+      "symbols": [
+        {
+          "line": 29,
+          "declaration": "export function findSelectionPolicy(markType) {"
+        },
+        {
+          "line": 33,
+          "declaration": "export function requireSelectionPolicy(markType) {"
+        },
+        {
+          "line": 41,
+          "declaration": "export function resolveMarkItems(program, target, grain = \"item\") {"
+        },
+        {
+          "line": 73,
+          "declaration": "export function resolveMarkSourceItems(program, target, grain = 'item') {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/materialization/selection/policies/index.js"
+    },
+    {
+      "path": "src/materialization/selection/rows.js",
+      "status": "existing-at-baseline",
+      "sha256": "28b801e26fa979ac3e1df12f2327b255b312ca0e6b3c5771ef0ea7fe86f77981",
+      "lines": 103,
+      "symbols": [
+        {
+          "line": 71,
+          "declaration": "export function markFilterSourceIndices(sourceRows, rows) {"
+        },
+        {
+          "line": 80,
+          "declaration": "export function memberRowReferences(program, members) {"
+        },
+        {
+          "line": 87,
+          "declaration": "export function validateRowSelection(program, rows, items) {"
+        },
+        {
+          "line": 95,
+          "declaration": "export function rowsForSelectedItems(program, items, keys, preferredData) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/materialization/selection/rows.js"
+    },
+    {
+      "path": "src/materialization/selection/state.js",
+      "status": "existing-at-baseline",
+      "sha256": "450fc8569cb15de015021338e72ee1a104db85ca3d121595112b4bb665f9fdee",
+      "lines": 83,
+      "symbols": [
+        {
+          "line": 6,
+          "declaration": "export function resolveMarkSelection(program, target, selector) {"
+        },
+        {
+          "line": 35,
+          "declaration": "export function resolveSelectionCreationId(program, id, target) {"
+        },
+        {
+          "line": 49,
+          "declaration": "export function selectionPredicate(program, definition) {"
+        },
+        {
+          "line": 60,
+          "declaration": "export function resolveStoredSelection(program, id) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/materialization/selection/state.js"
+    },
+    {
+      "path": "src/materialization/selection/styles.js",
+      "status": "existing-at-baseline",
+      "sha256": "23609302667a5d251bb51f3a84dde0cca2722076c0613a5daec1caad470aa4ae",
+      "lines": 202,
+      "symbols": [
+        {
+          "line": 48,
+          "declaration": "export function normalizeDimOthers(dimOthers) {"
+        },
+        {
+          "line": 63,
+          "declaration": "export function normalizePointHighlightStyle(args) {"
+        },
+        {
+          "line": 127,
+          "declaration": "export function normalizeBarHighlightStyle(args) {"
+        },
+        {
+          "line": 131,
+          "declaration": "export function normalizeRectHighlightStyle(args) {"
+        },
+        {
+          "line": 143,
+          "declaration": "export function normalizeStrokeHighlightStyle(args, mark) {"
+        },
+        {
+          "line": 176,
+          "declaration": "export function normalizeAreaHighlightStyle(args, mark = \"Area\") {"
+        },
+        {
+          "line": 196,
+          "declaration": "export function normalizeTextHighlightStyle(args) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/materialization/selection/styles.js"
+    },
+    {
+      "path": "src/persistence.js",
+      "status": "existing-at-baseline",
+      "sha256": "be9b8080dd778ab590f8cce00ffac0c20c67a8eed0c211e4df84ae5af8be1573",
+      "lines": 162,
+      "symbols": [
+        {
+          "line": 121,
+          "declaration": "export function serializeProgram(program) {"
+        },
+        {
+          "line": 135,
+          "declaration": "export function deserializeProgram(text) {"
+        },
+        {
+          "line": 153,
+          "declaration": "export function serializeGraphic(program) {"
+        },
+        {
+          "line": 158,
+          "declaration": "export function deserializeGraphic(text) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/persistence.js"
+    },
+    {
+      "path": "src/persistence/codec.js",
+      "status": "existing-at-baseline",
+      "sha256": "4e1ce23a6201d1f822111b90789936e19d68fb0bfc7b50b8061ef979de23bccd",
+      "lines": 96,
+      "symbols": [
+        {
+          "line": 4,
+          "declaration": "export function invalidSnapshot(message, optionPath) {"
+        },
+        {
+          "line": 8,
+          "declaration": "export function encodeValue(value, path = \"payload\", ancestors = new WeakSet(), shared) {"
+        },
+        {
+          "line": 47,
+          "declaration": "export function encodeSharedValue(value) {"
+        },
+        {
+          "line": 53,
+          "declaration": "export function decodeValue(value, path = \"payload\", references) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/persistence/codec.js"
+    },
+    {
+      "path": "src/persistence/validation.js",
+      "status": "existing-at-baseline",
+      "sha256": "c090eb076cde577a56588cab2b453948bec266050dfec8ea380c4994399963ac",
+      "lines": 592,
+      "symbols": [
+        {
+          "line": 63,
+          "declaration": "export const STATE_KEYS = Object.freeze(["
+        },
+        {
+          "line": 83,
+          "declaration": "export function requireObject(value, path) {"
+        },
+        {
+          "line": 87,
+          "declaration": "export function exactKeys(value, keys, path) {"
+        },
+        {
+          "line": 100,
+          "declaration": "export function validateGraphic(graphic, path = \"payload.graphicSpec\") {"
+        },
+        {
+          "line": 144,
+          "declaration": "export function validateTrace(trace, ProgramClass, extensions, path = \"payload.trace\") {"
+        },
+        {
+          "line": 179,
+          "declaration": "export function validateProgramState(program, path, { allowMissingLookupSchemas = false } = {}) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/persistence/validation.js"
+    },
+    {
+      "path": "src/renderers/AGENTS.md",
+      "status": "existing-at-baseline",
+      "sha256": "7810b281452d6d8fe33b0e4b6a1987a0dd69370fc9aab4cfe97105190d00073f",
+      "lines": 12,
+      "symbols": [],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/renderers/AGENTS.md"
+    },
+    {
+      "path": "src/renderers/canvas/path.js",
+      "status": "existing-at-baseline",
+      "sha256": "6b9e382b82fb5f44b048b6cfbf15bbb3c8f03deb957879b0f7a556803b2c47c1",
+      "lines": 100,
+      "symbols": [
+        {
+          "line": 91,
+          "declaration": "export function drawPathGraphic(context, id, graphic) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/renderers/canvas/path.js"
+    },
+    {
+      "path": "src/renderers/canvas/scene.js",
+      "status": "existing-at-baseline",
+      "sha256": "6b8534840f4ad64e5fbeb5b30810b9f6585c3db5a69055582d1616b5be42a226",
+      "lines": 66,
+      "symbols": [
+        {
+          "line": 57,
+          "declaration": "export function renderTransitionScene(scene, context, options) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/renderers/canvas/scene.js"
+    },
+    {
+      "path": "src/renderers/pdf.js",
+      "status": "existing-at-baseline",
+      "sha256": "aa0bf4b56bb1bd076907021d5eb690592a1a14ae92acc715a9241779ac1c02df",
+      "lines": 97,
+      "symbols": [
+        {
+          "line": 69,
+          "declaration": "export async function renderToPDFBuffer(program, options = {}) {"
+        },
+        {
+          "line": 87,
+          "declaration": "export async function renderToPDF(program, options = {}) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/renderers/pdf.js"
+    },
+    {
+      "path": "src/renderers/png.js",
+      "status": "existing-at-baseline",
+      "sha256": "9d4ffd81b8b93d863ed7a57d2721ffc64c274f0b1d0f3464e56902e2ac7c0b1c",
+      "lines": 35,
+      "symbols": [
+        {
+          "line": 10,
+          "declaration": "export async function renderToPNGBuffer(program, options = {}) {"
+        },
+        {
+          "line": 24,
+          "declaration": "export async function renderToPNG(program, options = {}) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/renderers/png.js"
+    },
+    {
+      "path": "src/renderers/svg.js",
+      "status": "existing-at-baseline",
+      "sha256": "35a2db221d9cdcc4b243418dfd4e4356774b118bbd6ddbc9120c219c42b5ee58",
+      "lines": 1,
+      "symbols": [],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/renderers/svg.js"
+    },
+    {
+      "path": "src/renderers/svgSerialization.js",
+      "status": "existing-at-baseline",
+      "sha256": "01b1dc32b48ddc2d20e1a306aadc5f3191bcfd54bcb2f913ef971d03601ae1f1",
+      "lines": 653,
+      "symbols": [
+        {
+          "line": 578,
+          "declaration": "export function renderToSVG(program, options = {}) {"
+        },
+        {
+          "line": 644,
+          "declaration": "export function renderTransitionGraphics(graphicSpec, identities) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/renderers/svgSerialization.js"
+    },
+    {
+      "path": "src/renderers/text.js",
+      "status": "existing-at-baseline",
+      "sha256": "8ec7821d7c54883b29f1463341adbd0724734ee0fa06729712bb08d34d6ef3ac",
+      "lines": 1,
+      "symbols": [],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/renderers/text.js"
+    },
+    {
+      "path": "src/renderers/transitionScene.js",
+      "status": "existing-at-baseline",
+      "sha256": "458fbd59cd958c3b5b3aeaacbf2276b45af9fc1ac38c00352f8970c625cabaff",
+      "lines": 67,
+      "symbols": [
+        {
+          "line": 10,
+          "declaration": "export function collectTransitionGraphics(graphicSpec, identities) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/renderers/transitionScene.js"
+    },
+    {
+      "path": "src/scene.js",
+      "status": "existing-at-baseline",
+      "sha256": "83ecb814b660d2f21b5e4b1b302b9204f6012e4f1c0755b794301a6a3f7f4acf",
+      "lines": 91,
+      "symbols": [
+        {
+          "line": 83,
+          "declaration": "export function createTransitionScene(program, { format = \"svg\" } = {}) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/scene.js"
+    },
+    {
+      "path": "src/selectors/coordinates.js",
+      "status": "existing-at-baseline",
+      "sha256": "e6e08eae3d7c533ccddf58cb8e8f22a525a634de83b026e9424f91bcdf737d6c",
+      "lines": 15,
+      "symbols": [
+        {
+          "line": 3,
+          "declaration": "export function findCoordinate(program, id) {"
+        },
+        {
+          "line": 7,
+          "declaration": "export function hasCoordinate(program, id) {"
+        },
+        {
+          "line": 11,
+          "declaration": "export function requireCoordinate(program, id) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/selectors/coordinates.js"
+    },
+    {
+      "path": "src/theme/defaults.js",
+      "status": "existing-at-baseline",
+      "sha256": "312d427dd1c6f2cc3c6ff9068ee82e5ec8ab06b9ea4d7e01c52c54f7ca80bbf8",
+      "lines": 164,
+      "symbols": [
+        {
+          "line": 4,
+          "declaration": "export const DEFAULT_POINT_RADIUS = 3;"
+        },
+        {
+          "line": 5,
+          "declaration": "export const AXIS_LABEL_FONT_SIZES = Object.freeze({ cartesian: 12, polar: 11, parallel: 11 });"
+        },
+        {
+          "line": 6,
+          "declaration": "export const AXIS_TITLE_FONT_SIZE = 13;"
+        },
+        {
+          "line": 7,
+          "declaration": "export const DEFAULT_VERTICAL_LEGEND_ITEM_GAP = 18;"
+        },
+        {
+          "line": 9,
+          "declaration": "export const DEFAULT_COLORS = Object.freeze({"
+        },
+        {
+          "line": 28,
+          "declaration": "export const THEME_NAMES = Object.freeze([\"light\", \"dark\"]);"
+        },
+        {
+          "line": 30,
+          "declaration": "export const THEME_TOKEN_KEYS = Object.freeze(["
+        },
+        {
+          "line": 81,
+          "declaration": "export const THEME_TOKENS = Object.freeze({"
+        },
+        {
+          "line": 109,
+          "declaration": "export function themeTokens(name = \"light\") {"
+        },
+        {
+          "line": 135,
+          "declaration": "export function normalizeThemeDefinition(definition) {"
+        },
+        {
+          "line": 158,
+          "declaration": "export function resolveThemeTokens(definition = \"light\") {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/src/theme/defaults.js"
+    },
+    {
+      "path": "test/AGENTS.md",
+      "status": "existing-at-baseline",
+      "sha256": "348ef0f428d1d7d3e7e3a7a3abed7f79289d6f37e7d9af17a119deea1af2e43c",
+      "lines": 34,
+      "symbols": [
+        {
+          "line": 5,
+          "declaration": "## Scoped Test Instructions"
+        },
+        {
+          "line": 12,
+          "declaration": "## Suite-Wide Rules"
+        },
+        {
+          "line": 29,
+          "declaration": "## Active Review Gates"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/test/AGENTS.md"
+    },
+    {
+      "path": "test/capabilities.json",
+      "status": "existing-at-baseline",
+      "sha256": "30beeb593c1567b5e91389ad095ed45f4ed479936c0eaff5f4700f491e1da0c2",
+      "lines": 547,
+      "symbols": [],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/test/capabilities.json"
+    },
+    {
+      "path": "test/support/browser.js",
+      "status": "existing-at-baseline",
+      "sha256": "90d2e617372af13ebd6ac8c9dedcbfc74559962060cfb4ce39ab084d9afbe26b",
+      "lines": 67,
+      "symbols": [
+        {
+          "line": 8,
+          "declaration": "export async function openBrowserPage(browser, url, { waitFor, waitForArg } = {}) {"
+        },
+        {
+          "line": 28,
+          "declaration": "export async function windowValue(page, name) {"
+        },
+        {
+          "line": 32,
+          "declaration": "export function assertNoBrowserErrors(errors, label) {"
+        },
+        {
+          "line": 36,
+          "declaration": "export async function saveBrowserPageEvidence(page, error, label) {"
+        },
+        {
+          "line": 48,
+          "declaration": "export async function saveBrowserContextEvidence(context, error) {"
+        },
+        {
+          "line": 54,
+          "declaration": "export async function saveBrowserEvidence(browser, error) {"
+        },
+        {
+          "line": 63,
+          "declaration": "export async function closeBrowserWithEvidence(browser) {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/test/support/browser.js"
+    },
+    {
+      "path": "types/program.d.ts",
+      "status": "existing-at-baseline",
+      "sha256": "89701a6935eae443336827ca0404cf5b80e7ec886b4d0070b5608d353e1431e4",
+      "lines": 5873,
+      "symbols": [
+        {
+          "line": 5417,
+          "declaration": "export class ChartProgram {"
+        }
+      ],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/types/program.d.ts"
+    },
+    {
+      "path": "types/scene.d.ts",
+      "status": "existing-at-baseline",
+      "sha256": "caffa2620174c83b2bfb2efad2aa1f37771ad8001bffded8b882da75f1660554",
+      "lines": 35,
+      "symbols": [],
+      "sourceUrl": "https://github.com/ggaction/ggaction/blob/40ec7edead7fc84de05aad31888dd0f7d264a512/types/scene.d.ts"
+    }
+  ]
+}

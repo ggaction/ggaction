@@ -1,0 +1,17 @@
+✔ public point clip exactly matches independent existing viewport pixels and exports (85.9535ms)
+✔ omitted or disabled clip retains the frozen control SVG and exact decoded PNG pixels (29.391792ms)
+✔ primitive owner clip validation is closed, immutable, and independent from item properties (1.496ms)
+✔ native clipping preflight rejects unsafe geometry before mutating a destination (21.000125ms)
+✔ owner clips join nested viewport frames and isolated normal/difference allocation (34.182958ms)
+✔ collection and child clips intersect without translations, including empty rectangles (5.79775ms)
+✔ native font fallback keeps authored families first and includes only installed families (0.653417ms)
+✔ native fallback preserves Latin pixels and never changes the graphical scene (20.804083ms)
+✔ native PNG resolves Hangul through an installed fallback and PDF remains vector text (9.537459ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 798.758084

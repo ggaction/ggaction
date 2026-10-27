@@ -1,0 +1,17 @@
+
+> ggaction@0.0.25 package:check
+> node scripts/package-artifact.js --check
+
+npm notice
+npm notice New minor version of npm available! 11.18.0 -> 11.21.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.21.1
+npm notice To update run: npm install -g npm@11.21.1
+npm notice
+{
+  "name": "ggaction",
+  "version": "0.0.25",
+  "filename": "ggaction-0.0.25.tgz",
+  "entryCount": 654,
+  "packedBytes": 974397,
+  "unpackedBytes": 4574796
+}

@@ -1,0 +1,22 @@
+{
+  "verifiedAt": "2026-10-27T01:13:42.685Z",
+  "commit": "40ec7edead7fc84de05aad31888dd0f7d264a512",
+  "deletedRemote": [
+    {
+      "name": "codex/overlay-composition-v025",
+      "sha": "4b3722767b9ad6a706d118a76b88665342e42a96"
+    }
+  ],
+  "alreadyAbsentRemote": [
+    "release/0.0.26-integration"
+  ],
+  "preservedRemote": [],
+  "deletedLocal": "Deleted branch release/0.0.26-integration (was a4c00a8e).",
+  "remoteHeads": [
+    "40ec7edead7fc84de05aad31888dd0f7d264a512\trefs/heads/main"
+  ],
+  "localBranches": [
+    "main"
+  ],
+  "workingTree": ""
+}

@@ -1,0 +1,16 @@
+{
+  "label": "test",
+  "command": "npm",
+  "args": [
+    "test"
+  ],
+  "code": 0,
+  "signal": null,
+  "timeoutMs": 5400000,
+  "durationMs": 441180,
+  "node": "v20.20.2",
+  "platform": "linux",
+  "bytes": 1227718,
+  "retainedBytes": 1227718,
+  "truncated": false
+}

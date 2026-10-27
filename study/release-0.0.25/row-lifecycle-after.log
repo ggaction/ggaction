@@ -1,0 +1,121 @@
+✖ compound row highlights round trip, revise and remove every owned component (117.11325ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  
+  undefined !== {}
+  
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/unit/actions/selection/row-highlight-lifecycle.test.js:29:10)
+      at Test.runInAsyncScope (node:async_hooks:211:14)
+      at Test.run (node:internal/test_runner/test:931:25)
+      at Test.start (node:internal/test_runner/test:829:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:297:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: {},
+    operator: 'deepStrictEqual'
+  }
+
+✖ restoration rejects corrupt composite owners and row references (88.010375ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /selection|Selection|row|Row|composite|Composite/. Input:
+  
+  'Error: Unknown dataset "missing" does not exist.'
+  
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/unit/actions/selection/row-highlight-lifecycle.test.js:47:12)
+      at Test.runInAsyncScope (node:async_hooks:211:14)
+      at Test.run (node:internal/test_runner/test:931:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+      at Test.postRun (node:internal/test_runner/test:1042:19)
+      at Test.run (node:internal/test_runner/test:970:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:297:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: Unknown dataset "missing" does not exist.
+        at resolveDatasetReference (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/selectors/datasets.js:34:25)
+        at validateProgramState (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/persistence/validation.js:487:36)
+        at restoreState (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/persistence.js:67:3)
+        at deserializeProgram (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/persistence.js:146:19)
+        at file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/unit/actions/selection/row-highlight-lifecycle.test.js:47:25
+        at getActual (node:assert:805:5)
+        at Function.throws (node:assert:951:24)
+        at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/unit/actions/selection/row-highlight-lifecycle.test.js:47:12)
+        at Test.runInAsyncScope (node:async_hooks:211:14)
+        at Test.run (node:internal/test_runner/test:931:25),
+    expected: /selection|Selection|row|Row|composite|Composite/,
+    operator: 'throws'
+  }
+
+✔ row selectors reject malformed input atomically and accept an empty selection (22.737583ms)
+✔ item inspection caches frozen snapshots and resolves scoped targets (15.61625ms)
+✔ collects typed references from every persistent owner with canonical paths (2.841416ms)
+✔ does not infer references from trace text or unrelated string values (0.473ms)
+✔ collects stored data and mark ownership without treating recipes as IDs (0.523209ms)
+✔ keeps composition child resource namespaces independent (29.411625ms)
+✔ canonicalResourcePath validates every path segment (0.304625ms)
+✔ all action corpus programs round trip without replay and preserve graphics and state (8447.023833ms)
+✔ empty, partial, Basic, and composed states restore as immutable editable Full programs (64.962042ms)
+✔ editable schema version 1 migrates dataset schemas while version 2 requires them (4.569125ms)
+✔ editable version 1 migrates lookup schemas from both lossless raw tables (10.555292ms)
+✔ editable restoration retains compatible empty-domain preservation identity (4.71925ms)
+✔ registered extensions restore without executing actions; unknown classes and operations fail (1.697333ms)
+✔ envelopes, canonical keys, and closed traces are mandatory (1.394667ms)
+✔ restoration rejects malformed semantics, dangling resources, caches, selectors, and ownership (102.311625ms)
+✔ graphic snapshots reject malformed, duplicated, orphaned and cyclic concrete trees (15.667459ms)
+✔ editable version 2 remains readable while shared payloads require version 3 (12.065375ms)
+ℹ tests 19
+ℹ suites 0
+ℹ pass 17
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 9139.165958
+
+✖ failing tests:
+
+test at test/unit/actions/selection/row-highlight-lifecycle.test.js:15:1
+✖ compound row highlights round trip, revise and remove every owned component (117.11325ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  
+  undefined !== {}
+  
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/unit/actions/selection/row-highlight-lifecycle.test.js:29:10)
+      at Test.runInAsyncScope (node:async_hooks:211:14)
+      at Test.run (node:internal/test_runner/test:931:25)
+      at Test.start (node:internal/test_runner/test:829:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:297:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: {},
+    operator: 'deepStrictEqual'
+  }
+
+test at test/unit/actions/selection/row-highlight-lifecycle.test.js:34:1
+✖ restoration rejects corrupt composite owners and row references (88.010375ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /selection|Selection|row|Row|composite|Composite/. Input:
+  
+  'Error: Unknown dataset "missing" does not exist.'
+  
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/unit/actions/selection/row-highlight-lifecycle.test.js:47:12)
+      at Test.runInAsyncScope (node:async_hooks:211:14)
+      at Test.run (node:internal/test_runner/test:931:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+      at Test.postRun (node:internal/test_runner/test:1042:19)
+      at Test.run (node:internal/test_runner/test:970:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:297:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: Unknown dataset "missing" does not exist.
+        at resolveDatasetReference (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/selectors/datasets.js:34:25)
+        at validateProgramState (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/persistence/validation.js:487:36)
+        at restoreState (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/persistence.js:67:3)
+        at deserializeProgram (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/persistence.js:146:19)
+        at file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/unit/actions/selection/row-highlight-lifecycle.test.js:47:25
+        at getActual (node:assert:805:5)
+        at Function.throws (node:assert:951:24)
+        at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/unit/actions/selection/row-highlight-lifecycle.test.js:47:12)
+        at Test.runInAsyncScope (node:async_hooks:211:14)
+        at Test.run (node:internal/test_runner/test:931:25),
+    expected: /selection|Selection|row|Row|composite|Composite/,
+    operator: 'throws'
+  }

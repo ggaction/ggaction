@@ -1,0 +1,32 @@
+
+> ggaction@0.0.23 test:package
+> node scripts/package-consumer.js
+
+npm notice
+npm notice New minor version of npm available! 11.18.0 -> 11.21.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.21.1
+npm notice To update run: npm install -g npm@11.21.1
+npm notice
+file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/consumers/runtime.js:46
+  if (failures.length) throw new AggregateError(failures.map(record => new Error(`${record.id}: ${record.error}`)), "Installed consumer cases failed");
+                             ^
+
+AggregateError: Installed consumer cases failed
+    at runConsumerCases (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/consumers/runtime.js:46:30)
+    at async testPackageConsumer (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/package-consumer.js:73:21)
+    at async file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/package-consumer.js:98:18 {
+  [errors]: [
+    Error: bundle-full: Error: ggaction gzip bundle 451111 exceeds 448000.
+        at bundle (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/package-consumer.js:70:43)
+        at async runConsumerCases (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/consumers/runtime.js:37:27)
+        at async testPackageConsumer (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/package-consumer.js:73:21)
+        at async file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/package-consumer.js:98:18
+        at file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/consumers/runtime.js:46:72
+        at Array.map (<anonymous>)
+        at runConsumerCases (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/consumers/runtime.js:46:58)
+        at async testPackageConsumer (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/package-consumer.js:73:21)
+        at async file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/package-consumer.js:98:18
+  ]
+}
+
+Node.js v23.5.0

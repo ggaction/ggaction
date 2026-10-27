@@ -1,0 +1,288 @@
+{
+  "checkedDate": "2026-10-23",
+  "repository": {
+    "name": "ggaction/ggaction",
+    "defaultBranch": "main"
+  },
+  "releases": [
+    {
+      "version": "v0.0.22",
+      "url": "https://github.com/ggaction/ggaction/releases/tag/v0.0.22",
+      "published": "2026-10-23T01:15:17Z"
+    },
+    {
+      "version": "v0.0.21",
+      "url": "https://github.com/ggaction/ggaction/releases/tag/v0.0.21",
+      "published": "2026-10-18T17:32:10Z"
+    },
+    {
+      "version": "v0.0.20",
+      "url": "https://github.com/ggaction/ggaction/releases/tag/v0.0.20",
+      "published": "2026-10-18T12:23:49Z"
+    }
+  ],
+  "recentPRs": [
+    {
+      "number": 263,
+      "title": "Release 0.0.22 with integrated chart, guide, data and scene fixes",
+      "url": "https://github.com/ggaction/ggaction/pull/263",
+      "merged": true,
+      "head": "2d2748d6068234bfe7762d3818d5052b8c0b69ce"
+    },
+    {
+      "number": 230,
+      "title": "Preserve bootstrap interval precision and prepare 0.0.21",
+      "url": "https://github.com/ggaction/ggaction/pull/230",
+      "merged": true,
+      "head": "9af7fd8858269a88ab19656283949188ab868878"
+    },
+    {
+      "number": 228,
+      "title": "Support quantitative Area color and seeded mean intervals (0.0.20)",
+      "url": "https://github.com/ggaction/ggaction/pull/228",
+      "merged": true,
+      "head": "f6b37d9aca1c1c38f3669981330d97df1c5be3a0"
+    },
+    {
+      "number": 217,
+      "title": "Release 0.0.19: complete approved chart authoring capabilities",
+      "url": "https://github.com/ggaction/ggaction/pull/217",
+      "merged": true,
+      "head": "e7eaca1e0914f9c56de7261a8778db67a92ec96b"
+    },
+    {
+      "number": 215,
+      "title": "Remove unused docs dependency and bound corpus generation memory",
+      "url": "https://github.com/ggaction/ggaction/pull/215",
+      "merged": true,
+      "head": "ca90232becaa48318641670d966b41ea2ea8bc09"
+    },
+    {
+      "number": 211,
+      "title": "Release ggaction 0.0.18 with translation-driven capabilities and guide fixes",
+      "url": "https://github.com/ggaction/ggaction/pull/211",
+      "merged": true,
+      "head": "84b344cde9fae69ad8ecd876f10c295c63d24105"
+    },
+    {
+      "number": 133,
+      "title": "Release ggaction 0.0.17",
+      "url": "https://github.com/ggaction/ggaction/pull/133",
+      "merged": true,
+      "head": "cb3856699df1ecc9e44b055569e9677b65cf66a2"
+    },
+    {
+      "number": 132,
+      "title": "Implement roadmap 8 authoring contracts without flatten",
+      "url": "https://github.com/ggaction/ggaction/pull/132",
+      "merged": true,
+      "head": "50ca4399a2522b26e4c494cc38d8a536b579fe48"
+    },
+    {
+      "number": 131,
+      "title": "Release 0.0.16: immutable authoring, accessibility, and verified delivery",
+      "url": "https://github.com/ggaction/ggaction/pull/131",
+      "merged": true,
+      "head": "b27e739189c915f2ecdf180312170f5b38af5448"
+    },
+    {
+      "number": 130,
+      "title": "Fix search retries and prepare 0.0.15",
+      "url": "https://github.com/ggaction/ggaction/pull/130",
+      "merged": true,
+      "head": "73af254804eb446559ab6ae8a89aac0e835b25f6"
+    },
+    {
+      "number": 127,
+      "title": "Add progressive radius refinement and focused scale editors",
+      "url": "https://github.com/ggaction/ggaction/pull/127",
+      "merged": true,
+      "head": "7f813592b61d7d12bcbc27ed8661e5e0309abf6f"
+    },
+    {
+      "number": 126,
+      "title": "Support progressive guide creation",
+      "url": "https://github.com/ggaction/ggaction/pull/126",
+      "merged": true,
+      "head": "2b3f829aff1601e64e94597c9705e988a2a0e24f"
+    }
+  ],
+  "openIssues": [
+    {
+      "number": 258,
+      "title": "Support independently packed wrapped facet bounds and shared footer axes",
+      "url": "https://github.com/ggaction/ggaction/issues/258"
+    },
+    {
+      "number": 253,
+      "title": "Support row-preserving null calendar buckets in createTimeUnitData",
+      "url": "https://github.com/ggaction/ggaction/issues/253"
+    },
+    {
+      "number": 244,
+      "title": "Enhancement: explicit Steffen monotone recipe for faithful Vega-Lite curve translation",
+      "url": "https://github.com/ggaction/ggaction/issues/244"
+    },
+    {
+      "number": 238,
+      "title": "Allow opt-in plot-last placement for high-level regression lines",
+      "url": "https://github.com/ggaction/ggaction/issues/238"
+    }
+  ],
+  "runs": [
+    {
+      "id": 39881207750,
+      "name": "Release",
+      "sha": "202b7afd4146a691c136964c4cc53f9c37444513",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/ggaction/ggaction/actions/runs/39881207750"
+    },
+    {
+      "id": 39881202375,
+      "name": "CI",
+      "sha": "202b7afd4146a691c136964c4cc53f9c37444513",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "url": "https://github.com/ggaction/ggaction/actions/runs/39881202375"
+    },
+    {
+      "id": 39879409933,
+      "name": "CI",
+      "sha": "2d2748d6068234bfe7762d3818d5052b8c0b69ce",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/ggaction/ggaction/actions/runs/39879409933"
+    },
+    {
+      "id": 39877653672,
+      "name": "CI",
+      "sha": "6468999bbaff66daa861ed74e81ff11f295c4701",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "url": "https://github.com/ggaction/ggaction/actions/runs/39877653672"
+    },
+    {
+      "id": 39875861960,
+      "name": "CI",
+      "sha": "57ddcc0fc810a15ac8ba078ee2b64dd9379bb509",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/ggaction/ggaction/actions/runs/39875861960"
+    },
+    {
+      "id": 39875673990,
+      "name": "CI",
+      "sha": "e934906032f624edd55697409651e3db496053a4",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "url": "https://github.com/ggaction/ggaction/actions/runs/39875673990"
+    },
+    {
+      "id": 39870303590,
+      "name": "CI",
+      "sha": "263970a8bf29fcfe0df5979790c5669d103c9317",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/ggaction/ggaction/actions/runs/39870303590"
+    },
+    {
+      "id": 39868703949,
+      "name": "CI",
+      "sha": "3134466bd38dbced18d13b29f2c96d972890acc2",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "url": "https://github.com/ggaction/ggaction/actions/runs/39868703949"
+    }
+  ],
+  "releaseJobs": [
+    {
+      "name": "candidate",
+      "conclusion": "success"
+    },
+    {
+      "name": "verify-documentation",
+      "conclusion": "success"
+    },
+    {
+      "name": "realistic-data",
+      "conclusion": "success"
+    },
+    {
+      "name": "verify-browsers (firefox)",
+      "conclusion": "success"
+    },
+    {
+      "name": "verify-coverage",
+      "conclusion": "success"
+    },
+    {
+      "name": "verify-platform (macos-latest)",
+      "conclusion": "success"
+    },
+    {
+      "name": "verify-platform (windows-latest)",
+      "conclusion": "success"
+    },
+    {
+      "name": "verify-package",
+      "conclusion": "success"
+    },
+    {
+      "name": "verify-browsers (webkit)",
+      "conclusion": "success"
+    },
+    {
+      "name": "verify-source",
+      "conclusion": "success"
+    },
+    {
+      "name": "verify-realistic (2)",
+      "conclusion": "success"
+    },
+    {
+      "name": "verify-realistic (4)",
+      "conclusion": "success"
+    },
+    {
+      "name": "verify-realistic (7)",
+      "conclusion": "success"
+    },
+    {
+      "name": "verify-realistic (1)",
+      "conclusion": "success"
+    },
+    {
+      "name": "verify-realistic (5)",
+      "conclusion": "success"
+    },
+    {
+      "name": "verify-realistic (3)",
+      "conclusion": "success"
+    },
+    {
+      "name": "verify-realistic (6)",
+      "conclusion": "success"
+    },
+    {
+      "name": "verify",
+      "conclusion": "success"
+    },
+    {
+      "name": "publish",
+      "conclusion": "success"
+    },
+    {
+      "name": "pages-build",
+      "conclusion": "success"
+    },
+    {
+      "name": "context7-refresh / Refresh /ggaction/ggaction",
+      "conclusion": "success"
+    },
+    {
+      "name": "pages-deploy",
+      "conclusion": "success"
+    }
+  ]
+}

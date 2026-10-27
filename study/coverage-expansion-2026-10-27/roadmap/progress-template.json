@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "taskId": null,
+  "status": "planned",
+  "implementationCommit": null,
+  "contractRevision": null,
+  "gateEvidence": [],
+  "changedFiles": [],
+  "commands": [],
+  "artifacts": [],
+  "independentOracleReview": null,
+  "consumerCells": [],
+  "openObligations": [],
+  "handoff": {
+    "completed": [],
+    "remaining": [],
+    "nextTask": null
+  },
+  "notice": "Copy per task during implementation. Do not fill pass without executing the referenced command."
+}

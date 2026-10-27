@@ -1,0 +1,21 @@
+{
+  "compilerVersion": "7.0.2",
+  "node": "v20.20.2",
+  "args": [
+    "--noEmit",
+    "--strict",
+    "--skipLibCheck",
+    "--target",
+    "ES2022",
+    "--module",
+    "NodeNext",
+    "--moduleResolution",
+    "NodeNext",
+    "/tmp/ggaction-focused-scale-editor-types-27hze4/focused-scale-editor.mts"
+  ],
+  "cwd": "/home/runner/work/ggaction/ggaction/",
+  "status": 0,
+  "signal": null,
+  "durationMs": 152.267135,
+  "diagnostics": ""
+}

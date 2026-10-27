@@ -1,0 +1,32 @@
+{
+  "registered": 55,
+  "consumers": 55,
+  "buildInputs": 50,
+  "overwritten": [
+    {
+      "file": "recipes/line-chart.md",
+      "id": "primary",
+      "result": "program"
+    },
+    {
+      "file": "api/marks/line-area.md",
+      "id": "primary",
+      "result": "gaps"
+    },
+    {
+      "file": "api/marks/line-area.md",
+      "id": "canvas-layout-2",
+      "result": "program"
+    },
+    {
+      "file": "api/marks/line-area.md",
+      "id": "canvas-layout-3",
+      "result": "layered"
+    },
+    {
+      "file": "api/marks/line-area.md",
+      "id": "canvas-layout-4",
+      "result": "radar"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "profile": "user-scope-2026-10-27",
+  "method": "Grammar-node traversal of explicit independent Y and Vega multiple-Y guide declarations; data records skipped.",
+  "limits": "Not a dialect compiler. Implicit defaults, inheritance and resolved scale binding need fixture qualification. No rows marked pass or automatically excluded.",
+  "rootOccurrences": 24957,
+  "embeddedOccurrences": 30,
+  "rows": 24987,
+  "screenStates": {
+    "no-explicit-candidate-found": 24892,
+    "panel-declaration-review": 8,
+    "scope-review-required": 87
+  },
+  "declarationKinds": {
+    "panel-independent-y-declaration": 9,
+    "layer-independent-y-candidate": 38,
+    "unresolved-independent-y-declaration": 49
+  },
+  "findings": 96,
+  "finalPolicyQualifications": 0,
+  "allRequiredResolvedFrameChecks": "not-run"
+}

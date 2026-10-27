@@ -1,0 +1,24 @@
+✔ renders cross-feature-dashboard/nested-polar-replacement (4914.136542ms)
+✔ renders gapminder-cluster-regression-facet/outer-guides (2614.37725ms)
+✔ renders gapminder-cluster-regression-facet/shared-scales (1707.648917ms)
+✔ renders gapminder-cluster-regression-facet/independent-x (1652.520333ms)
+✔ renders gapminder-cluster-regression-facet/outer-guides (1637.107583ms)
+✔ renders cars-scatterplot/point-create-and-palette-edit (1005.932167ms)
+✔ renders jobs-grouped-bar/bar-create-appearance (1751.83225ms)
+✔ renders cars-line-chart/line-create-edit-appearance (723.410042ms)
+✔ renders cars-regression-scatterplot/focused-legend-components (1406.614541ms)
+✔ renders cars-scatterplot/cartesian-guide-facades (667.461959ms)
+✔ renders cars-error-bar/owner-edit (786.567084ms)
+✔ renders gapminder-error-band/owner-and-boundary-edit (1383.612ms)
+✔ renders cars-regression-scatterplot/owner-edit (992.793125ms)
+✔ renders cars-box-plot/owner-edit (456.676792ms)
+✔ renders cars-histogram/remove-guides-and-title (403.858958ms)
+✔ renders gapminder-layered-bar-point/remove-point-mark (298.392083ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 16
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 10868.008583

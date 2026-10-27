@@ -1,0 +1,21 @@
+{
+  "compilerVersion": "7.0.2",
+  "node": "v20.20.2",
+  "args": [
+    "--noEmit",
+    "--strict",
+    "--skipLibCheck",
+    "--module",
+    "NodeNext",
+    "--moduleResolution",
+    "NodeNext",
+    "--target",
+    "ES2022",
+    "/tmp/ggaction-legend-policy-k4wqnm/policy.mts"
+  ],
+  "cwd": "/home/runner/work/ggaction/ggaction/",
+  "status": 0,
+  "signal": null,
+  "durationMs": 146.73526200000003,
+  "diagnostics": ""
+}

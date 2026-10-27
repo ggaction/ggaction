@@ -1,0 +1,57 @@
+{
+  "label": "{\"scope\":\"charts\",\"capability\":\"polar-guides\",\"chart\":\"cars-polar-guides\",\"variant\":\"default\",\"kind\":\"user-facing\",\"title\":\"Cars Polar Guides\",\"userFacingCallChain\":\"chart()\\n  .createCanvas({ width: 620, height: 620, margin: 78 })\\n  .createData({ values: cars })\\n  .createPointMark({ opacity: 0.78 })\\n  .encodeTheta({ field: \\\"Acceleration\\\" })\\n  .encodeR({ field: \\\"Horsepower\\\", scale: { zero: true } })\\n  .encodeColor({ field: \\\"Origin\\\" })\\n  .encodePointRadius({ value: 3 })\\n  .createGuides();\"}",
+  "message": "cars-polar-guides/default/user-facing ink bounds changed from its approved signature (actual {\"x\":49.5,\"y\":60.5,\"width\":523,\"height\":528}, expected {\"x\":50.5,\"y\":64,\"width\":520.5,\"height\":525,\"tolerance\":{\"x\":2.5,\"y\":1.5,\"width\":4.5,\"height\":1.5}}, tolerance {\"x\":2.5,\"y\":1.5,\"width\":4.5,\"height\":1.5})\n+ actual - expected\n\n+ [\n+   'y',\n+   'height'\n+ ]\n- []",
+  "stack": "AssertionError [ERR_ASSERTION]: cars-polar-guides/default/user-facing ink bounds changed from its approved signature (actual {\"x\":49.5,\"y\":60.5,\"width\":523,\"height\":528}, expected {\"x\":50.5,\"y\":64,\"width\":520.5,\"height\":525,\"tolerance\":{\"x\":2.5,\"y\":1.5,\"width\":4.5,\"height\":1.5}}, tolerance {\"x\":2.5,\"y\":1.5,\"width\":4.5,\"height\":1.5})\n+ actual - expected\n\n+ [\n+   'y',\n+   'height'\n+ ]\n- []\n    at assertRenderedPNGImpl (file:///home/runner/work/ggaction/ggaction/test/support/png.js:180:12)\n    at async assertRenderedPNG (file:///home/runner/work/ggaction/ggaction/test/support/png.js:247:16)\n    at async Promise.all (index 1)",
+  "details": {
+    "width": 620,
+    "height": 620,
+    "colors": [
+      "#d7e0ea",
+      "#475569"
+    ],
+    "regions": [
+      {
+        "name": "polar-guides",
+        "x": 48,
+        "y": 48,
+        "width": 524,
+        "height": 560,
+        "minimumInkPixels": 500
+      }
+    ],
+    "visualSignature": {
+      "inkRatio": {
+        "min": 0.0438,
+        "max": 0.0537
+      },
+      "inkBounds": {
+        "x": 50.5,
+        "y": 64,
+        "width": 520.5,
+        "height": 525,
+        "tolerance": {
+          "x": 2.5,
+          "y": 1.5,
+          "width": 4.5,
+          "height": 1.5
+        }
+      }
+    },
+    "artifact": {
+      "scope": "charts",
+      "capability": "polar-guides",
+      "chart": "cars-polar-guides",
+      "variant": "default",
+      "kind": "user-facing",
+      "title": "Cars Polar Guides",
+      "userFacingCallChain": "chart()\n  .createCanvas({ width: 620, height: 620, margin: 78 })\n  .createData({ values: cars })\n  .createPointMark({ opacity: 0.78 })\n  .encodeTheta({ field: \"Acceleration\" })\n  .encodeR({ field: \"Horsepower\", scale: { zero: true } })\n  .encodeColor({ field: \"Origin\" })\n  .encodePointRadius({ value: 3 })\n  .createGuides();"
+    }
+  },
+  "files": [
+    {
+      "source": "/home/runner/work/ggaction/ggaction/.artifacts/test/png/charts/polar-guides/cars-polar-guides/default/user-facing.png",
+      "file": "0-user-facing.png",
+      "bytes": 218802
+    }
+  ]
+}

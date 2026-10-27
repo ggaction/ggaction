@@ -1,0 +1,46 @@
+{
+  "github": {
+    "isDraft": false,
+    "isPrerelease": false,
+    "publishedAt": "2026-10-27T01:08:47Z",
+    "tagName": "v0.0.26",
+    "url": "https://github.com/ggaction/ggaction/releases/tag/v0.0.26"
+  },
+  "remoteRefs": [
+    "40ec7edead7fc84de05aad31888dd0f7d264a512\trefs/heads/main",
+    "40ec7edead7fc84de05aad31888dd0f7d264a512\trefs/tags/v0.0.26^{}"
+  ],
+  "sourceCommit": "1e38e7bef30aeedb561c1ae09bbdcdd152bd46b2",
+  "verifiedAt": "2026-10-27T01:13:03.448Z",
+  "version": "0.0.26",
+  "tag": "v0.0.26",
+  "commit": "40ec7edead7fc84de05aad31888dd0f7d264a512",
+  "registryTarball": "https://registry.npmjs.org/ggaction/-/ggaction-0.0.26.tgz",
+  "sha256": "f250428f3359244d625c6bd105d8017836cbb70fd3c5b826505e38d7fbab62af",
+  "integrity": "sha512-BATvYXSYc+PcuVVwuWs+r7YCLQ4eGZk9crexzg9gnIVcFcfNW+OVsiQ35ipxMGulGX76Lyef2xXM7UDn7OZWsA==",
+  "contractId": "sha256:8ec25828c662bcb6b0bf6801a6b6add6f2b653f218476ea7fc758f21e1418174",
+  "homepageSha256": "700a522030b7ffe74656df0c161f9b565621545ea246c703eacfda0773f37b11",
+  "versionPageSha256": "3b2b7b677bbb9c632f7e828088d0742d446072009b6a9ccb2457a641d0c5c281",
+  "documents": [
+    {
+      "file": "doc-provenance.json",
+      "bytes": 23984,
+      "sha256": "f588bf32b6d05571f5b1d69405f9d7e2677ea8acb318963ad6ec93e84a9e75fc"
+    },
+    {
+      "file": "llms-manifest.json",
+      "bytes": 111922,
+      "sha256": "2894d2768167fc1b4da29ac3f0d3b915193ed2f68e98599c2152b29e4b0affc2"
+    },
+    {
+      "file": "llms-full.txt",
+      "bytes": 2071790,
+      "sha256": "92c4dc0a6e8e987f9e11babb39d9e2dd503cb32c6e3787dff2ed1992b1f41493"
+    },
+    {
+      "file": "llms.txt",
+      "bytes": 10792,
+      "sha256": "e209cc144989818916a4a98eb55fba6146d13e26f8b1ef49c6ff074676b18069"
+    }
+  ]
+}

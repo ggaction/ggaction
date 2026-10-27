@@ -1,0 +1,2113 @@
+{
+  "profile": "ggaction-native-2026-10-27",
+  "notice": "Historical source mapping for reference only. No chart-family parity or adapter implementation obligation.",
+  "counts": {
+    "sourceChartNames": 51,
+    "sourceBackendEntries": 154,
+    "excludedChartNames": 2,
+    "excludedBackendEntries": 4,
+    "namesBeforeOptionPolicy": 49,
+    "backendEntriesBeforeOptionPolicy": 150
+  },
+  "charts": [
+    {
+      "id": "FCH-001",
+      "chart": "Area Chart",
+      "backends": [
+        "vegalite",
+        "echarts",
+        "chartjs",
+        "plotly",
+        "excel"
+      ],
+      "evidence": [
+        {
+          "chart": "Area Chart",
+          "file": "packages/flint-js/src/chartjs/templates/area.ts",
+          "startLine": 23,
+          "endLine": 201,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/area.ts#L23-L201"
+        },
+        {
+          "chart": "Area Chart",
+          "file": "packages/flint-js/src/echarts/templates/area.ts",
+          "startLine": 29,
+          "endLine": 323,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/area.ts#L29-L323"
+        },
+        {
+          "chart": "Area Chart",
+          "file": "packages/flint-js/src/excel/templates/area.ts",
+          "startLine": 6,
+          "endLine": 13,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/excel/templates/area.ts#L6-L13"
+        },
+        {
+          "chart": "Area Chart",
+          "file": "packages/flint-js/src/plotly/templates/area.ts",
+          "startLine": 57,
+          "endLine": 194,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/area.ts#L57-L194"
+        },
+        {
+          "chart": "Area Chart",
+          "file": "packages/flint-js/src/vegalite/templates/area.ts",
+          "startLine": 133,
+          "endLine": 230,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/area.ts#L133-L230"
+        }
+      ],
+      "scopeDisposition": "reference-only",
+      "targetRepresentation": "source-profile-native-actions",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Historical comparison only; ggaction native design is authoritative.",
+      "qualification": "not-required",
+      "priorScopeDisposition": "required",
+      "required": false
+    },
+    {
+      "id": "FCH-002",
+      "chart": "Bar Chart",
+      "backends": [
+        "vegalite",
+        "echarts",
+        "chartjs",
+        "plotly",
+        "excel"
+      ],
+      "evidence": [
+        {
+          "chart": "Bar Chart",
+          "file": "packages/flint-js/src/chartjs/templates/bar.ts",
+          "startLine": 37,
+          "endLine": 127,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/bar.ts#L37-L127"
+        },
+        {
+          "chart": "Bar Chart",
+          "file": "packages/flint-js/src/echarts/templates/bar.ts",
+          "startLine": 168,
+          "endLine": 456,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/bar.ts#L168-L456"
+        },
+        {
+          "chart": "Bar Chart",
+          "file": "packages/flint-js/src/excel/templates/bar.ts",
+          "startLine": 6,
+          "endLine": 13,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/excel/templates/bar.ts#L6-L13"
+        },
+        {
+          "chart": "Bar Chart",
+          "file": "packages/flint-js/src/plotly/templates/bar.ts",
+          "startLine": 38,
+          "endLine": 225,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/bar.ts#L38-L225"
+        },
+        {
+          "chart": "Bar Chart",
+          "file": "packages/flint-js/src/vegalite/templates/bar.ts",
+          "startLine": 173,
+          "endLine": 240,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/bar.ts#L173-L240"
+        }
+      ],
+      "scopeDisposition": "reference-only",
+      "targetRepresentation": "source-profile-native-actions",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Historical comparison only; ggaction native design is authoritative.",
+      "qualification": "not-required",
+      "priorScopeDisposition": "required",
+      "required": false
+    },
+    {
+      "id": "FCH-003",
+      "chart": "Bar Table",
+      "backends": [
+        "vegalite",
+        "plotly"
+      ],
+      "evidence": [
+        {
+          "chart": "Bar Table",
+          "file": "packages/flint-js/src/plotly/templates/bar-table.ts",
+          "startLine": 154,
+          "endLine": 522,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/bar-table.ts#L154-L522"
+        },
+        {
+          "chart": "Bar Table",
+          "file": "packages/flint-js/src/vegalite/templates/bar-table.ts",
+          "startLine": 694,
+          "endLine": 1124,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/bar-table.ts#L694-L1124"
+        }
+      ],
+      "scopeDisposition": "reference-only",
+      "targetRepresentation": "source-profile-native-actions",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Historical comparison only; ggaction native design is authoritative.",
+      "qualification": "not-required",
+      "priorScopeDisposition": "required",
+      "required": false
+    },
+    {
+      "id": "FCH-004",
+      "chart": "Boxplot",
+      "backends": [
+        "vegalite",
+        "echarts",
+        "plotly",
+        "excel"
+      ],
+      "evidence": [
+        {
+          "chart": "Boxplot",
+          "file": "packages/flint-js/src/echarts/templates/boxplot.ts",
+          "startLine": 203,
+          "endLine": 514,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/boxplot.ts#L203-L514"
+        },
+        {
+          "chart": "Boxplot",
+          "file": "packages/flint-js/src/excel/templates/boxplot.ts",
+          "startLine": 7,
+          "endLine": 65,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/excel/templates/boxplot.ts#L7-L65"
+        },
+        {
+          "chart": "Boxplot",
+          "file": "packages/flint-js/src/plotly/templates/boxplot.ts",
+          "startLine": 27,
+          "endLine": 141,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/boxplot.ts#L27-L141"
+        },
+        {
+          "chart": "Boxplot",
+          "file": "packages/flint-js/src/vegalite/templates/scatter.ts",
+          "startLine": 357,
+          "endLine": 743,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/scatter.ts#L357-L743"
+        }
+      ],
+      "scopeDisposition": "reference-only",
+      "targetRepresentation": "source-profile-native-actions",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Historical comparison only; ggaction native design is authoritative.",
+      "qualification": "not-required",
+      "priorScopeDisposition": "required",
+      "required": false
+    },
+    {
+      "id": "FCH-005",
+      "chart": "Bubble Chart",
+      "backends": [
+        "chartjs"
+      ],
+      "evidence": [
+        {
+          "chart": "Bubble Chart",
+          "file": "packages/flint-js/src/chartjs/templates/bubble.ts",
+          "startLine": 52,
+          "endLine": 180,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/bubble.ts#L52-L180"
+        }
+      ],
+      "scopeDisposition": "reference-only",
+      "targetRepresentation": "source-profile-native-actions",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Historical comparison only; ggaction native design is authoritative.",
+      "qualification": "not-required",
+      "priorScopeDisposition": "required",
+      "required": false
+    },
+    {
+      "id": "FCH-006",
+      "chart": "Bullet Chart",
+      "backends": [
+        "vegalite",
+        "echarts",
+        "plotly"
+      ],
+      "evidence": [
+        {
+          "chart": "Bullet Chart",
+          "file": "packages/flint-js/src/echarts/templates/bullet.ts",
+          "startLine": 31,
+          "endLine": 161,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/bullet.ts#L31-L161"
+        },
+        {
+          "chart": "Bullet Chart",
+          "file": "packages/flint-js/src/plotly/templates/bullet.ts",
+          "startLine": 25,
+          "endLine": 151,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/bullet.ts#L25-L151"
+        },
+        {
+          "chart": "Bullet Chart",
+          "file": "packages/flint-js/src/vegalite/templates/bullet.ts",
+          "startLine": 61,
+          "endLine": 226,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/bullet.ts#L61-L226"
+        }
+      ],
+      "scopeDisposition": "reference-only",
+      "targetRepresentation": "existing-action-recipe",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Historical comparison only; ggaction native design is authoritative.",
+      "qualification": "not-required",
+      "priorScopeDisposition": "required-via-composition",
+      "required": false
+    },
+    {
+      "id": "FCH-007",
+      "chart": "Bump Chart",
+      "backends": [
+        "vegalite",
+        "echarts",
+        "chartjs",
+        "plotly"
+      ],
+      "evidence": [
+        {
+          "chart": "Bump Chart",
+          "file": "packages/flint-js/src/chartjs/templates/bump.ts",
+          "startLine": 31,
+          "endLine": 204,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/bump.ts#L31-L204"
+        },
+        {
+          "chart": "Bump Chart",
+          "file": "packages/flint-js/src/echarts/templates/line.ts",
+          "startLine": 508,
+          "endLine": 651,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/line.ts#L508-L651"
+        },
+        {
+          "chart": "Bump Chart",
+          "file": "packages/flint-js/src/plotly/templates/bump.ts",
+          "startLine": 21,
+          "endLine": 97,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/bump.ts#L21-L97"
+        },
+        {
+          "chart": "Bump Chart",
+          "file": "packages/flint-js/src/vegalite/templates/bump.ts",
+          "startLine": 22,
+          "endLine": 117,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/bump.ts#L22-L117"
+        }
+      ],
+      "scopeDisposition": "reference-only",
+      "targetRepresentation": "source-profile-native-actions",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Historical comparison only; ggaction native design is authoritative.",
+      "qualification": "not-required",
+      "priorScopeDisposition": "required",
+      "required": false
+    },
+    {
+      "id": "FCH-008",
+      "chart": "Calendar Heatmap",
+      "backends": [
+        "vegalite",
+        "echarts"
+      ],
+      "evidence": [
+        {
+          "chart": "Calendar Heatmap",
+          "file": "packages/flint-js/src/echarts/templates/calendar.ts",
+          "startLine": 55,
+          "endLine": 191,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/calendar.ts#L55-L191"
+        },
+        {
+          "chart": "Calendar Heatmap",
+          "file": "packages/flint-js/src/vegalite/templates/calendar.ts",
+          "startLine": 108,
+          "endLine": 282,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/calendar.ts#L108-L282"
+        }
+      ],
+      "scopeDisposition": "reference-only",
+      "targetRepresentation": "source-profile-native-actions",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Historical comparison only; ggaction native design is authoritative.",
+      "qualification": "not-required",
+      "priorScopeDisposition": "required",
+      "required": false
+    },
+    {
+      "id": "FCH-009",
+      "chart": "Candlestick Chart",
+      "backends": [
+        "vegalite",
+        "echarts",
+        "plotly",
+        "excel"
+      ],
+      "evidence": [
+        {
+          "chart": "Candlestick Chart",
+          "file": "packages/flint-js/src/echarts/templates/candlestick.ts",
+          "startLine": 24,
+          "endLine": 170,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/candlestick.ts#L24-L170"
+        },
+        {
+          "chart": "Candlestick Chart",
+          "file": "packages/flint-js/src/excel/templates/candlestick.ts",
+          "startLine": 17,
+          "endLine": 103,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/excel/templates/candlestick.ts#L17-L103"
+        },
+        {
+          "chart": "Candlestick Chart",
+          "file": "packages/flint-js/src/plotly/templates/candlestick.ts",
+          "startLine": 17,
+          "endLine": 77,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/candlestick.ts#L17-L77"
+        },
+        {
+          "chart": "Candlestick Chart",
+          "file": "packages/flint-js/src/vegalite/templates/candlestick.ts",
+          "startLine": 13,
+          "endLine": 149,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/candlestick.ts#L13-L149"
+        }
+      ],
+      "scopeDisposition": "reference-only",
+      "targetRepresentation": "source-profile-native-actions",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Historical comparison only; ggaction native design is authoritative.",
+      "qualification": "not-required",
+      "priorScopeDisposition": "required",
+      "required": false
+    },
+    {
+      "id": "FCH-010",
+      "chart": "Choropleth",
+      "backends": [
+        "vegalite",
+        "plotly"
+      ],
+      "evidence": [
+        {
+          "chart": "Choropleth",
+          "file": "packages/flint-js/src/plotly/templates/choropleth.ts",
+          "startLine": 72,
+          "endLine": 135,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/choropleth.ts#L72-L135"
+        },
+        {
+          "chart": "Choropleth",
+          "file": "packages/flint-js/src/vegalite/templates/map.ts",
+          "startLine": 623,
+          "endLine": 695,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/map.ts#L623-L695"
+        }
+      ],
+      "scopeDisposition": "reference-only",
+      "targetRepresentation": "source-profile-native-actions",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Historical comparison only; ggaction native design is authoritative.",
+      "qualification": "not-required",
+      "priorScopeDisposition": "required",
+      "required": false
+    },
+    {
+      "id": "FCH-011",
+      "chart": "Combo Chart",
+      "backends": [
+        "chartjs"
+      ],
+      "evidence": [
+        {
+          "chart": "Combo Chart",
+          "file": "packages/flint-js/src/chartjs/templates/combo.ts",
+          "startLine": 46,
+          "endLine": 146,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/combo.ts#L46-L146"
+        }
+      ],
+      "scopeDisposition": "reference-only",
+      "targetRepresentation": "shared-y-layer-composition",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Historical comparison only; ggaction native design is authoritative.",
+      "qualification": "not-required",
+      "priorScopeDisposition": "scoped-conditional",
+      "required": false
+    },
+    {
+      "id": "FCH-012",
+      "chart": "Connected Scatter Plot",
+      "backends": [
+        "vegalite",
+        "echarts",
+        "chartjs",
+        "plotly",
+        "excel"
+      ],
+      "evidence": [
+        {
+          "chart": "Connected Scatter Plot",
+          "file": "packages/flint-js/src/chartjs/templates/connected-scatter.ts",
+          "startLine": 70,
+          "endLine": 165,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/connected-scatter.ts#L70-L165"
+        },
+        {
+          "chart": "Connected Scatter Plot",
+          "file": "packages/flint-js/src/echarts/templates/connected-scatter.ts",
+          "startLine": 72,
+          "endLine": 150,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/connected-scatter.ts#L72-L150"
+        },
+        {
+          "chart": "Connected Scatter Plot",
+          "file": "packages/flint-js/src/excel/templates/scatter.ts",
+          "startLine": 17,
+          "endLine": 29,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/excel/templates/scatter.ts#L17-L29"
+        },
+        {
+          "chart": "Connected Scatter Plot",
+          "file": "packages/flint-js/src/plotly/templates/connected-scatter.ts",
+          "startLine": 16,
+          "endLine": 66,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/connected-scatter.ts#L16-L66"
+        },
+        {
+          "chart": "Connected Scatter Plot",
+          "file": "packages/flint-js/src/vegalite/templates/connected-scatter.ts",
+          "startLine": 68,
+          "endLine": 154,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/connected-scatter.ts#L68-L154"
+        }
+      ],
+      "scopeDisposition": "reference-only",
+      "targetRepresentation": "source-profile-native-actions",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Historical comparison only; ggaction native design is authoritative.",
+      "qualification": "not-required",
+      "priorScopeDisposition": "required",
+      "required": false
+    },
+    {
+      "id": "FCH-013",
+      "chart": "Density Contour",
+      "backends": [
+        "plotly"
+      ],
+      "evidence": [
+        {
+          "chart": "Density Contour",
+          "file": "packages/flint-js/src/plotly/templates/density-contour.ts",
+          "startLine": 21,
+          "endLine": 101,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/density-contour.ts#L21-L101"
+        }
+      ],
+      "scopeDisposition": "reference-only",
+      "targetRepresentation": "source-profile-native-actions",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Historical comparison only; ggaction native design is authoritative.",
+      "qualification": "not-required",
+      "priorScopeDisposition": "required",
+      "required": false
+    },
+    {
+      "id": "FCH-014",
+      "chart": "Density Plot",
+      "backends": [
+        "vegalite",
+        "echarts",
+        "plotly"
+      ],
+      "evidence": [
+        {
+          "chart": "Density Plot",
+          "file": "packages/flint-js/src/echarts/templates/density.ts",
+          "startLine": 63,
+          "endLine": 129,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/density.ts#L63-L129"
+        },
+        {
+          "chart": "Density Plot",
+          "file": "packages/flint-js/src/plotly/templates/density.ts",
+          "startLine": 15,
+          "endLine": 71,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/density.ts#L15-L71"
+        },
+        {
+          "chart": "Density Plot",
+          "file": "packages/flint-js/src/vegalite/templates/density.ts",
+          "startLine": 69,
+          "endLine": 196,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/density.ts#L69-L196"
+        }
+      ],
+      "scopeDisposition": "reference-only",
+      "targetRepresentation": "source-profile-native-actions",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Historical comparison only; ggaction native design is authoritative.",
+      "qualification": "not-required",
+      "priorScopeDisposition": "required",
+      "required": false
+    },
+    {
+      "id": "FCH-015",
+      "chart": "Donut Chart",
+      "backends": [
+        "vegalite",
+        "plotly",
+        "excel"
+      ],
+      "evidence": [
+        {
+          "chart": "Donut Chart",
+          "file": "packages/flint-js/src/excel/templates/pie.ts",
+          "startLine": 12,
+          "endLine": 16,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/excel/templates/pie.ts#L12-L16"
+        },
+        {
+          "chart": "Donut Chart",
+          "file": "packages/flint-js/src/plotly/templates/pie.ts",
+          "startLine": 157,
+          "endLine": 167,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/pie.ts#L157-L167"
+        },
+        {
+          "chart": "Donut Chart",
+          "file": "packages/flint-js/src/vegalite/templates/pie.ts",
+          "startLine": 204,
+          "endLine": 223,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/pie.ts#L204-L223"
+        }
+      ],
+      "scopeDisposition": "reference-only",
+      "targetRepresentation": "source-profile-native-actions",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Historical comparison only; ggaction native design is authoritative.",
+      "qualification": "not-required",
+      "priorScopeDisposition": "required",
+      "required": false
+    },
+    {
+      "id": "FCH-016",
+      "chart": "Doughnut Chart",
+      "backends": [
+        "chartjs"
+      ],
+      "evidence": [
+        {
+          "chart": "Doughnut Chart",
+          "file": "packages/flint-js/src/chartjs/templates/doughnut.ts",
+          "startLine": 23,
+          "endLine": 114,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/doughnut.ts#L23-L114"
+        }
+      ],
+      "scopeDisposition": "reference-only",
+      "targetRepresentation": "source-profile-native-actions",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Historical comparison only; ggaction native design is authoritative.",
+      "qualification": "not-required",
+      "priorScopeDisposition": "required",
+      "required": false
+    },
+    {
+      "id": "FCH-017",
+      "chart": "ECDF Plot",
+      "backends": [
+        "vegalite",
+        "echarts",
+        "chartjs",
+        "plotly"
+      ],
+      "evidence": [
+        {
+          "chart": "ECDF Plot",
+          "file": "packages/flint-js/src/chartjs/templates/ecdf.ts",
+          "startLine": 42,
+          "endLine": 120,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/ecdf.ts#L42-L120"
+        },
+        {
+          "chart": "ECDF Plot",
+          "file": "packages/flint-js/src/echarts/templates/ecdf.ts",
+          "startLine": 45,
+          "endLine": 117,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/ecdf.ts#L45-L117"
+        },
+        {
+          "chart": "ECDF Plot",
+          "file": "packages/flint-js/src/plotly/templates/ecdf.ts",
+          "startLine": 16,
+          "endLine": 68,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/ecdf.ts#L16-L68"
+        },
+        {
+          "chart": "ECDF Plot",
+          "file": "packages/flint-js/src/vegalite/templates/ecdf.ts",
+          "startLine": 69,
+          "endLine": 191,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/ecdf.ts#L69-L191"
+        }
+      ],
+      "scopeDisposition": "reference-only",
+      "targetRepresentation": "source-profile-native-actions",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Historical comparison only; ggaction native design is authoritative.",
+      "qualification": "not-required",
+      "priorScopeDisposition": "required",
+      "required": false
+    },
+    {
+      "id": "FCH-018",
+      "chart": "Funnel Chart",
+      "backends": [
+        "echarts",
+        "plotly",
+        "excel"
+      ],
+      "evidence": [
+        {
+          "chart": "Funnel Chart",
+          "file": "packages/flint-js/src/echarts/templates/funnel.ts",
+          "startLine": 30,
+          "endLine": 194,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/funnel.ts#L30-L194"
+        },
+        {
+          "chart": "Funnel Chart",
+          "file": "packages/flint-js/src/excel/templates/funnel.ts",
+          "startLine": 7,
+          "endLine": 69,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/excel/templates/funnel.ts#L7-L69"
+        },
+        {
+          "chart": "Funnel Chart",
+          "file": "packages/flint-js/src/plotly/templates/funnel.ts",
+          "startLine": 19,
+          "endLine": 89,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/funnel.ts#L19-L89"
+        }
+      ],
+      "scopeDisposition": "reference-only",
+      "targetRepresentation": "stage-pyramid",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Historical comparison only; ggaction native design is authoritative.",
+      "qualification": "not-required",
+      "priorScopeDisposition": "renamed",
+      "required": false
+    },
+    {
+      "id": "FCH-019",
+      "chart": "Gantt Chart",
+      "backends": [
+        "vegalite",
+        "echarts",
+        "chartjs",
+        "plotly"
+      ],
+      "evidence": [
+        {
+          "chart": "Gantt Chart",
+          "file": "packages/flint-js/src/chartjs/templates/gantt.ts",
+          "startLine": 38,
+          "endLine": 180,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/gantt.ts#L38-L180"
+        },
+        {
+          "chart": "Gantt Chart",
+          "file": "packages/flint-js/src/echarts/templates/gantt.ts",
+          "startLine": 40,
+          "endLine": 176,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/gantt.ts#L40-L176"
+        },
+        {
+          "chart": "Gantt Chart",
+          "file": "packages/flint-js/src/plotly/templates/gantt.ts",
+          "startLine": 19,
+          "endLine": 110,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/gantt.ts#L19-L110"
+        },
+        {
+          "chart": "Gantt Chart",
+          "file": "packages/flint-js/src/vegalite/templates/gantt.ts",
+          "startLine": 36,
+          "endLine": 175,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/gantt.ts#L36-L175"
+        }
+      ],
+      "scopeDisposition": "reference-only",
+      "targetRepresentation": "source-profile-native-actions",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Historical comparison only; ggaction native design is authoritative.",
+      "qualification": "not-required",
+      "priorScopeDisposition": "required",
+      "required": false
+    },
+    {
+      "id": "FCH-020",
+      "chart": "Gauge Chart",
+      "backends": [
+        "echarts",
+        "plotly"
+      ],
+      "evidence": [
+        {
+          "chart": "Gauge Chart",
+          "file": "packages/flint-js/src/echarts/templates/gauge.ts",
+          "startLine": 29,
+          "endLine": 223,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/gauge.ts#L29-L223"
+        },
+        {
+          "chart": "Gauge Chart",
+          "file": "packages/flint-js/src/plotly/templates/gauge.ts",
+          "startLine": 20,
+          "endLine": 100,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/gauge.ts#L20-L100"
+        }
+      ],
+      "scopeDisposition": "reference-only",
+      "targetRepresentation": null,
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Historical comparison only; ggaction native design is authoritative.",
+      "qualification": "not-required",
+      "priorScopeDisposition": "excluded-by-user",
+      "required": false
+    },
+    {
+      "id": "FCH-021",
+      "chart": "Grouped Bar Chart",
+      "backends": [
+        "vegalite",
+        "echarts",
+        "chartjs",
+        "plotly",
+        "excel"
+      ],
+      "evidence": [
+        {
+          "chart": "Grouped Bar Chart",
+          "file": "packages/flint-js/src/chartjs/templates/bar.ts",
+          "startLine": 242,
+          "endLine": 456,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/bar.ts#L242-L456"
+        },
+        {
+          "chart": "Grouped Bar Chart",
+          "file": "packages/flint-js/src/echarts/templates/bar.ts",
+          "startLine": 684,
+          "endLine": 989,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/bar.ts#L684-L989"
+        },
+        {
+          "chart": "Grouped Bar Chart",
+          "file": "packages/flint-js/src/excel/templates/bar.ts",
+          "startLine": 15,
+          "endLine": 23,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/excel/templates/bar.ts#L15-L23"
+        },
+        {
+          "chart": "Grouped Bar Chart",
+          "file": "packages/flint-js/src/plotly/templates/bar.ts",
+          "startLine": 342,
+          "endLine": 474,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/bar.ts#L342-L474"
+        },
+        {
+          "chart": "Grouped Bar Chart",
+          "file": "packages/flint-js/src/vegalite/templates/bar.ts",
+          "startLine": 434,
+          "endLine": 564,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/bar.ts#L434-L564"
+        }
+      ],
+      "scopeDisposition": "reference-only",
+      "targetRepresentation": "source-profile-native-actions",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Historical comparison only; ggaction native design is authoritative.",
+      "qualification": "not-required",
+      "priorScopeDisposition": "required",
+      "required": false
+    },
+    {
+      "id": "FCH-022",
+      "chart": "Heatmap",
+      "backends": [
+        "vegalite",
+        "echarts",
+        "plotly"
+      ],
+      "evidence": [
+        {
+          "chart": "Heatmap",
+          "file": "packages/flint-js/src/echarts/templates/heatmap.ts",
+          "startLine": 55,
+          "endLine": 285,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/heatmap.ts#L55-L285"
+        },
+        {
+          "chart": "Heatmap",
+          "file": "packages/flint-js/src/plotly/templates/heatmap.ts",
+          "startLine": 24,
+          "endLine": 110,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/heatmap.ts#L24-L110"
+        },
+        {
+          "chart": "Heatmap",
+          "file": "packages/flint-js/src/vegalite/templates/bar.ts",
+          "startLine": 772,
+          "endLine": 1078,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/bar.ts#L772-L1078"
+        }
+      ],
+      "scopeDisposition": "reference-only",
+      "targetRepresentation": "source-profile-native-actions",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Historical comparison only; ggaction native design is authoritative.",
+      "qualification": "not-required",
+      "priorScopeDisposition": "required",
+      "required": false
+    },
+    {
+      "id": "FCH-023",
+      "chart": "Histogram",
+      "backends": [
+        "vegalite",
+        "echarts",
+        "chartjs",
+        "plotly",
+        "excel"
+      ],
+      "evidence": [
+        {
+          "chart": "Histogram",
+          "file": "packages/flint-js/src/chartjs/templates/histogram.ts",
+          "startLine": 17,
+          "endLine": 137,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/histogram.ts#L17-L137"
+        },
+        {
+          "chart": "Histogram",
+          "file": "packages/flint-js/src/echarts/templates/histogram.ts",
+          "startLine": 16,
+          "endLine": 164,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/histogram.ts#L16-L164"
+        },
+        {
+          "chart": "Histogram",
+          "file": "packages/flint-js/src/excel/templates/histogram.ts",
+          "startLine": 14,
+          "endLine": 91,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/excel/templates/histogram.ts#L14-L91"
+        },
+        {
+          "chart": "Histogram",
+          "file": "packages/flint-js/src/plotly/templates/histogram.ts",
+          "startLine": 15,
+          "endLine": 68,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/histogram.ts#L15-L68"
+        },
+        {
+          "chart": "Histogram",
+          "file": "packages/flint-js/src/vegalite/templates/bar.ts",
+          "startLine": 669,
+          "endLine": 768,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/bar.ts#L669-L768"
+        }
+      ],
+      "scopeDisposition": "reference-only",
+      "targetRepresentation": "source-profile-native-actions",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Historical comparison only; ggaction native design is authoritative.",
+      "qualification": "not-required",
+      "priorScopeDisposition": "required",
+      "required": false
+    },
+    {
+      "id": "FCH-024",
+      "chart": "KPI Card",
+      "backends": [
+        "vegalite",
+        "plotly"
+      ],
+      "evidence": [
+        {
+          "chart": "KPI Card",
+          "file": "packages/flint-js/src/plotly/templates/kpi-card.ts",
+          "startLine": 20,
+          "endLine": 196,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/kpi-card.ts#L20-L196"
+        },
+        {
+          "chart": "KPI Card",
+          "file": "packages/flint-js/src/vegalite/templates/kpi-card.ts",
+          "startLine": 157,
+          "endLine": 672,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/kpi-card.ts#L157-L672"
+        }
+      ],
+      "scopeDisposition": "reference-only",
+      "targetRepresentation": null,
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Historical comparison only; ggaction native design is authoritative.",
+      "qualification": "not-required",
+      "priorScopeDisposition": "excluded-by-user",
+      "required": false
+    },
+    {
+      "id": "FCH-025",
+      "chart": "Line Chart",
+      "backends": [
+        "vegalite",
+        "echarts",
+        "chartjs",
+        "plotly",
+        "excel"
+      ],
+      "evidence": [
+        {
+          "chart": "Line Chart",
+          "file": "packages/flint-js/src/chartjs/templates/line.ts",
+          "startLine": 25,
+          "endLine": 210,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/line.ts#L25-L210"
+        },
+        {
+          "chart": "Line Chart",
+          "file": "packages/flint-js/src/echarts/templates/line.ts",
+          "startLine": 83,
+          "endLine": 452,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/line.ts#L83-L452"
+        },
+        {
+          "chart": "Line Chart",
+          "file": "packages/flint-js/src/excel/templates/line.ts",
+          "startLine": 6,
+          "endLine": 19,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/excel/templates/line.ts#L6-L19"
+        },
+        {
+          "chart": "Line Chart",
+          "file": "packages/flint-js/src/plotly/templates/line.ts",
+          "startLine": 49,
+          "endLine": 285,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/line.ts#L49-L285"
+        },
+        {
+          "chart": "Line Chart",
+          "file": "packages/flint-js/src/vegalite/templates/line.ts",
+          "startLine": 132,
+          "endLine": 196,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/line.ts#L132-L196"
+        }
+      ],
+      "scopeDisposition": "reference-only",
+      "targetRepresentation": "source-profile-native-actions",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Historical comparison only; ggaction native design is authoritative.",
+      "qualification": "not-required",
+      "priorScopeDisposition": "required",
+      "required": false
+    },
+    {
+      "id": "FCH-026",
+      "chart": "Lollipop Chart",
+      "backends": [
+        "vegalite",
+        "echarts",
+        "chartjs",
+        "plotly"
+      ],
+      "evidence": [
+        {
+          "chart": "Lollipop Chart",
+          "file": "packages/flint-js/src/chartjs/templates/lollipop.ts",
+          "startLine": 37,
+          "endLine": 141,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/lollipop.ts#L37-L141"
+        },
+        {
+          "chart": "Lollipop Chart",
+          "file": "packages/flint-js/src/echarts/templates/lollipop.ts",
+          "startLine": 35,
+          "endLine": 183,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/lollipop.ts#L35-L183"
+        },
+        {
+          "chart": "Lollipop Chart",
+          "file": "packages/flint-js/src/plotly/templates/lollipop.ts",
+          "startLine": 18,
+          "endLine": 101,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/lollipop.ts#L18-L101"
+        },
+        {
+          "chart": "Lollipop Chart",
+          "file": "packages/flint-js/src/vegalite/templates/lollipop.ts",
+          "startLine": 19,
+          "endLine": 192,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/lollipop.ts#L19-L192"
+        }
+      ],
+      "scopeDisposition": "reference-only",
+      "targetRepresentation": "source-profile-native-actions",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Historical comparison only; ggaction native design is authoritative.",
+      "qualification": "not-required",
+      "priorScopeDisposition": "required",
+      "required": false
+    },
+    {
+      "id": "FCH-027",
+      "chart": "Map",
+      "backends": [
+        "vegalite",
+        "plotly"
+      ],
+      "evidence": [
+        {
+          "chart": "Map",
+          "file": "packages/flint-js/src/plotly/templates/map.ts",
+          "startLine": 173,
+          "endLine": 295,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/map.ts#L173-L295"
+        },
+        {
+          "chart": "Map",
+          "file": "packages/flint-js/src/vegalite/templates/map.ts",
+          "startLine": 400,
+          "endLine": 473,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/map.ts#L400-L473"
+        }
+      ],
+      "scopeDisposition": "reference-only",
+      "targetRepresentation": "source-profile-native-actions",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Historical comparison only; ggaction native design is authoritative.",
+      "qualification": "not-required",
+      "priorScopeDisposition": "required",
+      "required": false
+    },
+    {
+      "id": "FCH-028",
+      "chart": "Marginal Plot",
+      "backends": [
+        "vegalite"
+      ],
+      "evidence": [
+        {
+          "chart": "Marginal Plot",
+          "file": "packages/flint-js/src/vegalite/templates/marginal.ts",
+          "startLine": 249,
+          "endLine": 445,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/marginal.ts#L249-L445"
+        }
+      ],
+      "scopeDisposition": "reference-only",
+      "targetRepresentation": "existing-action-recipe",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Historical comparison only; ggaction native design is authoritative.",
+      "qualification": "not-required",
+      "priorScopeDisposition": "required-via-composition",
+      "required": false
+    },
+    {
+      "id": "FCH-029",
+      "chart": "Network Graph",
+      "backends": [
+        "echarts"
+      ],
+      "evidence": [
+        {
+          "chart": "Network Graph",
+          "file": "packages/flint-js/src/echarts/templates/graph.ts",
+          "startLine": 27,
+          "endLine": 167,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/graph.ts#L27-L167"
+        }
+      ],
+      "scopeDisposition": "reference-only",
+      "targetRepresentation": "source-profile-native-actions",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Historical comparison only; ggaction native design is authoritative.",
+      "qualification": "not-required",
+      "priorScopeDisposition": "required",
+      "required": false
+    },
+    {
+      "id": "FCH-030",
+      "chart": "Parallel Coordinates",
+      "backends": [
+        "echarts"
+      ],
+      "evidence": [
+        {
+          "chart": "Parallel Coordinates",
+          "file": "packages/flint-js/src/echarts/templates/parallel.ts",
+          "startLine": 56,
+          "endLine": 190,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/parallel.ts#L56-L190"
+        }
+      ],
+      "scopeDisposition": "reference-only",
+      "targetRepresentation": "source-profile-native-actions",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Historical comparison only; ggaction native design is authoritative.",
+      "qualification": "not-required",
+      "priorScopeDisposition": "required",
+      "required": false
+    },
+    {
+      "id": "FCH-031",
+      "chart": "Pie Chart",
+      "backends": [
+        "vegalite",
+        "echarts",
+        "chartjs",
+        "plotly",
+        "excel"
+      ],
+      "evidence": [
+        {
+          "chart": "Pie Chart",
+          "file": "packages/flint-js/src/chartjs/templates/pie.ts",
+          "startLine": 49,
+          "endLine": 135,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/pie.ts#L49-L135"
+        },
+        {
+          "chart": "Pie Chart",
+          "file": "packages/flint-js/src/echarts/templates/pie.ts",
+          "startLine": 17,
+          "endLine": 220,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/pie.ts#L17-L220"
+        },
+        {
+          "chart": "Pie Chart",
+          "file": "packages/flint-js/src/excel/templates/pie.ts",
+          "startLine": 6,
+          "endLine": 10,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/excel/templates/pie.ts#L6-L10"
+        },
+        {
+          "chart": "Pie Chart",
+          "file": "packages/flint-js/src/plotly/templates/pie.ts",
+          "startLine": 148,
+          "endLine": 155,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/pie.ts#L148-L155"
+        },
+        {
+          "chart": "Pie Chart",
+          "file": "packages/flint-js/src/vegalite/templates/pie.ts",
+          "startLine": 62,
+          "endLine": 199,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/pie.ts#L62-L199"
+        }
+      ],
+      "scopeDisposition": "reference-only",
+      "targetRepresentation": "source-profile-native-actions",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Historical comparison only; ggaction native design is authoritative.",
+      "qualification": "not-required",
+      "priorScopeDisposition": "required",
+      "required": false
+    },
+    {
+      "id": "FCH-032",
+      "chart": "Pyramid Chart",
+      "backends": [
+        "vegalite",
+        "echarts",
+        "plotly",
+        "excel"
+      ],
+      "evidence": [
+        {
+          "chart": "Pyramid Chart",
+          "file": "packages/flint-js/src/echarts/templates/pyramid.ts",
+          "startLine": 18,
+          "endLine": 161,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/pyramid.ts#L18-L161"
+        },
+        {
+          "chart": "Pyramid Chart",
+          "file": "packages/flint-js/src/excel/templates/pyramid.ts",
+          "startLine": 20,
+          "endLine": 115,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/excel/templates/pyramid.ts#L20-L115"
+        },
+        {
+          "chart": "Pyramid Chart",
+          "file": "packages/flint-js/src/plotly/templates/bar.ts",
+          "startLine": 483,
+          "endLine": 586,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/bar.ts#L483-L586"
+        },
+        {
+          "chart": "Pyramid Chart",
+          "file": "packages/flint-js/src/vegalite/templates/bar.ts",
+          "startLine": 272,
+          "endLine": 430,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/bar.ts#L272-L430"
+        }
+      ],
+      "scopeDisposition": "reference-only",
+      "targetRepresentation": "mirrored-bars",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Historical comparison only; ggaction native design is authoritative.",
+      "qualification": "not-required",
+      "priorScopeDisposition": "required-via-composition",
+      "required": false
+    },
+    {
+      "id": "FCH-033",
+      "chart": "Radar Chart",
+      "backends": [
+        "vegalite",
+        "echarts",
+        "chartjs",
+        "plotly",
+        "excel"
+      ],
+      "evidence": [
+        {
+          "chart": "Radar Chart",
+          "file": "packages/flint-js/src/chartjs/templates/radar.ts",
+          "startLine": 24,
+          "endLine": 149,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/radar.ts#L24-L149"
+        },
+        {
+          "chart": "Radar Chart",
+          "file": "packages/flint-js/src/echarts/templates/radar.ts",
+          "startLine": 35,
+          "endLine": 189,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/radar.ts#L35-L189"
+        },
+        {
+          "chart": "Radar Chart",
+          "file": "packages/flint-js/src/excel/templates/radar.ts",
+          "startLine": 18,
+          "endLine": 111,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/excel/templates/radar.ts#L18-L111"
+        },
+        {
+          "chart": "Radar Chart",
+          "file": "packages/flint-js/src/plotly/templates/radar.ts",
+          "startLine": 18,
+          "endLine": 275,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/radar.ts#L18-L275"
+        },
+        {
+          "chart": "Radar Chart",
+          "file": "packages/flint-js/src/vegalite/templates/radar.ts",
+          "startLine": 423,
+          "endLine": 611,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/radar.ts#L423-L611"
+        }
+      ],
+      "scopeDisposition": "reference-only",
+      "targetRepresentation": "source-profile-native-actions",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Historical comparison only; ggaction native design is authoritative.",
+      "qualification": "not-required",
+      "priorScopeDisposition": "required",
+      "required": false
+    },
+    {
+      "id": "FCH-034",
+      "chart": "Range Area Chart",
+      "backends": [
+        "vegalite",
+        "echarts",
+        "chartjs",
+        "plotly"
+      ],
+      "evidence": [
+        {
+          "chart": "Range Area Chart",
+          "file": "packages/flint-js/src/chartjs/templates/range-area.ts",
+          "startLine": 42,
+          "endLine": 184,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/range-area.ts#L42-L184"
+        },
+        {
+          "chart": "Range Area Chart",
+          "file": "packages/flint-js/src/echarts/templates/range-area.ts",
+          "startLine": 94,
+          "endLine": 233,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/range-area.ts#L94-L233"
+        },
+        {
+          "chart": "Range Area Chart",
+          "file": "packages/flint-js/src/plotly/templates/range-area.ts",
+          "startLine": 16,
+          "endLine": 101,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/range-area.ts#L16-L101"
+        },
+        {
+          "chart": "Range Area Chart",
+          "file": "packages/flint-js/src/vegalite/templates/range-area.ts",
+          "startLine": 50,
+          "endLine": 135,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/range-area.ts#L50-L135"
+        }
+      ],
+      "scopeDisposition": "reference-only",
+      "targetRepresentation": "source-profile-native-actions",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Historical comparison only; ggaction native design is authoritative.",
+      "qualification": "not-required",
+      "priorScopeDisposition": "required",
+      "required": false
+    },
+    {
+      "id": "FCH-035",
+      "chart": "Ranged Dot Plot",
+      "backends": [
+        "vegalite",
+        "echarts",
+        "plotly"
+      ],
+      "evidence": [
+        {
+          "chart": "Ranged Dot Plot",
+          "file": "packages/flint-js/src/echarts/templates/ranged-dot.ts",
+          "startLine": 14,
+          "endLine": 146,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/ranged-dot.ts#L14-L146"
+        },
+        {
+          "chart": "Ranged Dot Plot",
+          "file": "packages/flint-js/src/plotly/templates/ranged-dot.ts",
+          "startLine": 16,
+          "endLine": 99,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/ranged-dot.ts#L16-L99"
+        },
+        {
+          "chart": "Ranged Dot Plot",
+          "file": "packages/flint-js/src/vegalite/templates/scatter.ts",
+          "startLine": 258,
+          "endLine": 339,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/scatter.ts#L258-L339"
+        }
+      ],
+      "scopeDisposition": "reference-only",
+      "targetRepresentation": "source-profile-native-actions",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Historical comparison only; ggaction native design is authoritative.",
+      "qualification": "not-required",
+      "priorScopeDisposition": "required",
+      "required": false
+    },
+    {
+      "id": "FCH-036",
+      "chart": "Regression",
+      "backends": [
+        "vegalite",
+        "echarts",
+        "plotly"
+      ],
+      "evidence": [
+        {
+          "chart": "Regression",
+          "file": "packages/flint-js/src/echarts/templates/scatter.ts",
+          "startLine": 818,
+          "endLine": 915,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/scatter.ts#L818-L915"
+        },
+        {
+          "chart": "Regression",
+          "file": "packages/flint-js/src/plotly/templates/regression.ts",
+          "startLine": 123,
+          "endLine": 191,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/regression.ts#L123-L191"
+        },
+        {
+          "chart": "Regression",
+          "file": "packages/flint-js/src/vegalite/templates/scatter.ts",
+          "startLine": 130,
+          "endLine": 256,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/scatter.ts#L130-L256"
+        }
+      ],
+      "scopeDisposition": "reference-only",
+      "targetRepresentation": "source-profile-native-actions",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Historical comparison only; ggaction native design is authoritative.",
+      "qualification": "not-required",
+      "priorScopeDisposition": "required",
+      "required": false
+    },
+    {
+      "id": "FCH-037",
+      "chart": "Ridgeline Plot",
+      "backends": [
+        "vegalite"
+      ],
+      "evidence": [
+        {
+          "chart": "Ridgeline Plot",
+          "file": "packages/flint-js/src/vegalite/templates/ridgeline.ts",
+          "startLine": 449,
+          "endLine": 876,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/ridgeline.ts#L449-L876"
+        }
+      ],
+      "scopeDisposition": "reference-only",
+      "targetRepresentation": "source-profile-native-actions",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Historical comparison only; ggaction native design is authoritative.",
+      "qualification": "not-required",
+      "priorScopeDisposition": "required",
+      "required": false
+    },
+    {
+      "id": "FCH-038",
+      "chart": "Rose Chart",
+      "backends": [
+        "vegalite",
+        "echarts",
+        "chartjs",
+        "plotly"
+      ],
+      "evidence": [
+        {
+          "chart": "Rose Chart",
+          "file": "packages/flint-js/src/chartjs/templates/rose.ts",
+          "startLine": 31,
+          "endLine": 185,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/rose.ts#L31-L185"
+        },
+        {
+          "chart": "Rose Chart",
+          "file": "packages/flint-js/src/echarts/templates/rose.ts",
+          "startLine": 42,
+          "endLine": 276,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/rose.ts#L42-L276"
+        },
+        {
+          "chart": "Rose Chart",
+          "file": "packages/flint-js/src/plotly/templates/rose.ts",
+          "startLine": 25,
+          "endLine": 120,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/rose.ts#L25-L120"
+        },
+        {
+          "chart": "Rose Chart",
+          "file": "packages/flint-js/src/vegalite/templates/rose.ts",
+          "startLine": 41,
+          "endLine": 326,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/rose.ts#L41-L326"
+        }
+      ],
+      "scopeDisposition": "reference-only",
+      "targetRepresentation": "source-profile-native-actions",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Historical comparison only; ggaction native design is authoritative.",
+      "qualification": "not-required",
+      "priorScopeDisposition": "required",
+      "required": false
+    },
+    {
+      "id": "FCH-039",
+      "chart": "Sankey Diagram",
+      "backends": [
+        "echarts"
+      ],
+      "evidence": [
+        {
+          "chart": "Sankey Diagram",
+          "file": "packages/flint-js/src/echarts/templates/sankey.ts",
+          "startLine": 30,
+          "endLine": 176,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/sankey.ts#L30-L176"
+        }
+      ],
+      "scopeDisposition": "reference-only",
+      "targetRepresentation": "source-profile-native-actions",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Historical comparison only; ggaction native design is authoritative.",
+      "qualification": "not-required",
+      "priorScopeDisposition": "required",
+      "required": false
+    },
+    {
+      "id": "FCH-040",
+      "chart": "Scatter Plot",
+      "backends": [
+        "vegalite",
+        "echarts",
+        "chartjs",
+        "plotly",
+        "excel"
+      ],
+      "evidence": [
+        {
+          "chart": "Scatter Plot",
+          "file": "packages/flint-js/src/chartjs/templates/scatter.ts",
+          "startLine": 28,
+          "endLine": 137,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/scatter.ts#L28-L137"
+        },
+        {
+          "chart": "Scatter Plot",
+          "file": "packages/flint-js/src/echarts/templates/scatter.ts",
+          "startLine": 31,
+          "endLine": 639,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/scatter.ts#L31-L639"
+        },
+        {
+          "chart": "Scatter Plot",
+          "file": "packages/flint-js/src/excel/templates/scatter.ts",
+          "startLine": 7,
+          "endLine": 15,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/excel/templates/scatter.ts#L7-L15"
+        },
+        {
+          "chart": "Scatter Plot",
+          "file": "packages/flint-js/src/plotly/templates/scatter.ts",
+          "startLine": 50,
+          "endLine": 208,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/scatter.ts#L50-L208"
+        },
+        {
+          "chart": "Scatter Plot",
+          "file": "packages/flint-js/src/vegalite/templates/scatter.ts",
+          "startLine": 50,
+          "endLine": 128,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/scatter.ts#L50-L128"
+        }
+      ],
+      "scopeDisposition": "reference-only",
+      "targetRepresentation": "source-profile-native-actions",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Historical comparison only; ggaction native design is authoritative.",
+      "qualification": "not-required",
+      "priorScopeDisposition": "required",
+      "required": false
+    },
+    {
+      "id": "FCH-041",
+      "chart": "Slope Chart",
+      "backends": [
+        "vegalite",
+        "echarts",
+        "chartjs",
+        "plotly"
+      ],
+      "evidence": [
+        {
+          "chart": "Slope Chart",
+          "file": "packages/flint-js/src/chartjs/templates/slope.ts",
+          "startLine": 45,
+          "endLine": 143,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/slope.ts#L45-L143"
+        },
+        {
+          "chart": "Slope Chart",
+          "file": "packages/flint-js/src/echarts/templates/slope.ts",
+          "startLine": 59,
+          "endLine": 149,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/slope.ts#L59-L149"
+        },
+        {
+          "chart": "Slope Chart",
+          "file": "packages/flint-js/src/plotly/templates/slope.ts",
+          "startLine": 29,
+          "endLine": 86,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/slope.ts#L29-L86"
+        },
+        {
+          "chart": "Slope Chart",
+          "file": "packages/flint-js/src/vegalite/templates/slope.ts",
+          "startLine": 81,
+          "endLine": 260,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/slope.ts#L81-L260"
+        }
+      ],
+      "scopeDisposition": "reference-only",
+      "targetRepresentation": "source-profile-native-actions",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Historical comparison only; ggaction native design is authoritative.",
+      "qualification": "not-required",
+      "priorScopeDisposition": "required",
+      "required": false
+    },
+    {
+      "id": "FCH-042",
+      "chart": "Sparkline",
+      "backends": [
+        "vegalite",
+        "plotly"
+      ],
+      "evidence": [
+        {
+          "chart": "Sparkline",
+          "file": "packages/flint-js/src/plotly/templates/sparkline.ts",
+          "startLine": 71,
+          "endLine": 237,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/sparkline.ts#L71-L237"
+        },
+        {
+          "chart": "Sparkline",
+          "file": "packages/flint-js/src/vegalite/templates/sparkline.ts",
+          "startLine": 220,
+          "endLine": 442,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/sparkline.ts#L220-L442"
+        }
+      ],
+      "scopeDisposition": "reference-only",
+      "targetRepresentation": "source-profile-native-actions",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Historical comparison only; ggaction native design is authoritative.",
+      "qualification": "not-required",
+      "priorScopeDisposition": "required",
+      "required": false
+    },
+    {
+      "id": "FCH-043",
+      "chart": "Stacked Bar Chart",
+      "backends": [
+        "vegalite",
+        "echarts",
+        "chartjs",
+        "plotly",
+        "excel"
+      ],
+      "evidence": [
+        {
+          "chart": "Stacked Bar Chart",
+          "file": "packages/flint-js/src/chartjs/templates/bar.ts",
+          "startLine": 131,
+          "endLine": 238,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/bar.ts#L131-L238"
+        },
+        {
+          "chart": "Stacked Bar Chart",
+          "file": "packages/flint-js/src/echarts/templates/bar.ts",
+          "startLine": 460,
+          "endLine": 680,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/bar.ts#L460-L680"
+        },
+        {
+          "chart": "Stacked Bar Chart",
+          "file": "packages/flint-js/src/excel/templates/bar.ts",
+          "startLine": 25,
+          "endLine": 33,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/excel/templates/bar.ts#L25-L33"
+        },
+        {
+          "chart": "Stacked Bar Chart",
+          "file": "packages/flint-js/src/plotly/templates/bar.ts",
+          "startLine": 234,
+          "endLine": 332,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/bar.ts#L234-L332"
+        },
+        {
+          "chart": "Stacked Bar Chart",
+          "file": "packages/flint-js/src/vegalite/templates/bar.ts",
+          "startLine": 568,
+          "endLine": 658,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/bar.ts#L568-L658"
+        }
+      ],
+      "scopeDisposition": "reference-only",
+      "targetRepresentation": "source-profile-native-actions",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Historical comparison only; ggaction native design is authoritative.",
+      "qualification": "not-required",
+      "priorScopeDisposition": "required",
+      "required": false
+    },
+    {
+      "id": "FCH-044",
+      "chart": "Streamgraph",
+      "backends": [
+        "vegalite",
+        "echarts",
+        "plotly"
+      ],
+      "evidence": [
+        {
+          "chart": "Streamgraph",
+          "file": "packages/flint-js/src/echarts/templates/streamgraph.ts",
+          "startLine": 22,
+          "endLine": 231,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/streamgraph.ts#L22-L231"
+        },
+        {
+          "chart": "Streamgraph",
+          "file": "packages/flint-js/src/plotly/templates/streamgraph.ts",
+          "startLine": 18,
+          "endLine": 102,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/streamgraph.ts#L18-L102"
+        },
+        {
+          "chart": "Streamgraph",
+          "file": "packages/flint-js/src/vegalite/templates/area.ts",
+          "startLine": 232,
+          "endLine": 289,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/area.ts#L232-L289"
+        }
+      ],
+      "scopeDisposition": "reference-only",
+      "targetRepresentation": "source-profile-native-actions",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Historical comparison only; ggaction native design is authoritative.",
+      "qualification": "not-required",
+      "priorScopeDisposition": "required",
+      "required": false
+    },
+    {
+      "id": "FCH-045",
+      "chart": "Strip Plot",
+      "backends": [
+        "vegalite",
+        "echarts",
+        "chartjs",
+        "plotly"
+      ],
+      "evidence": [
+        {
+          "chart": "Strip Plot",
+          "file": "packages/flint-js/src/chartjs/templates/jitter.ts",
+          "startLine": 56,
+          "endLine": 186,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/jitter.ts#L56-L186"
+        },
+        {
+          "chart": "Strip Plot",
+          "file": "packages/flint-js/src/echarts/templates/jitter.ts",
+          "startLine": 35,
+          "endLine": 204,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/jitter.ts#L35-L204"
+        },
+        {
+          "chart": "Strip Plot",
+          "file": "packages/flint-js/src/plotly/templates/jitter.ts",
+          "startLine": 17,
+          "endLine": 125,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/jitter.ts#L17-L125"
+        },
+        {
+          "chart": "Strip Plot",
+          "file": "packages/flint-js/src/vegalite/templates/jitter.ts",
+          "startLine": 16,
+          "endLine": 175,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/jitter.ts#L16-L175"
+        }
+      ],
+      "scopeDisposition": "reference-only",
+      "targetRepresentation": "source-profile-native-actions",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Historical comparison only; ggaction native design is authoritative.",
+      "qualification": "not-required",
+      "priorScopeDisposition": "required",
+      "required": false
+    },
+    {
+      "id": "FCH-046",
+      "chart": "Sunburst Chart",
+      "backends": [
+        "echarts",
+        "excel"
+      ],
+      "evidence": [
+        {
+          "chart": "Sunburst Chart",
+          "file": "packages/flint-js/src/echarts/templates/sunburst.ts",
+          "startLine": 77,
+          "endLine": 366,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/sunburst.ts#L77-L366"
+        },
+        {
+          "chart": "Sunburst Chart",
+          "file": "packages/flint-js/src/excel/templates/sunburst.ts",
+          "startLine": 6,
+          "endLine": 67,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/excel/templates/sunburst.ts#L6-L67"
+        }
+      ],
+      "scopeDisposition": "reference-only",
+      "targetRepresentation": "unified-partition-polar",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Historical comparison only; ggaction native design is authoritative.",
+      "qualification": "not-required",
+      "priorScopeDisposition": "required",
+      "required": false
+    },
+    {
+      "id": "FCH-047",
+      "chart": "Table",
+      "backends": [
+        "vegalite"
+      ],
+      "evidence": [
+        {
+          "chart": "Table",
+          "file": "packages/flint-js/src/vegalite/templates/table.ts",
+          "startLine": 57,
+          "endLine": 115,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/table.ts#L57-L115"
+        }
+      ],
+      "scopeDisposition": "reference-only",
+      "targetRepresentation": "source-profile-native-actions",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Historical comparison only; ggaction native design is authoritative.",
+      "qualification": "not-required",
+      "priorScopeDisposition": "required",
+      "required": false
+    },
+    {
+      "id": "FCH-048",
+      "chart": "Tree",
+      "backends": [
+        "echarts"
+      ],
+      "evidence": [
+        {
+          "chart": "Tree",
+          "file": "packages/flint-js/src/echarts/templates/tree.ts",
+          "startLine": 25,
+          "endLine": 145,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/tree.ts#L25-L145"
+        }
+      ],
+      "scopeDisposition": "reference-only",
+      "targetRepresentation": "source-profile-native-actions",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Historical comparison only; ggaction native design is authoritative.",
+      "qualification": "not-required",
+      "priorScopeDisposition": "required",
+      "required": false
+    },
+    {
+      "id": "FCH-049",
+      "chart": "Treemap",
+      "backends": [
+        "echarts",
+        "excel"
+      ],
+      "evidence": [
+        {
+          "chart": "Treemap",
+          "file": "packages/flint-js/src/echarts/templates/treemap.ts",
+          "startLine": 24,
+          "endLine": 226,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/treemap.ts#L24-L226"
+        },
+        {
+          "chart": "Treemap",
+          "file": "packages/flint-js/src/excel/templates/treemap.ts",
+          "startLine": 6,
+          "endLine": 65,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/excel/templates/treemap.ts#L6-L65"
+        }
+      ],
+      "scopeDisposition": "reference-only",
+      "targetRepresentation": "source-profile-native-actions",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Historical comparison only; ggaction native design is authoritative.",
+      "qualification": "not-required",
+      "priorScopeDisposition": "required",
+      "required": false
+    },
+    {
+      "id": "FCH-050",
+      "chart": "Violin Plot",
+      "backends": [
+        "vegalite",
+        "plotly"
+      ],
+      "evidence": [
+        {
+          "chart": "Violin Plot",
+          "file": "packages/flint-js/src/plotly/templates/violin.ts",
+          "startLine": 17,
+          "endLine": 96,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/violin.ts#L17-L96"
+        },
+        {
+          "chart": "Violin Plot",
+          "file": "packages/flint-js/src/vegalite/templates/violin.ts",
+          "startLine": 249,
+          "endLine": 643,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/violin.ts#L249-L643"
+        }
+      ],
+      "scopeDisposition": "reference-only",
+      "targetRepresentation": "source-profile-native-actions",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Historical comparison only; ggaction native design is authoritative.",
+      "qualification": "not-required",
+      "priorScopeDisposition": "required",
+      "required": false
+    },
+    {
+      "id": "FCH-051",
+      "chart": "Waterfall Chart",
+      "backends": [
+        "vegalite",
+        "echarts",
+        "chartjs",
+        "plotly",
+        "excel"
+      ],
+      "evidence": [
+        {
+          "chart": "Waterfall Chart",
+          "file": "packages/flint-js/src/chartjs/templates/waterfall.ts",
+          "startLine": 30,
+          "endLine": 139,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/waterfall.ts#L30-L139"
+        },
+        {
+          "chart": "Waterfall Chart",
+          "file": "packages/flint-js/src/echarts/templates/waterfall.ts",
+          "startLine": 23,
+          "endLine": 256,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/waterfall.ts#L23-L256"
+        },
+        {
+          "chart": "Waterfall Chart",
+          "file": "packages/flint-js/src/excel/templates/waterfall.ts",
+          "startLine": 8,
+          "endLine": 68,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/excel/templates/waterfall.ts#L8-L68"
+        },
+        {
+          "chart": "Waterfall Chart",
+          "file": "packages/flint-js/src/plotly/templates/waterfall.ts",
+          "startLine": 17,
+          "endLine": 118,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/waterfall.ts#L17-L118"
+        },
+        {
+          "chart": "Waterfall Chart",
+          "file": "packages/flint-js/src/vegalite/templates/waterfall.ts",
+          "startLine": 73,
+          "endLine": 434,
+          "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/waterfall.ts#L73-L434"
+        }
+      ],
+      "scopeDisposition": "reference-only",
+      "targetRepresentation": "source-profile-native-actions",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Historical comparison only; ggaction native design is authoritative.",
+      "qualification": "not-required",
+      "priorScopeDisposition": "required",
+      "required": false
+    }
+  ]
+}

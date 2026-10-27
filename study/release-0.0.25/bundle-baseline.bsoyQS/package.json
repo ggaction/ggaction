@@ -1,0 +1,196 @@
+{
+  "name": "ggaction",
+  "version": "0.0.25",
+  "description": "Build charts through immutable, traceable graphical actions.",
+  "license": "MIT",
+  "author": "Hyeon Jeon",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ggaction/ggaction.git"
+  },
+  "homepage": "https://ggaction.github.io/ggaction/",
+  "bugs": {
+    "url": "https://github.com/ggaction/ggaction/issues"
+  },
+  "keywords": [
+    "visualization",
+    "charts",
+    "graphics",
+    "canvas",
+    "data-visualization"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "files": [
+    "src/",
+    "!src/**/AGENTS.md",
+    "knowledge/action-cards.json",
+    "knowledge/action-card.schema.json",
+    "knowledge/action-cards.schema.json",
+    "knowledge/extension-authoring.md",
+    "knowledge/intent-taxonomy.json",
+    "knowledge/intent-taxonomy.schema.json",
+    "knowledge/mcp-resources.json",
+    "knowledge/mcp-resources.schema.json",
+    "knowledge/task-packet.schema.json",
+    "knowledge/task-resolver.js",
+    "types/",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "bin": {
+    "ggaction-mcp": "./src/mcp/cli.js"
+  },
+  "types": "./types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./types/index.d.ts",
+      "default": "./src/index.js"
+    },
+    "./basic": {
+      "types": "./types/basic.d.ts",
+      "default": "./src/basic.js"
+    },
+    "./extension": {
+      "types": "./types/extension.d.ts",
+      "default": "./src/extension.js"
+    },
+    "./png": {
+      "types": "./types/png.d.ts",
+      "default": "./src/renderers/png.js"
+    },
+    "./pdf": {
+      "types": "./types/pdf.d.ts",
+      "default": "./src/renderers/pdf.js"
+    },
+    "./svg": {
+      "types": "./types/svg.d.ts",
+      "default": "./src/renderers/svg.js"
+    },
+    "./diagnostics": {
+      "types": "./types/diagnostics.d.ts",
+      "default": "./src/diagnostics.js"
+    },
+    "./persistence": {
+      "types": "./types/persistence.d.ts",
+      "default": "./src/persistence.js"
+    },
+    "./accessibility": {
+      "types": "./types/accessibility.d.ts",
+      "default": "./src/accessibility.js"
+    },
+    "./inspection": {
+      "types": "./types/inspection.d.ts",
+      "default": "./src/inspection.js"
+    },
+    "./scene": {
+      "types": "./types/scene.d.ts",
+      "default": "./src/scene.js"
+    }
+  },
+  "scripts": {
+    "test": "node scripts/run-tests.js all",
+    "test:unit": "node scripts/run-tests.js unit",
+    "test:contracts": "node scripts/run-tests.js contracts",
+    "test:charts": "node scripts/run-tests.js charts",
+    "test:gates": "node scripts/run-tests.js gates",
+    "test:docs": "node scripts/run-tests.js docs",
+    "test:realistic": "node scripts/run-tests.js realistic",
+    "test:browser": "node scripts/run-tests.js browser",
+    "test:docs:built": "node scripts/check-built-docs.js _site",
+    "test:docs:browser": "node scripts/test-built-docs.js _site",
+    "test:coverage": "node scripts/run-tests.js coverage",
+    "test:render": "node scripts/run-render-tests.js",
+    "assets:readme": "node scripts/generate-readme-demo.js",
+    "artifacts:renderers": "node scripts/generate-renderer-comparison.js",
+    "artifacts:clean": "node test/support/artifacts.js",
+    "artifacts:gallery": "node scripts/generate-artifact-gallery.js",
+    "artifacts:gallery:test": "node scripts/test-artifact-gallery.js",
+    "datasets:sync": "node scripts/sync-dataset-corpus.js --all",
+    "scenarios:smoke": "node scripts/run-generated-scenarios.js --mode=smoke --no-tidytuesday",
+    "scenarios:deep": "node scripts/run-generated-scenarios.js --mode=deep",
+    "scenarios:realistic": "node --expose-gc scripts/run-realistic-scenarios.js",
+    "scenarios:realistic:audit": "node --expose-gc scripts/run-realistic-scenarios.js --no-artifacts",
+    "docs:images": "node scripts/generate-doc-images.js",
+    "docs:llms": "node scripts/generate-llm-docs.js",
+    "docs:capabilities": "node scripts/generate-doc-capabilities.js",
+    "docs:capabilities:check": "node scripts/generate-doc-capabilities.js --check",
+    "docs:actions": "node scripts/generate-doc-action-metadata.js",
+    "docs:actions:check": "node scripts/generate-doc-action-metadata.js --check",
+    "docs:machine": "node scripts/generate-doc-machine-artifacts.js",
+    "docs:machine:check": "node scripts/generate-doc-machine-artifacts.js --check",
+    "docs:search": "node scripts/generate-doc-search-index.js",
+    "docs:search:check": "node scripts/generate-doc-search-index.js --check",
+    "docs:reference": "node scripts/generate-doc-action-reference.js",
+    "docs:reference:check": "node scripts/generate-doc-action-reference.js --check",
+    "docs:metadata": "node scripts/generate-doc-page-metadata.js",
+    "docs:metadata:check": "node scripts/generate-doc-page-metadata.js --check",
+    "docs:preflight": "node scripts/check-docs-environment.js",
+    "docs:signatures": "node scripts/generate-doc-signatures.js",
+    "docs:signatures:check": "node scripts/generate-doc-signatures.js --check",
+    "examples:index": "node scripts/generate-examples-readme.js",
+    "examples:index:check": "node scripts/generate-examples-readme.js --check",
+    "docs:generate": "npm run contracts:relations && npm run contracts:cards && npm run inspection:descriptors && npm run docs:provenance && npm run docs:workflows && npm run examples:index && npm run docs:capabilities && npm run docs:reference && npm run docs:picker && npm run docs:scale-editors && npm run docs:actions && npm run docs:signatures && npm run docs:snippets && npm run docs:metadata && npm run docs:search && npm run docs:images && npm run docs:machine && npm run docs:llms",
+    "docs:build": "bundle exec jekyll build --source docs --destination _site --baseurl /ggaction",
+    "docs:verify": "npm run docs:preflight && npm run docs:generate && npm run test:docs && npm run docs:build && npm run test:docs:built && npm run test:docs:browser",
+    "contracts:catalog": "node scripts/generate-action-catalog.js",
+    "contracts:catalog:check": "node scripts/generate-action-catalog.js --check",
+    "contracts:relations": "node scripts/generate-action-relationships.js",
+    "contracts:relations:check": "node scripts/generate-action-relationships.js --check",
+    "contracts:cards": "node scripts/generate-action-cards.js",
+    "contracts:cards:check": "node scripts/generate-action-cards.js --check",
+    "inspection:descriptors": "node scripts/generate-inspection-descriptors.js",
+    "inspection:descriptors:check": "node scripts/generate-inspection-descriptors.js --check",
+    "package:check": "node scripts/package-artifact.js --check",
+    "package:pack": "node scripts/package-artifact.js --pack",
+    "package:bundle": "node scripts/measure-browser-bundle.js",
+    "test:package": "node scripts/package-consumer.js",
+    "release:notes": "node scripts/release-notes.js",
+    "docs:workflows": "node scripts/generate-doc-workflows.js",
+    "docs:provenance": "node scripts/doc-provenance.js",
+    "docs:picker": "node scripts/generate-doc-chart-picker.js",
+    "docs:snippets": "node scripts/generate-doc-snippet-contracts.js",
+    "docs:scale-editors": "node scripts/generate-doc-scale-editors.js",
+    "benchmark:runtime": "node scripts/benchmark-runtime.js",
+    "benchmark:authoring": "node scripts/evaluate-authoring-requirements.js",
+    "test:platform": "node scripts/test-platform-package.js",
+    "test:browser:compat": "node scripts/run-tests.js browser browser/backend-compatibility.browser.js browser/facet-content-headers.browser.js",
+    "release:prepare": "node scripts/prepare-release.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/",
+    "tag": "latest"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.12.1",
+    "@modelcontextprotocol/sdk": "1.32.1",
+    "@napi-rs/canvas": "^1.0.2",
+    "@xmldom/xmldom": "0.9.12",
+    "acorn": "8.19.0",
+    "ajv": "^8.20.0",
+    "es-module-lexer": "^1.7.0",
+    "esbuild": "0.28.2",
+    "gifenc": "^1.0.3",
+    "playwright": "^1.61.1",
+    "typescript": "^7.0.2",
+    "vite": "^6.4.3",
+    "yaml": "2.9.1"
+  },
+  "peerDependencies": {
+    "@modelcontextprotocol/sdk": "1.32.1",
+    "@napi-rs/canvas": "^1.0.2"
+  },
+  "peerDependenciesMeta": {
+    "@modelcontextprotocol/sdk": {
+      "optional": true
+    },
+    "@napi-rs/canvas": {
+      "optional": true
+    }
+  }
+}

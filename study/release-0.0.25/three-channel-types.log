@@ -1,0 +1,14 @@
+✔ facade declarations retain only combinations supported by their own mark and field inputs (371.311708ms)
+✔ legend block declarations expose the closed Full-only contract (364.852875ms)
+✔ three-channel interval samples preserve ordinal shape, source points and exact scale ownership (137.953541ms)
+✔ three-channel sampling rejects missing representatives, incompatible mappings and mapped overrides atomically (25.356291ms)
+✔ each channel alias edits one shared block and changing a bound scale rematerializes it (71.394875ms)
+✔ explicit combination edits preserve the block and splitting requires an explicit request (53.130625ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 944.489209

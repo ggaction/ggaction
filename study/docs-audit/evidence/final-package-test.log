@@ -1,0 +1,17 @@
+✔ isolates npm pack from the caller's global cache (1.026125ms)
+npm notice
+npm notice New minor version of npm available! 11.18.0 -> 11.21.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.21.1
+npm notice To update run: npm install -g npm@11.21.1
+npm notice
+✔ publishes only the bounded public package artifact (2204.60025ms)
+✔ rejects missing, forbidden, and oversized package manifests (0.593458ms)
+✔ packed scale compaction preserves exports and numeric color results (70.466875ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2389.988334

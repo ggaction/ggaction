@@ -1,0 +1,186 @@
+import { action } from "../../core/action.js";
+import { validateUserId } from "../../core/identifiers.js";
+import { validateKeys } from "../../core/validation.js";
+import {
+  validateOrdinalDomain,
+  validateOrdinalRange,
+  validateScaleDomain,
+  validateScaleRange,
+  validateScaleType,
+  validateDiscretizedColorDomain,
+  validateDiscretizedColorRange,
+  validateSequentialColorRange,
+  hasOrdinalDomain,
+  isColorScaleType,
+  isContinuousColorScaleType,
+  isDiscretizedColorScaleType,
+  normalizeSizeScaleDefinition,
+  normalizeScaleDefinition
+} from "../../grammar/scales/index.js";
+import { findSemanticScale } from "../../selectors/scales.js";
+import { findScaleConsumers } from "./consumers/index.js";
+
+const CREATE_SCALE_OPTIONS = Object.freeze([
+  "id",
+  "type",
+  "domain",
+  "emptyDomain",
+  "range",
+  "nice",
+  "zero",
+  "clamp",
+  "reverse",
+  "base",
+  "exponent",
+  "constant",
+  "paddingInner",
+  "paddingOuter",
+  "padding",
+  "align",
+  "palette",
+  "interpolate", "whitePoint", "gamma", "midpoint",
+  "radialMapping", "unknown"
+]);
+
+function validateOptions(args) {
+  validateKeys(args, CREATE_SCALE_OPTIONS, "createScale");
+}
+
+function sameScaleSetting(left, right) {
+  if (left === right) return true;
+  if (Array.isArray(left) && Array.isArray(right)) {
+    return left.length === right.length && left.every(
+      (value, index) => sameScaleSetting(value, right[index])
+    );
+  }
+  if (
+    left !== null &&
+    right !== null &&
+    typeof left === "object" &&
+    typeof right === "object" &&
+    !Array.isArray(left) &&
+    !Array.isArray(right)
+  ) {
+    const leftKeys = Object.keys(left);
+    const rightKeys = Object.keys(right);
+    return leftKeys.length === rightKeys.length && leftKeys.every(
+      key => Object.hasOwn(right, key) && sameScaleSetting(left[key], right[key])
+    );
+  }
+  return false;
+}
+
+function assertEquivalentScale(existing, expected) {
+  const keys = new Set([...Object.keys(existing), ...Object.keys(expected)]);
+  keys.delete("id");
+  if ([...keys].some(key => !sameScaleSetting(existing[key], expected[key]))) {
+    throw new Error(`Scale "${existing.id}" already exists with a different definition.`);
+  }
+}
+
+export const createScale = /* @__PURE__ */ action(
+  {
+    op: "createScale",
+    description: "Create a named semantic scale."
+  },
+  function (args = {}) {
+    validateOptions(args);
+    const id = validateUserId(args.id, "Scale id");
+    const type = validateScaleType(args.type ?? "linear");
+    const colorType = isColorScaleType(type) && (
+      !["log", "pow", "sqrt", "symlog"].includes(type) || args.palette !== undefined ||
+      args.interpolate !== undefined || (Array.isArray(args.range) && typeof args.range[0] === "string") ||
+      args.range?.palette !== undefined
+    );
+    if (args.palette !== undefined && args.range !== undefined) {
+      throw new Error("Color scale cannot specify both palette and range.");
+    }
+    if (args.palette !== undefined && !colorType) {
+      throw new Error(`Scale type "${type}" does not support palette.`);
+    }
+    if (args.interpolate !== undefined && !colorType) {
+      throw new Error(`Scale type "${type}" does not support interpolate.`);
+    }
+    const requestedRange = args.palette === undefined
+      ? args.range
+      : { palette: args.palette };
+    const consumers = findScaleConsumers(this, id);
+    const offsetScale = consumers.length > 0 && consumers.every(
+      consumer => ["xOffset", "yOffset"].includes(consumer.channel)
+    );
+    const sizeScale = consumers.length > 0 && consumers.every(
+      consumer => consumer.channel === "size"
+    );
+    if (offsetScale && type !== "ordinal") {
+      throw new Error(`Scale type "${type}" is not valid for offset positions.`);
+    }
+    if (
+      offsetScale &&
+      Object.hasOwn(args, "range") &&
+      args.range !== "auto"
+    ) {
+      throw new Error(
+        "Offset scale range is derived from its parent categorical slot."
+      );
+    }
+    const definition = sizeScale
+      ? normalizeSizeScaleDefinition({
+          patch: {
+            ...args,
+            type,
+            ...(requestedRange === undefined ? {} : { range: requestedRange })
+          }
+        })
+      : normalizeScaleDefinition({
+          type,
+          color: colorType,
+          patch: {
+            ...args,
+            ...(requestedRange === undefined ? {} : { range: requestedRange })
+          },
+          allowOrdinalBandParameters: offsetScale,
+          validateDomain: (scaleType, value) =>
+            isDiscretizedColorScaleType(scaleType)
+              ? validateDiscretizedColorDomain(scaleType, value)
+              : hasOrdinalDomain(scaleType)
+                ? validateOrdinalDomain(value)
+                : validateScaleDomain(value),
+          validateRange: (scaleType, value) =>
+            isDiscretizedColorScaleType(scaleType)
+              ? validateDiscretizedColorRange(value)
+              : colorType && isContinuousColorScaleType(scaleType)
+                ? validateSequentialColorRange(value)
+                : scaleType === "ordinal"
+                  ? validateOrdinalRange(value)
+                  : validateScaleRange(value)
+        });
+    if (Object.hasOwn(args, "unknown") && !sizeScale) {
+      definition.unknown = args.unknown;
+    }
+    const existing = findSemanticScale(this, id);
+
+    if (existing !== undefined) {
+      assertEquivalentScale(existing, definition);
+      return this;
+    }
+
+    let next = this
+      .editSemantic({ property: `scale[${id}].type`, value: definition.type })
+      .editSemantic({ property: `scale[${id}].domain`, value: definition.domain })
+      .editSemantic({ property: `scale[${id}].range`, value: definition.range });
+
+    for (const property of [
+      "emptyDomain", "nice", "zero", "clamp", "reverse", "base", "exponent", "constant",
+      "paddingInner", "paddingOuter", "padding", "align", "interpolate", "whitePoint", "gamma", "midpoint",
+      "radialMapping", "unknown"
+    ]) {
+      if (definition[property] === undefined) continue;
+      next = next.editSemantic({
+        property: `scale[${id}].${property}`,
+        value: definition[property]
+      });
+    }
+
+    return next;
+  }
+);

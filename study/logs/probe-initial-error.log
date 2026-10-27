@@ -1,0 +1,14 @@
+file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/core/validation.js:45
+      throw annotateError(new Error(`Unknown ${label} option "${key}".`), { code: "invalid-option", optionPath: key });
+                          ^
+
+Error: Unknown hconcat option "children".
+    at validateKeys (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/core/validation.js:45:27)
+    at validateOptionObject (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/core/validation.js:59:32)
+    at normalizeCompositionInput (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/composition/actions.js:77:3)
+    at ChartProgram.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/composition/actions.js:158:21)
+    at ChartProgram.wrappedAction (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/core/action.js:213:35)
+    at hconcat (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/composition.js:5:24)
+    at file:///Users/hj/Desktop/ggaction_chongjeonglee/study/probe.mjs:46:21
+
+Node.js v23.5.0

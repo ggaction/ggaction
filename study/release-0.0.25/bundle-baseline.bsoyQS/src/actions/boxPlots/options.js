@@ -1,0 +1,192 @@
+import { isPlainObject } from "../../core/immutable.js";
+import {
+  validateKeys,
+  validateNonEmptyString,
+  validateNonNegativeFinite,
+  validatePositiveFinite,
+  validateUnitInterval
+} from "../../core/validation.js";
+import { validatePointShape } from "../../grammar/pointShapes.js";
+import {
+  requestedRectStyleDetails,
+  RECT_STYLE_PROPERTIES
+} from "../../grammar/roundedRect.js";
+import {
+  requestedStrokeDetails,
+  STROKE_STYLE_PROPERTIES
+} from "../../grammar/strokeStyle.js";
+import { ERROR_BAR_APPEARANCE_OPTIONS, resolveErrorBarAppearance } from "../errorBars/edit.js";
+import { DEFAULT_COLORS } from "../../theme/defaults.js";
+import { normalizeGuides } from "../charts/shared.js";
+
+export const BOX_PLOT_OPTIONS = Object.freeze([
+  "id", "target", "data", "x", "y", "coordinate", "whisker",
+  "width", "summary", "outliers", "box", "median", "outlier", "color", "guides"
+]);
+
+const DEFAULT_BOX = {
+  fill: DEFAULT_COLORS.mark,
+  opacity: 1,
+  stroke: DEFAULT_COLORS.mark,
+  strokeWidth: 1.5
+};
+const DEFAULT_MEDIAN = { stroke: "#1f2937", strokeWidth: 1.5 };
+const DEFAULT_OUTLIER = {
+  shape: "diamond",
+  radius: 3,
+  opacity: 0.75
+};
+const APPEARANCE_VALIDATORS = {
+  fill: validateNonEmptyString,
+  opacity: validateUnitInterval,
+  stroke: validateNonEmptyString,
+  strokeWidth: validateNonNegativeFinite,
+  shape: validatePointShape,
+  radius: validatePositiveFinite
+};
+
+function plainOptions(value, keys, label, operation = "createBoxPlot") {
+  if (value === undefined) return {};
+  if (!isPlainObject(value)) {
+    throw new TypeError(`${operation} ${label} must be a plain object.`);
+  }
+  validateKeys(value, keys, `${operation} ${label}`);
+  return value;
+}
+
+function resolveAppearance(value, defaults, label, operation, details) {
+  const options = plainOptions(
+    value,
+    [
+      ...Object.keys(defaults),
+      ...(details === requestedRectStyleDetails
+        ? RECT_STYLE_PROPERTIES
+        : STROKE_STYLE_PROPERTIES)
+    ],
+    label,
+    operation
+  );
+  return Object.freeze({
+    ...Object.fromEntries(Object.entries(defaults).map(([key, fallback]) => [
+        key,
+        options[key] === undefined
+          ? fallback
+          : APPEARANCE_VALIDATORS[key](
+              options[key],
+              `${operation} ${label}.${key}`
+            )
+      ])),
+    ...details(options, `${operation} ${label}`)
+  });
+}
+
+export function resolveBoxPosition(value, label, operation = "createBoxPlot") {
+  if (value === undefined) return undefined;
+  return plainOptions(value, ["field", "fieldType", "scale"], label, operation);
+}
+
+export function boxEncodingArgs(value) {
+  return {
+    ...value,
+    ...(typeof value.scale === "string" ? { scale: { id: value.scale } } : {})
+  };
+}
+
+export function resolveBoxGuides(value) {
+  return value === undefined
+    ? false
+    : normalizeGuides(value, "createBoxPlot");
+}
+
+export function resolveBoxWhisker(value, operation = "createBoxPlot", defaultType = "tukey") {
+  if (value === undefined) return Object.freeze(defaultType === "tukey" ? { type: "tukey", factor: 1.5 } : { type: defaultType });
+  const options = plainOptions(
+    value,
+    ["type", "factor", ...ERROR_BAR_APPEARANCE_OPTIONS],
+    "whisker",
+    operation
+  );
+  const requestedAppearance = boxWhiskerAppearance(options);
+  const appearance = Object.keys(requestedAppearance).length === 0 ? {} : resolveErrorBarAppearance(requestedAppearance, {
+    defaults: { caps: true, capSize: 8, stroke: "#111111", strokeWidth: 1.5, strokeDash: "solid", opacity: 1 }, operation
+  });
+  const style = Object.fromEntries(Object.keys(requestedAppearance).map(key => [key, appearance[key]]));
+  const type = options.type ?? defaultType;
+  if (!["tukey", "minmax"].includes(type)) {
+    throw new Error(`Unsupported createBoxPlot whisker type "${type}".`);
+  }
+  if (type === "minmax") {
+    if (options.factor !== undefined) {
+      throw new Error("createBoxPlot minmax whiskers do not accept factor.");
+    }
+    return Object.freeze({ type, ...style });
+  }
+  const factor = options.factor ?? 1.5;
+  if (!Number.isFinite(factor) || factor <= 0) {
+    throw new RangeError(
+      "createBoxPlot whisker factor must be positive and finite."
+    );
+  }
+  return Object.freeze({ type, factor, ...style });
+}
+
+export function resolveBoxWidth(value, operation = "createBoxPlot") {
+  const options = plainOptions(value, ["band", "pixels"], "width", operation);
+  if (options.pixels !== undefined) {
+    if (options.band !== undefined) throw new Error(`${operation} width accepts band or pixels, not both.`);
+    return Object.freeze({ pixels: validatePositiveFinite(options.pixels, `${operation} width.pixels`) });
+  }
+  const band = options.band ?? 0.7;
+  if (!Number.isFinite(band) || band <= 0 || band >= 1) {
+    throw new RangeError(
+      "createBoxPlot width.band must be greater than 0 and less than 1."
+    );
+  }
+  return band;
+}
+
+export function boxBarWidth(width) {
+  return typeof width === "number" ? { band: width } : width;
+}
+
+export function boxWhiskerAppearance(whisker) {
+  return Object.fromEntries(ERROR_BAR_APPEARANCE_OPTIONS.filter(key => Object.hasOwn(whisker, key))
+    .map(key => [key, whisker[key]]));
+}
+
+export function resolveBoxAppearance(value, operation = "createBoxPlot") {
+  return resolveAppearance(
+    value,
+    DEFAULT_BOX,
+    "box",
+    operation,
+    requestedRectStyleDetails
+  );
+}
+
+export function resolveBoxMedianAppearance(value, operation = "createBoxPlot") {
+  const options = value === undefined ? {} : value;
+  if (!isPlainObject(options)) throw new TypeError(`${operation} median must be a plain object.`);
+  const { width, ...appearance } = options;
+  if (width !== undefined && width !== "auto") {
+    plainOptions(width, ["pixels"], "median.width", operation);
+    validatePositiveFinite(width.pixels, `${operation} median.width.pixels`);
+  }
+  return Object.freeze({ ...resolveAppearance(
+    appearance,
+    DEFAULT_MEDIAN,
+    "median",
+    operation,
+    requestedStrokeDetails
+  ), ...(width === undefined || width === "auto" ? {} : { width: Object.freeze({ pixels: width.pixels }) }) });
+}
+
+export function resolveBoxOutlierAppearance(value, operation = "createBoxPlot") {
+  return resolveAppearance(
+    value,
+    DEFAULT_OUTLIER,
+    "outlier",
+    operation,
+    requestedStrokeDetails
+  );
+}

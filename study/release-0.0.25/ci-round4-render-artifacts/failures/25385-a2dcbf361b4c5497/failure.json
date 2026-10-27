@@ -1,0 +1,58 @@
+{
+  "label": "{\"scope\":\"charts\",\"capability\":\"polar-line-radar\",\"chart\":\"jobs-radar-chart\",\"variant\":\"closed\",\"kind\":\"user-facing\",\"title\":\"Jobs Closed Radar Chart\",\"userFacingCallChain\":\"chart()\\n  .createCanvas({\\n    width: 820,\\n    height: 650,\\n    margin: { top: 90, right: 190, bottom: 90, left: 90 }\\n  })\\n  .createData({ values: radarRows })\\n  .createRadarPlot({\\n    id: \\\"line\\\",\\n    category: \\\"role\\\",\\n    value: { field: \\\"share\\\", scale: { domain: [0, 1], zero: true } },\\n    groupBy: \\\"sex\\\",\\n    order: [\\n      \\\"Accounting\\\", \\\"Architecture\\\", \\\"Engineering\\\", \\\"Law\\\",\\n      \\\"Management\\\", \\\"Nursing\\\", \\\"Secretarial\\\", \\\"Teaching\\\"\\n    ],\\n    color: { field: \\\"sex\\\", palette: \\\"tableau10\\\" },\\n    line: { strokeWidth: 2.5, opacity: 0.9 },\\n    guides: {\\n      axes: {\\n        theta: { title: { text: \\\"Occupation\\\" } },\\n        radius: {\\n          ticksAndLabels: { values: [0, 0.25, 0.5, 0.75, 1] },\\n          title: { text: \\\"Share\\\" }\\n        }\\n      },\\n      grid: {\\n        theta: {\\n          values: [\\n            \\\"Accounting\\\", \\\"Architecture\\\", \\\"Engineering\\\", \\\"Law\\\",\\n            \\\"Management\\\", \\\"Nursing\\\", \\\"Secretarial\\\", \\\"Teaching\\\"\\n          ]\\n        },\\n        radial: { values: [0, 0.25, 0.5, 0.75, 1] }\\n      }\\n      legend: { position: \\\"right\\\", title: \\\"Sex\\\" }\\n    }\\n  });\"}",
+  "message": "jobs-radar-chart/closed/user-facing ink bounds changed from its approved signature (actual {\"x\":67.5,\"y\":80.5,\"width\":682.5,\"height\":529}, expected {\"x\":75.5,\"y\":83.5,\"width\":670.1215,\"height\":526.5,\"tolerance\":{\"x\":7,\"y\":1.5,\"width\":10.5,\"height\":1}}, tolerance {\"x\":7,\"y\":1.5,\"width\":10.5,\"height\":1})\n+ actual - expected\n\n+ [\n+   'x',\n+   'y',\n+   'width',\n+   'height'\n+ ]\n- []",
+  "stack": "AssertionError [ERR_ASSERTION]: jobs-radar-chart/closed/user-facing ink bounds changed from its approved signature (actual {\"x\":67.5,\"y\":80.5,\"width\":682.5,\"height\":529}, expected {\"x\":75.5,\"y\":83.5,\"width\":670.1215,\"height\":526.5,\"tolerance\":{\"x\":7,\"y\":1.5,\"width\":10.5,\"height\":1}}, tolerance {\"x\":7,\"y\":1.5,\"width\":10.5,\"height\":1})\n+ actual - expected\n\n+ [\n+   'x',\n+   'y',\n+   'width',\n+   'height'\n+ ]\n- []\n    at assertRenderedPNGImpl (file:///home/runner/work/ggaction/ggaction/test/support/png.js:180:12)\n    at async assertRenderedPNG (file:///home/runner/work/ggaction/ggaction/test/support/png.js:247:16)\n    at async Promise.all (index 1)",
+  "details": {
+    "width": 820,
+    "height": 650,
+    "colors": [
+      "#4c78a8",
+      "#f58518",
+      "#d7e0ea"
+    ],
+    "regions": [
+      {
+        "name": "closed-radar-lines",
+        "x": 82,
+        "y": 70,
+        "width": 670,
+        "height": 550,
+        "minimumInkPixels": 650
+      }
+    ],
+    "visualSignature": {
+      "inkRatio": {
+        "min": 0.0264,
+        "max": 0.0324
+      },
+      "inkBounds": {
+        "x": 75.5,
+        "y": 83.5,
+        "width": 670.1215,
+        "height": 526.5,
+        "tolerance": {
+          "x": 7,
+          "y": 1.5,
+          "width": 10.5,
+          "height": 1
+        }
+      }
+    },
+    "artifact": {
+      "scope": "charts",
+      "capability": "polar-line-radar",
+      "chart": "jobs-radar-chart",
+      "variant": "closed",
+      "kind": "user-facing",
+      "title": "Jobs Closed Radar Chart",
+      "userFacingCallChain": "chart()\n  .createCanvas({\n    width: 820,\n    height: 650,\n    margin: { top: 90, right: 190, bottom: 90, left: 90 }\n  })\n  .createData({ values: radarRows })\n  .createRadarPlot({\n    id: \"line\",\n    category: \"role\",\n    value: { field: \"share\", scale: { domain: [0, 1], zero: true } },\n    groupBy: \"sex\",\n    order: [\n      \"Accounting\", \"Architecture\", \"Engineering\", \"Law\",\n      \"Management\", \"Nursing\", \"Secretarial\", \"Teaching\"\n    ],\n    color: { field: \"sex\", palette: \"tableau10\" },\n    line: { strokeWidth: 2.5, opacity: 0.9 },\n    guides: {\n      axes: {\n        theta: { title: { text: \"Occupation\" } },\n        radius: {\n          ticksAndLabels: { values: [0, 0.25, 0.5, 0.75, 1] },\n          title: { text: \"Share\" }\n        }\n      },\n      grid: {\n        theta: {\n          values: [\n            \"Accounting\", \"Architecture\", \"Engineering\", \"Law\",\n            \"Management\", \"Nursing\", \"Secretarial\", \"Teaching\"\n          ]\n        },\n        radial: { values: [0, 0.25, 0.5, 0.75, 1] }\n      }\n      legend: { position: \"right\", title: \"Sex\" }\n    }\n  });"
+    }
+  },
+  "files": [
+    {
+      "source": "/home/runner/work/ggaction/ggaction/.artifacts/test/png/charts/polar-line-radar/jobs-radar-chart/closed/user-facing.png",
+      "file": "0-user-facing.png",
+      "bytes": 202053
+    }
+  ]
+}

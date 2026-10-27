@@ -1,0 +1,390 @@
+
+> ggaction@0.0.25 test:render
+> node scripts/run-render-tests.js
+
+✔ renders airline-passenger-moving-windows/trailing-centered-and-sum (4001.42325ms)
+✔ matches primitive and public output in Canvas, SVG, PNG, and PDF (1751.189917ms)
+✔ renders annotated-imdb-scatterplot/default (2057.681792ms)
+✔ renders area-layout/area-simple (4974.52475ms)
+✔ renders area-layout/area-signed-baseline (3554.203ms)
+✔ renders area-layout/area-horizontal-log (6125.835458ms)
+✔ renders area-layout/ribbon-crossing (4178.336583ms)
+✔ renders area-layout/area-missing-break (3789.203708ms)
+✔ renders area-layout/area-stack (5359.089833ms)
+✔ renders area-layout/area-fill (6768.083083ms)
+✔ renders area-layout/area-diverging (6492.948666ms)
+✔ renders area-layout/area-center (6999.80125ms)
+✔ renders area-layout/bar-independent-stack (4755.742ms)
+✔ renders area-layout/bar-layout-roundtrip (4382.364416ms)
+✔ preserves Area: zero baseline in vector SVG and PDF (408.991042ms)
+✔ preserves Area: signed values around baseline 1 in vector SVG and PDF (212.955417ms)
+✔ preserves Area: horizontal log scale with baseline 1 in vector SVG and PDF (129.017917ms)
+✔ preserves Ribbon: preserve crossing boundaries in vector SVG and PDF (42.292167ms)
+✔ preserves Area: two segments with a missing middle sample in vector SVG and PDF (180.022458ms)
+✔ preserves Area: stack identity separate from color in vector SVG and PDF (196.670417ms)
+✔ preserves Area: normalized series thickness in vector SVG and PDF (171.40075ms)
+✔ preserves Area: independent positive and negative accumulation in vector SVG and PDF (175.027292ms)
+✔ preserves Area: centered total thickness in vector SVG and PDF (294.873625ms)
+✔ preserves Bars: stack series without color in vector SVG and PDF (158.092083ms)
+✔ preserves Bars: final group state after group, stack, group in vector SVG and PDF (318.216875ms)
+✔ renders axis-owners/independent-scales (823.769334ms)
+✔ PDF difference glyphs retain opaque RGB and bounded alpha quantization (1631.539ms)
+✔ approved difference source has stable literal/public PNG pairs (470.88825ms)
+✔ renders beeswarm-plot/vertical-packed (1270.940583ms)
+✔ renders bootstrap-mean-ci/skewed-five-groups (1137.132167ms)
+✔ renders cars-acceleration-violins/full (2777.930375ms)
+✔ renders cars-acceleration-violins/split-era (2834.448792ms)
+✔ renders cars-binned-heatmap/weight-mpg-counts (4801.715959ms)
+✔ renders cars-box-plot/cars-vertical-tukey (1990.48175ms)
+✔ renders cars-box-plot/cars-horizontal-minmax (1439.245834ms)
+✔ renders cars-box-plot/cars-styled-factor (1241.086458ms)
+✔ renders cars-box-plot/cars-outliers-off (1302.806333ms)
+✔ renders cars-density-area/baseline (3343.694041ms)
+✔ renders cars-density-area/area-outline-edit (2595.563167ms)
+✔ renders cars-density-area/epanechnikov-kernel (2198.812625ms)
+✔ renders cars-density-area/count-normalization (2650.642042ms)
+✔ renders cars-density-area/density-revision (2422.883417ms)
+✔ renders cars-density-area/wrapped-title-bottom (2890.6025ms)
+✔ renders cars-error-bar/rule-geometry (2777.387959ms)
+✔ renders cars-error-bar/baseline (1529.405583ms)
+✔ renders cars-error-bar/encoded-layer-inference (1875.401625ms)
+✔ renders cars-error-bar/horizontal (1531.012625ms)
+✔ renders cars-error-bar/explicit-interval (1643.029666ms)
+✔ renders cars-error-bar/styled-caps (1575.314041ms)
+✔ renders cars-weighted-rules/field-stroke-width (1054.865792ms)
+✔ renders cars-gradient-plot/acceleration-by-origin (986.822125ms)
+✔ renders cars-gradient-plot/action-parity (2151.986166ms)
+✔ renders cars-histogram/baseline (1393.60675ms)
+✔ renders cars-histogram/bin-step (1049.632292ms)
+✔ renders cars-histogram/bin-boundaries (1337.444125ms)
+✔ renders cars-histogram/field-reassignment (1382.632167ms)
+✔ renders cars-histogram/normalized-stack (2353.369625ms)
+✔ renders cars-line-chart/baseline (2005.896542ms)
+✔ renders cars-line-chart/curve-step (1880.23075ms)
+✔ renders cars-line-chart/curve-monotone-edit (2618.701167ms)
+✔ renders cars-line-chart/named-dash-vocabulary (1777.445458ms)
+✔ renders cars-line-chart/constant-dash (1894.320791ms)
+✔ renders cars-line-chart/group-reassignment (1742.7215ms)
+✔ renders cars-line-chart/dash-reassignment (1739.62775ms)
+✔ renders cars-line-chart/aggregate-median (2293.388625ms)
+✔ renders cars-line-chart/aggregate-dispersion (2369.015167ms)
+✔ renders cars-line-chart/aggregate-quantile (2031.789417ms)
+✔ renders cars-line-chart/aggregate-ordered (1848.0225ms)
+✔ renders cars-line-chart/composite-legend-top (2348.65675ms)
+✔ renders cars-line-chart/composite-legend-bottom (2384.832375ms)
+✔ renders cars-multi-legend-layout/top-inline-lane (4538.060375ms)
+✔ renders cars-multi-legend-layout/bottom-inline-lane (3666.494458ms)
+✔ matches stable multi-legend output in Canvas, SVG, PNG, and PDF (1678.138708ms)
+✔ renders cars-origin-scatterplot-facet/default-one-row (2884.706208ms)
+✔ renders cars-origin-histogram-facet/two-column-wrap (3837.016125ms)
+✔ renders cars-parallel-coordinates/axis-style (3433.835ms)
+✔ renders cars-parallel-coordinates/cars-1970 (2579.177792ms)
+✔ renders cars-regression-scatterplot/baseline (3403.66525ms)
+✔ renders cars-regression-scatterplot/component-edit (2660.385917ms)
+✔ renders cars-regression-scatterplot/comparison-filter (2079.675875ms)
+✔ renders cars-regression-scatterplot/range-filter (2822.827834ms)
+✔ renders cars-regression-scatterplot/polynomial-degree-2 (2854.29925ms)
+✔ renders cars-regression-scatterplot/loess-span (2640.60825ms)
+✔ renders cars-regression-scatterplot/prediction-interval (3504.639459ms)
+✔ renders cars-regression-scatterplot/left-legend (2725.395416ms)
+✔ renders cars-regression-scatterplot/graphic-hierarchy (2273.504375ms)
+✔ renders cars-scatterplot/baseline (2018.091167ms)
+✔ renders cars-scatterplot/mirrored-axes-format (2204.943125ms)
+✔ renders cars-scatterplot/scale-reverse (2057.5165ms)
+✔ renders cars-scatterplot/point-shape-diamond (1943.030458ms)
+✔ renders cars-scatterplot/shape-vocabulary (2043.538916ms)
+✔ renders cars-scatterplot/categorical-palette (2545.499333ms)
+✔ renders cars-scatterplot/encoding-reassignment (2299.429ms)
+✔ renders cars-scatterplot/continuous-color-gradient (2199.710958ms)
+✔ renders cars-scatterplot/field-opacity-legend (1769.826667ms)
+✔ renders cars-temporal-bar-line/shared-position (3630.297583ms)
+✔ renders cars-window-rank-scatterplot/top-horsepower-by-origin (3180.934542ms)
+✔ renders centered-area-stream/jobs-center-stack (2961.792625ms)
+✔ matches primitive and public center output in Canvas, SVG, PNG, and PDF (1595.3435ms)
+✔ renders color-white-point/lab-white-point (2199.437084ms)
+✔ renders color-controls/color-math (2511.959791ms)
+✔ renders color-controls/zero-gamma (2075.543167ms)
+✔ renders color-controls/negative-gamma (1988.835917ms)
+✔ lab-white-point preserves exact primitive SVG and PDF colors and rectangles (383.63375ms)
+✔ color-math preserves exact primitive SVG and PDF colors and rectangles (374.46675ms)
+✔ zero-gamma preserves exact primitive SVG and PDF colors and rectangles (51.866791ms)
+✔ negative-gamma preserves exact primitive SVG and PDF colors and rectangles (225.430291ms)
+✔ renders color-midpoint/asymmetric (3164.252625ms)
+✔ renders color-midpoint/clear (3101.520792ms)
+✔ preserves asymmetric color semantics in SVG and PDF (409.60575ms)
+✔ preserves clear color semantics in SVG and PDF (265.247625ms)
+✔ renders color-transitions/point (3270.163667ms)
+✔ renders color-transitions/bar (3542.426875ms)
+✔ preserves point interval colors in SVG and PDF (566.097458ms)
+✔ preserves bar interval colors in SVG and PDF (302.443417ms)
+✔ combined numeric legend PDF matches independently drawn literal circles and labels (464.201042ms)
+✔ combined numeric samples has a stable literal/public PNG pair (914.373166ms)
+✔ renders continuous-area-color/nine-series-hcl (953.597708ms)
+✔ renders cross-feature-dashboard/nested-polar-replacement (8691.119583ms)
+✖ renders gapminder-cluster-regression-facet/outer-guides (4411.822375ms)
+  AssertionError [ERR_ASSERTION]: gapminder-cluster-regression-facet/outer-guides pixels differ
+      at new AssertionError (node:internal/assert/assertion_error:369:5)
+      at assertSameRenderedPNG (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/support/png.js:257:17)
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/support/visual-variants.js:454:15)
+      at async Test.run (node:internal/test_runner/test:932:9)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:629:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: '268d31f1631705f836ed0dbd572093b3e79c7d367a91f64df76d2afe78b0f52c',
+    expected: '17142628b092d30155a25885c60d149c9cf7f80bc36518b7369a98efda879b57',
+    operator: undefined
+  }
+
+✖ renders gapminder-cluster-regression-facet/shared-scales (2445.902417ms)
+  AssertionError [ERR_ASSERTION]: gapminder-cluster-regression-facet/shared-scales pixels differ
+      at new AssertionError (node:internal/assert/assertion_error:369:5)
+      at assertSameRenderedPNG (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/support/png.js:257:17)
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/support/visual-variants.js:454:15)
+      at async Test.run (node:internal/test_runner/test:932:9)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:297:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: '2190e8b8a516aa3cde8fb0e58b82b63b7fb88e95c2b35a578f1cfde11c0f67e9',
+    expected: '3ecbdda4570a42086d74879c376153fcb28753d4773a56baebf38f12d8897a68',
+    operator: undefined
+  }
+
+✖ renders gapminder-cluster-regression-facet/independent-x (3364.374625ms)
+  AssertionError [ERR_ASSERTION]: gapminder-cluster-regression-facet/independent-x pixels differ
+      at new AssertionError (node:internal/assert/assertion_error:369:5)
+      at assertSameRenderedPNG (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/support/png.js:257:17)
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/support/visual-variants.js:454:15)
+      at async Test.run (node:internal/test_runner/test:932:9)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:629:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'c72a6d6dbaba4d77274da30d486ea68e39f6a36e01633ec8af244ca7c2e28f4e',
+    expected: 'a3aa992eaa5246f126c241ca418c7c2ba1a46b8ffc9fc639729a3612db0d2681',
+    operator: undefined
+  }
+
+✖ renders gapminder-cluster-regression-facet/outer-guides (2552.537416ms)
+  AssertionError [ERR_ASSERTION]: gapminder-cluster-regression-facet/outer-guides pixels differ
+      at new AssertionError (node:internal/assert/assertion_error:369:5)
+      at assertSameRenderedPNG (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/support/png.js:257:17)
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/support/visual-variants.js:454:15)
+      at async Test.run (node:internal/test_runner/test:932:9)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:629:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: '268d31f1631705f836ed0dbd572093b3e79c7d367a91f64df76d2afe78b0f52c',
+    expected: '17142628b092d30155a25885c60d149c9cf7f80bc36518b7369a98efda879b57',
+    operator: undefined
+  }
+
+✔ renders cars-scatterplot/point-create-and-palette-edit (1223.552709ms)
+✔ renders jobs-grouped-bar/bar-create-appearance (3272.244041ms)
+✔ renders cars-line-chart/line-create-edit-appearance (943.506083ms)
+✔ renders cars-regression-scatterplot/focused-legend-components (1944.852667ms)
+✔ renders cars-scatterplot/cartesian-guide-facades (1086.259ms)
+✔ renders cars-error-bar/owner-edit (1200.192666ms)
+✔ renders gapminder-error-band/owner-and-boundary-edit (2247.834709ms)
+✔ renders cars-regression-scatterplot/owner-edit (1781.468542ms)
+✔ renders cars-box-plot/owner-edit (1250.575958ms)
+✔ renders cars-histogram/remove-guides-and-title (882.246666ms)
+✔ renders gapminder-layered-bar-point/remove-point-mark (678.659ms)
+✔ renders dark-theme-scatterplot/default (2349.912916ms)
+✔ renders density-plot/vertical (3674.002625ms)
+✔ renders density-plot/grouped (4585.142667ms)
+✔ renders density-plot/horizontal (4707.873708ms)
+✔ preserves Density: one quantitative variable in vector SVG and PDF (318.098291ms)
+✔ preserves Density: explicit groups and color in vector SVG and PDF (219.566458ms)
+✔ preserves Density: horizontal orientation in vector SVG and PDF (101.87025ms)
+✔ renders directional-tick-plot/baseline-tick-point-directions (2444.528125ms)
+✔ renders directional-tick-plot/cars-horsepower-rug (579.626208ms)
+✔ renders every Tick visual target in Canvas, SVG, PNG, and PDF (623.703417ms)
+✔ renders ecdf-plot/grouped-weighted (1138.622292ms)
+✔ renders dot-plot/raw-horizontal (769.395625ms)
+✔ renders lollipop-plot/zero-baseline (807.277625ms)
+✔ renders dumbbell-plot/role-preserving (557.926541ms)
+✔ renders facet-field-titles/left-vertical (645.079083ms)
+✔ renders facet-grid/two-by-three-full (964.667667ms)
+✔ renders facet-header-rotation/left-vertical (640.277042ms)
+✔ renders facet-shared-top-lane/seven-panels (1409.224708ms)
+✔ shared facet top lane remains exact at physical double density (508.611458ms)
+✔ PDF shared facet top lane matches the independent literal scene without tolerance (1013.479709ms)
+✔ renders fitted-long-labels/default (2422.395417ms)
+✔ renders gapminder-continuous-color-bars/matching-population (1434.804459ms)
+✔ renders gapminder-continuous-color-bars/mean-life-expectancy (1202.3615ms)
+✔ renders gapminder-continuous-color-bars/reversed-life-expectancy (1355.791167ms)
+✔ renders gapminder-country-labels/collision-aware (1665.991916ms)
+✔ renders gapminder-development-trajectories/year-ordered (2131.118042ms)
+✔ renders gapminder-discretized-color-scales/quantize-life-expectancy (1162.668708ms)
+✔ renders gapminder-discretized-color-scales/quantile-life-expectancy (736.540084ms)
+✔ renders gapminder-discretized-color-scales/threshold-life-expectancy (839.436375ms)
+✔ renders gapminder-error-band/gapminder-vertical (2648.961916ms)
+✔ renders gapminder-error-band/cars-horizontal (1565.506583ms)
+✔ renders gapminder-error-band/gapminder-curved-boundaries (2826.650292ms)
+✔ renders gapminder-error-band/gapminder-boundary-override (2517.346041ms)
+✔ renders gapminder-horizon/kenya-life-expectancy (1761.502667ms)
+✔ renders gapminder-life-expectancy-heatmap/discrete-cells (2925.96775ms)
+✔ renders gapminder-temporal-discrete-scales/band-point-centers (928.387917ms)
+✔ renders gapminder-temporal-discrete-scales/utc-time-lines (665.490375ms)
+✔ renders gapminder-transformed-scales/gapminder-2005-log-sqrt (1022.809834ms)
+✔ renders horizon-plot/signed (5271.26975ms)
+✔ renders horizon-plot/temporal (5236.282083ms)
+✔ renders horizon-plot/baseline-style (5374.272708ms)
+✔ preserves Horizon: signed amplitude in vector SVG and PDF (339.472583ms)
+✔ preserves Horizon: explicit timestamps in vector SVG and PDF (165.194875ms)
+✔ preserves Horizon: baseline, bands and opacity revision in vector SVG and PDF (167.277541ms)
+✔ renders jobs-grouped-bar/baseline (3105.075333ms)
+✔ renders jobs-grouped-bar/overlay-layout (2814.887834ms)
+✔ renders jobs-grouped-bar/diverging-layout (3056.275708ms)
+✔ renders jobs-grouped-bar/width-pixels (2966.296209ms)
+✔ renders jobs-grouped-bar/offset-padding (3649.599459ms)
+✔ renders jobs-grouped-bar/group-reassignment (2589.929459ms)
+✔ renders jobs-grouped-bar/temporal-x (4933.643709ms)
+✔ renders jobs-grouped-bar/horizontal-bar (5286.341584ms)
+✔ renders jobs-horizontal-grouped-bar/default (4254.54075ms)
+✔ gradient-and-local-size preserves exact primitive SVG and PDF (237.917417ms)
+✔ recipe-opacity-0 preserves exact primitive SVG and PDF (44.769625ms)
+✔ recipe-opacity-0-7 preserves exact primitive SVG and PDF (35.059791ms)
+✔ recipe-opacity-1 preserves exact primitive SVG and PDF (19.887167ms)
+✔ PDF normal glyph sources equal independent native PDF embedding without a color tolerance (4763.927125ms)
+✔ whole-symbol opacity has a stable literal/public PNG pair (279.898709ms)
+✔ renders legend-layout/gradient-and-local-size (319.471417ms)
+✔ renders legend-recipe-opacity/recipe-opacity-0 (179.519084ms)
+✔ renders legend-recipe-opacity/recipe-opacity-0-7 (322.738417ms)
+✔ renders legend-recipe-opacity/recipe-opacity-1 (148.447959ms)
+✔ public sample window has exact native PNG and PDF cropped-circle geometry (849.282459ms)
+✔ renders legend-content-spacing/variable-rows (601.660666ms)
+✔ content spacing remains exact at physical double density (64.838916ms)
+✔ PDF content spacing matches the independent literal scene without tolerance (510.648375ms)
+✔ renders linear-nearest-ticks/default (595.727167ms)
+✔ renders linear-nice-count/default (576.334334ms)
+✔ /Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/charts/linked-composition/png.render.js (2855.467125ms)
+✔ beeswarm-box: reproducible rendered chart (2159.9595ms)
+✔ violin-box-points: reproducible rendered chart (1542.606916ms)
+✔ renders lookup-data/group-means (1828.470875ms)
+✔ renders mark-selection-bars/bars-tallest-stack (1746.32025ms)
+✔ renders mark-selection-bars/bars-topmost-segment (1157.295916ms)
+✔ renders mark-selection-lines/line-series-japan (2047.529ms)
+✔ renders mark-selection-points/points-grouped-max (2005.262083ms)
+✔ renders named-shapes/area-and-rotation (880.557709ms)
+✔ named-shape SVG and PDF match the independent primitive exactly (462.68325ms)
+✔ renders ordered-category-bar/automatic-ordered-reset (4553.277917ms)
+✔ renders pie-plot/count (4427.592ms)
+✔ renders pie-plot/weighted (4385.756167ms)
+✔ renders pie-plot/donut (3656.380042ms)
+✔ preserves Pie: category count in vector SVG and PDF (309.008334ms)
+✔ preserves Pie: explicit weighted sum in vector SVG and PDF (155.896125ms)
+✔ preserves Donut: ratio and padding in vector SVG and PDF (296.895ms)
+✔ renders plot-guide-underlays/difference-bars (945.067ms)
+✔ opaque difference backdrop is exact and matches literal pixels at density 1 (96.535292ms)
+✔ opaque difference backdrop is exact and matches literal pixels at density 2 (137.064375ms)
+✔ PDF guide underlays matches the independent literal scene without tolerance (584.149792ms)
+✔ renders cars-origin-jitter/vertical-band (2273.396375ms)
+✔ renders gapminder-cluster-jitter/horizontal-band (2219.316125ms)
+✔ renders gapminder-population-donut/weighted-theta (3732.173ms)
+✔ renders cars-origin-donut/count (3098.910334ms)
+✔ renders nightingale-rose-chart/overlay (3685.020791ms)
+✔ renders gapminder-radial-bars/life-expectancy (4249.247416ms)
+✔ renders cars-polar-guides/default (3643.084958ms)
+✔ renders gapminder-polar-trends/open (4043.504667ms)
+✔ renders jobs-radar-chart/closed (3487.279792ms)
+✔ renders cars-polar-scatterplot/baseline (2221.249167ms)
+✔ renders fashion-tsne-polar-points/dense-negative-domain (2029.5615ms)
+✔ renders program-composition/example (2976.063334ms)
+✔ renders program-composition/unequal-horizontal (2176.180417ms)
+✔ renders program-composition/nested-dashboard (4299.12725ms)
+✔ renders program-composition/replacement (2710.225292ms)
+✔ renders radial-sectors/rose-disk (2838.345166ms)
+✔ renders radial-sectors/rose-hole (2818.313041ms)
+✔ renders radial-sectors/radial-disk (3180.777292ms)
+✔ renders radial-sectors/radial-hole (4034.95325ms)
+✔ renders radial-sectors/radial-theta-legend-order (3299.258459ms)
+✔ preserves rose-disk measured geometry in SVG and PDF (531.950958ms)
+✔ preserves rose-hole measured geometry in SVG and PDF (159.494625ms)
+✔ preserves radial-disk measured geometry in SVG and PDF (146.361875ms)
+✔ preserves radial-hole measured geometry in SVG and PDF (142.393542ms)
+✔ preserves radial-theta-legend-order measured geometry in SVG and PDF (135.58075ms)
+✔ renders raincloud-plot/vertical-box-beeswarm (4247.079625ms)
+✔ renders repeat-charts/three-independent-metrics (1227.186792ms)
+✔ renders series-identity/country-color (3094.922792ms)
+✔ renders series-identity/tuple-color-dash (2195.931958ms)
+✔ renders series-identity/series-appearance (2369.466ms)
+✔ renders shared-facet-owner/parent-horizontal (1723.85ms)
+✔ encoded area window has a stable literal/public PNG pair (272.708ms)
+✔ renders temporal-input/timestamp (1920.876209ms)
+✔ renders temporal-input/year (1725.510667ms)
+✔ renders temporal-input/auto (1592.343792ms)
+✔ renders theta-legend-order/linked (4993.466209ms)
+✔ renders theta-legend-order/independent (3799.37125ms)
+✔ preserves linked category ordering in SVG and PDF (316.36125ms)
+✔ preserves independent category ordering in SVG and PDF (195.083875ms)
+✔ renders time-unit-data/month-bucketing (3260.158917ms)
+ℹ tests 264
+ℹ suites 0
+ℹ pass 260
+ℹ fail 4
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 190312.337208
+
+✖ failing tests:
+
+test at test/support/visual-variants.js:439:5
+✖ renders gapminder-cluster-regression-facet/outer-guides (4411.822375ms)
+  AssertionError [ERR_ASSERTION]: gapminder-cluster-regression-facet/outer-guides pixels differ
+      at new AssertionError (node:internal/assert/assertion_error:369:5)
+      at assertSameRenderedPNG (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/support/png.js:257:17)
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/support/visual-variants.js:454:15)
+      at async Test.run (node:internal/test_runner/test:932:9)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:629:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: '268d31f1631705f836ed0dbd572093b3e79c7d367a91f64df76d2afe78b0f52c',
+    expected: '17142628b092d30155a25885c60d149c9cf7f80bc36518b7369a98efda879b57',
+    operator: undefined
+  }
+
+test at test/support/visual-variants.js:439:5
+✖ renders gapminder-cluster-regression-facet/shared-scales (2445.902417ms)
+  AssertionError [ERR_ASSERTION]: gapminder-cluster-regression-facet/shared-scales pixels differ
+      at new AssertionError (node:internal/assert/assertion_error:369:5)
+      at assertSameRenderedPNG (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/support/png.js:257:17)
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/support/visual-variants.js:454:15)
+      at async Test.run (node:internal/test_runner/test:932:9)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:297:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: '2190e8b8a516aa3cde8fb0e58b82b63b7fb88e95c2b35a578f1cfde11c0f67e9',
+    expected: '3ecbdda4570a42086d74879c376153fcb28753d4773a56baebf38f12d8897a68',
+    operator: undefined
+  }
+
+test at test/support/visual-variants.js:439:5
+✖ renders gapminder-cluster-regression-facet/independent-x (3364.374625ms)
+  AssertionError [ERR_ASSERTION]: gapminder-cluster-regression-facet/independent-x pixels differ
+      at new AssertionError (node:internal/assert/assertion_error:369:5)
+      at assertSameRenderedPNG (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/support/png.js:257:17)
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/support/visual-variants.js:454:15)
+      at async Test.run (node:internal/test_runner/test:932:9)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:629:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'c72a6d6dbaba4d77274da30d486ea68e39f6a36e01633ec8af244ca7c2e28f4e',
+    expected: 'a3aa992eaa5246f126c241ca418c7c2ba1a46b8ffc9fc639729a3612db0d2681',
+    operator: undefined
+  }
+
+test at test/support/visual-variants.js:439:5
+✖ renders gapminder-cluster-regression-facet/outer-guides (2552.537416ms)
+  AssertionError [ERR_ASSERTION]: gapminder-cluster-regression-facet/outer-guides pixels differ
+      at new AssertionError (node:internal/assert/assertion_error:369:5)
+      at assertSameRenderedPNG (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/support/png.js:257:17)
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/support/visual-variants.js:454:15)
+      at async Test.run (node:internal/test_runner/test:932:9)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:629:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: '268d31f1631705f836ed0dbd572093b3e79c7d367a91f64df76d2afe78b0f52c',
+    expected: '17142628b092d30155a25885c60d149c9cf7f80bc36518b7369a98efda879b57',
+    operator: undefined
+  }

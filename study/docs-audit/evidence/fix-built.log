@@ -1,0 +1,5 @@
+
+> ggaction@0.0.22 test:docs:built
+> node scripts/check-built-docs.js _site
+
+checked 150 built documentation pages

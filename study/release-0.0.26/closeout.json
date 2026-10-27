@@ -1,0 +1,194 @@
+{
+  "completedAt": "2026-10-27T01:14:26.824Z",
+  "version": "0.0.26",
+  "identity": {
+    "pr": 277,
+    "prHead": "a4c00a8e505ee435da4a5aa6363cdd903e6134e5",
+    "mergeCommit": "40ec7edead7fc84de05aad31888dd0f7d264a512",
+    "tree": "f1188f8168b72f8db9de121c3ed1fa945cd9377d",
+    "integratedFeatureHead": "4b3722767b9ad6a706d118a76b88665342e42a96",
+    "tag": "v0.0.26",
+    "tagObject": "c54494f04b4878705c5c7d607f94c03e5c1aa724"
+  },
+  "ci": {
+    "pullRequest": {
+      "passed": 20,
+      "failed": 0,
+      "commit": "a4c00a8e505ee435da4a5aa6363cdd903e6134e5",
+      "url": "https://github.com/ggaction/ggaction/actions/runs/40422433392"
+    },
+    "main": {
+      "passed": 20,
+      "failed": 0,
+      "commit": "40ec7edead7fc84de05aad31888dd0f7d264a512",
+      "url": "https://github.com/ggaction/ggaction/actions/runs/40427353507"
+    },
+    "release": {
+      "passed": 22,
+      "failed": 0,
+      "commit": "40ec7edead7fc84de05aad31888dd0f7d264a512",
+      "url": "https://github.com/ggaction/ggaction/actions/runs/40427371005"
+    }
+  },
+  "tests": {
+    "local": {
+      "total": 6281,
+      "passed": 6281,
+      "failed": 0,
+      "skipped": 0
+    },
+    "source": {
+      "total": 6281,
+      "passed": 6280,
+      "failed": 0,
+      "skipped": 1,
+      "reason": "No Hangul fallback font installed on Linux"
+    },
+    "browser": {
+      "total": 295,
+      "passed": 295,
+      "failed": 0,
+      "skipped": 0
+    },
+    "render": {
+      "total": 265,
+      "passed": 265,
+      "failed": 0,
+      "skipped": 0
+    },
+    "releaseLogSummaries": [
+      [
+        "tests",
+        6281
+      ],
+      [
+        "pass",
+        6280
+      ],
+      [
+        "fail",
+        0
+      ],
+      [
+        "skipped",
+        1
+      ],
+      [
+        "tests",
+        295
+      ],
+      [
+        "pass",
+        295
+      ],
+      [
+        "fail",
+        0
+      ],
+      [
+        "skipped",
+        0
+      ],
+      [
+        "tests",
+        265
+      ],
+      [
+        "pass",
+        265
+      ],
+      [
+        "fail",
+        0
+      ],
+      [
+        "skipped",
+        0
+      ]
+    ],
+    "coverage": {
+      "lines": 95.79,
+      "branches": 93.35,
+      "functions": 98.72,
+      "criticalFloors": 182
+    }
+  },
+  "publicRelease": {
+    "github": {
+      "isDraft": false,
+      "isPrerelease": false,
+      "publishedAt": "2026-10-27T01:08:47Z",
+      "tagName": "v0.0.26",
+      "url": "https://github.com/ggaction/ggaction/releases/tag/v0.0.26"
+    },
+    "remoteRefs": [
+      "40ec7edead7fc84de05aad31888dd0f7d264a512\trefs/heads/main",
+      "40ec7edead7fc84de05aad31888dd0f7d264a512\trefs/tags/v0.0.26^{}"
+    ],
+    "sourceCommit": "1e38e7bef30aeedb561c1ae09bbdcdd152bd46b2",
+    "verifiedAt": "2026-10-27T01:13:03.448Z",
+    "version": "0.0.26",
+    "tag": "v0.0.26",
+    "commit": "40ec7edead7fc84de05aad31888dd0f7d264a512",
+    "registryTarball": "https://registry.npmjs.org/ggaction/-/ggaction-0.0.26.tgz",
+    "sha256": "f250428f3359244d625c6bd105d8017836cbb70fd3c5b826505e38d7fbab62af",
+    "integrity": "sha512-BATvYXSYc+PcuVVwuWs+r7YCLQ4eGZk9crexzg9gnIVcFcfNW+OVsiQ35ipxMGulGX76Lyef2xXM7UDn7OZWsA==",
+    "contractId": "sha256:8ec25828c662bcb6b0bf6801a6b6add6f2b653f218476ea7fc758f21e1418174",
+    "homepageSha256": "700a522030b7ffe74656df0c161f9b565621545ea246c703eacfda0773f37b11",
+    "versionPageSha256": "3b2b7b677bbb9c632f7e828088d0742d446072009b6a9ccb2457a641d0c5c281",
+    "documents": [
+      {
+        "file": "doc-provenance.json",
+        "bytes": 23984,
+        "sha256": "f588bf32b6d05571f5b1d69405f9d7e2677ea8acb318963ad6ec93e84a9e75fc"
+      },
+      {
+        "file": "llms-manifest.json",
+        "bytes": 111922,
+        "sha256": "2894d2768167fc1b4da29ac3f0d3b915193ed2f68e98599c2152b29e4b0affc2"
+      },
+      {
+        "file": "llms-full.txt",
+        "bytes": 2071790,
+        "sha256": "92c4dc0a6e8e987f9e11babb39d9e2dd503cb32c6e3787dff2ed1992b1f41493"
+      },
+      {
+        "file": "llms.txt",
+        "bytes": 10792,
+        "sha256": "e209cc144989818916a4a98eb55fba6146d13e26f8b1ef49c6ff074676b18069"
+      }
+    ]
+  },
+  "githubReleaseNotesMatch": true,
+  "cleanup": {
+    "verifiedAt": "2026-10-27T01:13:42.685Z",
+    "commit": "40ec7edead7fc84de05aad31888dd0f7d264a512",
+    "deletedRemote": [
+      {
+        "name": "codex/overlay-composition-v025",
+        "sha": "4b3722767b9ad6a706d118a76b88665342e42a96"
+      }
+    ],
+    "alreadyAbsentRemote": [
+      "release/0.0.26-integration"
+    ],
+    "preservedRemote": [],
+    "deletedLocal": "Deleted branch release/0.0.26-integration (was a4c00a8e).",
+    "remoteHeads": [
+      "40ec7edead7fc84de05aad31888dd0f7d264a512\trefs/heads/main"
+    ],
+    "localBranches": [
+      "main"
+    ],
+    "workingTree": ""
+  },
+  "openPullRequests": [],
+  "openIssues": [
+    {
+      "number": 258,
+      "title": "Support independently packed wrapped facet bounds and shared footer axes",
+      "url": "https://github.com/ggaction/ggaction/issues/258"
+    }
+  ],
+  "remainingQualification": "Issue #258 retains the external original-chart geometry and source-family fidelity qualification; it is not claimed complete."
+}

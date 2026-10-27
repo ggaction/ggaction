@@ -1,0 +1,266 @@
+{
+  "release": {
+    "conclusion": "success",
+    "jobs": [
+      {
+        "conclusion": "success",
+        "databaseId": 121936383852,
+        "name": "candidate",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121936545494,
+        "name": "verify-coverage",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121936545507,
+        "name": "verify-package",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121936545554,
+        "name": "verify-browsers (webkit)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121936545570,
+        "name": "realistic-data",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121936545573,
+        "name": "verify-platform (windows-latest)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121936545593,
+        "name": "verify-source",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121936545607,
+        "name": "verify-platform (macos-latest)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121936545608,
+        "name": "verify-documentation",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121936545624,
+        "name": "verify-browsers (firefox)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121937112926,
+        "name": "verify-realistic (4)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121937112960,
+        "name": "verify-realistic (5)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121937112974,
+        "name": "verify-realistic (7)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121937112977,
+        "name": "verify-realistic (1)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121937113024,
+        "name": "verify-realistic (6)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121937113027,
+        "name": "verify-realistic (3)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121937113092,
+        "name": "verify-realistic (2)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121947268224,
+        "name": "verify",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121947360693,
+        "name": "publish",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121947748192,
+        "name": "pages-build",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121947748753,
+        "name": "context7-refresh / Refresh /ggaction/ggaction",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121948016387,
+        "name": "pages-deploy",
+        "status": "completed"
+      }
+    ],
+    "status": "completed"
+  },
+  "main": {
+    "conclusion": "success",
+    "jobs": [
+      {
+        "conclusion": "success",
+        "databaseId": 121936318176,
+        "name": "test",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121936318413,
+        "name": "documentation",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121936318425,
+        "name": "package (20)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121936318427,
+        "name": "peer-compatibility",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121936318456,
+        "name": "platform (macos-latest)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121936318485,
+        "name": "platform (windows-latest)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121936318497,
+        "name": "package (22)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121936318500,
+        "name": "browsers (webkit)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121936318514,
+        "name": "realistic-data",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121936318528,
+        "name": "package (24)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121936318558,
+        "name": "browsers (firefox)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121936318576,
+        "name": "coverage",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121936396055,
+        "name": "realistic (3)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121936396113,
+        "name": "realistic (4)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121936396155,
+        "name": "realistic (7)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121936396171,
+        "name": "realistic (1)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121936396235,
+        "name": "realistic (6)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121936396241,
+        "name": "realistic (5)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121936396268,
+        "name": "realistic (2)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 121945052442,
+        "name": "realistic-required",
+        "status": "completed"
+      }
+    ],
+    "status": "completed"
+  }
+}

@@ -1,0 +1,152 @@
+import { reconcileRegressionPlacement } from "../../materialization/graphicHierarchy.js";
+import { validateRegressionPlacement } from "../../grammar/regression/parameters.js";
+import { closedAction } from "../../core/action.js";
+import { validateKeys } from "../../core/validation.js";
+import { normalizeRegressionParameters, normalizeRegressionPredict } from "../../grammar/regression/index.js";
+import { STROKE_STYLE_PROPERTIES } from "../../grammar/strokeStyle.js";
+import {
+  findRegressionPoint,
+  inferRegressionGroup,
+  requireRegressionField,
+  requireRegressionObject
+} from "./resolve.js";
+
+const REGRESSION_OPTIONS = Object.freeze([
+  "target", "x", "y", "groupBy", "method", "degree", "span", "robustIterations",
+  "confidenceMethod", "level", "confidence", "interval", "band", "line"
+  , "predict", "sourceBinding", "missing", "placement"
+]);
+
+export const createRegression = /* @__PURE__ */ closedAction(
+  {
+    op: "createRegression",
+    description: "Fit and layer regression lines with optional interval bands."
+  }, REGRESSION_OPTIONS,
+  function (args = {}) {
+    const placement = validateRegressionPlacement(args.placement);
+    const sourceBinding = args.sourceBinding ?? "fixed";
+    if (!["fixed", "follow"].includes(sourceBinding)) {
+      throw new Error('Regression sourceBinding must be "fixed" or "follow".');
+    }
+    const point = findRegressionPoint(this, args.target);
+    const x = args.x === undefined
+      ? point.encoding.x.field
+      : requireRegressionField(args.x, "Regression x");
+    const y = args.y === undefined
+      ? point.encoding.y.field
+      : requireRegressionField(args.y, "Regression y");
+    const groupBy = inferRegressionGroup(point, args);
+    const coordinate = point.coordinate;
+    const xScale = point.encoding.x.scale;
+    const yScale = point.encoding.y.scale;
+    if (coordinate === undefined || xScale === undefined || yScale === undefined) {
+      throw new Error(
+        "createRegression target requires stored coordinate and scales."
+      );
+    }
+    const parameters = normalizeRegressionParameters(args);
+    const predict = normalizeRegressionPredict(args.predict);
+    const regressionDefinition = {
+      ...parameters,
+      ...(predict === undefined ? {} : { predict }),
+      ...(args.missing === undefined ? {} : { missing: args.missing })
+    };
+    let band = false;
+    if (parameters.method === "loess") {
+      if (args.band !== undefined && args.band !== false) {
+        throw new Error("LOESS regression does not support a band object.");
+      }
+    } else if (parameters.interval === false) {
+      if (args.band !== undefined && args.band !== false) {
+        throw new Error("Regression interval false cannot include a band object.");
+      }
+    } else if (args.band !== false) {
+      band = requireRegressionObject(args.band ?? {}, "Regression band");
+    }
+    const line = requireRegressionObject(args.line ?? {}, "Regression line");
+    if (band !== false) {
+      validateKeys(
+        band,
+        [
+          "color", "opacity", "stroke", "strokeWidth", "curve",
+          ...STROKE_STYLE_PROPERTIES
+        ],
+        "regression band"
+      );
+    }
+    validateKeys(
+      line,
+      ["strokeWidth", "curve", ...STROKE_STYLE_PROPERTIES],
+      "regression line"
+    );
+    const colorEncoding = point.encoding?.color;
+    const namespace = point.id;
+    const dataId = `${namespace}RegressionData`;
+    const bandId = `${namespace}RegressionBands`;
+    const lineId = `${namespace}RegressionLines`;
+    const colorScale =
+      groupBy !== undefined && colorEncoding?.field === groupBy
+        ? colorEncoding.scale
+        : `${namespace}RegressionColor`;
+
+    let next = this
+      .createRegressionData({
+        id: dataId,
+        source: point.data,
+        x,
+        y,
+        ...(groupBy === undefined ? {} : { groupBy }),
+        ...regressionDefinition
+      });
+    if (band !== false) {
+      next = next.createRegressionBand({
+        id: bandId,
+        data: dataId,
+        x,
+        lower: "__regression_ci_lower",
+        upper: "__regression_ci_upper",
+        ...(groupBy === undefined ? {} : { groupBy }),
+        coordinate,
+        xScale,
+        yScale,
+        ...band
+      });
+    }
+    next = next.createRegressionLine({
+      id: lineId,
+      data: dataId,
+      x,
+      y,
+      ...(groupBy === undefined ? {} : { groupBy, colorScale }),
+      coordinate,
+      xScale,
+      yScale,
+      ...line
+    });
+    next = next._withMarkConfig(point.id, {
+      ...next.markConfigs[point.id],
+      regression: {
+        source: point.data,
+        x,
+        y,
+        groupBy,
+        coordinate,
+        xScale,
+        yScale,
+        colorScale,
+        dataId,
+        bandId: band === false ? undefined : bandId,
+        lineId,
+        ...(Object.hasOwn(args, "placement") ? { placement } : {}),
+        parameters: regressionDefinition
+      }
+    });
+    if (placement === "plot-last") next = reconcileRegressionPlacement(next, point.id);
+    return sourceBinding === "follow"
+      ? next.editSemantic({
+          property: `layer[${point.id}].derivedBindings.regression`,
+          value: { mode: "follow", roles: ["data", "x", "y"] }
+        })
+      : next;
+  }
+);

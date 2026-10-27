@@ -1,0 +1,26 @@
+✔ exponential regression uses response-weighted log least squares and positive predictions (6.023459ms)
+✔ exponential prediction grids, typed groups and missing policies preserve every eligible observation (2.974875ms)
+✔ exponential fitting scales response weights and full-range predictors without changing the estimator (2.770792ms)
+✔ exponential failures reject invalid responses, incompatible options and unrepresentable values atomically (9.154042ms)
+✔ exponential facades suppress bands, support transitions and remain renderer-neutral (75.905333ms)
+✔ exponential data edits clear inherited interval settings and replay downstream consumers (4.309375ms)
+✔ exponential public curves match independently drawn primitive Canvas pixels and SVG coordinates (8.742541ms)
+✔ exponential following bindings and facet replay refit the same positive-response model (48.643375ms)
+✔ accepts materialized semantic layers and reports analytic metrics (1.07425ms)
+✔ rejects an authored area whose incomplete encoding leaves an empty owner (13.092625ms)
+✔ rejects non-finite and zero-size geometry even when items exist (0.225ms)
+✔ checks every materialized facet or composition leaf independently (0.2105ms)
+✔ accepts a facet-grid cell explicitly declared empty (0.1275ms)
+✔ scans large path command lists without argument-spread limits (14.597542ms)
+✔ accepts a finite, attached graphic tree and reports literal metrics (1.256792ms)
+✔ independently rejects non-finite geometry, negative sizes, and broken trees (0.207208ms)
+✔ rejects missing primitive geometry, invalid paths, and non-tree attachments (1.951208ms)
+✔ SVG integrity distinguishes legitimate text from invalid attributes (1.517709ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 18
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 722.863834

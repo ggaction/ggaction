@@ -1,0 +1,7 @@
+{
+  "environment_ids": [
+    18269048715
+  ],
+  "state": "approved",
+  "comment": "Approve the requested v0.0.26 release after all main CI and exact-candidate verification passed."
+}

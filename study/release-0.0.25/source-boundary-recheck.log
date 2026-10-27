@@ -1,0 +1,43 @@
+✔ keeps source imports inside their architectural boundaries (135.368917ms)
+✔ the compact source-action vocabulary matches public default action metadata (0.673208ms)
+✔ parses static, re-exported, and dynamic module references (0.129041ms)
+✔ resolves extensionless files and directory entry points (0.11ms)
+✔ keeps the local source import graph acyclic (61.853083ms)
+✔ keeps semantic and graphic cloning inside primitive actions (187.817083ms)
+✔ routes exact named semantic resource lookup through selectors (298.050667ms)
+✔ keeps cross-cutting planners independent from concrete mark names (0.2535ms)
+✔ keeps every ordinary mark family behind a stable directory entry (1.035708ms)
+✔ architectural syntax checks ignore comments and recognize direct bracket and optional access (0.591459ms)
+✔ discovers every normal, render, and browser test recursively exactly once (61.789084ms)
+✔ separates network-backed corpus sweeps from source coverage (30.971125ms)
+✔ shards realistic CI after preparing its dataset cache once (0.379875ms)
+✔ does not discover programs or support modules as tests (8.671833ms)
+✔ keeps every test module reachable from a suite or module-script entry (296.175625ms)
+✔ requires every active gate to expose a complete reviewable slice (0.176917ms)
+✔ keeps stable tests independent from active gate implementations (99.459459ms)
+✔ keeps stable tests independent from implementation roadmap records (53.616708ms)
+✔ selects tests by chart, capability, or relative path (58.224708ms)
+✔ caps file concurrency without changing file order or coverage policy (0.757875ms)
+✔ validates realistic shard coordinates before invoking Node (0.557875ms)
+✔ maps every named capability entry to an exact file or prefix (586.202375ms)
+✔ assigns every normal test file to at least one named capability (11.453333ms)
+✔ validates every selector before short-circuit matching (0.13525ms)
+✔ coverage capture preserves UTF-8 markers across every byte boundary (0.746833ms)
+✔ compound row highlights round trip, revise and remove every owned component (118.35275ms)
+✔ restoration rejects corrupt composite owners and row references (106.050375ms)
+✔ source row indices survive sorting, filtering, computation, folding and aggregation (53.632792ms)
+✔ compound inspection and highlight removal preserve endpoint and raincloud ownership (176.950333ms)
+✔ removing a compound selection rejects live labels on a component selection (44.477833ms)
+✔ filtered duplicate-row identity persists and releases its provenance cache (61.482333ms)
+✔ row selectors reject malformed input atomically and accept an empty selection (11.194458ms)
+✔ item inspection caches frozen snapshots and resolves scoped targets (33.920959ms)
+✔ graphic item lookup follows immutable collection revisions and preserves owners (15.285792ms)
+✔ lookup never caches mutable item identity inside caller-owned or shallow-frozen collections (0.131583ms)
+ℹ tests 35
+ℹ suites 0
+ℹ pass 35
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1324.376667

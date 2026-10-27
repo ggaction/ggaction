@@ -1,0 +1,16 @@
+
+> ggaction@0.0.22 test:coverage
+> node scripts/run-tests.js coverage
+
+file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/coverage-policy.js:319
+    throw new Error(`Critical coverage policy failed:\n${failures.join("\n")}`);
+          ^
+
+Error: Critical coverage policy failed:
+persistence/validation.js: lines 72.85% is below 90%
+persistence/validation.js: functions 77.14% is below 100%
+    at assertCriticalCoverage (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/coverage-policy.js:319:11)
+    at run (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/run-tests.js:222:7)
+    at async file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/run-tests.js:258:3
+
+Node.js v23.5.0

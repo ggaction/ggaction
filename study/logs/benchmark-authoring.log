@@ -1,0 +1,11 @@
+
+> ggaction@0.0.22 benchmark:authoring
+> node scripts/evaluate-authoring-requirements.js
+
+{
+  "total": 15,
+  "passed": 15,
+  "executable": 15,
+  "fulfilled": 10,
+  "falseComplete": 0
+}

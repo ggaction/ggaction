@@ -1,0 +1,127 @@
+import { editFacetParentLegend } from "../../../materialization/facetGuides/edit.js";
+import { closedAction } from "../../../core/action.js";
+
+import {
+  removeLegendKinds,
+  resolveCategoricalLegendRevision,
+  createCategoricalLegendFromConfig
+} from "./lifecycle.js";
+import { resolveLegendTarget, validateLegendChannels } from "./target.js";
+import { planLegendBlockTransitions } from "./transition.js";
+import { legendBlockChannels } from "./target.js";
+import { suppressLegendChannels } from "../../../materialization/legendSuppression.js";
+
+export { removeLegendKinds } from "./lifecycle.js";
+
+const OPTIONS = Object.freeze(["target", "channels", "suppress"]);
+
+function legendKindChannels(kind, config) {
+  if (["series", "color", "stroke"].includes(kind)) return config.channels;
+  return {
+    colorSize: ["color","size"],
+    size: ["size"],
+    gradient: ["color"],
+    interval: ["color"],
+    strokeGradient: ["stroke"],
+    strokeInterval: ["stroke"],
+    opacity: ["opacity"],
+    strokeWidth: ["strokeWidth"]
+  }[kind];
+}
+
+function resolveRequestedRemoval(program, target, channels) {
+  validateLegendChannels(channels, "removeLegend");
+  const requested = new Set(channels);
+  const matched = new Set();
+  const kinds = [];
+  let partial;
+  for (const [kind, config] of Object.entries(program.guideConfigs.legend ?? {})) {
+    if (config?.target !== target) continue;
+    const owned = legendKindChannels(kind, config);
+    const overlap = owned.filter(channel => requested.has(channel));
+    if (overlap.length === 0) continue;
+    kinds.push(kind);
+    for (const channel of overlap) matched.add(channel);
+    if (overlap.length !== owned.length && !["size-shape","color-size"].includes(config.combine)) {
+      partial = { kind, config, channels: owned.filter(channel => !requested.has(channel)) };
+    }
+  }
+  const missing = channels.filter(channel => !matched.has(channel));
+  if (missing.length > 0) {
+    throw new Error(`Legend target "${target}" has no complete block for channel "${missing[0]}".`);
+  }
+  // Remove departing sibling configs from the immutable layout preflight view.
+  const view = kinds.reduce((next, kind) =>
+    next._withoutMaterializationConfig(["guides", "legend", kind]), program);
+  const resolved = partial === undefined ? undefined
+    : resolveCategoricalLegendRevision(view, partial.kind, partial.config, partial.channels);
+  const revision = resolved === undefined ? undefined : planLegendBlockTransitions(
+    program,
+    target,
+    [{ ...resolved, kind: resolved.config.kind }]
+  )[0];
+  return { kinds, revision };
+}
+
+export function removeOwnedColorLegends(program, target) {
+  const kinds = Object.entries(program.guideConfigs.legend ?? {})
+    .filter(([kind, config]) => config?.target === target && (
+      config.channels?.includes("color") || ["gradient", "interval", "colorSize"].includes(kind)
+    )).map(([kind]) => kind);
+  return kinds.length === 0 ? program : removeLegendKinds(program, kinds);
+}
+
+export const removeLegend = /* @__PURE__ */ closedAction(
+  { op: "removeLegend", description: "Remove selected legend content or every block owned by one mark.", scope: "any" }, OPTIONS,
+  function (args = {}) {
+    if (args.suppress !== undefined && typeof args.suppress !== "boolean") {
+      throw new TypeError("removeLegend suppress must be a boolean.");
+    }
+    if (this.compositionSpec !== undefined) return editFacetParentLegend(this, "removeLegend", args);
+    const target = resolveLegendTarget(this, args.target, "removeLegend");
+    const targetKinds = Object.entries(this.guideConfigs.legend ?? {})
+      .filter(([, config]) => config?.target === target)
+      .map(([kind]) => kind);
+    const { kinds, revision } = args.channels === undefined
+      ? { kinds: targetKinds }
+      : resolveRequestedRemoval(this, target, args.channels);
+    let next = removeLegendKinds(this, kinds);
+    if (revision !== undefined) {
+      next = createCategoricalLegendFromConfig(next, revision.config, revision.order);
+    }
+    if (args.suppress === true) {
+      const retained = new Set(Object.entries(next.guideConfigs.legend ?? {})
+        .filter(([, config]) => config.target === target)
+        .flatMap(([kind, config]) => legendBlockChannels(kind, config)));
+      const removed = kinds.flatMap(kind => legendBlockChannels(kind, this.guideConfigs.legend[kind]))
+        .filter(channel => !retained.has(channel));
+      next = suppressLegendChannels(next, target, removed);
+    }
+    if (!Object.values(next.guideConfigs.legend ?? {}).some(config => config.target === target)) {
+      next = next._withoutMaterializationConfig(["guides", "legendGroups", target]);
+    }
+    const retainedKinds = Object.keys(next.guideConfigs.legend ?? {});
+    if (args.channels === undefined) {
+      return retainedKinds.length === 0
+        ? next
+        : next.rematerializeLegend();
+    }
+    const remainingTargetKinds = targetKinds.filter(kind => !kinds.includes(kind));
+    const removedCategorical = kinds.some(kind =>
+      ["series", "color", "stroke"].includes(kind)
+    );
+    if (
+      removedCategorical && revision === undefined &&
+      remainingTargetKinds.includes("size") &&
+      next.guideConfigs.legend.size.inheritAppearance === true
+    ) {
+      next = next._withLegendConfig("size", {
+        ...next.guideConfigs.legend.size,
+        inheritAppearance: false
+      });
+    }
+    return retainedKinds.length === 0
+      ? next
+      : next.rematerializeLegend();
+  }
+);

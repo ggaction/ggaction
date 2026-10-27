@@ -1,0 +1,1181 @@
+{
+  "commit": "a794557384adcc3293a77043f6b9aff1c33d152c",
+  "entries": [
+    {
+      "key": "responsive",
+      "value": "true",
+      "file": "packages/flint-js/src/chartjs/templates/area.ts",
+      "startLine": 75,
+      "endLine": 75,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/area.ts#L75-L75"
+    },
+    {
+      "key": "tooltip",
+      "value": "{ enabled: true }",
+      "file": "packages/flint-js/src/chartjs/templates/area.ts",
+      "startLine": 108,
+      "endLine": 108,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/area.ts#L108-L108"
+    },
+    {
+      "key": "responsive",
+      "value": "true",
+      "file": "packages/flint-js/src/chartjs/templates/bar.ts",
+      "startLine": 85,
+      "endLine": 85,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/bar.ts#L85-L85"
+    },
+    {
+      "key": "tooltip",
+      "value": "{ enabled: true }",
+      "file": "packages/flint-js/src/chartjs/templates/bar.ts",
+      "startLine": 99,
+      "endLine": 99,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/bar.ts#L99-L99"
+    },
+    {
+      "key": "responsive",
+      "value": "true",
+      "file": "packages/flint-js/src/chartjs/templates/bar.ts",
+      "startLine": 173,
+      "endLine": 173,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/bar.ts#L173-L173"
+    },
+    {
+      "key": "tooltip",
+      "value": "{ enabled: true }",
+      "file": "packages/flint-js/src/chartjs/templates/bar.ts",
+      "startLine": 188,
+      "endLine": 188,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/bar.ts#L188-L188"
+    },
+    {
+      "key": "responsive",
+      "value": "true",
+      "file": "packages/flint-js/src/chartjs/templates/bar.ts",
+      "startLine": 295,
+      "endLine": 295,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/bar.ts#L295-L295"
+    },
+    {
+      "key": "tooltip",
+      "value": "{ enabled: true }",
+      "file": "packages/flint-js/src/chartjs/templates/bar.ts",
+      "startLine": 308,
+      "endLine": 308,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/bar.ts#L308-L308"
+    },
+    {
+      "key": "responsive",
+      "value": "true",
+      "file": "packages/flint-js/src/chartjs/templates/bubble.ts",
+      "startLine": 91,
+      "endLine": 91,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/bubble.ts#L91-L91"
+    },
+    {
+      "key": "tooltip",
+      "value": "{ enabled: true }",
+      "file": "packages/flint-js/src/chartjs/templates/bubble.ts",
+      "startLine": 101,
+      "endLine": 101,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/bubble.ts#L101-L101"
+    },
+    {
+      "key": "responsive",
+      "value": "true",
+      "file": "packages/flint-js/src/chartjs/templates/bump.ts",
+      "startLine": 96,
+      "endLine": 96,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/bump.ts#L96-L96"
+    },
+    {
+      "key": "tooltip",
+      "value": "{ enabled: true }",
+      "file": "packages/flint-js/src/chartjs/templates/bump.ts",
+      "startLine": 143,
+      "endLine": 143,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/bump.ts#L143-L143"
+    },
+    {
+      "key": "responsive",
+      "value": "true",
+      "file": "packages/flint-js/src/chartjs/templates/combo.ts",
+      "startLine": 110,
+      "endLine": 110,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/combo.ts#L110-L110"
+    },
+    {
+      "key": "tooltip",
+      "value": "{ enabled: true }",
+      "file": "packages/flint-js/src/chartjs/templates/combo.ts",
+      "startLine": 134,
+      "endLine": 134,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/combo.ts#L134-L134"
+    },
+    {
+      "key": "responsive",
+      "value": "true",
+      "file": "packages/flint-js/src/chartjs/templates/connected-scatter.ts",
+      "startLine": 93,
+      "endLine": 93,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/connected-scatter.ts#L93-L93"
+    },
+    {
+      "key": "tooltip",
+      "value": "{ enabled: true }",
+      "file": "packages/flint-js/src/chartjs/templates/connected-scatter.ts",
+      "startLine": 108,
+      "endLine": 108,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/connected-scatter.ts#L108-L108"
+    },
+    {
+      "key": "responsive",
+      "value": "true",
+      "file": "packages/flint-js/src/chartjs/templates/doughnut.ts",
+      "startLine": 86,
+      "endLine": 86,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/doughnut.ts#L86-L86"
+    },
+    {
+      "key": "tooltip",
+      "value": "{ enabled: true }",
+      "file": "packages/flint-js/src/chartjs/templates/doughnut.ts",
+      "startLine": 91,
+      "endLine": 91,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/doughnut.ts#L91-L91"
+    },
+    {
+      "key": "responsive",
+      "value": "true",
+      "file": "packages/flint-js/src/chartjs/templates/ecdf.ts",
+      "startLine": 61,
+      "endLine": 61,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/ecdf.ts#L61-L61"
+    },
+    {
+      "key": "tooltip",
+      "value": "{ enabled: true }",
+      "file": "packages/flint-js/src/chartjs/templates/ecdf.ts",
+      "startLine": 78,
+      "endLine": 78,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/ecdf.ts#L78-L78"
+    },
+    {
+      "key": "responsive",
+      "value": "true",
+      "file": "packages/flint-js/src/chartjs/templates/gantt.ts",
+      "startLine": 105,
+      "endLine": 105,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/gantt.ts#L105-L105"
+    },
+    {
+      "key": "tooltip",
+      "value": "{\n                        callbacks: {\n                            label: (item: any) => {\n                                const [s, e] = item.raw as [number, number];\n                                const fs = temporal ? fmtDate(s) : s;\n                                const fe = temporal ? fmtDate(e) : e;\n                                return `${fs} → ${fe}`;\n                            },\n                        },\n                    }",
+      "file": "packages/flint-js/src/chartjs/templates/gantt.ts",
+      "startLine": 137,
+      "endLine": 146,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/gantt.ts#L137-L146"
+    },
+    {
+      "key": "responsive",
+      "value": "true",
+      "file": "packages/flint-js/src/chartjs/templates/histogram.ts",
+      "startLine": 58,
+      "endLine": 58,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/histogram.ts#L58-L58"
+    },
+    {
+      "key": "tooltip",
+      "value": "{ enabled: true }",
+      "file": "packages/flint-js/src/chartjs/templates/histogram.ts",
+      "startLine": 70,
+      "endLine": 70,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/histogram.ts#L70-L70"
+    },
+    {
+      "key": "responsive",
+      "value": "true",
+      "file": "packages/flint-js/src/chartjs/templates/jitter.ts",
+      "startLine": 139,
+      "endLine": 139,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/jitter.ts#L139-L139"
+    },
+    {
+      "key": "tooltip",
+      "value": "{ enabled: true }",
+      "file": "packages/flint-js/src/chartjs/templates/jitter.ts",
+      "startLine": 145,
+      "endLine": 145,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/jitter.ts#L145-L145"
+    },
+    {
+      "key": "responsive",
+      "value": "true",
+      "file": "packages/flint-js/src/chartjs/templates/line.ts",
+      "startLine": 88,
+      "endLine": 88,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/line.ts#L88-L88"
+    },
+    {
+      "key": "tooltip",
+      "value": "{ enabled: true }",
+      "file": "packages/flint-js/src/chartjs/templates/line.ts",
+      "startLine": 129,
+      "endLine": 129,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/line.ts#L129-L129"
+    },
+    {
+      "key": "responsive",
+      "value": "true",
+      "file": "packages/flint-js/src/chartjs/templates/lollipop.ts",
+      "startLine": 108,
+      "endLine": 108,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/lollipop.ts#L108-L108"
+    },
+    {
+      "key": "tooltip",
+      "value": "{\n                        enabled: true,\n                        filter: (item: any) => item.dataset?.label !== STEM_LABEL,\n                    }",
+      "file": "packages/flint-js/src/chartjs/templates/lollipop.ts",
+      "startLine": 126,
+      "endLine": 129,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/lollipop.ts#L126-L129"
+    },
+    {
+      "key": "responsive",
+      "value": "true",
+      "file": "packages/flint-js/src/chartjs/templates/pie.ts",
+      "startLine": 114,
+      "endLine": 114,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/pie.ts#L114-L114"
+    },
+    {
+      "key": "tooltip",
+      "value": "{ enabled: true }",
+      "file": "packages/flint-js/src/chartjs/templates/pie.ts",
+      "startLine": 118,
+      "endLine": 118,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/pie.ts#L118-L118"
+    },
+    {
+      "key": "responsive",
+      "value": "true",
+      "file": "packages/flint-js/src/chartjs/templates/radar.ts",
+      "startLine": 53,
+      "endLine": 53,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/radar.ts#L53-L53"
+    },
+    {
+      "key": "tooltip",
+      "value": "{ enabled: true }",
+      "file": "packages/flint-js/src/chartjs/templates/radar.ts",
+      "startLine": 63,
+      "endLine": 63,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/radar.ts#L63-L63"
+    },
+    {
+      "key": "responsive",
+      "value": "true",
+      "file": "packages/flint-js/src/chartjs/templates/range-area.ts",
+      "startLine": 84,
+      "endLine": 84,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/range-area.ts#L84-L84"
+    },
+    {
+      "key": "tooltip",
+      "value": "{ enabled: true }",
+      "file": "packages/flint-js/src/chartjs/templates/range-area.ts",
+      "startLine": 115,
+      "endLine": 115,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/range-area.ts#L115-L115"
+    },
+    {
+      "key": "responsive",
+      "value": "true",
+      "file": "packages/flint-js/src/chartjs/templates/rose.ts",
+      "startLine": 132,
+      "endLine": 132,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/rose.ts#L132-L132"
+    },
+    {
+      "key": "tooltip",
+      "value": "{\n                        enabled: true,\n                        callbacks: {\n                            // Radius is sqrt-transformed; report the true value.\n                            label: (item: any) => {\n                                const raw = rawValues[item.dataIndex];\n                                const shown = raw != null ? raw : item.raw;\n                                const name = item.label != null ? item.label : '';\n                                return `${name}: ${shown}`;\n                            },\n                        },\n                    }",
+      "file": "packages/flint-js/src/chartjs/templates/rose.ts",
+      "startLine": 146,
+      "endLine": 157,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/rose.ts#L146-L157"
+    },
+    {
+      "key": "responsive",
+      "value": "true",
+      "file": "packages/flint-js/src/chartjs/templates/scatter.ts",
+      "startLine": 49,
+      "endLine": 49,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/scatter.ts#L49-L49"
+    },
+    {
+      "key": "tooltip",
+      "value": "{ enabled: true }",
+      "file": "packages/flint-js/src/chartjs/templates/scatter.ts",
+      "startLine": 62,
+      "endLine": 62,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/scatter.ts#L62-L62"
+    },
+    {
+      "key": "responsive",
+      "value": "true",
+      "file": "packages/flint-js/src/chartjs/templates/slope.ts",
+      "startLine": 79,
+      "endLine": 79,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/slope.ts#L79-L79"
+    },
+    {
+      "key": "tooltip",
+      "value": "{ enabled: true }",
+      "file": "packages/flint-js/src/chartjs/templates/slope.ts",
+      "startLine": 97,
+      "endLine": 97,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/slope.ts#L97-L97"
+    },
+    {
+      "key": "responsive",
+      "value": "true",
+      "file": "packages/flint-js/src/chartjs/templates/waterfall.ts",
+      "startLine": 105,
+      "endLine": 105,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/waterfall.ts#L105-L105"
+    },
+    {
+      "key": "tooltip",
+      "value": "{\n                        callbacks: {\n                            label: (item: any) => {\n                                const [lo, hi] = item.raw as [number, number];\n                                return `${valField}: ${Math.round((hi - lo) * 100) / 100}`;\n                            },\n                        },\n                    }",
+      "file": "packages/flint-js/src/chartjs/templates/waterfall.ts",
+      "startLine": 123,
+      "endLine": 130,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/waterfall.ts#L123-L130"
+    },
+    {
+      "key": "tooltip",
+      "value": "{ trigger: 'axis' }",
+      "file": "packages/flint-js/src/echarts/templates/area.ts",
+      "startLine": 58,
+      "endLine": 58,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/area.ts#L58-L58"
+    },
+    {
+      "key": "tooltip",
+      "value": "{ position: 'top' }",
+      "file": "packages/flint-js/src/echarts/templates/bar.ts",
+      "startLine": 215,
+      "endLine": 215,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/bar.ts#L215-L215"
+    },
+    {
+      "key": "emphasis",
+      "value": "{\n                        itemStyle: { shadowBlur: 10, shadowColor: 'rgba(0, 0, 0, 0.5)' },\n                    }",
+      "file": "packages/flint-js/src/echarts/templates/bar.ts",
+      "startLine": 259,
+      "endLine": 261,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/bar.ts#L259-L261"
+    },
+    {
+      "key": "tooltip",
+      "value": "{ trigger: 'axis', axisPointer: { type: 'shadow' } }",
+      "file": "packages/flint-js/src/echarts/templates/bar.ts",
+      "startLine": 276,
+      "endLine": 276,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/bar.ts#L276-L276"
+    },
+    {
+      "key": "tooltip",
+      "value": "{ trigger: 'axis', axisPointer: { type: 'shadow' } }",
+      "file": "packages/flint-js/src/echarts/templates/bar.ts",
+      "startLine": 370,
+      "endLine": 370,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/bar.ts#L370-L370"
+    },
+    {
+      "key": "tooltip",
+      "value": "{ trigger: 'axis', axisPointer: { type: 'shadow' } }",
+      "file": "packages/flint-js/src/echarts/templates/bar.ts",
+      "startLine": 419,
+      "endLine": 419,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/bar.ts#L419-L419"
+    },
+    {
+      "key": "tooltip",
+      "value": "{ trigger: 'axis', axisPointer: { type: 'shadow' } }",
+      "file": "packages/flint-js/src/echarts/templates/bar.ts",
+      "startLine": 497,
+      "endLine": 497,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/bar.ts#L497-L497"
+    },
+    {
+      "key": "tooltip",
+      "value": "{ trigger: 'axis', axisPointer: { type: 'shadow' } }",
+      "file": "packages/flint-js/src/echarts/templates/bar.ts",
+      "startLine": 568,
+      "endLine": 568,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/bar.ts#L568-L568"
+    },
+    {
+      "key": "tooltip",
+      "value": "{ trigger: 'axis', axisPointer: { type: 'shadow' } }",
+      "file": "packages/flint-js/src/echarts/templates/bar.ts",
+      "startLine": 732,
+      "endLine": 732,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/bar.ts#L732-L732"
+    },
+    {
+      "key": "tooltip",
+      "value": "{ trigger: 'axis', axisPointer: { type: 'shadow' } }",
+      "file": "packages/flint-js/src/echarts/templates/bar.ts",
+      "startLine": 790,
+      "endLine": 790,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/bar.ts#L790-L790"
+    },
+    {
+      "key": "tooltip",
+      "value": "{ trigger: 'axis', axisPointer: { type: 'shadow' } }",
+      "file": "packages/flint-js/src/echarts/templates/bar.ts",
+      "startLine": 866,
+      "endLine": 866,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/bar.ts#L866-L866"
+    },
+    {
+      "key": "tooltip",
+      "value": "[0, 1]",
+      "file": "packages/flint-js/src/echarts/templates/boxplot.ts",
+      "startLine": 140,
+      "endLine": 140,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/boxplot.ts#L140-L140"
+    },
+    {
+      "key": "tooltip",
+      "value": "{ show: false }",
+      "file": "packages/flint-js/src/echarts/templates/boxplot.ts",
+      "startLine": 183,
+      "endLine": 183,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/boxplot.ts#L183-L183"
+    },
+    {
+      "key": "tooltip",
+      "value": "{ trigger: 'item' }",
+      "file": "packages/flint-js/src/echarts/templates/boxplot.ts",
+      "startLine": 284,
+      "endLine": 284,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/boxplot.ts#L284-L284"
+    },
+    {
+      "key": "tooltip",
+      "value": "{ formatter: laneBoxTooltip }",
+      "file": "packages/flint-js/src/echarts/templates/boxplot.ts",
+      "startLine": 356,
+      "endLine": 356,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/boxplot.ts#L356-L356"
+    },
+    {
+      "key": "tooltip",
+      "value": "{ formatter: lanePointTooltip }",
+      "file": "packages/flint-js/src/echarts/templates/boxplot.ts",
+      "startLine": 361,
+      "endLine": 361,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/boxplot.ts#L361-L361"
+    },
+    {
+      "key": "emphasis",
+      "value": "{ disabled: true }",
+      "file": "packages/flint-js/src/echarts/templates/bullet.ts",
+      "startLine": 95,
+      "endLine": 95,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/bullet.ts#L95-L95"
+    },
+    {
+      "key": "tooltip",
+      "value": "{\n                trigger: 'item',\n                formatter: (p: any) => {\n                    if (typeof p.seriesName === 'string' && p.seriesName.startsWith('_')) return '';\n                    const cat = categories[p.dataIndex] ?? '';\n                    const v = valueOf(cat);\n                    const g = goalOf(cat);\n                    const goalLine = Number.isFinite(g) ? `<br/>${goalField}: ${g}` : '';\n                    return `${cat}<br/>${valueField}: ${v}${goalLine}`;\n                },\n            }",
+      "file": "packages/flint-js/src/echarts/templates/bullet.ts",
+      "startLine": 100,
+      "endLine": 110,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/bullet.ts#L100-L110"
+    },
+    {
+      "key": "tooltip",
+      "value": "{\n                trigger: 'item',\n                formatter: (params: any) => {\n                    const [date, val] = params.value;\n                    return `${date}<br/>${valueField ?? 'Count'}: ${val}`;\n                },\n            }",
+      "file": "packages/flint-js/src/echarts/templates/calendar.ts",
+      "startLine": 123,
+      "endLine": 129,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/calendar.ts#L123-L129"
+    },
+    {
+      "key": "tooltip",
+      "value": "{\n                trigger: 'axis',\n                axisPointer: { type: 'cross' },\n            }",
+      "file": "packages/flint-js/src/echarts/templates/candlestick.ts",
+      "startLine": 75,
+      "endLine": 78,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/candlestick.ts#L75-L78"
+    },
+    {
+      "key": "tooltip",
+      "value": "{ trigger: 'item' }",
+      "file": "packages/flint-js/src/echarts/templates/connected-scatter.ts",
+      "startLine": 90,
+      "endLine": 90,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/connected-scatter.ts#L90-L90"
+    },
+    {
+      "key": "tooltip",
+      "value": "{ trigger: 'axis' }",
+      "file": "packages/flint-js/src/echarts/templates/density.ts",
+      "startLine": 81,
+      "endLine": 81,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/density.ts#L81-L81"
+    },
+    {
+      "key": "tooltip",
+      "value": "{ trigger: 'axis', axisPointer: { type: 'cross' } }",
+      "file": "packages/flint-js/src/echarts/templates/ecdf.ts",
+      "startLine": 60,
+      "endLine": 60,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/ecdf.ts#L60-L60"
+    },
+    {
+      "key": "emphasis",
+      "value": "{ focus: 'series' as const }",
+      "file": "packages/flint-js/src/echarts/templates/ecdf.ts",
+      "startLine": 94,
+      "endLine": 94,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/ecdf.ts#L94-L94"
+    },
+    {
+      "key": "tooltip",
+      "value": "{\n                trigger: 'item',\n                formatter: '{b}: {c} ({d}%)',\n            }",
+      "file": "packages/flint-js/src/echarts/templates/funnel.ts",
+      "startLine": 126,
+      "endLine": 129,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/funnel.ts#L126-L129"
+    },
+    {
+      "key": "emphasis",
+      "value": "{\n                    label: {\n                        fontSize: 13,\n                    },\n                }",
+      "file": "packages/flint-js/src/echarts/templates/funnel.ts",
+      "startLine": 159,
+      "endLine": 163,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/funnel.ts#L159-L163"
+    },
+    {
+      "key": "tooltip",
+      "value": "{\n                trigger: 'item',\n                formatter: (p: any) => {\n                    if (p.seriesName === '_base') return '';\n                    const r = rows[p.dataIndex];\n                    if (!r) return '';\n                    const s = temporal ? fmtDate(r.start) : r.start;\n                    const e = temporal ? fmtDate(r.end) : r.end;\n                    const grp = r.group != null ? `<br/>${colorField}: ${r.group}` : '';\n                    return `${r.task}<br/>${startField}: ${s}<br/>${endField}: ${e}${grp}`;\n                },\n            }",
+      "file": "packages/flint-js/src/echarts/templates/gantt.ts",
+      "startLine": 90,
+      "endLine": 101,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/gantt.ts#L90-L101"
+    },
+    {
+      "key": "emphasis",
+      "value": "{ disabled: true }",
+      "file": "packages/flint-js/src/echarts/templates/gantt.ts",
+      "startLine": 131,
+      "endLine": 131,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/gantt.ts#L131-L131"
+    },
+    {
+      "key": "tooltip",
+      "value": "{ trigger: 'item', formatter: '{b}: {c}' }",
+      "file": "packages/flint-js/src/echarts/templates/gauge.ts",
+      "startLine": 202,
+      "endLine": 202,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/gauge.ts#L202-L202"
+    },
+    {
+      "key": "tooltip",
+      "value": "{\n                trigger: 'item',\n                formatter: (params: any) => {\n                    if (params.dataType === 'edge') {\n                        return `${params.data.source} → ${params.data.target}<br/>Weight: ${params.data.value}`;\n                    }\n                    return `${params.name}<br/>Degree: ${params.value}`;\n                },\n            }",
+      "file": "packages/flint-js/src/echarts/templates/graph.ts",
+      "startLine": 113,
+      "endLine": 121,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/graph.ts#L113-L121"
+    },
+    {
+      "key": "roam",
+      "value": "false",
+      "file": "packages/flint-js/src/echarts/templates/graph.ts",
+      "startLine": 127,
+      "endLine": 127,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/graph.ts#L127-L127"
+    },
+    {
+      "key": "emphasis",
+      "value": "{\n                    focus: 'adjacency',\n                    lineStyle: { width: 4 },\n                }",
+      "file": "packages/flint-js/src/echarts/templates/graph.ts",
+      "startLine": 139,
+      "endLine": 142,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/graph.ts#L139-L142"
+    },
+    {
+      "key": "force",
+      "value": "{ repulsion: 180, edgeLength: [50, 130], gravity: 0.08 }",
+      "file": "packages/flint-js/src/echarts/templates/graph.ts",
+      "startLine": 144,
+      "endLine": 144,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/graph.ts#L144-L144"
+    },
+    {
+      "key": "tooltip",
+      "value": "{ position: 'top' }",
+      "file": "packages/flint-js/src/echarts/templates/heatmap.ts",
+      "startLine": 159,
+      "endLine": 159,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/heatmap.ts#L159-L159"
+    },
+    {
+      "key": "emphasis",
+      "value": "{\n                    itemStyle: {\n                        shadowBlur: 10,\n                        shadowColor: 'rgba(0, 0, 0, 0.5)',\n                    },\n                }",
+      "file": "packages/flint-js/src/echarts/templates/heatmap.ts",
+      "startLine": 203,
+      "endLine": 208,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/heatmap.ts#L203-L208"
+    },
+    {
+      "key": "tooltip",
+      "value": "{\n                    trigger: 'axis',\n                    axisPointer: { type: 'shadow' },\n                }",
+      "file": "packages/flint-js/src/echarts/templates/histogram.ts",
+      "startLine": 58,
+      "endLine": 61,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/histogram.ts#L58-L61"
+    },
+    {
+      "key": "tooltip",
+      "value": "{ trigger: 'axis', axisPointer: { type: 'shadow' } }",
+      "file": "packages/flint-js/src/echarts/templates/histogram.ts",
+      "startLine": 133,
+      "endLine": 133,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/histogram.ts#L133-L133"
+    },
+    {
+      "key": "tooltip",
+      "value": "{ trigger: 'item' }",
+      "file": "packages/flint-js/src/echarts/templates/jitter.ts",
+      "startLine": 87,
+      "endLine": 87,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/jitter.ts#L87-L87"
+    },
+    {
+      "key": "tooltip",
+      "value": "{\n                trigger: 'axis',\n            }",
+      "file": "packages/flint-js/src/echarts/templates/line.ts",
+      "startLine": 120,
+      "endLine": 122,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/line.ts#L120-L122"
+    },
+    {
+      "key": "tooltip",
+      "value": "{ trigger: 'axis' }",
+      "file": "packages/flint-js/src/echarts/templates/line.ts",
+      "startLine": 557,
+      "endLine": 557,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/line.ts#L557-L557"
+    },
+    {
+      "key": "tooltip",
+      "value": "{ trigger: 'axis', axisPointer: { type: 'shadow' } }",
+      "file": "packages/flint-js/src/echarts/templates/lollipop.ts",
+      "startLine": 74,
+      "endLine": 74,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/lollipop.ts#L74-L74"
+    },
+    {
+      "key": "emphasis",
+      "value": "{ lineStyle: { width: 3, opacity: 0.9 } }",
+      "file": "packages/flint-js/src/echarts/templates/parallel.ts",
+      "startLine": 130,
+      "endLine": 130,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/parallel.ts#L130-L130"
+    },
+    {
+      "key": "emphasis",
+      "value": "{ lineStyle: { width: 3, opacity: 0.9 } }",
+      "file": "packages/flint-js/src/echarts/templates/parallel.ts",
+      "startLine": 139,
+      "endLine": 139,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/parallel.ts#L139-L139"
+    },
+    {
+      "key": "tooltip",
+      "value": "{}",
+      "file": "packages/flint-js/src/echarts/templates/parallel.ts",
+      "startLine": 155,
+      "endLine": 155,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/parallel.ts#L155-L155"
+    },
+    {
+      "key": "tooltip",
+      "value": "{ trigger: 'item' }",
+      "file": "packages/flint-js/src/echarts/templates/pie.ts",
+      "startLine": 141,
+      "endLine": 141,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/pie.ts#L141-L141"
+    },
+    {
+      "key": "emphasis",
+      "value": "{\n                    itemStyle: {\n                        shadowBlur: 10,\n                        shadowOffsetX: 0,\n                        shadowColor: 'rgba(0, 0, 0, 0.5)',\n                    },\n                }",
+      "file": "packages/flint-js/src/echarts/templates/pie.ts",
+      "startLine": 156,
+      "endLine": 162,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/pie.ts#L156-L162"
+    },
+    {
+      "key": "tooltip",
+      "value": "{ trigger: 'axis', axisPointer: { type: 'shadow' } }",
+      "file": "packages/flint-js/src/echarts/templates/pyramid.ts",
+      "startLine": 117,
+      "endLine": 117,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/pyramid.ts#L117-L117"
+    },
+    {
+      "key": "tooltip",
+      "value": "{ trigger: 'item' }",
+      "file": "packages/flint-js/src/echarts/templates/radar.ts",
+      "startLine": 142,
+      "endLine": 142,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/radar.ts#L142-L142"
+    },
+    {
+      "key": "emphasis",
+      "value": "{\n                    lineStyle: { width: 3 },\n                }",
+      "file": "packages/flint-js/src/echarts/templates/radar.ts",
+      "startLine": 153,
+      "endLine": 155,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/radar.ts#L153-L155"
+    },
+    {
+      "key": "tooltip",
+      "value": "{\n                trigger: 'axis',\n                // Show the low–high range at each x (the delta series carries the\n                // original bounds as `_low` / `_high`; the transparent base\n                // series has plain numeric data and is skipped).\n                formatter: (params: any) => {\n                    const list = Array.isArray(params) ? params : [params];\n                    if (list.length === 0) return '';\n                    const head = list[0].axisValueLabel ?? list[0].axisValue ?? list[0].name ?? '';\n                    const lines = [`${xField}: ${head}`];\n                    for (const p of list) {\n                        const d = p?.data;\n                        if (d && typeof d === 'object' && d._high != null) {\n                            const nm = p.seriesName && !String(p.seriesName).startsWith('__base')\n                                ? p.seriesName\n                                : 'Range';\n                            lines.push(`${nm}: ${fmtNum(d._low)} – ${fmtNum(d._high)}`);\n                        }\n                    }\n                    return lines.join('<br/>');\n                },\n            }",
+      "file": "packages/flint-js/src/echarts/templates/range-area.ts",
+      "startLine": 126,
+      "endLine": 147,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/range-area.ts#L126-L147"
+    },
+    {
+      "key": "emphasis",
+      "value": "{ focus: 'series' }",
+      "file": "packages/flint-js/src/echarts/templates/range-area.ts",
+      "startLine": 212,
+      "endLine": 212,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/range-area.ts#L212-L212"
+    },
+    {
+      "key": "tooltip",
+      "value": "{ trigger: 'item' }",
+      "file": "packages/flint-js/src/echarts/templates/ranged-dot.ts",
+      "startLine": 34,
+      "endLine": 34,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/ranged-dot.ts#L34-L34"
+    },
+    {
+      "key": "emphasis",
+      "value": "{ focus: 'series' }",
+      "file": "packages/flint-js/src/echarts/templates/rose.ts",
+      "startLine": 115,
+      "endLine": 115,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/rose.ts#L115-L115"
+    },
+    {
+      "key": "emphasis",
+      "value": "{ focus: 'series' }",
+      "file": "packages/flint-js/src/echarts/templates/rose.ts",
+      "startLine": 141,
+      "endLine": 141,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/rose.ts#L141-L141"
+    },
+    {
+      "key": "tooltip",
+      "value": "{ show: false }",
+      "file": "packages/flint-js/src/echarts/templates/rose.ts",
+      "startLine": 149,
+      "endLine": 149,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/rose.ts#L149-L149"
+    },
+    {
+      "key": "emphasis",
+      "value": "{ disabled: true }",
+      "file": "packages/flint-js/src/echarts/templates/rose.ts",
+      "startLine": 154,
+      "endLine": 154,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/rose.ts#L154-L154"
+    },
+    {
+      "key": "tooltip",
+      "value": "{\n                trigger: 'item',\n                // Radii are sqrt-transformed for area-truth; show the true value\n                // (stashed on each data item as `_rawValue`) instead of the radius.\n                formatter: (params: any) => {\n                    const raw = params?.data?._rawValue;\n                    const shown = raw != null ? raw : params?.value;\n                    const cat = params?.name != null && params.name !== '' ? String(params.name) : '';\n                    const series = params?.seriesName;\n                    const head = series && series !== cat\n                        ? (cat ? `${cat} · ${series}` : String(series))\n                        : cat;\n                    const marker = params?.marker ?? '';\n                    return `${marker}${head}: <b>${shown}</b>`;\n                },\n            }",
+      "file": "packages/flint-js/src/echarts/templates/rose.ts",
+      "startLine": 205,
+      "endLine": 220,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/rose.ts#L205-L220"
+    },
+    {
+      "key": "tooltip",
+      "value": "{\n                trigger: 'item',\n                triggerOn: 'mousemove',\n                formatter: (params: any) => {\n                    if (params.dataType === 'edge') {\n                        return `${params.data.source} → ${params.data.target}<br/>Value: ${params.data.value}`;\n                    }\n                    return params.name;\n                },\n            }",
+      "file": "packages/flint-js/src/echarts/templates/sankey.ts",
+      "startLine": 124,
+      "endLine": 133,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/sankey.ts#L124-L133"
+    },
+    {
+      "key": "triggerOn",
+      "value": "'mousemove'",
+      "file": "packages/flint-js/src/echarts/templates/sankey.ts",
+      "startLine": 126,
+      "endLine": 126,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/sankey.ts#L126-L126"
+    },
+    {
+      "key": "emphasis",
+      "value": "{\n                    focus: 'adjacency',\n                }",
+      "file": "packages/flint-js/src/echarts/templates/sankey.ts",
+      "startLine": 139,
+      "endLine": 141,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/sankey.ts#L139-L141"
+    },
+    {
+      "key": "tooltip",
+      "value": "{ trigger: 'item' }",
+      "file": "packages/flint-js/src/echarts/templates/scatter.ts",
+      "startLine": 143,
+      "endLine": 143,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/scatter.ts#L143-L143"
+    },
+    {
+      "key": "tooltip",
+      "value": "{ trigger: 'item' }",
+      "file": "packages/flint-js/src/echarts/templates/scatter.ts",
+      "startLine": 835,
+      "endLine": 835,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/scatter.ts#L835-L835"
+    },
+    {
+      "key": "tooltip",
+      "value": "{ trigger: 'axis' }",
+      "file": "packages/flint-js/src/echarts/templates/slope.ts",
+      "startLine": 86,
+      "endLine": 86,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/slope.ts#L86-L86"
+    },
+    {
+      "key": "tooltip",
+      "value": "{ trigger: 'axis' }",
+      "file": "packages/flint-js/src/echarts/templates/streamgraph.ts",
+      "startLine": 49,
+      "endLine": 49,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/streamgraph.ts#L49-L49"
+    },
+    {
+      "key": "tooltip",
+      "value": "{\n                trigger: 'axis',\n                axisPointer: { type: 'line', lineStyle: { color: 'rgba(0,0,0,0.2)', width: 1, type: 'solid' } },\n                formatter: (params: any) => {\n                    if (!params || params.length === 0) return '';\n                    const xVal = params[0].value[0];\n                    const displayX = xIsTemporal ? xVal : (xVals[xVal] ?? xVal);\n                    let html = `<b>${displayX}</b><br/>`;\n                    // Sort by value descending\n                    const sortedParams = [...params].sort((a, b) => (b.value[1] || 0) - (a.value[1] || 0));\n                    sortedParams.forEach((p: any) => {\n                        html += `${p.marker} ${p.value[2]}: <b>${p.value[1]}</b><br/>`;\n                    });\n                    return html;\n                },\n            }",
+      "file": "packages/flint-js/src/echarts/templates/streamgraph.ts",
+      "startLine": 112,
+      "endLine": 127,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/streamgraph.ts#L112-L127"
+    },
+    {
+      "key": "emphasis",
+      "value": "{ focus: 'series' }",
+      "file": "packages/flint-js/src/echarts/templates/streamgraph.ts",
+      "startLine": 158,
+      "endLine": 158,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/streamgraph.ts#L158-L158"
+    },
+    {
+      "key": "tooltip",
+      "value": "{\n                trigger: 'item',\n                formatter: (params: any) => {\n                    const { name, value, treePathInfo } = params;\n                    const path = treePathInfo\n                        ? treePathInfo.map((n: any) => n.name).filter(Boolean).join(' → ')\n                        : name;\n                    return `${path}<br/>Value: ${value}`;\n                },\n            }",
+      "file": "packages/flint-js/src/echarts/templates/sunburst.ts",
+      "startLine": 266,
+      "endLine": 275,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/sunburst.ts#L266-L275"
+    },
+    {
+      "key": "emphasis",
+      "value": "{\n                    focus: 'ancestor',\n                    label: { color: '#000000' },\n                }",
+      "file": "packages/flint-js/src/echarts/templates/sunburst.ts",
+      "startLine": 287,
+      "endLine": 290,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/sunburst.ts#L287-L290"
+    },
+    {
+      "key": "tooltip",
+      "value": "{\n                trigger: 'item',\n                triggerOn: 'mousemove',\n                formatter: (params: any) => {\n                    const v = params.value;\n                    return v != null && v !== ''\n                        ? `${params.name}<br/>Value: ${v}`\n                        : params.name;\n                },\n            }",
+      "file": "packages/flint-js/src/echarts/templates/tree.ts",
+      "startLine": 86,
+      "endLine": 95,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/tree.ts#L86-L95"
+    },
+    {
+      "key": "triggerOn",
+      "value": "'mousemove'",
+      "file": "packages/flint-js/src/echarts/templates/tree.ts",
+      "startLine": 88,
+      "endLine": 88,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/tree.ts#L88-L88"
+    },
+    {
+      "key": "expandAndCollapse",
+      "value": "false",
+      "file": "packages/flint-js/src/echarts/templates/tree.ts",
+      "startLine": 108,
+      "endLine": 108,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/tree.ts#L108-L108"
+    },
+    {
+      "key": "roam",
+      "value": "false",
+      "file": "packages/flint-js/src/echarts/templates/tree.ts",
+      "startLine": 109,
+      "endLine": 109,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/tree.ts#L109-L109"
+    },
+    {
+      "key": "emphasis",
+      "value": "{ focus: 'descendant' }",
+      "file": "packages/flint-js/src/echarts/templates/tree.ts",
+      "startLine": 126,
+      "endLine": 126,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/tree.ts#L126-L126"
+    },
+    {
+      "key": "tooltip",
+      "value": "{\n                trigger: 'item',\n                formatter: (params: any) => {\n                    const { name, value, treePathInfo } = params;\n                    const path = treePathInfo\n                        ? treePathInfo.map((n: any) => n.name).filter(Boolean).join(' → ')\n                        : name;\n                    return `${path}<br/>Value: ${value}`;\n                },\n            }",
+      "file": "packages/flint-js/src/echarts/templates/treemap.ts",
+      "startLine": 140,
+      "endLine": 149,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/treemap.ts#L140-L149"
+    },
+    {
+      "key": "roam",
+      "value": "false",
+      "file": "packages/flint-js/src/echarts/templates/treemap.ts",
+      "startLine": 157,
+      "endLine": 157,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/treemap.ts#L157-L157"
+    },
+    {
+      "key": "leafDepth",
+      "value": "subCatField ? 2 : 1",
+      "file": "packages/flint-js/src/echarts/templates/treemap.ts",
+      "startLine": 158,
+      "endLine": 158,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/treemap.ts#L158-L158"
+    },
+    {
+      "key": "breadcrumb",
+      "value": "{\n                    show: showBreadcrumb,\n                    bottom: 5,\n                }",
+      "file": "packages/flint-js/src/echarts/templates/treemap.ts",
+      "startLine": 159,
+      "endLine": 162,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/treemap.ts#L159-L162"
+    },
+    {
+      "key": "tooltip",
+      "value": "{\n                trigger: 'axis',\n                axisPointer: { type: 'shadow' },\n                formatter: (params: any[]) => {\n                    const head = params[0]?.axisValueLabel ?? params[0]?.name ?? '';\n                    const bar = params.find((p) => p.seriesName === 'Delta' && Array.isArray(p.value));\n                    if (!bar) return String(head);\n                    return `${head}<br/>${bar.marker ?? ''} ${yField}: ${bar.value[3]}`;\n                },\n            }",
+      "file": "packages/flint-js/src/echarts/templates/waterfall.ts",
+      "startLine": 121,
+      "endLine": 130,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/waterfall.ts#L121-L130"
+    },
+    {
+      "key": "hovertemplate",
+      "value": "`%{y}<br>${cv}: %{x}<extra></extra>`",
+      "file": "packages/flint-js/src/plotly/templates/bar-table.ts",
+      "startLine": 365,
+      "endLine": 365,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/bar-table.ts#L365-L365"
+    },
+    {
+      "key": "hoverinfo",
+      "value": "'skip'",
+      "file": "packages/flint-js/src/plotly/templates/bar-table.ts",
+      "startLine": 377,
+      "endLine": 377,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/bar-table.ts#L377-L377"
+    },
+    {
+      "key": "hovertemplate",
+      "value": "`%{y}<br>${xField}: %{x}<extra></extra>`",
+      "file": "packages/flint-js/src/plotly/templates/bar-table.ts",
+      "startLine": 405,
+      "endLine": 405,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/bar-table.ts#L405-L405"
+    },
+    {
+      "key": "hovertemplate",
+      "value": "`%{y}<br />${leftName ?? catField}: %{customdata}<extra></extra>`",
+      "file": "packages/flint-js/src/plotly/templates/bar.ts",
+      "startLine": 545,
+      "endLine": 545,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/bar.ts#L545-L545"
+    },
+    {
+      "key": "hovertemplate",
+      "value": "`%{y}<br />${rightName ?? catField}: %{x}<extra></extra>`",
+      "file": "packages/flint-js/src/plotly/templates/bar.ts",
+      "startLine": 551,
+      "endLine": 551,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/bar.ts#L551-L551"
+    },
+    {
+      "key": "hoverinfo",
+      "value": "'skip' as const",
+      "file": "packages/flint-js/src/plotly/templates/bullet.ts",
+      "startLine": 55,
+      "endLine": 55,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/bullet.ts#L55-L55"
+    },
+    {
+      "key": "hovertemplate",
+      "value": "`%{y}<br />${valueField}: %{x}<extra></extra>`",
+      "file": "packages/flint-js/src/plotly/templates/bullet.ts",
+      "startLine": 79,
+      "endLine": 79,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/bullet.ts#L79-L79"
+    },
+    {
+      "key": "hovertemplate",
+      "value": "`%{y}<br />${goalField}: %{x}<extra></extra>`",
+      "file": "packages/flint-js/src/plotly/templates/bullet.ts",
+      "startLine": 99,
+      "endLine": 99,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/bullet.ts#L99-L99"
+    },
+    {
+      "key": "hoverinfo",
+      "value": "'skip'",
+      "file": "packages/flint-js/src/plotly/templates/bullet.ts",
+      "startLine": 112,
+      "endLine": 112,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/bullet.ts#L112-L112"
+    },
+    {
+      "key": "hoverinfo",
+      "value": "'skip'",
+      "file": "packages/flint-js/src/plotly/templates/bullet.ts",
+      "startLine": 113,
+      "endLine": 113,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/bullet.ts#L113-L113"
+    },
+    {
+      "key": "hovertemplate",
+      "value": "`%{text}<br>${valueLabel}: %{z}<extra></extra>`",
+      "file": "packages/flint-js/src/plotly/templates/choropleth.ts",
+      "startLine": 121,
+      "endLine": 121,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/choropleth.ts#L121-L121"
+    },
+    {
+      "key": "hoverinfo",
+      "value": "'skip'",
+      "file": "packages/flint-js/src/plotly/templates/density-contour.ts",
+      "startLine": 60,
+      "endLine": 60,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/density-contour.ts#L60-L60"
+    },
+    {
+      "key": "hoverinfo",
+      "value": "'skip'",
+      "file": "packages/flint-js/src/plotly/templates/line.ts",
+      "startLine": 151,
+      "endLine": 151,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/line.ts#L151-L151"
+    },
+    {
+      "key": "hoverinfo",
+      "value": "'skip'",
+      "file": "packages/flint-js/src/plotly/templates/line.ts",
+      "startLine": 213,
+      "endLine": 213,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/line.ts#L213-L213"
+    },
+    {
+      "key": "hoverinfo",
+      "value": "'skip'",
+      "file": "packages/flint-js/src/plotly/templates/line.ts",
+      "startLine": 230,
+      "endLine": 230,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/line.ts#L230-L230"
+    },
+    {
+      "key": "hoverinfo",
+      "value": "'skip'",
+      "file": "packages/flint-js/src/plotly/templates/lollipop.ts",
+      "startLine": 54,
+      "endLine": 54,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/lollipop.ts#L54-L54"
+    },
+    {
+      "key": "hovertemplate",
+      "value": "`Lon: %{lon}<br>Lat: %{lat}<br>${colorField}: %{marker.color}`\n                    + (sizeField ? `<br>${sizeField}: %{customdata}` : '') + '<extra></extra>'",
+      "file": "packages/flint-js/src/plotly/templates/map.ts",
+      "startLine": 226,
+      "endLine": 227,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/map.ts#L226-L227"
+    },
+    {
+      "key": "hovertemplate",
+      "value": "`Lon: %{lon}<br>Lat: %{lat}<br>${colorField}: ${name}`\n                        + (sizeField ? `<br>${sizeField}: %{customdata}` : '') + '<extra></extra>'",
+      "file": "packages/flint-js/src/plotly/templates/map.ts",
+      "startLine": 253,
+      "endLine": 254,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/map.ts#L253-L254"
+    },
+    {
+      "key": "hovertemplate",
+      "value": "'Lon: %{lon}<br>Lat: %{lat}'\n                    + (sizeField ? `<br>${sizeField}: %{customdata}` : '') + '<extra></extra>'",
+      "file": "packages/flint-js/src/plotly/templates/map.ts",
+      "startLine": 272,
+      "endLine": 273,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/map.ts#L272-L273"
+    },
+    {
+      "key": "hovertemplate",
+      "value": "`%{theta}: %{customdata}${name != null ? `<br>${name}` : ''}<extra></extra>`",
+      "file": "packages/flint-js/src/plotly/templates/radar.ts",
+      "startLine": 118,
+      "endLine": 118,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/radar.ts#L118-L118"
+    },
+    {
+      "key": "hoverinfo",
+      "value": "'skip' as const",
+      "file": "packages/flint-js/src/plotly/templates/range-area.ts",
+      "startLine": 60,
+      "endLine": 60,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/range-area.ts#L60-L60"
+    },
+    {
+      "key": "hoverinfo",
+      "value": "'skip'",
+      "file": "packages/flint-js/src/plotly/templates/ranged-dot.ts",
+      "startLine": 56,
+      "endLine": 56,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/ranged-dot.ts#L56-L56"
+    },
+    {
+      "key": "hoverinfo",
+      "value": "'x+y'",
+      "file": "packages/flint-js/src/plotly/templates/sparkline.ts",
+      "startLine": 206,
+      "endLine": 206,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/sparkline.ts#L206-L206"
+    },
+    {
+      "key": "hoverinfo",
+      "value": "'skip'",
+      "file": "packages/flint-js/src/plotly/templates/sparkline.ts",
+      "startLine": 220,
+      "endLine": 220,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/sparkline.ts#L220-L220"
+    },
+    {
+      "key": "hoverinfo",
+      "value": "'skip'",
+      "file": "packages/flint-js/src/plotly/templates/streamgraph.ts",
+      "startLine": 67,
+      "endLine": 67,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/streamgraph.ts#L67-L67"
+    }
+  ]
+}

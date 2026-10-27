@@ -1,0 +1,75 @@
+import { assertIndependentOverlayGeometry } from "../../../grammar/overlay.js";
+import { closedAction } from "../../../core/action.js";
+import { validateUserId } from "../../../core/identifiers.js";
+
+import { normalizePointJitterPolicy } from "../../../grammar/jitter.js";
+import { findCoordinate } from "../../../selectors/coordinates.js";
+import { resolveEligibleLayer } from "../../../selectors/layers.js";
+
+const JITTER_OPTIONS = Object.freeze([
+  "target", "channel", "maxOffset", "seed", "key"
+]);
+const REMOVE_OPTIONS = Object.freeze(["target"]);
+
+function isCartesianPoint(program, layer) {
+  return layer.mark?.type === "point" &&
+    layer.encoding?.x?.scale !== undefined &&
+    layer.encoding?.y?.scale !== undefined &&
+    findCoordinate(program, layer.coordinate)?.type === "cartesian";
+}
+
+function resolveJitterTarget(program, target) {
+  const requested = target === undefined
+    ? undefined
+    : validateUserId(target, "Point jitter target");
+  return resolveEligibleLayer(program, {
+    target: requested,
+    predicate: layer => isCartesianPoint(program, layer),
+    label: "point jitter"
+  });
+}
+
+export const jitterPoints = /* @__PURE__ */ closedAction(
+  {
+    op: "jitterPoints",
+    description: "Apply deterministic bounded graphical jitter to a point mark."
+  }, JITTER_OPTIONS,
+  function (args = {}) {
+    const policy = normalizePointJitterPolicy(args);
+    const layer = resolveJitterTarget(this, args.target);
+    assertIndependentOverlayGeometry(layer, "jitterPoints");
+    if (this.materializationConfigs.pointPacking?.[layer.id] !== undefined) {
+      throw new Error(`Point jitter on "${layer.id}" conflicts with point packing.`);
+    }
+    return this
+      ._withMaterializationConfig(["jitters", layer.id], policy)
+      .rematerializePointMark({ id: layer.id });
+  }
+);
+
+export const removeJitter = /* @__PURE__ */ closedAction(
+  {
+    op: "removeJitter",
+    description: "Remove point jitter and restore semantic scale positions."
+  }, REMOVE_OPTIONS,
+  function (args = {}) {
+    const requested = args.target === undefined
+      ? undefined
+      : validateUserId(args.target, "Point jitter target");
+    const layer = resolveEligibleLayer(this, {
+      target: requested,
+      predicate: candidate =>
+        candidate.mark?.type === "point" &&
+        this.materializationConfigs.jitters?.[candidate.id] !== undefined,
+      label: "point jitter"
+    });
+    return this
+      ._withoutMaterializationConfig(["jitters", layer.id])
+      .rematerializePointMark({ id: layer.id });
+  }
+);
+
+export function registerPointJitterActions(ProgramClass) {
+  ProgramClass.prototype.jitterPoints = jitterPoints;
+  ProgramClass.prototype.removeJitter = removeJitter;
+}

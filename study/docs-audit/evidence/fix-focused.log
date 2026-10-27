@@ -1,0 +1,155 @@
+✔ the README authoring sequence completes with the repository cars data and its legend (142.81025ms)
+✔ the documented empty filter preserves its source and stores the named empty result (2.958167ms)
+✔ the LLM task fragments independently build histogram and regression programs (47.743ms)
+✔ the extension JavaScript example creates its target before editing it (6.478666ms)
+✔ numeric lines, points with default radius, and bars with default width materialize (7.695708ms)
+✔ card preconditions distinguish constant encodings, title-only charts, and empty filtered results (8.213167ms)
+✖ documented defaults agree with point strokes, time-unit aliases, and quartile interpolation (3.982917ms)
+  TypeError [Error]: createBoxPlot x must be a plain object.
+      at plainOptions (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/boxPlots/options.js:51:11)
+      at resolveBoxPosition (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/boxPlots/options.js:85:10)
+      at ChartProgram.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/boxPlots/create.js:39:13)
+      at ChartProgram.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/core/action.js:246:27)
+      at ChartProgram.wrappedAction [as createBoxPlot] (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/core/action.js:213:35)
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/docs/documented-behavior.test.js:107:6)
+      at Test.runInAsyncScope (node:async_hooks:211:14)
+      at Test.run (node:internal/test_runner/test:931:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+      at Test.postRun (node:internal/test_runner/test:1042:19)
+
+✔ executes documented recipes/annotations.md against its stated inputs (520.421291ms)
+✔ executes documented recipes/bar-chart.md against its stated inputs (49.150791ms)
+✔ executes documented recipes/box-plot.md against its stated inputs (73.740166ms)
+✔ executes documented recipes/composition.md against its stated inputs (45.239625ms)
+✔ executes documented recipes/density-area.md against its stated inputs (47.221583ms)
+✔ executes documented recipes/error-band.md against its stated inputs (31.996875ms)
+✔ executes documented recipes/error-bar.md against its stated inputs (41.213542ms)
+✔ executes documented recipes/facet.md against its stated inputs (59.272166ms)
+✔ executes documented recipes/gradient-plot.md against its stated inputs (68.025584ms)
+✔ executes documented recipes/heatmap.md against its stated inputs (27.095458ms)
+✔ executes documented recipes/histogram.md against its stated inputs (18.392334ms)
+✔ executes documented recipes/horizon.md against its stated inputs (26.128625ms)
+✔ executes documented recipes/line-chart.md against its stated inputs (16.605625ms)
+✔ executes documented recipes/parallel-coordinates.md against its stated inputs (41.805833ms)
+✔ executes documented recipes/path-ordering.md against its stated inputs (21.368208ms)
+✔ executes documented recipes/regression-scatterplot.md against its stated inputs (206.557625ms)
+✔ executes documented recipes/rose-chart.md against its stated inputs (23.41825ms)
+✔ executes documented recipes/scatterplot.md against its stated inputs (13.714917ms)
+✔ executes documented recipes/violin-plot.md against its stated inputs (20.681208ms)
+✔ executes documented tutorials/area-layout.md against its stated inputs (36.776333ms)
+✔ executes documented tutorials/density-area.md against its stated inputs (42.996833ms)
+✔ executes documented tutorials/ecdf.md against its stated inputs (22.651583ms)
+✔ executes documented tutorials/endpoint-plots.md against its stated inputs (56.073042ms)
+✔ executes documented tutorials/error-band.md against its stated inputs (72.865334ms)
+✔ executes documented tutorials/error-bar.md against its stated inputs (72.684292ms)
+✔ executes documented tutorials/grouped-bar.md against its stated inputs (275.864ms)
+✔ executes documented tutorials/histogram.md against its stated inputs (32.715166ms)
+✔ executes documented tutorials/horizon.md against its stated inputs (24.571125ms)
+✔ executes documented tutorials/line-chart.md against its stated inputs (38.486ms)
+✔ executes documented tutorials/mark-selection.md against its stated inputs (285.960083ms)
+✔ executes documented tutorials/polar-arcs.md against its stated inputs (16.94225ms)
+✔ executes documented tutorials/polar-lines.md against its stated inputs (24.07175ms)
+✔ executes documented tutorials/polar-points.md against its stated inputs (22.982209ms)
+✔ executes documented tutorials/regression-scatterplot.md against its stated inputs (151.274ms)
+✔ executes documented tutorials/scatterplot.md against its stated inputs (23.18625ms)
+✔ executes documented api/data/filtering.md against its stated inputs (13.513416ms)
+✔ executes documented recipes/repair-missing-observations.md against its stated inputs (57.351ms)
+✔ executes documented recipes/compare-weighted-distributions.md against its stated inputs (76.033416ms)
+✔ executes documented recipes/switch-encoding-modes.md against its stated inputs (29.979291ms)
+✔ executes documented recipes/edit-scales-and-guides.md against its stated inputs (170.15525ms)
+✔ executes documented recipes/edit-selected-labels.md against its stated inputs (48.733ms)
+✔ executes documented recipes/apply-custom-theme.md against its stated inputs (48.35125ms)
+✔ executes documented recipes/edit-facet-source.md against its stated inputs (144.441166ms)
+✔ executes documented recipes/remove-dependent-resources.md against its stated inputs (40.513ms)
+✔ executes documented tutorials/hierarchical-authoring.md against its stated inputs (52.54325ms)
+✔ executes documented api/marks/line-area.md against its stated inputs (12.148583ms)
+✔ executes documented api/marks/bar.md against its stated inputs (15.248083ms)
+✔ executes documented api/marks/line-area.md against its stated inputs (12.826459ms)
+✔ executes documented api/marks/line-area.md against its stated inputs (21.04975ms)
+✔ executes documented api/marks/line-area.md against its stated inputs (8.107334ms)
+✔ executes documented api/marks/line-area.md against its stated inputs (7.28525ms)
+✔ executes documented api/marks/point.md against its stated inputs (17.829209ms)
+✔ executes documented recipes/line-chart.md against its stated inputs (8.4715ms)
+{
+  data: 'sales',
+  schema: {
+    version: 1,
+    completeness: 'known',
+    origin: 'inferred',
+    fields: [ [Object], [Object] ]
+  }
+} {
+  version: 1,
+  equivalence: 'different',
+  completeProgramComparison: true,
+  changes: [
+    {
+      resource: [Object],
+      operation: 'modify',
+      effect: 'style',
+      roles: []
+    }
+  ],
+  affected: [ { kind: 'mark', id: 'points' } ],
+  findings: []
+} {
+  version: 1,
+  views: [
+    {
+      owner: [Object],
+      grain: 'item',
+      rawRows: 2,
+      logicalDataItems: 2,
+      drawablePrimitives: 2,
+      visibleCandidates: 2,
+      flags: [Array],
+      bounds: [Object],
+      sourceRefs: [Array],
+      checks: [Array]
+    }
+  ],
+  calculations: [],
+  checks: [
+    {
+      name: 'pixel-visibility',
+      status: 'not_run',
+      evidencePaths: [],
+      findings: []
+    }
+  ],
+  findings: [],
+  coverage: { partial: true, unsupported: [] }
+}
+false
+true
+✔ executes documented inspection.md against its stated inputs (25.552333ms)
+✔ executes documented api/rendering.md against its stated inputs (10.123958ms)
+✔ marks tutorial and recipe snippets with explicit execution contracts (0.678ms)
+✔ builds the ordered immutable README authoring sequence (451.939042ms)
+✔ handles zero-variance R-squared input explicitly (0.165666ms)
+✔ keeps generated README GIF and PNG valid and referenced (1.1075ms)
+✔ the paper rose sequence retains each revision and materializes its final palette (90.030041ms)
+ℹ tests 67
+ℹ suites 0
+ℹ pass 66
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3494.284958
+
+✖ failing tests:
+
+test at test/docs/documented-behavior.test.js:99:1
+✖ documented defaults agree with point strokes, time-unit aliases, and quartile interpolation (3.982917ms)
+  TypeError [Error]: createBoxPlot x must be a plain object.
+      at plainOptions (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/boxPlots/options.js:51:11)
+      at resolveBoxPosition (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/boxPlots/options.js:85:10)
+      at ChartProgram.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/actions/boxPlots/create.js:39:13)
+      at ChartProgram.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/core/action.js:246:27)
+      at ChartProgram.wrappedAction [as createBoxPlot] (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/src/core/action.js:213:35)
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/docs/documented-behavior.test.js:107:6)
+      at Test.runInAsyncScope (node:async_hooks:211:14)
+      at Test.run (node:internal/test_runner/test:931:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+      at Test.postRun (node:internal/test_runner/test:1042:19)

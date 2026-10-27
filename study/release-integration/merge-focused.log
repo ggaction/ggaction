@@ -1,0 +1,24 @@
+✔ facet parent title and subtitle move together for every alignment and signed offset (312.082208ms)
+✔ creation, later edits, and promotion of an existing title converge (26.923084ms)
+✔ grouped row/column headers and side header replay retain the title displacement (56.315583ms)
+✔ unit title resolution stays unchanged and invalid facet offsets fail atomically (39.211791ms)
+✔ four-edge facet titles reserve a lane outside shared legends and survive replay (2073.996125ms)
+✔ every top-title family aligns within its original content span on all edges (1436.083291ms)
+✔ long multiline titles and blank rows retain their measured reading block (47.75675ms)
+✔ whole and focused edits, nested creation and Basic agree without changing omitted defaults (183.11925ms)
+✔ free and corner groups retain their anchors, body geometry and border padding (100.737917ms)
+✔ inline alignment conflicts and invalid creation/edit values fail atomically (554.197167ms)
+✔ hidden titles preserve alignment and save/load rejects forged enum or inline state (114.366291ms)
+✔ aligned title anchors reach SVG and Canvas with the same concrete alignment (7.972791ms)
+✔ data, scale, content and font replay keep explicit title ownership (97.549709ms)
+✔ shared facet promotion retains explicit title style without adding sharing support (77.739792ms)
+✔ local edge overrides use one resolved title anchor and alignment across replay (163.716291ms)
+✔ local horizontal inline and explicit title alignment remain intentional (14.442708ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 16
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3177.520666

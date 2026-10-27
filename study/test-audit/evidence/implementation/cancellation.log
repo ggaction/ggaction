@@ -1,0 +1,22 @@
+Could not retain check log: EEXIST: file already exists, mkdir '/Users/hj/Desktop/ggaction_chongjeonglee/ggaction/.artifacts/failure-fixture-mLKjYc/not-directory'
+✔ a failing check retains a bounded log and its exact exit status (206.553083ms)
+✔ check wrappers execute the active npm CLI and retain startup diagnostics (170.74525ms)
+✔ failure collection excludes large files and old outputs while preserving identities (23.180334ms)
+✔ intentional pixel mismatch keeps actual, expected, diff, and the original failure (11.352333ms)
+✔ browser failure evidence contains the failed page screenshot and error (505.723666ms)
+✔ the upload payload stays within its total byte budget (76.417709ms)
+✔ a hanging check is terminated with a timeout receipt (610.457834ms)
+✔ a timed-out check kills its descendant process group (1111.974875ms)
+✔ context teardown retains the original assertion and screenshot before closing (229.895416ms)
+✔ check cancellation forwards SIGINT and preserves its receipt (189.830917ms)
+✔ check cancellation forwards SIGTERM and preserves its receipt (188.040417ms)
+✔ runs every render and gallery check for the complete suite (0.846875ms)
+✔ keeps a focused render isolated from complete gallery generation (0.162583ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 13
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3946.768209

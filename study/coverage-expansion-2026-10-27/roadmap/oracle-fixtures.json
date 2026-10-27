@@ -1,0 +1,1257 @@
+{
+  "status": "design-expectations",
+  "notice": "Literal proposed expectations. Arithmetic checked independently; ggaction implementations not executed.",
+  "fixtures": [
+    {
+      "id": "OR-01",
+      "capability": "row-identity",
+      "status": "expected-only-not-implementation-result",
+      "input": {
+        "before": [
+          {
+            "id": "a",
+            "v": 1
+          },
+          {
+            "id": "b",
+            "v": 2
+          }
+        ],
+        "after": [
+          {
+            "id": "b",
+            "v": 3
+          },
+          {
+            "id": "a",
+            "v": 1
+          }
+        ],
+        "key": "id"
+      },
+      "expected": {
+        "survivingKeys": [
+          "a",
+          "b"
+        ],
+        "updatedKeys": [
+          "b"
+        ],
+        "oldBValue": 2,
+        "newBValue": 3
+      },
+      "assertion": "Compare logical identity, old program value and trace immutability, not scene array position.",
+      "taskSlugs": [
+        "row-identity",
+        "scene-identity"
+      ],
+      "numericTolerance": {
+        "absolute": 1e-09,
+        "relative": 1e-09
+      }
+    },
+    {
+      "id": "OR-02",
+      "capability": "partition",
+      "status": "expected-only-not-implementation-result",
+      "input": {
+        "nodes": [
+          [
+            "root",
+            null,
+            10
+          ],
+          [
+            "A",
+            "root",
+            6
+          ],
+          [
+            "B",
+            "root",
+            4
+          ],
+          [
+            "A1",
+            "A",
+            2
+          ],
+          [
+            "A2",
+            "A",
+            4
+          ]
+        ],
+        "valueMode": "leaf-sum",
+        "width": 1000
+      },
+      "expected": {
+        "intervals": {
+          "root": [
+            0,
+            1
+          ],
+          "A": [
+            0,
+            0.6
+          ],
+          "B": [
+            0.6,
+            1
+          ],
+          "A1": [
+            0,
+            0.2
+          ],
+          "A2": [
+            0.2,
+            0.6
+          ]
+        },
+        "AWidth": 600,
+        "AAngle": 3.7699111843077517
+      },
+      "assertion": "Verify parent containment and sibling interval sums.",
+      "taskSlugs": [
+        "partition-values",
+        "partition-intervals",
+        "partition-marks"
+      ],
+      "numericTolerance": {
+        "absolute": 1e-09,
+        "relative": 1e-09
+      }
+    },
+    {
+      "id": "OR-03",
+      "capability": "partition-focus",
+      "status": "expected-only-not-implementation-result",
+      "input": {
+        "focus": "A",
+        "focusInterval": [
+          0,
+          0.6
+        ],
+        "childInterval": [
+          0,
+          0.2
+        ]
+      },
+      "expected": {
+        "childInterval": [
+          0,
+          0.3333333333333333
+        ],
+        "nodeKey": "A1"
+      },
+      "assertion": "Focus only remaps view; node key does not change.",
+      "taskSlugs": [
+        "partition-navigation",
+        "transition-sampler"
+      ],
+      "numericTolerance": {
+        "absolute": 1e-09,
+        "relative": 1e-09
+      }
+    },
+    {
+      "id": "OR-04",
+      "capability": "radial-area",
+      "status": "expected-only-not-implementation-result",
+      "input": {
+        "inner": 0,
+        "outer": 100,
+        "levels": 2
+      },
+      "expected": {
+        "equalDepthBoundary": 50,
+        "equalDepthAreaBoundary": 70.71067811865476,
+        "equalDepthAreaRingAreasOverPi": [
+          5000,
+          5000
+        ],
+        "bendCenterAtAnyB": [
+          0,
+          0.5
+        ],
+        "bendEndQuarter": [
+          1,
+          0
+        ]
+      },
+      "assertion": "Compare squared-radius band areas.",
+      "taskSlugs": [
+        "partition-marks"
+      ],
+      "numericTolerance": {
+        "absolute": 1e-09,
+        "relative": 1e-09
+      }
+    },
+    {
+      "id": "OR-05",
+      "capability": "knn-radius",
+      "status": "expected-only-not-implementation-result",
+      "input": {
+        "nodes": [
+          [
+            "a",
+            0
+          ],
+          [
+            "b",
+            1
+          ],
+          [
+            "c",
+            3
+          ],
+          [
+            "d",
+            10
+          ]
+        ],
+        "k": 1,
+        "radius": 2
+      },
+      "expected": {
+        "directed": [
+          [
+            "a",
+            "b"
+          ],
+          [
+            "b",
+            "a"
+          ],
+          [
+            "c",
+            "b"
+          ],
+          [
+            "d",
+            "c"
+          ]
+        ],
+        "union": [
+          [
+            "a",
+            "b"
+          ],
+          [
+            "b",
+            "c"
+          ],
+          [
+            "c",
+            "d"
+          ]
+        ],
+        "mutual": [
+          [
+            "a",
+            "b"
+          ]
+        ],
+        "radius": [
+          [
+            "a",
+            "b"
+          ],
+          [
+            "b",
+            "c"
+          ]
+        ]
+      },
+      "assertion": "Distance then stable typed key; self excluded; radius inclusive.",
+      "taskSlugs": [
+        "graph-neighbors"
+      ],
+      "numericTolerance": {
+        "absolute": 1e-09,
+        "relative": 1e-09
+      }
+    },
+    {
+      "id": "OR-06",
+      "capability": "duplicate-points",
+      "status": "expected-only-not-implementation-result",
+      "input": {
+        "nodes": [
+          [
+            "a",
+            0
+          ],
+          [
+            "b",
+            0
+          ],
+          [
+            "c",
+            2
+          ]
+        ],
+        "k": 1
+      },
+      "expected": {
+        "directed": [
+          [
+            "a",
+            "b"
+          ],
+          [
+            "b",
+            "a"
+          ],
+          [
+            "c",
+            "a"
+          ]
+        ],
+        "zeroEdges": [
+          [
+            "a",
+            "b"
+          ],
+          [
+            "b",
+            "a"
+          ]
+        ]
+      },
+      "assertion": "Keep zero distances and resolve c tie by key.",
+      "taskSlugs": [
+        "graph-neighbors"
+      ],
+      "numericTolerance": {
+        "absolute": 1e-09,
+        "relative": 1e-09
+      }
+    },
+    {
+      "id": "OR-07",
+      "capability": "metrics",
+      "status": "expected-only-not-implementation-result",
+      "input": {
+        "a": [
+          0,
+          0
+        ],
+        "b": [
+          3,
+          4
+        ],
+        "setA": [
+          "a",
+          "b"
+        ],
+        "setB": [
+          "b",
+          "c"
+        ],
+        "cosA": [
+          1,
+          0
+        ],
+        "cosB": [
+          -1,
+          0
+        ]
+      },
+      "expected": {
+        "euclidean": 5,
+        "manhattan": 7,
+        "cosine": -1,
+        "jaccard": 0.3333333333333333,
+        "jaccardEmptyEmpty": 1
+      },
+      "assertion": "Metric units/domain and empty behavior are explicit.",
+      "taskSlugs": [
+        "graph-metrics"
+      ],
+      "numericTolerance": {
+        "absolute": 1e-09,
+        "relative": 1e-09
+      }
+    },
+    {
+      "id": "OR-08",
+      "capability": "mst",
+      "status": "expected-only-not-implementation-result",
+      "input": {
+        "nodes": [
+          [
+            "a",
+            0
+          ],
+          [
+            "b",
+            1
+          ],
+          [
+            "c",
+            3
+          ],
+          [
+            "d",
+            10
+          ]
+        ]
+      },
+      "expected": {
+        "edges": [
+          [
+            "a",
+            "b",
+            1
+          ],
+          [
+            "b",
+            "c",
+            2
+          ],
+          [
+            "c",
+            "d",
+            7
+          ]
+        ],
+        "cost": 10,
+        "components": 1
+      },
+      "assertion": "Independent Kruskal union-find with stable edge ordering.",
+      "taskSlugs": [
+        "graph-rules"
+      ],
+      "numericTolerance": {
+        "absolute": 1e-09,
+        "relative": 1e-09
+      }
+    },
+    {
+      "id": "OR-09",
+      "capability": "compound-path",
+      "status": "expected-only-not-implementation-result",
+      "input": {
+        "outer": [
+          [
+            0,
+            0
+          ],
+          [
+            10,
+            0
+          ],
+          [
+            10,
+            10
+          ],
+          [
+            0,
+            10
+          ]
+        ],
+        "hole": [
+          [
+            3,
+            3
+          ],
+          [
+            7,
+            3
+          ],
+          [
+            7,
+            7
+          ],
+          [
+            3,
+            7
+          ]
+        ],
+        "island": [
+          [
+            12,
+            0
+          ],
+          [
+            14,
+            0
+          ],
+          [
+            14,
+            2
+          ],
+          [
+            12,
+            2
+          ]
+        ]
+      },
+      "expected": {
+        "donutArea": 84,
+        "totalArea": 88,
+        "hit": [
+          [
+            1,
+            1,
+            true
+          ],
+          [
+            5,
+            5,
+            false
+          ],
+          [
+            13,
+            1,
+            true
+          ],
+          [
+            11,
+            1,
+            false
+          ]
+        ]
+      },
+      "assertion": "Both evenodd and canonical nonzero rings preserve holes under transparency.",
+      "taskSlugs": [
+        "compound-path",
+        "compound-render",
+        "hit-shapes"
+      ],
+      "numericTolerance": {
+        "absolute": 1e-09,
+        "relative": 1e-09
+      }
+    },
+    {
+      "id": "OR-10",
+      "capability": "cubic-extrema",
+      "status": "expected-only-not-implementation-result",
+      "input": {
+        "control": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            10
+          ],
+          [
+            10,
+            10
+          ],
+          [
+            10,
+            0
+          ]
+        ]
+      },
+      "expected": {
+        "bounds": [
+          0,
+          0,
+          10,
+          7.5
+        ],
+        "atHalf": [
+          5,
+          7.5
+        ]
+      },
+      "assertion": "Derivative extrema, not control hull or sampled approximation.",
+      "taskSlugs": [
+        "geometry-math"
+      ],
+      "numericTolerance": {
+        "absolute": 1e-09,
+        "relative": 1e-09
+      }
+    },
+    {
+      "id": "OR-11",
+      "capability": "hierarchy-route",
+      "status": "expected-only-not-implementation-result",
+      "input": {
+        "parents": {
+          "root": null,
+          "A": "root",
+          "B": "root",
+          "s": "A",
+          "t": "B"
+        },
+        "source": "s",
+        "target": "t"
+      },
+      "expected": {
+        "lca": "root",
+        "route": [
+          "s",
+          "A",
+          "root",
+          "B",
+          "t"
+        ],
+        "strengthZero": "straight"
+      },
+      "assertion": "Ancestor path has no duplicated LCA.",
+      "taskSlugs": [
+        "hierarchical-bundling"
+      ],
+      "numericTolerance": {
+        "absolute": 1e-09,
+        "relative": 1e-09
+      }
+    },
+    {
+      "id": "OR-12",
+      "capability": "fdeb-compatibility",
+      "status": "expected-only-not-implementation-result",
+      "input": {
+        "P": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            0
+          ]
+        ],
+        "Q": [
+          [
+            0,
+            0.1
+          ],
+          [
+            1,
+            0.1
+          ]
+        ],
+        "step": 0.001,
+        "internalPoints": 1
+      },
+      "expected": {
+        "angle": 1,
+        "scale": 1,
+        "position": 0.9090909090909091,
+        "visibility": 1,
+        "compatibility": 0.9090909090909091,
+        "pMidAfterOneStep": [
+          0.5,
+          0.00909090909090909
+        ],
+        "qMidAfterOneStep": [
+          0.5,
+          0.09090909090909091
+        ]
+      },
+      "assertion": "Double buffer; no cap for this explicit step; endpoint positions remain unchanged.",
+      "taskSlugs": [
+        "force-edge-bundling"
+      ],
+      "numericTolerance": {
+        "absolute": 1e-09,
+        "relative": 1e-09
+      }
+    },
+    {
+      "id": "OR-13",
+      "capability": "density-kernel",
+      "status": "expected-only-not-implementation-result",
+      "input": {
+        "point": [
+          0,
+          0
+        ],
+        "weight": 1,
+        "bandwidth": 1,
+        "sampleX": [
+          0,
+          0.5,
+          1
+        ]
+      },
+      "expected": {
+        "density": [
+          1,
+          0.5625,
+          0
+        ],
+        "gradientXAtHalf": -1.5,
+        "symmetricGradientAtOrigin": 0
+      },
+      "assertion": "Native density-v1 compact radial kernel; not a rendered heatmap golden.",
+      "taskSlugs": [
+        "density-bundling"
+      ],
+      "numericTolerance": {
+        "absolute": 1e-09,
+        "relative": 1e-09
+      }
+    },
+    {
+      "id": "OR-14",
+      "capability": "edge-path",
+      "status": "expected-only-not-implementation-result",
+      "input": {
+        "nodes": {
+          "A": [
+            0,
+            0
+          ],
+          "B": [
+            1,
+            1
+          ],
+          "C": [
+            2,
+            0
+          ]
+        },
+        "edges": [
+          [
+            "A",
+            "C"
+          ],
+          [
+            "A",
+            "B"
+          ],
+          [
+            "B",
+            "C"
+          ]
+        ],
+        "maxStretch": 2,
+        "exponent": 2
+      },
+      "expected": {
+        "ACRoute": [
+          "A",
+          "B",
+          "C"
+        ],
+        "routeLength": 2.8284271247461903,
+        "lockedEdges": [
+          [
+            "A",
+            "B"
+          ],
+          [
+            "B",
+            "C"
+          ]
+        ],
+        "maxStretch1_2": "straight"
+      },
+      "assertion": "Validate actual graph path and geometric, not squared-cost, stretch.",
+      "taskSlugs": [
+        "edge-path-bundling"
+      ],
+      "numericTolerance": {
+        "absolute": 1e-09,
+        "relative": 1e-09
+      }
+    },
+    {
+      "id": "OR-15",
+      "capability": "image-fit",
+      "status": "expected-only-not-implementation-result",
+      "input": {
+        "image": [
+          200,
+          100
+        ],
+        "box": [
+          100,
+          100
+        ],
+        "align": [
+          0.5,
+          0.5
+        ]
+      },
+      "expected": {
+        "contain": [
+          0,
+          25,
+          100,
+          50
+        ],
+        "cover": [
+          -50,
+          0,
+          200,
+          100
+        ]
+      },
+      "assertion": "Bounds are before viewport clipping.",
+      "taskSlugs": [
+        "image-resolver"
+      ],
+      "numericTolerance": {
+        "absolute": 1e-09,
+        "relative": 1e-09
+      }
+    },
+    {
+      "id": "OR-16",
+      "capability": "statistics",
+      "status": "expected-only-not-implementation-result",
+      "input": {
+        "values": [
+          1,
+          2,
+          3
+        ],
+        "quantileValues": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "quantileMethod": "linear",
+        "window": 2
+      },
+      "expected": {
+        "mean": 2,
+        "sampleVariance": 1,
+        "populationVariance": 0.6666666666666666,
+        "q25": 1.75,
+        "q50": 2.5,
+        "trailingMeans": [
+          1,
+          1.5,
+          2.5
+        ]
+      },
+      "assertion": "Explicit methods; do not change existing defaults.",
+      "taskSlugs": [
+        "statistics-oracles"
+      ],
+      "numericTolerance": {
+        "absolute": 1e-09,
+        "relative": 1e-09
+      }
+    },
+    {
+      "id": "OR-17",
+      "capability": "histogram-ecdf",
+      "status": "expected-only-not-implementation-result",
+      "input": {
+        "binEdges": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "values": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "ecdfValues": [
+          1,
+          1,
+          3
+        ]
+      },
+      "expected": {
+        "counts": [
+          1,
+          1,
+          2
+        ],
+        "ecdfAt": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            0.6666666666666666
+          ],
+          [
+            3,
+            1
+          ]
+        ]
+      },
+      "assertion": "Last histogram endpoint included; ECDF right-continuous.",
+      "taskSlugs": [
+        "statistics-oracles"
+      ],
+      "numericTolerance": {
+        "absolute": 1e-09,
+        "relative": 1e-09
+      }
+    },
+    {
+      "id": "OR-18",
+      "capability": "regression-density",
+      "status": "expected-only-not-implementation-result",
+      "input": {
+        "pairs": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            3
+          ],
+          [
+            2,
+            5
+          ]
+        ],
+        "gaussianPoint": 0,
+        "bandwidth": 1
+      },
+      "expected": {
+        "slope": 2,
+        "intercept": 1,
+        "densityAtZero": 0.3989422804014327
+      },
+      "assertion": "Regression sums and Gaussian formula independent from source kernels.",
+      "taskSlugs": [
+        "statistics-oracles"
+      ],
+      "numericTolerance": {
+        "absolute": 1e-09,
+        "relative": 1e-09
+      }
+    },
+    {
+      "id": "OR-19",
+      "capability": "calendar",
+      "status": "expected-only-not-implementation-result",
+      "input": {
+        "year": 2024,
+        "month": 2,
+        "timezone": "UTC"
+      },
+      "expected": {
+        "daysInYear": 366,
+        "daysInMonth": 29
+      },
+      "assertion": "Supplement with IANA DST civil-day fixtures during implementation.",
+      "taskSlugs": [
+        "time-transform",
+        "calendar-layout"
+      ],
+      "numericTolerance": {
+        "absolute": 1e-09,
+        "relative": 1e-09
+      }
+    },
+    {
+      "id": "OR-20",
+      "capability": "pyramid",
+      "status": "expected-only-not-implementation-result",
+      "input": {
+        "values": [
+          100,
+          60,
+          20
+        ],
+        "width": 100,
+        "height": 90,
+        "gap": 0,
+        "lastStage": "flat"
+      },
+      "expected": {
+        "stageWidths": [
+          [
+            100,
+            60
+          ],
+          [
+            60,
+            20
+          ],
+          [
+            20,
+            20
+          ]
+        ],
+        "stageHeights": [
+          30,
+          30,
+          30
+        ],
+        "areaModeTaperPoint8Areas": [
+          2700,
+          1620,
+          540
+        ]
+      },
+      "assertion": "Stage order preserved; no forced triangle. Visual target is a proposal.",
+      "taskSlugs": [
+        "pyramid-ohlc-waterfall"
+      ],
+      "numericTolerance": {
+        "absolute": 1e-09,
+        "relative": 1e-09
+      }
+    },
+    {
+      "id": "OR-21",
+      "capability": "waterfall",
+      "status": "expected-only-not-implementation-result",
+      "input": {
+        "stages": [
+          [
+            "delta",
+            5
+          ],
+          [
+            "delta",
+            -2
+          ],
+          [
+            "subtotal",
+            null
+          ],
+          [
+            "delta",
+            4
+          ],
+          [
+            "total",
+            null
+          ]
+        ]
+      },
+      "expected": {
+        "endpoints": [
+          [
+            0,
+            5
+          ],
+          [
+            5,
+            3
+          ],
+          [
+            0,
+            3
+          ],
+          [
+            3,
+            7
+          ],
+          [
+            0,
+            7
+          ]
+        ],
+        "finalTotal": 7
+      },
+      "assertion": "Subtotal does not reset unless explicit reset flag.",
+      "taskSlugs": [
+        "pyramid-ohlc-waterfall"
+      ],
+      "numericTolerance": {
+        "absolute": 1e-09,
+        "relative": 1e-09
+      }
+    },
+    {
+      "id": "OR-22",
+      "capability": "projection",
+      "status": "expected-only-not-implementation-result",
+      "input": {
+        "mercatorDeg": [
+          0,
+          45
+        ],
+        "orthographicDeg": [
+          [
+            90,
+            0
+          ],
+          [
+            180,
+            0
+          ]
+        ],
+        "planarBounds": [
+          0,
+          0,
+          10,
+          20
+        ],
+        "viewport": [
+          100,
+          100
+        ]
+      },
+      "expected": {
+        "mercatorRaw": [
+          0,
+          0.881373587019543
+        ],
+        "orthographicLimb": [
+          1,
+          0
+        ],
+        "backsideVisible": false,
+        "planarFit": {
+          "scale": 5,
+          "translate": [
+            25,
+            0
+          ]
+        }
+      },
+      "assertion": "Raw projection math before screen y reflection.",
+      "taskSlugs": [
+        "projection-kernels",
+        "geo-stream"
+      ],
+      "numericTolerance": {
+        "absolute": 1e-09,
+        "relative": 1e-09
+      }
+    },
+    {
+      "id": "OR-23",
+      "capability": "linear-animation",
+      "status": "expected-only-not-implementation-result",
+      "input": {
+        "from": 10,
+        "to": 30,
+        "durationMs": 1000,
+        "timesMs": [
+          0,
+          250,
+          500,
+          750,
+          1000
+        ],
+        "easing": "linear"
+      },
+      "expected": {
+        "values": [
+          10,
+          15,
+          20,
+          25,
+          30
+        ],
+        "logScaleMidpoint": 10
+      },
+      "assertion": "Exact t0/t1 scene equality and declared log-space transform.",
+      "taskSlugs": [
+        "transition-sampler"
+      ],
+      "numericTolerance": {
+        "absolute": 1e-09,
+        "relative": 1e-09
+      }
+    },
+    {
+      "id": "OR-24",
+      "capability": "gesture-cancel",
+      "status": "expected-only-not-implementation-result",
+      "input": {
+        "events": [
+          "down",
+          "move",
+          "move",
+          "move",
+          "Escape",
+          "up"
+        ]
+      },
+      "expected": {
+        "terminalEvents": [
+          "cancel"
+        ],
+        "commitCount": 0,
+        "historyDelta": 0,
+        "baselineChanged": false,
+        "capturedPointersAfter": 0
+      },
+      "assertion": "Replay actual browser input; late up cannot commit.",
+      "taskSlugs": [
+        "gesture-controller",
+        "session-transactions",
+        "session-events"
+      ],
+      "numericTolerance": {
+        "absolute": 1e-09,
+        "relative": 1e-09
+      }
+    },
+    {
+      "id": "OR-25",
+      "capability": "async-stale",
+      "status": "expected-only-not-implementation-result",
+      "input": {
+        "dispatch": [
+          "job1@revision1",
+          "job2@revision2"
+        ],
+        "completion": [
+          "job2",
+          "job1"
+        ]
+      },
+      "expected": {
+        "applied": [
+          "job2"
+        ],
+        "discarded": [
+          "job1"
+        ],
+        "finalRevision": 2
+      },
+      "assertion": "Compare generation and input revision vector before applying.",
+      "taskSlugs": [
+        "session-lifecycle"
+      ],
+      "numericTolerance": {
+        "absolute": 1e-09,
+        "relative": 1e-09
+      }
+    },
+    {
+      "id": "OR-26",
+      "capability": "single-y",
+      "status": "expected-only-not-implementation-result",
+      "input": {
+        "cases": [
+          "same-frame-independent-scales",
+          "same-frame-mirror-y",
+          "separate-facet-panels",
+          "same-scale-y2-range",
+          "polar-coordinate"
+        ]
+      },
+      "expected": {
+        "accepted": [
+          false,
+          false,
+          true,
+          true,
+          true
+        ]
+      },
+      "assertion": "Validate at create/edit/composition/schema/load boundaries.",
+      "taskSlugs": [
+        "single-y-policy"
+      ],
+      "numericTolerance": {
+        "absolute": 1e-09,
+        "relative": 1e-09
+      }
+    }
+  ]
+}

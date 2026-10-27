@@ -1,0 +1,41 @@
+✔ the compiler harness accepts a used negative assertion and rejects a stale one (334.777833ms)
+✔ declares Full-only completion, imputation, calendar, and duration windows (192.949875ms)
+✔ declares the Full-only field-selected Parallel scale editor (193.879208ms)
+✔ publishes editParallelScale as one Current direct action (0.17225ms)
+✔ publishes both focused offset scale editors as Current direct actions (0.111042ms)
+✔ keeps publishing manual, immutable-tag-bound, protected, and non-concurrent (0.9855ms)
+✔ uses current trusted-publishing requirements without an npm secret (0.201625ms)
+✔ keeps generated release documentation strict across native PNG platforms (0.502292ms)
+✔ qualifies, retains, verifies, and publishes one exact artifact (0.22825ms)
+✔ deploys Pages only after the protected release publish (0.2775ms)
+✔ parallel qualifications consume one canonical candidate and join before publishing (0.777708ms)
+✔ qualifies native platforms and three browser engines with strict release dependencies (0.40025ms)
+✔ realistic CI has a stable aggregate that cannot accept skipped or failed dependencies (0.128209ms)
+✔ test and documentation failures retain bounded artifacts without forgiving required checks (0.735916ms)
+✔ every qualification rejects disabled, forgiven, and echo-only commands (68.776792ms)
+✔ discovers every normal, render, and browser test recursively exactly once (85.349125ms)
+✔ separates network-backed corpus sweeps from source coverage (35.9405ms)
+✔ shards realistic CI after preparing its dataset cache once (0.42775ms)
+✔ does not discover programs or support modules as tests (7.918ms)
+✔ keeps every test module reachable from a suite or module-script entry (174.268542ms)
+✔ requires every active gate to expose a complete reviewable slice (0.216542ms)
+✔ keeps stable tests independent from active gate implementations (119.039958ms)
+✔ keeps stable tests independent from implementation roadmap records (58.960542ms)
+✔ selects tests by chart, capability, or relative path (72.990375ms)
+✔ caps file concurrency without changing file order or coverage policy (0.7195ms)
+✔ validates realistic shard coordinates before invoking Node (0.549458ms)
+✔ maps every named capability entry to an exact file or prefix (682.323ms)
+✔ assigns every normal test file to at least one named capability (13.895791ms)
+✔ validates every selector before short-circuit matching (0.142959ms)
+✔ realistic shards are exhaustive, disjoint, deterministic, and weighted by measured durations (43.640334ms)
+✔ weighted scheduling spreads long tests and rejects invalid input (0.414833ms)
+✔ the aggregate accepts only complete successful prerequisites (0.337583ms)
+✔ timing summaries separate environments and exclude failures from scheduling quantiles (18.178791ms)
+ℹ tests 33
+ℹ suites 0
+ℹ pass 33
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1655.733709

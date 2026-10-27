@@ -1,0 +1,16 @@
+✔ renders every public chart through the SVG concrete schema (3884.393542ms)
+✔ accepts a finite, attached graphic tree and reports literal metrics (1.277333ms)
+✔ independently rejects non-finite geometry, negative sizes, and broken trees (0.31475ms)
+✔ rejects missing primitive geometry, invalid paths, and non-tree attachments (1.106041ms)
+✔ SVG integrity distinguishes legitimate text from invalid attributes (4.474709ms)
+✔ rejects wrong geometry types without crashing on malformed containers (0.381167ms)
+✔ rejects malformed XML and invalid geometry regardless of quote style (0.969084ms)
+✔ rejects malformed optional numeric styles and SVG command grammars (2.1785ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4237.182375

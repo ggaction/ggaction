@@ -1,0 +1,682 @@
+
+> ggaction@0.0.22 test:docs
+> node scripts/run-tests.js docs
+
+✔ keeps the generated capability pages synchronized (7.015ms)
+✔ matches primary position capability rows to runtime compatibility (0.790708ms)
+✔ matches documented highlight marks to runtime policies (0.093916ms)
+✔ smokes rect and arc position-color capabilities (42.64025ms)
+✔ smokes bar highlight and continuous legend capabilities (30.121541ms)
+✔ smokes complete Cartesian axis editing (16.595209ms)
+✔ verifies independent stroke and legend support for every documented mark (141.567167ms)
+✔ uses point opacity samples for line consumers and rejects rule opacity legends (18.881917ms)
+✔ gives every declared action one exact anchor, classification, and complete option table (1104.60175ms)
+✔ indexes each exact action at its canonical destination within the bounded search payload (15.584084ms)
+✔ current architecture source module references resolve in this repository (3.305334ms)
+✔ escaped code examples do not become real fragment targets or duplicate ids (1.334792ms)
+✔ actual duplicate element ids remain observable by the built checker (0.131208ms)
+✔ comments, raw text and quoted attribute examples cannot supply fragment targets (0.159708ms)
+✔ element ids support quoted and unquoted attributes without mistaking data-id (0.082208ms)
+✔ covers every maintained chart program or an explicit documentation-only exclusion (25.073792ms)
+✔ matches the public derived-transform union to its one normative tag table (2.050458ms)
+✔ keeps the chart picker, workflow programs, snippet contracts, and provenance fresh (395.44925ms)
+✔ release provenance requires the matching version and exact runtime fingerprint (573.092084ms)
+✔ keeps the hierarchical lesson geometrically equivalent before intentional styling (48.229042ms)
+✔ anchors completion, imputation, and window prose to literal expected values (41.1855ms)
+✔ distinguishes required runtime failures from CI-version recommendations (1.725084ms)
+✔ the resource cleanup recipe demonstrates rejection before dependency-safe removal (21.596875ms)
+✔ Related navigation remains the final section of public documentation (29.477125ms)
+✔ every authoring workflow has exact-code execution metadata and a browser entry (0.843083ms)
+✔ example source links resolve to the exact checked-in canonical programs (1149.384916ms)
+✔ weighted distribution recipes preserve mass and separate density from cumulative probability (59.44025ms)
+✔ every public JavaScript block is executable, generated, or a reviewed hash-pinned contextual exception (45.203583ms)
+✔ selective LLM artifacts retain current content, dependency routes, and shared identity (614.839125ms)
+✔ all published declarations compile in isolation without skipLibCheck (308.408125ms)
+✔ each manifest module has an exact runtime reference and architecture owner (1.591958ms)
+✖ keeps every local Markdown link and anchor valid (13.349958ms)
+  AssertionError [ERR_ASSERTION]: /Users/hj/Desktop/ggaction_chongjeonglee/ggaction/docs/api/appearance/mark-style.md links to missing ../../reference/actions/index.md
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/docs/documentation.test.js:177:14)
+      at async Test.run (node:internal/test_runner/test:932:9)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:297:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual'
+  }
+
+✔ keeps navigation and page order complete (12.073875ms)
+✔ keeps public facade and stabilization guidance cumulative (0.956292ms)
+✔ keeps the chart-example catalog strict and routable (23.830625ms)
+✔ generates the public example index from the chart catalog (9.891375ms)
+✔ keeps every Markdown page structurally readable (21.096917ms)
+✔ keeps documentation styles split by stable UI responsibility (1.570167ms)
+✔ generates unique page metadata and canonical social tags (106.416333ms)
+✔ reports documentation environment prerequisites before building (0.536667ms)
+✔ keeps repository source links and raw images verifiable (19.497958ms)
+✔ keeps the published documentation version aligned with the package (0.650417ms)
+✔ documents sequential palette count consistently across scale surfaces (0.227084ms)
+✔ keeps the strict TypeScript extension example executable by package CI (0.504125ms)
+✔ keeps task pages visual and chart figures canonical (13.602833ms)
+✔ keeps tutorial action flows aligned with public examples (2.971875ms)
+✔ routes entry documentation to the canonical example indexes (7.055458ms)
+✔ keeps the README and documentation home positioning aligned (0.340541ms)
+✔ keeps complete tutorial programs portable to package consumers (0.806167ms)
+✔ keeps every primary recipe snippet labeled and syntactically runnable (1733.752ms)
+✔ documents one shared numeric font-weight rendering policy (0.927917ms)
+✔ indexes documentation headings for section search (4.499ms)
+✔ keeps the compact search index generated and action-aware (265.119292ms)
+✔ keeps every public action available to documentation interactions (5.654958ms)
+✔ publishes schemas, typed action cards, and declarations from canonical sources (10.751583ms)
+✔ keeps point legend support consistent across public guidance (0.315834ms)
+✔ classifies every declared ChartProgram action in the reference (1473.248667ms)
+✔ keeps rendering guidance executable and aligned with the Canvas contract (348.437375ms)
+✔ does not repeat identical includes in one documentation position (17.419833ms)
+✖ keeps concise and full LLM documentation synchronized (2.211209ms)
+  AssertionError [ERR_ASSERTION]: The input was expected to not match the regular expression /\.md(?:#|\b)/. Input:
+  
+  '# ggaction\n' +
+    'ggaction is a JavaScript chart-authoring library built around immutable,\n' +
+    'hierarchical actions. Use this file as a routing index. The linked selective\n' +
+    'HTML routes are canonical; the generated full-text bundle is available at\n' +
+    './llms-full.txt\n' +
+    '\n' +
+    '## Start\n' +
+    '\n' +
+    '- Development/release status and exact source identity: ./version/\n' +
+    '\n' +
+    '- Documentation overview: ./\n' +
+    '- npm installation and first runnable chart: ./getting-started/\n' +
+    '- Local one-tool MCP for compact chart-authoring knowledge: ./mcp/\n' +
+    '- Bounded complete-program bootstrap and canonical capability IDs: ./llm-authoring/\n' +
+    '- Chart recipes: ./recipes/\n' +
+    '- Complete public action reference: ./reference/actions/\n' +
+    '- Supported features and limitations: ./supported-features/\n' +
+    '- Inference and layout troubleshooting: ./troubleshooting/\n' +
+    '\n' +
+    '## Public API layers\n' +
+    '\n' +
+    '- Basic scatter, line, bar, histogram, and heatmap charts: ./api/basic-charts/\n' +
+    '- Chart authoring: ./reference/actions/charts-data/\n' +
+    '- Advanced chart actions: ./reference/actions/advanced/\n' +
+    '- Extension action authoring: ./extension/action-authoring/\n' +
+    '- Primitive extension API: ./extension/primitives/\n' +
+    '- Canvas, SVG, PNG, and PDF rendering: ./api/rendering/\n' +
+    '- Data and scales: ./api/data/ | ./api/scales/\n' +
+    '- Legends and series encodings: ./api/legends/ | ./api/series-encodings/\n' +
+    '- Mark appearance, selection, and highlighting: ./api/appearance/\n' +
+    '- Vertical and horizontal statistical and explicit error bands: ./api/error-bands/\n' +
+    '- Vertical/horizontal Tukey and min–max box plots: ./api/box-plots/\n' +
+    '- Vertical/horizontal categorical gradient plots: ./api/gradient-plots/\n' +
+    '\n' +
+    'Only methods declared on the public ChartProgram TypeScript type are supported\n' +
+    'direct-call actions. Additional wrapped names may appear in action traces but\n' +
+    'are internal operations.\n' +
+    '\n' +
+    '## Chart recipes and tutorials\n' +
+    '\n' +
+    '- Scatterplot: ./recipes/scatterplot/ | ./tutorials/scatterplot/\n' +
+    '- Polar point chart: ./tutorials/polar-points/ | ./api/position-encodings/#polar-positions\n' +
+    '- Line chart: ./recipes/line-chart/ | ./tutorials/line-chart/\n' +
+    '- Histogram: ./recipes/histogram/ | ./tutorials/histogram/\n' +
+    '- Bar chart: ./recipes/bar-chart/ | ./tutorials/grouped-bar/\n' +
+    '- Heatmap: ./recipes/heatmap/ | ./api/basic-charts/#createheatmap\n' +
+    '- Regression scatterplot: ./recipes/regression-scatterplot/ | ./tutorials/regression-scatterplot/\n' +
+    '- Density area: ./recipes/density-area/ | ./tutorials/density-area/\n' +
+    '- Error bar: ./recipes/error-bar/ | ./tutorials/error-bar/\n' +
+    '- Mark selection and highlighting: ./tutorials/mark-selection/ | ./api/appearance/selection-and-highlighting/\n' +
+    '\n' +
+    '## Core concepts\n' +
+    '\n' +
+    '- Immutable ChartProgram: ./concepts/chart-program/\n' +
+    '- Semantic and graphical state: ./concepts/semantic-and-graphics/\n' +
+    '- Hierarchical action traces: ./concepts/actions-and-trace/\n' +
+    '\n' +
+    '## Essential invariants\n' +
+    '\n' +
+    '- Actions accept zero arguments or one option object according to their exact signature and returns a new ChartProgram.\n' +
+    '- Existing programs and caller-owned inputs are never mutated.\n' +
+    '- semanticSpec records chart meaning.\n' +
+    '- graphicSpec stores fully materialized backend-neutral graphics.\n' +
+    '- There is no automatic semantic-to-graphic compiler.\n' +
+    '- Domain actions explicitly invoke graphical materialization.\n' +
+    '- Renderers read graphicSpec only.\n' +
+    '- Omitted values are resolved as explicit option, unique inference, documented\n' +
+    '  default, then an error when no safe choice exists.\n' +
+    '- The first unnamed source dataset is stored as `"data"`; the first unnamed\n' +
+    '  point, line, bar, or area mark uses its type name. Repeated roles require an\n' +
+    '  explicit ID rather than receiving an automatic numeric suffix.\n' +
+    '\n' +
+    '## Runtime and support status\n' +
+    '\n' +
+    '- Exact program and renderer signatures: ./reference/runtime/\n' +
+    '- Exact ChartProgram action type: ./reference/types/\n' +
+    '- Browser Canvas, browser-safe SVG, Node PNG, and vector PDF share one\n' +
+    '  backend-neutral graphicSpec contract.\n' +
+    '- The package is ESM-only. Node entry points require Node.js 20 or later.\n' +
+    '\n' +
+    '\n' +
+    'For extension authors, the installed package includes `node_modules/ggaction/knowledge/extension-authoring.md`. Read that file alongside the installed declarations; it is a guide file, not an importable package entry.\n' +
+    '\n' +
+    '## Selective HTTP reading without MCP\n' +
+    '\n' +
+    'Fetch `./llm/index.json` first. It lists plaintext pages, one JSON card per action,\n' +
+    'and one declaration per named type with its dependencies. Read the task page,\n' +
+    'then only the selected action and its named option types. Follow dependencies\n' +
+    'until the chosen union branch is understood. The complete declaration graph is\n' +
+    'also distributed under `./types/`.\n' +
+    '\n' +
+    "Pin one manifest's `contractId` and verify its SHA-256 hashes. Do not combine\n" +
+    'same-version artifacts from different branches. MCP packets should be obtained\n' +
+    'from the same installed card/resource set; a resolved packet still requires\n' +
+    'execution and numerical/layout validation. The MCP query limit is 500 characters:\n' +
+    'retain the original request in host context, split by task, and reconcile all\n' +
+    'requirements after resolving each part.\n' +
+    '\n' +
+    '## Machine-readable contracts and canonical page inventory\n' +
+    '\n' +
+    '- Selective plaintext pages, action cards, named type dependencies, and artifact identity: ./llm/index.json\n' +
+    '- Full bundle section manifest and hashes: ./llms-manifest.json\n' +
+    '- Typed compact action-card collection: ./actions.json\n' +
+    '- Action-card item schema: ./schemas/action-card.schema.json\n' +
+    '- Action-card collection schema: ./schemas/action-cards.schema.json\n' +
+    '- MCP task-packet schema: ./schemas/task-packet.schema.json\n' +
+    '- Full-bundle manifest schema: ./schemas/llms-manifest.schema.json\n' +
+    '- Resolver intent taxonomy: ./intent-taxonomy.json\n' +
+    '- Resolver intent-taxonomy schema: ./schemas/intent-taxonomy.schema.json\n' +
+    '- Bounded MCP resource catalog: ./mcp-resources.json\n' +
+    '- Bounded MCP resource-catalog schema: ./schemas/mcp-resources.schema.json\n' +
+    '- Exact public ChartProgram declaration: ./types/program.d.ts\n' +
+    '- Tutorials: ./tutorials/\n' +
+    '- Polar Line and Radar Tutorial: ./tutorials/polar-lines/\n' +
+    '- Polar Arc Tutorial: ./tutorials/polar-arcs/\n' +
+    '- Area and Series Layout: ./tutorials/area-layout/\n' +
+    '- Horizon Chart Tutorial: ./tutorials/horizon/\n' +
+    '- Error Band Tutorial: ./tutorials/error-band/\n' +
+    '- Dot, Lollipop, and Dumbbell Plots: ./tutorials/endpoint-plots/\n' +
+    '- Empirical Cumulative Distribution Plots: ./tutorials/ecdf/\n' +
+    '- Horizon Chart Recipe: ./recipes/horizon/\n' +
+    '- Error Band Recipe: ./recipes/error-band/\n' +
+    '- Box Plot Recipe: ./recipes/box-plot/\n' +
+    '- Violin Plot Recipe: ./recipes/violin-plot/\n' +
+    '- Composition Recipe: ./recipes/composition/\n' +
+    '- Facet Recipe: ./recipes/facet/\n' +
+    '- Parallel Coordinates Recipe: ./recipes/parallel-coordinates/\n' +
+    '- Rose Chart Recipe: ./recipes/rose-chart/\n' +
+    '- Gradient Plot Recipe: ./recipes/gradient-plot/\n' +
+    '- Annotation Recipe: ./recipes/annotations/\n' +
+    '- Path Ordering Recipe: ./recipes/path-ordering/\n' +
+    '- Chart Gallery: ./gallery/\n' +
+    '- All Chart Examples: ./gallery/all/\n' +
+    '- Chart API: ./api/\n' +
+    '- Parallel Coordinates: ./api/parallel-coordinates/\n' +
+    '- Canvas: ./api/canvas/\n' +
+    '- Source and Derived Data: ./api/data/source-and-derived/\n' +
+    '- Data Filtering: ./api/data/filtering/\n' +
+    '- Statistical Data Transforms: ./api/data/statistical-transforms/\n' +
+    '- Time-Unit Data Transforms: ./api/data/time-units/\n' +
+    '- Window Data Transforms: ./api/data/window/\n' +
+    '- Rectangular 2D Bins: ./api/data/bin2d/\n' +
+    '- Marks: ./api/marks/\n' +
+    '- Point Marks: ./api/marks/point/\n' +
+    '- Line and Area Marks: ./api/marks/line-area/\n' +
+    '- Bar Marks: ./api/marks/bar/\n' +
+    '- Rule Marks: ./api/marks/rule/\n' +
+    '- Text Marks: ./api/marks/text/\n' +
+    '- Rect Marks: ./api/marks/rect/\n' +
+    '- Encodings: ./api/encodings/\n' +
+    '- Regression: ./api/regression/\n' +
+    '- Error Bars: ./api/error-bars/\n' +
+    '- Violin Plots: ./api/violin-plots/\n' +
+    '- Guides: ./api/guides/\n' +
+    '- Titles: ./api/titles/\n' +
+    '- Program Composition: ./api/composition/\n' +
+    '- Quantitative Positions: ./api/position/quantitative/\n' +
+    '- Temporal Line Positions: ./api/position/temporal/\n' +
+    '- Ordinal Bar Positions: ./api/position/ordinal-bars/\n' +
+    '- Category Ordering: ./api/position/category-ordering/\n' +
+    '- Histogram Positions: ./api/position/histogram/\n' +
+    '- Ordinal Offsets: ./api/position/offsets/\n' +
+    '- Color Encoding: ./api/series/color/\n' +
+    '- Stroke Dash Encoding: ./api/series/stroke-dash/\n' +
+    '- Point Appearance: ./api/appearance/point/\n' +
+    '- Mark Style: ./api/appearance/mark-style/\n' +
+    '- Position Scales: ./api/scales/position/\n' +
+    '- Ordinal and Dash Scales: ./api/scales/ordinal-and-dash/\n' +
+    '- Continuous Color Scales: ./api/scales/continuous-color/\n' +
+    '- Discretized Color Scales: ./api/scales/discretized-color/\n' +
+    '- Missing Scale Values: ./api/scales/missing-values/\n' +
+    '- Coordinates: ./api/coordinates/\n' +
+    '- Axes: ./api/axes/\n' +
+    '- Grids: ./api/grids/\n' +
+    '- Categorical and Size Legends: ./api/legends/categorical/\n' +
+    '- Continuous Legends: ./api/legends/continuous/\n' +
+    '- Composite Legend Symbols: ./api/legends/composite/\n' +
+    '- Editing Legends: ./api/legends/editing/\n' +
+    '- Accessibility: ./accessibility/\n' +
+    '- Runtime and Browser Compatibility: ./compatibility/\n' +
+    '- Responsive Charts: ./responsive-charts/\n' +
+    '- Performance and Large Charts: ./performance/\n' +
+    '- Data Updates and Live Refresh: ./data-updates/\n' +
+    '- Program Inspection: ./inspection/\n' +
+    '- Errors and Recovery: ./errors-and-recovery/\n' +
+    '- Versioning and Documentation Provenance: ./versioning/\n' +
+    '- Fonts and Text Rendering: ./fonts/\n' +
+    '- TypeScript: ./typescript/\n' +
+    '- Advanced Axis Components: ./advanced/axis-components/\n' +
+    '- Mark Actions: ./reference/actions/marks/\n' +
+    '- Encoding Actions: ./reference/actions/encodings/\n' +
+    '- Statistical Layer Actions: ./reference/actions/statistics/\n' +
+    '- Guide, Axis, Grid, and Title Actions: ./reference/actions/guides/\n' +
+    '- Extension Actions: ./reference/actions/extension/\n' +
+    '- Summaries, Bins, and Data Shaping: ./api/data/summaries-and-shaping/\n' +
+    '- Expressions and Normalization: ./api/data/expressions-and-normalization/\n' +
+    '- Missing Keys and Values: ./api/data/missing-data/\n' +
+    '- Data Revisions and Removal: ./api/data/revisions-and-removal/\n' +
+    '- Facets and Field Repetition: ./api/composition/facets/\n' +
+    '- Editing Compositions: ./api/composition/editing/\n' +
+    '- Attached Mark Labels: ./api/marks/labels/\n' +
+    '- Label Collision Layout: ./api/marks/label-layout/\n' +
+    '- Repair missing observations: ./recipes/repair-missing-observations/\n' +
+    '- Compare weighted distributions: ./recipes/compare-weighted-distributions/\n' +
+    '- Switch encoding'... 685 more characters
+  
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/docs/documentation.test.js:1008:10)
+      at Test.runInAsyncScope (node:async_hooks:211:14)
+      at Test.run (node:internal/test_runner/test:931:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+      at Test.postRun (node:internal/test_runner/test:1042:19)
+      at Test.run (node:internal/test_runner/test:970:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:629:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '# ggaction\nggaction is a JavaScript chart-authoring library built around immutable,\nhierarchical actions. Use this file as a routing index. The linked selective\nHTML routes are canonical; the generated full-text bundle is available at\n./llms-full.txt\n\n## Start\n\n- Development/release status and exact source identity: ./version/\n\n- Documentation overview: ./\n- npm installation and first runnable chart: ./getting-started/\n- Local one-tool MCP for compact chart-authoring knowledge: ./mcp/\n- Bounded complete-program bootstrap and canonical capability IDs: ./llm-authoring/\n- Chart recipes: ./recipes/\n- Complete public action reference: ./reference/actions/\n- Supported features and limitations: ./supported-features/\n- Inference and layout troubleshooting: ./troubleshooting/\n\n## Public API layers\n\n- Basic scatter, line, bar, histogram, and heatmap charts: ./api/basic-charts/\n- Chart authoring: ./reference/actions/charts-data/\n- Advanced chart actions: ./reference/actions/advanced/\n- Extension action authoring: ./extension/action-authoring/\n- Primitive extension API: ./extension/primitives/\n- Canvas, SVG, PNG, and PDF rendering: ./api/rendering/\n- Data and scales: ./api/data/ | ./api/scales/\n- Legends and series encodings: ./api/legends/ | ./api/series-encodings/\n- Mark appearance, selection, and highlighting: ./api/appearance/\n- Vertical and horizontal statistical and explicit error bands: ./api/error-bands/\n- Vertical/horizontal Tukey and min–max box plots: ./api/box-plots/\n- Vertical/horizontal categorical gradient plots: ./api/gradient-plots/\n\nOnly methods declared on the public ChartProgram TypeScript type are supported\ndirect-call actions. Additional wrapped names may appear in action traces but\nare internal operations.\n\n## Chart recipes and tutorials\n\n- Scatterplot: ./recipes/scatterplot/ | ./tutorials/scatterplot/\n- Polar point chart: ./tutorials/polar-points/ | ./api/position-encodings/#polar-positions\n- Line chart: ./recipes/line-chart/ | ./tutorials/line-chart/\n- Histogram: ./recipes/histogram/ | ./tutorials/histogram/\n- Bar chart: ./recipes/bar-chart/ | ./tutorials/grouped-bar/\n- Heatmap: ./recipes/heatmap/ | ./api/basic-charts/#createheatmap\n- Regression scatterplot: ./recipes/regression-scatterplot/ | ./tutorials/regression-scatterplot/\n- Density area: ./recipes/density-area/ | ./tutorials/density-area/\n- Error bar: ./recipes/error-bar/ | ./tutorials/error-bar/\n- Mark selection and highlighting: ./tutorials/mark-selection/ | ./api/appearance/selection-and-highlighting/\n\n## Core concepts\n\n- Immutable ChartProgram: ./concepts/chart-program/\n- Semantic and graphical state: ./concepts/semantic-and-graphics/\n- Hierarchical action traces: ./concepts/actions-and-trace/\n\n## Essential invariants\n\n- Actions accept zero arguments or one option object according to their exact signature and returns a new ChartProgram.\n- Existing programs and caller-owned inputs are never mutated.\n- semanticSpec records chart meaning.\n- graphicSpec stores fully materialized backend-neutral graphics.\n- There is no automatic semantic-to-graphic compiler.\n- Domain actions explicitly invoke graphical materialization.\n- Renderers read graphicSpec only.\n- Omitted values are resolved as explicit option, unique inference, documented\n  default, then an error when no safe choice exists.\n- The first unnamed source dataset is stored as `"data"`; the first unnamed\n  point, line, bar, or area mark uses its type name. Repeated roles require an\n  explicit ID rather than receiving an automatic numeric suffix.\n\n## Runtime and support status\n\n- Exact program and renderer signatures: ./reference/runtime/\n- Exact ChartProgram action type: ./reference/types/\n- Browser Canvas, browser-safe SVG, Node PNG, and vector PDF share one\n  backend-neutral graphicSpec contract.\n- The package is ESM-only. Node entry points require Node.js 20 or later.\n\n\nFor extension authors, the installed package includes `node_modules/ggaction/knowledge/extension-authoring.md`. Read that file alongside the installed declarations; it is a guide file, not an importable package entry.\n\n## Selective HTTP reading without MCP\n\nFetch `./llm/index.json` first. It lists plaintext pages, one JSON card per action,\nand one declaration per named type with its dependencies. Read the task page,\nthen only the selected action and its named option types. Follow dependencies\nuntil the chosen union branch is understood. The complete declaration graph is\nalso distributed under `./types/`.\n\nPin one manifest\'s `contractId` and verify its SHA-256 hashes. Do not combine\nsame-version artifacts from different branches. MCP packets should be obtained\nfrom the same installed card/resource set; a resolved packet still requires\nexecution and numerical/layout validation. The MCP query limit is 500 characters:\nretain the original request in host context, split by task, and reconcile all\nrequirements after resolving each part.\n\n## Machine-readable contracts and canonical page inventory\n\n- Selective plaintext pages, action cards, named type dependencies, and artifact identity: ./llm/index.json\n- Full bundle section manifest and hashes: ./llms-manifest.json\n- Typed compact action-card collection: ./actions.json\n- Action-card item schema: ./schemas/action-card.schema.json\n- Action-card collection schema: ./schemas/action-cards.schema.json\n- MCP task-packet schema: ./schemas/task-packet.schema.json\n- Full-bundle manifest schema: ./schemas/llms-manifest.schema.json\n- Resolver intent taxonomy: ./intent-taxonomy.json\n- Resolver intent-taxonomy schema: ./schemas/intent-taxonomy.schema.json\n- Bounded MCP resource catalog: ./mcp-resources.json\n- Bounded MCP resource-catalog schema: ./schemas/mcp-resources.schema.json\n- Exact public ChartProgram declaration: ./types/program.d.ts\n- Tutorials: ./tutorials/\n- Polar Line and Radar Tutorial: ./tutorials/polar-lines/\n- Polar Arc Tutorial: ./tutorials/polar-arcs/\n- Area and Series Layout: ./tutorials/area-layout/\n- Horizon Chart Tutorial: ./tutorials/horizon/\n- Error Band Tutorial: ./tutorials/error-band/\n- Dot, Lollipop, and Dumbbell Plots: ./tutorials/endpoint-plots/\n- Empirical Cumulative Distribution Plots: ./tutorials/ecdf/\n- Horizon Chart Recipe: ./recipes/horizon/\n- Error Band Recipe: ./recipes/error-band/\n- Box Plot Recipe: ./recipes/box-plot/\n- Violin Plot Recipe: ./recipes/violin-plot/\n- Composition Recipe: ./recipes/composition/\n- Facet Recipe: ./recipes/facet/\n- Parallel Coordinates Recipe: ./recipes/parallel-coordinates/\n- Rose Chart Recipe: ./recipes/rose-chart/\n- Gradient Plot Recipe: ./recipes/gradient-plot/\n- Annotation Recipe: ./recipes/annotations/\n- Path Ordering Recipe: ./recipes/path-ordering/\n- Chart Gallery: ./gallery/\n- All Chart Examples: ./gallery/all/\n- Chart API: ./api/\n- Parallel Coordinates: ./api/parallel-coordinates/\n- Canvas: ./api/canvas/\n- Source and Derived Data: ./api/data/source-and-derived/\n- Data Filtering: ./api/data/filtering/\n- Statistical Data Transforms: ./api/data/statistical-transforms/\n- Time-Unit Data Transforms: ./api/data/time-units/\n- Window Data Transforms: ./api/data/window/\n- Rectangular 2D Bins: ./api/data/bin2d/\n- Marks: ./api/marks/\n- Point Marks: ./api/marks/point/\n- Line and Area Marks: ./api/marks/line-area/\n- Bar Marks: ./api/marks/bar/\n- Rule Marks: ./api/marks/rule/\n- Text Marks: ./api/marks/text/\n- Rect Marks: ./api/marks/rect/\n- Encodings: ./api/encodings/\n- Regression: ./api/regression/\n- Error Bars: ./api/error-bars/\n- Violin Plots: ./api/violin-plots/\n- Guides: ./api/guides/\n- Titles: ./api/titles/\n- Program Composition: ./api/composition/\n- Quantitative Positions: ./api/position/quantitative/\n- Temporal Line Positions: ./api/position/temporal/\n- Ordinal Bar Positions: ./api/position/ordinal-bars/\n- Category Ordering: ./api/position/category-ordering/\n- Histogram Positions: ./api/position/histogram/\n- Ordinal Offsets: ./api/position/offsets/\n- Color Encoding: ./api/series/color/\n- Stroke Dash Encoding: ./api/series/stroke-dash/\n- Point Appearance: ./api/appearance/point/\n- Mark Style: ./api/appearance/mark-style/\n- Position Scales: ./api/scales/position/\n- Ordinal and Dash Scales: ./api/scales/ordinal-and-dash/\n- Continuous Color Scales: ./api/scales/continuous-color/\n- Discretized Color Scales: ./api/scales/discretized-color/\n- Missing Scale Values: ./api/scales/missing-values/\n- Coordinates: ./api/coordinates/\n- Axes: ./api/axes/\n- Grids: ./api/grids/\n- Categorical and Size Legends: ./api/legends/categorical/\n- Continuous Legends: ./api/legends/continuous/\n- Composite Legend Symbols: ./api/legends/composite/\n- Editing Legends: ./api/legends/editing/\n- Accessibility: ./accessibility/\n- Runtime and Browser Compatibility: ./compatibility/\n- Responsive Charts: ./responsive-charts/\n- Performance and Large Charts: ./performance/\n- Data Updates and Live Refresh: ./data-updates/\n- Program Inspection: ./inspection/\n- Errors and Recovery: ./errors-and-recovery/\n- Versioning and Documentation Provenance: ./versioning/\n- Fonts and Text Rendering: ./fonts/\n- TypeScript: ./typescript/\n- Advanced Axis Components: ./advanced/axis-components/\n- Mark Actions: ./reference/actions/marks/\n- Encoding Actions: ./reference/actions/encodings/\n- Statistical Layer Actions: ./reference/actions/statistics/\n- Guide, Axis, Grid, and Title Actions: ./reference/actions/guides/\n- Extension Actions: ./reference/actions/extension/\n- Summaries, Bins, and Data Shaping: ./api/data/summaries-and-shaping/\n- Expressions and Normalization: ./api/data/expressions-and-normalization/\n- Missing Keys and Values: ./api/data/missing-data/\n- Data Revisions and Removal: ./api/data/revisions-and-removal/\n- Facets and Field Repetition: ./api/composition/facets/\n- Editing Compositions: ./api/composition/editing/\n- Attached Mark Labels: ./api/marks/labels/\n- Label Collision Layout: ./api/marks/label-layout/\n- Repair missing observations: ./recipes/repair-missing-observations/\n- Compare weighted distributions: ./recipes/compare-weighted-distributions/\n- Switch encoding'... 685 more characters,
+    expected: /\.md(?:#|\b)/,
+    operator: 'doesNotMatch'
+  }
+
+✔ the README authoring sequence completes with the repository cars data and its legend (138.126709ms)
+✔ the documented empty filter preserves its source and stores the named empty result (3.108ms)
+✔ the LLM task fragments independently build histogram and regression programs (51.834666ms)
+✔ the extension JavaScript example creates its target before editing it (13.493875ms)
+✔ numeric lines, points with default radius, and bars with default width materialize (6.407792ms)
+✔ executes documented recipes/annotations.md against its stated inputs (541.9695ms)
+✔ executes documented recipes/bar-chart.md against its stated inputs (49.805041ms)
+✔ executes documented recipes/box-plot.md against its stated inputs (72.178583ms)
+✔ executes documented recipes/composition.md against its stated inputs (36.890208ms)
+✔ executes documented recipes/density-area.md against its stated inputs (51.267209ms)
+✔ executes documented recipes/error-band.md against its stated inputs (37.135583ms)
+✔ executes documented recipes/error-bar.md against its stated inputs (24.116917ms)
+✔ executes documented recipes/facet.md against its stated inputs (74.094541ms)
+✔ executes documented recipes/gradient-plot.md against its stated inputs (36.762084ms)
+✔ executes documented recipes/heatmap.md against its stated inputs (31.209083ms)
+✔ executes documented recipes/histogram.md against its stated inputs (18.864625ms)
+✔ executes documented recipes/horizon.md against its stated inputs (15.811459ms)
+✔ executes documented recipes/line-chart.md against its stated inputs (16.937791ms)
+✔ executes documented recipes/parallel-coordinates.md against its stated inputs (35.985375ms)
+✔ executes documented recipes/path-ordering.md against its stated inputs (60.926583ms)
+✔ executes documented recipes/regression-scatterplot.md against its stated inputs (156.142041ms)
+✔ executes documented recipes/rose-chart.md against its stated inputs (22.157708ms)
+✔ executes documented recipes/scatterplot.md against its stated inputs (15.799959ms)
+✔ executes documented recipes/violin-plot.md against its stated inputs (17.804334ms)
+✔ executes documented tutorials/area-layout.md against its stated inputs (36.826708ms)
+✔ executes documented tutorials/density-area.md against its stated inputs (42.792792ms)
+✔ executes documented tutorials/ecdf.md against its stated inputs (37.026958ms)
+✔ executes documented tutorials/endpoint-plots.md against its stated inputs (48.227291ms)
+✔ executes documented tutorials/error-band.md against its stated inputs (75.945166ms)
+✔ executes documented tutorials/error-bar.md against its stated inputs (63.149125ms)
+✔ executes documented tutorials/grouped-bar.md against its stated inputs (295.311208ms)
+✔ executes documented tutorials/histogram.md against its stated inputs (33.624083ms)
+✔ executes documented tutorials/horizon.md against its stated inputs (24.627542ms)
+✔ executes documented tutorials/line-chart.md against its stated inputs (44.534792ms)
+✔ executes documented tutorials/mark-selection.md against its stated inputs (217.112958ms)
+✔ executes documented tutorials/polar-arcs.md against its stated inputs (25.502333ms)
+✔ executes documented tutorials/polar-lines.md against its stated inputs (71.692ms)
+✔ executes documented tutorials/polar-points.md against its stated inputs (25.026875ms)
+✔ executes documented tutorials/regression-scatterplot.md against its stated inputs (159.761125ms)
+✔ executes documented tutorials/scatterplot.md against its stated inputs (23.996792ms)
+✔ executes documented api/data/filtering.md against its stated inputs (16.380167ms)
+✔ executes documented recipes/repair-missing-observations.md against its stated inputs (60.507875ms)
+✔ executes documented recipes/compare-weighted-distributions.md against its stated inputs (148.831834ms)
+✔ executes documented recipes/switch-encoding-modes.md against its stated inputs (29.467167ms)
+✔ executes documented recipes/edit-scales-and-guides.md against its stated inputs (52.393542ms)
+✔ executes documented recipes/edit-selected-labels.md against its stated inputs (51.206583ms)
+✔ executes documented recipes/apply-custom-theme.md against its stated inputs (50.949041ms)
+✔ executes documented recipes/edit-facet-source.md against its stated inputs (326.572542ms)
+✔ executes documented recipes/remove-dependent-resources.md against its stated inputs (40.933208ms)
+✔ executes documented tutorials/hierarchical-authoring.md against its stated inputs (41.561875ms)
+✔ executes documented api/marks/line-area.md against its stated inputs (12.356333ms)
+✔ executes documented api/marks/bar.md against its stated inputs (16.277291ms)
+✔ executes documented api/marks/line-area.md against its stated inputs (15.061792ms)
+✔ executes documented api/marks/line-area.md against its stated inputs (21.06375ms)
+✔ executes documented api/marks/line-area.md against its stated inputs (8.752417ms)
+✔ executes documented api/marks/line-area.md against its stated inputs (8.594416ms)
+✔ executes documented api/marks/point.md against its stated inputs (19.390416ms)
+✔ executes documented recipes/line-chart.md against its stated inputs (9.09775ms)
+{
+  data: 'sales',
+  schema: {
+    version: 1,
+    completeness: 'known',
+    origin: 'inferred',
+    fields: [ [Object], [Object] ]
+  }
+} {
+  version: 1,
+  equivalence: 'different',
+  completeProgramComparison: true,
+  changes: [
+    {
+      resource: [Object],
+      operation: 'modify',
+      effect: 'style',
+      roles: []
+    }
+  ],
+  affected: [ { kind: 'mark', id: 'points' } ],
+  findings: []
+} {
+  version: 1,
+  views: [
+    {
+      owner: [Object],
+      grain: 'item',
+      rawRows: 2,
+      logicalDataItems: 2,
+      drawablePrimitives: 2,
+      visibleCandidates: 2,
+      flags: [Array],
+      bounds: [Object],
+      sourceRefs: [Array],
+      checks: [Array]
+    }
+  ],
+  calculations: [],
+  checks: [
+    {
+      name: 'pixel-visibility',
+      status: 'not_run',
+      evidencePaths: [],
+      findings: []
+    }
+  ],
+  findings: [],
+  coverage: { partial: true, unsupported: [] }
+}
+false
+true
+✔ executes documented inspection.md against its stated inputs (29.009875ms)
+✔ executes documented api/rendering.md against its stated inputs (25.51025ms)
+✔ marks tutorial and recipe snippets with explicit execution contracts (0.812208ms)
+✔ keeps one generated gallery image for every public chart (11.218291ms)
+✔ keeps the generated Getting Started image aligned with its exact program (0.846625ms)
+✔ keeps generated mark-selection tutorial images canonical and fresh (0.5345ms)
+✔ keeps the composition asset legible as two distinct child panels (41.109417ms)
+✔ keeps the first chart identifiable without color alone (53.9075ms)
+✔ search recovers from a failed request and routes every exact action with correct keyboard boundaries (9727.607125ms)
+✔ action filtering updates TOC visibility and counts and a hidden hash target can be revealed (235.244ms)
+✔ search handles zero, one, two, and eight results without stale active options (272.497458ms)
+✔ typing after a completed failed prefetch waits for an explicit retry (254.865458ms)
+✔ each retry makes one request after consecutive failures and pending searches respect cancellation (802.507083ms)
+✔ natural task queries reach their canonical guide among the first three results (399.243667ms)
+✔ keeps the Quarto example pinned, responsive, and accessible (3.315792ms)
+✔ executes the example program against the package source (356.077542ms)
+✔ builds the ordered immutable README authoring sequence (384.006542ms)
+✔ handles zero-variance R-squared input explicitly (0.140834ms)
+✔ keeps generated README GIF and PNG valid and referenced (1.654875ms)
+✔ the paper rose sequence retains each revision and materializes its final palette (65.287791ms)
+✔ keeps the README revision branches immutable and independently traced (65.647875ms)
+✔ keeps the executable revision example immediately after Quick Start (0.436709ms)
+ℹ tests 140
+ℹ suites 0
+ℹ pass 138
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 14128.108167
+
+✖ failing tests:
+
+test at test/docs/documentation.test.js:164:1
+✖ keeps every local Markdown link and anchor valid (13.349958ms)
+  AssertionError [ERR_ASSERTION]: /Users/hj/Desktop/ggaction_chongjeonglee/ggaction/docs/api/appearance/mark-style.md links to missing ../../reference/actions/index.md
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/docs/documentation.test.js:177:14)
+      at async Test.run (node:internal/test_runner/test:932:9)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:297:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual'
+  }
+
+test at test/docs/documentation.test.js:999:1
+✖ keeps concise and full LLM documentation synchronized (2.211209ms)
+  AssertionError [ERR_ASSERTION]: The input was expected to not match the regular expression /\.md(?:#|\b)/. Input:
+  
+  '# ggaction\n' +
+    'ggaction is a JavaScript chart-authoring library built around immutable,\n' +
+    'hierarchical actions. Use this file as a routing index. The linked selective\n' +
+    'HTML routes are canonical; the generated full-text bundle is available at\n' +
+    './llms-full.txt\n' +
+    '\n' +
+    '## Start\n' +
+    '\n' +
+    '- Development/release status and exact source identity: ./version/\n' +
+    '\n' +
+    '- Documentation overview: ./\n' +
+    '- npm installation and first runnable chart: ./getting-started/\n' +
+    '- Local one-tool MCP for compact chart-authoring knowledge: ./mcp/\n' +
+    '- Bounded complete-program bootstrap and canonical capability IDs: ./llm-authoring/\n' +
+    '- Chart recipes: ./recipes/\n' +
+    '- Complete public action reference: ./reference/actions/\n' +
+    '- Supported features and limitations: ./supported-features/\n' +
+    '- Inference and layout troubleshooting: ./troubleshooting/\n' +
+    '\n' +
+    '## Public API layers\n' +
+    '\n' +
+    '- Basic scatter, line, bar, histogram, and heatmap charts: ./api/basic-charts/\n' +
+    '- Chart authoring: ./reference/actions/charts-data/\n' +
+    '- Advanced chart actions: ./reference/actions/advanced/\n' +
+    '- Extension action authoring: ./extension/action-authoring/\n' +
+    '- Primitive extension API: ./extension/primitives/\n' +
+    '- Canvas, SVG, PNG, and PDF rendering: ./api/rendering/\n' +
+    '- Data and scales: ./api/data/ | ./api/scales/\n' +
+    '- Legends and series encodings: ./api/legends/ | ./api/series-encodings/\n' +
+    '- Mark appearance, selection, and highlighting: ./api/appearance/\n' +
+    '- Vertical and horizontal statistical and explicit error bands: ./api/error-bands/\n' +
+    '- Vertical/horizontal Tukey and min–max box plots: ./api/box-plots/\n' +
+    '- Vertical/horizontal categorical gradient plots: ./api/gradient-plots/\n' +
+    '\n' +
+    'Only methods declared on the public ChartProgram TypeScript type are supported\n' +
+    'direct-call actions. Additional wrapped names may appear in action traces but\n' +
+    'are internal operations.\n' +
+    '\n' +
+    '## Chart recipes and tutorials\n' +
+    '\n' +
+    '- Scatterplot: ./recipes/scatterplot/ | ./tutorials/scatterplot/\n' +
+    '- Polar point chart: ./tutorials/polar-points/ | ./api/position-encodings/#polar-positions\n' +
+    '- Line chart: ./recipes/line-chart/ | ./tutorials/line-chart/\n' +
+    '- Histogram: ./recipes/histogram/ | ./tutorials/histogram/\n' +
+    '- Bar chart: ./recipes/bar-chart/ | ./tutorials/grouped-bar/\n' +
+    '- Heatmap: ./recipes/heatmap/ | ./api/basic-charts/#createheatmap\n' +
+    '- Regression scatterplot: ./recipes/regression-scatterplot/ | ./tutorials/regression-scatterplot/\n' +
+    '- Density area: ./recipes/density-area/ | ./tutorials/density-area/\n' +
+    '- Error bar: ./recipes/error-bar/ | ./tutorials/error-bar/\n' +
+    '- Mark selection and highlighting: ./tutorials/mark-selection/ | ./api/appearance/selection-and-highlighting/\n' +
+    '\n' +
+    '## Core concepts\n' +
+    '\n' +
+    '- Immutable ChartProgram: ./concepts/chart-program/\n' +
+    '- Semantic and graphical state: ./concepts/semantic-and-graphics/\n' +
+    '- Hierarchical action traces: ./concepts/actions-and-trace/\n' +
+    '\n' +
+    '## Essential invariants\n' +
+    '\n' +
+    '- Actions accept zero arguments or one option object according to their exact signature and returns a new ChartProgram.\n' +
+    '- Existing programs and caller-owned inputs are never mutated.\n' +
+    '- semanticSpec records chart meaning.\n' +
+    '- graphicSpec stores fully materialized backend-neutral graphics.\n' +
+    '- There is no automatic semantic-to-graphic compiler.\n' +
+    '- Domain actions explicitly invoke graphical materialization.\n' +
+    '- Renderers read graphicSpec only.\n' +
+    '- Omitted values are resolved as explicit option, unique inference, documented\n' +
+    '  default, then an error when no safe choice exists.\n' +
+    '- The first unnamed source dataset is stored as `"data"`; the first unnamed\n' +
+    '  point, line, bar, or area mark uses its type name. Repeated roles require an\n' +
+    '  explicit ID rather than receiving an automatic numeric suffix.\n' +
+    '\n' +
+    '## Runtime and support status\n' +
+    '\n' +
+    '- Exact program and renderer signatures: ./reference/runtime/\n' +
+    '- Exact ChartProgram action type: ./reference/types/\n' +
+    '- Browser Canvas, browser-safe SVG, Node PNG, and vector PDF share one\n' +
+    '  backend-neutral graphicSpec contract.\n' +
+    '- The package is ESM-only. Node entry points require Node.js 20 or later.\n' +
+    '\n' +
+    '\n' +
+    'For extension authors, the installed package includes `node_modules/ggaction/knowledge/extension-authoring.md`. Read that file alongside the installed declarations; it is a guide file, not an importable package entry.\n' +
+    '\n' +
+    '## Selective HTTP reading without MCP\n' +
+    '\n' +
+    'Fetch `./llm/index.json` first. It lists plaintext pages, one JSON card per action,\n' +
+    'and one declaration per named type with its dependencies. Read the task page,\n' +
+    'then only the selected action and its named option types. Follow dependencies\n' +
+    'until the chosen union branch is understood. The complete declaration graph is\n' +
+    'also distributed under `./types/`.\n' +
+    '\n' +
+    "Pin one manifest's `contractId` and verify its SHA-256 hashes. Do not combine\n" +
+    'same-version artifacts from different branches. MCP packets should be obtained\n' +
+    'from the same installed card/resource set; a resolved packet still requires\n' +
+    'execution and numerical/layout validation. The MCP query limit is 500 characters:\n' +
+    'retain the original request in host context, split by task, and reconcile all\n' +
+    'requirements after resolving each part.\n' +
+    '\n' +
+    '## Machine-readable contracts and canonical page inventory\n' +
+    '\n' +
+    '- Selective plaintext pages, action cards, named type dependencies, and artifact identity: ./llm/index.json\n' +
+    '- Full bundle section manifest and hashes: ./llms-manifest.json\n' +
+    '- Typed compact action-card collection: ./actions.json\n' +
+    '- Action-card item schema: ./schemas/action-card.schema.json\n' +
+    '- Action-card collection schema: ./schemas/action-cards.schema.json\n' +
+    '- MCP task-packet schema: ./schemas/task-packet.schema.json\n' +
+    '- Full-bundle manifest schema: ./schemas/llms-manifest.schema.json\n' +
+    '- Resolver intent taxonomy: ./intent-taxonomy.json\n' +
+    '- Resolver intent-taxonomy schema: ./schemas/intent-taxonomy.schema.json\n' +
+    '- Bounded MCP resource catalog: ./mcp-resources.json\n' +
+    '- Bounded MCP resource-catalog schema: ./schemas/mcp-resources.schema.json\n' +
+    '- Exact public ChartProgram declaration: ./types/program.d.ts\n' +
+    '- Tutorials: ./tutorials/\n' +
+    '- Polar Line and Radar Tutorial: ./tutorials/polar-lines/\n' +
+    '- Polar Arc Tutorial: ./tutorials/polar-arcs/\n' +
+    '- Area and Series Layout: ./tutorials/area-layout/\n' +
+    '- Horizon Chart Tutorial: ./tutorials/horizon/\n' +
+    '- Error Band Tutorial: ./tutorials/error-band/\n' +
+    '- Dot, Lollipop, and Dumbbell Plots: ./tutorials/endpoint-plots/\n' +
+    '- Empirical Cumulative Distribution Plots: ./tutorials/ecdf/\n' +
+    '- Horizon Chart Recipe: ./recipes/horizon/\n' +
+    '- Error Band Recipe: ./recipes/error-band/\n' +
+    '- Box Plot Recipe: ./recipes/box-plot/\n' +
+    '- Violin Plot Recipe: ./recipes/violin-plot/\n' +
+    '- Composition Recipe: ./recipes/composition/\n' +
+    '- Facet Recipe: ./recipes/facet/\n' +
+    '- Parallel Coordinates Recipe: ./recipes/parallel-coordinates/\n' +
+    '- Rose Chart Recipe: ./recipes/rose-chart/\n' +
+    '- Gradient Plot Recipe: ./recipes/gradient-plot/\n' +
+    '- Annotation Recipe: ./recipes/annotations/\n' +
+    '- Path Ordering Recipe: ./recipes/path-ordering/\n' +
+    '- Chart Gallery: ./gallery/\n' +
+    '- All Chart Examples: ./gallery/all/\n' +
+    '- Chart API: ./api/\n' +
+    '- Parallel Coordinates: ./api/parallel-coordinates/\n' +
+    '- Canvas: ./api/canvas/\n' +
+    '- Source and Derived Data: ./api/data/source-and-derived/\n' +
+    '- Data Filtering: ./api/data/filtering/\n' +
+    '- Statistical Data Transforms: ./api/data/statistical-transforms/\n' +
+    '- Time-Unit Data Transforms: ./api/data/time-units/\n' +
+    '- Window Data Transforms: ./api/data/window/\n' +
+    '- Rectangular 2D Bins: ./api/data/bin2d/\n' +
+    '- Marks: ./api/marks/\n' +
+    '- Point Marks: ./api/marks/point/\n' +
+    '- Line and Area Marks: ./api/marks/line-area/\n' +
+    '- Bar Marks: ./api/marks/bar/\n' +
+    '- Rule Marks: ./api/marks/rule/\n' +
+    '- Text Marks: ./api/marks/text/\n' +
+    '- Rect Marks: ./api/marks/rect/\n' +
+    '- Encodings: ./api/encodings/\n' +
+    '- Regression: ./api/regression/\n' +
+    '- Error Bars: ./api/error-bars/\n' +
+    '- Violin Plots: ./api/violin-plots/\n' +
+    '- Guides: ./api/guides/\n' +
+    '- Titles: ./api/titles/\n' +
+    '- Program Composition: ./api/composition/\n' +
+    '- Quantitative Positions: ./api/position/quantitative/\n' +
+    '- Temporal Line Positions: ./api/position/temporal/\n' +
+    '- Ordinal Bar Positions: ./api/position/ordinal-bars/\n' +
+    '- Category Ordering: ./api/position/category-ordering/\n' +
+    '- Histogram Positions: ./api/position/histogram/\n' +
+    '- Ordinal Offsets: ./api/position/offsets/\n' +
+    '- Color Encoding: ./api/series/color/\n' +
+    '- Stroke Dash Encoding: ./api/series/stroke-dash/\n' +
+    '- Point Appearance: ./api/appearance/point/\n' +
+    '- Mark Style: ./api/appearance/mark-style/\n' +
+    '- Position Scales: ./api/scales/position/\n' +
+    '- Ordinal and Dash Scales: ./api/scales/ordinal-and-dash/\n' +
+    '- Continuous Color Scales: ./api/scales/continuous-color/\n' +
+    '- Discretized Color Scales: ./api/scales/discretized-color/\n' +
+    '- Missing Scale Values: ./api/scales/missing-values/\n' +
+    '- Coordinates: ./api/coordinates/\n' +
+    '- Axes: ./api/axes/\n' +
+    '- Grids: ./api/grids/\n' +
+    '- Categorical and Size Legends: ./api/legends/categorical/\n' +
+    '- Continuous Legends: ./api/legends/continuous/\n' +
+    '- Composite Legend Symbols: ./api/legends/composite/\n' +
+    '- Editing Legends: ./api/legends/editing/\n' +
+    '- Accessibility: ./accessibility/\n' +
+    '- Runtime and Browser Compatibility: ./compatibility/\n' +
+    '- Responsive Charts: ./responsive-charts/\n' +
+    '- Performance and Large Charts: ./performance/\n' +
+    '- Data Updates and Live Refresh: ./data-updates/\n' +
+    '- Program Inspection: ./inspection/\n' +
+    '- Errors and Recovery: ./errors-and-recovery/\n' +
+    '- Versioning and Documentation Provenance: ./versioning/\n' +
+    '- Fonts and Text Rendering: ./fonts/\n' +
+    '- TypeScript: ./typescript/\n' +
+    '- Advanced Axis Components: ./advanced/axis-components/\n' +
+    '- Mark Actions: ./reference/actions/marks/\n' +
+    '- Encoding Actions: ./reference/actions/encodings/\n' +
+    '- Statistical Layer Actions: ./reference/actions/statistics/\n' +
+    '- Guide, Axis, Grid, and Title Actions: ./reference/actions/guides/\n' +
+    '- Extension Actions: ./reference/actions/extension/\n' +
+    '- Summaries, Bins, and Data Shaping: ./api/data/summaries-and-shaping/\n' +
+    '- Expressions and Normalization: ./api/data/expressions-and-normalization/\n' +
+    '- Missing Keys and Values: ./api/data/missing-data/\n' +
+    '- Data Revisions and Removal: ./api/data/revisions-and-removal/\n' +
+    '- Facets and Field Repetition: ./api/composition/facets/\n' +
+    '- Editing Compositions: ./api/composition/editing/\n' +
+    '- Attached Mark Labels: ./api/marks/labels/\n' +
+    '- Label Collision Layout: ./api/marks/label-layout/\n' +
+    '- Repair missing observations: ./recipes/repair-missing-observations/\n' +
+    '- Compare weighted distributions: ./recipes/compare-weighted-distributions/\n' +
+    '- Switch encoding'... 685 more characters
+  
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/docs/documentation.test.js:1008:10)
+      at Test.runInAsyncScope (node:async_hooks:211:14)
+      at Test.run (node:internal/test_runner/test:931:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+      at Test.postRun (node:internal/test_runner/test:1042:19)
+      at Test.run (node:internal/test_runner/test:970:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:629:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '# ggaction\nggaction is a JavaScript chart-authoring library built around immutable,\nhierarchical actions. Use this file as a routing index. The linked selective\nHTML routes are canonical; the generated full-text bundle is available at\n./llms-full.txt\n\n## Start\n\n- Development/release status and exact source identity: ./version/\n\n- Documentation overview: ./\n- npm installation and first runnable chart: ./getting-started/\n- Local one-tool MCP for compact chart-authoring knowledge: ./mcp/\n- Bounded complete-program bootstrap and canonical capability IDs: ./llm-authoring/\n- Chart recipes: ./recipes/\n- Complete public action reference: ./reference/actions/\n- Supported features and limitations: ./supported-features/\n- Inference and layout troubleshooting: ./troubleshooting/\n\n## Public API layers\n\n- Basic scatter, line, bar, histogram, and heatmap charts: ./api/basic-charts/\n- Chart authoring: ./reference/actions/charts-data/\n- Advanced chart actions: ./reference/actions/advanced/\n- Extension action authoring: ./extension/action-authoring/\n- Primitive extension API: ./extension/primitives/\n- Canvas, SVG, PNG, and PDF rendering: ./api/rendering/\n- Data and scales: ./api/data/ | ./api/scales/\n- Legends and series encodings: ./api/legends/ | ./api/series-encodings/\n- Mark appearance, selection, and highlighting: ./api/appearance/\n- Vertical and horizontal statistical and explicit error bands: ./api/error-bands/\n- Vertical/horizontal Tukey and min–max box plots: ./api/box-plots/\n- Vertical/horizontal categorical gradient plots: ./api/gradient-plots/\n\nOnly methods declared on the public ChartProgram TypeScript type are supported\ndirect-call actions. Additional wrapped names may appear in action traces but\nare internal operations.\n\n## Chart recipes and tutorials\n\n- Scatterplot: ./recipes/scatterplot/ | ./tutorials/scatterplot/\n- Polar point chart: ./tutorials/polar-points/ | ./api/position-encodings/#polar-positions\n- Line chart: ./recipes/line-chart/ | ./tutorials/line-chart/\n- Histogram: ./recipes/histogram/ | ./tutorials/histogram/\n- Bar chart: ./recipes/bar-chart/ | ./tutorials/grouped-bar/\n- Heatmap: ./recipes/heatmap/ | ./api/basic-charts/#createheatmap\n- Regression scatterplot: ./recipes/regression-scatterplot/ | ./tutorials/regression-scatterplot/\n- Density area: ./recipes/density-area/ | ./tutorials/density-area/\n- Error bar: ./recipes/error-bar/ | ./tutorials/error-bar/\n- Mark selection and highlighting: ./tutorials/mark-selection/ | ./api/appearance/selection-and-highlighting/\n\n## Core concepts\n\n- Immutable ChartProgram: ./concepts/chart-program/\n- Semantic and graphical state: ./concepts/semantic-and-graphics/\n- Hierarchical action traces: ./concepts/actions-and-trace/\n\n## Essential invariants\n\n- Actions accept zero arguments or one option object according to their exact signature and returns a new ChartProgram.\n- Existing programs and caller-owned inputs are never mutated.\n- semanticSpec records chart meaning.\n- graphicSpec stores fully materialized backend-neutral graphics.\n- There is no automatic semantic-to-graphic compiler.\n- Domain actions explicitly invoke graphical materialization.\n- Renderers read graphicSpec only.\n- Omitted values are resolved as explicit option, unique inference, documented\n  default, then an error when no safe choice exists.\n- The first unnamed source dataset is stored as `"data"`; the first unnamed\n  point, line, bar, or area mark uses its type name. Repeated roles require an\n  explicit ID rather than receiving an automatic numeric suffix.\n\n## Runtime and support status\n\n- Exact program and renderer signatures: ./reference/runtime/\n- Exact ChartProgram action type: ./reference/types/\n- Browser Canvas, browser-safe SVG, Node PNG, and vector PDF share one\n  backend-neutral graphicSpec contract.\n- The package is ESM-only. Node entry points require Node.js 20 or later.\n\n\nFor extension authors, the installed package includes `node_modules/ggaction/knowledge/extension-authoring.md`. Read that file alongside the installed declarations; it is a guide file, not an importable package entry.\n\n## Selective HTTP reading without MCP\n\nFetch `./llm/index.json` first. It lists plaintext pages, one JSON card per action,\nand one declaration per named type with its dependencies. Read the task page,\nthen only the selected action and its named option types. Follow dependencies\nuntil the chosen union branch is understood. The complete declaration graph is\nalso distributed under `./types/`.\n\nPin one manifest\'s `contractId` and verify its SHA-256 hashes. Do not combine\nsame-version artifacts from different branches. MCP packets should be obtained\nfrom the same installed card/resource set; a resolved packet still requires\nexecution and numerical/layout validation. The MCP query limit is 500 characters:\nretain the original request in host context, split by task, and reconcile all\nrequirements after resolving each part.\n\n## Machine-readable contracts and canonical page inventory\n\n- Selective plaintext pages, action cards, named type dependencies, and artifact identity: ./llm/index.json\n- Full bundle section manifest and hashes: ./llms-manifest.json\n- Typed compact action-card collection: ./actions.json\n- Action-card item schema: ./schemas/action-card.schema.json\n- Action-card collection schema: ./schemas/action-cards.schema.json\n- MCP task-packet schema: ./schemas/task-packet.schema.json\n- Full-bundle manifest schema: ./schemas/llms-manifest.schema.json\n- Resolver intent taxonomy: ./intent-taxonomy.json\n- Resolver intent-taxonomy schema: ./schemas/intent-taxonomy.schema.json\n- Bounded MCP resource catalog: ./mcp-resources.json\n- Bounded MCP resource-catalog schema: ./schemas/mcp-resources.schema.json\n- Exact public ChartProgram declaration: ./types/program.d.ts\n- Tutorials: ./tutorials/\n- Polar Line and Radar Tutorial: ./tutorials/polar-lines/\n- Polar Arc Tutorial: ./tutorials/polar-arcs/\n- Area and Series Layout: ./tutorials/area-layout/\n- Horizon Chart Tutorial: ./tutorials/horizon/\n- Error Band Tutorial: ./tutorials/error-band/\n- Dot, Lollipop, and Dumbbell Plots: ./tutorials/endpoint-plots/\n- Empirical Cumulative Distribution Plots: ./tutorials/ecdf/\n- Horizon Chart Recipe: ./recipes/horizon/\n- Error Band Recipe: ./recipes/error-band/\n- Box Plot Recipe: ./recipes/box-plot/\n- Violin Plot Recipe: ./recipes/violin-plot/\n- Composition Recipe: ./recipes/composition/\n- Facet Recipe: ./recipes/facet/\n- Parallel Coordinates Recipe: ./recipes/parallel-coordinates/\n- Rose Chart Recipe: ./recipes/rose-chart/\n- Gradient Plot Recipe: ./recipes/gradient-plot/\n- Annotation Recipe: ./recipes/annotations/\n- Path Ordering Recipe: ./recipes/path-ordering/\n- Chart Gallery: ./gallery/\n- All Chart Examples: ./gallery/all/\n- Chart API: ./api/\n- Parallel Coordinates: ./api/parallel-coordinates/\n- Canvas: ./api/canvas/\n- Source and Derived Data: ./api/data/source-and-derived/\n- Data Filtering: ./api/data/filtering/\n- Statistical Data Transforms: ./api/data/statistical-transforms/\n- Time-Unit Data Transforms: ./api/data/time-units/\n- Window Data Transforms: ./api/data/window/\n- Rectangular 2D Bins: ./api/data/bin2d/\n- Marks: ./api/marks/\n- Point Marks: ./api/marks/point/\n- Line and Area Marks: ./api/marks/line-area/\n- Bar Marks: ./api/marks/bar/\n- Rule Marks: ./api/marks/rule/\n- Text Marks: ./api/marks/text/\n- Rect Marks: ./api/marks/rect/\n- Encodings: ./api/encodings/\n- Regression: ./api/regression/\n- Error Bars: ./api/error-bars/\n- Violin Plots: ./api/violin-plots/\n- Guides: ./api/guides/\n- Titles: ./api/titles/\n- Program Composition: ./api/composition/\n- Quantitative Positions: ./api/position/quantitative/\n- Temporal Line Positions: ./api/position/temporal/\n- Ordinal Bar Positions: ./api/position/ordinal-bars/\n- Category Ordering: ./api/position/category-ordering/\n- Histogram Positions: ./api/position/histogram/\n- Ordinal Offsets: ./api/position/offsets/\n- Color Encoding: ./api/series/color/\n- Stroke Dash Encoding: ./api/series/stroke-dash/\n- Point Appearance: ./api/appearance/point/\n- Mark Style: ./api/appearance/mark-style/\n- Position Scales: ./api/scales/position/\n- Ordinal and Dash Scales: ./api/scales/ordinal-and-dash/\n- Continuous Color Scales: ./api/scales/continuous-color/\n- Discretized Color Scales: ./api/scales/discretized-color/\n- Missing Scale Values: ./api/scales/missing-values/\n- Coordinates: ./api/coordinates/\n- Axes: ./api/axes/\n- Grids: ./api/grids/\n- Categorical and Size Legends: ./api/legends/categorical/\n- Continuous Legends: ./api/legends/continuous/\n- Composite Legend Symbols: ./api/legends/composite/\n- Editing Legends: ./api/legends/editing/\n- Accessibility: ./accessibility/\n- Runtime and Browser Compatibility: ./compatibility/\n- Responsive Charts: ./responsive-charts/\n- Performance and Large Charts: ./performance/\n- Data Updates and Live Refresh: ./data-updates/\n- Program Inspection: ./inspection/\n- Errors and Recovery: ./errors-and-recovery/\n- Versioning and Documentation Provenance: ./versioning/\n- Fonts and Text Rendering: ./fonts/\n- TypeScript: ./typescript/\n- Advanced Axis Components: ./advanced/axis-components/\n- Mark Actions: ./reference/actions/marks/\n- Encoding Actions: ./reference/actions/encodings/\n- Statistical Layer Actions: ./reference/actions/statistics/\n- Guide, Axis, Grid, and Title Actions: ./reference/actions/guides/\n- Extension Actions: ./reference/actions/extension/\n- Summaries, Bins, and Data Shaping: ./api/data/summaries-and-shaping/\n- Expressions and Normalization: ./api/data/expressions-and-normalization/\n- Missing Keys and Values: ./api/data/missing-data/\n- Data Revisions and Removal: ./api/data/revisions-and-removal/\n- Facets and Field Repetition: ./api/composition/facets/\n- Editing Compositions: ./api/composition/editing/\n- Attached Mark Labels: ./api/marks/labels/\n- Label Collision Layout: ./api/marks/label-layout/\n- Repair missing observations: ./recipes/repair-missing-observations/\n- Compare weighted distributions: ./recipes/compare-weighted-distributions/\n- Switch encoding'... 685 more characters,
+    expected: /\.md(?:#|\b)/,
+    operator: 'doesNotMatch'
+  }

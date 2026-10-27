@@ -1,0 +1,248 @@
+{
+  "snapshot": "202b7afd4146a691c136964c4cc53f9c37444513",
+  "counts": {
+    "publicMarkdownPages": 150,
+    "jsBlocks": 675,
+    "tsBlocks": 974,
+    "registeredPrograms": 46,
+    "apiAdvancedExtensionSnippetRecords": 332,
+    "registeredWithinSnippetRecords": 2
+  },
+  "missingCanvasExamples": [
+    {
+      "file": "docs/api/marks/bar.md",
+      "line": 29,
+      "heading": "`createBarMark({ id?, data?, missing?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight?, cornerRadiusBottomRight?, cornerRadiusBottomLeft?, lineCap?, lineJoin?, miterLimit? } = {})`",
+      "exactCode": "const program = chart()\n  .createData({ values: cars })\n  .createBarMark({ opacity: 0.78, stroke: \"#0f172a\", strokeWidth: 1.25 })\n  .encodeHistogram({ field: \"Displacement\" });",
+      "original": {
+        "ok": false,
+        "message": "Graphical layout requires Canvas dimensions and margin."
+      },
+      "withCanvasOnly": {
+        "ok": true
+      }
+    },
+    {
+      "file": "docs/api/marks/line-area.md",
+      "line": 23,
+      "heading": "`createLineMark({ id?, data?, missing?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed?, lineCap?, lineJoin?, miterLimit? } = {})`",
+      "exactCode": "const program = chart()\n  .createData({ values: cars })\n  .createLineMark({ stroke: \"#7c3aed\", opacity: 0.55 })\n  .encodeX({ field: \"Year\", fieldType: \"temporal\" })\n  .encodeY({ field: \"Acceleration\", aggregate: \"mean\" });",
+      "original": {
+        "ok": false,
+        "message": "Graphical layout requires Canvas dimensions and margin."
+      },
+      "withCanvasOnly": {
+        "ok": true
+      }
+    },
+    {
+      "file": "docs/api/marks/line-area.md",
+      "line": 125,
+      "heading": "Ordered categories",
+      "exactCode": "const layered = chart()\n  .createData({ values: cars })\n  .createBarMark({ id: \"bars\" })\n  .encodeX({ field: \"Year\", fieldType: \"temporal\" })\n  .encodeY({ field: \"Acceleration\", aggregate: \"mean\" })\n  .createLineMark({ id: \"trend\", strokeWidth: 3 });",
+      "original": {
+        "ok": false,
+        "message": "Graphical layout requires Canvas dimensions and margin."
+      },
+      "withCanvasOnly": {
+        "ok": true
+      }
+    },
+    {
+      "file": "docs/api/marks/line-area.md",
+      "line": 207,
+      "heading": "Polar lines and radar paths",
+      "exactCode": "const radar = chart()\n  .createData({ values: rows })\n  .createLineMark({ closed: true, strokeWidth: 2.5 })\n  .encodeTheta({ field: \"category\", fieldType: \"nominal\" })\n  .encodeR({ field: \"score\", scale: { domain: [0, 1] } })\n  .encodeGroup({ field: \"series\" });",
+      "original": {
+        "ok": false,
+        "message": "Graphical layout requires Canvas dimensions and margin."
+      },
+      "withCanvasOnly": {
+        "ok": true
+      }
+    },
+    {
+      "file": "docs/api/marks/line-area.md",
+      "line": 234,
+      "heading": "`createAreaMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing?, lineCap?, lineJoin?, miterLimit? } = {})`",
+      "exactCode": "const area = chart()\n  .createData({ values: intervalRows })\n  .createAreaMark()\n  .encodeX({ field: \"year\", fieldType: \"temporal\" })\n  .encodeYRange({ lower: \"lower\", upper: \"upper\" });",
+      "original": {
+        "ok": false,
+        "message": "Graphical layout requires Canvas dimensions and margin."
+      },
+      "withCanvasOnly": {
+        "ok": true
+      }
+    },
+    {
+      "file": "docs/api/marks/point.md",
+      "line": 35,
+      "heading": "`createPointMark({ id?, data?, missing?, shape?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? } = {})`",
+      "exactCode": "const program = chart()\n  .createData({ values: cars })\n  .createPointMark({ opacity: 0.48, stroke: \"white\", strokeWidth: 1.25 })\n  .encodeX({ field: \"Horsepower\" })\n  .encodeY({ field: \"Miles_per_Gallon\" });",
+      "original": {
+        "ok": false,
+        "message": "Graphical layout requires Canvas dimensions and margin."
+      },
+      "withCanvasOnly": {
+        "ok": true
+      }
+    },
+    {
+      "file": "docs/recipes/line-chart.md",
+      "line": 62,
+      "heading": "The library infers",
+      "exactCode": "const layered = chart()\n  .createData({ values })\n  .createBarMark({ id: \"bars\" })\n  .encodeX({ field: \"date\", fieldType: \"temporal\" })\n  .encodeY({ field: \"value\", aggregate: \"mean\" })\n  .createLineMark({ id: \"trend\", strokeWidth: 3 });",
+      "original": {
+        "ok": false,
+        "message": "Graphical layout requires Canvas dimensions and margin."
+      },
+      "withCanvasOnly": {
+        "ok": true
+      }
+    }
+  ],
+  "abbreviatedSignatures": [
+    {
+      "file": "docs/api/appearance/mark-style.md",
+      "line": 164,
+      "action": "encodeBarWidth",
+      "omitted": [
+        "interval"
+      ]
+    },
+    {
+      "file": "docs/api/data/source-and-derived.md",
+      "line": 217,
+      "action": "createSummaryData",
+      "omitted": [
+        "missing",
+        "empty"
+      ]
+    },
+    {
+      "file": "docs/api/data/statistical-transforms.md",
+      "line": 10,
+      "action": "createRegressionData",
+      "omitted": [
+        "robustIterations"
+      ]
+    },
+    {
+      "file": "docs/api/data/summaries-and-shaping.md",
+      "line": 12,
+      "action": "createSummaryData",
+      "omitted": [
+        "missing",
+        "empty"
+      ]
+    },
+    {
+      "file": "docs/api/marks/bar.md",
+      "line": 21,
+      "action": "createBarMark",
+      "omitted": [
+        "clip",
+        "orientation"
+      ]
+    },
+    {
+      "file": "docs/api/marks/bar.md",
+      "line": 78,
+      "action": "editBarMark",
+      "omitted": [
+        "clip",
+        "missing"
+      ]
+    },
+    {
+      "file": "docs/api/marks/line-area.md",
+      "line": 15,
+      "action": "createLineMark",
+      "omitted": [
+        "clip"
+      ]
+    },
+    {
+      "file": "docs/api/marks/line-area.md",
+      "line": 139,
+      "action": "editLineMark",
+      "omitted": [
+        "clip"
+      ]
+    },
+    {
+      "file": "docs/api/marks/line-area.md",
+      "line": 226,
+      "action": "createAreaMark",
+      "omitted": [
+        "clip"
+      ]
+    },
+    {
+      "file": "docs/api/marks/line-area.md",
+      "line": 278,
+      "action": "editAreaMark",
+      "omitted": [
+        "clip"
+      ]
+    },
+    {
+      "file": "docs/api/marks/point.md",
+      "line": 14,
+      "action": "createPointMark",
+      "omitted": [
+        "clip"
+      ]
+    },
+    {
+      "file": "docs/api/marks/point.md",
+      "line": 64,
+      "action": "editPointMark",
+      "omitted": [
+        "clip",
+        "missing"
+      ]
+    },
+    {
+      "file": "docs/api/marks/rect.md",
+      "line": 13,
+      "action": "createRectMark",
+      "omitted": [
+        "clip"
+      ]
+    },
+    {
+      "file": "docs/api/marks/rect.md",
+      "line": 103,
+      "action": "editRectMark",
+      "omitted": [
+        "clip",
+        "missing"
+      ]
+    },
+    {
+      "file": "docs/api/marks/rule.md",
+      "line": 13,
+      "action": "createRuleMark",
+      "omitted": [
+        "clip"
+      ]
+    }
+  ],
+  "defaultChecks": {
+    "pointWithStrokeOnly": {
+      "fill": "#4c78a8",
+      "stroke": "red",
+      "strokeWidth": 1,
+      "x": 340,
+      "y": 185,
+      "radius": 3
+    },
+    "timeUnitWithoutAs": [
+      {
+        "date": "2024-05-17T13:45:00Z",
+        "date_month": 1714521600000
+      }
+    ]
+  }
+}

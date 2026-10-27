@@ -1,0 +1,150 @@
+"""Authored task decomposition. All entries are proposed work, never results."""
+GROUPS = [
+('WP-00','qualification-delivery',[
+('baseline','기준 버전과 실행 경로 고정','HEAD/package/lock와 public exports/action count를 다시 inventory한다;현재 CI·coverage·docs·release script의 실제 명령을 저장한다;source-map의 symbol/hash와 drift 정책을 기록한다','clean baseline과 재현 가능한 command manifest; 기존 테스트 실패는 신규 변경 실패와 분리','다른 checkout의 버전·완료 숫자 재사용 금지','AT-01'),
+('oracle-harness','독립 oracle와 fixture harness','literal fixture schema와 abs/rel tolerance comparator를 만든다;numeric/geometry/state/time/asset 각 oracle owner를 분리한다;src import 없는 독립 수식과 seeded input generator를 작성한다','같은 fixture+seed의 expected/hash 동일; wrong result를 주면 반드시 실패','production helper로 expected 생성 금지','AT-02'),
+('test-discovery','시험 발견과 evidence 기록','새 capability 시험 파일의 runner discovery를 검증한다;result evidence에 commit/command/exit/hash를 필수로 둔다;not-run과 pass를 분리하는 completion manifest validator를 만든다','0 discovered test와 missing artifact는 종료 실패','empty suite 성공·계획 import로 자기검증 금지','AT-01 AT-02'),
+]),
+('WP-02','core',[
+('row-identity','명시 key와 생성 row identity','typed scalar/tuple codec과 ordering을 구현한다;createData와 reviseData에 logical identity와 persisted tokens를 연결한다;duplicate/null/unkeyed full replacement 정책을 preflight한다','keyed a/b 순서·값 변경 후 key 유지; unkeyed 전체 교체는 새 key','row value hash·delimiter collision·삭제 token 재사용 금지','AT-06 AT-07'),
+('derived-lineage','모든 transform의 final grain lineage','1:1/fold/flatten/aggregate/bin/stack/lookup의 key adapter를 구현한다;shared lineage table과 reverse lookup을 만든다;facet/series item grain과 원본 contributing rows를 연결한다','aggregate A=[r1,r2], filter 뒤 A=[r1]; lookup 양쪽 role 보존','array index를 stable identity로 노출 금지','AT-08'),
+('scene-identity','Scene selection과 revision 연결','scene의 value-token matching을 stable item metadata로 교체한다;selection/highlight와 inspection에 row/series key를 전달한다;revise와 nested child 이동의 enter/update/exit reason을 검증한다','b 값만 변경하면 b update; topology 변경 path는 safe fade','primitive child index로 다른 항목에 selection 이동 금지','AT-06 AT-07 AT-08'),
+]),
+('WP-03','core',[
+('resource-registry','Typed resource schema와 ownership','resources discriminator와 validators/selectors를 구현한다;kind/id/revision ref collector와 cycle validator를 기존 registry에 연결한다;prepared result의 source revision과 owned buffers를 검증한다','동일 id 다른 kind 구분; stale result와 cycle atomic rejection','materializationConfigs에 semantic result 중복 저장 금지','AT-10'),
+('resource-lifecycle','리소스 edit remove와 재계산','create/edit/replace/remove의 lifecycle을 정한다;restrict/cascade preflight와 shared user resource 보호를 구현한다;domain dependency closure를 기존 ordered materialization plan에 연결한다','node drag→route/hit만 갱신; source feature edit→inference 이후 갱신','dangling ref·partial trace·hidden compile 금지','AT-10'),
+('schema-migration','Schema 4와 역사적 program 복원','schema1/2/3 검증 후4 migration을 순서대로 구현한다;selection index를 saved row key로 변환하고 ambiguous ref를 거부한다;fresh process serialize/load/edit/remove와 tagged scalar 왕복을 시험한다','기존3 fixture의 의미/graphics 보존; 신규resource 복원 뒤 편집 가능','schema3 의미 소급 변경·function/DOM 저장 금지','AT-09 AT-10'),
+]),
+('WP-04','geometry-design',[
+('compound-path','복수 subpath validator와 path builder','M/L/C/Z state machine을 구현한다;fillRule과 compound clip schema를 공통 validator에 추가한다;per-path command limit와 empty/closed/open subpath를 검증한다','hole fixture 면적84, island 포함88; invalid command 위치 진단','white polygon으로 hole 덮기 금지','AT-11 AT-12'),
+('geometry-math','Bounds flatten stroke와 clip kernel','cubic derivative extrema를 정확 평가한다;adaptive de Casteljau flatten과 arc-to-cubic을 구현한다;winding/evenodd 및 segment distance에 쓰일 공통 geometry 결과를 만든다','cubic y최대7.5; rotated/clipped occupied bounds가 실제 ink 포함','endpoint만 bounds·curve 샘플 수 임의 고정 금지','AT-12'),
+('compound-render','모든 renderer와 scene의 복합 path','Canvas/SVG/native PNG/PDF의 path/fill/clip을 확장한다;primitive editing·scene serialization·persistence를 연결한다;transparent overlay hole과 open stroke를 같은 run에서 비교한다','4formats의 hole topology 동일; unsupported fill 무음대체0','한 backend 성공을 전체 지원으로 집계 금지','AT-11 AT-12'),
+]),
+('WP-06','data-statistics',[
+('expression-ast','안전한 AST와 typed function registry','기존 computed AST를 inventory한 뒤 compatible 확장을 설계한다;closed node/function schema와 null/short-circuit/date 규칙을 구현한다;depth/node budget과 parameter ref extraction 및 CSV/JSON resolver/field-path 계약을 추가한다','if의 미선택 divide-by-zero branch 미평가; unknown function error','eval/global/getter 실행 금지','AT-16'),
+('statistics-oracles','통계와 pivot LOESS 경계 보강','현재 stats의 옵션/출력/lineage matrix를 만든다;독립 summary/quantile/bin/window/regression/KDE fixtures를 추가한다;pivot duplicate/LOESS singular/weight/empty 정책을 구현한다','명시 linear q25=1.75, variance1, Gaussian f0=.3989422804014327','기존 default를 test에 맞게 바꾸기 금지','AT-17'),
+('time-transform','Timezone과 calendar용 날짜 grain','civil day/timeUnit의 timezone을 명시한다;DST/윤년/연말/weekStart fixtures를 작성한다;date aggregate와 missing date completion을 lineage에 연결한다','2024년366 civil days; DST날 한 cell','날짜 증가를 고정24h ms로 구현 금지','AT-17'),
+('conditional-dataflow','Parameter와 조건부 encoding invalidation','first-match condition AST와 otherwise schema를 구현한다;parameter→filter→stats→scale→mark/guide closure를 계산한다;inactive branch type validation과 cycle rejection을 추가한다','모든 condition branch 실행 fixture; empty filter domain 갱신','opacity0 falsy 누락·stale domain 금지','AT-18'),
+]),
+('WP-05','geometry-design',[
+('paint-resources','7가지 pattern과 gradient','canonical tile geometry 및 coordinate-space/phase를 구현한다;radial gradient/stop validation과 shadow/halo/outline/blend 지원표를 추가한다;SVG/Canvas/PNG/PDF vector lowering과 alpha를 맞춘다','7pattern×4backend, clip/phase/opacity 동일','solid fill fallback·alpha 두 번 곱하기 금지','AT-13'),
+('image-resolver','이미지 resolver와 offline 자원','hash/MIME/byte budget/abort를 가진 host resolver를 만든다;image fit/align/clip을 materialize한다;bundle payload와 export preflight를 연결한다','200×100 contain→100×50 y25; abort 뒤 callback0','renderer fetch·URI만 저장하고 offline-ready 주장 금지','AT-04 AT-14'),
+('font-metrics','Font identity와 text rematerialization','font bytes hash와 metric provider를 고정한다;load completion에 dependency closure를 실행한다;한글/emoji/combining/long labels의 line origins를 검증한다','실제 render font와 측정 font 일치; late font stale layout0','renderer 재wrap·host font로 oracle 대체 금지','AT-04 AT-15'),
+]),
+('WP-08','structure-recipes',[
+('hierarchy-layouts','Hierarchy tree와 treemap','공통 hierarchy validator를 구축하고 partition과 공유한다;tidy tree contour separation과 radial adapter를 구현한다;slice-dice/squarify의 containment/area를 검증한다','cycle/orphan error; child area 합·node key 보존','tree와partition에 다른 hierarchy parser 중복 금지','AT-22'),
+('graph-layouts','Observed graph와 fixed circular force 배치','GraphResource node/edge validation을 구현한다;fixed/circular와 seeded fixed-iteration force kernel을 만든다;component packing과 pinned node를 검증한다','same seed→same layout; fixed node 부동; adjacency 불변','force layout으로 edge inference 실행 금지','AT-23'),
+('flow-layouts','Sankey DAG와 cyclic routing','flow value/imbalance와 column thickness를 계산한다;DAG rank와 fixed-iteration overlap solve를 구현한다;SCC condensation/feedback/self-loop lanes를 구현한다','edge width=value×공통k; cyclic edge 삭제0','cycle를 잘라 DAG로 위장 금지','AT-23'),
+('contour-layouts','Grid contour와 density contour','regular grid/threshold contract를 구현한다;marching squares saddle decider와 stitch/hole classification을 만든다;point-density를 동일 grid 입력으로 낮춘다','saddle/hole/island/empty topology independent fixture 일치','disconnected ring 연결·heatmap으로 contour 대체 금지','AT-24'),
+('calendar-layout','Calendar cell과 month boundary','civil-day data를 week/day cells로 배치한다;month outline/labels와 missing date 정책을 구현한다;reorder/resize/selection lineage를 연결한다','윤년/연말/DST/weekStart cell mapping 정확','date label 문자열 기반 잘못된 정렬 금지','AT-25'),
+]),
+('WP-22','hierarchy-partition',[
+('partition-values','공통 hierarchy value mode','leaf-sum/inclusive/own-plus-children을 normalize한다;residual/forest/zero-total/deep tree를 반복 DFS로 계산한다;resolved order와 node key를 저장한다','root10/A6/B4; inclusive child합 초과 error','internal value 이중합산·residual fake child 금지','AT-63'),
+('partition-intervals','Normalized partition 구간','prefix weight로 u0/u1/depth를 계산한다;compensated sum과 last endpoint 보정을 적용한다;layoutHierarchy partition result와 inspect를 연결한다','A[0,.6],A1[0,.2],A2[.2,.6],B[.6,1]','padding을 normalized 데이터에 섞기 금지','AT-62 AT-63'),
+('partition-marks','Icicle와 Sunburst materializer','Cartesian orientation과 polar radius policy를 구현한다;rootVisible/padding/tiny wedge/label을 처리한다;공통 partition owner를 selection/highlight/scene에 등록한다','동일 node/value/순서; width600와 angle1.2π','두 chart 별도 집계·selection 구현 금지','AT-62 AT-64'),
+('partition-navigation','Focus breadcrumb와 bend 준비','focus view interval과 nearest surviving ancestor를 구현한다;keyboard navigation metadata와 selected key를 보존한다;bend kernel의 b0/b1 reference geometry를 작성한다','focus A 후 A1 구간[0,1/3]; endpoint와현재hit 통합 의무 기록','focus 시 원 hierarchy 파괴 금지','AT-65'),
+]),
+('WP-24','graph-inference',[
+('graph-metrics','Metric preprocessing과 stable edge key','typed feature extraction과 standardize/minmax를 구현한다;Euclidean/Manhattan/cosine/Jaccard/great-circle을 검증한다;ruleId 기반 edge key와 source revision provenance를 저장한다','zero vector/empty Jaccard/geo meter/null 계약 일치','추론 관계를 observed로 기록 금지','AT-71 AT-74'),
+('graph-neighbors','kNN radius similarity exact rules','brute-force distance reference를 작성한다;directed/union/mutual kNN과 inclusive threshold를 구현한다;ties/duplicate points/zero edges/n≤1 정책을 검증한다','k1 fixture directed4/union3/mutual1, radius2 edges2','k silent clamp·distance0 edge 제거 금지','AT-70 AT-71'),
+('graph-rules','MST forest group sequence','deterministic Kruskal과 candidate graph connectivity를 구현한다;clique/star의 예산과 hub validation을 구현한다;grouped sequence lag/tie/maxGap을 구현한다','MST cost10; disconnected는 explicit forest만 허용','원래 없는 edge를 group 경계 넘어 생성 금지','AT-72'),
+('graph-search-revision','Exact accelerator approximate와 수정 연결','KD/grid 결과를 brute-force와 전수 비교한다;opt-in seeded approximate 후보+exact rerank와 recall evidence를 만든다;data/k/layout/resize의 invalidation을 분리한다','exact equality; approximate recall 기준·seed 명시; drag topology 유지','무음 approximate/sampling·unknown recall pass 금지','AT-73 AT-74'),
+]),
+('WP-07','geometry-design',[
+('theme-precedence','Native theme과 property provenance','theme closed schema와 defaults precedence를 구현한다;false/0/omission/reset 규칙을 기존 action과 맞춘다;paint-only와 text-layout invalidation을 분리한다','explicit override 우선; winning source inspect 가능','외부 theme 복제·색편집에 topology 재계산 금지','AT-19'),
+('layout-solver','Guide와 responsive layout solve','text/guide/reserved-lane/plot 순서의 solve를 만든다;bounded fixed point와 layout-unsatisfied를 구현한다;Canvas edit와 layout resource edit의 동등성을 시험한다','fixed dimensions 유지; 4회 미수렴 error','Canvas 자동확대·font 몰래축소 금지','AT-20'),
+('nested-composition','Nested facet와 shared guide 정렬','occupied topology와 full child bounds를 합성한다;ragged rows/header/footer/legend/title 충돌을 검사한다;resize/font-load/revise 후 ancestor snapshots를 갱신한다','3행 long-label fixture plot/header/footer 정렬','mark-only bounds·child root Canvas만 resize 금지','AT-20 AT-21'),
+]),
+('WP-25','edge-bundling',[
+('route-resource','Edge route 공통 kernel과 budget','route schema/normalization/endpoint invariant를 구현한다;input immutability/typed key/sync prepared result를 검증한다;candidate/sample budget와 abort boundary를 추가한다','edge count/key/direction/weight/adjacency/node positions 동일','incomplete preview를 canonical route로 저장 금지','AT-75 AT-82'),
+('hierarchical-bundling','Hierarchy path와 B-spline bundling','mapping/LCA/path controls를 계산한다;strength straightening과 clamped spline을 구현한다;missing mapping/forest/strength0/1을 시험한다','β0 straight; exact LCA path; endpoint 고정','비계층 평균곡선으로 HEB 대체 금지','AT-76'),
+('force-edge-bundling','FDEB compatibility와 iterative solver','angle/scale/position/visibility numeric oracle를 만든다;subdivision/spring/attraction schedule을 구현한다;double buffer·opposite direction·zero distance를 검증한다','parallel offset.1 compatibility10/11; permutation invariant','in-place updates·spring constant 식 임의 변경 금지','AT-77'),
+('density-bundling','KDE field gradient와 vector advection','arc-length weighted splat와 compact kernel을 구현한다;gradient/bilinear/advection/smoothing/resampling을 반복한다;direction channels/endpoints/grid halo를 검증한다','rho0=1,rho.5=.5625,rho1=0; vector routes 보존','density image만 반환·sampling 수에 따른 weight inflation 금지','AT-78'),
+('edge-path-bundling','Weighted path lock와 stretch','length^d 우선순위와 Dijkstra tie를 구현한다;skip/lock을 순서대로 적용하고 provenance path를 저장한다;directed/disconnected/stretch/smoothing fallback을 검증한다','AC→AB+BC, maxStretch1.2이면 straight; path 실제존재','가상 shortcut·semantic weight를 routing cost로 혼용 금지','AT-79'),
+('bundling-consumers','Bundling 선택 worker cache export 연결','graph edge materializer와 semantic candidate metadata를 연결한다;worker result revision/hash/cache keys를 구현한다;4renderer route 동등성과 추후 current-frame/geo 의무를 등록한다','overlap 원 edge 후보 보존; abort/callback leak0','junction node 생성·PNG route 저장 금지','AT-80 AT-81 AT-82'),
+]),
+('WP-10','geo',[
+('geometry-data','GeoJSON TopoJSON 정규화','모든 geometry discriminator와 null feature를 validate한다;TopoJSON delta/transform/reverse/shared arc를 decode한다;feature key/raw asset hash와 source lineage를 저장한다','hole/island/collection/null identity 보존','ring 자동보수·다중 topo object 임의선택 금지','AT-30'),
+('projection-kernels','Projection registry와 forward inverse','15종 지원표와 type별 option schema를 만든다;검증된 pure dependency의 version/license를 고정한다;raw numeric와 visible-domain roundtrip을 시험한다','Mercator45 y=.881373587; orthographic backside null','projection 이름만 등록하고 identity 반환 금지','AT-29'),
+('geo-stream','Date line clip fit와 geo marks','spherical split/clip/resample/projection/planar clip을 구현한다;fit degeneracy와 shape/point/line/graticule을 materialize한다;hole/antimeridian/pole의 scene/hit metadata를 만든다','179→−179 world-span 선0; planar fit scale5 tx25','endpoint visibility만으로 segment drop 금지','AT-29 AT-30'),
+('geo-join-lod','Geometry join과 hierarchy LOD','typed join duplicate/unmatched diagnostics를 구현한다;shared topology simplification과 hysteresis level을 적용한다;selection/annotation의 feature mapping을 보존한다','enter4.2 exit3.8 사이 level 안정; unmatched geometry 유지','feature name fuzzy repair·county selection을 임의state로 변경 금지','AT-31'),
+('geo-camera','Camera navigation과 viewport contract','pan/zoom/rotate/fit/reset/resize pure commands를 구현한다;pointer anchor와 composite inverse를 검증한다;interaction/tween용 camera state와 clipping 정보를 제공한다','zoom 전후 anchor≤.25px; reset exact; hidden inverse null','camera를 renderer mutable global로 저장 금지','AT-32'),
+]),
+('WP-11','interaction',[
+('hit-shapes','Geometry별 exact hit와 CSS 좌표','root/child transforms inverse와 CSS local 변환을 구현한다;compound fill/stroke/clip/image/text hit를 작성한다;DPR1/2/3과 rotated nested composition을 시험한다','same CSS point→same semantic key, hole은hit없음','DPR 이중적용·clip밖hit 금지','AT-33'),
+('hit-index','공간 인덱스와 guide semantic roles','bounds broadphase와 exact narrowphase를 분리한다;guide/title/header roles 및 z-order candidate 정렬을 연결한다;cache를 scene revision에 묶고 row lineage를 반환한다','axis/legend/mark target 정확; duplicate primitive owner1개','frontmost 후보만 남겨 bundle 정보 손실 금지','AT-33'),
+('hit-frame','Frame hit와 transition bridge','current scene index 업데이트 API를 정의한다;enter/exit/crossfade visibility와 semantic dedupe를 구현한다;animation sampler 없이 synthetic intermediate scenes로 먼저 검증한다','mid-frame 위치에서hit, final-only 위치는miss','애니메이션 최종 scene만 사용 금지','AT-34'),
+]),
+('WP-26','qualification-delivery',[
+('single-y-policy','다섯 경계의 단일 Y 검증','frame owner와 scale binding collector를 만든다;create/edit/schema/composition/load에 한 validator를 연결한다;hidden/mirror/overlap 우회와합법 y2/panels를 시험한다','same-frame2Y error; separate panels와range y2 pass','axis만숨겨 정책 통과 금지','AT-85 AT-86'),
+('native-api-policy','명칭과 조합 및 제외 정책','Pyramid 최종명과 stage 의미를 catalog에 제안한다;Marginal/Bullet/Combo 전용constructor 추가를 막는다;KPI/Gauge·set visualization의 scope metadata를 정리한다','현재 필수 API에 excluded facade0; recipe는공통actions','보류 기능을 generic resource로 몰래 재도입 금지','AT-83 AT-84 AT-87'),
+('native-boundaries','외부 정합성 없는 core 경계','core/event/default/dependency에 외부 engine 요구가 없는지 검사한다;active native/USR와 historical reference를 분리한다;release qualification 분모를30요구/79시험군으로 고정한다','Flint/translator/corpus parity 필수의존0','외부 참고2279행을pass 또는required로 집계 금지','AT-88 AT-92'),
+]),
+('WP-09','structure-recipes',[
+('pyramid-ohlc-waterfall','Pyramid OHLC waterfall 역할 구현','각 facade의 primitive review target을 준비한다;stage/trapezoid와OHLC/range/waterfall누적을 기존marks로 낮춘다;create/edit/revise/hit/labels를 compound owner에 연결한다','Pyramid widths100/60→60/20→20/20; OHLC inequality검증','stage자동정렬·KPI/Gauge facade 추가 금지','AT-26 AT-27 AT-83'),
+('trail-native-variants','Trail과 polar 통계 variant','variable-width ribbon join/cap과missing breaks를 구현한다;rose/radar/streamgraph/violin의 현재 계약을 보강한다;negative/zero/bandwidth/baseline fixture를 실행한다','width/area/angle 의미독립; streamgraph baseline oracle','line stroke width 하나로 trail 대체 금지','AT-26 AT-28'),
+('table-sparkline','Cell table과 compact chart recipe','row/column keyed cell layout와text formatter 및 bar-table/inline-sparkline을 만든다;table selection/resize/sort와accessible data를 연결한다;sparkline/reference-band를 기존actions로 조합한다','cell key 유지; static4formats와DOM data의 동일값','HTML-only table로 export 의무 회피 금지','AT-26 AT-27'),
+('composition-recipes','Marginal Bullet Combo 종단 recipe','public domain action만으로3개 recipe를 작성한다;shared scale/frame/order와linked lineage를 검증한다;AST lint·serialize/revise/resize/render를 예제로 고정한다','dedicatedconstructor0, rawgraphic0, same-frame Y1','명목상 recipe가 private helper에 기대기 금지','AT-26 AT-84'),
+]),
+('WP-12','interaction',[
+('selection-state','Persistent selection과 parameter bindings','items/range/predicate와mode/empty/resolve를 구현한다;logical key와linked targets를 저장한다;revise/delete/hidden selection reconciliation을 검증한다','toggle/nearest/empty/union/intersection 의미정확','index만 저장·empty를항상all로취급 금지','AT-37'),
+('gesture-controller','Pointer capture와 gesture state machine','armed/dragging/cancel state reducer를 구현한다;threshold/priority/modifier/pinch arbitration을 적용한다;실제pointer/touch/keyboard로up/cancel/lostcapture/blur를 시험한다','drag100move→commit1 또는cancel1','move별commit·lateup 중복commit 금지','AT-35 AT-36'),
+('brush-lasso','Brush lasso angular와 scale inversion','x/y/xy categorical/log/time brush를 구현한다;angular seam union과lasso polygon selection을 구현한다;empty brush/cancel과preview overlay를 검증한다','wrap350°→10°는경계양쪽선택; log inverse정확','screen polygon을domain polygon으로저장 금지','AT-36'),
+('linked-direct-controls','Linked filter legend reorder annotation','origin transaction으로linked propagation을 구현한다;legend visibility/reorder/parameter controls/context actions를 연결한다;node drag/partition focus/geo navigation과keyboard 경로를 연결한다','linkedloop0; filtered scale변경; focus/selection유지','외부preset 명칭·개수에API 맞추기 금지','AT-35 AT-38 AT-65 AT-80'),
+]),
+('WP-14','animation',[
+('transition-plan','Stable matching과 transition 계획','scene item identity로enter/update/exit를 분류한다;primitive/topology/coordinate compatible kernel을 선택한다;plan schema/version/options/assets와reason을 저장한다','reorder는update, keyed value변경identity유지','path string 또는array index matching 금지','AT-42'),
+('transition-sampler','Deterministic sampler와typed kernels','numeric/color/angle/log interpolation을 구현한다;partition bend/geo camera/bundle endpoint kernel을 연결한다;fixed t0/.25/.5/.75/1과current-frame hit를 시험한다','linear10→30 중간20; exact endpoints; nodeattachment','매frame source data inference·topology morph 강행 금지','AT-42 AT-44 AT-65 AT-81'),
+('animation-player','Virtual clock과 timeline playback','play/pause/seek/reverse/rate/repeat를 reducer로구현한다;current-frame interrupt와terminalPromise를 연결한다;zero-duration/reducedmotion/dispose를 검증한다','interruption frame연속; terminal1회; disposedRAF0','벽시계기반golden·old endpoint로jump 금지','AT-43'),
+('animation-envelope','Animation 저장과 frame export','endpoint program/resource/font/kernel payload를bundle한다;fresh process에서network없이deserialize/sample한다;time list와fps frame export를4renderer로연결한다','same time same scene hash; missingkernel 명시오류','hash만 저장후offline replay 주장 금지','AT-45'),
+]),
+('WP-13','interaction',[
+('session-transactions','Committed baseline과 preview transaction','session owner와command reducer를구현한다;preview/commit/cancel/reset/clear/undo를분리한다;atomic command preflight와reentrant queue를추가한다','cancel baseline동일, commit history+1, reset의미정확','preview baseline누적변경 금지','AT-39'),
+('session-events','Native events와 async settlement','eventpayload와origin/revision/phase를검증한다;commit→settled 조건과cancel/error terminal을구현한다;linked loop guard와subscriber reentry를시험한다','commit1 settled1 또는cancel1; stale settled0','외부7ops/23presets 계약복제 금지','AT-40'),
+('session-lifecycle','Update resize asset worker destroy 경쟁','generation/revision vector로late result를폐기한다;mount/updateProgram/capture/resizeobserver의disposal을구현한다;100회 mount/destroy와중복destroy를실행한다','listeners/timers/workers0, oldjob덮어쓰기0','destroy후DOM write·사라진owner callback 금지','AT-41'),
+]),
+('WP-18','qualification-delivery',[
+('accessible-interactions','Keyboard focus와 accessible data','semanticitems에서accessible table/tree/graph descriptions를만든다;keyboard/touch로모든actionable target접근을검증한다;hidden/filter/reducedmotion/focus복구를연결한다','screenreader 데이터와visible/selectedstate일치','Canvas image alt하나로접근성완료 금지','AT-53'),
+('export-restore','네 포맷과 offline fresh-process 복원','interacted partition/graph/geo/animation fixture를저장한다;network차단freshconsumer에서load/edit/replay한다;SVG/Canvas/PNG/PDF의asset/font/clip을비교한다','현재상태·선택·viewport·lineage복원; 4format정확','source checkout·network 숨은의존 금지','AT-54 AT-55 AT-89'),
+('cross-feature-integration','현재 frame와 모든 deferred 통합 의무 종료','partitionfocus→morph→revise 시나리오를실행한다;4bundle→overlapselect→drag→interrupt→geo clip을실행한다;session+animation+hit+LOD+undo/restore를교차검증한다','AT34/65/80/81/82의후행 의무0; 현재frame선택정확','커널단위pass를전체capability완료로집계 금지','AT-34 AT-65 AT-80 AT-81 AT-82'),
+]),
+('WP-19','qualification-delivery',[
+('performance-qualification','Size class SLO와 memory','고정장비/profile/seed/warmup/30samples를기록한다;inference/bundling/geo/hit/frame 단계별P50/P95를측정한다;worker/cache/abort와100cycle memory를검증한다','지원sizeclass SLO·retainedheap·abort 목표통과','budgeterror를성능success로집계 금지','AT-56'),
+('package-consumers','새 exports와 source-free package','browser/Node/SSR/types entry를검증한다;npm pack 산출물을별도tempconsumer에설치한다;freshload/edit/render와optionaldeps격리를시험한다','Node dependency browser유입0; package타입/runtime일치','checkout deepimport·로컬repack을releaseartifact로대체 금지','AT-57'),
+('human-agent-docs','Current contracts와 agent packets','실제구현된API의current계약/타입/카드/relationships를갱신한다;shortestcall+negative+revise+savedresult 예제를실행한다;LLM/MCP/inspection/docs generator와builtsite를검증한다','새action계약누락0; planned/current구분; defaults/version정확','미구현API를current로홍보 금지','AT-58 AT-90'),
+]),
+('WP-20','qualification-delivery',[
+('native-qualification','Native 요구와 consumer matrix 종료','active30요구→79시험군→실제evidence를연결한다;모든requiredconsumer cell의pass/NAnote를검증한다;기존CI/coverage/realistic/docs/package 전체suite를실행한다','active orphan0/not-run0, excluded는분모밖','외부corpus/adapter를release조건으로재도입 금지','AT-59 AT-88 AT-91 AT-92'),
+('independent-review','실패와 성공 표본 독립 검토','모든failed diff를stats/font/layout/input/time별로분류한다;각domain성공표본과4bundle알고리즘차이를직접검토한다;scope/contract변경없이snapshot만갱신한경우를차단한다','숫자·geometry·입력·시간·asset근거로판정','대량golden교체·독립oracle가production복제 금지','AT-60'),
+]),
+('WP-21','qualification-delivery',[
+('release-candidate','동일 candidate와 tag 기반 검증','실제승인범위에서version/CHANGELOG/lock/docs를정리한다;annotatedtag/commit/ref를확인한다;한번pack한candidate를모든verifyjob과consumer에전달한다','tarball SHA256/commit/tag/qualification일치','dirty candidate·tag이동·job별재pack 금지','AT-61'),
+('published-release','Registry docs와 공개 결과 대조','필수CI와protectedpublish결과를확인한다;registryintegrity와candidatehash를대조한다;공개docs/release/installedpackage를검증하여기록한다','공개artifact와검증artifact동일, 실제URL/CI증거존재','로컬pass를공개release완료로표현 금지','AT-61'),
+]),
+]
+
+# Baseline owners, not instructions to refactor every file in a group.
+OWNERS = {
+'WP-00':['scripts/run-tests.js','scripts/coverage-policy.js','test/capabilities.json','.github/workflows/ci.yml'],
+'WP-02':['src/actions/data/revise.js','src/actions/data/revisionBindings.js','src/materialization/revisionIdentity.js','src/scene.js','src/inspection.js'],
+'WP-03':['src/core/ChartProgram.js','src/core/specs.js','src/core/resourceReferences.js','src/core/materializationState.js','src/persistence.js','src/persistence/validation.js','src/persistence/codec.js','src/materialization/planner.js'],
+'WP-04':['src/grammar/pathCommands.js','src/grammar/schemas/concreteGraphic.js','src/grammar/schemas/graphicBounds.js','src/grammar/schemas/graphicClip.js','src/renderers/canvas/path.js','src/renderers/svgSerialization.js'],
+'WP-06':['src/grammar/computed.js','src/grammar/transforms.js','src/grammar/datasetSchema.js','src/actions/data/index.js','src/actions/encodings/index.js'],
+'WP-05':['src/grammar/paint.js','src/core/textMetrics.js','src/core/textMetricProfile.js','src/renderers/text.js','src/actions/textMetrics/index.js'],
+'WP-08':['src/actions/data/index.js','src/grammar/transforms.js','src/actions/charts/index.js','src/materialization/marks/capabilities.js'],
+'WP-22':['src/actions/charts/index.js','src/actions/marks/arc/index.js','src/actions/marks/rect/index.js','src/grammar/pathCommands.js','src/materialization/selection/policies/index.js'],
+'WP-24':['src/actions/data/index.js','src/grammar/datasetSchema.js','src/core/datasetReferences.js','src/actions/data/revise.js'],
+'WP-07':['src/theme/defaults.js','src/actions/theme/index.js','src/materialization/layout.js','src/materialization/composition.js','src/materialization/facets.js','src/materialization/compositionSnapshot.js'],
+'WP-25':['src/grammar/pathCommands.js','src/actions/marks/line/materialize.js','src/scene.js','src/inspection.js','src/materialization/selection/items/path.js'],
+'WP-10':['src/grammar/pathCommands.js','src/actions/coordinates/actions.js','src/actions/coordinates/edit.js','src/selectors/coordinates.js','src/renderers/svgSerialization.js'],
+'WP-11':['src/inspection.js','src/scene.js','src/grammar/schemas/graphicBounds.js','src/grammar/schemas/graphicClip.js','src/materialization/selection/items/index.js'],
+'WP-26':['src/core/compositionScales.js','src/actions/composition/index.js','src/actions/guides/axes/index.js','src/persistence/validation.js'],
+'WP-09':['src/actions/charts/index.js','src/actions/marks/index.js','src/actions/overlays/index.js','src/actions/composition/index.js'],
+'WP-12':['src/actions/selection/actions.js','src/materialization/selection/state.js','src/materialization/selection/rows.js','src/materialization/selection/styles.js'],
+'WP-14':['src/scene.js','src/renderers/transitionScene.js','src/renderers/canvas/scene.js','types/scene.d.ts'],
+'WP-13':['src/core/action.js','src/core/diagnostics.js','src/actions/selection/actions.js'],
+'WP-18':['src/accessibility.js','src/persistence.js','src/renderers/png.js','src/renderers/pdf.js','src/renderers/svg.js','test/support/browser.js'],
+'WP-19':['package.json','scripts/package-consumer.js','scripts/generate-action-catalog.js','knowledge/action-cards.json','knowledge/task-resolver.js','src/inspectionDescriptors.js','types/program.d.ts'],
+'WP-20':['scripts/run-tests.js','scripts/coverage-policy.js','test/capabilities.json','.github/workflows/ci.yml'],
+'WP-21':['.github/workflows/release.yml','scripts/release-candidate.js','package.json','package-lock.json'],
+}

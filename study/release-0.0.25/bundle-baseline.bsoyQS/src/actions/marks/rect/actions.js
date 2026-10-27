@@ -1,0 +1,220 @@
+import { materializeMarkClip } from "../../../materialization/markClip.js";
+import { requestedMarkClip, validateMarkClipCoordinate } from "../../../selectors/markClip.js";
+import { action } from "../../../core/action.js";
+import { validateUserId } from "../../../core/identifiers.js";
+import {
+  DEFAULT_RECT_MARK,
+  normalizeRectMarkConfig
+} from "../../../materialization/rectConfig.js";
+import {
+  canMaterializeRect
+} from "../../../materialization/marks/index.js";
+import { resolveRectGraphicItems } from "../../../materialization/rect.js";
+import { findDataset } from "../../../selectors/datasets.js";
+import { findLayer, resolveEligibleLayer } from "../../../selectors/layers.js";
+import {
+  assertMarkAvailable,
+  applyLayeredMarkInheritance,
+  materializeInheritedMark,
+  resolveLayeredMarkInheritance,
+  resolveMarkData,
+  resolveMarkId,
+  validateMarkOptions
+} from "../shared.js";
+import { replaceGraphicItems } from "../../primitives/editGraphics.js";
+import { resolveMarkGraphicPlacement } from
+  "../../../materialization/graphicHierarchy.js";
+import { rematerializeExistingLegend } from "../../encodings/shared.js";
+import { rematerializeHighlightBaseline } from "../lifecycle.js";
+import {
+  requestedRectStyleDetails, hasRectRadius, RECT_RADIUS_PROPERTIES
+} from "../../../grammar/roundedRect.js";
+import { STROKE_STYLE_PROPERTIES } from
+  "../../../grammar/strokeStyle.js";
+import { applyItemMissingPolicy, validateItemMissing } from
+  "../../../grammar/itemMissing.js";
+
+const STYLE_OPTIONS = Object.freeze([
+  "clip", "fill", "opacity", "stroke", "strokeWidth", ...RECT_RADIUS_PROPERTIES,
+  ...STROKE_STYLE_PROPERTIES
+]);
+const CREATE_OPTIONS = Object.freeze(["id", "data", "missing", ...STYLE_OPTIONS]);
+const EDIT_OPTIONS = Object.freeze(["target", "missing", ...STYLE_OPTIONS]);
+const REMATERIALIZE_OPTIONS = Object.freeze(["id", "scales"]);
+
+function requireRectLayer(program, requested, operation) {
+  const target = requested === undefined
+    ? undefined
+    : validateUserId(requested, "Rect mark id");
+  return resolveEligibleLayer(program, {
+    target,
+    predicate: layer => layer.mark?.type === "rect",
+    label: `${operation} rect mark`
+  });
+}
+
+const createRectMark = /* @__PURE__ */ action(
+  { op: "createRectMark", description: "Create a semantic rectangular cell layer." },
+  function (args = {}) {
+    validateMarkOptions(args, CREATE_OPTIONS, "createRectMark");
+    requestedMarkClip(args);
+    requestedRectStyleDetails(args, "createRectMark");
+    const id = resolveMarkId(this, args.id, {
+      defaultId: "rect",
+      label: "Rect mark id",
+      markType: "rect",
+      operation: "createRectMark"
+    });
+    const inherited = resolveLayeredMarkInheritance(this, args, "rect");
+    const { data } = resolveMarkData(this, {
+      ...args,
+      ...(args.data === undefined && this.context.currentData === undefined &&
+        inherited?.data !== undefined ? { data: inherited.data } : {})
+    });
+    assertMarkAvailable(this, id);
+
+    let next = this
+      .editSemantic({ property: `layer[${id}].mark.type`, value: "rect" })
+      .editSemantic({ property: `layer[${id}].data`, value: data });
+    if (Object.hasOwn(args, "missing")) {
+      next = next.editSemantic({
+        property: `layer[${id}].mark.missing`,
+        value: validateItemMissing(args.missing, "Rect missing")
+      });
+    }
+    next = applyLayeredMarkInheritance(next, id, inherited)
+      .createGraphics({
+        id,
+        type: "rect",
+        length: 0,
+        ...resolveMarkGraphicPlacement(next, { data, markType: "rect" })
+      })
+      ._withMarkConfig(id, { ...DEFAULT_RECT_MARK, fillExplicit: false });
+    next = materializeInheritedMark(next, id);
+    const style = Object.fromEntries(
+      STYLE_OPTIONS.filter(option => Object.hasOwn(args, option))
+        .map(option => [option, args[option]])
+    );
+    return Object.keys(style).length === 0
+      ? next
+      : next.editRectMark({ target: id, ...style });
+  }
+);
+
+const rematerializeRectMark = /* @__PURE__ */ action(
+  { op: "rematerializeRectMark", description: "Recompute concrete rectangular cells." },
+  function (args = {}) {
+    validateMarkOptions(args, REMATERIALIZE_OPTIONS, "rematerializeRectMark");
+    const id = validateUserId(args.id, "Rect mark id");
+    if (args.scales !== undefined && typeof args.scales !== "boolean") {
+      throw new TypeError("rematerializeRectMark scales must be a boolean.");
+    }
+    const highlighted = rematerializeHighlightBaseline(this, {
+      target: id,
+      operation: "rematerializeRectMark",
+      scales: args.scales,
+      resetProperty: "items",
+      resetValue: []
+    });
+    if (highlighted !== undefined) return highlighted;
+    const layer = findLayer(this, id);
+    const graphic = this.graphicSpec.objects[id];
+    if (layer?.mark?.type !== "rect") throw new Error(`Unknown rect mark "${id}".`);
+    const roundedCollection = graphic?.type === "collection" &&
+      hasRectRadius(this.markConfigs[id]) &&
+      graphic.items?.every(item => ["rect", "path"].includes(item.type));
+    if (
+      (graphic?.type !== "rect" && !roundedCollection) ||
+      !Array.isArray(graphic.items)
+    ) {
+      throw new Error(`Rect mark "${id}" requires rect collection graphics.`);
+    }
+    if (this.markConfigs[id]?.gradientPlot?.materialized === true) {
+      return materializeMarkClip(this.materializeGradientPlotFill({ id, scales: args.scales }), id);
+    }
+    const sourceDataset = findDataset(this, layer.data);
+    if (sourceDataset === undefined) {
+      throw new Error(`Rect mark "${id}" requires an existing dataset.`);
+    }
+    const dataset = applyItemMissingPolicy(layer, sourceDataset);
+    if (!canMaterializeRect(this, layer)) {
+      return replaceGraphicItems(this, id, "rect", []);
+    }
+    let next = this;
+    if (args.scales !== false) {
+      const ids = new Set(["x", "y", "x2", "y2", "color", "stroke"].flatMap(channel => {
+        const scale = layer.encoding?.[channel]?.scale;
+        return scale === undefined ? [] : [scale];
+      }));
+      for (const scale of ids) {
+        next = next.rematerializeScale({ id: scale, marks: false });
+      }
+    }
+    return materializeMarkClip(replaceGraphicItems(
+      next,
+      id,
+      "rect",
+      resolveRectGraphicItems(next, layer, dataset)
+    ), id);
+  }
+);
+
+const editRectMark = /* @__PURE__ */ action(
+  { op: "editRectMark", description: "Edit rectangular cell appearance." },
+  function (args = {}) {
+    validateMarkOptions(args, EDIT_OPTIONS, "editRectMark");
+    requestedMarkClip(args);
+    requestedRectStyleDetails(args, "editRectMark");
+    if (!["missing", ...STYLE_OPTIONS].some(option => Object.hasOwn(args, option))) {
+      throw new Error("editRectMark requires at least one editable property.");
+    }
+    const layer = requireRectLayer(this, args.target, "editRectMark");
+    if (Object.hasOwn(args, "fill") && layer.encoding?.color !== undefined) {
+      throw new Error("editRectMark fill cannot be combined with a color encoding.");
+    }
+    if (Object.hasOwn(args, "stroke") && layer.encoding?.stroke !== undefined) {
+      throw new Error(
+        "editRectMark stroke conflicts with a field encoding; use encodeStroke with value to replace it."
+      );
+    }
+    validateMarkClipCoordinate(this, layer, args.clip ?? this.markConfigs[layer.id]?.clip);
+    for (const channel of ["opacity", "strokeWidth"]) {
+      if (Object.hasOwn(args, channel) && layer.encoding?.[channel] !== undefined) {
+        throw new Error(`editRectMark ${channel} conflicts with a field encoding; use ${channel === "opacity" ? "encodeOpacity" : "encodeStrokeWidth"} with value to replace it.`);
+      }
+    }
+    const semantic = Object.hasOwn(args, "missing")
+      ? this.editSemantic({
+          property: `layer[${layer.id}].mark.missing`,
+          value: validateItemMissing(args.missing, "Rect missing")
+        })
+      : this;
+    const next = semantic._withMarkConfig(
+      layer.id,
+      {
+        ...normalizeRectMarkConfig(
+          args,
+          semantic.markConfigs[layer.id] ?? DEFAULT_RECT_MARK
+        ),
+        ...requestedMarkClip(args),
+        fillExplicit: Object.hasOwn(args, "fill")
+          ? true
+          : semantic.markConfigs[layer.id]?.fillExplicit ?? false
+      }
+    );
+    const materialized = canMaterializeRect(next, layer)
+      ? next.rematerializeRectMark({ id: layer.id })
+      : next;
+    return rematerializeExistingLegend(materialized);
+  }
+);
+
+export function registerRectMarkActions(ProgramClass) {
+  ProgramClass.prototype.editRectMark = editRectMark;
+  registerBasicRectMarkActions(ProgramClass);
+}
+
+export function registerBasicRectMarkActions(ProgramClass) {
+  ProgramClass.prototype.createRectMark = createRectMark;
+  ProgramClass.prototype.rematerializeRectMark = rematerializeRectMark;
+}

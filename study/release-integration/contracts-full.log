@@ -1,0 +1,1389 @@
+✔ keeps the generated catalog synchronized with the manifest (5.199041ms)
+✔ removes the singular filterMark API from every current public surface (109.941375ms)
+✔ keeps every declared direct action in one current domain contract (2170.590917ms)
+✔ keeps lifecycle, coverage, and edit gaps machine-readable (1.547042ms)
+✔ keeps every current action contract fully covered (1.590583ms)
+✔ keeps primitives and internal wrapped actions in separate layers (3.41825ms)
+✔ documents every internal wrapped owner exactly once (0.818917ms)
+✔ keeps planned direct actions and reassignment gaps explicit (1.113292ms)
+✔ keeps implemented and planned formal values distinct (13.309708ms)
+✔ keeps maybe-future ideas outside the active proposal queue (1.508292ms)
+✔ keeps all executable coverage evidence paths valid (4.374417ms)
+✔ complete-chart discovery reaches semantic and primitive authoring layers (14.982583ms)
+✔ discovery separates completion from resource validity (5.049666ms)
+✔ entry-point discovery matches declarations and runtime methods (4.653834ms)
+✔ every cataloged public action rejects malformed and unknown options on a valid source state (18926.138708ms)
+✔ generic, focused, and atomic authoring paths preserve the same intended chart (4.186917ms)
+✔ bundlers discard unused built-in wrappers but preserve extension validation (136.787083ms)
+✔ keeps accepted planned capabilities linked and non-public (0.51525ms)
+✔ current action statuses agree with the runtime surface (196.616083ms)
+✔ normative current value vocabularies match shipped declarations (2.863542ms)
+✔ recomputes a complete derived-data provenance chain and releases every retired revision (56.32375ms)
+✔ keeps legends, selected labels, references, themes, and shape details on the final encoding state (233.588959ms)
+✔ replays Polar frame, local domains, headers, labels, highlights, and theme after a revised source (109.061083ms)
+✔ preserves Parallel siblings across scale, repeat, and facet edits before complete resource cleanup (40.155875ms)
+✔ keeps one optional active roadmap and an explicit completed owner (0.892041ms)
+✔ keeps human entry points synchronized with roadmap activity (2.268541ms)
+✔ keeps the active or last completed phase linked to its roadmap (0.629417ms)
+✔ links current and historical roadmap roots to their canonical owner (7.034916ms)
+✔ routes architecture work without duplicating the canonical record (4.436208ms)
+✔ keeps the contract landing page lightweight and action-directed (1.380292ms)
+✔ keeps current agent-documentation routes and anchors valid (304.139625ms)
+✔ declares aggregate axes with existing edit types and closed resource selectors (154.810875ms)
+✔ analytic raster witnesses reject invisible marks even when guides remain visible (210.071625ms)
+✔ data annotation equals its lower actions, literal graphic, Canvas, and PNG (300.11875ms)
+✔ mark and plot annotation branches equal their lower public chains (23.799084ms)
+✔ area endpoint declarations accept mixed bounds and reject ambiguous constant pairs (165.516208ms)
+✔ declares the closed full-only atomic encoding payload (162.782208ms)
+✔ exposes atomic encoding only from the full program (1.096625ms)
+✔ matches the corresponding focused action for one channel (45.79875ms)
+✔ uses canonical channel order independently of property insertion order (17.13175ms)
+✔ swaps x and y fields against the final fixed scales (3.2ms)
+✔ updates primary and secondary rectangle endpoints from one final draft (43.1895ms)
+✔ validates an offset against the final categorical parent encoding (44.682041ms)
+✔ transposes aggregate bar roles from one final x/y state (64.440417ms)
+✔ rejects a transpose when its final categorical channel retains an explicit numeric grid count (7.349708ms)
+✔ updates path grouping and ordering before one final series materialization (10.865375ms)
+✔ updates supported Parallel appearance without replacing its dimensions (4.601833ms)
+✔ updates theta and r through the public r alias (5.536167ms)
+✔ rebuilds combined and sampled legends from final appearance channels (67.537667ms)
+✔ assigns point shape, opacity, and angle from one final appearance draft (12.890333ms)
+✔ assigns line stroke width, dash, and opacity at final series grain (14.107209ms)
+✔ assigns independent text position and content from one final draft (3.629459ms)
+✔ accepts identical explicit patches when two channels share one scale (2.618958ms)
+✔ refreshes every external consumer of a reassigned shared scale (3.52875ms)
+✔ removes a field stroke and its legend without leaving stale graphics (6.962ms)
+✔ keeps the original program unchanged when any requested channel is invalid (3.171875ms)
+✔ rejects an unsupported mark and channel combination without any write (1.910375ms)
+✔ rejects conflicting explicit patches for one shared scale before writing (3.261708ms)
+✔ rejects malformed, empty, aliased, and injected channel payloads (2.259917ms)
+✔ keeps the completed authoring lifecycle surface Current and fully covered (8.740042ms)
+✔ composes selective legends, encoding teardown, and selection release (192.611833ms)
+✔ keeps removed boundaries and axis components absent after revision replay (82.926416ms)
+✔ facet rederivation preserves teardown and replays retained highlights (175.52075ms)
+✔ the requirement corpus evaluates execution and fulfillment separately (947.408292ms)
+✔ an executable chart that omits requested color is a false completion (12.567958ms)
+✔ publishes Cartesian axis component removal as current behavior (0.902708ms)
+✔ renders only retained axis components in Canvas and Node PNG (307.453125ms)
+✔ Cartesian complete, focused and grid declarations expose finite numeric offset vocabulary (188.778042ms)
+✔ anchors the independent difference equation with opaque and transparent colors (1.16125ms)
+✔ bar blend is a single optional semantic intent with exact normal reset (42.85425ms)
+✔ difference combines one bar fill and outline before applying mark opacity (29.737458ms)
+✔ rounded, gradient and transparent bars preserve concrete blend through replay (78.163708ms)
+✔ blend rejects invalid inputs and unsupported concrete types atomically (8.069291ms)
+✔ missing isolated surface capability is rejected before clear or canvas resize (26.654375ms)
+✔ independent bar sources preserve painter order and caller composite state (20.530417ms)
+✔ nested fractional clipping, shared paint objects and pixel ratios keep source coordinates (10.753417ms)
+✔ DOM-compatible surface creation remains backend neutral (30.806167ms)
+✔ isolated sources preflight dimensions, pixel budgets and incompatible surfaces (2.619209ms)
+✔ malformed stored blend is rejected by shared graphic and semantic validation (9.001125ms)
+✔ ranged horizontal and vertical bars retain blend through data, themes, highlights and facets (167.458625ms)
+✔ bar creation, editing and facade declarations share structured fill paint (146.639083ms)
+✔ bar width declarations distinguish calendar intervals from slot and box widths (148.922875ms)
+✔ keeps every basic chart facade in one canonical Current owner (1.826458ms)
+✔ keeps every facade declaration and current root type export exact (2.642791ms)
+✔ keeps every facade program in its canonical chart slice (1306.921166ms)
+✔ hands every facade result to its documented resource edit path (1627.02925ms)
+✔ keeps Parallel facade guides on the Parallel coordinate (9.382875ms)
+✔ keeps facade-specific branches out of materialization and renderers (15.023333ms)
+✔ Basic encoding reassignment retains its existing public editor and Full restoration boundaries (170.4365ms)
+✔ declares Full-only role-safe point packing and Beeswarm contracts (149.342167ms)
+✔ publishes the logical Bin2D edit facade as current behavior (1.050708ms)
+✔ renders the rebound Bin2D revision in Canvas and Node PNG (386.451334ms)
+✔ declares Canvas scenes separately from the unchanged SVG contract (147.324791ms)
+✔ categorical spacing matches independent primitive graphics and pixels (7890.866958ms)
+✔ declares categorical theta and legend ordering with exclusive policies (187.096083ms)
+✔ keeps category-order runtime, declarations, current contract, and inventory aligned (7.398625ms)
+✔ declares channel-specific scale editors with channel-appropriate options (159.345084ms)
+✔ keeps chart variants under one capability-oriented variants tree (11.8615ms)
+✔ uses capability names instead of completed gate or phase names (12.981584ms)
+✔ baseline evidence declares shared production dependencies without claiming independent geometry (87.792417ms)
+✔ keeps the public chart registry and vertical slices synchronized (11581.509834ms)
+✔ combined size titles share the categorical appearance at every edge (10262.758417ms)
+✔ combined horizontal legends match primitive geometry, drawing order and pixels (2662.622292ms)
+✔ deferred chart owner cards distinguish creation from completed geometry (8.340042ms)
+✔ compact action cards are generated from the current action contract (3364.27525ms)
+✔ compact action cards satisfy the bounded typed public schema projection (75.7955ms)
+✔ action-card hierarchy is generated from the executable direct-child trace (13563.348792ms)
+✔ scale spacing units agree across every generic and focused editor (5.012042ms)
+✔ action cards separate entry support, units, inference, and completion (3.490917ms)
+✔ every compact snippet type-checks against the exact ChartProgram declaration (184.23225ms)
+✔ imputation call patterns preserve method-specific requirements (4.811125ms)
+✔ call pattern validation rejects unsupported top-level keys without confusing nested keys (0.780375ms)
+✔ advertised bar calls execute and direction-only guide branches retain their exact meaning (38.638083ms)
+✔ exposes exactly one read-only search tool with a byte-equal direct payload (90.796959ms)
+✔ keeps resource discovery bounded and reads exact cards and recipes (63.6685ms)
+✔ permits documentation only for the latest unresolved result (15.006791ms)
+✔ does not require or authorize documentation for a terminal unsupported result (7.928ms)
+✔ routes attached-label removal to its explicit source selector (4.326625ms)
+✔ routes selected-label reset to the exact attached-label editor (1.0635ms)
+✔ routes semantic label placement to the exact attached-label editor (0.93075ms)
+✔ rejects legacy unresolved entries that omit their explicit resource (0.169333ms)
+✔ rejects non-knowledge resources and invalid tool arguments without execution (2.010791ms)
+✔ keeps the MCP implementation out of chart execution and network surfaces (1.910125ms)
+✔ retains exclusions without proposing contradictory actions or facade defaults (79.588666ms)
+✔ keeps positive requests actionable and quoted restriction words literal (32.328083ms)
+✔ chart packets either materialize their chart or expose the missing decision (407.870792ms)
+✔ raw mark requests remain distinct from incomplete chart requests (3.686792ms)
+✔ specific polar phrases shadow only overlapping generic chart phrases (126.615083ms)
+✔ polar point, line, and Radar discovery select distinct complete facades (73.873125ms)
+✔ rose and radial bar discovery select distinct complete measurement owners (31.24975ms)
+✔ intent taxonomy covers every supported constraint with exact owners (130.883ms)
+✔ completes density axis requests through the facade without creating duplicate guides (15.840416ms)
+✔ every exact action name resolves to its compact card without gaps (547.318333ms)
+✔ selects atomic channel encoding only for an explicit batch intent (5.029458ms)
+✔ routes equal-unit layout intent through explicit coordinate editing (50.017291ms)
+✔ routes moved Polar-frame intent through the Polar coordinate editor (53.391375ms)
+✔ routes semantic mark-label placement through its explicit editor (0.987083ms)
+✔ provides exact executable Canvas and SVG authoring bootstraps (128.284625ms)
+✔ prefers the complete reference-line phrase without hiding separate marks (1.4605ms)
+✔ uses the regression owner for its fitted line and uncertainty ribbon (0.896916ms)
+✔ routes point-and-whisker language to the error-bar action (0.903583ms)
+✔ injects an executable point source for an explicit regression-layer request (33.210292ms)
+✔ preserves request order only within one lifecycle priority (3.276042ms)
+✔ orders a positioned point before its inherited text overlay (7.781834ms)
+✔ connects a requested color scale to its facade legend owner (56.792791ms)
+✔ orders a raw bar category before its quantitative measure (14.833167ms)
+✔ keeps incomplete rule endpoints open and preserves requested appearance text (13.748875ms)
+✔ keeps terminal unsupported output separate from open renderer decisions (3.912ms)
+✔ reports concrete options, placeholders, and unsupported requirements without silent partials (27.430333ms)
+✔ executes the complete Horizon facade with original field roles, bands and owned x guides (12.541166ms)
+✔ reports incompatible complete-chart guides and derived color as unresolved without invalid actions (127.827792ms)
+✔ design fixtures prove bounded one-call task closure without silent partials (153.269541ms)
+✔ every supported constraint and design-fixture authoring step type-checks (923.681416ms)
+✔ task packets reject ambiguous, unsupported, empty, and oversized input explicitly (4.131167ms)
+✔ area discovery uses the complete facade and preserves requested fields and guides (12.396791ms)
+✔ executes point color, explicit axis rotation, and logarithmic scale requirements together (27.396167ms)
+✔ required options reflect the contract and selected imputation method rather than sample calls (2.194041ms)
+✔ retains unparsed, conflicting, and non-English requirements instead of claiming completion (20.095375ms)
+✔ the compiler harness accepts a used negative assertion and rejects a stale one (280.37075ms)
+✔ executes named composition edits across Cartesian, Polar, and Parallel children (276.490208ms)
+✔ executes Polar and Parallel facet, grid, and repeat families (134.558458ms)
+✔ retains Polar children in horizontal and nested concat compositions (66.38325ms)
+✔ facets a Polar program without changing the source program (25.509833ms)
+✔ shares a temporal aggregate scale across compatible layered marks (37.286541ms)
+✔ propagates an immutable Polar child revision through explicit ancestor replacement (100.367584ms)
+✔ declares strict grid, repeat, source, and named-child composition contracts (146.391875ms)
+✔ computed access and literal replacement declare closed serializable node shapes (150.207875ms)
+✔ Context7 configuration matches the supported repository schema (2.050917ms)
+✔ Context7 indexes canonical public documentation without duplicate bundles (1.613583ms)
+✔ Context7 refresh is wired to releases and explicit manual dispatch (1.580042ms)
+✔ continuous facade grids reject categorical band placement without changing prior state (352.789084ms)
+✔ area facade keeps native band grids for both independent-channel orientations (41.673167ms)
+✔ unrelated band resources cannot replace continuous facade grid ownership (184.125125ms)
+✔ continuous facade grid declarations prohibit only physically impossible band roles (189.223ms)
+✔ generated option inventory retains real band paths and omits unreachable continuous ones (42142.998667ms)
+✔ continuous color and stroke declarations retain closed palette descriptors (171.5925ms)
+✔ declares full-only coordinate aspect editing (146.982125ms)
+✔ exposes coordinate editing only from the full program (1.029959ms)
+✔ resolves frame and data aspect bounds from independent literal oracles (0.729042ms)
+✔ stores a normalized data aspect and gives x and y units the requested ratio (27.5675ms)
+✔ uses absolute reversed domain spans without rewriting the domains (14.278459ms)
+✔ rematerializes axes and grids against the shared effective bounds (17.348042ms)
+✔ recomputes coupled ranges after domain and Canvas edits and auto restores allocation (9.860958ms)
+✔ rejects invalid or ambiguous data aspects atomically (57.726708ms)
+✔ rejects multiple Cartesian scale pairs for one data-aspect coordinate (14.596042ms)
+✔ applies frame aspect to Polar and Parallel coordinate consumers (9.178792ms)
+✔ renaming fields preserves summary values and point geometry (cars-metamorphic-v1) (63.51825ms)
+✔ rescaling data and its domain preserves geometry while changing aggregates (cars-metamorphic-v1) (14.580083ms)
+✔ missing-value injection agrees with an independent grouped reduction (cars-metamorphic-v1) (3.5915ms)
+✔ mutation helpers reject collisions and numeric overflow without changing input (0.441917ms)
+✔ bounded small point consumer preserves 32 rows and 4 categories (9.741041ms)
+✔ bounded medium point consumer preserves 512 rows and 32 categories (18.7665ms)
+✔ bounded large point consumer preserves 4096 rows and 256 categories (80.91675ms)
+✔ pathology missing retains its explicit aggregate postcondition (1.196833ms)
+✔ pathology duplicates retains its explicit aggregate postcondition (1.290416ms)
+✔ pathology signed-zero retains its explicit aggregate postcondition (2.408209ms)
+✔ pathology constant retains its explicit aggregate postcondition (1.764292ms)
+✔ pathology large-magnitude retains its explicit aggregate postcondition (0.696666ms)
+✔ declares Full-only completion, imputation, calendar, and duration windows (151.282458ms)
+✔ declares exact Full-only derived editing unions (180.30625ms)
+✔ publishes every derived editor as Current and renders a revised owner (239.868917ms)
+✔ Full and Basic share structured option errors without retaining supplied data (2.659708ms)
+✔ resource diagnostics distinguish missing, ambiguous, and live consumers (4.8315ms)
+✔ numeric diagnostics retain Error classes and include actual resource budgets (248.833458ms)
+✔ unknown failures retain identity and use a fallback code without message parsing (0.382583ms)
+✔ wedge preserves independently specified vertices, area and clockwise rotation (77.059083ms)
+✔ wedge renders the independent primitive identically in PNG and persists in Full and Basic (300.974167ms)
+✔ arrow preserves independently specified vertices, area and clockwise rotation (58.183125ms)
+✔ arrow renders the independent primitive identically in PNG and persists in Full and Basic (18.671917ms)
+✔ renders mapped axis, legend, and role headers through every backend (181.309417ms)
+✔ mapped axis and legend text matches literal primitive edits and pixels (116.112791ms)
+✔ declares typed display maps on supported axis, legend, and facet surfaces (140.15425ms)
+✔ Box and Gradient facades expose ordinary field and fixed color encodings (155.94825ms)
+✔ publishes distribution owner role revisions as current behavior (51.314ms)
+✔ renders revised distribution owners through Canvas and Node PNG (467.975542ms)
+✔ keeps current package surfaces visible in public and architecture documentation (3.787708ms)
+✔ documents each shipped renderer entry at the package boundary (1.249083ms)
+✔ keeps documented browser bundle ceilings synchronized with package checks (18.956834ms)
+✔ declares Full-only ECDF data, chart, and atomic statistical editor (141.238667ms)
+✔ renders encoding and outline teardown through Canvas and Node PNG (260.165916ms)
+✔ keeps an incomplete circle empty after removing x (9.11875ms)
+✔ keeps an incomplete circle empty after removing y (4.54475ms)
+✔ keeps an incomplete square empty after removing x (9.092ms)
+✔ keeps an incomplete square empty after removing y (4.2085ms)
+✔ keeps an incomplete diamond empty after removing x (4.946583ms)
+✔ keeps an incomplete diamond empty after removing y (18.83575ms)
+✔ declares Full-only endpoint chart facades and their atomic role editor (135.06725ms)
+✔ routes installed extension agents through current package knowledge (4.111709ms)
+✔ keeps every local extension knowledge link resolvable (1.713792ms)
+✔ facade declarations retain only combinations supported by their own mark and field inputs (151.120958ms)
+✔ createLinePlot rejects another mark's combined legend atomically (31.778958ms)
+✔ createBarPlot rejects another mark's combined legend atomically (16.10275ms)
+✔ createIntervalPlot rejects another mark's combined legend atomically (128.700208ms)
+✔ createDotPlot rejects another mark's combined legend atomically (16.710375ms)
+✔ categorical path legends reject bottom titles while gradient legends retain them (35.077125ms)
+✔ quantitative fusion rejects a polar point without changing its source program (4.748292ms)
+✔ facet content anchors use one closed vocabulary for creation and editing (143.354458ms)
+✔ facet field titles use role-scoped options and Full-only actions (145.423958ms)
+✔ facet header rotation uses the existing closed rotation vocabulary and Full-only actions (144.105167ms)
+✔ publishes facet policy editing as current behavior (0.889541ms)
+✔ renders edited facet policies through Canvas and Node PNG (561.502083ms)
+✔ facet top lane declarations keep closed values, canonical state and Full-only composition (141.398875ms)
+✔ keeps field-driven encodings Current and out of Planned (3.704959ms)
+✔ exports the complete strict field-driven option surface (1.751917ms)
+✔ keeps both field-driven visual capabilities executable and equivalent (105.36825ms)
+✔ documents both additive field-driven contracts and their limits (3.358875ms)
+✔ publishes fitting only on Full unit programs (10.556292ms)
+✔ keeps fitting inside one authoring trace and preserves semantic state (288.026167ms)
+✔ publishes Cartesian label layout without leaking it to Parallel labels (0.660291ms)
+✔ promotes the approved focused guide actions and keeps later work Planned (4.034125ms)
+✔ promotes the approved mark and scale parameter extensions (0.672583ms)
+✔ covers every focused-editing action in an approved visual target (0.73075ms)
+✔ publishes exact current option types and aligns audience classifications (5.645167ms)
+✔ keeps every accepted focused-editing action and capability current (0.146541ms)
+✔ declares the Full-only field-selected Parallel scale editor (194.31075ms)
+✔ publishes editParallelScale as one Current direct action (0.42675ms)
+✔ publishes both focused offset scale editors as Current direct actions (0.264291ms)
+✔ locks the complete public graphic hierarchy inventory (6837.505167ms)
+✔ snapshots roots, ownership, items, and depth-first drawing order (4.176583ms)
+✔ separates concrete node equality from attachment equality (7.11625ms)
+✔ preserves extension-authored top-level graphics (1.645417ms)
+✔ emits balanced recursive enter and exit events (1.651167ms)
+✔ hidden categorical edge legends match literal primitive bounds and pixels (2569.5995ms)
+✔ preview shares owned unrelated rows while isolating caller-owned updates (3.259292ms)
+✔ data-only actions preserve every themed visual branch and later styling works (21.461167ms)
+✔ keeps implemented capability groups out of planned inventory (0.762708ms)
+✔ keeps the implemented box-plot contract complete (17.373583ms)
+✔ keeps mark selection current, documented, and executable (3.881541ms)
+✔ Full rejects unknown primitive options without changing the source (12.142958ms)
+✔ Full rejects sparse rows at both source data boundaries (4.94175ms)
+✔ Full refuses mutable function cells without freezing caller values (0.354041ms)
+✔ Basic rejects unknown primitive options without changing the source (0.592334ms)
+✔ Basic rejects sparse rows at both source data boundaries (0.729167ms)
+✔ Basic refuses mutable function cells without freezing caller values (0.18775ms)
+✔ extension callbacks remain executable without entering immutable trace state (0.389542ms)
+✔ keeps browser inspection descriptors synchronized with action cards (16.082625ms)
+✔ covers every registered built-in action without descriptor evasion (26.6125ms)
+✔ keeps the scoped instruction hierarchy explicit and bounded (51.957833ms)
+✔ keeps durable instruction bullets owned by one scope (30.1685ms)
+✔ places interval legends at four edges with exact primitive graphics and pixels (4908.578958ms)
+✔ declares full-only Interval and Regression complete facades (147.809292ms)
+✔ item legend strokes reserve sample space with exact primitive graphics and pixels (2282.967625ms)
+✔ keeps crossing label leaders above grids across creation and refresh order (84.97275ms)
+✔ replays derived data through filters, selected labels, references, layout, and highlights (150.452916ms)
+✔ legend block declarations expose the closed Full-only contract (157.94325ms)
+✔ edits separate categorical and sampled blocks by stable channel identity (111.4135ms)
+✔ treats every member of one merged block as the same selector (39.686167ms)
+✔ maps categorical legend labels by typed raw value and resets the block override (23.457292ms)
+✔ rejects nonnumeric display maps for continuous size legend blocks atomically (22.22575ms)
+✔ replaces symbol patches completely and removes stale concrete properties (36.372ms)
+✔ edits sampled, interval, and gradient families through one block contract (106.226666ms)
+✔ matches lower-level graphics and decoded pixels for a block-only symbol edit (181.782333ms)
+✔ stores categorical order in the existing semantic order owner (42.205958ms)
+✔ preserves compatible overrides and rejects ambiguous structural transitions (143.82975ms)
+✔ migrates compatible block style across color families and rejects incompatible content (54.506541ms)
+✔ drops removed block state and keeps retained state through replay (87.339333ms)
+✔ keeps block title visibility authoritative over root title edits (31.238709ms)
+✔ rejects invalid block requests atomically (53.155834ms)
+✔ keeps editLegendBlock on the Full surface only (0.189625ms)
+✔ matches exact point legend content to independent graphic primitives (4175.197042ms)
+✔ matches inferred point legend content to independent graphic primitives (3776.199167ms)
+✔ matches partial point legend removal to independent graphic primitives (3926.211417ms)
+✔ matches point content replacement to the existing independent graphic targets (3785.964041ms)
+✔ replays automatic companion symbols against independent graphic primitives (2265.114958ms)
+✔ renders the edited stroke-width block and its selective removal (154.319459ms)
+✔ matches standalone size content edits to explicit primitive styling and exact pixels (698.804833ms)
+✔ preserves explicit bottom placement through focused styling and exact pixels (1720.201167ms)
+✔ legend spacing declarations preserve Full/Basic creation and edit-only resets (146.209666ms)
+✔ stores exact size samples without changing the scale or mark mapping (287.127375ms)
+✔ maps exact opacity and stroke-width samples through their real scales (69.750375ms)
+✔ preserves the automatic count while entering, replacing, and leaving exact mode (41.33375ms)
+✔ rejects malformed, conflicting, unsupported, and out-of-domain values atomically (70.716583ms)
+✔ rejects a scale edit when stored exact samples become invalid (8.480834ms)
+✔ rejects a data rebind when its inferred domain invalidates exact samples (5.998625ms)
+✔ validates exact samples against shared and independent facet domains (75.994125ms)
+✔ keeps exact values through theme, layout, Canvas, and every renderer (55.094833ms)
+✔ declares exact legend sample values for create, edit, and guide facades (186.092542ms)
+✔ line horizontal grids reject band positioning for every supported y role atomically (49.514ms)
+✔ line vertical grids retain both band positioning values on categorical x (16.813583ms)
+✔ an auxiliary band scale cannot replace the line facade's horizontal grid owner (10.432541ms)
+✔ line grid declarations prohibit only the impossible horizontal band role (200.46675ms)
+✔ the option inventory follows the corrected line role without excluding valid grid options (40837.395458ms)
+✔ line missing types expose the closed direct-line policy in Full and Basic (155.165542ms)
+✔ converges across all position, color, and stroke-dash authoring orders (155.415042ms)
+✔ preserves constant stroke dash before, between, and after position assignments (14.434292ms)
+✔ converges for quantitative x then y and y then x (6.215083ms)
+✔ keeps grouped quantitative lines independent of position action order (7.322083ms)
+✔ does not reinterpret a quantitative x partial as an aggregate line (1.665375ms)
+✔ preserves temporal aggregate line behavior (3.476875ms)
+✔ renders the x-first quantitative line through Browser Canvas and Node PNG (237.47475ms)
+✔ Cartesian tick rounding types cover full, focused, Basic and nested facade authoring (147.292708ms)
+✔ complete nearest axis matches literal primitives and Basic graphics (90.051292ms)
+✔ focused tick edits update the opted-in labels and inferred grid together (25.127542ms)
+✔ grouped and complete editors retain a shared tick-label selection policy (9.19275ms)
+✔ label-only axes support nearest selection and supply it to later ticks (48.894375ms)
+✔ explicit grid policies remove inherited rounding and auto restores it (16.492208ms)
+✔ Canvas, scale and saved-program replay preserve the chosen policy (121.549041ms)
+✔ independent facets choose ticks from every actual child domain (38.863458ms)
+✔ malformed rounding, explicit values and unsupported axis families reject atomically (55.561ms)
+✔ named axes keep separate policies and inferred grids reject conflicting owners (30.061833ms)
+✔ source revisions refresh automatic domains, ticks, labels and grid without changing old rows (35.538209ms)
+✔ X-axis policies use the same selection and honor reversed domains (8.826209ms)
+✔ saved programs reject corrupt or stale rounding instead of retaining inconsistent guides (78.744708ms)
+✔ count rounding preserves exact histogram boundaries and membership (2.495084ms)
+✔ histogram facade, axis inference, edits and persistence share the rounded domain (193.170542ms)
+✔ binned aggregate line and shared bar reuse the same unchanged boundaries (88.452583ms)
+✔ shared and independent binned facets retain the same stored policy (76.933ms)
+✔ count objects do not extend the data-bin transform policy (0.712209ms)
+✔ Full and Basic facades retain the same immutable count policy and graphics (29.71775ms)
+✔ focused and generic editors rematerialize the same resolved owner (22.561292ms)
+✔ explicit descending domains keep precedence and auto restores count inference (31.031ms)
+✔ independent facets apply the count rule to every actual child domain (138.257542ms)
+✔ data revisions and filters refresh domains without changing original rows or old programs (16.806875ms)
+✔ shared scale edits and filtering refresh all consumers (25.738084ms)
+✔ persistence preserves canonical policy, pixels and editable inference (27.216541ms)
+✔ invalid count edit is atomic {"count":0} (6.192292ms)
+✔ invalid count edit is atomic {"count":1.5} (5.001708ms)
+✔ invalid count edit is atomic {"count":10,"extra":true} (15.658584ms)
+✔ invalid count edit is atomic null (3.278167ms)
+✔ time/transformed/type edits cannot retain an incompatible count object (20.471916ms)
+✔ count policy remains limited to position scales (5.907709ms)
+✔ corrupt semantic count objects are rejected on restore (5.732792ms)
+✔ keeps published MCP benchmark aggregates internally consistent (0.552125ms)
+✔ keeps the public MCP claims anchored to the benchmark record (1.43625ms)
+✔ keeps the raw benchmark identifiable without shipping execution traces (0.232084ms)
+✔ semantic label pie-share matches independent literal text primitives (797.59075ms)
+✔ semantic label stack-values matches independent literal text primitives (789.766958ms)
+✔ mark label facade pie-share matches literal primitives (755.421667ms)
+✔ mark label facade stack-values matches literal primitives (652.018042ms)
+✔ executes materialization plans in order and deduplicates equivalent steps (1.329542ms)
+✔ deduplicates equivalent arguments independent of object key order (0.245166ms)
+✔ owns nested array arguments and canonicalizes their object entries (0.261542ms)
+✔ rejects malformed plans and unavailable operations clearly (0.404417ms)
+✔ builds one deterministic scale, mark, guide, layout, highlight plan (0.24675ms)
+✔ plans registered layout consumers without hard-coded planner branches (0.109875ms)
+✔ stops after an injected failure without mutating the input program (0.245ms)
+✔ plans point encoding scale, mark, and existing legend in order (0.410583ms)
+✔ plans every area consumer of one shared color scale (0.762708ms)
+✔ plans the revised density target before every shared-scale mark (0.664958ms)
+✔ plans each unique scale after one layer changes data (0.787708ms)
+✔ declares ordinary and measured radial encodings with exclusive count and sum options (142.402458ms)
+✔ declares quantitative midpoint while excluding temporal, position and discrete roles (142.848333ms)
+✔ Cartesian named identities, owner targets and nonempty aggregate arrays remain closed contracts (167.958541ms)
+✔ derives only role-reachable nested scale type paths (37071.657833ms)
+✔ executes every strict nested scale type path and literal (6539.26425ms)
+✔ materializes every role-specific nested scale type vocabulary (26.191834ms)
+✔ rejects formerly accepted-but-ignored role combinations (42.101ms)
+✔ Canvas none paint cannot retain the previous opaque fill or stroke (6.327ms)
+✔ none paint preserves shared preflight atomicity and ordinary paint assignments (1.288417ms)
+✔ a none Canvas background leaves transparent pixels and does not affect glyph fill (0.628375ms)
+✔ declares typed computed expressions and Full-only normalization (130.184375ms)
+✔ single horizontal legends match literal occupied-bound primitive targets (4810.205125ms)
+✔ large opacity samples and text match independent spacing primitives (7366.376916ms)
+✔ declares opacity point recipes across legend creation, edits and guide options (137.616708ms)
+✔ option inventory preserves object and named-array branches at the same property depth (2881.399125ms)
+✔ ordered categorical dash declarations cover direct, facade and bulk APIs while preserving Basic method boundaries and constant restrictions (157.108583ms)
+✔ isolates npm pack from the caller's global cache (1.125333ms)
+npm notice
+npm notice New minor version of npm available! 11.18.0 -> 11.21.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.21.1
+npm notice To update run: npm install -g npm@11.21.1
+npm notice
+✖ publishes only the bounded public package artifact (3384.911709ms)
+  Error: Package entry count 622 exceeds 621.
+      at validatePackageManifest (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/package-artifact.js:255:11)
+      at inspectPackageArtifact (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/package-artifact.js:269:10)
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/contracts/package-artifact.test.js:50:20)
+      at async Test.run (node:internal/test_runner/test:932:9)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:629:7)
+
+✔ rejects missing, forbidden, and oversized package manifests (0.957042ms)
+✔ packed scale compaction preserves exports and numeric color results (98.102542ms)
+✔ consumer setup removes its temporary directory when installation fails (390.826916ms)
+✔ independent installed cases continue after a failure and retain case identities (3.428958ms)
+✔ installed fixture modules and their case manifest are exhaustive (57.840625ms)
+✔ exports the public module boundaries (0.797167ms)
+✔ keeps the basic entry focused on common Cartesian charts (0.46675ms)
+✔ maps every public entry point to a declaration file (0.975625ms)
+✔ keeps runtime values and declarations in exact public-entry parity (33.917375ms)
+✔ keeps the public release identity and legal metadata consistent (1.864709ms)
+✔ keeps library terminology source-neutral (680.165417ms)
+✔ declares Parallel field lifecycle with component, tick mode, and Basic boundaries (126.589291ms)
+✔ keeps the Parallel public actions in their canonical Current contracts (2.295875ms)
+✔ keeps Parallel declarations and root type exports synchronized (1.556875ms)
+✔ computed temporal parsing declares a closed format union and recursive operand (136.710334ms)
+✔ keeps command arrays as the only canonical geometry for every chart path (797.22425ms)
+✔ renders every public chart through the PDF concrete schema (5213.835875ms)
+✔ declares clipping on supported Cartesian marks and their facade styles only (134.681417ms)
+✔ editable and graphic-only snapshots validate owner rectangles and item boundaries (113.891667ms)
+✔ axis and border underlay types keep Boolean placement on complete Cartesian resources (132.221208ms)
+✔ materializes a default Cartesian point radius for Browser and PNG rendering (184.91925ms)
+✔ lets explicit radius and field-driven size override the default immutably (9.039333ms)
+✔ materializes the same default glyph radius for Polar point positions (4.069375ms)
+✔ keeps point jitter actions Current and out of Planned (1.799333ms)
+✔ exports the complete strict point jitter option surface (0.623292ms)
+✔ keeps both point jitter visual targets executable and equivalent (107.870458ms)
+✔ documents and package-tests the additive point jitter contract (1.140083ms)
+✔ declares Polar component creation with resource, angle and tick mode boundaries (129.692ms)
+✔ declares full-only Polar point and line facades with separate position and glyph roles (134.406209ms)
+✔ resolves the three fixed Polar frame geometry oracles (1.355959ms)
+✔ moves point, line, arc, axes, and grids through one requested frame (67.190583ms)
+✔ applies aspect before Polar frame and replaces frame objects completely (7.471917ms)
+✔ replays fraction and pixel frames across Canvas edits and restores auto (15.447041ms)
+✔ rejects invalid frame edits and range conflicts atomically (31.386ms)
+✔ renders a moved Polar frame through Canvas, SVG, PNG, and PDF (200.172542ms)
+✔ locks Polar and Parallel shared-domain and local-denominator numeric oracles (114.688458ms)
+✔ renders all seven non-Cartesian facet families through every backend (553.814916ms)
+✔ replays non-Cartesian source, scale, headers, theme, selection, and style state (92.283791ms)
+✔ rejects unsupported non-Cartesian policies without changing caller state (20.881291ms)
+✔ preserves canonical empty graphics for every non-Cartesian full-grid family (98.800583ms)
+✔ replays selected Polar labels, placement, leaders, theme, and revised Canvas per child (39.058833ms)
+✔ replays named Polar label membership independently in every child (7.093708ms)
+✔ promotes exact sampled Polar legend blocks without losing requested state (53.37575ms)
+✔ does not resurrect removed Polar labels in facet or repeat replay (11.556041ms)
+✔ polygon symbols exactly match independent concrete paths in PNG and export PDF (193.631792ms)
+✔ Full and Basic declarations accept polygon policies and reject malformed point options (133.780084ms)
+✔ compact point cards retain polygon normalization in generated authoring guidance (4.1455ms)
+✔ inspects semantic layers and final point items through public state (17.085084ms)
+✔ uses the same public item path for final bars and line series (17.341458ms)
+✔ keeps canonical public state paths discoverable in documentation (4.528916ms)
+✔ declares full-only long and explicit-wide Radar contracts (131.525ms)
+✔ declares complete measured radial charts with count/sum and Polar guide constraints (129.798458ms)
+✔ declares Full-only role-safe Raincloud create and edit contracts (132.928458ms)
+✔ range encoders declare numeric datum pairs without widening temporal or Basic options (139.492083ms)
+✔ a concrete rect closes all four stroke joins like an independent native rectangle (3.417042ms)
+✔ constant x Rect span matches literal graphics and PNG (315.618875ms)
+✔ constant y Rect span matches literal graphics and PNG (271.796875ms)
+✔ reference facade graphics equal literal primitives, lower actions, Canvas and PNG (331.276459ms)
+✔ data references retain lower-chain parity and selection after resize and style edits (21.00975ms)
+✔ Rule guide examples execute with complete Canvas setup and explicit field types (46.82ms)
+✔ requires one exact package, lock, tag, and workflow-ref identity (1.025834ms)
+✔ rejects mismatched release versions and non-tag workflow refs (0.42325ms)
+✔ loads release verification without package build dependencies (7.882917ms)
+✔ derives the 0.0.2 GitHub release notes from the canonical changelog (3.357458ms)
+✔ rejects unknown, empty, and malformed release-note requests (0.493375ms)
+✔ prepares all canonical version owners and promotes only unreleased notes without changing dependencies (2.921459ms)
+✔ preflight rejects drift, empty notes, invalid dates, downgrades and existing releases (0.775375ms)
+✔ release preparation has no publish, tag, push, or candidate-packing side effects (0.35625ms)
+✔ keeps publishing manual, immutable-tag-bound, protected, and non-concurrent (0.848333ms)
+✔ uses current trusted-publishing requirements without an npm secret (0.188292ms)
+✔ keeps generated release documentation strict across native PNG platforms (0.503542ms)
+✔ qualifies, retains, verifies, and publishes one exact artifact (0.2585ms)
+✔ deploys Pages only after the protected release publish (0.336958ms)
+✔ parallel qualifications consume one canonical candidate and join before publishing (0.852041ms)
+✔ qualifies native platforms and three browser engines with strict release dependencies (0.762125ms)
+✔ realistic CI has a stable aggregate that cannot accept skipped or failed dependencies (0.187959ms)
+✔ test and documentation failures retain bounded artifacts without forgiving required checks (0.795875ms)
+✔ every qualification rejects disabled, forgiven, and echo-only commands (48.499375ms)
+✔ removes one attached label and its leader while preserving its source and siblings (87.74375ms)
+✔ removes every label owned by a source and returns active label context to that source (49.723875ms)
+✔ treats an existing source with no labels as a successful deterministic no-op (45.120916ms)
+✔ cleans label-target interaction state but preserves source selections (47.147791ms)
+✔ rejects invalid or externally referenced targets before changing any state (105.074583ms)
+✔ does not resurrect removed labels during source, scale, Canvas, or theme replay (97.485208ms)
+✔ declares Full-only exact named-resource removal contracts (136.287875ms)
+✔ publishes three exact Full-only safe-removal actions (2.564708ms)
+✔ R25-N01/N02/N03 remove unused named resources without visual drift (51.074666ms)
+✔ R25-E01 reports a Parallel dimension as a single live scale edge (7.734625ms)
+✔ R25-E02 retained facet source blocks parent deletion (17.502333ms)
+✔ R25-L01 removes a logical data owner only after its last consumer (8.196833ms)
+✔ uses structural ownership for chart-generated statistical data (9.961083ms)
+✔ rejects concat parents before attempting cross-child name resolution (2.978666ms)
+✔ keeps the public chart corpus complete for the renderer matrix (4220.226ms)
+✔ consumes one complete concrete matrix through every renderer (169.368792ms)
+✔ keeps contributor entry points complete and security reports private (2.593542ms)
+✔ keeps automated dependency updates bounded to reviewable non-major changes (0.448667ms)
+✔ declares a Full-only orientation-safe Rug contract (141.164375ms)
+✔ turns an inherited opposite position into a horizontal datum span (41.489ms)
+✔ turns the symmetric inherited position into a vertical datum span (5.681125ms)
+✔ renders the inferred datum span through Browser Canvas and Node PNG (177.135375ms)
+✔ keeps explicit-data datum spans independent from layered provenance (8.758833ms)
+✔ preserves inherited orthogonal fields for interval construction (3.839667ms)
+✔ keeps field-based full spans available through explicit data (3.073792ms)
+✔ continuous color representation is declared through supported creation and edit surfaces (132.378417ms)
+✔ closes every accepted scale capability out of the Planned inventory (0.584791ms)
+✔ keeps time as the only UTC temporal token in the current contract (0.48175ms)
+✔ publishes the complete current scale type vocabulary (6.870583ms)
+✔ publishes mapping fallback ownership and compound-grain limits (0.562042ms)
+✔ imports the scenario engine without the optional TidyTuesday cache (420.920125ms)
+✔ paces large recipe reservations across every eligible dataset (0.336917ms)
+✔ matches wrapped visible titles while preserving every non-whitespace character (0.366333ms)
+✔ keeps strict candidate diagnostics reproducible without dumping row arrays (0.972709ms)
+✔ bounds structured preflight diagnostics without raw factors (13.45925ms)
+✔ rejects unknown, duplicate, mismatched, and missing factor-effect claims (1.298333ms)
+✔ hard-fails incomplete factor-value requirement reports (0.452792ms)
+✔ labels only inline-selected final items while preserving source order and body (30.915167ms)
+✔ uses the existing first and all tie policies without reordering selected labels by rank (21.124375ms)
+✔ treats an empty match as a valid empty label collection (5.536666ms)
+✔ keeps semantic share values relative to the complete final source (14.391666ms)
+✔ replays attached collision layout and removes stale leaders as membership changes (11.765375ms)
+✔ replays named membership on selection edit and protects the live dependency (14.42125ms)
+✔ replaces label membership atomically and leaves named selections after label removal (8.486041ms)
+✔ validates exclusive selection modes, ownership, fields, and edit targets before writing (33.916875ms)
+✔ reevaluates inline membership after mark filtering, reencoding, Canvas, and theme replay (15.892125ms)
+✔ evaluates new and edited label membership before source highlight geometry (14.898ms)
+✔ renders edited selection keys and the clean removal baseline (189.651666ms)
+✔ keeps one complete selection policy beside every supported mark (0.967209ms)
+✔ finds, checks, and requires named semantic resources (1.180333ms)
+✔ resolves explicit, current, unique, missing, and ambiguous layers (0.412875ms)
+✔ anchors signed bar labels outside each final value boundary (30.158792ms)
+✔ does not let an omitted zero-length bar fail the remaining labels (9.312ms)
+✔ anchors every stacked segment at its own start and end (13.117791ms)
+✔ supports Cartesian Point centers, Polar Point outward anchors, and directed Rect intervals (43.046583ms)
+✔ recomputes inside fit, reverse direction, Canvas geometry, and Polar frame (26.809542ms)
+✔ creates one owned placement leader and removes every stale owner (7.656916ms)
+✔ updates placement leaders after collision layout displacement (16.333125ms)
+✔ rejects unsupported families, invalid policies, and dual leader ownership atomically (15.648083ms)
+✔ renders semantic placement and leaders through Canvas, SVG, PNG, and PDF (184.066792ms)
+✔ declares R49 shape details on every supported public owner only (136.836625ms)
+✔ graphical editing and rendering share concrete value validation (2.86825ms)
+✔ renderers may add completeness checks without changing value rules (0.885667ms)
+✔ authoring and rendering share the structured rect fill contract (0.773667ms)
+✔ filtering a shared position consumer refreshes sibling marks and attached labels (44.485916ms)
+✔ encodeColor refreshes both shared consumers in either authoring order (17.3005ms)
+✔ encodeSize refreshes both shared consumers in either authoring order (16.875375ms)
+✔ encodeOpacity refreshes both shared consumers in either authoring order (9.874167ms)
+✔ shared color refresh crosses compatible mark families (16.833625ms)
+✔ removeMark removes the departed x scale contribution (6.269584ms)
+✔ removeEncoding removes the departed x scale contribution (10.920792ms)
+✔ reassign removes the departed x scale contribution (4.25475ms)
+✔ removeMark removes the departed y scale contribution (4.223458ms)
+✔ removeEncoding removes the departed y scale contribution (3.702375ms)
+✔ reassign removes the departed y scale contribution (3.892292ms)
+✔ removeMark removes the departed color scale contribution (6.738417ms)
+✔ removeEncoding removes the departed color scale contribution (5.200625ms)
+✔ reassign removes the departed color scale contribution (14.4605ms)
+✔ removeMark removes the departed size scale contribution (5.058083ms)
+✔ removeEncoding removes the departed size scale contribution (4.848916ms)
+✔ reassign removes the departed size scale contribution (5.000209ms)
+✔ removeMark removes the departed opacity scale contribution (9.001958ms)
+✔ removeEncoding removes the departed opacity scale contribution (4.635792ms)
+✔ reassign removes the departed opacity scale contribution (8.207625ms)
+✔ detaching the last consumer preserves the named scale without trying to resolve it (3.819125ms)
+✔ detachment preserves explicit domains and refreshes the remaining opacity after constant assignment (8.920292ms)
+✔ places size legends at four edges with exact primitive graphics and pixels (2894.910125ms)
+✔ maps logarithmic, power, and square-root size scales in area space (38.21875ms)
+✔ renders nonlinear size marks and their legend through every public backend (218.494542ms)
+✔ maps threshold and duplicate-quantile buckets and renders every interval (21.446167ms)
+✔ edits size scale families with explicit migration and stable interval labels (37.91725ms)
+✔ recomputes automatic quantile thresholds after a derived source revision (26.686584ms)
+✔ uses unknown areas only for missing values and rejects invalid size states atomically (6.356416ms)
+✖ keeps source imports inside their architectural boundaries (75.3345ms)
+  AssertionError [ERR_ASSERTION]: core/compositionState.js must not import grammar/facets/guides.js
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/contracts/source-boundaries.test.js:93:14)
+      at Test.runInAsyncScope (node:async_hooks:211:14)
+      at Test.run (node:internal/test_runner/test:931:25)
+      at Test.start (node:internal/test_runner/test:829:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:297:17) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual'
+  }
+
+✔ the compact source-action vocabulary matches public default action metadata (0.890958ms)
+✔ parses static, re-exported, and dynamic module references (0.146833ms)
+✔ resolves extensionless files and directory entry points (0.137958ms)
+✔ keeps the local source import graph acyclic (68.043292ms)
+✔ keeps semantic and graphic cloning inside primitive actions (203.120166ms)
+✔ routes exact named semantic resource lookup through selectors (298.964667ms)
+✔ keeps cross-cutting planners independent from concrete mark names (0.266292ms)
+✔ keeps every ordinary mark family behind a stable directory entry (0.41475ms)
+✔ architectural syntax checks ignore comments and recognize direct bracket and optional access (0.571458ms)
+✔ source rows preserve structural interfaces and reject non-storable values in both entries (135.023375ms)
+✔ source field reassignment with labels matches literal endpoint graphics and PNG (152.967875ms)
+✔ publishes statistical-owner revision options as current behavior (20.089625ms)
+✔ renders every revised statistical owner through Canvas and Node PNG (381.033208ms)
+✔ statistical facade exports strict single-statistic and interval types only in the full API (133.61925ms)
+✔ stores normalized statistical reference recipes and exact one-row values (36.263834ms)
+✔ matches literal Rule and Rect output through Canvas, SVG, and PNG (309.571833ms)
+✔ distinguishes bound rows from visible items and ignores selections (13.630875ms)
+✔ axis bindings follow source re-encoding while explicit fields persist (10.364167ms)
+✔ keeps statistical values out of automatic source scale domains (4.08025ms)
+✔ follows binned scales without joining their scale policy (9.950875ms)
+✔ recomputes after derived edits and removes the owned closure (16.868333ms)
+✔ computes facet-cell statistics from each partition (18.619333ms)
+✔ rejects invalid dynamic recipes atomically (21.873458ms)
+✔ declares a Full-only role-safe Strip contract (133.945625ms)
+✔ keeps point fill and stroke as independent categorical channels and legends (52.488041ms)
+✔ validates line stroke at final series grain before writing state (13.7445ms)
+✔ uses one continuous stroke mapper and preserves stroke legend transitions (39.715417ms)
+✔ reassigns categorical and quantitative stroke with the correct legend family (52.1155ms)
+✔ cleans field and constant ownership without disturbing fill (7.566083ms)
+✔ supports every approved stroke mark family and raw stroke selection values (67.027792ms)
+✔ preserves Rule constant trace compatibility and rejects invalid requests atomically (6.987958ms)
+✔ edits compatible shared color and stroke scales and rejects incompatible edits atomically (3.406667ms)
+✔ transitions both legends on a shared continuous color and stroke scale (81.214667ms)
+✔ preserves an explicit zero stroke width in stroke legends (18.517375ms)
+✔ preserves field stroke through theme and Canvas replay (8.092792ms)
+✔ replays stroke-channel highlights into marks and the stroke legend (34.333ms)
+✔ removeEncoding removes stroke-owned state while preserving fill (6.304208ms)
+✔ renders field stroke colors consistently through Canvas, SVG, PNG, and PDF (180.61225ms)
+✔ promotes separate categorical and continuous stroke legends through facets (60.851709ms)
+✔ places stroke-width legends at four edges with exact primitive graphics and pixels (3206.3555ms)
+✔ renders every public chart through the SVG concrete schema (4505.915916ms)
+✔ discovers every normal, render, and browser test recursively exactly once (64.67425ms)
+✔ separates network-backed corpus sweeps from source coverage (31.022ms)
+✔ shards realistic CI after preparing its dataset cache once (0.468125ms)
+✔ does not discover programs or support modules as tests (6.419459ms)
+✔ keeps every test module reachable from a suite or module-script entry (276.259083ms)
+✔ requires every active gate to expose a complete reviewable slice (0.177208ms)
+✔ keeps stable tests independent from active gate implementations (106.462667ms)
+✔ keeps stable tests independent from implementation roadmap records (58.763291ms)
+✔ selects tests by chart, capability, or relative path (61.134375ms)
+✔ caps file concurrency without changing file order or coverage policy (0.902875ms)
+✔ validates realistic shard coordinates before invoking Node (0.675959ms)
+✔ maps every named capability entry to an exact file or prefix (598.886167ms)
+✔ assigns every normal test file to at least one named capability (11.574792ms)
+✔ validates every selector before short-circuit matching (0.15575ms)
+✔ text content and precision types match their runtime vocabularies (225.19975ms)
+✔ constant Text position matches literal graphics, Canvas, and decoded PNG (134.902625ms)
+✔ text metric profile types preserve the closed schema and Full-only actions (139.044667ms)
+✔ numeric Text offset types retain exact unions and Basic exclusion (138.429791ms)
+✔ publishes program theme lifecycle in runtime, types, and the Current catalog (2.983209ms)
+✔ publishes custom tokens and composition theme scope as current behavior (39.73925ms)
+✔ rejects malformed custom theme definitions before changing state (3.598167ms)
+✔ keeps theme reconciliation nested under the authoring action trace (7.336125ms)
+✔ applies the dark theme to every public unit chart without semantic drift (4203.698958ms)
+✔ keeps every stored dataset transform in the grammar registry (1.012333ms)
+✔ streaming typed CSV parsing matches the materialized reference (14.205583ms)
+✔ preserves quoted, BOM, CRLF, empty, trailing, and duplicate-header semantics (0.532041ms)
+✔ preserves parse-error precedence and typed row-field diagnostics (0.218709ms)
+✔ returns fresh mutable arrays containing fresh frozen row records (0.112958ms)
+✔ keeps long quoted descriptions within a bounded parser heap (342.716041ms)
+✔ declares existing grouped numeric and UTC weekday formats in Full and Basic (146.604417ms)
+✔ keeps the implemented visual capability surface callable (0.970541ms)
+✔ stores a Polar resource without inventing positional encodings (5.128375ms)
+✔ inherits only compatible positions from a layered rule (29.095208ms)
+✔ shares a temporal position scale between compatible bars and lines (16.544459ms)
+✔ captures horizontal grouped bars and the implemented palette shorthand (19.408041ms)
+✔ captures stale state after raw graphic removal (6.566666ms)
+✔ keeps the implemented visual actions Current, callable, and typed (5.2545ms)
+✔ keeps approved visual evidence owned by current capabilities (0.173458ms)
+✖ keeps closed polar lines and advanced facets in the strict public types (2.236666ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /export interface FacetGuideOptions \{[\s\S]*?axes\?: "each" \| "outer";/. Input:
+  
+  'import type { RegisteredExtensionActions } from "./extension.js";\n' +
+    '\n' +
+    'export type TemporalInputUnit = "auto" | "year" | "timestamp";\n' +
+    'export type TextMetricFontWeight = 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900;\n' +
+    'export interface TextMeasurement {\n' +
+    '  readonly text: string;\n' +
+    '  readonly fontFamily: string;\n' +
+    '  readonly fontSize: number;\n' +
+    '  readonly fontWeight: TextMetricFontWeight;\n' +
+    '  readonly fontStyle?: "normal" | "italic";\n' +
+    '  readonly width: number;\n' +
+    '}\n' +
+    'export interface TextMetricsProfile {\n' +
+    '  readonly schemaVersion: 1;\n' +
+    '  readonly id: string;\n' +
+    '  readonly measurements: readonly TextMeasurement[];\n' +
+    '}\n' +
+    'export interface ApplyTextMetricsOptions { profile: TextMetricsProfile; }\n' +
+    '\n' +
+    'export type ThemeName = "light" | "dark";\n' +
+    'export interface ThemeTokens {\n' +
+    '  axisLabel?: string;\n' +
+    '  axisLabelFontFamily?: string;\n' +
+    '  axisTitleFontFamily?: string;\n' +
+    '  axisLabelFontSize?: number;\n' +
+    '  axisTitleFontSize?: number;\n' +
+    '  background: string;\n' +
+    '  mark: string;\n' +
+    '  text: string;\n' +
+    '  strongText: string;\n' +
+    '  mutedText: string;\n' +
+    '  axis: string;\n' +
+    '  axisTitle: string;\n' +
+    '  grid: string;\n' +
+    '  border: string;\n' +
+    '  sizeSymbol: string;\n' +
+    '  regressionBand: string;\n' +
+    '  boxLine: string;\n' +
+    '  boxMedian: string;\n' +
+    '  referenceLine: string;\n' +
+    '  referenceBand: string;\n' +
+    '  gradientCenter: string;\n' +
+    '  highlight: string;\n' +
+    '  fontFamily: string;\n' +
+    '}\n' +
+    'export type ThemeDefinition =\n' +
+    '  | ThemeName\n' +
+    '  | { base: ThemeName; tokens: Partial<ThemeTokens> };\n' +
+    'export interface ApplyThemeOptions {\n' +
+    '  theme: ThemeDefinition;\n' +
+    '  scope?: "self" | "descendants";\n' +
+    '}\n' +
+    'export type FieldType = "quantitative" | "temporal" | "ordinal" | "nominal";\n' +
+    'export type GraphicType =\n' +
+    '  | "canvas"\n' +
+    '  | "collection"\n' +
+    '  | "circle"\n' +
+    '  | "rect"\n' +
+    '  | "line"\n' +
+    '  | "text"\n' +
+    '  | "path";\n' +
+    'export type ConcretePathCommand =\n' +
+    '  | { readonly op: "M"; readonly x: number; readonly y: number }\n' +
+    '  | { readonly op: "L"; readonly x: number; readonly y: number }\n' +
+    '  | {\n' +
+    '      readonly op: "C";\n' +
+    '      readonly x1: number;\n' +
+    '      readonly y1: number;\n' +
+    '      readonly x2: number;\n' +
+    '      readonly y2: number;\n' +
+    '      readonly x: number;\n' +
+    '      readonly y: number;\n' +
+    '    }\n' +
+    '  | { readonly op: "Z" };\n' +
+    'export interface LinearGradientPoint {\n' +
+    '  readonly x: number;\n' +
+    '  readonly y: number;\n' +
+    '}\n' +
+    'export interface LinearGradientStop {\n' +
+    '  readonly offset: number;\n' +
+    '  readonly color: string;\n' +
+    '}\n' +
+    'export interface LinearGradientPaint {\n' +
+    '  readonly type: "linear-gradient";\n' +
+    '  readonly from: LinearGradientPoint;\n' +
+    '  readonly to: LinearGradientPoint;\n' +
+    '  readonly stops: readonly [\n' +
+    '    LinearGradientStop,\n' +
+    '    LinearGradientStop,\n' +
+    '    ...LinearGradientStop[]\n' +
+    '  ];\n' +
+    '}\n' +
+    'export type FillPaint = string | LinearGradientPaint;\n' +
+    'type FilledMarkStroke = string | false;\n' +
+    'export type CurveInterpolation =\n' +
+    '  | "linear"\n' +
+    '  | "step"\n' +
+    '  | "step-before"\n' +
+    '  | "step-after"\n' +
+    '  | "basis"\n' +
+    '  | "cardinal"\n' +
+    '  | "monotone"\n' +
+    '  | "monotone-steffen"\n' +
+    '  | "natural";\n' +
+    'export type DashStyle = "solid" | "dashed" | "dotted" | "dashdot";\n' +
+    'export type DashPattern = readonly number[];\n' +
+    'export type JitterMaxOffset =\n' +
+    '  | { pixels: number; band?: never }\n' +
+    '  | { pixels?: never; band: number };\n' +
+    'export interface JitterPointsOptions {\n' +
+    '  target?: string;\n' +
+    '  channel: "x" | "y" | "both";\n' +
+    '  maxOffset: JitterMaxOffset;\n' +
+    '  seed?: string | number;\n' +
+    '  key?: string;\n' +
+    '}\n' +
+    'export interface RemoveJitterOptions {\n' +
+    '  target?: string;\n' +
+    '}\n' +
+    'export type PointPackingMaxOffset =\n' +
+    '  | { pixels: number; band?: never }\n' +
+    '  | { pixels?: never; band: number };\n' +
+    'export interface PackPointsOptions {\n' +
+    '  target?: string;\n' +
+    '  channel: "x" | "y";\n' +
+    '  maxOffset?: PointPackingMaxOffset;\n' +
+    '  padding?: number;\n' +
+    '  key?: string;\n' +
+    '  overflow?: "error" | "overlap";\n' +
+    '}\n' +
+    'export interface RemovePointPackingOptions {\n' +
+    '  target?: string;\n' +
+    '}\n' +
+    'export type ScaleType =\n' +
+    '  | "linear"\n' +
+    '  | "log"\n' +
+    '  | "pow"\n' +
+    '  | "sqrt"\n' +
+    '  | "symlog"\n' +
+    '  | "time"\n' +
+    '  | "band"\n' +
+    '  | "point"\n' +
+    '  | "ordinal"\n' +
+    '  | "sequential"\n' +
+    '  | "quantize"\n' +
+    '  | "quantile"\n' +
+    '  | "threshold";\n' +
+    'export type StackMode = "zero" | "normalize" | null;\n' +
+    'export type YStackMode = StackMode | "center";\n' +
+    'export type CompositionAlign = "start" | "center" | "end";\n' +
+    'export interface CompositionPadding {\n' +
+    '  top?: number;\n' +
+    '  right?: number;\n' +
+    '  bottom?: number;\n' +
+    '  left?: number;\n' +
+    '}\n' +
+    'export type CompositionProgramEntry =\n' +
+    '  | ChartProgram\n' +
+    '  | { id?: string; program: ChartProgram };\n' +
+    'export interface CompositionOptions {\n' +
+    '  id?: string;\n' +
+    '  programs: readonly CompositionProgramEntry[];\n' +
+    '  gap?: number;\n' +
+    '  align?: CompositionAlign;\n' +
+    '  padding?: number | CompositionPadding;\n' +
+    '}\n' +
+    'export interface EditCompositionLayoutOptions {\n' +
+    '  columns?: number;\n' +
+    '  gap?: number;\n' +
+    '  align?: CompositionAlign;\n' +
+    '  padding?: number | CompositionPadding;\n' +
+    '  /** Interpret gap between child canvases (default), inner plots, or retained full content (wrapped facets). */\n' +
+    '  spacing?: "canvas" | "plot" | "content";\n' +
+    '  /** Share existing top margin with parent title and headers; requires plot spacing. Stacked restores the default. */\n' +
+    '  topLane?: FacetTopLaneMode;\n' +
+    '}\n' +
+    'export type FacetTopLaneMode = "stacked" | "shared";\n' +
+    'export interface ReplaceCompositionChildOptions {\n' +
+    '  target: string;\n' +
+    '  program: ChartProgram;\n' +
+    '}\n' +
+    'export interface InsertCompositionChildOptions {\n' +
+    '  id: string;\n' +
+    '  program: ChartProgram;\n' +
+    '  before?: string;\n' +
+    '  after?: string;\n' +
+    '}\n' +
+    'export interface RemoveCompositionChildOptions { target: string; }\n' +
+    'export interface ReorderCompositionChildrenOptions {\n' +
+    '  order: readonly [string, ...string[]];\n' +
+    '}\n' +
+    'export type FacetScaleResolution = "shared" | "independent";\n' +
+    'export interface FacetScaleResolutions {\n' +
+    '  x?: FacetScaleResolution;\n' +
+    '  y?: FacetScaleResolution;\n' +
+    '  xOffset?: FacetScaleResolution;\n' +
+    '  yOffset?: FacetScaleResolution;\n' +
+    '  theta?: FacetScaleResolution;\n' +
+    '  r?: FacetScaleResolution;\n' +
+    '  color?: FacetScaleResolution;\n' +
+    '  stroke?: FacetScaleResolution;\n' +
+    '  size?: FacetScaleResolution;\n' +
+    '  shape?: FacetScaleResolution;\n' +
+    '  opacity?: FacetScaleResolution;\n' +
+    '  strokeDash?: FacetScaleResolution;\n' +
+    '  parallelDimensions?: FacetScaleResolution;\n' +
+    '}\n' +
+    'interface StoredFacetLegendIntent {\n' +
+    '  readonly type: "authored-legend";\n' +
+    '  readonly blocks: Readonly<Record<string, {\n' +
+    '    readonly config: Readonly<Record<string, unknown>>;\n' +
+    '    readonly guide?: Readonly<Record<string, unknown>>;\n' +
+    '  }>>;\n' +
+    '  readonly groups: Readonly<Record<string, unknown>>;\n' +
+    '}\n' +
+    'export interface FacetGuideOptions {\n' +
+    '  axes?: "each" | "outer" | { x?: "each" | "outer"; y?: "each" | "outer" };\n' +
+    '  legend?: false | "shared" | LegendOptions;\n' +
+    '}\n' +
+    'export interface FacetOptions {\n' +
+    '  id?: string;\n' +
+    '  field: string;\n' +
+    '  /** Common row-preserving ancestor, or an explicit materialized fold ancestor of every layer. */\n' +
+    '  data?: string;\n' +
+    '  values?: readonly DatasetScalar[];\n' +
+    '  columns?: number;\n' +
+    '  gap?: number;\n' +
+    '  align?: CompositionAlign;\n' +
+    '  padding?: number | CompositionPadding;\n' +
+    '  scales?: FacetScaleResolutions;\n' +
+    '  guides?: FacetGuideOptions;\n' +
+    '  headers?: FacetHeadersOptions;\n' +
+    '  /** Interpret gap between child canvases (default), inner plots, or retained full content (wrapped facets). */\n' +
+    '  spacing?: "canvas" | "plot" | "content";\n' +
+    '  /** Share the existing top margin rather than adding title/header reservations. Requires plot spacing. */\n' +
+    '  topLane?: FacetTopLaneMode;\n' +
+    '}\n' +
+    'export interface FacetGridRole {\n' +
+    '  field: string;\n' +
+    '  values?: readonly DatasetScalar[];\n' +
+    '}\n' +
+    'export interface FacetGridOptions {\n' +
+    '  id?: string;\n' +
+    '  data?: string;\n' +
+    '  rows: FacetGridRole;\n' +
+    '  columns: FacetGridRole;\n' +
+    '  combinations?: "observed" | "full";\n' +
+    '  gap?: number;\n' +
+    '  align?: CompositionAlign;\n' +
+    '  padding?: number | CompositionPadding;\n' +
+    '  scales?: FacetScaleResolutions;\n' +
+    '  guides?: FacetGuideOptions;\n' +
+    '  headers?: FacetHeadersOptions;\n' +
+    '  /** Interpret gap between child canvases (default), inner plots, or retained full content (wrapped facets). */\n' +
+    '  spacing?: "canvas" | "plot";\n' +
+    '  /** Share the existing top margin rather than adding title/header reservations. Requires plot spacing. */\n' +
+    '  topLane?: FacetTopLaneMode;\n' +
+    '}\n' +
+    'export interface RepeatChartsOptions {\n' +
+    '  id?: string;\n' +
+    '  target?: string;\n' +
+    '  channel: "x" | "y" | "theta" | "r" | { parallelDimension: string };\n' +
+    '  fields: readonly [string, ...string[]];\n' +
+    '  columns?: number;\n' +
+    '  gap?: number;\n' +
+    '  align?: CompositionAlign;\n' +
+    '  padding?: number | CompositionPadding;\n' +
+    '  scales?: FacetScaleResolutions;\n' +
+    '  guides?: FacetGuideOptions;\n' +
+    '  headers?: FacetHeadersOptions;\n' +
+    '  /** Interpret gap between child canvases (default), inner plots, or retained full content (wrapped facets). */\n' +
+    '  spacing?: "canvas" | "plot" | "content";\n' +
+    '  /** Share the existing top margin rather than adding title/header reservations. Requires plot spacing. */\n' +
+    '  topLane?: FacetTopLaneMode;\n' +
+    '}\n' +
+    'export type EditFacetSourceOptions =\n' +
+    '  | { program: ChartProgram; action?: never }\n' +
+    '  | { program?: never; action: { method: string; options?: Readonly<Record<string, unknown>> } };\n' +
+    'export interface FacetHeaderTitleOptions {\n' +
+    '  /** Required when introducing a title; edits preserve the existing text. One line. */\n' +
+    '  text?: string;\n' +
+    '  fontSize?: number;\n' +
+    '  fontFamily?: string;\n' +
+    '  fontWeight?: string | number;\n' +
+    '  color?: string;\n' +
+    '  offset?: number;\n' +
+    '  align?: FacetHeaderAlign;\n' +
+    '  rotation?: RotationInput;\n' +
+    '  alongOffset?: number;\n' +
+    '}\n' +
+    'export interface EditFacetHeadersOptions {\n' +
+    '  fontSize?: number;\n' +
+    '  fontFamily?: string;\n' +
+    '  fontWeight?: string | number;\n' +
+    '  color?: string;\n' +
+    '  offset?: number;\n' +
+    '  /** Content follows concrete mark bounds with plot spacing; plot preserves existing placement. */\n' +
+    '  anchor?: "plot" | "content" | "view";\n' +
+    '  role?: FacetHeaderRole;\n' +
+    '  labelMap?: DisplayLabelMap | "auto";\n' +
+    '  side?: FacetHeaderSide;\n' +
+    '  align?: FacetHeaderAlign;\n' +
+    '  /** Numbers are radians; zero restores the existing unrotated header layout. */\n' +
+    '  rotation?: RotationInput;\n' +
+    "  /** Requires an explicit row or column role. False removes that role's field title. */\n" +
+    '  title?: FacetHeaderTitleOptions | false;\n' +
+    '}\n' +
+    'export type FacetHeadersOptions = Omit<EditFacetHeadersOptions, "role" | "side" | "title"> & {\n' +
+    '  row?: Omit<EditFacetHeadersOptions, "role">;\n' +
+    '  column?: Omit<EditFacetHeadersOptions, "role">;\n' +
+    '};\n' +
+    'export type FacetHeaderRole = "all" | "row" | "column";\n' +
+    'export type FacetHeaderSide = "top" | "bottom" | "left" | "right";\n' +
+    'export type FacetHeaderAlign = "start" | "center" | "end";\n' +
+    'export interface ConcatCompositionSpec {\n' +
+    '  readonly id: string;\n' +
+    '  readonly direction: "horizontal" | "vertical";\n' +
+    '  readonly children: readonly str'... 183569 more characters
+  
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/contracts/visual-capability-surface.test.js:82:10)
+      at Test.runInAsyncScope (node:async_hooks:211:14)
+      at Test.run (node:internal/test_runner/test:931:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+      at Test.postRun (node:internal/test_runner/test:1042:19)
+      at Test.run (node:internal/test_runner/test:970:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:629:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: `import type { RegisteredExtensionActions } from "./extension.js";\n\nexport type TemporalInputUnit = "auto" | "year" | "timestamp";\nexport type TextMetricFontWeight = 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900;\nexport interface TextMeasurement {\n  readonly text: string;\n  readonly fontFamily: string;\n  readonly fontSize: number;\n  readonly fontWeight: TextMetricFontWeight;\n  readonly fontStyle?: "normal" | "italic";\n  readonly width: number;\n}\nexport interface TextMetricsProfile {\n  readonly schemaVersion: 1;\n  readonly id: string;\n  readonly measurements: readonly TextMeasurement[];\n}\nexport interface ApplyTextMetricsOptions { profile: TextMetricsProfile; }\n\nexport type ThemeName = "light" | "dark";\nexport interface ThemeTokens {\n  axisLabel?: string;\n  axisLabelFontFamily?: string;\n  axisTitleFontFamily?: string;\n  axisLabelFontSize?: number;\n  axisTitleFontSize?: number;\n  background: string;\n  mark: string;\n  text: string;\n  strongText: string;\n  mutedText: string;\n  axis: string;\n  axisTitle: string;\n  grid: string;\n  border: string;\n  sizeSymbol: string;\n  regressionBand: string;\n  boxLine: string;\n  boxMedian: string;\n  referenceLine: string;\n  referenceBand: string;\n  gradientCenter: string;\n  highlight: string;\n  fontFamily: string;\n}\nexport type ThemeDefinition =\n  | ThemeName\n  | { base: ThemeName; tokens: Partial<ThemeTokens> };\nexport interface ApplyThemeOptions {\n  theme: ThemeDefinition;\n  scope?: "self" | "descendants";\n}\nexport type FieldType = "quantitative" | "temporal" | "ordinal" | "nominal";\nexport type GraphicType =\n  | "canvas"\n  | "collection"\n  | "circle"\n  | "rect"\n  | "line"\n  | "text"\n  | "path";\nexport type ConcretePathCommand =\n  | { readonly op: "M"; readonly x: number; readonly y: number }\n  | { readonly op: "L"; readonly x: number; readonly y: number }\n  | {\n      readonly op: "C";\n      readonly x1: number;\n      readonly y1: number;\n      readonly x2: number;\n      readonly y2: number;\n      readonly x: number;\n      readonly y: number;\n    }\n  | { readonly op: "Z" };\nexport interface LinearGradientPoint {\n  readonly x: number;\n  readonly y: number;\n}\nexport interface LinearGradientStop {\n  readonly offset: number;\n  readonly color: string;\n}\nexport interface LinearGradientPaint {\n  readonly type: "linear-gradient";\n  readonly from: LinearGradientPoint;\n  readonly to: LinearGradientPoint;\n  readonly stops: readonly [\n    LinearGradientStop,\n    LinearGradientStop,\n    ...LinearGradientStop[]\n  ];\n}\nexport type FillPaint = string | LinearGradientPaint;\ntype FilledMarkStroke = string | false;\nexport type CurveInterpolation =\n  | "linear"\n  | "step"\n  | "step-before"\n  | "step-after"\n  | "basis"\n  | "cardinal"\n  | "monotone"\n  | "monotone-steffen"\n  | "natural";\nexport type DashStyle = "solid" | "dashed" | "dotted" | "dashdot";\nexport type DashPattern = readonly number[];\nexport type JitterMaxOffset =\n  | { pixels: number; band?: never }\n  | { pixels?: never; band: number };\nexport interface JitterPointsOptions {\n  target?: string;\n  channel: "x" | "y" | "both";\n  maxOffset: JitterMaxOffset;\n  seed?: string | number;\n  key?: string;\n}\nexport interface RemoveJitterOptions {\n  target?: string;\n}\nexport type PointPackingMaxOffset =\n  | { pixels: number; band?: never }\n  | { pixels?: never; band: number };\nexport interface PackPointsOptions {\n  target?: string;\n  channel: "x" | "y";\n  maxOffset?: PointPackingMaxOffset;\n  padding?: number;\n  key?: string;\n  overflow?: "error" | "overlap";\n}\nexport interface RemovePointPackingOptions {\n  target?: string;\n}\nexport type ScaleType =\n  | "linear"\n  | "log"\n  | "pow"\n  | "sqrt"\n  | "symlog"\n  | "time"\n  | "band"\n  | "point"\n  | "ordinal"\n  | "sequential"\n  | "quantize"\n  | "quantile"\n  | "threshold";\nexport type StackMode = "zero" | "normalize" | null;\nexport type YStackMode = StackMode | "center";\nexport type CompositionAlign = "start" | "center" | "end";\nexport interface CompositionPadding {\n  top?: number;\n  right?: number;\n  bottom?: number;\n  left?: number;\n}\nexport type CompositionProgramEntry =\n  | ChartProgram\n  | { id?: string; program: ChartProgram };\nexport interface CompositionOptions {\n  id?: string;\n  programs: readonly CompositionProgramEntry[];\n  gap?: number;\n  align?: CompositionAlign;\n  padding?: number | CompositionPadding;\n}\nexport interface EditCompositionLayoutOptions {\n  columns?: number;\n  gap?: number;\n  align?: CompositionAlign;\n  padding?: number | CompositionPadding;\n  /** Interpret gap between child canvases (default), inner plots, or retained full content (wrapped facets). */\n  spacing?: "canvas" | "plot" | "content";\n  /** Share existing top margin with parent title and headers; requires plot spacing. Stacked restores the default. */\n  topLane?: FacetTopLaneMode;\n}\nexport type FacetTopLaneMode = "stacked" | "shared";\nexport interface ReplaceCompositionChildOptions {\n  target: string;\n  program: ChartProgram;\n}\nexport interface InsertCompositionChildOptions {\n  id: string;\n  program: ChartProgram;\n  before?: string;\n  after?: string;\n}\nexport interface RemoveCompositionChildOptions { target: string; }\nexport interface ReorderCompositionChildrenOptions {\n  order: readonly [string, ...string[]];\n}\nexport type FacetScaleResolution = "shared" | "independent";\nexport interface FacetScaleResolutions {\n  x?: FacetScaleResolution;\n  y?: FacetScaleResolution;\n  xOffset?: FacetScaleResolution;\n  yOffset?: FacetScaleResolution;\n  theta?: FacetScaleResolution;\n  r?: FacetScaleResolution;\n  color?: FacetScaleResolution;\n  stroke?: FacetScaleResolution;\n  size?: FacetScaleResolution;\n  shape?: FacetScaleResolution;\n  opacity?: FacetScaleResolution;\n  strokeDash?: FacetScaleResolution;\n  parallelDimensions?: FacetScaleResolution;\n}\ninterface StoredFacetLegendIntent {\n  readonly type: "authored-legend";\n  readonly blocks: Readonly<Record<string, {\n    readonly config: Readonly<Record<string, unknown>>;\n    readonly guide?: Readonly<Record<string, unknown>>;\n  }>>;\n  readonly groups: Readonly<Record<string, unknown>>;\n}\nexport interface FacetGuideOptions {\n  axes?: "each" | "outer" | { x?: "each" | "outer"; y?: "each" | "outer" };\n  legend?: false | "shared" | LegendOptions;\n}\nexport interface FacetOptions {\n  id?: string;\n  field: string;\n  /** Common row-preserving ancestor, or an explicit materialized fold ancestor of every layer. */\n  data?: string;\n  values?: readonly DatasetScalar[];\n  columns?: number;\n  gap?: number;\n  align?: CompositionAlign;\n  padding?: number | CompositionPadding;\n  scales?: FacetScaleResolutions;\n  guides?: FacetGuideOptions;\n  headers?: FacetHeadersOptions;\n  /** Interpret gap between child canvases (default), inner plots, or retained full content (wrapped facets). */\n  spacing?: "canvas" | "plot" | "content";\n  /** Share the existing top margin rather than adding title/header reservations. Requires plot spacing. */\n  topLane?: FacetTopLaneMode;\n}\nexport interface FacetGridRole {\n  field: string;\n  values?: readonly DatasetScalar[];\n}\nexport interface FacetGridOptions {\n  id?: string;\n  data?: string;\n  rows: FacetGridRole;\n  columns: FacetGridRole;\n  combinations?: "observed" | "full";\n  gap?: number;\n  align?: CompositionAlign;\n  padding?: number | CompositionPadding;\n  scales?: FacetScaleResolutions;\n  guides?: FacetGuideOptions;\n  headers?: FacetHeadersOptions;\n  /** Interpret gap between child canvases (default), inner plots, or retained full content (wrapped facets). */\n  spacing?: "canvas" | "plot";\n  /** Share the existing top margin rather than adding title/header reservations. Requires plot spacing. */\n  topLane?: FacetTopLaneMode;\n}\nexport interface RepeatChartsOptions {\n  id?: string;\n  target?: string;\n  channel: "x" | "y" | "theta" | "r" | { parallelDimension: string };\n  fields: readonly [string, ...string[]];\n  columns?: number;\n  gap?: number;\n  align?: CompositionAlign;\n  padding?: number | CompositionPadding;\n  scales?: FacetScaleResolutions;\n  guides?: FacetGuideOptions;\n  headers?: FacetHeadersOptions;\n  /** Interpret gap between child canvases (default), inner plots, or retained full content (wrapped facets). */\n  spacing?: "canvas" | "plot" | "content";\n  /** Share the existing top margin rather than adding title/header reservations. Requires plot spacing. */\n  topLane?: FacetTopLaneMode;\n}\nexport type EditFacetSourceOptions =\n  | { program: ChartProgram; action?: never }\n  | { program?: never; action: { method: string; options?: Readonly<Record<string, unknown>> } };\nexport interface FacetHeaderTitleOptions {\n  /** Required when introducing a title; edits preserve the existing text. One line. */\n  text?: string;\n  fontSize?: number;\n  fontFamily?: string;\n  fontWeight?: string | number;\n  color?: string;\n  offset?: number;\n  align?: FacetHeaderAlign;\n  rotation?: RotationInput;\n  alongOffset?: number;\n}\nexport interface EditFacetHeadersOptions {\n  fontSize?: number;\n  fontFamily?: string;\n  fontWeight?: string | number;\n  color?: string;\n  offset?: number;\n  /** Content follows concrete mark bounds with plot spacing; plot preserves existing placement. */\n  anchor?: "plot" | "content" | "view";\n  role?: FacetHeaderRole;\n  labelMap?: DisplayLabelMap | "auto";\n  side?: FacetHeaderSide;\n  align?: FacetHeaderAlign;\n  /** Numbers are radians; zero restores the existing unrotated header layout. */\n  rotation?: RotationInput;\n  /** Requires an explicit row or column role. False removes that role's field title. */\n  title?: FacetHeaderTitleOptions | false;\n}\nexport type FacetHeadersOptions = Omit<EditFacetHeadersOptions, "role" | "side" | "title"> & {\n  row?: Omit<EditFacetHeadersOptions, "role">;\n  column?: Omit<EditFacetHeadersOptions, "role">;\n};\nexport type FacetHeaderRole = "all" | "row" | "column";\nexport type FacetHeaderSide = "top" | "bottom" | "left" | "right";\nexport type FacetHeaderAlign = "start" | "center" | "end";\nexport interface ConcatCompositionSpec {\n  readonly id: string;\n  readonly direction: "horizontal" | "vertical";\n  readonly children: readonly str`... 183569 more characters,
+    expected: /export interface FacetGuideOptions \{[\s\S]*?axes\?: "each" \| "outer";/,
+    operator: 'match'
+  }
+
+✔ zero-width stroke leaves fills intact and produces no line or outline ink (6.0255ms)
+✔ zero-width drawing still validates before any paint and preserves positive strokes (1.087792ms)
+ℹ tests 652
+ℹ suites 0
+ℹ pass 649
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 96655.436
+
+✖ failing tests:
+
+test at test/contracts/package-artifact.test.js:30:1
+✖ publishes only the bounded public package artifact (3384.911709ms)
+  Error: Package entry count 622 exceeds 621.
+      at validatePackageManifest (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/package-artifact.js:255:11)
+      at inspectPackageArtifact (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/package-artifact.js:269:10)
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/contracts/package-artifact.test.js:50:20)
+      at async Test.run (node:internal/test_runner/test:932:9)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:629:7)
+
+test at test/contracts/source-boundaries.test.js:88:1
+✖ keeps source imports inside their architectural boundaries (75.3345ms)
+  AssertionError [ERR_ASSERTION]: core/compositionState.js must not import grammar/facets/guides.js
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/contracts/source-boundaries.test.js:93:14)
+      at Test.runInAsyncScope (node:async_hooks:211:14)
+      at Test.run (node:internal/test_runner/test:931:25)
+      at Test.start (node:internal/test_runner/test:829:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:297:17) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual'
+  }
+
+test at test/contracts/visual-capability-surface.test.js:77:1
+✖ keeps closed polar lines and advanced facets in the strict public types (2.236666ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /export interface FacetGuideOptions \{[\s\S]*?axes\?: "each" \| "outer";/. Input:
+  
+  'import type { RegisteredExtensionActions } from "./extension.js";\n' +
+    '\n' +
+    'export type TemporalInputUnit = "auto" | "year" | "timestamp";\n' +
+    'export type TextMetricFontWeight = 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900;\n' +
+    'export interface TextMeasurement {\n' +
+    '  readonly text: string;\n' +
+    '  readonly fontFamily: string;\n' +
+    '  readonly fontSize: number;\n' +
+    '  readonly fontWeight: TextMetricFontWeight;\n' +
+    '  readonly fontStyle?: "normal" | "italic";\n' +
+    '  readonly width: number;\n' +
+    '}\n' +
+    'export interface TextMetricsProfile {\n' +
+    '  readonly schemaVersion: 1;\n' +
+    '  readonly id: string;\n' +
+    '  readonly measurements: readonly TextMeasurement[];\n' +
+    '}\n' +
+    'export interface ApplyTextMetricsOptions { profile: TextMetricsProfile; }\n' +
+    '\n' +
+    'export type ThemeName = "light" | "dark";\n' +
+    'export interface ThemeTokens {\n' +
+    '  axisLabel?: string;\n' +
+    '  axisLabelFontFamily?: string;\n' +
+    '  axisTitleFontFamily?: string;\n' +
+    '  axisLabelFontSize?: number;\n' +
+    '  axisTitleFontSize?: number;\n' +
+    '  background: string;\n' +
+    '  mark: string;\n' +
+    '  text: string;\n' +
+    '  strongText: string;\n' +
+    '  mutedText: string;\n' +
+    '  axis: string;\n' +
+    '  axisTitle: string;\n' +
+    '  grid: string;\n' +
+    '  border: string;\n' +
+    '  sizeSymbol: string;\n' +
+    '  regressionBand: string;\n' +
+    '  boxLine: string;\n' +
+    '  boxMedian: string;\n' +
+    '  referenceLine: string;\n' +
+    '  referenceBand: string;\n' +
+    '  gradientCenter: string;\n' +
+    '  highlight: string;\n' +
+    '  fontFamily: string;\n' +
+    '}\n' +
+    'export type ThemeDefinition =\n' +
+    '  | ThemeName\n' +
+    '  | { base: ThemeName; tokens: Partial<ThemeTokens> };\n' +
+    'export interface ApplyThemeOptions {\n' +
+    '  theme: ThemeDefinition;\n' +
+    '  scope?: "self" | "descendants";\n' +
+    '}\n' +
+    'export type FieldType = "quantitative" | "temporal" | "ordinal" | "nominal";\n' +
+    'export type GraphicType =\n' +
+    '  | "canvas"\n' +
+    '  | "collection"\n' +
+    '  | "circle"\n' +
+    '  | "rect"\n' +
+    '  | "line"\n' +
+    '  | "text"\n' +
+    '  | "path";\n' +
+    'export type ConcretePathCommand =\n' +
+    '  | { readonly op: "M"; readonly x: number; readonly y: number }\n' +
+    '  | { readonly op: "L"; readonly x: number; readonly y: number }\n' +
+    '  | {\n' +
+    '      readonly op: "C";\n' +
+    '      readonly x1: number;\n' +
+    '      readonly y1: number;\n' +
+    '      readonly x2: number;\n' +
+    '      readonly y2: number;\n' +
+    '      readonly x: number;\n' +
+    '      readonly y: number;\n' +
+    '    }\n' +
+    '  | { readonly op: "Z" };\n' +
+    'export interface LinearGradientPoint {\n' +
+    '  readonly x: number;\n' +
+    '  readonly y: number;\n' +
+    '}\n' +
+    'export interface LinearGradientStop {\n' +
+    '  readonly offset: number;\n' +
+    '  readonly color: string;\n' +
+    '}\n' +
+    'export interface LinearGradientPaint {\n' +
+    '  readonly type: "linear-gradient";\n' +
+    '  readonly from: LinearGradientPoint;\n' +
+    '  readonly to: LinearGradientPoint;\n' +
+    '  readonly stops: readonly [\n' +
+    '    LinearGradientStop,\n' +
+    '    LinearGradientStop,\n' +
+    '    ...LinearGradientStop[]\n' +
+    '  ];\n' +
+    '}\n' +
+    'export type FillPaint = string | LinearGradientPaint;\n' +
+    'type FilledMarkStroke = string | false;\n' +
+    'export type CurveInterpolation =\n' +
+    '  | "linear"\n' +
+    '  | "step"\n' +
+    '  | "step-before"\n' +
+    '  | "step-after"\n' +
+    '  | "basis"\n' +
+    '  | "cardinal"\n' +
+    '  | "monotone"\n' +
+    '  | "monotone-steffen"\n' +
+    '  | "natural";\n' +
+    'export type DashStyle = "solid" | "dashed" | "dotted" | "dashdot";\n' +
+    'export type DashPattern = readonly number[];\n' +
+    'export type JitterMaxOffset =\n' +
+    '  | { pixels: number; band?: never }\n' +
+    '  | { pixels?: never; band: number };\n' +
+    'export interface JitterPointsOptions {\n' +
+    '  target?: string;\n' +
+    '  channel: "x" | "y" | "both";\n' +
+    '  maxOffset: JitterMaxOffset;\n' +
+    '  seed?: string | number;\n' +
+    '  key?: string;\n' +
+    '}\n' +
+    'export interface RemoveJitterOptions {\n' +
+    '  target?: string;\n' +
+    '}\n' +
+    'export type PointPackingMaxOffset =\n' +
+    '  | { pixels: number; band?: never }\n' +
+    '  | { pixels?: never; band: number };\n' +
+    'export interface PackPointsOptions {\n' +
+    '  target?: string;\n' +
+    '  channel: "x" | "y";\n' +
+    '  maxOffset?: PointPackingMaxOffset;\n' +
+    '  padding?: number;\n' +
+    '  key?: string;\n' +
+    '  overflow?: "error" | "overlap";\n' +
+    '}\n' +
+    'export interface RemovePointPackingOptions {\n' +
+    '  target?: string;\n' +
+    '}\n' +
+    'export type ScaleType =\n' +
+    '  | "linear"\n' +
+    '  | "log"\n' +
+    '  | "pow"\n' +
+    '  | "sqrt"\n' +
+    '  | "symlog"\n' +
+    '  | "time"\n' +
+    '  | "band"\n' +
+    '  | "point"\n' +
+    '  | "ordinal"\n' +
+    '  | "sequential"\n' +
+    '  | "quantize"\n' +
+    '  | "quantile"\n' +
+    '  | "threshold";\n' +
+    'export type StackMode = "zero" | "normalize" | null;\n' +
+    'export type YStackMode = StackMode | "center";\n' +
+    'export type CompositionAlign = "start" | "center" | "end";\n' +
+    'export interface CompositionPadding {\n' +
+    '  top?: number;\n' +
+    '  right?: number;\n' +
+    '  bottom?: number;\n' +
+    '  left?: number;\n' +
+    '}\n' +
+    'export type CompositionProgramEntry =\n' +
+    '  | ChartProgram\n' +
+    '  | { id?: string; program: ChartProgram };\n' +
+    'export interface CompositionOptions {\n' +
+    '  id?: string;\n' +
+    '  programs: readonly CompositionProgramEntry[];\n' +
+    '  gap?: number;\n' +
+    '  align?: CompositionAlign;\n' +
+    '  padding?: number | CompositionPadding;\n' +
+    '}\n' +
+    'export interface EditCompositionLayoutOptions {\n' +
+    '  columns?: number;\n' +
+    '  gap?: number;\n' +
+    '  align?: CompositionAlign;\n' +
+    '  padding?: number | CompositionPadding;\n' +
+    '  /** Interpret gap between child canvases (default), inner plots, or retained full content (wrapped facets). */\n' +
+    '  spacing?: "canvas" | "plot" | "content";\n' +
+    '  /** Share existing top margin with parent title and headers; requires plot spacing. Stacked restores the default. */\n' +
+    '  topLane?: FacetTopLaneMode;\n' +
+    '}\n' +
+    'export type FacetTopLaneMode = "stacked" | "shared";\n' +
+    'export interface ReplaceCompositionChildOptions {\n' +
+    '  target: string;\n' +
+    '  program: ChartProgram;\n' +
+    '}\n' +
+    'export interface InsertCompositionChildOptions {\n' +
+    '  id: string;\n' +
+    '  program: ChartProgram;\n' +
+    '  before?: string;\n' +
+    '  after?: string;\n' +
+    '}\n' +
+    'export interface RemoveCompositionChildOptions { target: string; }\n' +
+    'export interface ReorderCompositionChildrenOptions {\n' +
+    '  order: readonly [string, ...string[]];\n' +
+    '}\n' +
+    'export type FacetScaleResolution = "shared" | "independent";\n' +
+    'export interface FacetScaleResolutions {\n' +
+    '  x?: FacetScaleResolution;\n' +
+    '  y?: FacetScaleResolution;\n' +
+    '  xOffset?: FacetScaleResolution;\n' +
+    '  yOffset?: FacetScaleResolution;\n' +
+    '  theta?: FacetScaleResolution;\n' +
+    '  r?: FacetScaleResolution;\n' +
+    '  color?: FacetScaleResolution;\n' +
+    '  stroke?: FacetScaleResolution;\n' +
+    '  size?: FacetScaleResolution;\n' +
+    '  shape?: FacetScaleResolution;\n' +
+    '  opacity?: FacetScaleResolution;\n' +
+    '  strokeDash?: FacetScaleResolution;\n' +
+    '  parallelDimensions?: FacetScaleResolution;\n' +
+    '}\n' +
+    'interface StoredFacetLegendIntent {\n' +
+    '  readonly type: "authored-legend";\n' +
+    '  readonly blocks: Readonly<Record<string, {\n' +
+    '    readonly config: Readonly<Record<string, unknown>>;\n' +
+    '    readonly guide?: Readonly<Record<string, unknown>>;\n' +
+    '  }>>;\n' +
+    '  readonly groups: Readonly<Record<string, unknown>>;\n' +
+    '}\n' +
+    'export interface FacetGuideOptions {\n' +
+    '  axes?: "each" | "outer" | { x?: "each" | "outer"; y?: "each" | "outer" };\n' +
+    '  legend?: false | "shared" | LegendOptions;\n' +
+    '}\n' +
+    'export interface FacetOptions {\n' +
+    '  id?: string;\n' +
+    '  field: string;\n' +
+    '  /** Common row-preserving ancestor, or an explicit materialized fold ancestor of every layer. */\n' +
+    '  data?: string;\n' +
+    '  values?: readonly DatasetScalar[];\n' +
+    '  columns?: number;\n' +
+    '  gap?: number;\n' +
+    '  align?: CompositionAlign;\n' +
+    '  padding?: number | CompositionPadding;\n' +
+    '  scales?: FacetScaleResolutions;\n' +
+    '  guides?: FacetGuideOptions;\n' +
+    '  headers?: FacetHeadersOptions;\n' +
+    '  /** Interpret gap between child canvases (default), inner plots, or retained full content (wrapped facets). */\n' +
+    '  spacing?: "canvas" | "plot" | "content";\n' +
+    '  /** Share the existing top margin rather than adding title/header reservations. Requires plot spacing. */\n' +
+    '  topLane?: FacetTopLaneMode;\n' +
+    '}\n' +
+    'export interface FacetGridRole {\n' +
+    '  field: string;\n' +
+    '  values?: readonly DatasetScalar[];\n' +
+    '}\n' +
+    'export interface FacetGridOptions {\n' +
+    '  id?: string;\n' +
+    '  data?: string;\n' +
+    '  rows: FacetGridRole;\n' +
+    '  columns: FacetGridRole;\n' +
+    '  combinations?: "observed" | "full";\n' +
+    '  gap?: number;\n' +
+    '  align?: CompositionAlign;\n' +
+    '  padding?: number | CompositionPadding;\n' +
+    '  scales?: FacetScaleResolutions;\n' +
+    '  guides?: FacetGuideOptions;\n' +
+    '  headers?: FacetHeadersOptions;\n' +
+    '  /** Interpret gap between child canvases (default), inner plots, or retained full content (wrapped facets). */\n' +
+    '  spacing?: "canvas" | "plot";\n' +
+    '  /** Share the existing top margin rather than adding title/header reservations. Requires plot spacing. */\n' +
+    '  topLane?: FacetTopLaneMode;\n' +
+    '}\n' +
+    'export interface RepeatChartsOptions {\n' +
+    '  id?: string;\n' +
+    '  target?: string;\n' +
+    '  channel: "x" | "y" | "theta" | "r" | { parallelDimension: string };\n' +
+    '  fields: readonly [string, ...string[]];\n' +
+    '  columns?: number;\n' +
+    '  gap?: number;\n' +
+    '  align?: CompositionAlign;\n' +
+    '  padding?: number | CompositionPadding;\n' +
+    '  scales?: FacetScaleResolutions;\n' +
+    '  guides?: FacetGuideOptions;\n' +
+    '  headers?: FacetHeadersOptions;\n' +
+    '  /** Interpret gap between child canvases (default), inner plots, or retained full content (wrapped facets). */\n' +
+    '  spacing?: "canvas" | "plot" | "content";\n' +
+    '  /** Share the existing top margin rather than adding title/header reservations. Requires plot spacing. */\n' +
+    '  topLane?: FacetTopLaneMode;\n' +
+    '}\n' +
+    'export type EditFacetSourceOptions =\n' +
+    '  | { program: ChartProgram; action?: never }\n' +
+    '  | { program?: never; action: { method: string; options?: Readonly<Record<string, unknown>> } };\n' +
+    'export interface FacetHeaderTitleOptions {\n' +
+    '  /** Required when introducing a title; edits preserve the existing text. One line. */\n' +
+    '  text?: string;\n' +
+    '  fontSize?: number;\n' +
+    '  fontFamily?: string;\n' +
+    '  fontWeight?: string | number;\n' +
+    '  color?: string;\n' +
+    '  offset?: number;\n' +
+    '  align?: FacetHeaderAlign;\n' +
+    '  rotation?: RotationInput;\n' +
+    '  alongOffset?: number;\n' +
+    '}\n' +
+    'export interface EditFacetHeadersOptions {\n' +
+    '  fontSize?: number;\n' +
+    '  fontFamily?: string;\n' +
+    '  fontWeight?: string | number;\n' +
+    '  color?: string;\n' +
+    '  offset?: number;\n' +
+    '  /** Content follows concrete mark bounds with plot spacing; plot preserves existing placement. */\n' +
+    '  anchor?: "plot" | "content" | "view";\n' +
+    '  role?: FacetHeaderRole;\n' +
+    '  labelMap?: DisplayLabelMap | "auto";\n' +
+    '  side?: FacetHeaderSide;\n' +
+    '  align?: FacetHeaderAlign;\n' +
+    '  /** Numbers are radians; zero restores the existing unrotated header layout. */\n' +
+    '  rotation?: RotationInput;\n' +
+    "  /** Requires an explicit row or column role. False removes that role's field title. */\n" +
+    '  title?: FacetHeaderTitleOptions | false;\n' +
+    '}\n' +
+    'export type FacetHeadersOptions = Omit<EditFacetHeadersOptions, "role" | "side" | "title"> & {\n' +
+    '  row?: Omit<EditFacetHeadersOptions, "role">;\n' +
+    '  column?: Omit<EditFacetHeadersOptions, "role">;\n' +
+    '};\n' +
+    'export type FacetHeaderRole = "all" | "row" | "column";\n' +
+    'export type FacetHeaderSide = "top" | "bottom" | "left" | "right";\n' +
+    'export type FacetHeaderAlign = "start" | "center" | "end";\n' +
+    'export interface ConcatCompositionSpec {\n' +
+    '  readonly id: string;\n' +
+    '  readonly direction: "horizontal" | "vertical";\n' +
+    '  readonly children: readonly str'... 183569 more characters
+  
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/contracts/visual-capability-surface.test.js:82:10)
+      at Test.runInAsyncScope (node:async_hooks:211:14)
+      at Test.run (node:internal/test_runner/test:931:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+      at Test.postRun (node:internal/test_runner/test:1042:19)
+      at Test.run (node:internal/test_runner/test:970:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:629:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: `import type { RegisteredExtensionActions } from "./extension.js";\n\nexport type TemporalInputUnit = "auto" | "year" | "timestamp";\nexport type TextMetricFontWeight = 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900;\nexport interface TextMeasurement {\n  readonly text: string;\n  readonly fontFamily: string;\n  readonly fontSize: number;\n  readonly fontWeight: TextMetricFontWeight;\n  readonly fontStyle?: "normal" | "italic";\n  readonly width: number;\n}\nexport interface TextMetricsProfile {\n  readonly schemaVersion: 1;\n  readonly id: string;\n  readonly measurements: readonly TextMeasurement[];\n}\nexport interface ApplyTextMetricsOptions { profile: TextMetricsProfile; }\n\nexport type ThemeName = "light" | "dark";\nexport interface ThemeTokens {\n  axisLabel?: string;\n  axisLabelFontFamily?: string;\n  axisTitleFontFamily?: string;\n  axisLabelFontSize?: number;\n  axisTitleFontSize?: number;\n  background: string;\n  mark: string;\n  text: string;\n  strongText: string;\n  mutedText: string;\n  axis: string;\n  axisTitle: string;\n  grid: string;\n  border: string;\n  sizeSymbol: string;\n  regressionBand: string;\n  boxLine: string;\n  boxMedian: string;\n  referenceLine: string;\n  referenceBand: string;\n  gradientCenter: string;\n  highlight: string;\n  fontFamily: string;\n}\nexport type ThemeDefinition =\n  | ThemeName\n  | { base: ThemeName; tokens: Partial<ThemeTokens> };\nexport interface ApplyThemeOptions {\n  theme: ThemeDefinition;\n  scope?: "self" | "descendants";\n}\nexport type FieldType = "quantitative" | "temporal" | "ordinal" | "nominal";\nexport type GraphicType =\n  | "canvas"\n  | "collection"\n  | "circle"\n  | "rect"\n  | "line"\n  | "text"\n  | "path";\nexport type ConcretePathCommand =\n  | { readonly op: "M"; readonly x: number; readonly y: number }\n  | { readonly op: "L"; readonly x: number; readonly y: number }\n  | {\n      readonly op: "C";\n      readonly x1: number;\n      readonly y1: number;\n      readonly x2: number;\n      readonly y2: number;\n      readonly x: number;\n      readonly y: number;\n    }\n  | { readonly op: "Z" };\nexport interface LinearGradientPoint {\n  readonly x: number;\n  readonly y: number;\n}\nexport interface LinearGradientStop {\n  readonly offset: number;\n  readonly color: string;\n}\nexport interface LinearGradientPaint {\n  readonly type: "linear-gradient";\n  readonly from: LinearGradientPoint;\n  readonly to: LinearGradientPoint;\n  readonly stops: readonly [\n    LinearGradientStop,\n    LinearGradientStop,\n    ...LinearGradientStop[]\n  ];\n}\nexport type FillPaint = string | LinearGradientPaint;\ntype FilledMarkStroke = string | false;\nexport type CurveInterpolation =\n  | "linear"\n  | "step"\n  | "step-before"\n  | "step-after"\n  | "basis"\n  | "cardinal"\n  | "monotone"\n  | "monotone-steffen"\n  | "natural";\nexport type DashStyle = "solid" | "dashed" | "dotted" | "dashdot";\nexport type DashPattern = readonly number[];\nexport type JitterMaxOffset =\n  | { pixels: number; band?: never }\n  | { pixels?: never; band: number };\nexport interface JitterPointsOptions {\n  target?: string;\n  channel: "x" | "y" | "both";\n  maxOffset: JitterMaxOffset;\n  seed?: string | number;\n  key?: string;\n}\nexport interface RemoveJitterOptions {\n  target?: string;\n}\nexport type PointPackingMaxOffset =\n  | { pixels: number; band?: never }\n  | { pixels?: never; band: number };\nexport interface PackPointsOptions {\n  target?: string;\n  channel: "x" | "y";\n  maxOffset?: PointPackingMaxOffset;\n  padding?: number;\n  key?: string;\n  overflow?: "error" | "overlap";\n}\nexport interface RemovePointPackingOptions {\n  target?: string;\n}\nexport type ScaleType =\n  | "linear"\n  | "log"\n  | "pow"\n  | "sqrt"\n  | "symlog"\n  | "time"\n  | "band"\n  | "point"\n  | "ordinal"\n  | "sequential"\n  | "quantize"\n  | "quantile"\n  | "threshold";\nexport type StackMode = "zero" | "normalize" | null;\nexport type YStackMode = StackMode | "center";\nexport type CompositionAlign = "start" | "center" | "end";\nexport interface CompositionPadding {\n  top?: number;\n  right?: number;\n  bottom?: number;\n  left?: number;\n}\nexport type CompositionProgramEntry =\n  | ChartProgram\n  | { id?: string; program: ChartProgram };\nexport interface CompositionOptions {\n  id?: string;\n  programs: readonly CompositionProgramEntry[];\n  gap?: number;\n  align?: CompositionAlign;\n  padding?: number | CompositionPadding;\n}\nexport interface EditCompositionLayoutOptions {\n  columns?: number;\n  gap?: number;\n  align?: CompositionAlign;\n  padding?: number | CompositionPadding;\n  /** Interpret gap between child canvases (default), inner plots, or retained full content (wrapped facets). */\n  spacing?: "canvas" | "plot" | "content";\n  /** Share existing top margin with parent title and headers; requires plot spacing. Stacked restores the default. */\n  topLane?: FacetTopLaneMode;\n}\nexport type FacetTopLaneMode = "stacked" | "shared";\nexport interface ReplaceCompositionChildOptions {\n  target: string;\n  program: ChartProgram;\n}\nexport interface InsertCompositionChildOptions {\n  id: string;\n  program: ChartProgram;\n  before?: string;\n  after?: string;\n}\nexport interface RemoveCompositionChildOptions { target: string; }\nexport interface ReorderCompositionChildrenOptions {\n  order: readonly [string, ...string[]];\n}\nexport type FacetScaleResolution = "shared" | "independent";\nexport interface FacetScaleResolutions {\n  x?: FacetScaleResolution;\n  y?: FacetScaleResolution;\n  xOffset?: FacetScaleResolution;\n  yOffset?: FacetScaleResolution;\n  theta?: FacetScaleResolution;\n  r?: FacetScaleResolution;\n  color?: FacetScaleResolution;\n  stroke?: FacetScaleResolution;\n  size?: FacetScaleResolution;\n  shape?: FacetScaleResolution;\n  opacity?: FacetScaleResolution;\n  strokeDash?: FacetScaleResolution;\n  parallelDimensions?: FacetScaleResolution;\n}\ninterface StoredFacetLegendIntent {\n  readonly type: "authored-legend";\n  readonly blocks: Readonly<Record<string, {\n    readonly config: Readonly<Record<string, unknown>>;\n    readonly guide?: Readonly<Record<string, unknown>>;\n  }>>;\n  readonly groups: Readonly<Record<string, unknown>>;\n}\nexport interface FacetGuideOptions {\n  axes?: "each" | "outer" | { x?: "each" | "outer"; y?: "each" | "outer" };\n  legend?: false | "shared" | LegendOptions;\n}\nexport interface FacetOptions {\n  id?: string;\n  field: string;\n  /** Common row-preserving ancestor, or an explicit materialized fold ancestor of every layer. */\n  data?: string;\n  values?: readonly DatasetScalar[];\n  columns?: number;\n  gap?: number;\n  align?: CompositionAlign;\n  padding?: number | CompositionPadding;\n  scales?: FacetScaleResolutions;\n  guides?: FacetGuideOptions;\n  headers?: FacetHeadersOptions;\n  /** Interpret gap between child canvases (default), inner plots, or retained full content (wrapped facets). */\n  spacing?: "canvas" | "plot" | "content";\n  /** Share the existing top margin rather than adding title/header reservations. Requires plot spacing. */\n  topLane?: FacetTopLaneMode;\n}\nexport interface FacetGridRole {\n  field: string;\n  values?: readonly DatasetScalar[];\n}\nexport interface FacetGridOptions {\n  id?: string;\n  data?: string;\n  rows: FacetGridRole;\n  columns: FacetGridRole;\n  combinations?: "observed" | "full";\n  gap?: number;\n  align?: CompositionAlign;\n  padding?: number | CompositionPadding;\n  scales?: FacetScaleResolutions;\n  guides?: FacetGuideOptions;\n  headers?: FacetHeadersOptions;\n  /** Interpret gap between child canvases (default), inner plots, or retained full content (wrapped facets). */\n  spacing?: "canvas" | "plot";\n  /** Share the existing top margin rather than adding title/header reservations. Requires plot spacing. */\n  topLane?: FacetTopLaneMode;\n}\nexport interface RepeatChartsOptions {\n  id?: string;\n  target?: string;\n  channel: "x" | "y" | "theta" | "r" | { parallelDimension: string };\n  fields: readonly [string, ...string[]];\n  columns?: number;\n  gap?: number;\n  align?: CompositionAlign;\n  padding?: number | CompositionPadding;\n  scales?: FacetScaleResolutions;\n  guides?: FacetGuideOptions;\n  headers?: FacetHeadersOptions;\n  /** Interpret gap between child canvases (default), inner plots, or retained full content (wrapped facets). */\n  spacing?: "canvas" | "plot" | "content";\n  /** Share the existing top margin rather than adding title/header reservations. Requires plot spacing. */\n  topLane?: FacetTopLaneMode;\n}\nexport type EditFacetSourceOptions =\n  | { program: ChartProgram; action?: never }\n  | { program?: never; action: { method: string; options?: Readonly<Record<string, unknown>> } };\nexport interface FacetHeaderTitleOptions {\n  /** Required when introducing a title; edits preserve the existing text. One line. */\n  text?: string;\n  fontSize?: number;\n  fontFamily?: string;\n  fontWeight?: string | number;\n  color?: string;\n  offset?: number;\n  align?: FacetHeaderAlign;\n  rotation?: RotationInput;\n  alongOffset?: number;\n}\nexport interface EditFacetHeadersOptions {\n  fontSize?: number;\n  fontFamily?: string;\n  fontWeight?: string | number;\n  color?: string;\n  offset?: number;\n  /** Content follows concrete mark bounds with plot spacing; plot preserves existing placement. */\n  anchor?: "plot" | "content" | "view";\n  role?: FacetHeaderRole;\n  labelMap?: DisplayLabelMap | "auto";\n  side?: FacetHeaderSide;\n  align?: FacetHeaderAlign;\n  /** Numbers are radians; zero restores the existing unrotated header layout. */\n  rotation?: RotationInput;\n  /** Requires an explicit row or column role. False removes that role's field title. */\n  title?: FacetHeaderTitleOptions | false;\n}\nexport type FacetHeadersOptions = Omit<EditFacetHeadersOptions, "role" | "side" | "title"> & {\n  row?: Omit<EditFacetHeadersOptions, "role">;\n  column?: Omit<EditFacetHeadersOptions, "role">;\n};\nexport type FacetHeaderRole = "all" | "row" | "column";\nexport type FacetHeaderSide = "top" | "bottom" | "left" | "right";\nexport type FacetHeaderAlign = "start" | "center" | "end";\nexport interface ConcatCompositionSpec {\n  readonly id: string;\n  readonly direction: "horizontal" | "vertical";\n  readonly children: readonly str`... 183569 more characters,
+    expected: /export interface FacetGuideOptions \{[\s\S]*?axes\?: "each" \| "outer";/,
+    operator: 'match'
+  }

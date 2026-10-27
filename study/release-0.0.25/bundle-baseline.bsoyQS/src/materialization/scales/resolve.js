@@ -1,0 +1,464 @@
+import { validateContinuousColorConsumer } from "../../grammar/scales/colorConsumers.js";
+import {
+  isContinuousColorScaleType,
+  isDiscretePositionScaleType,
+  isDiscretizedColorScaleType,
+  isOrdinalScaleType,
+  isTransformedScaleType,
+  normalizeTransformParameters,
+  resolveColorRange,
+  resolveContinuousDomain,
+  resolveDiscretePositionScale,
+  resolveDiscretizedColorScale,
+  resolveOpacityRange,
+  resolveOrdinalDomain,
+  resolveOrdinalOffsetScale,
+  resolveOrdinalPositionScale,
+  resolveScaleRange,
+  resolveSequentialColorStops,
+  resolveShapeRange,
+  resolveSizeScale,
+  resolveSizeRange,
+  resolveStrokeDashRange,
+  resolveStrokeWidthRange,
+  resolveTransformedDomain,
+  SCALE_ROLES,
+  validateSequentialMidpoint,
+  validateLinearScaleType,
+  validateOrdinalScaleType,
+  validateScaleTypeForRole,
+  validateTimeScaleType
+} from "../../grammar/scales/index.js";
+import { resolveArcAutoPositionRange, resolveMeasuredRadiusDomain, validateMeasuredRadiusConsumers } from "./policies/arc.js";
+import { resolveTemporalBarBand } from "./policies/bar.js";
+import { resolveOffsetScalePolicy } from "./policies/offset.js";
+import { resolveBinnedPositionDomain } from "./policies/binnedPosition.js";
+import { resolveSeriesLayoutDomain } from "./policies/series.js";
+import { OFFSET_POSITION_CHANNELS } from "../../core/vocabulary.js";
+import { annotateError } from "../../core/diagnostics.js";
+import { cloneAndFreeze } from "../../core/immutable.js";
+import { comparableDataIdentity } from "../revisionIdentity.js";
+
+const bindingSignatures = new WeakMap();
+
+function scaleBindingSignature(channel, consumers, { comparable = false } = {}) {
+  return consumers.map(consumer => ({
+    channel: consumer.channel ?? channel,
+    coordinate: consumer.layer.coordinate,
+    data: comparable
+      ? comparableDataIdentity(consumer.layer.data)
+      : consumer.layer.data,
+    field: consumer.encoding.field,
+    datum: consumer.encoding.datum,
+    fieldType: consumer.encoding.fieldType,
+    temporalUnit: consumer.encoding.temporalUnit,
+    aggregate: consumer.encoding.aggregate,
+    bin: consumer.encoding.bin
+  })).sort((left, right) => JSON.stringify(left).localeCompare(JSON.stringify(right)));
+}
+
+export function rememberResolvedScaleBinding(resolvedScale, channel, consumers) {
+  if (resolvedScale !== undefined) {
+    bindingSignatures.set(
+      resolvedScale,
+      cloneAndFreeze(scaleBindingSignature(channel, consumers))
+    );
+  }
+}
+
+function resolveDefaultDomain({
+  scale,
+  allValues,
+  isOrdinalAppearance,
+  isOrdinalOffset,
+  isOrdinalPosition,
+  isDiscretePosition
+}) {
+  if (
+    isOrdinalAppearance ||
+    isOrdinalOffset ||
+    isOrdinalPosition ||
+    isDiscretePosition
+  ) {
+    return resolveOrdinalDomain(scale.domain, allValues);
+  }
+  if (isTransformedScaleType(scale.type)) {
+    return resolveTransformedDomain({
+      type: scale.type,
+      domain: scale.domain,
+      values: allValues,
+      nice: scale.nice ?? false,
+      zero: scale.zero ?? false,
+      ...(scale.base === undefined ? {} : { base: scale.base }),
+      ...(scale.exponent === undefined ? {} : { exponent: scale.exponent }),
+      ...(scale.constant === undefined ? {} : { constant: scale.constant })
+    });
+  }
+  return resolveContinuousDomain({
+    domain: scale.domain,
+    values: allValues,
+    type: scale.type,
+    nice: scale.nice,
+    zero: scale.zero
+  });
+}
+
+function resolveCategoryOrderDomain(valuesByConsumer) {
+  const orders = valuesByConsumer
+    .map(item => item.categoryOrder)
+    .filter(order => order !== undefined);
+  if (orders.length === 0) return undefined;
+  const [first, ...rest] = orders;
+  if (rest.some(order =>
+    order.length !== first.length ||
+    order.some((value, index) => !Object.is(value, first[index])))) {
+    throw new Error("Shared scale category order assignments must resolve identically.");
+  }
+  return first;
+}
+
+function resolveRange({
+  scale,
+  channel,
+  domain,
+  bounds,
+  consumers,
+  markConfigs,
+  isSequentialColor,
+  isDiscretizedColor,
+  isOrdinalOffset,
+  discretizedScale,
+  polarFrame
+}) {
+  if (channel === "color") {
+    if (isDiscretizedColor) return discretizedScale.range;
+    if (isSequentialColor) return resolveSequentialColorStops(scale.range);
+    return resolveColorRange(scale.range, domain.length);
+  }
+  if (channel === "strokeDash") return resolveStrokeDashRange(scale.range);
+  if (channel === "shape") return resolveShapeRange(scale.range);
+  if (channel === "size") return resolveSizeRange(scale.range);
+  if (channel === "opacity") return resolveOpacityRange(scale.range);
+  if (channel === "strokeWidth") return resolveStrokeWidthRange(scale.range);
+  if (isOrdinalOffset) return undefined;
+  return resolveArcAutoPositionRange({
+    consumers,
+    scale,
+    channel,
+    domain,
+    range: resolveScaleRange(scale.range, channel, bounds, polarFrame),
+    markConfigs
+  });
+}
+
+function resolveContinuousScale({
+  scale,
+  domain,
+  range,
+  isSequentialColor,
+  isOrdinalAppearance
+}) {
+  return {
+    type: isSequentialColor
+      ? scale.type
+      : isOrdinalAppearance
+        ? validateOrdinalScaleType(scale.type)
+        : scale.type === "time"
+          ? validateTimeScaleType(scale.type)
+          : isTransformedScaleType(scale.type)
+            ? validateScaleTypeForRole(
+                scale.type,
+                SCALE_ROLES.quantitativePosition
+              )
+            : validateLinearScaleType(scale.type),
+    domain,
+    range,
+    ...(scale.midpoint === undefined ? {} : { midpoint: scale.midpoint }),
+    ...(scale.clamp === undefined ? {} : { clamp: scale.clamp }),
+    ...(scale.radialMapping === undefined ? {} : { radialMapping: scale.radialMapping }),
+    ...(scale.type === "log"
+      ? {
+          base: normalizeTransformParameters("log", {
+            ...(scale.base === undefined ? {} : { base: scale.base })
+          }).base
+        }
+      : scale.type === "pow"
+        ? {
+            exponent: normalizeTransformParameters("pow", {
+              ...(scale.exponent === undefined
+                ? {}
+                : { exponent: scale.exponent })
+            }).exponent
+          }
+        : scale.type === "symlog"
+          ? {
+              constant: normalizeTransformParameters("symlog", {
+                ...(scale.constant === undefined
+                  ? {}
+                  : { constant: scale.constant })
+              }).constant
+            }
+          : {}),
+    ...(isSequentialColor ? { interpolate: scale.interpolate ?? "rgb" } : {}),
+    ...(scale.whitePoint === undefined ? {} : {whitePoint: scale.whitePoint}),
+    ...(scale.gamma === undefined ? {} : {gamma: scale.gamma}),
+    ...(Object.hasOwn(scale, "unknown") ? { unknown: scale.unknown } : {})
+  };
+}
+
+function reverseResolvedScale(scale) {
+  const range = [...scale.range].reverse();
+  const direction = Math.sign(range[1] - range[0]) || 1;
+  const offset = scale.start === undefined
+    ? undefined
+    : Math.abs(scale.start - scale.range[0]);
+  return {
+    ...scale,
+    range,
+    ...(scale.step === undefined ? {} : { step: -scale.step }),
+    ...(offset === undefined ? {} : { start: range[0] + direction * offset })
+  };
+}
+
+export function resolveScaleMaterialization(options) {
+  const {
+    id,
+    scale,
+    channel: requestedChannel,
+    consumers,
+    valuesByConsumer,
+    bounds,
+    resolvedScales,
+    markConfigs,
+    thetaScales,
+    polarFrame
+  } = options;
+  const channel = requestedChannel === "stroke" ? "color" : requestedChannel;
+  const allValues = valuesByConsumer
+    .flatMap(item => item.values)
+    .filter(value => value !== undefined);
+  const preserved = resolvedScales[id]?.domain;
+  const bindingSignature = scaleBindingSignature(channel, consumers);
+  const comparableBindingSignature = scaleBindingSignature(channel, consumers, {
+    comparable: true
+  });
+  const priorSignature = resolvedScales[id] === undefined
+    ? undefined
+    : bindingSignatures.get(resolvedScales[id]);
+  const samePreservedMeaning = priorSignature !== undefined &&
+    JSON.stringify(priorSignature) === JSON.stringify(comparableBindingSignature);
+  if (
+    scale.domain === "auto" &&
+    Array.isArray(preserved) &&
+    resolvedScales[id]?.type === scale.type &&
+    (consumers.some(({ layer }) =>
+      markConfigs?.[layer.id]?.markFilter?.empty === true
+    ) || (scale.emptyDomain === "preserve" && allValues.length === 0 && samePreservedMeaning))
+  ) {
+    return resolveScaleMaterialization({
+      ...options,
+      scale: { ...scale, domain: preserved },
+      valuesByConsumer: valuesByConsumer.map(item => ({
+        ...item,
+        categoryOrder: undefined
+      }))
+    });
+  }
+  if (
+    scale.domain === "auto" && allValues.length === 0 &&
+    scale.emptyDomain === "preserve" && Array.isArray(preserved) && !samePreservedMeaning
+  ) {
+    throw annotateError(new Error(`Scale "${id}" requires an explicit domain because its binding changed.`), {
+      code: "incompatible-resource",
+      operation: "rematerializeScale",
+      optionPath: "domain",
+      resourceId: id,
+      reason: "domain-required"
+    });
+  }
+  if (scale.domain === "auto" && allValues.length === 0) {
+    throw annotateError(new Error(`Scale "${id}" requires an explicit domain for empty data.`), {
+      code: "incompatible-resource",
+      operation: "rematerializeScale",
+      optionPath: "domain",
+      resourceId: id,
+      reason: "domain-required"
+    });
+  }
+  if (channel === "size") {
+    return resolveSizeScale({ ...scale, values: allValues });
+  }
+  const isSequentialColor = channel === "color" &&
+    isContinuousColorScaleType(scale.type);
+  const isDiscretizedColor = channel === "color" &&
+    isDiscretizedColorScaleType(scale.type);
+  const isOrdinalAppearance =
+    ["color", "strokeDash", "shape"].includes(channel) &&
+    isOrdinalScaleType(scale.type);
+  const isOrdinalOffset = OFFSET_POSITION_CHANNELS.includes(channel);
+  const isOrdinalPosition =
+    !isOrdinalAppearance && !isOrdinalOffset && isOrdinalScaleType(scale.type);
+  const isDiscretePosition =
+    !isOrdinalAppearance &&
+    !isOrdinalOffset &&
+    isDiscretePositionScaleType(scale.type);
+
+  if (isSequentialColor || isDiscretizedColor) {
+    for (const consumer of consumers) {
+      validateContinuousColorConsumer(
+        consumer.layer,
+        consumer.encoding,
+        scale,
+        { channel: consumer.channel }
+      );
+    }
+  }
+  let discretizedScale;
+  if (isDiscretizedColor) {
+    discretizedScale = resolveDiscretizedColorScale({
+      type: scale.type,
+      domain: scale.domain,
+      range: scale.range,
+      values: allValues
+    });
+  }
+  const binnedDomain = isDiscretizedColor
+    ? undefined
+    : resolveBinnedPositionDomain({
+        program: options.program,
+        valuesByConsumer,
+        channel,
+        scale,
+        id
+      });
+  const seriesLayouts = valuesByConsumer.map(item => item.seriesLayout);
+  const seriesDomain = isDiscretizedColor || binnedDomain !== undefined
+    ? undefined
+    : resolveSeriesLayoutDomain({
+        program: options.program,
+        id,
+        scale,
+        valuesByConsumer,
+        seriesLayouts
+      });
+  const categoryOrderDomain = isDiscretizedColor
+    ? undefined
+    : resolveCategoryOrderDomain(valuesByConsumer);
+  if (categoryOrderDomain !== undefined && scale.domain !== "auto") {
+    throw new Error(
+      `Scale "${id}" cannot combine an explicit domain with category order.`
+    );
+  }
+  const domain = isDiscretizedColor
+    ? discretizedScale.domain
+    : resolveMeasuredRadiusDomain({ scale, channel, allValues }) ?? categoryOrderDomain ?? binnedDomain ?? seriesDomain ?? resolveDefaultDomain({
+        scale,
+        allValues,
+        isOrdinalAppearance,
+        isOrdinalOffset,
+        isOrdinalPosition,
+        isDiscretePosition
+      });
+  const range = resolveRange({
+    scale,
+    channel,
+    domain,
+    bounds,
+    consumers,
+    markConfigs,
+    isSequentialColor,
+    isDiscretizedColor,
+    isOrdinalOffset,
+    discretizedScale,
+    polarFrame
+  });
+  validateSequentialMidpoint(scale.midpoint, scale.type, domain);
+  if (scale.midpoint !== undefined && (channel !== "color" || consumers.some(
+    consumer => consumer.encoding.fieldType !== "quantitative"
+  ))) {
+    throw new Error("Scale midpoint requires quantitative color consumers.");
+  }
+  validateMeasuredRadiusConsumers({ scale, domain, range, consumers, markConfigs, thetaScales });
+  if (channel === "shape" && domain.length > range.length) {
+    throw new Error(
+      `Shape scale "${id}" requires at least one shape entry per domain value.`
+    );
+  }
+
+  let resolvedScale = isDiscretizedColor
+    ? discretizedScale
+    : isOrdinalOffset
+      ? resolveOrdinalOffsetScale({
+          domain: scale.domain,
+          values: allValues,
+          range: scale.range,
+          ...resolveOffsetScalePolicy({
+            scale,
+            consumers,
+            resolvedScales,
+            markConfigs,
+            id,
+            channel
+          }),
+          channel
+        })
+      : isDiscretePosition
+        ? resolveDiscretePositionScale({
+            type: scale.type,
+            domain: categoryOrderDomain ?? scale.domain,
+            values: allValues,
+            range: channel === "theta" && consumers.every(
+              consumer => consumer.layer.mark?.type === "arc"
+            ) ? range : scale.range,
+            channel,
+            bounds,
+            ...(scale.type === "band"
+              ? {
+                  paddingInner: scale.paddingInner,
+                  paddingOuter: scale.paddingOuter
+                }
+              : { padding: scale.padding }),
+            align: scale.align,
+            unknown: scale.unknown
+          })
+        : isOrdinalPosition
+          ? resolveOrdinalPositionScale({
+              domain: categoryOrderDomain ?? scale.domain,
+              values: allValues,
+              range: scale.range,
+              channel,
+              bounds,
+              unknown: scale.unknown
+            })
+          : resolveContinuousScale({
+              scale,
+              domain,
+              range,
+              isSequentialColor,
+              isOrdinalAppearance
+            });
+  if (Object.hasOwn(scale, "unknown") && !Object.hasOwn(resolvedScale, "unknown")) {
+    resolvedScale = { ...resolvedScale, unknown: scale.unknown };
+  }
+  if (scale.type === "time" && ["x", "y"].includes(channel)) {
+    const temporalBarBand = resolveTemporalBarBand(
+      valuesByConsumer,
+      domain,
+      range,
+      markConfigs,
+      Array.isArray(scale.range)
+    );
+    if (temporalBarBand !== undefined) {
+      resolvedScale = {
+        ...resolvedScale,
+        range: temporalBarBand.range,
+        bandwidth: temporalBarBand.bandwidth
+      };
+    }
+  }
+  const finalScale = cloneAndFreeze(scale.reverse === true
+    ? reverseResolvedScale(resolvedScale)
+    : resolvedScale);
+  bindingSignatures.set(finalScale, cloneAndFreeze(bindingSignature));
+  return finalScale;
+}

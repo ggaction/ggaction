@@ -1,0 +1,19 @@
+{
+  "scope": "Roadmap packet helper only",
+  "passed": true,
+  "checks": [
+    {
+      "name": "empty progress selects first task",
+      "passed": true
+    },
+    {
+      "name": "bounded packet includes contract and literal fixture",
+      "passed": true,
+      "bytes": 42027
+    },
+    {
+      "name": "unbacked completion rejected",
+      "passed": true
+    }
+  ]
+}

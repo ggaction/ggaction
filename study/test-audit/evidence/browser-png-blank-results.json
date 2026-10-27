@@ -1,0 +1,43 @@
+[
+  {
+    "chart": "continuous-area-color",
+    "allSharedPNGAssertions": "PASS",
+    "actual": "fully transparent PNG",
+    "inkPixels": 281600,
+    "inkRatio": 1,
+    "regions": [
+      {
+        "name": "stacked areas",
+        "inkPixels": 181440
+      }
+    ],
+    "sameRunPixelHashEqual": true
+  },
+  {
+    "chart": "bootstrap-mean-ci",
+    "allSharedPNGAssertions": "PASS",
+    "actual": "fully transparent PNG",
+    "inkPixels": 281600,
+    "inkRatio": 1,
+    "regions": [
+      {
+        "name": "asymmetric confidence band",
+        "inkPixels": 162400
+      }
+    ],
+    "sameRunPixelHashEqual": true
+  },
+  {
+    "invalidCSSAccepted": {
+      "value": "not-a-css-color",
+      "rgba": [
+        0,
+        0,
+        0,
+        255
+      ],
+      "tolerance": 0,
+      "minimumPixels": 1
+    }
+  }
+]

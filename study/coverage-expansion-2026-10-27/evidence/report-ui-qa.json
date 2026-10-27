@@ -1,0 +1,106 @@
+{
+  "generatedAt": "2026-10-27T06:02:34.315Z",
+  "scope": "Local report UI only; not ggaction feature conformance",
+  "reportSha256": {
+    "markdown": "ebbeaf05a3270b0250758b5fdeb8ec8a52d91beecccc230e4ee535cd496c1fa2",
+    "html": "87df4050b3a7e6a7bd615ce29a8dc884ba9f656cb885b78f533c64090ef0ec3c"
+  },
+  "browser": "153.0.8010.12",
+  "passed": true,
+  "checks": [
+    {
+      "name": "desktop document structure",
+      "passed": true,
+      "detail": {
+        "h2": 24,
+        "tables": 53,
+        "overflow": false,
+        "externalImages": 0
+      }
+    },
+    {
+      "name": "offline viewer",
+      "passed": true,
+      "detail": {
+        "network": []
+      }
+    },
+    {
+      "name": "chapter navigation",
+      "passed": true
+    },
+    {
+      "name": "search matches",
+      "passed": true,
+      "detail": {
+        "displayed": 17,
+        "status": "17개 문단/행 일치 · 최대 60개 표시"
+      }
+    },
+    {
+      "name": "search target visible",
+      "passed": true
+    },
+    {
+      "name": "empty search",
+      "passed": true
+    },
+    {
+      "name": "escape resets search",
+      "passed": true
+    },
+    {
+      "name": "set visualization deferred notice",
+      "passed": true
+    },
+    {
+      "name": "scope revision chapter navigation",
+      "passed": true
+    },
+    {
+      "name": "revision search UpSet",
+      "passed": true
+    },
+    {
+      "name": "revision search force-directed",
+      "passed": true
+    },
+    {
+      "name": "revision search POL-08",
+      "passed": true
+    },
+    {
+      "name": "revision search WP-26",
+      "passed": true
+    },
+    {
+      "name": "mobile no document overflow",
+      "passed": true
+    },
+    {
+      "name": "mobile menu open",
+      "passed": true
+    },
+    {
+      "name": "mobile nav closes",
+      "passed": true
+    },
+    {
+      "name": "mobile tables independently scroll",
+      "passed": true,
+      "detail": {
+        "scrollableTables": 53
+      }
+    },
+    {
+      "name": "print hides navigation",
+      "passed": true
+    },
+    {
+      "name": "no script errors",
+      "passed": true,
+      "detail": []
+    }
+  ],
+  "errors": []
+}

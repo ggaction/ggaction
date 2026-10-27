@@ -1,0 +1,16 @@
+{
+  "linear": {
+    "actual": 0,
+    "expected": 50
+  },
+  "quantile": {
+    "actual": "Infinity",
+    "expected": 0
+  },
+  "ticks": {
+    "status": null,
+    "error": "ETIMEDOUT",
+    "signal": "SIGTERM",
+    "stdout": ""
+  }
+}

@@ -1,0 +1,28 @@
+✔ Steffen line survives immutable authoring, rematerialization and all export backends (50.495875ms)
+✔ Steffen area survives immutable authoring, rematerialization and all export backends (34.867666ms)
+✔ Steffen band survives immutable authoring, rematerialization and all export backends (25.164125ms)
+✔ Basic line facade retains the recipe without broadening its chart families (4.636375ms)
+✔ exposes and validates the closed curve vocabulary (1.109916ms)
+✔ builds exact linear and step-family command fixtures (0.628333ms)
+✔ builds exact basis and cardinal cubic command fixtures (0.395333ms)
+✔ builds exact monotone and natural cubic command fixtures (0.33675ms)
+✔ builds monotone cubics for strictly decreasing x values (0.159833ms)
+✔ keeps every curve family finite across the full numeric range (1.523125ms)
+✔ keeps a valid two-point monotone cubic and falls back for other short curves (0.234125ms)
+✔ owns every generated command without retaining caller points (0.087708ms)
+✔ builds closed areas from two independently interpolated boundaries (1.222708ms)
+✔ orients monotone area interpolation along a vertical independent axis (0.527584ms)
+✔ rejects curve and area command expansion before oversized allocation (62.977209ms)
+✔ cardinal tension contracts tangents while retaining endpoints and the default curve (7.663125ms)
+✔ Steffen controls match independent nonuniform rational reference values (1.560834ms)
+✔ each Steffen segment stays inside its endpoint range through rises, flats and turns (1.348917ms)
+✔ degenerate Steffen segments retain vertical endpoints and reject X reversals (0.579583ms)
+✔ area boundaries reverse controls and transpose their independent axis (0.492542ms)
+ℹ tests 20
+ℹ suites 0
+ℹ pass 20
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 576.250041

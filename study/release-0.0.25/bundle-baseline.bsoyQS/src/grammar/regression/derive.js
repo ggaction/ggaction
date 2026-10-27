@@ -1,0 +1,221 @@
+import { cloneAndFreeze, isOwned, isPlainObject } from "../../core/immutable.js";
+import {
+  readNominalField,
+  readQuantitativeField
+} from "../scales/index.js";
+import { fitRegressionGroup, predictRegressionAt, linearRegressionStatistics } from "./models.js";
+import { requireFiniteResult } from "../numeric.js";
+import {
+  validateGeneratedItemLimit,
+  validateWorkLimit
+} from "../../core/validation.js";
+import {
+  normalizeRegressionParameters,
+  requireRegressionField
+} from "./parameters.js";
+
+export const REGRESSION_LOWER_FIELD = "__regression_ci_lower";
+export const REGRESSION_UPPER_FIELD = "__regression_ci_upper";
+
+const regressionResults = new WeakMap();
+const parameterKeys = ["x", "y", "groupBy", "method", "degree", "span", "robustIterations",
+  "confidenceMethod", "level", "confidence", "interval", "predict", "missing"];
+
+export function deriveRegression(values, options = {}) {
+  if (!isOwned(values) || !isPlainObject(options) || parameterKeys.some(key => {
+    const descriptor = Object.getOwnPropertyDescriptor(options, key);
+    return descriptor ? !Object.hasOwn(descriptor, "value") : key in options;
+  })) return computeRegression(values, options);
+  const entries = parameterKeys.map(key => options[key]);
+  const cacheable = isOwned(values) && entries.every(value => value === undefined || value === null ||
+    typeof value === "string" || typeof value === "boolean" ||
+    typeof value === "number" && Number.isFinite(value) && !Object.is(value, -0));
+  const key = cacheable ? JSON.stringify(entries.map(value => [typeof value, value])) : undefined;
+  const cached = cacheable ? regressionResults.get(values)?.get(key) : undefined;
+  if (cached !== undefined) return cached;
+  const result = computeRegression(values, options);
+  if (cacheable) {
+    if (!regressionResults.has(values)) regressionResults.set(values, new Map());
+    const cache = regressionResults.get(values);
+    if (cache.size >= 32) cache.delete(cache.keys().next().value);
+    cache.set(key, result);
+  }
+  return result;
+}
+
+function computeRegression(values, {
+  x,
+  y,
+  groupBy,
+  method,
+  degree,
+  span,
+  robustIterations,
+  confidenceMethod,
+  level,
+  confidence,
+  interval,
+  predict,
+  missing
+} = {}) {
+  if (!Array.isArray(values)) {
+    throw new TypeError("Regression values must be an array.");
+  }
+  requireRegressionField(x, "Regression x field");
+  requireRegressionField(y, "Regression y field");
+  if (groupBy !== undefined) {
+    requireRegressionField(groupBy, "Regression groupBy field");
+  }
+  const parameters = normalizeRegressionParameters({
+    method,
+    degree,
+    span,
+    robustIterations,
+    confidenceMethod,
+    level,
+    confidence,
+    interval
+  });
+  let missingRows = 0;
+  const eligibleValues = missing === undefined ? values : values.filter((row, index) => {
+    const xValue = row?.[x];
+    const yValue = row?.[y];
+    if (xValue === null || xValue === undefined || yValue === null || yValue === undefined) {
+      if (missing === "error") throw new TypeError(`Regression x/y pair is missing at row ${index}.`);
+      missingRows += 1;
+      return false;
+    }
+    if (!Number.isFinite(xValue) || !Number.isFinite(yValue)) {
+      throw new TypeError(`Regression x/y fields must contain finite numbers at row ${index}.`);
+    }
+    return true;
+  });
+  readQuantitativeField(eligibleValues, x);
+  readQuantitativeField(eligibleValues, y);
+  if (groupBy !== undefined) readNominalField(eligibleValues, groupBy);
+
+  const groupedRows = new Map();
+  if (groupBy === undefined) {
+    groupedRows.set(undefined, eligibleValues);
+  } else {
+    for (const row of eligibleValues) {
+      const group = row[groupBy];
+      const rows = groupedRows.get(group) ?? [];
+      rows.push(row);
+      groupedRows.set(group, rows);
+    }
+  }
+  const groups = [...groupedRows.keys()];
+  const models = [];
+  const statistics = [];
+  const rows = [];
+  let work = 0;
+
+  for (const group of groups) {
+    const groupRows = groupedRows.get(group);
+    const observedX = [...new Set(groupRows.map(row => row[x]))]
+      .sort((left, right) => left - right);
+    const xValues = predict?.values ?? (predict?.domain === undefined
+      ? observedX
+      : Array.from({ length: predict.steps }, (_, index) => {
+          if (index === 0) return predict.domain[0];
+          if (index === predict.steps - 1) return predict.domain[1];
+          const ratio = index / (predict.steps - 1);
+          return requireFiniteResult(
+            predict.domain[0] * (1 - ratio) + predict.domain[1] * ratio,
+            "Regression prediction grid"
+          );
+        }));
+    validateGeneratedItemLimit(rows.length + xValues.length, "Regression generated row count");
+    if (parameters.method === "polynomial") {
+      const size = parameters.degree + 1;
+      work += groupRows.length * size ** 2 + size ** 3;
+    } else if (parameters.method === "loess") {
+      const observedSet = new Set(observedX);
+      const newPredictions = predict === undefined ? 0 :
+        xValues.filter(value => !observedSet.has(value)).length;
+      work += groupRows.length *
+        (observedX.length * (1 + (parameters.robustIterations ?? 0)) + newPredictions) *
+        Math.ceil(Math.log2(groupRows.length + 1));
+    }
+    validateWorkLimit(work, "Regression computation");
+    const model = fitRegressionGroup(groupRows, {
+      x,
+      y,
+      group,
+      parameters
+    });
+    models.push({ ...(groupBy === undefined ? {} : { group }), ...model, xValues });
+    if (parameters.method === "linear") statistics.push({
+      ...(groupBy === undefined ? {} : { group }),
+      ...linearRegressionStatistics(groupRows, model, { x, y })
+    });
+
+    for (const xValue of xValues) {
+      const prediction = predictRegressionAt(model, xValue, parameters);
+      const fitted = requireFiniteResult(
+        prediction.prediction,
+        `Regression group "${group === undefined ? "all" : String(group)}" prediction`
+      );
+      const lower = parameters.method === "loess" || parameters.interval === false
+        ? undefined
+        : requireFiniteResult(
+            fitted - prediction.margin,
+            `Regression group "${group === undefined ? "all" : String(group)}" lower interval`
+          );
+      const upper = parameters.method === "loess" || parameters.interval === false
+        ? undefined
+        : requireFiniteResult(
+            fitted + prediction.margin,
+            `Regression group "${group === undefined ? "all" : String(group)}" upper interval`
+          );
+      rows.push({
+        ...(groupBy === undefined ? {} : { [groupBy]: group }),
+        [x]: xValue,
+        [y]: fitted,
+        ...(parameters.method === "loess" || parameters.interval === false ? {} : {
+          [REGRESSION_LOWER_FIELD]: lower,
+          [REGRESSION_UPPER_FIELD]: upper
+        })
+      });
+    }
+  }
+
+  return cloneAndFreeze({
+    fields: {
+      x,
+      y,
+      ...(groupBy === undefined ? {} : { group: groupBy }),
+      ...(parameters.method === "loess" || parameters.interval === false ? {} : {
+        lower: REGRESSION_LOWER_FIELD,
+        upper: REGRESSION_UPPER_FIELD
+      })
+    },
+    parameters,
+    groups,
+    models,
+    ...(parameters.method === "linear" ? {
+      fitStatistics: { version: 1, method: "linear", groups: statistics }
+    } : {}),
+    values: rows,
+    ...(missing === undefined ? {} : {
+      report: {
+        version: 1,
+        owner: { kind: "data", id: "pending" },
+        inputs: [],
+        units: [{
+          role: "fit",
+          group: {},
+          inputRows: values.length,
+          usedRows: eligibleValues.length,
+          excludedRows: missingRows,
+          excludedByReason: missingRows === 0 ? {} : { "missing-value": missingRows }
+        }]
+      }
+    })
+  });
+}
+
+export function deriveLinearRegression(values, options = {}) {
+  return deriveRegression(values, { ...options, method: "linear" });
+}

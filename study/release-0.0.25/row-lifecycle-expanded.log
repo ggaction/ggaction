@@ -1,0 +1,14 @@
+✔ compound row highlights round trip, revise and remove every owned component (120.074416ms)
+✔ restoration rejects corrupt composite owners and row references (105.677167ms)
+✔ source row indices survive sorting, filtering, computation, folding and aggregation (56.014417ms)
+✔ compound inspection and highlight removal preserve endpoint and raincloud ownership (171.596583ms)
+✔ row selectors reject malformed input atomically and accept an empty selection (14.550083ms)
+✔ item inspection caches frozen snapshots and resolves scoped targets (17.038584ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 844.026125

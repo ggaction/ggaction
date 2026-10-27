@@ -1,0 +1,1185 @@
+{
+  "base": "http://127.0.0.1:50397/ggaction/",
+  "queries": [
+    {
+      "query": "editAxisTitle",
+      "results": [
+        {
+          "title": "Actions and Trace Trees",
+          "url": "http://127.0.0.1:50397/ggaction/concepts/actions-and-trace/",
+          "kind": "Concept · published-release · a83a24aac005",
+          "snippet": "An action expresses an operation on a chart element, with options describing the requested design choice. A ch"
+        },
+        {
+          "title": "Advanced Axis Components",
+          "url": "http://127.0.0.1:50397/ggaction/advanced/axis-components/",
+          "kind": "Guide · published-release · a83a24aac005",
+          "snippet": "Use these actions when a complete createAxes call is not sufficient. All component actions require a resolved "
+        },
+        {
+          "title": "Advanced Axis Components › Complete single channel axes",
+          "url": "http://127.0.0.1:50397/ggaction/advanced/axis-components/#complete-single-channel-axes",
+          "kind": "Guide · published-release · a83a24aac005",
+          "snippet": "Contextual fragment. Use an ES module with the imports, data, and prepared resource state described in this se"
+        },
+        {
+          "title": "Advanced Axis Components › Titles",
+          "url": "http://127.0.0.1:50397/ggaction/advanced/axis-components/#titles",
+          "kind": "Guide · published-release · a83a24aac005",
+          "snippet": "A summary of row counts without an input field infers the title count . Other summaries retain their operation"
+        },
+        {
+          "title": "Axes › At a glance",
+          "url": "http://127.0.0.1:50397/ggaction/api/axes/#at-a-glance",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "Action Shortest call Inference/defaults Result createAxes createAxes() Stored coordinate family, position scal"
+        },
+        {
+          "title": "Axes › Edit several existing axes",
+          "url": "http://127.0.0.1:50397/ggaction/api/axes/#edit-several-existing-axes",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "Contextual fragment. Use an ES module with the imports, data, and prepared resource state described in this se"
+        },
+        {
+          "title": "Axes › Editing a complete axis",
+          "url": "http://127.0.0.1:50397/ggaction/api/axes/#editing-a-complete-axis",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "Use editXAxis() or editYAxis() when several components of one existing axis should change together: Contextual"
+        },
+        {
+          "title": "Canvas › editCanvas(options)",
+          "url": "http://127.0.0.1:50397/ggaction/api/canvas/#editcanvasoptions",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "Updates one or more existing canvas options. Omitted values are preserved. A numeric margin applies to every s"
+        }
+      ]
+    },
+    {
+      "query": "axis title",
+      "results": [
+        {
+          "title": "Axes",
+          "url": "http://127.0.0.1:50397/ggaction/api/axes/",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "Cartesian axis lines, ticks, labels and titles must not overlap a chart title or legend on the same edge."
+        },
+        {
+          "title": "Axes › At a glance",
+          "url": "http://127.0.0.1:50397/ggaction/api/axes/#at-a-glance",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "Action Shortest call Inference/defaults Result createAxes createAxes() Stored coordinate family, position scal"
+        },
+        {
+          "title": "Axes › Color individual tick labels",
+          "url": "http://127.0.0.1:50397/ggaction/api/axes/#color-individual-tick-labels",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "Use Cartesian labels colorMap: [{ value, color }] for per value colors. Lookup uses raw typed tick values, ind"
+        },
+        {
+          "title": "Charts, Data, and Composition Actions › applyTheme",
+          "url": "http://127.0.0.1:50397/ggaction/reference/actions/charts-data/#applytheme",
+          "kind": "Action · published-release · a83a24aac005",
+          "snippet": "Use \"light\", \"dark\", or a custom partial definition such as:"
+        },
+        {
+          "title": "Exact TypeScript Contract › AxisTitleOptions",
+          "url": "http://127.0.0.1:50397/ggaction/reference/types/#type-axistitleoptions",
+          "kind": "Reference · published-release · a83a24aac005",
+          "snippet": "Declared TypeScript shape."
+        },
+        {
+          "title": "Exact TypeScript Contract › CreateRadialAxisTitleOptions",
+          "url": "http://127.0.0.1:50397/ggaction/reference/types/#type-createradialaxistitleoptions",
+          "kind": "Reference · published-release · a83a24aac005",
+          "snippet": "Declared TypeScript shape."
+        },
+        {
+          "title": "Exact TypeScript Contract › CreateThetaAxisTitleOptions",
+          "url": "http://127.0.0.1:50397/ggaction/reference/types/#type-createthetaaxistitleoptions",
+          "kind": "Reference · published-release · a83a24aac005",
+          "snippet": "Declared TypeScript shape."
+        },
+        {
+          "title": "Guide, Axis, Grid, and Title Actions › createRadialAxisTitle",
+          "url": "http://127.0.0.1:50397/ggaction/reference/actions/guides/#createradialaxistitle",
+          "kind": "Action · published-release · a83a24aac005",
+          "snippet": "Create missing radial-axis title independently of the other components."
+        }
+      ]
+    },
+    {
+      "query": "axis label",
+      "results": [
+        {
+          "title": "Axes",
+          "url": "http://127.0.0.1:50397/ggaction/api/axes/",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "Cartesian axis lines, ticks, labels and titles must not overlap a chart title or legend on the same edge."
+        },
+        {
+          "title": "Axes › At a glance",
+          "url": "http://127.0.0.1:50397/ggaction/api/axes/#at-a-glance",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "Action Shortest call Inference/defaults Result createAxes createAxes() Stored coordinate family, position scal"
+        },
+        {
+          "title": "Axes › Color individual tick labels",
+          "url": "http://127.0.0.1:50397/ggaction/api/axes/#color-individual-tick-labels",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "Use Cartesian labels colorMap: [{ value, color }] for per value colors. Lookup uses raw typed tick values, ind"
+        },
+        {
+          "title": "Exact TypeScript Contract › AxisLabelLayoutOptions",
+          "url": "http://127.0.0.1:50397/ggaction/reference/types/#type-axislabellayoutoptions",
+          "kind": "Reference · published-release · a83a24aac005",
+          "snippet": "Declared TypeScript shape."
+        },
+        {
+          "title": "Exact TypeScript Contract › AxisLabelOptions",
+          "url": "http://127.0.0.1:50397/ggaction/reference/types/#type-axislabeloptions",
+          "kind": "Reference · published-release · a83a24aac005",
+          "snippet": "Declared TypeScript shape."
+        },
+        {
+          "title": "Exact TypeScript Contract › AxisLabelStyleOptions",
+          "url": "http://127.0.0.1:50397/ggaction/reference/types/#type-axislabelstyleoptions",
+          "kind": "Reference · published-release · a83a24aac005",
+          "snippet": "Declared TypeScript shape."
+        },
+        {
+          "title": "Guide, Axis, Grid, and Title Actions › createRadialAxisLabels",
+          "url": "http://127.0.0.1:50397/ggaction/reference/actions/guides/#createradialaxislabels",
+          "kind": "Action · published-release · a83a24aac005",
+          "snippet": "Create missing radial-axis labels independently of the other components."
+        },
+        {
+          "title": "Guide, Axis, Grid, and Title Actions › createThetaAxisLabels",
+          "url": "http://127.0.0.1:50397/ggaction/reference/actions/guides/#createthetaaxislabels",
+          "kind": "Action · published-release · a83a24aac005",
+          "snippet": "Create missing theta-axis labels independently of the other components."
+        }
+      ]
+    },
+    {
+      "query": "change axis label",
+      "results": [
+        {
+          "title": "Axes › Editing a complete axis",
+          "url": "http://127.0.0.1:50397/ggaction/api/axes/#editing-a-complete-axis",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "Use editXAxis() or editYAxis() when several components of one existing axis should change together: Contextual"
+        },
+        {
+          "title": "Axes › Related",
+          "url": "http://127.0.0.1:50397/ggaction/api/axes/#related",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "Guides · Grids · Advanced axis components An explicit Cartesian labelMap entry with label: \"\" hides only that "
+        },
+        {
+          "title": "Canvas › editCanvas(options)",
+          "url": "http://127.0.0.1:50397/ggaction/api/canvas/#editcanvasoptions",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "Updates one or more existing canvas options. Omitted values are preserved. A numeric margin applies to every s"
+        },
+        {
+          "title": "Charts, Data, and Composition Actions › editBin2DData",
+          "url": "http://127.0.0.1:50397/ggaction/reference/actions/charts-data/#editbin2ddata",
+          "kind": "Action · published-release · a83a24aac005",
+          "snippet": "Partially revise the current or unique logical 2D-bin owner."
+        },
+        {
+          "title": "Charts, Data, and Composition Actions › editCanvas",
+          "url": "http://127.0.0.1:50397/ggaction/reference/actions/charts-data/#editcanvas",
+          "kind": "Action · published-release · a83a24aac005",
+          "snippet": "Edit Canvas properties and rematerialize connected consumers."
+        },
+        {
+          "title": "Guide, Axis, Grid, and Title Actions › editAxes",
+          "url": "http://127.0.0.1:50397/ggaction/reference/actions/guides/#editaxes",
+          "kind": "Action · published-release · a83a24aac005",
+          "snippet": "Edits x and y axes, including settings for Cartesian guides."
+        },
+        {
+          "title": "Guide, Axis, Grid, and Title Actions › editLegend",
+          "url": "http://127.0.0.1:50397/ggaction/reference/actions/guides/#editlegend",
+          "kind": "Action · published-release · a83a24aac005",
+          "snippet": "Singular channel selects one existing block without changing sibling typography."
+        },
+        {
+          "title": "Guide, Axis, Grid, and Title Actions › editLegendBlock",
+          "url": "http://127.0.0.1:50397/ggaction/reference/actions/guides/#editlegendblock",
+          "kind": "Action · published-release · a83a24aac005",
+          "snippet": "Edit one logical legend block without changing sibling blocks on the same mark."
+        }
+      ]
+    },
+    {
+      "query": "how do I change the axis label",
+      "results": []
+    },
+    {
+      "query": "change colors",
+      "results": []
+    },
+    {
+      "query": "change the colors",
+      "results": []
+    },
+    {
+      "query": "resize chart",
+      "results": [
+        {
+          "title": "Bar Chart Tutorial › Width, spacing, and reassignment",
+          "url": "http://127.0.0.1:50397/ggaction/tutorials/grouped-bar/#width-spacing-and-reassignment",
+          "kind": "Tutorial · published-release · a83a24aac005",
+          "snippet": "Use exactly one width mode. Band width follows a resized Canvas; logical pixels stay fixed and are independent"
+        },
+        {
+          "title": "Canvas",
+          "url": "http://127.0.0.1:50397/ggaction/api/canvas/",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "Creates the program's single canvas and establishes bounds for later position encodings."
+        },
+        {
+          "title": "Responsive Charts",
+          "url": "http://127.0.0.1:50397/ggaction/responsive-charts/",
+          "kind": "Guide · published-release · a83a24aac005",
+          "snippet": "A ggaction ChartProgram has concrete logical Canvas dimensions. Responsive behavior belongs to the host: measu"
+        },
+        {
+          "title": "Responsive Charts › Complete browser pattern",
+          "url": "http://127.0.0.1:50397/ggaction/responsive-charts/#complete-browser-pattern",
+          "kind": "Guide · published-release · a83a24aac005",
+          "snippet": "editCanvas returns a new program and rematerializes connected chart resources. The unchanged base remains avai"
+        },
+        {
+          "title": "Responsive Charts › Related",
+          "url": "http://127.0.0.1:50397/ggaction/responsive-charts/#related",
+          "kind": "Guide · published-release · a83a24aac005",
+          "snippet": "Canvas · Performance · Data updates · Rendering"
+        },
+        {
+          "title": "Runtime and Browser Compatibility",
+          "url": "http://127.0.0.1:50397/ggaction/compatibility/",
+          "kind": "Guide · published-release · a83a24aac005",
+          "snippet": "ggaction is an ESM only package. The supported Node.js floor is 20. Continuous integration installs and tests "
+        },
+        {
+          "title": "Runtime and Browser Compatibility › Browser applications",
+          "url": "http://127.0.0.1:50397/ggaction/compatibility/#browser-applications",
+          "kind": "Guide · published-release · a83a24aac005",
+          "snippet": "Vite is the documented getting started path and the installed browser consumer is tested with a real Chromium "
+        }
+      ]
+    },
+    {
+      "query": "update data",
+      "results": [
+        {
+          "title": "Annotation Recipe › The library infers",
+          "url": "http://127.0.0.1:50397/ggaction/recipes/annotations/#the-library-infers",
+          "kind": "Recipe · published-release · a83a24aac005",
+          "snippet": "The current compatible source layer and dataset One text item per final point, bar, rect, or rule item Updated"
+        },
+        {
+          "title": "Canvas › editCanvas(options)",
+          "url": "http://127.0.0.1:50397/ggaction/api/canvas/#editcanvasoptions",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "Updates one or more existing canvas options. Omitted values are preserved. A numeric margin applies to every s"
+        },
+        {
+          "title": "Charts, Data, and Composition Actions › reviseData",
+          "url": "http://127.0.0.1:50397/ggaction/reference/actions/charts-data/#revisedata",
+          "kind": "Action · published-release · a83a24aac005",
+          "snippet": "Create a fresh original-data revision and atomically update its dependent chart."
+        },
+        {
+          "title": "Data Updates and Live Refresh",
+          "url": "http://127.0.0.1:50397/ggaction/data-updates/",
+          "kind": "Guide · published-release · a83a24aac005",
+          "snippet": "Source dataset values are immutable after creation. createData copies and freezes caller owned rows."
+        },
+        {
+          "title": "Data Updates and Live Refresh › Async update policy",
+          "url": "http://127.0.0.1:50397/ggaction/data-updates/#async-update-policy",
+          "kind": "Guide · published-release · a83a24aac005",
+          "snippet": "Give each refresh a monotonically increasing request ID or abort signal so a slow older response cannot overwr"
+        },
+        {
+          "title": "Data Updates and Live Refresh › Derived data",
+          "url": "http://127.0.0.1:50397/ggaction/data-updates/#derived-data",
+          "kind": "Guide · published-release · a83a24aac005",
+          "snippet": "Derived datasets record one normalized transform and source provenance. Higher level materializers create conc"
+        },
+        {
+          "title": "Discretized Color Scales › Changing color scale families",
+          "url": "http://127.0.0.1:50397/ggaction/api/scales/discretized-color/#changing-color-scale-families",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "In Full, editScale and a type changing encodeColor reassignment share one transition policy. Both update every"
+        },
+        {
+          "title": "Performance and Large Charts › Related",
+          "url": "http://127.0.0.1:50397/ggaction/performance/#related",
+          "kind": "Guide · published-release · a83a24aac005",
+          "snippet": "Rendering · Responsive charts · Data updates · Supported features"
+        }
+      ]
+    },
+    {
+      "query": "replace data",
+      "results": [
+        {
+          "title": "Data Updates and Live Refresh",
+          "url": "http://127.0.0.1:50397/ggaction/data-updates/",
+          "kind": "Guide · published-release · a83a24aac005",
+          "snippet": "Source dataset values are immutable after creation. createData copies and freezes caller owned rows."
+        },
+        {
+          "title": "Data Updates and Live Refresh › Async update policy",
+          "url": "http://127.0.0.1:50397/ggaction/data-updates/#async-update-policy",
+          "kind": "Guide · published-release · a83a24aac005",
+          "snippet": "Give each refresh a monotonically increasing request ID or abort signal so a slow older response cannot overwr"
+        },
+        {
+          "title": "Data Updates and Live Refresh › Derived data",
+          "url": "http://127.0.0.1:50397/ggaction/data-updates/#derived-data",
+          "kind": "Guide · published-release · a83a24aac005",
+          "snippet": "Derived datasets record one normalized transform and source provenance. Higher level materializers create conc"
+        },
+        {
+          "title": "Attached Mark Labels › editMarkLabelSelection(options)",
+          "url": "http://127.0.0.1:50397/ggaction/api/marks/labels/#editmarklabelselectionoptions",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "Replace the complete membership request for an existing attached label layer: Contextual fragment. Use an ES m"
+        },
+        {
+          "title": "Canvas › editCanvas(options)",
+          "url": "http://127.0.0.1:50397/ggaction/api/canvas/#editcanvasoptions",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "Updates one or more existing canvas options. Omitted values are preserved. A numeric margin applies to every s"
+        },
+        {
+          "title": "Charts, Data, and Composition Actions › filterMarks",
+          "url": "http://127.0.0.1:50397/ggaction/reference/actions/charts-data/#filtermarks",
+          "kind": "Action · published-release · a83a24aac005",
+          "snippet": "Retain matching final mark items through the shared selector grammar."
+        },
+        {
+          "title": "Charts, Data, and Composition Actions › replaceCompositionChild",
+          "url": "http://127.0.0.1:50397/ggaction/reference/actions/charts-data/#replacecompositionchild",
+          "kind": "Action · published-release · a83a24aac005",
+          "snippet": "Replace one named child while preserving its slot ID and order."
+        },
+        {
+          "title": "Composition Recipe",
+          "url": "http://127.0.0.1:50397/ggaction/recipes/composition/",
+          "kind": "Recipe · published-release · a83a24aac005",
+          "snippet": "pointRows and barRows are arrays of plain row objects containing the named fields. Every child must already ha"
+        }
+      ]
+    },
+    {
+      "query": "missing values",
+      "results": [
+        {
+          "title": "Missing Keys and Values",
+          "url": "http://127.0.0.1:50397/ggaction/api/data/missing-data/",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "Materialize missing keys inside each observed group without silently turning absence into zero:"
+        },
+        {
+          "title": "Data Grain and Statistical Policies › Missing keys are not missing values",
+          "url": "http://127.0.0.1:50397/ggaction/api/data/policies/#missing-keys-are-not-missing-values",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "The complete repair workflow starts with (1,2) and (3,6) . Its row counts are 2 → 3 → 3 → 3: Stage Values at k"
+        },
+        {
+          "title": "Empirical Cumulative Distribution Plots › Missing values and grouping",
+          "url": "http://127.0.0.1:50397/ggaction/tutorials/ecdf/#missing-values-and-grouping",
+          "kind": "Tutorial · published-release · a83a24aac005",
+          "snippet": "missing defaults to \"drop\" . It omits a row whose value, weight, or group field is invalid. Use missing: \"erro"
+        },
+        {
+          "title": "Parallel Coordinates › Row identity and missing values",
+          "url": "http://127.0.0.1:50397/ggaction/api/parallel-coordinates/#row-identity-and-missing-values",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "key names a dataset field whose values must be present and unique. It is optional: omission uses stable source"
+        },
+        {
+          "title": "Missing Keys and Values › createImputedData({ id, source?, fields, groupBy?, sortBy?, method?, value?, edges?, maxGap? })",
+          "url": "http://127.0.0.1:50397/ggaction/api/data/missing-data/#createimputeddata-id-source-fields-groupby-sortby-method-value-edges-maxgap",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "Replace explicit null or undefined cells without changing row grain or final source order: Contextual fragment"
+        },
+        {
+          "title": "Source and Derived Data › createImputedData({ id, source?, fields, groupBy?, sortBy?, method?, value?, edges?, maxGap? })",
+          "url": "http://127.0.0.1:50397/ggaction/api/data/source-and-derived/#createimputeddata-id-source-fields-groupby-sortby-method-value-edges-maxgap",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "See Missing Keys and Values for this contract and its examples."
+        },
+        {
+          "title": "Statistical Layer Actions › createImputedData",
+          "url": "http://127.0.0.1:50397/ggaction/reference/actions/statistics/#createimputeddata",
+          "kind": "Action · published-release · a83a24aac005",
+          "snippet": "Replace nullish cells by group mean (the default), constant, forward, backward, or distance-based linear imput"
+        },
+        {
+          "title": "Statistical Layer Actions › editImputedData",
+          "url": "http://127.0.0.1:50397/ggaction/reference/actions/statistics/#editimputeddata",
+          "kind": "Action · published-release · a83a24aac005",
+          "snippet": "…puted data, including settings for filled missing values."
+        }
+      ]
+    },
+    {
+      "query": "tooltip",
+      "results": [
+        {
+          "title": "Supported Features",
+          "url": "http://127.0.0.1:50397/ggaction/supported-features/",
+          "kind": "Guide · published-release · a83a24aac005",
+          "snippet": "This page describes implemented behavior only. A dash means that the current chart authoring API does not supp"
+        },
+        {
+          "title": "Supported Features › Complete chart support",
+          "url": "http://127.0.0.1:50397/ggaction/supported-features/#complete-chart-support",
+          "kind": "Guide · published-release · a83a24aac005",
+          "snippet": "Use the chart picker for every current H0 facade, its required input context, editable owners, package members"
+        },
+        {
+          "title": "Supported Features › Coordinates and composition",
+          "url": "http://127.0.0.1:50397/ggaction/supported-features/#coordinates-and-composition",
+          "kind": "Guide · published-release · a83a24aac005",
+          "snippet": "Polar Point/Line/direct Arc/Pie/Rose/Radar charts support facet and facet grid composition with shared or inde"
+        }
+      ]
+    },
+    {
+      "query": "confidence interval",
+      "results": [
+        {
+          "title": "Error Bands",
+          "url": "http://127.0.0.1:50397/ggaction/api/error-bands/",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "createErrorBand() creates a vertical or horizontal confidence or interval ribbon as one ordinary area layer."
+        },
+        {
+          "title": "Error Bands › At a glance",
+          "url": "http://127.0.0.1:50397/ggaction/api/error-bands/#at-a-glance",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "Action Shortest call Result createErrorBand createErrorBand() after one eligible encoded layer One grouped int"
+        },
+        {
+          "title": "Error Bars",
+          "url": "http://127.0.0.1:50397/ggaction/api/error-bars/",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "createErrorBar() materializes vertical or horizontal intervals from either grouped statistics or existing cent"
+        },
+        {
+          "title": "Error Bars › At a glance",
+          "url": "http://127.0.0.1:50397/ggaction/api/error-bars/#at-a-glance",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "…after one eligible encoded layer Mean 95% confidence intervals sharing that layer's data, coordinate, and scales editErrorBar edi…"
+        },
+        {
+          "title": "Error Bars › Errors and current limitations",
+          "url": "http://127.0.0.1:50397/ggaction/api/error-bars/#errors-and-current-limitations",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "The action rejects missing data, incompatible or ambiguous source layers, ambiguous channel roles, incomplete "
+        },
+        {
+          "title": "Exact TypeScript Contract › ConfidenceIntervalMethod",
+          "url": "http://127.0.0.1:50397/ggaction/reference/types/#type-confidenceintervalmethod",
+          "kind": "Reference · published-release · a83a24aac005",
+          "snippet": "Declared TypeScript shape."
+        },
+        {
+          "title": "Exact TypeScript Contract › MeanConfidenceIntervalMethod",
+          "url": "http://127.0.0.1:50397/ggaction/reference/types/#type-meanconfidenceintervalmethod",
+          "kind": "Reference · published-release · a83a24aac005",
+          "snippet": "Declared TypeScript shape."
+        },
+        {
+          "title": "Statistical Data Transforms › createRegressionData({ id, source?, x, y, groupBy?, method?, degree?, span?, confidenceMethod?, level?, confidence?, interval?, predict?, missing? })",
+          "url": "http://127.0.0.1:50397/ggaction/api/data/statistical-transforms/#createregressiondata-id-source-x-y-groupby-method-degree-span-confidencemethod-level-confidence-interval-predict-missing",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "Create deterministic regression predictions from an existing dataset. This is an advanced data action used by "
+        }
+      ]
+    },
+    {
+      "query": "linear regression",
+      "results": [
+        {
+          "title": "Charts, Data, and Composition Actions › createRegressionData",
+          "url": "http://127.0.0.1:50397/ggaction/reference/actions/charts-data/#createregressiondata",
+          "kind": "Action · published-release · a83a24aac005",
+          "snippet": "Create immutable linear, polynomial, LOESS, or exponential fitted rows at observed unique x values."
+        },
+        {
+          "title": "Charts, Data, and Composition Actions › createRegressionStatisticsData",
+          "url": "http://127.0.0.1:50397/ggaction/reference/actions/charts-data/#createregressionstatisticsdata",
+          "kind": "Action · published-release · a83a24aac005",
+          "snippet": "Create observation counts, intercepts, slopes, and R-squared from an explicit existing linear fit."
+        },
+        {
+          "title": "Charts, Data, and Composition Actions › editRegressionData",
+          "url": "http://127.0.0.1:50397/ggaction/reference/actions/charts-data/#editregressiondata",
+          "kind": "Action · published-release · a83a24aac005",
+          "snippet": "Edits fitted values, including settings for regression transform."
+        },
+        {
+          "title": "Regression",
+          "url": "http://127.0.0.1:50397/ggaction/api/regression/",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "createRegression() layers grouped linear, polynomial, LOESS, or exponential fits over an existing quantitative"
+        },
+        {
+          "title": "Regression › At a glance",
+          "url": "http://127.0.0.1:50397/ggaction/api/regression/#at-a-glance",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "Action Required decision Inferred or default behavior createRegression(options?) Nothing when one eligible poi"
+        },
+        {
+          "title": "Regression Scatterplot Recipe",
+          "url": "http://127.0.0.1:50397/ggaction/recipes/regression-scatterplot/",
+          "kind": "Recipe · published-release · a83a24aac005",
+          "snippet": "Use this pattern to layer grouped linear fits and mean response confidence bands over a point chart."
+        },
+        {
+          "title": "Regression Scatterplot Recipe › Minimal flow",
+          "url": "http://127.0.0.1:50397/ggaction/recipes/regression-scatterplot/#minimal-flow",
+          "kind": "Recipe · published-release · a83a24aac005",
+          "snippet": "Use this pattern to layer grouped linear fits and mean response confidence bands over a point chart."
+        },
+        {
+          "title": "Regression Scatterplot Tutorial",
+          "url": "http://127.0.0.1:50397/ggaction/tutorials/regression-scatterplot/",
+          "kind": "Tutorial · published-release · a83a24aac005",
+          "snippet": "This tutorial filters the cars dataset to Japan and the USA, maps point size to Acceleration and point color/s"
+        }
+      ]
+    },
+    {
+      "query": "scatter plot",
+      "results": [
+        {
+          "title": "Basic Charts › createScatterPlot",
+          "url": "http://127.0.0.1:50397/ggaction/api/basic-charts/#createscatterplot",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "Required options are x and y . Optional color , stroke , size , and shape values create field encodings; point"
+        },
+        {
+          "title": "Charts, Data, and Composition Actions › createScatterPlot",
+          "url": "http://127.0.0.1:50397/ggaction/reference/actions/charts-data/#createscatterplot",
+          "kind": "Action · published-release · a83a24aac005",
+          "snippet": "Draws one point per observation, without statistical aggregation. Supports color, size, and shape fields; defa"
+        },
+        {
+          "title": "Program Composition",
+          "url": "http://127.0.0.1:50397/ggaction/api/composition/",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "Combine already authored chart programs without merging their datasets, marks, scales, or guides."
+        },
+        {
+          "title": "Program Composition › Arrange complete programs",
+          "url": "http://127.0.0.1:50397/ggaction/api/composition/#arrange-complete-programs",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "Contextual fragment. Use an ES module with the imports, data, and prepared resource state described in this se"
+        },
+        {
+          "title": "Regression Scatterplot Tutorial › Run and continue",
+          "url": "http://127.0.0.1:50397/ggaction/tutorials/regression-scatterplot/#run-and-continue",
+          "kind": "Tutorial · published-release · a83a24aac005",
+          "snippet": "Serve the repository root and open examples/cars regression scatterplot/ . Read the regression API for inferen"
+        },
+        {
+          "title": "Scatterplot Recipe",
+          "url": "http://127.0.0.1:50397/ggaction/recipes/scatterplot/",
+          "kind": "Recipe · published-release · a83a24aac005",
+          "snippet": "Add color: \"group\", size: \"amount\", or shape: \"category\" to the same call for field driven appearance. The def"
+        },
+        {
+          "title": "Scatterplot Tutorial",
+          "url": "http://127.0.0.1:50397/ggaction/tutorials/scatterplot/",
+          "kind": "Tutorial · published-release · a83a24aac005",
+          "snippet": "This tutorial uses the public npm package. The repository also contains a runnable browser example and its can"
+        },
+        {
+          "title": "Scatterplot Tutorial › Run and continue",
+          "url": "http://127.0.0.1:50397/ggaction/tutorials/scatterplot/#run-and-continue",
+          "kind": "Tutorial · published-release · a83a24aac005",
+          "snippet": "Serve the repository root and open examples/cars scatterplot/ . View the complete browser source. Continue wit"
+        }
+      ]
+    },
+    {
+      "query": "scatterplot",
+      "results": [
+        {
+          "title": "Regression Scatterplot Tutorial › Run and continue",
+          "url": "http://127.0.0.1:50397/ggaction/tutorials/regression-scatterplot/#run-and-continue",
+          "kind": "Tutorial · published-release · a83a24aac005",
+          "snippet": "…ry root and open examples/cars regression scatterplot/ . Read the regression API for inference and options. Use Appearanc…"
+        },
+        {
+          "title": "Scatterplot Recipe",
+          "url": "http://127.0.0.1:50397/ggaction/recipes/scatterplot/",
+          "kind": "Recipe · published-release · a83a24aac005",
+          "snippet": "Add color: \"group\", size: \"amount\", or shape: \"category\" to the same call for field driven appearance. The def"
+        },
+        {
+          "title": "Scatterplot Tutorial",
+          "url": "http://127.0.0.1:50397/ggaction/tutorials/scatterplot/",
+          "kind": "Tutorial · published-release · a83a24aac005",
+          "snippet": "This tutorial uses the public npm package. The repository also contains a runnable browser example and its can"
+        },
+        {
+          "title": "Scatterplot Tutorial › Run and continue",
+          "url": "http://127.0.0.1:50397/ggaction/tutorials/scatterplot/#run-and-continue",
+          "kind": "Tutorial · published-release · a83a24aac005",
+          "snippet": "…he repository root and open examples/cars scatterplot/ . View the complete browser source. Continue with Encodings, Guide…"
+        },
+        {
+          "title": "Basic Charts › createScatterPlot",
+          "url": "http://127.0.0.1:50397/ggaction/api/basic-charts/#createscatterplot",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "Required options are x and y . Optional color , stroke , size , and shape values create field encodings; point"
+        },
+        {
+          "title": "Charts, Data, and Composition Actions › createScatterPlot",
+          "url": "http://127.0.0.1:50397/ggaction/reference/actions/charts-data/#createscatterplot",
+          "kind": "Action · published-release · a83a24aac005",
+          "snippet": "Draws one point per observation, without statistical aggregation. Supports color, size, and shape fields; defa"
+        },
+        {
+          "title": "Program Composition",
+          "url": "http://127.0.0.1:50397/ggaction/api/composition/",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "Combine already authored chart programs without merging their datasets, marks, scales, or guides."
+        },
+        {
+          "title": "Program Composition › Arrange complete programs",
+          "url": "http://127.0.0.1:50397/ggaction/api/composition/#arrange-complete-programs",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "Contextual fragment. Use an ES module with the imports, data, and prepared resource state described in this se"
+        }
+      ]
+    },
+    {
+      "query": "horizontal bar chart",
+      "results": [
+        {
+          "title": "Bar Chart Recipe",
+          "url": "http://127.0.0.1:50397/ggaction/recipes/bar-chart/",
+          "kind": "Recipe · published-release · a83a24aac005",
+          "snippet": "The current complete bar chart example uses grouped bars. Grouping is a layout choice inside the bar chart, no"
+        },
+        {
+          "title": "Basic Charts › createBarPlot",
+          "url": "http://127.0.0.1:50397/ggaction/api/basic-charts/#createbarplot",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "Required options are x and y . Position option objects select vertical, horizontal, aggregate, or ranged geome"
+        },
+        {
+          "title": "Charts, Data, and Composition Actions › createBarPlot",
+          "url": "http://127.0.0.1:50397/ggaction/reference/actions/charts-data/#createbarplot",
+          "kind": "Action · published-release · a83a24aac005",
+          "snippet": "Create categorical, temporal or binned bars with quantitative measures; bin rectangles fill their complete int"
+        },
+        {
+          "title": "Encoding Actions › encodeXOffset",
+          "url": "http://127.0.0.1:50397/ggaction/reference/actions/encodings/#encodexoffset",
+          "kind": "Action · published-release · a83a24aac005",
+          "snippet": "Create or compatibly update a categorical sub-slot scale within a bar, point, or rule x category."
+        },
+        {
+          "title": "Encoding Actions › encodeXRange",
+          "url": "http://127.0.0.1:50397/ggaction/reference/actions/encodings/#encodexrange",
+          "kind": "Action · published-release · a83a24aac005",
+          "snippet": "Atomically compose area or ranged-bar encodeX and encodeX2."
+        },
+        {
+          "title": "Error Bars",
+          "url": "http://127.0.0.1:50397/ggaction/api/error-bars/",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "createErrorBar() materializes vertical or horizontal intervals from either grouped statistics or existing cent"
+        },
+        {
+          "title": "Error Bars › Horizontal intervals",
+          "url": "http://127.0.0.1:50397/ggaction/api/error-bars/#horizontal-intervals",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "Contextual fragment. Use an ES module with the imports, data, and prepared resource state described in this se"
+        },
+        {
+          "title": "Line Chart Recipe › The library infers",
+          "url": "http://127.0.0.1:50397/ggaction/recipes/line-chart/#the-library-infers",
+          "kind": "Recipe · published-release · a83a24aac005",
+          "snippet": "UTC time x and linear y scales Mean aggregation at each x/series group Sorted concrete M/L path commands Linea"
+        }
+      ]
+    },
+    {
+      "query": "log scale",
+      "results": [
+        {
+          "title": "Scale Options",
+          "url": "http://127.0.0.1:50397/ggaction/api/scales/",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "Scales map semantic field or datum values into concrete positions and appearance values."
+        },
+        {
+          "title": "Scale Options › Errors and limitations",
+          "url": "http://127.0.0.1:50397/ggaction/api/scales/#errors-and-limitations",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "One scale cannot be shared across unrelated channels. Color and stroke are the supported appearance sharing ex"
+        },
+        {
+          "title": "Scale Options › Focused scale families",
+          "url": "http://127.0.0.1:50397/ggaction/api/scales/#focused-scale-families",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "Position scales Linear, transformed, time, band, and point mappings. Ordinal and dash scales Stable categorica"
+        },
+        {
+          "title": "Appearance Encodings › Canonical appearance compatibility",
+          "url": "http://127.0.0.1:50397/ggaction/api/appearance/#canonical-appearance-compatibility",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "Action Marks Field types Scale family Item grain and units encodeSize point quantitative, nominal, ordinal lin"
+        },
+        {
+          "title": "Area and Series Layout › Choose bounds and orientation",
+          "url": "http://127.0.0.1:50397/ggaction/tutorials/area-layout/#choose-bounds-and-orientation",
+          "kind": "Tutorial · published-release · a83a24aac005",
+          "snippet": "Given a prepared program with low , high , time , and value fields, these are alternative creation calls: Lowe"
+        },
+        {
+          "title": "Axes › Shift ticks and labels along an axis",
+          "url": "http://127.0.0.1:50397/ggaction/api/axes/#shift-ticks-and-labels-along-an-axis",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "Cartesian ticks and labels accept alongOffset , a signed finite displacement in logical pixels. Positive value"
+        },
+        {
+          "title": "Charts, Data, and Composition Actions › editBin2DData",
+          "url": "http://127.0.0.1:50397/ggaction/reference/actions/charts-data/#editbin2ddata",
+          "kind": "Action · published-release · a83a24aac005",
+          "snippet": "Partially revise the current or unique logical 2D-bin owner."
+        },
+        {
+          "title": "Charts, Data, and Composition Actions › editParallelScale",
+          "url": "http://127.0.0.1:50397/ggaction/reference/actions/charts-data/#editparallelscale",
+          "kind": "Action · published-release · a83a24aac005",
+          "snippet": "Edits parallel dimension scale, including settings for field-selected parallel scale."
+        }
+      ]
+    },
+    {
+      "query": "save SVG",
+      "results": [
+        {
+          "title": "Rendering",
+          "url": "http://127.0.0.1:50397/ggaction/api/rendering/",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "Render one fully materialized ChartProgram to Browser Canvas, a browser safe SVG string, a Node PNG file, or a"
+        },
+        {
+          "title": "Rendering › At a glance",
+          "url": "http://127.0.0.1:50397/ggaction/api/rendering/#at-a-glance",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "Target Environment Shortest call Use when Browser Canvas Browser render(program, context) Drawing into an exis"
+        },
+        {
+          "title": "Rendering › Automated environment checks",
+          "url": "http://127.0.0.1:50397/ggaction/api/rendering/#automated-environment-checks",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "CI and release qualification exercise these environments against installed packages. The release jobs all cons"
+        },
+        {
+          "title": "Data Updates and Live Refresh › Save and restore snapshots",
+          "url": "http://127.0.0.1:50397/ggaction/data-updates/#save-and-restore-snapshots",
+          "kind": "Guide · published-release · a83a24aac005",
+          "snippet": "Use getDatasetSchema , describeAction , comparePrograms , and inspectProgram from ggaction/inspection to inspe"
+        }
+      ]
+    },
+    {
+      "query": "export svg",
+      "results": [
+        {
+          "title": "Accessibility › Data alternatives at the chart’s final grain",
+          "url": "http://127.0.0.1:50397/ggaction/accessibility/#data-alternatives-at-the-charts-final-grain",
+          "kind": "Guide · published-release · a83a24aac005",
+          "snippet": "Use exportAccessibleData from ggaction/accessibility to obtain immutable columns and rows for supported chart "
+        },
+        {
+          "title": "Program and Rendering Functions",
+          "url": "http://127.0.0.1:50397/ggaction/reference/runtime/",
+          "kind": "Reference · published-release · a83a24aac005",
+          "snippet": "Create, compose, render, and inspect programs without confusing package functions with chainable actions."
+        },
+        {
+          "title": "Program and Rendering Functions › Exact TypeScript signatures",
+          "url": "http://127.0.0.1:50397/ggaction/reference/runtime/#exact-typescript-signatures",
+          "kind": "Reference · published-release · a83a24aac005",
+          "snippet": "These blocks are generated from the declaration file owned by each package entry. ggaction ggaction/basic ggac"
+        },
+        {
+          "title": "Troubleshooting › Node PNG or PDF export is unavailable in the browser",
+          "url": "http://127.0.0.1:50397/ggaction/troubleshooting/#node-png-or-pdf-export-is-unavailable-in-the-browser",
+          "kind": "Guide · published-release · a83a24aac005",
+          "snippet": "The PNG and PDF adapters are Node only package entries: Use render from ggaction or renderToSVG from ggaction/"
+        }
+      ]
+    },
+    {
+      "query": "API",
+      "results": [
+        {
+          "title": "Polar Arc Tutorial › Map values directly into a pie",
+          "url": "http://127.0.0.1:50397/ggaction/tutorials/polar-arcs/#map-values-directly-into-a-pie",
+          "kind": "Tutorial · published-release · a83a24aac005",
+          "snippet": "When each row already contains one category and its final numeric value, pass that value field directly to enc"
+        },
+        {
+          "title": "Chart API",
+          "url": "http://127.0.0.1:50397/ggaction/api/",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "Build a chart from a small set of domain actions. Start with the family that owns the decision you need to mak"
+        },
+        {
+          "title": "Chart API › All complete chart families",
+          "url": "http://127.0.0.1:50397/ggaction/api/#all-complete-chart-families",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "The complete chart picker covers every complete chart facade, including Pie, Area, Density, Horizon, endpoint "
+        },
+        {
+          "title": "Chart API › Exact action lookup",
+          "url": "http://127.0.0.1:50397/ggaction/api/#exact-action-lookup",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "…xtension authors should use the extension API rather than depending on internal trace operations."
+        },
+        {
+          "title": "Primitive API",
+          "url": "http://127.0.0.1:50397/ggaction/extension/primitives/",
+          "kind": "Guide · published-release · a83a24aac005",
+          "snippet": "A named Canvas or collection can reorder its existing direct children with editGraphics({ target, property: \"c"
+        },
+        {
+          "title": "Primitive API › Clip a named graphic owner",
+          "url": "http://127.0.0.1:50397/ggaction/extension/primitives/#clip-a-named-graphic-owner",
+          "kind": "Guide · published-release · a83a24aac005",
+          "snippet": "Use editGraphics({ target, property: \"clip\", value: { x, y, width, height } }) to clip one named non Canvas ow"
+        },
+        {
+          "title": "Primitive API › createGraphics({ id, type, length?, parent?, before?, after? })",
+          "url": "http://127.0.0.1:50397/ggaction/extension/primitives/#creategraphics-id-type-length-parent-before-after",
+          "kind": "Guide · published-release · a83a24aac005",
+          "snippet": "Creates one concrete object, a homogeneous drawable collection, or an empty heterogeneous drawable collection "
+        },
+        {
+          "title": "Summaries, Bins, and Data Shaping",
+          "url": "http://127.0.0.1:50397/ggaction/api/data/summaries-and-shaping/",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "Create reusable aggregate rows without tying the calculation to a chart type:"
+        }
+      ]
+    },
+    {
+      "query": "facet",
+      "results": [
+        {
+          "title": "Charts, Data, and Composition Actions › facet",
+          "url": "http://127.0.0.1:50397/ggaction/reference/actions/charts-data/#facet",
+          "kind": "Action · published-release · a83a24aac005",
+          "snippet": "Repeat one complete Cartesian, Polar, or Parallel chart by a field on its common row-preserving dataset ancest"
+        },
+        {
+          "title": "Charts, Data, and Composition Actions › facetGrid",
+          "url": "http://127.0.0.1:50397/ggaction/reference/actions/charts-data/#facetgrid",
+          "kind": "Action · published-release · a83a24aac005",
+          "snippet": "Repeat one supported Cartesian, Polar, or Parallel chart over two ordered categorical fields."
+        },
+        {
+          "title": "Facet Recipe",
+          "url": "http://127.0.0.1:50397/ggaction/recipes/facet/",
+          "kind": "Recipe · published-release · a83a24aac005",
+          "snippet": "…containing the encoded fields and Origin. Facet values retain source first appearance order."
+        },
+        {
+          "title": "Facet Recipe › Minimal flow",
+          "url": "http://127.0.0.1:50397/ggaction/recipes/facet/#minimal-flow",
+          "kind": "Recipe · published-release · a83a24aac005",
+          "snippet": "…ontaining the encoded fields and Origin . Facet values retain source first appearance order."
+        },
+        {
+          "title": "Facets and Field Repetition",
+          "url": "http://127.0.0.1:50397/ggaction/api/composition/facets/",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "Pass a legend object to guides.legend to create it against the combined inner plots."
+        },
+        {
+          "title": "Facets and Field Repetition › Build a row and column facet grid",
+          "url": "http://127.0.0.1:50397/ggaction/api/composition/facets/#build-a-row-and-column-facet-grid",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "Use facetGrid when two source fields define the comparison: Contextual fragme…"
+        },
+        {
+          "title": "Facets and Field Repetition › Declare a legend for the complete facet",
+          "url": "http://127.0.0.1:50397/ggaction/api/composition/facets/#declare-a-legend-for-the-complete-facet",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "Pass a legend object to guides.legend to create it against the combined inner plots. This runnable example kee"
+        },
+        {
+          "title": "Program Composition › Build a row and column facet grid",
+          "url": "http://127.0.0.1:50397/ggaction/api/composition/#build-a-row-and-column-facet-grid",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "See Facets and Field Repetition for this contract and its examples."
+        }
+      ]
+    },
+    {
+      "query": "animation",
+      "results": [
+        {
+          "title": "LLM Chart Authoring Contract",
+          "url": "http://127.0.0.1:50397/ggaction/llm-authoring/",
+          "kind": "Guide · published-release · a83a24aac005",
+          "snippet": "\"A bounded public contract for complete ggaction programs: exact Canvas and data bootstrap, common histogram a"
+        },
+        {
+          "title": "LLM Chart Authoring Contract › Terminal limitations and open decisions",
+          "url": "http://127.0.0.1:50397/ggaction/llm-authoring/#terminal-limitations-and-open-decisions",
+          "kind": "Guide · published-release · a83a24aac005",
+          "snippet": "…hic projections and map marks unsupported.animation — animated transitions…"
+        }
+      ]
+    },
+    {
+      "query": "createScatterPlot",
+      "results": [
+        {
+          "title": "Charts, Data, and Composition Actions › createScatterPlot",
+          "url": "http://127.0.0.1:50397/ggaction/reference/actions/charts-data/#createscatterplot",
+          "kind": "Action · published-release · a83a24aac005",
+          "snippet": "Draws one point per observation, without statistical aggregation. Supports color, size, and shape fields; defa"
+        },
+        {
+          "title": "Basic Charts › createScatterPlot",
+          "url": "http://127.0.0.1:50397/ggaction/api/basic-charts/#createscatterplot",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "Required options are x and y . Optional color , stroke , size , and shape values create field encodings; point"
+        },
+        {
+          "title": "Annotation Recipe",
+          "url": "http://127.0.0.1:50397/ggaction/recipes/annotations/",
+          "kind": "Recipe · published-release · a83a24aac005",
+          "snippet": "films is an array of plain row objects containing the two position fields and the label field."
+        },
+        {
+          "title": "Annotation Recipe › Minimal flow",
+          "url": "http://127.0.0.1:50397/ggaction/recipes/annotations/#minimal-flow",
+          "kind": "Recipe · published-release · a83a24aac005",
+          "snippet": "films is an array of plain row objects containing the two position fields and the label field. The text layer "
+        },
+        {
+          "title": "Apply, override, and remove a theme",
+          "url": "http://127.0.0.1:50397/ggaction/recipes/apply-custom-theme/",
+          "kind": "Recipe · published-release · a83a24aac005",
+          "snippet": "Apply reusable defaults, preserve an intentional local override, and remove the active theme."
+        },
+        {
+          "title": "Apply, override, and remove a theme › Complete program",
+          "url": "http://127.0.0.1:50397/ggaction/recipes/apply-custom-theme/#complete-program",
+          "kind": "Recipe · published-release · a83a24aac005",
+          "snippet": "Apply reusable defaults, preserve an intentional local override, and remove the active theme."
+        },
+        {
+          "title": "Basic Charts",
+          "url": "http://127.0.0.1:50397/ggaction/api/basic-charts/",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "Basic chart actions create a complete mark, its encodings, and applicable guides in one traceable call."
+        },
+        {
+          "title": "Basic Charts › Choose a facade",
+          "url": "http://127.0.0.1:50397/ggaction/api/basic-charts/#choose-a-facade",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "Facade Shortest complete decision Guides when omitted createScatterPlot { x, y } applicable guides createTextP"
+        }
+      ]
+    },
+    {
+      "query": "line chart",
+      "results": [
+        {
+          "title": "Line Chart Tutorial",
+          "url": "http://127.0.0.1:50397/ggaction/tutorials/line-chart/",
+          "kind": "Tutorial · published-release · a83a24aac005",
+          "snippet": "This chart shows mean acceleration over time for each origin. The complete module below uses the public npm pa"
+        },
+        {
+          "title": "Basic Charts › createLinePlot",
+          "url": "http://127.0.0.1:50397/ggaction/api/basic-charts/#createlineplot",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "Required options are x and y . groupBy accepts a field name or a non empty unique tuple such as [\"country\", \"s"
+        },
+        {
+          "title": "Charts, Data, and Composition Actions › createLinePlot",
+          "url": "http://127.0.0.1:50397/ggaction/reference/actions/charts-data/#createlineplot",
+          "kind": "Action · published-release · a83a24aac005",
+          "snippet": "Create a complete Cartesian line chart."
+        },
+        {
+          "title": "Line Chart Recipe",
+          "url": "http://127.0.0.1:50397/ggaction/recipes/line-chart/",
+          "kind": "Recipe · published-release · a83a24aac005",
+          "snippet": "For multiple series, add color: \"group\", groupBy: \"group\", or strokeDash: { field: \"group\" } to the facade cal"
+        },
+        {
+          "title": "Line Chart Recipe › Continue",
+          "url": "http://127.0.0.1:50397/ggaction/recipes/line-chart/#continue",
+          "kind": "Recipe · published-release · a83a24aac005",
+          "snippet": "Line chart tutorial · Basic Charts · Temporal line positions · Series encoding…"
+        },
+        {
+          "title": "Line Chart Recipe › Minimal flow",
+          "url": "http://127.0.0.1:50397/ggaction/recipes/line-chart/#minimal-flow",
+          "kind": "Recipe · published-release · a83a24aac005",
+          "snippet": "For multiple series, add color: \"group\", groupBy: \"group\", or strokeDash: { field: \"group\" } to the facade cal"
+        },
+        {
+          "title": "Line Chart Tutorial › Change the curve",
+          "url": "http://127.0.0.1:50397/ggaction/tutorials/line-chart/#change-the-curve",
+          "kind": "Tutorial · published-release · a83a24aac005",
+          "snippet": "Curve is line appearance rather than a semantic field encoding. It can be set inside the facade: or edited aft"
+        },
+        {
+          "title": "Line Chart Tutorial › Change the dash assignment",
+          "url": "http://127.0.0.1:50397/ggaction/tutorials/line-chart/#change-the-dash-assignment",
+          "kind": "Tutorial · published-release · a83a24aac005",
+          "snippet": "Use named styles in a field scale when each series needs its own pattern: Or replace the field mapping with on"
+        }
+      ]
+    },
+    {
+      "query": "linechart",
+      "results": [
+        {
+          "title": "Basic Charts › createLinePlot",
+          "url": "http://127.0.0.1:50397/ggaction/api/basic-charts/#createlineplot",
+          "kind": "API · published-release · a83a24aac005",
+          "snippet": "Required options are x and y . groupBy accepts a field name or a non empty unique tuple such as [\"country\", \"s"
+        },
+        {
+          "title": "Charts, Data, and Composition Actions › createLinePlot",
+          "url": "http://127.0.0.1:50397/ggaction/reference/actions/charts-data/#createlineplot",
+          "kind": "Action · published-release · a83a24aac005",
+          "snippet": "Create a complete Cartesian line chart."
+        },
+        {
+          "title": "Line Chart Tutorial",
+          "url": "http://127.0.0.1:50397/ggaction/tutorials/line-chart/",
+          "kind": "Tutorial · published-release · a83a24aac005",
+          "snippet": "This chart shows mean acceleration over time for each origin. The complete module below uses the public npm pa"
+        },
+        {
+          "title": "Line Chart Recipe",
+          "url": "http://127.0.0.1:50397/ggaction/recipes/line-chart/",
+          "kind": "Recipe · published-release · a83a24aac005",
+          "snippet": "For multiple series, add color: \"group\", groupBy: \"group\", or strokeDash: { field: \"group\" } to the facade cal"
+        },
+        {
+          "title": "Line Chart Recipe › Continue",
+          "url": "http://127.0.0.1:50397/ggaction/recipes/line-chart/#continue",
+          "kind": "Recipe · published-release · a83a24aac005",
+          "snippet": "Line chart tutorial · Basic Charts · Temporal line positions · Series encodings"
+        },
+        {
+          "title": "Line Chart Recipe › Minimal flow",
+          "url": "http://127.0.0.1:50397/ggaction/recipes/line-chart/#minimal-flow",
+          "kind": "Recipe · published-release · a83a24aac005",
+          "snippet": "For multiple series, add color: \"group\", groupBy: \"group\", or strokeDash: { field: \"group\" } to the facade cal"
+        },
+        {
+          "title": "Line Chart Tutorial › Change the curve",
+          "url": "http://127.0.0.1:50397/ggaction/tutorials/line-chart/#change-the-curve",
+          "kind": "Tutorial · published-release · a83a24aac005",
+          "snippet": "Curve is line appearance rather than a semantic field encoding. It can be set inside the facade: or edited aft"
+        },
+        {
+          "title": "Line Chart Tutorial › Change the dash assignment",
+          "url": "http://127.0.0.1:50397/ggaction/tutorials/line-chart/#change-the-dash-assignment",
+          "kind": "Tutorial · published-release · a83a24aac005",
+          "snippet": "Use named styles in a field scale when each series needs its own pattern: Or replace the field mapping with on"
+        }
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "url": "/ggaction/getting-started/",
+      "textChars": 5779,
+      "height": 4761,
+      "headings": 7,
+      "codeBlocks": 4,
+      "links": 32,
+      "horizontalOverflow": false,
+      "filter": false
+    },
+    {
+      "url": "/ggaction/api/data/",
+      "textChars": 3121,
+      "height": 2716,
+      "headings": 5,
+      "codeBlocks": 0,
+      "links": 36,
+      "horizontalOverflow": false,
+      "filter": false
+    },
+    {
+      "url": "/ggaction/api/scales/",
+      "textChars": 14612,
+      "height": 8655,
+      "headings": 7,
+      "codeBlocks": 8,
+      "links": 43,
+      "horizontalOverflow": false,
+      "filter": false
+    },
+    {
+      "url": "/ggaction/reference/actions/",
+      "textChars": 13335,
+      "height": 15138,
+      "headings": 2,
+      "codeBlocks": 0,
+      "links": 308,
+      "horizontalOverflow": false,
+      "filter": true
+    },
+    {
+      "url": "/ggaction/reference/actions/guides/",
+      "textChars": 57205,
+      "height": 41696,
+      "headings": 88,
+      "codeBlocks": 125,
+      "links": 448,
+      "horizontalOverflow": false,
+      "filter": true
+    },
+    {
+      "url": "/ggaction/mcp/",
+      "textChars": 10354,
+      "height": 5653,
+      "headings": 8,
+      "codeBlocks": 7,
+      "links": 35,
+      "horizontalOverflow": false,
+      "filter": false
+    }
+  ],
+  "consoleErrors": [],
+  "mobileSidebar": {
+    "x": 0,
+    "width": 272,
+    "scrollWidth": 271,
+    "clientWidth": 271
+  }
+}

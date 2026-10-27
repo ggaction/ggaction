@@ -1,0 +1,9 @@
+{
+  "references": 2122,
+  "kinds": {
+    "named": 332,
+    "remote": 1790
+  },
+  "unresolvedNamedDatasetCharts": 53,
+  "note": "Named resolution is a root datasets membership screen, not full lexical-scope resolution; remote resources are inventoried but not fetched or HTTP-qualified."
+}

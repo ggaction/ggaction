@@ -1,0 +1,288 @@
+{
+  "queries": [
+    {
+      "query": "editAxisTitle",
+      "count": 8,
+      "top": [
+        "Actions and Trace Trees",
+        "Advanced Axis Components",
+        "Advanced Axis Components › Complete single channel axes"
+      ]
+    },
+    {
+      "query": "axis title",
+      "count": 8,
+      "top": [
+        "Axes",
+        "Axes › At a glance",
+        "Axes › Color individual tick labels"
+      ]
+    },
+    {
+      "query": "axis label",
+      "count": 8,
+      "top": [
+        "Axes",
+        "Axes › At a glance",
+        "Axes › Color individual tick labels"
+      ]
+    },
+    {
+      "query": "change axis label",
+      "count": 8,
+      "top": [
+        "Axes › Editing a complete axis",
+        "Axes › Related",
+        "Canvas › editCanvas(options)"
+      ]
+    },
+    {
+      "query": "how do I change the axis label",
+      "count": 0,
+      "top": []
+    },
+    {
+      "query": "change colors",
+      "count": 0,
+      "top": []
+    },
+    {
+      "query": "change the colors",
+      "count": 0,
+      "top": []
+    },
+    {
+      "query": "resize chart",
+      "count": 7,
+      "top": [
+        "Bar Chart Tutorial › Width, spacing, and reassignment",
+        "Canvas",
+        "Responsive Charts"
+      ]
+    },
+    {
+      "query": "update data",
+      "count": 8,
+      "top": [
+        "Annotation Recipe › The library infers",
+        "Canvas › editCanvas(options)",
+        "Charts, Data, and Composition Actions › reviseData"
+      ]
+    },
+    {
+      "query": "replace data",
+      "count": 8,
+      "top": [
+        "Data Updates and Live Refresh",
+        "Data Updates and Live Refresh › Async update policy",
+        "Data Updates and Live Refresh › Derived data"
+      ]
+    },
+    {
+      "query": "missing values",
+      "count": 8,
+      "top": [
+        "Missing Keys and Values",
+        "Data Grain and Statistical Policies › Missing keys are not missing values",
+        "Empirical Cumulative Distribution Plots › Missing values and grouping"
+      ]
+    },
+    {
+      "query": "tooltip",
+      "count": 3,
+      "top": [
+        "Supported Features",
+        "Supported Features › Complete chart support",
+        "Supported Features › Coordinates and composition"
+      ]
+    },
+    {
+      "query": "confidence interval",
+      "count": 8,
+      "top": [
+        "Error Bands",
+        "Error Bands › At a glance",
+        "Error Bars"
+      ]
+    },
+    {
+      "query": "linear regression",
+      "count": 8,
+      "top": [
+        "Charts, Data, and Composition Actions › createRegressionData",
+        "Charts, Data, and Composition Actions › createRegressionStatisticsData",
+        "Charts, Data, and Composition Actions › editRegressionData"
+      ]
+    },
+    {
+      "query": "scatter plot",
+      "count": 8,
+      "top": [
+        "Basic Charts › createScatterPlot",
+        "Charts, Data, and Composition Actions › createScatterPlot",
+        "Program Composition"
+      ]
+    },
+    {
+      "query": "scatterplot",
+      "count": 8,
+      "top": [
+        "Regression Scatterplot Tutorial › Run and continue",
+        "Scatterplot Recipe",
+        "Scatterplot Tutorial"
+      ]
+    },
+    {
+      "query": "horizontal bar chart",
+      "count": 8,
+      "top": [
+        "Bar Chart Recipe",
+        "Basic Charts › createBarPlot",
+        "Charts, Data, and Composition Actions › createBarPlot"
+      ]
+    },
+    {
+      "query": "log scale",
+      "count": 8,
+      "top": [
+        "Scale Options",
+        "Scale Options › Errors and limitations",
+        "Scale Options › Focused scale families"
+      ]
+    },
+    {
+      "query": "save SVG",
+      "count": 4,
+      "top": [
+        "Rendering",
+        "Rendering › At a glance",
+        "Rendering › Automated environment checks"
+      ]
+    },
+    {
+      "query": "export svg",
+      "count": 4,
+      "top": [
+        "Accessibility › Data alternatives at the chart’s final grain",
+        "Program and Rendering Functions",
+        "Program and Rendering Functions › Exact TypeScript signatures"
+      ]
+    },
+    {
+      "query": "API",
+      "count": 8,
+      "top": [
+        "Polar Arc Tutorial › Map values directly into a pie",
+        "Chart API",
+        "Chart API › All complete chart families"
+      ]
+    },
+    {
+      "query": "facet",
+      "count": 8,
+      "top": [
+        "Charts, Data, and Composition Actions › facet",
+        "Charts, Data, and Composition Actions › facetGrid",
+        "Facet Recipe"
+      ]
+    },
+    {
+      "query": "animation",
+      "count": 2,
+      "top": [
+        "LLM Chart Authoring Contract",
+        "LLM Chart Authoring Contract › Terminal limitations and open decisions"
+      ]
+    },
+    {
+      "query": "createScatterPlot",
+      "count": 8,
+      "top": [
+        "Charts, Data, and Composition Actions › createScatterPlot",
+        "Basic Charts › createScatterPlot",
+        "Annotation Recipe"
+      ]
+    },
+    {
+      "query": "line chart",
+      "count": 8,
+      "top": [
+        "Line Chart Tutorial",
+        "Basic Charts › createLinePlot",
+        "Charts, Data, and Composition Actions › createLinePlot"
+      ]
+    },
+    {
+      "query": "linechart",
+      "count": 8,
+      "top": [
+        "Basic Charts › createLinePlot",
+        "Charts, Data, and Composition Actions › createLinePlot",
+        "Line Chart Tutorial"
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "url": "/ggaction/getting-started/",
+      "textChars": 5779,
+      "height": 4761,
+      "headings": 7,
+      "codeBlocks": 4,
+      "links": 32,
+      "horizontalOverflow": false,
+      "filter": false
+    },
+    {
+      "url": "/ggaction/api/data/",
+      "textChars": 3121,
+      "height": 2716,
+      "headings": 5,
+      "codeBlocks": 0,
+      "links": 36,
+      "horizontalOverflow": false,
+      "filter": false
+    },
+    {
+      "url": "/ggaction/api/scales/",
+      "textChars": 14612,
+      "height": 8655,
+      "headings": 7,
+      "codeBlocks": 8,
+      "links": 43,
+      "horizontalOverflow": false,
+      "filter": false
+    },
+    {
+      "url": "/ggaction/reference/actions/",
+      "textChars": 13335,
+      "height": 15138,
+      "headings": 2,
+      "codeBlocks": 0,
+      "links": 308,
+      "horizontalOverflow": false,
+      "filter": true
+    },
+    {
+      "url": "/ggaction/reference/actions/guides/",
+      "textChars": 57205,
+      "height": 41696,
+      "headings": 88,
+      "codeBlocks": 125,
+      "links": 448,
+      "horizontalOverflow": false,
+      "filter": true
+    },
+    {
+      "url": "/ggaction/mcp/",
+      "textChars": 10354,
+      "height": 5653,
+      "headings": 8,
+      "codeBlocks": 7,
+      "links": 35,
+      "horizontalOverflow": false,
+      "filter": false
+    }
+  ],
+  "consoleErrors": []
+}

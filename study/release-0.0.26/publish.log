@@ -1,0 +1,1003 @@
+﻿2026-10-27T01:08:27.6460199Z Current runner version: '2.338.0'
+2026-10-27T01:08:27.6477760Z ##[group]Runner Image Provisioner
+2026-10-27T01:08:27.6478368Z Hosted Compute Agent
+2026-10-27T01:08:27.6478848Z Version: 20261021.618
+2026-10-27T01:08:27.6479252Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-10-27T01:08:27.6479657Z Build Date: 2026-10-21T00:45:21Z
+2026-10-27T01:08:27.6480286Z Worker ID: {a5a297e2-c5c8-4b90-8e0f-a7e1db816136}
+2026-10-27T01:08:27.6480702Z Region: southcentralus
+2026-10-27T01:08:27.6481057Z Cloud: Azure
+2026-10-27T01:08:27.6481396Z ##[endgroup]
+2026-10-27T01:08:27.6482151Z ##[group]Operating System
+2026-10-27T01:08:27.6482550Z Ubuntu
+2026-10-27T01:08:27.6482857Z 24.04.5
+2026-10-27T01:08:27.6483174Z LTS
+2026-10-27T01:08:27.6483496Z ##[endgroup]
+2026-10-27T01:08:27.6483810Z ##[group]Runner Image
+2026-10-27T01:08:27.6484141Z Image: ubuntu-24.04
+2026-10-27T01:08:27.6484505Z Version: 20261012.334.1
+2026-10-27T01:08:27.6485236Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261012.334/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-27T01:08:27.6486126Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261012.334
+2026-10-27T01:08:27.6486652Z ##[endgroup]
+2026-10-27T01:08:27.6487351Z ##[group]GITHUB_TOKEN Permissions
+2026-10-27T01:08:27.6488719Z Contents: write
+2026-10-27T01:08:27.6489118Z Metadata: read
+2026-10-27T01:08:27.6489438Z ##[endgroup]
+2026-10-27T01:08:27.6490907Z Secret source: Actions
+2026-10-27T01:08:27.6491481Z Cache mode: write
+2026-10-27T01:08:27.6491979Z Prepare workflow directory
+2026-10-27T01:08:27.6689052Z Prepare all required actions
+2026-10-27T01:08:27.6721312Z Getting action download info
+2026-10-27T01:08:27.9352045Z Download action repository 'actions/checkout@v6' (SHA:d23441a48e516b6c34aea4fa41551a30e30af803)
+2026-10-27T01:08:28.0357300Z Download action repository 'actions/setup-node@v6' (SHA:249970729cb0ef3589644e2896645e5dc5ba9c38)
+2026-10-27T01:08:28.1296904Z Download action repository 'actions/download-artifact@v8' (SHA:9000827ccba6bdab643e8b6fd33ac0654aef8333)
+2026-10-27T01:08:28.6224677Z Download action repository 'actions/upload-artifact@v7' (SHA:cf430e030ddbb5b0abf93d22962f4752f3646cd9)
+2026-10-27T01:08:29.2925682Z Complete job name: publish
+2026-10-27T01:08:29.3534160Z ##[group]Run actions/checkout@v6
+2026-10-27T01:08:29.3534845Z with:
+2026-10-27T01:08:29.3535269Z   ref: v0.0.26
+2026-10-27T01:08:29.3535717Z   fetch-depth: 0
+2026-10-27T01:08:29.3536198Z   repository: ggaction/ggaction
+2026-10-27T01:08:29.3540909Z   token: ***
+2026-10-27T01:08:29.3541352Z   ssh-strict: true
+2026-10-27T01:08:29.3541809Z   ssh-user: git
+2026-10-27T01:08:29.3542274Z   persist-credentials: true
+2026-10-27T01:08:29.3542788Z   clean: true
+2026-10-27T01:08:29.3543258Z   sparse-checkout-cone-mode: true
+2026-10-27T01:08:29.3543822Z   fetch-tags: false
+2026-10-27T01:08:29.3544296Z   show-progress: true
+2026-10-27T01:08:29.3544777Z   lfs: false
+2026-10-27T01:08:29.3545221Z   submodules: false
+2026-10-27T01:08:29.3545696Z   set-safe-directory: true
+2026-10-27T01:08:29.3546264Z   allow-unsafe-pr-checkout: false
+2026-10-27T01:08:29.3546908Z ##[endgroup]
+2026-10-27T01:08:29.5773123Z Syncing repository: ggaction/ggaction
+2026-10-27T01:08:29.5774718Z ##[group]Getting Git version info
+2026-10-27T01:08:29.5775481Z Working directory is '/home/runner/work/ggaction/ggaction'
+2026-10-27T01:08:29.5776505Z [command]/usr/bin/git version
+2026-10-27T01:08:29.5852529Z git version 2.55.0
+2026-10-27T01:08:29.5866328Z ##[endgroup]
+2026-10-27T01:08:29.5876827Z Temporarily overriding HOME='/home/runner/work/_temp/6087323b-ee54-4723-a436-a5ad100f8f47' before making global git config changes
+2026-10-27T01:08:29.5879444Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-27T01:08:29.5881324Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/ggaction/ggaction
+2026-10-27T01:08:29.5921955Z Deleting the contents of '/home/runner/work/ggaction/ggaction'
+2026-10-27T01:08:29.5924822Z ##[group]Determining repository object format
+2026-10-27T01:08:29.9304174Z ##[endgroup]
+2026-10-27T01:08:29.9305376Z ##[group]Initializing the repository
+2026-10-27T01:08:29.9306999Z [command]/usr/bin/git init /home/runner/work/ggaction/ggaction
+2026-10-27T01:08:29.9412351Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-27T01:08:29.9413901Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-27T01:08:29.9415435Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-27T01:08:29.9416637Z hint: call:
+2026-10-27T01:08:29.9417239Z hint:
+2026-10-27T01:08:29.9418086Z hint: 	git config --global init.defaultBranch <name>
+2026-10-27T01:08:29.9419067Z hint:
+2026-10-27T01:08:29.9419771Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-27T01:08:29.9420777Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-27T01:08:29.9421611Z hint:
+2026-10-27T01:08:29.9422069Z hint: 	git branch -m <name>
+2026-10-27T01:08:29.9422644Z hint:
+2026-10-27T01:08:29.9423365Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-27T01:08:29.9424599Z Initialized empty Git repository in /home/runner/work/ggaction/ggaction/.git/
+2026-10-27T01:08:29.9426895Z [command]/usr/bin/git remote add origin https://github.com/ggaction/ggaction
+2026-10-27T01:08:29.9474309Z ##[endgroup]
+2026-10-27T01:08:29.9475627Z ##[group]Disabling automatic garbage collection
+2026-10-27T01:08:29.9477021Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-27T01:08:29.9515108Z ##[endgroup]
+2026-10-27T01:08:29.9515994Z ##[group]Setting up auth
+2026-10-27T01:08:29.9516713Z Removing SSH command configuration
+2026-10-27T01:08:29.9520090Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-27T01:08:29.9552335Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-27T01:08:29.9829233Z Removing HTTP extra header
+2026-10-27T01:08:29.9833971Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-27T01:08:29.9865353Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-27T01:08:30.0025987Z Removing includeIf entries pointing to credentials config files
+2026-10-27T01:08:30.0030403Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-27T01:08:30.0060195Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-27T01:08:30.0230412Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-7d75ccb5-f456-4870-ad5c-76cc7079fa8d.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-27T01:08:30.0261906Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/ggaction/ggaction/.git.path /home/runner/work/_temp/git-credentials-7d75ccb5-f456-4870-ad5c-76cc7079fa8d.config
+2026-10-27T01:08:30.0290494Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/ggaction/ggaction/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-7d75ccb5-f456-4870-ad5c-76cc7079fa8d.config
+2026-10-27T01:08:30.0321598Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-7d75ccb5-f456-4870-ad5c-76cc7079fa8d.config
+2026-10-27T01:08:30.0349709Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-7d75ccb5-f456-4870-ad5c-76cc7079fa8d.config
+2026-10-27T01:08:30.0375058Z ##[endgroup]
+2026-10-27T01:08:30.0375813Z ##[group]Fetching the repository
+2026-10-27T01:08:30.0380113Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/*
+2026-10-27T01:08:34.7143946Z From https://github.com/ggaction/ggaction
+2026-10-27T01:08:34.7145260Z  * [new branch]        codex/overlay-composition-v025 -> origin/codex/overlay-composition-v025
+2026-10-27T01:08:34.7145703Z  * [new branch]        main       -> origin/main
+2026-10-27T01:08:34.7146211Z  * [new tag]           archive/release-0.0.22/codex/docs-signature-keyboard -> archive/release-0.0.22/codex/docs-signature-keyboard
+2026-10-27T01:08:34.7146860Z  * [new tag]           archive/release-0.0.22/fix/area-fill-paint -> archive/release-0.0.22/fix/area-fill-paint
+2026-10-27T01:08:34.7147552Z  * [new tag]           archive/release-0.0.22/fix/computed-path-replace-curve -> archive/release-0.0.22/fix/computed-path-replace-curve
+2026-10-27T01:08:34.7148338Z  * [new tag]           archive/release-0.0.22/fix/facet-shared-legend-placement -> archive/release-0.0.22/fix/facet-shared-legend-placement
+2026-10-27T01:08:34.7149425Z  * [new tag]           archive/release-0.0.22/fix/inferred-axis-title-font-bounds -> archive/release-0.0.22/fix/inferred-axis-title-font-bounds
+2026-10-27T01:08:34.7150191Z  * [new tag]           archive/release-0.0.22/fix/legend-gradient-opacity -> archive/release-0.0.22/fix/legend-gradient-opacity
+2026-10-27T01:08:34.7150895Z  * [new tag]           archive/release-0.0.22/fix/sampled-color-legend -> archive/release-0.0.22/fix/sampled-color-legend
+2026-10-27T01:08:34.7151637Z  * [new tag]           archive/release-0.0.22/fix/translation-axis-along-offset -> archive/release-0.0.22/fix/translation-axis-along-offset
+2026-10-27T01:08:34.7152433Z  * [new tag]           archive/release-0.0.22/fix/translation-gradient-fill -> archive/release-0.0.22/fix/translation-gradient-fill
+2026-10-27T01:08:34.7153164Z  * [new tag]           archive/release-0.0.22/proposal/axis-title-along-offset -> archive/release-0.0.22/proposal/axis-title-along-offset
+2026-10-27T01:08:34.7153921Z  * [new tag]           archive/release-0.0.22/proposal/bounded-summary-output -> archive/release-0.0.22/proposal/bounded-summary-output
+2026-10-27T01:08:34.7155187Z  * [new tag]           archive/release-0.0.22/proposal/gradient-layout-direction-bottom-title -> archive/release-0.0.22/proposal/gradient-layout-direction-bottom-title
+2026-10-27T01:08:34.7156165Z  * [new tag]           archive/release-0.0.22/proposal/independent-axis-guides -> archive/release-0.0.22/proposal/independent-axis-guides
+2026-10-27T01:08:34.7156937Z  * [new tag]           archive/release-0.0.22/proposal/merged-quantitative-legend -> archive/release-0.0.22/proposal/merged-quantitative-legend
+2026-10-27T01:08:34.7157697Z  * [new tag]           archive/release-0.0.22/proposal/point-wedge-bar-blend -> archive/release-0.0.22/proposal/point-wedge-bar-blend
+2026-10-27T01:08:34.7158215Z  * [new tag]           v0.0.1     -> v0.0.1
+2026-10-27T01:08:34.7158641Z  * [new tag]           v0.0.10    -> v0.0.10
+2026-10-27T01:08:34.7158930Z  * [new tag]           v0.0.11    -> v0.0.11
+2026-10-27T01:08:34.7159221Z  * [new tag]           v0.0.12    -> v0.0.12
+2026-10-27T01:08:34.7159504Z  * [new tag]           v0.0.13    -> v0.0.13
+2026-10-27T01:08:34.7159794Z  * [new tag]           v0.0.14    -> v0.0.14
+2026-10-27T01:08:34.7160081Z  * [new tag]           v0.0.15    -> v0.0.15
+2026-10-27T01:08:34.7160360Z  * [new tag]           v0.0.16    -> v0.0.16
+2026-10-27T01:08:34.7160636Z  * [new tag]           v0.0.17    -> v0.0.17
+2026-10-27T01:08:34.7160898Z  * [new tag]           v0.0.18    -> v0.0.18
+2026-10-27T01:08:34.7161168Z  * [new tag]           v0.0.19    -> v0.0.19
+2026-10-27T01:08:34.7161554Z  * [new tag]           v0.0.2     -> v0.0.2
+2026-10-27T01:08:34.7162014Z  * [new tag]           v0.0.20    -> v0.0.20
+2026-10-27T01:08:34.7162287Z  * [new tag]           v0.0.21    -> v0.0.21
+2026-10-27T01:08:34.7162565Z  * [new tag]           v0.0.22    -> v0.0.22
+2026-10-27T01:08:34.7162841Z  * [new tag]           v0.0.23    -> v0.0.23
+2026-10-27T01:08:34.7164001Z  * [new tag]           v0.0.24    -> v0.0.24
+2026-10-27T01:08:34.7164429Z  * [new tag]           v0.0.25    -> v0.0.25
+2026-10-27T01:08:34.7164609Z  * [new tag]           v0.0.26    -> v0.0.26
+2026-10-27T01:08:34.7164793Z  * [new tag]           v0.0.3     -> v0.0.3
+2026-10-27T01:08:34.7164976Z  * [new tag]           v0.0.4     -> v0.0.4
+2026-10-27T01:08:34.7165158Z  * [new tag]           v0.0.5     -> v0.0.5
+2026-10-27T01:08:34.7165335Z  * [new tag]           v0.0.6     -> v0.0.6
+2026-10-27T01:08:34.7165513Z  * [new tag]           v0.0.7     -> v0.0.7
+2026-10-27T01:08:34.7165690Z  * [new tag]           v0.0.8     -> v0.0.8
+2026-10-27T01:08:34.7165868Z  * [new tag]           v0.0.9     -> v0.0.9
+2026-10-27T01:08:34.7166904Z ##[endgroup]
+2026-10-27T01:08:34.7167187Z ##[group]Determining the checkout info
+2026-10-27T01:08:34.7167446Z [command]/usr/bin/git branch --list --remote origin/v0.0.26
+2026-10-27T01:08:34.7192507Z [command]/usr/bin/git tag --list v0.0.26
+2026-10-27T01:08:34.7220483Z v0.0.26
+2026-10-27T01:08:34.7223220Z ##[endgroup]
+2026-10-27T01:08:34.7226326Z [command]/usr/bin/git sparse-checkout disable
+2026-10-27T01:08:34.7268712Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-27T01:08:34.7304854Z ##[group]Checking out the ref
+2026-10-27T01:08:34.7313553Z [command]/usr/bin/git checkout --progress --force refs/tags/v0.0.26
+2026-10-27T01:08:35.0239619Z Note: switching to 'refs/tags/v0.0.26'.
+2026-10-27T01:08:35.0239997Z 
+2026-10-27T01:08:35.0240198Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-10-27T01:08:35.0240639Z changes and commit them, and you can discard any commits you make in this
+2026-10-27T01:08:35.0240926Z state without impacting any branches by switching back to a branch.
+2026-10-27T01:08:35.0241088Z 
+2026-10-27T01:08:35.0241223Z If you want to create a new branch to retain commits you create, you may
+2026-10-27T01:08:35.0241501Z do so (now or later) by using -c with the switch command. Example:
+2026-10-27T01:08:35.0241648Z 
+2026-10-27T01:08:35.0241729Z   git switch -c <new-branch-name>
+2026-10-27T01:08:35.0241871Z 
+2026-10-27T01:08:35.0241952Z Or undo this operation with:
+2026-10-27T01:08:35.0242049Z 
+2026-10-27T01:08:35.0242116Z   git switch -
+2026-10-27T01:08:35.0242193Z 
+2026-10-27T01:08:35.0242515Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-10-27T01:08:35.0242685Z 
+2026-10-27T01:08:35.0242851Z HEAD is now at 40ec7ede Merge pull request #277 from ggaction/release/0.0.26-integration
+2026-10-27T01:08:35.0273772Z ##[endgroup]
+2026-10-27T01:08:35.0323944Z [command]/usr/bin/git log -1 --format=%H
+2026-10-27T01:08:35.0351781Z 40ec7edead7fc84de05aad31888dd0f7d264a512
+2026-10-27T01:08:35.0549439Z ##[group]Run actions/setup-node@v6
+2026-10-27T01:08:35.0549590Z with:
+2026-10-27T01:08:35.0549700Z   node-version: 24
+2026-10-27T01:08:35.0549850Z   registry-url: https://registry.npmjs.org/
+2026-10-27T01:08:35.0550021Z   package-manager-cache: false
+2026-10-27T01:08:35.0550153Z   check-latest: false
+2026-10-27T01:08:35.0551384Z   token: ***
+2026-10-27T01:08:35.0551504Z ##[endgroup]
+2026-10-27T01:08:35.1412224Z Found in cache @ /opt/hostedtoolcache/node/24.21.0/x64
+2026-10-27T01:08:35.1415577Z ##[group]Environment details
+2026-10-27T01:08:35.4169487Z node: v24.21.0
+2026-10-27T01:08:35.4169729Z npm: 11.19.0
+2026-10-27T01:08:35.4169885Z yarn: 1.22.22
+2026-10-27T01:08:35.4170767Z ##[endgroup]
+2026-10-27T01:08:35.4285218Z ##[group]Run npm install --global "npm@^11.5.1"
+2026-10-27T01:08:35.4285440Z [36;1mnpm install --global "npm@^11.5.1"[0m
+2026-10-27T01:08:35.4500569Z shell: /usr/bin/bash -e {0}
+2026-10-27T01:08:35.4500715Z env:
+2026-10-27T01:08:35.4500856Z   NPM_CONFIG_USERCONFIG: /home/runner/work/_temp/.npmrc
+2026-10-27T01:08:35.4501048Z   NODE_AUTH_TOKEN: XXXXX-XXXXX-XXXXX-XXXXX
+2026-10-27T01:08:35.4501194Z ##[endgroup]
+2026-10-27T01:08:38.5734252Z 
+2026-10-27T01:08:38.5739690Z changed 22 packages in 3s
+2026-10-27T01:08:38.5739916Z 
+2026-10-27T01:08:38.5740114Z 15 packages are looking for funding
+2026-10-27T01:08:38.5740396Z   run `npm fund` for details
+2026-10-27T01:08:38.6194502Z ##[group]Run actions/download-artifact@v8
+2026-10-27T01:08:38.6194657Z with:
+2026-10-27T01:08:38.6194770Z   name: ggaction-v0.0.26
+2026-10-27T01:08:38.6194896Z   path: .artifacts/release
+2026-10-27T01:08:38.6195022Z   merge-multiple: false
+2026-10-27T01:08:38.6195145Z   repository: ggaction/ggaction
+2026-10-27T01:08:38.6195272Z   run-id: 40427371005
+2026-10-27T01:08:38.6195392Z   skip-decompress: false
+2026-10-27T01:08:38.6195511Z   digest-mismatch: error
+2026-10-27T01:08:38.6195622Z env:
+2026-10-27T01:08:38.6195751Z   NPM_CONFIG_USERCONFIG: /home/runner/work/_temp/.npmrc
+2026-10-27T01:08:38.6195931Z   NODE_AUTH_TOKEN: XXXXX-XXXXX-XXXXX-XXXXX
+2026-10-27T01:08:38.6196073Z ##[endgroup]
+2026-10-27T01:08:38.7070517Z Downloading single artifact
+2026-10-27T01:08:38.8880977Z Preparing to download the following artifacts:
+2026-10-27T01:08:38.8881840Z - ggaction-v0.0.26 (ID: 12701040082, Size: 978456, Expected Digest: sha256:c8798fe42d91d8720353dcb72509d4e79ceb35333e6b886d9671be6994ee71ea)
+2026-10-27T01:08:39.2472797Z Redirecting to blob download url: https://productionresultssa8.blob.core.windows.net/actions-results/c1ea97b8-7df4-4108-a3e2-a3fae51efe0b/workflow-job-run-19fa996d-6756-5a2e-9bd6-3a4a2768cccf/artifacts/0fae08c2c9eed63fa99ea54266b08b2d5669b59b80bd7a73ef5e82ebdec2e4e6.zip
+2026-10-27T01:08:39.2473543Z Starting download of artifact to: /home/runner/work/ggaction/ggaction/.artifacts/release
+2026-10-27T01:08:39.4113553Z (node:2141) [DEP0005] DeprecationWarning: Buffer() is deprecated due to security and usability issues. Please use the Buffer.alloc(), Buffer.allocUnsafe(), or Buffer.from() methods instead.
+2026-10-27T01:08:39.4114099Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-27T01:08:39.6041466Z SHA256 digest of downloaded artifact is c8798fe42d91d8720353dcb72509d4e79ceb35333e6b886d9671be6994ee71ea
+2026-10-27T01:08:39.6041798Z Artifact download completed successfully.
+2026-10-27T01:08:39.6041998Z Total of 1 artifact(s) downloaded
+2026-10-27T01:08:39.6045383Z Download artifact has finished successfully
+2026-10-27T01:08:39.6137467Z ##[group]Run node scripts/release-candidate.js --verify .artifacts/release/candidate.json "$RELEASE_TAG"
+2026-10-27T01:08:39.6137850Z [36;1mnode scripts/release-candidate.js --verify .artifacts/release/candidate.json "$RELEASE_TAG"[0m
+2026-10-27T01:08:39.6187460Z shell: /usr/bin/bash -e {0}
+2026-10-27T01:08:39.6187591Z env:
+2026-10-27T01:08:39.6187728Z   NPM_CONFIG_USERCONFIG: /home/runner/work/_temp/.npmrc
+2026-10-27T01:08:39.6187912Z   NODE_AUTH_TOKEN: XXXXX-XXXXX-XXXXX-XXXXX
+2026-10-27T01:08:39.6188062Z   RELEASE_TAG: v0.0.26
+2026-10-27T01:08:39.6188181Z ##[endgroup]
+2026-10-27T01:08:39.6786270Z {
+2026-10-27T01:08:39.6786447Z   "schemaVersion": 1,
+2026-10-27T01:08:39.6786602Z   "name": "ggaction",
+2026-10-27T01:08:39.6786732Z   "version": "0.0.26",
+2026-10-27T01:08:39.6786859Z   "tag": "v0.0.26",
+2026-10-27T01:08:39.6787051Z   "commit": "40ec7edead7fc84de05aad31888dd0f7d264a512",
+2026-10-27T01:08:39.6787312Z   "filename": "ggaction-0.0.26.tgz",
+2026-10-27T01:08:39.6787553Z   "sha1": "56690948f9429f656b55382307d174a54d56d8a9",
+2026-10-27T01:08:39.6787810Z   "sha256": "f250428f3359244d625c6bd105d8017836cbb70fd3c5b826505e38d7fbab62af",
+2026-10-27T01:08:39.6788024Z   "entryCount": 654,
+2026-10-27T01:08:39.6788150Z   "packedBytes": 977213,
+2026-10-27T01:08:39.6788283Z   "unpackedBytes": 4576677,
+2026-10-27T01:08:39.6788472Z   "releaseNotes": "ggaction-0.0.26-release-notes.md"
+2026-10-27T01:08:39.6788722Z }
+2026-10-27T01:08:39.6864519Z ##[group]Run set -euo pipefail
+2026-10-27T01:08:39.6864722Z [36;1mset -euo pipefail[0m
+2026-10-27T01:08:39.6864927Z [36;1mPACKAGE=$(node -p "require('./.artifacts/release/candidate.json').name")[0m
+2026-10-27T01:08:39.6865203Z [36;1mVERSION=$(node -p "require('./.artifacts/release/candidate.json').version")[0m
+2026-10-27T01:08:39.6865475Z [36;1mLOCAL_SHA1=$(node -p "require('./.artifacts/release/candidate.json').sha1")[0m
+2026-10-27T01:08:39.6865795Z [36;1mif REMOTE_SHA1=$(npm view "$PACKAGE@$VERSION" dist.shasum 2>.artifacts/release/npm-view-error.log); then[0m
+2026-10-27T01:08:39.6866181Z [36;1m  test "$REMOTE_SHA1" = "$LOCAL_SHA1"[0m
+2026-10-27T01:08:39.6866350Z [36;1m  echo "already=true" >> "$GITHUB_OUTPUT"[0m
+2026-10-27T01:08:39.6866555Z [36;1melif grep -q "E404" .artifacts/release/npm-view-error.log; then[0m
+2026-10-27T01:08:39.6866764Z [36;1m  echo "already=false" >> "$GITHUB_OUTPUT"[0m
+2026-10-27T01:08:39.6866912Z [36;1melse[0m
+2026-10-27T01:08:39.6867069Z [36;1m  cat .artifacts/release/npm-view-error.log >&2[0m
+2026-10-27T01:08:39.6867229Z [36;1m  exit 1[0m
+2026-10-27T01:08:39.6867333Z [36;1mfi[0m
+2026-10-27T01:08:39.6917594Z shell: /usr/bin/bash -e {0}
+2026-10-27T01:08:39.6917726Z env:
+2026-10-27T01:08:39.6917863Z   NPM_CONFIG_USERCONFIG: /home/runner/work/_temp/.npmrc
+2026-10-27T01:08:39.6918044Z   NODE_AUTH_TOKEN: XXXXX-XXXXX-XXXXX-XXXXX
+2026-10-27T01:08:39.6918192Z ##[endgroup]
+2026-10-27T01:08:40.0898991Z ##[group]Run TARBALL=".artifacts/release/$(node -p "require('./.artifacts/release/candidate.json').filename")"
+2026-10-27T01:08:40.0899393Z [36;1mTARBALL=".artifacts/release/$(node -p "require('./.artifacts/release/candidate.json').filename")"[0m
+2026-10-27T01:08:40.0899681Z [36;1mnpm publish "$TARBALL" --access public --tag latest[0m
+2026-10-27T01:08:40.0948991Z shell: /usr/bin/bash -e {0}
+2026-10-27T01:08:40.0949126Z env:
+2026-10-27T01:08:40.0949263Z   NPM_CONFIG_USERCONFIG: /home/runner/work/_temp/.npmrc
+2026-10-27T01:08:40.0949445Z   NODE_AUTH_TOKEN: XXXXX-XXXXX-XXXXX-XXXXX
+2026-10-27T01:08:40.0949597Z ##[endgroup]
+2026-10-27T01:08:40.7779375Z npm notice
+2026-10-27T01:08:40.7782583Z npm notice 📦  ggaction@0.0.26
+2026-10-27T01:08:40.7782874Z npm notice Tarball Contents
+2026-10-27T01:08:40.7853134Z npm notice 51.3kB CHANGELOG.md
+2026-10-27T01:08:40.7853422Z npm notice 1.1kB LICENSE
+2026-10-27T01:08:40.7853721Z npm notice 12.3kB README.md
+2026-10-27T01:08:40.7854096Z npm notice 4.0kB knowledge/action-card.schema.json
+2026-10-27T01:08:40.7854416Z npm notice 612.8kB knowledge/action-cards.json
+2026-10-27T01:08:40.7854761Z npm notice 705B knowledge/action-cards.schema.json
+2026-10-27T01:08:40.7855098Z npm notice 12.4kB knowledge/extension-authoring.md
+2026-10-27T01:08:40.7855433Z npm notice 37.1kB knowledge/intent-taxonomy.json
+2026-10-27T01:08:40.7855788Z npm notice 2.4kB knowledge/intent-taxonomy.schema.json
+2026-10-27T01:08:40.7856143Z npm notice 7.0kB knowledge/mcp-resources.json
+2026-10-27T01:08:40.7856496Z npm notice 1.4kB knowledge/mcp-resources.schema.json
+2026-10-27T01:08:40.7856846Z npm notice 4.5kB knowledge/task-packet.schema.json
+2026-10-27T01:08:40.7857174Z npm notice 46.2kB knowledge/task-resolver.js
+2026-10-27T01:08:40.7857447Z npm notice 8.4kB package.json
+2026-10-27T01:08:40.7857709Z npm notice 8.9kB src/accessibility.js
+2026-10-27T01:08:40.7857986Z npm notice 1.1kB src/actions/basic.js
+2026-10-27T01:08:40.7858312Z npm notice 3.3kB src/actions/boxPlots/components.js
+2026-10-27T01:08:40.7859045Z npm notice 3.9kB src/actions/boxPlots/create.js
+2026-10-27T01:08:40.7859375Z npm notice 19.0kB src/actions/boxPlots/edit.js
+2026-10-27T01:08:40.7859699Z npm notice 567B src/actions/boxPlots/index.js
+2026-10-27T01:08:40.7860041Z npm notice 7.3kB src/actions/boxPlots/materialize.js
+2026-10-27T01:08:40.7860377Z npm notice 6.3kB src/actions/boxPlots/options.js
+2026-10-27T01:08:40.7860702Z npm notice 1.7kB src/actions/boxPlots/resolve.js
+2026-10-27T01:08:40.7860969Z npm notice 6.1kB src/actions/canvas/actions.js
+2026-10-27T01:08:40.7861223Z npm notice 11.4kB src/actions/canvas/fitting.js
+2026-10-27T01:08:40.7861409Z npm notice 884B src/actions/canvas/index.js
+2026-10-27T01:08:40.7861653Z npm notice 1.6kB src/actions/canvas/plotBorder.js
+2026-10-27T01:08:40.7861851Z npm notice 794B src/actions/canvas/plotOrder.js
+2026-10-27T01:08:40.7862051Z npm notice 4.5kB src/actions/categoryOrder/index.js
+2026-10-27T01:08:40.7862245Z npm notice 4.0kB src/actions/charts/area.js
+2026-10-27T01:08:40.7862427Z npm notice 4.3kB src/actions/charts/bar.js
+2026-10-27T01:08:40.7862820Z npm notice 587B src/actions/charts/basic.js
+2026-10-27T01:08:40.7863077Z npm notice 2.9kB src/actions/charts/beeswarm.js
+2026-10-27T01:08:40.7863265Z npm notice 2.8kB src/actions/charts/density.js
+2026-10-27T01:08:40.7863446Z npm notice 6.5kB src/actions/charts/ecdf.js
+2026-10-27T01:08:40.7863630Z npm notice 22.4kB src/actions/charts/endpoints.js
+2026-10-27T01:08:40.7863822Z npm notice 6.8kB src/actions/charts/heatmap.js
+2026-10-27T01:08:40.7864010Z npm notice 2.1kB src/actions/charts/histogram.js
+2026-10-27T01:08:40.7864199Z npm notice 4.0kB src/actions/charts/horizon.js
+2026-10-27T01:08:40.7864380Z npm notice 3.1kB src/actions/charts/index.js
+2026-10-27T01:08:40.7864594Z npm notice 6.8kB src/actions/charts/interval-regression.js
+2026-10-27T01:08:40.7864805Z npm notice 2.5kB src/actions/charts/line.js
+2026-10-27T01:08:40.7864987Z npm notice 929B src/actions/charts/missing.js
+2026-10-27T01:08:40.7865331Z npm notice 3.8kB src/actions/charts/parallel.js
+2026-10-27T01:08:40.7865518Z npm notice 367B src/actions/charts/pie.js
+2026-10-27T01:08:40.7865699Z npm notice 5.1kB src/actions/charts/polar.js
+2026-10-27T01:08:40.7865879Z npm notice 16.9kB src/actions/charts/radar.js
+2026-10-27T01:08:40.7866063Z npm notice 4.2kB src/actions/charts/radial.js
+2026-10-27T01:08:40.7866250Z npm notice 19.1kB src/actions/charts/raincloud.js
+2026-10-27T01:08:40.7866445Z npm notice 11.7kB src/actions/charts/rug-strip.js
+2026-10-27T01:08:40.7866637Z npm notice 3.5kB src/actions/charts/scatter.js
+2026-10-27T01:08:40.7866817Z npm notice 8.6kB src/actions/charts/shared.js
+2026-10-27T01:08:40.7866993Z npm notice 1.9kB src/actions/charts/text.js
+2026-10-27T01:08:40.7867190Z npm notice 16.2kB src/actions/composition/actions.js
+2026-10-27T01:08:40.7867403Z npm notice 6.3kB src/actions/composition/adjacent.js
+2026-10-27T01:08:40.7867602Z npm notice 589B src/actions/composition/index.js
+2026-10-27T01:08:40.7867796Z npm notice 2.6kB src/actions/composition/layer.js
+2026-10-27T01:08:40.7868006Z npm notice 14.3kB src/actions/composition/layerPlan.js
+2026-10-27T01:08:40.7868212Z npm notice 5.7kB src/actions/composition/targets.js
+2026-10-27T01:08:40.7868412Z npm notice 2.7kB src/actions/coordinates/actions.js
+2026-10-27T01:08:40.7868816Z npm notice 2.8kB src/actions/coordinates/edit.js
+2026-10-27T01:08:40.7869117Z npm notice 1.9kB src/actions/coordinates/parallel.js
+2026-10-27T01:08:40.7869479Z npm notice 929B src/actions/data/basic.js
+2026-10-27T01:08:40.7869779Z npm notice 1.4kB src/actions/data/basicBin2d.js
+2026-10-27T01:08:40.7870057Z npm notice 816B src/actions/data/bin.js
+2026-10-27T01:08:40.7870331Z npm notice 6.2kB src/actions/data/bin2d.js
+2026-10-27T01:08:40.7870641Z npm notice 849B src/actions/data/bin2dMaterialize.js
+2026-10-27T01:08:40.7870927Z npm notice 1.6kB src/actions/data/box.js
+2026-10-27T01:08:40.7871205Z npm notice 761B src/actions/data/complete.js
+2026-10-27T01:08:40.7871494Z npm notice 725B src/actions/data/computed.js
+2026-10-27T01:08:40.7871786Z npm notice 1.7kB src/actions/data/create.js
+2026-10-27T01:08:40.7872072Z npm notice 2.0kB src/actions/data/density.js
+2026-10-27T01:08:40.7872369Z npm notice 7.2kB src/actions/data/derived.js
+2026-10-27T01:08:40.7872645Z npm notice 1.0kB src/actions/data/ecdf.js
+2026-10-27T01:08:40.7872918Z npm notice 18.5kB src/actions/data/edit.js
+2026-10-27T01:08:40.7873198Z npm notice 7.7kB src/actions/data/filter.js
+2026-10-27T01:08:40.7873478Z npm notice 704B src/actions/data/flatten.js
+2026-10-27T01:08:40.7873765Z npm notice 657B src/actions/data/fold.js
+2026-10-27T01:08:40.7874078Z npm notice 1.1kB src/actions/data/gradientProfile.js
+2026-10-27T01:08:40.7874384Z npm notice 1.3kB src/actions/data/horizon.js
+2026-10-27T01:08:40.7874665Z npm notice 750B src/actions/data/impute.js
+2026-10-27T01:08:40.7874941Z npm notice 3.9kB src/actions/data/index.js
+2026-10-27T01:08:40.7875229Z npm notice 1.1kB src/actions/data/interval.js
+2026-10-27T01:08:40.7875534Z npm notice 6.5kB src/actions/data/intervalEdit.js
+2026-10-27T01:08:40.7875833Z npm notice 2.7kB src/actions/data/lookup.js
+2026-10-27T01:08:40.7876267Z npm notice 816B src/actions/data/normalize.js
+2026-10-27T01:08:40.7876580Z npm notice 3.2kB src/actions/data/raincloudFilter.js
+2026-10-27T01:08:40.7876853Z npm notice 2.6kB src/actions/data/regression.js
+2026-10-27T01:08:40.7877068Z npm notice 4.1kB src/actions/data/regressionStatistics.js
+2026-10-27T01:08:40.7877268Z npm notice 3.7kB src/actions/data/revise.js
+2026-10-27T01:08:40.7877464Z npm notice 4.7kB src/actions/data/revisionBindings.js
+2026-10-27T01:08:40.7877658Z npm notice 4.5kB src/actions/data/shared.js
+2026-10-27T01:08:40.7877833Z npm notice 657B src/actions/data/sort.js
+2026-10-27T01:08:40.7878072Z npm notice 732B src/actions/data/stack.js
+2026-10-27T01:08:40.7878358Z npm notice 752B src/actions/data/summary.js
+2026-10-27T01:08:40.7878820Z npm notice 769B src/actions/data/timeUnit.js
+2026-10-27T01:08:40.7878997Z npm notice 707B src/actions/data/window.js
+2026-10-27T01:08:40.7879308Z npm notice 13.7kB src/actions/distributions/revision.js
+2026-10-27T01:08:40.7879514Z npm notice 2.7kB src/actions/encodings/angle.js
+2026-10-27T01:08:40.7879719Z npm notice 12.6kB src/actions/encodings/appearance.js
+2026-10-27T01:08:40.7879924Z npm notice 3.7kB src/actions/encodings/barWidth.js
+2026-10-27T01:08:40.7880122Z npm notice 1.1kB src/actions/encodings/basic.js
+2026-10-27T01:08:40.7880316Z npm notice 13.8kB src/actions/encodings/channels.js
+2026-10-27T01:08:40.7880533Z npm notice 4.6kB src/actions/encodings/color/continuous.js
+2026-10-27T01:08:40.7880753Z npm notice 9.3kB src/actions/encodings/color/index.js
+2026-10-27T01:08:40.7880959Z npm notice 238B src/actions/encodings/color/layout.js
+2026-10-27T01:08:40.7881167Z npm notice 7.1kB src/actions/encodings/color/policy.js
+2026-10-27T01:08:40.7881372Z npm notice 19.9kB src/actions/encodings/density.js
+2026-10-27T01:08:40.7881585Z npm notice 4.2kB src/actions/encodings/density/resolve.js
+2026-10-27T01:08:40.7881795Z npm notice 1.7kB src/actions/encodings/histogram.js
+2026-10-27T01:08:40.7881997Z npm notice 12.3kB src/actions/encodings/horizon.js
+2026-10-27T01:08:40.7882211Z npm notice 9.7kB src/actions/encodings/horizon/resolve.js
+2026-10-27T01:08:40.7882436Z npm notice 2.2kB src/actions/encodings/index.js
+2026-10-27T01:08:40.7882630Z npm notice 4.7kB src/actions/encodings/offset.js
+2026-10-27T01:08:40.7882826Z npm notice 3.7kB src/actions/encodings/parallel.js
+2026-10-27T01:08:40.7883028Z npm notice 4.4kB src/actions/encodings/pathOrder.js
+2026-10-27T01:08:40.7883243Z npm notice 5.1kB src/actions/encodings/position/apply.js
+2026-10-27T01:08:40.7883484Z npm notice 2.9kB src/actions/encodings/position/areaAlignment.js
+2026-10-27T01:08:40.7883723Z npm notice 8.0kB src/actions/encodings/position/index.js
+2026-10-27T01:08:40.7883957Z npm notice 3.6kB src/actions/encodings/position/policies/arc.js
+2026-10-27T01:08:40.7884204Z npm notice 2.0kB src/actions/encodings/position/policies/area.js
+2026-10-27T01:08:40.7884448Z npm notice 6.7kB src/actions/encodings/position/policies/bar.js
+2026-10-27T01:08:40.7884696Z npm notice 514B src/actions/encodings/position/policies/common.js
+2026-10-27T01:08:40.7884945Z npm notice 1.3kB src/actions/encodings/position/policies/index.js
+2026-10-27T01:08:40.7885192Z npm notice 4.4kB src/actions/encodings/position/policies/line.js
+2026-10-27T01:08:40.7885434Z npm notice 692B src/actions/encodings/position/policies/point.js
+2026-10-27T01:08:40.7885675Z npm notice 647B src/actions/encodings/position/policies/rule.js
+2026-10-27T01:08:40.7885918Z npm notice 687B src/actions/encodings/position/policies/tick.js
+2026-10-27T01:08:40.7886153Z npm notice 14.3kB src/actions/encodings/position/resolve.js
+2026-10-27T01:08:40.7886366Z npm notice 17.9kB src/actions/encodings/ranged.js
+2026-10-27T01:08:40.7886563Z npm notice 10.7kB src/actions/encodings/remove.js
+2026-10-27T01:08:40.7886776Z npm notice 5.2kB src/actions/encodings/ruleAppearance.js
+2026-10-27T01:08:40.7886993Z npm notice 7.4kB src/actions/encodings/seriesLayout.js
+2026-10-27T01:08:40.7887196Z npm notice 10.2kB src/actions/encodings/shared.js
+2026-10-27T01:08:40.7887391Z npm notice 7.9kB src/actions/encodings/stroke.js
+2026-10-27T01:08:40.7887687Z npm notice 4.9kB src/actions/encodings/strokeDash.js
+2026-10-27T01:08:40.7887887Z npm notice 305B src/actions/encodings/temporal.js
+2026-10-27T01:08:40.7888079Z npm notice 5.6kB src/actions/encodings/text.js
+2026-10-27T01:08:40.7888271Z npm notice 8.5kB src/actions/errorBands/create.js
+2026-10-27T01:08:40.7888461Z npm notice 18.3kB src/actions/errorBands/edit.js
+2026-10-27T01:08:40.7888782Z npm notice 594B src/actions/errorBands/index.js
+2026-10-27T01:08:40.7888974Z npm notice 13.5kB src/actions/errorBars/create.js
+2026-10-27T01:08:40.7889161Z npm notice 16.6kB src/actions/errorBars/edit.js
+2026-10-27T01:08:40.7889350Z npm notice 437B src/actions/errorBars/index.js
+2026-10-27T01:08:40.7889538Z npm notice 21.8kB src/actions/facets/actions.js
+2026-10-27T01:08:40.7889728Z npm notice 11.8kB src/actions/facets/derive.js
+2026-10-27T01:08:40.7889990Z npm notice 629B src/actions/facets/guides.js
+2026-10-27T01:08:40.7890171Z npm notice 53B src/actions/facets/index.js
+2026-10-27T01:08:40.7890354Z npm notice 1.4kB src/actions/facets/replay.js
+2026-10-27T01:08:40.7890562Z npm notice 8.6kB src/actions/gradientPlots/components.js
+2026-10-27T01:08:40.7890778Z npm notice 3.3kB src/actions/gradientPlots/create.js
+2026-10-27T01:08:40.7890985Z npm notice 13.1kB src/actions/gradientPlots/edit.js
+2026-10-27T01:08:40.7891186Z npm notice 717B src/actions/gradientPlots/index.js
+2026-10-27T01:08:40.7891405Z npm notice 10.5kB src/actions/gradientPlots/materialize.js
+2026-10-27T01:08:40.7891624Z npm notice 4.1kB src/actions/gradientPlots/options.js
+2026-10-27T01:08:40.7891829Z npm notice 3.9kB src/actions/gradientPlots/paint.js
+2026-10-27T01:08:40.7892037Z npm notice 1.8kB src/actions/gradientPlots/rebind.js
+2026-10-27T01:08:40.7892246Z npm notice 2.4kB src/actions/gradientPlots/resolve.js
+2026-10-27T01:08:40.7892455Z npm notice 5.5kB src/actions/guides/applicability.js
+2026-10-27T01:08:40.7892659Z npm notice 13.8kB src/actions/guides/axes/axes.js
+2026-10-27T01:08:40.7892851Z npm notice 9.0kB src/actions/guides/axes/axis.js
+2026-10-27T01:08:40.7893056Z npm notice 2.3kB src/actions/guides/axes/components.js
+2026-10-27T01:08:40.7893255Z npm notice 5.9kB src/actions/guides/axes/edit.js
+2026-10-27T01:08:40.7893446Z npm notice 1.5kB src/actions/guides/axes/index.js
+2026-10-27T01:08:40.7893643Z npm notice 14.5kB src/actions/guides/axes/labels.js
+2026-10-27T01:08:40.7893838Z npm notice 7.0kB src/actions/guides/axes/lines.js
+2026-10-27T01:08:40.7894041Z npm notice 6.3kB src/actions/guides/axes/parallel.js
+2026-10-27T01:08:40.7894267Z npm notice 7.3kB src/actions/guides/axes/parallel/lifecycle.js
+2026-10-27T01:08:40.7894506Z npm notice 7.3kB src/actions/guides/axes/parallel/policy.js
+2026-10-27T01:08:40.7894742Z npm notice 5.0kB src/actions/guides/axes/parallel/resolve.js
+2026-10-27T01:08:40.7894957Z npm notice 4.7kB src/actions/guides/axes/policy.js
+2026-10-27T01:08:40.7895156Z npm notice 2.6kB src/actions/guides/axes/remove.js
+2026-10-27T01:08:40.7895363Z npm notice 5.2kB src/actions/guides/axes/tickGroups.js
+2026-10-27T01:08:40.7895566Z npm notice 12.9kB src/actions/guides/axes/ticks.js
+2026-10-27T01:08:40.7895763Z npm notice 11.4kB src/actions/guides/axes/titles.js
+2026-10-27T01:08:40.7895957Z npm notice 986B src/actions/guides/basic.js
+2026-10-27T01:08:40.7896140Z npm notice 5.5kB src/actions/guides/facade.js
+2026-10-27T01:08:40.7896334Z npm notice 11.0kB src/actions/guides/facadeAxes.js
+2026-10-27T01:08:40.7896536Z npm notice 4.3kB src/actions/guides/facadeLegend.js
+2026-10-27T01:08:40.7896733Z npm notice 12.8kB src/actions/guides/grids/grid.js
+2026-10-27T01:08:40.7896924Z npm notice 75B src/actions/guides/grids/index.js
+2026-10-27T01:08:40.7897125Z npm notice 15.3kB src/actions/guides/grids/resolve.js
+2026-10-27T01:08:40.7897321Z npm notice 6.4kB src/actions/guides/guides.js
+2026-10-27T01:08:40.7897532Z npm notice 635B src/actions/guides/index.js
+2026-10-27T01:08:40.7897867Z npm notice 1.6kB src/actions/guides/legends/automatic.js
+2026-10-27T01:08:40.7898145Z npm notice 19.3kB src/actions/guides/legends/blocks.js
+2026-10-27T01:08:40.7898481Z npm notice 16.9kB src/actions/guides/legends/categorical/actions.js
+2026-10-27T01:08:40.7898890Z npm notice 5.8kB src/actions/guides/legends/categorical/components.js
+2026-10-27T01:08:40.7899146Z npm notice 6.5kB src/actions/guides/legends/categorical/index.js
+2026-10-27T01:08:40.7899392Z npm notice 9.9kB src/actions/guides/legends/categorical/layout.js
+2026-10-27T01:08:40.7899663Z npm notice 7.6kB src/actions/guides/legends/categorical/options.js
+2026-10-27T01:08:40.7899915Z npm notice 7.6kB src/actions/guides/legends/categorical/recipes.js
+2026-10-27T01:08:40.7900164Z npm notice 6.9kB src/actions/guides/legends/categorical/resolve.js
+2026-10-27T01:08:40.7900411Z npm notice 11.0kB src/actions/guides/legends/categorical/symbols.js
+2026-10-27T01:08:40.7900668Z npm notice 660B src/actions/guides/legends/categorical/validation.js
+2026-10-27T01:08:40.7900994Z npm notice 12.4kB src/actions/guides/legends/colorSize.js
+2026-10-27T01:08:40.7901213Z npm notice 2.6kB src/actions/guides/legends/combine.js
+2026-10-27T01:08:40.7901454Z npm notice 3.9kB src/actions/guides/legends/continuous/colorSymbols.js
+2026-10-27T01:08:40.7901709Z npm notice 13.1kB src/actions/guides/legends/continuous/common.js
+2026-10-27T01:08:40.7901965Z npm notice 10.8kB src/actions/guides/legends/continuous/gradient.js
+2026-10-27T01:08:40.7902216Z npm notice 1.5kB src/actions/guides/legends/continuous/index.js
+2026-10-27T01:08:40.7902465Z npm notice 8.6kB src/actions/guides/legends/continuous/interval.js
+2026-10-27T01:08:40.7902715Z npm notice 16.1kB src/actions/guides/legends/continuous/opacity.js
+2026-10-27T01:08:40.7902960Z npm notice 8.4kB src/actions/guides/legends/continuous/stroke.js
+2026-10-27T01:08:40.7903187Z npm notice 2.1kB src/actions/guides/legends/creation.js
+2026-10-27T01:08:40.7903398Z npm notice 32.6kB src/actions/guides/legends/edit.js
+2026-10-27T01:08:40.7903607Z npm notice 2.3kB src/actions/guides/legends/focused.js
+2026-10-27T01:08:40.7903816Z npm notice 5.5kB src/actions/guides/legends/group.js
+2026-10-27T01:08:40.7904021Z npm notice 833B src/actions/guides/legends/index.js
+2026-10-27T01:08:40.7904224Z npm notice 13.6kB src/actions/guides/legends/lane.js
+2026-10-27T01:08:40.7904433Z npm notice 5.1kB src/actions/guides/legends/lifecycle.js
+2026-10-27T01:08:40.7904647Z npm notice 5.5kB src/actions/guides/legends/remove.js
+2026-10-27T01:08:40.7904856Z npm notice 2.7kB src/actions/guides/legends/sampling.js
+2026-10-27T01:08:40.7905062Z npm notice 11.5kB src/actions/guides/legends/size.js
+2026-10-27T01:08:40.7905278Z npm notice 6.3kB src/actions/guides/legends/strokeWidth.js
+2026-10-27T01:08:40.7905493Z npm notice 2.5kB src/actions/guides/legends/target.js
+2026-10-27T01:08:40.7905708Z npm notice 13.2kB src/actions/guides/legends/transition.js
+2026-10-27T01:08:40.7905929Z npm notice 8.6kB src/actions/guides/polar/axes/facade.js
+2026-10-27T01:08:40.7906143Z npm notice 1.2kB src/actions/guides/polar/axes/index.js
+2026-10-27T01:08:40.7906357Z npm notice 8.9kB src/actions/guides/polar/axes/labels.js
+2026-10-27T01:08:40.7906574Z npm notice 4.1kB src/actions/guides/polar/axes/lines.js
+2026-10-27T01:08:40.7906785Z npm notice 4.5kB src/actions/guides/polar/axes/shared.js
+2026-10-27T01:08:40.7906996Z npm notice 5.6kB src/actions/guides/polar/axes/ticks.js
+2026-10-27T01:08:40.7907207Z npm notice 7.6kB src/actions/guides/polar/axes/titles.js
+2026-10-27T01:08:40.7907413Z npm notice 9.2kB src/actions/guides/polar/grids.js
+2026-10-27T01:08:40.7907612Z npm notice 115B src/actions/guides/polar/index.js
+2026-10-27T01:08:40.7907815Z npm notice 9.2kB src/actions/guides/polar/resolve.js
+2026-10-27T01:08:40.7908009Z npm notice 2.0kB src/actions/guides/reuse.js
+2026-10-27T01:08:40.7908202Z npm notice 4.0kB src/actions/guides/tickValues.js
+2026-10-27T01:08:40.7908386Z npm notice 2.8kB src/actions/index.js
+2026-10-27T01:08:40.7908714Z npm notice 11.0kB src/actions/intervals/resolve.js
+2026-10-27T01:08:40.7908914Z npm notice 4.7kB src/actions/intervals/revision.js
+2026-10-27T01:08:40.7909109Z npm notice 11.3kB src/actions/marks/arc/actions.js
+2026-10-27T01:08:40.7909392Z npm notice 55B src/actions/marks/arc/index.js
+2026-10-27T01:08:40.7909584Z npm notice 14.0kB src/actions/marks/area/actions.js
+2026-10-27T01:08:40.7909779Z npm notice 87B src/actions/marks/area/index.js
+2026-10-27T01:08:40.7909981Z npm notice 3.3kB src/actions/marks/area/materialize.js
+2026-10-27T01:08:40.7910180Z npm notice 3.2kB src/actions/marks/bar/create.js
+2026-10-27T01:08:40.7910368Z npm notice 5.7kB src/actions/marks/bar/edit.js
+2026-10-27T01:08:40.7910551Z npm notice 487B src/actions/marks/bar/index.js
+2026-10-27T01:08:40.7910753Z npm notice 5.4kB src/actions/marks/bar/materialize.js
+2026-10-27T01:08:40.7910943Z npm notice 460B src/actions/marks/basic.js
+2026-10-27T01:08:40.7911149Z npm notice 3.8kB src/actions/marks/dependentReferences.js
+2026-10-27T01:08:40.7911353Z npm notice 1.8kB src/actions/marks/index.js
+2026-10-27T01:08:40.7911624Z npm notice 1.4kB src/actions/marks/lifecycle.js
+2026-10-27T01:08:40.7911820Z npm notice 13.7kB src/actions/marks/line/actions.js
+2026-10-27T01:08:40.7912021Z npm notice 90B src/actions/marks/line/index.js
+2026-10-27T01:08:40.7912221Z npm notice 5.7kB src/actions/marks/line/materialize.js
+2026-10-27T01:08:40.7912424Z npm notice 3.1kB src/actions/marks/point/create.js
+2026-10-27T01:08:40.7912621Z npm notice 4.7kB src/actions/marks/point/edit.js
+2026-10-27T01:08:40.7912811Z npm notice 630B src/actions/marks/point/index.js
+2026-10-27T01:08:40.7913005Z npm notice 2.7kB src/actions/marks/point/jitter.js
+2026-10-27T01:08:40.7913216Z npm notice 19.6kB src/actions/marks/point/materialize.js
+2026-10-27T01:08:40.7913422Z npm notice 2.9kB src/actions/marks/point/packing.js
+2026-10-27T01:08:40.7913619Z npm notice 8.8kB src/actions/marks/rect/actions.js
+2026-10-27T01:08:40.7913809Z npm notice 90B src/actions/marks/rect/index.js
+2026-10-27T01:08:40.7914000Z npm notice 30.2kB src/actions/marks/references.js
+2026-10-27T01:08:40.7914191Z npm notice 11.5kB src/actions/marks/remove.js
+2026-10-27T01:08:40.7914493Z npm notice 15.9kB src/actions/marks/rule/actions.js
+2026-10-27T01:08:40.7914823Z npm notice 1.1kB src/actions/marks/rule/appearance.js
+2026-10-27T01:08:40.7915123Z npm notice 56B src/actions/marks/rule/index.js
+2026-10-27T01:08:40.7915355Z npm notice 8.7kB src/actions/marks/shared.js
+2026-10-27T01:08:40.7915546Z npm notice 20.6kB src/actions/marks/text/actions.js
+2026-10-27T01:08:40.7915742Z npm notice 525B src/actions/marks/text/index.js
+2026-10-27T01:08:40.7915936Z npm notice 15.9kB src/actions/marks/text/layout.js
+2026-10-27T01:08:40.7916135Z npm notice 6.5kB src/actions/marks/text/removal.js
+2026-10-27T01:08:40.7916346Z npm notice 2.5kB src/actions/marks/text/selection.js
+2026-10-27T01:08:40.7916545Z npm notice 9.6kB src/actions/marks/tick/actions.js
+2026-10-27T01:08:40.7916737Z npm notice 56B src/actions/marks/tick/index.js
+2026-10-27T01:08:40.7916925Z npm notice 10.3kB src/actions/overlays/index.js
+2026-10-27T01:08:40.7917119Z npm notice 3.0kB src/actions/overlays/snapshot.js
+2026-10-27T01:08:40.7917334Z npm notice 6.7kB src/actions/primitives/createGraphics.js
+2026-10-27T01:08:40.7917563Z npm notice 11.7kB src/actions/primitives/editGraphics.js
+2026-10-27T01:08:40.7917788Z npm notice 73B src/actions/primitives/graphicProperties.js
+2026-10-27T01:08:40.7917998Z npm notice 1.8kB src/actions/primitives/index.js
+2026-10-27T01:08:40.7918199Z npm notice 1.3kB src/actions/primitives/semantic.js
+2026-10-27T01:08:40.7918415Z npm notice 14.3kB src/actions/primitives/semanticAction.js
+2026-10-27T01:08:40.7918830Z npm notice 1.1kB src/actions/primitives/semanticValidation/dataset.js
+2026-10-27T01:08:40.7919098Z npm notice 3.0kB src/actions/primitives/semanticValidation/guide.js
+2026-10-27T01:08:40.7919355Z npm notice 1.7kB src/actions/primitives/semanticValidation/index.js
+2026-10-27T01:08:40.7919609Z npm notice 7.0kB src/actions/primitives/semanticValidation/layer.js
+2026-10-27T01:08:40.7919862Z npm notice 4.4kB src/actions/primitives/semanticValidation/scale.js
+2026-10-27T01:08:40.7920115Z npm notice 191B src/actions/primitives/semanticValidation/shared.js
+2026-10-27T01:08:40.7920440Z npm notice 7.2kB src/actions/regression/components.js
+2026-10-27T01:08:40.7920646Z npm notice 5.2kB src/actions/regression/create.js
+2026-10-27T01:08:40.7920844Z npm notice 16.7kB src/actions/regression/edit.js
+2026-10-27T01:08:40.7921036Z npm notice 909B src/actions/regression/follow.js
+2026-10-27T01:08:40.7921231Z npm notice 890B src/actions/regression/index.js
+2026-10-27T01:08:40.7921429Z npm notice 2.0kB src/actions/regression/resolve.js
+2026-10-27T01:08:40.7921622Z npm notice 296B src/actions/resources/index.js
+2026-10-27T01:08:40.7921812Z npm notice 7.0kB src/actions/resources/remove.js
+2026-10-27T01:08:40.7922000Z npm notice 8.1kB src/actions/scales/channels.js
+2026-10-27T01:08:40.7922204Z npm notice 5.5kB src/actions/scales/consumers/common.js
+2026-10-27T01:08:40.7922423Z npm notice 3.9kB src/actions/scales/consumers/families.js
+2026-10-27T01:08:40.7922717Z npm notice 3.2kB src/actions/scales/consumers/index.js
+2026-10-27T01:08:40.7922945Z npm notice 10.7kB src/actions/scales/consumers/seriesLayout.js
+2026-10-27T01:08:40.7923157Z npm notice 6.2kB src/actions/scales/create.js
+2026-10-27T01:08:40.7923351Z npm notice 8.4kB src/actions/scales/definitions.js
+2026-10-27T01:08:40.7923537Z npm notice 6.4kB src/actions/scales/edit.js
+2026-10-27T01:08:40.7923726Z npm notice 10.3kB src/actions/scales/editPolicy.js
+2026-10-27T01:08:40.7923913Z npm notice 934B src/actions/scales/index.js
+2026-10-27T01:08:40.7924101Z npm notice 3.3kB src/actions/scales/materialize.js
+2026-10-27T01:08:40.7924289Z npm notice 1.9kB src/actions/scales/offset.js
+2026-10-27T01:08:40.7924478Z npm notice 2.8kB src/actions/scales/parallel.js
+2026-10-27T01:08:40.7924662Z npm notice 890B src/actions/scales/patch.js
+2026-10-27T01:08:40.7924844Z npm notice 7.9kB src/actions/scales/preview.js
+2026-10-27T01:08:40.7925052Z npm notice 1.9kB src/actions/scales/quantitativeColor.js
+2026-10-27T01:08:40.7925262Z npm notice 26.5kB src/actions/selection/actions.js
+2026-10-27T01:08:40.7925452Z npm notice 1.4kB src/actions/selection/index.js
+2026-10-27T01:08:40.7925646Z npm notice 2.5kB src/actions/textMetrics/index.js
+2026-10-27T01:08:40.7925839Z npm notice 3.2kB src/actions/theme/actions.js
+2026-10-27T01:08:40.7926027Z npm notice 7.1kB src/actions/theme/composition.js
+2026-10-27T01:08:40.7926213Z npm notice 551B src/actions/theme/index.js
+2026-10-27T01:08:40.7926403Z npm notice 42.6kB src/actions/theme/reconcile.js
+2026-10-27T01:08:40.7926584Z npm notice 5.1kB src/actions/theme/state.js
+2026-10-27T01:08:40.7926766Z npm notice 8.0kB src/actions/titles/actions.js
+2026-10-27T01:08:40.7926948Z npm notice 692B src/actions/titles/index.js
+2026-10-27T01:08:40.7927131Z npm notice 11.6kB src/actions/titles/resolve.js
+2026-10-27T01:08:40.7927325Z npm notice 8.3kB src/actions/violinPlots/create.js
+2026-10-27T01:08:40.7927523Z npm notice 6.4kB src/actions/violinPlots/edit.js
+2026-10-27T01:08:40.7927713Z npm notice 273B src/actions/violinPlots/index.js
+2026-10-27T01:08:40.7927886Z npm notice 102B src/basic.js
+2026-10-27T01:08:40.7928049Z npm notice 525B src/BasicChartProgram.js
+2026-10-27T01:08:40.7928223Z npm notice 433B src/ChartProgram.js
+2026-10-27T01:08:40.7928390Z npm notice 294B src/composition.js
+2026-10-27T01:08:40.7928686Z npm notice 9.0kB src/core/action.js
+2026-10-27T01:08:40.7928865Z npm notice 8.2kB src/core/ChartProgram.js
+2026-10-27T01:08:40.7929052Z npm notice 693B src/core/compositionScales.js
+2026-10-27T01:08:40.7929239Z npm notice 14.3kB src/core/compositionState.js
+2026-10-27T01:08:40.7929427Z npm notice 802B src/core/datasetReferences.js
+2026-10-27T01:08:40.7929603Z npm notice 643B src/core/diagnostics.js
+2026-10-27T01:08:40.7929781Z npm notice 4.2kB src/core/extensionRegistry.js
+2026-10-27T01:08:40.7929969Z npm notice 1.4kB src/core/facetAxisPolicy.js
+2026-10-27T01:08:40.7930144Z npm notice 1.7kB src/core/facetGap.js
+2026-10-27T01:08:40.7930305Z npm notice 903B src/core/font.js
+2026-10-27T01:08:40.7930479Z npm notice 146B src/core/graphicProperties.js
+2026-10-27T01:08:40.7930658Z npm notice 909B src/core/identifiers.js
+2026-10-27T01:08:40.7930922Z npm notice 3.2kB src/core/immutable.js
+2026-10-27T01:08:40.7931107Z npm notice 1.6kB src/core/materializationState.js
+2026-10-27T01:08:40.7931304Z npm notice 390B src/core/optionRequirements.js
+2026-10-27T01:08:40.7931485Z npm notice 2.9kB src/core/programState.js
+2026-10-27T01:08:40.7931671Z npm notice 13.0kB src/core/resourceReferences.js
+2026-10-27T01:08:40.7931851Z npm notice 525B src/core/specs.js
+2026-10-27T01:08:40.7932025Z npm notice 1.8kB src/core/textMetricProfile.js
+2026-10-27T01:08:40.7932204Z npm notice 6.5kB src/core/textMetrics.js
+2026-10-27T01:08:40.7932379Z npm notice 5.4kB src/core/validation.js
+2026-10-27T01:08:40.7932548Z npm notice 12.6kB src/core/vocabulary.js
+2026-10-27T01:08:40.7932713Z npm notice 57B src/diagnostics.js
+2026-10-27T01:08:40.7932871Z npm notice 296B src/extension.js
+2026-10-27T01:08:40.7933043Z npm notice 1.3kB src/grammar/actionTargets.js
+2026-10-27T01:08:40.7933299Z npm notice 10.9kB src/grammar/aggregate.js
+2026-10-27T01:08:40.7933470Z npm notice 8.8kB src/grammar/arcs.js
+2026-10-27T01:08:40.7933646Z npm notice 2.0kB src/grammar/areaEndpoints.js
+2026-10-27T01:08:40.7933823Z npm notice 492B src/grammar/areaPaint.js
+2026-10-27T01:08:40.7933994Z npm notice 9.2kB src/grammar/areaSeries.js
+2026-10-27T01:08:40.7934183Z npm notice 2.0kB src/grammar/axisTextPlacement.js
+2026-10-27T01:08:40.7934377Z npm notice 5.5kB src/grammar/bars/aggregate.js
+2026-10-27T01:08:40.7934557Z npm notice 5.8kB src/grammar/bars/geometry.js
+2026-10-27T01:08:40.7934738Z npm notice 3.9kB src/grammar/bars/policy.js
+2026-10-27T01:08:40.7934910Z npm notice 8.3kB src/grammar/bin.js
+2026-10-27T01:08:40.7935073Z npm notice 12.3kB src/grammar/bin2d.js
+2026-10-27T01:08:40.7935238Z npm notice 8.3kB src/grammar/boxPlot.js
+2026-10-27T01:08:40.7935427Z npm notice 6.6kB src/grammar/categoricalDensity.js
+2026-10-27T01:08:40.7935619Z npm notice 6.4kB src/grammar/categoryOrder.js
+2026-10-27T01:08:40.7935806Z npm notice 6.0kB src/grammar/colorSizeLegend.js
+2026-10-27T01:08:40.7935992Z npm notice 10.4kB src/grammar/complete.js
+2026-10-27T01:08:40.7936164Z npm notice 18.0kB src/grammar/computed.js
+2026-10-27T01:08:40.7936338Z npm notice 1.9kB src/grammar/coordinates.js
+2026-10-27T01:08:40.7936521Z npm notice 14.8kB src/grammar/curveCommands.js
+2026-10-27T01:08:40.7936720Z npm notice 3.9kB src/grammar/datasetDependencies.js
+2026-10-27T01:08:40.7936916Z npm notice 19.8kB src/grammar/datasetSchema.js
+2026-10-27T01:08:40.7937094Z npm notice 27.0kB src/grammar/density.js
+2026-10-27T01:08:40.7937263Z npm notice 1.5kB src/grammar/direction.js
+2026-10-27T01:08:40.7937440Z npm notice 4.1kB src/grammar/displayLabels.js
+2026-10-27T01:08:40.7937612Z npm notice 6.8kB src/grammar/ecdf.js
+2026-10-27T01:08:40.7937786Z npm notice 2.4kB src/grammar/facetHeaders.js
+2026-10-27T01:08:40.7937983Z npm notice 12.4kB src/grammar/facets/dependencies.js
+2026-10-27T01:08:40.7938177Z npm notice 11.0kB src/grammar/facets/guides.js
+2026-10-27T01:08:40.7938360Z npm notice 6.8kB src/grammar/facets/index.js
+2026-10-27T01:08:40.7938668Z npm notice 5.1kB src/grammar/facets/legendIntent.js
+2026-10-27T01:08:40.7938861Z npm notice 8.9kB src/grammar/facets/scales.js
+2026-10-27T01:08:40.7939035Z npm notice 10.5kB src/grammar/filter.js
+2026-10-27T01:08:40.7939200Z npm notice 3.1kB src/grammar/flatten.js
+2026-10-27T01:08:40.7939366Z npm notice 3.8kB src/grammar/fold.js
+2026-10-27T01:08:40.7939547Z npm notice 7.3kB src/grammar/gradientProfile.js
+2026-10-27T01:08:40.7939729Z npm notice 1.6kB src/grammar/guideDash.js
+2026-10-27T01:08:40.7939902Z npm notice 12.0kB src/grammar/histogram.js
+2026-10-27T01:08:40.7940070Z npm notice 9.5kB src/grammar/horizon.js
+2026-10-27T01:08:40.7940238Z npm notice 12.3kB src/grammar/impute.js
+2026-10-27T01:08:40.7940408Z npm notice 9.8kB src/grammar/interval.js
+2026-10-27T01:08:40.7940579Z npm notice 2.0kB src/grammar/itemMissing.js
+2026-10-27T01:08:40.7940751Z npm notice 6.1kB src/grammar/jitter.js
+2026-10-27T01:08:40.7940924Z npm notice 2.3kB src/grammar/legendBlocks.js
+2026-10-27T01:08:40.7941102Z npm notice 492B src/grammar/legendBorder.js
+2026-10-27T01:08:40.7941376Z npm notice 1.1kB src/grammar/legendClip.js
+2026-10-27T01:08:40.7941566Z npm notice 2.5kB src/grammar/legendCombinations.js
+2026-10-27T01:08:40.7941758Z npm notice 1.1kB src/grammar/legendGradient.js
+2026-10-27T01:08:40.7941944Z npm notice 2.8kB src/grammar/legendGroups.js
+2026-10-27T01:08:40.7942130Z npm notice 596B src/grammar/legendItemsOffset.js
+2026-10-27T01:08:40.7942317Z npm notice 238B src/grammar/legendOpacity.js
+2026-10-27T01:08:40.7942501Z npm notice 1.4kB src/grammar/legendOverflow.js
+2026-10-27T01:08:40.7942685Z npm notice 1.7kB src/grammar/legendSpacing.js
+2026-10-27T01:08:40.7942874Z npm notice 1.0kB src/grammar/legendTitleStyle.js
+2026-10-27T01:08:40.7943058Z npm notice 3.6kB src/grammar/lineMissing.js
+2026-10-27T01:08:40.7943235Z npm notice 7.7kB src/grammar/lineSeries.js
+2026-10-27T01:08:40.7943406Z npm notice 4.4kB src/grammar/lookup.js
+2026-10-27T01:08:40.7943684Z npm notice 2.4kB src/grammar/markFilter.js
+2026-10-27T01:08:40.7943861Z npm notice 5.6kB src/grammar/markLabels.js
+2026-10-27T01:08:40.7944048Z npm notice 1.9kB src/grammar/markLabelSelection.js
+2026-10-27T01:08:40.7944240Z npm notice 11.4kB src/grammar/markSelection.js
+2026-10-27T01:08:40.7944421Z npm notice 11.2kB src/grammar/normalize.js
+2026-10-27T01:08:40.7944589Z npm notice 4.9kB src/grammar/numeric.js
+2026-10-27T01:08:40.7944755Z npm notice 2.8kB src/grammar/overlay.js
+2026-10-27T01:08:40.7944922Z npm notice 3.4kB src/grammar/paint.js
+2026-10-27T01:08:40.7945105Z npm notice 11.8kB src/grammar/palettes.js
+2026-10-27T01:08:40.7945421Z npm notice 703B src/grammar/parallelAxisTitles.js
+2026-10-27T01:08:40.7945773Z npm notice 4.6kB src/grammar/parallelCoordinates.js
+2026-10-27T01:08:40.7946050Z npm notice 1.6kB src/grammar/parseTime.js
+2026-10-27T01:08:40.7946229Z npm notice 3.4kB src/grammar/pathCommands.js
+2026-10-27T01:08:40.7946405Z npm notice 1.2kB src/grammar/pathOrder.js
+2026-10-27T01:08:40.7946635Z npm notice 3.4kB src/grammar/pathSeries.js
+2026-10-27T01:08:40.7946899Z npm notice 11.1kB src/grammar/plotComposition.js
+2026-10-27T01:08:40.7947164Z npm notice 7.3kB src/grammar/pointPacking.js
+2026-10-27T01:08:40.7947546Z npm notice 3.7kB src/grammar/pointPolygon.js
+2026-10-27T01:08:40.7947796Z npm notice 8.4kB src/grammar/pointShapes.js
+2026-10-27T01:08:40.7948134Z npm notice 3.9kB src/grammar/polar.js
+2026-10-27T01:08:40.7948380Z npm notice 7.7kB src/grammar/polarGuides.js
+2026-10-27T01:08:40.7948817Z npm notice 1.2kB src/grammar/polarLineCommands.js
+2026-10-27T01:08:40.7949149Z npm notice 4.6kB src/grammar/polarPaths.js
+2026-10-27T01:08:40.7949449Z npm notice 2.2kB src/grammar/positionCompatibility.js
+2026-10-27T01:08:40.7949754Z npm notice 641B src/grammar/positionDatum.js
+2026-10-27T01:08:40.7960570Z npm notice 1.2kB src/grammar/rects.js
+2026-10-27T01:08:40.7960929Z npm notice 4.1kB src/grammar/regression/derive.js
+2026-10-27T01:08:40.7961241Z npm notice 854B src/grammar/regression/index.js
+2026-10-27T01:08:40.7961568Z npm notice 21.3kB src/grammar/regression/models.js
+2026-10-27T01:08:40.7961860Z npm notice 9.8kB src/grammar/regression/parameters.js
+2026-10-27T01:08:40.7962072Z npm notice 3.7kB src/grammar/regression/statistics.js
+2026-10-27T01:08:40.7962263Z npm notice 891B src/grammar/rotation.js
+2026-10-27T01:08:40.7962439Z npm notice 5.7kB src/grammar/roundedRect.js
+2026-10-27T01:08:40.7962624Z npm notice 344B src/grammar/ruleAppearance.js
+2026-10-27T01:08:40.7962810Z npm notice 2.3kB src/grammar/rules.js
+2026-10-27T01:08:40.7963091Z npm notice 3.8kB src/grammar/scales/appearance.js
+2026-10-27T01:08:40.7963284Z npm notice 8.8kB src/grammar/scales/color.js
+2026-10-27T01:08:40.7963479Z npm notice 4.1kB src/grammar/scales/colorConsumers.js
+2026-10-27T01:08:40.7963681Z npm notice 8.4kB src/grammar/scales/continuous.js
+2026-10-27T01:08:40.7963877Z npm notice 4.1kB src/grammar/scales/definition.js
+2026-10-27T01:08:40.7964109Z npm notice 4.3kB src/grammar/scales/discretized.js
+2026-10-27T01:08:40.7964304Z npm notice 6.3kB src/grammar/scales/fields.js
+2026-10-27T01:08:40.7964625Z npm notice 403B src/grammar/scales/index.js
+2026-10-27T01:08:40.7964807Z npm notice 1.3kB src/grammar/scales/mapping.js
+2026-10-27T01:08:40.7964999Z npm notice 10.3kB src/grammar/scales/ordinal.js
+2026-10-27T01:08:40.7965190Z npm notice 1.7kB src/grammar/scales/policies.js
+2026-10-27T01:08:40.7965373Z npm notice 2.7kB src/grammar/scales/radial.js
+2026-10-27T01:08:40.7965551Z npm notice 6.7kB src/grammar/scales/size.js
+2026-10-27T01:08:40.7965732Z npm notice 2.1kB src/grammar/scales/temporal.js
+2026-10-27T01:08:40.7965922Z npm notice 7.1kB src/grammar/scales/transformed.js
+2026-10-27T01:08:40.7966111Z npm notice 3.6kB src/grammar/scales/types.js
+2026-10-27T01:08:40.7966300Z npm notice 1.6kB src/grammar/scales/validation.js
+2026-10-27T01:08:40.7966512Z npm notice 4.7kB src/grammar/schemas/concreteGraphic.js
+2026-10-27T01:08:40.7966717Z npm notice 2.7kB src/grammar/schemas/graphic.js
+2026-10-27T01:08:40.7967003Z npm notice 18.6kB src/grammar/schemas/graphicBounds.js
+2026-10-27T01:08:40.7967213Z npm notice 1.1kB src/grammar/schemas/graphicClip.js
+2026-10-27T01:08:40.7967418Z npm notice 6.4kB src/grammar/schemas/graphicTree.js
+2026-10-27T01:08:40.7967610Z npm notice 81B src/grammar/schemas/mark.js
+2026-10-27T01:08:40.7967803Z npm notice 6.8kB src/grammar/schemas/semanticPath.js
+2026-10-27T01:08:40.7967996Z npm notice 4.0kB src/grammar/seriesLayout.js
+2026-10-27T01:08:40.7968171Z npm notice 4.3kB src/grammar/sort.js
+2026-10-27T01:08:40.7968337Z npm notice 5.9kB src/grammar/stack.js
+2026-10-27T01:08:40.7968677Z npm notice 4.6kB src/grammar/statisticalReference.js
+2026-10-27T01:08:40.7968910Z npm notice 3.4kB src/grammar/statistics/confidenceInterval.js
+2026-10-27T01:08:40.7969130Z npm notice 2.9kB src/grammar/statistics/studentT.js
+2026-10-27T01:08:40.7969318Z npm notice 3.0kB src/grammar/strokeStyle.js
+2026-10-27T01:08:40.7969488Z npm notice 7.0kB src/grammar/summary.js
+2026-10-27T01:08:40.7969658Z npm notice 10.1kB src/grammar/text.js
+2026-10-27T01:08:40.7969819Z npm notice 12.6kB src/grammar/ticks.js
+2026-10-27T01:08:40.7969988Z npm notice 12.9kB src/grammar/timeUnit.js
+2026-10-27T01:08:40.7970171Z npm notice 1.8kB src/grammar/transformKeys.js
+2026-10-27T01:08:40.7970352Z npm notice 18.6kB src/grammar/transforms.js
+2026-10-27T01:08:40.7970539Z npm notice 1.8kB src/grammar/transformTopology.js
+2026-10-27T01:08:40.7970728Z npm notice 4.5kB src/grammar/valueFormat.js
+2026-10-27T01:08:40.7970917Z npm notice 12.3kB src/grammar/weightedStatistics.js
+2026-10-27T01:08:40.7971102Z npm notice 20.1kB src/grammar/window.js
+2026-10-27T01:08:40.7971257Z npm notice 150B src/index.js
+2026-10-27T01:08:40.7971411Z npm notice 22.8kB src/inspection.js
+2026-10-27T01:08:40.7971591Z npm notice 152.3kB src/inspectionDescriptors.js
+2026-10-27T01:08:40.7971771Z npm notice 2.7kB src/layout/aspect.js
+2026-10-27T01:08:40.7971934Z npm notice 3.5kB src/layout/canvas.js
+2026-10-27T01:08:40.7972101Z npm notice 12.0kB src/layout/composition.js
+2026-10-27T01:08:40.7972290Z npm notice 5.7kB src/layout/compositionLegend.js
+2026-10-27T01:08:40.7972489Z npm notice 5.7kB src/layout/facetContentFlow.js
+2026-10-27T01:08:40.7972682Z npm notice 1.3kB src/layout/facetHeaderTitles.js
+2026-10-27T01:08:40.7972858Z npm notice 7.1kB src/layout/facets.js
+2026-10-27T01:08:40.7973027Z npm notice 1.4kB src/layout/facetTopLane.js
+2026-10-27T01:08:40.7973195Z npm notice 396B src/layout/grid.js
+2026-10-27T01:08:40.7973370Z npm notice 1.2kB src/layout/guideCollisions.js
+2026-10-27T01:08:40.7973549Z npm notice 24.6kB src/layout/labels.js
+2026-10-27T01:08:40.7973711Z npm notice 2.2kB src/layout/legend.js
+2026-10-27T01:08:40.7973878Z npm notice 2.2kB src/layout/legendGroup.js
+2026-10-27T01:08:40.7974053Z npm notice 9.8kB src/layout/legendItems.js
+2026-10-27T01:08:40.7974227Z npm notice 8.0kB src/layout/legendLane.js
+2026-10-27T01:08:40.7974404Z npm notice 3.8kB src/layout/legendSpacing.js
+2026-10-27T01:08:40.7974578Z npm notice 1.2kB src/layout/legendText.js
+2026-10-27T01:08:40.7974758Z npm notice 987B src/layout/plotDrawOrder.js
+2026-10-27T01:08:40.7974927Z npm notice 1.8kB src/layout/text.js
+2026-10-27T01:08:40.7975181Z npm notice 4.1kB src/layout/title.js
+2026-10-27T01:08:40.7975379Z npm notice 1.6kB src/materialization/adjacentSource.js
+2026-10-27T01:08:40.7975594Z npm notice 5.3kB src/materialization/bars/aggregate.js
+2026-10-27T01:08:40.7975802Z npm notice 8.6kB src/materialization/bars/histogram.js
+2026-10-27T01:08:40.7976010Z npm notice 4.0kB src/materialization/bars/ranged.js
+2026-10-27T01:08:40.7976218Z npm notice 3.7kB src/materialization/bars/resolve.js
+2026-10-27T01:08:40.7976436Z npm notice 1.8kB src/materialization/categorySlotOffset.js
+2026-10-27T01:08:40.7976658Z npm notice 14.1kB src/materialization/composition.js
+2026-10-27T01:08:40.7976875Z npm notice 7.7kB src/materialization/compositionLegends.js
+2026-10-27T01:08:40.7977103Z npm notice 7.1kB src/materialization/compositionScales.js
+2026-10-27T01:08:40.7977334Z npm notice 4.4kB src/materialization/compositionSnapshot.js
+2026-10-27T01:08:40.7977650Z npm notice 4.3kB src/materialization/compositionTitle.js
+2026-10-27T01:08:40.7977873Z npm notice 8.1kB src/materialization/coordinateBounds.js
+2026-10-27T01:08:40.7978087Z npm notice 2.7kB src/materialization/dataProvenance.js
+2026-10-27T01:08:40.7978287Z npm notice 988B src/materialization/density.js
+2026-10-27T01:08:40.7978488Z npm notice 5.1kB src/materialization/dependencies.js
+2026-10-27T01:08:40.7978811Z npm notice 947B src/materialization/encodings.js
+2026-10-27T01:08:40.7979029Z npm notice 5.7kB src/materialization/facetContentBounds.js
+2026-10-27T01:08:40.7979249Z npm notice 3.1kB src/materialization/facetGuides/edit.js
+2026-10-27T01:08:40.7979463Z npm notice 122B src/materialization/facetGuides/index.js
+2026-10-27T01:08:40.7979684Z npm notice 2.9kB src/materialization/facetGuides/layout.js
+2026-10-27T01:08:40.7979931Z npm notice 4.1kB src/materialization/facetGuides/legacyCategorical.js
+2026-10-27T01:08:40.7980176Z npm notice 7.8kB src/materialization/facetGuides/owner.js
+2026-10-27T01:08:40.7980415Z npm notice 5.0kB src/materialization/facetGuides/ownerLayout.js
+2026-10-27T01:08:40.7980663Z npm notice 11.1kB src/materialization/facetGuides/placement.js
+2026-10-27T01:08:40.7980909Z npm notice 10.1kB src/materialization/facetGuides/preparation.js
+2026-10-27T01:08:40.7981139Z npm notice 14.1kB src/materialization/facetHeaders.js
+2026-10-27T01:08:40.7981335Z npm notice 7.2kB src/materialization/facets.js
+2026-10-27T01:08:40.7981537Z npm notice 1.5kB src/materialization/facetTopLane.js
+2026-10-27T01:08:40.7981751Z npm notice 6.1kB src/materialization/graphicHierarchy.js
+2026-10-27T01:08:40.7981975Z npm notice 2.2kB src/materialization/graphicTranslation.js
+2026-10-27T01:08:40.7982193Z npm notice 3.2kB src/materialization/guides/layout.js
+2026-10-27T01:08:40.7982408Z npm notice 7.1kB src/materialization/guides/resources.js
+2026-10-27T01:08:40.7982628Z npm notice 5.6kB src/materialization/guides/visibility.js
+2026-10-27T01:08:40.7982829Z npm notice 990B src/materialization/horizon.js
+2026-10-27T01:08:40.7983018Z npm notice 2.4kB src/materialization/layout.js
+2026-10-27T01:08:40.7983221Z npm notice 1.2kB src/materialization/legendBorder.js
+2026-10-27T01:08:40.7983425Z npm notice 4.5kB src/materialization/legendClip.js
+2026-10-27T01:08:40.7983631Z npm notice 1.1kB src/materialization/legendGroups.js
+2026-10-27T01:08:40.7983851Z npm notice 3.6kB src/materialization/legendItemsOffset.js
+2026-10-27T01:08:40.7984059Z npm notice 1.3kB src/materialization/legends.js
+2026-10-27T01:08:40.7984269Z npm notice 1.2kB src/materialization/legendSuppression.js
+2026-10-27T01:08:40.7984482Z npm notice 256B src/materialization/legendText.js
+2026-10-27T01:08:40.7984677Z npm notice 1.7kB src/materialization/markClip.js
+2026-10-27T01:08:40.7984891Z npm notice 7.2kB src/materialization/marks/capabilities.js
+2026-10-27T01:08:40.7985111Z npm notice 2.5kB src/materialization/marks/grouping.js
+2026-10-27T01:08:40.7985315Z npm notice 7.2kB src/materialization/marks/index.js
+2026-10-27T01:08:40.7985532Z npm notice 2.4kB src/materialization/marks/pathOrder.js
+2026-10-27T01:08:40.7985748Z npm notice 3.9kB src/materialization/marks/policies.js
+2026-10-27T01:08:40.7986053Z npm notice 10.1kB src/materialization/overlayItems.js
+2026-10-27T01:08:40.7986253Z npm notice 4.4kB src/materialization/planner.js
+2026-10-27T01:08:40.7986456Z npm notice 2.1kB src/materialization/plotDrawOrder.js
+2026-10-27T01:08:40.7986655Z npm notice 6.5kB src/materialization/rect.js
+2026-10-27T01:08:40.7986846Z npm notice 1.2kB src/materialization/rectConfig.js
+2026-10-27T01:08:40.7987055Z npm notice 466B src/materialization/revisionIdentity.js
+2026-10-27T01:08:40.7987265Z npm notice 3.0kB src/materialization/rowEncoding.js
+2026-10-27T01:08:40.7987492Z npm notice 4.8kB src/materialization/scaleGuideDependencies.js
+2026-10-27T01:08:40.7987714Z npm notice 1.6kB src/materialization/scales/map.js
+2026-10-27T01:08:40.7987934Z npm notice 3.4kB src/materialization/scales/policies/arc.js
+2026-10-27T01:08:40.7988242Z npm notice 4.4kB src/materialization/scales/policies/bar.js
+2026-10-27T01:08:40.7988495Z npm notice 3.5kB src/materialization/scales/policies/binnedPosition.js
+2026-10-27T01:08:40.7988918Z npm notice 2.9kB src/materialization/scales/policies/offset.js
+2026-10-27T01:08:40.7989157Z npm notice 4.0kB src/materialization/scales/policies/series.js
+2026-10-27T01:08:40.7989386Z npm notice 14.9kB src/materialization/scales/resolve.js
+2026-10-27T01:08:40.7989619Z npm notice 434B src/materialization/selection/compatibility.js
+2026-10-27T01:08:40.7989847Z npm notice 1.2kB src/materialization/selection/filter.js
+2026-10-27T01:08:40.7990069Z npm notice 2.6kB src/materialization/selection/items/arc.js
+2026-10-27T01:08:40.7990298Z npm notice 9.6kB src/materialization/selection/items/bar.js
+2026-10-27T01:08:40.7990529Z npm notice 7.0kB src/materialization/selection/items/common.js
+2026-10-27T01:08:40.7990763Z npm notice 338B src/materialization/selection/items/index.js
+2026-10-27T01:08:40.7990998Z npm notice 894B src/materialization/selection/items/overlay.js
+2026-10-27T01:08:40.7991235Z npm notice 3.4kB src/materialization/selection/items/path.js
+2026-10-27T01:08:40.7991472Z npm notice 1.0kB src/materialization/selection/items/point.js
+2026-10-27T01:08:40.7991706Z npm notice 2.3kB src/materialization/selection/items/rect.js
+2026-10-27T01:08:40.7991937Z npm notice 900B src/materialization/selection/items/rule.js
+2026-10-27T01:08:40.7992166Z npm notice 843B src/materialization/selection/items/tick.js
+2026-10-27T01:08:40.7992386Z npm notice 1.1kB src/materialization/selection/path.js
+2026-10-27T01:08:40.7992607Z npm notice 3.6kB src/materialization/selection/point.js
+2026-10-27T01:08:40.7992831Z npm notice 406B src/materialization/selection/policies/arc.js
+2026-10-27T01:08:40.7993068Z npm notice 389B src/materialization/selection/policies/area.js
+2026-10-27T01:08:40.7993305Z npm notice 493B src/materialization/selection/policies/bar.js
+2026-10-27T01:08:40.7993544Z npm notice 4.1kB src/materialization/selection/policies/index.js
+2026-10-27T01:08:40.7993786Z npm notice 415B src/materialization/selection/policies/line.js
+2026-10-27T01:08:40.7994025Z npm notice 620B src/materialization/selection/policies/point.js
+2026-10-27T01:08:40.7994269Z npm notice 389B src/materialization/selection/policies/rect.js
+2026-10-27T01:08:40.7994502Z npm notice 415B src/materialization/selection/policies/rule.js
+2026-10-27T01:08:40.7994736Z npm notice 969B src/materialization/selection/policies/text.js
+2026-10-27T01:08:40.7994974Z npm notice 415B src/materialization/selection/policies/tick.js
+2026-10-27T01:08:40.7995194Z npm notice 6.1kB src/materialization/selection/rows.js
+2026-10-27T01:08:40.7995406Z npm notice 3.5kB src/materialization/selection/state.js
+2026-10-27T01:08:40.7995622Z npm notice 7.5kB src/materialization/selection/styles.js
+2026-10-27T01:08:40.7995819Z npm notice 554B src/materialization/text.js
+2026-10-27T01:08:40.7996016Z npm notice 19.8kB src/materialization/textGeometry.js
+2026-10-27T01:08:40.7996218Z npm notice 2.0kB src/materialization/textLines.js
+2026-10-27T01:08:40.7996420Z npm notice 2.3kB src/materialization/typography.js
+2026-10-27T01:08:40.7996602Z npm notice 7.2kB src/mcp/adapter.js
+2026-10-27T01:08:40.7996875Z npm notice 517B src/mcp/cli.js
+2026-10-27T01:08:40.7997027Z npm notice 3.5kB src/mcp/server.js
+2026-10-27T01:08:40.7997187Z npm notice 7.6kB src/persistence.js
+2026-10-27T01:08:40.7997354Z npm notice 4.9kB src/persistence/codec.js
+2026-10-27T01:08:40.7997536Z npm notice 39.5kB src/persistence/validation.js
+2026-10-27T01:08:40.7997724Z npm notice 2.0kB src/renderers/canvas/circle.js
+2026-10-27T01:08:40.7997908Z npm notice 1.4kB src/renderers/canvas/fill.js
+2026-10-27T01:08:40.7998091Z npm notice 9.4kB src/renderers/canvas/index.js
+2026-10-27T01:08:40.7998278Z npm notice 9.0kB src/renderers/canvas/isolated.js
+2026-10-27T01:08:40.7998464Z npm notice 170B src/renderers/canvas/limits.js
+2026-10-27T01:08:40.7998779Z npm notice 1.7kB src/renderers/canvas/line.js
+2026-10-27T01:08:40.7998965Z npm notice 5.7kB src/renderers/canvas/native.js
+2026-10-27T01:08:40.7999230Z npm notice 3.1kB src/renderers/canvas/path.js
+2026-10-27T01:08:40.7999415Z npm notice 2.2kB src/renderers/canvas/rect.js
+2026-10-27T01:08:40.7999601Z npm notice 3.6kB src/renderers/canvas/scene.js
+2026-10-27T01:08:40.7999783Z npm notice 519B src/renderers/canvas/stroke.js
+2026-10-27T01:08:40.7999968Z npm notice 3.3kB src/renderers/canvas/text.js
+2026-10-27T01:08:40.8000155Z npm notice 562B src/renderers/canvas/validation.js
+2026-10-27T01:08:40.8000349Z npm notice 1.6kB src/renderers/nativeBackend.js
+2026-10-27T01:08:40.8000529Z npm notice 537B src/renderers/options.js
+2026-10-27T01:08:40.8000704Z npm notice 3.3kB src/renderers/pdf.js
+2026-10-27T01:08:40.8000871Z npm notice 1.6kB src/renderers/png.js
+2026-10-27T01:08:40.8001034Z npm notice 53B src/renderers/svg.js
+2026-10-27T01:08:40.8001221Z npm notice 11.1kB src/renderers/svgSerialization.js
+2026-10-27T01:08:40.8001407Z npm notice 63B src/renderers/text.js
+2026-10-27T01:08:40.8001588Z npm notice 3.8kB src/renderers/transitionScene.js
+2026-10-27T01:08:40.8001760Z npm notice 5.0kB src/scene.js
+2026-10-27T01:08:40.8001918Z npm notice 2.7kB src/selectors/axes.js
+2026-10-27T01:08:40.8002093Z npm notice 553B src/selectors/coordinates.js
+2026-10-27T01:08:40.8002273Z npm notice 2.5kB src/selectors/datasets.js
+2026-10-27T01:08:40.8002460Z npm notice 1.6kB src/selectors/graphicCapacity.js
+2026-10-27T01:08:40.8002641Z npm notice 304B src/selectors/grids.js
+2026-10-27T01:08:40.8002811Z npm notice 123B src/selectors/index.js
+2026-10-27T01:08:40.8002977Z npm notice 2.8kB src/selectors/layers.js
+2026-10-27T01:08:40.8003152Z npm notice 1.3kB src/selectors/markClip.js
+2026-10-27T01:08:40.8003330Z npm notice 1.5kB src/selectors/markOwners.js
+2026-10-27T01:08:40.8003524Z npm notice 7.7kB src/selectors/plotComposition.js
+2026-10-27T01:08:40.8003709Z npm notice 414B src/selectors/raincloud.js
+2026-10-27T01:08:40.8003880Z npm notice 1.3kB src/selectors/scales.js
+2026-10-27T01:08:40.8004065Z npm notice 874B src/selectors/selectionTargets.js
+2026-10-27T01:08:40.8004245Z npm notice 4.5kB src/theme/defaults.js
+2026-10-27T01:08:40.8004405Z npm notice 116B src/version.js
+2026-10-27T01:08:40.8004570Z npm notice 1.3kB types/accessibility.d.ts
+2026-10-27T01:08:40.8004737Z npm notice 3.3kB types/basic.d.ts
+2026-10-27T01:08:40.8004900Z npm notice 546B types/diagnostics.d.ts
+2026-10-27T01:08:40.8005065Z npm notice 1.1kB types/extension.d.ts
+2026-10-27T01:08:40.8005229Z npm notice 11.6kB types/index.d.ts
+2026-10-27T01:08:40.8005392Z npm notice 5.7kB types/inspection.d.ts
+2026-10-27T01:08:40.8005552Z npm notice 867B types/pdf.d.ts
+2026-10-27T01:08:40.8005712Z npm notice 434B types/persistence.d.ts
+2026-10-27T01:08:40.8005871Z npm notice 637B types/png.d.ts
+2026-10-27T01:08:40.8006026Z npm notice 212.1kB types/program.d.ts
+2026-10-27T01:08:40.8006189Z npm notice 1.6kB types/scene.d.ts
+2026-10-27T01:08:40.8006342Z npm notice 304B types/svg.d.ts
+2026-10-27T01:08:40.8006484Z npm notice Tarball Details
+2026-10-27T01:08:40.8006627Z npm notice name: ggaction
+2026-10-27T01:08:40.8006766Z npm notice version: 0.0.26
+2026-10-27T01:08:40.8006933Z npm notice filename: ggaction-0.0.26.tgz
+2026-10-27T01:08:40.8007234Z npm notice package size: 977.2 kB
+2026-10-27T01:08:40.8007396Z npm notice unpacked size: 4.6 MB
+2026-10-27T01:08:40.8007593Z npm notice shasum: 56690948f9429f656b55382307d174a54d56d8a9
+2026-10-27T01:08:40.8007836Z npm notice integrity: sha512-BATvYXSYc+Pcu[...]xXM7UDn7OZWsA==
+2026-10-27T01:08:40.8008029Z npm notice total files: 654
+2026-10-27T01:08:40.8008157Z npm notice
+2026-10-27T01:08:41.9113344Z npm notice npm tokens that bypass 2FA are being restricted for account changes and direct publishing. Learn how to prepare: https://gh.io/npm-gat-bypass2fa-deprecation
+2026-10-27T01:08:42.1319156Z npm notice Publishing to https://registry.npmjs.org/ with tag latest and public access
+2026-10-27T01:08:42.9011022Z npm notice publish Signed provenance statement with source and build information from GitHub Actions
+2026-10-27T01:08:42.9012287Z npm notice publish Provenance statement published to transparency log: https://search.sigstore.dev/?logIndex=3501190388
+2026-10-27T01:08:45.9202556Z npm notice Your package is being processed and may take a few minutes to become available.
+2026-10-27T01:08:45.9204750Z + ggaction@0.0.26
+2026-10-27T01:08:45.9350957Z ##[group]Run VERSION=$(node -p "require('./.artifacts/release/candidate.json').version")
+2026-10-27T01:08:45.9351522Z [36;1mVERSION=$(node -p "require('./.artifacts/release/candidate.json').version")[0m
+2026-10-27T01:08:45.9352083Z [36;1mNOTES=".artifacts/release/$(node -p "require('./.artifacts/release/candidate.json').releaseNotes")"[0m
+2026-10-27T01:08:45.9352584Z [36;1mif gh release view "$RELEASE_TAG" >/dev/null 2>&1; then[0m
+2026-10-27T01:08:45.9353032Z [36;1m  gh release edit "$RELEASE_TAG" --title "ggaction $VERSION" --notes-file "$NOTES"[0m
+2026-10-27T01:08:45.9353403Z [36;1melse[0m
+2026-10-27T01:08:45.9353745Z [36;1m  gh release create "$RELEASE_TAG" --verify-tag --title "ggaction $VERSION" --notes-file "$NOTES"[0m
+2026-10-27T01:08:45.9354128Z [36;1mfi[0m
+2026-10-27T01:08:45.9422846Z shell: /usr/bin/bash -e {0}
+2026-10-27T01:08:45.9423009Z env:
+2026-10-27T01:08:45.9423155Z   NPM_CONFIG_USERCONFIG: /home/runner/work/_temp/.npmrc
+2026-10-27T01:08:45.9423375Z   NODE_AUTH_TOKEN: XXXXX-XXXXX-XXXXX-XXXXX
+2026-10-27T01:08:45.9424878Z   GH_TOKEN: ***
+2026-10-27T01:08:45.9425000Z   RELEASE_TAG: v0.0.26
+2026-10-27T01:08:45.9425124Z ##[endgroup]
+2026-10-27T01:08:47.5307844Z https://github.com/ggaction/ggaction/releases/tag/v0.0.26
+2026-10-27T01:08:47.5386357Z Post job cleanup.
+2026-10-27T01:08:47.6209889Z Post job cleanup.
+2026-10-27T01:08:47.6767368Z [command]/usr/bin/git version
+2026-10-27T01:08:47.6826806Z git version 2.55.0
+2026-10-27T01:08:47.6862271Z Temporarily overriding HOME='/home/runner/work/_temp/75fae246-b0fe-44f6-8072-9995500bc9ff' before making global git config changes
+2026-10-27T01:08:47.6863027Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-27T01:08:47.6863645Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/ggaction/ggaction
+2026-10-27T01:08:47.6888262Z Removing SSH command configuration
+2026-10-27T01:08:47.6893226Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-27T01:08:47.6921106Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-27T01:08:47.7128258Z Removing HTTP extra header
+2026-10-27T01:08:47.7133466Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-27T01:08:47.7162808Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-27T01:08:47.7360686Z Removing includeIf entries pointing to credentials config files
+2026-10-27T01:08:47.7367435Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-27T01:08:47.7392190Z includeif.gitdir:/home/runner/work/ggaction/ggaction/.git.path
+2026-10-27T01:08:47.7392687Z includeif.gitdir:/home/runner/work/ggaction/ggaction/.git/worktrees/*.path
+2026-10-27T01:08:47.7392957Z includeif.gitdir:/github/workspace/.git.path
+2026-10-27T01:08:47.7393196Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-27T01:08:47.7399415Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/ggaction/ggaction/.git.path
+2026-10-27T01:08:47.7419805Z /home/runner/work/_temp/git-credentials-7d75ccb5-f456-4870-ad5c-76cc7079fa8d.config
+2026-10-27T01:08:47.7427860Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/ggaction/ggaction/.git.path /home/runner/work/_temp/git-credentials-7d75ccb5-f456-4870-ad5c-76cc7079fa8d.config
+2026-10-27T01:08:47.7457179Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/ggaction/ggaction/.git/worktrees/*.path
+2026-10-27T01:08:47.7476613Z /home/runner/work/_temp/git-credentials-7d75ccb5-f456-4870-ad5c-76cc7079fa8d.config
+2026-10-27T01:08:47.7483851Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/ggaction/ggaction/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-7d75ccb5-f456-4870-ad5c-76cc7079fa8d.config
+2026-10-27T01:08:47.7512085Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-10-27T01:08:47.7531651Z /github/runner_temp/git-credentials-7d75ccb5-f456-4870-ad5c-76cc7079fa8d.config
+2026-10-27T01:08:47.7537613Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-7d75ccb5-f456-4870-ad5c-76cc7079fa8d.config
+2026-10-27T01:08:47.7564815Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-27T01:08:47.7587739Z /github/runner_temp/git-credentials-7d75ccb5-f456-4870-ad5c-76cc7079fa8d.config
+2026-10-27T01:08:47.7591561Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-7d75ccb5-f456-4870-ad5c-76cc7079fa8d.config
+2026-10-27T01:08:47.7621808Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-27T01:08:47.7785519Z Removing credentials config '/home/runner/work/_temp/git-credentials-7d75ccb5-f456-4870-ad5c-76cc7079fa8d.config'
+2026-10-27T01:08:47.7902745Z Evaluate and set environment url
+2026-10-27T01:08:47.7904662Z Evaluated environment url: https://www.npmjs.com/package/ggaction
+2026-10-27T01:08:47.7905107Z Cleaning up orphan processes

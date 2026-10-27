@@ -1,0 +1,1925 @@
+{
+  "commit": "a794557384adcc3293a77043f6b9aff1c33d152c",
+  "accesses": [
+    {
+      "key": "region",
+      "expression": "chartProperties?.region",
+      "file": "packages/flint-js/src/chart-types/geo.ts",
+      "startLine": 379,
+      "endLine": 379,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chart-types/geo.ts#L379-L379"
+    },
+    {
+      "key": "opacity",
+      "expression": "chartProperties?.opacity",
+      "file": "packages/flint-js/src/chartjs/templates/area.ts",
+      "startLine": 50,
+      "endLine": 50,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/area.ts#L50-L50"
+    },
+    {
+      "key": "stackMode",
+      "expression": "chartProperties?.stackMode",
+      "file": "packages/flint-js/src/chartjs/templates/area.ts",
+      "startLine": 53,
+      "endLine": 53,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/area.ts#L53-L53"
+    },
+    {
+      "key": "interpolate",
+      "expression": "chartProperties?.interpolate",
+      "file": "packages/flint-js/src/chartjs/templates/area.ts",
+      "startLine": 57,
+      "endLine": 57,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/area.ts#L57-L57"
+    },
+    {
+      "key": "stackMode",
+      "expression": "ctx.chartProperties?.stackMode",
+      "file": "packages/flint-js/src/chartjs/templates/area.ts",
+      "startLine": 191,
+      "endLine": 191,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/area.ts#L191-L191"
+    },
+    {
+      "key": "cornerRadius",
+      "expression": "chartProperties?.cornerRadius",
+      "file": "packages/flint-js/src/chartjs/templates/bar.ts",
+      "startLine": 81,
+      "endLine": 81,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/bar.ts#L81-L81"
+    },
+    {
+      "key": "dodge",
+      "expression": "chartProperties?.dodge",
+      "file": "packages/flint-js/src/chartjs/templates/bar.ts",
+      "startLine": 258,
+      "endLine": 258,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/bar.ts#L258-L258"
+    },
+    {
+      "key": "dodge",
+      "expression": "chartProperties?.dodge",
+      "file": "packages/flint-js/src/chartjs/templates/bar.ts",
+      "startLine": 286,
+      "endLine": 286,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/bar.ts#L286-L286"
+    },
+    {
+      "key": "opacity",
+      "expression": "chartProperties?.opacity",
+      "file": "packages/flint-js/src/chartjs/templates/bubble.ts",
+      "startLine": 66,
+      "endLine": 66,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/bubble.ts#L66-L66"
+    },
+    {
+      "key": "lineField",
+      "expression": "chartProperties?.lineField",
+      "file": "packages/flint-js/src/chartjs/templates/combo.ts",
+      "startLine": 66,
+      "endLine": 66,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/combo.ts#L66-L66"
+    },
+    {
+      "key": "lineField",
+      "expression": "chartProperties.lineField",
+      "file": "packages/flint-js/src/chartjs/templates/combo.ts",
+      "startLine": 66,
+      "endLine": 66,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/combo.ts#L66-L66"
+    },
+    {
+      "key": "lineField",
+      "expression": "chartProperties.lineField",
+      "file": "packages/flint-js/src/chartjs/templates/combo.ts",
+      "startLine": 67,
+      "endLine": 67,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/combo.ts#L67-L67"
+    },
+    {
+      "key": "cornerRadius",
+      "expression": "chartProperties?.cornerRadius",
+      "file": "packages/flint-js/src/chartjs/templates/combo.ts",
+      "startLine": 86,
+      "endLine": 86,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/combo.ts#L86-L86"
+    },
+    {
+      "key": "innerRadius",
+      "expression": "chartProperties?.innerRadius",
+      "file": "packages/flint-js/src/chartjs/templates/doughnut.ts",
+      "startLine": 70,
+      "endLine": 70,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/doughnut.ts#L70-L70"
+    },
+    {
+      "key": "sortSlices",
+      "expression": "chartProperties?.sortSlices",
+      "file": "packages/flint-js/src/chartjs/templates/doughnut.ts",
+      "startLine": 72,
+      "endLine": 72,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/doughnut.ts#L72-L72"
+    },
+    {
+      "key": "showPoints",
+      "expression": "chartProperties?.showPoints",
+      "file": "packages/flint-js/src/chartjs/templates/ecdf.ts",
+      "startLine": 54,
+      "endLine": 54,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/ecdf.ts#L54-L54"
+    },
+    {
+      "key": "taskHeight",
+      "expression": "chartProperties?.taskHeight",
+      "file": "packages/flint-js/src/chartjs/templates/gantt.ts",
+      "startLine": 64,
+      "endLine": 64,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/gantt.ts#L64-L64"
+    },
+    {
+      "key": "cornerRadius",
+      "expression": "chartProperties?.cornerRadius",
+      "file": "packages/flint-js/src/chartjs/templates/gantt.ts",
+      "startLine": 65,
+      "endLine": 65,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/gantt.ts#L65-L65"
+    },
+    {
+      "key": "intervalLabels",
+      "expression": "chartProperties?.intervalLabels",
+      "file": "packages/flint-js/src/chartjs/templates/gantt.ts",
+      "startLine": 66,
+      "endLine": 66,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/gantt.ts#L66-L66"
+    },
+    {
+      "key": "binCount",
+      "expression": "chartProperties?.binCount",
+      "file": "packages/flint-js/src/chartjs/templates/histogram.ts",
+      "startLine": 38,
+      "endLine": 38,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/histogram.ts#L38-L38"
+    },
+    {
+      "key": "opacity",
+      "expression": "chartProperties?.opacity",
+      "file": "packages/flint-js/src/chartjs/templates/jitter.ts",
+      "startLine": 88,
+      "endLine": 88,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/jitter.ts#L88-L88"
+    },
+    {
+      "key": "pointSize",
+      "expression": "chartProperties?.pointSize",
+      "file": "packages/flint-js/src/chartjs/templates/jitter.ts",
+      "startLine": 89,
+      "endLine": 89,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/jitter.ts#L89-L89"
+    },
+    {
+      "key": "interpolate",
+      "expression": "chartProperties?.interpolate",
+      "file": "packages/flint-js/src/chartjs/templates/line.ts",
+      "startLine": 70,
+      "endLine": 70,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/line.ts#L70-L70"
+    },
+    {
+      "key": "dotSize",
+      "expression": "chartProperties?.dotSize",
+      "file": "packages/flint-js/src/chartjs/templates/lollipop.ts",
+      "startLine": 64,
+      "endLine": 64,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/lollipop.ts#L64-L64"
+    },
+    {
+      "key": "innerRadius",
+      "expression": "chartProperties?.innerRadius",
+      "file": "packages/flint-js/src/chartjs/templates/pie.ts",
+      "startLine": 97,
+      "endLine": 97,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/pie.ts#L97-L97"
+    },
+    {
+      "key": "sortSlices",
+      "expression": "chartProperties?.sortSlices",
+      "file": "packages/flint-js/src/chartjs/templates/pie.ts",
+      "startLine": 100,
+      "endLine": 100,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/pie.ts#L100-L100"
+    },
+    {
+      "key": "filled",
+      "expression": "chartProperties?.filled",
+      "file": "packages/flint-js/src/chartjs/templates/radar.ts",
+      "startLine": 41,
+      "endLine": 41,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/radar.ts#L41-L41"
+    },
+    {
+      "key": "fillOpacity",
+      "expression": "chartProperties?.fillOpacity",
+      "file": "packages/flint-js/src/chartjs/templates/radar.ts",
+      "startLine": 42,
+      "endLine": 42,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/radar.ts#L42-L42"
+    },
+    {
+      "key": "opacity",
+      "expression": "chartProperties?.opacity",
+      "file": "packages/flint-js/src/chartjs/templates/range-area.ts",
+      "startLine": 77,
+      "endLine": 77,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/range-area.ts#L77-L77"
+    },
+    {
+      "key": "sortSlices",
+      "expression": "ctx.chartProperties?.sortSlices",
+      "file": "packages/flint-js/src/chartjs/templates/rose.ts",
+      "startLine": 97,
+      "endLine": 97,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/rose.ts#L97-L97"
+    },
+    {
+      "key": "alignment",
+      "expression": "ctx.chartProperties?.alignment",
+      "file": "packages/flint-js/src/chartjs/templates/rose.ts",
+      "startLine": 108,
+      "endLine": 108,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/rose.ts#L108-L108"
+    },
+    {
+      "key": "opacity",
+      "expression": "chartProperties?.opacity",
+      "file": "packages/flint-js/src/chartjs/templates/scatter.ts",
+      "startLine": 41,
+      "endLine": 41,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/scatter.ts#L41-L41"
+    },
+    {
+      "key": "totals",
+      "expression": "ctx.chartProperties?.totals",
+      "file": "packages/flint-js/src/chartjs/templates/waterfall.ts",
+      "startLine": 53,
+      "endLine": 53,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/chartjs/templates/waterfall.ts#L53-L53"
+    },
+    {
+      "key": "facetColumns",
+      "expression": "chartProperties?.facetColumns",
+      "file": "packages/flint-js/src/core/compute-layout.ts",
+      "startLine": 558,
+      "endLine": 558,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/core/compute-layout.ts#L558-L558"
+    },
+    {
+      "key": "independentYAxis",
+      "expression": "chartProperties?.independentYAxis",
+      "file": "packages/flint-js/src/core/furniture-plan.ts",
+      "startLine": 66,
+      "endLine": 66,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/core/furniture-plan.ts#L66-L66"
+    },
+    {
+      "key": "pivot",
+      "expression": "chartProperties?.pivot",
+      "file": "packages/flint-js/src/core/pivot.ts",
+      "startLine": 919,
+      "endLine": 919,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/core/pivot.ts#L919-L919"
+    },
+    {
+      "key": "opacity",
+      "expression": "chartProperties?.opacity",
+      "file": "packages/flint-js/src/core/plan.ts",
+      "startLine": 349,
+      "endLine": 349,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/core/plan.ts#L349-L349"
+    },
+    {
+      "key": "labelOverflow",
+      "expression": "chartProperties?.labelOverflow",
+      "file": "packages/flint-js/src/core/plan.ts",
+      "startLine": 662,
+      "endLine": 662,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/core/plan.ts#L662-L662"
+    },
+    {
+      "key": "binCount",
+      "expression": "chartProperties?.binCount",
+      "file": "packages/flint-js/src/core/plan.ts",
+      "startLine": 1109,
+      "endLine": 1109,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/core/plan.ts#L1109-L1109"
+    },
+    {
+      "key": "showSeriesInLabel",
+      "expression": "chartProperties?.showSeriesInLabel",
+      "file": "packages/flint-js/src/core/plan.ts",
+      "startLine": 1637,
+      "endLine": 1637,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/core/plan.ts#L1637-L1637"
+    },
+    {
+      "key": "labelOverflow",
+      "expression": "chartProperties?.labelOverflow",
+      "file": "packages/flint-js/src/core/plan.ts",
+      "startLine": 1658,
+      "endLine": 1658,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/core/plan.ts#L1658-L1658"
+    },
+    {
+      "key": "sortSlices",
+      "expression": "chartProperties?.sortSlices",
+      "file": "packages/flint-js/src/core/plan.ts",
+      "startLine": 1783,
+      "endLine": 1783,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/core/plan.ts#L1783-L1783"
+    },
+    {
+      "key": "dodge",
+      "expression": "context.chartProperties?.dodge",
+      "file": "packages/flint-js/src/core/structure.ts",
+      "startLine": 189,
+      "endLine": 189,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/core/structure.ts#L189-L189"
+    },
+    {
+      "key": "showValueLabels",
+      "expression": "chartProperties?.showValueLabels",
+      "file": "packages/flint-js/src/core/theme/ground.ts",
+      "startLine": 403,
+      "endLine": 403,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/core/theme/ground.ts#L403-L403"
+    },
+    {
+      "key": "showTextLabels",
+      "expression": "chartProperties?.showTextLabels",
+      "file": "packages/flint-js/src/core/theme/ground.ts",
+      "startLine": 405,
+      "endLine": 405,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/core/theme/ground.ts#L405-L405"
+    },
+    {
+      "key": "stackMode",
+      "expression": "chartProperties?.stackMode",
+      "file": "packages/flint-js/src/echarts/templates/area.ts",
+      "startLine": 109,
+      "endLine": 109,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/area.ts#L109-L109"
+    },
+    {
+      "key": "opacity",
+      "expression": "chartProperties?.opacity",
+      "file": "packages/flint-js/src/echarts/templates/area.ts",
+      "startLine": 113,
+      "endLine": 113,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/area.ts#L113-L113"
+    },
+    {
+      "key": "interpolate",
+      "expression": "chartProperties?.interpolate",
+      "file": "packages/flint-js/src/echarts/templates/area.ts",
+      "startLine": 116,
+      "endLine": 116,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/area.ts#L116-L116"
+    },
+    {
+      "key": "stackMode",
+      "expression": "ctx.chartProperties?.stackMode",
+      "file": "packages/flint-js/src/echarts/templates/area.ts",
+      "startLine": 311,
+      "endLine": 311,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/area.ts#L311-L311"
+    },
+    {
+      "key": "cornerRadius",
+      "expression": "chartProperties?.cornerRadius",
+      "file": "packages/flint-js/src/echarts/templates/bar.ts",
+      "startLine": 389,
+      "endLine": 389,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/bar.ts#L389-L389"
+    },
+    {
+      "key": "cornerRadius",
+      "expression": "chartProperties?.cornerRadius",
+      "file": "packages/flint-js/src/echarts/templates/bar.ts",
+      "startLine": 437,
+      "endLine": 437,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/bar.ts#L437-L437"
+    },
+    {
+      "key": "stackMode",
+      "expression": "chartProperties?.stackMode",
+      "file": "packages/flint-js/src/echarts/templates/bar.ts",
+      "startLine": 588,
+      "endLine": 588,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/bar.ts#L588-L588"
+    },
+    {
+      "key": "dodge",
+      "expression": "chartProperties?.dodge",
+      "file": "packages/flint-js/src/echarts/templates/bar.ts",
+      "startLine": 701,
+      "endLine": 701,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/bar.ts#L701-L701"
+    },
+    {
+      "key": "dodge",
+      "expression": "ctx.chartProperties?.dodge",
+      "file": "packages/flint-js/src/echarts/templates/bar.ts",
+      "startLine": 940,
+      "endLine": 940,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/bar.ts#L940-L940"
+    },
+    {
+      "key": "dodge",
+      "expression": "chartProperties?.dodge",
+      "file": "packages/flint-js/src/echarts/templates/boxplot.ts",
+      "startLine": 221,
+      "endLine": 221,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/boxplot.ts#L221-L221"
+    },
+    {
+      "key": "whiskerMethod",
+      "expression": "ctx.chartProperties?.whiskerMethod",
+      "file": "packages/flint-js/src/echarts/templates/boxplot.ts",
+      "startLine": 240,
+      "endLine": 240,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/boxplot.ts#L240-L240"
+    },
+    {
+      "key": "showPoints",
+      "expression": "ctx.chartProperties?.showPoints",
+      "file": "packages/flint-js/src/echarts/templates/boxplot.ts",
+      "startLine": 243,
+      "endLine": 243,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/boxplot.ts#L243-L243"
+    },
+    {
+      "key": "showOutliers",
+      "expression": "ctx.chartProperties?.showOutliers",
+      "file": "packages/flint-js/src/echarts/templates/boxplot.ts",
+      "startLine": 245,
+      "endLine": 245,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/boxplot.ts#L245-L245"
+    },
+    {
+      "key": "nestedSnapThreshold",
+      "expression": "ctx.chartProperties?.nestedSnapThreshold",
+      "file": "packages/flint-js/src/echarts/templates/boxplot.ts",
+      "startLine": 271,
+      "endLine": 271,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/boxplot.ts#L271-L271"
+    },
+    {
+      "key": "dodge",
+      "expression": "ctx.chartProperties?.dodge",
+      "file": "packages/flint-js/src/echarts/templates/boxplot.ts",
+      "startLine": 274,
+      "endLine": 274,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/boxplot.ts#L274-L274"
+    },
+    {
+      "key": "whiskerMethod",
+      "expression": "ctx.chartProperties?.whiskerMethod",
+      "file": "packages/flint-js/src/echarts/templates/boxplot.ts",
+      "startLine": 485,
+      "endLine": 485,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/boxplot.ts#L485-L485"
+    },
+    {
+      "key": "showPoints",
+      "expression": "ctx.chartProperties?.showPoints",
+      "file": "packages/flint-js/src/echarts/templates/boxplot.ts",
+      "startLine": 486,
+      "endLine": 486,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/boxplot.ts#L486-L486"
+    },
+    {
+      "key": "nestedSnapThreshold",
+      "expression": "ctx.chartProperties?.nestedSnapThreshold",
+      "file": "packages/flint-js/src/echarts/templates/boxplot.ts",
+      "startLine": 508,
+      "endLine": 508,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/boxplot.ts#L508-L508"
+    },
+    {
+      "key": "showMA",
+      "expression": "chartProperties?.showMA",
+      "file": "packages/flint-js/src/echarts/templates/candlestick.ts",
+      "startLine": 111,
+      "endLine": 111,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/candlestick.ts#L111-L111"
+    },
+    {
+      "key": "maWindow",
+      "expression": "chartProperties.maWindow",
+      "file": "packages/flint-js/src/echarts/templates/candlestick.ts",
+      "startLine": 112,
+      "endLine": 112,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/candlestick.ts#L112-L112"
+    },
+    {
+      "key": "bandwidth",
+      "expression": "chartProperties?.bandwidth",
+      "file": "packages/flint-js/src/echarts/templates/density.ts",
+      "startLine": 76,
+      "endLine": 76,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/density.ts#L76-L76"
+    },
+    {
+      "key": "bandwidth",
+      "expression": "chartProperties.bandwidth",
+      "file": "packages/flint-js/src/echarts/templates/density.ts",
+      "startLine": 76,
+      "endLine": 76,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/density.ts#L76-L76"
+    },
+    {
+      "key": "bandwidth",
+      "expression": "chartProperties.bandwidth",
+      "file": "packages/flint-js/src/echarts/templates/density.ts",
+      "startLine": 77,
+      "endLine": 77,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/density.ts#L77-L77"
+    },
+    {
+      "key": "showPoints",
+      "expression": "chartProperties?.showPoints",
+      "file": "packages/flint-js/src/echarts/templates/ecdf.ts",
+      "startLine": 57,
+      "endLine": 57,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/ecdf.ts#L57-L57"
+    },
+    {
+      "key": "sort",
+      "expression": "chartProperties?.sort",
+      "file": "packages/flint-js/src/echarts/templates/funnel.ts",
+      "startLine": 94,
+      "endLine": 94,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/funnel.ts#L94-L94"
+    },
+    {
+      "key": "orient",
+      "expression": "chartProperties?.orient",
+      "file": "packages/flint-js/src/echarts/templates/funnel.ts",
+      "startLine": 123,
+      "endLine": 123,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/funnel.ts#L123-L123"
+    },
+    {
+      "key": "gap",
+      "expression": "chartProperties?.gap",
+      "file": "packages/flint-js/src/echarts/templates/funnel.ts",
+      "startLine": 146,
+      "endLine": 146,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/funnel.ts#L146-L146"
+    },
+    {
+      "key": "taskHeight",
+      "expression": "chartProperties?.taskHeight",
+      "file": "packages/flint-js/src/echarts/templates/gantt.ts",
+      "startLine": 68,
+      "endLine": 68,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/gantt.ts#L68-L68"
+    },
+    {
+      "key": "cornerRadius",
+      "expression": "chartProperties?.cornerRadius",
+      "file": "packages/flint-js/src/echarts/templates/gantt.ts",
+      "startLine": 69,
+      "endLine": 69,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/gantt.ts#L69-L69"
+    },
+    {
+      "key": "intervalLabels",
+      "expression": "chartProperties?.intervalLabels",
+      "file": "packages/flint-js/src/echarts/templates/gantt.ts",
+      "startLine": 70,
+      "endLine": 70,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/gantt.ts#L70-L70"
+    },
+    {
+      "key": "min",
+      "expression": "chartProperties?.min",
+      "file": "packages/flint-js/src/echarts/templates/gauge.ts",
+      "startLine": 45,
+      "endLine": 45,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/gauge.ts#L45-L45"
+    },
+    {
+      "key": "max",
+      "expression": "chartProperties?.max",
+      "file": "packages/flint-js/src/echarts/templates/gauge.ts",
+      "startLine": 46,
+      "endLine": 46,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/gauge.ts#L46-L46"
+    },
+    {
+      "key": "showProgress",
+      "expression": "chartProperties?.showProgress",
+      "file": "packages/flint-js/src/echarts/templates/gauge.ts",
+      "startLine": 141,
+      "endLine": 141,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/gauge.ts#L141-L141"
+    },
+    {
+      "key": "layout",
+      "expression": "chartProperties?.layout",
+      "file": "packages/flint-js/src/echarts/templates/graph.ts",
+      "startLine": 105,
+      "endLine": 105,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/graph.ts#L105-L105"
+    },
+    {
+      "key": "binCount",
+      "expression": "chartProperties?.binCount",
+      "file": "packages/flint-js/src/echarts/templates/histogram.ts",
+      "startLine": 35,
+      "endLine": 35,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/histogram.ts#L35-L35"
+    },
+    {
+      "key": "interpolate",
+      "expression": "chartProperties?.interpolate",
+      "file": "packages/flint-js/src/echarts/templates/line.ts",
+      "startLine": 183,
+      "endLine": 183,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/line.ts#L183-L183"
+    },
+    {
+      "key": "showPoints",
+      "expression": "chartProperties?.showPoints",
+      "file": "packages/flint-js/src/echarts/templates/line.ts",
+      "startLine": 184,
+      "endLine": 184,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/line.ts#L184-L184"
+    },
+    {
+      "key": "dotSize",
+      "expression": "chartProperties?.dotSize",
+      "file": "packages/flint-js/src/echarts/templates/lollipop.ts",
+      "startLine": 70,
+      "endLine": 70,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/lollipop.ts#L70-L70"
+    },
+    {
+      "key": "dimensions",
+      "expression": "chartProperties?.dimensions",
+      "file": "packages/flint-js/src/echarts/templates/parallel.ts",
+      "startLine": 68,
+      "endLine": 68,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/parallel.ts#L68-L68"
+    },
+    {
+      "key": "innerRadius",
+      "expression": "chartProperties?.innerRadius",
+      "file": "packages/flint-js/src/echarts/templates/pie.ts",
+      "startLine": 63,
+      "endLine": 63,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/pie.ts#L63-L63"
+    },
+    {
+      "key": "sortSlices",
+      "expression": "chartProperties?.sortSlices",
+      "file": "packages/flint-js/src/echarts/templates/pie.ts",
+      "startLine": 67,
+      "endLine": 67,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/pie.ts#L67-L67"
+    },
+    {
+      "key": "labelType",
+      "expression": "chartProperties?.labelType",
+      "file": "packages/flint-js/src/echarts/templates/pie.ts",
+      "startLine": 76,
+      "endLine": 76,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/pie.ts#L76-L76"
+    },
+    {
+      "key": "cornerRadius",
+      "expression": "chartProperties?.cornerRadius",
+      "file": "packages/flint-js/src/echarts/templates/pie.ts",
+      "startLine": 182,
+      "endLine": 182,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/pie.ts#L182-L182"
+    },
+    {
+      "key": "filled",
+      "expression": "chartProperties?.filled",
+      "file": "packages/flint-js/src/echarts/templates/radar.ts",
+      "startLine": 69,
+      "endLine": 69,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/radar.ts#L69-L69"
+    },
+    {
+      "key": "fillOpacity",
+      "expression": "chartProperties?.fillOpacity",
+      "file": "packages/flint-js/src/echarts/templates/radar.ts",
+      "startLine": 70,
+      "endLine": 70,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/radar.ts#L70-L70"
+    },
+    {
+      "key": "shape",
+      "expression": "chartProperties?.shape",
+      "file": "packages/flint-js/src/echarts/templates/radar.ts",
+      "startLine": 145,
+      "endLine": 145,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/radar.ts#L145-L145"
+    },
+    {
+      "key": "opacity",
+      "expression": "ctx.chartProperties?.opacity",
+      "file": "packages/flint-js/src/echarts/templates/range-area.ts",
+      "startLine": 119,
+      "endLine": 119,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/range-area.ts#L119-L119"
+    },
+    {
+      "key": "sortSlices",
+      "expression": "ctx.chartProperties?.sortSlices",
+      "file": "packages/flint-js/src/echarts/templates/rose.ts",
+      "startLine": 61,
+      "endLine": 61,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/rose.ts#L61-L61"
+    },
+    {
+      "key": "alignment",
+      "expression": "ctx.chartProperties?.alignment",
+      "file": "packages/flint-js/src/echarts/templates/rose.ts",
+      "startLine": 166,
+      "endLine": 166,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/rose.ts#L166-L166"
+    },
+    {
+      "key": "nodeGap",
+      "expression": "chartProperties?.nodeGap",
+      "file": "packages/flint-js/src/echarts/templates/sankey.ts",
+      "startLine": 107,
+      "endLine": 107,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/sankey.ts#L107-L107"
+    },
+    {
+      "key": "nodeWidth",
+      "expression": "chartProperties?.nodeWidth",
+      "file": "packages/flint-js/src/echarts/templates/sankey.ts",
+      "startLine": 108,
+      "endLine": 108,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/sankey.ts#L108-L108"
+    },
+    {
+      "key": "orient",
+      "expression": "chartProperties?.orient",
+      "file": "packages/flint-js/src/echarts/templates/sankey.ts",
+      "startLine": 120,
+      "endLine": 120,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/sankey.ts#L120-L120"
+    },
+    {
+      "key": "opacity",
+      "expression": "chartProperties?.opacity",
+      "file": "packages/flint-js/src/echarts/templates/scatter.ts",
+      "startLine": 356,
+      "endLine": 356,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/scatter.ts#L356-L356"
+    },
+    {
+      "key": "regressionMethod",
+      "expression": "chartProperties?.regressionMethod",
+      "file": "packages/flint-js/src/echarts/templates/scatter.ts",
+      "startLine": 831,
+      "endLine": 831,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/scatter.ts#L831-L831"
+    },
+    {
+      "key": "polyOrder",
+      "expression": "chartProperties?.polyOrder",
+      "file": "packages/flint-js/src/echarts/templates/scatter.ts",
+      "startLine": 832,
+      "endLine": 832,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/scatter.ts#L832-L832"
+    },
+    {
+      "key": "opacity",
+      "expression": "chartProperties?.opacity",
+      "file": "packages/flint-js/src/echarts/templates/scatter.ts",
+      "startLine": 844,
+      "endLine": 844,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/scatter.ts#L844-L844"
+    },
+    {
+      "key": "innerRadius",
+      "expression": "chartProperties?.innerRadius",
+      "file": "packages/flint-js/src/echarts/templates/sunburst.ts",
+      "startLine": 259,
+      "endLine": 259,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/sunburst.ts#L259-L259"
+    },
+    {
+      "key": "labelRotate",
+      "expression": "chartProperties?.labelRotate",
+      "file": "packages/flint-js/src/echarts/templates/sunburst.ts",
+      "startLine": 283,
+      "endLine": 283,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/sunburst.ts#L283-L283"
+    },
+    {
+      "key": "rootLabel",
+      "expression": "chartProperties?.rootLabel",
+      "file": "packages/flint-js/src/echarts/templates/tree.ts",
+      "startLine": 75,
+      "endLine": 75,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/tree.ts#L75-L75"
+    },
+    {
+      "key": "orient",
+      "expression": "chartProperties?.orient",
+      "file": "packages/flint-js/src/echarts/templates/tree.ts",
+      "startLine": 79,
+      "endLine": 79,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/tree.ts#L79-L79"
+    },
+    {
+      "key": "breadcrumb",
+      "expression": "chartProperties?.breadcrumb",
+      "file": "packages/flint-js/src/echarts/templates/treemap.ts",
+      "startLine": 137,
+      "endLine": 137,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/treemap.ts#L137-L137"
+    },
+    {
+      "key": "totals",
+      "expression": "ctx.chartProperties?.totals",
+      "file": "packages/flint-js/src/echarts/templates/waterfall.ts",
+      "startLine": 45,
+      "endLine": 45,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/waterfall.ts#L45-L45"
+    },
+    {
+      "key": "showTextLabels",
+      "expression": "ctx.chartProperties?.showTextLabels",
+      "file": "packages/flint-js/src/echarts/templates/waterfall.ts",
+      "startLine": 108,
+      "endLine": 108,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/echarts/templates/waterfall.ts#L108-L108"
+    },
+    {
+      "key": "innerRadius",
+      "expression": "input.chart_spec.chartProperties?.innerRadius",
+      "file": "packages/flint-js/src/excel/assemble.ts",
+      "startLine": 545,
+      "endLine": 545,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/excel/assemble.ts#L545-L545"
+    },
+    {
+      "key": "whiskerMethod",
+      "expression": "input.chart_spec.chartProperties?.whiskerMethod",
+      "file": "packages/flint-js/src/excel/templates/boxplot.ts",
+      "startLine": 24,
+      "endLine": 24,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/excel/templates/boxplot.ts#L24-L24"
+    },
+    {
+      "key": "sort",
+      "expression": "input.chart_spec.chartProperties?.sort",
+      "file": "packages/flint-js/src/excel/templates/funnel.ts",
+      "startLine": 37,
+      "endLine": 37,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/excel/templates/funnel.ts#L37-L37"
+    },
+    {
+      "key": "binCount",
+      "expression": "input.chart_spec.chartProperties?.binCount",
+      "file": "packages/flint-js/src/excel/templates/histogram.ts",
+      "startLine": 29,
+      "endLine": 29,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/excel/templates/histogram.ts#L29-L29"
+    },
+    {
+      "key": "filled",
+      "expression": "input.chart_spec.chartProperties?.filled",
+      "file": "packages/flint-js/src/excel/templates/radar.ts",
+      "startLine": 77,
+      "endLine": 77,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/excel/templates/radar.ts#L77-L77"
+    },
+    {
+      "key": "totals",
+      "expression": "input.chart_spec.chartProperties?.totals",
+      "file": "packages/flint-js/src/excel/templates/waterfall.ts",
+      "startLine": 32,
+      "endLine": 32,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/excel/templates/waterfall.ts#L32-L32"
+    },
+    {
+      "key": "labelOverflow",
+      "expression": "chartProperties?.labelOverflow",
+      "file": "packages/flint-js/src/plotly/assemble.ts",
+      "startLine": 521,
+      "endLine": 521,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/assemble.ts#L521-L521"
+    },
+    {
+      "key": "showPoints",
+      "expression": "input.chart_spec.chartProperties?.showPoints",
+      "file": "packages/flint-js/src/plotly/assemble.ts",
+      "startLine": 529,
+      "endLine": 529,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/assemble.ts#L529-L529"
+    },
+    {
+      "key": "showPoints",
+      "expression": "input.chart_spec.chartProperties?.showPoints",
+      "file": "packages/flint-js/src/plotly/assemble.ts",
+      "startLine": 531,
+      "endLine": 531,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/assemble.ts#L531-L531"
+    },
+    {
+      "key": "showPoints",
+      "expression": "chartProperties?.showPoints",
+      "file": "packages/flint-js/src/plotly/assemble.ts",
+      "startLine": 532,
+      "endLine": 532,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/assemble.ts#L532-L532"
+    },
+    {
+      "key": "showValueLabels",
+      "expression": "chartProperties?.showValueLabels",
+      "file": "packages/flint-js/src/plotly/assemble.ts",
+      "startLine": 612,
+      "endLine": 612,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/assemble.ts#L612-L612"
+    },
+    {
+      "key": "showTextLabels",
+      "expression": "chartProperties?.showTextLabels",
+      "file": "packages/flint-js/src/plotly/assemble.ts",
+      "startLine": 614,
+      "endLine": 614,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/assemble.ts#L614-L614"
+    },
+    {
+      "key": "stackMode",
+      "expression": "chartProperties?.stackMode",
+      "file": "packages/flint-js/src/plotly/templates/area.ts",
+      "startLine": 83,
+      "endLine": 83,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/area.ts#L83-L83"
+    },
+    {
+      "key": "opacity",
+      "expression": "chartProperties?.opacity",
+      "file": "packages/flint-js/src/plotly/templates/area.ts",
+      "startLine": 88,
+      "endLine": 88,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/area.ts#L88-L88"
+    },
+    {
+      "key": "interpolate",
+      "expression": "chartProperties?.interpolate",
+      "file": "packages/flint-js/src/plotly/templates/area.ts",
+      "startLine": 89,
+      "endLine": 89,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/area.ts#L89-L89"
+    },
+    {
+      "key": "maxRows",
+      "expression": "chartProperties?.maxRows",
+      "file": "packages/flint-js/src/plotly/templates/bar-table.ts",
+      "startLine": 176,
+      "endLine": 176,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/bar-table.ts#L176-L176"
+    },
+    {
+      "key": "showPercent",
+      "expression": "chartProperties?.showPercent",
+      "file": "packages/flint-js/src/plotly/templates/bar-table.ts",
+      "startLine": 177,
+      "endLine": 177,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/bar-table.ts#L177-L177"
+    },
+    {
+      "key": "cornerRadius",
+      "expression": "chartProperties?.cornerRadius",
+      "file": "packages/flint-js/src/plotly/templates/bar.ts",
+      "startLine": 131,
+      "endLine": 131,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/bar.ts#L131-L131"
+    },
+    {
+      "key": "stackMode",
+      "expression": "chartProperties?.stackMode",
+      "file": "packages/flint-js/src/plotly/templates/bar.ts",
+      "startLine": 266,
+      "endLine": 266,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/bar.ts#L266-L266"
+    },
+    {
+      "key": "showPoints",
+      "expression": "chartProperties?.showPoints",
+      "file": "packages/flint-js/src/plotly/templates/boxplot.ts",
+      "startLine": 60,
+      "endLine": 60,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/boxplot.ts#L60-L60"
+    },
+    {
+      "key": "showOutliers",
+      "expression": "chartProperties?.showOutliers",
+      "file": "packages/flint-js/src/plotly/templates/boxplot.ts",
+      "startLine": 61,
+      "endLine": 61,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/boxplot.ts#L61-L61"
+    },
+    {
+      "key": "showPoints",
+      "expression": "ctx.chartProperties?.showPoints",
+      "file": "packages/flint-js/src/plotly/templates/boxplot.ts",
+      "startLine": 138,
+      "endLine": 138,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/boxplot.ts#L138-L138"
+    },
+    {
+      "key": "showMA",
+      "expression": "chartProperties?.showMA",
+      "file": "packages/flint-js/src/plotly/templates/candlestick.ts",
+      "startLine": 48,
+      "endLine": 48,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/candlestick.ts#L48-L48"
+    },
+    {
+      "key": "maWindow",
+      "expression": "chartProperties.maWindow",
+      "file": "packages/flint-js/src/plotly/templates/candlestick.ts",
+      "startLine": 49,
+      "endLine": 49,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/candlestick.ts#L49-L49"
+    },
+    {
+      "key": "showMA",
+      "expression": "chartProperties?.showMA",
+      "file": "packages/flint-js/src/plotly/templates/candlestick.ts",
+      "startLine": 67,
+      "endLine": 67,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/candlestick.ts#L67-L67"
+    },
+    {
+      "key": "binCount",
+      "expression": "chartProperties?.binCount",
+      "file": "packages/flint-js/src/plotly/templates/density-contour.ts",
+      "startLine": 32,
+      "endLine": 32,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/density-contour.ts#L32-L32"
+    },
+    {
+      "key": "showPoints",
+      "expression": "chartProperties?.showPoints",
+      "file": "packages/flint-js/src/plotly/templates/density-contour.ts",
+      "startLine": 33,
+      "endLine": 33,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/density-contour.ts#L33-L33"
+    },
+    {
+      "key": "bandwidth",
+      "expression": "chartProperties?.bandwidth",
+      "file": "packages/flint-js/src/plotly/templates/density.ts",
+      "startLine": 27,
+      "endLine": 27,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/density.ts#L27-L27"
+    },
+    {
+      "key": "bandwidth",
+      "expression": "chartProperties.bandwidth",
+      "file": "packages/flint-js/src/plotly/templates/density.ts",
+      "startLine": 27,
+      "endLine": 27,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/density.ts#L27-L27"
+    },
+    {
+      "key": "bandwidth",
+      "expression": "chartProperties.bandwidth",
+      "file": "packages/flint-js/src/plotly/templates/density.ts",
+      "startLine": 28,
+      "endLine": 28,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/density.ts#L28-L28"
+    },
+    {
+      "key": "showPoints",
+      "expression": "chartProperties?.showPoints",
+      "file": "packages/flint-js/src/plotly/templates/ecdf.ts",
+      "startLine": 27,
+      "endLine": 27,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/ecdf.ts#L27-L27"
+    },
+    {
+      "key": "sort",
+      "expression": "chartProperties?.sort",
+      "file": "packages/flint-js/src/plotly/templates/funnel.ts",
+      "startLine": 56,
+      "endLine": 56,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/funnel.ts#L56-L56"
+    },
+    {
+      "key": "taskHeight",
+      "expression": "chartProperties?.taskHeight",
+      "file": "packages/flint-js/src/plotly/templates/gantt.ts",
+      "startLine": 45,
+      "endLine": 45,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/gantt.ts#L45-L45"
+    },
+    {
+      "key": "cornerRadius",
+      "expression": "chartProperties?.cornerRadius",
+      "file": "packages/flint-js/src/plotly/templates/gantt.ts",
+      "startLine": 46,
+      "endLine": 46,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/gantt.ts#L46-L46"
+    },
+    {
+      "key": "intervalLabels",
+      "expression": "chartProperties?.intervalLabels",
+      "file": "packages/flint-js/src/plotly/templates/gantt.ts",
+      "startLine": 47,
+      "endLine": 47,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/gantt.ts#L47-L47"
+    },
+    {
+      "key": "min",
+      "expression": "chartProperties?.min",
+      "file": "packages/flint-js/src/plotly/templates/gauge.ts",
+      "startLine": 33,
+      "endLine": 33,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/gauge.ts#L33-L33"
+    },
+    {
+      "key": "max",
+      "expression": "chartProperties?.max",
+      "file": "packages/flint-js/src/plotly/templates/gauge.ts",
+      "startLine": 34,
+      "endLine": 34,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/gauge.ts#L34-L34"
+    },
+    {
+      "key": "binCount",
+      "expression": "chartProperties?.binCount",
+      "file": "packages/flint-js/src/plotly/templates/histogram.ts",
+      "startLine": 26,
+      "endLine": 26,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/histogram.ts#L26-L26"
+    },
+    {
+      "key": "layout",
+      "expression": "chartProperties?.layout",
+      "file": "packages/flint-js/src/plotly/templates/kpi-card.ts",
+      "startLine": 36,
+      "endLine": 36,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/kpi-card.ts#L36-L36"
+    },
+    {
+      "key": "interpolate",
+      "expression": "chartProperties?.interpolate",
+      "file": "packages/flint-js/src/plotly/templates/line.ts",
+      "startLine": 80,
+      "endLine": 80,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/line.ts#L80-L80"
+    },
+    {
+      "key": "showPoints",
+      "expression": "chartProperties?.showPoints",
+      "file": "packages/flint-js/src/plotly/templates/line.ts",
+      "startLine": 81,
+      "endLine": 81,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/line.ts#L81-L81"
+    },
+    {
+      "key": "dotSize",
+      "expression": "chartProperties?.dotSize",
+      "file": "packages/flint-js/src/plotly/templates/lollipop.ts",
+      "startLine": 46,
+      "endLine": 46,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/lollipop.ts#L46-L46"
+    },
+    {
+      "key": "region",
+      "expression": "ctx.chartProperties?.region",
+      "file": "packages/flint-js/src/plotly/templates/map.ts",
+      "startLine": 83,
+      "endLine": 83,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/map.ts#L83-L83"
+    },
+    {
+      "key": "projection",
+      "expression": "chartProperties?.projection",
+      "file": "packages/flint-js/src/plotly/templates/map.ts",
+      "startLine": 145,
+      "endLine": 145,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/map.ts#L145-L145"
+    },
+    {
+      "key": "projectionCenter",
+      "expression": "chartProperties?.projectionCenter",
+      "file": "packages/flint-js/src/plotly/templates/map.ts",
+      "startLine": 151,
+      "endLine": 151,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/map.ts#L151-L151"
+    },
+    {
+      "key": "sortSlices",
+      "expression": "chartProperties?.sortSlices",
+      "file": "packages/flint-js/src/plotly/templates/pie.ts",
+      "startLine": 51,
+      "endLine": 51,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/pie.ts#L51-L51"
+    },
+    {
+      "key": "labelType",
+      "expression": "chartProperties?.labelType",
+      "file": "packages/flint-js/src/plotly/templates/pie.ts",
+      "startLine": 58,
+      "endLine": 58,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/pie.ts#L58-L58"
+    },
+    {
+      "key": "innerRadius",
+      "expression": "ctx.chartProperties?.innerRadius",
+      "file": "packages/flint-js/src/plotly/templates/pie.ts",
+      "startLine": 162,
+      "endLine": 162,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/pie.ts#L162-L162"
+    },
+    {
+      "key": "filled",
+      "expression": "chartProperties?.filled",
+      "file": "packages/flint-js/src/plotly/templates/radar.ts",
+      "startLine": 82,
+      "endLine": 82,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/radar.ts#L82-L82"
+    },
+    {
+      "key": "fillOpacity",
+      "expression": "chartProperties?.fillOpacity",
+      "file": "packages/flint-js/src/plotly/templates/radar.ts",
+      "startLine": 83,
+      "endLine": 83,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/radar.ts#L83-L83"
+    },
+    {
+      "key": "opacity",
+      "expression": "chartProperties?.opacity",
+      "file": "packages/flint-js/src/plotly/templates/range-area.ts",
+      "startLine": 39,
+      "endLine": 39,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/range-area.ts#L39-L39"
+    },
+    {
+      "key": "regressionMethod",
+      "expression": "chartProperties?.regressionMethod",
+      "file": "packages/flint-js/src/plotly/templates/regression.ts",
+      "startLine": 135,
+      "endLine": 135,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/regression.ts#L135-L135"
+    },
+    {
+      "key": "polyOrder",
+      "expression": "chartProperties?.polyOrder",
+      "file": "packages/flint-js/src/plotly/templates/regression.ts",
+      "startLine": 136,
+      "endLine": 136,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/regression.ts#L136-L136"
+    },
+    {
+      "key": "opacity",
+      "expression": "chartProperties?.opacity",
+      "file": "packages/flint-js/src/plotly/templates/regression.ts",
+      "startLine": 137,
+      "endLine": 137,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/regression.ts#L137-L137"
+    },
+    {
+      "key": "sortSlices",
+      "expression": "chartProperties?.sortSlices",
+      "file": "packages/flint-js/src/plotly/templates/rose.ts",
+      "startLine": 41,
+      "endLine": 41,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/rose.ts#L41-L41"
+    },
+    {
+      "key": "opacity",
+      "expression": "chartProperties?.opacity",
+      "file": "packages/flint-js/src/plotly/templates/scatter.ts",
+      "startLine": 67,
+      "endLine": 67,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/scatter.ts#L67-L67"
+    },
+    {
+      "key": "baseline",
+      "expression": "chartProperties?.baseline",
+      "file": "packages/flint-js/src/plotly/templates/sparkline.ts",
+      "startLine": 87,
+      "endLine": 87,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/sparkline.ts#L87-L87"
+    },
+    {
+      "key": "trendWidth",
+      "expression": "chartProperties?.trendWidth",
+      "file": "packages/flint-js/src/plotly/templates/sparkline.ts",
+      "startLine": 142,
+      "endLine": 142,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/sparkline.ts#L142-L142"
+    },
+    {
+      "key": "showBox",
+      "expression": "chartProperties?.showBox",
+      "file": "packages/flint-js/src/plotly/templates/violin.ts",
+      "startLine": 48,
+      "endLine": 48,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/violin.ts#L48-L48"
+    },
+    {
+      "key": "showPoints",
+      "expression": "chartProperties?.showPoints",
+      "file": "packages/flint-js/src/plotly/templates/violin.ts",
+      "startLine": 49,
+      "endLine": 49,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/violin.ts#L49-L49"
+    },
+    {
+      "key": "totals",
+      "expression": "chartProperties?.totals",
+      "file": "packages/flint-js/src/plotly/templates/waterfall.ts",
+      "startLine": 34,
+      "endLine": 34,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/waterfall.ts#L34-L34"
+    },
+    {
+      "key": "showTextLabels",
+      "expression": "chartProperties?.showTextLabels",
+      "file": "packages/flint-js/src/plotly/templates/waterfall.ts",
+      "startLine": 58,
+      "endLine": 58,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/plotly/templates/waterfall.ts#L58-L58"
+    },
+    {
+      "key": "showTextLabels",
+      "expression": "chartProperties.showTextLabels",
+      "file": "packages/flint-js/src/vegalite/assemble.ts",
+      "startLine": 320,
+      "endLine": 320,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/assemble.ts#L320-L320"
+    },
+    {
+      "key": "facetColumns",
+      "expression": "input.chart_spec.chartProperties?.facetColumns",
+      "file": "packages/flint-js/src/vegalite/assemble.ts",
+      "startLine": 858,
+      "endLine": 858,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/assemble.ts#L858-L858"
+    },
+    {
+      "key": "dodge",
+      "expression": "chartProperties?.dodge",
+      "file": "packages/flint-js/src/vegalite/assemble.ts",
+      "startLine": 1303,
+      "endLine": 1303,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/assemble.ts#L1303-L1303"
+    },
+    {
+      "key": "stackMode",
+      "expression": "ctx.chartProperties?.stackMode",
+      "file": "packages/flint-js/src/vegalite/templates/area.ts",
+      "startLine": 141,
+      "endLine": 141,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/area.ts#L141-L141"
+    },
+    {
+      "key": "stackMode",
+      "expression": "ctx.chartProperties?.stackMode",
+      "file": "packages/flint-js/src/vegalite/templates/area.ts",
+      "startLine": 210,
+      "endLine": 210,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/area.ts#L210-L210"
+    },
+    {
+      "key": "maxRows",
+      "expression": "chartProperties?.maxRows",
+      "file": "packages/flint-js/src/vegalite/templates/bar-table.ts",
+      "startLine": 764,
+      "endLine": 764,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/bar-table.ts#L764-L764"
+    },
+    {
+      "key": "dodge",
+      "expression": "chartProperties?.dodge",
+      "file": "packages/flint-js/src/vegalite/templates/bar.ts",
+      "startLine": 483,
+      "endLine": 483,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/bar.ts#L483-L483"
+    },
+    {
+      "key": "dodge",
+      "expression": "ctx.chartProperties?.dodge",
+      "file": "packages/flint-js/src/vegalite/templates/bar.ts",
+      "startLine": 503,
+      "endLine": 503,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/bar.ts#L503-L503"
+    },
+    {
+      "key": "stackMode",
+      "expression": "ctx.chartProperties?.stackMode",
+      "file": "packages/flint-js/src/vegalite/templates/bar.ts",
+      "startLine": 575,
+      "endLine": 575,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/bar.ts#L575-L575"
+    },
+    {
+      "key": "binCount",
+      "expression": "ctx.chartProperties?.binCount",
+      "file": "packages/flint-js/src/vegalite/templates/bar.ts",
+      "startLine": 722,
+      "endLine": 722,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/bar.ts#L722-L722"
+    },
+    {
+      "key": "showTextLabels",
+      "expression": "ctx.chartProperties?.showTextLabels",
+      "file": "packages/flint-js/src/vegalite/templates/bar.ts",
+      "startLine": 779,
+      "endLine": 779,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/bar.ts#L779-L779"
+    },
+    {
+      "key": "showTextLabels",
+      "expression": "chartProperties?.showTextLabels",
+      "file": "packages/flint-js/src/vegalite/templates/bar.ts",
+      "startLine": 823,
+      "endLine": 823,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/bar.ts#L823-L823"
+    },
+    {
+      "key": "cornerRadius",
+      "expression": "ctx.chartProperties?.cornerRadius",
+      "file": "packages/flint-js/src/vegalite/templates/calendar.ts",
+      "startLine": 201,
+      "endLine": 201,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/calendar.ts#L201-L201"
+    },
+    {
+      "key": "stackMode",
+      "expression": "ctx.chartProperties?.stackMode",
+      "file": "packages/flint-js/src/vegalite/templates/density.ts",
+      "startLine": 86,
+      "endLine": 86,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/density.ts#L86-L86"
+    },
+    {
+      "key": "stackMode",
+      "expression": "ctx.chartProperties?.stackMode",
+      "file": "packages/flint-js/src/vegalite/templates/density.ts",
+      "startLine": 179,
+      "endLine": 179,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/density.ts#L179-L179"
+    },
+    {
+      "key": "showPoints",
+      "expression": "ctx.chartProperties?.showPoints",
+      "file": "packages/flint-js/src/vegalite/templates/ecdf.ts",
+      "startLine": 186,
+      "endLine": 186,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/ecdf.ts#L186-L186"
+    },
+    {
+      "key": "taskHeight",
+      "expression": "ctx.chartProperties?.taskHeight",
+      "file": "packages/flint-js/src/vegalite/templates/gantt.ts",
+      "startLine": 98,
+      "endLine": 98,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/gantt.ts#L98-L98"
+    },
+    {
+      "key": "cornerRadius",
+      "expression": "ctx.chartProperties?.cornerRadius",
+      "file": "packages/flint-js/src/vegalite/templates/gantt.ts",
+      "startLine": 99,
+      "endLine": 99,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/gantt.ts#L99-L99"
+    },
+    {
+      "key": "intervalLabels",
+      "expression": "ctx.chartProperties?.intervalLabels",
+      "file": "packages/flint-js/src/vegalite/templates/gantt.ts",
+      "startLine": 100,
+      "endLine": 100,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/gantt.ts#L100-L100"
+    },
+    {
+      "key": "stepWidth",
+      "expression": "chartProperties?.stepWidth",
+      "file": "packages/flint-js/src/vegalite/templates/jitter.ts",
+      "startLine": 63,
+      "endLine": 63,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/jitter.ts#L63-L63"
+    },
+    {
+      "key": "layout",
+      "expression": "ctx.chartProperties?.layout",
+      "file": "packages/flint-js/src/vegalite/templates/kpi-card.ts",
+      "startLine": 143,
+      "endLine": 143,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/kpi-card.ts#L143-L143"
+    },
+    {
+      "key": "style",
+      "expression": "ctx.chartProperties?.style",
+      "file": "packages/flint-js/src/vegalite/templates/kpi-card.ts",
+      "startLine": 187,
+      "endLine": 187,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/kpi-card.ts#L187-L187"
+    },
+    {
+      "key": "showPoints",
+      "expression": "ctx.chartProperties?.showPoints",
+      "file": "packages/flint-js/src/vegalite/templates/line.ts",
+      "startLine": 38,
+      "endLine": 38,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/line.ts#L38-L38"
+    },
+    {
+      "key": "region",
+      "expression": "ctx.chartProperties?.region",
+      "file": "packages/flint-js/src/vegalite/templates/map.ts",
+      "startLine": 106,
+      "endLine": 106,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/map.ts#L106-L106"
+    },
+    {
+      "key": "projection",
+      "expression": "chartProperties.projection",
+      "file": "packages/flint-js/src/vegalite/templates/map.ts",
+      "startLine": 168,
+      "endLine": 168,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/map.ts#L168-L168"
+    },
+    {
+      "key": "projectionCenter",
+      "expression": "chartProperties.projectionCenter",
+      "file": "packages/flint-js/src/vegalite/templates/map.ts",
+      "startLine": 169,
+      "endLine": 169,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/map.ts#L169-L169"
+    },
+    {
+      "key": "levelField",
+      "expression": "chartProperties?.levelField",
+      "file": "packages/flint-js/src/vegalite/templates/map.ts",
+      "startLine": 241,
+      "endLine": 241,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/map.ts#L241-L241"
+    },
+    {
+      "key": "levels",
+      "expression": "chartProperties?.levels",
+      "file": "packages/flint-js/src/vegalite/templates/map.ts",
+      "startLine": 242,
+      "endLine": 242,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/map.ts#L242-L242"
+    },
+    {
+      "key": "region",
+      "expression": "ctx.chartProperties?.region",
+      "file": "packages/flint-js/src/vegalite/templates/map.ts",
+      "startLine": 372,
+      "endLine": 372,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/map.ts#L372-L372"
+    },
+    {
+      "key": "baseMapUrl",
+      "expression": "ctx.chartProperties?.baseMapUrl",
+      "file": "packages/flint-js/src/vegalite/templates/map.ts",
+      "startLine": 459,
+      "endLine": 459,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/map.ts#L459-L459"
+    },
+    {
+      "key": "levels",
+      "expression": "chartProperties?.levels",
+      "file": "packages/flint-js/src/vegalite/templates/map.ts",
+      "startLine": 559,
+      "endLine": 559,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/map.ts#L559-L559"
+    },
+    {
+      "key": "projection",
+      "expression": "chartProperties?.projection",
+      "file": "packages/flint-js/src/vegalite/templates/map.ts",
+      "startLine": 584,
+      "endLine": 584,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/map.ts#L584-L584"
+    },
+    {
+      "key": "projection",
+      "expression": "ctx.chartProperties?.projection",
+      "file": "packages/flint-js/src/vegalite/templates/map.ts",
+      "startLine": 663,
+      "endLine": 663,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/map.ts#L663-L663"
+    },
+    {
+      "key": "featureKey",
+      "expression": "ctx.chartProperties?.featureKey",
+      "file": "packages/flint-js/src/vegalite/templates/map.ts",
+      "startLine": 673,
+      "endLine": 673,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/map.ts#L673-L673"
+    },
+    {
+      "key": "featureKey",
+      "expression": "ctx.chartProperties.featureKey",
+      "file": "packages/flint-js/src/vegalite/templates/map.ts",
+      "startLine": 673,
+      "endLine": 673,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/map.ts#L673-L673"
+    },
+    {
+      "key": "baseMapUrl",
+      "expression": "ctx.chartProperties?.baseMapUrl",
+      "file": "packages/flint-js/src/vegalite/templates/map.ts",
+      "startLine": 675,
+      "endLine": 675,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/map.ts#L675-L675"
+    },
+    {
+      "key": "level",
+      "expression": "ctx.chartProperties?.level",
+      "file": "packages/flint-js/src/vegalite/templates/map.ts",
+      "startLine": 680,
+      "endLine": 680,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/map.ts#L680-L680"
+    },
+    {
+      "key": "stackMode",
+      "expression": "ctx.chartProperties?.stackMode",
+      "file": "packages/flint-js/src/vegalite/templates/marginal.ts",
+      "startLine": 268,
+      "endLine": 268,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/marginal.ts#L268-L268"
+    },
+    {
+      "key": "innerRadius",
+      "expression": "ctx.chartProperties?.innerRadius",
+      "file": "packages/flint-js/src/vegalite/templates/pie.ts",
+      "startLine": 216,
+      "endLine": 216,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/pie.ts#L216-L216"
+    },
+    {
+      "key": "colorBy",
+      "expression": "ctx.chartProperties?.colorBy",
+      "file": "packages/flint-js/src/vegalite/templates/ridgeline.ts",
+      "startLine": 461,
+      "endLine": 461,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/ridgeline.ts#L461-L461"
+    },
+    {
+      "key": "colorBy",
+      "expression": "ctx.chartProperties?.colorBy",
+      "file": "packages/flint-js/src/vegalite/templates/ridgeline.ts",
+      "startLine": 463,
+      "endLine": 463,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/ridgeline.ts#L463-L463"
+    },
+    {
+      "key": "colorBy",
+      "expression": "ctx.chartProperties?.colorBy",
+      "file": "packages/flint-js/src/vegalite/templates/ridgeline.ts",
+      "startLine": 594,
+      "endLine": 594,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/ridgeline.ts#L594-L594"
+    },
+    {
+      "key": "colorBy",
+      "expression": "ctx.chartProperties?.colorBy",
+      "file": "packages/flint-js/src/vegalite/templates/ridgeline.ts",
+      "startLine": 595,
+      "endLine": 595,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/ridgeline.ts#L595-L595"
+    },
+    {
+      "key": "markAt",
+      "expression": "ctx.chartProperties?.markAt",
+      "file": "packages/flint-js/src/vegalite/templates/ridgeline.ts",
+      "startLine": 610,
+      "endLine": 610,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/ridgeline.ts#L610-L610"
+    },
+    {
+      "key": "colorBy",
+      "expression": "ctx.chartProperties?.colorBy",
+      "file": "packages/flint-js/src/vegalite/templates/ridgeline.ts",
+      "startLine": 631,
+      "endLine": 631,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/ridgeline.ts#L631-L631"
+    },
+    {
+      "key": "markAt",
+      "expression": "ctx.chartProperties?.markAt",
+      "file": "packages/flint-js/src/vegalite/templates/ridgeline.ts",
+      "startLine": 662,
+      "endLine": 662,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/ridgeline.ts#L662-L662"
+    },
+    {
+      "key": "colorBy",
+      "expression": "ctx.chartProperties?.colorBy",
+      "file": "packages/flint-js/src/vegalite/templates/ridgeline.ts",
+      "startLine": 859,
+      "endLine": 859,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/ridgeline.ts#L859-L859"
+    },
+    {
+      "key": "sortSlices",
+      "expression": "ctx.chartProperties?.sortSlices",
+      "file": "packages/flint-js/src/vegalite/templates/rose.ts",
+      "startLine": 125,
+      "endLine": 125,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/rose.ts#L125-L125"
+    },
+    {
+      "key": "alignment",
+      "expression": "ctx.chartProperties?.alignment",
+      "file": "packages/flint-js/src/vegalite/templates/rose.ts",
+      "startLine": 158,
+      "endLine": 158,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/rose.ts#L158-L158"
+    },
+    {
+      "key": "nestedSnapThreshold",
+      "expression": "chartProperties?.nestedSnapThreshold",
+      "file": "packages/flint-js/src/vegalite/templates/scatter.ts",
+      "startLine": 353,
+      "endLine": 353,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/scatter.ts#L353-L353"
+    },
+    {
+      "key": "dodge",
+      "expression": "chartProperties?.dodge",
+      "file": "packages/flint-js/src/vegalite/templates/scatter.ts",
+      "startLine": 354,
+      "endLine": 354,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/scatter.ts#L354-L354"
+    },
+    {
+      "key": "showPoints",
+      "expression": "ctx.chartProperties?.showPoints",
+      "file": "packages/flint-js/src/vegalite/templates/scatter.ts",
+      "startLine": 366,
+      "endLine": 366,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/scatter.ts#L366-L366"
+    },
+    {
+      "key": "nestedSnapThreshold",
+      "expression": "chartProperties?.nestedSnapThreshold",
+      "file": "packages/flint-js/src/vegalite/templates/scatter.ts",
+      "startLine": 440,
+      "endLine": 440,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/scatter.ts#L440-L440"
+    },
+    {
+      "key": "dodge",
+      "expression": "chartProperties?.dodge",
+      "file": "packages/flint-js/src/vegalite/templates/scatter.ts",
+      "startLine": 442,
+      "endLine": 442,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/scatter.ts#L442-L442"
+    },
+    {
+      "key": "showPoints",
+      "expression": "chartProperties?.showPoints",
+      "file": "packages/flint-js/src/vegalite/templates/scatter.ts",
+      "startLine": 451,
+      "endLine": 451,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/scatter.ts#L451-L451"
+    },
+    {
+      "key": "whiskerMethod",
+      "expression": "ctx.chartProperties?.whiskerMethod",
+      "file": "packages/flint-js/src/vegalite/templates/scatter.ts",
+      "startLine": 706,
+      "endLine": 706,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/scatter.ts#L706-L706"
+    },
+    {
+      "key": "showPoints",
+      "expression": "ctx.chartProperties?.showPoints",
+      "file": "packages/flint-js/src/vegalite/templates/scatter.ts",
+      "startLine": 707,
+      "endLine": 707,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/scatter.ts#L707-L707"
+    },
+    {
+      "key": "nestedSnapThreshold",
+      "expression": "ctx.chartProperties?.nestedSnapThreshold",
+      "file": "packages/flint-js/src/vegalite/templates/scatter.ts",
+      "startLine": 734,
+      "endLine": 734,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/scatter.ts#L734-L734"
+    },
+    {
+      "key": "showText",
+      "expression": "chartProperties?.showText",
+      "file": "packages/flint-js/src/vegalite/templates/slope.ts",
+      "startLine": 76,
+      "endLine": 76,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/slope.ts#L76-L76"
+    },
+    {
+      "key": "showSeriesInLabel",
+      "expression": "chartProperties?.showSeriesInLabel",
+      "file": "packages/flint-js/src/vegalite/templates/slope.ts",
+      "startLine": 77,
+      "endLine": 77,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/slope.ts#L77-L77"
+    },
+    {
+      "key": "showText",
+      "expression": "ctx.chartProperties?.showText",
+      "file": "packages/flint-js/src/vegalite/templates/slope.ts",
+      "startLine": 155,
+      "endLine": 155,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/slope.ts#L155-L155"
+    },
+    {
+      "key": "showSeriesInLabel",
+      "expression": "ctx.chartProperties?.showSeriesInLabel",
+      "file": "packages/flint-js/src/vegalite/templates/slope.ts",
+      "startLine": 158,
+      "endLine": 158,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/slope.ts#L158-L158"
+    },
+    {
+      "key": "baseline",
+      "expression": "ctx.chartProperties?.baseline",
+      "file": "packages/flint-js/src/vegalite/templates/sparkline.ts",
+      "startLine": 202,
+      "endLine": 202,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/sparkline.ts#L202-L202"
+    },
+    {
+      "key": "trendWidth",
+      "expression": "ctx.chartProperties?.trendWidth",
+      "file": "packages/flint-js/src/vegalite/templates/sparkline.ts",
+      "startLine": 208,
+      "endLine": 208,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/sparkline.ts#L208-L208"
+    },
+    {
+      "key": "baseline",
+      "expression": "ctx.chartProperties?.baseline",
+      "file": "packages/flint-js/src/vegalite/templates/sparkline.ts",
+      "startLine": 230,
+      "endLine": 230,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/sparkline.ts#L230-L230"
+    },
+    {
+      "key": "baseline",
+      "expression": "ctx.chartProperties?.baseline",
+      "file": "packages/flint-js/src/vegalite/templates/sparkline.ts",
+      "startLine": 298,
+      "endLine": 298,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/sparkline.ts#L298-L298"
+    },
+    {
+      "key": "trendWidth",
+      "expression": "ctx.chartProperties?.trendWidth",
+      "file": "packages/flint-js/src/vegalite/templates/sparkline.ts",
+      "startLine": 342,
+      "endLine": 342,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/sparkline.ts#L342-L342"
+    },
+    {
+      "key": "showMedian",
+      "expression": "ctx.chartProperties?.showMedian",
+      "file": "packages/flint-js/src/vegalite/templates/violin.ts",
+      "startLine": 640,
+      "endLine": 640,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/violin.ts#L640-L640"
+    },
+    {
+      "key": "showTextLabels",
+      "expression": "ctx.chartProperties?.showTextLabels",
+      "file": "packages/flint-js/src/vegalite/templates/waterfall.ts",
+      "startLine": 132,
+      "endLine": 132,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/waterfall.ts#L132-L132"
+    },
+    {
+      "key": "totals",
+      "expression": "ctx.chartProperties?.totals",
+      "file": "packages/flint-js/src/vegalite/templates/waterfall.ts",
+      "startLine": 133,
+      "endLine": 133,
+      "url": "https://github.com/microsoft/flint-chart/blob/a794557384adcc3293a77043f6b9aff1c33d152c/packages/flint-js/src/vegalite/templates/waterfall.ts#L133-L133"
+    }
+  ]
+}

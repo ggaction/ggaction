@@ -1,0 +1,17 @@
+{
+  "recovery": {
+    "ok": false,
+    "message": "render requires a Canvas 2D context.",
+    "previousProgramRetainedAsCurrent": false
+  },
+  "existingCanvas": {
+    "accepted": false,
+    "message": "createCanvas requires a program without a canvas."
+  },
+  "validContextRecovery": {
+    "ok": false,
+    "message": "render physical Canvas dimensions must not exceed 32767.",
+    "previousProgramRetainedAsCurrent": false,
+    "canvasWidth": 1
+  }
+}

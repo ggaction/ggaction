@@ -1,0 +1,37 @@
+{
+  "source": "docs/data/metadata.xlsx sheet3",
+  "records": 1981,
+  "licenseKeys": {
+    "bsd-3-clause": 281,
+    "mit": 926,
+    "gpl-3.0": 483,
+    "apache-2.0": 139,
+    "epl-1.0": 14,
+    "lgpl-3.0": 1,
+    "bsl-1.0": 1,
+    "agpl-3.0": 30,
+    "cc-by-4.0": 10,
+    "gpl-2.0": 6,
+    "other": 28,
+    "zlib": 4,
+    "Attribution-NonCommercial-ShareAlike 4.0 International": 15,
+    "CNRS-Inist": 1,
+    "mpl-2.0": 2,
+    "cc0-1.0": 5,
+    "Creative Commons Attribution 3.0 Unported": 1,
+    "cc-by-sa-4.0": 31,
+    "Attribution 4.0 International (CC BY 4.0)": 3
+  },
+  "recordedInteraction": {
+    "1": 1010,
+    "0": 971
+  },
+  "recordedComplexity": {
+    "extracomplex": 976,
+    "medium": 199,
+    "complex": 733,
+    "simple": 73
+  },
+  "missingCanonicalIds": [],
+  "assessment": "Recorded licensing metadata is provenance, not independently verified permissions; license URLs may be mutable or point to another repository."
+}

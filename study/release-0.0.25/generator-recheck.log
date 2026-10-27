@@ -1,0 +1,10 @@
+✔ integrates every coverage recipe once with bounded tier capacity (620.092041ms)
+✔ records unsupported dataset recipes as skips without preflight rejection loops (128843.52975ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 130371.246125

@@ -1,0 +1,1001 @@
+{
+  "seed": "cars-metamorphic-v1",
+  "original": [
+    {
+      "x": 175,
+      "y": 13,
+      "group": "USA"
+    },
+    {
+      "x": 63,
+      "y": 38,
+      "group": "USA"
+    },
+    {
+      "x": 145,
+      "y": 15,
+      "group": "USA"
+    },
+    {
+      "x": 84,
+      "y": 27.2,
+      "group": "USA"
+    },
+    {
+      "x": 88,
+      "y": 35,
+      "group": "Europe"
+    },
+    {
+      "x": 52,
+      "y": 44,
+      "group": "Europe"
+    },
+    {
+      "x": 90,
+      "y": 24.3,
+      "group": "USA"
+    },
+    {
+      "x": 150,
+      "y": 17,
+      "group": "USA"
+    },
+    {
+      "x": 88,
+      "y": 27,
+      "group": "USA"
+    },
+    {
+      "x": 137,
+      "y": 14,
+      "group": "USA"
+    },
+    {
+      "x": 90,
+      "y": 28.4,
+      "group": "USA"
+    },
+    {
+      "x": 78,
+      "y": 26,
+      "group": "Europe"
+    },
+    {
+      "x": 140,
+      "y": 16,
+      "group": "USA"
+    },
+    {
+      "x": 170,
+      "y": 15.5,
+      "group": "USA"
+    },
+    {
+      "x": 145,
+      "y": 15,
+      "group": "USA"
+    },
+    {
+      "x": 200,
+      "y": 10,
+      "group": "USA"
+    },
+    {
+      "x": 105,
+      "y": 19.2,
+      "group": "USA"
+    },
+    {
+      "x": 90,
+      "y": 18,
+      "group": "Japan"
+    },
+    {
+      "x": 48,
+      "y": 43.4,
+      "group": "Europe"
+    },
+    {
+      "x": 71,
+      "y": 25,
+      "group": "Europe"
+    },
+    {
+      "x": 58,
+      "y": 36,
+      "group": "Europe"
+    },
+    {
+      "x": 72,
+      "y": 26.5,
+      "group": "USA"
+    },
+    {
+      "x": 105,
+      "y": 20.5,
+      "group": "USA"
+    },
+    {
+      "x": 105,
+      "y": 16,
+      "group": "USA"
+    },
+    {
+      "x": 180,
+      "y": 11,
+      "group": "USA"
+    },
+    {
+      "x": 70,
+      "y": 34,
+      "group": "Japan"
+    },
+    {
+      "x": 86,
+      "y": 22,
+      "group": "USA"
+    },
+    {
+      "x": 100,
+      "y": 20,
+      "group": "USA"
+    },
+    {
+      "x": 67,
+      "y": 44.6,
+      "group": "Japan"
+    },
+    {
+      "x": 158,
+      "y": 13,
+      "group": "USA"
+    },
+    {
+      "x": 95,
+      "y": 24,
+      "group": "Japan"
+    },
+    {
+      "x": 82,
+      "y": 31,
+      "group": "USA"
+    },
+    {
+      "x": 150,
+      "y": 14,
+      "group": "USA"
+    },
+    {
+      "x": 74,
+      "y": 36,
+      "group": "Europe"
+    },
+    {
+      "x": 94,
+      "y": 22,
+      "group": "Japan"
+    },
+    {
+      "x": 83,
+      "y": 33.5,
+      "group": "USA"
+    },
+    {
+      "x": 92,
+      "y": 28,
+      "group": "Japan"
+    },
+    {
+      "x": 88,
+      "y": 36,
+      "group": "Japan"
+    },
+    {
+      "x": 107,
+      "y": 21,
+      "group": "USA"
+    },
+    {
+      "x": 97,
+      "y": 27.2,
+      "group": "Japan"
+    },
+    {
+      "x": 70,
+      "y": 39.4,
+      "group": "Japan"
+    },
+    {
+      "x": 155,
+      "y": 16.9,
+      "group": "USA"
+    },
+    {
+      "x": 97,
+      "y": 22,
+      "group": "Japan"
+    },
+    {
+      "x": 90,
+      "y": 19.4,
+      "group": "USA"
+    },
+    {
+      "x": 84,
+      "y": 29,
+      "group": "USA"
+    },
+    {
+      "x": 85,
+      "y": 31,
+      "group": "USA"
+    },
+    {
+      "x": 125,
+      "y": 23,
+      "group": "USA"
+    },
+    {
+      "x": 129,
+      "y": 13,
+      "group": "USA"
+    }
+  ],
+  "renamed": [
+    {
+      "power": 175,
+      "mileage": 13,
+      "group": "USA"
+    },
+    {
+      "power": 63,
+      "mileage": 38,
+      "group": "USA"
+    },
+    {
+      "power": 145,
+      "mileage": 15,
+      "group": "USA"
+    },
+    {
+      "power": 84,
+      "mileage": 27.2,
+      "group": "USA"
+    },
+    {
+      "power": 88,
+      "mileage": 35,
+      "group": "Europe"
+    },
+    {
+      "power": 52,
+      "mileage": 44,
+      "group": "Europe"
+    },
+    {
+      "power": 90,
+      "mileage": 24.3,
+      "group": "USA"
+    },
+    {
+      "power": 150,
+      "mileage": 17,
+      "group": "USA"
+    },
+    {
+      "power": 88,
+      "mileage": 27,
+      "group": "USA"
+    },
+    {
+      "power": 137,
+      "mileage": 14,
+      "group": "USA"
+    },
+    {
+      "power": 90,
+      "mileage": 28.4,
+      "group": "USA"
+    },
+    {
+      "power": 78,
+      "mileage": 26,
+      "group": "Europe"
+    },
+    {
+      "power": 140,
+      "mileage": 16,
+      "group": "USA"
+    },
+    {
+      "power": 170,
+      "mileage": 15.5,
+      "group": "USA"
+    },
+    {
+      "power": 145,
+      "mileage": 15,
+      "group": "USA"
+    },
+    {
+      "power": 200,
+      "mileage": 10,
+      "group": "USA"
+    },
+    {
+      "power": 105,
+      "mileage": 19.2,
+      "group": "USA"
+    },
+    {
+      "power": 90,
+      "mileage": 18,
+      "group": "Japan"
+    },
+    {
+      "power": 48,
+      "mileage": 43.4,
+      "group": "Europe"
+    },
+    {
+      "power": 71,
+      "mileage": 25,
+      "group": "Europe"
+    },
+    {
+      "power": 58,
+      "mileage": 36,
+      "group": "Europe"
+    },
+    {
+      "power": 72,
+      "mileage": 26.5,
+      "group": "USA"
+    },
+    {
+      "power": 105,
+      "mileage": 20.5,
+      "group": "USA"
+    },
+    {
+      "power": 105,
+      "mileage": 16,
+      "group": "USA"
+    },
+    {
+      "power": 180,
+      "mileage": 11,
+      "group": "USA"
+    },
+    {
+      "power": 70,
+      "mileage": 34,
+      "group": "Japan"
+    },
+    {
+      "power": 86,
+      "mileage": 22,
+      "group": "USA"
+    },
+    {
+      "power": 100,
+      "mileage": 20,
+      "group": "USA"
+    },
+    {
+      "power": 67,
+      "mileage": 44.6,
+      "group": "Japan"
+    },
+    {
+      "power": 158,
+      "mileage": 13,
+      "group": "USA"
+    },
+    {
+      "power": 95,
+      "mileage": 24,
+      "group": "Japan"
+    },
+    {
+      "power": 82,
+      "mileage": 31,
+      "group": "USA"
+    },
+    {
+      "power": 150,
+      "mileage": 14,
+      "group": "USA"
+    },
+    {
+      "power": 74,
+      "mileage": 36,
+      "group": "Europe"
+    },
+    {
+      "power": 94,
+      "mileage": 22,
+      "group": "Japan"
+    },
+    {
+      "power": 83,
+      "mileage": 33.5,
+      "group": "USA"
+    },
+    {
+      "power": 92,
+      "mileage": 28,
+      "group": "Japan"
+    },
+    {
+      "power": 88,
+      "mileage": 36,
+      "group": "Japan"
+    },
+    {
+      "power": 107,
+      "mileage": 21,
+      "group": "USA"
+    },
+    {
+      "power": 97,
+      "mileage": 27.2,
+      "group": "Japan"
+    },
+    {
+      "power": 70,
+      "mileage": 39.4,
+      "group": "Japan"
+    },
+    {
+      "power": 155,
+      "mileage": 16.9,
+      "group": "USA"
+    },
+    {
+      "power": 97,
+      "mileage": 22,
+      "group": "Japan"
+    },
+    {
+      "power": 90,
+      "mileage": 19.4,
+      "group": "USA"
+    },
+    {
+      "power": 84,
+      "mileage": 29,
+      "group": "USA"
+    },
+    {
+      "power": 85,
+      "mileage": 31,
+      "group": "USA"
+    },
+    {
+      "power": 125,
+      "mileage": 23,
+      "group": "USA"
+    },
+    {
+      "power": 129,
+      "mileage": 13,
+      "group": "USA"
+    }
+  ],
+  "rescaled": [
+    {
+      "x": 1400,
+      "y": 104,
+      "group": "USA"
+    },
+    {
+      "x": 504,
+      "y": 304,
+      "group": "USA"
+    },
+    {
+      "x": 1160,
+      "y": 120,
+      "group": "USA"
+    },
+    {
+      "x": 672,
+      "y": 217.6,
+      "group": "USA"
+    },
+    {
+      "x": 704,
+      "y": 280,
+      "group": "Europe"
+    },
+    {
+      "x": 416,
+      "y": 352,
+      "group": "Europe"
+    },
+    {
+      "x": 720,
+      "y": 194.4,
+      "group": "USA"
+    },
+    {
+      "x": 1200,
+      "y": 136,
+      "group": "USA"
+    },
+    {
+      "x": 704,
+      "y": 216,
+      "group": "USA"
+    },
+    {
+      "x": 1096,
+      "y": 112,
+      "group": "USA"
+    },
+    {
+      "x": 720,
+      "y": 227.2,
+      "group": "USA"
+    },
+    {
+      "x": 624,
+      "y": 208,
+      "group": "Europe"
+    },
+    {
+      "x": 1120,
+      "y": 128,
+      "group": "USA"
+    },
+    {
+      "x": 1360,
+      "y": 124,
+      "group": "USA"
+    },
+    {
+      "x": 1160,
+      "y": 120,
+      "group": "USA"
+    },
+    {
+      "x": 1600,
+      "y": 80,
+      "group": "USA"
+    },
+    {
+      "x": 840,
+      "y": 153.6,
+      "group": "USA"
+    },
+    {
+      "x": 720,
+      "y": 144,
+      "group": "Japan"
+    },
+    {
+      "x": 384,
+      "y": 347.2,
+      "group": "Europe"
+    },
+    {
+      "x": 568,
+      "y": 200,
+      "group": "Europe"
+    },
+    {
+      "x": 464,
+      "y": 288,
+      "group": "Europe"
+    },
+    {
+      "x": 576,
+      "y": 212,
+      "group": "USA"
+    },
+    {
+      "x": 840,
+      "y": 164,
+      "group": "USA"
+    },
+    {
+      "x": 840,
+      "y": 128,
+      "group": "USA"
+    },
+    {
+      "x": 1440,
+      "y": 88,
+      "group": "USA"
+    },
+    {
+      "x": 560,
+      "y": 272,
+      "group": "Japan"
+    },
+    {
+      "x": 688,
+      "y": 176,
+      "group": "USA"
+    },
+    {
+      "x": 800,
+      "y": 160,
+      "group": "USA"
+    },
+    {
+      "x": 536,
+      "y": 356.8,
+      "group": "Japan"
+    },
+    {
+      "x": 1264,
+      "y": 104,
+      "group": "USA"
+    },
+    {
+      "x": 760,
+      "y": 192,
+      "group": "Japan"
+    },
+    {
+      "x": 656,
+      "y": 248,
+      "group": "USA"
+    },
+    {
+      "x": 1200,
+      "y": 112,
+      "group": "USA"
+    },
+    {
+      "x": 592,
+      "y": 288,
+      "group": "Europe"
+    },
+    {
+      "x": 752,
+      "y": 176,
+      "group": "Japan"
+    },
+    {
+      "x": 664,
+      "y": 268,
+      "group": "USA"
+    },
+    {
+      "x": 736,
+      "y": 224,
+      "group": "Japan"
+    },
+    {
+      "x": 704,
+      "y": 288,
+      "group": "Japan"
+    },
+    {
+      "x": 856,
+      "y": 168,
+      "group": "USA"
+    },
+    {
+      "x": 776,
+      "y": 217.6,
+      "group": "Japan"
+    },
+    {
+      "x": 560,
+      "y": 315.2,
+      "group": "Japan"
+    },
+    {
+      "x": 1240,
+      "y": 135.2,
+      "group": "USA"
+    },
+    {
+      "x": 776,
+      "y": 176,
+      "group": "Japan"
+    },
+    {
+      "x": 720,
+      "y": 155.2,
+      "group": "USA"
+    },
+    {
+      "x": 672,
+      "y": 232,
+      "group": "USA"
+    },
+    {
+      "x": 680,
+      "y": 248,
+      "group": "USA"
+    },
+    {
+      "x": 1000,
+      "y": 184,
+      "group": "USA"
+    },
+    {
+      "x": 1032,
+      "y": 104,
+      "group": "USA"
+    }
+  ],
+  "missing": [
+    {
+      "x": 175,
+      "y": null,
+      "group": "USA"
+    },
+    {
+      "x": 63,
+      "y": 38,
+      "group": "USA"
+    },
+    {
+      "x": 145,
+      "y": 15,
+      "group": "USA"
+    },
+    {
+      "x": 84,
+      "y": null,
+      "group": "USA"
+    },
+    {
+      "x": 88,
+      "y": 35,
+      "group": "Europe"
+    },
+    {
+      "x": 52,
+      "y": 44,
+      "group": "Europe"
+    },
+    {
+      "x": 90,
+      "y": null,
+      "group": "USA"
+    },
+    {
+      "x": 150,
+      "y": 17,
+      "group": "USA"
+    },
+    {
+      "x": 88,
+      "y": 27,
+      "group": "USA"
+    },
+    {
+      "x": 137,
+      "y": null,
+      "group": "USA"
+    },
+    {
+      "x": 90,
+      "y": 28.4,
+      "group": "USA"
+    },
+    {
+      "x": 78,
+      "y": 26,
+      "group": "Europe"
+    },
+    {
+      "x": 140,
+      "y": null,
+      "group": "USA"
+    },
+    {
+      "x": 170,
+      "y": 15.5,
+      "group": "USA"
+    },
+    {
+      "x": 145,
+      "y": 15,
+      "group": "USA"
+    },
+    {
+      "x": 200,
+      "y": null,
+      "group": "USA"
+    },
+    {
+      "x": 105,
+      "y": 19.2,
+      "group": "USA"
+    },
+    {
+      "x": 90,
+      "y": 18,
+      "group": "Japan"
+    },
+    {
+      "x": 48,
+      "y": null,
+      "group": "Europe"
+    },
+    {
+      "x": 71,
+      "y": 25,
+      "group": "Europe"
+    },
+    {
+      "x": 58,
+      "y": 36,
+      "group": "Europe"
+    },
+    {
+      "x": 72,
+      "y": null,
+      "group": "USA"
+    },
+    {
+      "x": 105,
+      "y": 20.5,
+      "group": "USA"
+    },
+    {
+      "x": 105,
+      "y": 16,
+      "group": "USA"
+    },
+    {
+      "x": 180,
+      "y": null,
+      "group": "USA"
+    },
+    {
+      "x": 70,
+      "y": 34,
+      "group": "Japan"
+    },
+    {
+      "x": 86,
+      "y": 22,
+      "group": "USA"
+    },
+    {
+      "x": 100,
+      "y": null,
+      "group": "USA"
+    },
+    {
+      "x": 67,
+      "y": 44.6,
+      "group": "Japan"
+    },
+    {
+      "x": 158,
+      "y": 13,
+      "group": "USA"
+    },
+    {
+      "x": 95,
+      "y": null,
+      "group": "Japan"
+    },
+    {
+      "x": 82,
+      "y": 31,
+      "group": "USA"
+    },
+    {
+      "x": 150,
+      "y": 14,
+      "group": "USA"
+    },
+    {
+      "x": 74,
+      "y": null,
+      "group": "Europe"
+    },
+    {
+      "x": 94,
+      "y": 22,
+      "group": "Japan"
+    },
+    {
+      "x": 83,
+      "y": 33.5,
+      "group": "USA"
+    },
+    {
+      "x": 92,
+      "y": null,
+      "group": "Japan"
+    },
+    {
+      "x": 88,
+      "y": 36,
+      "group": "Japan"
+    },
+    {
+      "x": 107,
+      "y": 21,
+      "group": "USA"
+    },
+    {
+      "x": 97,
+      "y": null,
+      "group": "Japan"
+    },
+    {
+      "x": 70,
+      "y": 39.4,
+      "group": "Japan"
+    },
+    {
+      "x": 155,
+      "y": 16.9,
+      "group": "USA"
+    },
+    {
+      "x": 97,
+      "y": null,
+      "group": "Japan"
+    },
+    {
+      "x": 90,
+      "y": 19.4,
+      "group": "USA"
+    },
+    {
+      "x": 84,
+      "y": 29,
+      "group": "USA"
+    },
+    {
+      "x": 85,
+      "y": null,
+      "group": "USA"
+    },
+    {
+      "x": 125,
+      "y": 23,
+      "group": "USA"
+    },
+    {
+      "x": 129,
+      "y": 13,
+      "group": "USA"
+    }
+  ],
+  "profile": {
+    "rows": 48,
+    "sourceRows": 406,
+    "selection": "sampled",
+    "sizeTier": "small",
+    "duplicateRows": 1,
+    "categories": {
+      "group": 3
+    },
+    "numeric": {
+      "x": {
+        "missing": 0,
+        "nonFinite": 0,
+        "negative": 0,
+        "zero": 0,
+        "distinct": 36,
+        "min": 48,
+        "max": 200
+      },
+      "y": {
+        "missing": 0,
+        "nonFinite": 0,
+        "negative": 0,
+        "zero": 0,
+        "distinct": 37,
+        "min": 10,
+        "max": 44.6
+      }
+    }
+  }
+}

@@ -1,0 +1,23 @@
+✔ loads only the dataset requested by a test (3.036542ms)
+✔ locks every reference dataset by row count, bytes, and sha256 (9.7925ms)
+✔ registers a frozen, uniquely identified real-data and edge-case corpus (0.328542ms)
+✔ describes every real source with typed fields, roles, mappings, and provenance (0.921875ms)
+✔ loads zoo datasets through immutable fixtures and isolated clones (5.415541ms)
+✔ coerces pinned CSV fields only through explicit schemas (0.69ms)
+✔ normalizes only explicitly declared upstream CSV quirks (0.322083ms)
+✔ selects deterministic samples with endpoint and numeric extrema witnesses (11.389792ms)
+✔ matches the independent full-sort stable-sample oracle (17.4875ms)
+✔ preserves the pinned large-source stable-sample index digest (1187.627625ms)
+✔ keeps TidyTuesday URLs commit-pinned and reports optional local caches (11262.485584ms)
+✔ exposes every verified source row with immutable original lineage (4116.314875ms)
+✔ keeps optional raw caches outside git and the published package (0.642833ms)
+✔ rejects unknown or ambiguous dataset sync arguments before downloading (177.012208ms)
+✔ applies deterministic, non-mutating corpus mutations (0.860084ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 15
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 16945.78875

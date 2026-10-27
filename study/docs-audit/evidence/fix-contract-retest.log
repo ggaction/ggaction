@@ -1,0 +1,51 @@
+✔ deferred chart owner cards distinguish creation from completed geometry (6.018625ms)
+✔ compact action cards are generated from the current action contract (1023.513083ms)
+✔ compact action cards satisfy the bounded typed public schema projection (63.498875ms)
+✔ action-card hierarchy is generated from the executable direct-child trace (6831.375541ms)
+✔ scale spacing units agree across every generic and focused editor (3.552375ms)
+✔ action cards separate entry support, units, inference, and completion (2.909083ms)
+✔ every compact snippet type-checks against the exact ChartProgram declaration (135.377167ms)
+✔ imputation call patterns preserve method-specific requirements (3.080084ms)
+✔ call pattern validation rejects unsupported top-level keys without confusing nested keys (0.749584ms)
+✔ advertised bar calls execute and direction-only guide branches retain their exact meaning (31.817917ms)
+✔ keeps current package surfaces visible in public and architecture documentation (2.754459ms)
+✔ keeps the current renderer set out of architecture limitations (1.358084ms)
+✔ keeps documented browser bundle ceilings synchronized with package checks (16.69175ms)
+✔ keeps published MCP benchmark aggregates internally consistent (0.511542ms)
+✔ keeps the public MCP claims anchored to the benchmark record (0.950375ms)
+✔ keeps the raw benchmark identifiable without shipping execution traces (0.238458ms)
+✔ isolates npm pack from the caller's global cache (0.917917ms)
+npm notice
+npm notice New minor version of npm available! 11.18.0 -> 11.21.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.21.1
+npm notice To update run: npm install -g npm@11.21.1
+npm notice
+✖ publishes only the bounded public package artifact (2071.135625ms)
+  Error: Unpacked size 4255119 exceeds 4255000 bytes.
+      at validatePackageManifest (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/package-artifact.js:261:11)
+      at inspectPackageArtifact (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/package-artifact.js:269:10)
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/contracts/package-artifact.test.js:47:20)
+      at async Test.run (node:internal/test_runner/test:932:9)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:629:7)
+
+✔ rejects missing, forbidden, and oversized package manifests (0.904833ms)
+✔ packed scale compaction preserves exports and numeric color results (61.754625ms)
+ℹ tests 20
+ℹ suites 0
+ℹ pass 19
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 8555.732375
+
+✖ failing tests:
+
+test at test/contracts/package-artifact.test.js:27:1
+✖ publishes only the bounded public package artifact (2071.135625ms)
+  Error: Unpacked size 4255119 exceeds 4255000 bytes.
+      at validatePackageManifest (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/package-artifact.js:261:11)
+      at inspectPackageArtifact (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/scripts/package-artifact.js:269:10)
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/contracts/package-artifact.test.js:47:20)
+      at async Test.run (node:internal/test_runner/test:932:9)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:629:7)

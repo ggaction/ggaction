@@ -1,0 +1,457 @@
+
+> ggaction@0.0.22 test:docs
+> node scripts/run-tests.js docs
+
+✔ keeps the generated capability pages synchronized (6.992083ms)
+✔ matches primary position capability rows to runtime compatibility (0.750625ms)
+✔ matches documented highlight marks to runtime policies (0.092083ms)
+✔ smokes rect and arc position-color capabilities (40.774ms)
+✔ smokes bar highlight and continuous legend capabilities (30.832583ms)
+✔ smokes complete Cartesian axis editing (16.834666ms)
+✔ verifies independent stroke and legend support for every documented mark (130.727084ms)
+✔ uses point opacity samples for line consumers and rejects rule opacity legends (9.243792ms)
+✔ gives every declared action one exact anchor, classification, and complete option table (1078.220667ms)
+✖ indexes each exact action at its canonical destination within the bounded search payload (7.759ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(Buffer.byteLength(source) < SEARCH_INDEX_MAX_BYTES)
+  
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/docs/action-reference.test.js:38:10)
+      at async Test.run (node:internal/test_runner/test:932:9)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:629:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '=='
+  }
+
+✔ current architecture source module references resolve in this repository (2.899292ms)
+✔ escaped code examples do not become real fragment targets or duplicate ids (1.337333ms)
+✔ actual duplicate element ids remain observable by the built checker (0.131917ms)
+✔ comments, raw text and quoted attribute examples cannot supply fragment targets (0.157459ms)
+✔ element ids support quoted and unquoted attributes without mistaking data-id (0.082ms)
+✖ covers every maintained chart program or an explicit documentation-only exclusion (26.984625ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    [
+      'airline-passenger-moving-windows',
+      'annotated-imdb-scatterplot',
+      'apply-custom-theme',
+      'area-layout',
+  ...
+      'readme-authoring-sequence',
+  +   'readme-rose-sequence',
+      'remove-dependent-resources',
+      'repair-missing-observations',
+      'repeat-charts',
+      'series-identity',
+      'shared-facet-owner',
+  
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/docs/documentation-coverage.test.js:30:10)
+      at async Test.run (node:internal/test_runner/test:932:9)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:297:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [
+      'airline-passenger-moving-windows',   'annotated-imdb-scatterplot',         'apply-custom-theme',
+      'area-layout',                        'axis-owners',                        'bar-compositing',
+      'beeswarm-plot',                      'bootstrap-mean-ci',                  'cars-acceleration-violins',
+      'cars-binned-heatmap',                'cars-box-plot',                      'cars-density-area',
+      'cars-error-bar',                     'cars-gradient-plot',                 'cars-histogram',
+      'cars-line-chart',                    'cars-multi-legend-layout',           'cars-origin-donut',
+      'cars-origin-histogram-facet',        'cars-origin-scatterplot-facet',      'cars-parallel-coordinates',
+      'cars-regression-scatterplot',        'cars-scatterplot',                   'cars-temporal-bar-line',
+      'cars-weighted-rules',                'cars-window-rank-scatterplot',       'centered-area-stream',
+      'color-controls',                     'color-midpoint',                     'color-transitions',
+      'color-white-point',                  'combined-legends',                   'compare-weighted-distributions',
+      'continuous-area-color',              'cross-feature-dashboard',            'dark-theme-scatterplot',
+      'density-plot',                       'directional-tick-plot',              'dot-plot',
+      'dumbbell-plot',                      'ecdf-plot',                          'edit-facet-source',
+      'edit-scales-and-guides',             'edit-selected-labels',               'facet-field-titles',
+      'facet-grid',                         'facet-header-rotation',              'facet-shared-top-lane',
+      'fitted-long-labels',                 'gapminder-continuous-color-bars',    'gapminder-country-labels',
+      'gapminder-development-trajectories', 'gapminder-discretized-color-scales', 'gapminder-error-band',
+      'gapminder-horizon',                  'gapminder-life-expectancy-heatmap',  'gapminder-polar-trends',
+      'gapminder-population-donut',         'gapminder-radial-bars',              'gapminder-temporal-discrete-scales',
+      'gapminder-transformed-scales',       'getting-started',                    'hierarchical-authoring',
+      'horizon-plot',                       'jobs-grouped-bar',                   'jobs-horizontal-grouped-bar',
+      'jobs-radar-chart',                   'legend-appearance',                  'legend-content-spacing',
+      'legend-layout',                      'legend-recipe-opacity',              'linear-nearest-ticks',
+      'linear-nice-count',                  'lollipop-plot',                      'lookup-data',
+      'mark-selection',                     'named-shapes',                       'nightingale-rose-chart',
+      'ordered-category-bar',               'pie-plot',                           'plot-guide-underlays',
+      'point-jitter',                       'polar-guides',                       'polar-points',
+      'program-composition',                'radial-sectors',                     'raincloud-plot',
+      'readme-authoring-sequence',          'readme-rose-sequence',               'remove-dependent-resources',
+      'repair-missing-observations',        'repeat-charts',                      'series-identity',
+      'shared-facet-owner',                 'switch-encoding-modes',              'symbol-window',
+      'temporal-input',                     'theta-legend-order',                 'time-unit-data'
+    ],
+    expected: [
+      'airline-passenger-moving-windows',   'annotated-imdb-scatterplot',         'apply-custom-theme',
+      'area-layout',                        'axis-owners',                        'bar-compositing',
+      'beeswarm-plot',                      'bootstrap-mean-ci',                  'cars-acceleration-violins',
+      'cars-binned-heatmap',                'cars-box-plot',                      'cars-density-area',
+      'cars-error-bar',                     'cars-gradient-plot',                 'cars-histogram',
+      'cars-line-chart',                    'cars-multi-legend-layout',           'cars-origin-donut',
+      'cars-origin-histogram-facet',        'cars-origin-scatterplot-facet',      'cars-parallel-coordinates',
+      'cars-regression-scatterplot',        'cars-scatterplot',                   'cars-temporal-bar-line',
+      'cars-weighted-rules',                'cars-window-rank-scatterplot',       'centered-area-stream',
+      'color-controls',                     'color-midpoint',                     'color-transitions',
+      'color-white-point',                  'combined-legends',                   'compare-weighted-distributions',
+      'continuous-area-color',              'cross-feature-dashboard',            'dark-theme-scatterplot',
+      'density-plot',                       'directional-tick-plot',              'dot-plot',
+      'dumbbell-plot',                      'ecdf-plot',                          'edit-facet-source',
+      'edit-scales-and-guides',             'edit-selected-labels',               'facet-field-titles',
+      'facet-grid',                         'facet-header-rotation',              'facet-shared-top-lane',
+      'fitted-long-labels',                 'gapminder-continuous-color-bars',    'gapminder-country-labels',
+      'gapminder-development-trajectories', 'gapminder-discretized-color-scales', 'gapminder-error-band',
+      'gapminder-horizon',                  'gapminder-life-expectancy-heatmap',  'gapminder-polar-trends',
+      'gapminder-population-donut',         'gapminder-radial-bars',              'gapminder-temporal-discrete-scales',
+      'gapminder-transformed-scales',       'getting-started',                    'hierarchical-authoring',
+      'horizon-plot',                       'jobs-grouped-bar',                   'jobs-horizontal-grouped-bar',
+      'jobs-radar-chart',                   'legend-appearance',                  'legend-content-spacing',
+      'legend-layout',                      'legend-recipe-opacity',              'linear-nearest-ticks',
+      'linear-nice-count',                  'lollipop-plot',                      'lookup-data',
+      'mark-selection',                     'named-shapes',                       'nightingale-rose-chart',
+      'ordered-category-bar',               'pie-plot',                           'plot-guide-underlays',
+      'point-jitter',                       'polar-guides',                       'polar-points',
+      'program-composition',                'radial-sectors',                     'raincloud-plot',
+      'readme-authoring-sequence',          'remove-dependent-resources',         'repair-missing-observations',
+      'repeat-charts',                      'series-identity',                    'shared-facet-owner',
+      'switch-encoding-modes',              'symbol-window',                      'temporal-input',
+      'theta-legend-order',                 'time-unit-data'
+    ],
+    operator: 'deepStrictEqual'
+  }
+
+✔ matches the public derived-transform union to its one normative tag table (2.788625ms)
+✔ keeps the chart picker, workflow programs, snippet contracts, and provenance fresh (377.368625ms)
+✔ release provenance requires the matching version and exact runtime fingerprint (591.430209ms)
+✔ keeps the hierarchical lesson geometrically equivalent before intentional styling (41.835042ms)
+✔ anchors completion, imputation, and window prose to literal expected values (45.871334ms)
+✔ distinguishes required runtime failures from CI-version recommendations (3.87625ms)
+✔ the resource cleanup recipe demonstrates rejection before dependency-safe removal (20.284209ms)
+✖ Related navigation remains the final section of public documentation (12.388ms)
+  AssertionError [ERR_ASSERTION]: docs/mcp.md
+      at visit (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/docs/documentation-coverage.test.js:153:29)
+      at async TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/docs/documentation-coverage.test.js:157:3)
+      at async Test.run (node:internal/test_runner/test:932:9)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:629:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: '\n[Getting Started](./getting-started.md) ·\n[Chart Recipes](./recipes/index.md) ·\n[Rendering](./api/rendering.md) ·\n[Supported Features](./supported-features.md)\n\n## Long requests and execution recovery\n\nEach query is limited to 500 characters. Preserve the full user request in the host, split longer requests into bounded tasks, and track every requirement across packets. A resolved packet is not an execution guarantee. If execution fails, inspect `ggaction/diagnostics`, retain the prior program, and consult the exact action/type and public recovery guide. The MCP fallback URI allowlist still applies; external public-documentation access is a separate host capability. Never drop requirements to fit the query limit.\n',
+    expected: /^#{2,6}\s|^```/m,
+    operator: 'doesNotMatch'
+  }
+
+✔ every authoring workflow has exact-code execution metadata and a browser entry (1.134167ms)
+✔ example source links resolve to the exact checked-in canonical programs (1142.881958ms)
+✔ weighted distribution recipes preserve mass and separate density from cumulative probability (58.203917ms)
+✔ keeps every local Markdown link and anchor valid (558.105459ms)
+✔ keeps navigation and page order complete (5.250041ms)
+✔ keeps public facade and stabilization guidance cumulative (0.957ms)
+✔ keeps the chart-example catalog strict and routable (16.892209ms)
+✔ generates the public example index from the chart catalog (10.681458ms)
+✔ keeps every Markdown page structurally readable (10.248ms)
+✔ keeps documentation styles split by stable UI responsibility (1.200333ms)
+✔ generates unique page metadata and canonical social tags (105.831125ms)
+✔ reports documentation environment prerequisites before building (0.540834ms)
+✔ keeps repository source links and raw images verifiable (10.541083ms)
+✔ keeps the published documentation version aligned with the package (0.587333ms)
+✔ documents sequential palette count consistently across scale surfaces (0.191209ms)
+✔ keeps the strict TypeScript extension example executable by package CI (1.12175ms)
+✔ keeps task pages visual and chart figures canonical (11.926667ms)
+✔ keeps tutorial action flows aligned with public examples (1.374292ms)
+✔ routes entry documentation to the canonical example indexes (3.046875ms)
+✔ keeps the README and documentation home positioning aligned (0.299958ms)
+✔ keeps complete tutorial programs portable to package consumers (0.744584ms)
+✔ keeps every primary recipe snippet labeled and syntactically runnable (1725.884209ms)
+✔ documents one shared numeric font-weight rendering policy (1.86225ms)
+✔ indexes documentation headings for section search (4.241792ms)
+✖ keeps the compact search index generated and action-aware (258.057083ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/docs/documentation.test.js:789:10)
+      at async Test.run (node:internal/test_runner/test:932:9)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:629:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual'
+  }
+
+✔ keeps every public action available to documentation interactions (7.544959ms)
+✔ publishes schemas, typed action cards, and declarations from canonical sources (12.496584ms)
+✔ keeps point legend support consistent across public guidance (0.310166ms)
+✔ classifies every declared ChartProgram action in the reference (1408.201792ms)
+✔ keeps rendering guidance executable and aligned with the Canvas contract (327.982125ms)
+✔ does not repeat identical includes in one documentation position (11.791375ms)
+✔ keeps concise and full LLM documentation synchronized (2160.225291ms)
+✔ the README authoring sequence completes with the repository cars data and its legend (137.401209ms)
+✔ the documented empty filter preserves its source and stores the named empty result (3.121625ms)
+✔ the LLM task fragments independently build histogram and regression programs (41.652125ms)
+✔ the extension JavaScript example creates its target before editing it (13.54425ms)
+✔ numeric lines, points with default radius, and bars with default width materialize (7.1855ms)
+✔ executes documented recipes/annotations.md against its stated inputs (491.306625ms)
+✔ executes documented recipes/bar-chart.md against its stated inputs (42.957125ms)
+✔ executes documented recipes/box-plot.md against its stated inputs (71.791209ms)
+✔ executes documented recipes/composition.md against its stated inputs (32.80325ms)
+✔ executes documented recipes/density-area.md against its stated inputs (40.971333ms)
+✔ executes documented recipes/error-band.md against its stated inputs (45.994167ms)
+✔ executes documented recipes/error-bar.md against its stated inputs (29.049417ms)
+✔ executes documented recipes/facet.md against its stated inputs (70.609958ms)
+✔ executes documented recipes/gradient-plot.md against its stated inputs (39.615709ms)
+✔ executes documented recipes/heatmap.md against its stated inputs (31.625292ms)
+✔ executes documented recipes/histogram.md against its stated inputs (19.618875ms)
+✔ executes documented recipes/horizon.md against its stated inputs (18.720166ms)
+✔ executes documented recipes/line-chart.md against its stated inputs (13.760916ms)
+✔ executes documented recipes/parallel-coordinates.md against its stated inputs (39.39275ms)
+✔ executes documented recipes/path-ordering.md against its stated inputs (57.14875ms)
+✔ executes documented recipes/regression-scatterplot.md against its stated inputs (147.974625ms)
+✔ executes documented recipes/rose-chart.md against its stated inputs (22.013208ms)
+✔ executes documented recipes/scatterplot.md against its stated inputs (11.670416ms)
+✔ executes documented recipes/violin-plot.md against its stated inputs (18.99575ms)
+✔ executes documented tutorials/area-layout.md against its stated inputs (32.651417ms)
+✔ executes documented tutorials/density-area.md against its stated inputs (41.277792ms)
+✔ executes documented tutorials/ecdf.md against its stated inputs (30.309625ms)
+✔ executes documented tutorials/endpoint-plots.md against its stated inputs (45.361375ms)
+✔ executes documented tutorials/error-band.md against its stated inputs (76.501041ms)
+✔ executes documented tutorials/error-bar.md against its stated inputs (68.086708ms)
+✔ executes documented tutorials/grouped-bar.md against its stated inputs (282.294666ms)
+✔ executes documented tutorials/histogram.md against its stated inputs (30.932166ms)
+✔ executes documented tutorials/horizon.md against its stated inputs (21.934875ms)
+✔ executes documented tutorials/line-chart.md against its stated inputs (44.317208ms)
+✔ executes documented tutorials/mark-selection.md against its stated inputs (222.904125ms)
+✔ executes documented tutorials/polar-arcs.md against its stated inputs (17.065334ms)
+✔ executes documented tutorials/polar-lines.md against its stated inputs (23.263375ms)
+✔ executes documented tutorials/polar-points.md against its stated inputs (32.757375ms)
+✔ executes documented tutorials/regression-scatterplot.md against its stated inputs (196.536583ms)
+✔ executes documented tutorials/scatterplot.md against its stated inputs (24.73625ms)
+✔ executes documented api/data/filtering.md against its stated inputs (13.851ms)
+✔ executes documented recipes/repair-missing-observations.md against its stated inputs (59.905542ms)
+✔ executes documented recipes/compare-weighted-distributions.md against its stated inputs (77.6445ms)
+✔ executes documented recipes/switch-encoding-modes.md against its stated inputs (30.399792ms)
+✔ executes documented recipes/edit-scales-and-guides.md against its stated inputs (142.2395ms)
+✔ executes documented recipes/edit-selected-labels.md against its stated inputs (49.671875ms)
+✔ executes documented recipes/apply-custom-theme.md against its stated inputs (49.967334ms)
+✔ executes documented recipes/edit-facet-source.md against its stated inputs (140.78925ms)
+✔ executes documented recipes/remove-dependent-resources.md against its stated inputs (43.807416ms)
+✔ executes documented tutorials/hierarchical-authoring.md against its stated inputs (42.035625ms)
+✔ executes documented api/marks/line-area.md against its stated inputs (12.907041ms)
+✔ marks tutorial and recipe snippets with explicit execution contracts (4.61175ms)
+✔ keeps one generated gallery image for every public chart (7.329834ms)
+✔ keeps the generated Getting Started image aligned with its exact program (0.47325ms)
+✔ keeps generated mark-selection tutorial images canonical and fresh (0.488542ms)
+✔ keeps the composition asset legible as two distinct child panels (42.729209ms)
+✔ keeps the first chart identifiable without color alone (51.863625ms)
+✔ search recovers from a failed request and routes every exact action with correct keyboard boundaries (9964.507583ms)
+✔ action filtering updates TOC visibility and counts and a hidden hash target can be revealed (225.321834ms)
+✔ search handles zero, one, two, and eight results without stale active options (261.655375ms)
+✔ typing after a completed failed prefetch waits for an explicit retry (249.859959ms)
+✔ each retry makes one request after consecutive failures and pending searches respect cancellation (792.820209ms)
+✔ keeps the Quarto example pinned, responsive, and accessible (3.160166ms)
+✔ executes the example program against the package source (360.302541ms)
+✔ builds the ordered immutable README authoring sequence (406.636584ms)
+✔ handles zero-variance R-squared input explicitly (0.187208ms)
+✖ keeps generated README GIF and PNG valid and referenced (2.714875ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  15 !== 8
+  
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/docs/readme-authoring-sequence.test.js:125:10)
+      at Test.runInAsyncScope (node:async_hooks:211:14)
+      at Test.run (node:internal/test_runner/test:931:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+      at Test.postRun (node:internal/test_runner/test:1042:19)
+      at Test.run (node:internal/test_runner/test:970:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:629:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 15,
+    expected: 8,
+    operator: 'strictEqual'
+  }
+
+✔ keeps the README revision branches immutable and independently traced (61.945292ms)
+✔ keeps the executable revision example immediately after Quick Start (0.379916ms)
+ℹ tests 125
+ℹ suites 0
+ℹ pass 120
+ℹ fail 5
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 13874.474792
+
+✖ failing tests:
+
+test at test/docs/action-reference.test.js:36:1
+✖ indexes each exact action at its canonical destination within the bounded search payload (7.759ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(Buffer.byteLength(source) < SEARCH_INDEX_MAX_BYTES)
+  
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/docs/action-reference.test.js:38:10)
+      at async Test.run (node:internal/test_runner/test:932:9)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:629:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '=='
+  }
+
+test at test/docs/documentation-coverage.test.js:22:1
+✖ covers every maintained chart program or an explicit documentation-only exclusion (26.984625ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    [
+      'airline-passenger-moving-windows',
+      'annotated-imdb-scatterplot',
+      'apply-custom-theme',
+      'area-layout',
+  ...
+      'readme-authoring-sequence',
+  +   'readme-rose-sequence',
+      'remove-dependent-resources',
+      'repair-missing-observations',
+      'repeat-charts',
+      'series-identity',
+      'shared-facet-owner',
+  
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/docs/documentation-coverage.test.js:30:10)
+      at async Test.run (node:internal/test_runner/test:932:9)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:297:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [
+      'airline-passenger-moving-windows',   'annotated-imdb-scatterplot',         'apply-custom-theme',
+      'area-layout',                        'axis-owners',                        'bar-compositing',
+      'beeswarm-plot',                      'bootstrap-mean-ci',                  'cars-acceleration-violins',
+      'cars-binned-heatmap',                'cars-box-plot',                      'cars-density-area',
+      'cars-error-bar',                     'cars-gradient-plot',                 'cars-histogram',
+      'cars-line-chart',                    'cars-multi-legend-layout',           'cars-origin-donut',
+      'cars-origin-histogram-facet',        'cars-origin-scatterplot-facet',      'cars-parallel-coordinates',
+      'cars-regression-scatterplot',        'cars-scatterplot',                   'cars-temporal-bar-line',
+      'cars-weighted-rules',                'cars-window-rank-scatterplot',       'centered-area-stream',
+      'color-controls',                     'color-midpoint',                     'color-transitions',
+      'color-white-point',                  'combined-legends',                   'compare-weighted-distributions',
+      'continuous-area-color',              'cross-feature-dashboard',            'dark-theme-scatterplot',
+      'density-plot',                       'directional-tick-plot',              'dot-plot',
+      'dumbbell-plot',                      'ecdf-plot',                          'edit-facet-source',
+      'edit-scales-and-guides',             'edit-selected-labels',               'facet-field-titles',
+      'facet-grid',                         'facet-header-rotation',              'facet-shared-top-lane',
+      'fitted-long-labels',                 'gapminder-continuous-color-bars',    'gapminder-country-labels',
+      'gapminder-development-trajectories', 'gapminder-discretized-color-scales', 'gapminder-error-band',
+      'gapminder-horizon',                  'gapminder-life-expectancy-heatmap',  'gapminder-polar-trends',
+      'gapminder-population-donut',         'gapminder-radial-bars',              'gapminder-temporal-discrete-scales',
+      'gapminder-transformed-scales',       'getting-started',                    'hierarchical-authoring',
+      'horizon-plot',                       'jobs-grouped-bar',                   'jobs-horizontal-grouped-bar',
+      'jobs-radar-chart',                   'legend-appearance',                  'legend-content-spacing',
+      'legend-layout',                      'legend-recipe-opacity',              'linear-nearest-ticks',
+      'linear-nice-count',                  'lollipop-plot',                      'lookup-data',
+      'mark-selection',                     'named-shapes',                       'nightingale-rose-chart',
+      'ordered-category-bar',               'pie-plot',                           'plot-guide-underlays',
+      'point-jitter',                       'polar-guides',                       'polar-points',
+      'program-composition',                'radial-sectors',                     'raincloud-plot',
+      'readme-authoring-sequence',          'readme-rose-sequence',               'remove-dependent-resources',
+      'repair-missing-observations',        'repeat-charts',                      'series-identity',
+      'shared-facet-owner',                 'switch-encoding-modes',              'symbol-window',
+      'temporal-input',                     'theta-legend-order',                 'time-unit-data'
+    ],
+    expected: [
+      'airline-passenger-moving-windows',   'annotated-imdb-scatterplot',         'apply-custom-theme',
+      'area-layout',                        'axis-owners',                        'bar-compositing',
+      'beeswarm-plot',                      'bootstrap-mean-ci',                  'cars-acceleration-violins',
+      'cars-binned-heatmap',                'cars-box-plot',                      'cars-density-area',
+      'cars-error-bar',                     'cars-gradient-plot',                 'cars-histogram',
+      'cars-line-chart',                    'cars-multi-legend-layout',           'cars-origin-donut',
+      'cars-origin-histogram-facet',        'cars-origin-scatterplot-facet',      'cars-parallel-coordinates',
+      'cars-regression-scatterplot',        'cars-scatterplot',                   'cars-temporal-bar-line',
+      'cars-weighted-rules',                'cars-window-rank-scatterplot',       'centered-area-stream',
+      'color-controls',                     'color-midpoint',                     'color-transitions',
+      'color-white-point',                  'combined-legends',                   'compare-weighted-distributions',
+      'continuous-area-color',              'cross-feature-dashboard',            'dark-theme-scatterplot',
+      'density-plot',                       'directional-tick-plot',              'dot-plot',
+      'dumbbell-plot',                      'ecdf-plot',                          'edit-facet-source',
+      'edit-scales-and-guides',             'edit-selected-labels',               'facet-field-titles',
+      'facet-grid',                         'facet-header-rotation',              'facet-shared-top-lane',
+      'fitted-long-labels',                 'gapminder-continuous-color-bars',    'gapminder-country-labels',
+      'gapminder-development-trajectories', 'gapminder-discretized-color-scales', 'gapminder-error-band',
+      'gapminder-horizon',                  'gapminder-life-expectancy-heatmap',  'gapminder-polar-trends',
+      'gapminder-population-donut',         'gapminder-radial-bars',              'gapminder-temporal-discrete-scales',
+      'gapminder-transformed-scales',       'getting-started',                    'hierarchical-authoring',
+      'horizon-plot',                       'jobs-grouped-bar',                   'jobs-horizontal-grouped-bar',
+      'jobs-radar-chart',                   'legend-appearance',                  'legend-content-spacing',
+      'legend-layout',                      'legend-recipe-opacity',              'linear-nearest-ticks',
+      'linear-nice-count',                  'lollipop-plot',                      'lookup-data',
+      'mark-selection',                     'named-shapes',                       'nightingale-rose-chart',
+      'ordered-category-bar',               'pie-plot',                           'plot-guide-underlays',
+      'point-jitter',                       'polar-guides',                       'polar-points',
+      'program-composition',                'radial-sectors',                     'raincloud-plot',
+      'readme-authoring-sequence',          'remove-dependent-resources',         'repair-missing-observations',
+      'repeat-charts',                      'series-identity',                    'shared-facet-owner',
+      'switch-encoding-modes',              'symbol-window',                      'temporal-input',
+      'theta-legend-order',                 'time-unit-data'
+    ],
+    operator: 'deepStrictEqual'
+  }
+
+test at test/docs/documentation-coverage.test.js:144:1
+✖ Related navigation remains the final section of public documentation (12.388ms)
+  AssertionError [ERR_ASSERTION]: docs/mcp.md
+      at visit (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/docs/documentation-coverage.test.js:153:29)
+      at async TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/docs/documentation-coverage.test.js:157:3)
+      at async Test.run (node:internal/test_runner/test:932:9)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:629:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: '\n[Getting Started](./getting-started.md) ·\n[Chart Recipes](./recipes/index.md) ·\n[Rendering](./api/rendering.md) ·\n[Supported Features](./supported-features.md)\n\n## Long requests and execution recovery\n\nEach query is limited to 500 characters. Preserve the full user request in the host, split longer requests into bounded tasks, and track every requirement across packets. A resolved packet is not an execution guarantee. If execution fails, inspect `ggaction/diagnostics`, retain the prior program, and consult the exact action/type and public recovery guide. The MCP fallback URI allowlist still applies; external public-documentation access is a separate host capability. Never drop requirements to fit the query limit.\n',
+    expected: /^#{2,6}\s|^```/m,
+    operator: 'doesNotMatch'
+  }
+
+test at test/docs/documentation.test.js:779:1
+✖ keeps the compact search index generated and action-aware (258.057083ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/docs/documentation.test.js:789:10)
+      at async Test.run (node:internal/test_runner/test:932:9)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:629:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual'
+  }
+
+test at test/docs/readme-authoring-sequence.test.js:107:1
+✖ keeps generated README GIF and PNG valid and referenced (2.714875ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  15 !== 8
+  
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/docs/readme-authoring-sequence.test.js:125:10)
+      at Test.runInAsyncScope (node:async_hooks:211:14)
+      at Test.run (node:internal/test_runner/test:931:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+      at Test.postRun (node:internal/test_runner/test:1042:19)
+      at Test.run (node:internal/test_runner/test:970:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:629:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 15,
+    expected: 8,
+    operator: 'strictEqual'
+  }

@@ -1,0 +1,107 @@
+{
+  "scope": "Roadmap HTML UI, not ggaction runtime",
+  "htmlSha256": "ffa0f3854795394203d1dc5fea5310279b6e447fdbb0ea681198b6ae856105aa",
+  "browser": "153.0.8010.12",
+  "passed": true,
+  "checks": [
+    {
+      "name": "desktop width",
+      "passed": true
+    },
+    {
+      "name": "all cards and sections",
+      "passed": true
+    },
+    {
+      "name": "unique anchors",
+      "passed": true
+    },
+    {
+      "name": "WP filter",
+      "passed": true
+    },
+    {
+      "name": "task navigation",
+      "passed": true
+    },
+    {
+      "name": "search sourceRevisionVector",
+      "passed": true
+    },
+    {
+      "name": "jump sourceRevisionVector",
+      "passed": true
+    },
+    {
+      "name": "search maxStretch",
+      "passed": true
+    },
+    {
+      "name": "jump maxStretch",
+      "passed": true
+    },
+    {
+      "name": "search UpSet",
+      "passed": true
+    },
+    {
+      "name": "jump UpSet",
+      "passed": true
+    },
+    {
+      "name": "search STEP-035",
+      "passed": true
+    },
+    {
+      "name": "jump STEP-035",
+      "passed": true
+    },
+    {
+      "name": "search schema 4",
+      "passed": true
+    },
+    {
+      "name": "jump schema 4",
+      "passed": true
+    },
+    {
+      "name": "empty search",
+      "passed": true
+    },
+    {
+      "name": "escape restores toc",
+      "passed": true
+    },
+    {
+      "name": "mobile no document overflow",
+      "passed": true
+    },
+    {
+      "name": "mobile menu open",
+      "passed": true
+    },
+    {
+      "name": "mobile menu closes",
+      "passed": true
+    },
+    {
+      "name": "mobile tables scroll",
+      "passed": true
+    },
+    {
+      "name": "print hides navigation",
+      "passed": true
+    },
+    {
+      "name": "offline viewer network zero",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "no JS errors",
+      "passed": true,
+      "detail": []
+    }
+  ],
+  "errors": []
+}

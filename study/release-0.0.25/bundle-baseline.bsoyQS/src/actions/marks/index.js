@@ -1,0 +1,43 @@
+import { removeMark } from "./remove.js";
+import {
+  createStatisticalReference,
+  createReferenceLine,
+  createReferenceBand,
+  materializeStatisticalReferenceData,
+  rematerializeStatisticalReference
+} from "./references.js";
+import { registerRuleMarkActions } from "./rule/index.js";
+import { registerAreaMarkActions } from "./area/index.js";
+import { registerTickMarkActions } from "./tick/index.js";
+import { registerBarMarkActions } from "./bar/index.js";
+import { registerLineMarkActions } from "./line/index.js";
+import { registerArcMarkActions } from "./arc/index.js";
+import { registerRectMarkActions } from "./rect/index.js";
+import {
+  registerPointJitterActions,
+  registerPointPackingActions,
+  registerPointMarkActions
+} from "./point/index.js";
+import { registerTextMarkActions } from "./text/index.js";
+
+export function registerMarkActions(ProgramClass) {
+  registerPointMarkActions(ProgramClass);
+  registerPointJitterActions(ProgramClass);
+  registerPointPackingActions(ProgramClass);
+  registerRectMarkActions(ProgramClass);
+  registerAreaMarkActions(ProgramClass);
+  registerArcMarkActions(ProgramClass);
+  registerLineMarkActions(ProgramClass);
+  registerBarMarkActions(ProgramClass);
+  registerRuleMarkActions(ProgramClass);
+  registerTextMarkActions(ProgramClass);
+  registerTickMarkActions(ProgramClass);
+  ProgramClass.prototype.removeMark = removeMark;
+  ProgramClass.prototype.createStatisticalReference = createStatisticalReference;
+  ProgramClass.prototype.createReferenceLine = createReferenceLine;
+  ProgramClass.prototype.createReferenceBand = createReferenceBand;
+  ProgramClass.prototype.materializeStatisticalReferenceData =
+    materializeStatisticalReferenceData;
+  ProgramClass.prototype.rematerializeStatisticalReference =
+    rematerializeStatisticalReference;
+}

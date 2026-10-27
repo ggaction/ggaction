@@ -1,0 +1,277 @@
+import{hasLegendClipGraphics,applyLegendClipGraphics}from"../../../../materialization/legendClip.js";
+import { editGraphicProperties } from "../../../primitives/graphicProperties.js";
+import { action } from "../../../../core/action.js";
+import {
+  activeConfig,
+  categoricalLegendView,
+  graphic,
+  layerFor,
+  noOptions,
+  resolveAppearance,
+  resolveSymbolLayout as resolveLayout,
+  symbolGraphic,
+  symbolWidth
+} from "./layout.js";
+import { resolveCategoricalLegendPlacement } from "../lifecycle.js";
+import { createPointShapeGraphic } from "../../../../grammar/pointShapes.js";
+import {
+  hasRectRadius,
+  materializeRectItem,
+  requestedRectStyleDetails
+} from "../../../../grammar/roundedRect.js";
+import { requestedStrokeDetails } from "../../../../grammar/strokeStyle.js";
+import { replaceGraphicItems } from "../../../primitives/editGraphics.js";
+
+function applyLayerOpacity(program,id,opacity,normal=false) {
+  const owner=program.graphicSpec.objects[id];
+  if(!normal&&!owner.items.some(item=>item.properties.blend!==undefined)){
+    if(opacity!==undefined)return program.editGraphics({target:id,property:"opacity",value:opacity});
+    if(!owner.items.some(item=>item.properties.opacity!==undefined))return program;
+  }
+  return program.editGraphics({target:id,property:"items",value:owner.items.map(item=>{
+    const {opacity:_old,blend:_blend,...properties}=item.properties;
+    return {type:item.type??owner.type,properties:{...properties,
+      ...(opacity===undefined?{}:{opacity}),...(normal?{blend:"normal"}:{})}};
+  })});
+}
+
+function makeEditSymbol(type) {
+  const suffix = { line: "Lines", point: "Points", swatch: "Swatches" }[type];
+  const op = `rematerializeLegendSymbol${suffix}`;
+  return action(
+    { op, description: `Rematerialize categorical legend ${type} symbols.` },
+    function (args = {}) {
+      noOptions(args, op);
+      if(hasLegendClipGraphics(this))return this.rematerializeLegend();
+      const { kind, config: stored } = activeConfig(this, args.kind);
+      const config = categoricalLegendView(stored);
+      const layer = layerFor(config, type);
+      const explicitRecipeOpacity = this.guideConfigs.legend[kind].symbol.layers
+        .some(sample=>sample.type===type&&sample.opacity!==undefined);
+      const id = symbolGraphic(config, type);
+      const dynamicPoint = type === "point" && config.channels.includes("shape");
+      const styledSwatch = type === "swatch" && hasRectRadius(layer);
+      const expected = dynamicPoint || styledSwatch
+        ? "collection"
+        : { line: "line", point: "circle", swatch: "rect" }[type];
+      const actual = this.graphicSpec.objects[id]?.type;
+      const compatibleSwatch = type === "swatch" && ["rect", "collection"].includes(actual);
+      if (actual !== expected && !compatibleSwatch) {
+        throw new Error(`${op} requires existing ${type} symbols.`);
+      }
+      const layout = resolveLayout(this, config);
+      const appearance = resolveAppearance(this, config);
+      let next = this;
+      if (!dynamicPoint && !styledSwatch && actual !== "collection") {
+        next = next.editGraphics({
+          target: id,
+          property: "length",
+          value: config.domain.length
+        });
+      }
+      if (type === "line") {
+        const x1 = layout.symbolX.map(
+          value => value + (symbolWidth(config) - layer.length) / 2
+        );
+        next = editGraphicProperties(editGraphicProperties(editGraphicProperties(next, id, {
+          x1: x1,
+          y1: layout.itemY
+        }), id, {
+          x2: x1.map(value => value + layer.length),
+          y2: layout.itemY
+        })
+          .editGraphics({
+            target: id,
+            property: "stroke",
+            value: layer.stroke ?? (config.channels.includes("stroke")
+              ? appearance.strokes
+              : appearance.colors)
+          }), id, {
+          strokeWidth: layer.lineWidth,
+          strokeDash: appearance.dashes
+        });
+        for (const [property, value] of Object.entries(
+          requestedStrokeDetails(layer, "Legend line symbol")
+        )) {
+          next = next.editGraphics({ target: id, property, value });
+        }
+        return applyLayerOpacity(next, id, layer.opacity ?? appearance.opacity);
+      }
+      if (type === "point") {
+        const x = layout.symbolX.map(value => value + symbolWidth(config) / 2);
+        if (dynamicPoint) {
+          const items = config.domain.map((_, index) => {
+            const fill = layer.fill ?? appearance.colors[index];
+            const graphic = createPointShapeGraphic({
+              shape: appearance.shapes[index],
+              x: x[index],
+              y: layout.itemY[index],
+              area: appearance.areas?.[index] ?? Math.PI * layer.size ** 2,
+              fill,
+              stroke: config.channels.includes("stroke")
+                ? appearance.strokes[index]
+                : layer.stroke,
+              strokeWidth: layer.strokeWidth,
+              opacity: layer.opacity ?? appearance.opacity,
+              ...requestedStrokeDetails(layer, "Legend point symbol")
+            });
+            return !explicitRecipeOpacity?graphic:{...graphic,properties:{...graphic.properties,blend:"normal"}};
+          });
+          return next.editGraphics({
+            target: id,
+            property: "items",
+            value: items
+          });
+        }
+        next = editGraphicProperties(next, id, {
+          x: x,
+          y: layout.itemY,
+          radius: layer.size,
+          fill: layer.fill ?? appearance.colors
+        })
+          .editGraphics({
+            target: id,
+            property: "stroke",
+            value: config.channels.includes("stroke")
+              ? appearance.strokes
+              : layer.stroke
+          })
+          .editGraphics({ target: id, property: "strokeWidth", value: layer.strokeWidth });
+        for (const [property, value] of Object.entries(
+          requestedStrokeDetails(layer, "Legend point symbol")
+        )) {
+          next = next.editGraphics({ target: id, property, value });
+        }
+        return applyLayerOpacity(next, id, layer.opacity ?? appearance.opacity, explicitRecipeOpacity);
+      }
+      const x = layout.symbolX.map(
+        value => value + (symbolWidth(config) - layer.width) / 2
+      );
+      const details = requestedRectStyleDetails(layer, "Legend swatch symbol");
+      const fills = layer.fill === undefined
+        ? appearance.colors
+        : config.domain.map(() => layer.fill);
+      const strokes = config.channels.includes("stroke")
+        ? appearance.strokes
+        : config.domain.map(() => layer.stroke);
+      return replaceGraphicItems(
+        next,
+        id,
+        "rect",
+        config.domain.map((_, index) => materializeRectItem({
+          x: x[index],
+          y: layout.itemY[index] - layer.height / 2,
+          width: layer.width,
+          height: layer.height,
+          fill: fills[index],
+          stroke: strokes[index],
+          strokeWidth: layer.strokeWidth,
+          ...((layer.opacity ?? appearance.opacity) === undefined ? {} : { opacity: layer.opacity ?? appearance.opacity }),
+          ...(!explicitRecipeOpacity?{}:{blend:"normal"}),
+          ...requestedStrokeDetails(details, "Legend swatch symbol")
+        }, details))
+      );
+    }
+  );
+}
+
+function makeCreateSymbol(type, edit) {
+  const suffix = { line: "Lines", point: "Points", swatch: "Swatches" }[type];
+  const op = `createLegendSymbol${suffix}`;
+  return action(
+    { op, description: `Create categorical legend ${type} symbols.` },
+    function (args = {}) {
+      noOptions(args, op);
+      const { config: stored } = activeConfig(this, args.kind);
+      const config = categoricalLegendView(stored);
+      const layer = layerFor(config, type);
+      const id = symbolGraphic(config, type);
+      if (this.graphicSpec.objects[id] !== undefined) {
+        throw new Error(`${op} requires missing ${type} symbols.`);
+      }
+      const graphicType = type === "point" && config.channels.includes("shape") ||
+        type === "swatch" && hasRectRadius(layer)
+        ? "collection"
+        : { line: "line", point: "circle", swatch: "rect" }[type];
+      return this
+        .createGraphics({
+          id,
+          type: graphicType,
+          ...resolveCategoricalLegendPlacement(this),
+          ...(this.graphicSpec.objects[graphic(config, "Labels")] === undefined
+            ? {}
+            : { before: graphic(config, "Labels") }),
+          ...(graphicType === "collection"
+            ? {}
+            : { length: config.domain.length })
+        })
+        [edit]({ kind: config.kind });
+    }
+  );
+}
+
+export const rematerializeLegendSymbolLines = /* @__PURE__ */ makeEditSymbol("line");
+export const rematerializeLegendSymbolPoints = /* @__PURE__ */ makeEditSymbol("point");
+export const rematerializeLegendSymbolSwatches = /* @__PURE__ */ makeEditSymbol("swatch");
+export const createLegendSymbolLines = /* @__PURE__ */ makeCreateSymbol(
+  "line",
+  "rematerializeLegendSymbolLines"
+);
+export const createLegendSymbolPoints = /* @__PURE__ */ makeCreateSymbol(
+  "point",
+  "rematerializeLegendSymbolPoints"
+);
+export const createLegendSymbolSwatches = /* @__PURE__ */ makeCreateSymbol(
+  "swatch",
+  "rematerializeLegendSymbolSwatches"
+);
+
+export const createLegendSymbols = /* @__PURE__ */ action(
+  { op: "createLegendSymbols", description: "Create layered legend symbols." },
+  function (args = {}) {
+    noOptions(args, "createLegendSymbols");
+    const { config: stored } = activeConfig(this, args.kind);
+    const config = categoricalLegendView(stored);
+    let next = this;
+    for (const layer of config.symbol.layers) {
+      const operation = {
+        line: "createLegendSymbolLines",
+        point: "createLegendSymbolPoints",
+        swatch: "createLegendSymbolSwatches"
+      }[layer.type];
+      next = next[operation]({ kind: config.kind });
+    }
+    return next;
+  }
+);
+
+export const rematerializeLegendSymbols = /* @__PURE__ */ action(
+  { op: "rematerializeLegendSymbols", description: "Rematerialize layered legend symbols." },
+  function (args = {}) {
+    noOptions(args, "rematerializeLegendSymbols");
+    if (hasLegendClipGraphics(this)) return this.rematerializeLegend();
+    const { config: stored } = activeConfig(this, args.kind);
+    const config = categoricalLegendView(stored);
+    let next = this;
+    for (const layer of config.symbol.layers) {
+      const operation = {
+        line: "rematerializeLegendSymbolLines",
+        point: "rematerializeLegendSymbolPoints",
+        swatch: "rematerializeLegendSymbolSwatches"
+      }[layer.type];
+      next = next[operation]({ kind: config.kind });
+    }
+    return next;
+  }
+);
+
+export const rematerializeBasicLegendHighlights = /* @__PURE__ */ action(
+  {
+    op: "rematerializeLegendHighlights",
+    description: "Reflect exact categorical mark highlights in legend symbols."
+  },
+  function (args = {}) {
+    noOptions(args, "rematerializeLegendHighlights");
+    return this;
+  }
+);

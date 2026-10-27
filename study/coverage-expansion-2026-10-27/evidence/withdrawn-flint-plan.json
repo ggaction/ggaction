@@ -1,0 +1,98 @@
+{
+  "reason": "Latest user instructions remove external conformance/integration and translation requirements. IDs retained for history, not active dependencies.",
+  "workPackages": [
+    {
+      "id": "WP-01",
+      "title": "dialect·asset·정정 원장",
+      "required": false,
+      "status": "withdrawn-by-user",
+      "reason": "External conformance, backend integration and corpus translation are no longer implementation goals."
+    },
+    {
+      "id": "WP-15",
+      "title": "Flint public prepare·capability 경계",
+      "required": false,
+      "status": "withdrawn-by-user",
+      "reason": "External conformance, backend integration and corpus translation are no longer implementation goals."
+    },
+    {
+      "id": "WP-17",
+      "title": "코퍼스 전수 native translator",
+      "required": false,
+      "status": "withdrawn-by-user",
+      "reason": "External conformance, backend integration and corpus translation are no longer implementation goals."
+    },
+    {
+      "id": "WP-16",
+      "title": "사용자 범위의 Flint adapter·host 연결",
+      "required": false,
+      "status": "withdrawn-by-user",
+      "reason": "External conformance, backend integration and corpus translation are no longer implementation goals."
+    }
+  ],
+  "acceptanceTests": [
+    {
+      "id": "AT-03",
+      "input": "root24957+embedded30을 schema/dialect/source-engine로 분리 검사",
+      "expected": "invalid/unknown/unavailable도 원장에서 유지; 조용한 repair·제외 0",
+      "required": false,
+      "status": "withdrawn-not-run"
+    },
+    {
+      "id": "AT-05",
+      "input": "340 source delta와 6 normalization-only 가족 비교",
+      "expected": "pointer별 효과와 dialect 근거; 0009hover/0011zoom/0002responsive 원복 확인",
+      "required": false,
+      "status": "withdrawn-not-run"
+    },
+    {
+      "id": "AT-46",
+      "input": "Flint public package consumer로 prepare/capability호출",
+      "expected": "private deep import0, nonVL interaction 삭제 해결, optionaldependency lazy loading",
+      "required": false,
+      "status": "withdrawn-not-run"
+    },
+    {
+      "id": "AT-47",
+      "input": "adapter interface 전메서드와 interactive surface",
+      "expected": "typecheck+실제호출, viewports/layout/context/state/refresh/update/destroy 일치",
+      "required": false,
+      "status": "withdrawn-not-run"
+    },
+    {
+      "id": "AT-48",
+      "input": "874Flint 요구의 disposition과 허용 property/native behavior",
+      "expected": "각 row에 정책/fixture/evidence; 제외를 pass로 세지 않음",
+      "required": false,
+      "status": "withdrawn-not-run"
+    },
+    {
+      "id": "AT-49",
+      "input": "React/MCP/Python/site/gallery/static-export 경로",
+      "expected": "backend선택→동일program/behavior, 기존 external artifact route 기능보존",
+      "required": false,
+      "status": "withdrawn-not-run"
+    },
+    {
+      "id": "AT-50",
+      "input": "1981원본과 추가 root/embedded 전수 scope screening",
+      "expected": "원본별 pointer/hash 보존; 금지 variant 명시; 허용 원본의 미완료 보존",
+      "required": false,
+      "status": "withdrawn-not-run"
+    },
+    {
+      "id": "AT-51",
+      "input": "모든 번역 recipe의 AST와 feature→step coverage",
+      "expected": "public domain action만 사용, rawgraphics/private/렌더러fallback/행별좌표loop0",
+      "required": false,
+      "status": "withdrawn-not-run"
+    },
+    {
+      "id": "AT-52",
+      "input": "원본+native의 의미/배치/픽셀/입력/시간 비교",
+      "expected": "각적용layer 통과, source hash/repair/profile 고정, frozen-target replay와구분",
+      "required": false,
+      "status": "withdrawn-not-run"
+    }
+  ]
+}

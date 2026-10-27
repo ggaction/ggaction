@@ -1,0 +1,30 @@
+✔ deferred chart owner cards distinguish creation from completed geometry (6.725291ms)
+✔ compact action cards are generated from the current action contract (2559.986708ms)
+✔ compact action cards satisfy the bounded typed public schema projection (62.119125ms)
+✔ action-card hierarchy is generated from the executable direct-child trace (6120.948958ms)
+✔ scale spacing units agree across every generic and focused editor (4.500625ms)
+✔ Cartesian title cards retain numeric and relative gap logical-pixel units (3.961541ms)
+✔ action cards separate entry support, units, inference, and completion (27.972666ms)
+✔ every compact snippet type-checks against the exact ChartProgram declaration (151.568708ms)
+✔ imputation call patterns preserve method-specific requirements (3.732875ms)
+✔ call pattern validation rejects unsupported top-level keys without confusing nested keys (0.801083ms)
+✔ advertised bar calls execute and direction-only guide branches retain their exact meaning (45.962792ms)
+✔ legend block declarations expose the closed Full-only contract (174.584417ms)
+✔ combined creation forwards the same bounded prefix to categorical and ordinal size blocks (91.7955ms)
+✔ bounded ordinal size creation survives persistence, resize and edit convergence (55.416667ms)
+✔ omission and false retain all ordinal categories while quantitative size sampling is unchanged (41.98225ms)
+✔ invalid bounded prefix options reject the combined action atomically (14.819083ms)
+✔ explicit summary sample paints the first hidden category while preserving every source row and path (90.964375ms)
+✔ summary sample renders the same pixels as an independent added line primitive (414.495875ms)
+✔ Basic line authoring supports the same summary policy through categorical color (31.11375ms)
+✔ summary samples follow final legend order, scale edits, resize and persistence (99.981959ms)
+✔ overflow reset and zero hidden entries remove the summary sample and converge with direct creation (90.490625ms)
+✔ invalid summary policies, nonline recipes and persisted tampering fail atomically (41.968791ms)
+ℹ tests 22
+ℹ suites 0
+ℹ pass 22
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 9491.257958

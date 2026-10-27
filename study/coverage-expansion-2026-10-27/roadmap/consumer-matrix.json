@@ -1,0 +1,3596 @@
+{
+  "status": "proposed-not-run",
+  "columns": [
+    "create",
+    "edit",
+    "source-revise",
+    "encodings",
+    "scales",
+    "guides",
+    "composition",
+    "selection-highlight",
+    "hit",
+    "scene-animation",
+    "svg",
+    "canvas",
+    "png",
+    "pdf",
+    "persistence",
+    "types",
+    "package",
+    "docs",
+    "accessibility"
+  ],
+  "rows": [
+    {
+      "capability": "compound-path",
+      "cells": {
+        "create": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "edit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "source-revise": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "encodings": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scales": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "guides": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "composition": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "selection-highlight": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "hit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scene-animation": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "svg": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "canvas": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "png": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "pdf": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "persistence": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "types": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "package": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "docs": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "accessibility": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        }
+      }
+    },
+    {
+      "capability": "pattern",
+      "cells": {
+        "create": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "edit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "source-revise": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "encodings": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scales": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "guides": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "composition": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "selection-highlight": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "hit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scene-animation": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "svg": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "canvas": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "png": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "pdf": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "persistence": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "types": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "package": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "docs": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "accessibility": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        }
+      }
+    },
+    {
+      "capability": "image",
+      "cells": {
+        "create": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "edit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "source-revise": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "encodings": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scales": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "guides": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "composition": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "selection-highlight": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "hit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scene-animation": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "svg": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "canvas": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "png": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "pdf": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "persistence": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "types": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "package": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "docs": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "accessibility": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        }
+      }
+    },
+    {
+      "capability": "partition-cartesian",
+      "cells": {
+        "create": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "edit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "source-revise": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "encodings": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scales": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "guides": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "composition": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "selection-highlight": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "hit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scene-animation": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "svg": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "canvas": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "png": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "pdf": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "persistence": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "types": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "package": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "docs": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "accessibility": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        }
+      }
+    },
+    {
+      "capability": "partition-polar",
+      "cells": {
+        "create": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "edit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "source-revise": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "encodings": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scales": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "guides": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "composition": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "selection-highlight": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "hit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scene-animation": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "svg": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "canvas": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "png": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "pdf": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "persistence": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "types": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "package": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "docs": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "accessibility": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        }
+      }
+    },
+    {
+      "capability": "tree",
+      "cells": {
+        "create": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "edit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "source-revise": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "encodings": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scales": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "guides": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "composition": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "selection-highlight": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "hit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scene-animation": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "svg": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "canvas": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "png": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "pdf": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "persistence": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "types": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "package": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "docs": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "accessibility": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        }
+      }
+    },
+    {
+      "capability": "treemap",
+      "cells": {
+        "create": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "edit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "source-revise": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "encodings": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scales": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "guides": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "composition": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "selection-highlight": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "hit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scene-animation": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "svg": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "canvas": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "png": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "pdf": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "persistence": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "types": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "package": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "docs": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "accessibility": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        }
+      }
+    },
+    {
+      "capability": "graph-nodes",
+      "cells": {
+        "create": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "edit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "source-revise": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "encodings": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scales": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "guides": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "composition": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "selection-highlight": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "hit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scene-animation": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "svg": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "canvas": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "png": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "pdf": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "persistence": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "types": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "package": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "docs": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "accessibility": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        }
+      }
+    },
+    {
+      "capability": "edges-hierarchical",
+      "cells": {
+        "create": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "edit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "source-revise": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "encodings": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scales": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "guides": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "composition": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "selection-highlight": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "hit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scene-animation": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "svg": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "canvas": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "png": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "pdf": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "persistence": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "types": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "package": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "docs": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "accessibility": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        }
+      }
+    },
+    {
+      "capability": "edges-force-directed",
+      "cells": {
+        "create": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "edit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "source-revise": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "encodings": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scales": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "guides": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "composition": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "selection-highlight": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "hit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scene-animation": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "svg": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "canvas": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "png": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "pdf": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "persistence": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "types": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "package": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "docs": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "accessibility": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        }
+      }
+    },
+    {
+      "capability": "edges-density",
+      "cells": {
+        "create": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "edit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "source-revise": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "encodings": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scales": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "guides": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "composition": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "selection-highlight": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "hit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scene-animation": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "svg": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "canvas": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "png": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "pdf": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "persistence": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "types": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "package": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "docs": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "accessibility": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        }
+      }
+    },
+    {
+      "capability": "edges-edge-path",
+      "cells": {
+        "create": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "edit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "source-revise": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "encodings": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scales": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "guides": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "composition": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "selection-highlight": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "hit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scene-animation": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "svg": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "canvas": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "png": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "pdf": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "persistence": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "types": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "package": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "docs": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "accessibility": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        }
+      }
+    },
+    {
+      "capability": "sankey-dag",
+      "cells": {
+        "create": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "edit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "source-revise": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "encodings": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scales": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "guides": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "composition": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "selection-highlight": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "hit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scene-animation": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "svg": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "canvas": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "png": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "pdf": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "persistence": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "types": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "package": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "docs": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "accessibility": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        }
+      }
+    },
+    {
+      "capability": "sankey-cyclic",
+      "cells": {
+        "create": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "edit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "source-revise": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "encodings": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scales": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "guides": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "composition": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "selection-highlight": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "hit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scene-animation": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "svg": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "canvas": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "png": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "pdf": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "persistence": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "types": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "package": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "docs": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "accessibility": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        }
+      }
+    },
+    {
+      "capability": "contour-line",
+      "cells": {
+        "create": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "edit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "source-revise": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "encodings": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scales": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "guides": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "composition": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "selection-highlight": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "hit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scene-animation": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "svg": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "canvas": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "png": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "pdf": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "persistence": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "types": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "package": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "docs": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "accessibility": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        }
+      }
+    },
+    {
+      "capability": "contour-filled",
+      "cells": {
+        "create": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "edit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "source-revise": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "encodings": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scales": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "guides": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "composition": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "selection-highlight": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "hit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scene-animation": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "svg": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "canvas": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "png": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "pdf": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "persistence": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "types": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "package": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "docs": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "accessibility": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        }
+      }
+    },
+    {
+      "capability": "calendar",
+      "cells": {
+        "create": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "edit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "source-revise": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "encodings": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scales": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "guides": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "composition": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "selection-highlight": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "hit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scene-animation": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "svg": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "canvas": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "png": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "pdf": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "persistence": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "types": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "package": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "docs": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "accessibility": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        }
+      }
+    },
+    {
+      "capability": "table",
+      "cells": {
+        "create": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "edit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "source-revise": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "encodings": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scales": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "guides": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "composition": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "selection-highlight": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "hit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scene-animation": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "svg": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "canvas": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "png": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "pdf": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "persistence": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "types": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "package": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "docs": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "accessibility": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        }
+      }
+    },
+    {
+      "capability": "pyramid",
+      "cells": {
+        "create": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "edit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "source-revise": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "encodings": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scales": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "guides": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "composition": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "selection-highlight": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "hit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scene-animation": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "svg": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "canvas": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "png": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "pdf": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "persistence": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "types": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "package": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "docs": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "accessibility": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        }
+      }
+    },
+    {
+      "capability": "ohlc",
+      "cells": {
+        "create": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "edit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "source-revise": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "encodings": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scales": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "guides": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "composition": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "selection-highlight": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "hit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scene-animation": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "svg": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "canvas": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "png": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "pdf": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "persistence": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "types": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "package": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "docs": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "accessibility": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        }
+      }
+    },
+    {
+      "capability": "waterfall",
+      "cells": {
+        "create": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "edit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "source-revise": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "encodings": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scales": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "guides": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "composition": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "selection-highlight": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "hit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scene-animation": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "svg": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "canvas": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "png": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "pdf": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "persistence": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "types": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "package": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "docs": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "accessibility": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        }
+      }
+    },
+    {
+      "capability": "trail",
+      "cells": {
+        "create": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "edit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "source-revise": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "encodings": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scales": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "guides": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "composition": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "selection-highlight": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "hit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scene-animation": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "svg": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "canvas": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "png": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "pdf": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "persistence": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "types": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "package": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "docs": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "accessibility": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        }
+      }
+    },
+    {
+      "capability": "geo-shape",
+      "cells": {
+        "create": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "edit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "source-revise": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "encodings": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scales": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "guides": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "composition": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "selection-highlight": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "hit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scene-animation": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "svg": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "canvas": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "png": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "pdf": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "persistence": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "types": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "package": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "docs": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "accessibility": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        }
+      }
+    },
+    {
+      "capability": "geo-point",
+      "cells": {
+        "create": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "edit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "source-revise": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "encodings": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scales": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "guides": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "composition": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "selection-highlight": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "hit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scene-animation": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "svg": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "canvas": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "png": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "pdf": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "persistence": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "types": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "package": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "docs": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "accessibility": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        }
+      }
+    },
+    {
+      "capability": "geo-line",
+      "cells": {
+        "create": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "edit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "source-revise": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "encodings": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scales": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "guides": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "composition": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "selection-highlight": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "hit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scene-animation": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "svg": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "canvas": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "png": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "pdf": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "persistence": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "types": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "package": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "docs": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "accessibility": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        }
+      }
+    },
+    {
+      "capability": "graticule",
+      "cells": {
+        "create": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "edit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "source-revise": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "encodings": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scales": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "guides": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "composition": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "selection-highlight": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "hit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scene-animation": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "svg": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "canvas": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "png": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "pdf": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "persistence": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "types": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "package": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "docs": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "accessibility": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        }
+      }
+    },
+    {
+      "capability": "rose-regression",
+      "cells": {
+        "create": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "edit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "source-revise": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "encodings": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scales": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "guides": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "composition": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "selection-highlight": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "hit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scene-animation": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "svg": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "canvas": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "png": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "pdf": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "persistence": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "types": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "package": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "docs": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "accessibility": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        }
+      }
+    },
+    {
+      "capability": "radar-regression",
+      "cells": {
+        "create": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "edit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "source-revise": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "encodings": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scales": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "guides": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "composition": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "selection-highlight": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "hit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scene-animation": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "svg": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "canvas": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "png": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "pdf": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "persistence": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "types": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "package": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "docs": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "accessibility": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        }
+      }
+    },
+    {
+      "capability": "streamgraph-regression",
+      "cells": {
+        "create": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "edit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "source-revise": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "encodings": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scales": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "guides": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "composition": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "selection-highlight": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "hit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scene-animation": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "svg": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "canvas": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "png": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "pdf": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "persistence": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "types": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "package": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "docs": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "accessibility": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        }
+      }
+    },
+    {
+      "capability": "violin-regression",
+      "cells": {
+        "create": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "edit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "source-revise": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "encodings": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scales": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "guides": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "composition": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "selection-highlight": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "hit": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "scene-animation": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "svg": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "canvas": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "png": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "pdf": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "persistence": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "types": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "package": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "docs": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        },
+        "accessibility": {
+          "status": "not-run",
+          "applicability": "requires-review",
+          "reason": null,
+          "evidence": []
+        }
+      }
+    }
+  ]
+}

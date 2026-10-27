@@ -1,0 +1,17 @@
+{
+  "label": "render-stage-0",
+  "command": "/opt/hostedtoolcache/node/20.20.2/x64/bin/node",
+  "args": [
+    "scripts/run-tests.js",
+    "render"
+  ],
+  "code": 1,
+  "signal": null,
+  "timeoutMs": 5400000,
+  "durationMs": 83599,
+  "node": "v20.20.2",
+  "platform": "linux",
+  "bytes": 22862685,
+  "retainedBytes": 2097152,
+  "truncated": true
+}

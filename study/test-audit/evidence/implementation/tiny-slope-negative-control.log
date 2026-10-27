@@ -1,0 +1,63 @@
+(node:43381) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+--import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("/Users/hj/Desktop/ggaction_chongjeonglee/study/test-audit/evidence/semantics-tiny-slope-loader.mjs", pathToFileURL("./"));'
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ statistics expose independent observed linear coefficients and R-squared rather than prediction-row counts (19.803625ms)
+✔ statistics preserve typed first-seen groups, eligible missing-pair counts and constant-response null (3.465458ms)
+✔ statistics reject missing, unsupported and colliding fit sources without mutating the parent (14.974167ms)
+✔ cached fits are reused and old snapshots materialize the missing cache exactly once on explicit request (3.645375ms)
+✔ statistics source edits and source revisions replay dependent annotation data and clean old caches (28.042083ms)
+✔ fit method changes and resource removal enforce the statistics dependency before mutating state (5.615875ms)
+✔ fit cache snapshots reject orphaned, missing, stale, malformed and misordered statistics (11.403084ms)
+✖ linear statistics stay finite at previously supported extreme ranges without altering predictions (7.665625ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(Math.abs(result.slope / 1e-300 - 1) < 1e-12)
+  
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/unit/actions/data/regression-statistics.test.js:165:14)
+      at Test.runInAsyncScope (node:async_hooks:211:14)
+      at Test.run (node:internal/test_runner/test:931:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+      at Test.postRun (node:internal/test_runner/test:1042:19)
+      at Test.run (node:internal/test_runner/test:970:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:629:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '=='
+  }
+
+✔ chart-owned regression edits rematerialize dependent statistics and reject unsupported model transitions (33.703166ms)
+✔ statistics editors require unique ownership and preserve omitted sources (2.451917ms)
+✔ statistics source edits reject cycles and lazy transform schemas remain source-specific (5.008916ms)
+✔ following chart roles and retained facets rebuild statistics from their fit owners (50.888375ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 11
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 594.827125
+
+✖ failing tests:
+
+test at test/unit/actions/data/regression-statistics.test.js:154:1
+✖ linear statistics stay finite at previously supported extreme ranges without altering predictions (7.665625ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(Math.abs(result.slope / 1e-300 - 1) < 1e-12)
+  
+      at TestContext.<anonymous> (file:///Users/hj/Desktop/ggaction_chongjeonglee/ggaction/test/unit/actions/data/regression-statistics.test.js:165:14)
+      at Test.runInAsyncScope (node:async_hooks:211:14)
+      at Test.run (node:internal/test_runner/test:931:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:629:18)
+      at Test.postRun (node:internal/test_runner/test:1042:19)
+      at Test.run (node:internal/test_runner/test:970:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:629:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '=='
+  }

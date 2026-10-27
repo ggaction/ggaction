@@ -1,0 +1,5 @@
+
+> ggaction@0.0.22 test:docs:browser
+> node scripts/test-built-docs.js _site
+
+verified desktop search and all documentation pages at 320px, 390px, and 768px

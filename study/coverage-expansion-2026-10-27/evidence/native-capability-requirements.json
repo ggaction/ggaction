@@ -1,0 +1,272 @@
+{
+  "profile": "ggaction-native-2026-10-27",
+  "status": "proposal-only",
+  "requirements": [
+    {
+      "id": "GGA-01",
+      "origin": "ggaction native capability design",
+      "requirement": "Native semantic data and chart composition",
+      "description": "data transforms, statistical summaries, Cartesian/polar marks, layers/facets/adjacent panels and traceable recipes",
+      "sourceEvidence": "evidence/native-capability-requirements.json",
+      "workPackages": [
+        "WP-06",
+        "WP-07",
+        "WP-09"
+      ],
+      "acceptance": [
+        "AT-17",
+        "AT-20",
+        "AT-26",
+        "AT-27",
+        "AT-28"
+      ],
+      "status": "requires-qualification",
+      "scopeDisposition": "required",
+      "required": true,
+      "targetRepresentation": "native reusable actions/resources/runtime",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Explicitly adopted native functionality; no external contract inheritance."
+    },
+    {
+      "id": "GGA-02",
+      "origin": "ggaction native capability design",
+      "requirement": "Native design and theme system",
+      "description": "typography, colors, patterns/gradients, explicit precedence, responsive guides and layout; no external theme token parity",
+      "sourceEvidence": "evidence/native-capability-requirements.json",
+      "workPackages": [
+        "WP-05",
+        "WP-07"
+      ],
+      "acceptance": [
+        "AT-13",
+        "AT-15",
+        "AT-19",
+        "AT-20"
+      ],
+      "status": "requires-qualification",
+      "scopeDisposition": "required",
+      "required": true,
+      "targetRepresentation": "native reusable actions/resources/runtime",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Explicitly adopted native functionality; no external contract inheritance."
+    },
+    {
+      "id": "GGA-03",
+      "origin": "ggaction native capability design",
+      "requirement": "Structure and geometric layouts",
+      "description": "tree, treemap, Sankey, contour, calendar, table/cell layout, stable node/edge/region semantics",
+      "sourceEvidence": "evidence/native-capability-requirements.json",
+      "workPackages": [
+        "WP-08",
+        "WP-09"
+      ],
+      "acceptance": [
+        "AT-22",
+        "AT-23",
+        "AT-24",
+        "AT-25",
+        "AT-27"
+      ],
+      "status": "requires-qualification",
+      "scopeDisposition": "required",
+      "required": true,
+      "targetRepresentation": "native reusable actions/resources/runtime",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Explicitly adopted native functionality; no external contract inheritance."
+    },
+    {
+      "id": "GGA-04",
+      "origin": "ggaction native capability design",
+      "requirement": "Selection and direct inspection",
+      "description": "hover/tooltip, single/multi/group selection, brush/lasso/angular selection, semantic hit on marks and guides",
+      "sourceEvidence": "evidence/native-capability-requirements.json",
+      "workPackages": [
+        "WP-11",
+        "WP-12"
+      ],
+      "acceptance": [
+        "AT-33",
+        "AT-34",
+        "AT-35",
+        "AT-36"
+      ],
+      "status": "requires-qualification",
+      "scopeDisposition": "required",
+      "required": true,
+      "targetRepresentation": "native reusable actions/resources/runtime",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Explicitly adopted native functionality; no external contract inheritance."
+    },
+    {
+      "id": "GGA-05",
+      "origin": "ggaction native capability design",
+      "requirement": "Coordinated interactive views",
+      "description": "linked selection/filter, parameter controls, legend visibility, reorder, annotations, keyboard/touch, context commands",
+      "sourceEvidence": "evidence/native-capability-requirements.json",
+      "workPackages": [
+        "WP-12",
+        "WP-13"
+      ],
+      "acceptance": [
+        "AT-37",
+        "AT-38",
+        "AT-39",
+        "AT-40",
+        "AT-41"
+      ],
+      "status": "requires-qualification",
+      "scopeDisposition": "required",
+      "required": true,
+      "targetRepresentation": "native reusable actions/resources/runtime",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Explicitly adopted native functionality; no external contract inheritance."
+    },
+    {
+      "id": "GGA-06",
+      "origin": "ggaction native capability design",
+      "requirement": "Native state and lifecycle",
+      "description": "immutable committed state, preview/commit/cancel, typed commands and events, revision ordering, disposal",
+      "sourceEvidence": "evidence/native-capability-requirements.json",
+      "workPackages": [
+        "WP-02",
+        "WP-03",
+        "WP-13"
+      ],
+      "acceptance": [
+        "AT-06",
+        "AT-09",
+        "AT-10",
+        "AT-39",
+        "AT-40",
+        "AT-41"
+      ],
+      "status": "requires-qualification",
+      "scopeDisposition": "required",
+      "required": true,
+      "targetRepresentation": "native reusable actions/resources/runtime",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Explicitly adopted native functionality; no external contract inheritance."
+    },
+    {
+      "id": "GGA-07",
+      "origin": "ggaction native capability design",
+      "requirement": "Animation and timeline",
+      "description": "identity matching, enter/update/exit, typed interpolation, keyframes/playback, interruption, frame export, reduced motion",
+      "sourceEvidence": "evidence/native-capability-requirements.json",
+      "workPackages": [
+        "WP-14",
+        "WP-18"
+      ],
+      "acceptance": [
+        "AT-42",
+        "AT-43",
+        "AT-44",
+        "AT-45",
+        "AT-54"
+      ],
+      "status": "requires-qualification",
+      "scopeDisposition": "required",
+      "required": true,
+      "targetRepresentation": "native reusable actions/resources/runtime",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Explicitly adopted native functionality; no external contract inheritance."
+    },
+    {
+      "id": "GGA-08",
+      "origin": "ggaction native capability design",
+      "requirement": "Geo resources and navigation",
+      "description": "GeoJSON/TopoJSON, spherical/planar coordinates, projections, holes/clip/join, zoom/pan/rotation, LOD and export",
+      "sourceEvidence": "evidence/native-capability-requirements.json",
+      "workPackages": [
+        "WP-10",
+        "WP-12",
+        "WP-14"
+      ],
+      "acceptance": [
+        "AT-29",
+        "AT-30",
+        "AT-31",
+        "AT-32",
+        "AT-44"
+      ],
+      "status": "requires-qualification",
+      "scopeDisposition": "required",
+      "required": true,
+      "targetRepresentation": "native reusable actions/resources/runtime",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Explicitly adopted native functionality; no external contract inheritance."
+    },
+    {
+      "id": "GGA-09",
+      "origin": "ggaction native capability design",
+      "requirement": "Readable and reproducible public APIs",
+      "description": "public action contracts, identity/lineage, persistence, inspection, documentation/agent cards, installed-package use",
+      "sourceEvidence": "evidence/native-capability-requirements.json",
+      "workPackages": [
+        "WP-03",
+        "WP-18",
+        "WP-19"
+      ],
+      "acceptance": [
+        "AT-10",
+        "AT-55",
+        "AT-57",
+        "AT-58",
+        "AT-89",
+        "AT-90"
+      ],
+      "status": "requires-qualification",
+      "scopeDisposition": "required",
+      "required": true,
+      "targetRepresentation": "native reusable actions/resources/runtime",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Explicitly adopted native functionality; no external contract inheritance."
+    },
+    {
+      "id": "GGA-10",
+      "origin": "ggaction native capability design",
+      "requirement": "Native correctness and design independence",
+      "description": "independent math/geometry/state/time oracles, composition, performance and native-only release gates; no external parity or translation",
+      "sourceEvidence": "evidence/native-capability-requirements.json",
+      "workPackages": [
+        "WP-19",
+        "WP-20",
+        "WP-21"
+      ],
+      "acceptance": [
+        "AT-56",
+        "AT-59",
+        "AT-60",
+        "AT-61",
+        "AT-91",
+        "AT-92"
+      ],
+      "status": "requires-qualification",
+      "scopeDisposition": "required",
+      "required": true,
+      "targetRepresentation": "native reusable actions/resources/runtime",
+      "policyIds": [
+        "POL-09"
+      ],
+      "scopeReason": "Explicitly adopted native functionality; no external contract inheritance."
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "node": "v23.5.0",
+  "platform": "darwin",
+  "architecture": "arm64",
+  "tools": {
+    "acorn": {
+      "version": "8.19.0"
+    },
+    "ajv": {
+      "version": "8.20.0"
+    },
+    "ajv-formats": {
+      "version": "3.0.1"
+    },
+    "esbuild": {
+      "version": "0.28.2"
+    },
+    "playwright": {
+      "version": "1.63.0"
+    }
+  },
+  "reportRenderer": {
+    "marked": "17.0.5"
+  },
+  "sourceVersion": "0.0.26",
+  "notice": "Environment of local focused audit; not a release CI environment."
+}

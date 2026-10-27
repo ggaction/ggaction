@@ -1,0 +1,12 @@
+✔ generates deterministic pairwise cases without a Cartesian explosion (1.801167ms)
+✔ covers every recipe factor pair in the deterministic deep descriptor set (35.518833ms)
+✔ builds and independently validates every offline smoke scenario (11646.281792ms)
+✔ each offline recipe has a differential analytic raster witness (3286.747125ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 15422.779833

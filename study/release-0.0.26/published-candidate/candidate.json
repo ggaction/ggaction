@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "name": "ggaction",
+  "version": "0.0.26",
+  "tag": "v0.0.26",
+  "commit": "40ec7edead7fc84de05aad31888dd0f7d264a512",
+  "filename": "ggaction-0.0.26.tgz",
+  "sha1": "56690948f9429f656b55382307d174a54d56d8a9",
+  "sha256": "f250428f3359244d625c6bd105d8017836cbb70fd3c5b826505e38d7fbab62af",
+  "entryCount": 654,
+  "packedBytes": 977213,
+  "unpackedBytes": 4576677,
+  "releaseNotes": "ggaction-0.0.26-release-notes.md"
+}

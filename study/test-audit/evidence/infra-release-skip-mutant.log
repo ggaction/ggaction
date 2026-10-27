@@ -1,0 +1,17 @@
+✔ keeps publishing manual, immutable-tag-bound, protected, and non-concurrent (0.781625ms)
+✔ uses current trusted-publishing requirements without an npm secret (0.23475ms)
+✔ keeps generated release documentation strict across native PNG platforms (0.874334ms)
+✔ qualifies, retains, verifies, and publishes one exact artifact (0.221666ms)
+✔ deploys Pages only after the protected release publish (0.339916ms)
+✔ parallel qualifications consume one canonical candidate and join before publishing (0.745125ms)
+✔ qualifies native platforms and three browser engines with strict release dependencies (0.367875ms)
+✔ realistic CI has a stable aggregate that cannot accept skipped or failed dependencies (0.125166ms)
+✔ test and documentation failures retain bounded artifacts without forgiving required checks (0.70175ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 93.095875

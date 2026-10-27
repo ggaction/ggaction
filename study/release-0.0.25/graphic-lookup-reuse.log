@@ -1,0 +1,10 @@
+✔ graphic item lookup follows immutable collection revisions and preserves owners (14.293208ms)
+✔ lookup never caches mutable item identity inside caller-owned or shallow-frozen collections (0.121583ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 100.395167
