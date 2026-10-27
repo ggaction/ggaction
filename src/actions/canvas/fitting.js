@@ -11,6 +11,7 @@ import { findCanvasGraphic } from
   "../../materialization/graphicHierarchy.js";
 import { resolveConcreteGraphicBounds } from "../../grammar/schemas/graphicBounds.js";
 import { textBoundsFitCanvas } from "../../core/textMetrics.js";
+import { isOwned } from "../../core/immutable.js";
 
 const OPTIONS = Object.freeze([
   "padding",
@@ -30,6 +31,7 @@ const DEFAULTS = Object.freeze({
   align: "preserve"
 });
 const UNITS_PER_PIXEL = 4;
+const signatures = new WeakMap();
 
 function normalizeOptions(args) {
   validateOptionObject(args, OPTIONS, "fitCanvas", { allowEmpty: true });
@@ -200,11 +202,16 @@ function samePolicy(first, second) {
 }
 
 function layoutSignature(program) {
+  const graphicSpec = program.graphicSpec, configs = program.materializationConfigs;
+  const cached = signatures.get(graphicSpec);
+  if (cached && cached.canvas === configs.canvas && cached.guides === configs.guides && cached.title === configs.title) {
+    return cached.signature;
+  }
   const source = JSON.stringify({
-    graphicSpec: program.graphicSpec,
-    canvas: program.materializationConfigs.canvas,
-    guides: program.materializationConfigs.guides,
-    title: program.materializationConfigs.title
+    graphicSpec,
+    canvas: configs.canvas,
+    guides: configs.guides,
+    title: configs.title
   });
   // Two independent 32-bit lanes avoid a BigInt allocation for every byte of
   // a large facet/mark scene. This is an invalidation fingerprint, not a digest.
@@ -214,7 +221,14 @@ function layoutSignature(program) {
     first = Math.imul(first ^ code, 0x01000193);
     second = Math.imul(second ^ code, 0x85ebca6b);
   }
-  return [first, second].map(value => (value >>> 0).toString(16).padStart(8, "0")).join("");
+  const signature = [first, second].map(value => (value >>> 0).toString(16).padStart(8, "0")).join("");
+  // Fitting itself only adds its result metadata, leaving these four immutable
+  // inputs unchanged. Preserve the persisted signature while avoiding another
+  // full-scene serialization/hash on subsequent no-op fits.
+  if (isOwned(graphicSpec)) signatures.set(graphicSpec, {
+    canvas: configs.canvas, guides: configs.guides, title: configs.title, signature
+  });
+  return signature;
 }
 
 export const fitCanvas = /* @__PURE__ */ action(
