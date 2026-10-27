@@ -168,6 +168,16 @@ it never resets files or silently updates the reference. Environment and current
 working-tree state are separate observations, not proof that checks ran. This
 inventory is independent of the primitive-equivalence report above.
 
+`test/oracles/native-fixtures.js` validates bounded, finite JSON literal fixtures,
+hashes sorted object keys, compares exact structure with explicit absolute and
+relative numeric tolerances, and supplies a deterministic uint32 input seed.
+Numeric, geometry, state, manual-frame-clock and asset references have separate
+owners in `test/oracles/`. Their literal anchors live in
+`test/fixtures/verification.json`; these are harness qualification examples, not
+claims that future chart features are implemented. Oracle tests include wrong
+answers and mutation/cancellation cases. A contract checks their transitive
+imports stay independent from production code.
+
 `corpus-mutation-relations.test.js` reports bounded input-size tiers and pathology
 postconditions separately from real-source sampling. Its 32/512/4096-row point
 cases are stress witnesses, not a scalability benchmark. Seed, original and

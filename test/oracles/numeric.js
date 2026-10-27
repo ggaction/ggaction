@@ -6,6 +6,20 @@ function finiteValues(values, label) {
   return values;
 }
 
+// A small independent partition reference, with no hierarchy or renderer code.
+export function normalizedIntervals(weights) {
+  finiteValues(weights, "normalizedIntervals");
+  if (weights.some(value => value < 0)) throw new RangeError("Weights must be non-negative.");
+  const total = weights.reduce((sum, value) => sum + value, 0);
+  if (!Number.isFinite(total) || total <= 0) throw new RangeError("Weight total must be positive and finite.");
+  let cumulative = 0;
+  return weights.map((weight, index) => {
+    const start = cumulative / total;
+    cumulative += weight;
+    return [start, index === weights.length - 1 ? 1 : cumulative / total];
+  });
+}
+
 export function niceStep(span, count = 5) {
   if (!Number.isFinite(span) || span < 0 || !Number.isFinite(count) || count <= 0) {
     throw new RangeError("niceStep requires a non-negative span and positive count.");
