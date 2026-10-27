@@ -7,7 +7,7 @@
 - [x] 6개 primitive target과 공개 호출안 작성
 - [x] SVG·Canvas·PNG·PDF native primitive 검사
 - [x] 같은 clean revision에서 누적 검사 및 원격 검토 checkpoint
-- [ ] G-PATH D1–D6와 시각 target 명시 승인
+- [x] G-PATH D1–D6와 시각 target 명시 승인 (2026-10-27, 사용자 “네”)
 - [ ] STEP-010 공개 schema/primitive validation 연결
 - [ ] STEP-011 flatten·arc·winding·distance·stroke/clip bounds 연결
 - [ ] STEP-012 네 제품 renderer·scene·persistence 및 문서 통합

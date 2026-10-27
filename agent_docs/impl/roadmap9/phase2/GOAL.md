@@ -1,11 +1,11 @@
 # Phase 2 — 복합 경로와 공통 geometry
 
-상태: **G-PATH ready-for-review**. STEP-010의 순수 topology kernel과 검토 준비 검증을 완료했다.
+상태: **G-PATH 승인, 제품 통합 진행 중**. STEP-010의 순수 topology kernel과 검토 준비 검증을 완료했다.
 STEP-010–012 제품 통합 및 AT-11/12 완료는 아직 아니다.
 
 사용자 “승인 계속 진행” (2026-10-27)에 따라 Phase 1 다음 작업을 시작했다.
 앞선 [G-CORE](../phase1/G-CORE.json)는 D1–D8, STEP-004–009 승인으로 범위가 명시되어 있다.
-이번에 구체화한 공개 fillRule·경로형 clip·시각 target은 [G-PATH](G-PATH.json)에서 함께 검토한다.
+사용자 “네” (2026-10-27)가 원격 검토 commit e0fc08c8의 D1–D6와 시각 출력을 승인했다. 정확한 증거는 [G-PATH](G-PATH.json)에 기록한다. DESIGN.md는 승인 당시 제안 원문과 hash를 보존한다.
 원안 G-CORE/G-VISUAL의 해당 결정을 하나의 검토 묶음으로 기록하며 기존 승인을 소급 확장하지 않는다.
 
 - [설계 D1–D6](DESIGN.md): 정확한 공개 호출, 저장 결과, 호환성, 시각 의미
