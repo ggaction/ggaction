@@ -78,6 +78,8 @@ node scripts/verification-evidence.js agent_docs/impl/roadmap9/phase1/review-pla
 package artifact, generated metadata, 문서 build와 built-site browser 검사를 모두 요구한다.
 `coverage` runner는 일반 전체 suite와 같은 파일 집합을 실행하므로 최종 revision에서는
 그 실행으로 전체 회귀와 coverage를 함께 입증한다. 실데이터·browser·render는 각각 별도 실행한다.
+실데이터 suite는 canonical runner의 `--shard=1/2`, `--shard=2/2`로 분할한다.
+각 shard의 512MiB heap과 concurrency 2를 유지하며, 두 실행의 파일 합집합이 전체 29개이고 중복이 없는지 확인한다.
 새로운 시각 표현은 추가하지 않으며 기존 geometry·draw order·decoded pixels를 유지한다.
 각 chart를 독립 작성할 때 새로 할당되는 private identity만 비교에서 정규화하고,
 행·항목 identity 자체는 별도 lifecycle 및 변조 거부 시험에서 정규화 없이 검사한다.

@@ -61,7 +61,8 @@
       "requiredChecks": [
         "suite-coverage",
         "coverage-check",
-        "suite-realistic",
+        "realistic-shard-1",
+        "realistic-shard-2",
         "suite-browser",
         "suite-render",
         "test-render",
@@ -83,7 +84,8 @@
       "requiredChecks": [
         "suite-coverage",
         "coverage-check",
-        "suite-realistic",
+        "realistic-shard-1",
+        "realistic-shard-2",
         "suite-browser",
         "suite-render",
         "test-render",
@@ -105,7 +107,8 @@
       "requiredChecks": [
         "suite-coverage",
         "coverage-check",
-        "suite-realistic",
+        "realistic-shard-1",
+        "realistic-shard-2",
         "suite-browser",
         "suite-render",
         "test-render",
@@ -127,7 +130,8 @@
       "requiredChecks": [
         "suite-coverage",
         "coverage-check",
-        "suite-realistic",
+        "realistic-shard-1",
+        "realistic-shard-2",
         "suite-browser",
         "suite-render",
         "test-render",
@@ -149,7 +153,8 @@
       "requiredChecks": [
         "suite-coverage",
         "coverage-check",
-        "suite-realistic",
+        "realistic-shard-1",
+        "realistic-shard-2",
         "suite-browser",
         "suite-render",
         "test-render",
@@ -171,7 +176,8 @@
       "requiredChecks": [
         "suite-coverage",
         "coverage-check",
-        "suite-realistic",
+        "realistic-shard-1",
+        "realistic-shard-2",
         "suite-browser",
         "suite-render",
         "test-render",
