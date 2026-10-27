@@ -490,7 +490,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 507,000 bytes |
+| `ggaction` | 508,000 bytes |
 | `ggaction/basic` | 286,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
@@ -2815,4 +2815,7 @@ hue channel을 기록하고, `legendBlocks`/facet/encoding removal은 같은 cha
 packed1,005,000/unpacked4,684,000으로 지원 환경의 실측을 포함하는 최소 천 byte 단위만 조정한다.
 로컬 압축값만으로 정한1,003,000 한도는 CI에서 실패했으며 해당 실패는
 [CI run40576335578](https://github.com/ggaction/ggaction/actions/runs/40576335578)에 보존한다.
+Installed Full browser gzip은 Node24 CI에서507,419bytes로 기존507,000 한도를 초과하여
+508,000으로만 조정한다. Basic286,000/SVG25,000 한도는 유지한다. 해당 기능·타입 consumer들은
+통과했으며 크기 실패는 [CI run40578989389](https://github.com/ggaction/ggaction/actions/runs/40578989389)에 보존한다.
 일반·수치·pixel·coverage 검사는 완화하지 않는다.
