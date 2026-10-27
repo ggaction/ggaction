@@ -2232,7 +2232,6 @@ const TRACE_ONLY_LIFECYCLE_FACTORS = Object.freeze({
   "action-mark-lifecycle": Object.freeze(["length"]),
   "action-horizon-lifecycle": Object.freeze(["baseline"]),
   "action-cartesian-guides": Object.freeze(["align", "subtitle"]),
-  "action-selection-lifecycle": Object.freeze(["count"]),
 });
 
 function directTraceNode(program, operation) {
@@ -2272,11 +2271,6 @@ function traceOnlyFactorEvidence(base, program, factors, factor) {
       ? "trace-only:editTitle.subtitle-before-removeTitle"
       : undefined;
   }
-  if (base.id === "action-selection-lifecycle" && factor === "count") {
-    return directTraceNode(program, "highlightMarks")?.select?.count === factors.count
-      ? "trace-only:highlightMarks.select.count-before-removeMarkHighlight"
-      : undefined;
-  }
   return undefined;
 }
 
@@ -2287,6 +2281,8 @@ function observeLifecycleFactorEffects(base, program, factors) {
     .flatMap(factor => {
       const evidence = traceOnly.has(factor)
         ? traceOnlyFactorEvidence(base, program, factors, factor)
+        : base.id === "action-selection-lifecycle" && factor === "count"
+          ? selectionCountEvidence(program, factors)
         : base.id === "action-facet-scale-lifecycle" && factor === "columns"
           ? facetColumnEvidence(program, factors)
           : `final-semantic-or-graphic:${base.id}:${factor}`;
@@ -2294,6 +2290,16 @@ function observeLifecycleFactorEffects(base, program, factors) {
         ? []
         : [Object.freeze({ factor, value: factors[factor], evidence })];
     }));
+}
+
+function selectionCountEvidence(program, factors) {
+  // Removing appearance preserves the named selection's semantic predicate.
+  const resource = program.semanticSpec.resources.find(value =>
+    value.kind === "persistent-selection" && value.id === "highestPoint"
+  );
+  return resource?.options.predicate?.count === factors.count
+    ? "final-semantic-or-graphic:persistent-selection.predicate.count"
+    : undefined;
 }
 
 function facetColumnEvidence(program, factors) {

@@ -1,3 +1,4 @@
+import { withoutAllocatedIdentity } from "../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import test from "node:test";
@@ -13,7 +14,7 @@ function fingerprint(value) {
 }
 
 function finalFingerprint(program) {
-  return fingerprint([program.semanticSpec, program.graphicSpec, program.children]);
+  return fingerprint(withoutAllocatedIdentity([program.semanticSpec, program.graphicSpec, program.children]));
 }
 
 function factorsAtBaseline(dataset, domains) {

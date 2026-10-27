@@ -1,3 +1,4 @@
+import { withoutAllocatedIdentity } from "../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import test from "node:test";
@@ -265,9 +266,9 @@ test("composition alignment moves deliberately unequal child canvases", () => {
         const program = recipe.build(factors);
         recipe.releaseResolution(factors);
         return createHash("sha256")
-          .update(JSON.stringify(program.semanticSpec))
+          .update(JSON.stringify(withoutAllocatedIdentity(program.semanticSpec)))
           .update("\0")
-          .update(JSON.stringify(program.graphicSpec))
+          .update(JSON.stringify(withoutAllocatedIdentity(program.graphicSpec)))
           .digest("hex");
       });
       assert.equal(new Set(fingerprints).size, domains.compositionAlign.length);

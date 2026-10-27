@@ -1,3 +1,4 @@
+import { withoutAllocatedIdentity } from "../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { spawnSync } from "node:child_process";
@@ -1234,7 +1235,7 @@ test("selects polynomial-safe Space Launch groups before sampling", () => {
         assertAnalyticLayerIntegrity(program, dataset);
         assertSvgIntegrity(renderToSVG(program), dataset);
         semanticDigest = createHash("sha256")
-          .update(JSON.stringify(program.semanticSpec))
+          .update(JSON.stringify(withoutAllocatedIdentity(program.semanticSpec)))
           .digest("hex");
         provenanceSnapshot = provenance;
       }
@@ -1250,7 +1251,7 @@ test("selects polynomial-safe Space Launch groups before sampling", () => {
     const repeated = recipe.build(factors);
     const repeatedMetadata = recipe.describe(factors);
     assert.equal(
-      createHash("sha256").update(JSON.stringify(repeated.semanticSpec)).digest("hex"),
+      createHash("sha256").update(JSON.stringify(withoutAllocatedIdentity(repeated.semanticSpec))).digest("hex"),
       semanticDigest
     );
     assert.deepEqual(repeatedMetadata.provenance, provenanceSnapshot);

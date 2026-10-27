@@ -7,6 +7,7 @@ import { TRANSFORM_TYPES } from "../../../../src/grammar/transforms.js";
 import { LINEAGE_TRANSFORMS } from "../../../../src/grammar/rowLineage.js";
 import { buildActionRelationshipPrograms } from "../../../../scripts/action-relationship-source.js";
 import { memberRowReferences } from "../../../../src/materialization/selection/rows.js";
+import { resolveMarkItems } from "../../../../src/materialization/selection/policies/index.js";
 
 const data = (program, id) => program.semanticSpec.datasets.find(dataset => dataset.id === id);
 const contributing = (program, id) => {
@@ -51,6 +52,21 @@ test("every registered transform emits unique row keys and exact resolvable line
         assert.equal(source.logicalId, ref.logicalDataId);
         assert.equal(source.revision, ref.revision);
         assert.ok(source.rowKeys.includes(ref.rowKey));
+      }
+    }
+    for (const layer of program.semanticSpec.layers) {
+      const graphic = program.graphicSpec.objects[layer.id];
+      if (!graphic?.items?.length || graphic.items.some(item => item.identity === undefined)) continue;
+      const stored = new Map(graphic.items.map(item => [item.id, item.identity]));
+      for (const item of resolveMarkItems(program, layer.id)) {
+        const rowKeys = item.rows.filter(ref => ref.data === layer.data).map(ref => ref.rowKey);
+        for (const [index, id] of item.graphicIds.entries()) {
+          const identity = stored.get(id);
+          assert.equal(identity.key, item.key);
+          assert.equal(identity.topology, item.topology);
+          assert.equal(identity.role, item.graphicRoles[index]);
+          assert.deepEqual(identity.lineage.rowKeys, rowKeys);
+        }
       }
     }
     Object.values(program.children).forEach(inspect);

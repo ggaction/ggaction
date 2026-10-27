@@ -267,8 +267,9 @@ type MarkSelector =
 - Resolves an existing selection by explicit/current/unique rules. When a dependent highlight exists, calls the real wrapped
   `removeMarkHighlight({ selection })` child first, then removes the selection config and clears matching
   `currentSelection`. Other selection/highlight assignments are preserved.
-- Selection has no independent semantic or graphic resource, so selection-only removal does not rematerialize graphics.
-  Missing/ambiguous direct removal fails before state changes.
+- Removes the persistent-selection resource when its last selection consumer is removed. A selection has no independent
+  graphic resource, so selection-only removal does not rematerialize graphics. Missing/ambiguous direct removal fails
+  before state changes.
 
 ### Formal values — `removeMarkSelection`
 

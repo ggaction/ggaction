@@ -1,3 +1,4 @@
+import { withoutAllocatedIdentity } from "../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
@@ -65,9 +66,9 @@ const analysisRecipe = REALISTIC_ANALYSIS_RECIPES.find(recipe =>
 
 function finalFingerprint(program) {
   return createHash("sha256")
-    .update(JSON.stringify(program.semanticSpec))
+    .update(JSON.stringify(withoutAllocatedIdentity(program.semanticSpec)))
     .update("\0")
-    .update(JSON.stringify(program.graphicSpec))
+    .update(JSON.stringify(withoutAllocatedIdentity(program.graphicSpec)))
     .digest("hex");
 }
 

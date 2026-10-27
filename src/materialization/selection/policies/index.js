@@ -39,10 +39,21 @@ export function requireSelectionPolicy(markType) {
 }
 
 export function resolveMarkItems(program, target, grain = "item") {
+  return resolveItems(program, target, grain, false);
+}
+
+// Concrete output records direct membership; expanding all ancestors belongs
+// to selection and inspection, not every geometry rebuild.
+export function resolveMarkIdentities(program, target) {
+  return resolveItems(program, target, "item", true);
+}
+
+function resolveItems(program, target, grain, identityOnly) {
+  const resolvers = { resolveMarkItems, resolveMarkSourceItems, identityOnly };
   const layer = requireLayer(program, target, `Unknown mark target "${target}"`);
   if (layer.derivedBindings?.overlay) {
     if (grain !== "item") throw new Error(`Overlay "${target}" supports item selection grain.`);
-    return resolveOverlayItems(program, layer, { resolveMarkItems, resolveMarkSourceItems });
+    return resolveOverlayItems(program, layer, resolvers);
   }
   const dataset = findDataset(program, layer.data);
   if (dataset === undefined) {
@@ -52,7 +63,7 @@ export function resolveMarkItems(program, target, grain = "item") {
   if (!policy.supportedGrains.includes(grain)) {
     throw new Error(`Mark "${target}" does not support ${grain} selection grain.`);
   }
-  return policy.resolveItems(program, layer, applyItemMissingPolicy(layer, dataset), grain, resolveMarkItems, { resolveMarkItems, resolveMarkSourceItems });
+  return policy.resolveItems(program, layer, applyItemMissingPolicy(layer, dataset), grain, resolveMarkItems, resolvers);
 }
 
 // Composite source membership does not require the parent's graphics to have

@@ -164,9 +164,19 @@ export function finalizeItems(program, layer, grain, definitions, graphicType, {
       });
     }
   }
+  const positions = selectionResolvers?.identityOnly
+    ? new Map(requireDataset(program, layer.data).rowKeys.map((key, index) => [key, index]))
+    : undefined;
   return Object.freeze(definitions.map((definition, index) => {
     const indices = definition.graphicIndices ?? [index];
     const items = indices.map(childIndex => graphic.items[childIndex]);
+    if (positions !== undefined) return Object.freeze({
+      key: definition.key,
+      topology: definition.topology,
+      graphicRoles: Object.freeze(definition.graphicRoles ?? ["body"]),
+      rowKeys: Object.freeze([...new Set(definition.memberKeys)].sort((a, b) => positions.get(a) - positions.get(b))),
+      graphicIds: Object.freeze(items.map((child, offset) => child.id ?? graphicId(layer, indices[offset])))
+    });
     const properties = definition.properties === undefined ? (
       items.length === 1
         ? selectableGraphicProperties({

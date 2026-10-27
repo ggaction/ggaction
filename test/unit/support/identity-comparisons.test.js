@@ -12,3 +12,24 @@ test("independent allocation comparisons retain dates, key declarations and conc
   assert.throws(() => assertEquivalentMeaning({ id: "mark", properties: { x: 1 } },
     { id: "mark", properties: { x: 2 } }), assert.AssertionError);
 });
+
+test("independent allocation comparisons ignore namespaces while retaining values and item order", () => {
+  const program = namespace => ({
+    semanticSpec: { datasets: [{
+      id: "rows", logicalId: namespace, revision: 0, allocationId: namespace,
+      rowKeys: [namespace], nextGeneratedKey: 1, keySpec: { mode: "generated" },
+      values: [{ value: 2 }]
+    }] },
+    graphicSpec: { objects: { points: { items: [1, 2].map(x => ({
+      id: `points:${namespace.repeat(64)}`, identity: { rowKey: namespace },
+      properties: { x }
+    })) } } }
+  });
+  const first = program("a"), second = program("b");
+  assertEquivalentMeaning(first, second);
+  second.semanticSpec.datasets[0].values[0].value = 3;
+  assert.throws(() => assertEquivalentMeaning(first, second), assert.AssertionError);
+  const reordered = program("c");
+  reordered.graphicSpec.objects.points.items.reverse();
+  assert.throws(() => assertEquivalentMeaning(first, reordered), assert.AssertionError);
+});

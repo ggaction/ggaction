@@ -1,3 +1,4 @@
+import { withoutAllocatedIdentity } from "../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
@@ -287,9 +288,9 @@ function strippedFingerprint(program) {
     ([id]) => id !== "chartTitle" && id !== "chartSubtitle"
   ));
   return createHash("sha256")
-    .update(JSON.stringify({ ...program.semanticSpec, title: {} }))
+    .update(JSON.stringify(withoutAllocatedIdentity({ ...program.semanticSpec, title: {} })))
     .update("\0")
-    .update(JSON.stringify({ ...program.graphicSpec, objects }))
+    .update(JSON.stringify(withoutAllocatedIdentity({ ...program.graphicSpec, objects })))
     .digest("hex");
 }
 

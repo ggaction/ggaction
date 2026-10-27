@@ -1,3 +1,4 @@
+import { withoutAllocatedIdentity } from "../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
@@ -151,15 +152,12 @@ function recordStats(stats, dataset) {
 
 function finalProgramFingerprint(program) {
   return createHash("sha256")
-    .update(JSON.stringify({
-      semanticSpec: program.semanticSpec,
-      graphicSpec: program.graphicSpec
-    }))
+    .update(JSON.stringify(programSpecs(program)))
     .digest("hex");
 }
 
 function programSpecs(program) {
-  return Object.freeze({
+  return withoutAllocatedIdentity({
     semanticSpec: program.semanticSpec,
     graphicSpec: program.graphicSpec
   });
@@ -1006,7 +1004,7 @@ test("replays the automatic cartesian guide identically after cloning, reorderin
     );
     assert.equal(child.status, 0, child.stderr);
     assert.deepEqual(
-      JSON.parse(child.stdout),
+      withoutAllocatedIdentity(JSON.parse(child.stdout)),
       JSON.parse(JSON.stringify(programSpecs(baseline)))
     );
   } finally {

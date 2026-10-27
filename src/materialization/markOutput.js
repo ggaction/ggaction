@@ -1,6 +1,6 @@
 import { requireDataset } from "../selectors/datasets.js";
 import { materializeMarkClip } from "./markClip.js";
-import { resolveMarkItems } from "./selection/policies/index.js";
+import { resolveMarkIdentities } from "./selection/policies/index.js";
 import { findLayer } from "../selectors/layers.js";
 
 // Explicitly called by the owning mark materializer after geometry is complete.
@@ -16,12 +16,12 @@ export function materializeMarkOutput(program, id) {
         (layer.encoding?.theta?.scale && layer.encoding?.radius?.scale))) return clipped;
   const dataset = requireDataset(clipped, layer.data);
   const identities = new Map();
-  for (const item of resolveMarkItems(clipped, id)) {
+  for (const item of resolveMarkIdentities(clipped, id)) {
     for (const [index, graphicId] of item.graphicIds.entries()) {
       identities.set(graphicId, {
         key: item.key, topology: item.topology, role: item.graphicRoles[index],
         lineage: { data: dataset.id, logicalDataId: dataset.logicalId, revision: dataset.revision,
-          rowKeys: item.rows.filter(ref => ref.data === layer.data).map(ref => ref.rowKey) }
+          rowKeys: item.rowKeys }
       });
     }
   }

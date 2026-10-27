@@ -185,6 +185,7 @@ test("removes only one highlight and restores categorical legend symbols", () =>
     });
   const removed = highlighted.removeMarkHighlight({ selection: "groupA" });
 
+  assert.equal(removed.semanticSpec.resources, highlighted.semanticSpec.resources);
   assert.notEqual(removed.materializationConfigs.selections.groupA, undefined);
   assert.equal(removed.materializationConfigs.highlights.groupA, undefined);
   assert.notEqual(removed.materializationConfigs.highlights.highest, undefined);
@@ -250,6 +251,8 @@ test("removes a dependent highlight before releasing its selection", () => {
   });
   const removed = highlighted.removeMarkSelection({ selection: "highest" });
 
+  assert.deepEqual(removed.semanticSpec.resources, []);
+  assert.equal(highlighted.semanticSpec.resources.length, 1);
   assert.equal(removed.materializationConfigs.selections, undefined);
   assert.equal(removed.materializationConfigs.highlights, undefined);
   assert.equal(removed.context.currentSelection, undefined);
