@@ -4,7 +4,7 @@
 
 ## 현재 상태
 
-- 현재 활성 계획은 **Roadmap 9 Phase 1**이다. Phase 0은 완료했고 Phase 1은 G-CORE 검토 준비 중이다. 마지막 완료 Roadmap은 Roadmap 8 Phase 7이다.
+- 현재 활성 계획은 **Roadmap 9 Phase 2**의 [복합 경로 검토](roadmap9/phase2/GOAL.md)다. Phase 0과 Phase 1은 완료했다. 마지막 완료 Roadmap은 Roadmap 8 Phase 7이다.
 - [`roadmap9/ROADMAP.md`](roadmap9/ROADMAP.md) — native 확장과 실행 의존성
 - [`roadmap9/phase0/GOAL.md`](roadmap9/phase0/GOAL.md) — baseline·독립 oracle·검증 증거 구현
 - [`roadmap9/phase1/GOAL.md`](roadmap9/phase1/GOAL.md) — ID·리소스·저장 형식 검토와 구현 경계

@@ -15,7 +15,7 @@ const COMMAND_KEYS = Object.freeze({
 });
 const validatedCommands = new WeakSet();
 
-function validateCommand(command, index) {
+export function validatePathCommand(command, index) {
   if (!isPlainObject(command) || !Object.hasOwn(COMMAND_KEYS, command.op)) {
     throw new TypeError(
       `path.commands[${index}] must be an M, L, C, or Z command.`
@@ -47,7 +47,7 @@ export function validatePathCommands(commands) {
     throw new TypeError("path.commands must contain at least one command.");
   }
   validatePathCommandCount(commands.length, "path.commands length");
-  commands.forEach(validateCommand);
+  commands.forEach(validatePathCommand);
   if (commands[0].op !== "M") {
     throw new Error("path.commands must start with M.");
   }

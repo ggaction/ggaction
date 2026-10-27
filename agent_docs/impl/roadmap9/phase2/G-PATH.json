@@ -1,0 +1,44 @@
+{
+  "id": "G-PATH",
+  "state": "planned",
+  "scope": [
+    "STEP-010",
+    "STEP-011",
+    "STEP-012"
+  ],
+  "proposal": "agent_docs/impl/roadmap9/phase2/DESIGN.md",
+  "decisions": [
+    "D1",
+    "D2",
+    "D3",
+    "D4",
+    "D5",
+    "D6"
+  ],
+  "authorization": {
+    "preparation": {
+      "date": "2026-10-27",
+      "userMessage": "승인 계속 진행",
+      "scope": "Phase 1 다음 작업의 독립 kernel과 구체적 검토 자료 준비"
+    },
+    "priorApproval": "phase1/G-CORE.json의 명시 승인 범위는 D1–D8 / STEP-004–009다.",
+    "designApproval": null
+  },
+  "codeRevision": null,
+  "evidenceRevision": null,
+  "requiredChecks": [
+    "suite-unit",
+    "suite-gates",
+    "suite-contracts",
+    "suite-all",
+    "suite-render",
+    "package-check",
+    "machine-docs"
+  ],
+  "remaining": [
+    "clean revision 누적 검증과 원격 evidence",
+    "D1–D6 공개/저장 계약과 시각 target 승인",
+    "STEP-010–012 제품 통합"
+  ],
+  "notice": "원안 G-CORE와 G-VISUAL의 복합 경로 결정을 한 검토 묶음에 기록한다."
+}

@@ -177,6 +177,10 @@
       {
         "type": "prefix",
         "path": "unit/grammar/"
+      },
+      {
+        "type": "prefix",
+        "path": "gates/compound-path/"
       }
     ],
     "guides": [

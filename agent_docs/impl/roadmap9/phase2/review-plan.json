@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "scope": "G-PATH 검토 준비만 해당; STEP-010–012 제품 완료를 뜻하지 않는다.",
+  "requirementsSource": "agent_docs/impl/roadmap9/phase2/GOAL.md",
+  "tasks": [
+    {
+      "id": "PATH-REVIEW-PREPARATION",
+      "dependsOn": [],
+      "requiredChecks": [
+        "suite-unit",
+        "suite-gates",
+        "suite-contracts",
+        "suite-all",
+        "suite-render",
+        "package-check",
+        "machine-docs"
+      ],
+      "requiredGates": []
+    }
+  ],
+  "finalTask": "PATH-REVIEW-PREPARATION"
+}

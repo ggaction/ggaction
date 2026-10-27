@@ -23,7 +23,7 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 670, // Complete identity, lineage, resource and shared encoding owners.
+  entries: 671, // Includes the private compound-path topology owner.
   packedBytes: 1_001_000, // Identity integration: Node 22.23.2/npm 10 measured 999,138 bytes.
   unpackedBytes: 4_669_000 // Integrated artifact: measured 4,663,958 bytes.
 });

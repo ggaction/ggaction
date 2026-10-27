@@ -1,0 +1,13 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><title>Compound path primitive review</title><body><p id="status">Loading</p>
+<script type="module">
+import { variants, frame } from './manifest.js';
+import { drawPrimitive } from './primitive.program.js';
+for (const variant of variants) {
+  const canvas = document.createElement('canvas');
+  canvas.id = variant.id; canvas.width = frame.width; canvas.height = frame.height;
+  canvas.setAttribute('aria-label', variant.title);
+  drawPrimitive(canvas.getContext('2d'), variant);
+  document.body.append(canvas);
+}
+document.querySelector('#status').textContent = 'Ready';
+</script></body></html>

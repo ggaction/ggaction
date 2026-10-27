@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "scope": "STEP-010–012 product integration; review-only passes do not close product cells",
+  "cells": [
+    {
+      "id": "topology-kernel",
+      "status": "implemented-awaiting-clean-qualification",
+      "owner": "src/grammar/pathTopology.js",
+      "obligation": "dense exact commands, subpaths, copying, whole-path limit"
+    },
+    {
+      "id": "native-primitive-review",
+      "status": "implemented-awaiting-clean-qualification",
+      "owner": "test/gates/compound-path/review.render.js",
+      "obligation": "six targets; four backends; not product integration"
+    },
+    {
+      "id": "graphic-validation-and-editing",
+      "status": "pending",
+      "owner": "src/grammar/schemas/concreteGraphic.js",
+      "obligation": "path owners/items, fillRule, clip union and atomic errors"
+    },
+    {
+      "id": "bounds-and-geometry",
+      "status": "pending",
+      "owner": "src/grammar/schemas/graphicBounds.js",
+      "obligation": "reuse exact extrema; all subpath stroke/cap/join, transforms, clip, adaptive flatten/arc/winding/distance"
+    },
+    {
+      "id": "owner-clip",
+      "status": "pending",
+      "owner": "src/grammar/schemas/graphicClip.js",
+      "obligation": "same parent frame; nested scopes; false removal; occupied bounds"
+    },
+    {
+      "id": "canvas-and-native-png-pdf",
+      "status": "pending",
+      "owner": "src/renderers/canvas/path.js",
+      "obligation": "fill rule and compound clip; native preflight; no silent fallback"
+    },
+    {
+      "id": "svg",
+      "status": "pending",
+      "owner": "src/renderers/svgSerialization.js",
+      "obligation": "path serialization, fill-rule, clip-rule and scoped defs"
+    },
+    {
+      "id": "scene",
+      "status": "pending",
+      "owner": "src/scene.js",
+      "obligation": "Canvas/SVG round-trip and replay; immutable state; exact commands"
+    },
+    {
+      "id": "persistence",
+      "status": "pending",
+      "owner": "src/persistence.js",
+      "obligation": "graphic/editable round-trip; legacy rejection; fresh-process edit/remove"
+    },
+    {
+      "id": "types-and-package",
+      "status": "pending",
+      "owner": "types/program.d.ts",
+      "obligation": "runtime/declaration parity and installed exports; no new entry point"
+    },
+    {
+      "id": "contracts-and-documentation",
+      "status": "pending",
+      "owner": "agent_docs/contract/current/PRIMITIVES.md",
+      "obligation": "current action surface and extension docs with generated references"
+    },
+    {
+      "id": "inspection-and-accessibility",
+      "status": "pending",
+      "owner": "src/inspection.js",
+      "obligation": "concrete properties, item identity and metadata remain intact"
+    },
+    {
+      "id": "refs-and-rematerialization",
+      "status": "pending",
+      "owner": "src/materialization",
+      "obligation": "explicit lowerings; retain compatible authored overrides; full consumer audit"
+    },
+    {
+      "id": "new-mark-family",
+      "status": "not-applicable",
+      "owner": null,
+      "obligation": "This phase expands concrete path geometry, not semantic mark families."
+    },
+    {
+      "id": "hit-and-animation-runtime",
+      "status": "deferred-to-existing-roadmap",
+      "owner": null,
+      "obligation": "STEP-011 provides geometry; runtime integration remains STEP-047 onward as originally planned."
+    }
+  ]
+}

@@ -16,7 +16,7 @@
 | 승인된 미래 계약 읽기 | [`contract/planned/`](contract/planned/) |
 | 현재 개발 순서 확인 | [`impl/README.md`](impl/README.md) |
 
-현재 활성 계획은 **Roadmap 9 Phase 1**의 [ID·리소스·저장 형식 검토](impl/roadmap9/phase1/GOAL.md)다. Phase 0 검증 기반은 완료했다. 마지막 완료 Roadmap은 Roadmap 8 Phase 7이다.
+현재 활성 계획은 **Roadmap 9 Phase 2**의 [복합 경로 검토](impl/roadmap9/phase2/GOAL.md)다. Phase 0과 Phase 1은 완료했다. 마지막 완료 Roadmap은 Roadmap 8 Phase 7이다.
 [Roadmap 8](impl/roadmap8/ROADMAP.md)은 필드/schema·빈 결과·통계·회귀·파생 관계·정렬·
 조회 API·반복 실행 성능의 11개 보완을 구현했다.
 [Phase 7 완료 기록](impl/roadmap8/phase7/GOAL.md)과
