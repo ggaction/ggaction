@@ -2809,7 +2809,10 @@ hue channel을 기록하고, `legendBlocks`/facet/encoding removal은 같은 cha
 [저장 및 scene 계약](contract/current/PRIMITIVES.md#compound-path-persistence-and-scenes)에 둔다.
 
 복합 geometry의 새 private module로 entry 실측은672이며 기존671을 초과한다.
-최종 계측은 Node22.23.1/npm10에서 packed1,002,146bytes, unpacked4,683,067bytes다.
+최종 계측은 Node22.23.1/npm10에서 packed1,002,150bytes, unpacked4,683,082bytes다.
+같은 source의 CI Node20/22 Linux·macOS 압축 실측은1,004,363bytes, Windows는1,004,352bytes다.
 이전 packed1,001,000/unpacked4,669,000 한도 실패를 보존하고 entry672,
-packed1,003,000/unpacked4,684,000으로 최소 천 byte 단위만 조정한다.
+packed1,005,000/unpacked4,684,000으로 지원 환경의 실측을 포함하는 최소 천 byte 단위만 조정한다.
+로컬 압축값만으로 정한1,003,000 한도는 CI에서 실패했으며 해당 실패는
+[CI run40576335578](https://github.com/ggaction/ggaction/actions/runs/40576335578)에 보존한다.
 일반·수치·pixel·coverage 검사는 완화하지 않는다.
