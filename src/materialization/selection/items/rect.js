@@ -5,7 +5,6 @@ import {
   channelMapFromRow,
   concreteProperties,
   finalizeItems,
-  itemKey,
   ownFields,
   uniqueFields
 } from "./common.js";
@@ -21,24 +20,24 @@ function rectSelectionProperties(graphic, index) {
   };
 }
 
-function resolveGradientPlotItems(program, layer, dataset) {
+function resolveGradientPlotItems(program, layer, dataset, selectionResolvers) {
   const graphic = program.graphicSpec.objects[layer.id];
   return finalizeItems(
     program,
     layer,
     "rect",
     dataset.values.map((row, index) => ({
-      key: itemKey(layer, "rect", index),
+      rowKey: dataset.rowKeys[index],
       fields: ownFields(row),
       channels: channelMapFromRow(row, layer),
       properties: rectSelectionProperties(graphic, index),
       members: [row]
     })),
-    "rect"
-  );
+    hasRectRadius(program.markConfigs[layer.id]) ? ["rect", "path"] : "rect"
+  , { selectionResolvers });
 }
 
-export function resolveRectItems(program, layer, dataset) {
+export function resolveRectItems(program, layer, dataset, grain, resolveItems, selectionResolvers) {
   const graphic = program.graphicSpec.objects[layer.id];
   const rounded = hasRectRadius(program.markConfigs[layer.id]);
   const compatibleCollection = rounded && graphic?.type === "collection" &&
@@ -50,12 +49,12 @@ export function resolveRectItems(program, layer, dataset) {
     throw new Error(`Rect mark "${layer.id}" is incomplete for selection.`);
   }
   if (program.markConfigs[layer.id]?.gradientPlot?.materialized === true) {
-    return resolveGradientPlotItems(program, layer, dataset);
+    return resolveGradientPlotItems(program, layer, dataset, selectionResolvers);
   }
   const rows = resolveRectRows(program, layer, dataset);
   const hasField = rectUsesFields(layer);
   const definitions = rows.map((item, graphicIndex) => ({
-    key: itemKey(layer, "rect", item.sourceIndex),
+    ...(hasField ? { rowKey: dataset.rowKeys[item.sourceIndex] } : { semanticIdentity: ["constant"] }),
     fields: hasField ? ownFields(item.row) : uniqueFields(dataset.values),
     channels: channelMapFromRow(item.row, layer),
     properties: rectSelectionProperties(graphic, graphicIndex),
@@ -67,5 +66,5 @@ export function resolveRectItems(program, layer, dataset) {
     "rect",
     definitions,
     rounded ? ["rect", "path"] : "rect"
-  );
+  , { selectionResolvers });
 }

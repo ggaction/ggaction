@@ -1,3 +1,4 @@
+import { selectedItemPositions } from "../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import { mkdtemp, readFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
@@ -93,9 +94,9 @@ test("keeps point fill and stroke as independent categorical channels and legend
     op: "eq",
     value: "U"
   });
-  assert.deepEqual(resolveStoredSelection(selected, "outline-u").keys, [
-    "points/point/0",
-    "points/point/2"
+  assert.deepEqual(selectedItemPositions(resolveStoredSelection(selected, "outline-u")), [
+    0,
+    2
   ]);
   const highlighted = selected.highlightMarks({
     selection: "outline-u",
@@ -135,14 +136,14 @@ test("validates line stroke at final series grain before writing state", () => {
 
   assert.deepEqual(strokes(encoded, "paths"), ["#4c78a8", "#f58518"]);
   assert.deepEqual(
-    resolveStoredSelection(encoded.selectMarks({
+    selectedItemPositions(resolveStoredSelection(encoded.selectMarks({
       id: "series-u",
       target: "paths",
       channel: "stroke",
       op: "eq",
       value: "U"
-    }), "series-u").keys,
-    ["paths/series/0"]
+    }), "series-u")),
+    [0]
   );
 
   const mixed = chart()

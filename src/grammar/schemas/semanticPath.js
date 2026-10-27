@@ -171,6 +171,8 @@ export function parseSemanticPath(property, { allowContainer = false } = {}) {
   if (typeof property !== "string" || property.length === 0) {
     throw new TypeError("editSemantic requires a non-empty property string.");
   }
+  const resource = property.match(new RegExp(`^resource\\[([a-z-]+):(${USER_ID_SOURCE})\\]$`));
+  if (resource) return Object.freeze({ kind: "resource", resourceKind: resource[1], id: resource[2], collection: "resources", path: Object.freeze([]) });
 
   if (allowContainer) {
     const entityMatch = property.match(

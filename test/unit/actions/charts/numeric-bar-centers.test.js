@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { chart } from "../../../../src/index.js";
@@ -48,7 +49,7 @@ test("numeric raw and interval bars support both orientations and lower-level au
     const raw = base().createBarPlot({ x: "x", y: "y", orientation, width: { pixels: 12 }, guides: false });
     let lower = base().createBarMark({ id: "barPlot", orientation }).encodeBarWidth({ pixels: 12 });
     lower = lower.encodeY({ field: "y" }).encodeX({ field: "x" });
-    assert.deepEqual(raw.graphicSpec, lower.graphicSpec);
+    assertEquivalentMeaning(raw.graphicSpec, lower.graphicSpec);
     const range = base().createBarPlot({
       x: orientation === "vertical" ? "x" : { lower: "lo", upper: "y" },
       y: orientation === "vertical" ? { lower: "lo", upper: "y" } : "x",

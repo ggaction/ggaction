@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -100,7 +101,7 @@ test("keeps rect authoring order-independent and incomplete intent empty", () =>
     field: "column",
     fieldType: "ordinal"
   });
-  assert.deepEqual(
+  assertEquivalentMeaning(
     reversed.graphicSpec.objects.rect.items,
     discreteRect().graphicSpec.objects.rect.items
   );

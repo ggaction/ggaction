@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -235,7 +236,7 @@ for (const horizontal of [false, true]) {
     const expectedCenters = horizontal ? [200, 100] : [125, 275];
     assert.deepEqual(p.resolvedScales[axis].range, expectedRange);
     assert.deepEqual(categoryCenters(p, horizontal), expectedCenters);
-    assert.deepEqual(first.graphicSpec, p.graphicSpec);
+    assertEquivalentMeaning(first.graphicSpec, p.graphicSpec);
     assert.equal(p.graphicSpec.objects.bars.items.every(({ properties: r }) =>
       (horizontal ? r.height : r.width) === 5), true);
     const reversed = p.editScale({ id: axis, reverse: true });

@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { chart } from "../../../../src/index.js";
@@ -75,7 +76,7 @@ test("endpoint edits preserve references, styles and source roles in either acti
     assert.deepEqual(statistics(first), statistics(last));
     assert.equal(first.markConfigs.statisticalReference.statisticalReference.source, source);
     assert.equal(first.markConfigs.statisticalReference.statisticalReference.axis, "y");
-    assert.deepEqual(first.graphicSpec.objects.statisticalReference, last.graphicSpec.objects.statisticalReference);
+    assertEquivalentMeaning(first.graphicSpec.objects.statisticalReference, last.graphicSpec.objects.statisticalReference);
     assert.equal(first.graphicSpec.objects.statisticalReference.items[0].properties.strokeWidth, 4);
     assert.equal(first.graphicSpec.objects.statisticalReference.items[0].properties.stroke, "#334455");
     assert.deepEqual(deserializeProgram(serializeProgram(first)).graphicSpec, first.graphicSpec);

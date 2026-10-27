@@ -62,6 +62,7 @@ test("encodes grouped bar color through a nested xOffset action", () => {
     "editGraphics",
     "editGraphics",
     "editGraphics",
+    "editGraphics",
     "editGraphics"
   ]);
 });

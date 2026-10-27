@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { chart } from "../../../../src/index.js";
@@ -41,7 +42,7 @@ test("complete, whole, group, focused and Basic creation converge", () => {
     base().createYAxis({ ticksAndLabels: { values: [0, 1, 2] } }).editYAxisTicksAndLabels({ ticks: tick }),
     base().createYAxis({ ticksAndLabels: { values: [0, 1, 2] } }).editYAxisTicks(tick),
     base(basicChart).createYAxis({ ticksAndLabels: { values: [0, 1, 2], ticks: tick } })
-  ]) assert.deepEqual(actual.graphicSpec, expected.graphicSpec);
+  ]) assertEquivalentMeaning(actual.graphicSpec, expected.graphicSpec);
 });
 
 test("map reset preserves uniform dash and uniform edits preserve an override map", () => {

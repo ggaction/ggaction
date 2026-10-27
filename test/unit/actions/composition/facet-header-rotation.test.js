@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { chart } from "../../../../src/index.js";
@@ -19,7 +20,7 @@ test("initial structured degrees equal edited radians without changing the earli
   const old = initial(), before = serializeProgram(old);
   const actual = initial({ rotation });
   const edited = old.editFacetHeaders({ role: "column", rotation: -Math.PI / 2 });
-  assert.deepEqual(actual.graphicSpec, edited.graphicSpec);
+  assertEquivalentMeaning(actual.graphicSpec, edited.graphicSpec);
   assert.deepEqual(config(actual), config(edited));
   assert.equal(config(actual).column.rotation, -Math.PI / 2);
   assert.equal(serializeProgram(old), before);

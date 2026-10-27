@@ -2297,14 +2297,14 @@ export interface CreateCoordinateOptions {
  Expand CreateDataOptions
 
 ```typescript
-export interface CreateDataOptions<Row extends object> {
+export type CreateDataOptions<Row extends object> = DataKeyOptions & {
   id?: string;
   values: readonly (Row extends readonly unknown[] ? never : Row & StoredCell<Row>)[];
   schema?: SourceSchemaInput;
-}
+};
 ```
 
-Related types: [`StoredCell`](../../../reference/types/#type-storedcell) · [`SourceSchemaInput`](../../../reference/types/#type-sourceschemainput).
+Related types: [`DataKeyOptions`](../../../reference/types/#type-datakeyoptions) · [`StoredCell`](../../../reference/types/#type-storedcell) · [`SourceSchemaInput`](../../../reference/types/#type-sourceschemainput).
 
 ### `CreateDensityPlotOptions` {#type-createdensityplotoptions}
 
@@ -3139,6 +3139,20 @@ Related types: [`DashStyle`](../../../reference/types/#type-dashstyle) · [`Dash
 ```typescript
 export type DashStyle = "solid" | "dashed" | "dotted" | "dashdot";
 ```
+
+### `DataKeyOptions` {#type-datakeyoptions}
+
+ Expand DataKeyOptions
+
+```typescript
+export type DataKeyOptions =
+  | { keyField?: never; keyFields?: never; keys?: never }
+  | { keyField: string; keyFields?: never; keys?: never }
+  | { keyField?: never; keyFields: readonly string[]; keys?: never }
+  | { keyField?: never; keyFields?: never; keys: readonly RowKey[] };
+```
+
+Related types: [`RowKey`](../../../reference/types/#type-rowkey).
 
 ### `DatasetBin2DOutputFields` {#type-datasetbin2doutputfields}
 
@@ -9552,13 +9566,16 @@ type RequestedTransform<T> = T extends unknown ? Omit<T, "resolved"> : never;
  Expand ReviseDataOptions
 
 ```typescript
-export interface ReviseDataOptions<Row extends object> extends CreateDataOptions<Row> {
+export type ReviseDataOptions<Row extends object> = ({ keys?: never; rowMap?: readonly (number | null)[] }
+  | { keys: readonly RowKey[]; rowMap?: never }) & {
+  values: readonly (Row extends readonly unknown[] ? never : Row & StoredCell<Row>)[];
+  schema?: SourceSchemaInput;
   source: string;
   id: string;
-}
+};
 ```
 
-Related types: [`CreateDataOptions`](../../../reference/types/#type-createdataoptions).
+Related types: [`RowKey`](../../../reference/types/#type-rowkey) · [`StoredCell`](../../../reference/types/#type-storedcell) · [`SourceSchemaInput`](../../../reference/types/#type-sourceschemainput).
 
 ### `RotationInput` {#type-rotationinput}
 
@@ -9576,6 +9593,24 @@ Related types: [`RotationUnit`](../../../reference/types/#type-rotationunit).
 
 ```typescript
 export type RotationUnit = "radians" | "degrees";
+```
+
+### `RowKey` {#type-rowkey}
+
+ Expand RowKey
+
+```typescript
+export type RowKey = RowKeyScalar | readonly RowKeyScalar[];
+```
+
+Related types: [`RowKeyScalar`](../../../reference/types/#type-rowkeyscalar).
+
+### `RowKeyScalar` {#type-rowkeyscalar}
+
+ Expand RowKeyScalar
+
+```typescript
+export type RowKeyScalar = string | number | bigint | boolean | Date;
 ```
 
 ### `RowWindowFrame` {#type-rowwindowframe}

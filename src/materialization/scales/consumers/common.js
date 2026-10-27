@@ -9,8 +9,8 @@ import { findDataset } from "../../../selectors/datasets.js";
 import { requireSemanticScale } from "../../../selectors/scales.js";
 import { SCALED_ENCODING_CHANNELS } from "../../../core/vocabulary.js";
 import { applyItemMissingPolicy } from "../../../grammar/itemMissing.js";
-import { resolveOverlaySeries } from "../../../materialization/overlayItems.js";
-import { uniqueFields } from "../../../materialization/selection/items/common.js";
+import { resolveOverlaySeries } from "../../overlayItems.js";
+import { uniqueFields } from "../../selection/items/common.js";
 
 export function findScale(program, id) {
   return requireSemanticScale(program, id);

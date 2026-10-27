@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { chart } from "../../../../src/index.js";
@@ -19,7 +20,7 @@ test("initial and edited title resolve identically, merge immutably and remove c
   const old = unit().facet({ field: "region", columns: 1, headers: { column: { side: "left", offset: 40 } } });
   const before = serializeProgram(old), patch = { text: "Region" };
   const p = old.editFacetHeaders({ role: "column", title: patch });
-  assert.deepEqual(p.graphicSpec, facet().graphicSpec);
+  assertEquivalentMeaning(p.graphicSpec, facet().graphicSpec);
   patch.text = "caller mutation";
   assert.equal(config(p).column.title.text, "Region");
   assert.equal(serializeProgram(old), before);

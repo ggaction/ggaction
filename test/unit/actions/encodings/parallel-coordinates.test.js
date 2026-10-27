@@ -82,8 +82,8 @@ test("supports missing policies and stable source-row identity", () => {
       op: "eq",
       value: 0
     })
-      .materializationConfigs.selections.parallelLinesSelection.selector,
-    { grain: "item", field: "a", op: "eq", value: 0 }
+      .semanticSpec.resources.find(resource => resource.id === "parallelLinesSelection").options.predicate,
+    { field: "a", op: "eq", value: 0 }
   );
   assert.throws(
     () => base(values).encodeParallelCoordinates({

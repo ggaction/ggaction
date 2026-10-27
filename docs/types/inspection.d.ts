@@ -1,5 +1,5 @@
 import type { BasicChartProgram } from "./basic.js";
-import type { ChartProgram, DatasetSchema } from "./program.js";
+import type { ChartProgram, DatasetSchema, InputRowRef } from "./program.js";
 export type ProgramInput = ChartProgram | BasicChartProgram;
 export interface ResourceRef { readonly kind: "data" | "mark" | "scale" | "coordinate" | "guide" | "canvas" | "composition"; readonly id: string; readonly childPath?: readonly string[]; }
 export interface InspectionTarget { readonly kind: "data" | "mark" | "scale" | "coordinate" | "guide"; readonly id: string; readonly childPath?: readonly string[]; }
@@ -45,7 +45,7 @@ export interface MarkItemInspection {
   readonly fields: Readonly<Record<string, unknown>>; readonly channels: Readonly<Record<string, unknown>>;
   readonly properties: Readonly<Record<string, unknown>>;
   readonly geometry: readonly {readonly type: string; readonly properties: Readonly<Record<string, unknown>>}[];
-  readonly rows: readonly { readonly data: string; readonly index: number }[];
+  readonly rows: readonly (InputRowRef & { readonly index: number })[];
   readonly bounds: Readonly<{left:number;top:number;right:number;bottom:number}> | null;
 }
 export function getMarkItems(program: ProgramInput, options?: {target?: string | {childPath?:readonly string[];id:string};grain?:"item"|"stack"}): readonly MarkItemInspection[];

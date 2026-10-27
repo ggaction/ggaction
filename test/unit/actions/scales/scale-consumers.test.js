@@ -6,7 +6,7 @@ import {
   findScaleConsumers,
   resolveConsumerValues,
   resolveHistogramCountValues
-} from "../../../../src/actions/scales/consumers/index.js";
+} from "../../../../src/materialization/scales/consumers/index.js";
 
 function program(layer, datasets = []) {
   return {

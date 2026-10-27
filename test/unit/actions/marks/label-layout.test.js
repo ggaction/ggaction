@@ -54,6 +54,12 @@ test("lays out one complete text mark through the approved wrapped hierarchy", (
   assert.equal(config.resolution.maximumDisplacement <= 48, true);
   assert.deepEqual(config.resolution.warnings, []);
   assert.equal(program.graphicSpec.objects[config.leaderId].type, "line");
+  const leader = program.graphicSpec.objects[config.leaderId].items[0];
+  const label = program.graphicSpec.objects.labels.items.find(item => item.identity.key === leader.identity.key);
+  assert.ok(label);
+  assert.equal(leader.identity.role, "leader");
+  assert.deepEqual(leader.identity.lineage, label.identity.lineage);
+  assert.notEqual(leader.id, label.id);
   const layout = traceNode(program.trace, "layoutLabels");
   const materialize = traceNode(layout, "materializeLabelLayout");
   assert.ok(materialize);
@@ -132,7 +138,7 @@ test("records deterministic best-effort warnings instead of silently succeeding"
   const resolution = program.materializationConfigs.labelLayouts.labels.resolution;
   assert.equal(resolution.overlapAfter, 1);
   assert.deepEqual(resolution.warnings.map(warning => warning.code), ["overlap"]);
-  assert.deepEqual(resolution.warnings[0].pairs, [["labels:0", "labels:1"]]);
+  assert.deepEqual(resolution.warnings[0].pairs, [program.graphicSpec.objects.labels.items.map(item => item.id)]);
 });
 
 test("replays after text encoding, source filtering, and scale edits", () => {

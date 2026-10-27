@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import test from "node:test";import assert from "node:assert/strict";
 import {chart} from "../../../../src/index.js";
 import {chart as basicChart} from "../../../../src/basic.js";
@@ -67,7 +68,7 @@ test("lookup edit rejects own results and downstream tables as reference inputs"
  const p=joined().createComputedData({id:"child",as:"other",expression:{field:"age"}}),before=serializeProgram(p);for(const data of["ages","child"])assert.throws(()=>p.editLookupData({target:"ages",lookup:{data,key:"person",fields:["age"],as:["alias"]},dependents:"recompute"}),/own result|dependent/);assert.equal(serializeProgram(p),before);
 });
 test("Full and Basic share lookup creation while editors remain Full-only",()=>{
- const full=joined(),basic=joined(basicChart);assert.deepEqual(basic.semanticSpec,full.semanticSpec);assert.equal(typeof basic.editLookupData,"undefined");assert.deepEqual(deserializeProgram(serializeProgram(basic)).semanticSpec,basic.semanticSpec);
+ const full=joined(),basic=joined(basicChart);assertEquivalentMeaning(basic.semanticSpec,full.semanticSpec);assert.equal(typeof basic.editLookupData,"undefined");assertEquivalentMeaning(deserializeProgram(serializeProgram(basic)).semanticSpec,basic.semanticSpec);
 });
 test("editable persistence preserves both dependencies and rejects stale values or lineage",()=>{
  const p=joined();assert.deepEqual(deserializeProgram(serializeProgram(p)).semanticSpec,p.semanticSpec);

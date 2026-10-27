@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
@@ -128,7 +129,7 @@ test("keeps grouped quantitative lines independent of position action order", ()
   assert.deepEqual(xThenY.semanticSpec.layers, yThenX.semanticSpec.layers);
   assert.deepEqual(orderedScales(xThenY), orderedScales(yThenX));
   assert.deepEqual(xThenY.resolvedScales, yThenX.resolvedScales);
-  assert.deepEqual(xThenY.graphicSpec, yThenX.graphicSpec);
+  assertEquivalentMeaning(xThenY.graphicSpec, yThenX.graphicSpec);
   assert.equal(xThenY.graphicSpec.objects.line.items.length, 2);
 });
 

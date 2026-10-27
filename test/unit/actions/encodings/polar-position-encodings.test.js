@@ -1,3 +1,5 @@
+import { storedSelectionSelector } from "../../../../src/selectors/selectionResources.js";
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -100,7 +102,7 @@ test("produces identical state regardless of Polar encoding order", () => {
     [...thetaFirst.semanticSpec.scales].sort((a, b) => a.id.localeCompare(b.id)),
     [...radiusFirst.semanticSpec.scales].sort((a, b) => a.id.localeCompare(b.id))
   );
-  assert.deepEqual(thetaFirst.graphicSpec, radiusFirst.graphicSpec);
+  assertEquivalentMeaning(thetaFirst.graphicSpec, radiusFirst.graphicSpec);
 });
 
 test("supports discrete theta and explicit radial scale policy", () => {
@@ -275,7 +277,7 @@ test("filters, selects, and highlights final Polar point items", () => {
   });
 
   assert.deepEqual(
-    selected.materializationConfigs.selections["large-angle"].selector,
+    storedSelectionSelector(selected, selected.materializationConfigs.selections["large-angle"]),
     { grain: "item", channel: "theta", op: "gte", value: 90 }
   );
   assert.deepEqual(

@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { chart } from "../../../../src/index.js";
@@ -54,9 +55,9 @@ test("supports radius-first authoring, pending Canvas edits, and exact completio
     assert.equal(pending.graphicSpec.objects.sectors.items.length, 0);
     const actual = pending.editCanvas({ height: 800 }).encodeTheta(theta);
     const expected = base().editCanvas({ height: 800 }).encodeTheta(theta).encodeR(args);
-    assert.deepEqual({ ...actual.semanticSpec, scales: [...actual.semanticSpec.scales].sort((a, b) => a.id.localeCompare(b.id)) },
+    assertEquivalentMeaning({ ...actual.semanticSpec, scales: [...actual.semanticSpec.scales].sort((a, b) => a.id.localeCompare(b.id)) },
       { ...expected.semanticSpec, scales: [...expected.semanticSpec.scales].sort((a, b) => a.id.localeCompare(b.id)) });
-    assert.deepEqual(actual.graphicSpec, expected.graphicSpec);
+    assertEquivalentMeaning(actual.graphicSpec, expected.graphicSpec);
     assert.deepEqual(actual.resolvedScales, expected.resolvedScales);
   }
 });

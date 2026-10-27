@@ -83,8 +83,8 @@ test('shape replacement, source revision, selection, highlights and removal reta
 test('concrete bounds intersect self and ancestor clip while selected property geometry stays raw',()=>{
   const p=points().editPointMark({target:'scatterPlot',clip:true});
   assert.deepEqual(resolveConcreteGraphicBounds(p.graphicSpec,'scatterPlot'),{left:40,right:200,top:30,bottom:158});
-  assert.equal(resolveConcreteGraphicBounds(p.graphicSpec,'scatterPlot:5'),undefined);
-  assert.deepEqual(resolveConcreteGraphicBounds(p.graphicSpec,'scatterPlot:0'),{left:40,right:44,top:86,bottom:102});
+  assert.equal(resolveConcreteGraphicBounds(p.graphicSpec,p.graphicSpec.objects.scatterPlot.items[5].id),undefined);
+  assert.deepEqual(resolveConcreteGraphicBounds(p.graphicSpec,p.graphicSpec.objects.scatterPlot.items[0].id),{left:40,right:44,top:86,bottom:102});
   const moved=translateGraphic(p,'scatterPlot',3,7);assert.deepEqual(moved.graphicSpec.objects.scatterPlot.clip,{x:43,y:37,width:160,height:128});
   assert.equal(moved.graphicSpec.objects.scatterPlot.items[0].properties.x,39);
 });

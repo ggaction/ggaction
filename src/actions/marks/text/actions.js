@@ -1,5 +1,6 @@
+import { selectionPredicate } from "../../../materialization/selection/state.js";
 import { rematerializeHighlightBaseline } from "../lifecycle.js";
-import { materializeMarkClip } from "../../../materialization/markClip.js";
+import { materializeMarkOutput } from "../../../materialization/markOutput.js";
 import { requestedMarkClip, validateMarkClipCoordinate } from "../../../selectors/markClip.js";
 import { TEXT_LABEL_LAYOUT_OPTIONS } from "./layout.js";
 import { action } from "../../../core/action.js";
@@ -385,7 +386,7 @@ const createMarkLabels = /* @__PURE__ */ action(
           `Label selection "${selection.id}" must target source mark "${inherited.source}".`
         );
       }
-      resolveMarkSelection(this, inherited.source, definition.selector);
+      resolveMarkSelection(this, inherited.source, selectionPredicate(this, definition));
     }
     const style = Object.fromEntries(STYLE_OPTIONS
       .filter(option => Object.hasOwn(args, option))
@@ -463,7 +464,7 @@ const rematerializeTextMark = /* @__PURE__ */ action(
     }
     const highlighted = rematerializeHighlightBaseline(this, { target: id, operation: 'rematerializeTextMark', resetProperty: 'items', resetValue: [] });
     if (highlighted) return highlighted;
-    let next = materializeMarkClip(this.editGraphics({
+    let next = materializeMarkOutput(this.editGraphics({
       target: id,
       property: "items",
       value: resolveTextGraphicItems(

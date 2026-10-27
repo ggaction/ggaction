@@ -17,6 +17,9 @@ These blocks are generated from the declaration file owned by each package entry
 [Complete declaration and relative dependencies](../../../types/index.d.ts)
 
 ```typescript
+export type { RowKeyScalar, RowKey, DataKeyOptions, DataKeySpec, InputRowRef, RowLineage, InputRef, StoredResourceKind, PersistentSelectionResource, GraphicIdentity, GraphicLineageRef } from "./program.js";
+import type { ChartProgram, CompositionOptions } from "./program.js";
+
 export type {
   CreateOverlayOptions,
   EditOverlayOptions,
@@ -500,6 +503,9 @@ export function render(
 [Complete declaration and relative dependencies](../../../types/basic.d.ts)
 
 ```typescript
+export type { RowKeyScalar, RowKey, DataKeyOptions, DataKeySpec } from "./program.js";
+import type { ChartProgram, BasicSeriesLayoutOptions, CreateDataOptions, ScopedActionTarget } from "./program.js";
+
 export type {
   LinearNiceCountOptions,
   PointPolygonShape,
@@ -646,6 +652,7 @@ import { ChartProgram } from "./program.js";
 
 export { ChartProgram };
 export type {
+  InputRef, InputRowRef, RowLineage, GraphicIdentity, GraphicLineageRef, PersistentSelectionResource,
   FillPaint,
   LinearGradientPaint,
   LinearGradientPoint,
@@ -778,13 +785,16 @@ export function renderToSVG(
 ```typescript
 export type ErrorCode = "invalid-option" | "invalid-value" | "missing-resource" |
   "ambiguous-resource" | "incompatible-resource" | "resource-in-use" |
-  "resource-limit" | "unsupported-format" | "action-failed";
+  "resource-limit" | "unsupported-format" | "action-failed" | "duplicate-id" | "ambiguous-identity" | "cyclic-dependency" | "stale-result";
 
 export interface ErrorDetails {
   readonly code: ErrorCode;
   readonly operation?: string;
   readonly optionPath?: string;
   readonly resourceId?: string;
+  readonly ownerId?: string;
+  readonly expected?: number | string;
+  readonly dependencies?: readonly string[];
   readonly candidates?: readonly string[];
   readonly limit?: number;
   readonly actual?: number;
@@ -857,7 +867,7 @@ export function exportAccessibleData(program: ChartProgram | BasicChartProgram, 
 
 ```typescript
 import type { BasicChartProgram } from "./basic.js";
-import type { ChartProgram, DatasetSchema } from "./program.js";
+import type { ChartProgram, DatasetSchema, InputRowRef } from "./program.js";
 export type ProgramInput = ChartProgram | BasicChartProgram;
 export interface ResourceRef { readonly kind: "data" | "mark" | "scale" | "coordinate" | "guide" | "canvas" | "composition"; readonly id: string; readonly childPath?: readonly string[]; }
 export interface InspectionTarget { readonly kind: "data" | "mark" | "scale" | "coordinate" | "guide"; readonly id: string; readonly childPath?: readonly string[]; }
@@ -903,7 +913,7 @@ export interface MarkItemInspection {
   readonly fields: Readonly<Record<string, unknown>>; readonly channels: Readonly<Record<string, unknown>>;
   readonly properties: Readonly<Record<string, unknown>>;
   readonly geometry: readonly {readonly type: string; readonly properties: Readonly<Record<string, unknown>>}[];
-  readonly rows: readonly { readonly data: string; readonly index: number }[];
+  readonly rows: readonly (InputRowRef & { readonly index: number })[];
   readonly bounds: Readonly<{left:number;top:number;right:number;bottom:number}> | null;
 }
 export function getMarkItems(program: ProgramInput, options?: {target?: string | {childPath?:readonly string[];id:string};grain?:"item"|"stack"}): readonly MarkItemInspection[];

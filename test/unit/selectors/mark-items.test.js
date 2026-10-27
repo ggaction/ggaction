@@ -1,3 +1,4 @@
+import { writeSelectionState } from "../../../src/actions/selection/resources.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -30,7 +31,9 @@ test("resolves one stable semantic item per point row and graphic child", () => 
 
   assert.equal(items.length, dataset.values.length);
   assert.deepEqual(items[0], {
-    key: `${layer.id}/point/0`,
+    key: child.identity.key,
+    topology: "",
+    graphicRoles: ["body"],
     layer: layer.id,
     markType: "point",
     fields: dataset.values[0],
@@ -46,8 +49,8 @@ test("resolves one stable semantic item per point row and graphic child", () => 
       radius: child.properties.radius
     },
     members: [dataset.values[0]],
-    rows: [{ data: dataset.id, index: 0 }],
-    graphicIds: [`${layer.id}:0`]
+    rows: [{ data: dataset.id, logicalDataId: dataset.logicalId, revision: dataset.revision, rowKey: dataset.rowKeys[0], role: "source", index: 0 }],
+    graphicIds: [child.id]
   });
   assert.equal(Object.isFrozen(items[0].members), true);
 });
@@ -147,7 +150,7 @@ test("resolves one rule item per final semantic rule", () => {
 
   assert.deepEqual(items.map(item => item.fields.group), ["A", "B"]);
   assert.deepEqual(items.map(item => item.channels.x), [10, 30]);
-  assert.deepEqual(items.map(item => item.graphicIds), [["rule:0"], ["rule:1"]]);
+  assert.deepEqual(items.map(item => item.graphicIds), program.graphicSpec.objects.rule.items.map(child => [child.id]));
   assert.deepEqual(items.map(item => item.properties.x1), [
     program.graphicSpec.objects.rule.items[0].properties.x1,
     program.graphicSpec.objects.rule.items[1].properties.x1
@@ -170,7 +173,7 @@ test("resolves one datum rule whose item represents the complete dataset", () =>
   assert.equal(item.channels.x, 20);
   assert.deepEqual(item.fields, {});
   assert.deepEqual(item.members, rows);
-  assert.deepEqual(item.graphicIds, ["rule:0"]);
+  assert.deepEqual(item.graphicIds, [program.graphicSpec.objects.rule.items[0].id]);
 });
 
 test("stores immutable selection intent and reevaluates current mark items", () => {
@@ -181,17 +184,13 @@ test("stores immutable selection intent and reevaluates current mark items", () 
     groupBy: "Origin"
   };
   const id = resolveSelectionCreationId(base, undefined, "points");
-  const selected = base
-    ._withSelectionConfig(id, {
-      target: "points",
-      selector: normalizeMarkSelector(selectorInput)
-    })
+  const selected = writeSelectionState(base, id, "points", normalizeMarkSelector(selectorInput))
     ._withContext({ currentSelection: id });
   selectorInput.groupBy = "Cylinders";
 
   const resolved = resolveStoredSelection(selected);
   assert.equal(id, "pointsSelection");
-  assert.equal(resolved.definition.selector.groupBy[0], "Origin");
+  assert.equal(resolved.selector.groupBy[0], "Origin");
   assert.deepEqual(
     resolved.items
       .filter(item => resolved.keys.includes(item.key))
@@ -200,7 +199,7 @@ test("stores immutable selection intent and reevaluates current mark items", () 
   );
   assert.equal(resolved.keys.length, 3);
   assert.equal(selected.graphicSpec, base.graphicSpec);
-  assert.equal(selected.trace, base.trace);
+  assert.equal(selected.trace.children.at(-1).op, "editSemantic");
 
   const resized = selected.editCanvas({ width: 760 });
   assert.deepEqual(resolveStoredSelection(resized).keys, resolved.keys);
@@ -212,10 +211,7 @@ test("stores immutable selection intent and reevaluates current mark items", () 
 
 test("rejects a multi-valued path field or channel at series grain", () => {
   const base = createCarsLineChart(loadCars());
-  const selected = base._withSelectionConfig("xSelection", {
-    target: "trends",
-    selector: normalizeMarkSelector({ channel: "x", op: "max" })
-  });
+  const selected = writeSelectionState(base, "xSelection", "trends", normalizeMarkSelector({ channel: "x", op: "max" }));
   assert.throws(
     () => resolveStoredSelection(selected, "xSelection"),
     /not uniquely defined/

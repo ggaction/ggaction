@@ -1,4 +1,4 @@
-import { materializeMarkClip } from "../../../materialization/markClip.js";
+import { materializeMarkOutput } from "../../../materialization/markOutput.js";
 import { requestedMarkClip, validateMarkClipCoordinate } from "../../../selectors/markClip.js";
 import { action } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
@@ -130,7 +130,7 @@ const rematerializeRectMark = /* @__PURE__ */ action(
       throw new Error(`Rect mark "${id}" requires rect collection graphics.`);
     }
     if (this.markConfigs[id]?.gradientPlot?.materialized === true) {
-      return materializeMarkClip(this.materializeGradientPlotFill({ id, scales: args.scales }), id);
+      return materializeMarkOutput(this.materializeGradientPlotFill({ id, scales: args.scales }), id);
     }
     const sourceDataset = findDataset(this, layer.data);
     if (sourceDataset === undefined) {
@@ -150,7 +150,7 @@ const rematerializeRectMark = /* @__PURE__ */ action(
         next = next.rematerializeScale({ id: scale, marks: false });
       }
     }
-    return materializeMarkClip(replaceGraphicItems(
+    return materializeMarkOutput(replaceGraphicItems(
       next,
       id,
       "rect",

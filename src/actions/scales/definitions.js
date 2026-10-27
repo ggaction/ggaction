@@ -39,7 +39,7 @@ import { findSemanticScale } from "../../selectors/scales.js";
 import { normalizeOffsetScalePolicy } from "../../grammar/bars/geometry.js";
 import { resolveRequestedOffsetPolicy } from
   "../../materialization/scales/policies/offset.js";
-import { findScaleConsumers } from "./consumers/index.js";
+import { findScaleConsumers } from "../../materialization/scales/consumers/index.js";
 
 const BASE_OPTIONS = ["id", "type", "domain", "range", "emptyDomain"];
 const UNKNOWN_OPTIONS = [...BASE_OPTIONS, "unknown"];

@@ -9,7 +9,7 @@ import {
 } from "../../../grammar/scales/index.js";
 import { findSemanticScale } from "../../../selectors/scales.js";
 import { normalizeScaleNice } from "../../../grammar/scales/continuous.js";
-import { findScaleConsumers } from "../../scales/consumers/index.js";
+import { findScaleConsumers } from "../../../materialization/scales/consumers/index.js";
 
 function isOffsetScale(program, id, existing) {
   if (existing?.type !== "ordinal") return false;

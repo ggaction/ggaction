@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { chart } from '../../../../src/index.js';
@@ -28,7 +29,7 @@ test('Radar dimension revisions preserve grouping, current appearance, guide sty
 
 test('Radar dimension edit matches direct final construction geometry and supports two-axis comparison',()=>{
  const after=radar().editRadarPlot({wide:{fields:['w','y','x','z']}}), direct=radar(['w','y','x','z']);
- assert.deepEqual(after.graphicSpec.objects.radar,direct.graphicSpec.objects.radar);
+ assertEquivalentMeaning(after.graphicSpec.objects.radar,direct.graphicSpec.objects.radar);
  const two=after.editRadarPlot({wide:{fields:['y','w']}});
  assert.deepEqual(two.resolvedScales.theta.domain,['y','w']);assert.deepEqual(two.resolvedScales.radius.domain,[2,12]);
  assert.equal(two.semanticSpec.datasets.find(d=>d.id===two.semanticSpec.layers[0].data).values.length,4);

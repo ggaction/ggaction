@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { chart } from '../../../../src/index.js';
@@ -18,7 +19,7 @@ test('constant bar gradients survive materialization and resize without owning c
 });
 test('creation and facade gradient shorthand converges with edits including rounded paths',()=>{
  const fill=paint(),create=chart().createCanvas({width:240,height:180,margin:20}).createData({values:[{c:'A',v:2},{c:'B',v:5}]}).createBarMark({fill,cornerRadius:4}).encodeX({field:'c',fieldType:'nominal'}).encodeY({field:'v',aggregate:'sum'});
- const edited=base().editBarMark({fill,cornerRadius:4});assert.deepEqual(create.graphicSpec,edited.graphicSpec);assert.match(renderToSVG(create),/<linearGradient/);
+ const edited=base().editBarMark({fill,cornerRadius:4});assertEquivalentMeaning(create.graphicSpec,edited.graphicSpec);assert.match(renderToSVG(create),/<linearGradient/);
  const facade=chart().createCanvas({width:300,height:240,margin:60}).createData({values:[{c:'A',v:2}]}).createBarPlot({x:{field:'c',fieldType:'nominal'},y:{field:'v',aggregate:'sum'},bar:{fill}});
  assert.ok(facade.graphicSpec.objects.barPlot.items.every(i=>i.properties.fill.type==='linear-gradient'));
 });

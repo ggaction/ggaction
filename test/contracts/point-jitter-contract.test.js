@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import path from "node:path";
@@ -62,8 +63,8 @@ test("keeps both point jitter visual targets executable and equivalent", () => {
     assert.equal(variant.artifact.capability, "point-jitter");
     const primitive = variant.primitive();
     const userFacing = variant.userFacing();
-    assert.deepEqual(userFacing.semanticSpec, primitive.semanticSpec);
-    assert.deepEqual(userFacing.graphicSpec, primitive.graphicSpec);
+    assertEquivalentMeaning(userFacing.semanticSpec, primitive.semanticSpec);
+    assertEquivalentMeaning(userFacing.graphicSpec, primitive.graphicSpec);
   }
 });
 

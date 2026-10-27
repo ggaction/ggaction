@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -22,7 +23,9 @@ function assertPrimitiveTarget(program, base, target) {
   const selected = children.slice(-target.indices.length);
   const selectedIndices = new Set(target.indices);
 
-  assert.deepEqual(program.semanticSpec, base.semanticSpec);
+  assertEquivalentMeaning({ ...program.semanticSpec, resources: [] }, base.semanticSpec);
+  assert.equal(program.semanticSpec.resources.length, 1);
+  assert.equal(program.semanticSpec.resources[0].kind, "persistent-selection");
   assert.deepEqual(
     children.slice(0, -target.indices.length).map(child => child.properties),
     baseChildren

@@ -81,7 +81,8 @@ for (const factory of [chart, basicChart]) {
         .createScatterPlot({x:"x",y:"y",guides:false});
       assert.equal(dense.graphicSpec.objects.scatterPlot.items.length,50000);
       assert.deepEqual(deserializeProgram(serializeProgram(dense)).graphicSpec,dense.graphicSpec);
-      assert.equal(dense.graphicSpec.objects.scatterPlot.items.at(-1).id,"scatterPlot:49999");
+      assert.match(dense.graphicSpec.objects.scatterPlot.items.at(-1).id,/^scatterPlot:[a-f0-9]{64}$/);
+      assert.equal(new Set(dense.graphicSpec.objects.scatterPlot.items.map(item => item.id)).size, 50000);
       assert.throws(()=>factory().createGraphics({id:"unowned",type:"circle",length:10001}),/10000/);
     }
   } },

@@ -108,6 +108,7 @@ test("encodes aggregate ordinal bars with inferred mean/non-stack defaults", () 
     "editGraphics",
     "editGraphics",
     "editGraphics",
+    "editGraphics",
     "editGraphics"
   ]);
 });

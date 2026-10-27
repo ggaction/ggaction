@@ -34,8 +34,8 @@ test("renders every Tick visual target in Canvas, SVG, PNG, and PDF", async () =
       `${JSON.stringify(primitiveCanvas.calls, null, 2)}\n`
     );
 
-    const primitiveSVG = renderToSVG(primitive);
-    const userFacingSVG = renderToSVG(userFacing);
+    const primitiveSVG = renderToSVG(primitive, { resourceNamespace: "comparison" });
+    const userFacingSVG = renderToSVG(userFacing, { resourceNamespace: "comparison" });
     assert.equal(userFacingSVG, primitiveSVG);
     assert.match(primitiveSVG, new RegExp(`<svg[^>]+width="${variant.width}"`));
     assert.match(primitiveSVG, new RegExp(`height="${variant.height}"`));

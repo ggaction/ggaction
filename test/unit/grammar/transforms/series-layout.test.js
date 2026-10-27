@@ -197,8 +197,9 @@ test("orders categorical centered area positions by the resolved x domain", () =
   };
 
   const derived = deriveCenteredAreaSeries(rows, layer, {
-    xDomain: ["Wed", "Tue", "Mon"]
+    xDomain: ["Wed", "Tue", "Mon"], lineage: true
   });
+  assert.deepEqual(derived.series.map(series => series.sourceIndices), [[1, 0], [3, 2]]);
 
   assert.deepEqual(derived.xValues, ["Tue", "Mon"]);
   assert.deepEqual(derived.series[0].values.map(value => value.x), ["Tue", "Mon"]);

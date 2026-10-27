@@ -7,8 +7,7 @@
   "gate": "G-CORE",
   "gateState": "approved",
   "openObligations": [
-    "Production key owner and createData/reviseData integration",
-    "Applicable consumer, type, current-contract, persistence and rendering verification"
+    "Clean revision consumer qualification and immutable completion evidence"
   ],
-  "notice": "Independent reference checks do not constitute product implementation."
+  "notice": "D1-D8 integrated; completion awaits all required checks."
 }

@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { chart } from "../../../../src/index.js";
@@ -45,7 +46,7 @@ test("Basic legends and facade guide reuse accept initial title suppression", ()
   for (const kind of kinds.filter(kind => !["opacity", "strokeWidth"].includes(kind))) {
     const full = source(kind).createLegend({ title: false });
     const basic = source(kind, basicChart).createLegend({ title: false });
-    assert.deepEqual(basic.graphicSpec, full.graphicSpec, kind);
+    assertEquivalentMeaning(basic.graphicSpec, full.graphicSpec, kind);
     assert.deepEqual(deserializeProgram(serializeProgram(basic)).graphicSpec, basic.graphicSpec);
   }
   for (const factory of [chart, basicChart]) {

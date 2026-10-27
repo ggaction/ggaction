@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { chart, ChartProgram } from "../../../../src/ChartProgram.js";
@@ -21,7 +22,7 @@ test("Rule creation and editing converge with the existing appearance action cha
   const edited = position(source().createRuleMark()).editRuleMark(style);
   for (const program of [created, edited]) {
     assertChartProgramsEquivalent({ publicProgram: program, primitiveProgram: primitive });
-    assert.deepEqual(program.editCanvas({ width: 540 }).graphicSpec,
+    assertEquivalentMeaning(program.editCanvas({ width: 540 }).graphicSpec,
       primitive.editCanvas({ width: 540 }).graphicSpec);
   }
   assert.deepEqual(created.trace.children[2].children.slice(-4).map(node => node.op), children);

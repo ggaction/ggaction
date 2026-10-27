@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -50,7 +51,7 @@ test("createStackData reuses stable stack math and preserves source row order", 
     program.trace.children.at(-1).children.map(child => child.op),
     ["createDerivedData", "materializeStackData"]
   );
-  assert.deepEqual(source.semanticSpec.datasets, [{ id: "source", values: rows, schema: source.semanticSpec.datasets[0].schema }]);
+  assertEquivalentMeaning(source.semanticSpec.datasets, [{ id: "source", values: rows, schema: source.semanticSpec.datasets[0].schema }]);
 });
 
 test("createStackData exposes fill, center, and diverging modes through shared math", () => {

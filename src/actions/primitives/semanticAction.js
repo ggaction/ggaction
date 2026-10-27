@@ -1,3 +1,4 @@
+import { statisticalReferenceContributions } from "../../materialization/statisticalPopulation.js";
 import { hasSemanticScaleReferences } from "../../selectors/scales.js";
 import { closedAction } from "../../core/action.js";
 import {
@@ -8,6 +9,10 @@ import {
 } from "../../core/immutable.js";
 import { parseSemanticPath } from "../../grammar/schemas/semanticPath.js";
 import { deriveTransformSchema, inferDatasetSchema, validateRowsAgainstSchema,datasetSchemaContext } from "../../grammar/datasetSchema.js";
+import { preparedDatasetIdentity, sourceIdentityFor } from "./datasetIdentity.js";
+import { derivedIdentityBase, deriveRowLineage } from "../../grammar/rowLineage.js";
+import { findDataset } from "../../selectors/datasets.js";
+import { replaceStoredResource, removeStoredResource } from "./resourceState.js";
 
 
 const CONTEXT_KEYS = Object.freeze({
@@ -32,7 +37,19 @@ function setNestedProperty(source, path, value) {
   });
 }
 
-function updateEntity(spec, parsed, value) {
+function derivedRows(program, dataset, values) {
+  const source = findDataset(program, dataset.source), transform = dataset.transform?.[0];
+  if (source === undefined || transform === undefined) throw new Error("Derived rows require a source and transform.");
+  return deriveRowLineage(source, values, transform, {
+    indices: program.materializationConfigs.rowProvenance?.[dataset.id]?.indices,
+    lookup: transform.type === "lookup" ? findDataset(program, transform.lookup.data) : undefined,
+    reference: program.markConfigs[transform.target]?.statisticalReference,
+    referenceRows: transform.type === "statisticalReference" ? statisticalReferenceContributions(program, transform.target) : undefined
+  });
+}
+
+function updateEntity(program, parsed, value, args) {
+  const spec = program.semanticSpec;
   const collection = spec[parsed.collection];
   const index = collection.findIndex(item => item.id === parsed.id);
 
@@ -46,6 +63,17 @@ function updateEntity(spec, parsed, value) {
 
   const current = index === -1 ? { id: parsed.id } : collection[index];
   let updated = setNestedProperty(current, parsed.path, value);
+  if (parsed.kind === "dataset" && parsed.path[0] === "values" && current.source === undefined) {
+    updated = freezeOwned({ ...updated, ...sourceIdentityFor(args, value) });
+  }
+  if (parsed.kind === "dataset" && current.source !== undefined) {
+    const source = findDataset(program, current.source);
+    if (parsed.path[0] === "transform") {
+      updated = freezeOwned({ ...updated, ...(preparedDatasetIdentity(args) ??
+        (current.logicalId === undefined ? derivedIdentityBase(source, parsed.id) : {})) });
+    }
+    if (parsed.path[0] === "values") updated = freezeOwned({ ...updated, ...derivedRows(program, current, value) });
+  }
   if (
     parsed.kind === "dataset" && parsed.path.length === 1 &&
     parsed.path[0] === "transform" && current.schema === undefined &&
@@ -164,11 +192,14 @@ export function withPreviewDatasetValues(program, {
     datasets: program.semanticSpec.datasets.map(dataset => {
       if (dataset.id !== id) return dataset;
       if (omitValues) {
-        const { values: unused, ...definition } = dataset;
+        const { values: unused, rowKeys: unusedKeys, lineage: unusedLineage, ...definition } = dataset;
         void unused;
+        void unusedKeys; void unusedLineage;
         return definition;
       }
-      return { ...dataset, values };
+      return { ...dataset, values, ...(dataset.source === undefined
+        ? sourceIdentityFor({}, values, dataset.keySpec?.mode === "field" ? { keyField: dataset.keySpec.field } : {})
+        : derivedRows(program, dataset, values)) };
     }),
     layers: target === undefined
       ? program.semanticSpec.layers
@@ -189,11 +220,14 @@ export function withRematerializedDerivedDataset(program, {
   values,
   schema
 }) {
+  const previous = findDataset(program, id);
+  const identity = derivedIdentityBase(findDataset(program, source), id, previous);
+  const rows = derivedRows(program, { ...previous, source, transform: [transform] }, values);
   const semanticSpec = {
     ...program.semanticSpec,
     datasets: program.semanticSpec.datasets.map(dataset =>
       dataset.id === id
-        ? { ...dataset, source, transform: [transform], values, ...(schema === undefined ? {} : { schema }) }
+        ? { ...dataset, source, transform: [transform], values, ...identity, ...rows, ...(schema === undefined ? {} : { schema }) }
         : dataset
     )
   };
@@ -278,6 +312,7 @@ export function createSemanticPrimitiveAction(validateSemanticValue, planNamedRe
       }
 
       const parsed = parseSemanticPath(property, { allowContainer: remove });
+      if (parsed.kind === "resource") return remove ? removeStoredResource(this, parsed) : replaceStoredResource(this, parsed, value);
       const removesNamedResource = remove && parsed.path.length === 0 &&
         ["dataset", "scale", "coordinate"].includes(parsed.kind);
       if (this.compositionSpec !== undefined && !(
@@ -354,7 +389,7 @@ export function createSemanticPrimitiveAction(validateSemanticValue, planNamedRe
         ? updateGuides(this.semanticSpec, parsed, value)
         : parsed.kind === "title"
           ? updateTitle(this.semanticSpec, parsed, value)
-          : updateEntity(this.semanticSpec, parsed, value);
+          : updateEntity(this, parsed, value, args);
       const contextKey = CONTEXT_KEYS[parsed.kind];
       const context = contextKey === undefined
         ? this.context

@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { chart } from "../../../../src/index.js";
@@ -29,7 +30,7 @@ test("size edge edits and content replacement converge with direct creation and 
     const original = base().createLegend({ position: from, border: true });
     const itemGap = original.guideConfigs.legend.size.itemGap;
     const actual = original.editLegendLayout({ position });
-    assert.deepEqual(actual.graphicSpec, base().createLegend({ position, border: true, itemGap }).graphicSpec);
+    assertEquivalentMeaning(actual.graphicSpec, base().createLegend({ position, border: true, itemGap }).graphicSpec);
     assert.deepEqual(actual.editCanvas({ width: 1100 }).graphicSpec,
       original.editCanvas({ width: 1100 }).editLegend({ position }).graphicSpec);
     assert.deepEqual(actual.editLegend({ channels: ["size"], position }).graphicSpec, actual.graphicSpec);

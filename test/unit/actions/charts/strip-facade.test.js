@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { chart } from "../../../../src/index.js";
@@ -29,8 +30,8 @@ test("creates a one-measure Strip with a constant center slot", () => {
       scale: { id: "stripAnchor", domain: [0, 1], zero: false, nice: false }
     })
     .encodePointRadius({ target: "strip", value: 4 });
-  assert.deepEqual(actual.semanticSpec, expected.semanticSpec);
-  assert.deepEqual(actual.graphicSpec, expected.graphicSpec);
+  assertEquivalentMeaning(actual.semanticSpec, expected.semanticSpec);
+  assertEquivalentMeaning(actual.graphicSpec, expected.graphicSpec);
   assert.equal(new Set(actual.graphicSpec.objects.strip.items.map(item =>
     item.properties.y
   )).size, 1);

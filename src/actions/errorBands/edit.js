@@ -1,3 +1,4 @@
+import { storedSelectionSelector } from "../../selectors/selectionResources.js";
 import { validateFillPaint } from "../../grammar/paint.js";
 import { currentIntervalRoleArgs, resolveIntervalRoleScales, applyIntervalStatistics } from "../intervals/revision.js";
 import { closedAction } from "../../core/action.js";
@@ -391,12 +392,12 @@ export const editErrorBand = /* @__PURE__ */ closedAction(
           this.materializationConfigs.selections ?? {}
         ).find(([, selection]) =>
           selection.target === owner.id &&
-          ["group", "color"].includes(selection.selector?.channel)
+          ["group", "color"].includes(storedSelectionSelector(this, selection).channel)
         );
         if (referenced !== undefined && candidate.groupField !== colorField) {
           throw new Error(
             `editErrorBand cannot change groupBy while selection "${referenced[0]}" ` +
-            `references ${referenced[1].selector.channel}.`
+            `references ${storedSelectionSelector(this, referenced[1]).channel}.`
           );
         }
         base = base.editSemantic({

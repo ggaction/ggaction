@@ -1,3 +1,4 @@
+import { storedSelectionSelector } from "../../selectors/selectionResources.js";
 import { action } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { validateKeys } from "../../core/validation.js";
@@ -47,7 +48,7 @@ function assertSplitSelectionCompatibility(program, owner, changesSplit) {
   const referenced = Object.entries(
     program.materializationConfigs.selections ?? {}
   ).find(([, selection]) =>
-    selection.target === owner.id && selection.selector?.channel === "color"
+    selection.target === owner.id && storedSelectionSelector(program, selection).channel === "color"
   );
   if (referenced !== undefined) {
     throw new Error(

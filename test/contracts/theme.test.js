@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import path from "node:path";
@@ -94,7 +95,7 @@ test("publishes custom tokens and composition theme scope as current behavior", 
   ), ["composition:pair"]);
   assert.equal(removed.materializationConfigs.theme, undefined);
   assert.equal(JSON.stringify(options), snapshot);
-  assert.equal(JSON.stringify(left), JSON.stringify(unit()));
+  assertEquivalentMeaning(left, unit());
 });
 
 test("rejects malformed custom theme definitions before changing state", () => {

@@ -10,7 +10,7 @@ import {
 import { resolveMarkFamilyConsumerValues } from "./families.js";
 import { CATEGORY_ORDER_CHANNELS, resolveCategoryOrder } from "../../../grammar/categoryOrder.js";
 import { resolveHistogramInput } from
-  "../../../materialization/bars/histogram.js";
+  "../../bars/histogram.js";
 
 export { findScale, findScaleConsumers } from "./common.js";
 export {

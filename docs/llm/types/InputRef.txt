@@ -1,0 +1,2 @@
+export type InputRef = { readonly kind: "data"; readonly id: string; readonly logicalId: string; readonly revision: number }
+  | { readonly kind: StoredResourceKind; readonly id: string; readonly revision: number };

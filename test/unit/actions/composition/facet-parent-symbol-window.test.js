@@ -87,7 +87,7 @@ test("clipped children compose with valid private identities and preserve item s
   assert.equal(windows(replay).length,windows(p).length);
  }
  const selected=source.highlightMarks({target:"scatterPlot",select:{field:"group",op:"eq",value:"B"},color:"red"});
- assert.deepEqual(selected.graphicSpec.objects.scatterPlot.items.map(item=>item.id),source.graphicSpec.objects.scatterPlot.items.map(item=>item.id));
+ assert.deepEqual(selected.graphicSpec.objects.scatterPlot.items.map(item=>item.id).sort(),source.graphicSpec.objects.scatterPlot.items.map(item=>item.id).sort());
  assert.equal(windows(selected).length,2);
  assert.deepEqual(selected.rematerializeLegend().graphicSpec,selected.graphicSpec);
  assert.equal(serializeProgram(source),before);

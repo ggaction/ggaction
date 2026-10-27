@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -75,7 +76,7 @@ test("creates immutable density provenance and concrete values", () => {
     bandwidth: 0.6
   });
 
-  assert.deepEqual(program.semanticSpec.datasets[1], {
+  assertEquivalentMeaning(program.semanticSpec.datasets[1], {
     schema: program.semanticSpec.datasets[1].schema,
     id: "densitiesDensityData",
     source: "cars",

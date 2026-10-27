@@ -1,3 +1,4 @@
+import { namespaceItemKey } from "../grammar/schemas/graphicIdentity.js";
 import { cloneAndFreeze, freezeOwned, isOwned, isPlainObject } from "../core/immutable.js";
 import { namespaceGraphicId } from "../selectors/graphicCapacity.js";
 export { namespaceGraphicId } from "../selectors/graphicCapacity.js";
@@ -47,7 +48,10 @@ function rewriteItem(item, namespace) {
   }
   return freezeOwned({
     ...cloneAndFreeze(item),
-    id: namespaceGraphicId(namespace, item.id)
+    id: namespaceGraphicId(namespace, item.id),
+    ...(item.identity === undefined ? {} : { identity: cloneAndFreeze({
+      ...item.identity, key: namespaceItemKey(item.identity.key, namespace)
+    }) })
   });
 }
 

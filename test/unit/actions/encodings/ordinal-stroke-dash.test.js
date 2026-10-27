@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { chart } from "../../../../src/index.js";
@@ -40,9 +41,9 @@ test("default and explicit nominal stay exact; ordinal changes meaning without c
   const omitted = base().encodeStrokeDash({ field: "level", scale }).createLegend();
   const nominal = base().encodeStrokeDash({ field: "level", fieldType: "nominal", scale }).createLegend();
   const ordinal = base().encodeStrokeDash({ field: "level", fieldType: "ordinal", scale }).createLegend();
-  assert.deepEqual(omitted.semanticSpec, nominal.semanticSpec);
-  assert.deepEqual(omitted.graphicSpec, nominal.graphicSpec);
-  assert.deepEqual(nominal.graphicSpec, ordinal.graphicSpec);
+  assertEquivalentMeaning(omitted.semanticSpec, nominal.semanticSpec);
+  assertEquivalentMeaning(omitted.graphicSpec, nominal.graphicSpec);
+  assertEquivalentMeaning(nominal.graphicSpec, ordinal.graphicSpec);
   assert.equal(renderToSVG(omitted), renderToSVG(nominal));
   assert.equal(renderToSVG(nominal), renderToSVG(ordinal));
   assert.deepEqual(ordinal.guideConfigs.legend.series.domain, [1, 2]);
@@ -135,8 +136,8 @@ test("ordinal intent does not loosen constant-mode or within-series validation",
 test("nullish field type keeps the existing nominal fallback", () => {
   const omitted = base().encodeStrokeDash({ field: "level", scale });
   const nullable = base().encodeStrokeDash({ field: "level", fieldType: null, scale });
-  assert.deepEqual(nullable.semanticSpec, omitted.semanticSpec);
-  assert.deepEqual(nullable.graphicSpec, omitted.graphicSpec);
+  assertEquivalentMeaning(nullable.semanticSpec, omitted.semanticSpec);
+  assertEquivalentMeaning(nullable.graphicSpec, omitted.graphicSpec);
 });
 
 test("ordinal categories preserve distinct numeric, string and boolean raw keys", () => {
@@ -159,5 +160,5 @@ test("existing Basic stroke-dash entry shares the ordered categorical contract",
     .encodeStrokeDash({ field: "level", fieldType: "ordinal", scale });
   const full = base().encodeStrokeDash({ field: "level", fieldType: "ordinal", scale });
   assert.equal(encoding(basic).fieldType, "ordinal");
-  assert.deepEqual(basic.graphicSpec, full.graphicSpec);
+  assertEquivalentMeaning(basic.graphicSpec, full.graphicSpec);
 });

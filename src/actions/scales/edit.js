@@ -17,7 +17,7 @@ import {
   findSemanticScale,
   requireSemanticScale
 } from "../../selectors/scales.js";
-import { findScaleConsumers } from "./consumers/index.js";
+import { findScaleConsumers } from "../../materialization/scales/consumers/index.js";
 import {
   prepareScaleEdit,
   resolveScaleConsumerChannel

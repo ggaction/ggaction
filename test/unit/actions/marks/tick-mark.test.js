@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -79,7 +80,7 @@ test("converges for x/y authoring order and Canvas rematerialization", () => {
     .encodeX({ target: "ticks", field: "x" });
   const resized = xThenY.editCanvas({ width: 260 });
 
-  assert.deepEqual(yThenX.graphicSpec, xThenY.graphicSpec);
+  assertEquivalentMeaning(yThenX.graphicSpec, xThenY.graphicSpec);
   assert.equal(resized.graphicSpec.objects.ticks.items[1].properties.x1, 250);
   assert.equal(xThenY.graphicSpec.objects.ticks.items[1].properties.x1, 190);
   assert.equal(length(resized.graphicSpec.objects.ticks.items[1]), 14);

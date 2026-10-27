@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -65,7 +66,7 @@ test("keeps keyed primitive offsets stable across repeated and reordered rows", 
   const second = createGapminderClusterJitterPrimitiveResult(rows);
   const reordered = createGapminderClusterJitterPrimitiveResult([...rows].reverse());
   assert.deepEqual(first.resolution.offsets, second.resolution.offsets);
-  assert.deepEqual(first.program.graphicSpec, second.program.graphicSpec);
+  assertEquivalentMeaning(first.program.graphicSpec, second.program.graphicSpec);
   const offsetByCountry = result => new Map(result.rows.map(
     (row, index) => [row.country, result.resolution.offsets[index]]
   ));

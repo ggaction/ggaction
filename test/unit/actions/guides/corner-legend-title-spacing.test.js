@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { chart } from "../../../../src/index.js";
@@ -42,7 +43,7 @@ test("large symbols, multiline titles and fonts reserve actual corner extents",(
     const without=p.editLegend({title:false});
     assert.equal(without.graphicSpec.objects.seriesLegendTitle,undefined);
     assert.deepEqual(without.editLegend({title:"Two\nLines"}).graphicSpec,p.graphicSpec);
-    assert.deepEqual(p.editCanvas({width:1500}).graphicSpec,source().editCanvas({width:1500}).createLegend({position,title:"Two\nLines",itemGap:48,
+    assertEquivalentMeaning(p.editCanvas({width:1500}).graphicSpec,source().editCanvas({width:1500}).createLegend({position,title:"Two\nLines",itemGap:48,
       titleStyle:{fontSize},labels:{fontSize},symbol:{layers:[{type:"point",shape:"circle",size:15,stroke:"black",strokeWidth:4}]}}).graphicSpec);
   }
 });

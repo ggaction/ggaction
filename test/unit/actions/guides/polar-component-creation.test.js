@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { chart, render } from "../../../../src/index.js";
@@ -70,7 +71,7 @@ for (const [axis, channel, prefix] of [["Theta", "theta", "theta"], ["Radial", "
     assert.equal(p.graphicSpec.objects[`${prefix}AxisTitle`], undefined);
     const removed = q[`remove${axis}Axis`]();
     const recreated = create(removed);
-    assert.deepEqual(recreated.graphicSpec, create(base()).graphicSpec);
+    assertEquivalentMeaning(recreated.graphicSpec, create(base()).graphicSpec);
     for (const part of parts) assert.equal(typeof basicChart()[`create${axis}Axis${part}`], "undefined");
   });
 

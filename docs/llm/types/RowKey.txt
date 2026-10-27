@@ -1,0 +1,1 @@
+export type RowKey = RowKeyScalar | readonly RowKeyScalar[];

@@ -199,7 +199,7 @@ test("selects continuous-color bars at their final aggregate rect grain", () => 
   const selection = resolveStoredSelection(program);
 
   assert.equal(selection.items.length, 2);
-  assert.deepEqual(selection.keys, ["bar/aggregate/1"]);
+  assert.deepEqual(selection.keys, [selection.items[1].key]);
   assert.deepEqual(
     selection.items.map(item => item.members.length),
     [2, 2]

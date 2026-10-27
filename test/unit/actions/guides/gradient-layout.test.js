@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import {chart} from '../../../../src/index.js';
@@ -43,7 +44,7 @@ test('bottom title clears the complete strip/tick/label union by exactly twelve 
  }
  const created=base().createLegend({position:'right',direction:'horizontal',titlePosition:'bottom'});
  const edited=base().createLegend({position:'right'}).editLegendLayout({channel:'color',direction:'horizontal',titlePosition:'bottom'});
- assert.deepEqual(edited.graphicSpec,created.graphicSpec);
+ assertEquivalentMeaning(edited.graphicSpec,created.graphicSpec);
  const hidden=created.editLegendTitle({title:false});assert.equal(hidden.graphicSpec.objects.colorGradientTitle,undefined);
  assert.deepEqual(hidden.editLegendLayout({titlePosition:'top'}).graphicSpec,hidden.graphicSpec);
 });

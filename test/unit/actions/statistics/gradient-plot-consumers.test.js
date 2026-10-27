@@ -1,3 +1,4 @@
+import { storedSelectionSelector } from "../../../../src/selectors/selectionResources.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -40,7 +41,7 @@ test("selects gradient plots at final category-strip grain", () => {
   const config = selected.materializationConfigs.selections.gradientPlotSelection;
 
   assert.equal(config.target, "gradientPlot");
-  assert.deepEqual(config.selector, {
+  assert.deepEqual(storedSelectionSelector(selected, config), {
     grain: "item",
     field: "group",
     op: "eq",

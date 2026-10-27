@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -15,7 +16,7 @@ test("creates an immutable dataset and updates currentData", () => {
   values.push({ id: 3 });
 
   assert.deepEqual(empty.semanticSpec.datasets, []);
-  assert.deepEqual(program.semanticSpec.datasets, [
+  assertEquivalentMeaning(program.semanticSpec.datasets, [
     {
       schema: program.semanticSpec.datasets[0].schema,
       id: "cars",

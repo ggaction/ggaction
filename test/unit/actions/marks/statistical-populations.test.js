@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { chart } from "../../../../src/index.js";
@@ -73,7 +74,7 @@ test("box measure revisions refresh references and converge in either authoring 
   assert.deepEqual(values(first), [
     { group: "A", value: 4 / 3 }, { group: "B", value: 3.5 }
   ]);
-  assert.deepEqual(first.graphicSpec.objects.statisticalReference, last.graphicSpec.objects.statisticalReference);
+  assertEquivalentMeaning(first.graphicSpec.objects.statisticalReference, last.graphicSpec.objects.statisticalReference);
   assert.equal(values(p.createStatisticalReference(options))[0].value, 10 / 3);
 });
 

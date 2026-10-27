@@ -304,12 +304,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/1e38e7bef30aeedb561c1ae09bbdcdd152bd46b2/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/1e38e7bef30aeedb561c1ae09bbdcdd152bd46b2/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -388,3 +388,18 @@ Extension actions should call the public domain action that owns the affected
 consumer instead of calling `rematerializeScale` directly. Rematerialization is
 still explicit inside that action and remains visible in `program.trace`; it
 never runs merely because `semanticSpec` changed.
+
+## Stored selection resources and concrete identity
+
+The semantic primitive accepts complete resources at
+`resource[persistent-selection:id]`. Creation uses revision `0`; replacement
+uses the previous revision plus one. The value follows `PersistentSelectionResource`
+from `ggaction/extension`. Inputs must resolve to exact stored revisions.
+Removal rejects live consumers. Graphical materialization remains explicit.
+Use the selection domain actions for ordinary chart authoring.
+
+Typed `editGraphics({ property: "items", ... })` entries may include
+`GraphicIdentity` metadata. The materialized semantic key and primitive role
+produce a stable private child ID; ordered path membership produces its topology
+fingerprint. `GraphicLineageRef` links to the exact data revision and row keys.
+Renderers consume this concrete metadata without reading semantic state.

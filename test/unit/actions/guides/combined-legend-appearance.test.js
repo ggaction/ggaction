@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { chart } from "../../../../src/index.js";
@@ -19,13 +20,13 @@ test("new combined legends share appearance independently of edge and partial ed
     assert.equal(title.fill, style.titleStyle?.color ?? "#334155");
     assert.equal(p.guideConfigs.legend.size.labels.offset, 12);
     for (const target of edges) {
-      assert.deepEqual(p.editLegendLayout({ position: target }).graphicSpec,
+      assertEquivalentMeaning(p.editLegendLayout({ position: target }).graphicSpec,
         base().createLegend({ ...options, position: target }).graphicSpec);
     }
     for (const patch of [{ labels: { fontWeight: 700 } }, { titleStyle: { fontSize: 20 } }]) {
       const expected = { ...options, ...patch, labels: { ...style.labels, ...patch.labels },
         titleStyle: { ...style.titleStyle, ...patch.titleStyle } };
-      assert.deepEqual(p.editLegend(patch).graphicSpec, base().createLegend(expected).graphicSpec);
+      assertEquivalentMeaning(p.editLegend(patch).graphicSpec, base().createLegend(expected).graphicSpec);
     }
     assert.deepEqual(p.editLegendTitle({ title: false }).editLegendTitle({ title: "auto" }).graphicSpec, p.graphicSpec);
   }

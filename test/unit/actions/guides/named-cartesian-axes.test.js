@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { chart } from "../../../../src/index.js";
@@ -90,7 +91,7 @@ test("aggregate named arrays are nonempty, ordered, atomic and usable through cr
   const facade = chart().createCanvas({ width: 600, height: 400, margin: 80 })
     .createData({ id: "rows", values: rows })
     .createScatterPlot({ x: "x", y: "y", guides: { axes: options, grid: false, legend: false } });
-  assert.deepEqual(facade.graphicSpec, p.graphicSpec);
+  assertEquivalentMeaning(facade.graphicSpec, p.graphicSpec);
 });
 
 test("same-side occupancy includes every retained legacy canonical component", () => {

@@ -1,4 +1,4 @@
-# STEP-004 — row identity 검토 준비
+# STEP-004–009 — identity와 resource 통합
 
 ## 진행 상태
 
@@ -9,12 +9,12 @@
 - [x] 누적 검증 및 원격 evidence checkpoint
 - [x] G-CORE 명시 승인 (2026-10-27, 사용자 “승인한다”)
 - [x] production 순수 key kernel과 independent oracle 비교
-- [ ] createData/reviseData 및 persistence 연결
-- [ ] current contracts·types·generated docs 및 모든 적용 소비자 연결
+- [x] createData/reviseData 및 persistence 연결
+- [x] current contracts·types·generated docs 및 현재 적용 소비자 연결
 - [ ] 실제 제품 actual과 oracle 비교, atomicity·renderer·package 검증 후 complete
 
 상태 in-progress. independent oracle의 통과를 STEP-004 complete로 기록하지 않는다.
-[DESIGN](DESIGN.md)의 D1–D8이 승인되었으며 현재 product call은 아직 변경되지 않았다.
+[DESIGN](DESIGN.md)의 D1–D8을 제품 호출 경로에 연결했으며 최종 clean revision 검증 전이다.
 [기계 판독 진행 기록](progress/STEP-004.json)과 [실행 집계](evidence/summary.json)를 함께 읽는다.
 
 ## 검토 준비에서 구현한 것
@@ -37,7 +37,7 @@
 후속 [consumer matrix](consumers.json)의 pending 항목과 AT-06–10 closure를 넘긴다.
 원안 작업 카드나 Phase 0 완료 기록을 수정하여 승인을 소급 생성하지 않는다.
 
-## 순수 kernel checkpoint
+## 순수 kernel checkpoint (이전 기록)
 
 `src/core/itemIdentity.js`에 typed equality/order, source key mode, explicit row mapping, 분기 namespace,
 삭제 token 미재사용과 safe-integer 한도 검증을 구현했다. `test/unit/core/item-identity.test.js`는

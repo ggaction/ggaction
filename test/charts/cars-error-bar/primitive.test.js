@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../support/identity-equivalence.js";
 import { graphicDrawOrder } from "../../support/graphic-tree.js";
 import assert from "node:assert/strict";
 import test from "node:test";
@@ -101,7 +102,7 @@ test("authors the canonical error-bar target with raw interval and line primitiv
 
   assert.equal(program.semanticSpec.datasets[0].id, "data");
   const { schema, ...summaryWithoutSchema } = summary;
-  assert.deepEqual(summaryWithoutSchema, {
+  assertEquivalentMeaning(summaryWithoutSchema, {
     id: "errorBarIntervalData",
     source: "data",
     transform: [values.transform],

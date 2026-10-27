@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { chart } from "../../../../src/index.js";
@@ -99,11 +100,11 @@ test("initial and later border opt-in converge without changing chart or scale g
   const plain = axes(scaffold(chart().createCanvas(layout)));
   const initial = axes(scaffold(chart().createCanvas({ ...layout, plotBorder: {} })));
   const late = plain.editCanvas({ plotBorder: {} });
-  assert.deepEqual(initial.graphicSpec, late.graphicSpec);
-  assert.deepEqual(initial.semanticSpec, plain.semanticSpec);
+  assertEquivalentMeaning(initial.graphicSpec, late.graphicSpec);
+  assertEquivalentMeaning(initial.semanticSpec, plain.semanticSpec);
   assert.deepEqual(initial.resolvedScales, plain.resolvedScales);
   for (const id of ["points", "xAxisLine", "xAxisTicks", "xAxisLabels", "yAxisLine", "yAxisTicks", "yAxisLabels"]) {
-    assert.deepEqual(initial.graphicSpec.objects[id], plain.graphicSpec.objects[id]);
+    assertEquivalentMeaning(initial.graphicSpec.objects[id], plain.graphicSpec.objects[id]);
   }
   assertBorder(initial);
   assertOrder(initial);
@@ -208,9 +209,9 @@ for (const [name, draw] of [
     const create = plotBorder => draw(chart().createCanvas({ width: 600, height: 400, margin: 80,
       ...(plotBorder === undefined ? {} : { plotBorder }) }).createData({ id: "rows", values: rows }));
     const plain = create(undefined), off = create(false), initial = create({}), late = plain.editCanvas({ plotBorder: {} });
-    assert.deepEqual(off.graphicSpec, plain.graphicSpec);
-    assert.deepEqual(initial.graphicSpec, late.graphicSpec);
-    assert.deepEqual(initial.semanticSpec, plain.semanticSpec);
+    assertEquivalentMeaning(off.graphicSpec, plain.graphicSpec);
+    assertEquivalentMeaning(initial.graphicSpec, late.graphicSpec);
+    assertEquivalentMeaning(initial.semanticSpec, plain.semanticSpec);
     assert.deepEqual(initial.resolvedScales, plain.resolvedScales);
     assertBorder(initial, { left: 80, top: 80, width: 440, height: 240 });
     const order = initial.graphicSpec.objects["plot-main"].children;
@@ -219,7 +220,7 @@ for (const [name, draw] of [
     assert.ok(markIds.length > 0);
     for (const id of markIds) {
       assert.ok(order.indexOf(id) < frameIndex, `${id} below border`);
-      assert.deepEqual(initial.graphicSpec.objects[id], plain.graphicSpec.objects[id], `${id} unchanged`);
+      assertEquivalentMeaning(initial.graphicSpec.objects[id], plain.graphicSpec.objects[id], `${id} unchanged`);
     }
     const axisIds = order.filter(id => /^(x|y|theta|radial|parallel)Axis/.test(id));
     assert.ok(axisIds.length > 0);

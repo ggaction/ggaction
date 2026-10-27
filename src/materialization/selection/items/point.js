@@ -2,11 +2,10 @@ import {
   channelMapFromRow,
   concreteProperties,
   finalizeItems,
-  itemKey,
   ownFields
 } from "./common.js";
 
-export function resolvePointItems(program, layer, dataset) {
+export function resolvePointItems(program, layer, dataset, grain, resolveItems, selectionResolvers) {
   const graphic = program.graphicSpec.objects[layer.id];
   const completePosition = (
     layer.encoding?.x?.scale !== undefined &&
@@ -22,7 +21,7 @@ export function resolvePointItems(program, layer, dataset) {
     throw new Error(`Point mark "${layer.id}" is incomplete for selection.`);
   }
   const definitions = dataset.values.map((row, index) => ({
-    key: itemKey(layer, "point", index),
+    rowKey: dataset.rowKeys[index],
     fields: ownFields(row),
     channels: channelMapFromRow(row, layer),
     properties: concreteProperties(graphic.items[index]?.properties),
@@ -34,5 +33,5 @@ export function resolvePointItems(program, layer, dataset) {
     "point",
     definitions,
     program.graphicSpec.objects[layer.id]?.type
-  );
+  , { selectionResolvers });
 }

@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import {chart} from '../../../../src/index.js';
@@ -30,7 +31,7 @@ const dash=Object.freeze([4,2,6,1]);
 test('dashed border uses one continuous closed path and exact solid occupied bounds across families',()=>{
  for(const family of Object.keys(families))for(const position of ['left','right','top','bottom']){
   const solid=created(family,position,border),[id,g]=bg(solid),p=created(family,position,{...border,strokeDash:dash}),actual=p.graphicSpec.objects[id];
-  assert.equal(actual.type,'path',family);assert.deepEqual(created(family,position,{...border,strokeDash:[]}).graphicSpec,solid.graphicSpec);const {x,y,width:w,height:h}=g.properties;
+  assert.equal(actual.type,'path',family);assertEquivalentMeaning(created(family,position,{...border,strokeDash:[]}).graphicSpec,solid.graphicSpec);const {x,y,width:w,height:h}=g.properties;
   assert.deepEqual(actual.properties.commands,[{op:'M',x,y},{op:'L',x:x+w,y},{op:'L',x:x+w,y:y+h},{op:'L',x,y:y+h},{op:'Z'}]);
   assert.deepEqual(actual.properties.strokeDash,dash);assert.deepEqual(resolveConcreteGraphicBounds(p.graphicSpec,id),resolveConcreteGraphicBounds(solid.graphicSpec,id));
   assert.deepEqual(p.graphicSpec.order,solid.graphicSpec.order);assert.match(renderToSVG(p),/stroke-dasharray="4 2 6 1"/);

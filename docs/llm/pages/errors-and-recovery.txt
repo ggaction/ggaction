@@ -23,7 +23,8 @@ identity are preserved, including extension errors that are already frozen.
 
 The stable `code` values are `invalid-option`, `invalid-value`,
 `missing-resource`, `ambiguous-resource`, `incompatible-resource`,
-`resource-in-use`, `resource-limit`, `unsupported-format`, and `action-failed`.
+`resource-in-use`, `resource-limit`, `unsupported-format`, `action-failed`,
+`duplicate-id`, `ambiguous-identity`, `cyclic-dependency`, and `stale-result`.
 Shared input validation and named-resource selectors assign specific codes.
 Wrapped actions attach `action-failed` to other errors without guessing their
 category from English message text. Not every individual domain failure has a
@@ -32,10 +33,12 @@ option or resource-limit validator supplies them; native/filesystem failures
 can return `undefined`.
 
 Optional fields are `operation`, `optionPath`, `resourceId`, `candidates`,
-`limit`, and `actual`. `operation` identifies the innermost wrapped action that
+`limit`, `actual`, `ownerId`, `expected`, and `dependencies`. `operation` identifies the innermost wrapped action that
 observed the error (or an explicitly named renderer). `optionPath` identifies
 the supplied key or the validator's named quantity. `candidates` lists resource
-IDs; `actual` and `limit` are numeric measurements or bounds. For insufficient
+IDs. `ownerId` identifies a failed dependency owner; `dependencies` lists its
+blocking resources. `expected` is a string or number describing the required
+identity or revision. `actual` and `limit` are numeric measurements or bounds. For insufficient
 facet header spacing, `optionPath: "gap"` reports the requested gap in `actual`
 and the minimum header clearance in `limit`. Retry with that clearance and
 validate again: other retained guides can require additional space. No row values or complete program

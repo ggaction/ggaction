@@ -714,7 +714,7 @@
     "reason": "Not a standalone executable contract. Requires the imports, resource state, and branch in \"`removeData({ id })` {#removedata-id}\" on docs/api/data/revisions-and-removal.md. Review this context when editing; register a fixture in snippet_cases.json to claim execution coverage."
   },
   {
-    "id": "docs/api/data/source-and-derived.md#-createdata-id-values-schema-createdata-id-values-:1",
+    "id": "docs/api/data/source-and-derived.md#-createdata-id-values-schema-keyfield-keyfields-keys-createdata-id-values-:1",
     "sha256": "4113e74124124295616164ff9ad165ce4522c9fdd8871c231ed2602c7419bdd0",
     "mode": "contextual-fragment",
     "owner": "docs/api/data/source-and-derived.md",

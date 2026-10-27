@@ -1,0 +1,3 @@
+export type DataKeySpec = { readonly mode: "generated" } | { readonly mode: "explicit" }
+  | { readonly mode: "field"; readonly field: string }
+  | { readonly mode: "fields"; readonly fields: readonly string[] };

@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -126,7 +127,7 @@ test("continuous field color and stroke preserve palette descriptor parity throu
       const make = scale => factory().createCanvas({ width: 320, height: 200, margin: 30 })
         .createData({ values: rows }).createScatterPlot({ x: "x", y: "y", guides: false,
           stroke: { field: "value", fieldType: "quantitative", scale } });
-      assert.deepEqual(make(top).graphicSpec, make(nested).graphicSpec);
+      assertEquivalentMeaning(make(top).graphicSpec, make(nested).graphicSpec);
     }
   }
   assert.deepEqual(palette, { name: "turbo", count: 64, extent: [0.1, 0.9] });

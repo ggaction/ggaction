@@ -1,3 +1,5 @@
+import { selectedItemPositions } from "../../../support/identity-equivalence.js";
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -60,21 +62,19 @@ test("replaces a complete selector while preserving selection identity and targe
   const edited = original.editMarkSelection(options);
 
   assert.deepEqual(edited.materializationConfigs.selections.extreme, {
-    target: "point",
-    selector: {
-      grain: "item",
-      field: "label",
-      op: "oneOf",
-      values: ["low", "top"]
-    }
+    target: "point", grain: "item", projection: {},
+    resource: { kind: "persistent-selection", id: "extreme", revision: 1 }
   });
-  assert.deepEqual(resolveStoredSelection(edited).keys, [
-    "point/point/0",
-    "point/point/3"
+  assert.deepEqual(resolveStoredSelection(edited).selector, {
+    grain: "item", field: "label", op: "oneOf", values: ["low", "top"]
+  });
+  assert.deepEqual(selectedItemPositions(resolveStoredSelection(edited)), [
+    0,
+    3
   ]);
   assert.equal(edited.context.currentSelection, "extreme");
   assert.equal(edited.graphicSpec, original.graphicSpec);
-  assert.equal(original.materializationConfigs.selections.extreme.selector.op, "max");
+  assert.equal(resolveStoredSelection(original).selector.op, "max");
   assert.deepEqual(options.values, ["low", "top"]);
 });
 
@@ -85,23 +85,23 @@ test("supports every selector operator and source through complete replacement",
     op: "max"
   });
   const cases = [
-    [{ field: "x", op: "eq", value: 5 }, ["point/point/1"]],
-    [{ field: "x", op: "neq", value: 5 }, ["point/point/0", "point/point/2", "point/point/3"]],
-    [{ channel: "x", op: "gt", value: 5 }, ["point/point/3"]],
-    [{ channel: "x", op: "gte", value: 5 }, ["point/point/1", "point/point/3"]],
-    [{ property: "x", op: "lt", value: 120 }, ["point/point/0", "point/point/2"]],
-    [{ field: "x", op: "lte", value: 3 }, ["point/point/0", "point/point/2"]],
-    [{ field: "label", op: "oneOf", values: ["high", "top"] }, ["point/point/1", "point/point/3"]],
-    [{ field: "x", op: "range", min: 1, max: 8, inclusive: false }, ["point/point/1", "point/point/2"]],
-    [{ field: "x", op: "min", count: 2 }, ["point/point/0", "point/point/2"]],
-    [{ field: "x", op: "max", count: 1, groupBy: "group", ties: "all" }, ["point/point/1", "point/point/3"]]
+    [{ field: "x", op: "eq", value: 5 }, [1]],
+    [{ field: "x", op: "neq", value: 5 }, [0, 2, 3]],
+    [{ channel: "x", op: "gt", value: 5 }, [3]],
+    [{ channel: "x", op: "gte", value: 5 }, [1, 3]],
+    [{ property: "x", op: "lt", value: 120 }, [0, 2]],
+    [{ field: "x", op: "lte", value: 3 }, [0, 2]],
+    [{ field: "label", op: "oneOf", values: ["high", "top"] }, [1, 3]],
+    [{ field: "x", op: "range", min: 1, max: 8, inclusive: false }, [1, 2]],
+    [{ field: "x", op: "min", count: 2 }, [0, 2]],
+    [{ field: "x", op: "max", count: 1, groupBy: "group", ties: "all" }, [1, 3]]
   ];
   for (const [selector, keys] of cases) {
     const edited = base.editMarkSelection({
       selection: "active",
       ...selector
     });
-    assert.deepEqual(resolveStoredSelection(edited, "active").keys, keys);
+    assert.deepEqual(selectedItemPositions(resolveStoredSelection(edited, "active")), keys);
   }
 
   const histogram = createCarsHistogram(loadCars()).selectMarks({
@@ -116,7 +116,7 @@ test("supports every selector operator and source through complete replacement",
     channel: "y2",
     op: "max"
   });
-  assert.deepEqual(resolveStoredSelection(stack, "bars").keys, ["bars/stack/1"]);
+  assert.deepEqual(selectedItemPositions(resolveStoredSelection(stack, "bars")), [1]);
   assert.equal(stack.materializationConfigs.selections.bars.target, "bars");
 });
 
@@ -145,18 +145,18 @@ test("replays edited selections and remaining highlights from a clean baseline",
   });
   const items = edited.graphicSpec.objects.point.items;
 
-  assert.deepEqual(resolveStoredSelection(edited, "high").keys, [
-    "point/point/0",
-    "point/point/2"
+  assert.deepEqual(selectedItemPositions(resolveStoredSelection(edited, "high")), [
+    2,
+    3
   ]);
   assert.equal(items.slice(-2).every(item => item.properties.fill === "#dc2626"), true);
   assert.equal(items.some(item => item.properties.fill === "#2563eb"), true);
   assert.deepEqual(Object.keys(edited.materializationConfigs.highlights), ["low", "high"]);
 
   const resized = edited.editCanvas({ width: 300 });
-  assert.deepEqual(resolveStoredSelection(resized, "high").keys, [
-    "point/point/0",
-    "point/point/2"
+  assert.deepEqual(selectedItemPositions(resolveStoredSelection(resized, "high")), [
+    2,
+    3
   ]);
   assert.equal(
     resized.graphicSpec.objects.point.items.slice(-2).every(
@@ -253,13 +253,13 @@ test("removes a dependent highlight before releasing its selection", () => {
   assert.equal(removed.materializationConfigs.selections, undefined);
   assert.equal(removed.materializationConfigs.highlights, undefined);
   assert.equal(removed.context.currentSelection, undefined);
-  assert.deepEqual(
+  assertEquivalentMeaning(
     removed.graphicSpec.objects.point,
     pointProgram().graphicSpec.objects.point
   );
   assert.deepEqual(
     removed.trace.children.at(-1).children.map(child => child.op),
-    ["removeMarkHighlight"]
+    ["removeMarkHighlight", "editSemantic"]
   );
   assert.notEqual(highlighted.materializationConfigs.selections.highest, undefined);
 });

@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { chart } from "../../../../src/index.js";
@@ -15,7 +16,7 @@ test("continuous labels map raw tick values while retaining formatter fallback a
   const p = base().createXAxis(axis());
   assert.deepEqual(texts(p), ["0", "0.2", "40", "1"]);
   assert.deepEqual(p.resolvedScales, before.resolvedScales);
-  assert.deepEqual(p.semanticSpec, before.semanticSpec);
+  assertEquivalentMeaning(p.semanticSpec, before.semanticSpec);
   assert.deepEqual(p.graphicSpec.objects.xAxisTicks, before.graphicSpec.objects.xAxisTicks);
   assert.deepEqual(p.guideConfigs.axis.x.labels.values, [0, 20, 40, 100]);
   assert.notEqual(p.guideConfigs.axis.x.labels.labelMap, map);
@@ -32,7 +33,7 @@ test("focused, grouped and whole-axis edits share continuous map behavior atomic
   assert.deepEqual(texts(edited), ["0", "0.2", "40", "1"]);
   assert.deepEqual(texts(edited, "y"), ["0", "0.2", "40", "1"]);
   const direct = base().createAxes({ x: axis(), y: axis() });
-  assert.deepEqual(edited.graphicSpec, direct.graphicSpec);
+  assertEquivalentMeaning(edited.graphicSpec, direct.graphicSpec);
   assert.equal(JSON.stringify(before), snapshot);
   const changed = edited.editXAxisTicksAndLabels({ values: [0, 20, 60, 100] });
   assert.deepEqual(texts(changed), ["0", "0.2", "60", "1"]);

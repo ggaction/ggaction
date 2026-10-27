@@ -72,6 +72,7 @@ test("materializes grouped rectangles with the default band", () => {
     "editGraphics",
     "editGraphics",
     "editGraphics",
+    "editGraphics",
     "editGraphics"
   ]);
 });

@@ -1,3 +1,5 @@
+import { selectedItemPositions } from "../../../support/identity-equivalence.js";
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -39,22 +41,22 @@ function highlighted(program = pointProgram()) {
 
 test("runs every selector operator through reusable action state", () => {
   const cases = [
-    ["eq", { field: "x", op: "eq", value: 5 }, ["point/point/1"]],
-    ["neq", { field: "x", op: "neq", value: 5 }, ["point/point/0", "point/point/2", "point/point/3"]],
-    ["gt", { channel: "x", op: "gt", value: 5 }, ["point/point/3"]],
-    ["gte", { channel: "x", op: "gte", value: 5 }, ["point/point/1", "point/point/3"]],
-    ["lt", { property: "x", op: "lt", value: 120 }, ["point/point/0", "point/point/2"]],
-    ["lte", { field: "x", op: "lte", value: 3 }, ["point/point/0", "point/point/2"]],
-    ["oneOf", { field: "label", op: "oneOf", values: ["low", "top"] }, ["point/point/0", "point/point/3"]],
-    ["range", { field: "x", op: "range", min: 1, max: 8, inclusive: false }, ["point/point/1", "point/point/2"]],
-    ["min", { field: "x", op: "min", count: 2 }, ["point/point/0", "point/point/2"]],
-    ["max", { field: "x", op: "max", count: 2 }, ["point/point/3", "point/point/1"]]
+    ["eq", { field: "x", op: "eq", value: 5 }, [1]],
+    ["neq", { field: "x", op: "neq", value: 5 }, [0, 2, 3]],
+    ["gt", { channel: "x", op: "gt", value: 5 }, [3]],
+    ["gte", { channel: "x", op: "gte", value: 5 }, [1, 3]],
+    ["lt", { property: "x", op: "lt", value: 120 }, [0, 2]],
+    ["lte", { field: "x", op: "lte", value: 3 }, [0, 2]],
+    ["oneOf", { field: "label", op: "oneOf", values: ["low", "top"] }, [0, 3]],
+    ["range", { field: "x", op: "range", min: 1, max: 8, inclusive: false }, [1, 2]],
+    ["min", { field: "x", op: "min", count: 2 }, [0, 2]],
+    ["max", { field: "x", op: "max", count: 2 }, [3, 1]]
   ];
   const before = pointProgram();
   let next = before;
   for (const [id, selector, expected] of cases) {
     next = next.selectMarks({ id, ...selector });
-    assert.deepEqual(resolveStoredSelection(next, id).keys, expected);
+    assert.deepEqual(selectedItemPositions(resolveStoredSelection(next, id)), expected);
   }
 
   assert.equal(Object.keys(next.materializationConfigs.selections).length, cases.length);
@@ -133,8 +135,8 @@ test("converges across color encoding, scale, Canvas, and filter order", () => {
     pointProgram().encodeColor({ field: "group" })
   );
   const highlightThenEncode = highlighted().encodeColor({ field: "group" });
-  assert.deepEqual(highlightThenEncode.semanticSpec, encodeThenHighlight.semanticSpec);
-  assert.deepEqual(highlightThenEncode.graphicSpec, encodeThenHighlight.graphicSpec);
+  assertEquivalentMeaning(highlightThenEncode.semanticSpec, encodeThenHighlight.semanticSpec);
+  assertEquivalentMeaning(highlightThenEncode.graphicSpec, encodeThenHighlight.graphicSpec);
   assert.deepEqual(
     highlightThenEncode.materializationConfigs,
     encodeThenHighlight.materializationConfigs
@@ -142,21 +144,21 @@ test("converges across color encoding, scale, Canvas, and filter order", () => {
 
   const resizeThenHighlight = highlighted(pointProgram().editCanvas({ width: 300 }));
   const highlightThenResize = highlighted().editCanvas({ width: 300 });
-  assert.deepEqual(highlightThenResize.graphicSpec, resizeThenHighlight.graphicSpec);
+  assertEquivalentMeaning(highlightThenResize.graphicSpec, resizeThenHighlight.graphicSpec);
 
   const reverseThenHighlight = highlighted(pointProgram().editScale({
     id: "x",
     reverse: true
   }));
   const highlightThenReverse = highlighted().editScale({ id: "x", reverse: true });
-  assert.deepEqual(highlightThenReverse.graphicSpec, reverseThenHighlight.graphicSpec);
+  assertEquivalentMeaning(highlightThenReverse.graphicSpec, reverseThenHighlight.graphicSpec);
 
   const selector = { field: "group", op: "eq", value: "A" };
   const filterThenHighlight = highlighted(pointProgram().filterMarks(selector));
   const highlightThenFilter = highlighted().filterMarks(selector);
-  assert.deepEqual(highlightThenFilter.semanticSpec, filterThenHighlight.semanticSpec);
-  assert.deepEqual(highlightThenFilter.graphicSpec, filterThenHighlight.graphicSpec);
-  assert.deepEqual(resolveStoredSelection(highlightThenFilter).keys, ["point/point/1"]);
+  assertEquivalentMeaning(highlightThenFilter.semanticSpec, filterThenHighlight.semanticSpec);
+  assertEquivalentMeaning(highlightThenFilter.graphicSpec, filterThenHighlight.graphicSpec);
+  assert.deepEqual(selectedItemPositions(resolveStoredSelection(highlightThenFilter)), [1]);
   assert.equal(highlightThenFilter.graphicSpec.objects.point.items.length, 2);
 });
 
@@ -200,9 +202,9 @@ test("preserves selected-last order and encoded-style precedence after remateria
   const result = highlighted(base).editCanvas({ width: 300, height: 220 });
   const children = result.graphicSpec.objects.point.items;
 
-  assert.deepEqual(resolveStoredSelection(result).keys, [
-    "point/point/1",
-    "point/point/3"
+  assert.deepEqual(selectedItemPositions(resolveStoredSelection(result)), [
+    2,
+    3
   ]);
   assert.deepEqual(children.slice(-2).map(child => child.type), ["path", "path"]);
   assert.equal(children.slice(-2).every(child =>

@@ -31,7 +31,11 @@ export function createTallestHistogramStackHighlightPrimitive(
   }));
   const selectedIndices = new Set(target.indices);
 
-  return base.editGraphics({
+  return base.editSemantic({ property: "resource[persistent-selection:barsSelection]", value: {
+    kind: "persistent-selection", id: "barsSelection", revision: 0, algorithmVersion: "1",
+    ownership: { mode: "authored" }, inputs: [], options: { mode: "predicate", predicate: { channel: "y2", op: "max", count: 1, ties: "first" } },
+    result: {}, provenance: { origin: "authored" }
+  } }).editGraphics({
     target: "bars",
     property: "items",
     value: [
@@ -59,7 +63,11 @@ export function createTopmostHistogramSegmentHighlightPrimitive(
     properties: child.properties
   }));
   const [selected] = children.splice(target.index, 1);
-  return base.editGraphics({
+  return base.editSemantic({ property: "resource[persistent-selection:barsSelection]", value: {
+    kind: "persistent-selection", id: "barsSelection", revision: 0, algorithmVersion: "1",
+    ownership: { mode: "authored" }, inputs: [], options: { mode: "predicate", predicate: { channel: "y2", op: "max", count: 1, ties: "first" } },
+    result: {}, provenance: { origin: "authored" }
+  } }).editGraphics({
     target: "bars",
     property: "items",
     value: [

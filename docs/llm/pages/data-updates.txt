@@ -185,22 +185,21 @@ available.
 Each JSON envelope has exactly these keys:
 
 ```text
-{ schemaVersion: 3, kind: "editable", packageVersion: string,
+{ schemaVersion: 4, kind: "editable", packageVersion: string,
   extensions: string[], payload: EncodedValue }
 { schemaVersion: 1, kind: "graphic", packageVersion: string,
   extensions: string[], payload: EncodedValue }
 ```
 
-Editable snapshots use schema version 3 to store large repeated arrays once,
-including source data shared by many facet panels. Dataset schema and calculation
-metadata still round-trip. Version 2 remains readable. The reader migrates
-editable version 1 payloads by
-inferring or deriving missing dataset schemas before final schema validation.
-Lookup migration resolves both input schemas. The initial pass still checks
-references, cycles, typed keys, duplicate keys, and exact derived row values;
-only missing-schema comparisons are deferred. Malformed provided schemas and
-tampered lookup results remain rejected. Modern formats stay strict. Graphic
-snapshots remain version 1 because their payload shape did not change.
+Editable snapshots use schema version 4 to preserve row identities, shared lineage
+and typed selection resources. Versions 1, 2 and 3 remain readable. The reader
+validates each historical format before migration; version 1 additionally infers
+or derives missing dataset schemas. Derived values and saved provenance must
+agree with their inputs. Ambiguous or malformed correspondence is rejected.
+Historical namespaces are deterministic from the original envelope and child path;
+no row field is silently treated as a key. Saved graphics are preserved, and
+migration does not replay actions or redraw a chart. Graphic snapshots remain
+version 1 and may carry optional concrete item identity metadata.
 `packageVersion` records the producer version; `schemaVersion` determines the
 format. Other schema versions are rejected. `extensions` contains the exact
 registered extension names required by the editable action traces, including
@@ -211,7 +210,7 @@ canonical keys `semanticSpec`, `graphicSpec`, `resolvedScales`,
 empty; aliases and private action counters are not persisted. The graphic
 payload is `graphicSpec` itself.
 
-Editable version 3 wraps encoded values as `["shared", arrays, root]`.
+Editable versions 3 and 4 wrap encoded values as `["shared", arrays, root]`.
 Arrays with at least 32 entries are interned by their exact tagged contents;
 `["reference", index]` reuses an earlier array. Array definitions may refer only
 to previously defined arrays, so cycles and forward references are invalid.
@@ -245,3 +244,8 @@ not as an object-identity graph.
 [Source and derived data](../../api/data/source-and-derived/) ·
 [ChartProgram and immutability](../../concepts/chart-program/) ·
 [Responsive charts](../../responsive-charts/) · [Errors and recovery](../../errors-and-recovery/)
+
+Full row contributions add storage proportional to the actual lineage. Shared
+arrays avoid duplicating complete source tables across facets. The regression
+fixture with 31,800 rows and 106 area panels remains below 22 MB as an editable
+snapshot, including all row lineage and concrete identity references.

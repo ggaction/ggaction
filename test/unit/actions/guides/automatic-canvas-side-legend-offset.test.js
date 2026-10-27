@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { chart } from "../../../../src/index.js";
@@ -42,7 +43,7 @@ test("side legend placement converges across creation order, axis edits, replay 
   for (const position of ["left", "right"]) {
     const p = axis(source(), position).createLegend({ position });
     const q = axis(source().createLegend({ position }), position);
-    assert.deepEqual(q.graphicSpec, p.graphicSpec);
+    assertEquivalentMeaning(q.graphicSpec, p.graphicSpec);
     const edited = p.editYAxisLabels({ fontSize: 24, offset: 25 }).editYAxisTitle({ fontSize: 22, offset: 80 });
     near(gap(edited, position), 8);
     near(gap(deserializeProgram(serializeProgram(edited)).editCanvas({ plot: { width: 360, height: 360 } }), position), 8);

@@ -11,6 +11,7 @@ export function annotateError(error, details) {
   const previous = getErrorDetails(error);
   const merged = { ...details, ...previous };
   if (merged.candidates !== undefined) merged.candidates = Object.freeze([...merged.candidates]);
+  if (merged.dependencies !== undefined) merged.dependencies = Object.freeze([...merged.dependencies]);
   detailsByError.set(error, Object.freeze(merged));
   return error;
 }

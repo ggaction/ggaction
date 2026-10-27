@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { chart } from '../../../../src/index.js';
@@ -133,7 +134,7 @@ test('free occupied anchors accept negative plot-relative coordinates and replac
   assert.deepEqual(returned.graphicSpec, free.graphicSpec);
   const direct = base().createLegend({ ...style, at: { x: -200, y: -150 } });
   const edited = base().createLegend(style).editLegendLayout({ at: { x: -200, y: -150 } });
-  assert.deepEqual(direct.graphicSpec, edited.graphicSpec);
+  assertEquivalentMeaning(direct.graphicSpec, edited.graphicSpec);
 });
 
 test('invalid free placement, conflicting same-call anchors and failed layout leave old programs untouched', () => {
@@ -178,7 +179,7 @@ test('non-opted programs retain legacy side defaults and explicit wrap retains m
   assert.ok(!Object.keys(p.guideConfigs.legendGroups ?? {}).length);
   const boxes = blockBounds(p); assert.ok(boxes[0].top < boxes[1].top && boxes[1].top < boxes[2].top);
   close(legendFixtureBounds(p).top, CANVAS.margin.top, 'legacy side top anchor');
-  assert.deepEqual(p.editCanvas({ width: canvas.width + 50 }).graphicSpec,
+  assertEquivalentMeaning(p.editCanvas({ width: canvas.width + 50 }).graphicSpec,
     multi({ ...CANVAS, width: canvas.width + 50 }).graphicSpec);
   const narrow = { width: 1200, height: 800, margin: { left: 100, right: 800, top: 150, bottom: 350 } };
   const wrapped = multi(narrow, 'Wide legend title').editLegendLayout({ position: 'bottom', blockLayout: 'wrap', align: 'left', offset: 20 });

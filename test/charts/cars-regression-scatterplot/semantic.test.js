@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -47,7 +48,7 @@ test("stores derived-data provenance and regression layer channels", () => {
     });
 
   const derived = program.semanticSpec.datasets.slice(1);
-  assert.deepEqual(derived.map(({ schema, ...dataset }) => dataset), [
+  assertEquivalentMeaning(derived.map(({ schema, ...dataset }) => dataset), [
     {
       id: "selected",
       source: "cars",

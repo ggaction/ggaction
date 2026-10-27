@@ -1,0 +1,10 @@
+export interface PersistentSelectionResource {
+  readonly kind: "persistent-selection"; readonly id: string; readonly revision: number;
+  readonly algorithmVersion: "1";
+  readonly ownership: { readonly mode: "authored" } | { readonly mode: "generated"; readonly owner: InputRef };
+  readonly inputs: readonly InputRef[];
+  readonly options: { readonly mode: "predicate"; readonly predicate: Readonly<Record<string, unknown>> }
+    | { readonly mode: "row-keys"; readonly logicalDataId: string; readonly rowKeys: readonly string[] };
+  readonly result: Readonly<Record<string, never>>;
+  readonly provenance: { readonly origin: "authored" | "observed" | "inferred"; readonly sourceRows?: readonly InputRowRef[] };
+}

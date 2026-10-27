@@ -1,4 +1,4 @@
-import { isPendingMeasuredRadiusConsumer } from "../../../materialization/scales/policies/arc.js";
+import { isPendingMeasuredRadiusConsumer } from "../policies/arc.js";
 import { deriveMeasuredArcValues, deriveProportionalArcRadiusValues } from "../../../grammar/arcs.js";
 import { deriveBarAggregates } from "../../../grammar/bars/aggregate.js";
 import {
@@ -14,7 +14,7 @@ import { derivePathSeriesFieldValues } from "../../../grammar/pathSeries.js";
 import { isAggregate } from "../../../grammar/aggregate.js";
 import {
   resolveRectConsumerValues
-} from "../../../materialization/rect.js";
+} from "../../rect.js";
 import { findScale } from "./common.js";
 
 function lineDerivationOptions(program, consumer, dataset) {

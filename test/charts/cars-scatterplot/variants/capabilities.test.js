@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import { graphicDrawOrder } from "../../../support/graphic-tree.js";
 import assert from "node:assert/strict";
 import test from "node:test";
@@ -90,8 +91,8 @@ test("matches the approved mirrored-axis primitive with public guides", () => {
   const primitive = createMirroredAxesPrimitives(cars);
   const publicProgram = createMirroredAxesCarsScatterplot(cars);
 
-  assert.deepEqual(publicProgram.semanticSpec, primitive.semanticSpec);
-  assert.deepEqual(publicProgram.graphicSpec, primitive.graphicSpec);
+  assertEquivalentMeaning(publicProgram.semanticSpec, primitive.semanticSpec);
+  assertEquivalentMeaning(publicProgram.graphicSpec, primitive.graphicSpec);
   assert.deepEqual(publicProgram.trace.children.map(node => node.op), [
     "createCanvas",
     "createData",
@@ -248,7 +249,7 @@ test("matches every approved primitive with a user-facing action flow", () => {
     renderCarsScatterplotPrimitives(primitive, primitiveContext);
     renderCarsScatterplotPrimitives(publicProgram, publicContext);
 
-    assert.deepEqual(publicProgram.graphicSpec, primitive.graphicSpec);
+    assertEquivalentMeaning(publicProgram.graphicSpec, primitive.graphicSpec);
     assert.deepEqual(publicContext.calls, primitiveContext.calls);
     assert.equal(publicProgram.trace.children.at(-1).op, finalAction);
     assert.equal(publicProgram.actionStack.length, 0);

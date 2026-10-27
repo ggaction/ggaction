@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { chart } from "../../../../src/index.js";
@@ -79,6 +80,6 @@ test("one-call bar facade and separate color assignment agree for a repeated cat
   const p = source(), q = p.encodeColor({ field: "category" });
   const bundled = chart().createCanvas({ width: 640, height: 460, margin: 80 }).createData({ id: "data", values })
     .createBarPlot({ id: "bars", x: "category", y: { field: "value", aggregate: "mean" }, color: "category", guides: false });
-  assert.deepEqual(bundled.semanticSpec, q.semanticSpec);
-  assert.deepEqual(bundled.graphicSpec, q.graphicSpec);
+  assertEquivalentMeaning(bundled.semanticSpec, q.semanticSpec);
+  assertEquivalentMeaning(bundled.graphicSpec, q.graphicSpec);
 });

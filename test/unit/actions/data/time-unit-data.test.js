@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -33,7 +34,7 @@ test("creates immutable UTC time-unit provenance and materialized values", () =>
   });
   const dataset = program.semanticSpec.datasets[1];
 
-  assert.deepEqual(dataset, {
+  assertEquivalentMeaning(dataset, {
     schema: dataset.schema,
     id: "monthly",
     source: "source",

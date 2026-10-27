@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -61,7 +62,7 @@ test("authors the regression graphic hierarchy with raw primitives", () => {
   renderCarsRegressionScatterplotPrimitives(baseline, baselineContext);
   renderCarsRegressionScatterplotPrimitives(program, context);
 
-  assert.deepEqual(program.semanticSpec, baseline.semanticSpec);
+  assertEquivalentMeaning(program.semanticSpec, baseline.semanticSpec);
   assert.deepEqual(
     concreteGraphicSnapshot(program, { exclude: ["plot-main"] }),
     concreteGraphicSnapshot(baseline, { exclude: ["plot-main"] })
@@ -125,7 +126,7 @@ test("authors regression component edit targets with low-level graphic edits", (
 
   renderCarsRegressionScatterplotPrimitives(program, context);
 
-  assert.deepEqual(program.semanticSpec, baseline.semanticSpec);
+  assertEquivalentMeaning(program.semanticSpec, baseline.semanticSpec);
   assert.deepEqual(program.graphicSpec.order, baseline.graphicSpec.order);
   assert.deepEqual(
     program.graphicSpec.objects.pointsRegressionBands.items.map(child => ({

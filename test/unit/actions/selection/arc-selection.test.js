@@ -1,3 +1,4 @@
+import { selectedItemPositions } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -22,7 +23,7 @@ test("selects count sectors at their final visual grain", () => {
   });
   const resolved = resolveStoredSelection(selected);
 
-  assert.deepEqual(resolved.keys, ["arc/sector/2"]);
+  assert.deepEqual(selectedItemPositions(resolved), [2]);
   assert.deepEqual(resolved.items.map(item => item.channels.theta), [
     "USA", "Europe", "Japan"
   ]);
@@ -41,7 +42,7 @@ test("selects weighted sectors at the grouped source-member grain", () => {
   const resolved = resolveStoredSelection(selected);
   const item = resolved.items.find(candidate => resolved.keys.includes(candidate.key));
 
-  assert.deepEqual(resolved.keys, ["arc/sector/4"]);
+  assert.deepEqual(selectedItemPositions(resolved), [4]);
   assert.equal(item.channels.theta, 4);
   assert.equal(item.members.every(row => row.cluster === 4), true);
   assert.equal(item.members.length > 1, true);
@@ -69,7 +70,7 @@ test("selects direct quantitative sectors at source-row grain", () => {
   const resolved = resolveStoredSelection(selected);
   const item = resolved.items.find(candidate => resolved.keys.includes(candidate.key));
 
-  assert.deepEqual(resolved.keys, ["arc/sector/1"]);
+  assert.deepEqual(selectedItemPositions(resolved), [1]);
   assert.equal(item.channels.theta, 1);
   assert.deepEqual(item.members, [rows[1]]);
 });
@@ -120,7 +121,7 @@ test("reapplies arc highlights after geometry rematerialization", () => {
   });
   const resized = highlighted.editCanvas({ width: 840 });
 
-  assert.deepEqual(resolveStoredSelection(resized).keys, ["arc/sector/9"]);
+  assert.deepEqual(selectedItemPositions(resolveStoredSelection(resized)), [11]);
   assert.equal(resized.graphicSpec.objects.arc.items.at(-1).properties.fill, "#dc2626");
   assert.equal(resized.graphicSpec.objects.arc.items.slice(0, -1).every(
     item => item.properties.opacity === 0.25

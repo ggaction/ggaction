@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { chart } from "../../../../src/index.js";
@@ -32,7 +33,7 @@ test("stroke-width edge edits, content replacement and removal converge with cre
     const original = base().createLegend({ position: from, border: true });
     const itemGap = original.guideConfigs.legend.strokeWidth.itemGap;
     const actual = original.editLegendLayout({ position });
-    assert.deepEqual(actual.graphicSpec, base().createLegend({ position, border: true, itemGap }).graphicSpec);
+    assertEquivalentMeaning(actual.graphicSpec, base().createLegend({ position, border: true, itemGap }).graphicSpec);
     assert.deepEqual(actual.editCanvas({ width: 1100 }).graphicSpec,
       original.editCanvas({ width: 1100 }).editLegend({ position }).graphicSpec);
     assert.deepEqual(actual.editLegend({ channels: ["strokeWidth"], position }).graphicSpec, actual.graphicSpec);
@@ -54,7 +55,7 @@ test("stroke-width grids measure thick samples and preserve styled hidden titles
       assert.ok(Math.abs(rows[1] - rows[0]) >= 60);
       const hidden = p.editLegend({ title: false });
       assert.equal(hidden.graphicSpec.objects.strokeWidthLegendTitle, undefined);
-      assert.deepEqual(hidden.editScale({ id: "strokeWidth", range: [2, 10] }).graphicSpec,
+      assertEquivalentMeaning(hidden.editScale({ id: "strokeWidth", range: [2, 10] }).graphicSpec,
         base().createLegend(options).editLegend({ title: false }).graphicSpec);
       assert.deepEqual(hidden.editLegend({ title: "auto" }).graphicSpec, p.graphicSpec);
     }
@@ -104,7 +105,7 @@ test("thick side samples keep a visible gap below the title", () => {
     const title = p.graphicSpec.objects.strokeWidthLegendTitle.properties;
     assert.equal(samples(p)[0].y1 - 30 - (title.y + title.fontSize), 12);
     assert.equal(samples(p)[1].y1 - samples(p)[0].y1, 60);
-    assert.deepEqual(p.editLegend({ title: false }).graphicSpec,
+    assertEquivalentMeaning(p.editLegend({ title: false }).graphicSpec,
       base().createLegend({ position, count: 3 }).editLegend({ title: false })
         .editScale({ id: "strokeWidth", range: [60, 60] }).graphicSpec);
   }

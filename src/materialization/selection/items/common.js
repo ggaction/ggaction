@@ -8,9 +8,37 @@ import {
 import { unionConcreteGraphicBounds } from
   "../../../grammar/schemas/graphicBounds.js";
 import { readRectItemGeometry } from "../../../grammar/roundedRect.js";
+import { selectionPredicate } from "../predicate.js";
+import { requireDataset } from "../../../selectors/datasets.js";
+import { canonicalJSON, contentDigest } from "../../../core/contentDigest.js";
+import { encodeValue } from "../../../core/valueEncoding.js";
 
-export function itemKey(layer, grain, index) {
-  return `${layer.id}/${grain}/${index}`;
+const rowKeySets = new WeakMap();
+function itemNamespace(program, dataset, keys) {
+  let current = dataset;
+  while (current.source !== undefined) {
+    const source = requireDataset(program, current.source);
+    let sourceKeys = rowKeySets.get(source);
+    if (sourceKeys === undefined) { sourceKeys = new Set(source.rowKeys); rowKeySets.set(source, sourceKeys); }
+    if (!keys.every(key => sourceKeys.has(key))) break;
+    current = source;
+  }
+  return current.logicalId;
+}
+
+export function identifyItems(program, layer, grain, definitions) {
+  const dataset = requireDataset(program, layer.data);
+  const keysByRow = new Map();
+  dataset.values.forEach((row, index) => keysByRow.set(row, [...(keysByRow.get(row) ?? []), dataset.rowKeys[index]]));
+  return definitions.map(definition => {
+    const memberKeys = definition.memberKeys ?? (definition.rowKey ? [definition.rowKey]
+      : [...new Set(definition.members.flatMap(row => keysByRow.get(row) ?? []))]);
+    const identity = definition.semanticIdentity ?? (definition.rowKey === undefined
+      ? ["members", [...memberKeys].sort()] : ["row", definition.rowKey]);
+    const key = JSON.stringify([[], layer.id, grain, [itemNamespace(program, dataset, memberKeys), canonicalJSON(encodeValue(identity))]]);
+    return { ...definition, key, memberKeys,
+      topology: ["line", "area"].includes(layer.mark.type) ? contentDigest(JSON.stringify(definition.topologyKeys ?? memberKeys)) : "" };
+  });
 }
 
 function graphicId(layer, index) {
@@ -109,7 +137,7 @@ function collectionBounds(program, items) {
   return { x: left, y: top, width: right - left, height: bottom - top };
 }
 
-export function finalizeItems(program, layer, grain, definitions, graphicType, { reorder = true } = {}) {
+export function finalizeItems(program, layer, grain, definitions, graphicType, { reorder = true, selectionResolvers } = {}) {
   const graphic = requireResolvedGraphic(program, layer, graphicType);
   const referenced = definitions.flatMap((definition, index) =>
     definition.graphicIndices ?? [index]
@@ -123,9 +151,18 @@ export function finalizeItems(program, layer, grain, definitions, graphicType, {
       `Mark "${layer.id}" item count does not match its materialized graphics.`
     );
   }
-  definitions = definitions.map((definition, index) => ({ ...definition, key: definition.key ?? itemKey(layer, grain, index) }));
-  if (reorder && definitions.every(definition => definition.graphicIndices === undefined)) {
-    definitions = reorderHighlightedItems(program, layer, definitions);
+  definitions = identifyItems(program, layer, grain, definitions);
+  if (reorder) {
+    definitions = reorderHighlightedItems(program, layer, definitions, {}, selectionResolvers);
+    if (definitions.some(definition => definition.graphicIndices !== undefined)) {
+      // A selected series moves all its concrete segments together. Rebind the
+      // semantic definitions to the resulting draw order, including broken paths.
+      let offset = 0;
+      definitions = definitions.map(definition => {
+        const graphicIndices = definition.graphicIndices.map(() => offset++);
+        return { ...definition, graphicIndices };
+      });
+    }
   }
   return Object.freeze(definitions.map((definition, index) => {
     const indices = definition.graphicIndices ?? [index];
@@ -142,7 +179,9 @@ export function finalizeItems(program, layer, grain, definitions, graphicType, {
           }
     ) : { ...definition.properties, ...concreteProperties(items[0]?.properties) };
     return Object.freeze({
-      key: definition.key ?? itemKey(layer, grain, index),
+      key: definition.key,
+      topology: definition.topology,
+      graphicRoles: Object.freeze(definition.graphicRoles ?? ["body"]),
       layer: layer.id,
       markType: layer.mark.type,
       fields: cloneAndFreeze(definition.fields),
@@ -152,7 +191,7 @@ export function finalizeItems(program, layer, grain, definitions, graphicType, {
         ? {}
         : { geometry: cloneAndFreeze(definition.geometry) }),
       members: Object.freeze([...definition.members]),
-      rows: Object.freeze(memberRowReferences(program, definition.members)),
+      rows: Object.freeze(memberRowReferences(program, definition.members, layer.data, definition.memberKeys)),
       graphicIds: Object.freeze(items.map((child, childOffset) =>
         child.id ?? graphicId(layer, indices[childOffset])
       ))
@@ -160,7 +199,7 @@ export function finalizeItems(program, layer, grain, definitions, graphicType, {
   }));
 }
 
-export function reorderHighlightedItems(program, layer, definitions, groups = {}) {
+export function reorderHighlightedItems(program, layer, definitions, groups = {}, selectionResolvers) {
   let ordered = definitions;
   for (const config of Object.values(
     program.materializationConfigs.highlights ?? {}
@@ -168,9 +207,9 @@ export function reorderHighlightedItems(program, layer, definitions, groups = {}
     if (config.target !== layer.id || config.bringToFront !== true) continue;
     const selection = program.materializationConfigs.selections?.[config.selection];
     if (selection?.target !== layer.id) continue;
-    const predicate = selection.selector;
+    const predicate = selectionPredicate(program, selection, selectionResolvers);
     const grouped = groups[predicate.grain];
-    const candidates = (grouped ?? ordered).map(item => ({ ...item, properties: item.properties ?? {}, ...(predicate.rows ? { rows: memberRowReferences(program, item.members) } : {}) }));
+    const candidates = (grouped ?? ordered).map(item => ({ ...item, properties: item.properties ?? {}, ...(predicate.rows ? { rows: memberRowReferences(program, item.members, layer.data, item.memberKeys) } : {}) }));
     let selected = new Set(selectMarkItemKeys(candidates, predicate));
     if (grouped) {
       const members = new Set(grouped.filter(item => selected.has(item.key)).flatMap(item => item.members));

@@ -378,10 +378,10 @@ Browser-safe 저장·복원 entry다. Canonical constructor state를 versioned t
 
 > 과거 checkpoint 수치 포함. 현재 한도는 실행 검사에서 확인한다.
 
-Editable snapshot v3는32개 이상 array의 exact tagged content를 intern하여 facet child마다
+Editable snapshot v4는 v3의 tagged array codec을 유지하며 32개 이상 array의 exact tagged content를 intern하여 facet child마다
 같은 원본 행을 반복 저장하지 않는다. 이전 array만 참조하는 DAG이며 cycle/forward reference는
 거부한다. Decode한 fresh plain graph를 한 번 소유하여 child constructor가 immutable source를
-공유한다. 기존 semantic/graphic/reference validator를 유지하며 v1 migration과 v2 reader도 유지한다.
+공유한다. 기존 semantic/graphic/reference validator를 유지하며 v1/v2/v3를 먼저 원래 형식으로 검증한 뒤 identity·lineage·resource를 이관한다. 저장된 그래픽을 재생성하지 않는다.
 Facet은 기존100-child 전용 ceiling 대신 공통 generated-item/work budget을 적용한다.
 
 ### `ggaction/accessibility`
@@ -394,7 +394,7 @@ Facet은 기존100-child 전용 ceiling 대신 공통 generated-item/work budget
 
 ### `ggaction/scene`
 
-Browser-safe read-only transition scenes reuse concrete SVG serialization and existing selection-grain ownership. They add no action or persisted state; the exact public scene contract is documented in [Rendering](../docs/api/rendering.md#transition-scenes).
+Browser-safe read-only transition scenes consume materialized item identity metadata and concrete drawing values solely from graphicSpec. Domain mark materializers explicitly persist this metadata through primitives; the exact public scene contract is documented in [Rendering](../docs/api/rendering.md#transition-scenes).
 
 ### `ggaction/diagnostics`
 
@@ -490,8 +490,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 495,000 bytes |
-| `ggaction/basic` | 255,000 bytes |
+| `ggaction` | 507,000 bytes |
+| `ggaction/basic` | 286,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 
@@ -507,9 +507,13 @@ Full 481,383 / Basic 244,242 bytes이며 기준 commit 대비 순증은 5,200 / 
 추가 module은 Full의 Area 정렬 정책·complete-case 데이터 소유자, Basic의 Area
 정렬 정책이며 Node/MCP/knowledge 경계 유입은 없다. 같은 minified 결과를
 Node 20.20.2·22.23.4·24.22.1의 zlib로 압축한 최댓값 481,548 / 244,737 bytes를
-기준으로 최소 1,000 bytes 단위 상한 495,000 / 255,000을 적용한다.
+기준으로 당시 상한을 조정했다. 이후 checkpoint의 상한은 아래 현재 측정 기록을 따른다.
 SVG는 Node 23에서 7,566 bytes, 지원 Node matrix에서 7,578 bytes로
 25,000 상한을 유지한다. 이전 상한을 통과했다고 보고하지 않는다.
+
+2026-10-27 identity·lineage·selection resource 통합의 installed-package 측정은
+Node 22.23.2에서 Full 506,776 / Basic 285,190 / SVG 7,827 gzip bytes다.
+이번 통합의 현재 상한은 위 표와 canonical numeric owner에 기록한다.
 
 > 과거 checkpoint 수치 포함. 현재 한도는 실행 검사에서 확인한다.
 
@@ -621,8 +625,7 @@ materializationConfigs = {
 아니라 이 canonical object에서 값을 읽는 getter다. `_actionSequence`처럼 serialization
 대상이 아닌 bookkeeping은 enumerable state가 아니다.
 
-`selections`는 target mark와 normalized mark-item selector intent를 저장하고 selected key 자체는 저장하지
-않는다. Selector source는 서로 겹치지 않는 세 namespace다. `field`는 item member data의 unique 값,
+`semanticSpec.resources`의 persistent-selection은 predicate 또는 stable row-key 집합을 소유한다. `selections`는 target mark, grain/projection, exact resource ref와 composite sourceSelection 관계를 저장한다. Selector source는 서로 겹치지 않는 세 namespace다. `field`는 item member data의 unique 값,
 `channel`은 scale 적용 전 resolved semantic encoding 값, `property`는 final `graphicSpec`의 concrete 값만 읽는다.
 Item resolver가 현재 semantic/materialization 계산에서 point row, final bar segment/stack, line/area series 또는
 rule row를 다시 만든 뒤 selection을 평가한다. Bar의 semantic position은 start `x`/`y`와 end `x2`/`y2`로
@@ -666,7 +669,11 @@ Automatic statistical parameter의 요청과 계산값은 서로 다른 provenan
 
 `core/itemIdentity.js`는 typed scalar/tuple의 동등성·순서, 명시적인 행 대응에 따른 token 배정,
 source identity 검증의 순수 owner다. Namespace를 인자로 받고 UUID·program·trace·renderer에 접근하지 않는다.
-현재 이 kernel의 독립 검증을 완료했으며 action과 persistence 연결은 진행 중이다.
+Action 경계가 생성 namespace를 준비하고 kernel이 source snapshot identity를 계산한다.
+`grammar/rowLineage.js`는 transform별 최종 행 grain과 기여 행 공유 table을 계산한다.
+`materialization/resourceState.js`는 typed resource 검증·dependency DAG·prepared result 검사를, `selectors/resources.js`는 exact identity lookup을 소유한다.
+`materialization/markOutput.js`는 final item resolver의 key·topology·lineage ref를 wrapped graphic primitive로 저장한다.
+통계 reference의 값과 lineage는 `materialization/statisticalPopulation.js`의 같은 population boundary를 사용한다.
 공개 옵션과 저장 형식의 현재 지원 범위는 [CORE](contract/current/CORE.md)가 소유한다.
 
 ## Immutability와 ownership
@@ -1836,7 +1843,7 @@ parameter validation, model fitting, derived-row assembly도 각각 분리되어
 Materialization의 cross-cutting policy도 descriptor owner와 consumer executor를 나눈다.
 `materialization/marks/` 는 mark capability와 rematerialization policy,
 `scaleGuideDependencies.js`는 scale이 어떤 guide에 영향을 주는지,
-`actions/scales/consumers/`는 실제 consumer discovery와 family dispatch를 소유한다. Facet guide는
+`materialization/scales/consumers/`는 실제 consumer discovery와 family dispatch를 소유한다. Facet guide는
 legacy categorical compatibility, child preparation, final placement의 세 stage로 분리하되 한
 public composition flow에서 순서대로 실행된다.
 
@@ -2788,3 +2795,6 @@ Renderer는 변경하지 않고 완성된 graphicSpec만 소비한다. 표시 �
 binding/대표값 validation을 소유한다. 기존 `legend.colorSize` owner에 선택적 shape binding과
 hue channel을 기록하고, `legendBlocks`/facet/encoding removal은 같은 channel/scale descriptor를
 사용한다. Glyph는 기존 Point materializer와 concrete bounds를 공유하며 renderer 경계는 변하지 않는다.
+
+공통 tagged value encoding은 `core/valueEncoding.js`가 소유하고 persistence codec과 item/resource digest가 재사용한다.
+복원 검증은 읽기 전용 `materialization/resourceState.js`를 호출하며, action 실행이나 그래픽 재계산을 하지 않는다.

@@ -1,3 +1,4 @@
+import { storedSelectionSelector } from "../../selectors/selectionResources.js";
 import { action } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
 import {
@@ -249,12 +250,12 @@ function assertGroupingSelectionCompatibility(program, layer, changesGroup) {
     program.materializationConfigs.selections ?? {}
   ).find(([, selection]) =>
     selection.target === layer.id &&
-    ["group", "color"].includes(selection.selector?.channel)
+    ["group", "color"].includes(storedSelectionSelector(program, selection).channel)
   );
   if (referenced !== undefined) {
     throw new Error(
       `editDensity cannot change groupBy while selection "${referenced[0]}" ` +
-      `references ${referenced[1].selector.channel}.`
+      `references ${storedSelectionSelector(program, referenced[1]).channel}.`
     );
   }
 }

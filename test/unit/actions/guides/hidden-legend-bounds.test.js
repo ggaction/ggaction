@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { chart } from "../../../../src/index.js";
@@ -16,7 +17,7 @@ test("hidden continuous titles do not reject fitting Canvas sizes or enlarge bor
     const hidden = long.editCanvas({ width: 800, margin: { right: 300 } });
     const short = base(kind).createLegend({ title: "m", border: true }).editLegend({ title: false })
       .editCanvas({ width: 800, margin: { right: 300 } });
-    assert.deepEqual(hidden.graphicSpec, short.graphicSpec);
+    assertEquivalentMeaning(hidden.graphicSpec, short.graphicSpec);
     assert.equal(hidden.guideConfigs.legend[kind].titleVisible, false);
     const before = JSON.stringify(hidden);
     assert.throws(() => hidden.editLegend({ title: "Long legend title ".repeat(6) }), /margin|Canvas|fixed title and item rows/);

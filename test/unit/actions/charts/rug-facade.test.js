@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { chart } from "../../../../src/index.js";
@@ -31,8 +32,8 @@ test("creates horizontal-measure Rug ticks at the bottom plot edge", () => {
       scale: { id: "rugAnchor", domain: [0, 1], zero: false, nice: false }
     })
     .encodeAngle({ target: "rug", value: 0 });
-  assert.deepEqual(actual.semanticSpec, expected.semanticSpec);
-  assert.deepEqual(actual.graphicSpec, expected.graphicSpec);
+  assertEquivalentMeaning(actual.semanticSpec, expected.semanticSpec);
+  assertEquivalentMeaning(actual.graphicSpec, expected.graphicSpec);
   assert.equal(actual.graphicSpec.objects.rug.items.every(item =>
     item.properties.y1 + item.properties.y2 === 280 &&
     item.properties.x1 === item.properties.x2

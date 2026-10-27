@@ -503,6 +503,17 @@ a font later does not change an existing program. Apply a new measured profile
 to update layout after fonts change. Canvas, SVG, PNG, and PDF draw the resulting
 text graphics; they do not rewrap or replace the authoring measurements.
 
+### Identity across revisions
+
+Transition scenes use the materialized item identity in `graphicSpec`. Explicit
+row keys retain an item across reorderings and value edits. Generated rows retain
+identity only when `reviseData` receives a `rowMap`. New independent datasets
+have separate identity namespaces. A series keeps its semantic key while changed
+ordered membership changes its topology fingerprint. Composition child paths
+participate in identity, so moving an item to another child produces enter/exit.
+SVG scene version 1 and Canvas scene version 2 keep their existing shapes.
+Graphic-only snapshots retain the same scene identities.
+
 ## Related
 
 [Canvas](../../../api/canvas/) · [Semantic and graphical state](../../../concepts/semantic-and-graphics/) ·

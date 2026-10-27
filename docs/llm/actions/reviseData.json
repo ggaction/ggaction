@@ -60,14 +60,14 @@
   },
   "options": [
     {
-      "name": "source",
-      "required": true,
-      "type": "string"
+      "name": "keys",
+      "required": false,
+      "type": "readonly RowKey[] | undefined"
     },
     {
-      "name": "id",
-      "required": true,
-      "type": "string"
+      "name": "rowMap",
+      "required": false,
+      "type": "readonly (number | null)[] | undefined"
     },
     {
       "name": "values",
@@ -80,15 +80,25 @@
       "type": "SourceSchemaInput | undefined"
     },
     {
+      "name": "source",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "id",
+      "required": true,
+      "type": "string"
+    },
+    {
       "name": "target",
       "required": false,
       "type": "ActionTargetList | ScopedActionTarget"
     }
   ],
   "callPatterns": [
-    "reviseData({ source, id, values, target?, schema? })"
+    "reviseData({ values, source, id, target?, keys?, rowMap?, schema? })"
   ],
-  "snippet": "program.reviseData({ source: \"data-1\", id: \"data-1\", values: [{ category: \"A\", value: 1 }] })",
+  "snippet": "program.reviseData({ values: [{ category: \"A\", value: 1 }], source: \"data-1\", id: \"data-1\" })",
   "errors": [],
   "route": "/reference/actions/charts-data/#revisedata"
 }

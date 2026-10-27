@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -39,7 +40,7 @@ test("authors the density area outline target with low-level graphic edits", () 
 
   renderCarsDensityAreaPrimitives(program, context);
 
-  assert.deepEqual(program.semanticSpec, baseline.semanticSpec);
+  assertEquivalentMeaning(program.semanticSpec, baseline.semanticSpec);
   assert.deepEqual(program.graphicSpec.order, baseline.graphicSpec.order);
   assert.deepEqual(
     program.graphicSpec.objects.densities.items.map(child => ({

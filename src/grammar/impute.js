@@ -241,7 +241,7 @@ function setField(row, field, value) {
   });
 }
 
-function fillRun(partition, field, run, transform, positions, mean) {
+function fillRun(partition, field, run, transform, positions, mean, contributions, observed) {
   const [start, end] = run;
   const length = end - start + 1;
   if (transform.maxGap !== undefined && length > transform.maxGap) return;
@@ -250,7 +250,10 @@ function fillRun(partition, field, run, transform, positions, mean) {
       if (transform.edges === "error") throw new RangeError(`Impute mean requires an observed value in field "${field}".`);
       return;
     }
-    for (let index = start; index <= end; index += 1) setField(partition[index].row, field, mean);
+    for (let index = start; index <= end; index += 1) {
+      setField(partition[index].row, field, mean);
+      if (contributions) for (const input of observed) contributions[partition[index].index].add(input);
+    }
     return;
   }
   if (transform.method === "constant") {
@@ -277,6 +280,7 @@ function fillRun(partition, field, run, transform, positions, mean) {
     const value = partition[anchor].row[field];
     for (let index = start; index <= end; index += 1) {
       setField(partition[index].row, field, value);
+      contributions?.[partition[index].index].add(partition[anchor].index);
     }
     return;
   }
@@ -289,10 +293,12 @@ function fillRun(partition, field, run, transform, positions, mean) {
       field,
       interpolateNumber(leftValue, rightValue, proportion)
     );
+    contributions?.[partition[index].index].add(partition[left].index);
+    contributions?.[partition[index].index].add(partition[right].index);
   }
 }
 
-export function deriveImputedRows(rows, transform) {
+export function deriveImputedRows(rows, transform, contributions) {
   validateImputeTransform(transform);
   validateRows(rows, transform);
   const entries = rows.map((row, index) => ({ index, row: { ...row } }));
@@ -303,12 +309,20 @@ export function deriveImputedRows(rows, transform) {
     partition.sort((left, right) => compareEntries(left, right, transform.sortBy));
     const positions = linearPositions(partition, transform);
     for (const field of transform.fields) {
+      const observedIndices = contributions && transform.method === "mean"
+        ? partition.filter(entry => entry.row[field] != null).map(entry => entry.index) : [];
       const observed = transform.method === "mean" ? partition.map(entry => entry.row[field]).filter(value => value !== null && value !== undefined) : [];
       const mean = observed.length ? stableFiniteMean(observed, "Impute group mean") : undefined;
       for (const run of missingRuns(partition, field)) {
-        fillRun(partition, field, run, transform, positions, mean);
+        fillRun(partition, field, run, transform, positions, mean, contributions, observedIndices);
       }
     }
   }
   return cloneAndFreeze(entries.sort((a, b) => a.index - b.index).map(entry => entry.row));
+}
+
+export function imputedRowContributions(rows, transform) {
+  const contributions = rows.map((_, index) => new Set([index]));
+  deriveImputedRows(rows, transform, contributions);
+  return contributions.map(indices => [...indices]);
 }

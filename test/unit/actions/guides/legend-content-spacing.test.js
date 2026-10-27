@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {chart} from '../../../../src/index.js';
@@ -213,7 +214,7 @@ test('content policies override retained block gap and reset restores that fallb
   const q=p.editLegendBlock({target:'scatterPlot',channel:'size',gap:60});
   assert.deepEqual(q.graphicSpec,p.graphicSpec);
   const reset=q.editLegendLayout({rowPadding:'auto',titlePadding:'auto'});
-  assert.deepEqual(reset.graphicSpec,exampleControl().editLegendBlock({target:'scatterPlot',channel:'size',gap:60}).graphicSpec);
+  assertEquivalentMeaning(reset.graphicSpec,exampleControl().editLegendBlock({target:'scatterPlot',channel:'size',gap:60}).graphicSpec);
 });
 
 test('multiline titles and clipped samples use final logical occupied bounds',()=>{

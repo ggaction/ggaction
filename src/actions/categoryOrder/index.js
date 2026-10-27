@@ -3,7 +3,7 @@ import { validateUserId } from "../../core/identifiers.js";
 
 import { findDataset } from "../../selectors/datasets.js";
 import { resolveEligibleLayer } from "../../selectors/layers.js";
-import { findScaleConsumers } from "../scales/consumers/index.js";
+import { findScaleConsumers } from "../../materialization/scales/consumers/index.js";
 import {
   applyMaterializationPlan,
   planScaleGuideRematerialization

@@ -272,7 +272,7 @@ test("edits size scale families with explicit migration and stable interval labe
   close(
     itemArea(
       highlightedObject,
-      highlightedObject.items.find(item => item.id === "points:3")
+      highlightedObject.items.find(item => item.id === discrete.graphicSpec.objects.points.items[3].id)
     ),
     50
   );

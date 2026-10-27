@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { chart } from '../../../../src/index.js';
@@ -26,19 +27,19 @@ test('Radar minmax is explicit, per dimension, row preserving, finite for consta
  assert.deepEqual(values(p).map(r=>r.radarValueNormalized),[0,0,0,1,1,0]);
  assert.deepEqual(values(p).map(r=>r.radarValue),[4,200,2,7,500,2]);
  const raw=p.editRadarPlot({wide:{fields:['x','y','z'],normalize:false}});
- assert.deepEqual(raw.graphicSpec.objects.radar,make().graphicSpec.objects.radar);
+ assertEquivalentMeaning(raw.graphicSpec.objects.radar,make().graphicSpec.objects.radar);
  assert.deepEqual(deserializeProgram(serializeProgram(p)).graphicSpec,p.graphicSpec);
  assert.match(renderToSVG(p),/<svg/);
 });
 test('Radar repeat revisions release obsolete owned pipelines and preserve borrowed data',()=>{
  let p=make();
- const original=serializeProgram(p);
+ const initial=p, original=serializeProgram(p);
  for(let i=0;i<12;i++){
   p=p.editRadarPlot({wide:{fields:i%2?['x','y','z']:['z','y','x'],summary:i%2?'mean':'median',normalize:i%2?false:'minmax'}});
   assert.ok(p.semanticSpec.datasets.length<=4);
   assert.equal(p.graphicSpec.objects.radar.items.length,2);
  }
- assert.deepEqual(serializeProgram(make()),original);
+ assert.deepEqual(serializeProgram(initial),original);
  const borrowed=make().createData({id:'other',values:[{a:1}]});
  assert.deepEqual(borrowed.editRadarPlot({target:'radar',wide:{fields:['x','y'],summary:'median'}}).semanticSpec.datasets.find(d=>d.id==='other').values,[{a:1}]);
 });

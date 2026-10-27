@@ -1,6 +1,10 @@
 import { collectDataOwnerReferences, collectMarkConfigReferences } from "../../core/resourceReferences.js";
 import { datasetTransformOutputRoles } from "../../grammar/transforms.js";
 import { requireLayer } from "../../selectors/layers.js";
+import { storedSelectionSelector } from "../../selectors/selectionResources.js";
+import { writeSelectionState } from "../selection/resources.js";
+import { requireDataset } from "../../selectors/datasets.js";
+import { dataInputReference, requireStoredResource } from "../../selectors/resources.js";
 
 
 export function outputFieldChanges(previous, next) {
@@ -82,13 +86,14 @@ export function rebindLayerOutputFields(program, id, changes) {
     program.materializationConfigs.selections ?? {}
   )) {
     if (config.target !== id) continue;
-    const selector = { ...config.selector };
+    const originalSelector = storedSelectionSelector(program, config);
+    const selector = { ...originalSelector };
     if (selector.field !== undefined) selector.field = changed(selector.field);
     if (selector.groupBy !== undefined) {
       selector.groupBy = selector.groupBy.map(changed);
     }
-    if (JSON.stringify(selector) !== JSON.stringify(config.selector)) {
-      next = next._withSelectionConfig(selectionId, { ...config, selector });
+    if (JSON.stringify(selector) !== JSON.stringify(originalSelector)) {
+      next = writeSelectionState(next, selectionId, config.target, selector);
     }
   }
 
@@ -114,6 +119,21 @@ function replaceAtPath(value, [key, ...rest], replacement) {
 export function rebindMaterializationDataReferences(program, replacements) {
   if (replacements.size === 0) return program;
   let next = program;
+  for (const resource of program.semanticSpec.resources) {
+    if (![...resource.inputs, ...(resource.ownership.mode === "generated" ? [resource.ownership.owner] : [])]
+      .some(input => input.kind === "data" && replacements.has(input.id))) continue;
+    const current = requireStoredResource(next, { kind: resource.kind, id: resource.id });
+    next = next.editSemantic({ property: `resource[${current.kind}:${current.id}]`, value: { ...current, revision: current.revision + 1,
+      ownership: current.ownership.mode === "generated" && current.ownership.owner.kind === "data" && replacements.has(current.ownership.owner.id)
+        ? { ...current.ownership, owner: dataInputReference(requireDataset(next, replacements.get(current.ownership.owner.id))) } : current.ownership,
+      inputs: current.inputs.map(input => input.kind === "data" && replacements.has(input.id)
+        ? dataInputReference(requireDataset(next, replacements.get(input.id))) : input) } });
+  }
+  for (const [id, definition] of Object.entries(next.materializationConfigs.selections ?? {})) {
+    if (replacements.has(definition.projection.data)) next = next._withSelectionConfig(id, {
+      ...definition, projection: { ...definition.projection, data: replacements.get(definition.projection.data) }
+    });
+  }
   for (const ref of [...collectMarkConfigReferences(program), ...collectDataOwnerReferences(program)]) {
     if (ref.kind !== "data" || !replacements.has(ref.id)) continue;
     const path = ref.ownerKind === "markConfig" ? ["marks", ref.ownerId, ...ref.path] : ref.path;

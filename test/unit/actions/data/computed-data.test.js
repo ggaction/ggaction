@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -21,7 +22,7 @@ test("createComputedData preserves row grain and materializes closed arithmetic"
     expression: ratio
   });
 
-  assert.deepEqual(program.semanticSpec.datasets[1], {
+  assertEquivalentMeaning(program.semanticSpec.datasets[1], {
     schema: program.semanticSpec.datasets[1].schema,
     id: "shares",
     source: "source",
@@ -35,7 +36,7 @@ test("createComputedData preserves row grain and materializes closed arithmetic"
     program.trace.children.at(-1).children.map(child => child.op),
     ["createDerivedData", "materializeComputedData"]
   );
-  assert.deepEqual(source.semanticSpec.datasets, [{ id: "source", values: rows, schema: source.semanticSpec.datasets[0].schema }]);
+  assertEquivalentMeaning(source.semanticSpec.datasets, [{ id: "source", values: rows, schema: source.semanticSpec.datasets[0].schema }]);
 });
 
 test("createComputedData composes binary, unary, field, and finite constants", () => {

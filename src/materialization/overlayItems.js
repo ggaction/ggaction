@@ -139,11 +139,11 @@ export function resolveOverlaySeries(program, binding, { geometry = true } = {})
       Object.hasOwn(source.encoding[`${channel}2`] ?? {}, "datum")) return point[channel];
     return point[`${channel}2`] ?? point[channel];
   }
-  return derived.series.map((series, index) => {
+  return derived.series.map(series => {
     const members = series.sourceIndices ? series.sourceIndices.map(i => dataset.values[i])
       : dataset.values.filter(row => Object.entries(series.key).every(([field, value]) => row[field] === value));
-    return { key: JSON.stringify([series.key, index]), members,
-      points: series.values.map((point, i) => ({ key: JSON.stringify([series.key, i]), members,
+    return { key: JSON.stringify(series.key), members,
+      points: series.values.map((point, i) => ({ key: JSON.stringify([series.key, endpoint(point, "x"), endpoint(point, "y")]), members,
         fields: { ...uniqueFields(members), ...series.key,
           [overlayPositionEncoding(source, "x").field]: endpoint(point, "x"),
           [overlayPositionEncoding(source, "y").field]: endpoint(point, "y") },

@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { chart } from "../../../../src/index.js";
@@ -19,7 +20,7 @@ test("complete and focused axis authoring retain data and tick geometry", () => 
   const edited = original.editYAxisLabels({ format: "ticks" });
   const direct = base().createAxes({ x: false, y: { title: false, ticksAndLabels: { values: ticks, labels: { fontSize: 10, format: "ticks" } } } });
   assert.deepEqual(labels(edited), expected);
-  assert.deepEqual(direct.graphicSpec, edited.graphicSpec);
+  assertEquivalentMeaning(direct.graphicSpec, edited.graphicSpec);
   assert.deepEqual(edited.graphicSpec.objects.yAxisTicks, original.graphicSpec.objects.yAxisTicks);
   assert.deepEqual(edited.semanticSpec, original.semanticSpec);
   assert.equal(serializeProgram(original), before);

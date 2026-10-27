@@ -27,7 +27,7 @@ import {
 import { findDataset } from "../../../selectors/datasets.js";
 import { findScale } from "./common.js";
 import { resolveHistogramInput } from
-  "../../../materialization/bars/histogram.js";
+  "../../bars/histogram.js";
 
 export function resolveHistogramCountValues(program, consumer) {
   const xEncoding = consumer.layer.encoding?.x;

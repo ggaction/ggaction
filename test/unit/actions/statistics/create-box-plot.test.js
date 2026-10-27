@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -81,8 +82,8 @@ test("converges when compatible owner encodings arrive after createBoxPlot", () 
     .encodeX({ target: "boxPlot", field: "Origin", fieldType: "nominal" })
     .encodeY({ target: "boxPlot", field: "Miles_per_Gallon" });
 
-  assert.deepEqual(deferred.semanticSpec, direct.semanticSpec);
-  assert.deepEqual(deferred.graphicSpec, direct.graphicSpec);
+  assertEquivalentMeaning(deferred.semanticSpec, direct.semanticSpec);
+  assertEquivalentMeaning(deferred.graphicSpec, direct.graphicSpec);
   assert.deepEqual(deferred.resolvedScales, direct.resolvedScales);
 });
 
@@ -112,8 +113,8 @@ test("preserves opt-in guides and replays them after deferred encodings", () => 
   assert.ok(direct.graphicSpec.objects.yAxisLine);
   assert.ok(direct.graphicSpec.objects.horizontalGridLines);
   assert.ok(findAction(direct.trace.children.at(-1), "createGuides"));
-  assert.deepEqual(deferred.semanticSpec, direct.semanticSpec);
-  assert.deepEqual(deferred.graphicSpec, direct.graphicSpec);
+  assertEquivalentMeaning(deferred.semanticSpec, direct.semanticSpec);
+  assertEquivalentMeaning(deferred.graphicSpec, direct.graphicSpec);
   assert.deepEqual(deferred.resolvedScales, direct.resolvedScales);
 });
 
@@ -236,8 +237,8 @@ test("converges when horizontal encodings arrive after createBoxPlot", () => {
     .encodeX({ target: "boxPlot", field: "Horsepower" })
     .encodeY({ target: "boxPlot", field: "Origin", fieldType: "nominal" });
 
-  assert.deepEqual(deferred.semanticSpec, direct.semanticSpec);
-  assert.deepEqual(deferred.graphicSpec, direct.graphicSpec);
+  assertEquivalentMeaning(deferred.semanticSpec, direct.semanticSpec);
+  assertEquivalentMeaning(deferred.graphicSpec, direct.graphicSpec);
   assert.deepEqual(deferred.resolvedScales, direct.resolvedScales);
 });
 

@@ -536,6 +536,8 @@ const TRANSFORM_POLICIES = Object.freeze({
   })
 });
 
+export const TRANSFORM_TYPES = Object.freeze(Object.keys(TRANSFORM_POLICIES));
+
 export function findTransformPolicy(type) {
   return TRANSFORM_POLICIES[type];
 }

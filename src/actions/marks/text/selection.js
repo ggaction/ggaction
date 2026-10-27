@@ -1,3 +1,4 @@
+import { selectionPredicate } from "../../../materialization/selection/state.js";
 import { closedAction } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
 
@@ -37,7 +38,7 @@ function validateSelectionSource(program, source, requested) {
       `Label selection "${requested.id}" must target source mark "${source}".`
     );
   }
-  resolveMarkSelection(program, source, definition.selector);
+  resolveMarkSelection(program, source, selectionPredicate(program, definition));
 }
 
 const editMarkLabelSelection = /* @__PURE__ */ closedAction(

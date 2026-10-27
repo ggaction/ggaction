@@ -7,7 +7,7 @@ import { validateUserId } from "../../core/identifiers.js";
 import { validateOptionObject } from "../../core/validation.js";
 import { findLayer } from "../../selectors/layers.js";
 import { findSemanticScale } from "../../selectors/scales.js";
-import { findScaleConsumers } from "../scales/consumers/index.js";
+import { findScaleConsumers } from "../../materialization/scales/consumers/index.js";
 import { resolveScalePreview, validatePendingMeasuredScale } from
   "../scales/preview.js";
 import { isPendingMeasuredRadiusConsumer } from

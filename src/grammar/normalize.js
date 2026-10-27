@@ -314,3 +314,18 @@ export function deriveNormalizedRows(rows, transform) {
     [transform.as]: outputs[index]
   })));
 }
+
+export function normalizedRowContributions(rows, transform) {
+  const contributions = rows.map((_, index) => [index]);
+  for (const group of groupRows(rows, transform)) {
+    if (["share", "minmax", "zscore"].includes(transform.method)) {
+      const members = group.map(entry => entry.index);
+      group.forEach(entry => { contributions[entry.index] = members; });
+    } else if (!Object.hasOwn(transform.baseline, "value")) {
+      const sorted = [...group].sort((left, right) => compareEntries(left, right, transform.sortBy));
+      const anchor = sorted[transform.baseline.position === "first" ? 0 : sorted.length - 1].index;
+      group.forEach(entry => { contributions[entry.index] = [...new Set([entry.index, anchor])]; });
+    }
+  }
+  return contributions;
+}

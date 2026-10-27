@@ -34,10 +34,12 @@ export function applyItemMissingPolicy(layer, dataset) {
   const fields = itemMissingFields(layer);
   if (fields.length === 0) return dataset;
   const eligible = [];
+  const indices = [];
   for (const [index, row] of dataset.values.entries()) {
     const missing = fields.find(field => row[field] === null || row[field] === undefined);
     if (missing === undefined) {
       eligible.push(row);
+      indices.push(index);
     } else if (policy === "error") {
       throw new Error(
         `${layer.mark.type} mark "${layer.id}" field "${missing}" is missing at row ${index}.`
@@ -45,7 +47,10 @@ export function applyItemMissingPolicy(layer, dataset) {
     }
   }
   if (eligible.length === dataset.values.length) return dataset;
-  return cloneAndFreeze({ ...dataset, values: eligible });
+  return cloneAndFreeze({ ...dataset, values: eligible,
+    ...(dataset.rowKeys === undefined ? {} : { rowKeys: indices.map(index => dataset.rowKeys[index]) }),
+    ...(dataset.lineage === undefined ? {} : { lineage: { ...dataset.lineage, rowRefs: indices.map(index => dataset.lineage.rowRefs[index]) } })
+  });
 }
 
 export function applyRequestedItemMissingPolicy(layer, dataset, field) {

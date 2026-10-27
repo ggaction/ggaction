@@ -1,4 +1,4 @@
-import { materializeMarkClip } from "../../../materialization/markClip.js";
+import { materializeMarkOutput } from "../../../materialization/markOutput.js";
 import { validateGraphicItemLimit, validateWorkLimit } from "../../../core/validation.js";
 import { editGraphicProperties } from "../../primitives/graphicProperties.js";
 import { action } from "../../../core/action.js";
@@ -454,7 +454,7 @@ export const rematerializePointMark = /* @__PURE__ */ action(
           ...strokeDetails
         });
       });
-      return materializeFollowingOverlays(materializeMarkClip(jittered.program.editGraphics({
+      return materializeFollowingOverlays(materializeMarkOutput(jittered.program.editGraphics({
         target: id,
         property: "items",
         value: items
@@ -553,6 +553,6 @@ export const rematerializePointMark = /* @__PURE__ */ action(
     for (const [property, value] of Object.entries(strokeDetails)) {
       next = next.editGraphics({ target: id, property, value });
     }
-    return materializeFollowingOverlays(materializeMarkClip(next, id), id);
+    return materializeFollowingOverlays(materializeMarkOutput(next, id), id);
   }
 );

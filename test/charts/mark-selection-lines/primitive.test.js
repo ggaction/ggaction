@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -28,7 +29,9 @@ test("authors the approved line highlight as one selected-last complete path", (
 
   assert.equal(program.graphicSpec.objects.trends.type, "path");
   assert.equal(children.length, baseChildren.length);
-  assert.deepEqual(program.semanticSpec, base.semanticSpec);
+  assertEquivalentMeaning({ ...program.semanticSpec, resources: [] }, base.semanticSpec);
+  assert.equal(program.semanticSpec.resources.length, 1);
+  assert.equal(program.semanticSpec.resources[0].kind, "persistent-selection");
   assert.deepEqual(
     children.slice(0, -1).map(child => child.properties.commands),
     baseChildren

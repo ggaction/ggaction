@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -86,6 +87,7 @@ test("records aggregate y and line materialization as wrapped actions", () => {
     [
       "rematerializeScale",
       "rematerializeScale",
+      "editGraphics",
       "editGraphics",
       "editGraphics",
       "editGraphics",
@@ -192,7 +194,7 @@ test("validates aggregate line y requirements", () => {
     .createData({ id: "data", values: rows }).createLineMark({ id: "trends" })
     .encodeY({ field: "value" })
     .encodeX({ field: "year", fieldType: "temporal", scale: { nice: true } });
-  assert.deepEqual(reverseOrder.graphicSpec, raw.graphicSpec);
+  assertEquivalentMeaning(reverseOrder.graphicSpec, raw.graphicSpec);
   assert.throws(
     () => createXEncodedLine().encodeY({
       field: "value",

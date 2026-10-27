@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -19,7 +20,7 @@ test("createCompleteData fills one typed key domain with explicit membership", (
   });
   values[1] = 99;
 
-  assert.deepEqual(dataset(program, "complete"), {
+  assertEquivalentMeaning(dataset(program, "complete"), {
     schema: dataset(program, "complete").schema,
     id: "complete",
     source: "source",

@@ -5,8 +5,9 @@ D1–D8과 STEP-004–009 제품 구현을 명시 승인한다. 정확한 승인
 
 ## 범위와 Gate
 
-STEP-004–009를 순서대로 구현한다. 현재 STEP-004의 독립 reference 계산, 기존 저장 형식 호환성 fixture,
-API/소유권/복원 검토 패키지를 준비했다. **제품 row identity 및 schema 4 구현 완료가 아니다.**
+STEP-004–009의 승인된 D1–D8을 구현했다. create/revise, 26개 transform, concrete item identity,
+persistent-selection 리소스와 schema 4를 연결했으며 현재 전체 소비자 검증 중이다.
+완료 기록은 clean implementation revision의 필수 검사가 모두 통과한 뒤 고정한다.
 
 - [STEP1](STEP1.md): STEP-004 준비 상태, 정확한 후속 범위
 - [G-CORE 설계](DESIGN.md): 승인 대상 옵션·상태·오류·호환성·분기 규칙
@@ -23,14 +24,14 @@ API/소유권/복원 검토 패키지를 준비했다. **제품 row identity 및
 
 | 작업 | 현재 상태 | 완료에 필요한 것 |
 |---|---|---|
-| STEP-004 | in-progress | product key owner, create/revise·소비자·타입·문서 |
-| STEP-005 | planned | 모든 transform의 final-grain lineage |
-| STEP-006 | planned | scene/selection/inspection identity와 revision 연결 |
-| STEP-007 | planned | resource schema, typed selectors, reference DAG |
-| STEP-008 | planned | lifecycle preflight와 selective rematerialization |
-| STEP-009 | planned | 1/2/3→4 migration, fresh-process 신규 resource edit/remove |
+| STEP-004 | verification | product key owner, create/revise·소비자·타입·문서 |
+| STEP-005 | verification | 모든 transform의 final-grain lineage |
+| STEP-006 | verification | scene/selection/inspection identity와 revision 연결 |
+| STEP-007 | verification | resource schema, typed selectors, reference DAG |
+| STEP-008 | verification | lifecycle preflight와 selective rematerialization |
+| STEP-009 | verification | 1/2/3→4 migration, fresh-process 신규 resource edit/remove |
 
-## 이번 검토 checkpoint의 필수 검사
+## 승인 전 검토 checkpoint의 검사 (보존 기록)
 
 1. `node scripts/run-tests.js unit unit/oracles/identity.test.js unit/persistence/legacy-selection.test.js`
 2. `node scripts/run-tests.js contracts contracts/oracle-independence.test.js contracts/test-discovery.test.js contracts/agent-docs-navigation.test.js`
@@ -62,10 +63,25 @@ fixture 재현은 검토 code revision을 checkout한 뒤 `node agent_docs/impl/
 Focused와 문서 검사는 Node 22.23.2, 전체 일반 검사는 storage wrapper의 Node 22.23.1/darwin/arm64에서 실행했다.
 원본 로그는 각 2MiB 이내이고 모두 truncated=false다. 저장 공간 감시기는 near-limit 경고 후 exit 0으로 완료했다.
 위 검증은 승인 전 검토 준비의 증거이며 제품 구현 완료 증거가 아니다.
-G-CORE는 이후 명시 승인되었고, 완료된 구현 범위는 여전히 CORE-REVIEW-PREPARATION뿐이다.
+G-CORE는 이후 명시 승인되었고, 아래 증거는 CORE-REVIEW-PREPARATION만을 입증한다. 제품 통합 증거는 별도로 기록한다.
 
 저장한 증거는 다음 명령으로 다시 검증한다. 이 명령은 test를 다시 실행하거나 Gate를 승인하지 않는다.
 
 ```sh
 node scripts/verification-evidence.js agent_docs/impl/roadmap9/phase1/review-plan.json agent_docs/impl/roadmap9/phase1/preparation.json
 ```
+
+## 제품 통합의 필수 검사
+
+[실행계획](../execution-plan.json)의 STEP-004–009는 동일한 통합 checkpoint에서 검증한다.
+일반 전체 suite, source coverage, 실데이터 suite, browser, render와 gallery, installed package,
+package artifact, generated metadata, 문서 build와 built-site browser 검사를 모두 요구한다.
+`coverage` runner는 일반 전체 suite와 같은 파일 집합을 실행하므로 최종 revision에서는
+그 실행으로 전체 회귀와 coverage를 함께 입증한다. 실데이터·browser·render는 각각 별도 실행한다.
+새로운 시각 표현은 추가하지 않으며 기존 geometry·draw order·decoded pixels를 유지한다.
+각 chart를 독립 작성할 때 새로 할당되는 private identity만 비교에서 정규화하고,
+행·항목 identity 자체는 별도 lifecycle 및 변조 거부 시험에서 정규화 없이 검사한다.
+
+실데이터 입력은 manifest의 SHA-256와 일치하는 50개 CSV를 사용한다. 재현 시 `npm run datasets:sync`로
+로컬 캐시를 준비하거나 `GGACTION_TEST_TIDYTUESDAY_CACHE_ROOT`에 검증된 기존 캐시를 지정한다.
+로컬 문서 검증은 Ruby 3.2.11을 사용하며 CI pin 3.2.6과 구별해 기록한다.

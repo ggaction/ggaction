@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -20,7 +21,7 @@ test("creates immutable interval provenance and concrete summary rows", () => {
   });
   const summary = program.semanticSpec.datasets[1];
 
-  assert.deepEqual(summary, {
+  assertEquivalentMeaning(summary, {
     schema: summary.schema,
     id: "summary",
     source: "data",

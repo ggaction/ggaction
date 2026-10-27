@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -482,7 +483,7 @@ test("converges statistical and explicit modes when interval rows are equal", ()
       caps: false
     });
 
-  assert.deepEqual(
+  assertEquivalentMeaning(
     explicit.graphicSpec.objects.errorBar,
     statistical.graphicSpec.objects.errorBar
   );

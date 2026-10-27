@@ -180,7 +180,11 @@ function removeLeaderGraphic(program, id) {
 function materializeLeaders(program, layer, config, items) {
   let next = removeLeaderGraphic(program, config.leaderId);
   if (config.leader === false) return { program: next, count: 0 };
-  const leaders = items.map(resolveLabelLeader).filter(Boolean);
+  const labelItems = new Map(program.graphicSpec.objects[layer.id].items.map(item => [item.id, item]));
+  const leaders = items.flatMap(item => {
+    const line = resolveLabelLeader(item);
+    return line ? [{ ...line, identity: labelItems.get(item.id)?.identity }] : [];
+  });
   if (leaders.length === 0) return { program: next, count: 0 };
   next = next.createGraphics({
       id: config.leaderId,
@@ -198,6 +202,14 @@ function materializeLeaders(program, layer, config, items) {
     strokeDash: leaders.map(() => config.leader.strokeDash),
     opacity: config.leader.opacity
   });
+  next = next.editGraphics({ target: config.leaderId, property: "items", value:
+    next.graphicSpec.objects[config.leaderId].items.map((item, index) => ({
+      type: "line",
+      properties: item.properties,
+      ...(leaders[index].identity === undefined ? {} : {
+        identity: { ...leaders[index].identity, role: "leader" }
+      })
+    })) });
   return { program: next, count: leaders.length };
 }
 

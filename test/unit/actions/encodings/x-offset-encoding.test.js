@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -178,8 +179,8 @@ test("converges when width and offset padding are authored in either order", () 
     .encodeXOffset(padding)
     .encodeBarWidth({ pixels: 14 });
 
-  assert.deepEqual(first.semanticSpec, second.semanticSpec);
-  assert.deepEqual(first.graphicSpec, second.graphicSpec);
+  assertEquivalentMeaning(first.semanticSpec, second.semanticSpec);
+  assertEquivalentMeaning(first.graphicSpec, second.graphicSpec);
   assert.deepEqual(first.materializationConfigs, second.materializationConfigs);
 });
 

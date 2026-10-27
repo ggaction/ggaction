@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../support/identity-equivalence.js";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { chart } from "../../src/index.js";
@@ -40,8 +41,8 @@ test("histogram facade, axis inference, edits and persistence share the rounded 
   assert.deepEqual(program.resolvedScales.x.domain, [0, 110]);
   assert.deepEqual(inferHistogramBoundaries(program, "x", "x"), boundaries);
   assert.deepEqual(program.semanticSpec.datasets[0].values, values);
-  assert.deepEqual(before.editXScale({ nice: { count: 10 } }).graphicSpec, program.graphicSpec);
-  assert.deepEqual(program.editXScale({ nice: true }).graphicSpec, before.graphicSpec);
+  assertEquivalentMeaning(before.editXScale({ nice: { count: 10 } }).graphicSpec, program.graphicSpec);
+  assertEquivalentMeaning(program.editXScale({ nice: true }).graphicSpec, before.graphicSpec);
   assert.deepEqual(deserializeProgram(serializeProgram(program)).graphicSpec, program.graphicSpec);
   assert.deepEqual(program.editXScale({ domain: [0, 108] }).resolvedScales.x.domain, [0, 108]);
   assert.throws(() => program.editXScale({ domain: [0, 120] }), /must match/);

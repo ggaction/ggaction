@@ -3,6 +3,7 @@ import { ChartProgram } from "./program.js";
 
 export { ChartProgram };
 export type {
+  InputRef, InputRowRef, RowLineage, GraphicIdentity, GraphicLineageRef, PersistentSelectionResource,
   FillPaint,
   LinearGradientPaint,
   LinearGradientPoint,

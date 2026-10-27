@@ -1,7 +1,7 @@
 import { deriveRuleValues } from "../../../grammar/rules.js";
 import { finalizeItems, ownFields, uniqueFields } from "./common.js";
 
-export function resolveRuleItems(program, layer, dataset) {
+export function resolveRuleItems(program, layer, dataset, grain, resolveItems, selectionResolvers) {
   const derived = deriveRuleValues(dataset.values, layer);
   const hasField = Object.values(layer.encoding ?? {}).some(encoding =>
     Object.hasOwn(encoding, "field")
@@ -9,6 +9,7 @@ export function resolveRuleItems(program, layer, dataset) {
   const definitions = Array.from({ length: derived.length }, (_, index) => {
     const members = hasField ? [dataset.values[index]] : dataset.values;
     return {
+      ...(hasField ? { rowKey: dataset.rowKeys[index] } : { semanticIdentity: ["constant"] }),
       fields: hasField
         ? ownFields(dataset.values[index])
         : uniqueFields(dataset.values),
@@ -21,5 +22,5 @@ export function resolveRuleItems(program, layer, dataset) {
       members
     };
   });
-  return finalizeItems(program, layer, "rule", definitions, "line");
+  return finalizeItems(program, layer, "rule", definitions, "line", { selectionResolvers });
 }

@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { chart } from "../../../../src/index.js";
@@ -39,11 +40,11 @@ test("bounded ordinal size creation survives persistence, resize and edit conver
   assert.deepEqual(restored.graphicSpec, p.graphicSpec);
   const edited = restored.editLegend({ overflow: { maxItems: 5 } }).editCanvas({ height: 700 });
   const direct = base().editCanvas({ height: 700 }).createLegend({ ...options, overflow: { maxItems: 5 } });
-  assert.deepEqual(edited.graphicSpec, direct.graphicSpec);
+  assertEquivalentMeaning(edited.graphicSpec, direct.graphicSpec);
   assert.deepEqual(labels(edited, "size"), ["A", "B", "C", "D", "E", "…3 entries"]);
   const reset = p.editLegend({ overflow: false });
   assert.deepEqual(labels(reset, "size"), categories);
-  assert.deepEqual(reset.graphicSpec, base().createLegend({ ...options, overflow: false }).graphicSpec);
+  assertEquivalentMeaning(reset.graphicSpec, base().createLegend({ ...options, overflow: false }).graphicSpec);
 });
 
 test("omission and false retain all ordinal categories while quantitative size sampling is unchanged", () => {

@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { chart } from "../../../../src/index.js";
@@ -35,14 +36,14 @@ test("axis-first and legend-first defaults converge and track edited or removed 
   for(const position of ["top","bottom"]) {
     const p=axis(source(),position).createLegend(legend(position));
     const q=axis(source().createLegend(legend(position)),position);
-    assert.deepEqual(q.graphicSpec,p.graphicSpec);
+    assertEquivalentMeaning(q.graphicSpec,p.graphicSpec);
     const edited=p.editXAxisTitle({fontSize:18,offset:70}).editXAxisLabels({fontSize:22,rotation:{value:45,unit:"degrees"},offset:20});
     near(gap(edited,position),8);
     const restored=deserializeProgram(serializeProgram(edited));
     near(gap(restored.editCanvas({height:800}),position),8);
     const removed=edited.removeXAxis();
     near(gap(removed,position),8);
-    assert.deepEqual(removed.graphicSpec,source().createLegend(legend(position)).graphicSpec);
+    assertEquivalentMeaning(removed.graphicSpec,source().createLegend(legend(position)).graphicSpec);
   }
 });
 

@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { createCanvas } from "@napi-rs/canvas";
@@ -40,7 +41,7 @@ test("neutral fill and stroke share mapped colors through gradient edits, resets
   const lab = source().encodeColor({ field: "v", fieldType: "quantitative", scale: scale("lab", "d50") })
     .encodeStroke({ field: "v", fieldType: "quantitative", scale: scale("lab", "d50") })
     .createLegend({ title: false });
-  assert.deepEqual(p.graphicSpec, lab.graphicSpec);
+  assertEquivalentMeaning(p.graphicSpec, lab.graphicSpec);
   assert.equal(renderToSVG(p), renderToSVG(lab));
   const reversed = p.editColorScale({ reverse: true }).editStrokeScale({ target: "scatterPlot", reverse: true });
   assert.deepEqual(fills(reversed), colors("d50").toReversed());

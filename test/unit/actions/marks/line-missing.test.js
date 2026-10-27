@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { chart } from "../../../../src/index.js";
@@ -32,7 +33,7 @@ test("explicit break preserves raw rows and draws two paths without a bridge", (
   assert.deepEqual(p.semanticSpec.datasets[0].values, rows);
   assert.equal(p.semanticSpec.layers[0].mark.missing, "break");
   assert.deepEqual(derived(p).series.map(s => s.sourceIndices), [[0, 1], [3, 4]]);
-  assert.deepEqual(resolveMarkItems(p, "line").map(item => item.members), [rows.slice(0, 2), rows.slice(3)]);
+  assert.deepEqual(resolveMarkItems(p, "line").map(item => item.members), [[...rows.slice(0, 2), ...rows.slice(3)]]);
   assert.equal(exportAccessibleData(p).views[0].rows.length, 4);
 });
 
@@ -40,7 +41,7 @@ test("strict default and explicit error reject nulls; no-gap output is unchanged
   assert.throws(() => build(rows, {}), /finite number at row 2/);
   assert.throws(() => build(rows, { missing: "error" }), /finite number at row 2/);
   const complete = rows.filter(row => row.y !== null);
-  assert.deepEqual(build(complete).graphicSpec, build(complete, {}).graphicSpec);
+  assertEquivalentMeaning(build(complete).graphicSpec, build(complete, {}).graphicSpec);
   assert.equal(renderToSVG(build(complete)), renderToSVG(build(complete, {})));
   assert.deepEqual(build(complete, {}).semanticSpec.layers[0].mark, { type: "line" });
   assert.throws(() => base().createLineMark({ missing: "drop" }), /Line missing/);
@@ -150,7 +151,7 @@ test("temporal y ordering and missing x retain separate runs", () => {
 test("editing missing is atomic, converges with birth and retains gaps through persistence", () => {
   const incomplete = base().createLineMark({ id: "line" }).encodeX(x);
   const edited = incomplete.editLineMark({ missing: "break" }).encodeY(y);
-  assert.deepEqual(edited.graphicSpec, build().graphicSpec);
+  assertEquivalentMeaning(edited.graphicSpec, build().graphicSpec);
   const before = serializeProgram(edited);
   assert.throws(() => edited.editLineMark({ missing: "error" }), /finite number/);
   assert.equal(serializeProgram(edited), before);

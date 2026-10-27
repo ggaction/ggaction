@@ -1,6 +1,7 @@
 import { assertIndependentOverlayGeometry } from "../../grammar/overlay.js";
 import {resolveDatasetTransformInputs} from "./shared.js";
 import { closedAction } from "../../core/action.js";
+import { preparedDatasetIdentity, withPreparedDatasetIdentity } from "../primitives/datasetIdentity.js";
 import { validateGraphicItemLimit } from "../../core/validation.js";
 import { resolveGraphicItemCapacity } from "../../selectors/graphicCapacity.js";
 import { validateUserId } from "../../core/identifiers.js";
@@ -54,9 +55,10 @@ export const createDerivedData = /* @__PURE__ */ closedAction(
     const transforms=args.transform?.[0]?.type==="lookup"
       ? [resolveDatasetTransformInputs(this,args.transform[0])]
       : args.transform;
-    const created = this
-      .editSemantic({ property: `dataset[${id}].source`, value: source })
-      .editSemantic({ property: `dataset[${id}].transform`, value: transforms });
+    const withSource = this.editSemantic({ property: `dataset[${id}].source`, value: source });
+    const created = withPreparedDatasetIdentity(
+      { property: `dataset[${id}].transform`, value: transforms }, preparedDatasetIdentity(args),
+      options => withSource.editSemantic(options));
     const input = resolveDatasetReference(created, source, "Source dataset");
     const transform = transforms[0];
     assertFieldsAvailable(input.schema, transformInputFields(transform), {

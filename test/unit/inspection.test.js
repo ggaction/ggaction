@@ -1,3 +1,4 @@
+import { serializeProgram, deserializeProgram } from "../../src/persistence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -88,7 +89,8 @@ test("comparison preserves exact scalar values, sparse arrays and changed immuta
   const make = value => chart().createCanvas().createData({ id: "source", values: [{ value }] });
   for (const value of [NaN, Infinity, -Infinity, -0, undefined, null, 1, "1"]) {
     const before = make(value);
-    assert.equal(comparePrograms(before, make(value)).equivalence, "equal");
+    assert.equal(comparePrograms(before, deserializeProgram(serializeProgram(before))).equivalence, "equal");
+    assert.equal(comparePrograms(before, make(value)).equivalence, "different");
     assert.equal(comparePrograms(before, before._withContext({ note: "unchanged" })).equivalence, "equal");
   }
   assert.equal(comparePrograms(make(-0), make(0)).equivalence, "different");

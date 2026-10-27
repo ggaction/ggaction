@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
+import { assertEquivalentMeaning } from "../support/identity-equivalence.js";
 
 import { renderToSVG } from "../../src/renderers/svg.js";
 import { assertGraphicIntegrity } from "../oracles/graphic-integrity.js";
@@ -76,13 +77,15 @@ test("executes deterministic lifecycle recipes through integrity and SVG oracles
       const label = `${recipe.id}-${index === 0 ? "baseline" : "edge"}`;
       const graphic = assertGraphicIntegrity(first, label);
       const svg = renderToSVG(first, {
+        resourceNamespace: "scenario",
         title: label,
         description: `Generated lifecycle scenario for ${recipe.id}.`
       });
 
-      assert.deepEqual(replay.semanticSpec, first.semanticSpec, `${label} semantic replay`);
-      assert.deepEqual(replay.graphicSpec, first.graphicSpec, `${label} graphic replay`);
+      assertEquivalentMeaning(replay.semanticSpec, first.semanticSpec, `${label} semantic replay`);
+      assertEquivalentMeaning(replay.graphicSpec, first.graphicSpec, `${label} graphic replay`);
       assert.equal(renderToSVG(replay, {
+        resourceNamespace: "scenario",
         title: label,
         description: `Generated lifecycle scenario for ${recipe.id}.`
       }), svg, `${label} SVG replay`);

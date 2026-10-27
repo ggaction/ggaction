@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -30,7 +31,7 @@ test("converges across equivalent curve, group, color, and dash call orders", ()
     .encodeColor({ field: "origin" })
     .editLineMark({ curve: "step" });
 
-  assert.deepEqual(lateCurve.graphicSpec, earlyCurve.graphicSpec);
+  assertEquivalentMeaning(lateCurve.graphicSpec, earlyCurve.graphicSpec);
   assert.deepEqual(lateCurve.resolvedScales, earlyCurve.resolvedScales);
   assert.deepEqual(lateCurve.markConfigs, earlyCurve.markConfigs);
   assert.deepEqual(

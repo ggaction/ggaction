@@ -5,6 +5,8 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "resource-state": { prefix: "materialization/resourceState", floor: { lines: 80, branches: 75, functions: 80 }, rationale: "Stored resource revisions and dependency validation must remain exercised." },
+  "row-lineage": { prefix: "grammar/rowLineage", floor: { lines: 80, branches: 75, functions: 80 }, rationale: "Every transform must preserve exact contributing rows." },
   "core-state": { prefix: "core/", floor: { lines: 80, branches: 75, functions: 80 }, rationale: "State and action boundaries must remain exercised." },
   "all-renderers": { prefix: "renderers/", floor: { lines: 50, branches: 60, functions: 80 }, rationale: "Includes the lazy native loader; Canvas and explicit overrides retain stricter floors." },
   "all-selectors": { prefix: "selectors/", floor: { lines: 80, branches: 80, functions: 80 }, rationale: "Resource identity and ambiguity are public contracts." },
@@ -64,6 +66,7 @@ export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
 });
 
 export const CRITICAL_COVERAGE_OVERRIDES = Object.freeze({
+  "core/valueEncoding.js": Object.freeze({ lines: 90, branches: 80, functions: 100 }),
   "layout/facetHeaderTitles.js": Object.freeze({ lines: 90, branches: 80, functions: 100 }),
   "actions/data/regressionStatistics.js": Object.freeze({ lines: 90, branches: 80, functions: 100 }),
   "actions/guides/legends/colorSize.js": Object.freeze({ lines: 90, branches: 80, functions: 100 }),

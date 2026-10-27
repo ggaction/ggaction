@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { chart } from "../../../../src/index.js";
@@ -16,7 +17,7 @@ const ys = program => program.graphicSpec.objects.colorLegendLabels.items.map(it
 test("bottom categorical legends default to the edge grid", () => {
   const implicit = base().createLegend({ channels: ["color"], position: "bottom" });
   const explicit = base().createLegend({ channels: ["color"], position: "bottom", layout: "edge" });
-  assert.deepEqual(implicit.graphicSpec, explicit.graphicSpec);
+  assertEquivalentMeaning(implicit.graphicSpec, explicit.graphicSpec);
   assert.equal(implicit.guideConfigs.legend.color.layout, "edge");
   assert.deepEqual(ys(implicit), [489.25, 489.25]);
 });
@@ -40,7 +41,7 @@ test("focused styles preserve both explicit bottom modes", () => {
 test("explicit mode edits converge with creation and survive Canvas and scale replay", () => {
   const legacy = base().createLegend({ channels: ["color"], position: "bottom", layout: "legacy-bottom" });
   const edge = legacy.editLegendLayout({ layout: "edge" });
-  assert.deepEqual(edge.graphicSpec, base().createLegend({ channels: ["color"], position: "bottom" }).graphicSpec);
+  assertEquivalentMeaning(edge.graphicSpec, base().createLegend({ channels: ["color"], position: "bottom" }).graphicSpec);
   assert.deepEqual(edge.editLegend({ layout: "legacy-bottom" }).graphicSpec, legacy.graphicSpec);
   const edited = legacy.editLegendLabels({ color: "red" }).editCanvas({ height: 660 })
     .editScale({ id: "color", domain: ["B", "A"] });

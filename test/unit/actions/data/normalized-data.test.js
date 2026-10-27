@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -38,7 +39,7 @@ test("createNormalizedData preserves row order for share, minmax, and zscore", (
     share.trace.children.at(-1).children.map(child => child.op),
     ["createDerivedData", "materializeNormalizedData"]
   );
-  assert.deepEqual(source.semanticSpec.datasets, [{
+  assertEquivalentMeaning(source.semanticSpec.datasets, [{
     schema: source.semanticSpec.datasets[0].schema,
     id: "source", values: [{ x: 2 }, { x: 4 }]
   }]);

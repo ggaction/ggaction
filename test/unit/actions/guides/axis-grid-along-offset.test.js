@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { chart } from "../../../../src/index.js";
@@ -43,8 +44,8 @@ test("complete, whole-axis, grouped and focused edits converge without mutating 
     .editYAxisTicksAndLabels({ ticks: { alongOffset: 10 }, labels: { alongOffset: 20 } })
     .editHorizontalGrid({ alongOffset: 10 }).editVerticalGrid({ alongOffset: 10 });
   const direct = base().createAxes(axes(10, 20)).createGrid(grids(10));
-  assert.deepEqual(whole.graphicSpec, direct.graphicSpec);
-  assert.deepEqual(focused.graphicSpec, direct.graphicSpec);
+  assertEquivalentMeaning(whole.graphicSpec, direct.graphicSpec);
+  assertEquivalentMeaning(focused.graphicSpec, direct.graphicSpec);
   assert.equal(JSON.stringify(before), snapshot);
   const reset = focused.editXAxisTicksAndLabels({ ticks: { alongOffset: 0 }, labels: { alongOffset: 0 } })
     .editYAxis({ ticksAndLabels: { ticks: { alongOffset: 0 }, labels: { alongOffset: 0 } } }).editGrid(grids(0));
@@ -65,7 +66,7 @@ test("Canvas and scale rematerialization preserves absolute offsets", () => {
   const replay = original.editCanvas({ width: 400, height: 400 }).editXScale({ domain: [0, 200] }).editYScale({ domain: [0, 200] });
   const expected = base().editCanvas({ width: 400, height: 400 }).editXScale({ domain: [0, 200] }).editYScale({ domain: [0, 200] })
     .createAxes(axes(10, 20)).createGrid(grids(10));
-  assert.deepEqual(replay.graphicSpec, expected.graphicSpec);
+  assertEquivalentMeaning(replay.graphicSpec, expected.graphicSpec);
   const unchanged = original.editCanvas({ width: 360, height: 360 });
   assert.deepEqual(unchanged.graphicSpec, original.graphicSpec);
 });

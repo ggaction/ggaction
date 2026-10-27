@@ -45,7 +45,7 @@ test("one point collection supports circles, rectangles, paths, mixed shapes and
   for (const shape of ["circle", "square", "star"]) {
     const program = base.editPointMark({ shape });
     assert.equal(program.graphicSpec.objects.scatterPlot.items.length, 10001);
-    assert.equal(program.graphicSpec.objects.scatterPlot.items.at(-1).id, "scatterPlot:10000");
+    assert.equal(program.graphicSpec.objects.scatterPlot.items.at(-1).id, base.graphicSpec.objects.scatterPlot.items.at(-1).id);
   }
   const mixed = base.encodeShape({ field: "group", fieldType: "nominal", scale: { range: ["circle", "square"] } });
   assert.equal(mixed.graphicSpec.objects.scatterPlot.type, "collection");
@@ -81,7 +81,8 @@ test("raw source revisions reject overflow before missing rows can hide allocati
   const program = scatter(10001), before = serializeProgram(program);
   const revised = program.reviseData({ source: "raw", id: "newRows", values: rows(10002) });
   assert.equal(revised.graphicSpec.objects.scatterPlot.items.length, 10002);
-  assert.equal(revised.graphicSpec.objects.scatterPlot.items.at(-1).id, "scatterPlot:10001");
+  assert.notEqual(revised.graphicSpec.objects.scatterPlot.items.at(-1).id, program.graphicSpec.objects.scatterPlot.items.at(-1).id);
+  assert.equal(new Set(revised.graphicSpec.objects.scatterPlot.items.map(item => item.id)).size, 10002);
   assert.throws(() => program.reviseData({ source: "raw", id: "tooMany", values: rows(50001) }), /50000/);
   const dropping = program.editPointMark({ missing: "skip" });
   assert.throws(() => dropping.reviseData({ source: "raw", id: "tooMany", values: rows(50001).map(row => ({ ...row, y: null })) }), /50000/);

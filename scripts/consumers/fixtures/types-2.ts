@@ -2060,3 +2060,12 @@ const subtitleSpacing = chart().createCanvas().createTitle({
 subtitleSpacing.editTitle({ subtitleLineHeight: 18 });
 // @ts-expect-error Subtitle spacing is numeric; reset strings are not public options.
 subtitleSpacing.editTitle({ subtitleLineHeight: "auto" });
+
+const keyedSource = chart().createData({ id: "keyed", values: [{ id: "a", x: 1 }], keyField: "id" });
+keyedSource.reviseData({ source: "keyed", id: "nextKeyed", values: [{ id: "a", x: 2 }] });
+chart().createData({ id: "generated", values: [{}] }).reviseData({ source: "generated", id: "nextGenerated", values: [{}, {}], rowMap: [0, null] });
+chart().createData({ values: [{}, {}], keys: [new Date(0), [1n, true, "a"]] });
+// @ts-expect-error source key modes are mutually exclusive
+chart().createData({ values: [{ id: "a" }], keyField: "id", keys: ["a"] });
+// @ts-expect-error revision mappings cannot be mixed
+keyedSource.reviseData({ source: "keyed", id: "invalid", values: [{}], keys: ["a"], rowMap: [0] });

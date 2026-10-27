@@ -4,7 +4,7 @@ import { validateOptionObject } from "../../core/validation.js";
 import { normalizePositionScaleChannel } from "../../core/vocabulary.js";
 import { findLayer } from "../../selectors/layers.js";
 import { requireSemanticScale } from "../../selectors/scales.js";
-import { findScaleConsumers } from "./consumers/index.js";
+import { findScaleConsumers } from "../../materialization/scales/consumers/index.js";
 import { axisScaleBindings } from "../../materialization/coordinateBounds.js";
 
 const DEFINITIONS = Object.freeze({

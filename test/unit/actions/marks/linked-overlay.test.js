@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { chart } from "../../../../src/index.js";
@@ -140,7 +141,7 @@ test("detach freezes final geometry and severs source dependencies", () => {
   const p = bars({ color: { field: "group", layout: "group" } })
     .createOverlay({ id: "trend", source: "bars" });
   const detached = p.editOverlay({ target: "trend", follow: false });
-  assert.deepEqual(detached.graphicSpec.objects.trend, p.graphicSpec.objects.trend);
+  assertEquivalentMeaning(detached.graphicSpec.objects.trend, p.graphicSpec.objects.trend);
   const changed = detached.encodeY({ target: "bars", field: "y", aggregate: "mean" });
   assert.deepEqual(changed.graphicSpec.objects.trend, detached.graphicSpec.objects.trend);
   const removed = changed.removeMark({ target: "bars" });
@@ -232,7 +233,12 @@ test("line selection resolves final series membership and missing segments", () 
   const sparse = bars({ values: [{ x: "A", y: 4 }, { x: "C", y: 8 }] })
     .editXScale({ target: "bars", domain: ["A", "B", "C"] })
     .createOverlay({ id: "trend", source: "bars" });
-  assert.deepEqual(resolveMarkItems(sparse, "trend").map(item => item.members.length), [1, 1]);
-  assert.deepEqual(resolveMarkItems(sparse.editOverlay({ target: "trend", missing: "connect" }), "trend")
-    .map(item => item.members.length), [2]);
+  const broken = resolveMarkItems(sparse, "trend");
+  const connected = resolveMarkItems(sparse.editOverlay({ target: "trend", missing: "connect" }), "trend");
+  assert.deepEqual(broken.map(item => item.members.length), [2]);
+  assert.deepEqual(connected.map(item => item.members.length), [2]);
+  assert.equal(broken[0].graphicIds.length, 2);
+  assert.equal(connected[0].graphicIds.length, 1);
+  assert.equal(broken[0].key, connected[0].key);
+  assert.notEqual(broken[0].topology, connected[0].topology);
 });

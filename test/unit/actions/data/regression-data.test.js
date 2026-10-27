@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -81,7 +82,7 @@ test("creates immutable regression provenance and concrete values", () => {
   });
 
   const { schema, ...stored } = program.semanticSpec.datasets[2];
-  assert.deepEqual(stored, {
+  assertEquivalentMeaning(stored, {
     id: "regressionData",
     source: "selectedCars",
     transform: [{

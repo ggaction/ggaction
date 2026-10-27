@@ -206,6 +206,7 @@ test("replays named membership on selection edit and protects the live dependenc
   assert.deepEqual(
     edited.trace.children.at(-1).children.map(child => child.op),
     [
+      "editSemantic",
       "editGraphics",
       "rematerializeBarMark",
       "rematerializeTextMark",

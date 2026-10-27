@@ -53,6 +53,21 @@
   },
   "options": [
     {
+      "name": "keyField",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "keyFields",
+      "required": false,
+      "type": "readonly string[] | undefined"
+    },
+    {
+      "name": "keys",
+      "required": false,
+      "type": "readonly RowKey[] | undefined"
+    },
+    {
       "name": "id",
       "required": false,
       "type": "string | undefined"
@@ -69,7 +84,7 @@
     }
   ],
   "callPatterns": [
-    "createData({ values, id?, schema? })"
+    "createData({ values, id?, keyField?, keyFields?, keys?, schema? })"
   ],
   "snippet": "program.createData({ values: [{ category: \"A\", value: 1 }] })",
   "errors": [],

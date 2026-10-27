@@ -30,7 +30,9 @@
   "authoringRoles": [
     "H3"
   ],
-  "wraps": [],
+  "wraps": [
+    "editSemantic"
+  ],
   "editableVia": [
     "editMarkSelection",
     "removeMarkSelection"

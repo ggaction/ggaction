@@ -6,7 +6,7 @@ import {
   resolveBarChannels
 } from "../../../grammar/bars/policy.js";
 import { validateColorLayout } from "../../../grammar/seriesLayout.js";
-import { findScaleConsumers } from "../../scales/consumers/common.js";
+import { findScaleConsumers } from "../../../materialization/scales/consumers/common.js";
 import { resolveReassignmentScaleOptions } from "../shared.js";
 
 export const COLOR_ENCODING_OPTIONS = Object.freeze([

@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { chart } from "../../../../src/index.js";
@@ -105,7 +106,7 @@ test("Full flattened edits create immutable revisions and rebind renamed scalar 
   assert.equal(next.semanticSpec.layers[0].encoding.x.field,"value");
   assert.equal(next.semanticSpec.layers[0].encoding.y.field,"value");
   assert.equal(next.graphicSpec.objects.scatterPlot.items.length,5);
-  assert.deepEqual(next.graphicSpec,p.graphicSpec);
+  assertEquivalentMeaning(next.graphicSpec,p.graphicSpec);
   assert.deepEqual(next.semanticSpec.datasets[0].values,rows);
   assert.throws(()=>p.editFlattenData({target:"expanded"}),/empty|requires|at least/i);
 });

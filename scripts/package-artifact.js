@@ -23,9 +23,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 655, // Includes the private typed row identity kernel.
-  packedBytes: 980_000, // Typed row identity: measured 979,932 bytes.
-  unpackedBytes: 4_588_000 // Typed row identity: measured 4,587,103 bytes.
+  entries: 670, // Complete identity, lineage, resource and shared encoding owners.
+  packedBytes: 1_001_000, // Identity integration: Node 22.23.2/npm 10 measured 999,138 bytes.
+  unpackedBytes: 4_669_000 // Integrated artifact: measured 4,663,958 bytes.
 });
 
 const REQUIRED_FILES = Object.freeze([

@@ -41,10 +41,8 @@ test("does not synthesize missing combinations", () => {
     guides: false
   });
 
-  assert.deepEqual(
-    program.graphicSpec.objects.heatmap.items.map(item => item.id),
-    ["heatmap:0", "heatmap:1", "heatmap:2"]
-  );
+  assert.equal(program.graphicSpec.objects.heatmap.items.length, 3);
+  assert.equal(new Set(program.graphicSpec.objects.heatmap.items.map(item => item.id)).size, 3);
 });
 
 test("forwards quantitative color, outline appearance, and guide options immutably", () => {

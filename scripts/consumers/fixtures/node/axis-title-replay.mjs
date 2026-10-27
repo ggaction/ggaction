@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "./identity-equivalence.js";
 import assert from "node:assert/strict";
 import { chart } from "ggaction";
 import { chart as basicChart } from "ggaction/basic";
@@ -15,7 +16,7 @@ export const cases = [{ id: "guides/prospective-numeric-axis-title-replay", asyn
     const before = serializeProgram(p), margin = { left: 47, top: 40, right: 7, bottom: 37 };
     const q = factory === chart ? p.editCanvas({ margin }) : build(margin);
     if (factory === chart) fullGeometry = q.graphicSpec;
-    else { assert.equal(p.editCanvas, undefined); assert.deepEqual(q.graphicSpec, fullGeometry); }
+    else { assert.equal(p.editCanvas, undefined); assertEquivalentMeaning(q.graphicSpec, fullGeometry); }
     assert.equal(q.graphicSpec.objects.yAxisTitle.properties.x, 11.2587890625);
     assert.equal(q.guideConfigs.axis.y.title.offset, title.offset);
     assert.equal(Object.hasOwn(q.context, "pendingMaterializationPlan"), false);
@@ -35,7 +36,7 @@ export const cases = [{ id: "guides/prospective-numeric-axis-title-replay", asyn
       title: { text: "Quantity", fontSize: 11, fontWeight: 700, offset: 40.5, alongOffset: 0.5 } });
   const framed = createFramed(0), original = serializeProgram(framed);
   const moved = framed.editYAxis({ offset: 4 });
-  assert.deepEqual(moved.graphicSpec, createFramed(4).graphicSpec);
+  assertEquivalentMeaning(moved.graphicSpec, createFramed(4).graphicSpec);
   assert.deepEqual(moved.editYAxis({ offset: 0 }).graphicSpec, framed.graphicSpec);
   assert.deepEqual(deserializeProgram(serializeProgram(moved)).graphicSpec, moved.graphicSpec);
   assert.throws(() => moved.editYAxisLabels({ offset: 20 }), /overlap/);

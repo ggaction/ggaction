@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -204,7 +205,7 @@ test("rejects invalid or ambiguous data aspects atomically", () => {
     program => program.editCoordinate({ target: "missing", aspect: { mode: "frame", ratio: 1 } })
   ]) {
     assert.throws(() => operation(base));
-    assert.deepEqual(state(base), state(pointProgram()));
+    assertEquivalentMeaning(state(base), state(pointProgram()));
   }
 
   const zeroSpan = pointProgram({ xDomain: [1, 1] });

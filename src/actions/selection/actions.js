@@ -1,4 +1,7 @@
+import { requireDataset } from "../../selectors/datasets.js";
 import { highlightTargets } from "../../selectors/selectionTargets.js";
+import { storedSelectionSelector } from "../../selectors/selectionResources.js";
+import { writeSelectionState, linkSelectionOwner } from "./resources.js";
 import { action, closedAction } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { isPlainObject } from "../../core/immutable.js";
@@ -65,7 +68,8 @@ function resolveTarget(program, target, label = "mark selection") {
 }
 
 function hasLegendSelection(program, target, selection) {
-  const selector = program.materializationConfigs.selections?.[selection]?.selector;
+  const definition = program.materializationConfigs.selections?.[selection];
+  const selector = definition === undefined ? undefined : storedSelectionSelector(program, definition);
   const layer = findLayer(program, target);
   const field = selector?.field ?? layer?.encoding?.[selector?.channel]?.field;
   if (field === undefined) return false;
@@ -173,7 +177,7 @@ function selectedGraphicItems(program, resolved, keys) {
     target: resolved.definition.target,
     items: graphic.items.map(child => ({
       key: keyByGraphic.get(child.id),
-      child: { type: child.type ?? graphic.type, properties: child.properties }
+      child: { type: child.type ?? graphic.type, properties: child.properties, ...(child.identity === undefined ? {} : { identity: child.identity }) }
     }))
   };
 }
@@ -190,7 +194,7 @@ function editSelectedItems(
     target,
     property: "items",
     value: items.map(item => selected.has(item.key) !== complement
-      ? transform(item.child)
+      ? { ...transform(item.child), ...(item.child.identity === undefined ? {} : { identity: item.child.identity }) }
       : item.child)
   });
 }
@@ -274,8 +278,7 @@ export const selectMarks = /* @__PURE__ */ closedAction(
     const layer = resolveTarget(this, args.target);
     const resolved = resolveMarkSelection(this, layer.id, selectorFrom(args));
     const id = resolveSelectionCreationId(this, args.id, layer.id);
-    return this
-      ._withSelectionConfig(id, { target: layer.id, selector: resolved.selector })
+    return writeSelectionState(this, id, layer.id, resolved.selector)
       ._withContext({ currentSelection: id });
   }
 );
@@ -292,24 +295,17 @@ export const editMarkSelection = /* @__PURE__ */ closedAction(
       current.definition.target,
       selectorFrom(args)
     );
-    let next = this
-      ._withSelectionConfig(current.id, {
-        target: current.definition.target,
-        selector: replacement.selector
-      })
+    let next = writeSelectionState(this, current.id, current.definition.target, replacement.selector)
       ._withContext({ currentSelection: current.id });
-    const hasDependentHighlight = Object.values(
-      next.materializationConfigs.highlights ?? {}
-    ).some(config => config.selection === current.id);
-    const labels = namedLabelDependents(this, current.id);
-    if (hasDependentHighlight) {
-      return rematerializeLabelsBeforeHighlights(
-        next,
-        current.definition.target,
-        labels
-      );
+    const consumers = Object.entries(next.materializationConfigs.selections).filter(([, definition]) =>
+      definition.resource.kind === next.materializationConfigs.selections[current.id].resource.kind &&
+      definition.resource.id === next.materializationConfigs.selections[current.id].resource.id);
+    for (const [selectionId, definition] of consumers) {
+      const labels = namedLabelDependents(this, selectionId);
+      const highlighted = Object.values(next.materializationConfigs.highlights ?? {}).some(config => config.selection === selectionId);
+      next = highlighted ? rematerializeLabelsBeforeHighlights(next, definition.target, labels) : rematerializeLabels(next, labels);
     }
-    return rematerializeLabels(next, labels);
+    return next;
   }
 );
 
@@ -360,6 +356,10 @@ export const removeMarkSelection = /* @__PURE__ */ closedAction(
       : this;
     for (const [id] of componentDependents) next = next._withoutMaterializationConfig(["selections", id]);
     next = next._withoutMaterializationConfig(["selections", current.id]);
+    const resource = current.definition.resource;
+    if (!Object.values(next.materializationConfigs.selections ?? {}).some(definition => definition.resource.id === resource.id && definition.resource.kind === resource.kind)) {
+      next = next.editSemantic({ property: `resource[${resource.kind}:${resource.id}]`, remove: true });
+    }
     return this.context.currentSelection === current.id
       ? next._withContext({ currentSelection: undefined })
       : next;
@@ -637,9 +637,9 @@ export const highlightMarks = /* @__PURE__ */ closedAction(
     const primary = resolveMarkSelection(this, targets[0], args.select);
     const selected = new Set(primary.keys);
     const rows = primary.items.filter(item => selected.has(item.key)).flatMap(item => item.rows);
-    // The oldest explicitly recorded dataset is common to all dependent marks.
-    const datasets = this.semanticSpec.datasets;
-    const source = datasets.find(dataset => primary.items.some(item => item.rows.some(ref => ref.data === dataset.id)));
+    // Follow the explicit primary owner ancestry; dataset array order has no meaning.
+    let source = requireDataset(this, findLayer(this, targets[0]).data);
+    while (source.source !== undefined) source = requireDataset(this, source.source);
     const select = source ? { rows: { data: source.id, indices: [...new Set(rows.filter(ref => ref.data === source.id).map(ref => ref.index))] } } : args.select;
     const baseId = args.id ?? resolveSelectionCreationId(this, undefined, targets[0]);
     let next = this;
@@ -657,7 +657,7 @@ export const highlightMarks = /* @__PURE__ */ closedAction(
       if (target !== targets[0] && ['line', 'rule', 'tick'].includes(type) && local.fill) { local.color = local.fill; delete local.fill; }
       next = highlightSingle.call(next, local);
       if (target !== targets[0] && source) {
-        next = next._withSelectionConfig(local.id, { ...next.materializationConfigs.selections[local.id], sourceSelection: baseId });
+        next = linkSelectionOwner(next, local.id, baseId);
       }
       next = next._withHighlightConfig(local.id, { ...next.materializationConfigs.highlights[local.id], groupSelection: baseId });
     }

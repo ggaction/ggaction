@@ -1,0 +1,1 @@
+export type RowKeyScalar = string | number | bigint | boolean | Date;

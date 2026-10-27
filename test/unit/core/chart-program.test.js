@@ -9,6 +9,7 @@ test("creates an immutable program with canonical empty state", () => {
   assert.equal(program instanceof ChartProgram, true);
   assert.deepEqual(program.semanticSpec, {
     datasets: [],
+    resources: [],
     layers: [],
     scales: [],
     coordinates: [],

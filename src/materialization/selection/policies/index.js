@@ -1,5 +1,5 @@
-import { rowsForSelectedItems, memberRowReferences } from "../rows.js";
-import { selectMarkItemKeys } from "../../../grammar/markSelection.js";
+import { identifyItems } from "../items/common.js";
+import { memberRowReferences } from "../rows.js";
 import { textSelectionPolicy } from "./text.js";
 import { findDataset } from "../../../selectors/datasets.js";
 import { requireLayer } from "../../../selectors/layers.js";
@@ -39,23 +39,10 @@ export function requireSelectionPolicy(markType) {
 }
 
 export function resolveMarkItems(program, target, grain = "item") {
-  for (const config of Object.values(program.materializationConfigs.highlights ?? {})) {
-    const definition = program.materializationConfigs.selections?.[config.selection];
-    if (config.target !== target || !definition?.sourceSelection) continue;
-    const parent = program.materializationConfigs.selections[definition.sourceSelection];
-    if (!parent || parent.sourceSelection) throw new Error('Invalid composite selection owner.');
-    if (!definition.selector.rows) {
-      program = program._withSelectionConfig(config.selection, { ...definition, selector: parent.selector });
-      continue;
-    }
-    const parentItems = parent.selector.property ? resolveMarkItems(program, parent.target, parent.selector.grain) : resolveMarkSourceItems(program, parent.target, parent.selector.grain);
-    const rows = rowsForSelectedItems(program, parentItems, selectMarkItemKeys(parentItems, parent.selector), definition.selector.rows.data);
-    program = program._withSelectionConfig(config.selection, { ...definition, selector: { ...definition.selector, rows } });
-  }
   const layer = requireLayer(program, target, `Unknown mark target "${target}"`);
   if (layer.derivedBindings?.overlay) {
     if (grain !== "item") throw new Error(`Overlay "${target}" supports item selection grain.`);
-    return resolveOverlayItems(program, layer);
+    return resolveOverlayItems(program, layer, { resolveMarkItems, resolveMarkSourceItems });
   }
   const dataset = findDataset(program, layer.data);
   if (dataset === undefined) {
@@ -65,7 +52,7 @@ export function resolveMarkItems(program, target, grain = "item") {
   if (!policy.supportedGrains.includes(grain)) {
     throw new Error(`Mark "${target}" does not support ${grain} selection grain.`);
   }
-  return policy.resolveItems(program, layer, applyItemMissingPolicy(layer, dataset), grain, resolveMarkItems);
+  return policy.resolveItems(program, layer, applyItemMissingPolicy(layer, dataset), grain, resolveMarkItems, { resolveMarkItems, resolveMarkSourceItems });
 }
 
 // Composite source membership does not require the parent's graphics to have
@@ -74,8 +61,8 @@ export function resolveMarkSourceItems(program, target, grain = 'item') {
   const layer = requireLayer(program, target), policy = requireSelectionPolicy(layer.mark.type);
   if (!policy.resolveSourceItems) return resolveMarkItems(program, target, grain);
   const dataset = applyItemMissingPolicy(layer, findDataset(program, layer.data));
-  return policy.resolveSourceItems(program, layer, dataset, grain).map((item,index) => ({
-    ...item, key: item.key ?? `${layer.id}/source/${index}`, properties: item.properties ?? {},
-    rows: memberRowReferences(program, item.members)
+  return identifyItems(program, layer, grain, policy.resolveSourceItems(program, layer, dataset, grain)).map(item => ({
+    ...item, properties: item.properties ?? {},
+    rows: memberRowReferences(program, item.members, layer.data, item.memberKeys)
   }));
 }

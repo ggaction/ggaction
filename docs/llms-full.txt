@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:8ec25828c662bcb6b0bf6801a6b6add6f2b653f218476ea7fc758f21e1418174. Status: published-release. Runtime source: 1e38e7bef30aeedb561c1ae09bbdcdd152bd46b2. Release baseline: v0.0.13.
+Contract: sha256:5f985823b92f3e49c4a73a8303f1de427b37528681889fca593cdb30216ffd3d. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/1e38e7bef30aeedb561c1ae09bbdcdd152bd46b2/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/1e38e7bef30aeedb561c1ae09bbdcdd152bd46b2/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -4986,13 +4986,16 @@ creating state, and a failed action leaves the earlier program unchanged.
 
 # Source and Derived Data
 
-## `createData({ id?, values, schema? })` {#createdata-id-values}
+## `createData({ id?, values, schema?, keyField?, keyFields?, keys? })` {#createdata-id-values}
 
 | Option | Type | Required |
 | --- | --- | --- |
 | `id` | string containing letters, numbers, `_`, or `-` | no; first dataset defaults to `"data"` |
 | `values` | array of plain row objects | yes |
 | `schema` | `{ fields: SourceSchemaField[] }` | no |
+| `keyField` | one field containing unique scalar keys | no |
+| `keyFields` | ordered field names forming unique tuples | no |
+| `keys` | a separate array of scalar or tuple keys | no |
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
@@ -5015,6 +5018,14 @@ be created twice, and source values cannot be replaced after creation. The
 first omitted ID is stored as `"data"`. Once any dataset exists, another
 `createData` call must provide an explicit ID; the library does not invent
 `data2`-style names.
+
+Choose at most one key option. Keys distinguish strings, finite numbers, bigint,
+boolean and valid Date values. Date keys belong in the separate `keys` array;
+row cells still accept only plain immutable data. Empty strings are valid keys,
+`-0` equals `0`, and null, undefined, nonfinite numbers and objects are invalid.
+Tuples contain 1–64 scalar components; duplicates reject the whole operation.
+Without a key option, the action allocates internal row identities. See
+[data revisions](./api/data/revisions-and-removal/) for retaining them across edits.
 
 Every dataset carries a schema. Non-empty source rows infer field kinds and
 nullable state from observed values. An empty source has an unknown schema;
@@ -10098,6 +10109,17 @@ a font later does not change an existing program. Apply a new measured profile
 to update layout after fonts change. Canvas, SVG, PNG, and PDF draw the resulting
 text graphics; they do not rewrap or replace the authoring measurements.
 
+### Identity across revisions
+
+Transition scenes use the materialized item identity in `graphicSpec`. Explicit
+row keys retain an item across reorderings and value edits. Generated rows retain
+identity only when `reviseData` receives a `rowMap`. New independent datasets
+have separate identity namespaces. A series keeps its semantic key while changed
+ordered membership changes its topology fingerprint. Composition child paths
+participate in identity, so moving an item to another child produces enter/exit.
+SVG scene version 1 and Canvas scene version 2 keep their existing shapes.
+Graphic-only snapshots retain the same scene identities.
+
 ## Related
 
 [Canvas](./api/canvas/) · [Semantic and graphical state](./concepts/semantic-and-graphics/) ·
@@ -11956,6 +11978,13 @@ the approved point, stacked-bar, and line-series examples.
 ## Related
 
 [Appearance overview](./api/appearance/) · [Mark-selection tutorial](./tutorials/mark-selection/) · [Data filtering](./api/data/filtering/)
+
+Row indices are input coordinates only. A persistent selection immediately stores
+the corresponding logical row keys. Reordering keyed data preserves the selection;
+deleting a key hides its membership, and reintroducing it selects it again.
+Field, channel and property predicates remain dynamic and reevaluate after edits.
+Selection meaning belongs to `semanticSpec.resources`; target/projection and
+highlight appearance stay in their respective materialization configurations.
 
 <!-- Source: /api/appearance/point/ -->
 
@@ -16306,22 +16335,21 @@ available.
 Each JSON envelope has exactly these keys:
 
 ```text
-{ schemaVersion: 3, kind: "editable", packageVersion: string,
+{ schemaVersion: 4, kind: "editable", packageVersion: string,
   extensions: string[], payload: EncodedValue }
 { schemaVersion: 1, kind: "graphic", packageVersion: string,
   extensions: string[], payload: EncodedValue }
 ```
 
-Editable snapshots use schema version 3 to store large repeated arrays once,
-including source data shared by many facet panels. Dataset schema and calculation
-metadata still round-trip. Version 2 remains readable. The reader migrates
-editable version 1 payloads by
-inferring or deriving missing dataset schemas before final schema validation.
-Lookup migration resolves both input schemas. The initial pass still checks
-references, cycles, typed keys, duplicate keys, and exact derived row values;
-only missing-schema comparisons are deferred. Malformed provided schemas and
-tampered lookup results remain rejected. Modern formats stay strict. Graphic
-snapshots remain version 1 because their payload shape did not change.
+Editable snapshots use schema version 4 to preserve row identities, shared lineage
+and typed selection resources. Versions 1, 2 and 3 remain readable. The reader
+validates each historical format before migration; version 1 additionally infers
+or derives missing dataset schemas. Derived values and saved provenance must
+agree with their inputs. Ambiguous or malformed correspondence is rejected.
+Historical namespaces are deterministic from the original envelope and child path;
+no row field is silently treated as a key. Saved graphics are preserved, and
+migration does not replay actions or redraw a chart. Graphic snapshots remain
+version 1 and may carry optional concrete item identity metadata.
 `packageVersion` records the producer version; `schemaVersion` determines the
 format. Other schema versions are rejected. `extensions` contains the exact
 registered extension names required by the editable action traces, including
@@ -16332,7 +16360,7 @@ canonical keys `semanticSpec`, `graphicSpec`, `resolvedScales`,
 empty; aliases and private action counters are not persisted. The graphic
 payload is `graphicSpec` itself.
 
-Editable version 3 wraps encoded values as `["shared", arrays, root]`.
+Editable versions 3 and 4 wrap encoded values as `["shared", arrays, root]`.
 Arrays with at least 32 entries are interned by their exact tagged contents;
 `["reference", index]` reuses an earlier array. Array definitions may refer only
 to previously defined arrays, so cycles and forward references are invalid.
@@ -16366,6 +16394,11 @@ not as an object-identity graph.
 [Source and derived data](./api/data/source-and-derived/) ·
 [ChartProgram and immutability](./concepts/chart-program/) ·
 [Responsive charts](./responsive-charts/) · [Errors and recovery](./errors-and-recovery/)
+
+Full row contributions add storage proportional to the actual lineage. Shared
+arrays avoid duplicating complete source tables across facets. The regression
+fixture with 31,800 rows and 106 area panels remains below 22 MB as an editable
+snapshot, including all row lineage and concrete identity references.
 
 <!-- Source: /inspection/ -->
 
@@ -16529,7 +16562,8 @@ identity are preserved, including extension errors that are already frozen.
 
 The stable `code` values are `invalid-option`, `invalid-value`,
 `missing-resource`, `ambiguous-resource`, `incompatible-resource`,
-`resource-in-use`, `resource-limit`, `unsupported-format`, and `action-failed`.
+`resource-in-use`, `resource-limit`, `unsupported-format`, `action-failed`,
+`duplicate-id`, `ambiguous-identity`, `cyclic-dependency`, and `stale-result`.
 Shared input validation and named-resource selectors assign specific codes.
 Wrapped actions attach `action-failed` to other errors without guessing their
 category from English message text. Not every individual domain failure has a
@@ -16538,10 +16572,12 @@ option or resource-limit validator supplies them; native/filesystem failures
 can return `undefined`.
 
 Optional fields are `operation`, `optionPath`, `resourceId`, `candidates`,
-`limit`, and `actual`. `operation` identifies the innermost wrapped action that
+`limit`, `actual`, `ownerId`, `expected`, and `dependencies`. `operation` identifies the innermost wrapped action that
 observed the error (or an explicitly named renderer). `optionPath` identifies
 the supplied key or the validator's named quantity. `candidates` lists resource
-IDs; `actual` and `limit` are numeric measurements or bounds. For insufficient
+IDs. `ownerId` identifies a failed dependency owner; `dependencies` lists its
+blocking resources. `expected` is a string or number describing the required
+identity or revision. `actual` and `limit` are numeric measurements or bounds. For insufficient
 facet header spacing, `optionPath: "gap"` reports the requested gap in `actual`
 and the minimum header clearance in `limit`. Retry with that clearance and
 validate again: other retained guides can require additional space. No row values or complete program
@@ -17655,7 +17691,7 @@ default overflow policy rejects an unsatisfied minimum plot atomically;
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 applyTextMetrics(options: TargetedOptions<ApplyTextMetricsOptions>): ChartProgram;
@@ -17686,7 +17722,7 @@ exact profile format, matching rules, propagation, and executable example.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 removeTextMetrics(): ChartProgram;
@@ -17821,6 +17857,9 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `keyField` | Optional / branch-dependent | `string \| undefined` |
+| `keyFields` | Optional / branch-dependent | `readonly string[] \| undefined` |
+| `keys` | Optional / branch-dependent | `readonly RowKey[] \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `values` | Required | `readonly (Row extends readonly unknown[] ? never : Row & StoredCell<Row>)[]` |
 | `schema` | Optional / branch-dependent | `SourceSchemaInput \| undefined` |
@@ -17837,7 +17876,7 @@ Create one immutable named dataset. [Data](./api/data/)
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 reviseData<Row extends object>(options: TargetedOptions<ReviseDataOptions<Row>>): ChartProgram;
@@ -17851,10 +17890,12 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `source` | Required | `string` |
-| `id` | Required | `string` |
+| `keys` | Optional / branch-dependent | `readonly RowKey[] \| undefined` |
+| `rowMap` | Optional / branch-dependent | `readonly (number \| null)[] \| undefined` |
 | `values` | Required | `readonly (Row extends readonly unknown[] ? never : Row & StoredCell<Row>)[]` |
 | `schema` | Optional / branch-dependent | `SourceSchemaInput \| undefined` |
+| `source` | Required | `string` |
+| `id` | Required | `string` |
 | `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
@@ -17871,7 +17912,7 @@ See [Data updates](./data-updates/#revise-a-source-and-its-dependent-chart).
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 removeData(options: TargetedOptions<RemoveResourceOptions>): ChartProgram;
@@ -17905,7 +17946,7 @@ does not infer, cascade, or change graphics.
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 removeScale(options: TargetedOptions<RemoveResourceOptions>): ChartProgram;
@@ -17937,7 +17978,7 @@ graphics. [Scale Options](./api/scales/#removescale-id)
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 removeCoordinate(options: TargetedOptions<RemoveResourceOptions>): ChartProgram;
@@ -18135,7 +18176,7 @@ adds residual reweighting; see [regression](./api/regression/) for the estimator
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 createRegressionStatisticsData(options: TargetedOptions<RegressionStatisticsDataOptions>): ChartProgram;
@@ -18334,7 +18375,7 @@ rebind direct visual consumers, and safely release the prior revision.
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editDerivedData(options: TargetedOptions<EditDerivedDataOptions>): ChartProgram;
@@ -18358,7 +18399,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./reference
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editFilteredData(options: TargetedOptions<EditFilteredDataOptions>): ChartProgram;
@@ -18387,7 +18428,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./reference
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editTimeUnitData(options: TargetedOptions<EditTimeUnitDataOptions>): ChartProgram;
@@ -18418,7 +18459,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./reference
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editWindowData(options: TargetedOptions<EditWindowDataOptions>): ChartProgram;
@@ -18445,7 +18486,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./reference
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editDensityData(options: TargetedOptions<EditDensityDataOptions>): ChartProgram;
@@ -18478,7 +18519,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./reference
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editRegressionData(options: TargetedOptions<EditRegressionDataOptions>): ChartProgram;
@@ -18514,7 +18555,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./reference
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editRegressionStatisticsData(options?: TargetedOptions<EditRegressionStatisticsDataOptions>): ChartProgram;
@@ -18570,7 +18611,7 @@ Behavior, inference, resets, and errors: [Semantic resources and regression laye
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editCoordinate(options: TargetedOptions<EditCoordinateOptions>): ChartProgram;
@@ -18684,7 +18725,7 @@ Behavior, inference, resets, and errors: [Extension and scale contracts](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editXScale(options: TargetedOptions<EditXScaleOptions>): ChartProgram;
@@ -18722,7 +18763,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editYScale(options: TargetedOptions<EditYScaleOptions>): ChartProgram;
@@ -18760,7 +18801,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editXOffsetScale(options: TargetedOptions<EditXOffsetScaleOptions>): ChartProgram;
@@ -18788,7 +18829,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editYOffsetScale(options: TargetedOptions<EditYOffsetScaleOptions>): ChartProgram;
@@ -18816,7 +18857,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editParallelScale(options: TargetedOptions<EditParallelScaleOptions>): ChartProgram;
@@ -18854,7 +18895,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editThetaScale(options: TargetedOptions<EditThetaScaleOptions>): ChartProgram;
@@ -18888,7 +18929,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editRScale(options: TargetedOptions<EditRScaleOptions>): ChartProgram;
@@ -18922,7 +18963,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editColorScale(options: TargetedOptions<EditColorScaleOptions>): ChartProgram;
@@ -18959,7 +19000,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editStrokeScale(options: TargetedOptions<EditStrokeScaleOptions>): ChartProgram;
@@ -18995,7 +19036,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editSizeScale(options: TargetedOptions<EditSizeScaleOptions>): ChartProgram;
@@ -19026,7 +19067,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editOpacityScale(options: TargetedOptions<EditOpacityScaleOptions>): ChartProgram;
@@ -19057,7 +19098,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editShapeScale(options: TargetedOptions<EditShapeScaleOptions>): ChartProgram;
@@ -19084,7 +19125,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editStrokeWidthScale(options: TargetedOptions<EditStrokeWidthScaleOptions>): ChartProgram;
@@ -19117,7 +19158,7 @@ Behavior, inference, resets, and errors: [Focused channel scale editors](./refer
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editStrokeDashScale(options: TargetedOptions<EditStrokeDashScaleOptions>): ChartProgram;
@@ -19878,7 +19919,7 @@ appearance encodings. [Basic Charts](./api/basic-charts/#createscatterplot)
 
 **API layer:** user-facing. **Authoring roles:** H0.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 createTextPlot(options: TargetedOptions<CreateTextPlotOptions>): ChartProgram;
@@ -20436,7 +20477,7 @@ are used as supplied; the facade does not infer normalization. [Polar positions]
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editRadarPlot(options: TargetedOptions<EditRadarPlotOptions>): ChartProgram;
@@ -21092,7 +21133,7 @@ See the [Area and series layout tutorial](./tutorials/area-layout/).
 
 **API layer:** user-facing. **Authoring roles:** H0.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 createLayerPlot(options: TargetedOptions<CreateLayerPlotOptions>): ChartProgram;
@@ -21130,7 +21171,7 @@ roles. Use `createOverlay` to follow already computed visible results instead.
 
 **API layer:** user-facing. **Authoring roles:** H0.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 createAdjacentPlot(options?: TargetedOptions<CreateAdjacentPlotOptions>): ChartProgram;
@@ -21179,7 +21220,7 @@ retained content; explicit offsets remain exact and reject collisions.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editCompositionScales(options: TargetedOptions<EditCompositionScalesOptions>): ChartProgram;
@@ -21368,7 +21409,7 @@ Length defaults to `14`; stroke width defaults to `2`. [Marks](./api/marks/)
 
 **API layer:** user-facing. **Authoring roles:** H1, H2.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 createStatisticalReference(options: TargetedOptions<CreateStatisticalReferenceOptions>): ChartProgram;
@@ -21627,7 +21668,7 @@ keeps its percentage of the complete source.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editMarkLabelSelection(options: TargetedOptions<EditMarkLabelSelectionOptions>): ChartProgram;
@@ -21665,7 +21706,7 @@ rebound with this action or removed.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editMarkLabelPlacement(options: TargetedOptions<EditMarkLabelPlacementOptions>): ChartProgram;
@@ -21705,7 +21746,7 @@ Pass `"auto"` to restore the legacy source anchor and remove the owned placement
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 removeMarkLabels(options: TargetedOptions<RemoveMarkLabelsOptions>): ChartProgram;
@@ -22785,7 +22826,7 @@ Omitted corners fall back to the global radius or zero; edits retain unspecified
 
 **API layer:** user-facing. **Authoring roles:** H1, H2.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 createOverlay(options?: TargetedOptions<CreateOverlayOptions>): ChartProgram;
@@ -22822,7 +22863,7 @@ Add a line or point layer that follows a source mark's visible results. Bar over
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editOverlay(options: TargetedOptions<EditOverlayOptions>): ChartProgram;
@@ -23975,7 +24016,7 @@ replaces the previous content branch. [Text marks](./api/marks/text/)
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 encodeDx(options: TargetedOptions<TextOffsetEncodingOptions>): ChartProgram;
@@ -24011,7 +24052,7 @@ source-owned labels and other marks are rejected.
 
 **API layer:** user-facing. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 encodeDy(options: TargetedOptions<TextOffsetEncodingOptions>): ChartProgram;
@@ -24458,7 +24499,7 @@ members using the same edge rules as Histogram.
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 createLookupData(options: TargetedOptions<LookupDataOptions>): ChartProgram;
@@ -24492,7 +24533,7 @@ Full and Basic support creation. [Named table lookup](./api/data/summaries-and-s
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 createFlattenData(options: TargetedOptions<FlattenDataOptions>): ChartProgram;
@@ -24593,7 +24634,7 @@ expression, including explicit nested scalar `getPath` and first-occurrence
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 createNormalizedData(options: TargetedOptions<NormalizedDataOptions>): ChartProgram;
@@ -24633,7 +24674,7 @@ percent-change values independently within each group.
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 createSortedData(options: TargetedOptions<SortedDataOptions>): ChartProgram;
@@ -24666,7 +24707,7 @@ null placement, and quantitative, categorical, or temporal comparison.
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 createCompleteData(options: TargetedOptions<CompleteDataOptions>): ChartProgram;
@@ -24704,7 +24745,7 @@ explicit fill and source-membership provenance for synthesized rows.
 
 **API layer:** user-facing. **Authoring roles:** H1.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 createImputedData(options: TargetedOptions<ImputedDataOptions>): ChartProgram;
@@ -24779,7 +24820,7 @@ by Bar and Area layouts. [Source and Derived Data](./api/data/source-and-derived
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editComputedData(options: TargetedOptions<EditComputedDataOptions>): ChartProgram;
@@ -24804,7 +24845,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./re
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editLookupData(options: TargetedOptions<EditLookupDataOptions>): ChartProgram;
@@ -24829,7 +24870,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./re
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editFlattenData(options: TargetedOptions<EditFlattenDataOptions>): ChartProgram;
@@ -24854,7 +24895,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./re
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editFoldData(options: TargetedOptions<EditFoldDataOptions>): ChartProgram;
@@ -24879,7 +24920,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./re
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editSummaryData(options: TargetedOptions<EditSummaryDataOptions>): ChartProgram;
@@ -24908,7 +24949,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./re
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editBinData(options: TargetedOptions<EditBinDataOptions>): ChartProgram;
@@ -24943,7 +24984,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./re
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editStackData(options: TargetedOptions<EditStackDataOptions>): ChartProgram;
@@ -24971,7 +25012,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./re
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editIntervalData(options: TargetedOptions<EditIntervalDataOptions>): ChartProgram;
@@ -25002,7 +25043,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./re
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editECDFData(options: TargetedOptions<EditECDFDataOptions>): ChartProgram;
@@ -25030,7 +25071,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./re
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editNormalizedData(options: TargetedOptions<EditNormalizedDataOptions>): ChartProgram;
@@ -25061,7 +25102,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./re
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editSortedData(options: TargetedOptions<EditSortedDataOptions>): ChartProgram;
@@ -25085,7 +25126,7 @@ Behavior, inference, resets, and errors: [Focused core data editing](./reference
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editCompleteData(options: TargetedOptions<EditCompleteDataOptions>): ChartProgram;
@@ -25114,7 +25155,7 @@ Behavior, inference, resets, and errors: [Focused statistical data editing](./re
 
 **API layer:** user-facing. **Authoring roles:** H1, H3.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editImputedData(options: TargetedOptions<EditImputedDataOptions>): ChartProgram;
@@ -27047,7 +27088,7 @@ Behavior, inference, resets, and errors: [Tick/label groups and axis titles](./r
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editAxes(options: TargetedOptions<EditAxesOptions>): ChartProgram;
@@ -27662,7 +27703,7 @@ dependent replay that would invalidate a stored exact sample fails atomically.
 
 **API layer:** user-facing. **Authoring roles:** H3.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 editLegendBlock(options: TargetedOptions<EditLegendBlockOptions>): ChartProgram;
@@ -29159,7 +29200,7 @@ Each declared action has an exact signature and its own stable link. Option tabl
 
 **API layer:** advanced. **Authoring roles:** H2.
 
-**Availability:** Available by v0.0.26. See [release compatibility](./version/).
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
 encodeChannels(options: TargetedOptions<EncodeChannelsOptions>): ChartProgram;
@@ -29501,6 +29542,9 @@ These blocks are generated from the declaration file owned by each package entry
 [Complete declaration and relative dependencies](./types/index.d.ts)
 
 ```typescript
+export type { RowKeyScalar, RowKey, DataKeyOptions, DataKeySpec, InputRowRef, RowLineage, InputRef, StoredResourceKind, PersistentSelectionResource, GraphicIdentity, GraphicLineageRef } from "./program.js";
+import type { ChartProgram, CompositionOptions } from "./program.js";
+
 export type {
   CreateOverlayOptions,
   EditOverlayOptions,
@@ -29984,6 +30028,9 @@ export function render(
 [Complete declaration and relative dependencies](./types/basic.d.ts)
 
 ```typescript
+export type { RowKeyScalar, RowKey, DataKeyOptions, DataKeySpec } from "./program.js";
+import type { ChartProgram, BasicSeriesLayoutOptions, CreateDataOptions, ScopedActionTarget } from "./program.js";
+
 export type {
   LinearNiceCountOptions,
   PointPolygonShape,
@@ -30130,6 +30177,7 @@ import { ChartProgram } from "./program.js";
 
 export { ChartProgram };
 export type {
+  InputRef, InputRowRef, RowLineage, GraphicIdentity, GraphicLineageRef, PersistentSelectionResource,
   FillPaint,
   LinearGradientPaint,
   LinearGradientPoint,
@@ -30262,13 +30310,16 @@ export function renderToSVG(
 ```typescript
 export type ErrorCode = "invalid-option" | "invalid-value" | "missing-resource" |
   "ambiguous-resource" | "incompatible-resource" | "resource-in-use" |
-  "resource-limit" | "unsupported-format" | "action-failed";
+  "resource-limit" | "unsupported-format" | "action-failed" | "duplicate-id" | "ambiguous-identity" | "cyclic-dependency" | "stale-result";
 
 export interface ErrorDetails {
   readonly code: ErrorCode;
   readonly operation?: string;
   readonly optionPath?: string;
   readonly resourceId?: string;
+  readonly ownerId?: string;
+  readonly expected?: number | string;
+  readonly dependencies?: readonly string[];
   readonly candidates?: readonly string[];
   readonly limit?: number;
   readonly actual?: number;
@@ -30341,7 +30392,7 @@ export function exportAccessibleData(program: ChartProgram | BasicChartProgram, 
 
 ```typescript
 import type { BasicChartProgram } from "./basic.js";
-import type { ChartProgram, DatasetSchema } from "./program.js";
+import type { ChartProgram, DatasetSchema, InputRowRef } from "./program.js";
 export type ProgramInput = ChartProgram | BasicChartProgram;
 export interface ResourceRef { readonly kind: "data" | "mark" | "scale" | "coordinate" | "guide" | "canvas" | "composition"; readonly id: string; readonly childPath?: readonly string[]; }
 export interface InspectionTarget { readonly kind: "data" | "mark" | "scale" | "coordinate" | "guide"; readonly id: string; readonly childPath?: readonly string[]; }
@@ -30387,7 +30438,7 @@ export interface MarkItemInspection {
   readonly fields: Readonly<Record<string, unknown>>; readonly channels: Readonly<Record<string, unknown>>;
   readonly properties: Readonly<Record<string, unknown>>;
   readonly geometry: readonly {readonly type: string; readonly properties: Readonly<Record<string, unknown>>}[];
-  readonly rows: readonly { readonly data: string; readonly index: number }[];
+  readonly rows: readonly (InputRowRef & { readonly index: number })[];
   readonly bounds: Readonly<{left:number;top:number;right:number;bottom:number}> | null;
 }
 export function getMarkItems(program: ProgramInput, options?: {target?: string | {childPath?:readonly string[];id:string};grain?:"item"|"stack"}): readonly MarkItemInspection[];
@@ -32759,14 +32810,14 @@ export interface CreateCoordinateOptions {
  Expand CreateDataOptions
 
 ```typescript
-export interface CreateDataOptions<Row extends object> {
+export type CreateDataOptions<Row extends object> = DataKeyOptions & {
   id?: string;
   values: readonly (Row extends readonly unknown[] ? never : Row & StoredCell<Row>)[];
   schema?: SourceSchemaInput;
-}
+};
 ```
 
-Related types: [`StoredCell`](./reference/types/#type-storedcell) · [`SourceSchemaInput`](./reference/types/#type-sourceschemainput).
+Related types: [`DataKeyOptions`](./reference/types/#type-datakeyoptions) · [`StoredCell`](./reference/types/#type-storedcell) · [`SourceSchemaInput`](./reference/types/#type-sourceschemainput).
 
 ### `CreateDensityPlotOptions` {#type-createdensityplotoptions}
 
@@ -33601,6 +33652,20 @@ Related types: [`DashStyle`](./reference/types/#type-dashstyle) · [`DashPattern
 ```typescript
 export type DashStyle = "solid" | "dashed" | "dotted" | "dashdot";
 ```
+
+### `DataKeyOptions` {#type-datakeyoptions}
+
+ Expand DataKeyOptions
+
+```typescript
+export type DataKeyOptions =
+  | { keyField?: never; keyFields?: never; keys?: never }
+  | { keyField: string; keyFields?: never; keys?: never }
+  | { keyField?: never; keyFields: readonly string[]; keys?: never }
+  | { keyField?: never; keyFields?: never; keys: readonly RowKey[] };
+```
+
+Related types: [`RowKey`](./reference/types/#type-rowkey).
 
 ### `DatasetBin2DOutputFields` {#type-datasetbin2doutputfields}
 
@@ -40014,13 +40079,16 @@ type RequestedTransform<T> = T extends unknown ? Omit<T, "resolved"> : never;
  Expand ReviseDataOptions
 
 ```typescript
-export interface ReviseDataOptions<Row extends object> extends CreateDataOptions<Row> {
+export type ReviseDataOptions<Row extends object> = ({ keys?: never; rowMap?: readonly (number | null)[] }
+  | { keys: readonly RowKey[]; rowMap?: never }) & {
+  values: readonly (Row extends readonly unknown[] ? never : Row & StoredCell<Row>)[];
+  schema?: SourceSchemaInput;
   source: string;
   id: string;
-}
+};
 ```
 
-Related types: [`CreateDataOptions`](./reference/types/#type-createdataoptions).
+Related types: [`RowKey`](./reference/types/#type-rowkey) · [`StoredCell`](./reference/types/#type-storedcell) · [`SourceSchemaInput`](./reference/types/#type-sourceschemainput).
 
 ### `RotationInput` {#type-rotationinput}
 
@@ -40038,6 +40106,24 @@ Related types: [`RotationUnit`](./reference/types/#type-rotationunit).
 
 ```typescript
 export type RotationUnit = "radians" | "degrees";
+```
+
+### `RowKey` {#type-rowkey}
+
+ Expand RowKey
+
+```typescript
+export type RowKey = RowKeyScalar | readonly RowKeyScalar[];
+```
+
+Related types: [`RowKeyScalar`](./reference/types/#type-rowkeyscalar).
+
+### `RowKeyScalar` {#type-rowkeyscalar}
+
+ Expand RowKeyScalar
+
+```typescript
+export type RowKeyScalar = string | number | bigint | boolean | Date;
 ```
 
 ### `RowWindowFrame` {#type-rowwindowframe}
@@ -42058,12 +42144,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/1e38e7bef30aeedb561c1ae09bbdcdd152bd46b2/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/1e38e7bef30aeedb561c1ae09bbdcdd152bd46b2/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -42142,6 +42228,21 @@ Extension actions should call the public domain action that owns the affected
 consumer instead of calling `rematerializeScale` directly. Rematerialization is
 still explicit inside that action and remains visible in `program.trace`; it
 never runs merely because `semanticSpec` changed.
+
+## Stored selection resources and concrete identity
+
+The semantic primitive accepts complete resources at
+`resource[persistent-selection:id]`. Creation uses revision `0`; replacement
+uses the previous revision plus one. The value follows `PersistentSelectionResource`
+from `ggaction/extension`. Inputs must resolve to exact stored revisions.
+Removal rejects live consumers. Graphical materialization remains explicit.
+Use the selection domain actions for ordinary chart authoring.
+
+Typed `editGraphics({ property: "items", ... })` entries may include
+`GraphicIdentity` metadata. The materialized semantic key and primitive role
+produce a stable private child ID; ordered path membership produces its topology
+fingerprint. `GraphicLineageRef` links to the exact data revision and row keys.
+Renderers consume this concrete metadata without reading semantic state.
 
 <!-- Source: /api/data/summaries-and-shaping/ -->
 
@@ -42607,6 +42708,21 @@ Named lookups use `editLookupData({target, field?, lookup?, dependents?})` in Fu
 A supplied `lookup` replaces its whole reference definition. Revisions of either input
 update the joined records and their consumers in dependency order. Change the primary
 source through `reviseData`; generic transform definitions cannot replace `source`.
+
+## Keeping rows identified across source revisions
+
+`reviseData({source, id, values, schema?, keys?, rowMap?})` creates an immutable
+snapshot and refreshes its consumers. A source created with `keyField` or
+`keyFields` keeps that definition. A source created with separate `keys`
+requires a complete new `keys` array. Matching keys retain item identity even
+when row order or values change; a removed key can reappear later.
+
+For a source without explicit keys, replacement rows get new identities by
+default. Pass `rowMap` to retain known correspondence: each output position
+contains its old row index or `null` for a new row. The array must match the new
+row count and cannot repeat old indices. Keyed sources reject `rowMap`.
+Independent branches allocate distinct identities for new rows. Earlier
+programs remain unchanged, and invalid mappings reject the whole revision.
 
 ## Editing derived data {#editing-derived-data}
 
@@ -44803,7 +44919,7 @@ smaller package, and a low-level domain action is not automatically an extension
 # Documentation Version
 
 The current site documents **ggaction 0.0.26** with a
-**published-release** contract.
+**development** contract.
 A `published-release` contract matches that package version. A `development`
 contract can include newer behavior; its package version alone does not establish
 API availability. Each action entry identifies its release availability.
@@ -44811,9 +44927,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:8ec25828c662bcb6b0bf6801a6b6add6f2b653f218476ea7fc758f21e1418174` |
+| Contract fingerprint | `sha256:5f985823b92f3e49c4a73a8303f1de427b37528681889fca593cdb30216ffd3d` |
 | Example and dataset source | `ab206c446ae5010eecfd859427775c4785d8aed4` |
-| Runtime source commit | `1e38e7bef30aeedb561c1ae09bbdcdd152bd46b2` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 298 |
 | Declared actions in that release | 234 |

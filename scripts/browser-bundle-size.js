@@ -5,8 +5,8 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 495_000, // Includes provenance-aware selection: Node 24 measured 494492.
-  "ggaction/basic": 255_000, // Shared selection and text geometry: Node 24 measured 254534.
+  ggaction: 507_000, // Identity/resource integration: Node 22 measured 506286.
+  "ggaction/basic": 286_000, // Shared lineage and concrete identity: Node 22.23.2 measured 285190.
   "ggaction/svg": 25_000
 });
 

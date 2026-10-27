@@ -51,7 +51,7 @@ test('text inspection follows emitted labels rather than raw dataset cardinality
   const p=base().createScatterPlot({id:'plot',x:'x',y:'y'})
     .createMarkLabels({id:'labels',source:'plot',field:'g',select:{field:'g',op:'eq',value:'B'}});
   const items=getMarkItems(p,{target:'labels'});
-  assert.equal(items.length,1);assert.deepEqual(items[0].rows,[{data:'data',index:2}]);
+  assert.equal(items.length,1);assert.deepEqual(items[0].rows.map(({data,index})=>({data,index})),[{data:'data',index:2}]);
   const h=p.highlightMarks({target:'labels',select:{rows:{data:'data',indices:[2]}},color:'red',fontSize:25});
   assert.equal(h.graphicSpec.objects.labels.items[0].properties.fontSize,25);
 });

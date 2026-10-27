@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -25,7 +26,7 @@ test("creates immutable box summary and outlier provenance through wrapped data 
     field: "value"
   });
 
-  assert.deepEqual(completed.semanticSpec.datasets[1], {
+  assertEquivalentMeaning(completed.semanticSpec.datasets[1], {
     schema: completed.semanticSpec.datasets[1].schema,
     id: "summary",
     source: "data",

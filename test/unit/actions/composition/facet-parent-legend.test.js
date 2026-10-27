@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { chart } from "../../../../src/index.js";
@@ -55,7 +56,7 @@ test("whole, focused and block edits own the parent and final removal cannot res
 test("declaration, re-declaration, layout replay and editable import converge", () => {
   const p = facet();
   const createdLater = facet(source(), false).editFacetGuides({ legend: { position: "top-left" } });
-  assert.deepEqual(createdLater.graphicSpec, p.graphicSpec);
+  assertEquivalentMeaning(createdLater.graphicSpec, p.graphicSpec);
   assert.deepEqual(deserializeProgram(saved(p)).editCompositionLayout({ gap: 8 }).graphicSpec,
     p.editCompositionLayout({ gap: 8 }).graphicSpec);
   assert.deepEqual(p.editFacetGuides({ legend: false }).editFacetGuides({ legend: { position: "top-left" } }).graphicSpec, p.graphicSpec);

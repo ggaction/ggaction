@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -51,8 +52,8 @@ test("keeps four country paths when two continent colors supply appearance", () 
   assert.deepEqual(colored.resolvedScales.color.domain, ["Europe", "Asia"]);
   const reversed = line().encodeColor({ field: "continent" })
     .encodeGroup({ field: "country" });
-  assert.deepEqual(reversed.semanticSpec, colored.semanticSpec);
-  assert.deepEqual(reversed.graphicSpec, colored.graphicSpec);
+  assertEquivalentMeaning(reversed.semanticSpec, colored.semanticSpec);
+  assertEquivalentMeaning(reversed.graphicSpec, colored.graphicSpec);
   assert.deepEqual(reversed.resolvedScales, colored.resolvedScales);
 });
 
@@ -104,8 +105,8 @@ test("keeps typed tuples collision-free and retains nominal zero equality", () =
 test("normalizes single-element groups and removes alternate fields on reassignment", () => {
   const single = line().encodeGroup({ field: "country" });
   const array = line().encodeGroup({ fields: ["country"] });
-  assert.deepEqual(single.semanticSpec, array.semanticSpec);
-  assert.deepEqual(single.graphicSpec, array.graphicSpec);
+  assertEquivalentMeaning(single.semanticSpec, array.semanticSpec);
+  assertEquivalentMeaning(single.graphicSpec, array.graphicSpec);
   const tuple = single.encodeGroup({ fields: ["country", "scenario"] });
   const restored = tuple.encodeGroup({ field: "country" });
   assert.deepEqual(restored.semanticSpec, single.semanticSpec);
@@ -155,10 +156,10 @@ test("supports the same tuple facade and child flow in root and basic entries", 
     .encodeX({ field: "x" }).encodeY({ field: "y" })
     .encodeGroup({ fields: ["country", "scenario"] })
     .encodeColor({ field: "continent" }).encodeStrokeDash({ field: "scenario" });
-  assert.deepEqual(program.graphicSpec, lower.graphicSpec);
-  assert.deepEqual(program.semanticSpec, lower.semanticSpec);
-  assert.deepEqual(basic.graphicSpec, program.graphicSpec);
-  assert.deepEqual(basic.semanticSpec, program.semanticSpec);
+  assertEquivalentMeaning(program.graphicSpec, lower.graphicSpec);
+  assertEquivalentMeaning(program.semanticSpec, lower.semanticSpec);
+  assertEquivalentMeaning(basic.graphicSpec, program.graphicSpec);
+  assertEquivalentMeaning(basic.semanticSpec, program.semanticSpec);
   const children = program.trace.children.at(-1).children.map(node => node.op);
   assert.ok(children.indexOf("encodeGroup") < children.indexOf("encodeColor"));
   assert.ok(children.includes("encodeStrokeDash"));

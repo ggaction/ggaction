@@ -1,3 +1,4 @@
+import { selectedItemPositions } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -30,31 +31,29 @@ test("creates a reusable selection without changing graphics", () => {
   const selected = before.selectMarks({ field: "x", op: "max" });
 
   assert.equal(selected.context.currentSelection, "pointSelection");
-  assert.deepEqual(selected.materializationConfigs.selections, {
-    pointSelection: {
-      target: "point",
-      selector: {
-        grain: "item",
-        field: "x",
-        op: "max",
-        count: 1,
-        ties: "first"
-      }
-    }
+  assert.deepEqual(selected.materializationConfigs.selections.pointSelection, {
+    target: "point", grain: "item", projection: {},
+    resource: { kind: "persistent-selection", id: "pointSelection", revision: 0 }
   });
-  assert.deepEqual(resolveStoredSelection(selected).keys, ["point/point/3"]);
+  assert.deepEqual(resolveStoredSelection(selected).selector, {
+    grain: "item", field: "x", op: "max", count: 1, ties: "first"
+  });
+  assert.deepEqual(selected.semanticSpec.resources[0].options, {
+    mode: "predicate", predicate: { field: "x", op: "max", count: 1, ties: "first" }
+  });
+  assert.deepEqual(selectedItemPositions(resolveStoredSelection(selected)), [3]);
   assert.equal(selected.graphicSpec, before.graphicSpec);
-  assert.deepEqual(selected.trace.children.at(-1).children, []);
+  assert.deepEqual(selected.trace.children.at(-1).children.map(child => child.op), ["editSemantic"]);
   assert.equal(before.materializationConfigs.selections, undefined);
 });
 
 test("supports explicit targets, ids, and every point selector family", () => {
   const base = pointProgram();
   const cases = [
-    [{ field: "x", op: "eq", value: 3 }, ["point/point/2"]],
-    [{ field: "label", op: "oneOf", values: ["low", "top"] }, ["point/point/0", "point/point/3"]],
-    [{ channel: "x", op: "range", min: 3, max: 5 }, ["point/point/1", "point/point/2"]],
-    [{ field: "x", op: "max", groupBy: "group" }, ["point/point/1", "point/point/3"]]
+    [{ field: "x", op: "eq", value: 3 }, [2]],
+    [{ field: "label", op: "oneOf", values: ["low", "top"] }, [0, 3]],
+    [{ channel: "x", op: "range", min: 3, max: 5 }, [1, 2]],
+    [{ field: "x", op: "max", groupBy: "group" }, [1, 3]]
   ];
   for (const [selector, keys] of cases) {
     const program = base.selectMarks({
@@ -62,7 +61,7 @@ test("supports explicit targets, ids, and every point selector family", () => {
       target: "point",
       ...selector
     });
-    assert.deepEqual(resolveStoredSelection(program).keys, keys);
+    assert.deepEqual(selectedItemPositions(resolveStoredSelection(program)), keys);
   }
 });
 
@@ -76,10 +75,10 @@ test("selects final bar and series items without changing their graphics", () =>
     op: "max"
   });
   assert.equal(resolveStoredSelection(selectedBar).keys.length, 1);
-  assert.deepEqual(resolveStoredSelection(selectedBar).keys, ["bars/stack/1"]);
+  assert.deepEqual(selectedItemPositions(resolveStoredSelection(selectedBar)), [1]);
   assert.equal(selectedBar.graphicSpec, histogram.graphicSpec);
   const resizedBar = selectedBar.editCanvas({ height: 520 });
-  assert.deepEqual(resolveStoredSelection(resizedBar).keys, ["bars/stack/1"]);
+  assert.deepEqual(selectedItemPositions(resolveStoredSelection(resizedBar)), [1]);
   assert.equal(
     resolveStoredSelection(resizedBar).items[1].channels.y2,
     resolveStoredSelection(selectedBar).items[1].channels.y2
@@ -95,8 +94,8 @@ test("selects final bar and series items without changing their graphics", () =>
     property: "height",
     op: "max"
   });
-  assert.deepEqual(resolveStoredSelection(tallestSegment).keys, [
-    "bars/histogram/2"
+  assert.deepEqual(selectedItemPositions(resolveStoredSelection(tallestSegment)), [
+    2
   ]);
 
   const line = createCarsLineChart(cars);
@@ -132,7 +131,7 @@ test("weighted histogram selections use positive-weight final members", () => {
   const selected = histogram.selectMarks({ field: "weight", op: "max" });
   const state = resolveStoredSelection(selected);
 
-  assert.deepEqual(state.keys, ["histogram/histogram/1"]);
+  assert.deepEqual(selectedItemPositions(state), [1]);
   assert.deepEqual(state.items.map(item => item.members), [
     [{ value: 1, weight: 1 }],
     [{ value: 3, weight: 3 }]
@@ -169,9 +168,9 @@ test("highlights inline and reusable selections through wrapped point actions", 
   const reusable = pointProgram()
     .selectMarks({ id: "high", field: "x", op: "gte", value: 5 })
     .highlightMarks({ selection: "high", color: "#dc2626", size: 4 });
-  assert.deepEqual(resolveStoredSelection(reusable, "high").keys, [
-    "point/point/1",
-    "point/point/3"
+  assert.deepEqual(selectedItemPositions(resolveStoredSelection(reusable, "high")), [
+    2,
+    3
   ]);
   assert.deepEqual(
     reusable.trace.children.at(-1).children.map(child => child.op),
@@ -217,7 +216,7 @@ test("keeps an empty point highlight graphical no-op unless complement dimming i
     select: { field: "x", op: "eq", value: 999 }
   });
   assert.equal(empty.graphicSpec, base.graphicSpec);
-  assert.deepEqual(resolveStoredSelection(empty).keys, []);
+  assert.deepEqual(selectedItemPositions(resolveStoredSelection(empty)), []);
 
   const dimmed = base.highlightMarks({
     select: { field: "x", op: "eq", value: 999 },
@@ -263,9 +262,9 @@ test("reapplies selection and highlight intent after point rematerialization", (
     dimOthers: true
   });
   const resized = highlighted.editCanvas({ width: 300 });
-  assert.deepEqual(resolveStoredSelection(resized).keys, [
-    "point/point/1",
-    "point/point/3"
+  assert.deepEqual(selectedItemPositions(resolveStoredSelection(resized)), [
+    2,
+    3
   ]);
   assert.deepEqual(
     resized.graphicSpec.objects.point.items.slice(-2).map(child => child.type),
@@ -283,7 +282,7 @@ test("reapplies selection and highlight intent after point rematerialization", (
     op: "eq",
     value: "A"
   });
-  assert.deepEqual(resolveStoredSelection(filtered).keys, ["point/point/1"]);
+  assert.deepEqual(selectedItemPositions(resolveStoredSelection(filtered)), [1]);
   assert.equal(filtered.graphicSpec.objects.point.items.length, 2);
   assert.equal(filtered.graphicSpec.objects.point.items.at(-1).type, "path");
 });
@@ -329,7 +328,7 @@ test("highlights one bar item or one complete stack from the same y2 channel", (
     strokeWidth: 2.5,
     opacity: 1
   });
-  assert.deepEqual(resolveStoredSelection(item).keys, ["bars/histogram/5"]);
+  assert.deepEqual(selectedItemPositions(resolveStoredSelection(item)), [14]);
   assert.equal(item.graphicSpec.objects.bars.items.at(-1).properties.fill, "#facc15");
   assert.deepEqual(item.trace.children.at(-1).children.map(child => child.op), [
     "selectMarks",
@@ -345,14 +344,14 @@ test("highlights one bar item or one complete stack from the same y2 channel", (
     strokeWidth: 2.5,
     opacity: 1
   });
-  assert.deepEqual(resolveStoredSelection(stack).keys, ["bars/stack/1"]);
+  assert.deepEqual(selectedItemPositions(resolveStoredSelection(stack)), [1]);
   assert.equal(stack.graphicSpec.objects.bars.items.slice(-3).every(child =>
     child.properties.fill === "#facc15" &&
     child.properties.stroke === "#713f12"
   ), true);
 
   const resized = stack.editCanvas({ height: 520 });
-  assert.deepEqual(resolveStoredSelection(resized).keys, ["bars/stack/1"]);
+  assert.deepEqual(selectedItemPositions(resolveStoredSelection(resized)), [1]);
   assert.equal(resized.graphicSpec.objects.bars.items.slice(-3).every(child =>
     child.properties.fill === "#facc15"
   ), true);

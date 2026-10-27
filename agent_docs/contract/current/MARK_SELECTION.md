@@ -176,8 +176,9 @@ type MarkSelector =
   area, arc, rule과 Tick의 final semantic item resolver를 제공한다.
 - `id`: 생략한 첫 selection은 `${target}Selection`을 사용한다. 같은 role의 두 번째 selection은 explicit
   ID가 필요하며 기존 ID를 교체하지 않는다.
-- Effect: normalized selector와 target을 immutable `materializationConfigs.selections`에 저장하고
-  `currentSelection` context를 갱신한다. `semanticSpec`과 `graphicSpec`은 바꾸지 않는다.
+- Effect: normalized predicate or row-key meaning is stored once in `semanticSpec.resources` as a persistent-selection resource.
+  `materializationConfigs.selections` stores target, grain, projection, exact resource ref and optional composite sourceSelection.
+  `currentSelection` is updated; graphics stay unchanged. Input row indices are immediately resolved to stable row keys.
 - Rematerialization: stored selector는 현재 semantic point item에 다시 평가되므로 Canvas/scale/encoding/data
   cardinality 변경 뒤에도 stale graphic child ID를 저장하지 않는다.
 
@@ -218,8 +219,8 @@ type MarkSelector =
   유지하며 supplied selector는 partial merge가 아니라 complete replacement다. Target replacement는
   `removeMarkSelection` 뒤 `selectMarks`가 소유한다.
 - Effect: 새 selector 전체를 normalize하고 current target의 final item grain에서 compatibility를 preflight한 뒤
-  `materializationConfigs.selections[selection].selector`를 immutable하게 교체한다. Matching
-  `currentSelection` context를 갱신하고 semantic state는 바꾸지 않는다.
+  the persistent-selection resource at its next revision and rebinds all dependent selection references atomically.
+  Matching currentSelection context is updated; all dependent highlights and named labels are rematerialized.
 - Highlight replay: dependent highlight가 없으면 `graphicSpec`을 그대로 공유한다. Dependent highlight가 있으면
   target의 모든 highlight config를 잠시 분리하고 concrete mark와 categorical legend symbols를 empty baseline에서
   복구한 뒤 current keys로 remaining highlight, dimming, selected-last와 exact legend reflection을 declaration
@@ -336,3 +337,21 @@ type MarkSelector =
   `test/charts/mark-selection-points/public.test.js`,
   `test/charts/mark-selection-bars/public.test.js`, and their PNG render tests.
   Gate C evidence: `test/charts/mark-selection-lines/public.test.js`.
+
+## Persistent selection storage and concrete identity
+
+Only persistent-selection is registered in the shared resource registry. Resources have unique kind/id, non-negative safe revision,
+algorithmVersion "1", authored or generated ownership, exact typed data/resource inputs, closed options/result and provenance.
+Predicate options contain mode/predicate; row-key options contain mode/logicalDataId/rowKeys; result is empty. Predicate membership is
+reevaluated. Logical key membership survives deletion and reappearance. The stored target projection determines the current dataset.
+Prepared results pin a sourceRevisionVector and inputHash; stale inputs and dependency cycles are rejected. Removal restricts live
+references. Explicit generated ownership permits a preflighted cascade; authored shared consumers must be removed/rebound first.
+The existing removeMarkSelection highlight cleanup and named-label restriction remain unchanged. There are no generic domain resource actions.
+
+Final semantic item keys contain child path, owner, role and logical final-grain identity. Private graphic child IDs derive from item key
+and primitive role. Concrete identity metadata stores key, topology and direct row-lineage references; dataset lineage provides their
+complete contributors. Line/area series identity is separate from ordered member topology and segment roles. Composition namespaces
+keys so moving between child paths enters/exits. SVG scene v1 and Canvas scene v2 read only concrete metadata from graphicSpec.
+
+Evidence: `test/unit/actions/data/row-identity.test.js`, `test/unit/core/resource-state.test.js`,
+`test/unit/persistence/legacy-selection.test.js`, `test/unit/persistence/legacy-derived.test.js`.

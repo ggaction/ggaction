@@ -1,3 +1,4 @@
+import { selectedItemPositions } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -30,7 +31,7 @@ test("selects final Tick items with fields, channels, and concrete lines", () =>
   });
   const resolved = resolveStoredSelection(selected, "highest");
 
-  assert.deepEqual(resolved.keys, ["ticks/tick/2"]);
+  assert.deepEqual(selectedItemPositions(resolved), [2]);
   assert.deepEqual(resolved.items.map(item => item.fields.id), [
     "low", "middle", "high"
   ]);
@@ -44,7 +45,8 @@ test("selects final Tick items with fields, channels, and concrete lines", () =>
 });
 
 test("replays Tick highlight order and appearance after rematerialization", () => {
-  const highlighted = tickProgram().highlightMarks({
+  const original = tickProgram();
+  const highlighted = original.highlightMarks({
     target: "ticks",
     select: { field: "group", op: "eq", value: "A" },
     stroke: "#dc2626",
@@ -54,7 +56,7 @@ test("replays Tick highlight order and appearance after rematerialization", () =
   const resized = highlighted.editCanvas({ width: 300 });
   const resolved = resolveStoredSelection(resized);
 
-  assert.deepEqual(resolved.keys, ["ticks/tick/0", "ticks/tick/1"]);
+  assert.deepEqual(selectedItemPositions(resolved), [1, 2]);
   assert.deepEqual(
     resized.graphicSpec.objects.ticks.items.slice(-2).map(item =>
       item.properties.stroke
@@ -63,7 +65,7 @@ test("replays Tick highlight order and appearance after rematerialization", () =
   );
   assert.deepEqual(
     resized.graphicSpec.objects.ticks.items.slice(-2).map(item => item.id),
-    ["ticks:1", "ticks:2"]
+    highlighted.graphicSpec.objects.ticks.items.slice(-2).map(item => item.id)
   );
   assert.deepEqual(resolved.items.map(item => [
     item.fields.id,
@@ -74,7 +76,7 @@ test("replays Tick highlight order and appearance after rematerialization", () =
     ["middle", "#dc2626"]
   ]);
 
-  const retained = tickProgram().highlightMarks({
+  const retained = original.highlightMarks({
     target: "ticks",
     select: { field: "x", op: "max" },
     stroke: "#dc2626",
@@ -82,7 +84,7 @@ test("replays Tick highlight order and appearance after rematerialization", () =
   }).editCanvas({ height: 220 });
   assert.deepEqual(
     retained.graphicSpec.objects.ticks.items.map(item => item.id),
-    ["ticks:0", "ticks:1", "ticks:2"]
+    original.graphicSpec.objects.ticks.items.map(item => item.id)
   );
 });
 

@@ -120,7 +120,7 @@ test("composes selective legends, encoding teardown, and selection release", () 
   assert.ok(withoutShape.graphicSpec.objects.colorLegendSymbols);
   assert.equal(withoutShape.graphicSpec.objects.colorLegendSymbols.type, "rect");
   assert.equal(
-    editedSelection.materializationConfigs.selections.focus.selector.value,
+    editedSelection.semanticSpec.resources.find(resource => resource.id === "focus").options.predicate.value,
     "B"
   );
   assert.deepEqual(withoutHighlight.graphicSpec, clean.graphicSpec);

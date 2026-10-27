@@ -35,7 +35,7 @@ for(const ratio of [1,2])test(`${name} preserves literal underlay pixels and opa
       const {createPrimitiveProgram}=await import('/primitive.js');
       const programs=[createPlotUnderlayProgram(),createPrimitiveProgram(),
         createPlotUnderlayProgram({axisUnderlay:false,borderUnderlay:false})];
-      const svgs=programs.map(p=>renderToSVG(p)),checks=[];
+      const svgs=programs.map(p=>renderToSVG(p,{resourceNamespace:"comparison"})),checks=[];
       for(const backend of ['Canvas','SVG']){
         const pixels=[],probes=[];
         for(let i=0;i<programs.length;i++){

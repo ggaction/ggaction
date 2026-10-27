@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { chart } from "../../../../src/index.js";
@@ -67,7 +68,7 @@ test("source label edits recalculate header lanes and reject insufficient intern
   assertHeaderClearance(bigger);
   assert.ok(bigger.graphicSpec.objects.canvas.properties.height > small.graphicSpec.objects.canvas.properties.height);
   const direct = rose(18).facet({ field: "year", spacing: "plot", gap: 200, guides: { legend: false } });
-  assert.deepEqual(bigger.graphicSpec, direct.graphicSpec);
+  assertEquivalentMeaning(bigger.graphicSpec, direct.graphicSpec);
   assert.throws(() => rose().facet({ field: "year", columns: 1, spacing: "plot", gap: 30,
     guides: { legend: false } }), /too small for the facet headers/);
 });

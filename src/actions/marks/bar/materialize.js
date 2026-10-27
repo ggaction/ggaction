@@ -1,4 +1,4 @@
-import { materializeMarkClip } from "../../../materialization/markClip.js";
+import { materializeMarkOutput } from "../../../materialization/markOutput.js";
 import { findLayer } from "../../../selectors/layers.js";
 import { editGraphicProperties } from "../../primitives/graphicProperties.js";
 import { action } from "../../../core/action.js";
@@ -30,7 +30,7 @@ function editRectangles(program, id, rectangles) {
     item.properties?.blend !== undefined);
   if (hasShapeStyle || blend !== undefined || previousBlend) {
     const radius = appearance;
-    return materializeFollowingOverlays(materializeMarkClip(replaceGraphicItems(
+    return materializeFollowingOverlays(materializeMarkOutput(replaceGraphicItems(
       program,
       id,
       "rect",
@@ -54,7 +54,7 @@ function editRectangles(program, id, rectangles) {
       value: rectangles.map(rect => rect.opacity ?? 1)
     });
   }
-  return materializeFollowingOverlays(materializeMarkClip(next, id), id);
+  return materializeFollowingOverlays(materializeMarkOutput(next, id), id);
 }
 
 export const rematerializeBarMark = /* @__PURE__ */ action(

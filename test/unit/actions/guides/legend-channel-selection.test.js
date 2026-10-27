@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { chart } from "../../../../src/index.js";
@@ -124,7 +125,7 @@ test("complete scatter facades retain exact content in Full and Basic", () => {
         color: "g", shape: "g", size: "m", guides: { axes: false, grid: false,
           legend: { channels: ["color", "size"], count: 3 } } });
     assert.deepEqual(represented(actual), ["color", "size"]);
-    assert.deepEqual(actual.graphicSpec, base(create).createLegend({ channels: ["color", "size"], count: 3 }).graphicSpec);
+    assertEquivalentMeaning(actual.graphicSpec, base(create).createLegend({ channels: ["color", "size"], count: 3 }).graphicSpec);
   }
 });
 
@@ -164,7 +165,7 @@ test("point channel omission matches explicit content across Full and Basic auth
           ...(channels.includes("shape") ? { shape: "g" } : {}),
           ...(channels.includes("size") ? { size: "m" } : {}),
           guides: { axes: false, grid: false, legend: {} } });
-      assert.deepEqual(facade.graphicSpec, explicit.graphicSpec);
+      assertEquivalentMeaning(facade.graphicSpec, explicit.graphicSpec);
       assert.deepEqual(represented(facade), [...channels].sort());
       assert.equal(before.semanticSpec.guides.legend, undefined);
     }

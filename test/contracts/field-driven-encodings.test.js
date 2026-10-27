@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import path from "node:path";
@@ -68,7 +69,7 @@ test("keeps both field-driven visual capabilities executable and equivalent", ()
   for (const variant of [weightedTheta, strokeWidth]) {
     assert.ok(variant);
     assert.equal(variant.artifact.scope, "charts");
-    assert.deepEqual(variant.userFacing().graphicSpec, variant.primitive().graphicSpec);
+    assertEquivalentMeaning(variant.userFacing().graphicSpec, variant.primitive().graphicSpec);
   }
 });
 

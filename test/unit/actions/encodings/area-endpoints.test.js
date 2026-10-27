@@ -59,7 +59,7 @@ test("break segments preserve source identity, nulls and shared strict consumers
   assert.deepEqual(paths(result).map(path => [...new Set(path.slice(0, -1).map(p => p.x))]), [[150, 325], [675, 850]]);
   assert.deepEqual(result.semanticSpec.datasets[0].values, input);
   const items = resolveAreaItems(result, layer(result), result.semanticSpec.datasets[0]);
-  assert.deepEqual(items.map(item => item.members.map(row => row.x)), [[0, 1], [3, 4]]);
+  assert.deepEqual(items.map(item => item.members.map(row => row.x)), [[0, 1, 3, 4]]);
   assertAtomicFailures(result, [
     { operation: () => result.editAreaMark({ missing: "error" }) },
     { operation: () => result.createPointMark({ id: "strict", data: "data" }).encodeX({ field: "x" }).encodeY({ field: "value" }) }

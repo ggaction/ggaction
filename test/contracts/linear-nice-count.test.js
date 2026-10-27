@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../support/identity-equivalence.js";
 import test from "node:test";import assert from "node:assert/strict";
 import { chart } from "../../src/index.js";
 import { chart as basicChart } from "../../src/basic.js";
@@ -13,14 +14,14 @@ function fixture(factory=chart,nice={count:10}){
 }
 test("Full and Basic facades retain the same immutable count policy and graphics",()=>{
   const full=fixture(),basic=fixture(basicChart);
-  assert.deepEqual(full.graphicSpec,basic.graphicSpec);assert.deepEqual(full.resolvedScales.y.domain,[0,110]);
+  assertEquivalentMeaning(full.graphicSpec,basic.graphicSpec);assertEquivalentMeaning(full.resolvedScales.y.domain,[0,110]);
   const input={count:10},p=fixture(chart,input);input.count=20;
   assert.deepEqual(p.semanticSpec.scales.find(s=>s.id==="y").nice,{count:10});
   assert.deepEqual(p.resolvedScales.y.domain,[0,110]);
 });
 test("focused and generic editors rematerialize the same resolved owner",()=>{
   const before=fixture(chart,true),saved=JSON.stringify(before),focused=before.editYScale({nice:{count:10}}),generic=before.editScale({id:"y",nice:{count:10}});
-  assert.deepEqual(focused.graphicSpec,fixture().graphicSpec);assert.deepEqual(generic.graphicSpec,focused.graphicSpec);
+  assertEquivalentMeaning(focused.graphicSpec,fixture().graphicSpec);assertEquivalentMeaning(generic.graphicSpec,focused.graphicSpec);
   assert.deepEqual(before.resolvedScales.y.domain,[0,120]);assert.equal(JSON.stringify(before),saved);
   assert.deepEqual(focused.editYScale({nice:false}).resolvedScales.y.domain,[0,108]);
   assert.deepEqual(focused.editYScale({nice:true}).resolvedScales.y.domain,[0,120]);
@@ -29,7 +30,7 @@ test("explicit descending domains keep precedence and auto restores count infere
   const p=fixture().editYScale({domain:[200,-10]});assert.deepEqual(p.resolvedScales.y.domain,[200,-10]);
   assert.deepEqual(p.editYScale({domain:"auto"}).resolvedScales.y.domain,[0,110]);
   const reversed=fixture().editYScale({reverse:true});assert.deepEqual(reversed.resolvedScales.y.domain,[0,110]);
-  assert.deepEqual(reversed.graphicSpec,fixture().editYScale({reverse:true}).graphicSpec);
+  assertEquivalentMeaning(reversed.graphicSpec,fixture().editYScale({reverse:true}).graphicSpec);
 });
 test("independent facets apply the count rule to every actual child domain",()=>{
   const maxima=[133,108,171,107,139,116],values=maxima.flatMap((maximum,i)=>[{group:String(i),x:0,y:0},{group:String(i),x:1,y:maximum}]);
@@ -58,7 +59,7 @@ test("shared scale edits and filtering refresh all consumers",()=>{
   assert.deepEqual(p.resolvedScales.y.domain,[0,140]);
   const q=p.filterMarks({target:"other",field:"y",op:"eq",value:0});
   assert.deepEqual(q.resolvedScales.y.domain,[0,110]);
-  assert.deepEqual(q.graphicSpec.objects.linePlot,fixture().graphicSpec.objects.linePlot);
+  assertEquivalentMeaning(q.graphicSpec.objects.linePlot,fixture().graphicSpec.objects.linePlot);
 });
 test("persistence preserves canonical policy, pixels and editable inference",()=>{
   const p=createLinearNiceCount(),stored=serializeProgram(p),restored=deserializeProgram(stored);

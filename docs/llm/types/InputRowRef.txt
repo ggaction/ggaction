@@ -1,0 +1,4 @@
+export interface InputRowRef {
+  readonly data: string; readonly logicalDataId: string; readonly revision: number;
+  readonly rowKey: string; readonly role: string;
+}

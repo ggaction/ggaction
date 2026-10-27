@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { chart } from "../../../../src/index.js";
@@ -25,7 +26,7 @@ test("interval edge edits and content revisions converge with direct creation an
     const original = base().createLegend({ position: from, border: true });
     const itemGap = original.guideConfigs.legend.interval.itemGap;
     const actual = original.editLegend({ position });
-    assert.deepEqual(actual.graphicSpec, base().createLegend({ position, border: true, itemGap }).graphicSpec);
+    assertEquivalentMeaning(actual.graphicSpec, base().createLegend({ position, border: true, itemGap }).graphicSpec);
     assert.deepEqual(actual.editCanvas({ width: 1100 }).graphicSpec,
       original.editCanvas({ width: 1100 }).editLegend({ position }).graphicSpec);
     assert.deepEqual(actual.editLegend({ channels: ["color"], position }).graphicSpec, actual.graphicSpec);
@@ -70,7 +71,7 @@ test("interval and opacity blocks share each edge lane with preserved borders", 
     assert.ok(border.width > 0 && border.height > 0);
     const resized = source.editCanvas({ width: 1200, height: 1000 });
     assert.deepEqual(resized.graphicSpec, resized.editCanvas({ width: 1200, height: 1000 }).graphicSpec);
-    assert.deepEqual(source.editLegend({ channels: ["color"] }).graphicSpec,
+    assertEquivalentMeaning(source.editLegend({ channels: ["color"] }).graphicSpec,
       base().encodeOpacity({ field: "m" }).createLegend({ channels: ["color"], position, border: true }).graphicSpec);
   }
 });

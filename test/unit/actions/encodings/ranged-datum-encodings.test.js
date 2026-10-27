@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { chart } from "../../../../src/index.js";
@@ -117,7 +118,7 @@ test("datum range replacement preflights the final pair and its shared scale", (
       scale: { id: "positiveRange", type: "log", domain: [1, 100], nice: false } });
     const fresh = base(mark, channel)[op]({ lower: { datum: 1 }, upper: "high",
       scale: { id: "positiveRange", type: "log", domain: [1, 100], nice: false } });
-    assert.deepEqual(next.graphicSpec, fresh.graphicSpec);
+    assertEquivalentMeaning(next.graphicSpec, fresh.graphicSpec);
     assert.equal(JSON.stringify(before), snapshot);
     assert.equal(next.semanticSpec.layers[0].encoding[channel + "2"].datum, undefined);
     assert.equal(next.semanticSpec.layers[0].encoding[channel + "2"].field, "high");

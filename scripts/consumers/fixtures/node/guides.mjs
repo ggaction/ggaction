@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "./identity-equivalence.js";
 import { fileURLToPath as consumerPath } from "node:url";
 import assert from "node:assert/strict";
 import { chart, hconcat, render, vconcat } from "ggaction";
@@ -176,7 +177,7 @@ assert.equal(underlayPlot.guideConfigs.axis.x.frame.underlay,true);
 assert.equal(underlayPlot.materializationConfigs.canvas.plotBorder.underlay,true);
 assert.deepEqual(deserializeProgram(serializeProgram(underlayPlot)).graphicSpec,underlayPlot.graphicSpec);
 const defaultPlot=underlayPlot.editXAxis({underlay:false}).editCanvas({plotBorder:{underlay:false}});
-assert.deepEqual(defaultPlot.graphicSpec,createPlotUnderlayProgram({axisUnderlay:false,borderUnderlay:false}).graphicSpec);
+assertEquivalentMeaning(defaultPlot.graphicSpec,createPlotUnderlayProgram({axisUnderlay:false,borderUnderlay:false}).graphicSpec);
 assert.notEqual(renderToSVG(underlayPlot),renderToSVG(defaultPlot));
 assert.ok((await renderToPNGBuffer(underlayPlot)).buffer.length>100);
 assert.ok((await renderToPDFBuffer(underlayPlot)).buffer.length>100);

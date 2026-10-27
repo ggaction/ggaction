@@ -1,3 +1,4 @@
+import { validateGraphicIdentity, graphicIdentityId } from "../../grammar/schemas/graphicIdentity.js";
 import { validateGraphicClip } from "../../grammar/schemas/graphicClip.js";
 import { validateGraphicItemLimit } from "../../core/validation.js";
 import { closedAction } from "../../core/action.js";
@@ -25,7 +26,7 @@ function validateCollectionItem(item, ownerId, index) {
   if (!isPlainObject(item)) {
     throw new TypeError(`collection.items[${index}] must be a plain object.`);
   }
-  const unknown = Object.keys(item).find(key => !["type", "properties"].includes(key));
+  const unknown = Object.keys(item).find(key => !["type", "properties", "identity"].includes(key));
   if (unknown !== undefined) throw new Error(`Unknown collection item property "${unknown}".`);
   const type = validateGraphicType(item.type);
   if (!isPrimitiveDrawableGraphicType(type)) {
@@ -39,7 +40,8 @@ function validateCollectionItem(item, ownerId, index) {
     validateConcreteGraphicValue(type, property, value);
   }
   return freezeOwned({
-    id: `${ownerId}:${index}`,
+    id: item.identity === undefined ? `${ownerId}:${index}` : graphicIdentityId(ownerId, validateGraphicIdentity(item.identity)),
+    ...(item.identity === undefined ? {} : { identity: cloneAndFreeze(item.identity) }),
     type,
     properties: cloneAndFreeze(item.properties)
   });
@@ -48,7 +50,9 @@ function validateCollectionItem(item, ownerId, index) {
 function replaceCollectionItems(value, id, program) {
   if (!Array.isArray(value)) throw new TypeError("collection.items must be an array.");
   validateGraphicItemLimit(value.length, resolveGraphicItemCapacity(program, { id, label: "collection.items length" }));
-  return freezeOwned(value.map((item, index) => validateCollectionItem(item, id, index)));
+  const items = value.map((item, index) => validateCollectionItem(item, id, index));
+  if (new Set(items.map(item => item.id)).size !== items.length) throw new Error("Duplicate concrete item identity.");
+  return freezeOwned(items);
 }
 
 function replaceDrawableItems(value, id, type, program) {
@@ -60,6 +64,7 @@ function replaceDrawableItems(value, id, type, program) {
     type,
     items: freezeOwned(items.map(item => freezeOwned({
       id: item.id,
+      ...(item.identity === undefined ? {} : { identity: item.identity }),
       properties: item.properties
     })))
   });
@@ -77,6 +82,7 @@ export function replaceGraphicItems(program, target, baseType, items) {
     type: baseType,
     items: freezeOwned(graphic.items.map(item => freezeOwned({
       id: item.id,
+      ...(item.identity === undefined ? {} : { identity: item.identity }),
       properties: item.properties
     })))
   });

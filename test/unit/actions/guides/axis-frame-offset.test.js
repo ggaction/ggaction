@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { chart } from "../../../../src/index.js";
@@ -54,9 +55,9 @@ test("frame/title orthogonal offsets match the independent screen-coordinate ora
 test("complete, aggregate and whole edits converge and zero restores plot-edge graphics", () => {
   const p = base().createXAxis();
   const expected = base().createXAxis({ offset: 20 });
-  assert.deepEqual(p.editXAxis({ offset: 20 }).graphicSpec, expected.graphicSpec);
-  assert.deepEqual(base().createAxes({ x: { offset: 20 }, y: false }).graphicSpec, expected.graphicSpec);
-  assert.deepEqual(expected.editXAxis({ offset: 0 }).graphicSpec, p.graphicSpec);
+  assertEquivalentMeaning(p.editXAxis({ offset: 20 }).graphicSpec, expected.graphicSpec);
+  assertEquivalentMeaning(base().createAxes({ x: { offset: 20 }, y: false }).graphicSpec, expected.graphicSpec);
+  assertEquivalentMeaning(expected.editXAxis({ offset: 0 }).graphicSpec, p.graphicSpec);
   const moved = expected.editXAxis({ position: "top" });
   assert.equal(moved.guideConfigs.axis.x.frame.offset, 20);
   assert.equal(moved.graphicSpec.objects.xAxisLine.properties.y1, 180);
@@ -106,7 +107,7 @@ test("public frame geometry has exact same-run PNG and SVG parity with independe
       }
     }
   }
-  assert.deepEqual(actual.graphicSpec, primitive.graphicSpec);
+  assertEquivalentMeaning(actual.graphicSpec, primitive.graphicSpec);
   assert.equal(renderToSVG(actual), renderToSVG(primitive));
   const expectedPng = await renderToPNGBuffer(primitive), actualPng = await renderToPNGBuffer(actual);
   assert.deepEqual(actualPng.buffer, expectedPng.buffer);

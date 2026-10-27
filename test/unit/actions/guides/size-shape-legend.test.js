@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import {chart}from'../../../../src/index.js';
@@ -53,7 +54,7 @@ test('eligibility, mapped overrides and malformed stored state reject atomically
  assert.equal(JSON.stringify(p),before);
  const cfg=structuredClone(p.materializationConfigs);cfg.guides.legend.series.sizeAreas[1]=99;
  assert.throws(()=>serializeProgram(p._clone({materializationConfigs:cfg})),/Stale combined/);
- const ordinary=source().createLegend();assert.deepEqual(source().createLegend({combine:'separate'}).graphicSpec,ordinary.graphicSpec);
+ const ordinary=source().createLegend();assertEquivalentMeaning(source().createLegend({combine:'separate'}).graphicSpec,ordinary.graphicSpec);
  const updated=p.editScale({id:'size',range:[0,36,400]});assert.deepEqual(updated.guideConfigs.legend.series.sizeAreas,[0,36,400]);
  assert.deepEqual(updated.editCanvas({width:1300}).editCanvas({width:1200}).graphicSpec,updated.graphicSpec);
 });

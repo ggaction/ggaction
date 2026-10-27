@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { chart } from "../../../src/index.js";
@@ -21,7 +22,7 @@ test("axis-only typography is order independent and leaves other text untouched"
     const before = serializeProgram(plain);
     const after = plain.applyTheme({ theme });
     const first = complete(base(factory).applyTheme({ theme }));
-    assert.deepEqual(first.graphicSpec, after.graphicSpec);
+    assertEquivalentMeaning(first.graphicSpec, after.graphicSpec);
     assert.equal(text(after, "xAxisLabels").fontSize, 16);
     assert.equal(text(after, "xAxisLabels").fontFamily, "serif");
     assert.equal(text(after, "xAxisLabels").fill, "red");
@@ -59,7 +60,7 @@ test("Polar and Parallel roles use scoped typography and restore family defaults
   const polar = polarPlot(base());
   const parallel = parallelPlot(base());
   for (const build of [polarPlot, parallelPlot]) {
-    assert.deepEqual(build(base().applyTheme({ theme })).graphicSpec, build(base()).applyTheme({ theme }).graphicSpec);
+    assertEquivalentMeaning(build(base().applyTheme({ theme })).graphicSpec, build(base()).applyTheme({ theme }).graphicSpec);
   }
   for (const [source, labels, title] of [[polar, "thetaAxisLabels", "thetaAxisTitle"],
     [parallel, "parallelAxisLabels", "parallelAxisTitles"]]) {

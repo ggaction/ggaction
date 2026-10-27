@@ -33,8 +33,8 @@ test("matches stable multi-legend output in Canvas, SVG, PNG, and PDF", async ()
       `${JSON.stringify(primitiveCanvas.calls, null, 2)}\n`
     );
 
-    const primitiveSVG = renderToSVG(primitive);
-    const userFacingSVG = renderToSVG(userFacing);
+    const primitiveSVG = renderToSVG(primitive, { resourceNamespace: "comparison" });
+    const userFacingSVG = renderToSVG(userFacing, { resourceNamespace: "comparison" });
     assert.equal(userFacingSVG, primitiveSVG);
     await writeFile(`${artifactRoot}/primitive.svg`, primitiveSVG);
     await writeFile(`${artifactRoot}/user-facing.svg`, userFacingSVG);

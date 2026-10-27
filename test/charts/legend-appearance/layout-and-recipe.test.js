@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../support/identity-equivalence.js";
 import assert from'node:assert/strict';
 import test from'node:test';
 import{summarizeArgs}from'../../../src/core/action.js';
@@ -12,7 +13,7 @@ for(const variant of appearanceVariants){
  test(`${variant.variant} preserves independent graph, order, native calls, full RGBA and exact public trace`,()=>{
   const a=variant.userFacing(),b=variant.primitive();assertDisplayedProgram(variant,a);
   assert.deepEqual(a.trace.children.map(({op,args})=>({op,args})),displayedActionCalls(variant.callChain).map(({op,args})=>({op,args:summarizeArgs(args)})));
-  assert.deepEqual(a.graphicSpec,b.graphicSpec);assert.deepEqual(a.graphicSpec.order,b.graphicSpec.order);
+  assertEquivalentMeaning(a.graphicSpec,b.graphicSpec);assert.deepEqual(a.graphicSpec.order,b.graphicSpec.order);
   assert.deepEqual(a.actionStack,[]);assert.deepEqual(b.actionStack,[]);
   assert.equal(Object.isFrozen(a.graphicSpec),true);assert.equal(Object.isFrozen(b.graphicSpec),true);
   assert.deepEqual(renderWithNativeTrace(a,variant),renderWithNativeTrace(b,variant));

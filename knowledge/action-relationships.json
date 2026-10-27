@@ -1417,11 +1417,14 @@
     },
     {
       "name": "selectMarks",
-      "wraps": []
+      "wraps": [
+        "editSemantic"
+      ]
     },
     {
       "name": "editMarkSelection",
       "wraps": [
+        "editSemantic",
         "editGraphics"
       ]
     },
@@ -1434,7 +1437,8 @@
     {
       "name": "removeMarkSelection",
       "wraps": [
-        "removeMarkHighlight"
+        "removeMarkHighlight",
+        "editSemantic"
       ]
     },
     {

@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { chart } from "../../../../src/index.js";
@@ -38,7 +39,7 @@ for(const kind of ["line","area","band"]){
 test("Basic line facade retains the recipe without broadening its chart families",()=>{
   for(const family of ["Line"]){
     const options={x:"x",y:"y",guides:false,[family.toLowerCase()]:{curve}};
-    assert.deepEqual(base(basicChart)[`create${family}Plot`](options).graphicSpec,
+    assertEquivalentMeaning(base(basicChart)[`create${family}Plot`](options).graphicSpec,
       base()[`create${family}Plot`](options).graphicSpec);
   }
   assert.equal(typeof basicChart().createAreaPlot,"undefined");

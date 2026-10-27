@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { chart, hconcat } from "../../../src/index.js";
@@ -19,6 +20,19 @@ function corrupt(program, mutate) {
   mutate(state);
   envelope.payload = encodeValue(state);
   return JSON.stringify(envelope);
+}
+
+// Synthetic old-format corruption cases supplement the fixed historical files.
+function legacyState(state) {
+  delete state.semanticSpec.resources;
+  for (const dataset of state.semanticSpec.datasets) {
+    for (const field of ["logicalId", "revision", "allocationId", "rowKeys", "keySpec", "nextGeneratedKey", "lineage"]) delete dataset[field];
+  }
+  for (const graphic of Object.values(state.graphicSpec.objects)) {
+    for (const item of graphic.items ?? []) delete item.identity;
+  }
+  for (const child of Object.values(state.children)) legacyState(child);
+  return state;
 }
 
 test("all action corpus programs round trip without replay and preserve graphics and state", () => {
@@ -74,6 +88,7 @@ test("editable schema version 1 migrates dataset schemas while version 2 require
     });
   const envelope = JSON.parse(serializeProgram(original));
   const state = decodeValue(envelope.payload);
+  legacyState(state);
   for (const dataset of state.semanticSpec.datasets) delete dataset.schema;
   envelope.schemaVersion = 1;
   envelope.payload = encodeValue(state);
@@ -87,7 +102,7 @@ test("editable schema version 1 migrates dataset schemas while version 2 require
     migrated.semanticSpec.datasets[1].schema.fields.map(field => field.name),
     ["group", "mean"]
   );
-  assert.equal(JSON.parse(serializeProgram(migrated)).schemaVersion, 3);
+  assert.equal(JSON.parse(serializeProgram(migrated)).schemaVersion, 4);
 
   envelope.schemaVersion = 2;
   assert.throws(
@@ -106,7 +121,7 @@ test("editable schema version 1 migrates dataset schemas while version 2 require
     }
   ] });
   const composedEnvelope = JSON.parse(serializeProgram(composed));
-  const composedState = decodeValue(composedEnvelope.payload);
+  const composedState = legacyState(decodeValue(composedEnvelope.payload));
   for (const child of Object.values(composedState.children)) {
     for (const dataset of child.semanticSpec.datasets) delete dataset.schema;
   }
@@ -130,6 +145,7 @@ test("editable version 1 migrates lookup schemas from both lossless raw tables",
     } });
   const saved = serializeProgram(original), envelope = JSON.parse(saved);
   const state = decodeValue(envelope.payload);
+  legacyState(state);
   for (const dataset of state.semanticSpec.datasets) delete dataset.schema;
   envelope.schemaVersion = 1; envelope.payload = encodeValue(state);
   const migrated = deserializeProgram(JSON.stringify(envelope));
@@ -149,7 +165,7 @@ test("editable version 1 migrates lookup schemas from both lossless raw tables",
   partialState.semanticSpec.datasets.find(dataset => dataset.id === "reference").schema =
     original.semanticSpec.datasets.find(dataset => dataset.id === "reference").schema;
   withPartialSchemas.payload = encodeValue(partialState);
-  assert.deepEqual(deserializeProgram(JSON.stringify(withPartialSchemas)).semanticSpec, migrated.semanticSpec);
+  assertEquivalentMeaning(deserializeProgram(JSON.stringify(withPartialSchemas)).semanticSpec, migrated.semanticSpec);
   for (const change of [
     s => { s.semanticSpec.datasets.find(d => d.id === "joined").values[0].joinedValue = "tampered"; },
     s => { s.semanticSpec.datasets.find(d => d.id === "joined").transform[0].lookup.data = "unknown"; },
@@ -227,7 +243,7 @@ test("registered extensions restore without executing actions; unknown classes a
 
 test("envelopes, canonical keys, and closed traces are mandatory", () => {
   const envelope = JSON.parse(serializeProgram(chart()));
-  for (const value of [null, 1, {}, "{", "[]", JSON.stringify({ ...envelope, schemaVersion: 4 }),
+  for (const value of [null, 1, {}, "{", "[]", JSON.stringify({ ...envelope, schemaVersion: 5 }),
     JSON.stringify({ ...envelope, kind: "graphic" }), JSON.stringify({ ...envelope, packageVersion: "unknown" }),
     JSON.stringify({ ...envelope, extra: true })]) assert.throws(() => deserializeProgram(value));
   for (const mutate of [s => { delete s.context; }, s => { s.markConfigs = {}; },
@@ -294,7 +310,23 @@ test("editable version 2 remains readable while shared payloads require version 
   const source = example();
   const envelope = JSON.parse(serializeProgram(source));
   const state = decodeValue(envelope.payload);
+  legacyState(state);
   const legacy = { ...envelope, schemaVersion: 2, payload: encodeValue(state) };
-  assert.deepEqual(deserializeProgram(JSON.stringify(legacy)).graphicSpec, source.graphicSpec);
+  assert.deepEqual(deserializeProgram(JSON.stringify(legacy)).graphicSpec, state.graphicSpec);
   assert.throws(() => deserializeProgram(JSON.stringify({ ...envelope, schemaVersion: 2 })), /require.*version 3/);
+});
+
+
+test("editable snapshots reject stale concrete row references and invalid child scopes", () => {
+  const original = example();
+  for (const mutate of [
+    identity => { identity.lineage.revision += 1; },
+    identity => { identity.lineage.logicalDataId = "unrelated"; },
+    identity => { identity.lineage.data = "missing"; },
+    identity => { identity.lineage.rowKeys = ["missing"]; },
+    identity => { const key = JSON.parse(identity.key); key[0] = ["missing"]; identity.key = JSON.stringify(key); },
+    identity => { const key = JSON.parse(identity.key); key[3] = [null, {}]; identity.key = JSON.stringify(key); }
+  ]) assert.throws(() => deserializeProgram(corrupt(original, state => mutate(state.graphicSpec.objects.points.items[0].identity))));
+  const composed = hconcat({ programs: [{ id: "left", program: original }, { id: "right", program: original }] });
+  assert.equal(serializeProgram(deserializeProgram(serializeProgram(composed))), serializeProgram(composed));
 });

@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { chart } from "../../../../src/index.js";
@@ -107,7 +108,7 @@ test("preserves final sector membership through selection and weighted aggregati
   const p = base().createPiePlot({ category: "category", value: "value", aggregate: "sum" });
   const selected = p.selectMarks({ target: "piePlot", field: "category", op: "eq", value: "A" });
   const selection = resolveStoredSelection(selected);
-  assert.deepEqual(selection.keys, ["piePlot/sector/0"]);
+  assert.deepEqual(selection.keys, [selection.items[0].key]);
   assert.equal(selection.items[0].members.length, 2);
   assert.equal(selected.graphicSpec, p.graphicSpec);
 });
@@ -138,7 +139,7 @@ test("infers weighted sum from the value field while keeping a three-option faca
   for (const action of ["createPiePlot", "createRosePlot", "createRadialBarPlot"]) {
     const p = base()[action]({ category: "category", value: "value", guides: false });
     const q = base()[action]({ category: "category", value: "value", aggregate: "sum", guides: false });
-    assert.deepEqual(p.semanticSpec, q.semanticSpec);
-    assert.deepEqual(p.graphicSpec, q.graphicSpec);
+    assertEquivalentMeaning(p.semanticSpec, q.semanticSpec);
+    assertEquivalentMeaning(p.graphicSpec, q.graphicSpec);
   }
 });

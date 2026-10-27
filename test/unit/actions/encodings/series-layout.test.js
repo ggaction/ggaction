@@ -53,7 +53,7 @@ test("a missing endpoint breaks all stacked series at the same source position",
   const p = area(values, { missing: "break", layout: "stack" });
   const series = derive(p).series;
   assert.deepEqual(series.map(s => s.sourceIndices), [[0, 1], [3, 4], [5, 6], [8, 9]]);
-  assert.deepEqual(resolveAreaItems(p, layer(p), p.semanticSpec.datasets[0]).map(item => item.members.map(row => row.x)), [[0, 1], [3, 4], [0, 1], [3, 4]]);
+  assert.deepEqual(resolveAreaItems(p, layer(p), p.semanticSpec.datasets[0]).map(item => item.members.map(row => row.x)), [[0, 1, 3, 4], [0, 1, 3, 4]]);
   assert.deepEqual(p.semanticSpec.datasets[0].values, values);
   const zero = area(rows.map(row => ({ ...row, value: 0 })), { layout: "fill" });
   assert.deepEqual(zero.resolvedScales.y.domain, [0, 1]);

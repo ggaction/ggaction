@@ -1,3 +1,4 @@
+import { validateGraphicIdentity } from "../grammar/schemas/graphicIdentity.js";
 import { validateLegendOverflow } from "../grammar/legendOverflow.js";
 import { normalizeTextOverrides } from "../grammar/text.js";
 import { normalizeLegendDisplayLabelMap } from "../grammar/displayLabels.js";
@@ -59,6 +60,11 @@ import { validateGraphicType, isGraphicContainerType } from "../grammar/schemas/
 import { validateConcreteGraphicProperties } from "../grammar/schemas/concreteGraphic.js";
 import { walkGraphicTreeEvents } from "../grammar/schemas/graphicTree.js";
 import { invalidSnapshot } from "./codec.js";
+import { DATA_IDENTITY_FIELDS, validateSourceIdentity } from "../core/itemIdentity.js";
+import { validateDatasetLineage } from "../grammar/rowLineage.js";
+import { validateResourceGraph } from "../materialization/resourceState.js";
+import { storedSelectionSelector } from "../selectors/selectionResources.js";
+import { requireStoredResource, resolveGraphicLineage } from "../selectors/resources.js";
 
 export const STATE_KEYS = Object.freeze([
   "semanticSpec", "graphicSpec", "resolvedScales", "materializationConfigs",
@@ -120,7 +126,8 @@ export function validateGraphic(graphic, path = "payload.graphicSpec") {
       if (object.type === "canvas" || object.properties !== undefined) throw invalidSnapshot(`Invalid item owner "${id}".`, path);
       requireArray(object.items, `${path}.objects.${id}.items`);
       for (const item of object.items) {
-        exactKeys(item, object.type === "collection" ? ["id", "type", "properties"] : ["id", "properties"], path);
+        exactKeys(item, [...(object.type === "collection" ? ["id", "type", "properties"] : ["id", "properties"]), ...(item.identity === undefined ? [] : ["identity"])], path);
+        if (item.identity !== undefined) validateGraphicIdentity(item.identity);
         if (typeof item.id !== "string" || !item.id.length || ids.has(item.id)) throw invalidSnapshot(`Duplicate or invalid graphic item ID "${item.id}".`, path);
         ids.add(item.id);
         const type = item.type ?? object.type;
@@ -176,9 +183,11 @@ function validateSemanticProperties(program, value, property) {
   validateStoredSemanticValue(program, parsed, value);
 }
 
-export function validateProgramState(program, path, { allowMissingLookupSchemas = false } = {}) {
+export function validateProgramState(program, path, { allowMissingLookupSchemas = false, legacy = false } = {}) {
   const semantic = program.semanticSpec;
-  exactKeys(semantic, ["datasets", "layers", "scales", "coordinates", "guides", "title"], `${path}.semanticSpec`);
+  exactKeys(semantic, ["datasets", "layers", "scales", "coordinates", "guides", "title", ...(legacy ? [] : ["resources"])], `${path}.semanticSpec`);
+  if (!legacy) validateDatasetLineage(semantic.datasets);
+  if (!legacy) validateResourceGraph(program);
   const resources = new Map();
   for (const [collection, kind, referenceKind] of [
     ["datasets", "dataset", "data"], ["layers", "layer", "mark"],
@@ -194,6 +203,9 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
     }
     resources.set(referenceKind, entries);
     for (const resource of entries.values()) {
+      if (kind === "dataset" && !legacy && resource.source === undefined && Array.isArray(resource.values)) {
+        validateSourceIdentity(resource);
+      }
       if (kind === "layer") validateTickColorChannels(resource);
       if (kind === "layer" && ["dx", "dy"].some(channel => resource.encoding?.[channel] !== undefined)) {
         const dataset = semantic.datasets.find(item => item.id === resource.data);
@@ -207,6 +219,7 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
         });
       }
       for (const [key, value] of Object.entries(resource)) {
+        if (kind === "dataset" && !legacy && DATA_IDENTITY_FIELDS.includes(key)) continue;
         if (key !== "id") validateSemanticProperties(program, value, `${kind}[${resource.id}].${key}`);
       }
     }
@@ -487,9 +500,16 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
   requireObject(selections, `${path}.materializationConfigs.selections`);
   for (const [id, selection] of Object.entries(selections)) {
     validateUserId(id, "Selection id");
-    exactKeys(selection, ["target", "selector", ...(Object.hasOwn(selection, "sourceSelection") ? ["sourceSelection"] : [])], `${path}.materializationConfigs.selections.${id}`);
+    exactKeys(selection, ["target", ...(legacy ? ["selector"] : ["grain", "resource", "projection"]), ...(Object.hasOwn(selection, "sourceSelection") ? ["sourceSelection"] : [])], `${path}.materializationConfigs.selections.${id}`);
     validateUserId(selection.target, "Selection target");
-    normalizeMarkSelector(selection.selector);
+    if (!legacy) {
+      exactKeys(selection.resource, ["kind", "id", "revision"], `${path}.materializationConfigs.selections.${id}.resource`);
+      if (selection.resource.kind !== "persistent-selection") throw invalidSnapshot("Selection requires its persistent-selection resource.", path);
+      const resource = requireStoredResource(program, selection.resource);
+      exactKeys(selection.projection, Object.hasOwn(selection.projection, "data") ? ["data"] : [], path);
+      if (resource.options.mode === "row-keys" && !selection.projection.data) throw invalidSnapshot("Row-key selection requires a data projection.", path);
+    }
+    normalizeMarkSelector(legacy ? selection.selector : storedSelectionSelector(program, selection));
     if (Object.hasOwn(selection, "sourceSelection")) validateUserId(selection.sourceSelection, "Composite selection owner");
   }
   resources.set("selection", new Map(Object.entries(selections)));
@@ -507,7 +527,8 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
         throw invalidSnapshot("Invalid composite selection owner.", path);
       }
     }
-    if (selection.selector.rows !== undefined) validateRowSelectionDataset(selection.selector.rows, resources.get("data").get(selection.selector.rows.data));
+    const predicate = legacy ? selection.selector : storedSelectionSelector(program, selection);
+    if (predicate.rows !== undefined) validateRowSelectionDataset(predicate.rows, resources.get("data").get(predicate.rows.data));
   }
   for (const config of Object.values(program.materializationConfigs.highlights ?? {})) {
     if (config.groupSelection === undefined) continue;
@@ -560,6 +581,9 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
   }
   validateGraphic(program.graphicSpec, `${path}.graphicSpec`);
   for (const [id, graphic] of Object.entries(program.graphicSpec.objects)) {
+    if (!legacy) for (const item of graphic.items ?? []) {
+      if (item.identity !== undefined) resolveGraphicLineage(program, item.identity);
+    }
     if (graphic.items !== undefined) validateGraphicItemLimit(graphic.items.length, resolveGraphicItemCapacity(program, {
       id, label: "Graphic collection length"
     }));

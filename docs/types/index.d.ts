@@ -1,3 +1,4 @@
+export type { RowKeyScalar, RowKey, DataKeyOptions, DataKeySpec, InputRowRef, RowLineage, InputRef, StoredResourceKind, PersistentSelectionResource, GraphicIdentity, GraphicLineageRef } from "./program.js";
 import type { ChartProgram, CompositionOptions } from "./program.js";
 
 export type {

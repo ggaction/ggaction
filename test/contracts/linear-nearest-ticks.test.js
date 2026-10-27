@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../support/identity-equivalence.js";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { chart } from "../../src/index.js";
@@ -18,8 +19,8 @@ const labels = p => p.graphicSpec.objects.yAxisLabels.items.map(item => item.pro
 const nearest = ["0", "20", "40", "60", "80", "100", "120", "140"];
 
 test("complete nearest axis matches literal primitives and Basic graphics", () => {
-  assert.deepEqual(axis().graphicSpec, createLinearNearestTicksPrimitives().graphicSpec);
-  assert.deepEqual(axis().graphicSpec, axis(basic).graphicSpec);
+  assertEquivalentMeaning(axis().graphicSpec, createLinearNearestTicksPrimitives().graphicSpec);
+  assertEquivalentMeaning(axis().graphicSpec, axis(basic).graphicSpec);
   assert.deepEqual(labels(axis()), nearest);
   const options = { rounding: "nearest" };
   const owned = base().createYAxis({ title: false, ticksAndLabels: options });

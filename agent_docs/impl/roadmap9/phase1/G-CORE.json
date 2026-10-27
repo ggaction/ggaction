@@ -40,9 +40,9 @@
     "machine-docs"
   ],
   "remaining": [
-    "Production STEP-004 through STEP-009 and their consumer checks"
+    "Clean revision verification and evidence for integrated STEP-004 through STEP-009"
   ],
-  "notice": "D1-D8 explicitly approved; product implementation and consumer verification remain open.",
+  "notice": "D1-D8 explicitly approved and integrated; final consumer qualification remains open.",
   "reviewPreparation": {
     "complete": [
       "CORE-REVIEW-PREPARATION"

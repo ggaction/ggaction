@@ -18,7 +18,7 @@ import {
   normalizeScaleDefinition
 } from "../../grammar/scales/index.js";
 import { findSemanticScale } from "../../selectors/scales.js";
-import { findScaleConsumers } from "./consumers/index.js";
+import { findScaleConsumers } from "../../materialization/scales/consumers/index.js";
 
 const CREATE_SCALE_OPTIONS = Object.freeze([
   "id",

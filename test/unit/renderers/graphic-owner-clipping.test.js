@@ -69,8 +69,8 @@ test('owner clips join nested viewport frames and isolated normal/difference all
   const base=clippingControl(chart).editPointMark({target:'scatterPlot',clip:true});
   const normal=base.editGraphics({target:'scatterPlot',property:'blend',value:'normal'});
   const context=createCanvas(320,240).getContext('2d');const isolated=prepareIsolatedGlyphs(resolveGraphicRenderTarget(normal.graphicSpec),context);
-  assert.equal(isolated.plans.get('scatterPlot:5').empty,true);assert.equal(isolated.plans.get('scatterPlot:7').empty,true);
-  assert.equal(isolated.plans.get('scatterPlot:0').left,40);
+  assert.equal(isolated.plans.get(normal.graphicSpec.objects.scatterPlot.items[5].id).empty,true);assert.equal(isolated.plans.get(normal.graphicSpec.objects.scatterPlot.items[7].id).empty,true);
+  assert.equal(isolated.plans.get(normal.graphicSpec.objects.scatterPlot.items[0].id).left,40);
   // Compare against the same isolated source under an existing nested viewport.
   let primitive=clippingPrimitive(chart,clippingControl(chart)).editGraphics({target:'scatterPlot',property:'blend',value:'normal'});
   assert.deepEqual(rgba(normal),rgba(primitive));

@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {chart,hconcat} from '../../../../src/index.js';
@@ -22,7 +23,7 @@ test('axis and border opt-ins act independently and reset to the same default sc
     const p=createPlotUnderlayProgram({axisUnderlay,borderUnderlay});
     assert.deepEqual(order(p),expected);
     assert.deepEqual(deserializeProgram(serializeProgram(p)).graphicSpec,p.graphicSpec);
-    assert.deepEqual(p.editXAxis({underlay:false}).editCanvas({plotBorder:{underlay:false}}).graphicSpec,defaults.graphicSpec);
+    assertEquivalentMeaning(p.editXAxis({underlay:false}).editCanvas({plotBorder:{underlay:false}}).graphicSpec,defaults.graphicSpec);
     assert.deepEqual(p.editXAxis({underlay:undefined}).graphicSpec,p.graphicSpec);
     assert.equal(serializeProgram(defaults),saved);
   }

@@ -1356,7 +1356,7 @@
   {
     "file": "api/data/source-and-derived.md",
     "block": 1,
-    "heading": "`createData({ id?, values, schema? })` {#createdata-id-values}",
+    "heading": "`createData({ id?, values, schema?, keyField?, keyFields?, keys? })` {#createdata-id-values}",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [],

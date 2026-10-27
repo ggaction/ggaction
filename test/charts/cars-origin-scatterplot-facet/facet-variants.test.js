@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -21,7 +22,7 @@ function assertSameConcreteRendering(primitive, publicProgram) {
   render(primitive, primitiveContext);
   render(publicProgram, publicContext);
   assert.deepEqual(publicContext.calls, primitiveContext.calls);
-  assert.deepEqual(publicProgram.graphicSpec, primitive.graphicSpec);
+  assertEquivalentMeaning(publicProgram.graphicSpec, primitive.graphicSpec);
 }
 
 function intersects(first, second) {

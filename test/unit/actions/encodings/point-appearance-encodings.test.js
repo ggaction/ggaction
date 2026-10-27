@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import test from "node:test";
@@ -87,7 +88,7 @@ test("is independent of appearance encoding call order", () => {
     [...reordered.semanticSpec.scales].sort((a, b) => a.id.localeCompare(b.id)),
     [...expected.semanticSpec.scales].sort((a, b) => a.id.localeCompare(b.id))
   );
-  assert.deepEqual(reordered.graphicSpec, expected.graphicSpec);
+  assertEquivalentMeaning(reordered.graphicSpec, expected.graphicSpec);
 });
 
 test("replaces an existing constant opacity through the same assignment", () => {
@@ -298,7 +299,7 @@ test("matches the regression scatterplot primitive point collection", () => {
     .encodeShape({ field: "Origin" })
     .encodeOpacity({ value: 0.27 });
 
-  assert.deepEqual(
+  assertEquivalentMeaning(
     program.graphicSpec.objects.points.items,
     expected.pointChildren.map((child, index) => ({
       id: `points:${index}`,

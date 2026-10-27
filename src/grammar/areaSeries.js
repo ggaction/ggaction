@@ -68,13 +68,13 @@ export function deriveAreaSeries(rows, layer, options = {}) {
           x: independentValues[index],
           y: lower[index],
           y2: upper[index],
-          ...(missing === "break" ? { sourceIndex: index } : {}),
+          ...(missing === "break" || options.lineage ? { sourceIndex: index } : {}),
           ...(orderValues === undefined ? {} : { pathOrder: orderValues[index] })
         }
       : {
           x: lower[index],
           x2: upper[index],
-          ...(missing === "break" ? { sourceIndex: index } : {}),
+          ...(missing === "break" || options.lineage ? { sourceIndex: index } : {}),
           y: independentValues[index],
           ...(orderValues === undefined ? {} : { pathOrder: orderValues[index] })
         });
@@ -114,7 +114,7 @@ export function deriveAreaSeries(rows, layer, options = {}) {
         `Area series on mark "${layer.id}" requires at least two points.`
       );
     }
-    return { key: item.key, values };
+    return { key: item.key, values: values.map(({ sourceIndex, ...value }) => value), ...(options.lineage ? { sourceIndices: values.map(value => value.sourceIndex) } : {}) };
   });
   // Explicit gaps may leave only isolated samples. Preserve their finite
   // coordinate domains, but do not invent a segment connecting across a gap.
@@ -223,7 +223,8 @@ export function deriveCenteredAreaSeries(rows, layer, options = {}) {
       [group.field]: key,
       ...(color === undefined || color.fieldType === "quantitative" ? {} : { [color.field]: key })
     },
-    values: valuesBySeries[index]
+    values: valuesBySeries[index],
+    ...(options.lineage ? { sourceIndices: orderedPositions.map(position => rows.findIndex((row, i) => groups[i] === key && xValues[i] === position)) } : {})
   }));
   return cloneAndFreeze({
     mode: "y-center",
@@ -237,7 +238,7 @@ export function deriveCenteredAreaSeries(rows, layer, options = {}) {
   });
 }
 
-export function deriveDensityAreaSeries(rows, layer, transform) {
+export function deriveDensityAreaSeries(rows, layer, transform, options = {}) {
   if (layer?.mark?.type !== "area") {
     throw new Error("Density area derivation requires a semantic area mark.");
   }
@@ -297,7 +298,7 @@ export function deriveDensityAreaSeries(rows, layer, transform) {
       key: transform.groupBy === undefined ? {} : { [transform.groupBy]: key },
       values: []
     };
-    series.values.push({ x: xValues[index], y: yValues[index] });
+    series.values.push({ x: xValues[index], y: yValues[index], sourceIndex: index });
     groups.set(key, series);
   }
   if (groups.size === 0) {
@@ -311,7 +312,7 @@ export function deriveDensityAreaSeries(rows, layer, transform) {
         `Density area series on mark "${layer.id}" requires at least two points.`
       );
     }
-    return { key: item.key, values };
+    return { key: item.key, values: values.map(({ sourceIndex, ...value }) => value), ...(options.lineage ? { sourceIndices: values.map(value => value.sourceIndex) } : {}) };
   });
   return cloneAndFreeze({ mode, series });
 }

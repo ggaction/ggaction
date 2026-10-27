@@ -19,12 +19,13 @@ test('style changes retain correspondence, including duplicate records',()=>{
  assert.deepEqual(points(createTransitionScene(p)).map(n=>n.key),points(createTransitionScene(q)).map(n=>n.key));
  assert.notEqual(points(createTransitionScene(p))[0].svg,points(createTransitionScene(q))[0].svg);
 });
-test('filtering and facet retain the original data identities',()=>{
+test('filtering preserves identity while facet child paths create distinct scene identities',()=>{
  const p=scatter(),a=points(createTransitionScene(p));
  const q=p.filterData({id:'f',source:'d',field:'c',oneOf:['b']}).rebindLayerData({id:'p',data:'f'}).rematerializePointMark({id:'p'});
  const b=points(createTransitionScene(q));assert.equal(b.length,1);assert.equal(b[0].key,a[1].key);
  const f=points(createTransitionScene(p.facet({field:'c',data:'d',columns:2})));
- assert.deepEqual(f.map(n=>n.key).sort(),a.map(n=>n.key).sort());
+ assert.equal(f.length, a.length);
+ assert.ok(f.every(node => !a.some(original => original.key === node.key)));
  assert.ok(f.some(n=>n.offset[0]!==a[0].offset[0]));
 });
 test('bar aggregation and pie arcs produce concrete transferable nodes',()=>{
@@ -36,9 +37,7 @@ test('invalid inputs fail without mutating a chart',()=>assert.throws(()=>create
 
 test('row ordering changes preserve identities instead of pairing array positions',()=>{
  const p=scatter();
- const q=chart().createCanvas({plot:{width:300,height:250},margin:{left:70,right:160,top:30,bottom:70}})
-  .createData({id:'d',values:[rows[1],rows[0],rows[2]]})
-  .createScatterPlot({id:'p',data:'d',x:{field:'x'},y:{field:'y'}}).createGuides();
+ const q=p.reviseData({source:'d',id:'next',values:[rows[1],rows[0],rows[2]],rowMap:[1,0,2]});
  const a=points(createTransitionScene(p)),b=points(createTransitionScene(q));
  assert.equal(a[1].key,b[0].key);assert.equal(a[0].key,b[1].key);assert.equal(a[2].key,b[2].key);
 });

@@ -1,0 +1,4 @@
+export interface RowLineage {
+  readonly entries: readonly (readonly InputRowRef[])[];
+  readonly rowRefs: readonly number[];
+}

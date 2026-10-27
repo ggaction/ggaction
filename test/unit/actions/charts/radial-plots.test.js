@@ -40,7 +40,7 @@ for (const [operation, id, mapping] of [["createRosePlot", "rosePlot", "area"], 
     const highlighted = p.highlightMarks({ target: id,
       select: { field: "category", op: "eq", value: "A" }, fill: "#123456", bringToFront: false })
       .editScale({ id: "radius", domain: [0, 8] }).editCanvas({ width: 1100 });
-    assert.equal(highlighted.graphicSpec.objects[id].items.find(item => item.id === `${id}:0`).properties.fill, "#123456");
+    assert.equal(highlighted.graphicSpec.objects[id].items[0].properties.fill, "#123456");
     assert.deepEqual(highlighted.graphicSpec.objects.labels.items.map(item => item.properties.text), ["2", "3", "4"]);
     const filtered = p.filterMarks({ target: id, field: "category", op: "oneOf", values: ["A", "B"] });
     assert.deepEqual(filtered.resolvedScales.radius.domain, [0, 3]);

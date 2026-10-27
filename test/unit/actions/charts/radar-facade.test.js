@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { chart } from "../../../../src/index.js";
@@ -46,8 +47,8 @@ test("creates a long-form Radar plot through the Polar line owner", () => {
     line: { strokeWidth: 2.5, closed: true },
     guides: false
   });
-  assert.deepEqual(actual.semanticSpec, expected.semanticSpec);
-  assert.deepEqual(actual.graphicSpec, expected.graphicSpec);
+  assertEquivalentMeaning(actual.semanticSpec, expected.semanticSpec);
+  assertEquivalentMeaning(actual.graphicSpec, expected.graphicSpec);
   const facade = actual.trace.children.at(-1);
   assert.equal(facade.op, "createRadarPlot");
   assert.equal(facade.children[0].op, "createPolarLinePlot");
@@ -89,8 +90,8 @@ test("folds explicit wide fields with deterministic owned aliases", () => {
       line: { closed: true },
       guides: false
     });
-  assert.deepEqual(actual.semanticSpec, expected.semanticSpec);
-  assert.deepEqual(actual.graphicSpec, expected.graphicSpec);
+  assertEquivalentMeaning(actual.semanticSpec, expected.semanticSpec);
+  assertEquivalentMeaning(actual.graphicSpec, expected.graphicSpec);
   assert.deepEqual(actual.trace.children.at(-1).children.map(node => node.op), [
     "createFoldData", "createPolarLinePlot"
   ]);

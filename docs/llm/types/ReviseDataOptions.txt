@@ -1,4 +1,7 @@
-export interface ReviseDataOptions<Row extends object> extends CreateDataOptions<Row> {
+export type ReviseDataOptions<Row extends object> = ({ keys?: never; rowMap?: readonly (number | null)[] }
+  | { keys: readonly RowKey[]; rowMap?: never }) & {
+  values: readonly (Row extends readonly unknown[] ? never : Row & StoredCell<Row>)[];
+  schema?: SourceSchemaInput;
   source: string;
   id: string;
-}
+};

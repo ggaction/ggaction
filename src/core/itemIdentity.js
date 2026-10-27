@@ -4,6 +4,9 @@ import { validateDataRows, validateWorkLimit } from "./validation.js";
 
 const TYPES = ["boolean", "number", "bigint", "string", "date"];
 const MAX_COMPONENTS = 64;
+export const DATA_IDENTITY_FIELDS = Object.freeze([
+  "logicalId", "revision", "allocationId", "keySpec", "rowKeys", "nextGeneratedKey", "lineage"
+]);
 
 function invalid(path, message, code = "invalid-value") {
   return annotateError(new TypeError(message), { code, optionPath: path });

@@ -443,3 +443,18 @@ Extension actions should call the public domain action that owns the affected
 consumer instead of calling `rematerializeScale` directly. Rematerialization is
 still explicit inside that action and remains visible in `program.trace`; it
 never runs merely because `semanticSpec` changed.
+
+## Stored selection resources and concrete identity
+
+The semantic primitive accepts complete resources at
+`resource[persistent-selection:id]`. Creation uses revision `0`; replacement
+uses the previous revision plus one. The value follows `PersistentSelectionResource`
+from `ggaction/extension`. Inputs must resolve to exact stored revisions.
+Removal rejects live consumers. Graphical materialization remains explicit.
+Use the selection domain actions for ordinary chart authoring.
+
+Typed `editGraphics({ property: "items", ... })` entries may include
+`GraphicIdentity` metadata. The materialized semantic key and primitive role
+produce a stable private child ID; ordered path membership produces its topology
+fingerprint. `GraphicLineageRef` links to the exact data revision and row keys.
+Renderers consume this concrete metadata without reading semantic state.

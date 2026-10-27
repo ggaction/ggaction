@@ -215,11 +215,18 @@ test("derives a bounded public option inventory without runtime prototype paths"
   const inventory = await buildPublicOptionInventory(actionCards);
 
   assert.equal(inventory.counts.publicActions, 291);
-  assert.equal(inventory.counts.topLevelOptionPaths, 2704);
-  assert.equal(inventory.counts.nestedOptionPaths, 21720);
-  assert.equal(inventory.counts.optionPaths, 24424);
-  assert.equal(inventory.counts.requiredOptionPaths, 16904);
-  assert.equal(inventory.counts.excludedOptionPaths, 7520);
+  assert.equal(inventory.counts.topLevelOptionPaths, 2709);
+  assert.equal(inventory.counts.nestedOptionPaths, 21726);
+  assert.equal(inventory.counts.optionPaths, 24435);
+  assert.equal(inventory.counts.requiredOptionPaths, 16909);
+  assert.equal(inventory.counts.excludedOptionPaths, 7526);
+  assert.deepEqual(inventory.optionPaths.filter(option =>
+    ["createData", "reviseData"].includes(option.action) && option.topLevel &&
+    ["keyField", "keyFields", "keys", "rowMap"].includes(option.path)
+  ).map(option => option.id).sort(), [
+    "option-path:createData.keyField", "option-path:createData.keyFields",
+    "option-path:createData.keys", "option-path:reviseData.keys", "option-path:reviseData.rowMap"
+  ]);
   assert.deepEqual(inventory.optionPaths.filter(option => option.path === "subtitleLineHeight")
     .map(option => option.id).sort(), [
       "option-path:createTitle.subtitleLineHeight",
@@ -427,7 +434,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
       ...counts,
       [value.reason]: (counts[value.reason] ?? 0) + 1
     }), {}),
-    { "redacted-array": 7520 }
+    { "redacted-array": 7526 }
   );
   const values = id => optionById.get(id)?.values ?? [];
   assert.equal(optionById.has("option-path:createScatterPlot.x.scale.palette"), false);
@@ -471,7 +478,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
     "option-path:createData.values[]"), false);
   assert.equal(ledger.requirements.some(requirement => requirement.id ===
     "option-path:createDerivedData.transform[].type"), false);
-  assert.equal(ledger.requirements.length, 30363);
+  assert.equal(ledger.requirements.length, 30368);
   assert.deepEqual(ledger.requirements.filter(requirement =>
     /^(?:option-path:)(?:createTitle|editTitle)\.subtitleLineHeight$/u.test(requirement.id)
   ).map(requirement => requirement.id).sort(), [

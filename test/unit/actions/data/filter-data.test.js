@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -21,7 +22,7 @@ test("filters the current dataset through wrapped derived-data actions", () => {
     oneOf: ["A"]
   });
 
-  assert.deepEqual(program.semanticSpec.datasets[1], {
+  assertEquivalentMeaning(program.semanticSpec.datasets[1], {
     schema: program.semanticSpec.datasets[1].schema,
     id: "selected",
     source: "rows",
@@ -41,7 +42,7 @@ test("filters the current dataset through wrapped derived-data actions", () => {
     program.trace.children.at(-1).children[1].children.map(node => node.op),
     ["editSemantic"]
   );
-  assert.deepEqual(source.semanticSpec.datasets, [{ id: "rows", values: rows, schema: source.semanticSpec.datasets[0].schema }]);
+  assertEquivalentMeaning(source.semanticSpec.datasets, [{ id: "rows", values: rows, schema: source.semanticSpec.datasets[0].schema }]);
 });
 
 test("supports an explicit source and scalar filter values", () => {
@@ -292,7 +293,7 @@ test("validates filter mode exclusivity and ordered operands", () => {
       /filter|comparison|predicate|range|exactly/i
     );
   }
-  assert.deepEqual(base.semanticSpec.datasets, [{
+  assertEquivalentMeaning(base.semanticSpec.datasets, [{
     id: "rows", values: rows, schema: base.semanticSpec.datasets[0].schema
   }]);
 });

@@ -28,8 +28,8 @@ test("matches primitive and public center output in Canvas, SVG, PNG, and PDF", 
   assert.deepEqual(userFacingCanvas.calls, primitiveCanvas.calls);
 
   await mkdir(artifactRoot, { recursive: true });
-  const primitiveSVG = renderToSVG(primitive);
-  const userFacingSVG = renderToSVG(userFacing);
+  const primitiveSVG = renderToSVG(primitive, { resourceNamespace: "comparison" });
+  const userFacingSVG = renderToSVG(userFacing, { resourceNamespace: "comparison" });
   assert.equal(userFacingSVG, primitiveSVG);
   await writeFile(`${artifactRoot}/primitive.svg`, primitiveSVG);
   await writeFile(`${artifactRoot}/user-facing.svg`, userFacingSVG);

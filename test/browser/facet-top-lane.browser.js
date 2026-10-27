@@ -38,7 +38,7 @@ for(const blank of [false,true])for(const ratio of [1,2])test(`${name} matches $
         createFacetSharedTopLaneProgram().editFacetHeaders({labelMap:[{value:'Sun',label:''}]}),
         createPrimitiveProgram().editGraphics({target:'facet-headers:0',property:'text',value:''})
       ]:[createFacetSharedTopLaneProgram(),createPrimitiveProgram()];
-      const svgs=programs.map(p=>renderToSVG(p)),checks=[];
+      const svgs=programs.map(p=>renderToSVG(p,{resourceNamespace:"comparison"})),checks=[];
       for(const backend of ['Canvas','SVG']){
         const pixels=[];
         for(let i=0;i<programs.length;i++){

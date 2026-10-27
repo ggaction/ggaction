@@ -1,7 +1,7 @@
 # Documentation Version
 
 The current site documents **ggaction 0.0.26** with a
-**published-release** contract.
+**development** contract.
 A `published-release` contract matches that package version. A `development`
 contract can include newer behavior; its package version alone does not establish
 API availability. Each action entry identifies its release availability.
@@ -9,9 +9,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:8ec25828c662bcb6b0bf6801a6b6add6f2b653f218476ea7fc758f21e1418174` |
+| Contract fingerprint | `sha256:5f985823b92f3e49c4a73a8303f1de427b37528681889fca593cdb30216ffd3d` |
 | Example and dataset source | `ab206c446ae5010eecfd859427775c4785d8aed4` |
-| Runtime source commit | `1e38e7bef30aeedb561c1ae09bbdcdd152bd46b2` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 298 |
 | Declared actions in that release | 234 |

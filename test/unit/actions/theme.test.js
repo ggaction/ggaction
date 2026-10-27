@@ -595,8 +595,9 @@ test("drops a removed mark's local binding before the same id is recreated", () 
 });
 
 test("honors a low-level graphic item override without freezing its siblings", () => {
-  const program = pointChart()
-    .editGraphics({ target: "point:0", property: "fill", value: "#4c78a8" })
+  const original = pointChart();
+  const program = original
+    .editGraphics({ target: original.graphicSpec.objects.point.items[0].id, property: "fill", value: "#4c78a8" })
     .applyTheme({ theme: "dark" });
   assert.deepEqual(
     program.graphicSpec.objects.point.items.map(item => item.properties.fill),

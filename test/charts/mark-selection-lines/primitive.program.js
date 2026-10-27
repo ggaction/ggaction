@@ -31,7 +31,11 @@ export function createJapanLineHighlightPrimitive(
   const [selected] = children.splice(target.index, 1);
   const legendSymbols = base.graphicSpec.objects.seriesLegendSymbols;
 
-  return base
+  return base.editSemantic({ property: "resource[persistent-selection:trendsSelection]", value: {
+    kind: "persistent-selection", id: "trendsSelection", revision: 0, algorithmVersion: "1",
+    ownership: { mode: "authored" }, inputs: [], options: { mode: "predicate", predicate: { field: "Origin", op: "eq", value: "Japan" } },
+    result: {}, provenance: { origin: "authored" }
+  } })
     .editGraphics({
       target: "trends",
       property: "items",

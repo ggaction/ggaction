@@ -1,3 +1,4 @@
+import { storedSelectionSelector } from "../../../../src/selectors/selectionResources.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -481,7 +482,7 @@ test("tracks output-role renames through consumers, guides, selections, and jitt
   assert.equal(edited.semanticSpec.guides.axis.x.title, "left");
   assert.equal(edited.semanticSpec.guides.axis.y.title, "bottom");
   assert.equal(edited.semanticSpec.guides.legend.color.title, "n");
-  assert.deepEqual(edited.materializationConfigs.selections.occupied.selector, {
+  assert.deepEqual(storedSelectionSelector(edited, edited.materializationConfigs.selections.occupied), {
     grain: "item",
     field: "n",
     op: "max",
@@ -510,7 +511,7 @@ test("tracks output-role renames through consumers, guides, selections, and jitt
     count: "n", members: "indexes"
   });
   assert.equal(before.semanticSpec.layers[0].encoding.x.field, "x0");
-  assert.equal(before.materializationConfigs.selections.occupied.selector.field, "count");
+  assert.equal(storedSelectionSelector(before, before.materializationConfigs.selections.occupied).field, "count");
   assert.equal(before.materializationConfigs.jitters.points.key, "x0");
 
   const outputFieldEdits = edited.trace.children.at(-1).children
@@ -522,6 +523,7 @@ test("tracks output-role renames through consumers, guides, selections, and jitt
     "layer[rects].encoding.y.field",
     "layer[rects].encoding.y2.field",
     "layer[rects].encoding.color.field",
+    "resource[persistent-selection:occupied]",
     "layer[points].encoding.x.field",
     "layer[points].encoding.y.field"
   ]);

@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import {chart, render} from "../../../../src/index.js";
@@ -19,8 +20,8 @@ const points = factory => source(factory).createScatterPlot({x:"x",y:"y",guides:
 const lines = factory => source(factory).createLinePlot({x:"x",y:"y",guides:false});
 const patterns = (p,id="linePlot") => p.graphicSpec.objects[id].items.map(i=>i.properties.strokeDash);
 function equivalent(actual, expected) {
-  assert.deepEqual(actual.semanticSpec,expected.semanticSpec);
-  assert.deepEqual(actual.graphicSpec,expected.graphicSpec);
+  assertEquivalentMeaning(actual.semanticSpec,expected.semanticSpec);
+  assertEquivalentMeaning(actual.graphicSpec,expected.graphicSpec);
   assert.deepEqual(actual.guideConfigs,expected.guideConfigs);
   assert.equal(renderToSVG(actual),renderToSVG(expected));
 }

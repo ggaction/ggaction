@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { chart } from "../../../../src/index.js";
@@ -21,8 +22,8 @@ test("scatter stroke uses the existing encoding owner in Full and Basic", () => 
       const source = base(factory);
       const before = serializeProgram(source);
       const result = source.createScatterPlot({ x: "x", y: "y", stroke, point: { fill: "none", strokeWidth: 2 }, guides: false });
-      assert.deepEqual(result.semanticSpec, reference.semanticSpec);
-      assert.deepEqual(result.graphicSpec, reference.graphicSpec);
+      assertEquivalentMeaning(result.semanticSpec, reference.semanticSpec);
+      assertEquivalentMeaning(result.graphicSpec, reference.graphicSpec);
       assert.deepEqual(result.trace.children.at(-1).children.map(child => child.op),
         ["createPointMark", "encodeX", "encodeY", "encodeStroke", "editPointMark"]);
       assert.equal(serializeProgram(source), before);

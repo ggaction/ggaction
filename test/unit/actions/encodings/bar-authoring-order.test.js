@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { chart } from "../../../../src/index.js";
@@ -48,8 +49,8 @@ for (const horizontal of [false, true]) {
           const snapshot = structuredClone(state(initial));
           const trace = initial.trace;
           const actual = order.reduce((p, name) => actions[name](p), initial);
-          assert.deepEqual(state(actual), state(expected), order.join(" → "));
-          assert.deepEqual(state(actual.editCanvas({ width: 560 })), state(expected.editCanvas({ width: 560 })));
+          assertEquivalentMeaning(state(actual), state(expected), order.join(" → "));
+          assertEquivalentMeaning(state(actual.editCanvas({ width: 560 })), state(expected.editCanvas({ width: 560 })));
           assert.deepEqual(state(initial), snapshot);
           assert.equal(initial.trace, trace);
           const measure = actual.semanticSpec.layers[0].encoding[horizontal ? "x" : "y"];
@@ -84,7 +85,7 @@ test("pending explicit aggregates, stack modes, and scale choices survive comple
         const category = { field: "category", fieldType: "nominal" };
         const expected = base().encodeX(category).encodeY(measure);
         const actual = base().encodeY(measure).encodeX(category);
-        assert.deepEqual(state(actual), state(expected));
+        assertEquivalentMeaning(state(actual), state(expected));
       }
     }
   }
@@ -99,7 +100,7 @@ test("histogram y-first resolves count and zero stack only when binned x arrives
       assert.equal(pending.semanticSpec.layers[0].encoding.y.stack, undefined);
       const actual = pending.encodeX(x);
       const expected = base().encodeX(x).encodeY(y);
-      assert.deepEqual(state(actual), state(expected));
+      assertEquivalentMeaning(state(actual), state(expected));
       assert.equal(actual.semanticSpec.layers[0].encoding.y.aggregate, "count");
       assert.equal(actual.semanticSpec.layers[0].layout.mode, "stack");
       assert.equal(actual.graphicSpec.objects.bars.items.length, 2);
@@ -134,11 +135,11 @@ test("grouped bars preserve early width and removing position clears items while
     .encodeColor({ field: "group", layout: "group" }).encodeBarWidth({ pixels: 14 });
   const actual = base().encodeBarWidth({ pixels: 14 }).encodeY({ field: "value" })
     .encodeX(category).encodeColor({ field: "group", layout: "group" });
-  assert.deepEqual(state(actual), state(expected));
+  assertEquivalentMeaning(state(actual), state(expected));
   const removed = actual.removeEncoding({ channel: "y" });
   assert.equal(removed.graphicSpec.objects.bars.items.length, 0);
   assert.deepEqual(removed.markConfigs.bars.barWidth, { pixels: 14 });
-  assert.deepEqual(state(removed.encodeY({ field: "value" })), state(expected));
+  assertEquivalentMeaning(state(removed.encodeY({ field: "value" })), state(expected));
 });
 
 test("a deferred Box keeps its dedicated width owner and completes its range without an aggregate", () => {
@@ -152,6 +153,6 @@ test("a deferred Box keeps its dedicated width owner and completes its range wit
       x: { field: "category", fieldType: "nominal" },
       y: { field: "value" }, width: { band: 0.5 }
     });
-  assert.deepEqual(state(actual), state(expected));
+  assertEquivalentMeaning(state(actual), state(expected));
   assert.equal(actual.semanticSpec.layers[0].encoding.y.aggregate, undefined);
 });

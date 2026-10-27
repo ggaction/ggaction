@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { chart } from "../../../../src/index.js";
@@ -19,7 +20,7 @@ test("Cartesian label colors use typed raw values and a global fallback independ
   assert.deepEqual(fills(mapped), ["red", "green", "red"]);
   assert.deepEqual(fills(p.editXAxisLabels({ color: "blue" })), ["blue", "green", "blue"]);
   const before = categorical().createXAxis(axis([]));
-  assert.deepEqual(p.editXAxisLabels({ colorMap: "auto" }).graphicSpec, before.graphicSpec);
+  assertEquivalentMeaning(p.editXAxisLabels({ colorMap: "auto" }).graphicSpec, before.graphicSpec);
   assert.deepEqual(fills(p.editXAxisLabels({ colorMap: [] })), ["red", "red", "red"]);
   assert.notEqual(p.guideConfigs.axis.x.labels.colorMap, colors);
   assert.ok(Object.isFrozen(p.guideConfigs.axis.x.labels.colorMap));
@@ -30,7 +31,7 @@ test("complete, focused, grouped and whole-axis color edits converge without mut
   const snapshot = JSON.stringify(p);
   const direct = categorical().createXAxis(axis());
   for (const edited of [p.editXAxisLabels({ colorMap: colors }), p.editXAxisTicksAndLabels({ labels: { colorMap: colors } }), p.editXAxis({ labels: { colorMap: colors } }), p.editXAxis({ ticksAndLabels: { labels: { colorMap: colors } } })]) {
-    assert.deepEqual(edited.graphicSpec, direct.graphicSpec);
+    assertEquivalentMeaning(edited.graphicSpec, direct.graphicSpec);
   }
   assert.equal(JSON.stringify(p), snapshot);
   const replay = direct.editCanvas({ width: 540 }).editScale({ id: "x", reverse: true });

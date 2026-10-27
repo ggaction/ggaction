@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -153,7 +154,7 @@ test("explicit and statistical rows converge on the same concrete band", () => {
 
   assert.equal(explicit.semanticSpec.datasets.length, 1);
   assert.equal(explicit.semanticSpec.layers[0].encoding.y.title, "__errorBand_center");
-  assert.deepEqual(
+  assertEquivalentMeaning(
     explicit.graphicSpec.objects.errorBand,
     statistical.graphicSpec.objects.errorBand
   );

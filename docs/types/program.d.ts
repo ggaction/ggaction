@@ -1355,8 +1355,43 @@ export interface TraceNode {
   readonly children: readonly TraceNode[];
 }
 
+/** Typed keys distinguish strings, numbers, bigint, boolean and Date epochs. */
+export type RowKeyScalar = string | number | bigint | boolean | Date;
+export type RowKey = RowKeyScalar | readonly RowKeyScalar[];
+export type DataKeySpec = { readonly mode: "generated" } | { readonly mode: "explicit" }
+  | { readonly mode: "field"; readonly field: string }
+  | { readonly mode: "fields"; readonly fields: readonly string[] };
+export interface InputRowRef {
+  readonly data: string; readonly logicalDataId: string; readonly revision: number;
+  readonly rowKey: string; readonly role: string;
+}
+export interface RowLineage {
+  readonly entries: readonly (readonly InputRowRef[])[];
+  readonly rowRefs: readonly number[];
+}
+export type StoredResourceKind = "persistent-selection";
+export type InputRef = { readonly kind: "data"; readonly id: string; readonly logicalId: string; readonly revision: number }
+  | { readonly kind: StoredResourceKind; readonly id: string; readonly revision: number };
+export interface PersistentSelectionResource {
+  readonly kind: "persistent-selection"; readonly id: string; readonly revision: number;
+  readonly algorithmVersion: "1";
+  readonly ownership: { readonly mode: "authored" } | { readonly mode: "generated"; readonly owner: InputRef };
+  readonly inputs: readonly InputRef[];
+  readonly options: { readonly mode: "predicate"; readonly predicate: Readonly<Record<string, unknown>> }
+    | { readonly mode: "row-keys"; readonly logicalDataId: string; readonly rowKeys: readonly string[] };
+  readonly result: Readonly<Record<string, never>>;
+  readonly provenance: { readonly origin: "authored" | "observed" | "inferred"; readonly sourceRows?: readonly InputRowRef[] };
+}
+
 export interface SemanticDataset {
   readonly id: string;
+  readonly logicalId?: string;
+  readonly revision?: number;
+  readonly allocationId?: string;
+  readonly keySpec?: DataKeySpec;
+  readonly rowKeys?: readonly string[];
+  readonly nextGeneratedKey?: number;
+  readonly lineage?: RowLineage;
   readonly schema: DatasetSchema;
   readonly values?: readonly Readonly<Record<string, unknown>>[];
   readonly source?: string;
@@ -1465,6 +1500,7 @@ export interface SemanticCoordinate {
 }
 
 export interface SemanticSpec {
+  readonly resources: readonly PersistentSelectionResource[];
   readonly datasets: readonly SemanticDataset[];
   readonly layers: readonly SemanticLayer[];
   readonly scales: readonly SemanticScale[];
@@ -1473,7 +1509,16 @@ export interface SemanticSpec {
   readonly title: Readonly<Record<string, unknown>>;
 }
 
+export interface GraphicLineageRef {
+  readonly data: string; readonly logicalDataId: string; readonly revision: number; readonly rowKeys: readonly string[];
+}
+
+export interface GraphicIdentity {
+  readonly key: string; readonly topology: string; readonly role: string; readonly lineage: GraphicLineageRef;
+}
+
 export interface GraphicItem {
+  readonly identity?: GraphicIdentity;
   readonly id: string;
   readonly type?: Exclude<GraphicType, "canvas" | "collection">;
   readonly properties: Readonly<Record<string, unknown>>;
@@ -5403,16 +5448,24 @@ type StoredCell<T> = T extends (...args: never[]) => unknown ? never
   : T extends object ? { readonly [Key in keyof T]: StoredCell<T[Key]> }
   : T;
 
-export interface CreateDataOptions<Row extends object> {
+export type DataKeyOptions =
+  | { keyField?: never; keyFields?: never; keys?: never }
+  | { keyField: string; keyFields?: never; keys?: never }
+  | { keyField?: never; keyFields: readonly string[]; keys?: never }
+  | { keyField?: never; keyFields?: never; keys: readonly RowKey[] };
+export type CreateDataOptions<Row extends object> = DataKeyOptions & {
   id?: string;
   values: readonly (Row extends readonly unknown[] ? never : Row & StoredCell<Row>)[];
   schema?: SourceSchemaInput;
-}
+};
 
-export interface ReviseDataOptions<Row extends object> extends CreateDataOptions<Row> {
+export type ReviseDataOptions<Row extends object> = ({ keys?: never; rowMap?: readonly (number | null)[] }
+  | { keys: readonly RowKey[]; rowMap?: never }) & {
+  values: readonly (Row extends readonly unknown[] ? never : Row & StoredCell<Row>)[];
+  schema?: SourceSchemaInput;
   source: string;
   id: string;
-}
+};
 
 export class ChartProgram {
   constructor(state?: ActionOptions);

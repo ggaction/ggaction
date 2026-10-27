@@ -2,11 +2,10 @@ import {
   channelMapFromRow,
   concreteProperties,
   finalizeItems,
-  itemKey,
   ownFields
 } from "./common.js";
 
-export function resolveTickItems(program, layer, dataset) {
+export function resolveTickItems(program, layer, dataset, grain, resolveItems, selectionResolvers) {
   const graphic = program.graphicSpec.objects[layer.id];
   const completePosition =
     layer.encoding?.x?.scale !== undefined &&
@@ -15,11 +14,11 @@ export function resolveTickItems(program, layer, dataset) {
     throw new Error(`Tick mark "${layer.id}" is incomplete for selection.`);
   }
   const definitions = dataset.values.map((row, index) => ({
-      key: itemKey(layer, "tick", index),
+      rowKey: dataset.rowKeys[index],
       fields: ownFields(row),
       channels: channelMapFromRow(row, layer),
       properties: concreteProperties(graphic.items[index]?.properties),
       members: [row]
     }));
-  return finalizeItems(program, layer, "tick", definitions, "line");
+  return finalizeItems(program, layer, "tick", definitions, "line", { selectionResolvers });
 }

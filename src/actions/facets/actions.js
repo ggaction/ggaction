@@ -1,3 +1,4 @@
+import { adoptSelectionResources } from "../primitives/resourceState.js";
 import { normalizeFacetAxes, validateFacetAxisPolicy } from "../../core/facetAxisPolicy.js";
 import { DEFAULT_ACTION_METHODS } from "../../core/vocabulary.js";
 import { axisGraphicIds } from "../../materialization/guides/resources.js";
@@ -687,6 +688,9 @@ function adoptUnitState(program, actionOwner, preferSource = false) {
   void _retainedCanvas;
   void _retainedTheme;
   void _retainedFacets;
+  if (!preferSource || program.materializationConfigs.selections === undefined) {
+    program = adoptSelectionResources(program, actionOwner.children[seedId], retainedRecipe.selections);
+  }
   return new actionOwner.constructor({
     semanticSpec: program.semanticSpec,
     graphicSpec: program.graphicSpec,

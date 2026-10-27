@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { chart } from "../../../../src/index.js";
@@ -46,7 +47,7 @@ test("complete, whole-axis, grouped and focused flush edits converge immutably",
   const snapshot = JSON.stringify(p);
   const direct = base().editCanvas({ width: 400, height: 400, margin: 80 }).createXAxis(axis(true));
   for (const edited of [p.editXAxisLabels({ flush: true }), p.editXAxisTicksAndLabels({ labels: { flush: true } }), p.editXAxis({ labels: { flush: true } }), p.editXAxis({ ticksAndLabels: { labels: { flush: true } } })]) {
-    assert.deepEqual(edited.graphicSpec, direct.graphicSpec);
+    assertEquivalentMeaning(edited.graphicSpec, direct.graphicSpec);
     assert.deepEqual(edited.editXAxisLabels({ flush: false }).graphicSpec, p.graphicSpec);
   }
   assert.equal(JSON.stringify(p), snapshot);
@@ -56,7 +57,7 @@ test("flush survives Canvas and reversed-scale rematerialization", () => {
   const p = base().createXAxis(axis(true));
   const edited = p.editCanvas({ width: 300 }).editXScale({ domain: [100, 0] });
   const direct = base().editCanvas({ width: 300 }).editXScale({ domain: [100, 0] }).createXAxis(axis(true));
-  assert.deepEqual(edited.graphicSpec, direct.graphicSpec);
+  assertEquivalentMeaning(edited.graphicSpec, direct.graphicSpec);
   assert.ok(Math.abs(labelBounds(edited).left - 40) < 1e-9);
   assert.ok(Math.abs(labelBounds(edited).right - 290) < 1e-9);
 });

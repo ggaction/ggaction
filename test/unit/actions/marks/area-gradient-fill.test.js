@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { chart } from "../../../../src/index.js";
@@ -15,8 +16,8 @@ const fills = (p) => p.graphicSpec.objects.areaPlot.items.map((i) => i.propertie
 test("area constructors, facades and focused edits converge for each gradient orientation", () => {
   for (const [from, to] of [[{ x: 0, y: 0 }, { x: 1, y: 0 }], [{ x: 0, y: 1 }, { x: 0, y: 0 }], [{ x: 0, y: 0 }, { x: 1, y: 1 }]]) {
     const fill = paint(from, to), facade = area({ area: { fill } }), edited = area().editAreaMark({ fill }), constructed = base().createAreaMark({ id: "areaPlot", fill }).encodeX({ field: "x" }).encodeYRange({ lower: "y", upper: { datum: 0 } }).layoutSeries({ mode: "overlay" });
-    assert.deepEqual(facade.graphicSpec, edited.graphicSpec);
-    assert.deepEqual(facade.graphicSpec, constructed.graphicSpec);
+    assertEquivalentMeaning(facade.graphicSpec, edited.graphicSpec);
+    assertEquivalentMeaning(facade.graphicSpec, constructed.graphicSpec);
     assert.ok(fills(facade).every((f) => f.type === "linear-gradient"));
     assert.deepEqual(resolveLinearGradientCoordinates(fill, { left: 10, right: 110, top: 20, bottom: 220 }), { from: { x: 10 + 100 * from.x, y: 20 + 200 * from.y }, to: { x: 10 + 100 * to.x, y: 20 + 200 * to.y } });
   }

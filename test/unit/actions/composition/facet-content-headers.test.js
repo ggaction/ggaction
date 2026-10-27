@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { chart } from "../../../../src/index.js";
@@ -32,7 +33,7 @@ test("content follows per-panel mark overflow while keeping the plot alignment",
   const old = facet(), before = serializeProgram(old);
   const actual = old.editFacetHeaders({ anchor: "content" });
   const initial = facet({ headers: { anchor: "content" } });
-  assert.deepEqual(actual.graphicSpec, initial.graphicSpec);
+  assertEquivalentMeaning(actual.graphicSpec, initial.graphicSpec);
   assert.deepEqual(config(actual), config(initial));
   const b = boxes(actual), h = headers(actual);
   close(b[0].top - h[0].y, 16);

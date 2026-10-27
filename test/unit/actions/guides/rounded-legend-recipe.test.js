@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { chart } from '../../../../src/index.js';
@@ -17,10 +18,10 @@ function bars(cornerRadius = 1) {
     .encodeColor({ field: 'category' });
 }
 function equalOutput(actual, expected) {
-  assert.deepEqual(actual.graphicSpec, expected.graphicSpec);
+  assertEquivalentMeaning(actual.graphicSpec, expected.graphicSpec);
   assert.deepEqual(actual.graphicSpec.order, expected.graphicSpec.order);
   assert.deepEqual(actual.guideConfigs, expected.guideConfigs);
-  assert.deepEqual(actual.semanticSpec, expected.semanticSpec);
+  assertEquivalentMeaning(actual.semanticSpec, expected.semanticSpec);
   assert.deepEqual(deserializeProgram(serializeProgram(actual)).graphicSpec, actual.graphicSpec);
 }
 for (const [name, symbol] of [

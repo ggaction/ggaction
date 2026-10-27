@@ -1,3 +1,4 @@
+import { withoutAllocatedIdentity, assertEquivalentMeaning } from "./identity-equivalence.js";
 import assert from "node:assert/strict";
 
 import { render } from "../../src/index.js";
@@ -16,12 +17,12 @@ export function assertChartProgramsEquivalent({
   render(primitiveProgram, primitiveContext);
 
   if (compareSemanticSpec) {
-    assert.deepEqual(publicProgram.semanticSpec, primitiveProgram.semanticSpec);
+    assertEquivalentMeaning(publicProgram.semanticSpec, primitiveProgram.semanticSpec);
   }
-  assert.deepEqual(publicProgram.graphicSpec, primitiveProgram.graphicSpec);
+  assertEquivalentMeaning(publicProgram.graphicSpec, primitiveProgram.graphicSpec);
   assert.deepEqual(
-    graphicTreeSnapshot(publicProgram),
-    graphicTreeSnapshot(primitiveProgram)
+    graphicTreeSnapshot({ graphicSpec: withoutAllocatedIdentity(publicProgram.graphicSpec) }),
+    graphicTreeSnapshot({ graphicSpec: withoutAllocatedIdentity(primitiveProgram.graphicSpec) })
   );
   assert.deepEqual(
     publicProgram.graphicSpec.order,

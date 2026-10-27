@@ -1,0 +1,30 @@
+{
+  "role": "historical-inputs",
+  "producerCommit": "129a506dfd2fc2455b7de949d73fdd6cf34e27a5",
+  "producerPackage": "0.0.26",
+  "construction": "Captured output from the historical schema-3 writer, before production identity integration.",
+  "files": [
+    {
+      "path": "derived-v3.json",
+      "schemaVersion": 3,
+      "sha256": "4183a48f1d9cfbbb3ddf7cb0d2da4b7a46173ba86056514eda40d398ef563362"
+    },
+    {
+      "path": "composition-v3.json",
+      "schemaVersion": 3,
+      "sha256": "cb6cb754b3bc4388c033073f85545453dcd9cf2fef92c5cbaf92a4e3e777b138"
+    },
+    {
+      "path": "statistical-v3.json",
+      "schemaVersion": 3,
+      "kind": "statistical",
+      "sha256": "cd99250276f4e878d3505ad361a381efb79a99a761ec794fe6c51ea5b7fd5184"
+    },
+    {
+      "path": "box-filter-v3.json",
+      "schemaVersion": 3,
+      "kind": "box-filter",
+      "sha256": "d2fd296a01c6d52abffc38651be0d7e892ee4bc0c08cd0b15b6539db425a00ec"
+    }
+  ]
+}

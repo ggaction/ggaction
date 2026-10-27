@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -93,7 +94,7 @@ test("moves every right categorical component through create and focused edit", 
     );
   }
 
-  assert.deepEqual(edited.graphicSpec, far.graphicSpec);
+  assertEquivalentMeaning(edited.graphicSpec, far.graphicSpec);
   assert.equal(near.guideConfigs.legend.series.offset, 8);
   assert.equal(edited.guideConfigs.legend.series.offset, 80);
 });

@@ -1,3 +1,4 @@
+export type { RowKeyScalar, RowKey, DataKeyOptions, DataKeySpec } from "./program.js";
 import type { ChartProgram, BasicSeriesLayoutOptions, CreateDataOptions, ScopedActionTarget } from "./program.js";
 
 export type {

@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -66,7 +67,7 @@ test("converges when radius and theta are encoded in either order", () => {
       left.id.localeCompare(right.id)
     )
   );
-  assert.deepEqual(radiusFirst.graphicSpec, thetaFirst.graphicSpec);
+  assertEquivalentMeaning(radiusFirst.graphicSpec, thetaFirst.graphicSpec);
 });
 
 test("creates and edits one closing command per Polar series", () => {

@@ -7,7 +7,7 @@ Apply these instructions to chart slices, examples, primitive baselines, manifes
 - One capability slice may own several public chart variants, but every chart keeps its own public program and primitive/public equivalence assertion.
 - Keep shared inputs, expected geometry, displayed call chains, dimensions, artifact paths, and variant metadata in one manifest or fixture owner.
 - Preserve one primitive baseline and one evolving high-level program while replacing primitive calls with public actions. Do not create a new representative program for every implementation step.
-- Require primitive and public programs for the same chart contract to converge on exact `graphicSpec`, explicit drawing order, renderer calls, and same-run decoded pixels.
+- Require primitive and public programs for the same chart contract to converge on exact concrete graphic properties, structure, explicit drawing order, renderer calls, and same-run decoded pixels. Independently allocated logical identities and private child IDs may be normalized for this comparison; test their uniqueness and revision correspondence separately without normalization.
 - Keep primitive demonstration programs as explicit method chains without batching helpers or test-only syntactic sugar.
 - Keep user programs realistic and assertion-free. Mocks, probes, and test-only inspection belong in importing tests.
 - Test the shortest valid public call for every high-level action after its prerequisites are present.

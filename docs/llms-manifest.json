@@ -3,9 +3,9 @@
   "packageVersion": "0.0.26",
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
-    "status": "published-release",
-    "contractId": "sha256:8ec25828c662bcb6b0bf6801a6b6add6f2b653f218476ea7fc758f21e1418174",
-    "sourceCommit": "1e38e7bef30aeedb561c1ae09bbdcdd152bd46b2",
+    "status": "development",
+    "contractId": "sha256:5f985823b92f3e49c4a73a8303f1de427b37528681889fca593cdb30216ffd3d",
+    "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -65,8 +65,8 @@
         "long-requests-and-execution-recovery",
         "related"
       ],
-      "bytes": 12058,
-      "sha256": "d83a44979c7f85f56f3d418c27bd7d592b7e8b3d34528bd8bbce6c1e7dd83ac8"
+      "bytes": 11986,
+      "sha256": "c14c078d0d79db1cb04ee38a587d53a79e71b64caa952352b8ea4e083bc94523"
     },
     {
       "order": 4,
@@ -810,8 +810,8 @@
         "removedata-id",
         "related"
       ],
-      "bytes": 13893,
-      "sha256": "bbfe5df32ea439a8e34d1d05e0d7c7b7463465a26c8595f5a0bc2f01753692c0"
+      "bytes": 14667,
+      "sha256": "0e2aa2e440f159dcead6525cc4d82118843fc87eb2c58e46823ef21c7491627d"
     },
     {
       "order": 51,
@@ -1214,10 +1214,11 @@
         "transition-scenes",
         "canvas-transition-scenes",
         "measured-text-layout",
+        "identity-across-revisions",
         "related"
       ],
-      "bytes": 26314,
-      "sha256": "7e4f4d9e82c563d172b407d51ead075685f73b80b805db99c072f05318222a5a"
+      "bytes": 26957,
+      "sha256": "8d61cd5c904b7aa1db61b90787bb6f8bfa52934fc2f25e874075ed983afb3f44"
     },
     {
       "order": 73,
@@ -1436,8 +1437,8 @@
         "editing-and-removing-stored-intent",
         "related"
       ],
-      "bytes": 10727,
-      "sha256": "f6a2b110d089b2f281fadd539fe0dbbf832fb8031ec700ec3f2dc571e0288c51"
+      "bytes": 11206,
+      "sha256": "58ef3b2d5023e08359e272dbe17d7e3422837bba74781344b2fbc82fa1c4c834"
     },
     {
       "order": 86,
@@ -1845,8 +1846,8 @@
         "snapshot-formats",
         "related"
       ],
-      "bytes": 11885,
-      "sha256": "c4dfe080d74c938822071e6507531b3c94ce95245130801a59fac2f161ed63f8"
+      "bytes": 12176,
+      "sha256": "487b852e324159fe456c354038639def82fa0246c80097af941245596fb11784"
     },
     {
       "order": 110,
@@ -1879,8 +1880,8 @@
         "diagnosis-order",
         "related"
       ],
-      "bytes": 5218,
-      "sha256": "a4325b385b515ec6cf8a14e821a0d72f6ae7084459a19e324921bec4f832167a"
+      "bytes": 5504,
+      "sha256": "cf2047f34950bcc2ec4106adc64f5593291435c015705a1869c5dab2e7c29e61"
     },
     {
       "order": 112,
@@ -2084,8 +2085,8 @@
         "focused-channel-scale-editors",
         "related"
       ],
-      "bytes": 195377,
-      "sha256": "7fb612dda4654fd4f31bf45d1b6fdd2d09f1f125b26959179f36c333f132a589"
+      "bytes": 196175,
+      "sha256": "b65d1048c35f15b488a9232462120bcdf1a08b408a0b221c122f2a0f25824350"
     },
     {
       "order": 119,
@@ -2132,8 +2133,8 @@
         "editoverlay",
         "related"
       ],
-      "bytes": 85962,
-      "sha256": "18dd77fb69cef63f7cc7238daec338b0863873942676b28c045cd9ab5f6791a2"
+      "bytes": 86034,
+      "sha256": "a552347a7acf3f6a9bfb3ce1af278f8972cc7dfcfbf5f6c546cef8ca357787cd"
     },
     {
       "order": 120,
@@ -2184,8 +2185,8 @@
         "encodechannels",
         "related"
       ],
-      "bytes": 71638,
-      "sha256": "11d16a39e6b7117ac05176318d477541b0079712adc4baf1e72c0d9c867f34b8"
+      "bytes": 71662,
+      "sha256": "fe8cd63a08816895ab6dfcdd39af66a5268602ae4bd9ed32f12add0d2ec4502b"
     },
     {
       "order": 121,
@@ -2244,8 +2245,8 @@
         "semantic-resources-and-regression-layers",
         "related"
       ],
-      "bytes": 90886,
-      "sha256": "ec0def9751443a98aae275132ac84800abe25073e6bdb5a65c9ebc2b53559587"
+      "bytes": 91114,
+      "sha256": "90076c089e8abb368dc1604841a69042b3be3c6fc390c40511ba605a7a2cd777"
     },
     {
       "order": 122,
@@ -2342,8 +2343,8 @@
         "focused-legend-edits",
         "related"
       ],
-      "bytes": 156636,
-      "sha256": "e909fff73f17e5c9f19c78630d9825390170e84d264aa7aaf2b1d26ee21cb1fc"
+      "bytes": 156660,
+      "sha256": "9bf51611236228ac171932b9e080d1fecbf43ee386d7e42e8663019a25bd682e"
     },
     {
       "order": 123,
@@ -2367,8 +2368,8 @@
         "directional-grids",
         "related"
       ],
-      "bytes": 10915,
-      "sha256": "6b11152a5ec369739446c152fce43190d57de00267d1de1d4c939aaaaa334afb"
+      "bytes": 10927,
+      "sha256": "08044c231bf3535a3759dbb8802b5f2736eb082f5ad1c60f85465ab0ae421575"
     },
     {
       "order": 124,
@@ -2409,8 +2410,8 @@
         "rendering-functions",
         "internal-trace-operations"
       ],
-      "bytes": 30071,
-      "sha256": "8b7d156b5901bab054e710428f4178fa270fd03ac396d6d84793fc31abd9ca71"
+      "bytes": 30852,
+      "sha256": "4eebb5baedd0d8e2b14293ebdc564e93771bec06976c1f90c778ea025395b725"
     },
     {
       "order": 126,
@@ -2595,6 +2596,7 @@
         "type-dashpattern",
         "type-dashscaleoptions",
         "type-dashstyle",
+        "type-datakeyoptions",
         "type-datasetbin2doutputfields",
         "type-datasetbin2dtransform",
         "type-datasetbintransform",
@@ -3007,6 +3009,8 @@
         "type-revisedataoptions",
         "type-rotationinput",
         "type-rotationunit",
+        "type-rowkey",
+        "type-rowkeyscalar",
         "type-rowwindowframe",
         "type-rugguideoptions",
         "type-rugmeasurechannel",
@@ -3107,8 +3111,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 385756,
-      "sha256": "b21fad340c2b8d4d9b8013d9ae31499bfc34db46ba439a680acfa89085d536f5"
+      "bytes": 386904,
+      "sha256": "c78c3c1e84236bb7f3f27807e9f65ebdb3054d44ffb1c94b916b5443073b1f6c"
     },
     {
       "order": 127,
@@ -3139,10 +3143,11 @@
         "creategraphics-id-type-length-parent-before-after",
         "editgraphics-target-property-value-remove",
         "clip-a-named-graphic-owner",
-        "scale-materialization"
+        "scale-materialization",
+        "stored-selection-resources-and-concrete-identity"
       ],
-      "bytes": 19253,
-      "sha256": "fe90d7a82d5c2cde1290a139b3ad4aeca495f6140852ec1b4e557b1b263e46d1"
+      "bytes": 20044,
+      "sha256": "03541f1cc30a70185d0e00ded26f883894aac542db00eea95a949d340dbc0192"
     },
     {
       "order": 129,
@@ -3195,12 +3200,13 @@
       "source": "api/data/revisions-and-removal.md",
       "headings": [
         "data-revisions-and-removal",
+        "keeping-rows-identified-across-source-revisions",
         "editing-derived-data",
         "edit-sorted-data",
         "removedata-id"
       ],
-      "bytes": 9029,
-      "sha256": "10786026e1897bc8c2f06e5fc1f0657f17d7888f44b44dbf1fedd62b729434a6"
+      "bytes": 9907,
+      "sha256": "856584c4cbae50df9274fa636edca74cf46ba6864107426c4957f147e17176ef"
     },
     {
       "order": 133,
@@ -3475,8 +3481,8 @@
         "choose-the-matching-documentation",
         "migration-from-v0013"
       ],
-      "bytes": 3039,
-      "sha256": "66a74a8698d4c93681921eeb8f7eb721c1b121268815e6c34e391e273aa8ca16"
+      "bytes": 3000,
+      "sha256": "c13b5ad1cde73a4df2688fc61dcd10beb3bd8e5d90bfa870c7d8373b5ff5fe8d"
     },
     {
       "order": 150,

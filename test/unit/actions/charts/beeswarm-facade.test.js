@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -34,8 +35,8 @@ test("creates a vertical Beeswarm through Strip and point-packing owners", () =>
     point: { radius: 4, stroke: "white" },
     guides: false
   }).packPoints({ target: "swarm", channel: "x", key: "id", padding: 2 });
-  assert.deepEqual(actual.semanticSpec, expected.semanticSpec);
-  assert.deepEqual(actual.graphicSpec, expected.graphicSpec);
+  assertEquivalentMeaning(actual.semanticSpec, expected.semanticSpec);
+  assertEquivalentMeaning(actual.graphicSpec, expected.graphicSpec);
   assert.deepEqual(
     actual.trace.children.at(-1).children.map(node => node.op),
     ["createStripPlot", "packPoints"]

@@ -18,6 +18,8 @@ import { applyLayerDataRematerialization } from
   "../../materialization/dependencies.js";
 import { withLogicalDataReplacements } from
   "../../materialization/revisionIdentity.js";
+import { derivedIdentityBase } from "../../grammar/rowLineage.js";
+import { withPreparedDatasetIdentity } from "../primitives/datasetIdentity.js";
 import {
   outputFieldChanges,
   rebindLayerOutputFields,
@@ -296,11 +298,12 @@ function applyRevisionPlanWithIdentity(program, resolved, plan, { retain }) {
   for (const revision of plan.revisions) {
     if (revision.transform === undefined) continue;
     const policy = findTransformPolicy(revision.transform.type);
-    next = next.createDerivedData({
+    const identity = derivedIdentityBase(findDataset(next, revision.source), revision.id, findDataset(next, revision.old));
+    next = withPreparedDatasetIdentity({
       id: revision.id,
       source: revision.source,
       transform: [revision.transform]
-    });
+    }, identity, args => next.createDerivedData(args));
     if (revision.transform.type === "markFilter") {
       next = next.rebindLayerData({
         id: revision.transform.target,

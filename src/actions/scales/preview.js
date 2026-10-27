@@ -16,7 +16,7 @@ import {
   resolveScaleMaterialization
 } from "../../materialization/scales/resolve.js";
 import { findScale, findScaleConsumers, resolveConsumerCategoryOrder,
-  resolveConsumerValues, resolveSeriesLayoutScaleValues } from "./consumers/index.js";
+  resolveConsumerValues, resolveSeriesLayoutScaleValues } from "../../materialization/scales/consumers/index.js";
 
 function resolveScalePreviewAtBounds(program, id, bounds) {
   const scale = findScale(program, id);

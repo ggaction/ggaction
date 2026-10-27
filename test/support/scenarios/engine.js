@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
+import { assertEquivalentMeaning, withoutAllocatedIdentity } from "../identity-equivalence.js";
 
 import { renderToSVG } from "../../../src/renderers/svg.js";
 import { assertAnalyticLayerIntegrity } from "../../oracles/analytic-layer-integrity.js";
@@ -36,6 +37,7 @@ const realisticFactorRequirementCache = new Map();
 
 function stableValue(value) {
   if (Array.isArray(value)) return `[${value.map(stableValue).join(",")}]`;
+  if (value instanceof Date) return `date:${value.getTime()}`;
   if (value !== null && typeof value === "object") {
     return `{${Object.entries(value).map(([key, child]) =>
       `${JSON.stringify(key)}:${stableValue(child)}`
@@ -1039,9 +1041,9 @@ function assertVisibleMetadataTitle(program, metadata, label) {
 
 function semanticFingerprint(program) {
   return createHash("sha256")
-    .update(stableValue(program.semanticSpec))
+    .update(stableValue(withoutAllocatedIdentity(program.semanticSpec)))
     .update("\0")
-    .update(stableValue(program.graphicSpec))
+    .update(stableValue(withoutAllocatedIdentity(program.graphicSpec)))
     .digest("hex");
 }
 
@@ -1216,6 +1218,7 @@ function preflightRealisticCandidate(recipe, factors) {
     assertRecipeEvidence(recipe, program, factors, metadata, `${id} preflight`);
     const factorEffects = observedFactorEffects(recipe, program, factors);
     const svg = renderToSVG(program, {
+      resourceNamespace: "scenario",
       title: metadata?.title ?? id,
       description: metadata?.analysisQuestion ?? `Generated ${recipe.id} scenario.`
     });
@@ -2766,6 +2769,7 @@ export function runScenario(descriptor, {
       ? assertRecipeEvidence(recipe, program, descriptor.factors, metadata, descriptor.id)
       : observedFeatures(recipe, program, descriptor.factors);
     const svg = renderToSVG(program, {
+      resourceNamespace: "scenario",
       title: metadata?.title ?? descriptor.id,
       description: metadata?.analysisQuestion ?? `Generated ${descriptor.recipe} scenario.`
     });
@@ -2780,9 +2784,10 @@ export function runScenario(descriptor, {
     }
     if (deterministic) {
       const replay = buildScenario(descriptor);
-      assert.deepEqual(replay.semanticSpec, program.semanticSpec, `${descriptor.id} semantic replay`);
-      assert.deepEqual(replay.graphicSpec, program.graphicSpec, `${descriptor.id} graphic replay`);
+      assertEquivalentMeaning(replay.semanticSpec, program.semanticSpec, `${descriptor.id} semantic replay`);
+      assertEquivalentMeaning(replay.graphicSpec, program.graphicSpec, `${descriptor.id} graphic replay`);
       assert.equal(renderToSVG(replay, {
+        resourceNamespace: "scenario",
         title: metadata?.title ?? descriptor.id,
         description: metadata?.analysisQuestion ?? `Generated ${descriptor.recipe} scenario.`
       }), svg, `${descriptor.id} SVG replay`);

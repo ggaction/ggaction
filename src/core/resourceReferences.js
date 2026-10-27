@@ -251,7 +251,7 @@ export function collectSelectionReferences(program) {
       "selection", config.sourceSelection, "selection", id, ["sourceSelection"]
     ));
     append(references, reference(
-      "data", config.selector?.rows?.data, "selection", id, ["selector", "rows", "data"]
+      "data", config.projection?.data ?? config.selector?.rows?.data, "selection", id, config.resource ? ["projection", "data"] : ["selector", "rows", "data"]
     ));
   }
   for (const [id, config] of Object.entries(
@@ -349,6 +349,12 @@ export function collectResourceReferences(program, { kind, id }) {
 
 export function collectAllResourceReferences(program) {
   return [
+    ...(program.semanticSpec.resources ?? []).flatMap(resource => [
+      ...resource.inputs,
+      ...(resource.ownership.mode === "generated" ? [resource.ownership.owner] : [])
+    ].filter(input => input.kind === "data").map(input => reference("data", input.id, "resource", resource.id, ["inputs"]))),
+    ...(program.semanticSpec.resources ?? []).flatMap(resource =>
+      (resource.provenance.sourceRows ?? []).map(ref => reference("data", ref.data, "resource", resource.id, ["provenance", "sourceRows"]))),
     ...collectSemanticDataReferences(program),
     ...collectSemanticScaleReferences(program),
     ...collectSemanticCoordinateReferences(program),

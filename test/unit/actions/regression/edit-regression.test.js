@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -52,11 +53,11 @@ test("revises regression statistics once and rebinds every owned consumer", () =
     edited.semanticSpec.layers.find(layer => layer.id === "pointsRegressionLines").data,
     revision.id
   );
-  assert.deepEqual(
+  assertEquivalentMeaning(
     edited.graphicSpec.objects.pointsRegressionBands,
     direct.graphicSpec.objects.pointsRegressionBands
   );
-  assert.deepEqual(
+  assertEquivalentMeaning(
     edited.graphicSpec.objects.pointsRegressionLines,
     direct.graphicSpec.objects.pointsRegressionLines
   );

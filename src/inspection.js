@@ -1,3 +1,4 @@
+import { namespaceItemKey } from "./grammar/schemas/graphicIdentity.js";
 import { resolveMarkItems } from "./materialization/selection/policies/index.js";
 import { highlightTargets } from "./selectors/selectionTargets.js";
 import { resolvePathCommandBounds, unionConcreteGraphicBounds } from "./grammar/schemas/graphicBounds.js";
@@ -641,9 +642,13 @@ export function getMarkItems(program, { target, grain = 'item' } = {}) {
   const view = typeof target === 'object' ? atChildPath(program, target.childPath) : program;
   const requested = typeof target === 'object' ? target.id : target;
   const layer = requested ?? resolveEligibleLayer(view, { label: 'mark items', predicate: l => l.data !== undefined }).id;
-  let stored = markItemInspections.get(view);
-  if (!stored) markItemInspections.set(view, stored = new Map());
-  const key = `${layer}:${grain}`;
+  let stored = markItemInspections.get(program);
+  if (!stored) markItemInspections.set(program, stored = new Map());
+  const path = typeof target === "object" ? target.childPath ?? [] : [];
+  const key = JSON.stringify([path, layer, grain]);
+  let parent = program;
+  const namespaces = path.map(id => { const namespace = `${parent.compositionSpec.id}-${id}`; parent = parent.children[id]; return namespace; });
+  const scopedKey = key => namespaces.reduceRight((result, namespace) => namespaceItemKey(result, namespace), key);
   if (stored.has(key)) return stored.get(key);
   const graphics = new Map();
   for (const [id, object] of Object.entries(view.graphicSpec.objects)) {
@@ -660,7 +665,7 @@ export function getMarkItems(program, { target, grain = 'item' } = {}) {
       if (g.type === 'rect') return {left:p.x,top:p.y,right:p.x+p.width,bottom:p.y+p.height};
       return unionConcreteGraphicBounds({objects:{item:g},order:['item']}, ['item'], view.materializationConfigs.textMetrics);
     }).filter(Boolean);
-    return { key:item.key, target:item.layer, markType:item.markType, grain, fields:item.fields,
+    return { key:scopedKey(item.key), target:item.layer, markType:item.markType, grain, fields:item.fields,
       channels:item.channels, properties:item.properties, rows:item.rows, geometry,
       bounds:bounds.length ? {left:Math.min(...bounds.map(b=>b.left)),top:Math.min(...bounds.map(b=>b.top)),right:Math.max(...bounds.map(b=>b.right)),bottom:Math.max(...bounds.map(b=>b.bottom))}:null };
   })));

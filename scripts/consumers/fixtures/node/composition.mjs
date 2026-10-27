@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "./identity-equivalence.js";
 import { fileURLToPath as consumerPath } from "node:url";
 import assert from "node:assert/strict";
 import { chart, hconcat, render, vconcat } from "ggaction";
@@ -56,7 +57,7 @@ for (const factory of [chart,basicChart]) {
       if(factory===chart){
         const edited=bars.editLookupData({target:"ages",lookup:{data:"people",key:"name",fields:["age"],as:["years"]}});
         assert.equal(edited.semanticSpec.layers[0].encoding.y.field,"years");
-        assert.deepEqual(edited.graphicSpec.objects.barPlot.items,bars.graphicSpec.objects.barPlot.items);
+        assertEquivalentMeaning(edited.graphicSpec.objects.barPlot.items,bars.graphicSpec.objects.barPlot.items);
         assert.equal(edited.graphicSpec.objects.yAxisTitle.properties.text,"mean(years)");
         const revised=bars.reviseData({source:"people",id:"peopleV2",values:[{name:"A",age:30},{name:"B",age:45}]});
         const id=revised.materializationConfigs.data.lookup.ages.current;
@@ -542,7 +543,7 @@ const manyPanels = chart().createCanvas({ width: 120, height: 100, margin: 20 })
       .createLinePlot({ x: "x", y: "y", groupBy: "group", guides: false })
       .facet({ field: "group", columns: 10, scales: { x: "independent", y: "independent" } });
 const manyStored = serializeProgram(manyPanels);
-assert.equal(JSON.parse(manyStored).schemaVersion, 3);
+assert.equal(JSON.parse(manyStored).schemaVersion, 4);
 const manyRestored = deserializeProgram(manyStored);
 assert.equal(Object.keys(manyRestored.children).length, 106);
 const manyChildren = Object.values(manyRestored.children);

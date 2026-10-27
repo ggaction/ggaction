@@ -1,5 +1,5 @@
 import { isPendingMeasuredRadiusConsumer } from "../../materialization/scales/policies/arc.js";
-import { findScale, findScaleConsumers } from "./consumers/index.js";
+import { findScale, findScaleConsumers } from "../../materialization/scales/consumers/index.js";
 import { resolveScalePreview, validatePendingMeasuredScale } from "./preview.js";
 import { action } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";

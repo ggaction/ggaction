@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { chart } from "../../../../src/index.js";
@@ -48,7 +49,7 @@ test("complete, whole, focused and Basic title calls converge and reset concrete
     base().createXAxis().editXAxis({ title: options }),
     base().createXAxis().editXAxisTitle(options),
     base(basicChart).createXAxis({ title: options })
-  ]) assert.deepEqual(actual.graphicSpec, expected.graphicSpec);
+  ]) assertEquivalentMeaning(actual.graphicSpec, expected.graphicSpec);
   const kept = expected.editXAxisTitle({ color: "red" });
   assert.equal(kept.guideConfigs.axis.x.title.alongOffset, 85);
   const reset = kept.editXAxisTitle({ align: "center", baseline: "middle", alongOffset: 0 });

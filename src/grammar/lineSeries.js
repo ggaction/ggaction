@@ -96,6 +96,11 @@ function groupedSeries(groups, fields, dimensions) {
   return series;
 }
 
+function seriesWithSources(key, values, enabled) {
+  return { key, values: values.map(({ sourceIndex, sourceIndices, ...value }) => value),
+    ...(enabled ? { sourceIndices: values.flatMap(value => value.sourceIndices ?? [value.sourceIndex]) } : {}) };
+}
+
 function freezeCartesianSeries(series, categoryOrder) {
   const observedX = series.flatMap(item => item.values.map(value => value.x));
   const observedSet = new Set(observedX);
@@ -193,7 +198,7 @@ function deriveCartesianLineSeries(rows, layer, options = {}) {
         field => rows[index][field]
       );
       const series = groupedSeries(groups, seriesFields, dimensions);
-      series.values.push({ x: xValues[index], y: yValues[index] });
+      series.values.push({ x: xValues[index], y: yValues[index], sourceIndex: index });
       series.orderValues ??= [];
       series.orderValues.push(orderValues[index]);
     }
@@ -203,7 +208,7 @@ function deriveCartesianLineSeries(rows, layer, options = {}) {
         item.orderValues,
         pathOrder.order
       );
-      return [{ key: item.key, values }];
+      return [seriesWithSources(item.key, values, options.lineage)];
     });
     if (series.length === 0) {
       throw new Error(
@@ -220,14 +225,14 @@ function deriveCartesianLineSeries(rows, layer, options = {}) {
         field => rows[index][field]
       );
       const series = groupedSeries(groups, seriesFields, dimensions);
-      series.values.push({ x: xValues[index], y: yValues[index] });
+      series.values.push({ x: xValues[index], y: yValues[index], sourceIndex: index });
     }
     const orderBy = directTemporal && y.fieldType === "temporal" ? "y" : "x";
     const series = [...groups.values()].flatMap(item => {
       const values = item.values.sort(
         orderBy === "x" ? compareX : (left, right) => left.y - right.y
       );
-      return [{ key: item.key, values }];
+      return [seriesWithSources(item.key, values, options.lineage)];
     });
     if (series.length === 0) {
       throw new Error(
@@ -256,10 +261,11 @@ function deriveCartesianLineSeries(rows, layer, options = {}) {
     const group = aggregateGroups.get(key) ?? {
       x: position,
       dimensions,
-      rows: []
+      rows: [], indices: []
     };
 
     group.rows.push(rows[index]);
+    group.indices.push(index);
     aggregateGroups.set(key, group);
   }
 
@@ -280,7 +286,7 @@ function deriveCartesianLineSeries(rows, layer, options = {}) {
 
     series.values.push({
       x: group.x,
-      y: value
+      y: value, sourceIndices: group.indices
     });
   }
 
@@ -291,7 +297,7 @@ function deriveCartesianLineSeries(rows, layer, options = {}) {
       return [];
     }
 
-    return [{ key: item.key, values }];
+    return [seriesWithSources(item.key, values, options.lineage)];
   });
 
   if (series.length === 0) {
@@ -350,7 +356,7 @@ function thetaOrder(values, fieldType, domain) {
   return values.map(value => indices.get(value));
 }
 
-export function derivePolarLineSeries(rows, layer, { thetaDomain } = {}) {
+export function derivePolarLineSeries(rows, layer, { thetaDomain, lineage = false } = {}) {
   if (layer.encoding?.pathOrder !== undefined) {
     throw new Error(
       `Polar line mark "${layer.id}" does not support path order.`
@@ -381,7 +387,7 @@ export function derivePolarLineSeries(rows, layer, { thetaDomain } = {}) {
       (left, right) => left.order - right.order ||
         left.sourceIndex - right.sourceIndex
     );
-    return values.length < 2 ? [] : [{ key: item.key, values }];
+    return values.length < 2 ? [] : [{ key: item.key, values, ...(lineage ? { sourceIndices: values.map(value => value.sourceIndex) } : {}) }];
   });
   if (series.length === 0) {
     throw new Error(

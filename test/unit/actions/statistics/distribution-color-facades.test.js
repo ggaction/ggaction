@@ -1,3 +1,4 @@
+import { comparableSVG } from "../../../support/identity-equivalence.js";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { chart } from "../../../../src/index.js";
@@ -20,8 +21,8 @@ for (const method of ["createBoxPlot", "createGradientPlot"]) {
       .encodeColor({ target: "plot", ...color });
     const deferred = p[method]({ id: "plot", color, guides: false })
       .encodeX({ target: "plot", ...x }).encodeY({ target: "plot", ...y });
-    assert.equal(renderToSVG(initial), renderToSVG(followup));
-    assert.equal(renderToSVG(initial), renderToSVG(deferred));
+    assert.equal(comparableSVG(initial), comparableSVG(followup));
+    assert.equal(comparableSVG(initial), comparableSVG(deferred));
     assert.equal(renderToSVG(initial), renderToSVG(deserializeProgram(serializeProgram(initial))));
     assert.equal(serializeProgram(p), before);
     assert.equal(initial.semanticSpec.layers.find(layer => layer.id === "plot").encoding.color.field, "group");
@@ -31,7 +32,7 @@ for (const method of ["createBoxPlot", "createGradientPlot"]) {
     const q = base()[method]({ id: "plot", x, y, color: "group", guides: {} });
     const fixedFollowup = base()[method]({ id: "plot", x, y, guides: false })
       .encodeColor({ target: "plot", value: "#e45756" });
-    assert.equal(renderToSVG(p), renderToSVG(fixedFollowup));
+    assert.equal(comparableSVG(p), comparableSVG(fixedFollowup));
     assert.ok(q.semanticSpec.guides.axis);
     assert.doesNotThrow(() => q.editCanvas({ width: 600, height: 450 }));
     const pending = base()[method]({ id: "plot", color: { field: "missing" } });

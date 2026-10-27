@@ -1,7 +1,8 @@
-import { validateRowSelection, rowsForSelectedItems } from "./rows.js";
+import { validateRowSelection } from "./rows.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { normalizeMarkSelector, selectMarkItemKeys } from "../../grammar/markSelection.js";
 import { resolveMarkItems, resolveMarkSourceItems } from "./policies/index.js";
+import { selectionPredicate as resolveSelectionPredicate } from "./predicate.js";
 
 export function resolveMarkSelection(program, target, selector) {
   const normalized = normalizeMarkSelector(selector);
@@ -44,17 +45,8 @@ export function resolveSelectionCreationId(program, id, target) {
 }
 
 
-// Dependent components follow their owner's current selection after data or
-// encoding revisions, rather than freezing a list of previously selected rows.
 export function selectionPredicate(program, definition) {
-  if (!definition.sourceSelection) return definition.selector;
-  const parent = program.materializationConfigs.selections?.[definition.sourceSelection];
-  if (!parent || parent.sourceSelection) throw new Error('Invalid composite selection owner.');
-  if (!definition.selector.rows) return parent.selector;
-  const items = parent.selector.property ? resolveMarkItems(program, parent.target, parent.selector.grain)
-    : resolveMarkSourceItems(program, parent.target, parent.selector.grain);
-  const resolved = { items, keys: selectMarkItemKeys(items, parent.selector) };
-  return { ...definition.selector, rows: rowsForSelectedItems(program, resolved.items, resolved.keys, definition.selector.rows.data) };
+  return resolveSelectionPredicate(program, definition, { resolveMarkItems, resolveMarkSourceItems });
 }
 
 export function resolveStoredSelection(program, id) {

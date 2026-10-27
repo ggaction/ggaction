@@ -1,3 +1,4 @@
+import { validateWorkLimit } from "../core/validation.js";
 import { scalarKey, normalizeSortBy, validateSortBy } from "./transformKeys.js";
 import { rejectUnknownProperties as rejectUnknownKeys } from "../core/validation.js";
 import { requireStringValue as requireField } from "../core/validation.js";
@@ -536,7 +537,34 @@ function applyOperation(partition, operation, sortBy, transform) {
   });
 }
 
-export function deriveWindowRows(rows, transform) {
+function captureOperationInputs(partition, operation, transform, budget) {
+  const duration = operation.frame?.duration;
+  const times = duration ? durationPositions(partition, transform) : undefined;
+  for (const [index, entry] of partition.entries()) {
+    let inputs;
+    if (["rowNumber", "rank", "denseRank"].includes(operation.op)) inputs = partition;
+    else if (operation.op === "cumulativeSum") inputs = partition.slice(0, index + 1);
+    else if (MOVING_OPERATIONS.has(operation.op)) {
+      inputs = duration ? partition.filter((_, position) => times[position] >= times[index] - durationMilliseconds(duration, "preceding") &&
+        times[position] <= times[index] + durationMilliseconds(duration, "following"))
+        : partition.slice(Math.max(0, index - operation.frame.preceding), index + operation.frame.following + 1);
+      if (operation.missing === "skip") inputs = inputs.filter(input => input.row[operation.field] != null);
+    } else {
+      const input = partition[index + (operation.op === "lag" ? -1 : 1) * operation.offset];
+      inputs = input === undefined ? [] : [input];
+    }
+    const sources = new Set();
+    for (const input of inputs) {
+      const dependencies = input.sources.get(operation.field) ?? [input.index];
+      budget.work += dependencies.size ?? dependencies.length;
+      validateWorkLimit(budget.work, "Window lineage work");
+      for (const index of dependencies) sources.add(index);
+    }
+    entry.sources.set(operation.as, sources);
+  }
+}
+
+export function deriveWindowRows(rows, transform, contributions) {
   if (!Array.isArray(rows)) {
     throw new TypeError("Window source rows must be an array.");
   }
@@ -545,7 +573,7 @@ export function deriveWindowRows(rows, transform) {
   }
   validateWindowTransform(transform);
   validateSourceFields(rows, transform);
-  const entries = rows.map((row, index) => ({ index, row: { ...row } }));
+  const entries = rows.map((row, index) => ({ index, row: { ...row }, ...(contributions ? { sources: new Map() } : {}) }));
   const partitions = partitionRows(entries, transform.partitionBy);
   const hasDuration = transform.operations.some(operation =>
     MOVING_OPERATIONS.has(operation.op) && Object.hasOwn(operation.frame, "duration")
@@ -566,10 +594,21 @@ export function deriveWindowRows(rows, transform) {
       partition.sort((left, right) => compareEntries(left, right, transform.sortBy));
     }
   }
+  const budget = { work: 0 };
   for (const operation of transform.operations) {
     for (const partition of partitions) {
       applyOperation(partition, operation, transform.sortBy, transform);
+      if (contributions) captureOperationInputs(partition, operation, transform, budget);
     }
   }
+  if (contributions) for (const entry of entries) for (const inputs of entry.sources.values()) {
+    for (const index of inputs) contributions[entry.index].add(index);
+  }
   return cloneAndFreeze(entries.map(entry => entry.row));
+}
+
+export function windowRowContributions(rows, transform) {
+  const contributions = rows.map((_, index) => new Set([index]));
+  deriveWindowRows(rows, transform, contributions);
+  return contributions.map(indices => [...indices]);
 }

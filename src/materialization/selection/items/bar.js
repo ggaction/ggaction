@@ -20,7 +20,7 @@ import {
   channelMapFromRow,
   finalizeItems,
   reorderHighlightedItems,
-  itemKey,
+  identifyItems,
   ownFields,
   uniqueFields
 } from "./common.js";
@@ -69,6 +69,9 @@ function aggregateCellDefinitions(program, layer, dataset) {
       throw new Error("Bar stroke requires one value within each aggregate cell.");
     }
     return {
+      semanticIdentity: ["cell", channels.category, cell[channels.category],
+        cell.series ?? (["nominal", "ordinal"].includes(colorEncoding?.fieldType) ? cell.color : null),
+        layer.encoding[channels.measure].field, layer.encoding[channels.measure].aggregate],
       fields: uniqueFields(members),
       channels: {
         [channels.category]: cell[channels.category],
@@ -115,6 +118,7 @@ function histogramDefinitions(program, layer, dataset) {
       throw new Error("Histogram stroke requires one value within each bin/series cell.");
     }
     return {
+      semanticIdentity: ["bin", segment.start, segment.end, colorValue],
       fields: uniqueFields(segment.members),
       channels: {
         x: segment.start,
@@ -131,7 +135,8 @@ function histogramDefinitions(program, layer, dataset) {
 
 function rangedDefinitions(layer, dataset) {
   const measure = resolveBarGrain(layer) === BAR_GRAINS.centered ? resolveBarChannels(layer).measure : undefined;
-  return dataset.values.map(row => ({
+  return dataset.values.map((row, index) => ({
+    rowKey: dataset.rowKeys[index],
     fields: ownFields(row),
     channels: { ...channelMapFromRow(row, layer),
       ...(measure !== undefined && layer.encoding[`${measure}2`] === undefined
@@ -191,7 +196,7 @@ function barStackDefinitions(layer, barGrain, definitions) {
     const [minimum, maximum] = numericExtent(endpoints);
     const members = grouped.flatMap(definition => definition.members);
     return {
-      key: itemKey(layer, "stack", index),
+      semanticIdentity: ["stack", categoryChannels.map(channel => grouped[0].channels[channel])],
       fields: uniqueFields(members),
       channels: {
         ...sharedChannels(grouped),
@@ -219,15 +224,13 @@ export function resolveBarItemDefinitions(program, layer, dataset) {
   return definitions;
 }
 
-export function resolveBarItems(program, layer, dataset, selectionGrain) {
+export function resolveBarItems(program, layer, dataset, selectionGrain, resolveItems, selectionResolvers) {
   const grain = resolveBarGrain(layer);
-  const definitions = resolveBarItemDefinitions(program, layer, dataset).map((definition, index) => ({
-    ...definition, key: definition.key ?? itemKey(layer, grain, index)
-  }));
+  const definitions = identifyItems(program, layer, grain, resolveBarItemDefinitions(program, layer, dataset));
   const needsStacks = selectionGrain === 'stack' || Object.values(program.materializationConfigs.highlights ?? {}).some(config =>
-    config.target === layer.id && program.materializationConfigs.selections?.[config.selection]?.selector.grain === 'stack');
-  const stacks = needsStacks ? barStackDefinitions(layer, grain, definitions) : undefined;
-  const ordered = reorderHighlightedItems(program, layer, definitions, { stack: stacks });
+    config.target === layer.id && program.materializationConfigs.selections?.[config.selection]?.grain === 'stack');
+  const stacks = needsStacks ? identifyItems(program, layer, "stack", barStackDefinitions(layer, grain, definitions)) : undefined;
+  const ordered = reorderHighlightedItems(program, layer, definitions, { stack: stacks }, selectionResolvers);
   const graphicTypes = hasRectRadius(program.markConfigs[layer.id]?.barAppearance) ? ["rect", "path"] : "rect";
   if (selectionGrain === "stack") {
     return finalizeItems(
@@ -235,13 +238,14 @@ export function resolveBarItems(program, layer, dataset, selectionGrain) {
       layer,
       "stack",
       stacks.map(stack => ({ ...stack, graphicIndices: stack.graphicIndices.map(index => ordered.indexOf(definitions[index])) })),
-      graphicTypes
+      graphicTypes, { reorder: false, selectionResolvers }
     );
   }
-  return finalizeItems(program, layer, grain, ordered, graphicTypes, { reorder: false });
+  return finalizeItems(program, layer, grain, ordered, graphicTypes, { reorder: false, selectionResolvers });
 }
 
 export function resolveBarSourceItems(program, layer, dataset, selectionGrain) {
   const definitions = resolveBarItemDefinitions(program, layer, dataset);
-  return selectionGrain === 'stack' ? barStackDefinitions(layer, resolveBarGrain(layer), definitions) : definitions;
+  return identifyItems(program, layer, selectionGrain === 'stack' ? 'stack' : resolveBarGrain(layer),
+    selectionGrain === 'stack' ? barStackDefinitions(layer, resolveBarGrain(layer), definitions) : definitions);
 }

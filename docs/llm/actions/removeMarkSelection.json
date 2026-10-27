@@ -30,7 +30,8 @@
     "H3"
   ],
   "wraps": [
-    "removeMarkHighlight"
+    "removeMarkHighlight",
+    "editSemantic"
   ],
   "editableVia": [],
   "supports": {

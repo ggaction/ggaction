@@ -7,6 +7,8 @@ import { applyRevisionPlan, buildSourceRevisionPlan } from "./edit.js";
 import { resolveStoredSelection } from "../../materialization/selection/state.js";
 import { withGuideLayoutTransaction } from "../../materialization/guides/layout.js";
 import { assertFieldsAvailable } from "../../grammar/datasetSchema.js";
+import { reviseSourceIdentity } from "../../core/itemIdentity.js";
+import { newDatasetNamespace, withPreparedDatasetIdentity } from "../primitives/datasetIdentity.js";
 
 let reviseFacet;
 
@@ -32,7 +34,7 @@ export function registerFacetDataRevision(handler) {
   reviseFacet = handler;
 }
 
-export function reviseUnitData(program, { source, id, values, schema }) {
+export function reviseUnitData(program, { source, id, values, schema, identity }) {
   const plan = buildSourceRevisionPlan(program, source, id);
   const original = requireDataset(program, source);
   const inheritedSchema = schema ?? (original.schema?.origin === "declared"
@@ -40,7 +42,9 @@ export function reviseUnitData(program, { source, id, values, schema }) {
         name, storageType, nullable, optional
       })) }
     : undefined);
-  const created = program.createData({ id, values, ...(inheritedSchema === undefined ? {} : { schema: inheritedSchema }) });
+  const created = withPreparedDatasetIdentity(
+    { id, values, ...(inheritedSchema === undefined ? {} : { schema: inheritedSchema }) }, identity,
+    args => program.createData(args));
   const revisedSource = requireDataset(created, id);
   for (const layer of program.semanticSpec.layers.filter(layer => layer.data === source)) {
     assertFieldsAvailable(revisedSource.schema, layerInputFields(layer), {
@@ -59,7 +63,7 @@ export function reviseUnitData(program, { source, id, values, schema }) {
 }
 
 export const reviseData = /* @__PURE__ */ closedAction(
-  { op: "reviseData", description: "Revise source data and its dependent chart.", scope: "any" }, ["source", "id", "values", "schema"],
+  { op: "reviseData", description: "Revise source data and its dependent chart.", scope: "any" }, ["source", "id", "values", "schema", "keys", "rowMap"],
   function (args = {}) {
     const source = validateUserId(args.source, "Source dataset id");
     const id = validateUserId(args.id, "Revision dataset id");
@@ -70,9 +74,10 @@ export const reviseData = /* @__PURE__ */ closedAction(
     if (original.source !== undefined || !Array.isArray(original.values)) {
       throw new Error(`Source "${source}" must be a materialized original dataset.`);
     }
+    const identity = reviseSourceIdentity(original, args.values, args, newDatasetNamespace());
     const apply = this.compositionSpec === undefined
-      ? program => reviseUnitData(program, { source, id, values: args.values, schema: args.schema }).program
-      : program => reviseFacet(program, { source, id, values: args.values, schema: args.schema });
+      ? program => reviseUnitData(program, { source, id, values: args.values, schema: args.schema, identity }).program
+      : program => reviseFacet(program, { source, id, values: args.values, schema: args.schema, identity });
     // The entire dependent materialization must succeed before returning a revision.
     apply(this);
     return apply(this);

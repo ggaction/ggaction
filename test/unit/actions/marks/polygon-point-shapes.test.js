@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { chart } from "../../../../src/index.js";
@@ -26,7 +27,7 @@ test("constant polygon create/edit agree in Full and Basic with stable input cop
   for (const factory of [chart, basicChart]) {
     const shape = structuredClone(triangle), created = point(factory, shape);
     const edited = point(factory, "circle").editPointMark({ shape });
-    assert.deepEqual(edited.graphicSpec, created.graphicSpec);
+    assertEquivalentMeaning(edited.graphicSpec, created.graphicSpec);
     assert(created.graphicSpec.objects.points.items.every(i => i.type === "path"));
     const before = structuredClone(created.graphicSpec);
     shape.polygon[0].x = -2;

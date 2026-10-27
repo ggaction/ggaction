@@ -48,7 +48,7 @@ for (const ratio of [1, 2]) test(`${name} matches explicit content-header geomet
       let differences = 0;
       for (let i = 0; i < pixels[0].length; i++) if (pixels[0][i] !== pixels[1][i]) differences++;
       return { differences, sameLength: pixels[0].length === pixels[1].length,
-        sameSvg: renderToSVG(actual) === renderToSVG(primitive),
+        sameSvg: renderToSVG(actual, { resourceNamespace: "comparison" }) === renderToSVG(primitive, { resourceNamespace: "comparison" }),
         savedSvg: renderToSVG(deserializeProgram(serializeProgram(actual))) === renderToSVG(actual),
         headerY: actual.graphicSpec.objects["facet-headers"].items.map(x => x.properties.y) };
     }, ratio);
@@ -89,7 +89,7 @@ for (const ratio of [1, 2]) test(`${name} independently packed content matches l
         render(p,ctx,{pixelRatio:ratio});
         return Array.from(ctx.getImageData(0,0,canvas.width,canvas.height).data);
       });
-      return {svg:renderToSVG(actual)===renderToSVG(primitive),
+      return {svg:renderToSVG(actual,{resourceNamespace:"comparison"})===renderToSVG(primitive,{resourceNamespace:"comparison"}),
         pixels:pixels.slice(1).every(p=>p.length===pixels[0].length&&p.every((v,i)=>v===pixels[0][i])),
         painted:pixels[0].some((v,i)=>i%4!==3&&v!==255)};
     },ratio);

@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { chart } from "../../../../src/index.js";
@@ -35,8 +36,8 @@ test("creates a Polar scatter plot through the existing lower owners", () => {
     .encodePointRadius({ target: "points", value: 7 })
     .encodeColor({ target: "points", field: "group" })
     .encodeShape({ target: "points", field: "group" });
-  assert.deepEqual(actual.semanticSpec, expected.semanticSpec);
-  assert.deepEqual(actual.graphicSpec, expected.graphicSpec);
+  assertEquivalentMeaning(actual.semanticSpec, expected.semanticSpec);
+  assertEquivalentMeaning(actual.graphicSpec, expected.graphicSpec);
   assert.deepEqual(actual.resolvedScales, expected.resolvedScales);
   assert.deepEqual(actual.trace.children.at(-1).children.map(node => node.op), [
     "createPointMark", "encodeTheta", "encodeR", "encodePointRadius",
@@ -61,7 +62,7 @@ test("keeps Polar radius position separate from encoded glyph size", () => {
     }),
     /radius conflicts with size/
   );
-  assert.deepEqual(
+  assertEquivalentMeaning(
     base().createPolarScatterPlot({
       theta: "angle", radius: "distance", point: { radius: undefined }, guides: false
     }).graphicSpec,
@@ -120,7 +121,7 @@ test("creates scoped Polar guides and converges after a radius scale edit", () =
     color: "group",
     guides: { legend: {} }
   });
-  assert.deepEqual(edited.graphicSpec, direct.graphicSpec);
+  assertEquivalentMeaning(edited.graphicSpec, direct.graphicSpec);
 });
 
 test("rejects invalid Polar facade requests without changing prior state", () => {

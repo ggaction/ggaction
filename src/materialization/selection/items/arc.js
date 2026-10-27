@@ -8,7 +8,7 @@ import {
   uniqueFields
 } from "./common.js";
 
-export function resolveArcItems(program, layer, dataset) {
+export function resolveArcItems(program, layer, dataset, grain, resolveItems, selectionResolvers) {
   const thetaScale = program.resolvedScales[layer.encoding?.theta?.scale];
   const radiusScale = program.resolvedScales[layer.encoding?.radius?.scale];
   const frame = resolveCoordinatePolarFrame(program, layer.coordinate);
@@ -32,6 +32,9 @@ export function resolveArcItems(program, layer, dataset) {
       throw new Error("Arc stroke requires one value within each sector.");
     }
     return {
+      ...(layer.encoding.theta?.aggregate !== undefined || layer.encoding.radius?.aggregate !== undefined
+        ? { semanticIdentity: ["sector", sector.key] } : { rowKey: dataset.rowKeys[sector.sourceIndices[0]] }),
+      memberKeys: sector.sourceIndices.map(index => dataset.rowKeys[index]),
       fields: uniqueFields(members),
       channels: {
         theta: sector.theta,
@@ -63,5 +66,5 @@ export function resolveArcItems(program, layer, dataset) {
       members
     };
   });
-  return finalizeItems(program, layer, "sector", definitions, "path");
+  return finalizeItems(program, layer, "sector", definitions, "path", { selectionResolvers });
 }

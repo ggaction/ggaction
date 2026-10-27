@@ -1,89 +1,89 @@
 {
-  "status": "open",
+  "status": "verification",
   "cells": [
     {
       "consumer": "identity-kernel",
       "owner": "src/core/itemIdentity.js",
-      "status": "kernel-tested",
-      "remaining": "Public action and persistence integration; phase consumer closure remains open"
+      "status": "implemented-awaiting-qualification",
+      "remaining": "Clean revision cumulative verification and evidence closure"
     },
     {
       "consumer": "create-revise",
       "owner": "src/actions/data/revise.js",
-      "status": "pending-implementation",
-      "remaining": "Key options, namespace preflight and immutable source revision"
+      "status": "implemented-awaiting-qualification",
+      "remaining": "Clean revision cumulative verification and evidence closure"
     },
     {
       "consumer": "derived-lineage",
       "owner": "src/grammar/transforms.js",
-      "status": "pending-implementation",
-      "remaining": "Every registered transform; grouping, flatten replacement, lookup roles"
+      "status": "implemented-awaiting-qualification",
+      "remaining": "Clean revision cumulative verification and evidence closure"
     },
     {
       "consumer": "selectors-references",
       "owner": "src/core/resourceReferences.js",
-      "status": "pending-implementation",
-      "remaining": "Typed resource/input refs, exact revision, cycle and shared-owner preflight"
+      "status": "implemented-awaiting-qualification",
+      "remaining": "Clean revision cumulative verification and evidence closure"
     },
     {
       "consumer": "materialization",
       "owner": "src/materialization/planner.js",
-      "status": "pending-implementation",
-      "remaining": "Explicit closure, metadata reconciliation, no implicit compiler"
+      "status": "implemented-awaiting-qualification",
+      "remaining": "Clean revision cumulative verification and evidence closure"
     },
     {
       "consumer": "scene",
       "owner": "src/scene.js",
-      "status": "pending-implementation",
-      "remaining": "Stable keys and ordered topology; SVG v1 and Canvas v2 return shapes"
+      "status": "implemented-awaiting-qualification",
+      "remaining": "Clean revision cumulative verification and evidence closure"
     },
     {
       "consumer": "selection-highlight",
       "owner": "src/materialization/selection/state.js",
-      "status": "pending-implementation",
-      "remaining": "Move logical predicate/key ownership; keep domain API and style intent"
+      "status": "implemented-awaiting-qualification",
+      "remaining": "Clean revision cumulative verification and evidence closure"
     },
     {
       "consumer": "inspection-accessibility",
       "owner": "src/inspection.js",
-      "status": "pending-implementation",
-      "remaining": "Stable key and contributing row visibility at final grain"
+      "status": "implemented-awaiting-qualification",
+      "remaining": "Clean revision cumulative verification and evidence closure"
     },
     {
       "consumer": "composition",
       "owner": "src/actions/data/revise.js",
-      "status": "pending-implementation",
-      "remaining": "Retained facet/repeat source, child namespaces, ancestor closure"
+      "status": "implemented-awaiting-qualification",
+      "remaining": "Clean revision cumulative verification and evidence closure"
     },
     {
       "consumer": "persistence",
       "owner": "src/persistence.js",
-      "status": "historical-inputs-tested",
-      "remaining": "Real 1/2/3-to-4 migration and new resource edit/remove in fresh process"
+      "status": "implemented-awaiting-qualification",
+      "remaining": "Clean revision cumulative verification and evidence closure"
     },
     {
       "consumer": "svg-canvas-png-pdf",
       "owner": "src/renderers",
-      "status": "unchanged-in-review",
-      "remaining": "Phase closeout must run all backends with new concrete metadata"
+      "status": "implemented-awaiting-qualification",
+      "remaining": "Clean revision cumulative verification and evidence closure"
     },
     {
       "consumer": "types-exports",
       "owner": "types/program.d.ts",
-      "status": "unchanged-in-review",
-      "remaining": "Full/Basic options and additive ErrorDetails/semantic declarations"
+      "status": "implemented-awaiting-qualification",
+      "remaining": "Clean revision cumulative verification and evidence closure"
     },
     {
       "consumer": "contracts-docs",
       "owner": "agent_docs/contract/current",
-      "status": "unchanged-in-review",
-      "remaining": "Current CORE/SELECTION and generated metadata with implementation"
+      "status": "implemented-awaiting-qualification",
+      "remaining": "Clean revision cumulative verification and evidence closure"
     },
     {
       "consumer": "package",
       "owner": "package.json",
-      "status": "unchanged-in-review",
-      "remaining": "Installed consumer, artifact/bundle budget once runtime changes"
+      "status": "implemented-awaiting-qualification",
+      "remaining": "Clean revision cumulative verification and evidence closure"
     },
     {
       "consumer": "hit-animation",

@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { chart } from "../../../../src/index.js";
@@ -160,7 +161,7 @@ test("a Box reuses compatible guides when deferred positions complete", () => {
     .encodeX({ target: "box", ...category }).encodeY({ target: "box", field: "y" });
   const expected = build(false);
   const actual = build({});
-  assert.deepEqual(state(actual), state(expected));
+  assertEquivalentMeaning(state(actual), state(expected));
 });
 
 test("Parallel coordinates reject a second owner's independent dimension scales", () => {

@@ -246,3 +246,10 @@ the approved point, stacked-bar, and line-series examples.
 ## Related
 
 [Appearance overview](../appearance.md) · [Mark-selection tutorial](../../tutorials/mark-selection.md) · [Data filtering](../data/filtering.md)
+
+Row indices are input coordinates only. A persistent selection immediately stores
+the corresponding logical row keys. Reordering keyed data preserves the selection;
+deleting a key hides its membership, and reintroducing it selects it again.
+Field, channel and property predicates remain dynamic and reevaluate after edits.
+Selection meaning belongs to `semanticSpec.resources`; target/projection and
+highlight appearance stay in their respective materialization configurations.

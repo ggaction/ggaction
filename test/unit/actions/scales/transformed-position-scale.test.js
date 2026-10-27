@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -162,7 +163,7 @@ test("converges between direct transformed encoding and a later type edit", () =
     .encodeRadius({ value: 3 })
     .editScale({ id: "x", type: "log", base: 10 });
 
-  assert.deepEqual(edited.semanticSpec, direct.semanticSpec);
+  assertEquivalentMeaning(edited.semanticSpec, direct.semanticSpec);
   assert.deepEqual(edited.resolvedScales, direct.resolvedScales);
   assert.deepEqual(edited.graphicSpec, direct.graphicSpec);
 });

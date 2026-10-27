@@ -1,0 +1,3 @@
+export interface GraphicIdentity {
+  readonly key: string; readonly topology: string; readonly role: string; readonly lineage: GraphicLineageRef;
+}

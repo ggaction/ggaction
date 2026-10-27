@@ -37,14 +37,14 @@ test("restoration rejects corrupt composite owners and row references", () => {
   for (const mutate of [
     s => { s.materializationConfigs.selections["h-plotMedian"].sourceSelection = "missing"; },
     s => { s.materializationConfigs.selections.h.sourceSelection = "h"; },
-    s => { s.materializationConfigs.selections.h.selector.rows.indices = [99]; },
-    s => { s.materializationConfigs.selections.h.selector.rows.data = "missing"; },
+    s => { s.semanticSpec.resources[0].options.rowKeys = [99]; },
+    s => { s.materializationConfigs.selections.h.projection.data = "missing"; },
     s => { s.materializationConfigs.highlights["h-plotMedian"].groupSelection = "missing"; },
     s => { s.materializationConfigs.highlights["h-plotMedian"].groupSelection = "h-plotWhisker"; }
   ]) {
     const envelope = JSON.parse(stored), state = decodeValue(envelope.payload);
     mutate(state); envelope.payload = encodeValue(state);
-    assert.throws(() => deserializeProgram(JSON.stringify(envelope)), /selection|Selection|row|Row|composite|Composite|dataset/);
+    assert.throws(() => deserializeProgram(JSON.stringify(envelope)), /selection|Selection|row|Row|composite|Composite|dataset|Dataset/);
   }
 });
 
@@ -102,7 +102,7 @@ test("filtered duplicate-row identity persists and releases its provenance cache
   const stored = serializeProgram(p), restored = deserializeProgram(stored);
   assert.deepEqual(getMarkItems(restored, { target: "labels" }), getMarkItems(p, { target: "labels" }));
   assert.deepEqual(restored.materializationConfigs.rowProvenance.plotFilteredData, { indices: [1] });
-  assert.deepEqual(getMarkItems(restored, { target: "plot" })[0].rows,
+  assert.deepEqual(getMarkItems(restored, { target: "plot" })[0].rows.map(({ data, index }) => ({ data, index })),
     [{ data: "data", index: 1 }, { data: "plotFilteredData", index: 0 }]);
   for (const indices of [[-1], [3], [1, 1], [], [2]]) {
     const envelope = JSON.parse(stored), state = decodeValue(envelope.payload);
@@ -132,7 +132,7 @@ test("row selectors reject malformed input atomically and accept an empty select
   assert.equal(redItems(empty).length, 0);
   assert.equal(serializeProgram(p), stored);
   const deduplicated = p.selectMarks({ id: "s", target: "plot", rows: { data: "data", indices: [1, 1] } });
-  assert.deepEqual(deduplicated.materializationConfigs.selections.s.selector.rows.indices, [1]);
+  assert.deepEqual(deduplicated.semanticSpec.resources[0].options.rowKeys, [p.semanticSpec.datasets[0].rowKeys[1]]);
 });
 
 test("item inspection caches frozen snapshots and resolves scoped targets", () => {
@@ -141,7 +141,7 @@ test("item inspection caches frozen snapshots and resolves scoped targets", () =
   assert.equal(getMarkItems(p, { target: "plot" }), first);
   assert.ok(Object.isFrozen(first) && Object.isFrozen(first[0].rows[0]));
   assert.equal(first.length, 3);
-  assert.deepEqual(first.map(i => i.rows), [[{ data: "data", index: 0 }], [{ data: "data", index: 1 }], [{ data: "data", index: 2 }]]);
+  assert.deepEqual(first.map(i => i.rows.map(({ data, index }) => ({ data, index }))), [[{ data: "data", index: 0 }], [{ data: "data", index: 1 }], [{ data: "data", index: 2 }]]);
   for (const item of first) {
     assert.equal(Object.hasOwn(item, "graphicIds"), false);
     const { x, y, radius } = item.geometry[0].properties;

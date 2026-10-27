@@ -5,3 +5,5 @@ export interface TraceNode {
   readonly args: Readonly<Record<string, unknown>>;
   readonly children: readonly TraceNode[];
 }
+
+/** Typed keys distinguish strings, numbers, bigint, boolean and Date epochs. */

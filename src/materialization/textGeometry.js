@@ -1,3 +1,4 @@
+import { selectionPredicate } from "./selection/predicate.js";
 import { resolveTextOverrides, textIdentity, textIdentityOccurrences } from "../grammar/text.js";
 import { resolveBarChannels } from "../grammar/bars/policy.js";
 import {
@@ -357,7 +358,7 @@ function resolveSourceTextItems(program, layer, config, identities, members, res
         `Label selection "${requested.id}" must target source mark "${source.id}".`
       );
     }
-    const resolved = resolveMarkSelection(program, source.id, definition.selector);
+    const resolved = resolveMarkSelection(program, source.id, selectionPredicate(program, definition, { resolveMarkItems, resolveMarkSourceItems: resolveMarkItems }));
     allItems = resolved.items;
     const selected = new Set(resolved.keys);
     items = allItems.filter(item => selected.has(item.key));
@@ -374,7 +375,7 @@ function resolveSourceTextItems(program, layer, config, identities, members, res
   const overrides = resolveTextOverrides(allItems, config.textOverrides);
   return items.flatMap(item => {
     const identity = identityRecords?.get(item);
-    const provenance = members ? { members: item.members, fields: item.fields, channels: item.channels } : {};
+    const provenance = members ? { members: item.members, fields: item.fields, channels: item.channels, semanticIdentity: ["label", item.key] } : {};
     let resolvedConfig = sourceTextConfig(config, source, item);
     const text = overrides.has(item) ? overrides.get(item) : formatTextValue(
       values === undefined
@@ -492,7 +493,7 @@ function resolveRowTextItems(program, layer, config, includeIdentities, members)
     );
     return concrete === undefined
       ? []
-      : [{ graphic: concrete, ...occurrences?.[index], ...(members ? { members: sourceDataset.values[index] ? [sourceDataset.values[index]] : [], fields: row ?? {}, channels: Object.fromEntries(Object.entries(layer.encoding).map(([channel, encoding]) => [channel, encoding.field === undefined ? encoding.datum : row?.[encoding.field]])) } : {}), anchor: { x: x[index], y: y[index] } }];
+      : [{ graphic: concrete, ...occurrences?.[index], ...(members ? { ...(sourceDataset.rowKeys[index] === undefined ? { semanticIdentity: ["constant"] } : { rowKey: sourceDataset.rowKeys[index] }), members: sourceDataset.values[index] ? [sourceDataset.values[index]] : [], fields: row ?? {}, channels: Object.fromEntries(Object.entries(layer.encoding).map(([channel, encoding]) => [channel, encoding.field === undefined ? encoding.datum : row?.[encoding.field]])) } : {}), anchor: { x: x[index], y: y[index] } }];
   });
 }
 

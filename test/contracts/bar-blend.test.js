@@ -73,9 +73,9 @@ test("blend rejects invalid inputs and unsupported concrete types atomically",()
   const p=bars(),before=serializeProgram(p);
   for(const blend of ["multiply","",null,undefined,1])assert.throws(()=>p.editBarMark({blend}),/blend/);
   assert.throws(()=>p.createBarMark({id:"second",blend:"difference"}),/blend/);
-  assert.equal(p.editGraphics({target:"barPlot:0",property:"blend",value:"normal"}).graphicSpec.objects.barPlot.items[0].properties.blend,"normal");
+  assert.equal(p.editGraphics({target:p.graphicSpec.objects.barPlot.items[0].id,property:"blend",value:"normal"}).graphicSpec.objects.barPlot.items[0].properties.blend,"normal");
   const points=chart().createCanvas().createData({values:[{x:1,y:2}]}).createScatterPlot({x:"x",y:"y",guides:false});
-  assert.throws(()=>points.editGraphics({target:"scatterPlot:0",property:"blend",value:"difference"}),/blend/);
+  assert.throws(()=>points.editGraphics({target:points.graphicSpec.objects.scatterPlot.items[0].id,property:"blend",value:"difference"}),/blend/);
   assert.throws(()=>points.editSemantic({property:"layer[scatterPlot].mark.blend",value:"difference"}),/blend/);
   assert.equal(serializeProgram(p),before);
 });

@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { chart } from "../../../../src/index.js";
@@ -36,13 +37,13 @@ for(const position of ["left","right"]) {
   });
   test(`${position} axis-first and legend-first converge and follow edits/removal`,()=>{
     const p=axis(source(),position).createLegend(legend(position));
-    assert.deepEqual(axis(source().createLegend(legend(position)),position).graphicSpec,p.graphicSpec);
+    assertEquivalentMeaning(axis(source().createLegend(legend(position)),position).graphicSpec,p.graphicSpec);
     const edited=p.editYAxisTitle({target:"sideAxis",fontSize:18,offset:70})
       .editYAxisLabels({target:"sideAxis",fontSize:22,offset:20});
     near(occupiedGap(edited,position),8);
     near(occupiedGap(deserializeProgram(serializeProgram(edited)).editCanvas({height:900}),position),8);
     const removed=edited.removeYAxis({target:"sideAxis"});
-    assert.deepEqual(removed.graphicSpec,source().createLegend(legend(position)).graphicSpec);
+    assertEquivalentMeaning(removed.graphicSpec,source().createLegend(legend(position)).graphicSpec);
   });
   test(`${position} explicit zero/eight anchors retain collision rejection and immutability`,()=>{
     const base=axis(source(),position),before=serializeProgram(base);
@@ -105,12 +106,12 @@ for(const position of ["left","right"]) {
   test(`${position} group authoring order, label edits and hidden components converge`,()=>{
     const p=axis(source(),position).createLegend({...legend(position),blockLayout:"column"});
     const q=axis(source().createLegend({...legend(position),blockLayout:"column"}),position);
-    assert.deepEqual(p.graphicSpec,q.graphicSpec);
+    assertEquivalentMeaning(p.graphicSpec,q.graphicSpec);
     const labels=p.editYAxisLabels({target:"sideAxis",labelMap:[{value:2,label:"Wider upper tick label"}]});
     near(occupiedGap(labels,position),8);
     const hidden=labels.editYAxis({target:"sideAxis",labels:false,title:false});
     near(occupiedGap(hidden,position),8);
-    assert.deepEqual(hidden.removeYAxis({target:"sideAxis"}).graphicSpec,
+    assertEquivalentMeaning(hidden.removeYAxis({target:"sideAxis"}).graphicSpec,
       source().createLegend({...legend(position),blockLayout:"column"}).graphicSpec);
   });
   test(`${position} data and scale replay keep the current side clearance`,()=>{

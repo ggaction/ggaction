@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -24,7 +25,7 @@ test("createSummaryData materializes stable grouped multi-aggregate rows", () =>
     members: "members"
   });
 
-  assert.deepEqual(program.semanticSpec.datasets[1], {
+  assertEquivalentMeaning(program.semanticSpec.datasets[1], {
     schema: program.semanticSpec.datasets[1].schema,
     id: "summary",
     source: "source",
@@ -66,7 +67,7 @@ test("createSummaryData materializes stable grouped multi-aggregate rows", () =>
     program.trace.children.at(-1).children.map(child => child.op),
     ["createDerivedData", "materializeSummaryData"]
   );
-  assert.deepEqual(source.semanticSpec.datasets, [{ id: "source", values: rows, schema: source.semanticSpec.datasets[0].schema }]);
+  assertEquivalentMeaning(source.semanticSpec.datasets, [{ id: "source", values: rows, schema: source.semanticSpec.datasets[0].schema }]);
 });
 
 test("createSummaryData defines empty and ungrouped grain deterministically", () => {

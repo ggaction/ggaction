@@ -3,6 +3,7 @@ import { cloneAndFreeze } from "./immutable.js";
 export function createEmptySemanticSpec() {
   return cloneAndFreeze({
     datasets: [],
+    resources: [],
     layers: [],
     scales: [],
     coordinates: [],

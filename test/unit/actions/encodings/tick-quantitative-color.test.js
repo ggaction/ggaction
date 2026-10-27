@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { chart } from '../../../../src/index.js';
@@ -24,7 +25,7 @@ test('numeric Tick color has literal mapped stroke colors and unchanged endpoint
 });
 test('color before positions and Rug scaffold converge with complete Tick authoring',()=>{
  const first=base().encodeColor(options);assert.deepEqual(first.graphicSpec.objects.tick.items,[]);
- const p=position(first),q=position(base()).encodeColor(options);assert.deepEqual(p.graphicSpec,q.graphicSpec);
+ const p=position(first),q=position(base()).encodeColor(options);assertEquivalentMeaning(p.graphicSpec,q.graphicSpec);
  const rug=chart().createCanvas({width:800,height:700,margin:200}).createData({id:'raw',values:rows})
   .createRugPlot({x:'x',edge:'bottom',guides:false}).editTickMark({length:20,strokeWidth:1})
   .encodeY({field:'y'}).encodeColor(options);

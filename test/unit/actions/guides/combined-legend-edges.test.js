@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { chart } from "../../../../src/index.js";
@@ -38,7 +39,7 @@ test("combined edge edits, whole-content replacement and Canvas replay converge"
   for (const from of edges) for (const position of edges) {
     const start = base().createLegend({ ...options, position: from });
     const p = start.editLegendLayout({ position });
-    assert.deepEqual(p.graphicSpec, base().createLegend({ ...options, position }).graphicSpec);
+    assertEquivalentMeaning(p.graphicSpec, base().createLegend({ ...options, position }).graphicSpec);
     assert.deepEqual(p.editLegend({ channels: ["color", "shape", "size"] }).graphicSpec, p.graphicSpec);
     assert.deepEqual(p.editCanvas({ width: 1400 }).graphicSpec, start.editCanvas({ width: 1400 }).editLegendLayout({ position }).graphicSpec);
     assert.deepEqual(p.removeLegend().createLegend({ ...options, position }).graphicSpec, p.graphicSpec);

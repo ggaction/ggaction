@@ -12,6 +12,21 @@ A supplied `lookup` replaces its whole reference definition. Revisions of either
 update the joined records and their consumers in dependency order. Change the primary
 source through `reviseData`; generic transform definitions cannot replace `source`.
 
+## Keeping rows identified across source revisions
+
+`reviseData({source, id, values, schema?, keys?, rowMap?})` creates an immutable
+snapshot and refreshes its consumers. A source created with `keyField` or
+`keyFields` keeps that definition. A source created with separate `keys`
+requires a complete new `keys` array. Matching keys retain item identity even
+when row order or values change; a removed key can reappear later.
+
+For a source without explicit keys, replacement rows get new identities by
+default. Pass `rowMap` to retain known correspondence: each output position
+contains its old row index or `null` for a new row. The array must match the new
+row count and cannot repeat old indices. Keyed sources reject `rowMap`.
+Independent branches allocate distinct identities for new rows. Earlier
+programs remain unchanged, and invalid mappings reject the whole revision.
+
 ## Editing derived data {#editing-derived-data}
 
 Every standalone value-producing data action creates a logical dataset owner.

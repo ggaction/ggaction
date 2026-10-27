@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -74,7 +75,7 @@ test("revises one box summary and rebinds every owned component", () => {
     outlierId
   );
   for (const id of ["boxPlot", "boxPlotWhisker", "boxPlotMedian", "boxPlotOutliers"]) {
-    assert.deepEqual(edited.graphicSpec.objects[id], direct.graphicSpec.objects[id]);
+    assertEquivalentMeaning(edited.graphicSpec.objects[id], direct.graphicSpec.objects[id]);
   }
   assert.equal(before.markConfigs.boxPlot.boxPlot.whisker.factor, 1.5);
 });

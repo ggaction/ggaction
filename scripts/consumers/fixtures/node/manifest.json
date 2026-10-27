@@ -753,6 +753,10 @@
     "file": "selection.mjs",
     "cases": [
       {
+        "id": "selection/keyed-revision",
+        "statements": 16
+      },
+      {
         "id": "selection/row-provenance",
         "statements": 10
       },

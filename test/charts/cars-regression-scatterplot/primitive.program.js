@@ -1,7 +1,7 @@
 import { chart, render } from "../../../src/index.js";
 import { linearPathCommands } from "../../support/path.js";
 
-import { createCarsRegressionScatterplotValues } from
+import { createCarsRegressionScatterplotValues, selectRegressionFilterRows } from
   "./reference-values.js";
 
 function markSelector(filter) {
@@ -25,7 +25,7 @@ export function createCarsRegressionScatterplotPrimitives(cars, {
   const width = 760;
   const height = 480;
   const margin = { top: 40, right: 190, bottom: 70, left: 80 };
-  const values = createCarsRegressionScatterplotValues(cars, {
+  let values = createCarsRegressionScatterplotValues(cars, {
     width,
     height,
     margin,
@@ -51,7 +51,10 @@ export function createCarsRegressionScatterplotPrimitives(cars, {
     });
   }
 
-  program = program.createData({ id: "cars", values: cars })
+  program = program.createData({ id: "cars", values: cars });
+  const storedCars = program.semanticSpec.datasets[0].values;
+  values = createCarsRegressionScatterplotValues(storedCars, { width, height, margin, filter, ...regression });
+  program = program
     .editSemantic({ property: "dataset[pointsFilteredData].source", value: "cars" })
     .editSemantic({
       property: "dataset[pointsFilteredData].transform",
@@ -63,7 +66,7 @@ export function createCarsRegressionScatterplotPrimitives(cars, {
     })
     .editSemantic({
       property: "dataset[pointsFilteredData].values",
-      value: values.filteredRows
+      value: storedCars.filter(row => selectRegressionFilterRows([row], filter).length === 1)
     })
     .editSemantic({
       property: "dataset[pointsRegressionData].source",

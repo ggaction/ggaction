@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { chart } from "../../../../src/index.js";
@@ -23,16 +24,16 @@ test("threshold selects mapped ticks rather than overflowing text bounds and kee
   assert.deepEqual(items(base().createXAxis(axis(0))),items(limited));
   assert.deepEqual(items(base().createXAxis(axis(9.999))),items(limited));
   assert.deepEqual(items(base().createXAxis(axis(10))),items(legacy));
-  assert.deepEqual(legacy.semanticSpec,limited.semanticSpec);
+  assertEquivalentMeaning(legacy.semanticSpec,limited.semanticSpec);
   assert.deepEqual(limited.resolvedScales.x.domain,[0,30]);
   assert.equal(limited.graphicSpec.objects.xAxisTicks.items.length,2);
 });
 
 test("complete, focused, grouped, whole-axis and plot-facade edits converge immutably",()=>{
   const p=base().createXAxis(axis()), snapshot=serializeProgram(p), direct=base().createXAxis(axis(1));
-  for(const edited of [p.editXAxisLabels({flushThreshold:1}),p.editXAxisTicksAndLabels({labels:{flushThreshold:1}}),p.editXAxis({labels:{flushThreshold:1}}),p.editXAxis({ticksAndLabels:{labels:{flushThreshold:1}}})]) assert.deepEqual(edited.graphicSpec,direct.graphicSpec);
+  for(const edited of [p.editXAxisLabels({flushThreshold:1}),p.editXAxisTicksAndLabels({labels:{flushThreshold:1}}),p.editXAxis({labels:{flushThreshold:1}}),p.editXAxis({ticksAndLabels:{labels:{flushThreshold:1}}})]) assertEquivalentMeaning(edited.graphicSpec,direct.graphicSpec);
   const facade=chart().createCanvas({width:420,height:300,margin:60}).applyTextMetrics({profile}).createData({values:[{x:0,y:0},{x:30,y:30}]}).createLinePlot({x:{field:"x",scale:{domain:[0,30]}},y:{field:"y",scale:{domain:[0,30]}},guides:{axes:{x:axis(1),y:false},grid:false,legend:false}});
-  assert.deepEqual(facade.graphicSpec,direct.graphicSpec);
+  assertEquivalentMeaning(facade.graphicSpec,direct.graphicSpec);
   assert.equal(serializeProgram(p),snapshot);
 });
 
@@ -41,8 +42,8 @@ test("omission preserves threshold, auto removes it and disabled flushing keeps 
   assert.equal(p.editXAxisLabels({color:"red"}).guideConfigs.axis.x.labels.flushThreshold,1);
   const reset=p.editXAxisLabels({flushThreshold:"auto"});
   assert.equal(Object.hasOwn(reset.guideConfigs.axis.x.labels,"flushThreshold"),false);
-  assert.deepEqual(reset.graphicSpec,base().createXAxis(axis()).graphicSpec);
-  assert.deepEqual(base().createXAxis(axis("auto")).graphicSpec,reset.graphicSpec);
+  assertEquivalentMeaning(reset.graphicSpec,base().createXAxis(axis()).graphicSpec);
+  assertEquivalentMeaning(base().createXAxis(axis("auto")).graphicSpec,reset.graphicSpec);
   const disabled=p.editXAxisLabels({flush:false});
   assert.equal(disabled.guideConfigs.axis.x.labels.flushThreshold,1);
   assert.deepEqual(disabled.editXAxisLabels({flush:true}).graphicSpec,p.graphicSpec);
@@ -57,7 +58,7 @@ test("vertical, reversed and displaced ranges use the same mapped-position polic
   assert.equal(items(p)[1].x,354);
   const replay=p.editCanvas({width:450}).editXScale({reverse:true});
   const direct=base().editCanvas({width:450}).editXScale({reverse:true}).createXAxis(axis(1,{alongOffset:4}));
-  assert.deepEqual(replay.graphicSpec,direct.graphicSpec);
+  assertEquivalentMeaning(replay.graphicSpec,direct.graphicSpec);
 });
 
 test("wrapped lines move as one eligible tick group",()=>{
@@ -72,7 +73,7 @@ test("wrapped lines move as one eligible tick group",()=>{
 test("editable persistence retains threshold and rejects noncanonical stored values",()=>{
   const p=base().createXAxis(axis(1)), restored=deserializeProgram(serializeProgram(p));
   assert.equal(restored.guideConfigs.axis.x.labels.flushThreshold,1);
-  assert.deepEqual(restored.editXAxisLabels({flushThreshold:"auto"}).graphicSpec,base().createXAxis(axis()).graphicSpec);
+  assertEquivalentMeaning(restored.editXAxisLabels({flushThreshold:"auto"}).graphicSpec,base().createXAxis(axis()).graphicSpec);
   for(const invalid of [-1,Infinity,"auto",null]) {
     const envelope=JSON.parse(serializeProgram(p)),state=decodeValue(envelope.payload);
     state.materializationConfigs.guides.axis.x.labels.flushThreshold=invalid;

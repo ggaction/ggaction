@@ -43,7 +43,7 @@ test(`${browserName} preserves occupied legend spacing in installed Canvas and S
         const {renderToSVG}=await import('/node_modules/ggaction/src/renderers/svg.js');
         const {createLegendContentSpacingProgram}=await import('/legend-spacing-public.js');
         const {createPrimitiveProgram}=await import('/legend-spacing-primitive.js');
-        const programs=[createLegendContentSpacingProgram(),createPrimitiveProgram()],svgs=programs.map(p=>renderToSVG(p)),checks=[];
+        const programs=[createLegendContentSpacingProgram(),createPrimitiveProgram()],svgs=programs.map(p=>renderToSVG(p,{resourceNamespace:"comparison"})),checks=[];
         for(const backend of['Canvas','SVG']){
           const arrays=[];
           for(let index=0;index<programs.length;index++){
@@ -273,4 +273,47 @@ test(`${browserName} clips one Cartesian mark without moving its items or outsid
   } catch (error) { await saveBrowserContextEvidence(context, error); throw error; }finally{await context.close();}
 
   } catch (error) { await saveBrowserEvidence(browser, error); throw error; }
+});
+
+test(`${browserName} preserves keyed selection and graphic-only scene identity after a saved revision`, async () => {
+  const context = await browser.newContext();
+  try {
+    const { page, errors } = await openBrowserPage(context, server.baseUrl, { waitFor: () => window.compatibility !== undefined });
+    const result = await page.evaluate(async () => {
+      const { chart, render } = await import('/node_modules/ggaction/src/index.js');
+      const { getMarkItems } = await import('/node_modules/ggaction/src/inspection.js');
+      const { createTransitionScene } = await import('/node_modules/ggaction/src/scene.js');
+      const { serializeProgram, deserializeProgram, serializeGraphic, deserializeGraphic } = await import('/node_modules/ggaction/src/persistence.js');
+      const { renderToSVG } = await import('/node_modules/ggaction/src/renderers/svg.js');
+      const before = chart().createCanvas({ width: 240, height: 180 }).createData({ id: 'rows', keyField: 'id', values: [
+        { id: 'a', x: 1, y: 2 }, { id: 'b', x: 2, y: 4 }
+      ] }).createScatterPlot({ id: 'points', x: 'x', y: 'y' })
+        .highlightMarks({ id: 'picked', target: 'points', select: { rows: { data: 'rows', indices: [1] } }, fill: 'red' });
+      const saved = serializeProgram(before);
+      const after = deserializeProgram(saved).reviseData({ source: 'rows', id: 'next', values: [
+        { id: 'b', x: 3, y: 9 }, { id: 'a', x: 1, y: 2 }
+      ] });
+      const keys = program => Object.fromEntries(getMarkItems(program, { target: 'points' }).map(item => [item.fields.id, item.key]).sort());
+      const graphic = deserializeGraphic(serializeGraphic(after));
+      const pixels = program => {
+        const canvas = document.createElement('canvas');
+        render(program, canvas.getContext('2d'));
+        return canvas.toDataURL();
+      };
+      return {
+        before: keys(before), after: keys(after), unchanged: saved === serializeProgram(before),
+        selected: getMarkItems(after, { target: 'points' }).filter(item => item.properties.fill === 'red').map(item => item.fields.id),
+        svg: renderToSVG(graphic) === renderToSVG(after), canvas: pixels(graphic) === pixels(after),
+        scenes: ['svg', 'canvas'].map(format => JSON.stringify(createTransitionScene(graphic, { format })) === JSON.stringify(createTransitionScene(after, { format })))
+      };
+    });
+    assert.deepEqual(result.after, result.before);
+    assert.deepEqual(result.selected, ['b']);
+    assert.equal(result.unchanged, true);
+    assert.equal(result.svg, true); assert.equal(result.canvas, true);
+    assert.deepEqual(result.scenes, [true, true]);
+    assertNoBrowserErrors(errors, browserName);
+    await page.close();
+  } catch (error) { await saveBrowserContextEvidence(context, error); throw error; }
+  finally { await context.close(); }
 });

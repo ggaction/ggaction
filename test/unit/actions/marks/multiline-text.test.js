@@ -74,5 +74,5 @@ test("source labels, facets, content replacement and schema edits preserve logic
  assert.deepEqual(Object.values(p.facet({field:"g"}).children).map(c=>c.graphicSpec.objects.labels.items.length),[1,1]);
  const q=p.encodeText({target:"labels",value:"single"});
  assert.ok(q.graphicSpec.objects.labels.items.every(i=>i.properties.lines.length===1));
- assert.throws(()=>p.editGraphics({target:"labels:0",property:"lines",value:[{text:"x",x:0,y:Infinity}]}),/resolved text/);
+ assert.throws(()=>p.editGraphics({target:p.graphicSpec.objects.labels.items[0].id,property:"lines",value:[{text:"x",x:0,y:Infinity}]}),/resolved text/);
 });

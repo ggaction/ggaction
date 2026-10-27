@@ -57,7 +57,13 @@ export function createPointHighlightPrimitive(cars) {
     }));
   }
 
-  return base.editGraphics({
+  return base.editSemantic({
+    property: "resource[persistent-selection:pointsSelection]",
+    value: { kind: "persistent-selection", id: "pointsSelection", revision: 0, algorithmVersion: "1",
+      ownership: { mode: "authored" }, inputs: [],
+      options: { mode: "predicate", predicate: { field: "Horsepower", op: "max", count: 1, groupBy: ["Origin"], ties: "first" } },
+      result: {}, provenance: { origin: "authored" } }
+  }).editGraphics({
     target: "points",
     property: "items",
     value: [...unselected, ...selected]

@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -81,7 +82,7 @@ test("retains both-axis jitter through keyed reordering, geometry edits, filteri
     assert.deepEqual(offsets(original), offsets(reversed));
   }
   const edited = original.editCanvas({ width: 420 }).editPointMark({ shape: "diamond", stroke: "black", strokeWidth: 2 });
-  assert.deepEqual(edited.graphicSpec, createProgram().editCanvas({ width: 420 })
+  assertEquivalentMeaning(edited.graphicSpec, createProgram().editCanvas({ width: 420 })
     .editPointMark({ shape: "diamond", stroke: "black", strokeWidth: 2 }).jitterPoints(options).graphicSpec);
   const filtered = original.filterMarks({ target: "points", field: "value", op: "gte", value: 4 });
   assert.equal(filtered.materializationConfigs.jitters.points.resolved.itemCount, 3);

@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -144,7 +145,7 @@ test("keeps incomplete arc collections empty and converges across encoding order
     [...radiusFirst.semanticSpec.scales].sort((a, b) => a.id.localeCompare(b.id)),
     [...thetaFirst.semanticSpec.scales].sort((a, b) => a.id.localeCompare(b.id))
   );
-  assert.deepEqual(radiusFirst.graphicSpec, thetaFirst.graphicSpec);
+  assertEquivalentMeaning(radiusFirst.graphicSpec, thetaFirst.graphicSpec);
   assert.deepEqual(radiusFirst.resolvedScales, thetaFirst.resolvedScales);
 });
 
@@ -265,7 +266,7 @@ test("rejects incompatible arc position and appearance contracts atomically", ()
   const radiusFirst = base().encodeR({ field: "value", scale: { zero: true } })
     .encodeTheta({ field: "value" });
   assert.equal(thetaFirst.graphicSpec.objects.arc.items.length, 3);
-  assert.deepEqual(thetaFirst.graphicSpec.objects.arc, radiusFirst.graphicSpec.objects.arc);
+  assertEquivalentMeaning(thetaFirst.graphicSpec.objects.arc, radiusFirst.graphicSpec.objects.arc);
   assert.throws(
     () => radial().editArcMark({ fill: "red" }),
     /cannot be combined with a color encoding/

@@ -1,5 +1,12 @@
 export interface SemanticDataset {
   readonly id: string;
+  readonly logicalId?: string;
+  readonly revision?: number;
+  readonly allocationId?: string;
+  readonly keySpec?: DataKeySpec;
+  readonly rowKeys?: readonly string[];
+  readonly nextGeneratedKey?: number;
+  readonly lineage?: RowLineage;
   readonly schema: DatasetSchema;
   readonly values?: readonly Readonly<Record<string, unknown>>[];
   readonly source?: string;

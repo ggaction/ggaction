@@ -1,0 +1,5 @@
+export type DataKeyOptions =
+  | { keyField?: never; keyFields?: never; keys?: never }
+  | { keyField: string; keyFields?: never; keys?: never }
+  | { keyField?: never; keyFields: readonly string[]; keys?: never }
+  | { keyField?: never; keyFields?: never; keys: readonly RowKey[] };

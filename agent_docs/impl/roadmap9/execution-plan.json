@@ -57,42 +57,132 @@
       "dependsOn": [
         "STEP-003"
       ],
-      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-004-row-identity.ko.md"
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-004-row-identity.ko.md",
+      "requiredChecks": [
+        "suite-coverage",
+        "coverage-check",
+        "suite-realistic",
+        "suite-browser",
+        "suite-render",
+        "test-render",
+        "test-package",
+        "package-check",
+        "metadata-check",
+        "docs-verify"
+      ],
+      "requiredGates": [
+        "G-CORE"
+      ]
     },
     {
       "id": "STEP-005",
       "dependsOn": [
         "STEP-004"
       ],
-      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-005-derived-lineage.ko.md"
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-005-derived-lineage.ko.md",
+      "requiredChecks": [
+        "suite-coverage",
+        "coverage-check",
+        "suite-realistic",
+        "suite-browser",
+        "suite-render",
+        "test-render",
+        "test-package",
+        "package-check",
+        "metadata-check",
+        "docs-verify"
+      ],
+      "requiredGates": [
+        "G-CORE"
+      ]
     },
     {
       "id": "STEP-006",
       "dependsOn": [
         "STEP-005"
       ],
-      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-006-scene-identity.ko.md"
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-006-scene-identity.ko.md",
+      "requiredChecks": [
+        "suite-coverage",
+        "coverage-check",
+        "suite-realistic",
+        "suite-browser",
+        "suite-render",
+        "test-render",
+        "test-package",
+        "package-check",
+        "metadata-check",
+        "docs-verify"
+      ],
+      "requiredGates": [
+        "G-CORE"
+      ]
     },
     {
       "id": "STEP-007",
       "dependsOn": [
         "STEP-006"
       ],
-      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-007-resource-registry.ko.md"
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-007-resource-registry.ko.md",
+      "requiredChecks": [
+        "suite-coverage",
+        "coverage-check",
+        "suite-realistic",
+        "suite-browser",
+        "suite-render",
+        "test-render",
+        "test-package",
+        "package-check",
+        "metadata-check",
+        "docs-verify"
+      ],
+      "requiredGates": [
+        "G-CORE"
+      ]
     },
     {
       "id": "STEP-008",
       "dependsOn": [
         "STEP-007"
       ],
-      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-008-resource-lifecycle.ko.md"
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-008-resource-lifecycle.ko.md",
+      "requiredChecks": [
+        "suite-coverage",
+        "coverage-check",
+        "suite-realistic",
+        "suite-browser",
+        "suite-render",
+        "test-render",
+        "test-package",
+        "package-check",
+        "metadata-check",
+        "docs-verify"
+      ],
+      "requiredGates": [
+        "G-CORE"
+      ]
     },
     {
       "id": "STEP-009",
       "dependsOn": [
         "STEP-008"
       ],
-      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-009-schema-migration.ko.md"
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-009-schema-migration.ko.md",
+      "requiredChecks": [
+        "suite-coverage",
+        "coverage-check",
+        "suite-realistic",
+        "suite-browser",
+        "suite-render",
+        "test-render",
+        "test-package",
+        "package-check",
+        "metadata-check",
+        "docs-verify"
+      ],
+      "requiredGates": [
+        "G-CORE"
+      ]
     },
     {
       "id": "STEP-010",

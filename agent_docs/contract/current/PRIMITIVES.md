@@ -40,6 +40,17 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - Coverage: `test/unit/actions/primitives/edit-semantic.test.js`가 structural copy, ownership,
   dataset immutability, path/schema validation과 trace summary를 검증한다.
 
+### Typed resource lifecycle
+
+`resource[persistent-selection:id]`는 complete resource assignment와 removal을 지원한다.
+resource의 kind+id는 path와 같아야 하고 생성 revision은 0, 교체는 이전 revision+1이다.
+`algorithmVersion: "1"`, ownership, typed inputs, closed options/result, provenance를 검증한다.
+현재 지원 kind는 persistent-selection뿐이다. Options는 predicate 또는 logicalDataId+rowKeys이며
+result는 빈 object다. 정확한 stored shape는 `PersistentSelectionResource` declaration이 소유한다.
+입력 revision 오류·cycle·중복 ID는 원자적으로 거부한다. 기존 dependent resource와 selection consumer의
+revision ref를 같은 transaction에서 갱신한다. remove는 live consumer가 있으면 거부한다.
+자동 graphical materialization은 하지 않는다. Evidence: `test/unit/core/resource-state.test.js`.
+
 ### Formal values — `editSemantic`
 
 - Implemented: `editSemantic(options: EditSemanticOptions): ChartProgram`; property string은 runtime의 supported path vocabulary로 검증하며 assignment와 removal은 mutually exclusive다.
@@ -208,3 +219,11 @@ whole-glyph paint instruction, with bounded source attenuation once; omitted
 legacy output and semantic bar normal reset remain unchanged. The approved normal
 path adds no numerical tolerance. Preflight checks source arc/transform/mask and
 target compositing support before destination resize or clear.
+
+### Concrete item identity
+
+`items` entries는 optional `identity: GraphicIdentity`를 받는다. key는 child path·owner·role·final grain을
+식별하고 topology는 ordered path membership을 식별한다. lineage는 정확한 dataset snapshot의 logicalId,
+revision, rowKeys를 참조한다. primitive role과 semantic key로 private child ID를 생성한다. key·role 중복과
+malformed metadata는 거부한다. Metadata가 없는 extension graphics는 기존 순서 기반 private ID를 쓴다.
+의미를 바꾸지 않는 graphics edit는 metadata를 보존하고, domain materializer가 의미 변경의 metadata를 갱신한다.

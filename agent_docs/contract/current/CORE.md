@@ -288,7 +288,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ## `createData`
 
-- Signature: `createData({ id?, values, schema? })`
+- Signature: `createData({ id?, values, schema?, keyField?, keyFields?, keys? })`
 - `id`
   - Status: Implemented. Optional user-defined ID다. 첫 dataset에서 생략하면 deterministic role ID
     `"data"`를 사용한다. Dataset이 이미 있으면 생략은 ambiguous하므로 explicit ID가 필요하다.
@@ -305,6 +305,26 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - 오류: ambiguous omitted ID, invalid/duplicate ID, non-array와 non-object row를 거부한다.
 - Coverage: `test/unit/actions/data/create-data.test.js`가 empty/multiple data, ownership,
   trace summary, invalid values와 duplicates를 검증한다.
+
+### Row identity
+
+`keyField`, ordered `keyFields` and separate `keys` are mutually exclusive. Omission allocates opaque generated keys.
+Keys accept strings (including empty strings), finite numbers, bigint, boolean and valid Date values; Date is accepted only
+in separate keys, never as a stored row cell. A scalar and a one-element tuple differ. Tuples contain 1–64 scalars.
+Types are distinct, -0 equals 0, strings compare by UTF-16, and duplicate keys reject the whole action.
+Type order is boolean, number, bigint, string, date; scalars precede tuples and tuples compare lexicographically.
+
+Source snapshots store logicalId, revision, allocationId, keySpec, rowKeys and nextGeneratedKey. Each creation has a new
+logical namespace. Revisions preserve that namespace; branch-local generated additions use a fresh allocation namespace.
+UUID allocation occurs once at the action boundary and requires crypto.randomUUID. No value hashing guesses correspondence.
+Derived snapshots store logicalId/revision/allocationId, rowKeys and a shared lineage table. Each lineage entry records exact
+input data ID, logicalDataId, revision, rowKey and role; rowRefs indexes the shared entries. Field lineage remains separate.
+Every registered transform has an adapter for its final row grain. Row-preserving transforms preserve row keys; fold adds
+field role, flatten uses a replacement namespace for unkeyed elements, aggregates use typed group/measure roles, bins use
+resolved boundaries, and statistical outputs use group/output role/sample position. Lookup records left and right contributors.
+Window, normalization and imputation record the rows actually used in their calculations. Unsupported lineage is rejected.
+
+Evidence: `test/unit/actions/data/row-identity.test.js`, `test/unit/actions/data/row-lineage.test.js`, `test/unit/core/item-identity.test.js`.
 
 ### Formal values — `createData`
 
@@ -330,12 +350,18 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ## `reviseData`
 
-- Signature: `reviseData({ source, id, values })`. Full 전용 immutable source revision이다.
+- Signature: `reviseData({ source, id, values, schema?, keys?, rowMap? })`. Full 전용 immutable source revision이다.
 - `source`와 `id`는 필수 explicit user ID다. source는 materialized 원본 dataset이어야 하며 derived snapshot은 거부한다. 새 id는 source와 다르고 dataset/logical owner와 충돌하지 않아야 한다.
 - `values`는 createData와 같은 dense plain-object row 및 immutable cell 계약이다. 외부 값을 복사·동결하며 과거 원본은 보존한다.
 - Effect: 새 source를 createData wrapped child로 만들고, 해당 source의 transitive derived DAG를 기존 transform policy/materializer로 재계산한다. Stable mark/composite ID와 명시적 style을 유지하면서 layer와 typed private data reference 및 logical owner를 rebind한다. Scale/mark/guide/label/highlight를 기존 materialization 경로로 갱신하고 highlight 없는 stored selection도 final item grain에서 검증한다. 참조되지 않는 과거 derived revision은 기존 release lifecycle을 따른다. 원본은 자동 삭제하지 않는다.
 - Unit과 retained-source facet/grid/repeat를 지원한다. Facet은 기존 values/grid/repeat/layout/scale/guide recipe를 보존하여 child를 다시 derive한다. 새로운 category를 자동으로 recipe에 추가하지 않는다. Concat은 명시적 child를 revise한 뒤 replaceCompositionChild로 조합한다.
 - Missing source, duplicate ID, invalid rows, incompatible field/schema/selection 및 rematerialization/layout 실패는 전체를 거부한다. 이전 program/trace는 변경되지 않으며 성공 public trace root는 reviseData다.
+
+- Field key definitions are inherited and cannot be redeclared. Explicit-key datasets require a complete `keys` array on every revision.
+- Generated datasets allocate all-new row keys unless `rowMap` supplies output-to-source indices or null for new rows. It must be dense,
+  match output length, and use each valid source index at most once. Keyed datasets reject rowMap. Deleted generated tokens are never reused.
+- Reintroducing the same explicit key restores its logical identity. Stored row selections retain deleted keys and select them again on reappearance.
+- `schema` may override the source schema under the existing validation rules. Counter/revision overflow and invalid key modes reject atomically.
 
 ### Formal values — `reviseData`
 

@@ -1,0 +1,3 @@
+export interface GraphicLineageRef {
+  readonly data: string; readonly logicalDataId: string; readonly revision: number; readonly rowKeys: readonly string[];
+}

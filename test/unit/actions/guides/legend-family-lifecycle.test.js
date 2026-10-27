@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { chart } from "../../../../src/index.js";
@@ -47,8 +48,8 @@ function scaleEdit(kind) {
   return { id: "color", range: ["purple", "orange"] };
 }
 function assertEquivalent(actual, expected) {
-  assert.deepEqual(actual.graphicSpec, expected.graphicSpec);
-  assert.deepEqual(actual.semanticSpec, expected.semanticSpec);
+  assertEquivalentMeaning(actual.graphicSpec, expected.graphicSpec);
+  assertEquivalentMeaning(actual.semanticSpec, expected.semanticSpec);
   assert.deepEqual(actual.resolvedScales, expected.resolvedScales);
 }
 function assertFit(p) {

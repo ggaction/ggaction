@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import { mkdtemp, readFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
@@ -168,7 +169,7 @@ test("moves point, line, arc, axes, and grids through one requested frame", () =
     op: "eq",
     value: "A"
   }));
-  assert.deepEqual(selected.keys, ["pie/sector/0"]);
+  assert.deepEqual(selected.keys, [selected.items[0].key]);
   assert.deepEqual(
     [selected.items[0].properties.x, selected.items[0].properties.y],
     [140, 100]
@@ -271,7 +272,7 @@ test("replays fraction and pixel frames across Canvas edits and restores auto", 
     [0, 60]
   );
   assert.throws(() => pixels.editCanvas({ width: 100, height: 100 }), /maximum radius 50/);
-  assert.deepEqual(state(pixels), state(
+  assertEquivalentMeaning(state(pixels), state(
     polarPointProgram().editCoordinate({
       target: "polar",
       polarFrame: { radius: { unit: "px", value: 60 } }
@@ -284,7 +285,7 @@ test("replays fraction and pixel frames across Canvas edits and restores auto", 
   });
   assert.equal(automatic.semanticSpec.coordinates[0].polarFrame, undefined);
   assert.deepEqual(automatic.resolvedScales.radius.range, [0, 100]);
-  assert.deepEqual(automatic.graphicSpec, polarPointProgram().graphicSpec);
+  assertEquivalentMeaning(automatic.graphicSpec, polarPointProgram().graphicSpec);
 });
 
 test("rejects invalid frame edits and range conflicts atomically", () => {
@@ -323,7 +324,7 @@ test("rejects invalid frame edits and range conflicts atomically", () => {
   ];
   for (const attempt of attempts) {
     assert.throws(attempt);
-    assert.deepEqual(state(base), state(polarPointProgram()));
+    assertEquivalentMeaning(state(base), state(polarPointProgram()));
   }
   assert.throws(
     () => cartesian.editCoordinate({

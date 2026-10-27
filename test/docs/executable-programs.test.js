@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
@@ -47,7 +48,7 @@ for (const example of await documentationPrograms()) {
       const { file, exported, input } = example.canonical;
       const canonical = await import(pathToFileURL(path.join(root, file)));
       const expected = canonical[exported](input ? datasetValues(input) : undefined);
-      assert.deepEqual(result[resultNames.at(-1)].graphicSpec, expected.graphicSpec,
+      assertEquivalentMeaning(result[resultNames.at(-1)].graphicSpec, expected.graphicSpec,
         "The displayed complete program must match its canonical example.");
     }
     passed = true;

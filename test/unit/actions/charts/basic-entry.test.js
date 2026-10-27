@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -52,8 +53,8 @@ test("matches full-entry output while preserving the Basic trace composition", (
   const basic = scatter(basicChart);
   const full = scatter(fullChart);
 
-  assert.deepEqual(basic.semanticSpec, full.semanticSpec);
-  assert.deepEqual(basic.graphicSpec, full.graphicSpec);
+  assertEquivalentMeaning(basic.semanticSpec, full.semanticSpec);
+  assertEquivalentMeaning(basic.graphicSpec, full.graphicSpec);
   assert.deepEqual(
     basic.trace.children.map(entry => entry.op),
     ["createCanvas", "createData", "createScatterPlot"]

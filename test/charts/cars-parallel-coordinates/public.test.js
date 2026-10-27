@@ -119,7 +119,7 @@ test("selects and highlights one semantic item per source row", () => {
 
   assert.equal(selection.items.length, 35);
   assert.equal(selection.keys.length, 2);
-  assert.equal(selection.keys.every(key => key.includes("/row/")), true);
+  assert.equal(selection.keys.every(key => JSON.parse(key)[2] === "row"), true);
   assert.equal(
     highlighted.graphicSpec.objects.parallelCoordinates.items.filter(
       item => item.properties.strokeWidth === 3

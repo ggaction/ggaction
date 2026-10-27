@@ -1,3 +1,4 @@
+import { assertEquivalentMeaning } from "../../../support/identity-equivalence.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -79,7 +80,7 @@ test("reassigns direction and removes order without mutating earlier programs", 
   );
   assert.equal(restored.semanticSpec.layers[0].encoding.pathOrder, undefined);
   assert.equal(inferred.semanticSpec.layers[0].encoding.pathOrder, undefined);
-  assert.deepEqual(restored.graphicSpec, lineBase().graphicSpec);
+  assertEquivalentMeaning(restored.graphicSpec, lineBase().graphicSpec);
   assert.equal(
     ascending.semanticSpec.layers[0].encoding.pathOrder.order,
     "ascending"
@@ -101,8 +102,8 @@ test("converges when path order is assigned before Cartesian positions", () => {
     .encodeGroup({ target: "paths", field: "group" });
   const late = lineBase().encodePathOrder({ field: "year" });
 
-  assert.deepEqual(early.semanticSpec, late.semanticSpec);
-  assert.deepEqual(early.graphicSpec, late.graphicSpec);
+  assertEquivalentMeaning(early.semanticSpec, late.semanticSpec);
+  assertEquivalentMeaning(early.graphicSpec, late.graphicSpec);
   assert.deepEqual(early.resolvedScales, late.resolvedScales);
 });
 

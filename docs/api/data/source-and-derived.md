@@ -7,13 +7,16 @@ title: Source and Derived Data
 
 {% include chart-example.html id="scatterplot" lead=true %}
 
-## `createData({ id?, values, schema? })` {#createdata-id-values}
+## `createData({ id?, values, schema?, keyField?, keyFields?, keys? })` {#createdata-id-values}
 
 | Option | Type | Required |
 | --- | --- | --- |
 | `id` | string containing letters, numbers, `_`, or `-` | no; first dataset defaults to `"data"` |
 | `values` | array of plain row objects | yes |
 | `schema` | `{ fields: SourceSchemaField[] }` | no |
+| `keyField` | one field containing unique scalar keys | no |
+| `keyFields` | ordered field names forming unique tuples | no |
+| `keys` | a separate array of scalar or tuple keys | no |
 
 <!-- snippet-context:start -->
 
@@ -40,6 +43,14 @@ be created twice, and source values cannot be replaced after creation. The
 first omitted ID is stored as `"data"`. Once any dataset exists, another
 `createData` call must provide an explicit ID; the library does not invent
 `data2`-style names.
+
+Choose at most one key option. Keys distinguish strings, finite numbers, bigint,
+boolean and valid Date values. Date keys belong in the separate `keys` array;
+row cells still accept only plain immutable data. Empty strings are valid keys,
+`-0` equals `0`, and null, undefined, nonfinite numbers and objects are invalid.
+Tuples contain 1–64 scalar components; duplicates reject the whole operation.
+Without a key option, the action allocates internal row identities. See
+[data revisions](./revisions-and-removal.md) for retaining them across edits.
 
 Every dataset carries a schema. Non-empty source rows infer field kinds and
 nullable state from observed values. An empty source has an unknown schema;
